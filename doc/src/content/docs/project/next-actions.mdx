@@ -6,6 +6,10 @@ sidebar_position: 10
 
 ## Current architecture design gate
 
+Current front-panel correctness reconciliation is recorded in `design/panel/current-audit/README.md`: fixed centres are preserved; imported electrical annotations and historical preview behavior are distinguished from current circuit bindings. VCF G06 and ENV G07 remain owner semantic questions.
+
+Owner update (2026-10-18): the standalone GH4 coupon has **not been ordered**, and its purchase is deferred, not a mandatory gate. Preserve its files as optional historical work; do not delete or modify the cart. Standard connector selection should use manufacturer dimensions, recommended lands and pin numbering, then CAD and assembly-preview comparison. Resolve custom latch/grip access, registration and service sequencing in a representative integrated mock-up/circuit prototype where needed; do not require separate physical requalification or endurance testing of every standard component. Coupon purchase is not a dependency of panel or circuit source work. GH is not a frozen requirement: IDC/ribbon alternatives are being compared separately, with no substitution adopted here and explicit separation of Eurorack power from bespoke internal signal pinouts.
+
 Epic [#278](https://github.com/Takazudo/zudo-osc-hole-field/issues/278) studies separate front jack/control boards, a local middle interconnect zone and removable rear functional cards. The [modular design packet](../architecture/osc-modular-design-gate.mdx) records the source inventories, bounded models, independent review and separately approvable next scope. The owner approved a bounded revision proposing front redesign, rear tile placement, supports, connectors and enclosure dimensions. Revision 2 recommends mixed front-flex/rear-direct signal connections, supported power straps and a 105 mm inner cover depth for a separately authorized one-zone implementation. This is design work, not architecture adoption. Existing production CAD, locked centres and KEEP_K1402_INCUMBENT remain unchanged.
 
 Old #242/#253 routing and E16 work remains parked; PR #260 and #277 remain draft and unmerged. Historical continuation instructions below do not authorize restarting those campaigns. No native run, prototype construction, energization or new implementation is authorized by the packet. Electrical, physical and manufacturing obligations remain open.
@@ -145,3 +149,7 @@ records active runs, exact artifact digests, H1/H2 regression evidence,
 same-input benchmarks and commands for terminal artifact reconciliation.
 Issue #189 stays open until all routing and regression criteria are met. Existing
 protection, mechanical, electrical and manufacturing gates remain open.
+
+Owner connector direction: use standard, readily sourced and replaceable connectors with flexible cable assembly. Flying-bus and `Takazudo/zudo-bus` are owner-supplied references for a separate comparison, not a selected interface here. This does not imply 16-pin power connectors on every signal interface.
+
+Owner stack constraint update: minimum thinness is no longer mandatory. Additional board separation and enclosure depth may be proposed for standard connectors, cable bends and service access. The mentioned 5 mm is an example, neither a target nor a limit. This supersedes using the previous narrow cassette/depth as a fixed requirement for new proposals; canonical stack dimensions are unchanged here. Finish this panel audit first, then compare standard power/signal connector stacks using actual mating-envelope dimensions.

@@ -1,5 +1,7 @@
 # R21 workbench
 
+**Historical ergonomic view:** the retained standalone HTML, static proofs and 3D examples describe R21 intent, not the current circuit BOM or native manufacturing panel. Current reconciliation and a clean source preview live in `design/panel/current-audit/` (repository root). The original 0.85 mm switch text / 0.5 mm separator profile is deliberately preserved here; panel export uses 1.0 / 2.5 mm for KiCad stroke-font clearance. Current export supplies locked OCT aperture diameters; old proof defaults are not machining dimensions. Grid component annotations retain import provenance; 48 current DC-control pots are B104, despite historical B103 labels.
+
 This is the updated R20 grid, not a new panel. Open index.html locally. Both SLEW pots occupy the formerly empty cells; every old port/control record is unchanged. All 2D/3D dimensions remain proposals pending mechanical qualification.
 
 Rebuild: `python3 scripts/prepare_data.py`, `python3 scripts/build.py`, `node scripts/render_static.cjs`, `python3 scripts/export_proofs.py`. Check: `python3 scripts/validate.py`, `node scripts/test_logic.cjs`, `node scripts/test_slew.cjs`. Browser: `xvfb-run -a python3 scripts/test_browser.py` with Playwright and Chromium installed. CairoSVG/Pillow/PyMuPDF are needed for raster/PDF proofs; no documentation runtime is needed for the standalone preview.

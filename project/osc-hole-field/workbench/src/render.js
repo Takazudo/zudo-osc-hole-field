@@ -47,7 +47,7 @@ function render(D,s,options={}){
  if(['pot','octave'].includes(q.kind)){
  const r=q.diameter_mm/2;marks.push({id:q.id,x0:x-r-.85,x1:x+r+.85,y0:y-r-.85,y1:y+r+.85});out.push(corners(x,y,r+.55,q.accent));
  if(!art){out.push(`<g transform="rotate(${angle} ${x} ${y})">`);if(q.kind==='pot')out.push(`<path d="M${x-2.5981} ${y-1.5}A3 3 0 1 0 ${x+2.5981} ${y-1.5}Z" fill="#292f2d" stroke="#8a928a" stroke-width=".13"/>`);else out.push(circ(x,y,r,'#252b29','#9b9f92',.15));out.push(line(x,y-.2,x,y-r+.55,C.white,.30),'</g>');}
- else out.push(circ(x,y,3.15,C.bg));
+ else out.push(circ(x,y,(options.apertureDiameters?.[q.uid]??6.3)/2,C.bg));
  if(q.stage){let lv=s.stageLevels[q.block]?.[q.stage]||0;out.push(line(x+3.7,y,x+5.1,y,C.gold,.2),circ(x+5.9,y,.67,'#19201b',C.dim,.13),circ(x+5.9,y,.48,C.gold,'none',0,`opacity="${lv**.65}" data-stage="${q.stage}" data-env="${q.block}"`));}
  }else if(q.kind==='switch'){
  if(!art){let points=Array.from({length:6},(_,i)=>`${x+4.04*Math.cos(i*Math.PI/3)},${y+4.04*Math.sin(i*Math.PI/3)}`).join(' ');out.push(`<polygon points="${points}" fill="#454e48" stroke="#929b8a" stroke-width=".17"/>`,circ(x,y,2.8,'#212923','#a2ad9c',.17));let dx=q.positions.length===2?(v?2.2:-2.2):(v-1)*2.2;out.push(`<path d="M${x} ${y}L${x+dx} ${y}" stroke="#adb8a7" stroke-width="2.0" stroke-linecap="round"/>`,circ(x+dx,y,.73,'#e4e5d6'));}
