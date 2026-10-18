@@ -79,6 +79,15 @@ jobs:
       - name: Install pinned numerical test dependencies
         run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
 
+      - name: Install pinned browser test dependencies
+        run: |
+          python -m pip install -r scripts/checks/browser-requirements.txt
+          python -m playwright install --with-deps --no-shell chromium
+          # Preserve the retained browser harness's explicit executable path.
+          browser_bin=$(python -c 'from playwright.sync_api import sync_playwright; p = sync_playwright().start(); print(p.chromium.executable_path); p.stop()')
+          test -x "$browser_bin"
+          sudo ln -s "$browser_bin" /usr/bin/chromium
+
       - name: Run Python unit tests
         run: bash scripts/checks/run-python-tests.sh
 

@@ -74,3 +74,14 @@ tests. The exact moved case inventory follows.
 - `peripheral_ground_source_retained_regression.py`: `test_exact_observed_fresh_native_stage_and_foreign_rule_rejection`
 - `jack_ground_source_epoch_retained_regression.py`: `test_current_exact_nominal_source_bridge`
 - `current_convex_source_gap_retained_regression.py`: `test_complete_reviewed_epoch_remains_blocked`, `test_geometry_and_physical_claims_fail_closed`, `test_modified_aggregate_is_rejected_before_classification`, `test_original_source_exists`. Shared setup loads the exact retained v6 aggregate indirectly through `checked_source()`; this dependency was found by the clean-checkout test.
+
+## Browser dependency boundary
+
+The Documentation CI Python job installs `scripts/checks/browser-requirements.txt`
+and that Playwright version's Chromium with OS dependencies before discovery.
+Only Chromium is installed (no unused headless-shell download). On its disposable
+Ubuntu runner, the executable is linked at `/usr/bin/chromium` for the retained
+Stage36 whole-layout browser harness. An existing path or failed installation is
+an error, never a passing skip. The existing discovery invocation executes all
+24 browser assertions once, alongside the directory's six source tests; browser
+exceptions still fail the job. No editor or retained harness files are rewritten.
