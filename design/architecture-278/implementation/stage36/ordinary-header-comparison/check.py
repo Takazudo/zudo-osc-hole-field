@@ -31,6 +31,29 @@ class Evidence(unittest.TestCase):
         self.assertAlmostEqual(penetration(19.2, 11.21)[0], 2.4)
         self.assertAlmostEqual(penetration(19.2, 13.47)[1], 5.96)
 
+    def test_maps_preserve_source_roles(self):
+        from generate import outputs
+        a=json.loads(outputs()['analysis.json'])
+        self.assertEqual(len(a['maps']['rear_signal']['pins']),16)
+        self.assertEqual(list(a['maps']['rear_signal']['pins'].values()).count('AGND'),8)
+        self.assertEqual(a['maps']['K-PWR']['pins'],{'1':'+12V','2':'-12V','3':'AGND'})
+        self.assertEqual(a['maps']['J-SIG']['boards'],['A01-jack','A01-middle'])
+        self.assertEqual(a['maps']['C-SIG']['boards'],['A01-control','A01-middle'])
+        self.assertEqual(a['retained_tail_wires'],14)
+        self.assertIsNone(a['direct']['qualified_insertion_interval'])
+        self.assertIsNone(a['IDC']['closed_height_mm'])
+        self.assertFalse(a['hardware_fit_established'])
+
+    def test_determinism_and_bindings(self):
+        from generate import outputs
+        from xml.etree import ElementTree as ET
+        for name,data in outputs().items():self.assertEqual((HERE/name).read_text(),data)
+        a=json.loads((HERE/'analysis.json').read_text())
+        for name,digest in a['input_sha256'].items():
+            self.assertEqual(hashlib.sha256((ROOT/name).read_bytes()).hexdigest(),digest)
+        ET.fromstring((HERE/'comparison.svg').read_text())
+        self.assertAlmostEqual(a['direct']['electrical_strip_max_length_mm'],42.08)
+
     def test_retained_pdf_bytes(self):
         for source in json.loads((HERE/'sources.json').read_text())['sources']:
             data = (ROOT/source['local_cache']).read_bytes()

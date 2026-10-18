@@ -1,0 +1,153 @@
+{
+  "IDC": {
+    "assumed_bend_radius_mm": 10,
+    "assumed_placement_bow_mm": 2,
+    "closed_height_mm": null,
+    "cut_lengths_mm": null,
+    "open_access_column_mm": 36,
+    "planning_depth_mm": 32,
+    "supplied_open_cap_height_mm": 18.3
+  },
+  "direct": {
+    "assumed_separation_mm": [
+      11.9,
+      12.1
+    ],
+    "axial_screen_nominal_spacing_open_interval_mm": [
+      11.73,
+      13.99
+    ],
+    "body_gap_min_mm": 0.51,
+    "component_fit": null,
+    "electrical_strip_max_length_mm": 42.08,
+    "male_body_mm": [
+      2.39,
+      2.69
+    ],
+    "male_pin_mm": [
+      5.8,
+      6.2
+    ],
+    "penetration_mm": [
+      4.39,
+      5.69
+    ],
+    "qualified_insertion_interval": null,
+    "socket_height_mm": [
+      8.3,
+      8.7
+    ],
+    "strip_proposal_mm": [
+      43,
+      10
+    ],
+    "support_fit": null
+  },
+  "hardware_fit_established": false,
+  "input_sha256": {
+    "design/architecture-278/implementation/stage10/interface-input.json": "140349d4e24166a5c4ec0fc67241ba9fbeb490ca1f9c30110fa01a5b4c6bd583",
+    "design/architecture-278/implementation/stage10/interfaces-report.json": "8ff53afea5b21d8438699cfe9e733b5655f08e9901025f008df631e2fd8216f0",
+    "design/architecture-278/implementation/stage36/practical-idc-layout/cad-report.json": "f77ea78295455e4d2b778c625a1ea49c09c14631e7d0d66fb80da010f771fae8",
+    "design/architecture-278/implementation/stage36/practical-idc-layout/sources.json": "9228af531e712cb306e8a075012e1f8d4f253e4a3b7342ab42ccbb0624093b64",
+    "design/architecture-278/implementation/stage36/standard-idc-comparison/sources.json": "9979a60d4f731a7e1b4f79922c5d258bc1b42ea891d2aea5b61b187f36a363c9",
+    "design/architecture-278/implementation/stage36/whole-layout-review/view-data.json": "a374133872d8fe845e43116c9bc3d92ad44942d42a39f668fcbc81bb0fba6597",
+    "scripts/architecture278/implementation/stage36_interface_cassette.py": "fcc8b02434374f51b55477dfd82cfb9062804179ef790e28682ba21868296580"
+  },
+  "maps": {
+    "C-SIG": {
+      "boards": [
+        "A01-control",
+        "A01-middle"
+      ],
+      "pins": {
+        "1": "/A01/REF5",
+        "2": "/A01/REFN5",
+        "3": "/A01/IN_REMOTE",
+        "4": "/A01/Cc045d2_W",
+        "5": "/A01/C38cac0_W",
+        "6": "AGND"
+      },
+      "proposed_mode": "IDC"
+    },
+    "J-PWR": {
+      "boards": [
+        "A01-jack",
+        "A01-middle"
+      ],
+      "pins": {
+        "1": "+12V",
+        "2": "-12V",
+        "3": "+5V",
+        "4": "AGND"
+      },
+      "proposed_mode": "IDC"
+    },
+    "J-SIG": {
+      "boards": [
+        "A01-jack",
+        "A01-middle"
+      ],
+      "pins": {
+        "1": "/A01/REF5",
+        "2": "AGND",
+        "3": "/A01/REFN5",
+        "4": "/A01/IN_BUFFER",
+        "5": "/A01/OFFSET_BUFFER",
+        "6": "/A01/SUM_NEG",
+        "7": "AGND"
+      },
+      "proposed_mode": "IDC"
+    },
+    "K-PWR": {
+      "boards": [
+        "A01-core",
+        "A01-middle"
+      ],
+      "pins": {
+        "1": "+12V",
+        "2": "-12V",
+        "3": "AGND"
+      },
+      "proposed_mode": "direct8"
+    },
+    "rear_signal": {
+      "boards": [
+        "A01-middle",
+        "A01-core"
+      ],
+      "pins": {
+        "1": "/A01/REF5",
+        "10": "AGND",
+        "11": "/A01/IN_REMOTE",
+        "12": "AGND",
+        "13": "/A01/Cc045d2_W",
+        "14": "AGND",
+        "15": "/A01/C38cac0_W",
+        "16": "AGND",
+        "2": "AGND",
+        "3": "/A01/REFN5",
+        "4": "AGND",
+        "5": "/A01/IN_BUFFER",
+        "6": "AGND",
+        "7": "/A01/OFFSET_BUFFER",
+        "8": "AGND",
+        "9": "/A01/SUM_NEG"
+      },
+      "proposed_mode": "direct16"
+    }
+  },
+  "procurement": {
+    "exact_spacer": null,
+    "long_pin_variant": null,
+    "ordered": false,
+    "stock_verified": false
+  },
+  "retained_tail_wires": 14,
+  "service": {
+    "axial_pin_clearance_screen_mm": 5.69,
+    "historical_core_reservation_mm": 40,
+    "load_support_qualified": false,
+    "new_full_sweep_clear": null
+  },
+  "status": "UNADOPTED_PLANNING_ONLY"
+}
