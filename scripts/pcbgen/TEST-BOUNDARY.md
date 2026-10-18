@@ -1,7 +1,18 @@
 # Python verification boundary
 
 The portable unit suite is `bash scripts/checks/run-python-tests.sh`. It discovers
-`test_*.py` under `scripts/` and `design/`. Its inputs are committed source,
+`test_*.py` under `scripts/` and `design/`, except the explicitly frozen
+`design/architecture-278/implementation/stage17-native-x0x-001/` host-run archive.
+That archive expects an external `osc-validation` checkout and is retained
+unchanged as historical evidence, not replayed. Its maintained comparator and all
+12 synthetic mutation cases run from
+`scripts/architecture278/implementation/test_stage17_native_parity.py` instead.
+The runner reports this boundary explicitly and fails if the portable replacement
+is missing. Discovery regression tests verify the frozen/portable assertion
+bodies are equivalent and continue discovering other `design/` test directories.
+No parity assertion or native acceptance gate is removed.
+
+Its inputs are committed source,
 committed small fixtures, and temporary synthetic fixtures. Passing this suite
 establishes software regression coverage only, not native board acceptance.
 

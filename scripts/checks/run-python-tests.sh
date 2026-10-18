@@ -13,8 +13,20 @@ if ((${#test_roots[@]} == 0)); then
   exit 0
 fi
 
+# This frozen host-run snapshot expects an external osc-validation checkout.
+# Its portable comparator and all mutation cases live under scripts/ instead.
+archived_harness=design/architecture-278/implementation/stage17-native-x0x-001
+portable_parity=scripts/architecture278/implementation/test_stage17_native_parity.py
+if [[ -d "$archived_harness" ]]; then
+  if [[ ! -f "$portable_parity" ]]; then
+    printf 'Missing portable replacement for archived parity tests: %s\n' "$portable_parity" >&2
+    exit 1
+  fi
+  printf 'NOT RUN: frozen host harness %s/; portable parity coverage: %s\n' "$archived_harness" "$portable_parity"
+fi
+
 mapfile -d '' -t test_files < <(
-  find "${test_roots[@]}" -type f -name 'test_*.py' -print0 | sort -z
+  find "${test_roots[@]}" -path "$archived_harness" -prune -o -type f -name 'test_*.py' -print0 | sort -z
 )
 
 if ((${#test_files[@]} == 0)); then
