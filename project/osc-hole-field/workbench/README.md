@@ -1,3 +1,5 @@
+> **Current geometry-locked appearance editor:** [download/open instructions](current-editor/README.md) · [self-contained HTML](current-editor/index.html). It uses the audited current panel and supports appearance presets and SVG/PNG previews. The historical workbench below remains preserved.
+
 # R21 workbench
 
 **Historical ergonomic view:** the retained standalone HTML, static proofs and 3D examples describe R21 intent, not the current circuit BOM or native manufacturing panel. Current reconciliation and a clean source preview live in `design/panel/current-audit/` (repository root). The original 0.85 mm switch text / 0.5 mm separator profile is deliberately preserved here; panel export uses 1.0 / 2.5 mm for KiCad stroke-font clearance. Current export supplies locked OCT aperture diameters; old proof defaults are not machining dimensions. Grid component annotations retain import provenance; 48 current DC-control pots are B104, despite historical B103 labels.
