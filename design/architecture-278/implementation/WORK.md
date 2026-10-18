@@ -1245,3 +1245,34 @@ Stage34 verification (Claude Code Cloud, Python 3.13):
   - M-01, M-09, M-12, M33-01…08 and M34-01…08, and energisation.
 
 No supplier contact, order, upload, adoption or merge took place. Native request: NONE.
+
+
+## Stage35 — cover and guided-service interval study (Codex Cloud, 2026-10-18)
+
+Starting remote PR #287 head verified at 9d9aa404a27dc7e5b8476e0d9f826fc44c517fbe;
+parent #286 verified at b58068fbaeb65886958a67a4f4978613414e31c5. No newer issue/PR
+work claim was present. Host workspace instructions selected portable profile;
+loader verified snapshot 3d5441ff538c288923340368c5b64a5ff97890042430211c20bb0348357bac61
+from codex-settings revision 67f64089eb5c55d40aa846a9f158af66e5d84317. Runtime
+restoration skipped. Initial truncated loader output was captured/read in full.
+
+Scope: Stage35 source-only interval, support, unknown-occupancy/access/removal
+screens and an unpowered measurement checklist. No canonical geometry or old
+stage bytes changed. The 129–130.5 mm trial interval passes only the inherited
+height screen; independent signed endpoint-box sensitivity gives an empty
+J-SIG necessary interval. Neither selects hardware. Deeper-cover comparisons
+are lower bounds, not complete solutions. Wire selection and physical inputs
+remain unresolved.
+
+First failures preserved: host fallback pnpm 11.19.0 failed baseline circuit:check
+because /home/agent/.local/share/pnpm was absent. Pinned pnpm 11.5.2 via Corepack
+with /workspace/shared/corepack and frozen-lockfile install into the workspace
+succeeded; baseline circuit:check PASS. Python 3.12.14, Node 24.19.0.
+Review round1 requested changes: conservative unknown occupancy was not shared
+by inherited free-span/access routines (HIGH), and screening regression tests
+were missing (MEDIUM). Stage35 now separately audits those volumes and retains
+historical results only with explicit scope labels. Final checks/re-review are
+recorded in stage35/verification.md and independent-review files.
+
+NOT RUN: KiCad regeneration/oracle, ERC/DRC, physical/native/manufacturing tests,
+energisation, fabrication, orders, deployment and merge. User prohibits these.

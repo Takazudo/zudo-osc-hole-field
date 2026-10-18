@@ -1,3 +1,13 @@
+## Current cover and guided-service study — Stage35
+
+[Stage35](stage35/README.md) evaluates shorter J-SIG lengths and continuous arch
+height/lead intervals. The approximate 2.42 mm reduction is insufficient even in
+the inherited height model. Shorter cables can clear that height screen, but
+**no robust service solution is established**: datum/bow allocation, open-sleeve
+support, unknown neighbours, fasteners and removal remain unresolved. Deeper
+covers are height alternatives only. See the [unpowered checklist](stage35/mock-up.md).
+All new hardware remains proposed; prior stages and canonical CAD are preserved.
+
 ## Current A01 whole-arch retention and wire/current evidence — Stage34
 
 [Stage34](stage34/README.md) adds RG34 to the owner's provisional R33 study baseline. RG34 is one slot
