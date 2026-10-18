@@ -46,7 +46,11 @@ total_tests=0
 
 for directory in "${ordered_discovery_roots[@]}"; do
   printf 'Discovering tests under %s/\n' "$directory"
-  if output=$(python3 -m unittest discover --start-directory "$directory" --pattern 'test_*.py' 2>&1); then
+  command=(python3 -m unittest discover --start-directory "$directory" --pattern 'test_*.py')
+  if [[ "$directory" == scripts/architecture278/implementation ]]; then
+    command=(python3 scripts/checks/architecture_history.py)
+  fi
+  if output=$("${command[@]}" 2>&1); then
     printf '%s\n' "$output"
   else
     status=$?

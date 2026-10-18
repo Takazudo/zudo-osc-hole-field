@@ -17,6 +17,12 @@ class DiscoveryBoundary(unittest.TestCase):
     def run_fixture(self, files):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
+            # This fixture tests shell routing; real checkpoint bindings have
+            # separate Git-backed tests in test_architecture_history.py.
+            files = {Path('scripts/checks/architecture_history.py'):
+                     'import subprocess,sys\n'
+                     'sys.exit(subprocess.call([sys.executable,"-m","unittest","discover",'
+                     '"-s","scripts/architecture278/implementation"]))\n', **files}
             for name, content in files.items():
                 path = root / name
                 path.parent.mkdir(parents=True, exist_ok=True)

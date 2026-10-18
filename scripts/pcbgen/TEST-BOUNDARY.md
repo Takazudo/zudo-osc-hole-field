@@ -12,6 +12,34 @@ is missing. Discovery regression tests verify the frozen/portable assertion
 bodies are equivalent and continue discovering other `design/` test directories.
 No parity assertion or native acceptance gate is removed.
 
+Eight later retained modules contain whole-repository preservation or old
+entrypoint-hash assertions. `scripts/checks/architecture_history.py` executes
+those exact, unchanged modules in detached temporary worktrees at their recorded
+full checkpoint commits. All unmapped modules, including newly added tests,
+remain in current-source discovery. No assertion is rewritten or skipped.
+The adapter emits both context names and an aggregate executed-test count.
+
+Before replay, all pre-existing tracked paths must match each checkpoint in the
+working tree (including deletions, renames and type changes). Exactly ten known
+later global updates are instead pinned to `ed3a66125fb48e7777a73a7572fbc7afd2debe2f`:
+the workflow, panel visual-review report, architecture README/WORK/check_source
+entrypoints, osc-panel/next-actions docs, workbench README/render.js, and panel
+export script. Their exact paths are enumerated in the adapter. Frozen tests
+validate their original versions; this is not coverage of modifications to those
+current files. The only unpinned historical paths are this repair's discovery
+shell entrypoint and this boundary document. Historical test and evidence files
+receive no exception. Missing commits, modules, evidence, or changed bindings
+fail; no fallback to current sources or passing skip is permitted.
+Future changes to bound paths require explicit context-policy review; this is
+deliberately not a permanent exemption for unrelated edits to those files.
+
+Replay uses the same interpreter and propagates optimized mode, a 600-second
+per-module limit, original test failures, and cleanup failures. Git-backed
+regressions cover dirty/deleted/renamed/redirected evidence, modified assertions,
+missing commits/modules, exception drift, snapshot execution, current-test
+failure propagation and worktree cleanup. This source-only context split does
+not regenerate evidence or establish hardware qualification.
+
 Its inputs are committed source,
 committed small fixtures, and temporary synthetic fixtures. Passing this suite
 establishes software regression coverage only, not native board acceptance.
