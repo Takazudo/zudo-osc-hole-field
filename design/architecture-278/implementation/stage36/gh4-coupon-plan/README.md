@@ -2,6 +2,8 @@
 
 Base: `36f5cad002a54ea783093b2fa1246a71affdd7c4`, draft PR287 / Issue278. This additive plan preserves all historical studies, canonical CAD and PR286 at `b58068fbaeb65886958a67a4f4978613414e31c5`. No footprint, PCB, fabrication files or order is supplied. The structure viewer is not ordering evidence.
 
+Latest source-only continuation: [Standard arrangement comparison, recommendation and consolidated unsent questions](STANDARD-ARRANGEMENTS.md). No specimen size or process is adopted; procurement remains gated.
+
 ## Intended sample and quantity
 
 One identical isolated coupon design, one JST **BM04B-GHS-TBT(LF)(SN)** top-entry header per board, JLCPCB **C161692**. Target two assembled endpoints. Provisional fabrication quantity is five total PCBs, two populated and three left bare; confirm that interpretation and actual supplier quantity options before an order. Five is a planning quantity, not a verified checkout minimum or a request for five additional bare boards. The owner's zudo-case114/116 mechanical samples establish no PCBA history.
