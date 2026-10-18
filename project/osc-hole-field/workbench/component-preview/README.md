@@ -44,3 +44,7 @@ These files are outside the default scripts/design Python discovery, so must be 
 ## Remaining physical inputs
 
 Measure actual panel thickness, pot mounting datum-to-panel and tip protrusion, jack body-face-to-panel/nut engagement, shaft flat orientation and carrier constraints. Confirm exact bought part markings, especially the 48 B104 controls. For cap options, an owner selection plus actual bore/flat/retention and neighboring-finger clearance measurements are required. No visual overlap result here qualifies assembly, service removal, flex radius or retention stiffness. Keep the earlier Stage35/36 measurements and unresolved decisions separate from this appearance study.
+
+## Artwork flicker correction
+
+Artwork now uses the panel’s existing front triangles rather than a second nearly coincident mesh. See [FLICKER-FIX.md](FLICKER-FIX.md) for the owner-reference inspection, reproduced depth-buffer interference, before/after framebuffer evidence, preserved geometry and regression coverage.

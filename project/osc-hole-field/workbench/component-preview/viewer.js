@@ -12,9 +12,25 @@ const bodyMat=mat('#88673e'),shaftMat=mat('#657463'),metalMat=mat('#bbc7c9',.55)
 const panelGroup=new THREE.Group(),componentGroup=new THREE.Group();scene.add(panelGroup,componentGroup);
 const shape=new THREE.Shape();shape.moveTo(-159,-149);shape.lineTo(159,-149);shape.lineTo(159,149);shape.lineTo(-159,149);shape.closePath();
 for(const q of data.lock.placements){const hole=new THREE.Path();hole.absarc(q.x_mm-159,149-q.y_mm,(q.kind==='led'?data.params.indicator_window.diameter_mm:q.hole_d_mm)/2,0,Math.PI*2,true);shape.holes.push(hole);}
-const panel=new THREE.Mesh(new THREE.ExtrudeGeometry(shape,{depth:2,bevelEnabled:false,curveSegments:12}),mat('#273332',.15));panel.position.z=-2;panelGroup.add(panel);
-// Artwork is the retained current SVG; cut out all locked apertures in the display texture.
-const artImage=new Image();artImage.onload=()=>{const canvas=document.createElement('canvas');canvas.width=1272;canvas.height=1192;const c=canvas.getContext('2d');c.drawImage(artImage,0,0,1272,1192);c.globalCompositeOperation='destination-out';for(const q of data.lock.placements){c.beginPath();c.arc(q.x_mm*4,q.y_mm*4,(q.kind==='led'?data.params.indicator_window.diameter_mm:q.hole_d_mm)*2,0,Math.PI*2);c.fill();}const tex=new THREE.CanvasTexture(canvas);tex.colorSpace=THREE.SRGBColorSpace;const ink=new THREE.Mesh(new THREE.PlaneGeometry(318,298),new THREE.MeshBasicMaterial({map:tex,transparent:true,alphaTest:.1}));ink.position.z=.02;panelGroup.add(ink);draw();};artImage.src='data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(data.artwork)));
+// Put artwork on the panel's own front triangles. A separate plane 0.02 mm
+// above this face competed for depth at orbit distances on 24-bit buffers.
+const panelGeometry=new THREE.ExtrudeGeometry(shape,{depth:2,bevelEnabled:false,curveSegments:12});
+const panelPositions=panelGeometry.attributes.position,panelUV=panelGeometry.attributes.uv;
+panelGeometry.clearGroups();let panelStart=0,panelRole=-1;
+for(let i=0;i<panelPositions.count;i++)panelUV.setXY(i,(panelPositions.getX(i)+159)/318,(panelPositions.getY(i)+149)/298);
+for(let i=0;i<panelPositions.count;i+=3){
+ const role=[0,1,2].every(j=>panelPositions.getZ(i+j)===2)?0:1;
+ if(role!==panelRole){if(i)panelGeometry.addGroup(panelStart,i-panelStart,panelRole);panelStart=i;panelRole=role;}
+}
+panelGeometry.addGroup(panelStart,panelPositions.count-panelStart,panelRole);
+const artworkMaterial=new THREE.MeshBasicMaterial({color:'#273332'});
+const panel=new THREE.Mesh(panelGeometry,[artworkMaterial,mat('#273332',.15)]);panel.position.z=-2;panelGroup.add(panel);
+const artImage=new Image();artImage.onload=()=>{
+ const canvas=document.createElement('canvas');canvas.width=1272;canvas.height=1192;
+ canvas.getContext('2d').drawImage(artImage,0,0,1272,1192);
+ const tex=new THREE.CanvasTexture(canvas);tex.colorSpace=THREE.SRGBColorSpace;
+ artworkMaterial.map=tex;artworkMaterial.color.set('#ffffff');artworkMaterial.needsUpdate=true;draw();
+};artImage.src='data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(data.artwork)));
 function meshGeometry(s,transform){const g=new THREE.BufferGeometry(),a=[];for(let i=0;i<s.positions.length;i+=3)a.push(...transform(...s.positions.slice(i,i+3)));g.setAttribute('position',new THREE.Float32BufferAttribute(a,3));g.setIndex(s.indices);g.computeVertexNormals();return g;}
 const potGeo=meshGeometry(data.meshes.pot.solids[0],(x,y,z)=>[x-6.9960603727775,y-2.5,z-9.89]);
 // Material grouping preserves the original tessellated solid; no geometric substitution.
