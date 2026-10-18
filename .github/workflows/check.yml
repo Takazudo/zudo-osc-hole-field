@@ -84,9 +84,15 @@ jobs:
           python -m pip install -r scripts/checks/browser-requirements.txt
           python -m playwright install --with-deps --no-shell chromium
           # Preserve the retained browser harness's explicit executable path.
-          browser_bin=$(python -c 'from playwright.sync_api import sync_playwright; p = sync_playwright().start(); print(p.chromium.executable_path); p.stop()')
+          browser_bin=$(python - <<'PY'
+          from playwright.sync_api import sync_playwright
+          with sync_playwright() as p:
+              print(p.chromium.executable_path)
+          PY
+          )
           test -x "$browser_bin"
-          sudo ln -s "$browser_bin" /usr/bin/chromium
+          # Replace the image's preinstalled launcher only on this disposable runner.
+          sudo ln -sfnT "$browser_bin" /usr/bin/chromium
 
       - name: Run Python unit tests
         run: bash scripts/checks/run-python-tests.sh

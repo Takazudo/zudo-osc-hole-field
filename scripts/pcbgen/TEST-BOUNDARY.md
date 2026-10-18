@@ -81,7 +81,7 @@ The Documentation CI Python job installs `scripts/checks/browser-requirements.tx
 and that Playwright version's Chromium with OS dependencies before discovery.
 Only Chromium is installed (no unused headless-shell download). On its disposable
 Ubuntu runner, the executable is linked at `/usr/bin/chromium` for the retained
-Stage36 whole-layout browser harness. An existing path or failed installation is
-an error, never a passing skip. The existing discovery invocation executes all
+Stage36 whole-layout browser harness, replacing the image's preinstalled launcher.
+A failed installation is an error, never a passing skip. Discovery executes all
 24 browser assertions once, alongside the directory's six source tests; browser
 exceptions still fail the job. No editor or retained harness files are rewritten.
