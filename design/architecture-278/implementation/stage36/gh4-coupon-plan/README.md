@@ -2,7 +2,11 @@
 
 Base: `36f5cad002a54ea783093b2fa1246a71affdd7c4`, draft PR287 / Issue278. This additive plan preserves all historical studies, canonical CAD and PR286 at `b58068fbaeb65886958a67a4f4978613414e31c5`. No footprint, PCB, fabrication files or order is supplied. The structure viewer is not ordering evidence.
 
-Latest source-only continuation: [Standard arrangement comparison, recommendation and consolidated unsent questions](STANDARD-ARRANGEMENTS.md). No specimen size or process is adopted; procurement remains gated.
+**Current decision:** [Concrete source design](CONCRETE-DESIGN.md), [coordinates](design.json), [source inventory](SOURCE-INVENTORY.md), and [native handoff](NATIVE-HANDOFF.md). Selected for later isolated CAD: 80×80 mm functional coupon with 10 mm top/bottom rails, Standard normal-paste evaluation, exact catalog/pinned GH4 footprint. No native files or manufacturing outputs yet. The separate drawing, finger-measurement and supplier-enquiry prerequisites below are **superseded**; they do not block source/native drafting. No supplier enquiry is requested. Both viewers remain unchanged.
+
+## Historical proposals — retained, superseded where conflicting
+
+The remaining text records earlier 30 mm, array and process alternatives and their then-current gates. Read the concrete design for current decisions; retain this history without treating its superseded gates as current requirements. [Standard arrangement comparison](STANDARD-ARRANGEMENTS.md) is also historical.
 
 ## Intended sample and quantity
 
