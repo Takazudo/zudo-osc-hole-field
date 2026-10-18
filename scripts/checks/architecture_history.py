@@ -12,7 +12,7 @@ import time
 import unittest
 
 DIRECTORY = 'scripts/architecture278/implementation'
-CURRENT_BASE = 'ed3a66125fb48e7777a73a7572fbc7afd2debe2f'
+CURRENT_BASE = '8c2d4f33cf55ee0f9ca1509261669c3feeeca4e3'
 CHECKPOINTS = {
     'e2e580aed4620e86357341d660bbf04f356d33f2': (
         'test_stage18_observation.py', 'test_stage20_observation.py'),
@@ -24,7 +24,7 @@ CHECKPOINTS = {
     '9d9aa404a27dc7e5b8476e0d9f826fc44c517fbe': ('test_stage34_arch_retention.py',),
 }
 # These known later updates are current-context inputs, not rewritten history.
-# Pin their working bytes to the reviewed pre-repair checkout, rather than grant
+# Pin their working bytes to the reviewed CI-split checkpoint, rather than grant
 # an open-ended exemption from preservation checks.
 CURRENT_PATHS = (
     '.github/workflows/check.yml',

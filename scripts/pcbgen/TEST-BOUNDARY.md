@@ -21,7 +21,7 @@ The adapter emits both context names and an aggregate executed-test count.
 
 Before replay, all pre-existing tracked paths must match each checkpoint in the
 working tree (including deletions, renames and type changes). Exactly ten known
-later global updates are instead pinned to `ed3a66125fb48e7777a73a7572fbc7afd2debe2f`:
+later global updates are instead pinned to `8c2d4f33cf55ee0f9ca1509261669c3feeeca4e3`:
 the workflow, panel visual-review report, architecture README/WORK/check_source
 entrypoints, osc-panel/next-actions docs, workbench README/render.js, and panel
 export script. Their exact paths are enumerated in the adapter. Frozen tests
@@ -113,3 +113,15 @@ Stage36 whole-layout browser harness, replacing the image's preinstalled launche
 A failed installation is an error, never a passing skip. Discovery executes all
 24 browser assertions once, alongside the directory's six source tests; browser
 exceptions still fail the job. No editor or retained harness files are rewritten.
+
+## Separate aggregate CI budget
+
+The reviewed CI split checkpoint above changes only the workflow among those ten
+bound paths; the other nine remain identical to ed3a6612. No historical module,
+checkpoint or exception path changed. `Python and native checks` and `Aggregate
+source regeneration` retain the same pinned setup and each has a 30-minute limit.
+The existing required `Python unit tests` name now checks both dependency results
+with `always()` and rejects anything except two successes. All original commands
+and the regeneration drift artifact are retained. See
+[`CI-TIMEOUT-DIAGNOSIS.md`](../checks/CI-TIMEOUT-DIAGNOSIS.md) for the original
+timeouts, resource duplication and validation boundary.
