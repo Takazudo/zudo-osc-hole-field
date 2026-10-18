@@ -1,3 +1,8 @@
+# Current checkpoint: Stage36
+
+[C36 cassette interface study](stage36/README.md) stops at failed guide/capture interfaces.
+No hardware adopted; historical stages below remain unchanged.
+
 ## Current cover and guided-service study — Stage35
 
 [Stage35](stage35/README.md) evaluates shorter J-SIG lengths and continuous arch

@@ -1276,3 +1276,16 @@ recorded in stage35/verification.md and independent-review files.
 
 NOT RUN: KiCad regeneration/oracle, ERC/DRC, physical/native/manufacturing tests,
 energisation, fabrication, orders, deployment and merge. User prohibits these.
+
+## Stage36 — bounded C36 interface study
+
+Fresh local/remote PR287 head verified at8fd10c4; PR draft, parent286 remains
+b58068f. Issue/PR comments checked, no newer active-work claim. Portable loader
+already consumed in this chat; not rerun. Existing source drawings reviewed.
+One rigid cassette concept preserves lengths/R12 and stops at guide/capture
+interfaces. Datum, neighbor caps, roots and opening are explicit unadopted
+obligations. Unknowns remain occupied; no canonical geometry changed.
+
+First rendering failure: CairoSVG unavailable; PyMuPDF used without installation.
+Final checks and independent review are recorded in stage36/verification.md and
+review records. No native/physical/manufacturing operations or alternate mechanism.
