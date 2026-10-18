@@ -18,4 +18,3 @@
 | F4 | Stage32 S-JLC-CAP receipt, https://jlcpcb.com/capabilities/pcb-capabilities, inspected2026-10-17 | Historical source reading: thickness±10% at≥1mm, routed outline±0.2mm regular, hole position±0.075mm. Historical tolerance reference only; current source design does not claim manufactured tolerance validation. Eurocircuits stage8receipt is not a JLC rule. |
 
 Private J2/J3 files exist outside git in `/workspace/gh-manual-private-intake/extracted/`; hashes verified this turn. No new redistribution. Prior FAQ(N) explanation remains parent-reported after local403; not used to infer new thermal limits.
-

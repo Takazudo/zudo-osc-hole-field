@@ -23,9 +23,11 @@ Reviewed SHA256 bindings:
 
 - `CONCRETE-DESIGN.md`: `a6e17622e357fb6929059d42836c990c4dc551df827ad6cebd8f5a6af0d2d524`
 - `design.json`: `925a7b6ce211797d4736fe2c40fe71bb551b98bb3f720738f26e49a36e26dd7c`
-- `SOURCE-INVENTORY.md`: `e4708f23c3e3545711cb7be6aa7e52b24736c02200e3efc0e3900ec59785b1d2`
+- `SOURCE-INVENTORY.md`: `fffea06ec526ab806b8b3792add1ea58a06c5a6844727c3c6c6a96ff8ec2cb06`
 - `NATIVE-HANDOFF.md`: `67cbfb4fd9ef1ff1a1c1535c83258048818ed4881350e48db99da6fde6b4957f`
 - `README.md`: `c04b477f78c865cd488f94751fe34c10ec54c085b87b590d81a31b67e2f7075a`
 - `test_design.py`: `b96c8574254c5d4b19de77b32ec377e527b7e574c98f55641b2277f8d7930ee6`
 
 Receipt body before this verdict append: `a5fa51b85f8956d4be7f44927d05849bd9416f952e294bb42efdb837e63c2207`. Verdict append records the review without changing reviewed design bytes.
+
+Final staged whitespace check caught an extra blank line at SOURCE-INVENTORY.md EOF after the working-tree-only check had passed (untracked files were excluded). Removed that blank line; no source-design change. Preserved initial commit and reran whole-change whitespace validation.
