@@ -1,0 +1,195 @@
+{
+  "front_unknown_volume": {
+    "entered_by_R33": false,
+    "lowest_R33_envelope_z_mm": 42.15,
+    "status": "UNKNOWN_NOT_FREE (unchanged from Stage32)"
+  },
+  "reservations": [
+    {
+      "designed_part_overlaps": [],
+      "for": "J-SIG arch in the installed state and every release case (2.45-15 mm, constant length)",
+      "id": "RV-ARCH-J-SIG",
+      "reason": "the arch occupies this in-plane volume above the A01 boards; its top above z 105 is reached only in service states with the rear cover off (the rear cover is not a modelled part)",
+      "slab": {
+        "direction_xy": [
+          0.885398,
+          -0.464834
+        ],
+        "half_thickness_mm": 2.35,
+        "length_mm": 45.177428,
+        "normal_xy": [
+          0.464834,
+          0.885398
+        ],
+        "origin_xy_mm": [
+          210.0,
+          173.0
+        ],
+        "parts": [
+          {
+            "part": "local leg",
+            "s_mm": [
+              -2.35,
+              2.35
+            ],
+            "z_mm": [
+              43.9,
+              109.711945
+            ]
+          },
+          {
+            "part": "middle leg",
+            "s_mm": [
+              42.827428,
+              47.527428
+            ],
+            "z_mm": [
+              57.3,
+              109.711945
+            ]
+          },
+          {
+            "part": "top band",
+            "s_mm": [
+              -2.35,
+              47.527428
+            ],
+            "z_mm": [
+              78.011945,
+              109.711945
+            ]
+          }
+        ]
+      },
+      "status": "PROPOSAL_REQUIRES_OWNER_DECISION"
+    },
+    {
+      "box_mm": [
+        201.15,
+        169.4,
+        218.85,
+        180.5
+      ],
+      "designed_part_overlaps": [],
+      "for": "A01:J-SIG:local latch press and pull from the rear",
+      "id": "RV-ACCESS-J-SIG-local",
+      "reason": "+z access above the housing with the rear cover off",
+      "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
+      "z_mm": [
+        43.9,
+        105.0
+      ]
+    },
+    {
+      "box_mm": [
+        241.15,
+        148.4,
+        258.85,
+        159.5
+      ],
+      "designed_part_overlaps": [],
+      "for": "A01:J-SIG:middle latch press and pull from the rear",
+      "id": "RV-ACCESS-J-SIG-middle",
+      "reason": "+z access above the housing with the rear cover off",
+      "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
+      "z_mm": [
+        57.3,
+        105.0
+      ]
+    },
+    {
+      "designed_part_overlaps": [],
+      "for": "J-PWR arch in the installed state and every release case (2.45-15 mm, constant length)",
+      "id": "RV-ARCH-J-PWR",
+      "reason": "the arch occupies this in-plane volume above the A01 boards; its top above z 105 is reached only in service states with the rear cover off (the rear cover is not a modelled part)",
+      "slab": {
+        "direction_xy": [
+          0.941075,
+          -0.338199
+        ],
+        "half_thickness_mm": 2.057107,
+        "length_mm": 68.007353,
+        "normal_xy": [
+          0.338199,
+          0.941075
+        ],
+        "origin_xy_mm": [
+          226.0,
+          173.0
+        ],
+        "parts": [
+          {
+            "part": "local leg",
+            "s_mm": [
+              -2.057107,
+              2.057107
+            ],
+            "z_mm": [
+              43.9,
+              106.00409
+            ]
+          },
+          {
+            "part": "middle leg",
+            "s_mm": [
+              65.950246,
+              70.06446
+            ],
+            "z_mm": [
+              57.3,
+              106.00409
+            ]
+          },
+          {
+            "part": "top band",
+            "s_mm": [
+              -2.057107,
+              70.06446
+            ],
+            "z_mm": [
+              74.889876,
+              106.00409
+            ]
+          }
+        ]
+      },
+      "status": "PROPOSAL_REQUIRES_OWNER_DECISION"
+    },
+    {
+      "box_mm": [
+        219.025,
+        169.4,
+        232.975,
+        180.5
+      ],
+      "designed_part_overlaps": [],
+      "for": "A01:J-PWR:local latch press and pull from the rear",
+      "id": "RV-ACCESS-J-PWR-local",
+      "reason": "+z access above the housing with the rear cover off",
+      "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
+      "z_mm": [
+        43.9,
+        105.0
+      ]
+    },
+    {
+      "box_mm": [
+        283.025,
+        146.4,
+        296.975,
+        157.5
+      ],
+      "designed_part_overlaps": [],
+      "for": "A01:J-PWR:middle latch press and pull from the rear",
+      "id": "RV-ACCESS-J-PWR-middle",
+      "reason": "+z access above the housing with the rear cover off",
+      "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
+      "z_mm": [
+        57.3,
+        105.0
+      ]
+    }
+  ],
+  "stage32_front_reservations": "RV-DIP and RV-ACCESS (front) are not needed by R33; they stay Stage32 proposals for B32",
+  "status": "DESIGN_STUDY_ONLY"
+}

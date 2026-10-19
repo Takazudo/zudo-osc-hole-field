@@ -1,0 +1,269 @@
+{
+  "K4_mm": 0.15,
+  "continuous": {
+    "fan_in_mm": 6.905617,
+    "fixed_former_released_slack_mm": [
+      0,
+      15
+    ],
+    "former_relative_rise_mm": [
+      0,
+      7.5
+    ],
+    "historical_polyline_top_delta_mm": 0.00021519337737174737,
+    "local_straight_mm": [
+      33.04676780662263,
+      25.546767806622633
+    ],
+    "opposite_straight_mm": [
+      19.646767806622634,
+      27.146767806622634
+    ],
+    "residual_slack_equation": "delta_set + 2*max(0,t/2-y(t)); y(t)>t/2 risks tension and is not permitted by this length model; no friction or clamp credited",
+    "reverse": "same swept family with t decreasing; support must precede sleeve removal and remain until sleeve closed",
+    "t_mm": [
+      0,
+      15
+    ],
+    "top_z_mm": [
+      88.94676780662263,
+      96.44676780662263
+    ]
+  },
+  "core_extraction_mm": 40,
+  "cover_inner_z_mm": 105,
+  "grip": {
+    "angle_scope": "depth limits are zero-angle axis-aligned necessary screens, not full15deg orientation or approach clearance",
+    "both_faces_required": true,
+    "family": "full4-wire pitch-row reference projection; not measured wire shape or finger",
+    "force_or_friction_credit": false,
+    "full_15deg_translation_only_outer_bound": {
+      "minus_v": {
+        "blocking_count": 4,
+        "meets_K4": false,
+        "minimum": [
+          {
+            "kind": "known",
+            "obstacle": "board:A01-middle:0",
+            "spare_mm": -3.108560807568879
+          },
+          {
+            "kind": "known",
+            "obstacle": "board:A01-middle:2",
+            "spare_mm": -2.117655969141223
+          },
+          {
+            "kind": "known",
+            "obstacle": "release:A01:J-SIG:local",
+            "spare_mm": -1.4512886940357115
+          }
+        ],
+        "pairs": 1039
+      },
+      "plus_v": {
+        "blocking_count": 5,
+        "meets_K4": false,
+        "minimum": [
+          {
+            "kind": "known",
+            "obstacle": "board:A01-middle:0",
+            "spare_mm": -2.9760141968389213
+          },
+          {
+            "kind": "known",
+            "obstacle": "board:A01-middle:2",
+            "spare_mm": -2.117655969141223
+          },
+          {
+            "kind": "known",
+            "obstacle": "release:A01:J-SIG:local",
+            "spare_mm": -1.4512886940357115
+          }
+        ],
+        "pairs": 1039
+      }
+    },
+    "height_condition": "H+q <= cap; q>=0 offset above fan-in; cap omits tolerances and hand approach, so necessary only",
+    "minus_v": {
+      "at_limit": {
+        "blocking_count": 0,
+        "meets_K4": true,
+        "minimum": [
+          {
+            "kind": "known",
+            "obstacle": "board:A01-middle:0",
+            "spare_mm": 0.15000000949121617
+          },
+          {
+            "kind": "known",
+            "obstacle": "board:A01-middle:2",
+            "spare_mm": 1.7682199038456448
+          },
+          {
+            "kind": "known",
+            "obstacle": "release:A01:J-SIG:local",
+            "spare_mm": 2.5679491924311284
+          }
+        ],
+        "pairs": 1039
+      },
+      "max_depth_mm": 1.848365180194378,
+      "status": "NECESSARY_ONLY_ZERO_AXIAL_HEIGHT",
+      "upper_search_mm": 25
+    },
+    "nominal_axial_height_cap_mm": 9.0,
+    "plus_v": {
+      "at_limit": {
+        "blocking_count": 0,
+        "meets_K4": true,
+        "minimum": [
+          {
+            "kind": "unknown_depth",
+            "obstacle": "foreign-depth:SW1301",
+            "spare_mm": 0.15000008825412703
+          },
+          {
+            "kind": "known",
+            "obstacle": "board:A01-middle:1",
+            "spare_mm": 0.3496485472607409
+          },
+          {
+            "kind": "unknown_depth",
+            "obstacle": "foreign-depth:SW1401",
+            "spare_mm": 1.1884654294758001
+          }
+        ],
+        "pairs": 1039
+      },
+      "max_depth_mm": 5.404630955308676,
+      "status": "NECESSARY_ONLY_ZERO_AXIAL_HEIGHT",
+      "upper_search_mm": 25
+    },
+    "row_depth_mm": 1,
+    "row_width_mm": 4.75
+  },
+  "latch": {
+    "maximum_certified_envelope_mm": null,
+    "reason": "protrusion known qualitatively; exact position, side, travel and approach missing; housing outline is not latch datum",
+    "stroke_mm": null,
+    "tool_tip_width_depth_height_mm": null
+  },
+  "lengths_mm": {
+    "J-PWR": 149,
+    "J-SIG": 133
+  },
+  "local_frame": {
+    "latch_side_sign": "UNCONFIRMED exact part orientation; inspect actual top-entry part",
+    "origin_mm": [
+      226,
+      173,
+      43.9
+    ],
+    "u_pitch": [
+      1,
+      0,
+      0
+    ],
+    "v_broad_face_normal": [
+      0,
+      1,
+      0
+    ],
+    "w_withdrawal": [
+      0,
+      0,
+      1
+    ]
+  },
+  "margin_mm": 0.5,
+  "native": "NOT_RUN",
+  "open_span": {
+    "K4_deficit_mm": 0.1598340778862258,
+    "historical_stage35_bound_mm": -0.009834077886226034,
+    "necessary_max_total_residual_mm_for_middle_board_only": 0.43417947739362717,
+    "not_a_global_slack_pass": true,
+    "recomputed_same_bound_mm": -0.009834077886225812,
+    "unknowns_retained": true
+  },
+  "physical": "NOT_RUN",
+  "planning_angle_deg": 15,
+  "radius_mm": 12,
+  "scope": "J-PWR local only; no other endpoints advanced; no mechanism selected",
+  "sleeve": {
+    "closed_local_coordinate_corners": [
+      [
+        -3.7829480000000046,
+        -1.7827690000000018,
+        13.526105999999999
+      ],
+      [
+        -3.7829480000000046,
+        -1.7827690000000018,
+        30.905617
+      ],
+      [
+        1.7827690000000018,
+        -3.7829480000000046,
+        13.526105999999999
+      ],
+      [
+        1.7827690000000018,
+        -3.7829480000000046,
+        30.905617
+      ],
+      [
+        3.7829480000000046,
+        1.7827690000000018,
+        13.526105999999999
+      ],
+      [
+        3.7829480000000046,
+        1.7827690000000018,
+        30.905617
+      ],
+      [
+        -1.7827690000000018,
+        3.7829480000000046,
+        13.526105999999999
+      ],
+      [
+        -1.7827690000000018,
+        3.7829480000000046,
+        30.905617
+      ]
+    ],
+    "maximum_certified_opening_travel_mm": null,
+    "opening_axis_hinge_angle_and_wall_geometry": null,
+    "reason": "closed occupancy screen and absent split/hinge profile do not establish a collision-free opening; no direction is invented",
+    "zero_motion_outer_prism_audit": {
+      "blocking_count": 3,
+      "meets_K4": false,
+      "minimum": [
+        {
+          "kind": "channel",
+          "obstacle": "RG34-J-PWR-channel-local-leg",
+          "spare_mm": -2.807050807568877
+        },
+        {
+          "kind": "channel",
+          "obstacle": "RG34-J-PWR-channel-corner-local",
+          "spare_mm": -2.807050807568877
+        },
+        {
+          "kind": "channel",
+          "obstacle": "RG34-J-SIG-channel-corner-local",
+          "spare_mm": -0.19922118286487933
+        }
+      ],
+      "pairs": 1039
+    }
+  },
+  "support_handoff": {
+    "housing_crimp_structural_credit": false,
+    "operator_arch_support_credit": false,
+    "opposite_sleeve_retained": true,
+    "retention_of_both_bends_before_sleeve_open": "REQUIRED_UNDEFINED",
+    "separate_former_reaction_to_carrier": "REQUIRED_UNDEFINED"
+  },
+  "verdict": "UNKNOWN_NOT_SOURCE_FEASIBLE_HARD_STOP"
+}

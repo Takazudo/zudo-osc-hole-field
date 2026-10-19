@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-18",
+  "decided_by": "OWNER",
+  "record_source": "Owner instruction to the Claude Code Cloud session continuing Issue #278 / draft PR #287 at 66533ba69b03c1ad7b43bf41baf69c0b3d258673 (Stage31 B as the provisional working option)",
+  "subject": "A01 J-SIG/J-PWR local mechanical design: wiring, retention, unmating and the core 40 mm service in one 3D envelope model",
+  "status": "DESIGN_STUDY_CHANGES_ALLOWED",
+  "changeable": {
+    "carrier_local_shape": ["rail:middle:0"],
+    "header_refs": ["A01:J-SIG:middle", "A01:J-PWR:middle"],
+    "header_changes": ["position", "orientation"],
+    "cable": ["design length", "bundling", "retention parts"]
+  },
+  "fixed": [
+    "panel controls and jacks (design/grid/placements.lock.json)",
+    "nets and pin identities",
+    "part numbers",
+    "DIN mapping and DIN positions",
+    "board planes",
+    "the service order: disconnect K-PWR, then withdraw the core 40 mm",
+    "A01:J-SIG:local and A01:J-PWR:local positions"
+  ],
+  "approval_required_before_use": [
+    "any change to a neighbouring (foreign) board, its outline or its parts",
+    "any change of a board plane z",
+    "any adoption into canonical CAD"
+  ],
+  "scope_excludes": [
+    "fabrication, ordering, quotes, uploads or supplier contact",
+    "native KiCad, ERC/DRC, simulation or fabrication output",
+    "energisation and physical tests",
+    "calling a design length a measured or cut length",
+    "promoting a calculation to a physical pass"
+  ]
+}

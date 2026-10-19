@@ -1,0 +1,984 @@
+{
+  "approval": {
+    "approval_required_before_use": [
+      "any broader change listed above",
+      "any change to a neighbouring (foreign) board, its outline or its parts",
+      "any adoption into canonical CAD",
+      "any wire selection"
+    ],
+    "broader_change_proposals": {
+      "carrier_registration_requirement": "The jack, middle and rear carriers must register to each other within registration_allowance_mm at the enclosure cleats; the cleats are not designed, so this is a requirement on a future enclosure, proposed only",
+      "front_jack_board_procedure": "Front jack board removal starts by removing RG34: the J-PWR channel is within K4 of the A01-jack M4 screwdriver column (1.63 mm; -0.34 mm robust with the registration allowance). Proposed only; the RG34 fit/removal path is not evaluated",
+      "j_sig_cover_conflict": "The J-SIG RG34 cap needs the rear cover inner face higher than z 105 or a shorter J-SIG design length (below the inherited 10 mm service slack). Either is a change outside the approved geometry and is proposed for an owner decision only. The consequences of a shorter J-SIG (T1-T11 and the Stage32 length rule with about 7.6 mm service slack) are not evaluated",
+      "rg34_mount_on_rear_carrier": "A post on crossmember:rear:0 that carries the RG34 retention channels. It changes the rear carrier (a fastening interface on the crossmember top face) and is proposed only",
+      "rg34_outside_reserved_volumes": "RG34 walls stand up to guide_wall_mm + guide_clearance_mm - 0.625 mm outside the RV-ARCH slab half-thickness and the sleeves and block occupy the RV-ACCESS columns above the grip zones; proposed only",
+      "service_procedure_restriction": "With RG34 closed, only one end of a cable may be withdrawn at a time; a both-ends withdrawal needs the channel lid opened. Proposed only"
+    },
+    "changeable": {
+      "cable": [
+        "provisional design length",
+        "bundling",
+        "retention"
+      ],
+      "carrier_local_shape": [
+        "rail:middle:0"
+      ],
+      "header_changes": [],
+      "header_refs": [
+        "A01:J-SIG:middle",
+        "A01:J-PWR:middle"
+      ],
+      "retention_parts": "study geometry for captive guides inside or adjacent to the reserved RV-ARCH / RV-ACCESS volumes"
+    },
+    "date": "2026-10-17",
+    "decided_by": "OWNER",
+    "fixed": [
+      "panel controls and jacks (design/grid/placements.lock.json)",
+      "nets and pin identities",
+      "locked component part numbers",
+      "DIN mapping and DIN positions",
+      "board planes",
+      "the R33 middle header positions, faces and orientations (study baseline)",
+      "the service order: disconnect K-PWR, then withdraw the core 40 mm",
+      "A01:J-SIG:local and A01:J-PWR:local positions",
+      "the 15 mm withdrawal basis, the 0.5 mm placement margin and the 0.15 mm K4 threshold",
+      "the R12 route radius as the primary 10x OD candidate"
+    ],
+    "provisional_baseline": {
+      "R33_rear_face_middle_headers": "Provisionally used as the DESIGN-STUDY baseline: A01:J-SIG:middle at (250, 152) and A01:J-PWR:middle at (290, 150) on the A01-middle rear face",
+      "R33_reservations": "RV-ARCH-J-SIG, RV-ARCH-J-PWR and the four RV-ACCESS columns are provisionally reserved for this study",
+      "does_not_adopt": [
+        "canonical CAD",
+        "manufacturing outputs",
+        "a wire selection",
+        "physical feasibility"
+      ],
+      "owner_informed": "Final adoption would require assembly-side (second SMT side on A01-middle) and copper-routing changes"
+    },
+    "record_source": "Owner instruction to the Claude Code Cloud session (Stage34) continuing Issue #278 / draft PR #287 at 2c41e8cd93574c356ba375fafba47ba65a480217: whole-arch retention and wire/current qualification",
+    "scope_excludes": [
+      "merging, canonical CAD adoption, KiCad regeneration, ERC/DRC claims or fabrication output",
+      "ordering, quotes, purchases, uploads or supplier contact",
+      "native KiCad, ERC/DRC or simulation",
+      "energisation and physical tests",
+      "calling a design length a measured or cut length",
+      "promoting a calculation to a physical pass"
+    ],
+    "status": "DESIGN_STUDY_CHANGES_ALLOWED",
+    "subject": "Positive lateral retention of the R33 J-SIG/J-PWR arches that still allows the 15 mm withdrawals, and the remaining electrical and wire evidence"
+  },
+  "design_lengths": {
+    "J-PWR": {
+      "cut_tolerance_mm": 0.5,
+      "design_length_proposal_mm": 149,
+      "measured_or_cut_mm": null
+    },
+    "J-SIG": {
+      "cut_tolerance_mm": 0.5,
+      "design_length_proposal_mm": 133,
+      "measured_or_cut_mm": null
+    }
+  },
+  "inherited_from": "design/architecture-278/implementation/stage33/design-input.json",
+  "parameters": {
+    "copper_E_lower_MPa": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "lower end of annealed copper modulus, used only for the strands-only buckling load (friction check); not used for any retention bound",
+      "value": 100000
+    },
+    "copper_density_g_cm3": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "reference value for the cable weight bound",
+      "value": 8.96
+    },
+    "cut_length_tolerance_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "+/- on the design length after crimping; drives the former height and the slack bound; to be measured (M34-03, M-09)",
+      "value": 0.5
+    },
+    "former_clearance_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "the former (inner block under the top leg, corners at the bend inner surface) is a contact guide surface in the arch plane; it stops the arch from sagging and the bends from tightening. Its height is set at assembly (former_setting_resolution_mm)",
+      "value": 0.0
+    },
+    "former_setting_resolution_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "the former height is set at assembly (and after any harness replacement) so the top leg rests on it: lowered, then raised until it touches and locked (shim or captive screw). The remaining gap is at most this value, so at most twice it of slack can move into a free span; without the setting step the cut tolerance and the board bow leave 2.28 mm of slack (sensitivity)",
+      "value": 0.25
+    },
+    "friction_coefficient_upper": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "upper bound for insulation on a radiused guide surface; not measured (M34-04)",
+      "value": 0.5
+    },
+    "grip_length_design_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "bundle length kept free for a two-finger grip above the fan-in during a 15 mm withdrawal (JST: hold the wire in a bundle within 15 degrees); the maker grip length gh_bundle_grip_length_mm stays UNCONFIRMED",
+      "value": 8.0
+    },
+    "guide_clearance_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "radial play between the dressed bundle envelope (JST maximum OD + 0.25 mm dressing) and each guide wall, sleeve bore, end wall and cap; out-of-plane movement inside RG34 is bounded by this value",
+      "value": 0.3
+    },
+    "guide_closure_gap_max_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "largest gap at a lid or sleeve parting line when closed on its positive stop; must stay below half the smallest wire OD so no conductor can enter (pinch) or pass (escape)",
+      "value": 0.2
+    },
+    "guide_edge_radius_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "every edge a conductor can touch (sleeve ends, channel entries, lid edges) is radiused; insulation protection",
+      "value": 0.5
+    },
+    "guide_fab_tolerance_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "profile tolerance of RG34 surfaces; no part exists",
+      "value": 0.1
+    },
+    "guide_mount_float_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "RG34 post to crossmember:rear:0 fastening float; no fastener selected",
+      "value": 0.1
+    },
+    "guide_wall_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "wall, lid, cap and sleeve thickness (machined 6061-T6 with radiused cable edges, or an equivalent part)",
+      "value": 1.2
+    },
+    "insulation_density_upper_g_cm3": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "PTFE-class upper value so the cable weight is an upper bound for any insulation",
+      "value": 2.2
+    },
+    "inter_carrier_registration_mm": {
+      "class": "UNCONFIRMED",
+      "note": "the carriers bolt to enclosure cleats that are not designed; actual registration unknown (M34-06)",
+      "value": null
+    },
+    "registration_allowance_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "REQUIREMENT, not a known value: largest relative position error between the rear carrier (RG34, core) and the jack/middle carriers (housings) that the design tolerates; sets the free length below each sleeve for an S-bend at the maker radius",
+      "value": 1.0
+    }
+  },
+  "procedure": {
+    "Connector service (one end at a time)": [
+      "Power off; remove the rear cover. The core may stay installed.",
+      "Open and remove only the sleeve of the end to be serviced; the channel, its lid and the other sleeve stay closed.",
+      "Press the latch, hold the bundle in the grip zone above the fan-in and pull within 15 degrees of +z; the cable slides through the channel and the opposite sleeve and the arch rises inside the channel (cap above the single-end raised top).",
+      "Re-mate along -z, pulling the arch back down onto the former; refit the sleeve and check its stop.",
+      "Never withdraw both ends of one cable with the lid closed: the raised arch would hit the cap (blocked by design). For harness replacement open the lid and both sleeves first."
+    ],
+    "Core service (unchanged order)": [
+      "Power off; remove the rear cover.",
+      "Disconnect K-PWR, release the four core screws and withdraw the core 40 mm along +z. RG34 and both arches stay in place; the J-PWR channel wall, not the cable, faces the core volume."
+    ],
+    "Front jack board removal": [
+      "Power off; remove the rear cover; open both lids and all four sleeves; unmate both middle ends and lift both cables out of their channels.",
+      "Remove RG34 (J-SIG channel from the J-PWR channel, then the J-PWR channel and post from crossmember:rear:0): the A01-jack M3/M4 screwdriver columns are used only with RG34 removed (the J-PWR channel is within K4 of the M4 column).",
+      "Lift each free middle end back over the A01-middle edge to x < 232 and remove the front panel assembly as in Stage10 with the cables attached to A01-jack."
+    ],
+    "Harness replacement": [
+      "Power off; remove the rear cover; open both lids and all four sleeves.",
+      "Unmate the middle ends, then the local ends, from the rear; lift each cable out of its channel. No board, carrier or the core is removed.",
+      "Fit the new harness as in RG34 assembly, setting both formers again."
+    ],
+    "RG34 assembly": [
+      "Fit carriers, boards and the core as in Stage10; fit the RG34 post on crossmember:rear:0 (proposal).",
+      "From the rear (cover off): mate J-PWR at both ends, dress it into one arch and lay it into the J-PWR channel; set the J-PWR former (lower it, raise it until the top leg rests on it, gap <= former_setting_resolution_mm, lock it); close the J-PWR lid and both J-PWR sleeves.",
+      "Mate J-SIG at both ends, fit the J-SIG channel to the J-PWR channel, lay J-SIG in, set its former the same way, close its lid and both sleeves.",
+      "Check that each lid and sleeve sits on its stop (closure gap <= guide_closure_gap_max_mm) with no conductor in a parting line; refit the rear cover."
+    ]
+  },
+  "rg34": {
+    "geometry": {
+      "J-PWR": {
+        "R": 12.0,
+        "Z0": 88.946983,
+        "Zcap_inner": 99.45409,
+        "Zlow": 87.05591943060926,
+        "Ztop": 100.65409,
+        "block_entry_z_mm": {
+          "local": 74.805617,
+          "middle": 88.205617
+        },
+        "bow_mm": 1.282127,
+        "c": 0.3,
+        "corners_dz_mm": {
+          "high": 1.25,
+          "low": -1.891064,
+          "nominal": 0.0
+        },
+        "design_length_mm": 149,
+        "exit_z_mm": {
+          "local": 43.9,
+          "middle": 57.3
+        },
+        "fan_in_mm": 6.905617,
+        "former_bottom_z_mm": 75.055919,
+        "former_top_range_z_mm": [
+          85.598812,
+          88.739876
+        ],
+        "frame": {
+          "D": 68.007353,
+          "a": [
+            226.0,
+            173.0,
+            43.9
+          ],
+          "b": [
+            290.0,
+            150.0,
+            57.3
+          ],
+          "n": [
+            0.338199,
+            0.941075
+          ],
+          "u": [
+            0.941075,
+            -0.338199
+          ]
+        },
+        "hug_length_mm": 145.217874,
+        "interior_hull": {
+          "carrier": "rear",
+          "id": "RG34-J-PWR-interior",
+          "kind": "interior",
+          "link": "J-PWR",
+          "plane": {
+            "n": [
+              -1.757107,
+              1.757107
+            ],
+            "s": [
+              -1.757107,
+              69.76446
+            ],
+            "z": [
+              57.426106,
+              99.45409
+            ]
+          },
+          "poly": [
+            [
+              223.75218,
+              171.940682
+            ],
+            [
+              291.059318,
+              147.75218
+            ],
+            [
+              292.24782,
+              151.059318
+            ],
+            [
+              224.940682,
+              175.24782
+            ]
+          ],
+          "removable_for": null,
+          "z": [
+            57.426106,
+            99.45409
+          ]
+        },
+        "parts": [
+          {
+            "carrier": "rear",
+            "id": "RG34-J-PWR-sleeve-local",
+            "kind": "sleeve",
+            "link": "J-PWR",
+            "plane": {
+              "n": [
+                -2.957107,
+                2.957107
+              ],
+              "s": [
+                -2.957107,
+                2.957107
+              ],
+              "z": [
+                57.426106,
+                74.805617
+              ]
+            },
+            "poly": [
+              [
+                222.217052,
+                171.217231
+              ],
+              [
+                227.782769,
+                169.217052
+              ],
+              [
+                229.782948,
+                174.782769
+              ],
+              [
+                224.217231,
+                176.782948
+              ]
+            ],
+            "removable_for": "local",
+            "z": [
+              57.426106,
+              74.805617
+            ]
+          },
+          {
+            "carrier": "rear",
+            "id": "RG34-J-PWR-sleeve-middle",
+            "kind": "sleeve",
+            "link": "J-PWR",
+            "plane": {
+              "n": [
+                -2.957107,
+                2.957107
+              ],
+              "s": [
+                53.050246,
+                70.96446
+              ],
+              "z": [
+                70.826106,
+                88.205617
+              ]
+            },
+            "poly": [
+              [
+                274.924155,
+                152.275616
+              ],
+              [
+                291.782769,
+                146.217052
+              ],
+              [
+                293.782948,
+                151.782769
+              ],
+              [
+                276.924335,
+                157.841333
+              ]
+            ],
+            "removable_for": "middle",
+            "z": [
+              70.826106,
+              88.205617
+            ]
+          },
+          {
+            "carrier": "rear",
+            "id": "RG34-J-PWR-channel-local-leg",
+            "kind": "channel",
+            "link": "J-PWR",
+            "plane": {
+              "n": [
+                -2.957107,
+                2.957107
+              ],
+              "s": [
+                -2.957107,
+                2.957107
+              ],
+              "z": [
+                74.805617,
+                100.65409
+              ]
+            },
+            "poly": [
+              [
+                222.217052,
+                171.217231
+              ],
+              [
+                227.782769,
+                169.217052
+              ],
+              [
+                229.782948,
+                174.782769
+              ],
+              [
+                224.217231,
+                176.782948
+              ]
+            ],
+            "removable_for": null,
+            "z": [
+              74.805617,
+              100.65409
+            ]
+          },
+          {
+            "carrier": "rear",
+            "id": "RG34-J-PWR-channel-corner-local",
+            "kind": "channel",
+            "link": "J-PWR",
+            "plane": {
+              "n": [
+                -2.957107,
+                2.957107
+              ],
+              "s": [
+                -2.957107,
+                12.0
+              ],
+              "z": [
+                73.855919,
+                100.65409
+              ]
+            },
+            "poly": [
+              [
+                222.217052,
+                171.217231
+              ],
+              [
+                236.292807,
+                166.158757
+              ],
+              [
+                238.292986,
+                171.724474
+              ],
+              [
+                224.217231,
+                176.782948
+              ]
+            ],
+            "removable_for": null,
+            "z": [
+              73.855919,
+              100.65409
+            ]
+          },
+          {
+            "carrier": "rear",
+            "id": "RG34-J-PWR-channel-top",
+            "kind": "channel",
+            "link": "J-PWR",
+            "plane": {
+              "n": [
+                -2.957107,
+                2.957107
+              ],
+              "s": [
+                12.0,
+                53.050246
+              ],
+              "z": [
+                84.398812,
+                100.65409
+              ]
+            },
+            "poly": [
+              [
+                236.292807,
+                166.158757
+              ],
+              [
+                274.924155,
+                152.275616
+              ],
+              [
+                276.924335,
+                157.841333
+              ],
+              [
+                238.292986,
+                171.724474
+              ]
+            ],
+            "removable_for": null,
+            "z": [
+              84.398812,
+              100.65409
+            ]
+          },
+          {
+            "carrier": "rear",
+            "id": "RG34-J-PWR-channel-middle",
+            "kind": "channel",
+            "link": "J-PWR",
+            "plane": {
+              "n": [
+                -2.957107,
+                2.957107
+              ],
+              "s": [
+                53.050246,
+                70.96446
+              ],
+              "z": [
+                88.205617,
+                100.65409
+              ]
+            },
+            "poly": [
+              [
+                274.924155,
+                152.275616
+              ],
+              [
+                291.782769,
+                146.217052
+              ],
+              [
+                293.782948,
+                151.782769
+              ],
+              [
+                276.924335,
+                157.841333
+              ]
+            ],
+            "removable_for": null,
+            "z": [
+              88.205617,
+              100.65409
+            ]
+          }
+        ],
+        "r": 1.457107,
+        "required_radius_mm": 11.457107,
+        "s_bend_length_mm": 5.620489,
+        "s_off": {
+          "local": 0.0,
+          "middle": 12.0
+        },
+        "slack_fixed_former_mm": 4.282126,
+        "slack_mm": 0.5,
+        "sleeve_bottom_z_mm": {
+          "local": 57.426106,
+          "middle": 70.826106
+        },
+        "t": 1.2
+      },
+      "J-SIG": {
+        "R": 12.0,
+        "Z0": 92.361945,
+        "Zcap_inner": 103.161945,
+        "Zlow": 90.47088143060927,
+        "Ztop": 104.361945,
+        "block_entry_z_mm": {
+          "local": 78.289297,
+          "middle": 91.689297
+        },
+        "bow_mm": 1.282127,
+        "c": 0.3,
+        "corners_dz_mm": {
+          "high": 1.25,
+          "low": -1.891064,
+          "nominal": 0.0
+        },
+        "design_length_mm": 133,
+        "exit_z_mm": {
+          "local": 43.9,
+          "middle": 57.3
+        },
+        "fan_in_mm": 10.389297,
+        "former_bottom_z_mm": 78.470881,
+        "former_top_range_z_mm": [
+          88.720881,
+          91.861945
+        ],
+        "frame": {
+          "D": 45.177428,
+          "a": [
+            210.0,
+            173.0,
+            43.9
+          ],
+          "b": [
+            250.0,
+            152.0,
+            57.3
+          ],
+          "n": [
+            0.464834,
+            0.885398
+          ],
+          "u": [
+            0.885398,
+            -0.464834
+          ]
+        },
+        "hug_length_mm": 129.217873,
+        "interior_hull": {
+          "carrier": "rear",
+          "id": "RG34-J-SIG-interior",
+          "kind": "interior",
+          "link": "J-SIG",
+          "plane": {
+            "n": [
+              -2.05,
+              2.05
+            ],
+            "s": [
+              -2.05,
+              47.227428
+            ],
+            "z": [
+              60.982275,
+              103.161945
+            ]
+          },
+          "poly": [
+            [
+              207.232025,
+              172.137844
+            ],
+            [
+              250.862156,
+              149.232025
+            ],
+            [
+              252.767975,
+              152.862156
+            ],
+            [
+              209.137844,
+              175.767975
+            ]
+          ],
+          "removable_for": null,
+          "z": [
+            60.982275,
+            103.161945
+          ]
+        },
+        "parts": [
+          {
+            "carrier": "rear",
+            "id": "RG34-J-SIG-sleeve-local",
+            "kind": "sleeve",
+            "link": "J-SIG",
+            "plane": {
+              "n": [
+                -3.25,
+                3.25
+              ],
+              "s": [
+                -3.25,
+                3.25
+              ],
+              "z": [
+                60.982275,
+                78.289297
+              ]
+            },
+            "poly": [
+              [
+                205.611747,
+                171.633167
+              ],
+              [
+                211.366833,
+                168.611747
+              ],
+              [
+                214.388253,
+                174.366833
+              ],
+              [
+                208.633167,
+                177.388253
+              ]
+            ],
+            "removable_for": "local",
+            "z": [
+              60.982275,
+              78.289297
+            ]
+          },
+          {
+            "carrier": "rear",
+            "id": "RG34-J-SIG-sleeve-middle",
+            "kind": "sleeve",
+            "link": "J-SIG",
+            "plane": {
+              "n": [
+                -3.25,
+                3.25
+              ],
+              "s": [
+                29.927428,
+                48.427428
+              ],
+              "z": [
+                74.382275,
+                91.689297
+              ]
+            },
+            "poly": [
+              [
+                234.986972,
+                156.211174
+              ],
+              [
+                251.366833,
+                147.611747
+              ],
+              [
+                254.388253,
+                153.366833
+              ],
+              [
+                238.008392,
+                161.96626
+              ]
+            ],
+            "removable_for": "middle",
+            "z": [
+              74.382275,
+              91.689297
+            ]
+          },
+          {
+            "carrier": "rear",
+            "id": "RG34-J-SIG-channel-local-leg",
+            "kind": "channel",
+            "link": "J-SIG",
+            "plane": {
+              "n": [
+                -3.25,
+                3.25
+              ],
+              "s": [
+                -3.25,
+                3.25
+              ],
+              "z": [
+                78.289297,
+                104.361945
+              ]
+            },
+            "poly": [
+              [
+                205.611747,
+                171.633167
+              ],
+              [
+                211.366833,
+                168.611747
+              ],
+              [
+                214.388253,
+                174.366833
+              ],
+              [
+                208.633167,
+                177.388253
+              ]
+            ],
+            "removable_for": null,
+            "z": [
+              78.289297,
+              104.361945
+            ]
+          },
+          {
+            "carrier": "rear",
+            "id": "RG34-J-SIG-channel-corner-local",
+            "kind": "channel",
+            "link": "J-SIG",
+            "plane": {
+              "n": [
+                -3.25,
+                3.25
+              ],
+              "s": [
+                -3.25,
+                12.0
+              ],
+              "z": [
+                77.270881,
+                104.361945
+              ]
+            },
+            "poly": [
+              [
+                205.611747,
+                171.633167
+              ],
+              [
+                219.114065,
+                164.54445
+              ],
+              [
+                222.135485,
+                170.299536
+              ],
+              [
+                208.633167,
+                177.388253
+              ]
+            ],
+            "removable_for": null,
+            "z": [
+              77.270881,
+              104.361945
+            ]
+          },
+          {
+            "carrier": "rear",
+            "id": "RG34-J-SIG-channel-top",
+            "kind": "channel",
+            "link": "J-SIG",
+            "plane": {
+              "n": [
+                -3.25,
+                3.25
+              ],
+              "s": [
+                12.0,
+                29.927428
+              ],
+              "z": [
+                87.520881,
+                104.361945
+              ]
+            },
+            "poly": [
+              [
+                219.114065,
+                164.54445
+              ],
+              [
+                234.986972,
+                156.211174
+              ],
+              [
+                238.008392,
+                161.96626
+              ],
+              [
+                222.135485,
+                170.299536
+              ]
+            ],
+            "removable_for": null,
+            "z": [
+              87.520881,
+              104.361945
+            ]
+          },
+          {
+            "carrier": "rear",
+            "id": "RG34-J-SIG-channel-middle",
+            "kind": "channel",
+            "link": "J-SIG",
+            "plane": {
+              "n": [
+                -3.25,
+                3.25
+              ],
+              "s": [
+                29.927428,
+                48.427428
+              ],
+              "z": [
+                91.689297,
+                104.361945
+              ]
+            },
+            "poly": [
+              [
+                234.986972,
+                156.211174
+              ],
+              [
+                251.366833,
+                147.611747
+              ],
+              [
+                254.388253,
+                153.366833
+              ],
+              [
+                238.008392,
+                161.96626
+              ]
+            ],
+            "removable_for": null,
+            "z": [
+              91.689297,
+              104.361945
+            ]
+          }
+        ],
+        "r": 1.75,
+        "required_radius_mm": 11.75,
+        "s_bend_length_mm": 5.692978,
+        "s_off": {
+          "local": 0.0,
+          "middle": 12.0
+        },
+        "slack_fixed_former_mm": 4.282127,
+        "slack_mm": 0.5,
+        "sleeve_bottom_z_mm": {
+          "local": 60.982275,
+          "middle": 74.382275
+        },
+        "t": 1.2
+      }
+    },
+    "post": {
+      "carrier": "rear",
+      "id": "RG34-post",
+      "kind": "post",
+      "link": null,
+      "poly": [
+        [
+          237.5,
+          167.5
+        ],
+        [
+          243.5,
+          167.5
+        ],
+        [
+          243.5,
+          172.5
+        ],
+        [
+          237.5,
+          172.5
+        ]
+      ],
+      "z": [
+        62.0,
+        84.398812
+      ]
+    },
+    "spec": {
+      "former_scope": "The former is one settable part: the floor under the top leg and BOTH bend corners, including the bend-2 corner that runs down through the middle sleeve zone. The sleeves carry no inner arc; each closes only the outer side and the two n-walls of its leg and bend region. A fixed arc in the sleeve would let the cable cut between arcs at the corners and add slack (about 0.6 mm, independent review), so it is excluded by design.",
+      "joint": "the J-SIG channel is fastened to the J-PWR channel where their outer walls are closest; the J-PWR channel stands on the post",
+      "lid_side": "-n (away from the core for J-PWR; open space for J-SIG)",
+      "material": "same as the carriers (6061-T6) for the strength check; cable-contact finish (hard anodise or PTFE coat) UNCONFIRMED",
+      "parts_closed": {
+        "channel_lid": true,
+        "sleeve_clamshell": true
+      },
+      "post_base_on": "crossmember:rear:0",
+      "post_box_mm": [
+        237.5,
+        167.5,
+        62.0,
+        243.5,
+        172.5
+      ],
+      "role": "STUDY_RETENTION_DESIGN",
+      "service_withdrawal_ends_at_once": 1,
+      "title": "RG34: one slot channel per arch on the rear carrier (two walls, end walls, cap, settable former), with a removable split sleeve on each leg"
+    }
+  },
+  "status": "DESIGN_STUDY_ONLY"
+}

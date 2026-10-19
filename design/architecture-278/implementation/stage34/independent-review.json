@@ -1,0 +1,145 @@
+{
+  "date": "2026-10-17",
+  "findings": [
+    {
+      "finding": "fixed parts and T2 checked only for the nominal cable: the middle sleeve bore was overrun at the lowest former setting and the cap had no registration term",
+      "id": "A-H1",
+      "resolution": "tolerance corners (cut, bow, z registration) for every state; sleeve bottoms and block entries include the registration; sleeve extent over the corners; admissibility model reworked; verified round 2",
+      "severity": "HIGH"
+    },
+    {
+      "finding": "rear-cover check omitted the RG34 tolerances and K4; J-SIG would fail",
+      "id": "A-H2",
+      "resolution": "cover rule with margin, RG34 tolerances, registration and K4: J-SIG FAILS (needs z 106.21 vs 105); reported as BOUNDED_EXCEPT_REAR_COVER with owner options as proposals; verified",
+      "severity": "HIGH"
+    },
+    {
+      "finding": "post strength used bending only",
+      "id": "A-M1",
+      "resolution": "bending plus torsion (von Mises): 39.8 N allowable, 50 N fails; root overhang not covered; verified",
+      "severity": "MEDIUM"
+    },
+    {
+      "finding": "wire ledger promoted conditional currents to PASS",
+      "id": "A-M2",
+      "resolution": "AWG26 rating checks CONDITIONAL; verified",
+      "severity": "MEDIUM"
+    },
+    {
+      "finding": "current budget hand-entered, partly from X1-derived numbers",
+      "id": "A-M3",
+      "resolution": "term-by-term budget summed by the generator with sources (ADG values from the ADI rev C table recorded in Stage8, cited with their condition); verified by independent sum",
+      "severity": "MEDIUM"
+    },
+    {
+      "finding": "SERVICE_ONLY exclusion changed the front jack board procedure without a proposal",
+      "id": "A-M4",
+      "resolution": "proposal and result rows added; RG34 fit/removal path UNKNOWN; verified",
+      "severity": "MEDIUM"
+    },
+    {
+      "finding": "tautological criteria, fixed-former control not generated, former/sleeve model mismatch, labels, stranded check, review-record note, friction model note",
+      "id": "A-L1..L7",
+      "resolution": "all fixed or noted; verified",
+      "severity": "LOW"
+    },
+    {
+      "finding": "Stage33 largest_fitting_radius is only the largest scanned radius",
+      "id": "B-L1",
+      "resolution": "recorded in report.stage33_notes; Stage33 bytes unchanged",
+      "severity": "LOW"
+    },
+    {
+      "finding": "middle sleeve vs settable former ambiguous; a fixed sleeve arc would add about 0.6 mm slack",
+      "id": "M-R2-1",
+      "resolution": "both bend corners belong to the settable former; sleeves carry no inner arc (design-input former_scope, README, summary, report); verified round 3",
+      "severity": "MEDIUM"
+    },
+    {
+      "finding": "Alpha 1852 missing from the UNKNOWN group; ADG typical values unused; shorter J-SIG not marked not evaluated; sleeve wording",
+      "id": "L-R2-1..4",
+      "resolution": "fixed; verified round 3",
+      "severity": "LOW"
+    }
+  ],
+  "first_failures_preserved": [
+    "Stage34 --check failed with deterministic drift report.json after README/check_source edits (before the pre-review commit); fixed by regenerating",
+    "first Stage34 test run: 1 failure in the independent former test (float boundary at s = D); test tolerance fixed",
+    "round 1 review: CHANGES_REQUESTED with 2 HIGH"
+  ],
+  "not_claimed": [
+    "physical feasibility or any measurement",
+    "native KiCad, ERC/DRC or simulation",
+    "manufacturing outputs or adoption",
+    "a wire selection",
+    "visual inspection of the SVG drawings by the reviewer (drift checked by --check)"
+  ],
+  "reviewed_sha256": {
+    "design/architecture-278/implementation/README.md": "7cb5a9805664099a87fbabdb0d9d46db73bf0b8c61f8db3379de8f93b4a3fd1b",
+    "design/architecture-278/implementation/stage33/README.md": "a9b10fc43797e5d21825fca58e9e8e2780dc6ed16402a59125086a48a7f6c9bf",
+    "design/architecture-278/implementation/stage33/analysis.json": "db6b9a3e9fb67638344629f64d61a2020fa2bfe1024bb8219f5513c29b168806",
+    "design/architecture-278/implementation/stage33/approval.json": "88eccb2b86467a40448a9291a2f8edb206a71f1fd0790ad3eb86dba521c07077",
+    "design/architecture-278/implementation/stage33/design-input.json": "718c133566b80db7a3b50029d05d541d8bd174614d13ad2920ffb5a7c5babe18",
+    "design/architecture-278/implementation/stage33/independent-review.json": "eb69696d0146cc270a3f6eba8501809b306cafa254c756e0a94181e37c170bd5",
+    "design/architecture-278/implementation/stage33/independent-review.md": "e29a2d1996cd61d11125aa94bab194de7cc2c5123052380e0500f5ed75f1be06",
+    "design/architecture-278/implementation/stage33/model.json": "1f1b463367659cc81c742149f69f95c6e490da0a4c054d2a5477f75ad5e968e0",
+    "design/architecture-278/implementation/stage33/report.json": "8ee854f40be94ea13d5240d9e0ccc8b838a61c72b3464a942835796801825b16",
+    "design/architecture-278/implementation/stage33/sources.json": "29f77ded3e852813cd777a4fe296332a131dbd647ed72037407f6741e23fb4f2",
+    "design/architecture-278/implementation/stage33/summary.md": "d02ada0380e10f386a9952ce50ac319e98ba96fec7002eb6d70024eb5a2baae4",
+    "design/architecture-278/implementation/stage34/README.md": "153a5a30224df73c30e59bf53e2c05f7014b462f3b35e4a23e43cc4f7790ea40",
+    "design/architecture-278/implementation/stage34/analysis.json": "e268b1d05118c5ba0fe30bd9e21f86727e747cc6f266442a8b903db359df1b20",
+    "design/architecture-278/implementation/stage34/approval.json": "23e7975d0b418eaed82169e3f290fc983338e0b4c60cc8b60e9a43ba3ea117d5",
+    "design/architecture-278/implementation/stage34/arch-sections.svg": "2bbda0ec5346a9500815440239e08ab2234be512b1b3cbe701132e695f4e42bc",
+    "design/architecture-278/implementation/stage34/design-input.json": "7deae09f04903d443affb2b91bb8811ceb64ce5c9920ffbe9054b06cd0f7f85f",
+    "design/architecture-278/implementation/stage34/ledger.json": "0bef1f7568e1650b4746181c2247e192408194f5999059f5e9c12754c82f10f2",
+    "design/architecture-278/implementation/stage34/model.json": "b138cf74556127ed383f4d8c40e05998fa4e36fc55ac3e411c2152405589afac",
+    "design/architecture-278/implementation/stage34/plan-rg34.svg": "f402ff0fb7a1cbd771d2728a25fdf05436182aafc4fdd860b68c730b45c0a61f",
+    "design/architecture-278/implementation/stage34/report.json": "85ba88c11e289c6cc74c48efde6d8ba08fab99a26f40789df845c4d42771b7b6",
+    "design/architecture-278/implementation/stage34/service-sections.svg": "3fde5803d928afcc86158e80c00a2070b61de70069a4485f332c85ba86a6434a",
+    "design/architecture-278/implementation/stage34/sources.json": "68249c2a45898b3d96e8aeff0725402a0c52098f30a39dece5ee96b76ed88182",
+    "design/architecture-278/implementation/stage34/summary.md": "361ee56fc71d64cb0889e942394cb081d5de0b3671e6cb05c933f782ae53167f",
+    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+    "scripts/architecture278/implementation/check_source.py": "a15e58fef1a4db8f8448cf322a5a7c9cba9d2ea6fa2fc98db05c77342214f474",
+    "scripts/architecture278/implementation/stage31_cable_entry_redesign.py": "ecb6faae2a802841b8651e49b2c993291bd6598962c5079257828b1b2cc1add0",
+    "scripts/architecture278/implementation/stage32_service_envelope.py": "f38de834ecc125cf891e2604f5783333594d7a56a146577a03e3c97ba822240e",
+    "scripts/architecture278/implementation/stage33_large_radius.py": "45cecb8271b667d984311757901da62ef2b1866ba9a0f79a9916f7fbe5e3fa1f",
+    "scripts/architecture278/implementation/stage34_arch_retention.py": "cfa6a96d54305a7d64024607ccdc4a5d8c9aa5114e3cfc35ee74bb1367c599ef",
+    "scripts/architecture278/implementation/test_stage33_large_radius.py": "1d762334510dd0ee70f47bd4e898b1e03c7571c300be8848d74ed3557a2916e4",
+    "scripts/architecture278/implementation/test_stage34_arch_retention.py": "975e9a82e3e13d81821a2cdbf8eab4aee5565a9f217e875af84ac6596a39d1b1"
+  },
+  "reviewer": "fresh-context independent Claude Code subagent (general-purpose), three rounds",
+  "rounds": [
+    {
+      "counts": {
+        "HIGH": 2,
+        "LOW": 7,
+        "MEDIUM": 4
+      },
+      "round": 1,
+      "scope_b": "N1 and N2 correct; 1 LOW (B-L1)",
+      "verdict": "CHANGES_REQUESTED"
+    },
+    {
+      "counts": {
+        "HIGH": 0,
+        "LOW": 4,
+        "MEDIUM": 1
+      },
+      "note": "all round-1 findings verified resolved with independent code (108 exit-moving corner combinations per cable, no violation)",
+      "round": 2,
+      "verdict": "CHANGES_REQUESTED"
+    },
+    {
+      "counts": {
+        "HIGH": 0,
+        "LOW": 0,
+        "MEDIUM": 0
+      },
+      "note": "round-2 findings verified; final pass over the whole Stage34 tree; README numbers match the generated outputs",
+      "round": 3,
+      "verdict": "PASS_SOURCE_REVIEW_ONLY"
+    }
+  ],
+  "scope": "Stage34 source, inputs, generated outputs, tests and entrypoint edits (Scope A), and the Stage33 round-2 corrections 24c5471..2c41e8c that were not independently re-reviewed in Stage33 (Scope B); independent recomputation of prism and spheroid distances, tolerance corners with moved exits, slack, cover, post stress, current sums and wire values; tests run",
+  "status": "PASS_SOURCE_REVIEW_ONLY"
+}

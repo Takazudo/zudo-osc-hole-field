@@ -1,0 +1,22 @@
+setUpClass (stage45_tests.InventoryTests) ... ERROR
+
+======================================================================
+ERROR: setUpClass (stage45_tests.InventoryTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/zudo-osc-hole-field/design/architecture-278/implementation/stage45/connectivity-inventory/test_inventory.py", line 19, in setUpClass
+    cls.report = m.build()
+                 ^^^^^^^^^
+  File "/workspace/zudo-osc-hole-field/design/architecture-278/implementation/stage45/connectivity-inventory/generate.py", line 175, in build
+    result = {'inventory': inventory(projection), 'reuse': reuse()}
+                           ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/zudo-osc-hole-field/design/architecture-278/implementation/stage45/connectivity-inventory/generate.py", line 59, in inventory
+    require(all(token == 'X' + hashlib.sha256(name.encode()).hexdigest()[:20].upper()
+  File "/workspace/zudo-osc-hole-field/design/architecture-278/implementation/stage45/connectivity-inventory/generate.py", line 36, in require
+    raise ValueError(message)
+ValueError: semantic alias hash mismatch
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.013s
+
+FAILED (errors=1)

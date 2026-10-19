@@ -1,3 +1,121 @@
+# Current checkpoint: Stage36
+
+[C36 cassette interface study](stage36/README.md) stops at failed guide/capture interfaces.
+No hardware adopted; historical stages below remain unchanged.
+
+## Current cover and guided-service study — Stage35
+
+[Stage35](stage35/README.md) evaluates shorter J-SIG lengths and continuous arch
+height/lead intervals. The approximate 2.42 mm reduction is insufficient even in
+the inherited height model. Shorter cables can clear that height screen, but
+**no robust service solution is established**: datum/bow allocation, open-sleeve
+support, unknown neighbours, fasteners and removal remain unresolved. Deeper
+covers are height alternatives only. See the [unpowered checklist](stage35/mock-up.md).
+All new hardware remains proposed; prior stages and canonical CAD are preserved.
+
+## Current A01 whole-arch retention and wire/current evidence — Stage34
+
+[Stage34](stage34/README.md) adds RG34 to the owner's provisional R33 study baseline. RG34 is one slot
+channel per arch on the rear carrier, with walls, a cap, a former whose height is set at assembly, and
+removable leg sleeves. Stage34 also builds the A01 conductor current budget from recorded terms and the
+wire ledger.
+- **R33 + RG34 (CONDITIONAL_PENDING_COVER_REGISTRATION_AND_MEASUREMENT):**
+  - RG34 bounds the whole arch geometrically at every tolerance corner (cut, bow, registration), without
+    using cable stiffness. It keeps every single-end 15 mm withdrawal at constant length.
+  - The J-PWR channel wall faces the core (0.29 mm robust spare, registration out of the chain).
+  - **The J-SIG cap does not fit under the rear cover** (needs z 106.21; the cover is at 105). A deeper
+    cover or a 2.4 mm shorter J-SIG is an owner decision.
+  - Inter-carrier registration (≤ 1.0 mm required) is UNKNOWN.
+  - Front jack board removal must remove RG34 first, and RG34 sits outside the reserved volumes (both
+    proposals).
+- **Negative controls:** a local-leg guide alone, RG34 without its former, a fixed (not set) former, and
+  a both-ends withdrawal with the lid closed all fail as expected.
+- **Currents:** the Stage33 J-PWR inputs were Stage8 X1 values and are superseded; the Stage33 bytes
+  are unchanged. The A01 budget gives conditional maxima only, and no conductor has an established
+  maximum.
+- **Wire:** the selection stays null.
+  - Thermax M22759/18-26 fails nothing: its current checks are CONDITIONAL and there is no maker bend
+    radius.
+  - Alpha 1852 / 6710 (AWG28) and 1851 (AWG30) lack a JST contact rating; that is UNKNOWN, not a
+    failure.
+- **NOT RUN:** M34-01…08, M-01, M-09, M-12, KiCad, ERC/DRC, simulation, fabrication output and
+  energisation.
+
+## Current A01 large-radius routing study — Stage33
+
+[Stage33](stage33/README.md) replaces the Stage32 5 mm bends with routes that meet the wire
+makers' 10× OD bend rule, and checks the installed state, latch access, the 15 mm withdrawal and
+the core 40 mm motion in one model at constant cable length.
+- **R33 (CONDITIONAL, pending retention):**
+  - J-SIG:middle and J-PWR:middle move to the A01-middle rear face, a broader change that is
+    proposed only.
+  - Each cable forms one vertical arch at R 12, with a fan-in straight at every exit.
+  - Design lengths are 133 / 149 mm. K4 holds for every bow case in the arch's ideal plane.
+  - No state enters the undesigned front volume.
+  - No part retains the arches laterally (S3 fails); the J-PWR allowance is 1.89 mm.
+- **F33 (UNKNOWN):** with front-face headers, the slot path fails K4. The other path runs below the
+  code-default foreign plane, inside the undesigned front volume.
+- **B32 (INFEASIBLE for every identified wire):** the Stage32 bend-rule and uniform-bow failures
+  are carried unchanged.
+- **Wire:** no identified wire qualifies for either cable, so the selection is null. AWG28 has no
+  JST current rating, and the J-SIG current is not budgeted.
+- **NOT RUN:** M-01, M-09, M-12, the M33 measurements, native and physical checks.
+
+## Current A01 service-envelope and retention study — Stage32
+
+[Stage32](stage32/README.md) takes Stage31 B as the working option. It checks the installed state
+(at design length, slack in the local loop), latch access, 2.45–15 mm constant-length withdrawal
+and the core 40 mm motion in one 3D envelope model. The undesigned neighbouring volume is kept as
+UNKNOWN.
+- **Recommended:** **B32**, status CONDITIONAL_PENDING_WIRE_SELECTION.
+  - Captive notch guides R1/R2 (N1 4.5 mm, N2 4.1 mm deep).
+  - Runs lowered for an explicit tolerance stack.
+  - J-PWR:middle moved 0.7 mm toward −y.
+- **B31 (B as committed)** fails K4 once A01-middle bow and part tolerances are counted.
+- **Open:** every identified wire states a 10× OD bend radius, which the r 5 route does not meet.
+  K4 fails if a uniform 1.282 mm bow is assumed.
+- **Owner decisions:** the 15 mm release needs the RV-DIP / RV-ACCESS reservations.
+- **Rail strength:** calculated conditionally (allowable tip load ≥ 11.4 N); not a physical result.
+- **NOT RUN:** M-01, M-09, M-12, the M32 measurements, native and physical checks.
+
+## Current A01 cable-entry redesign study — Stage31
+
+[Stage31](stage31/README.md) compares three common entries for J-SIG and J-PWR into the A01
+middle carrier ring. The comparison uses filleted 3D routes with r 5 bends, bundle
+envelopes, and foreign-depth bounds instead of a cap. **B** is recommended for the next
+prototype study: move J-SIG:middle and J-PWR:middle into the clear strip, turn them 90°, and
+cut two notches (2.3 / 1.8 mm) in the left rail. It is a proposal only. Rail strength is NOT_CALCULATED,
+lengths are design lengths, and M-01, M-09, M-12, native and physical checks are NOT RUN.
+
+## Current provisional DIN design integration — Stage30
+
+[Stage30](stage30/README.md) uses the Stage29 contact positions as **DESIGN_ONLY_PROVISIONAL**
+A01 design data, as the owner approved on 2026-10-17 before M-01. It recomputes the 34
+DIN-incident Stage15 allocations and 11 signal paths, and traces the 16 assigned contacts.
+The Stage28 harness is unchanged.
+
+A separate J-PWR route study finds no route under the existing conditions; a middle-rail
+relief is a proposal only. Stage30 also prepares 1:1 M-01 prints and an empty record sheet.
+D02 stays CONFLICT_REQUIRES_DECISION, and M-01, native and physical checks are NOT RUN.
+
+## Current DIN source correction candidate — Stage29
+
+[Stage29](stage29/README.md) re-reads both HARTING drawings, including their vector
+geometry. Both views look from the body toward the board, and the female fixing holes sit
+0.3 mm toward row a. It proposes the column-reversal relabeling
+`candidate_position(row, n) = Stage10_position(row, 33 − n)` for J17909/J17910. Nets stay with
+the physical contact IDs, and the hole grid and fixing holes are unchanged. NOT adopted:
+D02 stays CONFLICT_REQUIRES_DECISION, physical M-01 is NOT RUN, and no copper is bound.
+
+## Current DIN manufacturing and harness continuation — Stage28
+
+[Stage28](stage28/README.md) turns the retained HARTING 96-contact DIN pair and the
+A01 transport ledger into a decision table, a vendor-completed harness ledger, an
+assembly drawing candidate, an unsent questionnaire and a minimum measurement list.
+It finds that the Stage10 DIN labels are mirrored against the HARTING views; a
+proper-handed relabeling candidate is recorded but not adopted. Manufacturing,
+harness lengths and anchors remain UNCONFIRMED; physical and native NOT RUN.
+
 ## Current HF-trim continuation — Stage27
 
 [Stage27](stage27/README.md) selects TC33X-2-203E / C720648 for the existing

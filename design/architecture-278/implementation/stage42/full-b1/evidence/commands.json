@@ -1,0 +1,193 @@
+{
+  "execution": "Native/heavy drivers wrapped by bash /home/agent/.codex/scripts/heavy-guard.sh --label <stage42-step> -- bash <driver>; exact-release10.0.6 environment sourced by each native driver. No canonical regeneration.",
+  "drivers": {
+    ".circuit-cache/stage42/placement-v2.sh": {
+      "sha256": "d81062e40300ca1eb933d4410415b9ba591a27d16ac7091111a73818f9293050",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nroot=design/architecture-278/implementation/stage42/full-b1\nold=design/architecture-278/implementation/stage41/native-pilot\nwork=.circuit-cache/stage42-full-b1-placement\nbash scripts/kicad/run.sh python3 \"$root/prepare.py\" \"$work\"\nboard=$work/osc-jack-left.kicad_pcb\ncp \"$board\" \"$work/pre-drc.kicad_pcb\"\nbash scripts/kicad/run.sh python3 \"$old/audit.py\" \"$board\" \"$work/prepare-receipt.json\"\nbash scripts/kicad/run.sh kicad-cli pcb drc --schematic-parity --refill-zones --save-board --format json --severity-all -o \"$work/drc-placement.json\" \"$board\"\nbash scripts/kicad/run.sh python3 \"$old/audit.py\" \"$board\" \"$work/prepare-receipt.json\"\n"
+    },
+    ".circuit-cache/stage42/placement-v3.sh": {
+      "sha256": "5957fc31c2ceaa13312c41b4e1219a0027abcdc864bf208ec401d42aa310e9dd",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nroot=design/architecture-278/implementation/stage42/full-b1\nold=design/architecture-278/implementation/stage41/native-pilot\nwork=.circuit-cache/stage42-full-b1-revision1\nbash scripts/kicad/run.sh python3 \"$root/prepare.py\" \"$work\"\nboard=$work/osc-jack-left.kicad_pcb\ncp \"$board\" \"$work/pre-drc.kicad_pcb\"\nbash scripts/kicad/run.sh python3 \"$old/audit.py\" \"$board\" \"$work/prepare-receipt.json\"\nbash scripts/kicad/run.sh kicad-cli pcb drc --schematic-parity --refill-zones --save-board --format json --severity-all -o \"$work/drc-placement.json\" \"$board\"\nbash scripts/kicad/run.sh python3 \"$old/audit.py\" \"$board\" \"$work/prepare-receipt.json\"\n"
+    },
+    ".circuit-cache/stage42/placement-v4.sh": {
+      "sha256": "9aa29255050495d662f749e72f76cf83ba15532ac12998b4fee30bda171fe15d",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nroot=design/architecture-278/implementation/stage42/full-b1\nold=design/architecture-278/implementation/stage41/native-pilot\nwork=.circuit-cache/stage42-full-b1-revision2\nbash scripts/kicad/run.sh python3 \"$root/prepare.py\" \"$work\"\nboard=$work/osc-jack-left.kicad_pcb\ncp \"$board\" \"$work/pre-drc.kicad_pcb\"\nbash scripts/kicad/run.sh python3 \"$old/audit.py\" \"$board\" \"$work/prepare-receipt.json\"\nbash scripts/kicad/run.sh kicad-cli pcb drc --schematic-parity --refill-zones --save-board --format json --severity-all -o \"$work/drc-placement.json\" \"$board\"\nbash scripts/kicad/run.sh python3 \"$old/audit.py\" \"$board\" \"$work/prepare-receipt.json\"\n"
+    },
+    ".circuit-cache/stage42/placement-v5.sh": {
+      "sha256": "c4118c20d3b49b9b69f782bd7e9dd1695f044a3989bb3f75d1c582d4b6cdb889",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nroot=design/architecture-278/implementation/stage42/full-b1\nold=design/architecture-278/implementation/stage41/native-pilot\nwork=.circuit-cache/stage42-full-b1-revision3\nbash scripts/kicad/run.sh python3 \"$root/prepare.py\" \"$work\"\nboard=$work/osc-jack-left.kicad_pcb\ncp \"$board\" \"$work/pre-drc.kicad_pcb\"\nbash scripts/kicad/run.sh python3 \"$old/audit.py\" \"$board\" \"$work/prepare-receipt.json\"\nbash scripts/kicad/run.sh kicad-cli pcb drc --schematic-parity --refill-zones --save-board --format json --severity-all -o \"$work/drc-placement.json\" \"$board\"\nbash scripts/kicad/run.sh python3 \"$old/audit.py\" \"$board\" \"$work/prepare-receipt.json\"\n"
+    },
+    ".circuit-cache/stage42/power.sh": {
+      "sha256": "1aac9f84a843f554e429265a61a95becf859213fdf29215f843208ae3bff5e0a",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\npython3 - <<'GATE'\nimport json\nfrom pathlib import Path\np=Path('.circuit-cache/stage42-full-b1-revision3/drc-placement.json')\nd=json.loads(p.read_text())\nif any(x['severity']=='error' for x in d['violations']) or d['schematic_parity']:\n raise SystemExit('Placement rule errors/parity block routing')\nGATE\nroot=design/architecture-278/implementation/stage42/full-b1\nold=design/architecture-278/implementation/stage41/native-pilot\nsrc=.circuit-cache/stage42-full-b1-revision3\nwork=.circuit-cache/stage42-full-b1-power\nbash scripts/kicad/run.sh python3 \"$root/route_power.py\" \"$src/osc-jack-left.kicad_pcb\" \"$src/power-proposal.json\"\npython3 - <<'PY'\nfrom pathlib import Path\nimport shutil\ns=Path('.circuit-cache/stage42-full-b1-revision3');d=Path('.circuit-cache/stage42-full-b1-power');d.mkdir()\nfor p in s.iterdir():\n if p.is_dir():shutil.copytree(p,d/p.name)\n elif p.suffix in ('.kicad_pro','.kicad_sch','.kicad_dru') or p.name in ('prepare-receipt.json','fp-lib-table','sym-lib-table'):shutil.copy2(p,d/p.name)\nPY\nbash scripts/kicad/run.sh python3 scripts/pcbgen/grid_apply.py \"$src/osc-jack-left.kicad_pcb\" \"$src/power-proposal.json\" --output \"$work/osc-jack-left.kicad_pcb\"\nbash scripts/kicad/run.sh python3 \"$old/audit.py\" \"$work/osc-jack-left.kicad_pcb\" \"$work/prepare-receipt.json\" --proposal \"$src/power-proposal.json\"\nbash scripts/kicad/run.sh kicad-cli pcb drc --schematic-parity --refill-zones --save-board --format json --severity-all -o \"$work/drc-power.json\" \"$work/osc-jack-left.kicad_pcb\"\nbash scripts/kicad/run.sh python3 \"$old/audit.py\" \"$work/osc-jack-left.kicad_pcb\" \"$work/prepare-receipt.json\" --proposal \"$src/power-proposal.json\"\nbash scripts/kicad/run.sh python3 scripts/pcbgen/grid_dump.py \"$work/osc-jack-left.kicad_pcb\" \"$work/dump-power.json\"\n"
+    },
+    ".circuit-cache/stage42/signals.sh": {
+      "sha256": "4085ba4e5a3ef7fd1694048b0d751f148c1449ce13baf44e49cfe91839c36c3c",
+      "command_text": "#!/bin/bash\nset -euo pipefail\npython3 - <<'GATE'\nimport json\nfrom pathlib import Path\nd=json.loads(Path('.circuit-cache/stage42-full-b1-power/drc-power.json').read_text())\nif any(x['severity']=='error' for x in d['violations']) or d['schematic_parity']:\n raise SystemExit('Power rule errors/parity block routing')\nGATE\n/workspace/shared/osc-ci-python/bin/python design/architecture-278/implementation/stage42/full-b1/route_signals.py .circuit-cache/stage42-full-b1-power/dump-power.json .circuit-cache/stage42-full-b1-power/prepare-receipt.json .circuit-cache/stage42-full-b1-power/signal-proposal.json --resolution .05\n"
+    },
+    ".circuit-cache/stage42/signals-alternatives.sh": {
+      "sha256": "a15a2716319ceb7f3188a4190647c65418e5425d2160fe08bbceb2d4bdccb83e",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nfor res in .075 .025; do\n /workspace/shared/osc-ci-python/bin/python design/architecture-278/implementation/stage42/full-b1/route_signals.py .circuit-cache/stage42-full-b1-power/dump-power.json .circuit-cache/stage42-full-b1-power/prepare-receipt.json .circuit-cache/stage42-full-b1-power/signal-proposal-$res.json --resolution \"$res\"\ndone\n"
+    },
+    ".circuit-cache/stage42/signals-priority.sh": {
+      "sha256": "feceeb2f03996e231eed4157b4082d091b9517ef00a8f3d20c474b1f7ca459fb",
+      "command_text": "#!/bin/bash\nset -euo pipefail\n/workspace/shared/osc-ci-python/bin/python design/architecture-278/implementation/stage42/full-b1/route_signals.py .circuit-cache/stage42-full-b1-power/dump-power.json .circuit-cache/stage42-full-b1-power/prepare-receipt.json .circuit-cache/stage42-full-b1-power/signal-proposal-priority.json --resolution .05 --priority-net X24465B284FC5581E6283\n"
+    },
+    ".circuit-cache/stage42/routed-check.sh": {
+      "sha256": "57414ed5a4ec12684ad8774f24c44ffeac943f7bd21b07f6363a961e9488528c",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nroot=design/architecture-278/implementation/stage42/full-b1\nold=design/architecture-278/implementation/stage41/native-pilot\nsrc=.circuit-cache/stage42-full-b1-power\nwork=.circuit-cache/stage42-full-b1-routed\npower=.circuit-cache/stage42-full-b1-revision3/power-proposal.json\nsignal=$src/signal-proposal-priority.json\npython3 - <<'PY'\nfrom pathlib import Path\nimport shutil,json\ns=Path('.circuit-cache/stage42-full-b1-power');d=Path('.circuit-cache/stage42-full-b1-routed')\nr=json.loads((s/'signal-proposal-priority-search.json').read_text())\nif r['failed_links']:raise SystemExit('Unresolved raster links; do not apply as complete route')\nd.mkdir()\nfor p in s.iterdir():\n if p.is_dir():shutil.copytree(p,d/p.name)\n elif p.suffix in ('.kicad_pro','.kicad_sch','.kicad_dru') or p.name in ('prepare-receipt.json','fp-lib-table','sym-lib-table'):shutil.copy2(p,d/p.name)\nPY\nbash scripts/kicad/run.sh python3 scripts/pcbgen/grid_apply.py \"$src/osc-jack-left.kicad_pcb\" \"$signal\" --output \"$work/osc-jack-left.kicad_pcb\"\nbash scripts/kicad/run.sh python3 \"$root/audit.py\" \"$work/osc-jack-left.kicad_pcb\" \"$work/prepare-receipt.json\" --proposal \"$power\" --proposal \"$signal\"\nbash scripts/kicad/run.sh kicad-cli pcb drc --schematic-parity --refill-zones --save-board --format json --severity-all -o \"$work/drc-routed.json\" \"$work/osc-jack-left.kicad_pcb\"\nbash scripts/kicad/run.sh python3 \"$root/audit.py\" \"$work/osc-jack-left.kicad_pcb\" \"$work/prepare-receipt.json\" --proposal \"$power\" --proposal \"$signal\"\nbash scripts/kicad/run.sh python3 \"$old/connectivity.py\" \"$work/osc-jack-left.kicad_pcb\" \"$work/connectivity-complete.json\"\npython3 \"$old/compare_connectivity.py\" .circuit-cache/stage41-baseline/osc-jack-left.kicad_pcb \"$work/osc-jack-left.kicad_pcb\" .circuit-cache/stage41-baseline/connectivity-complete.json \"$work/connectivity-complete.json\" \"$work/prepare-receipt.json\" \"$work/connectivity-comparison.json\" --proposal \"$power\" --proposal \"$signal\"\nbash scripts/kicad/run.sh python3 \"$root/verify_power.py\" \"$work/osc-jack-left.kicad_pcb\" .circuit-cache/stage42-full-b1-revision3/power-proposal-paths.json \"$power\" \"$work/power-connections.json\"\n"
+    },
+    ".circuit-cache/stage42/power-verify.sh": {
+      "sha256": "95e6172fdb479d7b46583020fd781cf33988f1de16b40424fe6c1587375513bf",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nbash scripts/kicad/run.sh python3 design/architecture-278/implementation/stage42/full-b1/verify_power.py .circuit-cache/stage42-full-b1-routed/osc-jack-left.kicad_pcb .circuit-cache/stage42-full-b1-revision3/power-proposal-paths.json .circuit-cache/stage42-full-b1-revision3/power-proposal.json .circuit-cache/stage42-full-b1-routed/power-connections.json\n"
+    },
+    ".circuit-cache/stage42/branches.sh": {
+      "sha256": "7601363bce9cc8289cf542ec123bf4994c5ec068ddac77f51100e25c6ad977ea",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nbash scripts/kicad/run.sh python3 design/architecture-278/implementation/stage42/full-b1/branch_contacts.py .circuit-cache/stage42-full-b1-routed/osc-jack-left.kicad_pcb .circuit-cache/stage42/branch-contacts.json\n"
+    },
+    ".circuit-cache/stage42/cleanup.sh": {
+      "sha256": "5343c63b2472b2073aa233ec2b80228053ec2dc6814f74d3088045d41360c4b1",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nroot=design/architecture-278/implementation/stage42/full-b1\nold=design/architecture-278/implementation/stage41/native-pilot\nwork=.circuit-cache/stage42-full-b1-clean\npower=.circuit-cache/stage42-full-b1-revision3/power-proposal.json\nsignal=$work/signal-proposal.json\npython3 \"$root/retire_branches.py\" .circuit-cache/stage42-full-b1-routed .circuit-cache/stage42-full-b1-power/signal-proposal-priority.json \"$work\"\nbash scripts/kicad/run.sh python3 \"$root/audit.py\" \"$work/osc-jack-left.kicad_pcb\" \"$work/prepare-receipt.json\" --proposal \"$power\" --proposal \"$signal\"\nbash scripts/kicad/run.sh kicad-cli pcb drc --schematic-parity --refill-zones --save-board --format json --severity-all -o \"$work/drc-clean.json\" \"$work/osc-jack-left.kicad_pcb\"\nbash scripts/kicad/run.sh python3 \"$root/audit.py\" \"$work/osc-jack-left.kicad_pcb\" \"$work/prepare-receipt.json\" --proposal \"$power\" --proposal \"$signal\"\nbash scripts/kicad/run.sh python3 \"$old/connectivity.py\" \"$work/osc-jack-left.kicad_pcb\" \"$work/connectivity-complete.json\"\npython3 \"$root/compare_connectivity.py\" .circuit-cache/stage41-baseline/osc-jack-left.kicad_pcb \"$work/osc-jack-left.kicad_pcb\" .circuit-cache/stage41-baseline/connectivity-complete.json \"$work/connectivity-complete.json\" \"$work/prepare-receipt.json\" \"$work/connectivity-comparison.json\" --proposal \"$power\" --proposal \"$signal\"\nbash scripts/kicad/run.sh python3 \"$root/verify_power.py\" \"$work/osc-jack-left.kicad_pcb\" .circuit-cache/stage42-full-b1-revision3/power-proposal-paths.json \"$power\" \"$work/power-connections.json\"\n"
+    },
+    ".circuit-cache/stage42/anchor.sh": {
+      "sha256": "865bcf3bc86da1161b3e4ac940ad57c3d726a3b19611009bd2741baecb37d9c1",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nroot=design/architecture-278/implementation/stage42/full-b1\nold=design/architecture-278/implementation/stage41/native-pilot\nwork=.circuit-cache/stage42-full-b1-anchor\npower=.circuit-cache/stage42-full-b1-revision3/power-proposal.json\nsignal=$work/signal-proposal.json\npython3 - <<'COPY'\nfrom pathlib import Path\nimport shutil\ns=Path('.circuit-cache/stage42-full-b1-clean');d=Path('.circuit-cache/stage42-full-b1-anchor');d.mkdir()\nfor p in s.iterdir():\n if p.is_dir():shutil.copytree(p,d/p.name)\n elif p.suffix in ('.kicad_pro','.kicad_sch','.kicad_dru') or p.name in ('prepare-receipt.json','fp-lib-table','sym-lib-table'):shutil.copy2(p,d/p.name)\nCOPY\nbash scripts/kicad/run.sh python3 \"$root/route_anchor.py\" .circuit-cache/stage42-full-b1-clean/osc-jack-left.kicad_pcb .circuit-cache/stage42-full-b1-clean/signal-proposal.json \"$work/anchor-proposal.json\"\nbash scripts/kicad/run.sh python3 scripts/pcbgen/grid_apply.py .circuit-cache/stage42-full-b1-clean/osc-jack-left.kicad_pcb \"$work/anchor-proposal.json\" --output \"$work/osc-jack-left.kicad_pcb\"\nbash scripts/kicad/run.sh python3 \"$root/audit.py\" \"$work/osc-jack-left.kicad_pcb\" \"$work/prepare-receipt.json\" --proposal \"$power\" --proposal \"$signal\"\nbash scripts/kicad/run.sh kicad-cli pcb drc --schematic-parity --refill-zones --save-board --format json --severity-all -o \"$work/drc-clean.json\" \"$work/osc-jack-left.kicad_pcb\"\nbash scripts/kicad/run.sh python3 \"$root/audit.py\" \"$work/osc-jack-left.kicad_pcb\" \"$work/prepare-receipt.json\" --proposal \"$power\" --proposal \"$signal\"\nbash scripts/kicad/run.sh python3 \"$old/connectivity.py\" \"$work/osc-jack-left.kicad_pcb\" \"$work/connectivity-complete.json\"\npython3 \"$root/compare_connectivity.py\" .circuit-cache/stage41-baseline/osc-jack-left.kicad_pcb \"$work/osc-jack-left.kicad_pcb\" .circuit-cache/stage41-baseline/connectivity-complete.json \"$work/connectivity-complete.json\" \"$work/prepare-receipt.json\" \"$work/connectivity-comparison.json\" --proposal \"$power\" --proposal \"$signal\"\nbash scripts/kicad/run.sh python3 \"$root/verify_power.py\" \"$work/osc-jack-left.kicad_pcb\" .circuit-cache/stage42-full-b1-revision3/power-proposal-paths.json \"$power\" \"$work/power-connections.json\"\n"
+    },
+    ".circuit-cache/stage42/settle.sh": {
+      "sha256": "cbdb84229b42d32c553e3e45d6f8d1f44c1d588c19162b418bcf8bf77186f5b0",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nroot=design/architecture-278/implementation/stage42/full-b1\npower=.circuit-cache/stage42-full-b1-revision3/power-proposal.json\nsignal=.circuit-cache/stage42-full-b1-anchor/signal-proposal.json\npython3 - <<'FIRST'\nfrom pathlib import Path\nimport shutil,json\np=Path('.circuit-cache/stage42-full-b1-anchor')\nif not json.loads((p/'connectivity-comparison.json').read_text())['accepted_connectivity_only']:raise SystemExit('first connectivity failed')\nif not json.loads((p/'power-connections.json').read_text())['accepted_native_connections_only']:raise SystemExit('first power failed')\nfor a,b in [('drc-clean.json','drc-signals-pass1.json'),('connectivity-complete.json','connectivity-complete-pass1.json'),('connectivity-comparison.json','connectivity-comparison-pass1.json'),('power-connections.json','power-connections-pass1.json'),('identity-audit.json','identity-audit-pass1.json')]:\n if (p/b).exists():raise SystemExit('first pass already archived')\n shutil.copy2(p/a,p/b)\nFIRST\nfor pass in 2 3 fresh; do\n work=.circuit-cache/stage42-full-b1-anchor\n if [[ \"$pass\" == fresh ]]; then\n  python3 - <<'COPY'\nfrom pathlib import Path\nimport shutil\nsrc=Path('.circuit-cache/stage42-full-b1-anchor');dst=Path('.circuit-cache/stage42-full-b1-fresh')\ndst.mkdir()\nfor p in src.iterdir():\n if p.is_dir():shutil.copytree(p,dst/p.name)\n elif p.suffix in ('.kicad_pcb','.kicad_pro','.kicad_sch','.kicad_dru') or p.name in ('prepare-receipt.json','fp-lib-table','sym-lib-table'):\n  shutil.copy2(p,dst/p.name)\nCOPY\n  work=.circuit-cache/stage42-full-b1-fresh\n fi\n bash scripts/kicad/run.sh kicad-cli pcb drc --schematic-parity --refill-zones --save-board --format json --severity-all -o \"$work/drc-pass$pass.json\" \"$work/osc-jack-left.kicad_pcb\"\n bash scripts/kicad/run.sh python3 \"$root/audit.py\" \"$work/osc-jack-left.kicad_pcb\" \"$work/prepare-receipt.json\" --proposal \"$power\" --proposal \"$signal\"\n bash scripts/kicad/run.sh python3 design/architecture-278/implementation/stage41/native-pilot/connectivity.py \"$work/osc-jack-left.kicad_pcb\" \"$work/connectivity-pass$pass.json\"\n python3 \"$root/compare_connectivity.py\" .circuit-cache/stage41-baseline/osc-jack-left.kicad_pcb \"$work/osc-jack-left.kicad_pcb\" .circuit-cache/stage41-baseline/connectivity-complete.json \"$work/connectivity-pass$pass.json\" \"$work/prepare-receipt.json\" \"$work/comparison-pass$pass.json\" --proposal \"$power\" --proposal \"$signal\"\n bash scripts/kicad/run.sh python3 \"$root/verify_power.py\" \"$work/osc-jack-left.kicad_pcb\" .circuit-cache/stage42-full-b1-revision3/power-proposal-paths.json \"$power\" \"$work/power-pass$pass.json\"\n cp \"$work/identity-audit.json\" \"$work/identity-pass$pass.json\"\n printf 'Completed native pass %s\\n' \"$pass\"\ndone\npython3 \"$root/settlement.py\" .circuit-cache/stage41-baseline .circuit-cache/stage42-full-b1-anchor .circuit-cache/stage42-full-b1-fresh .circuit-cache/stage42/settlement.json\npython3 -O \"$root/settlement.py\" .circuit-cache/stage41-baseline .circuit-cache/stage42-full-b1-anchor .circuit-cache/stage42-full-b1-fresh .circuit-cache/stage42/settlement-optimized.json\ncmp .circuit-cache/stage42/settlement.json .circuit-cache/stage42/settlement-optimized.json\n"
+    }
+  },
+  "retained_logs": {
+    ".circuit-cache/stage42/anchor.log": {
+      "sha256": "969f1058782f308a117e6f8b7420b4b6e6e4e0d8d7c3286dd1dd4195135b1da7",
+      "bytes": 4022
+    },
+    ".circuit-cache/stage42/branches-current-pad.log": {
+      "sha256": "6ba3da8558f1f9a9ba1149c6fc5bb03433b59134106d831a113616f2eddc77bd",
+      "bytes": 997
+    },
+    ".circuit-cache/stage42/branches-refined.log": {
+      "sha256": "a491fa985b79fe3da003a96997266b184c93cea852c439fedf2bca1b56b397f6",
+      "bytes": 997
+    },
+    ".circuit-cache/stage42/branches.log": {
+      "sha256": "bc11e0b8f5e6b93e169e51796da88c7d096f3fea46d7ee73a857a34136d59f34",
+      "bytes": 1037
+    },
+    ".circuit-cache/stage42/cleanup.log": {
+      "sha256": "ebfb38f758d0bacd7026c1f9519345305c60dd4e897b22b88ec3d8e650c53873",
+      "bytes": 4042
+    },
+    ".circuit-cache/stage42/diagnose-power.log": {
+      "sha256": "a6c11affb7b7705c731af2f283ec84d721b42e4485dbf86fe7d99b4b9fd11dfd",
+      "bytes": 675
+    },
+    ".circuit-cache/stage42/focused-normal-final.log": {
+      "sha256": "ee3c73a672bac1c44744835c94631e93db8005e996097c15bb7575b707b1782b",
+      "bytes": 469
+    },
+    ".circuit-cache/stage42/focused-optimized-final.log": {
+      "sha256": "aeefffc854062b3c8413ba97e9c315c63e558f23d6d51fdc906a742407b2854e",
+      "bytes": 469
+    },
+    ".circuit-cache/stage42/focused-optimized.log": {
+      "sha256": "b10439c2a64330cd5ab41da681440189085760f8aee97ef1a8bccb683315b2de",
+      "bytes": 468
+    },
+    ".circuit-cache/stage42/placement-missing-script.log": {
+      "sha256": "431cd34df267f568f365e83e3fdeec47e93d1af2eaa1e426f6a6b3408da2e51b",
+      "bytes": 276
+    },
+    ".circuit-cache/stage42/placement-nc-first-failure.log": {
+      "sha256": "955bcaafff632cad47a0a2fde72bcb557c189c57cd65feb4633db093d6f96b2d",
+      "bytes": 470
+    },
+    ".circuit-cache/stage42/placement-sandbox-failure.log": {
+      "sha256": "5c68a031b9d7543e2ffa7944a262db5e64962b7eb123a9470b2a140801f1553e",
+      "bytes": 4272
+    },
+    ".circuit-cache/stage42/placement-v2.log": {
+      "sha256": "c5319f9ea40c322f5388a2b9ff46036df4104b74a7c8e03138b87334c61606dc",
+      "bytes": 2373
+    },
+    ".circuit-cache/stage42/placement-v3.log": {
+      "sha256": "0b0e24f8dc8dc4b7bbf951c49a81ba8d5f47063b658b5882f1f0203d596dedd3",
+      "bytes": 2373
+    },
+    ".circuit-cache/stage42/placement-v4.log": {
+      "sha256": "b14bd9ad1b187810e594f65760b0537f9dae0af78e288748fc3f22feebb92198",
+      "bytes": 2373
+    },
+    ".circuit-cache/stage42/placement-v5.log": {
+      "sha256": "ef6e7e88b598c89c6ae415f8e5c885f26c86aafa15c92d71c4e8ff7cf06d5df4",
+      "bytes": 2373
+    },
+    ".circuit-cache/stage42/placement.log": {
+      "sha256": "955bcaafff632cad47a0a2fde72bcb557c189c57cd65feb4633db093d6f96b2d",
+      "bytes": 470
+    },
+    ".circuit-cache/stage42/power-placement-gate-failure.log": {
+      "sha256": "5335c318ec8d691a6592791d207f258461ed42dd1ea93b9de07f00515334e6a7",
+      "bytes": 519
+    },
+    ".circuit-cache/stage42/power-v2.log": {
+      "sha256": "973c46791ca65d56ce2371658b3a5e9ae50cdc5c607b455ac5a7b790a70146cf",
+      "bytes": 7799
+    },
+    ".circuit-cache/stage42/power-verify.log": {
+      "sha256": "c928b41858abe536b2c48d2b9eb39e80269a7fe2cd76883ada5c7ecece6eed10",
+      "bytes": 111
+    },
+    ".circuit-cache/stage42/power.log": {
+      "sha256": "5335c318ec8d691a6592791d207f258461ed42dd1ea93b9de07f00515334e6a7",
+      "bytes": 519
+    },
+    ".circuit-cache/stage42/routed-check.log": {
+      "sha256": "515d1e18744f9587953a6f568454da73357b7eb823ea488c4c4cf6175cc46722",
+      "bytes": 4735
+    },
+    ".circuit-cache/stage42/search.log": {
+      "sha256": "38dcaef488b1e9f7d6b2f63b9e03155002c55cfbed55c3d78d50a0fce75815ed",
+      "bytes": 661
+    },
+    ".circuit-cache/stage42/signals-alternatives.log": {
+      "sha256": "642733ff381b7ea00eaa909bccc035ef8413f5cf7ca5b53af5f434be7561f780",
+      "bytes": 5247
+    },
+    ".circuit-cache/stage42/signals-priority.log": {
+      "sha256": "7687445f21c8fe5c18695992b0f1e50f9d756105a308cea225904588db113905",
+      "bytes": 2753
+    },
+    ".circuit-cache/stage42/signals.log": {
+      "sha256": "2d37c363e70fc4c48b5c04847ebf2c361c2c4ec776e2ed60660f8fbc16c68e73",
+      "bytes": 3120
+    },
+    ".circuit-cache/stage42/final-circuit-check.log": {
+      "sha256": "07a2f28172f86ec3ebb60044f4eaad6da83999d0a61d5b14bf6b088ac70acca4",
+      "bytes": 246
+    }
+  },
+  "limits": "Drivers are the actual attempt history, not a single safe replay command; they create named disposable directories and require retained baseline/tool inputs. Logs/large boards stay local and ignored. Final settlement binds repeat/fresh evidence separately.",
+  "source_checks": {
+    "focused_normal": 68,
+    "focused_optimized": 68,
+    "historical_bindings_normal": 7,
+    "historical_bindings_optimized": 7,
+    "scope_normal_optimized_committed_byte_equal": true,
+    "metrics_normal_optimized_byte_equal": true,
+    "pnpm_circuit_check": "PASS; manual68lines/0declaredplacements; no schematic/placement binding; pin-asset check performed",
+    "pnpm_check": "PASS; generated checks and doc tsc",
+    "full_historical_replay": "Not duplicated locally; existing exact-head CI budget"
+  },
+  "source_commands": [
+    "python3 -m unittest scripts.checks.test_native_pilot_identity scripts.checks.test_native_pilot_connectivity scripts.checks.test_native_pilot_power scripts.checks.test_native_pilot_settlement scripts.checks.test_native_pilot_metrics scripts.checks.test_mult_copper_plan scripts.checks.test_b1_scope scripts.checks.test_full_b1_power scripts.checks.test_full_b1_retirement scripts.checks.test_full_b1_settlement",
+    "python3 -O -m unittest scripts.checks.test_native_pilot_identity scripts.checks.test_native_pilot_connectivity scripts.checks.test_native_pilot_power scripts.checks.test_native_pilot_settlement scripts.checks.test_native_pilot_metrics scripts.checks.test_mult_copper_plan scripts.checks.test_b1_scope scripts.checks.test_full_b1_power scripts.checks.test_full_b1_retirement scripts.checks.test_full_b1_settlement",
+    "pnpm circuit:check",
+    "pnpm check",
+    "python3 [-O] - <<'PY'\nfrom pathlib import Path\nfrom scripts.checks.architecture_history import CHECKPOINTS,verify_binding\nfor c,m in CHECKPOINTS.items():verify_binding(Path.cwd(),c,m)\nPY",
+    "python3 [-O] design/architecture-278/implementation/stage42/full-b1/scope.py .circuit-cache/stage42/scope-{normal,optimized}.json; cmp outputs and committed evidence/open-scope.json",
+    "python3 [-O] design/architecture-278/implementation/stage41/native-pilot/metrics.py boards/osc-jack-left/osc-jack-left.kicad_pcb .circuit-cache/stage42-full-b1-anchor/osc-jack-left.kicad_pcb .circuit-cache/stage42-full-b1-anchor/prepare-receipt.json .circuit-cache/stage42/metrics[-optimized].json; cmp outputs",
+    "python3 -m py_compile design/architecture-278/implementation/stage42/full-b1/*.py"
+  ]
+}

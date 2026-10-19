@@ -1,0 +1,1758 @@
+{
+  "current": {
+    "classes": {
+      "conditional_fault_A": "conditional maximum plus the fault increments of the stated fault case",
+      "conditional_max_A": "worst case of the stated conditions; not a guaranteed limit",
+      "established_max_A": "a hard limit backed by maker evidence; null where none exists",
+      "typical_A": "nominal values at the stated operating point"
+    },
+    "conditions": [
+      "rails at the supply contract maxima +12.48 / -12.37 / +5.2 V (requirement only, R-SUPPLY)",
+      "100 kOhm network at -0.1 % (R-EV-PASSIVES); 92.5 kOhm for the Stage15 LT5400 network candidate",
+      "A01 signal and CV range +/-5 V nominal; outputs can reach the rails (rail-to-rail OPA4197)",
+      "quiescent maxima at full temperature from the evidence bundles"
+    ],
+    "established_any": false,
+    "fault": "no fuse, PTC, series element or regulator limit exists upstream (R-POWER-SPEC); a short on a J-PWR or AGND conductor is limited only by an unselected source (requirement 2.1 A), above the JST 1.0 A rating: UNKNOWN",
+    "jst_rating_awg26_A": 1.0,
+    "links": {
+      "J-PWR": [
+        {
+          "condition": "sum of the terms (rails at the contract maxima, quiescent maxima at full temperature); fault adds the contract output-forced increment",
+          "conditional_fault_A": 0.04401315238624706,
+          "conditional_max_A": 0.019013152386247057,
+          "direction": "middle -> jack",
+          "driver": "upstream supply via A01-middle (power enters at A01:J-PWR:middle)",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: no fuse, PTC, series element or regulator limit upstream; the supply contract maximum (2.1 A) is a requirement on an unselected source",
+          "fraction_of_jst_awg26_rating": 0.044013,
+          "fraction_of_project_limit": 0.088026,
+          "loads": "A01-jack: U7106 (4 x OPA4197), U7109 (4 x OPA4196), U7102/U7103 ADG5412F VDD, U7107/U7108 LM393BIDR, R7135 clip LED, magnitude senses, 6 x 100 nF",
+          "net": "+12V",
+          "pin": "1",
+          "sources": [
+            "R-A01-SPEC",
+            "R-STAGE15-INTERFACES",
+            "R-EV-OPA4197",
+            "R-EV-OPA4196",
+            "R-EV-LM393B",
+            "R-POWER-SPEC",
+            "R-SUPPLY",
+            "R-PLANNING-CURRENT"
+          ],
+          "terms": [
+            {
+              "basis": "fact-op-precision-quiescent-current: 1.0 mA typical, 1.5 mA full-temperature maximum per amplifier",
+              "conditional_A": 0.006,
+              "fault_increment_A": null,
+              "sources": [
+                "R-EV-OPA4197"
+              ],
+              "term": "OPA4197 IQ, U7106 (4 amplifiers)",
+              "typical_A": 0.004
+            },
+            {
+              "basis": "fact-op-audio-quiescent-current: 140 uA typical, 250 uA full-temperature maximum per amplifier",
+              "conditional_A": 0.001,
+              "fault_increment_A": null,
+              "sources": [
+                "R-EV-OPA4196"
+              ],
+              "term": "OPA4196 IQ, U7109 (4 amplifiers)",
+              "typical_A": 0.0005600000000000001
+            },
+            {
+              "basis": "ADI ADG5412F rev C Table 1 normal mode IDD: 0.9 mA typical, 1.3 mA full-temperature maximum at +/-16.5 V (conditional at +/-12 V)",
+              "conditional_A": 0.0026,
+              "fault_increment_A": null,
+              "sources": [
+                "R-STAGE8-ADG-EVIDENCE"
+              ],
+              "term": "ADG5412F IDD, U7102/U7103",
+              "typical_A": 0.0018
+            },
+            {
+              "basis": "5 V / rail across 5.6 kOhm",
+              "conditional_A": 0.006685714,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC"
+              ],
+              "term": "magnitude senses R7130-R7132 (driven from the amplifier outputs; either rail)",
+              "typical_A": 0.002678571
+            },
+            {
+              "basis": "rail to rail across 22.1 kOhm; tolerance unknown",
+              "conditional_A": 0.001124434,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-SUPPLY"
+              ],
+              "term": "clip LED R7135 22.1 kOhm (+12V to -12V, LED drop ignored)",
+              "typical_A": 0.001124434
+            },
+            {
+              "basis": "each output at 5 V / the rail into its 100 kOhm (92.5 kOhm network floor)",
+              "conditional_A": 0.000404757,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-STAGE15-ELECTRICAL"
+              ],
+              "term": "signal outputs of U7106 (IN_BUFFER, OFFSET_BUFFER, RESTORE feedback R7126)",
+              "typical_A": 0.00015
+            },
+            {
+              "basis": "5 V / rail across 2 x 100 kOhm",
+              "conditional_A": 6.2462e-05,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC"
+              ],
+              "term": "clip divider R7133 + R7134",
+              "typical_A": 2.5e-05
+            },
+            {
+              "basis": "supply contract normal output 5 V / 10 kOhm",
+              "conditional_A": 0.001135784,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-SUPPLY"
+              ],
+              "term": "output load via 998 Ohm into the contract 10 kOhm load",
+              "typical_A": 0.000454628
+            },
+            {
+              "basis": "contract.load_envelope.fault_increment_mA 25 per analog rail",
+              "conditional_A": 0.0,
+              "fault_increment_A": 0.025,
+              "sources": [
+                "R-SUPPLY"
+              ],
+              "term": "output forced to the opposite 12 V (supply contract fault increment)",
+              "typical_A": 0.0
+            },
+            {
+              "basis": "not in the R-EV-LM393B bundle; the 1 mA per package per rail planning reservation (R-PLANNING-CURRENT) is not datasheet evidence",
+              "conditional_A": null,
+              "status": "UNKNOWN",
+              "term": "LM393BIDR supply current, U7107/U7108",
+              "typical_A": null
+            }
+          ],
+          "typical_A": 0.010792633931914281,
+          "unknown_terms": [
+            "LM393BIDR supply current, U7107/U7108"
+          ],
+          "within_project_limit_conditional": true,
+          "worst_conditional_A": 0.04401315238624706
+        },
+        {
+          "condition": "sum of the terms (rails at the contract maxima, quiescent maxima at full temperature); fault adds the contract output-forced increment",
+          "conditional_fault_A": 0.042813152386247055,
+          "conditional_max_A": 0.017813152386247057,
+          "direction": "jack -> middle (conventional)",
+          "driver": "upstream supply via A01-middle",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: as pin 1",
+          "fraction_of_jst_awg26_rating": 0.042813,
+          "fraction_of_project_limit": 0.085626,
+          "loads": "as pin 1 (VSS / V- pins)",
+          "net": "-12V",
+          "pin": "2",
+          "sources": [
+            "R-A01-SPEC",
+            "R-STAGE15-INTERFACES",
+            "R-EV-OPA4197",
+            "R-EV-OPA4196",
+            "R-POWER-SPEC",
+            "R-SUPPLY"
+          ],
+          "terms": [
+            {
+              "basis": "fact-op-precision-quiescent-current: 1.0 mA typical, 1.5 mA full-temperature maximum per amplifier",
+              "conditional_A": 0.006,
+              "fault_increment_A": null,
+              "sources": [
+                "R-EV-OPA4197"
+              ],
+              "term": "OPA4197 IQ, U7106 (4 amplifiers)",
+              "typical_A": 0.004
+            },
+            {
+              "basis": "fact-op-audio-quiescent-current: 140 uA typical, 250 uA full-temperature maximum per amplifier",
+              "conditional_A": 0.001,
+              "fault_increment_A": null,
+              "sources": [
+                "R-EV-OPA4196"
+              ],
+              "term": "OPA4196 IQ, U7109 (4 amplifiers)",
+              "typical_A": 0.0005600000000000001
+            },
+            {
+              "basis": "ADI ADG5412F rev C Table 1 normal mode ISS: 0.5 mA typical, 0.7 mA full-temperature maximum at +/-16.5 V (conditional at +/-12 V)",
+              "conditional_A": 0.0014,
+              "fault_increment_A": null,
+              "sources": [
+                "R-STAGE8-ADG-EVIDENCE"
+              ],
+              "term": "ADG5412F ISS, U7102/U7103",
+              "typical_A": 0.001
+            },
+            {
+              "basis": "5 V / rail across 5.6 kOhm",
+              "conditional_A": 0.006685714,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC"
+              ],
+              "term": "magnitude senses R7130-R7132 (driven from the amplifier outputs; either rail)",
+              "typical_A": 0.002678571
+            },
+            {
+              "basis": "rail to rail across 22.1 kOhm; tolerance unknown",
+              "conditional_A": 0.001124434,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-SUPPLY"
+              ],
+              "term": "clip LED R7135 22.1 kOhm (+12V to -12V, LED drop ignored)",
+              "typical_A": 0.001124434
+            },
+            {
+              "basis": "each output at 5 V / the rail into its 100 kOhm (92.5 kOhm network floor)",
+              "conditional_A": 0.000404757,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-STAGE15-ELECTRICAL"
+              ],
+              "term": "signal outputs of U7106 (IN_BUFFER, OFFSET_BUFFER, RESTORE feedback R7126)",
+              "typical_A": 0.00015
+            },
+            {
+              "basis": "5 V / rail across 2 x 100 kOhm",
+              "conditional_A": 6.2462e-05,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC"
+              ],
+              "term": "clip divider R7133 + R7134",
+              "typical_A": 2.5e-05
+            },
+            {
+              "basis": "supply contract normal output 5 V / 10 kOhm",
+              "conditional_A": 0.001135784,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-SUPPLY"
+              ],
+              "term": "output load via 998 Ohm into the contract 10 kOhm load",
+              "typical_A": 0.000454628
+            },
+            {
+              "basis": "contract.load_envelope.fault_increment_mA 25 per analog rail",
+              "conditional_A": 0.0,
+              "fault_increment_A": 0.025,
+              "sources": [
+                "R-SUPPLY"
+              ],
+              "term": "output forced to the opposite 12 V (supply contract fault increment)",
+              "typical_A": 0.0
+            },
+            {
+              "basis": "not in the R-EV-LM393B bundle; the 1 mA per package per rail planning reservation (R-PLANNING-CURRENT) is not datasheet evidence",
+              "conditional_A": null,
+              "status": "UNKNOWN",
+              "term": "LM393BIDR supply current, U7107/U7108",
+              "typical_A": null
+            }
+          ],
+          "typical_A": 0.009992633931914283,
+          "unknown_terms": [
+            "LM393BIDR supply current, U7107/U7108"
+          ],
+          "within_project_limit_conditional": true,
+          "worst_conditional_A": 0.042813152386247055
+        },
+        {
+          "condition": "5.2 V into the enable dividers plus LM393B input bias; ADG5412F logic input current not in evidence",
+          "conditional_fault_A": null,
+          "conditional_max_A": 0.00010410000000000001,
+          "direction": "middle -> jack",
+          "driver": "upstream supply via A01-middle",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: as pin 1",
+          "fraction_of_jst_awg26_rating": 0.000104,
+          "fraction_of_project_limit": 0.000208,
+          "loads": "A01-jack R7106/R7110 enable dividers (1 kOhm + 100 kOhm), U7107/U7108 inputs",
+          "net": "+5V",
+          "pin": "3",
+          "sources": [
+            "R-A01-SPEC",
+            "R-STAGE15-INTERFACES",
+            "R-SUPPLY"
+          ],
+          "terms": [
+            {
+              "basis": "+5 V into 1 kOhm + 100 kOhm",
+              "conditional_A": 0.000104,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES",
+                "R-SUPPLY"
+              ],
+              "term": "enable dividers R7106/R7110 + R7105/R7109",
+              "typical_A": 9.901e-05
+            },
+            {
+              "basis": "input bias",
+              "conditional_A": 1.0000000000000001e-07,
+              "fault_increment_A": null,
+              "sources": [
+                "R-EV-LM393B"
+              ],
+              "term": "LM393BIDR inputs on +5V (U7107/U7108)",
+              "typical_A": 7e-09
+            },
+            {
+              "basis": "not in evidence",
+              "conditional_A": null,
+              "status": "UNKNOWN",
+              "term": "ADG5412F logic input current",
+              "typical_A": null
+            }
+          ],
+          "typical_A": 9.901690099009902e-05,
+          "unknown_terms": [
+            "ADG5412F logic input current"
+          ],
+          "within_project_limit_conditional": true,
+          "worst_conditional_A": 0.00010410000000000001
+        },
+        {
+          "condition": "whole jack AGND total charged to this one conductor (sharing with the other AGND contacts UNKNOWN; equal sharing is not credited, Stage10 contract)",
+          "conditional_fault_A": 0.037284839209227996,
+          "conditional_max_A": 0.011284839209227997,
+          "direction": "jack -> middle (net)",
+          "driver": "-",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: as J-SIG pin 2",
+          "fraction_of_jst_awg26_rating": 0.037285,
+          "fraction_of_project_limit": 0.07457,
+          "loads": "A01-jack AGND, parallel with J-SIG pins 2 and 7",
+          "net": "AGND",
+          "pin": "4",
+          "sources": [
+            "R-STAGE15-INTERFACES",
+            "R-SUPPLY",
+            "R-STAGE10-ELECTRICAL"
+          ],
+          "terms": [
+            {
+              "basis": "+5 V into 1 kOhm + 100 kOhm (100 kOhm at -1 %)",
+              "conditional_A": 0.000104,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES",
+                "R-SUPPLY"
+              ],
+              "term": "enable dividers R7105/R7109 (+5V via R7106/R7110 1 kOhm + 100 kOhm 1 %)",
+              "typical_A": 9.901e-05
+            },
+            {
+              "basis": "ADI ADG5412F rev C Table 1 IGND normal mode: 0.4 mA typical, 0.6 mA full-temperature maximum at +/-16.5 V (conditional at +/-12 V)",
+              "conditional_A": 0.0012,
+              "fault_increment_A": 0.001,
+              "sources": [
+                "R-STAGE8-ADG-EVIDENCE"
+              ],
+              "term": "ADG5412F IGND (U7102, U7103)",
+              "typical_A": 0.0008
+            },
+            {
+              "basis": "5 V / rail across 5.6 kOhm; resistor tolerance unknown (no MPN)",
+              "conditional_A": 0.006685714,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC"
+              ],
+              "term": "magnitude senses R7130-R7132 5.6 kOhm (indicator drive returns)",
+              "typical_A": 0.002678571
+            },
+            {
+              "basis": "5 V / rail across 2 x 100 kOhm",
+              "conditional_A": 6.2462e-05,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES"
+              ],
+              "term": "clip divider R7133 + R7134",
+              "typical_A": 2.5e-05
+            },
+            {
+              "basis": "5 V / rail into 100 kOhm 1 %",
+              "conditional_A": 0.000252121,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES"
+              ],
+              "term": "input pull-downs R7107/R7111 (external source current; may return via the patch sleeve)",
+              "typical_A": 0.0001
+            },
+            {
+              "basis": "supply contract normal output 5 V / 10 kOhm; rail at -1 % isolation",
+              "conditional_A": 0.001135784,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-SUPPLY",
+                "R-EV-PASSIVES"
+              ],
+              "term": "output load via R7127 + R7128 (998 Ohm) into the contract 10 kOhm load",
+              "typical_A": 0.000454628
+            },
+            {
+              "basis": "counted in AGND only as a conservative bound; their DC loops close through the far amplifiers rails",
+              "conditional_A": 0.000404757,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-STAGE15-ELECTRICAL"
+              ],
+              "term": "J-SIG signal returns (IN_BUFFER, OFFSET_BUFFER, SUM_NEG)",
+              "typical_A": 0.0
+            },
+            {
+              "basis": "12 x 100 nF x 12 V / 10 ms soft_start_min_ms, no cancellation between rails",
+              "conditional_A": 0.0014399999999999999,
+              "fault_increment_A": null,
+              "sources": [
+                "R-SUPPLY",
+                "R-A01-SPEC"
+              ],
+              "term": "decoupling charge at the 10 ms soft start (12 x 100 nF, two analog rails)",
+              "typical_A": 0.0
+            },
+            {
+              "basis": "contract.load_envelope.fault_basis: 24.05 mA, 25 mA per analog rail increment",
+              "conditional_A": 0.0,
+              "fault_increment_A": 0.025,
+              "sources": [
+                "R-SUPPLY"
+              ],
+              "term": "output forced to the opposite 12 V across 998 Ohm (supply contract fault basis)",
+              "typical_A": 0.0
+            },
+            {
+              "basis": "unbounded by any element; between modules or instruments",
+              "conditional_A": null,
+              "status": "UNKNOWN",
+              "term": "external ground-loop current through the jack sleeves",
+              "typical_A": null
+            }
+          ],
+          "typical_A": 0.00415720944376411,
+          "unknown_terms": [
+            "external ground-loop current through the jack sleeves"
+          ],
+          "within_project_limit_conditional": true,
+          "worst_conditional_A": 0.037284839209227996
+        }
+      ],
+      "J-SIG": [
+        {
+          "condition": "LM393B input bias, typical 25 C / maximum full temperature",
+          "conditional_fault_A": null,
+          "conditional_max_A": 5e-08,
+          "direction": "core -> jack (input-bias magnitude)",
+          "driver": "A01-core U7104A (OPA4197IPWR follower of REF5050)",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: no series resistor; OPA4197 short-circuit current not in the evidence bundle",
+          "fraction_of_jst_awg26_rating": 0.0,
+          "fraction_of_project_limit": 0.0,
+          "loads": "A01-jack U7107 pin 3 (LM393BIDR input)",
+          "net": "/A01/REF5",
+          "pin": "1",
+          "sources": [
+            "R-A01-SPEC",
+            "R-STAGE15-INTERFACES",
+            "R-EV-LM393B",
+            "R-EV-OPA4197"
+          ],
+          "terms": [
+            {
+              "basis": "fact-comparator-input-bias-current: 3.5 nA typical 25 C, 50 nA maximum full temperature",
+              "conditional_A": 5.0000000000000004e-08,
+              "fault_increment_A": null,
+              "sources": [
+                "R-EV-LM393B"
+              ],
+              "term": "LM393BIDR input bias (REF5)",
+              "typical_A": 3e-09
+            },
+            {
+              "basis": "not in the R-EV-OPA4197 bundle; bounds a fault on this conductor",
+              "conditional_A": null,
+              "status": "UNKNOWN",
+              "term": "OPA4197 output short-circuit current (driver)",
+              "typical_A": null
+            }
+          ],
+          "typical_A": 3.5e-09,
+          "unknown_terms": [
+            "OPA4197 output short-circuit current (driver)"
+          ],
+          "within_project_limit_conditional": true,
+          "worst_conditional_A": 5e-08
+        },
+        {
+          "condition": "whole jack AGND total charged to this one conductor (sharing with the other AGND contacts UNKNOWN; equal sharing is not credited, Stage10 contract)",
+          "conditional_fault_A": 0.037284839209227996,
+          "conditional_max_A": 0.011284839209227997,
+          "direction": "jack -> middle (net)",
+          "driver": "-",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: no limiting element; external ground loops through the jack sleeves are unbounded",
+          "fraction_of_jst_awg26_rating": 0.037285,
+          "fraction_of_project_limit": 0.07457,
+          "loads": "A01-jack AGND, parallel with J-SIG pin 7 and J-PWR pin 4",
+          "net": "AGND",
+          "pin": "2",
+          "sources": [
+            "R-STAGE15-INTERFACES",
+            "R-SUPPLY",
+            "R-STAGE10-ELECTRICAL"
+          ],
+          "terms": [
+            {
+              "basis": "+5 V into 1 kOhm + 100 kOhm (100 kOhm at -1 %)",
+              "conditional_A": 0.000104,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES",
+                "R-SUPPLY"
+              ],
+              "term": "enable dividers R7105/R7109 (+5V via R7106/R7110 1 kOhm + 100 kOhm 1 %)",
+              "typical_A": 9.901e-05
+            },
+            {
+              "basis": "ADI ADG5412F rev C Table 1 IGND normal mode: 0.4 mA typical, 0.6 mA full-temperature maximum at +/-16.5 V (conditional at +/-12 V)",
+              "conditional_A": 0.0012,
+              "fault_increment_A": 0.001,
+              "sources": [
+                "R-STAGE8-ADG-EVIDENCE"
+              ],
+              "term": "ADG5412F IGND (U7102, U7103)",
+              "typical_A": 0.0008
+            },
+            {
+              "basis": "5 V / rail across 5.6 kOhm; resistor tolerance unknown (no MPN)",
+              "conditional_A": 0.006685714,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC"
+              ],
+              "term": "magnitude senses R7130-R7132 5.6 kOhm (indicator drive returns)",
+              "typical_A": 0.002678571
+            },
+            {
+              "basis": "5 V / rail across 2 x 100 kOhm",
+              "conditional_A": 6.2462e-05,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES"
+              ],
+              "term": "clip divider R7133 + R7134",
+              "typical_A": 2.5e-05
+            },
+            {
+              "basis": "5 V / rail into 100 kOhm 1 %",
+              "conditional_A": 0.000252121,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES"
+              ],
+              "term": "input pull-downs R7107/R7111 (external source current; may return via the patch sleeve)",
+              "typical_A": 0.0001
+            },
+            {
+              "basis": "supply contract normal output 5 V / 10 kOhm; rail at -1 % isolation",
+              "conditional_A": 0.001135784,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-SUPPLY",
+                "R-EV-PASSIVES"
+              ],
+              "term": "output load via R7127 + R7128 (998 Ohm) into the contract 10 kOhm load",
+              "typical_A": 0.000454628
+            },
+            {
+              "basis": "counted in AGND only as a conservative bound; their DC loops close through the far amplifiers rails",
+              "conditional_A": 0.000404757,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-STAGE15-ELECTRICAL"
+              ],
+              "term": "J-SIG signal returns (IN_BUFFER, OFFSET_BUFFER, SUM_NEG)",
+              "typical_A": 0.0
+            },
+            {
+              "basis": "12 x 100 nF x 12 V / 10 ms soft_start_min_ms, no cancellation between rails",
+              "conditional_A": 0.0014399999999999999,
+              "fault_increment_A": null,
+              "sources": [
+                "R-SUPPLY",
+                "R-A01-SPEC"
+              ],
+              "term": "decoupling charge at the 10 ms soft start (12 x 100 nF, two analog rails)",
+              "typical_A": 0.0
+            },
+            {
+              "basis": "contract.load_envelope.fault_basis: 24.05 mA, 25 mA per analog rail increment",
+              "conditional_A": 0.0,
+              "fault_increment_A": 0.025,
+              "sources": [
+                "R-SUPPLY"
+              ],
+              "term": "output forced to the opposite 12 V across 998 Ohm (supply contract fault basis)",
+              "typical_A": 0.0
+            },
+            {
+              "basis": "unbounded by any element; between modules or instruments",
+              "conditional_A": null,
+              "status": "UNKNOWN",
+              "term": "external ground-loop current through the jack sleeves",
+              "typical_A": null
+            }
+          ],
+          "typical_A": 0.00415720944376411,
+          "unknown_terms": [
+            "external ground-loop current through the jack sleeves"
+          ],
+          "within_project_limit_conditional": true,
+          "worst_conditional_A": 0.037284839209227996
+        },
+        {
+          "condition": "LM393B input bias, typical 25 C / maximum full temperature",
+          "conditional_fault_A": null,
+          "conditional_max_A": 5e-08,
+          "direction": "jack <-> core (input-bias magnitude)",
+          "driver": "A01-core U7104B (OPA4197IPWR inverter)",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: no series resistor; OPA4197 short-circuit current not in the evidence bundle",
+          "fraction_of_jst_awg26_rating": 0.0,
+          "fraction_of_project_limit": 0.0,
+          "loads": "A01-jack U7108 pin 2 (LM393BIDR input)",
+          "net": "/A01/REFN5",
+          "pin": "3",
+          "sources": [
+            "R-A01-SPEC",
+            "R-EV-LM393B",
+            "R-EV-OPA4197"
+          ],
+          "terms": [
+            {
+              "basis": "fact-comparator-input-bias-current: 3.5 nA typical 25 C, 50 nA maximum full temperature",
+              "conditional_A": 5.0000000000000004e-08,
+              "fault_increment_A": null,
+              "sources": [
+                "R-EV-LM393B"
+              ],
+              "term": "LM393BIDR input bias (REFN5)",
+              "typical_A": 3e-09
+            },
+            {
+              "basis": "not in the R-EV-OPA4197 bundle; bounds a fault on this conductor",
+              "conditional_A": null,
+              "status": "UNKNOWN",
+              "term": "OPA4197 output short-circuit current (driver)",
+              "typical_A": null
+            }
+          ],
+          "typical_A": 3.5e-09,
+          "unknown_terms": [
+            "OPA4197 output short-circuit current (driver)"
+          ],
+          "within_project_limit_conditional": true,
+          "worst_conditional_A": 5e-08
+        },
+        {
+          "condition": "5 V nominal / output at the rail into the resistor floor",
+          "conditional_fault_A": null,
+          "conditional_max_A": 0.00012493992492492492,
+          "direction": "jack -> core for positive input",
+          "driver": "A01-jack U7106A (OPA4197IPWR follower)",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: OPA4197 short-circuit current not in evidence; with the core unpowered the output drives a core input directly (Stage14 buffer warning)",
+          "fraction_of_jst_awg26_rating": 0.000125,
+          "fraction_of_project_limit": 0.00025,
+          "loads": "A01-core R7117 100 kOhm to the U7105A virtual ground, U7104 input",
+          "net": "/A01/IN_BUFFER",
+          "pin": "4",
+          "sources": [
+            "R-A01-SPEC",
+            "R-STAGE15-ELECTRICAL",
+            "R-STAGE14-ELECTRICAL",
+            "R-EV-PASSIVES",
+            "R-EV-OPA4197"
+          ],
+          "terms": [
+            {
+              "basis": "5 V nominal signal / output at the +12.48 V rail into the resistor (worst tolerance)",
+              "conditional_A": 0.000124925,
+              "fault_increment_A": null,
+              "sources": [
+                "R-EV-PASSIVES",
+                "R-A01-SPEC",
+                "R-SUPPLY"
+              ],
+              "term": "R7117 100 kOhm 0.1 % to ATTEN_SUM (U7105A input)",
+              "typical_A": 5e-05
+            },
+            {
+              "basis": "not in the R-EV-OPA4197 bundle",
+              "conditional_A": null,
+              "status": "UNKNOWN",
+              "term": "OPA4197 output short-circuit current (driver)",
+              "typical_A": null
+            },
+            {
+              "basis": "fact-op-precision-input-bias-current-full-temperature (value 15 as recorded; taken as nA, conservative)",
+              "conditional_A": 1.5000000000000002e-08,
+              "fault_increment_A": null,
+              "sources": [
+                "R-EV-OPA4197"
+              ],
+              "term": "U7104 pin 12 input bias",
+              "typical_A": null
+            }
+          ],
+          "typical_A": 5e-05,
+          "unknown_terms": [
+            "OPA4197 output short-circuit current (driver)"
+          ],
+          "within_project_limit_conditional": true,
+          "worst_conditional_A": 0.00012493992492492492
+        },
+        {
+          "condition": "5 V nominal / output at the rail into the resistor floor",
+          "conditional_fault_A": null,
+          "conditional_max_A": 0.00013491891891891892,
+          "direction": "jack -> core for positive CV",
+          "driver": "A01-jack U7106B (OPA4197IPWR follower)",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: OPA4197 short-circuit current not in evidence",
+          "fraction_of_jst_awg26_rating": 0.000135,
+          "fraction_of_project_limit": 0.00027,
+          "loads": "A01-core R7123 100 kOhm to SUM_NODE (U7105C virtual ground)",
+          "net": "/A01/OFFSET_BUFFER",
+          "pin": "5",
+          "sources": [
+            "R-A01-SPEC",
+            "R-STAGE15-ELECTRICAL",
+            "R-EV-PASSIVES"
+          ],
+          "terms": [
+            {
+              "basis": "5 V nominal signal / output at the +12.48 V rail into the resistor (worst tolerance)",
+              "conditional_A": 0.000134919,
+              "fault_increment_A": null,
+              "sources": [
+                "R-STAGE15-ELECTRICAL",
+                "R-A01-SPEC",
+                "R-SUPPLY"
+              ],
+              "term": "RN7101:3 (R7123) 100 kOhm to SUM_NODE",
+              "typical_A": 5e-05
+            },
+            {
+              "basis": "not in the R-EV-OPA4197 bundle",
+              "conditional_A": null,
+              "status": "UNKNOWN",
+              "term": "OPA4197 output short-circuit current (driver)",
+              "typical_A": null
+            }
+          ],
+          "typical_A": 5e-05,
+          "unknown_terms": [
+            "OPA4197 output short-circuit current (driver)"
+          ],
+          "within_project_limit_conditional": true,
+          "worst_conditional_A": 0.00013491891891891892
+        },
+        {
+          "condition": "5 V nominal / output at the rail into the resistor floor",
+          "conditional_fault_A": null,
+          "conditional_max_A": 0.00013491891891891892,
+          "direction": "core -> jack for positive SUM_NEG",
+          "driver": "A01-core U7105C (OPA4197IPWR summer)",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: OPA4197 short-circuit current not in evidence (an unpowered jack is protected by the 100 kOhm resistor)",
+          "fraction_of_jst_awg26_rating": 0.000135,
+          "fraction_of_project_limit": 0.00027,
+          "loads": "A01-jack R7125 100 kOhm to RESTORE_NODE (U7106C virtual ground)",
+          "net": "/A01/SUM_NEG",
+          "pin": "6",
+          "sources": [
+            "R-A01-SPEC",
+            "R-STAGE15-ELECTRICAL",
+            "R-EV-PASSIVES"
+          ],
+          "terms": [
+            {
+              "basis": "5 V nominal signal / output at the +12.48 V rail into the resistor (worst tolerance)",
+              "conditional_A": 0.000134919,
+              "fault_increment_A": null,
+              "sources": [
+                "R-STAGE15-ELECTRICAL",
+                "R-A01-SPEC",
+                "R-SUPPLY"
+              ],
+              "term": "RN7102:1 (R7125) 100 kOhm to RESTORE_NODE",
+              "typical_A": 5e-05
+            },
+            {
+              "basis": "not in the R-EV-OPA4197 bundle",
+              "conditional_A": null,
+              "status": "UNKNOWN",
+              "term": "OPA4197 output short-circuit current (driver)",
+              "typical_A": null
+            }
+          ],
+          "typical_A": 5e-05,
+          "unknown_terms": [
+            "OPA4197 output short-circuit current (driver)"
+          ],
+          "within_project_limit_conditional": true,
+          "worst_conditional_A": 0.00013491891891891892
+        },
+        {
+          "condition": "whole jack AGND total charged to this one conductor (sharing with the other AGND contacts UNKNOWN; equal sharing is not credited, Stage10 contract)",
+          "conditional_fault_A": 0.037284839209227996,
+          "conditional_max_A": 0.011284839209227997,
+          "direction": "jack -> middle (net)",
+          "driver": "-",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: as pin 2",
+          "fraction_of_jst_awg26_rating": 0.037285,
+          "fraction_of_project_limit": 0.07457,
+          "loads": "as pin 2",
+          "net": "AGND",
+          "pin": "7",
+          "sources": [
+            "R-STAGE15-INTERFACES",
+            "R-SUPPLY",
+            "R-STAGE10-ELECTRICAL"
+          ],
+          "terms": [
+            {
+              "basis": "+5 V into 1 kOhm + 100 kOhm (100 kOhm at -1 %)",
+              "conditional_A": 0.000104,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES",
+                "R-SUPPLY"
+              ],
+              "term": "enable dividers R7105/R7109 (+5V via R7106/R7110 1 kOhm + 100 kOhm 1 %)",
+              "typical_A": 9.901e-05
+            },
+            {
+              "basis": "ADI ADG5412F rev C Table 1 IGND normal mode: 0.4 mA typical, 0.6 mA full-temperature maximum at +/-16.5 V (conditional at +/-12 V)",
+              "conditional_A": 0.0012,
+              "fault_increment_A": 0.001,
+              "sources": [
+                "R-STAGE8-ADG-EVIDENCE"
+              ],
+              "term": "ADG5412F IGND (U7102, U7103)",
+              "typical_A": 0.0008
+            },
+            {
+              "basis": "5 V / rail across 5.6 kOhm; resistor tolerance unknown (no MPN)",
+              "conditional_A": 0.006685714,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC"
+              ],
+              "term": "magnitude senses R7130-R7132 5.6 kOhm (indicator drive returns)",
+              "typical_A": 0.002678571
+            },
+            {
+              "basis": "5 V / rail across 2 x 100 kOhm",
+              "conditional_A": 6.2462e-05,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES"
+              ],
+              "term": "clip divider R7133 + R7134",
+              "typical_A": 2.5e-05
+            },
+            {
+              "basis": "5 V / rail into 100 kOhm 1 %",
+              "conditional_A": 0.000252121,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES"
+              ],
+              "term": "input pull-downs R7107/R7111 (external source current; may return via the patch sleeve)",
+              "typical_A": 0.0001
+            },
+            {
+              "basis": "supply contract normal output 5 V / 10 kOhm; rail at -1 % isolation",
+              "conditional_A": 0.001135784,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-SUPPLY",
+                "R-EV-PASSIVES"
+              ],
+              "term": "output load via R7127 + R7128 (998 Ohm) into the contract 10 kOhm load",
+              "typical_A": 0.000454628
+            },
+            {
+              "basis": "counted in AGND only as a conservative bound; their DC loops close through the far amplifiers rails",
+              "conditional_A": 0.000404757,
+              "fault_increment_A": null,
+              "sources": [
+                "R-A01-SPEC",
+                "R-STAGE15-ELECTRICAL"
+              ],
+              "term": "J-SIG signal returns (IN_BUFFER, OFFSET_BUFFER, SUM_NEG)",
+              "typical_A": 0.0
+            },
+            {
+              "basis": "12 x 100 nF x 12 V / 10 ms soft_start_min_ms, no cancellation between rails",
+              "conditional_A": 0.0014399999999999999,
+              "fault_increment_A": null,
+              "sources": [
+                "R-SUPPLY",
+                "R-A01-SPEC"
+              ],
+              "term": "decoupling charge at the 10 ms soft start (12 x 100 nF, two analog rails)",
+              "typical_A": 0.0
+            },
+            {
+              "basis": "contract.load_envelope.fault_basis: 24.05 mA, 25 mA per analog rail increment",
+              "conditional_A": 0.0,
+              "fault_increment_A": 0.025,
+              "sources": [
+                "R-SUPPLY"
+              ],
+              "term": "output forced to the opposite 12 V across 998 Ohm (supply contract fault basis)",
+              "typical_A": 0.0
+            },
+            {
+              "basis": "unbounded by any element; between modules or instruments",
+              "conditional_A": null,
+              "status": "UNKNOWN",
+              "term": "external ground-loop current through the jack sleeves",
+              "typical_A": null
+            }
+          ],
+          "typical_A": 0.00415720944376411,
+          "unknown_terms": [
+            "external ground-loop current through the jack sleeves"
+          ],
+          "within_project_limit_conditional": true,
+          "worst_conditional_A": 0.037284839209227996
+        }
+      ]
+    },
+    "project_contact_limit_A": 0.5,
+    "stage33_superseded": {
+      "parameters": [
+        "j_pwr_conductor_current_max_A",
+        "j_pwr_agnd_return_bound_A"
+      ],
+      "reason": "Stage8 studies X1 (R-STAGE8-SCOPE: A01 implementation forbidden); its J_plus12/J_minus12 values are X1 jack-board currents, so Stage33 mislabelled them as A01-jack. The AGND bound summed rail-to-rail currents and put all return on J-PWR pin 4. Stage33 bytes stay unchanged as history.",
+      "stage33_values": {
+        "j_pwr_agnd_return_bound_A": 0.024635858983630604,
+        "j_pwr_conductor_current_max_A": {
+          "+12V": 0.012868015509400157,
+          "+5V": 9.900990099009902e-05,
+          "-12V": 0.011667852483239457
+        }
+      }
+    }
+  },
+  "status": "DESIGN_STUDY_ONLY",
+  "wires": {
+    "basis": {
+      "conductor_ampacity": "generic chart only (S-REMINGTON-AMPACITY, not a candidate maker); shown, not used as a check",
+      "contact_rating": "JST 1.0 A at AWG #26 only (S-JST-EGH); not transferred to AWG #28/#30",
+      "crimp_process": "JST applicator and crimp height for every wire: NOT RUN (process item)",
+      "derating": "project limit 0.5 A per contact (R-STAGE10-CONTACT-LIMIT), half the JST AWG #26 rating",
+      "service_flex": "no candidate maker states a repeated-flex radius; RG34 also slides the cable through its guides at each withdrawal",
+      "temperature_rise": "JST range -40 to +105 C includes temperature rise at the rated current (AWG #26)"
+    },
+    "closest": [
+      {
+        "conditional": [],
+        "mpn": "Alpha Wire 1852",
+        "unknown": [
+          "contact_rating",
+          "temperature_rise",
+          "derating_to_project_limit",
+          "service_flex"
+        ]
+      },
+      {
+        "conditional": [],
+        "mpn": "Alpha Wire 6710",
+        "unknown": [
+          "contact_rating",
+          "temperature_rise",
+          "derating_to_project_limit",
+          "service_flex"
+        ]
+      },
+      {
+        "conditional": [],
+        "mpn": "Alpha Wire 1851",
+        "unknown": [
+          "contact_rating",
+          "temperature_rise",
+          "derating_to_project_limit",
+          "service_flex"
+        ]
+      },
+      {
+        "conditional": [
+          "contact_rating",
+          "temperature_rise",
+          "derating_to_project_limit"
+        ],
+        "mpn": "Thermax M22759/18-26 (26-AMCFZ-1938)",
+        "unknown": [
+          "bend_installed_R12",
+          "service_flex"
+        ]
+      }
+    ],
+    "questions": [
+      "Amphenol CIT / Thermax: minimum bend radius (installation and repeated flexing) for M22759/18-26 and confirmation that the .030-.034 in OD range is current",
+      "JST: SSHL-002T-P0.2 current rating or temperature-rise curve with AWG #28 and #30, and any insulation restriction for mPPE, PVC or ETFE",
+      "Measurement: OD of an M22759/18-26 sample against the 0.76 mm floor (stated minimum 0.762 mm leaves 0.002 mm)",
+      "Measurement: unpowered repeated-withdrawal flex and abrasion test of the chosen wire at R12 through RG34 (M34-04)"
+    ],
+    "selection": null,
+    "selection_status": "NULL: no identified wire meets every check; the closest fail nothing but leave UNKNOWN items, and their current checks are CONDITIONAL (no established current maximum)",
+    "wires": [
+      {
+        "awg": 28,
+        "bend_rule_x_od": 10,
+        "conductor": "tinned copper 7/36",
+        "insulation": "PVC",
+        "mpn": "Alpha Wire 1852",
+        "od_margin_to_window_mm": [
+          0.0782,
+          0.0602
+        ],
+        "od_range_mm": [
+          0.8382,
+          0.9398
+        ],
+        "per_cable": {
+          "J-PWR": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "PASS",
+              "contact_rating": "UNKNOWN",
+              "derating_to_project_limit": "UNKNOWN",
+              "od_window_full_tolerance": "PASS",
+              "service_flex": "UNKNOWN",
+              "temperature": "PASS",
+              "temperature_rise": "UNKNOWN",
+              "tin_plated_stranded": "PASS",
+              "voltage": "PASS"
+            },
+            "conditional": [],
+            "conductor_ampacity_generic_A": 3.4,
+            "failed": [],
+            "status": "UNKNOWN",
+            "unknown": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit",
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.04401315238624706
+          },
+          "J-SIG": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "PASS",
+              "contact_rating": "UNKNOWN",
+              "derating_to_project_limit": "UNKNOWN",
+              "od_window_full_tolerance": "PASS",
+              "service_flex": "UNKNOWN",
+              "temperature": "PASS",
+              "temperature_rise": "UNKNOWN",
+              "tin_plated_stranded": "PASS",
+              "voltage": "PASS"
+            },
+            "conditional": [],
+            "conductor_ampacity_generic_A": 3.4,
+            "failed": [],
+            "status": "UNKNOWN",
+            "unknown": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit",
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.037284839209227996
+          }
+        },
+        "sources": [
+          "S-AW-1852"
+        ],
+        "stage": 33,
+        "temperature_max_C": 105,
+        "voltage_V": 600
+      },
+      {
+        "awg": 26,
+        "bend_rule_x_od": 10,
+        "conductor": "tinned copper 7/34",
+        "insulation": "PVC",
+        "mpn": "Alpha Wire 1853",
+        "od_margin_to_window_mm": [
+          0.1798,
+          -0.0414
+        ],
+        "od_range_mm": [
+          0.9398,
+          1.0414
+        ],
+        "per_cable": {
+          "J-PWR": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "PASS",
+              "contact_rating": "CONDITIONAL",
+              "derating_to_project_limit": "CONDITIONAL",
+              "od_window_full_tolerance": "FAIL",
+              "service_flex": "UNKNOWN",
+              "temperature": "PASS",
+              "temperature_rise": "CONDITIONAL",
+              "tin_plated_stranded": "PASS",
+              "voltage": "PASS"
+            },
+            "conditional": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit"
+            ],
+            "conductor_ampacity_generic_A": 4.6,
+            "failed": [
+              "od_window_full_tolerance"
+            ],
+            "status": "FAIL",
+            "unknown": [
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.04401315238624706
+          },
+          "J-SIG": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "FAIL",
+              "contact_rating": "CONDITIONAL",
+              "derating_to_project_limit": "CONDITIONAL",
+              "od_window_full_tolerance": "FAIL",
+              "service_flex": "UNKNOWN",
+              "temperature": "PASS",
+              "temperature_rise": "CONDITIONAL",
+              "tin_plated_stranded": "PASS",
+              "voltage": "PASS"
+            },
+            "conditional": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit"
+            ],
+            "conductor_ampacity_generic_A": 4.6,
+            "failed": [
+              "od_window_full_tolerance",
+              "bend_installed_R12"
+            ],
+            "status": "FAIL",
+            "unknown": [
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.037284839209227996
+          }
+        },
+        "sources": [
+          "S-AW-1853"
+        ],
+        "stage": 33,
+        "temperature_max_C": 105,
+        "voltage_V": 600
+      },
+      {
+        "awg": 26,
+        "bend_rule_x_od": 10,
+        "conductor": "silver-plated copper 7/34",
+        "insulation": "PTFE",
+        "mpn": "Alpha Wire 2843/7",
+        "od_margin_to_window_mm": [
+          -0.0234,
+          0.1618
+        ],
+        "od_range_mm": [
+          0.7366,
+          0.8382
+        ],
+        "per_cable": {
+          "J-PWR": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "PASS",
+              "contact_rating": "CONDITIONAL",
+              "derating_to_project_limit": "CONDITIONAL",
+              "od_window_full_tolerance": "FAIL",
+              "service_flex": "UNKNOWN",
+              "temperature": "PASS",
+              "temperature_rise": "CONDITIONAL",
+              "tin_plated_stranded": "FAIL",
+              "voltage": "PASS"
+            },
+            "conditional": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit"
+            ],
+            "conductor_ampacity_generic_A": 4.6,
+            "failed": [
+              "od_window_full_tolerance",
+              "tin_plated_stranded"
+            ],
+            "status": "FAIL",
+            "unknown": [
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.04401315238624706
+          },
+          "J-SIG": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "PASS",
+              "contact_rating": "CONDITIONAL",
+              "derating_to_project_limit": "CONDITIONAL",
+              "od_window_full_tolerance": "FAIL",
+              "service_flex": "UNKNOWN",
+              "temperature": "PASS",
+              "temperature_rise": "CONDITIONAL",
+              "tin_plated_stranded": "FAIL",
+              "voltage": "PASS"
+            },
+            "conditional": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit"
+            ],
+            "conductor_ampacity_generic_A": 4.6,
+            "failed": [
+              "od_window_full_tolerance",
+              "tin_plated_stranded"
+            ],
+            "status": "FAIL",
+            "unknown": [
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.037284839209227996
+          }
+        },
+        "sources": [
+          "S-AW-2843-7"
+        ],
+        "stage": 33,
+        "temperature_max_C": 200,
+        "voltage_V": 250
+      },
+      {
+        "awg": 26,
+        "bend_rule_x_od": 10,
+        "conductor": "tinned copper 7/34",
+        "insulation": "semi-rigid PVC",
+        "mpn": "Alpha Wire 422607",
+        "od_margin_to_window_mm": [
+          0.1798,
+          -0.0414
+        ],
+        "od_range_mm": [
+          0.9398,
+          1.0414
+        ],
+        "per_cable": {
+          "J-PWR": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "PASS",
+              "contact_rating": "CONDITIONAL",
+              "derating_to_project_limit": "CONDITIONAL",
+              "od_window_full_tolerance": "FAIL",
+              "service_flex": "UNKNOWN",
+              "temperature": "FAIL",
+              "temperature_rise": "CONDITIONAL",
+              "tin_plated_stranded": "PASS",
+              "voltage": "PASS"
+            },
+            "conditional": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit"
+            ],
+            "conductor_ampacity_generic_A": 4.6,
+            "failed": [
+              "od_window_full_tolerance",
+              "temperature"
+            ],
+            "status": "FAIL",
+            "unknown": [
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.04401315238624706
+          },
+          "J-SIG": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "FAIL",
+              "contact_rating": "CONDITIONAL",
+              "derating_to_project_limit": "CONDITIONAL",
+              "od_window_full_tolerance": "FAIL",
+              "service_flex": "UNKNOWN",
+              "temperature": "FAIL",
+              "temperature_rise": "CONDITIONAL",
+              "tin_plated_stranded": "PASS",
+              "voltage": "PASS"
+            },
+            "conditional": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit"
+            ],
+            "conductor_ampacity_generic_A": 4.6,
+            "failed": [
+              "od_window_full_tolerance",
+              "temperature",
+              "bend_installed_R12"
+            ],
+            "status": "FAIL",
+            "unknown": [
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.037284839209227996
+          }
+        },
+        "sources": [
+          "S-AW-422607"
+        ],
+        "stage": 33,
+        "temperature_max_C": 80,
+        "voltage_V": 300
+      },
+      {
+        "awg": 26,
+        "bend_rule_x_od": 5,
+        "conductor": "tinned copper 7/34",
+        "insulation": "PVC",
+        "mpn": "Alpha Wire 782607",
+        "od_margin_to_window_mm": [
+          1.2466,
+          -1.2098
+        ],
+        "od_range_mm": [
+          2.0066,
+          2.2098
+        ],
+        "per_cable": {
+          "J-PWR": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "FAIL",
+              "contact_rating": "CONDITIONAL",
+              "derating_to_project_limit": "CONDITIONAL",
+              "od_window_full_tolerance": "FAIL",
+              "service_flex": "UNKNOWN",
+              "temperature": "PASS",
+              "temperature_rise": "CONDITIONAL",
+              "tin_plated_stranded": "PASS",
+              "voltage": "PASS"
+            },
+            "conditional": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit"
+            ],
+            "conductor_ampacity_generic_A": 4.6,
+            "failed": [
+              "od_window_full_tolerance",
+              "bend_installed_R12"
+            ],
+            "status": "FAIL",
+            "unknown": [
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.04401315238624706
+          },
+          "J-SIG": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "FAIL",
+              "contact_rating": "CONDITIONAL",
+              "derating_to_project_limit": "CONDITIONAL",
+              "od_window_full_tolerance": "FAIL",
+              "service_flex": "UNKNOWN",
+              "temperature": "PASS",
+              "temperature_rise": "CONDITIONAL",
+              "tin_plated_stranded": "PASS",
+              "voltage": "PASS"
+            },
+            "conditional": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit"
+            ],
+            "conductor_ampacity_generic_A": 4.6,
+            "failed": [
+              "od_window_full_tolerance",
+              "bend_installed_R12"
+            ],
+            "status": "FAIL",
+            "unknown": [
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.037284839209227996
+          }
+        },
+        "sources": [
+          "S-AW-782607"
+        ],
+        "stage": 33,
+        "temperature_max_C": 105,
+        "voltage_V": 600
+      },
+      {
+        "awg": 28,
+        "bend_rule_x_od": 5,
+        "conductor": "tinned copper 7/36",
+        "insulation": "mPPE",
+        "mpn": "Alpha Wire 6710",
+        "od_margin_to_window_mm": [
+          0.0528,
+          0.0856
+        ],
+        "od_range_mm": [
+          0.8128,
+          0.9144
+        ],
+        "per_cable": {
+          "J-PWR": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "PASS",
+              "contact_rating": "UNKNOWN",
+              "derating_to_project_limit": "UNKNOWN",
+              "od_window_full_tolerance": "PASS",
+              "service_flex": "UNKNOWN",
+              "temperature": "PASS",
+              "temperature_rise": "UNKNOWN",
+              "tin_plated_stranded": "PASS",
+              "voltage": "PASS"
+            },
+            "conditional": [],
+            "conductor_ampacity_generic_A": 3.4,
+            "failed": [],
+            "status": "UNKNOWN",
+            "unknown": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit",
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.04401315238624706
+          },
+          "J-SIG": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "PASS",
+              "contact_rating": "UNKNOWN",
+              "derating_to_project_limit": "UNKNOWN",
+              "od_window_full_tolerance": "PASS",
+              "service_flex": "UNKNOWN",
+              "temperature": "PASS",
+              "temperature_rise": "UNKNOWN",
+              "tin_plated_stranded": "PASS",
+              "voltage": "PASS"
+            },
+            "conditional": [],
+            "conductor_ampacity_generic_A": 3.4,
+            "failed": [],
+            "status": "UNKNOWN",
+            "unknown": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit",
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.037284839209227996
+          }
+        },
+        "sources": [
+          "S-AW-6710"
+        ],
+        "stage": 34,
+        "temperature_max_C": 105,
+        "voltage_V": 600
+      },
+      {
+        "awg": 30,
+        "bend_rule_x_od": 10,
+        "conductor": "tinned copper 7/38",
+        "insulation": "PVC",
+        "mpn": "Alpha Wire 1851",
+        "od_margin_to_window_mm": [
+          0.002,
+          0.1364
+        ],
+        "od_range_mm": [
+          0.762,
+          0.8636
+        ],
+        "per_cable": {
+          "J-PWR": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "PASS",
+              "contact_rating": "UNKNOWN",
+              "derating_to_project_limit": "UNKNOWN",
+              "od_window_full_tolerance": "PASS",
+              "service_flex": "UNKNOWN",
+              "temperature": "PASS",
+              "temperature_rise": "UNKNOWN",
+              "tin_plated_stranded": "PASS",
+              "voltage": "PASS"
+            },
+            "conditional": [],
+            "conductor_ampacity_generic_A": 2.5,
+            "failed": [],
+            "status": "UNKNOWN",
+            "unknown": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit",
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.04401315238624706
+          },
+          "J-SIG": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "PASS",
+              "contact_rating": "UNKNOWN",
+              "derating_to_project_limit": "UNKNOWN",
+              "od_window_full_tolerance": "PASS",
+              "service_flex": "UNKNOWN",
+              "temperature": "PASS",
+              "temperature_rise": "UNKNOWN",
+              "tin_plated_stranded": "PASS",
+              "voltage": "PASS"
+            },
+            "conditional": [],
+            "conductor_ampacity_generic_A": 2.5,
+            "failed": [],
+            "status": "UNKNOWN",
+            "unknown": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit",
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.037284839209227996
+          }
+        },
+        "sources": [
+          "S-AW-1851"
+        ],
+        "stage": 34,
+        "temperature_max_C": 105,
+        "voltage_V": 600
+      },
+      {
+        "awg": 26,
+        "bend_rule_x_od": 5,
+        "conductor": "tinned copper 7/34",
+        "insulation": "mPPE",
+        "mpn": "Alpha Wire 6711",
+        "od_margin_to_window_mm": [
+          0.1544,
+          -0.016
+        ],
+        "od_range_mm": [
+          0.9144,
+          1.016
+        ],
+        "per_cable": {
+          "J-PWR": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "PASS",
+              "contact_rating": "CONDITIONAL",
+              "derating_to_project_limit": "CONDITIONAL",
+              "od_window_full_tolerance": "FAIL",
+              "service_flex": "UNKNOWN",
+              "temperature": "PASS",
+              "temperature_rise": "CONDITIONAL",
+              "tin_plated_stranded": "PASS",
+              "voltage": "PASS"
+            },
+            "conditional": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit"
+            ],
+            "conductor_ampacity_generic_A": 4.6,
+            "failed": [
+              "od_window_full_tolerance"
+            ],
+            "status": "FAIL",
+            "unknown": [
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.04401315238624706
+          },
+          "J-SIG": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "PASS",
+              "contact_rating": "CONDITIONAL",
+              "derating_to_project_limit": "CONDITIONAL",
+              "od_window_full_tolerance": "FAIL",
+              "service_flex": "UNKNOWN",
+              "temperature": "PASS",
+              "temperature_rise": "CONDITIONAL",
+              "tin_plated_stranded": "PASS",
+              "voltage": "PASS"
+            },
+            "conditional": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit"
+            ],
+            "conductor_ampacity_generic_A": 4.6,
+            "failed": [
+              "od_window_full_tolerance"
+            ],
+            "status": "FAIL",
+            "unknown": [
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.037284839209227996
+          }
+        },
+        "sources": [
+          "S-AW-6711"
+        ],
+        "stage": 34,
+        "temperature_max_C": 105,
+        "voltage_V": 600
+      },
+      {
+        "awg": 26,
+        "bend_rule_x_od": null,
+        "conductor": "tin-plated copper 19/38",
+        "insulation": "ETFE",
+        "mpn": "Thermax M22759/18-26 (26-AMCFZ-1938)",
+        "od_margin_to_window_mm": [
+          0.002,
+          0.1364
+        ],
+        "od_range_mm": [
+          0.762,
+          0.8636
+        ],
+        "per_cable": {
+          "J-PWR": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "UNKNOWN",
+              "contact_rating": "CONDITIONAL",
+              "derating_to_project_limit": "CONDITIONAL",
+              "od_window_full_tolerance": "PASS",
+              "service_flex": "UNKNOWN",
+              "temperature": "PASS",
+              "temperature_rise": "CONDITIONAL",
+              "tin_plated_stranded": "PASS",
+              "voltage": "PASS"
+            },
+            "conditional": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit"
+            ],
+            "conductor_ampacity_generic_A": 4.6,
+            "failed": [],
+            "status": "UNKNOWN",
+            "unknown": [
+              "bend_installed_R12",
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.04401315238624706
+          },
+          "J-SIG": {
+            "checks": {
+              "awg_in_jst_range": "PASS",
+              "bend_installed_R12": "UNKNOWN",
+              "contact_rating": "CONDITIONAL",
+              "derating_to_project_limit": "CONDITIONAL",
+              "od_window_full_tolerance": "PASS",
+              "service_flex": "UNKNOWN",
+              "temperature": "PASS",
+              "temperature_rise": "CONDITIONAL",
+              "tin_plated_stranded": "PASS",
+              "voltage": "PASS"
+            },
+            "conditional": [
+              "contact_rating",
+              "temperature_rise",
+              "derating_to_project_limit"
+            ],
+            "conductor_ampacity_generic_A": 4.6,
+            "failed": [],
+            "status": "UNKNOWN",
+            "unknown": [
+              "bend_installed_R12",
+              "service_flex"
+            ],
+            "worst_conditional_A": 0.037284839209227996
+          }
+        },
+        "sources": [
+          "S-THERMAX-M22759"
+        ],
+        "stage": 34,
+        "temperature_max_C": 150,
+        "voltage_V": 600
+      }
+    ]
+  }
+}

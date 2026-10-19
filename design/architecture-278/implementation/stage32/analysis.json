@@ -1,0 +1,2826 @@
+{
+  "candidates": {
+    "B31": {
+      "bend": {
+        "any_identified_wire_met": false,
+        "hook_lower_bound": [
+          {
+            "installed_envelope_bottom_z_max_mm": 32.6,
+            "installed_lowest_centreline_z_max_mm": 34.1,
+            "link": "J-SIG",
+            "radius_mm": 5.0,
+            "release_15mm_envelope_bottom_z_max_mm": 17.6,
+            "route_admits": true
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 32.892893,
+            "installed_lowest_centreline_z_max_mm": 34.1,
+            "link": "J-PWR",
+            "radius_mm": 5.0,
+            "release_15mm_envelope_bottom_z_max_mm": 17.892893,
+            "route_admits": true
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 30.1,
+            "installed_lowest_centreline_z_max_mm": 31.6,
+            "link": "J-SIG",
+            "radius_mm": 7.5,
+            "release_15mm_envelope_bottom_z_max_mm": 15.1,
+            "route_admits": false
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 30.392893,
+            "installed_lowest_centreline_z_max_mm": 31.6,
+            "link": "J-PWR",
+            "radius_mm": 7.5,
+            "release_15mm_envelope_bottom_z_max_mm": 15.392893,
+            "route_admits": false
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 28.7,
+            "installed_lowest_centreline_z_max_mm": 30.2,
+            "link": "J-SIG",
+            "radius_mm": 8.9,
+            "release_15mm_envelope_bottom_z_max_mm": 13.7,
+            "route_admits": false
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 28.992893,
+            "installed_lowest_centreline_z_max_mm": 30.2,
+            "link": "J-PWR",
+            "radius_mm": 8.9,
+            "release_15mm_envelope_bottom_z_max_mm": 13.992893,
+            "route_admits": false
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 27.6,
+            "installed_lowest_centreline_z_max_mm": 29.1,
+            "link": "J-SIG",
+            "radius_mm": 10.0,
+            "release_15mm_envelope_bottom_z_max_mm": 12.6,
+            "route_admits": false
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 27.892893,
+            "installed_lowest_centreline_z_max_mm": 29.1,
+            "link": "J-PWR",
+            "radius_mm": 10.0,
+            "release_15mm_envelope_bottom_z_max_mm": 12.892893,
+            "route_admits": false
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 26.6,
+            "installed_lowest_centreline_z_max_mm": 28.1,
+            "link": "J-SIG",
+            "radius_mm": 11.0,
+            "release_15mm_envelope_bottom_z_max_mm": 11.6,
+            "route_admits": false
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 26.892893,
+            "installed_lowest_centreline_z_max_mm": 28.1,
+            "link": "J-PWR",
+            "radius_mm": 11.0,
+            "release_15mm_envelope_bottom_z_max_mm": 11.892893,
+            "route_admits": false
+          }
+        ],
+        "lower_bound_rule": "a route of bend radius >= R that leaves the middle housing along -z after the straight lead must fall at least R before it can turn back up (z_low <= exit z - lead - R)",
+        "maker_rule": "10 x wire OD (S-AW-1852/1853/2843-7); applied to the inner conductor of the round bundle",
+        "max_uniform_radius_mm": {
+          "J-PWR": 5.0,
+          "J-SIG": 5.0
+        },
+        "required_centreline_radius_at_jst_max_od_mm": {
+          "J-PWR": 10.707107,
+          "J-SIG": 11.0
+        },
+        "route_radius_mm": 5.0,
+        "wire_candidates": [
+          {
+            "awg": 28,
+            "inside_jst_od_window": true,
+            "meets_gh_ratings": true,
+            "mpn": "Alpha Wire 1852",
+            "od_range_mm": [
+              0.8382,
+              0.9398
+            ],
+            "required_centreline_radius_mm": {
+              "J-PWR": 10.062539,
+              "J-SIG": 10.3378
+            },
+            "route_meets_maker_rule": false,
+            "route_radius_mm": 5.0,
+            "sources": [
+              "S-AW-1852"
+            ],
+            "temperature_max_C": 105,
+            "voltage_V": 600
+          },
+          {
+            "awg": 26,
+            "inside_jst_od_window": false,
+            "meets_gh_ratings": true,
+            "mpn": "Alpha Wire 1853",
+            "od_range_mm": [
+              0.9398,
+              1.0414
+            ],
+            "required_centreline_radius_mm": {
+              "J-PWR": 11.150381,
+              "J-SIG": 11.4554
+            },
+            "route_meets_maker_rule": false,
+            "route_radius_mm": 5.0,
+            "sources": [
+              "S-AW-1853"
+            ],
+            "temperature_max_C": 105,
+            "voltage_V": 600
+          },
+          {
+            "awg": 26,
+            "inside_jst_od_window": false,
+            "meets_gh_ratings": true,
+            "mpn": "Alpha Wire 2843/7",
+            "od_range_mm": [
+              0.7366,
+              0.8382
+            ],
+            "required_centreline_radius_mm": {
+              "J-PWR": 8.974697,
+              "J-SIG": 9.2202
+            },
+            "route_meets_maker_rule": false,
+            "route_radius_mm": 5.0,
+            "sources": [
+              "S-AW-2843-7"
+            ],
+            "temperature_max_C": 200,
+            "voltage_V": 250
+          }
+        ]
+      },
+      "bow_sensitivity": [
+        {
+          "bow_mm": null,
+          "case": "edge-M1-M3",
+          "meets_K4": false,
+          "note": "half sine along the M1-M3 mount line",
+          "tightest": {
+            "link": "J-PWR",
+            "obstacle": "board:A01-middle:1",
+            "robust_spare_mm": -0.686016
+          }
+        },
+        {
+          "bow_mm": null,
+          "case": "length-142-292",
+          "meets_K4": false,
+          "note": "base: half sine over the board length",
+          "tightest": {
+            "link": "J-PWR",
+            "obstacle": "board:A01-middle:1",
+            "robust_spare_mm": -0.758726
+          }
+        },
+        {
+          "bow_mm": 1.282127,
+          "case": "uniform-diagonal",
+          "meets_K4": false,
+          "note": "0.75 % of the A01-middle outline diagonal applied everywhere (interior bow of a four-corner-supported board)",
+          "tightest": {
+            "link": "J-PWR",
+            "obstacle": "board:A01-middle:1",
+            "robust_spare_mm": -1.189234
+          }
+        }
+      ],
+      "cable_to_cable": {
+        "gap_mm": 5.69356,
+        "robust_spare_mm": 4.99356,
+        "tolerance_mm": 0.2
+      },
+      "criteria": {
+        "S1_static_clear": true,
+        "S2_robust_K4": false,
+        "S3_retention_modelled": false,
+        "S4_sweeps_clear": false,
+        "S5_core_clear": true,
+        "S6_strength_planning_load": true,
+        "S7_release_15mm_known_clear": true,
+        "S8_foreign_allowance": true,
+        "S9_bend_maker_rule": false
+      },
+      "failed": [
+        "S2_robust_K4",
+        "S3_retention_modelled",
+        "S4_sweeps_clear",
+        "S9_bend_maker_rule"
+      ],
+      "guide_foreign_bounds": [],
+      "open_conditions": {
+        "bend_radius": "maker rule not met by the 5 mm route for any identified wire",
+        "finger_operation": "NOT_DETERMINED",
+        "foreign_volume": "UNKNOWN (no board outline)",
+        "latch_side": "UNCONFIRMED",
+        "release_dip": {
+          "J-PWR": {
+            "NB-278": 10,
+            "NB-CAN": 15
+          },
+          "J-SIG": {
+            "NB-278": 10,
+            "NB-CAN": 15
+          }
+        }
+      },
+      "robust": [
+        {
+          "at_mm": [
+            232.195176,
+            183.0,
+            46.3
+          ],
+          "link": "J-PWR",
+          "meets_K4": false,
+          "obstacle": "board:A01-middle:1",
+          "robust_spare_mm": -0.758726,
+          "robust_spare_rss_mm": -0.570389,
+          "sampled_clearance_mm": 0.792893,
+          "spare_after_margin_mm": 0.292893,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_bow": 0.851619,
+              "spacer_length_mm": 0.1
+            },
+            "rss_mm": 0.863282,
+            "worst_case_mm": 1.051619
+          }
+        },
+        {
+          "at_mm": [
+            273.378505,
+            181.086454,
+            46.3
+          ],
+          "link": "J-PWR",
+          "meets_K4": false,
+          "obstacle": "board:A01-middle:2",
+          "robust_spare_mm": -0.726811,
+          "robust_spare_rss_mm": -0.538895,
+          "sampled_clearance_mm": 0.794672,
+          "spare_after_margin_mm": 0.294672,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_bow": 0.821483,
+              "spacer_length_mm": 0.1
+            },
+            "rss_mm": 0.833567,
+            "worst_case_mm": 1.021483
+          }
+        },
+        {
+          "at_mm": [
+            242.320914,
+            171.5,
+            46.0
+          ],
+          "link": "J-SIG",
+          "meets_K4": false,
+          "obstacle": "board:A01-middle:2",
+          "robust_spare_mm": -0.551691,
+          "robust_spare_rss_mm": -0.366859,
+          "sampled_clearance_mm": 0.8,
+          "spare_after_margin_mm": 0.3,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_bow": 0.651691,
+              "spacer_length_mm": 0.1
+            },
+            "rss_mm": 0.666859,
+            "worst_case_mm": 0.851691
+          }
+        },
+        {
+          "at_mm": [
+            237.876133,
+            168.986758,
+            46.0
+          ],
+          "link": "J-SIG",
+          "meets_K4": false,
+          "obstacle": "board:A01-middle:0",
+          "robust_spare_mm": -0.502542,
+          "robust_spare_rss_mm": -0.318916,
+          "sampled_clearance_mm": 0.8,
+          "spare_after_margin_mm": 0.3,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_bow": 0.602542,
+              "spacer_length_mm": 0.1
+            },
+            "rss_mm": 0.618916,
+            "worst_case_mm": 0.802542
+          }
+        },
+        {
+          "at_mm": [
+            234.187136,
+            183.0,
+            46.3
+          ],
+          "link": "J-PWR",
+          "meets_K4": false,
+          "obstacle": "tool:A01-jack:M4",
+          "robust_spare_mm": -0.082107,
+          "robust_spare_rss_mm": 0.032815,
+          "sampled_clearance_mm": 0.692893,
+          "spare_after_margin_mm": 0.192893,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075
+            },
+            "rss_mm": 0.160078,
+            "worst_case_mm": 0.275
+          }
+        },
+        {
+          "at_mm": [
+            242.123427,
+            171.496098,
+            46.0
+          ],
+          "link": "J-SIG",
+          "meets_K4": false,
+          "obstacle": "rail:middle:0:N1:floor",
+          "robust_spare_mm": 0.1,
+          "robust_spare_rss_mm": 0.1,
+          "sampled_clearance_mm": 0.7,
+          "spare_after_margin_mm": 0.2,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1
+            },
+            "rss_mm": 0.1,
+            "worst_case_mm": 0.1
+          }
+        },
+        {
+          "at_mm": [
+            242.320914,
+            171.5,
+            46.0
+          ],
+          "link": "J-SIG",
+          "meets_K4": false,
+          "obstacle": "rail:middle:0:y173.8-180.9",
+          "robust_spare_mm": 0.1,
+          "robust_spare_rss_mm": 0.1,
+          "sampled_clearance_mm": 0.7,
+          "spare_after_margin_mm": 0.2,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1
+            },
+            "rss_mm": 0.1,
+            "worst_case_mm": 0.1
+          }
+        },
+        {
+          "at_mm": [
+            242.154977,
+            183.0,
+            46.3
+          ],
+          "link": "J-PWR",
+          "meets_K4": true,
+          "obstacle": "rail:middle:0:N2:floor",
+          "robust_spare_mm": 0.192893,
+          "robust_spare_rss_mm": 0.192893,
+          "sampled_clearance_mm": 0.792893,
+          "spare_after_margin_mm": 0.292893,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1
+            },
+            "rss_mm": 0.1,
+            "worst_case_mm": 0.1
+          }
+        },
+        {
+          "at_mm": [
+            242.154977,
+            183.0,
+            46.3
+          ],
+          "link": "J-PWR",
+          "meets_K4": true,
+          "obstacle": "rail:middle:0:y173.8-180.9",
+          "robust_spare_mm": 0.214213,
+          "robust_spare_rss_mm": 0.214213,
+          "sampled_clearance_mm": 0.814213,
+          "spare_after_margin_mm": 0.314213,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1
+            },
+            "rss_mm": 0.1,
+            "worst_case_mm": 0.1
+          }
+        },
+        {
+          "at_mm": [
+            242.154977,
+            183.0,
+            46.3
+          ],
+          "link": "J-PWR",
+          "meets_K4": true,
+          "obstacle": "rail:middle:0:y185.1-274",
+          "robust_spare_mm": 0.214213,
+          "robust_spare_rss_mm": 0.214213,
+          "sampled_clearance_mm": 0.814213,
+          "spare_after_margin_mm": 0.314213,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1
+            },
+            "rss_mm": 0.1,
+            "worst_case_mm": 0.1
+          }
+        },
+        {
+          "at_mm": [
+            272.845786,
+            181.665174,
+            46.3
+          ],
+          "link": "J-PWR",
+          "meets_K4": true,
+          "obstacle": "release:A01:J-SIG:middle",
+          "robust_spare_mm": 0.43635,
+          "robust_spare_rss_mm": 0.551272,
+          "sampled_clearance_mm": 1.21135,
+          "spare_after_margin_mm": 0.71135,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075
+            },
+            "rss_mm": 0.160078,
+            "worst_case_mm": 0.275
+          }
+        },
+        {
+          "at_mm": [
+            241.534043,
+            171.437695,
+            46.0
+          ],
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "rail:middle:0:y142-168.6",
+          "robust_spare_mm": 0.675696,
+          "robust_spare_rss_mm": 0.675696,
+          "sampled_clearance_mm": 1.275696,
+          "spare_after_margin_mm": 0.775696,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1
+            },
+            "rss_mm": 0.1,
+            "worst_case_mm": 0.1
+          }
+        },
+        {
+          "at_mm": [
+            240.955701,
+            171.31001,
+            46.0
+          ],
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "tool:A01-jack:M4",
+          "robust_spare_mm": 1.436744,
+          "robust_spare_rss_mm": 1.551666,
+          "sampled_clearance_mm": 2.211744,
+          "spare_after_margin_mm": 1.711744,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075
+            },
+            "rss_mm": 0.160078,
+            "worst_case_mm": 0.275
+          }
+        },
+        {
+          "at_mm": [
+            236.123867,
+            166.913242,
+            46.0
+          ],
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "release:A01:J-PWR:local",
+          "robust_spare_mm": 2.340395,
+          "robust_spare_rss_mm": 2.455317,
+          "sampled_clearance_mm": 3.115395,
+          "spare_after_margin_mm": 2.615395,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075
+            },
+            "rss_mm": 0.160078,
+            "worst_case_mm": 0.275
+          }
+        },
+        {
+          "at_mm": [
+            237.175076,
+            183.0,
+            46.3
+          ],
+          "link": "J-PWR",
+          "meets_K4": true,
+          "obstacle": "rail:rear:0",
+          "robust_spare_mm": 2.792893,
+          "robust_spare_rss_mm": 2.792893,
+          "sampled_clearance_mm": 3.392893,
+          "spare_after_margin_mm": 2.892893,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1
+            },
+            "rss_mm": 0.1,
+            "worst_case_mm": 0.1
+          }
+        },
+        {
+          "at_mm": [
+            238.7686,
+            170.018674,
+            46.0
+          ],
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "crossmember:rear:0",
+          "robust_spare_mm": 2.8,
+          "robust_spare_rss_mm": 2.8,
+          "sampled_clearance_mm": 3.4,
+          "spare_after_margin_mm": 2.9,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1
+            },
+            "rss_mm": 0.1,
+            "worst_case_mm": 0.1
+          }
+        }
+      ],
+      "static": {
+        "J-PWR": {
+          "bends": 7,
+          "foreign_depth_bounds": {
+            "SW1401": {
+              "block": "E2",
+              "max_foreign_top_z_mm": 44.492893,
+              "max_rear_side_height_mm": 22.892893,
+              "pcb_rear_z_mm": 21.6
+            },
+            "SW1501": {
+              "block": "E3",
+              "max_foreign_top_z_mm": 44.492893,
+              "max_rear_side_height_mm": 22.892893,
+              "pcb_rear_z_mm": 21.6
+            },
+            "SW1601": {
+              "block": "E4",
+              "max_foreign_top_z_mm": 44.492893,
+              "max_rear_side_height_mm": 22.892893,
+              "pcb_rear_z_mm": 21.6
+            }
+          },
+          "installed_length_mm": 149.0,
+          "installed_state": "at design length, slack stored in the local loop (top z 71.211922)",
+          "min_surface_clearance_mm": 0.692893,
+          "nearest": [
+            [
+              "tool:A01-jack:M4",
+              0.692893
+            ],
+            [
+              "board:A01-middle:1",
+              0.792893
+            ],
+            [
+              "board:A01-middle:2",
+              0.792893
+            ],
+            [
+              "rail:middle:0:N2:floor",
+              0.792893
+            ],
+            [
+              "rail:middle:0:y173.8-180.9",
+              0.814213
+            ],
+            [
+              "rail:middle:0:y185.1-274",
+              0.814213
+            ]
+          ]
+        },
+        "J-SIG": {
+          "bends": 8,
+          "foreign_depth_bounds": {},
+          "installed_length_mm": 138.0,
+          "installed_state": "at design length, slack stored in the local loop (top z 71.044885)",
+          "min_surface_clearance_mm": 0.7,
+          "nearest": [
+            [
+              "rail:middle:0:N1:floor",
+              0.7
+            ],
+            [
+              "rail:middle:0:y173.8-180.9",
+              0.7
+            ],
+            [
+              "board:A01-middle:0",
+              0.8
+            ],
+            [
+              "board:A01-middle:2",
+              0.8
+            ],
+            [
+              "rail:middle:0:y142-168.6",
+              1.275696
+            ],
+            [
+              "tool:A01-jack:M4",
+              2.211744
+            ]
+          ]
+        }
+      },
+      "status": "NOT_ROBUST_UNDER_STAGE32_CHECKS",
+      "strength": {
+        "Kt": "Inglis upper estimate 1 + 2 sqrt(depth / corner radius); conservative for a flat-bottomed groove, not a chart or FEA value",
+        "full_section": {
+          "I_lateral_mm4": 216.0,
+          "I_vertical_mm4": 864.0,
+          "area_mm2": 72.0,
+          "c_lateral_mm": 3.0,
+          "c_vertical_mm": 6.0,
+          "centroid_from_bottom_mm": 6.0
+        },
+        "material": {
+          "E_MPa": 70000,
+          "manufacture": "machined; notch internal corners end-milled",
+          "name": "6061-T6, machined from extrusion",
+          "proof_min_MPa": 240,
+          "safety_factor": 1.5
+        },
+        "meets_at_planning_load": true,
+        "model": "cantilever rail:middle:0 fixed at the top crossmember (y 142, joint stiffness not evaluated), free end y 274, tip load P; moment at the notch edge nearest the root",
+        "not_covered": [
+          "joint to the crossmember",
+          "fatigue and vibration",
+          "assembly or service impact loads (unknown)",
+          "DIN insertion load path (enters the right rail and tabs, not beyond the notches)",
+          "certified machined-part material"
+        ],
+        "notches": [
+          {
+            "Kt_inglis_at_design_radius": 4.391165,
+            "allowable_tip_load_N": {
+              "lateral": 20.119751,
+              "vertical": 32.526931
+            },
+            "depth_mm": 2.3,
+            "grid": [
+              {
+                "Kt_inglis": 5.289522,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "vertical",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 5.60102,
+                "peak_MPa": 29.626721
+              },
+              {
+                "Kt_inglis": 5.289522,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "lateral",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 9.054983,
+                "peak_MPa": 47.896532
+              },
+              {
+                "Kt_inglis": 5.289522,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "vertical",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 11.202041,
+                "peak_MPa": 59.253442
+              },
+              {
+                "Kt_inglis": 5.289522,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "lateral",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 18.109966,
+                "peak_MPa": 95.793064
+              },
+              {
+                "Kt_inglis": 5.289522,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "vertical",
+                "load_N": 20,
+                "meets": true,
+                "nominal_MPa": 22.404081,
+                "peak_MPa": 118.506883
+              },
+              {
+                "Kt_inglis": 5.289522,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "lateral",
+                "load_N": 20,
+                "meets": false,
+                "nominal_MPa": 36.219931,
+                "peak_MPa": 191.586128
+              },
+              {
+                "Kt_inglis": 5.289522,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "vertical",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 56.010203,
+                "peak_MPa": 296.267208
+              },
+              {
+                "Kt_inglis": 5.289522,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "lateral",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 90.549828,
+                "peak_MPa": 478.965319
+              },
+              {
+                "Kt_inglis": 4.391165,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "vertical",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 5.60102,
+                "peak_MPa": 24.595004
+              },
+              {
+                "Kt_inglis": 4.391165,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "lateral",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 9.054983,
+                "peak_MPa": 39.761924
+              },
+              {
+                "Kt_inglis": 4.391165,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "vertical",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 11.202041,
+                "peak_MPa": 49.190009
+              },
+              {
+                "Kt_inglis": 4.391165,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "lateral",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 18.109966,
+                "peak_MPa": 79.523847
+              },
+              {
+                "Kt_inglis": 4.391165,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "vertical",
+                "load_N": 20,
+                "meets": true,
+                "nominal_MPa": 22.404081,
+                "peak_MPa": 98.380017
+              },
+              {
+                "Kt_inglis": 4.391165,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "lateral",
+                "load_N": 20,
+                "meets": true,
+                "nominal_MPa": 36.219931,
+                "peak_MPa": 159.047694
+              },
+              {
+                "Kt_inglis": 4.391165,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "vertical",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 56.010203,
+                "peak_MPa": 245.950043
+              },
+              {
+                "Kt_inglis": 4.391165,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "lateral",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 90.549828,
+                "peak_MPa": 397.619235
+              },
+              {
+                "Kt_inglis": 4.03315,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "vertical",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 5.60102,
+                "peak_MPa": 22.589756
+              },
+              {
+                "Kt_inglis": 4.03315,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "lateral",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 9.054983,
+                "peak_MPa": 36.520106
+              },
+              {
+                "Kt_inglis": 4.03315,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "vertical",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 11.202041,
+                "peak_MPa": 45.179512
+              },
+              {
+                "Kt_inglis": 4.03315,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "lateral",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 18.109966,
+                "peak_MPa": 73.040211
+              },
+              {
+                "Kt_inglis": 4.03315,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "vertical",
+                "load_N": 20,
+                "meets": true,
+                "nominal_MPa": 22.404081,
+                "peak_MPa": 90.359024
+              },
+              {
+                "Kt_inglis": 4.03315,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "lateral",
+                "load_N": 20,
+                "meets": true,
+                "nominal_MPa": 36.219931,
+                "peak_MPa": 146.080422
+              },
+              {
+                "Kt_inglis": 4.03315,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "vertical",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 56.010203,
+                "peak_MPa": 225.89756
+              },
+              {
+                "Kt_inglis": 4.03315,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "lateral",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 90.549828,
+                "peak_MPa": 365.201056
+              }
+            ],
+            "id": "N1",
+            "lever_mm": 105.4,
+            "net_section": {
+              "I_lateral_mm4": 174.6,
+              "I_vertical_mm4": 456.3365,
+              "area_mm2": 58.2,
+              "c_lateral_mm": 3.0,
+              "c_vertical_mm": 4.85,
+              "centroid_from_bottom_mm": 4.85
+            },
+            "remaining_mm": 9.7,
+            "y_mm": [
+              168.6,
+              173.8
+            ]
+          },
+          {
+            "Kt_inglis_at_design_radius": 4.0,
+            "allowable_tip_load_N": {
+              "lateral": 26.294307,
+              "vertical": 44.700322
+            },
+            "depth_mm": 1.8,
+            "grid": [
+              {
+                "Kt_inglis": 4.794733,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "vertical",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 4.474241,
+                "peak_MPa": 21.45279
+              },
+              {
+                "Kt_inglis": 4.794733,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "lateral",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 7.606209,
+                "peak_MPa": 36.469743
+              },
+              {
+                "Kt_inglis": 4.794733,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "vertical",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 8.948481,
+                "peak_MPa": 42.905581
+              },
+              {
+                "Kt_inglis": 4.794733,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "lateral",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 15.212418,
+                "peak_MPa": 72.939487
+              },
+              {
+                "Kt_inglis": 4.794733,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "vertical",
+                "load_N": 20,
+                "meets": true,
+                "nominal_MPa": 17.896963,
+                "peak_MPa": 85.811161
+              },
+              {
+                "Kt_inglis": 4.794733,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "lateral",
+                "load_N": 20,
+                "meets": true,
+                "nominal_MPa": 30.424837,
+                "peak_MPa": 145.878974
+              },
+              {
+                "Kt_inglis": 4.794733,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "vertical",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 44.742407,
+                "peak_MPa": 214.527903
+              },
+              {
+                "Kt_inglis": 4.794733,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "lateral",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 76.062092,
+                "peak_MPa": 364.697435
+              },
+              {
+                "Kt_inglis": 4.0,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "vertical",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 4.474241,
+                "peak_MPa": 17.896963
+              },
+              {
+                "Kt_inglis": 4.0,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "lateral",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 7.606209,
+                "peak_MPa": 30.424837
+              },
+              {
+                "Kt_inglis": 4.0,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "vertical",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 8.948481,
+                "peak_MPa": 35.793925
+              },
+              {
+                "Kt_inglis": 4.0,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "lateral",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 15.212418,
+                "peak_MPa": 60.849673
+              },
+              {
+                "Kt_inglis": 4.0,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "vertical",
+                "load_N": 20,
+                "meets": true,
+                "nominal_MPa": 17.896963,
+                "peak_MPa": 71.587851
+              },
+              {
+                "Kt_inglis": 4.0,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "lateral",
+                "load_N": 20,
+                "meets": true,
+                "nominal_MPa": 30.424837,
+                "peak_MPa": 121.699346
+              },
+              {
+                "Kt_inglis": 4.0,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "vertical",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 44.742407,
+                "peak_MPa": 178.969627
+              },
+              {
+                "Kt_inglis": 4.0,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "lateral",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 76.062092,
+                "peak_MPa": 304.248366
+              },
+              {
+                "Kt_inglis": 3.683282,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "vertical",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 4.474241,
+                "peak_MPa": 16.479888
+              },
+              {
+                "Kt_inglis": 3.683282,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "lateral",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 7.606209,
+                "peak_MPa": 28.01581
+              },
+              {
+                "Kt_inglis": 3.683282,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "vertical",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 8.948481,
+                "peak_MPa": 32.959776
+              },
+              {
+                "Kt_inglis": 3.683282,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "lateral",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 15.212418,
+                "peak_MPa": 56.03162
+              },
+              {
+                "Kt_inglis": 3.683282,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "vertical",
+                "load_N": 20,
+                "meets": true,
+                "nominal_MPa": 17.896963,
+                "peak_MPa": 65.919553
+              },
+              {
+                "Kt_inglis": 3.683282,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "lateral",
+                "load_N": 20,
+                "meets": true,
+                "nominal_MPa": 30.424837,
+                "peak_MPa": 112.06324
+              },
+              {
+                "Kt_inglis": 3.683282,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "vertical",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 44.742407,
+                "peak_MPa": 164.798882
+              },
+              {
+                "Kt_inglis": 3.683282,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "lateral",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 76.062092,
+                "peak_MPa": 280.1581
+              }
+            ],
+            "id": "N2",
+            "lever_mm": 93.1,
+            "net_section": {
+              "I_lateral_mm4": 183.6,
+              "I_vertical_mm4": 530.604,
+              "area_mm2": 61.2,
+              "c_lateral_mm": 3.0,
+              "c_vertical_mm": 5.1,
+              "centroid_from_bottom_mm": 5.1
+            },
+            "remaining_mm": 10.2,
+            "y_mm": [
+              180.9,
+              185.1
+            ]
+          }
+        ],
+        "planning_load_N": 5,
+        "smallest_allowable_tip_load_N": 20.119751,
+        "status": "CALCULATED_CONDITIONALLY; not a physical strength result (M32-06)",
+        "tip_deflection_mm": {
+          "with_notches": 0.069247,
+          "without_notches": 0.063381
+        }
+      },
+      "sweeps": {
+        "A01:J-PWR:middle": {
+          "allowed_panel_registration_mm": -0.35,
+          "foreign_xy_overlaps": [],
+          "known_overlaps": [],
+          "known_tolerance_mm": 0.275,
+          "registration_class": "UNCONFIRMED (panel_to_carrier_registration_mm)",
+          "robust_spare_known_only_mm": -0.2,
+          "tightest": {
+            "gap_mm": 0.575,
+            "id": "foreign-depth:SW1701"
+          }
+        },
+        "A01:J-SIG:middle": {
+          "allowed_panel_registration_mm": 0.975,
+          "foreign_xy_overlaps": [],
+          "known_overlaps": [],
+          "known_tolerance_mm": 0.275,
+          "registration_class": "UNCONFIRMED (panel_to_carrier_registration_mm)",
+          "robust_spare_known_only_mm": 1.125,
+          "tightest": {
+            "gap_mm": 1.9,
+            "id": "foreign-depth:J1610"
+          }
+        }
+      }
+    },
+    "B32": {
+      "bend": {
+        "any_identified_wire_met": false,
+        "hook_lower_bound": [
+          {
+            "installed_envelope_bottom_z_max_mm": 32.6,
+            "installed_lowest_centreline_z_max_mm": 34.1,
+            "link": "J-SIG",
+            "radius_mm": 5.0,
+            "release_15mm_envelope_bottom_z_max_mm": 17.6,
+            "route_admits": true
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 32.892893,
+            "installed_lowest_centreline_z_max_mm": 34.1,
+            "link": "J-PWR",
+            "radius_mm": 5.0,
+            "release_15mm_envelope_bottom_z_max_mm": 17.892893,
+            "route_admits": true
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 30.1,
+            "installed_lowest_centreline_z_max_mm": 31.6,
+            "link": "J-SIG",
+            "radius_mm": 7.5,
+            "release_15mm_envelope_bottom_z_max_mm": 15.1,
+            "route_admits": false
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 30.392893,
+            "installed_lowest_centreline_z_max_mm": 31.6,
+            "link": "J-PWR",
+            "radius_mm": 7.5,
+            "release_15mm_envelope_bottom_z_max_mm": 15.392893,
+            "route_admits": false
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 28.7,
+            "installed_lowest_centreline_z_max_mm": 30.2,
+            "link": "J-SIG",
+            "radius_mm": 8.9,
+            "release_15mm_envelope_bottom_z_max_mm": 13.7,
+            "route_admits": false
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 28.992893,
+            "installed_lowest_centreline_z_max_mm": 30.2,
+            "link": "J-PWR",
+            "radius_mm": 8.9,
+            "release_15mm_envelope_bottom_z_max_mm": 13.992893,
+            "route_admits": false
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 27.6,
+            "installed_lowest_centreline_z_max_mm": 29.1,
+            "link": "J-SIG",
+            "radius_mm": 10.0,
+            "release_15mm_envelope_bottom_z_max_mm": 12.6,
+            "route_admits": false
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 27.892893,
+            "installed_lowest_centreline_z_max_mm": 29.1,
+            "link": "J-PWR",
+            "radius_mm": 10.0,
+            "release_15mm_envelope_bottom_z_max_mm": 12.892893,
+            "route_admits": false
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 26.6,
+            "installed_lowest_centreline_z_max_mm": 28.1,
+            "link": "J-SIG",
+            "radius_mm": 11.0,
+            "release_15mm_envelope_bottom_z_max_mm": 11.6,
+            "route_admits": false
+          },
+          {
+            "installed_envelope_bottom_z_max_mm": 26.892893,
+            "installed_lowest_centreline_z_max_mm": 28.1,
+            "link": "J-PWR",
+            "radius_mm": 11.0,
+            "release_15mm_envelope_bottom_z_max_mm": 11.892893,
+            "route_admits": false
+          }
+        ],
+        "lower_bound_rule": "a route of bend radius >= R that leaves the middle housing along -z after the straight lead must fall at least R before it can turn back up (z_low <= exit z - lead - R)",
+        "maker_rule": "10 x wire OD (S-AW-1852/1853/2843-7); applied to the inner conductor of the round bundle",
+        "max_uniform_radius_mm": {
+          "J-PWR": 5.0,
+          "J-SIG": 5.0
+        },
+        "required_centreline_radius_at_jst_max_od_mm": {
+          "J-PWR": 10.707107,
+          "J-SIG": 11.0
+        },
+        "route_radius_mm": 5.0,
+        "wire_candidates": [
+          {
+            "awg": 28,
+            "inside_jst_od_window": true,
+            "meets_gh_ratings": true,
+            "mpn": "Alpha Wire 1852",
+            "od_range_mm": [
+              0.8382,
+              0.9398
+            ],
+            "required_centreline_radius_mm": {
+              "J-PWR": 10.062539,
+              "J-SIG": 10.3378
+            },
+            "route_meets_maker_rule": false,
+            "route_radius_mm": 5.0,
+            "sources": [
+              "S-AW-1852"
+            ],
+            "temperature_max_C": 105,
+            "voltage_V": 600
+          },
+          {
+            "awg": 26,
+            "inside_jst_od_window": false,
+            "meets_gh_ratings": true,
+            "mpn": "Alpha Wire 1853",
+            "od_range_mm": [
+              0.9398,
+              1.0414
+            ],
+            "required_centreline_radius_mm": {
+              "J-PWR": 11.150381,
+              "J-SIG": 11.4554
+            },
+            "route_meets_maker_rule": false,
+            "route_radius_mm": 5.0,
+            "sources": [
+              "S-AW-1853"
+            ],
+            "temperature_max_C": 105,
+            "voltage_V": 600
+          },
+          {
+            "awg": 26,
+            "inside_jst_od_window": false,
+            "meets_gh_ratings": true,
+            "mpn": "Alpha Wire 2843/7",
+            "od_range_mm": [
+              0.7366,
+              0.8382
+            ],
+            "required_centreline_radius_mm": {
+              "J-PWR": 8.974697,
+              "J-SIG": 9.2202
+            },
+            "route_meets_maker_rule": false,
+            "route_radius_mm": 5.0,
+            "sources": [
+              "S-AW-2843-7"
+            ],
+            "temperature_max_C": 200,
+            "voltage_V": 250
+          }
+        ]
+      },
+      "bow_sensitivity": [
+        {
+          "bow_mm": null,
+          "case": "edge-M1-M3",
+          "meets_K4": true,
+          "note": "half sine along the M1-M3 mount line",
+          "tightest": {
+            "link": "J-PWR",
+            "obstacle": "board:A01-middle:1",
+            "robust_spare_mm": 0.269271
+          }
+        },
+        {
+          "bow_mm": null,
+          "case": "length-142-292",
+          "meets_K4": true,
+          "note": "base: half sine over the board length",
+          "tightest": {
+            "link": "J-PWR",
+            "obstacle": "board:A01-middle:1",
+            "robust_spare_mm": 0.198836
+          }
+        },
+        {
+          "bow_mm": 1.282127,
+          "case": "uniform-diagonal",
+          "meets_K4": false,
+          "note": "0.75 % of the A01-middle outline diagonal applied everywhere (interior bow of a four-corner-supported board)",
+          "tightest": {
+            "link": "J-SIG",
+            "obstacle": "board:A01-middle:0",
+            "robust_spare_mm": -0.382127
+          }
+        }
+      ],
+      "cable_to_cable": {
+        "gap_mm": 4.292913,
+        "robust_spare_mm": 3.592913,
+        "tolerance_mm": 0.2
+      },
+      "criteria": {
+        "S1_static_clear": true,
+        "S2_robust_K4": true,
+        "S3_retention_modelled": true,
+        "S4_sweeps_clear": true,
+        "S5_core_clear": true,
+        "S6_strength_planning_load": true,
+        "S7_release_15mm_known_clear": true,
+        "S8_foreign_allowance": true,
+        "S9_bend_maker_rule": false
+      },
+      "failed": [
+        "S9_bend_maker_rule"
+      ],
+      "guide_foreign_bounds": [
+        {
+          "body": "guide:R2:leg+",
+          "foreign": "SW1501",
+          "max_foreign_top_z_mm": 38.4,
+          "max_rear_side_height_mm": 16.8
+        },
+        {
+          "body": "guide:R2:base",
+          "foreign": "SW1501",
+          "max_foreign_top_z_mm": 41.4,
+          "max_rear_side_height_mm": 19.8
+        },
+        {
+          "body": "guide:R2:wall+",
+          "foreign": "SW1501",
+          "max_foreign_top_z_mm": 42.242893,
+          "max_rear_side_height_mm": 20.642893
+        },
+        {
+          "body": "guide:R2:wall-",
+          "foreign": "SW1501",
+          "max_foreign_top_z_mm": 42.242893,
+          "max_rear_side_height_mm": 20.642893
+        },
+        {
+          "body": "guide:R2:latch",
+          "foreign": "SW1501",
+          "max_foreign_top_z_mm": 45.157107,
+          "max_rear_side_height_mm": 23.557107
+        }
+      ],
+      "open_conditions": {
+        "bend_radius": "maker rule not met by the 5 mm route for any identified wire",
+        "finger_operation": "NOT_DETERMINED",
+        "foreign_volume": "UNKNOWN (no board outline)",
+        "latch_side": "UNCONFIRMED",
+        "release_dip": {
+          "J-PWR": {
+            "NB-278": 10,
+            "NB-CAN": 15
+          },
+          "J-SIG": {
+            "NB-278": 10,
+            "NB-CAN": 15
+          }
+        }
+      },
+      "robust": [
+        {
+          "at_mm": [
+            245.0,
+            183.6,
+            44.2
+          ],
+          "from": "guide:R2:latch",
+          "link": "J-PWR",
+          "meets_K4": true,
+          "obstacle": "board:A01-middle:1",
+          "robust_spare_mm": 0.198836,
+          "robust_spare_rss_mm": 0.719943,
+          "sampled_clearance_mm": 2.142893,
+          "spare_after_margin_mm": 1.642893,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_bow": 0.894057,
+              "saddle_seat_mm": 0.1,
+              "saddle_seating_mm": 0.1,
+              "spacer_length_mm": 0.1,
+              "strap_bore_mm": 0.1,
+              "strap_thickness_mm": 0.05
+            },
+            "rss_mm": 0.92295,
+            "worst_case_mm": 1.444057
+          }
+        },
+        {
+          "at_mm": [
+            245.0,
+            183.6,
+            44.2
+          ],
+          "from": "guide:R2:strap",
+          "link": "J-PWR",
+          "meets_K4": true,
+          "obstacle": "board:A01-middle:1",
+          "robust_spare_mm": 0.198836,
+          "robust_spare_rss_mm": 0.719943,
+          "sampled_clearance_mm": 2.142893,
+          "spare_after_margin_mm": 1.642893,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_bow": 0.894057,
+              "saddle_seat_mm": 0.1,
+              "saddle_seating_mm": 0.1,
+              "spacer_length_mm": 0.1,
+              "strap_bore_mm": 0.1,
+              "strap_thickness_mm": 0.05
+            },
+            "rss_mm": 0.92295,
+            "worst_case_mm": 1.444057
+          }
+        },
+        {
+          "at_mm": [
+            245.0,
+            171.5,
+            44.1
+          ],
+          "from": "guide:R1:latch",
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "board:A01-middle:0",
+          "robust_spare_mm": 0.200286,
+          "robust_spare_rss_mm": 0.713726,
+          "sampled_clearance_mm": 1.95,
+          "spare_after_margin_mm": 1.45,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_bow": 0.699714,
+              "saddle_seat_mm": 0.1,
+              "saddle_seating_mm": 0.1,
+              "spacer_length_mm": 0.1,
+              "strap_bore_mm": 0.1,
+              "strap_thickness_mm": 0.05
+            },
+            "rss_mm": 0.736274,
+            "worst_case_mm": 1.249714
+          }
+        },
+        {
+          "at_mm": [
+            245.0,
+            171.5,
+            44.1
+          ],
+          "from": "guide:R1:strap",
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "board:A01-middle:0",
+          "robust_spare_mm": 0.200286,
+          "robust_spare_rss_mm": 0.713726,
+          "sampled_clearance_mm": 1.95,
+          "spare_after_margin_mm": 1.45,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_bow": 0.699714,
+              "saddle_seat_mm": 0.1,
+              "saddle_seating_mm": 0.1,
+              "spacer_length_mm": 0.1,
+              "strap_bore_mm": 0.1,
+              "strap_thickness_mm": 0.05
+            },
+            "rss_mm": 0.736274,
+            "worst_case_mm": 1.249714
+          }
+        },
+        {
+          "at_mm": [
+            245.0,
+            171.5,
+            44.1
+          ],
+          "from": "guide:R1:latch",
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "board:A01-middle:2",
+          "robust_spare_mm": 0.200286,
+          "robust_spare_rss_mm": 0.713726,
+          "sampled_clearance_mm": 1.95,
+          "spare_after_margin_mm": 1.45,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_bow": 0.699714,
+              "saddle_seat_mm": 0.1,
+              "saddle_seating_mm": 0.1,
+              "spacer_length_mm": 0.1,
+              "strap_bore_mm": 0.1,
+              "strap_thickness_mm": 0.05
+            },
+            "rss_mm": 0.736274,
+            "worst_case_mm": 1.249714
+          }
+        },
+        {
+          "at_mm": [
+            245.0,
+            171.5,
+            44.1
+          ],
+          "from": "guide:R1:strap",
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "board:A01-middle:2",
+          "robust_spare_mm": 0.200286,
+          "robust_spare_rss_mm": 0.713726,
+          "sampled_clearance_mm": 1.95,
+          "spare_after_margin_mm": 1.45,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_bow": 0.699714,
+              "saddle_seat_mm": 0.1,
+              "saddle_seating_mm": 0.1,
+              "spacer_length_mm": 0.1,
+              "strap_bore_mm": 0.1,
+              "strap_thickness_mm": 0.05
+            },
+            "rss_mm": 0.736274,
+            "worst_case_mm": 1.249714
+          }
+        },
+        {
+          "at_mm": [
+            245.0,
+            183.6,
+            44.2
+          ],
+          "from": "guide:R2:latch",
+          "link": "J-PWR",
+          "meets_K4": true,
+          "obstacle": "board:A01-middle:2",
+          "robust_spare_mm": 0.226096,
+          "robust_spare_rss_mm": 0.747203,
+          "sampled_clearance_mm": 2.170153,
+          "spare_after_margin_mm": 1.670153,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_bow": 0.894057,
+              "saddle_seat_mm": 0.1,
+              "saddle_seating_mm": 0.1,
+              "spacer_length_mm": 0.1,
+              "strap_bore_mm": 0.1,
+              "strap_thickness_mm": 0.05
+            },
+            "rss_mm": 0.92295,
+            "worst_case_mm": 1.444057
+          }
+        },
+        {
+          "at_mm": [
+            245.0,
+            183.6,
+            44.2
+          ],
+          "from": "guide:R2:strap",
+          "link": "J-PWR",
+          "meets_K4": true,
+          "obstacle": "board:A01-middle:2",
+          "robust_spare_mm": 0.226096,
+          "robust_spare_rss_mm": 0.747203,
+          "sampled_clearance_mm": 2.170153,
+          "spare_after_margin_mm": 1.670153,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_bow": 0.894057,
+              "saddle_seat_mm": 0.1,
+              "saddle_seating_mm": 0.1,
+              "spacer_length_mm": 0.1,
+              "strap_bore_mm": 0.1,
+              "strap_thickness_mm": 0.05
+            },
+            "rss_mm": 0.92295,
+            "worst_case_mm": 1.444057
+          }
+        },
+        {
+          "at_mm": [
+            242.150056,
+            183.6,
+            44.2
+          ],
+          "link": "J-PWR",
+          "meets_K4": true,
+          "obstacle": "rail:middle:0:N2:floor",
+          "robust_spare_mm": 0.392893,
+          "robust_spare_rss_mm": 0.392893,
+          "sampled_clearance_mm": 0.992893,
+          "spare_after_margin_mm": 0.492893,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1
+            },
+            "rss_mm": 0.1,
+            "worst_case_mm": 0.1
+          }
+        },
+        {
+          "at_mm": [
+            242.114414,
+            171.5,
+            44.1
+          ],
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "rail:middle:0:N1:floor",
+          "robust_spare_mm": 0.4,
+          "robust_spare_rss_mm": 0.4,
+          "sampled_clearance_mm": 1.0,
+          "spare_after_margin_mm": 0.5,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1
+            },
+            "rss_mm": 0.1,
+            "worst_case_mm": 0.1
+          }
+        },
+        {
+          "at_mm": [
+            242.150056,
+            183.6,
+            44.2
+          ],
+          "link": "J-PWR",
+          "meets_K4": true,
+          "obstacle": "rail:middle:0:y174.2-181.2",
+          "robust_spare_mm": 0.492893,
+          "robust_spare_rss_mm": 0.492893,
+          "sampled_clearance_mm": 1.092893,
+          "spare_after_margin_mm": 0.592893,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1
+            },
+            "rss_mm": 0.1,
+            "worst_case_mm": 0.1
+          }
+        },
+        {
+          "at_mm": [
+            242.150056,
+            183.6,
+            44.2
+          ],
+          "link": "J-PWR",
+          "meets_K4": true,
+          "obstacle": "rail:middle:0:y186-274",
+          "robust_spare_mm": 0.492893,
+          "robust_spare_rss_mm": 0.492893,
+          "sampled_clearance_mm": 1.092893,
+          "spare_after_margin_mm": 0.592893,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1
+            },
+            "rss_mm": 0.1,
+            "worst_case_mm": 0.1
+          }
+        },
+        {
+          "at_mm": [
+            242.114414,
+            171.5,
+            44.1
+          ],
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "rail:middle:0:y142-168.8",
+          "robust_spare_mm": 0.5,
+          "robust_spare_rss_mm": 0.5,
+          "sampled_clearance_mm": 1.1,
+          "spare_after_margin_mm": 0.6,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1
+            },
+            "rss_mm": 0.1,
+            "worst_case_mm": 0.1
+          }
+        },
+        {
+          "at_mm": [
+            242.114414,
+            171.5,
+            44.1
+          ],
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "rail:middle:0:y174.2-181.2",
+          "robust_spare_mm": 0.5,
+          "robust_spare_rss_mm": 0.5,
+          "sampled_clearance_mm": 1.1,
+          "spare_after_margin_mm": 0.6,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1
+            },
+            "rss_mm": 0.1,
+            "worst_case_mm": 0.1
+          }
+        },
+        {
+          "at_mm": [
+            234.18573,
+            183.6,
+            44.2
+          ],
+          "link": "J-PWR",
+          "meets_K4": true,
+          "obstacle": "tool:A01-jack:M4",
+          "robust_spare_mm": 0.517893,
+          "robust_spare_rss_mm": 0.632815,
+          "sampled_clearance_mm": 1.292893,
+          "spare_after_margin_mm": 0.792893,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075
+            },
+            "rss_mm": 0.160078,
+            "worst_case_mm": 0.275
+          }
+        },
+        {
+          "at_mm": [
+            273.362401,
+            181.413011,
+            44.2
+          ],
+          "link": "J-PWR",
+          "meets_K4": true,
+          "obstacle": "release:A01:J-SIG:middle",
+          "robust_spare_mm": 0.667704,
+          "robust_spare_rss_mm": 0.782626,
+          "sampled_clearance_mm": 1.442704,
+          "spare_after_margin_mm": 0.942704,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075
+            },
+            "rss_mm": 0.160078,
+            "worst_case_mm": 0.275
+          }
+        },
+        {
+          "at_mm": [
+            234.991631,
+            168.126229,
+            44.1
+          ],
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "release:A01:J-PWR:local",
+          "robust_spare_mm": 0.703911,
+          "robust_spare_rss_mm": 0.818833,
+          "sampled_clearance_mm": 1.478911,
+          "spare_after_margin_mm": 0.978911,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075
+            },
+            "rss_mm": 0.160078,
+            "worst_case_mm": 0.275
+          }
+        },
+        {
+          "at_mm": [
+            239.937297,
+            171.5,
+            44.1
+          ],
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "tool:A01-jack:M4",
+          "robust_spare_mm": 1.125,
+          "robust_spare_rss_mm": 1.239922,
+          "sampled_clearance_mm": 1.9,
+          "spare_after_margin_mm": 1.4,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075
+            },
+            "rss_mm": 0.160078,
+            "worst_case_mm": 0.275
+          }
+        },
+        {
+          "at_mm": [
+            232.194649,
+            183.6,
+            44.2
+          ],
+          "link": "J-PWR",
+          "meets_K4": true,
+          "obstacle": "board:A01-middle:1",
+          "robust_spare_mm": 1.332104,
+          "robust_spare_rss_mm": 1.520564,
+          "sampled_clearance_mm": 2.892893,
+          "spare_after_margin_mm": 2.392893,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_bow": 0.860789,
+              "spacer_length_mm": 0.1
+            },
+            "rss_mm": 0.872329,
+            "worst_case_mm": 1.060789
+          }
+        },
+        {
+          "at_mm": [
+            239.937297,
+            171.5,
+            44.1
+          ],
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "board:A01-middle:2",
+          "robust_spare_mm": 1.348309,
+          "robust_spare_rss_mm": 1.533141,
+          "sampled_clearance_mm": 2.7,
+          "spare_after_margin_mm": 2.2,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_bow": 0.651691,
+              "spacer_length_mm": 0.1
+            },
+            "rss_mm": 0.666859,
+            "worst_case_mm": 0.851691
+          }
+        },
+        {
+          "at_mm": [
+            273.573267,
+            181.082772,
+            44.2
+          ],
+          "link": "J-PWR",
+          "meets_K4": true,
+          "obstacle": "board:A01-middle:2",
+          "robust_spare_mm": 1.372285,
+          "robust_spare_rss_mm": 1.5602,
+          "sampled_clearance_mm": 2.893709,
+          "spare_after_margin_mm": 2.393709,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_bow": 0.821424,
+              "spacer_length_mm": 0.1
+            },
+            "rss_mm": 0.833509,
+            "worst_case_mm": 1.021424
+          }
+        },
+        {
+          "at_mm": [
+            235.605978,
+            169.024122,
+            44.1
+          ],
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "board:A01-middle:0",
+          "robust_spare_mm": 1.396783,
+          "robust_spare_rss_mm": 1.580429,
+          "sampled_clearance_mm": 2.700068,
+          "spare_after_margin_mm": 2.200068,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_bow": 0.603285,
+              "spacer_length_mm": 0.1
+            },
+            "rss_mm": 0.619639,
+            "worst_case_mm": 0.803285
+          }
+        },
+        {
+          "at_mm": [
+            222.0,
+            165.8,
+            44.1
+          ],
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "body:R7108",
+          "robust_spare_mm": 2.616553,
+          "robust_spare_rss_mm": 2.731475,
+          "sampled_clearance_mm": 3.391553,
+          "spare_after_margin_mm": 2.891553,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "spacer_length_mm": 0.1
+            },
+            "rss_mm": 0.160078,
+            "worst_case_mm": 0.275
+          }
+        },
+        {
+          "at_mm": [
+            223.194914,
+            165.8,
+            44.1
+          ],
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "body:R7135",
+          "robust_spare_mm": 2.616553,
+          "robust_spare_rss_mm": 2.731475,
+          "sampled_clearance_mm": 3.391553,
+          "spare_after_margin_mm": 2.891553,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "spacer_length_mm": 0.1
+            },
+            "rss_mm": 0.160078,
+            "worst_case_mm": 0.275
+          }
+        },
+        {
+          "at_mm": [
+            230.364398,
+            165.8,
+            44.1
+          ],
+          "link": "J-SIG",
+          "meets_K4": true,
+          "obstacle": "body:R7133",
+          "robust_spare_mm": 2.720302,
+          "robust_spare_rss_mm": 2.835224,
+          "sampled_clearance_mm": 3.495302,
+          "spare_after_margin_mm": 2.995302,
+          "tolerance": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "spacer_length_mm": 0.1
+            },
+            "rss_mm": 0.160078,
+            "worst_case_mm": 0.275
+          }
+        }
+      ],
+      "static": {
+        "J-PWR": {
+          "bends": 7,
+          "foreign_depth_bounds": {
+            "SW1401": {
+              "block": "E2",
+              "max_foreign_top_z_mm": 42.392893,
+              "max_rear_side_height_mm": 20.792893,
+              "pcb_rear_z_mm": 21.6
+            },
+            "SW1501": {
+              "block": "E3",
+              "max_foreign_top_z_mm": 42.392893,
+              "max_rear_side_height_mm": 20.792893,
+              "pcb_rear_z_mm": 21.6
+            },
+            "SW1601": {
+              "block": "E4",
+              "max_foreign_top_z_mm": 42.392893,
+              "max_rear_side_height_mm": 20.792893,
+              "pcb_rear_z_mm": 21.6
+            }
+          },
+          "installed_length_mm": 150.0,
+          "installed_state": "at design length, slack stored in the local loop (top z 70.920086)",
+          "min_surface_clearance_mm": 0.992893,
+          "nearest": [
+            [
+              "rail:middle:0:N2:floor",
+              0.992893
+            ],
+            [
+              "rail:middle:0:y174.2-181.2",
+              1.092893
+            ],
+            [
+              "rail:middle:0:y186-274",
+              1.092893
+            ],
+            [
+              "tool:A01-jack:M4",
+              1.292893
+            ],
+            [
+              "release:A01:J-SIG:middle",
+              1.442704
+            ],
+            [
+              "board:A01-middle:1",
+              2.892893
+            ]
+          ]
+        },
+        "J-SIG": {
+          "bends": 8,
+          "foreign_depth_bounds": {},
+          "installed_length_mm": 136.0,
+          "installed_state": "at design length, slack stored in the local loop (top z 71.036522)",
+          "min_surface_clearance_mm": 1.0,
+          "nearest": [
+            [
+              "rail:middle:0:N1:floor",
+              1.0
+            ],
+            [
+              "rail:middle:0:y142-168.8",
+              1.1
+            ],
+            [
+              "rail:middle:0:y174.2-181.2",
+              1.1
+            ],
+            [
+              "release:A01:J-PWR:local",
+              1.478911
+            ],
+            [
+              "tool:A01-jack:M4",
+              1.9
+            ],
+            [
+              "board:A01-middle:0",
+              2.7
+            ]
+          ]
+        }
+      },
+      "status": "CONDITIONAL_PENDING_WIRE_SELECTION",
+      "strength": {
+        "Kt": "Inglis upper estimate 1 + 2 sqrt(depth / corner radius); conservative for a flat-bottomed groove, not a chart or FEA value",
+        "full_section": {
+          "I_lateral_mm4": 216.0,
+          "I_vertical_mm4": 864.0,
+          "area_mm2": 72.0,
+          "c_lateral_mm": 3.0,
+          "c_vertical_mm": 6.0,
+          "centroid_from_bottom_mm": 6.0
+        },
+        "material": {
+          "E_MPa": 70000,
+          "manufacture": "machined; notch internal corners end-milled",
+          "name": "6061-T6, machined from extrusion",
+          "proof_min_MPa": 240,
+          "safety_factor": 1.5
+        },
+        "meets_at_planning_load": true,
+        "model": "cantilever rail:middle:0 fixed at the top crossmember (y 142, joint stiffness not evaluated), free end y 274, tip load P; moment at the notch edge nearest the root",
+        "not_covered": [
+          "joint to the crossmember",
+          "fatigue and vibration",
+          "assembly or service impact loads (unknown)",
+          "DIN insertion load path (enters the right rail and tabs, not beyond the notches)",
+          "certified machined-part material"
+        ],
+        "notches": [
+          {
+            "Kt_inglis_at_design_radius": 5.743416,
+            "allowable_tip_load_N": {
+              "lateral": 11.361867,
+              "vertical": 14.643112
+            },
+            "depth_mm": 4.5,
+            "grid": [
+              {
+                "Kt_inglis": 7.0,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "vertical",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 9.512317,
+                "peak_MPa": 66.586217
+              },
+              {
+                "Kt_inglis": 7.0,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "lateral",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 12.259421,
+                "peak_MPa": 85.815948
+              },
+              {
+                "Kt_inglis": 7.0,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "vertical",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 19.024633,
+                "peak_MPa": 133.172433
+              },
+              {
+                "Kt_inglis": 7.0,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "lateral",
+                "load_N": 10,
+                "meets": false,
+                "nominal_MPa": 24.518842,
+                "peak_MPa": 171.631896
+              },
+              {
+                "Kt_inglis": 7.0,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "vertical",
+                "load_N": 20,
+                "meets": false,
+                "nominal_MPa": 38.049267,
+                "peak_MPa": 266.344867
+              },
+              {
+                "Kt_inglis": 7.0,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "lateral",
+                "load_N": 20,
+                "meets": false,
+                "nominal_MPa": 49.037685,
+                "peak_MPa": 343.263792
+              },
+              {
+                "Kt_inglis": 7.0,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "vertical",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 95.123167,
+                "peak_MPa": 665.862166
+              },
+              {
+                "Kt_inglis": 7.0,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "lateral",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 122.594212,
+                "peak_MPa": 858.159481
+              },
+              {
+                "Kt_inglis": 5.743416,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "vertical",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 9.512317,
+                "peak_MPa": 54.633196
+              },
+              {
+                "Kt_inglis": 5.743416,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "lateral",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 12.259421,
+                "peak_MPa": 70.410962
+              },
+              {
+                "Kt_inglis": 5.743416,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "vertical",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 19.024633,
+                "peak_MPa": 109.266393
+              },
+              {
+                "Kt_inglis": 5.743416,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "lateral",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 24.518842,
+                "peak_MPa": 140.821923
+              },
+              {
+                "Kt_inglis": 5.743416,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "vertical",
+                "load_N": 20,
+                "meets": false,
+                "nominal_MPa": 38.049267,
+                "peak_MPa": 218.532786
+              },
+              {
+                "Kt_inglis": 5.743416,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "lateral",
+                "load_N": 20,
+                "meets": false,
+                "nominal_MPa": 49.037685,
+                "peak_MPa": 281.643847
+              },
+              {
+                "Kt_inglis": 5.743416,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "vertical",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 95.123167,
+                "peak_MPa": 546.331964
+              },
+              {
+                "Kt_inglis": 5.743416,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "lateral",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 122.594212,
+                "peak_MPa": 704.109617
+              },
+              {
+                "Kt_inglis": 5.242641,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "vertical",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 9.512317,
+                "peak_MPa": 49.869658
+              },
+              {
+                "Kt_inglis": 5.242641,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "lateral",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 12.259421,
+                "peak_MPa": 64.27174
+              },
+              {
+                "Kt_inglis": 5.242641,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "vertical",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 19.024633,
+                "peak_MPa": 99.739317
+              },
+              {
+                "Kt_inglis": 5.242641,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "lateral",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 24.518842,
+                "peak_MPa": 128.54348
+              },
+              {
+                "Kt_inglis": 5.242641,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "vertical",
+                "load_N": 20,
+                "meets": false,
+                "nominal_MPa": 38.049267,
+                "peak_MPa": 199.478633
+              },
+              {
+                "Kt_inglis": 5.242641,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "lateral",
+                "load_N": 20,
+                "meets": false,
+                "nominal_MPa": 49.037685,
+                "peak_MPa": 257.086961
+              },
+              {
+                "Kt_inglis": 5.242641,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "vertical",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 95.123167,
+                "peak_MPa": 498.696584
+              },
+              {
+                "Kt_inglis": 5.242641,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "lateral",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 122.594212,
+                "peak_MPa": 642.717402
+              }
+            ],
+            "id": "N1",
+            "lever_mm": 105.2,
+            "net_section": {
+              "I_lateral_mm4": 128.717333,
+              "I_vertical_mm4": 208.914046,
+              "area_mm2": 44.2,
+              "c_lateral_mm": 3.0,
+              "c_vertical_mm": 3.778054,
+              "centroid_from_bottom_mm": 3.721946
+            },
+            "remaining_mm": 7.5,
+            "y_mm": [
+              168.8,
+              174.2
+            ]
+          },
+          {
+            "Kt_inglis_at_design_radius": 5.527693,
+            "allowable_tip_load_N": {
+              "lateral": 14.131287,
+              "vertical": 19.118789
+            },
+            "depth_mm": 4.1,
+            "grid": [
+              {
+                "Kt_inglis": 6.727128,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "vertical",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 7.569823,
+                "peak_MPa": 50.923173
+              },
+              {
+                "Kt_inglis": 6.727128,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "lateral",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 10.241519,
+                "peak_MPa": 68.896016
+              },
+              {
+                "Kt_inglis": 6.727128,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "vertical",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 15.139646,
+                "peak_MPa": 101.846345
+              },
+              {
+                "Kt_inglis": 6.727128,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "lateral",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 20.483039,
+                "peak_MPa": 137.792032
+              },
+              {
+                "Kt_inglis": 6.727128,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "vertical",
+                "load_N": 20,
+                "meets": false,
+                "nominal_MPa": 30.279293,
+                "peak_MPa": 203.692691
+              },
+              {
+                "Kt_inglis": 6.727128,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "lateral",
+                "load_N": 20,
+                "meets": false,
+                "nominal_MPa": 40.966077,
+                "peak_MPa": 275.584064
+              },
+              {
+                "Kt_inglis": 6.727128,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "vertical",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 75.698232,
+                "peak_MPa": 509.231726
+              },
+              {
+                "Kt_inglis": 6.727128,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.5,
+                "direction": "lateral",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 102.415194,
+                "peak_MPa": 688.96016
+              },
+              {
+                "Kt_inglis": 5.527693,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "vertical",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 7.569823,
+                "peak_MPa": 41.843655
+              },
+              {
+                "Kt_inglis": 5.527693,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "lateral",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 10.241519,
+                "peak_MPa": 56.61197
+              },
+              {
+                "Kt_inglis": 5.527693,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "vertical",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 15.139646,
+                "peak_MPa": 83.687311
+              },
+              {
+                "Kt_inglis": 5.527693,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "lateral",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 20.483039,
+                "peak_MPa": 113.223941
+              },
+              {
+                "Kt_inglis": 5.527693,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "vertical",
+                "load_N": 20,
+                "meets": false,
+                "nominal_MPa": 30.279293,
+                "peak_MPa": 167.374621
+              },
+              {
+                "Kt_inglis": 5.527693,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "lateral",
+                "load_N": 20,
+                "meets": false,
+                "nominal_MPa": 40.966077,
+                "peak_MPa": 226.447882
+              },
+              {
+                "Kt_inglis": 5.527693,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "vertical",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 75.698232,
+                "peak_MPa": 418.436553
+              },
+              {
+                "Kt_inglis": 5.527693,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 0.8,
+                "direction": "lateral",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 102.415194,
+                "peak_MPa": 566.119704
+              },
+              {
+                "Kt_inglis": 5.049691,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "vertical",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 7.569823,
+                "peak_MPa": 38.225271
+              },
+              {
+                "Kt_inglis": 5.049691,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "lateral",
+                "load_N": 5,
+                "meets": true,
+                "nominal_MPa": 10.241519,
+                "peak_MPa": 51.716512
+              },
+              {
+                "Kt_inglis": 5.049691,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "vertical",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 15.139646,
+                "peak_MPa": 76.450541
+              },
+              {
+                "Kt_inglis": 5.049691,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "lateral",
+                "load_N": 10,
+                "meets": true,
+                "nominal_MPa": 20.483039,
+                "peak_MPa": 103.433023
+              },
+              {
+                "Kt_inglis": 5.049691,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "vertical",
+                "load_N": 20,
+                "meets": true,
+                "nominal_MPa": 30.279293,
+                "peak_MPa": 152.901082
+              },
+              {
+                "Kt_inglis": 5.049691,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "lateral",
+                "load_N": 20,
+                "meets": false,
+                "nominal_MPa": 40.966077,
+                "peak_MPa": 206.866047
+              },
+              {
+                "Kt_inglis": 5.049691,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "vertical",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 75.698232,
+                "peak_MPa": 382.252706
+              },
+              {
+                "Kt_inglis": 5.049691,
+                "allowable_MPa": 160.0,
+                "corner_radius_mm": 1.0,
+                "direction": "lateral",
+                "load_N": 50,
+                "meets": false,
+                "nominal_MPa": 102.415194,
+                "peak_MPa": 517.165117
+              }
+            ],
+            "id": "N2",
+            "lever_mm": 92.8,
+            "net_section": {
+              "I_lateral_mm4": 135.917333,
+              "I_vertical_mm4": 243.960773,
+              "area_mm2": 46.6,
+              "c_lateral_mm": 3.0,
+              "c_vertical_mm": 3.980043,
+              "centroid_from_bottom_mm": 3.919957
+            },
+            "remaining_mm": 7.9,
+            "y_mm": [
+              181.2,
+              186.0
+            ]
+          }
+        ],
+        "planning_load_N": 5,
+        "smallest_allowable_tip_load_N": 11.361867,
+        "status": "CALCULATED_CONDITIONALLY; not a physical strength result (M32-06)",
+        "tip_deflection_mm": {
+          "with_notches": 0.086336,
+          "without_notches": 0.063381
+        }
+      },
+      "sweeps": {
+        "A01:J-PWR:middle": {
+          "allowed_panel_registration_mm": 0.35,
+          "foreign_xy_overlaps": [],
+          "known_overlaps": [],
+          "known_tolerance_mm": 0.275,
+          "registration_class": "UNCONFIRMED (panel_to_carrier_registration_mm)",
+          "robust_spare_known_only_mm": 0.5,
+          "tightest": {
+            "gap_mm": 1.275,
+            "id": "foreign-depth:SW1701"
+          }
+        },
+        "A01:J-SIG:middle": {
+          "allowed_panel_registration_mm": 0.975,
+          "foreign_xy_overlaps": [],
+          "known_overlaps": [],
+          "known_tolerance_mm": 0.275,
+          "registration_class": "UNCONFIRMED (panel_to_carrier_registration_mm)",
+          "robust_spare_known_only_mm": 1.125,
+          "tightest": {
+            "gap_mm": 1.9,
+            "id": "foreign-depth:J1610"
+          }
+        }
+      }
+    }
+  },
+  "status": "DESIGN_STUDY_ONLY"
+}

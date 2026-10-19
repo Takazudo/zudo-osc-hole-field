@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/workspace/zudo-osc-hole-field/design/architecture-278/implementation/stage46/ground-escape/fill_probe.py", line 29, in <module>
+    if __name__=='__main__':extract(Path(sys.argv[1]),Path(sys.argv[2]))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/zudo-osc-hole-field/design/architecture-278/implementation/stage46/ground-escape/fill_probe.py", line 17, in extract
+    perimeter=sum(math.dist(r[i],r[(i+1)%len(r)]) for p in data for r in [p['shell'],*p['holes']])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/zudo-osc-hole-field/design/architecture-278/implementation/stage46/ground-escape/fill_probe.py", line 17, in <genexpr>
+    perimeter=sum(math.dist(r[i],r[(i+1)%len(r)]) for p in data for r in [p['shell'],*p['holes']])
+                              ^
+NameError: name 'i' is not defined. Did you mean: 'id'?
+heavy-guard: verdict=FAIL exit=1 secs=24 min_mem_mb=16536 reason=-

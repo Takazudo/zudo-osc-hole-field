@@ -1,7 +1,46 @@
 # Python verification boundary
 
 The portable unit suite is `bash scripts/checks/run-python-tests.sh`. It discovers
-`test_*.py` under `scripts/` and `design/`. Its inputs are committed source,
+`test_*.py` under `scripts/` and `design/`, except the explicitly frozen
+`design/architecture-278/implementation/stage17-native-x0x-001/` host-run archive.
+That archive expects an external `osc-validation` checkout and is retained
+unchanged as historical evidence, not replayed. Its maintained comparator and all
+12 synthetic mutation cases run from
+`scripts/architecture278/implementation/test_stage17_native_parity.py` instead.
+The runner reports this boundary explicitly and fails if the portable replacement
+is missing. Discovery regression tests verify the frozen/portable assertion
+bodies are equivalent and continue discovering other `design/` test directories.
+No parity assertion or native acceptance gate is removed.
+
+Eight later retained modules contain whole-repository preservation or old
+entrypoint-hash assertions. `scripts/checks/architecture_history.py` executes
+those exact, unchanged modules in detached temporary worktrees at their recorded
+full checkpoint commits. All unmapped modules, including newly added tests,
+remain in current-source discovery. No assertion is rewritten or skipped.
+The adapter emits both context names and an aggregate executed-test count.
+
+Before replay, all pre-existing tracked paths must match each checkpoint in the
+working tree (including deletions, renames and type changes). Exactly ten known
+later global updates are instead pinned to `8c2d4f33cf55ee0f9ca1509261669c3feeeca4e3`:
+the workflow, panel visual-review report, architecture README/WORK/check_source
+entrypoints, osc-panel/next-actions docs, workbench README/render.js, and panel
+export script. Their exact paths are enumerated in the adapter. Frozen tests
+validate their original versions; this is not coverage of modifications to those
+current files. The only unpinned historical paths are this repair's discovery
+shell entrypoint and this boundary document. Historical test and evidence files
+receive no exception. Missing commits, modules, evidence, or changed bindings
+fail; no fallback to current sources or passing skip is permitted.
+Future changes to bound paths require explicit context-policy review; this is
+deliberately not a permanent exemption for unrelated edits to those files.
+
+Replay uses the same interpreter and propagates optimized mode, a 600-second
+per-module limit, original test failures, and cleanup failures. Git-backed
+regressions cover dirty/deleted/renamed/redirected evidence, modified assertions,
+missing commits/modules, exception drift, snapshot execution, current-test
+failure propagation and worktree cleanup. This source-only context split does
+not regenerate evidence or establish hardware qualification.
+
+Its inputs are committed source,
 committed small fixtures, and temporary synthetic fixtures. Passing this suite
 establishes software regression coverage only, not native board acceptance.
 
@@ -63,3 +102,26 @@ tests. The exact moved case inventory follows.
 - `peripheral_ground_source_retained_regression.py`: `test_exact_observed_fresh_native_stage_and_foreign_rule_rejection`
 - `jack_ground_source_epoch_retained_regression.py`: `test_current_exact_nominal_source_bridge`
 - `current_convex_source_gap_retained_regression.py`: `test_complete_reviewed_epoch_remains_blocked`, `test_geometry_and_physical_claims_fail_closed`, `test_modified_aggregate_is_rejected_before_classification`, `test_original_source_exists`. Shared setup loads the exact retained v6 aggregate indirectly through `checked_source()`; this dependency was found by the clean-checkout test.
+
+## Browser dependency boundary
+
+The Documentation CI Python job installs `scripts/checks/browser-requirements.txt`
+and that Playwright version's Chromium with OS dependencies before discovery.
+Only Chromium is installed (no unused headless-shell download). On its disposable
+Ubuntu runner, the executable is linked at `/usr/bin/chromium` for the retained
+Stage36 whole-layout browser harness, replacing the image's preinstalled launcher.
+A failed installation is an error, never a passing skip. Discovery executes all
+24 browser assertions once, alongside the directory's six source tests; browser
+exceptions still fail the job. No editor or retained harness files are rewritten.
+
+## Separate aggregate CI budget
+
+The reviewed CI split checkpoint above changes only the workflow among those ten
+bound paths; the other nine remain identical to ed3a6612. No historical module,
+checkpoint or exception path changed. `Python and native checks` and `Aggregate
+source regeneration` retain the same pinned setup and each has a 30-minute limit.
+The existing required `Python unit tests` name now checks both dependency results
+with `always()` and rejects anything except two successes. All original commands
+and the regeneration drift artifact are retained. See
+[`CI-TIMEOUT-DIAGNOSIS.md`](../checks/CI-TIMEOUT-DIAGNOSIS.md) for the original
+timeouts, resource duplication and validation boundary.

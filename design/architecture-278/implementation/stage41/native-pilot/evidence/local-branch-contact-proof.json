@@ -1,0 +1,215 @@
+{
+  "canonical_sha256": "e984c0a01156b5f282f0c849077c61572df30ee0c70dfe6c9db94fbfcfe52107",
+  "native_version": "10.0.6",
+  "branches": [
+    {
+      "name": "negative-IC-and-bypass",
+      "net": "-12V",
+      "plane": "In3.Cu",
+      "pads": [
+        "U3102:11",
+        "C3107:1"
+      ],
+      "ids": [
+        "ad4076c4-6993-563e-b756-f16bade968a8",
+        "d2685cd1-1b40-5f7b-812a-95ff8f967dee",
+        "b6a3e08a-344c-56dd-8210-3445bca58110"
+      ],
+      "retire_ids": [
+        "ad4076c4-6993-563e-b756-f16bade968a8",
+        "d2685cd1-1b40-5f7b-812a-95ff8f967dee",
+        "b6a3e08a-344c-56dd-8210-3445bca58110"
+      ],
+      "retained_anchor_ids": [],
+      "objects": [
+        {
+          "index": 1522,
+          "kind": "segment",
+          "uuid": "ad4076c4-6993-563e-b756-f16bade968a8",
+          "net": "-12V",
+          "sha256": "df75172915968158ae556ff0afa3b9f2236ed2951a30bb6ccc10ccb683283175",
+          "pad_contacts": [
+            {
+              "pad": "U3102:11",
+              "net": "-12V",
+              "layers": [
+                "F.Cu"
+              ]
+            }
+          ],
+          "outside_copper_contacts": [],
+          "proposed_retirement": true,
+          "via_plane_contains_center": []
+        },
+        {
+          "index": 1548,
+          "kind": "segment",
+          "uuid": "d2685cd1-1b40-5f7b-812a-95ff8f967dee",
+          "net": "-12V",
+          "sha256": "8169ed2b257b2597fece4530e6e6ef4b2044299ceb36625e5ce76cd86544243b",
+          "pad_contacts": [
+            {
+              "pad": "C3107:1",
+              "net": "-12V",
+              "layers": [
+                "F.Cu"
+              ]
+            }
+          ],
+          "outside_copper_contacts": [],
+          "proposed_retirement": true,
+          "via_plane_contains_center": []
+        },
+        {
+          "index": 1769,
+          "kind": "via",
+          "uuid": "b6a3e08a-344c-56dd-8210-3445bca58110",
+          "net": "-12V",
+          "sha256": "1602da0c72507fe693deb669eaf0048408c7d9c43d226bf119ca5456117a4c4c",
+          "pad_contacts": [],
+          "outside_copper_contacts": [],
+          "proposed_retirement": true,
+          "via_plane_contains_center": [
+            {
+              "uuid": "5ef02847-300d-5684-8a5b-1d757942d963",
+              "net": "-12V",
+              "layer": "In3.Cu"
+            }
+          ]
+        }
+      ],
+      "native_contact_graph_connected": true
+    },
+    {
+      "name": "positive-IC",
+      "net": "+12V",
+      "plane": "In4.Cu",
+      "pads": [
+        "U3102:4"
+      ],
+      "ids": [
+        "a7cc00f2-c575-500f-a42b-35d1ad78df1b",
+        "f2390319-3bbf-503b-8ce7-f134408e6163"
+      ],
+      "retire_ids": [
+        "a7cc00f2-c575-500f-a42b-35d1ad78df1b"
+      ],
+      "retained_anchor_ids": [
+        "f2390319-3bbf-503b-8ce7-f134408e6163"
+      ],
+      "objects": [
+        {
+          "index": 2506,
+          "kind": "segment",
+          "uuid": "a7cc00f2-c575-500f-a42b-35d1ad78df1b",
+          "net": "+12V",
+          "sha256": "932c78e63fa4f83242670f3b50e572017fd59ce1b0801df942c3c44d12a28b11",
+          "pad_contacts": [
+            {
+              "pad": "U3102:4",
+              "net": "+12V",
+              "layers": [
+                "F.Cu"
+              ]
+            }
+          ],
+          "outside_copper_contacts": [],
+          "proposed_retirement": true,
+          "via_plane_contains_center": []
+        },
+        {
+          "index": 2781,
+          "kind": "via",
+          "uuid": "f2390319-3bbf-503b-8ce7-f134408e6163",
+          "net": "+12V",
+          "sha256": "9ef7aa52b328286908ee512d0b7a476300f8bbbb6c14150ac4960745023f9bba",
+          "pad_contacts": [],
+          "outside_copper_contacts": [
+            {
+              "uuid": "1469e03d-eb79-5b5c-92d0-c7ed41dea028",
+              "net": "+12V",
+              "layers": [
+                "In2.Cu"
+              ]
+            }
+          ],
+          "proposed_retirement": false,
+          "via_plane_contains_center": [
+            {
+              "uuid": "90ebc320-18a8-570c-afa1-82e8c740d84e",
+              "net": "+12V",
+              "layer": "In4.Cu"
+            }
+          ]
+        }
+      ],
+      "native_contact_graph_connected": true
+    },
+    {
+      "name": "positive-bypass",
+      "net": "+12V",
+      "plane": "In4.Cu",
+      "pads": [
+        "C3106:1"
+      ],
+      "ids": [
+        "f442ae45-59e3-5ef8-a34a-b31090e70cfe",
+        "7222cef1-7777-575d-9c3f-191c117c080d"
+      ],
+      "retire_ids": [
+        "f442ae45-59e3-5ef8-a34a-b31090e70cfe"
+      ],
+      "retained_anchor_ids": [
+        "7222cef1-7777-575d-9c3f-191c117c080d"
+      ],
+      "objects": [
+        {
+          "index": 2554,
+          "kind": "segment",
+          "uuid": "f442ae45-59e3-5ef8-a34a-b31090e70cfe",
+          "net": "+12V",
+          "sha256": "891ce65bc3622599ff3b147f6a4e5df8a4ec8a3a5023973b843e23b289241d3d",
+          "pad_contacts": [
+            {
+              "pad": "C3106:1",
+              "net": "+12V",
+              "layers": [
+                "F.Cu"
+              ]
+            }
+          ],
+          "outside_copper_contacts": [],
+          "proposed_retirement": true,
+          "via_plane_contains_center": []
+        },
+        {
+          "index": 2675,
+          "kind": "via",
+          "uuid": "7222cef1-7777-575d-9c3f-191c117c080d",
+          "net": "+12V",
+          "sha256": "d4ead3b6cb2f9b723a37342a3a9f6dba15c0646d7a3eb2db672f4df0e8d5e156",
+          "pad_contacts": [],
+          "outside_copper_contacts": [
+            {
+              "uuid": "cc526944-19cf-5165-8098-d3ebef1702d5",
+              "net": "+12V",
+              "layers": [
+                "In2.Cu"
+              ]
+            }
+          ],
+          "proposed_retirement": false,
+          "via_plane_contains_center": [
+            {
+              "uuid": "90ebc320-18a8-570c-afa1-82e8c740d84e",
+              "net": "+12V",
+              "layer": "In4.Cu"
+            }
+          ]
+        }
+      ],
+      "native_contact_graph_connected": true
+    }
+  ],
+  "limits": "Exact local contact/plane-center screen only. Cut plus replacement still requires full native foreign/shared connectivity equality."
+}

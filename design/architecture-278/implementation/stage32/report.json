@@ -1,0 +1,163 @@
+{
+  "architecture_adopted": false,
+  "comparison": {
+    "B31": {
+      "failed": [
+        "S2_robust_K4",
+        "S3_retention_modelled",
+        "S4_sweeps_clear",
+        "S9_bend_maker_rule"
+      ],
+      "status": "NOT_ROBUST_UNDER_STAGE32_CHECKS",
+      "tightest_robust": {
+        "link": "J-PWR",
+        "obstacle": "board:A01-middle:1",
+        "robust_spare_mm": -0.758726,
+        "sampled_clearance_mm": 0.792893
+      }
+    },
+    "B32": {
+      "failed": [
+        "S9_bend_maker_rule"
+      ],
+      "status": "CONDITIONAL_PENDING_WIRE_SELECTION",
+      "tightest_robust": {
+        "link": "J-PWR",
+        "obstacle": "board:A01-middle:1",
+        "robust_spare_mm": 0.198836,
+        "sampled_clearance_mm": 2.142893
+      }
+    }
+  },
+  "decision_status": {
+    "D02": "CONFLICT_REQUIRES_DECISION (unchanged)",
+    "M-01": "NOT_RUN",
+    "M-09": "NOT_RUN",
+    "M-12": "NOT_RUN",
+    "cable_lengths": "DESIGN_LENGTH_PROPOSAL; not measured, not cut",
+    "header_moves": "PROPOSAL_NOT_ADOPTED",
+    "rail_change": "PROPOSAL_NOT_ADOPTED",
+    "reservations": "PROPOSAL_REQUIRES_OWNER_DECISION",
+    "retention": "PROPOSAL_NOT_ADOPTED",
+    "route": "WORKING_DESIGN_CONDITIONAL; not adopted",
+    "strength": "CALCULATED_CONDITIONALLY"
+  },
+  "design_lengths": {
+    "J-PWR": {
+      "design_length_proposal_mm": 150,
+      "installed_loop_top_z_mm": 70.920086,
+      "minimum_installed_mm": 121.159828,
+      "release_extra_15mm_mm": 18.8
+    },
+    "J-SIG": {
+      "design_length_proposal_mm": 136,
+      "installed_loop_top_z_mm": 71.036522,
+      "minimum_installed_mm": 106.726956,
+      "release_extra_15mm_mm": 19.0
+    }
+  },
+  "external_contact": "NONE",
+  "measurements": [
+    {
+      "id": "M32-01",
+      "item": "Selected wire MPN with the maker minimum bend radius, OD and the dressed 4/7-conductor bundle diameter",
+      "status": "NOT_RUN",
+      "value": null
+    },
+    {
+      "id": "M32-02",
+      "item": "GH unmating on a bench coupon: stroke to free, force, latch side, bundle grip length within 15 degrees",
+      "status": "NOT_RUN",
+      "value": null
+    },
+    {
+      "id": "M32-03",
+      "item": "Latch press and pull at the moved middle headers with the real neighbours fitted (finger or tool)",
+      "status": "NOT_RUN",
+      "value": null
+    },
+    {
+      "id": "M32-04",
+      "item": "A01-middle bow at the notch positions after assembly, spacer length, tab and notch-floor heights",
+      "status": "NOT_RUN",
+      "value": null
+    },
+    {
+      "id": "M32-05",
+      "item": "Neighbouring board planes, outlines and rear-side heights in RV-DIP / RV-ACCESS / RV-RUN",
+      "status": "NOT_RUN",
+      "value": null
+    },
+    {
+      "id": "M32-06",
+      "item": "Notched rail coupon: stiffness and strength at the notches with the real corner radius",
+      "status": "NOT_RUN",
+      "value": null
+    },
+    {
+      "id": "M32-07",
+      "item": "R1/R2 saddle fit, strap latch, axial slide force, abrasion after repeated release (M-12)",
+      "status": "NOT_RUN",
+      "value": null
+    },
+    {
+      "id": "M32-08",
+      "item": "Mock-up path and cut lengths for installed and release states (M-09)",
+      "status": "NOT_RUN",
+      "value": null
+    },
+    {
+      "id": "M32-09",
+      "item": "Panel-to-carrier registration (sweep gap to SW1701 / J1610)",
+      "status": "NOT_RUN",
+      "value": null
+    }
+  ],
+  "native": "NOT_RUN",
+  "open_conditions": {
+    "bend_radius": "maker rule not met by the 5 mm route for any identified wire",
+    "finger_operation": "NOT_DETERMINED",
+    "foreign_volume": "UNKNOWN (no board outline)",
+    "latch_side": "UNCONFIRMED",
+    "release_dip": {
+      "J-PWR": {
+        "NB-278": 10,
+        "NB-CAN": 15
+      },
+      "J-SIG": {
+        "NB-278": 10,
+        "NB-CAN": 15
+      }
+    }
+  },
+  "physical": "NOT_RUN",
+  "preservation_baseline": "66533ba69b03c1ad7b43bf41baf69c0b3d258673",
+  "production_CAD_changed": false,
+  "recommendation": {
+    "adopted": false,
+    "id": "B32",
+    "status": "CONDITIONAL_PENDING_WIRE_SELECTION"
+  },
+  "reservations": [
+    "RV-DIP-J-SIG",
+    "RV-ACCESS-J-SIG",
+    "RV-DIP-J-PWR",
+    "RV-ACCESS-J-PWR"
+  ],
+  "source_sha256": {
+    "design/architecture-278/implementation/stage31/approval.json": "9c7859937d32c52470892bc949770da8acdaf96fde68039f4b089eb55aeedd40",
+    "design/architecture-278/implementation/stage31/design-input.json": "b23e274fba0e13ef4e055918b9570556cf6044f3078062594bcd1b0f4516d58b",
+    "design/architecture-278/implementation/stage32/README.md": "ee07a515186e3c1b1a3a19479da2283fdc5b1267a36c9262635d191a8b841f77",
+    "design/architecture-278/implementation/stage32/approval.json": "c95e30b61609d2e4979b4680a140c9bb66a3fd2ac10164ae53f6c3aa31451a4e",
+    "design/architecture-278/implementation/stage32/design-input.json": "ae953a61e39535b922663e58de919955d1dd70e27c883132578d9689c5f90e54",
+    "design/architecture-278/implementation/stage32/sources.json": "a3f20c6750aa99fe68ce28f6373a9dee32a51ca116bd44d5e4e16b1697de9344",
+    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+    "scripts/architecture278/implementation/check_source.py": "3c2310b4f8186257dd75e33ffdd27b0ae26473a0ca0a9fdb0d2cc194e47325be",
+    "scripts/architecture278/implementation/stage28_din_harness.py": "49fab6a30d86e3f3aa9898e2268e3258532a49affaefc4f7203e306b2235468a",
+    "scripts/architecture278/implementation/stage30_din_design_integration.py": "a092803e4a68a0d90a81d4f50b3f8f09a74948a4f2195f4ec122ba0f2b5eef26",
+    "scripts/architecture278/implementation/stage31_cable_entry_redesign.py": "ecb6faae2a802841b8651e49b2c993291bd6598962c5079257828b1b2cc1add0",
+    "scripts/architecture278/implementation/stage32_service_envelope.py": "f38de834ecc125cf891e2604f5783333594d7a56a146577a03e3c97ba822240e",
+    "scripts/architecture278/implementation/test_stage32_service_envelope.py": "935b035125ae1ad3e063bdcd39758f7ab5b58c14cfaa58794c23d5b60438739b"
+  },
+  "status": "DESIGN_STUDY_ONLY"
+}
