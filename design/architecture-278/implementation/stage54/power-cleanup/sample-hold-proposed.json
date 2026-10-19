@@ -1,0 +1,207 @@
+{
+  "authority": "OSC-ES-1 PROPOSAL (planning, owner-delegated)",
+  "breakdown": [
+    {
+      "budget_load_id": "opamp_audio",
+      "planning_unit_mA": {
+        "+12V": 1.0,
+        "+5V": 0,
+        "-12V": 1.0
+      },
+      "symbol": "OPA4196IDR",
+      "typical_unit_mA": {
+        "+12V": 0.56,
+        "+5V": 0,
+        "-12V": 0.56
+      },
+      "whole_packages": 2
+    },
+    {
+      "budget_load_id": "opamp_precision",
+      "planning_unit_mA": {
+        "+12V": 6.0,
+        "+5V": 0,
+        "-12V": 6.0
+      },
+      "symbol": "OPA4197IPWR",
+      "typical_unit_mA": {
+        "+12V": 4,
+        "+5V": 0,
+        "-12V": 4
+      },
+      "whole_packages": 3
+    },
+    {
+      "budget_load_id": "fault_switches",
+      "planning_unit_mA": {
+        "+12V": 1.3,
+        "+5V": 0,
+        "-12V": 0.7
+      },
+      "symbol": "ADG5412FBRUZ",
+      "typical_unit_mA": {
+        "+12V": 0.9,
+        "+5V": 0,
+        "-12V": 0.5
+      },
+      "whole_packages": 2
+    },
+    {
+      "budget_load_id": "sample_hold",
+      "planning_unit_mA": {
+        "+12V": 6,
+        "+5V": 0,
+        "-12V": 6
+      },
+      "symbol": "LF398M_NOPB",
+      "typical_unit_mA": {
+        "+12V": 4.5,
+        "+5V": 0,
+        "-12V": 4.5
+      },
+      "whole_packages": 1
+    },
+    {
+      "budget_load_id": "comparators",
+      "planning_unit_mA": {
+        "+12V": 1,
+        "+5V": 0,
+        "-12V": 0
+      },
+      "symbol": "LM393BIDR",
+      "typical_unit_mA": {
+        "+12V": 0.6,
+        "+5V": 0,
+        "-12V": 0
+      },
+      "whole_packages": 1
+    },
+    {
+      "count": 3,
+      "dynamic_load": "magnitude_leds",
+      "planning_unit_mA": {
+        "+12V": 1.25,
+        "+5V": 0,
+        "-12V": 1.25
+      },
+      "typical_unit_mA": {
+        "+12V": 0.25,
+        "+5V": 0,
+        "-12V": 0.25
+      }
+    },
+    {
+      "count": 1,
+      "dynamic_load": "output_loads",
+      "planning_unit_mA": {
+        "+12V": 0.5,
+        "+5V": 0,
+        "-12V": 0.5
+      },
+      "typical_unit_mA": {
+        "+12V": 0.05,
+        "+5V": 0,
+        "-12V": 0.05
+      }
+    }
+  ],
+  "dnp_alternatives_per_instance": [
+    "C_HOLD_ALT",
+    "C_BULK_P12V",
+    "C_BULK_N12V",
+    "C_BULK_P5V"
+  ],
+  "fitted_package_count_per_instance": {
+    "1206CG104J500NT": 5,
+    "ADG5412FBRUZ": 2,
+    "B3F-1020": 1,
+    "BAS16GW_QX": 14,
+    "BAT54S_215": 2,
+    "C0603C102J5GACTU": 1,
+    "C0805C103J5GACTU": 2,
+    "CD74HC221M96": 1,
+    "GRM188R71H104KA93D": 24,
+    "Kingbright_White_0402": 3,
+    "LF398M_NOPB": 1,
+    "LM393BIDR": 1,
+    "OPA4196IDR": 2,
+    "OPA4197IPWR": 3,
+    "PTV09A-4020F-B504": 1,
+    "RC0603FR-07100KL": 17,
+    "RC0603FR-07100RL": 1,
+    "RC1210FR-07499RL": 2,
+    "REF5050AIDR": 1,
+    "RT0603BRD07100KL": 8,
+    "SN74HC14DR": 2,
+    "WQP518MA": 3
+  },
+  "instances": [
+    {
+      "basis": "Per-instance whole-package count from generated family plus the preliminary per-package/LED/output-load worksheet. This is a planning subtotal, not guaranteed maximum demand.",
+      "complete_total_maximum_mA": null,
+      "complete_total_typical_mA": null,
+      "instance": "H1",
+      "known_planning_upper_mA": {
+        "+12V": 33.85,
+        "+5V": 0.0,
+        "-12V": 31.65
+      },
+      "known_typical_mA": {
+        "+12V": 20.82,
+        "+5V": 0.0,
+        "-12V": 19.42
+      },
+      "maximum_status_by_rail": {
+        "+12V": "NOT ESTABLISHED - incomplete device/dynamic load data",
+        "+5V": "NOT ESTABLISHED - incomplete device/dynamic load data",
+        "-12V": "NOT ESTABLISHED - incomplete device/dynamic load data"
+      },
+      "plus_5V_note": "The 0 mA known +5 V subtotal is not a zero-current claim. HC14, HC221, pull-up and switching demand are unquantified. REF5050 input is on +12 V and is also absent from that rail subtotal.",
+      "unquantified": [
+        "REF5050 input and buffered reference loads on +12 V",
+        "SN74HC14 and CD74HC221 quiescent/dynamic current on +5 V",
+        "gate comparator and button pull-up switching duty",
+        "fault-switch enable feed and fault current",
+        "actual LF398 acquisition and hold drive",
+        "capacitor charge, output contention and cable load",
+        "factory population/allocation and package sharing"
+      ]
+    },
+    {
+      "basis": "Per-instance whole-package count from generated family plus the preliminary per-package/LED/output-load worksheet. This is a planning subtotal, not guaranteed maximum demand.",
+      "complete_total_maximum_mA": null,
+      "complete_total_typical_mA": null,
+      "instance": "H2",
+      "known_planning_upper_mA": {
+        "+12V": 33.85,
+        "+5V": 0.0,
+        "-12V": 31.65
+      },
+      "known_typical_mA": {
+        "+12V": 20.82,
+        "+5V": 0.0,
+        "-12V": 19.42
+      },
+      "maximum_status_by_rail": {
+        "+12V": "NOT ESTABLISHED - incomplete device/dynamic load data",
+        "+5V": "NOT ESTABLISHED - incomplete device/dynamic load data",
+        "-12V": "NOT ESTABLISHED - incomplete device/dynamic load data"
+      },
+      "plus_5V_note": "The 0 mA known +5 V subtotal is not a zero-current claim. HC14, HC221, pull-up and switching demand are unquantified. REF5050 input is on +12 V and is also absent from that rail subtotal.",
+      "unquantified": [
+        "REF5050 input and buffered reference loads on +12 V",
+        "SN74HC14 and CD74HC221 quiescent/dynamic current on +5 V",
+        "gate comparator and button pull-up switching duty",
+        "fault-switch enable feed and fault current",
+        "actual LF398 acquisition and hold drive",
+        "capacitor charge, output contention and cable load",
+        "factory population/allocation and package sharing"
+      ]
+    }
+  ],
+  "module": "sample_hold",
+  "schema_version": 1,
+  "source": "design/standard/rail-budget-preliminary.json",
+  "status": "Unvalidated partial current worksheet; no complete typical or maximum per rail",
+  "whole_instrument_warning": "The preliminary whole-instrument estimate is superseded by design/power/rail-budget.json; the S&H +12 V reference and +5 V logic draft allowances are recorded separately in design/power/rail-ledger.json. Guaranteed maxima remain unestablished."
+}

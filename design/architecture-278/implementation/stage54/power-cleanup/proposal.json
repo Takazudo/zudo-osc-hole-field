@@ -1,0 +1,1022 @@
+{
+  "active_channel_signatures_unchanged": true,
+  "analog_rail_bypass_reduction_uF": {
+    "+12V": 1.2,
+    "-12V": 1.2
+  },
+  "before_pin_count": 20434,
+  "candidate_schematic_sha256": {
+    "sheets/01_power_interfaces.kicad_sch": "c0f137c3aeb75b7ca8c0b0ddb8b6180791f0a77a0bb348ae35fe50f3bd0d6605",
+    "sheets/envelope.kicad_sch": "43d84d1db4a69e8f4cd3b008d6029fe630f2e530027dd9914a5e594e274229c8",
+    "sheets/filter.kicad_sch": "80031e7c824601ac7f7a020f066627e325b73e4e2d8f91cde1eef0682fc96098",
+    "sheets/manual_ab.kicad_sch": "2e24267e5f990b17f0ec6f11f04d3e3f2d3ef0ab21ba983aee7d16aef2613cb6",
+    "sheets/mix4_vca.kicad_sch": "4f40f6b84591147822c7e75f0a0c4a4f63a82cf143f1affdfb034af08fe5d68f",
+    "sheets/mix5.kicad_sch": "36888b2bbf98490db75bb3608dd8acb23870a73c29ed05ad5d6a9a49476785af",
+    "sheets/mult.kicad_sch": "efb406faaaefa3afb3beef287569e2da8d47a386f5d325e76baefa2acbcd4945",
+    "sheets/noise.kicad_sch": "5f0f5d62e9b6372e0d4d8c06770abf7b1de2184f7ff2b6b13fcca9b30338be71",
+    "sheets/octave_reference.kicad_sch": "023eb6823659615659f7bb56bd6f4938eb72fe4b75afa4569c7c63bfd7507239",
+    "sheets/offset.kicad_sch": "448a8b7da9e7b965c0c614562f40c912460898a65f72dd579b0f238350b403f9",
+    "sheets/oscillator.kicad_sch": "06ace0b9b5fae11377689cd39ddf67634cfd2ce4c6e143a000c0fd66cb05cece",
+    "sheets/sample_hold.kicad_sch": "483ff33506a8fe03b82087919d444bfe424225050ca5075a9b7867b30e4c5409",
+    "sheets/wavefolder.kicad_sch": "c600b25b2bc7f104ff295e0c0846759190c3ab5cac0f121c1ef83ef54cf161b6",
+    "zudo-osc-hole-field.kicad_sch": "1ff18463822ffc9c16c6d30a5017c93353aa5b4b2a4a1fe5e3d6602da48b2440"
+  },
+  "canonical_schematic_sha256": {
+    "sheets/01_power_interfaces.kicad_sch": "c0f137c3aeb75b7ca8c0b0ddb8b6180791f0a77a0bb348ae35fe50f3bd0d6605",
+    "sheets/envelope.kicad_sch": "43d84d1db4a69e8f4cd3b008d6029fe630f2e530027dd9914a5e594e274229c8",
+    "sheets/filter.kicad_sch": "80031e7c824601ac7f7a020f066627e325b73e4e2d8f91cde1eef0682fc96098",
+    "sheets/manual_ab.kicad_sch": "2e24267e5f990b17f0ec6f11f04d3e3f2d3ef0ab21ba983aee7d16aef2613cb6",
+    "sheets/mix4_vca.kicad_sch": "4f40f6b84591147822c7e75f0a0c4a4f63a82cf143f1affdfb034af08fe5d68f",
+    "sheets/mix5.kicad_sch": "36888b2bbf98490db75bb3608dd8acb23870a73c29ed05ad5d6a9a49476785af",
+    "sheets/mult.kicad_sch": "efb406faaaefa3afb3beef287569e2da8d47a386f5d325e76baefa2acbcd4945",
+    "sheets/noise.kicad_sch": "5f0f5d62e9b6372e0d4d8c06770abf7b1de2184f7ff2b6b13fcca9b30338be71",
+    "sheets/octave_reference.kicad_sch": "023eb6823659615659f7bb56bd6f4938eb72fe4b75afa4569c7c63bfd7507239",
+    "sheets/offset.kicad_sch": "448a8b7da9e7b965c0c614562f40c912460898a65f72dd579b0f238350b403f9",
+    "sheets/oscillator.kicad_sch": "06ace0b9b5fae11377689cd39ddf67634cfd2ce4c6e143a000c0fd66cb05cece",
+    "sheets/sample_hold.kicad_sch": "200c390a88a9f08132a0e051666e5684128b6416a02fe458ae75a836d4d715f0",
+    "sheets/wavefolder.kicad_sch": "c600b25b2bc7f104ff295e0c0846759190c3ab5cac0f121c1ef83ef54cf161b6",
+    "zudo-osc-hole-field.kicad_sch": "1ff18463822ffc9c16c6d30a5017c93353aa5b4b2a4a1fe5e3d6602da48b2440"
+  },
+  "limits": "Removes only private followers and their supply/bypass branches. No guarantee of hardware behavior, decoupling/layout suitability, ERC/DRC or supply capacity.",
+  "packages": [
+    {
+      "bypasses": [
+        {
+          "key": "C_DEC_28",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "+12V",
+            "2": "AGND"
+          },
+          "ref": "C140",
+          "value": "100 nF"
+        },
+        {
+          "key": "C_DEC_29",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "-12V",
+            "2": "AGND"
+          },
+          "ref": "C141",
+          "value": "100 nF"
+        }
+      ],
+      "followers": [
+        {
+          "native_semantic_net": "/H1/magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED1",
+          "pins": {
+            "1": "magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED1",
+            "2": "magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED1",
+            "3": "AGND"
+          },
+          "unit": 1
+        },
+        {
+          "native_semantic_net": "/H1/magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED2",
+          "pins": {
+            "5": "AGND",
+            "6": "magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED2",
+            "7": "magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED2"
+          },
+          "unit": 2
+        },
+        {
+          "native_semantic_net": "/H1/magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED3",
+          "pins": {
+            "10": "AGND",
+            "8": "magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED3",
+            "9": "magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED3"
+          },
+          "unit": 3
+        },
+        {
+          "native_semantic_net": "/H1/magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED4",
+          "pins": {
+            "12": "AGND",
+            "13": "magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED4",
+            "14": "magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED4"
+          },
+          "unit": 4
+        }
+      ],
+      "instance": "H1",
+      "mpn": "OPA4196IDR",
+      "ref": "U112",
+      "stem": "magnitude_indicator_L_H1_TRIGGER_mag___A",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    },
+    {
+      "bypasses": [
+        {
+          "key": "C_DEC_30",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "+12V",
+            "2": "AGND"
+          },
+          "ref": "C142",
+          "value": "100 nF"
+        },
+        {
+          "key": "C_DEC_31",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "-12V",
+            "2": "AGND"
+          },
+          "ref": "C143",
+          "value": "100 nF"
+        }
+      ],
+      "followers": [
+        {
+          "native_semantic_net": "/H1/magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED1",
+          "pins": {
+            "1": "magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED1",
+            "2": "magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED1",
+            "3": "AGND"
+          },
+          "unit": 1
+        },
+        {
+          "native_semantic_net": "/H1/magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED2",
+          "pins": {
+            "5": "AGND",
+            "6": "magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED2",
+            "7": "magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED2"
+          },
+          "unit": 2
+        },
+        {
+          "native_semantic_net": "/H1/magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED3",
+          "pins": {
+            "10": "AGND",
+            "8": "magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED3",
+            "9": "magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED3"
+          },
+          "unit": 3
+        },
+        {
+          "native_semantic_net": "/H1/magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED4",
+          "pins": {
+            "12": "AGND",
+            "13": "magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED4",
+            "14": "magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED4"
+          },
+          "unit": 4
+        }
+      ],
+      "instance": "H1",
+      "mpn": "OPA4196IDR",
+      "ref": "U113",
+      "stem": "magnitude_indicator_L_H1_IN_mag___A",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    },
+    {
+      "bypasses": [
+        {
+          "key": "C_DEC_16",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "+12V",
+            "2": "AGND"
+          },
+          "ref": "C128",
+          "value": "100 nF"
+        },
+        {
+          "key": "C_DEC_17",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "-12V",
+            "2": "AGND"
+          },
+          "ref": "C129",
+          "value": "100 nF"
+        }
+      ],
+      "followers": [
+        {
+          "native_semantic_net": "/H1/slew_island_C_H1_SLEW___PRE_IO_UNUSED1",
+          "pins": {
+            "1": "slew_island_C_H1_SLEW___PRE_IO_UNUSED1",
+            "2": "slew_island_C_H1_SLEW___PRE_IO_UNUSED1",
+            "3": "AGND"
+          },
+          "unit": 1
+        },
+        {
+          "native_semantic_net": "/H1/slew_island_C_H1_SLEW___PRE_IO_UNUSED2",
+          "pins": {
+            "5": "AGND",
+            "6": "slew_island_C_H1_SLEW___PRE_IO_UNUSED2",
+            "7": "slew_island_C_H1_SLEW___PRE_IO_UNUSED2"
+          },
+          "unit": 2
+        },
+        {
+          "native_semantic_net": "/H1/slew_island_C_H1_SLEW___PRE_IO_UNUSED3",
+          "pins": {
+            "10": "AGND",
+            "8": "slew_island_C_H1_SLEW___PRE_IO_UNUSED3",
+            "9": "slew_island_C_H1_SLEW___PRE_IO_UNUSED3"
+          },
+          "unit": 3
+        },
+        {
+          "native_semantic_net": "/H1/slew_island_C_H1_SLEW___PRE_IO_UNUSED4",
+          "pins": {
+            "12": "AGND",
+            "13": "slew_island_C_H1_SLEW___PRE_IO_UNUSED4",
+            "14": "slew_island_C_H1_SLEW___PRE_IO_UNUSED4"
+          },
+          "unit": 4
+        }
+      ],
+      "instance": "H1",
+      "mpn": "OPA4197IPWR",
+      "ref": "U116",
+      "stem": "slew_island_C_H1_SLEW___PRE",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    },
+    {
+      "bypasses": [
+        {
+          "key": "C_DEC_19",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "+12V",
+            "2": "AGND"
+          },
+          "ref": "C131",
+          "value": "100 nF"
+        },
+        {
+          "key": "C_DEC_20",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "-12V",
+            "2": "AGND"
+          },
+          "ref": "C132",
+          "value": "100 nF"
+        }
+      ],
+      "followers": [
+        {
+          "native_semantic_net": "/H1/slew_island_C_H1_SLEW___POST_IO_UNUSED1",
+          "pins": {
+            "1": "slew_island_C_H1_SLEW___POST_IO_UNUSED1",
+            "2": "slew_island_C_H1_SLEW___POST_IO_UNUSED1",
+            "3": "AGND"
+          },
+          "unit": 1
+        },
+        {
+          "native_semantic_net": "/H1/slew_island_C_H1_SLEW___POST_IO_UNUSED2",
+          "pins": {
+            "5": "AGND",
+            "6": "slew_island_C_H1_SLEW___POST_IO_UNUSED2",
+            "7": "slew_island_C_H1_SLEW___POST_IO_UNUSED2"
+          },
+          "unit": 2
+        },
+        {
+          "native_semantic_net": "/H1/slew_island_C_H1_SLEW___POST_IO_UNUSED3",
+          "pins": {
+            "10": "AGND",
+            "8": "slew_island_C_H1_SLEW___POST_IO_UNUSED3",
+            "9": "slew_island_C_H1_SLEW___POST_IO_UNUSED3"
+          },
+          "unit": 3
+        },
+        {
+          "native_semantic_net": "/H1/slew_island_C_H1_SLEW___POST_IO_UNUSED4",
+          "pins": {
+            "12": "AGND",
+            "13": "slew_island_C_H1_SLEW___POST_IO_UNUSED4",
+            "14": "slew_island_C_H1_SLEW___POST_IO_UNUSED4"
+          },
+          "unit": 4
+        }
+      ],
+      "instance": "H1",
+      "mpn": "OPA4197IPWR",
+      "ref": "U117",
+      "stem": "slew_island_C_H1_SLEW___POST",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    },
+    {
+      "bypasses": [
+        {
+          "key": "C_DEC_21",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "+12V",
+            "2": "AGND"
+          },
+          "ref": "C133",
+          "value": "100 nF"
+        },
+        {
+          "key": "C_DEC_22",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "-12V",
+            "2": "AGND"
+          },
+          "ref": "C134",
+          "value": "100 nF"
+        }
+      ],
+      "followers": [
+        {
+          "native_semantic_net": "/H1/precision_output_J_H1_OUT___A_IO_UNUSED1",
+          "pins": {
+            "1": "precision_output_J_H1_OUT___A_IO_UNUSED1",
+            "2": "precision_output_J_H1_OUT___A_IO_UNUSED1",
+            "3": "AGND"
+          },
+          "unit": 1
+        },
+        {
+          "native_semantic_net": "/H1/precision_output_J_H1_OUT___A_IO_UNUSED2",
+          "pins": {
+            "5": "AGND",
+            "6": "precision_output_J_H1_OUT___A_IO_UNUSED2",
+            "7": "precision_output_J_H1_OUT___A_IO_UNUSED2"
+          },
+          "unit": 2
+        },
+        {
+          "native_semantic_net": "/H1/precision_output_J_H1_OUT___A_IO_UNUSED3",
+          "pins": {
+            "10": "AGND",
+            "8": "precision_output_J_H1_OUT___A_IO_UNUSED3",
+            "9": "precision_output_J_H1_OUT___A_IO_UNUSED3"
+          },
+          "unit": 3
+        },
+        {
+          "native_semantic_net": "/H1/precision_output_J_H1_OUT___A_IO_UNUSED4",
+          "pins": {
+            "12": "AGND",
+            "13": "precision_output_J_H1_OUT___A_IO_UNUSED4",
+            "14": "precision_output_J_H1_OUT___A_IO_UNUSED4"
+          },
+          "unit": 4
+        }
+      ],
+      "instance": "H1",
+      "mpn": "OPA4197IPWR",
+      "ref": "U118",
+      "stem": "precision_output_J_H1_OUT___A",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    },
+    {
+      "bypasses": [
+        {
+          "key": "C_DEC_32",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "+12V",
+            "2": "AGND"
+          },
+          "ref": "C144",
+          "value": "100 nF"
+        },
+        {
+          "key": "C_DEC_33",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "-12V",
+            "2": "AGND"
+          },
+          "ref": "C145",
+          "value": "100 nF"
+        }
+      ],
+      "followers": [
+        {
+          "native_semantic_net": "/H1/magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED1",
+          "pins": {
+            "1": "magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED1",
+            "2": "magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED1",
+            "3": "AGND"
+          },
+          "unit": 1
+        },
+        {
+          "native_semantic_net": "/H1/magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED2",
+          "pins": {
+            "5": "AGND",
+            "6": "magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED2",
+            "7": "magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED2"
+          },
+          "unit": 2
+        },
+        {
+          "native_semantic_net": "/H1/magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED3",
+          "pins": {
+            "10": "AGND",
+            "8": "magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED3",
+            "9": "magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED3"
+          },
+          "unit": 3
+        },
+        {
+          "native_semantic_net": "/H1/magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED4",
+          "pins": {
+            "12": "AGND",
+            "13": "magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED4",
+            "14": "magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED4"
+          },
+          "unit": 4
+        }
+      ],
+      "instance": "H1",
+      "mpn": "OPA4196IDR",
+      "ref": "U119",
+      "stem": "magnitude_indicator_L_H1_OUT_mag___A",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    },
+    {
+      "bypasses": [
+        {
+          "key": "C_DEC_28",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "+12V",
+            "2": "AGND"
+          },
+          "ref": "C240",
+          "value": "100 nF"
+        },
+        {
+          "key": "C_DEC_29",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "-12V",
+            "2": "AGND"
+          },
+          "ref": "C241",
+          "value": "100 nF"
+        }
+      ],
+      "followers": [
+        {
+          "native_semantic_net": "/H2/magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED1",
+          "pins": {
+            "1": "magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED1",
+            "2": "magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED1",
+            "3": "AGND"
+          },
+          "unit": 1
+        },
+        {
+          "native_semantic_net": "/H2/magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED2",
+          "pins": {
+            "5": "AGND",
+            "6": "magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED2",
+            "7": "magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED2"
+          },
+          "unit": 2
+        },
+        {
+          "native_semantic_net": "/H2/magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED3",
+          "pins": {
+            "10": "AGND",
+            "8": "magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED3",
+            "9": "magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED3"
+          },
+          "unit": 3
+        },
+        {
+          "native_semantic_net": "/H2/magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED4",
+          "pins": {
+            "12": "AGND",
+            "13": "magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED4",
+            "14": "magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED4"
+          },
+          "unit": 4
+        }
+      ],
+      "instance": "H2",
+      "mpn": "OPA4196IDR",
+      "ref": "U212",
+      "stem": "magnitude_indicator_L_H1_TRIGGER_mag___A",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    },
+    {
+      "bypasses": [
+        {
+          "key": "C_DEC_30",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "+12V",
+            "2": "AGND"
+          },
+          "ref": "C242",
+          "value": "100 nF"
+        },
+        {
+          "key": "C_DEC_31",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "-12V",
+            "2": "AGND"
+          },
+          "ref": "C243",
+          "value": "100 nF"
+        }
+      ],
+      "followers": [
+        {
+          "native_semantic_net": "/H2/magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED1",
+          "pins": {
+            "1": "magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED1",
+            "2": "magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED1",
+            "3": "AGND"
+          },
+          "unit": 1
+        },
+        {
+          "native_semantic_net": "/H2/magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED2",
+          "pins": {
+            "5": "AGND",
+            "6": "magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED2",
+            "7": "magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED2"
+          },
+          "unit": 2
+        },
+        {
+          "native_semantic_net": "/H2/magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED3",
+          "pins": {
+            "10": "AGND",
+            "8": "magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED3",
+            "9": "magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED3"
+          },
+          "unit": 3
+        },
+        {
+          "native_semantic_net": "/H2/magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED4",
+          "pins": {
+            "12": "AGND",
+            "13": "magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED4",
+            "14": "magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED4"
+          },
+          "unit": 4
+        }
+      ],
+      "instance": "H2",
+      "mpn": "OPA4196IDR",
+      "ref": "U213",
+      "stem": "magnitude_indicator_L_H1_IN_mag___A",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    },
+    {
+      "bypasses": [
+        {
+          "key": "C_DEC_16",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "+12V",
+            "2": "AGND"
+          },
+          "ref": "C228",
+          "value": "100 nF"
+        },
+        {
+          "key": "C_DEC_17",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "-12V",
+            "2": "AGND"
+          },
+          "ref": "C229",
+          "value": "100 nF"
+        }
+      ],
+      "followers": [
+        {
+          "native_semantic_net": "/H2/slew_island_C_H1_SLEW___PRE_IO_UNUSED1",
+          "pins": {
+            "1": "slew_island_C_H1_SLEW___PRE_IO_UNUSED1",
+            "2": "slew_island_C_H1_SLEW___PRE_IO_UNUSED1",
+            "3": "AGND"
+          },
+          "unit": 1
+        },
+        {
+          "native_semantic_net": "/H2/slew_island_C_H1_SLEW___PRE_IO_UNUSED2",
+          "pins": {
+            "5": "AGND",
+            "6": "slew_island_C_H1_SLEW___PRE_IO_UNUSED2",
+            "7": "slew_island_C_H1_SLEW___PRE_IO_UNUSED2"
+          },
+          "unit": 2
+        },
+        {
+          "native_semantic_net": "/H2/slew_island_C_H1_SLEW___PRE_IO_UNUSED3",
+          "pins": {
+            "10": "AGND",
+            "8": "slew_island_C_H1_SLEW___PRE_IO_UNUSED3",
+            "9": "slew_island_C_H1_SLEW___PRE_IO_UNUSED3"
+          },
+          "unit": 3
+        },
+        {
+          "native_semantic_net": "/H2/slew_island_C_H1_SLEW___PRE_IO_UNUSED4",
+          "pins": {
+            "12": "AGND",
+            "13": "slew_island_C_H1_SLEW___PRE_IO_UNUSED4",
+            "14": "slew_island_C_H1_SLEW___PRE_IO_UNUSED4"
+          },
+          "unit": 4
+        }
+      ],
+      "instance": "H2",
+      "mpn": "OPA4197IPWR",
+      "ref": "U216",
+      "stem": "slew_island_C_H1_SLEW___PRE",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    },
+    {
+      "bypasses": [
+        {
+          "key": "C_DEC_19",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "+12V",
+            "2": "AGND"
+          },
+          "ref": "C231",
+          "value": "100 nF"
+        },
+        {
+          "key": "C_DEC_20",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "-12V",
+            "2": "AGND"
+          },
+          "ref": "C232",
+          "value": "100 nF"
+        }
+      ],
+      "followers": [
+        {
+          "native_semantic_net": "/H2/slew_island_C_H1_SLEW___POST_IO_UNUSED1",
+          "pins": {
+            "1": "slew_island_C_H1_SLEW___POST_IO_UNUSED1",
+            "2": "slew_island_C_H1_SLEW___POST_IO_UNUSED1",
+            "3": "AGND"
+          },
+          "unit": 1
+        },
+        {
+          "native_semantic_net": "/H2/slew_island_C_H1_SLEW___POST_IO_UNUSED2",
+          "pins": {
+            "5": "AGND",
+            "6": "slew_island_C_H1_SLEW___POST_IO_UNUSED2",
+            "7": "slew_island_C_H1_SLEW___POST_IO_UNUSED2"
+          },
+          "unit": 2
+        },
+        {
+          "native_semantic_net": "/H2/slew_island_C_H1_SLEW___POST_IO_UNUSED3",
+          "pins": {
+            "10": "AGND",
+            "8": "slew_island_C_H1_SLEW___POST_IO_UNUSED3",
+            "9": "slew_island_C_H1_SLEW___POST_IO_UNUSED3"
+          },
+          "unit": 3
+        },
+        {
+          "native_semantic_net": "/H2/slew_island_C_H1_SLEW___POST_IO_UNUSED4",
+          "pins": {
+            "12": "AGND",
+            "13": "slew_island_C_H1_SLEW___POST_IO_UNUSED4",
+            "14": "slew_island_C_H1_SLEW___POST_IO_UNUSED4"
+          },
+          "unit": 4
+        }
+      ],
+      "instance": "H2",
+      "mpn": "OPA4197IPWR",
+      "ref": "U217",
+      "stem": "slew_island_C_H1_SLEW___POST",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    },
+    {
+      "bypasses": [
+        {
+          "key": "C_DEC_21",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "+12V",
+            "2": "AGND"
+          },
+          "ref": "C233",
+          "value": "100 nF"
+        },
+        {
+          "key": "C_DEC_22",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "-12V",
+            "2": "AGND"
+          },
+          "ref": "C234",
+          "value": "100 nF"
+        }
+      ],
+      "followers": [
+        {
+          "native_semantic_net": "/H2/precision_output_J_H1_OUT___A_IO_UNUSED1",
+          "pins": {
+            "1": "precision_output_J_H1_OUT___A_IO_UNUSED1",
+            "2": "precision_output_J_H1_OUT___A_IO_UNUSED1",
+            "3": "AGND"
+          },
+          "unit": 1
+        },
+        {
+          "native_semantic_net": "/H2/precision_output_J_H1_OUT___A_IO_UNUSED2",
+          "pins": {
+            "5": "AGND",
+            "6": "precision_output_J_H1_OUT___A_IO_UNUSED2",
+            "7": "precision_output_J_H1_OUT___A_IO_UNUSED2"
+          },
+          "unit": 2
+        },
+        {
+          "native_semantic_net": "/H2/precision_output_J_H1_OUT___A_IO_UNUSED3",
+          "pins": {
+            "10": "AGND",
+            "8": "precision_output_J_H1_OUT___A_IO_UNUSED3",
+            "9": "precision_output_J_H1_OUT___A_IO_UNUSED3"
+          },
+          "unit": 3
+        },
+        {
+          "native_semantic_net": "/H2/precision_output_J_H1_OUT___A_IO_UNUSED4",
+          "pins": {
+            "12": "AGND",
+            "13": "precision_output_J_H1_OUT___A_IO_UNUSED4",
+            "14": "precision_output_J_H1_OUT___A_IO_UNUSED4"
+          },
+          "unit": 4
+        }
+      ],
+      "instance": "H2",
+      "mpn": "OPA4197IPWR",
+      "ref": "U218",
+      "stem": "precision_output_J_H1_OUT___A",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    },
+    {
+      "bypasses": [
+        {
+          "key": "C_DEC_32",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "+12V",
+            "2": "AGND"
+          },
+          "ref": "C244",
+          "value": "100 nF"
+        },
+        {
+          "key": "C_DEC_33",
+          "mpn": "GRM188R71H104KA93D",
+          "pins": {
+            "1": "-12V",
+            "2": "AGND"
+          },
+          "ref": "C245",
+          "value": "100 nF"
+        }
+      ],
+      "followers": [
+        {
+          "native_semantic_net": "/H2/magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED1",
+          "pins": {
+            "1": "magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED1",
+            "2": "magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED1",
+            "3": "AGND"
+          },
+          "unit": 1
+        },
+        {
+          "native_semantic_net": "/H2/magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED2",
+          "pins": {
+            "5": "AGND",
+            "6": "magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED2",
+            "7": "magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED2"
+          },
+          "unit": 2
+        },
+        {
+          "native_semantic_net": "/H2/magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED3",
+          "pins": {
+            "10": "AGND",
+            "8": "magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED3",
+            "9": "magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED3"
+          },
+          "unit": 3
+        },
+        {
+          "native_semantic_net": "/H2/magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED4",
+          "pins": {
+            "12": "AGND",
+            "13": "magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED4",
+            "14": "magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED4"
+          },
+          "unit": 4
+        }
+      ],
+      "instance": "H2",
+      "mpn": "OPA4196IDR",
+      "ref": "U219",
+      "stem": "magnitude_indicator_L_H1_OUT_mag___A",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    }
+  ],
+  "panel_bindings_unchanged": true,
+  "physical_bypass_count_removed": 24,
+  "physical_package_count_removed": 12,
+  "removed_family_part_keys": [
+    "C_DEC_16",
+    "C_DEC_17",
+    "C_DEC_19",
+    "C_DEC_20",
+    "C_DEC_21",
+    "C_DEC_22",
+    "C_DEC_28",
+    "C_DEC_29",
+    "C_DEC_30",
+    "C_DEC_31",
+    "C_DEC_32",
+    "C_DEC_33",
+    "magnitude_indicator_L_H1_IN_mag___A.1",
+    "magnitude_indicator_L_H1_IN_mag___A.2",
+    "magnitude_indicator_L_H1_IN_mag___A.3",
+    "magnitude_indicator_L_H1_IN_mag___A.4",
+    "magnitude_indicator_L_H1_IN_mag___A.5",
+    "magnitude_indicator_L_H1_OUT_mag___A.1",
+    "magnitude_indicator_L_H1_OUT_mag___A.2",
+    "magnitude_indicator_L_H1_OUT_mag___A.3",
+    "magnitude_indicator_L_H1_OUT_mag___A.4",
+    "magnitude_indicator_L_H1_OUT_mag___A.5",
+    "magnitude_indicator_L_H1_TRIGGER_mag___A.1",
+    "magnitude_indicator_L_H1_TRIGGER_mag___A.2",
+    "magnitude_indicator_L_H1_TRIGGER_mag___A.3",
+    "magnitude_indicator_L_H1_TRIGGER_mag___A.4",
+    "magnitude_indicator_L_H1_TRIGGER_mag___A.5",
+    "precision_output_J_H1_OUT___A.1",
+    "precision_output_J_H1_OUT___A.2",
+    "precision_output_J_H1_OUT___A.3",
+    "precision_output_J_H1_OUT___A.4",
+    "precision_output_J_H1_OUT___A.5",
+    "slew_island_C_H1_SLEW___POST.1",
+    "slew_island_C_H1_SLEW___POST.2",
+    "slew_island_C_H1_SLEW___POST.3",
+    "slew_island_C_H1_SLEW___POST.4",
+    "slew_island_C_H1_SLEW___POST.5",
+    "slew_island_C_H1_SLEW___PRE.1",
+    "slew_island_C_H1_SLEW___PRE.2",
+    "slew_island_C_H1_SLEW___PRE.3",
+    "slew_island_C_H1_SLEW___PRE.4",
+    "slew_island_C_H1_SLEW___PRE.5"
+  ],
+  "removed_private_nets": [
+    "/H1/magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED1",
+    "/H1/magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED2",
+    "/H1/magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED3",
+    "/H1/magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED4",
+    "/H1/magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED1",
+    "/H1/magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED2",
+    "/H1/magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED3",
+    "/H1/magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED4",
+    "/H1/magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED1",
+    "/H1/magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED2",
+    "/H1/magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED3",
+    "/H1/magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED4",
+    "/H1/precision_output_J_H1_OUT___A_IO_UNUSED1",
+    "/H1/precision_output_J_H1_OUT___A_IO_UNUSED2",
+    "/H1/precision_output_J_H1_OUT___A_IO_UNUSED3",
+    "/H1/precision_output_J_H1_OUT___A_IO_UNUSED4",
+    "/H1/slew_island_C_H1_SLEW___POST_IO_UNUSED1",
+    "/H1/slew_island_C_H1_SLEW___POST_IO_UNUSED2",
+    "/H1/slew_island_C_H1_SLEW___POST_IO_UNUSED3",
+    "/H1/slew_island_C_H1_SLEW___POST_IO_UNUSED4",
+    "/H1/slew_island_C_H1_SLEW___PRE_IO_UNUSED1",
+    "/H1/slew_island_C_H1_SLEW___PRE_IO_UNUSED2",
+    "/H1/slew_island_C_H1_SLEW___PRE_IO_UNUSED3",
+    "/H1/slew_island_C_H1_SLEW___PRE_IO_UNUSED4",
+    "/H2/magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED1",
+    "/H2/magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED2",
+    "/H2/magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED3",
+    "/H2/magnitude_indicator_L_H1_IN_mag___A_IO_UNUSED4",
+    "/H2/magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED1",
+    "/H2/magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED2",
+    "/H2/magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED3",
+    "/H2/magnitude_indicator_L_H1_OUT_mag___A_IO_UNUSED4",
+    "/H2/magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED1",
+    "/H2/magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED2",
+    "/H2/magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED3",
+    "/H2/magnitude_indicator_L_H1_TRIGGER_mag___A_IO_UNUSED4",
+    "/H2/precision_output_J_H1_OUT___A_IO_UNUSED1",
+    "/H2/precision_output_J_H1_OUT___A_IO_UNUSED2",
+    "/H2/precision_output_J_H1_OUT___A_IO_UNUSED3",
+    "/H2/precision_output_J_H1_OUT___A_IO_UNUSED4",
+    "/H2/slew_island_C_H1_SLEW___POST_IO_UNUSED1",
+    "/H2/slew_island_C_H1_SLEW___POST_IO_UNUSED2",
+    "/H2/slew_island_C_H1_SLEW___POST_IO_UNUSED3",
+    "/H2/slew_island_C_H1_SLEW___POST_IO_UNUSED4",
+    "/H2/slew_island_C_H1_SLEW___PRE_IO_UNUSED1",
+    "/H2/slew_island_C_H1_SLEW___PRE_IO_UNUSED2",
+    "/H2/slew_island_C_H1_SLEW___PRE_IO_UNUSED3",
+    "/H2/slew_island_C_H1_SLEW___PRE_IO_UNUSED4"
+  ],
+  "removed_refs": [
+    "C128",
+    "C129",
+    "C131",
+    "C132",
+    "C133",
+    "C134",
+    "C140",
+    "C141",
+    "C142",
+    "C143",
+    "C144",
+    "C145",
+    "C228",
+    "C229",
+    "C231",
+    "C232",
+    "C233",
+    "C234",
+    "C240",
+    "C241",
+    "C242",
+    "C243",
+    "C244",
+    "C245",
+    "U112",
+    "U113",
+    "U116",
+    "U117",
+    "U118",
+    "U119",
+    "U212",
+    "U213",
+    "U216",
+    "U217",
+    "U218",
+    "U219"
+  ],
+  "retained_part_fields_unchanged": true,
+  "retained_pin_count": 20218,
+  "retained_pin_net_sha256": "5ac07c2bda871165e3e59ffcc1b974e511d15daa6baabe9ce22d98b771e922d4",
+  "status": "PROPOSAL ONLY; source no-active-function-loss, not physical validation"
+}
