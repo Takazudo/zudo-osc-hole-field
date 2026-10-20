@@ -10,7 +10,7 @@ Runs inside the pinned KiCad 10.0.6 oracle (`bash scripts/kicad/run.sh python3 .
 Usage: pcb_cleanup.py SOURCE_PCB OUTPUT_PCB RECEIPT_JSON SCHEMATIC_RECEIPT_JSON
 
 Deletion rules, all explicit and reported item by item:
-1. the 36 removed footprints;
+1. the 30 removed footprints;
 2. every track, arc and via on the 48 removed private nets (must have no zone);
 3. iteratively, on shared rail nets, a track/via with an end that touched a removed pad
    or deleted copper and now meets no remaining track, via or pad there. Copper that
