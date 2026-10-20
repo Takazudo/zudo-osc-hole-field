@@ -43,6 +43,14 @@ class DecompositionTests(unittest.TestCase):
             self.assertIn('UNVERIFIED', lv[name]['classification'])
         self.assertTrue(all(v is None for v in self.data['measured'].values()))
 
+    def test_fitted_startup_row_is_below_ceiling_and_not_a_contract(self):
+        lv = self.data['levels']
+        fitted = lv['startup_envelope_fitted_capacitance']
+        self.assertIn('not a contract value', fitted['classification'])
+        for r in decompose.RAILS:
+            self.assertLess(fitted['mA'][r], lv['startup_worst_envelope']['mA'][r])
+            self.assertGreater(fitted['mA'][r], lv['canonical_planning_all_upper_terms']['mA'][r])
+
 
 if __name__ == '__main__':
     unittest.main()

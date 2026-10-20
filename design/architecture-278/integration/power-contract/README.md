@@ -230,7 +230,8 @@ All values are mA, given as +12 V / −12 V / +5 V.
 | Heavy realistic patch | 1534.8 / 1435.6 / 221.0 | 36.7 / 37.5 (34.8 nominal with one rail at a time) | 1700 / 1600 / 300 | CALCULATED, UNVERIFIED |
 | Canonical planning | 1534.8 / 1435.6 / 224.3 | 36.8 / 37.5 | 1700 / 1600 / 300 | PLANNING (governs) |
 | Explicit usage limit (candidate) | 1386.2 / 1287.0 / 203.0 | 33.1 / 33.8 | 1600 / 1500 / 300 | CANDIDATE, CALCULATED, UNVERIFIED |
-| Startup worst envelope | 1759.5 / 1658.2 / 286.7 | 42.4 / 43.3 | — | CONSERVATIVE ENVELOPE |
+| Startup worst envelope (capacitance ceiling) | 1759.5 / 1658.2 / 286.7 | 42.4 / 43.3 | — | CONSERVATIVE ENVELOPE |
+| Startup with fitted capacitance | 1609.5 / 1498.2 / 239.6 | 38.5 / 39.3 | — | CALCULATED, UNVERIFIED; not a contract value |
 | Continuous requirement | 1700 / 1600 / 300 | 41.1 / 42.0 | — | CONTRACT, unchanged |
 | 20 ms transient requirement | 2000 / 1900 / 400 | 48.8 / 49.8 | — | CONTRACT, unchanged |
 
@@ -253,16 +254,34 @@ All values are mA, given as +12 V / −12 V / +5 V.
   - Inference: at that efficiency the transient corresponds to roughly 64 W at the charger. This matches the owner's 64 W example, but it is not a measured or adopted figure.
 - **The excess over 60 W is startup, not patching.** The transient adds 300 / 300 / 100 mA above continuous, and that is mostly the 10 ms full-capacitance ramp. A usage notice cannot reduce it. Only OSC hardware can: slower soft start, sequencing or less capacitance (PD-003 L5). Any of those changes an OSC contract value and needs the owner.
 
-### Circuit facts requested from the OSC owner (via the coordinator)
+**Startup with fitted capacitance:** the ceiling row charges 150 / 150 / 100 µF (+20 %) at the 10 ms minimum soft start, adding 224.6 / 222.7 / 62.4 mA. The OSC owner reports 49.9 / 42.2 / 24.5 µF fitted (all MLCC, +5 V including NOISE_VDD 4.7 µF; Q6), which adds 74.7 / 62.6 / 15.3 mA. The contract keeps the ceiling, so capacitance may still be added up to it, and the transient requirement is unchanged.
 
-| ID | Question | Effect |
+### Circuit facts from the OSC owner (Q1–Q6, relayed by the coordinator, source at `e1969027`)
+
+| ID | Answer | Effect here |
 | --- | --- | --- |
-| Q1 | Do the magnitude indicators drive LEDs bipolar from an op-amp output to ground, or from a rectified single-polarity output? | Rail split of 174 mA per rail of patch/indicator planning |
-| Q2 | Stage54 confirms the A01–A06, M4A/B and M5A/B LM393s on −12 V. Do the H1/H2, O1–O5 and E1–E6 LM393s also connect pin 4 to −12 V? | Those rows book 0 mA on −12 V; possible under-booking |
-| Q3 | LM13700 IABC per OTA at minimum and maximum control, and which reserve pool carries it | Size of the open OTA bias overlap; control dependence of the 96 mA OTA allowance |
-| Q4 | Which parts of the 233 mA per-rail reserve are fixed operating-point currents and which are signal-dependent | How much reserve a measurement could release |
-| Q5 | HC logic and NOISE2 current at the maximum clock and trigger rate | Whether 87 + 10 mA on +5 V is fixed or rate-bounded |
-| Q6 | Fitted downstream bulk capacitance per rail against the 150 / 150 / 100 µF (+20 %) ceiling, and whether per-module soft start or sequencing is acceptable | Size of the startup ramp that drives the transient |
+| Q1 | 92 magnitude paths sit in BAS16GW-QX bridges: the positive half draws +12 V → 5.6 kΩ → AGND, the negative half sinks into the −12 V-side op-amp. 10 clip LEDs run +12 V → 22.1 kΩ → LED → LM393 open collector | Confirms the one-rail-at-a-time set; clip LEDs stay on both rails |
+| Q2 | 44 LM393s, pin 8 on +12 V. Pin 4 on AGND for 24 (U107/U207, O1–O5, E1–E6) and on −12 V for 20 (A01–A06, M4A/B, M5A/B) | The 0 mA −12 V booking of the H/O/E rows is correct; no change |
+| Q3 | LM13700 IABC values are nominal (filter 0.49–506 µA derived, RES 0–100 µA, DRY 0–403 µA, envelope 0.49–500 µA, MIX4 0–500 µA, wavefolder 0–403 µA in its own row) | Overlap with reserves stays unallocated; no credit |
+| Q4 | Only the 26 mA per rail of trim is stated as fixed; no source splits the rest | Reserves stay as booked |
+| Q5 | 87 mA is a fixed 6 × 29 × 0.5 mA allowance; NOISE2 10 mA is an example value; no maximum trigger rate is stated | No change |
+| Q6 | Fitted 49.9 / 42.2 / 19.6 µF (24.5 µF on +5 V with NOISE_VDD), far below the ceiling; no soft start, inrush limiting, sequencing or power-good is implemented | New fitted-capacitance startup row |
+
+## Review of the PD 60 W-class screen
+
+Reviewed zudo-pd PR #219 `7bb2e0a85069d4acca95a4b214c77d6494cad55d` (`manufacturing/power-limit-60w.md`). Integration review only.
+
+| ID | Finding | Effect |
+| --- | --- | --- |
+| W1 | PD quotes the decomposition rows from `17fd746` unchanged and keeps the OSC record values as the verification record | Agree |
+| W2 | R60 caps (1.60 / 1.50 / 0.28 A) carry the OSC usage-limit candidate demand (1.386 / 1.287 / 0.203 A), but not its ×1.1 rule result (1.6 / 1.5 / 0.3 A): +5 V 0.3 > 0.28 A, and the total is EDGE on the LTC4282 basis. Above the heavy realistic patch, R60 leaves about 4 % on ±12 V where the OSC rule asks for 10 % | Using R60 for OSC means dropping or refining the OSC reserve and rounding rule. That is an OSC contract change for PWR-D5, not a supply-side choice |
+| W3 | Startup envelope 42.4 W (12 / 12 / 5 V) / 43.3 W (source-band maximum) matches this record; PD's non-fit against every safe trip holds for the ceiling row. With fitted capacitance (1.610 / 1.498 / 0.240 A), +12 V exceeds the R60 LTC4282 cap by about 10 mA and −12 V is about 2 mA inside; the INA301 reference caps (1.66 / 1.56 / 0.29 A) carry it on paper | Fitted row is EDGE, not PASS; full OSC still needs the ceiling |
+| W4 | The OSC contract sets a 10 ms **minimum** soft start (`supply-architecture-input.json` `soft_start_min_ms`); no maximum was found. PD reads it as a ceiling ("reach their bands within the OSC 10 ms"). A slower common source ramp is inside the contract as written and scales the ramp term down (20 ms halves it). What OSC must still answer for W60-D3: all-rails-together tolerance of a longer ramp, since no staged enable or power-good exists | Correct L6 wording; W60-D3 narrows to OSC tolerance |
+| W5 | The 90.8 % converter efficiency in this record applies to the current LDO chain; PD's screen uses the switcher-direct candidate with assumed efficiencies (transient 3.11–3.35 A against 3.0 A). Both conclude the 20 ms transient does not fit 60 W | Consistent |
+| W6 | M1 accepts on a 20 ms moving average. Peaks shorter than 20 ms are what a trip sees; accepting on the average alone would hide them | Add a peak criterion over the trip's own blanking window |
+| W7 | Latching all-rail off, re-plug reset, no auto-retry, no hold-up first, and sequenced start flagged against the all-rails-together rule match the PD-003 conditions | Agree |
+
+The lineup recommendation (C2 as the full-OSC basis; C1-L only for a light SKU until the startup fits and M1–M3 data exist) relaxes no OSC limit.
 
 ## Gap list
 
@@ -291,7 +310,7 @@ All values are mA, given as +12 V / −12 V / +5 V.
 | PWR-D4 | The brief's 1.493 / 1.394 / 0.224 A "planning normal" is the Stage54 conditional row; canonical 1.535 / 1.436 / 0.224 A governs comparisons | Routine (evidence) | ADOPTED |
 | PWR-D5 | Whether OSC gets an explicit degraded mode for lower-capability supplies (functional loss and new power domains) or full OSC requires a supply meeting the contract | Owner | OPEN; candidate only. The usage-limit candidate (1600 / 1500 / 300 mA by the same rule) is in "Budget decomposition" |
 
-Checks for this record: `ledger.py --check` and `decompose.py --check` PASS; 13 focused
+Checks for this record: `ledger.py --check` and `decompose.py --check` PASS; 14 focused
 tests PASS (normal and `-O`); `verify_pd_pin.py` PASS against a local zudo-pd checkout at both pinned commits.
 ERC, DRC, native KiCad export, simulation and any physical measurement: NOT RUN (no
 schematic or PCB change).

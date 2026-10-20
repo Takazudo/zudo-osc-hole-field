@@ -72,6 +72,9 @@ ONE_RAIL_AT_A_TIME = {
     'SUM external load',
 }
 NOMINAL_V = {'+12V': 12, '-12V': 12, '+5V': 5}
+# Fitted downstream capacitance reported by the OSC owner from source at e1969027
+# (answer to Q6, relayed by the coordinator; all MLCC, +5 V includes NOISE_VDD 4.7 uF).
+FITTED_UF = {'+12V': 49.9, '-12V': 42.2, '+5V': 24.5}
 
 
 def require(ok, msg):
@@ -200,6 +203,14 @@ def build():
         return out
 
     normal_typ = add(fixed_typ, var_typ, clip_typ)
+    # Ramp term = C x (1 + tolerance) x upper load-band voltage / minimum soft start.
+    tol, t_ms = src['capacitance_tolerance_fraction'], src['soft_start_min_ms']
+    v_load = {r: src['required_load_voltage_magnitude_V'][r][1] for r in RAILS}
+    def ramp_mA(uF):
+        return {r: r6(uF[r] * (1 + tol) * v_load[r] / t_ms) for r in RAILS}
+    for r, v in ramp_mA(src['nominal_capacitance_ceiling_uF']).items():
+        require(abs(v - ramp[r]) < 1e-6, 'ceiling ramp reproduced ' + r)
+    ramp_fitted = ramp_mA(FITTED_UF)
     heavy = sub(canonical, per_rail_overcount)
     overlap_W = r6(one_rail_overlap['+12V'] / 1000 * 12)
     usage = add(fixed_plan, cats[P_INTERNAL]['planning_mA'], user_typ)
@@ -219,6 +230,9 @@ def build():
         'startup_worst_envelope': level(
             'CONSERVATIVE ENVELOPE (calculated); UNVERIFIED',
             add(canonical, ramp), 'Canonical planning plus the full-capacitance ramp at the 10 ms minimum soft start (capacitance ceiling +20 %). Loads draw less at reduced voltage, so this overstates a real ramp; the 20 ms transient requirement covers it with the one-fault increment.', rule=False),
+        'startup_envelope_fitted_capacitance': level(
+            'CALCULATED from OSC-owner-reported fitted capacitance; UNVERIFIED; not a contract value',
+            add(canonical, ramp_fitted), 'Canonical planning plus the ramp of the fitted 49.9 / 42.2 / 24.5 uF (+20 %) at the 10 ms minimum soft start. The contract keeps the 150 / 150 / 100 uF ceiling and the transient requirement unchanged; a later capacitance addition up to the ceiling stays allowed.', rule=False),
         'transient_requirement_20ms': level(
             'CONTRACT REQUIREMENT (unchanged)', sel['minimum_transient_mA'],
             'canonical + ramp + one external-forcing fault, rounded; supply-architecture.json', rule=False),
@@ -289,7 +303,9 @@ def build():
             'trim_current_inside_reserves_mA_per_analog_rail': s54['nominal_trim_current_contained_in_reserves_mA_per_analog_rail'],
             'ota_bias_overlap_with_reserves': 'OPEN: reserve rows state a conservative overlap with the inherited OTA bias allowance (26 IABC branches); size unknown, no credit taken.',
             'stage54_idle_quads_planning_Iq_mA': stage54_iq,
-            'stage54_note': 'Unadopted conditional removal of idle op-amp quads; listed separately, not applied to any level.',
+            'ramp_increment_ceiling_mA': ramp,
+        'ramp_increment_fitted_mA': ramp_fitted,
+        'stage54_note': 'Unadopted conditional removal of idle op-amp quads; listed separately, not applied to any level.',
         },
         'levels': levels,
         'sixty_watt_class_screen': {

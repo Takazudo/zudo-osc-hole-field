@@ -311,6 +311,16 @@
       "+5V": 0.0,
       "-12V": 42.0
     },
+    "ramp_increment_ceiling_mA": {
+      "+12V": 224.64,
+      "-12V": 222.66,
+      "+5V": 62.4
+    },
+    "ramp_increment_fitted_mA": {
+      "+12V": 74.73024,
+      "-12V": 62.64168,
+      "+5V": 15.288
+    },
     "stage54_note": "Unadopted conditional removal of idle op-amp quads; listed separately, not applied to any level."
   },
   "levels": {
@@ -389,6 +399,17 @@
       "rail_output_W_nominal": 42.445686,
       "rail_output_W_source_band_max": 43.333838,
       "basis": "Canonical planning plus the full-capacitance ramp at the 10 ms minimum soft start (capacitance ceiling +20 %). Loads draw less at reduced voltage, so this overstates a real ramp; the 20 ms transient requirement covers it with the one-fault increment."
+    },
+    "startup_envelope_fitted_capacitance": {
+      "classification": "CALCULATED from OSC-owner-reported fitted capacitance; UNVERIFIED; not a contract value",
+      "mA": {
+        "+12V": 1609.549406,
+        "-12V": 1498.21034,
+        "+5V": 239.574445
+      },
+      "rail_output_W_nominal": 38.490989,
+      "rail_output_W_source_band_max": 39.297454,
+      "basis": "Canonical planning plus the ramp of the fitted 49.9 / 42.2 / 24.5 uF (+20 %) at the 10 ms minimum soft start. The contract keeps the 150 / 150 / 100 uF ceiling and the transient requirement unchanged; a later capacitance addition up to the ceiling stays allowed."
     },
     "transient_requirement_20ms": {
       "classification": "CONTRACT REQUIREMENT (unchanged)",
