@@ -70,6 +70,7 @@ want = sum(len(v) for v in dropped.values())
 removed = sum(1 for c in changes if c['field'] != 'Decouples')
 assert seen == set(retained) | set(dropped), 'footprint roster'
 assert sum(1 for c in changes if c['field'] == 'Decouples') == len(retained), 'Decouples updates'
+assert removed == want, 'every requested field synchronised'
 dst.write_text(result)
 receipt = {'input_sha256': hashlib.sha256(src.read_bytes()).hexdigest(), 'output_sha256': hashlib.sha256(dst.read_bytes()).hexdigest(),
            'requested_field_syncs': want, 'field_syncs': removed,

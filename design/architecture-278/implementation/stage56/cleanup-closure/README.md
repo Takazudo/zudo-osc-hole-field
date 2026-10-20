@@ -32,8 +32,8 @@ model is 27.36 mA/rail; neither is a measurement.
   LogicalCellKey or Island, that field is dropped from all its units in the board
   render (824 package/field pairs on 333 surviving packages: Role 333, LogicalCellKey
   333, Island 158; Stage55's 345 included the 12 removed quads). This is
-  the projector's existing JL/JR rule applied to osc-core, done here as a render
-  transform; `scripts/schgen` itself is unchanged. 30 board sheets change.
+  a narrower form of the projector's JL/JR rule (which drops these fields
+  unconditionally), done here as a render transform; `scripts/schgen` itself is unchanged. 30 board sheets change.
 - **PCB field sync** (`pcb_fields.py`, host text edit of top-level footprint properties
   only). The renderer always emits Role and Island (as `""` once dropped), so the
   footprint fields are set to `""`; LogicalCellKey is not rendered, so it is deleted.
@@ -52,7 +52,7 @@ Baseline side is the retained Stage55 evidence of the same canonical board
 | --- | --- | --- | --- |
 | ERC errors / warnings | 0 / 218 off-grid | 0 / 218, identical signatures | PASS |
 | DRC rule errors | 0 | 0 | PASS |
-| Schematic parity | 0 | **0** (Stage55 candidate: 1) | PASS |
+| Schematic parity | 0 (gated) | **0** (Stage55 candidate: 1) | PASS |
 | Complete native ratsnest edges | 1402 | 1390 (only +12 V/−12 V 80→74) | PASS |
 | Nets gaining edges / new open nets | – | none / none | PASS |
 | Rail clusters (pad membership) | 81 / 81 / 214 / 1 | 75 / 75 / 214 / 1 = baseline minus removed pads | PASS |
@@ -61,7 +61,8 @@ Baseline side is the retained Stage55 evidence of the same canonical board
 
 The six removed-only clusters per supply rail are the isolated OPA4197 supply pads of
 U116–U118 and U216–U218, as in Stage55. No other net's edge count changed. The 325
-"new" signatures are all silk_over_copper (198) and silk_overlap (127): truncation
+distinct "new" signatures (397 removed) are all silk_over_copper (198) and
+silk_overlap (127): truncation
 reshuffling at the 199-marker cap; nonregression of those types is not established.
 
 ## Decoupling (`decoupling.json`, source level)

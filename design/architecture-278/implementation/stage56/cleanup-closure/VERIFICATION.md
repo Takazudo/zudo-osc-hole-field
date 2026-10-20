@@ -16,7 +16,8 @@ python3 design/.../pcb_fields.py .circuit-cache/stage56/cleaned.kicad_pcb \
   .circuit-cache/stage56/candidate/osc-core/osc-core.kicad_pcb \
   .circuit-cache/stage56/schematic-receipt.json .circuit-cache/stage56/fields-receipt.json
 python3 design/.../native.py run      # candidate ERC, DRC, refilled ratsnest, rail clusters, ~28 min
-python3 design/.../native.py check    # PASS, all 10 gates
+python3 design/.../native.py audit    # writes native-audit.json
+python3 design/.../native.py check    # replays it without writing; PASS, all 11 gates
 python3 design/.../decoupling.py --check   # PASS
 python3 -m unittest scripts/checks/test_stage56_cleanup_closure.py   # 9 tests OK; also with -O
 python3 -m unittest scripts/checks/test_idle_quad_cleanup.py         # Stage55, 11 tests OK
@@ -29,6 +30,12 @@ deleted every dropped field from the footprints. DRC then reported 199+ parity i
 Role and Island (empty once dropped). `pcb_fields.py` was changed to set those two to
 `""` and delete only LogicalCellKey; the run was then repeated from the field step.
 The gate definitions were not changed between attempts.
+
+**After independent review** (raw reports unchanged): `check` now compares instead of
+rewriting the audit; a baseline-parity-zero gate (11 gates) and a binding of every
+unchanged candidate input to the canonical board file were added; `pcb_fields.py`
+now asserts every requested field was synchronised; the rail-cluster roster is
+checked on both sides. The audit was regenerated from the same evidence.
 
 ## Evidence SHA256
 

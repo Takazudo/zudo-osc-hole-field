@@ -71,7 +71,7 @@ class Stage56Tests(unittest.TestCase):
 
     def test_native_audit_binds_receipts(self):
         audit = json.loads((HERE/'native-audit.json').read_text())
-        self.assertEqual(n.evaluate(), audit)
+        self.assertEqual(n.evaluate(write=False), audit)
         self.assertEqual(n.gate(audit), audit['gates'])
         self.assertEqual(audit['verdict'], 'PASS' if all(audit['gates'].values()) else 'FAIL')
 
@@ -80,6 +80,7 @@ class Stage56Tests(unittest.TestCase):
 
     def test_gate_rejects_parity_drc_and_erc_regressions(self):
         self.assertFalse(self.mutated(lambda a: a['drc'].__setitem__('schematic_parity', 1))['schematic_parity_zero'])
+        self.assertFalse(self.mutated(lambda a: a['drc'].__setitem__('baseline_schematic_parity', 1))['baseline_schematic_parity_zero'])
         self.assertFalse(self.mutated(lambda a: a['drc'].__setitem__('candidate_errors', 1))['no_drc_errors'])
         self.assertFalse(self.mutated(lambda a: a['erc'].__setitem__('new_violation_signatures', 1))['erc_errors_zero_and_signatures_unchanged'])
         self.assertFalse(self.mutated(lambda a: a['oracle'].__setitem__(3, '10.0.5'))['oracle_10_0_6'])

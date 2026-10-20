@@ -1,7 +1,7 @@
 """Stage56 native gates. The baseline side is the retained Stage55 canonical-copy evidence
 (same canonical inputs, bound by hash); only the candidate is executed here.
 
-Usage: native.py run | check
+Usage: native.py run | audit | check   (check compares with the retained native-audit.json)
 """
 from pathlib import Path
 from collections import Counter
@@ -68,6 +68,7 @@ def gate(result):
         'oracle_10_0_6': all(v == '10.0.6' for v in result['oracle']),
         'erc_errors_zero_and_signatures_unchanged': result['erc']['candidate_errors'] == 0 and result['erc']['new_violation_signatures'] == 0,
         'no_drc_errors': d['candidate_errors'] == 0,
+        'baseline_schematic_parity_zero': d['baseline_schematic_parity'] == 0,
         'schematic_parity_zero': d['schematic_parity'] == 0,
         'no_new_uncapped_drc_signatures': all(k.split(' :: ')[0] in d['capped_types_at_199'] for k in d['new_violation_signatures']),
         'no_candidate_violation_names_removed_item': d['violations_mentioning_removed_refs_or_nets'] == [],
@@ -79,7 +80,7 @@ def gate(result):
     }
 
 
-def evaluate():
+def evaluate(write=True):
     sch = json.loads((EVIDENCE/'schematic-receipt.json').read_text())
     pcb = json.loads((EVIDENCE/'pcb-receipt.json').read_text())
     fields = json.loads((EVIDENCE/'fields-receipt.json').read_text())
@@ -94,6 +95,10 @@ def evaluate():
         require(r['input_sha256'][cand_pcb] == fields['output_sha256'], 'candidate PCB binding '+kind)
         for name, digest in sch['candidate_schematic_sha256'].items():
             require(r['input_sha256'][rel(CAND/name)] == digest, 'candidate schematic binding '+name)
+        for path, digest in r['input_sha256'].items():
+            name = Path(path).relative_to(rel(CAND)).as_posix()
+            if path != cand_pcb and name not in sch['candidate_schematic_sha256']:
+                require(digest == sha(ROOT/'boards'/BOARD/name), 'unchanged input equals canonical '+name)
     # Stage55 baseline evidence is of the same canonical inputs.
     s55 = json.loads((S55/'evidence/pcb-receipt.json').read_text())
     require(s55['source_sha256'] == pcb['source_sha256'], 'Stage55 baseline is the same canonical board')
@@ -112,6 +117,7 @@ def evaluate():
     cc = json.loads((EVIDENCE/'candidate-rail-clusters.json').read_text())
     require(cb['board_sha256'] == rb['refilled_board_sha256_host'] and cc['board_sha256'] == rc['refilled_board_sha256_host'], 'cluster bindings')
     clusters = {}
+    require(set(cb['clusters']) == set(cc['clusters']), 'rail cluster roster')
     for rail, base in cb['clusters'].items():
         cand = cc['clusters'][rail]; where = {p: i for i, c in enumerate(cand) for p in c['pads']}
         surv = lambda c: tuple(p for p in c['pads'] if p.split('.')[0] not in removed)
@@ -127,6 +133,7 @@ def evaluate():
         'drc': {'baseline_types': {f'{t}/{s}': k for (t, s), k in sorted(vb.items())},
                 'candidate_types': {f'{t}/{s}': k for (t, s), k in sorted(vc.items())},
                 'candidate_errors': errors(vc), 'schematic_parity': len(dc['schematic_parity']),
+                'baseline_schematic_parity': len(db['schematic_parity']),
                 'parity_items': [x['description'] for x in dc['schematic_parity']],
                 'capped_types_at_199': capped,
                 'new_violation_signatures': {f'{k[0]} :: ' + ' | '.join(k[1]): v for k, v in (ic - ib).items()},
@@ -141,7 +148,11 @@ def evaluate():
     }
     result['gates'] = gate(result)
     result['verdict'] = 'PASS' if all(result['gates'].values()) else 'FAIL'
-    (HERE/'native-audit.json').write_text(json.dumps(result, indent=2, sort_keys=True)+'\n')
+    body = json.dumps(result, indent=2, sort_keys=True)+'\n'
+    if write:
+        (HERE/'native-audit.json').write_text(body)
+    else:
+        require((HERE/'native-audit.json').read_text() == body, 'native audit replay drift')
     print(result['verdict'], json.dumps(result['gates']))
     return result
 
@@ -149,7 +160,9 @@ def evaluate():
 if __name__ == '__main__':
     if sys.argv[1:] == ['run']:
         execute(); evaluate()
-    elif sys.argv[1:] == ['check']:
+    elif sys.argv[1:] == ['audit']:
         evaluate()
+    elif sys.argv[1:] == ['check']:
+        evaluate(write=False)
     else:
-        raise SystemExit('usage: native.py run|check')
+        raise SystemExit('usage: native.py run|audit|check')
