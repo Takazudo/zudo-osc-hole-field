@@ -309,17 +309,36 @@ On the fitted basis, keeping +12 V at or below 1.60 A needs a ramp of at least 1
 
 Re-deriving the transient from a slower ramp or from fitted capacitance would be an OSC contract change for the owner.
 
-**Q-A Longest acceptable ramp.** The contract sets no upper bound. It requires a monotonic ramp no faster than 10 ms (`osc-electrical-standard.mdx` L113). OSC's tolerance of any ramp longer than 10 ms is **unverified**, so no longest acceptable value can be given yet.
+**Q-A Longest acceptable ramp: there is no circuit-derived ceiling and tolerance is unverified, so the campaign must be extended.**
 
-The PD campaign (6 rail orders × 10 / 20 / 50 ms: VEE5, injection, reset timing, latch-up) is incomplete. Items to add from the OSC source answers:
-1. **Capture first:** abs-max, injection and latch-up facts for LM13700, OPA4197/4196, LM393, LF398 and the HC family. These are not retained.
-2. **Missing-rail cases:** OSC must tolerate any missing rail, not only any arrival order. Also test the 6 failure (power-down) orders and interrupted or brownout ramps.
-3. **AR reset:** the release time on +5 V, against its 100 ms RC with two HC14 stages, at 20 and 50 ms ramps. This circuit is not brownout supervision.
-4. **Per-part limits:** AS3340 VEE–GND (−6 V abs max) and the local OPA4197 VEE driver in every order.
-5. **−5 V reference fanout:** power-off injection into its 30 inputs.
-6. **Logic and enables with +5 V absent:** input-switch enable and sync validity, and LM393 output and LED state under undervoltage.
-7. **Recovery:** from an output short without latch-up.
-8. **Supply current during the ramp:** measure it, to validate the Q-C scaling model.
+The contract sets no upper bound; it requires a monotonic ramp no faster than 10 ms (`osc-electrical-standard.mdx` L113). The OSC owner's circuit-side answer is from `a4d7cca` on `e1969027`.
+
+The AR reset is the only timing element found:
+- **Circuit:** +5 V feeds 100 kΩ and 1 µF to AGND, with a discharge diode, two HC14 stages and two HC74 synchronous-release stages (`design/spec/modules/envelope.py` L157–162). The 1 µF has no MPN, so the 100 ms time constant has unknown tolerance.
+- **Thresholds:** HC14 thresholds are held only at VCC = 4.5 V. Below 4.5 V, behaviour is unknown during any ramp, whatever its length.
+- **Arithmetic estimate (not in source):** release is about 37–98 ms after a +5 V step. On a slow ramp the RC lags the rail, so reset releases after +5 V settles.
+- **Unaddressed:** ±12 V entering its band late.
+- **Not proven:** the source says this circuit is not brownout supervision (`osc-block-ar.mdx` L264–265), and real RC/reset behaviour is NOT RUN (L307–309). REF5050 startup and LM393 undervoltage output state are not in the repo.
+
+The PD campaign (6 rail orders × 10 / 20 / 50 ms: VEE5, injection, reset timing, latch-up) is incomplete. These items must be added; each is required by an OSC source:
+1. **Facts to capture first:** abs-max, injection and latch-up for LM13700, OPA4197/4196, LM393, LF398, ADG5412F, REF5050 and HC00/HC14/HC74/HC221. ADG5412F leakage is stated not to apply to floating or ramping rails, and AS3340 has only VEE −6 V recorded.
+2. **Failure cases:** the 6 failure orders, brownout and hiccup, all-rail disconnect, and the post-discharge off state with AGND never opened (`osc-protection-architecture.mdx` L73).
+3. **Missing rail and ground:** a single rail permanently missing, and ground loss (`osc-supply-architecture.mdx` L103, `osc-standard-cells.mdx` L42, `osc-block-osc.mdx` L35).
+4. **Wiring faults and restart:** miswiring and offset wiring, open ground, startup retry, thermal hold and trip, discharge and restart (`osc-supply-architecture.mdx` L107).
+5. **Back-feed while off:** from external patching (including through output resistors and sense paths), a partial supply, and a removed receiving board (`osc-supply-architecture.mdx` L105, `osc-reference-fanout.mdx` L29, `osc-standard-cells.mdx` L575, `verification/osc-slew-test-plan.mdx` L23).
+6. **Output-short recovery** without latch-up (`osc-electrical-standard.mdx` L59).
+7. **Supply side:** synth-side ripple, cable drop, current and thermal rise (`osc-power.mdx` L89).
+8. **Power-on states:**
+   - LF398 (`osc-sample-hold-slew.mdx` L98);
+   - AR single trigger when the gate is high at reset release (`osc-block-ar.mdx` L261–262, L276);
+   - MIX4 sequencing (`osc-block-mix4.mdx` L53);
+   - LM393 output and LED states.
+9. **Ramp-specific checks:**
+   - AR release at 20 / 50 ms ramps, with ±12 V early and late;
+   - AS3340 VEE and the OPA4197 VEE driver in every order;
+   - −5 V reference fanout injection into its 30 inputs;
+   - input-switch enable and sync validity while +5 V is absent.
+10. **Model check:** supply current during the ramp, to validate the Q-C model.
 
 There is no staged-enable circuit yet, so every test runs on the current three-converter supply.
 
