@@ -1,0 +1,233 @@
+{
+  "acceptance": {
+    "copper_layers_allowed_without_new_approval": [
+      "F.Cu",
+      "B.Cu"
+    ],
+    "courtyard": "courtyard contact is reported, never used as clearance or assembly proof",
+    "drc": "KiCad 10.0.6 rule errors 0, schematic parity 0, no added uncapped warning, no lib_footprint_issues",
+    "merge": "exactly source(1) + target(162) into one 163-member retained component",
+    "opens_after": 114,
+    "opens_before": 115,
+    "other_partitions": "every other net partition preserved exactly"
+  },
+  "baseline": {
+    "board_sha256": "27d2214492f9dd88483be014df4197fdb936cbbc7c445f17c8178cce97126560",
+    "connectivity_snapshot_sha256": "21e305061046e7bdf79baa67cd7ddfa31adc2e2db6d00c7a6203173911a3a6e0",
+    "native_object_count": 37800,
+    "native_open_edges": 115,
+    "nets_with_opens": 89,
+    "stage53_settlement_sha256": "7966e8aac1ad4d07ae127a76d1e148aaec8eca7e4e896518f77c51ab51f4a02e"
+  },
+  "exclusions": {
+    "in3_minus12v_necks": {
+      "cut_sections": [
+        {
+          "end_mm": [
+            229.8,
+            105.1
+          ],
+          "index": 16,
+          "start_mm": [
+            227.8,
+            107.1
+          ]
+        },
+        {
+          "end_mm": [
+            234.1,
+            105.1
+          ],
+          "index": 17,
+          "start_mm": [
+            229.8,
+            105.1
+          ]
+        },
+        {
+          "end_mm": [
+            236.0,
+            96.4
+          ],
+          "index": 25,
+          "start_mm": [
+            236.0,
+            102.7
+          ]
+        }
+      ],
+      "reason": "Stage51 full In3 route split -12V 1015 -> 15+23+977; Stage52 refill diagnostics located the cuts at Stage51 copper indices 16, 17, 25",
+      "rule": "no new copper on In3.Cu; -12V must stay one 1015-object partition",
+      "stage51_in3_bbox_mm": [
+        227.2,
+        95.7,
+        236.0,
+        113.0
+      ]
+    },
+    "stage53_in4_corridor": {
+      "bbox_mm": [
+        227.980882,
+        95.7,
+        236.0,
+        113.39
+      ],
+      "reason": "Stage53 accepted /F3/C945bba_SENSE copper; its In4 use was approved for F3 only and its +12V In4 pour must stay one 1025-object partition",
+      "rule": "Stage53 copper unchanged (no removals); no new copper on In4.Cu; +12V stays one 1025-object partition"
+    }
+  },
+  "nearest_target_objects_mm": [
+    [
+      28.707,
+      "pad",
+      "B.Cu",
+      "U8215:3"
+    ],
+    [
+      28.873,
+      "segment",
+      "B.Cu",
+      "6dcc28d4-2c22-52c9-b204-6ec28289d648"
+    ],
+    [
+      28.966,
+      "segment",
+      "F.Cu",
+      "78cd0d8f-3b42-51f8-8b6f-791fd784f771"
+    ],
+    [
+      28.966,
+      "segment",
+      "F.Cu",
+      "ddd065eb-188e-51da-b4dd-aac95c96d9bd"
+    ],
+    [
+      29.059,
+      "segment",
+      "F.Cu",
+      "04a1849a-29ed-564f-8238-47e16ee19d12"
+    ],
+    [
+      29.059,
+      "segment",
+      "F.Cu",
+      "e7bd2743-9eed-565e-a102-200549f5cded"
+    ],
+    [
+      29.082,
+      "segment",
+      "F.Cu",
+      "5e7ccdae-a91c-5811-985d-d0661877d43a"
+    ],
+    [
+      29.082,
+      "segment",
+      "F.Cu",
+      "c789a72d-29ad-599c-afe6-63cfd479adce"
+    ]
+  ],
+  "net": {
+    "name": "/M5B/C819409_SENSE",
+    "native": "X1B64D2A971AB89E1AF19"
+  },
+  "rail_partitions": {
+    "+12V": [
+      1025
+    ],
+    "-12V": [
+      1015
+    ],
+    "AGND": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      3,
+      6,
+      1425
+    ]
+  },
+  "source": {
+    "at_mm": [
+      260.289999,
+      110.81
+    ],
+    "bbox_mm": [
+      259.884999,
+      110.38,
+      260.694999,
+      111.24
+    ],
+    "component_hash": "5352ce147c589a33dbea3211c46a606d192502e81d91d4844df64a1626f40799",
+    "component_size": 1,
+    "footprint": "zudo-osc-hole-field:R0603",
+    "layers": [
+      "F.Cu"
+    ],
+    "pad": "R8248:2",
+    "side": "F.Cu"
+  },
+  "status": "Stage57 frozen target record; setup only, no route search run",
+  "target_group": {
+    "component_hash": "4a0c02eb4d96295952e45498044bcd1b9452a8db20c9fab991536a201286c845",
+    "copper_layers": {
+      "B.Cu": 44,
+      "F.Cu": 56,
+      "In2.Cu": 49,
+      "via": 11
+    },
+    "kinds": {
+      "pad": 2,
+      "segment": 149,
+      "via": 11
+    },
+    "pads": [
+      {
+        "at_mm": [
+          209.9675,
+          155.81
+        ],
+        "bbox_mm": [
+          209.23,
+          155.51,
+          210.705,
+          156.11
+        ],
+        "footprint": "zudo-osc-hole-field:SOT-23",
+        "layers": [
+          "F.Cu"
+        ],
+        "pin": "3",
+        "ref": "D8212",
+        "side": "F.Cu"
+      },
+      {
+        "at_mm": [
+          257.194999,
+          139.35
+        ],
+        "bbox_mm": [
+          256.219999,
+          139.05,
+          258.169999,
+          139.65
+        ],
+        "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
+        "layers": [
+          "B.Cu"
+        ],
+        "pin": "3",
+        "ref": "U8215",
+        "side": "B.Cu"
+      }
+    ],
+    "size": 162
+  }
+}
