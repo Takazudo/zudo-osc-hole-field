@@ -45,6 +45,13 @@ class LedgerTests(unittest.TestCase):
         self.assertTrue(r['+12V']['continuous_beyond_ldo_table_rows'] and r['-12V']['continuous_beyond_ldo_table_rows'])
         self.assertFalse(any(v['ptc_enforces_interface_maximum'] for v in r.values()))
 
+    def test_pd_crosscheck(self):
+        c = self.data['pd_capability_crosscheck']
+        self.assertTrue(c['minus12_exceeds_u4_switch_current_limit']['normal_planning'])
+        self.assertTrue(c['plus12_exceeds_ptc1_hold_25C']['normal_planning'])
+        self.assertFalse(c['plus12_exceeds_ptc1_hold_25C']['normal_planning_stage54_conditional'])
+        self.assertTrue(c['efficiency_discrepancy']['pd_probe_matches_stage54_conditional_not_canonical'])
+
     def test_floors_are_pd_screened_minima(self):
         chain = ledger.read(ledger.INPUTS['pd_supply_input'])['chain']
         self.assertEqual({r: round(chain[r]['pre_rail_min_V'], 4) for r in ledger.RAILS},

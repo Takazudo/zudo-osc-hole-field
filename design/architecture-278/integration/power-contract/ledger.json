@@ -29,7 +29,7 @@
     },
     "pd_supply_input": {
       "path": "design/architecture-278/integration/power-contract/supply-input.json",
-      "sha256": "c02d70a3390c5321c0dff0f5caeaa6efb4a31b37e21f47b8c688552d84182ae8"
+      "sha256": "1bbdf402b9ed8f2a6a5bfdcc63af8e70c41245942396842559cd9a38b9dc348f"
     }
   },
   "pd_commit": "65031f98f02677998efada217f64e731d39437f7",
@@ -931,6 +931,49 @@
       0.8205980321401299
     ],
     "u4_model_limits": "conduction losses only at 0.8-0.87 A output; switching/core/quiescent losses omitted; not an upper bound on input current"
+  },
+  "pd_capability_crosscheck": {
+    "source": {
+      "pr": "https://github.com/Takazudo/zudo-pd/pull/219",
+      "commit": "6071e1757c7678a4b5ed0af069a9eae202c6ee2d",
+      "file": "manufacturing/supply-capability.json",
+      "sha256": "e5864272b5e1e4a1876a69c95dc9a2fcd5683fea61a3d783016a52f7b18e2b8d"
+    },
+    "minus12_exceeds_u4_switch_current_limit": {
+      "reported_typical_subtotal": false,
+      "normal_planning": true,
+      "normal_planning_stage54_conditional": true,
+      "startup_envelope_10ms": true,
+      "normal_plus_one_fault": true,
+      "continuous_requirement": true,
+      "transient_requirement_20ms": true
+    },
+    "efficiency_discrepancy": {
+      "pd_probe_loads_A": {
+        "+12V": 1.493,
+        "-12V": 1.394,
+        "+5V": 0.224
+      },
+      "pd_probe_matches_stage54_conditional_not_canonical": true,
+      "pd_probe_efficiency_needed": {
+        "14V": 0.949751839343959,
+        "15V": 0.8864350500543617
+      },
+      "ledger_canonical_efficiency_needed": {
+        "14V": 0.976301,
+        "15V": 0.911214
+      },
+      "ledger_stage54_efficiency_needed": {
+        "14V": 0.949598,
+        "15V": 0.886291
+      },
+      "cause": "The brief quoted the unadopted Stage54 conditional loads (1.493 / 1.394 / 0.224 A) as planning normal; PD probed those. Canonical planning normal is 1.535 / 1.436 / 0.224 A. Residual difference between the PD probe and this ledger's Stage54 row is small and comes from PD including indicator/feedback current and its own floor terms.",
+      "resolution": "Canonical rows govern requirements; the Stage54 row stays conditional. Not averaged."
+    },
+    "plus12_exceeds_ptc1_hold_25C": {
+      "normal_planning": true,
+      "normal_planning_stage54_conditional": false
+    }
   },
   "pd_open_qualification_quoted": [
     "Negative LM2596 startup may reach about 4.5 A for at least 2 ms versus 3 A PD contract; steady-state margins do not prove startup.",

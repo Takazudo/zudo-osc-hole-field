@@ -45,6 +45,20 @@ def main():
         assert ptc['ihold_A_25C'] == facts[f'fact-{prefix}-ihold'] and ptc['itrip_A_25C'] == facts[f'fact-{prefix}-itrip'], rail
     assert ch['-12V']['ptc']['ihold_A_85C'] == facts['fact-ptc3-hold-85c'] and ch['-12V']['ptc']['r1max_ohm'] == facts['fact-ptc3-r1max']
     assert ch['+5V']['ptc']['r1max_ohm'] == facts['fact-ptc2-r1max']
+    cap = sup['pd_capability_screen']
+    try:
+        raw = show(repo, cap['commit'], cap['file'])
+    except subprocess.CalledProcessError:
+        print('NOT RUN: PD capability screen commit not in checkout; fetch zudo-pd pull/219/head')
+        return 2
+    assert hashlib.sha256(raw).hexdigest() == cap['sha256'], 'capability screen hash'
+    sc = json.loads(raw)
+    lim = sc['per_rail_limits_other_rails_at_targets_a']['minus12']
+    assert lim['u4_switch_current_limit'] == cap['minus12_u4_switch_current_limit_A']
+    assert lim['input_42w_at_14v_3a_with_weighted_efficiency_1'] == cap['minus12_ceiling_lossless_42W_A']
+    pn = sc['probe_points']['results']['osc_planning_normal']
+    assert pn['external_loads_a'] == {'plus12': 1.493, 'minus12': 1.394, 'plus5': 0.224}
+    assert pn['pre_rail_power_floor']['power_w'] == cap['osc_planning_normal_probe_pre_rail_floor_W']
     print('PASS pinned zudo-pd quotation at', c)
     return 0
 

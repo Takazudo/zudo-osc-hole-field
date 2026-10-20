@@ -121,5 +121,27 @@
     "+12V": null,
     "-12V": null,
     "+5V": null
+  },
+  "pd_capability_screen": {
+    "classification": "PD OWNER SCREEN (draft zudo-pd PR #219); arithmetic, not measurement",
+    "pr": "https://github.com/Takazudo/zudo-pd/pull/219",
+    "commit": "6071e1757c7678a4b5ed0af069a9eae202c6ee2d",
+    "file": "manufacturing/supply-capability.json",
+    "sha256": "e5864272b5e1e4a1876a69c95dc9a2fcd5683fea61a3d783016a52f7b18e2b8d",
+    "minus12_u4_switch_current_limit_A": 1.2168,
+    "minus12_ceiling_lossless_42W_A": 1.2224,
+    "ptc1_hold_85C_estimate_A": 0.74,
+    "ldo_characterized_current_A": 1.5,
+    "osc_planning_normal_probe_loads_A": {
+      "+12V": 1.493,
+      "-12V": 1.394,
+      "+5V": 0.224
+    },
+    "osc_planning_normal_probe_pre_rail_floor_W": 39.88957725244628,
+    "osc_planning_normal_probe_efficiency_needed": {
+      "14V": 0.949751839343959,
+      "15V": 0.8864350500543617
+    },
+    "probe_provenance": "PD quoted the brief's load triples; demand is owned by this ledger"
   }
 }

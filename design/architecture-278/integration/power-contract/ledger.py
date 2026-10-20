@@ -176,6 +176,30 @@ def build():
             'transient_beyond_ldo_table_rows': trans > chain[r]['ldo_table_rows_end_A'],
             'sources': [ptc['source'], chain[r]['ldo_source']]}
 
+    cap = pd['pd_capability_screen']
+    probe = cap['osc_planning_normal_probe_loads_A']
+    stage54 = states['normal_planning_stage54_conditional']['mA']
+    crosscheck = {
+        'source': {k: cap[k] for k in ('pr', 'commit', 'file', 'sha256')},
+        'minus12_exceeds_u4_switch_current_limit': {
+            name: st['mA']['-12V'] / 1000 > cap['minus12_u4_switch_current_limit_A']
+            for name, st in states.items() if name != 'interface_maximum'},
+        'efficiency_discrepancy': {
+            'pd_probe_loads_A': probe,
+            'pd_probe_matches_stage54_conditional_not_canonical': all(abs(probe[r] - round(stage54[r] / 1000, 3)) < 1e-9 for r in RAILS),
+            'pd_probe_efficiency_needed': cap['osc_planning_normal_probe_efficiency_needed'],
+            'ledger_canonical_efficiency_needed': {'14V': power['normal_planning']['efficiency_needed']['board_b_input_screen_14V_3A']['current_pd_chain_converters'],
+                                                   '15V': power['normal_planning']['efficiency_needed']['nominal_15V_3A']['current_pd_chain_converters']},
+            'ledger_stage54_efficiency_needed': {'14V': power['normal_planning_stage54_conditional']['efficiency_needed']['board_b_input_screen_14V_3A']['current_pd_chain_converters'],
+                                                 '15V': power['normal_planning_stage54_conditional']['efficiency_needed']['nominal_15V_3A']['current_pd_chain_converters']},
+            'cause': 'The brief quoted the unadopted Stage54 conditional loads (1.493 / 1.394 / 0.224 A) as planning normal; PD probed those. Canonical planning normal is 1.535 / 1.436 / 0.224 A. Residual difference between the PD probe and this ledger\'s Stage54 row is small and comes from PD including indicator/feedback current and its own floor terms.',
+            'resolution': 'Canonical rows govern requirements; the Stage54 row stays conditional. Not averaged.'},
+    }
+    # Indicator LEDs sit before the PTCs, so PTC1 carries only the external load.
+    crosscheck['plus12_exceeds_ptc1_hold_25C'] = {
+        'normal_planning': normal['+12V'] / 1000 > chain['+12V']['ptc']['ihold_A_25C'],
+        'normal_planning_stage54_conditional': stage54['+12V'] / 1000 > chain['+12V']['ptc']['ihold_A_25C']}
+
     bands = {}
     for r in RAILS:
         pd_iv = chain[r]['output_conditional_V']
@@ -208,6 +232,7 @@ def build():
         'voltage_bands': bands,
         'ratings_screen': ratings,
         'pd_screen_at_design_targets': pd['pd_screen_at_design_targets'],
+        'pd_capability_crosscheck': crosscheck,
         'pd_open_qualification_quoted': pd['open_qualification_quoted'],
         'supply_capability_mA': pd['capability_mA'],
         'converter_efficiency_booked': None,

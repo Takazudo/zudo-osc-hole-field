@@ -11,8 +11,10 @@ no converter efficiency is booked. Canonical OSC schematic, PCB, BOM, placement,
 - Rebuild: `python3 design/architecture-278/integration/power-contract/ledger.py` (`--check` verifies)
 - PD quotation check: `python3 design/architecture-278/integration/power-contract/verify_pd_pin.py <zudo-pd checkout>`
   (read-only `git show` at the pinned commit; prints NOT RUN without a checkout)
-- Ownership: OSC holds this combined record; zudo-pd #218 holds supply findings. The PD
-  owner's capability screening replaces `supply-input.json` when it lands.
+- PD capability screen: zudo-pd draft PR #219 `6071e1757c7678a4b5ed0af069a9eae202c6ee2d`,
+  `manufacturing/supply-capability.json` (sha256 `e5864272…2b8d`), quoted under
+  `pd_capability_screen`; `verify_pd_pin.py` checks it when that commit is fetched
+- Ownership: OSC holds this combined record; zudo-pd #218 holds supply findings.
 
 ## Demand states (mA, +12 / −12 / +5 V)
 
@@ -69,6 +71,21 @@ over 100 % at 42 W. That model is a PD screen, not a guarantee.
 No PTC trip current enforces the 2.1 / 2.0 / 0.5 A interface maximum. PTC3 R1max
 (0.13 Ω) alone drops 0.208 V at 1.6 A, as wide as the whole OSC −12 V source band.
 
+## Cross-check with the PD capability screen (#219)
+
+- U4's guaranteed-minimum switch current limits −12 V to **1.217 A** (1.222 A even at a
+  lossless 42 W input). Every OSC planning, conditional and requirement state exceeds it.
+- PTC1 holds 1.5 A at 25 °C. Canonical normal planning (1.535 A external) exceeds it;
+  the Stage54 conditional row (1.493 A) does not. Indicator LEDs sit before the PTC.
+- PTC3 holds 0.77 A at 85 °C, below even the PD 0.8 A target (PD FAIL).
+- **Efficiency discrepancy, recorded rather than averaged:** PD reports 88.6 % (15 V) /
+  95.0 % (14 V) for "planning normal"; this ledger reports 91.1 % / 97.6 %. The cause is
+  the demand basis. The brief quoted 1.493 / 1.394 / 0.224 A as planning normal, but
+  those are the unadopted Stage54 conditional loads; PD probed them. This ledger's
+  Stage54 row gives 88.6 % / 95.0 %, matching PD. Canonical planning normal is
+  1.535 / 1.436 / 0.224 A and governs. The residual difference is small and comes
+  from PD's indicator/feedback current and floor terms.
+
 ## Findings
 
 1. **The present Board B fails the continuous requirement two independent ways**:
@@ -100,8 +117,8 @@ relaxed here.
 | ID | Area | Gap | Owner | Status |
 | --- | --- | --- | --- | --- |
 | G1 | Input | Continuous, normal and transient demand against 42–45 W through the current chain | Product decision | OPEN, needs owner |
-| G2 | Regulation | LDO rows end at 1.5 A; U2/U3/U4 current limits and efficiency at OSC currents | zudo-pd #218 | FAIL on rows; full screen pending |
-| G3 | Protection | PTC1/PTC3 hold below continuous requirement; no device enforces the interface maximum | zudo-pd #218 | FAIL |
+| G2 | Regulation | LDO rows end at 1.5 A; U4 switch-current ceiling 1.217 A on −12 V; efficiency at OSC currents has no evidence | zudo-pd #218/#219 | FAIL |
+| G3 | Protection | PTC1 hold below canonical normal and continuous; PTC3 below continuous at 25 °C and 0.77 A at 85 °C; no device enforces the interface maximum | zudo-pd #218/#219 | FAIL |
 | G4 | Fault policy | OSC requires reverse blocking, coordinated all-rail shutdown and rail monitors; Board B ties LDO SHDN to IN and has no reverse blocking | Joint (OSC #52/#59, PD) | OPEN |
 | G5 | Startup | 10 ms soft start and 150 / 150 / 100 µF (+20 %) ceilings against Board B start-up; PD notes U4 start may draw ~4.5 A for ≥ 2 ms against the 3 A contract; no cross-rail sequencing | Joint | NOT RUN |
 | G6 | Voltage band | PD screens are wider than OSC source bands on all three rails, before PTC drop | Joint | OPEN |
@@ -117,9 +134,10 @@ relaxed here.
 | --- | --- | --- | --- |
 | PWR-D1 | One shared ledger; OSC holds the combined record, PD holds supply findings and links here | Owner brief | ADOPTED |
 | PWR-D2 | Requirements stay 1700 / 1600 / 300 and 2000 / 1900 / 400 mA; Stage54 is not booked | Routine (rule reproduces) | ADOPTED |
-| PWR-D3 | Supply direction: the present 15 V Board B cannot carry the OSC contract; choose between a larger PD revision (higher input contract with Board P change, and/or no LDO post-regulation), a separate premium supply, or revisiting the OSC contract through demand closure | Owner | OPEN; quantified options follow PD #218 |
+| PWR-D3 | Supply direction: the present 15 V Board B cannot carry the OSC contract; choose between a small in-product revision, a larger PD revision (for example 20 V input with Board P change), or a separate supply | Owner | OPEN; PD owner builds the quantified three-option comparison; this record reviews it against demand and acceptance limits |
+| PWR-D4 | The brief's 1.493 / 1.394 / 0.224 A "planning normal" is the Stage54 conditional row; canonical 1.535 / 1.436 / 0.224 A governs comparisons | Routine (evidence) | ADOPTED |
 
-Checks for this record: `ledger.py --check` PASS; 6 focused tests PASS (normal and
-`-O`); `verify_pd_pin.py` PASS against a local zudo-pd checkout at the pinned commit.
+Checks for this record: `ledger.py --check` PASS; 7 focused tests PASS (normal and
+`-O`); `verify_pd_pin.py` PASS against a local zudo-pd checkout at both pinned commits.
 ERC, DRC, native KiCad export, simulation and any physical measurement: NOT RUN (no
 schematic or PCB change).
