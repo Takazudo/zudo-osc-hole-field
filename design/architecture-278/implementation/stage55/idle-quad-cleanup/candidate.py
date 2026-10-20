@@ -42,8 +42,11 @@ def filtered_partition(removed):
     return partition, floorplan
 
 
-def board_render(families_override, partition, floorplan):
-    """Run the canonical projector for one board with injected inputs."""
+def board_render(families_override, partition, floorplan, transform=None):
+    """Run the canonical projector for one board with injected inputs.
+
+    `transform`, if given, maps the projected board families before rendering (Stage56).
+    """
     original_spec, original_root = pb.specification, pb.ROOT
     with tempfile.TemporaryDirectory() as tmp:
         fake = Path(tmp); (fake/'design/partition').mkdir(parents=True)
@@ -68,7 +71,8 @@ def board_render(families_override, partition, floorplan):
         symbols[f'zudo-osc-hole-field:{key}'] = load_symbol(key)
     symbols['Fixture:PWR_FLAG'] = LibrarySymbol.from_fixture('Fixture:PWR_FLAG', ROOT/'scripts/schgen/fixtures/PWR_FLAG.kicad_sympart')
     board_id = short_to_id[SHORT]; require(board_id == BOARD, 'board id')
-    fs = [*families[board_id], pb.interface_family(SHORT, partition, canon)]
+    board_families = list(families[board_id]) if transform is None else list(transform(families[board_id]))
+    fs = [*board_families, pb.interface_family(SHORT, partition, canon)]
     ins = [*instances[board_id], Instance(fs[-1].name, f'INTERFACES_{SHORT}', 999)]
     power_nets = set()
     for family in fs:
