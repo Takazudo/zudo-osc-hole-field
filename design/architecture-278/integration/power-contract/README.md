@@ -128,6 +128,40 @@ the option choice remains PWR-D3.
 | R6 | B1 replaces the preserved 15 V / 3 A / 45 W boundary and needs a 60 W or larger 20 V-capable charger | Product decision for the owner; the TVS clamp versus the STUSB4500 28 V absolute maximum must close before adoption |
 | R7 | No proposed device enforces the OSC 2.1 / 2.0 / 0.5 A interface maximum (PTC trip 5 A, switch limit 6.3 A); the OSC requirement for coordinated all-rail shutdown and reverse blocking is not addressed | G3 / G4 stay open under every option |
 
+## Lower-capability supplies: demand-side conditions (PD-003)
+
+This separates what full OSC requires from what a lower-capability supply could do
+safely. It changes no requirement.
+
+1. **Full OSC needs the canonical contract.** A supply whose guaranteed continuous or
+   20 ms transient capability is below 1.7 / 1.6 / 0.3 A or 2.0 / 1.9 / 0.4 A is not an
+   OSC-compatible supply, whatever the adapter's wattage. A low-output model can still
+   be a valid PD supply for lighter products.
+2. **OSC demand cannot be throttled by the supply.** It is dominated by quiescent and
+   rail-to-rail resistor current in one EXT domain with no switchable sections. Limiting
+   current at the source therefore produces brownout, which the OSC fault policy forbids
+   (monitors at load, coordinated all-rail shutdown, no partial supply). "Adaptive
+   current" at the source can only choose between enabling OSC fully or not at all.
+3. **Safe behaviour on an insufficient contract:** detect the negotiated PDO before
+   enabling any OSC rail; enable only when it covers both the continuous and the
+   transient requirement; on renegotiation, a lower contract, charger removal or
+   brownout, shut all rails down together; treat a charger change as a power cycle.
+4. **A degraded OSC mode would be a new product decision.** It needs switchable power
+   domains with their own all-rail sequencing, backfeed protection between powered and
+   unpowered sections (the existing missing-rail and unplugged-board fault cases apply),
+   and panel indication. The planning demand that would have to be switched off, using
+   PD-002's maximum continuous outputs (efficiencies assumed):
+
+| PD-002 capability (+12 / −12 V, +5 V at 0.3 A) | Planning reduction needed (+12 / −12 V) | Equivalent functions |
+| --- | --- | --- |
+| 15 V floor, low: 1400 / 1320 mA | 262.1 / 235.6 mA | about 4.2 oscillators or 4.5 envelopes |
+| 15 V floor, high: 1490 / 1400 mA | 180.3 / 162.8 mA | about 2.9 oscillators or 3.1 envelopes |
+| 15 V ideal, high: 1600 / 1510 mA | 80.3 / 62.8 mA | about 1.3 oscillators or 1.4 envelopes |
+
+Per-module planning values are in `ledger.json` `low_power_supply_screen`. The 20 ms
+transient requirement still applies in any degraded mode unless it is re-derived from
+the reduced demand.
+
 ## Gap list
 
 | ID | Area | Gap | Owner | Status |
@@ -142,6 +176,7 @@ the option choice remains PWR-D3.
 | G8 | Distribution | 4.6 A worst return contact, 0.2 V rail+return loss, PTC R1max drop, J6/J7/J10/J11 contacts and the unselected OSC inlet connector | Joint | OPEN |
 | G9 | Input path | Cable, J1, Board P Q1 AO3401A at 3 A and VBUS header losses ahead of Board B | PD | NOT RUN |
 | G10 | Thermal | LDO dissipation at OSC currents; cooling plate is planned, not qualified | PD | NOT RUN |
+| G12 | Low-capability supply | Contract detection before enable, renegotiation/removal/brownout all-rail shutdown, and any degraded-mode domain switching | Joint (PD-003) | OPEN |
 | G11 | Demand | Complete typical, guaranteed maximum and OTA/mirror allocation remain unknown | OSC | OPEN |
 
 ## Decision record
@@ -151,9 +186,10 @@ the option choice remains PWR-D3.
 | PWR-D1 | One shared ledger; OSC holds the combined record, PD holds supply findings and links here | Owner brief | ADOPTED |
 | PWR-D2 | Requirements stay 1700 / 1600 / 300 and 2000 / 1900 / 400 mA; Stage54 is not booked | Routine (rule reproduces) | ADOPTED |
 | PWR-D3 | Supply direction: the present 15 V Board B cannot carry the OSC contract; choose between a small in-product revision, a larger PD revision (for example 20 V input with Board P change), or a separate supply | Owner | OPEN; PD-002 requests it; integration review R1–R7 above |
+| PWR-D5 | Whether OSC gets an explicit degraded mode for lower-capability supplies (functional loss and new power domains) or full OSC requires a supply meeting the contract | Owner | OPEN; candidate only |
 | PWR-D4 | The brief's 1.493 / 1.394 / 0.224 A "planning normal" is the Stage54 conditional row; canonical 1.535 / 1.436 / 0.224 A governs comparisons | Routine (evidence) | ADOPTED |
 
-Checks for this record: `ledger.py --check` PASS; 7 focused tests PASS (normal and
+Checks for this record: `ledger.py --check` PASS; 8 focused tests PASS (normal and
 `-O`); `verify_pd_pin.py` PASS against a local zudo-pd checkout at both pinned commits.
 ERC, DRC, native KiCad export, simulation and any physical measurement: NOT RUN (no
 schematic or PCB change).

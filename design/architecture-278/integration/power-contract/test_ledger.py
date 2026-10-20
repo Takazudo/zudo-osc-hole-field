@@ -52,6 +52,11 @@ class LedgerTests(unittest.TestCase):
         self.assertFalse(c['plus12_exceeds_ptc1_hold_25C']['normal_planning_stage54_conditional'])
         self.assertTrue(c['efficiency_discrepancy']['pd_probe_matches_stage54_conditional_not_canonical'])
 
+    def test_low_power_screen_changes_no_requirement(self):
+        lp = self.data['low_power_supply_screen']['cases']
+        self.assertTrue(all(c['planning_reduction_needed_mA']['+12V'] > 0 for c in lp.values()))
+        self.assertEqual(self.data['states']['continuous_requirement']['mA'], {'+12V': 1700, '-12V': 1600, '+5V': 300})
+
     def test_floors_are_pd_screened_minima(self):
         chain = ledger.read(ledger.INPUTS['pd_supply_input'])['chain']
         self.assertEqual({r: round(chain[r]['pre_rail_min_V'], 4) for r in ledger.RAILS},

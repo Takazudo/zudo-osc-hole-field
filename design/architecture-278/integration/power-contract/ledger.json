@@ -1,5 +1,98 @@
 {
   "schema_version": 1,
+  "low_power_supply_screen": {
+    "status": "DEMAND-SIDE SCREEN for PD-003; not a requirement change. Removing load means removing or switching off functions, which is a product decision.",
+    "rule": "normal planning x (1 + reserve) must not exceed the continuous capability (100 mA rounding omitted)",
+    "caps_source": "zudo-pd PR #219 8cb38bb supply-alternatives.md, maximum continuous output table (PA efficiencies)",
+    "per_module_planning_mA": {
+      "sample_hold": {
+        "+12V": 54.85,
+        "-12V": 52.65
+      },
+      "oscillator": {
+        "+12V": 62.7,
+        "-12V": 61.8
+      },
+      "octave_reference": {
+        "+12V": 26.0,
+        "-12V": 26.0
+      },
+      "filter": {
+        "+12V": 58.2,
+        "-12V": 55.8
+      },
+      "noise": {
+        "+12V": 6.0,
+        "-12V": 6.0
+      },
+      "envelope": {
+        "+12V": 58.45,
+        "-12V": 53.45
+      },
+      "mult": {
+        "+12V": 11.05,
+        "-12V": 10.45
+      },
+      "manual_ab": {
+        "+12V": 19.8505,
+        "-12V": 18.6505
+      },
+      "mix5": {
+        "+12V": 39.6,
+        "-12V": 36.6
+      },
+      "mix4_vca": {
+        "+12V": 46.6,
+        "-12V": 43.6
+      },
+      "wavefolder": {
+        "+12V": 44.219069,
+        "-12V": 41.169069
+      },
+      "offset": {
+        "+12V": 32.825,
+        "-12V": 28.925
+      }
+    },
+    "cases": {
+      "pd002_A1_15V_floor_low": {
+        "continuous_capability_mA": {
+          "+12V": 1400,
+          "-12V": 1320
+        },
+        "planning_reduction_needed_mA": {
+          "+12V": 262.091893,
+          "-12V": 235.56866
+        },
+        "equivalent_oscillators": 4.180094,
+        "equivalent_envelopes": 4.484036
+      },
+      "pd002_A1_15V_floor_high": {
+        "continuous_capability_mA": {
+          "+12V": 1490,
+          "-12V": 1400
+        },
+        "planning_reduction_needed_mA": {
+          "+12V": 180.273711,
+          "-12V": 162.841387
+        },
+        "equivalent_oscillators": 2.875179,
+        "equivalent_envelopes": 3.084238
+      },
+      "pd002_A1_15V_ideal_high": {
+        "continuous_capability_mA": {
+          "+12V": 1600,
+          "-12V": 1510
+        },
+        "planning_reduction_needed_mA": {
+          "+12V": 80.273711,
+          "-12V": 62.841387
+        },
+        "equivalent_oscillators": 1.280282,
+        "equivalent_envelopes": 1.373374
+      }
+    }
+  },
   "status": "UNVALIDATED DRAFT combined power-contract ledger; arithmetic only; no measured, guaranteed or simulated capacity",
   "classification_legend": {
     "GUARANTEED": "manufacturer limit under its stated conditions; none booked for whole-instrument demand",

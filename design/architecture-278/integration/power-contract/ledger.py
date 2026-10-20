@@ -211,8 +211,31 @@ def build():
                     'screen_outside_osc_load_band_before_ptc_and_cable_drop': pd_iv[0] < load[0] or pd_iv[1] > load[1],
                     'source': chain[r]['output_source']}
 
+    # Demand side of a lower-capability supply (PD-003): how much planning demand would
+    # have to be removed before a given per-rail continuous capability meets the same
+    # 10 % reserve rule. Caps are PD-002 screening outputs (assumed efficiencies).
+    caps = {'pd002_A1_15V_floor_low': {'+12V': 1400, '-12V': 1320},
+            'pd002_A1_15V_floor_high': {'+12V': 1490, '-12V': 1400},
+            'pd002_A1_15V_ideal_high': {'+12V': 1600, '-12V': 1510}}
+    per_module = {f: {r: r6(v['planning_upper_mA'][r] / len(v['instances'])) for r in RAILS[:2]}
+                  for f, v in families.items()}
+    low_power = {
+        'status': 'DEMAND-SIDE SCREEN for PD-003; not a requirement change. Removing load means removing or switching off functions, which is a product decision.',
+        'rule': 'normal planning x (1 + reserve) must not exceed the continuous capability (100 mA rounding omitted)',
+        'caps_source': 'zudo-pd PR #219 8cb38bb supply-alternatives.md, maximum continuous output table (PA efficiencies)',
+        'per_module_planning_mA': per_module,
+        'cases': {}}
+    for name, cap in caps.items():
+        need = {r: r6(max(0, normal[r] - cap[r] / (1 + env['reserve_fraction']))) for r in RAILS[:2]}
+        low_power['cases'][name] = {
+            'continuous_capability_mA': cap,
+            'planning_reduction_needed_mA': need,
+            'equivalent_oscillators': r6(max(need[r] / per_module['oscillator'][r] for r in RAILS[:2])),
+            'equivalent_envelopes': r6(max(need[r] / per_module['envelope'][r] for r in RAILS[:2]))}
+
     return {
         'schema_version': 1,
+        'low_power_supply_screen': low_power,
         'status': 'UNVALIDATED DRAFT combined power-contract ledger; arithmetic only; no measured, guaranteed or simulated capacity',
         'classification_legend': {
             'GUARANTEED': 'manufacturer limit under its stated conditions; none booked for whole-instrument demand',
