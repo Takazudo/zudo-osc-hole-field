@@ -1,0 +1,125 @@
+{
+  "schema_version": 2,
+  "status": "PROVISIONAL supply-side values quoted from zudo-pd at a pinned commit; the PD owner's capability screening (zudo-pd #218) supersedes them when it lands. Nothing here is a new rating.",
+  "repository": "https://github.com/Takazudo/zudo-pd",
+  "commit": "65031f98f02677998efada217f64e731d39437f7",
+  "pd_source_sha256": {
+    "manufacturing/power-budget.json": "68160d62bf93d31e0143b462d38e2110c75c19eda5a21bcf5f91510fe7223f33",
+    "scripts/schgen/board_b_spec.py": "12814d07a8318bc16ab0259ff6baddfd67af3abe01b8824feb5b0885608cff49",
+    ".claude/skills/component-ptc-smd1210p200tf-c20808/facts.json": "87811de941799f2445b715b1aaa2c47ad2525be5ebc9802323d86affab627ea6",
+    ".claude/skills/component-ptc-msmd110-33v-c70119/facts.json": "10119137a0fd134dca8ccb3e364d59a749839b633b11c7567edee80d743b1222",
+    ".claude/skills/component-ptc-bsmd1206-150-16v-c883133/facts.json": "21893353626bce08f01613b1405d9ec4261cd9ae9b42f3697ec73c5547ca053e",
+    ".claude/skills/component-renewal-ldos/facts.json": "3859114e877895205bcc23d8fae3e7d19772aed01269010a38e2ccc40f14e66f"
+  },
+  "value_classification": "Each block carries its PD classification. Null means not supplied, never zero.",
+  "input_boundary_W": {
+    "classification": "PD CONTRACT / PD SCREEN (manufacturing/power-budget.json pd_contract and whole_chain_current_thermal_screen)",
+    "nominal_15V_3A": 45,
+    "source_minus_5_percent": 42.75,
+    "board_b_input_screen_14V_3A": 42,
+    "note": "15 V only; 20 V unsupported by Board P (16 V input TVS). Losses in the USB-C cable, J1, Board P Q1 AO3401A and the VBUS header sit ahead of Board B."
+  },
+  "output_design_target_mA": {
+    "classification": "PD-DESIGN target, unmeasured",
+    "+12V": 1200,
+    "-12V": 800,
+    "+5V": 500
+  },
+  "pd_screen_at_design_targets": {
+    "classification": "PD SCREEN at its own 1.2 / 0.8 / 0.5 A targets (power-budget.json whole_chain_current_thermal_screen)",
+    "pre_regulator_power_W_total": 35.74241737617201,
+    "minimum_weighted_converter_efficiency_at_14V_3A": 0.8510099375279049,
+    "u4_modeled_conduction_efficiency": [
+      0.8169086816832283,
+      0.8205980321401299
+    ],
+    "u4_model_limits": "conduction losses only at 0.8-0.87 A output; switching/core/quiescent losses omitted; not an upper bound on input current"
+  },
+  "chain": {
+    "+12V": {
+      "pre_regulator": "U2 AP63201WU-7 synchronous buck",
+      "pre_rail_nominal_V": 13.44,
+      "pre_rail_min_V": 13.219794240119684,
+      "pre_rail_source": "power-budget.json positive_pre_regulator_screen.bounds (reference/resistor/TCR; valid only while U2 regulates)",
+      "post_regulator": "U6 LT1963AEQ#TRPBF linear",
+      "output_conditional_V": [
+        11.526398684603885,
+        12.47731419187155
+      ],
+      "output_source": "power-budget.json whole_chain_current_thermal_screen.plus12_output_band_conditional (not a guaranteed full-temperature band)",
+      "ptc": {
+        "ref": "PTC1",
+        "mpn": "SMD1210P150TF/16",
+        "ihold_A_25C": 1.5,
+        "itrip_A_25C": 3.0,
+        "ihold_A_85C": null,
+        "r1max_ohm": null,
+        "source": "component-ptc-smd1210p200tf-c20808 fact-ptc1b-ihold / fact-ptc1b-itrip (GUARANTEED_ELECTRICAL); 85 C row not retained for this variant"
+      },
+      "ldo_table_rows_end_A": 1.5,
+      "ldo_source": "component-renewal-ldos LT1963A dropout and ground-current rows at 1.5 A (GUARANTEED_ELECTRICAL table rows, verdict UNSOURCED under PD strict source policy)"
+    },
+    "-12V": {
+      "pre_regulator": "U4 LM2596S-ADJ inverting buck-boost",
+      "pre_rail_nominal_V": 14.145,
+      "pre_rail_min_V": 13.483572496263077,
+      "pre_rail_source": "power-budget.json negative_stage_scenarios[3].bounds (includes 0.35 % tolerance+TCR; valid only while U4 regulates)",
+      "post_regulator": "U8 LT3015EQ#PBF adjustable linear",
+      "output_conditional_V": [
+        11.740613718230193,
+        12.370100851223281
+      ],
+      "output_source": "power-budget.json whole_chain_current_thermal_screen.minus12_output_band_conditional (magnitude; not a guaranteed full-temperature band)",
+      "ptc": {
+        "ref": "PTC3",
+        "mpn": "BSMD1206-150-16V",
+        "ihold_A_25C": 1.5,
+        "itrip_A_25C": 3.0,
+        "ihold_A_85C": 0.77,
+        "r1max_ohm": 0.13,
+        "source": "component-ptc-bsmd1206-150-16v-c883133 fact-ptc3-ihold / itrip / hold-85c / r1max (GUARANTEED_ELECTRICAL, THERMAL_SOA)"
+      },
+      "ldo_table_rows_end_A": 1.5,
+      "ldo_source": "component-renewal-ldos LT3015 regulation, dropout and ground-current rows at 1.5 A (verdict UNSOURCED under PD strict source policy)"
+    },
+    "+5V": {
+      "pre_regulator": "U3 LM2596S-ADJ buck",
+      "pre_rail_nominal_V": 6.519,
+      "pre_rail_min_V": 6.055019607843137,
+      "pre_rail_source": "power-budget.json whole_chain_current_thermal_screen.plus5_pre_hot_tolerance_bounds (valid only while U3 regulates)",
+      "post_regulator": "U7 LT1963AEQ#TRPBF linear",
+      "output_conditional_V": [
+        4.81482669955157,
+        5.19593178166834
+      ],
+      "output_source": "power-budget.json whole_chain_current_thermal_screen.plus5_output_band_conditional",
+      "ptc": {
+        "ref": "PTC2",
+        "mpn": "mSMD110-33V",
+        "ihold_A_25C": 1.1,
+        "itrip_A_25C": 2.2,
+        "ihold_A_85C": null,
+        "r1max_ohm": 0.25,
+        "source": "component-ptc-msmd110-33v-c70119 fact-ptc2-ihold / itrip / r1max (GUARANTEED_ELECTRICAL)"
+      },
+      "ldo_table_rows_end_A": 1.5,
+      "ldo_source": "component-renewal-ldos LT1963A rows"
+    }
+  },
+  "open_qualification_quoted": [
+    "Negative LM2596 startup may reach about 4.5 A for at least 2 ms versus 3 A PD contract; steady-state margins do not prove startup.",
+    "AP63201 full high-duty low-line behavior, actual path voltage drop and final whole-chain input-current budget."
+  ],
+  "topology_facts": {
+    "classification": "PD-DESIGN connectivity (scripts/schgen/board_b_spec.py)",
+    "ldo_shutdown_pins_tied_to_input": "U6.1, U7.1 and U8.1 share their pre-rail nets; no sequencing or cross-rail shutdown",
+    "output_path": "LDO -> PTC -> TVS -> J6/J7/J10/J11; no reverse blocking",
+    "indicator_loads": "R7/LED2, R8/LED3, R9/LED4 on the LDO outputs before the PTCs"
+  },
+  "capability_mA": {
+    "classification": "PENDING PD owner screening (#218)",
+    "+12V": null,
+    "-12V": null,
+    "+5V": null
+  }
+}
