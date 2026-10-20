@@ -19,6 +19,9 @@ python3 design/.../native.py run      # candidate ERC, DRC, refilled ratsnest, r
 python3 design/.../native.py audit    # writes native-audit.json
 python3 design/.../native.py check    # replays it without writing; PASS, all 11 gates
 python3 design/.../decoupling.py --check   # PASS
+python3 design/.../capped_diff.py          # PASS: removals only, no added or altered geometry
+python3 design/.../capped_tiles.py run     # 2 DRC runs on X 214-264 mm (cap 8)
+python3 design/.../capped_tiles.py check   # hole_to_hole PASS, silk_over_copper PASS, silk_overlap NOT ESTABLISHED
 python3 -m unittest scripts/checks/test_stage56_cleanup_closure.py   # 9 tests OK; also with -O
 python3 -m unittest scripts/checks/test_idle_quad_cleanup.py         # Stage55, 11 tests OK
 pnpm circuit:check
@@ -59,7 +62,9 @@ was not made for Stage56; determinism is inferred from the Stage55 rule, not sho
 | Check | Status |
 | --- | --- |
 | ERC, DRC, schematic parity, complete ratsnest, rail clusters, decoupling replay, unit tests | PASS (disposable candidate) |
-| Capped warning types (hole_to_hole, silk_over_copper, silk_overlap) | NOT ESTABLISHED, KiCad 199 cap |
+| Capped types: hole_to_hole, silk_over_copper on changed tile | PASS (complete counts 58→58, 0→0) |
+| Capped types: non-regression outside changed region | PASS by construction (`capped_diff.py`), no DRC run there |
+| silk_overlap complete count in changed tile | NOT ESTABLISHED (199 cap on both sides) |
 | Downstream use of dropped osc-core unit fields | NOT RUN beyond `pnpm circuit:check` |
 | PDN impedance, analog behavior, thermal, assembly | NOT RUN |
 | Canonical adoption, generator/BOM/worksheet update | NOT RUN, needs owner approval |

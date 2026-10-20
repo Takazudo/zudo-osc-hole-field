@@ -57,13 +57,30 @@ Baseline side is the retained Stage55 evidence of the same canonical board
 | Nets gaining edges / new open nets | – | none / none | PASS |
 | Rail clusters (pad membership) | 81 / 81 / 214 / 1 | 75 / 75 / 214 / 1 = baseline minus removed pads | PASS |
 | Uncapped warning types | track_dangling 12, silk_edge 6, text_height 4 | identical signatures | PASS |
-| Capped types (199) | hole_to_hole, silk_over_copper, silk_overlap | still 199 each | **NOT ESTABLISHED** |
+| Capped types (199), whole board | hole_to_hole, silk_over_copper, silk_overlap | still 199 each | see below |
 
 The six removed-only clusters per supply rail are the isolated OPA4197 supply pads of
 U116–U118 and U216–U218, as in Stage55. No other net's edge count changed. The 325
 distinct "new" signatures (397 removed) are all silk_over_copper (198) and
 silk_overlap (127): truncation
-reshuffling at the 199-marker cap; nonregression of those types is not established.
+reshuffling at the 199-marker cap.
+
+**Capped types, bounded check** (`capped_diff.py`, `capped_tiles.py`, `capped-audit.json`).
+KiCad 10.0.6 caps each type at 199 markers and kicad-cli cannot raise it; a full-board
+X tiling was stopped because silk_overlap reached 199 in every 40 mm tile. Instead:
+
+- The item-by-item source diff shows the candidate is the canonical board minus 30
+  footprints, 77 segments and 18 vias, with nothing added. All other differences are
+  hidden Role/LogicalCellKey/Island/Decouples fields (339 footprints) and zone
+  whitespace (5 zones). No DRC item in any report names a hidden field.
+- All three checks compare pairs of existing items, so removing items cannot create a
+  violation, and outside the removed-item box (X 215.0–262.7 mm) every pair is
+  geometrically identical. Non-regression therefore holds by construction.
+- Confirmation, one DRC per side (2 of a hard cap of 8) on the tile X 214–264 mm, with
+  `severity ignore` rules for pairs entirely outside it: hole_to_hole 58 → 58 and
+  silk_over_copper 0 → 0, both complete, no new signature: **PASS**. silk_overlap
+  reaches 199 in the tile on both sides, so its complete count is **NOT ESTABLISHED**;
+  its non-regression rests on the construction argument above.
 
 ## Decoupling (`decoupling.json`, source level)
 
