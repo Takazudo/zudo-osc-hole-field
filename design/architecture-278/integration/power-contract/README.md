@@ -8,7 +8,7 @@ no converter efficiency is booked. Canonical OSC schematic, PCB, BOM, placement,
 - OSC base: `e1969027e63dfc22da1dbca07bf64e8778b122dd` (Stage54, PR #287 / Issue #278)
 - zudo-pd read at `65031f98f02677998efada217f64e731d39437f7`; quoted values and source
   hashes are in `supply-input.json`
-- Rebuild: `python3 design/architecture-278/integration/power-contract/ledger.py` (`--check` verifies)
+- Rebuild: `python3 design/architecture-278/integration/power-contract/ledger.py`, then `decompose.py` (`--check` verifies each)
 - PD quotation check: `python3 design/architecture-278/integration/power-contract/verify_pd_pin.py <zudo-pd checkout>`
   (read-only `git show` at the pinned commit; prints NOT RUN without a checkout)
 - PD capability screen: zudo-pd draft PR #219 `6071e1757c7678a4b5ed0af069a9eae202c6ee2d`,
@@ -178,6 +178,92 @@ Reviewed zudo-pd#218 PD-003 / PR #219 `2bd418e` (`manufacturing/b1-gates.md`,
 | L7 | TVS2200 against STUSB4500: 0.00 / −0.35 V margin, plus the CC 22 V margin; the alternative controllers are out of stock or not in production stock. R7 (interface maximum, all-rail shutdown, reverse blocking) is unresolved for every option | Blocking before adoption |
 | L8 | PD notes the final lineup edits were not re-reviewed | Re-review before the owner decision is recorded as adopted |
 
+## Budget decomposition (owner request, zudo-pd #218)
+
+Requested in [zudo-pd#218 comment 6284861864](https://github.com/Takazudo/zudo-pd/issues/218#issuecomment-6284861864).
+`decompose.py` writes `decomposition.json` by classifying every one of the 347 rows of
+`design/power/rail-ledger.json`. The basis text of each row is kept in that file, and
+the input sha256 values are recorded under `inputs_sha256` (OSC base `e1969027`).
+
+Status of the numbers:
+- Everything here is **CALCULATED** and **UNVERIFIED**.
+- Nothing is **MEASURED**: there is no whole-instrument or module current measurement.
+- No requirement changes. A lower level is at most a candidate operating range for PWR-D5.
+
+### Parts of the canonical planning budget
+
+All values are mA, given as +12 V / −12 V / +5 V.
+
+| Part | Planning | Typical | Varies with |
+| --- | --- | --- | --- |
+| IC quiescent (OPA4197/4196 at full-temperature max Iq, ADG5412, LM13700, LM393, AS3340D, LF398, NOISE2) | 1035.5 / 963.0 / 10.0 | 676.8 / 623.4 / 5.0 | Nothing the user does (LM13700 IABC partly control-dependent, see Q3) |
+| HC logic packages | 0 / 0 / 87.0 | 0 / 0 / 34.8 | Clock and trigger rate (Q5) |
+| Static resistive and reference paths (REF5050, trims, enable feeds, dividers) | 23.6 / 4.9 / 7.2 | 16.5 / 3.4 / 3.7 | Nothing |
+| Coarse reserves (233 mA per analog rail, plus the 5 V conditioning reserve) | 233 / 233 / 30 | 122 / 122 / 15 | Fixed or unallocated. It contains 26 mA per rail of verified nominal trim current; the rest also covers feedback, signal pots and clamp transients (Q4) |
+| Inlet, protection, reference and logic allowances | 34.7 / 26.7 / 49.4 | 30.7 / 26.7 / 31.4 | Nothing |
+| Internal signal paths (clamp feeds, fold feedback, command, summing and local resistor paths) | 27.8 / 27.8 / 0 | 4.7 / 4.7 / 0 | Signal level; no user notice bounds them |
+| Patch and indicators (output and jack loads, magnitude and clip LEDs) | 174.2 / 174.2 / 0 | 30.3 / 30.3 / 0 | Patching and signal level |
+| Operation and state (FOLD/LEVEL drive, stage LEDs, pull-ups, contacts) | 6.0 / 6.0 / 40.7 | 1.3 / 1.3 / 19.5 | Knobs, buttons and logic state |
+| **Canonical planning** | **1534.8 / 1435.6 / 224.3** | | |
+| Rule (×1.1, rounded up to 100 mA) → continuous requirement | +165.2 / +164.4 / +75.7 | | |
+| Startup ramp and one fault → 20 ms transient | +300 / +300 / +100 | | Startup only (soft start and capacitance) |
+
+**What the decomposition shows:**
+- **Most of the budget does not depend on what the user does.** 86 / 86 / 82 % of canonical planning is fixed or unallocated reserve: quiescent current, static paths, reserves and allowances. Without the reserves the fixed share is still about 71 % on the analog rails.
+- **"All knobs at maximum" does not give maximum consumption.** All operation-dependent rows together are 6 / 6 / 41 mA. Patch and indicator rows are 174 / 174 / 0 mA, and internal signal paths 28 / 28 / 0 mA.
+- **Double counting found in the rows:**
+  - The rows themselves state only 3.3 mA on +5 V as impossible: one-hot stage LEDs charged for both states.
+  - Some LM393 rows say their −12 V charge is never drawn, but Stage54 `clip_comparator_accounting` confirms pin 4 on −12 V for every row that charges it (A01–A06, M4A/B, M5A/B). That charge stays, and their typical −12 V rises by 10 mA. The H, O and E comparator rows book 0 mA on −12 V, which may under-book (Q2).
+- **Jack loads and magnitude LEDs draw from one rail at a time.** Clip LEDs, feedback, summing, clamp and differential drive paths load both rails at once.
+  - This lowers total power by up to 1.96 W at nominal.
+  - It does not lower per-rail current, because every output can hold a positive control voltage at once. Stage54 `simultaneity` likewise says there is no blanket halving.
+- **The largest unverified margin is the spread between maximum and typical Iq:** 358.7 / 339.6 / 57.2 mA.
+  - It mixes guaranteed full-temperature maxima (OPA419x) with unverified planning allowances (ADG5412 extrapolated to ±12 V, HC logic, NOISE2, LM13700), some of which could be exceeded. It is not double counting.
+  - It cannot be credited without a measured distribution.
+  - The reserves are second (233 → 122 typical), pending operating-point measurement.
+
+### Demand levels
+
+| Level | mA (+12 / −12 / +5) | Rail output W, nominal / source-band max | ×1.1 rule | Class |
+| --- | --- | --- | --- | --- |
+| Normal typical | 882.5 / 821.9 / 109.4 | 21.0 / 21.4 | — | CALCULATED, UNVERIFIED (typical rows are partly assumptions) |
+| Heavy realistic patch | 1534.8 / 1435.6 / 221.0 | 36.7 / 37.5 (34.8 nominal with one rail at a time) | 1700 / 1600 / 300 | CALCULATED, UNVERIFIED |
+| Canonical planning | 1534.8 / 1435.6 / 224.3 | 36.8 / 37.5 | 1700 / 1600 / 300 | PLANNING (governs) |
+| Explicit usage limit (candidate) | 1386.2 / 1287.0 / 203.0 | 33.1 / 33.8 | 1600 / 1500 / 300 | CANDIDATE, CALCULATED, UNVERIFIED |
+| Startup worst envelope | 1759.5 / 1658.2 / 286.7 | 42.4 / 43.3 | — | CONSERVATIVE ENVELOPE |
+| Continuous requirement | 1700 / 1600 / 300 | 41.1 / 42.0 | — | CONTRACT, unchanged |
+| 20 ms transient requirement | 2000 / 1900 / 400 | 48.8 / 49.8 | — | CONTRACT, unchanged |
+
+**Explicit usage limit:** fixed parts and internal signal paths stay at planning, and the patch, indicator and operation rows are held to typical (indicators near typical brightness, outputs into roughly 100 kΩ loads).
+- This is the most any patch-based usage notice can remove: about 149 / 149 / 21 mA.
+- If adopted, the continuous rule would give 1600 / 1500 / 300 mA, only one 100 mA step below the requirement. That is a **candidate re-basing for PWR-D5**, not a requirement.
+- The user enforces it, and the supply cannot detect a violation.
+- Reaching the limit must still be met by an all-rail refusal or shutdown. A low probability of occurrence is not a PASS.
+
+### 60 W-class input
+
+- **Rail output power is not charger input power.** Input = rail output ÷ end-to-end efficiency, which covers the converters, LDO headroom, cable and PDO. No efficiency is booked here.
+- **Any architecture:**
+  - 60 W covers the continuous requirement only at ≥ 69.9 % end-to-end efficiency (≥ 73.6 % at 57 W, source −5 %).
+  - It covers the 20 ms transient only at ≥ 83.0 % (≥ 87.4 %).
+- **Current LDO chain (Board B pre-rails at their PD-screened minima, from `ledger.json`):**
+  - The continuous requirement needs ≥ 45.86 W of pre-rail power, so the converters must reach ≥ 76.4 % efficiency (80.5 % at 57 W).
+  - The 20 ms transient needs ≥ 54.48 W, so the converters must reach ≥ 90.8 % (95.6 % at 57 W).
+  - PD screened about 85 % at its own lighter targets.
+  - Inference: at that efficiency the transient corresponds to roughly 64 W at the charger. This matches the owner's 64 W example, but it is not a measured or adopted figure.
+- **The excess over 60 W is startup, not patching.** The transient adds 300 / 300 / 100 mA above continuous, and that is mostly the 10 ms full-capacitance ramp. A usage notice cannot reduce it. Only OSC hardware can: slower soft start, sequencing or less capacitance (PD-003 L5). Any of those changes an OSC contract value and needs the owner.
+
+### Circuit facts requested from the OSC owner (via the coordinator)
+
+| ID | Question | Effect |
+| --- | --- | --- |
+| Q1 | Do the magnitude indicators drive LEDs bipolar from an op-amp output to ground, or from a rectified single-polarity output? | Rail split of 174 mA per rail of patch/indicator planning |
+| Q2 | Stage54 confirms the A01–A06, M4A/B and M5A/B LM393s on −12 V. Do the H1/H2, O1–O5 and E1–E6 LM393s also connect pin 4 to −12 V? | Those rows book 0 mA on −12 V; possible under-booking |
+| Q3 | LM13700 IABC per OTA at minimum and maximum control, and which reserve pool carries it | Size of the open OTA bias overlap; control dependence of the 96 mA OTA allowance |
+| Q4 | Which parts of the 233 mA per-rail reserve are fixed operating-point currents and which are signal-dependent | How much reserve a measurement could release |
+| Q5 | HC logic and NOISE2 current at the maximum clock and trigger rate | Whether 87 + 10 mA on +5 V is fixed or rate-bounded |
+| Q6 | Fitted downstream bulk capacitance per rail against the 150 / 150 / 100 µF (+20 %) ceiling, and whether per-module soft start or sequencing is acceptable | Size of the startup ramp that drives the transient |
+
 ## Gap list
 
 | ID | Area | Gap | Owner | Status |
@@ -203,9 +289,9 @@ Reviewed zudo-pd#218 PD-003 / PR #219 `2bd418e` (`manufacturing/b1-gates.md`,
 | PWR-D2 | Requirements stay 1700 / 1600 / 300 and 2000 / 1900 / 400 mA; Stage54 is not booked | Routine (rule reproduces) | ADOPTED |
 | PWR-D3 | Supply direction: the present 15 V Board B cannot carry the OSC contract; choose between a small in-product revision, a larger PD revision (for example 20 V input with Board P change), or a separate supply | Owner | OPEN; PD-002 requests it; integration review R1–R7 above |
 | PWR-D4 | The brief's 1.493 / 1.394 / 0.224 A "planning normal" is the Stage54 conditional row; canonical 1.535 / 1.436 / 0.224 A governs comparisons | Routine (evidence) | ADOPTED |
-| PWR-D5 | Whether OSC gets an explicit degraded mode for lower-capability supplies (functional loss and new power domains) or full OSC requires a supply meeting the contract | Owner | OPEN; candidate only |
+| PWR-D5 | Whether OSC gets an explicit degraded mode for lower-capability supplies (functional loss and new power domains) or full OSC requires a supply meeting the contract | Owner | OPEN; candidate only. The usage-limit candidate (1600 / 1500 / 300 mA by the same rule) is in "Budget decomposition" |
 
-Checks for this record: `ledger.py --check` PASS; 8 focused tests PASS (normal and
-`-O`); `verify_pd_pin.py` PASS against a local zudo-pd checkout at both pinned commits.
+Checks for this record: `ledger.py --check` and `decompose.py --check` PASS; 13 focused
+tests PASS (normal and `-O`); `verify_pd_pin.py` PASS against a local zudo-pd checkout at both pinned commits.
 ERC, DRC, native KiCad export, simulation and any physical measurement: NOT RUN (no
 schematic or PCB change).

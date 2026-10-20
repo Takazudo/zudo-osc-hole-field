@@ -1,0 +1,479 @@
+{
+  "schema_version": 1,
+  "status": "UNVALIDATED DRAFT decomposition; arithmetic on committed worksheet rows; nothing measured; no requirement changed",
+  "request": "https://github.com/Takazudo/zudo-pd/issues/218#issuecomment-6284861864",
+  "inputs_sha256": {
+    "rail_ledger": {
+      "path": "design/power/rail-ledger.json",
+      "sha256": "783f578045a6a5bed31e3f1e944d9dfde5e12696ba5805a39f5ece6d9a8d1a5f"
+    },
+    "supply_architecture": {
+      "path": "design/power/supply-architecture.json",
+      "sha256": "937d0584938c592b3a35a578b5deaf0cb60e80a4729980edd178c69a62f2345e"
+    },
+    "supply_architecture_input": {
+      "path": "design/power/supply-architecture-input.json",
+      "sha256": "a8a4e92ac4c1d7de5c16b6982fba7d5ab60ab13753b12eabfa23fc75da98acc4"
+    },
+    "stage54_accounting": {
+      "path": "design/architecture-278/implementation/stage54/power-cleanup/accounting.json",
+      "sha256": "114a9c3c9581413653dc4085b16228f3637ca5eb6b4bcdff923a482de5adc8e6"
+    },
+    "combined_ledger": {
+      "path": "design/architecture-278/integration/power-contract/ledger.json",
+      "sha256": "f4a3b05e66c800eea6e884845749d20e3a1de4fc6de6aa08e60c08cb6f5c3608"
+    }
+  },
+  "classification_legend": {
+    "CALCULATED": "arithmetic on committed rows; inherits each row's own status (typical, planning, assumption)",
+    "MEASURED": "none; no whole-instrument or module current has been measured",
+    "UNVERIFIED": "every calculated level until bench measurement",
+    "CONTRACT": "existing requirement, unchanged",
+    "CANDIDATE": "possible new operating range for an owner decision (PWR-D5); never booked"
+  },
+  "categories": {
+    "fixed_ic_quiescent": {
+      "planning_mA": {
+        "+12V": 1035.5,
+        "-12V": 963.0,
+        "+5V": 10.0
+      },
+      "typical_mA": {
+        "+12V": 676.84,
+        "-12V": 623.44,
+        "+5V": 5.0
+      },
+      "rows": 142,
+      "labels": [
+        "ADG5412FBRUZ",
+        "AS3340D core",
+        "LF398M_NOPB",
+        "LM13700M_NOPB",
+        "LM393BIDR",
+        "NOISE2 filtered digital supply",
+        "OPA4196IDR",
+        "OPA4196IDR whole quad package",
+        "OPA4197IPWR"
+      ]
+    },
+    "fixed_logic_quiescent_and_rate": {
+      "planning_mA": {
+        "+12V": 0.0,
+        "-12V": 0.0,
+        "+5V": 87.0
+      },
+      "typical_mA": {
+        "+12V": 0.0,
+        "-12V": 0.0,
+        "+5V": 34.8
+      },
+      "rows": 24,
+      "labels": [
+        "CD74HC221M96",
+        "SN74HC00DR",
+        "SN74HC14DR",
+        "SN74HC74DR"
+      ]
+    },
+    "fixed_static_resistive_reference": {
+      "planning_mA": {
+        "+12V": 23.551,
+        "-12V": 4.851,
+        "+5V": 7.15
+      },
+      "typical_mA": {
+        "+12V": 16.541,
+        "-12V": 3.441,
+        "+5V": 3.7
+      },
+      "rows": 49,
+      "labels": [
+        "10 MΩ selector-common bias load",
+        "ATTEN fault-switch enable feed",
+        "Input isolation enables",
+        "Input-isolator enable feed",
+        "Input-isolator enable feeds",
+        "Manual control tracks",
+        "Offset trim track",
+        "Offset/input low-side divider loads",
+        "REF5050 allocation",
+        "REF5050 local generator and rail ladder",
+        "fault-switch enable feeds",
+        "one manual offset pot",
+        "two input-switch enable feeds"
+      ]
+    },
+    "coarse_reserve": {
+      "planning_mA": {
+        "+12V": 233.0,
+        "-12V": 233.0,
+        "+5V": 30.0
+      },
+      "typical_mA": {
+        "+12V": 122.0,
+        "-12V": 122.0,
+        "+5V": 15.0
+      },
+      "rows": 24,
+      "labels": [
+        "5 V conditioning reserve",
+        "Internal resistive/reference/shaper load reserve",
+        "Reference, rates, clamp and control reserve",
+        "Reference/control/expo/feedback reserve",
+        "Shared reference and distribution reserve",
+        "reference, signal pots, summer feedback, servo and trims"
+      ]
+    },
+    "internal_signal_path": {
+      "planning_mA": {
+        "+12V": 27.838138,
+        "-12V": 27.838138,
+        "+5V": 0.0
+      },
+      "typical_mA": {
+        "+12V": 4.742268,
+        "-12V": 4.742268,
+        "+5V": 0.0
+      },
+      "rows": 14,
+      "labels": [
+        "Command clamp resistor",
+        "Four diode clamp feeds",
+        "Four fold feedback paths",
+        "Other local signal/control resistor paths",
+        "internal command and feedback load"
+      ]
+    },
+    "patch_signal_dependent": {
+      "planning_mA": {
+        "+12V": 174.2,
+        "-12V": 174.2,
+        "+5V": 0.0
+      },
+      "typical_mA": {
+        "+12V": 30.32,
+        "-12V": 30.32,
+        "+5V": 0.0
+      },
+      "rows": 70,
+      "labels": [
+        "External output load",
+        "External output loads",
+        "Four 10 kohm jack loads",
+        "Four external output loads",
+        "Four magnitude indicators",
+        "Magnitude indicator envelope",
+        "SUM external load",
+        "Three magnitude LEDs",
+        "magnitude indicators",
+        "magnitude_leds",
+        "one clip LED",
+        "one external output load",
+        "output_loads",
+        "pre-level clip LED",
+        "three magnitude LEDs"
+      ]
+    },
+    "operation_state_dependent": {
+      "planning_mA": {
+        "+12V": 6.0,
+        "-12V": 6.0,
+        "+5V": 40.748934
+      },
+      "typical_mA": {
+        "+12V": 1.3,
+        "-12V": 1.3,
+        "+5V": 19.5
+      },
+      "rows": 24,
+      "labels": [
+        "Comparator pullups",
+        "FOLD depth track/harness drive",
+        "Five control-contact pulls",
+        "LEVEL track/harness drive",
+        "PNP bias/command branch",
+        "Two stage LEDs"
+      ]
+    }
+  },
+  "budget_steps": {
+    "fixed_quiescent_and_static_planning_mA": {
+      "+12V": 1326.781028,
+      "-12V": 1227.530522,
+      "+5V": 183.537511
+    },
+    "of_which_coarse_reserve_mA": {
+      "+12V": 233.0,
+      "-12V": 233.0,
+      "+5V": 30.0
+    },
+    "of_which_inlet_protection_reference_logic_allowances_mA": {
+      "+12V": 34.730028,
+      "-12V": 26.679522,
+      "+5V": 49.387511
+    },
+    "patch_signal_and_operation_planning_mA": {
+      "+12V": 208.038138,
+      "-12V": 208.038138,
+      "+5V": 40.748934
+    },
+    "canonical_planning_mA": {
+      "+12V": 1534.819166,
+      "-12V": 1435.56866,
+      "+5V": 224.286445
+    },
+    "reserve_x1_1_and_100mA_rounding_mA": {
+      "+12V": 165.180834,
+      "-12V": 164.43134,
+      "+5V": 75.713555
+    },
+    "continuous_requirement_mA": {
+      "+12V": 1700,
+      "-12V": 1600,
+      "+5V": 300
+    },
+    "startup_ramp_and_fault_to_transient_mA": {
+      "+12V": 300,
+      "-12V": 300,
+      "+5V": 100
+    },
+    "transient_requirement_mA": {
+      "+12V": 2000,
+      "-12V": 1900,
+      "+5V": 400
+    }
+  },
+  "fixed_share_of_canonical": {
+    "+12V": 0.864454,
+    "-12V": 0.855083,
+    "+5V": 0.818317
+  },
+  "double_counting_and_margins": {
+    "per_rail_overcount_documented_mA": {
+      "+12V": 0.0,
+      "-12V": 0.0,
+      "+5V": 3.3
+    },
+    "per_rail_overcount_rows": [
+      {
+        "id": "E1:10",
+        "rail": "+5V",
+        "mA": 0.55,
+        "basis": "0.5mA nominal at8V plus planning allowance; conservatively charges both although one-hot states permit only one."
+      },
+      {
+        "id": "E2:10",
+        "rail": "+5V",
+        "mA": 0.55,
+        "basis": "0.5mA nominal at8V plus planning allowance; conservatively charges both although one-hot states permit only one."
+      },
+      {
+        "id": "E3:10",
+        "rail": "+5V",
+        "mA": 0.55,
+        "basis": "0.5mA nominal at8V plus planning allowance; conservatively charges both although one-hot states permit only one."
+      },
+      {
+        "id": "E4:10",
+        "rail": "+5V",
+        "mA": 0.55,
+        "basis": "0.5mA nominal at8V plus planning allowance; conservatively charges both although one-hot states permit only one."
+      },
+      {
+        "id": "E5:10",
+        "rail": "+5V",
+        "mA": 0.55,
+        "basis": "0.5mA nominal at8V plus planning allowance; conservatively charges both although one-hot states permit only one."
+      },
+      {
+        "id": "E6:10",
+        "rail": "+5V",
+        "mA": 0.55,
+        "basis": "0.5mA nominal at8V plus planning allowance; conservatively charges both although one-hot states permit only one."
+      }
+    ],
+    "one_rail_at_a_time_overlap_mA": {
+      "mA_on_each_analog_rail": 163.2,
+      "power_W_removable_at_nominal": 1.9584,
+      "note": "Jack loads and magnitude LEDs return to ground and draw from one analog rail at a time; this lowers total power only. Per-rail current is unchanged because all outputs may sit at one polarity together."
+    },
+    "iq_spread_planning_minus_typical_mA": {
+      "+12V": 358.66,
+      "-12V": 339.56,
+      "+5V": 57.2
+    },
+    "iq_spread_note": "Planning mixes guaranteed full-temperature maxima (TI OPA419x) with unverified planning allowances (ADG5412 extrapolated to +/-12 V, HC logic, NOISE2, LM13700) that could be exceeded. The sum of ~260 packages is unlikely to sit at every maximum, but no distribution is retained, so no statistical credit is taken without measurement.",
+    "lm393_minus12": "Stage54 clip_comparator_accounting confirms pin 4 on -12V for every LM393 row that charges -12 V (A01-A06, M4A/B, M5A/B), despite a row basis saying no -12 V current; planning stays, typical gains 10 mA. H/O/E LM393 rows book 0 mA on -12 V (possible under-booking, open).",
+    "trim_current_inside_reserves_mA_per_analog_rail": 26,
+    "ota_bias_overlap_with_reserves": "OPEN: reserve rows state a conservative overlap with the inherited OTA bias allowance (26 IABC branches); size unknown, no credit taken.",
+    "stage54_idle_quads_planning_Iq_mA": {
+      "+12V": 42.0,
+      "+5V": 0.0,
+      "-12V": 42.0
+    },
+    "stage54_note": "Unadopted conditional removal of idle op-amp quads; listed separately, not applied to any level."
+  },
+  "levels": {
+    "normal_typical": {
+      "classification": "CALCULATED from reported/assumed typical rows; UNVERIFIED",
+      "mA": {
+        "+12V": 882.473296,
+        "-12V": 821.92279,
+        "+5V": 109.387511
+      },
+      "rail_output_W_nominal": 20.999691,
+      "rail_output_W_source_band_max": 21.439756,
+      "basis": "Every row at its reported/assumed typical, plus the Stage54 clip-comparator -12 V typical correction; allowances at pre-sensitivity draft values (protection/supervision and reference/logic included, unlike the ledger reported typical subtotal).",
+      "continuous_rule_result_mA": {
+        "+12V": 1000,
+        "-12V": 1000,
+        "+5V": 200
+      }
+    },
+    "heavy_realistic_patch": {
+      "classification": "CALCULATED planning upper with documented impossible combinations removed; UNVERIFIED",
+      "mA": {
+        "+12V": 1534.819166,
+        "-12V": 1435.56866,
+        "+5V": 220.986445
+      },
+      "rail_output_W_nominal": 36.749586,
+      "rail_output_W_source_band_max": 37.519244,
+      "basis": "Canonical planning (full-temperature maximum Iq, every output into 10 kohm at 5 V, every indicator at planning brightness, all reserves) minus only the per-rail charges whose own worksheet basis says cannot occur. Every output may hold a positive DC CV at once, so per-rail signal loads are not halved.",
+      "continuous_rule_result_mA": {
+        "+12V": 1700,
+        "-12V": 1600,
+        "+5V": 300
+      },
+      "rail_output_W_nominal_one_rail_at_a_time": 34.791186
+    },
+    "canonical_planning_all_upper_terms": {
+      "classification": "PLANNING ALLOCATION (canonical; governs the current requirement)",
+      "mA": {
+        "+12V": 1534.819166,
+        "-12V": 1435.56866,
+        "+5V": 224.286445
+      },
+      "rail_output_W_nominal": 36.766086,
+      "rail_output_W_source_band_max": 37.536074,
+      "basis": "supply-architecture.json selected_requirement.normal_with_allowances_mA, reproduced row by row.",
+      "continuous_rule_result_mA": {
+        "+12V": 1700,
+        "-12V": 1600,
+        "+5V": 300
+      }
+    },
+    "explicit_usage_limit_candidate": {
+      "classification": "CANDIDATE operating range (PWR-D5); CALCULATED, UNVERIFIED; not a requirement",
+      "mA": {
+        "+12V": 1386.239166,
+        "-12V": 1286.98866,
+        "+5V": 203.037511
+      },
+      "rail_output_W_nominal": 33.093921,
+      "rail_output_W_source_band_max": 33.787495,
+      "basis": "Fixed parts and internal signal paths at planning; external patch/indicator and operation rows held to their typical values by a stated usage limit (for example: indicators near typical brightness, outputs into typical 100 kohm loads). Shows the most any patch-based usage limit can remove; enforcement is by user instruction only.",
+      "continuous_rule_result_mA": {
+        "+12V": 1600,
+        "-12V": 1500,
+        "+5V": 300
+      }
+    },
+    "startup_worst_envelope": {
+      "classification": "CONSERVATIVE ENVELOPE (calculated); UNVERIFIED",
+      "mA": {
+        "+12V": 1759.459166,
+        "-12V": 1658.22866,
+        "+5V": 286.686445
+      },
+      "rail_output_W_nominal": 42.445686,
+      "rail_output_W_source_band_max": 43.333838,
+      "basis": "Canonical planning plus the full-capacitance ramp at the 10 ms minimum soft start (capacitance ceiling +20 %). Loads draw less at reduced voltage, so this overstates a real ramp; the 20 ms transient requirement covers it with the one-fault increment."
+    },
+    "transient_requirement_20ms": {
+      "classification": "CONTRACT REQUIREMENT (unchanged)",
+      "mA": {
+        "+12V": 2000,
+        "-12V": 1900,
+        "+5V": 400
+      },
+      "rail_output_W_nominal": 48.8,
+      "rail_output_W_source_band_max": 49.82,
+      "basis": "canonical + ramp + one external-forcing fault, rounded; supply-architecture.json"
+    },
+    "continuous_requirement": {
+      "classification": "CONTRACT REQUIREMENT (unchanged)",
+      "mA": {
+        "+12V": 1700,
+        "-12V": 1600,
+        "+5V": 300
+      },
+      "rail_output_W_nominal": 41.1,
+      "rail_output_W_source_band_max": 41.96,
+      "basis": "canonical x 1.1, rounded up to 100 mA"
+    }
+  },
+  "sixty_watt_class_screen": {
+    "status": "Rail output power only. Charger input power = rail output / end-to-end efficiency (converters, LDO headroom, cable, PDO). No efficiency is booked here; the PD owner screens the supply side.",
+    "levels": {
+      "normal_typical": {
+        "rail_output_W_source_band_max": 21.439756,
+        "end_to_end_efficiency_needed_60W": 0.357329,
+        "end_to_end_efficiency_needed_57W_source_minus_5pct": 0.376136
+      },
+      "heavy_realistic_patch": {
+        "rail_output_W_source_band_max": 37.519244,
+        "end_to_end_efficiency_needed_60W": 0.625321,
+        "end_to_end_efficiency_needed_57W_source_minus_5pct": 0.658232
+      },
+      "canonical_planning_all_upper_terms": {
+        "rail_output_W_source_band_max": 37.536074,
+        "end_to_end_efficiency_needed_60W": 0.625601,
+        "end_to_end_efficiency_needed_57W_source_minus_5pct": 0.658528
+      },
+      "explicit_usage_limit_candidate": {
+        "rail_output_W_source_band_max": 33.787495,
+        "end_to_end_efficiency_needed_60W": 0.563125,
+        "end_to_end_efficiency_needed_57W_source_minus_5pct": 0.592763
+      },
+      "continuous_requirement": {
+        "rail_output_W_source_band_max": 41.96,
+        "end_to_end_efficiency_needed_60W": 0.699333,
+        "end_to_end_efficiency_needed_57W_source_minus_5pct": 0.73614
+      },
+      "transient_requirement_20ms": {
+        "rail_output_W_source_band_max": 49.82,
+        "end_to_end_efficiency_needed_60W": 0.830333,
+        "end_to_end_efficiency_needed_57W_source_minus_5pct": 0.874035
+      }
+    },
+    "current_ldo_chain_at_60W": {
+      "normal_planning": {
+        "pre_rail_W_lower_bound": 41.004646,
+        "converter_efficiency_needed_60W": 0.683411,
+        "converter_efficiency_needed_57W_source_minus_5pct": 0.71938
+      },
+      "continuous_requirement": {
+        "pre_rail_W_lower_bound": 45.863872,
+        "converter_efficiency_needed_60W": 0.764398,
+        "converter_efficiency_needed_57W_source_minus_5pct": 0.804629
+      },
+      "startup_envelope_10ms": {
+        "pre_rail_W_lower_bound": 47.354427,
+        "converter_efficiency_needed_60W": 0.78924,
+        "converter_efficiency_needed_57W_source_minus_5pct": 0.830779
+      },
+      "transient_requirement_20ms": {
+        "pre_rail_W_lower_bound": 54.480384,
+        "converter_efficiency_needed_60W": 0.908006,
+        "converter_efficiency_needed_57W_source_minus_5pct": 0.955796
+      }
+    },
+    "current_ldo_chain_note": "From ledger.json: pre-rail power with the existing LDO post-regulation (PD-screened minimum pre-rail setpoints). Converter efficiency is not booked; PD screened about 0.85 at its own 1.2/0.8/0.5 A targets."
+  },
+  "measured": {
+    "+12V": null,
+    "-12V": null,
+    "+5V": null
+  }
+}
