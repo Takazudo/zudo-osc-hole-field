@@ -1,11 +1,9 @@
-# Stage57: /M5B/C819409_SENSE target setup (no route search run)
+# Stage57: /M5B/C819409_SENSE target setup and outer-layer search (no path found)
 
-**Setup checkpoint only. No route search, no proposal, no accepted repair, no
-canonical adoption.** Canonical boards, the placement lock and `decision.json` are
+**No proposal, no accepted repair, no canonical adoption.** Canonical boards, the placement lock and `decision.json` are
 unchanged; KEEP_K1402_INCUMBENT stands. No zudo-pd edits, order or energisation.
-The route search is **NOT RUN**: `scripts/pcbgen/grid_router.py` needs numpy, scipy
-and shapely (pinned in `scripts/pcbgen/numerical-requirements.txt`), which are not
-installed on this host or in the KiCad image, and installing them awaits approval.
+The bounded outer-layer search found **no path** (below). Any route needs inner-layer
+copper, which the frozen criteria reserve for a new owner approval.
 
 ## Baseline
 
@@ -61,6 +59,31 @@ shortcut for this net.
 
 Capped silkscreen identity non-regression stays UNRESOLVED as in Stage53.
 
+## Outer-layer search (`search.py`, after the approved install)
+
+Router libraries numpy 2.2.6, scipy 1.15.3, shapely 2.1.2 (the pinned CI set) in a
+scratch venv outside the repo. Router input `grid_dump.py` on the Stage53 board
+(oracle; dump binds `27d22144`, islands 1 + 162). F.Cu and B.Cu with ordinary
+0.60/0.30 mm through vias, 0.20 mm tracks, bounds X 238–276 / Y 100–160 mm:
+
+| Grid | Cells expanded | Result |
+| --- | --- | --- |
+| 0.10 mm | 10,341 of 1.5 M budget | search exhausted, no path |
+| 0.05 mm | 50,950 of 1.5 M budget | search exhausted, no path |
+
+The reachable region around R8248:2 is about 1 cm²: the source pocket is enclosed
+on the outer layers. Search records are `evidence/outer-*.search.json`. This is a
+bounded raster search, not proof that no continuous outer-layer route exists.
+
+Diagnostic searches (not proposals, not committed as copper) with one inner layer
+added find a path only via In1.Cu (AGND plane) or In4.Cu (+12 V plane), both the
+same geometry: F.Cu 7.29 mm, one through via at (262.8, 117.4) mm, 24.38 mm on the
+inner layer, bbox X 258.4–262.8 / Y 111.2–139.9 mm. In2.Cu or In3.Cu alone fails.
+The dump omits pour fills, so either inner route would cut that plane's pour;
+only native refill and the partition gate can decide whether the plane stays one
+component. This location is outside the Stage53 In4 corridor, but the frozen rule
+still forbids new In4 copper without approval.
+
 ## Commands
 
 ```sh
@@ -68,6 +91,9 @@ bash scripts/kicad/run.sh python3 design/architecture-278/implementation/stage57
   .circuit-cache/stage53-fresh/osc-jack-left.kicad_pcb design/.../stage57/m5b-sense/evidence/target-geometry.json
 python3 design/.../stage57/m5b-sense/freeze.py --check     # PASS
 bash design/.../stage57/m5b-sense/setup.sh                 # disposable stage57-pass1 / stage57-fresh
+bash scripts/kicad/run.sh python3 scripts/pcbgen/grid_dump.py .circuit-cache/stage53-fresh/osc-jack-left.kicad_pcb .circuit-cache/stage57/dump.json
+PYTHONPATH=. <venv>/bin/python design/.../stage57/m5b-sense/search.py .circuit-cache/stage57/dump.json .circuit-cache/stage57/coarse.json coarse   # no path
+PYTHONPATH=. <venv>/bin/python design/.../stage57/m5b-sense/search.py .circuit-cache/stage57/dump.json .circuit-cache/stage57/fine.json fine       # no path
 bash design/.../stage57/m5b-sense/trial.sh .circuit-cache/stage57-pass1 pass1   # NOT RUN: no proposal
 python3 -m unittest design/.../stage57/m5b-sense/test_stage57.py   # 9 tests OK; also with -O
 ```
@@ -79,5 +105,6 @@ python3 -m unittest design/.../stage57/m5b-sense/test_stage57.py   # 9 tests OK;
 | Baseline reconstruction and snapshot replay | PASS (hash match) |
 | Target record freeze and replay | PASS |
 | Gate unit tests | PASS (synthetic snapshots) |
-| Route search, proposal, native DRC/connectivity, settlement | NOT RUN (library install awaits approval) |
+| Outer-layer route search (0.10 and 0.05 mm) | RUN: no path found (bounded) |
+| Inner-layer route trial, proposal, native DRC/connectivity, settlement | NOT RUN (needs owner approval) |
 | Analog, thermal, assembly, hardware | NOT RUN |
