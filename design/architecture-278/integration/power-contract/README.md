@@ -112,6 +112,22 @@ PD intervals are its whole-chain conditional screens before PTC and cable drop. 
 bands and the 1 mVpp ripple-at-load criterion are OSC contract values; neither side is
 relaxed here.
 
+## Review of PD-002 supply alternatives
+
+Reviewed zudo-pd#218 PD-002 / PR #219 `8cb38bbbaf90609fa2f516cb558cf91acfb69cf5`
+(`manufacturing/supply-alternatives.md`) against this ledger. Integration review only;
+the option choice remains PWR-D3.
+
+| ID | Finding | Effect |
+| --- | --- | --- |
+| R1 | Load basis is canonical; Stage54 is labelled conditional | OK |
+| R2 | External power uses 12 / 12 / 5 V; the OSC source bands reach 12.3 / 12.2 / 5.1 V (continuous 41.96 W, not 41.10 W) | B1 continuous input current rises about 2 %, to about 2.61–2.82 A |
+| R3 | Transient path (b) needs a sink input limit whose minimum stays above the continuous input current (about 2.82 A) and whose maximum stays at or below 3 A, a window of about ±3 %; the hold-up must also be charged before the outputs ramp, which needs sequencing | Path (b) is not demonstrated; the hold-up arithmetic itself reproduces (about 0.9 mF at 18.67 to 17.67 V) |
+| R4 | The 2 mV / 1 mV precision criteria are kept as gates (no relaxation), but the OSC supply contract's 1 mVpp ripple at load, the 12.00–12.30 / 12.00–12.20 / 5.05–5.10 V source bands and the 0.2 V rail plus return loss are not screened; PTC drop outside the loop is 0.17–0.20 V | Add as gates for every no-LDO option |
+| R5 | "Keep 15 V" requires lowering the OSC continuous requirement below canonical planning normal | Inadmissible as a supply-side choice; only demand closure can change the requirement |
+| R6 | B1 replaces the preserved 15 V / 3 A / 45 W boundary and needs a 60 W or larger 20 V-capable charger | Product decision for the owner; the TVS clamp versus the STUSB4500 28 V absolute maximum must close before adoption |
+| R7 | No proposed device enforces the OSC 2.1 / 2.0 / 0.5 A interface maximum (PTC trip 5 A, switch limit 6.3 A); the OSC requirement for coordinated all-rail shutdown and reverse blocking is not addressed | G3 / G4 stay open under every option |
+
 ## Gap list
 
 | ID | Area | Gap | Owner | Status |
@@ -134,7 +150,7 @@ relaxed here.
 | --- | --- | --- | --- |
 | PWR-D1 | One shared ledger; OSC holds the combined record, PD holds supply findings and links here | Owner brief | ADOPTED |
 | PWR-D2 | Requirements stay 1700 / 1600 / 300 and 2000 / 1900 / 400 mA; Stage54 is not booked | Routine (rule reproduces) | ADOPTED |
-| PWR-D3 | Supply direction: the present 15 V Board B cannot carry the OSC contract; choose between a small in-product revision, a larger PD revision (for example 20 V input with Board P change), or a separate supply | Owner | OPEN; PD owner builds the quantified three-option comparison; this record reviews it against demand and acceptance limits |
+| PWR-D3 | Supply direction: the present 15 V Board B cannot carry the OSC contract; choose between a small in-product revision, a larger PD revision (for example 20 V input with Board P change), or a separate supply | Owner | OPEN; PD-002 requests it; integration review R1–R7 above |
 | PWR-D4 | The brief's 1.493 / 1.394 / 0.224 A "planning normal" is the Stage54 conditional row; canonical 1.535 / 1.436 / 0.224 A governs comparisons | Routine (evidence) | ADOPTED |
 
 Checks for this record: `ledger.py --check` PASS; 7 focused tests PASS (normal and
