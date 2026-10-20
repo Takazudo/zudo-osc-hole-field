@@ -283,6 +283,46 @@ Reviewed zudo-pd PR #219 `7bb2e0a85069d4acca95a4b214c77d6494cad55d` (`manufactur
 
 The lineup recommendation (C2 as the full-OSC basis; C1-L only for a light SKU until the startup fits and M1–M3 data exist) relaxes no OSC limit.
 
+## Slower common startup ramp: OSC answers to the PD questions (Q-A to Q-C)
+
+Asked by the PD owner after the owner's [zudo-pd#218 comment 6285348769](https://github.com/Takazudo/zudo-pd/issues/218#issuecomment-6285348769). Candidate only (PWR-C1). Calculated, unverified, no requirement changed.
+
+**Q-C Scaling model.** The PD model is acceptable as a screen. The steady part is the heavy realistic patch, and capacitor charging scales as 10 ms ÷ ramp time. Three conditions apply:
+- **The ramp is linear and monotonic, and judged by its maximum slew.** The model takes the maximum dV/dt as V/T. A soft start that is faster at first (RC-shaped or stepped) must be judged by its steepest part. An interrupted ramp is a separate case.
+- **The fitted row assumes no capacitance is added.** It holds only while the fitted capacitance stays at or below 49.9 / 42.2 / 24.5 µF. The 150 / 150 / 100 µF contract ceiling still governs any full-OSC source.
+- **Taking the full steady load during the ramp is conservative.** Loads draw less at reduced voltage.
+
+Startup rows, mA (`decomposition.json` `startup_ramp_candidate`):
+
+| Ramp | Ceiling capacitance | Fitted capacitance |
+| --- | --- | --- |
+| 10 ms | 1759.5 / 1658.2 / 283.4 | 1609.5 / 1498.2 / 236.3 |
+| 20 ms | 1647.1 / 1546.9 / 252.2 | 1572.2 / 1466.9 / 228.6 |
+| 50 ms | 1579.7 / 1480.1 / 233.5 | 1549.8 / 1448.1 / 224.0 |
+
+On the fitted basis, keeping +12 V at or below 1.60 A needs a ramp of at least 11.47 ms. This reproduces the PD figures (≥ 11.5 ms; 1.573 A at 20 ms).
+
+**Q-B Separation.** A slower ramp only changes the startup inrush row. The following stay unchanged and are judged separately even if startup fits on paper:
+- the 20 ms transient requirement (2.0 / 1.9 / 0.4 A, built from the ceiling ramp plus one fault and rounding);
+- the continuous requirement and its ×1.1 reserve with 100 mA rounding (PWR-D5);
+- the source bands, 1 mVpp ripple, 2 mV / 1 mV precision, and the interface maximum.
+
+Re-deriving the transient from a slower ramp or from fitted capacitance would be an OSC contract change for the owner.
+
+**Q-A Longest acceptable ramp.** The contract sets no upper bound. It requires a monotonic ramp no faster than 10 ms (`osc-electrical-standard.mdx` L113). OSC's tolerance of any ramp longer than 10 ms is **unverified**, so no longest acceptable value can be given yet.
+
+The PD campaign (6 rail orders × 10 / 20 / 50 ms: VEE5, injection, reset timing, latch-up) is incomplete. Items to add from the OSC source answers:
+1. **Capture first:** abs-max, injection and latch-up facts for LM13700, OPA4197/4196, LM393, LF398 and the HC family. These are not retained.
+2. **Missing-rail cases:** OSC must tolerate any missing rail, not only any arrival order. Also test the 6 failure (power-down) orders and interrupted or brownout ramps.
+3. **AR reset:** the release time on +5 V, against its 100 ms RC with two HC14 stages, at 20 and 50 ms ramps. This circuit is not brownout supervision.
+4. **Per-part limits:** AS3340 VEE–GND (−6 V abs max) and the local OPA4197 VEE driver in every order.
+5. **−5 V reference fanout:** power-off injection into its 30 inputs.
+6. **Logic and enables with +5 V absent:** input-switch enable and sync validity, and LM393 output and LED state under undervoltage.
+7. **Recovery:** from an output short without latch-up.
+8. **Supply current during the ramp:** measure it, to validate the Q-C scaling model.
+
+There is no staged-enable circuit yet, so every test runs on the current three-converter supply.
+
 ## Gap list
 
 | ID | Area | Gap | Owner | Status |
@@ -311,7 +351,7 @@ The lineup recommendation (C2 as the full-OSC basis; C1-L only for a light SKU u
 | PWR-D5 | Whether OSC gets an explicit degraded mode for lower-capability supplies (functional loss and new power domains) or full OSC requires a supply meeting the contract | Owner | OPEN; candidate only. The usage-limit candidate (1600 / 1500 / 300 mA by the same rule) is in "Budget decomposition" |
 | PWR-C1 | **Candidate, not a decision:** a slower common source ramp (20–50 ms). It is contract-compatible: the contract requires a monotonic ramp no faster than 10 ms and sets no upper bound (`osc-electrical-standard.mdx` L113, `decisions/osc-supply-architecture.mdx` L65; OSC owner answer from `31311c6`). The ramp term scales as CΔV/Δt: at 20 / 50 ms the ceiling ramp is 112.3 / 44.9 mA on +12 V (10 ms: 224.6) and the fitted ramp 37.4 / 14.9 mA (10 ms: 74.7). Correct OSC behaviour on a slow ramp is **unverified**: the AR reset RC (100 ms) is not brownout supervision and is untested on slow rails (`osc-block-ar.mdx` L258–265), the oscillators need each-rail-first/last, slow-ramp and brownout tests (`osc-block-osc.mdx` L35), and the all-orders staged enable has no circuit (`osc-protection-architecture.mdx` L72–73). Named risks: AS3340 VEE–GND −6 V abs max, the OPA4197 VEE driver, −5 V reference fanout and +5 V-absent logic. Abs-max and latch-up facts for LM13700, OPA4197/4196, LM393, LF398 and HC are not retained. Needs measurement (6 orders × 10 / 20 / 50 ms, VEE5, injection, reset release, latch-up), after the abs-max facts are captured | OSC owner, then product owner | CANDIDATE; UNVERIFIED; transient requirement unchanged |
 
-Checks for this record: `ledger.py --check` and `decompose.py --check` PASS; 14 focused
+Checks for this record: `ledger.py --check` and `decompose.py --check` PASS; 15 focused
 tests PASS (normal and `-O`); `verify_pd_pin.py` PASS against a local zudo-pd checkout at both pinned commits.
 ERC, DRC, native KiCad export, simulation and any physical measurement: NOT RUN (no
 schematic or PCB change).

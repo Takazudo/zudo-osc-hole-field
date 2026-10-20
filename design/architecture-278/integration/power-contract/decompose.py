@@ -241,6 +241,21 @@ def build():
             'canonical x 1.1, rounded up to 100 mA', rule=False),
     }
     levels['heavy_realistic_patch']['rail_output_W_nominal_one_rail_at_a_time'] = r6(levels['heavy_realistic_patch']['rail_output_W_nominal'] - overlap_W)
+    # Startup inrush per common ramp length (PWR-C1 candidate). Steady part = heavy
+    # realistic patch at full voltage (conservative: loads draw less mid-ramp);
+    # capacitor charging = C x (1 + tol) x V / T for a linear, monotonic ramp.
+    ceiling_uF = src['nominal_capacitance_ceiling_uF']
+    ramp_rows = {}
+    for t in (10, 20, 50):
+        row = {}
+        for basis, uF in (('ceiling_capacitance', ceiling_uF), ('fitted_capacitance', FITTED_UF)):
+            charge = {r: r6(uF[r] * (1 + tol) * v_load[r] / t) for r in RAILS}
+            row[basis] = {'charge_mA': charge, 'startup_mA': add(heavy, charge)}
+        ramp_rows['%d_ms' % t] = row
+    # Shortest ramp keeping fitted +12 V startup at or below a given cap.
+    def min_ramp_ms(cap_mA, rail='+12V'):
+        room = cap_mA - heavy[rail]
+        return r6(FITTED_UF[rail] * (1 + tol) * v_load[rail] / room) if room > 0 else None
     # Reproduce the requirement rule on the canonical level.
     require(levels['canonical_planning_all_upper_terms']['continuous_rule_result_mA'] == sel['minimum_continuous_mA'], 'continuous rule')
     for r in RAILS:
@@ -276,6 +291,15 @@ def build():
                          'converter_efficiency_needed_60W': r6(pre / 60),
                          'converter_efficiency_needed_57W_source_minus_5pct': r6(pre / 57)}
 
+    startup_ramp = {
+        'classification': 'CANDIDATE (PWR-C1); CALCULATED, UNVERIFIED; contract unchanged',
+        'model': 'steady = heavy realistic patch; charge = C x 1.2 x upper load-band V / ramp time; valid for a linear monotonic ramp whose maximum dV/dt is V/T. A non-linear soft start must be judged by its maximum slew, not its total time.',
+        'rows': ramp_rows,
+        'min_ramp_ms_for_plus12_cap_1600mA_fitted': min_ramp_ms(1600),
+        'fitted_basis_holds_only_while': 'fitted downstream capacitance stays at or below 49.9 / 42.2 / 24.5 uF; the contract ceiling 150 / 150 / 100 uF still governs a full-OSC source',
+        'not_changed': ['20 ms transient requirement 2000 / 1900 / 400 mA', 'continuous requirement and the x1.1 reserve with 100 mA rounding', 'source bands, 1 mVpp ripple, 2 mV / 1 mV precision', 'interface maximum 2100 / 2000 / 500 mA'],
+    }
+
     return {
         'schema_version': 1,
         'status': 'UNVALIDATED DRAFT decomposition; arithmetic on committed worksheet rows; nothing measured; no requirement changed',
@@ -308,6 +332,7 @@ def build():
         'stage54_note': 'Unadopted conditional removal of idle op-amp quads; listed separately, not applied to any level.',
         },
         'levels': levels,
+        'startup_ramp_candidate': startup_ramp,
         'sixty_watt_class_screen': {
             'status': 'Rail output power only. Charger input power = rail output / end-to-end efficiency (converters, LDO headroom, cable, PDO). No efficiency is booked here; the PD owner screens the supply side.',
             'levels': sixty,

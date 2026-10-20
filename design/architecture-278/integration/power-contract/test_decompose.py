@@ -51,6 +51,13 @@ class DecompositionTests(unittest.TestCase):
             self.assertLess(fitted['mA'][r], lv['startup_worst_envelope']['mA'][r])
             self.assertGreater(fitted['mA'][r], lv['canonical_planning_all_upper_terms']['mA'][r])
 
+    def test_slower_ramp_changes_no_requirement(self):
+        ramp = self.data['startup_ramp_candidate']
+        self.assertIn('contract unchanged', ramp['classification'])
+        self.assertEqual(self.data['levels']['transient_requirement_20ms']['mA'], {'+12V': 2000, '-12V': 1900, '+5V': 400})
+        ten = ramp['rows']['10_ms']['ceiling_capacitance']['startup_mA']
+        self.assertAlmostEqual(ten['+12V'], self.data['levels']['startup_worst_envelope']['mA']['+12V'], places=5)
+
 
 if __name__ == '__main__':
     unittest.main()

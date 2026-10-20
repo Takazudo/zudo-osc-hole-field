@@ -434,6 +434,98 @@
       "basis": "canonical x 1.1, rounded up to 100 mA"
     }
   },
+  "startup_ramp_candidate": {
+    "classification": "CANDIDATE (PWR-C1); CALCULATED, UNVERIFIED; contract unchanged",
+    "model": "steady = heavy realistic patch; charge = C x 1.2 x upper load-band V / ramp time; valid for a linear monotonic ramp whose maximum dV/dt is V/T. A non-linear soft start must be judged by its maximum slew, not its total time.",
+    "rows": {
+      "10_ms": {
+        "ceiling_capacitance": {
+          "charge_mA": {
+            "+12V": 224.64,
+            "-12V": 222.66,
+            "+5V": 62.4
+          },
+          "startup_mA": {
+            "+12V": 1759.459166,
+            "-12V": 1658.22866,
+            "+5V": 283.386445
+          }
+        },
+        "fitted_capacitance": {
+          "charge_mA": {
+            "+12V": 74.73024,
+            "-12V": 62.64168,
+            "+5V": 15.288
+          },
+          "startup_mA": {
+            "+12V": 1609.549406,
+            "-12V": 1498.21034,
+            "+5V": 236.274445
+          }
+        }
+      },
+      "20_ms": {
+        "ceiling_capacitance": {
+          "charge_mA": {
+            "+12V": 112.32,
+            "-12V": 111.33,
+            "+5V": 31.2
+          },
+          "startup_mA": {
+            "+12V": 1647.139166,
+            "-12V": 1546.89866,
+            "+5V": 252.186445
+          }
+        },
+        "fitted_capacitance": {
+          "charge_mA": {
+            "+12V": 37.36512,
+            "-12V": 31.32084,
+            "+5V": 7.644
+          },
+          "startup_mA": {
+            "+12V": 1572.184286,
+            "-12V": 1466.8895,
+            "+5V": 228.630445
+          }
+        }
+      },
+      "50_ms": {
+        "ceiling_capacitance": {
+          "charge_mA": {
+            "+12V": 44.928,
+            "-12V": 44.532,
+            "+5V": 12.48
+          },
+          "startup_mA": {
+            "+12V": 1579.747166,
+            "-12V": 1480.10066,
+            "+5V": 233.466445
+          }
+        },
+        "fitted_capacitance": {
+          "charge_mA": {
+            "+12V": 14.946048,
+            "-12V": 12.528336,
+            "+5V": 3.0576
+          },
+          "startup_mA": {
+            "+12V": 1549.765214,
+            "-12V": 1448.096996,
+            "+5V": 224.044045
+          }
+        }
+      }
+    },
+    "min_ramp_ms_for_plus12_cap_1600mA_fitted": 11.465063,
+    "fitted_basis_holds_only_while": "fitted downstream capacitance stays at or below 49.9 / 42.2 / 24.5 uF; the contract ceiling 150 / 150 / 100 uF still governs a full-OSC source",
+    "not_changed": [
+      "20 ms transient requirement 2000 / 1900 / 400 mA",
+      "continuous requirement and the x1.1 reserve with 100 mA rounding",
+      "source bands, 1 mVpp ripple, 2 mV / 1 mV precision",
+      "interface maximum 2100 / 2000 / 500 mA"
+    ]
+  },
   "sixty_watt_class_screen": {
     "status": "Rail output power only. Charger input power = rail output / end-to-end efficiency (converters, LDO headroom, cable, PDO). No efficiency is booked here; the PD owner screens the supply side.",
     "levels": {
