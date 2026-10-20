@@ -90,7 +90,7 @@ UNIT_FIELDS = ('Role', 'LogicalCellKey', 'Island')
 
 
 def unit_field_conflicts(tree):
-    """{field: [refs]} for placed symbols whose units disagree on a unit-specific field."""
+    """{field: {ref: unit values}} for placed symbols whose units disagree on a unit-specific field."""
     values = {}
     for body in tree.values():
         for block in body.split('\n  (symbol (lib_id')[1:]:
@@ -99,12 +99,12 @@ def unit_field_conflicts(tree):
                 continue
             for field in UNIT_FIELDS:
                 m = re.search(rf'"{field}" "([^"]*)"', block)
-                values.setdefault((field, ref.group(1)), set()).add(m.group(1) if m else None)
+                values.setdefault((field, ref.group(1)), set()).add(m.group(1) if m else '')
     out = {}
     for (field, ref), seen in values.items():
         if len(seen) > 1:
-            out.setdefault(field, []).append(ref)
-    return {f: sorted(r) for f, r in sorted(out.items())}
+            out.setdefault(field, {})[ref] = sorted(seen)
+    return {f: dict(sorted(r.items())) for f, r in sorted(out.items())}
 
 
 def write_tree(target, generated):

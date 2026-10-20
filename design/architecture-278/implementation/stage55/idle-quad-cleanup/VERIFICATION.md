@@ -17,7 +17,8 @@ bash scripts/kicad/run.sh python3 design/.../pcb_cleanup.py \
   .circuit-cache/stage55/pcb-receipt.json .circuit-cache/stage55/schematic-receipt.json
 python3 design/.../native.py run                     # ERC+DRC both sides, ~30 min
 bash scripts/kicad/run.sh python3 design/.../ratsnest_refilled.py <side PCB> <refilled> <json>  # both sides
-python3 design/.../native.py check                   # PASS, all 11 gates
+bash scripts/kicad/run.sh python3 design/.../rail_clusters.py <side refilled PCB> <json>        # both sides
+python3 design/.../native.py check                   # PASS, all 12 gates
 python3 design/.../decoupling.py --check             # PASS
 python3 -m unittest design/.../test_stage55.py       # 11 tests OK; also with -O
 pnpm circuit:check                                   # PASS after edits
@@ -28,9 +29,11 @@ The baseline PCB copy is the canonical `boards/osc-core/osc-core.kicad_pcb`.
 CLI unconnected list and required parity [0, 0]; it printed FAIL. Inspection showed
 both CLI lists stop at 499 items (rail opens fell 12 while truncation exposed 12
 other items on OSC_REF5/OSC_REFN5, whose copper and pads are identical on both
-sides) and the single parity item described in README. The evaluation was then
-changed to the complete native ratsnest and the explicit parity classifier; the raw
-reports are unchanged and retained.
+sides) and the single parity item described in README. First-run gates: parity
+[0, 0] false; oracle, ERC, DRC errors, uncapped signatures, truncated rail-unconnected
+and removed-item gates true. The evaluation was then changed to the complete native
+ratsnest, rail cluster membership and an explicit single-item parity classifier
+(tightened after independent review); the raw reports are unchanged and retained.
 
 ## Evidence SHA256
 
@@ -45,6 +48,8 @@ reports are unchanged and retained.
 | Baseline refilled PCB (ratsnest input) | `b9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66` |
 | Candidate refilled PCB (ratsnest input) | `2667ee52eaff2ab0a7692cbf02107f3f7406d7b697627657b1b163d0fb77ccef` |
 
+Rail cluster files are bound to the refilled boards by `board_sha256`.
+
 Disposable PCBs stay in `.circuit-cache/stage55/` (git-ignored, about 70–100 MB each)
 and are reproducible from the canonical board and `pcb_cleanup.py`.
 
@@ -52,7 +57,8 @@ and are reproducible from the canonical board and `pcb_cleanup.py`.
 
 | Check | Status |
 | --- | --- |
-| ERC, DRC, parity, complete ratsnest, decoupling replay, unit tests | PASS (disposable candidate) |
+| ERC, DRC, parity, complete ratsnest, rail clusters, decoupling replay, unit tests | PASS (disposable candidate) |
+| Bypass proximity for U101, U107, U207 | OPEN, needs PDN/layout review |
 | Capped warning types (hole_to_hole, silk_over_copper, silk_overlap) | NOT ESTABLISHED, KiCad 199 cap |
 | PDN impedance, analog behavior, thermal, assembly | NOT RUN |
 | Canonical adoption, BOM/worksheet update | NOT RUN, needs owner approval |

@@ -109,6 +109,18 @@ def run(check=False):
         nearest = sorted((dist(ic['ref'], i['ref']), i['ref']) for i in surviving_ics)
         row['nearest_surviving_powered_ics'] = [[r, round(d, 3), floor[r]['side']] for d, r in nearest[:3]]
         neighbourhood.append(row)
+    # Survivors whose nearest same-rail capacitor (by floorplan origin) was a removed one,
+    # closer than their own owned bypass: they lose a nearby HF bypass despite ownership.
+    baseline_caps = [c for c in caps_b if c['board'] == 'K' and c['ref'] in floor]
+    survivors_losing_nearest = []
+    for ic in sorted(surviving_ics, key=lambda i: i['ref']):
+        for rail in ic['rails']:
+            same = sorted((dist(ic['ref'], c['ref']), c['ref']) for c in baseline_caps if rail in c['rail'])
+            own = sorted((dist(ic['ref'], c['ref']), c['ref']) for c in baseline_caps if rail in c['rail'] and c['decouples'] == ic['stem'])
+            if same and same[0][1] in removed:
+                survivors_losing_nearest.append({'ref': ic['ref'], 'mpn': ic['mpn'], 'rail': rail,
+                    'removed_cap': same[0][1], 'removed_cap_mm': round(same[0][0], 3),
+                    'own_bypass': own[0][1] if own else None, 'own_bypass_mm': round(own[0][0], 3) if own else None})
     before, after = totals(caps_b), totals(caps_a)
     result = {
         'status': 'SOURCE-LEVEL decoupling review of an UNADOPTED candidate; no PDN, layout or hardware result',
@@ -121,6 +133,8 @@ def run(check=False):
         'rail_nominal_reduction_uF': {r: round(before[r]['nominal_uF']-after[r]['nominal_uF'], 3) for r in RAILS},
         'rail_nominal_reduction_fraction': {r: round(1-after[r]['nominal_uF']/before[r]['nominal_uF'], 5) for r in RAILS},
         'removed_ic_neighbourhood_floorplan': neighbourhood,
+        'survivors_whose_nearest_rail_cap_is_removed': survivors_losing_nearest,
+        'survivors_needing_pdn_layout_review': sorted({r['ref'] for r in survivors_losing_nearest}),
         'limits': ('Nominal values only: no DC-bias, tolerance, temperature or ESL derating. Ownership is the '
                    'project Decouples attribute, not a PDN impedance model. Distances use footprint origins from '
                    'the locked floorplan, not copper path length. Downstream ceramic capacitance seen by the '

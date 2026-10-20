@@ -1,4 +1,10 @@
 {
+  "capped_markers_near_removed_parts": {
+    "baseline": [],
+    "candidate": [],
+    "candidate_only": [],
+    "radius_mm": 6.0
+  },
   "capped_type_limit": "Types reaching 199 markers are truncated by KiCad; their nonregression is NOT established by count comparison and is reported as unresolved, as in Stage53.",
   "drc": {
     "baseline_errors": 0,
@@ -728,6 +734,7 @@
     "no_new_erc_signatures": true,
     "no_new_uncapped_drc_signatures": true,
     "oracle_10_0_6": true,
+    "rail_clusters_equal_baseline_minus_removed_pads": true,
     "removed_private_nets_absent_from_ratsnest": true
   },
   "oracle": {
@@ -748,6 +755,86 @@
       "private-net": 48
     },
     "footprints": 36
+  },
+  "rail_clusters": {
+    "+12V": {
+      "baseline_clusters_losing_removed_pads": 1,
+      "clusters": [
+        81,
+        75
+      ],
+      "identical_after_projection": true,
+      "removed_only_clusters": [
+        [
+          "U116.4"
+        ],
+        [
+          "U117.4"
+        ],
+        [
+          "U118.4"
+        ],
+        [
+          "U216.4"
+        ],
+        [
+          "U217.4"
+        ],
+        [
+          "U218.4"
+        ]
+      ],
+      "split_clusters": 0
+    },
+    "+5V": {
+      "baseline_clusters_losing_removed_pads": 0,
+      "clusters": [
+        1,
+        1
+      ],
+      "identical_after_projection": true,
+      "removed_only_clusters": [],
+      "split_clusters": 0
+    },
+    "-12V": {
+      "baseline_clusters_losing_removed_pads": 1,
+      "clusters": [
+        81,
+        75
+      ],
+      "identical_after_projection": true,
+      "removed_only_clusters": [
+        [
+          "U116.11"
+        ],
+        [
+          "U117.11"
+        ],
+        [
+          "U118.11"
+        ],
+        [
+          "U216.11"
+        ],
+        [
+          "U217.11"
+        ],
+        [
+          "U218.11"
+        ]
+      ],
+      "split_clusters": 0
+    },
+    "AGND": {
+      "baseline_clusters_losing_removed_pads": 1,
+      "clusters": [
+        214,
+        214
+      ],
+      "identical_after_projection": true,
+      "removed_only_clusters": [],
+      "split_clusters": 0
+    }
   },
   "ratsnest": {
     "baseline_private_net_edges": 0,

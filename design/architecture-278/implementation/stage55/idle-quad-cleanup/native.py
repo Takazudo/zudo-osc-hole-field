@@ -91,19 +91,32 @@ def gate(result):
         'complete_ratsnest_no_net_gains_edges': result['ratsnest']['nets_with_more_edges'] == {},
         'complete_ratsnest_no_new_open_net': result['ratsnest']['new_open_nets'] == [],
         'removed_private_nets_absent_from_ratsnest': result['ratsnest']['candidate_private_net_edges'] == 0,
+        'rail_clusters_equal_baseline_minus_removed_pads': all(v['identical_after_projection'] and v['split_clusters'] == 0
+                                                               for v in result['rail_clusters'].values()),
         'no_candidate_violation_names_removed_item': d['violations_mentioning_removed_refs_or_nets']['candidate'] == [],
     }
     return gates
 
 
+ALLOWED_PARITY = {('U111', 'Role')}  # the one reviewed pre-existing unit-field ambiguity
+
+
 def parity_unexplained(items, conflicts):
-    """Parity items NOT explained by a field already ambiguous across units in baseline and candidate."""
+    """Parity items NOT explained by the reviewed pre-existing unit-field ambiguity.
+
+    Accepted only when the (ref, field) is explicitly allowed, and both the PCB value and
+    the schematic value are among that ref's unit values in the baseline and candidate.
+    """
     out = []
     for x in items:
-        m = re.match(r"Field '([^']+)' differs", x['description'])
+        m = re.match(r"Field '([^']+)' differs \(PCB: '([^']*)', Schematic: '([^']*)'\)$", x['description'])
         refs = [i['description'].removeprefix('Footprint ') for i in x['items']]
-        if not (x['type'] == 'footprint_symbol_field_mismatch' and m and len(refs) == 1 and
-                all(refs[0] in conflicts[s].get(m.group(1), []) for s in ('baseline', 'candidate'))):
+        ok = x['type'] == 'footprint_symbol_field_mismatch' and m and len(refs) == 1
+        if ok:
+            field, pcb, sch = m.groups()
+            ok = (refs[0], field) in ALLOWED_PARITY and all(
+                {pcb, sch} <= set(conflicts[s].get(field, {}).get(refs[0], [])) for s in ('baseline', 'candidate'))
+        if not ok:
             out.append(x['description'])
     return out
 
@@ -122,6 +135,40 @@ def ratsnest_delta(private):
             'baseline_private_net_edges': sum(eb.get(n, 0) for n in private)}
 
 
+def capped_near(pcb, capped_types, radius=6.0):
+    """Informational screen, not a gate: capped-type markers within `radius` mm of a removed
+    footprint origin, per side. Truncation means absence in a list proves nothing."""
+    origins = [r['at'] for r in pcb['removed_footprints']]
+    out = {}
+    for s in SIDES:
+        d = json.loads((EVIDENCE/f'{s}-drc.json').read_text())
+        hits = [[x['type'], [i['description'] for i in x['items']]] for x in d['violations'] if x['type'] in capped_types and
+                any(((i['pos']['x']-o[0])**2+(i['pos']['y']-o[1])**2) ** 0.5 <= radius for i in x['items'] for o in origins)]
+        out[s] = sorted(hits)
+    return {'radius_mm': radius, 'baseline': out['baseline'], 'candidate': out['candidate'],
+            'candidate_only': [h for h in out['candidate'] if h not in out['baseline']]}
+
+
+def rail_cluster_delta(removed):
+    """Candidate rail clusters must equal baseline clusters with removed pads dropped: no cut, no merge."""
+    rats = {s: json.loads((EVIDENCE/f'{s}-ratsnest.json').read_text()) for s in SIDES}
+    data = {s: json.loads((EVIDENCE/f'{s}-rail-clusters.json').read_text()) for s in SIDES}
+    for s in SIDES:
+        require(data[s]['board_sha256'] == rats[s]['refilled_board_sha256_host'], 'rail cluster board binding '+s)
+    out = {}
+    for rail, base in data['baseline']['clusters'].items():
+        cand = data['candidate']['clusters'][rail]
+        where = {p: i for i, c in enumerate(cand) for p in c['pads']}
+        surviving = lambda c: tuple(p for p in c['pads'] if p.split('.')[0] not in removed)
+        removed_only = [c['pads'] for c in base if not surviving(c)]
+        splits = sum(1 for c in base if surviving(c) and len({where.get(p) for p in surviving(c)}) != 1)
+        out[rail] = {'clusters': [len(base), len(cand)], 'removed_only_clusters': removed_only,
+                     'baseline_clusters_losing_removed_pads': sum(1 for c in base if surviving(c) and len(surviving(c)) < len(c['pads'])),
+                     'split_clusters': splits,
+                     'identical_after_projection': sorted(surviving(c) for c in base if surviving(c)) == sorted(tuple(c['pads']) for c in cand)}
+    return out
+
+
 def evaluate():
     schematic = json.loads((EVIDENCE/'schematic-receipt.json').read_text())
     pcb = json.loads((EVIDENCE/'pcb-receipt.json').read_text())
@@ -133,6 +180,15 @@ def evaluate():
             require(r['command'] == commands(side)[kind], 'command binding')
     require(json.loads((EVIDENCE/'candidate-drc.execution.json').read_text())['input_sha256'][rel(CACHE/'candidate'/BOARD/f'{BOARD}.kicad_pcb')] == pcb['output_sha256'], 'candidate PCB binding')
     require(sha(ROOT/'boards'/BOARD/f'{BOARD}.kicad_pcb') == pcb['source_sha256'], 'baseline PCB is canonical')
+    # Baseline ERC/DRC inputs are byte copies of the canonical board tree.
+    for kind in ('erc', 'drc'):
+        for path, digest in json.loads((EVIDENCE/f'baseline-{kind}.execution.json').read_text())['input_sha256'].items():
+            canonical = ROOT/'boards'/BOARD/Path(path).relative_to(rel(CACHE/'baseline'/BOARD))
+            if canonical.suffix in ('.kicad_sch', '.kicad_pcb'):
+                require(canonical.exists() and sha(canonical) == digest, 'baseline input not canonical '+path)
+        cand = json.loads((EVIDENCE/f'candidate-{kind}.execution.json').read_text())['input_sha256']
+        for name, digest in schematic['candidate_schematic_sha256'].items():
+            require(cand[rel(CACHE/'candidate'/BOARD/name)] == digest, 'candidate schematic binding '+name)
     ev_b, erc_items_b, erc_types_b = erc_summary(EVIDENCE/'baseline-erc.json')
     ev_c, erc_items_c, erc_types_c = erc_summary(EVIDENCE/'candidate-erc.json')
     db, vb, ib, ub = drc_summary(EVIDENCE/'baseline-drc.json')
@@ -164,6 +220,8 @@ def evaluate():
                 'cli_unconnected_items_truncated': [len(db['unconnected_items']), len(dc['unconnected_items'])],
                 'cli_unconnected_note': 'kicad-cli lists at most 499 unconnected items; complete counts are in ratsnest'},
         'ratsnest': ratsnest_delta(private),
+        'rail_clusters': rail_cluster_delta(removed),
+        'capped_markers_near_removed_parts': capped_near(pcb, capped_types),
     }
     gates = gate(result)
     result['gates'] = gates

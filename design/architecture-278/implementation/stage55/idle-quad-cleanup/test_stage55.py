@@ -42,6 +42,7 @@ class Stage55Tests(unittest.TestCase):
 
     def test_decoupling_replays(self):
         result = d.run(check=True)
+        self.assertEqual(result['survivors_needing_pdn_layout_review'], ['U101', 'U107', 'U207'])
         self.assertEqual(result['rail_nominal_reduction_uF'], {'+12V': 1.2, '-12V': 1.2})
         self.assertEqual(result['surviving_ics_without_complete_owned_bypass']['before'],
                          result['surviving_ics_without_complete_owned_bypass']['after'])
@@ -82,12 +83,17 @@ class Stage55Tests(unittest.TestCase):
         self.assertFalse(self.mutated(lambda a: a['ratsnest'].__setitem__('nets_with_more_edges', {'+12V': [1, 2]}))['complete_ratsnest_no_net_gains_edges'])
         self.assertFalse(self.mutated(lambda a: a['ratsnest'].__setitem__('new_open_nets', ['X']))['complete_ratsnest_no_new_open_net'])
         self.assertFalse(self.mutated(lambda a: a['ratsnest'].__setitem__('candidate_private_net_edges', 1))['removed_private_nets_absent_from_ratsnest'])
+        self.assertFalse(self.mutated(lambda a: a['rail_clusters']['+12V'].__setitem__('split_clusters', 1))['rail_clusters_equal_baseline_minus_removed_pads'])
+        self.assertFalse(self.mutated(lambda a: a['rail_clusters']['AGND'].__setitem__('identical_after_projection', False))['rail_clusters_equal_baseline_minus_removed_pads'])
 
     def test_parity_classifier(self):
-        conflicts = {'baseline': {'Role': ['U111']}, 'candidate': {'Role': ['U111']}}
+        values = ['gate_trigger_input:U_INV', 'sample_hold:unused grounded Schmitt', 'switch_button_input:U']
+        conflicts = {'baseline': {'Role': {'U111': values, 'U101': values}}, 'candidate': {'Role': {'U111': values, 'U101': values}}}
         item = lambda desc, ref: {'type': 'footprint_symbol_field_mismatch', 'description': desc, 'items': [{'description': 'Footprint '+ref}]}
-        self.assertEqual(n.parity_unexplained([item("Field 'Role' differs (PCB: 'a', Schematic: 'b')", 'U111')], conflicts), [])
-        self.assertEqual(len(n.parity_unexplained([item("Field 'Role' differs (PCB: 'a', Schematic: 'b')", 'U101')], conflicts)), 1)
+        good = "Field 'Role' differs (PCB: 'sample_hold:unused grounded Schmitt', Schematic: 'switch_button_input:U')"
+        self.assertEqual(n.parity_unexplained([item(good, 'U111')], conflicts), [])
+        self.assertEqual(len(n.parity_unexplained([item(good, 'U101')], conflicts)), 1)  # not allow-listed
+        self.assertEqual(len(n.parity_unexplained([item("Field 'Role' differs (PCB: 'x', Schematic: 'switch_button_input:U')", 'U111')], conflicts)), 1)
         self.assertEqual(len(n.parity_unexplained([item("Field 'Value' differs (PCB: 'a', Schematic: 'b')", 'U111')], conflicts)), 1)
         self.assertEqual(len(n.parity_unexplained([{'type': 'missing_footprint', 'description': 'Missing footprint U9', 'items': []}], conflicts)), 1)
 
