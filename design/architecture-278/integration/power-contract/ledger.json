@@ -1,0 +1,1115 @@
+{
+  "schema_version": 1,
+  "low_power_supply_screen": {
+    "status": "DEMAND-SIDE SCREEN for PD-003; not a requirement change. Removing load means removing or switching off functions, which is a product decision.",
+    "rule": "normal planning x (1 + reserve) must not exceed the continuous capability (100 mA rounding omitted)",
+    "caps_source": "zudo-pd PR #219 8cb38bb supply-alternatives.md, maximum continuous output table (PA efficiencies)",
+    "per_module_planning_mA": {
+      "sample_hold": {
+        "+12V": 54.85,
+        "-12V": 52.65
+      },
+      "oscillator": {
+        "+12V": 62.7,
+        "-12V": 61.8
+      },
+      "octave_reference": {
+        "+12V": 26.0,
+        "-12V": 26.0
+      },
+      "filter": {
+        "+12V": 58.2,
+        "-12V": 55.8
+      },
+      "noise": {
+        "+12V": 6.0,
+        "-12V": 6.0
+      },
+      "envelope": {
+        "+12V": 58.45,
+        "-12V": 53.45
+      },
+      "mult": {
+        "+12V": 11.05,
+        "-12V": 10.45
+      },
+      "manual_ab": {
+        "+12V": 19.8505,
+        "-12V": 18.6505
+      },
+      "mix5": {
+        "+12V": 39.6,
+        "-12V": 36.6
+      },
+      "mix4_vca": {
+        "+12V": 46.6,
+        "-12V": 43.6
+      },
+      "wavefolder": {
+        "+12V": 44.219069,
+        "-12V": 41.169069
+      },
+      "offset": {
+        "+12V": 32.825,
+        "-12V": 28.925
+      }
+    },
+    "cases": {
+      "pd002_A1_15V_floor_low": {
+        "continuous_capability_mA": {
+          "+12V": 1400,
+          "-12V": 1320
+        },
+        "planning_reduction_needed_mA": {
+          "+12V": 262.091893,
+          "-12V": 235.56866
+        },
+        "equivalent_oscillators": 4.180094,
+        "equivalent_envelopes": 4.484036
+      },
+      "pd002_A1_15V_floor_high": {
+        "continuous_capability_mA": {
+          "+12V": 1490,
+          "-12V": 1400
+        },
+        "planning_reduction_needed_mA": {
+          "+12V": 180.273711,
+          "-12V": 162.841387
+        },
+        "equivalent_oscillators": 2.875179,
+        "equivalent_envelopes": 3.084238
+      },
+      "pd002_A1_15V_ideal_high": {
+        "continuous_capability_mA": {
+          "+12V": 1600,
+          "-12V": 1510
+        },
+        "planning_reduction_needed_mA": {
+          "+12V": 80.273711,
+          "-12V": 62.841387
+        },
+        "equivalent_oscillators": 1.280282,
+        "equivalent_envelopes": 1.373374
+      }
+    }
+  },
+  "status": "UNVALIDATED DRAFT combined power-contract ledger; arithmetic only; no measured, guaranteed or simulated capacity",
+  "classification_legend": {
+    "GUARANTEED": "manufacturer limit under its stated conditions; none booked for whole-instrument demand",
+    "TYPICAL": "reported/assumed typical; partial",
+    "PLANNING": "project allocation, not a maximum",
+    "CONTRACT": "requirement the source must meet",
+    "CONDITIONAL": "unadopted proposal; never booked against a requirement",
+    "SIMULATION": "none in this ledger",
+    "MEASURED": "none; every measured field is null"
+  },
+  "inputs_sha256": {
+    "rail_budget": {
+      "path": "design/power/rail-budget.json",
+      "sha256": "d25b001600669359247c965d47f46754bf65a3532fca431470619db1cd496af2"
+    },
+    "supply_architecture": {
+      "path": "design/power/supply-architecture.json",
+      "sha256": "937d0584938c592b3a35a578b5deaf0cb60e80a4729980edd178c69a62f2345e"
+    },
+    "supply_architecture_input": {
+      "path": "design/power/supply-architecture-input.json",
+      "sha256": "a8a4e92ac4c1d7de5c16b6982fba7d5ab60ab13753b12eabfa23fc75da98acc4"
+    },
+    "stage54_accounting": {
+      "path": "design/architecture-278/implementation/stage54/power-cleanup/accounting.json",
+      "sha256": "114a9c3c9581413653dc4085b16228f3637ca5eb6b4bcdff923a482de5adc8e6"
+    },
+    "pd_supply_input": {
+      "path": "design/architecture-278/integration/power-contract/supply-input.json",
+      "sha256": "1bbdf402b9ed8f2a6a5bfdcc63af8e70c41245942396842559cd9a38b9dc348f"
+    }
+  },
+  "pd_commit": "65031f98f02677998efada217f64e731d39437f7",
+  "demand_by_family": {
+    "sample_hold": {
+      "instances": [
+        "H1",
+        "H2"
+      ],
+      "partial": true,
+      "reported_typical_mA": {
+        "+12V": 69.0,
+        "-12V": 66.2,
+        "+5V": 0.0
+      },
+      "planning_upper_mA": {
+        "+12V": 109.7,
+        "-12V": 105.3,
+        "+5V": 0.0
+      }
+    },
+    "oscillator": {
+      "instances": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5"
+      ],
+      "partial": false,
+      "reported_typical_mA": {
+        "+12V": 196.8,
+        "-12V": 197.8,
+        "+5V": 15.0
+      },
+      "planning_upper_mA": {
+        "+12V": 313.5,
+        "-12V": 309.0,
+        "+5V": 30.0
+      }
+    },
+    "octave_reference": {
+      "instances": [
+        "OCTAVE_REF"
+      ],
+      "partial": false,
+      "reported_typical_mA": {
+        "+12V": 15.0,
+        "-12V": 15.0,
+        "+5V": 0.0
+      },
+      "planning_upper_mA": {
+        "+12V": 26.0,
+        "-12V": 26.0,
+        "+5V": 0.0
+      }
+    },
+    "filter": {
+      "instances": [
+        "F1",
+        "F2",
+        "F3"
+      ],
+      "partial": false,
+      "reported_typical_mA": {
+        "+12V": 100.2,
+        "-12V": 95.4,
+        "+5V": 0.6
+      },
+      "planning_upper_mA": {
+        "+12V": 174.6,
+        "-12V": 167.4,
+        "+5V": 0.9
+      }
+    },
+    "noise": {
+      "instances": [
+        "N1"
+      ],
+      "partial": false,
+      "reported_typical_mA": {
+        "+12V": 2.44,
+        "-12V": 2.44,
+        "+5V": 5.0
+      },
+      "planning_upper_mA": {
+        "+12V": 6.0,
+        "-12V": 6.0,
+        "+5V": 10.0
+      }
+    },
+    "envelope": {
+      "instances": [
+        "E1",
+        "E2",
+        "E3",
+        "E4",
+        "E5",
+        "E6"
+      ],
+      "partial": false,
+      "reported_typical_mA": {
+        "+12V": 196.14,
+        "-12V": 176.94,
+        "+5V": 55.2
+      },
+      "planning_upper_mA": {
+        "+12V": 350.7,
+        "-12V": 320.7,
+        "+5V": 129.248934
+      }
+    },
+    "mult": {
+      "instances": [
+        "B1",
+        "B2"
+      ],
+      "partial": false,
+      "reported_typical_mA": {
+        "+12V": 11.72,
+        "-12V": 10.92,
+        "+5V": 0.1
+      },
+      "planning_upper_mA": {
+        "+12V": 22.1,
+        "-12V": 20.9,
+        "+5V": 0.15
+      }
+    },
+    "manual_ab": {
+      "instances": [
+        "X1",
+        "X2"
+      ],
+      "partial": false,
+      "reported_typical_mA": {
+        "+12V": 22.321,
+        "-12V": 20.721,
+        "+5V": 0.2
+      },
+      "planning_upper_mA": {
+        "+12V": 39.701,
+        "-12V": 37.301,
+        "+5V": 0.3
+      }
+    },
+    "mix5": {
+      "instances": [
+        "M5A",
+        "M5B"
+      ],
+      "partial": false,
+      "reported_typical_mA": {
+        "+12V": 37.96,
+        "-12V": 31.96,
+        "+5V": 0.5
+      },
+      "planning_upper_mA": {
+        "+12V": 79.2,
+        "-12V": 73.2,
+        "+5V": 1.0
+      }
+    },
+    "mix4_vca": {
+      "instances": [
+        "M4A",
+        "M4B"
+      ],
+      "partial": false,
+      "reported_typical_mA": {
+        "+12V": 47.08,
+        "-12V": 41.08,
+        "+5V": 0.5
+      },
+      "planning_upper_mA": {
+        "+12V": 93.2,
+        "-12V": 87.2,
+        "+5V": 1.0
+      }
+    },
+    "wavefolder": {
+      "instances": [
+        "W2",
+        "W1"
+      ],
+      "partial": false,
+      "reported_typical_mA": {
+        "+12V": 39.322268,
+        "-12V": 35.222268,
+        "+5V": 0.3
+      },
+      "planning_upper_mA": {
+        "+12V": 88.438138,
+        "-12V": 82.338138,
+        "+5V": 0.5
+      }
+    },
+    "offset": {
+      "instances": [
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06"
+      ],
+      "partial": false,
+      "reported_typical_mA": {
+        "+12V": 113.76,
+        "-12V": 91.56,
+        "+5V": 0.6
+      },
+      "planning_upper_mA": {
+        "+12V": 196.95,
+        "-12V": 173.55,
+        "+5V": 1.8
+      }
+    }
+  },
+  "inlet_allowances_mA": {
+    "+12V": [
+      {
+        "id": "one-inlet-bleeder",
+        "mA": 5.730028
+      },
+      {
+        "id": "one-inlet-leakage",
+        "mA": 1
+      },
+      {
+        "id": "protection-supervision-discharge",
+        "mA": 20
+      },
+      {
+        "id": "H1:reference",
+        "mA": 4.0
+      },
+      {
+        "id": "H2:reference",
+        "mA": 4.0
+      }
+    ],
+    "-12V": [
+      {
+        "id": "one-inlet-bleeder",
+        "mA": 5.679522
+      },
+      {
+        "id": "one-inlet-leakage",
+        "mA": 1
+      },
+      {
+        "id": "protection-supervision-discharge",
+        "mA": 20
+      }
+    ],
+    "+5V": [
+      {
+        "id": "one-inlet-bleeder",
+        "mA": 2.387511
+      },
+      {
+        "id": "one-inlet-leakage",
+        "mA": 1
+      },
+      {
+        "id": "protection-supervision-discharge",
+        "mA": 20
+      },
+      {
+        "id": "H1:logic",
+        "mA": 8.0
+      },
+      {
+        "id": "H2:logic",
+        "mA": 8.0
+      },
+      {
+        "id": "NOISE2-extra-sensitivity",
+        "mA": 10
+      }
+    ]
+  },
+  "states": {
+    "reported_typical_subtotal": {
+      "classification": "REPORTED/ASSUMED TYPICAL, PARTIAL (complete typical unknown)",
+      "mA": {
+        "+12V": 857.197813,
+        "-12V": 790.697813,
+        "+5V": 80.272727
+      },
+      "basis": "design/power/rail-budget.json; excludes items listed in incomplete_sources"
+    },
+    "normal_planning": {
+      "classification": "PLANNING ALLOCATION (canonical, not a maximum or measurement)",
+      "mA": {
+        "+12V": 1534.819166,
+        "-12V": 1435.56866,
+        "+5V": 224.286445
+      },
+      "basis": "supply-architecture.json selected_requirement.normal_with_allowances_mA"
+    },
+    "normal_planning_stage54_conditional": {
+      "classification": "UNADOPTED CONDITIONAL (Stage54 idle-quad removal, max-Iq allowance)",
+      "mA": {
+        "+12V": 1492.819166,
+        "+5V": 224.286445,
+        "-12V": 1393.56866
+      },
+      "basis": "Stage54 accounting.json; not booked against any requirement",
+      "continuous_rule_result_mA": {
+        "+12V": 1700,
+        "-12V": 1600,
+        "+5V": 300
+      }
+    },
+    "startup_envelope_10ms": {
+      "classification": "CONSERVATIVE ENVELOPE (normal planning plus full-capacitance ramp; not a simultaneous operating point)",
+      "mA": {
+        "+12V": 1759.459166,
+        "-12V": 1658.22866,
+        "+5V": 286.686445
+      },
+      "basis": "ramp increment at 10 ms soft start and capacitance ceiling +20 %; load current during the ramp is lower than at full voltage"
+    },
+    "normal_plus_one_fault": {
+      "classification": "PLANNING ALLOCATION plus one bounded external-forcing fault",
+      "mA": {
+        "+12V": 1559.819166,
+        "-12V": 1460.56866,
+        "+5V": 224.286445
+      },
+      "basis": "One output externally forced to opposite 12 V across 998 ohm: 24.0481 mA, rounded to 25 mA per analog rail. Does not establish all-output-short or opamp rail current maxima."
+    },
+    "continuous_requirement": {
+      "classification": "CONTRACT REQUIREMENT (minimum source delivery)",
+      "mA": {
+        "+12V": 1700,
+        "-12V": 1600,
+        "+5V": 300
+      },
+      "basis": "normal planning x (1 + 0.1 reserve), rounded up to 100 mA"
+    },
+    "transient_requirement_20ms": {
+      "classification": "CONTRACT REQUIREMENT (minimum source delivery for 20 ms)",
+      "mA": {
+        "+12V": 2000,
+        "-12V": 1900,
+        "+5V": 400
+      },
+      "basis": "supply-architecture.json selected_requirement.minimum_transient_mA"
+    },
+    "interface_maximum": {
+      "classification": "CONTRACT INTERFACE LIMIT (source current limit must stay at or below)",
+      "mA": {
+        "+12V": 2100,
+        "-12V": 2000,
+        "+5V": 500
+      },
+      "basis": "Selected source or inlet must deliver minimum transient requirements with a positive planning window to maximum_delivered_current_mA, then bound each rail including tolerance to that maximum and coordinate all-rail shutdown. The 100 mA windows are proposals, not proven realizable limiter tolerances. Maximums are interface limits, not device ratings. Unbounded overshoot/fault energy cannot be admitted by the contact/cable checker; actual limiter dynamics require #52 circuit evidence and #57 tests."
+    }
+  },
+  "power": {
+    "reported_typical_subtotal": {
+      "osc_inlet_W_at_source_band": [
+        20.180125,
+        20.599437
+      ],
+      "current_pd_chain_pre_rail_W_lower_bound": {
+        "nominal_setpoints": 23.228457,
+        "screened_minimum_setpoints": 22.479463
+      },
+      "efficiency_needed": {
+        "nominal_15V_3A": {
+          "any_architecture_end_to_end": 0.448447,
+          "current_pd_chain_converters": 0.499544
+        },
+        "source_minus_5_percent": {
+          "any_architecture_end_to_end": 0.47205,
+          "current_pd_chain_converters": 0.525835
+        },
+        "board_b_input_screen_14V_3A": {
+          "any_architecture_end_to_end": 0.480479,
+          "current_pd_chain_converters": 0.535225
+        }
+      },
+      "positive_converter_efficiency_needed_with_pd_u4_model": {
+        "nominal_15V_3A": 0.369224,
+        "source_minus_5_percent": 0.397142,
+        "board_b_input_screen_14V_3A": 0.40741
+      },
+      "infeasible_at_100_percent": {
+        "nominal_15V_3A": {
+          "any_architecture": false,
+          "current_pd_chain": false
+        },
+        "source_minus_5_percent": {
+          "any_architecture": false,
+          "current_pd_chain": false
+        },
+        "board_b_input_screen_14V_3A": {
+          "any_architecture": false,
+          "current_pd_chain": false
+        }
+      }
+    },
+    "normal_planning": {
+      "osc_inlet_W_at_source_band": [
+        36.7773,
+        37.536074
+      ],
+      "current_pd_chain_pre_rail_W_lower_bound": {
+        "nominal_setpoints": 42.396212,
+        "screened_minimum_setpoints": 41.004646
+      },
+      "efficiency_needed": {
+        "nominal_15V_3A": {
+          "any_architecture_end_to_end": 0.817273,
+          "current_pd_chain_converters": 0.911214
+        },
+        "source_minus_5_percent": {
+          "any_architecture_end_to_end": 0.860288,
+          "current_pd_chain_converters": 0.959173
+        },
+        "board_b_input_screen_14V_3A": {
+          "any_architecture_end_to_end": 0.87565,
+          "current_pd_chain_converters": 0.976301
+        }
+      },
+      "positive_converter_efficiency_needed_with_pd_u4_model": {
+        "nominal_15V_3A": 1.011043,
+        "source_minus_5_percent": 1.129762,
+        "board_b_input_screen_14V_3A": 1.175783
+      },
+      "infeasible_at_100_percent": {
+        "nominal_15V_3A": {
+          "any_architecture": false,
+          "current_pd_chain": false
+        },
+        "source_minus_5_percent": {
+          "any_architecture": false,
+          "current_pd_chain": false
+        },
+        "board_b_input_screen_14V_3A": {
+          "any_architecture": false,
+          "current_pd_chain": false
+        }
+      }
+    },
+    "normal_planning_stage54_conditional": {
+      "osc_inlet_W_at_source_band": [
+        35.7693,
+        36.507074
+      ],
+      "current_pd_chain_pre_rail_W_lower_bound": {
+        "nominal_setpoints": 41.237642,
+        "screened_minimum_setpoints": 39.883105
+      },
+      "efficiency_needed": {
+        "nominal_15V_3A": {
+          "any_architecture_end_to_end": 0.794873,
+          "current_pd_chain_converters": 0.886291
+        },
+        "source_minus_5_percent": {
+          "any_architecture_end_to_end": 0.836709,
+          "current_pd_chain_converters": 0.932938
+        },
+        "board_b_input_screen_14V_3A": {
+          "any_architecture_end_to_end": 0.85165,
+          "current_pd_chain_converters": 0.949598
+        }
+      },
+      "positive_converter_efficiency_needed_with_pd_u4_model": {
+        "nominal_15V_3A": 0.954352,
+        "source_minus_5_percent": 1.062519,
+        "board_b_input_screen_14V_3A": 1.104237
+      },
+      "infeasible_at_100_percent": {
+        "nominal_15V_3A": {
+          "any_architecture": false,
+          "current_pd_chain": false
+        },
+        "source_minus_5_percent": {
+          "any_architecture": false,
+          "current_pd_chain": false
+        },
+        "board_b_input_screen_14V_3A": {
+          "any_architecture": false,
+          "current_pd_chain": false
+        }
+      }
+    },
+    "startup_envelope_10ms": {
+      "osc_inlet_W_at_source_band": [
+        42.46002,
+        43.333838
+      ],
+      "current_pd_chain_pre_rail_W_lower_bound": {
+        "nominal_setpoints": 48.971685,
+        "screened_minimum_setpoints": 47.354427
+      },
+      "efficiency_needed": {
+        "nominal_15V_3A": {
+          "any_architecture_end_to_end": 0.943556,
+          "current_pd_chain_converters": 1.052321
+        },
+        "source_minus_5_percent": {
+          "any_architecture_end_to_end": 0.993217,
+          "current_pd_chain_converters": 1.107706
+        },
+        "board_b_input_screen_14V_3A": {
+          "any_architecture_end_to_end": 1.010953,
+          "current_pd_chain_converters": 1.127486
+        }
+      },
+      "positive_converter_efficiency_needed_with_pd_u4_model": {
+        "nominal_15V_3A": 1.407965,
+        "source_minus_5_percent": 1.612307,
+        "board_b_input_screen_14V_3A": 1.694273
+      },
+      "infeasible_at_100_percent": {
+        "nominal_15V_3A": {
+          "any_architecture": false,
+          "current_pd_chain": true
+        },
+        "source_minus_5_percent": {
+          "any_architecture": false,
+          "current_pd_chain": true
+        },
+        "board_b_input_screen_14V_3A": {
+          "any_architecture": true,
+          "current_pd_chain": true
+        }
+      }
+    },
+    "normal_plus_one_fault": {
+      "osc_inlet_W_at_source_band": [
+        37.3773,
+        38.148574
+      ],
+      "current_pd_chain_pre_rail_W_lower_bound": {
+        "nominal_setpoints": 43.085837,
+        "screened_minimum_setpoints": 41.672231
+      },
+      "efficiency_needed": {
+        "nominal_15V_3A": {
+          "any_architecture_end_to_end": 0.830607,
+          "current_pd_chain_converters": 0.92605
+        },
+        "source_minus_5_percent": {
+          "any_architecture_end_to_end": 0.874323,
+          "current_pd_chain_converters": 0.974789
+        },
+        "board_b_input_screen_14V_3A": {
+          "any_architecture_end_to_end": 0.889936,
+          "current_pd_chain_converters": 0.992196
+        }
+      },
+      "positive_converter_efficiency_needed_with_pd_u4_model": {
+        "nominal_15V_3A": 1.046557,
+        "source_minus_5_percent": 1.172138,
+        "board_b_input_screen_14V_3A": 1.220975
+      },
+      "infeasible_at_100_percent": {
+        "nominal_15V_3A": {
+          "any_architecture": false,
+          "current_pd_chain": false
+        },
+        "source_minus_5_percent": {
+          "any_architecture": false,
+          "current_pd_chain": false
+        },
+        "board_b_input_screen_14V_3A": {
+          "any_architecture": false,
+          "current_pd_chain": false
+        }
+      }
+    },
+    "continuous_requirement": {
+      "osc_inlet_W_at_source_band": [
+        41.115,
+        41.96
+      ],
+      "current_pd_chain_pre_rail_W_lower_bound": {
+        "nominal_setpoints": 47.4357,
+        "screened_minimum_setpoints": 45.863872
+      },
+      "efficiency_needed": {
+        "nominal_15V_3A": {
+          "any_architecture_end_to_end": 0.913667,
+          "current_pd_chain_converters": 1.019197
+        },
+        "source_minus_5_percent": {
+          "any_architecture_end_to_end": 0.961754,
+          "current_pd_chain_converters": 1.072839
+        },
+        "board_b_input_screen_14V_3A": {
+          "any_architecture_end_to_end": 0.978929,
+          "current_pd_chain_converters": 1.091997
+        }
+      },
+      "positive_converter_efficiency_needed_with_pd_u4_model": {
+        "nominal_15V_3A": 1.298261,
+        "source_minus_5_percent": 1.475729,
+        "board_b_input_screen_14V_3A": 1.546182
+      },
+      "infeasible_at_100_percent": {
+        "nominal_15V_3A": {
+          "any_architecture": false,
+          "current_pd_chain": true
+        },
+        "source_minus_5_percent": {
+          "any_architecture": false,
+          "current_pd_chain": true
+        },
+        "board_b_input_screen_14V_3A": {
+          "any_architecture": false,
+          "current_pd_chain": true
+        }
+      }
+    },
+    "transient_requirement_20ms": {
+      "osc_inlet_W_at_source_band": [
+        48.82,
+        49.82
+      ],
+      "current_pd_chain_pre_rail_W_lower_bound": {
+        "nominal_setpoints": 56.3631,
+        "screened_minimum_setpoints": 54.480384
+      },
+      "efficiency_needed": {
+        "nominal_15V_3A": {
+          "any_architecture_end_to_end": 1.084889,
+          "current_pd_chain_converters": 1.210675
+        },
+        "source_minus_5_percent": {
+          "any_architecture_end_to_end": 1.141988,
+          "current_pd_chain_converters": 1.274395
+        },
+        "board_b_input_screen_14V_3A": {
+          "any_architecture_end_to_end": 1.162381,
+          "current_pd_chain_converters": 1.297152
+        }
+      },
+      "positive_converter_efficiency_needed_with_pd_u4_model": {
+        "nominal_15V_3A": 2.094403,
+        "source_minus_5_percent": 2.503099,
+        "board_b_input_screen_14V_3A": 2.677242
+      },
+      "infeasible_at_100_percent": {
+        "nominal_15V_3A": {
+          "any_architecture": true,
+          "current_pd_chain": true
+        },
+        "source_minus_5_percent": {
+          "any_architecture": true,
+          "current_pd_chain": true
+        },
+        "board_b_input_screen_14V_3A": {
+          "any_architecture": true,
+          "current_pd_chain": true
+        }
+      }
+    }
+  },
+  "per_rail_vs_pd_design_target": {
+    "reported_typical_subtotal": {
+      "+12V": {
+        "demand_mA": 857.197813,
+        "pd_design_target_mA": 1200,
+        "excess_over_target_mA": -342.802187
+      },
+      "-12V": {
+        "demand_mA": 790.697813,
+        "pd_design_target_mA": 800,
+        "excess_over_target_mA": -9.302187
+      },
+      "+5V": {
+        "demand_mA": 80.272727,
+        "pd_design_target_mA": 500,
+        "excess_over_target_mA": -419.727273
+      }
+    },
+    "normal_planning": {
+      "+12V": {
+        "demand_mA": 1534.819166,
+        "pd_design_target_mA": 1200,
+        "excess_over_target_mA": 334.819166
+      },
+      "-12V": {
+        "demand_mA": 1435.56866,
+        "pd_design_target_mA": 800,
+        "excess_over_target_mA": 635.56866
+      },
+      "+5V": {
+        "demand_mA": 224.286445,
+        "pd_design_target_mA": 500,
+        "excess_over_target_mA": -275.713555
+      }
+    },
+    "normal_planning_stage54_conditional": {
+      "+12V": {
+        "demand_mA": 1492.819166,
+        "pd_design_target_mA": 1200,
+        "excess_over_target_mA": 292.819166
+      },
+      "-12V": {
+        "demand_mA": 1393.56866,
+        "pd_design_target_mA": 800,
+        "excess_over_target_mA": 593.56866
+      },
+      "+5V": {
+        "demand_mA": 224.286445,
+        "pd_design_target_mA": 500,
+        "excess_over_target_mA": -275.713555
+      }
+    },
+    "startup_envelope_10ms": {
+      "+12V": {
+        "demand_mA": 1759.459166,
+        "pd_design_target_mA": 1200,
+        "excess_over_target_mA": 559.459166
+      },
+      "-12V": {
+        "demand_mA": 1658.22866,
+        "pd_design_target_mA": 800,
+        "excess_over_target_mA": 858.22866
+      },
+      "+5V": {
+        "demand_mA": 286.686445,
+        "pd_design_target_mA": 500,
+        "excess_over_target_mA": -213.313555
+      }
+    },
+    "normal_plus_one_fault": {
+      "+12V": {
+        "demand_mA": 1559.819166,
+        "pd_design_target_mA": 1200,
+        "excess_over_target_mA": 359.819166
+      },
+      "-12V": {
+        "demand_mA": 1460.56866,
+        "pd_design_target_mA": 800,
+        "excess_over_target_mA": 660.56866
+      },
+      "+5V": {
+        "demand_mA": 224.286445,
+        "pd_design_target_mA": 500,
+        "excess_over_target_mA": -275.713555
+      }
+    },
+    "continuous_requirement": {
+      "+12V": {
+        "demand_mA": 1700,
+        "pd_design_target_mA": 1200,
+        "excess_over_target_mA": 500
+      },
+      "-12V": {
+        "demand_mA": 1600,
+        "pd_design_target_mA": 800,
+        "excess_over_target_mA": 800
+      },
+      "+5V": {
+        "demand_mA": 300,
+        "pd_design_target_mA": 500,
+        "excess_over_target_mA": -200
+      }
+    },
+    "transient_requirement_20ms": {
+      "+12V": {
+        "demand_mA": 2000,
+        "pd_design_target_mA": 1200,
+        "excess_over_target_mA": 800
+      },
+      "-12V": {
+        "demand_mA": 1900,
+        "pd_design_target_mA": 800,
+        "excess_over_target_mA": 1100
+      },
+      "+5V": {
+        "demand_mA": 400,
+        "pd_design_target_mA": 500,
+        "excess_over_target_mA": -100
+      }
+    }
+  },
+  "voltage_bands": {
+    "+12V": {
+      "osc_source_band_V": [
+        12,
+        12.3
+      ],
+      "osc_required_load_band_V": [
+        11.53,
+        12.48
+      ],
+      "pd_conditional_output_V": [
+        11.526398684603885,
+        12.47731419187155
+      ],
+      "within_osc_source_band": "not demonstrated",
+      "screen_outside_osc_load_band_before_ptc_and_cable_drop": true,
+      "source": "power-budget.json whole_chain_current_thermal_screen.plus12_output_band_conditional (not a guaranteed full-temperature band)"
+    },
+    "-12V": {
+      "osc_source_band_V": [
+        12,
+        12.2
+      ],
+      "osc_required_load_band_V": [
+        11.74,
+        12.37
+      ],
+      "pd_conditional_output_V": [
+        11.740613718230193,
+        12.370100851223281
+      ],
+      "within_osc_source_band": "not demonstrated",
+      "screen_outside_osc_load_band_before_ptc_and_cable_drop": true,
+      "source": "power-budget.json whole_chain_current_thermal_screen.minus12_output_band_conditional (magnitude; not a guaranteed full-temperature band)"
+    },
+    "+5V": {
+      "osc_source_band_V": [
+        5.05,
+        5.1
+      ],
+      "osc_required_load_band_V": [
+        4.81,
+        5.2
+      ],
+      "pd_conditional_output_V": [
+        4.81482669955157,
+        5.19593178166834
+      ],
+      "within_osc_source_band": "not demonstrated",
+      "screen_outside_osc_load_band_before_ptc_and_cable_drop": false,
+      "source": "power-budget.json whole_chain_current_thermal_screen.plus5_output_band_conditional"
+    }
+  },
+  "ratings_screen": {
+    "+12V": {
+      "ptc": "PTC1 SMD1210P150TF/16",
+      "continuous_requirement_A": 1.7,
+      "ptc_ihold_25C_A": 1.5,
+      "ptc_ihold_85C_A": null,
+      "continuous_exceeds_ptc_hold_25C": true,
+      "ptc_itrip_25C_A": 3.0,
+      "ptc_enforces_interface_maximum": false,
+      "ptc_drop_at_continuous_V_r1max": null,
+      "ldo_table_rows_end_A": 1.5,
+      "continuous_beyond_ldo_table_rows": true,
+      "transient_beyond_ldo_table_rows": true,
+      "sources": [
+        "component-ptc-smd1210p200tf-c20808 fact-ptc1b-ihold / fact-ptc1b-itrip (GUARANTEED_ELECTRICAL); 85 C row not retained for this variant",
+        "component-renewal-ldos LT1963A dropout and ground-current rows at 1.5 A (GUARANTEED_ELECTRICAL table rows, verdict UNSOURCED under PD strict source policy)"
+      ]
+    },
+    "-12V": {
+      "ptc": "PTC3 BSMD1206-150-16V",
+      "continuous_requirement_A": 1.6,
+      "ptc_ihold_25C_A": 1.5,
+      "ptc_ihold_85C_A": 0.77,
+      "continuous_exceeds_ptc_hold_25C": true,
+      "ptc_itrip_25C_A": 3.0,
+      "ptc_enforces_interface_maximum": false,
+      "ptc_drop_at_continuous_V_r1max": 0.208,
+      "ldo_table_rows_end_A": 1.5,
+      "continuous_beyond_ldo_table_rows": true,
+      "transient_beyond_ldo_table_rows": true,
+      "sources": [
+        "component-ptc-bsmd1206-150-16v-c883133 fact-ptc3-ihold / itrip / hold-85c / r1max (GUARANTEED_ELECTRICAL, THERMAL_SOA)",
+        "component-renewal-ldos LT3015 regulation, dropout and ground-current rows at 1.5 A (verdict UNSOURCED under PD strict source policy)"
+      ]
+    },
+    "+5V": {
+      "ptc": "PTC2 mSMD110-33V",
+      "continuous_requirement_A": 0.3,
+      "ptc_ihold_25C_A": 1.1,
+      "ptc_ihold_85C_A": null,
+      "continuous_exceeds_ptc_hold_25C": false,
+      "ptc_itrip_25C_A": 2.2,
+      "ptc_enforces_interface_maximum": false,
+      "ptc_drop_at_continuous_V_r1max": 0.075,
+      "ldo_table_rows_end_A": 1.5,
+      "continuous_beyond_ldo_table_rows": false,
+      "transient_beyond_ldo_table_rows": false,
+      "sources": [
+        "component-ptc-msmd110-33v-c70119 fact-ptc2-ihold / itrip / r1max (GUARANTEED_ELECTRICAL)",
+        "component-renewal-ldos LT1963A rows"
+      ]
+    }
+  },
+  "pd_screen_at_design_targets": {
+    "classification": "PD SCREEN at its own 1.2 / 0.8 / 0.5 A targets (power-budget.json whole_chain_current_thermal_screen)",
+    "pre_regulator_power_W_total": 35.74241737617201,
+    "minimum_weighted_converter_efficiency_at_14V_3A": 0.8510099375279049,
+    "u4_modeled_conduction_efficiency": [
+      0.8169086816832283,
+      0.8205980321401299
+    ],
+    "u4_model_limits": "conduction losses only at 0.8-0.87 A output; switching/core/quiescent losses omitted; not an upper bound on input current"
+  },
+  "pd_capability_crosscheck": {
+    "source": {
+      "pr": "https://github.com/Takazudo/zudo-pd/pull/219",
+      "commit": "6071e1757c7678a4b5ed0af069a9eae202c6ee2d",
+      "file": "manufacturing/supply-capability.json",
+      "sha256": "e5864272b5e1e4a1876a69c95dc9a2fcd5683fea61a3d783016a52f7b18e2b8d"
+    },
+    "minus12_exceeds_u4_switch_current_limit": {
+      "reported_typical_subtotal": false,
+      "normal_planning": true,
+      "normal_planning_stage54_conditional": true,
+      "startup_envelope_10ms": true,
+      "normal_plus_one_fault": true,
+      "continuous_requirement": true,
+      "transient_requirement_20ms": true
+    },
+    "efficiency_discrepancy": {
+      "pd_probe_loads_A": {
+        "+12V": 1.493,
+        "-12V": 1.394,
+        "+5V": 0.224
+      },
+      "pd_probe_matches_stage54_conditional_not_canonical": true,
+      "pd_probe_efficiency_needed": {
+        "14V": 0.949751839343959,
+        "15V": 0.8864350500543617
+      },
+      "ledger_canonical_efficiency_needed": {
+        "14V": 0.976301,
+        "15V": 0.911214
+      },
+      "ledger_stage54_efficiency_needed": {
+        "14V": 0.949598,
+        "15V": 0.886291
+      },
+      "cause": "The brief quoted the unadopted Stage54 conditional loads (1.493 / 1.394 / 0.224 A) as planning normal; PD probed those. Canonical planning normal is 1.535 / 1.436 / 0.224 A. Residual difference between the PD probe and this ledger's Stage54 row is small and comes from PD including indicator/feedback current and its own floor terms.",
+      "resolution": "Canonical rows govern requirements; the Stage54 row stays conditional. Not averaged."
+    },
+    "plus12_exceeds_ptc1_hold_25C": {
+      "normal_planning": true,
+      "normal_planning_stage54_conditional": false
+    }
+  },
+  "pd_open_qualification_quoted": [
+    "Negative LM2596 startup may reach about 4.5 A for at least 2 ms versus 3 A PD contract; steady-state margins do not prove startup.",
+    "AP63201 full high-duty low-line behavior, actual path voltage drop and final whole-chain input-current budget."
+  ],
+  "supply_capability_mA": {
+    "classification": "PENDING PD owner screening (#218)",
+    "+12V": null,
+    "-12V": null,
+    "+5V": null
+  },
+  "converter_efficiency_booked": null,
+  "guaranteed_whole_instrument_maximum_mA": {
+    "+12V": null,
+    "-12V": null,
+    "+5V": null
+  },
+  "measured_whole_instrument_mA": {
+    "+12V": null,
+    "-12V": null,
+    "+5V": null
+  },
+  "measured_source_capacity_mA": {
+    "+12V": null,
+    "-12V": null,
+    "+5V": null
+  },
+  "unknown_reasons_preserved": [
+    "REF5050 supply and reference load at actual +12 V operating condition not bounded across temperature",
+    "SH HC14/HC221/pull-up transient and fault-switch demand not source- or bench-bounded",
+    "NOISE2 manufacturer supply maximum absent; 10 mA is an explicit project assumption",
+    "Inlet TVS/capacitor leakage across temperature and startup charge including all downstream capacitors not bounded",
+    "Output shorts, external drive, cable capacitance and transient op-amp supply current including issue #49 feedback network unquantified",
+    "Installed zudo-pd source capacity, connector/cable/return-path drop and startup/fault behavior unmeasured"
+  ],
+  "source_not_proven_preserved": [
+    "Exact orderable connector/mate drawing, simultaneous-contact derating and footprint are not selected or qualified.",
+    "The requirement-only boundary separates raw and load nets but contains no protection circuit; #59 owns exact electrical realization.",
+    "Source realization, rail sequencing/backfeed/thermal/ripple, all-output faults, full-temperature maxima and physical fit remain NOT RUN in #57."
+  ],
+  "unresolved_ota_mirror_allocation": {
+    "status": "OPEN; no rebate booked",
+    "branches": 26,
+    "coarse_reserve_mA_per_analog_rail": 233
+  }
+}
