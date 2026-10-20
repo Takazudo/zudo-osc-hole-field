@@ -1,9 +1,11 @@
-# Stage57: /M5B/C819409_SENSE target setup and outer-layer search (no path found)
+# Stage57: /M5B/C819409_SENSE In4 trial accepted on a disposable copy
 
-**No proposal, no accepted repair, no canonical adoption.** Canonical boards, the placement lock and `decision.json` are
+**Bounded disposable native repair. No canonical adoption, fabrication, programming
+or energisation.** Canonical boards, the placement lock and `decision.json` are
 unchanged; KEEP_K1402_INCUMBENT stands. No zudo-pd edits, order or energisation.
-The bounded outer-layer search found **no path** (below). Any route needs inner-layer
-copper, which the frozen criteria reserve for a new owner approval.
+The bounded outer-layer search found **no path**. The owner then approved one In4
+(+12 V plane) trial (#288 OSC-S57-02 option A, comment 6288473096); it passes every
+frozen gate in two identical native builds (below). No other inner layer is approved.
 
 ## Baseline
 
@@ -84,6 +86,31 @@ only native refill and the partition gate can decide whether the plane stays one
 component. This location is outside the Stage53 In4 corridor, but the frozen rule
 still forbids new In4 copper without approval.
 
+## In4 trial (`search.py in4`, `proposal.json`, `settlement.json`)
+
+`accept.py` admits In4.Cu for this single trial only (In1–In3 still rejected) and
+binds `proposal.json` (`149212fd…`): 21 objects, 8 F.Cu and 12 In4.Cu 0.20 mm tracks
+and one 0.60/0.30 mm through via at (262.8, 117.4) mm, all outside the Stage53 In4
+corridor (checked by `search.py`). No removals.
+
+| Gate | Result |
+| --- | --- |
+| Identity: additive only, footprints, zones, rule areas, other objects | PASS |
+| Native opens | 115 → 114 |
+| Partitions | exact 1 + 162 → 163 merge; every other net unchanged |
+| Rails | +12V 1025 (one partition), −12V 1015, AGND unchanged |
+| DRC (10.0.6) | rule errors 0, parity 0, 114 unconnected, 476 warnings |
+| Uncapped warnings | none added or removed |
+| Two builds | identical board `9da833c1…`, snapshot `31ed9512…`, acceptance |
+
+Capped silkscreen identity non-regression stays UNRESOLVED (as Stage53).
+
+**Courtyard contact** (`courtyard.py`, `evidence/courtyard.json`; reported, not
+clearance or assembly proof): the via overlaps the J1004 front and D8217 back
+courtyards (0.167 and 0.280 mm² copper-shape overlap); two F.Cu segments overlap
+J1004's front courtyard (0.028, 0.401 mm²); three R8248 escape segments overlap
+R8248's own courtyard. J1004 is panel hardware; its body/process fit is not assessed.
+
 ## Commands
 
 ```sh
@@ -94,8 +121,15 @@ bash design/.../stage57/m5b-sense/setup.sh                 # disposable stage57-
 bash scripts/kicad/run.sh python3 scripts/pcbgen/grid_dump.py .circuit-cache/stage53-fresh/osc-jack-left.kicad_pcb .circuit-cache/stage57/dump.json
 PYTHONPATH=. <venv>/bin/python design/.../stage57/m5b-sense/search.py .circuit-cache/stage57/dump.json .circuit-cache/stage57/coarse.json coarse   # no path
 PYTHONPATH=. <venv>/bin/python design/.../stage57/m5b-sense/search.py .circuit-cache/stage57/dump.json .circuit-cache/stage57/fine.json fine       # no path
-bash design/.../stage57/m5b-sense/trial.sh .circuit-cache/stage57-pass1 pass1   # NOT RUN: no proposal
-python3 -m unittest design/.../stage57/m5b-sense/test_stage57.py   # 9 tests OK; also with -O
+PYTHONPATH=. <venv>/bin/python design/.../stage57/m5b-sense/search.py .circuit-cache/stage57/dump.json design/.../stage57/m5b-sense/proposal.json in4
+bash design/.../stage57/m5b-sense/setup.sh
+bash design/.../stage57/m5b-sense/trial.sh .circuit-cache/stage57-pass1 pass1         # accepted
+bash design/.../stage57/m5b-sense/trial.sh .circuit-cache/stage57-fresh passfresh     # accepted
+python3 design/.../stage57/m5b-sense/settle.py .circuit-cache/stage53-fresh .circuit-cache/stage57-pass1 \
+  .circuit-cache/stage57-fresh design/.../stage57/m5b-sense/proposal.json design/.../stage57/m5b-sense/settlement.json --check
+bash scripts/kicad/run.sh python3 design/.../stage57/m5b-sense/courtyard.py .circuit-cache/stage57-pass1/osc-jack-left.kicad_pcb \
+  design/.../stage57/m5b-sense/proposal.json design/.../stage57/m5b-sense/evidence/courtyard.json
+python3 -m unittest design/.../stage57/m5b-sense/test_stage57.py   # 10 tests OK; also with -O
 ```
 
 ## Status
@@ -104,7 +138,10 @@ python3 -m unittest design/.../stage57/m5b-sense/test_stage57.py   # 9 tests OK;
 | --- | --- |
 | Baseline reconstruction and snapshot replay | PASS (hash match) |
 | Target record freeze and replay | PASS |
-| Gate unit tests | PASS (synthetic snapshots) |
+| Gate unit tests | PASS (10, synthetic snapshots) |
 | Outer-layer route search (0.10 and 0.05 mm) | RUN: no path found (bounded) |
-| Inner-layer route trial, proposal, native DRC/connectivity, settlement | NOT RUN (needs owner approval) |
+| In4 trial: native identity, connectivity, rails, DRC, two-build settlement | PASS (disposable copy) |
+| Courtyard contact | REPORTED (J1004, D8217, R8248); not clearance proof |
+| Capped silkscreen identity non-regression | UNRESOLVED |
+| In1/other inner layers, canonical adoption | NOT RUN, not approved |
 | Analog, thermal, assembly, hardware | NOT RUN |

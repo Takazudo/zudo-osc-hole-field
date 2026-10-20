@@ -56,16 +56,19 @@ class Stage57Gate(unittest.TestCase):
         with self.assertRaises(ValueError): a.connectivity(self.old, self.new, self.p)
 
     def test_inner_layer_rejected(self):
-        for layer in ('In1.Cu', 'In2.Cu', 'In3.Cu', 'In4.Cu'):
+        for layer in ('In1.Cu', 'In2.Cu', 'In3.Cu'):
             self.p['copper'][0]['layer'] = layer
             with self.assertRaises(ValueError): a.layer_gate(self.p)
 
     def test_outer_layers_pass_layer_gate(self):
         a.layer_gate(self.p)
 
-    def test_no_proposal_is_not_run(self):
-        self.assertIsNone(a.PROPOSAL_SHA)
-        with self.assertRaisesRegex(ValueError, 'NOT RUN'): a.bound_proposal(self.p)
+    def test_in4_only_inner_layer_allowed(self):
+        self.p['copper'][0]['layer'] = 'In4.Cu'; a.layer_gate(self.p)
+        self.assertEqual(a.ALLOWED_TRACK_LAYERS, ('F.Cu', 'B.Cu', 'In4.Cu'))
+
+    def test_unbound_proposal_rejected(self):
+        with self.assertRaisesRegex(ValueError, 'exact authorized proposal'): a.bound_proposal(self.p)
 
 
 if __name__ == '__main__':

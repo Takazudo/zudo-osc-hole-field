@@ -22,9 +22,11 @@ NET = 'X1B64D2A971AB89E1AF19'
 SOURCE, TARGET = ('R8248', '2'), ('U8215', '3')
 TARGET_SIZE, OPENS_BEFORE, OPENS_AFTER = 162, 115, 114
 RAILS = {'+12V': [1025], '-12V': [1015], 'AGND': [1]*11 + [3, 6, 1425]}
-ALLOWED_TRACK_LAYERS = ('F.Cu', 'B.Cu')  # inner-layer copper needs a new owner approval
+# F.Cu/B.Cu frozen; In4.Cu added only for the single owner-approved trial
+# (#288 OSC-S57-02 option A, comment 6288473096). Any other inner layer is rejected.
+ALLOWED_TRACK_LAYERS = ('F.Cu', 'B.Cu', 'In4.Cu')
 PROPOSAL = HERE/'proposal.json'
-PROPOSAL_SHA = None  # set only after the route search produces and reviews a proposal
+PROPOSAL_SHA = '149212fd1044c4a39d84af436460a2353a940bad92ce9d6085a5ae54185d8e82'  # search.py in4 (OSC-S57-02 A)
 
 
 def bound_proposal(proposal):
