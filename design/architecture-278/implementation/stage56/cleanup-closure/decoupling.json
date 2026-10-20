@@ -1,0 +1,83 @@
+{
+  "limits": "Nominal values only; floorplan-origin distances, not copper paths; ownership is the project Decouples attribute, not a PDN impedance model.",
+  "rail_nominal_capacitance_after_uF": {
+    "+12V": 49.3,
+    "-12V": 41.0
+  },
+  "rail_nominal_reduction_uF": {
+    "+12V": 0.6,
+    "-12V": 1.2
+  },
+  "retained_bypasses": [
+    {
+      "instance": "H1",
+      "key": "C_DEC_16",
+      "new_decouples": "gate_trigger_input_J_H1_TRIGGER___U",
+      "old_decouples": "slew_island_C_H1_SLEW___PRE",
+      "owner_distance_mm": 3.713,
+      "owner_ref": "U107",
+      "ref": "C128"
+    },
+    {
+      "instance": "H2",
+      "key": "C_DEC_16",
+      "new_decouples": "gate_trigger_input_J_H1_TRIGGER___U",
+      "old_decouples": "slew_island_C_H1_SLEW___PRE",
+      "owner_distance_mm": 7.948,
+      "owner_ref": "U207",
+      "ref": "C228"
+    },
+    {
+      "instance": "H1",
+      "key": "C_DEC_28",
+      "new_decouples": "gate_trigger_input_J_H1_TRIGGER___U",
+      "old_decouples": "magnitude_indicator_L_H1_TRIGGER_mag___A",
+      "owner_distance_mm": 14.19,
+      "owner_ref": "U107",
+      "ref": "C140"
+    },
+    {
+      "instance": "H2",
+      "key": "C_DEC_28",
+      "new_decouples": "gate_trigger_input_J_H1_TRIGGER___U",
+      "old_decouples": "magnitude_indicator_L_H1_TRIGGER_mag___A",
+      "owner_distance_mm": 0.886,
+      "owner_ref": "U207",
+      "ref": "C240"
+    },
+    {
+      "instance": "H1",
+      "key": "C_DEC_32",
+      "new_decouples": "reference_generator_J_H1_TRIGGER___U",
+      "old_decouples": "magnitude_indicator_L_H1_OUT_mag___A",
+      "owner_distance_mm": 1.392,
+      "owner_ref": "U101",
+      "ref": "C144"
+    },
+    {
+      "instance": "H2",
+      "key": "C_DEC_32",
+      "new_decouples": "reference_generator_J_H1_TRIGGER___U",
+      "old_decouples": "magnitude_indicator_L_H1_OUT_mag___A",
+      "owner_distance_mm": 23.091,
+      "owner_ref": "U201",
+      "ref": "C244"
+    }
+  ],
+  "status": "SOURCE-LEVEL decoupling re-check of an UNADOPTED Stage56 candidate; no PDN, layout or hardware result",
+  "surviving_ics_without_complete_owned_bypass": {
+    "after": [
+      "U1601",
+      "U1602",
+      "U1603",
+      "U1604"
+    ],
+    "before": [
+      "U1601",
+      "U1602",
+      "U1603",
+      "U1604"
+    ]
+  },
+  "survivors_whose_nearest_rail_cap_is_removed": []
+}
