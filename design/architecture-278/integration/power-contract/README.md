@@ -316,7 +316,7 @@ The contract sets no upper bound; it requires a monotonic ramp no faster than 10
 The AR reset is the only timing element found:
 - **Circuit:** +5 V feeds 100 kΩ and 1 µF to AGND, with a discharge diode, two HC14 stages and two HC74 synchronous-release stages (`design/spec/modules/envelope.py` L157–162). The 1 µF has no MPN, so the 100 ms time constant has unknown tolerance.
 - **Thresholds:** HC14 thresholds are held only at VCC = 4.5 V. Below 4.5 V, behaviour is unknown during any ramp, whatever its length.
-- **Arithmetic estimate (not in source):** release is about 37–98 ms after a +5 V step. On a slow ramp the RC lags the rail, so reset releases after +5 V settles.
+- **Arithmetic estimate (not in source):** release is about 37–98 ms after a +5 V step. On a slow ramp the RC lags the rail, so reset releases after +5 V settles. This RC-only view is incomplete (desk review below, item R3): release and re-arm also depend on the ramp, the reset-synchroniser clock and how +5 V sinks the discharge diode current.
 - **Unaddressed:** ±12 V entering its band late.
 - **Not proven:** the source says this circuit is not brownout supervision (`osc-block-ar.mdx` L264–265), and real RC/reset behaviour is NOT RUN (L307–309). REF5050 startup and LM393 undervoltage output state are not in the repo.
 
@@ -336,11 +336,31 @@ The PD campaign (6 rail orders × 10 / 20 / 50 ms: VEE5, injection, reset timing
 9. **Ramp-specific checks:**
    - AR release at 20 / 50 ms ramps, with ±12 V early and late;
    - AS3340 VEE and the OPA4197 VEE driver in every order;
-   - −5 V reference fanout injection into its 30 inputs;
+   - ±5 V reference-pair fanout injection: 30 direct OPA4197 inputs in total, 15 per polarity (desk review R3), in addition to the 30 octave-tap receivers (`osc-reference-fanout.mdx` L29);
    - input-switch enable and sync validity while +5 V is absent.
 10. **Model check:** supply current during the ramp, to validate the Q-C model.
 
 There is no staged-enable circuit yet, so every test runs on the current three-converter supply.
+
+### Desk review of power-off and startup interactions (owner/Codex, [#288 6289113789](https://github.com/Takazudo/zudo-osc-hole-field/issues/288#issuecomment-6289113789))
+
+Connectivity and primary-source findings with labelled inferences. No damage, failure or measurement is observed, and no design change is accepted. The reviewed spec files are identical at `fa16c6f` (PR #290) and `ff925bf` (this branch). The integration owner checked the cited connectivity at `ff925bf`: the R1 and R2 cell terminals in `design/standard/electrical-standard.json` and the R3 reset and VEE parts in `design/spec/modules/envelope.py` L157–162 and `design/spec/modules/oscillator.py` L158. The datasheet limits are quoted from the review and were not re-read.
+
+| ID | Finding | Effect on this record |
+| --- | --- | --- |
+| R1 | `precision_output` has JACK → 100 Ω (`R_FB`) → op-amp IN−, separate from the 2 × 499 Ω (998 Ω) isolation pair DRIVE → JACK. In MULT, the output jack reaches U3102 pin 6 through R3107 and pin 7 drives the jack through R3105/R3106 (`mult.py` L96). The 998 Ω pair therefore does not establish off-state input-injection compliance. OPA4197 lists ±10 mA absolute input current and input-voltage limits relative to the rails; the actual injection depends on clamps, source and rail impedance and is NOT RUN | Adds to campaign item 5: back-feed while off must include the 100 Ω sense path into IN−, not only the isolation resistors |
+| R2 | The ADG5412F enable is +5 V through 1 kΩ with a 100 kΩ pull-down. FF is unused and neither analog rail is supervised. Its turn-on conditions permit a supply span ≥ 8 V, so conduction with partial rails is a plausible scenario, not ruled out by the power-off-isolation claims. Source and drain protection differ | Adds to campaign items 3 and 9: input-switch state with +5 V present and one analog rail absent or ramping, beside the existing +5 V-absent case |
+| R3 | The AR POR/READY chain (100 kΩ / 1 µF, HC14, HC74) does not monitor ±12 V, and D4104 discharges POR_RC into +5 V. Release and re-arm therefore depend on the ramp, clock and rail-sink behaviour, not on the RC alone. HC14 has 2 V threshold bounds but no guarantee below 2 V or on a moving rail. VEE5 is actively driven. The reference fanout is 30 direct OPA4197 inputs in total, 15 per polarity, not 30 negative inputs | Corrects the Q-A RC-only estimate and the fanout count above; no requirement changes |
+
+C × dV/dt startup estimates in this record leave out injection and contention, so they are not proven upper bounds. The retained and fresh REF50/OPA4196/HC00/HC14/HC74 electrical sections match. The disputed LM13700/LF398/HC74 table readings stay unresolved, and nothing is silently re-pinned.
+
+**Proposed desk matrix (candidate, not run):**
+- the six startup and collapse orders;
+- each absent rail, both grounded and floating;
+- external drive on jacks;
+- interrupted ramps.
+
+Functional recovery is judged separately from absolute stress limits. The continuous and transient requirements, PWR-C1 status and the PWR-D3 / PWR-D5 / OSC-S56-01 holds are unchanged.
 
 ## Gap list
 
@@ -368,7 +388,7 @@ There is no staged-enable circuit yet, so every test runs on the current three-c
 | PWR-D3 | Supply direction: the present 15 V Board B cannot carry the OSC contract; choose between a small in-product revision, a larger PD revision (for example 20 V input with Board P change), or a separate supply | Owner | OPEN; PD-002 requests it; integration review R1–R7 above |
 | PWR-D4 | The brief's 1.493 / 1.394 / 0.224 A "planning normal" is the Stage54 conditional row; canonical 1.535 / 1.436 / 0.224 A governs comparisons | Routine (evidence) | ADOPTED |
 | PWR-D5 | Whether OSC gets an explicit degraded mode for lower-capability supplies (functional loss and new power domains) or full OSC requires a supply meeting the contract | Owner | OPEN; candidate only. The usage-limit candidate (1600 / 1500 / 300 mA by the same rule) is in "Budget decomposition" |
-| PWR-C1 | **Candidate, not a decision:** a slower common source ramp (20–50 ms). It is contract-compatible: the contract requires a monotonic ramp no faster than 10 ms and sets no upper bound (`osc-electrical-standard.mdx` L113, `decisions/osc-supply-architecture.mdx` L65; OSC owner answer from `31311c6`). The ramp term scales as CΔV/Δt: at 20 / 50 ms the ceiling ramp is 112.3 / 44.9 mA on +12 V (10 ms: 224.6) and the fitted ramp 37.4 / 14.9 mA (10 ms: 74.7). Correct OSC behaviour on a slow ramp is **unverified**: the AR reset RC (100 ms) is not brownout supervision and is untested on slow rails (`osc-block-ar.mdx` L258–265), the oscillators need each-rail-first/last, slow-ramp and brownout tests (`osc-block-osc.mdx` L35), and the all-orders staged enable has no circuit (`osc-protection-architecture.mdx` L72–73). Named risks: AS3340 VEE–GND −6 V abs max, the OPA4197 VEE driver, −5 V reference fanout and +5 V-absent logic. Abs-max and latch-up facts for LM13700, OPA4197/4196, LM393, LF398 and HC are not retained. Needs measurement (6 orders × 10 / 20 / 50 ms, VEE5, injection, reset release, latch-up), after the abs-max facts are captured | OSC owner, then product owner | CANDIDATE; UNVERIFIED; transient requirement unchanged |
+| PWR-C1 | **Candidate, not a decision:** a slower common source ramp (20–50 ms). It is contract-compatible: the contract requires a monotonic ramp no faster than 10 ms and sets no upper bound (`osc-electrical-standard.mdx` L113, `decisions/osc-supply-architecture.mdx` L65; OSC owner answer from `31311c6`). The ramp term scales as CΔV/Δt: at 20 / 50 ms the ceiling ramp is 112.3 / 44.9 mA on +12 V (10 ms: 224.6) and the fitted ramp 37.4 / 14.9 mA (10 ms: 74.7). Correct OSC behaviour on a slow ramp is **unverified**: the AR reset RC (100 ms) is not brownout supervision and is untested on slow rails (`osc-block-ar.mdx` L258–265), the oscillators need each-rail-first/last, slow-ramp and brownout tests (`osc-block-osc.mdx` L35), and the all-orders staged enable has no circuit (`osc-protection-architecture.mdx` L72–73). Named risks: AS3340 VEE–GND −6 V abs max, the OPA4197 VEE driver, ±5 V reference-pair fanout, +5 V-absent logic, precision-output back-feed through the 100 Ω sense path and ADG5412F partial-rail conduction (desk review R1–R3). Abs-max and latch-up facts for LM13700, OPA4197/4196, LM393, LF398 and HC are not retained. Needs measurement (6 orders × 10 / 20 / 50 ms, VEE5, injection, reset release, latch-up), after the abs-max facts are captured | OSC owner, then product owner | CANDIDATE; UNVERIFIED; transient requirement unchanged |
 
 Checks for this record: `ledger.py --check` and `decompose.py --check` PASS; 15 focused
 tests PASS (normal and `-O`); `verify_pd_pin.py` PASS against a local zudo-pd checkout at both pinned commits.
