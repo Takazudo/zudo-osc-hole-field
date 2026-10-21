@@ -103,7 +103,7 @@ class SmokeTests(unittest.TestCase):
         self.assertTrue(all(x['with']['persist-credentials'] is False for x in checkouts))
         self.assertEqual(checkouts[1]['with']['ref'],c.SOURCE)
         upload=j['steps'][-1];self.assertEqual(upload['with']['retention-days'],7)
-        self.assertEqual(upload['with']['path'],'upload-safe/receipt.json\nupload-safe/tests.json')
+        self.assertEqual(upload['with']['path'],'upload-safe/receipt.json\nupload-safe/tests.json\nupload-safe/inventory.json')
         self.assertLessEqual(sum(x['timeout-minutes'] for x in j['steps']),20)
         for forbidden in ['contents: write','secrets.','git push','workflow_run','actions/cache','pickle','max-parallel:']:
             self.assertNotIn(forbidden,s)
@@ -116,7 +116,7 @@ class SmokeTests(unittest.TestCase):
             try:
                 os.chdir(t);Path('receipts/receipt.json').mkdir(parents=True)
                 Path('receipts/receipt.json/board').write_text('not permitted')
-                with self.assertRaises(SystemExit):exec(compile(script,'artifact-stage','exec'),{})
+                with patch.dict('os.environ',{'OSC_MODE':'smoke'}), self.assertRaises(SystemExit):exec(compile(script,'artifact-stage','exec'),{})
                 self.assertEqual(json.loads(Path('upload-safe/receipt.json').read_text())['status'],'ARTIFACT_POLICY_FAILURE')
                 self.assertEqual([x.name for x in Path('upload-safe').iterdir()],['receipt.json'])
             finally:os.chdir(previous)
