@@ -2,6 +2,7 @@
 import collections
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -31,7 +32,51 @@ LOG_LIMIT = 64 * 1024
 OUTPUT_LIMIT = 900000
 PCB_LIMIT = 64 * 1024 * 1024
 MEMBER_LIMIT = 100000
+MEMORY_CAP = 2147483648
+CGROUP = Path('/sys/fs/cgroup')
+PHASES = ('preflight','normalize','drc-before','fill','drc-after','summarize')
 STATUS = 'FILL_BASELINE_OBSERVATIONS_NOT_ACCEPTANCE'
+
+
+def memory_snapshot():
+    """Read only this owned container's unified cgroup, never host discovery."""
+    values={}
+    for name in ('memory.current','memory.peak','memory.events','memory.max','memory.swap.max'):
+        with (CGROUP/name).open(encoding='ascii') as stream: text=stream.read(4097)
+        if len(text)>4096: raise ValueError('cgroup telemetry bound')
+        if name=='memory.events':
+            events={}
+            for line in text.splitlines():
+                fields=line.split()
+                if len(fields)!=2 or not re.fullmatch('[a-z_]{1,32}',fields[0]) or not re.fullmatch('[0-9]{1,20}',fields[1]) or fields[0] in events: raise ValueError('unsupported memory.events')
+                events[fields[0]]=int(fields[1])
+            if not 1<=len(events)<=16 or not {'low','high','max','oom','oom_kill'}<=set(events): raise ValueError('unsupported memory.events')
+            values[name]=events
+        else:
+            if not re.fullmatch('[0-9]{1,20}',text.strip()): raise ValueError('unsupported '+name)
+            values[name]=int(text.strip())
+    if values['memory.max']!=MEMORY_CAP: raise ValueError('owned cgroup memory.max mismatch')
+    if values['memory.swap.max']!=0: raise ValueError('owned cgroup swap limit mismatch')
+    return values
+
+
+def record_memory(result, phase, point):
+    rows=result.setdefault('memory_telemetry',[])
+    if len(rows)>=16: raise ValueError('telemetry row bound')
+    # Keep failed telemetry explicit without overwriting the primary failure.
+    row={'phase':phase,'point':point,'monotonic_seconds':time.monotonic()};rows.append(row)
+    try:
+        row['values']=memory_snapshot()
+        row['peak_semantics']='memory.peak is cumulative for this cgroup, not a phase peak'
+        baseline=next((r['values']['memory.events'] for r in rows if 'values' in r),row['values']['memory.events'])
+        current=row['values']['memory.events']
+        if set(current)!=set(baseline) or any(current[k]<baseline[k] for k in current): raise ValueError('memory.events baseline discontinuity')
+        row['events_since_baseline']={k:current[k]-baseline[k] for k in current}
+        if any(row['events_since_baseline'].get(k,0)>0 for k in ('oom','oom_kill')):
+            raise ValueError('owned cgroup OOM event during run')
+    except Exception as exc:
+        row['error']=type(exc).__name__+': '+str(exc)[:160]
+        raise
 
 
 def sha(path):
@@ -56,8 +101,8 @@ def bounded_members(items):
 def semantic_hash(path):
     """Streaming token hash: ignore ONLY direct zone filled_polygon subtrees.
 
-    Preserve atom spelling, node order and every other node. Compare normalized
-    SaveBoard snapshots, not writer formatting against the original producer.
+    Preserve atom spelling, node order and every other node. Require equality
+    across the original input, normalized-before and filled-after snapshots.
     """
     token = re.compile(r'"(?:\\.|[^"\\])*"|[()]|[^\s()]+')
     stack = []
@@ -213,6 +258,7 @@ def main():
             'limits':'One fill; 100s total; no link/route edits; outer owned container cleanup required'}
     phase='preflight'
     try:
+        record_memory(result,phase,'before')
         result['input_before']=verify_inputs(root)
         result['nonfill_input']=semantic_hash(root/'osc-core.kicad_pcb')
         scratch.mkdir(exist_ok=False)
@@ -220,7 +266,9 @@ def main():
             dest=scratch/kind; dest.mkdir()
             for name in PINS:
                 if kind=='input' or not name.endswith('.kicad_pcb'): shutil.copyfile(root/name,dest/name)
+        record_memory(result,phase,'after')
         for phase in ('normalize','drc-before','fill','drc-after'):
+            record_memory(result,phase,'before')
             if phase.startswith('drc-'):
                 kind=phase[4:]; report=scratch/(phase+'.json')
                 argv=['kicad-cli','pcb','drc','--format','json','--severity-all','--output',str(report),str(scratch/kind/'osc-core.kicad_pcb')]
@@ -239,7 +287,9 @@ def main():
                 result['nonfill_before']=semantic_hash(scratch/'before/osc-core.kicad_pcb')
                 result['nonfill_after']=semantic_hash(scratch/'after/osc-core.kicad_pcb')
                 if result['nonfill_input']!=result['nonfill_after']: raise ValueError('non-fill semantic change')
+            record_memory(result,phase,'after')
         phase='summarize'
+        record_memory(result,phase,'before')
         bc,bi=drc_summary(scratch/'drc-before.json'); ac,ai=drc_summary(scratch/'drc-after.json')
         result['drc']={'before':bc,'after':ac,'delta':delta(bi,ai),'before_identity_sha256':digest(sorted(bi.items())), 'after_identity_sha256':digest(sorted(ai.items()))}
         result['scratch_hashes']={kind:sha(scratch/kind/'osc-core.kicad_pcb') for kind in ('input','before','after')}
@@ -247,10 +297,13 @@ def main():
         for kind in ('before','after'):
             for name in PINS:
                 if not name.endswith('.kicad_pcb') and sha(scratch/kind/name)!=PINS[name]: raise ValueError('project/rules changed')
+        record_memory(result,phase,'after')
         if time.monotonic()>deadline: raise TimeoutError('total deadline')
         result['status']=STATUS
     except Exception as exc:
         result['failure']={'phase':phase,'type':type(exc).__name__,'message':str(exc)[:500]}
+        try: record_memory(result,phase,'failed')
+        except Exception as check: result['telemetry_failure']=type(check).__name__+': '+str(check)[:160]
         log=scratch/(phase+'.log')
         if log.is_file():
             result['failure']['log_sha256']=sha(log)
@@ -295,6 +348,21 @@ def validate_result(result):
     if len(result.get('commands',[]))!=4 or any(x.get('exit_code')!=0 for x in result['commands']): raise ValueError('command outcomes')
     if not isinstance(result.get('elapsed_seconds'),(int,float)) or not 0<=result['elapsed_seconds']<=100: raise ValueError('deadline')
     if 'failure' in result or 'input_recheck_failure' in result: raise ValueError('failure present')
+    frames=result.get('memory_telemetry')
+    if not isinstance(frames,list) or [(x.get('phase'),x.get('point')) for x in frames]!=[(p,q) for p in PHASES for q in ('before','after')]: raise ValueError('telemetry coverage')
+    previous=-math.inf
+    for frame in frames:
+        stamp=frame.get('monotonic_seconds')
+        if type(stamp) not in (int,float) or not math.isfinite(stamp) or stamp<previous: raise ValueError('telemetry timestamp')
+        previous=stamp
+        v=frame.get('values')
+        if 'error' in frame or not isinstance(v,dict) or set(v)!={'memory.current','memory.peak','memory.events','memory.max','memory.swap.max'} or v['memory.max']!=MEMORY_CAP or v['memory.swap.max']!=0: raise ValueError('telemetry values')
+        if any(not count_ok(v[k]) for k in ('memory.current','memory.peak','memory.max','memory.swap.max')): raise ValueError('telemetry counts')
+        events=v['memory.events']
+        if not isinstance(events,dict) or not 1<=len(events)<=16 or not {'low','high','max','oom','oom_kill'}<=set(events) or any(not isinstance(k,str) or not count_ok(n) for k,n in events.items()): raise ValueError('telemetry events')
+        baseline=frames[0]['values']['memory.events']
+        if set(events)!=set(baseline) or any(events[k]<baseline[k] for k in events) or frame.get('events_since_baseline')!={k:events[k]-baseline[k] for k in events}: raise ValueError('telemetry delta')
+        if any(frame['events_since_baseline'].get(k,0)>0 for k in ('oom','oom_kill')): raise ValueError('OOM event prevents success')
     if not all(k in result for k in ('native_before','native_after','drc','scratch_hashes')): raise ValueError('missing evidence')
     native(result['native_before']);native(result['native_after'])
     hashes=result['scratch_hashes']

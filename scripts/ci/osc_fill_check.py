@@ -7,14 +7,73 @@ import shutil
 import sys
 import tempfile
 import time
+import uuid
 import osc_candidate_check as c
 import osc_frozen_fill as inv
 import osc_frozen_topology as topology
+
+GIB=1024**3
+
+def local_docker_endpoint(docker,root,measurement=None):
+    result=c.run_command([docker,'context','inspect','--format','{{json .Endpoints.docker.Host}}'],root,10,isolated=False)
+    endpoint=json.loads(c.checked(result))
+    if measurement is not None:
+        measurement['docker_endpoint']=endpoint if endpoint=='unix:///var/run/docker.sock' else 'REJECTED_NONLOCAL_OR_MISSING'
+    if endpoint!='unix:///var/run/docker.sock':
+        raise ValueError('effective Docker endpoint is not the hosted local Unix socket')
+    return endpoint
+
+def capacity_decision(meminfo,disk_free,docker_total,active):
+    values={}
+    for line in meminfo.splitlines():
+        fields=line.split()
+        if fields and fields[0] in ('MemTotal:','MemAvailable:'):
+            if len(fields)!=3 or fields[2]!='kB' or fields[0] in values: raise ValueError('invalid meminfo')
+            values[fields[0]]=int(fields[1])*1024
+    if set(values)!={'MemTotal:','MemAvailable:'}: raise ValueError('missing memory measurements')
+    if type(docker_total) is not int or type(disk_free) is not int: raise ValueError('invalid capacity types')
+    result={'host_total_bytes':values['MemTotal:'],'host_available_bytes':values['MemAvailable:'],
+        'docker_total_bytes':docker_total,'disk_free_bytes':disk_free,'active_container_count':len(active.splitlines()) if active.strip() else 0,
+        'container_memory_bytes':2*GIB,'host_reserve_bytes':2*GIB}
+    result['passed']=(values['MemTotal:']>=6*GIB and values['MemAvailable:']>=4*GIB
+        and docker_total>=6*GIB and disk_free>=4*GIB and not active.strip())
+    return result
+
+def resource_preflight():
+    state=Path(os.environ['OSC_STATE']);measurement={'status':'FAILED','measured_at_monotonic':time.monotonic()}
+    try:
+        if os.environ.get('GITHUB_ACTIONS')!='true' or os.environ.get('RUNNER_ENVIRONMENT')!='github-hosted':
+            raise ValueError('fill requires GitHub-hosted Actions runner')
+        if os.environ.get('DOCKER_HOST') or os.environ.get('DOCKER_CONTEXT'):
+            raise ValueError('alternate Docker endpoint unsupported')
+        c.DEADLINE=float(os.environ['OSC_DEADLINE'])
+        if c.DEADLINE-time.monotonic()<200: raise TimeoutError('insufficient prelaunch reserve')
+        docker=os.environ['OSC_REAL_DOCKER']
+        local_docker_endpoint(docker,Path.cwd(),measurement)
+        meminfo=Path('/proc/meminfo').read_text()
+        disk_free=shutil.disk_usage('/').free
+        info=c.run_command([docker,'info','--format','{{json .MemTotal}}'],Path.cwd(),10,isolated=False)
+        total=json.loads(c.checked(info))
+        ps=c.run_command([docker,'ps','-q'],Path.cwd(),10,isolated=False)
+        active=c.checked(ps)
+        measurement.update(capacity_decision(meminfo,disk_free,total,active))
+        if not measurement['passed']: raise ValueError('capacity or serial-exclusion gate failed')
+        measurement['status']='PASS'
+    except Exception as exc:
+        measurement['error']=str(exc)[:500];raise
+    finally:
+        (state/('resource-'+uuid.uuid4().hex+'.json')).write_text(json.dumps(measurement))
+
+def collect_resources(state,receipt):
+    paths=sorted(state.glob('resource-*.json'))
+    if len(paths)>8: raise ValueError('resource receipt count exceeded')
+    receipt['resource_checks']=sorted([json.loads(p.read_text()) for p in paths],key=lambda r:r['measured_at_monotonic'])
 
 def summary_for(receipt,detail=None):
     summary={k:str(receipt[k])[:500] for k in ('status','error','cleanup_error','after_error') if k in receipt}
     summary['cleanup']=[{k:r.get(k) for k in ('status','state_before_cleanup')} for r in receipt.get('cleanup',[])][:8]
     summary['source_hashes_unchanged']=receipt.get('before')==receipt.get('after') and 'before' in receipt
+    summary['resource_checks']=receipt.get('resource_checks',[])
     if isinstance(detail,dict):
         summary['fill_status']=detail.get('status')
         summary['fill_failure']=str(detail.get('failure'))[:700]
@@ -24,11 +83,12 @@ def summary_for(receipt,detail=None):
         summary['selected_membership']={phase:{name:{'count':row.get('count'),'selected_members':row.get('selected_members')}
             for name,row in detail.get(phase,{}).get('membership',{}).items() if name in topology.EXPECTED}
             for phase in ('native_before','native_after')}
+        summary['memory_telemetry']=[{k:r[k] for k in ('phase','point','monotonic_seconds','values','events_since_baseline','error') if k in r} for r in detail.get('memory_telemetry',[])][:16]
     encoded=json.dumps(summary,sort_keys=True)
-    if len(encoded.encode())>8192:
+    if len(encoded.encode())>16384:
         summary.pop('selected_membership',None);summary['membership_summary_omitted_for_bound']=True
         encoded=json.dumps(summary,sort_keys=True)
-    if len(encoded.encode())>8192: raise ValueError('bounded summary exceeds limit')
+    if len(encoded.encode())>16384: raise ValueError('bounded summary exceeds limit')
     return encoded
 
 def readonly_args(argv, root, payload):
@@ -51,7 +111,9 @@ def readonly_args(argv, root, payload):
 
 def adapter(argv):
     root=Path(os.environ['OSC_INPUT_ROOT']);payload=Path(os.environ['OSC_PAYLOAD'])
-    return c.adapter(readonly_args(argv,root,payload))
+    args=readonly_args(argv,root,payload)
+    resource_preflight()
+    return c.adapter(args,memory_policy='fill-2g-noswap')
 
 def main():
     if len(sys.argv)!=3: raise ValueError('usage: osc_fill_check.py SOURCE OUT')
@@ -68,6 +130,10 @@ def main():
     def save(): (out/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
     try:
         save()
+        if os.environ.get('GITHUB_ACTIONS')!='true' or os.environ.get('RUNNER_ENVIRONMENT')!='github-hosted':
+            raise ValueError('fill requires GitHub-hosted Actions runner')
+        if os.environ.get('DOCKER_HOST') or os.environ.get('DOCKER_CONTEXT'):
+            raise ValueError('alternate Docker endpoint unsupported')
         tooling=receipt['tooling_sha']
         if not tooling or len(tooling)!=40 or any(x not in '0123456789abcdef' for x in tooling): raise ValueError('tooling SHA required')
         receipt['tool_hashes']={p.name:c.sha(p) for p in [Path(__file__),payload,Path(topology.__file__),Path(c.__file__)]}
@@ -76,6 +142,7 @@ def main():
         if c.checked(head)!=c.SOURCE: raise ValueError('source HEAD mismatch')
         docker=shutil.which('docker')
         if not docker: raise ValueError('Docker unavailable')
+        local_docker_endpoint(docker,root,receipt);save()
         pull=c.run_command([docker,'pull',c.IMAGE],root,120);receipt['commands'].append(pull);c.checked(pull)
         state=Path(tempfile.mkdtemp(prefix='osc-fill-owned-'))
         bundle=state/'analysis';bundle.mkdir()
@@ -84,12 +151,14 @@ def main():
         if any(c.sha(bundle/src.name)!=receipt['tool_hashes'][src.name] for src in (payload,Path(topology.__file__))): raise ValueError('bundle hash')
         shim=state/'docker';shim.write_text('#!/bin/sh\nexec '+shlex.quote(sys.executable)+' '+shlex.quote(str(Path(__file__).resolve()))+' --adapter "$@"\n');shim.chmod(0o700)
         env={'PATH':str(state)+os.pathsep+os.environ['PATH'],'OSC_STATE':str(state),'OSC_REAL_DOCKER':docker,
-             'OSC_INPUT_ROOT':str(root),'OSC_PAYLOAD':str(bundle)}
+             'OSC_INPUT_ROOT':str(root),'OSC_PAYLOAD':str(bundle),'OSC_DEADLINE':str(c.DEADLINE),
+             'GITHUB_ACTIONS':os.environ['GITHUB_ACTIONS'],'RUNNER_ENVIRONMENT':os.environ['RUNNER_ENVIRONMENT']}
         commands=[*c.COMMANDS,['bash','scripts/kicad/run.sh','python3','-B','/analysis/osc_frozen_fill.py']]
         for n,command in enumerate(commands):
             if c.DEADLINE-time.monotonic()<200: raise TimeoutError('insufficient command and cleanup reserve')
             first=len(receipt['cleanup'])
             result=c.run_command(command,root,110,env);receipt['commands'].append(result);save()
+            collect_resources(state,receipt);save()
             data=None
             if n==2:
                 try:
@@ -110,6 +179,8 @@ def main():
         if state is not None:
             try:c.cleanup_owned(state,docker,root,outcomes=receipt['cleanup'])
             except Exception as exc:failed=True;receipt.update(status='FAILED',cleanup_error=str(exc))
+            try:collect_resources(state,receipt)
+            except Exception as exc:failed=True;receipt.update(status='FAILED',resource_receipt_error=str(exc))
         try:receipt['after']=c.snapshot(root)
         except Exception as exc:failed=True;receipt.update(status='FAILED',after_error=str(exc))
         try:

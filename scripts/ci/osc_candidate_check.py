@@ -125,18 +125,24 @@ def cleanup_owned(state, docker, root, call=run_command, outcomes=None):
         path.unlink() # Only completed job-local bookkeeping; outcomes retained in receipt.
     return outcomes
 
-def adapter(argv):
+def adapter(argv, memory_policy='default'):
     # The unchanged oracle discovers docker through PATH. This adapter supports only its run shape.
     if not argv or argv[0]!='run' or argv.count(IMAGE)!=1 or '--rm' not in argv:
         raise ValueError('unsupported Docker adapter operation')
     if any(x in argv for x in ['--name','--cidfile','--label','--privileged','--network=host']):
         raise ValueError('unexpected ownership/security option')
+    if memory_policy not in ('default','fill-2g-noswap'): raise ValueError('unknown memory policy')
+    resource_options=('--memory','--memory-swap','--memory-reservation','--memory-swappiness',
+        '--cpus','--cpu','--cpuset','--pids-limit','--oom','--kernel-memory','--ulimit','--cgroup')
+    if any(a.startswith(('-m','-c')) or any(a.startswith(x) for x in resource_options) for a in argv[:argv.index(IMAGE)]):
+        raise ValueError('resource overrides forbidden')
+    memory_args=['--memory','512m'] if memory_policy=='default' else ['--memory','2g','--memory-swap','2g']
     state=Path(os.environ['OSC_STATE']);docker=os.environ['OSC_REAL_DOCKER']
     owner=uuid.uuid4().hex;record={'name':'osc-smoke-'+owner,'owner':owner,'cid':None}
     path=state/('owned-'+owner+'.json');path.write_text(json.dumps(record))
     args=[x for x in argv[1:] if x!='--rm']
     result=run_command([docker,'create','--name',record['name'],'--label','osc.smoke.owner='+owner,
-        '--cpus','1','--memory','512m','--pids-limit','64',*args],Path.cwd(),10,isolated=False)
+        '--cpus','1',*memory_args,'--pids-limit','64',*args],Path.cwd(),10,isolated=False)
     cid=checked(result)
     if len(cid)!=64 or any(c not in '0123456789abcdef' for c in cid): raise ValueError('invalid created CID')
     record['cid']=cid

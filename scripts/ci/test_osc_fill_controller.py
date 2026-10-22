@@ -13,6 +13,7 @@ class FillController(unittest.TestCase):
             root=Path(t)/'source';root.mkdir();out=Path(t)/'out';state=Path(t)/'state';state.mkdir()
             before_pins,before_deadline=f.c.PINS,f.c.DEADLINE
             results=[{'failure':None,'exit_code':0,'output':f.c.SOURCE},
+                {'failure':None,'exit_code':0,'output':'"unix:///var/run/docker.sock"'},
                 {'failure':None,'exit_code':0,'output':''},
                 *[{'failure':None,'exit_code':0,'output':'10.0.6'}]*2,
                 {'failure':None,'exit_code':1,'output':'{"status":"FAILED","failure":{"phase":"fill"}}'}]
@@ -20,8 +21,10 @@ class FillController(unittest.TestCase):
             def cleanup(*args,**kwargs):
                 calls.append(1)
                 if len(calls)>=3: raise ValueError('cleanup failure preserved')
-            with patch.object(sys,'argv',['osc_fill_check.py',str(root),str(out)]),patch.dict(os.environ,{'TOOLING_SHA':'a'*40}),patch.object(f.c,'snapshot',return_value={'p':'h'}),patch.object(f.c,'run_command',side_effect=results),patch.object(f.shutil,'which',return_value='/docker'),patch.object(f.tempfile,'mkdtemp',return_value=str(state)),patch.object(f.c,'cleanup_owned',side_effect=cleanup),patch.object(f.c,'normal_exit'):
+            with patch.object(sys,'argv',['osc_fill_check.py',str(root),str(out)]),patch.dict(os.environ,{'TOOLING_SHA':'a'*40,'GITHUB_ACTIONS':'true','RUNNER_ENVIRONMENT':'github-hosted'}),patch.object(f.c,'snapshot',return_value={'p':'h'}),patch.object(f.c,'run_command',side_effect=results) as runner,patch.object(f.shutil,'which',return_value='/docker'),patch.object(f.tempfile,'mkdtemp',return_value=str(state)),patch.object(f.c,'cleanup_owned',side_effect=cleanup),patch.object(f.c,'normal_exit'):
                 self.assertEqual(f.main(),1)
+                self.assertEqual(runner.call_args_list[3].args[3]['GITHUB_ACTIONS'],'true')
+                self.assertEqual(runner.call_args_list[3].args[3]['RUNNER_ENVIRONMENT'],'github-hosted')
             self.assertEqual(json.loads((out/'fill.json').read_text())['status'],'FAILED')
             receipt=json.loads((out/'receipt.json').read_text())
             self.assertIn('cleanup failure',receipt['cleanup_error']);self.assertEqual(len(calls),4)

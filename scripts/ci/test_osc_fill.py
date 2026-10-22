@@ -8,6 +8,49 @@ import osc_frozen_fill as f
 
 
 class FillTests(unittest.TestCase):
+    def memory(self):
+        return {'memory.current':1024,'memory.peak':2048,'memory.max':f.MEMORY_CAP,'memory.swap.max':0,'memory.events':{'low':0,'high':0,'max':0,'oom':0,'oom_kill':0}}
+
+    def test_cgroup_fixed_paths_and_caps(self):
+        import io
+        data={'memory.current':'1024\n','memory.peak':'2048\n','memory.max':'2147483648\n','memory.swap.max':'0\n','memory.events':'low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\n'}
+        seen=[]
+        def opening(path,*args,**kwargs):
+            seen.append(str(path));return io.StringIO(data[path.name])
+        with patch.object(Path,'open',opening):
+            self.assertEqual(f.memory_snapshot(),self.memory())
+            for key,value in [('memory.max','max'),('memory.max','536870912'),('memory.swap.max','1024'),('memory.events','oom 0\noom 1'),('memory.peak','x'*4097)]:
+                old=data[key];data[key]=value
+                with self.assertRaises(ValueError):f.memory_snapshot()
+                data[key]=old
+        self.assertTrue(all(Path(p).parent==f.CGROUP for p in seen))
+
+    def test_missing_cgroup_fails_explicitly(self):
+        result={'failure':{'phase':'fill','message':'first failure'}}
+        with patch.object(Path,'open',side_effect=FileNotFoundError('fixture missing')):
+            with self.assertRaises(FileNotFoundError):f.record_memory(result,'fill','failed')
+        self.assertEqual(result['failure']['message'],'first failure')
+        self.assertIn('error',result['memory_telemetry'][0])
+
+    def test_events_baseline_and_failed_phase(self):
+        result={};a=self.memory();b=self.memory();b['memory.events']['max']=1
+        with patch.object(f,'memory_snapshot',side_effect=[a,b]),patch.object(f.time,'monotonic',side_effect=[10.0,12.5]):
+            f.record_memory(result,'fill','before');f.record_memory(result,'fill','failed')
+        self.assertEqual(result['memory_telemetry'][0]['events_since_baseline']['max'],0)
+        self.assertEqual(result['memory_telemetry'][1]['events_since_baseline']['max'],1)
+        self.assertIn('cumulative',result['memory_telemetry'][1]['peak_semantics'])
+        self.assertEqual(result['memory_telemetry'][1]['monotonic_seconds']-result['memory_telemetry'][0]['monotonic_seconds'],2.5)
+
+    def test_oom_event_stops_and_preserves_telemetry(self):
+        for event in ('oom','oom_kill'):
+            result={};before=self.memory();after=self.memory();after['memory.events'][event]=1
+            with patch.object(f,'memory_snapshot',side_effect=[before,after]):
+                f.record_memory(result,'fill','before')
+                with self.assertRaisesRegex(ValueError,'OOM'):f.record_memory(result,'fill','after')
+            row=result['memory_telemetry'][-1]
+            self.assertEqual(row['values']['memory.events'][event],1)
+            self.assertEqual(row['events_since_baseline'][event],1)
+            self.assertIn('error',row)
     def semantic(self,text):
         with tempfile.TemporaryDirectory() as td:
             p=Path(td)/'a';p.write_text(text);return f.semantic_hash(p)
@@ -65,8 +108,24 @@ class FillTests(unittest.TestCase):
         native={'membership':{n:{'count':0,'uuid_sha256':h,'selected_members':[]} for n in set(f.topology.EXPECTED)|set(f.VIAS)},'zones':[{'uuid':u,'net':'AGND','rule_area':False,'counts':{'F.Cu':0}} for u in f.topology.ZONES],'entry_terminal':None,'entry_terminal_status':'UNRESOLVED'}
         drc={'before':{},'after':{},'before_identity_sha256':h,'after_identity_sha256':h,'delta':f.delta(collections.Counter(),collections.Counter())}
         r={'status':f.STATUS,'board_acceptance':False,'source_hashes':{'before':f.PINS,'after':f.PINS},'nonfill_input':h,'nonfill_before':h,'nonfill_after':h,'commands':[{'exit_code':0}]*4,'elapsed_seconds':99,'native_before':native,'native_after':native,'drc':drc,'scratch_hashes':{'input':f.PINS['osc-core.kicad_pcb'],'before':h,'after':h}}
+        with patch.object(f,'memory_snapshot',side_effect=lambda:self.memory()):
+            for phase in f.PHASES:
+                for point in ('before','after'):f.record_memory(r,phase,point)
         f.validate_result(r)
+        for event in ('oom','oom_kill','max'):
+            altered=copy.deepcopy(r)
+            altered['memory_telemetry'][-1]['values']['memory.events'][event]=1
+            altered['memory_telemetry'][-1]['events_since_baseline'][event]=1
+            if event=='max': f.validate_result(altered)
+            else:
+                with self.assertRaisesRegex(ValueError,'OOM'):f.validate_result(altered)
+        for bad in (float('nan'),float('inf'),-1,True):
+            altered=copy.deepcopy(r);altered['memory_telemetry'][1]['monotonic_seconds']=bad
+            with self.assertRaisesRegex(ValueError,'timestamp'):f.validate_result(altered)
         for key,value in [('board_acceptance',True),('elapsed_seconds',101),('nonfill_after','b'),('failure',{}),('native_before',{}),('native_after',{}),('drc',{}),('scratch_hashes',{})]:
+            altered=dict(r);altered[key]=value
+            with self.assertRaises(ValueError):f.validate_result(altered)
+        for key,value in [('memory_telemetry',[]),('memory_telemetry',[{}])]:
             altered=dict(r);altered[key]=value
             with self.assertRaises(ValueError):f.validate_result(altered)
         # Normalization and fill agreeing with each other cannot excuse a mutation
