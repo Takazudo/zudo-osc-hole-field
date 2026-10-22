@@ -207,9 +207,10 @@ class CandidateAndDrc(unittest.TestCase):
                 (out/kind/'osc-core.kicad_pro').write_text('p');(out/kind/'osc-core.kicad_dru').write_text('d')
                 exported[kind]={n:c.sha(out/kind/n) for n in ('osc-core.kicad_pcb','osc-core.kicad_pro','osc-core.kicad_dru')}
             nonfill=fill.semantic_hash(out/'before'/'osc-core.kicad_pcb')
-            manifest={'exported':exported,'nonfill_sha256':{'input':nonfill}};(out/'manifest.json').write_text(json.dumps(manifest))
+            (out/'zone.json').write_text(json.dumps({'fill':{'returned':True,'seconds':1}}));receipts={'zone.json':c.sha(out/'zone.json')}
+            manifest={'exported':exported,'nonfill_sha256':{'input':nonfill},'exported_receipts':receipts};(out/'manifest.json').write_text(json.dumps(manifest))
             detail={'status':l.MODES['candidate'][2],'board_acceptance':False,'refill_zones_option_used':False,'memory_telemetry':self.frames(),'elapsed_seconds':10,'manifest_sha256':c.sha(out/'manifest.json'),
-                    'exported':exported,'input_before':dict(fill.PINS),'input_after':dict(fill.PINS),'worker':{'fill':{'returned':True}},'command':{'status':'COMPLETE'},'normalize':{'status':'COMPLETE'}}
+                    'exported':exported,'exported_receipts':receipts,'input_before':dict(fill.PINS),'input_after':dict(fill.PINS),'worker_summary':{'fill':{'returned':True},'failure':None},'command':{'status':'COMPLETE'},'normalize':{'status':'COMPLETE'}}
             with patch.dict(fill.PINS,{'osc-core.kicad_pro':exported['before']['osc-core.kicad_pro'],'osc-core.kicad_dru':exported['before']['osc-core.kicad_dru']}):
                 detail['input_before']=dict(fill.PINS);detail['input_after']=dict(fill.PINS)
                 v=l.verify_output('candidate',detail,out,None)

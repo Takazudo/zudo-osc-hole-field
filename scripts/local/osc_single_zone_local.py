@@ -214,7 +214,11 @@ def verify_output(mode,detail,output,candidate):
         verification['owners_host']={kind:payload.zone_fill_owners(output/kind/'osc-core.kicad_pcb') for kind in ('before','after')}
         if verification['owners_host']['before']['filled_polygon_by_zone'] or set(verification['owners_host']['after']['filled_polygon_by_zone'])!={payload.TARGET_ZONE}: raise ValueError('host fill ownership')
         if detail.get('input_before')!=inv.PINS or detail.get('input_after')!=inv.PINS: raise ValueError('input identity')
-        if detail.get('worker',{}).get('fill',{}).get('returned') is not True: raise ValueError('worker fill')
+        if detail.get('worker_summary',{}).get('fill',{}).get('returned') is not True or detail['worker_summary'].get('failure') is not None: raise ValueError('worker fill')
+        for name,expected in manifest['exported_receipts'].items():
+            if c.sha(output/name)!=expected or detail['exported_receipts'][name]!=expected: raise ValueError('exported receipt hash '+name)
+        exported_worker=json.loads((output/'zone.json').read_text())
+        if exported_worker.get('fill',{}).get('returned') is not True or 'failure' in exported_worker: raise ValueError('exported worker receipt')
         if detail.get('command',{}).get('status')!='COMPLETE' or detail.get('normalize',{}).get('status')!='COMPLETE': raise ValueError('worker commands')
     else:
         manifest=json.loads((output/'drc-manifest.json').read_text())

@@ -86,7 +86,11 @@ def candidate(root,scratch,output,result):
     result['command']={}
     zone.run_worker(scratch,deadline,result['command'])
     zone.capture_stages(result,scratch,require_complete=True)
-    result['worker']=json.loads((scratch/'zone.json').read_text())
+    worker=json.loads((scratch/'zone.json').read_text())
+    # The full worker receipt (cluster listings) is exported as zone.json; the payload receipt keeps a compact summary.
+    result['worker_summary']={'fill':worker.get('fill'),'counts':worker.get('counts'),'selected_after':(worker.get('after') or {}).get('selected'),
+        'connected':{phase:{k:v.get('connected') for k,v in (worker.get(phase) or {}).get('pairs',{}).items() if k!='ratsnest'} for phase in ('before','after','reloaded')},'failure':worker.get('failure')}
+    require(result['worker_summary']['failure'] is None and result['worker_summary']['fill'].get('returned') is True,'worker fill')
     fill.record_memory(result,'zone','after')
     fill.record_memory(result,'verify','before')
     for kind in ('before','after'):
@@ -100,11 +104,13 @@ def candidate(root,scratch,output,result):
     require(result['after_owners']['zones']==zone.COUNTS['zone'] and set(result['after_owners']['filled_polygon_by_zone'])=={zone.TARGET_ZONE},'filled_polygon outside selected zone')
     result['exported']={kind:export_dir(scratch/kind,output/kind) for kind in ('before','after')}
     for name in ('normalize.json','zone.json','normalize-substages.jsonl','zone-substages.jsonl'): shutil.copyfile(scratch/name,output/name)
+    result['exported_receipts']={name:fill.sha(output/name) for name in ('normalize.json','zone.json','normalize-substages.jsonl','zone-substages.jsonl')}
     result['input_after']=fill.verify_inputs(root)
     fill.record_memory(result,'verify','after')
     manifest={'status':CANDIDATE_STATUS,'target_zone':zone.TARGET_ZONE,'input':result['input_before'],'exported':result['exported'],
               'nonfill_sha256':{'input':result['nonfill_input'],'before':result['nonfill_before'],'after':result['nonfill_after']},
-              'before_owners':result['before_owners'],'after_owners':result['after_owners'],'fill_seconds':result['worker']['fill']['seconds'],'board_acceptance':False}
+              'before_owners':result['before_owners'],'after_owners':result['after_owners'],'fill_seconds':result['worker_summary']['fill']['seconds'],
+              'exported_receipts':result['exported_receipts'],'board_acceptance':False}
     (output/'manifest.json').write_text(json.dumps(manifest,indent=2,sort_keys=True)+'\n')
     result['manifest_sha256']=fill.sha(output/'manifest.json')
     require(time.monotonic()<=start+PAYLOAD_SECONDS,'payload deadline')
