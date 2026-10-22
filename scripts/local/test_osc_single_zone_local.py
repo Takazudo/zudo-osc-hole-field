@@ -251,11 +251,12 @@ class CandidateAndDrc(unittest.TestCase):
 class Wrapper(unittest.TestCase):
     def test_outer_stop_contract(self):
         text=(Path(__file__).with_name('osc_single_zone_local.sh')).read_text()
-        self.assertIn('standard) outer_stop_seconds=600',text);self.assertIn('fill-520-probe) outer_stop_seconds=900',text);self.assertIn('budget=${OSC_BUDGET:-standard}',text)
-        self.assertIn('export OSC_OUTER_STOP_SECONDS=$outer_stop_seconds',text);self.assertIn('kill -KILL -- "-$pid"',text);self.assertIn('osc_single_zone_local.py" cleanup',text)
+        self.assertIn('budget=${OSC_BUDGET:-standard}',text);self.assertIn('outer_stop_seconds=$(python3 -B "$script_dir/osc_single_zone_local.py" budget "$budget" outer_stop) || exit 2',text)
+        self.assertIn('guard_required=$(python3 -B "$script_dir/osc_single_zone_local.py" budget "$budget" heavy_guard_max_run) || exit 2',text);self.assertIn('((HEAVY_GUARD_MAX_RUN < guard_required))',text)
+        self.assertIn('export OSC_OUTER_STOP_SECONDS=$outer_stop_seconds',text);self.assertIn('export OSC_HEAVY_GUARD_MAX_RUN=$HEAVY_GUARD_MAX_RUN',text);self.assertNotIn('cleanup_seconds=60',text)
+        self.assertIn('kill -KILL -- "-$pid"',text);self.assertIn('osc_single_zone_local.py" cleanup',text)
         self.assertIn('HEAVY_GUARD_HELD',text);self.assertNotIn('GITHUB_ACTIONS=',text);self.assertIn('TOOLING_SHA=$(git -C "$script_dir" rev-parse HEAD)',text)
         self.assertIn('shift 4',text);self.assertIn('--authorization "$authorization" --budget "$budget" "$@"',text)
-        import osc_derived_fill as d
-        for name,b in ((n,d.budget(n)) for n in d.BUDGETS): self.assertIn(name+') outer_stop_seconds='+str(b['outer_stop']),text)
+        self.assertIn('timeout -s KILL "$cleanup_seconds"',text)
 
 if __name__=='__main__':unittest.main()

@@ -6,11 +6,13 @@
 # cleanup pass then removes owned containers by recorded CID/name and fails
 # closed on an uncertain create record.
 #
-# OSC_BUDGET selects the deadline chain (osc_derived_fill.BUDGETS): 'standard'
-# (default) stops at 600 s around the 590 s controller; 'fill-520-probe' stops
-# at 900 s around the 890 s controller. The chosen outer stop is exported as
-# OSC_OUTER_STOP_SECONDS and the controller refuses a budget whose outer stop
-# differs from what this wrapper enforces.
+# OSC_BUDGET selects the deadline chain (osc_derived_fill.BUDGETS); the outer
+# stop and the required heavy-guard cap are read from that one table through
+# the controller's 'budget' subcommand. The caller must set HEAVY_GUARD_MAX_RUN
+# (heavy-guard reads it as its --max-run default; do not also pass --max-run)
+# to at least the budget's heavy_guard_max_run, or this wrapper exits. The
+# chosen outer stop and the cap are exported as OSC_OUTER_STOP_SECONDS and
+# OSC_HEAVY_GUARD_MAX_RUN; the controller refuses a mismatch.
 set -uo pipefail
 
 if (($# < 4)); then
@@ -24,16 +26,15 @@ authorization=$4
 shift 4
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 budget=${OSC_BUDGET:-standard}
-case "$budget" in
-  standard) outer_stop_seconds=600 ;;
-  fill-520-probe) outer_stop_seconds=900 ;;
-  *)
-    printf 'osc-single-zone-local: unknown OSC_BUDGET %s\n' "$budget" >&2
-    exit 2
-    ;;
-esac
+outer_stop_seconds=$(python3 -B "$script_dir/osc_single_zone_local.py" budget "$budget" outer_stop) || exit 2
+guard_required=$(python3 -B "$script_dir/osc_single_zone_local.py" budget "$budget" heavy_guard_max_run) || exit 2
+cleanup_seconds=$(python3 -B "$script_dir/osc_single_zone_local.py" budget "$budget" post_stop_cleanup) || exit 2
+if [[ ! ${HEAVY_GUARD_MAX_RUN:-} =~ ^[0-9]+$ ]] || ((HEAVY_GUARD_MAX_RUN < guard_required)); then
+  printf 'osc-single-zone-local: HEAVY_GUARD_MAX_RUN must be set to at least %s for budget %s (got %s)\n' "$guard_required" "$budget" "${HEAVY_GUARD_MAX_RUN:-unset}" >&2
+  exit 3
+fi
 export OSC_OUTER_STOP_SECONDS=$outer_stop_seconds
-cleanup_seconds=60
+export OSC_HEAVY_GUARD_MAX_RUN=$HEAVY_GUARD_MAX_RUN
 
 if [[ ${HEAVY_GUARD_HELD:-} != 1 ]]; then
   printf 'osc-single-zone-local: run this through heavy-guard.sh (HEAVY_GUARD_HELD missing)\n' >&2

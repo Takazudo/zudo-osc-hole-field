@@ -11,9 +11,12 @@ read-only and hash-checked before and after. No DRC, no acceptance.
 Deadline chains are budget profiles (osc_derived_fill.BUDGETS): 'standard'
 is the hosted-parity chain above; 'fill-520-probe' is the single approved
 F.Cu AGND probe whose only growth is the fill cap and the layers that must
-contain it. The wrapper confirms the outer stop it enforces through
-OSC_OUTER_STOP_SECONDS so the controller cannot run a longer chain than the
-process group kill it sits under.
+contain it. The wrapper exports the outer stop it enforces and the heavy-guard
+cap it was given; the controller refuses a mismatch, and refuses an exported
+outer stop unless it is itself the session leader that the wrapper's process
+group kill targets. These are consistency checks between cooperating scripts,
+not authentication: a caller that forges the variables gets only the
+controller's own cooperative deadline.
 """
 import argparse
 import json
@@ -48,6 +51,22 @@ BUNDLE=(PAYLOAD_NAME,DRC_PAYLOAD_NAME,DERIVED_PAYLOAD_NAME,DERIVED_HELPER_NAME,'
 MODES={'zone':(PAYLOAD_NAME,[],payload.STATUS),'candidate':(DRC_PAYLOAD_NAME,['candidate'],drcpayload.CANDIDATE_STATUS),'drc':(DRC_PAYLOAD_NAME,['drc'],drcpayload.DRC_STATUS),
        'derive':(DERIVED_PAYLOAD_NAME,['derive'],derivedpayload.DERIVE_STATUS),'evaluate':(DERIVED_PAYLOAD_NAME,['evaluate'],derivedpayload.EVALUATE_STATUS)}
 SPEC_MODES=('derive','evaluate')
+
+def check_shared_constants():
+    """The budget table mirrors two hosted values the container bundle cannot import; drift is an import-time failure here."""
+    if derived.CLEANUP_RESERVE!=f.CLEANUP_RESERVE: raise ImportError('osc_derived_fill.CLEANUP_RESERVE differs from osc_fill_check')
+    probe=f.readonly_args(['run','--volume','/s:/work','--volume','/h:/tmp/kicad-home','--network','none',c.IMAGE],'/s','/p')
+    if not any(a.startswith('/scratch:') and a.endswith('size=%dm,mode=1777'%(derived.SCRATCH_TMPFS_BYTES//2**20)) for a in probe): raise ImportError('osc_derived_fill.SCRATCH_TMPFS_BYTES differs from the hosted scratch mount')
+check_shared_constants()
+
+def outer_stop_confirmation(b,outer,environ=os.environ):
+    """Record and check the wrapper's exported outer stop and heavy-guard cap against this budget and this process's session."""
+    record={'wrapper_outer_stop_seconds':outer,'heavy_guard_max_run_env':environ.get('OSC_HEAVY_GUARD_MAX_RUN'),'session_leader':os.getsid(0)==os.getpid()}
+    if outer is None: return record
+    if not record['session_leader']: raise ValueError('outer stop exported but this controller is not a session leader, so no process-group kill targets it')
+    cap=record['heavy_guard_max_run_env']
+    if cap is None or not cap.isdigit() or int(cap)<b['heavy_guard_max_run']: raise ValueError('heavy-guard cap '+str(cap)+' does not cover budget '+b['name'])
+    return record
 
 def bundle_sources():
     return {PAYLOAD_NAME:Path(__file__).with_name(PAYLOAD_NAME).resolve(),DRC_PAYLOAD_NAME:Path(__file__).with_name(DRC_PAYLOAD_NAME).resolve(),
@@ -164,6 +183,7 @@ def run(args):
        'deadline_policy':{'budget':b['name'],'total_seconds':b['controller'],'outer_stop_seconds':b['outer_stop'],'outer_stop_confirmed_by_wrapper':outer is not None,'payload_seconds':b['payload'],'attach_seconds':b['attach'],
            'wrapper_seconds':b['wrapper'],'cleanup_reserve_seconds':CLEANUP_RESERVE,'launch_reserve_seconds':b['launch_reserve'],'worker_deadline_seconds':b['worker_deadline'],
            'post_stop_cleanup_seconds':b['post_stop_cleanup'],'heavy_guard_max_run_seconds':b['heavy_guard_max_run'],'pcb_limit_bytes':b['pcb_limit'],
+           'adapter_execution_policy':"hosted 'fill-430' with docker start --attach swapped to %d s"%b['attach'],
            'stage_caps':derivedpayload.EVALUATE_CAPS if args.payload=='evaluate' else b['stage_caps'],
            'started_monotonic':started,'deadline_monotonic':c.DEADLINE}}
     state=None;docker=None;failed=False
@@ -178,7 +198,9 @@ def run(args):
         t=r['tooling_sha']
         if not t or len(t)!=40 or any(x not in '0123456789abcdef' for x in t):raise ValueError('tooling SHA')
         r['host']={'platform':platform.platform(),'python':sys.version.split()[0]}
+        r['deadline_policy']['outer_stop_confirmation']=outer_stop_confirmation(b,outer)
         r['before']=c.snapshot(root)
+        if (root/'boards'/'osc-core'/'osc-core.kicad_pcb').stat().st_size!=derived.SOURCE_BOARD_BYTES: raise ValueError('source board size differs from the budget table assumption')
         sources=bundle_sources()
         if set(sources)!=set(BUNDLE) or any(p.name!=name for name,p in sources.items()):raise ValueError('bundle sources')
         r['tool_hashes']={p.name:c.sha(p) for p in [Path(__file__),Path(local.__file__),Path(c.__file__),Path(f.__file__),*sources.values()]}
@@ -370,6 +392,7 @@ def parse(argv):
     a.add_argument('--payload',choices=sorted(MODES),default='zone');a.add_argument('--output');a.add_argument('--candidate');a.add_argument('--spec')
     a.add_argument('--budget',choices=sorted(derived.BUDGETS),default='standard')
     b=sub.add_parser('cleanup');b.add_argument('state');b.add_argument('out')
+    e=sub.add_parser('budget');e.add_argument('name',choices=sorted(derived.BUDGETS));e.add_argument('key',choices=('outer_stop','heavy_guard_max_run','post_stop_cleanup','controller'))
     d=sub.add_parser('adopt-legacy');d.add_argument('candidate');d.add_argument('receipt');d.add_argument('--attestation',required=True)
     return p.parse_args(argv)
 
@@ -378,6 +401,7 @@ def main(argv):
     args=parse(argv)
     if args.command=='run': return run(args)
     if args.command=='adopt-legacy': return adopt_legacy(args)
+    if args.command=='budget': print(derived.budget(args.name)[args.key]);return 0
     return local.cleanup(args)
 
 if __name__=='__main__':raise SystemExit(main(sys.argv[1:]))

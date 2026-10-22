@@ -169,7 +169,7 @@ class PayloadHelpers(unittest.TestCase):
         self.assertIsNone(dp.summarize_cluster(items[:1],layers,{},set(),[])['vias'] or None)
     def test_stage_tables_and_caps(self):
         self.assertEqual(set(dp.EVALUATE_GROUP),set(dp.EVALUATE_STAGES));self.assertEqual(set(dp.EVALUATE_GROUP.values()),set(dp.EVALUATE_CAPS))
-        self.assertLessEqual(sum(dp.EVALUATE_CAPS.values()),dp.PAYLOAD_SECONDS-dp.WORKER_RESERVE);self.assertEqual(sum(dp.DERIVE_CAPS.values()),dp.PAYLOAD_SECONDS)
+        s=d.budget('standard');self.assertLessEqual(sum(dp.EVALUATE_CAPS.values()),s['payload']-dp.WORKER_RESERVE);self.assertEqual(sum(s['stage_caps'].values()),s['payload']);self.assertFalse(hasattr(dp,'PAYLOAD_SECONDS') or hasattr(dp,'DERIVE_CAPS'))
         rows=b''.join((json.dumps({'seq':i+1,'phase':'zone','stage':s,'event':e,'monotonic_seconds':float(i)})+'\n').encode() for i,(s,e) in enumerate((s,e) for s in dp.EVALUATE_STAGES for e in ('start','complete')))
         self.assertTrue(z.parse_stages(rows,dp.EVALUATE_STAGES)['complete'])
         with self.assertRaises(ValueError):z.parse_stages(rows)
@@ -252,11 +252,19 @@ class Budget(unittest.TestCase):
         self.assertEqual((p['launch_reserve'],p['worker_deadline'],p['heavy_guard_max_run'],p['pcb_limit'],p['modes'],p['zones']),(847,720,1020,128*1024*1024,('derive',),[AGND_F]))
         self.assertIsNone(s['zones']);self.assertEqual(set(s['modes']),set(l.MODES))
         for name in d.BUDGETS: self.assertEqual(d.budget(name)['name'],name)
+    def test_shared_constants_are_the_enforced_ones(self):
+        import osc_fill_check as f
+        self.assertIs(d.WORKER_RESERVE,z.WORKER_RESERVE);self.assertIs(d.PCB_LIMIT,z.PCB_LIMIT);self.assertEqual(d.budget('standard')['pcb_limit'],z.PCB_LIMIT)
+        self.assertEqual(d.CLEANUP_RESERVE,f.CLEANUP_RESERVE);self.assertEqual(d.MEMORY_CAP,fill.MEMORY_CAP);l.check_shared_constants()
+        with patch.object(d,'CLEANUP_RESERVE',41):
+            with self.assertRaises(ImportError):l.check_shared_constants()
+        with patch.object(d,'SCRATCH_TMPFS_BYTES',512*1024*1024):
+            with self.assertRaises(ImportError):l.check_shared_constants()
     def test_broken_chains_are_defects(self):
         base=d.BUDGETS['fill-520-probe']
         breaks={'fill cap past worker deadline':{'stage_caps':{'prepare':60,'fill':721,'verify':100}},'attach below payload':{'attach':769},'wrapper below attach':{'wrapper':796},
                 'controller without setup window':{'controller':886},'outer stop not above controller':{'outer_stop':890},'guard cap too short':{'heavy_guard_max_run':1019},
-                'board bound beyond tmpfs':{'pcb_limit':256*1024*1024},'bad zone':{'zones':['nope']},'empty zones':{'zones':[]}}
+                'board bound beyond tmpfs':{'pcb_limit':256*1024*1024},'tmpfs footprint beyond its memory share':{'pcb_limit':209*1024*1024},'bad zone':{'zones':['nope']},'empty zones':{'zones':[]}}
         for name,over in breaks.items():
             with patch.dict(d.BUDGETS,{'broken':{**base,**over}}):
                 with self.assertRaises(ValueError,msg=name):d.budget('broken')
@@ -306,6 +314,26 @@ class ControllerDerived(unittest.TestCase):
                     self.assertIn(message,str(caught.exception))
                 self.assertFalse(out.exists(),message);self.assertFalse((Path(t)/'o').exists(),message)
             with self.assertRaises(SystemExit),contextlib.redirect_stderr(io.StringIO()):l.parse(base+['--budget','fill-1000'])
+    def test_budget_subcommand_is_the_wrapper_table(self):
+        for name in d.BUDGETS:
+            for key in ('outer_stop','heavy_guard_max_run','post_stop_cleanup','controller'):
+                buf=io.StringIO()
+                with contextlib.redirect_stdout(buf): self.assertEqual(l.main(['budget',name,key]),0)
+                self.assertEqual(buf.getvalue(),str(d.budget(name)[key])+'\n')
+        with self.assertRaises(SystemExit),contextlib.redirect_stderr(io.StringIO()):l.main(['budget','fill-520-probe','payload'])
+    def test_outer_stop_confirmation(self):
+        p=d.budget('fill-520-probe');s=d.budget('standard')
+        with patch.object(os,'getsid',return_value=os.getpid()):
+            rec=l.outer_stop_confirmation(p,'900',{'OSC_HEAVY_GUARD_MAX_RUN':'1020'});self.assertEqual((rec['session_leader'],rec['heavy_guard_max_run_env']),(True,'1020'))
+            l.outer_stop_confirmation(p,'900',{'OSC_HEAVY_GUARD_MAX_RUN':'1800'})
+            for environ in ({},{'OSC_HEAVY_GUARD_MAX_RUN':'1019'},{'OSC_HEAVY_GUARD_MAX_RUN':'720'},{'OSC_HEAVY_GUARD_MAX_RUN':'x'}):
+                with self.assertRaises(ValueError,msg=str(environ)):l.outer_stop_confirmation(p,'900',environ)
+            with self.assertRaises(ValueError):l.outer_stop_confirmation(s,'600',{'OSC_HEAVY_GUARD_MAX_RUN':'719'})
+            self.assertFalse(l.outer_stop_confirmation(s,None,{})['heavy_guard_max_run_env'])   # direct standard run without a wrapper: recorded, not required
+        with patch.object(os,'getsid',return_value=os.getpid()+1):
+            with self.assertRaises(ValueError) as caught:l.outer_stop_confirmation(p,'900',{'OSC_HEAVY_GUARD_MAX_RUN':'1020'})
+            self.assertIn('session leader',str(caught.exception))
+            self.assertFalse(l.outer_stop_confirmation(s,None,{})['session_leader'])
     def test_probe_budget_receipt_records_the_whole_chain(self):
         with tempfile.TemporaryDirectory() as t:
             source=Path(t)/'src';source.mkdir();out=Path(t)/'out';spec=self.spec_file(t,zones=[AGND_F])

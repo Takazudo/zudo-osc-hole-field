@@ -20,8 +20,8 @@ import json
 import re
 from pathlib import Path
 
-from osc_frozen_fill import digest, sha
-from osc_single_zone_payload import zone_fill_owners
+from osc_frozen_fill import MEMORY_CAP, digest, sha
+from osc_single_zone_payload import PCB_LIMIT, WORKER_RESERVE, zone_fill_owners
 
 PROCESS_VERSION = 'derived-fill/1'
 MANIFEST_STATUS = 'DERIVED_FILL_MANIFEST_NOT_ACCEPTANCE'
@@ -31,10 +31,12 @@ KICAD_VERSION = '10.0.6'
 BOARD_FILES = ('osc-core.kicad_pcb', 'osc-core.kicad_pro', 'osc-core.kicad_dru')
 ZONE_LIMIT = 8
 PAIR_LIMIT = 16
-WORKER_RESERVE = 40
+# CLEANUP_RESERVE mirrors hosted osc_fill_check.CLEANUP_RESERVE and SCRATCH_TMPFS_BYTES mirrors the '/scratch ... size=256m' mount in
+# osc_fill_check.readonly_args; the hosted module is not part of the container bundle, so the local controller asserts both at import.
 CLEANUP_RESERVE = 40
 SCRATCH_TMPFS_BYTES = 256 * 1024 * 1024
-SOURCE_BOARD_BYTES = 49819556
+SOURCE_BOARD_BYTES = 49819556   # pinned frozen core osc-core.kicad_pcb; the controller checks the real size against this
+TMPFS_SHARE_OF_MEMORY = 8      # tmpfs pages are charged to the 2 GiB cgroup: the input copy plus the output bound may use at most 1/8 of it
 # Deadline chains, innermost first. 'standard' is the proven hosted-parity chain. 'fill-520-probe' is the
 # single user-approved probe of the AGND F.Cu zone (2026-10-22 19:56 UTC): only the fill cap and the layers
 # that must contain it grow; CPU, memory, swap, PIDs, network and mounts are unchanged. The output board bound
@@ -43,7 +45,7 @@ SOURCE_BOARD_BYTES = 49819556
 # next to the input copy.
 BUDGETS = {
     'standard': {'payload': 420, 'stage_caps': {'prepare': 60, 'fill': 260, 'verify': 100}, 'attach': 430, 'wrapper': 450, 'controller': 590,
-                 'outer_stop': 600, 'post_stop_cleanup': 60, 'heavy_guard_max_run': 720, 'pcb_limit': 64 * 1024 * 1024,
+                 'outer_stop': 600, 'post_stop_cleanup': 60, 'heavy_guard_max_run': 720, 'pcb_limit': PCB_LIMIT,
                  'modes': ('zone', 'candidate', 'drc', 'derive', 'evaluate'), 'zones': None},
     'fill-520-probe': {'payload': 760, 'stage_caps': {'prepare': 60, 'fill': 520, 'verify': 100}, 'attach': 780, 'wrapper': 800, 'controller': 890,
                        'outer_stop': 900, 'post_stop_cleanup': 60, 'heavy_guard_max_run': 1020, 'pcb_limit': 128 * 1024 * 1024,
@@ -63,6 +65,7 @@ def budget(name):
     if b['outer_stop'] <= b['controller']: raise ValueError('outer stop does not contain the controller')
     if b['heavy_guard_max_run'] < b['outer_stop'] + b['post_stop_cleanup'] + 60: raise ValueError('heavy-guard cap does not contain outer stop and cleanup')
     if b['pcb_limit'] + SOURCE_BOARD_BYTES > SCRATCH_TMPFS_BYTES: raise ValueError('output board bound does not fit the scratch tmpfs next to the input copy')
+    if b['pcb_limit'] + SOURCE_BOARD_BYTES > MEMORY_CAP // TMPFS_SHARE_OF_MEMORY: raise ValueError('tmpfs footprint takes more than its share of the memory cap')
     if b['zones'] is not None and (not b['zones'] or any(not UUID_RE.match(z) for z in b['zones'])): raise ValueError('budget zones')
     return {**b, 'name': name, 'launch_reserve': b['wrapper'] + CLEANUP_RESERVE + 7, 'worker_deadline': b['payload'] - WORKER_RESERVE}
 

@@ -279,6 +279,39 @@ Offline evidence: local suites 83 tests pass (`-B` and `-B -O`), hosted
 `scripts/ci` 123 pass; logs in cclogs `osc-local-wsl/probe-budget-tests/`. No
 native run was made for this section.
 
+An independent `/code-review medium` of that commit returned seven findings;
+six were fixed in the follow-up commit and one is deferred:
+
+- The heavy-guard cap was recorded but never required. The wrapper now refuses to
+  start unless `HEAVY_GUARD_MAX_RUN` (which heavy-guard reads as its `--max-run`
+  default) is at least the profile's cap, and exports it; the controller records
+  it and refuses a cap below the profile. The launch recipe sets the variable and
+  passes no `--max-run` flag.
+- The exported outer stop was an unauthenticated variable while the text claimed
+  the controller "cannot" outrun the group kill. The controller now also refuses
+  an exported outer stop unless it is the session leader that the wrapper's
+  process-group kill targets, and the text says what the mechanism is: a
+  consistency check between cooperating scripts, not authentication.
+- The nesting proof used re-declared constants. The helper now imports the
+  worker reserve and the output bound from the payload it governs; the two hosted
+  values the bundle cannot import (cleanup reserve, scratch tmpfs size) are
+  asserted against the hosted module when the controller loads, and the source
+  board size assumption is checked against the real file on every run.
+- The wrapper's second copy of the outer-stop table is gone; it reads the outer
+  stop, the required heavy-guard cap and the cleanup window from the budget
+  table through the controller's `budget` subcommand.
+- Dead `PAYLOAD_SECONDS` / `DERIVE_CAPS` aliases in the derived payload are
+  removed.
+- Memory headroom for the larger output bound cannot be proven offline. The
+  profile check now limits the tmpfs footprint (input copy plus output bound) to
+  one eighth of the 2 GiB cap; the process peak for the F.Cu fill remains an
+  observation the probe itself has to make, and an OOM kill would be a recorded
+  result, not a surprise the chain is unprepared for.
+- Deferred: the hosted adapter still sees the policy name `fill-430` while its
+  attach ceiling is swapped to 780 s. The receipt records the swap
+  (`adapter_execution_policy`); adding a named `fill-attach-780` policy is a
+  hosted-controller change outside this local branch.
+
 ### Open items after this phase
 
 - C1111.2 <-> U1105.12 (AGND) stays `UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN`: it

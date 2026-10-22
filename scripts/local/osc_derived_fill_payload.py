@@ -30,11 +30,9 @@ import osc_frozen_fill as fill
 import osc_frozen_topology as topology
 import osc_single_zone_payload as zone
 
-PAYLOAD_SECONDS=zone.PAYLOAD_SECONDS
 WORKER_RESERVE=zone.WORKER_RESERVE
 DERIVE_STAGES=zone.STAGES
 DERIVE_GROUP=zone.STAGE_GROUP
-DERIVE_CAPS=zone.STAGE_CAPS
 EVALUATE_STAGES=('load','identity','before','load_derived','after','verify')
 EVALUATE_GROUP={'load':'prepare','identity':'prepare','before':'prepare','load_derived':'verify','after':'verify','verify':'verify'}
 EVALUATE_CAPS={'prepare':150,'verify':230}
