@@ -16,6 +16,11 @@ def sha(data): return hashlib.sha256(data).hexdigest()
 def require(condition, message):
     if not condition: raise ValueError(message)
 
+def multiset_diff(a,b,limit=12,width=1500):
+    # Bounded evidence of WHICH top-level nodes differ; never used to relax a check.
+    return {'only_first':[k[:width] for k in sorted((a-b).elements())][:limit],'only_second':[k[:width] for k in sorted((b-a).elements())][:limit],
+            'first_total':sum(a.values()),'second_total':sum(b.values())}
+
 def fixture():
     """Six-layer, 30mm square; all dimensions synthetic, no product inputs."""
     out=['(kicad_pcb (version 20260206) (generator "pcbnew")',
@@ -157,8 +162,12 @@ def run_case(root,pcb,custom,events):
     require(nonselected(before)==nonselected(after),'nonselected native fill changed')
     require(native_tracks(b)==source_tracks(data),'native tracks changed')
     filled=root/'filled.kicad_pcb';require(pcb.SaveBoard(str(filled),b) is not False,'fill save failed')
-    require(zones_serialized(control.read_bytes())==zones_serialized(filled.read_bytes()),'nonselected persistent zone changed')
-    require(persistent(control.read_bytes())==persistent(filled.read_bytes()),'persistent mutation outside selected polygons')
+    zc,zf=zones_serialized(control.read_bytes()),zones_serialized(filled.read_bytes())
+    if zc!=zf: events.append({'stage':'persistence_diff','custom_rules':custom,'kind':'nonselected_zones','diff':multiset_diff(zc,zf)});emit(events)
+    require(zc==zf,'nonselected persistent zone changed')
+    pc,pf=persistent(control.read_bytes()),persistent(filled.read_bytes())
+    if pc!=pf: events.append({'stage':'persistence_diff','custom_rules':custom,'kind':'top_level_nodes','diff':multiset_diff(pc,pf)});emit(events)
+    require(pc==pf,'persistent mutation outside selected polygons')
     require(source_tracks(filled.read_bytes())==source_tracks(data),'filled serialized tracks changed')
     again=pcb.LoadBoard(str(filled));require(native_tracks(again)==source_tracks(data),'filled reload tracks changed')
     reloaded=observe(again,pcb)
