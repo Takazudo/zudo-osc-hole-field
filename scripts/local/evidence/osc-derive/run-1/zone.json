@@ -1,0 +1,476 @@
+{
+  "after_owners": {
+    "filled_polygon_by_zone": {
+      "e67a5bc7-b575-52b6-a78a-9c84381053da": 1
+    },
+    "zones": 351
+  },
+  "board_acceptance": false,
+  "command": {
+    "argv": [
+      "/usr/bin/python3",
+      "-B",
+      "/analysis/osc_derived_fill_payload.py",
+      "--worker",
+      "/scratch/osc-derive"
+    ],
+    "deadline_monotonic_seconds": 1328048.993173398,
+    "elapsed_seconds": 245.72632817807607,
+    "end_monotonic_seconds": 1327921.344184257,
+    "exit_code": 0,
+    "log_sha256": "d3dbee2d621abd038ff63509cae7a39699588b35b386723a94e140ba0f4018e3",
+    "log_tail": "18:54:28: Debug: Adding duplicate image handler for 'PNG file'\n18:54:28: Debug: Adding duplicate image handler for 'JPEG file'\n18:54:28: Debug: Adding duplicate image handler for 'TIFF file'\n18:54:28: Debug: Adding duplicate image handler for 'GIF file'\n18:54:28: Debug: Adding duplicate image handler for 'PNM file'\n18:54:28: Debug: Adding duplicate image handler for 'PCX file'\n18:54:28: Debug: Adding duplicate image handler for 'IFF file'\n18:54:28: Debug: Adding duplicate image handler for 'Windows icon file'\n18:54:28: Debug: Adding duplicate image handler for 'Windows cursor file'\n18:54:28: Debug: Adding duplicate image handler for 'Windows animated cursor file'\n18:54:28: Debug: Adding duplicate image handler for 'TGA file'\n18:54:28: Debug: Adding duplicate image handler for 'XPM file'\n",
+    "stage_group_starts": {
+      "fill": 1327697.061879936,
+      "prepare": 1327676.01302341,
+      "verify": 1327828.985834666
+    },
+    "start_monotonic_seconds": 1327675.617856079,
+    "status": "COMPLETE"
+  },
+  "drc": "NOT RUN: outside this derived-copy connectivity diagnostic",
+  "elapsed_seconds": 259.0478735831566,
+  "exported": {
+    "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+    "osc-core.kicad_pcb": "a0a5755846e1b99dc815237e7faeb9b0ea8b2f6f50cf770dd55569bb0ab9e484",
+    "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+  },
+  "exported_receipts": {
+    "zone-substages.jsonl": "07f02f4e4f3663561d0b9c8a06f1997e18174d58d2bbc18171b1be40b3a101bd",
+    "zone.json": "bbc4c6f8a24e948b979a6ff4da3c93d2b6ef0c095e8f2ab3fd0839d11345ed75"
+  },
+  "full_board_fill": false,
+  "identity": {
+    "image_id": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "kicad": "10.0.6",
+    "parent_key": null,
+    "process": "derived-fill/1",
+    "source": {
+      "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+      "osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+      "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+    },
+    "zones": [
+      "e67a5bc7-b575-52b6-a78a-9c84381053da"
+    ]
+  },
+  "identity_key": "682af66e1a1ad05dd8c0b33729e8f5981a4ab2ce563b91926a0a13099664975f",
+  "input_after": {
+    "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+    "osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+    "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+  },
+  "input_before": {
+    "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+    "osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+    "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+  },
+  "input_hashes": {
+    "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+    "osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+    "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+  },
+  "limits": "payload 420 s; worker reserve 40 s; derive stage caps prepare 60 / fill 260 / verify 100; evaluate caps prepare 150 / verify 230; selected zones only; no route edits",
+  "manifest_sha256": "6e6a82c42ea4957e464f3fe4464e62b48159dd3e32f7ddf38226b29d2ab0e767",
+  "memory_telemetry": [
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1327668.993240422,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "preflight",
+      "point": "before",
+      "values": {
+        "memory.current": 13791232,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 14000128,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1327675.617380378,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "preflight",
+      "point": "after",
+      "values": {
+        "memory.current": 63107072,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 65003520,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1327675.617621064,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "zone",
+      "point": "before",
+      "values": {
+        "memory.current": 63107072,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 65003520,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1327921.345641938,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "zone",
+      "point": "after",
+      "values": {
+        "memory.current": 125534208,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 1582366720,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1327921.346025669,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "verify",
+      "point": "before",
+      "values": {
+        "memory.current": 125534208,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 1582366720,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1327928.040746126,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "verify",
+      "point": "after",
+      "values": {
+        "memory.current": 188825600,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 1582366720,
+        "memory.swap.max": 0
+      }
+    }
+  ],
+  "mode": "derive",
+  "nonfill_after": "a97c70f0809d8d43b68e70df3eb3998aa978bc5551cf66b85cc6050cdf29aa65",
+  "refill_zones_option_used": false,
+  "repair_basis": false,
+  "source_nonfill": "a97c70f0809d8d43b68e70df3eb3998aa978bc5551cf66b85cc6050cdf29aa65",
+  "source_owners": {
+    "filled_polygon_by_zone": {},
+    "zones": 351
+  },
+  "spec": {
+    "note": "Fill only the AGND In1.Cu zone on a disposable copy for the third mismatched pair C1111.2<->U1105.12; the +12V pair is a negative control expected to stay unevaluable (In4 unfilled).",
+    "pairs": [
+      [
+        "C1111.2",
+        "U1105.12"
+      ],
+      [
+        "C1129.1",
+        "U1105.16"
+      ]
+    ],
+    "zones": [
+      "e67a5bc7-b575-52b6-a78a-9c84381053da"
+    ]
+  },
+  "status": "DERIVED_FILL_EXPORTED_NOT_ACCEPTANCE",
+  "tooling_sha": "2e51858fb559a0f6c003e3085fcdcb8f7172cdda",
+  "worker_substages": {
+    "zone": {
+      "bytes": 1700,
+      "complete": true,
+      "log_sha256": "07f02f4e4f3663561d0b9c8a06f1997e18174d58d2bbc18171b1be40b3a101bd",
+      "rows": [
+        {
+          "event": "start",
+          "monotonic_seconds": 1327676.01302341,
+          "phase": "zone",
+          "seq": 1,
+          "stage": "load"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1327689.774595938,
+          "phase": "zone",
+          "seq": 2,
+          "stage": "load"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1327689.774683313,
+          "phase": "zone",
+          "seq": 3,
+          "stage": "identity"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1327690.213187341,
+          "phase": "zone",
+          "seq": 4,
+          "stage": "identity"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1327690.213241065,
+          "phase": "zone",
+          "seq": 5,
+          "stage": "before"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1327697.061779502,
+          "phase": "zone",
+          "seq": 6,
+          "stage": "before"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1327697.061879936,
+          "phase": "zone",
+          "seq": 7,
+          "stage": "fill"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1327828.985717432,
+          "phase": "zone",
+          "seq": 8,
+          "stage": "fill"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1327828.985834666,
+          "phase": "zone",
+          "seq": 9,
+          "stage": "after"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1327841.230772358,
+          "phase": "zone",
+          "seq": 10,
+          "stage": "after"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1327841.230851834,
+          "phase": "zone",
+          "seq": 11,
+          "stage": "save"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1327857.865577462,
+          "phase": "zone",
+          "seq": 12,
+          "stage": "save"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1327857.865644682,
+          "phase": "zone",
+          "seq": 13,
+          "stage": "reload"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1327907.792643828,
+          "phase": "zone",
+          "seq": 14,
+          "stage": "reload"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1327907.792724984,
+          "phase": "zone",
+          "seq": 15,
+          "stage": "verify"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1327920.955066467,
+          "phase": "zone",
+          "seq": 16,
+          "stage": "verify"
+        }
+      ]
+    }
+  },
+  "worker_summary": {
+    "classification": {
+      "C1111.2<->U1105.12": {
+        "class": "UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN",
+        "connected_after": false,
+        "connected_before": false,
+        "meaning": "still open, but copper zones of this net remain unfilled on the derived board, so connectivity cannot be evaluated; not a repair basis",
+        "net_zones": [
+          "601e02b2-8ccb-5c28-83e5-03789d47fbbd",
+          "e389d344-872d-538e-9bfc-39577adb1686",
+          "e67a5bc7-b575-52b6-a78a-9c84381053da"
+        ],
+        "repair_basis": false,
+        "selected_net_zones": [
+          "e67a5bc7-b575-52b6-a78a-9c84381053da"
+        ],
+        "unfilled_net_zones": [
+          "601e02b2-8ccb-5c28-83e5-03789d47fbbd",
+          "e389d344-872d-538e-9bfc-39577adb1686"
+        ]
+      },
+      "C1129.1<->U1105.16": {
+        "class": "UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN",
+        "connected_after": false,
+        "connected_before": false,
+        "meaning": "still open, but copper zones of this net remain unfilled on the derived board, so connectivity cannot be evaluated; not a repair basis",
+        "net_zones": [
+          "265b1369-38aa-5a3a-b488-eb0aae22e998"
+        ],
+        "repair_basis": false,
+        "selected_net_zones": [],
+        "unfilled_net_zones": [
+          "265b1369-38aa-5a3a-b488-eb0aae22e998"
+        ]
+      }
+    },
+    "connected": {
+      "after": {
+        "C1111.2<->U1105.12": false,
+        "C1129.1<->U1105.16": false
+      },
+      "before": {
+        "C1111.2<->U1105.12": false,
+        "C1129.1<->U1105.16": false
+      },
+      "reloaded": {
+        "C1111.2<->U1105.12": false,
+        "C1129.1<->U1105.16": false
+      }
+    },
+    "counts": {
+      "copper_zone": 5,
+      "segment": 123905,
+      "via": 9646,
+      "zone": 351
+    },
+    "failure": null,
+    "fill": {
+      "returned": true,
+      "seconds": 131.92305302619934,
+      "zones": [
+        "e67a5bc7-b575-52b6-a78a-9c84381053da"
+      ]
+    },
+    "selected_after": [
+      {
+        "counts": {
+          "In1.Cu": 1
+        },
+        "layers": [
+          "In1.Cu"
+        ],
+        "net": "AGND",
+        "rule_area": false,
+        "uuid": "e67a5bc7-b575-52b6-a78a-9c84381053da"
+      }
+    ],
+    "unconnected_count": {
+      "after": 4103,
+      "before": 4283,
+      "reloaded": 4103
+    }
+  }
+}
