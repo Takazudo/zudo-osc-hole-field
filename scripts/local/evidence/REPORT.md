@@ -222,10 +222,69 @@ zone (1,204 pads, 21,730 segments) is in the same class and was not attempted.
 Evidence: `scripts/local/evidence/osc-derive/run-2-failed`, cclogs
 `osc-local-wsl/derive-run-2-failed`.
 
+### Probe budget profile (fill 520 s): implemented and tested offline; the probe itself has NOT been run
+
+The user approved (2026-10-22 19:56 UTC, relayed through the file-based
+coordination channel) exactly one further attempt at the AGND F.Cu zone with a
+longer fill cap and every containing layer grown to hold it. The chain is now a
+named budget profile rather than edited constants, so the proven standard chain
+stays byte-identical for every other run and the probe chain can only be selected
+for its approved mode and zone:
+
+| layer | standard | fill-520-probe |
+| --- | --- | --- |
+| derive stage caps prepare / fill / verify | 60 / 260 / 100 | 60 / 520 / 100 |
+| worker deadline (payload - 40 s reserve) | 380 | 720 |
+| payload | 420 | 760 |
+| docker start --attach | 430 | 780 |
+| wrapper (run.sh command) | 450 | 800 |
+| controller | 590 | 890 |
+| outer stop (process-group SIGKILL) | 600 | 900 |
+| post-stop owned cleanup | 60 | 60 |
+| heavy-guard --max-run | 720 | 1020 |
+| output board bound | 64 MiB | 128 MiB |
+| CPU / memory / extra swap / PIDs / network | 1 / 2 GiB / 0 / 64 / none | unchanged |
+
+Containment of every layer is checked by `osc_derived_fill.budget()` and a
+profile whose layers do not nest is a defect (tested). The wrapper selects the
+profile through `OSC_BUDGET`, exports the outer stop it enforces, and the
+controller refuses a profile whose outer stop differs from that export, so the
+controller can never run a longer chain than the kill it sits under. The probe
+profile covers only `--payload derive` on the published source for zone
+`601e02b2-8ccb-5c28-83e5-03789d47fbbd`; evaluate, other zones, zone sets and
+chained derivations fall back to the standard chain or are refused. The hosted
+adapter is unchanged: only its `docker start --attach` ceiling is swapped for the
+profile's attach seconds, with the same ownership record, labels and resource
+flags. The payload reads the profile from `/spec/context.json` before any native
+work, echoes it, and the manifest records it; the controller validates the echo
+and the manifest against its own profile.
+
+Two technical judgments were made here and are reported as such:
+
+- The output board bound grows to 128 MiB for the probe only. The In1.Cu fill added
+  11.3 MB (420,024 polygon points) to the 47.5 MiB source; the F.Cu fill has
+  22,481 segments and about 1,077 SMD pads as extra obstacles and will add more.
+  The standard 64 MiB bound leaves 17.3 MB and would kill the worker after a
+  successful fill. 128 MiB plus the 47.5 MiB input copy fits the 256 MiB scratch
+  tmpfs; the 2 GiB memory cap is unchanged (tmpfs pages count against it).
+- The approved verify cap of 100 s is predicted to be tight. On derive run 1 the
+  verify group took 91.9 s on a 61 MB board (after 12.2, save 16.6, reload 49.9,
+  verify 13.2 s) and on candidate run 2 64.8 s on a 60.9 MB board; the
+  F.Cu-filled board will be larger and reload time grows with it. The approved
+  value is kept as approved. Whether to raise it (180 s fits the unchanged worker
+  deadline of 720 s even when the fill uses its full 520 s) is a decision for the
+  user, raised through the coordination channel before any launch.
+
+Offline evidence: local suites 83 tests pass (`-B` and `-B -O`), hosted
+`scripts/ci` 123 pass; logs in cclogs `osc-local-wsl/probe-budget-tests/`. No
+native run was made for this section.
+
 ### Open items after this phase
 
 - C1111.2 <-> U1105.12 (AGND) stays `UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN`: it
-  is decided by the F.Cu AGND fill, which does not finish in 260 s at 1 CPU.
+  is decided by the F.Cu AGND fill, which does not finish in 260 s at 1 CPU. The
+  single approved 520 s probe is prepared (profile `fill-520-probe`) and waits for
+  the verify-cap decision and a serialized heavy-job slot.
 - The derived boards (+12V In4 at b9de2114..., AGND In1 at a0a57558...) are
   reusable through the identity key with recomputed checks; chaining them is
   implemented and tested offline but has not been run natively.

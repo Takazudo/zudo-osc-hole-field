@@ -201,7 +201,7 @@ def good_detail(mode,zones=(AGND_IN1,),pairs=(('C1111.2','U1105.12'),('C1129.1',
     classification={k:{'class':cls,'connected_before':False,'connected_after':cls.startswith('CONNECTED'),'net_zones':[PLUS12] if 'U1105.16' in k else [AGND_F,AGND_B,AGND_IN1],
                        'unfilled_net_zones':([] if cls.startswith('CONNECTED') or cls=='OPEN_WITH_ALL_NET_ZONES_FILLED' else ([PLUS12] if 'U1105.16' in k else [AGND_F,AGND_B])),'selected_net_zones':[],'repair_basis':False} for k,cls in zip(keys,classes)}
     connected={phase:{k:classification[k]['connected_after'] if phase!='before' else False for k in keys} for phase in ('before','after','reloaded')}
-    detail={'status':dp.STATUSES[mode],'mode':mode,'board_acceptance':False,'repair_basis':False,'full_board_fill':False,'refill_zones_option_used':False,'input_before':dict(fill.PINS),'input_after':dict(fill.PINS),
+    detail={'status':dp.STATUSES[mode],'mode':mode,'budget':'standard','board_acceptance':False,'repair_basis':False,'full_board_fill':False,'refill_zones_option_used':False,'input_before':dict(fill.PINS),'input_after':dict(fill.PINS),
             'source_nonfill':'a'*64,'identity':ident,'identity_key':d.identity_key(ident),'tooling_sha':'t'*40,'spec':{'zones':list(zones),'pairs':[list(p) for p in pairs],'note':''},
             'command':{'status':'COMPLETE','exit_code':0},'worker_substages':{'zone':{'complete':True,'rows':rows}},'memory_telemetry':[frame(p,q) for p in ('preflight','zone','verify') for q in ('before','after')],
             'worker_summary':{'fill':{'returned':True,'seconds':70.0,'zones':list(zones)} if mode=='derive' else None,'counts':dict(z.COUNTS),'connected':connected,'unconnected_count':{'before':4283,'after':3802,'reloaded':3802},
@@ -229,11 +229,45 @@ class PayloadValidation(unittest.TestCase):
         r=good_detail('evaluate');r['reuse']={'reusable':False,'reason':'stale'}
         with self.assertRaises(ValueError):dp.validate_result(r,'evaluate')
         with self.assertRaises(ValueError):dp.validate_result(good_detail('evaluate'),'derive')
+    def test_budget_echo_and_deadline_follow_the_profile(self):
+        probe=good_detail('derive',(AGND_F,));probe.update(budget='fill-520-probe',elapsed_seconds=700)
+        dp.validate_result(probe,'derive','fill-520-probe')
+        with self.assertRaises(ValueError):dp.validate_result(probe,'derive')                      # controller ran the standard chain
+        with self.assertRaises(ValueError):dp.validate_result(good_detail('derive'),'derive','fill-520-probe')   # payload echoed the standard chain
+        probe['elapsed_seconds']=761
+        with self.assertRaises(ValueError):dp.validate_result(probe,'derive','fill-520-probe')
+        missing=good_detail('derive');del missing['budget']
+        with self.assertRaises(ValueError):dp.validate_result(missing,'derive')
     def test_compact_summary_drops_cluster_listings(self):
         worker={'fill':{'returned':True,'seconds':1,'zones':[AGND_IN1]},'counts':dict(z.COUNTS),'before':{'pairs':{'a<->b':{'connected':False,'cluster_a':{'vias':[1]*500}},'ratsnest':{'unconnected_count':4283}}},
                 'after':{'zones':[{'uuid':AGND_IN1}],'pairs':{'a<->b':{'connected':True},'ratsnest':{'unconnected_count':4000}}},'reloaded':{'pairs':{'a<->b':{'connected':True},'ratsnest':{'unconnected_count':4000}}},'classification':{'a<->b':{'class':'x'}}}
         s=dp.compact(worker);self.assertEqual(s['connected'],{'before':{'a<->b':False},'after':{'a<->b':True},'reloaded':{'a<->b':True}});self.assertEqual(s['unconnected_count']['before'],4283)
         self.assertNotIn('cluster_a',json.dumps(s));self.assertIsNone(s['failure'])
+
+class Budget(unittest.TestCase):
+    def test_profiles_nest_and_match_the_approval(self):
+        s=d.budget('standard');p=d.budget('fill-520-probe')
+        self.assertEqual((s['payload'],s['stage_caps'],s['attach'],s['wrapper'],s['controller'],s['outer_stop'],s['launch_reserve'],s['worker_deadline']),(420,{'prepare':60,'fill':260,'verify':100},430,450,590,600,497,380))
+        self.assertEqual((p['payload'],p['stage_caps'],p['attach'],p['wrapper'],p['controller'],p['outer_stop'],p['post_stop_cleanup']),(760,{'prepare':60,'fill':520,'verify':100},780,800,890,900,60))
+        self.assertEqual((p['launch_reserve'],p['worker_deadline'],p['heavy_guard_max_run'],p['pcb_limit'],p['modes'],p['zones']),(847,720,1020,128*1024*1024,('derive',),[AGND_F]))
+        self.assertIsNone(s['zones']);self.assertEqual(set(s['modes']),set(l.MODES))
+        for name in d.BUDGETS: self.assertEqual(d.budget(name)['name'],name)
+    def test_broken_chains_are_defects(self):
+        base=d.BUDGETS['fill-520-probe']
+        breaks={'fill cap past worker deadline':{'stage_caps':{'prepare':60,'fill':721,'verify':100}},'attach below payload':{'attach':769},'wrapper below attach':{'wrapper':796},
+                'controller without setup window':{'controller':886},'outer stop not above controller':{'outer_stop':890},'guard cap too short':{'heavy_guard_max_run':1019},
+                'board bound beyond tmpfs':{'pcb_limit':256*1024*1024},'bad zone':{'zones':['nope']},'empty zones':{'zones':[]}}
+        for name,over in breaks.items():
+            with patch.dict(d.BUDGETS,{'broken':{**base,**over}}):
+                with self.assertRaises(ValueError,msg=name):d.budget('broken')
+        with self.assertRaises(ValueError):d.budget('unknown')
+    def test_allowance(self):
+        p=d.budget('fill-520-probe');s=d.budget('standard')
+        d.budget_allows(p,'derive',[AGND_F]);d.budget_allows(s,'derive',[AGND_F]);d.budget_allows(s,'evaluate',[AGND_IN1,PLUS12]);d.budget_allows(s,'zone',None)
+        for mode,zones in (('evaluate',[AGND_F]),('zone',None),('derive',[AGND_IN1]),('derive',[AGND_F,AGND_B]),('derive',None)):
+            with self.assertRaises(ValueError,msg=mode):d.budget_allows(p,mode,zones)
+        d.budget_allows(s,'derive',[AGND_F],chained=True)
+        with self.assertRaises(ValueError):d.budget_allows(p,'derive',[AGND_F],chained=True)
 
 class ControllerDerived(unittest.TestCase):
     def spec_file(self,t,**over):
@@ -257,6 +291,34 @@ class ControllerDerived(unittest.TestCase):
             bad=self.spec_file(t,pairs=[['C1111.2','U1105.16']])
             with self.assertRaises(ValueError):l.run(l.parse(base+['--payload','derive','--output',str(Path(t)/'o'),'--spec',str(bad)]))
             self.assertFalse(out.exists());self.assertEqual(c.PINS,before)
+    def test_probe_budget_arguments_fail_closed(self):
+        with tempfile.TemporaryDirectory() as t:
+            out=Path(t)/'out';probe=Path(t)/'probe.json';probe.write_text(self.spec_file(t,zones=[AGND_F]).read_text());in1=self.spec_file(t)
+            base=['run',str(Path(t)/'src'),str(out),'--state',str(Path(t)/'s'),'--authorization','offline unit test authorization note','--payload','derive','--output',str(Path(t)/'o')]
+            clean={k:v for k,v in os.environ.items() if k not in ('GITHUB_ACTIONS','RUNNER_ENVIRONMENT','CI','DOCKER_HOST','DOCKER_CONTEXT','HEAVY_GUARD_HELD','OSC_LOCAL_ADAPTER','OSC_OUTER_STOP_SECONDS')}
+            cases=(({},['--budget','fill-520-probe','--spec',str(probe)],'wrapper did not confirm'),({'OSC_OUTER_STOP_SECONDS':'600'},['--budget','fill-520-probe','--spec',str(probe)],'differs from budget'),
+                   ({'OSC_OUTER_STOP_SECONDS':'900'},['--budget','fill-520-probe','--spec',str(in1)],'different zone set'),({'OSC_OUTER_STOP_SECONDS':'900'},['--budget','standard','--spec',str(probe)],'differs from budget'),
+                   ({'OSC_OUTER_STOP_SECONDS':'900'},['--budget','fill-520-probe','--spec',str(probe),'--candidate',str(Path(t)/'parent')],'chained derivation'))
+            (Path(t)/'parent').mkdir()
+            for extra_env,extra,message in cases:
+                with patch.dict(os.environ,{**clean,**extra_env},clear=True):
+                    with self.assertRaises(ValueError) as caught:l.run(l.parse(base+extra))
+                    self.assertIn(message,str(caught.exception))
+                self.assertFalse(out.exists(),message);self.assertFalse((Path(t)/'o').exists(),message)
+            with self.assertRaises(SystemExit),contextlib.redirect_stderr(io.StringIO()):l.parse(base+['--budget','fill-1000'])
+    def test_probe_budget_receipt_records_the_whole_chain(self):
+        with tempfile.TemporaryDirectory() as t:
+            source=Path(t)/'src';source.mkdir();out=Path(t)/'out';spec=self.spec_file(t,zones=[AGND_F])
+            args=l.parse(['run',str(source),str(out),'--state',str(Path(t)/'s'),'--authorization','offline unit test authorization note','--payload','derive','--output',str(Path(t)/'o'),'--spec',str(spec),'--budget','fill-520-probe'])
+            environment={k:v for k,v in os.environ.items() if k not in ('GITHUB_ACTIONS','RUNNER_ENVIRONMENT','CI','DOCKER_HOST','DOCKER_CONTEXT','HEAVY_GUARD_HELD','OSC_LOCAL_ADAPTER')};environment.update(TOOLING_SHA='a'*40,OSC_OUTER_STOP_SECONDS='900')
+            with patch.dict(os.environ,environment,clear=True),patch.object(c,'run_command') as runner,contextlib.redirect_stdout(io.StringIO()):
+                code=l.run(args)
+            receipt=json.loads((out/'receipt.json').read_text());policy=receipt['deadline_policy']
+            self.assertEqual(code,1);self.assertIn('heavy-guard',receipt['error']);runner.assert_not_called()
+            self.assertEqual({k:policy[k] for k in ('budget','total_seconds','outer_stop_seconds','outer_stop_confirmed_by_wrapper','payload_seconds','attach_seconds','wrapper_seconds','launch_reserve_seconds','worker_deadline_seconds','post_stop_cleanup_seconds','heavy_guard_max_run_seconds','pcb_limit_bytes','stage_caps')},
+                             {'budget':'fill-520-probe','total_seconds':890,'outer_stop_seconds':900,'outer_stop_confirmed_by_wrapper':True,'payload_seconds':760,'attach_seconds':780,'wrapper_seconds':800,'launch_reserve_seconds':847,'worker_deadline_seconds':720,
+                              'post_stop_cleanup_seconds':60,'heavy_guard_max_run_seconds':1020,'pcb_limit_bytes':128*1024*1024,'stage_caps':{'prepare':60,'fill':520,'verify':100}})
+            self.assertAlmostEqual(policy['deadline_monotonic']-policy['started_monotonic'],890,places=3);self.assertEqual(receipt['spec']['zones'],[AGND_F]);self.assertIs(receipt['repair_basis'],False)
     def test_derive_run_fails_closed_before_commands_and_records_spec(self):
         with tempfile.TemporaryDirectory() as t:
             source=Path(t)/'src';source.mkdir();out=Path(t)/'out';spec=self.spec_file(t)
@@ -301,7 +363,7 @@ class ControllerDerived(unittest.TestCase):
         detail=good_detail('derive');detail['exported_receipts']=receipts
         ident=d.identity(pins,[AGND_IN1],IMAGE_ID);detail['identity']=ident;detail['identity_key']=d.identity_key(ident)
         detail['source_nonfill']=fill.semantic_hash(src/'osc-core.kicad_pcb');detail['nonfill_after']=detail['source_nonfill']
-        manifest={'status':d.MANIFEST_STATUS,'identity':ident,'identity_key':detail['identity_key'],'exported':{'after':exported},'classification':detail['worker_summary']['classification'],'board_acceptance':False}
+        manifest={'status':d.MANIFEST_STATUS,'identity':ident,'identity_key':detail['identity_key'],'exported':{'after':exported},'classification':detail['worker_summary']['classification'],'board_acceptance':False,'budget':'standard','stage_caps':d.budget('standard')['stage_caps']}
         (output/'manifest.json').write_text(json.dumps(manifest));detail['manifest_sha256']=c.sha(output/'manifest.json')
         receipt={'tooling_sha':'t'*40,'image_identity':{'id':IMAGE_ID},'spec':{'zones':[AGND_IN1],'pairs':[['C1111.2','U1105.12'],['C1129.1','U1105.16']]}}
         return root,output,detail,receipt,pins,manifest
@@ -332,15 +394,17 @@ class PayloadIntegration(unittest.TestCase):
     def text(self,filled=()):
         body=''.join('\t(zone\n\t\t(net "x")\n\t\t(uuid "%s")\n%s\t)\n'%(u,'\t\t(filled_polygon\n\t\t\t(pts)\n\t\t)\n' if u in filled else '') for u in self.ZONES)
         return '(kicad_pcb\n\t(version 20250101)\n%s)\n'%body
-    def setup(self,t):
+    def setup(self,t,budget='standard'):
         root=Path(t)/'work';(root).mkdir();(root/'osc-core.kicad_pcb').write_text(self.text());(root/'osc-core.kicad_pro').write_text('pro');(root/'osc-core.kicad_dru').write_text('dru')
         pins={n:c.sha(root/n) for n in d.BOARD_FILES}
         spec_dir=Path(t)/'spec';spec_dir.mkdir()
         (spec_dir/'spec.json').write_text(json.dumps({'zones':[AGND_IN1],'pairs':[['C1111.2','U1105.12'],['C1129.1','U1105.16']],'note':'fake worker'}))
-        (spec_dir/'context.json').write_text(json.dumps({'image_id':IMAGE_ID,'kicad':'10.0.6','source_pins':pins,'process':d.PROCESS_VERSION,'tooling_sha':'t'*40}))
+        (spec_dir/'context.json').write_text(json.dumps({'image_id':IMAGE_ID,'kicad':'10.0.6','source_pins':pins,'process':d.PROCESS_VERSION,'tooling_sha':'t'*40,'budget':budget}))
         return root,pins,spec_dir
     def fake_worker(self,connected_after=False,fail=False):
-        def run_worker(scratch,deadline,record,script=None,stage_group=None,stage_caps=None):
+        self.supervision=[]
+        def run_worker(scratch,deadline,record,script=None,stage_group=None,stage_caps=None,pcb_limit=None):
+            self.supervision.append({'stage_caps':stage_caps,'pcb_limit':pcb_limit,'deadline':deadline})
             spec=json.loads((scratch/'spec.json').read_text());stages=dp.DERIVE_STAGES if spec['mode']=='derive' else dp.EVALUATE_STAGES
             log=z.StageLog(scratch/'zone-substages.jsonl')
             for s in stages:
@@ -372,8 +436,9 @@ class PayloadIntegration(unittest.TestCase):
             with patch.dict(fill.PINS,pins):
                 out1=Path(t)/'out1';out1.mkdir()
                 r=self.run_payload('derive',t,root,spec_dir,absent,out1,self.fake_worker(connected_after=True))
-                self.assertEqual(r['status'],dp.DERIVE_STATUS,r.get('failure'));dp.validate_result(r,'derive')
-                manifest=json.loads((out1/'manifest.json').read_text());self.assertEqual(manifest['identity']['zones'],[AGND_IN1]);self.assertEqual(manifest['classification']['C1111.2<->U1105.12']['class'],'CONNECTED_VIA_SELECTED_FILL')
+                self.assertEqual(r['status'],dp.DERIVE_STATUS,r.get('failure'));dp.validate_result(r,'derive');self.assertEqual(r['budget'],'standard');self.assertIn('budget standard: payload 420 s',r['limits'])
+                self.assertEqual(self.supervision,[{'stage_caps':{'prepare':60,'fill':260,'verify':100},'pcb_limit':64*1024*1024,'deadline':self.supervision[0]['deadline']}])
+                manifest=json.loads((out1/'manifest.json').read_text());self.assertEqual(manifest['identity']['zones'],[AGND_IN1]);self.assertEqual(manifest['classification']['C1111.2<->U1105.12']['class'],'CONNECTED_VIA_SELECTED_FILL');self.assertEqual(manifest['budget'],'standard')
                 self.assertEqual(manifest['classification']['C1129.1<->U1105.16']['class'],'UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN');self.assertEqual(set(manifest['after_owners']['filled_polygon_by_zone']),{AGND_IN1})
                 receipt={'tooling_sha':'t'*40,'image_identity':{'id':IMAGE_ID},'spec':{'zones':[AGND_IN1],'pairs':[['C1111.2','U1105.12'],['C1129.1','U1105.16']]},'expected_identity_key':r['identity_key']}
                 fake_root=Path(t)/'fake-root';(fake_root/'boards').mkdir(parents=True);(fake_root/'boards'/'osc-core').symlink_to(root)
@@ -393,7 +458,7 @@ class PayloadIntegration(unittest.TestCase):
                 # Changed source: the current source's non-fill semantics differ, so the saved derivation is not reusable.
                 (root/'osc-core.kicad_pcb').write_text(self.text().replace('(version 20250101)','(version 20250102)'))
                 with patch.dict(fill.PINS,{'osc-core.kicad_pcb':c.sha(root/'osc-core.kicad_pcb')}):
-                    (spec_dir/'context.json').write_text(json.dumps({'image_id':IMAGE_ID,'kicad':'10.0.6','source_pins':dict(fill.PINS),'process':d.PROCESS_VERSION,'tooling_sha':'t'*40}))
+                    (spec_dir/'context.json').write_text(json.dumps({'image_id':IMAGE_ID,'kicad':'10.0.6','source_pins':dict(fill.PINS),'process':d.PROCESS_VERSION,'tooling_sha':'t'*40,'budget':'standard'}))
                     out4=Path(t)/'out4';out4.mkdir()
                     e=self.run_payload('evaluate',t,root,spec_dir,out1,out4,self.fake_worker())
                     self.assertEqual(e['status'],dp.REJECTED_STATUS);self.assertIn('identity key mismatch in source',e['failure']['message'])
@@ -426,3 +491,32 @@ class PayloadIntegration(unittest.TestCase):
                 f=self.run_payload('derive',t,root,spec_dir,absent,out5,self.fake_worker(fail=True))
                 self.assertEqual(f['status'],'FAILED');self.assertIn('fill stage cap',f['failure']['message']);self.assertFalse(any(out5.iterdir()))
                 with self.assertRaises(ValueError):dp.validate_result(f,'derive')
+    def test_probe_budget_is_bound_to_its_zone_and_mode(self):
+        with tempfile.TemporaryDirectory() as t:
+            root,pins,spec_dir=self.setup(t,budget='fill-520-probe');absent=Path(t)/'absent'
+            with patch.dict(fill.PINS,pins):
+                # The probe profile refuses the In1 zone the fixture spec selects, before any worker runs or export happens.
+                out1=Path(t)/'out1';out1.mkdir()
+                r=self.run_payload('derive',t,root,spec_dir,absent,out1,self.fake_worker());self.assertEqual(r['status'],'FAILED');self.assertIn('different zone set',r['failure']['message']);self.assertEqual(self.supervision,[]);self.assertFalse(any(out1.iterdir()))
+                (spec_dir/'spec.json').write_text(json.dumps({'zones':[AGND_F],'pairs':[['C1111.2','U1105.12'],['C1129.1','U1105.16']],'note':'probe'}))
+                out2=Path(t)/'out2';out2.mkdir()
+                r=self.run_payload('derive',t,root,spec_dir,absent,out2,self.fake_worker());self.assertEqual(r['status'],dp.DERIVE_STATUS,r.get('failure'))
+                self.assertEqual(self.supervision[0]['stage_caps'],{'prepare':60,'fill':520,'verify':100});self.assertEqual(self.supervision[0]['pcb_limit'],128*1024*1024);self.assertEqual(r['budget'],'fill-520-probe')
+                manifest=json.loads((out2/'manifest.json').read_text());self.assertEqual((manifest['budget'],manifest['stage_caps']['fill']),('fill-520-probe',520))
+                r['elapsed_seconds']=700;dp.validate_result(r,'derive','fill-520-probe')
+                with self.assertRaises(ValueError):dp.validate_result(r,'derive')
+                receipt={'tooling_sha':'t'*40,'image_identity':{'id':IMAGE_ID},'spec':{'zones':[AGND_F],'pairs':[['C1111.2','U1105.12'],['C1129.1','U1105.16']]},'deadline_policy':{'budget':'fill-520-probe'}}
+                fake_root=Path(t)/'fake-root';(fake_root/'boards').mkdir(parents=True);(fake_root/'boards'/'osc-core').symlink_to(root)
+                self.assertTrue(l.verify_derived_output('derive',r,out2,None,fake_root,receipt)['reuse']['reusable'])
+                with self.assertRaises(ValueError) as caught:l.verify_derived_output('derive',r,out2,None,fake_root,{**receipt,'deadline_policy':{'budget':'standard'}})
+                self.assertIn('budget',str(caught.exception))
+                # Evaluate is outside the probe profile even for its zone.
+                out3=Path(t)/'out3';out3.mkdir()
+                e=self.run_payload('evaluate',t,root,spec_dir,out2,out3,self.fake_worker());self.assertEqual(e['status'],'FAILED');self.assertIn('does not cover payload evaluate',e['failure']['message']);self.assertFalse(any(out3.iterdir()))
+                # The standard chain still evaluates the probe's board: budgets bound the run, not the derived board's identity.
+                (spec_dir/'context.json').write_text(json.dumps({'image_id':IMAGE_ID,'kicad':'10.0.6','source_pins':pins,'process':d.PROCESS_VERSION,'tooling_sha':'t'*40,'budget':'standard'}))
+                out4=Path(t)/'out4';out4.mkdir()
+                e=self.run_payload('evaluate',t,root,spec_dir,out2,out4,self.fake_worker());self.assertEqual(e['status'],dp.EVALUATE_STATUS,e.get('failure'));self.assertTrue(e['reuse']['reusable']);self.assertEqual(self.supervision[0]['stage_caps'],dp.EVALUATE_CAPS)
+                (spec_dir/'context.json').write_text(json.dumps({'image_id':IMAGE_ID,'kicad':'10.0.6','source_pins':pins,'process':d.PROCESS_VERSION,'tooling_sha':'t'*40,'budget':'bogus'}))
+                out5=Path(t)/'out5';out5.mkdir()
+                e=self.run_payload('evaluate',t,root,spec_dir,out2,out5,self.fake_worker());self.assertEqual(e['status'],'FAILED');self.assertIn('unknown budget profile',e['failure']['message'])

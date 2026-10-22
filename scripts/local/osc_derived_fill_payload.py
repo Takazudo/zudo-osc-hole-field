@@ -196,9 +196,14 @@ def worker(scratch):
 
 def read_context(spec_dir):
     context=json.loads((spec_dir/'context.json').read_text())
-    require(set(context)=={'image_id','kicad','source_pins','process','tooling_sha'},'context shape')
+    require(set(context)=={'image_id','kicad','source_pins','process','tooling_sha','budget'},'context shape')
     require(context['kicad']==derived.KICAD_VERSION and context['process']==derived.PROCESS_VERSION and context['source_pins']==fill.PINS,'context pins')
+    derived.budget(context['budget'])
     return context
+
+def limits(b):
+    return ('budget '+b['name']+': payload %d s; worker reserve %d s; derive stage caps prepare %d / fill %d / verify %d; evaluate caps prepare %d / verify %d; output board bound %d bytes; selected zones only; no route edits'
+            %(b['payload'],WORKER_RESERVE,b['stage_caps']['prepare'],b['stage_caps']['fill'],b['stage_caps']['verify'],EVALUATE_CAPS['prepare'],EVALUATE_CAPS['verify'],b['pcb_limit']))
 
 def parent_identity(candidate_dir,context,source_nonfill):
     """Verify a mounted derivation against the identity its own manifest records, re-pinned to this run's source, image and process."""
@@ -219,10 +224,12 @@ def export(scratch,output,names):
     return exported
 
 def run(mode,root,spec_dir,candidate_dir,scratch,output,result):
-    start=time.monotonic();deadline=start+PAYLOAD_SECONDS
+    start=time.monotonic()
     require(output.is_dir() and not any(output.iterdir()),'empty writable /output required')
     fill.record_memory(result,'preflight','before')
     spec=derived.load_spec(spec_dir/'spec.json',topology.EXPECTED);context=read_context(spec_dir)
+    b=derived.budget(context['budget']);derived.budget_allows(b,mode,spec['zones'],chained=mode=='derive' and candidate_dir.is_dir());deadline=start+b['payload']
+    result['budget']=b['name'];result['limits']=limits(b)
     result['spec']={'zones':spec['zones'],'pairs':spec['pairs'],'note':spec['note']};result['tooling_sha']=context['tooling_sha']
     result['input_before']=fill.verify_inputs(root)
     result['source_nonfill']=fill.semantic_hash(root/'osc-core.kicad_pcb')
@@ -256,8 +263,8 @@ def run(mode,root,spec_dir,candidate_dir,scratch,output,result):
     fill.record_memory(result,'preflight','after')
     fill.record_memory(result,'zone','before')
     result['command']={}
-    group,caps,stages=(DERIVE_GROUP,DERIVE_CAPS,DERIVE_STAGES) if mode=='derive' else (EVALUATE_GROUP,EVALUATE_CAPS,EVALUATE_STAGES)
-    zone.run_worker(scratch,deadline-WORKER_RESERVE,result['command'],script=__file__,stage_group=group,stage_caps=caps)
+    group,caps,stages=(DERIVE_GROUP,b['stage_caps'],DERIVE_STAGES) if mode=='derive' else (EVALUATE_GROUP,EVALUATE_CAPS,EVALUATE_STAGES)
+    zone.run_worker(scratch,deadline-WORKER_RESERVE,result['command'],script=__file__,stage_group=group,stage_caps=caps,pcb_limit=b['pcb_limit'])
     zone.capture_stages(result,scratch,require_complete=True,stages=stages)
     worker_result=json.loads((scratch/'zone.json').read_text())
     result['worker_summary']=compact(worker_result)
@@ -279,7 +286,7 @@ def run(mode,root,spec_dir,candidate_dir,scratch,output,result):
                   'nonfill_sha256':{'source':result['source_nonfill'],'after':result['nonfill_after']},'after_owners':result['after_owners'],'fill_seconds':result['worker_summary']['fill']['seconds'],
                   'pairs':spec['pairs'],'classification':result['worker_summary']['classification'],'unconnected_count':result['worker_summary']['unconnected_count'],
                   'parent':{'identity_key':parent_key,'zones':input_zones},'spec_note':spec['note'],'tooling_sha':context['tooling_sha'],'exported_receipts':result['exported_receipts'],
-                  'board_acceptance':False,'repair_basis':False}
+                  'budget':b['name'],'stage_caps':b['stage_caps'],'board_acceptance':False,'repair_basis':False}
         (output/'manifest.json').write_text(json.dumps(manifest,indent=2,sort_keys=True)+'\n');result['manifest_sha256']=fill.sha(output/'manifest.json')
     else:
         result['exported_receipts']=export(scratch,output,RECEIPTS)
@@ -297,7 +304,7 @@ def main(mode):
     root=Path('/work/boards/osc-core');spec_dir=Path('/spec');candidate_dir=Path('/candidate');scratch=Path('/scratch/osc-'+mode);output=Path('/output')
     result={'status':'FAILED','mode':mode,'board_acceptance':False,'repair_basis':False,'full_board_fill':False,'refill_zones_option_used':False,
             'drc':'NOT RUN: outside this derived-copy connectivity diagnostic',
-            'limits':'payload 420 s; worker reserve 40 s; derive stage caps prepare 60 / fill 260 / verify 100; evaluate caps prepare 150 / verify 230; selected zones only; no route edits'}
+            'limits':'budget profile is read from /spec/context.json before any native work; selected zones only; no route edits'}
     try:
         run(mode,root,spec_dir,candidate_dir,scratch,output,result)
     except Exception as exc:
@@ -320,9 +327,10 @@ def main(mode):
     print(data,flush=True)
     return 0 if result['status']==STATUSES.get(mode) else 1
 
-def validate_result(result,mode):
+def validate_result(result,mode,budget_name='standard'):
     """Structural gate before the controller trusts a payload receipt; host re-verification of files follows separately."""
     if not isinstance(result,dict) or result.get('status')!=STATUSES[mode] or result.get('board_acceptance') is not False or result.get('repair_basis') is not False: raise ValueError('payload status')
+    if result.get('budget')!=budget_name: raise ValueError('payload budget differs from the controller budget')
     for key in ('failure','input_recheck_failure','substage_capture_failure','telemetry_failure','worker_receipt_failure'):
         if key in result: raise ValueError('payload failure key present: '+key)
     if result.get('refill_zones_option_used') is not False or result.get('full_board_fill') is not False: raise ValueError('scope flags')
@@ -356,7 +364,7 @@ def validate_result(result,mode):
         if owners.get('zones')!=zone.COUNTS['zone'] or set(owners.get('filled_polygon_by_zone',{}))!=expected: raise ValueError('fill ownership')
     else:
         if result.get('reuse',{}).get('reusable') is not True or not derived.hash_ok(result.get('evaluation_sha256')): raise ValueError('reuse')
-    if not isinstance(result.get('elapsed_seconds'),(int,float)) or not 0<=result['elapsed_seconds']<=PAYLOAD_SECONDS: raise ValueError('payload deadline')
+    if not isinstance(result.get('elapsed_seconds'),(int,float)) or not 0<=result['elapsed_seconds']<=derived.budget(budget_name)['payload']: raise ValueError('payload deadline')
 
 if __name__=='__main__':
     if len(sys.argv)==3 and sys.argv[1]=='--worker': worker(Path(sys.argv[2]))

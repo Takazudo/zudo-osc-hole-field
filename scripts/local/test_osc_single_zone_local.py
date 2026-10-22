@@ -111,9 +111,12 @@ class Payload(unittest.TestCase):
         self.assertEqual(z.COUNTS,{'segment':123905,'via':9646,'zone':351,'copper_zone':5})
 
 class Controller(unittest.TestCase):
-    def test_budget_constants_match_hosted_fill(self):
-        self.assertEqual(l.TOTAL_SECONDS,590);self.assertEqual(l.PAYLOAD_SECONDS,420);self.assertEqual(l.ATTACH_SECONDS,430)
-        self.assertEqual(l.OUTER_STOP_SECONDS,600);self.assertEqual(l.LAUNCH_RESERVE,497);self.assertEqual(set(l.BUNDLE),{'osc_single_zone_payload.py','osc_zone_drc_payload.py','osc_derived_fill_payload.py','osc_derived_fill.py','osc_frozen_fill.py','osc_frozen_topology.py'})
+    def test_standard_budget_matches_hosted_fill(self):
+        import osc_derived_fill as d
+        b=d.budget('standard')
+        self.assertEqual((b['controller'],b['payload'],b['attach'],b['wrapper'],b['launch_reserve']),(f.TOTAL_SECONDS,f.PAYLOAD_SECONDS,f.ATTACH_SECONDS,f.WRAPPER_SECONDS,f.LAUNCH_RESERVE))
+        self.assertEqual((b['outer_stop'],b['stage_caps'],b['pcb_limit'],b['worker_deadline']),(600,z.STAGE_CAPS,z.PCB_LIMIT,420-z.WORKER_RESERVE));self.assertEqual(l.PAYLOAD_SECONDS,420);self.assertEqual(l.CLEANUP_RESERVE,f.CLEANUP_RESERVE)
+        self.assertEqual(set(l.BUNDLE),{'osc_single_zone_payload.py','osc_zone_drc_payload.py','osc_derived_fill_payload.py','osc_derived_fill.py','osc_frozen_fill.py','osc_frozen_topology.py'})
     def test_board_pins_extend_source_allowlist(self):
         pins=l.board_pins();self.assertEqual(set(pins),set(c.PINS)|{'boards/osc-core/'+n for n in fill.PINS})
         self.assertEqual(pins['boards/osc-core/osc-core.kicad_pcb'],'fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10')
@@ -129,6 +132,31 @@ class Controller(unittest.TestCase):
                 self.assertEqual(l.adapter(argv),0)
             self.assertEqual(inner.call_args.kwargs,{'memory_policy':'fill-2g-noswap','execution_policy':'fill-430'})
             self.assertIn('--read-only',inner.call_args.args[0]);self.assertIn('/src:/work:ro',inner.call_args.args[0])
+    def test_adapter_probe_budget_extends_only_the_attach_ceiling(self):
+        import time
+        with tempfile.TemporaryDirectory() as t:
+            state=Path(t)/'state';state.mkdir()
+            argv=['run','--rm','--platform','linux/amd64','--network','none','--user','1:1','--volume','/src:/work','--volume','/h:/tmp/kicad-home','--workdir','/work','--entrypoint','/bin/sh',c.IMAGE,'-c','x','kicad-oracle','python3','-B','/analysis/osc_derived_fill_payload.py','derive']
+            calls=[]
+            def fake_run(argv,root,seconds=150,extra_env=None,isolated=True):
+                calls.append((argv[1:3],seconds));return {'failure':None,'exit_code':0,'output':'f'*64 if argv[1]=='create' else '{}'}
+            original=c.run_command
+            def environment(**extra): return env(OSC_LOCAL_ADAPTER='1',OSC_INPUT_ROOT='/src',OSC_PAYLOAD='/bundle',OSC_STATE=str(state),OSC_DEADLINE=str(10**9),OSC_REAL_DOCKER='/usr/bin/docker',**extra)
+            with patch.dict(os.environ,environment(OSC_BUDGET='fill-520-probe',OSC_COMMAND_DEADLINE=str(time.monotonic()+790)),clear=True),patch.object(l,'resource_preflight'),patch.object(c,'DEADLINE',10**9),patch.object(c,'run_command',fake_run),contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(l.adapter(argv),0);self.assertIs(c.run_command,fake_run)
+            self.assertEqual([x for x in calls if x[0]==['start','--attach']],[(['start','--attach'],780)]);self.assertEqual([x[1] for x in calls if x[0][0]=='create'],[10])
+            self.assertIs(c.run_command,original)
+            calls.clear()
+            with patch.dict(os.environ,environment(OSC_COMMAND_DEADLINE=str(time.monotonic()+790)),clear=True),patch.object(l,'resource_preflight'),patch.object(c,'DEADLINE',10**9),patch.object(c,'run_command',fake_run),contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(l.adapter(argv),0)
+            self.assertEqual([x for x in calls if x[0]==['start','--attach']],[(['start','--attach'],430)])
+            # The wrapper budget check scales with the profile: 770 s left is enough for a standard payload, not for the probe payload.
+            with patch.dict(os.environ,environment(OSC_BUDGET='fill-520-probe',OSC_COMMAND_DEADLINE=str(time.monotonic()+770)),clear=True),patch.object(l,'resource_preflight'),patch.object(c,'DEADLINE',10**9),patch.object(c,'run_command',fake_run):
+                with self.assertRaises(TimeoutError):l.adapter(argv)
+            with patch.dict(os.environ,environment(OSC_BUDGET='fill-520-probe',OSC_COMMAND_DEADLINE=str(10**9)),clear=True),patch.object(l,'resource_preflight'),patch.object(c,'DEADLINE',time.monotonic()+830),patch.object(c,'run_command',fake_run):
+                with self.assertRaises(TimeoutError):l.adapter(argv)
+            with patch.dict(os.environ,environment(OSC_BUDGET='bogus',OSC_COMMAND_DEADLINE=str(10**9)),clear=True),patch.object(l,'resource_preflight'),patch.object(c,'DEADLINE',10**9),patch.object(c,'run_command',fake_run):
+                with self.assertRaises(ValueError):l.adapter(argv)
     def test_resource_preflight_refuses_ci_and_records(self):
         with tempfile.TemporaryDirectory() as t:
             state=Path(t)/'state';state.mkdir()
@@ -143,7 +171,8 @@ class Controller(unittest.TestCase):
                 code=l.run(args)
             receipt=json.loads((out/'receipt.json').read_text())
             self.assertEqual(code,1);self.assertIn('heavy-guard',receipt['error']);runner.assert_not_called();self.assertFalse(state.exists())
-            self.assertEqual(receipt['deadline_policy']['payload_seconds'],420);self.assertIs(receipt['board_acceptance'],False);self.assertTrue(receipt['drc'].startswith('NOT RUN: '))
+            self.assertEqual(receipt['deadline_policy']['payload_seconds'],420);self.assertEqual(receipt['deadline_policy']['budget'],'standard');self.assertIs(receipt['deadline_policy']['outer_stop_confirmed_by_wrapper'],False)
+            self.assertIs(receipt['board_acceptance'],False);self.assertTrue(receipt['drc'].startswith('NOT RUN: '))
             self.assertNotIn('boards/osc-core/osc-core.kicad_pcb',c.PINS)
     def test_summarize_bounded(self):
         row={'connected':True,'symmetric':True,'cluster_a':{'size':9,'selected_zone_member':True,'vias':[{'x':1}]*100},'cluster_b':{'size':9,'selected_zone_member':True,'vias':[]},'bridging_vias':{'from_a_side':[1],'from_b_side':[1,2],'new_in_merged_cluster':[]}}
@@ -222,8 +251,11 @@ class CandidateAndDrc(unittest.TestCase):
 class Wrapper(unittest.TestCase):
     def test_outer_stop_contract(self):
         text=(Path(__file__).with_name('osc_single_zone_local.sh')).read_text()
-        self.assertIn('outer_stop_seconds=600',text);self.assertIn('kill -KILL -- "-$pid"',text);self.assertIn('osc_single_zone_local.py" cleanup',text)
+        self.assertIn('standard) outer_stop_seconds=600',text);self.assertIn('fill-520-probe) outer_stop_seconds=900',text);self.assertIn('budget=${OSC_BUDGET:-standard}',text)
+        self.assertIn('export OSC_OUTER_STOP_SECONDS=$outer_stop_seconds',text);self.assertIn('kill -KILL -- "-$pid"',text);self.assertIn('osc_single_zone_local.py" cleanup',text)
         self.assertIn('HEAVY_GUARD_HELD',text);self.assertNotIn('GITHUB_ACTIONS=',text);self.assertIn('TOOLING_SHA=$(git -C "$script_dir" rev-parse HEAD)',text)
-        self.assertIn('shift 4',text);self.assertIn('--authorization "$authorization" "$@"',text)
+        self.assertIn('shift 4',text);self.assertIn('--authorization "$authorization" --budget "$budget" "$@"',text)
+        import osc_derived_fill as d
+        for name,b in ((n,d.budget(n)) for n in d.BUDGETS): self.assertIn(name+') outer_stop_seconds='+str(b['outer_stop']),text)
 
 if __name__=='__main__':unittest.main()

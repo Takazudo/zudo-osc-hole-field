@@ -31,6 +31,47 @@ KICAD_VERSION = '10.0.6'
 BOARD_FILES = ('osc-core.kicad_pcb', 'osc-core.kicad_pro', 'osc-core.kicad_dru')
 ZONE_LIMIT = 8
 PAIR_LIMIT = 16
+WORKER_RESERVE = 40
+CLEANUP_RESERVE = 40
+SCRATCH_TMPFS_BYTES = 256 * 1024 * 1024
+SOURCE_BOARD_BYTES = 49819556
+# Deadline chains, innermost first. 'standard' is the proven hosted-parity chain. 'fill-520-probe' is the
+# single user-approved probe of the AGND F.Cu zone (2026-10-22 19:56 UTC): only the fill cap and the layers
+# that must contain it grow; CPU, memory, swap, PIDs, network and mounts are unchanged. The output board bound
+# grows because the F.Cu fill adds more polygon vertices than the inner-layer fills (In1.Cu added 11.3 MB to
+# the 47.5 MiB source; the standard 64 MiB bound leaves 17.3 MB) while still fitting the 256 MiB scratch tmpfs
+# next to the input copy.
+BUDGETS = {
+    'standard': {'payload': 420, 'stage_caps': {'prepare': 60, 'fill': 260, 'verify': 100}, 'attach': 430, 'wrapper': 450, 'controller': 590,
+                 'outer_stop': 600, 'post_stop_cleanup': 60, 'heavy_guard_max_run': 720, 'pcb_limit': 64 * 1024 * 1024,
+                 'modes': ('zone', 'candidate', 'drc', 'derive', 'evaluate'), 'zones': None},
+    'fill-520-probe': {'payload': 760, 'stage_caps': {'prepare': 60, 'fill': 520, 'verify': 100}, 'attach': 780, 'wrapper': 800, 'controller': 890,
+                       'outer_stop': 900, 'post_stop_cleanup': 60, 'heavy_guard_max_run': 1020, 'pcb_limit': 128 * 1024 * 1024,
+                       'modes': ('derive',), 'zones': ['601e02b2-8ccb-5c28-83e5-03789d47fbbd']},
+}
+
+
+def budget(name):
+    """One deadline chain, checked for containment at every layer; a profile whose layers do not nest is a defect, not a setting."""
+    if name not in BUDGETS: raise ValueError('unknown budget profile')
+    b = BUDGETS[name]; caps = b['stage_caps']
+    if set(caps) != {'prepare', 'fill', 'verify'} or any(type(v) is not int or v <= 0 for v in caps.values()): raise ValueError('stage caps')
+    if max(caps.values()) > b['payload'] - WORKER_RESERVE: raise ValueError('a stage cap cannot be reached before the worker deadline')
+    if b['attach'] < b['payload'] + 10: raise ValueError('attach does not contain the payload')
+    if b['wrapper'] < b['attach'] + 17: raise ValueError('wrapper does not contain attach plus create')
+    if b['controller'] < b['wrapper'] + CLEANUP_RESERVE + 7 + 40: raise ValueError('controller leaves under 40 s of setup before launch')
+    if b['outer_stop'] <= b['controller']: raise ValueError('outer stop does not contain the controller')
+    if b['heavy_guard_max_run'] < b['outer_stop'] + b['post_stop_cleanup'] + 60: raise ValueError('heavy-guard cap does not contain outer stop and cleanup')
+    if b['pcb_limit'] + SOURCE_BOARD_BYTES > SCRATCH_TMPFS_BYTES: raise ValueError('output board bound does not fit the scratch tmpfs next to the input copy')
+    if b['zones'] is not None and (not b['zones'] or any(not UUID_RE.match(z) for z in b['zones'])): raise ValueError('budget zones')
+    return {**b, 'name': name, 'launch_reserve': b['wrapper'] + CLEANUP_RESERVE + 7, 'worker_deadline': b['payload'] - WORKER_RESERVE}
+
+
+def budget_allows(b, mode, zones, chained=False):
+    """The probe profile is bound to its approved mode and zone set on the published source; anything else must use the standard chain."""
+    if mode not in b['modes']: raise ValueError('budget ' + b['name'] + ' does not cover payload ' + mode)
+    if b['zones'] is not None and sorted(zones or []) != sorted(b['zones']): raise ValueError('budget ' + b['name'] + ' is bound to a different zone set')
+    if b['zones'] is not None and chained: raise ValueError('budget ' + b['name'] + ' does not cover a chained derivation: its input board would not be the published source')
 UUID_RE = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
 CLASSES = {
     'CONNECTED_ON_INPUT': 'pads shared a native cluster on the input board before this derivation filled anything',

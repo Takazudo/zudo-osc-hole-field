@@ -7,6 +7,13 @@ owned cleanup and the existing 590 s controller / 420 s payload / 430 s
 attach ceilings. The hosted gate is replaced by local_gate from the
 synthetic adapter (never spoofed). Original board files are mounted
 read-only and hash-checked before and after. No DRC, no acceptance.
+
+Deadline chains are budget profiles (osc_derived_fill.BUDGETS): 'standard'
+is the hosted-parity chain above; 'fill-520-probe' is the single approved
+F.Cu AGND probe whose only growth is the fill cap and the layers that must
+contain it. The wrapper confirms the outer stop it enforces through
+OSC_OUTER_STOP_SECONDS so the controller cannot run a longer chain than the
+process group kill it sits under.
 """
 import argparse
 import json
@@ -29,13 +36,8 @@ import osc_zone_drc_payload as drcpayload
 import osc_derived_fill as derived
 import osc_derived_fill_payload as derivedpayload
 
-TOTAL_SECONDS=f.TOTAL_SECONDS
-PAYLOAD_SECONDS=f.PAYLOAD_SECONDS
-ATTACH_SECONDS=f.ATTACH_SECONDS
-WRAPPER_SECONDS=f.WRAPPER_SECONDS
+PAYLOAD_SECONDS=f.PAYLOAD_SECONDS   # zone/candidate/drc payloads run only under the standard budget
 CLEANUP_RESERVE=f.CLEANUP_RESERVE
-LAUNCH_RESERVE=f.LAUNCH_RESERVE
-OUTER_STOP_SECONDS=600
 STATUS=payload.STATUS
 MODE='LOCAL_WSL_SINGLE_ZONE'
 PAYLOAD_NAME='osc_single_zone_payload.py'
@@ -99,10 +101,22 @@ def adapter(argv):
     resource_preflight()
     c.RESERVE_SECONDS=CLEANUP_RESERVE+7
     is_payload=any('/analysis/'+name in a for a in args[args.index(c.IMAGE)+1:] for name in (PAYLOAD_NAME,DRC_PAYLOAD_NAME,DERIVED_PAYLOAD_NAME))
-    f.require_budget(ATTACH_SECONDS+CLEANUP_RESERVE+7+10 if is_payload else 40+CLEANUP_RESERVE+7)
-    if is_payload and float(os.environ['OSC_COMMAND_DEADLINE'])-time.monotonic()<PAYLOAD_SECONDS+10+7:
+    b=derived.budget(os.environ.get('OSC_BUDGET','standard'))
+    f.require_budget(b['attach']+CLEANUP_RESERVE+7+10 if is_payload else 40+CLEANUP_RESERVE+7)
+    if is_payload and float(os.environ['OSC_COMMAND_DEADLINE'])-time.monotonic()<b['payload']+10+7:
         raise TimeoutError('insufficient wrapper budget after setup for payload and create')
-    return c.adapter(args,memory_policy='fill-2g-noswap',execution_policy='fill-430' if is_payload else 'fill-probe-20')
+    if not is_payload: return c.adapter(args,memory_policy='fill-2g-noswap',execution_policy='fill-probe-20')
+    return attach_adapter(args,b['attach'])
+
+def attach_adapter(args,attach_seconds):
+    """The hosted adapter unchanged (ownership record, labels, 1 CPU / 2 GiB / no extra swap / 64 PIDs, forbidden-option checks) with one ceiling swapped: only 'docker start --attach' receives the budget's attach seconds."""
+    original=c.run_command
+    def wrapped(argv,root,seconds=150,extra_env=None,isolated=True):
+        if argv[1:3]==['start','--attach']: seconds=attach_seconds
+        return original(argv,root,seconds,extra_env,isolated)
+    c.run_command=wrapped
+    try: return c.adapter(args,memory_policy='fill-2g-noswap',execution_policy='fill-430')
+    finally: c.run_command=original
 
 def summarize(receipt,detail):
     summary={k:str(receipt[k])[:500] for k in ('status','error','cleanup_error','after_error') if k in receipt}
@@ -124,7 +138,7 @@ def summarize(receipt,detail):
     return json.dumps(summary,sort_keys=True)
 
 def run(args):
-    started=time.monotonic();c.DEADLINE=started+TOTAL_SECONDS;c.RESERVE_SECONDS=CLEANUP_RESERVE+7
+    started=time.monotonic();b=derived.budget(args.budget);c.DEADLINE=started+b['controller'];c.RESERVE_SECONDS=CLEANUP_RESERVE+7
     root=Path(args.source).resolve();out=Path(args.out).resolve()
     if root==out or out.is_relative_to(root): raise ValueError('separate output required')
     payload_name,payload_args,expected_status=MODES[args.payload]
@@ -136,6 +150,10 @@ def run(args):
     if args.payload in SPEC_MODES and spec_file is None: raise ValueError('--spec required for '+args.payload)
     if spec_file is not None and args.payload not in SPEC_MODES: raise ValueError('--spec only applies to derive/evaluate')
     spec=derived.load_spec(spec_file,topology.EXPECTED) if spec_file is not None else None
+    derived.budget_allows(b,args.payload,spec['zones'] if spec else None,chained=args.payload=='derive' and candidate is not None)
+    outer=os.environ.get('OSC_OUTER_STOP_SECONDS')
+    if outer is None and b['name']!='standard': raise ValueError('wrapper did not confirm the outer stop for budget '+b['name'])
+    if outer is not None and outer!=str(b['outer_stop']): raise ValueError('wrapper outer stop '+outer+' differs from budget '+b['name'])
     if output is not None and output.exists(): raise ValueError('output directory must not pre-exist')
     out.mkdir(exist_ok=False)
     if output is not None: output.mkdir(mode=0o755)
@@ -143,9 +161,10 @@ def run(args):
     r={'status':'STARTED','mode':MODE,'payload':args.payload,'output':str(output) if output else None,'candidate':str(candidate) if candidate else None,'hosted':False,'source_sha':c.SOURCE,'tooling_sha':os.environ.get('TOOLING_SHA'),'image':c.IMAGE,
        'target_zone':payload.TARGET_ZONE if spec is None else None,'pairs':payload.PAIRS if spec is None else spec['pairs'],'spec':spec,'commands':[],'cleanup':[],'full_board_fill':False,'board_acceptance':False,'repair_basis':False,
        'drc':'NOT RUN: whole-board DRC is outside this selected-zone connectivity diagnostic',
-       'deadline_policy':{'total_seconds':TOTAL_SECONDS,'outer_stop_seconds':OUTER_STOP_SECONDS,'payload_seconds':PAYLOAD_SECONDS,'attach_seconds':ATTACH_SECONDS,
-           'wrapper_seconds':WRAPPER_SECONDS,'cleanup_reserve_seconds':CLEANUP_RESERVE,'launch_reserve_seconds':LAUNCH_RESERVE,
-           'stage_caps':derivedpayload.EVALUATE_CAPS if args.payload=='evaluate' else payload.STAGE_CAPS,
+       'deadline_policy':{'budget':b['name'],'total_seconds':b['controller'],'outer_stop_seconds':b['outer_stop'],'outer_stop_confirmed_by_wrapper':outer is not None,'payload_seconds':b['payload'],'attach_seconds':b['attach'],
+           'wrapper_seconds':b['wrapper'],'cleanup_reserve_seconds':CLEANUP_RESERVE,'launch_reserve_seconds':b['launch_reserve'],'worker_deadline_seconds':b['worker_deadline'],
+           'post_stop_cleanup_seconds':b['post_stop_cleanup'],'heavy_guard_max_run_seconds':b['heavy_guard_max_run'],'pcb_limit_bytes':b['pcb_limit'],
+           'stage_caps':derivedpayload.EVALUATE_CAPS if args.payload=='evaluate' else b['stage_caps'],
            'started_monotonic':started,'deadline_monotonic':c.DEADLINE}}
     state=None;docker=None;failed=False
     def save():
@@ -178,18 +197,18 @@ def run(args):
         if {x.name for x in bundle.iterdir()}!=set(BUNDLE) or any(c.sha(bundle/name)!=r['tool_hashes'][name] for name in BUNDLE):raise ValueError('bundle hash')
         shim=state/'docker';shim.write_text('#!/bin/sh\nexec '+shlex.quote(sys.executable)+' -B '+shlex.quote(str(Path(__file__).resolve()))+' --adapter "$@"\n');shim.chmod(0o700)
         env={'PATH':str(state)+os.pathsep+os.environ['PATH'],'OSC_STATE':str(state),'OSC_REAL_DOCKER':docker,'OSC_INPUT_ROOT':str(root),
-             'OSC_PAYLOAD':str(bundle),'OSC_DEADLINE':str(c.DEADLINE),'OSC_LOCAL_ADAPTER':'1'}
+             'OSC_PAYLOAD':str(bundle),'OSC_DEADLINE':str(c.DEADLINE),'OSC_LOCAL_ADAPTER':'1','OSC_BUDGET':b['name']}
         if output is not None: env['OSC_OUTPUT']=str(output)
         if candidate is not None: env['OSC_CANDIDATE']=str(candidate);r['candidate_manifest_sha256']=c.sha(candidate/'manifest.json')
         if spec is not None:
             spec_dir=state/'spec';spec_dir.mkdir()
             (spec_dir/'spec.json').write_text(json.dumps({'zones':spec['zones'],'pairs':[list(p) for p in spec['pairs']],'note':spec['note']}))
-            r['context']={'image_id':r['image_identity']['id'],'kicad':derived.KICAD_VERSION,'source_pins':dict(inv.PINS),'process':derived.PROCESS_VERSION,'tooling_sha':t}
+            r['context']={'image_id':r['image_identity']['id'],'kicad':derived.KICAD_VERSION,'source_pins':dict(inv.PINS),'process':derived.PROCESS_VERSION,'tooling_sha':t,'budget':b['name']}
             (spec_dir/'context.json').write_text(json.dumps(r['context']));env['OSC_SPEC']=str(spec_dir)
             r['expected_identity_key']=None if args.payload=='derive' and candidate is not None else derived.identity_key(derived.identity(inv.PINS,spec['zones'],r['context']['image_id']))
-        f.require_budget(LAUNCH_RESERVE)
-        env['OSC_COMMAND_DEADLINE']=str(time.monotonic()+WRAPPER_SECONDS)
-        result=call(['bash','scripts/kicad/run.sh','python3','-B','/analysis/'+payload_name,*payload_args],WRAPPER_SECONDS,env)
+        f.require_budget(b['launch_reserve'])
+        env['OSC_COMMAND_DEADLINE']=str(time.monotonic()+b['wrapper'])
+        result=call(['bash','scripts/kicad/run.sh','python3','-B','/analysis/'+payload_name,*payload_args],b['wrapper'],env)
         f.collect_resources(state,r);save()
         detail=None
         try:
@@ -201,7 +220,7 @@ def run(args):
         if detail is None:raise ValueError('payload JSON missing or malformed')
         if args.payload=='zone': payload.validate_result(detail)
         elif args.payload in SPEC_MODES:
-            derivedpayload.validate_result(detail,args.payload)
+            derivedpayload.validate_result(detail,args.payload,b['name'])
             r['host_verification']=verify_derived_output(args.payload,detail,output,candidate,root,r)
         else: r['host_verification']=verify_output(args.payload,detail,output,candidate)
         r['status']=expected_status
@@ -219,7 +238,7 @@ def run(args):
         try:r['after']=c.snapshot(root)
         except Exception as exc:failed=True;r.update(status='FAILED',after_error=str(exc)[:500])
         r['elapsed_seconds']=time.monotonic()-started
-        if r['elapsed_seconds']>TOTAL_SECONDS:failed=True;r.update(status='FAILED',deadline_exceeded=True)
+        if r['elapsed_seconds']>b['controller']:failed=True;r.update(status='FAILED',deadline_exceeded=True)
         save();c.PINS=old_pins
         detail=None
         if (out/'zone.json').is_file():
@@ -274,6 +293,8 @@ def verify_derived_output(mode,detail,output,candidate,root,receipt):
     source_nonfill=inv.semantic_hash(root/'boards'/'osc-core'/'osc-core.kicad_pcb');verification['source_nonfill_host']=source_nonfill
     if detail.get('source_nonfill')!=source_nonfill: raise ValueError('host source semantic hash mismatch')
     if detail.get('tooling_sha')!=receipt['tooling_sha'] or detail['identity']['image_id']!=receipt['image_identity']['id']: raise ValueError('context echo')
+    budget_name=receipt.get('deadline_policy',{}).get('budget','standard')
+    if detail.get('budget')!=budget_name: raise ValueError('payload budget echo')
     zones=receipt['spec']['zones']
     worker=json.loads((output/'zone.json').read_text())
     for name,expected in detail['exported_receipts'].items():
@@ -282,6 +303,7 @@ def verify_derived_output(mode,detail,output,candidate,root,receipt):
     if mode=='derive':
         manifest=json.loads((output/'manifest.json').read_text())
         if c.sha(output/'manifest.json')!=detail.get('manifest_sha256') or manifest.get('status')!=derived.MANIFEST_STATUS: raise ValueError('manifest')
+        if manifest.get('budget')!=budget_name or manifest.get('stage_caps')!=derived.budget(budget_name)['stage_caps']: raise ValueError('manifest budget')
         parent=detail.get('parent');parent_key=None
         if (candidate is None)!=(parent is None): raise ValueError('parent record does not match the mounted candidate')
         if candidate is not None:
@@ -346,6 +368,7 @@ def parse(argv):
     a=sub.add_parser('run');a.add_argument('source');a.add_argument('out')
     a.add_argument('--state',required=True);a.add_argument('--authorization',required=True)
     a.add_argument('--payload',choices=sorted(MODES),default='zone');a.add_argument('--output');a.add_argument('--candidate');a.add_argument('--spec')
+    a.add_argument('--budget',choices=sorted(derived.BUDGETS),default='standard')
     b=sub.add_parser('cleanup');b.add_argument('state');b.add_argument('out')
     d=sub.add_parser('adopt-legacy');d.add_argument('candidate');d.add_argument('receipt');d.add_argument('--attestation',required=True)
     return p.parse_args(argv)

@@ -265,7 +265,7 @@ def read_rows(log,limit=fill.SUBSTAGE_LIMIT):
             except ValueError: break
     return rows
 
-def run_worker(scratch,deadline,record,script=None,stage_group=STAGE_GROUP,stage_caps=STAGE_CAPS):
+def run_worker(scratch,deadline,record,script=None,stage_group=STAGE_GROUP,stage_caps=STAGE_CAPS,pcb_limit=PCB_LIMIT):
     """Supervise one worker subprocess: payload deadline, per-stage-group caps from its substage log, output bounds."""
     log=scratch/'zone-substages.jsonl';stdout=scratch/'zone.log'
     argv=[sys.executable,'-B',str(Path(script or __file__).resolve()),'--worker',str(scratch)]
@@ -284,7 +284,7 @@ def run_worker(scratch,deadline,record,script=None,stage_group=STAGE_GROUP,stage
                         current=group
                 if current and now-group_start[current]>stage_caps[current]: raise TimeoutError(current+' stage cap')
                 after=scratch/'after'/'osc-core.kicad_pcb'
-                if after.exists() and after.stat().st_size>PCB_LIMIT: raise ValueError('output board bound')
+                if after.exists() and after.stat().st_size>pcb_limit: raise ValueError('output board bound')
                 if stdout.stat().st_size>fill.LOG_LIMIT: raise ValueError('worker log bound')
                 time.sleep(.1)
         if proc.returncode!=0: raise ValueError('worker exit '+str(proc.returncode))
