@@ -45,7 +45,7 @@ class WiringTests(unittest.TestCase):
                     self.assertEqual(call.args[0][0],'python3')
                     self.assertIn('unittest',call.args[0])
             finally:os.chdir(old)
-        self.assertEqual(sum(x['timeout-minutes'] for x in steps),19)
+        self.assertEqual(sum(x['timeout-minutes'] for x in steps),18)
     def stage(self,mode,inventory=False,extra=False):
         script=next(iter(self.workflow()['jobs'].values()))['steps'][-2]['run'].split('\n',1)[1].rsplit('\nPY',1)[0]
         with tempfile.TemporaryDirectory() as t:

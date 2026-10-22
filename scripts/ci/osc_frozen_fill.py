@@ -33,6 +33,8 @@ OUTPUT_LIMIT = 900000
 PCB_LIMIT = 64 * 1024 * 1024
 MEMBER_LIMIT = 100000
 MEMORY_CAP = 2147483648
+PAYLOAD_SECONDS = 420
+PHASE_CAPS = {'normalize':45,'drc-before':100,'fill':150,'drc-after':100}
 CGROUP = Path('/sys/fs/cgroup')
 PHASES = ('preflight','normalize','drc-before','fill','drc-after','summarize')
 STATUS = 'FILL_BASELINE_OBSERVATIONS_NOT_ACCEPTANCE'
@@ -202,26 +204,36 @@ def worker(phase, scratch):
     (scratch/(phase+'.json')).write_text(json.dumps(native_snapshot(board,pcbnew)),encoding='utf-8')
 
 
-def bounded(argv, cwd, deadline, log, watched=()):
+def bounded(argv, cwd, deadline, log, watched=(), record=None):
     remaining=deadline-time.monotonic()
     if remaining<=0: raise TimeoutError('total deadline exhausted')
     start=time.monotonic()
-    with log.open('xb') as output:
-        proc=subprocess.Popen(argv,cwd=cwd,stdout=output,stderr=subprocess.STDOUT,start_new_session=True)
-        try:
+    outcome={} if record is None else record
+    outcome.update(argv=argv,status='STARTED',start_monotonic_seconds=start,deadline_monotonic_seconds=deadline,exit_code=None)
+    proc=None
+    try:
+        with log.open('xb') as output:
+            proc=subprocess.Popen(argv,cwd=cwd,stdout=output,stderr=subprocess.STDOUT,start_new_session=True)
             while proc.poll() is None:
                 if time.monotonic()>=deadline: raise TimeoutError('total deadline')
                 if log.stat().st_size>LOG_LIMIT: raise ValueError('log bound')
                 if any(p.exists() and p.stat().st_size>limit for p,limit in watched): raise ValueError('file size bound')
                 time.sleep(.05)
-        except BaseException:
-            os.killpg(proc.pid,signal.SIGKILL)
-            proc.wait(timeout=2)
-            raise
-    if log.stat().st_size>LOG_LIMIT: raise ValueError('log bound')
-    if any(p.exists() and p.stat().st_size>limit for p,limit in watched): raise ValueError('file size bound')
-    if proc.returncode!=0: raise ValueError('command exit '+str(proc.returncode))
-    return {'argv':argv,'exit_code':proc.returncode,'elapsed_seconds':time.monotonic()-start,'log_sha256':sha(log)}
+        if log.stat().st_size>LOG_LIMIT: raise ValueError('log bound')
+        if any(p.exists() and p.stat().st_size>limit for p,limit in watched): raise ValueError('file size bound')
+        if proc.returncode!=0: raise ValueError('command exit '+str(proc.returncode))
+        outcome['status']='COMPLETE'
+    except BaseException as exc:
+        outcome['status']='FAILED';outcome['error']=type(exc).__name__+': '+str(exc)[:500]
+        if proc is not None and proc.poll() is None:
+            os.killpg(proc.pid,signal.SIGKILL);proc.wait(timeout=2)
+        raise
+    finally:
+        outcome['end_monotonic_seconds']=time.monotonic()
+        outcome['elapsed_seconds']=outcome['end_monotonic_seconds']-start
+        outcome['exit_code']=proc.returncode if proc is not None else None
+        if log.is_file(): outcome['log_sha256']=sha(log)
+    return outcome
 
 
 def drc_summary(path):
@@ -251,12 +263,42 @@ def delta(before, after):
     return {'added':summarize(after-before),'removed':summarize(before-after)}
 
 
+def drc_checkpoint(result, phase, path):
+    counts,identities=drc_summary(path)
+    result.setdefault('drc_checkpoints',{})[phase]={
+        'report_sha256':sha(path),'report_bytes':path.stat().st_size,
+        'counts':counts,'identities':delta(collections.Counter(),identities)['added']}
+    result.setdefault('drc_counts',{})[phase.removeprefix('drc-')]=counts
+    return counts,identities
+
+
+def phase_deadline(total, phase, now):
+    if phase not in PHASE_CAPS: raise ValueError('unknown bounded phase')
+    if now>=total: raise TimeoutError('total deadline exhausted')
+    return min(total,now+PHASE_CAPS[phase])
+
+
+def phase_start(result,phase):
+    row={'phase':phase,'status':'STARTED','start_monotonic_seconds':time.monotonic()}
+    result.setdefault('phase_results',[]).append(row)
+    return row
+
+
+def phase_end(row,status,deadline):
+    row.update(status=status,end_monotonic_seconds=time.monotonic())
+    row['elapsed_seconds']=row['end_monotonic_seconds']-row['start_monotonic_seconds']
+    if status=='COMPLETE' and row['end_monotonic_seconds']>deadline:
+        row['status']='FAILED';raise TimeoutError('phase deadline exhausted')
+
+
 def main():
-    start=time.monotonic(); deadline=start+100
+    start=time.monotonic(); deadline=start+PAYLOAD_SECONDS
     root=Path('/work/boards/osc-core'); scratch=Path('/scratch/osc-fill')
     result={'status':'FAILED','board_acceptance':False,'entry_terminal':None,'commands':[],
-            'limits':'One fill; 100s total; no link/route edits; outer owned container cleanup required'}
+            'limits':'One fill; 420s payload; phase caps 45/100/150/100s within total; no route edits; outer cleanup required'}
     phase='preflight'
+    phase_row=phase_start(result,phase)
+    drc_data={}
     try:
         record_memory(result,phase,'before')
         result['input_before']=verify_inputs(root)
@@ -267,7 +309,10 @@ def main():
             for name in PINS:
                 if kind=='input' or not name.endswith('.kicad_pcb'): shutil.copyfile(root/name,dest/name)
         record_memory(result,phase,'after')
+        phase_end(phase_row,'COMPLETE',deadline)
         for phase in ('normalize','drc-before','fill','drc-after'):
+            phase_row=phase_start(result,phase)
+            local_deadline=phase_deadline(deadline,phase,phase_row['start_monotonic_seconds'])
             record_memory(result,phase,'before')
             if phase.startswith('drc-'):
                 kind=phase[4:]; report=scratch/(phase+'.json')
@@ -277,7 +322,10 @@ def main():
                 argv=[sys.executable,'-B',str(Path(__file__).resolve()),'--worker',phase,str(scratch)]
                 target='before' if phase=='normalize' else 'after'
                 watched=((scratch/(phase+'.json'),REPORT_LIMIT),(scratch/target/'osc-core.kicad_pcb',PCB_LIMIT))
-            result['commands'].append(bounded(argv,scratch,deadline,scratch/(phase+'.log'),watched))
+            command={'phase':phase};result['commands'].append(command)
+            bounded(argv,scratch,local_deadline,scratch/(phase+'.log'),watched,command)
+            if phase.startswith('drc-'):
+                drc_data[phase]=drc_checkpoint(result,phase,report)
             if phase=='normalize':
                 result['native_before']=json.loads((scratch/'normalize.json').read_text())
                 result['nonfill_before']=semantic_hash(scratch/'before/osc-core.kicad_pcb')
@@ -288,9 +336,11 @@ def main():
                 result['nonfill_after']=semantic_hash(scratch/'after/osc-core.kicad_pcb')
                 if result['nonfill_input']!=result['nonfill_after']: raise ValueError('non-fill semantic change')
             record_memory(result,phase,'after')
+            phase_end(phase_row,'COMPLETE',local_deadline)
         phase='summarize'
+        phase_row=phase_start(result,phase)
         record_memory(result,phase,'before')
-        bc,bi=drc_summary(scratch/'drc-before.json'); ac,ai=drc_summary(scratch/'drc-after.json')
+        bc,bi=drc_data['drc-before']; ac,ai=drc_data['drc-after']
         result['drc']={'before':bc,'after':ac,'delta':delta(bi,ai),'before_identity_sha256':digest(sorted(bi.items())), 'after_identity_sha256':digest(sorted(ai.items()))}
         result['scratch_hashes']={kind:sha(scratch/kind/'osc-core.kicad_pcb') for kind in ('input','before','after')}
         result['input_after']=verify_inputs(root)
@@ -298,9 +348,11 @@ def main():
             for name in PINS:
                 if not name.endswith('.kicad_pcb') and sha(scratch/kind/name)!=PINS[name]: raise ValueError('project/rules changed')
         record_memory(result,phase,'after')
+        phase_end(phase_row,'COMPLETE',deadline)
         if time.monotonic()>deadline: raise TimeoutError('total deadline')
         result['status']=STATUS
     except Exception as exc:
+        phase_end(phase_row,'FAILED',deadline)
         result['failure']={'phase':phase,'type':type(exc).__name__,'message':str(exc)[:500]}
         try: record_memory(result,phase,'failed')
         except Exception as check: result['telemetry_failure']=type(check).__name__+': '+str(check)[:160]
@@ -346,7 +398,17 @@ def validate_result(result):
     if result.get('source_hashes')!={'before':PINS,'after':PINS}: raise ValueError('source hashes')
     if not hash_ok(result.get('nonfill_input')) or result['nonfill_input']!=result.get('nonfill_before') or result['nonfill_input']!=result.get('nonfill_after'): raise ValueError('non-fill semantics')
     if len(result.get('commands',[]))!=4 or any(x.get('exit_code')!=0 for x in result['commands']): raise ValueError('command outcomes')
-    if not isinstance(result.get('elapsed_seconds'),(int,float)) or not 0<=result['elapsed_seconds']<=100: raise ValueError('deadline')
+    phase_rows=result.get('phase_results')
+    if not isinstance(phase_rows,list) or [p.get('phase') for p in phase_rows]!=list(PHASES): raise ValueError('phase coverage')
+    for p in phase_rows:
+        a=p.get('start_monotonic_seconds');b=p.get('end_monotonic_seconds');elapsed=p.get('elapsed_seconds')
+        if p.get('status')!='COMPLETE' or any(type(v) not in (int,float) or not math.isfinite(v) for v in (a,b,elapsed)) or b<a or elapsed!=b-a or elapsed>PHASE_CAPS.get(p['phase'],PAYLOAD_SECONDS): raise ValueError('phase outcome')
+    checkpoints=result.get('drc_checkpoints')
+    if not isinstance(checkpoints,dict) or set(checkpoints)!={'drc-before','drc-after'}: raise ValueError('DRC checkpoint coverage')
+    for name,row in checkpoints.items():
+        if not isinstance(row,dict) or not hash_ok(row.get('report_sha256')) or not count_ok(row.get('report_bytes')) or not 0<row['report_bytes']<=REPORT_LIMIT or not isinstance(row.get('counts'),dict) or not isinstance(row.get('identities'),dict): raise ValueError('DRC checkpoint')
+        if result.get('drc_counts',{}).get(name[4:])!=row['counts']: raise ValueError('DRC checkpoint counts')
+    if not isinstance(result.get('elapsed_seconds'),(int,float)) or not 0<=result['elapsed_seconds']<=PAYLOAD_SECONDS: raise ValueError('deadline')
     if 'failure' in result or 'input_recheck_failure' in result: raise ValueError('failure present')
     frames=result.get('memory_telemetry')
     if not isinstance(frames,list) or [(x.get('phase'),x.get('point')) for x in frames]!=[(p,q) for p in PHASES for q in ('before','after')]: raise ValueError('telemetry coverage')
@@ -372,9 +434,11 @@ def validate_result(result):
     for phase in ('before','after'):
         counts=drc.get(phase)
         if not isinstance(counts,dict) or any(not isinstance(k,str) or not count_ok(v) for k,v in counts.items()) or not hash_ok(drc.get(phase+'_identity_sha256')): raise ValueError('DRC summary')
+        checkpoint=checkpoints['drc-'+phase]
+        if counts!=checkpoint['counts'] or drc[phase+'_identity_sha256']!=checkpoint['identities'].get('identity_sha256') or sum(counts.values())!=checkpoint['identities'].get('count'): raise ValueError('DRC checkpoint consistency')
     changes=drc.get('delta')
     if not isinstance(changes,dict) or set(changes)!={'added','removed'}: raise ValueError('DRC delta')
-    for row in changes.values():
+    for row in list(changes.values())+[c['identities'] for c in checkpoints.values()]:
         if not isinstance(row,dict) or not count_ok(row.get('count')) or not hash_ok(row.get('identity_sha256')) or type(row.get('sample_complete')) is not bool or not isinstance(row.get('sample'),list) or len(row['sample'])>32: raise ValueError('DRC identities')
         for pair in row['sample']:
             if not isinstance(pair,(list,tuple)) or len(pair)!=2 or not isinstance(pair[0],str) or not count_ok(pair[1]) or pair[1]==0: raise ValueError('DRC sample')

@@ -51,7 +51,7 @@
         },
         {
           "uses": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
-          "timeout-minutes": 2,
+          "timeout-minutes": 1,
           "with": {
             "ref": "${{ github.workflow_sha }}",
             "path": "tooling",
@@ -62,7 +62,7 @@
         },
         {
           "uses": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
-          "timeout-minutes": 2,
+          "timeout-minutes": 1,
           "with": {
             "ref": "fa16c6ffa6497f095e1902c223150c23fafccd6e",
             "path": "frozen",
@@ -79,7 +79,7 @@
         },
         {
           "name": "Run selected frozen-source mode",
-          "timeout-minutes": 9,
+          "timeout-minutes": 10,
           "run": "case \"$OSC_MODE\" in\n  smoke) python3 -B tooling/scripts/ci/osc_candidate_check.py --source frozen --out receipts ;;\n  identity) python3 -B tooling/scripts/ci/osc_inventory_check.py frozen inventory-receipts ;;\n  topology) python3 -B tooling/scripts/ci/osc_topology_check.py frozen topology-receipts ;;\n  fill) python3 -B tooling/scripts/ci/osc_fill_check.py frozen fill-receipts ;;\n  *) echo \"Unsupported mode\" >&2; exit 2 ;;\nesac",
           "if": "${{ !inputs.source_tests_only }}"
         },

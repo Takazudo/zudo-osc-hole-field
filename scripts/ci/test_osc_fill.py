@@ -108,6 +108,11 @@ class FillTests(unittest.TestCase):
         native={'membership':{n:{'count':0,'uuid_sha256':h,'selected_members':[]} for n in set(f.topology.EXPECTED)|set(f.VIAS)},'zones':[{'uuid':u,'net':'AGND','rule_area':False,'counts':{'F.Cu':0}} for u in f.topology.ZONES],'entry_terminal':None,'entry_terminal_status':'UNRESOLVED'}
         drc={'before':{},'after':{},'before_identity_sha256':h,'after_identity_sha256':h,'delta':f.delta(collections.Counter(),collections.Counter())}
         r={'status':f.STATUS,'board_acceptance':False,'source_hashes':{'before':f.PINS,'after':f.PINS},'nonfill_input':h,'nonfill_before':h,'nonfill_after':h,'commands':[{'exit_code':0}]*4,'elapsed_seconds':99,'native_before':native,'native_after':native,'drc':drc,'scratch_hashes':{'input':f.PINS['osc-core.kicad_pcb'],'before':h,'after':h}}
+        r['phase_results']=[{'phase':p,'status':'COMPLETE','start_monotonic_seconds':i*2,'end_monotonic_seconds':i*2+1,'elapsed_seconds':1} for i,p in enumerate(f.PHASES)]
+        empty=f.delta(collections.Counter(),collections.Counter())['added']
+        r['drc_checkpoints']={p:{'report_sha256':h,'report_bytes':1,'counts':{},'identities':empty} for p in ('drc-before','drc-after')}
+        r['drc_counts']={'before':{},'after':{}}
+        drc['before_identity_sha256']=drc['after_identity_sha256']=empty['identity_sha256']
         with patch.object(f,'memory_snapshot',side_effect=lambda:self.memory()):
             for phase in f.PHASES:
                 for point in ('before','after'):f.record_memory(r,phase,point)
@@ -122,7 +127,7 @@ class FillTests(unittest.TestCase):
         for bad in (float('nan'),float('inf'),-1,True):
             altered=copy.deepcopy(r);altered['memory_telemetry'][1]['monotonic_seconds']=bad
             with self.assertRaisesRegex(ValueError,'timestamp'):f.validate_result(altered)
-        for key,value in [('board_acceptance',True),('elapsed_seconds',101),('nonfill_after','b'),('failure',{}),('native_before',{}),('native_after',{}),('drc',{}),('scratch_hashes',{})]:
+        for key,value in [('board_acceptance',True),('elapsed_seconds',421),('nonfill_after','b'),('failure',{}),('native_before',{}),('native_after',{}),('drc',{}),('scratch_hashes',{}),('phase_results',[]),('drc_checkpoints',{})]:
             altered=dict(r);altered[key]=value
             with self.assertRaises(ValueError):f.validate_result(altered)
         for key,value in [('memory_telemetry',[]),('memory_telemetry',[{}])]:
@@ -148,10 +153,40 @@ class FillTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             root=Path(td);board=root/'board';board.write_bytes(b'12345')
             proc=unittest.mock.Mock();proc.poll.return_value=None;proc.pid=123
+            outcome={}
             with patch.object(f.subprocess,'Popen',return_value=proc),patch.object(f.os,'killpg',create=True) as kill,patch.object(f.signal,'SIGKILL',9,create=True):
                 with self.assertRaisesRegex(ValueError,'file size bound'):
-                    f.bounded(['fake'],root,f.time.monotonic()+2,root/'log',((board,4),))
+                    f.bounded(['fake'],root,f.time.monotonic()+2,root/'log',((board,4),),outcome)
                 kill.assert_called_once_with(123,f.signal.SIGKILL);proc.wait.assert_called_once_with(timeout=2)
+            self.assertEqual(outcome['status'],'FAILED')
+            self.assertEqual(outcome['argv'],['fake']);self.assertGreaterEqual(outcome['elapsed_seconds'],0)
+
+    def test_phase_caps_obey_remaining_total(self):
+        self.assertEqual(f.PAYLOAD_SECONDS,420)
+        for phase,cap in {'normalize':45,'drc-before':100,'fill':150,'drc-after':100}.items():
+            self.assertEqual(f.phase_deadline(420,phase,10),10+cap)
+            self.assertEqual(f.phase_deadline(420,phase,419),420)
+        with self.assertRaises(TimeoutError):f.phase_deadline(420,'fill',420)
+
+    def test_completed_drc_checkpoint_survives_later_failure(self):
+        result={}
+        with tempfile.TemporaryDirectory() as td:
+            path=Path(td)/'drc.json'
+            path.write_text(json.dumps({'kicad_version':'10.0.6','violations':[],'unconnected_items':[{'type':'unconnected_items','items':[{'uuid':'a'},{'uuid':'b'}]}],'schematic_parity':[]}))
+            f.drc_checkpoint(result,'drc-before',path)
+            saved=json.loads(json.dumps(result))
+            row=f.phase_start(result,'fill');f.phase_end(row,'FAILED',f.time.monotonic()+10)
+            result['failure']={'phase':'fill','message':'synthetic later failure'}
+            self.assertEqual(json.loads(json.dumps(result['drc_checkpoints'])),saved['drc_checkpoints'])
+            self.assertEqual(result['drc_counts']['before'],{'unconnected_items:unconnected_items':1})
+            self.assertEqual(result['drc_checkpoints']['drc-before']['report_sha256'],f.sha(path))
+            self.assertEqual(result['drc_checkpoints']['drc-before']['identities']['count'],1)
+
+    def test_late_phase_completion_is_failure(self):
+        row={'phase':'fill','start_monotonic_seconds':1,'status':'STARTED'}
+        with patch.object(f.time,'monotonic',return_value=152):
+            with self.assertRaises(TimeoutError):f.phase_end(row,'COMPLETE',151)
+        self.assertEqual(row['status'],'FAILED')
 
     def test_no_refill_cli_or_original_save(self):
         source=Path(f.__file__).read_text()

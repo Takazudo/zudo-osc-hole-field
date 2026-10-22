@@ -50,6 +50,12 @@ class Resources(unittest.TestCase):
     def test_resource_override_rejected(self):
         for flag in ('--memory','--memory=4g','--memory-swap=4g','--cpus=8','--pids-limit=100','-m4g','-c2'):
             with self.assertRaises(ValueError):c.adapter(['run','--rm',flag,c.IMAGE])
+    def test_attach_policy_is_fill_only(self):
+        with self.assertRaises(ValueError):c.adapter(['run','--rm',c.IMAGE],execution_policy='fill-430')
+        for policy,seconds in [('default',120),('fill-430',430),('fill-probe-20',20)]:
+            with tempfile.TemporaryDirectory() as t,patch.dict(os.environ,{'OSC_STATE':t,'OSC_REAL_DOCKER':'docker'}),patch.object(c,'run_command',side_effect=[{'failure':None,'exit_code':0,'output':'a'*64},{'failure':None,'exit_code':0,'output':''}]) as run:
+                c.adapter(['run','--rm',c.IMAGE],memory_policy='fill-2g-noswap',execution_policy=policy)
+                self.assertEqual(run.call_args.args[2],seconds)
     def test_effective_context_endpoint(self):
         for endpoint in ('unix:///var/run/docker.sock','tcp://remote:2375',None,''):
             with patch.object(c,'run_command',return_value={'failure':None,'exit_code':0,'output':json.dumps(endpoint)}) as run:
@@ -59,5 +65,27 @@ class Resources(unittest.TestCase):
                     with self.assertRaises(ValueError):f.local_docker_endpoint('docker',Path('.'),measurement)
                     self.assertEqual(measurement['docker_endpoint'],'REJECTED_NONLOCAL_OR_MISSING')
                 self.assertEqual(run.call_args.args[0],['docker','context','inspect','--format','{{json .Endpoints.docker.Host}}'])
+    def test_deadline_nesting_and_insufficient_budget(self):
+        self.assertLess(f.PAYLOAD_SECONDS,f.ATTACH_SECONDS)
+        self.assertLess(f.ATTACH_SECONDS,f.WRAPPER_SECONDS)
+        self.assertGreaterEqual(f.LAUNCH_RESERVE,f.WRAPPER_SECONDS+f.CLEANUP_RESERVE)
+        self.assertEqual(f.TOTAL_SECONDS,590)
+        self.assertLess(f.TOTAL_SECONDS,600)
+        old=c.DEADLINE
+        try:
+            c.DEADLINE=1000
+            with patch.object(f.time,'monotonic',return_value=504):
+                with self.assertRaises(TimeoutError):f.require_budget(f.LAUNCH_RESERVE)
+        finally:c.DEADLINE=old
+    def test_wrapper_exhausted_before_create(self):
+        args=['run','--rm',c.IMAGE,'python3','/analysis/osc_frozen_fill.py']
+        old=c.DEADLINE
+        try:
+            c.DEADLINE=1000
+            env={'OSC_INPUT_ROOT':'/source','OSC_PAYLOAD':'/bundle','OSC_COMMAND_DEADLINE':'600'}
+            with patch.dict(os.environ,env),patch.object(f,'readonly_args',return_value=args),patch.object(f,'resource_preflight'),patch.object(f.time,'monotonic',return_value=200),patch.object(c,'adapter') as create:
+                with self.assertRaisesRegex(TimeoutError,'wrapper budget'):f.adapter(args)
+                create.assert_not_called()
+        finally:c.DEADLINE=old;c.RESERVE_SECONDS=7
 
 if __name__=='__main__': unittest.main()

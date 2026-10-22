@@ -32,6 +32,16 @@ class FillController(unittest.TestCase):
     def test_summary_excludes_drc_samples(self):
         s=json.loads(f.summary_for({'status':'FAILED','cleanup':[]},{'drc':{'before':{'x':1},'after':{'x':2},'delta':{'added':{'count':1,'sample':'x'*20000}}}}))
         self.assertEqual(s['drc_delta_counts'],{'added':1});self.assertNotIn('sample',json.dumps(s))
+    def test_summary_preserves_partial_drc_and_phases(self):
+        detail={'drc_counts':{'before':{'x':2}},'drc_checkpoints':{'drc-before':{'report_sha256':'a'*64,'report_bytes':10,'counts':{'x':2},'identities':{'sample':'private'}}},'phase_results':[{'phase':'fill','status':'FAILED'}]}
+        s=json.loads(f.summary_for({'status':'FAILED'},detail))
+        self.assertEqual(s['drc_checkpoint_counts'],{'before':{'x':2}})
+        self.assertEqual(s['drc_checkpoints']['drc-before']['report_sha256'],'a'*64)
+        self.assertEqual(s['phase_results'],detail['phase_results']);self.assertNotIn('private',json.dumps(s))
+    def test_summary_preserves_command_failure_outcome(self):
+        row={'phase':'fill','status':'FAILED','error':'phase timeout','start_monotonic_seconds':1,'end_monotonic_seconds':2,'deadline_monotonic_seconds':2,'elapsed_seconds':1,'argv':['private']}
+        s=json.loads(f.summary_for({'status':'FAILED'},{'commands':[row]}))
+        self.assertEqual(s['command_outcomes'][0],{k:v for k,v in row.items() if k!='argv'})
     def args(self):
         return ['run','--rm','--network','none','--volume','/source:/work','--volume','/tmp/home:/tmp/kicad-home',f.c.IMAGE]
     def test_minimal_readonly_mounts(self):

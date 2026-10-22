@@ -13,6 +13,17 @@ import osc_frozen_fill as inv
 import osc_frozen_topology as topology
 
 GIB=1024**3
+TOTAL_SECONDS=590
+PAYLOAD_SECONDS=420
+ATTACH_SECONDS=430
+WRAPPER_SECONDS=450
+CLEANUP_RESERVE=40
+LAUNCH_RESERVE=WRAPPER_SECONDS+CLEANUP_RESERVE+7
+
+def require_budget(seconds):
+    remaining=c.DEADLINE-time.monotonic()
+    if remaining<seconds: raise TimeoutError('insufficient launch budget')
+    return remaining
 
 def local_docker_endpoint(docker,root,measurement=None):
     result=c.run_command([docker,'context','inspect','--format','{{json .Endpoints.docker.Host}}'],root,10,isolated=False)
@@ -74,11 +85,19 @@ def summary_for(receipt,detail=None):
     summary['cleanup']=[{k:r.get(k) for k in ('status','state_before_cleanup')} for r in receipt.get('cleanup',[])][:8]
     summary['source_hashes_unchanged']=receipt.get('before')==receipt.get('after') and 'before' in receipt
     summary['resource_checks']=receipt.get('resource_checks',[])
+    summary['deadline_policy']=receipt.get('deadline_policy')
+    summary['elapsed_seconds']=receipt.get('elapsed_seconds')
     if isinstance(detail,dict):
         summary['fill_status']=detail.get('status')
         summary['fill_failure']=str(detail.get('failure'))[:700]
         drc=detail.get('drc',{})
         summary['drc_counts']={k:drc.get(k) for k in ('before','after')}
+        summary['drc_checkpoint_counts']=detail.get('drc_counts',{})
+        summary['drc_checkpoints']={name:{k:row.get(k) for k in ('report_sha256','report_bytes','counts')}
+            for name,row in detail.get('drc_checkpoints',{}).items()}
+        summary['phase_results']=detail.get('phase_results',[])
+        summary['command_outcomes']=[{k:row.get(k) for k in ('phase','status','error','exit_code','failure','start_monotonic_seconds','end_monotonic_seconds','deadline_monotonic_seconds','elapsed_seconds','log_sha256') if k in row}
+            for row in detail.get('commands',[])][:4]
         summary['drc_delta_counts']={k:v.get('count') for k,v in drc.get('delta',{}).items() if isinstance(v,dict)}
         summary['selected_membership']={phase:{name:{'count':row.get('count'),'selected_members':row.get('selected_members')}
             for name,row in detail.get(phase,{}).get('membership',{}).items() if name in topology.EXPECTED}
@@ -87,6 +106,9 @@ def summary_for(receipt,detail=None):
     encoded=json.dumps(summary,sort_keys=True)
     if len(encoded.encode())>16384:
         summary.pop('selected_membership',None);summary['membership_summary_omitted_for_bound']=True
+        encoded=json.dumps(summary,sort_keys=True)
+    if len(encoded.encode())>16384:
+        summary.pop('memory_telemetry',None);summary['memory_summary_omitted_for_bound']=True
         encoded=json.dumps(summary,sort_keys=True)
     if len(encoded.encode())>16384: raise ValueError('bounded summary exceeds limit')
     return encoded
@@ -113,7 +135,13 @@ def adapter(argv):
     root=Path(os.environ['OSC_INPUT_ROOT']);payload=Path(os.environ['OSC_PAYLOAD'])
     args=readonly_args(argv,root,payload)
     resource_preflight()
-    return c.adapter(args,memory_policy='fill-2g-noswap')
+    c.RESERVE_SECONDS=CLEANUP_RESERVE+7
+    is_payload=any('/analysis/osc_frozen_fill.py' in a for a in args[args.index(c.IMAGE)+1:])
+    # Measure after both oracle setup and this container's capacity probes, before create.
+    require_budget(ATTACH_SECONDS+CLEANUP_RESERVE+7+10 if is_payload else 40+CLEANUP_RESERVE+7)
+    if is_payload and float(os.environ['OSC_COMMAND_DEADLINE'])-time.monotonic()<PAYLOAD_SECONDS+10+7:
+        raise TimeoutError('insufficient wrapper budget after setup for payload and create')
+    return c.adapter(args,memory_policy='fill-2g-noswap',execution_policy='fill-430' if is_payload else 'fill-probe-20')
 
 def main():
     if len(sys.argv)!=3: raise ValueError('usage: osc_fill_check.py SOURCE OUT')
@@ -121,11 +149,15 @@ def main():
     if root==out or out.is_relative_to(root): raise ValueError('output must be separate')
     out.mkdir(exist_ok=False)
     payload=Path(__file__).with_name('osc_frozen_fill.py').resolve()
-    old_pins,old_deadline=c.PINS,c.DEADLINE
-    c.DEADLINE=time.monotonic()+480
+    old_pins,old_deadline,old_reserve=c.PINS,c.DEADLINE,c.RESERVE_SECONDS
+    started=time.monotonic();c.DEADLINE=started+TOTAL_SECONDS
+    c.RESERVE_SECONDS=CLEANUP_RESERVE+7
     c.PINS={**c.PINS,**{'boards/osc-core/'+name:h for name,h in inv.PINS.items()}}
     receipt=dict(status='STARTED',source_sha=c.SOURCE,tooling_sha=os.environ.get('TOOLING_SHA'),
         image=c.IMAGE,commands=[],cleanup=[],candidate_ingestion='UNIMPLEMENTED')
+    receipt['deadline_policy']={'total_seconds':TOTAL_SECONDS,'payload_seconds':PAYLOAD_SECONDS,
+        'attach_seconds':ATTACH_SECONDS,'wrapper_seconds':WRAPPER_SECONDS,'cleanup_reserve_seconds':CLEANUP_RESERVE,
+        'launch_reserve_seconds':LAUNCH_RESERVE,'started_monotonic':started,'deadline_monotonic':c.DEADLINE}
     state=None;docker=None;failed=False
     def save(): (out/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
     try:
@@ -155,9 +187,10 @@ def main():
              'GITHUB_ACTIONS':os.environ['GITHUB_ACTIONS'],'RUNNER_ENVIRONMENT':os.environ['RUNNER_ENVIRONMENT']}
         commands=[*c.COMMANDS,['bash','scripts/kicad/run.sh','python3','-B','/analysis/osc_frozen_fill.py']]
         for n,command in enumerate(commands):
-            if c.DEADLINE-time.monotonic()<200: raise TimeoutError('insufficient command and cleanup reserve')
+            require_budget(LAUNCH_RESERVE if n==2 else 200)
             first=len(receipt['cleanup'])
-            result=c.run_command(command,root,110,env);receipt['commands'].append(result);save()
+            env['OSC_COMMAND_DEADLINE']=str(time.monotonic()+(WRAPPER_SECONDS if n==2 else 20))
+            result=c.run_command(command,root,WRAPPER_SECONDS if n==2 else 20,env);receipt['commands'].append(result);save()
             collect_resources(state,receipt);save()
             data=None
             if n==2:
@@ -176,6 +209,7 @@ def main():
     except Exception as exc:
         failed=True;receipt.update(status='FAILED',error=str(exc))
     finally:
+        c.RESERVE_SECONDS=7 # release reserved cleanup budget; keep the original absolute deadline
         if state is not None:
             try:c.cleanup_owned(state,docker,root,outcomes=receipt['cleanup'])
             except Exception as exc:failed=True;receipt.update(status='FAILED',cleanup_error=str(exc))
@@ -184,12 +218,13 @@ def main():
         try:receipt['after']=c.snapshot(root)
         except Exception as exc:failed=True;receipt.update(status='FAILED',after_error=str(exc))
         try:
+            receipt['elapsed_seconds']=time.monotonic()-started
             save()
             detail=None
             if (out/'fill.json').is_file():
                 detail=json.loads((out/'fill.json').read_text())
             print(summary_for(receipt,detail),flush=True)
-        finally: c.PINS,c.DEADLINE=old_pins,old_deadline
+        finally: c.PINS,c.DEADLINE,c.RESERVE_SECONDS=old_pins,old_deadline,old_reserve
     return int(failed)
 
 if __name__=='__main__':
