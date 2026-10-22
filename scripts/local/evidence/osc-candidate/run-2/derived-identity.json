@@ -1,0 +1,35 @@
+{
+  "attestation": "image id from candidate run 2 receipt image_identity (docker image inspect of the pinned digest, recorded in receipt commands); pcbnew 10.0.6 required by osc_single_zone_payload.py sha 899d5082 at tooling 18a3a6bd",
+  "identity": {
+    "image_id": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "kicad": "10.0.6",
+    "parent_key": null,
+    "process": "derived-fill/1",
+    "source": {
+      "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+      "osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+      "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+    },
+    "zones": [
+      "265b1369-38aa-5a3a-b488-eb0aae22e998"
+    ]
+  },
+  "identity_key": "58088594a0fc0434f0df530c3ed4c2196a8f4f561c6e0308b9b37c770f23ef89",
+  "manifest_sha256": "150cf6ff8f3ade4966a19197bbbacad67fe2d84e867d8581cfdf1bce879c49ed",
+  "meaning": "Image id and KiCad version are attested from the recorded run receipt, not recomputed from the board; file hashes, semantics and ownership are recomputed on every reuse.",
+  "process": "derived-fill/1",
+  "receipt": {
+    "status": "SINGLE_ZONE_CANDIDATE_EXPORTED_NOT_ACCEPTANCE",
+    "tool_hashes": {
+      "osc_candidate_check.py": "7ab62a1b5294c92b4291a6334014b9818349b52e38f36c04ed5aa476135340ce",
+      "osc_fill_check.py": "1fb357a67275fbc24f8b4bb4de33828b4c723b389cd49a2a2e1c8843eb4b87c9",
+      "osc_frozen_fill.py": "6d7540005965fa0b4998992874cb3de5ba55870c394dacee0044a0572b50672b",
+      "osc_frozen_topology.py": "173011d11d7e7e0c4ebdfa4ae6e413636da1d35c815a98504599c4d01d253f78",
+      "osc_single_zone_local.py": "9e7ec18a7d808e777bec9e53135b062d3a7fc7163f344ce85da714d729722720",
+      "osc_single_zone_payload.py": "899d5082869be03fea1f35d30ff4fddde5b1bf774df05afe6744fc76a4cc9d4e",
+      "osc_synthetic_local.py": "56c28c42378e4a898e82cea47055039082099baa4e29f1e43e5dc0be8384121a",
+      "osc_zone_drc_payload.py": "aafb7a6396b7192d405c866995b058ebebb3ba0c3841917482cad6532981af17"
+    },
+    "tooling_sha": "18a3a6bda7e7a7aacb9c6a30d76e10e856a532f9"
+  }
+}
