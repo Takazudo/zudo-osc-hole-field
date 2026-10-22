@@ -33,6 +33,7 @@ class LocalGate(unittest.TestCase):
     def test_refuses_without_heavy_guard_slot(self):
         with self.assertRaises(ValueError):l.local_gate(env())
         with self.assertRaises(ValueError):l.local_gate(env(HEAVY_GUARD_HELD='0'))
+        l.local_gate(env(),require_guard=False)
     def test_authorization_note(self):
         self.assertEqual(l.authorization('  user instruction 2026-10-23  '),'user instruction 2026-10-23')
         for bad in (None,'','short note','x'*501):
@@ -50,8 +51,9 @@ class LocalGate(unittest.TestCase):
     def test_adapter_requires_local_marker(self):
         with patch.dict(os.environ,env(),clear=True):
             with self.assertRaises(ValueError):l.adapter(['run'])
-        with patch.dict(os.environ,env(OSC_LOCAL_ADAPTER='1',GITHUB_ACTIONS='true'),clear=True):
-            with self.assertRaises(ValueError):l.adapter(['run'])
+        for key in ('GITHUB_ACTIONS','CI','DOCKER_HOST'):
+            with patch.dict(os.environ,env(OSC_LOCAL_ADAPTER='1',**{key:'x'}),clear=True):
+                with self.assertRaises(ValueError):l.adapter(['run'])
         with patch.dict(os.environ,env(OSC_LOCAL_ADAPTER='1'),clear=True),patch.object(s,'adapter',return_value=0) as hosted:
             self.assertEqual(l.adapter(['run','--rm',c.IMAGE]),0)
             hosted.assert_called_once_with(['run','--rm',c.IMAGE])
@@ -81,6 +83,25 @@ class LocalRun(unittest.TestCase):
         with tempfile.TemporaryDirectory() as t:
             args=l.parse(['run',t,str(Path(t)/'out'),'--state',str(Path(t)/'s'),'--authorization','offline unit test authorization note'])
             with self.assertRaises(ValueError):l.run(args)
+
+class OracleFailure(unittest.TestCase):
+    def test_missing_receipt_reports_oracle_failure(self):
+        with tempfile.TemporaryDirectory() as t:
+            source=Path(t)/'src';(source/'scripts/kicad').mkdir(parents=True);out=Path(t)/'out';state=Path(t)/'state'
+            for name in c.PINS:(source/name).write_text(name)
+            pins={name:c.sha(source/name) for name in c.PINS}
+            replies=[dict(failure=None,exit_code=0,output=c.SOURCE+'\n'),dict(failure=None,exit_code=0,output='"29.3.0"'),
+                     dict(failure=None,exit_code=0,output='"unix:///var/run/docker.sock"'),dict(failure=None,exit_code=0,output='12000000000'),
+                     dict(failure=None,exit_code=0,output=''),dict(failure=None,exit_code=0,output=json.dumps([{'Id':'sha256:'+'a'*64,'RepoDigests':[c.IMAGE],'Size':1}])),
+                     dict(failure=None,exit_code=1,output='Unable to start the pinned KiCad Docker oracle\n')]
+            meminfo='MemTotal:       12000000 kB\nMemAvailable:   10000000 kB\n'
+            args=l.parse(['run',str(source),str(out),'--state',str(state),'--authorization','offline unit test authorization note'])
+            with patch.dict(os.environ,env(TOOLING_SHA='a'*40,**GUARD),clear=False),patch.object(c,'PINS',pins),patch.object(c,'run_command',side_effect=replies),\
+                 patch.object(l,'host_meminfo',return_value=meminfo),patch.object(l.shutil,'which',return_value='/usr/bin/docker'),contextlib.redirect_stdout(io.StringIO()):
+                code=l.run(args)
+            receipt=json.loads((out/'receipt.json').read_text())
+            self.assertEqual(code,1);self.assertIn('Docker operation failed',receipt['error']);self.assertIn('receipt missing',receipt['receipt_parse_error'])
+            self.assertFalse((out/'synthetic.json').exists());self.assertEqual(receipt['cleanup'],[])
 
 class PostStopCleanup(unittest.TestCase):
     def cleanup_with(self,state,out,side_effect=None):
@@ -119,7 +140,8 @@ class PostStopCleanup(unittest.TestCase):
 class Wrapper(unittest.TestCase):
     def test_outer_stop_contract(self):
         text=(Path(__file__).with_name('osc_synthetic_local.sh')).read_text()
-        self.assertIn('outer_stop_seconds=120',text);self.assertIn('kill -KILL -- "-$pgid"',text)
+        self.assertIn('outer_stop_seconds=120',text);self.assertIn('kill -KILL -- "-$pid"',text);self.assertNotIn('ps -o pgid',text)
+        self.assertIn('TOOLING_SHA=$(git -C "$script_dir" rev-parse HEAD)',text)
         self.assertIn('setsid python3 -B',text);self.assertIn('osc_synthetic_local.py" cleanup',text)
         self.assertIn('HEAVY_GUARD_HELD',text);self.assertNotIn('GITHUB_ACTIONS=',text);self.assertNotIn('RUNNER_ENVIRONMENT=',text)
     def test_no_hosted_spoof_in_adapter_source(self):

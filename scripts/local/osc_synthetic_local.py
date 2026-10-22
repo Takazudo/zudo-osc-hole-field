@@ -31,13 +31,13 @@ CLEANUP_SECONDS=30
 STATUS=q.STATUS
 MODE='LOCAL_WSL_CONTAINMENT'
 
-def local_gate(environ):
+def local_gate(environ,require_guard=True):
     if any(environ.get(k) for k in ('GITHUB_ACTIONS','RUNNER_ENVIRONMENT','CI')):
         raise ValueError('local adapter refuses hosted or CI environments')
     if environ.get('DOCKER_HOST') or environ.get('DOCKER_CONTEXT'):
         raise ValueError('alternate Docker endpoint forbidden')
     # heavy-guard.sh exports this only to the command holding its machine-wide slot.
-    if environ.get('HEAVY_GUARD_HELD')!='1':
+    if require_guard and environ.get('HEAVY_GUARD_HELD')!='1':
         raise ValueError('machine-wide heavy-guard slot not held')
 
 def authorization(text):
@@ -54,6 +54,9 @@ def image_identity(output):
     if not isinstance(image_id,str) or not image_id.startswith('sha256:') or len(image_id)!=71: raise ValueError('image id')
     return {'id':image_id,'repo_digests':digests,'size_bytes':row.get('Size')}
 
+def host_meminfo():
+    return Path('/proc/meminfo').read_text()
+
 def state_dir(path):
     p=Path(path).resolve()
     if p.exists() or p.is_symlink(): raise ValueError('state directory must not pre-exist')
@@ -62,7 +65,8 @@ def state_dir(path):
 
 def adapter(argv):
     if os.environ.get('OSC_LOCAL_ADAPTER')!='1': raise ValueError('local adapter shim invoked outside a local run')
-    if os.environ.get('GITHUB_ACTIONS') or os.environ.get('RUNNER_ENVIRONMENT'): raise ValueError('hosted environment')
+    # run_command strips HEAVY_GUARD_HELD from the oracle environment; the controller already required it.
+    local_gate(os.environ,require_guard=False)
     return s.adapter(argv)
 
 def run(args):
@@ -92,7 +96,7 @@ def run(args):
         if not docker:raise ValueError('Docker missing')
         r['docker_server_version']=c.checked(call([docker,'version','--format','{{json .Server.Version}}']))
         f.local_docker_endpoint(docker,root,r)
-        capacity=f.capacity_decision(Path('/proc/meminfo').read_text(),shutil.disk_usage('/').free,
+        capacity=f.capacity_decision(host_meminfo(),shutil.disk_usage('/').free,
             json.loads(c.checked(call([docker,'info','--format','{{json .MemTotal}}']))),c.checked(call([docker,'ps','-q'])))
         r['resource_check']=capacity
         if not capacity['passed']:raise ValueError('resource gate')
@@ -106,9 +110,13 @@ def run(args):
         env={'PATH':str(state)+os.pathsep+os.environ['PATH'],'OSC_STATE':str(state),'OSC_REAL_DOCKER':docker,'OSC_INPUT_ROOT':str(root),
              'OSC_PAYLOAD':str(bundle),'OSC_SYNTHETIC_DEADLINE':str(c.DEADLINE),'OSC_LOCAL_ADAPTER':'1'}
         result=call(['bash','scripts/kicad/run.sh','python3','-B','/analysis/osc_synthetic_zone.py'],s.remaining()-RESERVE-7,env)
-        # Preserve the first partial/failure result before checking command exit.
-        detail=s.parse_output(result['output']);(out/'synthetic.json').write_text(json.dumps(detail,indent=2)+'\n')
+        # Preserve the first partial/failure result before checking command exit,
+        # but let a missing receipt surface the oracle failure instead of masking it.
+        try:detail=s.parse_output(result['output'])
+        except ValueError as exc:detail=None;r['receipt_parse_error']=type(exc).__name__+': '+str(exc)[:200]
+        if detail is not None:(out/'synthetic.json').write_text(json.dumps(detail,indent=2)+'\n')
         c.checked(result)
+        if detail is None:raise ValueError('synthetic receipt missing')
         if detail['status']!=STATUS:raise ValueError('synthetic qualification failed')
         r['status']=STATUS
     except Exception as exc:

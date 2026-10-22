@@ -25,7 +25,10 @@ def fixture():
     for i,(a,b) in enumerate([((0,0),(30,0)),((30,0),(30,30)),((30,30),(0,30)),((0,30),(0,0))]):
         out.append(f'(gr_line (start {a[0]} {a[1]}) (end {b[0]} {b[1]}) (stroke (width 0.05) (type default)) (layer "Edge.Cuts") (uuid "{uid("edge"+str(i))}"))')
     for name,x,y,net in [('A',5,5,'+12V'),('B',12,5,'+12V'),('N',26,26,'+12V'),('X',10,10,'OTHER')]:
-        out.append(f'(footprint "Synthetic:Pad" (layer "F.Cu") (uuid "{uid(name)}") (at {x} {y}) (property "Reference" "{name}" (at 0 -2) (layer "F.Cu") (effects (font (size 1 1) (thickness 0.15)))) (pad "1" thru_hole circle (at 0 0) (size 1.5 1.5) (drill 0.8) (layers "*.Cu" "*.Mask") (remove_unused_layers yes) (net "{net}") (uuid "{uid(name+"pad")}")))')
+        # The foreign-net obstacle X stays flashed on every layer so the custom
+        # clearance rule (copper clearance, not hole clearance) is observable on In4.Cu.
+        unused='' if name=='X' else ' (remove_unused_layers yes)'
+        out.append(f'(footprint "Synthetic:Pad" (layer "F.Cu") (uuid "{uid(name)}") (at {x} {y}) (property "Reference" "{name}" (at 0 -2) (layer "F.Cu") (effects (font (size 1 1) (thickness 0.15)))) (pad "1" thru_hole circle (at 0 0) (size 1.5 1.5) (drill 0.8) (layers "*.Cu" "*.Mask"){unused} (net "{net}") (uuid "{uid(name+"pad")}")))')
     for name,a,b in [('duplicate',(3,3),(4,3)),('duplicate',(3,4),(4,4))]:
         out.append(f'(segment (start {a[0]} {a[1]}) (end {b[0]} {b[1]}) (width 0.25) (layer "F.Cu") (net "+12V") (uuid "{uid(name)}"))')
     out.append(f'(via (at 8 5) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (remove_unused_layers yes) (net "+12V") (uuid "{uid("via")}"))')
@@ -93,7 +96,8 @@ def observe(board,pcb):
     pads=[p for f in board.GetFootprints() for p in f.Pads()]
     vias=[x for x in board.GetTracks() if type(x).__name__=='PCB_VIA']
     flash=[{'uuid':x.m_Uuid.AsString(),'net':x.GetNetname(),'position':[x.GetPosition().x,x.GetPosition().y],'layers':[[board.GetLayerName(l),int(x.GetZoneLayerOverride(l))] for l in layers if x.IsOnLayer(l)]} for x in pads+vias]
-    fills=[{'uuid':z.m_Uuid.AsString(),'filled':bool(z.IsFilled()),'layers':[[board.GetLayerName(l),int(z.GetFilledPolysList(l).OutlineCount()),str(z.GetFilledPolysList(l).Format())] for l in layers if z.IsOnLayer(l)]} for z in board.Zones() if not z.GetIsRuleArea()]
+    # Hash the exact polygon text instead of embedding it: the cumulative receipt stays within its 100000-byte bound.
+    fills=[{'uuid':z.m_Uuid.AsString(),'filled':bool(z.IsFilled()),'layers':[[board.GetLayerName(l),int(z.GetFilledPolysList(l).OutlineCount()),int(z.GetFilledPolysList(l).TotalVertices()),sha(str(z.GetFilledPolysList(l).Format()).encode())] for l in layers if z.IsOnLayer(l)]} for z in board.Zones() if not z.GetIsRuleArea()]
     # Graph traversal, not direct-neighbour membership; retain actual native object identity.
     byname={f.GetReference()+'.'+p.GetNumber():p for f in board.GetFootprints() for p in f.Pads()}
     start=byname['A.1'];seen=set();queue=[start]

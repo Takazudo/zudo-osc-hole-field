@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 # Outer stop control for the local synthetic qualification. Independent of the
-# controller's 115 s internal deadline: the controller runs in its own process
-# group and is SIGKILLed as a group at 120 s. A bounded owned-container cleanup
-# pass always follows, so a stopped run never leaves an owned container behind.
+# controller's 115 s internal deadline: the controller runs in its own session
+# (setsid, so its pid is its pgid) and is SIGKILLed as a group at 120 s. The
+# oracle chain (run.sh, docker shim, docker start --attach) runs in sessions of
+# its own and is bounded by the inner deadline it receives; a bounded post-stop
+# cleanup pass then removes owned containers by recorded CID/name and fails
+# closed on an uncertain create record.
 set -uo pipefail
 
 if (($# != 4)); then
@@ -22,16 +25,21 @@ if [[ ${HEAVY_GUARD_HELD:-} != 1 ]]; then
   exit 3
 fi
 
+if [[ -z ${TOOLING_SHA:-} ]]; then
+  TOOLING_SHA=$(git -C "$script_dir" rev-parse HEAD) || exit 4
+  export TOOLING_SHA
+fi
+
 setsid python3 -B "$script_dir/osc_synthetic_local.py" run "$source_dir" "$out_dir" \
   --state "$state_dir" --authorization "$authorization" &
 pid=$!
-pgid=$(ps -o pgid= -p "$pid" 2>/dev/null | tr -d ' ')
 start_seconds=$SECONDS
 killed=0
 while kill -0 "$pid" 2>/dev/null; do
   if ((SECONDS - start_seconds >= outer_stop_seconds)); then
     killed=1
-    if [[ -n $pgid ]]; then kill -KILL -- "-$pgid" 2>/dev/null; fi
+    # After setsid the controller's process group id equals its pid.
+    kill -KILL -- "-$pid" 2>/dev/null
     kill -KILL "$pid" 2>/dev/null
     break
   fi
@@ -39,8 +47,8 @@ while kill -0 "$pid" 2>/dev/null; do
 done
 wait "$pid"
 rc=$?
-printf 'osc-synthetic-local: controller exit=%s killed_at_outer_stop=%s wall_seconds=%s pgid=%s\n' \
-  "$rc" "$killed" "$((SECONDS - start_seconds))" "${pgid:-unknown}" >&2
+printf 'osc-synthetic-local: controller exit=%s killed_at_outer_stop=%s wall_seconds=%s tooling_sha=%s\n' \
+  "$rc" "$killed" "$((SECONDS - start_seconds))" "$TOOLING_SHA" >&2
 
 timeout -s KILL "$cleanup_seconds" python3 -B "$script_dir/osc_synthetic_local.py" cleanup "$state_dir" "$out_dir"
 cleanup_rc=$?
