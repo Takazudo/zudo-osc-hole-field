@@ -13,6 +13,12 @@
             "identity",
             "topology"
           ]
+        },
+        "source_tests_only": {
+          "description": "Run source tests only; skip frozen checkout and all native/container execution",
+          "type": "boolean",
+          "required": true,
+          "default": false
         }
       }
     }
@@ -33,7 +39,8 @@
         "PYTHONDONTWRITEBYTECODE": "1",
         "OMP_NUM_THREADS": "1",
         "OPENBLAS_NUM_THREADS": "1",
-        "OSC_MODE": "${{ inputs.mode }}"
+        "OSC_MODE": "${{ inputs.mode }}",
+        "SOURCE_TESTS_ONLY": "${{ inputs.source_tests_only }}"
       },
       "steps": [
         {
@@ -49,7 +56,7 @@
             "path": "tooling",
             "persist-credentials": false,
             "sparse-checkout-cone-mode": false,
-            "sparse-checkout": "/scripts/ci/osc_candidate_check.py\n/scripts/ci/test_osc_candidate_check.py\n/.github/workflows/osc-candidate-check.yml\n/scripts/ci/osc_frozen_board_inventory.py\n/scripts/ci/osc_inventory_check.py\n/scripts/ci/test_osc_inventory_check.py\n/scripts/ci/test_osc_inventory_workflow.py\n/scripts/ci/osc_topology_check.py\n/scripts/ci/osc_frozen_topology.py\n/scripts/ci/test_osc_topology.py"
+            "sparse-checkout": "/scripts/ci/osc_candidate_check.py\n/scripts/ci/test_osc_candidate_check.py\n/.github/workflows/osc-candidate-check.yml\n/scripts/ci/osc_frozen_board_inventory.py\n/scripts/ci/osc_inventory_check.py\n/scripts/ci/test_osc_inventory_check.py\n/scripts/ci/test_osc_inventory_workflow.py\n/scripts/ci/osc_topology_check.py\n/scripts/ci/osc_frozen_topology.py\n/scripts/ci/test_osc_topology.py\n/scripts/ci/test_osc_mismatch.py"
           }
         },
         {
@@ -61,17 +68,19 @@
             "persist-credentials": false,
             "sparse-checkout-cone-mode": false,
             "sparse-checkout": "/scripts/kicad/run.sh\n/scripts/kicad/pin.env\n/package.json\n${{ (inputs.mode == 'identity' || inputs.mode == 'topology') && '/boards/osc-core/osc-core.kicad_pcb' || '' }}"
-          }
+          },
+          "if": "${{ !inputs.source_tests_only }}"
         },
         {
           "name": "Pure tests",
           "timeout-minutes": 2,
-          "run": "python3 - <<'PY'\nimport json,sys\nfrom pathlib import Path\nsys.path.insert(0,'tooling/scripts/ci')\nfrom osc_candidate_check import run_command\nrows=[]\nfor flags in ([],['-O']):\n    r=run_command(['python3','-B',*flags,'-m','unittest','discover','-s','scripts/ci','-p','test_osc*.py','-v'],Path('tooling').resolve(),30)\n    rows.append(r)\n    Path('receipts/tests.json').write_text(json.dumps(rows,indent=2))\n    if r['failure'] or r['exit_code']: raise SystemExit(1)\nPY"
+          "run": "python3 - <<'PY'\nimport hashlib,json,os,sys\nfrom pathlib import Path\nsys.path.insert(0,'tooling/scripts/ci')\nfrom osc_candidate_check import run_command\nrows=[]\nfor flags in ([],['-O']):\n    r=run_command(['python3','-B',*flags,'-m','unittest','discover','-s','scripts/ci','-p','test_osc*.py','-v'],Path('tooling').resolve(),30)\n    print(r['output'],flush=True)\n    rows.append(r)\n    Path('receipts/tests.json').write_text(json.dumps(rows,indent=2))\n    if r['failure'] or r['exit_code']: raise SystemExit(1)\nif os.environ.get('SOURCE_TESTS_ONLY')=='true':\n    root=Path('tooling')\n    paths=sorted(root.glob('scripts/ci/*.py'))+[root/'.github/workflows/osc-candidate-check.yml']\n    hashes={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}\n    Path('receipts/receipt.json').write_text(json.dumps({'status':'SOURCE_TESTS_ONLY_PASSED',\n        'tooling_sha':os.environ['TOOLING_SHA'],'source_sha':'fa16c6ffa6497f095e1902c223150c23fafccd6e',\n        'source_checkout_executed':False,'native_executed':False,'candidate_ingestion':'UNIMPLEMENTED',\n        'tooling_hashes':hashes},indent=2))\nPY"
         },
         {
           "name": "Run selected frozen-source mode",
           "timeout-minutes": 9,
-          "run": "case \"$OSC_MODE\" in\n  smoke) python3 -B tooling/scripts/ci/osc_candidate_check.py --source frozen --out receipts ;;\n  identity) python3 -B tooling/scripts/ci/osc_inventory_check.py frozen inventory-receipts ;;\n  topology) python3 -B tooling/scripts/ci/osc_topology_check.py frozen topology-receipts ;;\n  *) echo \"Unsupported mode\" >&2; exit 2 ;;\nesac"
+          "run": "case \"$OSC_MODE\" in\n  smoke) python3 -B tooling/scripts/ci/osc_candidate_check.py --source frozen --out receipts ;;\n  identity) python3 -B tooling/scripts/ci/osc_inventory_check.py frozen inventory-receipts ;;\n  topology) python3 -B tooling/scripts/ci/osc_topology_check.py frozen topology-receipts ;;\n  *) echo \"Unsupported mode\" >&2; exit 2 ;;\nesac",
+          "if": "${{ !inputs.source_tests_only }}"
         },
         {
           "name": "Bound upload to explicit small artifacts",

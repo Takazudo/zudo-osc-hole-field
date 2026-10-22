@@ -20,6 +20,31 @@ class WiringTests(unittest.TestCase):
         self.assertIn('exit 2',command);self.assertNotIn('${{',command)
         self.assertIn("inputs.mode == 'identity'",steps[2]['with']['sparse-checkout'])
         self.assertIn('test_osc*.py',steps[3]['run'])
+        self.assertEqual(w['on']['workflow_dispatch']['inputs']['source_tests_only']['default'],False)
+        self.assertEqual(w['on']['workflow_dispatch']['inputs']['source_tests_only']['type'],'boolean')
+        self.assertEqual(steps[2]['if'],'${{ !inputs.source_tests_only }}')
+        self.assertEqual(steps[4]['if'],'${{ !inputs.source_tests_only }}')
+        self.assertIn('/scripts/ci/test_osc_mismatch.py',steps[1]['with']['sparse-checkout'].splitlines())
+        # Exercise the actual embedded source-only runner with no subprocess/native execution.
+        code=steps[3]['run'].split('\n',1)[1].rsplit('\nPY',1)[0]
+        import osc_candidate_check as c
+        old=Path.cwd()
+        with tempfile.TemporaryDirectory() as folder:
+            try:
+                os.chdir(folder);Path('receipts').mkdir();Path('tooling/scripts/ci').mkdir(parents=True)
+                Path('tooling/.github/workflows').mkdir(parents=True)
+                Path('tooling/.github/workflows/osc-candidate-check.yml').write_text('{}')
+                with patch.dict(os.environ,{'SOURCE_TESTS_ONLY':'true','TOOLING_SHA':'a'*40}), patch.object(c,'run_command',return_value={'output':'mock suite','failure':None,'exit_code':0}) as runner:
+                    exec(compile(code,'pure-tests','exec'),{})
+                receipt=json.loads(Path('receipts/receipt.json').read_text())
+                self.assertEqual(receipt['status'],'SOURCE_TESTS_ONLY_PASSED')
+                self.assertIs(receipt['native_executed'],False)
+                self.assertIs(receipt['source_checkout_executed'],False)
+                self.assertEqual(runner.call_count,2)
+                for call in runner.call_args_list:
+                    self.assertEqual(call.args[0][0],'python3')
+                    self.assertIn('unittest',call.args[0])
+            finally:os.chdir(old)
         self.assertEqual(sum(x['timeout-minutes'] for x in steps),19)
     def stage(self,mode,inventory=False,extra=False):
         script=next(iter(self.workflow()['jobs'].values()))['steps'][-2]['run'].split('\n',1)[1].rsplit('\nPY',1)[0]
