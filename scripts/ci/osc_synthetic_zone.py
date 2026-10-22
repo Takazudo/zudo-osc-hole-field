@@ -35,7 +35,14 @@ def fixture():
         # removal items persist board-wide zone_layer_connections after a selected
         # fill (pcb_io_kicad_sexpr.cpp 10.0.6), a side effect the core cannot exhibit.
         # X also stays flashed so the custom copper clearance rule is observable on In4.Cu.
-        out.append(f'(footprint "Synthetic:Pad" (layer "F.Cu") (uuid "{uid(name)}") (at {x} {y}) (property "Reference" "{name}" (at 0 -2) (layer "F.Cu") (effects (font (size 1 1) (thickness 0.15)))) (pad "1" thru_hole circle (at 0 0) (size 1.5 1.5) (drill 0.8) (layers "*.Cu" "*.Mask") (remove_unused_layers no) (net "{net}") (uuid "{uid(name+"pad")}")))')
+        # Every footprint field carries a deterministic UUID: run 3 showed the loader
+        # assigns fresh random UUIDs to undeclared Reference/Value/Datasheet/Description
+        # fields on each load, which falsely reads as a persistent mutation.
+        fields=(f'(property "Reference" "{name}" (at 0 -2 0) (layer "F.Cu") (uuid "{uid(name+"ref")}") (effects (font (size 1 1) (thickness 0.15))))'
+                f'(property "Value" "" (at 0 0 0) (layer "F.Fab") (uuid "{uid(name+"value")}") (effects (font (size 1.27 1.27))))'
+                f'(property "Datasheet" "" (at 0 0 0) (layer "F.Fab") (hide yes) (uuid "{uid(name+"datasheet")}") (effects (font (size 1.27 1.27))))'
+                f'(property "Description" "" (at 0 0 0) (layer "F.Fab") (hide yes) (uuid "{uid(name+"description")}") (effects (font (size 1.27 1.27))))')
+        out.append(f'(footprint "Synthetic:Pad" (layer "F.Cu") (uuid "{uid(name)}") (at {x} {y}) {fields} (pad "1" thru_hole circle (at 0 0) (size 1.5 1.5) (drill 0.8) (layers "*.Cu" "*.Mask") (remove_unused_layers no) (net "{net}") (uuid "{uid(name+"pad")}")))')
     for name,a,b in [('duplicate',(3,3),(4,3)),('duplicate',(3,4),(4,4))]:
         out.append(f'(segment (start {a[0]} {a[1]}) (end {b[0]} {b[1]}) (width 0.25) (layer "F.Cu") (net "+12V") (uuid "{uid(name)}"))')
     out.append(f'(via (at 8 5) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net "+12V") (uuid "{uid("via")}"))')

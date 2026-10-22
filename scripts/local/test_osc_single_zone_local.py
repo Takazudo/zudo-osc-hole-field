@@ -1,0 +1,109 @@
+import contextlib
+import io
+import json
+import os
+from pathlib import Path
+import sys
+import tempfile
+import unittest
+from unittest.mock import patch
+sys.path.insert(0,str(Path(__file__).resolve().parent.parent/'ci'))
+import osc_candidate_check as c
+import osc_fill_check as f
+import osc_frozen_fill as fill
+import osc_single_zone_payload as z
+import osc_single_zone_local as l
+
+GUARD={'HEAVY_GUARD_HELD':'1'}
+
+def env(**extra):
+    base={k:v for k,v in os.environ.items() if k not in ('GITHUB_ACTIONS','RUNNER_ENVIRONMENT','CI','DOCKER_HOST','DOCKER_CONTEXT','HEAVY_GUARD_HELD','OSC_LOCAL_ADAPTER')}
+    base.update(extra);return base
+
+class Payload(unittest.TestCase):
+    def test_constants_and_stage_registration(self):
+        self.assertEqual(z.PAYLOAD_SECONDS,420);self.assertEqual(sum(z.STAGE_CAPS.values()),420)
+        self.assertEqual(fill.SUBSTAGES['zone'],z.STAGES);self.assertEqual(set(z.STAGE_GROUP),set(z.STAGES))
+        self.assertEqual(z.TARGET_ZONE,'265b1369-38aa-5a3a-b488-eb0aae22e998');self.assertEqual(len(z.DUPLICATE_UUIDS),6)
+        self.assertEqual(z.PAIRS,[('C1129.1','U1105.16'),('C1131.1','U1106.8')])
+    def test_compress_keeps_vias_zones_pads(self):
+        path=[{'type':'PAD','uuid':'p1','net':'+12V','layers':['F.Cu'],'pad':'C1129.1'},
+              {'type':'PCB_TRACK','uuid':'t1','net':'+12V','layers':['F.Cu']},{'type':'PCB_TRACK','uuid':'t2','net':'+12V','layers':['F.Cu']},
+              {'type':'PCB_VIA','uuid':'v1','net':'+12V','layers':['F.Cu','In4.Cu','B.Cu'],'at':[1,2],'drill':3},
+              {'type':'ZONE','uuid':z.TARGET_ZONE,'net':'+12V','layers':['In4.Cu'],'rule_area':False},
+              {'type':'PCB_TRACK','uuid':'t3','net':'+12V','layers':['B.Cu']},{'type':'PAD','uuid':'p2','net':'+12V','layers':['F.Cu'],'pad':'U1105.16'}]
+        runs=z.compress(path)
+        self.assertEqual([r['type'] for r in runs],['PAD','PCB_TRACK','PCB_VIA','ZONE','PCB_TRACK','PAD'])
+        self.assertEqual(runs[1]['count'],2);self.assertEqual(runs[1]['first_uuid'],'t1');self.assertEqual(runs[1]['last_uuid'],'t2');self.assertEqual(runs[4]['count'],1)
+    def test_zone_fill_owners_pinned_format(self):
+        text='(kicad_pcb\n\t(zone\n\t\t(net 1)\n\t\t(uuid "a")\n\t\t(filled_polygon\n\t\t\t(pts)\n\t\t)\n\t\t(filled_polygon\n\t\t)\n\t)\n\t(zone\n\t\t(uuid "b")\n\t)\n\t(segment\n\t)\n)\n'
+        with tempfile.TemporaryDirectory() as t:
+            p=Path(t)/'x.kicad_pcb';p.write_text(text)
+            self.assertEqual(z.zone_fill_owners(p),{'zones':2,'filled_polygon_by_zone':{'a':2}})
+    def test_read_rows_ignores_partial_line(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=Path(t)/'log.jsonl';p.write_bytes(b'{"seq":1,"stage":"load","event":"start","monotonic_seconds":1.0}\n{"seq":2,"sta')
+            self.assertEqual([r['stage'] for r in z.read_rows(p)],['load']);self.assertEqual(z.read_rows(Path(t)/'absent'),[])
+    def test_stage_cap_enforced_by_substage_log(self):
+        with tempfile.TemporaryDirectory() as t:
+            scratch=Path(t);log=scratch/'zone-substages.jsonl'
+            log.write_text(json.dumps({'seq':1,'phase':'zone','stage':'fill','event':'start','monotonic_seconds':0.0})+'\n')
+            record={}
+            class Proc:
+                pid=os.getpid();returncode=None
+                def poll(self): return None
+                def wait(self,timeout=None): self.returncode=-9
+            with patch.object(z.subprocess,'Popen',return_value=Proc()),patch.object(z.os,'killpg'),patch.object(z.time,'monotonic',side_effect=[10.0,500.0,500.0,500.0,500.0,500.0]),\
+                 patch.object(z.time,'sleep'):
+                with self.assertRaises(TimeoutError) as caught: z.run_worker(scratch,10000.0,record)
+            self.assertIn('fill stage cap',str(caught.exception));self.assertEqual(record['status'],'FAILED');self.assertEqual(record['stage_group_starts'],{'fill':0.0})
+    def test_counts_pinned(self):
+        self.assertEqual(z.COUNTS,{'segment':123905,'via':9646,'zone':351,'copper_zone':5})
+
+class Controller(unittest.TestCase):
+    def test_budget_constants_match_hosted_fill(self):
+        self.assertEqual(l.TOTAL_SECONDS,590);self.assertEqual(l.PAYLOAD_SECONDS,420);self.assertEqual(l.ATTACH_SECONDS,430)
+        self.assertEqual(l.OUTER_STOP_SECONDS,600);self.assertEqual(l.LAUNCH_RESERVE,497);self.assertEqual(set(l.BUNDLE),{'osc_single_zone_payload.py','osc_frozen_fill.py','osc_frozen_topology.py'})
+    def test_board_pins_extend_source_allowlist(self):
+        pins=l.board_pins();self.assertEqual(set(pins),set(c.PINS)|{'boards/osc-core/'+n for n in fill.PINS})
+        self.assertEqual(pins['boards/osc-core/osc-core.kicad_pcb'],'fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10')
+    def test_adapter_requires_local_marker(self):
+        with patch.dict(os.environ,env(),clear=True):
+            with self.assertRaises(ValueError):l.adapter(['run'])
+    def test_adapter_payload_policy(self):
+        with tempfile.TemporaryDirectory() as t:
+            state=Path(t)/'state';state.mkdir()
+            argv=['run','--rm','--platform','linux/amd64','--network','none','--user','1:1','--volume','/src:/work','--volume','/h:/tmp/kicad-home','--workdir','/work','--entrypoint','/bin/sh',c.IMAGE,'-c','x','kicad-oracle','python3','-B','/analysis/osc_single_zone_payload.py']
+            environment=env(OSC_LOCAL_ADAPTER='1',OSC_INPUT_ROOT='/src',OSC_PAYLOAD='/bundle',OSC_STATE=str(state),OSC_DEADLINE=str(10**9),OSC_COMMAND_DEADLINE=str(10**9),OSC_REAL_DOCKER='/usr/bin/docker')
+            with patch.dict(os.environ,environment,clear=True),patch.object(l,'resource_preflight'),patch.object(c,'DEADLINE',10**9),patch.object(c,'adapter',return_value=0) as inner:
+                self.assertEqual(l.adapter(argv),0)
+            self.assertEqual(inner.call_args.kwargs,{'memory_policy':'fill-2g-noswap','execution_policy':'fill-430'})
+            self.assertIn('--read-only',inner.call_args.args[0]);self.assertIn('/src:/work:ro',inner.call_args.args[0])
+    def test_resource_preflight_refuses_ci_and_records(self):
+        with tempfile.TemporaryDirectory() as t:
+            state=Path(t)/'state';state.mkdir()
+            with patch.dict(os.environ,env(OSC_STATE=str(state),CI='true',OSC_DEADLINE='1',OSC_REAL_DOCKER='/usr/bin/docker'),clear=True):
+                with self.assertRaises(ValueError):l.resource_preflight()
+            record=json.loads(next(state.glob('resource-*.json')).read_text());self.assertEqual(record['status'],'FAILED');self.assertIn('CI',record['error'])
+    def test_run_gate_failure_before_commands(self):
+        with tempfile.TemporaryDirectory() as t:
+            source=Path(t)/'src';source.mkdir();out=Path(t)/'out';state=Path(t)/'state'
+            args=l.parse(['run',str(source),str(out),'--state',str(state),'--authorization','offline unit test authorization note'])
+            with patch.dict(os.environ,env(TOOLING_SHA='a'*40),clear=True),patch.object(c,'run_command') as runner,contextlib.redirect_stdout(io.StringIO()):
+                code=l.run(args)
+            receipt=json.loads((out/'receipt.json').read_text())
+            self.assertEqual(code,1);self.assertIn('heavy-guard',receipt['error']);runner.assert_not_called();self.assertFalse(state.exists())
+            self.assertEqual(receipt['deadline_policy']['payload_seconds'],420);self.assertIs(receipt['board_acceptance'],False);self.assertEqual(receipt['drc'],'NOT RUN')
+            self.assertEqual(c.PINS,{k:v for k,v in c.PINS.items()});self.assertNotIn('boards/osc-core/osc-core.kicad_pcb',c.PINS)
+    def test_summarize_bounded(self):
+        detail={'status':z.STATUS,'elapsed_seconds':1,'worker':{'fill':{'returned':True,'seconds':2},'after':{'selected':{'counts':{'In4.Cu':3}},'pairs':{'C1129.1<->U1105.16':{'connected':True,'path_items':9,'path':[{'x':1}]*100,'path_zones':[z.TARGET_ZONE]}}}},'memory_telemetry':[{'values':{'memory.peak':5}}]}
+        s=json.loads(l.summarize({'status':z.STATUS,'cleanup':[{'status':'REMOVED_CONFIRMED'}],'before':1,'after':1},detail))
+        self.assertTrue(s['source_hashes_unchanged']);self.assertEqual(s['pairs']['after']['C1129.1<->U1105.16']['connected'],True);self.assertNotIn('path',s['pairs']['after']['C1129.1<->U1105.16']);self.assertEqual(s['memory_peak'],5)
+
+class Wrapper(unittest.TestCase):
+    def test_outer_stop_contract(self):
+        text=(Path(__file__).with_name('osc_single_zone_local.sh')).read_text()
+        self.assertIn('outer_stop_seconds=600',text);self.assertIn('kill -KILL -- "-$pid"',text);self.assertIn('osc_single_zone_local.py" cleanup',text)
+        self.assertIn('HEAVY_GUARD_HELD',text);self.assertNotIn('GITHUB_ACTIONS=',text);self.assertIn('TOOLING_SHA=$(git -C "$script_dir" rev-parse HEAD)',text)
+
+if __name__=='__main__':unittest.main()
