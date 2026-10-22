@@ -1,0 +1,261 @@
+{
+  "board_acceptance": false,
+  "command": {
+    "argv": [
+      "/usr/bin/python3",
+      "-B",
+      "/analysis/osc_derived_fill_payload.py",
+      "--worker",
+      "/scratch/osc-derive"
+    ],
+    "deadline_monotonic_seconds": 1328360.90041791,
+    "elapsed_seconds": 289.10034447093494,
+    "end_monotonic_seconds": 1328276.283010825,
+    "error": "TimeoutError: fill stage cap",
+    "exit_code": -9,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "log_tail": "",
+    "stage_group_starts": {
+      "fill": 1328016.133937176,
+      "prepare": 1327987.622342619
+    },
+    "start_monotonic_seconds": 1327987.182666354,
+    "status": "FAILED"
+  },
+  "drc": "NOT RUN: outside this derived-copy connectivity diagnostic",
+  "elapsed_seconds": 295.4124697619118,
+  "failure": {
+    "message": "fill stage cap",
+    "type": "TimeoutError"
+  },
+  "full_board_fill": false,
+  "identity": {
+    "image_id": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "kicad": "10.0.6",
+    "parent_key": null,
+    "process": "derived-fill/1",
+    "source": {
+      "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+      "osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+      "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+    },
+    "zones": [
+      "601e02b2-8ccb-5c28-83e5-03789d47fbbd"
+    ]
+  },
+  "identity_key": "ecf170dbb48e07980d8c08e149ff6e5c223745b58cdd9f9abb09cfa4b5001d16",
+  "input_after": {
+    "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+    "osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+    "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+  },
+  "input_before": {
+    "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+    "osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+    "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+  },
+  "input_hashes": {
+    "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+    "osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+    "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+  },
+  "limits": "payload 420 s; worker reserve 40 s; derive stage caps prepare 60 / fill 260 / verify 100; evaluate caps prepare 150 / verify 230; selected zones only; no route edits",
+  "memory_telemetry": [
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1327980.900480902,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "preflight",
+      "point": "before",
+      "values": {
+        "memory.current": 14106624,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 14114816,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1327987.182232138,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "preflight",
+      "point": "after",
+      "values": {
+        "memory.current": 62918656,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 64815104,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1327987.182470637,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "zone",
+      "point": "before",
+      "values": {
+        "memory.current": 62918656,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 64815104,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1328276.283375294,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "failed",
+      "point": "after",
+      "values": {
+        "memory.current": 66977792,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 1144315904,
+        "memory.swap.max": 0
+      }
+    }
+  ],
+  "mode": "derive",
+  "refill_zones_option_used": false,
+  "repair_basis": false,
+  "source_nonfill": "a97c70f0809d8d43b68e70df3eb3998aa978bc5551cf66b85cc6050cdf29aa65",
+  "source_owners": {
+    "filled_polygon_by_zone": {},
+    "zones": 351
+  },
+  "spec": {
+    "note": "Bounded timing and connectivity probe: fill only the AGND F.Cu zone on a disposable copy. Both pads of C1111.2<->U1105.12 are F.Cu SMD pads with no attached track (evaluate run 1 clusters of size 1), so only this zone can connect them; the +12V pair is a negative control. A fill stage cap hit is itself the evidence.",
+    "pairs": [
+      [
+        "C1111.2",
+        "U1105.12"
+      ],
+      [
+        "C1129.1",
+        "U1105.16"
+      ]
+    ],
+    "zones": [
+      "601e02b2-8ccb-5c28-83e5-03789d47fbbd"
+    ]
+  },
+  "status": "FAILED",
+  "tooling_sha": "180c918c1b6871a3db969d50c5d3d2c28f28c90b",
+  "worker_substages": {
+    "zone": {
+      "bytes": 742,
+      "complete": false,
+      "log_sha256": "74df34a22abbdbac74703a9ea30d97bb87f5bfbbbb0d3bda83e863f52045c261",
+      "rows": [
+        {
+          "event": "start",
+          "monotonic_seconds": 1327987.622342619,
+          "phase": "zone",
+          "seq": 1,
+          "stage": "load"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1328000.784628467,
+          "phase": "zone",
+          "seq": 2,
+          "stage": "load"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1328000.784764775,
+          "phase": "zone",
+          "seq": 3,
+          "stage": "identity"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1328001.224168606,
+          "phase": "zone",
+          "seq": 4,
+          "stage": "identity"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1328001.224222058,
+          "phase": "zone",
+          "seq": 5,
+          "stage": "before"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1328016.133855979,
+          "phase": "zone",
+          "seq": 6,
+          "stage": "before"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1328016.133937176,
+          "phase": "zone",
+          "seq": 7,
+          "stage": "fill"
+        }
+      ]
+    }
+  }
+}

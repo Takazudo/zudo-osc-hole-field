@@ -1,0 +1,265 @@
+{
+  "status": "FAILED",
+  "mode": "LOCAL_WSL_SINGLE_ZONE",
+  "payload": "derive",
+  "output": "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/8377f366-14be-4d76-8538-bfa9293b2bb2/scratchpad/derive-run-2/output",
+  "candidate": null,
+  "hosted": false,
+  "source_sha": "fa16c6ffa6497f095e1902c223150c23fafccd6e",
+  "tooling_sha": "180c918c1b6871a3db969d50c5d3d2c28f28c90b",
+  "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "target_zone": null,
+  "pairs": [
+    [
+      "C1111.2",
+      "U1105.12"
+    ],
+    [
+      "C1129.1",
+      "U1105.16"
+    ]
+  ],
+  "spec": {
+    "zones": [
+      "601e02b2-8ccb-5c28-83e5-03789d47fbbd"
+    ],
+    "pairs": [
+      [
+        "C1111.2",
+        "U1105.12"
+      ],
+      [
+        "C1129.1",
+        "U1105.16"
+      ]
+    ],
+    "note": "Bounded timing and connectivity probe: fill only the AGND F.Cu zone on a disposable copy. Both pads of C1111.2<->U1105.12 are F.Cu SMD pads with no attached track (evaluate run 1 clusters of size 1), so only this zone can connect them; the +12V pair is a negative control. A fill stage cap hit is itself the evidence."
+  },
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.050129103008657694,
+      "failure": null,
+      "output": "fa16c6ffa6497f095e1902c223150c23fafccd6e\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "version",
+        "--format",
+        "{{json .Server.Version}}"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.05015574907884002,
+      "failure": null,
+      "output": "\"29.3.0\"\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "info",
+        "--format",
+        "{{json .MemTotal}}"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.10023531992919743,
+      "failure": null,
+      "output": "12541636608\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "ps",
+        "-q"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.050107490038499236,
+      "failure": null,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "image",
+        "inspect",
+        "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.050185097148641944,
+      "failure": null,
+      "output": "[\n    {\n        \"Id\": \"sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec\",\n        \"RepoTags\": [\n            \"kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec\"\n        ],\n        \"RepoDigests\": [\n            \"kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec\"\n        ],\n        \"Comment\": \"buildkit.dockerfile.v0\",\n        \"Created\": \"2026-09-22T14:31:54.218891518Z\",\n        \"Config\": {\n            \"User\": \"kicad\",\n            \"Env\": [\n                \"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\n                \"LANG=C.UTF-8\",\n                \"LANGUAGE=C.UTF-8\",\n                \"LC_ALL=C.UTF-8\"\n            ],\n            \"Cmd\": [\n                \"bash\"\n            ],\n            \"Labels\": {\n                \"org.opencontainers.image.authors\": \"https://groups.google.com/a/kicad.org/g/devlist\",\n                \"org.opencontainers.image.description\": \"Image containing KiCad EDA, python and the stock symbol and footprint libraries for use in automation workflows\",\n                \"org.opencontainers.image.documentation\": \"https://docs.kicad.org/\",\n                \"org.opencontainers.image.licenses\": \"GPL-3.0-or-later\",\n                \"org.opencontainers.image.source\": \"https://gitlab.com/kicad/kicad-ci/kicad-cli-docker\",\n                \"org.opencontainers.image.url\": \"https://kicad.org\",\n                \"org.opencontainers.image.vendor\": \"KiCad\"\n            }\n        },\n        \"Architecture\": \"amd64\",\n        \"Os\": \"linux\",\n        \"Size\": 808800982,\n        \"RootFS\": {\n            \"Type\": \"layers\",\n            \"Layers\": [\n                \"sha256:a6dc765193a52cbaede3c93a9ff48b9540948dd0774bbe7031fcb5847606f9ac\",\n                \"sha256:c9cf57836c803a925a1b916fc2c3f1d16b7a42d65f35185f432242848c5e9381\",\n                \"sha256:dc98827f896bfd4c22abe532edf3c3e4570e57f0d6afd8a8d3e9ba83c09fae60\",\n                \"sha256:50d6c045fecb3990e952e7a0c5d7b198a7116684ed95e72fff411ae89b989633\",\n                \"sha256:bc5494982f1e4d0e69ce3e0091ae4f30f66e13c49e00c1472a9136410319aba2\",\n                \"sha256:822f611cfa79fb64e502bdad3c1721b88daa73b6075c50b33180dc14a507e7fa\",\n                \"sha256:9cba6498172bcce11efab6afaa94e30c19e5d0259b316bec10bcb7a81aadde3f\",\n                \"sha256:0b3bab14135b8e7eebe1192f01e7ab1d1f55ff857ad63dc2cc503141ed3dad62\",\n                \"sha256:5e9ce457f3af391b57880457b839901afb7dd36f3c1bfd993f7d4582298b476b\",\n                \"sha256:6dbc179907e0d3ced869a2da06753ad46cee7ee2092f251fdbc26b7a35d13673\",\n                \"sha256:dcb2f55a87b1ad591db2355a3c866ba12bd519ad293a73ff02066cc6d9a5a784\",\n                \"sha256:f1f6b686e54dbfda4283b5d2e9f4557b48160aa817faa899b37abb35f0455690\",\n                \"sha256:9a5805b9b6539631909c318c3d9a7c80103fbd84a7636b34b267837054ca082b\"\n            ]\n        },\n        \"Metadata\": {\n            \"LastTagTime\": \"2026-09-27T18:28:09.431675145Z\"\n        },\n        \"Descriptor\": {\n            \"mediaType\": \"application/vnd.docker.distribution.manifest.list.v2+json\",\n            \"digest\": \"sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec\",\n            \"size\": 403\n        },\n        \"Identity\": {\n            \"Pull\": [\n                {\n                    \"Repository\": \"docker.io/kicad/kicad\"\n                }\n            ]\n        }\n    }\n]\n"
+    },
+    {
+      "argv": [
+        "bash",
+        "scripts/kicad/run.sh",
+        "python3",
+        "-B",
+        "/analysis/osc_derived_fill_payload.py",
+        "derive"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 296.80975889600813,
+      "failure": null,
+      "output": "{\"board_acceptance\": false, \"command\": {\"argv\": [\"/usr/bin/python3\", \"-B\", \"/analysis/osc_derived_fill_payload.py\", \"--worker\", \"/scratch/osc-derive\"], \"deadline_monotonic_seconds\": 1328360.90041791, \"elapsed_seconds\": 289.10034447093494, \"end_monotonic_seconds\": 1328276.283010825, \"error\": \"TimeoutError: fill stage cap\", \"exit_code\": -9, \"log_sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\", \"log_tail\": \"\", \"stage_group_starts\": {\"fill\": 1328016.133937176, \"prepare\": 1327987.622342619}, \"start_monotonic_seconds\": 1327987.182666354, \"status\": \"FAILED\"}, \"drc\": \"NOT RUN: outside this derived-copy connectivity diagnostic\", \"elapsed_seconds\": 295.4124697619118, \"failure\": {\"message\": \"fill stage cap\", \"type\": \"TimeoutError\"}, \"full_board_fill\": false, \"identity\": {\"image_id\": \"sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec\", \"kicad\": \"10.0.6\", \"parent_key\": null, \"process\": \"derived-fill/1\", \"source\": {\"osc-core.kicad_dru\": \"14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac\", \"osc-core.kicad_pcb\": \"fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10\", \"osc-core.kicad_pro\": \"118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe\"}, \"zones\": [\"601e02b2-8ccb-5c28-83e5-03789d47fbbd\"]}, \"identity_key\": \"ecf170dbb48e07980d8c08e149ff6e5c223745b58cdd9f9abb09cfa4b5001d16\", \"input_after\": {\"osc-core.kicad_dru\": \"14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac\", \"osc-core.kicad_pcb\": \"fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10\", \"osc-core.kicad_pro\": \"118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe\"}, \"input_before\": {\"osc-core.kicad_dru\": \"14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac\", \"osc-core.kicad_pcb\": \"fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10\", \"osc-core.kicad_pro\": \"118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe\"}, \"input_hashes\": {\"osc-core.kicad_dru\": \"14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac\", \"osc-core.kicad_pcb\": \"fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10\", \"osc-core.kicad_pro\": \"118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe\"}, \"limits\": \"payload 420 s; worker reserve 40 s; derive stage caps prepare 60 / fill 260 / verify 100; evaluate caps prepare 150 / verify 230; selected zones only; no route edits\", \"memory_telemetry\": [{\"events_since_baseline\": {\"high\": 0, \"low\": 0, \"max\": 0, \"oom\": 0, \"oom_group_kill\": 0, \"oom_kill\": 0}, \"monotonic_seconds\": 1327980.900480902, \"peak_semantics\": \"memory.peak is cumulative for this cgroup, not a phase peak\", \"phase\": \"preflight\", \"point\": \"before\", \"values\": {\"memory.current\": 14106624, \"memory.events\": {\"high\": 0, \"low\": 0, \"max\": 0, \"oom\": 0, \"oom_group_kill\": 0, \"oom_kill\": 0}, \"memory.max\": 2147483648, \"memory.peak\": 14114816, \"memory.swap.max\": 0}}, {\"events_since_baseline\": {\"high\": 0, \"low\": 0, \"max\": 0, \"oom\": 0, \"oom_group_kill\": 0, \"oom_kill\": 0}, \"monotonic_seconds\": 1327987.182232138, \"peak_semantics\": \"memory.peak is cumulative for this cgroup, not a phase peak\", \"phase\": \"preflight\", \"point\": \"after\", \"values\": {\"memory.current\": 62918656, \"memory.events\": {\"high\": 0, \"low\": 0, \"max\": 0, \"oom\": 0, \"oom_group_kill\": 0, \"oom_kill\": 0}, \"memory.max\": 2147483648, \"memory.peak\": 64815104, \"memory.swap.max\": 0}}, {\"events_since_baseline\": {\"high\": 0, \"low\": 0, \"max\": 0, \"oom\": 0, \"oom_group_kill\": 0, \"oom_kill\": 0}, \"monotonic_seconds\": 1327987.182470637, \"peak_semantics\": \"memory.peak is cumulative for this cgroup, not a phase peak\", \"phase\": \"zone\", \"point\": \"before\", \"values\": {\"memory.current\": 62918656, \"memory.events\": {\"high\": 0, \"low\": 0, \"max\": 0, \"oom\": 0, \"oom_group_kill\": 0, \"oom_kill\": 0}, \"memory.max\": 2147483648, \"memory.peak\": 64815104, \"memory.swap.max\": 0}}, {\"events_since_baseline\": {\"high\": 0, \"low\": 0, \"max\": 0, \"oom\": 0, \"oom_group_kill\": 0, \"oom_kill\": 0}, \"monotonic_seconds\": 1328276.283375294, \"peak_semantics\": \"memory.peak is cumulative for this cgroup, not a phase peak\", \"phase\": \"failed\", \"point\": \"after\", \"values\": {\"memory.current\": 66977792, \"memory.events\": {\"high\": 0, \"low\": 0, \"max\": 0, \"oom\": 0, \"oom_group_kill\": 0, \"oom_kill\": 0}, \"memory.max\": 2147483648, \"memory.peak\": 1144315904, \"memory.swap.max\": 0}}], \"mode\": \"derive\", \"refill_zones_option_used\": false, \"repair_basis\": false, \"source_nonfill\": \"a97c70f0809d8d43b68e70df3eb3998aa978bc5551cf66b85cc6050cdf29aa65\", \"source_owners\": {\"filled_polygon_by_zone\": {}, \"zones\": 351}, \"spec\": {\"note\": \"Bounded timing and connectivity probe: fill only the AGND F.Cu zone on a disposable copy. Both pads of C1111.2<->U1105.12 are F.Cu SMD pads with no attached track (evaluate run 1 clusters of size 1), so only this zone can connect them; the +12V pair is a negative control. A fill stage cap hit is itself the evidence.\", \"pairs\": [[\"C1111.2\", \"U1105.12\"], [\"C1129.1\", \"U1105.16\"]], \"zones\": [\"601e02b2-8ccb-5c28-83e5-03789d47fbbd\"]}, \"status\": \"FAILED\", \"tooling_sha\": \"180c918c1b6871a3db969d50c5d3d2c28f28c90b\", \"worker_substages\": {\"zone\": {\"bytes\": 742, \"complete\": false, \"log_sha256\": \"74df34a22abbdbac74703a9ea30d97bb87f5bfbbbb0d3bda83e863f52045c261\", \"rows\": [{\"event\": \"start\", \"monotonic_seconds\": 1327987.622342619, \"phase\": \"zone\", \"seq\": 1, \"stage\": \"load\"}, {\"event\": \"complete\", \"monotonic_seconds\": 1328000.784628467, \"phase\": \"zone\", \"seq\": 2, \"stage\": \"load\"}, {\"event\": \"start\", \"monotonic_seconds\": 1328000.784764775, \"phase\": \"zone\", \"seq\": 3, \"stage\": \"identity\"}, {\"event\": \"complete\", \"monotonic_seconds\": 1328001.224168606, \"phase\": \"zone\", \"seq\": 4, \"stage\": \"identity\"}, {\"event\": \"start\", \"monotonic_seconds\": 1328001.224222058, \"phase\": \"zone\", \"seq\": 5, \"stage\": \"before\"}, {\"event\": \"complete\", \"monotonic_seconds\": 1328016.133855979, \"phase\": \"zone\", \"seq\": 6, \"stage\": \"before\"}, {\"event\": \"start\", \"monotonic_seconds\": 1328016.133937176, \"phase\": \"zone\", \"seq\": 7, \"stage\": \"fill\"}]}}}\n"
+    }
+  ],
+  "cleanup": [
+    {
+      "name": "osc-smoke-73d15f401e2a4379bdafaf90e8ec4c9b",
+      "cid": "a27c89d9ce24262d917085d8ad49f2a052142f69b6194e76208c01cfd5636335",
+      "status": "REMOVED_CONFIRMED",
+      "state_before_cleanup": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-22T18:56:41.949237928Z",
+        "FinishedAt": "2026-10-22T18:56:42.198056578Z"
+      }
+    },
+    {
+      "name": "osc-smoke-9f0f39c9e5444785ab4849978f22c2b9",
+      "cid": "77f945d9a5a722fb511d04b404e4ccb54815b6794fa7a51c489451964baf6370",
+      "status": "REMOVED_CONFIRMED",
+      "state_before_cleanup": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 1,
+        "Error": "",
+        "StartedAt": "2026-10-22T18:56:42.659285702Z",
+        "FinishedAt": "2026-10-22T19:02:02.443523696Z"
+      }
+    }
+  ],
+  "full_board_fill": false,
+  "board_acceptance": false,
+  "repair_basis": false,
+  "drc": "NOT RUN: whole-board DRC is outside this selected-zone connectivity diagnostic",
+  "deadline_policy": {
+    "total_seconds": 590,
+    "outer_stop_seconds": 600,
+    "payload_seconds": 420,
+    "attach_seconds": 430,
+    "wrapper_seconds": 450,
+    "cleanup_reserve_seconds": 40,
+    "launch_reserve_seconds": 497,
+    "stage_caps": {
+      "prepare": 60,
+      "fill": 260,
+      "verify": 100
+    },
+    "started_monotonic": 1327979.166139222,
+    "deadline_monotonic": 1328569.166139222
+  },
+  "authorization": "User delegation 2026-10-23 (option C) in this Claude Code session: bounded probe deriving a disposable copy with only the AGND F.Cu zone filled for pair C1111.2-U1105.12 (F.Cu SMD pads without tracks); existing stage caps kept; original read-only; heavy-guard slot held",
+  "host": {
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "before": {
+    "scripts/kicad/run.sh": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
+    "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+    "package.json": "ff749b4655a4cbe22c74ea248b3354a0a9ba22cc08d512ec24be3bc55b24261e",
+    "boards/osc-core/osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+    "boards/osc-core/osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe",
+    "boards/osc-core/osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac"
+  },
+  "tool_hashes": {
+    "osc_single_zone_local.py": "c0578cf9798d7ebf7791714d43fd1903e4f4c4e5e603608b36f58fe08b530ec3",
+    "osc_synthetic_local.py": "56c28c42378e4a898e82cea47055039082099baa4e29f1e43e5dc0be8384121a",
+    "osc_candidate_check.py": "7ab62a1b5294c92b4291a6334014b9818349b52e38f36c04ed5aa476135340ce",
+    "osc_fill_check.py": "1fb357a67275fbc24f8b4bb4de33828b4c723b389cd49a2a2e1c8843eb4b87c9",
+    "osc_single_zone_payload.py": "b72e5eaac9a96bbf632cca4a3e20897255f8a3f23321f98a6ba058fd2968736e",
+    "osc_zone_drc_payload.py": "aafb7a6396b7192d405c866995b058ebebb3ba0c3841917482cad6532981af17",
+    "osc_derived_fill_payload.py": "497393302ce79a53daeb2838ce974e97c7a3bb36c2b908e7c983b73c8b611c01",
+    "osc_derived_fill.py": "18ef6be65e280509bb00dc21af1a80a5ac9d1a58abf355c3821ab51b09694c95",
+    "osc_frozen_fill.py": "6d7540005965fa0b4998992874cb3de5ba55870c394dacee0044a0572b50672b",
+    "osc_frozen_topology.py": "173011d11d7e7e0c4ebdfa4ae6e413636da1d35c815a98504599c4d01d253f78"
+  },
+  "docker_server_version": "\"29.3.0\"",
+  "docker_endpoint": "unix:///var/run/docker.sock",
+  "resource_check": {
+    "host_total_bytes": 12541636608,
+    "host_available_bytes": 10479091712,
+    "docker_total_bytes": 12541636608,
+    "disk_free_bytes": 355034595328,
+    "active_container_count": 0,
+    "container_memory_bytes": 2147483648,
+    "host_reserve_bytes": 2147483648,
+    "passed": true
+  },
+  "image_identity": {
+    "id": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "repo_digests": [
+      "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec"
+    ],
+    "size_bytes": 808800982
+  },
+  "state": "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/8377f366-14be-4d76-8538-bfa9293b2bb2/scratchpad/derive-run-2/state",
+  "context": {
+    "image_id": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "kicad": "10.0.6",
+    "source_pins": {
+      "osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+      "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe",
+      "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac"
+    },
+    "process": "derived-fill/1",
+    "tooling_sha": "180c918c1b6871a3db969d50c5d3d2c28f28c90b"
+  },
+  "expected_identity_key": "ecf170dbb48e07980d8c08e149ff6e5c223745b58cdd9f9abb09cfa4b5001d16",
+  "resource_checks": [
+    {
+      "status": "PASS",
+      "measured_at_monotonic": 1327979.681648127,
+      "docker_endpoint": "unix:///var/run/docker.sock",
+      "host_total_bytes": 12541636608,
+      "host_available_bytes": 10438987776,
+      "docker_total_bytes": 12541636608,
+      "disk_free_bytes": 355034431488,
+      "active_container_count": 0,
+      "container_memory_bytes": 2147483648,
+      "host_reserve_bytes": 2147483648,
+      "passed": true
+    },
+    {
+      "status": "PASS",
+      "measured_at_monotonic": 1327980.391937137,
+      "docker_endpoint": "unix:///var/run/docker.sock",
+      "host_total_bytes": 12541636608,
+      "host_available_bytes": 10362662912,
+      "docker_total_bytes": 12541636608,
+      "disk_free_bytes": 355034304512,
+      "active_container_count": 0,
+      "container_memory_bytes": 2147483648,
+      "host_reserve_bytes": 2147483648,
+      "passed": true
+    }
+  ],
+  "error": "ValueError: normal container exit unproven",
+  "after": {
+    "scripts/kicad/run.sh": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
+    "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+    "package.json": "ff749b4655a4cbe22c74ea248b3354a0a9ba22cc08d512ec24be3bc55b24261e",
+    "boards/osc-core/osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+    "boards/osc-core/osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe",
+    "boards/osc-core/osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac"
+  },
+  "elapsed_seconds": 297.7279252500739
+}

@@ -203,3 +203,31 @@ Unconnected count 4283 -> 4103. Both pairs classify as
 `UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN` (AGND: F.Cu 601e02b2 and B.Cu e389d344
 unfilled; +12V: In4 265b1369 unfilled). No wiring claim follows from either pair.
 Artifacts with checksums: cclogs `osc-local-wsl/{evaluate-run-1,derive-run-1}`.
+
+### Derive run 2 (AGND F.Cu zone probe): FAILED at the 260 s fill stage cap; not rerun
+
+Spec: zone `601e02b2-8ccb-5c28-83e5-03789d47fbbd` (AGND, F.Cu), same two pairs.
+Prediction recorded before launch: the fill was expected to exceed the cap (22,481
+F.Cu segments, roughly 6,700 F.Cu pads and 334 keepouts as obstacles, about 1,086
+thermal connections, versus In1.Cu at 131.9 s with no segments). Observed: load
+13.2 s, before-observation 15 s, fill started at 28.5 s and was still running when
+the 260 s fill-group cap killed the worker (SIGKILL, exit -9) at 289 s; payload
+295 s; peak 1.07 GiB, zero OOM; source hashes unchanged; both owned containers
+removed and confirmed. No derived board was exported and nothing from this run is
+evidence about connectivity. Time, not memory, is the binding limit for the outer
+AGND zones at 1 CPU. A repeat needs a cause-addressing change (longer fill cap or
+more CPUs, which exceed the delegated resource envelope, or a different confinement
+strategy) and is therefore a decision item, not an action taken here. The B.Cu AGND
+zone (1,204 pads, 21,730 segments) is in the same class and was not attempted.
+Evidence: `scripts/local/evidence/osc-derive/run-2-failed`, cclogs
+`osc-local-wsl/derive-run-2-failed`.
+
+### Open items after this phase
+
+- C1111.2 <-> U1105.12 (AGND) stays `UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN`: it
+  is decided by the F.Cu AGND fill, which does not finish in 260 s at 1 CPU.
+- The derived boards (+12V In4 at b9de2114..., AGND In1 at a0a57558...) are
+  reusable through the identity key with recomputed checks; chaining them is
+  implemented and tested offline but has not been run natively.
+- Resident exited containers named `osc-task-*` from 2026-10-20 belong to an
+  earlier session and were left untouched.
