@@ -41,6 +41,10 @@ DRC_PAYLOAD_NAME='osc_zone_drc_payload.py'
 BUNDLE=(PAYLOAD_NAME,DRC_PAYLOAD_NAME,'osc_frozen_fill.py','osc_frozen_topology.py')
 MODES={'zone':(PAYLOAD_NAME,[],payload.STATUS),'candidate':(DRC_PAYLOAD_NAME,['candidate'],drcpayload.CANDIDATE_STATUS),'drc':(DRC_PAYLOAD_NAME,['drc'],drcpayload.DRC_STATUS)}
 
+def bundle_sources():
+    return {PAYLOAD_NAME:Path(__file__).with_name(PAYLOAD_NAME).resolve(),DRC_PAYLOAD_NAME:Path(__file__).with_name(DRC_PAYLOAD_NAME).resolve(),
+            'osc_frozen_fill.py':Path(inv.__file__).resolve(),'osc_frozen_topology.py':Path(topology.__file__).resolve()}
+
 def board_pins():
     return {**c.PINS,**{'boards/osc-core/'+name:h for name,h in inv.PINS.items()}}
 
@@ -97,7 +101,7 @@ def summarize(receipt,detail):
         summary['payload_status']=detail.get('status');summary['payload_failure']=detail.get('failure');summary['payload_elapsed']=detail.get('elapsed_seconds')
         worker=detail.get('worker',{}) if isinstance(detail.get('worker'),dict) else {}
         summary['fill']=worker.get('fill');summary['selected_after']=(worker.get('after') or {}).get('selected')
-        summary['pairs']={phase:{name:{k:row.get(k) for k in ('connected','symmetric','unconnected_count')}|({'cluster_a_size':row['cluster_a']['size'],'selected_zone_in_cluster':row['cluster_a']['selected_zone_member'],'bridging':{k:len(v) for k,v in row['bridging_vias'].items()} if 'bridging_vias' in row else None} if isinstance(row.get('cluster_a'),dict) else {})
+        summary['pairs']={phase:{name:{k:row.get(k) for k in ('connected','symmetric','unconnected_count')}|({'cluster_a_size':row['cluster_a'].get('size'),'selected_zone_in_cluster':row['cluster_a'].get('selected_zone_member'),'bridging':{k:len(v) for k,v in row['bridging_vias'].items()} if isinstance(row.get('bridging_vias'),dict) else None} if isinstance(row.get('cluster_a'),dict) else {})
             for name,row in (worker.get(phase) or {}).get('pairs',{}).items()} for phase in ('before','after','reloaded')}
         summary['memory_peak']=max((r.get('values',{}).get('memory.peak',0) for r in detail.get('memory_telemetry',[])),default=None)
     return json.dumps(summary,sort_keys=True)
@@ -106,15 +110,15 @@ def run(args):
     started=time.monotonic();c.DEADLINE=started+TOTAL_SECONDS;c.RESERVE_SECONDS=CLEANUP_RESERVE+7
     root=Path(args.source).resolve();out=Path(args.out).resolve()
     if root==out or out.is_relative_to(root): raise ValueError('separate output required')
-    out.mkdir(exist_ok=False)
-    old_pins=c.PINS;c.PINS=board_pins()
     payload_name,payload_args,expected_status=MODES[args.payload]
     output=Path(args.output).resolve() if args.output else None;candidate=Path(args.candidate).resolve() if args.candidate else None
+    # Argument validation before any side effect: no directories, no allowlist mutation.
     if args.payload in ('candidate','drc') and output is None: raise ValueError('--output required for '+args.payload)
     if args.payload=='drc' and candidate is None: raise ValueError('--candidate required for drc')
-    if output is not None:
-        if output.exists(): raise ValueError('output directory must not pre-exist')
-        output.mkdir(mode=0o755)
+    if output is not None and output.exists(): raise ValueError('output directory must not pre-exist')
+    out.mkdir(exist_ok=False)
+    if output is not None: output.mkdir(mode=0o755)
+    old_pins=c.PINS;c.PINS=board_pins()
     r={'status':'STARTED','mode':MODE,'payload':args.payload,'output':str(output) if output else None,'candidate':str(candidate) if candidate else None,'hosted':False,'source_sha':c.SOURCE,'tooling_sha':os.environ.get('TOOLING_SHA'),'image':c.IMAGE,
        'target_zone':payload.TARGET_ZONE,'pairs':payload.PAIRS,'commands':[],'cleanup':[],'full_board_fill':False,'board_acceptance':False,'drc':'NOT RUN: whole-board DRC is outside this two-pair selected-zone diagnostic',
        'deadline_policy':{'total_seconds':TOTAL_SECONDS,'outer_stop_seconds':OUTER_STOP_SECONDS,'payload_seconds':PAYLOAD_SECONDS,'attach_seconds':ATTACH_SECONDS,
@@ -133,7 +137,8 @@ def run(args):
         if not t or len(t)!=40 or any(x not in '0123456789abcdef' for x in t):raise ValueError('tooling SHA')
         r['host']={'platform':platform.platform(),'python':sys.version.split()[0]}
         r['before']=c.snapshot(root)
-        sources={name:Path(__file__).with_name(name) if name==PAYLOAD_NAME else Path(inv.__file__ if name=='osc_frozen_fill.py' else topology.__file__).resolve() for name in BUNDLE}
+        sources=bundle_sources()
+        if set(sources)!=set(BUNDLE) or any(p.name!=name for name,p in sources.items()):raise ValueError('bundle sources')
         r['tool_hashes']={p.name:c.sha(p) for p in [Path(__file__),Path(local.__file__),Path(c.__file__),Path(f.__file__),*sources.values()]}
         if c.checked(call(['git','rev-parse','HEAD']))!=c.SOURCE:raise ValueError('source SHA')
         docker=shutil.which('docker')

@@ -144,7 +144,7 @@ class Controller(unittest.TestCase):
             receipt=json.loads((out/'receipt.json').read_text())
             self.assertEqual(code,1);self.assertIn('heavy-guard',receipt['error']);runner.assert_not_called();self.assertFalse(state.exists())
             self.assertEqual(receipt['deadline_policy']['payload_seconds'],420);self.assertIs(receipt['board_acceptance'],False);self.assertTrue(receipt['drc'].startswith('NOT RUN: '))
-            self.assertEqual(c.PINS,{k:v for k,v in c.PINS.items()});self.assertNotIn('boards/osc-core/osc-core.kicad_pcb',c.PINS)
+            self.assertNotIn('boards/osc-core/osc-core.kicad_pcb',c.PINS)
     def test_summarize_bounded(self):
         row={'connected':True,'symmetric':True,'cluster_a':{'size':9,'selected_zone_member':True,'vias':[{'x':1}]*100},'cluster_b':{'size':9,'selected_zone_member':True,'vias':[]},'bridging_vias':{'from_a_side':[1],'from_b_side':[1,2],'new_in_merged_cluster':[]}}
         detail={'status':z.STATUS,'elapsed_seconds':1,'worker':{'fill':{'returned':True,'seconds':2},'after':{'selected':{'counts':{'In4.Cu':3}},'pairs':{'C1129.1<->U1105.16':row,'ratsnest':{'unconnected_count':4}}}},'memory_telemetry':[{'values':{'memory.peak':5}}]}
@@ -164,6 +164,15 @@ class CandidateAndDrc(unittest.TestCase):
             got=l.extra_mounts(args,str(out),str(cand))
             self.assertEqual(got[:2],['run','--volume']);self.assertIn(str(out)+':/output',got);self.assertIn(str(cand)+':/candidate:ro',got);self.assertLess(got.index(str(out)+':/output'),got.index(c.IMAGE))
             with self.assertRaises(ValueError):l.extra_mounts(args,'relative/dir',None)
+    def test_bundle_sources_exist_and_match_names(self):
+        sources=l.bundle_sources();self.assertEqual(set(sources),set(l.BUNDLE))
+        for name,path in sources.items(): self.assertEqual(path.name,name);self.assertTrue(path.is_file())
+    def test_missing_output_argument_has_no_side_effects(self):
+        with tempfile.TemporaryDirectory() as t:
+            out=Path(t)/'out';before=dict(c.PINS)
+            args=l.parse(['run',str(Path(t)/'src'),str(out),'--state',str(Path(t)/'s'),'--authorization','offline unit test authorization note','--payload','candidate'])
+            with self.assertRaises(ValueError):l.run(args)
+            self.assertFalse(out.exists());self.assertEqual(c.PINS,before)
     def test_modes(self):
         self.assertEqual(set(l.MODES),{'zone','candidate','drc'});self.assertEqual(l.MODES['drc'][1],['drc']);self.assertEqual(l.MODES['candidate'][0],'osc_zone_drc_payload.py')
         args=l.parse(['run','s','o','--state','st','--authorization','x'*20,'--payload','drc','--output','/o','--candidate','/c'])
