@@ -1,0 +1,816 @@
+{
+  "board_acceptance": false,
+  "candidate": {
+    "after": {
+      "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+      "osc-core.kicad_pcb": "b9de2114a45c5d664159646a0eccaba988b8e161fb596fe0506318204e03be6b",
+      "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+    },
+    "before": {
+      "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+      "osc-core.kicad_pcb": "6de99d66c171ee00ce94a097a004bd829648c648e883763fc0d7c605cc7894a7",
+      "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+    }
+  },
+  "candidate_manifest_sha256": "150cf6ff8f3ade4966a19197bbbacad67fe2d84e867d8581cfdf1bce879c49ed",
+  "commands": {
+    "after": {
+      "argv": [
+        "kicad-cli",
+        "pcb",
+        "drc",
+        "--format",
+        "json",
+        "--severity-all",
+        "--output",
+        "/scratch/osc-drc/drc-after.json",
+        "/scratch/osc-drc/after/osc-core.kicad_pcb"
+      ],
+      "cap_seconds": 170,
+      "elapsed_seconds": 87.48860565992072,
+      "end_monotonic_seconds": 1325500.991797884,
+      "exit_code": 0,
+      "log_sha256": "f561a94d9dbab066bd254fb777004bbe5cca820a0320219a642046bd388cccd2",
+      "log_tail": "Found 1017 violations\nFound 499 unconnected items\nSaved DRC Report to /scratch/osc-drc/drc-after.json\n",
+      "start_monotonic_seconds": 1325413.503192224,
+      "status": "COMPLETE"
+    },
+    "before": {
+      "argv": [
+        "kicad-cli",
+        "pcb",
+        "drc",
+        "--format",
+        "json",
+        "--severity-all",
+        "--output",
+        "/scratch/osc-drc/drc-before.json",
+        "/scratch/osc-drc/before/osc-core.kicad_pcb"
+      ],
+      "cap_seconds": 170,
+      "elapsed_seconds": 68.06852278811857,
+      "end_monotonic_seconds": 1325413.490179779,
+      "exit_code": 0,
+      "log_sha256": "d7fd264dd089f8cea5452e3c2da09e5d8d297e9a059536c7ef6de9fb315ea14a",
+      "log_tail": "Found 1017 violations\nFound 499 unconnected items\nSaved DRC Report to /scratch/osc-drc/drc-before.json\n",
+      "start_monotonic_seconds": 1325345.421656991,
+      "status": "COMPLETE"
+    }
+  },
+  "delta": {
+    "added": {
+      "other": {
+        "count": 6,
+        "distinct": 6,
+        "identity_sha256": "25f065fccee45c68fed7ab9db62569a1a3abf8b60f8c15689fd71ba05d021187",
+        "sample": [
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"1726e368-e393-5c18-bcb1-37f1003e6349\",\"b2904615-fe64-5980-850b-c1729c1ccca1\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"2a9b6cdb-e44f-5336-aee7-f472423dc2c7\",\"79efefed-8d67-573c-b9db-5f93a4a6b1eb\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"2a9b6cdb-e44f-5336-aee7-f472423dc2c7\",\"a02a871d-86b7-51ad-8055-9ae2dfa7d712\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"983b1464-26e8-57a8-848d-1f7db58b6294\",\"c1c639ba-a1fd-5e6b-a728-345536eb4681\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"9b62325d-4db2-537b-bc9a-aed44190e7fe\",\"d78fb0b5-9dc3-5019-a502-8087f47a2fb5\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"afc76d72-8f06-5837-948a-55dcf96c07fd\",\"d769accd-edbe-5b6a-8893-fde1106323c8\"]]",
+            1
+          ]
+        ],
+        "sample_complete": true
+      },
+      "related_to_plus12v_or_selected_zone": {
+        "count": 0,
+        "distinct": 0,
+        "identity_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "sample": [],
+        "sample_complete": true
+      },
+      "total": {
+        "count": 6,
+        "distinct": 6,
+        "identity_sha256": "25f065fccee45c68fed7ab9db62569a1a3abf8b60f8c15689fd71ba05d021187",
+        "sample": [
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"1726e368-e393-5c18-bcb1-37f1003e6349\",\"b2904615-fe64-5980-850b-c1729c1ccca1\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"2a9b6cdb-e44f-5336-aee7-f472423dc2c7\",\"79efefed-8d67-573c-b9db-5f93a4a6b1eb\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"2a9b6cdb-e44f-5336-aee7-f472423dc2c7\",\"a02a871d-86b7-51ad-8055-9ae2dfa7d712\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"983b1464-26e8-57a8-848d-1f7db58b6294\",\"c1c639ba-a1fd-5e6b-a728-345536eb4681\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"9b62325d-4db2-537b-bc9a-aed44190e7fe\",\"d78fb0b5-9dc3-5019-a502-8087f47a2fb5\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"afc76d72-8f06-5837-948a-55dcf96c07fd\",\"d769accd-edbe-5b6a-8893-fde1106323c8\"]]",
+            1
+          ]
+        ],
+        "sample_complete": true
+      }
+    },
+    "meaning": "Identities keyed by category/type/severity/description/item UUIDs under identical conditions; related means the text mentions +12V or the selected zone UUID. Observations only, not a defect or improvement verdict.",
+    "removed": {
+      "other": {
+        "count": 6,
+        "distinct": 6,
+        "identity_sha256": "6930a1aee55b92f4975c81c42f939f69e7420663160d3832a184af616d8cf72a",
+        "sample": [
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"1726e368-e393-5c18-bcb1-37f1003e6349\",\"2c267fae-079c-5d17-b618-3926470feaef\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"20660819-94c0-59a5-9e66-16abcd67987e\",\"c1c639ba-a1fd-5e6b-a728-345536eb4681\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"78579667-7212-5304-be21-3e823ff73797\",\"79efefed-8d67-573c-b9db-5f93a4a6b1eb\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"78579667-7212-5304-be21-3e823ff73797\",\"a02a871d-86b7-51ad-8055-9ae2dfa7d712\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"915dee98-07b4-5419-b729-b6abad8cc892\",\"afc76d72-8f06-5837-948a-55dcf96c07fd\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"93dc87ee-9e2d-54d2-bfc3-d2f992a4c975\",\"d78fb0b5-9dc3-5019-a502-8087f47a2fb5\"]]",
+            1
+          ]
+        ],
+        "sample_complete": true
+      },
+      "related_to_plus12v_or_selected_zone": {
+        "count": 0,
+        "distinct": 0,
+        "identity_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "sample": [],
+        "sample_complete": true
+      },
+      "total": {
+        "count": 6,
+        "distinct": 6,
+        "identity_sha256": "6930a1aee55b92f4975c81c42f939f69e7420663160d3832a184af616d8cf72a",
+        "sample": [
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"1726e368-e393-5c18-bcb1-37f1003e6349\",\"2c267fae-079c-5d17-b618-3926470feaef\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"20660819-94c0-59a5-9e66-16abcd67987e\",\"c1c639ba-a1fd-5e6b-a728-345536eb4681\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"78579667-7212-5304-be21-3e823ff73797\",\"79efefed-8d67-573c-b9db-5f93a4a6b1eb\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"78579667-7212-5304-be21-3e823ff73797\",\"a02a871d-86b7-51ad-8055-9ae2dfa7d712\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"915dee98-07b4-5419-b729-b6abad8cc892\",\"afc76d72-8f06-5837-948a-55dcf96c07fd\"]]",
+            1
+          ],
+          [
+            "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"93dc87ee-9e2d-54d2-bfc3-d2f992a4c975\",\"d78fb0b5-9dc3-5019-a502-8087f47a2fb5\"]]",
+            1
+          ]
+        ],
+        "sample_complete": true
+      }
+    }
+  },
+  "drc_after": {
+    "counts": {
+      "unconnected_items:unconnected_items": 499,
+      "violations:hole_to_hole": 199,
+      "violations:lib_footprint_issues": 199,
+      "violations:silk_edge_clearance": 6,
+      "violations:silk_over_copper": 199,
+      "violations:silk_overlap": 199,
+      "violations:text_height": 4,
+      "violations:track_dangling": 12,
+      "violations:via_dangling": 199
+    },
+    "identities": {
+      "count": 1516,
+      "distinct": 1514,
+      "identity_sha256": "12199152001fd9bda5854b5de5647e6bb81f09f41ff4ef5dbf44d2621022b5fe",
+      "sample": [
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"00f6951c-ce13-5899-8c96-58d59f9bc8ba\",\"4c791886-54ab-5679-ab23-7c91549e6fc7\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"00f6951c-ce13-5899-8c96-58d59f9bc8ba\",\"b9dbb736-09e3-5494-b7c1-e47397effc1f\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"038910f1-1cf0-5b56-924c-388397bb8ccd\",\"50ca4a41-9dc9-53c3-8487-2841fa5746f9\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0393148e-f3c2-56f8-bceb-683254b3070f\",\"df668c27-0526-5ad9-95bd-812b9888d930\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"03b18102-2ee5-51c8-b6d5-b0ce9e37cca5\",\"6c3e8a4c-47a5-509c-9ad3-f63475b9f321\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"03b18102-2ee5-51c8-b6d5-b0ce9e37cca5\",\"8286a494-0862-53ac-ae29-b8f2ffe4ed4b\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0409e214-ed0b-5f05-b6ab-6840a9620ade\",\"3b11a780-95cf-510f-86d7-aba2a1f2c79a\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0409e214-ed0b-5f05-b6ab-6840a9620ade\",\"3ca31861-1740-5dea-a8c2-c774f2d0c0ec\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0409e214-ed0b-5f05-b6ab-6840a9620ade\",\"4ba4b726-d508-5048-bd18-2e2a1c7ef131\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"046c138b-7a80-5655-a6b7-40da89415000\",\"8286a494-0862-53ac-ae29-b8f2ffe4ed4b\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"046c138b-7a80-5655-a6b7-40da89415000\",\"96728728-8453-5c22-bb08-0341a1190f88\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"046c138b-7a80-5655-a6b7-40da89415000\",\"b2f9e2cb-6de3-5d03-af3c-ea3b16cde4fd\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"04e50dff-35b5-5940-964f-5dfffc9181df\",\"978d73b8-9b92-50be-899e-f008d643fa51\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"04e50dff-35b5-5940-964f-5dfffc9181df\",\"dac0d2cc-aa05-520c-9f76-fc3a6820877c\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"05062f1b-bb33-5dc1-8a10-b0d4bc01d72b\",\"5a3b21a8-73c1-5725-805c-5d87f5877043\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"058287c3-011e-569d-bc1c-fe6be53e46ec\",\"326d553e-29ae-5c23-bc20-a3bbf34bd034\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"058287c3-011e-569d-bc1c-fe6be53e46ec\",\"6702ac53-36ee-5a46-964f-6ed959750ab0\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"062950b7-3036-5ba2-a673-49a5a672b88e\",\"3536070e-9878-59ff-8565-ba494bf3fc77\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"062950b7-3036-5ba2-a673-49a5a672b88e\",\"d3cd5175-f1cf-5dfe-abcd-848fd175d9d6\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"06397bac-4f5f-579f-b88a-6c385c08ebac\",\"1ef48c6a-7d28-5643-b5fb-d00a4d0cf2a6\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"06397bac-4f5f-579f-b88a-6c385c08ebac\",\"4c126f4e-2436-5723-a04a-c51ac137acfa\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"07626a64-b305-5fe2-a4bc-e787cf275a19\",\"29e5202e-1d5b-54b0-9a21-0e3231fe4d5d\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"07acd85b-c9f5-501a-8b34-b1ea3cd8c914\",\"29e5202e-1d5b-54b0-9a21-0e3231fe4d5d\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"07acd85b-c9f5-501a-8b34-b1ea3cd8c914\",\"7b86771c-d46a-58d8-b76e-e7a57390e955\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"07acd85b-c9f5-501a-8b34-b1ea3cd8c914\",\"acf979d7-b4da-55e4-8a78-a94cfa84702d\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"07c81ff5-4f7b-5fb7-bb76-efa5774f604d\",\"c0caa5ee-e169-5b13-adee-62e6015a5087\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0818ac4f-4360-5954-ac1c-9f395ffb5b8f\",\"3c097f7e-05ca-5e19-becd-a4acf68a81ba\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0818ac4f-4360-5954-ac1c-9f395ffb5b8f\",\"e4c8a1bd-06b7-5f3a-a484-94e52fd88ae5\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"08c4b89a-977e-5e15-949a-9d704deacc1c\",\"18305852-57de-592d-b84b-dd22fa1b24cf\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"08c4b89a-977e-5e15-949a-9d704deacc1c\",\"6eb453ae-e9f1-5522-bfd9-346c92315a7e\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"08c4b89a-977e-5e15-949a-9d704deacc1c\",\"c923854e-6020-55af-bb28-40787e38060c\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"08e26bed-846d-5e36-bccc-94d3cbff18b8\",\"4ab999f8-b421-5e3a-a809-4c3197266eb9\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"08e26bed-846d-5e36-bccc-94d3cbff18b8\",\"dc831852-8148-50c4-9b1c-b315469fd601\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0963bec7-2ce8-52f4-9d79-149c5d441684\",\"d8738d99-5d84-5686-9225-469b9a3fa515\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0963bec7-2ce8-52f4-9d79-149c5d441684\",\"e0f54788-c946-589e-8a3b-cf16fdd67beb\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"09742cd8-1fc9-5537-92b2-83982ddde0ea\",\"8c898a3d-31ce-5b62-9d31-16ab82647aa7\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0977aa54-d1c9-5122-a30f-cfcece055eee\",\"847b91fe-8b99-5598-9b37-94084282daed\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0977aa54-d1c9-5122-a30f-cfcece055eee\",\"8ea237b7-e615-527b-8a9c-7c9a7191fa02\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0977aa54-d1c9-5122-a30f-cfcece055eee\",\"bbc29bfe-1370-54df-a5ea-cc2c103f80ea\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0a6b6ef0-49d3-53a1-ae03-84e6de3a60a5\",\"8c898a3d-31ce-5b62-9d31-16ab82647aa7\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0ab0435b-6113-530c-b9be-a0088f8575bb\",\"dc1869e5-3de5-5082-a6d2-b5cbf66ea8ac\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0ab0435b-6113-530c-b9be-a0088f8575bb\",\"dc3e73a0-dc54-5639-a7b7-c9813cc45e2d\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0b180086-aba9-5bb0-9f1f-52cb96fdfef3\",\"0e65b837-f84b-58c1-986d-5e819b6dceeb\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0b180086-aba9-5bb0-9f1f-52cb96fdfef3\",\"d270a7ed-df33-59ca-b966-18cded4e26de\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0b40fc00-b865-5877-aa3b-9aaeebd6fff7\",\"196ef288-a006-595f-a577-54d68b2b8c87\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0b40fc00-b865-5877-aa3b-9aaeebd6fff7\",\"d800b3a3-ba04-5b75-8f17-acdd8cbfcec0\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0b6a2b5a-b6e2-5cad-b428-ebb0f284a109\",\"39565c68-38a1-5676-a20d-89f657dd8590\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0bd350da-2306-5f56-aa0b-1d8c618e794d\",\"2e01a8dd-bfb1-5e9e-901b-8df5b08b6e88\"]]",
+          1
+        ]
+      ],
+      "sample_complete": false
+    },
+    "report_bytes": 1102413,
+    "report_sha256": "067db4427b3286192db5ec951e6966da3e39a23d5e29106fed234b9c42bfacbb"
+  },
+  "drc_before": {
+    "counts": {
+      "unconnected_items:unconnected_items": 499,
+      "violations:hole_to_hole": 199,
+      "violations:lib_footprint_issues": 199,
+      "violations:silk_edge_clearance": 6,
+      "violations:silk_over_copper": 199,
+      "violations:silk_overlap": 199,
+      "violations:text_height": 4,
+      "violations:track_dangling": 12,
+      "violations:via_dangling": 199
+    },
+    "identities": {
+      "count": 1516,
+      "distinct": 1514,
+      "identity_sha256": "20b1f70bfbe1bc926e97903728f8c50d1f21e6d8aa72e37a3f6756e31e222401",
+      "sample": [
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"00f6951c-ce13-5899-8c96-58d59f9bc8ba\",\"4c791886-54ab-5679-ab23-7c91549e6fc7\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"00f6951c-ce13-5899-8c96-58d59f9bc8ba\",\"b9dbb736-09e3-5494-b7c1-e47397effc1f\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"038910f1-1cf0-5b56-924c-388397bb8ccd\",\"50ca4a41-9dc9-53c3-8487-2841fa5746f9\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0393148e-f3c2-56f8-bceb-683254b3070f\",\"df668c27-0526-5ad9-95bd-812b9888d930\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"03b18102-2ee5-51c8-b6d5-b0ce9e37cca5\",\"6c3e8a4c-47a5-509c-9ad3-f63475b9f321\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"03b18102-2ee5-51c8-b6d5-b0ce9e37cca5\",\"8286a494-0862-53ac-ae29-b8f2ffe4ed4b\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0409e214-ed0b-5f05-b6ab-6840a9620ade\",\"3b11a780-95cf-510f-86d7-aba2a1f2c79a\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0409e214-ed0b-5f05-b6ab-6840a9620ade\",\"3ca31861-1740-5dea-a8c2-c774f2d0c0ec\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0409e214-ed0b-5f05-b6ab-6840a9620ade\",\"4ba4b726-d508-5048-bd18-2e2a1c7ef131\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"046c138b-7a80-5655-a6b7-40da89415000\",\"8286a494-0862-53ac-ae29-b8f2ffe4ed4b\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"046c138b-7a80-5655-a6b7-40da89415000\",\"96728728-8453-5c22-bb08-0341a1190f88\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"046c138b-7a80-5655-a6b7-40da89415000\",\"b2f9e2cb-6de3-5d03-af3c-ea3b16cde4fd\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"04e50dff-35b5-5940-964f-5dfffc9181df\",\"978d73b8-9b92-50be-899e-f008d643fa51\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"04e50dff-35b5-5940-964f-5dfffc9181df\",\"dac0d2cc-aa05-520c-9f76-fc3a6820877c\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"05062f1b-bb33-5dc1-8a10-b0d4bc01d72b\",\"5a3b21a8-73c1-5725-805c-5d87f5877043\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"058287c3-011e-569d-bc1c-fe6be53e46ec\",\"326d553e-29ae-5c23-bc20-a3bbf34bd034\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"058287c3-011e-569d-bc1c-fe6be53e46ec\",\"6702ac53-36ee-5a46-964f-6ed959750ab0\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"062950b7-3036-5ba2-a673-49a5a672b88e\",\"3536070e-9878-59ff-8565-ba494bf3fc77\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"062950b7-3036-5ba2-a673-49a5a672b88e\",\"d3cd5175-f1cf-5dfe-abcd-848fd175d9d6\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"06397bac-4f5f-579f-b88a-6c385c08ebac\",\"1ef48c6a-7d28-5643-b5fb-d00a4d0cf2a6\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"06397bac-4f5f-579f-b88a-6c385c08ebac\",\"4c126f4e-2436-5723-a04a-c51ac137acfa\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"07626a64-b305-5fe2-a4bc-e787cf275a19\",\"29e5202e-1d5b-54b0-9a21-0e3231fe4d5d\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"07acd85b-c9f5-501a-8b34-b1ea3cd8c914\",\"29e5202e-1d5b-54b0-9a21-0e3231fe4d5d\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"07acd85b-c9f5-501a-8b34-b1ea3cd8c914\",\"7b86771c-d46a-58d8-b76e-e7a57390e955\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"07acd85b-c9f5-501a-8b34-b1ea3cd8c914\",\"acf979d7-b4da-55e4-8a78-a94cfa84702d\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"07c81ff5-4f7b-5fb7-bb76-efa5774f604d\",\"c0caa5ee-e169-5b13-adee-62e6015a5087\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0818ac4f-4360-5954-ac1c-9f395ffb5b8f\",\"3c097f7e-05ca-5e19-becd-a4acf68a81ba\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0818ac4f-4360-5954-ac1c-9f395ffb5b8f\",\"e4c8a1bd-06b7-5f3a-a484-94e52fd88ae5\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"08c4b89a-977e-5e15-949a-9d704deacc1c\",\"18305852-57de-592d-b84b-dd22fa1b24cf\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"08c4b89a-977e-5e15-949a-9d704deacc1c\",\"6eb453ae-e9f1-5522-bfd9-346c92315a7e\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"08c4b89a-977e-5e15-949a-9d704deacc1c\",\"c923854e-6020-55af-bb28-40787e38060c\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"08e26bed-846d-5e36-bccc-94d3cbff18b8\",\"4ab999f8-b421-5e3a-a809-4c3197266eb9\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"08e26bed-846d-5e36-bccc-94d3cbff18b8\",\"dc831852-8148-50c4-9b1c-b315469fd601\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0963bec7-2ce8-52f4-9d79-149c5d441684\",\"d8738d99-5d84-5686-9225-469b9a3fa515\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0963bec7-2ce8-52f4-9d79-149c5d441684\",\"e0f54788-c946-589e-8a3b-cf16fdd67beb\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"09742cd8-1fc9-5537-92b2-83982ddde0ea\",\"8c898a3d-31ce-5b62-9d31-16ab82647aa7\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0977aa54-d1c9-5122-a30f-cfcece055eee\",\"847b91fe-8b99-5598-9b37-94084282daed\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0977aa54-d1c9-5122-a30f-cfcece055eee\",\"8ea237b7-e615-527b-8a9c-7c9a7191fa02\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0977aa54-d1c9-5122-a30f-cfcece055eee\",\"bbc29bfe-1370-54df-a5ea-cc2c103f80ea\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0a6b6ef0-49d3-53a1-ae03-84e6de3a60a5\",\"8c898a3d-31ce-5b62-9d31-16ab82647aa7\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0ab0435b-6113-530c-b9be-a0088f8575bb\",\"dc1869e5-3de5-5082-a6d2-b5cbf66ea8ac\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0ab0435b-6113-530c-b9be-a0088f8575bb\",\"dc3e73a0-dc54-5639-a7b7-c9813cc45e2d\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0b180086-aba9-5bb0-9f1f-52cb96fdfef3\",\"0e65b837-f84b-58c1-986d-5e819b6dceeb\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0b180086-aba9-5bb0-9f1f-52cb96fdfef3\",\"d270a7ed-df33-59ca-b966-18cded4e26de\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0b40fc00-b865-5877-aa3b-9aaeebd6fff7\",\"196ef288-a006-595f-a577-54d68b2b8c87\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0b40fc00-b865-5877-aa3b-9aaeebd6fff7\",\"d800b3a3-ba04-5b75-8f17-acdd8cbfcec0\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0b6a2b5a-b6e2-5cad-b428-ebb0f284a109\",\"39565c68-38a1-5676-a20d-89f657dd8590\"]]",
+          1
+        ],
+        [
+          "[\"unconnected_items\",\"unconnected_items\",\"error\",\"Missing connection between items\",[\"0bd350da-2306-5f56-aa0b-1d8c618e794d\",\"2e01a8dd-bfb1-5e9e-901b-8df5b08b6e88\"]]",
+          1
+        ]
+      ],
+      "sample_complete": false
+    },
+    "report_bytes": 1102455,
+    "report_sha256": "1eb6fba30ff90c8aeb75968c16664cc361ce6db2c4a0668d472849ca33af0574"
+  },
+  "elapsed_seconds": 155.69311211816967,
+  "full_board_fill": false,
+  "limits": "payload 420 s; candidate: normalize cap 60, zone worker stage caps; drc: 170 s per DRC run; no route edits",
+  "memory_telemetry": [
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1325345.31187473,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "preflight",
+      "point": "before",
+      "values": {
+        "memory.current": 12771328,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 12771328,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1325345.421286923,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "preflight",
+      "point": "after",
+      "values": {
+        "memory.current": 123916288,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 123916288,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1325345.42149309,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "drc-before",
+      "point": "before",
+      "values": {
+        "memory.current": 123916288,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 123916288,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1325413.502540801,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "drc-before",
+      "point": "after",
+      "values": {
+        "memory.current": 132857856,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 1862479872,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1325413.502943221,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "drc-after",
+      "point": "before",
+      "values": {
+        "memory.current": 132857856,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 1862479872,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1325501.003944574,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "drc-after",
+      "point": "after",
+      "values": {
+        "memory.current": 132284416,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 2137362432,
+        "memory.swap.max": 0
+      }
+    }
+  ],
+  "mode": "drc",
+  "refill_zones_option_used": false,
+  "status": "SINGLE_ZONE_DRC_OBSERVATIONS_NOT_ACCEPTANCE",
+  "target_zone": "265b1369-38aa-5a3a-b488-eb0aae22e998"
+}

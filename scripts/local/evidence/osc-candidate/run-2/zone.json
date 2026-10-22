@@ -1,0 +1,524 @@
+{
+  "after_owners": {
+    "filled_polygon_by_zone": {
+      "265b1369-38aa-5a3a-b488-eb0aae22e998": 1
+    },
+    "zones": 351
+  },
+  "before_owners": {
+    "filled_polygon_by_zone": {},
+    "zones": 351
+  },
+  "board_acceptance": false,
+  "command": {
+    "argv": [
+      "/usr/bin/python3",
+      "-B",
+      "/analysis/osc_single_zone_payload.py",
+      "--worker",
+      "/scratch/osc-candidate"
+    ],
+    "deadline_monotonic_seconds": 1325489.888172535,
+    "elapsed_seconds": 149.11553514003754,
+    "end_monotonic_seconds": 1325303.886667134,
+    "exit_code": 0,
+    "log_sha256": "c7477a39beaaec3f4a45b0e54cb9732d43c323039163bd90510b5bf7078b11cb",
+    "log_tail": "18:07:38: Debug: Adding duplicate image handler for 'PNG file'\n18:07:38: Debug: Adding duplicate image handler for 'JPEG file'\n18:07:38: Debug: Adding duplicate image handler for 'TIFF file'\n18:07:38: Debug: Adding duplicate image handler for 'GIF file'\n18:07:38: Debug: Adding duplicate image handler for 'PNM file'\n18:07:38: Debug: Adding duplicate image handler for 'PCX file'\n18:07:38: Debug: Adding duplicate image handler for 'IFF file'\n18:07:38: Debug: Adding duplicate image handler for 'Windows icon file'\n18:07:38: Debug: Adding duplicate image handler for 'Windows cursor file'\n18:07:38: Debug: Adding duplicate image handler for 'Windows animated cursor file'\n18:07:38: Debug: Adding duplicate image handler for 'TGA file'\n18:07:38: Debug: Adding duplicate image handler for 'XPM file'\n",
+    "stage_group_starts": {
+      "fill": 1325180.896044526,
+      "prepare": 1325155.020451889,
+      "verify": 1325238.791407187
+    },
+    "start_monotonic_seconds": 1325154.771131994,
+    "status": "COMPLETE"
+  },
+  "elapsed_seconds": 204.92045593098737,
+  "exported": {
+    "after": {
+      "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+      "osc-core.kicad_pcb": "b9de2114a45c5d664159646a0eccaba988b8e161fb596fe0506318204e03be6b",
+      "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+    },
+    "before": {
+      "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+      "osc-core.kicad_pcb": "6de99d66c171ee00ce94a097a004bd829648c648e883763fc0d7c605cc7894a7",
+      "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+    }
+  },
+  "exported_receipts": {
+    "normalize-substages.jsonl": "1254ceb6e9ab7cb8d522e6764b40c2eba11cc9a455f663d3a208e64dd8598451",
+    "normalize.json": "0bc7c970bd3d955abfc9725a7cfb93380b3d1b404e2780d102ffceab24a4b9db",
+    "zone-substages.jsonl": "f7235db4895cf6753ed9628a4419fc5c8806cb9f6f515e01ec43dc7e0e7d004f",
+    "zone.json": "393b33ca61f28cb3ebe73f9cb341f4f900ec6d1cf049cfab8bd8193c3cd335e3"
+  },
+  "full_board_fill": false,
+  "input_after": {
+    "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+    "osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+    "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+  },
+  "input_before": {
+    "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+    "osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+    "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+  },
+  "limits": "payload 420 s; candidate: normalize cap 60, zone worker stage caps; drc: 170 s per DRC run; no route edits",
+  "manifest_sha256": "150cf6ff8f3ade4966a19197bbbacad67fe2d84e867d8581cfdf1bce879c49ed",
+  "memory_telemetry": [
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1325109.888228799,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "preflight",
+      "point": "before",
+      "values": {
+        "memory.current": 12357632,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 12623872,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1325114.899633932,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "preflight",
+      "point": "after",
+      "values": {
+        "memory.current": 62480384,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 62480384,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1325114.899839963,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "zone",
+      "point": "before",
+      "values": {
+        "memory.current": 62480384,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 62480384,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1325303.897109192,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "zone",
+      "point": "after",
+      "values": {
+        "memory.current": 182083584,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 1620393984,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1325303.897319385,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "verify",
+      "point": "before",
+      "values": {
+        "memory.current": 182083584,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 1620393984,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1325314.805576767,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "verify",
+      "point": "after",
+      "values": {
+        "memory.current": 299913216,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 1620393984,
+        "memory.swap.max": 0
+      }
+    }
+  ],
+  "mode": "candidate",
+  "nonfill_after": "a97c70f0809d8d43b68e70df3eb3998aa978bc5551cf66b85cc6050cdf29aa65",
+  "nonfill_before": "a97c70f0809d8d43b68e70df3eb3998aa978bc5551cf66b85cc6050cdf29aa65",
+  "nonfill_input": "a97c70f0809d8d43b68e70df3eb3998aa978bc5551cf66b85cc6050cdf29aa65",
+  "normalize": {
+    "argv": [
+      "/usr/bin/python3",
+      "-B",
+      "/analysis/osc_frozen_fill.py",
+      "--worker",
+      "normalize",
+      "/scratch/osc-candidate"
+    ],
+    "cap_seconds": 60,
+    "elapsed_seconds": 39.870758877834305,
+    "end_monotonic_seconds": 1325154.770779827,
+    "exit_code": 0,
+    "log_sha256": "72e86db0e33dfd5bcb542d3775224a2eecb2cb7d02b84a1efa1d3d399423f5c4",
+    "log_tail": "18:05:22: Debug: Adding duplicate image handler for 'PNG file'\n18:05:22: Debug: Adding duplicate image handler for 'JPEG file'\n18:05:22: Debug: Adding duplicate image handler for 'TIFF file'\n18:05:22: Debug: Adding duplicate image handler for 'GIF file'\n18:05:22: Debug: Adding duplicate image handler for 'PNM file'\n18:05:22: Debug: Adding duplicate image handler for 'PCX file'\n18:05:22: Debug: Adding duplicate image handler for 'IFF file'\n18:05:22: Debug: Adding duplicate image handler for 'Windows icon file'\n18:05:22: Debug: Adding duplicate image handler for 'Windows cursor file'\n18:05:22: Debug: Adding duplicate image handler for 'Windows animated cursor file'\n18:05:22: Debug: Adding duplicate image handler for 'TGA file'\n18:05:22: Debug: Adding duplicate image handler for 'XPM file'\n",
+    "start_monotonic_seconds": 1325114.900020949,
+    "status": "COMPLETE"
+  },
+  "refill_zones_option_used": false,
+  "status": "SINGLE_ZONE_CANDIDATE_EXPORTED_NOT_ACCEPTANCE",
+  "target_zone": "265b1369-38aa-5a3a-b488-eb0aae22e998",
+  "worker_substages": {
+    "normalize": {
+      "bytes": 1602,
+      "complete": true,
+      "log_sha256": "1254ceb6e9ab7cb8d522e6764b40c2eba11cc9a455f663d3a208e64dd8598451",
+      "rows": [
+        {
+          "event": "start",
+          "monotonic_seconds": 1325115.175175356,
+          "phase": "normalize",
+          "seq": 1,
+          "stage": "load"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1325127.616445379,
+          "phase": "normalize",
+          "seq": 2,
+          "stage": "load"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1325127.616516275,
+          "phase": "normalize",
+          "seq": 3,
+          "stage": "save"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1325140.994086762,
+          "phase": "normalize",
+          "seq": 4,
+          "stage": "save"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1325140.994138219,
+          "phase": "normalize",
+          "seq": 5,
+          "stage": "reload"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1325154.125639011,
+          "phase": "normalize",
+          "seq": 6,
+          "stage": "reload"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1325154.125716157,
+          "phase": "normalize",
+          "seq": 7,
+          "stage": "metadata"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1325154.391146569,
+          "phase": "normalize",
+          "seq": 8,
+          "stage": "metadata"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1325154.391207711,
+          "phase": "normalize",
+          "seq": 9,
+          "stage": "connectivity"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1325154.651783745,
+          "phase": "normalize",
+          "seq": 10,
+          "stage": "connectivity"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1325154.651832004,
+          "phase": "normalize",
+          "seq": 11,
+          "stage": "zone-metadata"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1325154.653678639,
+          "phase": "normalize",
+          "seq": 12,
+          "stage": "zone-metadata"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1325154.653715894,
+          "phase": "normalize",
+          "seq": 13,
+          "stage": "snapshot-save"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1325154.654182661,
+          "phase": "normalize",
+          "seq": 14,
+          "stage": "snapshot-save"
+        }
+      ]
+    },
+    "zone": {
+      "bytes": 1700,
+      "complete": true,
+      "log_sha256": "f7235db4895cf6753ed9628a4419fc5c8806cb9f6f515e01ec43dc7e0e7d004f",
+      "rows": [
+        {
+          "event": "start",
+          "monotonic_seconds": 1325155.020451889,
+          "phase": "zone",
+          "seq": 1,
+          "stage": "load"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1325167.834335878,
+          "phase": "zone",
+          "seq": 2,
+          "stage": "load"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1325167.834444982,
+          "phase": "zone",
+          "seq": 3,
+          "stage": "identity"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1325168.213245175,
+          "phase": "zone",
+          "seq": 4,
+          "stage": "identity"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1325168.213289782,
+          "phase": "zone",
+          "seq": 5,
+          "stage": "before"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1325180.89589781,
+          "phase": "zone",
+          "seq": 6,
+          "stage": "before"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1325180.896044526,
+          "phase": "zone",
+          "seq": 7,
+          "stage": "fill"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1325238.791228091,
+          "phase": "zone",
+          "seq": 8,
+          "stage": "fill"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1325238.791407187,
+          "phase": "zone",
+          "seq": 9,
+          "stage": "after"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1325254.563344153,
+          "phase": "zone",
+          "seq": 10,
+          "stage": "after"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1325254.563455044,
+          "phase": "zone",
+          "seq": 11,
+          "stage": "save"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1325267.489149489,
+          "phase": "zone",
+          "seq": 12,
+          "stage": "save"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1325267.489203004,
+          "phase": "zone",
+          "seq": 13,
+          "stage": "reload"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1325295.099737536,
+          "phase": "zone",
+          "seq": 14,
+          "stage": "reload"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1325295.099804299,
+          "phase": "zone",
+          "seq": 15,
+          "stage": "verify"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1325303.615464969,
+          "phase": "zone",
+          "seq": 16,
+          "stage": "verify"
+        }
+      ]
+    }
+  },
+  "worker_summary": {
+    "connected": {
+      "after": {
+        "C1129.1<->U1105.16": true,
+        "C1131.1<->U1106.8": true
+      },
+      "before": {
+        "C1129.1<->U1105.16": false,
+        "C1131.1<->U1106.8": false
+      },
+      "reloaded": {
+        "C1129.1<->U1105.16": true,
+        "C1131.1<->U1106.8": true
+      }
+    },
+    "counts": {
+      "copper_zone": 5,
+      "segment": 123905,
+      "via": 9646,
+      "zone": 351
+    },
+    "failure": null,
+    "fill": {
+      "returned": true,
+      "seconds": 57.89513099589385
+    },
+    "selected_after": {
+      "counts": {
+        "In4.Cu": 1
+      },
+      "filled": true,
+      "net": "+12V",
+      "rule_area": false,
+      "uuid": "265b1369-38aa-5a3a-b488-eb0aae22e998"
+    }
+  }
+}

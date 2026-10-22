@@ -61,3 +61,61 @@ positive/negative connectivity controls. Checks were never weakened.
 `scripts/local/evidence/osc-synthetic/run-{1..4}` and
 `scripts/local/evidence/osc-single-zone/run-{1,2}`: controller receipts, payload
 receipts, capacity/resource and cleanup records, post-stop cleanup, wrapper logs.
+
+## Stage 3: candidate exported and bounded DRC run; no +12V-related DRC change is observable
+
+Candidate run 2 (tooling 18a3a6bd, 218 s, fill 57.9 s, peak 1.51 GiB) regenerated
+the single-zone fill on a disposable copy and exported both boards with the pinned
+project and rules to the host, where they were re-verified:
+
+| Board | Bytes | SHA256 | filled_polygon zones | non-fill semantic hash |
+| --- | --- | --- | --- | --- |
+| before (load/save control, unfilled) | 49,818,236 | 6de99d66c171ee00... | none | a97c70f0809d8d43... (= input) |
+| after (+12V In4.Cu zone only) | 60,880,206 | b9de2114a45c5d66... | 265b1369 only | a97c70f0809d8d43... (= input) |
+
+The after board hash is byte-identical to both earlier diagnostic runs (the fill is
+deterministic) and 60.9 MB is under the 95 MiB publication cap. Candidate run 1
+exported the same files but its payload receipt exceeded its own output bound and
+was refused; it is not counted. Artifacts with checksums are in the Dropbox cclogs
+directory `zudo-osc-hole-field/osc-local-wsl/{candidate-run-2,drc-run-1}` (CAD
+candidates are not committed).
+
+DRC run 1 (tooling 18a3a6bd, 158 s, `kicad-cli pcb drc --format json --severity-all`,
+no `--refill-zones`, 170 s cap per run, peak 1.99 GiB with zero OOM events; host
+recomputation of both reports matched the payload summaries):
+
+| Report | DRC time | Counts |
+| --- | --- | --- |
+| before (unfilled control) | 68.1 s | unconnected 499; hole_to_hole 199; lib_footprint_issues 199; silk_over_copper 199; silk_overlap 199; via_dangling 199; track_dangling 12; silk_edge_clearance 6; text_height 4 |
+| after (+12V zone filled) | 87.5 s | identical counts |
+
+The before counts equal the hosted prefill checkpoint of run 39793075070. Every
+199 and the 499 are KiCad report caps, so counts cannot show the +12V change; the
++12V pair pads and the four bridging vias never appear in either capped unconnected
+list. The identity delta is 6 removed and 6 added unconnected entries, all AGND,
+with the same AGND pads (U1411.10, U1107.5, C2139.2, U2216.12) re-paired with a
+different partner item: ratsnest re-pairing after reconnectivity, attributable to
+the still-unfilled AGND zones, not to the +12V fill. No violation identity related
+to +12V or the selected zone was added or removed. No new defect or improvement is
+claimed from DRC; the quantitative +12V signal remains the native unconnected count
+4283 -> 3802 and the two pairs' cluster merge. Memory peak 1.99 GiB during the
+after DRC is at the 2 GiB cap and must be respected in any repeat.
+
+## Why the published core is unfilled: fills are stripped at publication by design
+
+`scripts/pcbgen/adopt_obstacle_benchmark.py` `publication_copy` (lines 48-64) strips
+every `filled_polygon`/`fill_segments` via `scripts/pcbgen/zone_cache.py` when the
+native-filled board exceeds 95 MiB, after a native refill-equivalence gate; the
+receipt `boards/osc-core/reports/grid-routing/shards-issue189-finer-ground-batched-warnings.json`
+records 440 fields removed (104,621,696 -> 49,819,556 bytes) for the current core
+SHA. Every canonical writer fills before saving (`route_shards.py` merge via the
+driver check at `route_jack_grid.py:116` with `--refill-zones --save-board`,
+`route_kicad.py:77/99`, `prepare_source_planes.py:28`); the strip happens at
+promotion (`route_shards.py:313-326`). The frozen OSC readers
+(`scripts/ci/osc_frozen_topology.py`) read the published board without refilling,
+which is the direct cause of the two open +12V pairs. Minimal fix candidates, not
+applied: (A) let `without_zone_cache` keep a chosen zone set (the +12V In4 fill adds
+11 MB, well under the cap) inside `publication_copy` with the existing equivalence
+gate; (B) a one-time per-zone (never all-zone) refill script with the existing
+settled-fill and fresh-SHA promotion gates; (C) refill the selected zone in the
+reader before connectivity analysis, leaving the canonical file unchanged.
