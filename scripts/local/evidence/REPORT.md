@@ -145,3 +145,61 @@ copy on the diagnostic side, leaving the canonical file and the publication
 unchanged. Decision (user, 2026-10-23): C, with B-style shared helpers as internal
 implementation; A stays deferred until a concrete reason appears that the
 diagnostic side cannot solve. No canonical writer or publication change was made.
+
+## Derived-fill path (option C): the diagnostic side now separates "unfilled, cannot evaluate" from "open with every net zone filled"
+
+`scripts/local/osc_derived_fill.py` (pcbnew-free, shared by host and payload),
+`scripts/local/osc_derived_fill_payload.py` (container, modes `derive` and
+`evaluate`) and the `derive`/`evaluate` modes of the local controller implement
+the decision: the canonical board and the publication are untouched; the
+diagnostic fills only the zones named in a spec on a disposable copy, saves,
+reloads, re-observes and exports the derived board with a composite identity.
+
+- Identity key = SHA256 over the pinned source pcb/pro/dru hashes, the image id,
+  KiCad 10.0.6, the sorted selected zone UUIDs, the process version and an
+  optional parent derivation key. Any change yields a different key.
+- Reuse of a saved derived board recomputes the real file hashes, the non-fill
+  semantic hash against the current source and the fill ownership before anything
+  native runs; a stale, altered or differently derived copy is rejected with a
+  reason (`DERIVED_REUSE_REJECTED_NOT_ACCEPTANCE`), never used as evidence.
+- Pair status vocabulary: `CONNECTED_ON_INPUT`, `CONNECTED_VIA_SELECTED_FILL`,
+  `UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN`, `OPEN_WITH_ALL_NET_ZONES_FILLED`,
+  `OPEN_WITHOUT_NET_ZONES`. Every row carries `repair_basis: false`; the host
+  recomputes each class from the exported native observations and the full
+  exported zone table.
+- Offline regression tests (`test_osc_derived_fill.py`, 27 tests, with the fake
+  worker integration flow) cover normal reuse, stale cache, changed source,
+  chained derivations, mid-run worker failure, stage-cap timeout, incomplete
+  receipts, tampered classifications and legacy adoption. Review (`/code-review`
+  high) found ten items; the defects were fixed before the native runs, and the
+  two de-duplication suggestions against the proven single-zone payload were
+  deferred so its evidence-pinned output format stays untouched.
+
+### Evaluate run 1: the saved +12V board was reused, not regenerated (PASS, not acceptance)
+
+The candidate run 2 output was adopted through a sidecar (`derived-identity.json`,
+image id from its receipt, KiCad version attested by the payload hash 899d5082 at
+tooling 18a3a6bd) and evaluated against the current source: all recomputed checks
+matched (identity 58088594..., board b9de2114..., non-fill a97c70f0...). 157 s
+total, payload 134 s, peak 1.20 GiB, zero OOM, two owned containers removed.
+
+| Pair | Before | After | Class |
+| --- | --- | --- | --- |
+| C1129.1 <-> U1105.16 (+12V) | open | connected (1997-item cluster) | CONNECTED_VIA_SELECTED_FILL |
+| C1131.1 <-> U1106.8 (+12V) | open | connected (1997-item cluster) | CONNECTED_VIA_SELECTED_FILL |
+| C1111.2 <-> U1105.12 (AGND, control) | open | open | UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN (601e02b2, e389d344, e67a5bc7 unfilled) |
+
+Both AGND pads sit alone in clusters of size 1: F.Cu SMD pads with no attached
+track, reachable only through the F.Cu AGND zone.
+
+### Derive run 1: AGND In1.Cu zone alone leaves C1111.2 <-> U1105.12 unevaluable (PASS, not acceptance)
+
+Spec: zone `e67a5bc7-b575-52b6-a78a-9c84381053da` (AGND, In1.Cu), pairs
+C1111.2 <-> U1105.12 and the +12V pair as negative control. Fill 131.9 s (In1 has
+no segments; 177 AGND vias and 5 through-hole pads connect), payload 259 s, peak
+1.47 GiB, zero OOM; derived board 61,154,387 bytes, identity 682af66e..., only the
+selected zone carries `filled_polygon`, non-fill semantics equal to the source.
+Unconnected count 4283 -> 4103. Both pairs classify as
+`UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN` (AGND: F.Cu 601e02b2 and B.Cu e389d344
+unfilled; +12V: In4 265b1369 unfilled). No wiring claim follows from either pair.
+Artifacts with checksums: cclogs `osc-local-wsl/{evaluate-run-1,derive-run-1}`.
