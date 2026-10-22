@@ -8,6 +8,24 @@ from unittest.mock import patch
 import osc_fill_check as f
 
 class FillController(unittest.TestCase):
+    def test_substage_failure_retained_without_completion(self):
+        detail={'worker_substages':{'fill':{'complete':False,'error':'worker killed',
+            'rows':[{'seq':0,'substage':'LoadBoard','event':'start','monotonic_seconds':10},
+                    {'seq':1,'substage':'LoadBoard','event':'complete','monotonic_seconds':12},
+                    {'seq':2,'substage':'Fill','event':'start','monotonic_seconds':13}]}}}
+        s=json.loads(f.summary_for({'status':'FAILED'},detail))['worker_substages']['fill']
+        self.assertIs(s['complete'],False);self.assertEqual(s['error'],'worker killed')
+        self.assertEqual(s['rows'],detail['worker_substages']['fill']['rows'])
+        self.assertEqual(s['rows'][-1]['event'],'start')
+    def test_substage_rows_bounded_explicitly(self):
+        rows=[{'seq':n,'substage':'x'*500,'event':'start','monotonic_seconds':n} for n in range(80)]
+        text=f.summary_for({'status':'FAILED'},{'worker_substages':{'fill':{'complete':False,'rows':rows}}})
+        self.assertLessEqual(len(text.encode()),16384)
+        s=json.loads(text)['worker_substages']['fill'];self.assertEqual(s['omitted_rows'],56)
+        self.assertEqual(s['rows'][-1]['seq'],79);self.assertIs(s['complete'],False)
+    def test_malformed_substage_not_completion(self):
+        s=f.substage_summary({'fill':{'rows':'bad'}})['fill']
+        self.assertIn('summary_error',s);self.assertNotIn('complete',s)
     def test_failure_json_cleanup_and_global_restore(self):
         with tempfile.TemporaryDirectory() as t:
             root=Path(t)/'source';root.mkdir();out=Path(t)/'out';state=Path(t)/'state';state.mkdir()

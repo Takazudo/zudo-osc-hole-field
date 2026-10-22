@@ -8,6 +8,49 @@ import osc_frozen_fill as f
 
 
 class FillTests(unittest.TestCase):
+    def substage_bytes(self,phase):
+        rows=[]
+        for stage in f.SUBSTAGES[phase]:
+            for event in ('start','complete'):
+                rows.append({'seq':len(rows)+1,'phase':phase,'stage':stage,'event':event,'monotonic_seconds':float(len(rows))})
+        return b''.join((json.dumps(r)+'\n').encode() for r in rows)
+
+    def test_durable_partial_start_and_later_capture(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td);path=root/'fill-substages.jsonl';logger=f.SubstageLog(path,'fill')
+            with patch.object(f.os,'fsync',wraps=f.os.fsync) as sync:
+                with self.assertRaisesRegex(RuntimeError,'simulated killed'):
+                    with logger.stage('load'): raise RuntimeError('simulated killed worker')
+                sync.assert_called_once()
+            logger.close();result={};f.capture_substages(result,root,'fill')
+            row=result['worker_substages']['fill']
+            self.assertFalse(row['complete']);self.assertEqual(len(row['rows']),1)
+            self.assertEqual(row['rows'][0]['event'],'start')
+
+    def test_substage_corrupt_tail_preserves_prefix(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td);first=self.substage_bytes('fill').splitlines(keepends=True)[0]
+            (root/'fill-substages.jsonl').write_bytes(first+b'{"seq":2')
+            result={}
+            with self.assertRaises(ValueError):f.capture_substages(result,root,'fill')
+            row=result['worker_substages']['fill']
+            self.assertEqual(len(row['rows']),1);self.assertFalse(row['complete'])
+            self.assertIn('error',row);self.assertEqual(row['valid_prefix_bytes'],len(first))
+
+    def test_substage_fsync_failure_is_explicit(self):
+        with tempfile.TemporaryDirectory() as td:
+            logger=f.SubstageLog(Path(td)/'log','fill')
+            try:
+                with patch.object(f.os,'fsync',side_effect=OSError('fixture sync failure')):
+                    with self.assertRaisesRegex(OSError,'sync failure'):
+                        with logger.stage('load'):self.fail('must not execute after logging failure')
+            finally:logger.close()
+
+    def test_substage_schema_and_sequence_rejected(self):
+        data=self.substage_bytes('normalize');self.assertTrue(f.parse_substages(data,'normalize')['complete'])
+        for key,value in [('seq',2),('monotonic_seconds',float('nan')),('event','complete'),('phase','fill')]:
+            rows=[json.loads(x) for x in data.splitlines()];rows[0][key]=value
+            with self.assertRaises(ValueError):f.parse_substages(b''.join((json.dumps(r)+'\n').encode() for r in rows),'normalize')
     def memory(self):
         return {'memory.current':1024,'memory.peak':2048,'memory.max':f.MEMORY_CAP,'memory.swap.max':0,'memory.events':{'low':0,'high':0,'max':0,'oom':0,'oom_kill':0}}
 
@@ -112,6 +155,7 @@ class FillTests(unittest.TestCase):
         empty=f.delta(collections.Counter(),collections.Counter())['added']
         r['drc_checkpoints']={p:{'report_sha256':h,'report_bytes':1,'counts':{},'identities':empty} for p in ('drc-before','drc-after')}
         r['drc_counts']={'before':{},'after':{}}
+        r['worker_substages']={p:{**f.parse_substages(self.substage_bytes(p),p),'log_sha256':h,'bytes':len(self.substage_bytes(p))} for p in f.SUBSTAGES}
         drc['before_identity_sha256']=drc['after_identity_sha256']=empty['identity_sha256']
         with patch.object(f,'memory_snapshot',side_effect=lambda:self.memory()):
             for phase in f.PHASES:
@@ -163,9 +207,13 @@ class FillTests(unittest.TestCase):
 
     def test_phase_caps_obey_remaining_total(self):
         self.assertEqual(f.PAYLOAD_SECONDS,420)
-        for phase,cap in {'normalize':45,'drc-before':100,'fill':150,'drc-after':100}.items():
+        for phase,cap in {'normalize':45,'drc-before':100,'drc-after':100}.items():
             self.assertEqual(f.phase_deadline(420,phase,10),10+cap)
             self.assertEqual(f.phase_deadline(420,phase,419),420)
+        self.assertEqual(f.phase_deadline(420,'fill',0),300)
+        self.assertEqual(f.phase_deadline(420,'fill',86),305)
+        self.assertEqual(f.phase_deadline(420,'fill',304),305)
+        with self.assertRaises(TimeoutError):f.phase_deadline(420,'fill',305)
         with self.assertRaises(TimeoutError):f.phase_deadline(420,'fill',420)
 
     def test_completed_drc_checkpoint_survives_later_failure(self):

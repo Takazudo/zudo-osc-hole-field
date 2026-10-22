@@ -80,6 +80,34 @@ def collect_resources(state,receipt):
     if len(paths)>8: raise ValueError('resource receipt count exceeded')
     receipt['resource_checks']=sorted([json.loads(p.read_text()) for p in paths],key=lambda r:r['measured_at_monotonic'])
 
+def substage_summary(value, row_limit=24):
+    if not isinstance(value,dict): return {'summary_error':'worker_substages is not a mapping'}
+    result={}
+    for phase in ('normalize','fill'):
+        if phase not in value: continue
+        entry=value[phase]
+        if not isinstance(entry,dict):
+            result[phase]={'summary_error':'phase entry is not a mapping'};continue
+        rows=entry.get('rows',[])
+        item={k:entry[k] for k in ('complete','error','status','log_sha256','bytes') if k in entry}
+        item['text_truncated']=any(isinstance(entry.get(k),str) and len(entry[k])>300 for k in ('error','status'))
+        for key in ('error','status'):
+            if key in item: item[key]=str(item[key])[:300]
+        if not isinstance(rows,list):
+            item['summary_error']='rows is not a list';result[phase]=item;continue
+        item['row_count']=len(rows);item['omitted_rows']=max(0,len(rows)-row_limit)
+        item['rows']=[]
+        for row in rows[-row_limit:]:
+            if not isinstance(row,dict): item['rows'].append({'summary_error':'row is not a mapping'});continue
+            allowed=('seq','phase','stage','substage','name','event','status','monotonic_seconds','start_monotonic_seconds','end_monotonic_seconds','elapsed_seconds','error')
+            item['rows'].append({k:(v[:200] if isinstance(v,str) else v) for k,v in row.items()
+                if k in allowed and (v is None or type(v) in (str,int,float,bool))})
+            if any(isinstance(v,str) and len(v)>200 for k,v in row.items() if k in allowed):
+                item['rows'][-1]['text_truncated']=True
+        result[phase]=item
+    if set(value)-{'normalize','fill'}: result['summary_error']='unexpected worker phase keys omitted'
+    return result
+
 def summary_for(receipt,detail=None):
     summary={k:str(receipt[k])[:500] for k in ('status','error','cleanup_error','after_error') if k in receipt}
     summary['cleanup']=[{k:r.get(k) for k in ('status','state_before_cleanup')} for r in receipt.get('cleanup',[])][:8]
@@ -96,6 +124,7 @@ def summary_for(receipt,detail=None):
         summary['drc_checkpoints']={name:{k:row.get(k) for k in ('report_sha256','report_bytes','counts')}
             for name,row in detail.get('drc_checkpoints',{}).items()}
         summary['phase_results']=detail.get('phase_results',[])
+        summary['worker_substages']=substage_summary(detail.get('worker_substages',{}))
         summary['command_outcomes']=[{k:row.get(k) for k in ('phase','status','error','exit_code','failure','start_monotonic_seconds','end_monotonic_seconds','deadline_monotonic_seconds','elapsed_seconds','log_sha256') if k in row}
             for row in detail.get('commands',[])][:4]
         summary['drc_delta_counts']={k:v.get('count') for k,v in drc.get('delta',{}).items() if isinstance(v,dict)}
@@ -109,6 +138,10 @@ def summary_for(receipt,detail=None):
         encoded=json.dumps(summary,sort_keys=True)
     if len(encoded.encode())>16384:
         summary.pop('memory_telemetry',None);summary['memory_summary_omitted_for_bound']=True
+        encoded=json.dumps(summary,sort_keys=True)
+    if len(encoded.encode())>16384 and isinstance(detail,dict):
+        summary['worker_substages']=substage_summary(detail.get('worker_substages',{}),row_limit=2)
+        summary['substage_rows_reduced_for_bound']=True
         encoded=json.dumps(summary,sort_keys=True)
     if len(encoded.encode())>16384: raise ValueError('bounded summary exceeds limit')
     return encoded

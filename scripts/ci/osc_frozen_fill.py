@@ -1,5 +1,6 @@
 """One disposable fill baseline; Linux container payload, never original writes."""
 import collections
+from contextlib import contextmanager
 import hashlib
 import json
 import math
@@ -34,10 +35,78 @@ PCB_LIMIT = 64 * 1024 * 1024
 MEMBER_LIMIT = 100000
 MEMORY_CAP = 2147483648
 PAYLOAD_SECONDS = 420
-PHASE_CAPS = {'normalize':45,'drc-before':100,'fill':150,'drc-after':100}
+PHASE_CAPS = {'normalize':45,'drc-before':100,'fill':300,'drc-after':100}
+FILL_RESERVE = 115
+SUBSTAGE_LIMIT = 65536
+SUBSTAGES = {'normalize':('load','save','reload','metadata','connectivity','zone-metadata','snapshot-save'),
+             'fill':('load','fill','save','reload','metadata','connectivity','zone-metadata','snapshot-save')}
 CGROUP = Path('/sys/fs/cgroup')
 PHASES = ('preflight','normalize','drc-before','fill','drc-after','summarize')
 STATUS = 'FILL_BASELINE_OBSERVATIONS_NOT_ACCEPTANCE'
+
+
+class SubstageLog:
+    def __init__(self,path,phase):
+        if phase not in SUBSTAGES: raise ValueError('substage phase')
+        self.phase=phase;self.seq=0;self.size=0;self.last=-math.inf
+        self.stream=path.open('xb')
+
+    def write(self,stage,event):
+        stamp=time.monotonic()
+        if not math.isfinite(stamp) or stamp<self.last: raise ValueError('substage clock')
+        row={'seq':self.seq+1,'phase':self.phase,'stage':stage,'event':event,'monotonic_seconds':stamp}
+        data=(json.dumps(row,sort_keys=True)+'\n').encode()
+        if self.size+len(data)>SUBSTAGE_LIMIT: raise ValueError('substage log bound')
+        if self.stream.write(data)!=len(data): raise OSError('substage short write')
+        self.stream.flush();os.fsync(self.stream.fileno())
+        self.seq+=1;self.size+=len(data);self.last=stamp
+
+    @contextmanager
+    def stage(self,name):
+        self.write(name,'start')
+        yield
+        # Exceptions leave a durable start without a fabricated completion.
+        self.write(name,'complete')
+
+    def close(self): self.stream.close()
+
+
+def parse_substages(data,phase):
+    if phase not in SUBSTAGES or len(data)>SUBSTAGE_LIMIT: raise ValueError('substage bound/phase')
+    rows=[];previous=-math.inf
+    expected=[(stage,event) for stage in SUBSTAGES[phase] for event in ('start','complete')]
+    for line in data.splitlines(keepends=True):
+        if not line.endswith(b'\n'): raise ValueError('incomplete substage record')
+        row=json.loads(line)
+        if not isinstance(row,dict) or set(row)!={'seq','phase','stage','event','monotonic_seconds'}: raise ValueError('substage schema')
+        i=len(rows);stamp=row['monotonic_seconds']
+        if type(row['seq']) is not int or row['seq']!=i+1 or row['phase']!=phase or i>=len(expected) or (row['stage'],row['event'])!=expected[i]: raise ValueError('substage order')
+        if type(stamp) not in (int,float) or not math.isfinite(stamp) or stamp<previous: raise ValueError('substage time')
+        rows.append(row);previous=stamp
+    return {'rows':rows,'complete':len(rows)==len(expected)}
+
+
+def capture_substages(result,scratch,phase,require_complete=False):
+    target=result.setdefault('worker_substages',{})
+    path=scratch/(phase+'-substages.jsonl')
+    try:
+        with path.open('rb') as stream:data=stream.read(SUBSTAGE_LIMIT+1)
+        observation={'log_sha256':hashlib.sha256(data).hexdigest(),'bytes':len(data),**parse_substages(data,phase)}
+        target[phase]=observation
+        if require_complete and not observation['complete']: raise ValueError('worker substage incomplete')
+    except Exception as exc:
+        target.setdefault(phase,{'rows':[],'complete':False})['error']=type(exc).__name__+': '+str(exc)[:240]
+        if 'data' in locals():
+            prefix=b'';valid={'rows':[],'complete':False}
+            for line in data.splitlines(keepends=True):
+                try: candidate=parse_substages(prefix+line,phase)
+                except Exception: break
+                prefix+=line;valid=candidate
+            target[phase].update(rows=valid['rows'],complete=False,valid_prefix_bytes=len(prefix),
+                captured_bytes=len(data),captured_sha256=hashlib.sha256(data).hexdigest(),
+                unparsed_tail=data[len(prefix):len(prefix)+512].decode('utf-8',errors='replace'),
+                capture_truncated=len(data)>SUBSTAGE_LIMIT)
+        raise
 
 
 def memory_snapshot():
@@ -146,62 +215,70 @@ def verify_inputs(root):
     return result
 
 
-def native_snapshot(board, pcb):
-    selected={}
-    for f in board.GetFootprints():
-        for p in f.Pads():
-            name=f.GetReference()+'.'+p.GetNumber()
-            if name in topology.EXPECTED:
-                wanted=topology.EXPECTED[name]
-                if name in selected or topology.uid(p)!=wanted['uuid'] or p.GetNetname()!=wanted['net']:
-                    raise ValueError('pad identity')
-                selected[name]=p
-    if set(selected)!=set(topology.EXPECTED): raise ValueError('missing pad')
-    for t in board.GetTracks():
-        key=topology.uid(t)
-        if key in VIAS:
-            if key in selected or t.GetNetname()!=VIAS[key]: raise ValueError('via identity')
-            selected[key]=t
-    if not set(VIAS)<=set(selected): raise ValueError('missing via')
-    board.GetConnectivity().RecalculateRatsnest()
-    ids={name:topology.uid(item) for name,item in selected.items()}
-    rows={}
-    for name,item in selected.items():
-        members=bounded_members(board.GetConnectivity().GetConnectedItems(item))
-        rows[name]={'count':len(members),'uuid_sha256':digest(members),
-                    'selected_members':sorted(n for n,u in ids.items() if u in members)}
-    zones=[]
-    for z in board.Zones():
-        counts={}
-        for name in topology.COPPER_LAYERS:
-            layer=getattr(pcb,name.replace('.','_'))
-            if z.IsOnLayer(layer): counts[name]=z.GetFilledPolysList(layer).OutlineCount()
-        zones.append({'uuid':topology.uid(z),'net':z.GetNetname(),'rule_area':z.GetIsRuleArea(),'counts':counts})
-    if len(zones)>1000: raise ValueError('zone bound')
+def native_snapshot(board, pcb, stages):
+    with stages.stage('metadata'):
+        selected={}
+        for f in board.GetFootprints():
+            for p in f.Pads():
+                name=f.GetReference()+'.'+p.GetNumber()
+                if name in topology.EXPECTED:
+                    wanted=topology.EXPECTED[name]
+                    if name in selected or topology.uid(p)!=wanted['uuid'] or p.GetNetname()!=wanted['net']:
+                        raise ValueError('pad identity')
+                    selected[name]=p
+        if set(selected)!=set(topology.EXPECTED): raise ValueError('missing pad')
+        for t in board.GetTracks():
+            key=topology.uid(t)
+            if key in VIAS:
+                if key in selected or t.GetNetname()!=VIAS[key]: raise ValueError('via identity')
+                selected[key]=t
+        if not set(VIAS)<=set(selected): raise ValueError('missing via')
+    with stages.stage('connectivity'):
+        board.GetConnectivity().RecalculateRatsnest()
+        ids={name:topology.uid(item) for name,item in selected.items()}
+        rows={}
+        for name,item in selected.items():
+            members=bounded_members(board.GetConnectivity().GetConnectedItems(item))
+            rows[name]={'count':len(members),'uuid_sha256':digest(members),
+                        'selected_members':sorted(n for n,u in ids.items() if u in members)}
+    with stages.stage('zone-metadata'):
+        zones=[]
+        for z in board.Zones():
+            counts={}
+            for name in topology.COPPER_LAYERS:
+                layer=getattr(pcb,name.replace('.','_'))
+                if z.IsOnLayer(layer): counts[name]=z.GetFilledPolysList(layer).OutlineCount()
+            zones.append({'uuid':topology.uid(z),'net':z.GetNetname(),'rule_area':z.GetIsRuleArea(),'counts':counts})
+        if len(zones)>1000: raise ValueError('zone bound')
     return {'membership':rows,'zones':zones,'entry_terminal':None,
             'entry_terminal_status':'UNRESOLVED: no source-proven power-entry terminal selected',
             'meaning':'Native membership, not direct-contact adjacency or hardware acceptance'}
 
 
 def worker(phase, scratch):
-    import pcbnew
-    if pcbnew.GetBuildVersion()!='10.0.6': raise ValueError('pcbnew version')
-    path=scratch/'before'/'osc-core.kicad_pcb'
-    if phase=='normalize':
-        board=pcbnew.LoadBoard(str(scratch/'input'/'osc-core.kicad_pcb'))
-        if not board: raise ValueError('load failed')
-        pcbnew.SaveBoard(str(path),board)
-        board=pcbnew.LoadBoard(str(path))
-    elif phase=='fill':
-        board=pcbnew.LoadBoard(str(path))
-        if not board: raise ValueError('load failed')
-        if not pcbnew.ZONE_FILLER(board).Fill(board.Zones()): raise ValueError('fill failed')
-        path=scratch/'after'/'osc-core.kicad_pcb'
-        pcbnew.SaveBoard(str(path),board)
-        board=pcbnew.LoadBoard(str(path))
-    else: raise ValueError('unknown phase')
-    if not path.is_file() or not board: raise ValueError('save/load failure')
-    (scratch/(phase+'.json')).write_text(json.dumps(native_snapshot(board,pcbnew)),encoding='utf-8')
+    stages=SubstageLog(scratch/(phase+'-substages.jsonl'),phase)
+    try:
+        import pcbnew
+        if pcbnew.GetBuildVersion()!='10.0.6': raise ValueError('pcbnew version')
+        path=scratch/'before'/'osc-core.kicad_pcb'
+        with stages.stage('load'):
+            source=scratch/'input'/'osc-core.kicad_pcb' if phase=='normalize' else path
+            board=pcbnew.LoadBoard(str(source))
+            if not board: raise ValueError('load failed')
+        if phase=='fill':
+            with stages.stage('fill'):
+                if not pcbnew.ZONE_FILLER(board).Fill(board.Zones()): raise ValueError('fill failed')
+            path=scratch/'after'/'osc-core.kicad_pcb'
+        with stages.stage('save'):
+            pcbnew.SaveBoard(str(path),board)
+            if not path.is_file(): raise ValueError('save failed')
+        with stages.stage('reload'):
+            board=pcbnew.LoadBoard(str(path))
+            if not board: raise ValueError('reload failed')
+        snapshot=native_snapshot(board,pcbnew,stages)
+        with stages.stage('snapshot-save'):
+            (scratch/(phase+'.json')).write_text(json.dumps(snapshot),encoding='utf-8')
+    finally: stages.close()
 
 
 def bounded(argv, cwd, deadline, log, watched=(), record=None):
@@ -275,7 +352,9 @@ def drc_checkpoint(result, phase, path):
 def phase_deadline(total, phase, now):
     if phase not in PHASE_CAPS: raise ValueError('unknown bounded phase')
     if now>=total: raise TimeoutError('total deadline exhausted')
-    return min(total,now+PHASE_CAPS[phase])
+    limit=min(total-FILL_RESERVE,now+PHASE_CAPS[phase]) if phase=='fill' else min(total,now+PHASE_CAPS[phase])
+    if limit<=now: raise TimeoutError('fill post-DRC/summarize reserve exhausted')
+    return limit
 
 
 def phase_start(result,phase):
@@ -295,7 +374,7 @@ def main():
     start=time.monotonic(); deadline=start+PAYLOAD_SECONDS
     root=Path('/work/boards/osc-core'); scratch=Path('/scratch/osc-fill')
     result={'status':'FAILED','board_acceptance':False,'entry_terminal':None,'commands':[],
-            'limits':'One fill; 420s payload; phase caps 45/100/150/100s within total; no route edits; outer cleanup required'}
+            'limits':'One fill; 420s payload; caps45/100/300/100; fill reserves115s for post-DRC+summary; no route edits'}
     phase='preflight'
     phase_row=phase_start(result,phase)
     drc_data={}
@@ -321,9 +400,10 @@ def main():
             else:
                 argv=[sys.executable,'-B',str(Path(__file__).resolve()),'--worker',phase,str(scratch)]
                 target='before' if phase=='normalize' else 'after'
-                watched=((scratch/(phase+'.json'),REPORT_LIMIT),(scratch/target/'osc-core.kicad_pcb',PCB_LIMIT))
+                watched=((scratch/(phase+'.json'),REPORT_LIMIT),(scratch/target/'osc-core.kicad_pcb',PCB_LIMIT),(scratch/(phase+'-substages.jsonl'),SUBSTAGE_LIMIT))
             command={'phase':phase};result['commands'].append(command)
             bounded(argv,scratch,local_deadline,scratch/(phase+'.log'),watched,command)
+            if phase in SUBSTAGES: capture_substages(result,scratch,phase,require_complete=True)
             if phase.startswith('drc-'):
                 drc_data[phase]=drc_checkpoint(result,phase,report)
             if phase=='normalize':
@@ -354,6 +434,9 @@ def main():
     except Exception as exc:
         phase_end(phase_row,'FAILED',deadline)
         result['failure']={'phase':phase,'type':type(exc).__name__,'message':str(exc)[:500]}
+        if phase in SUBSTAGES:
+            try: capture_substages(result,scratch,phase)
+            except Exception as check: result['substage_capture_failure']=type(check).__name__+': '+str(check)[:240]
         try: record_memory(result,phase,'failed')
         except Exception as check: result['telemetry_failure']=type(check).__name__+': '+str(check)[:160]
         log=scratch/(phase+'.log')
@@ -395,6 +478,12 @@ def validate_result(result):
             if not isinstance(counts,dict) or not counts or not set(counts)<=set(topology.COPPER_LAYERS) or not all(count_ok(n) for n in counts.values()): raise ValueError('zone counts')
         if not set(topology.ZONES)<=seen: raise ValueError('zone coverage')
     if result.get('status')!=STATUS or result.get('board_acceptance') is not False: raise ValueError('fill unsuccessful')
+    worker_rows=result.get('worker_substages')
+    if not isinstance(worker_rows,dict) or set(worker_rows)!=set(SUBSTAGES): raise ValueError('worker substage coverage')
+    for phase,entry in worker_rows.items():
+        if not isinstance(entry,dict) or entry.get('complete') is not True or 'error' in entry or not hash_ok(entry.get('log_sha256')) or not count_ok(entry.get('bytes')) or not 0<entry['bytes']<=SUBSTAGE_LIMIT: raise ValueError('worker substage evidence')
+        data=b''.join((json.dumps(row)+'\n').encode() for row in entry.get('rows',[]))
+        if not parse_substages(data,phase)['complete']: raise ValueError('worker substage incomplete')
     if result.get('source_hashes')!={'before':PINS,'after':PINS}: raise ValueError('source hashes')
     if not hash_ok(result.get('nonfill_input')) or result['nonfill_input']!=result.get('nonfill_before') or result['nonfill_input']!=result.get('nonfill_after'): raise ValueError('non-fill semantics')
     if len(result.get('commands',[]))!=4 or any(x.get('exit_code')!=0 for x in result['commands']): raise ValueError('command outcomes')
