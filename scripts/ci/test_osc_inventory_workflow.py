@@ -10,7 +10,7 @@ class WiringTests(unittest.TestCase):
         return json.loads((Path(__file__).resolve().parents[2]/'.github/workflows/osc-candidate-check.yml').read_text())
     def test_modes_and_command_arguments(self):
         w=self.workflow();mode=w['on']['workflow_dispatch']['inputs']['mode']
-        self.assertEqual(mode['default'],'smoke');self.assertEqual(mode['options'],['smoke','identity','topology','fill'])
+        self.assertEqual(mode['default'],'smoke');self.assertEqual(mode['options'],['smoke','identity','topology','fill','synthetic'])
         self.assertEqual(mode['type'],'choice')
         j=next(iter(w['jobs'].values()));self.assertEqual(j['env']['OSC_MODE'],'${{ inputs.mode }}')
         steps=j['steps'];command=steps[4]['run']
@@ -45,7 +45,7 @@ class WiringTests(unittest.TestCase):
                     self.assertEqual(call.args[0][0],'python3')
                     self.assertIn('unittest',call.args[0])
             finally:os.chdir(old)
-        self.assertEqual(sum(x['timeout-minutes'] for x in steps),18)
+        self.assertEqual(sum(10 if x['timeout-minutes']=="${{ inputs.mode == 'synthetic' && 2 || 10 }}" else x['timeout-minutes'] for x in steps),18)
     def stage(self,mode,inventory=False,extra=False):
         script=next(iter(self.workflow()['jobs'].values()))['steps'][-2]['run'].split('\n',1)[1].rsplit('\nPY',1)[0]
         with tempfile.TemporaryDirectory() as t:

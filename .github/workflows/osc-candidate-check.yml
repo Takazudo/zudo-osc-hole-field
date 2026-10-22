@@ -4,7 +4,7 @@
     "workflow_dispatch": {
       "inputs": {
         "mode": {
-          "description": "Public frozen smoke, identity, topology, or disposable fill baseline (not acceptance)",
+          "description": "Frozen public diagnostics or tiny synthetic API qualification; not acceptance",
           "type": "choice",
           "required": true,
           "default": "smoke",
@@ -12,7 +12,8 @@
             "smoke",
             "identity",
             "topology",
-            "fill"
+            "fill",
+            "synthetic"
           ]
         },
         "source_tests_only": {
@@ -57,7 +58,7 @@
             "path": "tooling",
             "persist-credentials": false,
             "sparse-checkout-cone-mode": false,
-            "sparse-checkout": "/scripts/ci/osc_candidate_check.py\n/scripts/ci/test_osc_candidate_check.py\n/.github/workflows/osc-candidate-check.yml\n/scripts/ci/osc_frozen_board_inventory.py\n/scripts/ci/osc_inventory_check.py\n/scripts/ci/test_osc_inventory_check.py\n/scripts/ci/test_osc_inventory_workflow.py\n/scripts/ci/osc_topology_check.py\n/scripts/ci/osc_frozen_topology.py\n/scripts/ci/test_osc_topology.py\n/scripts/ci/test_osc_mismatch.py\n/scripts/ci/osc_fill_check.py\n/scripts/ci/osc_frozen_fill.py\n/scripts/ci/test_osc_fill.py\n/scripts/ci/test_osc_fill_controller.py\n/scripts/ci/test_osc_fill_resources.py"
+            "sparse-checkout": "/scripts/ci/osc_candidate_check.py\n/scripts/ci/test_osc_candidate_check.py\n/.github/workflows/osc-candidate-check.yml\n/scripts/ci/osc_frozen_board_inventory.py\n/scripts/ci/osc_inventory_check.py\n/scripts/ci/test_osc_inventory_check.py\n/scripts/ci/test_osc_inventory_workflow.py\n/scripts/ci/osc_topology_check.py\n/scripts/ci/osc_frozen_topology.py\n/scripts/ci/test_osc_topology.py\n/scripts/ci/test_osc_mismatch.py\n/scripts/ci/osc_fill_check.py\n/scripts/ci/osc_frozen_fill.py\n/scripts/ci/test_osc_fill.py\n/scripts/ci/test_osc_fill_controller.py\n/scripts/ci/test_osc_fill_resources.py\n/scripts/ci/osc_synthetic_check.py\n/scripts/ci/osc_synthetic_zone.py\n/scripts/ci/test_osc_synthetic.py"
           }
         },
         {
@@ -79,15 +80,15 @@
         },
         {
           "name": "Run selected frozen-source mode",
-          "timeout-minutes": 10,
-          "run": "case \"$OSC_MODE\" in\n  smoke) python3 -B tooling/scripts/ci/osc_candidate_check.py --source frozen --out receipts ;;\n  identity) python3 -B tooling/scripts/ci/osc_inventory_check.py frozen inventory-receipts ;;\n  topology) python3 -B tooling/scripts/ci/osc_topology_check.py frozen topology-receipts ;;\n  fill) python3 -B tooling/scripts/ci/osc_fill_check.py frozen fill-receipts ;;\n  *) echo \"Unsupported mode\" >&2; exit 2 ;;\nesac",
+          "timeout-minutes": "${{ inputs.mode == 'synthetic' && 2 || 10 }}",
+          "run": "case \"$OSC_MODE\" in\n  smoke) python3 -B tooling/scripts/ci/osc_candidate_check.py --source frozen --out receipts ;;\n  identity) python3 -B tooling/scripts/ci/osc_inventory_check.py frozen inventory-receipts ;;\n  topology) python3 -B tooling/scripts/ci/osc_topology_check.py frozen topology-receipts ;;\n  fill) python3 -B tooling/scripts/ci/osc_fill_check.py frozen fill-receipts ;;\n  synthetic) python3 -B tooling/scripts/ci/osc_synthetic_check.py frozen synthetic-receipts ;;\n  *) echo \"Unsupported mode\" >&2; exit 2 ;;\nesac",
           "if": "${{ !inputs.source_tests_only }}"
         },
         {
           "name": "Bound upload to explicit small artifacts",
           "if": "always()",
           "timeout-minutes": 1,
-          "run": "python3 - <<'PY'\nimport json,os\nfrom pathlib import Path\ndst=Path('upload-safe'); dst.mkdir(exist_ok=False)\ntry:\n    mode=os.environ['OSC_MODE']\n    if mode not in ('smoke','identity','topology','fill'): raise ValueError('invalid mode')\n    sources=[(Path('receipts'),{'receipt.json','tests.json'})]\n    inv=Path('inventory-receipts')\n    if inv.exists():\n        if mode!='identity' or inv.is_symlink() or not inv.is_dir(): raise ValueError('unexpected inventory output')\n        sources.append((inv,{'receipt.json','inventory.json'}))\n    top=Path('topology-receipts')\n    if top.exists():\n        if mode!='topology' or top.is_symlink() or not top.is_dir(): raise ValueError('unexpected topology output')\n        sources.append((top,{'receipt.json','topology.json'}))\n    fill=Path('fill-receipts')\n    if fill.exists():\n        if mode!='fill' or fill.is_symlink() or not fill.is_dir(): raise ValueError('unexpected fill output')\n        sources.append((fill,{'receipt.json','fill.json'}))\n    total=0; payload={}\n    for src,allowed in sources:\n        if src.is_symlink() or not src.is_dir(): raise ValueError('invalid artifact root')\n        entries=list(src.iterdir())\n        if any(p.name not in allowed or p.is_symlink() or not p.is_file() for p in entries): raise ValueError('artifact allowlist/type violation')\n        if not (src/'receipt.json').is_file(): raise ValueError('missing failure receipt')\n        for p in entries:\n            with p.open('rb') as f: data=f.read(100*1024*1024+1)\n            total+=len(data)\n            if total>100*1024*1024: raise ValueError('artifact byte cap exceeded')\n            payload[p.name]=data\n    for name,data in payload.items(): (dst/name).write_bytes(data)\nexcept Exception as exc:\n    (dst/'receipt.json').write_text(json.dumps({'status':'ARTIFACT_POLICY_FAILURE','error':str(exc)}))\n    raise SystemExit(1)\nPY"
+          "run": "python3 - <<'PY'\nimport json,os\nfrom pathlib import Path\ndst=Path('upload-safe'); dst.mkdir(exist_ok=False)\ntry:\n    mode=os.environ['OSC_MODE']\n    if mode not in ('smoke','identity','topology','fill','synthetic'): raise ValueError('invalid mode')\n    sources=[(Path('receipts'),{'receipt.json','tests.json'})]\n    inv=Path('inventory-receipts')\n    if inv.exists():\n        if mode!='identity' or inv.is_symlink() or not inv.is_dir(): raise ValueError('unexpected inventory output')\n        sources.append((inv,{'receipt.json','inventory.json'}))\n    top=Path('topology-receipts')\n    if top.exists():\n        if mode!='topology' or top.is_symlink() or not top.is_dir(): raise ValueError('unexpected topology output')\n        sources.append((top,{'receipt.json','topology.json'}))\n    fill=Path('fill-receipts')\n    if fill.exists():\n        if mode!='fill' or fill.is_symlink() or not fill.is_dir(): raise ValueError('unexpected fill output')\n        sources.append((fill,{'receipt.json','fill.json'}))\n    syn=Path('synthetic-receipts')\n    if syn.exists():\n        if mode!='synthetic' or syn.is_symlink() or not syn.is_dir(): raise ValueError('unexpected synthetic output')\n        sources.append((syn,{'receipt.json','synthetic.json'}))\n    total=0; payload={}\n    for src,allowed in sources:\n        if src.is_symlink() or not src.is_dir(): raise ValueError('invalid artifact root')\n        entries=list(src.iterdir())\n        if any(p.name not in allowed or p.is_symlink() or not p.is_file() for p in entries): raise ValueError('artifact allowlist/type violation')\n        if not (src/'receipt.json').is_file(): raise ValueError('missing failure receipt')\n        for p in entries:\n            with p.open('rb') as f: data=f.read(100*1024*1024+1)\n            total+=len(data)\n            if total>100*1024*1024: raise ValueError('artifact byte cap exceeded')\n            payload[p.name]=data\n    for name,data in payload.items(): (dst/name).write_bytes(data)\nexcept Exception as exc:\n    (dst/'receipt.json').write_text(json.dumps({'status':'ARTIFACT_POLICY_FAILURE','error':str(exc)}))\n    raise SystemExit(1)\nPY"
         },
         {
           "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
@@ -95,7 +96,7 @@
           "timeout-minutes": 2,
           "with": {
             "name": "osc-${{ inputs.mode }}-fa16c6f-${{ github.run_id }}-${{ github.run_attempt }}",
-            "path": "upload-safe/receipt.json\nupload-safe/tests.json\nupload-safe/inventory.json\nupload-safe/topology.json\nupload-safe/fill.json",
+            "path": "upload-safe/receipt.json\nupload-safe/tests.json\nupload-safe/inventory.json\nupload-safe/topology.json\nupload-safe/fill.json\nupload-safe/synthetic.json",
             "retention-days": 7,
             "if-no-files-found": "error"
           }

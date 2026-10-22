@@ -103,8 +103,8 @@ class SmokeTests(unittest.TestCase):
         self.assertTrue(all(x['with']['persist-credentials'] is False for x in checkouts))
         self.assertEqual(checkouts[1]['with']['ref'],c.SOURCE)
         upload=j['steps'][-1];self.assertEqual(upload['with']['retention-days'],7)
-        self.assertEqual(upload['with']['path'],'upload-safe/receipt.json\nupload-safe/tests.json\nupload-safe/inventory.json\nupload-safe/topology.json\nupload-safe/fill.json')
-        self.assertLessEqual(sum(x['timeout-minutes'] for x in j['steps']),20)
+        self.assertEqual(upload['with']['path'],'upload-safe/receipt.json\nupload-safe/tests.json\nupload-safe/inventory.json\nupload-safe/topology.json\nupload-safe/fill.json\nupload-safe/synthetic.json')
+        self.assertLessEqual(sum(10 if x['timeout-minutes']=="${{ inputs.mode == 'synthetic' && 2 || 10 }}" else x['timeout-minutes'] for x in j['steps']),20)
         for forbidden in ['contents: write','secrets.','git push','workflow_run','actions/cache','pickle','max-parallel:']:
             self.assertNotIn(forbidden,s)
     def test_artifact_directory_attack(self):
