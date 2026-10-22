@@ -23,10 +23,11 @@ COMMANDS = [['bash','scripts/kicad/run.sh','kicad-cli','version'],
             ['bash','scripts/kicad/run.sh','python3','-c','import pcbnew; print(pcbnew.GetBuildVersion())']]
 LIMIT = 1024 * 1024
 DEADLINE = None
+RESERVE_SECONDS = 7
 
 def bounded_seconds(seconds, now=None):
     if DEADLINE is None: return seconds
-    remaining=DEADLINE-(time.monotonic() if now is None else now)-7
+    remaining=DEADLINE-(time.monotonic() if now is None else now)-RESERVE_SECONDS
     if remaining<=0: raise TimeoutError('job-local execution budget exhausted')
     return min(seconds,remaining)
 
@@ -125,23 +126,32 @@ def cleanup_owned(state, docker, root, call=run_command, outcomes=None):
         path.unlink() # Only completed job-local bookkeeping; outcomes retained in receipt.
     return outcomes
 
-def adapter(argv):
+def adapter(argv, memory_policy='default', execution_policy='default'):
     # The unchanged oracle discovers docker through PATH. This adapter supports only its run shape.
     if not argv or argv[0]!='run' or argv.count(IMAGE)!=1 or '--rm' not in argv:
         raise ValueError('unsupported Docker adapter operation')
     if any(x in argv for x in ['--name','--cidfile','--label','--privileged','--network=host']):
         raise ValueError('unexpected ownership/security option')
+    if memory_policy not in ('default','fill-2g-noswap'): raise ValueError('unknown memory policy')
+    if execution_policy not in ('default','fill-430','fill-probe-20'): raise ValueError('unknown execution policy')
+    if execution_policy!='default' and memory_policy!='fill-2g-noswap': raise ValueError('fill execution requires fill memory policy')
+    resource_options=('--memory','--memory-swap','--memory-reservation','--memory-swappiness',
+        '--cpus','--cpu','--cpuset','--pids-limit','--oom','--kernel-memory','--ulimit','--cgroup')
+    if any(a.startswith(('-m','-c')) or any(a.startswith(x) for x in resource_options) for a in argv[:argv.index(IMAGE)]):
+        raise ValueError('resource overrides forbidden')
+    memory_args=['--memory','512m'] if memory_policy=='default' else ['--memory','2g','--memory-swap','2g']
     state=Path(os.environ['OSC_STATE']);docker=os.environ['OSC_REAL_DOCKER']
     owner=uuid.uuid4().hex;record={'name':'osc-smoke-'+owner,'owner':owner,'cid':None}
     path=state/('owned-'+owner+'.json');path.write_text(json.dumps(record))
     args=[x for x in argv[1:] if x!='--rm']
     result=run_command([docker,'create','--name',record['name'],'--label','osc.smoke.owner='+owner,
-        '--cpus','1','--memory','512m','--pids-limit','64',*args],Path.cwd(),10,isolated=False)
+        '--cpus','1',*memory_args,'--pids-limit','64',*args],Path.cwd(),10,isolated=False)
     cid=checked(result)
     if len(cid)!=64 or any(c not in '0123456789abcdef' for c in cid): raise ValueError('invalid created CID')
     record['cid']=cid
     tmp=path.with_suffix('.tmp');tmp.write_text(json.dumps(record));tmp.replace(path)
-    result=run_command([docker,'start','--attach',cid],Path.cwd(),120,isolated=False)
+    attach_seconds={'default':120,'fill-430':430,'fill-probe-20':20}[execution_policy]
+    result=run_command([docker,'start','--attach',cid],Path.cwd(),attach_seconds,isolated=False)
     sys.stdout.write(result['output']);sys.stdout.flush()
     return result['exit_code'] if not result['failure'] and result['exit_code'] is not None else 1
 
