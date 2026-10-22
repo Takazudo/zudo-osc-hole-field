@@ -10,7 +10,7 @@ class WiringTests(unittest.TestCase):
         return json.loads((Path(__file__).resolve().parents[2]/'.github/workflows/osc-candidate-check.yml').read_text())
     def test_modes_and_command_arguments(self):
         w=self.workflow();mode=w['on']['workflow_dispatch']['inputs']['mode']
-        self.assertEqual(mode['default'],'smoke');self.assertEqual(mode['options'],['smoke','identity'])
+        self.assertEqual(mode['default'],'smoke');self.assertEqual(mode['options'],['smoke','identity','topology'])
         self.assertEqual(mode['type'],'choice')
         j=next(iter(w['jobs'].values()));self.assertEqual(j['env']['OSC_MODE'],'${{ inputs.mode }}')
         steps=j['steps'];command=steps[4]['run']
