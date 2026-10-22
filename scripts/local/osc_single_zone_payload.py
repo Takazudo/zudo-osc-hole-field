@@ -43,8 +43,42 @@ VIA_LIMIT=400
 OUTPUT_LIMIT=900000
 PCB_LIMIT=64*1024*1024
 STATUS='SINGLE_ZONE_CONNECTIVITY_OBSERVATIONS_NOT_ACCEPTANCE'
-# Register this payload's durable substage order with the shared log/parser.
-fill.SUBSTAGES['zone']=STAGES
+
+class StageLog(fill.SubstageLog):
+    """Durable substage log for this payload's own stage order; never mutates the shared SUBSTAGES."""
+    def __init__(self,path):
+        self.phase='zone';self.seq=0;self.size=0;self.last=-float('inf');self.stream=path.open('xb')
+
+def parse_stages(data):
+    if len(data)>fill.SUBSTAGE_LIMIT: raise ValueError('substage bound')
+    rows=[];previous=-float('inf');expected=[(s,e) for s in STAGES for e in ('start','complete')]
+    for line in data.splitlines(keepends=True):
+        if not line.endswith(b'\n'): raise ValueError('incomplete substage record')
+        row=json.loads(line)
+        if not isinstance(row,dict) or set(row)!={'seq','phase','stage','event','monotonic_seconds'}: raise ValueError('substage schema')
+        i=len(rows);stamp=row['monotonic_seconds']
+        if type(row['seq']) is not int or row['seq']!=i+1 or row['phase']!='zone' or i>=len(expected) or (row['stage'],row['event'])!=expected[i]: raise ValueError('substage order')
+        if type(stamp) not in (int,float) or stamp<previous: raise ValueError('substage time')
+        rows.append(row);previous=stamp
+    return {'rows':rows,'complete':len(rows)==len(expected)}
+
+def capture_stages(result,scratch,require_complete=False):
+    path=scratch/'zone-substages.jsonl';target=result.setdefault('worker_substages',{})
+    try:
+        with path.open('rb') as stream: data=stream.read(fill.SUBSTAGE_LIMIT+1)
+        observation={'log_sha256':fill.hashlib.sha256(data).hexdigest(),'bytes':len(data),**parse_stages(data)}
+        target['zone']=observation
+        if require_complete and not observation['complete']: raise ValueError('worker substage incomplete')
+    except Exception as exc:
+        entry=target.setdefault('zone',{'rows':[],'complete':False});entry['error']=type(exc).__name__+': '+str(exc)[:240]
+        if 'data' in locals():
+            prefix=b'';valid={'rows':[],'complete':False}
+            for line in data.splitlines(keepends=True):
+                try: candidate=parse_stages(prefix+line)
+                except Exception: break
+                prefix+=line;valid=candidate
+            entry.update(rows=valid['rows'],complete=False,valid_prefix_bytes=len(prefix),captured_bytes=len(data))
+        raise
 
 def require(condition,message):
     if not condition: raise ValueError(message)
@@ -164,7 +198,7 @@ def select(board,pcb,layers):
     return z
 
 def worker(scratch):
-    stages=fill.SubstageLog(scratch/'zone-substages.jsonl','zone');result={'board_acceptance':False}
+    stages=StageLog(scratch/'zone-substages.jsonl');result={'board_acceptance':False}
     try:
         import pcbnew
         require(pcbnew.GetBuildVersion()=='10.0.6','pcbnew version')
@@ -279,7 +313,7 @@ def main():
         fill.record_memory(result,'preflight','after')
         fill.record_memory(result,'zone','before')
         run_worker(scratch,deadline,result['command'])
-        fill.capture_substages(result,scratch,'zone',require_complete=True)
+        capture_stages(result,scratch,require_complete=True)
         result['worker']=json.loads((scratch/'zone.json').read_text())
         fill.record_memory(result,'zone','after')
         fill.record_memory(result,'verify','before')
@@ -295,7 +329,7 @@ def main():
         result['status']=STATUS
     except Exception as exc:
         result['failure']={'type':type(exc).__name__,'message':str(exc)[:500]}
-        try: fill.capture_substages(result,scratch,'zone')
+        try: capture_stages(result,scratch)
         except Exception as check: result['substage_capture_failure']=type(check).__name__+': '+str(check)[:240]
         if (scratch/'zone.json').is_file():
             try: result['worker']=json.loads((scratch/'zone.json').read_text())

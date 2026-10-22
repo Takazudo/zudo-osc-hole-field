@@ -86,12 +86,12 @@ def summarize(receipt,detail):
 
 def run(args):
     started=time.monotonic();c.DEADLINE=started+TOTAL_SECONDS;c.RESERVE_SECONDS=CLEANUP_RESERVE+7
-    old_pins=c.PINS;c.PINS=board_pins()
     root=Path(args.source).resolve();out=Path(args.out).resolve()
     if root==out or out.is_relative_to(root): raise ValueError('separate output required')
     out.mkdir(exist_ok=False)
+    old_pins=c.PINS;c.PINS=board_pins()
     r={'status':'STARTED','mode':MODE,'hosted':False,'source_sha':c.SOURCE,'tooling_sha':os.environ.get('TOOLING_SHA'),'image':c.IMAGE,
-       'target_zone':payload.TARGET_ZONE,'pairs':payload.PAIRS,'commands':[],'cleanup':[],'full_board_fill':False,'board_acceptance':False,'drc':'NOT RUN',
+       'target_zone':payload.TARGET_ZONE,'pairs':payload.PAIRS,'commands':[],'cleanup':[],'full_board_fill':False,'board_acceptance':False,'drc':'NOT RUN: whole-board DRC is outside this two-pair selected-zone diagnostic',
        'deadline_policy':{'total_seconds':TOTAL_SECONDS,'outer_stop_seconds':OUTER_STOP_SECONDS,'payload_seconds':PAYLOAD_SECONDS,'attach_seconds':ATTACH_SECONDS,
            'wrapper_seconds':WRAPPER_SECONDS,'cleanup_reserve_seconds':CLEANUP_RESERVE,'launch_reserve_seconds':LAUNCH_RESERVE,'stage_caps':payload.STAGE_CAPS,
            'started_monotonic':started,'deadline_monotonic':c.DEADLINE}}

@@ -23,7 +23,7 @@ def env(**extra):
 class Payload(unittest.TestCase):
     def test_constants_and_stage_registration(self):
         self.assertEqual(z.PAYLOAD_SECONDS,420);self.assertEqual(sum(z.STAGE_CAPS.values()),420)
-        self.assertEqual(fill.SUBSTAGES['zone'],z.STAGES);self.assertEqual(set(z.STAGE_GROUP),set(z.STAGES))
+        self.assertNotIn('zone',fill.SUBSTAGES);self.assertEqual(set(z.STAGE_GROUP),set(z.STAGES))
         self.assertEqual(z.TARGET_ZONE,'265b1369-38aa-5a3a-b488-eb0aae22e998');self.assertEqual(len(z.DUPLICATE_UUIDS),6)
         self.assertEqual(z.PAIRS,[('C1129.1','U1105.16'),('C1131.1','U1106.8')])
     def test_summarize_cluster_and_bridging(self):
@@ -62,6 +62,24 @@ class Payload(unittest.TestCase):
                  patch.object(z.time,'sleep'):
                 with self.assertRaises(TimeoutError) as caught: z.run_worker(scratch,10000.0,record)
             self.assertIn('fill stage cap',str(caught.exception));self.assertEqual(record['status'],'FAILED');self.assertEqual(record['stage_group_starts'],{'fill':0.0})
+    def test_stage_log_and_parser(self):
+        with tempfile.TemporaryDirectory() as t:
+            log=z.StageLog(Path(t)/'zone-substages.jsonl')
+            with log.stage('load'): pass
+            log.write('identity','start');log.close()
+            data=(Path(t)/'zone-substages.jsonl').read_bytes()
+            parsed=z.parse_stages(data);self.assertEqual([(r['stage'],r['event']) for r in parsed['rows']],[('load','start'),('load','complete'),('identity','start')]);self.assertFalse(parsed['complete'])
+            result={}
+            with self.assertRaises(ValueError):z.capture_stages(result,Path(t),require_complete=True)
+            self.assertFalse(result['worker_substages']['zone']['complete']);self.assertEqual(len(result['worker_substages']['zone']['rows']),3)
+            with self.assertRaises(ValueError):z.parse_stages(b'{"seq":1,"phase":"zone","stage":"fill","event":"start","monotonic_seconds":1}\n')
+    def test_pins_restored_when_output_exists(self):
+        with tempfile.TemporaryDirectory() as t:
+            out=Path(t)/'out';out.mkdir()
+            args=l.parse(['run',str(Path(t)/'src'),str(out),'--state',str(Path(t)/'s'),'--authorization','offline unit test authorization note'])
+            before=dict(c.PINS)
+            with self.assertRaises(FileExistsError):l.run(args)
+            self.assertEqual(c.PINS,before)
     def test_counts_pinned(self):
         self.assertEqual(z.COUNTS,{'segment':123905,'via':9646,'zone':351,'copper_zone':5})
 
@@ -98,7 +116,7 @@ class Controller(unittest.TestCase):
                 code=l.run(args)
             receipt=json.loads((out/'receipt.json').read_text())
             self.assertEqual(code,1);self.assertIn('heavy-guard',receipt['error']);runner.assert_not_called();self.assertFalse(state.exists())
-            self.assertEqual(receipt['deadline_policy']['payload_seconds'],420);self.assertIs(receipt['board_acceptance'],False);self.assertEqual(receipt['drc'],'NOT RUN')
+            self.assertEqual(receipt['deadline_policy']['payload_seconds'],420);self.assertIs(receipt['board_acceptance'],False);self.assertTrue(receipt['drc'].startswith('NOT RUN: '))
             self.assertEqual(c.PINS,{k:v for k,v in c.PINS.items()});self.assertNotIn('boards/osc-core/osc-core.kicad_pcb',c.PINS)
     def test_summarize_bounded(self):
         row={'connected':True,'symmetric':True,'cluster_a':{'size':9,'selected_zone_member':True,'vias':[{'x':1}]*100},'cluster_b':{'size':9,'selected_zone_member':True,'vias':[]},'bridging_vias':{'from_a_side':[1],'from_b_side':[1,2],'new_in_merged_cluster':[]}}
