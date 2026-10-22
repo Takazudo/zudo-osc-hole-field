@@ -186,6 +186,12 @@ class PayloadHelpers(unittest.TestCase):
                 with self.assertRaises(TimeoutError) as caught: z.run_worker(scratch,10000.0,record,script=dp.__file__,stage_group=dp.EVALUATE_GROUP,stage_caps=dp.EVALUATE_CAPS)
             self.assertIn('verify stage cap',str(caught.exception));self.assertEqual(Path(seen['argv'][2]).name,'osc_derived_fill_payload.py');self.assertEqual(seen['argv'][3],'--worker')
 
+def full_table(filled):
+    nets={PLUS12:'+12V',AGND_IN1:'AGND',AGND_F:'AGND',AGND_B:'AGND'}
+    rows=[{'uuid':u,'net':n,'rule_area':False,'layers':['In1.Cu'],'counts':{'In1.Cu':1 if u in filled else 0}} for u,n in nets.items()]
+    rows+=[{'uuid':'%08x-0000-4000-8000-000000000000'%i,'net':'','rule_area':True,'layers':['F.Cu'],'counts':{'F.Cu':0}} for i in range(z.COUNTS['zone']-len(nets))]
+    return sorted(rows,key=lambda r:r['uuid'])
+
 def good_detail(mode,zones=(AGND_IN1,),pairs=(('C1111.2','U1105.12'),('C1129.1','U1105.16')),classes=('UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN','UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN')):
     stages=dp.DERIVE_STAGES if mode=='derive' else dp.EVALUATE_STAGES
     rows=[{'seq':i+1,'phase':'zone','stage':s,'event':e,'monotonic_seconds':float(i)} for i,(s,e) in enumerate((s,e) for s in stages for e in ('start','complete'))]
@@ -264,9 +270,15 @@ class ControllerDerived(unittest.TestCase):
     def test_adopt_legacy_writes_sidecar_once(self):
         with tempfile.TemporaryDirectory() as t:
             root=Path(t)/'cand';root.mkdir();(root/'after').mkdir()
-            manifest={'status':d.LEGACY_STATUS,'target_zone':PLUS12,'input':dict(fill.PINS),'exported':{'after':{}},'board_acceptance':False};(root/'manifest.json').write_text(json.dumps(manifest))
-            receipt=Path(t)/'receipt.json';receipt.write_text(json.dumps({'status':d.LEGACY_STATUS,'image':c.IMAGE,'image_identity':{'id':IMAGE_ID,'repo_digests':[c.IMAGE]},'tooling_sha':'1'*40,'tool_hashes':{},'host_verification':{'x':1}}))
+            manifest={'status':d.LEGACY_STATUS,'target_zone':PLUS12,'input':dict(fill.PINS),'exported':{'after':{'osc-core.kicad_pcb':'9'*64}},'board_acceptance':False};(root/'manifest.json').write_text(json.dumps(manifest))
+            def receipt_for(manifest_sha):
+                detail={'status':d.LEGACY_STATUS,'manifest_sha256':manifest_sha,'exported':manifest['exported']}
+                return {'status':d.LEGACY_STATUS,'image':c.IMAGE,'image_identity':{'id':IMAGE_ID,'repo_digests':[c.IMAGE]},'tooling_sha':'1'*40,'tool_hashes':{},
+                        'commands':[{'argv':['git','rev-parse','HEAD'],'output':'x'},{'argv':['bash','scripts/kicad/run.sh','python3','-B','/analysis/osc_zone_drc_payload.py','candidate'],'output':json.dumps(detail)}]}
+            receipt=Path(t)/'receipt.json';receipt.write_text(json.dumps(receipt_for('0'*64)))
             args=l.parse(['adopt-legacy',str(root),str(receipt),'--attestation','image id and pcbnew 10.0.6 from the recorded candidate run 2 receipt'])
+            with self.assertRaises(ValueError):l.adopt_legacy(args)   # receipt describes a different candidate directory
+            receipt.write_text(json.dumps(receipt_for(c.sha(root/'manifest.json'))))
             with contextlib.redirect_stdout(io.StringIO()): self.assertEqual(l.adopt_legacy(args),0)
             side=json.loads((root/d.SIDECAR).read_text());self.assertEqual(side['identity']['zones'],[PLUS12]);self.assertEqual(side['identity']['image_id'],IMAGE_ID);self.assertEqual(side['manifest_sha256'],c.sha(root/'manifest.json'))
             with self.assertRaises(FileExistsError):l.adopt_legacy(args)
@@ -280,9 +292,10 @@ class ControllerDerived(unittest.TestCase):
         write_board(output/'after'/'osc-core.kicad_pcb',[AGND_IN1])
         for name in ('osc-core.kicad_pro','osc-core.kicad_dru'):(output/'after'/name).write_text((src/name).read_text())
         exported={n:c.sha(output/'after'/n) for n in d.BOARD_FILES}
-        table=[{'uuid':AGND_IN1,'net':'AGND','rule_area':False,'layers':['In1.Cu'],'counts':{'In1.Cu':1}}]
+        table=full_table({AGND_IN1})
         pairs={'C1111.2<->U1105.12':{'connected':False},'C1129.1<->U1105.16':{'connected':False},'ratsnest':{'unconnected_count':1}}
-        worker={'failure':None,'counts':dict(z.COUNTS),'before':{'pairs':pairs},'after':{'pairs':pairs,'zones':table},'reloaded':{'pairs':pairs,'zones':table}}
+        selected=[r for r in table if r['uuid']==AGND_IN1]
+        worker={'failure':None,'counts':dict(z.COUNTS),'before':{'pairs':pairs},'after':{'pairs':pairs,'zones':selected},'reloaded':{'pairs':pairs,'zones':selected,'zone_table':table}}
         (output/'zone.json').write_text(json.dumps(worker));(output/'zone-substages.jsonl').write_text('')
         receipts={n:c.sha(output/n) for n in ('zone.json','zone-substages.jsonl')}
         detail=good_detail('derive');detail['exported_receipts']=receipts
@@ -301,8 +314,115 @@ class ControllerDerived(unittest.TestCase):
                 tampered=json.loads(json.dumps(detail));tampered['worker_summary']['classification']['C1111.2<->U1105.12'].update({'class':'CONNECTED_VIA_SELECTED_FILL','connected_after':True})
                 manifest['classification']=tampered['worker_summary']['classification'];(output/'manifest.json').write_text(json.dumps(manifest));tampered['manifest_sha256']=c.sha(output/'manifest.json')
                 with self.assertRaises(ValueError):l.verify_derived_output('derive',tampered,output,None,root,receipt)
+                # Class contradicts consistent flags: both phases open in zone.json, class claims a connection.
+                lying=json.loads(json.dumps(detail));lying['worker_summary']['classification']['C1111.2<->U1105.12'].update({'class':'CONNECTED_VIA_SELECTED_FILL'})
+                manifest['classification']=lying['worker_summary']['classification'];(output/'manifest.json').write_text(json.dumps(manifest));lying['manifest_sha256']=c.sha(output/'manifest.json')
+                with self.assertRaises(ValueError) as caught:l.verify_derived_output('derive',lying,output,None,root,receipt)
+                self.assertIn('classification class',str(caught.exception))
                 (output/'after'/'osc-core.kicad_pcb').write_text(board_text([AGND_IN1])+'\n')
                 manifest['classification']=detail['worker_summary']['classification'];(output/'manifest.json').write_text(json.dumps(manifest));detail['manifest_sha256']=c.sha(output/'manifest.json')
                 with self.assertRaises(ValueError):l.verify_derived_output('derive',detail,output,None,root,receipt)
 
 if __name__=='__main__':unittest.main()
+
+
+class PayloadIntegration(unittest.TestCase):
+    """Parent-side payload flow with a fake worker: spec/context, source checks, parent and reuse verification, export, manifest, validation, host verification."""
+    ZONES=[r['uuid'] for r in full_table(set())]
+    def text(self,filled=()):
+        body=''.join('\t(zone\n\t\t(net "x")\n\t\t(uuid "%s")\n%s\t)\n'%(u,'\t\t(filled_polygon\n\t\t\t(pts)\n\t\t)\n' if u in filled else '') for u in self.ZONES)
+        return '(kicad_pcb\n\t(version 20250101)\n%s)\n'%body
+    def setup(self,t):
+        root=Path(t)/'work';(root).mkdir();(root/'osc-core.kicad_pcb').write_text(self.text());(root/'osc-core.kicad_pro').write_text('pro');(root/'osc-core.kicad_dru').write_text('dru')
+        pins={n:c.sha(root/n) for n in d.BOARD_FILES}
+        spec_dir=Path(t)/'spec';spec_dir.mkdir()
+        (spec_dir/'spec.json').write_text(json.dumps({'zones':[AGND_IN1],'pairs':[['C1111.2','U1105.12'],['C1129.1','U1105.16']],'note':'fake worker'}))
+        (spec_dir/'context.json').write_text(json.dumps({'image_id':IMAGE_ID,'kicad':'10.0.6','source_pins':pins,'process':d.PROCESS_VERSION,'tooling_sha':'t'*40}))
+        return root,pins,spec_dir
+    def fake_worker(self,connected_after=False,fail=False):
+        def run_worker(scratch,deadline,record,script=None,stage_group=None,stage_caps=None):
+            spec=json.loads((scratch/'spec.json').read_text());stages=dp.DERIVE_STAGES if spec['mode']=='derive' else dp.EVALUATE_STAGES
+            log=z.StageLog(scratch/'zone-substages.jsonl')
+            for s in stages:
+                with log.stage(s):
+                    if s=='save' and spec['mode']=='derive': (scratch/'after'/'osc-core.kicad_pcb').write_text(self.text(set(spec['input_zones'])|set(spec['zones'])))
+                    if fail and s=='fill': log.close();record.update(status='FAILED',error='TimeoutError: fill stage cap',exit_code=-9);raise TimeoutError('fill stage cap')
+            log.close()
+            table=full_table(set(spec['zones'])|set(spec['input_zones']))
+            pairs=lambda on:{'C1111.2<->U1105.12':{'connected':on,'cluster_a':{'vias':[]}},'C1129.1<->U1105.16':{'connected':False,'cluster_a':{'vias':[]}},'ratsnest':{'unconnected_count':4283 if not on else 4000}}
+            cls=dp.classify([('C1111.2','U1105.12'),('C1129.1','U1105.16')],pairs(False),pairs(connected_after),table,set(spec['zones']))
+            worker={'board_acceptance':False,'mode':spec['mode'],'repair_basis':False,'counts':dict(z.COUNTS),'duplicates_before':[],'input_zone_owners':sorted(spec['input_zones']),
+                    'fill':{'returned':True,'seconds':1.5,'zones':sorted(spec['zones'])} if spec['mode']=='derive' else None,
+                    'before':{'pairs':pairs(False)},'after':{'zones':[r for r in table if r['uuid'] in spec['zones']],'pairs':pairs(connected_after)},
+                    'reloaded':{'zones':[r for r in table if r['uuid'] in spec['zones']],'zone_table':table,'pairs':pairs(connected_after)},'classification':cls}
+            (scratch/'zone.json').write_text(json.dumps(worker));record.update(status='COMPLETE',exit_code=0)
+        return run_worker
+    def frames(self,result,phase,point):
+        result.setdefault('memory_telemetry',[]).append({'phase':phase,'point':point,'values':{'memory.max':fill.MEMORY_CAP,'memory.swap.max':0,'memory.peak':7},'events_since_baseline':{'oom':0,'oom_kill':0}})
+    def run_payload(self,mode,t,root,spec_dir,candidate,output,worker):
+        result={'status':'FAILED','mode':mode,'board_acceptance':False,'repair_basis':False,'full_board_fill':False,'refill_zones_option_used':False}
+        with patch.object(z,'run_worker',side_effect=worker),patch.object(fill,'record_memory',side_effect=self.frames):
+            try: dp.run(mode,root,spec_dir,candidate,Path(t)/('scratch-'+mode+output.name),output,result)
+            except Exception as exc: result['failure']={'type':type(exc).__name__,'message':str(exc)};result['status']=result['status'] if result['status']==dp.REJECTED_STATUS else 'FAILED'
+        result['elapsed_seconds']=1.0
+        return result
+    def test_derive_then_evaluate_then_rejections(self):
+        with tempfile.TemporaryDirectory() as t:
+            root,pins,spec_dir=self.setup(t);absent=Path(t)/'absent'
+            with patch.dict(fill.PINS,pins):
+                out1=Path(t)/'out1';out1.mkdir()
+                r=self.run_payload('derive',t,root,spec_dir,absent,out1,self.fake_worker(connected_after=True))
+                self.assertEqual(r['status'],dp.DERIVE_STATUS,r.get('failure'));dp.validate_result(r,'derive')
+                manifest=json.loads((out1/'manifest.json').read_text());self.assertEqual(manifest['identity']['zones'],[AGND_IN1]);self.assertEqual(manifest['classification']['C1111.2<->U1105.12']['class'],'CONNECTED_VIA_SELECTED_FILL')
+                self.assertEqual(manifest['classification']['C1129.1<->U1105.16']['class'],'UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN');self.assertEqual(set(manifest['after_owners']['filled_polygon_by_zone']),{AGND_IN1})
+                receipt={'tooling_sha':'t'*40,'image_identity':{'id':IMAGE_ID},'spec':{'zones':[AGND_IN1],'pairs':[['C1111.2','U1105.12'],['C1129.1','U1105.16']]},'expected_identity_key':r['identity_key']}
+                fake_root=Path(t)/'fake-root';(fake_root/'boards').mkdir(parents=True);(fake_root/'boards'/'osc-core').symlink_to(root)
+                v=l.verify_derived_output('derive',r,out1,None,fake_root,receipt);self.assertTrue(v['reuse']['reusable'])
+                # Evaluate the exported derivation: reuse accepted, no fill, classification recomputed on the derived board.
+                out2=Path(t)/'out2';out2.mkdir()
+                e=self.run_payload('evaluate',t,root,spec_dir,out1,out2,self.fake_worker(connected_after=True))
+                self.assertEqual(e['status'],dp.EVALUATE_STATUS,e.get('failure'));dp.validate_result(e,'evaluate');self.assertTrue(e['reuse']['reusable']);self.assertIsNone(e['worker_summary']['fill'])
+                v=l.verify_derived_output('evaluate',e,out2,out1,fake_root,{**receipt,'expected_identity_key':e['identity_key']});self.assertTrue(v['reuse']['reusable'])
+                # Stale derived board: a byte appended after the manifest was written is rejected before any native work.
+                (out1/'after'/'osc-core.kicad_pcb').write_text(self.text([AGND_IN1])+'\n')
+                out3=Path(t)/'out3';out3.mkdir()
+                e=self.run_payload('evaluate',t,root,spec_dir,out1,out3,self.fake_worker())
+                self.assertEqual(e['status'],dp.REJECTED_STATUS);self.assertIn('stale or altered',e['failure']['message']);self.assertFalse(any(out3.iterdir()))
+                with self.assertRaises(ValueError):dp.validate_result(e,'evaluate')
+                (out1/'after'/'osc-core.kicad_pcb').write_text(self.text([AGND_IN1]))
+                # Changed source: the current source's non-fill semantics differ, so the saved derivation is not reusable.
+                (root/'osc-core.kicad_pcb').write_text(self.text().replace('(version 20250101)','(version 20250102)'))
+                with patch.dict(fill.PINS,{'osc-core.kicad_pcb':c.sha(root/'osc-core.kicad_pcb')}):
+                    (spec_dir/'context.json').write_text(json.dumps({'image_id':IMAGE_ID,'kicad':'10.0.6','source_pins':dict(fill.PINS),'process':d.PROCESS_VERSION,'tooling_sha':'t'*40}))
+                    out4=Path(t)/'out4';out4.mkdir()
+                    e=self.run_payload('evaluate',t,root,spec_dir,out1,out4,self.fake_worker())
+                    self.assertEqual(e['status'],dp.REJECTED_STATUS);self.assertIn('identity key mismatch in source',e['failure']['message'])
+    def test_chained_derivation_and_worker_failure(self):
+        with tempfile.TemporaryDirectory() as t:
+            root,pins,spec_dir=self.setup(t);absent=Path(t)/'absent'
+            with patch.dict(fill.PINS,pins):
+                out1=Path(t)/'out1';out1.mkdir()
+                r=self.run_payload('derive',t,root,spec_dir,absent,out1,self.fake_worker());self.assertEqual(r['status'],dp.DERIVE_STATUS,r.get('failure'))
+                (spec_dir/'spec.json').write_text(json.dumps({'zones':[AGND_F],'pairs':[['C1111.2','U1105.12'],['C1129.1','U1105.16']],'note':'chain'}))
+                out2=Path(t)/'out2';out2.mkdir()
+                r2=self.run_payload('derive',t,root,spec_dir,out1,out2,self.fake_worker(connected_after=True))
+                self.assertEqual(r2['status'],dp.DERIVE_STATUS,r2.get('failure'));dp.validate_result(r2,'derive')
+                manifest=json.loads((out2/'manifest.json').read_text());self.assertEqual(manifest['parent']['zones'],[AGND_IN1]);self.assertEqual(manifest['identity']['parent_key'],r['identity_key'])
+                self.assertEqual(set(manifest['after_owners']['filled_polygon_by_zone']),{AGND_IN1,AGND_F});self.assertEqual(manifest['classification']['C1111.2<->U1105.12']['class'],'CONNECTED_VIA_SELECTED_FILL')
+                receipt={'tooling_sha':'t'*40,'image_identity':{'id':IMAGE_ID},'spec':{'zones':[AGND_F],'pairs':[['C1111.2','U1105.12'],['C1129.1','U1105.16']]}}
+                fake_root=Path(t)/'fake-root';(fake_root/'boards').mkdir(parents=True);(fake_root/'boards'/'osc-core').symlink_to(root)
+                self.assertTrue(l.verify_derived_output('derive',r2,out2,out1,fake_root,receipt)['reuse']['reusable'])
+                # Overlapping selection with the parent is refused before any worker runs.
+                (spec_dir/'spec.json').write_text(json.dumps({'zones':[AGND_IN1],'pairs':[['C1111.2','U1105.12']]}))
+                out3=Path(t)/'out3';out3.mkdir()
+                r3=self.run_payload('derive',t,root,spec_dir,out1,out3,self.fake_worker());self.assertEqual(r3['status'],'FAILED');self.assertIn('overlap',r3['failure']['message'])
+                # Evaluate refuses chained derivations explicitly.
+                (spec_dir/'spec.json').write_text(json.dumps({'zones':[AGND_F],'pairs':[['C1111.2','U1105.12']]}))
+                out4=Path(t)/'out4';out4.mkdir()
+                e=self.run_payload('evaluate',t,root,spec_dir,out2,out4,self.fake_worker());self.assertEqual(e['status'],'FAILED');self.assertIn('chained',e['failure']['message'])
+                # Mid-run worker failure (stage cap) leaves a FAILED result with the partial substage log and no export.
+                (spec_dir/'spec.json').write_text(json.dumps({'zones':[AGND_F],'pairs':[['C1111.2','U1105.12']]}))
+                out5=Path(t)/'out5';out5.mkdir()
+                f=self.run_payload('derive',t,root,spec_dir,absent,out5,self.fake_worker(fail=True))
+                self.assertEqual(f['status'],'FAILED');self.assertIn('fill stage cap',f['failure']['message']);self.assertFalse(any(out5.iterdir()))
+                with self.assertRaises(ValueError):dp.validate_result(f,'derive')

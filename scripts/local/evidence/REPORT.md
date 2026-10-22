@@ -32,8 +32,11 @@ Path per endpoint (native cluster members before the fill, vias downcast with
 The layer transition is F.Cu or B.Cu -> via -> In4.Cu plane -> via -> F.Cu or
 B.Cu. The merged cluster also contains all 490 +12V vias (488 of them inside the
 fill) and 501 +12V pads; the board-wide unconnected count fell from 4283 to 3802.
-No wiring repair candidate is needed for these two pairs; the next minimal step
-is a zone refill before save in the canonical flow, which is not authorized here.
+No wiring repair candidate is needed for these two pairs. (Correction of an
+earlier hypothesis: the canonical flow does fill before saving; the published
+copy is stripped of fills on purpose, see the publication section below, so no
+canonical writer fix is needed. The adopted response is option C: the diagnostic
+side fills the zones it needs on a disposable derived copy.)
 
 ## Confinement evidence: the selected fill changed nothing else
 
@@ -113,9 +116,12 @@ driver check at `route_jack_grid.py:116` with `--refill-zones --save-board`,
 `route_kicad.py:77/99`, `prepare_source_planes.py:28`); the strip happens at
 promotion (`route_shards.py:313-326`). The frozen OSC readers
 (`scripts/ci/osc_frozen_topology.py`) read the published board without refilling,
-which is the direct cause of the two open +12V pairs. Minimal fix candidates, not
-applied: (A) let `without_zone_cache` keep a chosen zone set (the +12V In4 fill adds
-11 MB, well under the cap) inside `publication_copy` with the existing equivalence
-gate; (B) a one-time per-zone (never all-zone) refill script with the existing
-settled-fill and fresh-SHA promotion gates; (C) refill the selected zone in the
-reader before connectivity analysis, leaving the canonical file unchanged.
+which is the direct cause of the two open +12V pairs. Fix candidates considered: (A) let
+`without_zone_cache` keep a chosen zone set (the +12V In4 fill adds 11 MB, well
+under the cap) inside `publication_copy` with the existing equivalence gate; (B) a
+one-time per-zone (never all-zone) refill script with the existing settled-fill and
+fresh-SHA promotion gates; (C) refill the selected zones on a disposable derived
+copy on the diagnostic side, leaving the canonical file and the publication
+unchanged. Decision (user, 2026-10-23): C, with B-style shared helpers as internal
+implementation; A stays deferred until a concrete reason appears that the
+diagnostic side cannot solve. No canonical writer or publication change was made.

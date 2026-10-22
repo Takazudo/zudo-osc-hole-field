@@ -144,7 +144,8 @@ def run(args):
        'target_zone':payload.TARGET_ZONE if spec is None else None,'pairs':payload.PAIRS if spec is None else spec['pairs'],'spec':spec,'commands':[],'cleanup':[],'full_board_fill':False,'board_acceptance':False,'repair_basis':False,
        'drc':'NOT RUN: whole-board DRC is outside this selected-zone connectivity diagnostic',
        'deadline_policy':{'total_seconds':TOTAL_SECONDS,'outer_stop_seconds':OUTER_STOP_SECONDS,'payload_seconds':PAYLOAD_SECONDS,'attach_seconds':ATTACH_SECONDS,
-           'wrapper_seconds':WRAPPER_SECONDS,'cleanup_reserve_seconds':CLEANUP_RESERVE,'launch_reserve_seconds':LAUNCH_RESERVE,'stage_caps':payload.STAGE_CAPS,
+           'wrapper_seconds':WRAPPER_SECONDS,'cleanup_reserve_seconds':CLEANUP_RESERVE,'launch_reserve_seconds':LAUNCH_RESERVE,
+           'stage_caps':derivedpayload.EVALUATE_CAPS if args.payload=='evaluate' else payload.STAGE_CAPS,
            'started_monotonic':started,'deadline_monotonic':c.DEADLINE}}
     state=None;docker=None;failed=False
     def save():
@@ -278,12 +279,18 @@ def verify_derived_output(mode,detail,output,candidate,root,receipt):
     for name,expected in detail['exported_receipts'].items():
         if c.sha(output/name)!=expected: raise ValueError('exported receipt hash '+name)
     if worker.get('failure') is not None or worker.get('counts')!=payload.COUNTS: raise ValueError('exported worker receipt')
-    rows=worker['reloaded']['zones']+[r for r in []]
     if mode=='derive':
         manifest=json.loads((output/'manifest.json').read_text())
         if c.sha(output/'manifest.json')!=detail.get('manifest_sha256') or manifest.get('status')!=derived.MANIFEST_STATUS: raise ValueError('manifest')
-        parent_key=(detail.get('parent') or {}).get('identity',{}) and derived.identity_key(detail['parent']['identity'])
-        expected=derived.identity(inv.PINS,zones,receipt['image_identity']['id'],derived.KICAD_VERSION,parent_key or None)
+        parent=detail.get('parent');parent_key=None
+        if (candidate is None)!=(parent is None): raise ValueError('parent record does not match the mounted candidate')
+        if candidate is not None:
+            recorded=derived.manifest_identity(json.loads((candidate/'manifest.json').read_text()),candidate)[0]
+            parent_expected=derived.identity(inv.PINS,recorded['zones'],receipt['image_identity']['id'],derived.KICAD_VERSION,recorded.get('parent_key'))
+            parent_check=derived.verify_derived(candidate,parent_expected,source_nonfill,inv.semantic_hash);verification['parent']=parent_check
+            if not parent_check['reusable'] or parent_check['identity']!=parent.get('identity') or parent_check['ancestor_zones']!=parent.get('ancestor_zones'): raise ValueError('host parent verification: '+parent_check['reason'])
+            parent_key=derived.identity_key(parent_check['identity'])
+        expected=derived.identity(inv.PINS,zones,receipt['image_identity']['id'],derived.KICAD_VERSION,parent_key)
         reuse=derived.verify_derived(output,expected,source_nonfill,inv.semantic_hash);verification['reuse']=reuse
         if not reuse['reusable'] or reuse['identity']!=detail['identity'] or manifest['identity_key']!=detail['identity_key']: raise ValueError('host identity verification: '+reuse['reason'])
         if manifest['classification']!=detail['worker_summary']['classification']: raise ValueError('manifest classification')
@@ -296,17 +303,22 @@ def verify_derived_output(mode,detail,output,candidate,root,receipt):
         if not reuse['reusable']: raise ValueError('host reuse verification: '+reuse['reason'])
         if evaluation['classification']!=detail['worker_summary']['classification']: raise ValueError('evaluation classification')
     # Recompute the classification from the exported native observations instead of trusting the summary.
-    table={r['uuid']:r for r in worker['reloaded']['zones']}
+    table={r['uuid']:r for r in worker['reloaded']['zone_table']}
+    if len(table)!=payload.COUNTS['zone'] or not set(zones)<=set(table): raise ValueError('exported zone table incomplete')
     recomputed={}
     for a,b in receipt['spec']['pairs']:
         key=a+'<->'+b;before=worker['before']['pairs'][key]['connected'];after=worker['reloaded']['pairs'][key]['connected']
         recomputed[key]={'before':before,'after':after}
         row=detail['worker_summary']['classification'][key]
         if (row['connected_before'],row['connected_after'])!=(before,after): raise ValueError('classification flags '+key)
-        if row['class'] in ('CONNECTED_ON_INPUT','CONNECTED_VIA_SELECTED_FILL')!=(before or after): raise ValueError('classification class '+key)
+        if (row['class'] in ('CONNECTED_ON_INPUT','CONNECTED_VIA_SELECTED_FILL'))!=(before or after) or (row['class']=='CONNECTED_ON_INPUT')!=before: raise ValueError('classification class '+key)
         if row['class']=='UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN' and not row['unfilled_net_zones']: raise ValueError('unevaluable without unfilled zones '+key)
         if row['class']=='OPEN_WITH_ALL_NET_ZONES_FILLED' and (row['unfilled_net_zones'] or not row['net_zones']): raise ValueError('open-all-filled flags '+key)
-        if any(u in table and not all(cnt>=1 for cnt in table[u]['counts'].values()) for u in set(row['net_zones'])-set(row['unfilled_net_zones'])): raise ValueError('filled claim contradicts exported zone table '+key)
+        net=topology.EXPECTED[a]['net']
+        expected_net_zones=sorted(u for u,r in table.items() if r['net']==net and not r['rule_area'])
+        if row['net_zones']!=expected_net_zones: raise ValueError('net zone list contradicts exported zone table '+key)
+        filled=lambda u:bool(table[u]['counts']) and all(cnt>=1 for cnt in table[u]['counts'].values())
+        if row['unfilled_net_zones']!=[u for u in expected_net_zones if not filled(u)]: raise ValueError('fill state contradicts exported zone table '+key)
     verification['recomputed_connectivity']=recomputed
     return verification
 
@@ -317,8 +329,13 @@ def adopt_legacy(args):
     if receipt.get('status')!=derived.LEGACY_STATUS or receipt.get('image')!=c.IMAGE: raise ValueError('receipt is not a passed legacy candidate run')
     image_id=receipt['image_identity']['id']
     if c.IMAGE not in receipt['image_identity']['repo_digests']: raise ValueError('receipt image digest')
+    # The receipt is bound to this directory through the payload detail it recorded: manifest hash and exported board hashes.
+    payload_runs=[cmd for cmd in receipt.get('commands',[]) if cmd.get('argv',[])[-2:]==['/analysis/'+DRC_PAYLOAD_NAME,'candidate']]
+    if len(payload_runs)!=1: raise ValueError('receipt does not record exactly one candidate payload run')
+    detail=json.loads(payload_runs[0]['output']);manifest=json.loads((output/'manifest.json').read_text())
+    if detail.get('manifest_sha256')!=c.sha(output/'manifest.json') or detail.get('exported')!=manifest.get('exported') or detail.get('status')!=derived.LEGACY_STATUS: raise ValueError('receipt does not describe this candidate directory')
     sidecar=derived.legacy_sidecar(output/'manifest.json',image_id,args.attestation)
-    sidecar['receipt']={'tooling_sha':receipt.get('tooling_sha'),'tool_hashes':receipt.get('tool_hashes'),'payload_status':((receipt.get('host_verification') or {}) and receipt.get('status'))}
+    sidecar['receipt']={'tooling_sha':receipt.get('tooling_sha'),'tool_hashes':receipt.get('tool_hashes'),'status':receipt.get('status')}
     (output/derived.SIDECAR).write_text(json.dumps(sidecar,indent=2,sort_keys=True)+'\n')
     print(json.dumps({'sidecar':str(output/derived.SIDECAR),'identity_key':sidecar['identity_key']}))
     return 0

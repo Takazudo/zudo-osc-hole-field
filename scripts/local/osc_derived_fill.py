@@ -16,10 +16,12 @@ module gives the diagnostic side a shared, pcbnew-free vocabulary for that:
   apart from "open with every zone of the net filled". Neither is a repair
   verdict or board acceptance.
 """
-import hashlib
 import json
 import re
 from pathlib import Path
+
+from osc_frozen_fill import digest, sha
+from osc_single_zone_payload import zone_fill_owners
 
 PROCESS_VERSION = 'derived-fill/1'
 MANIFEST_STATUS = 'DERIVED_FILL_MANIFEST_NOT_ACCEPTANCE'
@@ -41,10 +43,6 @@ CLASSES = {
 
 def hash_ok(value):
     return isinstance(value, str) and len(value) == 64 and all(ch in '0123456789abcdef' for ch in value)
-
-
-def digest(value):
-    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
 
 
 def identity(source_pins, zones, image_id, kicad=KICAD_VERSION, parent_key=None, process=PROCESS_VERSION):
@@ -99,32 +97,17 @@ def classify_pair(connected_before, connected_after, net_zones):
             'repair_basis': False}
 
 
-def zone_fill_owners(path):
-    """Line-based scan of the pinned serialization: which depth-1 zones carry filled_polygon."""
-    owners = {}; current = None; zones = 0
-    with Path(path).open(encoding='utf-8') as stream:
-        for line in stream:
-            if line.startswith('\t(zone'): zones += 1; current = '?'
-            elif line.startswith('\t)'): current = None
-            elif current is not None and line.startswith('\t\t(uuid "'): current = line.split('"')[1]
-            elif current is not None and line.startswith('\t\t(filled_polygon'): owners[current] = owners.get(current, 0) + 1
-    return {'zones': zones, 'filled_polygon_by_zone': owners}
-
-
-def sha(path):
-    h = hashlib.sha256()
-    with Path(path).open('rb') as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b''): h.update(chunk)
-    return h.hexdigest()
-
-
 def manifest_identity(manifest, directory):
-    """Identity recorded for a derived board: native manifest, or a legacy candidate manifest plus its adoption sidecar."""
+    """Identity recorded for a derived board plus the zones its ancestors filled: native manifest, or a legacy candidate manifest with its adoption sidecar."""
     status = manifest.get('status')
     if status == MANIFEST_STATUS:
         ident = manifest.get('identity')
         if not isinstance(ident, dict) or manifest.get('identity_key') != identity_key(ident): raise ValueError('manifest identity key')
-        return ident, 'manifest', manifest['exported']['after']
+        parent = manifest.get('parent') or {}
+        ancestors = parent.get('zones') or []
+        if not isinstance(ancestors, list) or not all(isinstance(u, str) and UUID_RE.match(u) for u in ancestors) or set(ancestors) & set(ident['zones']): raise ValueError('manifest ancestor zones')
+        if (ident.get('parent_key') is None) != (not ancestors) or (ancestors and parent.get('identity_key') != ident.get('parent_key')): raise ValueError('manifest parent record')
+        return ident, 'manifest', manifest['exported']['after'], sorted(ancestors)
     if status == LEGACY_STATUS:
         sidecar = Path(directory) / SIDECAR
         if not sidecar.is_file(): raise ValueError('legacy candidate without adoption sidecar')
@@ -132,7 +115,7 @@ def manifest_identity(manifest, directory):
         if side.get('manifest_sha256') != sha(Path(directory) / 'manifest.json'): raise ValueError('sidecar manifest hash')
         ident = side.get('identity')
         if not isinstance(ident, dict) or side.get('identity_key') != identity_key(ident) or ident['zones'] != [manifest.get('target_zone')] or ident['source'] != manifest.get('input'): raise ValueError('sidecar identity')
-        return ident, 'legacy-sidecar:' + str(side.get('attestation', ''))[:200], manifest['exported']['after']
+        return ident, 'legacy-sidecar:' + str(side.get('attestation', ''))[:200], manifest['exported']['after'], []
     raise ValueError('manifest status')
 
 
@@ -142,10 +125,10 @@ def verify_derived(directory, expected_identity, source_semantic_hash, semantic_
     def reject(reason): return {'reusable': False, 'reason': reason, 'checks': checks}
     try:
         manifest = json.loads((directory / 'manifest.json').read_text())
-        ident, provenance, exported = manifest_identity(manifest, directory)
+        ident, provenance, exported, ancestors = manifest_identity(manifest, directory)
     except (OSError, ValueError, KeyError, TypeError) as exc:
         return reject('manifest: ' + type(exc).__name__ + ': ' + str(exc)[:200])
-    checks['provenance'] = provenance
+    checks['provenance'] = provenance; checks['ancestor_zones'] = ancestors
     try:
         expected_key = identity_key(expected_identity); actual_key = identity_key(ident)
     except (ValueError, KeyError, TypeError) as exc:
@@ -166,8 +149,8 @@ def verify_derived(directory, expected_identity, source_semantic_hash, semantic_
     checks['nonfill_sha256'] = nonfill
     if nonfill != source_semantic_hash: return reject('non-fill semantics differ from the current source')
     owners = zone_fill_owners(board); checks['owners'] = owners
-    if set(owners['filled_polygon_by_zone']) != set(ident['zones']): return reject('fill ownership differs from the identity zone set')
-    return {'reusable': True, 'reason': 'all recomputed checks match', 'checks': checks, 'identity': ident}
+    if set(owners['filled_polygon_by_zone']) != set(ident['zones']) | set(ancestors): return reject('fill ownership differs from the identity zone set plus its ancestors')
+    return {'reusable': True, 'reason': 'all recomputed checks match', 'checks': checks, 'identity': ident, 'ancestor_zones': ancestors}
 
 
 def legacy_sidecar(manifest_path, image_id, attestation, kicad=KICAD_VERSION):

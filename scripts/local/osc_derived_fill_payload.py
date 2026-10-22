@@ -180,7 +180,7 @@ def worker(scratch):
                 require(all(all(c>=1 for c in r['counts'].values()) for r in result['after']['zones']),'derived board lacks fill on a selected zone layer')
         with stages.stage('verify'):
             rows=zone_table(board,layers);selected=select_zones(board,layers,selected_ids,must_be_unfilled=False)
-            result['reloaded']={'zones':[r for r in rows if r['uuid'] in selected_ids],'zones_nonselected':nonselected_fill(rows,selected_ids),'overrides':zone.overrides(board,layers),
+            result['reloaded']={'zones':[r for r in rows if r['uuid'] in selected_ids],'zone_table':rows,'zones_nonselected':nonselected_fill(rows,selected_ids),'overrides':zone.overrides(board,layers),
                 'duplicates':zone.duplicates(board),'counts':zone.counts(board),'pairs':pair_observations(board,layers,pairs,selected,result['before']['pairs'])}
             require(result['reloaded']['zones_nonselected']==result['before']['zones_nonselected'],'nonselected fill changed on reload')
             require(result['reloaded']['duplicates']==result['duplicates_before']==result['after']['duplicates'],'duplicate identity changed')
@@ -203,7 +203,7 @@ def read_context(spec_dir):
 def parent_identity(candidate_dir,context,source_nonfill):
     """Verify a mounted derivation against the identity its own manifest records, re-pinned to this run's source, image and process."""
     manifest=json.loads((candidate_dir/'manifest.json').read_text())
-    recorded,_,_=derived.manifest_identity(manifest,candidate_dir)
+    recorded=derived.manifest_identity(manifest,candidate_dir)[0]
     expected=derived.identity(context['source_pins'],recorded['zones'],context['image_id'],context['kicad'],recorded.get('parent_key'))
     return derived.verify_derived(candidate_dir,expected,source_nonfill,fill.semantic_hash)
 
@@ -213,7 +213,7 @@ def compact(worker_result):
     return {'fill':worker_result.get('fill'),'counts':worker_result.get('counts'),'selected_after':(worker_result.get('after') or {}).get('zones'),'connected':phases,
             'unconnected_count':ratsnest,'classification':worker_result.get('classification'),'failure':worker_result.get('failure')}
 
-def export(scratch,output,result,names):
+def export(scratch,output,names):
     exported={}
     for name in names: shutil.copyfile(scratch/name,output/name);exported[name]=fill.sha(output/name)
     return exported
@@ -235,7 +235,7 @@ def run(mode,root,spec_dir,candidate_dir,scratch,output,result):
         if candidate_dir.is_dir():
             result['parent']=parent_identity(candidate_dir,context,result['source_nonfill'])
             if not result['parent']['reusable']: result['status']=REJECTED_STATUS;raise ValueError('parent derivation rejected: '+result['parent']['reason'])
-            parent_key=derived.identity_key(result['parent']['identity']);input_zones=list(result['parent']['identity']['zones'])
+            parent_key=derived.identity_key(result['parent']['identity']);input_zones=sorted(set(result['parent']['identity']['zones'])|set(result['parent']['ancestor_zones']))
             require(not set(input_zones)&set(spec['zones']),'selected zones overlap the parent derivation')
             shutil.copyfile(candidate_dir/'after'/'osc-core.kicad_pcb',scratch/'input'/'osc-core.kicad_pcb')
         else:
@@ -243,7 +243,7 @@ def run(mode,root,spec_dir,candidate_dir,scratch,output,result):
         ident=derived.identity(context['source_pins'],spec['zones'],context['image_id'],context['kicad'],parent_key)
     else:
         require(candidate_dir.is_dir(),'evaluate needs a derived board at /candidate')
-        manifest=json.loads((candidate_dir/'manifest.json').read_text());recorded,_,_=derived.manifest_identity(manifest,candidate_dir)
+        manifest=json.loads((candidate_dir/'manifest.json').read_text());recorded=derived.manifest_identity(manifest,candidate_dir)[0]
         ident=derived.identity(context['source_pins'],spec['zones'],context['image_id'],context['kicad'],recorded.get('parent_key'))
         result['reuse']=derived.verify_derived(candidate_dir,ident,result['source_nonfill'],fill.semantic_hash)
         if not result['reuse']['reusable']: result['status']=REJECTED_STATUS;raise ValueError('derived board rejected: '+result['reuse']['reason'])
@@ -274,7 +274,7 @@ def run(mode,root,spec_dir,candidate_dir,scratch,output,result):
         require(result['after_owners']['zones']==zone.COUNTS['zone'] and set(result['after_owners']['filled_polygon_by_zone'])==set(input_zones)|set(spec['zones']),'filled_polygon ownership differs from input zones plus selected zones')
         (output/'after').mkdir();result['exported']={}
         for name in derived.BOARD_FILES: shutil.copyfile(scratch/'after'/name,output/'after'/name);result['exported'][name]=fill.sha(output/'after'/name)
-        result['exported_receipts']=export(scratch,output,result,RECEIPTS)
+        result['exported_receipts']=export(scratch,output,RECEIPTS)
         manifest={'status':derived.MANIFEST_STATUS,'identity':ident,'identity_key':result['identity_key'],'exported':{'after':result['exported']},'input_hashes':result['input_hashes'],
                   'nonfill_sha256':{'source':result['source_nonfill'],'after':result['nonfill_after']},'after_owners':result['after_owners'],'fill_seconds':result['worker_summary']['fill']['seconds'],
                   'pairs':spec['pairs'],'classification':result['worker_summary']['classification'],'unconnected_count':result['worker_summary']['unconnected_count'],
@@ -282,7 +282,7 @@ def run(mode,root,spec_dir,candidate_dir,scratch,output,result):
                   'board_acceptance':False,'repair_basis':False}
         (output/'manifest.json').write_text(json.dumps(manifest,indent=2,sort_keys=True)+'\n');result['manifest_sha256']=fill.sha(output/'manifest.json')
     else:
-        result['exported_receipts']=export(scratch,output,result,RECEIPTS)
+        result['exported_receipts']=export(scratch,output,RECEIPTS)
         evaluation={'status':EVALUATE_STATUS,'identity':ident,'identity_key':result['identity_key'],'reuse':result['reuse'],'pairs':spec['pairs'],
                     'classification':result['worker_summary']['classification'],'connected':result['worker_summary']['connected'],'unconnected_count':result['worker_summary']['unconnected_count'],
                     'spec_note':spec['note'],'tooling_sha':context['tooling_sha'],'exported_receipts':result['exported_receipts'],'board_acceptance':False,'repair_basis':False}
@@ -351,7 +351,8 @@ def validate_result(result,mode):
     if mode=='derive':
         if summary.get('fill',{}).get('returned') is not True or sorted(summary['fill'].get('zones',[]))!=result['identity']['zones']: raise ValueError('worker fill')
         if not result.get('nonfill_after')==result['source_nonfill'] or not derived.hash_ok(result.get('manifest_sha256')): raise ValueError('derived semantics')
-        owners=result.get('after_owners',{});expected=set(result['identity']['zones'])|set((result.get('parent') or {}).get('identity',{}).get('zones',[]))
+        parent=result.get('parent') or {};owners=result.get('after_owners',{})
+        expected=set(result['identity']['zones'])|set(parent.get('identity',{}).get('zones',[]))|set(parent.get('ancestor_zones',[]))
         if owners.get('zones')!=zone.COUNTS['zone'] or set(owners.get('filled_polygon_by_zone',{}))!=expected: raise ValueError('fill ownership')
     else:
         if result.get('reuse',{}).get('reusable') is not True or not derived.hash_ok(result.get('evaluation_sha256')): raise ValueError('reuse')
