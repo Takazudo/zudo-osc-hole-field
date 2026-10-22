@@ -37,6 +37,32 @@ class Payload(unittest.TestCase):
         s=z.summarize_cluster(items,layers,{'p1':'C1129.1'},None,poly)
         self.assertEqual(s['size'],5);self.assertTrue(s['selected_zone_member']);self.assertEqual(s['pads'],['C1129.1'])
         self.assertEqual([(v['uuid'],v['inside_selected_fill']) for v in s['vias']],[('v1',True),('v2',False)]);self.assertEqual(s['layers'],{'F.Cu':4,'In4.Cu':3,'B.Cu':2})
+    def test_via_listing_truncates_instead_of_failing(self):
+        from types import SimpleNamespace as NS
+        def via(u): return type('PCB_VIA',(),{'m_Uuid':NS(AsString=lambda:u),'GetNetname':lambda self:'+12V','IsOnLayer':lambda self,l:True,'GetPosition':lambda self:NS(x=0,y=0),'GetDrillValue':lambda self:3})()
+        s=z.summarize_cluster([via('v%d'%i) for i in range(z.VIA_LIMIT+5)],{'F.Cu':0},{},None,None)
+        self.assertEqual(len(s['vias']),z.VIA_LIMIT);self.assertEqual(s['vias_truncated'],5);self.assertGreaterEqual(z.VIA_LIMIT,490)
+    def good_result(self):
+        rows=[{'seq':i+1,'phase':'zone','stage':s,'event':e,'monotonic_seconds':float(i)} for i,(s,e) in enumerate((s,e) for s in z.STAGES for e in ('start','complete'))]
+        frame=lambda p,q:{'phase':p,'point':q,'values':{'memory.max':fill.MEMORY_CAP,'memory.swap.max':0,'memory.peak':1},'events_since_baseline':{'oom':0,'oom_kill':0}}
+        pair={'connected':True,'symmetric':True}
+        pairs={'C1129.1<->U1105.16':pair,'C1131.1<->U1106.8':pair,'ratsnest':{'unconnected_count':1}}
+        return {'status':z.STATUS,'board_acceptance':False,'input_before':dict(fill.PINS),'input_after':dict(fill.PINS),'nonfill_input':'a'*64,'nonfill_after':'a'*64,
+            'after_owners':{'zones':351,'filled_polygon_by_zone':{z.TARGET_ZONE:3}},'command':{'status':'COMPLETE','exit_code':0},'worker_substages':{'zone':{'complete':True,'rows':rows}},
+            'memory_telemetry':[frame(p,q) for p in ('preflight','zone','verify') for q in ('before','after')],'elapsed_seconds':100,
+            'worker':{'fill':{'returned':True},'counts':dict(z.COUNTS),'before':{'pairs':pairs},'after':{'pairs':pairs,'counts':dict(z.COUNTS),'selected':{'counts':{'In4.Cu':2}}},'reloaded':{'pairs':pairs,'counts':dict(z.COUNTS)}}}
+    def test_validate_result(self):
+        z.validate_result(self.good_result())
+        def broken(mutate):
+            r=self.good_result();mutate(r)
+            with self.assertRaises(ValueError):z.validate_result(r)
+        broken(lambda r:r.update(status='FAILED'));broken(lambda r:r.update(failure={'x':1}));broken(lambda r:r.update(nonfill_after='b'*64))
+        broken(lambda r:r['after_owners']['filled_polygon_by_zone'].update({'other':1}));broken(lambda r:r['command'].update(exit_code=1))
+        broken(lambda r:r['worker_substages']['zone']['rows'].pop());broken(lambda r:r['memory_telemetry'][3]['events_since_baseline'].update(oom_kill=1))
+        broken(lambda r:r['worker']['after']['pairs']['C1129.1<->U1105.16'].update(symmetric=False));broken(lambda r:r['worker']['after']['selected']['counts'].update({'In4.Cu':0}))
+        broken(lambda r:r.update(elapsed_seconds=421));broken(lambda r:r['worker'].update(counts={}))
+    def test_worker_reserve(self):
+        self.assertEqual(z.WORKER_RESERVE,40);self.assertEqual(sum(z.STAGE_CAPS.values()),z.PAYLOAD_SECONDS)
     def test_cluster_bound(self):
         conn=type('C',(),{'GetConnectedItems':lambda self,i:[0]*(z.CLUSTER_LIMIT+1)})()
         with self.assertRaises(ValueError):z.cluster(conn,None)

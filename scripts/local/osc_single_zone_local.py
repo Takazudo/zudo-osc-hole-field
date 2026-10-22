@@ -138,7 +138,7 @@ def run(args):
         c.normal_exit(r['cleanup'])
         c.checked(result)
         if detail is None:raise ValueError('payload JSON missing or malformed')
-        if detail.get('status')!=STATUS or detail.get('board_acceptance') is not False:raise ValueError('payload did not complete')
+        payload.validate_result(detail)
         r['status']=STATUS
     except Exception as exc:
         failed=True;r.update(status='FAILED',error=type(exc).__name__+': '+str(exc)[:700])

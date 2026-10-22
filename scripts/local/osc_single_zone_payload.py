@@ -39,7 +39,8 @@ STAGE_CAPS={'prepare':60,'fill':260,'verify':100}
 STAGES=('load','identity','before','fill','after','save','reload','verify')
 STAGE_GROUP={'load':'prepare','identity':'prepare','before':'prepare','fill':'fill','after':'verify','save':'verify','reload':'verify','verify':'verify'}
 CLUSTER_LIMIT=200000
-VIA_LIMIT=400
+VIA_LIMIT=2000   # the pinned board has 490 +12V vias; listing is truncated with a flag, never fatal
+WORKER_RESERVE=40   # parent-side semantic hash, owner scan and input re-verification after the worker
 OUTPUT_LIMIT=900000
 PCB_LIMIT=64*1024*1024
 STATUS='SINGLE_ZONE_CONNECTIVITY_OBSERVATIONS_NOT_ACCEPTANCE'
@@ -103,19 +104,19 @@ def describe(item,layers,pads):
 
 def summarize_cluster(items,layers,pads,target,poly):
     """Compact description of one native cluster (the whole connected component)."""
-    counts=collections.Counter();by_layer=collections.Counter();vias=[];zones=[];pad_names=[]
+    counts=collections.Counter();by_layer=collections.Counter();vias=[];zones=[];pad_names=[];truncated=0
     for item in items:
         kind=type(item).__name__;counts[kind]+=1
         for name in layer_names(item,layers): by_layer[name]+=1
         if kind=='PCB_VIA':
-            if len(vias)>=VIA_LIMIT: raise ValueError('via listing bound')
+            if len(vias)>=VIA_LIMIT: truncated+=1;continue
             row=describe(item,layers,pads)
             row['inside_selected_fill']=bool(poly.Contains(item.GetPosition())) if poly is not None else None
             vias.append(row)
         elif kind=='ZONE': zones.append({'uuid':uid(item),'net':item.GetNetname(),'layers':layer_names(item,layers),'selected':uid(item)==TARGET_ZONE})
         elif kind=='PAD': pad_names.append(pads.get(uid(item),uid(item)))
     return {'size':len(items),'counts':dict(counts),'layers':dict(by_layer),'vias':sorted(vias,key=lambda r:r['uuid']),'zones':sorted(zones,key=lambda r:r['uuid']),
-            'pads':sorted(pad_names),'selected_zone_member':any(z['selected'] for z in zones)}
+            'pads':sorted(pad_names),'selected_zone_member':any(z['selected'] for z in zones),'vias_truncated':truncated}
 
 def cluster(conn,item):
     items=list(conn.GetConnectedItems(item))
@@ -287,7 +288,10 @@ def run_worker(scratch,deadline,record):
         record['status']='COMPLETE'
     except BaseException as exc:
         record['status']='FAILED';record['error']=type(exc).__name__+': '+str(exc)[:300]
-        if proc is not None and proc.poll() is None: os.killpg(proc.pid,signal.SIGKILL);proc.wait(timeout=5)
+        if proc is not None and proc.poll() is None:
+            os.killpg(proc.pid,signal.SIGKILL)
+            try: proc.wait(timeout=5)
+            except subprocess.TimeoutExpired: record['reap_timeout']=True
         raise
     finally:
         record['end_monotonic_seconds']=time.monotonic();record['elapsed_seconds']=record['end_monotonic_seconds']-record['start_monotonic_seconds']
@@ -301,7 +305,7 @@ def main():
     start=time.monotonic();deadline=start+PAYLOAD_SECONDS
     root=Path('/work/boards/osc-core');scratch=Path('/scratch/osc-zone')
     result={'status':'FAILED','board_acceptance':False,'full_board_fill':False,'drc':'NOT RUN: whole-board DRC is outside this two-pair diagnostic',
-            'target_zone':TARGET_ZONE,'pairs':PAIRS,'limits':'one selected fill; 420 s payload; stage caps prepare 60 / fill 260 / verify 100; no route edits','command':{}}
+            'target_zone':TARGET_ZONE,'pairs':PAIRS,'limits':'one selected fill; 420 s payload; worker deadline 380 s with stage caps prepare 60 / fill 260 / verify 100; no route edits','command':{}}
     try:
         fill.record_memory(result,'preflight','before')
         result['input_before']=fill.verify_inputs(root)
@@ -312,7 +316,7 @@ def main():
         for name in fill.PINS: shutil.copyfile(root/name,scratch/'input'/name)
         fill.record_memory(result,'preflight','after')
         fill.record_memory(result,'zone','before')
-        run_worker(scratch,deadline,result['command'])
+        run_worker(scratch,deadline-WORKER_RESERVE,result['command'])
         capture_stages(result,scratch,require_complete=True)
         result['worker']=json.loads((scratch/'zone.json').read_text())
         fill.record_memory(result,'zone','after')
@@ -352,6 +356,38 @@ def main():
         data=json.dumps({'status':'FAILED','board_acceptance':False,'failure':{'type':'ValueError','message':'output bound'},'elapsed_seconds':time.monotonic()-start})
     print(data,flush=True)
     return 0 if result['status']==STATUS else 1
+
+def validate_result(result):
+    """Structural gate the controller applies before trusting a payload result."""
+    def hash_ok(v): return isinstance(v,str) and len(v)==64 and all(ch in '0123456789abcdef' for ch in v)
+    if not isinstance(result,dict) or result.get('status')!=STATUS or result.get('board_acceptance') is not False: raise ValueError('payload status')
+    for key in ('failure','input_recheck_failure','substage_capture_failure','telemetry_failure','worker_receipt_failure'):
+        if key in result: raise ValueError('payload failure key present: '+key)
+    if result.get('input_before')!=fill.PINS or result.get('input_after')!=fill.PINS: raise ValueError('input identity')
+    if not hash_ok(result.get('nonfill_input')) or result.get('nonfill_input')!=result.get('nonfill_after'): raise ValueError('non-fill semantics')
+    owners=result.get('after_owners',{})
+    if owners.get('zones')!=COUNTS['zone'] or set(owners.get('filled_polygon_by_zone',{}))!={TARGET_ZONE}: raise ValueError('fill ownership')
+    command=result.get('command',{})
+    if command.get('status')!='COMPLETE' or command.get('exit_code')!=0: raise ValueError('worker command')
+    stages=result.get('worker_substages',{}).get('zone',{})
+    if stages.get('complete') is not True or 'error' in stages or not parse_stages(b''.join((json.dumps(r)+'\n').encode() for r in stages.get('rows',[])))['complete']: raise ValueError('worker substages')
+    frames=result.get('memory_telemetry',[])
+    if [(f.get('phase'),f.get('point')) for f in frames]!=[('preflight','before'),('preflight','after'),('zone','before'),('zone','after'),('verify','before'),('verify','after')]: raise ValueError('telemetry coverage')
+    for frame in frames:
+        values=frame.get('values',{})
+        if 'error' in frame or values.get('memory.max')!=fill.MEMORY_CAP or values.get('memory.swap.max')!=0: raise ValueError('telemetry values')
+        if any(frame.get('events_since_baseline',{}).get(k,0)>0 for k in ('oom','oom_kill')): raise ValueError('OOM event')
+    worker=result.get('worker',{})
+    if not isinstance(worker,dict) or worker.get('fill',{}).get('returned') is not True or 'failure' in worker: raise ValueError('worker fill')
+    if worker.get('counts')!=COUNTS or worker.get('after',{}).get('counts')!=COUNTS or worker.get('reloaded',{}).get('counts')!=COUNTS: raise ValueError('pinned counts')
+    for phase in ('before','after','reloaded'):
+        pairs=worker.get(phase,{}).get('pairs',{})
+        if set(pairs)!={a+'<->'+b for a,b in PAIRS}|{'ratsnest'}: raise ValueError('pair coverage '+phase)
+        for name,row in pairs.items():
+            if name=='ratsnest': continue
+            if type(row.get('connected')) is not bool or row.get('connected')!=row.get('symmetric'): raise ValueError('pair observation '+phase)
+    if worker.get('after',{}).get('selected',{}).get('counts',{}).get(TARGET_LAYER,0)<1: raise ValueError('selected fill absent')
+    if not isinstance(result.get('elapsed_seconds'),(int,float)) or not 0<=result['elapsed_seconds']<=PAYLOAD_SECONDS: raise ValueError('payload deadline')
 
 if __name__=='__main__':
     if len(sys.argv)==3 and sys.argv[1]=='--worker': worker(Path(sys.argv[2]))
