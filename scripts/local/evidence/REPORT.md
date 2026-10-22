@@ -16,6 +16,10 @@ stays and carries a `[superseded: ...]` marker pointing to the current conclusio
   purpose above 95 MiB. No canonical writer fix is needed. The adopted response is
   option C: the diagnostic side fills selected zones on disposable derived copies
   and reads those (derived-fill path below).
+- The AGND F.Cu zone fill (derive run 3) reaches U1105.12 only on an island with
+  no via or track, so C1111.2 <-> U1105.12 is not explained by a missing fill
+  cache; it is a candidate for human review, classified `UNEVALUABLE` while the
+  B.Cu and In1.Cu AGND zones remain unfilled.
 - Nothing in this report is board acceptance or a repair verdict.
 
 Branch `claude/osc-synthetic-local-wsl` on top of PR #293 head 8bdf7703. Frozen
@@ -312,12 +316,73 @@ six were fixed in the follow-up commit and one is deferred:
   (`adapter_execution_policy`); adding a named `fill-attach-780` policy is a
   hosted-controller change outside this local branch.
 
+### Derive run 3 (AGND F.Cu zone, profile fill-520-probe): PASS as a diagnostic; both pairs still `UNEVALUABLE`; not acceptance
+
+The single approved probe ran once, 2026-10-22 20:52:19Z to 20:56:41Z, under
+coordinator slot `osc-moya-single-slot-dc40fc87-7c59-41a4-8451-984bd22d9aa7`,
+tooling 4bc4a152, heavy-guard label `osc-derive-run-3-fcu-probe` with
+`HEAVY_GUARD_MAX_RUN=1020`. Launch-time exclusion: 0 running containers, no KiCad
+or heavy-guard process, LED session idle, no stop or cancel, 9.4 GiB available.
+
+Observed: load 9.2 s, before 8.2 s, **fill 150.8 s**, after 8.1 s, save 8.3 s,
+reload 12.8 s, verify 8.1 s; worker 208.5 s, payload 219.4 s, controller 238.9 s,
+wall 261 s. Peak memory 1,692,078,080 bytes (1.58 GiB) under the 2 GiB cap, zero
+OOM events. Both owned containers `REMOVED_CONFIRMED` with exit 0; post-stop
+cleanup found no remaining records; the container set before and after the run is
+identical; source hashes unchanged. Derived board 61,320,854 bytes (+11.5 MB over
+the source), identity key `ecf170dbb48e07980d8c08e149ff6e5c223745b58cdd9f9abb09cfa4b5001d16`,
+SHA256 `4a55e0c165efcc2215d920272da25476b54df1cc56ba59e95a31049b29ba4dc8`; only the
+selected zone carries `filled_polygon` (236 outlines on F.Cu); non-fill semantics
+equal the source; host re-verification passed. Unconnected count 4283 -> 3342.
+
+Two predictions from earlier sections did not hold and are recorded as such:
+
+- The fill finished in 150.8 s, well under the 260 s cap that killed derive run 2
+  on the same zone, same image, same 1 CPU / 2 GiB container. The difference is
+  not explained by this evidence; host contention during run 2 is a possibility,
+  not a finding. The 520 s cap was therefore not needed, and neither was the
+  verify cap question (verify group 37.3 s).
+- The derived board stayed under the standard 64 MiB bound; the 128 MiB bound
+  approved for this probe was not exercised.
+
+Pair results (observation classes, not verdicts):
+
+- `C1129.1 <-> U1105.16` (+12V, negative control): unchanged, both clusters as on
+  the input; `UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN` because the +12V In4.Cu zone
+  is unfilled on this derived board (it is filled on the +12V derived board, where
+  this pair is `CONNECTED_VIA_SELECTED_FILL`).
+- `C1111.2 <-> U1105.12` (AGND): still open after the F.Cu AGND fill. On the input
+  both pads were clusters of size 1 (F.Cu SMD pads, no track, no via). After the
+  fill, C1111.2 belongs to a 558-item cluster (447 pads, 85 tracks, 25 vias, the
+  F.Cu AGND zone), while U1105.12 belongs to a cluster of exactly two items: the
+  pad and the F.Cu AGND zone. The F.Cu fill therefore reaches U1105.12 but on an
+  island that contains no via and no track. The class stays
+  `UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN` because the B.Cu and In1.Cu AGND zones
+  are unfilled on this board, and that is what the vocabulary says. The narrower
+  observation for human review is this: an inner- or bottom-layer fill cannot
+  reach an F.Cu island that holds no via, so on the current copper geometry the
+  remaining AGND fills would not change this pad's cluster; a connection would
+  need a via or track at that island, or a different F.Cu fill geometry
+  (clearance, thermal relief, keepout or island-removal settings). This is a
+  candidate for review, not a repair basis and not a defect verdict.
+
+Evidence: `scripts/local/evidence/osc-derive/run-3/` (receipt, zone.json,
+manifest, substages, post-stop cleanup, wrapper log, spec, cclogs checksum list);
+cclogs `osc-local-wsl/derive-run-3/` (26 files including the derived board and
+the state directory's resource records; `SHA256SUMS`
+`c760369ae993081dc6ed543f55d1d29310c8c69c4e6e8a0e54d775704f42f88c`). No DRC was run.
+Nothing here is board acceptance.
+
 ### Open items after this phase
 
-- C1111.2 <-> U1105.12 (AGND) stays `UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN`: it
-  is decided by the F.Cu AGND fill, which does not finish in 260 s at 1 CPU. The
-  single approved 520 s probe is prepared (profile `fill-520-probe`) and waits for
-  the verify-cap decision and a serialized heavy-job slot.
+- C1111.2 <-> U1105.12 (AGND): the F.Cu fill alone does not connect the pair.
+  U1105.12 sits on an F.Cu AGND island with no via or track (derive run 3), so
+  the open is unlikely to be a missing fill cache; it is a candidate for human
+  review of the copper around U1105.12. No repair is proposed here.
+- A combined derivation (F.Cu plus In1.Cu, or all three AGND zones) would move
+  the class from `UNEVALUABLE` to `OPEN_WITH_ALL_NET_ZONES_FILLED` or
+  `CONNECTED_VIA_SELECTED_FILL`; it is implemented (chained derivation) but is
+  outside the single approved probe and has not been run.
 - The derived boards (+12V In4 at b9de2114..., AGND In1 at a0a57558...) are
   reusable through the identity key with recomputed checks; chaining them is
   implemented and tested offline but has not been run natively.
