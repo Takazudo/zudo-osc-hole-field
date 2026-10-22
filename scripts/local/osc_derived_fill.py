@@ -1,0 +1,180 @@
+"""Derived-copy identity, reuse verification and pair classification (option C).
+
+The published core is saved without zone fills on purpose (publication_copy
+strips them above the 95 MiB cap), so a reader that does not refill cannot
+tell a real wiring gap from a connection it simply cannot evaluate. This
+module gives the diagnostic side a shared, pcbnew-free vocabulary for that:
+
+- identity: the composite key of a derived board (source pins, project and
+  rules, pinned image, KiCad version, selected zones, process version,
+  optional parent derivation). Any change yields a different key.
+- verify_derived: before reusing a saved derived board, recompute the real
+  file hashes, the non-fill semantic hash against the current source and
+  the fill ownership; a stale, altered or differently derived copy is
+  rejected with a reason and is never success evidence.
+- classify_pair: the status vocabulary that keeps "open because unfilled"
+  apart from "open with every zone of the net filled". Neither is a repair
+  verdict or board acceptance.
+"""
+import hashlib
+import json
+import re
+from pathlib import Path
+
+PROCESS_VERSION = 'derived-fill/1'
+MANIFEST_STATUS = 'DERIVED_FILL_MANIFEST_NOT_ACCEPTANCE'
+LEGACY_STATUS = 'SINGLE_ZONE_CANDIDATE_EXPORTED_NOT_ACCEPTANCE'
+SIDECAR = 'derived-identity.json'
+KICAD_VERSION = '10.0.6'
+BOARD_FILES = ('osc-core.kicad_pcb', 'osc-core.kicad_pro', 'osc-core.kicad_dru')
+ZONE_LIMIT = 8
+PAIR_LIMIT = 16
+UUID_RE = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+CLASSES = {
+    'CONNECTED_ON_INPUT': 'pads shared a native cluster on the input board before this derivation filled anything',
+    'CONNECTED_VIA_SELECTED_FILL': 'open on the input board, connected after filling only the selected zones: the open was a missing fill cache, not a wiring gap',
+    'UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN': 'still open, but copper zones of this net remain unfilled on the derived board, so connectivity cannot be evaluated; not a repair basis',
+    'OPEN_WITH_ALL_NET_ZONES_FILLED': 'still open although every copper zone of this net is filled on the derived board: a wiring-gap candidate for review, not a verdict',
+    'OPEN_WITHOUT_NET_ZONES': 'still open and this net has no copper zone, so no fill can change it: a wiring-gap candidate for review, not a verdict',
+}
+
+
+def hash_ok(value):
+    return isinstance(value, str) and len(value) == 64 and all(ch in '0123456789abcdef' for ch in value)
+
+
+def digest(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+
+
+def identity(source_pins, zones, image_id, kicad=KICAD_VERSION, parent_key=None, process=PROCESS_VERSION):
+    """Composite identity of one derived board; every field participates in the key."""
+    if set(source_pins) != set(BOARD_FILES) or not all(hash_ok(v) for v in source_pins.values()): raise ValueError('source pins')
+    zones = sorted(zones)
+    if not zones or len(zones) > ZONE_LIMIT or len(set(zones)) != len(zones) or not all(UUID_RE.match(z) for z in zones): raise ValueError('zones')
+    if not isinstance(image_id, str) or not image_id.startswith('sha256:') or len(image_id) != 71: raise ValueError('image id')
+    if kicad != KICAD_VERSION: raise ValueError('kicad version')
+    if parent_key is not None and not hash_ok(parent_key): raise ValueError('parent key')
+    return {'source': {k: source_pins[k] for k in BOARD_FILES}, 'zones': zones, 'image_id': image_id, 'kicad': kicad, 'process': process, 'parent_key': parent_key}
+
+
+def identity_key(ident):
+    return digest(identity(ident['source'], ident['zones'], ident['image_id'], ident['kicad'], ident.get('parent_key'), ident['process']))
+
+
+def load_spec(path, expected_pads):
+    """Validate a diagnostic spec: selected zone UUIDs and pad pairs on one net each."""
+    spec = json.loads(Path(path).read_text())
+    if not isinstance(spec, dict) or set(spec) - {'zones', 'pairs', 'note'} or not isinstance(spec.get('zones'), list) or not isinstance(spec.get('pairs'), list): raise ValueError('spec shape')
+    zones = spec['zones']
+    if not zones or len(zones) > ZONE_LIMIT or len(set(zones)) != len(zones) or not all(isinstance(z, str) and UUID_RE.match(z) for z in zones): raise ValueError('spec zones')
+    pairs = []
+    for pair in spec['pairs']:
+        if not isinstance(pair, list) or len(pair) != 2 or pair[0] == pair[1] or any(p not in expected_pads for p in pair): raise ValueError('spec pair')
+        if expected_pads[pair[0]]['net'] != expected_pads[pair[1]]['net']: raise ValueError('spec pair nets differ')
+        pairs.append((pair[0], pair[1]))
+    if not pairs or len(pairs) > PAIR_LIMIT or len(set(pairs)) != len(pairs): raise ValueError('spec pairs')
+    note = spec.get('note', '')
+    if not isinstance(note, str) or len(note) > 500: raise ValueError('spec note')
+    return {'zones': sorted(zones), 'pairs': pairs, 'note': note}
+
+
+def classify_pair(connected_before, connected_after, net_zones):
+    """Status of one pad pair after the selected fill.
+
+    net_zones: copper zones of the pair's net on the derived board, each with
+    'uuid', 'filled' (every layer of the zone has at least one fill outline)
+    and 'selected'. The result is an observation class, never acceptance.
+    """
+    if type(connected_before) is not bool or type(connected_after) is not bool: raise ValueError('connectivity flags')
+    rows = sorted(net_zones, key=lambda z: z['uuid'])
+    unfilled = [z['uuid'] for z in rows if not z['filled']]
+    if connected_before: cls = 'CONNECTED_ON_INPUT'
+    elif connected_after: cls = 'CONNECTED_VIA_SELECTED_FILL'
+    elif not rows: cls = 'OPEN_WITHOUT_NET_ZONES'
+    elif unfilled: cls = 'UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN'
+    else: cls = 'OPEN_WITH_ALL_NET_ZONES_FILLED'
+    return {'class': cls, 'meaning': CLASSES[cls], 'connected_before': connected_before, 'connected_after': connected_after,
+            'net_zones': [z['uuid'] for z in rows], 'unfilled_net_zones': unfilled, 'selected_net_zones': [z['uuid'] for z in rows if z.get('selected')],
+            'repair_basis': False}
+
+
+def zone_fill_owners(path):
+    """Line-based scan of the pinned serialization: which depth-1 zones carry filled_polygon."""
+    owners = {}; current = None; zones = 0
+    with Path(path).open(encoding='utf-8') as stream:
+        for line in stream:
+            if line.startswith('\t(zone'): zones += 1; current = '?'
+            elif line.startswith('\t)'): current = None
+            elif current is not None and line.startswith('\t\t(uuid "'): current = line.split('"')[1]
+            elif current is not None and line.startswith('\t\t(filled_polygon'): owners[current] = owners.get(current, 0) + 1
+    return {'zones': zones, 'filled_polygon_by_zone': owners}
+
+
+def sha(path):
+    h = hashlib.sha256()
+    with Path(path).open('rb') as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b''): h.update(chunk)
+    return h.hexdigest()
+
+
+def manifest_identity(manifest, directory):
+    """Identity recorded for a derived board: native manifest, or a legacy candidate manifest plus its adoption sidecar."""
+    status = manifest.get('status')
+    if status == MANIFEST_STATUS:
+        ident = manifest.get('identity')
+        if not isinstance(ident, dict) or manifest.get('identity_key') != identity_key(ident): raise ValueError('manifest identity key')
+        return ident, 'manifest', manifest['exported']['after']
+    if status == LEGACY_STATUS:
+        sidecar = Path(directory) / SIDECAR
+        if not sidecar.is_file(): raise ValueError('legacy candidate without adoption sidecar')
+        side = json.loads(sidecar.read_text())
+        if side.get('manifest_sha256') != sha(Path(directory) / 'manifest.json'): raise ValueError('sidecar manifest hash')
+        ident = side.get('identity')
+        if not isinstance(ident, dict) or side.get('identity_key') != identity_key(ident) or ident['zones'] != [manifest.get('target_zone')] or ident['source'] != manifest.get('input'): raise ValueError('sidecar identity')
+        return ident, 'legacy-sidecar:' + str(side.get('attestation', ''))[:200], manifest['exported']['after']
+    raise ValueError('manifest status')
+
+
+def verify_derived(directory, expected_identity, source_semantic_hash, semantic_hash):
+    """Decide whether a saved derived board may be reused; every mismatch is a reason, never an exception."""
+    directory = Path(directory); checks = {}
+    def reject(reason): return {'reusable': False, 'reason': reason, 'checks': checks}
+    try:
+        manifest = json.loads((directory / 'manifest.json').read_text())
+        ident, provenance, exported = manifest_identity(manifest, directory)
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        return reject('manifest: ' + type(exc).__name__ + ': ' + str(exc)[:200])
+    checks['provenance'] = provenance
+    try:
+        expected_key = identity_key(expected_identity); actual_key = identity_key(ident)
+    except (ValueError, KeyError, TypeError) as exc:
+        return reject('identity: ' + str(exc)[:200])
+    checks['identity_key'] = {'expected': expected_key, 'actual': actual_key}
+    if actual_key != expected_key:
+        differing = sorted(k for k in set(ident) | set(expected_identity) if ident.get(k) != expected_identity.get(k))
+        return reject('identity key mismatch in ' + ','.join(differing))
+    for name in BOARD_FILES:
+        p = directory / 'after' / name
+        if p.is_symlink() or not p.is_file(): return reject('missing after/' + name)
+        actual = sha(p); checks['after/' + name] = actual
+        if actual != exported.get(name): return reject('stale or altered after/' + name + ': hash differs from manifest')
+    if exported.get('osc-core.kicad_pro') != ident['source']['osc-core.kicad_pro'] or exported.get('osc-core.kicad_dru') != ident['source']['osc-core.kicad_dru']: return reject('project/rules differ from identity')
+    board = directory / 'after' / 'osc-core.kicad_pcb'
+    try: nonfill = semantic_hash(board)
+    except Exception as exc: return reject('semantic hash: ' + type(exc).__name__ + ': ' + str(exc)[:200])
+    checks['nonfill_sha256'] = nonfill
+    if nonfill != source_semantic_hash: return reject('non-fill semantics differ from the current source')
+    owners = zone_fill_owners(board); checks['owners'] = owners
+    if set(owners['filled_polygon_by_zone']) != set(ident['zones']): return reject('fill ownership differs from the identity zone set')
+    return {'reusable': True, 'reason': 'all recomputed checks match', 'checks': checks, 'identity': ident}
+
+
+def legacy_sidecar(manifest_path, image_id, attestation, kicad=KICAD_VERSION):
+    """Adopt a legacy single-zone candidate directory: identity recomputed from its manifest plus an explicit attestation of image and version."""
+    manifest = json.loads(Path(manifest_path).read_text())
+    if manifest.get('status') != LEGACY_STATUS: raise ValueError('not a legacy candidate manifest')
+    ident = identity(manifest['input'], [manifest['target_zone']], image_id, kicad)
+    if not isinstance(attestation, str) or not 16 <= len(attestation) <= 500: raise ValueError('attestation text')
+    return {'identity': ident, 'identity_key': identity_key(ident), 'manifest_sha256': sha(manifest_path), 'attestation': attestation, 'process': PROCESS_VERSION,
+            'meaning': 'Image id and KiCad version are attested from the recorded run receipt, not recomputed from the board; file hashes, semantics and ownership are recomputed on every reuse.'}

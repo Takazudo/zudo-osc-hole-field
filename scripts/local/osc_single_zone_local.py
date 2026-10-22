@@ -26,6 +26,8 @@ import osc_frozen_topology as topology
 import osc_synthetic_local as local
 import osc_single_zone_payload as payload
 import osc_zone_drc_payload as drcpayload
+import osc_derived_fill as derived
+import osc_derived_fill_payload as derivedpayload
 
 TOTAL_SECONDS=f.TOTAL_SECONDS
 PAYLOAD_SECONDS=f.PAYLOAD_SECONDS
@@ -38,11 +40,16 @@ STATUS=payload.STATUS
 MODE='LOCAL_WSL_SINGLE_ZONE'
 PAYLOAD_NAME='osc_single_zone_payload.py'
 DRC_PAYLOAD_NAME='osc_zone_drc_payload.py'
-BUNDLE=(PAYLOAD_NAME,DRC_PAYLOAD_NAME,'osc_frozen_fill.py','osc_frozen_topology.py')
-MODES={'zone':(PAYLOAD_NAME,[],payload.STATUS),'candidate':(DRC_PAYLOAD_NAME,['candidate'],drcpayload.CANDIDATE_STATUS),'drc':(DRC_PAYLOAD_NAME,['drc'],drcpayload.DRC_STATUS)}
+DERIVED_PAYLOAD_NAME='osc_derived_fill_payload.py'
+DERIVED_HELPER_NAME='osc_derived_fill.py'
+BUNDLE=(PAYLOAD_NAME,DRC_PAYLOAD_NAME,DERIVED_PAYLOAD_NAME,DERIVED_HELPER_NAME,'osc_frozen_fill.py','osc_frozen_topology.py')
+MODES={'zone':(PAYLOAD_NAME,[],payload.STATUS),'candidate':(DRC_PAYLOAD_NAME,['candidate'],drcpayload.CANDIDATE_STATUS),'drc':(DRC_PAYLOAD_NAME,['drc'],drcpayload.DRC_STATUS),
+       'derive':(DERIVED_PAYLOAD_NAME,['derive'],derivedpayload.DERIVE_STATUS),'evaluate':(DERIVED_PAYLOAD_NAME,['evaluate'],derivedpayload.EVALUATE_STATUS)}
+SPEC_MODES=('derive','evaluate')
 
 def bundle_sources():
     return {PAYLOAD_NAME:Path(__file__).with_name(PAYLOAD_NAME).resolve(),DRC_PAYLOAD_NAME:Path(__file__).with_name(DRC_PAYLOAD_NAME).resolve(),
+            DERIVED_PAYLOAD_NAME:Path(derivedpayload.__file__).resolve(),DERIVED_HELPER_NAME:Path(derived.__file__).resolve(),
             'osc_frozen_fill.py':Path(inv.__file__).resolve(),'osc_frozen_topology.py':Path(topology.__file__).resolve()}
 
 def board_pins():
@@ -66,8 +73,8 @@ def resource_preflight():
     finally:
         (state/('resource-'+uuid.uuid4().hex+'.json')).write_text(json.dumps(measurement))
 
-def extra_mounts(args,output,candidate):
-    """Only the local candidate/drc modes add a writable /output and a read-only /candidate bind mount."""
+def extra_mounts(args,output,candidate,spec=None):
+    """Only the local export modes add a writable /output plus read-only /candidate and /spec bind mounts."""
     result=list(args);i=result.index(c.IMAGE);extra=[]
     if output:
         p=Path(output)
@@ -77,6 +84,10 @@ def extra_mounts(args,output,candidate):
         p=Path(candidate)
         if not p.is_absolute() or not p.is_dir() or p.is_symlink() or not (p/'manifest.json').is_file(): raise ValueError('candidate mount must be an existing directory with manifest.json')
         extra+=['--volume',str(p)+':/candidate:ro']
+    if spec:
+        p=Path(spec)
+        if not p.is_absolute() or not p.is_dir() or p.is_symlink() or not (p/'spec.json').is_file() or not (p/'context.json').is_file(): raise ValueError('spec mount must be an existing directory with spec.json and context.json')
+        extra+=['--volume',str(p)+':/spec:ro']
     result[i:i]=extra
     return result
 
@@ -84,10 +95,10 @@ def adapter(argv):
     if os.environ.get('OSC_LOCAL_ADAPTER')!='1': raise ValueError('local adapter shim invoked outside a local run')
     root=Path(os.environ['OSC_INPUT_ROOT']);bundle=Path(os.environ['OSC_PAYLOAD'])
     args=f.readonly_args(argv,root,bundle)
-    args=extra_mounts(args,os.environ.get('OSC_OUTPUT'),os.environ.get('OSC_CANDIDATE'))
+    args=extra_mounts(args,os.environ.get('OSC_OUTPUT'),os.environ.get('OSC_CANDIDATE'),os.environ.get('OSC_SPEC'))
     resource_preflight()
     c.RESERVE_SECONDS=CLEANUP_RESERVE+7
-    is_payload=any('/analysis/'+name in a for a in args[args.index(c.IMAGE)+1:] for name in (PAYLOAD_NAME,DRC_PAYLOAD_NAME))
+    is_payload=any('/analysis/'+name in a for a in args[args.index(c.IMAGE)+1:] for name in (PAYLOAD_NAME,DRC_PAYLOAD_NAME,DERIVED_PAYLOAD_NAME))
     f.require_budget(ATTACH_SECONDS+CLEANUP_RESERVE+7+10 if is_payload else 40+CLEANUP_RESERVE+7)
     if is_payload and float(os.environ['OSC_COMMAND_DEADLINE'])-time.monotonic()<PAYLOAD_SECONDS+10+7:
         raise TimeoutError('insufficient wrapper budget after setup for payload and create')
@@ -104,6 +115,12 @@ def summarize(receipt,detail):
         summary['pairs']={phase:{name:{k:row.get(k) for k in ('connected','symmetric','unconnected_count')}|({'cluster_a_size':row['cluster_a'].get('size'),'selected_zone_in_cluster':row['cluster_a'].get('selected_zone_member'),'bridging':{k:len(v) for k,v in row['bridging_vias'].items()} if isinstance(row.get('bridging_vias'),dict) else None} if isinstance(row.get('cluster_a'),dict) else {})
             for name,row in (worker.get(phase) or {}).get('pairs',{}).items()} for phase in ('before','after','reloaded')}
         summary['memory_peak']=max((r.get('values',{}).get('memory.peak',0) for r in detail.get('memory_telemetry',[])),default=None)
+        compact=detail.get('worker_summary') if isinstance(detail.get('worker_summary'),dict) else {}
+        if isinstance(compact.get('classification'),dict):
+            summary['classification']={k:v.get('class') for k,v in compact['classification'].items()};summary['unconnected_count']=compact.get('unconnected_count')
+            summary['fill']=compact.get('fill');summary['identity_key']=detail.get('identity_key')
+        if isinstance(detail.get('reuse'),dict): summary['reuse']={k:detail['reuse'].get(k) for k in ('reusable','reason')}
+        if isinstance(detail.get('parent'),dict): summary['parent']={k:detail['parent'].get(k) for k in ('reusable','reason')}
     return json.dumps(summary,sort_keys=True)
 
 def run(args):
@@ -112,15 +129,20 @@ def run(args):
     if root==out or out.is_relative_to(root): raise ValueError('separate output required')
     payload_name,payload_args,expected_status=MODES[args.payload]
     output=Path(args.output).resolve() if args.output else None;candidate=Path(args.candidate).resolve() if args.candidate else None
+    spec_file=Path(args.spec).resolve() if args.spec else None
     # Argument validation before any side effect: no directories, no allowlist mutation.
-    if args.payload in ('candidate','drc') and output is None: raise ValueError('--output required for '+args.payload)
-    if args.payload=='drc' and candidate is None: raise ValueError('--candidate required for drc')
+    if args.payload in ('candidate','drc')+SPEC_MODES and output is None: raise ValueError('--output required for '+args.payload)
+    if args.payload in ('drc','evaluate') and candidate is None: raise ValueError('--candidate required for '+args.payload)
+    if args.payload in SPEC_MODES and spec_file is None: raise ValueError('--spec required for '+args.payload)
+    if spec_file is not None and args.payload not in SPEC_MODES: raise ValueError('--spec only applies to derive/evaluate')
+    spec=derived.load_spec(spec_file,topology.EXPECTED) if spec_file is not None else None
     if output is not None and output.exists(): raise ValueError('output directory must not pre-exist')
     out.mkdir(exist_ok=False)
     if output is not None: output.mkdir(mode=0o755)
     old_pins=c.PINS;c.PINS=board_pins()
     r={'status':'STARTED','mode':MODE,'payload':args.payload,'output':str(output) if output else None,'candidate':str(candidate) if candidate else None,'hosted':False,'source_sha':c.SOURCE,'tooling_sha':os.environ.get('TOOLING_SHA'),'image':c.IMAGE,
-       'target_zone':payload.TARGET_ZONE,'pairs':payload.PAIRS,'commands':[],'cleanup':[],'full_board_fill':False,'board_acceptance':False,'drc':'NOT RUN: whole-board DRC is outside this two-pair selected-zone diagnostic',
+       'target_zone':payload.TARGET_ZONE if spec is None else None,'pairs':payload.PAIRS if spec is None else spec['pairs'],'spec':spec,'commands':[],'cleanup':[],'full_board_fill':False,'board_acceptance':False,'repair_basis':False,
+       'drc':'NOT RUN: whole-board DRC is outside this selected-zone connectivity diagnostic',
        'deadline_policy':{'total_seconds':TOTAL_SECONDS,'outer_stop_seconds':OUTER_STOP_SECONDS,'payload_seconds':PAYLOAD_SECONDS,'attach_seconds':ATTACH_SECONDS,
            'wrapper_seconds':WRAPPER_SECONDS,'cleanup_reserve_seconds':CLEANUP_RESERVE,'launch_reserve_seconds':LAUNCH_RESERVE,'stage_caps':payload.STAGE_CAPS,
            'started_monotonic':started,'deadline_monotonic':c.DEADLINE}}
@@ -158,6 +180,12 @@ def run(args):
              'OSC_PAYLOAD':str(bundle),'OSC_DEADLINE':str(c.DEADLINE),'OSC_LOCAL_ADAPTER':'1'}
         if output is not None: env['OSC_OUTPUT']=str(output)
         if candidate is not None: env['OSC_CANDIDATE']=str(candidate);r['candidate_manifest_sha256']=c.sha(candidate/'manifest.json')
+        if spec is not None:
+            spec_dir=state/'spec';spec_dir.mkdir()
+            (spec_dir/'spec.json').write_text(json.dumps({'zones':spec['zones'],'pairs':[list(p) for p in spec['pairs']],'note':spec['note']}))
+            r['context']={'image_id':r['image_identity']['id'],'kicad':derived.KICAD_VERSION,'source_pins':dict(inv.PINS),'process':derived.PROCESS_VERSION,'tooling_sha':t}
+            (spec_dir/'context.json').write_text(json.dumps(r['context']));env['OSC_SPEC']=str(spec_dir)
+            r['expected_identity_key']=None if args.payload=='derive' and candidate is not None else derived.identity_key(derived.identity(inv.PINS,spec['zones'],r['context']['image_id']))
         f.require_budget(LAUNCH_RESERVE)
         env['OSC_COMMAND_DEADLINE']=str(time.monotonic()+WRAPPER_SECONDS)
         result=call(['bash','scripts/kicad/run.sh','python3','-B','/analysis/'+payload_name,*payload_args],WRAPPER_SECONDS,env)
@@ -171,6 +199,9 @@ def run(args):
         c.checked(result)
         if detail is None:raise ValueError('payload JSON missing or malformed')
         if args.payload=='zone': payload.validate_result(detail)
+        elif args.payload in SPEC_MODES:
+            derivedpayload.validate_result(detail,args.payload)
+            r['host_verification']=verify_derived_output(args.payload,detail,output,candidate,root,r)
         else: r['host_verification']=verify_output(args.payload,detail,output,candidate)
         r['status']=expected_status
     except Exception as exc:
@@ -236,18 +267,77 @@ def verify_output(mode,detail,output,candidate):
     if not isinstance(detail.get('elapsed_seconds'),(int,float)) or not 0<=detail['elapsed_seconds']<=PAYLOAD_SECONDS: raise ValueError('payload deadline')
     return verification
 
+def verify_derived_output(mode,detail,output,candidate,root,receipt):
+    """Host-side re-verification for derive/evaluate: identity recomputed from the host's own image inspect and pins, files re-hashed, classification recomputed."""
+    verification={}
+    source_nonfill=inv.semantic_hash(root/'boards'/'osc-core'/'osc-core.kicad_pcb');verification['source_nonfill_host']=source_nonfill
+    if detail.get('source_nonfill')!=source_nonfill: raise ValueError('host source semantic hash mismatch')
+    if detail.get('tooling_sha')!=receipt['tooling_sha'] or detail['identity']['image_id']!=receipt['image_identity']['id']: raise ValueError('context echo')
+    zones=receipt['spec']['zones']
+    worker=json.loads((output/'zone.json').read_text())
+    for name,expected in detail['exported_receipts'].items():
+        if c.sha(output/name)!=expected: raise ValueError('exported receipt hash '+name)
+    if worker.get('failure') is not None or worker.get('counts')!=payload.COUNTS: raise ValueError('exported worker receipt')
+    rows=worker['reloaded']['zones']+[r for r in []]
+    if mode=='derive':
+        manifest=json.loads((output/'manifest.json').read_text())
+        if c.sha(output/'manifest.json')!=detail.get('manifest_sha256') or manifest.get('status')!=derived.MANIFEST_STATUS: raise ValueError('manifest')
+        parent_key=(detail.get('parent') or {}).get('identity',{}) and derived.identity_key(detail['parent']['identity'])
+        expected=derived.identity(inv.PINS,zones,receipt['image_identity']['id'],derived.KICAD_VERSION,parent_key or None)
+        reuse=derived.verify_derived(output,expected,source_nonfill,inv.semantic_hash);verification['reuse']=reuse
+        if not reuse['reusable'] or reuse['identity']!=detail['identity'] or manifest['identity_key']!=detail['identity_key']: raise ValueError('host identity verification: '+reuse['reason'])
+        if manifest['classification']!=detail['worker_summary']['classification']: raise ValueError('manifest classification')
+        if detail['worker_summary']['fill'].get('returned') is not True: raise ValueError('fill')
+    else:
+        evaluation=json.loads((output/'evaluation.json').read_text())
+        if c.sha(output/'evaluation.json')!=detail.get('evaluation_sha256') or evaluation.get('status')!=derivedpayload.EVALUATE_STATUS: raise ValueError('evaluation')
+        if receipt['expected_identity_key']!=detail['identity_key'] or evaluation['identity_key']!=detail['identity_key']: raise ValueError('evaluate identity key differs from the host expectation')
+        reuse=derived.verify_derived(candidate,detail['identity'],source_nonfill,inv.semantic_hash);verification['reuse']=reuse
+        if not reuse['reusable']: raise ValueError('host reuse verification: '+reuse['reason'])
+        if evaluation['classification']!=detail['worker_summary']['classification']: raise ValueError('evaluation classification')
+    # Recompute the classification from the exported native observations instead of trusting the summary.
+    table={r['uuid']:r for r in worker['reloaded']['zones']}
+    recomputed={}
+    for a,b in receipt['spec']['pairs']:
+        key=a+'<->'+b;before=worker['before']['pairs'][key]['connected'];after=worker['reloaded']['pairs'][key]['connected']
+        recomputed[key]={'before':before,'after':after}
+        row=detail['worker_summary']['classification'][key]
+        if (row['connected_before'],row['connected_after'])!=(before,after): raise ValueError('classification flags '+key)
+        if row['class'] in ('CONNECTED_ON_INPUT','CONNECTED_VIA_SELECTED_FILL')!=(before or after): raise ValueError('classification class '+key)
+        if row['class']=='UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN' and not row['unfilled_net_zones']: raise ValueError('unevaluable without unfilled zones '+key)
+        if row['class']=='OPEN_WITH_ALL_NET_ZONES_FILLED' and (row['unfilled_net_zones'] or not row['net_zones']): raise ValueError('open-all-filled flags '+key)
+        if any(u in table and not all(cnt>=1 for cnt in table[u]['counts'].values()) for u in set(row['net_zones'])-set(row['unfilled_net_zones'])): raise ValueError('filled claim contradicts exported zone table '+key)
+    verification['recomputed_connectivity']=recomputed
+    return verification
+
+def adopt_legacy(args):
+    """Write the adoption sidecar for a legacy single-zone candidate directory from its recorded controller receipt."""
+    output=Path(args.candidate).resolve();receipt=json.loads(Path(args.receipt).read_text())
+    if (output/derived.SIDECAR).exists(): raise FileExistsError('sidecar already present')
+    if receipt.get('status')!=derived.LEGACY_STATUS or receipt.get('image')!=c.IMAGE: raise ValueError('receipt is not a passed legacy candidate run')
+    image_id=receipt['image_identity']['id']
+    if c.IMAGE not in receipt['image_identity']['repo_digests']: raise ValueError('receipt image digest')
+    sidecar=derived.legacy_sidecar(output/'manifest.json',image_id,args.attestation)
+    sidecar['receipt']={'tooling_sha':receipt.get('tooling_sha'),'tool_hashes':receipt.get('tool_hashes'),'payload_status':((receipt.get('host_verification') or {}) and receipt.get('status'))}
+    (output/derived.SIDECAR).write_text(json.dumps(sidecar,indent=2,sort_keys=True)+'\n')
+    print(json.dumps({'sidecar':str(output/derived.SIDECAR),'identity_key':sidecar['identity_key']}))
+    return 0
+
 def parse(argv):
     p=argparse.ArgumentParser(description=__doc__)
     sub=p.add_subparsers(dest='command',required=True)
     a=sub.add_parser('run');a.add_argument('source');a.add_argument('out')
     a.add_argument('--state',required=True);a.add_argument('--authorization',required=True)
-    a.add_argument('--payload',choices=sorted(MODES),default='zone');a.add_argument('--output');a.add_argument('--candidate')
+    a.add_argument('--payload',choices=sorted(MODES),default='zone');a.add_argument('--output');a.add_argument('--candidate');a.add_argument('--spec')
     b=sub.add_parser('cleanup');b.add_argument('state');b.add_argument('out')
+    d=sub.add_parser('adopt-legacy');d.add_argument('candidate');d.add_argument('receipt');d.add_argument('--attestation',required=True)
     return p.parse_args(argv)
 
 def main(argv):
     if argv[:1]==['--adapter']:return adapter(argv[1:])
     args=parse(argv)
-    return run(args) if args.command=='run' else local.cleanup(args)
+    if args.command=='run': return run(args)
+    if args.command=='adopt-legacy': return adopt_legacy(args)
+    return local.cleanup(args)
 
 if __name__=='__main__':raise SystemExit(main(sys.argv[1:]))

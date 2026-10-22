@@ -8,7 +8,7 @@
 set -uo pipefail
 
 if (($# < 4)); then
-  printf 'Usage: bash scripts/local/osc_single_zone_local.sh SOURCE OUT STATE "AUTHORIZATION NOTE" [--payload zone|candidate|drc] [--output DIR] [--candidate DIR]\n' >&2
+  printf 'Usage: bash scripts/local/osc_single_zone_local.sh SOURCE OUT STATE "AUTHORIZATION NOTE" [--payload zone|candidate|drc|derive|evaluate] [--output DIR] [--candidate DIR] [--spec FILE]\n' >&2
   exit 2
 fi
 source_dir=$1

@@ -113,7 +113,7 @@ class Payload(unittest.TestCase):
 class Controller(unittest.TestCase):
     def test_budget_constants_match_hosted_fill(self):
         self.assertEqual(l.TOTAL_SECONDS,590);self.assertEqual(l.PAYLOAD_SECONDS,420);self.assertEqual(l.ATTACH_SECONDS,430)
-        self.assertEqual(l.OUTER_STOP_SECONDS,600);self.assertEqual(l.LAUNCH_RESERVE,497);self.assertEqual(set(l.BUNDLE),{'osc_single_zone_payload.py','osc_zone_drc_payload.py','osc_frozen_fill.py','osc_frozen_topology.py'})
+        self.assertEqual(l.OUTER_STOP_SECONDS,600);self.assertEqual(l.LAUNCH_RESERVE,497);self.assertEqual(set(l.BUNDLE),{'osc_single_zone_payload.py','osc_zone_drc_payload.py','osc_derived_fill_payload.py','osc_derived_fill.py','osc_frozen_fill.py','osc_frozen_topology.py'})
     def test_board_pins_extend_source_allowlist(self):
         pins=l.board_pins();self.assertEqual(set(pins),set(c.PINS)|{'boards/osc-core/'+n for n in fill.PINS})
         self.assertEqual(pins['boards/osc-core/osc-core.kicad_pcb'],'fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10')
@@ -174,7 +174,7 @@ class CandidateAndDrc(unittest.TestCase):
             with self.assertRaises(ValueError):l.run(args)
             self.assertFalse(out.exists());self.assertEqual(c.PINS,before)
     def test_modes(self):
-        self.assertEqual(set(l.MODES),{'zone','candidate','drc'});self.assertEqual(l.MODES['drc'][1],['drc']);self.assertEqual(l.MODES['candidate'][0],'osc_zone_drc_payload.py')
+        self.assertEqual(set(l.MODES),{'zone','candidate','drc','derive','evaluate'});self.assertEqual(l.MODES['drc'][1],['drc']);self.assertEqual(l.MODES['candidate'][0],'osc_zone_drc_payload.py')
         args=l.parse(['run','s','o','--state','st','--authorization','x'*20,'--payload','drc','--output','/o','--candidate','/c'])
         self.assertEqual((args.payload,args.output,args.candidate),('drc','/o','/c'))
     def test_classify_and_summarize(self):

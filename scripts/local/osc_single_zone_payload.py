@@ -50,9 +50,9 @@ class StageLog(fill.SubstageLog):
     def __init__(self,path):
         self.phase='zone';self.seq=0;self.size=0;self.last=-float('inf');self.stream=path.open('xb')
 
-def parse_stages(data):
+def parse_stages(data,stages=STAGES):
     if len(data)>fill.SUBSTAGE_LIMIT: raise ValueError('substage bound')
-    rows=[];previous=-float('inf');expected=[(s,e) for s in STAGES for e in ('start','complete')]
+    rows=[];previous=-float('inf');expected=[(s,e) for s in stages for e in ('start','complete')]
     for line in data.splitlines(keepends=True):
         if not line.endswith(b'\n'): raise ValueError('incomplete substage record')
         row=json.loads(line)
@@ -63,11 +63,11 @@ def parse_stages(data):
         rows.append(row);previous=stamp
     return {'rows':rows,'complete':len(rows)==len(expected)}
 
-def capture_stages(result,scratch,require_complete=False):
+def capture_stages(result,scratch,require_complete=False,stages=STAGES):
     path=scratch/'zone-substages.jsonl';target=result.setdefault('worker_substages',{})
     try:
         with path.open('rb') as stream: data=stream.read(fill.SUBSTAGE_LIMIT+1)
-        observation={'log_sha256':fill.hashlib.sha256(data).hexdigest(),'bytes':len(data),**parse_stages(data)}
+        observation={'log_sha256':fill.hashlib.sha256(data).hexdigest(),'bytes':len(data),**parse_stages(data,stages)}
         target['zone']=observation
         if require_complete and not observation['complete']: raise ValueError('worker substage incomplete')
     except Exception as exc:
@@ -75,7 +75,7 @@ def capture_stages(result,scratch,require_complete=False):
         if 'data' in locals():
             prefix=b'';valid={'rows':[],'complete':False}
             for line in data.splitlines(keepends=True):
-                try: candidate=parse_stages(prefix+line)
+                try: candidate=parse_stages(prefix+line,stages)
                 except Exception: break
                 prefix+=line;valid=candidate
             entry.update(rows=valid['rows'],complete=False,valid_prefix_bytes=len(prefix),captured_bytes=len(data))
@@ -265,9 +265,10 @@ def read_rows(log,limit=fill.SUBSTAGE_LIMIT):
             except ValueError: break
     return rows
 
-def run_worker(scratch,deadline,record):
+def run_worker(scratch,deadline,record,script=None,stage_group=STAGE_GROUP,stage_caps=STAGE_CAPS):
+    """Supervise one worker subprocess: payload deadline, per-stage-group caps from its substage log, output bounds."""
     log=scratch/'zone-substages.jsonl';stdout=scratch/'zone.log'
-    argv=[sys.executable,'-B',str(Path(__file__).resolve()),'--worker',str(scratch)]
+    argv=[sys.executable,'-B',str(Path(script or __file__).resolve()),'--worker',str(scratch)]
     record.update(argv=argv,status='STARTED',start_monotonic_seconds=time.monotonic(),deadline_monotonic_seconds=deadline)
     group_start={};current=None;proc=None
     try:
@@ -278,10 +279,10 @@ def run_worker(scratch,deadline,record):
                 if now>=deadline: raise TimeoutError('payload deadline')
                 for row in read_rows(log):
                     if row.get('event')=='start':
-                        group=STAGE_GROUP.get(row.get('stage'))
+                        group=stage_group.get(row.get('stage'))
                         if group and group not in group_start: group_start[group]=row['monotonic_seconds']
                         current=group
-                if current and now-group_start[current]>STAGE_CAPS[current]: raise TimeoutError(current+' stage cap')
+                if current and now-group_start[current]>stage_caps[current]: raise TimeoutError(current+' stage cap')
                 after=scratch/'after'/'osc-core.kicad_pcb'
                 if after.exists() and after.stat().st_size>PCB_LIMIT: raise ValueError('output board bound')
                 if stdout.stat().st_size>fill.LOG_LIMIT: raise ValueError('worker log bound')
