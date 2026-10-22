@@ -17,6 +17,49 @@ SUSPECTS = ['78a57192-9ee7-5e03-b428-d7073b7a8976', 'ccc30c50-bd1a-5356-a883-df5
 
 def uid(item): return item.m_Uuid.AsString()
 
+# Follow-up only for the three non-matching pairs from run 39748715341.
+MISMATCH_PAIRS = [('C1129.1','U1105.16'), ('C1131.1','U1106.8'), ('C1111.2','U1105.12')]
+
+def member_inventory(board, pcb, members):
+    """Resolve native UUIDs to saved objects; never infer path connectivity."""
+    endpoints = sorted({n for pair in MISMATCH_PAIRS for n in pair})
+    wanted = {u for n in endpoints for u in members[n]}
+    if len(wanted)>128: raise ValueError('Follow-up member bound exceeded')
+    objects = {}; native_tracks={}; native_pads={}
+    def add(item, kind, name=None):
+        key=uid(item)
+        if key not in wanted: return
+        if key in objects: raise ValueError('Duplicate native object UUID')
+        objects[key]={'kind':kind,'pad':name,'net':item.GetNetname(),
+            'layers':[s for s in COPPER_LAYERS if item.IsOnLayer(getattr(pcb,s.replace('.','_')))]}
+    for fp in board.GetFootprints():
+        for pad in fp.Pads():
+            name=fp.GetReference()+'.'+pad.GetNumber()
+            add(pad,'pad',name)
+            if name in endpoints: native_pads[name]=pad
+    for item in board.GetTracks():
+        add(item,'track_or_via')
+        if uid(item) in wanted: native_tracks[uid(item)]=item
+    for item in board.Zones(): add(item,'zone')
+    if set(objects)!=wanted: raise ValueError('Unresolved native member UUID')
+    neighbors={}
+    for key,item in sorted(native_tracks.items()):
+        found=board.GetConnectivity().GetConnectedItems(item)
+        if len(found)>128: raise ValueError('Follow-up neighbor bound exceeded')
+        neighbors[key]=sorted({uid(i) for i in found})
+    contacts=[]
+    for name in endpoints:
+        for key in members[name]:
+            if key not in native_tracks: continue
+            for layer in COPPER_LAYERS:
+                contacts.append({'pad':name,'member':key,'layer':layer,
+                    **contact_observation(native_pads[name],native_tracks[key],getattr(pcb,layer.replace('.','_')))})
+    return {'objects':objects,'member_reported_neighbors':neighbors,'pad_member_shape_contacts':contacts,'pairs':[{'a':a,'b':b,
+        'a_members':members[a], 'b_members':members[b],
+        'shared_members':sorted(set(members[a]) & set(members[b]))}
+        for a,b in MISMATCH_PAIRS],
+        'meaning':'UUID attribution only; shared membership is not a proven conductive path'}
+
 def contact_observation(pad,track,layer):
     # Connectivity membership must not be used as a foreign-net collision filter.
     if not pad.IsOnLayer(layer) or not track.IsOnLayer(layer):
@@ -67,6 +110,7 @@ def observe(board,pcb):
                 layers.append({'layer':name,'saved_filled_outline_count':z.GetFilledPolysList(layer).OutlineCount()})
         zone_rows.append({'uuid':key,'net':z.GetNetname(),'rule_area':z.GetIsRuleArea(),'layers':layers})
     return {'status':STATUS,'pairs':pairs,'native_reported_members':members,
+        'mismatch_member_inventory':member_inventory(board,pcb,members),
         'foreign_net_shape_observations':collisions,'zones':zone_rows,
         'pad_copper_layers':{n:[s for s in COPPER_LAYERS if p.IsOnLayer(getattr(pcb,s.replace('.','_')))] for n,p in pads.items()},
         'limits':['GetConnectedItems observations are not an independently traversed path or DRC.',
@@ -75,6 +119,33 @@ def observe(board,pcb):
         'return_terminal_selection':None,'copper_retirement':[],'board_acceptance':False}
 
 def validate(result):
+    follow=result.get('mismatch_member_inventory')
+    if not isinstance(follow,dict) or not isinstance(follow.get('objects'),dict): raise ValueError('Missing follow-up inventory')
+    members=result.get('native_reported_members',{})
+    endpoints={n for pair in MISMATCH_PAIRS for n in pair}
+    if not endpoints<=set(members): raise ValueError('Missing follow-up endpoint')
+    wanted={u for n in endpoints for u in members[n]}
+    if len(wanted)>128 or set(follow['objects'])!=wanted: raise ValueError('Incomplete follow-up inventory')
+    expected=[{'a':a,'b':b,'a_members':members[a],'b_members':members[b],
+        'shared_members':sorted(set(members[a]) & set(members[b]))} for a,b in MISMATCH_PAIRS]
+    if follow.get('pairs')!=expected: raise ValueError('Follow-up pair mismatch')
+    for row in follow['objects'].values():
+        if row.get('kind') not in ('pad','track_or_via','zone') or not isinstance(row.get('net'),str): raise ValueError('Invalid object attribution')
+        layers=row.get('layers')
+        if not isinstance(layers,list) or not layers or len(layers)!=len(set(layers)) or not set(layers)<=set(COPPER_LAYERS): raise ValueError('Invalid object layers')
+        if row['kind']=='pad' and (not isinstance(row.get('pad'),str) or not row['pad']): raise ValueError('Missing pad attribution')
+        if row['kind']!='pad' and row.get('pad') is not None: raise ValueError('Spurious pad attribution')
+    contacts=follow.get('pad_member_shape_contacts')
+    neighbors=follow.get('member_reported_neighbors')
+    if not isinstance(neighbors,dict) or set(neighbors)!={u for u,r in follow['objects'].items() if r['kind']=='track_or_via'}: raise ValueError('Missing neighbor observations')
+    for ids in neighbors.values():
+        if not isinstance(ids,list) or len(ids)>128 or any(not isinstance(u,str) or not u for u in ids) or len(ids)!=len(set(ids)): raise ValueError('Invalid neighbor observations')
+    expected_keys=[(n,u,l) for n in sorted(endpoints) for u in members[n]
+        if follow['objects'][u]['kind']=='track_or_via' for l in COPPER_LAYERS]
+    if not isinstance(contacts,list) or [(c.get('pad'),c.get('member'),c.get('layer')) for c in contacts]!=expected_keys: raise ValueError('Incomplete contact observations')
+    for c in contacts:
+        if any(type(c.get(k)) is not bool for k in ('shared_layer','shape_intersection')): raise ValueError('Invalid contact observation')
+        if c['shape_intersection'] and not c['shared_layer']: raise ValueError('Contact without shared layer')
     required={'status','board_acceptance','copper_retirement','return_terminal_selection','pairs','native_reported_members','foreign_net_shape_observations','zones','pad_copper_layers','limits'}
     if not required<=set(result):raise ValueError('Missing evidence fields')
     if result.get('status')!=STATUS or result.get('board_acceptance') is not False or result.get('copper_retirement')!=[] or result.get('return_terminal_selection') is not None:
