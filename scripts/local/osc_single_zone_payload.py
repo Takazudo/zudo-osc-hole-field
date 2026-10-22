@@ -106,6 +106,8 @@ def summarize_cluster(items,layers,pads,target,poly):
     """Compact description of one native cluster (the whole connected component)."""
     counts=collections.Counter();by_layer=collections.Counter();vias=[];zones=[];pad_names=[];truncated=0
     for item in items:
+        # The SWIG cluster vector downcasts vias only to PCB_TRACK; Cast() yields PCB_VIA (run 1 evidence).
+        if hasattr(item,'Cast'): item=item.Cast()
         kind=type(item).__name__;counts[kind]+=1
         for name in layer_names(item,layers): by_layer[name]+=1
         if kind=='PCB_VIA':

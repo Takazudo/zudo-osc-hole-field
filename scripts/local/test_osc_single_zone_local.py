@@ -34,9 +34,10 @@ class Payload(unittest.TestCase):
                                  'GetDrillValue':lambda self:3,'GetIsRuleArea':lambda self:False})()
         poly=NS(Contains=lambda p:p.x==1)
         items=[item('PAD','p1','+12V',[0]),item('PCB_VIA','v1','+12V',[0,10,2]),item('PCB_VIA','v2','+12V',[0,10,2],(9,9)),item('ZONE',z.TARGET_ZONE,'+12V',[10]),item('PCB_TRACK','t1','+12V',[0])]
+        proxy=type('PCB_TRACK',(),{'Cast':lambda self:items[1]})();items.append(proxy)
         s=z.summarize_cluster(items,layers,{'p1':'C1129.1'},None,poly)
-        self.assertEqual(s['size'],5);self.assertTrue(s['selected_zone_member']);self.assertEqual(s['pads'],['C1129.1'])
-        self.assertEqual([(v['uuid'],v['inside_selected_fill']) for v in s['vias']],[('v1',True),('v2',False)]);self.assertEqual(s['layers'],{'F.Cu':4,'In4.Cu':3,'B.Cu':2})
+        self.assertEqual(s['size'],6);self.assertTrue(s['selected_zone_member']);self.assertEqual(s['pads'],['C1129.1']);self.assertEqual(s['counts']['PCB_VIA'],3)
+        self.assertEqual([(v['uuid'],v['inside_selected_fill']) for v in s['vias']],[('v1',True),('v1',True),('v2',False)]);self.assertEqual(s['layers'],{'F.Cu':5,'In4.Cu':4,'B.Cu':3})
     def test_via_listing_truncates_instead_of_failing(self):
         from types import SimpleNamespace as NS
         def via(u): return type('PCB_VIA',(),{'m_Uuid':NS(AsString=lambda:u),'GetNetname':lambda self:'+12V','IsOnLayer':lambda self,l:True,'GetPosition':lambda self:NS(x=0,y=0),'GetDrillValue':lambda self:3})()
