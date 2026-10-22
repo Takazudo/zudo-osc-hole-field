@@ -25,13 +25,15 @@ def fixture():
     for i,(a,b) in enumerate([((0,0),(30,0)),((30,0),(30,30)),((30,30),(0,30)),((0,30),(0,0))]):
         out.append(f'(gr_line (start {a[0]} {a[1]}) (end {b[0]} {b[1]}) (stroke (width 0.05) (type default)) (layer "Edge.Cuts") (uuid "{uid("edge"+str(i))}"))')
     for name,x,y,net in [('A',5,5,'+12V'),('B',12,5,'+12V'),('N',26,26,'+12V'),('X',10,10,'OTHER')]:
-        # The foreign-net obstacle X stays flashed on every layer so the custom
-        # clearance rule (copper clearance, not hole clearance) is observable on In4.Cu.
-        unused='' if name=='X' else ' (remove_unused_layers yes)'
-        out.append(f'(footprint "Synthetic:Pad" (layer "F.Cu") (uuid "{uid(name)}") (at {x} {y}) (property "Reference" "{name}" (at 0 -2) (layer "F.Cu") (effects (font (size 1 1) (thickness 0.15)))) (pad "1" thru_hole circle (at 0 0) (size 1.5 1.5) (drill 0.8) (layers "*.Cu" "*.Mask"){unused} (net "{net}") (uuid "{uid(name+"pad")}")))')
+        # No unused-layer removal anywhere, matching the frozen core board (zero
+        # remove_unused_layers yes, zero zone_layer_connections). Run 1 showed that
+        # removal items persist board-wide zone_layer_connections after a selected
+        # fill (pcb_io_kicad_sexpr.cpp 10.0.6), a side effect the core cannot exhibit.
+        # X also stays flashed so the custom copper clearance rule is observable on In4.Cu.
+        out.append(f'(footprint "Synthetic:Pad" (layer "F.Cu") (uuid "{uid(name)}") (at {x} {y}) (property "Reference" "{name}" (at 0 -2) (layer "F.Cu") (effects (font (size 1 1) (thickness 0.15)))) (pad "1" thru_hole circle (at 0 0) (size 1.5 1.5) (drill 0.8) (layers "*.Cu" "*.Mask") (remove_unused_layers no) (net "{net}") (uuid "{uid(name+"pad")}")))')
     for name,a,b in [('duplicate',(3,3),(4,3)),('duplicate',(3,4),(4,4))]:
         out.append(f'(segment (start {a[0]} {a[1]}) (end {b[0]} {b[1]}) (width 0.25) (layer "F.Cu") (net "+12V") (uuid "{uid(name)}"))')
-    out.append(f'(via (at 8 5) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (remove_unused_layers yes) (net "+12V") (uuid "{uid("via")}"))')
+    out.append(f'(via (at 8 5) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net "+12V") (uuid "{uid("via")}"))')
     for name,layer,net,box,filled in [('target','In4.Cu','+12V',(2,2,18,18),False),('sentinel','F.Cu','OTHER',(20,2,28,10),True),('empty','B.Cu','OTHER',(20,12,28,20),False),('dependency','In4.Cu','+12V',(16,2,23,8),True)]:
         x,y,r,t=box; pts=f'(xy {x} {y}) (xy {r} {y}) (xy {r} {t}) (xy {x} {t})'
         out.append(f'(zone (net "{net}") (layer "{layer}") (uuid "{uid(name)}") (name "{name}") (hatch edge 0.5) (connect_pads yes (clearance 0.2)) (min_thickness 0.15) (fill yes (thermal_gap 0.3) (thermal_bridge_width 0.3) (island_removal_mode 0)) (polygon (pts {pts}))'+(f'(filled_polygon (layer "{layer}") (pts {pts}))' if filled else '')+')')

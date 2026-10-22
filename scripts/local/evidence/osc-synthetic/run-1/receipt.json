@@ -1,0 +1,190 @@
+{
+  "status": "FAILED",
+  "mode": "LOCAL_WSL_CONTAINMENT",
+  "hosted": false,
+  "source_sha": "fa16c6ffa6497f095e1902c223150c23fafccd6e",
+  "tooling_sha": "6f41b0fab205f11c0c98219be01ab0eff2fd0ec1",
+  "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "total_seconds": 120,
+  "outer_stop_seconds": 120,
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.05017627100460231,
+      "failure": null,
+      "output": "fa16c6ffa6497f095e1902c223150c23fafccd6e\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "version",
+        "--format",
+        "{{json .Server.Version}}"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.3007885538972914,
+      "failure": null,
+      "output": "\"29.3.0\"\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "info",
+        "--format",
+        "{{json .MemTotal}}"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.5512538282200694,
+      "failure": null,
+      "output": "12541636608\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "ps",
+        "-q"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.05016922205686569,
+      "failure": null,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "image",
+        "inspect",
+        "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.25064385402947664,
+      "failure": null,
+      "output": "[\n    {\n        \"Id\": \"sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec\",\n        \"RepoTags\": [\n            \"kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec\"\n        ],\n        \"RepoDigests\": [\n            \"kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec\"\n        ],\n        \"Comment\": \"buildkit.dockerfile.v0\",\n        \"Created\": \"2026-09-22T14:31:54.218891518Z\",\n        \"Config\": {\n            \"User\": \"kicad\",\n            \"Env\": [\n                \"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\n                \"LANG=C.UTF-8\",\n                \"LANGUAGE=C.UTF-8\",\n                \"LC_ALL=C.UTF-8\"\n            ],\n            \"Cmd\": [\n                \"bash\"\n            ],\n            \"Labels\": {\n                \"org.opencontainers.image.authors\": \"https://groups.google.com/a/kicad.org/g/devlist\",\n                \"org.opencontainers.image.description\": \"Image containing KiCad EDA, python and the stock symbol and footprint libraries for use in automation workflows\",\n                \"org.opencontainers.image.documentation\": \"https://docs.kicad.org/\",\n                \"org.opencontainers.image.licenses\": \"GPL-3.0-or-later\",\n                \"org.opencontainers.image.source\": \"https://gitlab.com/kicad/kicad-ci/kicad-cli-docker\",\n                \"org.opencontainers.image.url\": \"https://kicad.org\",\n                \"org.opencontainers.image.vendor\": \"KiCad\"\n            }\n        },\n        \"Architecture\": \"amd64\",\n        \"Os\": \"linux\",\n        \"Size\": 808800982,\n        \"RootFS\": {\n            \"Type\": \"layers\",\n            \"Layers\": [\n                \"sha256:a6dc765193a52cbaede3c93a9ff48b9540948dd0774bbe7031fcb5847606f9ac\",\n                \"sha256:c9cf57836c803a925a1b916fc2c3f1d16b7a42d65f35185f432242848c5e9381\",\n                \"sha256:dc98827f896bfd4c22abe532edf3c3e4570e57f0d6afd8a8d3e9ba83c09fae60\",\n                \"sha256:50d6c045fecb3990e952e7a0c5d7b198a7116684ed95e72fff411ae89b989633\",\n                \"sha256:bc5494982f1e4d0e69ce3e0091ae4f30f66e13c49e00c1472a9136410319aba2\",\n                \"sha256:822f611cfa79fb64e502bdad3c1721b88daa73b6075c50b33180dc14a507e7fa\",\n                \"sha256:9cba6498172bcce11efab6afaa94e30c19e5d0259b316bec10bcb7a81aadde3f\",\n                \"sha256:0b3bab14135b8e7eebe1192f01e7ab1d1f55ff857ad63dc2cc503141ed3dad62\",\n                \"sha256:5e9ce457f3af391b57880457b839901afb7dd36f3c1bfd993f7d4582298b476b\",\n                \"sha256:6dbc179907e0d3ced869a2da06753ad46cee7ee2092f251fdbc26b7a35d13673\",\n                \"sha256:dcb2f55a87b1ad591db2355a3c866ba12bd519ad293a73ff02066cc6d9a5a784\",\n                \"sha256:f1f6b686e54dbfda4283b5d2e9f4557b48160aa817faa899b37abb35f0455690\",\n                \"sha256:9a5805b9b6539631909c318c3d9a7c80103fbd84a7636b34b267837054ca082b\"\n            ]\n        },\n        \"Metadata\": {\n            \"LastTagTime\": \"2026-09-27T18:28:09.431675145Z\"\n        },\n        \"Descriptor\": {\n            \"mediaType\": \"application/vnd.docker.distribution.manifest.list.v2+json\",\n            \"digest\": \"sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec\",\n            \"size\": 403\n        },\n        \"Identity\": {\n            \"Pull\": [\n                {\n                    \"Repository\": \"docker.io/kicad/kicad\"\n                }\n            ]\n        }\n    }\n]\n"
+    },
+    {
+      "argv": [
+        "bash",
+        "scripts/kicad/run.sh",
+        "python3",
+        "-B",
+        "/analysis/osc_synthetic_zone.py"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 10.981101382989436,
+      "failure": null,
+      "output": "{\"board_acceptance\": false, \"error\": null, \"events\": [{\"cli\": \"10.0.6\", \"fixture_sha256\": \"ca128d71d021b5fe5ca393183f03e4cfd67e11e210b017661a523143bcce0b00\", \"monotonic_seconds\": 1318504.331502861, \"pcbnew\": \"10.0.6\", \"stage\": \"versions\"}], \"full_board_executed\": false, \"status\": \"RUNNING\"}\n{\"board_acceptance\": false, \"error\": null, \"events\": [{\"cli\": \"10.0.6\", \"fixture_sha256\": \"ca128d71d021b5fe5ca393183f03e4cfd67e11e210b017661a523143bcce0b00\", \"monotonic_seconds\": 1318504.331502861, \"pcbnew\": \"10.0.6\", \"stage\": \"versions\"}, {\"board_hash\": \"ca128d71d021b5fe5ca393183f03e4cfd67e11e210b017661a523143bcce0b00\", \"custom_rules\": false, \"monotonic_seconds\": 1318504.332827133, \"rules_hash\": \"edd74546c3a662048c2f81cace7014020026bf6586abc6b7333db7df5644bfc7\", \"stage\": \"input\"}], \"full_board_executed\": false, \"status\": \"RUNNING\"}\n{\"board_acceptance\": false, \"error\": null, \"events\": [{\"cli\": \"10.0.6\", \"fixture_sha256\": \"ca128d71d021b5fe5ca393183f03e4cfd67e11e210b017661a523143bcce0b00\", \"monotonic_seconds\": 1318504.331502861, \"pcbnew\": \"10.0.6\", \"stage\": \"versions\"}, {\"board_hash\": \"ca128d71d021b5fe5ca393183f03e4cfd67e11e210b017661a523143bcce0b00\", \"custom_rules\": false, \"monotonic_seconds\": 1318504.332827133, \"rules_hash\": \"edd74546c3a662048c2f81cace7014020026bf6586abc6b7333db7df5644bfc7\", \"stage\": \"input\"}, {\"custom_rules\": false, \"monotonic_seconds\": 1318504.357788575, \"observation\": {\"A_to_B\": false, \"A_to_N\": false, \"fills\": [{\"filled\": true, \"layers\": [[\"In4.Cu\", 0, 0, \"bbf74b4480fdbdc629c75994c2e63ca48f1912cca5f1265e69b9d8dda2e67b79\"]], \"uuid\": \"ed1fa84d-d9e2-52be-b424-9c7175b03672\"}, {\"filled\": true, \"layers\": [[\"F.Cu\", 1, 4, \"c537f286704a46b507425a51e62ef75d1e185f92ed7353331192e7461b16e81a\"]], \"uuid\": \"4f1c6851-d6d5-5976-befb-7dbdb7e1b519\"}, {\"filled\": true, \"layers\": [[\"B.Cu\", 0, 0, \"bbf74b4480fdbdc629c75994c2e63ca48f1912cca5f1265e69b9d8dda2e67b79\"]], \"uuid\": \"a0a4497f-39db-5c30-8453-28072171be5d\"}, {\"filled\": true, \"layers\": [[\"In4.Cu\", 1, 4, \"a9c4b4fcc8dba26d28f1bd2d2c406dd14899db356a23646cf194a945649d128c\"]], \"uuid\": \"755157c6-b886-5256-8adf-014c79890847\"}], \"flashing\": [{\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"+12V\", \"position\": [5000000, 5000000], \"uuid\": \"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"+12V\", \"position\": [12000000, 5000000], \"uuid\": \"9904f4c2-1740-5b0c-8353-279c968badc2\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"+12V\", \"position\": [26000000, 26000000], \"uuid\": \"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"OTHER\", \"position\": [10000000, 10000000], \"uuid\": \"bb3cf556-43bf-54e5-81ed-c99fe0dec87f\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"+12V\", \"position\": [8000000, 5000000], \"uuid\": \"353904c6-bfed-5337-a8e8-76fe60fab0c7\"}]}, \"stage\": \"loaded\"}], \"full_board_executed\": false, \"status\": \"RUNNING\"}\n16:06:51: Debug: Adding duplicate image handler for 'PNG file'\n16:06:51: Debug: Adding duplicate image handler for 'JPEG file'\n16:06:51: Debug: Adding duplicate image handler for 'TIFF file'\n16:06:51: Debug: Adding duplicate image handler for 'GIF file'\n16:06:51: Debug: Adding duplicate image handler for 'PNM file'\n16:06:51: Debug: Adding duplicate image handler for 'PCX file'\n16:06:51: Debug: Adding duplicate image handler for 'IFF file'\n16:06:51: Debug: Adding duplicate image handler for 'Windows icon file'\n16:06:51: Debug: Adding duplicate image handler for 'Windows cursor file'\n16:06:51: Debug: Adding duplicate image handler for 'Windows animated cursor file'\n16:06:51: Debug: Adding duplicate image handler for 'TGA file'\n16:06:51: Debug: Adding duplicate image handler for 'XPM file'\n16:06:51: Debug: Adding duplicate image handler for 'PNG file'\n16:06:51: Debug: Adding duplicate image handler for 'JPEG file'\n16:06:51: Debug: Adding duplicate image handler for 'TIFF file'\n16:06:51: Debug: Adding duplicate image handler for 'GIF file'\n16:06:51: Debug: Adding duplicate image handler for 'PNM file'\n16:06:51: Debug: Adding duplicate image handler for 'PCX file'\n16:06:51: Debug: Adding duplicate image handler for 'IFF file'\n16:06:51: Debug: Adding duplicate image handler for 'Windows icon file'\n16:06:51: Debug: Adding duplicate image handler for 'Windows cursor file'\n16:06:51: Debug: Adding duplicate image handler for 'Windows animated cursor file'\n16:06:51: Debug: Adding duplicate image handler for 'TGA file'\n16:06:51: Debug: Adding duplicate image handler for 'XPM file'\n{\"board_acceptance\": false, \"error\": null, \"events\": [{\"cli\": \"10.0.6\", \"fixture_sha256\": \"ca128d71d021b5fe5ca393183f03e4cfd67e11e210b017661a523143bcce0b00\", \"monotonic_seconds\": 1318504.331502861, \"pcbnew\": \"10.0.6\", \"stage\": \"versions\"}, {\"board_hash\": \"ca128d71d021b5fe5ca393183f03e4cfd67e11e210b017661a523143bcce0b00\", \"custom_rules\": false, \"monotonic_seconds\": 1318504.332827133, \"rules_hash\": \"edd74546c3a662048c2f81cace7014020026bf6586abc6b7333db7df5644bfc7\", \"stage\": \"input\"}, {\"custom_rules\": false, \"monotonic_seconds\": 1318504.357788575, \"observation\": {\"A_to_B\": false, \"A_to_N\": false, \"fills\": [{\"filled\": true, \"layers\": [[\"In4.Cu\", 0, 0, \"bbf74b4480fdbdc629c75994c2e63ca48f1912cca5f1265e69b9d8dda2e67b79\"]], \"uuid\": \"ed1fa84d-d9e2-52be-b424-9c7175b03672\"}, {\"filled\": true, \"layers\": [[\"F.Cu\", 1, 4, \"c537f286704a46b507425a51e62ef75d1e185f92ed7353331192e7461b16e81a\"]], \"uuid\": \"4f1c6851-d6d5-5976-befb-7dbdb7e1b519\"}, {\"filled\": true, \"layers\": [[\"B.Cu\", 0, 0, \"bbf74b4480fdbdc629c75994c2e63ca48f1912cca5f1265e69b9d8dda2e67b79\"]], \"uuid\": \"a0a4497f-39db-5c30-8453-28072171be5d\"}, {\"filled\": true, \"layers\": [[\"In4.Cu\", 1, 4, \"a9c4b4fcc8dba26d28f1bd2d2c406dd14899db356a23646cf194a945649d128c\"]], \"uuid\": \"755157c6-b886-5256-8adf-014c79890847\"}], \"flashing\": [{\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"+12V\", \"position\": [5000000, 5000000], \"uuid\": \"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"+12V\", \"position\": [12000000, 5000000], \"uuid\": \"9904f4c2-1740-5b0c-8353-279c968badc2\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"+12V\", \"position\": [26000000, 26000000], \"uuid\": \"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"OTHER\", \"position\": [10000000, 10000000], \"uuid\": \"bb3cf556-43bf-54e5-81ed-c99fe0dec87f\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"+12V\", \"position\": [8000000, 5000000], \"uuid\": \"353904c6-bfed-5337-a8e8-76fe60fab0c7\"}]}, \"stage\": \"loaded\"}, {\"custom_rules\": false, \"monotonic_seconds\": 1318504.371712815, \"stage\": \"fill_start\"}], \"full_board_executed\": false, \"status\": \"RUNNING\"}\n{\"board_acceptance\": false, \"error\": null, \"events\": [{\"cli\": \"10.0.6\", \"fixture_sha256\": \"ca128d71d021b5fe5ca393183f03e4cfd67e11e210b017661a523143bcce0b00\", \"monotonic_seconds\": 1318504.331502861, \"pcbnew\": \"10.0.6\", \"stage\": \"versions\"}, {\"board_hash\": \"ca128d71d021b5fe5ca393183f03e4cfd67e11e210b017661a523143bcce0b00\", \"custom_rules\": false, \"monotonic_seconds\": 1318504.332827133, \"rules_hash\": \"edd74546c3a662048c2f81cace7014020026bf6586abc6b7333db7df5644bfc7\", \"stage\": \"input\"}, {\"custom_rules\": false, \"monotonic_seconds\": 1318504.357788575, \"observation\": {\"A_to_B\": false, \"A_to_N\": false, \"fills\": [{\"filled\": true, \"layers\": [[\"In4.Cu\", 0, 0, \"bbf74b4480fdbdc629c75994c2e63ca48f1912cca5f1265e69b9d8dda2e67b79\"]], \"uuid\": \"ed1fa84d-d9e2-52be-b424-9c7175b03672\"}, {\"filled\": true, \"layers\": [[\"F.Cu\", 1, 4, \"c537f286704a46b507425a51e62ef75d1e185f92ed7353331192e7461b16e81a\"]], \"uuid\": \"4f1c6851-d6d5-5976-befb-7dbdb7e1b519\"}, {\"filled\": true, \"layers\": [[\"B.Cu\", 0, 0, \"bbf74b4480fdbdc629c75994c2e63ca48f1912cca5f1265e69b9d8dda2e67b79\"]], \"uuid\": \"a0a4497f-39db-5c30-8453-28072171be5d\"}, {\"filled\": true, \"layers\": [[\"In4.Cu\", 1, 4, \"a9c4b4fcc8dba26d28f1bd2d2c406dd14899db356a23646cf194a945649d128c\"]], \"uuid\": \"755157c6-b886-5256-8adf-014c79890847\"}], \"flashing\": [{\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"+12V\", \"position\": [5000000, 5000000], \"uuid\": \"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"+12V\", \"position\": [12000000, 5000000], \"uuid\": \"9904f4c2-1740-5b0c-8353-279c968badc2\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"+12V\", \"position\": [26000000, 26000000], \"uuid\": \"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"OTHER\", \"position\": [10000000, 10000000], \"uuid\": \"bb3cf556-43bf-54e5-81ed-c99fe0dec87f\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"+12V\", \"position\": [8000000, 5000000], \"uuid\": \"353904c6-bfed-5337-a8e8-76fe60fab0c7\"}]}, \"stage\": \"loaded\"}, {\"custom_rules\": false, \"monotonic_seconds\": 1318504.371712815, \"stage\": \"fill_start\"}, {\"after\": {\"A_to_B\": true, \"A_to_N\": false, \"fills\": [{\"filled\": true, \"layers\": [[\"In4.Cu\", 1, 65, \"c172c3acd6b1e5a5f5cd9bb0c26aeed0cd54868c710a40ff04e3090e20d21829\"]], \"uuid\": \"ed1fa84d-d9e2-52be-b424-9c7175b03672\"}, {\"filled\": true, \"layers\": [[\"F.Cu\", 1, 4, \"c537f286704a46b507425a51e62ef75d1e185f92ed7353331192e7461b16e81a\"]], \"uuid\": \"4f1c6851-d6d5-5976-befb-7dbdb7e1b519\"}, {\"filled\": true, \"layers\": [[\"B.Cu\", 0, 0, \"bbf74b4480fdbdc629c75994c2e63ca48f1912cca5f1265e69b9d8dda2e67b79\"]], \"uuid\": \"a0a4497f-39db-5c30-8453-28072171be5d\"}, {\"filled\": true, \"layers\": [[\"In4.Cu\", 1, 4, \"a9c4b4fcc8dba26d28f1bd2d2c406dd14899db356a23646cf194a945649d128c\"]], \"uuid\": \"755157c6-b886-5256-8adf-014c79890847\"}], \"flashing\": [{\"layers\": [[\"F.Cu\", 2], [\"In1.Cu\", 2], [\"In2.Cu\", 2], [\"In3.Cu\", 2], [\"In4.Cu\", 1], [\"B.Cu\", 2]], \"net\": \"+12V\", \"position\": [5000000, 5000000], \"uuid\": \"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\"}, {\"layers\": [[\"F.Cu\", 2], [\"In1.Cu\", 2], [\"In2.Cu\", 2], [\"In3.Cu\", 2], [\"In4.Cu\", 1], [\"B.Cu\", 2]], \"net\": \"+12V\", \"position\": [12000000, 5000000], \"uuid\": \"9904f4c2-1740-5b0c-8353-279c968badc2\"}, {\"layers\": [[\"F.Cu\", 2], [\"In1.Cu\", 2], [\"In2.Cu\", 2], [\"In3.Cu\", 2], [\"In4.Cu\", 2], [\"B.Cu\", 2]], \"net\": \"+12V\", \"position\": [26000000, 26000000], \"uuid\": \"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"OTHER\", \"position\": [10000000, 10000000], \"uuid\": \"bb3cf556-43bf-54e5-81ed-c99fe0dec87f\"}, {\"layers\": [[\"F.Cu\", 2], [\"In1.Cu\", 2], [\"In2.Cu\", 2], [\"In3.Cu\", 2], [\"In4.Cu\", 1], [\"B.Cu\", 2]], \"net\": \"+12V\", \"position\": [8000000, 5000000], \"uuid\": \"353904c6-bfed-5337-a8e8-76fe60fab0c7\"}]}, \"custom_rules\": false, \"flashing_changes\": [{\"after\": 2, \"before\": 0, \"identity\": [\"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\", \"+12V\", [5000000, 5000000], \"F.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\", \"+12V\", [5000000, 5000000], \"In1.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\", \"+12V\", [5000000, 5000000], \"In2.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\", \"+12V\", [5000000, 5000000], \"In3.Cu\"]}, {\"after\": 1, \"before\": 0, \"identity\": [\"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\", \"+12V\", [5000000, 5000000], \"In4.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\", \"+12V\", [5000000, 5000000], \"B.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"9904f4c2-1740-5b0c-8353-279c968badc2\", \"+12V\", [12000000, 5000000], \"F.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"9904f4c2-1740-5b0c-8353-279c968badc2\", \"+12V\", [12000000, 5000000], \"In1.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"9904f4c2-1740-5b0c-8353-279c968badc2\", \"+12V\", [12000000, 5000000], \"In2.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"9904f4c2-1740-5b0c-8353-279c968badc2\", \"+12V\", [12000000, 5000000], \"In3.Cu\"]}, {\"after\": 1, \"before\": 0, \"identity\": [\"9904f4c2-1740-5b0c-8353-279c968badc2\", \"+12V\", [12000000, 5000000], \"In4.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"9904f4c2-1740-5b0c-8353-279c968badc2\", \"+12V\", [12000000, 5000000], \"B.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\", \"+12V\", [26000000, 26000000], \"F.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\", \"+12V\", [26000000, 26000000], \"In1.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\", \"+12V\", [26000000, 26000000], \"In2.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\", \"+12V\", [26000000, 26000000], \"In3.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\", \"+12V\", [26000000, 26000000], \"In4.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\", \"+12V\", [26000000, 26000000], \"B.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"353904c6-bfed-5337-a8e8-76fe60fab0c7\", \"+12V\", [8000000, 5000000], \"F.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"353904c6-bfed-5337-a8e8-76fe60fab0c7\", \"+12V\", [8000000, 5000000], \"In1.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"353904c6-bfed-5337-a8e8-76fe60fab0c7\", \"+12V\", [8000000, 5000000], \"In2.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"353904c6-bfed-5337-a8e8-76fe60fab0c7\", \"+12V\", [8000000, 5000000], \"In3.Cu\"]}, {\"after\": 1, \"before\": 0, \"identity\": [\"353904c6-bfed-5337-a8e8-76fe60fab0c7\", \"+12V\", [8000000, 5000000], \"In4.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"353904c6-bfed-5337-a8e8-76fe60fab0c7\", \"+12V\", [8000000, 5000000], \"B.Cu\"]}], \"monotonic_seconds\": 1318506.060581463, \"stage\": \"fill_observed\"}], \"full_board_executed\": false, \"status\": \"RUNNING\"}\n{\"board_acceptance\": false, \"error\": \"ValueError: persistent mutation outside selected polygons\", \"events\": [{\"cli\": \"10.0.6\", \"fixture_sha256\": \"ca128d71d021b5fe5ca393183f03e4cfd67e11e210b017661a523143bcce0b00\", \"monotonic_seconds\": 1318504.331502861, \"pcbnew\": \"10.0.6\", \"stage\": \"versions\"}, {\"board_hash\": \"ca128d71d021b5fe5ca393183f03e4cfd67e11e210b017661a523143bcce0b00\", \"custom_rules\": false, \"monotonic_seconds\": 1318504.332827133, \"rules_hash\": \"edd74546c3a662048c2f81cace7014020026bf6586abc6b7333db7df5644bfc7\", \"stage\": \"input\"}, {\"custom_rules\": false, \"monotonic_seconds\": 1318504.357788575, \"observation\": {\"A_to_B\": false, \"A_to_N\": false, \"fills\": [{\"filled\": true, \"layers\": [[\"In4.Cu\", 0, 0, \"bbf74b4480fdbdc629c75994c2e63ca48f1912cca5f1265e69b9d8dda2e67b79\"]], \"uuid\": \"ed1fa84d-d9e2-52be-b424-9c7175b03672\"}, {\"filled\": true, \"layers\": [[\"F.Cu\", 1, 4, \"c537f286704a46b507425a51e62ef75d1e185f92ed7353331192e7461b16e81a\"]], \"uuid\": \"4f1c6851-d6d5-5976-befb-7dbdb7e1b519\"}, {\"filled\": true, \"layers\": [[\"B.Cu\", 0, 0, \"bbf74b4480fdbdc629c75994c2e63ca48f1912cca5f1265e69b9d8dda2e67b79\"]], \"uuid\": \"a0a4497f-39db-5c30-8453-28072171be5d\"}, {\"filled\": true, \"layers\": [[\"In4.Cu\", 1, 4, \"a9c4b4fcc8dba26d28f1bd2d2c406dd14899db356a23646cf194a945649d128c\"]], \"uuid\": \"755157c6-b886-5256-8adf-014c79890847\"}], \"flashing\": [{\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"+12V\", \"position\": [5000000, 5000000], \"uuid\": \"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"+12V\", \"position\": [12000000, 5000000], \"uuid\": \"9904f4c2-1740-5b0c-8353-279c968badc2\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"+12V\", \"position\": [26000000, 26000000], \"uuid\": \"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"OTHER\", \"position\": [10000000, 10000000], \"uuid\": \"bb3cf556-43bf-54e5-81ed-c99fe0dec87f\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"+12V\", \"position\": [8000000, 5000000], \"uuid\": \"353904c6-bfed-5337-a8e8-76fe60fab0c7\"}]}, \"stage\": \"loaded\"}, {\"custom_rules\": false, \"monotonic_seconds\": 1318504.371712815, \"stage\": \"fill_start\"}, {\"after\": {\"A_to_B\": true, \"A_to_N\": false, \"fills\": [{\"filled\": true, \"layers\": [[\"In4.Cu\", 1, 65, \"c172c3acd6b1e5a5f5cd9bb0c26aeed0cd54868c710a40ff04e3090e20d21829\"]], \"uuid\": \"ed1fa84d-d9e2-52be-b424-9c7175b03672\"}, {\"filled\": true, \"layers\": [[\"F.Cu\", 1, 4, \"c537f286704a46b507425a51e62ef75d1e185f92ed7353331192e7461b16e81a\"]], \"uuid\": \"4f1c6851-d6d5-5976-befb-7dbdb7e1b519\"}, {\"filled\": true, \"layers\": [[\"B.Cu\", 0, 0, \"bbf74b4480fdbdc629c75994c2e63ca48f1912cca5f1265e69b9d8dda2e67b79\"]], \"uuid\": \"a0a4497f-39db-5c30-8453-28072171be5d\"}, {\"filled\": true, \"layers\": [[\"In4.Cu\", 1, 4, \"a9c4b4fcc8dba26d28f1bd2d2c406dd14899db356a23646cf194a945649d128c\"]], \"uuid\": \"755157c6-b886-5256-8adf-014c79890847\"}], \"flashing\": [{\"layers\": [[\"F.Cu\", 2], [\"In1.Cu\", 2], [\"In2.Cu\", 2], [\"In3.Cu\", 2], [\"In4.Cu\", 1], [\"B.Cu\", 2]], \"net\": \"+12V\", \"position\": [5000000, 5000000], \"uuid\": \"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\"}, {\"layers\": [[\"F.Cu\", 2], [\"In1.Cu\", 2], [\"In2.Cu\", 2], [\"In3.Cu\", 2], [\"In4.Cu\", 1], [\"B.Cu\", 2]], \"net\": \"+12V\", \"position\": [12000000, 5000000], \"uuid\": \"9904f4c2-1740-5b0c-8353-279c968badc2\"}, {\"layers\": [[\"F.Cu\", 2], [\"In1.Cu\", 2], [\"In2.Cu\", 2], [\"In3.Cu\", 2], [\"In4.Cu\", 2], [\"B.Cu\", 2]], \"net\": \"+12V\", \"position\": [26000000, 26000000], \"uuid\": \"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\"}, {\"layers\": [[\"F.Cu\", 0], [\"In1.Cu\", 0], [\"In2.Cu\", 0], [\"In3.Cu\", 0], [\"In4.Cu\", 0], [\"B.Cu\", 0]], \"net\": \"OTHER\", \"position\": [10000000, 10000000], \"uuid\": \"bb3cf556-43bf-54e5-81ed-c99fe0dec87f\"}, {\"layers\": [[\"F.Cu\", 2], [\"In1.Cu\", 2], [\"In2.Cu\", 2], [\"In3.Cu\", 2], [\"In4.Cu\", 1], [\"B.Cu\", 2]], \"net\": \"+12V\", \"position\": [8000000, 5000000], \"uuid\": \"353904c6-bfed-5337-a8e8-76fe60fab0c7\"}]}, \"custom_rules\": false, \"flashing_changes\": [{\"after\": 2, \"before\": 0, \"identity\": [\"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\", \"+12V\", [5000000, 5000000], \"F.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\", \"+12V\", [5000000, 5000000], \"In1.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\", \"+12V\", [5000000, 5000000], \"In2.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\", \"+12V\", [5000000, 5000000], \"In3.Cu\"]}, {\"after\": 1, \"before\": 0, \"identity\": [\"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\", \"+12V\", [5000000, 5000000], \"In4.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"bb41e7c2-d9ab-573f-9853-afe8e2ee6ab1\", \"+12V\", [5000000, 5000000], \"B.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"9904f4c2-1740-5b0c-8353-279c968badc2\", \"+12V\", [12000000, 5000000], \"F.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"9904f4c2-1740-5b0c-8353-279c968badc2\", \"+12V\", [12000000, 5000000], \"In1.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"9904f4c2-1740-5b0c-8353-279c968badc2\", \"+12V\", [12000000, 5000000], \"In2.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"9904f4c2-1740-5b0c-8353-279c968badc2\", \"+12V\", [12000000, 5000000], \"In3.Cu\"]}, {\"after\": 1, \"before\": 0, \"identity\": [\"9904f4c2-1740-5b0c-8353-279c968badc2\", \"+12V\", [12000000, 5000000], \"In4.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"9904f4c2-1740-5b0c-8353-279c968badc2\", \"+12V\", [12000000, 5000000], \"B.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\", \"+12V\", [26000000, 26000000], \"F.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\", \"+12V\", [26000000, 26000000], \"In1.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\", \"+12V\", [26000000, 26000000], \"In2.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\", \"+12V\", [26000000, 26000000], \"In3.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\", \"+12V\", [26000000, 26000000], \"In4.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"a17cce7e-24c5-5dc5-9d06-b45521ef6d93\", \"+12V\", [26000000, 26000000], \"B.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"353904c6-bfed-5337-a8e8-76fe60fab0c7\", \"+12V\", [8000000, 5000000], \"F.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"353904c6-bfed-5337-a8e8-76fe60fab0c7\", \"+12V\", [8000000, 5000000], \"In1.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"353904c6-bfed-5337-a8e8-76fe60fab0c7\", \"+12V\", [8000000, 5000000], \"In2.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"353904c6-bfed-5337-a8e8-76fe60fab0c7\", \"+12V\", [8000000, 5000000], \"In3.Cu\"]}, {\"after\": 1, \"before\": 0, \"identity\": [\"353904c6-bfed-5337-a8e8-76fe60fab0c7\", \"+12V\", [8000000, 5000000], \"In4.Cu\"]}, {\"after\": 2, \"before\": 0, \"identity\": [\"353904c6-bfed-5337-a8e8-76fe60fab0c7\", \"+12V\", [8000000, 5000000], \"B.Cu\"]}], \"monotonic_seconds\": 1318506.060581463, \"stage\": \"fill_observed\"}], \"full_board_executed\": false, \"status\": \"FAILED\"}\n"
+    }
+  ],
+  "cleanup": [
+    {
+      "name": "osc-smoke-c1f458d65e6142f7b932d067b6f8f2fc",
+      "cid": "a630f290571661fdbddfe878c67de55146638d5640e8ab5502a872646ba14f4c",
+      "status": "REMOVED_CONFIRMED",
+      "state_before_cleanup": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-22T16:06:44.780213951Z",
+        "FinishedAt": "2026-10-22T16:06:47.384633236Z"
+      }
+    },
+    {
+      "name": "osc-smoke-5d4b56f2364a472e9839f5be1c68d5ae",
+      "cid": "8e2c9c4c0e944d6f504856e178b6cacc8d76ffe9903eb8e3fd7d67eb545cb32b",
+      "status": "REMOVED_CONFIRMED",
+      "state_before_cleanup": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 1,
+        "Error": "",
+        "StartedAt": "2026-10-22T16:06:48.359621361Z",
+        "FinishedAt": "2026-10-22T16:06:53.581848095Z"
+      }
+    }
+  ],
+  "full_board_executed": false,
+  "board_acceptance": false,
+  "candidate_ingestion": "UNIMPLEMENTED",
+  "authorization": "User instruction 2026-10-23 in this Claude Code session: proceed with the OSC local connection diagnosis on WSL; machine-wide heavy-guard slot held; tiny synthetic fixture only, no project CAD",
+  "host": {
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "before": {
+    "scripts/kicad/run.sh": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
+    "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+    "package.json": "ff749b4655a4cbe22c74ea248b3354a0a9ba22cc08d512ec24be3bc55b24261e"
+  },
+  "tool_hashes": {
+    "osc_synthetic_local.py": "56c28c42378e4a898e82cea47055039082099baa4e29f1e43e5dc0be8384121a",
+    "osc_synthetic_zone.py": "cd8773989177f03abb0e12f13e96291fdcbbb6104f960a1d4cf55bc8a3ee6ae9",
+    "osc_synthetic_check.py": "3076b6629ca74d7e1eff636430148f9758e9776fdb45b5cb30fc8ddf3709bedd",
+    "osc_candidate_check.py": "7ab62a1b5294c92b4291a6334014b9818349b52e38f36c04ed5aa476135340ce",
+    "osc_fill_check.py": "1fb357a67275fbc24f8b4bb4de33828b4c723b389cd49a2a2e1c8843eb4b87c9"
+  },
+  "docker_server_version": "\"29.3.0\"",
+  "docker_endpoint": "unix:///var/run/docker.sock",
+  "resource_check": {
+    "host_total_bytes": 12541636608,
+    "host_available_bytes": 10483544064,
+    "docker_total_bytes": 12541636608,
+    "disk_free_bytes": 355566608384,
+    "active_container_count": 0,
+    "container_memory_bytes": 2147483648,
+    "host_reserve_bytes": 2147483648,
+    "passed": true
+  },
+  "image_identity": {
+    "id": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "repo_digests": [
+      "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec"
+    ],
+    "size_bytes": 808800982
+  },
+  "state": "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/8377f366-14be-4d76-8538-bfa9293b2bb2/scratchpad/synthetic-run-1/state",
+  "error": "ValueError: Docker operation failed: {'argv': ['bash', 'scripts/kicad/run.sh', 'python3', '-B', '/analysis/osc_synthetic_zone.py'], 'exit_code': 1, 'elapsed_seconds': 10.981101382989436, 'failure': None, 'output': '{\"board_acceptance\": false, \"error\": null, \"events\": [{\"cli\": \"10.0.6\", \"fixture_sha256\": \"ca128d71d021b5fe5ca393183f03e4cfd67e11e210b017661a523143bcce0b00\", \"monotonic_seconds\": 1318504.331502861, \"pcbnew\": \"10.0.6\", \"stage\": \"versions\"}], \"full_board_executed\": false, \"status\": \"RUNNING\"}\\n{\"board_acceptance\": false, \"error\": null, \"events\": [{\"cli\": \"10.0.6\", \"fixture_sha256\": \"ca128d71d021b5fe5ca393183f03e4cfd67e11e210b017661a523143bcce0b00\", \"monotonic_seconds\": 1318504.331502861, \"pcbne",
+  "precreate_capacity": [
+    {
+      "host_total_bytes": 12541636608,
+      "host_available_bytes": 10402152448,
+      "docker_total_bytes": 12541636608,
+      "disk_free_bytes": 355566571520,
+      "active_container_count": 0,
+      "container_memory_bytes": 2147483648,
+      "host_reserve_bytes": 2147483648,
+      "passed": true
+    },
+    {
+      "host_total_bytes": 12541636608,
+      "host_available_bytes": 10394972160,
+      "docker_total_bytes": 12541636608,
+      "disk_free_bytes": 355566555136,
+      "active_container_count": 0,
+      "container_memory_bytes": 2147483648,
+      "host_reserve_bytes": 2147483648,
+      "passed": true
+    }
+  ],
+  "after": {
+    "scripts/kicad/run.sh": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
+    "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+    "package.json": "ff749b4655a4cbe22c74ea248b3354a0a9ba22cc08d512ec24be3bc55b24261e"
+  },
+  "elapsed_seconds": 12.324692924041301
+}
