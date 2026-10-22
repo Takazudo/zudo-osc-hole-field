@@ -5,8 +5,10 @@ under /scratch; /work is read-only and never written. It answers exactly two
 questions: after filling only zone 265b1369 and rebuilding native
 connectivity, do C1129.1-U1105.16 and C1131.1-U1106.8 share a connected
 component, and through which native items (pads, vias, the selected fill)
-and layer transitions. Connectivity is a breadth-first traversal of the
-native connectivity graph, never net-name equality or shape intersection.
+and layer transitions. Connectivity is native cluster membership
+(CONNECTIVITY_DATA::GetConnectedItems returns the whole cluster in 10.0.6),
+never net-name equality or shape intersection; via-inside-fill tests only
+corroborate which members bridge layers.
 No whole-board DRC, no other zone, no AGND claim, no board acceptance.
 """
 import collections
@@ -28,7 +30,6 @@ TARGET_LAYER='In4.Cu'
 # Outline from the exact hash-pinned board (boards/osc-core/osc-core.kicad_pcb, mm).
 TARGET_OUTLINE=[(104,58),(414,58),(414,296),(358,296),(358,342),(104,342)]
 PAIRS=[('C1129.1','U1105.16'),('C1131.1','U1106.8')]
-PAIR_PADS=sorted({n for p in PAIRS for n in p})
 # Pinned structural evidence of the frozen core (handoff ZONE-COMPLEXITY.json / PRESERVED-BOARD-COMPARISON.json).
 COUNTS={'segment':123905,'via':9646,'zone':351,'copper_zone':5}
 DUPLICATE_UUIDS=('6ad7a8ef-06c4-5daf-8c20-536f50fb0495','7a9f1a78-0122-5c1a-807d-edd14509239d','7bc22643-4022-5e36-b5d2-8117e4041966',
@@ -37,8 +38,8 @@ PAYLOAD_SECONDS=420
 STAGE_CAPS={'prepare':60,'fill':260,'verify':100}
 STAGES=('load','identity','before','fill','after','save','reload','verify')
 STAGE_GROUP={'load':'prepare','identity':'prepare','before':'prepare','fill':'fill','after':'verify','save':'verify','reload':'verify','verify':'verify'}
-TRAVERSAL_LIMIT=200000
-PATH_LIMIT=20000
+CLUSTER_LIMIT=200000
+VIA_LIMIT=400
 OUTPUT_LIMIT=900000
 PCB_LIMIT=64*1024*1024
 STATUS='SINGLE_ZONE_CONNECTIVITY_OBSERVATIONS_NOT_ACCEPTANCE'
@@ -66,65 +67,57 @@ def describe(item,layers,pads):
         row['at']=[item.GetPosition().x,item.GetPosition().y]
     return row
 
-def compress(path):
-    """Collapse runs of same-type, same-layer tracks; keep every pad, via and zone."""
-    runs=[]
-    for row in path:
-        if row['type'] in ('PCB_TRACK','PCB_ARC') and runs and runs[-1].get('run') and runs[-1]['layers']==row['layers']:
-            runs[-1]['count']+=1;runs[-1]['last_uuid']=row['uuid'];continue
-        if row['type'] in ('PCB_TRACK','PCB_ARC'):
-            runs.append({'run':True,'type':row['type'],'layers':row['layers'],'net':row['net'],'count':1,'first_uuid':row['uuid'],'last_uuid':row['uuid']})
-        else: runs.append(row)
-    return runs
+def summarize_cluster(items,layers,pads,target,poly):
+    """Compact description of one native cluster (the whole connected component)."""
+    counts=collections.Counter();by_layer=collections.Counter();vias=[];zones=[];pad_names=[]
+    for item in items:
+        kind=type(item).__name__;counts[kind]+=1
+        for name in layer_names(item,layers): by_layer[name]+=1
+        if kind=='PCB_VIA':
+            if len(vias)>=VIA_LIMIT: raise ValueError('via listing bound')
+            row=describe(item,layers,pads)
+            row['inside_selected_fill']=bool(poly.Contains(item.GetPosition())) if poly is not None else None
+            vias.append(row)
+        elif kind=='ZONE': zones.append({'uuid':uid(item),'net':item.GetNetname(),'layers':layer_names(item,layers),'selected':uid(item)==TARGET_ZONE})
+        elif kind=='PAD': pad_names.append(pads.get(uid(item),uid(item)))
+    return {'size':len(items),'counts':dict(counts),'layers':dict(by_layer),'vias':sorted(vias,key=lambda r:r['uuid']),'zones':sorted(zones,key=lambda r:r['uuid']),
+            'pads':sorted(pad_names),'selected_zone_member':any(z['selected'] for z in zones)}
 
-def traverse(conn,start,goal,layers,pads):
-    key=lambda x:(uid(x),type(x).__name__)
-    parent={key(start):None};objects={key(start):start};queue=collections.deque([start]);visited=0;found=False
-    while queue:
-        x=queue.popleft();visited+=1
-        if visited>TRAVERSAL_LIMIT: raise ValueError('traversal bound')
-        if key(x)==key(goal): found=True;break
-        for y in conn.GetConnectedItems(x):
-            k=key(y)
-            if k not in parent: parent[k]=key(x);objects[k]=y;queue.append(y)
-    result={'connected':found,'visited':visited,'component_at_least':len(parent)}
-    if found:
-        chain=[];k=key(goal)
-        while k is not None:
-            chain.append(describe(objects[k],layers,pads));k=parent[k]
-            if len(chain)>PATH_LIMIT: raise ValueError('path bound')
-        chain.reverse()
-        result['path_items']=len(chain);result['path']=compress(chain)
-        result['path_zones']=sorted({r['uuid'] for r in chain if r['type']=='ZONE'})
-        result['path_vias']=[r for r in chain if r['type']=='PCB_VIA']
-        result['path_layers']=sorted({l for r in chain for l in r['layers']})
-    return result
+def cluster(conn,item):
+    items=list(conn.GetConnectedItems(item))
+    if len(items)>CLUSTER_LIMIT: raise ValueError('cluster bound')
+    return items
 
-def pair_observations(board,pcb,layers,target):
+def pair_observations(board,pcb,layers,target,previous=None):
+    """Native cluster membership per endpoint pad; connected means the partner pad is in the same cluster.
+
+    GetConnectedItems returns the full cluster (connectivity_data.cpp 10.0.6 SearchClusters),
+    so one call per endpoint is the traversal; nothing is inferred from net names or shapes.
+    """
     conn=board.GetConnectivity();conn.Build(board)
     pads={};names={}
     for f in board.GetFootprints():
         for p in f.Pads():
-            name=f.GetReference()+'.'+p.GetNumber()
+            name=f.GetReference()+'.'+p.GetNumber();names[uid(p)]=name
             if name in topology.EXPECTED:
                 require(name not in pads and uid(p)==topology.EXPECTED[name]['uuid'] and p.GetNetname()==topology.EXPECTED[name]['net'],'pad identity '+name)
-                pads[name]=p;names[uid(p)]=name
+                pads[name]=p
     require(set(pads)==set(topology.EXPECTED),'missing pad')
+    poly=target.GetFilledPolysList(layers[TARGET_LAYER]) if target.GetFilledPolysList(layers[TARGET_LAYER]).OutlineCount() else None
     rows={}
     for a,b in PAIRS:
-        rows[a+'<->'+b]=traverse(conn,pads[a],pads[b],layers,names)
-    poly=target.GetFilledPolysList(layers[TARGET_LAYER])
-    for row in rows.values():
-        for via in row.get('path_vias',[]):
-            via['inside_selected_fill']=bool(poly.Contains(pcb.VECTOR2I(via['at'][0],via['at'][1])))
+        ca,cb=cluster(conn,pads[a]),cluster(conn,pads[b])
+        ids_a={uid(x) for x in ca};ids_b={uid(x) for x in cb}
+        row={'connected':uid(pads[b]) in ids_a,'symmetric':uid(pads[a]) in ids_b,'cluster_a':summarize_cluster(ca,layers,names,target,poly),'cluster_b':summarize_cluster(cb,layers,names,target,poly)}
+        if previous is not None:
+            before=previous[a+'<->'+b];side_a={v['uuid'] for v in before['cluster_a']['vias']};side_b={v['uuid'] for v in before['cluster_b']['vias']}
+            merged=row['cluster_a']['vias'] if row['connected'] else []
+            row['bridging_vias']={'from_a_side':[v for v in merged if v['uuid'] in side_a and v['inside_selected_fill']],
+                                  'from_b_side':[v for v in merged if v['uuid'] in side_b and v['inside_selected_fill']],
+                                  'new_in_merged_cluster':[v for v in merged if v['uuid'] not in side_a|side_b and v['inside_selected_fill']][:VIA_LIMIT]}
+        rows[a+'<->'+b]=row
     conn.RecalculateRatsnest()
-    net=board.FindNet(TARGET_NET);require(net is not None,'target net')
-    edges=conn.GetRatsnestForNet(net.GetNetCode());touching=[]
-    for e in edges:
-        for node in (e.GetSourceNode(),e.GetTargetNode()):
-            item=node.Parent()
-            if uid(item) in names and names[uid(item)] in PAIR_PADS: touching.append(names[uid(item)])
-    rows['ratsnest_+12V']={'edges':len(edges),'edges_touching_pair_pads':sorted(set(touching)),'unconnected_count':int(conn.GetUnconnectedCount(True))}
+    rows['ratsnest']={'unconnected_count':int(conn.GetUnconnectedCount(True))}
     return rows
 
 def zone_state(board,layers):
@@ -194,7 +187,7 @@ def worker(scratch):
             poly=target.GetFilledPolysList(layers[TARGET_LAYER])
             result['after']={'selected':selected,'selected_vertices':int(poly.TotalVertices()),'selected_holes':int(poly.HoleCount(0)) if poly.OutlineCount() else None,
                 'zones_nonselected':nonselected_fill(zones),'overrides':overrides(board,layers),'duplicates':duplicates(board),'counts':counts(board),
-                'pairs':pair_observations(board,pcbnew,layers,target)}
+                'pairs':pair_observations(board,pcbnew,layers,target,result['before']['pairs'])}
             require(result['after']['zones_nonselected']==result['before']['zones_nonselected'],'nonselected native fill changed')
             require(selected['counts'].get(TARGET_LAYER,0)>=1,'selected zone has no fill')
         with stages.stage('save'):
@@ -204,7 +197,7 @@ def worker(scratch):
         with stages.stage('verify'):
             zones=zone_state(board,layers);target=[z for z in board.Zones() if uid(z)==TARGET_ZONE][0]
             result['reloaded']={'selected':[z for z in zones if z['uuid']==TARGET_ZONE][0],'zones_nonselected':nonselected_fill(zones),'overrides':overrides(board,layers),
-                'duplicates':duplicates(board),'counts':counts(board),'pairs':pair_observations(board,pcbnew,layers,target)}
+                'duplicates':duplicates(board),'counts':counts(board),'pairs':pair_observations(board,pcbnew,layers,target,result['before']['pairs'])}
             require(result['reloaded']['zones_nonselected']==result['before']['zones_nonselected'],'nonselected fill changed on reload')
             require(result['reloaded']['duplicates']==result['duplicates_before']==result['after']['duplicates'],'duplicate identity changed')
             require(result['reloaded']['selected']['counts']==result['after']['selected']['counts'],'selected fill not preserved on reload')
@@ -317,7 +310,9 @@ def main():
         worker=result.get('worker',{})
         for key in ('before','after','reloaded'):
             for row in worker.get(key,{}).get('pairs',{}).values():
-                if isinstance(row,dict): row.pop('path',None);row['path_omitted_for_bound']=True
+                if isinstance(row,dict):
+                    for side in ('cluster_a','cluster_b'):
+                        if side in row: row[side].pop('vias',None);row[side]['vias_omitted_for_bound']=True
         data=json.dumps(result,sort_keys=True)
     if len(data.encode())>OUTPUT_LIMIT:
         data=json.dumps({'status':'FAILED','board_acceptance':False,'failure':{'type':'ValueError','message':'output bound'},'elapsed_seconds':time.monotonic()-start})

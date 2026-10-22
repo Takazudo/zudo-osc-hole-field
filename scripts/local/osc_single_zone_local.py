@@ -79,7 +79,7 @@ def summarize(receipt,detail):
         summary['payload_status']=detail.get('status');summary['payload_failure']=detail.get('failure');summary['payload_elapsed']=detail.get('elapsed_seconds')
         worker=detail.get('worker',{}) if isinstance(detail.get('worker'),dict) else {}
         summary['fill']=worker.get('fill');summary['selected_after']=(worker.get('after') or {}).get('selected')
-        summary['pairs']={phase:{name:{k:row.get(k) for k in ('connected','path_items','path_zones','path_layers','visited','edges','edges_touching_pair_pads','unconnected_count')}
+        summary['pairs']={phase:{name:{k:row.get(k) for k in ('connected','symmetric','unconnected_count')}|({'cluster_a_size':row['cluster_a']['size'],'selected_zone_in_cluster':row['cluster_a']['selected_zone_member'],'bridging':{k:len(v) for k,v in row['bridging_vias'].items()} if 'bridging_vias' in row else None} if isinstance(row.get('cluster_a'),dict) else {})
             for name,row in (worker.get(phase) or {}).get('pairs',{}).items()} for phase in ('before','after','reloaded')}
         summary['memory_peak']=max((r.get('values',{}).get('memory.peak',0) for r in detail.get('memory_telemetry',[])),default=None)
     return json.dumps(summary,sort_keys=True)

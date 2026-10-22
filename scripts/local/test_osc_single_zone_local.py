@@ -26,15 +26,20 @@ class Payload(unittest.TestCase):
         self.assertEqual(fill.SUBSTAGES['zone'],z.STAGES);self.assertEqual(set(z.STAGE_GROUP),set(z.STAGES))
         self.assertEqual(z.TARGET_ZONE,'265b1369-38aa-5a3a-b488-eb0aae22e998');self.assertEqual(len(z.DUPLICATE_UUIDS),6)
         self.assertEqual(z.PAIRS,[('C1129.1','U1105.16'),('C1131.1','U1106.8')])
-    def test_compress_keeps_vias_zones_pads(self):
-        path=[{'type':'PAD','uuid':'p1','net':'+12V','layers':['F.Cu'],'pad':'C1129.1'},
-              {'type':'PCB_TRACK','uuid':'t1','net':'+12V','layers':['F.Cu']},{'type':'PCB_TRACK','uuid':'t2','net':'+12V','layers':['F.Cu']},
-              {'type':'PCB_VIA','uuid':'v1','net':'+12V','layers':['F.Cu','In4.Cu','B.Cu'],'at':[1,2],'drill':3},
-              {'type':'ZONE','uuid':z.TARGET_ZONE,'net':'+12V','layers':['In4.Cu'],'rule_area':False},
-              {'type':'PCB_TRACK','uuid':'t3','net':'+12V','layers':['B.Cu']},{'type':'PAD','uuid':'p2','net':'+12V','layers':['F.Cu'],'pad':'U1105.16'}]
-        runs=z.compress(path)
-        self.assertEqual([r['type'] for r in runs],['PAD','PCB_TRACK','PCB_VIA','ZONE','PCB_TRACK','PAD'])
-        self.assertEqual(runs[1]['count'],2);self.assertEqual(runs[1]['first_uuid'],'t1');self.assertEqual(runs[1]['last_uuid'],'t2');self.assertEqual(runs[4]['count'],1)
+    def test_summarize_cluster_and_bridging(self):
+        from types import SimpleNamespace as NS
+        layers={'F.Cu':0,'In4.Cu':10,'B.Cu':2}
+        def item(kind,u,net,on,pos=(1,2)):
+            return type(kind,(),{'m_Uuid':NS(AsString=lambda:u),'GetNetname':lambda self:net,'IsOnLayer':lambda self,l:l in on,'GetPosition':lambda self:NS(x=pos[0],y=pos[1]),
+                                 'GetDrillValue':lambda self:3,'GetIsRuleArea':lambda self:False})()
+        poly=NS(Contains=lambda p:p.x==1)
+        items=[item('PAD','p1','+12V',[0]),item('PCB_VIA','v1','+12V',[0,10,2]),item('PCB_VIA','v2','+12V',[0,10,2],(9,9)),item('ZONE',z.TARGET_ZONE,'+12V',[10]),item('PCB_TRACK','t1','+12V',[0])]
+        s=z.summarize_cluster(items,layers,{'p1':'C1129.1'},None,poly)
+        self.assertEqual(s['size'],5);self.assertTrue(s['selected_zone_member']);self.assertEqual(s['pads'],['C1129.1'])
+        self.assertEqual([(v['uuid'],v['inside_selected_fill']) for v in s['vias']],[('v1',True),('v2',False)]);self.assertEqual(s['layers'],{'F.Cu':4,'In4.Cu':3,'B.Cu':2})
+    def test_cluster_bound(self):
+        conn=type('C',(),{'GetConnectedItems':lambda self,i:[0]*(z.CLUSTER_LIMIT+1)})()
+        with self.assertRaises(ValueError):z.cluster(conn,None)
     def test_zone_fill_owners_pinned_format(self):
         text='(kicad_pcb\n\t(zone\n\t\t(net 1)\n\t\t(uuid "a")\n\t\t(filled_polygon\n\t\t\t(pts)\n\t\t)\n\t\t(filled_polygon\n\t\t)\n\t)\n\t(zone\n\t\t(uuid "b")\n\t)\n\t(segment\n\t)\n)\n'
         with tempfile.TemporaryDirectory() as t:
@@ -96,9 +101,11 @@ class Controller(unittest.TestCase):
             self.assertEqual(receipt['deadline_policy']['payload_seconds'],420);self.assertIs(receipt['board_acceptance'],False);self.assertEqual(receipt['drc'],'NOT RUN')
             self.assertEqual(c.PINS,{k:v for k,v in c.PINS.items()});self.assertNotIn('boards/osc-core/osc-core.kicad_pcb',c.PINS)
     def test_summarize_bounded(self):
-        detail={'status':z.STATUS,'elapsed_seconds':1,'worker':{'fill':{'returned':True,'seconds':2},'after':{'selected':{'counts':{'In4.Cu':3}},'pairs':{'C1129.1<->U1105.16':{'connected':True,'path_items':9,'path':[{'x':1}]*100,'path_zones':[z.TARGET_ZONE]}}}},'memory_telemetry':[{'values':{'memory.peak':5}}]}
+        row={'connected':True,'symmetric':True,'cluster_a':{'size':9,'selected_zone_member':True,'vias':[{'x':1}]*100},'cluster_b':{'size':9,'selected_zone_member':True,'vias':[]},'bridging_vias':{'from_a_side':[1],'from_b_side':[1,2],'new_in_merged_cluster':[]}}
+        detail={'status':z.STATUS,'elapsed_seconds':1,'worker':{'fill':{'returned':True,'seconds':2},'after':{'selected':{'counts':{'In4.Cu':3}},'pairs':{'C1129.1<->U1105.16':row,'ratsnest':{'unconnected_count':4}}}},'memory_telemetry':[{'values':{'memory.peak':5}}]}
         s=json.loads(l.summarize({'status':z.STATUS,'cleanup':[{'status':'REMOVED_CONFIRMED'}],'before':1,'after':1},detail))
-        self.assertTrue(s['source_hashes_unchanged']);self.assertEqual(s['pairs']['after']['C1129.1<->U1105.16']['connected'],True);self.assertNotIn('path',s['pairs']['after']['C1129.1<->U1105.16']);self.assertEqual(s['memory_peak'],5)
+        pair=s['pairs']['after']['C1129.1<->U1105.16'];self.assertTrue(s['source_hashes_unchanged']);self.assertEqual(pair['connected'],True);self.assertEqual(pair['bridging'],{'from_a_side':1,'from_b_side':2,'new_in_merged_cluster':0})
+        self.assertNotIn('vias',json.dumps(pair));self.assertEqual(s['pairs']['after']['ratsnest']['unconnected_count'],4);self.assertEqual(s['memory_peak'],5)
 
 class Wrapper(unittest.TestCase):
     def test_outer_stop_contract(self):
