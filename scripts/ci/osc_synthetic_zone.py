@@ -180,6 +180,12 @@ def emit(events,status='RUNNING',error=None):
     text=json.dumps(obj,sort_keys=True);require(len(text.encode())<100000,'receipt bound')
     print(text,flush=True)
 
+def emit_failed(events,error):
+    # A receipt-bound failure must still leave a JSON receipt: fall back to the stage names only.
+    try:emit(events,'FAILED',error)
+    except ValueError as bound:
+        emit([{'stage':e.get('stage'),'monotonic_seconds':e.get('monotonic_seconds')} for e in events],'FAILED',error+' | receipt fallback: '+str(bound))
+
 def main():
     events=[]
     try:
@@ -192,6 +198,6 @@ def main():
         require(plain and not ruled,'custom rule effect not observed; initialization unqualified')
         emit(events,STATUS);return 0
     except Exception as exc:
-        emit(events,'FAILED',type(exc).__name__+': '+str(exc)[:600]);return 1
+        emit_failed(events,type(exc).__name__+': '+str(exc)[:600]);return 1
 
 if __name__=='__main__':raise SystemExit(main())

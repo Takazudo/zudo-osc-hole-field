@@ -16,7 +16,7 @@ source_dir=$1
 out_dir=$2
 state_dir=$3
 authorization=$4
-script_dir=$(cd "${BASH_SOURCE[0]%/*}" && pwd -P)
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 outer_stop_seconds=120
 cleanup_seconds=40
 

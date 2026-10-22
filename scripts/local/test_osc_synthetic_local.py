@@ -137,6 +137,18 @@ class PostStopCleanup(unittest.TestCase):
             self.assertEqual(code,0);self.assertEqual(record['outcomes'][0]['status'],'REMOVED_CONFIRMED')
             self.assertEqual(record['remaining_records'],[]);self.assertIn('rm',runner.call_args_list[2].args[0])
 
+class PayloadFailureReceipt(unittest.TestCase):
+    def test_oversized_events_still_yield_failed_receipt(self):
+        events=[{'stage':'loaded','monotonic_seconds':1.0,'observation':'x'*120000}]
+        with contextlib.redirect_stdout(io.StringIO()) as captured:s.q.emit_failed(events,'ValueError: receipt bound')
+        receipt=json.loads(captured.getvalue().strip().splitlines()[-1])
+        self.assertEqual(receipt['status'],'FAILED');self.assertIn('receipt fallback',receipt['error'])
+        self.assertEqual(receipt['events'],[{'stage':'loaded','monotonic_seconds':1.0}]);self.assertIs(receipt['board_acceptance'],False)
+    def test_small_failure_keeps_full_events(self):
+        events=[{'stage':'versions','cli':'10.0.6','monotonic_seconds':1.0}]
+        with contextlib.redirect_stdout(io.StringIO()) as captured:s.q.emit_failed(events,'ValueError: x')
+        self.assertEqual(json.loads(captured.getvalue().strip().splitlines()[-1])['events'],events)
+
 class Wrapper(unittest.TestCase):
     def test_outer_stop_contract(self):
         text=(Path(__file__).with_name('osc_synthetic_local.sh')).read_text()
