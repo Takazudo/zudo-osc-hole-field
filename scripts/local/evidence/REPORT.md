@@ -1,5 +1,23 @@
 # OSC +12V connection diagnosis on WSL (local containment)
 
+This report is cumulative. Sections are kept in the order they were written, as
+history; where a later stage superseded an earlier statement, the earlier text
+stays and carries a `[superseded: ...]` marker pointing to the current conclusion.
+
+## Current conclusions (2026-10-23)
+
+- The two +12V pairs are connected once the +12V In4.Cu zone is filled; their
+  open state on the published board is a missing fill cache, not a wiring gap
+  (stages 2 and 3).
+- A bounded native DRC was run on the unfilled control and on the single-zone
+  candidate (stage 3); counts are capped and identical, and the identity delta is
+  AGND ratsnest re-pairing only. No defect or improvement is claimed from DRC.
+- The canonical flow fills before saving; the publication step strips fills on
+  purpose above 95 MiB. No canonical writer fix is needed. The adopted response is
+  option C: the diagnostic side fills selected zones on disposable derived copies
+  and reads those (derived-fill path below).
+- Nothing in this report is board acceptance or a repair verdict.
+
 Branch `claude/osc-synthetic-local-wsl` on top of PR #293 head 8bdf7703. Frozen
 input commit fa16c6ff; `boards/osc-core/osc-core.kicad_pcb` SHA256
 fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10 (identical on
@@ -8,8 +26,10 @@ used `kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa
 with kicad-cli and pcbnew exactly 10.0.6, 1 CPU, 2 GiB, zero extra swap, 64 PIDs,
 network none, read-only root and source mounts, owned-container records with
 confirmed removal, through the machine-wide heavy guard. The original board was
-never written; all CAD writes went to a container tmpfs. No DRC was run (out of
-scope for this two-pair diagnostic). Nothing here is board acceptance.
+never written; all CAD writes went to a container tmpfs. No DRC was run in
+stages 1-2 (out of scope for the two-pair diagnostic) [superseded: stage 3 ran a
+bounded native DRC on a disposable candidate, see below]. Nothing here is board
+acceptance.
 
 ## Result: both pairs are open only because the +12V In4.Cu zone was unfilled
 
@@ -32,11 +52,11 @@ Path per endpoint (native cluster members before the fill, vias downcast with
 The layer transition is F.Cu or B.Cu -> via -> In4.Cu plane -> via -> F.Cu or
 B.Cu. The merged cluster also contains all 490 +12V vias (488 of them inside the
 fill) and 501 +12V pads; the board-wide unconnected count fell from 4283 to 3802.
-No wiring repair candidate is needed for these two pairs. (Correction of an
-earlier hypothesis: the canonical flow does fill before saving; the published
-copy is stripped of fills on purpose, see the publication section below, so no
-canonical writer fix is needed. The adopted response is option C: the diagnostic
-side fills the zones it needs on a disposable derived copy.)
+No wiring repair candidate is needed for these two pairs. The stage 2 text
+originally continued "the next minimal step is a zone refill before save in the
+canonical flow" [superseded: the canonical flow does fill before saving and the
+published copy is stripped on purpose, see "Why the published core is unfilled";
+the adopted response is option C, the derived-fill path].
 
 ## Confinement evidence: the selected fill changed nothing else
 
