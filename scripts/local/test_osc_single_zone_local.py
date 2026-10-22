@@ -113,7 +113,7 @@ class Payload(unittest.TestCase):
 class Controller(unittest.TestCase):
     def test_budget_constants_match_hosted_fill(self):
         self.assertEqual(l.TOTAL_SECONDS,590);self.assertEqual(l.PAYLOAD_SECONDS,420);self.assertEqual(l.ATTACH_SECONDS,430)
-        self.assertEqual(l.OUTER_STOP_SECONDS,600);self.assertEqual(l.LAUNCH_RESERVE,497);self.assertEqual(set(l.BUNDLE),{'osc_single_zone_payload.py','osc_frozen_fill.py','osc_frozen_topology.py'})
+        self.assertEqual(l.OUTER_STOP_SECONDS,600);self.assertEqual(l.LAUNCH_RESERVE,497);self.assertEqual(set(l.BUNDLE),{'osc_single_zone_payload.py','osc_zone_drc_payload.py','osc_frozen_fill.py','osc_frozen_topology.py'})
     def test_board_pins_extend_source_allowlist(self):
         pins=l.board_pins();self.assertEqual(set(pins),set(c.PINS)|{'boards/osc-core/'+n for n in fill.PINS})
         self.assertEqual(pins['boards/osc-core/osc-core.kicad_pcb'],'fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10')
@@ -152,10 +152,68 @@ class Controller(unittest.TestCase):
         pair=s['pairs']['after']['C1129.1<->U1105.16'];self.assertTrue(s['source_hashes_unchanged']);self.assertEqual(pair['connected'],True);self.assertEqual(pair['bridging'],{'from_a_side':1,'from_b_side':2,'new_in_merged_cluster':0})
         self.assertNotIn('vias',json.dumps(pair));self.assertEqual(s['pairs']['after']['ratsnest']['unconnected_count'],4);self.assertEqual(s['memory_peak'],5)
 
+class CandidateAndDrc(unittest.TestCase):
+    def test_extra_mounts(self):
+        import osc_zone_drc_payload as d
+        args=['run','--volume','/src:/work:ro',c.IMAGE,'x']
+        self.assertEqual(l.extra_mounts(args,None,None),args)
+        with tempfile.TemporaryDirectory() as t:
+            out=Path(t)/'out';out.mkdir();cand=Path(t)/'cand';cand.mkdir()
+            with self.assertRaises(ValueError):l.extra_mounts(args,str(out),str(cand))
+            (cand/'manifest.json').write_text('{}')
+            got=l.extra_mounts(args,str(out),str(cand))
+            self.assertEqual(got[:2],['run','--volume']);self.assertIn(str(out)+':/output',got);self.assertIn(str(cand)+':/candidate:ro',got);self.assertLess(got.index(str(out)+':/output'),got.index(c.IMAGE))
+            with self.assertRaises(ValueError):l.extra_mounts(args,'relative/dir',None)
+    def test_modes(self):
+        self.assertEqual(set(l.MODES),{'zone','candidate','drc'});self.assertEqual(l.MODES['drc'][1],['drc']);self.assertEqual(l.MODES['candidate'][0],'osc_zone_drc_payload.py')
+        args=l.parse(['run','s','o','--state','st','--authorization','x'*20,'--payload','drc','--output','/o','--candidate','/c'])
+        self.assertEqual((args.payload,args.output,args.candidate),('drc','/o','/c'))
+    def test_classify_and_summarize(self):
+        import osc_zone_drc_payload as d
+        bag={'["violations","clearance","error","Clearance +12V vs AGND",["a"]]':2,'["unconnected_items","unconnected_items","error","Missing connection between items",["'+z.TARGET_ZONE+'","b"]]':1,'["violations","silk_overlap","warning","Silkscreen overlap",["c"]]':3}
+        related,other=d.classify(bag);self.assertEqual(sum(related.values()),3);self.assertEqual(sum(other.values()),3)
+        s=d.summarize_identities(bag,sample=2);self.assertEqual((s['count'],s['distinct'],s['sample_complete'],len(s['sample'])),(6,3,False,2))
+    def frames(self):
+        return [{'phase':'preflight','point':'before','values':{'memory.max':fill.MEMORY_CAP,'memory.swap.max':0,'memory.peak':1},'events_since_baseline':{'oom':0,'oom_kill':0}}]
+    def test_verify_output_drc(self):
+        with tempfile.TemporaryDirectory() as t:
+            out=Path(t)/'out';out.mkdir();cand=Path(t)/'cand';cand.mkdir();(cand/'manifest.json').write_text('{"status":"x"}')
+            report={'kicad_version':'10.0.6','violations':[{'type':'clearance','severity':'error','description':'d','items':[{'uuid':'u1'}]}],'unconnected_items':[],'schematic_parity':[]}
+            detail={'status':l.MODES['drc'][2],'board_acceptance':False,'refill_zones_option_used':False,'memory_telemetry':self.frames(),'elapsed_seconds':10,'commands':{},'mode':'drc'}
+            for kind in ('before','after'):
+                p=out/('drc-'+kind+'.json');p.write_text(json.dumps(report));counts,ids=fill.drc_summary(p)
+                detail['drc_'+kind]={'report_sha256':c.sha(p),'counts':counts,'identities':{'identity_sha256':fill.digest(sorted(ids.items()))}};detail['commands'][kind]={'status':'COMPLETE','exit_code':0}
+            (out/'drc-manifest.json').write_text(json.dumps({'candidate_manifest_sha256':c.sha(cand/'manifest.json'),'reports':{k:detail['drc_'+k]['report_sha256'] for k in ('before','after')}}))
+            v=l.verify_output('drc',detail,out,cand);self.assertEqual(v['host_counts_after'],{'violations:clearance':1})
+            detail['commands']['after']['exit_code']=1
+            with self.assertRaises(ValueError):l.verify_output('drc',detail,out,cand)
+            detail['commands']['after']['exit_code']=0;(out/'drc-after.json').write_text(json.dumps(report)+' ')
+            with self.assertRaises(ValueError):l.verify_output('drc',detail,out,cand)
+    def test_verify_output_candidate_rejects_missing_fill(self):
+        with tempfile.TemporaryDirectory() as t:
+            out=Path(t)/'out';exported={}
+            text='(kicad_pcb\n\t(zone\n\t\t(uuid "%s")\n%s\t)\n)\n'
+            for kind,filled in (('before',''),('after','\t\t(filled_polygon\n\t\t)\n')):
+                (out/kind).mkdir(parents=True);(out/kind/'osc-core.kicad_pcb').write_text(text%(z.TARGET_ZONE,filled))
+                (out/kind/'osc-core.kicad_pro').write_text('p');(out/kind/'osc-core.kicad_dru').write_text('d')
+                exported[kind]={n:c.sha(out/kind/n) for n in ('osc-core.kicad_pcb','osc-core.kicad_pro','osc-core.kicad_dru')}
+            nonfill=fill.semantic_hash(out/'before'/'osc-core.kicad_pcb')
+            manifest={'exported':exported,'nonfill_sha256':{'input':nonfill}};(out/'manifest.json').write_text(json.dumps(manifest))
+            detail={'status':l.MODES['candidate'][2],'board_acceptance':False,'refill_zones_option_used':False,'memory_telemetry':self.frames(),'elapsed_seconds':10,'manifest_sha256':c.sha(out/'manifest.json'),
+                    'exported':exported,'input_before':dict(fill.PINS),'input_after':dict(fill.PINS),'worker':{'fill':{'returned':True}},'command':{'status':'COMPLETE'},'normalize':{'status':'COMPLETE'}}
+            with patch.dict(fill.PINS,{'osc-core.kicad_pro':exported['before']['osc-core.kicad_pro'],'osc-core.kicad_dru':exported['before']['osc-core.kicad_dru']}):
+                detail['input_before']=dict(fill.PINS);detail['input_after']=dict(fill.PINS)
+                v=l.verify_output('candidate',detail,out,None)
+                self.assertEqual(v['owners_host']['after']['filled_polygon_by_zone'],{z.TARGET_ZONE:1})
+                (out/'after'/'osc-core.kicad_pcb').write_text(text%(z.TARGET_ZONE,''));exported['after']['osc-core.kicad_pcb']=c.sha(out/'after'/'osc-core.kicad_pcb')
+                (out/'manifest.json').write_text(json.dumps(manifest));detail['manifest_sha256']=c.sha(out/'manifest.json')
+                with self.assertRaises(ValueError):l.verify_output('candidate',detail,out,None)
+
 class Wrapper(unittest.TestCase):
     def test_outer_stop_contract(self):
         text=(Path(__file__).with_name('osc_single_zone_local.sh')).read_text()
         self.assertIn('outer_stop_seconds=600',text);self.assertIn('kill -KILL -- "-$pid"',text);self.assertIn('osc_single_zone_local.py" cleanup',text)
         self.assertIn('HEAVY_GUARD_HELD',text);self.assertNotIn('GITHUB_ACTIONS=',text);self.assertIn('TOOLING_SHA=$(git -C "$script_dir" rev-parse HEAD)',text)
+        self.assertIn('shift 4',text);self.assertIn('--authorization "$authorization" "$@"',text)
 
 if __name__=='__main__':unittest.main()

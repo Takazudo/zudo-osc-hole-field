@@ -25,6 +25,7 @@ import osc_frozen_fill as inv
 import osc_frozen_topology as topology
 import osc_synthetic_local as local
 import osc_single_zone_payload as payload
+import osc_zone_drc_payload as drcpayload
 
 TOTAL_SECONDS=f.TOTAL_SECONDS
 PAYLOAD_SECONDS=f.PAYLOAD_SECONDS
@@ -36,7 +37,9 @@ OUTER_STOP_SECONDS=600
 STATUS=payload.STATUS
 MODE='LOCAL_WSL_SINGLE_ZONE'
 PAYLOAD_NAME='osc_single_zone_payload.py'
-BUNDLE=(PAYLOAD_NAME,'osc_frozen_fill.py','osc_frozen_topology.py')
+DRC_PAYLOAD_NAME='osc_zone_drc_payload.py'
+BUNDLE=(PAYLOAD_NAME,DRC_PAYLOAD_NAME,'osc_frozen_fill.py','osc_frozen_topology.py')
+MODES={'zone':(PAYLOAD_NAME,[],payload.STATUS),'candidate':(DRC_PAYLOAD_NAME,['candidate'],drcpayload.CANDIDATE_STATUS),'drc':(DRC_PAYLOAD_NAME,['drc'],drcpayload.DRC_STATUS)}
 
 def board_pins():
     return {**c.PINS,**{'boards/osc-core/'+name:h for name,h in inv.PINS.items()}}
@@ -59,13 +62,28 @@ def resource_preflight():
     finally:
         (state/('resource-'+uuid.uuid4().hex+'.json')).write_text(json.dumps(measurement))
 
+def extra_mounts(args,output,candidate):
+    """Only the local candidate/drc modes add a writable /output and a read-only /candidate bind mount."""
+    result=list(args);i=result.index(c.IMAGE);extra=[]
+    if output:
+        p=Path(output)
+        if not p.is_absolute() or not p.is_dir() or p.is_symlink(): raise ValueError('output mount must be an existing absolute directory')
+        extra+=['--volume',str(p)+':/output']
+    if candidate:
+        p=Path(candidate)
+        if not p.is_absolute() or not p.is_dir() or p.is_symlink() or not (p/'manifest.json').is_file(): raise ValueError('candidate mount must be an existing directory with manifest.json')
+        extra+=['--volume',str(p)+':/candidate:ro']
+    result[i:i]=extra
+    return result
+
 def adapter(argv):
     if os.environ.get('OSC_LOCAL_ADAPTER')!='1': raise ValueError('local adapter shim invoked outside a local run')
     root=Path(os.environ['OSC_INPUT_ROOT']);bundle=Path(os.environ['OSC_PAYLOAD'])
     args=f.readonly_args(argv,root,bundle)
+    args=extra_mounts(args,os.environ.get('OSC_OUTPUT'),os.environ.get('OSC_CANDIDATE'))
     resource_preflight()
     c.RESERVE_SECONDS=CLEANUP_RESERVE+7
-    is_payload=any('/analysis/'+PAYLOAD_NAME in a for a in args[args.index(c.IMAGE)+1:])
+    is_payload=any('/analysis/'+name in a for a in args[args.index(c.IMAGE)+1:] for name in (PAYLOAD_NAME,DRC_PAYLOAD_NAME))
     f.require_budget(ATTACH_SECONDS+CLEANUP_RESERVE+7+10 if is_payload else 40+CLEANUP_RESERVE+7)
     if is_payload and float(os.environ['OSC_COMMAND_DEADLINE'])-time.monotonic()<PAYLOAD_SECONDS+10+7:
         raise TimeoutError('insufficient wrapper budget after setup for payload and create')
@@ -90,7 +108,14 @@ def run(args):
     if root==out or out.is_relative_to(root): raise ValueError('separate output required')
     out.mkdir(exist_ok=False)
     old_pins=c.PINS;c.PINS=board_pins()
-    r={'status':'STARTED','mode':MODE,'hosted':False,'source_sha':c.SOURCE,'tooling_sha':os.environ.get('TOOLING_SHA'),'image':c.IMAGE,
+    payload_name,payload_args,expected_status=MODES[args.payload]
+    output=Path(args.output).resolve() if args.output else None;candidate=Path(args.candidate).resolve() if args.candidate else None
+    if args.payload in ('candidate','drc') and output is None: raise ValueError('--output required for '+args.payload)
+    if args.payload=='drc' and candidate is None: raise ValueError('--candidate required for drc')
+    if output is not None:
+        if output.exists(): raise ValueError('output directory must not pre-exist')
+        output.mkdir(mode=0o755)
+    r={'status':'STARTED','mode':MODE,'payload':args.payload,'output':str(output) if output else None,'candidate':str(candidate) if candidate else None,'hosted':False,'source_sha':c.SOURCE,'tooling_sha':os.environ.get('TOOLING_SHA'),'image':c.IMAGE,
        'target_zone':payload.TARGET_ZONE,'pairs':payload.PAIRS,'commands':[],'cleanup':[],'full_board_fill':False,'board_acceptance':False,'drc':'NOT RUN: whole-board DRC is outside this two-pair selected-zone diagnostic',
        'deadline_policy':{'total_seconds':TOTAL_SECONDS,'outer_stop_seconds':OUTER_STOP_SECONDS,'payload_seconds':PAYLOAD_SECONDS,'attach_seconds':ATTACH_SECONDS,
            'wrapper_seconds':WRAPPER_SECONDS,'cleanup_reserve_seconds':CLEANUP_RESERVE,'launch_reserve_seconds':LAUNCH_RESERVE,'stage_caps':payload.STAGE_CAPS,
@@ -126,9 +151,11 @@ def run(args):
         shim=state/'docker';shim.write_text('#!/bin/sh\nexec '+shlex.quote(sys.executable)+' -B '+shlex.quote(str(Path(__file__).resolve()))+' --adapter "$@"\n');shim.chmod(0o700)
         env={'PATH':str(state)+os.pathsep+os.environ['PATH'],'OSC_STATE':str(state),'OSC_REAL_DOCKER':docker,'OSC_INPUT_ROOT':str(root),
              'OSC_PAYLOAD':str(bundle),'OSC_DEADLINE':str(c.DEADLINE),'OSC_LOCAL_ADAPTER':'1'}
+        if output is not None: env['OSC_OUTPUT']=str(output)
+        if candidate is not None: env['OSC_CANDIDATE']=str(candidate);r['candidate_manifest_sha256']=c.sha(candidate/'manifest.json')
         f.require_budget(LAUNCH_RESERVE)
         env['OSC_COMMAND_DEADLINE']=str(time.monotonic()+WRAPPER_SECONDS)
-        result=call(['bash','scripts/kicad/run.sh','python3','-B','/analysis/'+PAYLOAD_NAME],WRAPPER_SECONDS,env)
+        result=call(['bash','scripts/kicad/run.sh','python3','-B','/analysis/'+payload_name,*payload_args],WRAPPER_SECONDS,env)
         f.collect_resources(state,r);save()
         detail=None
         try:
@@ -138,8 +165,9 @@ def run(args):
         c.normal_exit(r['cleanup'])
         c.checked(result)
         if detail is None:raise ValueError('payload JSON missing or malformed')
-        payload.validate_result(detail)
-        r['status']=STATUS
+        if args.payload=='zone': payload.validate_result(detail)
+        else: r['host_verification']=verify_output(args.payload,detail,output,candidate)
+        r['status']=expected_status
     except Exception as exc:
         failed=True;r.update(status='FAILED',error=type(exc).__name__+': '+str(exc)[:700])
     finally:
@@ -163,11 +191,48 @@ def run(args):
         print(summarize(r,detail),flush=True)
     return int(failed)
 
+def verify_output(mode,detail,output,candidate):
+    """Host-side re-verification of exported artifacts; never trusts the container's receipt alone."""
+    if not isinstance(detail,dict) or detail.get('status')!=MODES[mode][2] or detail.get('board_acceptance') is not False or 'failure' in detail: raise ValueError('payload status')
+    if detail.get('refill_zones_option_used') is not False: raise ValueError('refill option')
+    verification={}
+    if mode=='candidate':
+        manifest=json.loads((output/'manifest.json').read_text())
+        if c.sha(output/'manifest.json')!=detail.get('manifest_sha256'): raise ValueError('manifest hash')
+        for kind in ('before','after'):
+            for name,expected in manifest['exported'][kind].items():
+                p=output/kind/name
+                if p.is_symlink() or not p.is_file() or c.sha(p)!=expected or detail['exported'][kind][name]!=expected: raise ValueError('exported hash '+kind+'/'+name)
+        if manifest['exported']['before']['osc-core.kicad_pro']!=inv.PINS['osc-core.kicad_pro'] or manifest['exported']['before']['osc-core.kicad_dru']!=inv.PINS['osc-core.kicad_dru']: raise ValueError('pinned project/rules')
+        verification['nonfill_host']={kind:inv.semantic_hash(output/kind/'osc-core.kicad_pcb') for kind in ('before','after')}
+        if len({*verification['nonfill_host'].values(),manifest['nonfill_sha256']['input']})!=1: raise ValueError('host non-fill semantic hash mismatch')
+        verification['owners_host']={kind:payload.zone_fill_owners(output/kind/'osc-core.kicad_pcb') for kind in ('before','after')}
+        if verification['owners_host']['before']['filled_polygon_by_zone'] or set(verification['owners_host']['after']['filled_polygon_by_zone'])!={payload.TARGET_ZONE}: raise ValueError('host fill ownership')
+        if detail.get('input_before')!=inv.PINS or detail.get('input_after')!=inv.PINS: raise ValueError('input identity')
+        if detail.get('worker',{}).get('fill',{}).get('returned') is not True: raise ValueError('worker fill')
+        if detail.get('command',{}).get('status')!='COMPLETE' or detail.get('normalize',{}).get('status')!='COMPLETE': raise ValueError('worker commands')
+    else:
+        manifest=json.loads((output/'drc-manifest.json').read_text())
+        if manifest.get('candidate_manifest_sha256')!=c.sha(candidate/'manifest.json'): raise ValueError('candidate manifest hash')
+        for kind in ('before','after'):
+            p=output/('drc-'+kind+'.json');expected=detail['drc_'+kind]['report_sha256']
+            if p.is_symlink() or not p.is_file() or c.sha(p)!=expected or manifest['reports'][kind]!=expected: raise ValueError('report hash '+kind)
+            counts,identities=inv.drc_summary(p)
+            if counts!=detail['drc_'+kind]['counts'] or inv.digest(sorted(identities.items()))!=detail['drc_'+kind]['identities']['identity_sha256']: raise ValueError('report summary mismatch '+kind)
+            if detail['commands'][kind].get('status')!='COMPLETE' or detail['commands'][kind].get('exit_code')!=0: raise ValueError('drc command '+kind)
+            verification['host_counts_'+kind]=counts
+    frames=detail.get('memory_telemetry',[])
+    if not frames or any('error' in f or f.get('values',{}).get('memory.max')!=inv.MEMORY_CAP or f.get('values',{}).get('memory.swap.max')!=0 for f in frames): raise ValueError('telemetry')
+    if any(f.get('events_since_baseline',{}).get(k,0)>0 for f in frames for k in ('oom','oom_kill')): raise ValueError('OOM event')
+    if not isinstance(detail.get('elapsed_seconds'),(int,float)) or not 0<=detail['elapsed_seconds']<=PAYLOAD_SECONDS: raise ValueError('payload deadline')
+    return verification
+
 def parse(argv):
     p=argparse.ArgumentParser(description=__doc__)
     sub=p.add_subparsers(dest='command',required=True)
     a=sub.add_parser('run');a.add_argument('source');a.add_argument('out')
     a.add_argument('--state',required=True);a.add_argument('--authorization',required=True)
+    a.add_argument('--payload',choices=sorted(MODES),default='zone');a.add_argument('--output');a.add_argument('--candidate')
     b=sub.add_parser('cleanup');b.add_argument('state');b.add_argument('out')
     return p.parse_args(argv)
 

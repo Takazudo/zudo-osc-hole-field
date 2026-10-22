@@ -7,14 +7,15 @@
 # an uncertain create record.
 set -uo pipefail
 
-if (($# != 4)); then
-  printf 'Usage: bash scripts/local/osc_single_zone_local.sh SOURCE OUT STATE "AUTHORIZATION NOTE"\n' >&2
+if (($# < 4)); then
+  printf 'Usage: bash scripts/local/osc_single_zone_local.sh SOURCE OUT STATE "AUTHORIZATION NOTE" [--payload zone|candidate|drc] [--output DIR] [--candidate DIR]\n' >&2
   exit 2
 fi
 source_dir=$1
 out_dir=$2
 state_dir=$3
 authorization=$4
+shift 4
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 outer_stop_seconds=600
 cleanup_seconds=60
@@ -30,7 +31,7 @@ if [[ -z ${TOOLING_SHA:-} ]]; then
 fi
 
 setsid python3 -B "$script_dir/osc_single_zone_local.py" run "$source_dir" "$out_dir" \
-  --state "$state_dir" --authorization "$authorization" &
+  --state "$state_dir" --authorization "$authorization" "$@" &
 pid=$!
 start_seconds=$SECONDS
 killed=0
