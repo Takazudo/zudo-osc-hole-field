@@ -38,6 +38,7 @@ SCRATCH_TMPFS_BYTES = 256 * 1024 * 1024
 SOURCE_BOARD_BYTES = 49819556   # pinned frozen core osc-core.kicad_pcb; the controller checks the real size against this
 RUN3_PARENT_KEY = 'ecf170dbb48e07980d8c08e149ff6e5c223745b58cdd9f9abb09cfa4b5001d16'   # derive run 3: F.Cu AGND filled on the frozen core
 RUN3_PARENT_BOARD_BYTES = 61320854
+RUN3_PARENT_BOARD_SHA256 = '4a55e0c165efcc2215d920272da25476b54df1cc56ba59e95a31049b29ba4dc8'
 TMPFS_SHARE_OF_MEMORY = 8      # tmpfs pages are charged to the 2 GiB cgroup: the input copy plus the output bound may use at most 1/8 of it
 # Deadline chains, innermost first. 'standard' is the proven hosted-parity chain. 'fill-520-probe' is the
 # single user-approved probe of the AGND F.Cu zone (2026-10-22 19:56 UTC): only the fill cap and the layers
@@ -57,8 +58,17 @@ BUDGETS = {
     'chained-agnd': {'payload': 420, 'stage_caps': {'prepare': 60, 'fill': 260, 'verify': 100}, 'attach': 430, 'wrapper': 450, 'controller': 590,
                      'outer_stop': 600, 'post_stop_cleanup': 60, 'heavy_guard_max_run': 720, 'pcb_limit': 128 * 1024 * 1024,
                      'modes': ('derive',), 'zones': ['e389d344-872d-538e-9bfc-39577adb1686', 'e67a5bc7-b575-52b6-a78a-9c84381053da'],
-                     'parent_key': RUN3_PARENT_KEY, 'input_board_bytes': RUN3_PARENT_BOARD_BYTES},
+                     'parent_key': RUN3_PARENT_KEY, 'input_board_bytes': RUN3_PARENT_BOARD_BYTES, 'parent_board_sha256': RUN3_PARENT_BOARD_SHA256},
 }
+
+
+def footprint_check(*parts):
+    """Every board copy in the scratch tmpfs is charged to the container's memory cgroup: the sum must fit the tmpfs and its share of the cap."""
+    if any(type(p) is not int or p <= 0 for p in parts): raise ValueError('footprint parts')
+    total = sum(parts)
+    if total > SCRATCH_TMPFS_BYTES: raise ValueError('scratch footprint %d does not fit the %d-byte tmpfs' % (total, SCRATCH_TMPFS_BYTES))
+    if total > MEMORY_CAP // TMPFS_SHARE_OF_MEMORY: raise ValueError('scratch footprint %d takes more than its share of the memory cap' % total)
+    return total
 
 
 def budget(name):
@@ -72,13 +82,17 @@ def budget(name):
     if b['controller'] < b['wrapper'] + CLEANUP_RESERVE + 7 + 40: raise ValueError('controller leaves under 40 s of setup before launch')
     if b['outer_stop'] <= b['controller']: raise ValueError('outer stop does not contain the controller')
     if b['heavy_guard_max_run'] < b['outer_stop'] + b['post_stop_cleanup'] + 60: raise ValueError('heavy-guard cap does not contain outer stop and cleanup')
-    input_bytes = b.get('input_board_bytes', SOURCE_BOARD_BYTES)
-    if b['pcb_limit'] + input_bytes > SCRATCH_TMPFS_BYTES: raise ValueError('output board bound does not fit the scratch tmpfs next to the input copy')
-    if b['pcb_limit'] + input_bytes > MEMORY_CAP // TMPFS_SHARE_OF_MEMORY: raise ValueError('tmpfs footprint takes more than its share of the memory cap')
     if b['zones'] is not None and (not b['zones'] or any(not UUID_RE.match(z) for z in b['zones'])): raise ValueError('budget zones')
     parent_key = b.get('parent_key')
-    if parent_key is not None and (not hash_ok(parent_key) or b['zones'] is None or 'input_board_bytes' not in b): raise ValueError('budget parent binding')
-    return {**b, 'name': name, 'parent_key': parent_key, 'input_board_bytes': input_bytes, 'launch_reserve': b['wrapper'] + CLEANUP_RESERVE + 7, 'worker_deadline': b['payload'] - WORKER_RESERVE}
+    if parent_key is None:
+        # Unbound profiles always start from the published source; a declared input size would be an unchecked number.
+        if 'input_board_bytes' in b or 'parent_board_sha256' in b: raise ValueError('input size or parent hash declared without a parent binding')
+        input_bytes = SOURCE_BOARD_BYTES; parent_sha = None
+    else:
+        input_bytes = b.get('input_board_bytes'); parent_sha = b.get('parent_board_sha256')
+        if not hash_ok(parent_key) or b['zones'] is None or type(input_bytes) is not int or input_bytes <= 0 or not hash_ok(parent_sha) or 'derive' not in b['modes'] or len(b['modes']) != 1: raise ValueError('budget parent binding')
+    footprint_check(input_bytes, b['pcb_limit'])
+    return {**b, 'name': name, 'parent_key': parent_key, 'input_board_bytes': input_bytes, 'parent_board_sha256': parent_sha, 'launch_reserve': b['wrapper'] + CLEANUP_RESERVE + 7, 'worker_deadline': b['payload'] - WORKER_RESERVE}
 
 
 def budget_allows(b, mode, zones, chained=False, parent_key=None):
@@ -88,7 +102,34 @@ def budget_allows(b, mode, zones, chained=False, parent_key=None):
     if b['zones'] is not None and b['parent_key'] is None and chained: raise ValueError('budget ' + b['name'] + ' does not cover a chained derivation: its input board would not be the published source')
     if b['parent_key'] is not None:
         if not chained: raise ValueError('budget ' + b['name'] + ' covers only a derivation chained from its approved parent')
-        if parent_key is not None and parent_key != b['parent_key']: raise ValueError('budget ' + b['name'] + ' is bound to a different parent derivation')
+        if parent_key != b['parent_key']: raise ValueError('budget ' + b['name'] + ' is bound to a different parent derivation')
+
+
+def parent_record(candidate_dir):
+    """Identity key and exported board hash recorded by a parent derivation's own manifest; any unreadable or malformed input is a ValueError."""
+    candidate_dir = Path(candidate_dir)
+    try:
+        manifest = json.loads((candidate_dir / 'manifest.json').read_text())
+        ident, _, exported, _ = manifest_identity(manifest, candidate_dir)
+        return identity_key(ident), exported['osc-core.kicad_pcb']
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise ValueError('parent manifest: ' + type(exc).__name__ + ': ' + str(exc)[:200])
+
+
+def parent_board(candidate_dir):
+    """The parent's board file as the tmpfs input copy: a regular file, never a symlink; returns its size."""
+    board = Path(candidate_dir) / 'after' / 'osc-core.kicad_pcb'
+    if board.is_symlink() or not board.is_file(): raise ValueError('parent board missing or symlinked')
+    return board.stat().st_size
+
+
+def check_bound_parent(b, recorded_key, exported_sha, board_bytes, actual_sha=None):
+    """For a parent-bound profile, the mounted parent must be the approved file: key, recorded hash, size and (when given) the real file hash."""
+    if b['parent_key'] is None: return
+    if recorded_key != b['parent_key']: raise ValueError('budget ' + b['name'] + ' is bound to a different parent derivation')
+    if exported_sha != b['parent_board_sha256']: raise ValueError('parent manifest records a board other than the one bound to budget ' + b['name'])
+    if board_bytes != b['input_board_bytes']: raise ValueError('parent board size differs from the budget table assumption')
+    if actual_sha is not None and actual_sha != b['parent_board_sha256']: raise ValueError('parent board file differs from the one bound to budget ' + b['name'])
 UUID_RE = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
 CLASSES = {
     'CONNECTED_ON_INPUT': 'pads shared a native cluster on the input board before this derivation filled anything',

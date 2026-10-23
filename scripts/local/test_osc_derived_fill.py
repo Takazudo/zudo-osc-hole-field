@@ -259,11 +259,16 @@ class Budget(unittest.TestCase):
         self.assertIsNone(s['parent_key']);self.assertIsNone(p['parent_key']);self.assertEqual(s['input_board_bytes'],d.SOURCE_BOARD_BYTES)
     def test_parent_binding_is_declared_completely(self):
         base=d.BUDGETS['chained-agnd']
-        for name,over in {'bad key':{'parent_key':'nope'},'no zones':{'zones':None},'no input size':{k:v for k,v in base.items() if k!='input_board_bytes'}}.items():
-            with patch.dict(d.BUDGETS,{'broken':{**base,**over} if name!='no input size' else over}):
+        cases={'bad key':{**base,'parent_key':'nope'},'no zones':{**base,'zones':None},'no input size':{k:v for k,v in base.items() if k!='input_board_bytes'},'no parent hash':{k:v for k,v in base.items() if k!='parent_board_sha256'},
+               'bad parent hash':{**base,'parent_board_sha256':'x'},'size not int':{**base,'input_board_bytes':61320854.0},'size zero':{**base,'input_board_bytes':0},'size bool':{**base,'input_board_bytes':True},
+               'evaluate mode':{**base,'modes':('derive','evaluate')},'too big for tmpfs':{**base,'input_board_bytes':200*1024*1024},
+               'unbound with input size':{**d.BUDGETS['standard'],'input_board_bytes':1},'unbound with parent hash':{**d.BUDGETS['standard'],'parent_board_sha256':'a'*64}}
+        for name,table in cases.items():
+            with patch.dict(d.BUDGETS,{'broken':table}):
                 with self.assertRaises(ValueError,msg=name):d.budget('broken')
-        with patch.dict(d.BUDGETS,{'broken':{**base,'input_board_bytes':200*1024*1024}}):
-            with self.assertRaises(ValueError):d.budget('broken')   # parent copy plus bound no longer fits the tmpfs
+        self.assertEqual(d.footprint_check(1,2),3)
+        for parts in ((0,1),(1.0,1),(d.SCRATCH_TMPFS_BYTES,1),(d.MEMORY_CAP//8,1)):
+            with self.assertRaises(ValueError,msg=str(parts)):d.footprint_check(*parts)
     def test_shared_constants_are_the_enforced_ones(self):
         import osc_fill_check as f
         self.assertIs(d.WORKER_RESERVE,z.WORKER_RESERVE);self.assertIs(d.PCB_LIMIT,z.PCB_LIMIT);self.assertEqual(d.budget('standard')['pcb_limit'],z.PCB_LIMIT)
@@ -289,8 +294,8 @@ class Budget(unittest.TestCase):
         d.budget_allows(s,'derive',[AGND_F],chained=True)
         with self.assertRaises(ValueError):d.budget_allows(p,'derive',[AGND_F],chained=True)
         c=d.budget('chained-agnd');zones=[AGND_B,AGND_IN1]
-        d.budget_allows(c,'derive',zones,chained=True);d.budget_allows(c,'derive',zones,chained=True,parent_key=d.RUN3_PARENT_KEY)
-        for kw,msg in (({'chained':False},'covers only a derivation chained'),({'chained':True,'parent_key':'0'*64},'different parent derivation'),({'chained':True,'zones':[AGND_B]},'different zone set')):
+        d.budget_allows(c,'derive',zones,chained=True,parent_key=d.RUN3_PARENT_KEY)
+        for kw,msg in (({'chained':False},'covers only a derivation chained'),({'chained':True},'different parent derivation'),({'chained':True,'parent_key':'0'*64},'different parent derivation'),({'chained':True,'zones':[AGND_B],'parent_key':d.RUN3_PARENT_KEY},'different zone set')):
             z=kw.pop('zones',zones)
             with self.assertRaises(ValueError) as caught:d.budget_allows(c,'derive',z,**kw)
             self.assertIn(msg,str(caught.exception))
@@ -325,8 +330,10 @@ class ControllerDerived(unittest.TestCase):
             clean={k:v for k,v in os.environ.items() if k not in ('GITHUB_ACTIONS','RUNNER_ENVIRONMENT','CI','DOCKER_HOST','DOCKER_CONTEXT','HEAVY_GUARD_HELD','OSC_LOCAL_ADAPTER','OSC_OUTER_STOP_SECONDS')}
             cases=(({},['--budget','fill-520-probe','--spec',str(probe)],'wrapper did not confirm'),({'OSC_OUTER_STOP_SECONDS':'600'},['--budget','fill-520-probe','--spec',str(probe)],'differs from budget'),
                    ({'OSC_OUTER_STOP_SECONDS':'900'},['--budget','fill-520-probe','--spec',str(in1)],'different zone set'),({'OSC_OUTER_STOP_SECONDS':'900'},['--budget','standard','--spec',str(probe)],'differs from budget'),
-                   ({'OSC_OUTER_STOP_SECONDS':'900'},['--budget','fill-520-probe','--spec',str(probe),'--candidate',str(Path(t)/'parent')],'chained derivation'))
-            (Path(t)/'parent').mkdir()
+                   ({'OSC_OUTER_STOP_SECONDS':'900'},['--budget','fill-520-probe','--spec',str(probe),'--candidate',str(Path(t)/'parent')],'chained derivation'),
+                   ({'OSC_OUTER_STOP_SECONDS':'900'},['--budget','fill-520-probe','--spec',str(probe),'--candidate',str(Path(t)/'garbled')],'parent manifest'),
+                   ({'OSC_OUTER_STOP_SECONDS':'900'},['--budget','fill-520-probe','--spec',str(probe),'--candidate',str(Path(t)/'absent')],'candidate directory missing'))
+            derived_dir(Path(t)/'parent',[AGND_IN1],{'osc-core.kicad_pcb':'a'*64,'osc-core.kicad_pro':'b'*64,'osc-core.kicad_dru':'c'*64});(Path(t)/'garbled').mkdir();(Path(t)/'garbled'/'manifest.json').write_text('{')
             for extra_env,extra,message in cases:
                 with patch.dict(os.environ,{**clean,**extra_env},clear=True):
                     with self.assertRaises(ValueError) as caught:l.run(l.parse(base+extra))
@@ -338,25 +345,35 @@ class ControllerDerived(unittest.TestCase):
             out=Path(t)/'out';chain=Path(t)/'chain.json';chain.write_text(json.dumps({'zones':[AGND_B,AGND_IN1],'pairs':[['C1111.2','U1105.12'],['C1129.1','U1105.16']],'note':'chain'}))
             pins={'osc-core.kicad_pcb':'a'*64,'osc-core.kicad_pro':'b'*64,'osc-core.kicad_dru':'c'*64}
             good,gm=derived_dir(Path(t)/'parent-good',[AGND_F],pins);other,_=derived_dir(Path(t)/'parent-other',[AGND_IN1],pins)
-            good_key=d.identity_key(good);size=(Path(t)/'parent-good'/'after'/'osc-core.kicad_pcb').stat().st_size
+            good_key=d.identity_key(good);size=(Path(t)/'parent-good'/'after'/'osc-core.kicad_pcb').stat().st_size;good_sha=c.sha(Path(t)/'parent-good'/'after'/'osc-core.kicad_pcb')
             base=['run',str(Path(t)/'src'),str(out),'--state',str(Path(t)/'s'),'--authorization','offline unit test authorization note','--payload','derive','--output',str(Path(t)/'o'),'--spec',str(chain),'--budget','chained-agnd']
             clean={k:v for k,v in os.environ.items() if k not in ('GITHUB_ACTIONS','RUNNER_ENVIRONMENT','CI','DOCKER_HOST','DOCKER_CONTEXT','HEAVY_GUARD_HELD','OSC_LOCAL_ADAPTER')};clean['OSC_OUTER_STOP_SECONDS']='600'
-            bound={**d.BUDGETS['chained-agnd'],'parent_key':good_key,'input_board_bytes':size}
+            bound={**d.BUDGETS['chained-agnd'],'parent_key':good_key,'input_board_bytes':size,'parent_board_sha256':good_sha}
+            linked=Path(t)/'parent-linked';linked.mkdir();(linked/'after').mkdir();(linked/'manifest.json').write_text((Path(t)/'parent-good'/'manifest.json').read_text())
+            for n in ('osc-core.kicad_pro','osc-core.kicad_dru'): (linked/'after'/n).write_text((Path(t)/'parent-good'/'after'/n).read_text())
+            (linked/'after'/'osc-core.kicad_pcb').symlink_to(Path(t)/'parent-good'/'after'/'osc-core.kicad_pcb')
             with patch.dict(os.environ,clean,clear=True),patch.dict(d.BUDGETS,{'chained-agnd':bound}):
-                for extra,msg in (([],'covers only a derivation chained'),(['--candidate',str(Path(t)/'parent-other')],'different parent derivation')):
+                for extra,msg in (([],'covers only a derivation chained'),(['--candidate',str(Path(t)/'parent-other')],'different parent derivation'),(['--candidate',str(Path(t)/'parent-linked')],'symlinked'),(['--candidate',str(Path(t)/'nowhere')],'candidate directory missing')):
                     with self.assertRaises(ValueError) as caught:l.run(l.parse(base+extra))
                     self.assertIn(msg,str(caught.exception));self.assertFalse(out.exists());self.assertFalse((Path(t)/'o').exists())
                 with patch.dict(d.BUDGETS,{'chained-agnd':{**bound,'input_board_bytes':size+1}}):
                     with self.assertRaises(ValueError) as caught:l.run(l.parse(base+['--candidate',str(Path(t)/'parent-good')]))
                     self.assertIn('parent board size',str(caught.exception));self.assertFalse(out.exists())
+                with patch.dict(d.BUDGETS,{'chained-agnd':{**bound,'parent_board_sha256':'f'*64}}):
+                    with self.assertRaises(ValueError) as caught:l.run(l.parse(base+['--candidate',str(Path(t)/'parent-good')]))
+                    self.assertIn('records a board other than',str(caught.exception));self.assertFalse(out.exists())
+                # A chained run under the standard chain still has its real parent size checked against the tmpfs model.
+                with patch.object(d,'SCRATCH_TMPFS_BYTES',64*1024*1024+size-1):
+                    with self.assertRaises(ValueError) as caught:l.run(l.parse(base[:-2]+['--budget','standard','--candidate',str(Path(t)/'parent-good')]))
+                    self.assertIn('footprint',str(caught.exception));self.assertFalse(out.exists())
                 with patch.dict(os.environ,{'OSC_OUTER_STOP_SECONDS':'900'}):
                     with self.assertRaises(ValueError):l.run(l.parse(base+['--candidate',str(Path(t)/'parent-good')]))
                 with patch.object(c,'run_command') as runner,contextlib.redirect_stdout(io.StringIO()):
                     code=l.run(l.parse(base+['--candidate',str(Path(t)/'parent-good')]))
                 receipt=json.loads((out/'receipt.json').read_text());policy=receipt['deadline_policy']
                 self.assertEqual(code,1);self.assertIn('heavy-guard',receipt['error']);runner.assert_not_called()
-                self.assertEqual((policy['budget'],policy['total_seconds'],policy['outer_stop_seconds'],policy['payload_seconds'],policy['stage_caps']['fill'],policy['pcb_limit_bytes'],policy['bound_parent_key'],policy['input_board_bytes']),
-                                 ('chained-agnd',590,600,420,260,128*1024*1024,good_key,size))
+                self.assertEqual((policy['budget'],policy['total_seconds'],policy['outer_stop_seconds'],policy['payload_seconds'],policy['stage_caps']['fill'],policy['pcb_limit_bytes'],policy['bound_parent_key'],policy['bound_parent_board_sha256'],policy['input_board_bytes']),
+                                 ('chained-agnd',590,600,420,260,128*1024*1024,good_key,good_sha,size))
                 self.assertEqual(sorted(receipt['spec']['zones']),sorted([AGND_B,AGND_IN1]));self.assertEqual(receipt['candidate'],str(Path(t)/'parent-good'))
     def test_budget_subcommand_is_the_wrapper_table(self):
         for name in d.BUDGETS:
@@ -572,7 +589,7 @@ class PayloadIntegration(unittest.TestCase):
                 other=Path(t)/'other';other.mkdir();(spec_dir/'spec.json').write_text(json.dumps({'zones':[AGND_IN1],'pairs':[['C1111.2','U1105.12']],'note':'other parent'}))
                 self.assertEqual(self.run_payload('derive',t,root,spec_dir,absent,other,self.fake_worker())['status'],dp.DERIVE_STATUS)
                 size=(parent/'after'/'osc-core.kicad_pcb').stat().st_size
-                bound={**d.BUDGETS['chained-agnd'],'parent_key':r['identity_key'],'input_board_bytes':size}
+                bound={**d.BUDGETS['chained-agnd'],'parent_key':r['identity_key'],'input_board_bytes':size,'parent_board_sha256':c.sha(parent/'after'/'osc-core.kicad_pcb')}
                 chain={'zones':[AGND_B,AGND_IN1],'pairs':[['C1111.2','U1105.12'],['C1129.1','U1105.16']],'note':'chain'}
                 def context(budget): (spec_dir/'context.json').write_text(json.dumps({'image_id':IMAGE_ID,'kicad':'10.0.6','source_pins':pins,'process':d.PROCESS_VERSION,'tooling_sha':'t'*40,'budget':budget}))
                 with patch.dict(d.BUDGETS,{'chained-agnd':bound}):
@@ -588,9 +605,17 @@ class PayloadIntegration(unittest.TestCase):
                     self.assertEqual((manifest['budget'],manifest['identity']['parent_key'],sorted(manifest['parent']['zones']),set(manifest['after_owners']['filled_polygon_by_zone'])),('chained-agnd',r['identity_key'],[AGND_F],{AGND_F,AGND_B,AGND_IN1}))
                     # With every AGND zone filled the AGND pair leaves UNEVALUABLE; the +12V control keeps its unfilled In4.Cu zone.
                     self.assertEqual(manifest['classification']['C1111.2<->U1105.12']['class'],'OPEN_WITH_ALL_NET_ZONES_FILLED');self.assertEqual(manifest['classification']['C1129.1<->U1105.16']['class'],'UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN')
-                    receipt={'tooling_sha':'t'*40,'image_identity':{'id':IMAGE_ID},'spec':{'zones':chain['zones'],'pairs':chain['pairs']},'deadline_policy':{'budget':'chained-agnd'}}
+                    receipt={'tooling_sha':'t'*40,'image_identity':{'id':IMAGE_ID},'spec':{'zones':chain['zones'],'pairs':chain['pairs']},'deadline_policy':{'budget':'chained-agnd','bound_parent_key':bound['parent_key'],'bound_parent_board_sha256':bound['parent_board_sha256']}}
                     fake_root=Path(t)/'fake-root';(fake_root/'boards').mkdir(parents=True);(fake_root/'boards'/'osc-core').symlink_to(root)
                     self.assertTrue(l.verify_derived_output('derive',g,out3,parent,fake_root,receipt)['reuse']['reusable'])
+                    # Host post-run binding: the receipt must carry the table's binding and the mounted parent must be the bound file.
+                    with self.assertRaises(ValueError) as caught:l.verify_derived_output('derive',g,out3,parent,fake_root,{**receipt,'deadline_policy':{'budget':'chained-agnd'}})
+                    self.assertIn('receipt binding',str(caught.exception))
+                    with patch.dict(d.BUDGETS,{'chained-agnd':{**bound,'parent_key':'0'*64}}):
+                        with self.assertRaises(ValueError) as caught:l.verify_derived_output('derive',g,out3,parent,fake_root,{**receipt,'deadline_policy':{'budget':'chained-agnd','bound_parent_key':'0'*64,'bound_parent_board_sha256':bound['parent_board_sha256']}})
+                        self.assertIn('different parent derivation',str(caught.exception))
+                    with self.assertRaises(ValueError) as caught:l.verify_derived_output('derive',g,out3,None,fake_root,receipt)
+                    self.assertIn('parent record does not match',str(caught.exception))
     def test_probe_budget_is_bound_to_its_zone_and_mode(self):
         with tempfile.TemporaryDirectory() as t:
             root,pins,spec_dir=self.setup(t,budget='fill-520-probe');absent=Path(t)/'absent'

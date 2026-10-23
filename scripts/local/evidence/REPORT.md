@@ -406,6 +406,27 @@ recorded outcome of the single attempt; peak memory on the larger board is
 unknown (1.58 GiB observed on run 3); this is the first native use of the chained
 code path.
 
+An independent `/code-review medium` of the profile commit (c4fa9f6e) returned
+eight findings, all fixed in the follow-up commit:
+
+- The binding now names the parent board file, not only its size: the profile
+  carries the run-3 board SHA256 (`4a55e0c1...`); the controller checks the
+  parent manifest's recorded hash, the real file hash and the size before any side
+  effect, the payload checks the recorded hash and re-checks after its own
+  verification, and the host post-run check compares the recomputed parent key
+  and the mounted file against the table and against the receipt's recorded
+  binding.
+- `budget_allows` no longer passes a parent-bound profile when the parent key is
+  unknown; callers read the parent's own manifest first.
+- Unbound profiles may not declare an input size or parent hash; a bound profile
+  must declare a positive integer size and a valid hash and be derive-only.
+- One shared footprint check (input copies plus output bound against the tmpfs
+  and the memory share) is used by the table, by every chained derivation
+  including those under the standard chain (real parent size), and by evaluate
+  (source plus derived copy); the receipt records the real input size.
+- Parent reads before launch fail closed as `ValueError` for a missing
+  directory, a garbled manifest or a symlinked board.
+
 ### Open items after this phase
 
 - C1111.2 <-> U1105.12 (AGND): the F.Cu fill alone does not connect the pair.

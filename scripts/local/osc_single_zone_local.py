@@ -169,11 +169,14 @@ def run(args):
     if args.payload in SPEC_MODES and spec_file is None: raise ValueError('--spec required for '+args.payload)
     if spec_file is not None and args.payload not in SPEC_MODES: raise ValueError('--spec only applies to derive/evaluate')
     spec=derived.load_spec(spec_file,topology.EXPECTED) if spec_file is not None else None
-    chained=args.payload=='derive' and candidate is not None;parent_key=None
-    if chained and b['parent_key'] is not None:
-        # Pre-launch binding check from the parent's own manifest; the full recomputed verification happens in the container and again on the host afterwards.
-        parent_key=derived.identity_key(derived.manifest_identity(json.loads((candidate/'manifest.json').read_text()),candidate)[0])
-        if (candidate/'after'/'osc-core.kicad_pcb').stat().st_size!=b['input_board_bytes']: raise ValueError('parent board size differs from the budget table assumption')
+    chained=args.payload=='derive' and candidate is not None;parent_key=None;input_bytes=b['input_board_bytes']
+    if candidate is not None and not candidate.is_dir(): raise ValueError('candidate directory missing')
+    if chained:
+        # Pre-launch binding and footprint checks from the parent's own manifest and file; the recomputed verification happens in the container and again on the host afterwards.
+        parent_key,exported_sha=derived.parent_record(candidate);input_bytes=derived.parent_board(candidate)
+        derived.check_bound_parent(b,parent_key,exported_sha,input_bytes,c.sha(candidate/'after'/'osc-core.kicad_pcb'))
+        derived.footprint_check(input_bytes,b['pcb_limit'])
+    elif args.payload=='evaluate': derived.footprint_check(derived.SOURCE_BOARD_BYTES,derived.parent_board(candidate))
     derived.budget_allows(b,args.payload,spec['zones'] if spec else None,chained=chained,parent_key=parent_key)
     outer=os.environ.get('OSC_OUTER_STOP_SECONDS')
     if outer is None and b['name']!='standard': raise ValueError('wrapper did not confirm the outer stop for budget '+b['name'])
@@ -188,7 +191,7 @@ def run(args):
        'deadline_policy':{'budget':b['name'],'total_seconds':b['controller'],'outer_stop_seconds':b['outer_stop'],'outer_stop_confirmed_by_wrapper':outer is not None,'payload_seconds':b['payload'],'attach_seconds':b['attach'],
            'wrapper_seconds':b['wrapper'],'cleanup_reserve_seconds':CLEANUP_RESERVE,'launch_reserve_seconds':b['launch_reserve'],'worker_deadline_seconds':b['worker_deadline'],
            'post_stop_cleanup_seconds':b['post_stop_cleanup'],'heavy_guard_max_run_seconds':b['heavy_guard_max_run'],'pcb_limit_bytes':b['pcb_limit'],
-           'bound_parent_key':b['parent_key'],'input_board_bytes':b['input_board_bytes'],
+           'bound_parent_key':b['parent_key'],'bound_parent_board_sha256':b['parent_board_sha256'],'input_board_bytes':input_bytes,
            'adapter_execution_policy':"hosted 'fill-430' with docker start --attach swapped to %d s"%b['attach'],
            'stage_caps':derivedpayload.EVALUATE_CAPS if args.payload=='evaluate' else b['stage_caps'],
            'started_monotonic':started,'deadline_monotonic':c.DEADLINE}}
@@ -340,6 +343,11 @@ def verify_derived_output(mode,detail,output,candidate,root,receipt):
             parent_check=derived.verify_derived(candidate,parent_expected,source_nonfill,inv.semantic_hash);verification['parent']=parent_check
             if not parent_check['reusable'] or parent_check['identity']!=parent.get('identity') or parent_check['ancestor_zones']!=parent.get('ancestor_zones'): raise ValueError('host parent verification: '+parent_check['reason'])
             parent_key=derived.identity_key(parent_check['identity'])
+            bound=derived.budget(budget_name)
+            if bound['parent_key'] is not None:
+                if receipt['deadline_policy'].get('bound_parent_key')!=bound['parent_key'] or receipt['deadline_policy'].get('bound_parent_board_sha256')!=bound['parent_board_sha256']: raise ValueError('receipt binding differs from the budget table')
+                derived.check_bound_parent(bound,parent_key,parent_check['checks']['after/osc-core.kicad_pcb'],(candidate/'after'/'osc-core.kicad_pcb').stat().st_size,c.sha(candidate/'after'/'osc-core.kicad_pcb'))
+        elif derived.budget(budget_name)['parent_key'] is not None: raise ValueError('parent-bound budget without a mounted parent')
         expected=derived.identity(inv.PINS,zones,receipt['image_identity']['id'],derived.KICAD_VERSION,parent_key)
         reuse=derived.verify_derived(output,expected,source_nonfill,inv.semantic_hash);verification['reuse']=reuse
         if not reuse['reusable'] or reuse['identity']!=detail['identity'] or manifest['identity_key']!=detail['identity_key']: raise ValueError('host identity verification: '+reuse['reason'])
