@@ -373,6 +373,39 @@ the state directory's resource records; `SHA256SUMS`
 `c760369ae993081dc6ed543f55d1d29310c8c69c4e6e8a0e54d775704f42f88c`). No DRC was run.
 Nothing here is board acceptance.
 
+### Chained AGND profile (`chained-agnd`): prepared and tested offline for the approved single diagnostic; NOT run
+
+The user approved (2026-10-23 02:46 UTC, relayed as coordinator instruction
+`osc-moya-approved-queued-agnd-b6208767`, queue `osc-agnd-queue-26db12e7`) exactly
+one chained Fill on the saved derive-run-3 copy: zones `e389d344` (AGND B.Cu) and
+`e67a5bc7` (AGND In1.Cu), pairs C1111.2 <-> U1105.12 and C1129.1 <-> U1105.16,
+the standard time chain (60/260/100, worker 380, payload 420, attach 430, wrapper
+450, controller 590, outer stop 600, cleanup 60, heavy-guard 720), 1 CPU / 2 GiB /
+zero extra swap, output bound 128 MiB. The run is queued behind an LED session's
+reservation and has no OSC slot; nothing has been launched.
+
+The profile is a table entry bound to its input, not only to its zones: it carries
+the run-3 parent identity key (`ecf170db...`) and the parent board size
+(61,320,854 bytes). The profile check requires the binding to be complete (key,
+zones, input size), and the tmpfs and memory-share checks use the parent size
+instead of the source size. `budget_allows` now refuses the profile for an
+unchained derivation, for a parent whose identity key differs, and for any other
+zone set or mode. The controller checks the parent's manifest identity and board
+size before any side effect; the payload re-checks the parent key after its own
+recomputed verification of the parent; the receipt records the bound parent key
+and input size. Offline evidence: local 89 tests (`-B` and `-B -O`), hosted 123;
+the chained integration test shows the expected outcome shape: with all three
+AGND zones filled the AGND pair leaves `UNEVALUABLE` (to
+`OPEN_WITH_ALL_NET_ZONES_FILLED` or `CONNECTED_VIA_SELECTED_FILL`) while the
++12V control stays `UNEVALUABLE` because In4.Cu is not filled. Logs in cclogs
+`osc-local-wsl/probe-budget-tests/chained-agnd/`.
+
+Unknowns stated before the run: no B.Cu fill has been measured; the combined
+two-zone Fill from a 61.3 MB parent may exceed the 260 s cap, which would be the
+recorded outcome of the single attempt; peak memory on the larger board is
+unknown (1.58 GiB observed on run 3); this is the first native use of the chained
+code path.
+
 ### Open items after this phase
 
 - C1111.2 <-> U1105.12 (AGND): the F.Cu fill alone does not connect the pair.

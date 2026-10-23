@@ -36,6 +36,8 @@ PAIR_LIMIT = 16
 CLEANUP_RESERVE = 40
 SCRATCH_TMPFS_BYTES = 256 * 1024 * 1024
 SOURCE_BOARD_BYTES = 49819556   # pinned frozen core osc-core.kicad_pcb; the controller checks the real size against this
+RUN3_PARENT_KEY = 'ecf170dbb48e07980d8c08e149ff6e5c223745b58cdd9f9abb09cfa4b5001d16'   # derive run 3: F.Cu AGND filled on the frozen core
+RUN3_PARENT_BOARD_BYTES = 61320854
 TMPFS_SHARE_OF_MEMORY = 8      # tmpfs pages are charged to the 2 GiB cgroup: the input copy plus the output bound may use at most 1/8 of it
 # Deadline chains, innermost first. 'standard' is the proven hosted-parity chain. 'fill-520-probe' is the
 # single user-approved probe of the AGND F.Cu zone (2026-10-22 19:56 UTC): only the fill cap and the layers
@@ -50,6 +52,12 @@ BUDGETS = {
     'fill-520-probe': {'payload': 760, 'stage_caps': {'prepare': 60, 'fill': 520, 'verify': 100}, 'attach': 780, 'wrapper': 800, 'controller': 890,
                        'outer_stop': 900, 'post_stop_cleanup': 60, 'heavy_guard_max_run': 1020, 'pcb_limit': 128 * 1024 * 1024,
                        'modes': ('derive',), 'zones': ['601e02b2-8ccb-5c28-83e5-03789d47fbbd']},
+    # Single user-approved chained diagnostic (2026-10-23 02:46 UTC, coordinator osc-moya-approved-queued-agnd-b6208767): the standard
+    # time chain, the 128 MiB output bound, and a binding to the run-3 parent copy plus the two remaining AGND zones.
+    'chained-agnd': {'payload': 420, 'stage_caps': {'prepare': 60, 'fill': 260, 'verify': 100}, 'attach': 430, 'wrapper': 450, 'controller': 590,
+                     'outer_stop': 600, 'post_stop_cleanup': 60, 'heavy_guard_max_run': 720, 'pcb_limit': 128 * 1024 * 1024,
+                     'modes': ('derive',), 'zones': ['e389d344-872d-538e-9bfc-39577adb1686', 'e67a5bc7-b575-52b6-a78a-9c84381053da'],
+                     'parent_key': RUN3_PARENT_KEY, 'input_board_bytes': RUN3_PARENT_BOARD_BYTES},
 }
 
 
@@ -64,17 +72,23 @@ def budget(name):
     if b['controller'] < b['wrapper'] + CLEANUP_RESERVE + 7 + 40: raise ValueError('controller leaves under 40 s of setup before launch')
     if b['outer_stop'] <= b['controller']: raise ValueError('outer stop does not contain the controller')
     if b['heavy_guard_max_run'] < b['outer_stop'] + b['post_stop_cleanup'] + 60: raise ValueError('heavy-guard cap does not contain outer stop and cleanup')
-    if b['pcb_limit'] + SOURCE_BOARD_BYTES > SCRATCH_TMPFS_BYTES: raise ValueError('output board bound does not fit the scratch tmpfs next to the input copy')
-    if b['pcb_limit'] + SOURCE_BOARD_BYTES > MEMORY_CAP // TMPFS_SHARE_OF_MEMORY: raise ValueError('tmpfs footprint takes more than its share of the memory cap')
+    input_bytes = b.get('input_board_bytes', SOURCE_BOARD_BYTES)
+    if b['pcb_limit'] + input_bytes > SCRATCH_TMPFS_BYTES: raise ValueError('output board bound does not fit the scratch tmpfs next to the input copy')
+    if b['pcb_limit'] + input_bytes > MEMORY_CAP // TMPFS_SHARE_OF_MEMORY: raise ValueError('tmpfs footprint takes more than its share of the memory cap')
     if b['zones'] is not None and (not b['zones'] or any(not UUID_RE.match(z) for z in b['zones'])): raise ValueError('budget zones')
-    return {**b, 'name': name, 'launch_reserve': b['wrapper'] + CLEANUP_RESERVE + 7, 'worker_deadline': b['payload'] - WORKER_RESERVE}
+    parent_key = b.get('parent_key')
+    if parent_key is not None and (not hash_ok(parent_key) or b['zones'] is None or 'input_board_bytes' not in b): raise ValueError('budget parent binding')
+    return {**b, 'name': name, 'parent_key': parent_key, 'input_board_bytes': input_bytes, 'launch_reserve': b['wrapper'] + CLEANUP_RESERVE + 7, 'worker_deadline': b['payload'] - WORKER_RESERVE}
 
 
-def budget_allows(b, mode, zones, chained=False):
-    """The probe profile is bound to its approved mode and zone set on the published source; anything else must use the standard chain."""
+def budget_allows(b, mode, zones, chained=False, parent_key=None):
+    """A bound profile covers exactly its approved mode, zone set and input: the published source (no parent) or one named parent derivation."""
     if mode not in b['modes']: raise ValueError('budget ' + b['name'] + ' does not cover payload ' + mode)
     if b['zones'] is not None and sorted(zones or []) != sorted(b['zones']): raise ValueError('budget ' + b['name'] + ' is bound to a different zone set')
-    if b['zones'] is not None and chained: raise ValueError('budget ' + b['name'] + ' does not cover a chained derivation: its input board would not be the published source')
+    if b['zones'] is not None and b['parent_key'] is None and chained: raise ValueError('budget ' + b['name'] + ' does not cover a chained derivation: its input board would not be the published source')
+    if b['parent_key'] is not None:
+        if not chained: raise ValueError('budget ' + b['name'] + ' covers only a derivation chained from its approved parent')
+        if parent_key is not None and parent_key != b['parent_key']: raise ValueError('budget ' + b['name'] + ' is bound to a different parent derivation')
 UUID_RE = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
 CLASSES = {
     'CONNECTED_ON_INPUT': 'pads shared a native cluster on the input board before this derivation filled anything',

@@ -226,7 +226,7 @@ def run(mode,root,spec_dir,candidate_dir,scratch,output,result):
     require(output.is_dir() and not any(output.iterdir()),'empty writable /output required')
     fill.record_memory(result,'preflight','before')
     spec=derived.load_spec(spec_dir/'spec.json',topology.EXPECTED);context=read_context(spec_dir)
-    b=derived.budget(context['budget']);derived.budget_allows(b,mode,spec['zones'],chained=mode=='derive' and candidate_dir.is_dir());deadline=start+b['payload']
+    b=derived.budget(context['budget']);chained=mode=='derive' and candidate_dir.is_dir();derived.budget_allows(b,mode,spec['zones'],chained=chained);deadline=start+b['payload']
     result['budget']=b['name'];result['limits']=limits(b)
     result['spec']={'zones':spec['zones'],'pairs':spec['pairs'],'note':spec['note']};result['tooling_sha']=context['tooling_sha']
     result['input_before']=fill.verify_inputs(root)
@@ -241,6 +241,7 @@ def run(mode,root,spec_dir,candidate_dir,scratch,output,result):
             result['parent']=parent_identity(candidate_dir,context,result['source_nonfill'])
             if not result['parent']['reusable']: result['status']=REJECTED_STATUS;raise ValueError('parent derivation rejected: '+result['parent']['reason'])
             parent_key=derived.identity_key(result['parent']['identity']);input_zones=sorted(set(result['parent']['identity']['zones'])|set(result['parent']['ancestor_zones']))
+            derived.budget_allows(b,mode,spec['zones'],chained=True,parent_key=parent_key)
             require(not set(input_zones)&set(spec['zones']),'selected zones overlap the parent derivation')
             shutil.copyfile(candidate_dir/'after'/'osc-core.kicad_pcb',scratch/'input'/'osc-core.kicad_pcb')
         else:

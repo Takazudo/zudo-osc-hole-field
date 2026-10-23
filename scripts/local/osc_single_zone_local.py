@@ -169,7 +169,12 @@ def run(args):
     if args.payload in SPEC_MODES and spec_file is None: raise ValueError('--spec required for '+args.payload)
     if spec_file is not None and args.payload not in SPEC_MODES: raise ValueError('--spec only applies to derive/evaluate')
     spec=derived.load_spec(spec_file,topology.EXPECTED) if spec_file is not None else None
-    derived.budget_allows(b,args.payload,spec['zones'] if spec else None,chained=args.payload=='derive' and candidate is not None)
+    chained=args.payload=='derive' and candidate is not None;parent_key=None
+    if chained and b['parent_key'] is not None:
+        # Pre-launch binding check from the parent's own manifest; the full recomputed verification happens in the container and again on the host afterwards.
+        parent_key=derived.identity_key(derived.manifest_identity(json.loads((candidate/'manifest.json').read_text()),candidate)[0])
+        if (candidate/'after'/'osc-core.kicad_pcb').stat().st_size!=b['input_board_bytes']: raise ValueError('parent board size differs from the budget table assumption')
+    derived.budget_allows(b,args.payload,spec['zones'] if spec else None,chained=chained,parent_key=parent_key)
     outer=os.environ.get('OSC_OUTER_STOP_SECONDS')
     if outer is None and b['name']!='standard': raise ValueError('wrapper did not confirm the outer stop for budget '+b['name'])
     if outer is not None and outer!=str(b['outer_stop']): raise ValueError('wrapper outer stop '+outer+' differs from budget '+b['name'])
@@ -183,6 +188,7 @@ def run(args):
        'deadline_policy':{'budget':b['name'],'total_seconds':b['controller'],'outer_stop_seconds':b['outer_stop'],'outer_stop_confirmed_by_wrapper':outer is not None,'payload_seconds':b['payload'],'attach_seconds':b['attach'],
            'wrapper_seconds':b['wrapper'],'cleanup_reserve_seconds':CLEANUP_RESERVE,'launch_reserve_seconds':b['launch_reserve'],'worker_deadline_seconds':b['worker_deadline'],
            'post_stop_cleanup_seconds':b['post_stop_cleanup'],'heavy_guard_max_run_seconds':b['heavy_guard_max_run'],'pcb_limit_bytes':b['pcb_limit'],
+           'bound_parent_key':b['parent_key'],'input_board_bytes':b['input_board_bytes'],
            'adapter_execution_policy':"hosted 'fill-430' with docker start --attach swapped to %d s"%b['attach'],
            'stage_caps':derivedpayload.EVALUATE_CAPS if args.payload=='evaluate' else b['stage_caps'],
            'started_monotonic':started,'deadline_monotonic':c.DEADLINE}}
