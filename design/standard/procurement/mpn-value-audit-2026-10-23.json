@@ -1,0 +1,45 @@
+{
+ "checked": 18,
+ "mismatches": [
+  {
+   "mpn": "RC0603FR-072K2L",
+   "mpn_nominal": [
+    2e+32,
+    "R"
+   ],
+   "placed_value": "2.2 kohm",
+   "parsed": [
+    2200.0,
+    "R"
+   ],
+   "footprint": "R0603",
+   "per_set": 3,
+   "q": {
+    "core": 3
+   },
+   "refs_sample": "R301;R302;R303"
+  }
+ ],
+ "unparsed": [
+  [
+   "GRM21BR61E475KA12L",
+   "4.7 \u00b5F bulk reservation",
+   "C0805",
+   6
+  ],
+  [
+   "TC33X-2-102E",
+   "TC33X-2-102E",
+   "Potentiometer_Bourns_TC33X_Vertical",
+   1
+  ]
+ ],
+ "notations": {
+  "prefix": 2353,
+  "other": 2537,
+  "plain-ohm": 1415,
+  "sci": 345
+ },
+ "note": "Source-only audit of every MPN-bearing passive placement across the product board set: the MPN's nominal value (decoded from the Yageo/Vishay/KEMET/Murata/Samsung/Fenghua/Bourns ordering codes) was compared with the placed Value property. The one flagged row (RC0603FR-072K2L) is a decoder artifact: Yageo '2K2' means 2.2 kohm and the placed value is 2.2 kohm, so it is NOT a mismatch. Result: 0 real mismatches in 18 checked rows; 2 rows carried free-text values ('4.7 uF bulk reservation', MPN used as value) that the decoder did not parse but that agree with the MPN by inspection. Finding: board Value strings use four notations (SI prefix, plain ohms, scientific, free text), which a BOM generator must normalise.",
+ "mismatches_after_review": []
+}
