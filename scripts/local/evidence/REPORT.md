@@ -427,16 +427,55 @@ eight findings, all fixed in the follow-up commit:
 - Parent reads before launch fail closed as `ValueError` for a missing
   directory, a garbled manifest or a symlinked board.
 
+### Derive run 4 (chained AGND B.Cu + In1.Cu on the run-3 copy, profile chained-agnd): FAILED at the 260 s fill stage cap; attempt consumed, not rerun
+
+The single approved chained attempt ran once, 2026-10-23 03:03:27Z to 03:08:24Z,
+under coordinator slot `osc-single-chained-agnd-slot-118af167-2010-486a-a864-ea51fc2dcf2f`
+(attempt token `osc-attempt-854e7a08-7423-4578-abc5-8de0eff4781e`), tooling
+a89bb69d, heavy-guard label `osc-derive-run-4-chained-agnd` with
+`HEAVY_GUARD_MAX_RUN=720`. Launch-time exclusion: 0 containers, no KiCad or
+heavy-guard process, no slot holder, 9.5 GiB available, LED slot released after
+verified cleanup, no stop or cancel; source pins, parent board hash
+(`4a55e0c1...`, 61,320,854 bytes), parent identity (`ecf170db...`), spec and image
+re-verified immediately before launch.
+
+Observed: the payload verified the parent copy (`reusable: true, all recomputed
+checks match`), the worker loaded the 61.3 MB parent and started the two-zone
+Fill at 22.3 s; the fill was still running when the 260 s fill-group cap killed
+the worker (`TimeoutError: fill stage cap`) at about 282 s; payload 294.6 s,
+controller 296.9 s, wall 297 s, guard verdict FAIL exit 1. Peak memory
+1,770,110,976 bytes (1.65 GiB) under the 2 GiB cap, zero OOM events. Source hashes
+unchanged. Both owned containers `REMOVED_CONFIRMED` (the payload container with
+exit 1, the probe container with exit 0); post-stop cleanup found no remaining
+records; the container set before and after is identical. Nothing was exported:
+no derived board, no connectivity result, no classification. The causal first
+failure is the payload fill-stage timeout; the controller's `normal container
+exit unproven` is its consequence.
+
+What this establishes: on this machine at 1 CPU, filling the B.Cu and In1.Cu AGND
+zones together on the F.Cu-filled copy takes longer than 260 s (the In1.Cu fill
+alone took 131.9 s on the unfilled source; the F.Cu fill alone 150.8 s). It does
+not say anything about the connectivity of C1111.2 <-> U1105.12, whose class stays
+`UNEVALUABLE_UNFILLED_NET_ZONES_REMAIN` on the saved run-3 copy. The attempt is
+consumed; no retry, extension or resource change was made.
+
+Evidence: `scripts/local/evidence/osc-derive/run-4-failed/` (receipt, zone.json,
+post-stop cleanup, wrapper log, attempt token, spec, cclogs checksum list); cclogs
+`osc-local-wsl/derive-run-4-failed/` with the state directory's resource records.
+
 ### Open items after this phase
 
 - C1111.2 <-> U1105.12 (AGND): the F.Cu fill alone does not connect the pair.
   U1105.12 sits on an F.Cu AGND island with no via or track (derive run 3), so
   the open is unlikely to be a missing fill cache; it is a candidate for human
   review of the copper around U1105.12. No repair is proposed here.
-- A combined derivation (F.Cu plus In1.Cu, or all three AGND zones) would move
-  the class from `UNEVALUABLE` to `OPEN_WITH_ALL_NET_ZONES_FILLED` or
-  `CONNECTED_VIA_SELECTED_FILL`; it is implemented (chained derivation) but is
-  outside the single approved probe and has not been run.
+- A combined derivation (all three AGND zones) would move the class from
+  `UNEVALUABLE` to `OPEN_WITH_ALL_NET_ZONES_FILLED` or
+  `CONNECTED_VIA_SELECTED_FILL`. The one approved chained attempt (B.Cu + In1.Cu on
+  the run-3 copy) failed at the 260 s fill cap at 1 CPU (derive run 4). Any
+  further attempt would need a new approval and a cause-addressing change: one
+  zone per chained run (two runs, each with an unmeasured B.Cu time), a longer fill
+  cap, or more CPU; none is proposed here.
 - The derived boards (+12V In4 at b9de2114..., AGND In1 at a0a57558...) are
   reusable through the identity key with recomputed checks; chaining them is
   implemented and tested offline but has not been run natively.

@@ -1,0 +1,301 @@
+{
+  "board_acceptance": false,
+  "budget": "chained-agnd",
+  "command": {
+    "argv": [
+      "/usr/bin/python3",
+      "-B",
+      "/analysis/osc_derived_fill_payload.py",
+      "--worker",
+      "/scratch/osc-derive"
+    ],
+    "deadline_monotonic_seconds": 1356193.666679622,
+    "elapsed_seconds": 282.4080720630009,
+    "end_monotonic_seconds": 1356108.281192445,
+    "error": "TimeoutError: fill stage cap",
+    "exit_code": -9,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "log_tail": "",
+    "stage_group_starts": {
+      "fill": 1355848.128927249,
+      "prepare": 1355826.175033424
+    },
+    "start_monotonic_seconds": 1355825.873120382,
+    "status": "FAILED"
+  },
+  "drc": "NOT RUN: outside this derived-copy connectivity diagnostic",
+  "elapsed_seconds": 294.6488577600103,
+  "failure": {
+    "message": "fill stage cap",
+    "type": "TimeoutError"
+  },
+  "full_board_fill": false,
+  "identity": {
+    "image_id": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "kicad": "10.0.6",
+    "parent_key": "ecf170dbb48e07980d8c08e149ff6e5c223745b58cdd9f9abb09cfa4b5001d16",
+    "process": "derived-fill/1",
+    "source": {
+      "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+      "osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+      "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+    },
+    "zones": [
+      "e389d344-872d-538e-9bfc-39577adb1686",
+      "e67a5bc7-b575-52b6-a78a-9c84381053da"
+    ]
+  },
+  "identity_key": "79f803f86cc0d6c52876547e8e77438eaf5e1124f5914d2884c19f69ac0395b3",
+  "input_after": {
+    "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+    "osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+    "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+  },
+  "input_before": {
+    "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+    "osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+    "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+  },
+  "input_hashes": {
+    "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+    "osc-core.kicad_pcb": "4a55e0c165efcc2215d920272da25476b54df1cc56ba59e95a31049b29ba4dc8",
+    "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+  },
+  "limits": "budget chained-agnd: payload 420 s; worker reserve 40 s; derive stage caps prepare 60 / fill 260 / verify 100; evaluate caps prepare 150 / verify 230; output board bound 134217728 bytes; selected zones only; no route edits",
+  "memory_telemetry": [
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1355813.666726569,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "preflight",
+      "point": "before",
+      "values": {
+        "memory.current": 13586432,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 13651968,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1355825.872597988,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "preflight",
+      "point": "after",
+      "values": {
+        "memory.current": 74350592,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 76214272,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1355825.872859485,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "zone",
+      "point": "before",
+      "values": {
+        "memory.current": 74350592,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 76214272,
+        "memory.swap.max": 0
+      }
+    },
+    {
+      "events_since_baseline": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "monotonic_seconds": 1356108.281631524,
+      "peak_semantics": "memory.peak is cumulative for this cgroup, not a phase peak",
+      "phase": "failed",
+      "point": "after",
+      "values": {
+        "memory.current": 79564800,
+        "memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "memory.max": 2147483648,
+        "memory.peak": 1770110976,
+        "memory.swap.max": 0
+      }
+    }
+  ],
+  "mode": "derive",
+  "parent": {
+    "ancestor_zones": [],
+    "checks": {
+      "after/osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+      "after/osc-core.kicad_pcb": "4a55e0c165efcc2215d920272da25476b54df1cc56ba59e95a31049b29ba4dc8",
+      "after/osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe",
+      "ancestor_zones": [],
+      "identity_key": {
+        "actual": "ecf170dbb48e07980d8c08e149ff6e5c223745b58cdd9f9abb09cfa4b5001d16",
+        "expected": "ecf170dbb48e07980d8c08e149ff6e5c223745b58cdd9f9abb09cfa4b5001d16"
+      },
+      "nonfill_sha256": "a97c70f0809d8d43b68e70df3eb3998aa978bc5551cf66b85cc6050cdf29aa65",
+      "owners": {
+        "filled_polygon_by_zone": {
+          "601e02b2-8ccb-5c28-83e5-03789d47fbbd": 236
+        },
+        "zones": 351
+      },
+      "provenance": "manifest"
+    },
+    "identity": {
+      "image_id": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+      "kicad": "10.0.6",
+      "parent_key": null,
+      "process": "derived-fill/1",
+      "source": {
+        "osc-core.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+        "osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+        "osc-core.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+      },
+      "zones": [
+        "601e02b2-8ccb-5c28-83e5-03789d47fbbd"
+      ]
+    },
+    "reason": "all recomputed checks match",
+    "reusable": true
+  },
+  "refill_zones_option_used": false,
+  "repair_basis": false,
+  "source_nonfill": "a97c70f0809d8d43b68e70df3eb3998aa978bc5551cf66b85cc6050cdf29aa65",
+  "source_owners": {
+    "filled_polygon_by_zone": {},
+    "zones": 351
+  },
+  "spec": {
+    "note": "Approved single chained diagnostic: fill the AGND B.Cu and In1.Cu zones on the saved derive-run-3 copy (F.Cu AGND already filled, parent identity ecf170db...). Moves the AGND pair out of UNEVALUABLE; the +12V control keeps its unfilled In4.Cu zone. A fill-cap hit is a recorded failure, not a retry.",
+    "pairs": [
+      [
+        "C1111.2",
+        "U1105.12"
+      ],
+      [
+        "C1129.1",
+        "U1105.16"
+      ]
+    ],
+    "zones": [
+      "e389d344-872d-538e-9bfc-39577adb1686",
+      "e67a5bc7-b575-52b6-a78a-9c84381053da"
+    ]
+  },
+  "status": "FAILED",
+  "tooling_sha": "a89bb69d33edde42a0967de8057acc1197df1b73",
+  "worker_substages": {
+    "zone": {
+      "bytes": 741,
+      "complete": false,
+      "log_sha256": "1aa6d64b7be59d8936720c3b22d7ea586f41cd8b0c270cd835a525bd6533561e",
+      "rows": [
+        {
+          "event": "start",
+          "monotonic_seconds": 1355826.175033424,
+          "phase": "zone",
+          "seq": 1,
+          "stage": "load"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1355839.838199456,
+          "phase": "zone",
+          "seq": 2,
+          "stage": "load"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1355839.83852831,
+          "phase": "zone",
+          "seq": 3,
+          "stage": "identity"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1355840.208646233,
+          "phase": "zone",
+          "seq": 4,
+          "stage": "identity"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1355840.208699703,
+          "phase": "zone",
+          "seq": 5,
+          "stage": "before"
+        },
+        {
+          "event": "complete",
+          "monotonic_seconds": 1355848.128857299,
+          "phase": "zone",
+          "seq": 6,
+          "stage": "before"
+        },
+        {
+          "event": "start",
+          "monotonic_seconds": 1355848.128927249,
+          "phase": "zone",
+          "seq": 7,
+          "stage": "fill"
+        }
+      ]
+    }
+  }
+}
