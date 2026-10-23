@@ -460,8 +460,10 @@ not say anything about the connectivity of C1111.2 <-> U1105.12, whose class sta
 consumed; no retry, extension or resource change was made.
 
 Evidence: `scripts/local/evidence/osc-derive/run-4-failed/` (receipt, zone.json,
-post-stop cleanup, wrapper log, attempt token, spec, cclogs checksum list); cclogs
-`osc-local-wsl/derive-run-4-failed/` with the state directory's resource records.
+post-stop cleanup, attempt token, spec, cclogs checksum list; `*.log` files are
+git-ignored, so the wrapper log lives only in cclogs); cclogs
+`osc-local-wsl/derive-run-4-failed/` with the wrapper log, launch records and the
+state directory's resource records.
 
 ### Open items after this phase
 
