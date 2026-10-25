@@ -1,0 +1,30 @@
+{
+  "step": "census",
+  "input_sha256": {
+    "/tmp/osc-feed-geometry/normalized-caps.json": "0a373a2c6c13a60fdbc9670a06dfd0b04d5ae3ce36543b986f55e259db99f209",
+    "/tmp/osc-feed-geometry/clipped-sheets.json": "927504a53f0b6188c354ca06ca2738dce617025e8d4e14aafa81e436888b46da",
+    "/tmp/osc-feed-geometry/port-graph.json": "e4668522b6088c083258944e86055b17abf3984838e150a0f875da1ed2c001e3",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py": "c1aeeb5be28156448365fc78c03e986ef6402602ebfdaa03f2123d0411236375"
+  },
+  "command": [
+    "timeout",
+    "180s",
+    "/workspace/osc-venv/bin/python",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py",
+    "--board",
+    "/tmp/osc-feed-geometry/normalized-caps.json",
+    "--planes",
+    "/tmp/osc-feed-geometry/clipped-sheets.json",
+    "--graph",
+    "/tmp/osc-feed-geometry/port-graph.json",
+    "--output",
+    "/tmp/osc-feed-geometry/port-obligations.json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 4.052078716000324,
+  "stdout": "{\"board\": \"KA\", \"physical_pad_count\": 1568, \"counts_by_net\": {\"+5V\": 11, \"AGND\": 158, \"+12V\": 11, \"-12V\": 16}, \"direct_loads\": 144, \"supplemental\": 52}\n",
+  "stderr": "",
+  "output_sha256": "216b21c04b43652fbc707d9f3b47b0119cdaea8e7d2b490643e964d71fa13ebf",
+  "inputs_before_after_equal": true,
+  "native_calls": 0
+}

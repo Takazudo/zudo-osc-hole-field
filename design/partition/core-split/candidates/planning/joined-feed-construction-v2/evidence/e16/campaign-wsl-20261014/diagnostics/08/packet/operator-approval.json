@@ -1,0 +1,48 @@
+{
+  "source_sha": "2eb12a78804e04797c3e9cf0a49307117e8f63e3",
+  "run_id": "840bbbb9c25c493db98f0eb8223ccc2e",
+  "attempt": 1,
+  "scope": "Exactly one guarded production-input diagnostic: actual production finite_solve.py dpoint KB AGND nominal-average uniform-dielectric pads 0:96 after source-reviewed typed CSC lookup correction (matching indptr dtype avoids full-index temporary copies). Verify the measured allocation correction after diagnostic7 passed in157.69s, without changing baseline geometry, operators, loads, equations, tolerances, batch/chunk sizes or limits. No full baseline, native job or variant.",
+  "approved": true,
+  "operator": "takazudo",
+  "limits": {
+    "shared_heavy_guard": true,
+    "per_unit_shared_heavy_guard": true,
+    "parent_holds_no_slot": true,
+    "serialized_units": true,
+    "each_unit_timeout_seconds": 180,
+    "unit_memory_max_bytes": 2147483648,
+    "unit_memory_swap_max_bytes": 0,
+    "maximum_units": 148,
+    "shared_heavy_guard_max_run_seconds_per_unit": 1800,
+    "shared_guard_configuration": {
+      "guard": "/home/takazudo/.codex/scripts/heavy-guard.sh",
+      "sha256": "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+      "helper_sha256": "513efaf0b4f4a5bb1f94c15190822a2a79d84df399f83e69d7ed0297444ea571",
+      "directory": "/home/takazudo/.agent-guard/heavy",
+      "defaults": {
+        "slots": 1,
+        "wait_seconds": 0,
+        "max_run_seconds": 1800,
+        "min_mem_mb": 2048,
+        "low_mem_mb": 512
+      },
+      "queue_outside_unit_timeout": true
+    },
+    "scope": "finite_solve.enter_memory_scope verifies live user-systemd cgroup values; helper proves shared guard owner/descriptor/lock before workload; queue time is outside the180s timeout",
+    "stop_on_failure": true,
+    "both_board_reductions_before_driving_points": "NOT APPLICABLE: isolateddiagnosticdpoint,no coupled dispatch",
+    "resume": false,
+    "automatic_retry": false,
+    "maximum_diagnostic_units": 1,
+    "maximum_units_note": "148inheritedhookceiling;exactly1diagnosticunitauthorizedandsealeddriverenforced"
+  },
+  "request_sha256": "f074d2a571ece80f46b0e9a44501795b08350573c948699047dbe5719dd6d706",
+  "authorization_kind": "delegated_campaign_authorization",
+  "recorded_by": "Codex /root",
+  "operator_field_meaning": "Owner account required by unchanged hook; actual executor is Codex under standing owner authorization.",
+  "approval_source": "Standing owner campaign instruction at /home/takazudo/.cache/zudo-e16-runs/campaign-20261014/authority-source.txt SHA256 fe57c020772e65fc4438e4f8cce4e48d1903c554b2d6eab66476dbe0289ce00c. Source and exact request independently reviewed; delegated authorization, no new personal owner digest approval claimed.",
+  "authority_source_sha256": "fe57c020772e65fc4438e4f8cce4e48d1903c554b2d6eab66476dbe0289ce00c",
+  "scope_assessment": "Exactly eighth of24 production diagnostics: actual full96 KB AGND dpoint after demonstrated scalar index allocation correction. Prior7 passed157.69s; this is a changed, independently reviewed executable method, not blind repetition. Same geometry, operator, equations, loads, chunk size, tolerances and180s/2GiB/no-swap/per-unit guard. Prior terminal integrity and cleanup PASS. No full baseline or native/variant job.",
+  "created_unix": 1791921198.5775266
+}

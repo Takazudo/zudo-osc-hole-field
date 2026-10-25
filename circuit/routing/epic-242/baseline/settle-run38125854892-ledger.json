@@ -1,0 +1,126 @@
+{
+  "run_id": 38125854892,
+  "job_id": 114429954413,
+  "url": "https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38125854892",
+  "terminal_status": "completed",
+  "terminal_conclusion": "failure",
+  "source_sha": "fe2e6d20c50587e223f1357f34c865db385fa5b0",
+  "hook_sha256": "8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5",
+  "admission_id": "epic242-three-a-settle-02",
+  "dispatch_attempts": 1,
+  "pre_dispatch_remote_sha_exact": true,
+  "pre_dispatch_native_running_or_queued": [],
+  "other_seven_jobs": "SKIPPED",
+  "source_epoch": "epic242-tools-e5-lifecycle-observation",
+  "artifact": {
+    "id": 11697436855,
+    "node_id": "MDg6QXJ0aWZhY3QxMTY5NzQzNjg1NQ==",
+    "name": "epic242-three-a-settle-only",
+    "size_in_bytes": 17875440,
+    "url": "https://api.github.com/repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11697436855",
+    "archive_download_url": "https://api.github.com/repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11697436855/zip",
+    "expired": false,
+    "digest": "sha256:fab07dbc30f2fa65d366233847d363755fe7c07bc35cf47810d524b083aa25b7",
+    "created_at": "2026-10-11T08:51:10Z",
+    "updated_at": "2026-10-11T08:51:10Z",
+    "expires_at": "2026-10-18T08:51:08Z",
+    "workflow_run": {
+      "id": 38125854892,
+      "repository_id": 1391226919,
+      "head_repository_id": 1391226919,
+      "head_branch": "integration/epic-242-core-routing",
+      "head_sha": "fe2e6d20c50587e223f1357f34c865db385fa5b0"
+    }
+  },
+  "verified_archive_bytes": 17875440,
+  "verified_archive_sha256": "fab07dbc30f2fa65d366233847d363755fe7c07bc35cf47810d524b083aa25b7",
+  "verified_zip_entries": 600,
+  "zip_crc": "PASS",
+  "snapshot": {
+    "full_hash_bound_entries": 294,
+    "manifest_entries": 293,
+    "portable_seals": 291,
+    "hashes_membership": "PASS",
+    "original_before_pcb_sha256": "4d8e238d5d504d55a0f5defe19671d7825f3a356a56ab143e38dd9c918110819",
+    "unchanged_after_run": true
+  },
+  "image_preparation": {
+    "status": "PASS",
+    "repo_digests": [
+      "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec"
+    ],
+    "sample_count": 142,
+    "last_sample_seconds": 35.016256584999994,
+    "max_sampled_backend_bytes": 3103719424,
+    "min_sampled_host_free_bytes": 15366328320,
+    "policy_scope": "Sampled6GiB Docker/containerd abort threshold; no hard daemon cap; separate from enforced native6/12GiB bounds."
+  },
+  "native": {
+    "status": "FAIL / NOT ACCEPTED",
+    "reason": "Command '['docker', 'inspect', '--type', 'container', 'fa81f2e2c62bef18e892f27ba551410b8e8bdf5d1b1582456bec83787a61c5ad']' returned non-zero exit status 1.: Error response from daemon: No such container: fa81f2e2c62bef18e892f27ba551410b8e8bdf5d1b1582456bec83787a61c5ad",
+    "last_sample_seconds": 42.763361714,
+    "sample_count": 42,
+    "max_sampled_worker_bytes": 1040486400,
+    "kernel_peak_bytes": 1097555968,
+    "kernel_peak_scope": "after producer cleanup",
+    "kernel_events_after_producer_cleanup": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    },
+    "min_sampled_host_free_bytes": 14619860992,
+    "verified_running_container_ids": [
+      "430926687f4766a53f627dea9b9d5047854f3efd1eccf4a262e0bee13e31476b",
+      "ecc2201295f7521dc09bfe1e09f61f376427b5d543506e0ac08f308718f6f053"
+    ],
+    "lifecycle": [
+      {
+        "container_id": "fa81f2e2c62bef18e892f27ba551410b8e8bdf5d1b1582456bec83787a61c5ad",
+        "event": "inspect failed",
+        "returncode": 1,
+        "stderr": "Error response from daemon: No such container: fa81f2e2c62bef18e892f27ba551410b8e8bdf5d1b1582456bec83787a61c5ad\n",
+        "stdout": "[]\n"
+      }
+    ],
+    "failed_id_prior_running_membership_verified": false,
+    "driver_exit_before_cleanup": null,
+    "driver_exit_after_cleanup": 0,
+    "cleanup_failures": [],
+    "final_owned_state": {
+      "containers": [],
+      "units": {
+        "epic242-three-a-38125854892-1-checks.service": {
+          "load": "not-found",
+          "active": "inactive",
+          "settled": true
+        },
+        "epic242-three-a-38125854892-1-anchor.service": {
+          "load": "not-found",
+          "active": "inactive",
+          "settled": true
+        },
+        "epic242-three-a-38125854892-1-watchdog.service": {
+          "load": "not-found",
+          "active": "inactive",
+          "settled": true
+        }
+      },
+      "errors": [],
+      "workload_absent": true
+    }
+  },
+  "partial_result": {
+    "working_before_pcb_sha256": "a3ca1a40729d34fa9048678778bda792b4c984d5aa2a445b17a33f70aedc15b6",
+    "raw_drc_present": true,
+    "dump_present": false,
+    "settled_receipt_present": false,
+    "interpretation": "Native guard stopped during an unverified container lifecycle. DRC/board partial artifacts do not establish settlement, fresh agreement, uncapped warnings, acceptance or improvement."
+  },
+  "classification": "NEW FAIL-CLOSED GUARD OBSERVATION: a listed full-ID container disappeared before any running membership proof for that ID. Original prior-verified case is distinct. Exact underlying container exit cause not established.",
+  "next": "Escalate new unverified-container case for parent source/control review. No automatic third run or resource-policy relaxation.",
+  "independent_evidence_review": "PASS: separate reviewer verified600ZIP entries CRC, archiveSHA/bytes,294snapshot hashes, source/admission/hook bindings, exactly2 verified running IDs and distinct unverified disappeared fullID, specificNoSuchContainer stderr, kernelpeak/events, final three-unit/labeled-container absence, missing dump/settled receipt. Classification remains NEGATIVE/INCOMPLETE; no third run.",
+  "hardware": "UNCHANGED: JL117/JR129/K1402 accepted baseline; DRC/parity0/0."
+}

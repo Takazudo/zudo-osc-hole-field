@@ -1,0 +1,424 @@
+{
+  "accepted": false,
+  "board_bound": {
+    "accounting": "Includes minimum measured height AND full independent registration, retention, thermal, profile and warp allowances. This intentionally gives no cancellation credit; registration may overlap measured-height control. Published OD tolerance is not added again.",
+    "capsule_bare_gap_mm": 0.4861770829317429,
+    "capsule_remaining_gap_mm": 0.13617708293174285,
+    "derivation": "For height H, outward axis normal component v>0 and start s, exact support gap is H+s*v-R*sqrt(1-v*v). It increases with H,s,v, so the listed minima bound all accepted poses. An annulus has the same outer support as its solid cylinder. Axis directions lie within asin(eta1); v_min=v0*sqrt(1-eta1^2)-sqrt(1-v0^2)*eta1.",
+    "exact_cylinder_bare_gap_mm": 0.7979660348233535,
+    "independent_closures_mm": {
+      "board_warp": 0.1,
+      "outer_profile": 0.05,
+      "registration": 0.1,
+      "retention": 0.05,
+      "thermal": 0.05
+    },
+    "margin_above_required_mm": 0.19796603482335345,
+    "minimum_anchor_height_mm": 1.95,
+    "minimum_axis_normal_component": 0.536177082931743,
+    "remaining_gap_mm": 0.44796603482335345,
+    "required_residual_mm": 0.25,
+    "total_independent_closure_mm": 0.35000000000000003
+  },
+  "gates": {
+    "actual_C0_C1_C2_wire_shape": false,
+    "actual_axis_shape_material_qualification": false,
+    "all_100_trim_access": false,
+    "bore_retention_and_insulation": false,
+    "complete_new_feed_collision_sweep": false,
+    "conditional_outer_collet_to_listed_source": true,
+    "conditional_outer_collet_to_own_board": true,
+    "native": false,
+    "new_arm_and_joint_geometry": false,
+    "physical_fit": false,
+    "wire_to_new_collet_or_arm": false
+  },
+  "input_sha256": {
+    "check.py": "4d7d0799348686fa4427fe895a49d146638cbcfe15ffc6ae696b4d75856d38cf",
+    "offset-proposal.json": "0340c9d24ae6505e89af65af3bf0634e34a6219a3d7d5d6ffb0ff4c9f9ed0ec5",
+    "process-budget.md": "85af1cc851cd77f683db1de2a381de54af857115c82cb9902b84c84cbeb10512",
+    "reconciled-contract.json": "01b77387f568a5b246c7e33e635e8d867f09b23ea200d13dd0c17db251ada30d",
+    "robust-curve.json": "cfab1993ecd661054927e8c855470f16618bf04607b12af89cc6ba4099e7dfda",
+    "robust_curve.py": "12cb2cb82f8282c92e8a50c51b4060ba96eb826a35f8b7577c7b6442ff458d91",
+    "source-lock.json": "a5f6ce05cafb3c0ec2966a1794d9f892ba43e7e26b390b878f6c0316887e0345"
+  },
+  "outer_shape_contract": {
+    "axis_cone_half_angle_deg": 0.5729673448571527,
+    "axis_cone_half_angle_rad": 0.010000166674167114,
+    "axis_requirement": "Collet bore axis must be aligned with the straight gripped wire and independently qualify within this C1-derived direction cone. Position tolerance alone does not establish this alignment.",
+    "datum": "Depth is positive from each measured local PCB face into the inter-board gap.",
+    "excluded": "No unmodeled flange, screw head, split-clamp lug, stem, carrier, fastener or end cap may be included in this envelope claim. Such solids require separate full sweep checks.",
+    "grip_axis_arclength_mm": [
+      1.0,
+      2.5
+    ],
+    "outer_radius_mm": 2.0,
+    "shape": "Flat-ended finite annular cylinder; outer envelope only"
+  },
+  "source_XY_screen": {
+    "collet_XY_closures_mm": {
+      "outer_profile": 0.05,
+      "registration": 0.1,
+      "retention": 0.05,
+      "thermal": 0.05
+    },
+    "ledger": [
+      {
+        "anchor_xy_mm": [
+          23,
+          15.5
+        ],
+        "axis_from_anchor_toward_free_wire": [
+          0.5933040689317951,
+          0.5927989259019525,
+          0.5445913286478836
+        ],
+        "board": "KA",
+        "nearest_source_kind": "support",
+        "nearest_source_obstacle": "KA/support",
+        "outer_XY_box_after_independent_closures_mm": [
+          21.333303943926325,
+          13.832798800896484,
+          26.75826048484316,
+          19.256997627268554
+        ],
+        "outer_reference_XY_box_mm": [
+          21.583303943926325,
+          14.082798800896484,
+          26.50826048484316,
+          19.006997627268554
+        ],
+        "own_board_gap_after_closures_mm": 0.44796603482335345,
+        "source_XY_gap_after_closures_mm": 13.234413640496498,
+        "wire": 1
+      },
+      {
+        "anchor_xy_mm": [
+          40,
+          15.5
+        ],
+        "axis_from_anchor_toward_free_wire": [
+          0.5933040689317951,
+          -0.5927989259019525,
+          0.5445913286478836
+        ],
+        "board": "KA",
+        "nearest_source_kind": "new-bulk-reserve",
+        "nearest_source_obstacle": "KA/KA-bulk-2",
+        "outer_XY_box_after_independent_closures_mm": [
+          38.333303943926325,
+          11.743002372731446,
+          43.75826048484316,
+          17.167201199103516
+        ],
+        "outer_reference_XY_box_mm": [
+          38.583303943926325,
+          11.993002372731446,
+          43.50826048484316,
+          16.917201199103516
+        ],
+        "own_board_gap_after_closures_mm": 0.44796603482335345,
+        "source_XY_gap_after_closures_mm": 16.732798800896482,
+        "wire": 2
+      },
+      {
+        "anchor_xy_mm": [
+          57,
+          15.5
+        ],
+        "axis_from_anchor_toward_free_wire": [
+          0.5933040689317951,
+          0.5927989259019525,
+          0.5445913286478836
+        ],
+        "board": "KA",
+        "nearest_source_kind": "new-bulk-reserve",
+        "nearest_source_obstacle": "KA/KA-bulk-3",
+        "outer_XY_box_after_independent_closures_mm": [
+          55.333303943926325,
+          13.832798800896484,
+          60.75826048484316,
+          19.256997627268554
+        ],
+        "outer_reference_XY_box_mm": [
+          55.583303943926325,
+          14.082798800896484,
+          60.50826048484316,
+          19.006997627268554
+        ],
+        "own_board_gap_after_closures_mm": 0.44796603482335345,
+        "source_XY_gap_after_closures_mm": 14.643002372731445,
+        "wire": 3
+      },
+      {
+        "anchor_xy_mm": [
+          23,
+          24.5
+        ],
+        "axis_from_anchor_toward_free_wire": [
+          0.5933040689317951,
+          0.5927989259019525,
+          0.5445913286478836
+        ],
+        "board": "KA",
+        "nearest_source_kind": "new-bulk-reserve",
+        "nearest_source_obstacle": "KA/KA-bulk-1",
+        "outer_XY_box_after_independent_closures_mm": [
+          21.333303943926325,
+          22.832798800896484,
+          26.75826048484316,
+          28.256997627268554
+        ],
+        "outer_reference_XY_box_mm": [
+          21.583303943926325,
+          23.082798800896484,
+          26.50826048484316,
+          28.006997627268554
+        ],
+        "own_board_gap_after_closures_mm": 0.44796603482335345,
+        "source_XY_gap_after_closures_mm": 5.643002372731445,
+        "wire": 4
+      },
+      {
+        "anchor_xy_mm": [
+          40,
+          24.5
+        ],
+        "axis_from_anchor_toward_free_wire": [
+          0.5933040689317951,
+          -0.5927989259019525,
+          0.5445913286478836
+        ],
+        "board": "KA",
+        "nearest_source_kind": "new-bulk-reserve",
+        "nearest_source_obstacle": "KA/KA-bulk-2",
+        "outer_XY_box_after_independent_closures_mm": [
+          38.333303943926325,
+          20.743002372731446,
+          43.75826048484316,
+          26.167201199103516
+        ],
+        "outer_reference_XY_box_mm": [
+          38.583303943926325,
+          20.993002372731446,
+          43.50826048484316,
+          25.917201199103516
+        ],
+        "own_board_gap_after_closures_mm": 0.44796603482335345,
+        "source_XY_gap_after_closures_mm": 7.732798800896482,
+        "wire": 5
+      },
+      {
+        "anchor_xy_mm": [
+          57,
+          24.5
+        ],
+        "axis_from_anchor_toward_free_wire": [
+          0.5933040689317951,
+          0.5927989259019525,
+          0.5445913286478836
+        ],
+        "board": "KA",
+        "nearest_source_kind": "new-bulk-reserve",
+        "nearest_source_obstacle": "KA/KA-bulk-3",
+        "outer_XY_box_after_independent_closures_mm": [
+          55.333303943926325,
+          22.832798800896484,
+          60.75826048484316,
+          28.256997627268554
+        ],
+        "outer_reference_XY_box_mm": [
+          55.583303943926325,
+          23.082798800896484,
+          60.50826048484316,
+          28.006997627268554
+        ],
+        "own_board_gap_after_closures_mm": 0.44796603482335345,
+        "source_XY_gap_after_closures_mm": 5.643002372731445,
+        "wire": 6
+      },
+      {
+        "anchor_xy_mm": [
+          81,
+          15.5
+        ],
+        "axis_from_anchor_toward_free_wire": [
+          -0.5933040689317951,
+          0.5927989259019525,
+          0.5445913286478836
+        ],
+        "board": "KB",
+        "nearest_source_kind": "tool-column",
+        "nearest_source_obstacle": "KA/JL-K-4-K",
+        "outer_XY_box_after_independent_closures_mm": [
+          77.24173951515684,
+          13.832798800896484,
+          82.66669605607368,
+          19.256997627268554
+        ],
+        "outer_reference_XY_box_mm": [
+          77.49173951515684,
+          14.082798800896484,
+          82.41669605607368,
+          19.006997627268554
+        ],
+        "own_board_gap_after_closures_mm": 0.44796603482335345,
+        "source_XY_gap_after_closures_mm": 22.436097148916872,
+        "wire": 1
+      },
+      {
+        "anchor_xy_mm": [
+          98,
+          15.5
+        ],
+        "axis_from_anchor_toward_free_wire": [
+          -0.5933040689317951,
+          -0.5927989259019525,
+          0.5445913286478836
+        ],
+        "board": "KB",
+        "nearest_source_kind": "new-monitor-reserve",
+        "nearest_source_obstacle": "KB/CS247-MON-KB",
+        "outer_XY_box_after_independent_closures_mm": [
+          94.24173951515684,
+          11.743002372731446,
+          99.66669605607368,
+          17.167201199103516
+        ],
+        "outer_reference_XY_box_mm": [
+          94.49173951515684,
+          11.993002372731446,
+          99.41669605607368,
+          16.917201199103516
+        ],
+        "own_board_gap_after_closures_mm": 0.44796603482335345,
+        "source_XY_gap_after_closures_mm": 20.23330394392633,
+        "wire": 2
+      },
+      {
+        "anchor_xy_mm": [
+          115,
+          15.5
+        ],
+        "axis_from_anchor_toward_free_wire": [
+          -0.5933040689317951,
+          0.5927989259019525,
+          0.5445913286478836
+        ],
+        "board": "KB",
+        "nearest_source_kind": "new-monitor-reserve",
+        "nearest_source_obstacle": "KB/CS247-MON-KB",
+        "outer_XY_box_after_independent_closures_mm": [
+          111.24173951515684,
+          13.832798800896484,
+          116.66669605607368,
+          19.256997627268554
+        ],
+        "outer_reference_XY_box_mm": [
+          111.49173951515684,
+          14.082798800896484,
+          116.41669605607368,
+          19.006997627268554
+        ],
+        "own_board_gap_after_closures_mm": 0.44796603482335345,
+        "source_XY_gap_after_closures_mm": 3.2333039439263302,
+        "wire": 3
+      },
+      {
+        "anchor_xy_mm": [
+          81,
+          24.5
+        ],
+        "axis_from_anchor_toward_free_wire": [
+          -0.5933040689317951,
+          0.5927989259019525,
+          0.5445913286478836
+        ],
+        "board": "KB",
+        "nearest_source_kind": "tool-column",
+        "nearest_source_obstacle": "KA/JL-K-4-K",
+        "outer_XY_box_after_independent_closures_mm": [
+          77.24173951515684,
+          22.832798800896484,
+          82.66669605607368,
+          28.256997627268554
+        ],
+        "outer_reference_XY_box_mm": [
+          77.49173951515684,
+          23.082798800896484,
+          82.41669605607368,
+          28.006997627268554
+        ],
+        "own_board_gap_after_closures_mm": 0.44796603482335345,
+        "source_XY_gap_after_closures_mm": 13.498311470938496,
+        "wire": 4
+      },
+      {
+        "anchor_xy_mm": [
+          98,
+          24.5
+        ],
+        "axis_from_anchor_toward_free_wire": [
+          -0.5933040689317951,
+          -0.5927989259019525,
+          0.5445913286478836
+        ],
+        "board": "KB",
+        "nearest_source_kind": "tool-column",
+        "nearest_source_obstacle": "KA/JL-K-5-K",
+        "outer_XY_box_after_independent_closures_mm": [
+          94.24173951515684,
+          20.743002372731446,
+          99.66669605607368,
+          26.167201199103516
+        ],
+        "outer_reference_XY_box_mm": [
+          94.49173951515684,
+          20.993002372731446,
+          99.41669605607368,
+          25.917201199103516
+        ],
+        "own_board_gap_after_closures_mm": 0.44796603482335345,
+        "source_XY_gap_after_closures_mm": 15.567272692308846,
+        "wire": 5
+      },
+      {
+        "anchor_xy_mm": [
+          115,
+          24.5
+        ],
+        "axis_from_anchor_toward_free_wire": [
+          -0.5933040689317951,
+          0.5927989259019525,
+          0.5445913286478836
+        ],
+        "board": "KB",
+        "nearest_source_kind": "new-monitor-reserve",
+        "nearest_source_obstacle": "KB/CS247-MON-KB",
+        "outer_XY_box_after_independent_closures_mm": [
+          111.24173951515684,
+          22.832798800896484,
+          116.66669605607368,
+          28.256997627268554
+        ],
+        "outer_reference_XY_box_mm": [
+          111.49173951515684,
+          23.082798800896484,
+          116.41669605607368,
+          28.006997627268554
+        ],
+        "own_board_gap_after_closures_mm": 0.44796603482335345,
+        "source_XY_gap_after_closures_mm": 3.2333039439263302,
+        "wire": 6
+      }
+    ],
+    "method": "No broad phase. Check all twelve conservative axis-cone/capsule XY boxes against all retained KA-B/KB-F courtyard, support, tool and loom reservations, plus six retained bulk reserves and the reconciled monitor. Expand collets and source separately. XY nonoverlap holds through axial withdrawal regardless of Z. No part-height fidelity or unseen fastener claim.",
+    "minimum_gap_after_closures_mm": 3.2333039439263302,
+    "required_residual_mm": 0.25,
+    "source_obstacle_count": 2430,
+    "source_outward_profile_mm": 0.1
+  },
+  "source_epoch": "29140d4e19d526eed3a02a73c33f8ce4219c78f0",
+  "status": "CONDITIONAL LOCAL COLLET CLEARANCE ONLY; COMPLETE FEED/ARMS/PHYSICAL FIT NOT QUALIFIED",
+  "tool_sha256": "9037f883e66bc6856abaa8f83dd5f2e1184a7a2fea5f388a08d1f68ddbcc44f0"
+}

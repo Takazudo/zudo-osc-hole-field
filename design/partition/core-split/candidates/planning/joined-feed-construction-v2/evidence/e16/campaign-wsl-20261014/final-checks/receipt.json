@@ -1,0 +1,58 @@
+{
+  "checked_at_unix": 1791930444.908113,
+  "execution_source_sha": "852ffac7f85aff4bb436eb25f7ce993cee48146b",
+  "scope": "Final evidence/documentation increment; last two prose corrections are covered by final build/site. Executable source and numerical/browser bindings are unchanged.",
+  "checks": [
+    {
+      "command": [
+        "pnpm",
+        "circuit:check"
+      ],
+      "exit_code": 0,
+      "log": "circuit-check.txt",
+      "sha256": "07a2f28172f86ec3ebb60044f4eaad6da83999d0a61d5b14bf6b088ac70acca4"
+    },
+    {
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "exit_code": 0,
+      "log": "check.txt",
+      "sha256": "9f87a57ce9715447b4e735c17b0168e83daa4e27cfa6df39aeeacb416c5000af"
+    },
+    {
+      "command": [
+        "bash",
+        "/home/takazudo/.codex/scripts/heavy-guard.sh",
+        "--",
+        "pnpm",
+        "build"
+      ],
+      "exit_code": 0,
+      "log": "build.txt",
+      "sha256": "ac18487bf7cdb74c19a8466d96a84f438f269b99d2715c79f1446a025c029d75"
+    },
+    {
+      "command": [
+        "pnpm",
+        "check:site"
+      ],
+      "exit_code": 0,
+      "log": "site.txt",
+      "sha256": "0f2db131895415dc9f37e454408c0e6257d56ffec1130cd13b3f0e09ced1504f"
+    }
+  ],
+  "build_pages": 301,
+  "build_guard_verdict": "PASS",
+  "build_guard_seconds": 14,
+  "site_allowlist_exceptions": 1,
+  "site_exception": "${esc(x.url)} in workbench.html, existing unchanged allowlist",
+  "source_tests": {
+    "selected": 1769,
+    "explicit_oracle_exclusions": 2,
+    "status": "PASS at unchanged executable source; reused without repeat"
+  },
+  "new_native_oracle_and_retained_artifact_integration": "NOT RUN; outside numerical campaign",
+  "CI": "Not dispatched; skip-ci publication avoids unadmitted native paths and is not CI PASS"
+}

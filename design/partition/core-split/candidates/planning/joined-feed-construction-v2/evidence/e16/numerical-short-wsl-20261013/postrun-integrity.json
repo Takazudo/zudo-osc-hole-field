@@ -1,0 +1,34 @@
+{
+  "source_sha": "a73249c9f98f8fa9fd5d27aed85265062c74a907",
+  "request_sha256": "8f8d104e1b349f063ef7627cc52a66dd64486690b938407ef03916d659ab9665",
+  "checked_inputs": 334,
+  "changed_inputs": [],
+  "protected_files": 550,
+  "changed_protected": [],
+  "solver_scopes": [
+    {
+      "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r0429a608edc44e6688d3615d3570f763.scope",
+      "samples": 20,
+      "memory_max": 2147483648,
+      "memory_swap_max": 0,
+      "observed_memory_peak": 1622654976,
+      "memory_events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+      "postrun_is_active": "inactive",
+      "check_exit": 4
+    },
+    {
+      "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r4feaa31b44cf44ad8cbe8afddb6071e3.scope",
+      "samples": 23,
+      "memory_max": 2147483648,
+      "memory_swap_max": 0,
+      "observed_memory_peak": 1668386816,
+      "memory_events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+      "postrun_is_active": "inactive",
+      "check_exit": 4
+    }
+  ],
+  "scope_observation_note": "The unbounded tmux parent rows are launcher observations, not solving processes. Only the two run scopes above execute the solves.",
+  "steps": 3,
+  "driving_points_run": false,
+  "coupled_run": false
+}

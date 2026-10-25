@@ -1,0 +1,52 @@
+{
+  "status": "SEARCH_STARTED; do not retry if interrupted",
+  "ordering": {
+    "heuristic_weight": 2,
+    "priority": [
+      "g + 2*h",
+      "-g",
+      "deterministic node"
+    ],
+    "planar_cost": "Euclidean lattice step times 3 on F.Cu/B.Cu, otherwise 1",
+    "via_cost": 30,
+    "reopen": "strictly smaller positive g",
+    "variants": 0,
+    "automatic_retries": 0,
+    "optimality_claim": false
+  },
+  "source_sha256": {
+    "circuit/routing/epic-242/decision-pilots/terminal-access/weighted_transition_candidate.py": "4d6202b2f4156e5a9038b4f3801ae430944bcf54be4476bcbe3dd5dda80325d9",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/test_weighted_transition_candidate.py": "43bc439c186e08d5fd511661edbeb2984d8e8a3cb43462dadffc0a3b1571c76c",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/exact_transition_candidate.py": "f0c87c62c12b7353511c0d3c9e6f34d9485a6c469288a4ce75b8cb2d45639457",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/analyze_f3_breakout_region.py": "a4c4de781e8f87812ce11429a8e867e351622153feed290a1cb77804884aac0d"
+  },
+  "source_commit": "f5626849b368fb17cf11ccb729a6460dae43b4e0",
+  "started_utc": "2026-10-11T17:51:13.736410+00:00",
+  "native_admitted": false,
+  "input_dump_sha256": "613a358b340962e2d1fb13cd898fe8a9558edcbf1a5d69cb93b6d2bd7629e97c",
+  "candidate_input_source_binding_sha256": "c25b5c9948c194cd7e21b3d4228f8c6da89f52f7fb7421d88762132d5ba22000",
+  "window_cells": [
+    99,
+    343,
+    37,
+    420
+  ],
+  "budget": {
+    "automatic_retries": 0,
+    "clearance_mm": 0.25,
+    "global_memory_gib": 12,
+    "global_workers_max": 2,
+    "max_expansions_per_search": 50000,
+    "native_workers": 1,
+    "rail_width_mm": 0.5,
+    "raster_mm": 0.1,
+    "required_free_gib": 2,
+    "signal_width_mm": 0.3,
+    "via_diameter_mm": 0.6,
+    "via_drill_mm": 0.3,
+    "wall_seconds_route": 300,
+    "window_margin_mm": 6,
+    "worker_memory_gib": 6
+  },
+  "exact_check_cap": 250000
+}

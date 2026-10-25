@@ -1,0 +1,64 @@
+{
+  "source_sha256": "dfd3578cd6c7ca822e15766ea019aeecf43967c4d6393bf5ad145e32633506f6",
+  "scope": "synthetic matrices only; no production inputs or numerical units",
+  "kernel": "scipy.sparse._sparsetools.csc_matvec",
+  "chunk_entry_cap": 65536,
+  "column_span_cap": 65536,
+  "benchmarks": [
+    {
+      "nodes": 2000,
+      "nnz": 9924,
+      "rhs": 8,
+      "old_residual_seconds": 0.002065334003418684,
+      "compiled_residual_seconds": 0.0011901450343430042,
+      "speedup": 1.735363290877242,
+      "exact_float64_output_equal": true,
+      "factor_seconds": 0.0028276320081204176,
+      "one_LU_solve_seconds": 0.0004573820624500513,
+      "one_e_projection_seconds": 0.00026847003027796745
+    },
+    {
+      "nodes": 20000,
+      "nnz": 99924,
+      "rhs": 8,
+      "old_residual_seconds": 0.0316512871067971,
+      "compiled_residual_seconds": 0.007143531925976276,
+      "speedup": 4.430761622510905,
+      "exact_float64_output_equal": true,
+      "factor_seconds": 0.035634152009151876,
+      "one_LU_solve_seconds": 0.0065937950275838375,
+      "one_e_projection_seconds": 0.001783518004231155
+    },
+    {
+      "nodes": 100000,
+      "nnz": 499924,
+      "rhs": 8,
+      "old_residual_seconds": 0.11545136105269194,
+      "compiled_residual_seconds": 0.039909868966788054,
+      "speedup": 2.892802307839385,
+      "exact_float64_output_equal": true,
+      "factor_seconds": 0.41600634902715683,
+      "one_LU_solve_seconds": 0.0285116279264912,
+      "one_e_projection_seconds": 0.0077548850094899535
+    }
+  ],
+  "edge_cases": [
+    {
+      "case": "empty_columns",
+      "exact_output_equal": true
+    },
+    {
+      "case": "one_oversize_column",
+      "exact_output_equal": true
+    },
+    {
+      "case": "unsorted_duplicates",
+      "exact_output_equal": true
+    },
+    {
+      "case": "empty_matrix",
+      "exact_output_equal": true
+    }
+  ],
+  "limitation": "private pinned SciPy API; production runtime/memory not established"
+}

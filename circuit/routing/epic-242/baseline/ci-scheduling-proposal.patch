@@ -1,0 +1,27 @@
+--- a/.github/workflows/check.yml
++++ b/.github/workflows/check.yml
+@@ -10,8 +10,8 @@
+   contents: read
+ 
+ concurrency:
+-  group: ${{ github.workflow }}-${{ github.ref }}
+-  cancel-in-progress: true
++  group: issue189-core-audit-task-pilot
++  cancel-in-progress: false
+ 
+ jobs:
+   documentation:
+@@ -158,11 +158,13 @@
+   # Complete native assembly checks remain gated by sub-issue #44.
+ 
+   board-drc:
++    needs: python-tests
+     name: Native DRC gate (${{ matrix.board }})
+     runs-on: ubuntu-latest
+     timeout-minutes: 45
+     strategy:
+       fail-fast: false
++      max-parallel: 2
+       matrix:
+         board: [osc-jack-left, osc-jack-right, osc-core]
+ 

@@ -1,0 +1,47 @@
+{
+  "contact_design": "/tmp/feed-v2-electrical-design.json",
+  "contact_primitive_helper": "/tmp/feed-v2-contact-primitives.py",
+  "not_run": [
+    "New candidate geometry/collision screen",
+    "Native",
+    "Physical/process qualification"
+  ],
+  "required_corrections": [
+    {
+      "corrected_bolt_center_depth_mm": 6.307841012707756,
+      "corrected_cap_min_depth_mm": 4.907841012707756,
+      "id": "horizontal-M1-bolt-axis",
+      "new_basis": "For unit local outgoingw=(wx,wy,c), s=hypot(wx,wy), setn=(-c*wx/s,-c*wy/s,s), v=w cross n=(wy/s,-wx/s,0). Lug points outward away from board; M1 bolt lies parallel to board. Preserve lug/bolt dimensions and recompute every finger from newn. n_y is not forced negative.",
+      "original_other_handed_cap_depth_mm": 0.009982943103685638,
+      "original_worst_cap_depth_mm": -0.7448484491004549,
+      "reason": "Original horizontal negative-Y radial lug direction makes bolt axis strongly slanted in board depth; one dielectric cap penetrates board before tolerances.",
+      "scope": "Analytic own-board clearance correction only; complete fixed/foreign-wire/carrier clearance remains for the one construction screen."
+    },
+    {
+      "id": "separate-solder-and-exposed-wire-solids",
+      "prescription": "Use electrical solder-height <=0.05mm and exact inclined prism supports, not a homogeneous0.6mm solder envelope as the electrical conductor. A conservative0.6mm obstacle box may coexist only if labeled envelope. Stripped metal above0.05mm is a separate inclined conductor solid within proposed1.0mm normal-radius bound."
+    },
+    {
+      "id": "clip-angled-insulation-and-shroud-entry",
+      "prescription": "SUPERSEDED by parent_selected_prescription in superseding_parent_insulation_revision. Remove secondary sleeve; original insulation uses the explicit3.0mm axis-normal plane. Full oblique shroud bore subtraction remains required."
+    },
+    {
+      "id": "cap-filled-via-support",
+      "prescription": "Every new finite foil injection patch must lie on actual continuous foil/copper cap. Ordinary empty via drill holes are not valid current support. Attach the explicit filled/capped-via process and cap geometry to the12new endpoint identities; include cap/foil/barrel spreading in PCB model."
+    }
+  ],
+  "source_mechanical_sha256": "caa820ee87374f92210dc4d5b92f613bafa3e3186abdbf831503c35ded08c0f5",
+  "status": "APPROVE_ONE_SOURCE_CONSTRUCTION_AFTER_SPECIFIC_PRESCRIPTION_CORRECTIONS; NOT_FIT_PASS",
+  "superseding_parent_insulation_revision": {
+    "C1_angle_only_min_depth_mm": 0.4888313345818929,
+    "coherent_finite_contact_class": true,
+    "electrical_preparation": "Stripping treats already-counted bridge metal; preserve independent>=4.5mm preparation reserve.",
+    "nominal_insulation_cut_min_depth_mm": 0.5473200020978239,
+    "optional_station3p5_C1_angle_only_min_depth_mm": 0.7534805071798552,
+    "optional_station3p5_nominal_min_depth_mm": 0.8196156664217658,
+    "parent_selected_prescription": "Remove redundant sleeve. Original insulationR1.2954 starts at axis-normal plane station3.0mm from land/foil-axis intersection. Exposed metalR<=1.0 clipped betweenz=.05 and station3 plane. Solderz0...05; shroudz0..1.5 with full obliqueR1.7 bore.",
+    "qualification": "This removes nominal board penetration but does not establish allocated residual clearance. Compare the complete chosen closure budget before claiming a pass.",
+    "station_change_scope": "Moving only insulation stripping boundary to3.5mm leaves metal/wire path,85mm cut,lands andinterfaces unchanged, and still precedes first collet grip at2/c+1. It would provide more board-clearance margin if3.0 fails the required tolerance debit."
+  },
+  "topbeam_only_revision": "Approve for construction review: use top beam[-1,0,0.65,319,7,8.65], top two source support lugs/fasteners and proposed fingers only. Omit new perimeter/receiver fabrication as parent specifies; retain and explicitly name the existing carrier/service interface. No load/stiffness/extraction capability is inferred."
+}

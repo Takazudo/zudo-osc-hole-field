@@ -1,0 +1,12 @@
+import numpy as np
+import scipy.sparse as sp
+from scipy.sparse import _sparsetools
+A=sp.csc_matrix([[100000001.,-100000000.],[-100000000.,100000000.]])
+x=np.array([1.,1+1e-8],dtype=np.longdouble);b=np.array([0.,1.],dtype=np.longdouble)
+y=b.copy();_sparsetools.csc_matvec(2,2,A.indptr,A.indices,-A.data.astype(np.longdouble),x,y)
+r=b.copy()
+for col in range(2):
+ for k in range(A.indptr[col],A.indptr[col+1]):r[A.indices[k]]-=np.longdouble(A.data[k])*x[col]
+print('csc',y,r,np.array_equal(y,r))
+C=A.tocsr();z=b.copy();_sparsetools.csr_matvec(2,2,C.indptr,C.indices,-C.data.astype(np.longdouble),x,z)
+print('csr',z,r,np.array_equal(z,r))

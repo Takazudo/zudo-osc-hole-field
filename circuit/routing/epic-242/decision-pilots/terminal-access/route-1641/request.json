@@ -1,0 +1,167 @@
+{
+  "status": "PREPARED AND INDEPENDENTLY REVIEWED; NOT ADMITTED",
+  "admission_id": "epic242-f3-two-a-route-20261011-1641",
+  "native_admitted": false,
+  "native_executed": false,
+  "execution_branch_created": false,
+  "execution_branch": "integration/epic-242-f3-two-a-access-v1",
+  "workflow": ".github/workflows/epic242-f3-two-a-access.yml",
+  "worker_template": "f3-two-a-access-v1-<GITHUB_RUN_ID>-1",
+  "evidence_directory": "<RUNNER_TEMP>/epic242-f3-two-a-access-v1",
+  "artifact_template": "epic242-f3-two-a-access-v1-<GITHUB_RUN_ID>",
+  "method_sha": "6f0783335fa23d760877a91db3b63f93c039b4b4",
+  "reviewed_orchestration_pattern": "bf671866e73e8d133726090c0e8295ccdd41c5c1",
+  "frozen_packet_sha256": "10be49ae32997a36c54436e48226a295678e47dda1fc1c14f4569c72ef4bdd92",
+  "fixture_lock_sha256": "00dd82fa7c42d770204b0177e1f48eb0592a6595696b16bf8f9a76ae4c729f60",
+  "case": {
+    "access_plan_sha256": "c027be8497d450924e38a50ba504e2a694de58634c266de4867c655fac2732c1",
+    "board": "two-A",
+    "board_sha256": "66710513146c22f31595f794d608914fcfb8b61552c82fc5fd680f9ac4b0b978",
+    "dump_sha256": "613a358b340962e2d1fb13cd898fe8a9558edcbf1a5d69cb93b6d2bd7629e97c",
+    "fixture": "design/partition/core-split/candidates/pilots/generated/f3-two-a-exact-access-v1",
+    "fixture_lock_sha256": "00dd82fa7c42d770204b0177e1f48eb0592a6595696b16bf8f9a76ae4c729f60",
+    "initial_portal_counts": {
+      "negative_supply": [
+        0,
+        6
+      ],
+      "positive_supply": [
+        0,
+        12
+      ],
+      "return": [
+        3,
+        3
+      ],
+      "signal": [
+        6,
+        3
+      ]
+    },
+    "locked_files": 297,
+    "method_files": 426,
+    "original_binding": {
+      "artifact_id": 11699982799,
+      "board_sha256": "66710513146c22f31595f794d608914fcfb8b61552c82fc5fd680f9ac4b0b978",
+      "dump_member": "working-result/before/dump.json",
+      "dump_sha256": "613a358b340962e2d1fb13cd898fe8a9558edcbf1a5d69cb93b6d2bd7629e97c",
+      "file": "epic242-two-a-600-run38133584276.zip",
+      "run_id": 38133584276,
+      "sha256": "1bdd84bce237cc864db19bf831f44f51425ce2f7e41b1de774c0da1068881b56"
+    },
+    "recovery_artifact": {
+      "artifact_id": 11705755937,
+      "bytes": 20195283,
+      "file": "epic242-route-1438-38148185181.zip",
+      "run_id": 38148185181,
+      "sha256": "ed8de7933f40369ecefb3ea28f382662923b414298e0cdb72ed5e32578e64e3f"
+    },
+    "route_argv": [
+      "bash",
+      "scripts/pcbgen/with_route_guard.sh",
+      "{ACTUAL_EXECUTION_PYTHON}",
+      "scripts/kicad/native_resource_guard.py",
+      "--admission-id",
+      "{NEW_PARENT_CASE_ADMISSION_ID}",
+      "--worker",
+      "{UNIQUE_CASE_WORKER}",
+      "--sha",
+      "6f0783335fa23d760877a91db3b63f93c039b4b4",
+      "--hook-sha256",
+      "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+      "--seconds",
+      "300",
+      "--evidence",
+      "{NEW_CASE_GUARD_JSON_FILE}",
+      "bash",
+      "-c",
+      "bash scripts/kicad/run.sh kicad-cli version && exec \"$@\"",
+      "epic242-f3-access-probe",
+      "{ACTUAL_EXECUTION_PYTHON}",
+      "circuit/routing/epic-242/decision-pilots/terminal-access/route_f3_access.py",
+      "--board",
+      "two-A",
+      "--fixture",
+      "design/partition/core-split/candidates/pilots/generated/f3-two-a-exact-access-v1",
+      "--fixture-lock-sha256",
+      "00dd82fa7c42d770204b0177e1f48eb0592a6595696b16bf8f9a76ae4c729f60"
+    ],
+    "source_only_prepare_argv": [
+      "{ACTUAL_EXECUTION_PYTHON}",
+      "circuit/routing/epic-242/decision-pilots/terminal-access/f3_fixture.py",
+      "--board",
+      "two-A",
+      "--artifact",
+      "{AUTHENTICATED_ARTIFACT_DIRECTORY}/epic242-route-1438-38148185181.zip",
+      "--output",
+      "design/partition/core-split/candidates/pilots/generated/f3-two-a-exact-access-v1"
+    ]
+  },
+  "bounds_mm": [
+    205.15,
+    236.02,
+    246.775,
+    270.91
+  ],
+  "budget": {
+    "automatic_retries": 0,
+    "clearance_mm": 0.25,
+    "global_memory_gib": 12,
+    "global_workers_max": 2,
+    "max_expansions_per_search": 50000,
+    "native_workers": 1,
+    "rail_width_mm": 0.5,
+    "raster_mm": 0.1,
+    "required_free_gib": 2,
+    "signal_width_mm": 0.3,
+    "via_diameter_mm": 0.6,
+    "via_drill_mm": 0.3,
+    "wall_seconds_route": 300,
+    "window_margin_mm": 6,
+    "worker_memory_gib": 6
+  },
+  "limits": {
+    "automatic_retries": 0,
+    "early_abort_free_bytes": 2684354560,
+    "existing_enclosing_job_cap_seconds": 2580,
+    "free_memory_min_bytes": 2147483648,
+    "global_memory_bytes": 12884901888,
+    "global_workers_max": 2,
+    "image_preparation_seconds": 300,
+    "preparation_free_min_bytes": 8589934592,
+    "route_seconds_per_case_including_both_probes": 300,
+    "route_seconds_sum_two_cases": 600,
+    "sequential_workers": 1,
+    "worker_memory_bytes": 6442450944,
+    "worker_swap_max_bytes": 0
+  },
+  "source_sha256": {
+    "circuit/routing/epic-242/decision-pilots/terminal-access/run_f3_two_a.py": "44431d92da53751db8f01fffba1387e60b4bbd03df19e0bee66cd4fcb9deca86",
+    ".github/workflows/epic242-f3-two-a-access.yml": "925d3bee5addc8a36429b96faee9e79476d9c6b3bcd6085ef2da1ede3aed08de",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/test_f3_two_a_orchestration.py": "81e8b2d23367684e988867a2cf174053c00bf5a9ec21ade49313030544440402"
+  },
+  "independent_review_sha256": "67143ade5d783fc79e83919b21da54f79b39b654301216b8027302436197e33a",
+  "input_verification_sha256": "8c186a5c11edf95ac5c629f68931af7f39018c0f3904869a7a94593810decd82",
+  "parent_closeout": {
+    "k1402_reservation1623": "RELEASED BY PARENT",
+    "k1402_outcome": "ACCEPTED NO IMPROVEMENT;0additions/0cuts/0links",
+    "k1402_empty_proposal": "PRESERVED; NO APPLY",
+    "native_slots": "ALL FREE; preparation reserves none"
+  },
+  "validation": {
+    "terminal_access_source_tests": 70,
+    "independent_binding_source_tests": 19,
+    "pnpm_circuit_check": "PASS",
+    "pnpm_check": "PASS",
+    "baseline_verify_inputs": "PASS;1881original frozeninputs+2reviewedtoolreplacements;195harnesses/390completeendpointmaps/poses;inherited117/129/1402 DRC/parity0/0",
+    "component_scope": "manual68lines,zero declaredplacements; no schematic/placement binding",
+    "regen_all": "NOT RUN: includes native KiCad operations forbidden by source-only preparation scope",
+    "actual_host_and_native": "NOT RUN; requires new explicit exact-SHA parent admission"
+  },
+  "holds": [
+    "No execution branch creation before parent admission of exact orchestration SHA",
+    "No provisioning, probe or native search in preparation",
+    "No retries, changed targets, cuts or extra budget",
+    "No apply, settle, fresh-copy, audit, architecture/hardware adoption, merge or closure"
+  ]
+}

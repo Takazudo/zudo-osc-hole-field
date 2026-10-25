@@ -1,0 +1,48 @@
+from pathlib import Path
+import hashlib,json,os,subprocess,threading,time,resource,pwd
+root=Path.cwd();packet=root/'.circuit-cache/e16-numerical-a73249c-30c5780e';request=packet/'request.json';expected='8f8d104e1b349f063ef7627cc52a66dd64486690b938407ef03916d659ab9665'
+def sha(path):
+ with Path(path).open('rb') as stream:return hashlib.file_digest(stream,'sha256').hexdigest()
+def write(path,data):
+ with Path(path).open('x') as stream:json.dump(data,stream,indent=2);stream.write('\n')
+assert sha(request)==expected
+r=json.loads(request.read_text());assert r['command'][-1]=='--reductions-only';assert r['guards']['maximum_units']==3;assert str(root)==r['checkout'] and os.getuid()==r['uid']
+assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==r['source_sha']
+assert not subprocess.check_output(['git','status','--porcelain']).strip()
+assert not Path(r['output']).exists()
+assert not any(k.startswith('HEAVY_GUARD_') for k in os.environ),'unexpected shared guard environment'
+for path,h in r['input_sha256'].items():assert sha(path)==h,path
+py='/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python'
+versions=json.loads(subprocess.check_output([py,'-c','import sys,numpy,scipy,shapely,json;print(json.dumps(dict(python=sys.version,numpy=numpy.__version__,scipy=scipy.__version__,shapely=shapely.__version__)))'],text=True))
+assert versions==r['toolchain']
+probe="from pathlib import Path;import json;rel=Path('/proc/self/cgroup').read_text().strip().split('::',1)[1];p=Path('/sys/fs/cgroup'+rel);v={k:(p/k).read_text().strip() for k in ('memory.max','memory.swap.max')};assert v=={'memory.max':'2147483648','memory.swap.max':'0'},v;print(json.dumps(dict(cgroup=rel,limits=v)))"
+probe_cmd=['systemd-run','--user','--scope','-q','-p','MemoryMax=2147483648','-p','MemorySwapMax=0',py,'-c',probe]
+probe_run=subprocess.run(probe_cmd,text=True,capture_output=True);write(packet/'scope-preflight.json',{'command':probe_cmd,'exit_code':probe_run.returncode,'stdout':probe_run.stdout,'stderr':probe_run.stderr});assert probe_run.returncode==0
+write(packet/'operator-approval.json',{'schema':'e16-conversation-operator-approval-v1','approved':True,'operator':'takazudo','source_sha':r['source_sha'],'request_sha256':expected,'run_id':r['run_id'],'attempt':r['attempt'],'scope':r['scope'],'approved_at_unix':time.time(),'approval_source':'User replied "k" immediately after the exact short two-reduction request digest and explicit approval question.','reservation':'One serialized baseline batch through the existing shared heavy guard; no concurrent native or numerical work started by this integration owner.','limits':r['guards'],'excludes':'Driving-point chunks, coupled solves, other nets/cases/depths, remedy variants, native reruns and changed requests.'})
+claims=Path(pwd.getpwuid(os.getuid()).pw_dir)/'.local/state/epic242-native-admission';claims.mkdir(parents=True,exist_ok=True)
+claim=claims/f'numerical-{r["run_id"]}-{r["attempt"]}.json';write(claim,{'request_sha256':expected,'source_sha':r['source_sha'],'approval_sha256':sha(packet/'operator-approval.json'),'output':r['output'],'claimed_at_unix':time.time()})
+stop=threading.Event();samples=packet/'scope-observations.jsonl'
+def monitor():
+ with samples.open('x') as log:
+  while not stop.is_set():
+   for p in Path('/proc').iterdir():
+    if not p.name.isdigit():continue
+    try:
+     cmd=(p/'cmdline').read_bytes().split(b'\0')
+     if not any(x.endswith(b'/finite_solve.py') or x==b'finite_solve.py' for x in cmd):continue
+     if not any(r['output'].encode() in x for x in cmd):continue
+     rel=(p/'cgroup').read_text().strip().split('::',1)[1];cg=Path('/sys/fs/cgroup'+rel)
+     values={k:(cg/k).read_text().strip() for k in ('memory.max','memory.swap.max','memory.current','memory.peak','memory.events')}
+     log.write(json.dumps({'time':time.time(),'pid':int(p.name),'cgroup':rel,'values':values})+'\n');log.flush()
+    except (OSError,IndexError):pass
+   stop.wait(2)
+thread=threading.Thread(target=monitor);thread.start();start=time.monotonic();result=None
+try:
+ with (packet/'execution.stdout.log').open('x') as log:
+  result=subprocess.run(r['command'],cwd=root,stdout=log,stderr=subprocess.STDOUT,check=False)
+finally:
+ stop.set();thread.join()
+ changed=[p for p,h in r['input_sha256'].items() if sha(p)!=h]
+ receipt={'request_sha256':expected,'source_sha':r['source_sha'],'command':r['command'],'exit_code':None if result is None else result.returncode,'elapsed_seconds':time.monotonic()-start,'child_peak_rss_KiB':resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss,'changed_inputs':changed,'log_sha256':sha(packet/'execution.stdout.log'),'scope_observations_sha256':sha(samples)}
+ write(packet/'execution-result.json',receipt);write(Path(str(claim)+'.result'),receipt);print(json.dumps(receipt,indent=2))
+raise SystemExit(result.returncode if result is not None else 1)

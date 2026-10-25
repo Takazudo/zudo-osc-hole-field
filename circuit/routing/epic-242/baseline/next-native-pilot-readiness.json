@@ -1,0 +1,119 @@
+{
+  "status": "EXCLUSIVE LIFECYCLE CI SOURCE READY; PARENT ADMISSION REQUIRED; NATIVE SETTLE ON HOLD",
+  "candidate_source_sha": "Exact final pushed integration HEAD after metadata rebinding must be supplied as reviewed_commit and equal workflow GITHUB_SHA; implementation is tree-identical to reviewed local721c0956.",
+  "qualification_receipt": "resource-qualification-run38121547543-ledger.json",
+  "selected_issue": 245,
+  "selected_step": "three-A complete before-board settle ONLY; no focus/search/apply/fresh-copy/audit yet",
+  "selection_reason": "249 native fixture still deletes SVG/reload outputs and lacks full semantic reload comparison;245 has independently reviewed complete source fixture and minimal existing settle entrypoint",
+  "exclusive_workers": 1,
+  "deadline_seconds": 300,
+  "worker_memory_bytes": 6442450944,
+  "aggregate_parent_memory_bytes": 12884901888,
+  "minimum_free_bytes": 2147483648,
+  "hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+  "guard_sha256": "ee755233af405e60cf592956dcf42ca1069f5face6c20c1cdfcdf6f8479ef8ca",
+  "pinned_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "required_native_version": "10.0.6",
+  "preconditions": [
+    "Parent authenticates reviewed source SHA and reserves ONE global slot, excluding other native work",
+    "Selected already-capable runner matches systemd/localDocker/cgroupv2 memory+swap prerequisites; no daemon/security reconfiguration",
+    "One bounded300-second digest-pinned Docker pull; verify RepoDigests, charge disjoint Docker/containerd service cgroups, refuse unaccounted backends, monitor host floor. No daemon configuration or security change. Preparation threshold is sampled, not a hard cap; cancellation does not prove residual daemon work absence. Failure blocks native.",
+    "Approved source interpreter numpy2.2.6/scipy1.15.3/shapely2.1.2; clean reviewed checkout; new worker ID/fresh retained evidence destination",
+    "Source-only materialize in ignored candidates/pilots/generated/decision-three-A-native-a1; authenticate all293files and291portable seals, bind path-dependent commands/manifest hashes freshly",
+    "Before guard invocation, copy the COMPLETE materialized293-file input tree plus sha256.json to fresh retained EVIDENCE_DIRECTORY/input-snapshot, authenticate every copied file, and freeze/record its manifest; settle overwrites the working beforePCB via native --save-board. Verify snapshot hashes unchanged again after run. Never rely on post-settle beforePCB as original input.",
+    "Native regeneration remains held; no canonical generation/board/partition edits admitted",
+    "Every bounded helper including version probes waits for identity-bound guard ACK before native exec; retained containers require complete requested/listed/admitted identity equality and exited0 evidence before cleanup."
+  ],
+  "materialize_argv": [
+    "SOURCE_PYTHON",
+    "scripts/partition/core_split_candidates.py",
+    "materialize",
+    "--pilot",
+    "three-A",
+    "--output",
+    "design/partition/core-split/candidates/pilots/generated/decision-three-A-native-a1"
+  ],
+  "guard_argv": [
+    "python3",
+    "scripts/kicad/native_resource_guard.py",
+    "--admission-id",
+    "PARENT_ADMISSION_ID",
+    "--worker",
+    "three-a-settle-245-a1",
+    "--sha",
+    "FULL_REVIEWED_PUSHED_SHA",
+    "--hook-sha256",
+    "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "--seconds",
+    "300",
+    "--evidence",
+    "EVIDENCE_DIRECTORY/three-a-settle-245-a1.json",
+    "--",
+    "SOURCE_PYTHON",
+    "scripts/partition/core_split_candidates.py",
+    "settle",
+    "--board",
+    "design/partition/core-split/candidates/pilots/generated/decision-three-A-native-a1/before/osc-core.kicad_pcb"
+  ],
+  "source_checks": {
+    "trimmer_tests": 6,
+    "partition_tests": 15,
+    "numerical_versions": "2.2.6/1.15.3/2.1.2",
+    "materialized_manifest_entries": 293,
+    "portable_seals_matched": 291,
+    "before_pcb_sha256": "4d8e238d5d504d55a0f5defe19671d7825f3a356a56ab143e38dd9c918110819",
+    "coordinator_source_probe_manifest_sha256": "345b61737e344c617a3a7c35fed0fe8800a3593010b65ba4f9c8893f41137b31",
+    "manifest_note": "This probe used external temporary path; commands.json/sha256.json are path-dependent, never reuse its manifest digest for in-repository native directory",
+    "fixture_source_files_sha256": {
+      "scripts/partition/core_split_candidates.py": "7b9ff2633bd9ef4c68eec4d0be02f3b33046ab87d65e2e7793e42af5aa619396",
+      "design/partition/core-split/candidates/input-lock.json": "e9dac208ff2cd816aea8f95a8b1708d16859be9bd8d2cf2becf0840531ccae27",
+      "design/partition/core-split/candidates/pilots/source-fixture-seals.json": "9b6cdb960d63549feffeb7f4b8b249c63964126ca3fc041adf60eb569a5b1e57"
+    }
+  },
+  "retain": [
+    "complete293-file source input tree and exact sha256 manifest",
+    "Immutable full pre-run input snapshot plus exact original beforePCB; resulting settledPCB, full-severity raw drc.json (potentially capped), dump.json and settled-receipt.json. Independent uncapped full-warning audit NOT RUN in this step.",
+    "Exact command/interpreter/version/image/source hashes, actually captured driver stdout/stderr and error output, guard/watchdog receipts, elapsed/peak/free-memory samples and final owned-state cleanup"
+  ],
+  "interpretation": "Settle only; NOT COMPLETE ACCEPTANCE. Missing version/image/report or nonzero result retained as negative/blocked evidence. No improvement/adoption/routability or selected architecture claim. Stop after one command; no automatic retry or subsequent routing. Full-severity raw DRC is not an uncapped independent warning audit; that later acceptance gate remains NOT RUN.",
+  "issue249_required_owner_fix": [
+    "fresh explicit evidence-directory option; retain input/policy/candidate/native-reload/front/back SVGs and content hashes",
+    "compare all saved/reloaded owned text: UUID/text/layer/position/angle/mirror/size/stroke and reference/non-annotation preservation, plus second apply/remove semantics",
+    "source tests for evidence retention, both faces and failure artifacts; return reviewed immutable source patch before native proposal"
+  ],
+  "independent_source_review": "PASS: baseline_review independently reviewed gate binding, persistent exit evidence, repeated running PID/cgroup checks, strict final inventory and existing producer-first cleanup; source/mock evidence only.",
+  "logging_limit": "route_jack_grid.check captures child CLI/dump output internally; successful child stdout is not automatically persisted by an external tee. No complete subordinate stdout/stderr retention claim. Raw reports and driver/version/errors provide settle-only evidence; richer logging requires a separately reviewed source change.",
+  "workflow": "routing-benchmark.yml",
+  "dispatch_mode": {
+    "settle_only": "true",
+    "board": "osc-core",
+    "resource_qualification": "false",
+    "reviewed_commit": "FULL_REVIEWED_PUSHED_SHA",
+    "reviewed_hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "parent_admission_id": "NEW_PARENT_ADMISSION_REQUIRED"
+  },
+  "preparation_limit": "300 seconds plus at most10 seconds client cancellation cleanup; sampled6GiB aggregate Docker/containerd ceiling and2.5GiB host free-memory early abort. Existing daemon caps recorded; no daemon hard-cap enforcement claim.",
+  "route_checks": {
+    "focused_source_tests": 68,
+    "complete_fixture_snapshot": "293 input files plus manifest,291 portable seals; source-only materialization/snapshot/hash verification PASS",
+    "compile": "PASS",
+    "circuit_check": "PASS",
+    "pnpm_check": "PASS",
+    "frozen_inputs": "1881 original inputs unchanged;195 harnesses/390 endpoint refs/pin maps/poses; accepted117/129/1402 DRC/parity0/0"
+  },
+  "latest_native_run": {
+    "run_id": 38125854892,
+    "source_sha": "fe2e6d20c50587e223f1357f34c865db385fa5b0",
+    "ledger": "settle-run38125854892-ledger.json",
+    "outcome": "FAIL / NOT ACCEPTED",
+    "blocker": "NEW FAIL-CLOSED GUARD OBSERVATION: a listed full-ID container disappeared before any running membership proof for that ID. Original prior-verified case is distinct. Exact underlying container exit cause not established.",
+    "next": "First admit and inspect one bounded startup/exit lifecycle CI job after exact published SHA review. Third settle remains on hold until that lifecycle receipt passes and parent grants a separate native admission."
+  },
+  "retry_diagnosis": "settle-run38124807606-diagnosis.json",
+  "earlier_native_run": "settle-run38124807606-ledger.json",
+  "tool_epoch": "epic242-tools-e7-lifecycle-ci",
+  "lifecycle_proposal": "native-startup-handshake-proposal.json",
+  "reviewed_implementation_sha": "9950a864fbc02ff63734c4c9358b8a79a6abcd49",
+  "publication_mapping": "connector-publication-map.json",
+  "lifecycle_qualification": "next-lifecycle-qualification.json"
+}

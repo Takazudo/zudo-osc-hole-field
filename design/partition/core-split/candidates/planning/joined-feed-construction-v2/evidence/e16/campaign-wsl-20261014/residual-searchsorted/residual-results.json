@@ -1,0 +1,112 @@
+{
+  "source_sha256": "d07b002c42d9e708dcf95d0702b02c7753ebcef10ec4b45d1eb68c7449d7b919",
+  "synthetic_only": true,
+  "nodes": 1800000,
+  "nonzeros": 8999924,
+  "rhs": 1,
+  "indptr_dtype": "int32",
+  "peak_rss_KiB": 411172,
+  "address_limit_bytes": 2147483648,
+  "measurements": [
+    {
+      "method": "current_CSC_python_int",
+      "elapsed_seconds": 0.17891048407182097,
+      "exact_original_residual_equal": true,
+      "searchsorted_entries": [
+        {
+          "function": "<method 'searchsorted' of 'numpy.ndarray' objects>",
+          "calls": 276,
+          "total_seconds": 0.084308149,
+          "self_seconds": 0.084308149
+        },
+        {
+          "function": "_searchsorted_dispatcher",
+          "calls": 276,
+          "total_seconds": 3.9304e-05,
+          "self_seconds": 3.9304e-05
+        },
+        {
+          "function": "searchsorted",
+          "calls": 276,
+          "total_seconds": 0.08489866800000001,
+          "self_seconds": 0.000251204
+        }
+      ]
+    },
+    {
+      "method": "candidate_CSC_dtype_scalar",
+      "elapsed_seconds": 0.07625286001712084,
+      "exact_original_residual_equal": true,
+      "searchsorted_entries": [
+        {
+          "function": "<method 'searchsorted' of 'numpy.ndarray' objects>",
+          "calls": 276,
+          "total_seconds": 0.000411376,
+          "self_seconds": 0.000411376
+        },
+        {
+          "function": "_searchsorted_dispatcher",
+          "calls": 276,
+          "total_seconds": 3.3784e-05,
+          "self_seconds": 3.3784e-05
+        },
+        {
+          "function": "searchsorted",
+          "calls": 276,
+          "total_seconds": 0.00074021,
+          "self_seconds": 0.000146099
+        }
+      ]
+    },
+    {
+      "method": "current_repeat",
+      "elapsed_seconds": 0.16510125703644007,
+      "exact_original_residual_equal": true,
+      "searchsorted_entries": [
+        {
+          "function": "<method 'searchsorted' of 'numpy.ndarray' objects>",
+          "calls": 276,
+          "total_seconds": 0.087099784,
+          "self_seconds": 0.087099784
+        },
+        {
+          "function": "_searchsorted_dispatcher",
+          "calls": 276,
+          "total_seconds": 3.7054e-05,
+          "self_seconds": 3.7054e-05
+        },
+        {
+          "function": "searchsorted",
+          "calls": 276,
+          "total_seconds": 0.087649088,
+          "self_seconds": 0.000229838
+        }
+      ]
+    },
+    {
+      "method": "candidate_repeat",
+      "elapsed_seconds": 0.07323051802814007,
+      "exact_original_residual_equal": true,
+      "searchsorted_entries": [
+        {
+          "function": "<method 'searchsorted' of 'numpy.ndarray' objects>",
+          "calls": 276,
+          "total_seconds": 0.0004944190000000001,
+          "self_seconds": 0.0004944190000000001
+        },
+        {
+          "function": "_searchsorted_dispatcher",
+          "calls": 276,
+          "total_seconds": 3.4621e-05,
+          "self_seconds": 3.4621e-05
+        },
+        {
+          "function": "searchsorted",
+          "calls": 276,
+          "total_seconds": 0.0008572100000000001,
+          "self_seconds": 0.00015453
+        }
+      ]
+    }
+  ]
+}

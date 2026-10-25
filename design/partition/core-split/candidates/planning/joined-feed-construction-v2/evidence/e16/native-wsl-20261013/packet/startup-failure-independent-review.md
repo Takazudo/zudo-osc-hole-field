@@ -1,0 +1,1 @@
+Independent review PASS: expected0/1 helpers, valid membership/caps, exact approvals/hashes, no survivors or cleanup failures. Oracle preparation exact single selector and1680s bound, all input seals match. No approval or execution supplied.

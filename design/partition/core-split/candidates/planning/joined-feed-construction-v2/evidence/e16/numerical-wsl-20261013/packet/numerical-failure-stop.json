@@ -1,0 +1,50 @@
+{
+  "at_unix": 1791897030.4270275,
+  "reason": "Numerical stop-on-failure: both first +12V board load reductions exceed declared1e-9, despite exit0; preserve completed work and stop current owned solver before diagnosis.",
+  "owned": [
+    {
+      "pid": 1567976,
+      "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r60c3024b2e8e4009871e3ba01f94afd8.scope",
+      "unit": "run-r60c3024b2e8e4009871e3ba01f94afd8.scope",
+      "cmdline": [
+        "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_solve.py",
+        "dpoint",
+        "--operator",
+        "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/operator-+12V.pkl.gz",
+        "--coverage",
+        "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-+12V.json.gz",
+        "--config",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json",
+        "--cases",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json",
+        "--case",
+        "nominal-average",
+        "--depth",
+        "uniform-dielectric",
+        "--board",
+        "KB",
+        "--net=+12V",
+        "--start",
+        "0",
+        "--stop",
+        "96",
+        "--output",
+        "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-4bde7e8-3968e3cc/KB-dp-+12V-nominal-average-uniform-dielectric-000.pkl.gz"
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": [
+        "systemctl",
+        "--user",
+        "stop",
+        "run-r60c3024b2e8e4009871e3ba01f94afd8.scope"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

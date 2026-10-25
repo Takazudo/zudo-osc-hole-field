@@ -1,0 +1,46 @@
+{
+ "inputs": {
+  "KB-access-r4.json": "05484f4b7beddf1d8116e2ca461542079dfa40fa39fbcd01869dc2b4e2db3890"
+ },
+ "methods": {
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evaluate_access.py": "0a3c4d1d721895063b9d155d96e8aed8148448cfdc451e944240d655f6f915bf",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py": "6d84330093d5e5b998aae3c5582a3b3b7f40d7548288e0e43e48fb3645352ce0",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py": "c1aeeb5be28156448365fc78c03e986ef6402602ebfdaa03f2123d0411236375",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py": "6f3df61dd649729b3e58796c067cc9924dc3d776c645592c62e5f6ab3ac5c235",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json": "f2783e9a0a720e431a00512e9017b55c236e7f31e5a579bbe00e6ee442e00eea"
+ },
+ "command": [
+  "evaluate_access.py",
+  "--source",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-r4.json",
+  "--clip-helper",
+  "clip_sheets.py",
+  "--design",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+  "--python",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/venv/bin/python",
+  "--output",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-r4"
+ ],
+ "step": "KB-eval-r4",
+ "exit_code": 0,
+ "elapsed_seconds": 88.513,
+ "stdout_tail": "{\"step\": \"caps\", \"exit_code\": 0, \"seconds\": 1.6438660530257039, \"stdout\": \"{\\\"board\\\": \\\"KB\\\", \\\"caps\\\": 0, \\\"barrels\\\": 0}\\n\"}\n{\"step\": \"clip\", \"exit_code\": 0, \"seconds\": 63.472441810998134, \"stdout\": \"{\\\"board\\\": \\\"KB\\\", \\\"report\\\": {\\\"AGND\\\": {\\\"layer\\\": \\\"In1.Cu\\\", \\\"cut_count\\\": 9917, \\\"pieces\\\": 9, \\\"area_mm2\\\": 79200.652753, \\\"largest_mm2\\\": 79199.824006}, \\\"+5V\\\": {\\\"layer\\\": \\\"In2.Cu\\\", \\\"cut_count\\\": 34458, \\\"pieces\\\": 1223, \\\"area_mm2\\\": 68727.912978, \\\"largest_mm2\\\": 61833.074102}, \\\"-12V\\\": {\\\"layer\\\": \\\"In3.Cu\\\", \\\"cut_count\\\": 22992, \\\"pieces\\\": 666, \\\"area_mm2\\\": 72257.040667, \\\"largest_mm2\\\": 66897.928362}, \\\"+12V\\\": {\\\"layer\\\": \\\"In4.Cu\\\", \\\"cut_count\\\": 11309, \\\"pieces\\\": 11, \\\"area_mm2\\\": 78566.929523, \\\"largest_mm2\\\": 78565.386736}}, \\\"elapsed_seconds\\\": 63.04, \\\"peak_KiB\\\": 1266772}\\n\"}\n{\"step\": \"graph\", \"exit_code\": 0, \"seconds\": 19.985650621994864, \"stdout\": \"{\\\"status\\\": \\\"SOURCE_DISCONNECTED_LOAD_PORTS\\\", \\\"board\\\": \\\"KB\\\", \\\"direct_load_count\\\": 1490, \\\"counts\\\": {\\\"nodes\\\": 15798, \\\"edges\\\": 5515}, \\\"elapsed_seconds\\\": 16.90190692100441, \\\"peak_KiB\\\": 1392924}\\ndisconnected 363\\n\"}\n{\"step\": \"census\", \"exit_code\": 0, \"seconds\": 2.9782448759651743, \"stdout\": \"{\\\"board\\\": \\\"KB\\\", \\\"physical_pad_count\\\": 2281, \\\"counts_by_net\\\": {\\\"+5V\\\": 117, \\\"-12V\\\": 46, \\\"AGND\\\": 303, \\\"+12V\\\": 45}, \\\"direct_loads\\\": 363, \\\"supplemental\\\": 148}\\n\"}\n{\"status\": \"SOURCE_DISCONNECTED_PHYSICAL_PORTS\", \"board\": \"KB\", \"unresolved_physical_pad_count\": 511, \"unresolved_direct_load_count\": 363, \"unresolved_supplemental_count\": 148}\n",
+ "stderr_tail": "",
+ "peak_rss_KiB": 1392924,
+ "outputs": {
+  "KB-eval-r4": {
+   "caps-execution.json": "7316cc8cf91a56c338cad0c9516fd503b1a4fac3259439a4bc01c6376fec1362",
+   "census-execution.json": "cbe3d48f9b37dda20e07841273bd9059088d0270d628f01dfa6768ca9b0c23e8",
+   "clip-execution.json": "391e184a7ea18b39a91f565170b1f616d3761abaa7df88524b5c5ab7b69c43a2",
+   "clipped-sheets.json": "f7aca726becf7a017e8659860c6d5293b3c44170709ec3a50cf71a6472fb20f2",
+   "evaluation.json": "a0f8ce5465f3656f054edb44bb7bd200063068c21180a07ce1a23a8f578e3aa0",
+   "graph-execution.json": "4e3142dae2b6cd81de62d2c34e6ebd14978b36206cd41ed07e445b7dc4889109",
+   "normalized-caps.json": "2d698f5d5673dd91f69d625f595b9118d423403b868df28b22ca2fbd43b6dca9",
+   "port-graph.json": "c4dcde0c2be9dc59539dfefc9c4e50f501d3729f8cf80757a6c3221cb1467094",
+   "port-obligations.json": "43d0f91a2c4f09cb8890c40a73d9518c2a59c00ceda65d855e55430d30e668c2"
+  }
+ },
+ "native_calls": 0
+}

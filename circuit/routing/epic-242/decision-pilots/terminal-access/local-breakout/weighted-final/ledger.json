@@ -1,0 +1,87 @@
+{
+  "status": "FINAL WEIGHTED ATTEMPT INVALID; UNCHANGED-PLACEMENT CASE RETIRED",
+  "source_commit": "f5626849b368fb17cf11ccb729a6460dae43b4e0",
+  "attempt_count": 1,
+  "ordering": {
+    "heuristic_weight": 2,
+    "priority": [
+      "g + 2*h",
+      "-g",
+      "deterministic node"
+    ],
+    "planar_cost": "Euclidean lattice step times 3 on F.Cu/B.Cu, otherwise 1",
+    "via_cost": 30,
+    "reopen": "strictly smaller positive g",
+    "variants": 0,
+    "automatic_retries": 0,
+    "optimality_claim": false
+  },
+  "caps": {
+    "expansions": 50000,
+    "exact_checks": 250000,
+    "soft_search_wall_seconds": 300
+  },
+  "diagnostic": {
+    "status": "STOPPED_AT_COMPLETE_CHAIN_GATE",
+    "expanded": 15607,
+    "visited": 7164,
+    "exact_checks": 26251,
+    "rejection": "new vias violate existing-hole policy",
+    "failure": null
+  },
+  "method_interval_seconds": 4.544200353004271,
+  "candidate_created": false,
+  "native_executed": false,
+  "adopted": false,
+  "all_demands_succeeded": false,
+  "full_cumulative_fill_gate": "NOT RUN; prior emitted new-via gate rejected",
+  "negative_scope": "Not graph-disconnection, physical-impossibility or placement-necessity proof",
+  "disposition": "No variants, budget increases or native packet; separate #245 placement recommendation for #253 under #242",
+  "next_deliverable": "placement-recommendation.md",
+  "placement_implemented": false,
+  "validation": {
+    "source_tests": 101,
+    "new_weighted_tests": 7,
+    "pnpm_check": "PASS",
+    "circuit_check": "PASS",
+    "baseline_verifier": "PASS",
+    "independent_source_result_review": "PASS",
+    "component_scope": "manual68lines/zero declared placements; no schematic/placement binding",
+    "full_regeneration": "NOT RUN; unadmitted native operations",
+    "peak_memory": "NOT MEASURED",
+    "independent_closeout_review": "PASS; nonblocking original AGND anchor clarity addressed"
+  },
+  "native_admission": "NONE; all slots free",
+  "input_dump_sha256": "613a358b340962e2d1fb13cd898fe8a9558edcbf1a5d69cb93b6d2bd7629e97c",
+  "candidate_input_source_binding_sha256": "c25b5c9948c194cd7e21b3d4228f8c6da89f52f7fb7421d88762132d5ba22000",
+  "source_sha256": {
+    "circuit/routing/epic-242/decision-pilots/terminal-access/weighted_transition_candidate.py": "4d6202b2f4156e5a9038b4f3801ae430944bcf54be4476bcbe3dd5dda80325d9",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/test_weighted_transition_candidate.py": "43bc439c186e08d5fd511661edbeb2984d8e8a3cb43462dadffc0a3b1571c76c",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/exact_transition_candidate.py": "f0c87c62c12b7353511c0d3c9e6f34d9485a6c469288a4ce75b8cb2d45639457",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/analyze_f3_breakout_region.py": "a4c4de781e8f87812ce11429a8e867e351622153feed290a1cb77804884aac0d"
+  },
+  "evidence_sha256": {
+    "README.md": "a58c5a664053c1810425affcfee8297a6730e4ca307861148e02ca3312855191",
+    "baseline-check.txt": "32a44c8562aea8a4789470f03ae2211f7bf1c702bb02e3a20d0f2745e3021946",
+    "circuit-check.txt": "e2bf622a485aed751f0dc08a53a8d7e87b08bcd486d512e9c3a71257820c6e97",
+    "closeout-review.json": "ff571897bf73117bf6ca801caebc59c3e8b5346243d1863335e4ce46d8677542",
+    "execution-source.json": "0d2b01abca4a41f8dc696a1356d3428f9b6e527d0baadb1dd1425e45f3947cf1",
+    "graph-path.json": "69aa4b908978655d869a282aaec19b72b5a1b53be9e07190713713548c30a8be",
+    "independent-review.json": "b3fa3edebe491479dd9de8874c36a1a8647b39226ae8507ad950004983b80f81",
+    "intent.json": "8c3917a8a7e707b3e3dd9a7b3cecef2907049d64e8d68c555fee808aea3b1d23",
+    "new-via-rejection.json": "68e08297ef9568c76964772cf6ee34d69d4f70a382de2ed0f340e463797d62bf",
+    "placement-recommendation.md": "8e0997d61821e52b802aade43184d0ecb0e3e364613f348eae655d4bfa58b420",
+    "placement-source-snapshot.json": "195036d226618090fb297f47eafb35e824258d96a78f0d728a2b38f5a4769189",
+    "pnpm-check.txt": "028e9fcfd2ffee79cf33af7bbc9d7d82931c5ef9d31847ea177e04bdffe0b04e",
+    "result.json": "9ac4d889383104907f2594c9bd0ec672251ad380c80106785e2322ace6f4c296",
+    "tests.txt": "0bca343b760a83f6c00cbc00f3eea008cbeea1e4ae11b631e82e792e6ff3bd96"
+  },
+  "post_review_changes": {
+    "placement-recommendation.md": {
+      "reviewed_sha256": "58517db82a1bb489e8a2300d5ec48ab0358a093b54963f8c456ceea91b3a65e2",
+      "final_sha256": "8e0997d61821e52b802aade43184d0ecb0e3e364613f348eae655d4bfa58b420",
+      "change": "Addressed reviewer clarity note by explicitly preserving original AGND pair C2338.2 -> U2312.5; C2312.2 is local return access only"
+    },
+    "ledger.json": "Added the closeout review receipt, final file seals and this provenance note; reviewer ledger seal identifies its pre-review snapshot"
+  }
+}

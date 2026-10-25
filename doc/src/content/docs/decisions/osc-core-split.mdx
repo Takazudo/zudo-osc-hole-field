@@ -1,0 +1,201 @@
+---
+title: "Core architecture comparison: retain K1402 pending gates"
+description: "Issue 253 compares the complete one-, two- and three-core options without adopting a replacement architecture."
+---
+
+The architecture decision is **BLOCKED**. Retain the accepted K1402 board while
+resolving one complete two-core feed and service arrangement. Two cores remain the
+first comparison preference. Three cores need a specific local routing or service
+advantage that justifies another plane, feed branch and support layer. K1402 is the
+incumbent, not a demonstrated final routing winner.
+
+This assessment binds integrated evidence commit
+`10c51e44a1acc589c08ac17559c300e17799f8aa` and accepted main
+`65cefd41fc39e064d38319115ad96016a1c6b71c`. It preserves JL117/JR129/K1402,
+fixed panel positions, circuits, non-core poses and accepted copper. Core1312
+remains unadopted under #244's KEEP_K1402 disposition. Issue #253 stays open;
+production foundation and A/B/C implementation remain on hold. B/C are not
+permanently NOT_APPLICABLE without a final architecture selection.
+
+## Complete alternatives
+
+| Evidence | Retained K1402 | Complete two-core option | Complete three-core option |
+| --- | --- | --- | --- |
+| Unique source pad UUID/Ref/pad/net identities | 13,406 | Same 13,406; 199 duplicate blank-net mechanical pad identities | Same 13,406; 199 duplicate blank-net identities, 398 excess copies |
+| Source parts / trimmers | 3,385 / 100 | 1,795 + 1,590 / 64 + 36 | 919 + 1,134 + 1,332 / 31 + 33 + 36 |
+| Source-part courtyard sums, mm² | No new matched whole-K area screen here | 20,271.7884 / 27,953.0040 | 10,562.6680 / 13,306.0760 / 24,356.0484 |
+| Difficult local occupancy | No new matched whole-K tile screen here | B: F.Cu 0.733324, B.Cu 0.678739 | C retains those same maxima |
+| New planes / six-wire satellite branches | 0 / 0 | 1 / 1 | 2 / 2 |
+| Deep arrangement: extra case depth | None introduced | 26 mm | 52 mm |
+| Deep arrangement: passage/part conflicts | No new arrangement screened | 93 | 68 |
+| Through-loom / connector-service passages | Existing obligations retained | 85 / 106 | 196 / 186 |
+| Routing pilot | #252 source-ready, native NOT RUN | Settle only; routing NOT RUN | Settle only; routing NOT RUN |
+
+All five candidate boards are full-envelope, six-layer 310 × 284 mm notched
+boards, each 85,464 mm². They are not compact-board fit results. The worst common
+F.Cu tile is `[184,68,204,88]` mm. Actual serialized courtyard polygons and local
+20 × 20 mm tiles support the comparison; total part count or area alone cannot
+show a usable escape channel. Each complete split retains 40 strict 0.349999 mm
+gap records against the 0.35 mm requirement. No tolerance relaxation is adopted.
+Reservation intersections, opposing-face bodies, drilled pads/tails and shafts
+remain open. The #245 fixture retains a conservative protection reserve on every
+board; reconciled #246/#247 source geometry places it on A only and leaves new
+satellite reserves unplaced. These are different source screens, not one accepted
+layout; the final placed alternative must reconcile them before native comparison.
+
+The compact alternatives each intersect four retained JL–P utility loops. The
+three-board 120 mm case alternative has 58 bend-radius failures and eight utility
+loop conflicts. Deep options avoid those listed hard conflicts but retain the
+passage conflicts above. An empty `hard_conflicts` list does not prove fit.
+Three's fewer passage conflicts and more balanced trim workload are prospective
+advantages worth preserving; they do not yet close its added assembly burden.
+
+## Connectivity and retained copper
+
+The saved settled native dumps cover all 13,406 unique pads with unchanged
+identities. All 3,553 exclusive nonblank electrical nets retain the same recorded
+open island memberships and contribute 1,029 open-edge deficits in each complete
+option. Connected nets are omitted from the island table, so this is not proof of
+all connected groups or exhaustive zone-only copper preservation.
+
+Only +12 V, +5 V, −12 V and AGND are shared electrical domains. Their native
+deficits are 373 in K, 1,713 across two separate boards and 1,718 across three.
+These are different physical domains, not deduplicated cross-board joins.
+Consequently the raw totals 1,402 / 2,742 / 2,747 cannot rank routing quality,
+effort, noise or architecture. Unchanged exclusive connectivity is expected from
+retained local copper; it does not rule out a future split routing benefit.
+
+The source copper index marks 124,421 local-net objects for identity-preserving
+native recheck, 9,135 rail/return/zone objects for coupled replay and 346 rule
+areas for retention. These dispositions authorize no deletion or migration.
+Uncapped warning identities, original group preservation, migration eligibility
+and independent fresh-copy agreement remain unrun. Capped DRC unconnected-item
+lists cannot replace full dump edges or full warning inventories.
+
+## Power, feeds and adjustment access
+
+All 13 POWER parts, the 18 original K load lands and 76 × 70 mm protection
+reservation remain provisionally on A. Each satellite needs six additional
+factory-soldered wires, twelve lands, two 91 × 6 mm terminal rows and two
+91 × 28 × 28 mm F-side service corridors. Existing GH connectors retain their
+identities and complete pin order; they are not qualified full-core feeds.
+New bulk and monitor identities, positions and assembly origins remain unresolved.
+
+A 26 mm plane pitch gives 24.4 mm bare board gap. A 28 mm normal service corridor
+therefore has a **conditional 3.6 mm deficit** wherever it projects through the
+neighboring board. Origins and rotations are not yet assigned, so this is not
+proof that every split is impossible. A dimensioned edge escape or reviewed
+opening could resolve it. Moving the entire stack deeper does not increase that
+local gap. Actual wire paths must include bends, slack, strain relief and service
+travel within the 110 mm branch cut ceiling; straight-line lower bounds are
+insufficient.
+
+The 1 mΩ rail, 0.5 mΩ common-AGND and 20 mV allowances belong to the entire joined
+network, including hub, branches, necks, vias and contacts. They cannot restart
+at each core. Unequal demand, absent return conductors and partial-power behavior
+remain design obligations. #57/#59/#65 remain open.
+
+All 100 trimmers, including 56 on B.Cu, need supported adjustment without owner
+desoldering or loading solder joints. #248's COMPONENT_REVIEW_READY covers 23
+MPN-gap reviews; it does not adopt replacements or prove calibration access.
+Bourns TC33X-2-102E and TC33X-2-103E source identities remain unchanged.
+The reviewed TC33X family envelope is a candidate bound, not verified tool-axis,
+seating, mirrored installation, hand clearance or calibration range. Label
+reservations may require leaders displaced up to 111.832 mm in two or 82.354 mm
+in three; zero modeled label overlap does not establish installed readability.
+#249 native annotation checks and physical readability remain open.
+
+## Smallest next work
+
+The new source-to-settled target join finds a concrete pilot blocker: the current
+sensitive-signal samples for **two-A, two-B, three-A and three-B have no recorded
+open demand**, in both their candidate and accepted K dumps. They cannot count as
+routing exercises. Three-C's signal pads occupy two open groups in both. Two-B's
+coupled-return pads are split in the candidate but already share one recorded K
+group; closing that candidate pair would restore a partition-induced obligation,
+not demonstrate an improvement over K. Supply samples are single pads on open
+nets and still need reviewed remote landing groups. These findings are recorded
+per exact Ref/pad/UUID in the replay; no source manifest or copper was altered.
+
+1. **Complete one two-core source arrangement:** place both feed endpoints and
+   bulk/monitor reservations; resolve the conditional corridor deficit and strict
+   courtyard gaps; join the result to actual copper, cable, support and tool
+   obstacles. Preserve all 195 harness IDs, 390 endpoint Refs, full pin maps,
+   438 panel records and non-core poses. Do not rerun pair-sort packing or
+   order-derived J900 numbering.
+2. **Bound power and supported service:** provide a realizable branch route and
+   joined return budget, and check access to all 100 trim axes with opposing
+   bodies/tails, tray motion and factory-connected loops. Exact new identities
+   may remain draft only with source-backed envelopes and assembly constraints.
+3. **Prepare matched native cases:** replace the four unexercisable signal samples
+   with reviewed real open demands in their owned source modules, and join
+   #252's nine authenticated cases. Select real open
+   demands with legal landings and common obstacle/search windows. The #252
+   12 × 12 mm windows and separate AGND fanout window can exclude targets; such
+   failures would not prove one-core infeasibility. No native admission is active.
+4. **Run only after exact admission:** require at least one accepted difficult
+   supply closure and one coupled signal closure per proposed board, with its
+   return proved or preserved; retain both supply polarities in the comparison.
+   Already-connected cases are NOT EXERCISED, never successes. Record identical
+   predeclared search budgets, setup/refill/search/audit times, copper delta and
+   memory. Require full warnings, original-group/copper preservation, zero
+   error/parity and fresh-copy agreement before counting useful progress.
+
+A split advantage requires a source-identical difficult demand that it resolves
+within the common budget while K does not, and a geometric explanation. Three
+additionally needs a gain unavailable to two that justifies its extra board and
+service burden. No broad production router harness is needed to answer that
+question. Full physical qualification follows a selected source design; no order
+or energization is authorized here.
+
+The stale panel receipt is a separate failed qualification: panel bytes match,
+but `scripts/kicad/run.sh` changed. Candidate settles do not refresh it. Aggregate
+canonical regeneration is NOT RUN because it enters native work without a new
+parent admission. The accepted design is preserved in the meantime.
+
+## Reproducible decision evidence
+
+The machine-readable decision and interim preservation contract are
+`design/partition/core-split/decision.json` and `contract.json`. They deliberately
+leave final split IDs, names and stack Z unresolved; production foundation must
+not guess these. `circuit/routing/epic-242/decision-pilots/` binds source hashes,
+artifact IDs and ZIP/dump hashes and records source joins and saved-dump replay.
+
+```sh
+python3 circuit/routing/epic-242/decision-pilots/check.py --check
+python3 circuit/routing/epic-242/decision-pilots/check.py --check --artifacts /path/to/verified-zips
+python3 -m unittest discover -s circuit/routing/epic-242/decision-pilots -p 'test_*.py'
+```
+
+These commands perform no native work or downloads. Missing artifacts fail
+explicitly. The replay recomputes pad coverage, net ownership and recorded open
+groups from authenticated saved bytes; it does not refresh native measurements.
+Independent Astra High judgment informed this decision, with a separate skeptical
+review recorded beside the checks. Component validation uses the manual inventory:
+68 lines, zero declared placements; schematic/placement binding was not performed.
+
+## Corrected comparison and placed-feed follow-up
+
+The follow-up method in `decision-pilots/matching-spec.json` replaces unsuitable
+samples with 12 authenticated open demands across O1/F3/E1, each checked on K
+and its two/three owner. Exact two-pad landing masks, common native-coordinate
+windows and fixed budgets prevent a large K group from choosing an easier
+remote. The ledger preserves full groups and exhaustive touched-package rail
+and return obligations; partition repairs earn zero baseline credit. The saved
+evidence evaluator requires full warning replay and exact fresh-board agreement
+before reporting diagnostic closures, and never grants adoption.
+
+The nine-case transaction is concrete in `decision-pilots/native-proposal.md`,
+but remains **NOT ADMITTED / NOT RUN**. The original decision JSON is retained
+as the historical checkpoint so producer input hashes remain reproducible.
+
+Mechanical PR270 rejects the proposed indivisible91×34mm KA feed/service
+projection. Power PR271 joins exact interfaces and voltage/return budgets without
+claiming realized feeds. Neither applies the proposed capacitor shifts. A34.6mm
+pitch solves only Z at zero margin. The next source task is one jointly placed
+feed alternative using paired or split terminal rows and actual supported wire
+sweeps, with positive tolerance margins and the complete electrical cut budgets.
+This packaging search remains within the existing fixed-panel/electrical
+constraints; an owner topology choice is premature. See
+`decision-pilots/design-resolution.md` for the bounded deliverable and the precise
+condition that would require an owner constraint choice.

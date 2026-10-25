@@ -1,0 +1,4891 @@
+[
+  {
+    "kind": "segment",
+    "net_token": "AGND",
+    "sha256": "abb78ed0fa36cc8067bd9d265647f28d99c806011a300d1ccc6e4a125bd8cdc4",
+    "source_span": [
+      27288417,
+      27288565
+    ],
+    "uuid": "c56fc4e3-de5b-5407-b043-2296a6c583fa",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "a9e3eca7-29a2-5274-92e5-466ec478335f",
+        "ref": "C2337",
+        "pad": "2",
+        "copper_uuid": "c56fc4e3-de5b-5407-b043-2296a6c583fa",
+        "gap_mm": -0.15
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "AGND",
+      "source_contact_refs": [
+        "C2337"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == AGND",
+      "full_net_pad_records_sha256": "c35575d18d4fef56bce544fda4677584dd60895af1e17383883b6b5c1aac9bae",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          211.8,
+          240.9
+        ],
+        [
+          211.8,
+          241.25
+        ]
+      ],
+      "diameter_or_width_mm": 0.3,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          211.8,
+          240.9
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "4a55a332-14d5-59a0-a378-fc1ec898c08b",
+            "sha256": "887caaedc791b7494af80f000078c7bb63c6b88d350ab15225a4cdbff7d35037",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [
+          "a9e3eca7-29a2-5274-92e5-466ec478335f"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          211.8,
+          241.25
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "4a55a332-14d5-59a0-a378-fc1ec898c08b",
+            "sha256": "887caaedc791b7494af80f000078c7bb63c6b88d350ab15225a4cdbff7d35037",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "4a55a332-14d5-59a0-a378-fc1ec898c08b",
+        "sha256": "887caaedc791b7494af80f000078c7bb63c6b88d350ab15225a4cdbff7d35037",
+        "kind": "via",
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu",
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.6,
+        "drill_mm": 0.3,
+        "full_object_gap_mm": -0.44999999999999996,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "a9e3eca7-29a2-5274-92e5-466ec478335f",
+        "ref": "C2337",
+        "pad": "2",
+        "net": "AGND",
+        "original_xy_nm": [
+          211550000,
+          240460000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "via",
+    "net_token": "-12V",
+    "sha256": "720ec3610ea7670c5549c8094a5111eac69d8480846bd1dd9956bc65c76bd69b",
+    "source_span": [
+      27536271,
+      27536412
+    ],
+    "uuid": "d7732d5b-b9be-5185-a88d-d66289692ca0",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "-12V",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == -12V",
+      "full_net_pad_records_sha256": "cec455bf58f507f95436fece35178b290bb5364138fecdf3d2326ed501fb9aa1",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          236.3,
+          236.9
+        ]
+      ],
+      "diameter_or_width_mm": 0.7,
+      "layers": [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu",
+        "B.Cu"
+      ],
+      "drill_mm": 0.3
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "-12V",
+    "sha256": "46479b1cdfbfb7f28b985aef5cb341a47565bb5aac086ad1d8416daf9c321bc5",
+    "source_span": [
+      27546004,
+      27546151
+    ],
+    "uuid": "0545fe0e-71a6-592b-b6f5-f9d729821bc6",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "d49734b3-60d3-5c7b-abe1-2ac8ccb1e0af",
+        "ref": "C2338",
+        "pad": "1",
+        "copper_uuid": "0545fe0e-71a6-592b-b6f5-f9d729821bc6",
+        "gap_mm": -0.2
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "-12V",
+      "source_contact_refs": [
+        "C2338"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == -12V",
+      "full_net_pad_records_sha256": "cec455bf58f507f95436fece35178b290bb5364138fecdf3d2326ed501fb9aa1",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          213.3,
+          250.9
+        ],
+        [
+          213.7,
+          251.3
+        ]
+      ],
+      "diameter_or_width_mm": 0.4,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          213.3,
+          250.9
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "d49734b3-60d3-5c7b-abe1-2ac8ccb1e0af"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          213.7,
+          251.3
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "b3021cb3-4d87-5789-aae7-0bb29585ee56",
+            "sha256": "5f22ac6c71880dad4b0c249ae2473369a9b8d6aab8b1c1ddf832d690cb7ecb38",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "b3021cb3-4d87-5789-aae7-0bb29585ee56",
+        "sha256": "5f22ac6c71880dad4b0c249ae2473369a9b8d6aab8b1c1ddf832d690cb7ecb38",
+        "kind": "via",
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu",
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.7,
+        "drill_mm": 0.3,
+        "full_object_gap_mm": -0.55,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "d49734b3-60d3-5c7b-abe1-2ac8ccb1e0af",
+        "ref": "C2338",
+        "pad": "1",
+        "net": "-12V",
+        "original_xy_nm": [
+          212950000,
+          250480000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "-12V",
+    "sha256": "422ed17b3eec18a4ef2bace6d8a16ceeed041252451352f765c2612bcbd9c857",
+    "source_span": [
+      27550154,
+      27550299
+    ],
+    "uuid": "16bb70a4-c7d4-5b84-8a8d-7d78c27cad7e",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "-12V",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == -12V",
+      "full_net_pad_records_sha256": "cec455bf58f507f95436fece35178b290bb5364138fecdf3d2326ed501fb9aa1",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          235.9,
+          237.2
+        ],
+        [
+          236.1,
+          237.0
+        ]
+      ],
+      "diameter_or_width_mm": 0.4,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "-12V",
+    "sha256": "02e63def2ac6fa33d080224c99f3787dfbdc49fdbdfe6e40a1f6e865b99579a1",
+    "source_span": [
+      27554300,
+      27554445
+    ],
+    "uuid": "30c314ff-ae1a-58d7-a8e2-bcb844d001e9",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "-12V",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == -12V",
+      "full_net_pad_records_sha256": "cec455bf58f507f95436fece35178b290bb5364138fecdf3d2326ed501fb9aa1",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          236.2,
+          237.0
+        ],
+        [
+          236.3,
+          236.9
+        ]
+      ],
+      "diameter_or_width_mm": 0.4,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "-12V",
+    "sha256": "784b1e7a2f38d45eb746fc0808d573859b3c77bbd9207e995f578a872a4fa78c",
+    "source_span": [
+      27563792,
+      27563935
+    ],
+    "uuid": "56c8e55e-60b1-57f0-b6ef-0a316c2a7fc0",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "-12V",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == -12V",
+      "full_net_pad_records_sha256": "cec455bf58f507f95436fece35178b290bb5364138fecdf3d2326ed501fb9aa1",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          236.1,
+          237.0
+        ],
+        [
+          236.2,
+          237.0
+        ]
+      ],
+      "diameter_or_width_mm": 0.4,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "-12V",
+    "sha256": "b2290a4e7c278d7084dbc644601320ec40d09ef41436e24a4806e80a7dfacb4a",
+    "source_span": [
+      27574152,
+      27574297
+    ],
+    "uuid": "8a054a34-28ae-5937-9ce4-a8432091e930",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "dae09ecd-7b95-5397-8054-61796ba16e2e",
+        "ref": "U2313",
+        "pad": "11",
+        "copper_uuid": "8a054a34-28ae-5937-9ce4-a8432091e930",
+        "gap_mm": -0.2
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "-12V",
+      "source_contact_refs": [
+        "U2313"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == -12V",
+      "full_net_pad_records_sha256": "cec455bf58f507f95436fece35178b290bb5364138fecdf3d2326ed501fb9aa1",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          234.9,
+          241.0
+        ],
+        [
+          234.9,
+          241.2
+        ]
+      ],
+      "diameter_or_width_mm": 0.4,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          234.9,
+          241.0
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "d6db8f4b-59d8-512e-ac51-f6a658fd0da6",
+            "sha256": "df636f8f3459ee9cee3d4202fad5076881e4256eb61740fe828b25eaa7de094b",
+            "disposition": "RECONSTRUCTION_OBLIGATION"
+          }
+        ],
+        "contacted_original_pad_uuids": [
+          "dae09ecd-7b95-5397-8054-61796ba16e2e"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          234.9,
+          241.2
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "d6db8f4b-59d8-512e-ac51-f6a658fd0da6",
+            "sha256": "df636f8f3459ee9cee3d4202fad5076881e4256eb61740fe828b25eaa7de094b",
+            "disposition": "RECONSTRUCTION_OBLIGATION"
+          }
+        ],
+        "contacted_original_pad_uuids": [
+          "dae09ecd-7b95-5397-8054-61796ba16e2e"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "d6db8f4b-59d8-512e-ac51-f6a658fd0da6",
+        "sha256": "df636f8f3459ee9cee3d4202fad5076881e4256eb61740fe828b25eaa7de094b",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.4,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.4,
+        "disposition": "RECONSTRUCTION_OBLIGATION"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "dae09ecd-7b95-5397-8054-61796ba16e2e",
+        "ref": "U2313",
+        "pad": "11",
+        "net": "-12V",
+        "original_xy_nm": [
+          235180000,
+          240105000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "-12V",
+    "sha256": "df636f8f3459ee9cee3d4202fad5076881e4256eb61740fe828b25eaa7de094b",
+    "source_span": [
+      27591511,
+      27591658
+    ],
+    "uuid": "d6db8f4b-59d8-512e-ac51-f6a658fd0da6",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "dae09ecd-7b95-5397-8054-61796ba16e2e",
+        "ref": "U2313",
+        "pad": "11",
+        "copper_uuid": "d6db8f4b-59d8-512e-ac51-f6a658fd0da6",
+        "gap_mm": -0.04986334513850613
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "-12V",
+      "source_contact_refs": [
+        "U2313"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == -12V",
+      "full_net_pad_records_sha256": "cec455bf58f507f95436fece35178b290bb5364138fecdf3d2326ed501fb9aa1",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          234.9,
+          241.2
+        ],
+        [
+          234.5,
+          241.6
+        ]
+      ],
+      "diameter_or_width_mm": 0.4,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          234.9,
+          241.2
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "8a054a34-28ae-5937-9ce4-a8432091e930",
+            "sha256": "b2290a4e7c278d7084dbc644601320ec40d09ef41436e24a4806e80a7dfacb4a",
+            "disposition": "RECONSTRUCTION_OBLIGATION"
+          }
+        ],
+        "contacted_original_pad_uuids": [
+          "dae09ecd-7b95-5397-8054-61796ba16e2e"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          234.5,
+          241.6
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "7187b4b9-78b2-57d9-bc8b-9dbf60b6181a",
+            "sha256": "6992ed1258100835ee0f48b224f45237ceb083a5a96faed7f51f4118b9dd017e",
+            "disposition": "PRESERVED_IN_PLACE"
+          },
+          {
+            "uuid": "5fa9d25e-36af-541c-aa3e-2c3d4088bedc",
+            "sha256": "4926e176a41ff2f52bf21e66cdb304d1a4a997259d2a03275da89b310d02e191",
+            "disposition": "PRESERVED_IN_PLACE"
+          },
+          {
+            "uuid": "88bfa1e2-dcb8-5c95-af17-78509fcef8df",
+            "sha256": "19794f6e37ee8d9488094475c43938bb0acff0ae2c1328841f09c7cafea5e107",
+            "disposition": "PRESERVED_IN_PLACE"
+          },
+          {
+            "uuid": "8c9b7cf5-8c70-521b-9663-43c511dc931c",
+            "sha256": "6359cb50e6013e9d0f81e85e11d070547734fac7bf1763739a4ef7d46b74f8ca",
+            "disposition": "PRESERVED_IN_PLACE"
+          },
+          {
+            "uuid": "c12f87ee-b204-5d3d-b276-6f839423ca1f",
+            "sha256": "d5f5713a9b59f9a6ef113888ab9567c3f209bca7328cea408b4f0c56ec4bca8f",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "7187b4b9-78b2-57d9-bc8b-9dbf60b6181a",
+        "sha256": "6992ed1258100835ee0f48b224f45237ceb083a5a96faed7f51f4118b9dd017e",
+        "kind": "via",
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu",
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.7,
+        "drill_mm": 0.3,
+        "full_object_gap_mm": -0.1027864045000293,
+        "disposition": "PRESERVED_IN_PLACE"
+      },
+      {
+        "uuid": "5fa9d25e-36af-541c-aa3e-2c3d4088bedc",
+        "sha256": "4926e176a41ff2f52bf21e66cdb304d1a4a997259d2a03275da89b310d02e191",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.4,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.17639320225003374,
+        "disposition": "PRESERVED_IN_PLACE"
+      },
+      {
+        "uuid": "88bfa1e2-dcb8-5c95-af17-78509fcef8df",
+        "sha256": "19794f6e37ee8d9488094475c43938bb0acff0ae2c1328841f09c7cafea5e107",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.4,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.08377223398315309,
+        "disposition": "PRESERVED_IN_PLACE"
+      },
+      {
+        "uuid": "8a054a34-28ae-5937-9ce4-a8432091e930",
+        "sha256": "b2290a4e7c278d7084dbc644601320ec40d09ef41436e24a4806e80a7dfacb4a",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.4,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.4,
+        "disposition": "RECONSTRUCTION_OBLIGATION"
+      },
+      {
+        "uuid": "8c9b7cf5-8c70-521b-9663-43c511dc931c",
+        "sha256": "6359cb50e6013e9d0f81e85e11d070547734fac7bf1763739a4ef7d46b74f8ca",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.4,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.3000000000000057,
+        "disposition": "PRESERVED_IN_PLACE"
+      },
+      {
+        "uuid": "c12f87ee-b204-5d3d-b276-6f839423ca1f",
+        "sha256": "d5f5713a9b59f9a6ef113888ab9567c3f209bca7328cea408b4f0c56ec4bca8f",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.4,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.4,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "dae09ecd-7b95-5397-8054-61796ba16e2e",
+        "ref": "U2313",
+        "pad": "11",
+        "net": "-12V",
+        "original_xy_nm": [
+          235180000,
+          240105000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "-12V",
+    "sha256": "a366c0d78ccc0ca702fb39bb2d85b53aae05cdf6fbeeb3a5f68a54345ca3d7bb",
+    "source_span": [
+      27596843,
+      27596990
+    ],
+    "uuid": "ef7dd313-9546-5e5a-8fe5-b05c1851dd2d",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "a00581e9-93e0-52ad-9108-c24dcb3e8e4a",
+        "ref": "C2340",
+        "pad": "1",
+        "copper_uuid": "ef7dd313-9546-5e5a-8fe5-b05c1851dd2d",
+        "gap_mm": -0.2
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "-12V",
+      "source_contact_refs": [
+        "C2340"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == -12V",
+      "full_net_pad_records_sha256": "cec455bf58f507f95436fece35178b290bb5364138fecdf3d2326ed501fb9aa1",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          235.6,
+          237.2
+        ],
+        [
+          235.9,
+          237.2
+        ]
+      ],
+      "diameter_or_width_mm": 0.4,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          235.6,
+          237.2
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "16bb70a4-c7d4-5b84-8a8d-7d78c27cad7e",
+            "sha256": "422ed17b3eec18a4ef2bace6d8a16ceeed041252451352f765c2612bcbd9c857",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [
+          "a00581e9-93e0-52ad-9108-c24dcb3e8e4a"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          235.9,
+          237.2
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "d7732d5b-b9be-5185-a88d-d66289692ca0",
+            "sha256": "720ec3610ea7670c5549c8094a5111eac69d8480846bd1dd9956bc65c76bd69b",
+            "disposition": "PRESERVED_IN_PLACE"
+          },
+          {
+            "uuid": "16bb70a4-c7d4-5b84-8a8d-7d78c27cad7e",
+            "sha256": "422ed17b3eec18a4ef2bace6d8a16ceeed041252451352f765c2612bcbd9c857",
+            "disposition": "PRESERVED_IN_PLACE"
+          },
+          {
+            "uuid": "30c314ff-ae1a-58d7-a8e2-bcb844d001e9",
+            "sha256": "02e63def2ac6fa33d080224c99f3787dfbdc49fdbdfe6e40a1f6e865b99579a1",
+            "disposition": "PRESERVED_IN_PLACE"
+          },
+          {
+            "uuid": "56c8e55e-60b1-57f0-b6ef-0a316c2a7fc0",
+            "sha256": "784b1e7a2f38d45eb746fc0808d573859b3c77bbd9207e995f578a872a4fa78c",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "d7732d5b-b9be-5185-a88d-d66289692ca0",
+        "sha256": "720ec3610ea7670c5549c8094a5111eac69d8480846bd1dd9956bc65c76bd69b",
+        "kind": "via",
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu",
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.7,
+        "drill_mm": 0.3,
+        "full_object_gap_mm": -0.05000000000000565,
+        "disposition": "PRESERVED_IN_PLACE"
+      },
+      {
+        "uuid": "16bb70a4-c7d4-5b84-8a8d-7d78c27cad7e",
+        "sha256": "422ed17b3eec18a4ef2bace6d8a16ceeed041252451352f765c2612bcbd9c857",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.4,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.4,
+        "disposition": "PRESERVED_IN_PLACE"
+      },
+      {
+        "uuid": "30c314ff-ae1a-58d7-a8e2-bcb844d001e9",
+        "sha256": "02e63def2ac6fa33d080224c99f3787dfbdc49fdbdfe6e40a1f6e865b99579a1",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.4,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.03944487245362155,
+        "disposition": "PRESERVED_IN_PLACE"
+      },
+      {
+        "uuid": "56c8e55e-60b1-57f0-b6ef-0a316c2a7fc0",
+        "sha256": "784b1e7a2f38d45eb746fc0808d573859b3c77bbd9207e995f578a872a4fa78c",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.4,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.11715728752539706,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "a00581e9-93e0-52ad-9108-c24dcb3e8e4a",
+        "ref": "C2340",
+        "pad": "1",
+        "net": "-12V",
+        "original_xy_nm": [
+          235180000,
+          237590000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "-12V",
+    "sha256": "fa984b5b6ad3aa30b11b37d4b91fbd7d9109906ad998c2ee7d5a3145bf7a67c4",
+    "source_span": [
+      27598327,
+      27598474
+    ],
+    "uuid": "f39ede57-0a63-5039-8bbd-366da497b55f",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "fa697ff5-0ebe-5b11-9ca4-8b46c13bd185",
+        "ref": "U2312",
+        "pad": "11",
+        "copper_uuid": "f39ede57-0a63-5039-8bbd-366da497b55f",
+        "gap_mm": -0.2
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "-12V",
+      "source_contact_refs": [
+        "U2312"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == -12V",
+      "full_net_pad_records_sha256": "cec455bf58f507f95436fece35178b290bb5364138fecdf3d2326ed501fb9aa1",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          212.8,
+          248.9
+        ],
+        [
+          212.8,
+          249.4
+        ]
+      ],
+      "diameter_or_width_mm": 0.4,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          212.8,
+          248.9
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "da5b6c55-4945-53a4-a087-d0e84cff4543",
+            "sha256": "2981fc76b39beed55b9af8f63f91ad31b51143dab6ccda9ba051a9d38c7f6f2c",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [
+          "fa697ff5-0ebe-5b11-9ca4-8b46c13bd185"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          212.8,
+          249.4
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "da5b6c55-4945-53a4-a087-d0e84cff4543",
+            "sha256": "2981fc76b39beed55b9af8f63f91ad31b51143dab6ccda9ba051a9d38c7f6f2c",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "da5b6c55-4945-53a4-a087-d0e84cff4543",
+        "sha256": "2981fc76b39beed55b9af8f63f91ad31b51143dab6ccda9ba051a9d38c7f6f2c",
+        "kind": "via",
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu",
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.7,
+        "drill_mm": 0.3,
+        "full_object_gap_mm": -0.55,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "fa697ff5-0ebe-5b11-9ca4-8b46c13bd185",
+        "ref": "U2312",
+        "pad": "11",
+        "net": "-12V",
+        "original_xy_nm": [
+          212950000,
+          247945000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "via",
+    "net_token": "+12V",
+    "sha256": "78cc39e92af74b5f18aa59b0efffb715dd66c44d33f8710a51206eb9ea67a9b9",
+    "source_span": [
+      27704838,
+      27704979
+    ],
+    "uuid": "896ef23b-8e92-5a65-9a28-23d075d1c447",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "+12V",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == +12V",
+      "full_net_pad_records_sha256": "d0f5ab08e499ad56fe27315522679a87d9058edfc53cb66e906f44f6e2539d32",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          234.2,
+          247.5
+        ]
+      ],
+      "diameter_or_width_mm": 0.7,
+      "layers": [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu",
+        "B.Cu"
+      ],
+      "drill_mm": 0.3
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "+12V",
+    "sha256": "61c9a9c9f0e1b5ba163da0b72620aa0627af6f021f84ff82f5712922efc6fd77",
+    "source_span": [
+      27754248,
+      27754395
+    ],
+    "uuid": "3df807ee-1141-59c7-9866-8a7f949d66dd",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "c5f322dd-c1db-5da1-89c5-c50ebc8924ca",
+        "ref": "C2337",
+        "pad": "1",
+        "copper_uuid": "3df807ee-1141-59c7-9866-8a7f949d66dd",
+        "gap_mm": -0.2
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "+12V",
+      "source_contact_refs": [
+        "C2337"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == +12V",
+      "full_net_pad_records_sha256": "d0f5ab08e499ad56fe27315522679a87d9058edfc53cb66e906f44f6e2539d32",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          212.8,
+          240.1
+        ],
+        [
+          212.8,
+          239.5
+        ]
+      ],
+      "diameter_or_width_mm": 0.4,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          212.8,
+          240.1
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "c5f322dd-c1db-5da1-89c5-c50ebc8924ca"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          212.8,
+          239.5
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "a528d78d-710d-5cc2-8786-5ef7a6bae618",
+            "sha256": "074d33d15fb71194bd9443017b50d22cfa7a7d4fe0237b16f6df576191c29763",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "a528d78d-710d-5cc2-8786-5ef7a6bae618",
+        "sha256": "074d33d15fb71194bd9443017b50d22cfa7a7d4fe0237b16f6df576191c29763",
+        "kind": "via",
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu",
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.7,
+        "drill_mm": 0.3,
+        "full_object_gap_mm": -0.55,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "c5f322dd-c1db-5da1-89c5-c50ebc8924ca",
+        "ref": "C2337",
+        "pad": "1",
+        "net": "+12V",
+        "original_xy_nm": [
+          212950000,
+          240460000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "+12V",
+    "sha256": "8c241508ec48813f0ed5bf483a4aeec0d3367f4dd5798c502006c02c567b00ba",
+    "source_span": [
+      27760311,
+      27760454
+    ],
+    "uuid": "531e9aae-a3b3-57cc-b58a-17f72e771295",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "a6763a57-1f65-5dcd-8b20-b2af4d45bb58",
+        "ref": "U2313",
+        "pad": "4",
+        "copper_uuid": "531e9aae-a3b3-57cc-b58a-17f72e771295",
+        "gap_mm": -0.11568450648610566
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "+12V",
+      "source_contact_refs": [
+        "U2313"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == +12V",
+      "full_net_pad_records_sha256": "d0f5ab08e499ad56fe27315522679a87d9058edfc53cb66e906f44f6e2539d32",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          235.0,
+          244.0
+        ],
+        [
+          234.6,
+          243.6
+        ]
+      ],
+      "diameter_or_width_mm": 0.4,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          235.0,
+          244.0
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "c1f17fc9-5f04-5c10-a185-481ead8cd1c2",
+            "sha256": "bd82bfc6c7419946a1adf08587a21f5c13b5424ac3bf284c3b4b64db74b9f705",
+            "disposition": "RECONSTRUCTION_OBLIGATION"
+          }
+        ],
+        "contacted_original_pad_uuids": [
+          "a6763a57-1f65-5dcd-8b20-b2af4d45bb58"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          234.6,
+          243.6
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "fdc7604c-4477-58fc-a4e8-80f8c93246d7",
+            "sha256": "bc580702d6e006b9e1faa88eaec631ae030385118a497d4ab95ad2e613d640af",
+            "disposition": "PRESERVED_IN_PLACE"
+          },
+          {
+            "uuid": "18aa97c3-fabd-5e66-90f9-ad0d4c50d9ec",
+            "sha256": "568b35d4c42de45d3c9739ac4a87b869cb077b1f92bb7aaa8732cf9b4b68da17",
+            "disposition": "PRESERVED_IN_PLACE"
+          },
+          {
+            "uuid": "40ff9b6b-4de2-5cef-9321-e3c4caee7e9e",
+            "sha256": "0e0a851f2268c16063b0c3077a014f11eccab39df6314f75cfa0ae396c6b00d4",
+            "disposition": "PRESERVED_IN_PLACE"
+          },
+          {
+            "uuid": "70dc9add-d130-5a0e-824d-b1dc2f203f20",
+            "sha256": "7194a6a0e84a840305219b589e557bf408f9ebb27673d118ef46514b67cc3bca",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "fdc7604c-4477-58fc-a4e8-80f8c93246d7",
+        "sha256": "bc580702d6e006b9e1faa88eaec631ae030385118a497d4ab95ad2e613d640af",
+        "kind": "via",
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu",
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.7,
+        "drill_mm": 0.3,
+        "full_object_gap_mm": -0.011483519286553834,
+        "disposition": "PRESERVED_IN_PLACE"
+      },
+      {
+        "uuid": "18aa97c3-fabd-5e66-90f9-ad0d4c50d9ec",
+        "sha256": "568b35d4c42de45d3c9739ac4a87b869cb077b1f92bb7aaa8732cf9b4b68da17",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.4,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.4,
+        "disposition": "PRESERVED_IN_PLACE"
+      },
+      {
+        "uuid": "40ff9b6b-4de2-5cef-9321-e3c4caee7e9e",
+        "sha256": "0e0a851f2268c16063b0c3077a014f11eccab39df6314f75cfa0ae396c6b00d4",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.4,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.17639320225003374,
+        "disposition": "PRESERVED_IN_PLACE"
+      },
+      {
+        "uuid": "70dc9add-d130-5a0e-824d-b1dc2f203f20",
+        "sha256": "7194a6a0e84a840305219b589e557bf408f9ebb27673d118ef46514b67cc3bca",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.4,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.3000000000000057,
+        "disposition": "PRESERVED_IN_PLACE"
+      },
+      {
+        "uuid": "c1f17fc9-5f04-5c10-a185-481ead8cd1c2",
+        "sha256": "bd82bfc6c7419946a1adf08587a21f5c13b5424ac3bf284c3b4b64db74b9f705",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.4,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.4,
+        "disposition": "RECONSTRUCTION_OBLIGATION"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "a6763a57-1f65-5dcd-8b20-b2af4d45bb58",
+        "ref": "U2313",
+        "pad": "4",
+        "net": "+12V",
+        "original_xy_nm": [
+          235180000,
+          245055000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "+12V",
+    "sha256": "125684373192cf17ab8f983c675ebe7de4dd7881c389f6e4e1dc40432a3bf460",
+    "source_span": [
+      27769507,
+      27769654
+    ],
+    "uuid": "761dda70-e0a5-5faf-bece-8ae51581a8f8",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "19af0b1b-ee04-5881-b551-2e46d93f9c73",
+        "ref": "U2312",
+        "pad": "4",
+        "copper_uuid": "761dda70-e0a5-5faf-bece-8ae51581a8f8",
+        "gap_mm": -0.2
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "+12V",
+      "source_contact_refs": [
+        "U2312"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == +12V",
+      "full_net_pad_records_sha256": "d0f5ab08e499ad56fe27315522679a87d9058edfc53cb66e906f44f6e2539d32",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          212.8,
+          243.9
+        ],
+        [
+          212.8,
+          244.6
+        ]
+      ],
+      "diameter_or_width_mm": 0.4,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          212.8,
+          243.9
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "19af0b1b-ee04-5881-b551-2e46d93f9c73"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          212.8,
+          244.6
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "413abb37-0c24-572d-be37-d991b4ffdd5f",
+            "sha256": "e50adcd19d87fdab9325277115beb4f5fc194536b7a8083b5c111ed6a1c49829",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "413abb37-0c24-572d-be37-d991b4ffdd5f",
+        "sha256": "e50adcd19d87fdab9325277115beb4f5fc194536b7a8083b5c111ed6a1c49829",
+        "kind": "via",
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu",
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.7,
+        "drill_mm": 0.3,
+        "full_object_gap_mm": -0.55,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "19af0b1b-ee04-5881-b551-2e46d93f9c73",
+        "ref": "U2312",
+        "pad": "4",
+        "net": "+12V",
+        "original_xy_nm": [
+          212950000,
+          242995000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "+12V",
+    "sha256": "bd82bfc6c7419946a1adf08587a21f5c13b5424ac3bf284c3b4b64db74b9f705",
+    "source_span": [
+      27790833,
+      27790974
+    ],
+    "uuid": "c1f17fc9-5f04-5c10-a185-481ead8cd1c2",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "a6763a57-1f65-5dcd-8b20-b2af4d45bb58",
+        "ref": "U2313",
+        "pad": "4",
+        "copper_uuid": "c1f17fc9-5f04-5c10-a185-481ead8cd1c2",
+        "gap_mm": -0.2
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "+12V",
+      "source_contact_refs": [
+        "U2313"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == +12V",
+      "full_net_pad_records_sha256": "d0f5ab08e499ad56fe27315522679a87d9058edfc53cb66e906f44f6e2539d32",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          235.0,
+          244.1
+        ],
+        [
+          235.0,
+          244.0
+        ]
+      ],
+      "diameter_or_width_mm": 0.4,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          235.0,
+          244.1
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "531e9aae-a3b3-57cc-b58a-17f72e771295",
+            "sha256": "8c241508ec48813f0ed5bf483a4aeec0d3367f4dd5798c502006c02c567b00ba",
+            "disposition": "RECONSTRUCTION_OBLIGATION"
+          }
+        ],
+        "contacted_original_pad_uuids": [
+          "a6763a57-1f65-5dcd-8b20-b2af4d45bb58"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          235.0,
+          244.0
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "531e9aae-a3b3-57cc-b58a-17f72e771295",
+            "sha256": "8c241508ec48813f0ed5bf483a4aeec0d3367f4dd5798c502006c02c567b00ba",
+            "disposition": "RECONSTRUCTION_OBLIGATION"
+          }
+        ],
+        "contacted_original_pad_uuids": [
+          "a6763a57-1f65-5dcd-8b20-b2af4d45bb58"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "531e9aae-a3b3-57cc-b58a-17f72e771295",
+        "sha256": "8c241508ec48813f0ed5bf483a4aeec0d3367f4dd5798c502006c02c567b00ba",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.4,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.4,
+        "disposition": "RECONSTRUCTION_OBLIGATION"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "a6763a57-1f65-5dcd-8b20-b2af4d45bb58",
+        "ref": "U2313",
+        "pad": "4",
+        "net": "+12V",
+        "original_xy_nm": [
+          235180000,
+          245055000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "+12V",
+    "sha256": "99b54e65f0e08f4530c12358ef03f99850c59e1559eb9f12e78a724c801c717a",
+    "source_span": [
+      27804902,
+      27805049
+    ],
+    "uuid": "fc702fca-b3b1-53aa-ba44-182a4c2cfad3",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "0bef52f8-655e-5644-a013-9373b35edca1",
+        "ref": "C2339",
+        "pad": "1",
+        "copper_uuid": "fc702fca-b3b1-53aa-ba44-182a4c2cfad3",
+        "gap_mm": -0.2
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "+12V",
+      "source_contact_refs": [
+        "C2339"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == +12V",
+      "full_net_pad_records_sha256": "d0f5ab08e499ad56fe27315522679a87d9058edfc53cb66e906f44f6e2539d32",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          234.8,
+          247.5
+        ],
+        [
+          234.2,
+          247.5
+        ]
+      ],
+      "diameter_or_width_mm": 0.4,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          234.8,
+          247.5
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "0bef52f8-655e-5644-a013-9373b35edca1"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          234.2,
+          247.5
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "896ef23b-8e92-5a65-9a28-23d075d1c447",
+            "sha256": "78cc39e92af74b5f18aa59b0efffb715dd66c44d33f8710a51206eb9ea67a9b9",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "896ef23b-8e92-5a65-9a28-23d075d1c447",
+        "sha256": "78cc39e92af74b5f18aa59b0efffb715dd66c44d33f8710a51206eb9ea67a9b9",
+        "kind": "via",
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu",
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.7,
+        "drill_mm": 0.3,
+        "full_object_gap_mm": -0.55,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "0bef52f8-655e-5644-a013-9373b35edca1",
+        "ref": "C2339",
+        "pad": "1",
+        "net": "+12V",
+        "original_xy_nm": [
+          235180000,
+          247570000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "X3833DA0E2047F401FB91",
+    "sha256": "440847ba471060e57d3b8854c49b3af7ae6df152f33d503fbcc3871bd6777aeb",
+    "source_span": [
+      27828982,
+      27829148
+    ],
+    "uuid": "42a6cb3a-2857-5dbd-a2c0-4550870b70b0",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X3833DA0E2047F401FB91",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X3833DA0E2047F401FB91",
+      "full_net_pad_records_sha256": "2c4ca297e2af8916ad3746de71cfe83f3e50a4e5adadd7d4381cc80ddfc849b7",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          216.95,
+          244.15
+        ],
+        [
+          217.1,
+          244.3
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X3833DA0E2047F401FB91",
+    "sha256": "cfd0b3ac908721bb8e72de1370fb8da2246e0e8f234ea53ea752d275bf839f39",
+    "source_span": [
+      27831210,
+      27831379
+    ],
+    "uuid": "db1bb54d-02b1-53b6-a1f0-9dd0481b8ccc",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "ac44cf61-71cd-5d30-b3fb-3da8ed865f2d",
+        "ref": "U2312",
+        "pad": "7",
+        "copper_uuid": "db1bb54d-02b1-53b6-a1f0-9dd0481b8ccc",
+        "gap_mm": -0.1
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X3833DA0E2047F401FB91",
+      "source_contact_refs": [
+        "U2312"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X3833DA0E2047F401FB91",
+      "full_net_pad_records_sha256": "2c4ca297e2af8916ad3746de71cfe83f3e50a4e5adadd7d4381cc80ddfc849b7",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          216.95,
+          243.925
+        ],
+        [
+          216.95,
+          244.15
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          216.95,
+          243.925
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "ac44cf61-71cd-5d30-b3fb-3da8ed865f2d"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          216.95,
+          244.15
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "42a6cb3a-2857-5dbd-a2c0-4550870b70b0",
+            "sha256": "440847ba471060e57d3b8854c49b3af7ae6df152f33d503fbcc3871bd6777aeb",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "42a6cb3a-2857-5dbd-a2c0-4550870b70b0",
+        "sha256": "440847ba471060e57d3b8854c49b3af7ae6df152f33d503fbcc3871bd6777aeb",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.2,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.2,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "ac44cf61-71cd-5d30-b3fb-3da8ed865f2d",
+        "ref": "U2312",
+        "pad": "7",
+        "net": "X3833DA0E2047F401FB91",
+        "original_xy_nm": [
+          216760000,
+          242995000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "XB9F035FC2AF2925E1E25",
+    "sha256": "f84ba34d67149c5cc5ff9507251525dbeb03fd449a4e8a179f2f6946f10df67e",
+    "source_span": [
+      27841250,
+      27841414
+    ],
+    "uuid": "181420a3-a7a7-5b26-a53d-0cf414fe1a2c",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "05b96ec7-fb8e-5d76-bea0-2fc48d17a068",
+        "ref": "U2312",
+        "pad": "6",
+        "copper_uuid": "181420a3-a7a7-5b26-a53d-0cf414fe1a2c",
+        "gap_mm": -0.1
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "XB9F035FC2AF2925E1E25",
+      "source_contact_refs": [
+        "U2312"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == XB9F035FC2AF2925E1E25",
+      "full_net_pad_records_sha256": "c541f9705cdb2ab6846d469e5c46c84958f8167156bed5426ca3ff9757866cb7",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          215.3,
+          243.9
+        ],
+        [
+          214.5,
+          244.7
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          215.3,
+          243.9
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "05b96ec7-fb8e-5d76-bea0-2fc48d17a068"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          214.5,
+          244.7
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "32362ece-81d6-5558-aa96-aceeafa7f272",
+            "sha256": "ed43bee9048c882a3ca0dde007fd2facd1714e78acfc4e31141a2642eca6aa18",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "32362ece-81d6-5558-aa96-aceeafa7f272",
+        "sha256": "ed43bee9048c882a3ca0dde007fd2facd1714e78acfc4e31141a2642eca6aa18",
+        "kind": "via",
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu",
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.6,
+        "drill_mm": 0.3,
+        "full_object_gap_mm": -0.4,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "05b96ec7-fb8e-5d76-bea0-2fc48d17a068",
+        "ref": "U2312",
+        "pad": "6",
+        "net": "XB9F035FC2AF2925E1E25",
+        "original_xy_nm": [
+          215490000,
+          242995000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "X6A0E7F592D0262C057D6",
+    "sha256": "63d8ed8b736c09b33ec8bfb7d881c253f26f7110093e998b4d806dc77a18190f",
+    "source_span": [
+      29818775,
+      29818943
+    ],
+    "uuid": "18c520de-63d5-520a-9f25-8cc7c5e773a1",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X6A0E7F592D0262C057D6",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X6A0E7F592D0262C057D6",
+      "full_net_pad_records_sha256": "cfbc397590eca5a5664fe0a02b45bdef1824e9395f540f2e8338a67a42abb89d",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          239.9,
+          245.575
+        ],
+        [
+          239.9,
+          246.175
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X6A0E7F592D0262C057D6",
+    "sha256": "59a6ae66e26cdc890eeeec58e462b9d965cb5c2a5248607e48bc5067df840308",
+    "source_span": [
+      29819116,
+      29819284
+    ],
+    "uuid": "39295e59-3acf-5eae-8f08-3cf998593506",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X6A0E7F592D0262C057D6",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X6A0E7F592D0262C057D6",
+      "full_net_pad_records_sha256": "cfbc397590eca5a5664fe0a02b45bdef1824e9395f540f2e8338a67a42abb89d",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          239.975,
+          245.5
+        ],
+        [
+          239.9,
+          245.575
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "via",
+    "net_token": "XB7F3177099060F5D98BF",
+    "sha256": "842290b05703c96cee8a24c255b7532450fb4e204c63511d50c5c0674b6a1248",
+    "source_span": [
+      30199672,
+      30199831
+    ],
+    "uuid": "1a551b1b-9fca-514d-9991-3250eada9ab7",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "XB7F3177099060F5D98BF",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == XB7F3177099060F5D98BF",
+      "full_net_pad_records_sha256": "d84a05b5c60af461ad39b64a547fd5ea811ca7ab403158f9c2e94e74de3e1823",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          231.8,
+          252.55
+        ]
+      ],
+      "diameter_or_width_mm": 0.6,
+      "layers": [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu",
+        "B.Cu"
+      ],
+      "drill_mm": 0.3
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X8BDF2BAD2449627A6AD6",
+    "sha256": "a79de057c4754c639c2b7e32602ab9866960f2daf70ebb6d81d33a3ea61ca385",
+    "source_span": [
+      36457131,
+      36457296
+    ],
+    "uuid": "4f6e08c0-e875-5a7d-a49d-70ed751edebc",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "d1fa903e-0c21-506f-89e7-2ee76f3e0818",
+        "ref": "U2312",
+        "pad": "13",
+        "copper_uuid": "4f6e08c0-e875-5a7d-a49d-70ed751edebc",
+        "gap_mm": -0.075
+      },
+      {
+        "pad_uuid": "f995bc43-48eb-5b8d-a836-4bb150d169e4",
+        "ref": "U2312",
+        "pad": "14",
+        "copper_uuid": "4f6e08c0-e875-5a7d-a49d-70ed751edebc",
+        "gap_mm": -0.075
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X8BDF2BAD2449627A6AD6",
+      "source_contact_refs": [
+        "U2312"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X8BDF2BAD2449627A6AD6",
+      "full_net_pad_records_sha256": "fbc379dca90b0fbd3142dff6f87666b5430074590c2211d38f9e36596a35e40d",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          210.2,
+          247.2
+        ],
+        [
+          209.4,
+          247.2
+        ]
+      ],
+      "diameter_or_width_mm": 0.15,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          210.2,
+          247.2
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "d1fa903e-0c21-506f-89e7-2ee76f3e0818"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          209.4,
+          247.2
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "f995bc43-48eb-5b8d-a836-4bb150d169e4"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      }
+    ],
+    "full_object_same_net_contacts": [],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "d1fa903e-0c21-506f-89e7-2ee76f3e0818",
+        "ref": "U2312",
+        "pad": "13",
+        "net": "X8BDF2BAD2449627A6AD6",
+        "original_xy_nm": [
+          210410000,
+          247945000
+        ],
+        "moved_scope": true
+      },
+      {
+        "uuid": "f995bc43-48eb-5b8d-a836-4bb150d169e4",
+        "ref": "U2312",
+        "pad": "14",
+        "net": "X8BDF2BAD2449627A6AD6",
+        "original_xy_nm": [
+          209140000,
+          247945000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "via",
+    "net_token": "X27C28FDCAA9450E228E6",
+    "sha256": "6cd8bf11c75e76115bf1dba42f5d2cbbdcc17b360c1a1474993115ebcc7d2ba5",
+    "source_span": [
+      36992659,
+      36992818
+    ],
+    "uuid": "26c312d4-df55-5925-841a-22777a2fbd0f",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X27C28FDCAA9450E228E6",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X27C28FDCAA9450E228E6",
+      "full_net_pad_records_sha256": "5db277f7ced5425657b4267c0c11a6d6a1aefa59edc082283dbad637cbf3041a",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          231.95,
+          251.2
+        ]
+      ],
+      "diameter_or_width_mm": 0.6,
+      "layers": [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu",
+        "B.Cu"
+      ],
+      "drill_mm": 0.3
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X27C28FDCAA9450E228E6",
+    "sha256": "f8348256e9f076349a124294dbc7f2ee9fd46aadd26f26d217e40b686f78eea3",
+    "source_span": [
+      36996348,
+      36996514
+    ],
+    "uuid": "7f2878ef-f8c8-503e-a8bb-ffa181e25f5d",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X27C28FDCAA9450E228E6",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X27C28FDCAA9450E228E6",
+      "full_net_pad_records_sha256": "5db277f7ced5425657b4267c0c11a6d6a1aefa59edc082283dbad637cbf3041a",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          231.35,
+          250.6
+        ],
+        [
+          231.95,
+          251.2
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X39C38672C471F7713929",
+    "sha256": "a1c461a2ca350bbe40d207455593e5449a33684546816e914a27d09070ced79b",
+    "source_span": [
+      37905535,
+      37905707
+    ],
+    "uuid": "cd4ee6a6-6551-5b29-9b67-091e19b90f92",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "279f042f-f4ad-5ead-893a-478bfd87ab4d",
+        "ref": "U2313",
+        "pad": "7",
+        "copper_uuid": "cd4ee6a6-6551-5b29-9b67-091e19b90f92",
+        "gap_mm": -0.1
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X39C38672C471F7713929",
+      "source_contact_refs": [
+        "U2313"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X39C38672C471F7713929",
+      "full_net_pad_records_sha256": "7b03c8b8178fdd4b4c02da32b92b0d0255dd47f776873ecf7f5d5c776b470343",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          231.275,
+          246.025
+        ],
+        [
+          231.275,
+          246.625
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          231.275,
+          246.025
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "279f042f-f4ad-5ead-893a-478bfd87ab4d"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          231.275,
+          246.625
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "5622ca7f-e018-5172-ba3d-bd560e267498",
+            "sha256": "febd9ef1ffe64f2e05320fe03051e4a12964e92325b03978c0e78f48af30c73d",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "5622ca7f-e018-5172-ba3d-bd560e267498",
+        "sha256": "febd9ef1ffe64f2e05320fe03051e4a12964e92325b03978c0e78f48af30c73d",
+        "kind": "via",
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu",
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.6,
+        "drill_mm": 0.3,
+        "full_object_gap_mm": -0.4,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "279f042f-f4ad-5ead-893a-478bfd87ab4d",
+        "ref": "U2313",
+        "pad": "7",
+        "net": "X39C38672C471F7713929",
+        "original_xy_nm": [
+          231370000,
+          245055000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "X1F1A855A4AE2E5F824EC",
+    "sha256": "4bb85a86ee0d09a4966019f7ae16cedc00afa2d909b1bef178fa66aa6dd34ac2",
+    "source_span": [
+      37915385,
+      37915549
+    ],
+    "uuid": "057aada8-32ee-5ef4-9198-fd80a27ed07d",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X1F1A855A4AE2E5F824EC",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X1F1A855A4AE2E5F824EC",
+      "full_net_pad_records_sha256": "1b94d83ff1319896ffb4f868109190d512374dcdd40075afbfb8c60ca7da0d20",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          233.1,
+          247.7
+        ],
+        [
+          234.1,
+          248.7
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X1F1A855A4AE2E5F824EC",
+    "sha256": "75b5661b80996ee1ce296fa4e3d642f4572f9e8e5ec6c4154be846211054ee38",
+    "source_span": [
+      37915551,
+      37915713
+    ],
+    "uuid": "0dd23b6e-edd3-555b-b34a-acd65b6b4201",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X1F1A855A4AE2E5F824EC",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X1F1A855A4AE2E5F824EC",
+      "full_net_pad_records_sha256": "1b94d83ff1319896ffb4f868109190d512374dcdd40075afbfb8c60ca7da0d20",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          232.8,
+          246.3
+        ],
+        [
+          233.0,
+          246.5
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X1F1A855A4AE2E5F824EC",
+    "sha256": "80a31816861a92713a3d57f83eb038cc19bb480fe416a524cb586b8046e3ea7f",
+    "source_span": [
+      37915715,
+      37915877
+    ],
+    "uuid": "1a4ef45c-1ebf-5cc8-98f6-ddcd40cafdf7",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "bf9d184f-945f-53ee-abac-c024ad4b33ad",
+        "ref": "U2313",
+        "pad": "6",
+        "copper_uuid": "1a4ef45c-1ebf-5cc8-98f6-ddcd40cafdf7",
+        "gap_mm": -0.1
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X1F1A855A4AE2E5F824EC",
+      "source_contact_refs": [
+        "U2313"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X1F1A855A4AE2E5F824EC",
+      "full_net_pad_records_sha256": "1b94d83ff1319896ffb4f868109190d512374dcdd40075afbfb8c60ca7da0d20",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          232.8,
+          246.0
+        ],
+        [
+          232.8,
+          246.3
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          232.8,
+          246.0
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "bf9d184f-945f-53ee-abac-c024ad4b33ad"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          232.8,
+          246.3
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "0dd23b6e-edd3-555b-b34a-acd65b6b4201",
+            "sha256": "75b5661b80996ee1ce296fa4e3d642f4572f9e8e5ec6c4154be846211054ee38",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "0dd23b6e-edd3-555b-b34a-acd65b6b4201",
+        "sha256": "75b5661b80996ee1ce296fa4e3d642f4572f9e8e5ec6c4154be846211054ee38",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.2,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.2,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "bf9d184f-945f-53ee-abac-c024ad4b33ad",
+        "ref": "U2313",
+        "pad": "6",
+        "net": "X1F1A855A4AE2E5F824EC",
+        "original_xy_nm": [
+          232640000,
+          245055000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "X6B198689616F45B6B0B3",
+    "sha256": "dc1d6cad6920f68f026b12b4094b5ce9fc69bda0027d701f4942ae445266c14c",
+    "source_span": [
+      40275556,
+      40275725
+    ],
+    "uuid": "eb3a7123-805e-5869-96e0-6dbfa9c27f55",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X6B198689616F45B6B0B3",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X6B198689616F45B6B0B3",
+      "full_net_pad_records_sha256": "d73ad8a8205f36bfb1a968fb5ce88d3e11ea525e38b06247e7a659685a9e5611",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          239.975,
+          244.225
+        ],
+        [
+          239.45,
+          243.7
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X0055FA200D03E4C96010",
+    "sha256": "4fdb7c2cec854b2dc97a576c84334037d0bb0640aea6a063ff3584660ec6ad95",
+    "source_span": [
+      41039000,
+      41039168
+    ],
+    "uuid": "1feb090b-9bb2-53b8-9b97-718cde78d6b3",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "85f85688-0eae-5223-be95-63e2dca7f3db",
+        "ref": "U2312",
+        "pad": "10",
+        "copper_uuid": "1feb090b-9bb2-53b8-9b97-718cde78d6b3",
+        "gap_mm": -0.1
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X0055FA200D03E4C96010",
+      "source_contact_refs": [
+        "U2312"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X0055FA200D03E4C96010",
+      "full_net_pad_records_sha256": "59e33c7fda73d4ced8b02d820c0d3c3ad7530a95ac1fab743fd03bd313984c17",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          214.025,
+          247.0
+        ],
+        [
+          214.025,
+          246.775
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          214.025,
+          247.0
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "85f85688-0eae-5223-be95-63e2dca7f3db"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          214.025,
+          246.775
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "bf040174-961a-5be8-9a75-f00781d3283d",
+            "sha256": "b9823d75818a13cd68ee3e4010c7b210143bc011c810f2d4b639d8bfa510420d",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "bf040174-961a-5be8-9a75-f00781d3283d",
+        "sha256": "b9823d75818a13cd68ee3e4010c7b210143bc011c810f2d4b639d8bfa510420d",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.2,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.2,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "85f85688-0eae-5223-be95-63e2dca7f3db",
+        "ref": "U2312",
+        "pad": "10",
+        "net": "X0055FA200D03E4C96010",
+        "original_xy_nm": [
+          214220000,
+          247945000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "X0055FA200D03E4C96010",
+    "sha256": "b9823d75818a13cd68ee3e4010c7b210143bc011c810f2d4b639d8bfa510420d",
+    "source_span": [
+      41040028,
+      41040200
+    ],
+    "uuid": "bf040174-961a-5be8-9a75-f00781d3283d",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X0055FA200D03E4C96010",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X0055FA200D03E4C96010",
+      "full_net_pad_records_sha256": "59e33c7fda73d4ced8b02d820c0d3c3ad7530a95ac1fab743fd03bd313984c17",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          214.025,
+          246.775
+        ],
+        [
+          213.875,
+          246.625
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X1180C1A9B9B7538FDA64",
+    "sha256": "7ad3598a29525c9fb3da9c43a48bfcf2567aec5e9f17ddff1fe52a842004dfd3",
+    "source_span": [
+      41051206,
+      41051373
+    ],
+    "uuid": "13674f75-c8e6-5dc5-a8f8-253297896cea",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X1180C1A9B9B7538FDA64",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X1180C1A9B9B7538FDA64",
+      "full_net_pad_records_sha256": "8420ba92bb180993d74a25669e81a5274ab0fd4961f7e9201f216855cb4eace2",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          232.775,
+          250.0
+        ],
+        [
+          230.525,
+          247.75
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X1180C1A9B9B7538FDA64",
+    "sha256": "b116f0720c044acc42051471385b1735e665dd1c9f7b13a7e23638f4a06f4f0b",
+    "source_span": [
+      41052060,
+      41052224
+    ],
+    "uuid": "2a8ef2db-0338-5928-93fb-a4045fd2f4a0",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X1180C1A9B9B7538FDA64",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X1180C1A9B9B7538FDA64",
+      "full_net_pad_records_sha256": "8420ba92bb180993d74a25669e81a5274ab0fd4961f7e9201f216855cb4eace2",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          235.175,
+          250.0
+        ],
+        [
+          232.775,
+          250.0
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X0F25C1B40E73B6D42E31",
+    "sha256": "d8c3cda1b09e48a7e3439d7a7d0f02cab27aa39fa12f6338b57c095cbb71bfd1",
+    "source_span": [
+      41586769,
+      41586939
+    ],
+    "uuid": "11f0d8fd-ca0d-52a5-bf75-1debe38821a2",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "d02bb508-1d1a-52ae-be7d-560b0f00b9d5",
+        "ref": "U2313",
+        "pad": "13",
+        "copper_uuid": "11f0d8fd-ca0d-52a5-bf75-1debe38821a2",
+        "gap_mm": -0.1
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X0F25C1B40E73B6D42E31",
+      "source_contact_refs": [
+        "U2313"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X0F25C1B40E73B6D42E31",
+      "full_net_pad_records_sha256": "c22ffcab91dc85a587ebbeaf4afc8f7c1a7de4366dfb5c58e3e6c623ff10575b",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          237.575,
+          239.2
+        ],
+        [
+          237.575,
+          237.325
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          237.575,
+          239.2
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "d02bb508-1d1a-52ae-be7d-560b0f00b9d5"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          237.575,
+          237.325
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "cd817a65-1e8a-53f8-8b0d-57df08d08bcf",
+            "sha256": "a7280e06c233c039365f67deb1b713658fccae7f68a41a8b156425da8152b239",
+            "disposition": "PRESERVED_IN_PLACE"
+          },
+          {
+            "uuid": "f2cd9d58-e7a7-5eca-9da5-e9fd824e478d",
+            "sha256": "7988034dfa858aa9407b156ff74d7bc0c793d4454ae2afd0d0fa11e898c8d811",
+            "disposition": "PRESERVED_IN_PLACE"
+          },
+          {
+            "uuid": "f9017881-6b8c-55c6-baef-845bac75f889",
+            "sha256": "76e8c9cfcdd6f8d2ac3ae3dda6dabae3f31707940fc99db79e6e9d6a51729207",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "cd817a65-1e8a-53f8-8b0d-57df08d08bcf",
+        "sha256": "a7280e06c233c039365f67deb1b713658fccae7f68a41a8b156425da8152b239",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.2,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.2,
+        "disposition": "PRESERVED_IN_PLACE"
+      },
+      {
+        "uuid": "f2cd9d58-e7a7-5eca-9da5-e9fd824e478d",
+        "sha256": "7988034dfa858aa9407b156ff74d7bc0c793d4454ae2afd0d0fa11e898c8d811",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.2,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.032294901687541205,
+        "disposition": "PRESERVED_IN_PLACE"
+      },
+      {
+        "uuid": "f9017881-6b8c-55c6-baef-845bac75f889",
+        "sha256": "76e8c9cfcdd6f8d2ac3ae3dda6dabae3f31707940fc99db79e6e9d6a51729207",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.2,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.09393398282203397,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "d02bb508-1d1a-52ae-be7d-560b0f00b9d5",
+        "ref": "U2313",
+        "pad": "13",
+        "net": "X0F25C1B40E73B6D42E31",
+        "original_xy_nm": [
+          237720000,
+          240105000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "X0F25C1B40E73B6D42E31",
+    "sha256": "a122584070d75366a8f33e1145e76f676d7d288040758a6f4289e789eccc51ed",
+    "source_span": [
+      41587282,
+      41587449
+    ],
+    "uuid": "2bf79820-f564-52c3-9b22-e1254778e1b6",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "d02bb508-1d1a-52ae-be7d-560b0f00b9d5",
+        "ref": "U2313",
+        "pad": "13",
+        "copper_uuid": "2bf79820-f564-52c3-9b22-e1254778e1b6",
+        "gap_mm": -0.1
+      },
+      {
+        "pad_uuid": "deef02d8-cc7f-5141-afbf-221f995a0ca9",
+        "ref": "U2313",
+        "pad": "14",
+        "copper_uuid": "2bf79820-f564-52c3-9b22-e1254778e1b6",
+        "gap_mm": -0.1
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X0F25C1B40E73B6D42E31",
+      "source_contact_refs": [
+        "U2313"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X0F25C1B40E73B6D42E31",
+      "full_net_pad_records_sha256": "c22ffcab91dc85a587ebbeaf4afc8f7c1a7de4366dfb5c58e3e6c623ff10575b",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          238.7,
+          240.25
+        ],
+        [
+          237.95,
+          240.25
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          238.7,
+          240.25
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "deef02d8-cc7f-5141-afbf-221f995a0ca9"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          237.95,
+          240.25
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "d02bb508-1d1a-52ae-be7d-560b0f00b9d5"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      }
+    ],
+    "full_object_same_net_contacts": [],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "d02bb508-1d1a-52ae-be7d-560b0f00b9d5",
+        "ref": "U2313",
+        "pad": "13",
+        "net": "X0F25C1B40E73B6D42E31",
+        "original_xy_nm": [
+          237720000,
+          240105000
+        ],
+        "moved_scope": true
+      },
+      {
+        "uuid": "deef02d8-cc7f-5141-afbf-221f995a0ca9",
+        "ref": "U2313",
+        "pad": "14",
+        "net": "X0F25C1B40E73B6D42E31",
+        "original_xy_nm": [
+          238990000,
+          240105000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "XBF3BE4FDE28392550991",
+    "sha256": "be76c3214a08c40f2ef016073a6649c49bdfd43c0074f67bb8984cae5f4882cd",
+    "source_span": [
+      43560489,
+      43560652
+    ],
+    "uuid": "3920c62c-bdc2-58d1-91d4-61a539187a24",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "948e4b1b-f95d-5a6d-b5e5-30f3f31ff70a",
+        "ref": "U2313",
+        "pad": "1",
+        "copper_uuid": "3920c62c-bdc2-58d1-91d4-61a539187a24",
+        "gap_mm": -0.075
+      },
+      {
+        "pad_uuid": "e8751c19-cd4a-5e00-a4ac-a5e49bebce1e",
+        "ref": "U2313",
+        "pad": "2",
+        "copper_uuid": "3920c62c-bdc2-58d1-91d4-61a539187a24",
+        "gap_mm": -0.075
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "XBF3BE4FDE28392550991",
+      "source_contact_refs": [
+        "U2313"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == XBF3BE4FDE28392550991",
+      "full_net_pad_records_sha256": "81a85c18e2f07e2cd1e6f6b8236cf7f3ffb7d91f3fe0d32be200875595eaa6a9",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          238.7,
+          245.7
+        ],
+        [
+          238.0,
+          245.7
+        ]
+      ],
+      "diameter_or_width_mm": 0.15,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          238.7,
+          245.7
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "948e4b1b-f95d-5a6d-b5e5-30f3f31ff70a"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          238.0,
+          245.7
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "e8751c19-cd4a-5e00-a4ac-a5e49bebce1e"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      }
+    ],
+    "full_object_same_net_contacts": [],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "948e4b1b-f95d-5a6d-b5e5-30f3f31ff70a",
+        "ref": "U2313",
+        "pad": "1",
+        "net": "XBF3BE4FDE28392550991",
+        "original_xy_nm": [
+          238990000,
+          245055000
+        ],
+        "moved_scope": true
+      },
+      {
+        "uuid": "e8751c19-cd4a-5e00-a4ac-a5e49bebce1e",
+        "ref": "U2313",
+        "pad": "2",
+        "net": "XBF3BE4FDE28392550991",
+        "original_xy_nm": [
+          237720000,
+          245055000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "XC830CABE5D3B659DB698",
+    "sha256": "2ca0f9a81d487e6a49b46de9088aa03c4f2926ee377366c81b83fd3033c1fda4",
+    "source_span": [
+      43698849,
+      43699019
+    ],
+    "uuid": "9777b716-62a7-53dd-9a9a-aa7fb895e64c",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "887d9a61-bfe7-59e4-b151-7b55c9568dcf",
+        "ref": "U2313",
+        "pad": "9",
+        "copper_uuid": "9777b716-62a7-53dd-9a9a-aa7fb895e64c",
+        "gap_mm": -0.1
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "XC830CABE5D3B659DB698",
+      "source_contact_refs": [
+        "U2313"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == XC830CABE5D3B659DB698",
+      "full_net_pad_records_sha256": "9bbbf10771b8cb8a9c0424075913feed7c39aebf6fc78f7f08d42a5d8407b4b1",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          232.775,
+          241.075
+        ],
+        [
+          232.775,
+          241.3
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          232.775,
+          241.075
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "887d9a61-bfe7-59e4-b151-7b55c9568dcf"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          232.775,
+          241.3
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "d2702a9f-e86e-549a-a1b4-e2d68d46ee20",
+            "sha256": "4bff3d2bce1835e0ed5b2dce801b5c35b31a35b921026ea906fed96975415442",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "d2702a9f-e86e-549a-a1b4-e2d68d46ee20",
+        "sha256": "4bff3d2bce1835e0ed5b2dce801b5c35b31a35b921026ea906fed96975415442",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.2,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.2,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "887d9a61-bfe7-59e4-b151-7b55c9568dcf",
+        "ref": "U2313",
+        "pad": "9",
+        "net": "XC830CABE5D3B659DB698",
+        "original_xy_nm": [
+          232640000,
+          240105000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "XC830CABE5D3B659DB698",
+    "sha256": "4bff3d2bce1835e0ed5b2dce801b5c35b31a35b921026ea906fed96975415442",
+    "source_span": [
+      43699527,
+      43699696
+    ],
+    "uuid": "d2702a9f-e86e-549a-a1b4-e2d68d46ee20",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "XC830CABE5D3B659DB698",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == XC830CABE5D3B659DB698",
+      "full_net_pad_records_sha256": "9bbbf10771b8cb8a9c0424075913feed7c39aebf6fc78f7f08d42a5d8407b4b1",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          232.775,
+          241.3
+        ],
+        [
+          232.925,
+          241.45
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "XA524F62F8426DC6C6DDF",
+    "sha256": "5e80abdc7eef7ac7e3a4d04e2778b8589321fd5b9b844a2959305250861e802e",
+    "source_span": [
+      44113078,
+      44113240
+    ],
+    "uuid": "1ac1259a-26f5-5590-aa0f-c91ee1cb1637",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "d0601842-5bea-556e-828f-b951461e6804",
+        "ref": "U2313",
+        "pad": "12",
+        "copper_uuid": "1ac1259a-26f5-5590-aa0f-c91ee1cb1637",
+        "gap_mm": -0.1
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "XA524F62F8426DC6C6DDF",
+      "source_contact_refs": [
+        "U2313"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == XA524F62F8426DC6C6DDF",
+      "full_net_pad_records_sha256": "fb7ba8d7d9f1d786b876a4a68d5c2f41fd2e446af737e78d07a434d820e9269a",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          236.7,
+          241.0
+        ],
+        [
+          237.2,
+          241.5
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          236.7,
+          241.0
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "d0601842-5bea-556e-828f-b951461e6804"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          237.2,
+          241.5
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "1338d22b-9680-58b3-8bf8-de7de4315602",
+            "sha256": "18960e0150f55b985546d132f6d1050fe1cd075ec5e231c41cbcd5ad70a1c9c2",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "1338d22b-9680-58b3-8bf8-de7de4315602",
+        "sha256": "18960e0150f55b985546d132f6d1050fe1cd075ec5e231c41cbcd5ad70a1c9c2",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.2,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.2,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "d0601842-5bea-556e-828f-b951461e6804",
+        "ref": "U2313",
+        "pad": "12",
+        "net": "XA524F62F8426DC6C6DDF",
+        "original_xy_nm": [
+          236450000,
+          240105000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "XF3BFDFD1C1C00AB7A4A7",
+    "sha256": "328b0a85f41f9deb28b9e7dfb835a26b343986c5de01e921df1e2732c64398d0",
+    "source_span": [
+      44635045,
+      44635211
+    ],
+    "uuid": "277c031c-b184-5919-a978-b9342db290f2",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "ead781ca-25a4-5465-84de-db1de0216aa3",
+        "ref": "U2313",
+        "pad": "8",
+        "copper_uuid": "277c031c-b184-5919-a978-b9342db290f2",
+        "gap_mm": -0.1
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "XF3BFDFD1C1C00AB7A4A7",
+      "source_contact_refs": [
+        "U2313"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == XF3BFDFD1C1C00AB7A4A7",
+      "full_net_pad_records_sha256": "886e3ee4a7e69853fb94c3d4be9582e86a7bce5fc58ab7a73d19747330beb895",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          231.125,
+          239.2
+        ],
+        [
+          230.9,
+          239.2
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          231.125,
+          239.2
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "ead781ca-25a4-5465-84de-db1de0216aa3"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          230.9,
+          239.2
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "22a734b5-74f6-5d24-840c-8265f8f10c14",
+            "sha256": "141b2f8f06f19c6051c9b48443f6113bae61105d2698061bbf8e991f6da45c76",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "22a734b5-74f6-5d24-840c-8265f8f10c14",
+        "sha256": "141b2f8f06f19c6051c9b48443f6113bae61105d2698061bbf8e991f6da45c76",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.2,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.2,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "ead781ca-25a4-5465-84de-db1de0216aa3",
+        "ref": "U2313",
+        "pad": "8",
+        "net": "XF3BFDFD1C1C00AB7A4A7",
+        "original_xy_nm": [
+          231370000,
+          240105000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "XCF7B60823204C84A5FA7",
+    "sha256": "21f3d12076186d7f6d892cf3b944e8cb899f3b8a31019e20e996acd28ee80cbe",
+    "source_span": [
+      44670506,
+      44670676
+    ],
+    "uuid": "0a61b909-6bf0-5379-90e6-bdc90116003f",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "XCF7B60823204C84A5FA7",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == XCF7B60823204C84A5FA7",
+      "full_net_pad_records_sha256": "b7b421b52016e62d6e54300b098735c13de3659fac8cffcec3caef51ef9c1e10",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          231.725,
+          251.875
+        ],
+        [
+          232.4,
+          251.875
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "XCF7B60823204C84A5FA7",
+    "sha256": "a810671be8998cd895667162ea84c772832590ceca2e4206a8e007cb0fd7d52b",
+    "source_span": [
+      44671016,
+      44671185
+    ],
+    "uuid": "37277f2e-90f5-5913-9ced-ccdd48745345",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "XCF7B60823204C84A5FA7",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == XCF7B60823204C84A5FA7",
+      "full_net_pad_records_sha256": "b7b421b52016e62d6e54300b098735c13de3659fac8cffcec3caef51ef9c1e10",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          231.65,
+          251.8
+        ],
+        [
+          231.725,
+          251.875
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "XCF7B60823204C84A5FA7",
+    "sha256": "ede12a529048912c6f1bce246224bff98074cc002bbe9f2a7f461740aad3230f",
+    "source_span": [
+      44673579,
+      44673747
+    ],
+    "uuid": "f3a09382-a442-52c7-a717-6f50f58fbe56",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "XCF7B60823204C84A5FA7",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == XCF7B60823204C84A5FA7",
+      "full_net_pad_records_sha256": "b7b421b52016e62d6e54300b098735c13de3659fac8cffcec3caef51ef9c1e10",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          232.4,
+          251.875
+        ],
+        [
+          233.825,
+          253.3
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X33A21456F99AD2970DEB",
+    "sha256": "23aef4be4885093b0a1755c5570c1a94174e5f13c97d9106b771135914cc4954",
+    "source_span": [
+      45328957,
+      45329125
+    ],
+    "uuid": "14852139-0863-5fc7-9264-cc658f1f0e99",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "9cd8c667-bbda-54e7-9c0e-8693b1567dcc",
+        "ref": "U2313",
+        "pad": "3",
+        "copper_uuid": "14852139-0863-5fc7-9264-cc658f1f0e99",
+        "gap_mm": -0.1
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X33A21456F99AD2970DEB",
+      "source_contact_refs": [
+        "U2313"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X33A21456F99AD2970DEB",
+      "full_net_pad_records_sha256": "ae826775d67f92829f52e579630152ef69854316af75a05d39dd9833e53f3e59",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          236.6,
+          246.025
+        ],
+        [
+          236.6,
+          246.925
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          236.6,
+          246.025
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "9cd8c667-bbda-54e7-9c0e-8693b1567dcc"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          236.6,
+          246.925
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "da2fbf86-2367-5408-82e8-88fc7459a6ce",
+            "sha256": "1ff2e4f00e9a023459a0d7eea56e554b8c99f127579f7c71c4957648ccc87647",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "da2fbf86-2367-5408-82e8-88fc7459a6ce",
+        "sha256": "1ff2e4f00e9a023459a0d7eea56e554b8c99f127579f7c71c4957648ccc87647",
+        "kind": "via",
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu",
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.6,
+        "drill_mm": 0.3,
+        "full_object_gap_mm": -0.4,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "9cd8c667-bbda-54e7-9c0e-8693b1567dcc",
+        "ref": "U2313",
+        "pad": "3",
+        "net": "X33A21456F99AD2970DEB",
+        "original_xy_nm": [
+          236450000,
+          245055000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "X42A840C53C1A214F7CF4",
+    "sha256": "49f0804352b4944fdc45323bed4ba26eb95778033f04588dac0b2dedf5683734",
+    "source_span": [
+      47709408,
+      47709575
+    ],
+    "uuid": "3bb37b68-9ded-51a6-b50a-76ab322c9cc4",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "734f824a-11b4-5ce3-b785-dd1c2d8341d4",
+        "ref": "U2312",
+        "pad": "1",
+        "copper_uuid": "3bb37b68-9ded-51a6-b50a-76ab322c9cc4",
+        "gap_mm": -0.1
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X42A840C53C1A214F7CF4",
+      "source_contact_refs": [
+        "U2312"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X42A840C53C1A214F7CF4",
+      "full_net_pad_records_sha256": "b721b16f958ce9f2d253a181b4405bdf8cf8b74fa53f7917daacb3e20ecaf029",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          207.575,
+          243.4
+        ],
+        [
+          208.85,
+          243.4
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          207.575,
+          243.4
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "bb704d6f-6eb3-54e2-9c5c-66107d8a972d",
+            "sha256": "bd874a741acc81554f5b2e3b6f721085900fef91efc5849a96abdc4589f09cde",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      },
+      {
+        "xy_mm": [
+          208.85,
+          243.4
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "734f824a-11b4-5ce3-b785-dd1c2d8341d4"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "bb704d6f-6eb3-54e2-9c5c-66107d8a972d",
+        "sha256": "bd874a741acc81554f5b2e3b6f721085900fef91efc5849a96abdc4589f09cde",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.2,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.2,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "734f824a-11b4-5ce3-b785-dd1c2d8341d4",
+        "ref": "U2312",
+        "pad": "1",
+        "net": "X42A840C53C1A214F7CF4",
+        "original_xy_nm": [
+          209140000,
+          242995000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "X42A840C53C1A214F7CF4",
+    "sha256": "c328c3d26b7f830357eae2699d162d3aeaae74cb88fc77d408331e7b279a9c85",
+    "source_span": [
+      47709577,
+      47709745
+    ],
+    "uuid": "74dcd34f-1082-58a7-ae40-94880c5a7614",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "734f824a-11b4-5ce3-b785-dd1c2d8341d4",
+        "ref": "U2312",
+        "pad": "1",
+        "copper_uuid": "74dcd34f-1082-58a7-ae40-94880c5a7614",
+        "gap_mm": -0.1
+      },
+      {
+        "pad_uuid": "84236f18-403e-5e82-bf92-248ee226c8f4",
+        "ref": "U2312",
+        "pad": "2",
+        "copper_uuid": "74dcd34f-1082-58a7-ae40-94880c5a7614",
+        "gap_mm": -0.1
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X42A840C53C1A214F7CF4",
+      "source_contact_refs": [
+        "U2312"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X42A840C53C1A214F7CF4",
+      "full_net_pad_records_sha256": "b721b16f958ce9f2d253a181b4405bdf8cf8b74fa53f7917daacb3e20ecaf029",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          210.125,
+          242.8
+        ],
+        [
+          209.375,
+          242.8
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          210.125,
+          242.8
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "84236f18-403e-5e82-bf92-248ee226c8f4"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          209.375,
+          242.8
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "734f824a-11b4-5ce3-b785-dd1c2d8341d4"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      }
+    ],
+    "full_object_same_net_contacts": [],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "734f824a-11b4-5ce3-b785-dd1c2d8341d4",
+        "ref": "U2312",
+        "pad": "1",
+        "net": "X42A840C53C1A214F7CF4",
+        "original_xy_nm": [
+          209140000,
+          242995000
+        ],
+        "moved_scope": true
+      },
+      {
+        "uuid": "84236f18-403e-5e82-bf92-248ee226c8f4",
+        "ref": "U2312",
+        "pad": "2",
+        "net": "X42A840C53C1A214F7CF4",
+        "original_xy_nm": [
+          210410000,
+          242995000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "via",
+    "net_token": "X1BF430DFDDEBDA9D44AA",
+    "sha256": "78c9b4be2bd23a15ed441fe85e002771ff05dfd57c7eed7e42be54398004ba7a",
+    "source_span": [
+      47714622,
+      47714781
+    ],
+    "uuid": "c71e54eb-56f9-5b60-8c2d-a6eaa14fbb32",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X1BF430DFDDEBDA9D44AA",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X1BF430DFDDEBDA9D44AA",
+      "full_net_pad_records_sha256": "0ab1f1e081c412d5fff89b0430dc4efd2b795b3f1845ad69510f89ed01a60a11",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          211.2,
+          244.25
+        ]
+      ],
+      "diameter_or_width_mm": 0.6,
+      "layers": [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu",
+        "B.Cu"
+      ],
+      "drill_mm": 0.3
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X1BF430DFDDEBDA9D44AA",
+    "sha256": "b731ac464dbced1c1b99a66435e41f4f1aad7412992b16f9f2c73de1b9ec80ad",
+    "source_span": [
+      47715787,
+      47715954
+    ],
+    "uuid": "b4365b16-495f-5a42-884e-4c53e06493cb",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "8d05b5b4-3280-5718-8873-0ba8b1111167",
+        "ref": "U2312",
+        "pad": "3",
+        "copper_uuid": "b4365b16-495f-5a42-884e-4c53e06493cb",
+        "gap_mm": -0.075
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X1BF430DFDDEBDA9D44AA",
+      "source_contact_refs": [
+        "U2312"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X1BF430DFDDEBDA9D44AA",
+      "full_net_pad_records_sha256": "0ab1f1e081c412d5fff89b0430dc4efd2b795b3f1845ad69510f89ed01a60a11",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          211.2,
+          244.25
+        ],
+        [
+          211.5,
+          243.95
+        ]
+      ],
+      "diameter_or_width_mm": 0.15,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          211.2,
+          244.25
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "c71e54eb-56f9-5b60-8c2d-a6eaa14fbb32",
+            "sha256": "78c9b4be2bd23a15ed441fe85e002771ff05dfd57c7eed7e42be54398004ba7a",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      },
+      {
+        "xy_mm": [
+          211.5,
+          243.95
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "8d05b5b4-3280-5718-8873-0ba8b1111167"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "c71e54eb-56f9-5b60-8c2d-a6eaa14fbb32",
+        "sha256": "78c9b4be2bd23a15ed441fe85e002771ff05dfd57c7eed7e42be54398004ba7a",
+        "kind": "via",
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu",
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.6,
+        "drill_mm": 0.3,
+        "full_object_gap_mm": -0.375,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "8d05b5b4-3280-5718-8873-0ba8b1111167",
+        "ref": "U2312",
+        "pad": "3",
+        "net": "X1BF430DFDDEBDA9D44AA",
+        "original_xy_nm": [
+          211680000,
+          242995000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "XDEDA32D515C912ED69C7",
+    "sha256": "76be2250b17154ada95a46f32ad4190079b9371cb06d9721265a87c80b416e55",
+    "source_span": [
+      47717614,
+      47717781
+    ],
+    "uuid": "2ddb798b-5af4-5dfd-b6a9-21978d734257",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "a94ae2bb-13fe-5e3d-a7ab-10ddb6bd4222",
+        "ref": "C2312",
+        "pad": "1",
+        "copper_uuid": "2ddb798b-5af4-5dfd-b6a9-21978d734257",
+        "gap_mm": -0.1
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "XDEDA32D515C912ED69C7",
+      "source_contact_refs": [
+        "C2312"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == XDEDA32D515C912ED69C7",
+      "full_net_pad_records_sha256": "c971799fd500ebaa8d74b8e0db42c8e5601908fddd710616d1ffc27e41a63ad6",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          214.45,
+          264.05
+        ],
+        [
+          215.5,
+          264.05
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          214.45,
+          264.05
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "a94ae2bb-13fe-5e3d-a7ab-10ddb6bd4222"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      },
+      {
+        "xy_mm": [
+          215.5,
+          264.05
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "76dcc53e-6210-598a-b943-88b8e230b542",
+            "sha256": "c03f9647d8a9b1f29a05e1097561455467ec5b79220e77a5d4b9140895eed49e",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "76dcc53e-6210-598a-b943-88b8e230b542",
+        "sha256": "c03f9647d8a9b1f29a05e1097561455467ec5b79220e77a5d4b9140895eed49e",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.2,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.2,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "a94ae2bb-13fe-5e3d-a7ab-10ddb6bd4222",
+        "ref": "C2312",
+        "pad": "1",
+        "net": "XDEDA32D515C912ED69C7",
+        "original_xy_nm": [
+          214090000,
+          264460000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "segment",
+    "net_token": "XDEDA32D515C912ED69C7",
+    "sha256": "d9f10908162bba7d10afd65ec0099ece40df180299d94caa2a9113492ffe5430",
+    "source_span": [
+      47721489,
+      47721656
+    ],
+    "uuid": "fc6b2f47-d176-5ee4-ab1b-7e37af094b7d",
+    "classification": "EXPLICIT_CANDIDATE_RECONSTRUCTION_OBLIGATION",
+    "basis": "Original same-net pad contact belongs to an allowed movable ref; relaxing only this exact object gives an optimistic placement model. Any later candidate must explicitly replay/restore its connectivity.",
+    "original_contacts": [
+      {
+        "pad_uuid": "fd5ea680-21f5-5892-a79f-2adb1e925b57",
+        "ref": "U2312",
+        "pad": "12",
+        "copper_uuid": "fc6b2f47-d176-5ee4-ab1b-7e37af094b7d",
+        "gap_mm": -0.075
+      }
+    ],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "XDEDA32D515C912ED69C7",
+      "source_contact_refs": [
+        "U2312"
+      ],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == XDEDA32D515C912ED69C7",
+      "full_net_pad_records_sha256": "c971799fd500ebaa8d74b8e0db42c8e5601908fddd710616d1ffc27e41a63ad6",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          210.55,
+          249.85
+        ],
+        [
+          211.5,
+          248.9
+        ]
+      ],
+      "diameter_or_width_mm": 0.15,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    },
+    "continuity_ports": [
+      {
+        "xy_mm": [
+          210.55,
+          249.85
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [
+          {
+            "uuid": "68b90990-e55e-5542-ac52-4f2e45ac7606",
+            "sha256": "1838c4fb5e0b1d291f8a75c8e64dc73429e8dc6145794a279a0ebfe4d6d2de0a",
+            "disposition": "PRESERVED_IN_PLACE"
+          }
+        ],
+        "contacted_original_pad_uuids": [],
+        "role": "ORIGINAL_COPPER_SPLICE_OR_EXPOSED_ENDPOINT"
+      },
+      {
+        "xy_mm": [
+          211.5,
+          248.9
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "same_net_source_neighbors": [],
+        "contacted_original_pad_uuids": [
+          "fd5ea680-21f5-5892-a79f-2adb1e925b57"
+        ],
+        "role": "OLD_MOVED_PAD_CONTACT_AND_ANY_LISTED_COPPER_BRANCHES"
+      }
+    ],
+    "full_object_same_net_contacts": [
+      {
+        "uuid": "68b90990-e55e-5542-ac52-4f2e45ac7606",
+        "sha256": "1838c4fb5e0b1d291f8a75c8e64dc73429e8dc6145794a279a0ebfe4d6d2de0a",
+        "kind": "segment",
+        "layers": [
+          "B.Cu"
+        ],
+        "diameter_or_width_mm": 0.15,
+        "drill_mm": null,
+        "full_object_gap_mm": -0.15,
+        "disposition": "PRESERVED_IN_PLACE"
+      }
+    ],
+    "full_object_original_fixture_pad_contacts": [
+      {
+        "uuid": "fd5ea680-21f5-5892-a79f-2adb1e925b57",
+        "ref": "U2312",
+        "pad": "12",
+        "net": "XDEDA32D515C912ED69C7",
+        "original_xy_nm": [
+          211680000,
+          247945000
+        ],
+        "moved_scope": true
+      }
+    ],
+    "reconstruction_requirement": "Reconnect every listed original pad UUID at its selected pose and preserve connection to every listed endpoint/neighbor on this exact net and layer. If old endpoint lies inside a moved-pad contact it is a historical contact locator, not a required obsolete terminal. Any wider reconstruction requires explicit object classification; no silent cuts.",
+    "native_group_gate": "Original fixture pad contacts are source evidence only. Full accepted-board native connected groups and zone-mediated contacts must also be preserved and freshly verified before acceptance.",
+    "continuity_status": "NOT RECONSTRUCTED; NOT VERIFIED CONNECTED"
+  },
+  {
+    "kind": "via",
+    "net_token": "X5034420C569627042FA5",
+    "sha256": "7146048c79c72f90e078ff053fc899cbc4cc043b8e70bc48a20703faf96a22f2",
+    "source_span": [
+      47975965,
+      47976125
+    ],
+    "uuid": "a13e0afa-0bab-5881-ae96-1416765e30ac",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X5034420C569627042FA5",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X5034420C569627042FA5",
+      "full_net_pad_records_sha256": "a50a1d78da6862b81cc0b268f19c0756a2fd4aac902e654558945bf9b7eb5233",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          233.75,
+          237.05
+        ]
+      ],
+      "diameter_or_width_mm": 0.6,
+      "layers": [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu",
+        "B.Cu"
+      ],
+      "drill_mm": 0.3
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X5034420C569627042FA5",
+    "sha256": "be301eff20bea2afc1ba694867a50b2468d27c1be974a06d3111828831e27c7e",
+    "source_span": [
+      47976789,
+      47976957
+    ],
+    "uuid": "0d0b3c1f-e911-54ba-bf40-49f60c70d1fe",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X5034420C569627042FA5",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X5034420C569627042FA5",
+      "full_net_pad_records_sha256": "a50a1d78da6862b81cc0b268f19c0756a2fd4aac902e654558945bf9b7eb5233",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          233.75,
+          237.2
+        ],
+        [
+          233.75,
+          237.35
+        ]
+      ],
+      "diameter_or_width_mm": 0.15,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X5034420C569627042FA5",
+    "sha256": "dd863b18584b54b3f73d4b0b9892b9b6336692b74c2478cc61f1c01ae27de83f",
+    "source_span": [
+      47977625,
+      47977792
+    ],
+    "uuid": "1bf35bec-818e-57aa-ad41-3e448071f042",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X5034420C569627042FA5",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X5034420C569627042FA5",
+      "full_net_pad_records_sha256": "a50a1d78da6862b81cc0b268f19c0756a2fd4aac902e654558945bf9b7eb5233",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          230.45,
+          248.4
+        ],
+        [
+          232.35,
+          250.3
+        ]
+      ],
+      "diameter_or_width_mm": 0.15,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X5034420C569627042FA5",
+    "sha256": "2b3fad2433ad34ccba92bd3923d03b574583ba69597817625db0478ae8233d6c",
+    "source_span": [
+      47977963,
+      47978132
+    ],
+    "uuid": "29353aca-a4ee-5daf-a20c-b308b604f41a",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X5034420C569627042FA5",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X5034420C569627042FA5",
+      "full_net_pad_records_sha256": "a50a1d78da6862b81cc0b268f19c0756a2fd4aac902e654558945bf9b7eb5233",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          233.75,
+          237.35
+        ],
+        [
+          232.05,
+          239.05
+        ]
+      ],
+      "diameter_or_width_mm": 0.15,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X5034420C569627042FA5",
+    "sha256": "497d2dd0f2bf4359a9248f1ff20ed9acd66016bf83049248bebb93bc04127890",
+    "source_span": [
+      47978472,
+      47978640
+    ],
+    "uuid": "3a17fe69-08b5-50fe-8df1-5501045471a2",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X5034420C569627042FA5",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X5034420C569627042FA5",
+      "full_net_pad_records_sha256": "a50a1d78da6862b81cc0b268f19c0756a2fd4aac902e654558945bf9b7eb5233",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          233.15,
+          250.45
+        ],
+        [
+          233.3,
+          250.45
+        ]
+      ],
+      "diameter_or_width_mm": 0.15,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X5034420C569627042FA5",
+    "sha256": "8cddc41f8470a48665312fc180bbde8cd64d5859e722f149e88083d0409d1909",
+    "source_span": [
+      47979309,
+      47979477
+    ],
+    "uuid": "442ff6b7-c8b5-558a-b31d-540373186893",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X5034420C569627042FA5",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X5034420C569627042FA5",
+      "full_net_pad_records_sha256": "a50a1d78da6862b81cc0b268f19c0756a2fd4aac902e654558945bf9b7eb5233",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          233.1,
+          250.45
+        ],
+        [
+          233.15,
+          250.45
+        ]
+      ],
+      "diameter_or_width_mm": 0.15,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X5034420C569627042FA5",
+    "sha256": "b8f84f20b7b62e4a4933e011572ea6e2e23b33ee541d0e81ded3a601e8e1e7cf",
+    "source_span": [
+      47981143,
+      47981312
+    ],
+    "uuid": "5423ca56-8888-5228-a12a-1e6082612aad",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X5034420C569627042FA5",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X5034420C569627042FA5",
+      "full_net_pad_records_sha256": "a50a1d78da6862b81cc0b268f19c0756a2fd4aac902e654558945bf9b7eb5233",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          232.05,
+          239.05
+        ],
+        [
+          232.05,
+          246.75
+        ]
+      ],
+      "diameter_or_width_mm": 0.15,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X5034420C569627042FA5",
+    "sha256": "bc943e93a12151b150e2186c22ceef5fd336b220ce0e7f2ae4990862b3377978",
+    "source_span": [
+      47981646,
+      47981814
+    ],
+    "uuid": "5f9da1e0-a466-5e7d-8868-35c8d6e3f3f7",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X5034420C569627042FA5",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X5034420C569627042FA5",
+      "full_net_pad_records_sha256": "a50a1d78da6862b81cc0b268f19c0756a2fd4aac902e654558945bf9b7eb5233",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          233.75,
+          237.15
+        ],
+        [
+          233.75,
+          237.2
+        ]
+      ],
+      "diameter_or_width_mm": 0.15,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X5034420C569627042FA5",
+    "sha256": "74d2f42b69cf25116c58a4f466bbbb58d379e53c938d4cd8cee45e54ea3ea9dc",
+    "source_span": [
+      47983994,
+      47984160
+    ],
+    "uuid": "7889bd35-c9f0-57b6-ba11-29dc35ead1a4",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X5034420C569627042FA5",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X5034420C569627042FA5",
+      "full_net_pad_records_sha256": "a50a1d78da6862b81cc0b268f19c0756a2fd4aac902e654558945bf9b7eb5233",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          232.4,
+          250.35
+        ],
+        [
+          232.5,
+          250.45
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X5034420C569627042FA5",
+    "sha256": "f1081e74fc4bed9216424444b8bfeb76075506ba25de86303a7c84823aa72b57",
+    "source_span": [
+      47986491,
+      47986658
+    ],
+    "uuid": "90b40bf1-75ce-557f-a148-8b271b35c2d8",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X5034420C569627042FA5",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X5034420C569627042FA5",
+      "full_net_pad_records_sha256": "a50a1d78da6862b81cc0b268f19c0756a2fd4aac902e654558945bf9b7eb5233",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          232.35,
+          250.3
+        ],
+        [
+          232.4,
+          250.35
+        ]
+      ],
+      "diameter_or_width_mm": 0.15,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X5034420C569627042FA5",
+    "sha256": "77245546ea42b07fd7df4d696abaa806e72f3818cf0bd148b62eb0a20164cac7",
+    "source_span": [
+      47990678,
+      47990846
+    ],
+    "uuid": "c1e9b155-0df1-5db0-a8c9-cfb5b0faa1b7",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X5034420C569627042FA5",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X5034420C569627042FA5",
+      "full_net_pad_records_sha256": "a50a1d78da6862b81cc0b268f19c0756a2fd4aac902e654558945bf9b7eb5233",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          233.75,
+          237.05
+        ],
+        [
+          233.75,
+          237.15
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  },
+  {
+    "kind": "segment",
+    "net_token": "X5034420C569627042FA5",
+    "sha256": "b8f61c7b3b9d22e28297c53f7eb14a3fa611afe87112b6f27bdbe5fd7dabdd79",
+    "source_span": [
+      47991185,
+      47991351
+    ],
+    "uuid": "c8896bce-444e-5294-a67f-093722ad3abc",
+    "classification": "PRESERVE_IN_PLACE",
+    "basis": "No original moved-pad contact; remains a hard retained-copper obstacle. A collision is not permission to cut.",
+    "original_contacts": [],
+    "canonical_state": "PRESERVED_BYTE_IDENTICAL",
+    "ownership": {
+      "net_token": "X5034420C569627042FA5",
+      "source_contact_refs": [],
+      "full_net_endpoint_selector": "copper-contract.json/options/two/nets: net_token == X5034420C569627042FA5",
+      "full_net_pad_records_sha256": "a50a1d78da6862b81cc0b268f19c0756a2fd4aac902e654558945bf9b7eb5233",
+      "meaning": "Exact contact ownership where proved; otherwise full-net ownership, not an invented individual Ref owner"
+    },
+    "original_geometry": {
+      "endpoints_or_center_mm": [
+        [
+          232.5,
+          250.45
+        ],
+        [
+          233.1,
+          250.45
+        ]
+      ],
+      "diameter_or_width_mm": 0.2,
+      "layers": [
+        "B.Cu"
+      ],
+      "drill_mm": null
+    }
+  }
+]

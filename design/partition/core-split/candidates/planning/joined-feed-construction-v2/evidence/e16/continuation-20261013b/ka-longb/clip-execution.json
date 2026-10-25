@@ -1,0 +1,28 @@
+{
+  "step": "clip",
+  "input_sha256": {
+    "/tmp/osc-ka-longb-constructed-r3/eval/normalized-caps.json": "e6d202de41cb85be3387bdb83a04fda9f4a36c6bf054e0b40ab860b166def021",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py": "6f3df61dd649729b3e58796c067cc9924dc3d776c645592c62e5f6ab3ac5c235",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json": "f2783e9a0a720e431a00512e9017b55c236e7f31e5a579bbe00e6ee442e00eea"
+  },
+  "command": [
+    "timeout",
+    "180s",
+    "/workspace/osc-venv/bin/python",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py",
+    "--filtered-board",
+    "/tmp/osc-ka-longb-constructed-r3/eval/normalized-caps.json",
+    "--design",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+    "--clip-only",
+    "--output",
+    "/tmp/osc-ka-longb-constructed-r3/eval/clipped-sheets.json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 115.37209222699994,
+  "stdout": "{\"board\": \"KA\", \"report\": {\"AGND\": {\"layer\": \"In1.Cu\", \"cut_count\": 9763, \"pieces\": 8, \"area_mm2\": 79247.049125, \"largest_mm2\": 79246.184573}, \"+5V\": {\"layer\": \"In2.Cu\", \"cut_count\": 38539, \"pieces\": 1549, \"area_mm2\": 68364.907972, \"largest_mm2\": 58642.17548}, \"-12V\": {\"layer\": \"In3.Cu\", \"cut_count\": 23943, \"pieces\": 628, \"area_mm2\": 73018.625191, \"largest_mm2\": 70690.700422}, \"+12V\": {\"layer\": \"In4.Cu\", \"cut_count\": 10791, \"pieces\": 10, \"area_mm2\": 78768.732793, \"largest_mm2\": 78767.676274}}, \"elapsed_seconds\": 114.65, \"peak_KiB\": 1297692}\n",
+  "stderr": "",
+  "output_sha256": "43a4b26464bf7d65f7cc23f3a7c1fc5ba8a2caa8679e8934380a72c725e1517d",
+  "inputs_before_after_equal": true,
+  "native_calls": 0
+}

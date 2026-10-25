@@ -1,0 +1,96 @@
+{
+  "admission_id": "epic242-o1-k1402-route-20261011-1420",
+  "verdict": "NO IMPROVEMENT",
+  "accepted": false,
+  "run_id": 38147266896,
+  "job_id": 114493143724,
+  "worker": "o1-k1402-r1420-38147266896-1",
+  "launcher_source_sha": "b4d744f950eb5e68de6849ee3b34c387dc2ab960",
+  "orchestration_sha": "1c787de02197c87b9eb299f3e5ac5e8171e49a12",
+  "method_sha": "29140d4e19d526eed3a02a73c33f8ce4219c78f0",
+  "artifact": {
+    "id": 11705153530,
+    "bytes": 39091217,
+    "sha256": "9232ff3212f41604a72b3f49a9d3a8b10884186884bf50f367a57693a7e082a5",
+    "members": 319,
+    "all_crcs_pass": true
+  },
+  "proposal": {
+    "copper_additions": 0,
+    "cuts": 0,
+    "links": 0,
+    "unrouted_demands": 4,
+    "search_wall_seconds": 9.273817893
+  },
+  "verified_bindings": {
+    "complete_input_zips": 6,
+    "unchanged_input_files_including_lock": 297,
+    "fixture_lock_files": 296,
+    "primary_method_sources": 14,
+    "transitive_method_tool_hashes": 418
+  },
+  "resources": {
+    "native_seconds_limit": 300,
+    "worker_bytes_limit": 6442450944,
+    "aggregate_bytes_limit": 12884901888,
+    "free_bytes_floor": 2147483648,
+    "swap_bytes_extra": 0,
+    "whole_worker_peak_bytes": 415399936,
+    "minimum_sampled_free_bytes": 15253454848,
+    "guard_samples": 16,
+    "oom_events": 0
+  },
+  "cleanup": {
+    "both_full_id_probes_retained_exit": 0,
+    "containers_remaining": 0,
+    "owned_units": 3,
+    "all_owned_units_inactive_not_found": true,
+    "errors": [],
+    "cleanup_failures": [],
+    "workload_absent": true,
+    "reservation": "ELIGIBLE FOR PARENT RELEASE; no surviving task workload"
+  },
+  "independent_review": {
+    "reviewer": "/root/baseline_review",
+    "gate": "PASS: bounded negative result",
+    "checks": [
+      "ZIP size/SHA and all CRCs",
+      "all retained fixture bytes and primary source bindings",
+      "six complete ZIP ledger bindings",
+      "exact payload and limits",
+      "two full-ID ACK/live PID/cgroup proofs and retained exits",
+      "whole-worker resource events and complete cleanup",
+      "proposal and diagnostics against frozen method"
+    ]
+  },
+  "interpretation": [
+    "AGND counter 50001 follows frozen ++expanded > max_exp before expansion; limit remains 50000.",
+    "The two supply windows are frozen internal search attempts, not a workflow retry or enlarged common bounds.",
+    "Command success is not native closure, DRC/parity, full-warning or eligibility acceptance.",
+    "KEEP_K1402_INCUMBENT; no architecture selection inference."
+  ],
+  "unadmitted": [
+    "retry",
+    "O1/two-A",
+    "apply",
+    "settle",
+    "fresh-copy",
+    "audit"
+  ],
+  "evidence_files_sha256": {
+    "actions-log.json": "77270140f87f2077d17d90ce6150a2dc2703b518c85d69356e285b257b939f9a",
+    "artifact-authentication.json": "bbf11075ccfbf10434f3d13eee28f9512aeb69ef337e607d76e7cd2c04f93f46",
+    "artifact-members.json": "9f4377f2acf65d73b2b2420670ae0acd7cac4a85d32e24954780d258417fbee7",
+    "bootstrap.json": "ee5a84a7d773b4e1e0fe6897b12ec0673b301c8222e8871f136c7fc57ebdaf86",
+    "fixture-lock.json": "96ddddf168f1ebf14d8ba88c07f9c4264f48fb72b4c76f63f85ba087ae9ff80b",
+    "host.json": "6fc97e29f3b7ee11fa0e2566a9cb903fc3e532101f684610b0a99cb48ec1f2d8",
+    "image-preparation.json": "0cdbedf76a9c132c6ce3bbe6011a42860fb02ffdc5251fd3124b2c294b00cfd8",
+    "initial-fixture-hashes.json": "a2bd937541d055d43515b1b935ffb1505f8e275b93abfd87e63e4048096602f8",
+    "job-outcome.json": "f9de9b5e135f056f0854a79947429c807e06ed0e8ddf330d133d17a9d5dca921",
+    "matched-proposal.json": "884db96e56938fa3d7059b4088d29fcf571199c320e7cd79f10d0acf299dd331",
+    "matched-search-diagnostics.json": "6fe312c664f0aa40db01648b25019cf510a1d719e2b4632edb5c0ebb4ac9db45",
+    "native-guard.json": "76eca822a8eb3781c5842fadcfc1c53e70615bf376d35ef086e29a79990c67ad",
+    "raw-logs.json": "c67ffc1c238533351665921ac6824533e1fc109f03337bace6a3cfcd9b2c76c6",
+    "route.json": "3667386d08ebf5c24cd43f4f46bddf30751a24b15b638868ef22837503b22d70"
+  }
+}

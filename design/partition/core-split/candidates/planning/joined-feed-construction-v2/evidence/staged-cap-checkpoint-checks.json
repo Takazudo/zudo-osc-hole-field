@@ -1,0 +1,34 @@
+{
+  "status": "SOURCE_CHECKPOINT_CHECKS_PASS_NOT_ELECTRICAL_ACCEPTANCE",
+  "checked_at_utc": "2026-10-12T06:54:45.844802+00:00",
+  "parent_geometry_commit": "e59512bc2d150f9ef85913a226c297c4bcf4b361",
+  "sha256": {
+    "staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7",
+    "connectivity.py": "c13696185dbea33dcd18451e178f197632a7a8f33fc0ec73d0095aae5d8fa43e",
+    "board_context.py": "afcfaf0070632312fe02a62299f8a0ace0c614895a2330e44ee935631e86c7ca",
+    "test_staged_caps.py": "12ebaded0469dee7b37f82af36d5341b74782b48cac036afffa9b57e4b326877",
+    "test_connectivity.py": "3563406809c921cbb48924cf86513f0e3a1eb2d61b843a5b9bf09ba256675e3f",
+    "test_board_context.py": "fb9e33b0fb8ee1e6b7f556c0372330dd74be5530be09c4e6368df315ff2233d9"
+  },
+  "checks": [
+    {
+      "command": "python -m unittest discover -s design/partition/core-split/candidates/planning/joined-feed-construction-v2 -p test_*.py",
+      "tests": 29,
+      "seconds": 0.115,
+      "exit_code": 0
+    },
+    {
+      "command": "pnpm circuit:check",
+      "exit_code": 0,
+      "scope": "Component-spec and pin assets; no schematic/placement binding"
+    },
+    {
+      "command": "pnpm check",
+      "exit_code": 0,
+      "scope": "Generated documentation/preflight/model/footprint freshness and TypeScript"
+    }
+  ],
+  "native_calls": 0,
+  "signed_load_proof_complete": false,
+  "source_access_epoch_accepted": false
+}

@@ -1,0 +1,56 @@
+{
+  "source_commit": "f70e458a2197ad51ebb96ca9d2eb08804daaef1d",
+  "tests": 126,
+  "results": {
+    "local-hardened-guard-tests": {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/kicad",
+        "-p",
+        "test_*.py",
+        "-q"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 2.5526172230020165,
+      "child_peak_rss_KiB": 28312
+    },
+    "local-hardened-e16-tests": {
+      "command": [
+        "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+        "/tmp/osc-wsl-20261013/targeted_tests.py"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 1.082618381944485,
+      "child_peak_rss_KiB": 68632
+    },
+    "local-hardened-circuit": {
+      "command": [
+        "pnpm",
+        "circuit:check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 0.9497557379072532,
+      "child_peak_rss_KiB": 128804
+    },
+    "local-hardened-check": {
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 3.500141662079841,
+      "child_peak_rss_KiB": 276932
+    }
+  },
+  "build_site": "PASS retained at587b5e41, before evidence commits and ledger-only code hardening; published docs unchanged",
+  "native_calls": 0,
+  "operator_approvals_created": 0
+}

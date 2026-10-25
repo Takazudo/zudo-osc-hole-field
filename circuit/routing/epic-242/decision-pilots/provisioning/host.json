@@ -1,0 +1,683 @@
+{
+  "status": "PROVISIONING PASS ONLY; NO NATIVE ADMISSION OR EXECUTION",
+  "route_status": "NOT STARTED / NOT ADMITTED",
+  "native_workers_started": 0,
+  "probe_containers_started": 0,
+  "workflow_run_id": "38146298766",
+  "workflow_attempt": "1",
+  "orchestration_sha": "84339974f72e77f6bcf4e0edb72eb5b6b7356005",
+  "driver_sha256": "04d2f1fc1ef1495059e850dcc0939981b9035910dc765797651cb3bed03b30dd",
+  "source_hashes": {
+    "circuit/routing/epic-242/decision-pilots/evaluate_matched.py": "aaeab12b18174edc8c997dbd8e84c7d7ede64c8b9d92f84246cb37a3e77c3e73",
+    "circuit/routing/epic-242/decision-pilots/matched-demands.json": "4766e57af16f3ae50c9bd6edad099c9595984c8dd3eda0154a5433a19270550b",
+    "circuit/routing/epic-242/decision-pilots/matching-spec.json": "e17c8f01b0fe08164cee514d41b3f2bfea2a2fe23da181bcb4c3dae479404c99",
+    "circuit/routing/epic-242/decision-pilots/matching.py": "31aca39f3b10aa757bacc3c6f05f70c54a571d5afa3e29a384344dd12593b056",
+    "circuit/routing/epic-242/decision-pilots/prepare_matched.py": "7b012b5643862aaea43e96f6b77e351269787f12626fbcc04a6c4525d3b8e39e",
+    "circuit/routing/epic-242/decision-pilots/route_matched.py": "931a2a7a466067f1e4a01b8e0c203b99a6cbeab2e063908f6be9e8641619c5bf",
+    "scripts/kicad/native_resource_guard.py": "ee755233af405e60cf592956dcf42ca1069f5face6c20c1cdfcdf6f8479ef8ca",
+    "scripts/kicad/native_start_gate.sh": "6763496a773f4a4cd69a47f20eb2f2c07aec33b9351a7bbd861e0d368ed0083d",
+    "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+    "scripts/kicad/run.sh": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "scripts/kicad/settle_only_pilot.py": "8bf1e311e08554501e33e099cff164b69704f81df0aabe91cd980fd5fd98b531",
+    "scripts/partition/core_split_candidates.py": "5dd09d77e316ceff8312cca1bd011cb1178c9f457bea75c76176abdeedbf05b4",
+    "scripts/pcbgen/numerical-requirements.txt": "4bc0581928a58148957919e9d6af3f0372bb6512f2371d2410bbc24a46c4aee7",
+    "scripts/pcbgen/with_route_guard.sh": "29afbe134f0a3c196ab01482382f3042ac32ce5c825ea0728eb416c536ff383e"
+  },
+  "python": {
+    "path": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+    "version": "3.11.17 (main, Oct  1 2026, 14:32:31) [GCC 13.3.0]",
+    "packages": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "shapely": "2.1.2"
+    }
+  },
+  "dispatch": {
+    "wrapper": "scripts/pcbgen/with_route_guard.sh",
+    "policy": "github-hosted direct dispatch; native guard still mandatory",
+    "GITHUB_ACTIONS": "true",
+    "RUNNER_ENVIRONMENT": "github-hosted"
+  },
+  "image_preparation": {
+    "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "daemon_pid": 1329,
+    "backend_cgroups": [
+      "/sys/fs/cgroup/system.slice/docker.service",
+      "/sys/fs/cgroup/system.slice/containerd.service"
+    ],
+    "backend_memory_max": {
+      "/sys/fs/cgroup/system.slice/docker.service": "max",
+      "/sys/fs/cgroup/system.slice/containerd.service": "max"
+    },
+    "accounting": "sum of disjoint Docker/containerd service cgroups and verified contained backend helpers; sampled abort threshold, not daemon hard-cap enforcement",
+    "seconds_limit": 300,
+    "samples": [
+      {
+        "elapsed": 0.14334952100000464,
+        "daemon_bytes": 157298688,
+        "free_bytes": 15631204352
+      },
+      {
+        "elapsed": 0.3590937609999969,
+        "daemon_bytes": 160079872,
+        "free_bytes": 15628402688
+      },
+      {
+        "elapsed": 0.5769531589999985,
+        "daemon_bytes": 160378880,
+        "free_bytes": 15628283904
+      },
+      {
+        "elapsed": 0.7936204869999983,
+        "daemon_bytes": 160337920,
+        "free_bytes": 15628562432
+      },
+      {
+        "elapsed": 1.0098563560000002,
+        "daemon_bytes": 160321536,
+        "free_bytes": 15628582912
+      },
+      {
+        "elapsed": 1.2256484309999962,
+        "daemon_bytes": 258785280,
+        "free_bytes": 15619194880
+      },
+      {
+        "elapsed": 1.4511792309999976,
+        "daemon_bytes": 421154816,
+        "free_bytes": 15626285056
+      },
+      {
+        "elapsed": 1.6774137029999991,
+        "daemon_bytes": 564375552,
+        "free_bytes": 15629455360
+      },
+      {
+        "elapsed": 1.905886670000001,
+        "daemon_bytes": 733687808,
+        "free_bytes": 15625289728
+      },
+      {
+        "elapsed": 2.131866376000005,
+        "daemon_bytes": 852574208,
+        "free_bytes": 15630286848
+      },
+      {
+        "elapsed": 2.353054079000003,
+        "daemon_bytes": 906358784,
+        "free_bytes": 15603970048
+      },
+      {
+        "elapsed": 2.5747629149999938,
+        "daemon_bytes": 998039552,
+        "free_bytes": 15614984192
+      },
+      {
+        "elapsed": 2.7957849830000043,
+        "daemon_bytes": 1071648768,
+        "free_bytes": 15624257536
+      },
+      {
+        "elapsed": 3.0152887400000026,
+        "daemon_bytes": 1107726336,
+        "free_bytes": 15621857280
+      },
+      {
+        "elapsed": 3.2350631409999977,
+        "daemon_bytes": 1142202368,
+        "free_bytes": 15620829184
+      },
+      {
+        "elapsed": 3.4548390249999983,
+        "daemon_bytes": 1185742848,
+        "free_bytes": 15621439488
+      },
+      {
+        "elapsed": 3.6750239170000043,
+        "daemon_bytes": 1218228224,
+        "free_bytes": 15620845568
+      },
+      {
+        "elapsed": 3.8953750040000017,
+        "daemon_bytes": 1243897856,
+        "free_bytes": 15621603328
+      },
+      {
+        "elapsed": 4.115582834999998,
+        "daemon_bytes": 1264517120,
+        "free_bytes": 15622393856
+      },
+      {
+        "elapsed": 4.335318286999993,
+        "daemon_bytes": 1308139520,
+        "free_bytes": 15621431296
+      },
+      {
+        "elapsed": 4.555883811000001,
+        "daemon_bytes": 1357905920,
+        "free_bytes": 15621738496
+      },
+      {
+        "elapsed": 4.776007409999991,
+        "daemon_bytes": 1402699776,
+        "free_bytes": 15618011136
+      },
+      {
+        "elapsed": 5.0020680639999995,
+        "daemon_bytes": 1471344640,
+        "free_bytes": 15619461120
+      },
+      {
+        "elapsed": 5.222086938000004,
+        "daemon_bytes": 1524346880,
+        "free_bytes": 15617908736
+      },
+      {
+        "elapsed": 5.442899570999998,
+        "daemon_bytes": 1572474880,
+        "free_bytes": 15617462272
+      },
+      {
+        "elapsed": 5.664792836999993,
+        "daemon_bytes": 1616252928,
+        "free_bytes": 15616675840
+      },
+      {
+        "elapsed": 5.885166441999999,
+        "daemon_bytes": 1666756608,
+        "free_bytes": 15613259776
+      },
+      {
+        "elapsed": 6.1075727890000024,
+        "daemon_bytes": 1727115264,
+        "free_bytes": 15613313024
+      },
+      {
+        "elapsed": 6.328456967999998,
+        "daemon_bytes": 1773891584,
+        "free_bytes": 15611981824
+      },
+      {
+        "elapsed": 6.551404637999994,
+        "daemon_bytes": 1829175296,
+        "free_bytes": 15612178432
+      },
+      {
+        "elapsed": 6.771898343000004,
+        "daemon_bytes": 1880875008,
+        "free_bytes": 15612035072
+      },
+      {
+        "elapsed": 6.993402684000003,
+        "daemon_bytes": 1934196736,
+        "free_bytes": 15611879424
+      },
+      {
+        "elapsed": 7.212387399999997,
+        "daemon_bytes": 1985380352,
+        "free_bytes": 15611584512
+      },
+      {
+        "elapsed": 7.432382095999998,
+        "daemon_bytes": 2034581504,
+        "free_bytes": 15612395520
+      },
+      {
+        "elapsed": 7.654215386999994,
+        "daemon_bytes": 2084995072,
+        "free_bytes": 15612461056
+      },
+      {
+        "elapsed": 7.876277971999997,
+        "daemon_bytes": 2145034240,
+        "free_bytes": 15611510784
+      },
+      {
+        "elapsed": 8.095757410999994,
+        "daemon_bytes": 2204942336,
+        "free_bytes": 15612178432
+      },
+      {
+        "elapsed": 8.317111440000005,
+        "daemon_bytes": 2254962688,
+        "free_bytes": 15610822656
+      },
+      {
+        "elapsed": 8.538537257000002,
+        "daemon_bytes": 2313723904,
+        "free_bytes": 15608655872
+      },
+      {
+        "elapsed": 8.758535839000004,
+        "daemon_bytes": 2360098816,
+        "free_bytes": 15609200640
+      },
+      {
+        "elapsed": 8.978587857999997,
+        "daemon_bytes": 2394439680,
+        "free_bytes": 15610003456
+      },
+      {
+        "elapsed": 9.197823530999997,
+        "daemon_bytes": 2410889216,
+        "free_bytes": 15609597952
+      },
+      {
+        "elapsed": 9.419111290999993,
+        "daemon_bytes": 2421940224,
+        "free_bytes": 15610195968
+      },
+      {
+        "elapsed": 9.638338191999992,
+        "daemon_bytes": 2436984832,
+        "free_bytes": 15611203584
+      },
+      {
+        "elapsed": 9.859827448999994,
+        "daemon_bytes": 2471636992,
+        "free_bytes": 15612526592
+      },
+      {
+        "elapsed": 10.079893912000003,
+        "daemon_bytes": 2499121152,
+        "free_bytes": 15612362752
+      },
+      {
+        "elapsed": 10.299122886999996,
+        "daemon_bytes": 2515701760,
+        "free_bytes": 15614738432
+      },
+      {
+        "elapsed": 10.518421199999992,
+        "daemon_bytes": 2564505600,
+        "free_bytes": 15615041536
+      },
+      {
+        "elapsed": 10.739864147999995,
+        "daemon_bytes": 2600243200,
+        "free_bytes": 15614042112
+      },
+      {
+        "elapsed": 10.959282372000004,
+        "daemon_bytes": 2626158592,
+        "free_bytes": 15614738432
+      },
+      {
+        "elapsed": 11.180899840999999,
+        "daemon_bytes": 2667184128,
+        "free_bytes": 15615160320
+      },
+      {
+        "elapsed": 11.402152414,
+        "daemon_bytes": 2687148032,
+        "free_bytes": 15615586304
+      },
+      {
+        "elapsed": 11.617264289999994,
+        "daemon_bytes": 2701860864,
+        "free_bytes": 15615229952
+      },
+      {
+        "elapsed": 11.839427826000005,
+        "daemon_bytes": 2714927104,
+        "free_bytes": 15614091264
+      },
+      {
+        "elapsed": 12.060455676000004,
+        "daemon_bytes": 2727460864,
+        "free_bytes": 15614857216
+      },
+      {
+        "elapsed": 12.279637358000002,
+        "daemon_bytes": 2738880512,
+        "free_bytes": 15614337024
+      },
+      {
+        "elapsed": 12.498099800999995,
+        "daemon_bytes": 2226020352,
+        "free_bytes": 15301812224
+      },
+      {
+        "elapsed": 12.712420960999992,
+        "daemon_bytes": 2143485952,
+        "free_bytes": 15293583360
+      },
+      {
+        "elapsed": 12.928073549000004,
+        "daemon_bytes": 2143485952,
+        "free_bytes": 15293587456
+      },
+      {
+        "elapsed": 13.145061447999993,
+        "daemon_bytes": 2143485952,
+        "free_bytes": 15293349888
+      },
+      {
+        "elapsed": 13.360281878999999,
+        "daemon_bytes": 2143485952,
+        "free_bytes": 15290994688
+      },
+      {
+        "elapsed": 13.575227209000005,
+        "daemon_bytes": 2143485952,
+        "free_bytes": 15288934400
+      },
+      {
+        "elapsed": 13.791483249999999,
+        "daemon_bytes": 2143485952,
+        "free_bytes": 15296937984
+      },
+      {
+        "elapsed": 14.007558111999998,
+        "daemon_bytes": 2178899968,
+        "free_bytes": 15306670080
+      },
+      {
+        "elapsed": 14.230088879999997,
+        "daemon_bytes": 2232180736,
+        "free_bytes": 15322968064
+      },
+      {
+        "elapsed": 14.450345220999992,
+        "daemon_bytes": 2279989248,
+        "free_bytes": 15335821312
+      },
+      {
+        "elapsed": 14.669387615000005,
+        "daemon_bytes": 2257924096,
+        "free_bytes": 15282429952
+      },
+      {
+        "elapsed": 14.884565702000003,
+        "daemon_bytes": 2265161728,
+        "free_bytes": 15286812672
+      },
+      {
+        "elapsed": 15.105387890000003,
+        "daemon_bytes": 2279235584,
+        "free_bytes": 15292887040
+      },
+      {
+        "elapsed": 15.325390185999993,
+        "daemon_bytes": 2295058432,
+        "free_bytes": 15299899392
+      },
+      {
+        "elapsed": 15.544812953999994,
+        "daemon_bytes": 2310131712,
+        "free_bytes": 15306690560
+      },
+      {
+        "elapsed": 15.764952504999997,
+        "daemon_bytes": 2327855104,
+        "free_bytes": 15330770944
+      },
+      {
+        "elapsed": 15.987131852000005,
+        "daemon_bytes": 2352865280,
+        "free_bytes": 15338119168
+      },
+      {
+        "elapsed": 16.206202473999994,
+        "daemon_bytes": 2375770112,
+        "free_bytes": 15343005696
+      },
+      {
+        "elapsed": 16.425889983999994,
+        "daemon_bytes": 2396102656,
+        "free_bytes": 15346999296
+      },
+      {
+        "elapsed": 16.644800074000003,
+        "daemon_bytes": 2409136128,
+        "free_bytes": 15350812672
+      },
+      {
+        "elapsed": 16.864615001999994,
+        "daemon_bytes": 2419781632,
+        "free_bytes": 15364648960
+      },
+      {
+        "elapsed": 17.084026535999996,
+        "daemon_bytes": 2441801728,
+        "free_bytes": 15370752000
+      },
+      {
+        "elapsed": 17.302741322999992,
+        "daemon_bytes": 2460819456,
+        "free_bytes": 15376125952
+      },
+      {
+        "elapsed": 17.522281527999994,
+        "daemon_bytes": 2479042560,
+        "free_bytes": 15376678912
+      },
+      {
+        "elapsed": 17.742085126999996,
+        "daemon_bytes": 2497126400,
+        "free_bytes": 15389999104
+      },
+      {
+        "elapsed": 17.96214356499999,
+        "daemon_bytes": 2525462528,
+        "free_bytes": 15398682624
+      },
+      {
+        "elapsed": 18.182788001999995,
+        "daemon_bytes": 2588229632,
+        "free_bytes": 15408316416
+      },
+      {
+        "elapsed": 18.402374656999996,
+        "daemon_bytes": 2661720064,
+        "free_bytes": 15415349248
+      },
+      {
+        "elapsed": 18.621891083999998,
+        "daemon_bytes": 2732138496,
+        "free_bytes": 15428534272
+      },
+      {
+        "elapsed": 18.842018866999993,
+        "daemon_bytes": 2801647616,
+        "free_bytes": 15438708736
+      },
+      {
+        "elapsed": 19.060452460999997,
+        "daemon_bytes": 2749464576,
+        "free_bytes": 15377887232
+      },
+      {
+        "elapsed": 19.274840142000002,
+        "daemon_bytes": 2749464576,
+        "free_bytes": 15377149952
+      },
+      {
+        "elapsed": 19.49210735599999,
+        "daemon_bytes": 2749464576,
+        "free_bytes": 15377174528
+      },
+      {
+        "elapsed": 19.707301193999996,
+        "daemon_bytes": 2749464576,
+        "free_bytes": 15376474112
+      },
+      {
+        "elapsed": 19.924851696999994,
+        "daemon_bytes": 2767421440,
+        "free_bytes": 15381766144
+      },
+      {
+        "elapsed": 20.145991432000002,
+        "daemon_bytes": 2811977728,
+        "free_bytes": 15399329792
+      },
+      {
+        "elapsed": 20.365073444999993,
+        "daemon_bytes": 2881642496,
+        "free_bytes": 15427653632
+      },
+      {
+        "elapsed": 20.585542508999993,
+        "daemon_bytes": 2943901696,
+        "free_bytes": 15440814080
+      },
+      {
+        "elapsed": 20.803629970999992,
+        "daemon_bytes": 2999345152,
+        "free_bytes": 15454683136
+      },
+      {
+        "elapsed": 21.023894817,
+        "daemon_bytes": 3070550016,
+        "free_bytes": 15468945408
+      },
+      {
+        "elapsed": 21.247029863999998,
+        "daemon_bytes": 3128696832,
+        "free_bytes": 15476133888
+      },
+      {
+        "elapsed": 21.467825602000005,
+        "daemon_bytes": 3034779648,
+        "free_bytes": 15375994880
+      },
+      {
+        "elapsed": 21.683668302,
+        "daemon_bytes": 3034779648,
+        "free_bytes": 15375224832
+      },
+      {
+        "elapsed": 21.901338827999993,
+        "daemon_bytes": 3035267072,
+        "free_bytes": 15374462976
+      },
+      {
+        "elapsed": 22.125143840999996,
+        "daemon_bytes": 3036930048,
+        "free_bytes": 15371010048
+      }
+    ],
+    "status": "PASS",
+    "image_id": "sha256:1398ad98bb7f066ff8b445e2be96131f0f461a7765ff0078a0b207461b705f51",
+    "repo_digests": [
+      "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec"
+    ],
+    "pull_client_exit": 0,
+    "failure_scope": "No native start after preparation failure; daemon is not stopped or reconfigured. Client cancellation does not prove absence of residual daemon work."
+  },
+  "local_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "source_hashes_after": {
+    "circuit/routing/epic-242/decision-pilots/evaluate_matched.py": "aaeab12b18174edc8c997dbd8e84c7d7ede64c8b9d92f84246cb37a3e77c3e73",
+    "circuit/routing/epic-242/decision-pilots/matched-demands.json": "4766e57af16f3ae50c9bd6edad099c9595984c8dd3eda0154a5433a19270550b",
+    "circuit/routing/epic-242/decision-pilots/matching-spec.json": "e17c8f01b0fe08164cee514d41b3f2bfea2a2fe23da181bcb4c3dae479404c99",
+    "circuit/routing/epic-242/decision-pilots/matching.py": "31aca39f3b10aa757bacc3c6f05f70c54a571d5afa3e29a384344dd12593b056",
+    "circuit/routing/epic-242/decision-pilots/prepare_matched.py": "7b012b5643862aaea43e96f6b77e351269787f12626fbcc04a6c4525d3b8e39e",
+    "circuit/routing/epic-242/decision-pilots/route_matched.py": "931a2a7a466067f1e4a01b8e0c203b99a6cbeab2e063908f6be9e8641619c5bf",
+    "scripts/kicad/native_resource_guard.py": "ee755233af405e60cf592956dcf42ca1069f5face6c20c1cdfcdf6f8479ef8ca",
+    "scripts/kicad/native_start_gate.sh": "6763496a773f4a4cd69a47f20eb2f2c07aec33b9351a7bbd861e0d368ed0083d",
+    "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+    "scripts/kicad/run.sh": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "scripts/kicad/settle_only_pilot.py": "8bf1e311e08554501e33e099cff164b69704f81df0aabe91cd980fd5fd98b531",
+    "scripts/partition/core_split_candidates.py": "5dd09d77e316ceff8312cca1bd011cb1178c9f457bea75c76176abdeedbf05b4",
+    "scripts/pcbgen/numerical-requirements.txt": "4bc0581928a58148957919e9d6af3f0372bb6512f2371d2410bbc24a46c4aee7",
+    "scripts/pcbgen/with_route_guard.sh": "29afbe134f0a3c196ab01482382f3042ac32ce5c825ea0728eb416c536ff383e"
+  },
+  "free_bytes_after": 15352635392,
+  "future_route_plan": {
+    "status": "PLAN ONLY; RENEWED PARENT ADMISSION REQUIRED",
+    "cwd": "/home/runner/work/zudo-osc-hole-field/zudo-osc-hole-field/method",
+    "argv": [
+      "bash",
+      "scripts/pcbgen/with_route_guard.sh",
+      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+      "scripts/kicad/native_resource_guard.py",
+      "--admission-id",
+      "renewal-required-not-admitted",
+      "--worker",
+      "renewal-worker-not-reserved",
+      "--sha",
+      "29140d4e19d526eed3a02a73c33f8ce4219c78f0",
+      "--hook-sha256",
+      "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+      "--seconds",
+      "300",
+      "--evidence",
+      "/home/runner/work/_temp/epic242-provision-host/future-native-guard.json",
+      "bash",
+      "-c",
+      "bash scripts/kicad/run.sh kicad-cli version && exec \"$@\"",
+      "epic242-route-probe",
+      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+      "circuit/routing/epic-242/decision-pilots/route_matched.py",
+      "--domain",
+      "O1",
+      "--board",
+      "K1402",
+      "--fixture",
+      "/home/runner/work/zudo-osc-hole-field/zudo-osc-hole-field/method/design/partition/core-split/candidates/pilots/generated/o1-k1402-renewal-fixture"
+    ],
+    "native_seconds_including_both_probes": 300,
+    "python": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+    "six_zip_inputs": {
+      "K1402": {
+        "artifact_id": 11658776367,
+        "dump_member": ".circuit-cache/osc-core-grid-189-compact-refill/dump.json",
+        "file": "k1402.zip",
+        "run_id": 38011194282,
+        "sha256": "1ed58a9cd4c5796654a9e3e5c9b6e1c1129c353f3451e04c990b95032012479f"
+      },
+      "three-A": {
+        "artifact_id": 11698474605,
+        "dump_member": "working-result/before/dump.json",
+        "file": "epic242-three-a-settle-only-38130450410.zip",
+        "run_id": 38130450410,
+        "sha256": "d1f381019e13814b1f6d1b027d501610e7fc640362db8f6d1cfcf4be8ee282cb"
+      },
+      "three-B": {
+        "artifact_id": 11701063059,
+        "dump_member": "working-result/before/dump.json",
+        "file": "epic242-three-b-run38135827447.zip",
+        "run_id": 38135827447,
+        "sha256": "3eb9bfd8aaf2aa011c2bbc41fe969d0145814c70d790d04d68330b2f3a28cbfa"
+      },
+      "three-C": {
+        "artifact_id": 11700659890,
+        "dump_member": "working-result/before/dump.json",
+        "file": "epic242-three-c-run38136206699.zip",
+        "run_id": 38136206699,
+        "sha256": "b2973a892b5454d8cc4499ed897b2a9b79067138996ef25889fbe8982e150b0c"
+      },
+      "two-A": {
+        "artifact_id": 11699982799,
+        "dump_member": "working-result/before/dump.json",
+        "file": "epic242-two-a-600-run38133584276.zip",
+        "run_id": 38133584276,
+        "sha256": "1bdd84bce237cc864db19bf831f44f51425ce2f7e41b1de774c0da1068881b56"
+      },
+      "two-B": {
+        "artifact_id": 11700304065,
+        "dump_member": "working-result/before/dump.json",
+        "file": "epic242-two-b-run38135093123.zip",
+        "run_id": 38135093123,
+        "sha256": "a8566c8996b71fbda8b718b5eeb60f56a8c6b52d16eac02b6e4c2b2e3063a164"
+      }
+    },
+    "required_before_execution": [
+      "new parent admission and global capacity reservation",
+      "new exact clean method checkout and execution-host version binding",
+      "repeat trusted provisioning on actual execution host",
+      "authenticate all six complete ZIPs and prepare exact O1/K1402 fixture",
+      "verify fixture lock and immutable before hashes before route",
+      "replace admission/worker placeholders with new parent-bound identities"
+    ],
+    "required_after_execution": [
+      "both full-ID probe ACK/membership/retained successful exits",
+      "proposal/diagnostics/logs even on failure",
+      "unchanged before hashes",
+      "full guard memory/deadline/cleanup receipt"
+    ],
+    "forbidden": "No two-A/apply/settle/fresh/audit, retries, cuts, wider bounds or fallback"
+  },
+  "cleanup_scope": "No native workload/units/containers created. Image preparation retains its own daemon-accounting/client outcome; failure never implies daemon cleanup."
+}

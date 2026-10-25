@@ -1,0 +1,22 @@
+import json,subprocess,time,resource
+from pathlib import Path
+P=Path('/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python');F=Path.cwd()/'design/partition/core-split/candidates/planning/joined-feed-construction-v2';R=Path('/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission');R.mkdir(exist_ok=False)
+records=[]
+def run(name,script,*args):
+ cmd=['timeout','180s','prlimit','--as=2147483648','--',str(P),str(F/script),*map(str,args)];t=time.monotonic()
+ with (R/(name+'.txt')).open('w') as log:r=subprocess.run(cmd,stdout=log,stderr=subprocess.STDOUT)
+ records.append({'name':name,'command':cmd,'exit_code':r.returncode,'elapsed_seconds':time.monotonic()-t,'cumulative_child_peak_rss_KiB':resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss})
+ (R/'preparation.json').write_text(json.dumps(records,indent=2)+'\n');print(json.dumps(records[-1]),flush=True)
+ if r.returncode: print((R/(name+'.txt')).read_text(),flush=True);raise SystemExit(r.returncode)
+run('construct','construct.py','--output',R/'cand05')
+for b in ('KA','KB'):
+ run('normalize-'+b,'normalize_board.py','--board-id',b,'--pcb',R/'cand05'/f'{b}.kicad_pcb','--terminals',R/'cand05/terminals.json','--output',R/f'{b}-normalized.json')
+ extra=['--include-kb-p1'] if b=='KB' else []
+ run('materialize-'+b,'materialize_e16.py','--board',b,'--candidate',R/'cand05'/f'{b}.kicad_pcb','--normalized',R/f'{b}-normalized.json','--output',R/f'materialized-{b}',*extra)
+ for target in (['KA-t2'] if b=='KA' else ['KB-t2','KB-p1']):
+  # evaluate_access enforces 180 seconds separately on each existing source unit.
+  cmd=[str(P),str(F/'evaluate_access.py'),'--source',str(R/f'materialized-{b}'/f'{target}-source.json'),'--clip-helper',str(F/'clip_sheets.py'),'--design',str(F/'evidence/board-access-design.json'),'--python',str(P),'--output',str(R/f'{target}-eval')]
+  t=time.monotonic()
+  with (R/(target+'-eval.txt')).open('w') as log:r=subprocess.run(cmd,stdout=log,stderr=subprocess.STDOUT)
+  records.append({'name':target+'-eval','command':cmd,'exit_code':r.returncode,'elapsed_seconds':time.monotonic()-t,'cumulative_child_peak_rss_KiB':resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss});(R/'preparation.json').write_text(json.dumps(records,indent=2)+'\n');print(json.dumps(records[-1]),flush=True)
+  if r.returncode:print((R/(target+'-eval.txt')).read_text(),flush=True);raise SystemExit(r.returncode)

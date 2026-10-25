@@ -1,0 +1,81 @@
+{
+ "schema": "e16-pilot-seal-v1",
+ "board": "KB",
+ "net": "+5V",
+ "sealed_at": "2026-10-13",
+ "preflight": "KB-preflight-c-same-net-drills-exempt.json",
+ "preflight_sha256": "e85cfef06d773b62e0a3cb1833c338ce36b00a6b3bc4d1e10ecb64ba60540d5e",
+ "target": {
+  "pad_id": "2fd54753-6c48-5259-8e11-900b51cf407b",
+  "ref": "U4320",
+  "pad": "14"
+ },
+ "start_object": "d23658ae-2276-53ce-8c7b-c86cc977dfb4",
+ "end_object": "e52b5e9d-9c86-5cc7-bfcf-ce7e1a13667e",
+ "end_fragment": "e52b5e9d-9c86-5cc7-bfcf-ce7e1a13667e|F.Cu|0",
+ "face": "F.Cu",
+ "width_mm": 0.25,
+ "path_mm": [
+  [
+   295.79,
+   38.2
+  ],
+  [
+   292.44,
+   34.45
+  ],
+  [
+   292.04,
+   34.35
+  ],
+  [
+   289.99,
+   34.25
+  ]
+ ],
+ "length_mm": 7.493167,
+ "segments": 3,
+ "rules": {
+  "clearance_to_other_net_copper_mm": 0.25,
+  "clearance_to_other_net_drills_mm": 0.25,
+  "same_net_drills": "exempt (a trace may end on its own net's via; copper-to-hole clearance is a different-net rule)",
+  "rule_areas": "tracks/vias not_allowed are obstacles",
+  "outline": "inside the board outline"
+ },
+ "limits": {
+  "window_margin_mm": 12.0,
+  "max_length_mm": 30.0,
+  "max_segments": 10,
+  "pitch_mm": 0.05,
+  "widths_mm": [
+   0.25,
+   0.2
+  ],
+  "clearance_mm": 0.25,
+  "hole_clearance_mm": 0.25,
+  "unit_seconds": 180,
+  "unit_address_space_GiB": 2
+ },
+ "added_copper_scope": "exactly these face segments on F.Cu; no new drill, moved part, removed copper, layer change or relaxed clearance",
+ "construction": "python pilot_construct.py --preflight PREFLIGHT --seal SEAL --source REPLAY/KB-access-t2.json --graph REPLAY/KB-eval-t2/port-graph.json --census REPLAY/KB-eval-t2/port-obligations.json --python PYTHON --output ABS_OUTDIR  (one attempt, under the host guard; evaluate_access.py runs caps -> clip -> graph -> census with 180 s / 2 GiB per step)",
+ "credit_rule": "only pads the full census closes; zero newly disconnected identities required",
+ "predicted_not_credited": "the six orphan-component pads (U4320.14, C4337.1, R4334.1, U4336.4, C4353.1, U4336.10)",
+ "history": "Earlier preflight b (same limits) found no corridor because the tool applied hole clearance to same-net drills; the independent pilot review found the defect and this corridor. KA-preflight-a predates the limits arguments (method hash differs) and is superseded.",
+ "geometry_review": {
+  "verdict": "PASS",
+  "reviewer": "independent read-only geometry review (separate agent, own shapely checks under the host guard)",
+  "record": "KB-seal-review.md",
+  "record_sha256": "3373976721c954d97e1b92d067284053a6ff1021e4ed510f888f17f65d059c25",
+  "measured": {
+   "min_other_net_copper_mm": 0.25167,
+   "nearest_object": "a8ab62d0-fd7c-5ad9-b9cc-6a5fa7924e88",
+   "min_other_net_drill_mm": 0.4017,
+   "start_overlap_mm2": 0.02629,
+   "end_overlap_mm2": 0.02562
+  },
+  "limits_of_review": [
+   "F.Cu copper fills absent from the source data were not checked",
+   "end contacts sit 13-16 um inside the via copper; native connectivity/DRC NOT RUN"
+  ]
+ }
+}

@@ -1,0 +1,74 @@
+{
+  "scope": "two-A complete-fixture before-board settle only; no architecture acceptance or adoption",
+  "verdict": "SETTLED ONLY; NOT COMPLETE ACCEPTANCE",
+  "run": {
+    "id": 38133584276,
+    "url": "https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38133584276",
+    "conclusion": "success",
+    "source_sha": "59d032e3cc22586759e93a860059eb16ef667cb0",
+    "admission_id": "epic242-two-a-settle-02",
+    "pilot": "two-A",
+    "native_seconds_limit": 600,
+    "hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91"
+  },
+  "artifact": {
+    "id": 11699982799,
+    "url": "https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38133584276/artifacts/11699982799",
+    "zip_bytes": 34546173,
+    "zip_sha256": "1bdd84bce237cc864db19bf831f44f51425ce2f7e41b1de774c0da1068881b56",
+    "crc_entries_passed": 602,
+    "retrieval": "Authorized connected GitHub artifact download succeeded; direct gh redirected transport returned 403"
+  },
+  "baseline_reconciliation": {
+    "historical_manifest_paths": 1883,
+    "byte_identical_original_paths": 1881,
+    "exact_reviewed_tool_replacements": [
+      "scripts/kicad/README.md",
+      "scripts/kicad/run.sh"
+    ],
+    "dropped_hardware_inputs": 0,
+    "historical_original_before_board_sha256": "2d9c70e054b4d269ae2ee64d27ce9c6c1f39708d5ab25300f1ffa63e7235d1a7"
+  },
+  "snapshot": {
+    "outer_hashes_verified": 294,
+    "materialization_hashes_verified": 293,
+    "portable_two_a_seals_verified": 291,
+    "working_source_paths_unchanged": 292,
+    "intentional_working_change": "before/osc-core.kicad_pcb settle output only"
+  },
+  "guard": {
+    "seconds_limit": 600,
+    "worker_memory_bytes": 6442450944,
+    "aggregate_memory_bytes": 12884901888,
+    "free_floor_bytes": 2147483648,
+    "peak_worker_bytes": 2041782272,
+    "minimum_sampled_free_bytes": 13676920832,
+    "oom_events": 0,
+    "full_id_ack_membership_exited_zero_chains": 14,
+    "final_owned_workload_absent": true,
+    "cleanup_failures": 0
+  },
+  "settled_result": {
+    "matching_refill_passes": 3,
+    "candidate_open_edges_each_pass": 903,
+    "board_sha256": "66710513146c22f31595f794d608914fcfb8b61552c82fc5fd680f9ac4b0b978",
+    "drc_sha256": "e77e223ea73e43f4bfb7ec22a7e9669709a29313dfca95338914d0f3631e4609",
+    "dump_sha256": "613a358b340962e2d1fb13cd898fe8a9558edcbf1a5d69cb93b6d2bd7629e97c",
+    "raw_drc_warnings": 801,
+    "capped_unconnected_items": 499,
+    "schematic_parity": 0,
+    "note": "903 candidate dump edges and 499 capped DRC unconnected items are not comparable to retained K1402 whole-board native 1402 open edges"
+  },
+  "reviews": {
+    "coordinator": "ZIP CRC, all 294 outer and 293 inner hashes, 292 unchanged working source hashes, receipt byte hashes, guard identity/caps/cleanup and three-pass log independently checked",
+    "independent_evidence_reviewer": "PASS for SETTLED ONLY; no evidence blocker"
+  },
+  "not_run": [
+    "complete uncapped warning and preservation gates",
+    "migration eligibility",
+    "complete-set architecture comparison",
+    "canonical output adoption",
+    "two-B, three-B and three-C settles"
+  ],
+  "prior_300_second_negative": "run38132136159/artifact11700245195 remains a hard-stop negative receipt; it was not converted into success"
+}

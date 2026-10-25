@@ -1,0 +1,97 @@
+{
+  "status": "STOPPED: EXACT LOCAL HANDOFF REACHES ISOLATED416-NODE IN2POCKET; NO NATIVE PACKET",
+  "repair_id": "two-a-c2312-signal-breakout-v1",
+  "native_reservations": "ALL FREE;1641released byparent",
+  "old_matched_trials": "STOPPED; O1/F3 no-improvement results preserved",
+  "implementation": [
+    "f3_breakout.py",
+    "prove_f3_breakout.py",
+    "test_f3_breakout.py",
+    "local-breakout/repair.json"
+  ],
+  "unchanged": [
+    "f3_adapter.py",
+    "f3_fixture.py",
+    "route_f3_access.py",
+    "shared grid_router.py",
+    "native workflows/guards",
+    "canonicalhardware/copper/poses/harnesses"
+  ],
+  "source_artifact": {
+    "run_id": 38156907050,
+    "artifact_id": 11709240803,
+    "sha256": "552347595d8d0dd2bcca5437cbf83cb31ce92ea96cb8a395598faaa493240040",
+    "member": "fixture/before/dump.json",
+    "dump_sha256": "613a358b340962e2d1fb13cd898fe8a9558edcbf1a5d69cb93b6d2bd7629e97c"
+  },
+  "repair_geometry": {
+    "source": "C2312.1",
+    "source_uuid": "a94ae2bb-13fe-5e3d-a7ab-10ddb6bd4222",
+    "B_Cu_segment_mm": [
+      [
+        213.7,
+        264.1
+      ],
+      [
+        216.8,
+        263.3
+      ]
+    ],
+    "width_mm": 0.3,
+    "via_diameter_drill_mm": [
+      0.6,
+      0.3
+    ],
+    "clearance_mm": 0.25,
+    "landing": "In2.Cu",
+    "preview_segments": 1,
+    "preview_vias": 1,
+    "copper_applied": 0,
+    "package_moves": 0,
+    "cuts": 0
+  },
+  "regression": {
+    "before": "B-onlysource; selectedtransitionabsent;rasterforeignvia predicatefalse",
+    "after": "exactcheckedlocalattachment suppliesIn2source;fouradjacentIn2nodeslegal;physicaldumpunchanged",
+    "same_original_demands": 4,
+    "complete_pair_route": "NOT RUN"
+  },
+  "validation": {
+    "all_terminal_access_source_tests": 77,
+    "independent_breakout_tests": 7,
+    "source_transition_proof": "PASS; noA*",
+    "circuit_check": "PASS",
+    "pnpm_check": "PASS;generateddocs/models/previews/TypeScript",
+    "baseline_verifier": "PASS;1881originalinputs+2reviewedtoolreplacements;195harnesses/390completeendpointrefs/pinmaps/poses;inherited117/129/1402DRCparity0/0",
+    "component_scope": "manual68lines,zero declaredplacements;noschematic/placementbinding",
+    "full_regeneration": "NOT RUN; invokesunadmittednativeoperations"
+  },
+  "remaining": [
+    "New repair-method/input epoch must be sealed before any future native admission; old6f fixturelock cannot covernewwitnesspool",
+    "Completepairrouting/nativeclosure/DRC/parity/refill/fullwarning/eligibility NOT RUN",
+    "Rail andreturn debts remain; noarchitecturewinner orhardwareadoption"
+  ],
+  "evidence_sha256": {
+    "adapter-pool.json": "7f9ddf8d7ecd2700109f2acd8cd0cd2a041a090b944229cb7b3fe8dda236fbcb",
+    "breakout-receipt.json": "dad9ba526fddb17d4355f1662e80716556b73b0e69c030d44ac001071d08795a",
+    "failure-analysis.json": "8435c813b90d13f70e8486bfb1456bbfecdc86616a2f7c826f56e3b0bee767b1",
+    "geometry-proof.json": "d3ce7a8ddd527b0757fe39c4a02243f0c9a46bc9e3ce801be1743246c19bdefd",
+    "independent-review.json": "0d20e9a06638ea7043a2b8d4488afc81ac6edb28c85cd93cddb618501c020ec3",
+    "repair.json": "5d5b87fe58c7819fcc5e0bdb02be6cca7cdc2ee0a9acc76f51a079e8a1837348",
+    "source-binding.json": "c25b5c9948c194cd7e21b3d4228f8c6da89f52f7fb7421d88762132d5ba22000",
+    "transition-proof.json": "f3c4c69643b1f3300067f9d5b1700287d3a6719552d39f5e0f2dd400766dcc0f"
+  },
+  "continuation": {
+    "proof": "region-stop/region-proof.json",
+    "summary": "region-stop/README.md",
+    "decision": "Stop unchanged In2-only repair; no original goal reached; no new native packet or admission",
+    "physical_impossibility_claim": false
+  },
+  "latest_transition_revision": {
+    "status": "STOPPED AT EXPANSION_LIMIT; no complete original-pair candidate",
+    "summary": "exact-transition/README.md",
+    "result": "exact-transition/result.json",
+    "native_executed": false,
+    "not_physical_impossibility": true
+  }
+}

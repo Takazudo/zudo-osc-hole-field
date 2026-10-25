@@ -1,0 +1,46 @@
+{
+ "inputs": {
+  "KA-access-r3.json": "38ecde745bf646233617c7065351a2502808a2d120a46b7b3d778b53ed13098e"
+ },
+ "methods": {
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evaluate_access.py": "0a3c4d1d721895063b9d155d96e8aed8148448cfdc451e944240d655f6f915bf",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py": "6d84330093d5e5b998aae3c5582a3b3b7f40d7548288e0e43e48fb3645352ce0",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py": "c1aeeb5be28156448365fc78c03e986ef6402602ebfdaa03f2123d0411236375",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py": "6f3df61dd649729b3e58796c067cc9924dc3d776c645592c62e5f6ab3ac5c235",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json": "f2783e9a0a720e431a00512e9017b55c236e7f31e5a579bbe00e6ee442e00eea"
+ },
+ "command": [
+  "evaluate_access.py",
+  "--source",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KA-access-r3.json",
+  "--clip-helper",
+  "clip_sheets.py",
+  "--design",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+  "--python",
+  "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KA-eval-r3"
+ ],
+ "step": "KA-eval-r3",
+ "exit_code": 0,
+ "elapsed_seconds": 100.355,
+ "stdout_tail": "{\"step\": \"caps\", \"exit_code\": 0, \"seconds\": 1.4445371180190705, \"stdout\": \"{\\\"board\\\": \\\"KA\\\", \\\"caps\\\": 0, \\\"barrels\\\": 0}\\n\"}\n{\"step\": \"clip\", \"exit_code\": 0, \"seconds\": 60.95720890798839, \"stdout\": \"{\\\"board\\\": \\\"KA\\\", \\\"report\\\": {\\\"AGND\\\": {\\\"layer\\\": \\\"In1.Cu\\\", \\\"cut_count\\\": 9763, \\\"pieces\\\": 8, \\\"area_mm2\\\": 79247.049125, \\\"largest_mm2\\\": 79246.184573}, \\\"+5V\\\": {\\\"layer\\\": \\\"In2.Cu\\\", \\\"cut_count\\\": 38539, \\\"pieces\\\": 1549, \\\"area_mm2\\\": 68364.907972, \\\"largest_mm2\\\": 58642.17548}, \\\"-12V\\\": {\\\"layer\\\": \\\"In3.Cu\\\", \\\"cut_count\\\": 23943, \\\"pieces\\\": 628, \\\"area_mm2\\\": 73018.625191, \\\"largest_mm2\\\": 70690.700422}, \\\"+12V\\\": {\\\"layer\\\": \\\"In4.Cu\\\", \\\"cut_count\\\": 10791, \\\"pieces\\\": 10, \\\"area_mm2\\\": 78768.732793, \\\"largest_mm2\\\": 78767.676274}}, \\\"elapsed_seconds\\\": 60.55, \\\"peak_KiB\\\": 1300688}\\n\"}\n{\"step\": \"graph\", \"exit_code\": 0, \"seconds\": 21.2992898930097, \"stdout\": \"{\\\"status\\\": \\\"SOURCE_DISCONNECTED_LOAD_PORTS\\\", \\\"board\\\": \\\"KA\\\", \\\"direct_load_count\\\": 1031, \\\"counts\\\": {\\\"nodes\\\": 12907, \\\"edges\\\": 4321}, \\\"elapsed_seconds\\\": 13.886364869016688, \\\"peak_KiB\\\": 1375688}\\ndisconnected 166\\n\"}\n{\"step\": \"census\", \"exit_code\": 0, \"seconds\": 3.003698729968164, \"stdout\": \"{\\\"board\\\": \\\"KA\\\", \\\"physical_pad_count\\\": 1568, \\\"counts_by_net\\\": {\\\"+5V\\\": 11, \\\"AGND\\\": 183, \\\"-12V\\\": 18, \\\"+12V\\\": 14}, \\\"direct_loads\\\": 166, \\\"supplemental\\\": 60}\\n\"}\n{\"status\": \"SOURCE_DISCONNECTED_PHYSICAL_PORTS\", \"board\": \"KA\", \"unresolved_physical_pad_count\": 226, \"unresolved_direct_load_count\": 166, \"unresolved_supplemental_count\": 60}\n",
+ "stderr_tail": "",
+ "peak_rss_KiB": 1375688,
+ "outputs": {
+  "KA-eval-r3": {
+   "caps-execution.json": "0de5612aa04ff62c9d4f47a7cec43fa3455a4c46f4dc82ae74037c68c90636f3",
+   "census-execution.json": "a19045f092f769d648c18097b0e71a09e4697c2958f2190de36c48890b04c825",
+   "clip-execution.json": "8ff5984a57765fa2fb885771aee14289accb52f77dfb8d062f43af7aed8fc606",
+   "clipped-sheets.json": "e183df7b558c3c641302e63c77f5bb6a2c8a527dbfa27dad5a65b21f7428ddce",
+   "evaluation.json": "d62c982fcf08179e11d8940eb68885374231b2feb9456c4c94c262ec69049474",
+   "graph-execution.json": "0e204aeed095aa0719764db58fa8acc374fcfd76ed2806674aa24636d01e3e62",
+   "normalized-caps.json": "2b15691632c748cc7a4cfd6d3a012ba994a976a41de8514ea2e2defec45cf358",
+   "port-graph.json": "730f884906d9f9117eb8b67316acfb8c20e5e0e334968f4b385c2382fefbb928",
+   "port-obligations.json": "db6aef5a746076e2428aa17dab95c2183cde079d76313b9782ce4351f7360916"
+  }
+ },
+ "native_calls": 0
+}

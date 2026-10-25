@@ -1,0 +1,41 @@
+{
+  "status": "PASS_SOURCE_ONLY_PUBLICATION",
+  "blockers": [],
+  "source_sha256": {
+    "circuit/routing/epic-242/decision-pilots/terminal-access/analyze_f3_breakout_region.py": "a4c4de781e8f87812ce11429a8e867e351622153feed290a1cb77804884aac0d",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/test_f3_breakout_region.py": "ec4591a3a112c7b33e05656e13e659f8f633ef2a3325092af47209b2e555ba2a",
+    "circuit/routing/epic-242/decision-pilots/diagnosis-o1/analyze.py": "c80069a1b36209a2f525af850dda861bfc4e69715b87998057068e83f75e82e2"
+  },
+  "report_sha256": {
+    "region-proof.json": "d1f51819b41f66534d926d4139393c73461bef2833ef0eb4568568f8e750729c",
+    "exact-boundary.json": "2f2f6b9ba308193702a0af3e7a5f111809e27ab825f0f2ef904262ded7257df3",
+    "README.md": "13a254ff620604bc53cad322aefb4aaf4b3b025ea3805ce597d8796760a8a22b"
+  },
+  "candidate_source_binding_sha256": "c25b5c9948c194cd7e21b3d4228f8c6da89f52f7fb7421d88762132d5ba22000",
+  "independent_verification": {
+    "region_unit_tests": "6/6 PASS",
+    "current_report_copies_and_source_seals": "PASS",
+    "new_boundary_raster_predicates_recomputed": 148,
+    "boundary_predicate_result": "All 148 foreign-copper vetoes; edge/keepout pass",
+    "unchanged_exact_geometry_against_independently_recomputed_previous_report": "PASS",
+    "independent_internal_allowed_edges": 1444,
+    "internal_all_exact_clear": true,
+    "exact_cardinal_boundary_clear": 130,
+    "exact_cardinal_boundary_blocked": 18,
+    "new_seed_component_nodes": 416,
+    "new_seed_layers": [
+      "In2.Cu"
+    ],
+    "goal_nodes": 0,
+    "raster_via_sites": 0,
+    "original_exact_legal_via_sites": 10,
+    "distinct_via_sites_after_breakout_spacing": 0
+  },
+  "limits": [
+    "Current frozen graph disconnected; 130 exact-clear cardinal exits demonstrate raster conservatism, not physical impossibility.",
+    "Complete geometry checks are source-only obstacle-model evidence, not native DRC/refill or manufacturing acceptance.",
+    "No native execution, routing search, source edits, admission, packet, adoption or all-demand success.",
+    "Shared attachment via on another layer is not modeled/credited by this unchanged In2-only adapter."
+  ],
+  "recommendation": "Publish STOP for this In2-only repair; preserve original four demands and source-only qualification."
+}

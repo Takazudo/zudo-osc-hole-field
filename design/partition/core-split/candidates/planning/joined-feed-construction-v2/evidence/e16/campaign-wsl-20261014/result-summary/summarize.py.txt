@@ -1,0 +1,459 @@
+"""Read-only, hash-checked baseline summary. Never import solver code or deserialize pickle.
+
+Only --report-dir is written; it must be a new directory outside the checkout/run.
+Opaque outputs are streamed through SHA-256 only. JSON is the sole decoded format.
+"""
+import argparse
+import collections
+import datetime
+import gzip
+import hashlib
+import json
+import math
+from pathlib import Path
+from provenance import audit as audit_provenance, one as one_option
+
+
+def sha(path):
+    with Path(path).open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+
+def json_bytes(path):
+    raw = Path(path).read_bytes()
+    return json.loads(gzip.decompress(raw) if str(path).endswith('.gz') else raw)
+
+
+def arg_values(command, flag):
+    values = []
+    for i, value in enumerate(command):
+        if value == flag:
+            values.append(command[i + 1])
+        elif value.startswith(flag + '='):
+            values.append(value.split('=', 1)[1])
+    return values
+
+
+def finite(value):
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+
+
+
+def phase_count_assessment(counts, expected_reductions, expected_dpoints, expected_coupled, maximum_units):
+    """A complete matrix cannot hide duplicate receipts or excess execution units."""
+    expected = {'service': 1, 'reduce': expected_reductions,
+                'dpoint': expected_dpoints, 'couple': expected_coupled}
+    diagnostics = []
+    complete = True
+    for phase, target in expected.items():
+        observed = counts.get(phase, 0)
+        status = ('NOT_YET_KNOWN' if target is None else 'MATCH' if observed == target
+                  else 'EXCEEDED' if observed > target else 'INCOMPLETE')
+        diagnostics.append({'phase': phase, 'observed': observed, 'expected': target, 'status': status})
+        complete = complete and status == 'MATCH'
+    for phase in sorted(set(counts) - set(expected)):
+        diagnostics.append({'phase': phase, 'observed': counts[phase], 'status': 'UNEXPECTED_PHASE'})
+        complete = False
+    total = sum(counts.values())
+    diagnostics.append({'phase': 'all', 'observed': total, 'maximum_authorized_units': maximum_units,
+                        'status': 'WITHIN_CEILING' if total <= maximum_units else 'EXCEEDED'})
+    return {'complete': complete and total <= maximum_units, 'diagnostics': diagnostics}
+
+
+def summarize(request_path, expected_digest):
+    request_path = Path(request_path).resolve()
+    if sha(request_path) != expected_digest:
+        raise ValueError('request digest mismatch')
+    request = json_bytes(request_path)
+    root, run = Path(request['checkout']), Path(request['output'])
+    packet = request_path.parent
+    command = request['command']
+    config_path = Path(arg_values(command, '--config')[0])
+    if request['input_sha256'].get(str(config_path)) != sha(config_path):
+        raise ValueError('request-bound configuration bytes mismatch')
+    config = json_bytes(config_path)
+    nets = arg_values(command, '--net')
+    cases = arg_values(command, '--case')
+    depths = arg_values(command, '--depth')
+    if not nets or not cases or not depths:
+        raise ValueError('explicit requested nets/cases/depths required')
+    identities = {}
+    ledger_path = config_path.parents[3] / config['scenario']['ledger']
+    # Config lives at HERE/evidence/e16/continuation-*/config.json.
+    if request['input_sha256'].get(str(ledger_path)) != sha(ledger_path):
+        raise ValueError('request-bound signed load ledger bytes mismatch')
+    load_ledger = json_bytes(ledger_path)
+    for row in load_ledger['records']:
+        if row['scenario_id'] == config['scenario']['id']:
+            identities[row['pad_id']] = {key: row.get(key) for key in
+                                        ('ref', 'pad', 'board', 'mapping_status', 'current_A')}
+    report = {
+        'schema': 'e16-read-only-result-summary-v1',
+        'observed_at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        'request_path': str(request_path), 'request_sha256': expected_digest,
+        'source_sha': request['source_sha'], 'run_id': request['run_id'],
+        'attempt': request['attempt'], 'output_directory': str(run),
+        'scope': request['scope'], 'limits': request['guards'],
+        'interpretation': 'Reported numerical accuracy is separate from electrical acceptance. '
+                          'This snapshot is not independent postrun process cleanup or physical qualification.',
+        'integrity_errors': [], 'pending_unreadable_steps': [], 'steps': [],
+        'numerical_check_maxima': {}, 'failed_numerical_checks': [],
+        'service': None, 'coupled': [], 'matrix_coverage': [],
+        'source_support': config['source_support'], 'budgets': config['budgets'],
+        'config_sha256': sha(config_path), 'scenario': config['scenario'],
+        'numerical_tolerances': config['numerical_tolerances'], 'wires': config['wires'],
+        'electrical_acceptance': False,
+        'limitations': [
+            'Whole-device declared quiescent/static subset only; partial/unserved/unmapped package loads excluded.',
+            'Source-relative rail potentials are not rail-to-local-ground error or full source-to-load voltage.',
+            'Physical source/protection/raw-load bridge and branch loads remain unimplemented/external.',
+            'GH conductor currents/compliance are NOT EVALUATED; no nearest-ground return is inferred.',
+            'Board-class dissipation does not locate a particular via/land bottleneck.',
+            'Trunk resistance is not present in these JSON outputs; no pickle values are reconstructed.',
+            'No geometry variant, native DRC completion, fabrication or installed-fit acceptance follows.',
+        ],
+    }
+    hashes = {}
+    def verify(path, digest):
+        path = Path(path)
+        if path not in hashes:
+            try:
+                hashes[path] = sha(path)
+            except OSError as error:
+                report['integrity_errors'].append({'path': str(path), 'error': str(error)})
+                return False
+        if hashes[path] != digest:
+            report['integrity_errors'].append({'path': str(path), 'error': 'SHA-256 mismatch',
+                                               'expected': digest, 'actual': hashes[path]})
+            return False
+        return True
+
+    completed = []
+    for path in sorted((run / 'steps').glob('*.json')):
+        try:
+            step = json_bytes(path)
+        except (OSError, ValueError) as error:
+            report['pending_unreadable_steps'].append({'path': str(path), 'error': str(error)})
+            continue
+        if not {'step', 'exit_code', 'outputs', 'command'} <= step.keys():
+            report['pending_unreadable_steps'].append({'path': str(path), 'error': 'not a completed Ledger receipt'})
+            continue
+        completed.append((path, step))
+
+    for path, step in completed:
+        errors_before = len(report['integrity_errors'])
+        verified_outputs = {}
+        for name, entries in step['outputs'].items():
+            target = Path(name) if Path(name).is_absolute() else run / name
+            if not target.resolve().is_relative_to(run.resolve()):
+                report['integrity_errors'].append({'step': step['step'], 'error': 'output escapes run directory'})
+                continue
+            if not entries:
+                report['integrity_errors'].append({'step': step['step'], 'path': str(target), 'error': 'output unavailable'})
+                continue
+            for suffix, digest in entries.items():
+                item = target / suffix if suffix else target
+                if verify(item, digest):
+                    verified_outputs[str(item)] = digest
+        for name, digest in step.get('stream_files', {}).items():
+            target = Path(name) if Path(name).is_absolute() else run / name
+            verify(target, digest)
+        for name, digest in step.get('methods', {}).items():
+            target = str(Path(name) if Path(name).is_absolute() else root / name)
+            if request['input_sha256'].get(target) != digest:
+                report['integrity_errors'].append({'step': step['step'], 'path': target,
+                                                   'error': 'Ledger method binding differs from exact request'})
+        command = step['command']
+        phase = command[1]
+        item = {'step': step['step'], 'phase': phase, 'exit_code': step['exit_code'],
+                'ledger_sha256': sha(path), 'guard': step.get('resource_guard_result'),
+                'ledger_elapsed_seconds_including_queue': step.get('elapsed_seconds'),
+                'peak_rss_KiB': step.get('peak_rss_KiB'), 'numerical_status': None,
+                'output_hashes_verified': verified_outputs}
+        try:
+            emitted = json.loads(step.get('stdout_tail', '').strip().splitlines()[-1])
+            item['solver_elapsed_seconds'] = emitted.get('elapsed_seconds')
+            item['reported_pad_count'] = emitted.get('pads')
+        except (ValueError, IndexError):
+            pass
+        result_path = Path(arg_values(command, '--output')[0])
+        verdict = None
+        if phase in ('reduce', 'dpoint', 'couple'):
+            verdict_path = Path(str(result_path) + '.numerical.json')
+            if str(verdict_path) in verified_outputs and str(result_path) in verified_outputs:
+                verdict = json_bytes(verdict_path)
+                if verdict.get('output_sha256') != verified_outputs[str(result_path)]:
+                    report['integrity_errors'].append({'step': step['step'], 'error': 'verdict/result binding mismatch'})
+                if verdict.get('phase') != phase:
+                    report['integrity_errors'].append({'step': step['step'], 'error': 'verdict phase mismatch'})
+                expected_solver = next((value for name, value in step['methods'].items()
+                                        if name.endswith('/finite_solve.py')), None)
+                expected_assessment = next((value for name, value in step['methods'].items()
+                                            if name.endswith('/numerical_acceptance.py')), None)
+                if (verdict.get('solver_sha256') != expected_solver or
+                        verdict.get('assessment_sha256') != expected_assessment or
+                        verdict.get('config_sha256') != request['input_sha256'][str(config_path)]):
+                    report['integrity_errors'].append({'step': step['step'], 'error': 'verdict method/config binding mismatch'})
+            else:
+                report['integrity_errors'].append({'step': step['step'], 'error': 'no verified result/verdict pair'})
+        item['integrity_verified'] = len(report['integrity_errors']) == errors_before
+        item['process_and_guard_passed'] = step['exit_code'] == 0 and step.get('resource_guard_result', {}).get('passed') is True
+        if verdict is not None and item['integrity_verified']:
+            item['numerical_status'] = verdict['status']
+            checks = verdict.get('checks', [])
+            item['reported_checks_passed'] = bool(checks) and not verdict.get('failures') and all(
+                c.get('passed') is True and finite(c.get('value')) and finite(c.get('limit')) and
+                c['value'] <= c['limit'] for c in checks)
+            for check in checks:
+                key = phase + '.' + check['name']
+                if finite(check.get('value')):
+                    prior = report['numerical_check_maxima'].get(key)
+                    if prior is None or check['value'] > prior['value']:
+                        report['numerical_check_maxima'][key] = dict(check, step=step['step'])
+                if check.get('passed') is not True:
+                    report['failed_numerical_checks'].append(dict(check, step=step['step']))
+        report['steps'].append(item)
+        if not item['integrity_verified'] or not item['process_and_guard_passed']:
+            continue
+        if phase == 'service':
+            data = json_bytes(result_path)
+            service = data['device_service']
+            report['service'] = {'output_sha256': verified_outputs[str(result_path)],
+                'scenario_id': data['scenario_id'], 'summary': service['summary'],
+                'eligible_pad_count': len(service['eligible_pad_ids']),
+                'included_board_net_sum_A': service['included_board_net_sum_A'],
+                'included_global_residual_A': service['included_global_residual_A'],
+                'device_status_by_board': {b: dict(collections.Counter(d['service_status'] for d in service['devices']
+                                                                      if d['board'] == b)) for b in ('KA', 'KB')}}
+        elif phase == 'couple' and item.get('reported_checks_passed'):
+            data = json_bytes(result_path)
+            if data['bindings']['config'] != request['input_sha256'][str(config_path)]:
+                report['integrity_errors'].append({'step': step['step'], 'error': 'coupled config binding mismatch'})
+                continue
+            if report['service'] is None or data['bindings']['service'] != report['service']['output_sha256']:
+                # Step filename sorting places coupled units before service: defer to a second JSON pass below.
+                pass
+            report['coupled'].append({'step': step['step'], 'path': str(result_path),
+                'output_sha256': verified_outputs[str(result_path)], 'data': data})
+
+    provenance = audit_provenance(completed, report['steps'], request, nets, cases, depths, verify)
+    report['unit_identity_coverage'] = {k: v for k, v in provenance.items() if k not in ('identities', 'inputs')}
+    report['integrity_errors'].extend(provenance['errors'])
+    available = {}
+    for entry in report['coupled']:
+        data = entry.pop('data')
+        step = next(s for _, s in completed if s['step'] == entry['step'])
+        key = provenance['identities'].get(entry['step'])
+        binding_errors = []
+        for name, flag in [('ka_operator', '--ka-op'), ('kb_operator', '--kb-op'), ('ka_reduction', '--ka-red'), ('kb_reduction', '--kb-red')]:
+            try:
+                path = one_option(step['command'], flag)
+                if data['bindings'].get(name) != provenance['inputs'][entry['step']].get(path):
+                    binding_errors.append(name)
+            except ValueError:
+                binding_errors.append(name)
+        solver = next((v for n, v in step['methods'].items() if n.endswith('/finite_solve.py')), None)
+        if data['bindings'].get('method') != solver:
+            binding_errors.append('method')
+        if key != ('couple', data['net'], data['case'], data['depth']):
+            binding_errors.append('scope')
+        if binding_errors:
+            report['integrity_errors'].append({'step': entry['step'], 'error': 'coupled JSON predecessor/method/scope binding mismatch', 'bindings': binding_errors})
+        if provenance['errors'] or binding_errors:
+            entry['interpretation_refused'] = True
+            continue
+        if report['service'] is None or data['bindings']['service'] != report['service']['output_sha256']:
+            report['integrity_errors'].append({'step': entry['step'], 'error': 'coupled service binding mismatch'})
+            entry['interpretation_refused'] = True
+            continue
+        entry.update(net=data['net'], case=data['case'], depth=data['depth'], states={},
+                     loaded_pad_count=len(data['loaded_pads']), not_solved=data['not_solved'],
+                     unserved_loads=data['unserved_loads'], reduction_checks=data['reduction_checks'],
+                     wire_length_sensitivity_all_present=data['wire_length_sensitivity_all_present'])
+        loaded = set(data['loaded_pads'])
+        budget = config['budgets']['agnd_copper_ohm' if data['net'] == 'AGND' else 'rail_copper_ohm']
+        for name, state in data['states'].items():
+            state_out = {'checks': state['checks'], 'wire_current_A': state['wire_current_A'],
+                         'removed_wires': state['removed_wires'], 'energy_W': state['energy_W'], 'boards': {}}
+            for board, details in state['boards'].items():
+                dp = state['driving_point'][board]
+                ids, copper, total = dp['pads'], dp['R_copper_ohm'], dp['R_driving_point_ohm']
+                if not (len(ids) == len(copper) == len(total)) or not all(finite(v) for v in copper + total):
+                    raise ValueError('nonfinite/malformed accepted driving-point JSON')
+                potentials = details['pad_potential_V']
+                if not all(finite(v) for v in potentials.values()):
+                    raise ValueError('nonfinite accepted potential JSON')
+                def resistance_rows(selected):
+                    rows = [dict(pad_id=pid, identity=identities.get(pid), R_copper_ohm=cu,
+                                 R_driving_point_ohm=tot) for pid, cu, tot in zip(ids, copper, total) if selected(pid)]
+                    return {'count': len(rows), 'over_copper_budget_count': sum(x['R_copper_ohm'] > budget for x in rows),
+                            'min_copper_ohm': min((x['R_copper_ohm'] for x in rows), default=None),
+                            'max_copper': max(rows, key=lambda x: x['R_copper_ohm']) if rows else None}
+                worst = max(potentials, key=lambda p: abs(potentials[p])) if potentials else None
+                state_out['boards'][board] = {
+                    'signed_load_injection_A': details['load_injection_A'],
+                    'source_injection_A': details['source_injection_A'],
+                    'terminal_injection_A': details['terminal_injection_A'],
+                    'energy_W': details['energy_W'], 'copper_budget_ohm': budget,
+                    'all_evaluated_pads': resistance_rows(lambda pid: True),
+                    'energized_pads': resistance_rows(lambda pid: pid in loaded),
+                    'potential_min_V': min(potentials.values(), default=None),
+                    'potential_max_V': max(potentials.values(), default=None),
+                    'worst_absolute_source_relative_potential': {'pad_id': worst, 'identity': identities.get(worst),
+                        'potential_V': potentials[worst]} if worst else None}
+            entry['states'][name] = state_out
+        available[(data['net'], data['case'], data['depth'])] = entry
+
+    for net in nets:
+        expected_states = ['all-present']
+        if net == 'AGND':
+            expected_states += ['remove-' + '-'.join('W' + str(w) for w in removed)
+                                for kind in ('single', 'double') for removed in config['return_states'][kind]]
+        for case in cases:
+            for depth in depths:
+                entry = available.get((net, case, depth))
+                states = list(entry['states']) if entry else []
+                report['matrix_coverage'].append({'net': net, 'case': case, 'depth': depth,
+                    'expected_finite_states': expected_states, 'verified_passed_states': states,
+                    'missing_states': [s for s in expected_states if s not in states],
+                    'unexpected_states': [s for s in states if s not in expected_states],
+                    'all_three_open': entry['not_solved'].get('all-three-open') if entry and net == 'AGND' else
+                                      ('NOT YET CLASSIFIED' if net == 'AGND' else 'NOT APPLICABLE')})
+    terminal_path = packet / 'execution-result.json'
+    terminal = json_bytes(terminal_path) if terminal_path.exists() else None
+    report['terminal_receipt'] = terminal
+    if terminal is not None:
+        if terminal.get('request_sha256') != expected_digest or terminal.get('source_sha') != request['source_sha']:
+            report['integrity_errors'].append({'error': 'terminal receipt identity mismatch'})
+        required_integrity = ('request_unchanged', 'approval_unchanged', 'head_unchanged', 'checkout_clean')
+        if terminal.get('command') != request['command'] or any(terminal.get('postrun_integrity', {}).get(k) is not True for k in required_integrity):
+            report['integrity_errors'].append({'error': 'terminal command or mandatory postrun integrity mismatch'})
+        verify(packet / 'execution.stdout.log', terminal['log_sha256'])
+        verify(packet / 'scope-observations.jsonl', terminal['scope_observations_sha256'])
+    scopes = {}; sample_count = 0; nonmatching = 0; partial_lines = 0
+    samples = packet / 'scope-observations.jsonl'
+    if samples.exists():
+        with samples.open() as stream:
+            for line in stream:
+                try:
+                    sample = json.loads(line)
+                except ValueError:
+                    partial_lines += 1
+                    continue
+                sample_count += 1
+                values = sample['values']
+                if values['memory.max'] != str(request['guards']['unit_memory_max_bytes']) or values['memory.swap.max'] != '0':
+                    nonmatching += 1
+                    continue
+                record = scopes.setdefault(sample['cgroup'], {'samples': 0, 'peak_bytes': 0, 'oom': 0, 'oom_kill': 0})
+                record['samples'] += 1
+                record['peak_bytes'] = max(record['peak_bytes'], int(values['memory.peak']))
+                events = dict(row.split() for row in values.get('memory.events', '').splitlines())
+                for key in ('oom', 'oom_kill'):
+                    record[key] = max(record[key], int(events.get(key, 0)))
+    report['resources'] = {
+        'completed_ledger_units': len(report['steps']),
+        'guard_passed_units': sum(s['guard'].get('passed') is True for s in report['steps'] if s['guard']),
+        'process_nonzero_units': [s['step'] for s in report['steps'] if s['exit_code'] != 0],
+        'max_reported_peak_rss_KiB': max((s['peak_rss_KiB'] or 0 for s in report['steps']), default=0),
+        'max_solver_elapsed_seconds': max((s.get('solver_elapsed_seconds') or 0 for s in report['steps']), default=0),
+        'scope_samples': sample_count, 'bounded_scopes': scopes,
+        'nonmatching_scope_samples': nonmatching, 'partial_sample_lines': partial_lines,
+        'sampling_limit': 'Nonmatching samples include systemd-run/launcher parents; scope sampling is not a process-role/cleanup audit.'}
+    phase_counts = dict(collections.Counter(s['phase'] for s in report['steps']))
+    reductions = [s for s in report['steps'] if s['phase'] == 'reduce']
+    expected_reductions = 2 * len(nets) * len(cases) * len(depths)
+    expected_dpoints = (sum(math.ceil(s['reported_pad_count'] / 96) for s in reductions)
+        if len(reductions) == expected_reductions and all(isinstance(s.get('reported_pad_count'), int) for s in reductions) else None)
+    count_assessment = phase_count_assessment(phase_counts, expected_reductions, expected_dpoints,
+        len(nets) * len(cases) * len(depths), request['guards']['maximum_units'])
+    report['phase_count_diagnostics'] = count_assessment['diagnostics']
+    report['summary'] = {
+        'completed_ledger_units': len(report['steps']),
+        'phase_counts': phase_counts,
+        'phase_counts_complete': count_assessment['complete'],
+        'expected_reduction_units': expected_reductions,
+        'expected_driving_point_units_from_completed_reductions': expected_dpoints,
+        'maximum_authorized_units': request['guards']['maximum_units'],
+        'numerical_passed_units': sum(s.get('reported_checks_passed', False) for s in report['steps']),
+        'numerical_failed_units': [s['step'] for s in report['steps'] if s['numerical_status'] == 'FAIL'],
+        'verified_coupled_combinations': len(available),
+        'expected_coupled_combinations': len(nets) * len(cases) * len(depths),
+        'verified_finite_states': sum(len(s['verified_passed_states']) for s in report['matrix_coverage']),
+        'expected_finite_states': sum(len(s['expected_finite_states']) for s in report['matrix_coverage']),
+        'state': 'TERMINAL' if terminal is not None else 'INCOMPLETE SNAPSHOT; live versus stopped not inferred',
+        'terminal_exit_code': terminal.get('exit_code') if terminal else None,
+        'numerical_full_baseline_complete': bool(terminal and terminal.get('exit_code') == 0 and
+            terminal.get('postrun_integrity') and all(terminal['postrun_integrity'].values()) and
+            not terminal.get('changed_inputs') and count_assessment['complete'] and provenance['complete'] and
+            not report['integrity_errors'] and not report['pending_unreadable_steps'] and
+            all(not m['missing_states'] and not m['unexpected_states'] for m in report['matrix_coverage']) and
+            all(s['process_and_guard_passed'] and s['integrity_verified'] and
+                (s['phase'] == 'service' or s.get('reported_checks_passed')) for s in report['steps'])),
+    }
+    def safe_json(value):
+        if isinstance(value, float) and not math.isfinite(value):
+            return 'NONFINITE: ' + str(value)
+        if isinstance(value, dict):
+            return {k: safe_json(v) for k, v in value.items()}
+        if isinstance(value, list):
+            return [safe_json(v) for v in value]
+        return value
+    return safe_json(report)
+
+
+def markdown(report):
+    s = report['summary']
+    text = ['# Read-only baseline result snapshot', '',
+        f"Source `{report['source_sha']}`, request `{report['request_sha256']}`.", '',
+        f"{s['state']}; terminal exit={s['terminal_exit_code']}. Completed ledger units "
+        f"{s['completed_ledger_units']} / authorized maximum {s['maximum_authorized_units']}. "
+        f"Verified coupled combinations {s['verified_coupled_combinations']}/{s['expected_coupled_combinations']}; "
+        f"finite states {s['verified_finite_states']}/{s['expected_finite_states']}.", '',
+        f"Numerical full baseline complete: **{s['numerical_full_baseline_complete']}**. "
+        '**Electrical acceptance: false.**', '',
+        f"Integrity errors: {len(report['integrity_errors'])}; unreadable/in-progress ledgers: {len(report['pending_unreadable_steps'])}.", '',
+        'Phase/count diagnostics: ' + json.dumps(report['phase_count_diagnostics']) + '.']
+    if report['service']:
+        text += ['', 'Actual service subset: ' + json.dumps(report['service']['summary']) + '.',
+                 'Included signed board/net currents (A): ' + json.dumps(report['service']['included_board_net_sum_A']) + '.']
+    text += ['', '| Net | Case | Depth | Verified states | Missing states |', '| --- | --- | --- | --- | --- |']
+    for m in report['matrix_coverage']:
+        text.append(f"| {m['net']} | {m['case']} | {m['depth']} | {', '.join(m['verified_passed_states']) or 'none'} | {', '.join(m['missing_states']) or 'none'} |")
+    text += ['', 'Verified electrical results (copper resistance includes the modelled path; no full source-path acceptance):', '',
+             '| Net/case/state | Board | Evaluated / over budget | Max copper (mΩ) | Energized max copper (mΩ) | Worst source-relative potential (mV) |',
+             '| --- | --- | --- | --- | --- | --- |']
+    for e in report['coupled']:
+        if e.get('interpretation_refused'):
+            continue
+        for state, data in e['states'].items():
+            for board, b in data['boards'].items():
+                allpads, live = b['all_evaluated_pads'], b['energized_pads']
+                maxr = allpads['max_copper']['R_copper_ohm'] * 1000 if allpads['max_copper'] else None
+                maxlive = live['max_copper']['R_copper_ohm'] * 1000 if live['max_copper'] else None
+                voltage = b['worst_absolute_source_relative_potential']['potential_V'] * 1000 if b['worst_absolute_source_relative_potential'] else None
+                text.append(f"| {e['net']}/{e['case']}/{state} | {board} | {allpads['count']} / {allpads['over_copper_budget_count']} | {maxr} | {maxlive} | {voltage} |")
+    text += ['', 'Failed numerical checks: ' + json.dumps(report['failed_numerical_checks']) + '.', '',
+             'Resource/process detail and exact numerical maxima are in summary.json. Independent owned-process cleanup is not inferred.', '',
+             *['- ' + item for item in report['limitations']], '']
+    return '\n'.join(text)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--request', type=Path, required=True)
+    parser.add_argument('--expected-sha256', required=True)
+    parser.add_argument('--report-dir', type=Path, required=True)
+    args = parser.parse_args()
+    report = summarize(args.request, args.expected_sha256)
+    destination = args.report_dir.resolve()
+    if destination.is_relative_to(Path(report['output_directory']).resolve()) or destination.is_relative_to(Path(json_bytes(args.request)['checkout']).resolve()):
+        raise ValueError('reports must stay outside execution checkout/output')
+    destination.mkdir(parents=True, exist_ok=False)
+    (destination / 'summary.json').write_text(json.dumps(report, indent=2, allow_nan=False) + '\n')
+    (destination / 'report.md').write_text(markdown(report))
+    print(json.dumps(report['summary']))
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,52 @@
+{
+  "scope": "Evidence/docs update; executable source unchanged from reviewed26cfc65 and native execution093f14b",
+  "checks": [
+    {
+      "command": [
+        "pnpm",
+        "circuit:check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 2.847511194064282,
+      "child_peak_rss_KiB": 127740,
+      "log": "native-batch-circuit.txt"
+    },
+    {
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 4.936275438056327,
+      "child_peak_rss_KiB": 277904,
+      "log": "native-batch-doccheck.txt"
+    },
+    {
+      "command": [
+        "bash",
+        "/home/takazudo/.codex/scripts/heavy-guard.sh",
+        "--",
+        "pnpm",
+        "build"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 18.718437433009967,
+      "child_peak_rss_KiB": 1090316,
+      "log": "native-batch-build.txt"
+    },
+    {
+      "command": [
+        "pnpm",
+        "check:site"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 10.190542930038646,
+      "child_peak_rss_KiB": 553952,
+      "log": "native-batch-site.txt"
+    }
+  ]
+}

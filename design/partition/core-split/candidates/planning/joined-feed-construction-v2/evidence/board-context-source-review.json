@@ -1,0 +1,27 @@
+{
+  "status": "PASS_SOURCE_SERIALIZER_CORRECTIONS_PENDING_FINAL_INPUT_GRAPH",
+  "hashes": {
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/board_context.py": "fe9dcce6951f75d82bfc9a6692dcc13c3e5b733b31acebcc855e0693f84c1533",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/test_board_context.py": "fb9e33b0fb8ee1e6b7f556c0372330dd74be5530be09c4e6368df315ff2233d9"
+  },
+  "verification": "python3 -m unittest test_board_context -v:7/7PASS",
+  "resolved": [
+    "microvia/buried_via producer aliases",
+    "distinct KiCad10 buried token",
+    "explicit required staged filling/capping",
+    "150 terminal transfer overrides per board",
+    "solid connect_pads yes",
+    "exact raw replay UUID binding",
+    "new appended ID to output UUID mapping"
+  ],
+  "limits": [
+    "Actual final normalized graph is not ready; complete output census remains to be checked against its exact inputs.",
+    "Unit tests exercise source serialization, not the KiCad parser or saved/reloaded board semantics.",
+    "No native fill, DRC, connectivity, process capability or board adoption is inferred."
+  ],
+  "nonblocking_hardening": [
+    "Current trusted producer emits contiguous ordered via layer lists. Serializer could additionally enforce unique/contiguous lists and blind/buried endpoints to fail closed against malformed future schema.",
+    "Terminal input UUID set should be exactly150 unique IDs per board, and matched ID set equal to requested set; present checks enforce150 modifications and globallyuniqueoutputUUIDs."
+  ],
+  "native_calls": 0
+}

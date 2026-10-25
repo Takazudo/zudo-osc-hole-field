@@ -1,0 +1,262 @@
+{
+  "observed_at_utc": "2026-10-13T09:04:37Z",
+  "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+  "observations": [
+    {
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "exit_code": 0,
+      "stdout": "Linux x0x 6.18.33.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun 18 21:54:43 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+      "stderr": "",
+      "elapsed_seconds": 0.002519447007216513
+    },
+    {
+      "command": [
+        "cat",
+        "/etc/os-release"
+      ],
+      "exit_code": 0,
+      "stdout": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0020304369973018765
+    },
+    {
+      "command": [
+        "ps",
+        "-p",
+        "1",
+        "-o",
+        "comm="
+      ],
+      "exit_code": 0,
+      "stdout": "systemd\n",
+      "stderr": "",
+      "elapsed_seconds": 0.010213840985670686
+    },
+    {
+      "command": [
+        "systemctl",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "systemd 255 (255.4-1ubuntu8.17)\n+PAM +AUDIT +SELINUX +APPARMOR +IMA +SMACK +SECCOMP +GCRYPT -GNUTLS +OPENSSL +ACL +BLKID +CURL +ELFUTILS +FIDO2 +IDN2 -IDN +IPTC +KMOD +LIBCRYPTSETUP +LIBFDISK +PCRE2 -PWQUALITY +P11KIT +QRENCODE +TPM2 +BZIP2 +LZ4 +XZ +ZLIB +ZSTD -BPF_FRAMEWORK -XKBCOMMON +UTMP +SYSVINIT default-hierarchy=unified\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0028919409960508347
+    },
+    {
+      "command": [
+        "systemctl",
+        "--user",
+        "is-system-running"
+      ],
+      "exit_code": 1,
+      "stdout": "degraded\n",
+      "stderr": "",
+      "elapsed_seconds": 0.004487528931349516
+    },
+    {
+      "command": [
+        "systemctl",
+        "--user",
+        "--failed",
+        "--no-pager"
+      ],
+      "exit_code": 0,
+      "stdout": "  UNIT                                        LOAD   ACTIVE SUB    DESCRIPTION\n\u25cf run-re164410a616f4fac860450e8d9c537da.scope loaded failed failed /home/takazudo/.cache/zudo-e16-numerical-venv/bin/python -c \"\\nimport numpy as np;a=np.ones(int(3.2e9/8));print('allocated 3.2 GB: NOT ENFORCED')\"\n\nLegend: LOAD   \u2192 Reflects whether the unit definition was properly loaded.\n        ACTIVE \u2192 The high-level unit activation state, i.e. generalization of SUB.\n        SUB    \u2192 The low-level unit activation state, values depend on unit type.\n\n1 loaded units listed.\n",
+      "stderr": "",
+      "elapsed_seconds": 0.010186559986323118
+    },
+    {
+      "command": [
+        "systemctl",
+        "--user",
+        "show",
+        "--property=ControlGroup"
+      ],
+      "exit_code": 0,
+      "stdout": "ControlGroup=/user.slice/user-1000.slice/user@1000.service\n",
+      "stderr": "",
+      "elapsed_seconds": 0.01071436598431319
+    },
+    {
+      "command": [
+        "cat",
+        "/sys/fs/cgroup/cgroup.controllers"
+      ],
+      "exit_code": 0,
+      "stdout": "cpuset cpu io memory hugetlb pids rdma\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0022997590713202953
+    },
+    {
+      "command": [
+        "cat",
+        "/proc/self/cgroup"
+      ],
+      "exit_code": 0,
+      "stdout": "0::/user.slice/user-1000.slice/user@1000.service/tmux-spawn-b72b8a02-80ee-4ced-8780-b265e72c8e2a.scope\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0021751599851995707
+    },
+    {
+      "command": [
+        "free",
+        "-b"
+      ],
+      "exit_code": 0,
+      "stdout": "               total        used        free      shared  buff/cache   available\nMem:     12541636608  2806685696  7148769280     1400832  2961616896  9734950912\nSwap:    17179869184  1158897664 16020971520\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0029750500107184052
+    },
+    {
+      "command": [
+        "df",
+        "-B1",
+        ".",
+        "/tmp",
+        "/var/lib/docker",
+        "/var/lib/containerd"
+      ],
+      "exit_code": 0,
+      "stdout": "Filesystem        1B-blocks         Used    Available Use% Mounted on\n/dev/sdd       802086977536 351581020160 409686994944  47% /\n/dev/sdd       802086977536 351581020160 409686994944  47% /\n/dev/sdd       802086977536 351581020160 409686994944  47% /var/lib/docker\n/dev/sdd       802086977536 351581020160 409686994944  47% /\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0024887529434636235
+    },
+    {
+      "command": [
+        "df",
+        "-i",
+        ".",
+        "/var/lib/docker",
+        "/var/lib/containerd"
+      ],
+      "exit_code": 0,
+      "stdout": "Filesystem       Inodes   IUsed    IFree IUse% Mounted on\n/dev/sdd       49807360 3539446 46267914    8% /\n/dev/sdd       49807360 3539446 46267914    8% /var/lib/docker\n/dev/sdd       49807360 3539446 46267914    8% /\n",
+      "stderr": "",
+      "elapsed_seconds": 0.002283519017510116
+    },
+    {
+      "command": [
+        "docker",
+        "context",
+        "inspect",
+        "default",
+        "--format",
+        "{{.Endpoints.docker.Host}}"
+      ],
+      "exit_code": 0,
+      "stdout": "unix:///var/run/docker.sock\n",
+      "stderr": "",
+      "elapsed_seconds": 0.014858625014312565
+    },
+    {
+      "command": [
+        "docker",
+        "info",
+        "--format",
+        "{{.ServerVersion}} driver={{.Driver}} root={{.DockerRootDir}} cgroup={{.CgroupDriver}}/{{.CgroupVersion}} memory={{.MemoryLimit}} swap={{.SwapLimit}} containers={{.Containers}}"
+      ],
+      "exit_code": 0,
+      "stdout": "29.3.0 driver=overlayfs root=/var/lib/docker cgroup=systemd/2 memory=true swap=true containers=0\n",
+      "stderr": "",
+      "elapsed_seconds": 0.054105780087411404
+    },
+    {
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+        "--format",
+        "{{json .RepoDigests}} {{.Os}}/{{.Architecture}} reported_size={{.Size}}"
+      ],
+      "exit_code": 0,
+      "stdout": "[\"kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec\"] linux/amd64 reported_size=808800982\n",
+      "stderr": "",
+      "elapsed_seconds": 0.06200876901857555
+    },
+    {
+      "command": [
+        "docker",
+        "system",
+        "df"
+      ],
+      "exit_code": 0,
+      "stdout": "TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE\nImages          16        0         19.87GB   3.198GB (16%)\nContainers      0         0         0B        0B\nLocal Volumes   0         0         0B        0B\nBuild Cache     97        0         6.667GB   642.6MB\n",
+      "stderr": "",
+      "elapsed_seconds": 0.710784833994694
+    },
+    {
+      "command": [
+        "sudo",
+        "-n",
+        "systemctl",
+        "show",
+        "--property=Version",
+        "--value"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "sudo: a password is required\n",
+      "elapsed_seconds": 0.040637441095896065
+    },
+    {
+      "command": [
+        "cc",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "stderr": "",
+      "elapsed_seconds": 0.02305669302586466
+    },
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "v24.13.1\n",
+      "stderr": "",
+      "elapsed_seconds": 0.004026944981887937
+    },
+    {
+      "command": [
+        "pnpm",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "11.5.2\n",
+      "stderr": "",
+      "elapsed_seconds": 0.37772010697517544
+    },
+    {
+      "command": [
+        "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+        "-c",
+        "import sys,numpy,scipy,shapely; print(sys.version); print(numpy.__version__,scipy.__version__,shapely.__version__); print(shapely.geos_version_string)"
+      ],
+      "exit_code": 0,
+      "stdout": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]\n2.2.6 1.15.3 2.1.2\n3.13.1\n",
+      "stderr": "",
+      "elapsed_seconds": 0.14494241797365248
+    }
+  ],
+  "paths": {
+    "python3": "/usr/bin/python3",
+    "node": "/home/takazudo/.anyenv/envs/nodenv/versions/24.13.1/bin/node",
+    "pnpm": "/home/takazudo/.anyenv/envs/nodenv/versions/24.13.1/bin/pnpm",
+    "docker": "/usr/bin/docker",
+    "systemd-run": "/usr/bin/systemd-run",
+    "kicad-cli": null,
+    "ngspice": null
+  },
+  "guard_hashes": {
+    "/home/takazudo/.codex/scripts/heavy-guard.sh": "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+    "/home/takazudo/.claude/scripts/heavy-guard.sh": "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7"
+  },
+  "native_execution": false,
+  "qualification": "Capability inspection only; actual native startup/watchdog/cleanup qualification NOT RUN; reported image size does not establish peak storage."
+}

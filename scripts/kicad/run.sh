@@ -52,7 +52,43 @@ run_docker() {
   local docker_bin=$1
   local home_dir=$2
   shift 2
-  "$docker_bin" run --rm --platform linux/amd64 --network none \
+  local resource_args=()
+  local docker_action=(run --rm)
+  local gate_dir= gate_token= container_id=
+  local entry_command=(-c 'mkdir -p "$HOME/.config" "$HOME/.cache" "$HOME/.local/share" "$XDG_RUNTIME_DIR"; chmod 700 "$XDG_RUNTIME_DIR"; exec "$@"' kicad-oracle)
+  if [[ -n ${EPIC242_NATIVE_SLICE:-} ]]; then
+    [[ ${EPIC242_NATIVE_WORKER:-} =~ ^[a-z0-9][a-z0-9-]{0,60}$ ]] || {
+      printf 'Invalid bounded worker identity.\n' >&2; return 1;
+    }
+    # Slice hyphens encode hierarchy in systemd: hex keeps worker a single child.
+    local encoded_worker
+    encoded_worker=$(printf '%s' "$EPIC242_NATIVE_WORKER" | od -An -v -tx1 | tr -d ' \n')
+    [[ $EPIC242_NATIVE_SLICE == "epic242-w${encoded_worker}.slice" ]] || {
+      printf 'Bounded worker identity differs from slice.\n' >&2; return 1;
+    }
+    [[ ${EPIC242_NATIVE_DEADLINE:-} =~ ^[0-9]{10}$ ]] || {
+      printf 'Invalid bounded worker deadline.\n' >&2; return 1;
+    }
+    local remaining=$((10#$EPIC242_NATIVE_DEADLINE - $(date +%s)))
+    ((remaining > 0 && remaining <= 2580)) || {
+      printf 'Bounded worker deadline expired or exceeds 43 minutes.\n' >&2; return 1;
+    }
+    # The guard owns this private directory outside the writable repository mount.
+    [[ -d ${EPIC242_NATIVE_HANDSHAKE:-}/gates && -f $EPIC242_NATIVE_HANDSHAKE/start-gate.sh ]] || {
+      printf 'Bounded worker requires its guard handshake directory.\n' >&2; return 1;
+    }
+    gate_dir=$(mktemp -d "$EPIC242_NATIVE_HANDSHAKE/gates/gate.XXXXXXXXXXXX") || return
+    gate_token=${gate_dir##*/}
+    docker_action=(create)
+    entry_command=(/epic242-start.sh /epic242-gate "$EPIC242_NATIVE_DEADLINE" "$gate_token")
+    resource_args=(--pull=never --memory=6442450944 --memory-swap=6442450944
+      --cgroup-parent="$EPIC242_NATIVE_SLICE"
+      --label "epic242.native.worker=$EPIC242_NATIVE_WORKER"
+      --label "epic242.native.gate=$gate_token"
+      --volume "$gate_dir:/epic242-gate:ro"
+      --volume "$EPIC242_NATIVE_HANDSHAKE/start-gate.sh:/epic242-start.sh:ro")
+  fi
+  local docker_command=("$docker_bin" "${docker_action[@]}" "${resource_args[@]}" --platform linux/amd64 --network none \
     --user "$(id -u):$(id -g)" \
     --volume "$repo_root:/work" \
     --volume "$home_dir:/tmp/kicad-home" \
@@ -64,8 +100,29 @@ run_docker() {
     --env XDG_RUNTIME_DIR=/tmp/kicad-home/.runtime \
     --entrypoint /bin/sh \
     "$KICAD_IMAGE" \
-    -c 'mkdir -p "$HOME/.config" "$HOME/.cache" "$HOME/.local/share" "$XDG_RUNTIME_DIR"; chmod 700 "$XDG_RUNTIME_DIR"; exec "$@"' \
-    kicad-oracle "$@"
+    "${entry_command[@]}" "$@")
+  if [[ -z $gate_dir ]]; then
+    "${docker_command[@]}"
+    return
+  fi
+  container_id=$("${docker_command[@]}") || return
+  [[ $container_id =~ ^[0-9a-f]{64}$ ]] || {
+    printf 'Docker create did not return a full container identity.\n' >&2; return 1;
+  }
+  python3 - "$gate_dir" "$container_id" "$EPIC242_NATIVE_WORKER" \
+    "$EPIC242_NATIVE_DEADLINE" "$KICAD_IMAGE" "$@" <<'PY_REQUEST' || return
+import json, pathlib, sys
+path, cid, worker, deadline, image, *command = sys.argv[1:]
+gate = pathlib.Path(path)
+request = dict(container_id=cid, token=gate.name, worker=worker,
+               deadline=int(deadline), image=image, command=command)
+(gate / 'container-id').write_text(cid + '\n')
+with (gate / 'request.tmp').open('x') as output:
+    json.dump(request, output)
+(gate / 'request.tmp').replace(gate / 'request.json')
+PY_REQUEST
+  # No --rm: the guard must inspect the exit status before targeted cleanup.
+  "$docker_bin" start --attach "$container_id"
 }
 
 run_with_docker() {
@@ -84,9 +141,25 @@ run_with_docker() {
     return 1
   fi
   check_version "$actual_version"
+  if [[ -n ${EPIC242_NATIVE_SLICE:-} && $actual_version != 10.0.6 ]]; then
+    printf 'Bounded worker requires KiCad 10.0.6, got %s\n' "$actual_version" >&2
+    return 1
+  fi
 
   run_docker "$docker_bin" "$home_dir" "$@"
 }
+
+if [[ -n ${EPIC242_NATIVE_SLICE:-} ]]; then
+  if [[ -n ${KICAD_CLI_BIN:-} ]] || [[ -n ${DOCKER_HOST:-} ]] || [[ -n ${DOCKER_CONTEXT:-} ]]; then
+    printf 'Bounded mode requires the local Docker oracle without native fallback.\n' >&2
+    exit 1
+  fi
+  [[ -n ${EPIC242_NATIVE_WORKER:-} && -n ${EPIC242_NATIVE_DEADLINE:-} ]] || exit 1
+  if ! command -v docker >/dev/null; then
+    printf 'Bounded mode requires local Docker.\n' >&2
+    exit 1
+  fi
+fi
 
 if [[ -n ${KICAD_CLI_BIN:-} ]]; then
   if [[ ! -x $KICAD_CLI_BIN ]]; then

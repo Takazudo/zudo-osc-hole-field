@@ -1,0 +1,135 @@
+{
+  "issue": 243,
+  "epic": 242,
+  "status": "BATCH STOPPED ON FIRST CANDIDATE; NO RETRY; NO ARCHITECTURE SELECTION",
+  "admitted_batch": {
+    "reviewed_source_sha": "1e13889a150120b90b578ca8fe9b984a74c5b141",
+    "reviewed_hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "order": [
+      "two-A",
+      "two-B",
+      "three-B",
+      "three-C"
+    ],
+    "worker_policy": "ONE worker strictly sequential, 300 seconds native each; four distinct parent admissions",
+    "dispatched": [
+      "two-A"
+    ],
+    "not_dispatched": [
+      "two-B",
+      "three-B",
+      "three-C"
+    ],
+    "unused_admissions": [
+      "epic242-two-b-settle-01",
+      "epic242-three-b-settle-01",
+      "epic242-three-c-settle-01"
+    ]
+  },
+  "two_A": {
+    "run_id": 38132136159,
+    "run_url": "https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38132136159",
+    "job_id": 114448483219,
+    "run_attempt": 1,
+    "created_at": "2026-10-11T10:29:38Z",
+    "updated_at": "2026-10-11T10:36:07Z",
+    "source_sha": "1e13889a150120b90b578ca8fe9b984a74c5b141",
+    "admission_id": "epic242-two-a-settle-01",
+    "selector": "settle_pilot=two-A",
+    "dispatch": {
+      "workflow": "routing-benchmark.yml",
+      "ref": "integration/epic-242-core-routing",
+      "board": "osc-core",
+      "settle_only": true,
+      "settle_pilot": "two-A",
+      "reviewed_commit": "1e13889a150120b90b578ca8fe9b984a74c5b141",
+      "reviewed_hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+      "parent_admission_id": "epic242-two-a-settle-01",
+      "other_modes": false
+    },
+    "pre_dispatch": {
+      "remote_ref_exact": true,
+      "reviewed_workflow_sha256": "5605744a1c7c9c31080c298f37b465f2b331e2fc0550259dd36ecfbf7bf18dc5",
+      "no_active_or_queued_actions_jobs": true
+    },
+    "terminal": {
+      "run": "failure",
+      "settle_job": "failure",
+      "other_eight_jobs": "SKIPPED",
+      "pilot": "NEGATIVE / INCOMPLETE",
+      "pilot_exit_code": 1,
+      "reason": "whole-command deadline; guard FAIL / WATCHDOG TERMINATION after 300-second limit",
+      "settled_receipt": "ABSENT; native settle NOT COMPLETE",
+      "focus_search_route_apply_adoption": "NOT RUN"
+    },
+    "artifact": {
+      "id": 11700245195,
+      "name": "epic242-candidate-settle-only",
+      "size_bytes": 34537204,
+      "sha256": "9c4ac239451c5b1014a44e6f95b792e4740ba8775de4365330c062af69d8ebf3",
+      "zip_crc": "PASS, 602 entries",
+      "expires_at": "2026-10-18T10:36:00Z",
+      "local_copy": "/workspace/epic242-recovery/epic242-two-a-settle-38132136159.zip",
+      "retrieval": "GitHub connector download succeeded and returned matching SHA; direct gh artifact transport returned 403"
+    },
+    "frozen_input": {
+      "snapshot_files": 294,
+      "manifest_entries": 293,
+      "portable_source_seals": 291,
+      "all_snapshot_and_seal_hashes": "PASS",
+      "original_before_pcb_sha256": "2d9c70e054b4d269ae2ee64d27ce9c6c1f39708d5ab25300f1ffa63e7235d1a7",
+      "snapshot_unchanged_after_run": true
+    },
+    "native_guard": {
+      "worker": "settle-two-a-38132136159-1",
+      "command": [
+        "python3",
+        "scripts/partition/core_split_candidates.py",
+        "settle",
+        "--board",
+        "design/partition/core-split/candidates/pilots/generated/decision-two-A-native-38132136159-1/before/osc-core.kicad_pcb"
+      ],
+      "seconds_limit": 300,
+      "sampled_max_seconds": 300.42423818299994,
+      "peak_bytes": 2062454784,
+      "sample_count": 266,
+      "max_sampled_worker_bytes": 1994104832,
+      "min_sampled_host_free_bytes": 13724721152,
+      "kernel_oom": 0,
+      "kernel_oom_kill": 0,
+      "container_full_id_admission_membership_state_counts": [
+        12,
+        12,
+        12
+      ],
+      "retained_last_state": "11 exited0; one still running at last retained inspect as watchdog began termination; not a complete all-exited0 proof",
+      "driver_exit_before_cleanup": 1,
+      "driver_exit_after_cleanup": 1,
+      "final_owned_containers": 0,
+      "final_units": "three not-found/inactive/settled",
+      "final_workload_absent": true,
+      "cleanup_failures": [],
+      "interpretation": "Watchdog cleaned workload; native success/settled output not established. Pre-cleanup inspect errors after termination are retained negative evidence.",
+      "gate_script_sha256": "6763496a773f4a4cd69a47f20eb2f2c07aec33b9351a7bbd861e0d368ed0083d",
+      "pre_cleanup_inspect_missing_errors": 12
+    },
+    "image_preparation": {
+      "status": "PASS",
+      "sample_count": 131,
+      "max_sampled_backend_bytes": 3119099904,
+      "min_sampled_host_free_bytes": 15349465088,
+      "max_elapsed_seconds": 33.60950153899999,
+      "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec"
+    },
+    "driver_observation": "Two refill passes each logged 903 open edges before watchdog. This is partial diagnostic output, not a settled whole-board count, uncapped warning total, or architecture comparison."
+  },
+  "stopping_rule": "Nonzero job and absent settled receipt trigger the published hard stop. Do not dispatch the other three admissions, retry two-A, raise the 300-second limit, or infer feasibility from partial outputs without a new reviewed plan and parent admission.",
+  "independent_gates": {
+    "historical_panel_ci": "FAILED separately; not classified as candidate DRC failure",
+    "uncapped_full_warnings": "NOT RUN",
+    "complete_set_architecture_metrics": "NOT RUN",
+    "canonical_board_adoption": "NOT RUN",
+    "accepted_hardware": "JL117/JR129/K1402 unchanged; accepted main65cefd41fc39e064d38319115ad96016a1c6b71c"
+  },
+  "independent_read_only_review": "PASS for authenticated negative evidence and required hard stop: ZIP/CRC and source snapshot seals, exact worker/admission/hook/gate identity, 12 ACK/running PID/start/cgroup/6GiB/no-swap chains, watchdog deadline, OOM0 and final cleanup checked separately. One last retained state was running; no all-exited0 or complete settled-output claim."
+}

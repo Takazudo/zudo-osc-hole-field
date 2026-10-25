@@ -1,0 +1,55 @@
+{
+  "status": "PASS_SOURCE_ONLY_CAPPED_NEGATIVE_PUBLICATION",
+  "blocking_findings": [],
+  "executed_source_sha256": {
+    "circuit/routing/epic-242/decision-pilots/terminal-access/exact_transition_candidate.py": "893dd3c580cd22facad18b4244e4ba1735cfeab9d72ddc56d98f639b5c79f970",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/test_exact_transition_candidate.py": "84d0b0a4c0077d987e16031afd0e06c290abc65e1aa45dda614f55088d2445be",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/analyze_f3_breakout_region.py": "a4c4de781e8f87812ce11429a8e867e351622153feed290a1cb77804884aac0d"
+  },
+  "current_source_sha256": {
+    "exact_transition_candidate.py": "f0c87c62c12b7353511c0d3c9e6f34d9485a6c469288a4ce75b8cb2d45639457",
+    "test_exact_transition_candidate.py": "b6a8b9f36ce1cdce5759cba05282e670da442d808d00ff3b9efd72524ba8f3ef"
+  },
+  "raw_result_sha256": "37190c9df82d11074408e3137c42f22c8f41e2afb106a00eb0d400a0da6f5acb",
+  "candidate_input_source_binding_sha256": "c25b5c9948c194cd7e21b3d4228f8c6da89f52f7fb7421d88762132d5ba22000",
+  "input_dump_sha256": "613a358b340962e2d1fb13cd898fe8a9558edcbf1a5d69cb93b6d2bd7629e97c",
+  "reviewed_region_proof_sha256": "d1f51819b41f66534d926d4139393c73461bef2833ef0eb4568568f8e750729c",
+  "independently_checked": {
+    "executed_snapshots_match_result": true,
+    "candidate_dump_binding_region_hashes_match": true,
+    "current_unit_tests": {
+      "passed": 11,
+      "failed": 0,
+      "scope": "Synthetic source tests; no saved-board search or native execution"
+    },
+    "output_directory_members": [
+      "result.json"
+    ],
+    "no_candidate_file": true,
+    "expanded": 50000,
+    "visited": 51829,
+    "exact_checks": 199910,
+    "exact_check_cap": 250000,
+    "accepted_exact_overrides_considered": 17688,
+    "selected_exact_overrides": [],
+    "source_seconds": 20.241109657996276,
+    "proposal_created": false,
+    "native_executed": false,
+    "adopted": false
+  },
+  "cap_bug": {
+    "classification": "Source accounting defect corrected after consumed attempt; executed source preserved separately",
+    "executed_defect": "Diagonal side-edge recursion could consume remaining exact-check budget before unchecked diagonal increment",
+    "current_diff": "Insert limits() and explanatory comment immediately before final edge exact_checks increment",
+    "regression": "Four-check budget permits four side checks and refuses diagonal; exact_checks remains 4",
+    "actual_attempt_effect": "No edge-limit exceedance in retained run: 199910 < 250000; stopped at 50000 expansion cap",
+    "rerun_performed": false
+  },
+  "interpretation": "EXPANSION_LIMIT bounded negative; no proof of graph disconnection or physical impossibility",
+  "wall_limit_scope": "300-second feasibility-search soft wall check; not an enforced whole-process runtime ceiling",
+  "remaining_scope": [
+    "No full original-pair candidate or native closure/adoption evidence",
+    "All four original demands remain required; rails and AGND unresolved",
+    "Planned additional real-boundary CLI not yet reviewed; this verdict does not cover future additions"
+  ]
+}

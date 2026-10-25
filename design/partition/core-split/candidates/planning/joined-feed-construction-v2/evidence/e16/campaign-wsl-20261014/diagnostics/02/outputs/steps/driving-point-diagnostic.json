@@ -1,0 +1,80 @@
+{
+ "inputs": {
+  ".circuit-cache/e16-dpoint-locate-38eb37c2/diagnostic-spec.json": "2ea68e3336acdd39fbe8e0537ed18270e654d9aaa3921668de6050afeedfa6ed",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/operator-+5V.pkl.gz": "db2e192c90f76cb755b9b553f5d04f6876e4474acf5d6028e03affa8cd0be5a1",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-+5V.json.gz": "43e5a4d1c9732ba35543bd3416303fc8c4b15b9fe0d00f43eadaa81c85210fba",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+  "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-9f69cd8-4b95b6c8/KB-dp-+5V-nominal-average-uniform-dielectric-000.pkl.gz": "05c256453ce5f4d8f113f8b3e22619b437c74d673a2af7ace4d5e51429169e64"
+ },
+ "methods": {
+  "__inbox/e16-dpoint-diagnostic/locate.py": "435b5d573e5affb4a4b428911ff59600a3d80c54ce288774085822a57871a18e",
+  "__inbox/e16-dpoint-diagnostic/locate_driver.py": "0b09aa1c6b881c2dcdce620b7f25b4c7bbe9da2d02381f1aaee1431fde470503",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_solve.py": "3c993a2505dc279a4b970aadd13db5274e9f70beaf50caba800597d76287344f",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/numerical_unit_guard.py": "513efaf0b4f4a5bb1f94c15190822a2a79d84df399f83e69d7ed0297444ea571",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/replay_steps.py": "06f7cb0facf1674ce52f2f47e8fa22854430de17f3d6786e9c76b4debe9d14f0"
+ },
+ "command": [
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/__inbox/e16-dpoint-diagnostic/locate.py",
+  "--spec",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/.circuit-cache/e16-dpoint-locate-38eb37c2/diagnostic-spec.json",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/dpoint-locate-38eb37c2/report.json"
+ ],
+ "resource_guard": {
+  "guard": "/home/takazudo/.codex/scripts/heavy-guard.sh",
+  "sha256": "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+  "helper_sha256": "513efaf0b4f4a5bb1f94c15190822a2a79d84df399f83e69d7ed0297444ea571",
+  "directory": "/home/takazudo/.agent-guard/heavy",
+  "defaults": {
+   "slots": 1,
+   "wait_seconds": 0,
+   "max_run_seconds": 1800,
+   "min_mem_mb": 2048,
+   "low_mem_mb": 512
+  },
+  "queue_outside_unit_timeout": true
+ },
+ "step": "driving-point-diagnostic",
+ "exit_code": 0,
+ "elapsed_seconds": 120.73,
+ "stdout_tail": "{\"source_sha\": \"9f69cd8a2e7b80cba813a5bd66546c4d5ac705ec\", \"spec_sha256\": \"2ea68e3336acdd39fbe8e0537ed18270e654d9aaa3921668de6050afeedfa6ed\", \"scope\": \"/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/run-r48d993bdeee94108beca906e0748f9fd.scope\", \"original_chunk_relative\": 1.1208868656596437e-09, \"reproduced_chunk_relative\": 1.1208868656596437e-09, \"elapsed_seconds\": 120.30732943501789, \"peak_rss_KiB\": 1059784, \"memory_peak_bytes\": 1056350208, \"memory_events\": \"low 0\\nhigh 0\\nmax 0\\noom 0\\noom_kill 0\\noom_group_kill 0\\n\", \"input_hashes_unchanged\": true, \"interpretation\": \"Original arithmetic only, per-batch failure localization. Expected numerical failure remainsFAIL; exit0 means diagnostic completed, not numerical acceptance.\"}\n",
+ "stderr_tail": "heavy-guard: verdict=PASS exit=0 secs=124 min_mem_mb=8866 reason=-\n",
+ "peak_rss_KiB": 1059784,
+ "outputs": {
+  "report.json": {
+   "": "bfa2d4e10512d55fcefc56b71383e2a84cdd42d74f2788f7af7f46983eda3c46"
+  }
+ },
+ "native_calls": 0,
+ "launch_command": [
+  "bash",
+  "/home/takazudo/.codex/scripts/heavy-guard.sh",
+  "--",
+  "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/numerical_unit_guard.py",
+  "--inside",
+  "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+  "--",
+  "timeout",
+  "180s",
+  "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/__inbox/e16-dpoint-diagnostic/locate.py",
+  "--spec",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/.circuit-cache/e16-dpoint-locate-38eb37c2/diagnostic-spec.json",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/dpoint-locate-38eb37c2/report.json"
+ ],
+ "resource_guard_result": {
+  "passed": true,
+  "verdict": "PASS",
+  "exit": 0,
+  "seconds": 124,
+  "min_mem_mb": "8866",
+  "reason": "-"
+ },
+ "stream_files": {
+  "steps/driving-point-diagnostic.stdout.txt": "24de5979901daa479a1f2b003ffcbeaea2adf1ec15a9f651c79b6f959e58e69a",
+  "steps/driving-point-diagnostic.stderr.txt": "0abc796b635dbe75fedd4e6f2228c045d42d89ac4f77b45aaf4e640447fee827"
+ }
+}

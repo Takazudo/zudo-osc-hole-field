@@ -1,0 +1,98 @@
+"""Tiny wrapper fixtures only: no production module, operator, guard or scope run."""
+import importlib.util
+import json
+from pathlib import Path
+import pstats
+import sys
+import tempfile
+import unittest
+from unittest.mock import patch
+
+spec = importlib.util.spec_from_file_location('profile_unit_fixture', Path(__file__).with_name('profile_unit.py'))
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+
+
+class ProfileWrapper(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.scope = self.root / 'scope'
+        self.scope.mkdir()
+        for name, value in {'memory.max': '2147483648', 'memory.swap.max': '0',
+                            'memory.peak': '1234', 'memory.events': 'oom 0\n'}.items():
+            (self.scope / name).write_text(value)
+        self.output = self.root / 'output'
+        self.output.mkdir()
+        self.script = self.root / 'fixture.py'
+        self.spec = self.root / 'spec.json'
+        self.spec.write_text('{}')
+
+    def invoke(self, argv):
+        return module.profile_cli(self.script, argv, self.output, self.scope,
+                                  {str(self.script): module.sha(self.script)}, self.spec)
+
+    def test_actual_entry_argv_profile_and_restoration(self):
+        seen = self.output / 'seen.json'
+        self.script.write_text('import json,sys\nfrom pathlib import Path\n'
+                               'assert __name__ == "__main__"\n'
+                               'Path(sys.argv[1]).write_text(json.dumps(sys.argv))\n')
+        before = sys.argv
+        self.invoke([str(seen), '--net=AGND', '--start', '0', '--stop', '16'])
+        self.assertIs(sys.argv, before)
+        self.assertEqual(json.loads(seen.read_text()),
+                         [str(self.script), str(seen), '--net=AGND', '--start', '0', '--stop', '16'])
+        result = json.loads((self.output / 'profile-summary.json').read_text())
+        self.assertTrue(result['completed_cli'])
+        self.assertTrue(result['input_hashes_unchanged'])
+        self.assertTrue(result['timings'])
+        self.assertEqual(result['script_sha256'], module.sha(self.script))
+        pstats.Stats(str(self.output / 'profile.pstats'))
+
+    def test_cli_failure_propagates_and_retains_profile(self):
+        self.script.write_text('raise SystemExit(7)\n')
+        before = sys.argv
+        with self.assertRaises(SystemExit) as error:
+            self.invoke([])
+        self.assertEqual(error.exception.code, 7)
+        self.assertIs(sys.argv, before)
+        result = json.loads((self.output / 'profile-summary.json').read_text())
+        self.assertFalse(result['completed_cli'])
+        self.assertTrue((self.output / 'profile.pstats').exists())
+
+    def test_preexisting_profile_refused_before_entry(self):
+        self.script.write_text('raise AssertionError("must not enter fixture")\n')
+        (self.output / 'profile.pstats').write_text('preserve')
+        with self.assertRaises(AssertionError):
+            self.invoke([])
+        self.assertEqual((self.output / 'profile.pstats').read_text(), 'preserve')
+
+    def test_changed_input_fails_after_retaining_summary(self):
+        self.script.write_text('from pathlib import Path\nPath(__file__).write_text("changed")\n')
+        with self.assertRaises(AssertionError):
+            self.invoke([])
+        result = json.loads((self.output / 'profile-summary.json').read_text())
+        self.assertFalse(result['input_hashes_unchanged'])
+
+    def test_wrong_scope_refused_before_cli_or_matrix_import(self):
+        for key in ('memory.max', 'memory.swap.max'):
+            def read(path, *args, **kwargs):
+                if str(path) == '/proc/self/cgroup':
+                    return '0::/fixture.scope\n'
+                if path.name == key:
+                    return 'max'
+                if path.name == 'memory.max':
+                    return '2147483648'
+                if path.name == 'memory.swap.max':
+                    return '0'
+                raise AssertionError('unexpected read: ' + str(path))
+            with self.subTest(key=key), patch.dict(module.os.environ, {'E16_PROFILE_SCOPE': '1'}, clear=True), \
+                    patch.object(Path, 'read_text', read), patch.object(module, 'profile_cli') as cli:
+                with self.assertRaises(AssertionError):
+                    module.main()
+                cli.assert_not_called()
+
+
+if __name__ == '__main__':
+    unittest.main()

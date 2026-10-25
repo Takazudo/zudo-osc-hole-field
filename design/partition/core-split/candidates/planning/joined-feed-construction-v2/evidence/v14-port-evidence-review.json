@@ -1,0 +1,109 @@
+{
+  "status": "PASS_V14_SOURCE_CENSUS_EXPORT",
+  "helper_sha256": "c1aeeb5be28156448365fc78c03e986ef6402602ebfdaa03f2123d0411236375",
+  "boards": [
+    {
+      "board": "KA",
+      "physical_pads": 1568,
+      "unresolved": 278,
+      "direct": 41,
+      "supplemental": 237,
+      "by_net": {
+        "+5V": 35,
+        "AGND": 228,
+        "-12V": 7,
+        "+12V": 8
+      },
+      "closed_caps": 2046,
+      "hashes": {
+        "source": "4a1f7f592e6e9d2e3f77201a38c4b8c61f225a9153f272bf2b361586824e04b6",
+        "planes": "c95e553695ef623017862c981ae8b31b8f2eea3a3d42c52663abc793cb700215",
+        "graph": "592efc300dacbd64523a55a2754ae703ba08a3e78e86c5a70a1c08c6648f122d",
+        "census": "e489ff507fd9d5921a67f70431ba7a29eb6b6e3777e94b01e20927e7a91e4874"
+      },
+      "receipt": {
+        "board": "KA",
+        "step": "graph",
+        "input_sha256": {
+          "/tmp/feed-v2-KA-filtered-v14-caps.json": "4a1f7f592e6e9d2e3f77201a38c4b8c61f225a9153f272bf2b361586824e04b6",
+          "/tmp/feed-v2-KA-planes-v14-caps.json": "c95e553695ef623017862c981ae8b31b8f2eea3a3d42c52663abc793cb700215",
+          "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py": "6d84330093d5e5b998aae3c5582a3b3b7f40d7548288e0e43e48fb3645352ce0",
+          "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7"
+        },
+        "command": [
+          "timeout",
+          "180s",
+          "/tmp/osc-arch-source-venv/bin/python",
+          "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py",
+          "--board",
+          "/tmp/feed-v2-KA-filtered-v14-caps.json",
+          "--planes",
+          "/tmp/feed-v2-KA-planes-v14-caps.json",
+          "--output",
+          "/tmp/feed-v2-KA-connectivity-v14-caps.json"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 18.420908334999694,
+        "stdout": "{\"status\": \"SOURCE_DISCONNECTED_LOAD_PORTS\", \"board\": \"KA\", \"direct_load_count\": 1031, \"counts\": {\"nodes\": 13605, \"edges\": 6983}, \"elapsed_seconds\": 15.990638594001211, \"peak_KiB\": 1430512}\ndisconnected 41\n",
+        "stderr": "",
+        "output_sha256": "592efc300dacbd64523a55a2754ae703ba08a3e78e86c5a70a1c08c6648f122d",
+        "accepted": false,
+        "native_calls": 0
+      },
+      "execution_receipt_output_authenticated": true
+    },
+    {
+      "board": "KB",
+      "physical_pads": 2281,
+      "unresolved": 601,
+      "direct": 69,
+      "supplemental": 532,
+      "by_net": {
+        "AGND": 199,
+        "+5V": 362,
+        "+12V": 19,
+        "-12V": 21
+      },
+      "closed_caps": 3054,
+      "hashes": {
+        "source": "0d330301c988c24000c0d6298f6dbe308fcc36145cc94f35fcd2795ddc596d68",
+        "planes": "a2644d47cc5b317090b4cc5d1d09399398e5f52748900db56716230d7cdd0ca3",
+        "graph": "dcc5b98d83d1ba164a90a82cfe8633f7160f9cf3f8ed0021f70d450c1279eae5",
+        "census": "790f7add7c0bfcaab8fc52e322fb103876466b2439cd5781be178a1b401cfdc8"
+      },
+      "receipt": {
+        "board": "KB",
+        "step": "graph",
+        "input_sha256": {
+          "/tmp/feed-v2-KB-filtered-v14-caps.json": "0d330301c988c24000c0d6298f6dbe308fcc36145cc94f35fcd2795ddc596d68",
+          "/tmp/feed-v2-KB-planes-v14-caps.json": "a2644d47cc5b317090b4cc5d1d09399398e5f52748900db56716230d7cdd0ca3",
+          "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py": "6d84330093d5e5b998aae3c5582a3b3b7f40d7548288e0e43e48fb3645352ce0",
+          "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7"
+        },
+        "command": [
+          "timeout",
+          "180s",
+          "/tmp/osc-arch-source-venv/bin/python",
+          "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py",
+          "--board",
+          "/tmp/feed-v2-KB-filtered-v14-caps.json",
+          "--planes",
+          "/tmp/feed-v2-KB-planes-v14-caps.json",
+          "--output",
+          "/tmp/feed-v2-KB-connectivity-v14-caps.json"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 20.97698675599895,
+        "stdout": "{\"status\": \"SOURCE_DISCONNECTED_LOAD_PORTS\", \"board\": \"KB\", \"direct_load_count\": 1490, \"counts\": {\"nodes\": 16113, \"edges\": 8300}, \"elapsed_seconds\": 18.524242544001027, \"peak_KiB\": 1441172}\ndisconnected 69\n",
+        "stderr": "",
+        "output_sha256": "dcc5b98d83d1ba164a90a82cfe8633f7160f9cf3f8ed0021f70d450c1279eae5",
+        "accepted": false,
+        "native_calls": 0
+      },
+      "execution_receipt_output_authenticated": true
+    }
+  ],
+  "native_calls": 0,
+  "project_rerun": false,
+  "scope": "Exact source/planes/graph/census joins and every pad/object-connection correspondence verified. Continuity only; no current invention/electrical closure/physical qualification."
+}

@@ -1,0 +1,325 @@
+{
+  "plan": {
+    "admission_id": "local-3f8e1f747ebf47faa4d1b46024df0970-2",
+    "worker": "local-3f8e1f747ebf47faa4d1b46024df0970-2-startup-failure",
+    "sha": "093f14b55c8a85d5d14be26f20868df2551d3b14",
+    "hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "command": [
+      "env",
+      "EPIC242_ADMISSION_MODE=local",
+      "EPIC242_LOCAL_REQUEST=.circuit-cache/e16-local-packet-093f14b-3f8e1f74/startup-failure.json",
+      "EPIC242_PARENT_LOCAL_REQUEST_SHA256=6dc0413c1affaaec3ed6ab7d383ab6e34cdf53069c301b6e29750f1d242d06bc",
+      "EPIC242_LOCAL_APPROVAL=.circuit-cache/e16-local-packet-093f14b-3f8e1f74/startup-failure-approval.json",
+      "EPIC242_LOCAL_APPROVAL_SHA256=5244b71c84681986e23db5a3752f69d90135103cf479a3e8775755315cabd8d3",
+      "python3",
+      "scripts/kicad/local_native_admission.py",
+      "worker"
+    ],
+    "seconds": 60,
+    "memory_max": 6442450944,
+    "memory_swap_max": 0,
+    "aggregate_memory_max": 12884901888,
+    "free_floor": 2147483648,
+    "early_abort_free": 2684354560,
+    "slice": "epic242-w6c6f63616c2d33663865316637343765626634376661613464316234363032346466303937302d322d737461727475702d6661696c757265.slice",
+    "global_admission": "parent excludes ALL other native jobs; local flock covers only this guard"
+  },
+  "samples": [
+    {
+      "seconds": 0.014748444082215428,
+      "available": 10699612160,
+      "worker_current": 286720,
+      "events": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      }
+    },
+    {
+      "seconds": 1.0339403339894488,
+      "available": 10665717760,
+      "worker_current": 22106112,
+      "events": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      }
+    },
+    {
+      "seconds": 2.1021683450089768,
+      "available": 10623078400,
+      "worker_current": 24023040,
+      "events": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      }
+    },
+    {
+      "seconds": 3.1885299109853804,
+      "available": 10644013056,
+      "worker_current": 1130496,
+      "events": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      }
+    }
+  ],
+  "status": "FAIL / NOT ACCEPTED",
+  "container_lifecycle": [
+    {
+      "container_id": "be2750705b615344e2cef57cda6f438285c8a9b8f3983ae57d5ea48e1f94cf99",
+      "event": "not running",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-13T11:40:33.306410912Z",
+        "FinishedAt": "2026-10-13T11:40:34.328989416Z"
+      }
+    },
+    {
+      "container_id": "861aa5d05a373d4ff062208379c8ae18da372398a7f9bc2cf545bb43251ff7af",
+      "event": "not running",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 1,
+        "Error": "",
+        "StartedAt": "2026-10-13T11:40:34.729320703Z",
+        "FinishedAt": "2026-10-13T11:40:35.353839955Z"
+      }
+    },
+    {
+      "container_id": "861aa5d05a373d4ff062208379c8ae18da372398a7f9bc2cf545bb43251ff7af",
+      "event": "not running",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 1,
+        "Error": "",
+        "StartedAt": "2026-10-13T11:40:34.729320703Z",
+        "FinishedAt": "2026-10-13T11:40:35.353839955Z"
+      }
+    },
+    {
+      "container_id": "be2750705b615344e2cef57cda6f438285c8a9b8f3983ae57d5ea48e1f94cf99",
+      "event": "not running",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-13T11:40:33.306410912Z",
+        "FinishedAt": "2026-10-13T11:40:34.328989416Z"
+      }
+    }
+  ],
+  "container_memberships": {
+    "be2750705b615344e2cef57cda6f438285c8a9b8f3983ae57d5ea48e1f94cf99": {
+      "container_id": "be2750705b615344e2cef57cda6f438285c8a9b8f3983ae57d5ea48e1f94cf99",
+      "worker": "local-3f8e1f747ebf47faa4d1b46024df0970-2-startup-failure",
+      "pid": 1536128,
+      "process_start": "55855965",
+      "cgroup": "0::/epic242.slice/epic242-w6c6f63616c2d33663865316637343765626634376661613464316234363032346466303937302d322d737461727475702d6661696c757265.slice/docker-be2750705b615344e2cef57cda6f438285c8a9b8f3983ae57d5ea48e1f94cf99.scope\n",
+      "host_config": {
+        "Memory": 6442450944,
+        "MemorySwap": 6442450944,
+        "CgroupParent": "epic242-w6c6f63616c2d33663865316637343765626634376661613464316234363032346466303937302d322d737461727475702d6661696c757265.slice"
+      },
+      "state": {
+        "Status": "running",
+        "Running": true,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 1536128,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-13T11:40:33.306410912Z",
+        "FinishedAt": "0001-01-01T00:00:00Z"
+      }
+    },
+    "861aa5d05a373d4ff062208379c8ae18da372398a7f9bc2cf545bb43251ff7af": {
+      "container_id": "861aa5d05a373d4ff062208379c8ae18da372398a7f9bc2cf545bb43251ff7af",
+      "worker": "local-3f8e1f747ebf47faa4d1b46024df0970-2-startup-failure",
+      "pid": 1536302,
+      "process_start": "55856107",
+      "cgroup": "0::/epic242.slice/epic242-w6c6f63616c2d33663865316637343765626634376661613464316234363032346466303937302d322d737461727475702d6661696c757265.slice/docker-861aa5d05a373d4ff062208379c8ae18da372398a7f9bc2cf545bb43251ff7af.scope\n",
+      "host_config": {
+        "Memory": 6442450944,
+        "MemorySwap": 6442450944,
+        "CgroupParent": "epic242-w6c6f63616c2d33663865316637343765626634376661613464316234363032346466303937302d322d737461727475702d6661696c757265.slice"
+      },
+      "state": {
+        "Status": "running",
+        "Running": true,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 1536302,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-13T11:40:34.729320703Z",
+        "FinishedAt": "0001-01-01T00:00:00Z"
+      }
+    }
+  },
+  "container_admissions": {
+    "be2750705b615344e2cef57cda6f438285c8a9b8f3983ae57d5ea48e1f94cf99": {
+      "request": {
+        "container_id": "be2750705b615344e2cef57cda6f438285c8a9b8f3983ae57d5ea48e1f94cf99",
+        "token": "gate.dawc2JgGtiwe",
+        "worker": "local-3f8e1f747ebf47faa4d1b46024df0970-2-startup-failure",
+        "deadline": 1791891692,
+        "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+        "command": [
+          "kicad-cli",
+          "version"
+        ]
+      },
+      "verified_at": 1791891634.1997013,
+      "ack": "gate.dawc2JgGtiwe:be2750705b615344e2cef57cda6f438285c8a9b8f3983ae57d5ea48e1f94cf99"
+    },
+    "861aa5d05a373d4ff062208379c8ae18da372398a7f9bc2cf545bb43251ff7af": {
+      "request": {
+        "container_id": "861aa5d05a373d4ff062208379c8ae18da372398a7f9bc2cf545bb43251ff7af",
+        "token": "gate.evAfhYHDOehq",
+        "worker": "local-3f8e1f747ebf47faa4d1b46024df0970-2-startup-failure",
+        "deadline": 1791891692,
+        "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+        "command": [
+          "/bin/false"
+        ]
+      },
+      "verified_at": 1791891635.2725742,
+      "ack": "gate.evAfhYHDOehq:861aa5d05a373d4ff062208379c8ae18da372398a7f9bc2cf545bb43251ff7af"
+    }
+  },
+  "container_states": {
+    "be2750705b615344e2cef57cda6f438285c8a9b8f3983ae57d5ea48e1f94cf99": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-10-13T11:40:33.306410912Z",
+      "FinishedAt": "2026-10-13T11:40:34.328989416Z"
+    },
+    "861aa5d05a373d4ff062208379c8ae18da372398a7f9bc2cf545bb43251ff7af": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 1,
+      "Error": "",
+      "StartedAt": "2026-10-13T11:40:34.729320703Z",
+      "FinishedAt": "2026-10-13T11:40:35.353839955Z"
+    }
+  },
+  "gate_script_sha256": "6763496a773f4a4cd69a47f20eb2f2c07aec33b9351a7bbd861e0d368ed0083d",
+  "reason": "Docker container failed or indeterminate terminal state: {\"Status\": \"exited\", \"Running\": false, \"Paused\": false, \"Restarting\": false, \"OOMKilled\": false, \"Dead\": false, \"Pid\": 0, \"ExitCode\": 1, \"Error\": \"\", \"StartedAt\": \"2026-10-13T11:40:34.729320703Z\", \"FinishedAt\": \"2026-10-13T11:40:35.353839955Z\"}",
+  "pre_cleanup_state_errors": [],
+  "observed_containers": [
+    "861aa5d05a373d4ff062208379c8ae18da372398a7f9bc2cf545bb43251ff7af",
+    "be2750705b615344e2cef57cda6f438285c8a9b8f3983ae57d5ea48e1f94cf99"
+  ],
+  "driver_exit_before_cleanup": 1,
+  "memory_before_cleanup": {
+    "status": "OBSERVED",
+    "cgroup": "/sys/fs/cgroup/epic242.slice/epic242-w6c6f63616c2d33663865316637343765626634376661613464316234363032346466303937302d322d737461727475702d6661696c757265.slice",
+    "peak": 38289408,
+    "current": 1028096,
+    "events": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    }
+  },
+  "memory_after_producer_cleanup": {
+    "status": "OBSERVED",
+    "cgroup": "/sys/fs/cgroup/epic242.slice/epic242-w6c6f63616c2d33663865316637343765626634376661613464316234363032346466303937302d322d737461727475702d6661696c757265.slice",
+    "peak": 38289408,
+    "current": 946176,
+    "events": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    }
+  },
+  "driver_exit_after_cleanup": 1,
+  "peak": 38289408,
+  "peak_scope": "after producer cleanup",
+  "final_owned_state": {
+    "containers": [],
+    "units": {
+      "epic242-local-3f8e1f747ebf47faa4d1b46024df0970-2-startup-failure-checks.service": {
+        "load": "not-found",
+        "active": "inactive",
+        "settled": true
+      },
+      "epic242-local-3f8e1f747ebf47faa4d1b46024df0970-2-startup-failure-anchor.service": {
+        "load": "not-found",
+        "active": "inactive",
+        "settled": true
+      },
+      "epic242-local-3f8e1f747ebf47faa4d1b46024df0970-2-startup-failure-watchdog.service": {
+        "load": "not-found",
+        "active": "inactive",
+        "settled": true
+      }
+    },
+    "errors": [],
+    "workload_absent": true
+  },
+  "cleanup_failures": []
+}

@@ -1,0 +1,1156 @@
+{
+  "adopted": false,
+  "candidate_terminals_sha256": "43a99e800e538e39145fc40c3621c5502243e8a74020d9ed7ca9c76264649a44",
+  "native": false,
+  "return_topology": "Three separate physical AGND conductors between explicit finite board-access ports. They join actual owned same-net copper only where geometric contact is established. Shared copper remains finite and is charged once; no equal current sharing or ideal common node is asserted.",
+  "source_feed_id": "CS247-KA-KB",
+  "source_sha256": {
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/reconciled-contract.json": "01b77387f568a5b246c7e33e635e8d867f09b23ea200d13dd0c17db251ada30d",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/robust-curve.json": "cfab1993ecd661054927e8c855470f16618bf04607b12af89cc6ba4099e7dfda",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/robust_curve.py": "12cb2cb82f8282c92e8a50c51b4060ba96eb826a35f8b7577c7b6442ff458d91",
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/wire_contract.py": "af7074b52adf0bebea577dc1165d394f9c387c34a08387958b5b093e9e66c078"
+  },
+  "status": "PHYSICAL_SOURCE_WIRE_FAMILY_NOT_QUALIFIED",
+  "wires": [
+    {
+      "KA_anchor_nominal_xyz_mm": [
+        23,
+        15.5,
+        -103.6
+      ],
+      "continuous_construction": "For gap G in [20.2,30.7] and free length L in [65.9,66.1], h is the unique positive rising root of arclength(control(G,h))=L. Transform all four control points by reflection then KA anchor. Include both exact straight2.5mm tails and tangent bridges to the measured board planes. This formula defines every service position; saved end poses are illustrations.",
+      "current_screen_A": 2.1,
+      "effective_feed_cut_mm": [
+        84.5,
+        85.0
+      ],
+      "effective_main_cut_mm": [
+        103.5,
+        104.0
+      ],
+      "electrical_incidence": {
+        "KA": 1,
+        "KB": -1
+      },
+      "family": {
+        "anchor_height_nominal_mm": 2.0,
+        "anchor_height_range_mm": [
+          1.95,
+          2.05
+        ],
+        "curve_cells": 512,
+        "direction": [
+          0.5933040689317951,
+          0.5927989259019525,
+          -0.5445913286478836
+        ],
+        "face_gap_range_mm": [
+          24.3,
+          24.5
+        ],
+        "first_derivative_error_max": 0.01,
+        "free_length_nominal_mm": 66.0,
+        "free_length_range_mm": [
+          65.9,
+          66.1
+        ],
+        "gap_cells": 200,
+        "length_cells": 8,
+        "minimum_bend_radius_mm": 25.908,
+        "offset_mm": 58.0,
+        "position_error_max_mm": 0.2,
+        "required_withdrawal_mm": 10.0,
+        "second_derivative_error_max_per_mm": 0.002,
+        "stop_travel_range_mm": [
+          10.0,
+          10.1
+        ],
+        "tail_each_mm": 2.5
+      },
+      "id": "CS247-KA-KB-W1",
+      "illustrative_end_poses": [
+        {
+          "KA_straight_land_to_free_start_xyz_mm": [
+            [
+              20.821103503778307,
+              13.322958630745152,
+              -101.6
+            ],
+            [
+              24.483260172329487,
+              16.98199731475488,
+              -104.96147832161971
+            ]
+          ],
+          "KB_straight_free_end_to_land_xyz_mm": [
+            [
+              79.5167398276705,
+              16.98199731475488,
+              -122.63852167838029
+            ],
+            [
+              83.1788964962217,
+              13.322958630745152,
+              -126.0
+            ]
+          ],
+          "anchor_end_xyz_mm": [
+            81.0,
+            15.5,
+            -124.0
+          ],
+          "free_cubic_arclength_mm": 65.99999999999999,
+          "free_cubic_control_points_xyz_mm": [
+            [
+              24.483260172329487,
+              16.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              41.95925410936496,
+              34.44311207433459,
+              -121.00262021829965
+            ],
+            [
+              62.04074589063504,
+              34.44311207433459,
+              -106.59737978170034
+            ],
+            [
+              79.5167398276705,
+              16.98199731475488,
+              -122.63852167838029
+            ]
+          ],
+          "travel_mm": 0.0
+        },
+        {
+          "KA_straight_land_to_free_start_xyz_mm": [
+            [
+              20.821103503778307,
+              13.322958630745152,
+              -101.6
+            ],
+            [
+              24.483260172329487,
+              16.98199731475488,
+              -104.96147832161971
+            ]
+          ],
+          "KB_straight_free_end_to_land_xyz_mm": [
+            [
+              79.5167398276705,
+              16.98199731475488,
+              -132.7385216783803
+            ],
+            [
+              83.1788964962217,
+              13.322958630745152,
+              -136.1
+            ]
+          ],
+          "anchor_end_xyz_mm": [
+            81.0,
+            15.5,
+            -134.1
+          ],
+          "free_cubic_arclength_mm": 66.0,
+          "free_cubic_control_points_xyz_mm": [
+            [
+              24.483260172329487,
+              16.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              37.28440862596018,
+              29.772246785462748,
+              -116.71159906010222
+            ],
+            [
+              66.71559137403982,
+              29.772246785462748,
+              -120.98840093989777
+            ],
+            [
+              79.5167398276705,
+              16.98199731475488,
+              -132.7385216783803
+            ]
+          ],
+          "travel_mm": 10.1
+        }
+      ],
+      "inherited_110mm_metadata_superseded": true,
+      "manufacturing_status": "Conditional core paths, cut/strip, cap/solder, insulation and C0/C1/C2 service requirements; not qualified",
+      "net": "+12V",
+      "pad_UUIDs": [
+        "fca87c6c-3013-5e08-b316-2155785144ee",
+        "b9ab654d-6234-53ca-8767-a37146157f5c"
+      ],
+      "reflection": [
+        1,
+        1,
+        1
+      ],
+      "refs": [
+        "TP247001",
+        "TP247007"
+      ],
+      "terminal_ids": [
+        "CS247-KA-KB-SRC-1",
+        "CS247-KA-KB-DST-1"
+      ],
+      "wire_mpn": "Alpha Wire 5859 BK005"
+    },
+    {
+      "KA_anchor_nominal_xyz_mm": [
+        40,
+        15.5,
+        -103.6
+      ],
+      "continuous_construction": "For gap G in [20.2,30.7] and free length L in [65.9,66.1], h is the unique positive rising root of arclength(control(G,h))=L. Transform all four control points by reflection then KA anchor. Include both exact straight2.5mm tails and tangent bridges to the measured board planes. This formula defines every service position; saved end poses are illustrations.",
+      "current_screen_A": 2,
+      "effective_feed_cut_mm": [
+        84.5,
+        85.0
+      ],
+      "effective_main_cut_mm": [
+        103.5,
+        104.0
+      ],
+      "electrical_incidence": {
+        "KA": 1,
+        "KB": -1
+      },
+      "family": {
+        "anchor_height_nominal_mm": 2.0,
+        "anchor_height_range_mm": [
+          1.95,
+          2.05
+        ],
+        "curve_cells": 512,
+        "direction": [
+          0.5933040689317951,
+          0.5927989259019525,
+          -0.5445913286478836
+        ],
+        "face_gap_range_mm": [
+          24.3,
+          24.5
+        ],
+        "first_derivative_error_max": 0.01,
+        "free_length_nominal_mm": 66.0,
+        "free_length_range_mm": [
+          65.9,
+          66.1
+        ],
+        "gap_cells": 200,
+        "length_cells": 8,
+        "minimum_bend_radius_mm": 25.908,
+        "offset_mm": 58.0,
+        "position_error_max_mm": 0.2,
+        "required_withdrawal_mm": 10.0,
+        "second_derivative_error_max_per_mm": 0.002,
+        "stop_travel_range_mm": [
+          10.0,
+          10.1
+        ],
+        "tail_each_mm": 2.5
+      },
+      "id": "CS247-KA-KB-W2",
+      "illustrative_end_poses": [
+        {
+          "KA_straight_land_to_free_start_xyz_mm": [
+            [
+              37.8211035037783,
+              17.677041369254848,
+              -101.6
+            ],
+            [
+              41.48326017232949,
+              14.018002685245118,
+              -104.96147832161971
+            ]
+          ],
+          "KB_straight_free_end_to_land_xyz_mm": [
+            [
+              96.5167398276705,
+              14.018002685245118,
+              -122.63852167838029
+            ],
+            [
+              100.1788964962217,
+              17.677041369254848,
+              -126.0
+            ]
+          ],
+          "anchor_end_xyz_mm": [
+            98.0,
+            15.5,
+            -124.0
+          ],
+          "free_cubic_arclength_mm": 65.99999999999999,
+          "free_cubic_control_points_xyz_mm": [
+            [
+              41.48326017232949,
+              14.018002685245118,
+              -104.96147832161971
+            ],
+            [
+              58.95925410936496,
+              -3.4431120743345893,
+              -121.00262021829965
+            ],
+            [
+              79.04074589063504,
+              -3.4431120743345893,
+              -106.59737978170034
+            ],
+            [
+              96.5167398276705,
+              14.018002685245118,
+              -122.63852167838029
+            ]
+          ],
+          "travel_mm": 0.0
+        },
+        {
+          "KA_straight_land_to_free_start_xyz_mm": [
+            [
+              37.8211035037783,
+              17.677041369254848,
+              -101.6
+            ],
+            [
+              41.48326017232949,
+              14.018002685245118,
+              -104.96147832161971
+            ]
+          ],
+          "KB_straight_free_end_to_land_xyz_mm": [
+            [
+              96.5167398276705,
+              14.018002685245118,
+              -132.7385216783803
+            ],
+            [
+              100.1788964962217,
+              17.677041369254848,
+              -136.1
+            ]
+          ],
+          "anchor_end_xyz_mm": [
+            98.0,
+            15.5,
+            -134.1
+          ],
+          "free_cubic_arclength_mm": 66.0,
+          "free_cubic_control_points_xyz_mm": [
+            [
+              41.48326017232949,
+              14.018002685245118,
+              -104.96147832161971
+            ],
+            [
+              54.28440862596018,
+              1.22775321453725,
+              -116.71159906010222
+            ],
+            [
+              83.71559137403982,
+              1.22775321453725,
+              -120.98840093989777
+            ],
+            [
+              96.5167398276705,
+              14.018002685245118,
+              -132.7385216783803
+            ]
+          ],
+          "travel_mm": 10.1
+        }
+      ],
+      "inherited_110mm_metadata_superseded": true,
+      "manufacturing_status": "Conditional core paths, cut/strip, cap/solder, insulation and C0/C1/C2 service requirements; not qualified",
+      "net": "-12V",
+      "pad_UUIDs": [
+        "8068548c-477b-53de-84d2-5cc9aeb2ae33",
+        "a306404a-8cb1-5f8e-9092-11ce3b769722"
+      ],
+      "reflection": [
+        1,
+        -1,
+        1
+      ],
+      "refs": [
+        "TP247002",
+        "TP247008"
+      ],
+      "terminal_ids": [
+        "CS247-KA-KB-SRC-2",
+        "CS247-KA-KB-DST-2"
+      ],
+      "wire_mpn": "Alpha Wire 5859 BK005"
+    },
+    {
+      "KA_anchor_nominal_xyz_mm": [
+        57,
+        15.5,
+        -103.6
+      ],
+      "continuous_construction": "For gap G in [20.2,30.7] and free length L in [65.9,66.1], h is the unique positive rising root of arclength(control(G,h))=L. Transform all four control points by reflection then KA anchor. Include both exact straight2.5mm tails and tangent bridges to the measured board planes. This formula defines every service position; saved end poses are illustrations.",
+      "current_screen_A": 0.5,
+      "effective_feed_cut_mm": [
+        84.5,
+        85.0
+      ],
+      "effective_main_cut_mm": [
+        103.5,
+        104.0
+      ],
+      "electrical_incidence": {
+        "KA": 1,
+        "KB": -1
+      },
+      "family": {
+        "anchor_height_nominal_mm": 2.0,
+        "anchor_height_range_mm": [
+          1.95,
+          2.05
+        ],
+        "curve_cells": 512,
+        "direction": [
+          0.5933040689317951,
+          0.5927989259019525,
+          -0.5445913286478836
+        ],
+        "face_gap_range_mm": [
+          24.3,
+          24.5
+        ],
+        "first_derivative_error_max": 0.01,
+        "free_length_nominal_mm": 66.0,
+        "free_length_range_mm": [
+          65.9,
+          66.1
+        ],
+        "gap_cells": 200,
+        "length_cells": 8,
+        "minimum_bend_radius_mm": 25.908,
+        "offset_mm": 58.0,
+        "position_error_max_mm": 0.2,
+        "required_withdrawal_mm": 10.0,
+        "second_derivative_error_max_per_mm": 0.002,
+        "stop_travel_range_mm": [
+          10.0,
+          10.1
+        ],
+        "tail_each_mm": 2.5
+      },
+      "id": "CS247-KA-KB-W3",
+      "illustrative_end_poses": [
+        {
+          "KA_straight_land_to_free_start_xyz_mm": [
+            [
+              54.8211035037783,
+              13.322958630745152,
+              -101.6
+            ],
+            [
+              58.48326017232949,
+              16.98199731475488,
+              -104.96147832161971
+            ]
+          ],
+          "KB_straight_free_end_to_land_xyz_mm": [
+            [
+              113.5167398276705,
+              16.98199731475488,
+              -122.63852167838029
+            ],
+            [
+              117.1788964962217,
+              13.322958630745152,
+              -126.0
+            ]
+          ],
+          "anchor_end_xyz_mm": [
+            115.0,
+            15.5,
+            -124.0
+          ],
+          "free_cubic_arclength_mm": 65.99999999999999,
+          "free_cubic_control_points_xyz_mm": [
+            [
+              58.48326017232949,
+              16.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              75.95925410936496,
+              34.44311207433459,
+              -121.00262021829965
+            ],
+            [
+              96.04074589063504,
+              34.44311207433459,
+              -106.59737978170034
+            ],
+            [
+              113.5167398276705,
+              16.98199731475488,
+              -122.63852167838029
+            ]
+          ],
+          "travel_mm": 0.0
+        },
+        {
+          "KA_straight_land_to_free_start_xyz_mm": [
+            [
+              54.8211035037783,
+              13.322958630745152,
+              -101.6
+            ],
+            [
+              58.48326017232949,
+              16.98199731475488,
+              -104.96147832161971
+            ]
+          ],
+          "KB_straight_free_end_to_land_xyz_mm": [
+            [
+              113.5167398276705,
+              16.98199731475488,
+              -132.7385216783803
+            ],
+            [
+              117.1788964962217,
+              13.322958630745152,
+              -136.1
+            ]
+          ],
+          "anchor_end_xyz_mm": [
+            115.0,
+            15.5,
+            -134.1
+          ],
+          "free_cubic_arclength_mm": 66.0,
+          "free_cubic_control_points_xyz_mm": [
+            [
+              58.48326017232949,
+              16.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              71.28440862596018,
+              29.772246785462748,
+              -116.71159906010222
+            ],
+            [
+              100.71559137403982,
+              29.772246785462748,
+              -120.98840093989777
+            ],
+            [
+              113.5167398276705,
+              16.98199731475488,
+              -132.7385216783803
+            ]
+          ],
+          "travel_mm": 10.1
+        }
+      ],
+      "inherited_110mm_metadata_superseded": true,
+      "manufacturing_status": "Conditional core paths, cut/strip, cap/solder, insulation and C0/C1/C2 service requirements; not qualified",
+      "net": "+5V",
+      "pad_UUIDs": [
+        "ef9a1d58-45b3-5b94-9811-52056e4188f1",
+        "fb146c01-8e05-568c-b8e4-09f4f8048c95"
+      ],
+      "reflection": [
+        1,
+        1,
+        1
+      ],
+      "refs": [
+        "TP247003",
+        "TP247009"
+      ],
+      "terminal_ids": [
+        "CS247-KA-KB-SRC-3",
+        "CS247-KA-KB-DST-3"
+      ],
+      "wire_mpn": "Alpha Wire 5859 BK005"
+    },
+    {
+      "KA_anchor_nominal_xyz_mm": [
+        23,
+        24.5,
+        -103.6
+      ],
+      "continuous_construction": "For gap G in [20.2,30.7] and free length L in [65.9,66.1], h is the unique positive rising root of arclength(control(G,h))=L. Transform all four control points by reflection then KA anchor. Include both exact straight2.5mm tails and tangent bridges to the measured board planes. This formula defines every service position; saved end poses are illustrations.",
+      "current_screen_A": 4.6,
+      "effective_feed_cut_mm": [
+        84.5,
+        85.0
+      ],
+      "effective_main_cut_mm": [
+        103.5,
+        104.0
+      ],
+      "electrical_incidence": {
+        "KA": 1,
+        "KB": -1
+      },
+      "family": {
+        "anchor_height_nominal_mm": 2.0,
+        "anchor_height_range_mm": [
+          1.95,
+          2.05
+        ],
+        "curve_cells": 512,
+        "direction": [
+          0.5933040689317951,
+          0.5927989259019525,
+          -0.5445913286478836
+        ],
+        "face_gap_range_mm": [
+          24.3,
+          24.5
+        ],
+        "first_derivative_error_max": 0.01,
+        "free_length_nominal_mm": 66.0,
+        "free_length_range_mm": [
+          65.9,
+          66.1
+        ],
+        "gap_cells": 200,
+        "length_cells": 8,
+        "minimum_bend_radius_mm": 25.908,
+        "offset_mm": 58.0,
+        "position_error_max_mm": 0.2,
+        "required_withdrawal_mm": 10.0,
+        "second_derivative_error_max_per_mm": 0.002,
+        "stop_travel_range_mm": [
+          10.0,
+          10.1
+        ],
+        "tail_each_mm": 2.5
+      },
+      "id": "CS247-KA-KB-W4",
+      "illustrative_end_poses": [
+        {
+          "KA_straight_land_to_free_start_xyz_mm": [
+            [
+              20.821103503778307,
+              22.322958630745152,
+              -101.6
+            ],
+            [
+              24.483260172329487,
+              25.98199731475488,
+              -104.96147832161971
+            ]
+          ],
+          "KB_straight_free_end_to_land_xyz_mm": [
+            [
+              79.5167398276705,
+              25.98199731475488,
+              -122.63852167838029
+            ],
+            [
+              83.1788964962217,
+              22.322958630745152,
+              -126.0
+            ]
+          ],
+          "anchor_end_xyz_mm": [
+            81.0,
+            24.5,
+            -124.0
+          ],
+          "free_cubic_arclength_mm": 65.99999999999999,
+          "free_cubic_control_points_xyz_mm": [
+            [
+              24.483260172329487,
+              25.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              41.95925410936496,
+              43.44311207433459,
+              -121.00262021829965
+            ],
+            [
+              62.04074589063504,
+              43.44311207433459,
+              -106.59737978170034
+            ],
+            [
+              79.5167398276705,
+              25.98199731475488,
+              -122.63852167838029
+            ]
+          ],
+          "travel_mm": 0.0
+        },
+        {
+          "KA_straight_land_to_free_start_xyz_mm": [
+            [
+              20.821103503778307,
+              22.322958630745152,
+              -101.6
+            ],
+            [
+              24.483260172329487,
+              25.98199731475488,
+              -104.96147832161971
+            ]
+          ],
+          "KB_straight_free_end_to_land_xyz_mm": [
+            [
+              79.5167398276705,
+              25.98199731475488,
+              -132.7385216783803
+            ],
+            [
+              83.1788964962217,
+              22.322958630745152,
+              -136.1
+            ]
+          ],
+          "anchor_end_xyz_mm": [
+            81.0,
+            24.5,
+            -134.1
+          ],
+          "free_cubic_arclength_mm": 66.0,
+          "free_cubic_control_points_xyz_mm": [
+            [
+              24.483260172329487,
+              25.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              37.28440862596018,
+              38.77224678546275,
+              -116.71159906010222
+            ],
+            [
+              66.71559137403982,
+              38.77224678546275,
+              -120.98840093989777
+            ],
+            [
+              79.5167398276705,
+              25.98199731475488,
+              -132.7385216783803
+            ]
+          ],
+          "travel_mm": 10.1
+        }
+      ],
+      "inherited_110mm_metadata_superseded": true,
+      "manufacturing_status": "Conditional core paths, cut/strip, cap/solder, insulation and C0/C1/C2 service requirements; not qualified",
+      "net": "AGND",
+      "pad_UUIDs": [
+        "2f38347e-736d-5b6a-a5db-b9055190d248",
+        "63195ead-505c-516c-a6aa-2be50f1ea8b6"
+      ],
+      "reflection": [
+        1,
+        1,
+        1
+      ],
+      "refs": [
+        "TP247004",
+        "TP247010"
+      ],
+      "terminal_ids": [
+        "CS247-KA-KB-SRC-4",
+        "CS247-KA-KB-DST-4"
+      ],
+      "wire_mpn": "Alpha Wire 5859 BK005"
+    },
+    {
+      "KA_anchor_nominal_xyz_mm": [
+        40,
+        24.5,
+        -103.6
+      ],
+      "continuous_construction": "For gap G in [20.2,30.7] and free length L in [65.9,66.1], h is the unique positive rising root of arclength(control(G,h))=L. Transform all four control points by reflection then KA anchor. Include both exact straight2.5mm tails and tangent bridges to the measured board planes. This formula defines every service position; saved end poses are illustrations.",
+      "current_screen_A": 4.6,
+      "effective_feed_cut_mm": [
+        84.5,
+        85.0
+      ],
+      "effective_main_cut_mm": [
+        103.5,
+        104.0
+      ],
+      "electrical_incidence": {
+        "KA": 1,
+        "KB": -1
+      },
+      "family": {
+        "anchor_height_nominal_mm": 2.0,
+        "anchor_height_range_mm": [
+          1.95,
+          2.05
+        ],
+        "curve_cells": 512,
+        "direction": [
+          0.5933040689317951,
+          0.5927989259019525,
+          -0.5445913286478836
+        ],
+        "face_gap_range_mm": [
+          24.3,
+          24.5
+        ],
+        "first_derivative_error_max": 0.01,
+        "free_length_nominal_mm": 66.0,
+        "free_length_range_mm": [
+          65.9,
+          66.1
+        ],
+        "gap_cells": 200,
+        "length_cells": 8,
+        "minimum_bend_radius_mm": 25.908,
+        "offset_mm": 58.0,
+        "position_error_max_mm": 0.2,
+        "required_withdrawal_mm": 10.0,
+        "second_derivative_error_max_per_mm": 0.002,
+        "stop_travel_range_mm": [
+          10.0,
+          10.1
+        ],
+        "tail_each_mm": 2.5
+      },
+      "id": "CS247-KA-KB-W5",
+      "illustrative_end_poses": [
+        {
+          "KA_straight_land_to_free_start_xyz_mm": [
+            [
+              37.8211035037783,
+              26.677041369254848,
+              -101.6
+            ],
+            [
+              41.48326017232949,
+              23.01800268524512,
+              -104.96147832161971
+            ]
+          ],
+          "KB_straight_free_end_to_land_xyz_mm": [
+            [
+              96.5167398276705,
+              23.01800268524512,
+              -122.63852167838029
+            ],
+            [
+              100.1788964962217,
+              26.677041369254848,
+              -126.0
+            ]
+          ],
+          "anchor_end_xyz_mm": [
+            98.0,
+            24.5,
+            -124.0
+          ],
+          "free_cubic_arclength_mm": 65.99999999999999,
+          "free_cubic_control_points_xyz_mm": [
+            [
+              41.48326017232949,
+              23.01800268524512,
+              -104.96147832161971
+            ],
+            [
+              58.95925410936496,
+              5.556887925665411,
+              -121.00262021829965
+            ],
+            [
+              79.04074589063504,
+              5.556887925665411,
+              -106.59737978170034
+            ],
+            [
+              96.5167398276705,
+              23.01800268524512,
+              -122.63852167838029
+            ]
+          ],
+          "travel_mm": 0.0
+        },
+        {
+          "KA_straight_land_to_free_start_xyz_mm": [
+            [
+              37.8211035037783,
+              26.677041369254848,
+              -101.6
+            ],
+            [
+              41.48326017232949,
+              23.01800268524512,
+              -104.96147832161971
+            ]
+          ],
+          "KB_straight_free_end_to_land_xyz_mm": [
+            [
+              96.5167398276705,
+              23.01800268524512,
+              -132.7385216783803
+            ],
+            [
+              100.1788964962217,
+              26.677041369254848,
+              -136.1
+            ]
+          ],
+          "anchor_end_xyz_mm": [
+            98.0,
+            24.5,
+            -134.1
+          ],
+          "free_cubic_arclength_mm": 66.0,
+          "free_cubic_control_points_xyz_mm": [
+            [
+              41.48326017232949,
+              23.01800268524512,
+              -104.96147832161971
+            ],
+            [
+              54.28440862596018,
+              10.22775321453725,
+              -116.71159906010222
+            ],
+            [
+              83.71559137403982,
+              10.22775321453725,
+              -120.98840093989777
+            ],
+            [
+              96.5167398276705,
+              23.01800268524512,
+              -132.7385216783803
+            ]
+          ],
+          "travel_mm": 10.1
+        }
+      ],
+      "inherited_110mm_metadata_superseded": true,
+      "manufacturing_status": "Conditional core paths, cut/strip, cap/solder, insulation and C0/C1/C2 service requirements; not qualified",
+      "net": "AGND",
+      "pad_UUIDs": [
+        "eaaab572-bf09-5ac1-aee5-0c24592e051c",
+        "ddff6869-c3ea-52a3-b448-11cc9c439afc"
+      ],
+      "reflection": [
+        1,
+        -1,
+        1
+      ],
+      "refs": [
+        "TP247005",
+        "TP247011"
+      ],
+      "terminal_ids": [
+        "CS247-KA-KB-SRC-5",
+        "CS247-KA-KB-DST-5"
+      ],
+      "wire_mpn": "Alpha Wire 5859 BK005"
+    },
+    {
+      "KA_anchor_nominal_xyz_mm": [
+        57,
+        24.5,
+        -103.6
+      ],
+      "continuous_construction": "For gap G in [20.2,30.7] and free length L in [65.9,66.1], h is the unique positive rising root of arclength(control(G,h))=L. Transform all four control points by reflection then KA anchor. Include both exact straight2.5mm tails and tangent bridges to the measured board planes. This formula defines every service position; saved end poses are illustrations.",
+      "current_screen_A": 4.6,
+      "effective_feed_cut_mm": [
+        84.5,
+        85.0
+      ],
+      "effective_main_cut_mm": [
+        103.5,
+        104.0
+      ],
+      "electrical_incidence": {
+        "KA": 1,
+        "KB": -1
+      },
+      "family": {
+        "anchor_height_nominal_mm": 2.0,
+        "anchor_height_range_mm": [
+          1.95,
+          2.05
+        ],
+        "curve_cells": 512,
+        "direction": [
+          0.5933040689317951,
+          0.5927989259019525,
+          -0.5445913286478836
+        ],
+        "face_gap_range_mm": [
+          24.3,
+          24.5
+        ],
+        "first_derivative_error_max": 0.01,
+        "free_length_nominal_mm": 66.0,
+        "free_length_range_mm": [
+          65.9,
+          66.1
+        ],
+        "gap_cells": 200,
+        "length_cells": 8,
+        "minimum_bend_radius_mm": 25.908,
+        "offset_mm": 58.0,
+        "position_error_max_mm": 0.2,
+        "required_withdrawal_mm": 10.0,
+        "second_derivative_error_max_per_mm": 0.002,
+        "stop_travel_range_mm": [
+          10.0,
+          10.1
+        ],
+        "tail_each_mm": 2.5
+      },
+      "id": "CS247-KA-KB-W6",
+      "illustrative_end_poses": [
+        {
+          "KA_straight_land_to_free_start_xyz_mm": [
+            [
+              54.8211035037783,
+              22.322958630745152,
+              -101.6
+            ],
+            [
+              58.48326017232949,
+              25.98199731475488,
+              -104.96147832161971
+            ]
+          ],
+          "KB_straight_free_end_to_land_xyz_mm": [
+            [
+              113.5167398276705,
+              25.98199731475488,
+              -122.63852167838029
+            ],
+            [
+              117.1788964962217,
+              22.322958630745152,
+              -126.0
+            ]
+          ],
+          "anchor_end_xyz_mm": [
+            115.0,
+            24.5,
+            -124.0
+          ],
+          "free_cubic_arclength_mm": 65.99999999999999,
+          "free_cubic_control_points_xyz_mm": [
+            [
+              58.48326017232949,
+              25.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              75.95925410936496,
+              43.44311207433459,
+              -121.00262021829965
+            ],
+            [
+              96.04074589063504,
+              43.44311207433459,
+              -106.59737978170034
+            ],
+            [
+              113.5167398276705,
+              25.98199731475488,
+              -122.63852167838029
+            ]
+          ],
+          "travel_mm": 0.0
+        },
+        {
+          "KA_straight_land_to_free_start_xyz_mm": [
+            [
+              54.8211035037783,
+              22.322958630745152,
+              -101.6
+            ],
+            [
+              58.48326017232949,
+              25.98199731475488,
+              -104.96147832161971
+            ]
+          ],
+          "KB_straight_free_end_to_land_xyz_mm": [
+            [
+              113.5167398276705,
+              25.98199731475488,
+              -132.7385216783803
+            ],
+            [
+              117.1788964962217,
+              22.322958630745152,
+              -136.1
+            ]
+          ],
+          "anchor_end_xyz_mm": [
+            115.0,
+            24.5,
+            -134.1
+          ],
+          "free_cubic_arclength_mm": 66.0,
+          "free_cubic_control_points_xyz_mm": [
+            [
+              58.48326017232949,
+              25.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              71.28440862596018,
+              38.77224678546275,
+              -116.71159906010222
+            ],
+            [
+              100.71559137403982,
+              38.77224678546275,
+              -120.98840093989777
+            ],
+            [
+              113.5167398276705,
+              25.98199731475488,
+              -132.7385216783803
+            ]
+          ],
+          "travel_mm": 10.1
+        }
+      ],
+      "inherited_110mm_metadata_superseded": true,
+      "manufacturing_status": "Conditional core paths, cut/strip, cap/solder, insulation and C0/C1/C2 service requirements; not qualified",
+      "net": "AGND",
+      "pad_UUIDs": [
+        "0064756b-9b86-550d-8321-0700951760a6",
+        "7e6ed9d7-46a4-5452-9c4f-cce5598e88b3"
+      ],
+      "reflection": [
+        1,
+        1,
+        1
+      ],
+      "refs": [
+        "TP247006",
+        "TP247012"
+      ],
+      "terminal_ids": [
+        "CS247-KA-KB-SRC-6",
+        "CS247-KA-KB-DST-6"
+      ],
+      "wire_mpn": "Alpha Wire 5859 BK005"
+    }
+  ]
+}

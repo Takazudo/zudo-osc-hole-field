@@ -1,0 +1,33 @@
+{
+ "inputs": {
+  "cand05/KB.kicad_pcb": "05ce8d2b8121dc9ec6f9063a06d9e1f2f3dec49116e3a46ec253bc0556ada427",
+  "cand05/terminals.json": "43a99e800e538e39145fc40c3621c5502243e8a74020d9ed7ca9c76264649a44",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/mandatory-physical-ports-review.json": "783726fe52e6f510df2fcf80bfb4ebd8e4da5f0c4059ab33902ff8a9a0d84bc8"
+ },
+ "methods": {
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/normalize_board.py": "00c30dec12063f81b04fb8125046039e14d140fd75ee60e93f89c07975258811"
+ },
+ "command": [
+  "normalize_board.py",
+  "--board-id",
+  "KB",
+  "--pcb",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/cand05/KB.kicad_pcb",
+  "--terminals",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/cand05/terminals.json",
+  "--output",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-normalized.json"
+ ],
+ "step": "KB-normalize",
+ "exit_code": 0,
+ "elapsed_seconds": 3.772,
+ "stdout_tail": "{\"board\": \"KB\", \"objects\": {\"keepout\": 199, \"pad\": 7291, \"segment\": 55585, \"via\": 4239, \"rule_area\": 346}, \"loads\": 1490, \"elapsed_seconds\": 3.67, \"peak_KiB\": 351856, \"output_sha256\": \"9870d1840d33f95cf6462f311e5e675270fe27c62534d14cb17f1050d1573f27\"}\n",
+ "stderr_tail": "",
+ "peak_rss_KiB": 351856,
+ "outputs": {
+  "KB-normalized.json": {
+   "": "9870d1840d33f95cf6462f311e5e675270fe27c62534d14cb17f1050d1573f27"
+  }
+ },
+ "native_calls": 0
+}

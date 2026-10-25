@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: issue189-core-audit-task-pilot
+  cancel-in-progress: false
 
 jobs:
   documentation:
@@ -76,8 +76,8 @@ jobs:
           node-version: 24
           package-manager-cache: false
 
-      - name: Install pinned numerical test dependencies
-        run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
+      - name: Install pinned Python test dependencies
+        run: python -m pip install -r scripts/checks/python-test-requirements.txt
 
       - name: Run Python unit tests
         run: bash scripts/checks/run-python-tests.sh
@@ -88,62 +88,22 @@ jobs:
       - name: Check explicit catalogue publication coverage
         run: python3 scripts/checks/check_catalogue_publication.py
 
-      - name: Place every current shortlist symbol unit and check native ERC
-        run: bash scripts/libgen/fixtures/check_ic_units.sh
-
-      - name: Check deterministic cluster placement and source faces
-        run: bash scripts/pcbgen/test_placer.sh
-
-      - name: Check native standard-cell ERC and pin-net parity
-        run: bash design/spec/cells/check_harness.sh
-
-      - name: Run native main-ground connectivity regression
-        run: bash scripts/kicad/run.sh python3 scripts/pcbgen/power_locality_native_regression.py
-
-      - name: Check update-in-place PCB sync
-        run: bash scripts/pcbgen/test_fixture.sh
-
-      - name: Run native monitor/permit candidate checks
-        run: python3 scripts/checks/monitor_permit_native.py --check
-
-      - name: Run native passive permit RC diagnostics
-        run: python3 scripts/checks/monitor_permit_rc.py --check
-
-      - name: Run native source courtyard minimum check
-        run: bash scripts/kicad/run.sh python3 scripts/libgen/fixtures/check_courtyard_minimum.py
-
-      - name: Run native IC display-envelope placement checks
-        run: bash scripts/kicad/run.sh python3 scripts/libgen/fixtures/check_wrl_dimensions.py --check
-
-      - name: Reject malformed native panel features
-        run: bash scripts/kicad/run.sh python3 scripts/panel/check_feature_mutations.py
-
-      - name: Replay dense routing and reject stale project rules
-        run: bash scripts/pcbgen/test_route.sh --dense
-
-      - name: Check five current octave PCB drafts and rejection controls
-        run: |
-          bash scripts/kicad/run.sh python3 scripts/pcbgen/fixtures/check_fixed_only.py
-          bash scripts/kicad/run.sh python3 scripts/pcbgen/fixtures/check_octave_labels.py
-          bash scripts/kicad/run.sh python3 scripts/pcbgen/check_octave.py --disposable
-          bash scripts/kicad/run.sh python3 scripts/pcbgen/fixtures/check_octave_mutations.py
-
-      - name: Check the routed stage-optical PCB draft
-        run: bash scripts/kicad/run.sh python3 scripts/pcbgen/check_stage_optical.py --disposable
-
-      - name: Rebuild and check the control layout and partial copper
-        run: bash scripts/kicad/run.sh python3 scripts/pcbgen/check_control_copper.py
-
-      - name: Check aggregate source regeneration
+      - name: Run admitted native Python checks
         id: aggregate
+        env:
+          EPIC242_PARENT_ADMISSION_RUN_ID: ${{ vars.EPIC242_PARENT_ADMISSION_RUN_ID }}
+          EPIC242_PARENT_ADMISSION_SHA: ${{ vars.EPIC242_PARENT_ADMISSION_SHA }}
+          EPIC242_REVIEWED_HOOK_SHA256: ${{ vars.EPIC242_REVIEWED_HOOK_SHA256 }}
         run: |
-          if bash scripts/checks/regen-all.sh --check; then
+          if python3 scripts/kicad/ci_native_admission.py --phase python --seconds 1680 \
+            --evidence "$RUNNER_TEMP/epic242-python-evidence.json" -- \
+            bash scripts/checks/run-ci-native-python.sh; then
             exit 0
           else
-            regen_status=$?
+            native_status=$?
             git diff --binary > "$RUNNER_TEMP/osc-regeneration.patch"
             git diff --stat
-            exit "$regen_status"
+            exit "$native_status"
           fi
 
       - name: Retain regeneration drift for review
@@ -155,14 +115,26 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+      - name: Retain native resource evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: epic242-python-resource-evidence
+          path: ${{ runner.temp }}/epic242-python-evidence.json
+          if-no-files-found: ignore
+          retention-days: 7
+
   # Complete native assembly checks remain gated by sub-issue #44.
 
   board-drc:
+    needs: python-tests
+    if: ${{ always() }}
     name: Native DRC gate (${{ matrix.board }})
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
       fail-fast: false
+      max-parallel: 2
       matrix:
         board: [osc-jack-left, osc-jack-right, osc-core]
 
@@ -176,10 +148,22 @@ jobs:
           python-version: "3.12"
 
       # Partially routed drafts: unconnected items are reported, DRC errors and schematic parity fail.
-      - name: Run pinned KiCad DRC with schematic parity and zone refill
+      - name: Run admitted pinned KiCad DRC with schematic parity and zone refill
         env:
           BOARD: ${{ matrix.board }}
+          EPIC242_PARENT_ADMISSION_RUN_ID: ${{ vars.EPIC242_PARENT_ADMISSION_RUN_ID }}
+          EPIC242_PARENT_ADMISSION_SHA: ${{ vars.EPIC242_PARENT_ADMISSION_SHA }}
+          EPIC242_REVIEWED_HOOK_SHA256: ${{ vars.EPIC242_REVIEWED_HOOK_SHA256 }}
         run: |
-          bash scripts/kicad/run.sh kicad-cli pcb drc --schematic-parity --refill-zones --format json --severity-all \
-            -o "boards/$BOARD/reports/ci-drc.json" "boards/$BOARD/$BOARD.kicad_pcb"
-          python3 scripts/pcbgen/summarize.py "boards/$BOARD/reports/ci-drc.json"
+          python3 scripts/kicad/ci_native_admission.py --phase board --board "$BOARD" \
+            --seconds 2580 --evidence "$RUNNER_TEMP/epic242-$BOARD-evidence.json" -- \
+            bash scripts/checks/run-ci-native-board.sh "$BOARD"
+
+      - name: Retain native resource evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: epic242-${{ matrix.board }}-resource-evidence
+          path: ${{ runner.temp }}/epic242-${{ matrix.board }}-evidence.json
+          if-no-files-found: ignore
+          retention-days: 7

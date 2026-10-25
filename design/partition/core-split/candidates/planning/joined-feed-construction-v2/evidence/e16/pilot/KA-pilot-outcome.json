@@ -1,0 +1,72 @@
+{
+ "schema": "e16-pilot-outcome-v1",
+ "board": "KA",
+ "net": "-12V",
+ "target": {
+  "ref": "U2314",
+  "pad": "11",
+  "pad_id": "b0f9dbc5-d3f3-5380-a8d2-0fe230e28db0"
+ },
+ "orphan_component_pads": [
+  {
+   "ref": "C2342",
+   "pad": "1",
+   "pad_id": "2412205a-2a0a-5aa6-b8ef-6c883912d2b4"
+  },
+  {
+   "ref": "U2314",
+   "pad": "11",
+   "pad_id": "b0f9dbc5-d3f3-5380-a8d2-0fe230e28db0"
+  }
+ ],
+ "verified_against_fresh_source": "The fresh independent t2 replay's fragments give exactly this orphan component (the plan's stated members).",
+ "preflights": [
+  {
+   "file": "KA-preflight-a-6mm.json",
+   "sha256": "d766bbff93b42ec24ecde26b69a8c2513a92814c28efd8c1283503bbeb4e5e5e",
+   "window_margin_mm": 6,
+   "max_length_mm": 12,
+   "status": "SUPERSEDED (tool defect below; method hash predates the limits arguments)",
+   "result": "no fed -12V face copper within the 6 mm window (nearest 10.33 mm, atlas)."
+  },
+  {
+   "file": "KA-preflight-b-12mm.json",
+   "sha256": "9964b730579ba53aac5ed9946dd84176fcce761c08f9e6788bb084c1ce192669",
+   "window_margin_mm": 12,
+   "max_length_mm": 30,
+   "status": "SUPERSEDED (tool defect below)",
+   "result": "reported F.Cu start copper fully blocked; the cause was the tool applying hole clearance to the orphan's own same-net via drills, not other-net clearance."
+  },
+  {
+   "file": "KA-preflight-c-same-net-drills-exempt.json",
+   "sha256": "8fc5f57928ccdc57f6e45e56fb514c12c1e71a81a073acc5b3577cc15a15e1af",
+   "window_margin_mm": 12,
+   "max_length_mm": 30,
+   "max_segments": 10,
+   "status": "CURRENT",
+   "result": "NO LEGAL CORRIDOR WITHIN THE SEALED LIMITS: with same-net drills exempt, neither face has a clear 8-connected path at 0.25 or 0.2 mm inside the 12 mm window."
+  }
+ ],
+ "construction": "NOT ATTEMPTED (no legal preflight). No geometry was added; the t2 candidate is unchanged.",
+ "dimensioned_proposal": {
+  "mechanism": "The orphan's existing E16 access vias 777f3632-457b-52cb-905e-d88ee0abe7f4 (109.495, 183.95) and 19a8d3d3-d974-5b5c-9ad6-2feb6a732bf8 (108.96, 183.70) land in clipped In3 -12V sheet island KA--12V-SHEET-0068 (6.883 mm2, not feed-connected). Their In3 annulus is 0.277 mm from fed sheet KA--12V-SHEET-0000.",
+  "obstacle": "The island is cut off where AGND via 1e1b90ef-f82d-5e94-a82e-416153b33ef3 (110.245, 184.97; 0.6/0.3 mm) faces In3 trace segments 127141f3-ffb2-55dd-82f8-f83de6cb72d8 / d3ddf061-51ab-594f-8345-7661bfd81e93 (net X91D7FB7B3C74A3368139).",
+  "measured": {
+   "other_net_copper_gap_mm": 0.663,
+   "required_mm": 0.75,
+   "requirement_basis": "0.25 mm minimum sheet width (clip_sheets.MIN_WIDTH_MM) + 2 x 0.25 mm Rails clearance",
+   "deficit_mm": 0.087
+  },
+  "future_change_options": [
+   "remove the non-functional In3 annulus of AGND via 1e1b90ef (obstacle becomes drill + hole clearance): the independent re-clip joins island KA--12V-SHEET-0068 on its own (0.813 mm >= 0.75 mm); changes a pad stack, native NFP behaviour unverified",
+   "move AGND via 1e1b90ef >= 0.087 mm away from the X91D7FB7B3C74A3368139 In3 trace along the gap normal (moves non-pilot copper)",
+   "a longer additive B.Cu route (about 23.5 mm, 0.2 mm wide) outside this pilot's sealed window and segment limits",
+   "rerouting only the two named In3 trace segments does not join the island (other X91D7FB7... segments are nearby; independent re-clip)"
+  ],
+  "status": "PROPOSAL ONLY: each option is outside this pilot's rules (no moved part, removed copper or changed layer). Any of them needs the full caps -> clip -> graph -> census re-evaluation; the gap figure is a necessary condition along the narrowest passage, not proof that the island then joins."
+ },
+ "native_calls": 0,
+ "accepted": false,
+ "tool_defect": "Independent pilot review: pilot_preflight.py applied the 0.25 mm hole clearance to every drill including same-net ones (the orphan's own vias, fed target vias). Copper-to-hole clearance is a different-net rule; fixed, and both boards re-preflighted under the same limits (preflight c). The 12 mm / 30 mm limits were set after the 6 mm attempt failed (not pre-sealed).",
+ "outside_sealed_limits": "The review found a legal additive B.Cu corridor beyond the sealed limits: 0.2 mm wide, 23.545 mm, 16 segments (greedy simplification), from C2342.1 to fed -12V copper 6804d6f9, >= 0.2508 mm to other-net copper and 0.40 mm to drills, needing a 20 mm window. It was not constructed: the window and segment limits are not widened after a failure."
+}

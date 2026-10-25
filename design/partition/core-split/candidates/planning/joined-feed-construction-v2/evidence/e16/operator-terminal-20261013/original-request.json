@@ -1,0 +1,37 @@
+{
+  "status": "PREPARED; NOT ADMITTED; NOT EXECUTED",
+  "source_sha": "566967b2cc0f1ba0e6cf1e1a131058a0b0e965cf",
+  "checkout": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+  "local_run_id": "256921f3123d4f949f94031f75fe61e6",
+  "attempt": 1,
+  "command": [
+    "bash",
+    "/home/takazudo/.codex/scripts/heavy-guard.sh",
+    "--",
+    "python3",
+    "scripts/kicad/qualify_resource_guard.py",
+    "--admission-id",
+    "local-control-256921f3123d4f949f94031f75fe61e6",
+    "--sha",
+    "566967b2cc0f1ba0e6cf1e1a131058a0b0e965cf",
+    "--hook-sha256",
+    "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "--evidence-directory",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/.circuit-cache/e16-local-packet-566967b-256921f3/harmless-controls"
+  ],
+  "scope": "Existing single-worker harmless whole-control qualifier: static local fixture import, smoke, timeout, frontend-death, watchdog-death, owned cleanup. No KiCad, ngspice, board fill or numerical solve.",
+  "requirements": [
+    "Separate parent/operator approval of this digest and one global slot reservation",
+    "Approved noninteractive systemd privilege through cleanup",
+    "Existing guard resource limits unchanged"
+  ],
+  "method_sha256": {
+    "scripts/kicad/qualify_resource_guard.py": "06e783d370da6b938b1bb65c60a107e5760cae623c77ed4605142d5a044afb0f",
+    "scripts/kicad/run_resource_fixture.py": "b38c12fda3091ce998f8cfec7b744b8d2a5da9e089bdba32350c9aa87dc93480",
+    "scripts/kicad/fixtures/resource_guard_fixture.c": "12523b25e61cf54869743702949dca7c1873ac8089bf46476c15a11e03f7573a",
+    "scripts/kicad/native_resource_guard.py": "ee755233af405e60cf592956dcf42ca1069f5face6c20c1cdfcdf6f8479ef8ca",
+    "scripts/kicad/run.sh": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+    "/home/takazudo/.codex/scripts/heavy-guard.sh": "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7"
+  }
+}

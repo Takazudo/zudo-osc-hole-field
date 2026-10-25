@@ -1,0 +1,27 @@
+{
+  "authorization": "User explicitly authorized diagnose, fix, review and prepare new request on 2026-10-14. Read-only residual diagnostic; no factorization or production batch retry.",
+  "command": [
+    "env",
+    "OPENBLAS_NUM_THREADS=1",
+    "OMP_NUM_THREADS=1",
+    "MKL_NUM_THREADS=1",
+    "bash",
+    "/home/takazudo/.codex/scripts/heavy-guard.sh",
+    "--",
+    "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/numerical_unit_guard.py",
+    "--inside",
+    "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+    "--",
+    "timeout",
+    "180s",
+    "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/__inbox/e16-coupled-residual/probe.py",
+    "--board",
+    "KB",
+    "--output",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/__inbox/e16-coupled-residual/results/KB-original-decomposition.json"
+  ],
+  "exit_code": 0,
+  "seconds": 3.637526767095551
+}

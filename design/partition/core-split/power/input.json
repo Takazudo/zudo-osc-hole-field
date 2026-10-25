@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "source_main_sha": "65cefd41fc39e064d38319115ad96016a1c6b71c",
+  "status": "PROPOSAL comparison only; topology NOT SELECTED; no production adoption",
+  "options": {
+    "two": {
+      "KA": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "OCTAVE_REF",
+        "F1",
+        "F2",
+        "F3",
+        "W1",
+        "W2",
+        "M4A",
+        "M4B",
+        "N1"
+      ],
+      "KB": [
+        "E1",
+        "E2",
+        "E3",
+        "E4",
+        "E5",
+        "E6",
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "H1",
+        "H2",
+        "M5A",
+        "M5B"
+      ]
+    },
+    "three": {
+      "KA": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "OCTAVE_REF",
+        "H1",
+        "H2"
+      ],
+      "KB": [
+        "F1",
+        "F2",
+        "F3",
+        "W1",
+        "W2",
+        "M4A",
+        "M4B",
+        "M5A",
+        "M5B",
+        "N1"
+      ],
+      "KC": [
+        "E1",
+        "E2",
+        "E3",
+        "E4",
+        "E5",
+        "E6",
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06"
+      ]
+    }
+  },
+  "power_parts_owner": "KA",
+  "existing_main_lands_owner": "KA",
+  "auxiliary_reserve_mA_per_rail": {
+    "two": {
+      "KA": 10,
+      "KB": 10
+    },
+    "three": {
+      "KA": 10,
+      "KB": 5,
+      "KC": 5
+    }
+  },
+  "new_feed": {
+    "namespace": "CS247",
+    "topology": "KA load-side star to each additional core; no daisy chain; same EXT domain",
+    "net_order": [
+      "+12V",
+      "-12V",
+      "+5V",
+      "AGND",
+      "AGND",
+      "AGND"
+    ],
+    "interface": "six factory-soldered wires between custom copper lands; no orderable connector selected or needed for this candidate",
+    "terminal_reserve_mm": [
+      6,
+      6
+    ],
+    "terminal_copper_mm": [
+      4,
+      4
+    ],
+    "terminal_courtyard_mm": [
+      5,
+      5
+    ],
+    "terminal_row_pitch_mm": 17,
+    "wire_service_corridor_depth_mm": 28,
+    "wire_service_corridor_height_mm": 28,
+    "satellite_monitor_reserve_mm": [
+      20,
+      20,
+      5
+    ],
+    "placement_status": "LOCAL ENVELOPE ONLY; #245/#246 must place and collision-check each endpoint, corridor and strain relief; no global coordinates selected",
+    "strain_relief_candidate_gap": "Enclosure-supported clamp/anchor exact geometry and part identity unresolved; solder cannot carry service loads"
+  },
+  "bulk": {
+    "nominal_uF_per_board_rail": 4.7,
+    "reserve_mm": [
+      5,
+      3,
+      5
+    ],
+    "mpn": null,
+    "manufacturer": null,
+    "status": "UNSELECTED candidate; inherited finite reserve only, effective capacitance/ESR/voltage/temperature evidence required"
+  },
+  "policies": {
+    "physical_core_current_maximum_mA": null,
+    "measured_source_capacity_mA": null,
+    "native_acceptance": "NOT RUN; no assigned global native slot",
+    "protection": "OPEN #59; CN301/XB301 remain abstract without physical raw/load bridge",
+    "qualification": "NOT RUN #57/#65; no installed current/drop/thermal or fit claim"
+  }
+}

@@ -1,0 +1,1709 @@
+{
+ "schema": "e16-finite-network-summary-v1",
+ "round": "t2",
+ "status": "CONDITIONAL_PARTIAL_NETWORK; NOT ELECTRICAL COMPLIANCE; ACCEPTANCE UNRESOLVED",
+ "budgets": {
+  "distribution_mV": 20,
+  "rail_copper_mOhm": 1,
+  "return_copper_mOhm": 0.5,
+  "note": "Global budgets are charged once across the whole joined network. A model port resistance above a budget means only that the budget is not shown met: the model overcharges barrels and idealizes joins, so it is not a lower bound. The actual drop depends on per-pad currents, which are not established."
+ },
+ "rows": [
+  {
+   "board": "KA",
+   "net": "+12V",
+   "case": "legacy-conditional-requirement",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 278,
+   "ports_without_finite_path": 0,
+   "structurally_unresolved_excluded": 11,
+   "rail_pads": 289,
+   "max_port_R_mOhm": 8.6658,
+   "max_port_onboard_R_mOhm": 7.4849,
+   "worst_port": "3234a7f9-f060-52dc-93a6-f1934bb717f2",
+   "max_wire_current_fraction": {
+    "1": 1.0
+   },
+   "model_drop_figure_mV": 6.081,
+   "model": {
+    "sheet_cells": 288882,
+    "sheet_pieces": 1,
+    "segments": 201,
+    "barrel_legs": 570,
+    "pads": 279,
+    "face_joins": 582,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": true,
+   "onboard_R_over_global_copper_budget": 7.485
+  },
+  {
+   "board": "KA",
+   "net": "+12V",
+   "case": "nominal-average",
+   "pitch_mm": 1.0,
+   "removed_wires": [],
+   "ports_solved": 106,
+   "ports_without_finite_path": 172,
+   "structurally_unresolved_excluded": 11,
+   "rail_pads": 289,
+   "max_port_R_mOhm": 19.9334,
+   "max_port_onboard_R_mOhm": 18.7524,
+   "worst_port": "825a6c38-9387-5ed5-bcef-dd96946cf62a",
+   "max_wire_current_fraction": {
+    "1": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 65738,
+    "sheet_pieces": 1,
+    "segments": 201,
+    "barrel_legs": 563,
+    "pads": 279,
+    "face_joins": 582,
+    "barrels_without_sheet_cell": 7
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 18.752
+  },
+  {
+   "board": "KA",
+   "net": "+12V",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 278,
+   "ports_without_finite_path": 0,
+   "structurally_unresolved_excluded": 11,
+   "rail_pads": 289,
+   "max_port_R_mOhm": 8.4639,
+   "max_port_onboard_R_mOhm": 7.2829,
+   "worst_port": "3234a7f9-f060-52dc-93a6-f1934bb717f2",
+   "max_wire_current_fraction": {
+    "1": 1.0
+   },
+   "model_drop_figure_mV": 5.939,
+   "model": {
+    "sheet_cells": 288882,
+    "sheet_pieces": 1,
+    "segments": 201,
+    "barrel_legs": 570,
+    "pads": 279,
+    "face_joins": 582,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": true,
+   "onboard_R_over_global_copper_budget": 7.283
+  },
+  {
+   "board": "KA",
+   "net": "+12V",
+   "case": "sensitivity-thin",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 278,
+   "ports_without_finite_path": 0,
+   "structurally_unresolved_excluded": 11,
+   "rail_pads": 289,
+   "max_port_R_mOhm": 12.0945,
+   "max_port_onboard_R_mOhm": 10.9136,
+   "worst_port": "3234a7f9-f060-52dc-93a6-f1934bb717f2",
+   "max_wire_current_fraction": {
+    "1": 1.0
+   },
+   "model_drop_figure_mV": 8.487,
+   "model": {
+    "sheet_cells": 288882,
+    "sheet_pieces": 1,
+    "segments": 201,
+    "barrel_legs": 570,
+    "pads": 279,
+    "face_joins": 582,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": true,
+   "onboard_R_over_global_copper_budget": 10.914
+  },
+  {
+   "board": "KA",
+   "net": "+5V",
+   "case": "legacy-conditional-requirement",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 6,
+   "ports_without_finite_path": 21,
+   "structurally_unresolved_excluded": 11,
+   "rail_pads": 38,
+   "max_port_R_mOhm": 9.2058,
+   "max_port_onboard_R_mOhm": 8.0249,
+   "worst_port": "27be7aed-0999-5f62-a13e-0d57dfee673e",
+   "max_wire_current_fraction": {
+    "3": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 218011,
+    "sheet_pieces": 2,
+    "segments": 20,
+    "barrel_legs": 102,
+    "pads": 28,
+    "face_joins": 78,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 8.025
+  },
+  {
+   "board": "KA",
+   "net": "+5V",
+   "case": "nominal-average",
+   "pitch_mm": 1.0,
+   "removed_wires": [],
+   "ports_solved": 5,
+   "ports_without_finite_path": 22,
+   "structurally_unresolved_excluded": 11,
+   "rail_pads": 38,
+   "max_port_R_mOhm": 7.9119,
+   "max_port_onboard_R_mOhm": 6.7309,
+   "worst_port": "bcb9fc7c-d782-5fae-8f5c-c7eeba1f4b07",
+   "max_wire_current_fraction": {
+    "3": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 51127,
+    "sheet_pieces": 2,
+    "segments": 20,
+    "barrel_legs": 95,
+    "pads": 28,
+    "face_joins": 78,
+    "barrels_without_sheet_cell": 7
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 6.731
+  },
+  {
+   "board": "KA",
+   "net": "+5V",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 6,
+   "ports_without_finite_path": 21,
+   "structurally_unresolved_excluded": 11,
+   "rail_pads": 38,
+   "max_port_R_mOhm": 8.9486,
+   "max_port_onboard_R_mOhm": 7.7677,
+   "worst_port": "27be7aed-0999-5f62-a13e-0d57dfee673e",
+   "max_wire_current_fraction": {
+    "3": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 218011,
+    "sheet_pieces": 2,
+    "segments": 20,
+    "barrel_legs": 102,
+    "pads": 28,
+    "face_joins": 78,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 7.768
+  },
+  {
+   "board": "KA",
+   "net": "+5V",
+   "case": "sensitivity-thin",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 6,
+   "ports_without_finite_path": 21,
+   "structurally_unresolved_excluded": 11,
+   "rail_pads": 38,
+   "max_port_R_mOhm": 12.7246,
+   "max_port_onboard_R_mOhm": 11.5437,
+   "worst_port": "27be7aed-0999-5f62-a13e-0d57dfee673e",
+   "max_wire_current_fraction": {
+    "3": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 218011,
+    "sheet_pieces": 2,
+    "segments": 20,
+    "barrel_legs": 102,
+    "pads": 28,
+    "face_joins": 78,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 11.544
+  },
+  {
+   "board": "KA",
+   "net": "-12V",
+   "case": "legacy-conditional-requirement",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 58,
+   "ports_without_finite_path": 146,
+   "structurally_unresolved_excluded": 16,
+   "rail_pads": 220,
+   "max_port_R_mOhm": 15.8769,
+   "max_port_onboard_R_mOhm": 14.6959,
+   "worst_port": "95d7db2d-9de2-5d71-9812-eb8fe8e18bc1",
+   "max_wire_current_fraction": {
+    "2": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 256362,
+    "sheet_pieces": 2,
+    "segments": 167,
+    "barrel_legs": 403,
+    "pads": 205,
+    "face_joins": 440,
+    "barrels_without_sheet_cell": 3
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 14.696
+  },
+  {
+   "board": "KA",
+   "net": "-12V",
+   "case": "nominal-average",
+   "pitch_mm": 1.0,
+   "removed_wires": [],
+   "ports_solved": 20,
+   "ports_without_finite_path": 184,
+   "structurally_unresolved_excluded": 16,
+   "rail_pads": 220,
+   "max_port_R_mOhm": 9.3321,
+   "max_port_onboard_R_mOhm": 8.1512,
+   "worst_port": "757f7604-eedc-54a6-9ed2-18d78d551fb8",
+   "max_wire_current_fraction": {
+    "2": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 58757,
+    "sheet_pieces": 2,
+    "segments": 167,
+    "barrel_legs": 359,
+    "pads": 205,
+    "face_joins": 440,
+    "barrels_without_sheet_cell": 47
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 8.151
+  },
+  {
+   "board": "KA",
+   "net": "-12V",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 58,
+   "ports_without_finite_path": 146,
+   "structurally_unresolved_excluded": 16,
+   "rail_pads": 220,
+   "max_port_R_mOhm": 14.9363,
+   "max_port_onboard_R_mOhm": 13.7553,
+   "worst_port": "95d7db2d-9de2-5d71-9812-eb8fe8e18bc1",
+   "max_wire_current_fraction": {
+    "2": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 256362,
+    "sheet_pieces": 2,
+    "segments": 167,
+    "barrel_legs": 403,
+    "pads": 205,
+    "face_joins": 440,
+    "barrels_without_sheet_cell": 3
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 13.755
+  },
+  {
+   "board": "KA",
+   "net": "-12V",
+   "case": "sensitivity-thin",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 58,
+   "ports_without_finite_path": 146,
+   "structurally_unresolved_excluded": 16,
+   "rail_pads": 220,
+   "max_port_R_mOhm": 20.5074,
+   "max_port_onboard_R_mOhm": 19.3265,
+   "worst_port": "95d7db2d-9de2-5d71-9812-eb8fe8e18bc1",
+   "max_wire_current_fraction": {
+    "2": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 256362,
+    "sheet_pieces": 2,
+    "segments": 167,
+    "barrel_legs": 403,
+    "pads": 205,
+    "face_joins": 440,
+    "barrels_without_sheet_cell": 3
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 19.326
+  },
+  {
+   "board": "KA",
+   "net": "AGND",
+   "case": "legacy-conditional-requirement",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 856,
+   "ports_without_finite_path": 1,
+   "structurally_unresolved_excluded": 158,
+   "rail_pads": 1015,
+   "max_port_R_mOhm": 14.0322,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "19ea79eb-1080-5092-af14-6e6a02f99d97",
+   "max_wire_current_fraction": {
+    "4": 0.3571,
+    "5": 0.3481,
+    "6": 0.371
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 292683,
+    "sheet_pieces": 1,
+    "segments": 749,
+    "barrel_legs": 1598,
+    "pads": 865,
+    "face_joins": 1870,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null
+  },
+  {
+   "board": "KA",
+   "net": "AGND",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 856,
+   "ports_without_finite_path": 1,
+   "structurally_unresolved_excluded": 158,
+   "rail_pads": 1015,
+   "max_port_R_mOhm": 13.1854,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "19ea79eb-1080-5092-af14-6e6a02f99d97",
+   "max_wire_current_fraction": {
+    "4": 0.3548,
+    "5": 0.3465,
+    "6": 0.3673
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 292683,
+    "sheet_pieces": 1,
+    "segments": 749,
+    "barrel_legs": 1598,
+    "pads": 865,
+    "face_joins": 1870,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null
+  },
+  {
+   "board": "KA",
+   "net": "AGND",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [
+    4
+   ],
+   "ports_solved": 856,
+   "ports_without_finite_path": 1,
+   "structurally_unresolved_excluded": 158,
+   "rail_pads": 1015,
+   "max_port_R_mOhm": 13.3964,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "19ea79eb-1080-5092-af14-6e6a02f99d97",
+   "max_wire_current_fraction": {
+    "5": 0.5174,
+    "6": 0.5137
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 292683,
+    "sheet_pieces": 1,
+    "segments": 749,
+    "barrel_legs": 1598,
+    "pads": 865,
+    "face_joins": 1870,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null
+  },
+  {
+   "board": "KA",
+   "net": "AGND",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [
+    5
+   ],
+   "ports_solved": 856,
+   "ports_without_finite_path": 1,
+   "structurally_unresolved_excluded": 158,
+   "rail_pads": 1015,
+   "max_port_R_mOhm": 13.4066,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "19ea79eb-1080-5092-af14-6e6a02f99d97",
+   "max_wire_current_fraction": {
+    "4": 0.5203,
+    "6": 0.5311
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 292683,
+    "sheet_pieces": 1,
+    "segments": 749,
+    "barrel_legs": 1598,
+    "pads": 865,
+    "face_joins": 1870,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null
+  },
+  {
+   "board": "KA",
+   "net": "AGND",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [
+    6
+   ],
+   "ports_solved": 856,
+   "ports_without_finite_path": 1,
+   "structurally_unresolved_excluded": 158,
+   "rail_pads": 1015,
+   "max_port_R_mOhm": 13.4566,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "19ea79eb-1080-5092-af14-6e6a02f99d97",
+   "max_wire_current_fraction": {
+    "4": 0.5043,
+    "5": 0.5207
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 292683,
+    "sheet_pieces": 1,
+    "segments": 749,
+    "barrel_legs": 1598,
+    "pads": 865,
+    "face_joins": 1870,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null
+  },
+  {
+   "board": "KA",
+   "net": "AGND",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [
+    4,
+    5
+   ],
+   "ports_solved": 856,
+   "ports_without_finite_path": 1,
+   "structurally_unresolved_excluded": 158,
+   "rail_pads": 1015,
+   "max_port_R_mOhm": 14.0674,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "19ea79eb-1080-5092-af14-6e6a02f99d97",
+   "max_wire_current_fraction": {
+    "6": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 292683,
+    "sheet_pieces": 1,
+    "segments": 749,
+    "barrel_legs": 1598,
+    "pads": 865,
+    "face_joins": 1870,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null
+  },
+  {
+   "board": "KA",
+   "net": "AGND",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [
+    4,
+    6
+   ],
+   "ports_solved": 856,
+   "ports_without_finite_path": 1,
+   "structurally_unresolved_excluded": 158,
+   "rail_pads": 1015,
+   "max_port_R_mOhm": 14.1065,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "19ea79eb-1080-5092-af14-6e6a02f99d97",
+   "max_wire_current_fraction": {
+    "5": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 292683,
+    "sheet_pieces": 1,
+    "segments": 749,
+    "barrel_legs": 1598,
+    "pads": 865,
+    "face_joins": 1870,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null
+  },
+  {
+   "board": "KA",
+   "net": "AGND",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [
+    5,
+    6
+   ],
+   "ports_solved": 856,
+   "ports_without_finite_path": 1,
+   "structurally_unresolved_excluded": 158,
+   "rail_pads": 1015,
+   "max_port_R_mOhm": 14.1923,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "19ea79eb-1080-5092-af14-6e6a02f99d97",
+   "max_wire_current_fraction": {
+    "4": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 292683,
+    "sheet_pieces": 1,
+    "segments": 749,
+    "barrel_legs": 1598,
+    "pads": 865,
+    "face_joins": 1870,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null
+  },
+  {
+   "board": "KA",
+   "net": "AGND",
+   "case": "nominal-average",
+   "pitch_mm": 1.0,
+   "removed_wires": [],
+   "ports_solved": 566,
+   "ports_without_finite_path": 291,
+   "structurally_unresolved_excluded": 158,
+   "rail_pads": 1015,
+   "max_port_R_mOhm": 31.1165,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "a1072b95-3909-57b5-895a-1323f680a616",
+   "max_wire_current_fraction": {
+    "4": 0.3601,
+    "5": 0.3488,
+    "6": 0.3728
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 67044,
+    "sheet_pieces": 1,
+    "segments": 749,
+    "barrel_legs": 1579,
+    "pads": 865,
+    "face_joins": 1870,
+    "barrels_without_sheet_cell": 19
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null
+  },
+  {
+   "board": "KA",
+   "net": "AGND",
+   "case": "sensitivity-thin",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 856,
+   "ports_without_finite_path": 1,
+   "structurally_unresolved_excluded": 158,
+   "rail_pads": 1015,
+   "max_port_R_mOhm": 18.4301,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "19ea79eb-1080-5092-af14-6e6a02f99d97",
+   "max_wire_current_fraction": {
+    "4": 0.3589,
+    "5": 0.3492,
+    "6": 0.3738
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 292683,
+    "sheet_pieces": 1,
+    "segments": 749,
+    "barrel_legs": 1598,
+    "pads": 865,
+    "face_joins": 1870,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t2.json": "9e9f67089244eb3ee45a3f04a44cbbf649b4a14ebb5c59c8e2d5c908ea30555f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/clipped-sheets.json": "c906ae13b3faa8b19e88958e6ddf46467fc42eeb7a1a8305cf29d90d9e317fa8",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-graph.json": "2dbef797909e3d85db676e179e8282c90da6b53d91683fa6f691d719aa83cc6f",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-t2/port-obligations.json": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null
+  },
+  {
+   "board": "KB",
+   "net": "+12V",
+   "case": "legacy-conditional-requirement",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 250,
+   "ports_without_finite_path": 0,
+   "structurally_unresolved_excluded": 42,
+   "rail_pads": 292,
+   "max_port_R_mOhm": 10.1757,
+   "max_port_onboard_R_mOhm": 8.9948,
+   "worst_port": "25f0b07b-e1b8-5bac-a2d8-45a0960550b3",
+   "max_wire_current_fraction": {
+    "1": 1.0
+   },
+   "model_drop_figure_mV": 7.576,
+   "model": {
+    "sheet_cells": 286907,
+    "sheet_pieces": 1,
+    "segments": 173,
+    "barrel_legs": 486,
+    "pads": 251,
+    "face_joins": 493,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": true,
+   "onboard_R_over_global_copper_budget": 8.995
+  },
+  {
+   "board": "KB",
+   "net": "+12V",
+   "case": "nominal-average",
+   "pitch_mm": 1.0,
+   "removed_wires": [],
+   "ports_solved": 165,
+   "ports_without_finite_path": 85,
+   "structurally_unresolved_excluded": 42,
+   "rail_pads": 292,
+   "max_port_R_mOhm": 21.1449,
+   "max_port_onboard_R_mOhm": 19.964,
+   "worst_port": "d2c0dea6-7507-5994-84ff-3db95c16001a",
+   "max_wire_current_fraction": {
+    "1": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 64934,
+    "sheet_pieces": 1,
+    "segments": 173,
+    "barrel_legs": 475,
+    "pads": 251,
+    "face_joins": 493,
+    "barrels_without_sheet_cell": 11
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 19.964
+  },
+  {
+   "board": "KB",
+   "net": "+12V",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 250,
+   "ports_without_finite_path": 0,
+   "structurally_unresolved_excluded": 42,
+   "rail_pads": 292,
+   "max_port_R_mOhm": 9.8191,
+   "max_port_onboard_R_mOhm": 8.6381,
+   "worst_port": "25f0b07b-e1b8-5bac-a2d8-45a0960550b3",
+   "max_wire_current_fraction": {
+    "1": 1.0
+   },
+   "model_drop_figure_mV": 7.311,
+   "model": {
+    "sheet_cells": 286907,
+    "sheet_pieces": 1,
+    "segments": 173,
+    "barrel_legs": 486,
+    "pads": 251,
+    "face_joins": 493,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": true,
+   "onboard_R_over_global_copper_budget": 8.638
+  },
+  {
+   "board": "KB",
+   "net": "+12V",
+   "case": "sensitivity-thin",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 250,
+   "ports_without_finite_path": 0,
+   "structurally_unresolved_excluded": 42,
+   "rail_pads": 292,
+   "max_port_R_mOhm": 13.856,
+   "max_port_onboard_R_mOhm": 12.6751,
+   "worst_port": "25f0b07b-e1b8-5bac-a2d8-45a0960550b3",
+   "max_wire_current_fraction": {
+    "1": 1.0
+   },
+   "model_drop_figure_mV": 10.316,
+   "model": {
+    "sheet_cells": 286907,
+    "sheet_pieces": 1,
+    "segments": 173,
+    "barrel_legs": 486,
+    "pads": 251,
+    "face_joins": 493,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": true,
+   "onboard_R_over_global_copper_budget": 12.675
+  },
+  {
+   "board": "KB",
+   "net": "+5V",
+   "case": "legacy-conditional-requirement",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 92,
+   "ports_without_finite_path": 306,
+   "structurally_unresolved_excluded": 112,
+   "rail_pads": 510,
+   "max_port_R_mOhm": 20.9547,
+   "max_port_onboard_R_mOhm": 19.7738,
+   "worst_port": "30be96fc-dd69-5735-a42f-5be09690bafa",
+   "max_wire_current_fraction": {
+    "3": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 224955,
+    "sheet_pieces": 3,
+    "segments": 295,
+    "barrel_legs": 715,
+    "pads": 399,
+    "face_joins": 813,
+    "barrels_without_sheet_cell": 1
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 19.774
+  },
+  {
+   "board": "KB",
+   "net": "+5V",
+   "case": "nominal-average",
+   "pitch_mm": 1.0,
+   "removed_wires": [],
+   "ports_solved": 41,
+   "ports_without_finite_path": 357,
+   "structurally_unresolved_excluded": 112,
+   "rail_pads": 510,
+   "max_port_R_mOhm": 12.635,
+   "max_port_onboard_R_mOhm": 11.454,
+   "worst_port": "3f40773b-4a59-5f1c-bbd4-a55810942283",
+   "max_wire_current_fraction": {
+    "3": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 51440,
+    "sheet_pieces": 3,
+    "segments": 295,
+    "barrel_legs": 664,
+    "pads": 399,
+    "face_joins": 813,
+    "barrels_without_sheet_cell": 52
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 11.454
+  },
+  {
+   "board": "KB",
+   "net": "+5V",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 92,
+   "ports_without_finite_path": 306,
+   "structurally_unresolved_excluded": 112,
+   "rail_pads": 510,
+   "max_port_R_mOhm": 19.494,
+   "max_port_onboard_R_mOhm": 18.313,
+   "worst_port": "30be96fc-dd69-5735-a42f-5be09690bafa",
+   "max_wire_current_fraction": {
+    "3": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 224955,
+    "sheet_pieces": 3,
+    "segments": 295,
+    "barrel_legs": 715,
+    "pads": 399,
+    "face_joins": 813,
+    "barrels_without_sheet_cell": 1
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 18.313
+  },
+  {
+   "board": "KB",
+   "net": "+5V",
+   "case": "sensitivity-thin",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 92,
+   "ports_without_finite_path": 306,
+   "structurally_unresolved_excluded": 112,
+   "rail_pads": 510,
+   "max_port_R_mOhm": 26.4316,
+   "max_port_onboard_R_mOhm": 25.2507,
+   "worst_port": "30be96fc-dd69-5735-a42f-5be09690bafa",
+   "max_wire_current_fraction": {
+    "3": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 224955,
+    "sheet_pieces": 3,
+    "segments": 295,
+    "barrel_legs": 715,
+    "pads": 399,
+    "face_joins": 813,
+    "barrels_without_sheet_cell": 1
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 25.251
+  },
+  {
+   "board": "KB",
+   "net": "-12V",
+   "case": "legacy-conditional-requirement",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 68,
+   "ports_without_finite_path": 78,
+   "structurally_unresolved_excluded": 46,
+   "rail_pads": 192,
+   "max_port_R_mOhm": 23.9451,
+   "max_port_onboard_R_mOhm": 22.7641,
+   "worst_port": "9ae8ac1c-bbf1-5070-8d53-56a0797680ae",
+   "max_wire_current_fraction": {
+    "2": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 241732,
+    "sheet_pieces": 4,
+    "segments": 118,
+    "barrel_legs": 302,
+    "pads": 147,
+    "face_joins": 322,
+    "barrels_without_sheet_cell": 2
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 22.764
+  },
+  {
+   "board": "KB",
+   "net": "-12V",
+   "case": "nominal-average",
+   "pitch_mm": 1.0,
+   "removed_wires": [],
+   "ports_solved": 31,
+   "ports_without_finite_path": 115,
+   "structurally_unresolved_excluded": 46,
+   "rail_pads": 192,
+   "max_port_R_mOhm": 12.3601,
+   "max_port_onboard_R_mOhm": 11.1791,
+   "worst_port": "5ced1ff6-c851-58bf-b7d5-f92948ea1085",
+   "max_wire_current_fraction": {
+    "2": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 55033,
+    "sheet_pieces": 4,
+    "segments": 118,
+    "barrel_legs": 276,
+    "pads": 147,
+    "face_joins": 322,
+    "barrels_without_sheet_cell": 28
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 11.179
+  },
+  {
+   "board": "KB",
+   "net": "-12V",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 68,
+   "ports_without_finite_path": 78,
+   "structurally_unresolved_excluded": 46,
+   "rail_pads": 192,
+   "max_port_R_mOhm": 22.178,
+   "max_port_onboard_R_mOhm": 20.9971,
+   "worst_port": "9ae8ac1c-bbf1-5070-8d53-56a0797680ae",
+   "max_wire_current_fraction": {
+    "2": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 241732,
+    "sheet_pieces": 4,
+    "segments": 118,
+    "barrel_legs": 302,
+    "pads": 147,
+    "face_joins": 322,
+    "barrels_without_sheet_cell": 2
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 20.997
+  },
+  {
+   "board": "KB",
+   "net": "-12V",
+   "case": "sensitivity-thin",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 68,
+   "ports_without_finite_path": 78,
+   "structurally_unresolved_excluded": 46,
+   "rail_pads": 192,
+   "max_port_R_mOhm": 29.9203,
+   "max_port_onboard_R_mOhm": 28.7393,
+   "worst_port": "9ae8ac1c-bbf1-5070-8d53-56a0797680ae",
+   "max_wire_current_fraction": {
+    "2": 1.0
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 241732,
+    "sheet_pieces": 4,
+    "segments": 118,
+    "barrel_legs": 302,
+    "pads": 147,
+    "face_joins": 322,
+    "barrels_without_sheet_cell": 2
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null,
+   "onboard_R_over_global_copper_budget": 28.739
+  },
+  {
+   "board": "KB",
+   "net": "AGND",
+   "case": "legacy-conditional-requirement",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 995,
+   "ports_without_finite_path": 0,
+   "structurally_unresolved_excluded": 286,
+   "rail_pads": 1281,
+   "max_port_R_mOhm": 17.4569,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "75ee2fc4-10c6-5318-952d-d3151f3b65f0",
+   "max_wire_current_fraction": {
+    "4": 0.3502,
+    "5": 0.3306,
+    "6": 0.3648
+   },
+   "model_drop_figure_mV": 27.326,
+   "model": {
+    "sheet_cells": 291974,
+    "sheet_pieces": 1,
+    "segments": 802,
+    "barrel_legs": 1878,
+    "pads": 998,
+    "face_joins": 2105,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": false
+  },
+  {
+   "board": "KB",
+   "net": "AGND",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 995,
+   "ports_without_finite_path": 0,
+   "structurally_unresolved_excluded": 286,
+   "rail_pads": 1281,
+   "max_port_R_mOhm": 15.9884,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "75ee2fc4-10c6-5318-952d-d3151f3b65f0",
+   "max_wire_current_fraction": {
+    "4": 0.3485,
+    "5": 0.3309,
+    "6": 0.3617
+   },
+   "model_drop_figure_mV": 25.027,
+   "model": {
+    "sheet_cells": 291974,
+    "sheet_pieces": 1,
+    "segments": 802,
+    "barrel_legs": 1878,
+    "pads": 998,
+    "face_joins": 2105,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": false
+  },
+  {
+   "board": "KB",
+   "net": "AGND",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [
+    4
+   ],
+   "ports_solved": 995,
+   "ports_without_finite_path": 0,
+   "structurally_unresolved_excluded": 286,
+   "rail_pads": 1281,
+   "max_port_R_mOhm": 16.2134,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "75ee2fc4-10c6-5318-952d-d3151f3b65f0",
+   "max_wire_current_fraction": {
+    "5": 0.5094,
+    "6": 0.5115
+   },
+   "model_drop_figure_mV": 25.38,
+   "model": {
+    "sheet_cells": 291974,
+    "sheet_pieces": 1,
+    "segments": 802,
+    "barrel_legs": 1878,
+    "pads": 998,
+    "face_joins": 2105,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": false
+  },
+  {
+   "board": "KB",
+   "net": "AGND",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [
+    5
+   ],
+   "ports_solved": 995,
+   "ports_without_finite_path": 0,
+   "structurally_unresolved_excluded": 286,
+   "rail_pads": 1281,
+   "max_port_R_mOhm": 16.2077,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "75ee2fc4-10c6-5318-952d-d3151f3b65f0",
+   "max_wire_current_fraction": {
+    "4": 0.5127,
+    "6": 0.5252
+   },
+   "model_drop_figure_mV": 25.371,
+   "model": {
+    "sheet_cells": 291974,
+    "sheet_pieces": 1,
+    "segments": 802,
+    "barrel_legs": 1878,
+    "pads": 998,
+    "face_joins": 2105,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": false
+  },
+  {
+   "board": "KB",
+   "net": "AGND",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [
+    6
+   ],
+   "ports_solved": 995,
+   "ports_without_finite_path": 0,
+   "structurally_unresolved_excluded": 286,
+   "rail_pads": 1281,
+   "max_port_R_mOhm": 16.2431,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "75ee2fc4-10c6-5318-952d-d3151f3b65f0",
+   "max_wire_current_fraction": {
+    "4": 0.5038,
+    "5": 0.5154
+   },
+   "model_drop_figure_mV": 25.426,
+   "model": {
+    "sheet_cells": 291974,
+    "sheet_pieces": 1,
+    "segments": 802,
+    "barrel_legs": 1878,
+    "pads": 998,
+    "face_joins": 2105,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": false
+  },
+  {
+   "board": "KB",
+   "net": "AGND",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [
+    4,
+    5
+   ],
+   "ports_solved": 995,
+   "ports_without_finite_path": 0,
+   "structurally_unresolved_excluded": 286,
+   "rail_pads": 1281,
+   "max_port_R_mOhm": 16.8947,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "75ee2fc4-10c6-5318-952d-d3151f3b65f0",
+   "max_wire_current_fraction": {
+    "6": 1.0
+   },
+   "model_drop_figure_mV": 26.446,
+   "model": {
+    "sheet_cells": 291974,
+    "sheet_pieces": 1,
+    "segments": 802,
+    "barrel_legs": 1878,
+    "pads": 998,
+    "face_joins": 2105,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": false
+  },
+  {
+   "board": "KB",
+   "net": "AGND",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [
+    4,
+    6
+   ],
+   "ports_solved": 995,
+   "ports_without_finite_path": 0,
+   "structurally_unresolved_excluded": 286,
+   "rail_pads": 1281,
+   "max_port_R_mOhm": 16.9113,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "75ee2fc4-10c6-5318-952d-d3151f3b65f0",
+   "max_wire_current_fraction": {
+    "5": 1.0
+   },
+   "model_drop_figure_mV": 26.472,
+   "model": {
+    "sheet_cells": 291974,
+    "sheet_pieces": 1,
+    "segments": 802,
+    "barrel_legs": 1878,
+    "pads": 998,
+    "face_joins": 2105,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": false
+  },
+  {
+   "board": "KB",
+   "net": "AGND",
+   "case": "nominal-average",
+   "pitch_mm": 0.5,
+   "removed_wires": [
+    5,
+    6
+   ],
+   "ports_solved": 995,
+   "ports_without_finite_path": 0,
+   "structurally_unresolved_excluded": 286,
+   "rail_pads": 1281,
+   "max_port_R_mOhm": 16.9539,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "75ee2fc4-10c6-5318-952d-d3151f3b65f0",
+   "max_wire_current_fraction": {
+    "4": 1.0
+   },
+   "model_drop_figure_mV": 26.539,
+   "model": {
+    "sheet_cells": 291974,
+    "sheet_pieces": 1,
+    "segments": 802,
+    "barrel_legs": 1878,
+    "pads": 998,
+    "face_joins": 2105,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": false
+  },
+  {
+   "board": "KB",
+   "net": "AGND",
+   "case": "nominal-average",
+   "pitch_mm": 1.0,
+   "removed_wires": [],
+   "ports_solved": 884,
+   "ports_without_finite_path": 111,
+   "structurally_unresolved_excluded": 286,
+   "rail_pads": 1281,
+   "max_port_R_mOhm": 22.361,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "75ee2fc4-10c6-5318-952d-d3151f3b65f0",
+   "max_wire_current_fraction": {
+    "4": 0.3524,
+    "5": 0.3315,
+    "6": 0.3658
+   },
+   "model_drop_figure_mV": null,
+   "model": {
+    "sheet_cells": 66668,
+    "sheet_pieces": 1,
+    "segments": 802,
+    "barrel_legs": 1852,
+    "pads": 998,
+    "face_joins": 2105,
+    "barrels_without_sheet_cell": 26
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": null
+  },
+  {
+   "board": "KB",
+   "net": "AGND",
+   "case": "sensitivity-thin",
+   "pitch_mm": 0.5,
+   "removed_wires": [],
+   "ports_solved": 995,
+   "ports_without_finite_path": 0,
+   "structurally_unresolved_excluded": 286,
+   "rail_pads": 1281,
+   "max_port_R_mOhm": 21.3788,
+   "max_port_onboard_R_mOhm": null,
+   "worst_port": "75ee2fc4-10c6-5318-952d-d3151f3b65f0",
+   "max_wire_current_fraction": {
+    "4": 0.3515,
+    "5": 0.3304,
+    "6": 0.3672
+   },
+   "model_drop_figure_mV": 33.465,
+   "model": {
+    "sheet_cells": 291974,
+    "sheet_pieces": 1,
+    "segments": 802,
+    "barrel_legs": 1878,
+    "pads": 998,
+    "face_joins": 2105,
+    "barrels_without_sheet_cell": 0
+   },
+   "input_sha256": {
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+    "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_network.py": "3285fdc9b88f5bf753e5c1f4a43db4792edfecebbdb899239093216b6f8ebdb6"
+   },
+   "model_drop_figure_within_20mV": false
+  }
+ ],
+ "run_files_sha256": {
+  "KA-+12V-legacy-conditional-requirement.json": "55c21207a7539e75a2ef01462ac1c551979e347d36328d3fdab43715c6449c38",
+  "KA-+12V-nominal-average-pitch1.json": "421409e7e17b332cac7e628906f1f67ee681808a7857c836a13c14ad08581751",
+  "KA-+12V-nominal-average.json": "44d57000ea8ccbc8bec0464aef3a0828fa14c3acd212ef3fdc29dea42fa4c7e2",
+  "KA-+12V-sensitivity-thin.json": "b8c178d661d0a65edd0b846c2f198dab11bb58e97e08231f731bedbca34cd649",
+  "KA-+5V-legacy-conditional-requirement.json": "eebad3f872d072bdd2d4f650c69ba5d3b6485009136419adef39cc43db808a2e",
+  "KA-+5V-nominal-average-pitch1.json": "35b4990f6185c0cd93f644602d8fd6ad23a4efe1134a589cb30ef1d64aa1edfb",
+  "KA-+5V-nominal-average.json": "901bcac0d429f1fadb701e96601ac96021625835b224c6a7a41e3b4510855de3",
+  "KA-+5V-sensitivity-thin.json": "c97bc39fcbcf5c019e6f3bed40ccdd1007c115e8fd361489e4801860e976d487",
+  "KA--12V-legacy-conditional-requirement.json": "5d2b10a8d04be70c740dff9dacbbbfc7e81e8a04051bc3a96c9d2bb5c8583fc4",
+  "KA--12V-nominal-average-pitch1.json": "b4e6a37ca5f34e7ed1ea0ff54280271013ce216da2591a9c1a00ff8bda815459",
+  "KA--12V-nominal-average.json": "ac77fa2129773d7cf2624f761283cbeb86ee783543ed8b01f822f7f8e97bbba3",
+  "KA--12V-sensitivity-thin.json": "1479d057d8b8fc11d9696dbff86a743264675d835f97f98cc5aad87049d9748d",
+  "KA-AGND-legacy-conditional-requirement.json": "20bf40470169db46aa3f2fdf66cf6cf778a8be9627eb05dd05e9784dee950c52",
+  "KA-AGND-nominal-average-faults.json": "f484ae73b07f87a8300fdbcc00937d0beec1471438363d95f4095478d2ba27db",
+  "KA-AGND-nominal-average-pitch1.json": "90a025d47895528c1232362f492893de0fe8a9ef0d8fc2a6d3d18e79040fcf47",
+  "KA-AGND-sensitivity-thin.json": "6f6f3d43a0a407f828e7fa968a3ff8720b486ec478e36108a4c0f91c4e0ec870",
+  "KB-+12V-legacy-conditional-requirement.json": "22efe437fe3e12d00d06f2b036a8b23f315d5810569131817148106d55b49097",
+  "KB-+12V-nominal-average-pitch1.json": "4053bbccc33fd67907abe8792275c65042449a05778955375962985ab1466ab0",
+  "KB-+12V-nominal-average.json": "88eeaf1f9bbfb57c981e26b10264ca686ce0e6353470aaaa41b4da6d63208a9a",
+  "KB-+12V-sensitivity-thin.json": "8f2ecebaf026b262034e9755a929ef615e0020a78838041483f5fdef64e95ea2",
+  "KB-+5V-legacy-conditional-requirement.json": "f4c71e8e5b6f35907158da48e72802ffaaed9320565735347a2ba43e1c026a5f",
+  "KB-+5V-nominal-average-pitch1.json": "b191c34c234e906cbd12624c96a4a19a0047d3b5c0424277dfae97ce6748ba66",
+  "KB-+5V-nominal-average.json": "381df781f9e64df55886edda99c81a5e449922cac9b81089889ed15237b1f72f",
+  "KB-+5V-sensitivity-thin.json": "f81666c9d80632c0e4c6ef4b6dd9ed27ae8fd17f5cf08c7bfd8963e600726648",
+  "KB--12V-legacy-conditional-requirement.json": "a286ae1ecec73f0704728a302e5e2b8e1a3efff53a0cce12404bcfb72c8aa6fe",
+  "KB--12V-nominal-average-pitch1.json": "3ef4f1f282300d53ecedb571e8a719c958478933c8c6f58d6eed20037887c189",
+  "KB--12V-nominal-average.json": "be31a01342f6ba165cf5d342cbfbcfa8ed19cd4169db7e779630ab5e325f12d2",
+  "KB--12V-sensitivity-thin.json": "253ef118ac73b477a708661877253808bc5ceb4a0a4a742abe0d00f1383fd0dd",
+  "KB-AGND-legacy-conditional-requirement.json": "62bd555e7a4bb0e5b04e92e0a3adb981e5ebd19ee7cc860d4acdd856992c3233",
+  "KB-AGND-nominal-average-faults.json": "27707a0a60047c5f173877461e4491dd1481add023d537ac2c9aca35d1740720",
+  "KB-AGND-nominal-average-pitch1.json": "1f7bca512c3ea604b8957912bf04b7bd35d8b7dc5bbfece087a185bda00af56e",
+  "KB-AGND-sensitivity-thin.json": "f5654fa467a91e0949a5306de220afd6ca45f4e57ff32dfa387d040936df8507"
+ },
+ "native_calls": 0,
+ "accepted": false
+}

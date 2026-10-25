@@ -1,0 +1,43 @@
+{
+ "inputs": {
+  "KA-access-t1.json": "ee62315bcffd1aef0cf1aaaa55bbd282d6e035f58f1df9a92ab622ac0818477f",
+  "KA-eval-t1/port-graph.json": "6b10d08bb384360eb052fd85363e377954b2b18d3e07ae27e8ed688cdb9e8045",
+  "KA-eval-t1/port-obligations.json": "842577bbdcca19a1c85f4b5a4be3c86d899707ed3c7658d8a6af145a4d638bdc",
+  "KA-eval-t1/clipped-sheets.json": "01f3b2763f7bc0be3d816d4ff5b1969949df48ecceec037cbbb8331f13d3d6a8"
+ },
+ "methods": {
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/two_face.py": "5a0a3d893eae1631d4bd0d7d24f63d4dcbd4cd51641e737a9035318327c4e409",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/construct_access.py": "8b1ded187add59a8c384f2fd43a71097016e0c7b87040b7a0a3e8d8d1e0dc451"
+ },
+ "command": [
+  "two_face.py",
+  "--use-fed-transitions",
+  "--planes",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KA-eval-t1/clipped-sheets.json",
+  "--source",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KA-access-t1.json",
+  "--graph",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KA-eval-t1/port-graph.json",
+  "--census",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KA-eval-t1/port-obligations.json",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KA-access-t2.json",
+  "--report",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KA-access-t2-report.json"
+ ],
+ "step": "KA-access-t2",
+ "exit_code": 0,
+ "elapsed_seconds": 10.916,
+ "stdout_tail": "{\"board\": \"KA\", \"counts\": {\"NO_TWO_FACE_ROUTE\": 196, \"ROUTED_FED_TRANSITION\": 21}, \"elapsed_seconds\": 10.71, \"peak_KiB\": 1234012}\n",
+ "stderr_tail": "",
+ "peak_rss_KiB": 1234012,
+ "outputs": {
+  "KA-access-t2.json": {
+   "": "b73bc3a7b3b10bab9be357cc41984d515a88e73d8155731ae50db03bf057bffb"
+  },
+  "KA-access-t2-report.json": {
+   "": "de40addbb247262d50dc4cebf293f27fd7c7ec600902e0c2d9ffc1f4279569d6"
+  }
+ },
+ "native_calls": 0
+}

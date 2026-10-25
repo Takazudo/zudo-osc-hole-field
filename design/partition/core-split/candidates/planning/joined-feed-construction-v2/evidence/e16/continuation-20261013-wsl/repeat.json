@@ -1,0 +1,68 @@
+{
+  "commands": [
+    {
+      "command": [
+        "timeout",
+        "180s",
+        "prlimit",
+        "--as=2147483648",
+        "--",
+        "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/materialize_e16.py",
+        "--board",
+        "KA",
+        "--candidate",
+        "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/cand05/KA.kicad_pcb",
+        "--normalized",
+        "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/KA-normalized.json",
+        "--output",
+        "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/repeat-KA"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.645723516936414,
+      "stdout": "{\"accepted\":false,\"board\":\"KA\",\"native_calls\":0,\"output\":\"/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/repeat-KA\",\"records\":[\"t2\"]}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "timeout",
+        "180s",
+        "prlimit",
+        "--as=2147483648",
+        "--",
+        "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/materialize_e16.py",
+        "--board",
+        "KB",
+        "--candidate",
+        "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/cand05/KB.kicad_pcb",
+        "--normalized",
+        "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/KB-normalized.json",
+        "--output",
+        "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/repeat-KB",
+        "--include-kb-p1"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 5.289493486052379,
+      "stdout": "{\"accepted\":false,\"board\":\"KB\",\"native_calls\":0,\"output\":\"/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/repeat-KB\",\"records\":[\"t2\",\"p1\"]}\n",
+      "stderr": ""
+    }
+  ],
+  "byte_equal": {
+    "materialized-KA/KA-t2.kicad_pcb": true,
+    "materialized-KA/KA-t2-materialization.json": true,
+    "materialized-KA/KA-t2.kicad_dru": true,
+    "materialized-KA/KA-t2.kicad_pro": true,
+    "materialized-KA/KA-t2-source.json": true,
+    "materialized-KB/KB-t2-source.json": true,
+    "materialized-KB/KB-p1-materialization.json": true,
+    "materialized-KB/KB-t2.kicad_pcb": true,
+    "materialized-KB/KB-t2.kicad_dru": true,
+    "materialized-KB/KB-p1.kicad_pcb": true,
+    "materialized-KB/KB-t2-materialization.json": true,
+    "materialized-KB/KB-p1.kicad_pro": true,
+    "materialized-KB/KB-t2.kicad_pro": true,
+    "materialized-KB/KB-p1.kicad_dru": true,
+    "materialized-KB/KB-p1-source.json": true
+  }
+}

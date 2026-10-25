@@ -1,0 +1,1 @@
+Independent review PASS: exactly1test2.562s; request/approval/log hashes match, version/ngspice containers admitted with correct membership/caps, exits0, no cleanup errors/survivors, inputs unchanged. KA-t2 request input seals intact; no approval/claim/receipt. Read-only review supplied no execution or admission.

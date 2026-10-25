@@ -1,0 +1,40 @@
+{
+ "inputs": {
+  "KB-access-r1.json": "5926110cc805f63f362304fad105149a5ca2ee57848c5157dbe39b484f86f325",
+  "KB-eval-r1/port-graph.json": "f13c62812c1410eaf15883361b1a4842bfb51a64cbc471d30ce667af81e4805b",
+  "KB-eval-r1/port-obligations.json": "abcbe00eda093b5b1e5f97bb115442154838154733e39b03191b5c34b571fdc8"
+ },
+ "methods": {
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/construct_access.py": "bda057c00790437ffd9029304864a82cbe6345ae844ecdec9ea5e7affc2dbfcd"
+ },
+ "command": [
+  "construct_access.py",
+  "--method",
+  "route",
+  "--source",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-r1.json",
+  "--graph",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-r1/port-graph.json",
+  "--census",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-r1/port-obligations.json",
+  "--output",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-r2.json",
+  "--report",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-r2-report.json"
+ ],
+ "step": "KB-access-r2",
+ "exit_code": 0,
+ "elapsed_seconds": 11.841,
+ "stdout_tail": "{\"board\": \"KB\", \"counts\": {\"NO_ROUTE\": 628, \"ROUTED\": 188}, \"elapsed_seconds\": 11.71, \"peak_KiB\": 303800}\n",
+ "stderr_tail": "",
+ "peak_rss_KiB": 303800,
+ "outputs": {
+  "KB-access-r2.json": {
+   "": "138e1f7517180376ee5c698b162014f50a28ff20b479ac469e13c41cbeb9a712"
+  },
+  "KB-access-r2-report.json": {
+   "": "5aa26ad97d0e8b75dd78dee856c12b1b18764b584d209361e5b5ac83104ffe81"
+  }
+ },
+ "native_calls": 0
+}

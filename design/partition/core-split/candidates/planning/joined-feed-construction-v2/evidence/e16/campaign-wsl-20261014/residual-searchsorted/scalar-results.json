@@ -1,0 +1,60 @@
+{
+  "synthetic_only": true,
+  "peak_rss_KiB": 47896,
+  "results": [
+    {
+      "nodes": 100000,
+      "indptr_dtype": "int32",
+      "index_bytes": 400004,
+      "results": {
+        "python_int": {
+          "seconds": 0.015473367995582521,
+          "queries": 1000,
+          "checksum": 50000401
+        },
+        "dtype_scalar": {
+          "seconds": 0.0017789670964702964,
+          "queries": 1000,
+          "checksum": 50000401
+        },
+        "dtype_array": {
+          "seconds": 0.0016034758882597089,
+          "queries": 1000,
+          "checksum": 50000401
+        },
+        "local_span_python_int": {
+          "seconds": 0.009099533082917333,
+          "queries": 1000,
+          "checksum": 50000401
+        }
+      }
+    },
+    {
+      "nodes": 1800000,
+      "indptr_dtype": "int32",
+      "index_bytes": 7200004,
+      "results": {
+        "python_int": {
+          "seconds": 0.22691018995828927,
+          "queries": 1000,
+          "checksum": 900000400
+        },
+        "dtype_scalar": {
+          "seconds": 0.0016196230426430702,
+          "queries": 1000,
+          "checksum": 900000400
+        },
+        "dtype_array": {
+          "seconds": 0.0014342250069603324,
+          "queries": 1000,
+          "checksum": 900000400
+        },
+        "local_span_python_int": {
+          "seconds": 0.011194231919944286,
+          "queries": 1000,
+          "checksum": 900000400
+        }
+      }
+    }
+  ]
+}

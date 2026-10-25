@@ -1,0 +1,83 @@
+{
+  "source_commit": "587b5e41a312c1e2dcea4c90c95199dd10a4afe1",
+  "tests": 125,
+  "results": {
+    "local-source-guard-tests": {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/kicad",
+        "-p",
+        "test_*.py",
+        "-q"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 2.1080805599922314,
+      "child_peak_rss_KiB": 27984
+    },
+    "local-source-e16-tests": {
+      "command": [
+        "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+        "/tmp/osc-wsl-20261013/targeted_tests.py"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 1.0150943510234356,
+      "child_peak_rss_KiB": 68328
+    },
+    "local-source-circuit": {
+      "command": [
+        "pnpm",
+        "circuit:check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 3.9574706749990582,
+      "child_peak_rss_KiB": 128256
+    },
+    "local-source-check": {
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 4.598627786966972,
+      "child_peak_rss_KiB": 279672
+    },
+    "local-source-build": {
+      "command": [
+        "bash",
+        "/home/takazudo/.codex/scripts/heavy-guard.sh",
+        "--",
+        "pnpm",
+        "build"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 18.161381067009643,
+      "child_peak_rss_KiB": 1087304
+    },
+    "local-source-site": {
+      "command": [
+        "pnpm",
+        "check:site"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 10.059809354948811,
+      "child_peak_rss_KiB": 1087304
+    }
+  },
+  "protected_files_unchanged": 550,
+  "native_calls": 0,
+  "operator_approvals_created": 0,
+  "native_status": "NOT RUN / NOT ADMITTED",
+  "regeneration": "NOT RUN: regen-all contains native phases and canonical-board generation; no native admission.",
+  "aggregate_suite": "NOT RUN: owner excluded repeating aggregate discovery.",
+  "CI": "NOT RUN; no dispatch requested"
+}

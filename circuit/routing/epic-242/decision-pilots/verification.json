@@ -1,0 +1,805 @@
+{
+  "saved_native": {
+    "bindings": {
+      "K1402": {
+        "artifact_id": 11658776367,
+        "dump_member": ".circuit-cache/osc-core-grid-189-compact-refill/dump.json",
+        "dump_sha256": "2dae7737731cb9d6f230e3f61848d01f6939fd7e7e6b56d3ed23f74ea8684807",
+        "file": "k1402.zip",
+        "run_id": 38011194282,
+        "sha256": "1ed58a9cd4c5796654a9e3e5c9b6e1c1129c353f3451e04c990b95032012479f"
+      },
+      "three-A": {
+        "artifact_id": 11698474605,
+        "dump_member": "working-result/before/dump.json",
+        "dump_sha256": "eb41cfd06ff7f8c5562e48cf4b8dd803089eadae6dffe48bf0d578e4b7d0037c",
+        "file": "epic242-three-a-settle-only-38130450410.zip",
+        "run_id": 38130450410,
+        "sha256": "d1f381019e13814b1f6d1b027d501610e7fc640362db8f6d1cfcf4be8ee282cb"
+      },
+      "three-B": {
+        "artifact_id": 11701063059,
+        "dump_member": "working-result/before/dump.json",
+        "dump_sha256": "a2d4db45591c96fe9d8c4d6f13775af1ee11faebf0d4348730cc7523a5c7c525",
+        "file": "epic242-three-b-run38135827447.zip",
+        "run_id": 38135827447,
+        "sha256": "3eb9bfd8aaf2aa011c2bbc41fe969d0145814c70d790d04d68330b2f3a28cbfa"
+      },
+      "three-C": {
+        "artifact_id": 11700659890,
+        "dump_member": "working-result/before/dump.json",
+        "dump_sha256": "9f08daa753c3b672268dfbe2f156bba14e87b279bc3cb4c942a1d0ec451aa130",
+        "file": "epic242-three-c-run38136206699.zip",
+        "run_id": 38136206699,
+        "sha256": "b2973a892b5454d8cc4499ed897b2a9b79067138996ef25889fbe8982e150b0c"
+      },
+      "two-A": {
+        "artifact_id": 11699982799,
+        "dump_member": "working-result/before/dump.json",
+        "dump_sha256": "613a358b340962e2d1fb13cd898fe8a9558edcbf1a5d69cb93b6d2bd7629e97c",
+        "file": "epic242-two-a-600-run38133584276.zip",
+        "run_id": 38133584276,
+        "sha256": "1bdd84bce237cc864db19bf831f44f51425ce2f7e41b1de774c0da1068881b56"
+      },
+      "two-B": {
+        "artifact_id": 11700304065,
+        "dump_member": "working-result/before/dump.json",
+        "dump_sha256": "067ecea68521f3cffcb961df1c6be18975c07cc8b82b6070620a986c0a2e337f",
+        "file": "epic242-two-b-run38135093123.zip",
+        "run_id": 38135093123,
+        "sha256": "a8566c8996b71fbda8b718b5eeb60f56a8c6b52d16eac02b6e4c2b2e3063a164"
+      }
+    },
+    "boards": {
+      "K1402": {
+        "board_sha256": "b9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66",
+        "open_edges": 1402,
+        "pads": 13406
+      },
+      "three-A": {
+        "board_sha256": "a3ca1a40729d34fa9048678778bda792b4c984d5aa2a445b17a33f70aedc15b6",
+        "open_edges": 538,
+        "pads": 3412
+      },
+      "three-B": {
+        "board_sha256": "418bc508a5bb55376633e3e937287ec01daa63dbf6b14e40056907385dd507ae",
+        "open_edges": 558,
+        "pads": 3974
+      },
+      "three-C": {
+        "board_sha256": "64603151de9a07735335918a2228e3e3cf8de1e086f3a12b86032a5176a0a2cd",
+        "open_edges": 1651,
+        "pads": 6418
+      },
+      "two-A": {
+        "board_sha256": "66710513146c22f31595f794d608914fcfb8b61552c82fc5fd680f9ac4b0b978",
+        "open_edges": 903,
+        "pads": 6121
+      },
+      "two-B": {
+        "board_sha256": "b60ba6b20fc2db10cbf83f07c1195f5acc88b4e31da57c023dec6bcc0136f919",
+        "open_edges": 1839,
+        "pads": 7484
+      }
+    },
+    "limitations": [
+      "Connected nets absent from islands: no complete connected-group equality proof.",
+      "Pad/track-seeded islands exclude exhaustive zone-only copper census.",
+      "Shared deficits are separate board domains, not physical cross-board joins."
+    ],
+    "manifest_target_readiness": {
+      "three-A": {
+        "coupled_return": {
+          "K1402": {
+            "net_open_groups": 214,
+            "status": "TARGET_PADS_IN_DISTINCT_OPEN_GROUPS",
+            "target_group_indices": [
+              117,
+              1
+            ]
+          },
+          "net_token": "AGND",
+          "pads": [
+            {
+              "pad": "12",
+              "ref": "U1105",
+              "uuid": "608c587b-7aab-54c1-b46c-3773193ec4c0"
+            },
+            {
+              "pad": "2",
+              "ref": "C1111",
+              "uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1"
+            }
+          ],
+          "source_net": "AGND",
+          "three-A": {
+            "net_open_groups": 46,
+            "status": "TARGET_PADS_IN_DISTINCT_OPEN_GROUPS",
+            "target_group_indices": [
+              24,
+              0
+            ]
+          }
+        },
+        "negative_supply_escape": {
+          "K1402": {
+            "net_open_groups": 81,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              56
+            ]
+          },
+          "net_token": "-12V",
+          "pads": [
+            {
+              "pad": "11",
+              "ref": "U1109",
+              "uuid": "a40db1fe-2473-5035-bc12-87d1d1b0fdea"
+            }
+          ],
+          "source_net": "-12V",
+          "three-A": {
+            "net_open_groups": 122,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              76
+            ]
+          }
+        },
+        "positive_supply_escape": {
+          "K1402": {
+            "net_open_groups": 81,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              56
+            ]
+          },
+          "net_token": "+12V",
+          "pads": [
+            {
+              "pad": "4",
+              "ref": "U1109",
+              "uuid": "2b0c6980-ea70-5b84-92e6-75dafbe673f9"
+            }
+          ],
+          "source_net": "+12V",
+          "three-A": {
+            "net_open_groups": 175,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              108
+            ]
+          }
+        },
+        "sensitive_signal": {
+          "K1402": {
+            "net_open_groups": 0,
+            "status": "NO_RECORDED_OPEN_DEMAND",
+            "target_group_indices": []
+          },
+          "net_token": "X18B799A5334D35AC7DA4",
+          "pads": [
+            {
+              "pad": "11",
+              "ref": "U1105",
+              "uuid": "d7e48140-2eb4-5352-b344-cd122c401282"
+            },
+            {
+              "pad": "1",
+              "ref": "C1111",
+              "uuid": "07c3263b-8e36-529c-ba2f-98ac5f6e32fe"
+            }
+          ],
+          "source_net": "/O1/TIMING_CAP",
+          "three-A": {
+            "net_open_groups": 0,
+            "status": "NO_RECORDED_OPEN_DEMAND",
+            "target_group_indices": []
+          }
+        }
+      },
+      "three-B": {
+        "coupled_return": {
+          "K1402": {
+            "net_open_groups": 214,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              1
+            ]
+          },
+          "net_token": "AGND",
+          "pads": [
+            {
+              "pad": "2",
+              "ref": "C2112",
+              "uuid": "146a9e0a-3099-5c98-910e-c30354671088"
+            }
+          ],
+          "source_net": "AGND",
+          "three-B": {
+            "net_open_groups": 44,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              0
+            ]
+          }
+        },
+        "negative_supply_escape": {
+          "K1402": {
+            "net_open_groups": 81,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              0
+            ]
+          },
+          "net_token": "-12V",
+          "pads": [
+            {
+              "pad": "6",
+              "ref": "U2106",
+              "uuid": "ae89d87d-cb93-58ca-9bec-29aeb451a31a"
+            }
+          ],
+          "source_net": "-12V",
+          "three-B": {
+            "net_open_groups": 152,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              30
+            ]
+          }
+        },
+        "positive_supply_escape": {
+          "K1402": {
+            "net_open_groups": 81,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              0
+            ]
+          },
+          "net_token": "+12V",
+          "pads": [
+            {
+              "pad": "11",
+              "ref": "U2106",
+              "uuid": "d9d6e2d7-cdbf-589b-b53d-c39c18241cbd"
+            }
+          ],
+          "source_net": "+12V",
+          "three-B": {
+            "net_open_groups": 184,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              38
+            ]
+          }
+        },
+        "sensitive_signal": {
+          "K1402": {
+            "net_open_groups": 0,
+            "status": "NO_RECORDED_OPEN_DEMAND",
+            "target_group_indices": []
+          },
+          "net_token": "XD7960B3C1A6276C15CB0",
+          "pads": [
+            {
+              "pad": "5",
+              "ref": "U2106",
+              "uuid": "1f3ccb54-c0a6-52af-9cf6-4190fc325356"
+            },
+            {
+              "pad": "1",
+              "ref": "C2112",
+              "uuid": "fdfe0bf8-3f40-5713-b59c-7336d862593c"
+            }
+          ],
+          "source_net": "/F1/BP_INT",
+          "three-B": {
+            "net_open_groups": 0,
+            "status": "NO_RECORDED_OPEN_DEMAND",
+            "target_group_indices": []
+          }
+        }
+      },
+      "three-C": {
+        "coupled_return": {
+          "K1402": {
+            "net_open_groups": 214,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              1
+            ]
+          },
+          "net_token": "AGND",
+          "pads": [
+            {
+              "pad": "2",
+              "ref": "C4113",
+              "uuid": "dbcf6510-e511-5d59-975a-d78fd84dcb52"
+            }
+          ],
+          "source_net": "AGND",
+          "three-C": {
+            "net_open_groups": 99,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              55
+            ]
+          }
+        },
+        "negative_supply_escape": {
+          "K1402": {
+            "net_open_groups": 81,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              78
+            ]
+          },
+          "net_token": "-12V",
+          "pads": [
+            {
+              "pad": "4",
+              "ref": "U4106",
+              "uuid": "c50152ef-9898-56a3-8c4f-6dd07ecbef88"
+            }
+          ],
+          "source_net": "-12V",
+          "three-C": {
+            "net_open_groups": 138,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              134
+            ]
+          }
+        },
+        "positive_supply_escape": {
+          "K1402": {
+            "net_open_groups": 81,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              78
+            ]
+          },
+          "net_token": "+12V",
+          "pads": [
+            {
+              "pad": "13",
+              "ref": "U4106",
+              "uuid": "f5efe161-3fa0-5195-afc7-5d03193702a9"
+            }
+          ],
+          "source_net": "+12V",
+          "three-C": {
+            "net_open_groups": 222,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              216
+            ]
+          }
+        },
+        "sensitive_signal": {
+          "K1402": {
+            "net_open_groups": 2,
+            "status": "TARGET_PADS_IN_DISTINCT_OPEN_GROUPS",
+            "target_group_indices": [
+              1,
+              0
+            ]
+          },
+          "net_token": "XA83E8C2B123ED263B603",
+          "pads": [
+            {
+              "pad": "10",
+              "ref": "U4141",
+              "uuid": "53e9f0e8-70bc-50b8-920e-94b028a3fc2a"
+            },
+            {
+              "pad": "1",
+              "ref": "C4113",
+              "uuid": "5486ea67-9559-5bf6-868f-f2010af434b0"
+            }
+          ],
+          "source_net": "/E1/ENV_STORAGE",
+          "three-C": {
+            "net_open_groups": 2,
+            "status": "TARGET_PADS_IN_DISTINCT_OPEN_GROUPS",
+            "target_group_indices": [
+              1,
+              0
+            ]
+          }
+        }
+      },
+      "two-A": {
+        "coupled_return": {
+          "K1402": {
+            "net_open_groups": 214,
+            "status": "TARGET_PADS_IN_DISTINCT_OPEN_GROUPS",
+            "target_group_indices": [
+              117,
+              1
+            ]
+          },
+          "net_token": "AGND",
+          "pads": [
+            {
+              "pad": "12",
+              "ref": "U1105",
+              "uuid": "608c587b-7aab-54c1-b46c-3773193ec4c0"
+            },
+            {
+              "pad": "2",
+              "ref": "C1111",
+              "uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1"
+            }
+          ],
+          "source_net": "AGND",
+          "two-A": {
+            "net_open_groups": 75,
+            "status": "TARGET_PADS_IN_DISTINCT_OPEN_GROUPS",
+            "target_group_indices": [
+              39,
+              0
+            ]
+          }
+        },
+        "negative_supply_escape": {
+          "K1402": {
+            "net_open_groups": 81,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              56
+            ]
+          },
+          "net_token": "-12V",
+          "pads": [
+            {
+              "pad": "11",
+              "ref": "U1109",
+              "uuid": "a40db1fe-2473-5035-bc12-87d1d1b0fdea"
+            }
+          ],
+          "source_net": "-12V",
+          "two-A": {
+            "net_open_groups": 220,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              147
+            ]
+          }
+        },
+        "positive_supply_escape": {
+          "K1402": {
+            "net_open_groups": 81,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              56
+            ]
+          },
+          "net_token": "+12V",
+          "pads": [
+            {
+              "pad": "4",
+              "ref": "U1109",
+              "uuid": "2b0c6980-ea70-5b84-92e6-75dafbe673f9"
+            }
+          ],
+          "source_net": "+12V",
+          "two-A": {
+            "net_open_groups": 289,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              184
+            ]
+          }
+        },
+        "sensitive_signal": {
+          "K1402": {
+            "net_open_groups": 0,
+            "status": "NO_RECORDED_OPEN_DEMAND",
+            "target_group_indices": []
+          },
+          "net_token": "X18B799A5334D35AC7DA4",
+          "pads": [
+            {
+              "pad": "11",
+              "ref": "U1105",
+              "uuid": "d7e48140-2eb4-5352-b344-cd122c401282"
+            },
+            {
+              "pad": "1",
+              "ref": "C1111",
+              "uuid": "07c3263b-8e36-529c-ba2f-98ac5f6e32fe"
+            }
+          ],
+          "source_net": "/O1/TIMING_CAP",
+          "two-A": {
+            "net_open_groups": 0,
+            "status": "NO_RECORDED_OPEN_DEMAND",
+            "target_group_indices": []
+          }
+        }
+      },
+      "two-B": {
+        "coupled_return": {
+          "K1402": {
+            "net_open_groups": 214,
+            "status": "TARGET_PADS_SAME_GROUP",
+            "target_group_indices": [
+              1,
+              1
+            ]
+          },
+          "net_token": "AGND",
+          "pads": [
+            {
+              "pad": "10",
+              "ref": "U115",
+              "uuid": "953ca02d-974c-598e-8d88-9d75febb1673"
+            },
+            {
+              "pad": "2",
+              "ref": "C105",
+              "uuid": "d36ed99b-cb89-54d6-a4df-1087dc8d9213"
+            }
+          ],
+          "source_net": "AGND",
+          "two-B": {
+            "net_open_groups": 105,
+            "status": "TARGET_PADS_IN_DISTINCT_OPEN_GROUPS",
+            "target_group_indices": [
+              59,
+              0
+            ]
+          }
+        },
+        "negative_supply_escape": {
+          "K1402": {
+            "net_open_groups": 81,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              0
+            ]
+          },
+          "net_token": "-12V",
+          "pads": [
+            {
+              "pad": "3",
+              "ref": "U115",
+              "uuid": "ce3deeba-960b-5e9f-ae58-6a76bbe1063b"
+            }
+          ],
+          "source_net": "-12V",
+          "two-B": {
+            "net_open_groups": 192,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              184
+            ]
+          }
+        },
+        "positive_supply_escape": {
+          "K1402": {
+            "net_open_groups": 81,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              0
+            ]
+          },
+          "net_token": "+12V",
+          "pads": [
+            {
+              "pad": "12",
+              "ref": "U115",
+              "uuid": "4842fd7b-866a-5076-8cac-3e4e0bb2115f"
+            }
+          ],
+          "source_net": "+12V",
+          "two-B": {
+            "net_open_groups": 292,
+            "status": "OPEN_NET_REQUIRES_REVIEWED_REMOTE_LANDING",
+            "target_group_indices": [
+              279
+            ]
+          }
+        },
+        "sensitive_signal": {
+          "K1402": {
+            "net_open_groups": 0,
+            "status": "NO_RECORDED_OPEN_DEMAND",
+            "target_group_indices": []
+          },
+          "net_token": "X1404078EE5E4101AFDDC",
+          "pads": [
+            {
+              "pad": "8",
+              "ref": "U115",
+              "uuid": "ffd3cb46-91c3-573d-8383-06878f8c26c2"
+            },
+            {
+              "pad": "1",
+              "ref": "C105",
+              "uuid": "119368fa-a533-530d-abe8-b47edd1fe915"
+            }
+          ],
+          "source_net": "/H1/HOLD_CAP",
+          "two-B": {
+            "net_open_groups": 0,
+            "status": "NO_RECORDED_OPEN_DEMAND",
+            "target_group_indices": []
+          }
+        }
+      }
+    },
+    "scope": "Saved settled dump diagnostic; not routing rank, full warnings or migration acceptance",
+    "sets": {
+      "three": {
+        "duplicated_blank_net_pad_uuids": 199,
+        "exclusive_deficit": 1029,
+        "exclusive_nets": 3553,
+        "exclusive_open_groups_equal": true,
+        "raw_pad_records": 13804,
+        "shared_domain_deficits": {
+          "+12V": {
+            "K1402": 80,
+            "three-A": 174,
+            "three-B": 183,
+            "three-C": 221
+          },
+          "+5V": {
+            "K1402": 0,
+            "three-A": 54,
+            "three-B": 0,
+            "three-C": 491
+          },
+          "-12V": {
+            "K1402": 80,
+            "three-A": 121,
+            "three-B": 151,
+            "three-C": 137
+          },
+          "AGND": {
+            "K1402": 213,
+            "three-A": 45,
+            "three-B": 43,
+            "three-C": 98
+          }
+        },
+        "unique_pads": 13406
+      },
+      "two": {
+        "duplicated_blank_net_pad_uuids": 199,
+        "exclusive_deficit": 1029,
+        "exclusive_nets": 3553,
+        "exclusive_open_groups_equal": true,
+        "raw_pad_records": 13605,
+        "shared_domain_deficits": {
+          "+12V": {
+            "K1402": 80,
+            "two-A": 288,
+            "two-B": 291
+          },
+          "+5V": {
+            "K1402": 0,
+            "two-A": 37,
+            "two-B": 509
+          },
+          "-12V": {
+            "K1402": 80,
+            "two-A": 219,
+            "two-B": 191
+          },
+          "AGND": {
+            "K1402": 213,
+            "two-A": 74,
+            "two-B": 104
+          }
+        },
+        "unique_pads": 13406
+      }
+    }
+  },
+  "source": {
+    "endpoints": 390,
+    "harnesses": 195,
+    "locked_files": 22,
+    "options": {
+      "three": {
+        "boards": {
+          "three-A": {
+            "counts": {
+              "dnp": 8,
+              "electrical_footprints": 995,
+              "fitted": 911,
+              "headers": 58,
+              "load_lands": 18,
+              "mechanical_footprints": 199,
+              "source_parts": 919,
+              "total_native_footprints": 1194,
+              "trimmers": 31
+            },
+            "courtyard_sum_mm2": 10562.668
+          },
+          "three-B": {
+            "counts": {
+              "dnp": 0,
+              "electrical_footprints": 1204,
+              "fitted": 1134,
+              "headers": 70,
+              "load_lands": 0,
+              "mechanical_footprints": 199,
+              "source_parts": 1134,
+              "total_native_footprints": 1403,
+              "trimmers": 33
+            },
+            "courtyard_sum_mm2": 13306.076
+          },
+          "three-C": {
+            "counts": {
+              "dnp": 0,
+              "electrical_footprints": 1395,
+              "fitted": 1332,
+              "headers": 63,
+              "load_lands": 0,
+              "mechanical_footprints": 199,
+              "source_parts": 1332,
+              "total_native_footprints": 1594,
+              "trimmers": 36
+            },
+            "courtyard_sum_mm2": 24356.0484
+          }
+        },
+        "shared_nets": [
+          "+12V",
+          "+5V",
+          "-12V",
+          "AGND"
+        ],
+        "source_parts": 3385,
+        "trimmers": 100
+      },
+      "two": {
+        "boards": {
+          "two-A": {
+            "counts": {
+              "dnp": 0,
+              "electrical_footprints": 1919,
+              "fitted": 1795,
+              "headers": 106,
+              "load_lands": 18,
+              "mechanical_footprints": 199,
+              "source_parts": 1795,
+              "total_native_footprints": 2118,
+              "trimmers": 64
+            },
+            "courtyard_sum_mm2": 20271.7884
+          },
+          "two-B": {
+            "counts": {
+              "dnp": 8,
+              "electrical_footprints": 1675,
+              "fitted": 1582,
+              "headers": 85,
+              "load_lands": 0,
+              "mechanical_footprints": 199,
+              "source_parts": 1590,
+              "total_native_footprints": 1874,
+              "trimmers": 36
+            },
+            "courtyard_sum_mm2": 27953.004
+          }
+        },
+        "shared_nets": [
+          "+12V",
+          "+5V",
+          "-12V",
+          "AGND"
+        ],
+        "source_parts": 3385,
+        "trimmers": 100
+      }
+    },
+    "panel_records": 438,
+    "scope": "SOURCE JOINS ONLY; no native/physical acceptance"
+  }
+}

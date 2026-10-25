@@ -1,0 +1,20 @@
+"""Synthetic index-array timing only; no production data or source edits."""
+import resource,time,json
+import numpy as np
+resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,2*1024**3))
+rows=[]
+for n in (100000,1800000):
+ p=np.arange(n+1,dtype=np.int32)*5
+ queries=np.linspace(0,n*5-1,1000,dtype=np.int64)
+ results={}
+ for name,fn in [
+  ('python_int',lambda q:np.searchsorted(p,int(q),side='right')),
+  ('dtype_scalar',lambda q:np.searchsorted(p,p.dtype.type(q),side='right')),
+  ('dtype_array',lambda q:np.searchsorted(p,np.asarray(q,dtype=p.dtype),side='right')),
+  ('local_span_python_int',lambda q:np.searchsorted(p[max(0,int(q)//5-32768):min(n+1,int(q)//5+32768)],int(q),side='right')+max(0,int(q)//5-32768)),
+ ]:
+  start=time.perf_counter();values=[int(fn(q)) for q in queries];elapsed=time.perf_counter()-start
+  results[name]={'seconds':elapsed,'queries':len(queries),'checksum':sum(values)}
+ assert len({x['checksum'] for x in results.values()})==1
+ rows.append({'nodes':n,'indptr_dtype':str(p.dtype),'index_bytes':p.nbytes,'results':results})
+print(json.dumps({'synthetic_only':True,'peak_rss_KiB':resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,'results':rows},indent=2))

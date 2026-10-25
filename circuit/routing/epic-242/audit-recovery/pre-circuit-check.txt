@@ -1,0 +1,34 @@
+Scope: all 2 workspace projects
+? Verifying lockfile against supply-chain policies (150 entries)...
+✓ Lockfile passes supply-chain policies (150 entries in 6ms)
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +120
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+   ╭──────────────────────────────────────────╮
+   │                                          │
+   │   Update available! 11.19.0 → 12.11.2.   │
+   │   Changelog: https://pnpm.io/v/12.11.2   │
+   │     To update, run: pnpm add -g pnpm     │
+   │                                          │
+   ╰──────────────────────────────────────────╯
+
+Packages are copied from the content-addressable store to the virtual store.
+  Content-addressable store is at: /home/agent/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 120, reused 0, downloaded 3, added 3
+Progress: resolved 120, reused 0, downloaded 50, added 32
+Progress: resolved 120, reused 0, downloaded 119, added 119
+Progress: resolved 120, reused 0, downloaded 120, added 119
+Progress: resolved 120, reused 0, downloaded 120, added 120, done
+.../esbuild@0.28.2/node_modules/esbuild postinstall$ node install.js
+.../esbuild@0.28.2/node_modules/esbuild postinstall: Done
+
+devDependencies:
++ @takazudo/zudo-circuit-doc 0.1.0
+
+Done in 6s using pnpm v11.19.0
+$ zudo-circuit-doc validate
+SCOPE: inventory provider=manual; schematic/placement binding not performed (68 lines, 0 declared placements unverified); pin-asset check performed
+PASS: component-spec contract; 68 lines; offline=True; refreshed=none

@@ -1,0 +1,28 @@
+{
+ "step": "clip",
+ "input_sha256": {
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-base/normalized-caps.json": "97d2a44272d4308fc5d1f8de6da21480b3cd1479a2953b65a0e0715cbe8e7835",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py": "6f3df61dd649729b3e58796c067cc9924dc3d776c645592c62e5f6ab3ac5c235",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json": "f2783e9a0a720e431a00512e9017b55c236e7f31e5a579bbe00e6ee442e00eea"
+ },
+ "command": [
+  "timeout",
+  "180s",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py",
+  "--filtered-board",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-base/normalized-caps.json",
+  "--design",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+  "--clip-only",
+  "--output",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-base/clipped-sheets.json"
+ ],
+ "exit_code": 0,
+ "elapsed_seconds": 46.16758868301986,
+ "stdout": "{\"board\": \"KA\", \"report\": {\"AGND\": {\"layer\": \"In1.Cu\", \"cut_count\": 8825, \"pieces\": 6, \"area_mm2\": 79689.694349, \"largest_mm2\": 79689.006579}, \"+5V\": {\"layer\": \"In2.Cu\", \"cut_count\": 36221, \"pieces\": 1285, \"area_mm2\": 69439.408341, \"largest_mm2\": 59634.248677}, \"-12V\": {\"layer\": \"In3.Cu\", \"cut_count\": 21927, \"pieces\": 520, \"area_mm2\": 73960.683702, \"largest_mm2\": 71780.583992}, \"+12V\": {\"layer\": \"In4.Cu\", \"cut_count\": 8935, \"pieces\": 6, \"area_mm2\": 79641.820954, \"largest_mm2\": 79641.133184}}, \"elapsed_seconds\": 45.81, \"peak_KiB\": 1144436}\n",
+ "stderr": "",
+ "output_sha256": "8557e73df68e3d1a8e04e8a18722c691ff10237e58d100824de37414b0c2171e",
+ "inputs_before_after_equal": true,
+ "native_calls": 0
+}

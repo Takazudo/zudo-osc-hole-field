@@ -1,0 +1,30 @@
+{
+  "step": "census",
+  "input_sha256": {
+    "/tmp/feed-v2-KB-evaluation-v15/normalized-caps.json": "a59a10845d55e98f2df325061c25379fa19c43848ae1145f1cdcd30967f610da",
+    "/tmp/feed-v2-KB-evaluation-v15/clipped-sheets.json": "fadd97519f13c99d9e69b9a0d98da696da9939229225c425f097e3d4b64dfbbe",
+    "/tmp/feed-v2-KB-evaluation-v15/port-graph.json": "9e21776478dfa1220b128a36cb12396f7df67f920f47c7926d44740d9323b560",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py": "c1aeeb5be28156448365fc78c03e986ef6402602ebfdaa03f2123d0411236375"
+  },
+  "command": [
+    "timeout",
+    "180s",
+    "/tmp/osc-arch-source-venv/bin/python",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py",
+    "--board",
+    "/tmp/feed-v2-KB-evaluation-v15/normalized-caps.json",
+    "--planes",
+    "/tmp/feed-v2-KB-evaluation-v15/clipped-sheets.json",
+    "--graph",
+    "/tmp/feed-v2-KB-evaluation-v15/port-graph.json",
+    "--output",
+    "/tmp/feed-v2-KB-evaluation-v15/port-obligations.json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 2.766781660999186,
+  "stdout": "{\"board\": \"KB\", \"physical_pad_count\": 2281, \"counts_by_net\": {\"+5V\": 169, \"AGND\": 32, \"+12V\": 5, \"-12V\": 11}, \"direct_loads\": 69, \"supplemental\": 148}\n",
+  "stderr": "",
+  "output_sha256": "868cd812fb6435289a71fd2e0b26f7b8665db88550759556941de1967372b582",
+  "inputs_before_after_equal": true,
+  "native_calls": 0
+}

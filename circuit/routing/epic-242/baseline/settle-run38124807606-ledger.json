@@ -1,0 +1,103 @@
+{
+  "run_id": 38124807606,
+  "job_id": 114426857923,
+  "run_url": "https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38124807606",
+  "source_sha": "153e72c3047f3e65c08c762b31558d1652eb6ca2",
+  "admission_id": "epic242-three-a-settle-01",
+  "dispatch_attempts": 1,
+  "pre_dispatch_remote_sha_exact": true,
+  "pre_dispatch_running": [],
+  "pre_dispatch_queued": [],
+  "other_seven_jobs": "SKIPPED",
+  "terminal_conclusion": "failure",
+  "native_status": "STARTED, THEN FAIL / NOT ACCEPTED; NO SETTLED RECEIPT",
+  "reason": "Command '['docker', 'inspect', 'ecb8f97b42d3']' returned non-zero exit status 1.",
+  "reason_interpretation": "Docker inspect failed during container membership observation. Vanished --rm container is a possible lifecycle race; exact Docker stderr/cause is not retained, so not proven.",
+  "artifact": {
+    "id": 11695998875,
+    "node_id": "MDg6QXJ0aWZhY3QxMTY5NTk5ODg3NQ==",
+    "name": "epic242-three-a-settle-only",
+    "size_in_bytes": 19298394,
+    "url": "https://api.github.com/repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11695998875",
+    "archive_download_url": "https://api.github.com/repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11695998875/zip",
+    "expired": false,
+    "digest": "sha256:c21dbf55a9355cf79b7503edd7ff80bab53cdbd08212dd19ff33c090e65c13e7",
+    "created_at": "2026-10-11T08:29:11Z",
+    "updated_at": "2026-10-11T08:29:11Z",
+    "expires_at": "2026-10-18T08:29:08Z",
+    "workflow_run": {
+      "id": 38124807606,
+      "repository_id": 1391226919,
+      "head_repository_id": 1391226919,
+      "head_branch": "integration/epic-242-core-routing",
+      "head_sha": "153e72c3047f3e65c08c762b31558d1652eb6ca2"
+    }
+  },
+  "archive_sha256_verified": "c21dbf55a9355cf79b7503edd7ff80bab53cdbd08212dd19ff33c090e65c13e7",
+  "archive_bytes_verified": 19298394,
+  "archive_crc": "PASS",
+  "archive_transport": "Authenticated supported GitHub artifact connector reusable file reference materialized locally; CLI metadata/logs succeeded, direct CLI archive redirect returned403; no credential changes",
+  "snapshot": {
+    "manifest_entries": 293,
+    "full_hash_bound_entries_including_manifest": 294,
+    "portable_seals": 291,
+    "all_hashes_and_membership_verified": "PASS",
+    "runner_snapshot_unchanged": true,
+    "original_before_pcb_sha256": "4d8e238d5d504d55a0f5defe19671d7825f3a356a56ab143e38dd9c918110819",
+    "original_manifest_sha256": "80c4526d625434fe6a61db77dad1b6e9e46983c1fc7fff14d3cadf315985e23b"
+  },
+  "image_preparation": {
+    "status": "PASS",
+    "pinned_repo_digest_authenticated": [
+      "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec"
+    ],
+    "pull_client_exit": 0,
+    "sample_count": 108,
+    "last_sample_seconds": 24.624059568999996,
+    "max_sampled_backend_bytes": 3121291264,
+    "min_sampled_host_free_bytes": 15349702656,
+    "existing_backend_caps": {
+      "/sys/fs/cgroup/system.slice/docker.service": "max",
+      "/sys/fs/cgroup/system.slice/containerd.service": "max"
+    },
+    "scope": "Sampled preparation policy, not kernel-enforced6/12GiB native bounds; no daemon configuration changes"
+  },
+  "native_observations": {
+    "sample_count": 85,
+    "last_sample_seconds": 87.38562373399999,
+    "max_sampled_worker_bytes": 1163603968,
+    "min_sampled_host_free_bytes": 14568538112,
+    "observed_running_container_memberships": [
+      "69a8877fd40a",
+      "820e2b5d67be",
+      "968b6b2f8697",
+      "ecb8f97b42d3"
+    ],
+    "sampled_oom_events": 0,
+    "sampled_oom_kill_events": 0,
+    "kernel_peak": "NOT RETAINED: failure path has no peak field",
+    "deadline": "300seconds admitted; stopped earlier on inspect failure"
+  },
+  "cleanup": {
+    "cleanup_failures_field_present": false,
+    "watchdog_receipt_present": false,
+    "source_path": "Reviewed guard cleanup/final unit-state checks ran in finally; no cleanup failure recorded",
+    "explicit_final_owned_state_snapshot": "NOT RETAINED; no separately authenticated final unit/container state inventory in artifact. Do not claim such proof."
+  },
+  "partial_result": {
+    "first_refill_logged_open_edges": 538,
+    "raw_drc_unconnected_items": 499,
+    "raw_drc_violations": 800,
+    "raw_drc_error_severity_count": 0,
+    "raw_drc_warning_severity_count": 800,
+    "raw_drc_schematic_parity_count": 0,
+    "dump_open_edges": 538,
+    "dump_board_sha256": "a3ca1a40729d34fa9048678778bda792b4c984d5aa2a445b17a33f70aedc15b6",
+    "retained_before_pcb_sha256": "a3ca1a40729d34fa9048678778bda792b4c984d5aa2a445b17a33f70aedc15b6",
+    "settled_receipt": "MISSING",
+    "scope": "Partial refill only; raw DRC may be capped,800warning entries are not uncapped warning identities. Not settled/fresh/electrical acceptance or routing improvement."
+  },
+  "independent_evidence_review": "PASS for authentication and negative interpretation: separate reviewer verified archive size/SHA/CRC,601 entries,294 snapshot hashes,293manifest hashes, source/admission/hook identities, preparation RepoDigest, failure and missing settled receipt; final owned-state snapshot and authoritative peak remain unretained.",
+  "native_retry": "NOT AUTHORIZED / NOT DISPATCHED",
+  "canonical_boards": "UNTOUCHED;117/129/1402 remain accepted baseline"
+}

@@ -1,0 +1,9 @@
+import json,tracemalloc
+import numpy as np
+p=np.arange(1800001,dtype=np.int32)*5
+rows=[]
+for name,q in [('python_int',4000001),('dtype_scalar',np.int32(4000001))]:
+ tracemalloc.start();before=tracemalloc.get_traced_memory()[0];v=np.searchsorted(p,q,side='right');current,peak=tracemalloc.get_traced_memory();tracemalloc.stop()
+ rows.append({'query':name,'index':int(v),'peak_traced_allocated_bytes':peak-before,'remaining_traced_bytes':current-before})
+assert rows[0]['index']==rows[1]['index']
+print(json.dumps({'indptr_count':len(p),'indptr_dtype':str(p.dtype),'float64_or_int64_full_array_bytes':len(p)*8,'synthetic_only':True,'measurements':rows},indent=2))

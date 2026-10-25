@@ -1,0 +1,41 @@
+{
+  "status": "PASS_GEOMETRY_ONLY_CHECKPOINT_PUBLICATION",
+  "hashes": {
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/README.md": "3944d6d2a1b87d02a100e24df357b9e9d80f3896612a612d6915e51d49eb1e1c",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/verify_geometry.py": "09f6c923658f2b8b04f555a1af1b2a06a89474d3e928b703e732f91b6622047c",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/run_sealed_geometry.py": "fcb3d47abdf1ffcd443fbd848e89ceede4a50870860f93cea287ce016a4cfb35",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/check_joints.py": "a02801c7ee9a24b5b731059a524da77b1473c3b7de1001e93b21cfba7c266a3d",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/sweep-05.json": "e300f8767721544e4d30d1ec90938eda77f61479e25434e67a65709fd75de742",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/sweep-05.receipt.json": "c3a5844afc0b5a0b65339d7a9203597009cfb83da6fbe5fbe4331a3cd443c1ca",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/solids-05.json": "171ce2a2606fb0d61d0b724cc3417b2ca0cc7cc5d759132ed9fe1c75144be5c7",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/solids-05.receipt.json": "01c104c1ffe1af1feb71045067c17e6493e0362fa9e39d70ca50617f855e3428",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/joints-05.json": "1740c980db625c634ec1908f220a1ce8a0f815985443b6003d2ad8285c6acb6f"
+  },
+  "verification": "Lightweight verify_geometry.py independently PASS; all actual fastener IDs unique132. No geometry rerun.",
+  "aggregate": {
+    "status": "JOINED_SOURCE_GEOMETRY_SCREEN_PASS_CONDITIONAL",
+    "input_receipt_sha256": "a27a676aec18d09868c10e93ce70436f74782b9abafb23b68d3e5bf946df48b4",
+    "free_curve_carrier_lower_mm": 0.6041496989686299,
+    "end_carrier_lower_mm": 0.6788450135872146,
+    "rigid_wall_residual_mm": 1.65,
+    "solid_count": 204,
+    "contact_supports": 228,
+    "source_obstacles": 4669,
+    "trimmer_columns": 100,
+    "native_calls": 0,
+    "electrical_acceptance": false,
+    "physical_qualification": false,
+    "adopted": false,
+    "qualification": "Engineering floating bounds with explicit source/process/datum/C0-C1-C2 hypotheses. Joint contact is not strength; tool reservations are not baseline physical access qualification."
+  },
+  "resolved": [
+    "Sweep/solid reports authenticated by before/after method and candidate seals from fresh bounded execution.",
+    "Joint helper/receipt/support hashes authenticated.",
+    "Unexpected failure statuses rejected; actual full132 checks all allowed."
+  ],
+  "limits": [
+    "Source numerical geometry screen only; electrical stage remains active.",
+    "No physical qualification/native/adoption/full-stage acceptance."
+  ],
+  "native_calls": 0
+}

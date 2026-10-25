@@ -1,0 +1,24 @@
+{
+  "step": "caps",
+  "input_sha256": {
+    "/tmp/feed-v2-KB-filtered-v15-supp-532.json": "eecae3db28754d394de7198434fb4eb8e609fb7f34959c50445509677d7fe492",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7"
+  },
+  "command": [
+    "timeout",
+    "180s",
+    "/tmp/osc-arch-source-venv/bin/python",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py",
+    "--board",
+    "/tmp/feed-v2-KB-filtered-v15-supp-532.json",
+    "--output",
+    "/tmp/feed-v2-KB-evaluation-v15/normalized-caps.json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 2.395482333000473,
+  "stdout": "{\"board\": \"KB\", \"caps\": 4744, \"barrels\": 2372}\n",
+  "stderr": "",
+  "output_sha256": "a59a10845d55e98f2df325061c25379fa19c43848ae1145f1cdcd30967f610da",
+  "inputs_before_after_equal": true,
+  "native_calls": 0
+}

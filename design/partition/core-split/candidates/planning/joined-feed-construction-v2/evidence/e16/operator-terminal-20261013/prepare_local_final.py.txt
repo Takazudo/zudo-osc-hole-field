@@ -1,0 +1,44 @@
+"""Source-only preparation; never invokes approve or execute."""
+from pathlib import Path
+import hashlib,json,subprocess,sys,uuid,os
+root=Path.cwd();f=root/'design/partition/core-split/candidates/planning/joined-feed-construction-v2'
+r=Path('/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission')
+head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+assert not subprocess.check_output(['git','status','--porcelain']).strip()
+run_id=uuid.uuid4().hex
+out=Path('.circuit-cache')/('e16-local-packet-'+head[:7]+'-'+run_id[:8]);out.mkdir()
+stage=Path('.circuit-cache')/('e16-native-local-'+head[:7]+'-'+run_id[:8])
+cmd=['/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python',str(f/'native_descriptor.py'),
+     '--materialized',str(r/'materialized-KA'),'--materialized',str(r/'materialized-KB')]
+for target in ('KA-t2','KB-t2','KB-p1'):cmd+=['--graph',f'{target}={r}/{target}-eval/port-graph.json']
+cmd+=['--stage',str(stage),'--output',str(out/'native-descriptor.json'),'--run-attempt','2','--local-run-id',run_id,'--interactive-auth']
+commands=[cmd];subprocess.run(cmd,check=True)
+for kind,target in [('startup-success','startup-success'),('startup-failure','startup-failure'),('oracle','python')]:
+ cmd=['python3','scripts/kicad/local_native_admission.py','prepare','--kind',kind,'--target',target,
+      '--run-id',run_id,'--attempt','2','--interactive-auth','--output',str(out/(kind+'.json')),'--evidence',str(out/(kind+'-guard.json'))]
+ commands.append(cmd);subprocess.run(cmd,check=True)
+paths=[out/(kind+'.json') for kind in ('startup-success','startup-failure','oracle')]+[stage/target/'local-request.json' for target in ('KA-t2','KB-t2','KB-p1')]
+index={'source_sha':head,'local_run_id':run_id,'attempt':2,'native_calls':0,'approval':'NOT ADMITTED; no operator receipt created',
+ 'commands':commands,'requests':{str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in paths},
+ 'descriptor':str(out/'native-descriptor.json'),'descriptor_sha256':hashlib.sha256((out/'native-descriptor.json').read_bytes()).hexdigest()}
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+control_command=['python3','scripts/kicad/qualify_resource_guard.py',
+ '--admission-id','local-control-'+run_id+'-2','--sha',head,'--hook-sha256',sha('scripts/kicad/run.sh'),
+ '--evidence-directory',str((out/'harmless-controls').resolve())]
+control={'status':'PREPARED; NOT ADMITTED; NOT EXECUTED','source_sha':head,'checkout':str(root),'uid':os.getuid(),
+ 'local_run_id':run_id,'attempt':2,'authentication':'operator-pty','workload_command':control_command,
+ 'evidence_directory':str(out/'harmless-controls'),'driver_log':str(out/'harmless-controls-driver.log'),
+ 'heavy_guard_environment':{k:v for k,v in os.environ.items() if k.startswith('HEAVY_GUARD_') and k!='HEAVY_GUARD_HELD'},
+ 'scope':'Existing single-worker harmless whole-control qualifier: static local fixture import, smoke, timeout, frontend-death, watchdog-death, owned cleanup. No KiCad, ngspice, board fill or numerical solve.',
+ 'requirements':['Separate parent/operator approval of this digest and one global slot reservation','Operator-only sudo authentication inside shared-guard PTY; noninteractive refresh during workload','Existing guard resource limits unchanged'],
+ 'method_sha256':{p:sha(p) for p in ['scripts/kicad/operator_terminal.py','scripts/kicad/local_native_admission.py','scripts/kicad/qualify_resource_guard.py','scripts/kicad/run_resource_fixture.py','scripts/kicad/fixtures/resource_guard_fixture.c','scripts/kicad/native_resource_guard.py','scripts/kicad/run.sh','scripts/kicad/pin.env','/home/takazudo/.codex/scripts/heavy-guard.sh']}}
+(out/'harmless-control-request.json').write_text(json.dumps(control,indent=2)+'\n')
+index['harmless_control_request']={'path':str(out/'harmless-control-request.json'),'sha256':sha(out/'harmless-control-request.json')}
+import shlex
+helper=['python3','scripts/kicad/operator_terminal.py','--request',str(out/'harmless-control-request.json'),'--control-request-sha256',sha(out/'harmless-control-request.json')]
+launch=['bash','/home/takazudo/.codex/scripts/heavy-guard.sh','--','/usr/bin/script','--quiet','--return','--echo=never','--command',shlex.join(helper),'/dev/null']
+(out/'operator-next-step.md').write_text('# Next operator action: fresh harmless-control qualification\n\nRequest SHA256: `'+sha(out/'harmless-control-request.json')+'`. Source HEAD: `'+head+'`.\n\nReview harmless-control-request.json and separately approve this exact digest while reserving one global native slot. Preparation has not approved it. Executing the command below is an operator action for this control request only; it does not admit startup, oracle or E16 work. Sudo prompts inside the guard. No password/transcript is saved. Do not pipe through tee; workload output is retained separately. Do not retry failed attempts.\n\n```sh\ncd '+shlex.quote(str(root))+'\n'+shlex.join(launch)+' </dev/tty\n```\n')
+(out/'operator-command.sh').write_text('#!/usr/bin/env bash\nset -euo pipefail\ncd '+shlex.quote(str(root))+'\n'+shlex.join(launch)+' </dev/tty\n')
+(out/'index.json').write_text(json.dumps(index,indent=2)+'\n')
+Path('/tmp/osc-wsl-20261013/local-final-packet-location.json').write_text(json.dumps({'packet':str(out),'stage':str(stage),'index':index},indent=2)+'\n')
+print(json.dumps(index,indent=2))

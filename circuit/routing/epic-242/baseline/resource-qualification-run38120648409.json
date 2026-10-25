@@ -1,0 +1,434 @@
+{
+  "status": "FAIL_CLEANUP",
+  "native_execution": false,
+  "global_workers_requested": 1,
+  "sha": "70ee331eed8f7228a7d5f06fce58ff042e7d3d43",
+  "hook_sha256": "8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5",
+  "phases": {
+    "smoke": {
+      "expected_fault": false,
+      "exit_code": 0,
+      "status": "PASS_HARMLESS_CONTROL_CASE",
+      "guard_evidence": {
+        "plan": {
+          "admission_id": "epic242-harmless-qualification-01",
+          "worker": "q-7606cfc3ee-smoke",
+          "sha": "70ee331eed8f7228a7d5f06fce58ff042e7d3d43",
+          "command": [
+            "/usr/bin/python3",
+            "/home/runner/work/zudo-osc-hole-field/zudo-osc-hole-field/scripts/kicad/run_resource_fixture.py",
+            "--image",
+            "sha256:198e5fa86c15c9344f31ab7261676507e0e180c168ac5037030d3bb95f5ca67c",
+            "--mode",
+            "aggregate"
+          ],
+          "seconds": 20,
+          "memory_max": 6442450944,
+          "memory_swap_max": 0,
+          "aggregate_memory_max": 12884901888,
+          "free_floor": 2147483648,
+          "early_abort_free": 2684354560,
+          "slice": "epic242-w712d373630366366633365652d736d6f6b65.slice",
+          "global_admission": "parent excludes ALL other native jobs; local flock covers only this guard"
+        },
+        "samples": [
+          {
+            "seconds": 0.007328674000000035,
+            "available": 15556321280,
+            "worker_current": 487424,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          },
+          {
+            "seconds": 1.0297572369999983,
+            "available": 15541977088,
+            "worker_current": 18006016,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          },
+          {
+            "seconds": 2.047165593999999,
+            "available": 15505190912,
+            "worker_current": 104124416,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          },
+          {
+            "seconds": 3.07704571499999,
+            "available": 15497805824,
+            "worker_current": 103845888,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          },
+          {
+            "seconds": 4.108149216999998,
+            "available": 15502209024,
+            "worker_current": 103845888,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          },
+          {
+            "seconds": 5.138671276000004,
+            "available": 15603957760,
+            "worker_current": 991232,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          }
+        ],
+        "status": "COMMAND PASS ONLY; native acceptance requires exact complete evidence",
+        "exit_code": 0,
+        "observed_containers": [
+          "88eb88f1d7ab"
+        ],
+        "peak": 104337408
+      },
+      "watchdog_evidence": [],
+      "owned_survivors": false,
+      "fault_injection": null,
+      "verified_membership": {
+        "worker": "q-7606cfc3ee-smoke",
+        "sha": "70ee331eed8f7228a7d5f06fce58ff042e7d3d43",
+        "parent_pid": 2479,
+        "parent_start": "6109",
+        "image_id": "sha256:198e5fa86c15c9344f31ab7261676507e0e180c168ac5037030d3bb95f5ca67c",
+        "container_id": "88eb88f1d7ab",
+        "slice_path": "/epic242.slice/epic242-w712d373630366366633365652d736d6f6b65.slice",
+        "verified_at": 1791702845.3615742
+      },
+      "guard_stdout": "{\"proposal_plan\": {\"admission_id\": \"epic242-harmless-qualification-01\", \"worker\": \"q-7606cfc3ee-smoke\", \"sha\": \"70ee331eed8f7228a7d5f06fce58ff042e7d3d43\", \"command\": [\"/usr/bin/python3\", \"/home/runner/work/zudo-osc-hole-field/zudo-osc-hole-field/scripts/kicad/run_resource_fixture.py\", \"--image\", \"sha256:198e5fa86c15c9344f31ab7261676507e0e180c168ac5037030d3bb95f5ca67c\", \"--mode\", \"aggregate\"], \"seconds\": 20, \"memory_max\": 6442450944, \"memory_swap_max\": 0, \"aggregate_memory_max\": 12884901888, \"free_floor\": 2147483648, \"early_abort_free\": 2684354560, \"slice\": \"epic242-w712d373630366366633365652d736d6f6b65.slice\", \"global_admission\": \"parent excludes ALL other native jobs; local flock covers only this guard\"}}\nRunning as unit: epic242-q-7606cfc3ee-smoke-checks.service; invocation ID: 8f67bb5a99f047e79576b933fb1e9817\nguard-fixture pid=1 mode=aggregate\nallocated child=9 bytes=41943040\nallocated child=8 bytes=41943040\nchild=8 status=0\nchild=9 status=0\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 4.531s\nCPU time consumed: 55ms\nMemory peak: 2.1M\nMemory swap peak: 0B\n"
+    }
+  },
+  "limits": "single-worker chosen systemd implementation only; no two-worker qualification or electrical acceptance",
+  "capabilities": {
+    "pid1": "systemd",
+    "docker": "local/systemd/cgroupv2/memory+swap",
+    "available_bytes": 15565213696,
+    "no_reconfiguration": true
+  },
+  "fixture": {
+    "source_sha256": "12523b25e61cf54869743702949dca7c1873ac8089bf46476c15a11e03f7573a",
+    "binary_sha256": "b2cb8175373fa760ac579610a87364889e00c1d5a865f1eacc6f7214b898746b",
+    "image_id": "sha256:198e5fa86c15c9344f31ab7261676507e0e180c168ac5037030d3bb95f5ca67c",
+    "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  },
+  "reason": "fault phase must fail closed and clean up: timeout",
+  "cleanup_failures": [
+    "anchor stop failed: Command '['sudo', '-n', 'systemctl', 'stop', 'epic242-q-7606cfc3ee-timeout-anchor.service']' returned non-zero exit status 5."
+  ],
+  "raw_phase_evidence": {
+    "smoke": {
+      "worker": "q-7606cfc3ee-smoke",
+      "guard_receipt": {
+        "plan": {
+          "admission_id": "epic242-harmless-qualification-01",
+          "worker": "q-7606cfc3ee-smoke",
+          "sha": "70ee331eed8f7228a7d5f06fce58ff042e7d3d43",
+          "command": [
+            "/usr/bin/python3",
+            "/home/runner/work/zudo-osc-hole-field/zudo-osc-hole-field/scripts/kicad/run_resource_fixture.py",
+            "--image",
+            "sha256:198e5fa86c15c9344f31ab7261676507e0e180c168ac5037030d3bb95f5ca67c",
+            "--mode",
+            "aggregate"
+          ],
+          "seconds": 20,
+          "memory_max": 6442450944,
+          "memory_swap_max": 0,
+          "aggregate_memory_max": 12884901888,
+          "free_floor": 2147483648,
+          "early_abort_free": 2684354560,
+          "slice": "epic242-w712d373630366366633365652d736d6f6b65.slice",
+          "global_admission": "parent excludes ALL other native jobs; local flock covers only this guard"
+        },
+        "samples": [
+          {
+            "seconds": 0.007328674000000035,
+            "available": 15556321280,
+            "worker_current": 487424,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          },
+          {
+            "seconds": 1.0297572369999983,
+            "available": 15541977088,
+            "worker_current": 18006016,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          },
+          {
+            "seconds": 2.047165593999999,
+            "available": 15505190912,
+            "worker_current": 104124416,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          },
+          {
+            "seconds": 3.07704571499999,
+            "available": 15497805824,
+            "worker_current": 103845888,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          },
+          {
+            "seconds": 4.108149216999998,
+            "available": 15502209024,
+            "worker_current": 103845888,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          },
+          {
+            "seconds": 5.138671276000004,
+            "available": 15603957760,
+            "worker_current": 991232,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          }
+        ],
+        "status": "COMMAND PASS ONLY; native acceptance requires exact complete evidence",
+        "exit_code": 0,
+        "observed_containers": [
+          "88eb88f1d7ab"
+        ],
+        "peak": 104337408
+      },
+      "guard_stdout": "{\"proposal_plan\": {\"admission_id\": \"epic242-harmless-qualification-01\", \"worker\": \"q-7606cfc3ee-smoke\", \"sha\": \"70ee331eed8f7228a7d5f06fce58ff042e7d3d43\", \"command\": [\"/usr/bin/python3\", \"/home/runner/work/zudo-osc-hole-field/zudo-osc-hole-field/scripts/kicad/run_resource_fixture.py\", \"--image\", \"sha256:198e5fa86c15c9344f31ab7261676507e0e180c168ac5037030d3bb95f5ca67c\", \"--mode\", \"aggregate\"], \"seconds\": 20, \"memory_max\": 6442450944, \"memory_swap_max\": 0, \"aggregate_memory_max\": 12884901888, \"free_floor\": 2147483648, \"early_abort_free\": 2684354560, \"slice\": \"epic242-w712d373630366366633365652d736d6f6b65.slice\", \"global_admission\": \"parent excludes ALL other native jobs; local flock covers only this guard\"}}\nRunning as unit: epic242-q-7606cfc3ee-smoke-checks.service; invocation ID: 8f67bb5a99f047e79576b933fb1e9817\nguard-fixture pid=1 mode=aggregate\nallocated child=9 bytes=41943040\nallocated child=8 bytes=41943040\nchild=8 status=0\nchild=9 status=0\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 4.531s\nCPU time consumed: 55ms\nMemory peak: 2.1M\nMemory swap peak: 0B\n",
+      "membership": [
+        {
+          "worker": "q-7606cfc3ee-smoke",
+          "sha": "70ee331eed8f7228a7d5f06fce58ff042e7d3d43",
+          "parent_pid": 2479,
+          "parent_start": "6109",
+          "image_id": "sha256:198e5fa86c15c9344f31ab7261676507e0e180c168ac5037030d3bb95f5ca67c",
+          "container_id": "88eb88f1d7ab",
+          "slice_path": "/epic242.slice/epic242-w712d373630366366633365652d736d6f6b65.slice",
+          "verified_at": 1791702845.3615742
+        }
+      ],
+      "watchdog": []
+    },
+    "timeout": {
+      "worker": "q-7606cfc3ee-timeout",
+      "guard_receipt": {
+        "plan": {
+          "admission_id": "epic242-harmless-qualification-01",
+          "worker": "q-7606cfc3ee-timeout",
+          "sha": "70ee331eed8f7228a7d5f06fce58ff042e7d3d43",
+          "command": [
+            "/usr/bin/python3",
+            "/home/runner/work/zudo-osc-hole-field/zudo-osc-hole-field/scripts/kicad/run_resource_fixture.py",
+            "--image",
+            "sha256:198e5fa86c15c9344f31ab7261676507e0e180c168ac5037030d3bb95f5ca67c",
+            "--mode",
+            "hold"
+          ],
+          "seconds": 5,
+          "memory_max": 6442450944,
+          "memory_swap_max": 0,
+          "aggregate_memory_max": 12884901888,
+          "free_floor": 2147483648,
+          "early_abort_free": 2684354560,
+          "slice": "epic242-w712d373630366366633365652d74696d656f7574.slice",
+          "global_admission": "parent excludes ALL other native jobs; local flock covers only this guard"
+        },
+        "samples": [
+          {
+            "seconds": 0.007159260000008771,
+            "available": 15597154304,
+            "worker_current": 454656,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          },
+          {
+            "seconds": 1.0326685600000047,
+            "available": 15589961728,
+            "worker_current": 18665472,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          },
+          {
+            "seconds": 2.062296931000006,
+            "available": 15589609472,
+            "worker_current": 18333696,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          },
+          {
+            "seconds": 3.0929632389999995,
+            "available": 15613800448,
+            "worker_current": 18333696,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          },
+          {
+            "seconds": 4.123172440000005,
+            "available": 15648309248,
+            "worker_current": 18333696,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          },
+          {
+            "seconds": 5.1540243710000055,
+            "available": 15662632960,
+            "worker_current": 12296192,
+            "events": {
+              "low": 0,
+              "high": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_kill": 0,
+              "oom_group_kill": 0
+            }
+          }
+        ],
+        "status": "FAIL / CLEANUP BLOCKER",
+        "reason": "whole-command deadline",
+        "observed_containers": [
+          "270f284912e5"
+        ],
+        "watchdog": {
+          "reason": "whole-command deadline",
+          "cleanup_failures": [
+            "container removal failed: 270f284912e5: Command '['docker', 'rm', '-f', '270f284912e5']' returned non-zero exit status 1.",
+            "labeled container survivors after cleanup"
+          ],
+          "worker": "q-7606cfc3ee-timeout",
+          "parent_pid": 2760,
+          "parent_start": "6680",
+          "finished_at": 1791702854.136292
+        },
+        "cleanup_failures": [
+          "Command '['sudo', '-n', 'systemctl', 'stop', 'epic242-q-7606cfc3ee-timeout-anchor.service']' returned non-zero exit status 5."
+        ]
+      },
+      "guard_stdout": "{\"proposal_plan\": {\"admission_id\": \"epic242-harmless-qualification-01\", \"worker\": \"q-7606cfc3ee-timeout\", \"sha\": \"70ee331eed8f7228a7d5f06fce58ff042e7d3d43\", \"command\": [\"/usr/bin/python3\", \"/home/runner/work/zudo-osc-hole-field/zudo-osc-hole-field/scripts/kicad/run_resource_fixture.py\", \"--image\", \"sha256:198e5fa86c15c9344f31ab7261676507e0e180c168ac5037030d3bb95f5ca67c\", \"--mode\", \"hold\"], \"seconds\": 5, \"memory_max\": 6442450944, \"memory_swap_max\": 0, \"aggregate_memory_max\": 12884901888, \"free_floor\": 2147483648, \"early_abort_free\": 2684354560, \"slice\": \"epic242-w712d373630366366633365652d74696d656f7574.slice\", \"global_admission\": \"parent excludes ALL other native jobs; local flock covers only this guard\"}}\nRunning as unit: epic242-q-7606cfc3ee-timeout-checks.service; invocation ID: 1e0c72865c2145f4b086b4db648e4a98\nguard-fixture pid=1 mode=hold\nhold pid=1 child=7\nhold pid=7 child=0\nFinished with result: timeout\nMain processes terminated with: code=killed/status=TERM\nService runtime: 7.209s\nCPU time consumed: 57ms\nMemory peak: 16.6M\nMemory swap peak: 0B\n",
+      "membership": [
+        {
+          "worker": "q-7606cfc3ee-timeout",
+          "sha": "70ee331eed8f7228a7d5f06fce58ff042e7d3d43",
+          "parent_pid": 2760,
+          "parent_start": "6680",
+          "image_id": "sha256:198e5fa86c15c9344f31ab7261676507e0e180c168ac5037030d3bb95f5ca67c",
+          "container_id": "270f284912e5",
+          "slice_path": "/epic242.slice/epic242-w712d373630366366633365652d74696d656f7574.slice",
+          "verified_at": 1791702851.917303
+        }
+      ],
+      "watchdog": [
+        {
+          "reason": "whole-command deadline",
+          "cleanup_failures": [
+            "container removal failed: 270f284912e5: Command '['docker', 'rm', '-f', '270f284912e5']' returned non-zero exit status 1.",
+            "labeled container survivors after cleanup"
+          ],
+          "worker": "q-7606cfc3ee-timeout",
+          "parent_pid": 2760,
+          "parent_start": "6680",
+          "finished_at": 1791702854.136292
+        }
+      ]
+    }
+  },
+  "owned_image_removed": false
+}

@@ -1,0 +1,31 @@
+{
+  "status": "PASS_CONDITIONAL_SCALAR_COMPARISON_SOURCE_REVIEW",
+  "hashes": {
+    "compare-budgets.py": "f6b178c6188db21dea390c1ad0626070ce05d16a7ee08dececffb23addfbad0a",
+    "budget-comparison.json": "691f7a4058069f16a1fb6c168cc4aef8280797a298b0c7c3093b589f38de888c"
+  },
+  "checks": [
+    "--check PASS",
+    "Independent Decimal recomputation of all15 drops agrees within1e-10mV",
+    "104mm main/85mm feed override historical110mm in latest cases",
+    "Two combined termination-pair resistances, one per serial main/feed section",
+    "Global rail/common-return copper charged once and not divided in parallel cases"
+  ],
+  "parallel_scope": "R/n requires n independently accessible same-endpoint conductor/contact paths in each serial section; shared neck/access resistance separately included in global return budget. Unequal sharing is permitted by conductance bound. No arbitrary signed multiport injection, fault or disconnected-path credit.",
+  "numeric_results_worst_mV": {
+    "historical110_110": 26.242,
+    "latest_original_copper": 23.5419,
+    "latest_tight_copper": 19.8119,
+    "conditional3returns": 14.780433333333333,
+    "conditional2returns": 16.9708
+  },
+  "remaining_conditions": [
+    "Actual branch/plane/source-contact geometry and resistance extraction",
+    "Complete joined peripheral signed return graph and current/source functionals",
+    "Revised carrier/insulation/access/service geometry and physical qualification"
+  ],
+  "decision_scope": "No arithmetic blocker identified. No integrated candidate established, but positive conditional arithmetic and sampled geometry do not establish physical impossibility or inability to produce a source-feasible design. Any stop decision must identify uncompleted concrete source obligations, not infer a global obstruction or use missing process measurements alone.",
+  "blockers": [],
+  "native_calls": 0,
+  "geometry_reruns": 0
+}

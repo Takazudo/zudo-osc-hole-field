@@ -1,0 +1,64 @@
+{
+  "status": "STOPPED BOUNDED NEGATIVE: EXPANSION_LIMIT; NO CANDIDATE OR NATIVE PACKET",
+  "parent_integration_sha": "2be9b9144e4d7e12f78a54078c841fd433f7d2d7",
+  "method": "Candidate-local exact swept planar transition override of foreign-copper raster exclusions only",
+  "scope": "Original F3 signal demand and existing bounded window; unchanged original goals, full obstacles, widths, clearances, edge/keepout, hole/via rules",
+  "attempt": {
+    "expanded": 50000,
+    "visited": 51829,
+    "exact_checks": 199910,
+    "exact_check_cap": 250000,
+    "accepted_override_edges_considered": 17688,
+    "measured_interval_seconds": 20.241109657996276,
+    "stopping_condition": "EXPANSION_LIMIT",
+    "complete_candidate": false,
+    "partial_copper_retained": false
+  },
+  "counter_fix": {
+    "executed_source_preserved": true,
+    "threshold_reached_in_consumed_attempt": false,
+    "current_fixed_source_saved_board_search": "NOT RERUN",
+    "regression": "cap 4 diagonal performs 4 checks, then stops"
+  },
+  "new_boundary_check": {
+    "edges": 148,
+    "exact_clear_admitted": 130,
+    "real_collisions_refused": 18,
+    "feasibility_search_executed": false
+  },
+  "validation": {
+    "terminal_access_tests": 94,
+    "method_regressions": 11,
+    "independent_source_result_review": "PASS",
+    "pnpm_check": "PASS",
+    "circuit_check": "PASS",
+    "baseline_verifier": "PASS: 1881 original inputs plus two reviewed tool replacements; 195 harnesses/390 complete endpoints; inherited JL117/JR129/K1402 DRC/parity 0/0",
+    "component_scope": "manual 68 lines/zero declared placements; no schematic/placement binding",
+    "full_regeneration": "NOT RUN; includes unadmitted native operations",
+    "independent_boundary_review": "PASS; all 148 edge records and helper/receipt seals verified"
+  },
+  "claims": {
+    "graph_disconnected": false,
+    "physically_impossible": false,
+    "native_executed": false,
+    "native_closed": false,
+    "adopted": false,
+    "all_demands_succeeded": false
+  },
+  "native_admission": "NONE; all slots free",
+  "remaining": "Rails/AGND unchanged; no complete signal candidate; native closure/DRC/parity/refill/full-warning/eligibility NOT RUN",
+  "current_source_sha256": {
+    "circuit/routing/epic-242/decision-pilots/terminal-access/exact_transition_candidate.py": "f0c87c62c12b7353511c0d3c9e6f34d9485a6c469288a4ce75b8cb2d45639457",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/test_exact_transition_candidate.py": "b6a8b9f36ce1cdce5759cba05282e670da442d808d00ff3b9efd72524ba8f3ef",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/check_exact_transition_edges.py": "27b8321f243d9b660bf9eaae86e3c417eef98f9eb18e77e70b6fc518d28ecdfc"
+  },
+  "evidence_sha256": {
+    "README.md": "5b7f96181e193bb1db7016f5e6df49d5f074098ddbf511972757efeb307d8d42",
+    "attempt-source/exact_transition_candidate.py.txt": "893dd3c580cd22facad18b4244e4ba1735cfeab9d72ddc56d98f639b5c79f970",
+    "attempt-source/test_exact_transition_candidate.py.txt": "84d0b0a4c0077d987e16031afd0e06c290abc65e1aa45dda614f55088d2445be",
+    "edge-proof.json": "e6e59d473ca97326131ff415b7bc8d205325bfc055189fe93b5a714a006c321d",
+    "independent-review.json": "b4e46b717cb752ded85b801d1808576c11066edce6d33cb2d34834ee3e35521f",
+    "result.json": "37190c9df82d11074408e3137c42f22c8f41e2afb106a00eb0d400a0da6f5acb",
+    "boundary-review.json": "abd98a15b5479f0ba1516e445a7d9b72e65668c7993df51981d99d795498a85a"
+  }
+}

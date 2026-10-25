@@ -1,0 +1,134 @@
+{
+  "source_implementation_commit": "e215b9eb3f9695d74cd9dfc9de182e0882bebcd7",
+  "checked_out_head": "f1650bba3f224585e654930fbf4c521c3b9f61ed",
+  "changes": "Evidence and authored docs only; source methods unchanged. Final-head packet/check receipts are recorded in the PR checkpoint after the evidence commit.",
+  "results": {
+    "initial-circuit": {
+      "command": [
+        "pnpm",
+        "circuit:check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 0.865225090063177,
+      "child_peak_rss_KiB": 128468
+    },
+    "targeted-tests": {
+      "command": [
+        "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+        "/tmp/osc-wsl-20261013/targeted_tests.py"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 1.0056456270394847,
+      "child_peak_rss_KiB": 67304
+    },
+    "doc-check": {
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 5.721463794005103,
+      "child_peak_rss_KiB": 278428
+    },
+    "final-circuit": {
+      "command": [
+        "pnpm",
+        "circuit:check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 0.8585066050291061,
+      "child_peak_rss_KiB": 129244
+    },
+    "final-check": {
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 3.1584775829687715,
+      "child_peak_rss_KiB": 277520
+    },
+    "final-build": {
+      "command": [
+        "bash",
+        "/home/takazudo/.codex/scripts/heavy-guard.sh",
+        "--",
+        "pnpm",
+        "build"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 17.279770157067105,
+      "child_peak_rss_KiB": 1089428
+    },
+    "final-site": {
+      "command": [
+        "pnpm",
+        "check:site"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 10.727688940940425,
+      "child_peak_rss_KiB": 553692
+    },
+    "preparation": {
+      "command": [
+        "bash",
+        "/home/takazudo/.codex/scripts/heavy-guard.sh",
+        "--",
+        "python3",
+        "/tmp/osc-wsl-20261013/prepare_source.py"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 285.41945015697274,
+      "child_peak_rss_KiB": 1393168
+    },
+    "packet-finish": {
+      "command": [
+        "bash",
+        "/home/takazudo/.codex/scripts/heavy-guard.sh",
+        "--",
+        "python3",
+        "/tmp/osc-wsl-20261013/finish_packet.py"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 24.02002224593889,
+      "child_peak_rss_KiB": 1130920
+    },
+    "user-scope": {
+      "command": [
+        "systemd-run",
+        "--user",
+        "--scope",
+        "-q",
+        "-p",
+        "MemoryMax=2147483648",
+        "-p",
+        "MemorySwapMax=0",
+        "python3",
+        "/tmp/osc-wsl-20261013/scope_probe.py"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 0.07595811295323074,
+      "child_peak_rss_KiB": 12464
+    }
+  },
+  "not_run": {
+    "aggregate_python_suite": "Owner explicitly excluded repeating aggregate discovery.",
+    "regen_all": "Contains unadmitted native phases and canonical board generators; not executed.",
+    "oracle_test": "No exact-run admission; privileged guard prerequisite failed.",
+    "native_e16": "No exact-run admission or completed runner qualification.",
+    "production_numerics": "Separate validation admission absent; user memory scope probe passes.",
+    "runtime_oracle_versions": "No native execution authority.",
+    "native_control_qualification": "No separate admission and noninteractive sudo fails.",
+    "CI": "No workflow dispatched or final-head CI result claimed."
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "bindings": {
+    "/tmp/joined-feed-electrical-design-review.json": "595b9af0c7affe5616e16bbfb44efa95b142e1e33150332875921ecac38ea3d3",
+    "/tmp/joined-feed-geometry-witness-review.json": "1f2c349bf2a85c373bb93816f98c0b2660949e9a6f1a31b9f16a8394964f8a05",
+    "/tmp/joined-feed-geometry-witness.json": "da02dc0209b9722453ab339a09c5b2626de1e5dd3f340b95c68568390593073a",
+    "/tmp/joined-feed-geometry-witness.log": "b79d46ce48c644bac3ac61701bd37fe51a18ef89077d5adf0e10e3953c5fd01c",
+    "/tmp/joined-feed-geometry-witness.py": "2df2c5af7d9208b560be4155c6b4e3cf9495dee996f5c7349bf31adfe391437b",
+    "/tmp/joined-feed-mechanical-design-review.json": "4600459bf530b7f440f48cf268318f38d4e8a40f4a7de3a20a7d5f280c2d854d"
+  },
+  "blocking_code_defects_for_this_narrow_claim": [],
+  "code_review": [
+    {
+      "finding": "robust_curve.Family supplies offset58, free66 and2.5mm tails; witness asserts these. nominal2mm raised anchors and direction match source family. Family signs [+,-,+,+,-,+] and two rows y15.5/24.5 match the reconciled source overlay. No legacy52mm family or old clamp geometry is used for the sampled curves.",
+      "item": "Current reference family"
+    },
+    {
+      "finding": "KA B face=-101.6 and raised anchor=-103.6; KB F face=-126 and raised anchor=-124. Bridge length2/abs(vz)=3.672478599624mm gives exact nominal face intersections by tangent continuation. Gap20.4+travel and subtracting travel from KB component/reserve/land Z are consistent. Both2.5mm tails, both bridges and full cubic are sampled.",
+      "item": "Board datums and bridge geometry"
+    },
+    {
+      "finding": "Loops retain both faces of KA/KB source courtyard, tool, support and loom rows. Six bulk reserves are inherited from offset-proposal; the obsolete monitor is filtered out and replaced by reconciled [120,12,140,32] KB B reserve. All4569 modeled boxes are considered for every sampled point; no broad-phase exclusion.",
+      "item": "Source reservation coverage"
+    },
+    {
+      "finding": "Point-to-AABB is exact Euclidean distance at each sampled point. Wire-radius subtraction and pair two-radius subtraction are correct. KDTree exact query computes the finite sampled-pair minimum. Independent recombination of18 nearest-box witnesses and45 pair witnesses matches output.",
+      "item": "Distance checks"
+    },
+    {
+      "finding": "Twelve6x6mm reserves are centered at the nominal tangent-to-face intersection, not at raised anchors. Own-face source gap uses all modeled source rows. Foreign-wire checks use land-plane reserve rectangles. Own two land contacts are excluded by wire identity and therefore cannot certify containment of the whole solder/stripped-conductor joint.",
+      "item": "Land checks"
+    },
+    {
+      "finding": "Method and saved-output hashes match baseline review; seven local source seals and every inherited source-lock entry match current bytes. Witness checks input seals before/after computation. No CAD/native/hardware mutation occurs; only /tmp JSON is written.",
+      "item": "Input/output sealing"
+    }
+  ],
+  "complete_sweep_claim": false,
+  "decision_consistency": "STAGE_BLOCKED_SOURCE_DESIGN_NOT_ESTABLISHED / RETAIN_K1402 is supported by the absence of a completed distribution/contact/380-GH network/carrier construction. It is not a demonstrated source infeasibility or geometric impossibility. Preserve all positive short-feed and conditional parallel-return evidence.",
+  "mandatory_scope_limits": [
+    "Sample minima are upper bounds on the minimum continuous clearance. They cannot be reported as positive clearance lower certificates along unsampled curve portions or between travel poses. No witnessed conflict is the supported conclusion.",
+    "Nominal gap samples20.4,25.4,30.5mm do not cover full tolerance gap20.2..30.7mm. C0 position, C1/C2 shape and datum/thermal/process allocations are not applied by this witness.",
+    "The source-height boxes are reservation models; an overlap would reject that reservation construction, not prove exact physical solids collide. Conversely, this obstacle set is not a complete hardware inventory.",
+    "No revised carrier/arms/collets/fasteners or load path is checked. No board slab/edge penetration or full enclosure Z-wall test is performed. Land/bridge termination cutback, solder, stripping and dielectric geometry remain uninstantiated.",
+    "The fixed support/tool/loom columns conservatively span Z[-160,-90] but do not model a complete moving service assembly or prove all100 trimmer access paths.",
+    "The result does not establish manufactured fixed-length wire equilibrium, termination current-field compatibility, copper resistance, all owned feed closure, or the complete380-GH coupled return network.",
+    "The baseline review suggestion to complete a source candidate is an available next design route, not a claim that the carrier/contact/copper construction is already feasible."
+  ],
+  "native_run": false,
+  "physical_fit_claim": false,
+  "recommended_packet_wording": "No counterexample was found among the saved samples at three nominal travel poses. The58mm/66mm family remains a conditional design alternative. The joined stage is blocked because a complete source design with carrier, finite contacts, owned distribution and coupled return certificate has not been established; retainK1402 without declaring the alternative impossible.",
+  "review_execution": "Independent code and saved-output review; no rerun of witness, curve solve, pose evaluation, sweep, native or routing. Only source hashes and 63 saved-witness distance identities recomputed.",
+  "saved_results": {
+    "minimum_land_source_reserve_gap_mm": 9.62704136925485,
+    "obstacle_count": 4569,
+    "poses": [
+      {
+        "foreign_land_sample_failures": 0,
+        "minimum_sample_enclosure_XY_gap_mm": 1.6267666155603393,
+        "minimum_sample_source_gap_mm": 1.556497560412285,
+        "minimum_sample_wire_pair_gap_mm": 2.075696299355029,
+        "nominal_free_gap_mm": 20.4,
+        "travel_mm": 0.0
+      },
+      {
+        "foreign_land_sample_failures": 0,
+        "minimum_sample_enclosure_XY_gap_mm": 2.8850742456641507,
+        "minimum_sample_source_gap_mm": 1.947842972555433,
+        "minimum_sample_wire_pair_gap_mm": 4.657354560219547,
+        "nominal_free_gap_mm": 25.4,
+        "travel_mm": 5.0
+      },
+      {
+        "foreign_land_sample_failures": 0,
+        "minimum_sample_enclosure_XY_gap_mm": 5.129915582214218,
+        "minimum_sample_source_gap_mm": 1.947842972555433,
+        "minimum_sample_wire_pair_gap_mm": 4.657354560219547,
+        "nominal_free_gap_mm": 30.5,
+        "travel_mm": 10.1
+      }
+    ],
+    "run_elapsed_seconds": 7.613165401000515,
+    "run_peak_memory_KiB": 194588,
+    "saved_point_distance_checks": 63
+  },
+  "schema": "joined-feed-geometry-independent-review-v1",
+  "verdict": "PASS_FOR_THREE_POSE_SAMPLED_COUNTEREXAMPLE_AUDIT_ONLY",
+  "verified_fixture_source_hashes": {
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/check.py": "4d7d0799348686fa4427fe895a49d146638cbcfe15ffc6ae696b4d75856d38cf",
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/offset-proposal.json": "0340c9d24ae6505e89af65af3bf0634e34a6219a3d7d5d6ffb0ff4c9f9ed0ec5",
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/process-budget.md": "85af1cc851cd77f683db1de2a381de54af857115c82cb9902b84c84cbeb10512",
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/reconciled-contract.json": "01b77387f568a5b246c7e33e635e8d867f09b23ea200d13dd0c17db251ada30d",
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/robust-curve.json": "cfab1993ecd661054927e8c855470f16618bf04607b12af89cc6ba4099e7dfda",
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/robust_curve.py": "12cb2cb82f8282c92e8a50c51b4060ba96eb826a35f8b7577c7b6442ff458d91",
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/source-lock.json": "a5f6ce05cafb3c0ec2966a1794d9f892ba43e7e26b390b878f6c0316887e0345"
+  },
+  "verified_inherited_source_lock_entries": 15
+}

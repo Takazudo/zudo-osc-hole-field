@@ -1,0 +1,13 @@
+{"proposal_plan": {"admission_id": "local-3f8e1f747ebf47faa4d1b46024df0970-2", "worker": "local-3f8e1f747ebf47faa4d1b46024df0970-2-python", "sha": "093f14b55c8a85d5d14be26f20868df2551d3b14", "hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91", "command": ["env", "EPIC242_ADMISSION_MODE=local", "EPIC242_LOCAL_REQUEST=.circuit-cache/e16-local-packet-093f14b-3f8e1f74/oracle.json", "EPIC242_PARENT_LOCAL_REQUEST_SHA256=4fb54bc7ab70f75658c5c247a6fa089a4d52a2d5bf648177c0b44ce5126562c0", "EPIC242_LOCAL_APPROVAL=.circuit-cache/e16-local-packet-093f14b-3f8e1f74/oracle-approval.json", "EPIC242_LOCAL_APPROVAL_SHA256=e591707b9e2fb7319031c496a656f6db8840ecc44438ed221af0b5118016a39e", "python3", "scripts/kicad/local_native_admission.py", "worker"], "seconds": 1680, "memory_max": 6442450944, "memory_swap_max": 0, "aggregate_memory_max": 12884901888, "free_floor": 2147483648, "early_abort_free": 2684354560, "slice": "epic242-w6c6f63616c2d33663865316637343765626634376661613464316234363032346466303937302d322d707974686f6e.slice", "global_admission": "parent excludes ALL other native jobs; local flock covers only this guard"}}
+Running as unit: epic242-local-3f8e1f747ebf47faa4d1b46024df0970-2-python-checks.service
+.
+----------------------------------------------------------------------
+Ran 1 test in 2.562s
+
+OK
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 2.748s
+CPU time consumed: 389ms
+Memory peak: 2.1M
+Memory swap peak: 0B

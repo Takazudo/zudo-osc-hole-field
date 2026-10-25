@@ -1,0 +1,87 @@
+name: Epic242 admitted O1 K1402 route1420
+on:
+  push:
+    branches: [integration/epic-242-o1-k1402-route-1420]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: epic242-route-1420
+  cancel-in-progress: false
+jobs:
+  route:
+    if: github.event.created && github.run_attempt == 1
+    env:
+      PARENT_ADMISSION_ID: epic242-o1-k1402-route-20261011-1420
+    runs-on: ubuntu-24.04
+    timeout-minutes: 43
+    steps:
+      - name: Initialize admitted single-phase evidence
+        run: |
+          mkdir "$RUNNER_TEMP/epic242-route-1420"
+          printf '%s\n' '{"route_status":"NOT STARTED; ONLY O1/K1402 ROUTE ADMITTED","native_workers_started":0,"probe_containers_started":0}' > "$RUNNER_TEMP/epic242-route-1420/bootstrap.json"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          path: request
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: 29140d4e19d526eed3a02a73c33f8ce4219c78f0
+          path: method
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+      - name: Install existing pinned numerical dependencies
+        working-directory: method
+        run: |
+          python - <<'PY'
+          import os,subprocess,sys
+          from pathlib import Path
+          with (Path(os.environ['RUNNER_TEMP'])/'epic242-route-1420/dependencies.log').open('x') as log:
+              subprocess.run([sys.executable,'-m','pip','install','-r','scripts/pcbgen/numerical-requirements.txt'],stdout=log,stderr=subprocess.STDOUT,check=True,timeout=180)
+          PY
+      - name: Provision official pinned image through existing frozen controls
+        working-directory: method
+        run: |
+          set -o pipefail
+          bash scripts/pcbgen/with_route_guard.sh python \
+            "$GITHUB_WORKSPACE/request/circuit/routing/epic-242/decision-pilots/provision_host.py" \
+            --method "$GITHUB_WORKSPACE/method" \
+            --evidence "$RUNNER_TEMP/epic242-route-1420/host.json" \
+            2>&1 | tee "$RUNNER_TEMP/epic242-route-1420/provision.log"
+      - name: Authenticate six complete frozen artifacts
+        working-directory: method
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python "$GITHUB_WORKSPACE/request/circuit/routing/epic-242/decision-pilots/run_route_1420.py" authenticate \
+            --method "$GITHUB_WORKSPACE/method" \
+            --artifacts "$RUNNER_TEMP/epic242-authenticated-zips" \
+            --evidence-directory "$RUNNER_TEMP/epic242-route-1420"
+      - name: Prepare exact new fixture and run one guarded300s route
+        working-directory: method
+        run: |
+          python "$GITHUB_WORKSPACE/request/circuit/routing/epic-242/decision-pilots/run_route_1420.py" execute \
+            --method "$GITHUB_WORKSPACE/method" \
+            --artifacts "$RUNNER_TEMP/epic242-authenticated-zips" \
+            --evidence-directory "$RUNNER_TEMP/epic242-route-1420"
+      - name: Record final job outcome
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          (Path(os.environ['RUNNER_TEMP'])/'epic242-route-1420/job-outcome.json').write_text(json.dumps({'job_status':os.environ['JOB_STATUS'],'route_status':'Inspect route.json and native-guard.json; absence is NOT a pass','admission_id':'epic242-o1-k1402-route-20261011-1420'}))
+          PY
+      - name: Preserve full fixture and positive or negative route evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: epic242-route-1420-${{ github.run_id }}
+          path: ${{ runner.temp }}/epic242-route-1420/
+          include-hidden-files: true
+          retention-days: 30
+          if-no-files-found: error
