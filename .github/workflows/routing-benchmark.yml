@@ -36,7 +36,7 @@ on:
       core_replay:
         description: Reviewed recovery transaction (used only with recover_core)
         type: choice
-        options: [aggregate, reviewed, outer, outer-filtered, ground-link, bounded-one, short-supplies, short-power, u1513-alternatives, finer-ground-batch, finer-ground-complete-warnings, short-no-via, supply-away-from-splits, native-hole-audit, native-mask-audit, native-zone-audit]
+        options: [aggregate, reviewed, outer, outer-filtered, ground-link, bounded-one, short-supplies, short-power, u1513-alternatives, finer-ground-batch, finer-ground-complete-warnings, short-no-via, supply-away-from-splits, supply-two-split-guards, native-hole-audit, native-mask-audit, native-zone-audit]
         default: aggregate
       local_repair:
         description: Read-only jack local branch-repair pilot (no canonical writer)
@@ -269,6 +269,11 @@ jobs:
             replay=.circuit-cache/issue189-core-supply-away-from-splits/copper.json
             label=issue189-supply-away-from-splits
             extra=(--complete-native-warnings --native-zone-batch-size 16)
+          elif [[ $CORE_REPLAY == supply-two-split-guards ]]; then
+            python circuit/routing/issue189/core-supply-two-split-guards/prepare.py
+            replay=.circuit-cache/issue189-core-supply-two-split-guards/copper.json
+            label=issue189-supply-two-split-guards
+            extra=(--complete-native-warnings --native-zone-batch-size 16)
           elif [[ $CORE_REPLAY == short-power ]]; then
             python circuit/routing/issue189/core-short-power/prepare.py
             replay=.circuit-cache/issue189-core-short-power/copper.json
@@ -457,39 +462,64 @@ jobs:
       contents: read
       actions: read
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
-          name: obstacle-adoption-osc-core-37950004600
-          run-id: 37950004600
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path: .circuit-cache/hole-audit-input
-      - name: Verify immutable native inputs
+          python-version: '3.12'
+      - run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
+      - name: Download and hash-check original archive and inspected inventory
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          mkdir -p .circuit-cache/core236-recovery-input
+          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11671963117/zip > .circuit-cache/core236-recovery-input/original.zip
+          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11671779973/zip > .circuit-cache/core236-recovery-input/inspection.zip
           python3 - <<'PY'
-          import hashlib
+          import hashlib,zipfile
           from pathlib import Path
-          root=Path('.circuit-cache/hole-audit-input/.circuit-cache')
-          for stage,expected in [('start','95c815b2178511621f97cd7021938023b96d4ee19c9282ae99b35fb387ba10c5'),('merge','b9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66')]:
-              p=root/('osc-core-grid-shards-'+stage)/'osc-core.kicad_pcb'
-              assert hashlib.sha256(p.read_bytes()).hexdigest()==expected
+          p=Path('.circuit-cache/core236-recovery-input/inspection.zip')
+          with p.open('rb') as f: assert hashlib.file_digest(f,'sha256').hexdigest()=='c5971fa98d5235861294e015150242572cb71dd5fc94a862c0587f8f979d881e'
+          with zipfile.ZipFile(p) as z:
+              names=[n for n in z.namelist() if n.endswith('archive-inventory.json')];assert len(names)==1
+              Path('.circuit-cache/core236-recovery-input/archive-inventory.json').write_bytes(z.read(names[0]))
           PY
-      - name: Classify changed outer-zone silkscreen interactions
+          python3 circuit/routing/issue189/core236-audit-recovery/recover_audit.py extract .circuit-cache/core236-recovery-input/original.zip .circuit-cache/core236-original .circuit-cache/core236-recovery-input/archive-inventory.json
+      - name: Bounded audit-only batch16 resume with exact archived inputs
         run: |
-          # Leave time to upload incomplete evidence if classification times out.
-          timeout --signal=INT --kill-after=2m 80m bash scripts/kicad/run.sh python3 scripts/pcbgen/audit_zone_silk_scope.py \
-            .circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-start/osc-core.kicad_pcb \
-            .circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-merge/osc-core.kicad_pcb \
-            .circuit-cache/zone-silk-audit --classify
+          mkdir -p .circuit-cache/core236-recovery-telemetry
+          df -h > .circuit-cache/core236-recovery-telemetry/disk-before.txt
+          free -m > .circuit-cache/core236-recovery-telemetry/memory-before.txt
+          python3 circuit/routing/issue189/core236-audit-recovery/resource_telemetry.py .circuit-cache/core236-recovery-telemetry/resource.jsonl &
+          observer=$!
+          trap 'kill "$observer" 2>/dev/null || true; wait "$observer" 2>/dev/null || true' EXIT
+          set +e
+          /usr/bin/time -v timeout --signal=INT --kill-after=2m 100m bash scripts/kicad/run.sh python3 scripts/pcbgen/audit_zone_silk_scope.py \
+            .circuit-cache/core236-original/.circuit-cache/osc-core-grid-shards-start/osc-core.kicad_pcb \
+            .circuit-cache/core236-original/.circuit-cache/osc-core-grid-shards-fresh/osc-core.kicad_pcb \
+            .circuit-cache/core236-zone-recovery --classify --batch-size 16 \
+            --resume-from .circuit-cache/core236-original/.circuit-cache/osc-core-grid-shards-complete-warnings/native-audits/zones \
+            > .circuit-cache/core236-recovery-telemetry/audit.log 2> .circuit-cache/core236-recovery-telemetry/audit.stderr
+          audit_status=$?
+          printf '%s\\n' "$audit_status" > .circuit-cache/core236-recovery-telemetry/exit-status.txt
+          df -h > .circuit-cache/core236-recovery-telemetry/disk-after.txt
+          free -m > .circuit-cache/core236-recovery-telemetry/memory-after.txt
+          tail -n 20 .circuit-cache/core236-recovery-telemetry/audit.log
+          exit "$audit_status"
+      - name: Require full complete_reports and original-group promotion gates without publishing
+        run: |
+          python3 circuit/routing/issue189/core236-audit-recovery/recover_audit.py combine .circuit-cache/core236-original .circuit-cache/core236-zone-recovery .circuit-cache/core236-complete-eligibility
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         if: always()
         with:
-          name: issue189-zone-audit-${{ github.run_id }}
+          name: issue189-core236-zone-recovery-${{ github.run_id }}
           path: |
-            .circuit-cache/zone-silk-audit
-            !.circuit-cache/zone-silk-audit/**/~*.lck
+            .circuit-cache/core236-zone-recovery
+            .circuit-cache/core236-complete-eligibility
+            .circuit-cache/core236-recovery-telemetry
+            .circuit-cache/core236-recovery-input/archive-inventory.json
+            !.circuit-cache/**/~*.lck
           retention-days: 30
           include-hidden-files: true
           if-no-files-found: error
