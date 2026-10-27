@@ -88,5 +88,20 @@
     "rationale": "No component owner promotion or order BOM; #15 retains exact data, #21 promotes evidence, #34 replaces count estimates.",
     "standard": "design/standard/electrical-standard.json",
     "status": "accepted for draft capture; not hardware qualification"
+  },
+  {
+    "id": "E10",
+    "authority": "USER-CONFIRMED BEHAVIOR",
+    "date": "2026-10-27",
+    "topic": "G06 filter GAIN and RES behavior",
+    "decision": "GAIN changes unprocessed OUT volume only; LP/BP/HP remain independent of GAIN in the intended signal paths; RES controls their shared filter resonance.",
+    "rationale": "Explicit user ok confirms the existing parallel dry VCA and independent filter-tap behavior. Historical proposal and owner-confirmation-pending records are superseded only for this behavior choice.",
+    "standard": "design/standard/electrical-standard.json",
+    "status": "behavior confirmed; circuit and physical qualification remain open; no hardware or manufacturing adoption",
+    "confirmation_utc": "2026-10-27T11:23:37Z",
+    "user_message_id": "Sentinel_44d28b8c742c8191b5aed5f0dfcf2f4a",
+    "reply_to_message_id": "Sentinel_e42d8619f9e48191ba0d29e55b00a8e3",
+    "relay_instruction_id": "osc-moya-g06-confirmed-intent-reconcile-c84d733b-4635-4c72-9bfb-ec230b380009",
+    "scope": "Documentation, source comments and decision metadata only; no connection, component, value, package, topology or code-behavior change."
   }
 ]

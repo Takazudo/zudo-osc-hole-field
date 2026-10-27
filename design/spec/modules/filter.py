@@ -1,6 +1,8 @@
 """F1--F3 four-OTA state-variable filter and parallel dry VCA draft.
 
-PROPOSAL: G06 GAIN affects dry OUT only; owner confirmation remains open.
+G06 behavior user-confirmed 2026-10-27: GAIN affects dry OUT only;
+LP/BP/HP remain independent of GAIN and RES acts in their shared filter loop.
+Circuit and physical qualification remain open; see electrical decision E10.
 Component index reservation 21--23. All timing nodes are local and Sensitive.
 """
 from dataclasses import replace

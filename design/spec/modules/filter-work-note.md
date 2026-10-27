@@ -3,6 +3,18 @@
 Date: 2026-09-28. Authority: PROPOSAL (planning, owner-delegated).
 Unvalidated draft — not bench tested.
 
+## Dated successor — G06 behavior confirmed on 2026-10-27
+
+The note below is the historical 2026-09-28 capture record. Its pending G06 owner
+confirmation was superseded at 2026-10-27 11:23:37 UTC by the user's explicit `ok`:
+GAIN affects unprocessed OUT volume only; LP/BP/HP remain independent of GAIN
+in the intended paths; RES controls shared filter resonance. Decision E10 records
+the exact confirmation and message identifiers. Historical proposal/open wording
+below is preserved as history, not the current behavior-decision state.
+Self-oscillation, stability, headroom, feedthrough, loading/thermal and all other
+physical qualification gates remain open; no circuit or manufacturing adoption
+follows from the behavior confirmation.
+
 ## Requested result and scope
 
 Capture F1–F3 with four OTAs, independent LP/BP/HP and parallel dry OUT,

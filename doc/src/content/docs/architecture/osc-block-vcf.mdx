@@ -12,7 +12,15 @@ bounded simulations establish only their stated scope. No order files exist.
 
 ## G06: GAIN controls dry OUT only
 
-**Owner confirmation remains open.** This implementation adopts the R21 baseline:
+**User-confirmed behavior — 2026-10-27 11:23:37 UTC (decision E10).**
+The owner confirmed the existing R21 behavior: GAIN changes the unprocessed OUT
+volume only; LP/BP/HP remain independent of GAIN in the intended signal paths,
+and RES controls their shared filter resonance. This confirmation settles the
+behavior choice; physical qualification and manufacturing adoption remain open.
+The earlier proposal and pending-confirmation statements are retained in the
+historical capture work note and the immutable G06 comparison receipt.
+
+This implementation follows that confirmed behavior:
 IN feeds two parallel paths. LP, BP and HP are unaffected by GAIN; OUT is an
 unfiltered, voltage-controlled copy of IN. There is no internal mix or selector.
 This preserves independently patchable filter outputs. Putting GAIN before the
@@ -285,7 +293,8 @@ allocation. Startup, dynamic output loading and faults are unbounded here.
 Issues #33/#34 must reconcile this captured count with the instrument supply;
 this page does not declare the whole-instrument rail budget passing.
 
-Open gates are G06 owner confirmation; exact procurement for unresolved passive
+G06 behavior is user-confirmed in E10; physical qualification remains open.
+Open gates are exact procurement for unresolved passive
 values/trimmers; actual matched-pair/mirror behavior and cutoff endpoints over
 temperature; real-amplifier and servo stability; noise/distortion/headroom;
 self-oscillation onset/amplitude/recovery; dry gain/mute/feedthrough; power-on,
