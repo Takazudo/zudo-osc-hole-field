@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "status": "UNADOPTED_NON_FABRICATION_PROPOSAL",
+  "units": "mm",
+  "scope": "PTV09A-4020F shared representation; B103/B104/B504; all four alternatives remain separate",
+  "source_footprint_sha256": "c0dafcafeba8f3570b1c395c12e844ab8d237bb54edfd65130cf98f25939c557",
+  "source_pdf_sha256": "411cdb6a62e61f9c5bc2df76ed64ee21d7bcfbee035c1ba36beff08c43f28558",
+  "primary_locator": "PTV09 REV01/25, physical page0 horizontal/rear recommended PCB layout and configuration4 ordering field; page1 PTV09A-4 view",
+  "preserve_verbatim_pad_records": [
+    "(pad \"1\" thru_hole circle (at -2.5 7) (size 1.7 1.7) (drill 1.0) (layers \"*.Cu\" \"*.Mask\"))",
+    "(pad \"2\" thru_hole circle (at 0 7) (size 1.7 1.7) (drill 1.0) (layers \"*.Cu\" \"*.Mask\"))",
+    "(pad \"3\" thru_hole circle (at 2.5 7) (size 1.7 1.7) (drill 1.0) (layers \"*.Cu\" \"*.Mask\"))",
+    "(pad \"4\" thru_hole circle (at -5.3 0) (size 2.4 2.4) (drill 1.8) (layers \"*.Cu\" \"*.Mask\"))",
+    "(pad \"5\" thru_hole circle (at 5.3 0) (size 2.4 2.4) (drill 1.8) (layers \"*.Cu\" \"*.Mask\"))"
+  ],
+  "preserved_electrical_pins": [
+    {
+      "number": 1,
+      "center": [
+        -2.5,
+        7
+      ],
+      "drill_diameter": 1.0,
+      "copper_diameter": 1.7
+    },
+    {
+      "number": 2,
+      "center": [
+        0,
+        7
+      ],
+      "drill_diameter": 1.0,
+      "copper_diameter": 1.7
+    },
+    {
+      "number": 3,
+      "center": [
+        2.5,
+        7
+      ],
+      "drill_diameter": 1.0,
+      "copper_diameter": 1.7
+    }
+  ],
+  "mounting_centers": [
+    {
+      "number": 4,
+      "center": [
+        -5.3,
+        0
+      ]
+    },
+    {
+      "number": 5,
+      "center": [
+        5.3,
+        0
+      ]
+    }
+  ],
+  "reference_opening": {
+    "shape": "dimensioned rectangle reference ONLY; not a manufacturing primitive",
+    "width_interval": [
+      1.8,
+      2.0
+    ],
+    "height_interval": [
+      2.2,
+      2.4
+    ],
+    "orientation": "short axis along mounting-center line in prior conditional drawing frame; installed face/shaft-axis registration unresolved",
+    "corner_radius": null,
+    "plating": null,
+    "finished_tolerance_interpretation": "Drawing intervals retained; pre/post-plating interpretation not established"
+  },
+  "alternatives": [
+    {
+      "id": "retain-current",
+      "geometry": "circle diameter1.8, copper circle diameter2.4",
+      "disposition": "Retain source bytes pending decision; known recommended-opening mismatch, no fit claim"
+    },
+    {
+      "id": "reference-rectangle",
+      "geometry": "1.8x2.2 nominal rectangular reference at each unchanged mounting center",
+      "disposition": "Recommended decision reference only; exact tab/profile, radius, process and annulus unresolved"
+    },
+    {
+      "id": "same-envelope-slot",
+      "geometry": "capsule width1.8 height2.2",
+      "disposition": "Not equivalent to full sharp rectangle; do not adopt without applicable tab/corner evidence"
+    },
+    {
+      "id": "larger-circle",
+      "geometry": "circle diameter2.2 or enclosing diagonal diameter from retained comparison",
+      "disposition": "2.2 cannot contain nominal sharp rectangle; enclosing circle exceeds allowed width. Neither is an approved correction"
+    }
+  ],
+  "copper_impact": "Current circle diameter2.4 does not contain sharp nominal rectangle corners; prior calculated radial excess0.2212670404. Do not assume an annulus or simply change the drill.",
+  "reused_calculation": "prior-comparison.json; already completed, not rerun",
+  "required_facts": [
+    "Manufacturer applicable mounting-tab cross-section/profile and tolerance or accepted rounded-opening drawing",
+    "Allowable corner radius and opening manufacturing method",
+    "Finished-hole tolerance and plating state",
+    "Copper/annulus or no-copper requirement for mounting tabs",
+    "Registered PCB viewing face, opening axes and shaft-origin relationship"
+  ],
+  "separate_later_gates": [
+    "Seating",
+    "Panel/board spacing",
+    "Shaft reach",
+    "Installed retention"
+  ],
+  "variant_paths": [
+    "osc/approved-dev-baseline-07ac1be8-20261026/after/UNI_ROYAL/BA1/candidate/footprints/zudo-osc-hole-field.pretty/PTV09A-4020F.kicad_mod",
+    "osc/approved-dev-baseline-07ac1be8-20261026/after/UNI_ROYAL/RevP/candidate/footprints/zudo-osc-hole-field.pretty/PTV09A-4020F.kicad_mod",
+    "osc/approved-dev-baseline-07ac1be8-20261026/after/YAGEO/BA1/candidate/footprints/zudo-osc-hole-field.pretty/PTV09A-4020F.kicad_mod",
+    "osc/approved-dev-baseline-07ac1be8-20261026/after/YAGEO/RevP/candidate/footprints/zudo-osc-hole-field.pretty/PTV09A-4020F.kicad_mod"
+  ]
+}
