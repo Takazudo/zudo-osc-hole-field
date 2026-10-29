@@ -1,0 +1,5643 @@
+{
+  "scope": "Historical source distinction only; no canonical adoption or analog equivalence",
+  "provenance": {
+    "repository_base": "02d69fbd4ee4712ac2587b2d00e160d7a1a43e54 (received source snapshot, no Git ancestry imported)",
+    "candidate_authority": "approved-dev-baseline-07ac1be8-20261026; four nonadditive alternatives",
+    "comparison_packet_sha256": "1c0116fe70913a98c87b739acbb9652ab8cc892eb1ae78b36af922b40fc6564e",
+    "input_sha256": {
+      "UNI_ROYAL/BA1/candidate-bom.csv": "eb848c664161fd2f5a2dbb6436dd53a843d58aff6ca869d206242cfa285f7fc9",
+      "UNI_ROYAL/BA1/candidate-pin-map.csv": "9de34cf26c95e096d27b06bb367310057aba623da6c385dc423c16a32e2cc55e",
+      "UNI_ROYAL/RevP/candidate-bom.csv": "de6a913378cbd3a32e9683fee32b3186f68fe5086e96b09b041968952ad28008",
+      "UNI_ROYAL/RevP/candidate-pin-map.csv": "9de34cf26c95e096d27b06bb367310057aba623da6c385dc423c16a32e2cc55e",
+      "YAGEO/BA1/candidate-bom.csv": "d8dfda6a7b92c0ce3757c0f94e48c854a37df189559c78e49acdde107a253153",
+      "YAGEO/BA1/candidate-pin-map.csv": "9de34cf26c95e096d27b06bb367310057aba623da6c385dc423c16a32e2cc55e",
+      "YAGEO/RevP/candidate-bom.csv": "86da3d744d097758e0836929c9b77657dcaedc17422c5a867b65e421360854f1",
+      "YAGEO/RevP/candidate-pin-map.csv": "9de34cf26c95e096d27b06bb367310057aba623da6c385dc423c16a32e2cc55e",
+      "design/spec/modules/sample_hold.py": "0fa352022e5ea991866dd8583042932da382f66aec17110de07e1fcf569fe45a",
+      "design/spec/modules/io_partition.py": "3372b2b650e34d0323c080ec094715c2ed44864418864db3b95a84eb82f18980"
+    }
+  },
+  "repository": {
+    "ic_packages": 38,
+    "channels": [
+      {
+        "instance": "H1",
+        "ref": "U102",
+        "unit": 1,
+        "device": "OPA4197IPWR",
+        "spare": false,
+        "nets": [
+          "C5195c0_PRE_OUT",
+          "C5195c0_PRE_OUT",
+          "RAW_HELD"
+        ],
+        "region": "control"
+      },
+      {
+        "instance": "H1",
+        "ref": "U102",
+        "unit": 2,
+        "device": "OPA4197IPWR",
+        "spare": false,
+        "nets": [
+          "SLEW_BUFFERED",
+          "SLEW_BUFFERED",
+          "SLEW_STORAGE"
+        ],
+        "region": "control"
+      },
+      {
+        "instance": "H1",
+        "ref": "U102",
+        "unit": 3,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "control"
+      },
+      {
+        "instance": "H1",
+        "ref": "U102",
+        "unit": 4,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "control"
+      },
+      {
+        "instance": "H1",
+        "ref": "U103",
+        "unit": 1,
+        "device": "OPA4197IPWR",
+        "spare": false,
+        "nets": [
+          "REF_5V",
+          "REF_5V",
+          "Cdc0c61_RAW_5V"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U103",
+        "unit": 2,
+        "device": "OPA4197IPWR",
+        "spare": false,
+        "nets": [
+          "REF_N5V",
+          "Cdc0c61_INV",
+          "AGND"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U103",
+        "unit": 3,
+        "device": "OPA4197IPWR",
+        "spare": false,
+        "nets": [
+          "GATE_REF",
+          "GATE_REF",
+          "Cdc0c61_GATE_RAW"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U103",
+        "unit": 4,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U104",
+        "unit": 1,
+        "device": "OPA4197IPWR",
+        "spare": false,
+        "nets": [
+          "C1979a1_DRIVE",
+          "C1979a1_FB",
+          "SLEW_BUFFERED"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H1",
+        "ref": "U104",
+        "unit": 2,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H1",
+        "ref": "U104",
+        "unit": 3,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H1",
+        "ref": "U104",
+        "unit": 4,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H1",
+        "ref": "U106",
+        "unit": 1,
+        "device": "OPA4196IDR",
+        "spare": false,
+        "nets": [
+          "TRIGGER_BUFFERED",
+          "TRIGGER_BUFFERED",
+          "Ce0e057_SENSE"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H1",
+        "ref": "U106",
+        "unit": 2,
+        "device": "OPA4196IDR",
+        "spare": false,
+        "nets": [
+          "IN_BUFFERED",
+          "IN_BUFFERED",
+          "C267eb3_SENSE"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H1",
+        "ref": "U106",
+        "unit": 3,
+        "device": "OPA4196IDR",
+        "spare": false,
+        "nets": [
+          "C07a7c2_DRIVE",
+          "C07a7c2_SENSE",
+          "TRIGGER_BUFFERED"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H1",
+        "ref": "U106",
+        "unit": 4,
+        "device": "OPA4196IDR",
+        "spare": false,
+        "nets": [
+          "Ca073c3_DRIVE",
+          "Ca073c3_SENSE",
+          "IN_BUFFERED"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H1",
+        "ref": "U110",
+        "unit": 1,
+        "device": "OPA4196IDR",
+        "spare": false,
+        "nets": [
+          "C372c4e_DRIVE",
+          "C372c4e_SENSE",
+          "SLEW_BUFFERED"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H1",
+        "ref": "U110",
+        "unit": 2,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H1",
+        "ref": "U110",
+        "unit": 3,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H1",
+        "ref": "U110",
+        "unit": 4,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H1",
+        "ref": "U112",
+        "unit": 1,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U112",
+        "unit": 2,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U112",
+        "unit": 3,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U112",
+        "unit": 4,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U113",
+        "unit": 1,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U113",
+        "unit": 2,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U113",
+        "unit": 3,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U113",
+        "unit": 4,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U116",
+        "unit": 1,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U116",
+        "unit": 2,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U116",
+        "unit": 3,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U116",
+        "unit": 4,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U117",
+        "unit": 1,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U117",
+        "unit": 2,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U117",
+        "unit": 3,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U117",
+        "unit": 4,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U118",
+        "unit": 1,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U118",
+        "unit": 2,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U118",
+        "unit": 3,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U118",
+        "unit": 4,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U119",
+        "unit": 1,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U119",
+        "unit": 2,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U119",
+        "unit": 3,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H1",
+        "ref": "U119",
+        "unit": 4,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U202",
+        "unit": 1,
+        "device": "OPA4197IPWR",
+        "spare": false,
+        "nets": [
+          "C5195c0_PRE_OUT",
+          "C5195c0_PRE_OUT",
+          "RAW_HELD"
+        ],
+        "region": "control"
+      },
+      {
+        "instance": "H2",
+        "ref": "U202",
+        "unit": 2,
+        "device": "OPA4197IPWR",
+        "spare": false,
+        "nets": [
+          "SLEW_BUFFERED",
+          "SLEW_BUFFERED",
+          "SLEW_STORAGE"
+        ],
+        "region": "control"
+      },
+      {
+        "instance": "H2",
+        "ref": "U202",
+        "unit": 3,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "control"
+      },
+      {
+        "instance": "H2",
+        "ref": "U202",
+        "unit": 4,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "control"
+      },
+      {
+        "instance": "H2",
+        "ref": "U203",
+        "unit": 1,
+        "device": "OPA4197IPWR",
+        "spare": false,
+        "nets": [
+          "REF_5V",
+          "REF_5V",
+          "Cdc0c61_RAW_5V"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U203",
+        "unit": 2,
+        "device": "OPA4197IPWR",
+        "spare": false,
+        "nets": [
+          "REF_N5V",
+          "Cdc0c61_INV",
+          "AGND"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U203",
+        "unit": 3,
+        "device": "OPA4197IPWR",
+        "spare": false,
+        "nets": [
+          "GATE_REF",
+          "GATE_REF",
+          "Cdc0c61_GATE_RAW"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U203",
+        "unit": 4,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U204",
+        "unit": 1,
+        "device": "OPA4197IPWR",
+        "spare": false,
+        "nets": [
+          "C1979a1_DRIVE",
+          "C1979a1_FB",
+          "SLEW_BUFFERED"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H2",
+        "ref": "U204",
+        "unit": 2,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H2",
+        "ref": "U204",
+        "unit": 3,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H2",
+        "ref": "U204",
+        "unit": 4,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H2",
+        "ref": "U206",
+        "unit": 1,
+        "device": "OPA4196IDR",
+        "spare": false,
+        "nets": [
+          "TRIGGER_BUFFERED",
+          "TRIGGER_BUFFERED",
+          "Ce0e057_SENSE"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H2",
+        "ref": "U206",
+        "unit": 2,
+        "device": "OPA4196IDR",
+        "spare": false,
+        "nets": [
+          "IN_BUFFERED",
+          "IN_BUFFERED",
+          "C267eb3_SENSE"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H2",
+        "ref": "U206",
+        "unit": 3,
+        "device": "OPA4196IDR",
+        "spare": false,
+        "nets": [
+          "C07a7c2_DRIVE",
+          "C07a7c2_SENSE",
+          "TRIGGER_BUFFERED"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H2",
+        "ref": "U206",
+        "unit": 4,
+        "device": "OPA4196IDR",
+        "spare": false,
+        "nets": [
+          "Ca073c3_DRIVE",
+          "Ca073c3_SENSE",
+          "IN_BUFFERED"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H2",
+        "ref": "U210",
+        "unit": 1,
+        "device": "OPA4196IDR",
+        "spare": false,
+        "nets": [
+          "C372c4e_DRIVE",
+          "C372c4e_SENSE",
+          "SLEW_BUFFERED"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H2",
+        "ref": "U210",
+        "unit": 2,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H2",
+        "ref": "U210",
+        "unit": 3,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H2",
+        "ref": "U210",
+        "unit": 4,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "jack"
+      },
+      {
+        "instance": "H2",
+        "ref": "U212",
+        "unit": 1,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U212",
+        "unit": 2,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U212",
+        "unit": 3,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U212",
+        "unit": 4,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U213",
+        "unit": 1,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U213",
+        "unit": 2,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U213",
+        "unit": 3,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U213",
+        "unit": 4,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U216",
+        "unit": 1,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U216",
+        "unit": 2,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U216",
+        "unit": 3,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U216",
+        "unit": 4,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U217",
+        "unit": 1,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U217",
+        "unit": 2,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U217",
+        "unit": 3,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U217",
+        "unit": 4,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U218",
+        "unit": 1,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U218",
+        "unit": 2,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U218",
+        "unit": 3,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U218",
+        "unit": 4,
+        "device": "OPA4197IPWR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U219",
+        "unit": 1,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U219",
+        "unit": 2,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U219",
+        "unit": 3,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      },
+      {
+        "instance": "H2",
+        "ref": "U219",
+        "unit": 4,
+        "device": "OPA4196IDR",
+        "spare": true,
+        "nets": [
+          "GROUNDED_FOLLOWER"
+        ],
+        "region": "core"
+      }
+    ],
+    "supplies": [
+      {
+        "instance": "H1",
+        "ref": "U102",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H1",
+        "ref": "U103",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H1",
+        "ref": "U104",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H1",
+        "ref": "U106",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H1",
+        "ref": "U110",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H1",
+        "ref": "U112",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H1",
+        "ref": "U113",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H1",
+        "ref": "U116",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H1",
+        "ref": "U117",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H1",
+        "ref": "U118",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H1",
+        "ref": "U119",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H2",
+        "ref": "U202",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H2",
+        "ref": "U203",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H2",
+        "ref": "U204",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H2",
+        "ref": "U206",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H2",
+        "ref": "U210",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H2",
+        "ref": "U212",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H2",
+        "ref": "U213",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H2",
+        "ref": "U216",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H2",
+        "ref": "U217",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H2",
+        "ref": "U218",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "instance": "H2",
+        "ref": "U219",
+        "unit": 5,
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      }
+    ]
+  },
+  "variants": {
+    "UNI_ROYAL/BA1": {
+      "ic_packages": 26,
+      "channels": [
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "C5195c0_PRE_OUT",
+            "C5195c0_PRE_OUT",
+            "RAW_HELD"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "SLEW_BUFFERED",
+            "SLEW_BUFFERED",
+            "SLEW_STORAGE"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "REF_5V",
+            "REF_5V",
+            "Cdc0c61_RAW_5V"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "REF_N5V",
+            "Cdc0c61_INV",
+            "AGND"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "GATE_REF",
+            "GATE_REF",
+            "Cdc0c61_GATE_RAW"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "C1979a1_DRIVE",
+            "C1979a1_FB",
+            "SLEW_BUFFERED"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 1,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "TRIGGER_BUFFERED",
+            "TRIGGER_BUFFERED",
+            "Ce0e057_SENSE"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 2,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "IN_BUFFERED",
+            "IN_BUFFERED",
+            "C267eb3_SENSE"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 3,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "C07a7c2_DRIVE",
+            "C07a7c2_SENSE",
+            "TRIGGER_BUFFERED"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 4,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "Ca073c3_DRIVE",
+            "Ca073c3_SENSE",
+            "IN_BUFFERED"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 1,
+          "device": "TL074HIDR",
+          "spare": false,
+          "nets": [
+            "C372c4e_DRIVE",
+            "C372c4e_SENSE",
+            "SLEW_BUFFERED"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 2,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 3,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 4,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "C5195c0_PRE_OUT",
+            "C5195c0_PRE_OUT",
+            "RAW_HELD"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "SLEW_BUFFERED",
+            "SLEW_BUFFERED",
+            "SLEW_STORAGE"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "REF_5V",
+            "REF_5V",
+            "Cdc0c61_RAW_5V"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "REF_N5V",
+            "Cdc0c61_INV",
+            "AGND"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "GATE_REF",
+            "GATE_REF",
+            "Cdc0c61_GATE_RAW"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "C1979a1_DRIVE",
+            "C1979a1_FB",
+            "SLEW_BUFFERED"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 1,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "TRIGGER_BUFFERED",
+            "TRIGGER_BUFFERED",
+            "Ce0e057_SENSE"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 2,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "IN_BUFFERED",
+            "IN_BUFFERED",
+            "C267eb3_SENSE"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 3,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "C07a7c2_DRIVE",
+            "C07a7c2_SENSE",
+            "TRIGGER_BUFFERED"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 4,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "Ca073c3_DRIVE",
+            "Ca073c3_SENSE",
+            "IN_BUFFERED"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 1,
+          "device": "TL074HIDR",
+          "spare": false,
+          "nets": [
+            "C372c4e_DRIVE",
+            "C372c4e_SENSE",
+            "SLEW_BUFFERED"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 2,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 3,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 4,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        }
+      ],
+      "supplies": [
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        }
+      ]
+    },
+    "UNI_ROYAL/RevP": {
+      "ic_packages": 26,
+      "channels": [
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "C5195c0_PRE_OUT",
+            "C5195c0_PRE_OUT",
+            "RAW_HELD"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "SLEW_BUFFERED",
+            "SLEW_BUFFERED",
+            "SLEW_STORAGE"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "REF_5V",
+            "REF_5V",
+            "Cdc0c61_RAW_5V"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "REF_N5V",
+            "Cdc0c61_INV",
+            "AGND"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "GATE_REF",
+            "GATE_REF",
+            "Cdc0c61_GATE_RAW"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "C1979a1_DRIVE",
+            "C1979a1_FB",
+            "SLEW_BUFFERED"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 1,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "TRIGGER_BUFFERED",
+            "TRIGGER_BUFFERED",
+            "Ce0e057_SENSE"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 2,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "IN_BUFFERED",
+            "IN_BUFFERED",
+            "C267eb3_SENSE"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 3,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "C07a7c2_DRIVE",
+            "C07a7c2_SENSE",
+            "TRIGGER_BUFFERED"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 4,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "Ca073c3_DRIVE",
+            "Ca073c3_SENSE",
+            "IN_BUFFERED"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 1,
+          "device": "TL074HIDR",
+          "spare": false,
+          "nets": [
+            "C372c4e_DRIVE",
+            "C372c4e_SENSE",
+            "SLEW_BUFFERED"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 2,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 3,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 4,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "C5195c0_PRE_OUT",
+            "C5195c0_PRE_OUT",
+            "RAW_HELD"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "SLEW_BUFFERED",
+            "SLEW_BUFFERED",
+            "SLEW_STORAGE"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "REF_5V",
+            "REF_5V",
+            "Cdc0c61_RAW_5V"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "REF_N5V",
+            "Cdc0c61_INV",
+            "AGND"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "GATE_REF",
+            "GATE_REF",
+            "Cdc0c61_GATE_RAW"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "C1979a1_DRIVE",
+            "C1979a1_FB",
+            "SLEW_BUFFERED"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 1,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "TRIGGER_BUFFERED",
+            "TRIGGER_BUFFERED",
+            "Ce0e057_SENSE"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 2,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "IN_BUFFERED",
+            "IN_BUFFERED",
+            "C267eb3_SENSE"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 3,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "C07a7c2_DRIVE",
+            "C07a7c2_SENSE",
+            "TRIGGER_BUFFERED"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 4,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "Ca073c3_DRIVE",
+            "Ca073c3_SENSE",
+            "IN_BUFFERED"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 1,
+          "device": "TL074HIDR",
+          "spare": false,
+          "nets": [
+            "C372c4e_DRIVE",
+            "C372c4e_SENSE",
+            "SLEW_BUFFERED"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 2,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 3,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 4,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        }
+      ],
+      "supplies": [
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        }
+      ]
+    },
+    "YAGEO/BA1": {
+      "ic_packages": 26,
+      "channels": [
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "C5195c0_PRE_OUT",
+            "C5195c0_PRE_OUT",
+            "RAW_HELD"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "SLEW_BUFFERED",
+            "SLEW_BUFFERED",
+            "SLEW_STORAGE"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "REF_5V",
+            "REF_5V",
+            "Cdc0c61_RAW_5V"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "REF_N5V",
+            "Cdc0c61_INV",
+            "AGND"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "GATE_REF",
+            "GATE_REF",
+            "Cdc0c61_GATE_RAW"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "C1979a1_DRIVE",
+            "C1979a1_FB",
+            "SLEW_BUFFERED"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 1,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "TRIGGER_BUFFERED",
+            "TRIGGER_BUFFERED",
+            "Ce0e057_SENSE"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 2,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "IN_BUFFERED",
+            "IN_BUFFERED",
+            "C267eb3_SENSE"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 3,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "C07a7c2_DRIVE",
+            "C07a7c2_SENSE",
+            "TRIGGER_BUFFERED"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 4,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "Ca073c3_DRIVE",
+            "Ca073c3_SENSE",
+            "IN_BUFFERED"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 1,
+          "device": "TL074HIDR",
+          "spare": false,
+          "nets": [
+            "C372c4e_DRIVE",
+            "C372c4e_SENSE",
+            "SLEW_BUFFERED"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 2,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 3,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 4,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "C5195c0_PRE_OUT",
+            "C5195c0_PRE_OUT",
+            "RAW_HELD"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "SLEW_BUFFERED",
+            "SLEW_BUFFERED",
+            "SLEW_STORAGE"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "REF_5V",
+            "REF_5V",
+            "Cdc0c61_RAW_5V"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "REF_N5V",
+            "Cdc0c61_INV",
+            "AGND"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "GATE_REF",
+            "GATE_REF",
+            "Cdc0c61_GATE_RAW"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "C1979a1_DRIVE",
+            "C1979a1_FB",
+            "SLEW_BUFFERED"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 1,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "TRIGGER_BUFFERED",
+            "TRIGGER_BUFFERED",
+            "Ce0e057_SENSE"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 2,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "IN_BUFFERED",
+            "IN_BUFFERED",
+            "C267eb3_SENSE"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 3,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "C07a7c2_DRIVE",
+            "C07a7c2_SENSE",
+            "TRIGGER_BUFFERED"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 4,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "Ca073c3_DRIVE",
+            "Ca073c3_SENSE",
+            "IN_BUFFERED"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 1,
+          "device": "TL074HIDR",
+          "spare": false,
+          "nets": [
+            "C372c4e_DRIVE",
+            "C372c4e_SENSE",
+            "SLEW_BUFFERED"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 2,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 3,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 4,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        }
+      ],
+      "supplies": [
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        }
+      ]
+    },
+    "YAGEO/RevP": {
+      "ic_packages": 26,
+      "channels": [
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "C5195c0_PRE_OUT",
+            "C5195c0_PRE_OUT",
+            "RAW_HELD"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "SLEW_BUFFERED",
+            "SLEW_BUFFERED",
+            "SLEW_STORAGE"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "REF_5V",
+            "REF_5V",
+            "Cdc0c61_RAW_5V"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "REF_N5V",
+            "Cdc0c61_INV",
+            "AGND"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "GATE_REF",
+            "GATE_REF",
+            "Cdc0c61_GATE_RAW"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "C1979a1_DRIVE",
+            "C1979a1_FB",
+            "SLEW_BUFFERED"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 1,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "TRIGGER_BUFFERED",
+            "TRIGGER_BUFFERED",
+            "Ce0e057_SENSE"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 2,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "IN_BUFFERED",
+            "IN_BUFFERED",
+            "C267eb3_SENSE"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 3,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "C07a7c2_DRIVE",
+            "C07a7c2_SENSE",
+            "TRIGGER_BUFFERED"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 4,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "Ca073c3_DRIVE",
+            "Ca073c3_SENSE",
+            "IN_BUFFERED"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 1,
+          "device": "TL074HIDR",
+          "spare": false,
+          "nets": [
+            "C372c4e_DRIVE",
+            "C372c4e_SENSE",
+            "SLEW_BUFFERED"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 2,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 3,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 4,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/6e099b12-5867-513b-bb9f-e79ea0d70ad2"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "C5195c0_PRE_OUT",
+            "C5195c0_PRE_OUT",
+            "RAW_HELD"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "SLEW_BUFFERED",
+            "SLEW_BUFFERED",
+            "SLEW_STORAGE"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "REF_5V",
+            "REF_5V",
+            "Cdc0c61_RAW_5V"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "REF_N5V",
+            "Cdc0c61_INV",
+            "AGND"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "GATE_REF",
+            "GATE_REF",
+            "Cdc0c61_GATE_RAW"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 1,
+          "device": "OPA4197IPWR",
+          "spare": false,
+          "nets": [
+            "C1979a1_DRIVE",
+            "C1979a1_FB",
+            "SLEW_BUFFERED"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 2,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 3,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 4,
+          "device": "OPA4197IPWR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 1,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "TRIGGER_BUFFERED",
+            "TRIGGER_BUFFERED",
+            "Ce0e057_SENSE"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 2,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "IN_BUFFERED",
+            "IN_BUFFERED",
+            "C267eb3_SENSE"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 3,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "C07a7c2_DRIVE",
+            "C07a7c2_SENSE",
+            "TRIGGER_BUFFERED"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 4,
+          "device": "OPA4196IDR",
+          "spare": false,
+          "nets": [
+            "Ca073c3_DRIVE",
+            "Ca073c3_SENSE",
+            "IN_BUFFERED"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 1,
+          "device": "TL074HIDR",
+          "spare": false,
+          "nets": [
+            "C372c4e_DRIVE",
+            "C372c4e_SENSE",
+            "SLEW_BUFFERED"
+          ],
+          "pin_scopes": {
+            "1": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "2": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "3": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 2,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "7": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "6": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "5": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 3,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "8": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "9": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "10": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 4,
+          "device": "TL074HIDR",
+          "spare": true,
+          "nets": [
+            "GROUNDED_FOLLOWER"
+          ],
+          "pin_scopes": {
+            "14": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "13": [
+              "NET",
+              "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/3a5a8bad-f437-5604-932b-931e72fc3576"
+            ],
+            "12": [
+              "NET",
+              "GLOBAL"
+            ]
+          }
+        }
+      ],
+      "supplies": [
+        {
+          "instance": "H1",
+          "ref": "U102",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U103",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U104",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U106",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H1",
+          "ref": "U110",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U202",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U203",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U204",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U206",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        },
+        {
+          "instance": "H2",
+          "ref": "U210",
+          "unit": 5,
+          "pins": {
+            "4": "+12V",
+            "11": "-12V"
+          }
+        }
+      ]
+    }
+  }
+}
