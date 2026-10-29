@@ -1,0 +1,35 @@
+OPA4196 compact-mapping development proposal — 2026-10-29
+
+Recommendation: advance this named alternative for development review. Retaining the repository's original OPA4196IDR at U110/U210 avoids the additional, unqualified TL074H substitution while preserving the compact mapping. This is a proposal, not adoption or physical qualification. All four received alternatives remain untouched and mutually exclusive.
+
+Concrete choice
+A. Existing alternatives: U110 and U210 are TL074HIDR (two quad packages).
+B. Proposed overlay: those same two packages become OPA4196IDR. All other components, electrical pins/nets, footprint assignments and placement are preserved. H1/H2 remain 13 IC packages each; the 12 removed spare-only repository packages are not restored. No PCB is generated or edited.
+Both use the existing SOIC-14_3.9x8.7mm_P1.27mm footprint. The cached symbols have equal electrical pin geometry. OPA4196 identity and historical LCSC C2057385 are taken from the received candidate's U106; this is not a current stock, price or procurement approval. Cost difference and live availability remain unknown. A low-cost preference alone does not establish TL074H suitability.
+
+Why this advances the engineering decision
+At the source's +/-12 V rails and nominal +/-5 V monitor signal, the stricter TL074H recommended input range is -8 to +12.1 V. Nominal operation fits, but a -10 V excursion does not. OPA4196 has rail-to-rail input capability; restoring it removes that particular TL074H limitation. This does not prove clipping/recovery behavior of either nonlinear bridge loop.
+TI typical per-channel quiescent currents are 0.9375 mA for TL074H and 0.14 mA for OPA4196. The two-quad arithmetic difference is 8*(0.9375-0.14)=6.38 mA. This is a datasheet-typical comparison, not a measured current or guaranteed whole-board power saving.
+The actual magnitude loop uses R128/R228=5.6 kohm, four BAS16GW-QX diodes and APHHS1005QWF/D LED. At a 5 V command, nominal sense current is 0.893 mA. Returning the original amplifier preserves circuit function/connectivity, but does not establish analog equivalence, zero-crossing dead band, saturation recovery, cold forward-drop margin or nonlinear-loop stability. The existing bridge analysis and missing qualified transient models remain applicable. No invented simulation model is used.
+
+Primary evidence (previously reviewed; no new fetch or research)
+TI TL074H, SLOS080W July 2025, printed pp11-13, recommended conditions/electrical characteristics: https://www.ti.com/lit/gpn/TL074H
+Retained PDF SHA256 13366ea85bacfe27406b66acc57e9163a5e4bc5138c319591f19dbe957fdc54f.
+TI OPA4196, SBOS869 July 2017, electrical characteristics and capacitive-load discussion p22: https://www.ti.com/lit/ds/symlink/opa4196.pdf
+Retained repository circuit/sources/ic-library/OPA4196.pdf.
+Source loop: scripts/schgen source and received candidate/source-records/candidate-pin-map.csv U110/U210, R128/R228, DH113..116/DH213..216, D709/D710; electrical-standard.json magnitude_indicator defines nominal +/-5 V indicator intent. This packet reuses osc-u110-driver-assessment-20261029 and osc-bridge-model-bounds-20261029 findings rather than repeating their checks.
+
+Patch scope and provenance
+Input root: osc/approved-dev-baseline-07ac1be8-20261026/after.
+Four separately named overlays: UNI_ROYAL/BA1, UNI_ROYAL/RevP, YAGEO/BA1, YAGEO/RevP. Each patch changes exactly five files: sample_hold schematic plus candidate BOM, pin-map, source-facts and unadopted-procurement view. The five shared schematic units instantiate exactly U110/U210. Only device identity/datasheet and explicit proposal marker are changed; each symbol edit reverses exactly. CSV edits are confined to mpn/value/lib_id/lcsc for those references; all pin/net and other fields and row counts remain invariant.
+Original source archive SHA256: c1983dd86f7cc9c8a42d80fac61cc000ab68547c5d012608c5a164c2600a3e3b. Per-file original and proposed SHA256 identities are in patches/checks.json.
+This is a narrow overlay, not a regenerated complete release. Inherited substitution ledgers, DEVELOPMENT-BASELINE and prior check receipts remain historical. They must not be represented as validation of this proposed overlay. This document supersedes only the U110/U210 device proposal for review. Original H-packing regression fixtures intentionally retain TL074H for the original four variants; do not change their goldens to silently adopt this alternative.
+
+Reproduce (Python standard library; no native KiCad)
+python3 build_proposal.py RECEIVED_REPOSITORY RECEIVED_AFTER OUTPUT_DIRECTORY
+The builder emits diffs without mutating input. It asserts cached pin geometry, exact shared-instance scope, reverse-edit identity, CSV field constraints and row counts.
+Application check: patch --batch --fuzz=0 -p1 -i PATCH on a disposable copy of each variant's five files. All four passed and all 20 output hashes matched checks.json; original byte hashes remained unchanged. See patch-application-checks.json. These checks establish source-edit scope, not board/analog qualification.
+
+WSL handoff
+Import this packet as proposal evidence/scripts/patches only and commit that scoped addition in the legitimate local repository. Do not apply to a selected variant or change canonical CAD/BOM during import. No Git history export or fabricated cloud commit is needed. Any later development evaluation must name the exact base variant and this overlay separately.
+Remaining decision: whether to advance the two-OPA4196 compact candidate for development. Manufacturer/engineering qualification of the bridge at actual extremes, and sourcing/price review, remain required before hardware acceptance. No native checks, physical operations or manufacturing are authorized by this proposal.

@@ -1,0 +1,58 @@
+[
+  {
+    "variant": "UNI_ROYAL/BA1",
+    "result": "PASS",
+    "command": [
+      "patch",
+      "--batch",
+      "--fuzz=0",
+      "-p1",
+      "-i",
+      "/workspace/osc-receipt/opa-compact-proposal-20261029/patches/UNI_ROYAL-BA1.patch"
+    ],
+    "stdout": "patching file candidate/rendered/variant/sheets/sample_hold.kicad_sch\npatching file candidate/source-records/candidate-bom.csv\npatching file candidate/source-records/candidate-pin-map.csv\npatching file views/source-facts.csv\npatching file views/unadopted-procurement-candidate.csv\n",
+    "checks": "five exact output hashes; original hashes unchanged; zero fuzz; disposable copy only"
+  },
+  {
+    "variant": "UNI_ROYAL/RevP",
+    "result": "PASS",
+    "command": [
+      "patch",
+      "--batch",
+      "--fuzz=0",
+      "-p1",
+      "-i",
+      "/workspace/osc-receipt/opa-compact-proposal-20261029/patches/UNI_ROYAL-RevP.patch"
+    ],
+    "stdout": "patching file candidate/rendered/variant/sheets/sample_hold.kicad_sch\npatching file candidate/source-records/candidate-bom.csv\npatching file candidate/source-records/candidate-pin-map.csv\npatching file views/source-facts.csv\npatching file views/unadopted-procurement-candidate.csv\n",
+    "checks": "five exact output hashes; original hashes unchanged; zero fuzz; disposable copy only"
+  },
+  {
+    "variant": "YAGEO/BA1",
+    "result": "PASS",
+    "command": [
+      "patch",
+      "--batch",
+      "--fuzz=0",
+      "-p1",
+      "-i",
+      "/workspace/osc-receipt/opa-compact-proposal-20261029/patches/YAGEO-BA1.patch"
+    ],
+    "stdout": "patching file candidate/rendered/variant/sheets/sample_hold.kicad_sch\npatching file candidate/source-records/candidate-bom.csv\npatching file candidate/source-records/candidate-pin-map.csv\npatching file views/source-facts.csv\npatching file views/unadopted-procurement-candidate.csv\n",
+    "checks": "five exact output hashes; original hashes unchanged; zero fuzz; disposable copy only"
+  },
+  {
+    "variant": "YAGEO/RevP",
+    "result": "PASS",
+    "command": [
+      "patch",
+      "--batch",
+      "--fuzz=0",
+      "-p1",
+      "-i",
+      "/workspace/osc-receipt/opa-compact-proposal-20261029/patches/YAGEO-RevP.patch"
+    ],
+    "stdout": "patching file candidate/rendered/variant/sheets/sample_hold.kicad_sch\npatching file candidate/source-records/candidate-bom.csv\npatching file candidate/source-records/candidate-pin-map.csv\npatching file views/source-facts.csv\npatching file views/unadopted-procurement-candidate.csv\n",
+    "checks": "five exact output hashes; original hashes unchanged; zero fuzz; disposable copy only"
+  }
+]
