@@ -287,6 +287,113 @@ mid-list insertion renumbered core parts and split island IO_JACK:O1.
 - Harness and pin allocation (#52/#54) is open.
 - The SN74LVC1G17 output-current rating is not promoted.
 
+## Phase 11 readiness (P59-B quad packing, P59-C permit block)
+
+Both patches were applied to scratch worktrees at 99d9ff60 and regenerated with the
+phase-10 procedure (regen-all, master netlist export, `audit_master.py`, every module
+current worksheet, `regen-master-reports.sh`, `--check`).
+
+| Proposal | Patch (unapplied) | First failing gate | Readiness |
+| --- | --- | --- | --- |
+| P59-B v2 | `patches/p59b-precision-output-isolation.patch` | `partition35_floorplan.py`: **jack locality overflow JR D4602** | **Not ready**: fit conflict plus a contract change |
+| P59-C v2 | `patches/p59c-input-enable-permit.patch` | `connector_packing35.py`: jack-board header site list exhausted | **Not ready**: harness allocation needs a floorplan decision |
+
+### P59-B v2
+
+**What the patch does.**
+
+- `precision_output` gets one ADG5412F package: channel 1 for the main path and channel 2
+  for the sense path. It also gets R_FB 2.74 kΩ on the jack side, R_LOCAL 10 MΩ,
+  C_FAST 10 nF and R_EN/R_DRIVE.
+- `general_output` gets one channel.
+- `io_partition.refine` packs output-isolation channels into quads per module and board
+  region, and removes surplus packages with their bypasses.
+- Input fault-switch packages are **not** shared with output channels. No retained fact
+  covers how a fault on one channel interacts with the others.
+- `protection58.py` accepts the P59-B sense path and counts only the non-output packages
+  as existing.
+- The patch includes the contract values that the ledger requires (below).
+
+**Package count and supply cost (CALCULATED).**
+
+| Item | Value |
+| --- | --- |
+| Physical ADG5412F quads | 110 → 147 (+37) |
+| Ledger delta, from the module worksheets at the 1.3 / 0.7 mA quad planning unit (`fact-fault-switch-normal-idd`, ±15 V table) | +46.80 mA on +12 V, +25.20 mA on −12 V |
+| Two manual_ab core quads | `general_output` is reused there as an internal selector buffer, so P59-B also isolates a non-jack path. That needs its own review |
+| +5 V IN drive, not charged by the worksheets | 82 × 5.5 V / (101 kΩ × 0.99) = 4.5 mA. It fits inside the 20 mA auxiliary allowance |
+
+**Against the PD contract (CALCULATED by `build_supply_architecture.py`).**
+
+| Rail | HEAD normal → ×1.1, rounded | P59-B normal → ×1.1, rounded | Transient | PD maximum |
+| --- | --- | --- | --- | --- |
+| +12 V | 1534.82 → 1700 | 1581.62 → **1800** | 2000 → **2100** | 2100 |
+| −12 V | 1435.57 → 1600 | 1460.77 → **1700** | 1900 → **2000** | 2000 |
+| +5 V | 224.29 → 300 | 224.29 → 300 | 400 | 500 |
+
+- Before P59-B the +12 V headroom to the 1700 mA step is 10.6 mA of normal load, and the
+  −12 V headroom is 19 mA. Every packing of 82 isolated outputs crosses that step.
+- P59-B therefore needs continuous 1800 / 1700 mA. Its transient (2100 / 2000) leaves no
+  limiter window under the current maximum (2100 / 2000), so the gate
+  "limiter has no window above required transient" fails.
+- The trial variant sets maximum 2200 / 2100 mA as a PROPOSED value. The return sum is then
+  4.8 A, which is still inside the 5 A contact rating check.
+- This is a PD contract change, so it is a **user decision** and needs PD agreement.
+
+**Trial results.**
+
+- With that variant, the ledger, `build_supply_architecture.py` and protection58 pass.
+  The audit passes with 6201 components and +295 signal designators.
+- The trial then stops at `partition35_floorplan.py` with "jack locality overflow JR D4602".
+  The added output parts do not fit the JR jack-board locality around the fixed jacks.
+  Jacks stay fixed (project rule 1), so this is a **fit conflict**.
+- Stale receipts on adoption: the SPICE receipts for envelope, wavefolder and manual_ab hash
+  `io_partition.py`, and the panel current audit hashes `_builder.py`. They need model reruns.
+  **NOT RUN** in the trial.
+
+### P59-C v2
+
+**What the patch does.**
+
+- `ENABLE_OK` becomes a harness net. `input_fault_switch` R_DRIVE moves from +5V to it.
+- `io_partition` renames it per family to `ENABLE_OK_<FAMILY>`.
+- The power sheet instantiates the monitor/permit candidate:
+  - U101–U106, R101–R121, R125, C101–C110, with VN connected to −12V;
+  - the dummy sink Q101 and R122–R124 are removed;
+  - ten SN74LVC1G17 branch buffers (A = PERMIT_Q), each with a 100 nF bypass.
+- The rail-set unit tests ignore the branch nets.
+
+**Load (CALCULATED).**
+
+- 98 input channels × 5.5 V / (101 kΩ × 0.99) = 5.4 mA.
+- The largest branch is the oscillator: 20 channels, 1.10 mA.
+- Monitor block: +5 V 6.7 mA and +12 V 0.83 mA (`monitor-permit-current-report.json`
+  conservative screen, without R124), −12 V 0.31 mA.
+- Ten buffers at 10 µA quiescent each.
+- The total is ≤ 12.2 mA on +5 V. It fits inside the existing 20 mA auxiliary allowance, so
+  **no contract change** is needed.
+- The envelope SLOPE_SELECT and STORAGE_CLAMP switches are functional, not inputs, and stay
+  on their own drive.
+
+**Trial results.**
+
+- Module unit tests and the audit pass. The power parts lie outside the signal lock.
+- `connector_packing35.py` then fails with IndexError on the jack-board site list. Every new
+  conductor between a jack board and K needs a header contact. At HEAD, JL already uses
+  25 of its 25 sites with 0 spare contacts, so even one `ENABLE_OK` net overflows.
+
+**Options (user decision, #52/#54).**
+
+1. Add a JL/JR header site. This is a floorplan change.
+2. Generate the permit locally on each jack board. This needs a new evidenced circuit.
+3. Route `ENABLE_OK` through the JL–P utility headers. Their capacity is unchecked.
+
+**Evidence gaps.**
+
+- No SN74LVC1G17 VOH/IOH row is promoted, so the high level of a branch under its
+  ≤ 1.10 mA load is UNKNOWN.
+- The LVC default-LOW behaviour at intermediate supply is not established.
+
 ## Not covered
 
 - Return integrity (PRO item 2).

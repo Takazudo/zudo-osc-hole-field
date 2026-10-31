@@ -1,13 +1,169 @@
+diff --git a/design/power/supply-architecture-input.json b/design/power/supply-architecture-input.json
+index 69b06b0a..ffb5381d 100644
+--- a/design/power/supply-architecture-input.json
++++ b/design/power/supply-architecture-input.json
+@@ -2643,14 +2643,14 @@
+     "fault_policy": "Source current limit and coordinated all-rail shutdown must prevent indefinite partial supply. Reverse-current blocking on all source outputs, active discharge under supervision and rail monitors at load are required; actual circuit and measured response remain #52/#57.",
+     "voltage_band_note": "Shared AGND drop can raise one rail magnitude while reducing another. Check source maximum plus worst return shift against every upper load limit, not only subtraction at minimum.",
+     "maximum_delivered_current_mA": {
+-      "+12V": 2100,
+-      "-12V": 2000,
++      "+12V": 2200,
++      "-12V": 2100,
+       "+5V": 500
+     },
+     "current_limit_contract": "Selected source or inlet must deliver minimum transient requirements with a positive planning window to maximum_delivered_current_mA, then bound each rail including tolerance to that maximum and coordinate all-rail shutdown. The 100 mA windows are proposals, not proven realizable limiter tolerances. Maximums are interface limits, not device ratings. Unbounded overshoot/fault energy cannot be admitted by the contact/cable checker; actual limiter dynamics require #52 circuit evidence and #57 tests.",
+     "minimum_continuous_current_mA": {
+-      "+12V": 1700,
+-      "-12V": 1600,
++      "+12V": 1800,
++      "-12V": 1700,
+       "+5V": 300
+     }
+   },
+diff --git a/design/spec/cells/_builder.py b/design/spec/cells/_builder.py
+index a73d7fc8..1df6d486 100644
+--- a/design/spec/cells/_builder.py
++++ b/design/spec/cells/_builder.py
+@@ -22,7 +22,7 @@ for path in (ROOT/'symbols/src').glob('*.kicad_sym'):
+  if match:CATALOG[match.group(1)]=path.stem
+ 
+ PIN_ALIASES={
+- 'fault_switch':{'S':'3','D':'2','IN':'1','VDD':'13','VSS':'4','GND':'5'},
++ 'fault_switch':{'S':'3','D':'2','IN':'1','S2':'14','D2':'15','IN2':'16','VDD':'13','VSS':'4','GND':'5'},
+  'clamp_diode':{'A':'1','MID':'3','K':'2'},
+  'reference':{'VIN':'2','GND':'4','OUT':'6','TRIM':'5','TEMP':'3'},
+  'comparator':{'PLUS':'3','MINUS':'2','OUT':'1','VCC':'8','GND':'4'},
+@@ -100,9 +100,10 @@ def cell_parts(cell_id,panel_uid,nets=None,*,ordinal_start=1,instance_tag=''):
+  for ordinal,spec in enumerate(cell['parts'],ordinal_start):
+   part_id,record,symbol=resolve(spec);term=spec['terminals'];aliases=AMP if spec.get('opamp_role') else PIN_ALIASES.get(part_id,{})
+   assigned={aliases.get(key,key):net(value) for key,value in term.items()}
++  explicit=set(assigned)
+   if part_id=='fault_switch':
+    # Unused switch channels are off; FF is intentionally not connected.
+-   assigned.update({n:net('AGND') for n in ('14','15','16','11','10','9','6','7','8')})
++   assigned.update({n:net('AGND') for n in ('14','15','16','11','10','9','6','7','8') if n not in explicit})
+   if part_id=='reference':assigned.update({'1':None,'7':None,'8':None})
+   if part_id.startswith('pot_'):assigned.update({'4':None,'5':None})
+   key=namespace+'__'+re.sub('[^A-Za-z0-9_]','_',spec['ref'])
+@@ -126,7 +127,7 @@ def cell_parts(cell_id,panel_uid,nets=None,*,ordinal_start=1,instance_tag=''):
+     pins={'5':'AGND','6':'+5V','7':None}
+    if part_id=='schmitt' and unit in (2,3,4,5,6):
+     pins={pin.number:'AGND' if pin.electrical=='input' else None for pin in symbol.units[unit]}
+-   if part_id=='fault_switch' and unit in (2,3,4):pins={n:net('AGND') for n in pins}
++   if part_id=='fault_switch' and unit in (2,3,4) and not explicit&set(pins):pins={n:net('AGND') for n in pins}
+    x=50.8+((len(out))%7)*50.8;y=50.8+((len(out))//7)*25.4
+    out.append(Part(f'{key}.{unit}',symbol.lib_id,prefix,ordinal,unit,x,y,pins,value=_value(spec) or record['mpn'],footprint=footprint,attributes=attributes))
+  return tuple(out)
+diff --git a/design/spec/modules/io_partition.py b/design/spec/modules/io_partition.py
+index 72e84c8f..497ce8c1 100644
+--- a/design/spec/modules/io_partition.py
++++ b/design/spec/modules/io_partition.py
+@@ -13,6 +13,12 @@ JACK_CELLS = {'input_fault_switch', 'high_impedance_input', 'general_output',
+ CONTROL_CELLS = {'switch_button_input', 'stage_indicator', 'slew_island'}
+ AMP_MAPS = (('1','2','3'), ('7','6','5'), ('8','9','10'), ('14','13','12'))
+ SCHMITT_MAPS = (('2','1'), ('4','3'), ('6','5'), ('8','9'), ('10','11'), ('12','13'))
++# ADG5412F channel pins as (S, IN, D) per symbol unit; unit 5 holds supplies/FF.
++SWITCH_MAPS = (('3','1','2'), ('14','16','15'), ('11','9','10'), ('6','8','7'))
++# Only P59-B output isolation channels are packed. Input fault-switch packages
++# keep one dedicated package per jack: no evidence covers cross-channel fault
++# interaction, so input and output channels never share a package.
++PACKED_SWITCH_CELLS = ('general_output:', 'precision_output:')
+ 
+ 
+ def region(part, family):
+@@ -39,9 +45,16 @@ def spare(part):
+     if part.symbol.endswith('SN74HC14DR') and part.unit in range(1,7):
+         out, inp = SCHMITT_MAPS[part.unit-1]
+         return part.pins[out] is None and part.pins[inp] == 'AGND'
++    if part.symbol.endswith('ADG5412FBRUZ') and part.unit in range(1,5):
++        return all(part.pins[x] == 'AGND' for x in SWITCH_MAPS[part.unit-1])
+     return False
+ 
+ 
++def packed_switch(part):
++    return (part.symbol.endswith('ADG5412FBRUZ')
++            and part.attributes.get('Role', '').startswith(PACKED_SWITCH_CELLS))
++
++
+ def refined(function):
+     @wraps(function)
+     def wrapped(*args, **kwargs):
+@@ -69,14 +82,16 @@ def refine(family):
+         elif not attrs.get('Island'):
+             attrs['Island'] = f'IO_CORE:${{SHEETNAME}}'
+         p = replace(p, attributes=attrs)
+-        if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','SN74HC14DR')):
++        if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','SN74HC14DR')) or packed_switch(p):
+             groups[p.symbol].append(p)
+         else:
+             result.append(p)
+     extra_ordinal = max((p.ordinal for p in family.parts if p.prefix == 'U'), default=0)
++    dropped_rails = defaultdict(int)
+     for symbol, entries in groups.items():
+         is_amp = symbol.endswith(('OPA4196IDR','OPA4197IPWR'))
+-        maps = AMP_MAPS if is_amp else SCHMITT_MAPS
++        is_switch = symbol.endswith('ADG5412FBRUZ')
++        maps = SWITCH_MAPS if is_switch else AMP_MAPS if is_amp else SCHMITT_MAPS
+         power_unit = len(maps)+1
+         package_templates = [p for p in entries if p.unit == power_unit]
+         channels = defaultdict(list)
+@@ -87,8 +102,12 @@ def refine(family):
+         # package is real, with all units and two bypasses, and enters worksheets.
+         batches = [(reg, rows[n:n+len(maps)]) for reg, rows in sorted(channels.items())
+                    for n in range(0, len(rows), len(maps))]
+-        while len(batches) < len(package_templates):
++        # Surplus switch packages are removed with their bypasses (P59-B).
++        while len(batches) < len(package_templates) and not is_switch:
+             batches.append(('core', []))
++        for template in package_templates[len(batches):]:
++            for pin in ('13', '4'):
++                dropped_rails[template.pins[pin]] += 1
+         for number, (reg, batch) in enumerate(batches):
+             if number < len(package_templates):
+                 template = package_templates[number]
+@@ -108,8 +127,9 @@ def refine(family):
+                 else:
+                     channel = template
+                     net = f'{stem}_IO_UNUSED{unit}'
+-                    pins = dict(zip(target, (net,net,'AGND') if is_amp else (None,'AGND')))
+-                    channel_attrs = {**attrs, 'Role': f'{family.name}:unused grounded follower' if is_amp else f'{family.name}:unused grounded Schmitt', 'LogicalCellKey': ''}
++                    pins = dict(zip(target, ('AGND','AGND','AGND') if is_switch else (net,net,'AGND') if is_amp else (None,'AGND')))
++                    kind = 'switch' if is_switch else 'follower' if is_amp else 'Schmitt'
++                    channel_attrs = {**attrs, 'Role': f'{family.name}:unused grounded {kind}', 'LogicalCellKey': ''}
+                 result.append(replace(channel, key=f'{stem}.{unit}', prefix=template.prefix,
+                                       ordinal=template.ordinal, unit=unit, pins=pins,
+                                       attributes=channel_attrs, x=template.x, y=template.y))
+@@ -154,6 +174,10 @@ def refine(family):
+             consumed.add(cap.key)
+             result.append(replace(cap, attributes={**cap.attributes, 'BoardRegion':p.attributes['BoardRegion'],
+                                                  'Island':p.attributes['Island'], 'Decouples':stem}, pins={'1':rail,'2':'AGND'}))
++    for rail, count in dropped_rails.items():
++        if len(pools[rail]) > count:
++            raise ValueError(f'{family.name}: orphaned bypass capacitors')
++        pools[rail] = []
+     if any(pools.values()):
+         raise ValueError(f'{family.name}: orphaned bypass capacitors')
+     # Preserve drawing ordering for unchanged keys. Reassigned units receive the
+@@ -190,7 +214,7 @@ def channel_signatures(family):
+     """Electrical identity independent of physical channel pin allocation."""
+     signatures=[]
+     for p in family.parts:
+-        maps=AMP_MAPS if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) else SCHMITT_MAPS if p.symbol.endswith('SN74HC14DR') else ()
++        maps=AMP_MAPS if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) else SCHMITT_MAPS if p.symbol.endswith('SN74HC14DR') else SWITCH_MAPS if p.symbol.endswith('ADG5412FBRUZ') else ()
+         if not maps or p.unit>len(maps) or spare(p):continue
+         signatures.append((p.symbol,p.attributes.get('LogicalCellKey') or p.key,
+                            p.attributes.get('Role',''),tuple(p.pins[k] for k in maps[p.unit-1])))
 diff --git a/design/standard/electrical-standard.json b/design/standard/electrical-standard.json
-index cfaa8a54..d9d5312a 100644
+index cfaa8a54..ee0bb837 100644
 --- a/design/standard/electrical-standard.json
 +++ b/design/standard/electrical-standard.json
-@@ -405,13 +405,25 @@
+@@ -354,13 +354,25 @@
              "V-": "-12V"
            }
          },
 +        {
-+          "ref": "U_MAIN",
++          "ref": "U_SW",
 +          "part_id": "fault_switch",
 +          "terminals": {
 +            "S": "MAIN_S",
@@ -29,7 +185,69 @@ index cfaa8a54..d9d5312a 100644
              "2": "ISO_MID"
            }
          },
-@@ -428,26 +440,68 @@
+@@ -373,10 +385,30 @@
+             "1": "ISO_MID",
+             "2": "JACK"
+           }
++        },
++        {
++          "ref": "R_EN",
++          "part_id": "r_general",
++          "value": 100000,
++          "unit": "ohm",
++          "terminals": {
++            "1": "ENABLE",
++            "2": "AGND"
++          }
++        },
++        {
++          "ref": "R_DRIVE",
++          "part_id": "r_general",
++          "value": 1000,
++          "unit": "ohm",
++          "terminals": {
++            "1": "+5V",
++            "2": "ENABLE"
++          }
+         }
+       ],
+       "connections": [
+-        "Local feedback before the resistor. For DC/gates select cv role."
++        "Local feedback before the switch and resistors. For DC/gates select cv role. P59-B (#59, UNADOPTED): channel 1 of one ADG5412F isolates DRIVE from the jack while OSC is off; S faces the jack."
+       ],
+       "notes": [
+         "998 ohm gives 0.990119 gain into 100 kohm; nominal ±5 V specified unloaded.",
+@@ -405,13 +437,28 @@
+             "V-": "-12V"
+           }
+         },
++        {
++          "ref": "U_SW",
++          "part_id": "fault_switch",
++          "terminals": {
++            "S": "MAIN_S",
++            "D": "DRIVE",
++            "IN": "ENABLE",
++            "S2": "SENSE_S",
++            "D2": "FB",
++            "IN2": "ENABLE",
++            "VDD": "+12V",
++            "VSS": "-12V",
++            "GND": "AGND"
++          }
++        },
+         {
+           "ref": "R_ISO_A",
+           "part_id": "r_power",
+           "value": 499,
+           "unit": "ohm",
+           "terminals": {
+-            "1": "DRIVE",
++            "1": "MAIN_S",
+             "2": "ISO_MID"
+           }
+         },
+@@ -428,26 +475,56 @@
          {
            "ref": "R_FB",
            "part_id": "r_feedback",
@@ -39,18 +257,6 @@ index cfaa8a54..d9d5312a 100644
            "terminals": {
              "1": "JACK",
 +            "2": "SENSE_S"
-+          }
-+        },
-+        {
-+          "ref": "U_SENSE",
-+          "part_id": "fault_switch",
-+          "terminals": {
-+            "S": "SENSE_S",
-+            "D": "FB",
-+            "IN": "ENABLE",
-+            "VDD": "+12V",
-+            "VSS": "-12V",
-+            "GND": "AGND"
 +          }
 +        },
 +        {
@@ -97,7 +303,55 @@ index cfaa8a54..d9d5312a 100644
        ],
        "connections": [
 -        "DC feedback senses JACK through 100 ohm R_FB; 1 nF high-frequency feedback returns locally from DRIVE to FB."
-+        "P59-B (#59, UNADOPTED): main DRIVE -> D1/S1 -> 499 -> 499 -> JACK; sense JACK -> 2.74 k -> S2/D2 -> FB, the resistor on the jack side so it limits D-side clamp current; local 10 Mohm || 10 nF DRIVE -> FB keeps the amplifier closed-loop when the sense channel is open. Both S pins face the jack."
++        "P59-B (#59, UNADOPTED): one ADG5412F per output. Channel 1 main DRIVE -> D1/S1 -> 499 -> 499 -> JACK; channel 2 sense JACK -> 2.74 k -> S2/D2 -> FB, the resistor on the jack side so it limits D-side clamp current; local 10 Mohm || 10 nF DRIVE -> FB keeps the amplifier closed-loop with the sense channel open. Both S pins face the jack; channels 3-4 grounded off."
        ],
        "notes": [
          "Fixed 100 ohm JACK feedback and 1 nF local feedback are TI OPAx197 model-screened compensation choices, not hardware stability proof. Exact identities are Yageo RC0603FR-07100RL (100 ohm, 1%, 0.1 W at 70 C) and KEMET C0603C102J5GACTU (1 nF, 5%, 50 V, C0G). Physical stability, tolerance, thermal/fault duty and factory assembly remain unqualified.",
+diff --git a/scripts/checks/protection58.py b/scripts/checks/protection58.py
+index f7b58d92..f3e413a3 100644
+--- a/scripts/checks/protection58.py
++++ b/scripts/checks/protection58.py
+@@ -87,7 +87,9 @@ def build(contract=None):
+         parts = {p['ref']: p for p in CELLS[name]['parts']}
+         demand(parts['R_ISO_A']['value'] == parts['R_ISO_B']['value'] == 499, 'Output resistance changed; reassess fault current')
+         if name == 'precision_output':
+-            demand(parts['R_FB']['value'] == 100 and parts['R_FB']['terminals'] == {'1': 'JACK', '2': 'FB'}, 'Precision sense path changed; reassess exposure')
++            # P59-B (#59, UNADOPTED) moves sense to a jack-side 2.74 kohm resistor into an ADG5412F channel.
++            p59b = parts['R_FB']['value'] == 2740 and parts['R_FB']['terminals'] == {'1': 'JACK', '2': 'SENSE_S'}
++            demand(p59b or parts['R_FB']['value'] == 100 and parts['R_FB']['terminals'] == {'1': 'JACK', '2': 'FB'}, 'Precision sense path changed; reassess exposure')
+     for source in json.loads((ROOT / 'design/power/protection58-sources.json').read_text())['sources']:
+         if source['availability'] == 'AVAILABLE':
+             raw = (ROOT / source['file']).read_bytes()
+@@ -110,7 +112,8 @@ def build(contract=None):
+             continue
+         family = families[instance.family]
+         existing_switch_packages.update(designator(p, instance) for p in family.parts
+-                                        if p.symbol.endswith('ADG5412FBRUZ') and not p.dnp)
++                                        if p.symbol.endswith('ADG5412FBRUZ') and not p.dnp
++                                        and not ('general_output_' in p.key or 'precision_output_' in p.key))
+         jacks = {p.pins['T']: p for p in family.parts if p.prefix == 'J' and 'T' in p.pins}
+         channels = 0
+         for part in family.parts:
+@@ -121,7 +124,7 @@ def build(contract=None):
+             uid = jack.attributes['PanelUid'].replace('${SHEETNAME}', instance.name)
+             demand(uid in locked and locked[uid].get('direction') == 'out', f'Unbound output: {uid}')
+             precision = role.startswith('precision')
+-            outputs.append({'uid': uid, 'instance': instance.name, 'tip_net': part.pins['2'], 'kind': 'precision' if precision else 'general', 'existing_series_ohm': 998, 'existing_sense_ohm': 100 if precision else None, 'isolation_channels_required': 2 if precision else 1, 'status': 'UNPROTECTED OUTPUT/SENSE; candidate not captured'})
++            outputs.append({'uid': uid, 'instance': instance.name, 'tip_net': part.pins['2'], 'kind': 'precision' if precision else 'general', 'existing_series_ohm': 998, 'existing_sense_ohm': (2740 if p59b else 100) if precision else None, 'isolation_channels_required': 2 if precision else 1, 'status': 'P59-B isolation captured (unadopted proposal); bounds open' if p59b else 'UNPROTECTED OUTPUT/SENSE; candidate not captured'})
+             channels += 2 if precision else 1
+         packages += math.ceil(channels / 4)
+         if instance.family == 'oscillator':
+diff --git a/scripts/schgen/audit_master.py b/scripts/schgen/audit_master.py
+index 28c34d49..02c92e31 100644
+--- a/scripts/schgen/audit_master.py
++++ b/scripts/schgen/audit_master.py
+@@ -122,7 +122,8 @@ def check(families,instances,netlist):
+     # negative-rail bypass capacitors, two on each of ten offset/mixer instances.
+     # #60 adds four mixer quads + eight bypasses, and two A/B remote
+     # buffers (quad, two bypasses and two isolation resistors each).
+-    expected_signal_refs=5723+20+4*3+2*5+5*(6*3+2*3)+12  # #62 fanout plus #61 stage limiters
++    # #59 P59-B output isolation switches: +295 signal/reference designators from the generated cells.
++    expected_signal_refs=5723+20+4*3+2*5+5*(6*3+2*3)+12+(295)  # #62 fanout plus #61 stage limiters
+     if signal_ref_count!=expected_signal_refs:
+         errors.append(f'signal/reference designator lock drift: {signal_ref_count} != {expected_signal_refs}')
+     if len(refs)!=expected_signal_refs+len(power_refs):
