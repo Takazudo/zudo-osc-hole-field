@@ -1,0 +1,70 @@
+OPA4196 isolated candidate sourcing/assembly disposition, 2026-10-29
+
+Owner state reconciled to coordinator-reported WSL commit 5a2d02f4805ee1d5b3c5b22c0be58440f3015775,
+parent 213e612be53756e6c9efbb52e1c9954e7212e041. Local consumer committed four PARTIAL five-file
+overlays under circuit/candidates/opa4196-compact-20261029, 22 additive files. This is not a claim
+that the Cloud full copied trees themselves were committed. Reported receipt SHA256:
+df2b4fa9e03a350372bb7b3e21796a91cb6966a2cad488fa3022dbcf0fd9e5a2.
+No duplicate candidate application requested. This review is evidence only.
+
+Disposition: retain OPA4196 for the approved isolated development candidate. No new part adoption
+or CAD change is justified by this pass. No verified low-cost, ample-stock JLC substitute established.
+
+New assembly evidence:
+TI's exact orderable OPA4196IDR page lists active SOIC(D)-14, 2500 tape/reel, -40..125 C,
+NiPdAu, RoHS, MSL Level-3-260C-168HR. This is ordinary SMT packaging, but the actual supplied
+lot's moisture exposure/handling and qualified reflow profile remain assembler dependencies.
+The 260 C rating is not a recommended recipe. Do not turn 168HR into an unconditional storage rule.
+https://www.ti.com/product/OPA4196/part-details/OPA4196IDR
+LCSC confirms C2057385 maps to OPA4196IDR/SOIC14. Retrieved content did not expose actionable
+stock/price; it does not establish JLC assembly availability, Basic/Extended class, loading charges,
+or procurement quantity. TI's page has unavailable/login stock fields; no global stock inference.
+https://www.lcsc.com/product-detail/C2057385.html
+Required sourcing fact: an actual JLC quote/library record for this MPN at intended build quantity,
+including stock allocation, assembly eligibility, loading fees and lead time. No orders/contact made.
+
+Actual footprint check (new; not a repeated bridge analysis):
+Four candidate library footprints have 14 pads, correct numbering, 1.27mm pitch, x=+/-2.475mm,
+1.95x0.60mm pads. TI D0014A example (PDF page41, drawing4220718/A) has x=+/-2.7mm,
+1.55x0.60mm pads. Relative to that example, actual copper extends 0.425mm farther inward and
+0.025mm less outward. Same pitch/width; not an exact TI land-pattern match. TI explicitly allows
+alternate designs; these differences alone prove neither incompatibility nor assembly acceptance.
+Existing pads include F.Paste; actual stencil settings, mask process and solder-joint acceptance
+must be reviewed for the eventual board/assembler. Do not silently shrink pads. This source check
+covers the linked library geometry, not native board/CPL rotation or emitted fabrication apertures.
+Primary drawing: https://www.ti.com/lit/ds/symlink/opa4196.pdf PDF pp40-42.
+Run: python3 check_land_pattern.py RECEIVED_REPOSITORY FULL_ISOLATED_CANDIDATE_ROOT
+Four variants PASS; exact footprint hashes and extracted dimensions in land-pattern-result.json.
+No native KiCad or board regeneration used.
+
+Bounded alternative screen (proposal only):
+TLV9364IDR is a TI cost-oriented SOIC14 part, 4.5..40V supply. Manufacturer electrical table p8
+specifies common-mode Vminus..Vplus-2V: at +/-12V nominal +/-5V input fits. It is NOT rail-to-rail
+input. Typical Iq=2.6mA/channel versus OPA4196 0.14: two quads increase typical quiescent draw
+by 19.68mA. Faster bandwidth does not establish nonlinear bridge stability. Actual JLC identity,
+availability and net price savings unverified; no full pin/footprint substitution qualification done.
+Therefore no substitute patch recommended. LCSC related-part price snippets are not JLC quotes.
+https://www.ti.com/product/TLV9364/part-details/TLV9364IDR
+https://www.ti.com/lit/ds/symlink/tlv9362.pdf pp8-9 (SBOSA67B)
+TLV9154 was also screened out immediately: its 16V total supply maximum cannot support this
+24V total rail span. No need for further package research on it.
+https://www.ti.com/product/TLV9154/part-details/TLV9154IPWRG4
+
+Remaining analog acceptance dependencies, reusing existing bridge findings:
+Source gives +/-5V nominal magnitude indication, 5.6kohm sense resistance and qualitative brightness
+saturation allowance. It does not establish quantitative acceptance for zero-cross dead band,
+recovery after clipping, or visible modulation/flicker. No new analog bound claimed here.
+A meaningful qualification requires (1) minimum/maximum actual rails and operating temperature,
+(2) command waveform/amplitude/slew/frequency envelope including overload, (3) acceptable dark
+zone and settling/recovery/brightness error, and (4) bounded bridge parasitics and diode/LED
+forward-drop/recovery behavior at the actual current and temperature. Existing typical curves
+and op-amp-only models cannot close those requirements. Preserve prior conservative bridge bounds.
+A targeted future test should measure/model command-vs-sense error across zero, step recovery
+from both clipped polarities and ringing at those declared corners. Physical testing is not
+currently authorized; a faithful full-loop simulation remains dependent on suitable component
+models/parameters. No new source defect is proven and no repeated broad tests are useful.
+
+WSL action: import this small review/script/result as scoped evidence if desired, verify member
+hashes and commit only these additions. Do not reapply candidate overlays, change the BOM,
+modify historical regression goldens or run native/physical qualification. No implementation blocker
+for keeping the isolated OPA candidate; sourcing and hardware acceptance remain explicitly open.
