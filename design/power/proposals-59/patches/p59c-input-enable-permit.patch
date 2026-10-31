@@ -1,0 +1,22 @@
+diff --git a/design/standard/electrical-standard.json b/design/standard/electrical-standard.json
+index cfaa8a54..4a296091 100644
+--- a/design/standard/electrical-standard.json
++++ b/design/standard/electrical-standard.json
+@@ -217,14 +217,15 @@
+           "value": 1000,
+           "unit": "ohm",
+           "terminals": {
+-            "1": "+5V",
++            "1": "ENABLE_OK",
+             "2": "ENABLE"
+           }
+         }
+       ],
+       "connections": [
+         "One channel per input jack; source S always faces patch cable; drain D always faces local circuit.",
+-        "Unused source/drain grounded, unused IN grounded, FF explicitly no-connect."
++        "Unused source/drain grounded, unused IN grounded, FF explicitly no-connect.",
++        "P59-C (#59, UNADOPTED): IN is driven from the board ENABLE_OK permit, low until every rail is inside its load band; the 100 kohm pull-down defines IN low with the permit unpowered."
+       ],
+       "notes": [
+         "Powered-off isolation replaces a naked rail-clamp path. GND must stay connected with patch sleeves. No ±55 V system rating is inferred; project fault range is ±12 V.",

@@ -1,0 +1,40 @@
+diff --git a/design/spec/modules/oscillator.py b/design/spec/modules/oscillator.py
+index 19b9f595..caf6b149 100644
+--- a/design/spec/modules/oscillator.py
++++ b/design/spec/modules/oscillator.py
+@@ -156,7 +156,7 @@ def family():
+     b.trim('BASE_TRIM','10 kΩ','BASE_REFN5','BASE_ADJ','BASE_REF5');b.r('BASE_FEED','1 MΩ','BASE_ADJ','EXPO_SUM')
+     # ALFA external -5 V recommendation avoids contradictory internal-zener
+     # narrative versus VEE absolute limit. Driver/load sequencing remains a gate.
+-    b.amp('VEE_DRIVER','precision','LOCAL_REFN5','VEE_FB','VEE_DRIVE');b.r('VEE_ISO','100 Ω','VEE_DRIVE','VEE5');b.r('VEE_FB','10 kΩ','VEE5','VEE_FB');b.c('VEE_FAST','100 pF','VEE_DRIVE','VEE_FB')
++    b.amp('VEE_DRIVER','precision','LOCAL_REFN5','VEE_FB','VEE_DRIVE');b.r('VEE_ISO','100 Ω','VEE_DRIVE','VEE_SINK');b.r('VEE_FB','10 kΩ','VEE5','VEE_FB');b.c('VEE_FAST','100 pF','VEE_DRIVE','VEE_FB')
+     b.device('AS3340D','CORE','U',{str(i):net for i,net in enumerate(['SCALE1','SCALE2','VEE5','PULSE_RAW','PWM_PIN','HARD_PIN','HF_PIN','SAW_RAW','SOFT_PIN','TRI_RAW','TIMING_CAP','AGND','LINEAR_REF','SCALE_PIN','EXPO_SUM','+12V'],1)})
+     b.parts.append(Part('VEE_POWER_FLAG','Fixture:PWR_FLAG','#FLG',1,0,50.8,50.8,{'1':'VEE5'},value='LOCAL_BUFFER_SUPPLY',attributes={'Role':'oscillator:driven local -5 V declaration','MPN':'','Manufacturer':'','LCSC':'','PanelUid':'','Island':b.island}))
+     b.r('RZ_FIXED','24 kΩ','SCALE1','RZ_TRIM');b.trim('RZ_TRIM','10 kΩ','RZ_TRIM','AGND')
+@@ -207,6 +207,12 @@ def family():
+             b.r(key+'_ISO', '100 Ω', key+'_DRIVE', key)
+             b.r(key+'_FB', '100 Ω', key, key+'_FB')
+             b.c(key+'_FAST', '1 nF', key+'_DRIVE', key+'_FB')
++    # P59-A (#59): sink-only series diode (BAT54S D1; D2 shorted) stops an unregulated VEE driver
++    # sourcing into VEE5; the second BAT54S D2 bounds VEE5 at +VF for the AS3340 +0.5 V VEE-GND
++    # limit; the bleed keeps D1 forward biased. Appended last so existing designators stay stable.
++    b.device('BAT54S_215','VEE_SINK_DIODE','D',{'1':'VEE5','3':'VEE_SINK','2':'VEE_SINK'})
++    b.device('BAT54S_215','VEE_CLAMP','D',{'1':'VEE5','3':'VEE5','2':'AGND'})
++    b.r('VEE_BLEED','10 kΩ','VEE5','AGND')
+     return b.finish('oscillator',sensitive=('TIMING_CAP','EXPO_SUM','SCALE_PIN','SCALE1','SCALE2','LINEAR_REF','HF_PIN'))
+ 
+ 
+diff --git a/scripts/schgen/audit_master.py b/scripts/schgen/audit_master.py
+index 28c34d49..6fc3c9e9 100644
+--- a/scripts/schgen/audit_master.py
++++ b/scripts/schgen/audit_master.py
+@@ -122,7 +122,8 @@ def check(families,instances,netlist):
+     # negative-rail bypass capacitors, two on each of ten offset/mixer instances.
+     # #60 adds four mixer quads + eight bypasses, and two A/B remote
+     # buffers (quad, two bypasses and two isolation resistors each).
+-    expected_signal_refs=5723+20+4*3+2*5+5*(6*3+2*3)+12  # #62 fanout plus #61 stage limiters
++    # #59 P59-A adds two BAT54S and one bleed resistor to each of five oscillators.
++    expected_signal_refs=5723+20+4*3+2*5+5*(6*3+2*3)+12+5*3  # #62 fanout plus #61 stage limiters
+     if signal_ref_count!=expected_signal_refs:
+         errors.append(f'signal/reference designator lock drift: {signal_ref_count} != {expected_signal_refs}')
+     if len(refs)!=expected_signal_refs+len(power_refs):

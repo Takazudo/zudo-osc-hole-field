@@ -1,0 +1,103 @@
+diff --git a/design/standard/electrical-standard.json b/design/standard/electrical-standard.json
+index cfaa8a54..d9d5312a 100644
+--- a/design/standard/electrical-standard.json
++++ b/design/standard/electrical-standard.json
+@@ -405,13 +405,25 @@
+             "V-": "-12V"
+           }
+         },
++        {
++          "ref": "U_MAIN",
++          "part_id": "fault_switch",
++          "terminals": {
++            "S": "MAIN_S",
++            "D": "DRIVE",
++            "IN": "ENABLE",
++            "VDD": "+12V",
++            "VSS": "-12V",
++            "GND": "AGND"
++          }
++        },
+         {
+           "ref": "R_ISO_A",
+           "part_id": "r_power",
+           "value": 499,
+           "unit": "ohm",
+           "terminals": {
+-            "1": "DRIVE",
++            "1": "MAIN_S",
+             "2": "ISO_MID"
+           }
+         },
+@@ -428,26 +440,68 @@
+         {
+           "ref": "R_FB",
+           "part_id": "r_feedback",
+-          "value": 100,
++          "value": 2740,
+           "unit": "ohm",
+           "terminals": {
+             "1": "JACK",
++            "2": "SENSE_S"
++          }
++        },
++        {
++          "ref": "U_SENSE",
++          "part_id": "fault_switch",
++          "terminals": {
++            "S": "SENSE_S",
++            "D": "FB",
++            "IN": "ENABLE",
++            "VDD": "+12V",
++            "VSS": "-12V",
++            "GND": "AGND"
++          }
++        },
++        {
++          "ref": "R_LOCAL",
++          "part_id": "r_feedback",
++          "value": 10000000,
++          "unit": "ohm",
++          "terminals": {
++            "1": "DRIVE",
+             "2": "FB"
+           }
+         },
+         {
+           "ref": "C_FAST",
+           "part_id": "c_feedback",
+-          "value": 1e-09,
++          "value": 1e-08,
+           "unit": "F",
+           "terminals": {
+             "1": "DRIVE",
+             "2": "FB"
+           }
++        },
++        {
++          "ref": "R_EN",
++          "part_id": "r_general",
++          "value": 100000,
++          "unit": "ohm",
++          "terminals": {
++            "1": "ENABLE",
++            "2": "AGND"
++          }
++        },
++        {
++          "ref": "R_DRIVE",
++          "part_id": "r_general",
++          "value": 1000,
++          "unit": "ohm",
++          "terminals": {
++            "1": "+5V",
++            "2": "ENABLE"
++          }
+         }
+       ],
+       "connections": [
+-        "DC feedback senses JACK through 100 ohm R_FB; 1 nF high-frequency feedback returns locally from DRIVE to FB."
++        "P59-B (#59, UNADOPTED): main DRIVE -> D1/S1 -> 499 -> 499 -> JACK; sense JACK -> 2.74 k -> S2/D2 -> FB, the resistor on the jack side so it limits D-side clamp current; local 10 Mohm || 10 nF DRIVE -> FB keeps the amplifier closed-loop when the sense channel is open. Both S pins face the jack."
+       ],
+       "notes": [
+         "Fixed 100 ohm JACK feedback and 1 nF local feedback are TI OPAx197 model-screened compensation choices, not hardware stability proof. Exact identities are Yageo RC0603FR-07100RL (100 ohm, 1%, 0.1 W at 70 C) and KEMET C0603C102J5GACTU (1 nF, 5%, 50 V, C0G). Physical stability, tolerance, thermal/fault duty and factory assembly remain unqualified.",

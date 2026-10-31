@@ -100,6 +100,81 @@ the supply side ([`pd-interface-20v.md`](../../architecture-278/integration/powe
 
   The TI model makes no validity claim below 4.5 V span, so none of this is qualification.
 
+### P59-A rev 2 (phase 10): the adoption candidate
+
+Rev 1 raised R_ISO to 1.21 kΩ to limit how much the driver could push into the clamp. That
+broke regulation at the AS3340 supply current: −4.68 V at 6 mA. Rev 2 instead blocks the
+driver from sourcing at all and keeps R_ISO at 100 Ω.
+
+```text
+ OPA4197 VEE_DRIVE ──100 Ω──VEE_SINK──|<|── VEE5 ── AS3340 pin 3     D_SINK: BAT54S #1 D1
+       ▲                      (K)  (A)  │                           (A = VEE5, K = VEE_SINK; D2 shorted)
+       └──── VEE_FB 10 kΩ ──────────────┤
+                                        ├──|>|── AGND               D_CLAMP: BAT54S #2 D2
+                                        │                           (A = VEE5, K = AGND; D1 shorted)
+                                        └──10 kΩ── AGND             R_BLEED keeps D_SINK forward biased
+```
+
+The patch is [`patches/p59a-oscillator-vee-clamp.patch`](patches/p59a-oscillator-vee-clamp.patch).
+It applies to `design/spec/modules/oscillator.py` and is **not applied**. It adds, for
+each of the five oscillators, two BAT54S,215 and one 10 kΩ resistor.
+
+**Guaranteed figures (CALCULATED, 25 °C)**
+
+All facts below were promoted in phase 10 from the retained PDFs, with hashes verified.
+
+- **Driver cannot source into VEE5.** D_SINK is reverse biased by at most
+  12.48 + 0.40 = 12.88 V. The leakage is ≤ 2 µA at 25 V (`fact-clamp-diode-reverse-current`).
+  This removes the A1 worst case (driver at +12 V) from the positive bound entirely.
+- **Positive bound.** The current into D_CLAMP is the AS3340 supply current plus at most
+  2 µA, minus what the bleed draws.
+  - AS3340 positive supply current: 6.5 mA maximum (`fact-vco-positive-supply-current`).
+    This is a typical-table maximum at +15 V with the internal Zener at 20 °C, so it is not
+    a guarantee at +12 V / −5 V.
+  - At ≤ 10 mA, VEE5 ≤ +0.40 V; at ≤ 30 mA, ≤ +0.50 V (`fact-clamp-diode-forward-voltage`
+    and A2). The +0.40 V figure therefore keeps a 3.5 mA margin over the table maximum.
+- **Regulation.**
+  - At a 7.0 mA sink current (6.5 mA AS3340 plus 0.5 mA bleed) the driver must reach
+    −5 − 0.70 − 0.40 = −6.10 V.
+  - The −12 V rail is ≥ 11.74 V in magnitude, and the output swing is ≤ 0.5 V from the rail
+    at RLOAD = 2 kΩ (`fact-op-precision-output-swing`, 25 °C). The swing row is tested at
+    about 5.6 mA, so 7.0 mA is outside its exact condition.
+  - That leaves 5.14 V of headroom, so **P4 is retired**.
+  - The AS3340 ±40 mA pin limit binds before regulation does.
+- **Power.** Each figure is far below its rating:
+
+  | Element | Dissipation | Rating |
+  | --- | --- | --- |
+  | R_ISO | ≤ 4.9 mW | RT0603BRD 0.1 W at 70 °C, `fact-r-precision-power` |
+  | R_BLEED | 2.5 mW | same rating |
+  | D_CLAMP | ≤ 4 mW | BAT54S Ptot 250 mW, `fact-clamp-diode-power-thermal` |
+
+  **P3 is retired.**
+- **Skew.** The figures are unchanged from phase 9:
+  - +12 V lead: no R-VEE limit; R-ADG then limits it to ≤ 6.50 ms with +5 V present.
+  - −12 V lead: ≤ 0.69 ms on a 10 ms tracking ramp. With A1 the driver can still sink
+    VEE5 toward −12 V.
+- **Cost.** The bleed adds 0.5 mA per oscillator, 2.5 mA in total, through the drivers.
+
+**Diagnostic simulation (rev 2).** 47 of 48 cases ran:
+
+- grid: skew −1.0 to +4.65 ms; AS3340 load 0, 6.5 or 10 mA; two REF5050 surrogates;
+- result: every case that ran stayed inside −6 V / +0.5 V. Maximum +0.492 V at 10 mA with
+  the conservative envelope;
+- **settled VEE5 −5.000 V at both 6.5 and 10 mA**, so the conflict is resolved;
+- one case (track, 0 mA, +2.26 ms) exceeded the 180 s ngspice limit and is **NOT RUN**.
+
+**Still open**
+
+- **Temperature.** No BAT54S VF maximum exists away from 25 °C. Fig. 1 gives typical curves
+  at 25, 85 and 125 °C only, with nothing below 25 °C
+  (`fact-clamp-diode-forward-voltage-temperature`). The cold case needs a bench measurement
+  or a vendor statement.
+- **AS3340 current.** It is known only from a typical table.
+- **−12 V-lead limit.** It stays at 0.69 ms unless a negative clamp is added. No inventory
+  part fits; a 5.6 V Zener class part would need Workflow B/C evidence.
+- **BAT54S model.** The official SPICE model is not retained (HTTP 403).
+
 ## P59-B: output and sense injection while OSC is off
 
 **Status.** An earlier proposal already exists and is not selected:
@@ -163,6 +238,54 @@ unselected and has native ERC passing with zero warnings. Requirements:
 - Models for these parts are not retained, so the dynamic results stay NOT RUN until
   they are acquired.
 - Bench: confirm ADG channel state for every rail order (#57).
+
+## Phase 10 adoption readiness
+
+I applied each patch to a scratch worktree at 3c6e8ed0, ran the canonical regeneration and
+recorded the first failure.
+
+| Proposal | Patch (unapplied) | Regeneration result | Readiness |
+| --- | --- | --- | --- |
+| P59-A rev 2 | `patches/p59a-oscillator-vee-clamp.patch`: oscillator.py, plus a +15 designator-lock increment in `scripts/schgen/audit_master.py`, following the earlier #60/#61/#62 increments | **PASS** (detail below) | **Ready for a user decision**. Residual items are evidence: AS3340 current from a typical table, cold BAT54S VF, and the −12 V-lead limit |
+| P59-B | `patches/p59b-precision-output-isolation.patch`: the `precision_output` cell gains U_MAIN and U_SENSE ADG5412F channels, R_FB 2.74 kΩ on the jack side, R_LOCAL 10 MΩ, C_FAST 10 nF, and R_EN/R_DRIVE | **FAIL** at `build_rail_ledger.py`: "package count mismatch B1 ADG5412FBRUZ: 7 != 1" | **Not ready** (blockers below) |
+| P59-C | `patches/p59c-input-enable-permit.patch`: `input_fault_switch` R_DRIVE moved from +5V to ENABLE_OK | **FAIL** at the instrument ERC warning baseline: 259 against 228, with 31 new warnings on the root sheet | **Not ready** (blockers below) |
+
+**P59-A regeneration detail.** Instrument ERC gave 0 errors, and the 228 baseline warning
+identities match exactly. Native board ERC gave 0 errors on 10 boards. Cross-board
+verification passes. The master audit shows 5921 components (+15) and 438 panel UIDs. The
+rail ledger shows 650 IC packages. `regen-master-reports.sh --check` passes.
+
+Adoption needs one extra ordering step, found during the trial. With new parts, `regen-all`
+checks against the committed `master-audit.json` before the master-report step rewrites it.
+So the order is:
+
+1. Apply the patch.
+2. `bash scripts/checks/regen-all.sh`, which stops at the audit drift.
+3. Export the master netlist and run `scripts/schgen/audit_master.py <netlist>` to write the
+   audit.
+4. `bash scripts/schgen/regen-master-reports.sh`.
+5. The same command with `--check`.
+
+The new parts are appended last so that every existing designator stays stable. An earlier
+mid-list insertion renumbered core parts and split island IO_JACK:O1.
+
+**P59-B blockers.**
+
+- Each new switch channel becomes its own package. Repacking into existing or new quads is
+  open, and the module current worksheets and rail ledger need new package counts.
+- The ADG supply cost of 32.5–45.5 mA must be charged to the ledger.
+- C_FAST 10 nF and R_LOCAL 10 MΩ have no exact identity, because their values differ from
+  the shortlist representatives.
+- The ADG ±12 V behaviour and leakage while floating remain typical or unspecified.
+- The patch also inherits P59-C's enable source problem.
+
+**P59-C blockers.**
+
+- `ENABLE_OK` is unmapped in every module. It becomes a local, undriven cell net, which is
+  what produces the new warnings.
+- The monitor/permit candidate is not instantiated in the master.
+- Harness and pin allocation (#52/#54) is open.
+- The SN74LVC1G17 output-current rating is not promoted.
 
 ## Not covered
 
