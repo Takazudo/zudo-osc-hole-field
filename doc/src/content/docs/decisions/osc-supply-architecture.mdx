@@ -108,7 +108,7 @@ Reversed/shifted wiring, ground-open faults, startup retries, brownout, thermal 
 
 ## Supply direction and low-capability policy (user-confirmed)
 
-**User-confirmed decision — 2026-10-31 11:11 UTC, owner decision card (electrical decisions E11 and E12).**
+**User-confirmed decision — 2026-10-31 11:11 UTC, owner decision card `cmsg_01Pv35emdXEU6gCRF3teSpo23Q1CUhqDN2ebZaArfgF1Ru` (electrical decisions E11 and E12).**
 
 - **PWR-D3 = D3-A.** OSC is supplied by a revised zudo-pd path at 20 V / 5 A (USB-PD 20 V PDO, Board P and Board B change) with a 5 A e-marked cable, delivering through `OSC-EXT-PWR-8-R1`. The 15 V / 3 A Board B cannot carry the contract.
 - **PWR-D5 = D5-1.** There is no degraded mode. Full OSC runs only on a supply contract that meets the table above; otherwise no rail is enabled. Renegotiation, a lower contract, charger removal or brownout shuts all rails down together and counts as a power cycle.
