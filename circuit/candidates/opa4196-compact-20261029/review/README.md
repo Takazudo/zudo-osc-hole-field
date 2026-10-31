@@ -153,6 +153,31 @@ facts). The old source and its hash are unchanged.
 1.55 mm paste-only aperture on the unchanged 1.95 mm pad. It is a proposal only and is
 not adopted.
 
+## Native schematic/library checks (`native_checks.py`, `native-check-result.json`)
+
+Cloud verification authorised by the manager (schematic and library only). Eight disposable
+trees (four variants, predecessor and candidate) were rebuilt under
+`.circuit-cache/opa4196-native/` with `tools/osc_reconstruct.py` from
+`OSC-current-source-four-variants.zip` (`c1983dd8…3e3b`). Each got a copy of the canonical
+`schematic/zudo-osc-hole-field.kicad_pro` stub so that kicad-cli loads the tree-local library
+tables. All runs used KiCad 10.0.6 through `scripts/kicad/run.sh` (pinned image) under
+`flock /tmp/kicad-native.lock`. 32 runs, all exit 0. Input, output and stub hashes are in the result.
+
+| Check (per variant) | Predecessor | Candidate | Comparison |
+| --- | --- | --- | --- |
+| ERC (`--severity-all`) | 262 warnings: 218 Unspecified–Passive and 10 Unspecified–Open-collector pin-to-pin, 34 off-grid | the same 262 | 0 new, 0 removed; none names U110/U210 |
+| Netlist (kicadsexpr) | 5934 components, 5065 nets | same | nets identical; only U110/U210 change (value, lib part, MPN, LCSC, Datasheet, SubstitutionVariant) |
+| Netlist vs `candidate-pin-map.csv` | all non-virtual pins present; no label split or merge; NC pins isolated | same | 6 `#FLG` power-flag rows have no netlist node (virtual) |
+| BOM export, ungrouped | 5932 refs | same | only U110/U210 rows change; U110/U210 match the candidate BOM record |
+| BOM export vs `candidate-bom.csv` | 739 resistors carry MPN/manufacturer only in the record, not in schematic fields | identical set | no new mismatch; pre-existing record/schematic field gap |
+| `pcbnew.FootprintLoad` SOIC-14 | `d686d259…2337`, 14 pads 1.95 × 0.60 mm at x = ±2.475, F.Cu/F.Mask/F.Paste | same | unchanged |
+
+A first pass without the project stub reported 4998 warnings per tree, 4736 of them
+"configuration does not include the library" errors for every symbol. It was replaced by the
+run above and is not retained. The ERC warnings are the inherited state of the predecessor
+and are not reviewed here. These checks cover rules and connectivity only. They do not
+validate behaviour, fit or assembly.
+
 ## Status
 
 | Check | Status |
@@ -163,4 +188,5 @@ not adopted.
 | U110/U210 paste-aperture trim | PROPOSAL ONLY; not adopted |
 | Land comparison | RUN (desk); assembly NOT accepted |
 | JLC MSL/reflow/stencil conditions for this part | UNKNOWN (evidence gap) |
-| Native KiCad, DRC, fill, hardware | NOT RUN (not authorized) |
+| Native schematic/library checks (ERC, netlist, BOM, footprint load), 8 trees | RUN 2026-10-31; after-vs-before: 0 new ERC violations, nets identical, only U110/U210 fields changed (see below) |
+| DRC, zone fill, board, hardware | NOT RUN (no board in these trees; not authorized) |

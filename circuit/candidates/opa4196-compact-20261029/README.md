@@ -71,7 +71,8 @@ with `patch --batch --fuzz=0 -p1`, and requires the full successor inventory and
 | --- | --- |
 | File-level reconstruction (20 changed hashes, 466-file inventories) | PASS, 2026-10-31 |
 | Record consistency (`verify_record.py`, with `--base`) | PASS |
-| Compile, ERC, DRC or native KiCad of the candidate trees | NOT RUN (not authorized) |
+| Native ERC, netlist, BOM and footprint load of the candidate trees vs predecessors | RUN 2026-10-31: 0 new ERC violations, identical nets, only U110/U210 fields changed; see `review/` |
+| DRC, fill, board | NOT RUN (no board; not authorized) |
 | Analog bridge-loop behaviour | model screen only, see `review/` |
 | Land pattern / assembly | evaluated, not accepted, see `review/` |
 | Sourcing, JLC assembly eligibility, stock | UNVERIFIED |
