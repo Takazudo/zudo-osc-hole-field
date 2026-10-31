@@ -106,6 +106,15 @@ A powered external patch can drive the source-facing ADG5412F input or the **out
 
 Reversed/shifted wiring, ground-open faults, startup retries, brownout, thermal hold/trip, discharge and restart remain explicit tests. Polarization and TVS pulse ratings alone do not establish survival. Any future return to pinned P+B requires the original current-limited 5 V first power with B disconnected, 5 V/15 V-only programming and retained readback before a 20 V-capable charger. No programmed state, source capacity or physical measurement has been invented.
 
+## Supply direction and low-capability policy (user-confirmed)
+
+**User-confirmed decision — 2026-10-31 11:11 UTC, owner decision card (electrical decisions E11 and E12).**
+
+- **PWR-D3 = D3-A.** OSC is supplied by a revised zudo-pd path at 20 V / 5 A (USB-PD 20 V PDO, Board P and Board B change) with a 5 A e-marked cable, delivering through `OSC-EXT-PWR-8-R1`. The 15 V / 3 A Board B cannot carry the contract.
+- **PWR-D5 = D5-1.** There is no degraded mode. Full OSC runs only on a supply contract that meets the table above; otherwise no rail is enabled. Renegotiation, a lower contract, charger removal or brownout shuts all rails down together and counts as a power cycle.
+
+Every OSC requirement above is unchanged. The decision adopts no hardware. The TVS2200 versus STUSB4500 clamp margin is still blocking. The interface-maximum limiter, reverse blocking, contract detection and all-rail shutdown (#59) are not designed, and efficiency, ripple and source bands are **NOT RUN**. The record and the OSC-side interface numbers for the PD revision are in `design/architecture-278/integration/power-contract/` (`README.md`, `pd-interface-20v.md`).
+
 ## Review and continuation
 
 The checker proves complete proposed allocation, arithmetic, distinct candidate source pockets, reference grouping, no parallel regulated outputs and interface compliance **against declared requirements**. It does not prove the current netlist implements those requirements, source availability, actual connector ratings, complete load maxima or physical behavior. Negative tests inject omitted loads, joined rails, overloaded return contacts, voltage loss, reference crossings and enclosure collisions.

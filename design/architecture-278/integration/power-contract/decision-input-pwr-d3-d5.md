@@ -1,6 +1,7 @@
 # Decision input: PWR-D3 (supply architecture) and PWR-D5 (degraded-mode policy)
 
-**Draft recommendation for one combined owner decision. Nothing here is adopted.** It
+**Decided 2026-10-31 11:11Z by owner decision card: D3-A + D5-1** (electrical decisions
+E11/E12; power-contract decision record). This file is retained as the decision input. It
 changes no requirement, schematic, PCB, BOM or zudo-pd file. Every number is quoted
 from the committed record in this directory ([README.md](README.md), `ledger.json`,
 `decomposition.json`) or from

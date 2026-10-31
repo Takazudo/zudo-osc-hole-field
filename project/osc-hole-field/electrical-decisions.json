@@ -103,5 +103,31 @@
     "reply_to_message_id": "Sentinel_e42d8619f9e48191ba0d29e55b00a8e3",
     "relay_instruction_id": "osc-moya-g06-confirmed-intent-reconcile-c84d733b-4635-4c72-9bfb-ec230b380009",
     "scope": "Documentation, source comments and decision metadata only; no connection, component, value, package, topology or code-behavior change."
+  },
+  {
+    "id": "E11",
+    "topic": "PWR-D3 supply architecture",
+    "decision": "D3-A: revised zudo-pd path at 20 V / 5 A (USB-PD 20 V PDO, Board P plus Board B change) with a 5 A e-marked cable supplies OSC through OSC-EXT-PWR-8-R1. The OSC contract (continuous, 20 ms transient, maximum, source bands, ripple, capacitance, startup) is unchanged.",
+    "rationale": "Only option in the record meeting both continuous and transient delivery rows on paper; the 15 V / 3 A Board B cannot carry the contract (R5). Gates stay open: TVS2200 vs STUSB4500 clamp margin (L7, blocking), interface-maximum limiter, reverse blocking and all-rail shutdown (R7, G3, G4), efficiency, ripple and source bands (L6, G6, G7).",
+    "status": "decision confirmed; PD-side design, circuit and physical qualification remain open; no hardware or manufacturing adoption",
+    "authority": "USER-CONFIRMED DECISION",
+    "date": "2026-10-31",
+    "standard": "design/architecture-278/integration/power-contract/README.md",
+    "confirmation_utc": "2026-10-31T11:11Z",
+    "source": "Owner decision card (combined PWR-D3/PWR-D5 question from design/architecture-278/integration/power-contract/decision-input-pwr-d3-d5.md), relayed by the project coordinator; card message id not relayed",
+    "scope": "Decision metadata and documentation only; no OSC requirement, connection, component, value, package, topology or code-behavior change."
+  },
+  {
+    "id": "E12",
+    "topic": "PWR-D5 degraded-mode policy",
+    "decision": "D5-1: no degraded mode. Full OSC runs only on a supply contract that meets the OSC table; otherwise no rail is enabled (accept or refuse). The usage-limit re-basing (D5-2) and switchable power domains (D5-3) are not adopted.",
+    "rationale": "OSC demand is mostly fixed quiescent and resistor current in one EXT domain, so a supply-side limit yields brownout, which the no-partial-supply fault policy forbids. Requires contract detection before enable and all-rail shutdown on renegotiation, lower contract, removal or brownout (G12, PD-003 L2).",
+    "status": "decision confirmed; contract detection and all-rail shutdown circuit (#59, G12) and physical qualification remain open; no hardware or manufacturing adoption",
+    "authority": "USER-CONFIRMED DECISION",
+    "date": "2026-10-31",
+    "standard": "design/architecture-278/integration/power-contract/README.md",
+    "confirmation_utc": "2026-10-31T11:11Z",
+    "source": "Owner decision card (combined PWR-D3/PWR-D5 question from design/architecture-278/integration/power-contract/decision-input-pwr-d3-d5.md), relayed by the project coordinator; card message id not relayed",
+    "scope": "Decision metadata and documentation only; no OSC requirement, connection, component, value, package, topology or code-behavior change."
   }
 ]

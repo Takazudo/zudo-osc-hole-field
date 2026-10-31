@@ -366,7 +366,7 @@ Functional recovery is judged separately from absolute stress limits. The contin
 
 | ID | Area | Gap | Owner | Status |
 | --- | --- | --- | --- | --- |
-| G1 | Input | Continuous, normal and transient demand against 42–45 W through the current chain | Product decision | OPEN, needs owner |
+| G1 | Input | Continuous, normal and transient demand against 42–45 W through the current chain | Product decision | OPEN; direction decided (PWR-D3 = D3-A, 20 V / 5 A); the revised path's delivery is unmeasured |
 | G2 | Regulation | LDO rows end at 1.5 A; U4 switch-current ceiling 1.217 A on −12 V; efficiency at OSC currents has no evidence. The current 15 V model has **no established rating**: it fails the PD targets on the PTC3 (−12 V) hold, and its closest candidate is about 0.7 / 0.7 / 0.4 A (screen only, efficiency and LDO thermal NOT RUN; `product-comparison.md` at `e091f279`), far below OSC demand | zudo-pd #218/#219 | FAIL |
 | G3 | Protection | PTC1 hold below canonical normal and continuous; PTC3 below continuous at 25 °C and 0.77 A at 85 °C; no device enforces the interface maximum | zudo-pd #218/#219 | FAIL |
 | G4 | Fault policy | OSC requires reverse blocking, coordinated all-rail shutdown and rail monitors; Board B ties LDO SHDN to IN and has no reverse blocking | Joint (OSC #52/#59, PD) | OPEN |
@@ -377,7 +377,7 @@ Functional recovery is judged separately from absolute stress limits. The contin
 | G9 | Input path | Cable, J1, Board P Q1 AO3401A at 3 A and VBUS header losses ahead of Board B | PD | NOT RUN |
 | G10 | Thermal | LDO dissipation at OSC currents; cooling plate is planned, not qualified | PD | NOT RUN |
 | G11 | Demand | Complete typical, guaranteed maximum and OTA/mirror allocation remain unknown | OSC | OPEN |
-| G12 | Low-capability supply | Contract detection before enable, renegotiation/removal/brownout all-rail shutdown, and any degraded-mode domain switching | Joint (PD-003) | OPEN |
+| G12 | Low-capability supply | Contract detection before enable and renegotiation/removal/brownout all-rail shutdown; no degraded mode (PWR-D5 = D5-1) | Joint (PD-003) | OPEN |
 
 ## Decision record
 
@@ -385,9 +385,9 @@ Functional recovery is judged separately from absolute stress limits. The contin
 | --- | --- | --- | --- |
 | PWR-D1 | One shared ledger; OSC holds the combined record, PD holds supply findings and links here | Owner brief | ADOPTED |
 | PWR-D2 | Requirements stay 1700 / 1600 / 300 and 2000 / 1900 / 400 mA; Stage54 is not booked | Routine (rule reproduces) | ADOPTED |
-| PWR-D3 | Supply direction: the present 15 V Board B cannot carry the OSC contract; choose between a small in-product revision, a larger PD revision (for example 20 V input with Board P change), or a separate supply | Owner | OPEN; PD-002 requests it; integration review R1–R7 above |
+| PWR-D3 | Supply direction: the present 15 V Board B cannot carry the OSC contract; choose between a small in-product revision, a larger PD revision (for example 20 V input with Board P change), or a separate supply | Owner (decision card, 2026-10-31 11:11Z; E11) | ADOPTED (user-confirmed): **D3-A**, 20 V / 5 A PD revision with a 5 A e-marked cable; OSC contract unchanged. Gates stay open: L7 (blocking), R7, G3, G4, G6, G7, G9, G10; interface numbers in [pd-interface-20v.md](pd-interface-20v.md) |
 | PWR-D4 | The brief's 1.493 / 1.394 / 0.224 A "planning normal" is the Stage54 conditional row; canonical 1.535 / 1.436 / 0.224 A governs comparisons | Routine (evidence) | ADOPTED |
-| PWR-D5 | Whether OSC gets an explicit degraded mode for lower-capability supplies (functional loss and new power domains) or full OSC requires a supply meeting the contract | Owner | OPEN; candidate only. The usage-limit candidate (1600 / 1500 / 300 mA by the same rule) is in "Budget decomposition" |
+| PWR-D5 | Whether OSC gets an explicit degraded mode for lower-capability supplies (functional loss and new power domains) or full OSC requires a supply meeting the contract | Owner (decision card, 2026-10-31 11:11Z; E12) | ADOPTED (user-confirmed): **D5-1**, no degraded mode; accept or refuse. The usage-limit candidate (1600 / 1500 / 300 mA) in "Budget decomposition" is not adopted and stays arithmetic only. Contract detection before enable and all-rail shutdown (G12, #59) stay open |
 | PWR-C1 | **Candidate, not a decision:** a slower common source ramp (20–50 ms). It is contract-compatible: the contract requires a monotonic ramp no faster than 10 ms and sets no upper bound (`osc-electrical-standard.mdx` L113, `decisions/osc-supply-architecture.mdx` L65; OSC owner answer from `31311c6`). The ramp term scales as CΔV/Δt: at 20 / 50 ms the ceiling ramp is 112.3 / 44.9 mA on +12 V (10 ms: 224.6) and the fitted ramp 37.4 / 14.9 mA (10 ms: 74.7). Correct OSC behaviour on a slow ramp is **unverified**: the AR reset RC (100 ms) is not brownout supervision and is untested on slow rails (`osc-block-ar.mdx` L258–265), the oscillators need each-rail-first/last, slow-ramp and brownout tests (`osc-block-osc.mdx` L35), and the all-orders staged enable has no circuit (`osc-protection-architecture.mdx` L72–73). Named risks: AS3340 VEE–GND −6 V abs max, the OPA4197 VEE driver, ±5 V reference-pair fanout, +5 V-absent logic, precision-output back-feed through the 100 Ω sense path and ADG5412F partial-rail conduction (desk review R1–R3). Abs-max and latch-up facts for LM13700, OPA4197/4196, LM393, LF398 and HC are not retained. Needs measurement (6 orders × 10 / 20 / 50 ms, VEE5, injection, reset release, latch-up), after the abs-max facts are captured | OSC owner, then product owner | CANDIDATE; UNVERIFIED; transient requirement unchanged |
 
 Checks for this record: `ledger.py --check` and `decompose.py --check` PASS; 15 focused

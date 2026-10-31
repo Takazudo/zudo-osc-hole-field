@@ -4,7 +4,7 @@ Splits the canonical planning budget into fixed, operation/patch-dependent,
 reserve, allowance and margin parts, row by row from design/power/rail-ledger.json,
 and derives demand levels from those parts. Arithmetic only: nothing here is
 measured, and no level below the canonical one changes a requirement. A lower
-level is at most a candidate re-basing for the owner (PWR-D5).
+level is at most a candidate re-basing; PWR-D5 = D5-1 (2026-10-31) did not adopt it.
 Writes decomposition.json; --check compares it with the committed file.
 """
 from pathlib import Path
@@ -225,7 +225,7 @@ def build():
             'PLANNING ALLOCATION (canonical; governs the current requirement)',
             canonical, 'supply-architecture.json selected_requirement.normal_with_allowances_mA, reproduced row by row.'),
         'explicit_usage_limit_candidate': level(
-            'CANDIDATE operating range (PWR-D5); CALCULATED, UNVERIFIED; not a requirement',
+            'CANDIDATE operating range, NOT ADOPTED (PWR-D5 = D5-1, no degraded mode); CALCULATED, UNVERIFIED; not a requirement',
             usage, 'Fixed parts and internal signal paths at planning; external patch/indicator and operation rows held to their typical values by a stated usage limit (for example: indicators near typical brightness, outputs into typical 100 kohm loads). Shows the most any patch-based usage limit can remove; enforcement is by user instruction only.'),
         'startup_worst_envelope': level(
             'CONSERVATIVE ENVELOPE (calculated); UNVERIFIED',
@@ -310,7 +310,7 @@ def build():
             'MEASURED': 'none; no whole-instrument or module current has been measured',
             'UNVERIFIED': 'every calculated level until bench measurement',
             'CONTRACT': 'existing requirement, unchanged',
-            'CANDIDATE': 'possible new operating range for an owner decision (PWR-D5); never booked'},
+            'CANDIDATE': 'operating range offered for owner decision PWR-D5 and not adopted (D5-1, 2026-10-31); never booked'},
         'categories': cats,
         'budget_steps': budget_steps,
         'fixed_share_of_canonical': share,
