@@ -103,6 +103,7 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 - [`fact-op-precision-input-absolute`](#fact-op-precision-input-absolute)
 - [`fact-op-precision-supply-recommended`](#fact-op-precision-supply-recommended)
 - [`fact-op-precision-esd-steering`](#fact-op-precision-esd-steering)
+- [`fact-op-precision-output-swing`](#fact-op-precision-output-swing)
 
 ### manufacturer product description
 
@@ -276,6 +277,20 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [src-op-precision-datasheet: PDF page index 6, printed page 7, Section 6.7, INPUT BIAS CURRENT, IB full-temperature subrow marked PW package only](#src-op-precision-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-op-precision-output-swing" />
+
+  **Fact:** `fact-op-precision-output-swing`
+
+  **Value:** `no_load_max_mV`=25; `rload_10k_max_mV`=125; `rload_2k_max_mV`=500 · **Unit:** `mV`
+
+  **Conditions:** Voltage output swing from either rail, maximum, TA = 25 C, VS = +/-4 V to +/-18 V, RLOAD connected to VS/2. No temperature-range row.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [Section/table audit: src-op-precision-datasheet physical PDF page index 7, printed p.8, section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, OUTPUT VO rows](#src-op-precision-datasheet)
 </EvidenceFact>
 
 ### PROJECT\_STATE

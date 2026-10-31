@@ -1449,6 +1449,42 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-r-general-power",
+      "record_id": "rec-r-general",
+      "source_id": "src-r-general-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "power_W": 0.1,
+        "at_C": 70,
+        "max_continuous_V": 75
+      },
+      "unit": "W and V",
+      "conditions": "RC0603FR-07100KL product specification: power 0.1 W at 70 C; 75 V maximum continuous voltage at full rated power. Applies to the representative MPN; other RC0603FR values need their own record. Derating above 70 C not retained.",
+      "locator": "Section/table audit: src-r-general-datasheet physical PDF page index 0, printed not paginated, Specifications block, Power and Voltage DC rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-r-precision-power",
+      "record_id": "rec-r-precision",
+      "source_id": "src-r-precision-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "power_W": 0.1,
+        "at_C": 70,
+        "max_continuous_V": 75
+      },
+      "unit": "W and V",
+      "conditions": "RT0603BRD07100KL product specification: power 0.1 W at 70 C; 75 V maximum continuous voltage at full rated power. Applies to the representative MPN; other RT0603BRD values need their own record. Derating above 70 C not retained.",
+      "locator": "Section/table audit: src-r-precision-datasheet physical PDF page index 0, printed not paginated, Specifications block, Power and Voltage DC rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

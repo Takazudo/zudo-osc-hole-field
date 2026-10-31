@@ -266,6 +266,24 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-output-swing",
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "no_load_max_mV": 25,
+        "rload_10k_max_mV": 125,
+        "rload_2k_max_mV": 500
+      },
+      "unit": "mV",
+      "conditions": "Voltage output swing from either rail, maximum, TA = 25 C, VS = +/-4 V to +/-18 V, RLOAD connected to VS/2. No temperature-range row.",
+      "locator": "Section/table audit: src-op-precision-datasheet physical PDF page index 7, printed p.8, section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, OUTPUT VO rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

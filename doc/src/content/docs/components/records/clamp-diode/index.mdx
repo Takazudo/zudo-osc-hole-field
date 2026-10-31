@@ -102,6 +102,9 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 - [`fact-clamp-diode-reverse-voltage`](#fact-clamp-diode-reverse-voltage)
 - [`fact-clamp-diode-forward-current-absolute`](#fact-clamp-diode-forward-current-absolute)
 - [`fact-clamp-diode-forward-voltage`](#fact-clamp-diode-forward-voltage)
+- [`fact-clamp-diode-reverse-current`](#fact-clamp-diode-reverse-current)
+- [`fact-clamp-diode-power-thermal`](#fact-clamp-diode-power-thermal)
+- [`fact-clamp-diode-forward-voltage-temperature`](#fact-clamp-diode-forward-voltage-temperature)
 
 ### manufacturer product description
 
@@ -169,6 +172,20 @@ A never-exceed limit. Reaching it may damage the part; it is not an operating ta
   **Evidence:** [src-clamp-diode-datasheet: physical PDF p.1, printed 2/9, Table 5 Limiting values, IF/IFRM/IFSM rows](#src-clamp-diode-datasheet)
 </EvidenceFact>
 
+<EvidenceFact>
+  <EvidenceAnchor id="fact-clamp-diode-power-thermal" />
+
+  **Fact:** `fact-clamp-diode-power-thermal`
+
+  **Value:** `Ptot_mW`=250; `Rth_ja_K_per_W`=500; `Tj_max_C`=150 · **Unit:** `mW, C and K/W`
+
+  **Conditions:** Ptot 250 mW at Tamb \<= 25 C on single-sided FR4 with standard footprint (note 1); Tj 150 C; Rth(j-a) 500 K/W. Note on Schottky thermal runaway from reverse losses applies. Absolute maximum stress rating, not an operating condition.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [Section/table audit: src-clamp-diode-datasheet physical PDF page index 1, printed 2/9, Table 5 Limiting values Ptot/Tj rows and Table 6 Thermal characteristics Rth(j-a) row](#src-clamp-diode-datasheet)
+</EvidenceFact>
+
 ### GUARANTEED\_ELECTRICAL
 
 A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.
@@ -199,6 +216,38 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [src-clamp-diode-datasheet: physical PDF p.2, printed 3/9, Table 7 Characteristics, VF rows](#src-clamp-diode-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-clamp-diode-reverse-current" />
+
+  **Fact:** `fact-clamp-diode-reverse-current`
+
+  **Value:** `VR_V`=25; `max_uA`=2 · **Unit:** `uA`
+
+  **Conditions:** Maximum IR per diode at VR = 25 V, pulsed tp \<= 300 us, duty \<= 0.02, Tamb = 25 C only.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [Section/table audit: src-clamp-diode-datasheet physical PDF page index 2, printed 3/9, Table 7 Characteristics, IR row](#src-clamp-diode-datasheet)
+</EvidenceFact>
+
+### TYPICAL\_CURVE
+
+A representative figure read from a characteristic curve. Typical values are not guaranteed and vary part to part.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-clamp-diode-forward-voltage-temperature" />
+
+  **Fact:** `fact-clamp-diode-forward-voltage-temperature`
+
+  **Value:** Fig. 1 gives typical IF versus VF at Tamb = 125, 85 and 25 C only. No VF maximum exists at any temperature other than 25 C, and no curve below 25 C is given. · **Unit:** `NONE`
+
+  **Conditions:** Typical curves only; they do not bound VF over temperature.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [Section/table audit: src-clamp-diode-datasheet physical PDF page index 2, printed 3/9, Fig. 1 Forward current as a function of forward voltage; typical values](#src-clamp-diode-datasheet)
 </EvidenceFact>
 
 ### PROJECT\_STATE
@@ -420,6 +469,7 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 | `ABSOLUTE_MAXIMUM`      | A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.                                         |
 | `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| `TYPICAL_CURVE`         | A representative figure read from a characteristic curve. Typical values are not guaranteed and vary part to part.                                                 |
 
 ### Coverage status
 

@@ -163,6 +163,55 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-reverse-current",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "max_uA": 2,
+        "VR_V": 25
+      },
+      "unit": "uA",
+      "conditions": "Maximum IR per diode at VR = 25 V, pulsed tp <= 300 us, duty <= 0.02, Tamb = 25 C only.",
+      "locator": "Section/table audit: src-clamp-diode-datasheet physical PDF page index 2, printed 3/9, Table 7 Characteristics, IR row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-power-thermal",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "Ptot_mW": 250,
+        "Tj_max_C": 150,
+        "Rth_ja_K_per_W": 500
+      },
+      "unit": "mW, C and K/W",
+      "conditions": "Ptot 250 mW at Tamb <= 25 C on single-sided FR4 with standard footprint (note 1); Tj 150 C; Rth(j-a) 500 K/W. Note on Schottky thermal runaway from reverse losses applies. Absolute maximum stress rating, not an operating condition.",
+      "locator": "Section/table audit: src-clamp-diode-datasheet physical PDF page index 1, printed 2/9, Table 5 Limiting values Ptot/Tj rows and Table 6 Thermal characteristics Rth(j-a) row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-forward-voltage-temperature",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "TYPICAL_CURVE",
+      "value": "Fig. 1 gives typical IF versus VF at Tamb = 125, 85 and 25 C only. No VF maximum exists at any temperature other than 25 C, and no curve below 25 C is given.",
+      "unit": "NONE",
+      "conditions": "Typical curves only; they do not bound VF over temperature.",
+      "locator": "Section/table audit: src-clamp-diode-datasheet physical PDF page index 2, printed 3/9, Fig. 1 Forward current as a function of forward voltage; typical values",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }
