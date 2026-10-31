@@ -174,8 +174,11 @@ tables. All runs used KiCad 10.0.6 through `scripts/kicad/run.sh` (pinned image)
 
 A first pass without the project stub reported 4998 warnings per tree, 4736 of them
 "configuration does not include the library" errors for every symbol. It was replaced by the
-run above and is not retained. The ERC warnings are the inherited state of the predecessor
-and are not reviewed here. These checks cover rules and connectivity only. They do not
+run above and is not retained. The 262 ERC warnings are classified in
+[`erc-proposal/`](erc-proposal/README.md): 228 come from the Kingbright LED symbols'
+`Unspecified` pins, which are now fixed in the repository library, and 34 come from inherited
+off-grid series-resistor rows. None hides a connectivity defect. Proposal patches clear all
+262 on scratch copies with identical nets; they are not applied. These checks cover rules and connectivity only. They do not
 validate behaviour, fit or assembly.
 
 ## Status
@@ -189,4 +192,5 @@ validate behaviour, fit or assembly.
 | Land comparison | RUN (desk); assembly NOT accepted |
 | JLC MSL/reflow/stencil conditions for this part | UNKNOWN (evidence gap) |
 | Native schematic/library checks (ERC, netlist, BOM, footprint load), 8 trees | RUN 2026-10-31; after-vs-before: 0 new ERC violations, nets identical, only U110/U210 fields changed (see below) |
+| ERC cleanup proposal (262 → 0 on scratch copies, identical nets) | PROPOSAL ONLY; not applied |
 | DRC, zone fill, board, hardware | NOT RUN (no board in these trees; not authorized) |
