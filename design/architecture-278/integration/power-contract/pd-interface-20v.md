@@ -12,7 +12,9 @@ Each value has one class:
 - **CONTRACT**: an existing OSC requirement, quoted with its source.
 - **CALCULATED**: arithmetic on CONTRACT values or on owner-bundle facts
   (`.claude/skills/component-*/facts.json`, cited by fact id). It is not a measurement.
-  A CALCULATED value marked **(A1)** also depends on assumption A1 in §7.
+  A CALCULATED value marked **(A1)** also depends on assumption A1 in §7. Phase 7
+  promoted the absolute-maximum rows of the retained IC datasheets into the owner
+  bundles; their fact ids are cited in §7.
 - **PROPOSED**: no OSC source exists. It is a starting value for joint agreement, not a
   pass criterion. A PROPOSED value becomes a requirement only when both owners accept
   it, and only after the abs-max and injection facts listed in README Q-A item 1 are
@@ -86,8 +88,8 @@ That remains OSC #59 work.
 ## 3. Rail discharge at shutdown: level, time and skew
 
 The record says the exact thresholds and timing are **UNSOURCED** (PRO item 4). The
-component-limit rules R-VEE and R-ADG in §7 are now applied where owner bundles carry a
-fact. Everything else stays PROPOSED.
+component-limit rules in §7 are applied where owner bundles carry a fact. Everything
+else stays PROPOSED.
 
 | Item | Value | Class / source |
 | --- | --- | --- |
@@ -99,8 +101,8 @@ fact. Everything else stays PROPOSED.
 | Discharge time | All three rails at or below that level ≤ 100 ms after the shutdown decision, at ceiling capacitance and zero load | PROPOSED |
 | Disconnect skew | All three rail paths open within ≤ 1 ms of each other | PROPOSED |
 | Discharge skew, analog rails | No state with +12 V > 0.5 V while −12 V is absent, and none with −12 V magnitude > 6 V while +12 V is absent. Both rails therefore fall together, and neither may lead the other out | CALCULATED (A1), R-VEE |
-| Discharge skew, +5 V | No state with +5 V present, one analog rail absent and the other at ≥ 8 V magnitude. +5 V must therefore be removed no later than the first analog rail | CALCULATED, R-ADG; the IN logic threshold is missing (§7 gaps) |
-| Both rails low but driver not yet regulating or no longer regulating | Not covered by any bundle fact | OPEN; needs OPA4197IPWR minimum-supply and output facts (§7 gaps) |
+| Discharge skew, +5 V | No state with +5 V above 0.8 V, one analog rail absent and the other at ≥ 8 V magnitude. +5 V must therefore fall to ≤ 0.8 V no later than the first analog rail leaves | CALCULATED, R-ADG; the 0.8 V VINL maximum is from the ±15 V table, so it is conditional at ±12 V |
+| Driver interval: both rails present but VEE5 regulation not within specified operation | Exists on every common ramp and discharge, for +12 V between 0.5 V and 5.2 V (REF5050 minimum input). That is 0.41–4.23 ms of a 10 ms ramp, 0.81–8.46 ms of 20 ms and 2.03–21.1 ms of 50 ms. No supply-side ramp, skew or discharge order removes it | CALCULATED (A1), R-DRV. OPEN on the OSC side (#59): it needs an OSC-side bound on VEE5, not a PD number |
 | Re-enable | Only from the discharged state (all rails at or below the discharge level) | PROPOSED |
 | Detection-to-disconnect time, and injection charge per pin during it | Must be stated by the design; no OSC value | CONTRACT obligation (PRO item 4); value UNSOURCED |
 
@@ -111,9 +113,12 @@ fact. Everything else stays PROPOSED.
 | Steady state while enabled | Inside the source band, ripple included | CONTRACT |
 | Turn-on overshoot, load-step response and shutdown transients | Inside the source band. The record has no separate overshoot allowance; any allowance above the band is a contract change | PROPOSED reading of the CONTRACT band |
 | Overvoltage shutdown | All-rail shutdown if any inlet rail magnitude exceeds 12.48 / 12.37 / 5.20 V (the load-band maxima) | PROPOSED trip; the record requires overvoltage protection (SAI `fault_cases[3]`) with no threshold |
-| Overvoltage ceiling, rail-to-rail | (+12 V) + \|−12 V\| < 30 V at every instant: +12 V < 17.63 V with −12 V at 12.37 V, and \|−12 V\| < 17.52 V with +12 V at 12.48 V. The proposed trips give 24.85 V, 5.15 V below the ceiling | CALCULATED, R-CLAMP. This is the only ±12 V ceiling an owner bundle supports; IC supply abs-max values are missing (§7 gaps) and may be lower |
-| Overvoltage ceiling, +5 V | No fitted +5 V part has a bundle limit. If the monitor-permit candidates are adopted, the ceiling is 5.5 V (TLV9022DR recommended supply; SN74LVC1G17/74 abs max 6.5 V). The 5.20 V trip is 0.30 V below it | CALCULATED for candidates only (`fact-monitor-tlv9022dr-supply`, `fact-monitor-sn74lvc1g17dbvr-absolute-voltages`) |
-| Reverse-polarity excursion on any rail | ≤ 0.3 V of reverse polarity, measured at the inlet | PROPOSED. No fitted part has a bundle reverse limit. An analog rail driven past the other forward-biases every BAT54S rail-clamp pair (R-CLAMP), but BAT54S forward voltage is not in its bundle. For +5 V the candidate SN74LVC1G17/74 VCC abs min is −0.5 V, so 0.3 V sits inside it |
+| Overvoltage ceiling, +12 V | < 18 V (AS3340D VCC–GND, REF5050AIDR VIN, LF398M ±18 V and LM13700M ±18 V). The 12.48 V trip is 5.52 V below it | CALCULATED, R-SUP |
+| Overvoltage ceiling, −12 V | < 18 V magnitude (LF398M and LM13700M ±18 V). The 12.37 V trip is 5.63 V below it | CALCULATED, R-SUP |
+| Overvoltage ceiling, rail-to-rail | (+12 V) + \|−12 V\| < 30 V at every instant: +12 V < 17.63 V with −12 V at 12.37 V, and \|−12 V\| < 17.52 V with +12 V at 12.48 V. The proposed trips give 24.85 V, 5.15 V below the ceiling. BAT54S,215 (30 V) is the binding part; the IC span limits are 36–48 V | CALCULATED, R-CLAMP and R-SUP |
+| Overvoltage ceiling, +5 V | < 7 V for the fitted HC logic (SN74HC00/14/74, CD74HC221). NOISE2 has no supply limit in its retained source. If the monitor-permit candidates are adopted the ceiling drops to 5.5 V (TLV9022DR recommended supply). The 5.20 V trip is 1.80 V below 7 V | CALCULATED, R-SUP; NOISE2 gap in §7 |
+| Reverse-polarity excursion, ±12 V | ≤ 0.3 V of reverse polarity on either analog rail (ADG5412FBRUZ VDD–GND −0.3 V and VSS–GND +0.3 V; also REF5050AIDR VIN and LM393BIDR VCC −0.3 V) | CALCULATED, R-REV |
+| Reverse-polarity excursion, +5 V | ≤ 0.5 V (HC logic VCC −0.5 V). The proposed interface value stays 0.3 V, inside it. NOISE2 has no retained limit | CALCULATED, R-REV; NOISE2 gap in §7 |
 | Single-fault VBUS (20 V) reaching an OSC rail | Must not reach the inlet. The inlet contact voltage requirement is ≥ 30 V, but no OSC load is rated for it | CONTRACT (30 V contact rating, SAI `inlet`); load protection PROPOSED |
 | Current surge | Never above the maximum in §0, including startup | CONTRACT |
 | Hot plug | Prohibited. Ground is not first-mate or last-break | CONTRACT (SAI `inlet.hotplug`) |
@@ -129,6 +134,7 @@ fact. Everything else stays PROPOSED.
 | Ramp increment at 10 ms | 224.64 / 222.66 / 62.40 mA | CALCULATED (SUP table) |
 | One-rail-present tolerance, analog rails | +12 V alone ≤ 0.5 V; −12 V alone ≤ 6 V magnitude. At the fastest slopes this allows +12 V to lead by ≤ 0.41 ms and −12 V to lead by ≤ 4.92 ms | CALCULATED (A1), R-VEE |
 | One-rail-present tolerance with +5 V present | The single analog rail stays below 8 V magnitude (≤ 6.50 ms of +12 V lead, ≤ 6.56 ms of −12 V lead at the fastest slopes). Bringing +5 V up last avoids the case | CALCULATED, R-ADG; below 8 V isolation is not established by the source either |
+| ADG5412F enable on a common ramp | On a common ramp +5 V passes the 0.8 V VINL maximum at 15.7 % of the ramp, and the analog rails reach the ±5 V minimum supply at 40.7–41.0 %. IN is therefore not guaranteed low while the switch supplies are below their specified range. This is covered by the existing OSC requirement for load-side inhibited input enables (#59), not by a PD sequencing change, which the all-rails-together rule forbids | CALCULATED, R-ADG (`fact-fault-switch-logic-thresholds`, `fact-fault-switch-supply-range`); OSC #59 |
 | Rail-to-rail ramp skew | Ramps start within ≤ 0.41 ms of each other, set by the +12 V-leading case above, and all rails enter their source bands within ≤ 2 ms of each other | Start skew CALCULATED (A1); band-entry skew PROPOSED |
 | Precondition | Any PD hold-up is charged before the outputs ramp | CONTRACT for a hold-up path (PCR R3) |
 | Brownout during the ramp | All-rail shutdown (§3) | CONTRACT |
@@ -167,39 +173,39 @@ The rail placement of each IC is taken from `design/spec/modules/io_partition.py
 package is still `placements: []` in the inventory. Bundle facts are cited by fact id
 and are primary-source confirmed unless noted.
 
-**Assumption A1** (not a bundle fact): an unregulated op-amp output stays between its
-own supply pins. No OPA4197IPWR bundle fact states this.
+**Assumption A1** (narrowed, still not a bundle fact): an unregulated op-amp output stays
+between its own supply pins. Phase 7 checked the retained OPA4197 datasheet. It describes
+current-steering ESD diodes from the input and output pins to the internal supply lines
+(`fact-op-precision-esd-steering`), but gives no clamp voltage and no output behaviour
+below the 4.5 V (±2.25 V) recommended minimum (`fact-op-precision-supply-recommended`).
+A1 therefore cannot be retired. The diode structure supports the direction of A1 for an
+externally forced pin, but not its value.
 
 | Rule | Bundle fact | Project connection | Derived constraint |
 | --- | --- | --- | --- |
-| R-VEE | AS3340D `fact-vco-absolute-maximum-vee-to-ground`: VEE–GND −6 V to +0.5 V | AS3340 pin 3 = VEE5, driven by an OPA4197 (precision role, ±12 V) through `VEE_ISO` 100 Ω and referenced to LOCAL_REFN5; pin 16 = +12V | With A1, an unregulated driver puts VEE5 anywhere between its rails. Hence +12 V alone ≤ 0.5 V and −12 V alone ≤ 6 V magnitude |
-| R-ADG | ADG5412FBRUZ `fact-fault-switch-power-off-ground`: isolated with both supplies grounded or floating and GND present; an 8 V VDD–VSS span can already permit turn-on with IN high; one missing rail does not ensure isolation | VDD/VSS (pins 13/4) on ±12 V; IN from +5 V through 1 kΩ (PCR R2) | Forbid +5 V present with one analog rail absent and the other at ≥ 8 V. The discharged end state is both rails grounded with AGND present |
-| R-CLAMP | BAT54S,215 `fact-clamp-diode-reverse-voltage`: 30 V maximum | Rail clamp pair, A = −12V, K = +12V (`electrical-standard.json` cells `high_impedance_input`, `summing_node_input`) | Rail-to-rail span < 30 V. A reversed rail forward-biases the pairs, which is a back-feed path |
+| R-VEE | AS3340D `fact-vco-absolute-maximum-vee-to-ground` (VEE–GND −6 V / +0.5 V), `fact-vco-absolute-maximum-supply` (VCC–GND +18 / −0.5 V, VCC–VEE +24 / −0.5 V), `fact-vco-absolute-maximum-pins` (±40 mA any pin) | Pin 3 = VEE5, driven by an OPA4197 (precision role, ±12 V) through `VEE_ISO` 100 Ω and referenced to LOCAL_REFN5; pin 16 = +12V | With A1, an unregulated driver puts VEE5 anywhere between its rails. Hence +12 V alone ≤ 0.5 V and −12 V alone ≤ 6 V magnitude. At +12 V = 12 V a VEE5 short to the positive rail would push up to 115 mA through 100 Ω, above the ±40 mA pin limit, so the one-rail rule matters for current as well as voltage |
+| R-DRV | OPA4197IPWR `fact-op-precision-supply-recommended` (≥ 4.5 V span, ±2.25 V); REF5050AIDR `fact-reference-input-recommended` (VIN ≥ VOUT + 0.2 V = 5.2 V) | The VEE driver needs both its supplies in range and the LOCAL_REFN5 reference, which REF5050 on +12 V generates | VEE5 regulation is within specified operation only once +12 V ≥ 5.2 V and the span is ≥ 4.5 V. Below that, R-VEE with A1 applies, and on a common ramp +12 V exceeds 0.5 V first. The interval is unavoidable from the supply side (§3) |
+| R-ADG | ADG5412FBRUZ `fact-fault-switch-power-off-ground`, `fact-fault-switch-logic-thresholds` (VINH ≥ 2.0 V, VINL ≤ 0.8 V at ±15 V), `fact-fault-switch-supply-range` (±5 V to ±22 V), `fact-fault-switch-supply-absolute`, `fact-fault-switch-pin-absolute` | VDD/VSS (pins 13/4) on ±12 V; IN from +5 V through 1 kΩ with 100 kΩ pull-down (PCR R2) | Forbid +5 V above 0.8 V with one analog rail absent and the other at ≥ 8 V. The discharged end state is both rails grounded with AGND present. On a common ramp IN is not guaranteed low while the supplies are below ±5 V; OSC inhibited enables (#59) must cover this |
+| R-CLAMP | BAT54S,215 `fact-clamp-diode-reverse-voltage` (30 V), `fact-clamp-diode-forward-current-absolute` (IF 200 mA, IFSM 600 mA < 10 ms), `fact-clamp-diode-forward-voltage` (VF ≤ 240 mV at 0.1 mA … ≤ 800 mV at 100 mA, 25 °C) | Rail clamp pair, A = −12V, K = +12V (`electrical-standard.json` cells `high_impedance_input`, `summing_node_input`) | Rail-to-rail span < 30 V. A reversed span forward-biases every pair in series. The VF rows are maximum-only, so they bound voltage at a given current and cannot cap the current at a given reversal |
+| R-SUP | `fact-vco-absolute-maximum-supply` (VCC–GND 18 V), `fact-reference-absolute-maximum` (VIN 18 V), `fact-sample-hold-absolute-maximum` (±18 V), `fact-ota-absolute-maximum` (36 V or ±18 V), `fact-comparator-absolute-maximum` (38 V), `fact-op-precision-supply-absolute` / `fact-op-audio-supply-absolute` (±20 V, 40 V), `fact-fault-switch-supply-absolute` (48 V); HC logic `fact-nand-`, `fact-schmitt-`, `fact-flipflop-`, `fact-one-shot-absolute-maximum` (VCC 7 V) | Rail placement as above; REF5050 input on +12 V; HC logic on +5 V | Ceilings: +12 V < 18 V, −12 V < 18 V magnitude, span < 30 V (R-CLAMP binds), +5 V < 7 V |
+| R-REV | `fact-fault-switch-supply-absolute` (VDD–GND −0.3 V, VSS–GND +0.3 V), `fact-reference-absolute-maximum` (VIN −0.3 V), `fact-comparator-absolute-maximum` (VCC −0.3 V), `fact-vco-absolute-maximum-supply` (VCC–GND −0.5 V); HC `…-absolute-maximum` (VCC −0.5 V) | Same | Reverse excursion ≤ 0.3 V on ±12 V and ≤ 0.5 V on +5 V |
+| R-INJ | OPA4197/4196 `…-input-absolute` (inputs (V−) − 0.5 V to (V+) + 0.5 V, ±10 mA); LM393B IIK −50 mA; HC IIK/IOK ±20 mA, ±50 mA per VCC/GND pin; ADG5412F Dx/IN 30 mA; AS3340 ±40 mA any pin; LM13700 inputs within the supplies | Back-feed paths while OSC is off | This is an OSC-side constraint, outside the PD interface. Example: an external 12 V on a precision output jack reaches OPA4197 IN− through the 100 Ω sense resistor (PCR R1). With the rails at 0 V, IN− may sit at most 0.5 V above V+, so the path would need (12 − 0.5) / 100 Ω = 115 mA against a 10 mA limit. Open in #59. The PD reverse-current proposal (§2) is unchanged |
 | — | ADG5412FBRUZ `fact-fault-switch-source-pin-overvoltage-protection` ±55 V; `fact-fault-switch-floating-off-leakage` 10 µA typical (no maximum) | Source pins | Source-pin feature only; not a rail or system rating |
+| — | Bulk GRM21BR61E475KA12L `fact-c-bulk-rated-voltage` 25 Vdc; bypass GRM188R71H104KA93D `fact-c-bypass-rated-voltage` 50 Vdc (Murata catalogue) | Every rail | Both are above the 18 V per-rail ceiling. The catalogue gives no polarity or reverse-voltage statement, so capacitor reverse tolerance does not constrain R-REV either way |
 | — | Discretes: BAS16GW-QX 100 V repetitive peak reverse; 2N7002,215 VDS 60 V; MMBT3904/3906 VCEO ±40 V; C0G 50 V (C0805C103, C0603C101, C0603C102) | Signal and control paths | All above the 30 V clamp ceiling; they do not tighten it |
 | — | Kingbright APG1005SEC/E-T 25 mA, APHHS1005QWF/D 30 mA DC forward current abs max | LEDs driven from op-amp outputs through resistors | No supply-voltage limit follows |
 
-Missing facts. These are the exact parts and facts still needed before the remaining
-PROPOSED values can become CALCULATED. A retained primary PDF exists in
-`circuit/sources/ic-library/` for every IC listed, but none has been promoted to a fact.
+Facts still missing. The ICs below have retained PDFs, but none of them states these facts:
 
-| Part (rail) | Missing owner-bundle facts |
-| --- | --- |
-| OPA4197IPWR (±12 V) | Supply abs max (V+ − V−); input voltage and input-current (injection) abs max; minimum operating supply; output behaviour below it (replaces A1) |
-| OPA4196IDR candidate (±12 V) | Same as OPA4197; the candidate review cites the differential limit only, not as a bundle fact |
-| LM13700M/NOPB (±12 V) | Supply abs max, input and injection limits (`fact-ota-electrical-limits`: none promoted) |
-| LM393BIDR (+12 V / −12 V or AGND) | Supply abs max, input below V− limit, input injection |
-| LF398M/NOPB (±12 V) | Supply abs max, input and logic-pin limits, injection |
-| AS3340D (+12 V, VEE5) | VCC abs max, input and injection limits; Zener current limit |
-| ADG5412FBRUZ (±12 V) | VDD/VSS and VDD−VSS abs max; IN logic threshold and abs max; maximum (not typical) floating leakage |
-| REF5050AIDR (input +12 V) | Input abs max, reverse input, output back-drive (`fact-reference-electrical-limits`: none promoted) |
-| SN74HC00DR, SN74HC14DR, SN74HC74DR, CD74HC221M96 (+5 V) | VCC abs max and minimum, input and output clamp current (injection) |
-| NOISE2 (+5 V via 22 Ω) | Supply range and abs max, input limits |
-| TLV75533PDBVR | Abs max input. Its 1.45–5.5 V recommended range exists, but no current spec connects it to a rail |
-| GRM21BR61E475KA12L bulk 4.7 µF (each rail) | Rated voltage (25 V appears only in the OSC-ES-1 role text), polarity (pinout UNSOURCED) and reverse-voltage tolerance (`fact-c-bulk-electrical-limits`: none promoted) |
-| GRM188R71H104KA93D bypass 100 nF (each rail) | Rated voltage (50 V in role text only); `fact-c-bypass-electrical-limits`: none promoted |
-| BAT54S,215 | Forward voltage and forward-current ratings, which set the reverse-excursion back-feed onset |
-| Kingbright APG1005SEC/E-T, APHHS1005QWF/D | Reverse-voltage rating |
+| Part (rail) | Missing fact | Status |
+| --- | --- | --- |
+| OPA4197IPWR, OPA4196IDR candidate | Output behaviour below the 4.5 V minimum supply, and the ESD diode clamp voltage. This is what retires A1 | Not stated in the retained datasheets; needs a vendor answer or a bench test |
+| OPA4197IPWR | Output swing to the rails | In the retained datasheet, not promoted (it would tighten R-DRV) |
+| AS3340D | VEE pin current and the Zener characteristics while the driver is unregulated | The supply-guidance text only; no table |
+| NOISE2 (+5 V via 22 Ω) | Any supply abs max or reverse limit | The retained source gives only the 5 V pin function |
+| GRM21BR61E475KA12L, GRM188R71H104KA93D | Polarity, reverse-voltage tolerance, DC-bias | Not in the Murata catalogue responses; PDF datasheet downloads returned HTML or 404 (2026-10-31), so it stays SOURCE UNAVAILABLE |
+| ADG5412FBRUZ | VINL/VINH at ±12 V (only the ±15 V, ±20 V, 12 V and 36 V tables exist) and maximum floating leakage | The datasheet has typical floating leakage only |
+| Kingbright APG1005SEC/E-T, APHHS1005QWF/D | Reverse-voltage rating | Not promoted |
 
 ## Open gates this file does not close
 
@@ -209,8 +215,7 @@ PROPOSED values can become CALCULATED. A retained primary PDF exists in
 - L6 / G6 / G7: source bands and ripple, NOT RUN.
 - G9 / G10: input path and thermal, NOT RUN.
 - G12: contract detection and the shutdown circuit, OPEN.
-- The §7 missing facts, needed before the reverse excursion, ±12 V and +5 V trip
-  ceilings, injection limits, the both-rails-low driver interval and the discharge level
-  can move from PROPOSED.
+- The §7 missing facts. A1, the driver interval (an OSC-side #59 item) and the remaining
+  PROPOSED trip, discharge and timing values still depend on them.
 
 Physical qualification remains in OSC #57.
