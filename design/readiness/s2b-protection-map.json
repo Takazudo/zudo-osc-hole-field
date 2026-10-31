@@ -1,0 +1,716 @@
+{
+ "schema_version": 1,
+ "status": "UNADOPTED groundwork; protection standard unchanged",
+ "sources": {
+  "adg": {
+   "title": "ADG5412F/ADG5413F data sheet Rev. C",
+   "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/adg5412f_5413f.pdf",
+   "path": "circuit/sources/ic-library/ADG5412F.pdf",
+   "sha256": "ea3d12f983fc79a728d302675a0428a6d244e95828154bc4c970d34e23195a96",
+   "authority_class": "MANUFACTURER_PRIMARY"
+  },
+  "tmux7412f": {
+   "title": "TMUX741xF SCDS404B (November 2022)",
+   "url": "https://www.ti.com/lit/ds/symlink/tmux7412f.pdf",
+   "path": ".circuit-cache/sources/readiness-20261031/ds/tmux7412f.pdf",
+   "sha256": "7396d8a34f80b178a8b5c72272b5bb0eb7da7ad3182e7d3cd80d294fc32f26e5",
+   "authority_class": "MANUFACTURER_PRIMARY"
+  },
+  "tmux6112": {
+   "title": "TMUX611x SCDS383F (July 2025)",
+   "url": "https://www.ti.com/lit/ds/symlink/tmux6112.pdf",
+   "path": ".circuit-cache/sources/readiness-20261031/ds/tmux6112.pdf",
+   "sha256": "c0fab3135a4438048a759aa91b33480f95f01140885896e3bfa1202a9daa2ae1",
+   "authority_class": "MANUFACTURER_PRIMARY"
+  }
+ },
+ "input_placements_per_unit": 98,
+ "placement_groups": 31,
+ "jack_on_protected_source_per_unit": 98,
+ "errors": [],
+ "placements": [
+  {
+   "family": "sample_hold",
+   "instances": 2,
+   "stem": "input_fault_switch_J_H1_TRIGGER___U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "TRIGGER_TIP",
+   "local_net": "TRIGGER_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "sample_hold",
+   "instances": 2,
+   "stem": "input_fault_switch_J_H1_IN___U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "IN_TIP",
+   "local_net": "IN_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "oscillator",
+   "instances": 5,
+   "stem": "input_fault_switch_J_O1_1V_1V__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "1V_TIP",
+   "local_net": "1V_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "oscillator",
+   "instances": 5,
+   "stem": "input_fault_switch_J_O1_1V_FM__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "FM_TIP",
+   "local_net": "FM_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "oscillator",
+   "instances": 5,
+   "stem": "input_fault_switch_J_O1_1V_PWM__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "PWM_TIP",
+   "local_net": "PWM_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "oscillator",
+   "instances": 5,
+   "stem": "input_fault_switch_J_O1_1V_SYNC__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "SYNC_TIP",
+   "local_net": "SYNC_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "filter",
+   "instances": 3,
+   "stem": "CORE_input_fault_switch_J_F1_IN_IN__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "IN_TIP",
+   "local_net": "IN_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "filter",
+   "instances": 3,
+   "stem": "CORE_input_fault_switch_J_F1_IN_FREQ__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "FREQ_TIP",
+   "local_net": "FREQ_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "filter",
+   "instances": 3,
+   "stem": "CORE_input_fault_switch_J_F1_IN_RES__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "RES_TIP",
+   "local_net": "RES_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "filter",
+   "instances": 3,
+   "stem": "CORE_input_fault_switch_J_F1_IN_GAIN__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "GAIN_TIP",
+   "local_net": "GAIN_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "envelope",
+   "instances": 6,
+   "stem": "CORE_input_fault_switch_J_E1_SIG_SIG__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "SIG_TIP",
+   "local_net": "SIG_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "envelope",
+   "instances": 6,
+   "stem": "CORE_input_fault_switch_J_E1_SIG_RISE__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "RISE_TIP",
+   "local_net": "RISE_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "envelope",
+   "instances": 6,
+   "stem": "CORE_input_fault_switch_J_E1_SIG_FALL__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "FALL_TIP",
+   "local_net": "FALL_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mult",
+   "instances": 2,
+   "stem": "CORE_input_fault_switch_J_B1_IN_IN__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "IN_TIP",
+   "local_net": "IN_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "manual_ab",
+   "instances": 2,
+   "stem": "CORE_input_fault_switch_J_X1_IN_A_A__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "A_TIP",
+   "local_net": "A_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "manual_ab",
+   "instances": 2,
+   "stem": "CORE_input_fault_switch_J_X1_IN_A_B__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "B_TIP",
+   "local_net": "B_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix5",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M5A_1_1__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "1_TIP",
+   "local_net": "1_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix5",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M5A_1_2__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "2_TIP",
+   "local_net": "2_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix5",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M5A_1_3__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "3_TIP",
+   "local_net": "3_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix5",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M5A_1_4__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "4_TIP",
+   "local_net": "4_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix5",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M5A_1_5__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "5_TIP",
+   "local_net": "5_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix4_vca",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M4A_1_1__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "1_TIP",
+   "local_net": "1_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix4_vca",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M4A_1_2__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "2_TIP",
+   "local_net": "2_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix4_vca",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M4A_1_3__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "3_TIP",
+   "local_net": "3_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix4_vca",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M4A_1_4__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "4_TIP",
+   "local_net": "4_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix4_vca",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M4A_1_ATTEN__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "ATTEN_TIP",
+   "local_net": "ATTEN_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "wavefolder",
+   "instances": 2,
+   "stem": "CORE_input_fault_switch_J_W2_IN_IN__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "IN_TIP",
+   "local_net": "IN_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "wavefolder",
+   "instances": 2,
+   "stem": "CORE_input_fault_switch_J_W2_IN_FOLD__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "FOLD_TIP",
+   "local_net": "FOLD_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "wavefolder",
+   "instances": 2,
+   "stem": "CORE_input_fault_switch_J_W2_IN_BIAS__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "BIAS_TIP",
+   "local_net": "BIAS_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "offset",
+   "instances": 6,
+   "stem": "CORE_input_fault_switch_J_A01_IN_IN__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "IN_TIP",
+   "local_net": "IN_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "offset",
+   "instances": 6,
+   "stem": "CORE_input_fault_switch_J_A01_IN_OFFSET__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "OFFSET_TIP",
+   "local_net": "OFFSET_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  }
+ ],
+ "fault_rows": [
+  {
+   "row": "F1 powered, +/-12 V on the jack (input_continuous_fault_V)",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Within VSS - VT .. VDD + VT the switch passes the signal (Rev. C index 25, page 26, Power-On Protection); downstream 10 k + BAT54S unchanged"
+   },
+   "tmux7412f": {
+    "verdict": "PASS",
+    "basis": "Same behaviour: overvoltage only beyond the supplies by VT (SCDS404B index 32, 9.3.2.4)"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F2 powered, jack beyond a rail (rail sag or external source above +/-12 V)",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Switch turns off; source to +/-55 V, 80 V across the channel (index 25, page 26)"
+   },
+   "tmux7412f": {
+    "verdict": "PASS",
+    "basis": "Switch turns off regardless of logic; source to +/-60 V, 85 V source-to-supply and source-to-drain (index 31, 9.3.2.1; index 32, 9.3.2.4)"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F3 unpowered, rails at 0 V, GND present, +/-12 V on the jack",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Switch off, inputs high impedance, +/-55 V blocked (index 25, Power-Off Protection). Source leakage +/-40 uA typical only; drain leakage +/-50 nA max at 85 C (Table 1, index 2)"
+   },
+   "tmux7412f": {
+    "verdict": "PASS",
+    "basis": "Sources Hi-Z, +/-60 V blocked (index 32, 9.3.2.2). IS(FA) grounded +/-125 uA max, ID(FA) grounded +/-50 nA max at 85 C (Section 7.6, index 6)"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F4 unpowered, rails floating, GND present",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Off whether supplies are 0 V or floating (index 25). Floating drain leakage +/-10 uA typical only"
+   },
+   "tmux7412f": {
+    "verdict": "PASS",
+    "basis": "Hi-Z with VDD/VSS 0 V or floating (index 32). Floating-rail leakage recorded as typical only (protection59-sources.json)"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F5 GND absent (return open, board unplugged)",
+   "adg5412f": {
+    "verdict": "FAIL",
+    "basis": "Datasheet: a GND reference must always be present (index 25). Outside the protected envelope"
+   },
+   "tmux7412f": {
+    "verdict": "FAIL",
+    "basis": "Same requirement (index 32, 9.3.2.2). No regression from ADG5412F"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F6 one analog rail missing, other present",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Single-supply operation 8..44 V is specified; an input outside the remaining span is an overvoltage and turns the switch off. Conditional on VDD - VSS >= 8 V for the on state"
+   },
+   "tmux7412f": {
+    "verdict": "PASS",
+    "basis": "Single supply 8..44 V specified; same overvoltage rule. Conditional as for ADG5412F"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F7 +5 V enable present before the analog rails (startup, R-ADG)",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Digital inputs tolerated without power; switch guaranteed off (index 25, Digital Input Protection); logic to 44 V"
+   },
+   "tmux7412f": {
+    "verdict": "PASS",
+    "basis": "Fail-safe logic: logic before supplies, switch OFF, logic to +44 V (index 32, 9.3.2.3)"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F8 rail lift: a patched input must not energize an unpowered rail (bare-clamp rejection)",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Source pins have specialized ESD with no diode path to the rails (index 24, ESD Performance)"
+   },
+   "tmux7412f": {
+    "verdict": "PASS",
+    "basis": "Same statement: source ESD allows +/-60 V regardless of supply; powered-off protection prevents back-powering (index 32, 9.3.2.2 and 9.3.2.5)"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F9 several inputs patched at once in one quad (ADG-1/ADG-3 packing)",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Rev. C index 24, page 25, Switch Architecture: \"the channels undisturbed by the overvoltage input continue to operate normally without additional crosstalk\"; 80 V channel stress (index 25). Project worst case 24 V. Qualitative manufacturer statement, no table limit"
+   },
+   "tmux7412f": {
+    "verdict": "UNKNOWN",
+    "basis": "No published statement on undisturbed channels; only the 85 V source-to-drain stress rule (index 31) and -100 dB AC crosstalk. FF is shared across the four sources"
+   },
+   "changes_with_tmux7412f": true
+  },
+  {
+   "row": "F10 drain leakage and RON on pitch-sensitive inputs",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "RON 14 ohm max, ID(on) +/-2.0 nA max at 85 C, +/-15 V table (Table 1); +/-12 V not guaranteed"
+   },
+   "tmux7412f": {
+    "verdict": "PASS",
+    "basis": "RON 14 ohm max, ID(ON) +/-2 nA max at 85 C, +/-15 V table (Section 7.6); +/-12 V not guaranteed"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F11 land and pin map (drop-in)",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Current TSSOP-16 land"
+   },
+   "tmux7412f": {
+    "verdict": "FAIL",
+    "basis": "Orderable only as WQFN-16 RRP (addendum index 40); the TSSOP-16 PW package with the ADG pin order is marked Preview. New land and pin map: S1 = pad 1, D1 = pad 16, SEL1 = pad 15"
+   },
+   "changes_with_tmux7412f": true
+  }
+ ],
+ "fault_row_summary": {
+  "adg5412f": {
+   "PASS": 10,
+   "FAIL": 1
+  },
+  "tmux7412f": {
+   "PASS": 8,
+   "FAIL": 2,
+   "UNKNOWN": 1
+  }
+ },
+ "envelope_internal_tmux6112": [
+  {
+   "row": "Pin map",
+   "verdict": "PASS",
+   "basis": "TSSOP-16 order matches the ADG5412F land: SEL1 1, D1 2, S1 3, VSS 4, GND 5 ... pin 12 is NC where ADG has FF, which the project leaves unconnected (SCDS383F Table 5-1, index 3)"
+  },
+  {
+   "row": "Logic sense",
+   "verdict": "PASS",
+   "basis": "Logic 1 turns the switches on, as ADG5412F (Description, index 0)"
+  },
+  {
+   "row": "Supply",
+   "verdict": "PASS",
+   "basis": "+/-5 .. +/-17 V dual (Features, index 0)"
+  },
+  {
+   "row": "Signal range",
+   "verdict": "PASS",
+   "basis": "VA = VSS .. VDD; envelope nodes REF9/REF8/AGND are inside the rails when powered"
+  },
+  {
+   "row": "RON",
+   "verdict": "PASS",
+   "basis": "210 ohm max at VS = +/-10 V, 85 C (6.5, index 5) in series with the 899 k drive divider and the hold clamp"
+  },
+  {
+   "row": "Hold-node leakage",
+   "verdict": "PASS",
+   "basis": "IS(OFF)/ID(OFF) -0.14 .. +0.05 nA at 85 C, ID(ON) -0.25 .. +0.1 nA (6.5, index 5); +/-15 V table, not a +/-12 V guarantee"
+  },
+  {
+   "row": "Fault protection",
+   "verdict": "NOT APPLICABLE",
+   "basis": "Not fault protected; analog pins VSS - 0.3 .. VDD + 0.3 V (6.1, index 4). The envelope switches are internal, not jack facing"
+  },
+  {
+   "row": "Logic before rails",
+   "verdict": "FAIL",
+   "basis": "SELx absolute maximum is VDD + 0.3 V (6.1, index 4). +5 V logic present while +12 V is absent exceeds it unless current is limited below 30 mA; needs a sequencing or series-resistor check"
+  }
+ ]
+}
