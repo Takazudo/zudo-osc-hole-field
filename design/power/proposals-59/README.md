@@ -66,6 +66,40 @@ the supply side ([`pd-interface-20v.md`](../../architecture-278/integration/powe
    Pass criterion: VEE5 stays inside −6 V and +0.5 V at the 25 °C VF bound.
 5. Bench: measure VEE5 at each case (#57).
 
+**Phase 9 skew result (2026-10-31).** Two sources:
+
+- **Guaranteed (CALCULATED).** These come from the BAT54S 25 °C VF maxima, A1 and A2 (VF
+  monotonic in current). Each value carries conditions P1–P4 in
+  `pd-interface-20v.md` §5.
+  - +12 V lead: no R-VEE limit. VEE5 ≤ +0.50 V while the clamp current is ≤ 30 mA.
+  - The +12 V lead is then limited only by R-ADG: ≤ 6.50 ms with +5 V present.
+  - −12 V lead: ≤ 0.69 ms on 10 ms tracking ramps (0.069 × ramp time).
+  - No P59-A figure covers temperature.
+- **Diagnostic simulation.** `scripts/checks/p59a_skew_model.py` →
+  [`p59a-skew-model.json`](p59a-skew-model.json). It ran 64 cases through the pinned
+  ngspice and the TI OPAx197 model:
+  - grid: skew −1.0 to +4.65 ms; AS3340 VEE load 0 or 6 mA (as a current from +12 V);
+    two REF5050 surrogates.
+  - The official BAT54S SPICE model is **NOT RETAINED**; Nexperia refused the download
+    (HTTP 403). The clamp is therefore an envelope built from the promoted VF maxima. It
+    conducts no more than a conforming diode at every voltage, so it can only overstate
+    VEE5.
+
+  | Variant | Inside −6 V / +0.5 V | Worst VEE5 |
+  | --- | --- | --- |
+  | Current 100 Ω, no clamp | 26 / 32 | +0.86 V at +12 V lead ≥ 2.26 ms with a 6 mA load. All 6 failures are +12 V leads ≥ 1 ms at 6 mA |
+  | P59-A 1.21 kΩ + clamp envelope | 32 / 32 | max +0.452 V, min −5.14 V |
+
+  What the simulation shows:
+  - The model's driver did not itself drive VEE5 positive: the clamp carried 0 mA at a 0 mA
+    load. The positive excursion comes from the assumed AS3340 load current.
+  - **New conflict.** At a 6 mA load, P59-A settles VEE5 at −4.68 V instead of −5 V. The
+    driver saturates through 1.21 kΩ, confirming gate P4 (≤ 5.79 mA). If the real AS3340 VEE
+    current exceeds that, R_ISO must be chosen differently (a lower value with a higher
+    clamp current rating, or a different clamp topology).
+
+  The TI model makes no validity claim below 4.5 V span, so none of this is qualification.
+
 ## P59-B: output and sense injection while OSC is off
 
 **Status.** An earlier proposal already exists and is not selected:

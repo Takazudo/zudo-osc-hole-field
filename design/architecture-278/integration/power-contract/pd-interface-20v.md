@@ -103,6 +103,7 @@ else stays PROPOSED.
 | Discharge skew, analog rails | No state with +12 V > 0.5 V while −12 V is absent, and none with −12 V magnitude > 6 V while +12 V is absent. Both rails therefore fall together, and neither may lead the other out | CALCULATED (A1), R-VEE |
 | Discharge skew, +5 V | No state with +5 V above 0.8 V, one analog rail absent and the other at ≥ 8 V magnitude. +5 V must therefore fall to ≤ 0.8 V no later than the first analog rail leaves | CALCULATED, R-ADG; the 0.8 V VINL maximum is from the ±15 V table, so it is conditional at ±12 V |
 | Driver interval: both rails present but VEE5 regulation not within specified operation | Exists on every common ramp and discharge, for +12 V between 0.5 V and 5.2 V (REF5050 minimum input). That is 0.41–4.23 ms of a 10 ms ramp, 0.81–8.46 ms of 20 ms and 2.03–21.1 ms of 50 ms. No supply-side ramp, skew or discharge order removes it | CALCULATED (A1), R-DRV. OPEN on the OSC side (#59): it needs an OSC-side bound on VEE5, not a PD number |
+| *If P59-A adopted:* driver interval | VEE5 ≤ +0.40 V (clamp current ≤ 10 mA) or ≤ +0.50 V (≤ 30 mA), and VEE5 ≥ the −12 V rail, which is ≥ −6 V while −12 V magnitude ≤ 6 V. On tracking ramps the −12 V magnitude at +12 V = 5.2 V is 5.16 V, so the interval is inside −6 V / +0.5 V. Discharge: −12 V magnitude must reach ≤ 6 V no later than +12 V falls below 5.2 V | CALCULATED (A1, A2, P59-A conditions in §5), 25 °C only. UNADOPTED |
 | Re-enable | Only from the discharged state (all rails at or below the discharge level) | PROPOSED |
 | Detection-to-disconnect time, and injection charge per pin during it | Must be stated by the design; no OSC value | CONTRACT obligation (PRO item 4); value UNSOURCED |
 
@@ -136,6 +137,7 @@ else stays PROPOSED.
 | One-rail-present tolerance with +5 V present | The single analog rail stays below 8 V magnitude (≤ 6.50 ms of +12 V lead, ≤ 6.56 ms of −12 V lead at the fastest slopes). Bringing +5 V up last avoids the case | CALCULATED, R-ADG; below 8 V isolation is not established by the source either |
 | ADG5412F enable on a common ramp | On a common ramp +5 V passes the 0.8 V VINL maximum at 15.7 % of the ramp, and the analog rails reach the ±5 V minimum supply at 40.7–41.0 %. IN is therefore not guaranteed low while the switch supplies are below their specified range. This is covered by the existing OSC requirement for load-side inhibited input enables (#59), not by a PD sequencing change, which the all-rails-together rule forbids | CALCULATED, R-ADG (`fact-fault-switch-logic-thresholds`, `fact-fault-switch-supply-range`); OSC #59 |
 | Rail-to-rail ramp skew | Ramps start within ≤ 0.41 ms of each other, set by the +12 V-leading case above, and all rails enter their source bands within ≤ 2 ms of each other | Start skew CALCULATED (A1); band-entry skew PROPOSED |
+| *If P59-A adopted:* one-rail-present tolerance and start skew | **+12 V lead:** no R-VEE limit for any duration. VEE5 ≤ +0.40 V while the clamp carries ≤ 10 mA, ≤ +0.50 V up to 30 mA. The next limit is R-ADG: ≤ 6.50 ms of +12 V lead at the fastest slopes with +5 V present, and none from current OSC records if +5 V stays ≤ 0.8 V until both analog rails are present. **−12 V lead:** ≤ 0.69 ms on 10 ms tracking ramps (0.069 × ramp time: 1.38 ms at 20 ms, 3.45 ms at 50 ms). In voltage terms, −12 V magnitude ≤ 6 V until +12 V ≥ 5.2 V. This replaces the 4.92 ms one-rail figure, because the driver interval now governs. Unconditional values above are unchanged | CALCULATED (A1, A2), 25 °C only, UNADOPTED. Conditions: P1 R_ISO ≥ 1.21 kΩ; P2 AS3340 VCC→VEE current, which also flows into the clamp, ≤ 19.7 mA (30 − 10.3 mA; missing fact) for the 0.50 V bound; the 0.40 V figure holds only for the driver current alone; P3 R_ISO dissipation up to 0.129 W while +12 V alone is at 12.48 V (RC0603FR rating not promoted); P4 AS3340 VEE load ≤ 5.79 mA for regulation through 1.21 kΩ (missing fact). Diagnostic simulation (TI OPAx197 model, BAT54S VF-envelope surrogate, official model NOT RETAINED): `design/power/proposals-59/p59a-skew-model.json`. 32/32 P59-A cases stay inside −6 V / +0.5 V, against 26/32 for the current design. At a 6 mA load it settles VEE5 at −4.68 V, confirming P4 |
 | Precondition | Any PD hold-up is charged before the outputs ramp | CONTRACT for a hold-up path (PCR R3) |
 | Brownout during the ramp | All-rail shutdown (§3) | CONTRACT |
 
@@ -181,6 +183,11 @@ below the 4.5 V (±2.25 V) recommended minimum (`fact-op-precision-supply-recomm
 A1 therefore cannot be retired. The diode structure supports the direction of A1 for an
 externally forced pin, but not its value.
 
+**Assumption A2** (P59-A rows only): the BAT54S forward voltage rises monotonically with
+current, so a current at or below a datasheet test point gives a VF at or below that
+point's maximum (`fact-clamp-diode-forward-voltage`, 25 °C only). No VF maximum is
+retained at any other temperature, so no P59-A figure covers temperature.
+
 | Rule | Bundle fact | Project connection | Derived constraint |
 | --- | --- | --- | --- |
 | R-VEE | AS3340D `fact-vco-absolute-maximum-vee-to-ground` (VEE–GND −6 V / +0.5 V), `fact-vco-absolute-maximum-supply` (VCC–GND +18 / −0.5 V, VCC–VEE +24 / −0.5 V), `fact-vco-absolute-maximum-pins` (±40 mA any pin) | Pin 3 = VEE5, driven by an OPA4197 (precision role, ±12 V) through `VEE_ISO` 100 Ω and referenced to LOCAL_REFN5; pin 16 = +12V | With A1, an unregulated driver puts VEE5 anywhere between its rails. Hence +12 V alone ≤ 0.5 V and −12 V alone ≤ 6 V magnitude. At +12 V = 12 V a VEE5 short to the positive rail would push up to 115 mA through 100 Ω, above the ±40 mA pin limit, so the one-rail rule matters for current as well as voltage |
@@ -206,6 +213,8 @@ Facts still missing. The ICs below have retained PDFs, but none of them states t
 | GRM21BR61E475KA12L, GRM188R71H104KA93D | Polarity, reverse-voltage tolerance, DC-bias | Not in the Murata catalogue responses; PDF datasheet downloads returned HTML or 404 (2026-10-31), so it stays SOURCE UNAVAILABLE |
 | ADG5412FBRUZ | VINL/VINH at ±12 V (only the ±15 V, ±20 V, 12 V and 36 V tables exist) and maximum floating leakage | The datasheet has typical floating leakage only |
 | Kingbright APG1005SEC/E-T, APHHS1005QWF/D | Reverse-voltage rating | Not promoted |
+| BAT54S,215 (P59-A only) | VF maxima away from 25 °C; official SPICE model | Not in the promoted facts; the Nexperia model download was refused (HTTP 403, 2026-10-31), so the model is NOT RETAINED |
+| RC0603FR (P59-A R_ISO) | Rated power | In the retained PDF, not promoted |
 
 ## Open gates this file does not close
 
