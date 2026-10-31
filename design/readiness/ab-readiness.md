@@ -11,7 +11,7 @@ Evidence is at commit `25c60c40` unless a row names this commit. The "Needs" col
 **U** (user decision), **N** (native KiCad run), **P** (physical work), **E** (evidence or
 access) and **R** (independent review).
 
-## A: design complete. Not met: 3 FAIL, 3 BLOCKED, 3 NOT RUN, 1 UNKNOWN
+## A: design complete. Not met: 6 FAIL, 2 BLOCKED, 2 NOT RUN, 1 UNKNOWN
 
 | # | Gate | Status | Evidence | Blocker | Needs |
 | --- | --- | --- | --- | --- | --- |
@@ -24,19 +24,19 @@ access) and **R** (independent review).
 | A7 | DRC: octave ×5, panel, stage-optical | PASS for the retained reports | `boards/osc-octave-{1..5}/reports/drc.json` and `boards/panel/...`: 0 violations, 0 unconnected; `osc-stage-optical`: 0 unconnected, 289 warnings | The reports are 2026-10-02/03. A current-input rerun is NOT RUN (explicit permission) | N |
 | A8 | OPA4196 loop and headroom (U110/U210 bridge) | UNKNOWN | `circuit/candidates/opa4196-compact-20261029/` (`verify_record.py` PASS in this run). Model screen: PM 47.5–122.1°, headroom ≥ 1.62 V, 170/170 runs; 0 °C clean; at 40 °C, 48 of 960 AC points did not converge | Only a model screen against PROPOSED criteria. No temperature range is specified, layout parasitics are open (2.5° margin at 20/20 pF), and the candidate is unadopted | U, R, P |
 | A9 | Assembly land (U110/U210 SOIC-14) | BLOCKED | `circuit/proposals/opa4196-assembly-review-20261029/`; paste-aperture proposal 1a0563a | Paste policy: 1:1 or inner trim. The JLC part record is not retained: MSL handling, reflow profile, library class | U, E |
-| A10 | BOM identity and evidence | FAIL | `design/readiness/bom-readiness.json` (this commit) | 5922 placements per unit, of which 1745 have **no exact MPN**. The scheme leaves differing-value passive MPNs blank (`scripts/schgen/README.md`). 43 exact lines, 16 with an LCSC code. CL10A105KB8NNNC and RC0603FR-072K2L have no owner skill in the inventory. `circuit:check` PASSES for the 68 inventory lines it covers | E, U |
+| A10 | BOM identity and evidence | FAIL | `design/readiness/bom-readiness.json`; `bom-cost-evidence.json`; research page `osc-passive-identity-candidates` (phase 13) | 1739 of 5916 placements per unit have no exact MPN (6 power flags no longer counted). Phase 13 proposes UNADOPTED candidates covering 1582 of them. 157 stay UNKNOWN: 14 non-E-series precision values, 10 nF C0G 0603, and 1 µF / 4.7 µF on the C0G symbol, all design decisions. CL10A105KB8NNNC and RC0603FR-072K2L still need Workflow B records | E, U |
 | A11 | Supply contract and source | BLOCKED | `design/architecture-278/integration/power-contract/pd-interface-20v.md` | The PD B20 draft is not built. The PD-side start-skew time form FAILS (SIM). The no-load slope exception needs recording | U, P |
 | A12 | Independent review of the complete design | NOT RUN | `worker-reviews/` (stage-scoped reviews only) | Prerequisites A2, A4–A6 and A10 are open | R |
 | A13 | Repository Python test suite | FAIL (receipts) / NOT RUN (dependencies) | This run: 1808 tests in 28 roots. See the "Runnable gates" section | Hash-bound receipts are stale against main `02d69fbd`. scipy, shapely and playwright are missing here | E |
 | A14 | Physical fit (panel, stack, harness) | NOT RUN | `design/architecture-278/GATE.md` | No hardware. 14 transport allocations exceed 300 mm. P59-B fit conflict on JR. JL header sites are full | P, U |
 
-## B: prototype order. Not met: 2 FAIL, 3 BLOCKED, 3 NOT RUN, 2 UNKNOWN, 1 open
+## B: prototype order. Not met: 2 FAIL, 2 BLOCKED, 4 NOT RUN, 2 UNKNOWN, 1 open
 
 | # | Gate | Status | Evidence | Blocker | Needs |
 | --- | --- | --- | --- | --- | --- |
 | B1 | All A gates | FAIL | Section A above | A2, A4–A6 and A10 | — |
-| B2 | BOM availability (stock, lifecycle) | UNKNOWN | Owner-bundle procurement facts: 26 UNVERIFIED, 3 "LISTED; stock UNVERIFIED", the rest open | No retained stock record. Reading distributor stock is not done here | E |
-| B3 | BOM cost, per unit and per 5-unit lot | UNKNOWN | `design/readiness/bom-readiness.json` | Covered under "BOM cost" below | E |
+| B2 | BOM availability (stock, lifecycle) | FAIL | `bom-cost-evidence.json` (JLC catalog, 2026-10-31) | Stock below a 5-unit lot: ADG5412FBRUZ 0 of 550, PTV09A-4020F-B504 0, B104 4 of 240, B103 125 of 255, C0603C101J5GACTU 42 of 335, RC1210FR-07499RL 281 of 840, LM13700 54 of 80, LF398 5 of 10, RT0603BRD0710ML 0. Six lines have no part offer. Lifecycle is UNKNOWN | E, U |
+| B3 | BOM cost, per unit and per 5-unit lot | UNKNOWN (partial) | `bom-cost-evidence.json` | Known part subtotal: $3232.47 per unit and $15453.96 per lot (JLC tiers, 2026-10-31). Unpriced: BAS16GW-QX ×464, WQP518MA ×180, APHHS1005QWF/D ×104, 2MS3T1B1M2QES, AS3340D, NOISE2, plus 157 UNKNOWN passives | E |
 | B4 | PCB fabrication and assembly cost | UNKNOWN | — | No routed board set, and quoting is an outward action | U, E |
 | B5 | DFM (JLC capability, panel, stencil, THT) | NOT RUN | Stage24 JLC capability/stencil sources; Stage50 assembly specification | No routed final revision to check | N |
 | B6 | Residual-risk register accepted | BLOCKED | `pd-interface-20v.md`, `proposals-59/README.md`, `GATE.md` | Covered under "Residual risks" below | U |
@@ -46,37 +46,19 @@ access) and **R** (independent review).
 | B10 | Order and export package parity (ERC, DRC, BOM/CPL from one revision) | NOT RUN | — | No final revision. No order files are produced here | N |
 | B11 | Lot size | Open | — | The coordinator's 5-unit lot is a planning figure, not a user decision | U |
 
-## BOM cost: only one line has a price, under 5 cents per unit
+## BOM cost: known part subtotal $3232.47 per unit, total UNKNOWN
 
-**Per unit (CALCULATED):**
+Phase 13 read the public JLC catalog on 2026-10-31 (read-only). The detail is in
+`bom-cost-evidence.json` and `doc/.../research/osc-passive-identity-candidates.mdx`.
 
-- Known: CL10A105KB8NNNC / C15849, 3 per unit × $0.0146 (JLC tier 1–499) = **$0.044**.
-  - Source: the PD worker's JLC parts API read of 2026-10-31. It is uncommitted and is not
-    OSC evidence.
-- UNKNOWN: the other 42 exact lines (4174 placements) and all 1745 value-only placements.
+| Set | Per unit | Per 5-unit lot |
+| --- | --- | --- |
+| Exact lines | $3195.45 | $15292.22 |
+| Value-only candidates | $37.02 | $161.74 |
 
-**Per 5-unit lot:** 15 × $0.0146 = **$0.219** known. Everything else is UNKNOWN.
-
-**Total:** UNKNOWN. No retained OSC evidence prices any other line. The Stage36 IDC
-connector snapshot ($1.80 / $1.32) is a dated observation for parts that are not in this
-BOM.
-
-**Largest quantities per unit, which matter most for cost once prices are known:**
-
-| Part | Per unit |
-| --- | --- |
-| GRM188R71H104KA93D | 1132 |
-| RT0603BRD07100KL | 651 |
-| BAS16GW-QX | 464 |
-| RC0603FR-07100KL | 210 |
-| WQP518MA | 180 |
-| OPA4196IDR | 174 |
-| RC1210FR-07499RL | 168 |
-| BAT54S | 125 |
-| ADG5412FBRUZ | 110 |
-| APHHS1005QWF/D | 104 |
-
-For a 5-unit lot, multiply by 5. The full list is in `bom-readiness.json`.
+The largest costs per unit are ADG5412FBRUZ $1490, OPA4197IPWR $974 and OPA4196IDR $448.
+The total stays UNKNOWN because 6 exact lines and 157 passive placements have no offer.
+PCB, assembly, tax and shipping are excluded.
 
 ## Residual risks (open, not accepted)
 

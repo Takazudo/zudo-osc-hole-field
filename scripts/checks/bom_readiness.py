@@ -33,7 +33,8 @@ def build():
             stem = part.key.rsplit('.', 1)[0] if part.prefix == 'U' else part.key
             packages.setdefault(stem, part)
         for part in packages.values():
-            if part.abstract or not part.in_bom or part.dnp:
+            # '#'-prefixed parts are KiCad power flags, not physical placements.
+            if part.abstract or not part.in_bom or part.dnp or part.prefix.startswith('#'):
                 continue
             n = copies[family.name]
             placements += n
