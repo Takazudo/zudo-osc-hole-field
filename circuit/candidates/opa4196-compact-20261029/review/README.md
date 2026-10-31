@@ -176,7 +176,7 @@ A first pass without the project stub reported 4998 warnings per tree, 4736 of t
 "configuration does not include the library" errors for every symbol. It was replaced by the
 run above and is not retained. The 262 ERC warnings are classified in
 [`erc-proposal/`](erc-proposal/README.md): 228 come from the Kingbright LED symbols'
-`Unspecified` pins, which are now fixed in the repository library, and 34 come from inherited
+`Unspecified` pins (a repository-library fix is held as a user decision), and 34 come from inherited
 off-grid series-resistor rows. None hides a connectivity defect. Proposal patches clear all
 262 on scratch copies with identical nets; they are not applied. These checks cover rules and connectivity only. They do not
 validate behaviour, fit or assembly.

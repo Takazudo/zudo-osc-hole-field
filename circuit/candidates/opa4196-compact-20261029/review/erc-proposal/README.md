@@ -11,7 +11,7 @@ Each of the four variants has the same set of 262 warnings, and the predecessor 
 
 | Count | Type | Root cause | Owner |
 | --- | --- | --- | --- |
-| 228 | `pin_to_pin` | The embedded Kingbright LED symbols (APHHS1005QWF/D, APG1005SEC/E-T) type both pins `Unspecified`. KiCad warns where they meet passive diode/resistor/transistor pins or an LM393 open-collector output. | Repository library `symbols/src/Kingbright_*_0402.kicad_sym`, fixed in the repository. The trees carry frozen copies |
+| 228 | `pin_to_pin` | The embedded Kingbright LED symbols (APHHS1005QWF/D, APG1005SEC/E-T) type both pins `Unspecified`. KiCad warns where they meet passive diode/resistor/transistor pins or an LM393 open-collector output. | Repository library `symbols/src/Kingbright_*_0402.kicad_sym`; the repository retyping is held as a user decision because it reverses the documented stance in `schematic/reports/erc-notes.md`. The trees carry frozen copies |
 | 22 + 12 | `endpoint_off_grid` | The inherited R9000xx series-resistor rows (Series250k/Series14/79k splits) sit at round-millimetre centres (x 50/80/110 mm, y 590–960 mm), not on the 1.27 mm grid. 22 symbol pins and 12 joining wires are reported. | Predecessor development baseline (handoff generator, not in this repository) |
 
 The 228 pin pairs are 172 bridge nodes (LED anode to diode cathode, LED cathode to diode anode), 12+12 transistor-collector sinks with anode resistors, 10+10 LM393 open-collector sinks with anode resistors, and 6+6 DH steering-diode nodes. All of them match forward-connected indicators.
@@ -23,7 +23,7 @@ The native netlist shows that every off-grid endpoint is still connected exactly
 | File | Applies to | Effect |
 | --- | --- | --- |
 | `series-rows.snap.patch` (`9916aa62…9c38`, from `snap_series_rows.py`) | all four variants, `--fuzz=0 -p1` | 22 R9000xx symbols move to the nearest 1.27 mm grid point. Their pin-end wires and end labels follow, and mid-wire labels snap onto their wire. Nothing else moves |
-| `led-pin-types.patch` (from `led_pin_types.py`) | all four variants, after the snap patch | 28 LED pins retyped `passive`: 24 in the symbol copies embedded in nine sheets and 4 in the candidate library, matching the repository symbols |
+| `led-pin-types.patch` (from `led_pin_types.py`) | all four variants, after the snap patch | 28 LED pins retyped `passive`: 24 in the symbol copies embedded in nine sheets and 4 in the candidate library, matching the held repository change |
 
 ## Native verification
 

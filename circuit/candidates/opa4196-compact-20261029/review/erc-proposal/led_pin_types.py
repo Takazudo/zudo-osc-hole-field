@@ -3,7 +3,7 @@
 The candidate sheets embed frozen copies of the Kingbright_White_0402 / Kingbright_Red_0402
 symbols with both pins typed `unspecified`. This retypes only those symbols' pins to `passive`
 (in every embedded lib_symbols copy and in candidate/library/zudo-osc-hole-field.kicad_sym),
-matching symbols/src after the repository change. Other symbols, such as DW254P-2X8-L0, are
+matching the proposed (held) symbols/src change. Other symbols, such as DW254P-2X8-L0, are
 left as they are. Usage: python3 -I led_pin_types.py <candidate-tree-root>
 """
 import re
