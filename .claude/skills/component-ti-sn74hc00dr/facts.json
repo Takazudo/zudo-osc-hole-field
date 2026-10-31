@@ -87,7 +87,7 @@
       "record_id": "rec-nand",
       "source_id": "src-nand-datasheet",
       "class": "GUARANTEED_ELECTRICAL",
-      "value": "No exact-part electrical limits promoted from retained evidence.",
+      "value": "Absolute maximum ratings are promoted as separate facts; operating electrical characteristics and project supply suitability are not promoted.",
       "unit": "NONE",
       "conditions": "The task has not promoted a source-backed limit for this exact shortlist record.",
       "locator": "src-nand-datasheet: exact component electrical-characteristics table not promoted",
@@ -121,6 +121,27 @@
       "locator": "Section/table audit: src-nand-shortlist: parts[id=nand].package; CAD receipt is provisional family geometry",
       "provenance": "PROJECT-CHOICE",
       "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-nand-absolute-maximum",
+      "record_id": "rec-nand",
+      "source_id": "src-nand-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "VCC_min_V": -0.5,
+        "VCC_max_V": 7,
+        "input_clamp_current_mA": 20,
+        "output_clamp_current_mA": 20,
+        "output_current_mA": 25,
+        "VCC_or_GND_current_mA": 50
+      },
+      "unit": "V and mA",
+      "conditions": "VCC -0.5 V to 7 V; IIK and IOK +/-20 mA (VI or VO < -0.5 V or > VCC + 0.5 V); IO +/-25 mA; continuous VCC or GND current +/-50 mA. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-nand-datasheet: physical PDF p.3, printed p.4, section 6.1 Absolute Maximum Ratings",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
     }

@@ -238,6 +238,27 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-flipflop-absolute-maximum",
+      "record_id": "rec-flipflop",
+      "source_id": "src-flipflop-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "VCC_min_V": -0.5,
+        "VCC_max_V": 7,
+        "input_clamp_current_mA": 20,
+        "output_clamp_current_mA": 20,
+        "output_current_mA": 25,
+        "VCC_or_GND_current_mA": 50
+      },
+      "unit": "V and mA",
+      "conditions": "VCC -0.5 V to 7 V; IIK and IOK +/-20 mA (VI < -0.5 V or > VCC); IO +/-25 mA; continuous VCC or GND current +/-50 mA. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-flipflop-datasheet: physical PDF p.3, printed p.4, section 6.1 Absolute Maximum Ratings",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

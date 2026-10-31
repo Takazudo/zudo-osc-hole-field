@@ -92,11 +92,12 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 **Coverage ID:** `cov-ota-electrical-limits` · **Status:** OPEN
 
-**Reason:** No exact-part electrical limits were promoted; source/identity gap remains open.
+**Reason:** Absolute maximum ratings are retained as primary facts; operating electrical characteristics and project suitability remain unpromoted.
 
 **Facts in this domain:**
 
 - [`fact-ota-electrical-limits`](#fact-ota-electrical-limits)
+- [`fact-ota-absolute-maximum`](#fact-ota-absolute-maximum)
 
 **Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
 
@@ -150,6 +151,24 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
 
+### ABSOLUTE\_MAXIMUM
+
+A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-ota-absolute-maximum" />
+
+  **Fact:** `fact-ota-absolute-maximum`
+
+  **Value:** `amplifier_bias_current_mA`=2; `buffer_output_current_mA`=20; `differential_input_V`=5; `diode_bias_current_mA`=2; `supply_dual_V`=18; `supply_span_V`=36 · **Unit:** `V and mA`
+
+  **Conditions:** Supply 36 VDC or +/-18 V; DC input voltage between +VS and -VS; differential input +/-5 V; ID and IABC 2 mA; buffer output 20 mA (package dissipation limited). Absolute maximum stress rating, not an operating condition.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-ota-datasheet: physical PDF p.3, printed p.4, section 6.1 Absolute Maximum Ratings](#src-ota-datasheet)
+</EvidenceFact>
+
 ### GUARANTEED\_ELECTRICAL
 
 A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.
@@ -159,7 +178,7 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
 
   **Fact:** `fact-ota-electrical-limits`
 
-  **Value:** No exact-part electrical limits promoted from retained evidence. · **Unit:** `NONE`
+  **Value:** Absolute maximum ratings are promoted as separate facts; operating electrical characteristics and project supply suitability are not promoted. · **Unit:** `NONE`
 
   **Conditions:** The task has not promoted a source-backed limit for this exact shortlist record.
 
@@ -397,6 +416,7 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 
 | Recorded term           | What it means                                                                                                                                                      |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ABSOLUTE_MAXIMUM`      | A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.                                         |
 | `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
 

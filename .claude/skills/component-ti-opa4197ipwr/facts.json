@@ -197,6 +197,75 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-supply-absolute",
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "dual_supply_V": 20,
+        "single_supply_V": 40
+      },
+      "unit": "V",
+      "conditions": "VS = (V+) - (V-); dual-supply maximum is +/-20 V, single-supply maximum 40 V, over operating free-air temperature. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-op-precision-datasheet: physical PDF p.4, printed p.5, section 6.1 Absolute Maximum Ratings, Supply voltage row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-input-absolute",
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "common_mode_below_V_minus_V": -0.5,
+        "common_mode_above_V_plus_V": 0.5,
+        "differential_above_supply_span_V": 0.2,
+        "input_current_mA": 10
+      },
+      "unit": "V and mA",
+      "conditions": "Signal input pins: common-mode voltage (V-) - 0.5 V to (V+) + 0.5 V; differential (V+) - (V-) + 0.2 V; input current +/-10 mA. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-op-precision-datasheet: physical PDF p.4, printed p.5, section 6.1 Absolute Maximum Ratings, Signal input pins rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-supply-recommended",
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "class": "RECOMMENDED_OPERATION",
+      "value": {
+        "minimum_span_V": 4.5,
+        "minimum_dual_V": 2.25,
+        "maximum_span_V": 36,
+        "maximum_dual_V": 18
+      },
+      "unit": "V",
+      "conditions": "Recommended supply VS = (V+) - (V-): 4.5 V (+/-2.25 V) to 36 V (+/-18 V). No behaviour is specified below the minimum.",
+      "locator": "src-op-precision-datasheet: physical PDF p.4, printed p.5, section 6.3 Recommended Operating Conditions, Supply voltage row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-esd-steering",
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Current-steering ESD diodes connect the input and output pins back to the internal power-supply lines, meeting at an absorption device or supply ESD cell; intended to stay inactive in normal operation. No forward voltage or in-circuit current rating is given.",
+      "unit": "NONE",
+      "conditions": "Manufacturer description of OPAx197 internal ESD structure (Electrical Overstress section). Structure only; it is not a guaranteed clamp level.",
+      "locator": "src-op-precision-datasheet: physical PDF p.24, printed p.25, section 7.3.7 Electrical Overstress and Figure 52",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

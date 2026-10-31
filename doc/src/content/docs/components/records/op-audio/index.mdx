@@ -99,6 +99,10 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 - [`fact-op-audio-quiescent-current`](#fact-op-audio-quiescent-current)
 - [`fact-op-audio-output-swing`](#fact-op-audio-output-swing)
 - [`fact-op-audio-overload-recovery`](#fact-op-audio-overload-recovery)
+- [`fact-op-audio-supply-absolute`](#fact-op-audio-supply-absolute)
+- [`fact-op-audio-input-absolute`](#fact-op-audio-input-absolute)
+- [`fact-op-audio-supply-recommended`](#fact-op-audio-supply-recommended)
+- [`fact-op-audio-esd-steering`](#fact-op-audio-esd-steering)
 
 ### manufacturer product description
 
@@ -182,6 +186,56 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 ## Facts
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
+
+### ABSOLUTE\_MAXIMUM
+
+A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-op-audio-supply-absolute" />
+
+  **Fact:** `fact-op-audio-supply-absolute`
+
+  **Value:** `dual_supply_V`=20; `single_supply_V`=40 · **Unit:** `V`
+
+  **Conditions:** VS = (V+) - (V-); dual-supply maximum is +/-20 V, single-supply maximum 40 V, over operating free-air temperature. Absolute maximum stress rating, not an operating condition.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-op-audio-datasheet: physical PDF p.4, printed p.5, section 6.1 Absolute Maximum Ratings, Supply voltage row](#src-op-audio-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-op-audio-input-absolute" />
+
+  **Fact:** `fact-op-audio-input-absolute`
+
+  **Value:** `common_mode_above_V_plus_V`=0.5; `common_mode_below_V_minus_V`=-0.5; `differential_above_supply_span_V`=0.2; `input_current_mA`=10 · **Unit:** `V and mA`
+
+  **Conditions:** Signal input pins: common-mode voltage (V-) - 0.5 V to (V+) + 0.5 V; differential (V+) - (V-) + 0.2 V; input current +/-10 mA. Absolute maximum stress rating, not an operating condition.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-op-audio-datasheet: physical PDF p.4, printed p.5, section 6.1 Absolute Maximum Ratings, Signal input pins rows](#src-op-audio-datasheet)
+</EvidenceFact>
+
+### RECOMMENDED\_OPERATION
+
+The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-op-audio-supply-recommended" />
+
+  **Fact:** `fact-op-audio-supply-recommended`
+
+  **Value:** `maximum_dual_V`=18; `maximum_span_V`=36; `minimum_dual_V`=2.25; `minimum_span_V`=4.5 · **Unit:** `V`
+
+  **Conditions:** Recommended supply VS = (V+) - (V-): 4.5 V (+/-2.25 V) to 36 V (+/-18 V). No behaviour is specified below the minimum.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-op-audio-datasheet: physical PDF p.4, printed p.5, section 6.3 Recommended Operating Conditions, Supply voltage row](#src-op-audio-datasheet)
+</EvidenceFact>
 
 ### GUARANTEED\_ELECTRICAL
 
@@ -391,6 +445,20 @@ A value this project recorded about how the part is used here — a chosen opera
   **Evidence:** [src-op-audio-shortlist: JSON row parts\[id=op\_audio\] sourcing.jlcpcb\_assembly = UNVERIFIED](#src-op-audio-shortlist)
 </EvidenceFact>
 
+<EvidenceFact>
+  <EvidenceAnchor id="fact-op-audio-esd-steering" />
+
+  **Fact:** `fact-op-audio-esd-steering`
+
+  **Value:** Current-steering ESD diodes connect the input and output pins back to the internal power-supply lines, meeting at an absorption device or supply ESD cell; intended to stay inactive in normal operation. No forward voltage or in-circuit current rating is given. · **Unit:** `NONE`
+
+  **Conditions:** Manufacturer description of OPAx196 internal ESD structure (Electrical Overstress section). Structure only; it is not a guaranteed clamp level.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-op-audio-datasheet: physical PDF p.24, printed p.25, Electrical Overstress section and Figure 45](#src-op-audio-datasheet)
+</EvidenceFact>
+
 ## Pin maps
 
 The mapping between schematic pins and PCB pads, or physical terminals for an external part, as recorded. A record may carry more than one map when the same part is documented in more than one context.
@@ -555,8 +623,10 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 
 | Recorded term           | What it means                                                                                                                                                      |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ABSOLUTE_MAXIMUM`      | A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.                                         |
 | `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| `RECOMMENDED_OPERATION` | The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.                                                              |
 | `TYPICAL_CURVE`         | A representative figure read from a characteristic curve. Typical values are not guaranteed and vary part to part.                                                 |
 
 ### Coverage status

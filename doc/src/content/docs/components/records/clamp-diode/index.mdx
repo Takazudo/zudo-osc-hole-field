@@ -100,6 +100,8 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 **Facts in this domain:**
 
 - [`fact-clamp-diode-reverse-voltage`](#fact-clamp-diode-reverse-voltage)
+- [`fact-clamp-diode-forward-current-absolute`](#fact-clamp-diode-forward-current-absolute)
+- [`fact-clamp-diode-forward-voltage`](#fact-clamp-diode-forward-voltage)
 
 ### manufacturer product description
 
@@ -149,6 +151,24 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
 
+### ABSOLUTE\_MAXIMUM
+
+A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-clamp-diode-forward-current-absolute" />
+
+  **Fact:** `fact-clamp-diode-forward-current-absolute`
+
+  **Value:** `IFRM_mA`=300; `IFSM_mA`=600; `IF_mA`=200 · **Unit:** `mA`
+
+  **Conditions:** Limiting values per diode: IF 200 mA at Tamb = 25 C; IFRM 300 mA at tp \<= 1 s, duty \<= 0.5; IFSM 600 mA at tp \< 10 ms, Tj(init) = 25 C. Absolute maximum stress rating, not an operating condition.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-clamp-diode-datasheet: physical PDF p.1, printed 2/9, Table 5 Limiting values, IF/IFRM/IFSM rows](#src-clamp-diode-datasheet)
+</EvidenceFact>
+
 ### GUARANTEED\_ELECTRICAL
 
 A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.
@@ -165,6 +185,20 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [src-clamp-diode-datasheet: PDF page index 0, printed page 1, Table 1, reverse voltage VR row](#src-clamp-diode-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-clamp-diode-forward-voltage" />
+
+  **Fact:** `fact-clamp-diode-forward-voltage`
+
+  **Value:** `at_0p1mA_max_mV`=240; `at_100mA_max_mV`=800; `at_10mA_max_mV`=400; `at_1mA_max_mV`=320; `at_30mA_max_mV`=500 · **Unit:** `mV`
+
+  **Conditions:** Maximum VF per diode, pulsed tp \<= 300 us, duty \<= 0.02, Tamb = 25 C only; no minimum and no temperature range given.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-clamp-diode-datasheet: physical PDF p.2, printed 3/9, Table 7 Characteristics, VF rows](#src-clamp-diode-datasheet)
 </EvidenceFact>
 
 ### PROJECT\_STATE
@@ -383,6 +417,7 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 
 | Recorded term           | What it means                                                                                                                                                      |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ABSOLUTE_MAXIMUM`      | A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.                                         |
 | `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
 

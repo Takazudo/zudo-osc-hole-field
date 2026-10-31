@@ -96,6 +96,7 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 **Facts in this domain:**
 
 - [`fact-schmitt-electrical-limits`](#fact-schmitt-electrical-limits)
+- [`fact-schmitt-absolute-maximum`](#fact-schmitt-absolute-maximum)
 
 **Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
 
@@ -148,6 +149,24 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 ## Facts
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
+
+### ABSOLUTE\_MAXIMUM
+
+A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-schmitt-absolute-maximum" />
+
+  **Fact:** `fact-schmitt-absolute-maximum`
+
+  **Value:** `VCC_max_V`=7; `VCC_min_V`=-0.5; `VCC_or_GND_current_mA`=50; `input_clamp_current_mA`=20; `output_clamp_current_mA`=20; `output_current_mA`=25 · **Unit:** `V and mA`
+
+  **Conditions:** VCC -0.5 V to 7 V; IIK and IOK +/-20 mA (IIK for VI \< 0 or > VCC; IOK for VO \< 0); IO +/-25 mA; continuous VCC or GND current +/-50 mA. Absolute maximum stress rating, not an operating condition.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-schmitt-datasheet: physical PDF p.3, printed p.4, section 6.1 Absolute Maximum Ratings](#src-schmitt-datasheet)
+</EvidenceFact>
 
 ### RECOMMENDED\_OPERATION
 
@@ -502,6 +521,7 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 
 | Recorded term           | What it means                                                                                                                                                      |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ABSOLUTE_MAXIMUM`      | A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.                                         |
 | `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
 | `RECOMMENDED_OPERATION` | The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.                                                              |

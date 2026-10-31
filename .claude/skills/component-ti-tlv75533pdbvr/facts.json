@@ -126,6 +126,27 @@
       "verdict": "NEEDS BENCH",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-regulator-3v3-absolute-maximum",
+      "record_id": "rec-regulator-3v3",
+      "source_id": "src-regulator-3v3-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "VIN_min_V": -0.3,
+        "VIN_max_V": 6.0,
+        "VEN_min_V": -0.3,
+        "VEN_max_V": 6.0,
+        "VOUT_min_V": -0.3,
+        "VOUT_above_VIN_V": 0.3
+      },
+      "unit": "V",
+      "conditions": "VIN and VEN -0.3 V to 6.0 V; VOUT -0.3 V to VIN + 0.3 V (see datasheet note 2). Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-regulator-3v3-datasheet: physical PDF p.3, printed p.4, section 6.1 Absolute Maximum Ratings",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

@@ -145,6 +145,29 @@
       "verdict": "NEEDS BENCH",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-comparator-absolute-maximum",
+      "record_id": "rec-comparator",
+      "source_id": "src-comparator-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "VCC_min_V": -0.3,
+        "VCC_max_V": 38,
+        "input_min_V": -0.3,
+        "input_max_V": 38,
+        "differential_V": 38,
+        "input_current_mA": -50,
+        "output_min_V": -0.3,
+        "output_max_V": 38
+      },
+      "unit": "V and mA",
+      "conditions": "B versions: VCC -0.3 V to 38 V, either input -0.3 V to 38 V, VID +/-38 V, VO -0.3 V to 38 V, all relative to network ground (the device ground pin); IIK -50 mA, where input current through the parasitic diode can make the output incorrect until removed. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-comparator-datasheet: physical PDF p.3, printed p.4, section 5.1 Absolute Maximum Ratings and notes 2 and 5",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

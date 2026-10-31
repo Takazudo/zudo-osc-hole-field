@@ -91,11 +91,12 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 **Coverage ID:** `cov-nand-electrical-limits` · **Status:** OPEN
 
-**Reason:** No exact-part electrical limits were promoted; source/identity gap remains open.
+**Reason:** Absolute maximum ratings are retained as primary facts; operating electrical characteristics and project suitability remain unpromoted.
 
 **Facts in this domain:**
 
 - [`fact-nand-electrical-limits`](#fact-nand-electrical-limits)
+- [`fact-nand-absolute-maximum`](#fact-nand-absolute-maximum)
 
 **Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
 
@@ -149,6 +150,24 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
 
+### ABSOLUTE\_MAXIMUM
+
+A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-nand-absolute-maximum" />
+
+  **Fact:** `fact-nand-absolute-maximum`
+
+  **Value:** `VCC_max_V`=7; `VCC_min_V`=-0.5; `VCC_or_GND_current_mA`=50; `input_clamp_current_mA`=20; `output_clamp_current_mA`=20; `output_current_mA`=25 · **Unit:** `V and mA`
+
+  **Conditions:** VCC -0.5 V to 7 V; IIK and IOK +/-20 mA (VI or VO \< -0.5 V or > VCC + 0.5 V); IO +/-25 mA; continuous VCC or GND current +/-50 mA. Absolute maximum stress rating, not an operating condition.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-nand-datasheet: physical PDF p.3, printed p.4, section 6.1 Absolute Maximum Ratings](#src-nand-datasheet)
+</EvidenceFact>
+
 ### GUARANTEED\_ELECTRICAL
 
 A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.
@@ -158,7 +177,7 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
 
   **Fact:** `fact-nand-electrical-limits`
 
-  **Value:** No exact-part electrical limits promoted from retained evidence. · **Unit:** `NONE`
+  **Value:** Absolute maximum ratings are promoted as separate facts; operating electrical characteristics and project supply suitability are not promoted. · **Unit:** `NONE`
 
   **Conditions:** The task has not promoted a source-backed limit for this exact shortlist record.
 
@@ -394,6 +413,7 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 
 | Recorded term           | What it means                                                                                                                                                      |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ABSOLUTE_MAXIMUM`      | A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.                                         |
 | `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
 

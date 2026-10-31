@@ -102,9 +102,10 @@
       "record_id": "rec-c-bulk",
       "domain": "electrical limits",
       "status": "OPEN",
-      "reason": "No exact-part electrical limits were promoted; source/identity gap remains open.",
+      "reason": "Manufacturer catalogue rated voltage is retained; polarity, reverse-voltage, DC-bias and the detailed specification remain unavailable.",
       "fact_ids": [
-        "fact-c-bulk-electrical-limits"
+        "fact-c-bulk-electrical-limits",
+        "fact-c-bulk-rated-voltage"
       ],
       "blocking_fact_ids": [
         "fact-c-bulk-electrical-limits"
@@ -141,9 +142,10 @@
       "record_id": "rec-c-bulk",
       "domain": "manufacturer lifecycle",
       "status": "OPEN",
-      "reason": "The distributor report is recorded, but manufacturer lifecycle confirmation remains UNSOURCED.",
+      "reason": "Murata catalogue reports plannedDiscontinue on 2026-10-31; no discontinuation date, last-time-buy or replacement approval is established.",
       "fact_ids": [
-        "fact-c-bulk-manufacturer-lifecycle"
+        "fact-c-bulk-manufacturer-lifecycle",
+        "fact-c-bulk-lifecycle-20261031"
       ],
       "blocking_fact_ids": [
         "fact-c-bulk-manufacturer-lifecycle"
@@ -178,9 +180,10 @@
       "record_id": "rec-c-bypass",
       "domain": "electrical limits",
       "status": "OPEN",
-      "reason": "No exact-part detailed electrical limits were promoted; the detailed specification remains unavailable.",
+      "reason": "Manufacturer catalogue rated voltage is retained; polarity, reverse-voltage, DC-bias and the detailed specification remain unavailable.",
       "fact_ids": [
-        "fact-c-bypass-electrical-limits"
+        "fact-c-bypass-electrical-limits",
+        "fact-c-bypass-rated-voltage"
       ],
       "blocking_fact_ids": [
         "fact-c-bypass-electrical-limits"

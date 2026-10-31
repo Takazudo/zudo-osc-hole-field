@@ -175,6 +175,44 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-vco-absolute-maximum-supply",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "VCC_to_VEE_max_V": 24,
+        "VCC_to_VEE_min_V": -0.5,
+        "VCC_to_GND_max_V": 18,
+        "VCC_to_GND_min_V": -0.5
+      },
+      "unit": "V",
+      "conditions": "Voltage between VCC and VEE pins +24 V / -0.5 V; between VCC and GND +18 V / -0.5 V. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-vco-datasheet: physical PDF p.2, printed p.3, Absolute Maximum Ratings, VCC rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-vco-absolute-maximum-pins",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "any_pin_current_mA": 40,
+        "control_or_reference_pin_to_GND_V": 6,
+        "multiplier_output_max_V": 6,
+        "multiplier_output_min_V": -1
+      },
+      "unit": "V and mA",
+      "conditions": "Current through any pin +/-40 mA; frequency-control or reference-current pin to GND +/-6 V; multiplier output to GND +6 V / -1 V. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-vco-datasheet: physical PDF p.2, printed p.3, Absolute Maximum Ratings, pin rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

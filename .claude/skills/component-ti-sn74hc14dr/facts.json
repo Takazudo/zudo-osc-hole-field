@@ -233,6 +233,27 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-schmitt-absolute-maximum",
+      "record_id": "rec-schmitt",
+      "source_id": "src-schmitt-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "VCC_min_V": -0.5,
+        "VCC_max_V": 7,
+        "input_clamp_current_mA": 20,
+        "output_clamp_current_mA": 20,
+        "output_current_mA": 25,
+        "VCC_or_GND_current_mA": 50
+      },
+      "unit": "V and mA",
+      "conditions": "VCC -0.5 V to 7 V; IIK and IOK +/-20 mA (IIK for VI < 0 or > VCC; IOK for VO < 0); IO +/-25 mA; continuous VCC or GND current +/-50 mA. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-schmitt-datasheet: physical PDF p.3, printed p.4, section 6.1 Absolute Maximum Ratings",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

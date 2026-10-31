@@ -102,6 +102,10 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 - [`fact-fault-switch-floating-off-leakage`](#fact-fault-switch-floating-off-leakage)
 - [`fact-fault-switch-ron-125c`](#fact-fault-switch-ron-125c)
 - [`fact-fault-switch-normal-idd`](#fact-fault-switch-normal-idd)
+- [`fact-fault-switch-supply-absolute`](#fact-fault-switch-supply-absolute)
+- [`fact-fault-switch-pin-absolute`](#fact-fault-switch-pin-absolute)
+- [`fact-fault-switch-logic-thresholds`](#fact-fault-switch-logic-thresholds)
+- [`fact-fault-switch-supply-range`](#fact-fault-switch-supply-range)
 
 ### manufacturer product description
 
@@ -167,6 +171,38 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
 
+### ABSOLUTE\_MAXIMUM
+
+A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-fault-switch-supply-absolute" />
+
+  **Fact:** `fact-fault-switch-supply-absolute`
+
+  **Value:** `VDD_to_GND_max_V`=48; `VDD_to_GND_min_V`=-0.3; `VDD_to_VSS_max_V`=48; `VSS_to_GND_max_V`=0.3; `VSS_to_GND_min_V`=-48 · **Unit:** `V`
+
+  **Conditions:** TA = 25 C. VDD to VSS 48 V; VDD to GND -0.3 V to +48 V; VSS to GND -48 V to +0.3 V. Only one absolute maximum rating may be applied at a time. Absolute maximum stress rating, not an operating condition.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-fault-switch-datasheet: physical PDF p.11, printed Rev. C page 12 of 28, Table 6 Absolute Maximum Ratings, VDD/VSS rows](#src-fault-switch-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-fault-switch-pin-absolute" />
+
+  **Fact:** `fact-fault-switch-pin-absolute`
+
+  **Value:** `Dx_above_VDD_V`=0.7; `Dx_below_VSS_V`=-0.7; `Sx_max_V`=55; `Sx_min_V`=-55; `digital_input_below_GND_V`=-0.7; `digital_input_max_V`=48; `pin_current_limit_mA`=30 · **Unit:** `V and mA`
+
+  **Conditions:** Dx pins VSS - 0.7 V to VDD + 0.7 V or 30 mA, whichever occurs first (Dx overvoltages clamped by internal diodes); digital inputs GND - 0.7 V to +48 V or 30 mA, whichever first; Sx pins -55 V to +55 V. TA = 25 C. Absolute maximum stress rating, not an operating condition.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-fault-switch-datasheet: physical PDF p.11, printed Rev. C page 12 of 28, Table 6, Sx/Dx/Digital Inputs rows and note 1](#src-fault-switch-datasheet)
+</EvidenceFact>
+
 ### RECOMMENDED\_OPERATION
 
 The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.
@@ -183,6 +219,20 @@ The range the manufacturer intends the part to be used in. Always narrower than 
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [`src-fault-switch-datasheet`](#src-fault-switch-datasheet) — Section/table audit: Physical PDF page index 25, printed 26, Power-On Protection and Power-Off Protection
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-fault-switch-supply-range" />
+
+  **Fact:** `fact-fault-switch-supply-range`
+
+  **Value:** `dual_max_V`=22; `dual_min_V`=5; `single_max_V`=44; `single_min_V`=8 · **Unit:** `V`
+
+  **Conditions:** Feature list: +/-5 V to +/-22 V dual-supply and 8 V to 44 V single-supply operation; fully specified at +/-15 V, +/-20 V, +12 V and +36 V.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-fault-switch-datasheet: physical PDF p.0, printed Rev. C page 1 of 28, Features section, dual-supply and single-supply operation bullets](#src-fault-switch-datasheet)
 </EvidenceFact>
 
 ### GUARANTEED\_ELECTRICAL
@@ -257,6 +307,20 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [`src-fault-switch-datasheet`](#src-fault-switch-datasheet) — Section/table audit: Physical PDF page index 3, printed 4, Table 1, Power Requirements
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-fault-switch-logic-thresholds" />
+
+  **Fact:** `fact-fault-switch-logic-thresholds`
+
+  **Value:** `VINH_min_V`=2; `VINL_max_V`=0.8 · **Unit:** `V`
+
+  **Conditions:** Table 1 conditions: VDD = 15 V +/- 10 %, VSS = -15 V +/- 10 %, GND = 0 V. The OSC +/-12 V rails are outside this table condition, so use at +/-12 V is conditional.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-fault-switch-datasheet: physical PDF p.2, printed Rev. C page 3 of 28, Table 1 (+/-15 V dual supply), DIGITAL INPUTS VINH/VINL rows](#src-fault-switch-datasheet)
 </EvidenceFact>
 
 ### TYPICAL\_CURVE
@@ -519,6 +583,7 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 
 | Recorded term           | What it means                                                                                                                                                      |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ABSOLUTE_MAXIMUM`      | A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.                                         |
 | `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
 | `RECOMMENDED_OPERATION` | The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.                                                              |

@@ -125,6 +125,44 @@
       "verdict": "NEEDS BENCH",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-forward-current-absolute",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "IF_mA": 200,
+        "IFRM_mA": 300,
+        "IFSM_mA": 600
+      },
+      "unit": "mA",
+      "conditions": "Limiting values per diode: IF 200 mA at Tamb = 25 C; IFRM 300 mA at tp <= 1 s, duty <= 0.5; IFSM 600 mA at tp < 10 ms, Tj(init) = 25 C. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-clamp-diode-datasheet: physical PDF p.1, printed 2/9, Table 5 Limiting values, IF/IFRM/IFSM rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-forward-voltage",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "at_0p1mA_max_mV": 240,
+        "at_1mA_max_mV": 320,
+        "at_10mA_max_mV": 400,
+        "at_30mA_max_mV": 500,
+        "at_100mA_max_mV": 800
+      },
+      "unit": "mV",
+      "conditions": "Maximum VF per diode, pulsed tp <= 300 us, duty <= 0.02, Tamb = 25 C only; no minimum and no temperature range given.",
+      "locator": "src-clamp-diode-datasheet: physical PDF p.2, printed 3/9, Table 7 Characteristics, VF rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }
