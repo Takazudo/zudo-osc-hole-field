@@ -145,6 +145,86 @@
       "verdict": "NEEDS BENCH",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-datasheet-20261031",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": "",
+      "fact_id": "fact-op-audio-output-swing",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "no_load_typ": 5,
+        "no_load_max": 15,
+        "rl_10k_typ": 50,
+        "rl_10k_max": 110,
+        "rl_2k_typ": 200,
+        "rl_2k_max": 500
+      },
+      "unit": "mV from each rail",
+      "conditions": "Voltage output swing from positive and negative rail; VS = +/-4 V to +/-18 V; TA = 25 C; VCM = VOUT = VS/2; RL to VS/2. No full-temperature limit is stated in this row.",
+      "locator": "src-op-audio-datasheet-20261031: PDF page index 7, printed page 8, Section 6.7 (continued), OUTPUT, VO voltage output swing from rail rows"
+    },
+    {
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-datasheet-20261031",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": "",
+      "fact_id": "fact-op-audio-overload-recovery",
+      "class": "TYPICAL_CURVE",
+      "value": {
+        "to_negative_rail_typ": 0.4,
+        "to_positive_rail_typ": 1.0
+      },
+      "unit": "us",
+      "conditions": "tOR, VIN x G = VS; VS = +/-4 V to +/-18 V; TA = 25 C; typical values only, no guaranteed limit.",
+      "locator": "src-op-audio-datasheet-20261031: PDF page index 7, printed page 8, Section 6.7 (continued), FREQUENCY RESPONSE, tOR rows"
+    },
+    {
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-datasheet-20261031",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": "",
+      "fact_id": "fact-op-audio-msl",
+      "class": "PROJECT_STATE",
+      "value": "OPA4196IDR: SOIC (D) 14, 2500 LARGE T&R, NIPDAU lead finish, MSL rating/peak reflow Level-3-260C-168 HR, op temp -40 to 125 C",
+      "unit": "NONE",
+      "conditions": "Manufacturer package option addendum dated 15-Oct-2026. The peak reflow figure is a rating, not a reflow recipe; assembler floor-life tracking, bake and profile are not established by this source.",
+      "locator": "src-op-audio-datasheet-20261031: PDF page index 35, printed page Addendum-Page 2, PACKAGE OPTION ADDENDUM table, OPA4196IDR row"
+    },
+    {
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-datasheet-20261031",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": "",
+      "fact_id": "fact-op-audio-land-pattern-example",
+      "class": "PROJECT_STATE",
+      "value": "TI D0014A example: 14 pads 1.55 x 0.60 mm, pitch 1.27 mm, pad-centre row span 5.4 mm (pads at x = +/-2.70 mm), R0.05 corners; NSMD 0.07 mm max mask expansion or SMD 0.07 mm min overlap; stencil example uses the same apertures at 0.125 mm thickness",
+      "unit": "NONE",
+      "conditions": "Drawing 4220718/A 09/2016; dimensions in parentheses are reference only; notes state IPC-7351 may have alternate designs and the board assembly site may have different stencil recommendations. Not a project land requirement.",
+      "locator": "src-op-audio-datasheet-20261031: PDF page index 40, printed page none, D0014A EXAMPLE BOARD LAYOUT, LAND PATTERN EXAMPLE figure (scale 8X); stencil on PDF page index 41, SOLDER PASTE EXAMPLE figure"
+    },
+    {
+      "fact_id": "fact-op-audio-assembly-process",
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "Assembler handling for this MSL3 part (opened-reel floor-life tracking, bake, reflow profile) and the assembler's stencil aperture for the project land are not retained",
+      "unit": "NONE",
+      "conditions": "Project state 2026-10-31; no JLC part-library, quote or process record for OPA4196IDR is retained. The project land (1.95 x 0.60 mm) differs from the manufacturer example.",
+      "locator": "src-op-audio-shortlist: JSON row parts[id=op_audio] sourcing.jlcpcb_assembly = UNVERIFIED",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

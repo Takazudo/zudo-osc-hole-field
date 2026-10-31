@@ -18,3 +18,5 @@ See the [component catalog](/docs/components/catalog/) and [cross-component rule
 - Stock, lead time, consignment acceptance and assembly allocation remain dated project-state gaps unless a retained source says otherwise.
 - Package preview geometry is provisional family geometry. Confirm body, height, optical path, footprint and fixed-layout fit before hardware use.
 - Every pin map leaves board nets unassigned; the manual inventory provider does not bind schematic pins or placements.
+- Two datasheet byte identities are retained: `src-op-audio-datasheet` (2026-09-28) and `src-op-audio-datasheet-20261031` (TI-regenerated file, addendum 15-Oct-2026). Keep both; the newer one is new evidence, not a replacement hash.
+- Assembly process stays OPEN: MSL3 / 260 C peak is a manufacturer rating; assembler floor-life, bake, profile and stencil aperture for the 1.95 x 0.60 mm project land are not retained.

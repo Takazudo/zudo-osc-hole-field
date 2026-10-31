@@ -34,7 +34,7 @@ This record in the catalog: [OPA4196IDR](/docs/components/catalog/#rec-op-audio)
 
 **Source state:** AVAILABLE
 
-**Coverage:** 3 open of 7 published
+**Coverage:** 4 open of 8 published
 
 ## Documents and package
 
@@ -92,11 +92,13 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 **Coverage ID:** `cov-op-audio-electrical-limits` · **Status:** COVERED
 
-**Reason:** Retained source supports the specific listed product-family limits; conditions remain attached to each fact.
+**Reason:** Retained sources support the specific listed product-family limits (quiescent current; 25 C output swing; typical overload recovery); conditions remain attached to each fact.
 
 **Facts in this domain:**
 
 - [`fact-op-audio-quiescent-current`](#fact-op-audio-quiescent-current)
+- [`fact-op-audio-output-swing`](#fact-op-audio-output-swing)
+- [`fact-op-audio-overload-recovery`](#fact-op-audio-overload-recovery)
 
 ### manufacturer product description
 
@@ -116,11 +118,12 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 **Coverage ID:** `cov-op-audio-mechanical-fit` · **Status:** OPEN
 
-**Reason:** The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.
+**Reason:** The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated. The manufacturer D0014A example land (1.55 x 0.60 mm) is retained for comparison; the project land is 1.95 x 0.60 mm.
 
 **Facts in this domain:**
 
 - [`fact-op-audio-mechanical-fit`](#fact-op-audio-mechanical-fit)
+- [`fact-op-audio-land-pattern-example`](#fact-op-audio-land-pattern-example)
 
 **Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
 
@@ -158,6 +161,24 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 - [`fact-op-audio-negative-rail-budget`](#fact-op-audio-negative-rail-budget)
 
+### assembly process
+
+<EvidenceAnchor id="cov-op-audio-assembly-process" />
+
+**Coverage ID:** `cov-op-audio-assembly-process` · **Status:** OPEN
+
+**Reason:** The manufacturer MSL3 / 260 C peak rating and example stencil are retained, but assembler moisture handling, reflow profile and stencil aperture for this part are UNSOURCED.
+
+**Facts in this domain:**
+
+- [`fact-op-audio-msl`](#fact-op-audio-msl)
+- [`fact-op-audio-land-pattern-example`](#fact-op-audio-land-pattern-example)
+- [`fact-op-audio-assembly-process`](#fact-op-audio-assembly-process)
+
+**Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
+
+- [`fact-op-audio-assembly-process`](#fact-op-audio-assembly-process)
+
 ## Facts
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
@@ -178,6 +199,38 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [src-op-audio-datasheet: PDF page index 7, printed page 8, Section 6.7, POWER SUPPLY, IQ row](#src-op-audio-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-op-audio-output-swing" />
+
+  **Fact:** `fact-op-audio-output-swing`
+
+  **Value:** `no_load_max`=15; `no_load_typ`=5; `rl_10k_max`=110; `rl_10k_typ`=50; `rl_2k_max`=500; `rl_2k_typ`=200 · **Unit:** `mV from each rail`
+
+  **Conditions:** Voltage output swing from positive and negative rail; VS = +/-4 V to +/-18 V; TA = 25 C; VCM = VOUT = VS/2; RL to VS/2. No full-temperature limit is stated in this row.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-op-audio-datasheet-20261031: PDF page index 7, printed page 8, Section 6.7 (continued), OUTPUT, VO voltage output swing from rail rows](#src-op-audio-datasheet-20261031)
+</EvidenceFact>
+
+### TYPICAL\_CURVE
+
+A representative figure read from a characteristic curve. Typical values are not guaranteed and vary part to part.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-op-audio-overload-recovery" />
+
+  **Fact:** `fact-op-audio-overload-recovery`
+
+  **Value:** `to_negative_rail_typ`=0.4; `to_positive_rail_typ`=1 · **Unit:** `us`
+
+  **Conditions:** tOR, VIN x G = VS; VS = +/-4 V to +/-18 V; TA = 25 C; typical values only, no guaranteed limit.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-op-audio-datasheet-20261031: PDF page index 7, printed page 8, Section 6.7 (continued), FREQUENCY RESPONSE, tOR rows](#src-op-audio-datasheet-20261031)
 </EvidenceFact>
 
 ### PROJECT\_STATE
@@ -296,6 +349,48 @@ A value this project recorded about how the part is used here — a chosen opera
   **Evidence:** [Section/table audit: src-op-audio-rail-budget: JSON rail -12V conservative\_estimate\_mA / ceiling\_mA / margin\_mA](#src-op-audio-rail-budget)
 </EvidenceFact>
 
+<EvidenceFact>
+  <EvidenceAnchor id="fact-op-audio-msl" />
+
+  **Fact:** `fact-op-audio-msl`
+
+  **Value:** OPA4196IDR: SOIC (D) 14, 2500 LARGE T\&R, NIPDAU lead finish, MSL rating/peak reflow Level-3-260C-168 HR, op temp -40 to 125 C · **Unit:** `NONE`
+
+  **Conditions:** Manufacturer package option addendum dated 15-Oct-2026. The peak reflow figure is a rating, not a reflow recipe; assembler floor-life tracking, bake and profile are not established by this source.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-op-audio-datasheet-20261031: PDF page index 35, printed page Addendum-Page 2, PACKAGE OPTION ADDENDUM table, OPA4196IDR row](#src-op-audio-datasheet-20261031)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-op-audio-land-pattern-example" />
+
+  **Fact:** `fact-op-audio-land-pattern-example`
+
+  **Value:** TI D0014A example: 14 pads 1.55 x 0.60 mm, pitch 1.27 mm, pad-centre row span 5.4 mm (pads at x = +/-2.70 mm), R0.05 corners; NSMD 0.07 mm max mask expansion or SMD 0.07 mm min overlap; stencil example uses the same apertures at 0.125 mm thickness · **Unit:** `NONE`
+
+  **Conditions:** Drawing 4220718/A 09/2016; dimensions in parentheses are reference only; notes state IPC-7351 may have alternate designs and the board assembly site may have different stencil recommendations. Not a project land requirement.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-op-audio-datasheet-20261031: PDF page index 40, printed page none, D0014A EXAMPLE BOARD LAYOUT, LAND PATTERN EXAMPLE figure (scale 8X); stencil on PDF page index 41, SOLDER PASTE EXAMPLE figure](#src-op-audio-datasheet-20261031)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-op-audio-assembly-process" />
+
+  **Fact:** `fact-op-audio-assembly-process`
+
+  **Value:** Assembler handling for this MSL3 part (opened-reel floor-life tracking, bake, reflow profile) and the assembler's stencil aperture for the project land are not retained · **Unit:** `NONE`
+
+  **Conditions:** Project state 2026-10-31; no JLC part-library, quote or process record for OPA4196IDR is retained. The project land (1.95 x 0.60 mm) differs from the manufacturer example.
+
+  **Verdict:** UNSOURCED · **Provenance:** PROJECT-CHOICE
+
+  **Evidence:** [src-op-audio-shortlist: JSON row parts\[id=op\_audio\] sourcing.jlcpcb\_assembly = UNVERIFIED](#src-op-audio-shortlist)
+</EvidenceFact>
+
 ## Pin maps
 
 The mapping between schematic pins and PCB pads, or physical terminals for an external part, as recorded. A record may carry more than one map when the same part is documented in more than one context.
@@ -376,6 +471,26 @@ Every document cited above, with its identification, when it was retrieved, and 
 
 **Document URL:** [https://www.ti.com/lit/ds/symlink/opa4196.pdf](https://www.ti.com/lit/ds/symlink/opa4196.pdf)
 
+### OPAx196 36-V, Low-Power, Low Offset Voltage, Rail-to-Rail Operational Amplifier datasheet
+
+<EvidenceAnchor id="src-op-audio-datasheet-20261031" />
+
+**Source ID:** `src-op-audio-datasheet-20261031` · **Authority:** MANUFACTURER\_PRIMARY
+
+| Field           | Recorded value                                                                                                                                                                                                                                          |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Document number | SBOS869                                                                                                                                                                                                                                                 |
+| Revision        | Revision letter not stated; printed SBOS869 - JULY 2017; package option addendum dated 15-Oct-2026; PDF CreationDate 2026-10-16. Different bytes from src-op-audio-datasheet (sha256 d89dd600...793d): new evidence, not a recovery of the earlier file |
+| Document date   | July 2017 (addendum 15-Oct-2026)                                                                                                                                                                                                                        |
+| Retrieved       | 2026-10-31                                                                                                                                                                                                                                              |
+| Printed page    | 8                                                                                                                                                                                                                                                       |
+
+**Locator:** Section 6.7 Electrical Characteristics, VS = +/-4 V to +/-18 V (continued): FREQUENCY RESPONSE tOR and OUTPUT VO rows; also Package Option Addendum (PDF index 35) and D0014A example board layout/stencil (PDF index 40-41)
+
+**Availability:** AVAILABLE
+
+**Document URL:** [https://www.ti.com/lit/ds/symlink/opa4196.pdf](https://www.ti.com/lit/ds/symlink/opa4196.pdf)
+
 ### OSC-ES-1 parts shortlist
 
 <EvidenceAnchor id="src-op-audio-shortlist" />
@@ -442,6 +557,7 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| `TYPICAL_CURVE`         | A representative figure read from a characteristic curve. Typical values are not guaranteed and vary part to part.                                                 |
 
 ### Coverage status
 
