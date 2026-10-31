@@ -26,6 +26,10 @@ ARCHIVE = CACHE / "SBOMAF9.zip"
 LIBRARY = CACHE / "OPAx196.LIB"
 WORK = ROOT / ".circuit-cache/opa4196-bridge-loop"
 OUT = HERE / "bridge-loop-result.json"
+TEMP = None  # deg C; None keeps the simulator default (27 C)
+# PROPOSED 0-40 C ambient corners pending owner confirmation; the project specifies no temperature.
+PROPOSED_TEMPS = (0.0, 40.0)
+CONV_AID = False  # solver-only retry aids; the 2026-10-31 40 C retry made 944/960 AC points fail (NaN), so results are not retained
 # Digests recorded in design/architecture-278/implementation/stage6/electrical-report.json.
 ZIP_SHA256 = "9c264813a36536f743c166b6a101904b76ed08f049f2eeb127a438cc6e8ccdf5"
 LIB_SHA256 = "31142f5dbd71b758d887ee8a411692fc4c1309c8f47100af4ba5bed7e173c430"
@@ -100,7 +104,8 @@ def header(vp: float, vn: float) -> str:
         f".include {LIBRARY.relative_to(ROOT).as_posix()}",
         f"Vp vcc 0 DC {vp}",
         f"Vn vee 0 DC {vn}",
-    ])
+    ] + ([f".options TEMP={TEMP} TNOM=27"] if TEMP is not None else [])
+      + ([".options ITL1=1000 GMINSTEPS=200 SRCSTEPS=200"] if CONV_AID else []))
 
 
 def ac_deck(rail: str, inst: dict, n: int) -> str:
@@ -290,8 +295,19 @@ def analyse_tran(rail: str, case: str, inst: dict, n: int) -> dict:
 
 
 def main() -> int:
+    global WORK, OUT, TEMP, CONV_AID
     ap = argparse.ArgumentParser()
-    ap.parse_args()
+    ap.add_argument("--temp", type=float, choices=PROPOSED_TEMPS,
+                    help="run one PROPOSED temperature corner (0 or 40 C) instead of the 27 C default")
+    ap.add_argument("--conv-aid", action="store_true",
+                    help="retry with ITL1/GMINSTEPS/SRCSTEPS operating-point aids (solver options only)")
+    a = ap.parse_args()
+    CONV_AID = a.conv_aid
+    if a.temp is not None:
+        TEMP = a.temp
+        tag = f"t{int(a.temp)}C" + ("-convaid" if CONV_AID else "")
+        WORK = ROOT / f".circuit-cache/opa4196-bridge-loop-{tag}"
+        OUT = HERE / f"bridge-loop-result-{tag}.json"
     model()
     WORK.mkdir(parents=True, exist_ok=True)
     init = ROOT / ".spiceinit"
@@ -327,12 +343,16 @@ def main() -> int:
     result = {
         "status": "MODEL SCREEN ONLY; UNADOPTED candidate; not hardware or stability qualification",
         "model": {"archive": "SBOMAF9", "archive_sha256": ZIP_SHA256, "library_sha256": LIB_SHA256,
-                  "version": "Final 1.5, 29AUG2022", "temperature": "27 C model default only"},
+                  "version": "Final 1.5, 29AUG2022", "temperature": ("27 C model default only" if TEMP is None else
+                                  f"{TEMP} C PROPOSED corner (0-40 C pending owner confirmation); TNOM 27 C. The macro-model's only explicit "
+                                  "temperature term is Vos drift (E1 = DC+POL*DRIFT*(TEMP-27)); GBW, Aol, slew, swing and recovery are not "
+                                  "temperature-modelled. Assumed external diode/LED models follow SPICE default equations, not part data")},
         "assumptions": {"rails_V": RAILS, "r_sense_ohm": R_SENSE, "drop_sets": DROP_SETS,
                         "cj_diode": CJ_DIODE, "cj_led": CJ_LED, "c_drive": C_DRIVE, "c_sense": C_SENSE,
                         "note": "Diode/LED parameters and parasitic capacitances are assumed brackets; no BAS16GW-QX or APHHS1005QWF/D model or VF fact is retained."},
         "oracle": {"wrapper": "scripts/kicad/run.sh", "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
-                   "ngspice": sorted({v for r in runs for v in r["ngspice"]}), "compat": "ngbehavior=ps"},
+                   "ngspice": sorted({v for r in runs for v in r["ngspice"]}), "compat": "ngbehavior=ps",
+                   "solver_aids": ".options ITL1=1000 GMINSTEPS=200 SRCSTEPS=200" if CONV_AID else None},
         "runs": runs,
         "summary": {
             "ac_cases": len(ac), "ac_cases_with_crossover": len(valid_pm),

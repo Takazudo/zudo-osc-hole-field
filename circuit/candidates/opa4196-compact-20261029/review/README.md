@@ -17,7 +17,7 @@ is |V(SLEW_BUFFERED)| / 5.6 kΩ. Units 2–4 are grounded followers. The rails a
 | Corner | Value used | Source |
 | --- | --- | --- |
 | Supply | low +11.53 / −11.74 V; nominal ±12 V; high +12.48 / −12.37 V | load bands in `decisions/osc-supply-architecture.mdx` and `integration/power-contract/README.md` |
-| Temperature | **not specified** by the project; model at 27 °C only | `project/index.mdx` L53 states that operating temperature is unspecified |
+| Temperature | **not specified** by the project; model at 27 °C, plus 0 °C and 40 °C corners of a **PROPOSED** 0–40 °C range pending owner confirmation | `project/index.mdx` L53 states that operating temperature is unspecified |
 | Signal | ±5 V full scale, 0.893 mA nominal LED current | `electrical-standard.json` magnitude full-scale disposition |
 | Overload | input up to the rails (project fault range ±12 V) | `electrical-standard.json` cell notes |
 | Fastest source edge | slew island R_MIN 2.2 kΩ × 5 × 100 nF = 1.1 ms time constant | candidate BOM R124, C107–C111 |
@@ -56,9 +56,34 @@ maximum table, PDF index 4). The datasheet warns of ringing with light or capaci
 loads (§7.3.5, PDF index 21). This screen shows the near-zero, lightly loaded states
 have the highest PM (about 96–122°), not the lowest.
 
+## Temperature corners at a PROPOSED 0–40 °C range (`bridge_loop.py --temp 0|40`)
+
+**The 0–40 °C range is a proposal pending owner confirmation, not a project requirement.**
+The same 170 runs were repeated with `.options TEMP=<t> TNOM=27`. The macro-model's only
+explicit temperature term is Vos drift (`E1 … DC+POL*DRIFT*(TEMP-27)`). GBW, Aol, slew,
+output swing and overload recovery are not temperature-modelled, and the assumed diode
+and LED models follow SPICE default temperature equations, not part data. These corners
+therefore show the bridge's assumed-diode temperature shift, not the op-amp's.
+
+| Check | 0 °C (`bridge-loop-result-t0C.json`, `61160842…4797`) | 40 °C (`bridge-loop-result-t40C.json`, `7b1c64e0…8b1c`) |
+| --- | --- | --- |
+| Runs exiting 0 | 170 / 170 | 170 / 170 |
+| AC operating points converged | 960 / 960 | 912 / 960; **48 NOT CONVERGED**, all at +5.0 V input on nominal and high rails (every high-drop case on both rails, low-drop on one) |
+| Phase margin (converged cases) | 48.9–121.9° | 48.6–122.7° |
+| Tracking limit / headroom at ±5 V | ≥ 6.70 V / ≥ 1.74 V | ≥ 6.52 V / ≥ 1.562 V |
+| SENSE error, LED current while clipped | ≤ 0.016 mV; ≤ 1.521 mA | ≤ 0.036 mV; ≤ 1.51 mA |
+| 100 Hz crossing dark time / band | 9.9–12.6 µs; ≤ 57.6 mV | 9.85–12.53 µs; ≤ 58.1 mV |
+| 1 µs-edge recovery / overshoot | 3.79–5.8 µs; ≤ 4.28 % | 3.8–5.85 µs; ≤ 4.33 % |
+
+The 40 °C +5 V loop-gain cases are **UNKNOWN**. The DC and transient runs at 40 °C,
+including +5 V operation, converged. One retry with solver-only aids
+(`--conv-aid`: `ITL1=1000 GMINSTEPS=200 SRCSTEPS=200`) made 944 of 960 AC operating
+points fail with NaN node voltages, so its results are not retained. No further solver
+tuning was attempted.
+
 **Not established:**
-- Temperature corners: NOT RUN. The requirement is undefined, and the macro-model was
-  run at 27 °C only.
+- Op-amp temperature behaviour beyond Vos drift: NOT RUN. The model does not support it.
+- 40 °C loop gain at +5 V input: UNKNOWN (operating point not converged).
 - Vendor diode and LED models: NOT RUN. None is retained.
 - Layout parasitics: NOT RUN. There is no board for these trees.
 - The ±13.2 V rail extremes used in the standard's ideal LED-current bound: NOT RUN in
@@ -118,7 +143,15 @@ The datasheet bytes retrieved on 2026-10-31 from `https://www.ti.com/lit/ds/syml
 are SBOS869, JULY 2017, 52 pages, sha256 `c68223d5…5fde`. They differ from the owner bundle's
 retained sha256 `d89dd600…793d`. The PDF creation date is 2026-10-16, so TI regenerated the
 file. These bytes are **new evidence**, not recovery of the old bytes. They are cached
-locally (git-ignored) and are not yet promoted into `component-ti-opa4196idr`.
+locally (git-ignored) and are promoted into `component-ti-opa4196idr` as the separate source
+`src-op-audio-datasheet-20261031` (output swing, overload recovery, MSL and land-pattern
+facts). The old source and its hash are unchanged.
+
+## Paste-aperture proposal
+
+[`paste-aperture-proposal.md`](paste-aperture-proposal.md) documents option 2 above, a
+1.55 mm paste-only aperture on the unchanged 1.95 mm pad. It is a proposal only and is
+not adopted.
 
 ## Status
 
@@ -126,7 +159,8 @@ locally (git-ignored) and are not yet promoted into `component-ti-opa4196idr`.
 | --- | --- |
 | TI macro-model loop, transfer, crossing and recovery screen | RUN, within proposed screens; not PASS |
 | Vendor diode/LED models | NOT RUN (not retained) |
-| Temperature corners | NOT RUN (requirement undefined) |
+| Temperature corners at PROPOSED 0 °C / 40 °C | RUN, model only; 48 AC cases at 40 °C UNKNOWN (not converged) |
+| U110/U210 paste-aperture trim | PROPOSAL ONLY; not adopted |
 | Land comparison | RUN (desk); assembly NOT accepted |
 | JLC MSL/reflow/stencil conditions for this part | UNKNOWN (evidence gap) |
 | Native KiCad, DRC, fill, hardware | NOT RUN (not authorized) |
