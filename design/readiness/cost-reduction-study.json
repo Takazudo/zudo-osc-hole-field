@@ -1,0 +1,2158 @@
+{
+ "schema_version": 1,
+ "status": "UNADOPTED PROPOSALS; not a fabrication BOM, quote or order file",
+ "retrieved": "2026-10-31",
+ "lot_units": 5,
+ "currency": "USD",
+ "tier_rule": "Unit cost uses the JLC tier containing the per-unit quantity; lot cost uses the tier containing five times that quantity.",
+ "headroom_mA": {
+  "+12V": 10.6,
+  "-12V": 19.0
+ },
+ "adg_planning_idd_mA": {
+  "+12V": 1.3,
+  "-12V": 0.7
+ },
+ "phase13_totals": {
+  "exact": {
+   "per_unit_usd": 3195.45,
+   "per_lot_usd": 15292.22,
+   "priced_placements_per_unit": 3408,
+   "unpriced_placements_per_unit": 765,
+   "unpriced_lines": [
+    "BAS16GW-QX",
+    "WQP518MA",
+    "APHHS1005QWF/D",
+    "2MS3T1B1M2QES",
+    "AS3340D",
+    "NOISE2"
+   ]
+  },
+  "candidates": {
+   "per_unit_usd": 37.02,
+   "per_lot_usd": 161.74,
+   "priced_placements_per_unit": 1582,
+   "unpriced_placements_per_unit": 157,
+   "unpriced_lines": [
+    "C0603C103J5GACTU",
+    "RT0603BRD0780KL",
+    "RT0603BRD07899KL",
+    "RT0603BRD07250KL",
+    "C0603C-J5GACTU 1e-06",
+    "RT0603BRD0764KL",
+    "RT0603BRD0779KL",
+    "RT0603BRD07400KL",
+    "RT0603BRD075K72L",
+    "RT0603BRD0725KL",
+    "RT0603BRD0772KL",
+    "RT0603BRD07125KL",
+    "RT0603BRD071M2L",
+    "RT0603BRD071M8L",
+    "RT0603BRD075ML",
+    "RT0603BRD0770KL",
+    "C0603C-J5GACTU 4.7e-06"
+   ]
+  }
+ },
+ "adg5412f": {
+  "baseline_line": {
+   "unit_price_usd": 13.5494,
+   "lot_unit_price_usd": 13.5494,
+   "per_unit_usd": 1490.434,
+   "per_lot_usd": 7452.17,
+   "stock": 0,
+   "stock_covers_lot": false
+  },
+  "placements": {
+   "input_fault_switch": 98,
+   "envelope_internal": 12,
+   "input_groups": [
+    {
+     "family": "envelope",
+     "group": "CORE",
+     "per_instance": 3,
+     "instances": 6
+    },
+    {
+     "family": "filter",
+     "group": "CORE",
+     "per_instance": 4,
+     "instances": 3
+    },
+    {
+     "family": "manual_ab",
+     "group": "CORE",
+     "per_instance": 2,
+     "instances": 2
+    },
+    {
+     "family": "mix4_vca",
+     "group": "G1",
+     "per_instance": 5,
+     "instances": 2
+    },
+    {
+     "family": "mix5",
+     "group": "G1",
+     "per_instance": 5,
+     "instances": 2
+    },
+    {
+     "family": "mult",
+     "group": "CORE",
+     "per_instance": 1,
+     "instances": 2
+    },
+    {
+     "family": "offset",
+     "group": "CORE",
+     "per_instance": 2,
+     "instances": 6
+    },
+    {
+     "family": "oscillator",
+     "group": "MAIN",
+     "per_instance": 4,
+     "instances": 5
+    },
+    {
+     "family": "sample_hold",
+     "group": "MAIN",
+     "per_instance": 2,
+     "instances": 2
+    },
+    {
+     "family": "wavefolder",
+     "group": "CORE",
+     "per_instance": 3,
+     "instances": 2
+    }
+   ],
+   "packed_inputs_per_group": 36,
+   "packed_inputs_per_instance": 36,
+   "internal": [
+    {
+     "family": "envelope",
+     "role": "envelope:SLOPE_SELECT",
+     "per_instance": 1,
+     "instances": 6
+    },
+    {
+     "family": "envelope",
+     "role": "envelope:STORAGE_CLAMP",
+     "per_instance": 1,
+     "instances": 6
+    }
+   ]
+  },
+  "options": [
+   {
+    "id": "ADG-0",
+    "name": "HEAD: one ADG5412FBRUZ per input jack plus 12 envelope switches",
+    "packages": 110,
+    "cost": {
+     "mpn": "ADG5412FBRUZ",
+     "lcsc": "C579073",
+     "stock": 0,
+     "stock_covers_lot": false,
+     "qty_per_unit": 110,
+     "unit_price_usd": 13.5494,
+     "lot_unit_price_usd": 13.5494,
+     "per_unit_usd": 1490.43,
+     "per_lot_usd": 7452.17,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "C579073",
+      "retrieved": "2026-10-31",
+      "response_sha256": "329ff1348e5ed6fa8389c04900f73601812df266fe231d8860084298853ef35e"
+     }
+    },
+    "rows_changed": [],
+    "classification": "baseline"
+   },
+   {
+    "id": "ADG-1",
+    "name": "Quad-pack input channels per module group (ADG5412FBRUZ kept)",
+    "packages": 48,
+    "cost": {
+     "mpn": "ADG5412FBRUZ",
+     "lcsc": "C579073",
+     "stock": 0,
+     "stock_covers_lot": false,
+     "qty_per_unit": 48,
+     "unit_price_usd": 13.5494,
+     "lot_unit_price_usd": 13.5494,
+     "per_unit_usd": 650.37,
+     "per_lot_usd": 3251.86,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "C579073",
+      "retrieved": "2026-10-31",
+      "response_sha256": "329ff1348e5ed6fa8389c04900f73601812df266fe231d8860084298853ef35e"
+     }
+    },
+    "ledger_reduction_mA": {
+     "+12V": 80.6,
+     "-12V": 43.4
+    },
+    "rows_changed": [
+     "Input fault switch row keeps its identity, but one package serves up to four jacks",
+     "UNKNOWN: no retained fact covers how a fault on one channel affects the other channels (the same gap P59-B recorded for output sharing)",
+     "NOT RUN: partition35_floorplan jack-locality fit with shared packages",
+     "Stock 0 at JLC remains an availability blocker"
+    ],
+    "classification": "engineering, after the cross-channel fault evidence gap is closed"
+   },
+   {
+    "id": "ADG-2",
+    "name": "TMUX7412FRRPR one per input (S toward jack), 12 envelope switches unchanged",
+    "packages": 98,
+    "cost": {
+     "mpn": "TMUX7412FRRPR",
+     "lcsc": "C2982617",
+     "stock": 512,
+     "stock_covers_lot": true,
+     "qty_per_unit": 98,
+     "unit_price_usd": 3.95,
+     "lot_unit_price_usd": 3.6285,
+     "per_unit_usd": 387.1,
+     "per_lot_usd": 1777.96,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "TMUX7412FRRPR",
+      "retrieved": "2026-10-31",
+      "response_sha256": "ad04fb2b6138b10f27434fe08b054172787a6fa793e456ef7803da675316a4ea"
+     }
+    },
+    "ledger_reduction_mA": {
+     "+12V": 68.6,
+     "-12V": 19.6
+    },
+    "rows_changed": [
+     "Input fault switch identity changes (standard decision record)",
+     "Footprint TSSOP-16 -> WQFN-16 4x4 (thermal pad and assembly land review)",
+     "Drain pins are not overvoltage protected; S must face the jack, as now",
+     "Powered-off protection needs GND; floating-rail leakage is typical only",
+     "protection58 acceptance and P59-A rev2 clamp interaction must be re-run"
+    ],
+    "classification": "user decision (protected-switch identity in the standard)"
+   },
+   {
+    "id": "ADG-3",
+    "name": "TMUX7412FRRPR quad-packed (ADG-1 packing) plus envelope switches on ADG5412F",
+    "packages": 36,
+    "cost": {
+     "mpn": "TMUX7412FRRPR",
+     "lcsc": "C2982617",
+     "stock": 512,
+     "stock_covers_lot": true,
+     "qty_per_unit": 36,
+     "unit_price_usd": 3.95,
+     "lot_unit_price_usd": 3.6285,
+     "per_unit_usd": 142.2,
+     "per_lot_usd": 653.13,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "TMUX7412FRRPR",
+      "retrieved": "2026-10-31",
+      "response_sha256": "ad04fb2b6138b10f27434fe08b054172787a6fa793e456ef7803da675316a4ea"
+     }
+    },
+    "ledger_reduction_mA": {
+     "+12V": 105.8,
+     "-12V": 50.6
+    },
+    "rows_changed": [
+     "All ADG-1 and ADG-2 rows"
+    ],
+    "classification": "user decision"
+   },
+   {
+    "id": "ADG-4",
+    "name": "Discrete series resistor plus BAT54S rail clamp, no switch",
+    "packages": 0,
+    "cost": {
+     "status": "Clamp line BAT54S,215 already priced at 0.0283 USD; per-input resistor cost is below 0.03 USD"
+    },
+    "rows_changed": [
+     "FAIL: the standard rejects a bare clamp to a supply rail because an incoming patch can energize an unpowered rail",
+     "Changes the R-INJ and powered-off behaviour rows"
+    ],
+    "classification": "user decision (reverses a recorded architecture rejection)"
+   }
+  ],
+  "envelope_internal_alternatives": [
+   {
+    "mpn": "TMUX6112PWR",
+    "cost": {
+     "mpn": "TMUX6112PWR",
+     "lcsc": "C2673384",
+     "stock": 493,
+     "stock_covers_lot": true,
+     "qty_per_unit": 12,
+     "unit_price_usd": 5.0245,
+     "lot_unit_price_usd": 4.6767,
+     "per_unit_usd": 60.29,
+     "per_lot_usd": 280.6,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "TMUX6112PWR",
+      "retrieved": "2026-10-31",
+      "response_sha256": "6de78a05a516b97c0f2b6c07551f91c25bc221451d89c878a417fa2f62aa33f2"
+     }
+    },
+    "rows_changed": [
+     "Envelope SLOPE_SELECT / STORAGE_CLAMP switch identity",
+     "UNKNOWN: on-resistance, leakage on the hold node and +/-12 V rating are not read from a retained manufacturer datasheet",
+     "Pin map compatibility with the ADG5412F TSSOP-16 land is UNKNOWN"
+    ],
+    "classification": "engineering after evidence retrieval"
+   },
+   {
+    "mpn": "DG412DY",
+    "cost": {
+     "mpn": "DG412DY",
+     "lcsc": "C3656950",
+     "stock": 0,
+     "stock_covers_lot": false,
+     "qty_per_unit": 12,
+     "unit_price_usd": 2.0899,
+     "lot_unit_price_usd": 2.0899,
+     "per_unit_usd": 25.08,
+     "per_lot_usd": 125.39,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "DG412DY",
+      "retrieved": "2026-10-31",
+      "response_sha256": "e23340b3508d9e30e02b92bf7f4bd1b2b4d00cced6711c09f883d1cfc2b06392"
+     }
+    },
+    "rows_changed": [
+     "Envelope SLOPE_SELECT / STORAGE_CLAMP switch identity",
+     "UNKNOWN: on-resistance, leakage on the hold node and +/-12 V rating are not read from a retained manufacturer datasheet",
+     "Pin map compatibility with the ADG5412F TSSOP-16 land is UNKNOWN"
+    ],
+    "classification": "engineering after evidence retrieval"
+   },
+   {
+    "mpn": "ADG1412YRUZ",
+    "cost": {
+     "mpn": "ADG1412YRUZ",
+     "lcsc": "C579021",
+     "stock": 0,
+     "stock_covers_lot": false,
+     "qty_per_unit": 12,
+     "unit_price_usd": 9.063,
+     "lot_unit_price_usd": 8.256,
+     "per_unit_usd": 108.76,
+     "per_lot_usd": 495.36,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "ADG1412YRUZ",
+      "retrieved": "2026-10-31",
+      "response_sha256": "f14c34fe93399b133861bdb05a5faeaa6677f27a68ab6fb2de49bcfaf619b517"
+     }
+    },
+    "rows_changed": [
+     "Envelope SLOPE_SELECT / STORAGE_CLAMP switch identity",
+     "UNKNOWN: on-resistance, leakage on the hold node and +/-12 V rating are not read from a retained manufacturer datasheet",
+     "Pin map compatibility with the ADG5412F TSSOP-16 land is UNKNOWN"
+    ],
+    "classification": "engineering after evidence retrieval"
+   }
+  ],
+  "datasheet": {
+   "file": "tmux7412f.pdf",
+   "sha256": "7396d8a34f80b178a8b5c72272b5bb0eb7da7ad3182e7d3cd80d294fc32f26e5",
+   "locator": "TI SCDS404B (also design/power/protection59-sources.json)",
+   "rows": {
+    "package": "WQFN-16 4x4",
+    "idd_max_mA": 0.6,
+    "iss_max_mA": 0.5,
+    "ron_max_ohm": 16.5,
+    "drain_overvoltage_protected": false,
+    "powered_off_protection_needs_gnd": true,
+    "floating_rail_leakage": "typical only"
+   }
+  }
+ },
+ "opamps": {
+  "packages": {
+   "precision OPA4197IPWR": 89,
+   "audio/cv OPA4196IDR": 141,
+   "indicator OPA4196IDR": 33
+  },
+  "baseline": {
+   "OPA4197IPWR": {
+    "mpn": "OPA4197IPWR",
+    "lcsc": "C2057327",
+    "stock": 1842,
+    "stock_covers_lot": true,
+    "qty_per_unit": 89,
+    "unit_price_usd": 10.9461,
+    "lot_unit_price_usd": 10.1703,
+    "per_unit_usd": 974.2,
+    "per_lot_usd": 4525.78,
+    "receipt": {
+     "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+     "keyword": "C2057327",
+     "retrieved": "2026-10-31",
+     "response_sha256": "5c999f69b8d6861084d33f5d7b6d45e2612a60366690346451794ceb09e5cfd9"
+    }
+   },
+   "OPA4196IDR": {
+    "mpn": "OPA4196IDR",
+    "lcsc": "C2057385",
+    "stock": 6764,
+    "stock_covers_lot": true,
+    "qty_per_unit": 174,
+    "unit_price_usd": 2.5738,
+    "lot_unit_price_usd": 2.4425,
+    "per_unit_usd": 447.84,
+    "per_lot_usd": 2124.97,
+    "receipt": {
+     "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+     "keyword": "C2057385",
+     "retrieved": "2026-10-31",
+     "response_sha256": "cd7547cec23faeec01128033b7e28a225cde3490f81a1e98d309275ab89a22d7"
+    }
+   }
+  },
+  "baseline_datasheets": {
+   "OPA4197IPWR": {
+    "file": "opa4197.pdf",
+    "sha256": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd",
+    "locator": "TI SBOS737C Section 6.7 (VOS row printed page 7; IQ row printed page 8)",
+    "rows": {
+     "iq_max_mA": 1.5,
+     "vos_max_uV_25C": 100,
+     "ib_max_full_temp_nA": 15,
+     "gbw_MHz": 10,
+     "package": "TSSOP-14"
+    }
+   },
+   "OPA4196IDR": {
+    "file": "opa4196.pdf",
+    "sha256": "c68223d51715ef65baa6a8f549278f2f451365ccc3b95864c0d815c8797d5fde",
+    "locator": "TI SBOS869 electrical characteristics, VS = +/-18 V; IQ is the design/standard/source-receipts.json maximum over temperature",
+    "rows": {
+     "iq_max_mA": 0.25,
+     "vos_max_uV_25C": 100,
+     "package": "SOIC-14"
+    }
+   }
+  },
+  "precision_alternatives": [
+   {
+    "mpn": "OPA4197IDR",
+    "packages": 89,
+    "cost": {
+     "mpn": "OPA4197IDR",
+     "lcsc": "C2058532",
+     "stock": 6533,
+     "stock_covers_lot": true,
+     "qty_per_unit": 89,
+     "unit_price_usd": 2.4622,
+     "lot_unit_price_usd": 2.1735,
+     "per_unit_usd": 219.14,
+     "per_lot_usd": 967.21,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "OPA4197IDR",
+      "retrieved": "2026-10-31",
+      "response_sha256": "632585005016cce491c8bc7a8b2b84b1286019f240d97d36891e37f2ae4113e9"
+     }
+    },
+    "iq_change": {
+     "per_rail_mA": 0.0,
+     "fits_headroom": {
+      "+12V": true,
+      "-12V": true
+     }
+    },
+    "datasheet": {
+     "file": "opa4197.pdf",
+     "sha256": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd",
+     "locator": "TI SBOS737C Section 6.7; the 15 nA full-temperature IB subrow is PW only, the device row is +/-5 nA",
+     "rows": {
+      "iq_max_mA": 1.5,
+      "vos_max_uV_25C": 100,
+      "ib_max_full_temp_nA": 5,
+      "gbw_MHz": 10,
+      "package": "SOIC-14"
+     }
+    },
+    "rows_changed": [
+     "Role package TSSOP-14 -> SOIC-14 (explicit footprint migration per swap_policy)",
+     "Same die and datasheet; IB full-temperature limit improves from 15 to 5 nA",
+     "NOT RUN: board fit of the larger SOIC-14 land"
+    ],
+    "classification": "engineering (package migration)"
+   },
+   {
+    "mpn": "OPA4192IDR",
+    "packages": 89,
+    "cost": {
+     "mpn": "OPA4192IDR",
+     "lcsc": "C2057908",
+     "stock": 2464,
+     "stock_covers_lot": true,
+     "qty_per_unit": 89,
+     "unit_price_usd": 2.4294,
+     "lot_unit_price_usd": 2.2244,
+     "per_unit_usd": 216.22,
+     "per_lot_usd": 989.86,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "OPA4192IDR",
+      "retrieved": "2026-10-31",
+      "response_sha256": "c4dae22f7511f4c45b262945703779f9ba552b401a07477b3d7cbe4589dd2675"
+     }
+    },
+    "iq_change": {
+     "per_rail_mA": 0.0,
+     "fits_headroom": {
+      "+12V": true,
+      "-12V": true
+     }
+    },
+    "datasheet": {
+     "file": "opa4192.pdf",
+     "sha256": "3c01472f1a6a157c7503f5a07083d19359bd7641bc0971f60aafd572141a87f0",
+     "locator": "TI SBOS620E Section 6.x electrical characteristics, VS = +/-18 V",
+     "rows": {
+      "iq_max_mA": 1.5,
+      "vos_max_uV_25C": 25,
+      "vos_max_uV_full_temp": 75,
+      "gbw_MHz": 10,
+      "package": "SOIC-14"
+     }
+    },
+    "rows_changed": [
+     "Role package TSSOP-14 -> SOIC-14",
+     "Different die: renewed loop, stability and input-protection checks",
+     "VOS max 25 uV at 25 C improves the static budget"
+    ],
+    "classification": "engineering (package migration plus renewed checks)"
+   },
+   {
+    "mpn": "OPA4991IPWR",
+    "packages": 89,
+    "cost": {
+     "mpn": "OPA4991IPWR",
+     "lcsc": "C2873620",
+     "stock": 5283,
+     "stock_covers_lot": true,
+     "qty_per_unit": 89,
+     "unit_price_usd": 0.894,
+     "lot_unit_price_usd": 0.7727,
+     "per_unit_usd": 79.57,
+     "per_lot_usd": 343.85,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "OPA4991IPWR",
+      "retrieved": "2026-10-31",
+      "response_sha256": "7ce6184c3fb60ba6e016716ae998fc5bd619f5f8419aafac53b3d4332a52a157"
+     }
+    },
+    "iq_change": {
+     "per_rail_mA": -267.0,
+     "fits_headroom": {
+      "+12V": true,
+      "-12V": true
+     }
+    },
+    "datasheet": {
+     "file": "opa4991.pdf",
+     "sha256": "4e9370f684ab08af64d03d3bec012f6323a4d02231f7079392bcfde032d61312",
+     "locator": "TI SBOS969F Section 6.7",
+     "rows": {
+      "iq_max_mA": 0.75,
+      "vos_max_uV_25C": 830,
+      "vos_max_uV_full_temp": 850,
+      "gbw_MHz": 4.5,
+      "package": "TSSOP-14"
+     }
+    },
+    "rows_changed": [
+     "Same TSSOP-14 package; exact pin map must be retained",
+     "VOS max 830 uV uses 42 % of the 2 mV static and octave-step rows per amplifier; paths with two or more untrimmed stages need a per-path stack",
+     "GBW 4.5 MHz vs 10 MHz: renewed loop checks"
+    ],
+    "classification": "user decision (relaxes precision margin)"
+   },
+   {
+    "mpn": "OPA4171AIPWR",
+    "packages": 89,
+    "cost": {
+     "mpn": "OPA4171AIPWR",
+     "lcsc": "C529553",
+     "stock": 4089,
+     "stock_covers_lot": true,
+     "qty_per_unit": 89,
+     "unit_price_usd": 0.9875,
+     "lot_unit_price_usd": 0.7973,
+     "per_unit_usd": 87.89,
+     "per_lot_usd": 354.8,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "OPA4171AIPWR",
+      "retrieved": "2026-10-31",
+      "response_sha256": "5a56d1ab0ef173b919fc63eec9e6b8a250982bafcdeaeee6fdaea0c028671965"
+     }
+    },
+    "iq_change": {
+     "per_rail_mA": -302.6,
+     "fits_headroom": {
+      "+12V": true,
+      "-12V": true
+     }
+    },
+    "datasheet": {
+     "file": "opa4171.pdf",
+     "sha256": "fb84f841f3055f25accb0cc0dde8df93e4334a9b4deddc376e8217f0e9cbc538",
+     "locator": "TI SBOS516H Section 5.7, printed page 8",
+     "rows": {
+      "iq_max_mA": 0.65,
+      "vos_max_uV_25C": 1800,
+      "vos_max_uV_full_temp": 2000,
+      "gbw_MHz": 3,
+      "vcm_upper": "(V+) - 2 V",
+      "package": "TSSOP-14"
+     }
+    },
+    "rows_changed": [
+     "Same TSSOP-14 package",
+     "FAIL: VOS max 1.8 mV (2.0 mV over temperature) consumes the 2 mV static_precision_error_V and octave_step_error_V rows with one amplifier",
+     "Input range ends at (V+) - 2 V; GBW 3 MHz, SR 1.5 V/us"
+    ],
+    "classification": "user decision (fails precision rows)"
+   }
+  ],
+  "general_alternatives": [
+   {
+    "scope": "all audio/cv/indicator packages",
+    "mpn": "TL074HIDR",
+    "packages": 174,
+    "cost": {
+     "mpn": "TL074HIDR",
+     "lcsc": "C2878713",
+     "stock": 7511,
+     "stock_covers_lot": true,
+     "qty_per_unit": 174,
+     "unit_price_usd": 0.1788,
+     "lot_unit_price_usd": 0.1498,
+     "per_unit_usd": 31.11,
+     "per_lot_usd": 130.33,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "TL074HIDR",
+      "retrieved": "2026-10-31",
+      "response_sha256": "1dce2e0a924b3106e6f3fce0ea61db3b774beb1622d2572fb8d6ed8f62ed9bb3"
+     }
+    },
+    "iq_change": {
+     "per_rail_mA": 612.5,
+     "fits_headroom": {
+      "+12V": false,
+      "-12V": false
+     }
+    },
+    "datasheet": {
+     "file": "tl074h.pdf",
+     "sha256": "30a70a806642920df994222bc8e7d9b16b4e4cdbf228996dd21ee4bb2cdc863f",
+     "locator": "TI SLOS080W Section 5.7, printed page 13",
+     "rows": {
+      "iq_max_mA": 1.13,
+      "vos_max_uV_25C": 4000,
+      "vos_max_uV_full_temp": 5000,
+      "package": "SOIC-14"
+     }
+    },
+    "rows_changed": [
+     "Iq rises above the OPA4196 0.25 mA per amplifier",
+     "Renewed loop and headroom checks"
+    ],
+    "classification": "user decision (PD contract change with PD agreement)"
+   },
+   {
+    "scope": "all audio/cv/indicator packages",
+    "mpn": "LM324DR",
+    "packages": 174,
+    "cost": {
+     "mpn": "LM324DR",
+     "lcsc": "C7943",
+     "stock": 211037,
+     "stock_covers_lot": true,
+     "qty_per_unit": 174,
+     "unit_price_usd": 0.1314,
+     "lot_unit_price_usd": 0.1157,
+     "per_unit_usd": 22.86,
+     "per_lot_usd": 100.66,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "LM324DR",
+      "retrieved": "2026-10-31",
+      "response_sha256": "679e97f138734ae76290cf181dc65cf1bea044ae1cd53d3bf531bcaa6e61fa14"
+     }
+    },
+    "iq_change": {
+     "per_rail_mA": 348.0,
+     "fits_headroom": {
+      "+12V": false,
+      "-12V": false
+     }
+    },
+    "datasheet": {
+     "file": "lm324.pdf",
+     "sha256": "8161ad748420ae0594ad1919a34b34acd4858b822c04a8066b5fc95ddbda8963",
+     "locator": "TI SLOS066AE Section 6.7 (LM324 columns): VIO, VICR, ICC four amplifiers",
+     "rows": {
+      "iq_max_mA": 0.75,
+      "vos_max_uV_25C": 7000,
+      "vos_max_uV_full_temp": 9000,
+      "vcm_upper": "VCC - 2 V full range",
+      "package": "SOIC-14"
+     }
+    },
+    "rows_changed": [
+     "Iq rises above the OPA4196 0.25 mA per amplifier",
+     "Renewed loop and headroom checks",
+     "VIO 7 mV max; input range ends at VCC - 2 V; not rail-to-rail"
+    ],
+    "classification": "user decision (PD contract change with PD agreement)"
+   },
+   {
+    "scope": "all audio/cv/indicator packages",
+    "mpn": "OPA4171AIDR",
+    "packages": 174,
+    "cost": {
+     "mpn": "OPA4171AIDR",
+     "lcsc": "C46269",
+     "stock": 2191,
+     "stock_covers_lot": true,
+     "qty_per_unit": 174,
+     "unit_price_usd": 0.9679,
+     "lot_unit_price_usd": 0.8908,
+     "per_unit_usd": 168.41,
+     "per_lot_usd": 775.0,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "OPA4171AIDR",
+      "retrieved": "2026-10-31",
+      "response_sha256": "f65a214087c0e730b9e8c7622f69487cd08d18b100ca93c9fef5d81e216d4ecd"
+     }
+    },
+    "iq_change": {
+     "per_rail_mA": 278.4,
+     "fits_headroom": {
+      "+12V": false,
+      "-12V": false
+     }
+    },
+    "datasheet": {
+     "file": "opa4171.pdf",
+     "sha256": "fb84f841f3055f25accb0cc0dde8df93e4334a9b4deddc376e8217f0e9cbc538",
+     "locator": "TI SBOS516H Section 5.7, printed page 8",
+     "rows": {
+      "iq_max_mA": 0.65,
+      "vos_max_uV_25C": 1800,
+      "vos_max_uV_full_temp": 2000,
+      "gbw_MHz": 3,
+      "vcm_upper": "(V+) - 2 V",
+      "package": "SOIC-14"
+     }
+    },
+    "rows_changed": [
+     "Iq rises above the OPA4196 0.25 mA per amplifier",
+     "Renewed loop and headroom checks"
+    ],
+    "classification": "user decision (PD contract change with PD agreement)"
+   },
+   {
+    "scope": "indicator packages only",
+    "mpn": "TL074HIDR",
+    "packages": 33,
+    "cost": {
+     "mpn": "TL074HIDR",
+     "lcsc": "C2878713",
+     "stock": 7511,
+     "stock_covers_lot": true,
+     "qty_per_unit": 33,
+     "unit_price_usd": 0.2564,
+     "lot_unit_price_usd": 0.1788,
+     "per_unit_usd": 8.46,
+     "per_lot_usd": 29.5,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "TL074HIDR",
+      "retrieved": "2026-10-31",
+      "response_sha256": "1dce2e0a924b3106e6f3fce0ea61db3b774beb1622d2572fb8d6ed8f62ed9bb3"
+     }
+    },
+    "iq_change": {
+     "per_rail_mA": 116.2,
+     "fits_headroom": {
+      "+12V": false,
+      "-12V": false
+     }
+    },
+    "datasheet": {
+     "file": "tl074h.pdf",
+     "sha256": "30a70a806642920df994222bc8e7d9b16b4e4cdbf228996dd21ee4bb2cdc863f",
+     "locator": "TI SLOS080W Section 5.7, printed page 13",
+     "rows": {
+      "iq_max_mA": 1.13,
+      "vos_max_uV_25C": 4000,
+      "vos_max_uV_full_temp": 5000,
+      "package": "SOIC-14"
+     }
+    },
+    "rows_changed": [
+     "Iq rises above the OPA4196 0.25 mA per amplifier",
+     "Renewed loop and headroom checks"
+    ],
+    "classification": "user decision (PD contract change with PD agreement)"
+   },
+   {
+    "scope": "indicator packages only",
+    "mpn": "LM324DR",
+    "packages": 33,
+    "cost": {
+     "mpn": "LM324DR",
+     "lcsc": "C7943",
+     "stock": 211037,
+     "stock_covers_lot": true,
+     "qty_per_unit": 33,
+     "unit_price_usd": 0.1849,
+     "lot_unit_price_usd": 0.1314,
+     "per_unit_usd": 6.1,
+     "per_lot_usd": 21.68,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "LM324DR",
+      "retrieved": "2026-10-31",
+      "response_sha256": "679e97f138734ae76290cf181dc65cf1bea044ae1cd53d3bf531bcaa6e61fa14"
+     }
+    },
+    "iq_change": {
+     "per_rail_mA": 66.0,
+     "fits_headroom": {
+      "+12V": false,
+      "-12V": false
+     }
+    },
+    "datasheet": {
+     "file": "lm324.pdf",
+     "sha256": "8161ad748420ae0594ad1919a34b34acd4858b822c04a8066b5fc95ddbda8963",
+     "locator": "TI SLOS066AE Section 6.7 (LM324 columns): VIO, VICR, ICC four amplifiers",
+     "rows": {
+      "iq_max_mA": 0.75,
+      "vos_max_uV_25C": 7000,
+      "vos_max_uV_full_temp": 9000,
+      "vcm_upper": "VCC - 2 V full range",
+      "package": "SOIC-14"
+     }
+    },
+    "rows_changed": [
+     "Iq rises above the OPA4196 0.25 mA per amplifier",
+     "Renewed loop and headroom checks",
+     "VIO 7 mV max; input range ends at VCC - 2 V; not rail-to-rail"
+    ],
+    "classification": "user decision (PD contract change with PD agreement)"
+   },
+   {
+    "scope": "indicator packages only",
+    "mpn": "OPA4171AIDR",
+    "packages": 33,
+    "cost": {
+     "mpn": "OPA4171AIDR",
+     "lcsc": "C46269",
+     "stock": 2191,
+     "stock_covers_lot": true,
+     "qty_per_unit": 33,
+     "unit_price_usd": 1.1795,
+     "lot_unit_price_usd": 0.9679,
+     "per_unit_usd": 38.92,
+     "per_lot_usd": 159.7,
+     "receipt": {
+      "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "keyword": "OPA4171AIDR",
+      "retrieved": "2026-10-31",
+      "response_sha256": "f65a214087c0e730b9e8c7622f69487cd08d18b100ca93c9fef5d81e216d4ecd"
+     }
+    },
+    "iq_change": {
+     "per_rail_mA": 52.8,
+     "fits_headroom": {
+      "+12V": false,
+      "-12V": false
+     }
+    },
+    "datasheet": {
+     "file": "opa4171.pdf",
+     "sha256": "fb84f841f3055f25accb0cc0dde8df93e4334a9b4deddc376e8217f0e9cbc538",
+     "locator": "TI SBOS516H Section 5.7, printed page 8",
+     "rows": {
+      "iq_max_mA": 0.65,
+      "vos_max_uV_25C": 1800,
+      "vos_max_uV_full_temp": 2000,
+      "gbw_MHz": 3,
+      "vcm_upper": "(V+) - 2 V",
+      "package": "SOIC-14"
+     }
+    },
+    "rows_changed": [
+     "Iq rises above the OPA4196 0.25 mA per amplifier",
+     "Renewed loop and headroom checks"
+    ],
+    "classification": "user decision (PD contract change with PD agreement)"
+   }
+  ]
+ },
+ "resistors": [
+  {
+   "value": "80k",
+   "role": "envelope:R_REF9_FB",
+   "qty_per_unit": 6,
+   "function": "REF9 = REF5 * (1 + RF/RG), RG = 100 k",
+   "nominal_result": 9.0,
+   "unit": "V",
+   "proposals": [
+    {
+     "proposal": "series",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0740KL",
+       "lcsc": "C861392",
+       "stock": 229130,
+       "unit_price_usd": 0.037
+      },
+      {
+       "mpn": "RT0603BRD0740KL",
+       "lcsc": "C861392",
+       "stock": 229130,
+       "unit_price_usd": 0.037
+      }
+     ],
+     "added_placements_per_unit": 6,
+     "nominal_result": 9.0,
+     "unit": "V",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.444
+    },
+    {
+     "proposal": "rescale RF 40 k, RG 50 k",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0740KL",
+       "lcsc": "C861392",
+       "stock": 229130,
+       "unit_price_usd": 0.037
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 9.0,
+     "unit": "V",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.222
+    },
+    {
+     "proposal": "nearest",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0780K6L",
+       "lcsc": "C861568",
+       "stock": 3741,
+       "unit_price_usd": 0.0414
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 9.03,
+     "unit": "V",
+     "nominal_error_percent": 0.333,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.2484
+    }
+   ]
+  },
+  {
+   "value": "80k",
+   "role": "envelope:R_BIP_PLUS_BOTTOM",
+   "qty_per_unit": 6,
+   "function": "BIP_PLUS = ENV * 80k/(64k+80k); BIP gain 1.25",
+   "nominal_result": 1.25,
+   "unit": "gain",
+   "proposals": [
+    {
+     "proposal": "rescale TOP 40 k, BOTTOM 50 k",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0750KL",
+       "lcsc": "C861451",
+       "stock": 278234,
+       "unit_price_usd": 0.034
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 1.25,
+     "unit": "gain",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.204
+    },
+    {
+     "proposal": "series",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0740KL",
+       "lcsc": "C861392",
+       "stock": 229130,
+       "unit_price_usd": 0.037
+      },
+      {
+       "mpn": "RT0603BRD0740KL",
+       "lcsc": "C861392",
+       "stock": 229130,
+       "unit_price_usd": 0.037
+      }
+     ],
+     "added_placements_per_unit": 6,
+     "nominal_result": 1.25,
+     "unit": "gain",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.444
+    },
+    {
+     "proposal": "nearest",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0780K6L",
+       "lcsc": "C861568",
+       "stock": 3741,
+       "unit_price_usd": 0.0414
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 1.254149,
+     "unit": "gain",
+     "nominal_error_percent": 0.332,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.2484
+    }
+   ]
+  },
+  {
+   "value": "80k",
+   "role": "oscillator:R_SAW_IN",
+   "qty_per_unit": 5,
+   "function": "SAW gain = 100k / R_SAW_IN",
+   "nominal_result": 1.25,
+   "unit": "gain",
+   "proposals": [
+    {
+     "proposal": "series",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0740KL",
+       "lcsc": "C861392",
+       "stock": 229130,
+       "unit_price_usd": 0.037
+      },
+      {
+       "mpn": "RT0603BRD0740KL",
+       "lcsc": "C861392",
+       "stock": 229130,
+       "unit_price_usd": 0.037
+      }
+     ],
+     "added_placements_per_unit": 5,
+     "nominal_result": 1.25,
+     "unit": "gain",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.37
+    },
+    {
+     "proposal": "nearest",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0780K6L",
+       "lcsc": "C861568",
+       "stock": 3741,
+       "unit_price_usd": 0.0414
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 1.240695,
+     "unit": "gain",
+     "nominal_error_percent": -0.744,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.207
+    }
+   ]
+  },
+  {
+   "value": "899k",
+   "role": "envelope:R_RISE_DRIVE_TOP / R_FALL_DRIVE_TOP",
+   "qty_per_unit": 12,
+   "function": "OTA drive attenuation 1k / (R + 1k)",
+   "nominal_result": 0.001111,
+   "unit": "ratio",
+   "proposals": [
+    {
+     "proposal": "series",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD07820KL",
+       "lcsc": "C861571",
+       "stock": 8752,
+       "unit_price_usd": 0.0412
+      },
+      {
+       "mpn": "RT0603BRD0778K7L",
+       "lcsc": "C861558",
+       "stock": 8511,
+       "unit_price_usd": 0.0437
+      }
+     ],
+     "added_placements_per_unit": 12,
+     "nominal_result": 0.001111,
+     "unit": "ratio",
+     "nominal_error_percent": 0.033,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 1.0188
+    },
+    {
+     "proposal": "nearest",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD07887KL",
+       "lcsc": "C861583",
+       "stock": 0,
+       "unit_price_usd": 0.0164
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 0.001126,
+     "unit": "ratio",
+     "nominal_error_percent": 1.351,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": false,
+     "per_unit_usd": 0.1968
+    }
+   ]
+  },
+  {
+   "value": "250k",
+   "role": "oscillator:R_PITCH_TUNE",
+   "qty_per_unit": 5,
+   "function": "TUNE span = 5 V * 100k / R (manual knob)",
+   "nominal_result": 2.0,
+   "unit": "V",
+   "proposals": [
+    {
+     "proposal": "nearest",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD07249KL",
+       "lcsc": "C705752",
+       "stock": 5542,
+       "unit_price_usd": 0.0352
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 2.008032,
+     "unit": "V",
+     "nominal_error_percent": 0.402,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.176
+    },
+    {
+     "proposal": "series",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD07200KL",
+       "lcsc": "C728585",
+       "stock": 227297,
+       "unit_price_usd": 0.0562
+      },
+      {
+       "mpn": "RT0603BRD0750KL",
+       "lcsc": "C861451",
+       "stock": 278234,
+       "unit_price_usd": 0.034
+      }
+     ],
+     "added_placements_per_unit": 5,
+     "nominal_result": 2.0,
+     "unit": "V",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.451
+    }
+   ]
+  },
+  {
+   "value": "250k",
+   "role": "oscillator:R_TRI_BIAS_TOP",
+   "qty_per_unit": 5,
+   "function": "TRI_BIAS = REF5 * 100k / (R + 100k)",
+   "nominal_result": 1.428571,
+   "unit": "V",
+   "proposals": [
+    {
+     "proposal": "rescale TOP 50 k, BOTTOM 20 k",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0750KL",
+       "lcsc": "C861451",
+       "stock": 278234,
+       "unit_price_usd": 0.034
+      },
+      {
+       "mpn": "RT0603BRD0720KL",
+       "lcsc": "C723637",
+       "stock": 44525,
+       "unit_price_usd": 0.0358
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 1.428571,
+     "unit": "V",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.349
+    },
+    {
+     "proposal": "series",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD07200KL",
+       "lcsc": "C728585",
+       "stock": 227297,
+       "unit_price_usd": 0.0562
+      },
+      {
+       "mpn": "RT0603BRD0750KL",
+       "lcsc": "C861451",
+       "stock": 278234,
+       "unit_price_usd": 0.034
+      }
+     ],
+     "added_placements_per_unit": 5,
+     "nominal_result": 1.428571,
+     "unit": "V",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.451
+    },
+    {
+     "proposal": "nearest",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD07249KL",
+       "lcsc": "C705752",
+       "stock": 5542,
+       "unit_price_usd": 0.0352
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 1.432665,
+     "unit": "V",
+     "nominal_error_percent": 0.287,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.176
+    }
+   ]
+  },
+  {
+   "value": "64k",
+   "role": "envelope:R_BIP_PLUS_TOP",
+   "qty_per_unit": 6,
+   "function": "BIP_PLUS divider top; see R_BIP_PLUS_BOTTOM",
+   "nominal_result": 1.25,
+   "unit": "gain",
+   "proposals": [
+    {
+     "proposal": "rescale TOP 40 k, BOTTOM 50 k",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0740KL",
+       "lcsc": "C861392",
+       "stock": 229130,
+       "unit_price_usd": 0.037
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 1.25,
+     "unit": "gain",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.222
+    },
+    {
+     "proposal": "series",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0732KL",
+       "lcsc": "C861325",
+       "stock": 7667,
+       "unit_price_usd": 0.047
+      },
+      {
+       "mpn": "RT0603BRD0732KL",
+       "lcsc": "C861325",
+       "stock": 7667,
+       "unit_price_usd": 0.047
+      }
+     ],
+     "added_placements_per_unit": 6,
+     "nominal_result": 1.25,
+     "unit": "gain",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.564
+    },
+    {
+     "proposal": "nearest",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0764K9L",
+       "lcsc": "C861510",
+       "stock": 15124,
+       "unit_price_usd": 0.0576
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 1.242236,
+     "unit": "gain",
+     "nominal_error_percent": -0.621,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.3456
+    }
+   ]
+  },
+  {
+   "value": "79k",
+   "role": "envelope:R_FLOOR_TOP",
+   "qty_per_unit": 6,
+   "function": "FLOOR_REF = REF5 * 22k / (R + 22k)",
+   "nominal_result": 1.089109,
+   "unit": "V",
+   "proposals": [
+    {
+     "proposal": "series",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0747KL",
+       "lcsc": "C326725",
+       "stock": 19249,
+       "unit_price_usd": 0.0294
+      },
+      {
+       "mpn": "RT0603BRD0732KL",
+       "lcsc": "C861325",
+       "stock": 7667,
+       "unit_price_usd": 0.047
+      }
+     ],
+     "added_placements_per_unit": 6,
+     "nominal_result": 1.089109,
+     "unit": "V",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.4584
+    },
+    {
+     "proposal": "nearest",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0778K7L",
+       "lcsc": "C861558",
+       "stock": 8511,
+       "unit_price_usd": 0.0437
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 1.092354,
+     "unit": "V",
+     "nominal_error_percent": 0.298,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.2622
+    }
+   ]
+  },
+  {
+   "value": "400k",
+   "role": "envelope:R_BIP_GROUND",
+   "qty_per_unit": 6,
+   "function": "BIP gain 1 + 100k/(100k || R); offset -REF5",
+   "nominal_result": 1.25,
+   "unit": "gain",
+   "proposals": [
+    {
+     "proposal": "rescale REF/FB/GROUND 50 k/50 k/200 k",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0750KL",
+       "lcsc": "C861451",
+       "stock": 278234,
+       "unit_price_usd": 0.034
+      },
+      {
+       "mpn": "RT0603BRD07200KL",
+       "lcsc": "C728585",
+       "stock": 227297,
+       "unit_price_usd": 0.0562
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 1.25,
+     "unit": "gain",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.5412
+    },
+    {
+     "proposal": "series",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD07200KL",
+       "lcsc": "C728585",
+       "stock": 227297,
+       "unit_price_usd": 0.0562
+      },
+      {
+       "mpn": "RT0603BRD07200KL",
+       "lcsc": "C728585",
+       "stock": 227297,
+       "unit_price_usd": 0.0562
+      }
+     ],
+     "added_placements_per_unit": 6,
+     "nominal_result": 1.25,
+     "unit": "gain",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.6744
+    },
+    {
+     "proposal": "nearest",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD07402KL",
+       "lcsc": "C705774",
+       "stock": 1283,
+       "unit_price_usd": 0.0356
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 1.249309,
+     "unit": "gain",
+     "nominal_error_percent": -0.055,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.2136
+    }
+   ]
+  },
+  {
+   "value": "5.72k",
+   "role": "oscillator:R_RT",
+   "qty_per_unit": 5,
+   "function": "AS3340 scale resistor inside the trimmed scale network",
+   "nominal_result": 5720.0,
+   "unit": "ohm",
+   "proposals": [
+    {
+     "proposal": "series",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD075K1L",
+       "lcsc": "C122969",
+       "stock": 336091,
+       "unit_price_usd": 0.0322
+      },
+      {
+       "mpn": "RT0603BRD07620RL",
+       "lcsc": "C861501",
+       "stock": 120,
+       "unit_price_usd": 0.0614
+      }
+     ],
+     "added_placements_per_unit": 5,
+     "nominal_result": 5720.0,
+     "unit": "ohm",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.468
+    },
+    {
+     "proposal": "nearest",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD075K76L",
+       "lcsc": "C861489",
+       "stock": 5454,
+       "unit_price_usd": 0.0498
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 5760.0,
+     "unit": "ohm",
+     "nominal_error_percent": 0.699,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.249
+    }
+   ]
+  },
+  {
+   "value": "25k",
+   "role": "oscillator:R_REF4_TOP",
+   "qty_per_unit": 5,
+   "function": "REF4 = REF5 * 100k / (R + 100k), PWM clamp reference",
+   "nominal_result": 4.0,
+   "unit": "V",
+   "proposals": [
+    {
+     "proposal": "nearest",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0724K9L",
+       "lcsc": "C136967",
+       "stock": 14756,
+       "unit_price_usd": 0.0394
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 4.003203,
+     "unit": "V",
+     "nominal_error_percent": 0.08,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.197
+    },
+    {
+     "proposal": "rescale TOP 10 k, BOTTOM 40 k",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0710KL",
+       "lcsc": "C95204",
+       "stock": 1822262,
+       "unit_price_usd": 0.0302
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 4.0,
+     "unit": "V",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.151
+    }
+   ]
+  },
+  {
+   "value": "72k",
+   "role": "oscillator:R_PWM_FB",
+   "qty_per_unit": 5,
+   "function": "PWM command = (0.2 + 0.72 man + 0.36 depth) scale",
+   "nominal_result": 0.72,
+   "unit": "gain",
+   "proposals": [
+    {
+     "proposal": "series",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0740KL",
+       "lcsc": "C861392",
+       "stock": 229130,
+       "unit_price_usd": 0.037
+      },
+      {
+       "mpn": "RT0603BRD0732KL",
+       "lcsc": "C861325",
+       "stock": 7667,
+       "unit_price_usd": 0.047
+      }
+     ],
+     "added_placements_per_unit": 5,
+     "nominal_result": 0.72,
+     "unit": "gain",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.42
+    },
+    {
+     "proposal": "nearest",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0771K5L",
+       "lcsc": "C861546",
+       "stock": 1063,
+       "unit_price_usd": 0.0356
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 0.715,
+     "unit": "gain",
+     "nominal_error_percent": -0.694,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.178
+    }
+   ]
+  },
+  {
+   "value": "125k",
+   "role": "oscillator:R_SAW_BIAS_TOP",
+   "qty_per_unit": 5,
+   "function": "SAW_BIAS = REF5 * 100k / (R + 100k)",
+   "nominal_result": 2.222222,
+   "unit": "V",
+   "proposals": [
+    {
+     "proposal": "rescale TOP 50 k, BOTTOM 40 k",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0750KL",
+       "lcsc": "C861451",
+       "stock": 278234,
+       "unit_price_usd": 0.034
+      },
+      {
+       "mpn": "RT0603BRD0740KL",
+       "lcsc": "C861392",
+       "stock": 229130,
+       "unit_price_usd": 0.037
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 2.222222,
+     "unit": "V",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.355
+    },
+    {
+     "proposal": "series",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0775KL",
+       "lcsc": "C723587",
+       "stock": 175471,
+       "unit_price_usd": 0.0368
+      },
+      {
+       "mpn": "RT0603BRD0750KL",
+       "lcsc": "C861451",
+       "stock": 278234,
+       "unit_price_usd": 0.034
+      }
+     ],
+     "added_placements_per_unit": 5,
+     "nominal_result": 2.222222,
+     "unit": "V",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.354
+    },
+    {
+     "proposal": "nearest",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD07124KL",
+       "lcsc": "C861097",
+       "stock": 12717,
+       "unit_price_usd": 0.0452
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 2.232143,
+     "unit": "V",
+     "nominal_error_percent": 0.446,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.226
+    }
+   ]
+  },
+  {
+   "value": "1.2M",
+   "role": "oscillator:R_LINEAR_REFERENCE",
+   "qty_per_unit": 5,
+   "function": "AS3340 linear reference current from +12 V",
+   "nominal_result": 10.0,
+   "unit": "uA",
+   "proposals": [
+    {
+     "proposal": "series",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD071ML",
+       "lcsc": "C326730",
+       "stock": 113978,
+       "unit_price_usd": 0.0363
+      },
+      {
+       "mpn": "RT0603BRD07200KL",
+       "lcsc": "C728585",
+       "stock": 227297,
+       "unit_price_usd": 0.0562
+      }
+     ],
+     "added_placements_per_unit": 5,
+     "nominal_result": 10.0,
+     "unit": "uA",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.4625
+    },
+    {
+     "proposal": "r_general",
+     "parts_per_placement": [
+      {
+       "mpn": "RC0603FR-071M2L",
+       "lcsc": "C137774",
+       "stock": 40785,
+       "unit_price_usd": 0.0042
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 10.0,
+     "unit": "uA",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "1 % thick film (r_general)",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.021
+    }
+   ]
+  },
+  {
+   "value": "1.8M",
+   "role": "oscillator:R_PWM_OFFSET",
+   "qty_per_unit": 5,
+   "function": "PWM offset = REF5 * 72k / R",
+   "nominal_result": 0.2,
+   "unit": "V",
+   "proposals": [
+    {
+     "proposal": "series",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD071ML",
+       "lcsc": "C326730",
+       "stock": 113978,
+       "unit_price_usd": 0.0363
+      },
+      {
+       "mpn": "RT0603BRD07820KL",
+       "lcsc": "C861571",
+       "stock": 8752,
+       "unit_price_usd": 0.0412
+      }
+     ],
+     "added_placements_per_unit": 5,
+     "nominal_result": 0.197802,
+     "unit": "V",
+     "nominal_error_percent": -1.099,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.3875
+    },
+    {
+     "proposal": "r_general",
+     "parts_per_placement": [
+      {
+       "mpn": "RC0603FR-071M8L",
+       "lcsc": "C137772",
+       "stock": 14,
+       "unit_price_usd": 0.0028
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 0.2,
+     "unit": "V",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "1 % thick film (r_general)",
+     "all_stock_covers_lot": false,
+     "per_unit_usd": 0.014
+    }
+   ]
+  },
+  {
+   "value": "5M",
+   "role": "oscillator:R_PITCH_FINE",
+   "qty_per_unit": 5,
+   "function": "FINE span = 5 V * 100k / R (manual knob)",
+   "nominal_result": 0.1,
+   "unit": "V",
+   "proposals": [
+    {
+     "proposal": "series",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD071ML",
+       "lcsc": "C326730",
+       "stock": 113978,
+       "unit_price_usd": 0.0363
+      },
+      {
+       "mpn": "RT0603BRD071ML",
+       "lcsc": "C326730",
+       "stock": 113978,
+       "unit_price_usd": 0.0363
+      },
+      {
+       "mpn": "RT0603BRD071ML",
+       "lcsc": "C326730",
+       "stock": 113978,
+       "unit_price_usd": 0.0363
+      },
+      {
+       "mpn": "RT0603BRD071ML",
+       "lcsc": "C326730",
+       "stock": 113978,
+       "unit_price_usd": 0.0363
+      },
+      {
+       "mpn": "RT0603BRD071ML",
+       "lcsc": "C326730",
+       "stock": 113978,
+       "unit_price_usd": 0.0363
+      }
+     ],
+     "added_placements_per_unit": 20,
+     "nominal_result": 0.1,
+     "unit": "V",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.9075
+    },
+    {
+     "proposal": "r_general",
+     "parts_per_placement": [
+      {
+       "mpn": "RC0603FR-075M1L",
+       "lcsc": "C163423",
+       "stock": 744791,
+       "unit_price_usd": 0.0036
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 0.098039,
+     "unit": "V",
+     "nominal_error_percent": -1.961,
+     "tolerance_class": "1 % thick film (r_general)",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.018
+    }
+   ]
+  },
+  {
+   "value": "70k",
+   "role": "wavefolder:R_OUTPUT_RF",
+   "qty_per_unit": 2,
+   "function": "Output gain 1 + R / 10k",
+   "nominal_result": 8.0,
+   "unit": "gain",
+   "proposals": [
+    {
+     "proposal": "series",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0720KL",
+       "lcsc": "C723637",
+       "stock": 44525,
+       "unit_price_usd": 0.0358
+      },
+      {
+       "mpn": "RT0603BRD0750KL",
+       "lcsc": "C861451",
+       "stock": 278234,
+       "unit_price_usd": 0.034
+      }
+     ],
+     "added_placements_per_unit": 2,
+     "nominal_result": 8.0,
+     "unit": "gain",
+     "nominal_error_percent": 0.0,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.1396
+    },
+    {
+     "proposal": "nearest",
+     "parts_per_placement": [
+      {
+       "mpn": "RT0603BRD0769K8L",
+       "lcsc": "C861526",
+       "stock": 15135,
+       "unit_price_usd": 0.0581
+      }
+     ],
+     "added_placements_per_unit": 0,
+     "nominal_result": 7.98,
+     "unit": "gain",
+     "nominal_error_percent": -0.25,
+     "tolerance_class": "0.1 % thin film",
+     "all_stock_covers_lot": true,
+     "per_unit_usd": 0.1162
+    }
+   ]
+  }
+ ],
+ "resistor_plans": {
+  "R-exact": {
+   "per_unit_usd": 6.72,
+   "added_placements_per_unit": 80,
+   "worst_nominal_error_percent": 1.099,
+   "stock_short_of_lot": [],
+   "selection": [
+    {
+     "role": "envelope:R_REF9_FB",
+     "proposal": "rescale RF 40 k, RG 50 k",
+     "nominal_error_percent": 0.0,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "envelope:R_BIP_PLUS_BOTTOM",
+     "proposal": "rescale TOP 40 k, BOTTOM 50 k",
+     "nominal_error_percent": 0.0,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "oscillator:R_SAW_IN",
+     "proposal": "series",
+     "nominal_error_percent": 0.0,
+     "added_placements_per_unit": 5
+    },
+    {
+     "role": "envelope:R_RISE_DRIVE_TOP / R_FALL_DRIVE_TOP",
+     "proposal": "series",
+     "nominal_error_percent": 0.033,
+     "added_placements_per_unit": 12
+    },
+    {
+     "role": "oscillator:R_PITCH_TUNE",
+     "proposal": "series",
+     "nominal_error_percent": 0.0,
+     "added_placements_per_unit": 5
+    },
+    {
+     "role": "oscillator:R_TRI_BIAS_TOP",
+     "proposal": "series",
+     "nominal_error_percent": 0.0,
+     "added_placements_per_unit": 5
+    },
+    {
+     "role": "envelope:R_BIP_PLUS_TOP",
+     "proposal": "covered by the BIP_PLUS rescale"
+    },
+    {
+     "role": "envelope:R_FLOOR_TOP",
+     "proposal": "series",
+     "nominal_error_percent": 0.0,
+     "added_placements_per_unit": 6
+    },
+    {
+     "role": "envelope:R_BIP_GROUND",
+     "proposal": "nearest",
+     "nominal_error_percent": -0.055,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "oscillator:R_RT",
+     "proposal": "series",
+     "nominal_error_percent": 0.0,
+     "added_placements_per_unit": 5
+    },
+    {
+     "role": "oscillator:R_REF4_TOP",
+     "proposal": "nearest",
+     "nominal_error_percent": 0.08,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "oscillator:R_PWM_FB",
+     "proposal": "series",
+     "nominal_error_percent": 0.0,
+     "added_placements_per_unit": 5
+    },
+    {
+     "role": "oscillator:R_SAW_BIAS_TOP",
+     "proposal": "series",
+     "nominal_error_percent": 0.0,
+     "added_placements_per_unit": 5
+    },
+    {
+     "role": "oscillator:R_LINEAR_REFERENCE",
+     "proposal": "series",
+     "nominal_error_percent": 0.0,
+     "added_placements_per_unit": 5
+    },
+    {
+     "role": "oscillator:R_PWM_OFFSET",
+     "proposal": "series",
+     "nominal_error_percent": -1.099,
+     "added_placements_per_unit": 5
+    },
+    {
+     "role": "oscillator:R_PITCH_FINE",
+     "proposal": "series",
+     "nominal_error_percent": 0.0,
+     "added_placements_per_unit": 20
+    },
+    {
+     "role": "wavefolder:R_OUTPUT_RF",
+     "proposal": "series",
+     "nominal_error_percent": 0.0,
+     "added_placements_per_unit": 2
+    }
+   ]
+  },
+  "R-min": {
+   "per_unit_usd": 2.68,
+   "added_placements_per_unit": 0,
+   "worst_nominal_error_percent": 1.961,
+   "stock_short_of_lot": [
+    "envelope:R_RISE_DRIVE_TOP / R_FALL_DRIVE_TOP",
+    "oscillator:R_PWM_OFFSET"
+   ],
+   "selection": [
+    {
+     "role": "envelope:R_REF9_FB",
+     "proposal": "rescale RF 40 k, RG 50 k",
+     "nominal_error_percent": 0.0,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "envelope:R_BIP_PLUS_BOTTOM",
+     "proposal": "rescale TOP 40 k, BOTTOM 50 k",
+     "nominal_error_percent": 0.0,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "oscillator:R_SAW_IN",
+     "proposal": "nearest",
+     "nominal_error_percent": -0.744,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "envelope:R_RISE_DRIVE_TOP / R_FALL_DRIVE_TOP",
+     "proposal": "nearest",
+     "nominal_error_percent": 1.351,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "oscillator:R_PITCH_TUNE",
+     "proposal": "nearest",
+     "nominal_error_percent": 0.402,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "oscillator:R_TRI_BIAS_TOP",
+     "proposal": "nearest",
+     "nominal_error_percent": 0.287,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "envelope:R_BIP_PLUS_TOP",
+     "proposal": "covered by the BIP_PLUS rescale"
+    },
+    {
+     "role": "envelope:R_FLOOR_TOP",
+     "proposal": "nearest",
+     "nominal_error_percent": 0.298,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "envelope:R_BIP_GROUND",
+     "proposal": "nearest",
+     "nominal_error_percent": -0.055,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "oscillator:R_RT",
+     "proposal": "nearest",
+     "nominal_error_percent": 0.699,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "oscillator:R_REF4_TOP",
+     "proposal": "nearest",
+     "nominal_error_percent": 0.08,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "oscillator:R_PWM_FB",
+     "proposal": "nearest",
+     "nominal_error_percent": -0.694,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "oscillator:R_SAW_BIAS_TOP",
+     "proposal": "nearest",
+     "nominal_error_percent": 0.446,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "oscillator:R_LINEAR_REFERENCE",
+     "proposal": "r_general",
+     "nominal_error_percent": 0.0,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "oscillator:R_PWM_OFFSET",
+     "proposal": "r_general",
+     "nominal_error_percent": 0.0,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "oscillator:R_PITCH_FINE",
+     "proposal": "r_general",
+     "nominal_error_percent": -1.961,
+     "added_placements_per_unit": 0
+    },
+    {
+     "role": "wavefolder:R_OUTPUT_RF",
+     "proposal": "nearest",
+     "nominal_error_percent": -0.25,
+     "added_placements_per_unit": 0
+    }
+   ]
+  }
+ }
+}
