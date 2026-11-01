@@ -1,23 +1,117 @@
 {
  "schema_version": 1,
- "status": "UNADOPTED CANDIDATE; check results of a scratch worktree run, 2026-10-31/11-01; not a validation",
- "package_result": {"OPA4197IDR": 85, "OPA4197IPWR": 4, "kept_IPWR_refs": ["U102", "U202", "U3303", "U3403"]},
- "designators": {"existing_rows_compared": 8234, "moved": 0, "added": 80, "added_colliding_with_existing": 0},
+ "status": "UNADOPTED CANDIDATE; check results of scratch worktree runs 2026-10-31 to 11-01 (phase 16, revised phase 17); not a validation",
+ "package_result": {
+  "OPA4197IDR": 85,
+  "OPA4197IPWR": 4,
+  "kept_IPWR_refs": [
+   "U102",
+   "U202",
+   "U3303",
+   "U3403"
+  ]
+ },
+ "designators": {
+  "existing_rows_compared": 8234,
+  "moved": 0,
+  "added": 80,
+  "added_colliding_with_existing": 0
+ },
  "steps": [
-  {"step": "apply phase-15 OPA4197IDR patch", "status": "PASS"},
-  {"step": "regen-all (first pass)", "status": "FAIL (expected)", "detail": "stops at master-audit drift after ERC PASS: 0 errors, 228 warning identities match baseline"},
-  {"step": "master netlist export + audit_master.py", "status": "PASS", "detail": "5986 components (+80), 5129 nets (+80), designator lock +80"},
-  {"step": "regen-master-reports.sh", "status": "PASS"},
-  {"step": "regen-master-reports.sh --check (includes regen-all --check)", "status": "PASS"},
-  {"step": "partition chain (inside regen-all)", "status": "PASS", "detail": "physical rows 5904->5984; board K F.Cu 1409->1463, B.Cu 1976->2002; 473 crossings, 0 forbidden; orientation oracle PASS; fit remains OPEN"},
-  {"step": "rail ledger / two-feed planning totals", "status": "PASS", "detail": "totals unchanged from predecessor; worksheet loads 347->351"},
-  {"step": "envelope, wavefolder, manual_ab spice reruns", "status": "PASS", "detail": "envelope identical; wavefolder within 1e-8 V"},
-  {"step": "independent reproduction from source.patch (reproduce.sh)", "status": "PASS", "detail": "209/209 successor hashes match; same changed-file set"},
-  {"step": "zudo-circuit-doc validate", "status": "PASS", "detail": "69 lines"},
-  {"step": "design/spec unit tests", "status": "FAIL", "detail": "137/138; test_wavefolder model_and_plot_receipts: plot receipt binds the wavefolder report hash; re-render needs the pinned matplotlib 3.9.2 venv, absent (NOT RUN)"},
-  {"step": "scripts/schgen unit tests", "status": "PASS", "detail": "72/72 after count updates"},
-  {"step": "scripts/checks tests vs predecessor", "status": "FAIL", "detail": "4 newly failing files: test_assembly_specification (stage50 binding of inventory.json), test_connectivity_inventory (stage45 frozen inventory names IPWR), test_power_cleanup (stage54 fixture expects IPWR identity U116), test_routing_placement_translations (translated courtyard RB4515 conflict plus stale translation source). 6 other drifts were regenerated"},
-  {"step": "DRC, zone fill, #293 fill", "status": "NOT RUN", "detail": "not authorized"},
-  {"step": "component-spec-audit validate.py / check_forward_tests.py", "status": "NOT RUN", "detail": "scripts are absent from this repository"}
+  {
+   "step": "apply phase-15 OPA4197IDR patch",
+   "status": "PASS"
+  },
+  {
+   "step": "regen-all (first pass)",
+   "status": "FAIL (expected)",
+   "detail": "stops at master-audit drift after ERC PASS: 0 errors, 228 warning identities match baseline"
+  },
+  {
+   "step": "master netlist export + audit_master.py",
+   "status": "PASS",
+   "detail": "5986 components (+80), 5129 nets (+80), designator lock +80"
+  },
+  {
+   "step": "regen-master-reports.sh",
+   "status": "PASS"
+  },
+  {
+   "step": "regen-master-reports.sh --check (includes regen-all --check)",
+   "status": "PASS"
+  },
+  {
+   "step": "partition chain (inside regen-all)",
+   "status": "PASS",
+   "detail": "physical rows 5904->5984; board K F.Cu 1409->1463, B.Cu 1976->2002; 473 crossings, 0 forbidden; orientation oracle PASS; fit remains OPEN"
+  },
+  {
+   "step": "rail ledger / two-feed planning totals",
+   "status": "PASS",
+   "detail": "totals unchanged from predecessor; worksheet loads 347->351"
+  },
+  {
+   "step": "envelope, wavefolder, manual_ab spice reruns",
+   "status": "PASS",
+   "detail": "envelope identical; wavefolder within 1e-8 V"
+  },
+  {
+   "step": "independent reproduction from source.patch (reproduce.sh)",
+   "status": "PASS",
+   "detail": "phase 16: 209/209; phase 17 revision: see phase17 entries"
+  },
+  {
+   "step": "zudo-circuit-doc validate",
+   "status": "PASS",
+   "detail": "69 lines"
+  },
+  {
+   "step": "design/spec unit tests",
+   "status": "FAIL",
+   "detail": "137/138; test_wavefolder plot receipt. Phase 17 built the pinned matplotlib 3.9.2 venv (pip wheels, Python 3.13.18, FreeType 2.6.1), but re-rendering the predecessor does not reproduce the retained PNGs (transfer 280425 / 1766400 pixels differ, transient 293513 / 1843200), so the candidate plot hashes were not updated"
+  },
+  {
+   "step": "scripts/schgen unit tests",
+   "status": "PASS",
+   "detail": "72/72 after count updates"
+  },
+  {
+   "step": "scripts/checks tests vs predecessor",
+   "status": "FAIL",
+   "detail": "3 files still fail against the predecessor, all historical-stage bindings: test_assembly_specification (stage50 inventory.json binding), test_connectivity_inventory (stage45 frozen inventory names IPWR), test_power_cleanup (stage54 fixture expects IPWR identity U116). test_routing_placement_translations PASS after the phase-17 slot swap"
+  },
+  {
+   "step": "DRC, zone fill, #293 fill",
+   "status": "NOT RUN",
+   "detail": "not authorized"
+  },
+  {
+   "step": "component-spec-audit validate.py / check_forward_tests.py",
+   "status": "NOT RUN",
+   "detail": "scripts are absent from this repository"
+  },
+  {
+   "step": "phase 17: RB4413/RB4515 slot swap on JR (design/partition/candidate-slot-swaps.json)",
+   "status": "PASS",
+   "detail": "The SOIC-14 reflow moved 566 of 1031 JR rows; RB4515 had taken the slot that issue189 jr-rb4413-edge-bridge binds to RB4413. Swapping the two R0603 slots (25.66 mm each, same face/orientation) restores RB4413 exactly. No fixed hardware and no other part moves. Board K is not involved"
+  },
+  {
+   "step": "phase 17: partition chain + regen-master-reports --check",
+   "status": "PASS"
+  },
+  {
+   "step": "phase 17: precision_output_cell_model.py rerun (ngspice)",
+   "status": "PASS",
+   "detail": "24/24 targets met; cases identical; it bound the changed supply-architecture.json"
+  },
+  {
+   "step": "phase 17: candidate report tests (fast_disconnect, integrated_output, precision_output_cell)",
+   "status": "PASS"
+  },
+  {
+   "step": "phase 17: independent reproduction from source.patch",
+   "status": "PASS",
+   "detail": "212/212 successor hashes match and the changed-file set is identical. The first run exposed a reproduce.sh ordering bug: fast_disconnect and integrated_output bind the precision_output_cell report hash. That was fixed by running precision_output_cell first. The heavy-guard 1800 s budget expired during that run, so the closing --check was rerun separately"
+  }
  ]
 }

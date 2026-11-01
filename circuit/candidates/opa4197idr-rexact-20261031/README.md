@@ -25,6 +25,12 @@ records its tree hash):
    **no existing designator moves**: 8234/8234 key→designator rows are identical.
    `scripts/schgen/audit_master.py` takes a +80 designator-lock increment.
 
+3. **JR slot swap (phase 17).** The SOIC-14 reflow of the jack boards put RB4515 into
+   the slot that the issue189 `jr-rb4413-edge-bridge` translation binds to RB4413.
+   `design/partition/candidate-slot-swaps.json` swaps the two R0603 slots. RB4413 goes back to
+   its recorded position, and the pending translation is again rejected only by connector
+   JR-K-6-JR, as on the predecessor.
+
 Downstream code that hard-coded OPA4197IPWR was widened to accept either package. That
 covers current worksheets, model contracts, the rail ledger, checks and tests. The
 rail allocation inputs gain one load row each for H1, H2, X1 and X2, which now carry
@@ -34,13 +40,14 @@ both packages.
 
 | Path | Content |
 | --- | --- |
-| `patches/source.patch` | the 51 source and input files (includes the phase-15 bundle) |
-| `receipts/application-receipt.json` | before/after sha256 of all 209 changed files, source or generated |
+| `patches/source.patch` | the 53 source and input files (includes the phase-15 bundle) |
+| `receipts/application-receipt.json` | before/after sha256 of all 212 changed files, source or generated |
 | `receipts/checks.json` | step and check results of the candidate run |
 | `tools/reproduce.sh` | generation order that rebuilds the successor from the predecessor |
 | `tools/verify_record.py` | offline consistency check; `--tree` compares a rebuilt tree |
+| `review/tmux6112_routes.py`, `review/tmux6112-routes.json` | S2b envelope-switch route comparison (phase 17) |
 
-The 158 generated successor files (schematics, board sheets, partition, reports) are
+The 159 generated successor files (schematics, board sheets, partition, reports) are
 not committed; their hashes are in the receipt. Never apply this patch to the canonical tree
 without an adoption decision.
 

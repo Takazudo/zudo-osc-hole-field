@@ -20,7 +20,9 @@ bash scripts/kicad/run.sh kicad-cli sch export netlist --format kicadsexpr \
 python3 scripts/schgen/audit_master.py .circuit-cache/master-audit/netlist.net
 bash scripts/schgen/regen-master-reports.sh
 for m in run_envelope_spice run_wavefolder_spice run_manual_ab_spice; do python3 -m "design.spec.modules.$m"; done
-for n in negative_monitor_network rail_monitor_candidate fast_disconnect_candidate integrated_output_candidate precision_output_cell; do
+# precision_output_cell first: fast_disconnect and integrated_output bind its report hash.
+for n in precision_output_cell negative_monitor_network rail_monitor_candidate fast_disconnect_candidate integrated_output_candidate; do
   PYTHONPATH="$tree" python3 "scripts/checks/$n.py"
 done
+PYTHONPATH="$tree" python3 scripts/checks/precision_output_cell_model.py
 bash scripts/schgen/regen-master-reports.sh --check
