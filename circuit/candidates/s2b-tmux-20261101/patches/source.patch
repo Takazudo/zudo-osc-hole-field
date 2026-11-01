@@ -1,3 +1,56 @@
+diff --git a/.claude/skills/component-nexperia-bat54s-215/coverage.json b/.claude/skills/component-nexperia-bat54s-215/coverage.json
+index ef452e08..b6ec1630 100644
+--- a/.claude/skills/component-nexperia-bat54s-215/coverage.json
++++ b/.claude/skills/component-nexperia-bat54s-215/coverage.json
+@@ -37,7 +37,8 @@
+         "fact-clamp-diode-forward-voltage",
+         "fact-clamp-diode-reverse-current",
+         "fact-clamp-diode-power-thermal",
+-        "fact-clamp-diode-forward-voltage-temperature"
++        "fact-clamp-diode-forward-voltage-temperature",
++        "fact-clamp-diode-reverse-current-temperature"
+       ],
+       "blocking_fact_ids": []
+     },
+diff --git a/.claude/skills/component-nexperia-bat54s-215/facts.json b/.claude/skills/component-nexperia-bat54s-215/facts.json
+index 2bf1835f..66dd25c9 100644
+--- a/.claude/skills/component-nexperia-bat54s-215/facts.json
++++ b/.claude/skills/component-nexperia-bat54s-215/facts.json
+@@ -212,6 +212,20 @@
+       "verdict": "PASS - primary-source confirmed",
+       "depends_on": [],
+       "expression": ""
++    },
++    {
++      "fact_id": "fact-clamp-diode-reverse-current-temperature",
++      "record_id": "rec-clamp-diode",
++      "source_id": "src-clamp-diode-datasheet",
++      "class": "TYPICAL_CURVE",
++      "value": "Fig. 2 gives typical IR versus VR (0..30 V) at Tamb = 125, 85 and 25 C only. Approximate project readings of the typical curves: 25 C about 0.3 uA at 1 V rising to about 1.5..2 uA at 30 V; 85 C about 15..20 uA at 1 V rising to about 60 uA at 30 V; 125 C about 200..500 uA. The only maximum is Table 7, 2 uA at VR = 25 V and 25 C.",
++      "unit": "NONE",
++      "conditions": "Typical curves only, log scale, readings approximate; they do not bound IR at any temperature other than the 25 C, 25 V table row.",
++      "locator": "Section/table audit: src-clamp-diode-datasheet physical PDF page index 2, printed 3/9, Fig. 2 Reverse current as a function of reverse voltage; typical values",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
+     }
+   ]
+ }
+diff --git a/.claude/skills/component-nexperia-bat54s-215/manifest.json b/.claude/skills/component-nexperia-bat54s-215/manifest.json
+index 8a502b9d..5d9a3d83 100644
+--- a/.claude/skills/component-nexperia-bat54s-215/manifest.json
++++ b/.claude/skills/component-nexperia-bat54s-215/manifest.json
+@@ -28,7 +28,8 @@
+         "fact-clamp-diode-forward-voltage",
+         "fact-clamp-diode-reverse-current",
+         "fact-clamp-diode-power-thermal",
+-        "fact-clamp-diode-forward-voltage-temperature"
++        "fact-clamp-diode-forward-voltage-temperature",
++        "fact-clamp-diode-reverse-current-temperature"
+       ],
+       "interaction_ids": [
+         "int-clamp-diode-project-role"
 diff --git a/.claude/skills/component-spec-audit/references/direct-routing.json b/.claude/skills/component-spec-audit/references/direct-routing.json
 index 9d6a03b4..78e8046b 100644
 --- a/.claude/skills/component-spec-audit/references/direct-routing.json
@@ -114,10 +167,10 @@ index 00000000..f9a1916a
 +- Every pin map leaves board nets unassigned; the manual inventory provider does not bind schematic pins or placements.
 diff --git a/.claude/skills/component-ti-opa4197idr/coverage.json b/.claude/skills/component-ti-opa4197idr/coverage.json
 new file mode 100644
-index 00000000..e925063f
+index 00000000..99f08edb
 --- /dev/null
 +++ b/.claude/skills/component-ti-opa4197idr/coverage.json
-@@ -0,0 +1,97 @@
+@@ -0,0 +1,99 @@
 +{
 +  "schema_version": 1,
 +  "coverage": [
@@ -158,7 +211,9 @@ index 00000000..e925063f
 +        "fact-op-precision-d-input-absolute",
 +        "fact-op-precision-d-supply-recommended",
 +        "fact-op-precision-d-esd-steering",
-+        "fact-op-precision-d-output-swing"
++        "fact-op-precision-d-output-swing",
++        "fact-op-precision-d-input-common-mode-range",
++        "fact-op-precision-d-input-stage-transition"
 +      ],
 +      "blocking_fact_ids": []
 +    },
@@ -217,10 +272,10 @@ index 00000000..e925063f
 +}
 diff --git a/.claude/skills/component-ti-opa4197idr/facts.json b/.claude/skills/component-ti-opa4197idr/facts.json
 new file mode 100644
-index 00000000..7b954e24
+index 00000000..bc781869
 --- /dev/null
 +++ b/.claude/skills/component-ti-opa4197idr/facts.json
-@@ -0,0 +1,301 @@
+@@ -0,0 +1,338 @@
 +{
 +  "schema_version": 1,
 +  "facts": [
@@ -519,6 +574,43 @@ index 00000000..7b954e24
 +      "verdict": "UNSOURCED",
 +      "depends_on": [],
 +      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-input-common-mode-range",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "minimum_below_V_minus_V": -0.1,
++        "maximum_above_V_plus_V": 0.1
++      },
++      "unit": "V",
++      "conditions": "Operating common-mode voltage range VCM = (V-) - 0.1 V .. (V+) + 0.1 V, table header VS = +/-4 V to +/-18 V (8 V to 36 V), TA = 25 C; no separate full-temperature VCM row. At the project +/-12 V rails this is -12.1 .. +12.1 V nominal.",
++      "locator": "src-op-precision-d-datasheet: PDF page index 6, printed page 7, Section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, INPUT VOLTAGE, Common-mode voltage range row",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-input-stage-transition",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "cmrr_min_dB_low_region_full_temperature": 110,
++        "cmrr_min_dB_high_region_full_temperature": 80,
++        "low_region": "(V-) - 0.1 V < VCM < (V+) - 3 V",
++        "high_region": "(V+) - 1.5 V < VCM < (V+)",
++        "unspecified_region": "(V+) - 3 V < VCM < (V+) - 1.5 V"
++      },
++      "unit": "dB",
++      "conditions": "CMRR minima at VS = +/-18 V, TA = -40..125 C: 110 dB for (V-) - 0.1 V < VCM < (V+) - 3 V and 80 dB for (V+) - 1.5 V < VCM < (V+). The input-stage transition region (V+) - 3 V .. (V+) - 1.5 V has no table limit (\"See Typical Characteristics\"). Offset VOS is specified separately at VCM = (V+) - 1.5 V (+/-100 uV max at 25 C). Rows are at VS = +/-18 V, not +/-12 V.",
++      "locator": "src-op-precision-d-datasheet: PDF page index 6, printed page 7, Section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, INPUT VOLTAGE, CMRR rows; OFFSET VOLTAGE VOS rows",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
 +    }
 +  ]
 +}
@@ -547,10 +639,10 @@ index 00000000..a6c441cf
 +}
 diff --git a/.claude/skills/component-ti-opa4197idr/manifest.json b/.claude/skills/component-ti-opa4197idr/manifest.json
 new file mode 100644
-index 00000000..ba4e2670
+index 00000000..fce3c960
 --- /dev/null
 +++ b/.claude/skills/component-ti-opa4197idr/manifest.json
-@@ -0,0 +1,51 @@
+@@ -0,0 +1,53 @@
 +{
 +  "schema_version": 1,
 +  "skill": "component-ti-opa4197idr",
@@ -589,7 +681,9 @@ index 00000000..ba4e2670
 +        "fact-op-precision-d-supply-recommended",
 +        "fact-op-precision-d-esd-steering",
 +        "fact-op-precision-d-output-swing",
-+        "fact-op-precision-d-assembly-allocation"
++        "fact-op-precision-d-assembly-allocation",
++        "fact-op-precision-d-input-common-mode-range",
++        "fact-op-precision-d-input-stage-transition"
 +      ],
 +      "interaction_ids": [
 +        "int-op-precision-d-project-role"
@@ -849,6 +943,84 @@ index 00000000..c0d49b0d
 +    }
 +  ]
 +}
+diff --git a/.claude/skills/component-ti-opa4197ipwr/coverage.json b/.claude/skills/component-ti-opa4197ipwr/coverage.json
+index 854b3e4f..dff9bb41 100644
+--- a/.claude/skills/component-ti-opa4197ipwr/coverage.json
++++ b/.claude/skills/component-ti-opa4197ipwr/coverage.json
+@@ -38,7 +38,9 @@
+         "fact-op-precision-input-absolute",
+         "fact-op-precision-supply-recommended",
+         "fact-op-precision-esd-steering",
+-        "fact-op-precision-output-swing"
++        "fact-op-precision-output-swing",
++        "fact-op-precision-input-common-mode-range",
++        "fact-op-precision-input-stage-transition"
+       ],
+       "blocking_fact_ids": []
+     },
+diff --git a/.claude/skills/component-ti-opa4197ipwr/facts.json b/.claude/skills/component-ti-opa4197ipwr/facts.json
+index b3ba9425..5b6f4e88 100644
+--- a/.claude/skills/component-ti-opa4197ipwr/facts.json
++++ b/.claude/skills/component-ti-opa4197ipwr/facts.json
+@@ -284,6 +284,43 @@
+       "verdict": "PASS - primary-source confirmed",
+       "depends_on": [],
+       "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-input-common-mode-range",
++      "record_id": "rec-op-precision",
++      "source_id": "src-op-precision-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "minimum_below_V_minus_V": -0.1,
++        "maximum_above_V_plus_V": 0.1
++      },
++      "unit": "V",
++      "conditions": "Operating common-mode voltage range VCM = (V-) - 0.1 V .. (V+) + 0.1 V, table header VS = +/-4 V to +/-18 V (8 V to 36 V), TA = 25 C; no separate full-temperature VCM row. At the project +/-12 V rails this is -12.1 .. +12.1 V nominal.",
++      "locator": "src-op-precision-datasheet: PDF page index 6, printed page 7, Section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, INPUT VOLTAGE, Common-mode voltage range row",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-input-stage-transition",
++      "record_id": "rec-op-precision",
++      "source_id": "src-op-precision-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "cmrr_min_dB_low_region_full_temperature": 110,
++        "cmrr_min_dB_high_region_full_temperature": 80,
++        "low_region": "(V-) - 0.1 V < VCM < (V+) - 3 V",
++        "high_region": "(V+) - 1.5 V < VCM < (V+)",
++        "unspecified_region": "(V+) - 3 V < VCM < (V+) - 1.5 V"
++      },
++      "unit": "dB",
++      "conditions": "CMRR minima at VS = +/-18 V, TA = -40..125 C: 110 dB for (V-) - 0.1 V < VCM < (V+) - 3 V and 80 dB for (V+) - 1.5 V < VCM < (V+). The input-stage transition region (V+) - 3 V .. (V+) - 1.5 V has no table limit (\"See Typical Characteristics\"). Offset VOS is specified separately at VCM = (V+) - 1.5 V (+/-100 uV max at 25 C). Rows are at VS = +/-18 V, not +/-12 V.",
++      "locator": "src-op-precision-datasheet: PDF page index 6, printed page 7, Section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, INPUT VOLTAGE, CMRR rows; OFFSET VOLTAGE VOS rows",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
+     }
+   ]
+ }
+diff --git a/.claude/skills/component-ti-opa4197ipwr/manifest.json b/.claude/skills/component-ti-opa4197ipwr/manifest.json
+index ff070689..2b29a48f 100644
+--- a/.claude/skills/component-ti-opa4197ipwr/manifest.json
++++ b/.claude/skills/component-ti-opa4197ipwr/manifest.json
+@@ -35,7 +35,9 @@
+         "fact-op-precision-input-absolute",
+         "fact-op-precision-supply-recommended",
+         "fact-op-precision-esd-steering",
+-        "fact-op-precision-output-swing"
++        "fact-op-precision-output-swing",
++        "fact-op-precision-input-common-mode-range",
++        "fact-op-precision-input-stage-transition"
+       ],
+       "interaction_ids": [
+         "int-op-precision-project-role"
 diff --git a/.claude/skills/component-ti-tmux6112pwr/SKILL.md b/.claude/skills/component-ti-tmux6112pwr/SKILL.md
 new file mode 100644
 index 00000000..a3314f2c
@@ -1659,10 +1831,10 @@ index 00000000..e184d9a8
 +- Stock, lead time, consignment acceptance and assembly allocation remain dated project-state gaps.
 diff --git a/.claude/skills/component-ti-tmux7412frrpr/coverage.json b/.claude/skills/component-ti-tmux7412frrpr/coverage.json
 new file mode 100644
-index 00000000..a2baabd4
+index 00000000..32051c2c
 --- /dev/null
 +++ b/.claude/skills/component-ti-tmux7412frrpr/coverage.json
-@@ -0,0 +1,117 @@
+@@ -0,0 +1,118 @@
 +{
 +  "schema_version": 1,
 +  "coverage": [
@@ -1709,7 +1881,8 @@ index 00000000..a2baabd4
 +        "fact-fault-switch-t-logic-without-supply",
 +        "fact-fault-switch-t-thermal-pad",
 +        "fact-fault-switch-t-package-land",
-+        "fact-fault-switch-t-flat-ron-region"
++        "fact-fault-switch-t-flat-ron-region",
++        "fact-fault-switch-t-ron-12v-single"
 +      ],
 +      "blocking_fact_ids": []
 +    },
@@ -1782,10 +1955,10 @@ index 00000000..a2baabd4
 +}
 diff --git a/.claude/skills/component-ti-tmux7412frrpr/facts.json b/.claude/skills/component-ti-tmux7412frrpr/facts.json
 new file mode 100644
-index 00000000..c7a674b5
+index 00000000..3a1caba7
 --- /dev/null
 +++ b/.claude/skills/component-ti-tmux7412frrpr/facts.json
-@@ -0,0 +1,415 @@
+@@ -0,0 +1,439 @@
 +{
 +  "schema_version": 1,
 +  "facts": [
@@ -2192,8 +2365,32 @@ index 00000000..c7a674b5
 +      "class": "TYPICAL_CURVE",
 +      "value": "The flattest on-resistance region extends from VSS to roughly 3 V below VDD; within 3 V of VDD the on-resistance increases exponentially.",
 +      "unit": "NONE",
-+      "conditions": "Descriptive text with typical Figures 7-1..7-8 only; no RON maximum exists at +/-12 V. Project usable signal range -12 .. +9 V at nominal rails is derived from this text, not guaranteed.",
++      "conditions": "Descriptive text with typical Figures 7-1..7-8. The VDD - 3 V limit is guaranteed only with VSS = 0 V: 7.8 gives RON <= 15 ohm (-40..85 C) for VS = 0..7.8 V at VDD = 12 V +/-10 % (fact-fault-switch-t-ron-12v-single). At +/-12 V dual supply it is an extrapolation; the project usable range -12 .. +9 V at nominal rails is not a guaranteed table condition.",
 +      "locator": "src-fault-switch-t-datasheet: Section 9.3.4 Bidirectional Operation, second paragraph",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-fault-switch-t-ron-12v-single",
++      "record_id": "rec-fault-switch-t",
++      "source_id": "src-fault-switch-t-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "ron_max_ohm_25C": 11,
++        "ron_max_ohm_85C": 15,
++        "ron_max_ohm_125C": 18,
++        "rflat_max_ohm_85C": 0.5,
++        "delta_ron_max_ohm_85C": 0.6,
++        "vs_range_V": [
++          0,
++          7.8
++        ]
++      },
++      "unit": "ohm",
++      "conditions": "VDD = +12 V +/-10 % (10.8 .. 13.2 V), VSS = 0 V, VS = 0 .. 7.8 V, IS = -10 mA. Single supply only; VSS = -12 V is not a table condition.",
++      "locator": "src-fault-switch-t-datasheet: physical PDF index 12, printed 13, Section 7.8 12 V Single Supply Electrical Characteristics, RON, delta RON and RFLAT rows",
 +      "provenance": "PRIMARY-SPEC",
 +      "verdict": "PASS - primary-source confirmed",
 +      "depends_on": [],
@@ -2226,10 +2423,10 @@ index 00000000..c862c314
 +}
 diff --git a/.claude/skills/component-ti-tmux7412frrpr/manifest.json b/.claude/skills/component-ti-tmux7412frrpr/manifest.json
 new file mode 100644
-index 00000000..ba42e333
+index 00000000..4216ee2f
 --- /dev/null
 +++ b/.claude/skills/component-ti-tmux7412frrpr/manifest.json
-@@ -0,0 +1,58 @@
+@@ -0,0 +1,59 @@
 +{
 +  "schema_version": 1,
 +  "skill": "component-ti-tmux7412frrpr",
@@ -2274,7 +2471,8 @@ index 00000000..ba42e333
 +        "fact-fault-switch-t-mechanical-fit",
 +        "fact-fault-switch-t-multi-channel-fault",
 +        "fact-fault-switch-t-project-input-proof",
-+        "fact-fault-switch-t-flat-ron-region"
++        "fact-fault-switch-t-flat-ron-region",
++        "fact-fault-switch-t-ron-12v-single"
 +      ],
 +      "interaction_ids": [
 +        "int-fault-switch-t-project-role"
@@ -4817,10 +5015,22 @@ index ef374424..d743fdb9 100644
      {
        "record_id": "rec-c-slew",
 diff --git a/design/standard/electrical-standard.json b/design/standard/electrical-standard.json
-index cfaa8a54..d1d5c5d6 100644
+index cfaa8a54..cc201941 100644
 --- a/design/standard/electrical-standard.json
 +++ b/design/standard/electrical-standard.json
-@@ -191,7 +191,7 @@
+@@ -84,6 +84,11 @@
+     ],
+     "bipolar_envelope_equation": "BIP = 1.25*ENV - 5 V",
+     "pitch_V_per_octave": 1,
++    "pitch_linear_range_V": [
++      -5,
++      8
++    ],
++    "pitch_linear_range_status": "PROPOSED (option A1 of the phase-21 pitch-range study), pending the user's answer. Linear passing range of the 1V/OCT inputs only; calibrated accuracy stays limited to calibration.pitch_tracking_scope.",
+     "pitch_resistor_tolerance_percent": 0.1,
+     "gate_output_nominal_V": [
+       0,
+@@ -191,7 +196,7 @@
        "parts": [
          {
            "ref": "U",
@@ -4829,7 +5039,7 @@ index cfaa8a54..d1d5c5d6 100644
            "terminals": {
              "S": "JACK",
              "D": "PROTECTED",
-@@ -223,18 +223,169 @@
+@@ -223,18 +228,181 @@
          }
        ],
        "connections": [
@@ -4874,8 +5084,8 @@ index cfaa8a54..d1d5c5d6 100644
 +            "row": "F1 powered, +/-12 V on the jack (input_continuous_fault_V)",
 +            "previous_adg5412f": "PASS",
 +            "tmux7412f": "PASS",
-+            "tmux7412f_basis": "Survival: overvoltage only beyond the supplies by VT (SCDS404B index 32, 9.3.2.4). Signal passing is a separate condition: VT is 0.7 V typical at 25 C only (7.5), RON rises exponentially within 3 V of VDD (9.3.4), and no RON maximum exists at +/-12 V (7.6 is +/-15 V +/-10 %, VS = -10..+10 V). Usable signal range: VSS .. VDD - 3 V, i.e. -12 .. +9 V at nominal rails (typical-curve region, not guaranteed); see usable_signal_range",
-+            "s2b_disposition": "Survival unchanged. Signal passing is conditional on the usable signal range (-12 .. +9 V at nominal rails); see usable_signal_range, which flags the 1V/OCT pitch inputs"
++            "tmux7412f_basis": "Survival: overvoltage only beyond the supplies by VT (SCDS404B index 32, 9.3.2.4). Signal passing is a separate condition: VT is 0.7 V typical at 25 C only (7.5), RON rises exponentially within 3 V of VDD (9.3.4), and no RON maximum exists at +/-12 V (7.6 is +/-15 V +/-10 %, VS = -10..+10 V). Usable signal range: VSS .. VDD - 3 V, i.e. -12 .. +9 V at nominal rails. VDD - 3 V is guaranteed only with VSS = 0 V (7.8: RON <= 15 ohm at 85 C for VS = 0..7.8 V, VDD = 10.8..13.2 V); at +/-12 V dual supply it is an extrapolation; see usable_signal_range",
++            "s2b_disposition": "Survival unchanged. Signal passing is conditional on the usable signal range (-12 .. +9 V at nominal rails; VDD - 3 V guaranteed only at VSS = 0 V by 7.8, extrapolated at +/-12 V); see usable_signal_range"
 +          },
 +          {
 +            "row": "F2 powered, jack beyond a rail (rail sag or external source above +/-12 V)",
@@ -4937,8 +5147,8 @@ index cfaa8a54..d1d5c5d6 100644
 +            "row": "F10 drain leakage and RON on pitch-sensitive inputs",
 +            "previous_adg5412f": "PASS",
 +            "tmux7412f": "PASS",
-+            "tmux7412f_basis": "Conditional: inside the usable signal range VSS .. VDD - 3 V (-12 .. +9 V at nominal rails) into the 100 k high-impedance buffer load. RON 14 ohm max and ID(ON) +/-2 nA max at 85 C exist only in the +/-15 V +/-10 % table for VS = -10..+10 V (7.6); at +/-12 V they are typical-curve expectations, not guarantees. Above VDD - 3 V RON rises exponentially (9.3.4): UNKNOWN there",
-+            "s2b_disposition": "Conditional PASS inside the usable signal range into the 100 k buffer load; UNKNOWN above VDD - 3 V"
++            "tmux7412f_basis": "Conditional: inside the usable signal range VSS .. VDD - 3 V (-12 .. +9 V at nominal rails) into the 100 k R_PD drain load. RON 14 ohm max and ID(ON) +/-2 nA max at 85 C exist in the +/-15 V +/-10 % table for VS = -10..+10 V (7.6); RON 15 ohm and RFLAT 0.5 ohm max at 85 C exist in the 12 V single-supply table for VS = 0..7.8 V (7.8, VSS = 0 V). Neither is a +/-12 V dual-supply guarantee. Above VDD - 3 V RON rises exponentially (9.3.4): UNKNOWN there",
++            "s2b_disposition": "Conditional PASS inside the usable signal range into the 100 k R_PD load; UNKNOWN above VDD - 3 V. The 1V/OCT inputs are checked against signals.pitch_linear_range_V in usable_signal_range"
 +          },
 +          {
 +            "row": "F11 land and pin map (drop-in)",
@@ -4953,7 +5163,7 @@ index cfaa8a54..d1d5c5d6 100644
 +            -12,
 +            9
 +          ],
-+          "basis": "VSS .. VDD - 3 V at nominal +/-12 V rails (9.3.4); typical-curve region, no guaranteed RON at +/-12 V; the fault detector opens the switch beyond VDD + VT / VSS - VT, VT 0.7 V typical at 25 C only (7.5)",
++          "basis": "VSS .. VDD - 3 V at nominal +/-12 V rails (9.3.4). Guaranteed only with VSS = 0 V: 7.8 gives RON <= 15 ohm (-40..85 C) for VS = 0..7.8 V at VDD = 10.8..13.2 V. At +/-12 V dual supply the limit is an extrapolation, not a table condition. The fault detector opens the switch beyond VDD + VT / VSS - VT, VT 0.7 V typical at 25 C only (7.5)",
 +          "roles": [
 +            {
 +              "role": "audio inputs (filter IN, mix4 1-4, mix5 1-5, wavefolder IN, manual_ab A/B, mult IN, sample_hold IN, offset IN)",
@@ -4992,15 +5202,27 @@ index cfaa8a54..d1d5c5d6 100644
 +            {
 +              "role": "pitch input (oscillator 1V/OCT)",
 +              "inputs_per_unit": 5,
-+              "normal_swing_V": null,
-+              "class": "pitch_V_per_octave (no range in the standard)",
-+              "verdict": "FLAG",
-+              "margin_V": null,
-+              "note": "The standard defines 1 V/oct but no input range. Pitch sources commonly reach +8..+10 V; above +9 V the signal is outside the usable range, and above about +12.7 V (VDD + VT typical) the switch opens. Needs a declared pitch range or a rail/headroom decision"
++              "normal_swing_V": [
++                -5,
++                8
++              ],
++              "class": "pitch_linear_range_V (PROPOSED (option A1 of the phase-21 pitch-range study), pending the user's answer. Linear passing range of the 1V/OCT inputs only; calibrated accuracy stays limited to calibration.pitch_tracking_scope.)",
++              "verdict": "PASS",
++              "margin_V": 0.53,
++              "basis": {
++                "nominal_flat_top_V": 9.0,
++                "required_low_V": 11.53,
++                "low_band_flat_top_V": 8.53,
++                "rail_band_source": "design/power/supply-architecture-input.json source_requirement.required_load_voltage_magnitude_V +12V (requirement contract; source NOT SELECTED)"
++              },
++              "note": "Verdict covers signal passing only. The top of the declared range is compared with VDD - 3 V at the required +12V minimum; that limit is guaranteed only at VSS = 0 V (7.8) and extrapolated at +/-12 V. The bottom lies in the flat region down to VSS. Downstream: OPA4197 VCM (V-) - 0.1 .. (V+) + 0.1 V is guaranteed; its input-stage transition (V+) - 3 .. (V+) - 1.5 V has no CMRR limit, and the declared top stays below it at that minimum. Accuracy is a separate gate: calibration scope stays 0..5 V at 25 C, and the BAT54S clamp reverse leakage has only a 25 C maximum (2 uA at 25 V; Fig. 2 typical rises steeply with temperature), so the clamp-leakage term over the declared range and temperature is UNKNOWN"
 +            }
 +          ]
 +        },
-+        "review_corrections": "Phase 20: F1, F3, F6 and F10 revised after the independent review of 2026-11-01"
++        "review_corrections": [
++          "Phase 20: F1, F3, F6 and F10 revised after the independent review of 2026-11-01",
++          "Phase 22: signals.pitch_linear_range_V = [-5, 8] added as PROPOSED option A1 pending the user's answer; the 1V/OCT role row changes from FLAG to a computed verdict; the VDD - 3 V wording states the 7.8 guarantee at VSS = 0 V and the extrapolation at +/-12 V"
++        ]
 +      }
      },
      {
@@ -5822,10 +6044,10 @@ index 21be457d..db8768d5 100644
          lambda v: 5 * v['PITCH'] / v['FINE'], {'PITCH': [100e3], 'FINE': [5e6]},
          {'PITCH': [('100K', 100e3)], 'FINE': [('1M', 1e6)] * 5}, 5, 'V', 'series'),
 diff --git a/scripts/checks/s2b_protection_map.py b/scripts/checks/s2b_protection_map.py
-index 47b77bd6..53a8c81a 100644
+index 47b77bd6..f3e7e5e9 100644
 --- a/scripts/checks/s2b_protection_map.py
 +++ b/scripts/checks/s2b_protection_map.py
-@@ -36,13 +36,17 @@ SOURCES = {
+@@ -36,13 +36,18 @@ SOURCES = {
  FAULTS = [
      {'row': 'F1 powered, +/-12 V on the jack (input_continuous_fault_V)',
       'adg': ('PASS', 'Within VSS - VT .. VDD + VT the switch passes the signal (Rev. C index 25, page 26, Power-On Protection); downstream 10 k + BAT54S unchanged'),
@@ -5833,7 +6055,8 @@ index 47b77bd6..53a8c81a 100644
 +     'tmux': ('PASS', 'Survival: overvoltage only beyond the supplies by VT (SCDS404B index 32, 9.3.2.4). Signal passing is a separate '
 +              'condition: VT is 0.7 V typical at 25 C only (7.5), RON rises exponentially within 3 V of VDD (9.3.4), and no RON '
 +              'maximum exists at +/-12 V (7.6 is +/-15 V +/-10 %, VS = -10..+10 V). Usable signal range: VSS .. VDD - 3 V, '
-+              'i.e. -12 .. +9 V at nominal rails (typical-curve region, not guaranteed); see usable_signal_range')},
++              'i.e. -12 .. +9 V at nominal rails. VDD - 3 V is guaranteed only with VSS = 0 V (7.8: RON <= 15 ohm at 85 C for '
++              'VS = 0..7.8 V, VDD = 10.8..13.2 V); at +/-12 V dual supply it is an extrapolation; see usable_signal_range')},
      {'row': 'F2 powered, jack beyond a rail (rail sag or external source above +/-12 V)',
       'adg': ('PASS', 'Switch turns off; source to +/-55 V, 80 V across the channel (index 25, page 26)'),
       'tmux': ('PASS', 'Switch turns off regardless of logic; source to +/-60 V, 85 V source-to-supply and source-to-drain (index 31, 9.3.2.1; index 32, 9.3.2.4)')},
@@ -5845,7 +6068,7 @@ index 47b77bd6..53a8c81a 100644
      {'row': 'F4 unpowered, rails floating, GND present',
       'adg': ('PASS', 'Off whether supplies are 0 V or floating (index 25). Floating drain leakage +/-10 uA typical only'),
       'tmux': ('PASS', 'Hi-Z with VDD/VSS 0 V or floating (index 32). Floating-rail leakage recorded as typical only (protection59-sources.json)')},
-@@ -51,7 +55,9 @@ FAULTS = [
+@@ -51,7 +56,9 @@ FAULTS = [
       'tmux': ('FAIL', 'Same requirement (index 32, 9.3.2.2). No regression from ADG5412F')},
      {'row': 'F6 one analog rail missing, other present',
       'adg': ('PASS', 'Single-supply operation 8..44 V is specified; an input outside the remaining span is an overvoltage and turns the switch off. Conditional on VDD - VSS >= 8 V for the on state'),
@@ -5856,25 +6079,30 @@ index 47b77bd6..53a8c81a 100644
      {'row': 'F7 +5 V enable present before the analog rails (startup, R-ADG)',
       'adg': ('PASS', 'Digital inputs tolerated without power; switch guaranteed off (index 25, Digital Input Protection); logic to 44 V'),
       'tmux': ('PASS', 'Fail-safe logic: logic before supplies, switch OFF, logic to +44 V (index 32, 9.3.2.3)')},
-@@ -63,12 +69,38 @@ FAULTS = [
+@@ -63,12 +70,65 @@ FAULTS = [
       'tmux': ('UNKNOWN', 'No published statement on undisturbed channels; only the 85 V source-to-drain stress rule (index 31) and -100 dB AC crosstalk. FF is shared across the four sources')},
      {'row': 'F10 drain leakage and RON on pitch-sensitive inputs',
       'adg': ('PASS', 'RON 14 ohm max, ID(on) +/-2.0 nA max at 85 C, +/-15 V table (Table 1); +/-12 V not guaranteed'),
 -     'tmux': ('PASS', 'RON 14 ohm max, ID(ON) +/-2 nA max at 85 C, +/-15 V table (Section 7.6); +/-12 V not guaranteed')},
 +     'tmux': ('PASS', 'Conditional: inside the usable signal range VSS .. VDD - 3 V (-12 .. +9 V at nominal rails) into the 100 k '
-+              'high-impedance buffer load. RON 14 ohm max and ID(ON) +/-2 nA max at 85 C exist only in the +/-15 V +/-10 % table for '
-+              'VS = -10..+10 V (7.6); at +/-12 V they are typical-curve expectations, not guarantees. Above VDD - 3 V RON rises '
-+              'exponentially (9.3.4): UNKNOWN there')},
++              'R_PD drain load. RON 14 ohm max and ID(ON) +/-2 nA max at 85 C exist in the +/-15 V +/-10 % table for VS = -10..+10 V '
++              '(7.6); RON 15 ohm and RFLAT 0.5 ohm max at 85 C exist in the 12 V single-supply table for VS = 0..7.8 V (7.8, VSS = 0 V). '
++              'Neither is a +/-12 V dual-supply guarantee. Above VDD - 3 V RON rises exponentially (9.3.4): UNKNOWN there')},
      {'row': 'F11 land and pin map (drop-in)',
       'adg': ('PASS', 'Current TSSOP-16 land'),
       'tmux': ('FAIL', 'Orderable only as WQFN-16 RRP (addendum index 40); the TSSOP-16 PW package with the ADG pin order is marked Preview. New land and pin map: S1 = pad 1, D1 = pad 16, SEL1 = pad 15')},
  ]
  
-+# TMUX7412F at +/-12 V: flat-RON region VSS .. VDD - 3 V (SCDS404B 9.3.4, typical description);
-+# no RON table exists at +/-12 V. Role ranges are the standard's signal classes.
++# TMUX7412F at +/-12 V: flat-RON region VSS .. VDD - 3 V (SCDS404B 9.3.4). Guaranteed only with VSS = 0 V
++# (7.8: VS 0..7.8 V at VDD >= 10.8 V); at +/-12 V dual supply it is an extrapolation.
++# Role ranges are the standard's signal classes.
++STANDARD = ROOT / 'design/standard/electrical-standard.json'
++SUPPLY_INPUT = ROOT / 'design/power/supply-architecture-input.json'
++FLAT_HEADROOM_V = 3.0  # VDD - 3 V: SCDS404B 9.3.4 text; 7.8 tabulates it as VS <= 7.8 V at VDD = 10.8 V
 +USABLE_RANGE = {
-+    'range_V': [-12, 9], 'basis': 'VSS .. VDD - 3 V at nominal +/-12 V rails (9.3.4); typical-curve region, no guaranteed RON at +/-12 V; '
-+    'the fault detector opens the switch beyond VDD + VT / VSS - VT, VT 0.7 V typical at 25 C only (7.5)',
++    'range_V': [-12, 9], 'basis': 'VSS .. VDD - 3 V at nominal +/-12 V rails (9.3.4). Guaranteed only with VSS = 0 V: 7.8 gives RON '
++    '<= 15 ohm (-40..85 C) for VS = 0..7.8 V at VDD = 10.8..13.2 V. At +/-12 V dual supply the limit is an extrapolation, not a table '
++    'condition. The fault detector opens the switch beyond VDD + VT / VSS - VT, VT 0.7 V typical at 25 C only (7.5)',
 +    'roles': [
 +        {'role': 'audio inputs (filter IN, mix4 1-4, mix5 1-5, wavefolder IN, manual_ab A/B, mult IN, sample_hold IN, offset IN)',
 +         'inputs_per_unit': 3 + 8 + 10 + 2 + 4 + 2 + 2 + 6, 'normal_swing_V': [-5, 5], 'class': 'audio_nominal_V / mult nominal linear range',
@@ -5886,17 +6114,39 @@ index 47b77bd6..53a8c81a 100644
 +         'inputs_per_unit': 6 + 5 + 2, 'normal_swing_V': [0, 5], 'class': 'gate_output_nominal_V (project gate level)',
 +         'verdict': 'PASS', 'margin_V': 4,
 +         'note': 'External gates above +9 V (common 0..10 V sources) enter the rising-RON region; into the high-impedance comparator path this is UNKNOWN, not FAIL'},
-+        {'role': 'pitch input (oscillator 1V/OCT)', 'inputs_per_unit': 5, 'normal_swing_V': None, 'class': 'pitch_V_per_octave (no range in the standard)',
-+         'verdict': 'FLAG', 'margin_V': None,
-+         'note': 'The standard defines 1 V/oct but no input range. Pitch sources commonly reach +8..+10 V; above +9 V the signal is outside the usable '
-+                 'range, and above about +12.7 V (VDD + VT typical) the switch opens. Needs a declared pitch range or a rail/headroom decision'},
 +    ],
 +}
++
++
++def pitch_role():
++    """1V/OCT verdict against the standard's declared linear range and the required +12 V load-voltage minimum."""
++    signals = json.loads(STANDARD.read_text())['signals']
++    declared = signals.get('pitch_linear_range_V')
++    row = {'role': 'pitch input (oscillator 1V/OCT)', 'inputs_per_unit': 5}
++    if declared is None:
++        return {**row, 'normal_swing_V': None, 'class': 'pitch_V_per_octave (no range in the standard)', 'verdict': 'FLAG', 'margin_V': None,
++                'note': 'The standard defines 1 V/oct but no input range; a declared pitch linear range is needed'}
++    low = json.loads(SUPPLY_INPUT.read_text())['source_requirement']['required_load_voltage_magnitude_V']['+12V'][0]
++    nominal_top = signals['rails_V']['+12V'] - FLAT_HEADROOM_V
++    low_top = round(low - FLAT_HEADROOM_V, 2)
++    bottom_ok = declared[0] >= signals['rails_V']['-12V']
++    margin = round(low_top - declared[1], 2)
++    verdict = 'PASS' if bottom_ok and margin >= 0 else 'FAIL'
++    return {**row, 'normal_swing_V': declared, 'class': 'pitch_linear_range_V (' + signals.get('pitch_linear_range_status', '') + ')',
++            'verdict': verdict, 'margin_V': margin,
++            'basis': {'nominal_flat_top_V': nominal_top, 'required_low_V': low, 'low_band_flat_top_V': low_top,
++                      'rail_band_source': str(SUPPLY_INPUT.relative_to(ROOT)) + ' source_requirement.required_load_voltage_magnitude_V +12V (requirement contract; source NOT SELECTED)'},
++            'note': ('Verdict covers signal passing only. The top of the declared range is compared with VDD - 3 V at the required +12V minimum; that limit '
++                     'is guaranteed only at VSS = 0 V (7.8) and extrapolated at +/-12 V. The bottom lies in the flat region down to VSS. Downstream: '
++                     'OPA4197 VCM (V-) - 0.1 .. (V+) + 0.1 V is guaranteed; its input-stage transition (V+) - 3 .. (V+) - 1.5 V has no CMRR limit, and the '
++                     'declared top stays below it at that minimum. Accuracy is a separate gate: calibration scope stays 0..5 V at 25 C, and the '
++                     'BAT54S clamp reverse leakage has only a 25 C maximum (2 uA at 25 V; Fig. 2 typical rises steeply with temperature), so the '
++                     'clamp-leakage term over the declared range and temperature is UNKNOWN')}
 +
  TMUX6112_ROWS = [
      ('Pin map', 'PASS', 'TSSOP-16 order matches the ADG5412F land: SEL1 1, D1 2, S1 3, VSS 4, GND 5 ... pin 12 is NC where ADG has FF, which the project leaves unconnected (SCDS383F Table 5-1, index 3)'),
      ('Logic sense', 'PASS', 'Logic 1 turns the switches on, as ADG5412F (Description, index 0)'),
-@@ -77,7 +109,8 @@ TMUX6112_ROWS = [
+@@ -77,7 +137,8 @@ TMUX6112_ROWS = [
      ('RON', 'PASS', '210 ohm max at VS = +/-10 V, 85 C (6.5, index 5) in series with the 899 k drive divider and the hold clamp'),
      ('Hold-node leakage', 'PASS', 'IS(OFF)/ID(OFF) -0.14 .. +0.05 nA at 85 C, ID(ON) -0.25 .. +0.1 nA (6.5, index 5); +/-15 V table, not a +/-12 V guarantee'),
      ('Fault protection', 'NOT APPLICABLE', 'Not fault protected; analog pins VSS - 0.3 .. VDD + 0.3 V (6.1, index 4). The envelope switches are internal, not jack facing'),
@@ -5906,7 +6156,7 @@ index 47b77bd6..53a8c81a 100644
  ]
  
  
-@@ -101,7 +134,9 @@ def placements():
+@@ -101,7 +162,9 @@ def placements():
          for part in family.parts:
              if part.attributes.get('Role') != 'input_fault_switch:U' or part.unit != 1:
                  continue
@@ -5917,7 +6167,7 @@ index 47b77bd6..53a8c81a 100644
              jack_on_source = source in tips
              if not jack_on_source or drain in tips:
                  errors.append(f'{family.name} {part.key}: jack not on S1')
-@@ -117,7 +152,7 @@ def placements():
+@@ -117,7 +180,7 @@ def placements():
  def build():
      rows, errors = placements()
      total = sum(r['instances'] for r in rows)
@@ -5926,11 +6176,11 @@ index 47b77bd6..53a8c81a 100644
              'sources': source_receipts(),
              'input_placements_per_unit': total, 'placement_groups': len(rows),
              'jack_on_protected_source_per_unit': sum(r['instances'] for r in rows if r['jack_faces'] == 'SOURCE'),
-@@ -127,6 +162,7 @@ def build():
+@@ -127,6 +190,7 @@ def build():
                              'changes_with_tmux7412f': f['adg'][0] != f['tmux'][0]} for f in FAULTS],
              'fault_row_summary': {name: dict(collections.Counter(f[key][0] for f in FAULTS))
                                    for name, key in (('adg5412f', 'adg'), ('tmux7412f', 'tmux'))},
-+            'usable_signal_range': USABLE_RANGE,
++            'usable_signal_range': {**USABLE_RANGE, 'roles': USABLE_RANGE['roles'] + [pitch_role()]},
              'envelope_internal_tmux6112': [{'row': a, 'verdict': b, 'basis': c} for a, b, c in TMUX6112_ROWS]}
  
  

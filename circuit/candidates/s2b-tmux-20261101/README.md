@@ -13,6 +13,7 @@ separate approval.
 | 18 | Record created | — |
 | 19 | RB4413 slot pin; stage38 assertion; independent rebuild | `patches/phase19-delta.patch` |
 | 20 | Review corrections: F1/F3/F6/F10 and the usable signal range; SEL hold redesigned; PWM_OFFSET made exact; 15 R-exact role rows; TMUX6112 S/D comment; WQFN pin-1 silk mark; cost section | `patches/phase20-delta.patch` |
+| 22 | Pitch linear range `signals.pitch_linear_range_V` = −5…+8 V added as **PROPOSED** option A1, pending the user's answer; the 1V/OCT row is now computed (PASS); VDD − 3 V wording states the 7.8 guarantee at VSS = 0 V; new owner facts for OPA4197 common-mode range, BAT54S reverse current versus temperature and TMUX7412F 7.8 (phase 21 was a desk study with no record change) | `patches/phase22-delta.patch` |
 
 ## Decision
 
@@ -47,7 +48,9 @@ Owner bundles: `.claude/skills/component-ti-opa4197idr/`,
 `.claude/skills/component-ti-tmux7412frrpr/` and `.claude/skills/component-ti-tmux6112pwr/`.
 Each has its own inventory line, direct-routing case, publication selection, shortlist row,
 pin map and CAD receipt. The two TI PDFs (`circuit/sources/ic-library/TMUX7412F.pdf`,
-`TMUX6112.pdf`) are retained bytes.
+`TMUX6112.pdf`) are retained bytes. Phase 22 adds facts only (no identity change) to the
+canonical `.claude/skills/component-ti-opa4197ipwr/` and `.claude/skills/component-nexperia-bat54s-215/`
+bundles, from their already retained datasheets.
 
 ## Packing: ADG-2, one TMUX7412FRRPR per input
 
@@ -78,7 +81,7 @@ This is a subtotal of priced lines only, not a unit cost. The full breakdown is 
 
 | Row | ADG5412F | TMUX7412F | Basis (SCDS404B) | S2b disposition |
 |---|---|---|---|---|
-| F1 powered, ±12 V on the jack | PASS | PASS | Survival: the device turns off only beyond the supplies by VT (9.3.2.4). Signal passing is a separate condition: VT is 0.7 V typical at 25 C only, RON rises exponentially within 3 V of VDD (9.3.4), and there is no RON maximum at ±12 V | Survival unchanged. Signal passing is conditional on the usable range below |
+| F1 powered, ±12 V on the jack | PASS | PASS | Survival: the device turns off only beyond the supplies by VT (9.3.2.4). Signal passing is a separate condition: VT is 0.7 V typical at 25 C only, RON rises exponentially within 3 V of VDD (9.3.4). VDD − 3 V is guaranteed only at VSS = 0 V (7.8); there is no RON maximum at ±12 V dual supply | Survival unchanged. Signal passing is conditional on the usable range below |
 | F2 powered, jack beyond a rail | PASS | PASS | Turns off regardless of logic; ±60 V source, 85 V source-to-supply/drain | Unchanged |
 | F3 unpowered, rails 0 V, GND present | PASS | PASS | Sources Hi-Z, ±60 V blocked (9.3.2.2). IS(FA) ±125 uA is **typical only** (no maximum). ID(FA) ±50 nA is a maximum at 85 C | Blocking unchanged. Source-side fault leakage has no guaranteed bound, as for ADG5412F |
 | F4 unpowered, rails floating, GND present | PASS | PASS | Hi-Z with 0 V or floating rails; floating leakage typical only | Unchanged |
@@ -87,20 +90,43 @@ This is a subtotal of priced lines only, not a unit cost. The full breakdown is 
 | F7 +5 V enable before analog rails | PASS | PASS | Fail-safe logic, switch OFF (9.3.2.3) | Unchanged |
 | F8 rail lift by a patched input | PASS | PASS | Powered-off protection prevents back-powering (9.3.2.2, 9.3.2.5) | Unchanged |
 | F9 several inputs faulted in one quad | PASS | UNKNOWN | No statement on undisturbed channels; FF shared | Avoided by ADG-2; UNKNOWN for any quad packing |
-| F10 drain leakage and RON | PASS | PASS (conditional) | Inside VSS … VDD − 3 V into the 100 k buffer. RON 14 ohm / ID(ON) ±2 nA maxima exist only in the ±15 V ±10 % table for VS −10…+10 V | Conditional PASS inside the usable range; UNKNOWN above VDD − 3 V |
+| F10 drain leakage and RON | PASS | PASS (conditional) | Inside VSS … VDD − 3 V into the 100 k R_PD load. RON 14 ohm / ID(ON) ±2 nA maxima exist in the ±15 V ±10 % table for VS −10…+10 V (7.6); RON 15 ohm / RFLAT 0.5 ohm maxima in the 12 V single-supply table for VS 0…7.8 V (7.8). Neither is a ±12 V dual-supply table | Conditional PASS inside the usable range; UNKNOWN above VDD − 3 V. 1V/OCT checked against the declared pitch range |
 | F11 land and pin map | PASS | FAIL | Orderable only as WQFN-16 RRP; TSSOP PW is Preview | Resolved by the RRP0016A land and WQFN pin map |
 
 ### Usable signal range and input roles
 
 The usable signal range is VSS … VDD − 3 V, which is **−12 … +9 V at nominal rails**. It comes
-from the typical-curve description in 9.3.4 and is not guaranteed.
+from the description in 9.3.4. The VDD − 3 V limit is **guaranteed only with VSS = 0 V**: table 7.8
+gives RON ≤ 15 ohm (−40…85 °C) for VS 0…7.8 V at VDD = 12 V ±10 % (10.8…13.2 V). At ±12 V dual
+supply it is an extrapolation, not a table condition (owner fact `fact-fault-switch-t-ron-12v-single`).
 
 | Input role | Inputs per unit | Normal swing | Verdict |
 |---|---:|---|---|
 | Audio: filter IN, MIX4 1-4, MIX5 1-5, FOLD IN, A/B, MULT IN, S&H IN, OFFSET IN | 37 | ±5 V (`audio_nominal_V`) | PASS, 4 V margin |
 | Bipolar CV: envelope RISE/FALL, filter FREQ/RES/GAIN, MIX4 ATTEN, OFFSET, oscillator FM/PWM, FOLD/BIAS | 43 | ±5 V (`bipolar_cv_nominal_V`) | PASS, 4 V margin |
 | Gate and trigger: envelope SIG, oscillator SYNC, S&H TRIGGER | 13 | 0…5 V project gate level | PASS. External gates above +9 V are UNKNOWN (high-impedance comparator path) |
-| Pitch: oscillator 1V/OCT | 5 | the standard gives 1 V/oct but **no range** | **FLAG**. Sources above +9 V leave the usable range, and above about +12.7 V (VDD + VT typical) the switch opens. A declared pitch range is needed |
+| Pitch: oscillator 1V/OCT | 5 | −5…+8 V, `signals.pitch_linear_range_V`, **PROPOSED** (option A1, pending the user's answer) | **PASS** for signal passing, 0.53 V margin: the top is compared with VDD − 3 V = 8.53 V at the required +12 V minimum of 11.53 V (`supply-architecture-input.json`; extrapolated from 7.8). Accuracy is a separate gate; see the clamp-leakage finding below |
+
+## Pitch range and owner facts (phase 22)
+
+The pitch row is computed by `s2b_protection_map.py` from the standard. With no
+`pitch_linear_range_V` it returns FLAG; a range whose top exceeds VDD − 3 V at the required +12 V
+minimum returns FAIL. If the user picks another option, edit the two `signals` fields and rerun.
+
+| Owner fact (new) | Value | Source |
+|---|---|---|
+| `fact-op-precision-input-common-mode-range` (IPWR and IDR `-d-` twin) | VCM (V−) − 0.1 V … (V+) + 0.1 V, table header VS ±4…±18 V, 25 °C | SBOS737C 6.7, printed 7 |
+| `fact-op-precision-input-stage-transition` (both) | CMRR ≥ 110 dB for VCM < (V+) − 3 V and ≥ 80 dB for VCM > (V+) − 1.5 V (−40…125 °C, VS ±18 V); **no limit** in the transition (V+) − 3 … (V+) − 1.5 V | SBOS737C 6.7 |
+| `fact-clamp-diode-reverse-current-temperature` | Fig. 2, typical only: 25 °C about 0.3 µA (1 V) to 1.5–2 µA (30 V); 85 °C about 15–20 µA to about 60 µA; 125 °C about 200–500 µA. The only maximum is 2 µA at 25 V, 25 °C | BAT54S Fig. 2, printed 3/9 |
+| `fact-fault-switch-t-ron-12v-single` | RON ≤ 11 / 15 / 18 ohm (25 / 85 / 125 °C), RFLAT ≤ 0.5 ohm, ΔRON ≤ 0.6 ohm (85 °C) for VS 0…7.8 V, VDD 10.8…13.2 V, VSS 0 V | SCDS404B 7.8, printed 13 |
+
+**Finding (technical uncertainty, canonical cell, not specific to S2b).** In `high_impedance_input`
+the BAT54S clamp sits at `SENSE`, behind `R_LIMIT` 10 kOhm. The net reverse current of the two
+diodes (upper at VR = 12 − V, lower at VR = 12 + V) flows through about 10–11 kOhm with a patched
+low-impedance source. From the typical curves only, at +8 V this is about 0.5–0.8 µA at 25 °C
+(about 5–9 mV, mostly a scale term removed by calibration). At 85 °C it is about 15–20 µA (about
+150–220 mV). No maximum bounds it away from 25 °C, so pitch drift from the clamp over temperature is
+UNKNOWN. The A1 range does not change this term. It needs a separate pitch-path study.
 
 ## SEL hold (phase 20 redesign)
 
@@ -142,10 +168,10 @@ resistor out of the logic-low path. A BAT54S pull-down sinks SEL into the logic 
 
 ## Contents
 
-- `patches/source.patch` is the cumulative text diff of the 101 source files from 60c7c3ab.
-- `patches/phase19-delta.patch` and `patches/phase20-delta.patch` each hold one revision.
+- `patches/source.patch` is the cumulative text diff of the 107 source files from 60c7c3ab.
+- `patches/phase19-delta.patch`, `patches/phase20-delta.patch` and `patches/phase22-delta.patch` each hold one revision.
   Applied in order on top of the previous source set, they reproduce the source files exactly.
-- `receipts/application-receipt.json` lists all 268 changed files with before and after sha256
+- `receipts/application-receipt.json` lists all 276 changed files with before and after sha256
   and kind: source, generated, or retained-source (the 2 TI PDFs).
 - `receipts/checks.json` holds the step results, the cost section ("priced-line subtotal"),
   the SEL-hold figures and rows, and the open items.
