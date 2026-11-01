@@ -1,0 +1,451 @@
+diff --git a/.claude/skills/component-ti-tmux6112pwr/coverage.json b/.claude/skills/component-ti-tmux6112pwr/coverage.json
+index 0455970..18046ee 100644
+--- a/.claude/skills/component-ti-tmux6112pwr/coverage.json
++++ b/.claude/skills/component-ti-tmux6112pwr/coverage.json
+@@ -87,7 +87,7 @@
+       "record_id": "rec-env-switch-t",
+       "domain": "logic before supply",
+       "status": "OPEN",
+-      "reason": "SEL hold is a 25 C arithmetic proposal; temperature and timing are NOT RUN.",
++      "reason": "SEL hold (phase 20): 25 C guaranteed rows plus a 25..70 C project leakage bound; below 25 C VF and timing are NOT RUN.",
+       "fact_ids": [
+         "fact-env-switch-t-sel-hold",
+         "fact-env-switch-t-digital-input-absolute"
+diff --git a/.claude/skills/component-ti-tmux6112pwr/facts.json b/.claude/skills/component-ti-tmux6112pwr/facts.json
+index 4a2b79a..fe82006 100644
+--- a/.claude/skills/component-ti-tmux6112pwr/facts.json
++++ b/.claude/skills/component-ti-tmux6112pwr/facts.json
+@@ -316,9 +316,9 @@
+       "record_id": "rec-env-switch-t",
+       "source_id": "src-env-switch-t-protection-map",
+       "class": "PROJECT_STATE",
+-      "value": "Each SEL line: 100 kOhm RC0603FR-07100KL in series from the +5 V logic net and a BAT54S,215 at the SEL pin (pin 3 SEL, pin 2 +12V, pin 1 AGND); 25 C arithmetic only.",
++      "value": "Each driven SEL line: 100 kOhm RC0603FR-07100KL pull-up from +5V; BAT54S,215 clamp (pin 3 and pin 1 SEL, pin 2 +12V); BAT54S,215 pull-down (pin 3 and pin 1 SEL, pin 2 logic output). Logic low <= 0.57 V at 25 C (VOL 0.33 V max + VF 0.24 V max at 0.1 mA); <= 0.65 V for 25..70 C with a project leakage bound of 50 uA. SEL <= VDD + 0.24 V at 25 C with +12V absent.",
+       "unit": "NONE",
+-      "conditions": "Limits SEL current when +5 V logic is present and +12 V is absent; BAT54S VF has no maximum away from 25 C.",
++      "conditions": "Clamp current <= 52.5 uA (5.25 V / 100 kOhm). BAT54S VF and IR maxima exist at 25 C only; the 25..70 C leakage bound is a project bound (Fig. 2 typical 85 C reading x 1.25 max/typical ratio at 25 C), not a manufacturer maximum; below 25 C the VF rise is UNKNOWN.",
+       "locator": "Section/table audit: src-env-switch-t-protection-map JSON row envelope_internal_tmux6112[Logic before rails]",
+       "provenance": "PROJECT-CHOICE",
+       "verdict": "NEEDS BENCH",
+diff --git a/.claude/skills/component-ti-tmux7412frrpr/coverage.json b/.claude/skills/component-ti-tmux7412frrpr/coverage.json
+index da57e27..a2baabd 100644
+--- a/.claude/skills/component-ti-tmux7412frrpr/coverage.json
++++ b/.claude/skills/component-ti-tmux7412frrpr/coverage.json
+@@ -43,7 +43,8 @@
+         "fact-fault-switch-t-fault-mode",
+         "fact-fault-switch-t-logic-without-supply",
+         "fact-fault-switch-t-thermal-pad",
+-        "fact-fault-switch-t-package-land"
++        "fact-fault-switch-t-package-land",
++        "fact-fault-switch-t-flat-ron-region"
+       ],
+       "blocking_fact_ids": []
+     },
+diff --git a/.claude/skills/component-ti-tmux7412frrpr/facts.json b/.claude/skills/component-ti-tmux7412frrpr/facts.json
+index 5d701eb..c7a674b 100644
+--- a/.claude/skills/component-ti-tmux7412frrpr/facts.json
++++ b/.claude/skills/component-ti-tmux7412frrpr/facts.json
+@@ -396,6 +396,20 @@
+       "verdict": "NEEDS BENCH",
+       "depends_on": [],
+       "expression": ""
++    },
++    {
++      "fact_id": "fact-fault-switch-t-flat-ron-region",
++      "record_id": "rec-fault-switch-t",
++      "source_id": "src-fault-switch-t-datasheet",
++      "class": "TYPICAL_CURVE",
++      "value": "The flattest on-resistance region extends from VSS to roughly 3 V below VDD; within 3 V of VDD the on-resistance increases exponentially.",
++      "unit": "NONE",
++      "conditions": "Descriptive text with typical Figures 7-1..7-8 only; no RON maximum exists at +/-12 V. Project usable signal range -12 .. +9 V at nominal rails is derived from this text, not guaranteed.",
++      "locator": "src-fault-switch-t-datasheet: Section 9.3.4 Bidirectional Operation, second paragraph",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
+     }
+   ]
+ }
+diff --git a/.claude/skills/component-ti-tmux7412frrpr/manifest.json b/.claude/skills/component-ti-tmux7412frrpr/manifest.json
+index 168631f..ba42e33 100644
+--- a/.claude/skills/component-ti-tmux7412frrpr/manifest.json
++++ b/.claude/skills/component-ti-tmux7412frrpr/manifest.json
+@@ -41,7 +41,8 @@
+         "fact-fault-switch-t-assembly-allocation",
+         "fact-fault-switch-t-mechanical-fit",
+         "fact-fault-switch-t-multi-channel-fault",
+-        "fact-fault-switch-t-project-input-proof"
++        "fact-fault-switch-t-project-input-proof",
++        "fact-fault-switch-t-flat-ron-region"
+       ],
+       "interaction_ids": [
+         "int-fault-switch-t-project-role"
+diff --git a/circuit/cad-receipts/ic15-fault_switch_tmux.receipt.json b/circuit/cad-receipts/ic15-fault_switch_tmux.receipt.json
+index f87b53f..195238a 100644
+--- a/circuit/cad-receipts/ic15-fault_switch_tmux.receipt.json
++++ b/circuit/cad-receipts/ic15-fault_switch_tmux.receipt.json
+@@ -51,11 +51,11 @@
+     "tool": "scripts/libgen/build_s2b_switch_assets.py",
+     "tool_version": "1",
+     "parameters": {
+-      "normalization": "SCDS404B Table 6-1 WQFN pads (index 2); 4224816/A outline, land example and stencil (index 44-46): 16 pads 0.6 x 0.3 mm at 0.65 mm pitch, 3.8 mm pad-centre span, 2.6 mm thermal pad 17, 4 x 1.15 mm paste apertures at 0.675 mm offsets, 0.07 mm NSMD mask margin; 4.1 x 4.1 x 0.8 mm envelope from outline maxima"
++      "normalization": "SCDS404B Table 6-1 WQFN pads (index 2); 4224816/A outline, land example and stencil (index 44-46): 16 pads 0.6 x 0.3 mm at 0.65 mm pitch, 3.8 mm pad-centre span, 2.6 mm thermal pad 17, 4 x 1.15 mm paste apertures at 0.675 mm offsets, 0.07 mm NSMD mask margin; 4.1 x 4.1 x 0.8 mm envelope from outline maxima; F.SilkS pin-1 corner mark (project addition, no drawing dimension)"
+     },
+     "output_sha256": {
+       "symbols/src/TMUX7412FRRPR.kicad_sym": "b7656a1df870ad211447f0f0419f3492a6b49b9e075cc0d7d7bd1e271468655b",
+-      "footprints/kicad/zudo-osc-hole-field.pretty/TI_RRP0016A.kicad_mod": "4c7d523a7c427777713e4e5b7946f3c1da51ceca922feeee5ccded1a82c0a220",
++      "footprints/kicad/zudo-osc-hole-field.pretty/TI_RRP0016A.kicad_mod": "e12d5c3599e7c6e7bd4426cae9f62ea22c5f786b4069eb11c2cf833c06bfbdc7",
+       "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TI_RRP0016A.wrl": "0bccb5c641f7b253d78b12e1550ab6c24745b0a19cc8dc432da0435d1bfbd0b5"
+     }
+   },
+diff --git a/design/spec/modules/envelope.py b/design/spec/modules/envelope.py
+index 6280068..b3891b7 100644
+--- a/design/spec/modules/envelope.py
++++ b/design/spec/modules/envelope.py
+@@ -69,10 +69,11 @@ class EnvelopeBuilder(Builder):
+   self.device('LM393BIDR',key,'U',{str(i):{1:out,2:minus,3:plus,4:'AGND',8:'+12V'}.get(i) for i in range(1,9)})
+   self.r(key+'_PULL','4.7 kΩ','+5V',out)
+  def switch(self,key,channels):
+-  # S2b candidate: TMUX6112PWR keeps the ADG5412F TSSOP-16 order (SCDS383F
+-  # Table 5-1; pin 12 NC). Channel tuples are (SEL,S,D); all four captured.
+-  # SELx is limited to VDD + 0.3 V (SCDS383F 6.1), so each driven SEL gets a
+-  # 100 kOhm series feed and a BAT54S clamp to +12V/AGND (SEL hold).
++  # S2b candidate: TMUX6112PWR keeps the ADG5412F TSSOP-16 pin order (SCDS383F
++  # Table 5-1; pin 12 NC). Tuples are (SEL, first terminal, second terminal): channel 1
++  # lands them on S1/D1, channels 2-4 on D/S (pins 15/14, 10/11, 7/6) as the ADG mapping
++  # did; the switch is bidirectional with equal IS(OFF)/ID(OFF) limits (SCDS383F 6.5).
++  # SELx is limited to VDD + 0.3 V (SCDS383F 6.1), so each driven SEL gets a SEL hold.
+   pins={'13':'+12V','4':'-12V','5':'AGND','12':None}
+   for n,(ns,(en,s,d)) in enumerate(zip([('1','3','2'),('16','15','14'),('9','10','11'),('8','7','6')],channels),1):
+    sel=en
+@@ -82,9 +83,13 @@ class EnvelopeBuilder(Builder):
+   self.device('TMUX6112PWR',key,'U',pins)
+  def flush_sel_holds(self):
+   # Appended after every existing part so the designator lock only grows.
++  # SEL hold: 100 kOhm pull-up to +5V; BAT54S diode 2 (pin 3 anode, pin 2 cathode) clamps SEL
++  # to +12V, a second BAT54S pulls SEL down into the logic output; diode 1 of each is shorted
++  # (pins 1 and 3 on SEL). No series resistor carries the clamp leakage in logic low.
+   for key,logic,sel in self.__dict__.pop('sel_holds',[]):
+-   self.device(CATALOG['RC0603FR-07100KL'],'R_'+key,'R',{'1':logic,'2':sel},value='100 kΩ')
+-   self.device(CATALOG['BAT54S,215'],key+'_D','D',{'1':'AGND','2':'+12V','3':sel})
++   self.device(CATALOG['RC0603FR-07100KL'],'R_'+key,'R',{'1':'+5V','2':sel},value='100 kΩ')
++   self.device(CATALOG['BAT54S,215'],key+'_D','D',{'1':sel,'2':'+12V','3':sel})
++   self.device(CATALOG['BAT54S,215'],key+'_PD','D',{'1':sel,'2':logic,'3':sel})
+  def finish_envelope(self):
+   # Pack real logic/comparator channels, preserving canonical pin functions.
+   configs={
+diff --git a/design/spec/modules/oscillator.py b/design/spec/modules/oscillator.py
+index 3251362..2c2b253 100644
+--- a/design/spec/modules/oscillator.py
++++ b/design/spec/modules/oscillator.py
+@@ -182,7 +182,7 @@ def family():
+         b.r(mode+'_PD','100 kΩ',mode+'_DRIVE','AGND');b.r(mode+'_LIMIT','10 kΩ',mode+'_DRIVE',mode+'_EDGE');b.c(mode+'_AC','1 nF',mode+'_EDGE',mode+'_PIN')
+     # PWM command .2 + .72*manual + .36*depth, then clamp near 0..4 V.
+     b.amp('PWM_SUM','cv','AGND','PWM_SUM','PWM_NEG');b.series('PWM_FB',('40 kΩ','32 kΩ'),'PWM_NEG','PWM_SUM')
+-    for name,value,net in [('MAN','100 kΩ','PW_MANUAL'),('CV','200 kΩ','PWM_DEPTH'),('OFFSET',('1 MΩ','820 kΩ'),'LOCAL_REF5')]:b.series('PWM_'+name,value,net,'PWM_SUM') if isinstance(value,tuple) else b.r('PWM_'+name,value,net,'PWM_SUM')
++    for name,value,net in [('MAN','100 kΩ','PW_MANUAL'),('CV','200 kΩ','PWM_DEPTH'),('OFFSET',('1 MΩ','470 kΩ','330 kΩ'),'LOCAL_REF5')]:b.series('PWM_'+name,value,net,'PWM_SUM') if isinstance(value,tuple) else b.r('PWM_'+name,value,net,'PWM_SUM')
+     b.amp('PWM_INVERT','cv','AGND','PWM_INV','PWM_DRIVE');b.r('PWM_INV_IN','100 kΩ','PWM_NEG','PWM_INV');b.r('PWM_INV_FB','100 kΩ','PWM_DRIVE','PWM_INV')
+     b.r('REF4_TOP','24.9 kΩ','LOCAL_REF5','REF4_RAW');b.r('REF4_BOT','100 kΩ','REF4_RAW','AGND');b.amp('REF4','cv','REF4_RAW','REF4','REF4')
+     b.r('PWM_LIMIT','10 kΩ','PWM_DRIVE','PWM_PIN');b.device('BAT54S_215','PWM_CLAMP','D',{'1':'AGND','3':'PWM_PIN','2':'REF4'})
+diff --git a/design/standard/electrical-standard.json b/design/standard/electrical-standard.json
+index 5cb4880..d1d5c5d 100644
+--- a/design/standard/electrical-standard.json
++++ b/design/standard/electrical-standard.json
+@@ -258,8 +258,8 @@
+             "row": "F1 powered, +/-12 V on the jack (input_continuous_fault_V)",
+             "previous_adg5412f": "PASS",
+             "tmux7412f": "PASS",
+-            "tmux7412f_basis": "Same behaviour: overvoltage only beyond the supplies by VT (SCDS404B index 32, 9.3.2.4)",
+-            "s2b_disposition": "Unchanged"
++            "tmux7412f_basis": "Survival: overvoltage only beyond the supplies by VT (SCDS404B index 32, 9.3.2.4). Signal passing is a separate condition: VT is 0.7 V typical at 25 C only (7.5), RON rises exponentially within 3 V of VDD (9.3.4), and no RON maximum exists at +/-12 V (7.6 is +/-15 V +/-10 %, VS = -10..+10 V). Usable signal range: VSS .. VDD - 3 V, i.e. -12 .. +9 V at nominal rails (typical-curve region, not guaranteed); see usable_signal_range",
++            "s2b_disposition": "Survival unchanged. Signal passing is conditional on the usable signal range (-12 .. +9 V at nominal rails); see usable_signal_range, which flags the 1V/OCT pitch inputs"
+           },
+           {
+             "row": "F2 powered, jack beyond a rail (rail sag or external source above +/-12 V)",
+@@ -272,8 +272,8 @@
+             "row": "F3 unpowered, rails at 0 V, GND present, +/-12 V on the jack",
+             "previous_adg5412f": "PASS",
+             "tmux7412f": "PASS",
+-            "tmux7412f_basis": "Sources Hi-Z, +/-60 V blocked (index 32, 9.3.2.2). IS(FA) grounded +/-125 uA max, ID(FA) grounded +/-50 nA max at 85 C (Section 7.6, index 6)",
+-            "s2b_disposition": "Unchanged"
++            "tmux7412f_basis": "Sources Hi-Z, +/-60 V blocked (index 32, 9.3.2.2). IS(FA) grounded +/-125 uA is TYPICAL only (7.6 TYP column; no maximum), so source-side fault leakage has no guaranteed bound, as for ADG5412F. ID(FA) grounded +/-50 nA is a maximum at 85 C (7.6, index 6)",
++            "s2b_disposition": "Unchanged PASS for blocking; source-side fault leakage has no guaranteed bound (typical only), as for ADG5412F"
+           },
+           {
+             "row": "F4 unpowered, rails floating, GND present",
+@@ -292,9 +292,9 @@
+           {
+             "row": "F6 one analog rail missing, other present",
+             "previous_adg5412f": "PASS",
+-            "tmux7412f": "PASS",
+-            "tmux7412f_basis": "Single supply 8..44 V specified; same overvoltage rule. Conditional as for ADG5412F",
+-            "s2b_disposition": "Unchanged"
++            "tmux7412f": "UNKNOWN",
++            "tmux7412f_basis": "-12 V missing, +12 V present: PASS, VSS = 0 V is a specified single supply (VDD - VSS >= 8 V; 7.4, 9.1). +12 V missing, -12 V present: UNKNOWN, VDD = 0 V is below the recommended VDD minimum of 5 V (7.4) while the UVLO is defined on VDD - VSS = 12 V (7.5), so the device is not powered off by that definition and no datasheet text covers the state",
++            "s2b_disposition": "Changed: -12 V-missing half PASS, +12 V-missing half UNKNOWN; the row is UNKNOWN until bench evidence or a supply-sequencing rule covers it"
+           },
+           {
+             "row": "F7 +5 V enable present before the analog rails (startup, R-ADG)",
+@@ -321,8 +321,8 @@
+             "row": "F10 drain leakage and RON on pitch-sensitive inputs",
+             "previous_adg5412f": "PASS",
+             "tmux7412f": "PASS",
+-            "tmux7412f_basis": "RON 14 ohm max, ID(ON) +/-2 nA max at 85 C, +/-15 V table (Section 7.6); +/-12 V not guaranteed",
+-            "s2b_disposition": "Unchanged"
++            "tmux7412f_basis": "Conditional: inside the usable signal range VSS .. VDD - 3 V (-12 .. +9 V at nominal rails) into the 100 k high-impedance buffer load. RON 14 ohm max and ID(ON) +/-2 nA max at 85 C exist only in the +/-15 V +/-10 % table for VS = -10..+10 V (7.6); at +/-12 V they are typical-curve expectations, not guarantees. Above VDD - 3 V RON rises exponentially (9.3.4): UNKNOWN there",
++            "s2b_disposition": "Conditional PASS inside the usable signal range into the 100 k buffer load; UNKNOWN above VDD - 3 V"
+           },
+           {
+             "row": "F11 land and pin map (drop-in)",
+@@ -331,7 +331,60 @@
+             "tmux7412f_basis": "Orderable only as WQFN-16 RRP (addendum index 40); the TSSOP-16 PW package with the ADG pin order is marked Preview. New land and pin map: S1 = pad 1, D1 = pad 16, SEL1 = pad 15",
+             "s2b_disposition": "Resolved in this candidate by the TI RRP0016A land and the WQFN pin map"
+           }
+-        ]
++        ],
++        "usable_signal_range": {
++          "range_V": [
++            -12,
++            9
++          ],
++          "basis": "VSS .. VDD - 3 V at nominal +/-12 V rails (9.3.4); typical-curve region, no guaranteed RON at +/-12 V; the fault detector opens the switch beyond VDD + VT / VSS - VT, VT 0.7 V typical at 25 C only (7.5)",
++          "roles": [
++            {
++              "role": "audio inputs (filter IN, mix4 1-4, mix5 1-5, wavefolder IN, manual_ab A/B, mult IN, sample_hold IN, offset IN)",
++              "inputs_per_unit": 37,
++              "normal_swing_V": [
++                -5,
++                5
++              ],
++              "class": "audio_nominal_V / mult nominal linear range",
++              "verdict": "PASS",
++              "margin_V": 4
++            },
++            {
++              "role": "bipolar CV inputs (envelope RISE/FALL, filter FREQ/RES/GAIN, mix4 ATTEN, offset OFFSET, oscillator FM/PWM, wavefolder FOLD/BIAS)",
++              "inputs_per_unit": 43,
++              "normal_swing_V": [
++                -5,
++                5
++              ],
++              "class": "bipolar_cv_nominal_V",
++              "verdict": "PASS",
++              "margin_V": 4
++            },
++            {
++              "role": "gate and trigger inputs (envelope SIG, oscillator SYNC, sample_hold TRIGGER)",
++              "inputs_per_unit": 13,
++              "normal_swing_V": [
++                0,
++                5
++              ],
++              "class": "gate_output_nominal_V (project gate level)",
++              "verdict": "PASS",
++              "margin_V": 4,
++              "note": "External gates above +9 V (common 0..10 V sources) enter the rising-RON region; into the high-impedance comparator path this is UNKNOWN, not FAIL"
++            },
++            {
++              "role": "pitch input (oscillator 1V/OCT)",
++              "inputs_per_unit": 5,
++              "normal_swing_V": null,
++              "class": "pitch_V_per_octave (no range in the standard)",
++              "verdict": "FLAG",
++              "margin_V": null,
++              "note": "The standard defines 1 V/oct but no input range. Pitch sources commonly reach +8..+10 V; above +9 V the signal is outside the usable range, and above about +12.7 V (VDD + VT typical) the switch opens. Needs a declared pitch range or a rail/headroom decision"
++            }
++          ]
++        },
++        "review_corrections": "Phase 20: F1, F3, F6 and F10 revised after the independent review of 2026-11-01"
+       }
+     },
+     {
+diff --git a/footprints/kicad/zudo-osc-hole-field.pretty/TI_RRP0016A.kicad_mod b/footprints/kicad/zudo-osc-hole-field.pretty/TI_RRP0016A.kicad_mod
+index 2bc4cdb..c5a4689 100644
+--- a/footprints/kicad/zudo-osc-hole-field.pretty/TI_RRP0016A.kicad_mod
++++ b/footprints/kicad/zudo-osc-hole-field.pretty/TI_RRP0016A.kicad_mod
+@@ -8,6 +8,8 @@
+  (fp_line (start 2.05 2.05) (end -2.05 2.05) (stroke (width 0.1) (type solid)) (layer "F.Fab"))
+  (fp_line (start -2.05 2.05) (end -2.05 -1.55) (stroke (width 0.1) (type solid)) (layer "F.Fab"))
+  (fp_line (start -2.05 -1.55) (end -1.55 -2.05) (stroke (width 0.1) (type solid)) (layer "F.Fab"))
++ (fp_line (start -2.15 -1.5) (end -2.15 -2.15) (stroke (width 0.1) (type solid)) (layer "F.SilkS"))
++ (fp_line (start -2.15 -2.15) (end -1.5 -2.15) (stroke (width 0.1) (type solid)) (layer "F.SilkS"))
+  (pad "1" smd roundrect (at -1.9 -0.975) (size 0.6 0.3) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.166667) (solder_mask_margin 0.07))
+  (pad "2" smd roundrect (at -1.9 -0.325) (size 0.6 0.3) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.166667) (solder_mask_margin 0.07))
+  (pad "3" smd roundrect (at -1.9 0.325) (size 0.6 0.3) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.166667) (solder_mask_margin 0.07))
+diff --git a/project/osc-hole-field/electrical-decisions.json b/project/osc-hole-field/electrical-decisions.json
+index da4778e..d65401b 100644
+--- a/project/osc-hole-field/electrical-decisions.json
++++ b/project/osc-hole-field/electrical-decisions.json
+@@ -135,8 +135,8 @@
+   {
+     "id": "E13",
+     "topic": "S2b protected-switch identity (input_fault_switch)",
+-    "decision": "S2b: the jack-input protected switch changes from ADG5412FBRUZ to TMUX7412FRRPR (S1 on the jack), one package per input; the 12 envelope-internal switches change to TMUX6112PWR with a 100 kOhm + BAT54S,215 SEL hold on each of the 36 SEL lines.",
+-    "rationale": "Phase-14..17 cost study: ADG5412FBRUZ stock 0. TMUX7412F matches the fault rows F1-F8 and F10 (s2b-protection-map.json); F9 (several inputs faulted in one quad) has no TI statement, so packing stays one per input. TMUX6112 SELx is limited to VDD + 0.3 V, so the hold keeps +5 V logic from driving an unpowered +12 V pin.",
++    "decision": "S2b: the jack-input protected switch changes from ADG5412FBRUZ to TMUX7412FRRPR (S1 on the jack), one package per input; the 12 envelope-internal switches change to TMUX6112PWR with a SEL hold on each of the 36 SEL lines (100 kOhm pull-up to +5V, BAT54S,215 clamp to +12V, BAT54S,215 pull-down to the logic output; revised phase 20).",
++    "rationale": "Phase-14..17 cost study: ADG5412FBRUZ stock 0. TMUX7412F matches fault rows F1-F5, F7, F8 and F10 within the usable signal range (F6 +12 V-missing half UNKNOWN, revised phase 20) (s2b-protection-map.json); F9 (several inputs faulted in one quad) has no TI statement, so packing stays one per input. TMUX6112 SELx is limited to VDD + 0.3 V, so the hold keeps +5 V logic from driving an unpowered +12 V pin.",
+     "status": "UNADOPTED CANDIDATE: recorded inside circuit/candidates/s2b-tmux-20261101; canonical adoption, physical qualification and bench checks remain open; no hardware or manufacturing adoption",
+     "authority": "USER-CONFIRMED DECISION",
+     "date": "2026-11-01",
+diff --git a/scripts/checks/r_exact_candidates.py b/scripts/checks/r_exact_candidates.py
+index 21be457..db8768d 100644
+--- a/scripts/checks/r_exact_candidates.py
++++ b/scripts/checks/r_exact_candidates.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""R-exact candidate identities and per-role error table for the 14 non-stocked precision values.
++"""R-exact candidate identities and per-role error table for the 15 R-exact role rows.
+ 
+ Inputs: retained read-only bytes in .circuit-cache/sources/readiness-20261031/ (git-ignored):
+ jlc/<MPN>.json JLC search responses and spec/<MPN>.pdf Yageo spec sheets, retrieved
+@@ -70,7 +70,7 @@ ROLES = {
+         lambda v: 12 / v['R'] * 1e6, {'R': [1.2e6]}, {'R': [('1M', 1e6), ('200K', 200e3)]}, 5, 'uA', 'series'),
+     'oscillator:R_PWM_OFFSET': (
+         lambda v: 5 * v['FB'] / v['OFF'], {'FB': [72e3], 'OFF': [1.8e6]},
+-        {'FB': [('40K', 40e3), ('32K', 32e3)], 'OFF': [('1M', 1e6), ('820K', 820e3)]}, 5, 'V', 'series'),
++        {'FB': [('40K', 40e3), ('32K', 32e3)], 'OFF': [('1M', 1e6), ('470K', 470e3), ('330K', 330e3)]}, 5, 'V', 'series'),
+     'oscillator:R_PITCH_FINE': (
+         lambda v: 5 * v['PITCH'] / v['FINE'], {'PITCH': [100e3], 'FINE': [5e6]},
+         {'PITCH': [('100K', 100e3)], 'FINE': [('1M', 1e6)] * 5}, 5, 'V', 'series'),
+diff --git a/scripts/checks/s2b_protection_map.py b/scripts/checks/s2b_protection_map.py
+index 47b77bd..53a8c81 100644
+--- a/scripts/checks/s2b_protection_map.py
++++ b/scripts/checks/s2b_protection_map.py
+@@ -36,13 +36,17 @@ SOURCES = {
+ FAULTS = [
+     {'row': 'F1 powered, +/-12 V on the jack (input_continuous_fault_V)',
+      'adg': ('PASS', 'Within VSS - VT .. VDD + VT the switch passes the signal (Rev. C index 25, page 26, Power-On Protection); downstream 10 k + BAT54S unchanged'),
+-     'tmux': ('PASS', 'Same behaviour: overvoltage only beyond the supplies by VT (SCDS404B index 32, 9.3.2.4)')},
++     'tmux': ('PASS', 'Survival: overvoltage only beyond the supplies by VT (SCDS404B index 32, 9.3.2.4). Signal passing is a separate '
++              'condition: VT is 0.7 V typical at 25 C only (7.5), RON rises exponentially within 3 V of VDD (9.3.4), and no RON '
++              'maximum exists at +/-12 V (7.6 is +/-15 V +/-10 %, VS = -10..+10 V). Usable signal range: VSS .. VDD - 3 V, '
++              'i.e. -12 .. +9 V at nominal rails (typical-curve region, not guaranteed); see usable_signal_range')},
+     {'row': 'F2 powered, jack beyond a rail (rail sag or external source above +/-12 V)',
+      'adg': ('PASS', 'Switch turns off; source to +/-55 V, 80 V across the channel (index 25, page 26)'),
+      'tmux': ('PASS', 'Switch turns off regardless of logic; source to +/-60 V, 85 V source-to-supply and source-to-drain (index 31, 9.3.2.1; index 32, 9.3.2.4)')},
+     {'row': 'F3 unpowered, rails at 0 V, GND present, +/-12 V on the jack',
+      'adg': ('PASS', 'Switch off, inputs high impedance, +/-55 V blocked (index 25, Power-Off Protection). Source leakage +/-40 uA typical only; drain leakage +/-50 nA max at 85 C (Table 1, index 2)'),
+-     'tmux': ('PASS', 'Sources Hi-Z, +/-60 V blocked (index 32, 9.3.2.2). IS(FA) grounded +/-125 uA max, ID(FA) grounded +/-50 nA max at 85 C (Section 7.6, index 6)')},
++     'tmux': ('PASS', 'Sources Hi-Z, +/-60 V blocked (index 32, 9.3.2.2). IS(FA) grounded +/-125 uA is TYPICAL only (7.6 TYP column; no maximum), '
++              'so source-side fault leakage has no guaranteed bound, as for ADG5412F. ID(FA) grounded +/-50 nA is a maximum at 85 C (7.6, index 6)')},
+     {'row': 'F4 unpowered, rails floating, GND present',
+      'adg': ('PASS', 'Off whether supplies are 0 V or floating (index 25). Floating drain leakage +/-10 uA typical only'),
+      'tmux': ('PASS', 'Hi-Z with VDD/VSS 0 V or floating (index 32). Floating-rail leakage recorded as typical only (protection59-sources.json)')},
+@@ -51,7 +55,9 @@ FAULTS = [
+      'tmux': ('FAIL', 'Same requirement (index 32, 9.3.2.2). No regression from ADG5412F')},
+     {'row': 'F6 one analog rail missing, other present',
+      'adg': ('PASS', 'Single-supply operation 8..44 V is specified; an input outside the remaining span is an overvoltage and turns the switch off. Conditional on VDD - VSS >= 8 V for the on state'),
+-     'tmux': ('PASS', 'Single supply 8..44 V specified; same overvoltage rule. Conditional as for ADG5412F')},
++     'tmux': ('UNKNOWN', '-12 V missing, +12 V present: PASS, VSS = 0 V is a specified single supply (VDD - VSS >= 8 V; 7.4, 9.1). '
++              '+12 V missing, -12 V present: UNKNOWN, VDD = 0 V is below the recommended VDD minimum of 5 V (7.4) while the UVLO '
++              'is defined on VDD - VSS = 12 V (7.5), so the device is not powered off by that definition and no datasheet text covers the state')},
+     {'row': 'F7 +5 V enable present before the analog rails (startup, R-ADG)',
+      'adg': ('PASS', 'Digital inputs tolerated without power; switch guaranteed off (index 25, Digital Input Protection); logic to 44 V'),
+      'tmux': ('PASS', 'Fail-safe logic: logic before supplies, switch OFF, logic to +44 V (index 32, 9.3.2.3)')},
+@@ -63,12 +69,38 @@ FAULTS = [
+      'tmux': ('UNKNOWN', 'No published statement on undisturbed channels; only the 85 V source-to-drain stress rule (index 31) and -100 dB AC crosstalk. FF is shared across the four sources')},
+     {'row': 'F10 drain leakage and RON on pitch-sensitive inputs',
+      'adg': ('PASS', 'RON 14 ohm max, ID(on) +/-2.0 nA max at 85 C, +/-15 V table (Table 1); +/-12 V not guaranteed'),
+-     'tmux': ('PASS', 'RON 14 ohm max, ID(ON) +/-2 nA max at 85 C, +/-15 V table (Section 7.6); +/-12 V not guaranteed')},
++     'tmux': ('PASS', 'Conditional: inside the usable signal range VSS .. VDD - 3 V (-12 .. +9 V at nominal rails) into the 100 k '
++              'high-impedance buffer load. RON 14 ohm max and ID(ON) +/-2 nA max at 85 C exist only in the +/-15 V +/-10 % table for '
++              'VS = -10..+10 V (7.6); at +/-12 V they are typical-curve expectations, not guarantees. Above VDD - 3 V RON rises '
++              'exponentially (9.3.4): UNKNOWN there')},
+     {'row': 'F11 land and pin map (drop-in)',
+      'adg': ('PASS', 'Current TSSOP-16 land'),
+      'tmux': ('FAIL', 'Orderable only as WQFN-16 RRP (addendum index 40); the TSSOP-16 PW package with the ADG pin order is marked Preview. New land and pin map: S1 = pad 1, D1 = pad 16, SEL1 = pad 15')},
+ ]
+ 
++# TMUX7412F at +/-12 V: flat-RON region VSS .. VDD - 3 V (SCDS404B 9.3.4, typical description);
++# no RON table exists at +/-12 V. Role ranges are the standard's signal classes.
++USABLE_RANGE = {
++    'range_V': [-12, 9], 'basis': 'VSS .. VDD - 3 V at nominal +/-12 V rails (9.3.4); typical-curve region, no guaranteed RON at +/-12 V; '
++    'the fault detector opens the switch beyond VDD + VT / VSS - VT, VT 0.7 V typical at 25 C only (7.5)',
++    'roles': [
++        {'role': 'audio inputs (filter IN, mix4 1-4, mix5 1-5, wavefolder IN, manual_ab A/B, mult IN, sample_hold IN, offset IN)',
++         'inputs_per_unit': 3 + 8 + 10 + 2 + 4 + 2 + 2 + 6, 'normal_swing_V': [-5, 5], 'class': 'audio_nominal_V / mult nominal linear range',
++         'verdict': 'PASS', 'margin_V': 4},
++        {'role': 'bipolar CV inputs (envelope RISE/FALL, filter FREQ/RES/GAIN, mix4 ATTEN, offset OFFSET, oscillator FM/PWM, wavefolder FOLD/BIAS)',
++         'inputs_per_unit': 12 + 9 + 2 + 6 + 10 + 4, 'normal_swing_V': [-5, 5], 'class': 'bipolar_cv_nominal_V',
++         'verdict': 'PASS', 'margin_V': 4},
++        {'role': 'gate and trigger inputs (envelope SIG, oscillator SYNC, sample_hold TRIGGER)',
++         'inputs_per_unit': 6 + 5 + 2, 'normal_swing_V': [0, 5], 'class': 'gate_output_nominal_V (project gate level)',
++         'verdict': 'PASS', 'margin_V': 4,
++         'note': 'External gates above +9 V (common 0..10 V sources) enter the rising-RON region; into the high-impedance comparator path this is UNKNOWN, not FAIL'},
++        {'role': 'pitch input (oscillator 1V/OCT)', 'inputs_per_unit': 5, 'normal_swing_V': None, 'class': 'pitch_V_per_octave (no range in the standard)',
++         'verdict': 'FLAG', 'margin_V': None,
++         'note': 'The standard defines 1 V/oct but no input range. Pitch sources commonly reach +8..+10 V; above +9 V the signal is outside the usable '
++                 'range, and above about +12.7 V (VDD + VT typical) the switch opens. Needs a declared pitch range or a rail/headroom decision'},
++    ],
++}
++
+ TMUX6112_ROWS = [
+     ('Pin map', 'PASS', 'TSSOP-16 order matches the ADG5412F land: SEL1 1, D1 2, S1 3, VSS 4, GND 5 ... pin 12 is NC where ADG has FF, which the project leaves unconnected (SCDS383F Table 5-1, index 3)'),
+     ('Logic sense', 'PASS', 'Logic 1 turns the switches on, as ADG5412F (Description, index 0)'),
+@@ -77,7 +109,8 @@ TMUX6112_ROWS = [
+     ('RON', 'PASS', '210 ohm max at VS = +/-10 V, 85 C (6.5, index 5) in series with the 899 k drive divider and the hold clamp'),
+     ('Hold-node leakage', 'PASS', 'IS(OFF)/ID(OFF) -0.14 .. +0.05 nA at 85 C, ID(ON) -0.25 .. +0.1 nA (6.5, index 5); +/-15 V table, not a +/-12 V guarantee'),
+     ('Fault protection', 'NOT APPLICABLE', 'Not fault protected; analog pins VSS - 0.3 .. VDD + 0.3 V (6.1, index 4). The envelope switches are internal, not jack facing'),
+-    ('Logic before rails', 'FAIL', 'SELx absolute maximum is VDD + 0.3 V (6.1, index 4). +5 V logic present while +12 V is absent exceeds it unless current is limited below 30 mA; needs a sequencing or series-resistor check'),
++    ('Logic before rails', 'PASS', 'SELx absolute maximum is VDD + 0.3 V (6.1, index 4). Candidate SEL hold: 100 k pull-up to +5 V, BAT54S clamp '
++     'to +12V and a BAT54S pull-down to the logic output; SEL <= VDD + 0.24 V at 25 C (VF max at 0.1 mA). Below 25 C the VF margin is UNKNOWN (no curve)'),
+ ]
+ 
+ 
+@@ -101,7 +134,9 @@ def placements():
+         for part in family.parts:
+             if part.attributes.get('Role') != 'input_fault_switch:U' or part.unit != 1:
+                 continue
+-            source, drain = part.pins.get('3'), part.pins.get('2')
++            # S2b candidate: TMUX7412FRRPR S1 pad 1, D1 pad 16 (SCDS404B Table 6-1); ADG5412FBRUZ S1 3, D1 2.
++            tmux = part.symbol.endswith('TMUX7412FRRPR')
++            source, drain = part.pins.get('1' if tmux else '3'), part.pins.get('16' if tmux else '2')
+             jack_on_source = source in tips
+             if not jack_on_source or drain in tips:
+                 errors.append(f'{family.name} {part.key}: jack not on S1')
+@@ -117,7 +152,7 @@ def placements():
+ def build():
+     rows, errors = placements()
+     total = sum(r['instances'] for r in rows)
+-    return {'schema_version': 1, 'status': 'UNADOPTED groundwork; protection standard unchanged',
++    return {'schema_version': 1, 'status': 'UNADOPTED S2b candidate (decision E13); fault rows revised after the independent review',
+             'sources': source_receipts(),
+             'input_placements_per_unit': total, 'placement_groups': len(rows),
+             'jack_on_protected_source_per_unit': sum(r['instances'] for r in rows if r['jack_faces'] == 'SOURCE'),
+@@ -127,6 +162,7 @@ def build():
+                             'changes_with_tmux7412f': f['adg'][0] != f['tmux'][0]} for f in FAULTS],
+             'fault_row_summary': {name: dict(collections.Counter(f[key][0] for f in FAULTS))
+                                   for name, key in (('adg5412f', 'adg'), ('tmux7412f', 'tmux'))},
++            'usable_signal_range': USABLE_RANGE,
+             'envelope_internal_tmux6112': [{'row': a, 'verdict': b, 'basis': c} for a, b, c in TMUX6112_ROWS]}
+ 
+ 
+diff --git a/scripts/libgen/build_s2b_switch_assets.py b/scripts/libgen/build_s2b_switch_assets.py
+index 62464bf..00f65d5 100644
+--- a/scripts/libgen/build_s2b_switch_assets.py
++++ b/scripts/libgen/build_s2b_switch_assets.py
+@@ -92,6 +92,11 @@ def rrp_footprint():
+     for a, b in zip(points, points[1:]+points[:1]):
+         text += (f' (fp_line (start {a[0]:g} {a[1]:g}) (end {b[0]:g} {b[1]:g}) '
+                  '(stroke (width 0.1) (type solid)) (layer "F.Fab"))\n')
++    # Pin-1 corner mark on F.SilkS, outside the 4.1 mm body and inside the pad-row extent
++    # (edge + 0.3 mm), so the courtyard is unchanged; it clears pad 1 and pad 16 masks.
++    for a, b in (((-2.15, -1.5), (-2.15, -2.15)), ((-2.15, -2.15), (-1.5, -2.15))):
++        text += (f' (fp_line (start {a[0]:g} {a[1]:g}) (end {b[0]:g} {b[1]:g}) '
++                 '(stroke (width 0.1) (type solid)) (layer "F.SilkS"))\n')
+     edge = SPAN/2
+     offsets = [(n-1.5)*PITCH for n in range(4)]
+     pads = []
+diff --git a/scripts/schgen/audit_master.py b/scripts/schgen/audit_master.py
+index cdb29d7..ffccc8b 100644
+--- a/scripts/schgen/audit_master.py
++++ b/scripts/schgen/audit_master.py
+@@ -122,7 +122,7 @@ def check(families,instances,netlist):
+     # negative-rail bypass capacitors, two on each of ten offset/mixer instances.
+     # #60 adds four mixer quads + eight bypasses, and two A/B remote
+     # buffers (quad, two bypasses and two isolation resistors each).
+-    expected_signal_refs=5723+20+4*3+2*5+5*(6*3+2*3)+12+80+72  # #62 fanout plus #61 stage limiters, plus 80 UNADOPTED R-exact series elements and 72 S2b SEL-hold parts
++    expected_signal_refs=5723+20+4*3+2*5+5*(6*3+2*3)+12+85+108  # #62 fanout plus #61 stage limiters, plus 85 UNADOPTED R-exact series elements and 108 S2b SEL-hold parts
+     if signal_ref_count!=expected_signal_refs:
+         errors.append(f'signal/reference designator lock drift: {signal_ref_count} != {expected_signal_refs}')
+     if len(refs)!=expected_signal_refs+len(power_refs):

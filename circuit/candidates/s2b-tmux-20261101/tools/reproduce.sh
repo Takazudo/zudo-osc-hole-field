@@ -22,7 +22,10 @@ bash scripts/libgen/regen.sh
 for m in envelope filter manual_ab mixer mult offset oscillator sample_hold wavefolder; do
   python3 -m "design.spec.modules.build_${m}_current"
 done
-# regen-all is expected to stop at master-audit drift (designator lock +80 +72).
+# Readiness tables that the candidate revises (phase 20): S2b fault rows and R-exact roles.
+PYTHONPATH="$tree" python3 scripts/checks/s2b_protection_map.py
+PYTHONPATH="$tree" python3 scripts/checks/r_exact_candidates.py
+# regen-all is expected to stop at master-audit drift (designator lock +12 +85 +108).
 bash scripts/checks/regen-all.sh || true
 mkdir -p .circuit-cache/master-audit
 bash scripts/kicad/run.sh kicad-cli sch export netlist --format kicadsexpr \
