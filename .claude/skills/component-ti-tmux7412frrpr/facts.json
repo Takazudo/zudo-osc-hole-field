@@ -18,12 +18,12 @@
     {
       "fact_id": "fact-fault-switch-t-project-selection",
       "record_id": "rec-fault-switch-t",
-      "source_id": "src-fault-switch-t-study",
+      "source_id": "src-fault-switch-t-decision",
       "class": "PROJECT_STATE",
-      "value": "UNADOPTED S2b candidate (jack input fault isolation (S2b candidate)); user decision E13 2026-11-01 accepts the identity change; canonical adoption needs a separate approval",
+      "value": "ADOPTED 2026-11-01 (decisions E13, E15): jack input fault isolation switch, one package per input (98 per unit)",
       "unit": "NONE",
-      "conditions": "Candidate record circuit/candidates/s2b-tmux-20261101; not a supplier allocation.",
-      "locator": "Section/table audit: src-fault-switch-t-study JSON row scenarios[id=S2b]",
+      "conditions": "Canonical specification and schematic adoption only; not a supplier allocation, hardware validation or order.",
+      "locator": "Section/table audit: project/osc-hole-field/electrical-decisions.json JSON row [id=E15]",
       "provenance": "PROJECT-CHOICE",
       "verdict": "NOT APPLICABLE",
       "depends_on": [],
@@ -305,10 +305,8 @@
         "body_max_mm": 4.1,
         "height_max_mm": 0.8,
         "pitch_mm": 0.65,
-        "pad_mm": [
-          0.6,
-          0.3
-        ],
+        "pad_length_mm": 0.6,
+        "pad_width_mm": 0.3,
         "pad_centre_span_mm": 3.8,
         "thermal_pad_mm": 2.6,
         "paste_apertures": "4 x 1.15 mm at 0.675 mm offsets, 78 % coverage, 0.125 mm stencil",
@@ -422,10 +420,8 @@
         "ron_max_ohm_125C": 18,
         "rflat_max_ohm_85C": 0.5,
         "delta_ron_max_ohm_85C": 0.6,
-        "vs_range_V": [
-          0,
-          7.8
-        ]
+        "vs_min_V": 0,
+        "vs_max_V": 7.8
       },
       "unit": "ohm",
       "conditions": "VDD = +12 V +/-10 % (10.8 .. 13.2 V), VSS = 0 V, VS = 0 .. 7.8 V, IS = -10 mA. Single supply only; VSS = -12 V is not a table condition.",

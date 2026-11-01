@@ -13,9 +13,9 @@ Run `pnpm circuit:check`, read every local JSON record, and cite fact/source IDs
 
 See the [component catalog](/docs/components/catalog/) and [cross-component rules](/docs/components/integration/). Generated component pages project only the records included by `circuit/publication/selection.json`; these JSON files remain the evidence source.
 
-## Candidate status
+## Adoption status
 
-UNADOPTED candidate from the phase-15 cost study. It is not in parts-shortlist.json and replaces no placement.
+ADOPTED 2026-11-01 with the S2b record (decision E15): fitted on the precision role outside the control region (85 per unit; U102, U202, U3303 and U3403 keep OPA4197IPWR). Hardware remains unvalidated.
 
 ## Open review points
 

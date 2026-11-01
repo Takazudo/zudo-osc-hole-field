@@ -58,7 +58,10 @@
     "rec-r-precision",
     "rec-monitor-c1206c104f3gactu",
     "rec-precision-feedback-r",
-    "rec-precision-feedback-c"
+    "rec-precision-feedback-c",
+    "rec-op-precision-d",
+    "rec-fault-switch-t",
+    "rec-env-switch-t"
   ],
   "sourceIds": [
     "src-b103",
@@ -183,7 +186,23 @@
     "src-monitor-c1206c104f3gactu-land",
     "src-monitor-c1206c104f3gactu-candidate",
     "src-precision-feedback-r-datasheet",
-    "src-precision-feedback-c-datasheet"
+    "src-precision-feedback-c-datasheet",
+    "src-op-precision-d-datasheet",
+    "src-op-precision-d-jlc",
+    "src-op-precision-d-study",
+    "src-op-precision-d-output-model",
+    "src-op-precision-d-vendor-model",
+    "src-fault-switch-t-datasheet",
+    "src-fault-switch-t-jlc",
+    "src-fault-switch-t-study",
+    "src-fault-switch-t-protection-map",
+    "src-env-switch-t-datasheet",
+    "src-env-switch-t-jlc",
+    "src-env-switch-t-study",
+    "src-env-switch-t-protection-map",
+    "src-op-precision-d-decision",
+    "src-fault-switch-t-decision",
+    "src-env-switch-t-decision"
   ],
   "linkableSourceIds": [
     "src-b103",
@@ -304,7 +323,20 @@
     "src-monitor-c1206c104f3gactu-datasheet",
     "src-monitor-c1206c104f3gactu-land",
     "src-precision-feedback-r-datasheet",
-    "src-precision-feedback-c-datasheet"
+    "src-precision-feedback-c-datasheet",
+    "src-op-precision-d-datasheet",
+    "src-op-precision-d-study",
+    "src-op-precision-d-output-model",
+    "src-op-precision-d-vendor-model",
+    "src-fault-switch-t-datasheet",
+    "src-fault-switch-t-study",
+    "src-fault-switch-t-protection-map",
+    "src-env-switch-t-datasheet",
+    "src-env-switch-t-study",
+    "src-env-switch-t-protection-map",
+    "src-op-precision-d-decision",
+    "src-fault-switch-t-decision",
+    "src-env-switch-t-decision"
   ],
   "documentSelections": [
     {
@@ -596,12 +628,27 @@
       "recordId": "rec-precision-feedback-c",
       "sourceId": "src-precision-feedback-c-datasheet",
       "documentKind": "datasheet"
+    },
+    {
+      "recordId": "rec-op-precision-d",
+      "sourceId": "src-op-precision-d-datasheet",
+      "documentKind": "datasheet"
+    },
+    {
+      "recordId": "rec-fault-switch-t",
+      "sourceId": "src-fault-switch-t-datasheet",
+      "documentKind": "datasheet"
+    },
+    {
+      "recordId": "rec-env-switch-t",
+      "sourceId": "src-env-switch-t-datasheet",
+      "documentKind": "datasheet"
     }
   ],
   "expect": {
     "records": 72,
-    "sources": 158,
+    "sources": 162,
     "integrationRules": 2,
-    "packages": 31
+    "packages": 32
   }
 }

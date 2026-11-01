@@ -7,9 +7,15 @@ description: Use whenever an exact part identity, supplier code, manufacturer, p
 
 Run `pnpm circuit:check`, read every local JSON record, and cite fact/source IDs with conditions and exact locators. Keep each record aligned with the matching inventory line and direct-routing fixture. Do not infer procurement, physical fit, system safety, or circuit qualification from a component datasheet.
 
-## Candidate status
+## Human component reference
 
-UNADOPTED S2b candidate (user decision E13, 2026-11-01). It is bound to placements only inside `circuit/candidates/s2b-tmux-20261101/`; canonical adoption needs a separate approval. The record is an intentional catalogue exclusion, so no generated page exists.
+[rec-env-switch-t](/docs/components/records/env-switch-t/) is generated from this exact component record.
+
+See the [component catalog](/docs/components/catalog/) and [cross-component rules](/docs/components/integration/). Generated component pages project only the records included by `circuit/publication/selection.json`; these JSON files remain the evidence source.
+
+## Adoption status
+
+ADOPTED 2026-11-01 with the S2b record (decisions E13, E15): the 12 envelope-internal switches with a SEL hold on each SEL line. Selected for the generated catalogue. Hardware remains unvalidated.
 
 ## Open review points
 
