@@ -19,7 +19,8 @@ class FamilyReuse(unittest.TestCase):
 
     def test_complete_physical_packages_and_sensitive_locality(self):
         self.assertEqual(self.p['families']['AO']['region_counts'],{'core':29,'jack':59,'control':2})
-        self.assertEqual(self.p['families']['MULT']['region_counts'],{'jack':36})
+        # E13/E14 S2b adoption (2026-11-01): one D_BOOT clamp per MULT IN raises the MULT jack count from 36 to 37
+        self.assertEqual(self.p['families']['MULT']['region_counts'],{'jack':37})
         for f in self.p['families'].values():
             self.assertTrue(all(len(r)==1 for r in f['declared_sensitive_net_regions'].values()))
             for p in f['packages'].values():

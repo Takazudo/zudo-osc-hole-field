@@ -6,7 +6,7 @@ DOC=ROOT/'doc/src/content/docs/architecture/osc-standard-cells.mdx'
 SPICE=ROOT/'design/reports/spice/cells.json'
 CURRENT=ROOT/'design/reports/current/cells.json'
 PATHS={
-'input_fault_switch':['JACK','ADG5412F','PROTECTED'],
+'input_fault_switch':['JACK','TMUX7412F','PROTECTED'],
 'high_impedance_input':['PROTECTED','10k limiter + BAT54S','CV buffer','BUFFERED'],
 'summing_node_input':['PROTECTED','100k input + clamp','SUM'],
 'general_output':['SIGNAL','local feedback buffer','499Ω + 499Ω','JACK'],

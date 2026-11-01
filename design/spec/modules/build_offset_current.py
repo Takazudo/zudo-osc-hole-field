@@ -16,7 +16,8 @@ def build():
         a=dict(zip(RAILS,a));b=dict(zip(RAILS,b))
         for r in RAILS:typ[r]+=n*a[r];upper[r]+=n*b[r]
         rows.append({'load':label,'count':n,'typical_unit_mA':a,'planning_unit_mA':b,'basis':basis})
-    for symbol,id in [('OPA4197IPWR','opamp_precision'),('OPA4196IDR','opamp_audio'),('ADG5412FBRUZ','fault_switches'),('LM393BIDR','comparators')]:
+    for symbol,id in [('OPA4197IPWR','opamp_precision'),('OPA4197IDR','opamp_precision'),('OPA4196IDR','opamp_audio'),('ADG5412FBRUZ','fault_switches'),('TMUX7412FRRPR','fault_switches_tmux7412f'),('TMUX6112PWR','switches_tmux6112'),('LM393BIDR','comparators')]:
+        if not counts[symbol] and symbol.startswith(('OPA4197','ADG5412','TMUX')):continue
         x=LOADS[id]
         add(symbol,counts[symbol],[x['typical_unit_mA'][r] for r in RAILS],[x['planning_unit_mA'][r] for r in RAILS],x['basis'])
     for label,id,count in [('three magnitude LEDs','magnitude_leds',3),('one clip LED','clip_leds',1),('one manual offset pot','dc_pots',1),('one external output load','output_loads',1)]:

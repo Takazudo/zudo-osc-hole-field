@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-fault-switch-t-exact-orderable-identity",
+      "record_id": "rec-fault-switch-t",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Manufacturer primary bytes identify the exact MPN/package; supplier stock remains separately open.",
+      "fact_ids": [
+        "fact-fault-switch-t-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-fault-switch-t-pinout",
+      "record_id": "rec-fault-switch-t",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer pin-function table covers every pad; no project nets are assigned by this record.",
+      "fact_ids": [
+        "fact-fault-switch-t-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-fault-switch-t-electrical-limits",
+      "record_id": "rec-fault-switch-t",
+      "domain": "electrical limits",
+      "status": "COVERED",
+      "reason": "Retained source supports the listed limits; conditions stay attached to each fact.",
+      "fact_ids": [
+        "fact-fault-switch-t-source-overvoltage",
+        "fact-fault-switch-t-supply-absolute",
+        "fact-fault-switch-t-pin-absolute",
+        "fact-fault-switch-t-supply-range",
+        "fact-fault-switch-t-logic-thresholds",
+        "fact-fault-switch-t-ron-85c",
+        "fact-fault-switch-t-on-leakage-85c",
+        "fact-fault-switch-t-normal-supply-current",
+        "fact-fault-switch-t-fault-grounded-source-leakage",
+        "fact-fault-switch-t-continuous-current",
+        "fact-fault-switch-t-fault-mode",
+        "fact-fault-switch-t-logic-without-supply",
+        "fact-fault-switch-t-thermal-pad",
+        "fact-fault-switch-t-package-land",
+        "fact-fault-switch-t-flat-ron-region",
+        "fact-fault-switch-t-ron-12v-single"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-fault-switch-t-manufacturer-product-description",
+      "record_id": "rec-fault-switch-t",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained document identifies the product; this is not application qualification.",
+      "fact_ids": [
+        "fact-fault-switch-t-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-fault-switch-t-mechanical-fit",
+      "record_id": "rec-fault-switch-t",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "Land and envelope are draft geometry; physical fit is not validated.",
+      "fact_ids": [
+        "fact-fault-switch-t-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-fault-switch-t-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-fault-switch-t-procurement",
+      "record_id": "rec-fault-switch-t",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Stock, lead time, consignment and assembly allocation remain unverified.",
+      "fact_ids": [
+        "fact-fault-switch-t-assembly-allocation",
+        "fact-fault-switch-t-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-fault-switch-t-assembly-allocation"
+      ]
+    },
+    {
+      "coverage_id": "cov-fault-switch-t-multi-channel-fault",
+      "record_id": "rec-fault-switch-t",
+      "domain": "multi-channel fault behaviour",
+      "status": "OPEN",
+      "reason": "No manufacturer statement for undisturbed channels; ADG-3 quad packing is excluded until one exists.",
+      "fact_ids": [
+        "fact-fault-switch-t-multi-channel-fault"
+      ],
+      "blocking_fact_ids": [
+        "fact-fault-switch-t-multi-channel-fault"
+      ]
+    },
+    {
+      "coverage_id": "cov-fault-switch-t-project-input-protection",
+      "record_id": "rec-fault-switch-t",
+      "domain": "project input protection",
+      "status": "OPEN",
+      "reason": "Datasheet comparison only; bench and partial-power checks NOT RUN.",
+      "fact_ids": [
+        "fact-fault-switch-t-project-input-proof",
+        "fact-fault-switch-t-fault-mode"
+      ],
+      "blocking_fact_ids": [
+        "fact-fault-switch-t-project-input-proof"
+      ]
+    }
+  ]
+}

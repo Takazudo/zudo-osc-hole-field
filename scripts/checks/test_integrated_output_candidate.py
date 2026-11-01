@@ -108,8 +108,9 @@ class IntegratedOutputCandidateTests(unittest.TestCase):
         self.assertEqual(len(r['general_0to8V_outputs']), 6)
         self.assertEqual(r['original_maximum_return_A'], 4.6)
         now, slower = [row for row in r['cases'] if row['switch_packages'] == 112]
-        self.assertEqual(now['prospective_continuous_mA'], {'+12V': 1800, '-12V': 1700, '+5V': 300})
-        self.assertFalse(now['arithmetic_windows_positive'])
+        self.assertEqual(now['prospective_continuous_mA'], {'+12V': 1700, '-12V': 1600, '+5V': 300})
+        # S2b candidate: TMUX planning loads open a positive arithmetic window.
+        self.assertTrue(now['arithmetic_windows_positive'])
         self.assertTrue(slower['arithmetic_windows_positive'])
         self.assertEqual(now['original_maximum_delivered_mA'], slower['original_maximum_delivered_mA'])
         self.assertAlmostEqual(slower['ramp_increment_mA']['+12V'], 149.76)

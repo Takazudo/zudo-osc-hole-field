@@ -35,8 +35,8 @@ class WavefolderContract(unittest.TestCase):
    self.assertEqual(self.roles['wavefolder:'+key+'_D_NEG'].pins,{'1':key+'_CLIP','2':'AGND'})
    previous=key+'_OUT'
  def test_protected_inputs_and_only_three_input_indicators(self):
-  isolators=[p for p in self.f.parts if p.symbol.endswith('ADG5412FBRUZ') and p.unit==1]
-  self.assertEqual({p.pins['3'] for p in isolators},{x+'_TIP' for x in ('IN','FOLD','BIAS')})
+  isolators=[p for p in self.f.parts if p.symbol.endswith('TMUX7412FRRPR') and p.unit==1]
+  self.assertEqual({p.pins['1'] for p in isolators},{x+'_TIP' for x in ('IN','FOLD','BIAS')})
   leds=[p for p in self.f.parts if p.panel_refs and p.attributes['PanelUid'].startswith('L:')]
   self.assertEqual(len(leds),3);self.assertTrue(all(p.attributes['Island']=='FOLDER_LEDS:${SHEETNAME}' for p in leds))
   self.assertTrue(all(p.pins['TN'] is None for p in self.f.parts if p.symbol.endswith('WQP518MA')))

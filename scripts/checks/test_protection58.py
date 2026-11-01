@@ -24,10 +24,10 @@ class ProtectionAuditTests(unittest.TestCase):
     def test_loss_budget_follows_declared_continuous_contract(self):
         report = audit.build(self.contract)
         self.assertEqual({r: v['continuous_A'] for r, v in report['loss_calculations'].items()},
-                         {'+12V': 1.7, '-12V': 1.6, '+5V': .3})
+                         {'+12V': 1.6, '-12V': 1.6, '+5V': .3})
         self.assertEqual({r: v['maximum_delivered_A'] for r, v in report['loss_calculations'].items()},
                          {'+12V': 2.1, '-12V': 2.0, '+5V': .5})
-        self.assertAlmostEqual(report['loss_calculations']['+12V']['legacy_ptc_drop_V'], .425)
+        self.assertAlmostEqual(report['loss_calculations']['+12V']['legacy_ptc_drop_V'], .4)
         # A future declared requirement must reach the audit instead of another
         # hardcoded map. The supply generator separately rejects ledger mismatch.
         self.contract['source_requirement']['minimum_continuous_current_mA']['+12V'] = 1800

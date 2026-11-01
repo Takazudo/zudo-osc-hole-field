@@ -10,7 +10,7 @@ RAILS=('+12V','-12V','+5V')
 def sheet(f, copies):
     packages={p.key.rsplit('.',1)[0]:p.symbol.split(':')[-1] for p in f.parts if p.prefix=='U'}
     count=Counter(packages.values());typ=dict.fromkeys(RAILS,0.0);upper=typ.copy();rows=[]
-    for symbol,load_id in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('LM393BIDR','comparators')]:
+    for symbol,load_id in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('OPA4197IDR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('TMUX7412FRRPR','fault_switches_tmux7412f'),('TMUX6112PWR','switches_tmux6112'),('LM393BIDR','comparators')]:
         n=count[symbol]
         if not n:continue
         a=LOADS[load_id]['typical_unit_mA'].copy();z=LOADS[load_id]['planning_unit_mA'].copy()

@@ -30,8 +30,8 @@ class MixerContract(unittest.TestCase):
         self.assertEqual([i.index for i in mix5.specification()[1]],[81,82])
         self.assertEqual(len([p for p in f.parts if p.symbol.endswith('WQP518MA')]),6)
         self.assertTrue(all(p.symbol.endswith('PTV09A-4020F-B103') for p in f.parts if p.panel_refs and p.prefix=='RV'))
-        self.assertEqual(len([p for p in f.parts if p.symbol.endswith('ADG5412FBRUZ') and p.unit==1]),5)
-        self.assertEqual({p.pins['3'] for p in f.parts if p.symbol.endswith('ADG5412FBRUZ') and p.unit==1},
+        self.assertEqual(len([p for p in f.parts if p.symbol.endswith('TMUX7412FRRPR') and p.unit==1]),5)
+        self.assertEqual({p.pins['1'] for p in f.parts if p.symbol.endswith('TMUX7412FRRPR') and p.unit==1},
                          {f'{i}_TIP' for i in range(1,6)})
         for i in range(1,6):
             r=self.role(f,'mix5:R_SUM_IN_'+str(i))
@@ -47,7 +47,7 @@ class MixerContract(unittest.TestCase):
         self.assertEqual(len([p for p in f.parts if p.symbol.endswith('WQP518MA')]),6)
         level=[p for p in f.parts if p.attributes.get('PanelUid')=='C:${SHEETNAME}.LEVEL']
         self.assertEqual(len(level),1);self.assertTrue(level[0].symbol.endswith('PTV09A-4020F-B104'))
-        self.assertEqual({p.pins['3'] for p in f.parts if p.symbol.endswith('ADG5412FBRUZ') and p.unit==1},
+        self.assertEqual({p.pins['1'] for p in f.parts if p.symbol.endswith('TMUX7412FRRPR') and p.unit==1},
                          {f'{i}_TIP' for i in range(1,5)}|{'ATTEN_TIP'})
         self.assertEqual(self.role(f,'mix4_vca:R_SUM_FEEDBACK')[0].value,'50 kΩ')
         for i in range(1,5):
@@ -68,7 +68,7 @@ class MixerContract(unittest.TestCase):
 
     def test_current_worksheet_counts_and_unqualified_maxima(self):
         reports=build()
-        self.assertEqual(reports['mix5']['IC_packages_per_instance']['ADG5412FBRUZ'],5)
+        self.assertEqual(reports['mix5']['IC_packages_per_instance']['TMUX7412FRRPR'],5)
         self.assertEqual(reports['mix4_vca']['IC_packages_per_instance']['LM13700M_NOPB'],1)
         for report in reports.values():
             self.assertEqual(len(report['instances']),2)

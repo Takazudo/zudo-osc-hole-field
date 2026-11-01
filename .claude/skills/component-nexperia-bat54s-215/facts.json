@@ -212,6 +212,20 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-reverse-current-temperature",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "TYPICAL_CURVE",
+      "value": "Fig. 2 gives typical IR versus VR (0..30 V) at Tamb = 125, 85 and 25 C only. Approximate project readings of the typical curves: 25 C about 0.3 uA at 1 V rising to about 1.5..2 uA at 30 V; 85 C about 15..20 uA at 1 V rising to about 60 uA at 30 V; 125 C about 200..500 uA. The only maximum is Table 7, 2 uA at VR = 25 V and 25 C.",
+      "unit": "NONE",
+      "conditions": "Typical curves only, log scale, readings approximate; they do not bound IR at any temperature other than the 25 C, 25 V table row.",
+      "locator": "Section/table audit: src-clamp-diode-datasheet physical PDF page index 2, printed 3/9, Fig. 2 Reverse current as a function of reverse voltage; typical values",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

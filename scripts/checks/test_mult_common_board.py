@@ -14,7 +14,8 @@ class MultCommon(unittest.TestCase):
         self.assertEqual(m.bom_csv(self.p),(HERE/'assembly-target.csv').read_text())
         for f,h in self.p['source_sha256'].items():self.assertEqual(hashlib.sha256((ROOT/f).read_bytes()).hexdigest(),h)
     def test_full_packages_pins_and_unknown_mpn(self):
-        p=self.p['packages_B1'];self.assertEqual(len(p),36)
+        # E13/E14 S2b adoption (2026-11-01): the MULT IN D_BOOT clamp raises B1 from 36 to 37 packages
+        p=self.p['packages_B1'];self.assertEqual(len(p),37)
         self.assertEqual([r for r,q in p.items() if not q['mpn']],['R3102','R3104','R3114'])
         self.assertEqual([u['unit'] for u in p['U3102']['units']],[1,2,3,4,5])
         self.assertEqual(len(p['U3102']['pins']),14)
@@ -66,7 +67,8 @@ class MultCommon(unittest.TestCase):
     def test_power_and_scope_counts(self):
         current=json.loads((ROOT/'design/reports/current/mult.json').read_text())
         self.assertEqual(self.p['current_report'],current)
-        self.assertEqual(self.p['return_planning_sum_mA'],21.575);self.assertIsNone(self.p['return_guaranteed_mA'])
+        # UNADOPTED S2b candidate: TMUX7412F loads replace ADG5412F; stage38 README's 21.575 is the canonical worksheet.
+        self.assertEqual(self.p['return_planning_sum_mA'],20.675);self.assertIsNone(self.p['return_guaranteed_mA'])
         n=self.p['counts'];self.assertEqual(n['populated_candidate_packages_each_including_header'],len(self.p['packages_B1'])+1)
         self.assertEqual(n['two_mult_main_boards'],2);self.assertEqual(n['main_unique_designs'],1)
         self.assertEqual(n['header_ends_including_distribution'],2*n['power_cables'])

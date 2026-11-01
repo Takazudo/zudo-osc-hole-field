@@ -21,7 +21,7 @@ def primitives(parts):
     for p in parts:
         if p.prefix in ('R','RB','C'):
             rows.append(f'{p.prefix[0]}{name(p.key)} {net(p.pins["1"])} {net(p.pins["2"])} {number(p.value):g}')
-        elif p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) and p.unit in MAPS:
+        elif p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')) and p.unit in MAPS:
             out,minus,plus=MAPS[p.unit]
             rows.append(f'E{name(p.key)} {net(p.pins[out])} 0 {net(p.pins[plus])} {net(p.pins[minus])} 1e6')
     return rows

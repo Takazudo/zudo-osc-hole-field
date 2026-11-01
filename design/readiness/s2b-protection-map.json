@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "status": "UNADOPTED groundwork; protection standard unchanged",
+ "status": "UNADOPTED S2b candidate (decision E13); fault rows revised after the independent review",
  "sources": {
   "adg": {
    "title": "ADG5412F/ADG5413F data sheet Rev. C",
@@ -535,7 +535,7 @@
    },
    "tmux7412f": {
     "verdict": "PASS",
-    "basis": "Same behaviour: overvoltage only beyond the supplies by VT (SCDS404B index 32, 9.3.2.4)"
+    "basis": "Survival: overvoltage only beyond the supplies by VT (SCDS404B index 32, 9.3.2.4). Signal passing is a separate condition: VT is 0.7 V typical at 25 C only (7.5), RON rises exponentially within 3 V of VDD (9.3.4), and no RON maximum exists at +/-12 V (7.6 is +/-15 V +/-10 %, VS = -10..+10 V). Usable signal range: VSS .. VDD - 3 V, i.e. -12 .. +9 V at nominal rails. VDD - 3 V is guaranteed only with VSS = 0 V (7.8: RON <= 15 ohm at 85 C for VS = 0..7.8 V, VDD = 10.8..13.2 V); at +/-12 V dual supply it is an extrapolation; see usable_signal_range"
    },
    "changes_with_tmux7412f": false
   },
@@ -559,7 +559,7 @@
    },
    "tmux7412f": {
     "verdict": "PASS",
-    "basis": "Sources Hi-Z, +/-60 V blocked (index 32, 9.3.2.2). IS(FA) grounded +/-125 uA max, ID(FA) grounded +/-50 nA max at 85 C (Section 7.6, index 6)"
+    "basis": "Sources Hi-Z, +/-60 V blocked (index 32, 9.3.2.2). IS(FA) grounded +/-125 uA is TYPICAL only (7.6 TYP column; no maximum), so source-side fault leakage has no guaranteed bound, as for ADG5412F. ID(FA) grounded +/-50 nA is a maximum at 85 C (7.6, index 6)"
    },
    "changes_with_tmux7412f": false
   },
@@ -594,10 +594,10 @@
     "basis": "Single-supply operation 8..44 V is specified; an input outside the remaining span is an overvoltage and turns the switch off. Conditional on VDD - VSS >= 8 V for the on state"
    },
    "tmux7412f": {
-    "verdict": "PASS",
-    "basis": "Single supply 8..44 V specified; same overvoltage rule. Conditional as for ADG5412F"
+    "verdict": "UNKNOWN",
+    "basis": "-12 V missing, +12 V present: PASS, VSS = 0 V is a specified single supply (VDD - VSS >= 8 V; 7.4, 9.1). +12 V missing, -12 V present: UNKNOWN, VDD = 0 V is below the recommended VDD minimum of 5 V (7.4) while the UVLO is defined on VDD - VSS = 12 V (7.5), so the device is not powered off by that definition and no datasheet text covers the state"
    },
-   "changes_with_tmux7412f": false
+   "changes_with_tmux7412f": true
   },
   {
    "row": "F7 +5 V enable present before the analog rails (startup, R-ADG)",
@@ -643,7 +643,7 @@
    },
    "tmux7412f": {
     "verdict": "PASS",
-    "basis": "RON 14 ohm max, ID(ON) +/-2 nA max at 85 C, +/-15 V table (Section 7.6); +/-12 V not guaranteed"
+    "basis": "Conditional: inside the usable signal range VSS .. VDD - 3 V (-12 .. +9 V at nominal rails) into the 100 k R_PD drain load. RON 14 ohm max and ID(ON) +/-2 nA max at 85 C exist in the +/-15 V +/-10 % table for VS = -10..+10 V (7.6); RON 15 ohm and RFLAT 0.5 ohm max at 85 C exist in the 12 V single-supply table for VS = 0..7.8 V (7.8, VSS = 0 V). Neither is a +/-12 V dual-supply guarantee. Above VDD - 3 V RON rises exponentially (9.3.4): UNKNOWN there"
    },
    "changes_with_tmux7412f": false
   },
@@ -666,10 +666,71 @@
    "FAIL": 1
   },
   "tmux7412f": {
-   "PASS": 8,
+   "PASS": 7,
    "FAIL": 2,
-   "UNKNOWN": 1
+   "UNKNOWN": 2
   }
+ },
+ "usable_signal_range": {
+  "range_V": [
+   -12,
+   9
+  ],
+  "basis": "VSS .. VDD - 3 V at nominal +/-12 V rails (9.3.4). Guaranteed only with VSS = 0 V: 7.8 gives RON <= 15 ohm (-40..85 C) for VS = 0..7.8 V at VDD = 10.8..13.2 V. At +/-12 V dual supply the limit is an extrapolation, not a table condition. The fault detector opens the switch beyond VDD + VT / VSS - VT, VT 0.7 V typical at 25 C only (7.5)",
+  "roles": [
+   {
+    "role": "audio inputs (filter IN, mix4 1-4, mix5 1-5, wavefolder IN, manual_ab A/B, mult IN, sample_hold IN, offset IN)",
+    "inputs_per_unit": 37,
+    "normal_swing_V": [
+     -5,
+     5
+    ],
+    "class": "audio_nominal_V / mult nominal linear range",
+    "verdict": "PASS",
+    "margin_V": 4
+   },
+   {
+    "role": "bipolar CV inputs (envelope RISE/FALL, filter FREQ/RES/GAIN, mix4 ATTEN, offset OFFSET, oscillator FM/PWM, wavefolder FOLD/BIAS)",
+    "inputs_per_unit": 43,
+    "normal_swing_V": [
+     -5,
+     5
+    ],
+    "class": "bipolar_cv_nominal_V",
+    "verdict": "PASS",
+    "margin_V": 4
+   },
+   {
+    "role": "gate and trigger inputs (envelope SIG, oscillator SYNC, sample_hold TRIGGER)",
+    "inputs_per_unit": 13,
+    "normal_swing_V": [
+     0,
+     5
+    ],
+    "class": "gate_output_nominal_V (project gate level)",
+    "verdict": "PASS",
+    "margin_V": 4,
+    "note": "External gates above +9 V (common 0..10 V sources) enter the rising-RON region; into the high-impedance comparator path this is UNKNOWN, not FAIL"
+   },
+   {
+    "role": "pitch input (oscillator 1V/OCT)",
+    "inputs_per_unit": 5,
+    "normal_swing_V": [
+     -5,
+     8
+    ],
+    "class": "pitch_linear_range_V (USER DECISION 2026-11-01 13:41Z (decision card): option A1 of the phase-21 pitch-range study. Linear passing range of the 1V/OCT inputs only; calibrated accuracy stays limited to calibration.pitch_tracking_scope.)",
+    "verdict": "PASS",
+    "margin_V": 0.53,
+    "basis": {
+     "nominal_flat_top_V": 9.0,
+     "required_low_V": 11.53,
+     "low_band_flat_top_V": 8.53,
+     "rail_band_source": "design/power/supply-architecture-input.json source_requirement.required_load_voltage_magnitude_V +12V (requirement contract; source NOT SELECTED)"
+    },
+    "note": "Verdict covers signal passing only. The top of the declared range is compared with VDD - 3 V at the required +12V minimum; that limit is guaranteed only at VSS = 0 V (7.8) and extrapolated at +/-12 V. The bottom lies in the flat region down to VSS. Downstream: OPA4197 VCM (V-) - 0.1 .. (V+) + 0.1 V is guaranteed; its input-stage transition (V+) - 3 .. (V+) - 1.5 V has no CMRR limit, and the declared top stays below it at that minimum. Accuracy is a separate gate: calibration scope stays 0..5 V at 25 C; the clamp-leakage term is in precision_input_clamp (BAV199,215 precision variant on these inputs)"
+   }
+  ]
  },
  "envelope_internal_tmux6112": [
   {
@@ -709,18 +770,210 @@
   },
   {
    "row": "Logic before rails",
-   "verdict": "FAIL",
-   "basis": "SELx absolute maximum is VDD + 0.3 V (6.1, index 4). +5 V logic present while +12 V is absent exceeds it unless current is limited below 30 mA; needs a sequencing or series-resistor check"
+   "verdict": "PASS",
+   "basis": "SELx absolute maximum is VDD + 0.3 V (6.1, index 4). Candidate SEL hold: 100 k pull-up to +5 V, BAT54S clamp to +12V and a BAT54S pull-down to the logic output; SEL <= VDD + 0.24 V at 25 C (VF max at 0.1 mA). Below 25 C the VF margin is UNKNOWN (no curve)"
   },
   {
    "row": "Logic before rails, PD definition 1",
-   "verdict": "FAIL",
-   "basis": "Definition 1 holds +5 V <= 0.8 V until both analog rails exceed about 1.5 V and only requires +5 V <= 0.8 V by the time the first analog rail leaves. The HC00/HC14 drivers of SEL run from +5 V, so SEL <= V(+5 V) <= 0.8 V in those windows. 0.8 V <= VDD + 0.3 V needs VDD >= 0.5 V; for VDD < 0.5 V the excess is up to 0.5 V on ramp-up and on discharge. After release (VDD >= 1.5 V) the row holds only while V(+5 V) <= V(+12 V) + 0.3 V, which the common ramp gives (CALCULATED, conditional on the PD slopes). 6.1 lists VDIG and IDIG as separate limits with no current-limited exception, so no series resistor makes the voltage row hold"
+   "verdict": "PASS",
+   "basis": "Merged canonical row (f8e048f3) restated for the SEL hold. Definition 1 lets +5 V reach 0.8 V while VDD < 0.5 V; with the direct HC drive that exceeded VDD + 0.3 V. With the hold the driver only pulls SEL down through the BAT54S pull-down and the 100 k pull-up is clamped to +12V, so SEL <= VDD + 0.24 V at 25 C (VF max at 0.1 mA, hold current <= 54.5 uA) whatever the +5 V ramp; below 25 C UNKNOWN (no VF curve)"
   },
   {
    "row": "SEL series resistor (current row only)",
-   "verdict": "PROPOSED",
-   "basis": "IDIG <= 30 mA (6.1, index 4) needs R >= 0.8 V / 30 mA = 27 ohm under definition 1, and R >= 5.5 V / 30 mA = 183 ohm if +5 V is fully up with VDD at 0 V (5.5 V is a PROPOSED +5 V ceiling, not a sourced PD value). A 1 kOhm series resistor per SEL, as on the existing ADG5412F IN drive, bounds IDIG to <= 0.8 mA (definition 1) or <= 5.5 mA (unsequenced). Its drop into the 6 MOhm SEL pull-down (6.5, index 5) is <= 0.02 %. The voltage row needs either SEL held <= 0.3 V until VDD >= 0.5 V (an OSC enable such as #59 P59-C ENABLE_OK) or a PD bound of 0.3 V instead of 0.8 V"
+   "verdict": "PASS",
+   "basis": "Merged canonical row (f8e048f3): IDIG <= 30 mA (6.1, index 4). The SEL hold limits SEL current to the 100 k pull-up, <= 5.5 V / 100 k = 55 uA (5.5 V is a PROPOSED +5 V ceiling, not a sourced PD value), so the proposed separate 1 kOhm series resistor is not fitted"
   }
- ]
+ ],
+ "precision_input_clamp": {
+  "status": "UNADOPTED S2b candidate (phase 24 BAV199 rail clamp; phase 25 bootstrap clamp D_BOOT): precision variant of high_impedance_input",
+  "model": {
+   "r_eff_ohm": 11001.9,
+   "r_eff_basis": "R_LIMIT + R_PD || (signals.output_series_ohm + TMUX7412F RON 14 ohm)",
+   "drift_definition": "max over the role range (0.5 V steps) and the temperature span of |e(V,T) - e(V,25 C)|; cents at 1 V/oct (1 mV = 1.2 c)",
+   "before": "BAT54S,215 typical Fig. 2 curves (project digitisation), log-interpolated in temperature and extrapolated below 25 C; no guaranteed bound exists",
+   "after_bound": "(IR max at the top temperature + IR max at 25 C) x r_eff; BAV199 Fig. 4 curve (1) at VR = 75 V, assuming IR does not rise at lower VR or below 25 C; source is the JLCPCB-hosted mirror (UNSOURCED until a manufacturer-hosted copy is compared)",
+   "after_typical": "Fig. 4 curve (2) typical values",
+   "bootstrap": "D_BOOT error r_eff x 2 Is sinh(VOS / Vt); its diode voltage is set by the follower, so it adds to and does not divert the BAV199 leakage term, which is unchanged. Typical drift uses Is = BAT54S typical IR at 1 V (an upper estimate) and |VOS| = 100 uV + drift x |T - 25 C|"
+  },
+  "roles": [
+   {
+    "role": "pitch (oscillator 1V/OCT)",
+    "range_V": [
+     -5,
+     8
+    ],
+    "range_source": "signals.pitch_linear_range_V",
+    "follower": "OPA4197",
+    "placements": [
+     {
+      "stem": "high_impedance_input_J_O1_1V_1V__D",
+      "mpn": "BAV199,215",
+      "per_unit": 5
+     }
+    ],
+    "bootstrap_placements": [
+     {
+      "stem": "high_impedance_input_J_O1_1V_1V__D_BOOT",
+      "mpn": "BAT54S,215",
+      "per_unit": 5
+     }
+    ],
+    "bootstrap_25C": {
+     "offset_bound_mV": 0.1713,
+     "offset_bound_cents": 0.206,
+     "basis": "Is <= 2 uA (BAT54S IR maximum at 25 V, 25 C), |VOS| <= 100 uV; a fixed offset removed by the 25 C trim"
+    },
+    "0-40 C": {
+     "before_bat54s_typical_drift_mV": 13.385,
+     "before_bat54s_typical_drift_cents": 16.06,
+     "before_bat54s_guaranteed": "UNKNOWN (BAT54S IR maximum only at 25 C)",
+     "after_bav199_bound_mV": 0.1276,
+     "after_bav199_bound_cents": 0.153,
+     "after_bav199_typical_mV": 0.00011,
+     "bootstrap_typical_drift_mV": 0.0797,
+     "bootstrap_typical_drift_cents": 0.096,
+     "bootstrap_guaranteed": "UNKNOWN (no BAT54S IR maximum above 25 C; VOS drift maximum)",
+     "total_after_cents": 0.249
+    },
+    "0-70 C": {
+     "before_bat54s_typical_drift_mV": 112.335,
+     "before_bat54s_typical_drift_cents": 134.8,
+     "before_bat54s_guaranteed": "UNKNOWN (BAT54S IR maximum only at 25 C)",
+     "after_bav199_bound_mV": 0.198,
+     "after_bav199_bound_cents": 0.238,
+     "after_bav199_typical_mV": 0.00042,
+     "bootstrap_typical_drift_mV": 1.4385,
+     "bootstrap_typical_drift_cents": 1.726,
+     "bootstrap_guaranteed": "UNKNOWN (no BAT54S IR maximum above 25 C; VOS drift maximum)",
+     "total_after_cents": 1.964
+    }
+   },
+   {
+    "role": "MULT IN",
+    "range_V": [
+     -5,
+     5
+    ],
+    "range_source": "signals.bipolar_cv_nominal_V",
+    "follower": "OPA4197",
+    "placements": [
+     {
+      "stem": "CORE_high_impedance_input_J_B1_IN_IN__D",
+      "mpn": "BAV199,215",
+      "per_unit": 2
+     }
+    ],
+    "bootstrap_placements": [
+     {
+      "stem": "CORE_high_impedance_input_J_B1_IN_IN__D_BOOT",
+      "mpn": "BAT54S,215",
+      "per_unit": 2
+     }
+    ],
+    "bootstrap_25C": {
+     "offset_bound_mV": 0.1713,
+     "offset_bound_cents": 0.206,
+     "basis": "Is <= 2 uA (BAT54S IR maximum at 25 V, 25 C), |VOS| <= 100 uV; a fixed offset removed by the 25 C trim"
+    },
+    "0-40 C": {
+     "before_bat54s_typical_drift_mV": 8.278,
+     "before_bat54s_typical_drift_cents": 9.93,
+     "before_bat54s_guaranteed": "UNKNOWN (BAT54S IR maximum only at 25 C)",
+     "after_bav199_bound_mV": 0.1276,
+     "after_bav199_bound_cents": 0.153,
+     "after_bav199_typical_mV": 0.00011,
+     "bootstrap_typical_drift_mV": 0.0797,
+     "bootstrap_typical_drift_cents": 0.096,
+     "bootstrap_guaranteed": "UNKNOWN (no BAT54S IR maximum above 25 C; VOS drift maximum)",
+     "total_after_cents": 0.249
+    },
+    "0-70 C": {
+     "before_bat54s_typical_drift_mV": 68.323,
+     "before_bat54s_typical_drift_cents": 81.99,
+     "before_bat54s_guaranteed": "UNKNOWN (BAT54S IR maximum only at 25 C)",
+     "after_bav199_bound_mV": 0.198,
+     "after_bav199_bound_cents": 0.238,
+     "after_bav199_typical_mV": 0.00042,
+     "bootstrap_typical_drift_mV": 1.4385,
+     "bootstrap_typical_drift_cents": 1.726,
+     "bootstrap_guaranteed": "UNKNOWN (no BAT54S IR maximum above 25 C; VOS drift maximum)",
+     "total_after_cents": 1.964
+    }
+   },
+   {
+    "role": "S&H IN",
+    "range_V": [
+     -5,
+     5
+    ],
+    "range_source": "signals.bipolar_cv_nominal_V",
+    "follower": "OPA4196",
+    "placements": [
+     {
+      "stem": "high_impedance_input_J_H1_IN___D",
+      "mpn": "BAV199,215",
+      "per_unit": 2
+     }
+    ],
+    "bootstrap_placements": [
+     {
+      "stem": "high_impedance_input_J_H1_IN___D_BOOT",
+      "mpn": "BAT54S,215",
+      "per_unit": 2
+     }
+    ],
+    "bootstrap_25C": {
+     "offset_bound_mV": 0.1713,
+     "offset_bound_cents": 0.206,
+     "basis": "Is <= 2 uA (BAT54S IR maximum at 25 V, 25 C), |VOS| <= 100 uV; a fixed offset removed by the 25 C trim"
+    },
+    "0-40 C": {
+     "before_bat54s_typical_drift_mV": 8.278,
+     "before_bat54s_typical_drift_cents": 9.93,
+     "before_bat54s_guaranteed": "UNKNOWN (BAT54S IR maximum only at 25 C)",
+     "after_bav199_bound_mV": 0.1276,
+     "after_bav199_bound_cents": 0.153,
+     "after_bav199_typical_mV": 0.00011,
+     "bootstrap_typical_drift_mV": 0.0462,
+     "bootstrap_typical_drift_cents": 0.055,
+     "bootstrap_guaranteed": "UNKNOWN (no BAT54S IR maximum above 25 C; VOS drift typical only)",
+     "total_after_cents": 0.209
+    },
+    "0-70 C": {
+     "before_bat54s_typical_drift_mV": 68.323,
+     "before_bat54s_typical_drift_cents": 81.99,
+     "before_bat54s_guaranteed": "UNKNOWN (BAT54S IR maximum only at 25 C)",
+     "after_bav199_bound_mV": 0.198,
+     "after_bav199_bound_cents": 0.238,
+     "after_bav199_typical_mV": 0.00042,
+     "bootstrap_typical_drift_mV": 0.6349,
+     "bootstrap_typical_drift_cents": 0.762,
+     "bootstrap_guaranteed": "UNKNOWN (no BAT54S IR maximum above 25 C; VOS drift typical only)",
+     "total_after_cents": 1.0
+    }
+   }
+  ],
+  "placements_per_unit": {
+   "BAT54S,215": 89,
+   "BAV199,215": 9
+  },
+  "bootstrap_per_unit": 9,
+  "opa4197_input_absolute_maximum": {
+   "rows": "SBOS737C 6.1 (index 4): signal input pins, common-mode (V-) - 0.5 .. (V+) + 0.5 V; current +/-10 mA. Footnote (1) is the general stress note; no footnote lets the voltage row be exceeded when the current is limited. 7.3.7 (index 24-25): the ESD steering diodes are intended to remain inactive in normal operation; current-limiting resistors and TVS are named only for EOS events. OPA4196 (S&H IN) has the same rows in SBOS869 6.1",
+   "reading": "Both rows apply. The VDD .. VDD + VT window is therefore not PASS on the current row alone",
+   "declared_contract": "With input_continuous_fault_V +/-12 V and the required load-rail minima (+12V 11.53 V, -12V 11.74 V) the jack exceeds the local rail by at most 0.47 V / 0.26 V: PASS against (V+) + 0.5 V with 0.03 V margin, independent of the clamp diode",
+   "beyond_contract_without_bootstrap": "A source at the supply maximum (+12V 12.3 V at source) against a load rail at 11.53 V gives 0.77 V. Then SENSE - V+ <= min(VT, VF): BAT54S rail clamp VF <= 0.24 V at 0.1 mA, 25 C only; BAV199 VF has no maximum below 1 mA (UNKNOWN)",
+   "beyond_contract_with_bootstrap": {
+    "bound": "SENSE - V+ <= VF(D_BOOT) + I x ZO <= 0.24 + 0.026 = 0.266 V",
+    "basis": "The follower output limits at the rail (no phase reversal: OPA4197 SBOS737C 7.3.3 index 21, OPA4196 SBOS869 7.3.3 index 20). With the TMUX7412F drain inside its own absolute maximum (Dx <= VDD + 0.7 V, SCDS404B 7.1; beyond it the switch row fails first), I <= 70 uA through R_LIMIT and BAT54S VF <= 0.24 V (0.1 mA row, 25 C). ZO 375 ohm is the typical open-loop output impedance at 1 MHz (no maximum)",
+    "margin_V": 0.234,
+    "verdict": "PASS at 25 C (margin 0.23 V); below 25 C the BAT54S VF has no curve or maximum, so it is PASS only if VF rises by less than the margin (a Schottky tempco of about -1 to -2 mV/K, a general figure and not a BAT54S datasheet value, would add about 0.05 V at 0 C): UNKNOWN as a guarantee",
+    "negative_side": "Symmetric: SENSE >= V- - 0.266 V"
+   },
+   "current_row": "PASS: <= 70 uA, far below 10 mA; the follower output sinks or sources the same current",
+   "verdict_bav199_without_bootstrap": "PASS within the declared contract; beyond it UNKNOWN",
+   "verdict_with_bootstrap": "PASS within the declared contract; beyond it PASS at 25 C, UNKNOWN below 25 C (typical PASS)",
+   "not_covered": "Rail-missing and unpowered rows: with the follower unpowered D_BOOT clamps SENSE to the output pin, whose ESD diodes go to the dead rail; the BAV199 rail clamp is unchanged. Follower slewing: D_BOOT conducts while |SENSE - OUT| exceeds about 0.2 V during fast edges (transient only). NOT RUN"
+  }
+ }
 }

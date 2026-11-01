@@ -26,9 +26,11 @@ def build():
                           'typical_unit_mA': typical_unit,
                           'planning_maximum_unit_mA': max_unit, 'basis': basis})
 
-    for symbol, load_id in (('OPA4197IPWR', 'opamp_precision'),
+    for symbol, load_id in (('OPA4197IPWR', 'opamp_precision'), ('OPA4197IDR', 'opamp_precision'),
                             ('OPA4196IDR', 'opamp_indicator'),
-                            ('ADG5412FBRUZ', 'fault_switches')):
+                            ('ADG5412FBRUZ', 'fault_switches'),
+                            ('TMUX7412FRRPR', 'fault_switches_tmux7412f'),
+                            ('TMUX6112PWR', 'switches_tmux6112')):
         count = counts[symbol]
         if count:
             row = LOADS[load_id]

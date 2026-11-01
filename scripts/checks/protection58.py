@@ -110,7 +110,7 @@ def build(contract=None):
             continue
         family = families[instance.family]
         existing_switch_packages.update(designator(p, instance) for p in family.parts
-                                        if p.symbol.endswith('ADG5412FBRUZ') and not p.dnp)
+                                        if p.symbol.endswith(('ADG5412FBRUZ', 'TMUX7412FRRPR', 'TMUX6112PWR')) and not p.dnp)
         jacks = {p.pins['T']: p for p in family.parts if p.prefix == 'J' and 'T' in p.pins}
         channels = 0
         for part in family.parts:

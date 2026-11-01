@@ -56,7 +56,7 @@ def common(fold=5,bias=0,*,depth=0,bias_cv=0,offset=-.3,mismatch=False,sine=Fals
   role=p.attributes.get('Role','')
   if p.prefix in ('R','RB','C'):
    lines.append(f'{p.prefix[0]}{name(p.key)} {mapped(p.pins["1"])} {mapped(p.pins["2"])} {number(p.value):g}')
-  elif p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) and p.unit in MAPS:
+  elif p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')) and p.unit in MAPS:
    out,minus,plus=MAPS[p.unit]
    if role=='wavefolder:CURRENT_SERVO':lines.append(f'B{name(p.key)} {mapped(p.pins[out])} 0 V=10.5*tanh(1e5*(v({mapped(p.pins[plus])})-v({mapped(p.pins[minus])}))/10.5)')
    else:lines.append(f'E{name(p.key)} {mapped(p.pins[out])} 0 {mapped(p.pins[plus])} {mapped(p.pins[minus])} 1e6')

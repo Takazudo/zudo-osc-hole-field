@@ -55,7 +55,7 @@ def model_contract(parts, facts):
         if amplifier:
             power = [p for p in found if p.unit == 5]
             for p in power:
-                if (p.dnp or p.prefix != 'U' or p.symbol != LIBRARY + 'OPA4197IPWR' or
+                if (p.dnp or p.prefix != 'U' or p.symbol not in (LIBRARY + 'OPA4197IPWR', LIBRARY + 'OPA4197IDR') or
                         p.pins != {'4': '+12V', '11': '-12V'}):
                     raise ValueError('lag amplifier power identity changed')
             found = [p for p in found if p.unit != 5]
@@ -66,7 +66,7 @@ def model_contract(parts, facts):
 
     def amp(role):
         p = one(role, True)
-        if p.prefix != 'U' or p.symbol != LIBRARY + 'OPA4197IPWR' or p.unit not in (1, 2, 3, 4):
+        if p.prefix != 'U' or p.symbol not in (LIBRARY + 'OPA4197IPWR', LIBRARY + 'OPA4197IDR') or p.unit not in (1, 2, 3, 4):
             raise ValueError('lag model amplifier identity changed')
         out, minus, plus = AMP_MAPS[p.unit - 1]
         if set(p.pins) != {out, minus, plus} or p.pins[out] != p.pins[minus]:

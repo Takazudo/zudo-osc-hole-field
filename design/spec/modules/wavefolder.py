@@ -3,6 +3,7 @@
 Index allocation W2=51, W1=52. No hardware or stability qualification claimed.
 """
 from design.spec.modules.io_partition import refined
+import re
 from collections import defaultdict
 from dataclasses import replace
 from design.spec.modules.oscillator import Builder,PLACEMENTS,RAILS
@@ -45,7 +46,8 @@ class WavefolderBuilder(Builder):
     if p.key.startswith('C_DEC_'):attrs['Island']='FOLDER_'+('LEDS' if tag=='LED' else 'CORE')+':${SHEETNAME}'
     compiled.append(replace(p,key=tag+'_'+p.key,attributes=attrs))
   counts=defaultdict(int);assigned={};out=[]
-  for p in compiled:
+  # R-exact series tails number after every existing part (designator lock).
+  for p in sorted(compiled,key=lambda q:bool(re.search(r'_SER\d+\.',q.key))):
    prefix='R' if p.prefix=='RB' else p.prefix;key=(prefix,p.key.rsplit('.',1)[0])
    if key not in assigned:counts[prefix]+=1;assigned[key]=counts[prefix]
    n=assigned[key];pos=len(out)
@@ -100,7 +102,7 @@ def family():
   b.amp(k,'audio',k+'_CLIP',k+'_SUM',k+'_OUT')
   b.r(k+'_INPUT','100 kΩ',previous,k+'_SUM');b.r(k+'_FEEDBACK','100 kΩ',k+'_OUT',k+'_SUM')
   previous=k+'_OUT'
- b.amp('OUTPUT_SCALE','audio','F4_OUT','OUTPUT_FB','PRE_AC');b.r('OUTPUT_RF','70 kΩ','PRE_AC','OUTPUT_FB');b.r('OUTPUT_RG','10 kΩ','OUTPUT_FB','AGND')
+ b.amp('OUTPUT_SCALE','audio','F4_OUT','OUTPUT_FB','PRE_AC');b.series('OUTPUT_RF',('20 kΩ','50 kΩ'),'PRE_AC','OUTPUT_FB');b.r('OUTPUT_RG','10 kΩ','OUTPUT_FB','AGND')
  # Ten exact100nF C0G parts yield1uF nominal without inventing a film MPN.
  for i in range(10):b.device(CATALOG[SHORTLIST['c_slew']['mpn']],f'AC_BANK{i}','C',{'1':'PRE_AC','2':'AC_NODE'},value='100 nF C0G')
  b.r('AC_RETURN','100 kΩ','AC_NODE','AGND');b.amp('AC_BUFFER','audio','AC_NODE','AC_BUFFER','AC_BUFFER')
@@ -108,6 +110,7 @@ def family():
  b.cell('level_attenuator','LEVEL',{'REMOTE_INPUT':'LEVEL_REMOTE','OUT':'LEVEL_OUT'},panel='C:{}.LEVEL')
  b.cell('general_output','OUT',{'SIGNAL':'LEVEL_OUT','JACK':'OUT_TIP'})
  b.device('WQP518MA','J_OUT','J',{'T':'OUT_TIP','S':'AGND','TN':None},panel='J:{}.OUT',island='')
+ b.flush_series()
  return b.complete()
 
 

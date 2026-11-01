@@ -24,7 +24,8 @@ class PartitionTests(unittest.TestCase):
     def test_split_counts_and_all_nearby_bypasses(self):
         report=partition35.read('design/partition/partition.json')
         counts={b['board_key']:b['physical_package_count'] for b in report['boards']}
-        self.assertEqual((counts['JL'],counts['JR']),(1060,1031))
+        # E13/E14 S2b adoption (2026-11-01): the 9 precision-variant D_BOOT clamps raise JL from 1060 to 1069
+        self.assertEqual((counts['JL'],counts['JR']),(1069,1031))
         self.assertEqual((report['counts']['boards'],report['counts']['factory_load_side_wires'],report['counts']['load_side_copper_terminals']),(10,18,36))
         floor=partition35.read('design/partition/floorplan-candidate.json')
         self.assertEqual(len(floor['bypass_proximity']['pairs']),414)
