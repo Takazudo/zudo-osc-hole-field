@@ -14,8 +14,14 @@ It is not validated and not a manufacturing or order input. Nothing here is a fa
 - **Count tests.** `test_partition35`, `test_family_reuse` and `test_mult_common_board` (with the
   stage38 `generate.py` counts) are re-baselined for the D_BOOT parts. The stage45/50/54 historical
   bindings stay as recorded FAILs pending the owner's policy review.
-- **PCB steps.** The #293 fill, DRC and native RB4413 results are recorded in the phase-27 report
-  (`adoption/pcb-gate.json`). The board PCBs are not resynchronised in this adoption.
+- **PCB steps (disposable copies; `adoption/pcb-gate.json`).** The committed osc-core,
+  osc-jack-left and osc-jack-right PCBs are unchanged and now FAIL schematic parity against the
+  adopted schematic (704 / 548 / 496 issues, capped counts). On synced disposable copies the #293
+  zone fill completes (osc-core 649 s, 2277 MiB peak, 900 s budget) and parity is 0, but DRC FAILs
+  with 1470 / 1400 / 1396 errors (capped) from swapped footprints under existing copper and new
+  parts at their floorplan positions. RB4413 passes the native courtyard and clearance scan; the
+  issue189 pilot is BLOCKED by its own netlist guard. Placement and routing of the three boards are
+  required before any board gate can pass.
 
 ## Revisions
 

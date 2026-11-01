@@ -1,0 +1,217 @@
+{
+ "schema_version": 1,
+ "status": "Disposable-copy native results for the S2b adoption (E15); the committed PCBs are unchanged and every board is an unvalidated draft",
+ "source_commit": "9b0d7ef3",
+ "oracle": "KiCad 10.0.6 via scripts/kicad/run.sh (pinned image), heavy-guard outside, flock /tmp/kicad-native.lock inside",
+ "host": {
+  "cpus": 4,
+  "memory_gib": 15
+ },
+ "method": [
+  "scripts/pcbgen/sync.py <board> on a disposable worktree (new parts seeded at their netlisted FootprintOriginMm; existing parts keep their saved positions and copper)",
+  "pcbnew ZONE_FILLER over all zones, saved, timed (first budget 900 s, about 1.7x the 9-minute core refill noted in routing-benchmark.yml; the second, higher budget was not needed)",
+  "kicad-cli pcb drc --schematic-parity --severity-all on the filled copy (no --refill-zones)",
+  "the committed PCBs checked unchanged against the adopted schematic: kicad-cli pcb drc --schematic-parity, no refill"
+ ],
+ "report_caps": "Per-type counts of 199 and the unconnected count of 499 are KiCad JSON report caps; they are lower bounds",
+ "a4_fill_293": "PASS for completion with the changed inputs (adopted design, local 4 CPU host, 900 s budget): osc-core 649 s fill, 2277 MiB peak RSS; fill is not a layout acceptance",
+ "boards": {
+  "osc-core": {
+   "committed_pcb_sha256": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+   "committed_pcb_vs_adopted_schematic": {
+    "violations": 818,
+    "errors": 0,
+    "warnings": 818,
+    "unconnected": 499,
+    "parity": 704,
+    "parity_types": {
+     "footprint_symbol_field_mismatch": 199,
+     "footprint_symbol_mismatch": 199,
+     "net_conflict": 113,
+     "missing_footprint": 193
+    },
+    "error_types": {},
+    "date": "2026-11-01T16:49:58"
+   },
+   "sync": {
+    "wall_s": 23,
+    "synced_sha256": "dbab296b06a3e8632012e36f9d4e4c3310229a08e733eff289751116e99e1769"
+   },
+   "fill": {
+    "zones": 351,
+    "filled": 5,
+    "fill_ok": true,
+    "load_s": 3.0,
+    "fill_s": 649.0,
+    "save_s": 9.6,
+    "peak_rss_mib": 2276.8,
+    "budget_s": 900,
+    "wall_s": 673,
+    "verdict": "PASS: completed inside the budget"
+   },
+   "drc_after_sync_and_fill": {
+    "violations": 2321,
+    "errors": 1470,
+    "warnings": 851,
+    "unconnected": 499,
+    "parity": 0,
+    "parity_types": {},
+    "error_types": {
+     "items_not_allowed": 114,
+     "shorting_items": 199,
+     "clearance": 499,
+     "hole_clearance": 199,
+     "courtyards_overlap": 199,
+     "npth_inside_courtyard": 50,
+     "pth_inside_courtyard": 9,
+     "copper_edge_clearance": 2,
+     "solder_mask_bridge": 199
+    },
+    "date": "2026-11-01T16:45:44",
+    "wall_s": 295,
+    "verdict": "FAIL"
+   }
+  },
+  "osc-jack-left": {
+   "committed_pcb_sha256": "e984c0a01156b5f282f0c849077c61572df30ee0c70dfe6c9db94fbfcfe52107",
+   "committed_pcb_vs_adopted_schematic": {
+    "violations": 477,
+    "errors": 0,
+    "warnings": 477,
+    "unconnected": 117,
+    "parity": 548,
+    "parity_types": {
+     "footprint_symbol_field_mismatch": 199,
+     "footprint_symbol_mismatch": 141,
+     "missing_footprint": 9,
+     "net_conflict": 199
+    },
+    "error_types": {},
+    "date": "2026-11-01T16:49:08"
+   },
+   "sync": {
+    "wall_s": 16,
+    "synced_sha256": "f4e4a4176dcb34695d607dbc82b3ac185b077cb8e204f64952921220d05966e3"
+   },
+   "fill": {
+    "zones": 128,
+    "filled": 5,
+    "fill_ok": true,
+    "load_s": 7.1,
+    "fill_s": 43.9,
+    "save_s": 1.7,
+    "peak_rss_mib": 974.0,
+    "budget_s": 900,
+    "wall_s": 54,
+    "verdict": "PASS: completed inside the budget"
+   },
+   "drc_after_sync_and_fill": {
+    "violations": 2084,
+    "errors": 1400,
+    "warnings": 684,
+    "unconnected": 499,
+    "parity": 0,
+    "parity_types": {},
+    "error_types": {
+     "items_not_allowed": 92,
+     "shorting_items": 199,
+     "clearance": 499,
+     "hole_clearance": 199,
+     "courtyards_overlap": 199,
+     "pth_inside_courtyard": 9,
+     "copper_edge_clearance": 4,
+     "solder_mask_bridge": 199
+    },
+    "date": "2026-11-01T16:29:13",
+    "wall_s": 36,
+    "verdict": "FAIL"
+   }
+  },
+  "osc-jack-right": {
+   "committed_pcb_sha256": "9e164f9e8e23a5c3911d117fd08973fc877e5f2f382be20500b8e01040b20a55",
+   "committed_pcb_vs_adopted_schematic": {
+    "violations": 520,
+    "errors": 0,
+    "warnings": 520,
+    "unconnected": 129,
+    "parity": 496,
+    "parity_types": {
+     "footprint_symbol_field_mismatch": 199,
+     "footprint_symbol_mismatch": 98,
+     "net_conflict": 199
+    },
+    "error_types": {},
+    "date": "2026-11-01T16:48:37"
+   },
+   "sync": {
+    "wall_s": 20,
+    "synced_sha256": "2ae0ba7593dd63c6549ee625932db72f3b9b64484182646eaa0039e5a6506178"
+   },
+   "fill": {
+    "zones": 159,
+    "filled": 5,
+    "fill_ok": true,
+    "load_s": 7.8,
+    "fill_s": 54.1,
+    "save_s": 2.3,
+    "peak_rss_mib": 1036.7,
+    "budget_s": 900,
+    "wall_s": 66,
+    "verdict": "PASS: completed inside the budget"
+   },
+   "drc_after_sync_and_fill": {
+    "violations": 2132,
+    "errors": 1396,
+    "warnings": 736,
+    "unconnected": 499,
+    "parity": 0,
+    "parity_types": {},
+    "error_types": {
+     "items_not_allowed": 75,
+     "shorting_items": 199,
+     "clearance": 499,
+     "hole_clearance": 199,
+     "courtyards_overlap": 199,
+     "pth_inside_courtyard": 8,
+     "npth_inside_courtyard": 2,
+     "copper_edge_clearance": 16,
+     "solder_mask_bridge": 199
+    },
+    "date": "2026-11-01T16:27:26",
+    "wall_s": 35,
+    "verdict": "FAIL"
+   }
+  }
+ },
+ "rb4413_native": {
+  "ref": "RB4413",
+  "pos_mm": [
+   385.34,
+   92.31
+  ],
+  "side": "B.Cu",
+  "courtyard_overlaps": [],
+  "pads": [
+   {
+    "pad": "1",
+    "net": "X34EC684E00B004F73024",
+    "min_foreign_copper_mm": 0.69,
+    "nearest": [
+     "AGND",
+     "RB4413.2"
+    ]
+   },
+   {
+    "pad": "2",
+    "net": "AGND",
+    "min_foreign_copper_mm": 0.3445,
+    "nearest": [
+     "XC461F226A89444B6A743",
+     "PCB_VIA"
+    ]
+   }
+  ],
+  "verdict": "PASS for this check: no B.Cu courtyard overlap; nearest foreign copper 0.3445 mm (pad 2 to a via); no DRC item names RB4413 in the capped report. Zone copper is not in the clearance scan. The issue189 jr-rb4413-edge-bridge pilot itself is BLOCKED: its guards accept only a netlist that differs in the RB4413 origin, and the adopted netlist differs in many parts"
+ },
+ "consequence": "The committed PCBs no longer match the adopted schematic (parity issues on all three boards), and a plain sync leaves DRC errors from swapped footprints under existing copper and new parts overlapping old positions. A layout pass (placement and routing of osc-core, osc-jack-left, osc-jack-right) is required; the CI board-drc job will fail on parity until then."
+}
