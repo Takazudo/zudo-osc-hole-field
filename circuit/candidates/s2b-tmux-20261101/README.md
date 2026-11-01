@@ -1,10 +1,21 @@
-# S2b TMUX7412F + TMUX6112 candidate (UNADOPTED, isolated development record)
+# S2b TMUX7412F + TMUX6112 record (ADOPTED 2026-11-01, E15)
 
-**Status: UNADOPTED isolated development candidate. Not canonical, not validated, not a
-manufacturing or order input.** The canonical specification, schematics, board projects,
-partition, BOM and placement lock are unchanged by this directory. Nothing here is a
-fabrication file. No DRC, zone fill or #293 fill was run. Canonical adoption needs a
-separate approval.
+**Status: ADOPTED into the canonical specification and schematics on 2026-11-01** (user
+decision card 16:07Z, decision **E15** in `project/osc-hole-field/electrical-decisions.json`).
+It is not validated and not a manufacturing or order input. Nothing here is a fabrication file.
+
+- **How it was adopted.** Branch `osc-s2b-adoption-prep` applied `patches/source.patch` with a
+  3-way merge onto `539ff382`, added the retained PDFs and regenerated the outputs; it was merged
+  into the working branch without squash. 288 of the 290 receipt files matched. The two that differ,
+  `scripts/checks/s2b_protection_map.py` and `design/readiness/s2b-protection-map.json`, carry the
+  canonical `f8e048f3` TMUX6112 definition-1 rows, restated for the SEL hold (PASS at 25 C, UNKNOWN
+  below 25 C). The receipt below therefore describes the record as built on `60c7c3ab`, not the
+  adopted tree; `verify_record.py --tree` on the adopted tree reports those two files.
+- **Count tests.** `test_partition35`, `test_family_reuse` and `test_mult_common_board` (with the
+  stage38 `generate.py` counts) are re-baselined for the D_BOOT parts. The stage45/50/54 historical
+  bindings stay as recorded FAILs pending the owner's policy review.
+- **PCB steps.** The #293 fill, DRC and native RB4413 results are recorded in the phase-27 report
+  (`adoption/pcb-gate.json`). The board PCBs are not resynchronised in this adoption.
 
 ## Revisions
 

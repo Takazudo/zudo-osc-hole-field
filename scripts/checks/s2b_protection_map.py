@@ -4,7 +4,7 @@
 Reads the instrument specification and the ADG5412F owner pin map. Manufacturer
 rows are cited from the retained datasheets (ADG5412F Rev. C in circuit/sources,
 TMUX7412F SCDS404B and TMUX6112 SCDS383F in .circuit-cache/sources/readiness-20261031/ds).
-UNADOPTED: nothing here changes the standard, the schematic or the inventory.
+Adopted with S2b (E13, E15): this map reads the standard; it does not change the standard, the schematic or the inventory.
 """
 import argparse
 import collections
@@ -266,7 +266,7 @@ def precision_clamp():
     current_ua = over / values['R_LIMIT'] * 1e6
     sense_over = BOOT_VF_MAX_V + current_ua * 1e-6 * FOLLOWER_ZO_OHM
     return {
-        'status': 'UNADOPTED S2b candidate (phase 24 BAV199 rail clamp; phase 25 bootstrap clamp D_BOOT): precision variant of high_impedance_input',
+        'status': 'Adopted S2b (E15; phase 24 BAV199 rail clamp; phase 25 bootstrap clamp D_BOOT): precision variant of high_impedance_input',
         'model': {'r_eff_ohm': round(r_eff, 1), 'r_eff_basis': 'R_LIMIT + R_PD || (signals.output_series_ohm + TMUX7412F RON 14 ohm)',
                   'drift_definition': 'max over the role range (0.5 V steps) and the temperature span of |e(V,T) - e(V,25 C)|; cents at 1 V/oct (1 mV = 1.2 c)',
                   'before': 'BAT54S,215 typical Fig. 2 curves (project digitisation), log-interpolated in temperature and extrapolated below 25 C; no guaranteed bound exists',
@@ -338,7 +338,7 @@ def placements():
 def build():
     rows, errors = placements()
     total = sum(r['instances'] for r in rows)
-    return {'schema_version': 1, 'status': 'UNADOPTED S2b candidate (decision E13); fault rows revised after the independent review',
+    return {'schema_version': 1, 'status': 'Adopted S2b (decisions E13, E15); fault rows revised after the independent review',
             'sources': source_receipts(),
             'input_placements_per_unit': total, 'placement_groups': len(rows),
             'jack_on_protected_source_per_unit': sum(r['instances'] for r in rows if r['jack_faces'] == 'SOURCE'),

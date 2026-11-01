@@ -243,7 +243,7 @@
       ],
       "protection_identity_change": {
         "decision": "E13",
-        "status": "UNADOPTED CANDIDATE TEXT; canonical adoption needs a separate approval",
+        "status": "ADOPTED into the canonical specification 2026-11-01 (user decision card 16:07Z, E15); hardware unvalidated, physical qualification and bench checks open",
         "previous": {
           "mpn": "ADG5412FBRUZ",
           "package": "TSSOP-16",
@@ -459,7 +459,7 @@
         "100 kohm nominal at drain; switch on resistance adds series error. No independent 10 kohm pot may load the jack.",
         "Clamp leakage and input current, especially hot, remain part of the input error budget.",
         "Nominal accuracy limited to ±5 V; ±12 V is a continuous survival requirement, not a linear input range.",
-        "Variant precision (UNADOPTED S2b candidate, phases 24-25): D = BAV199,215 (clamp_diode_ll), a low-leakage series pair with the BAT54S pin order, plus D_BOOT = BAT54S,215 across the follower (pins 1 and 2 SENSE, pin 3 BUFFERED), on the five 1V/OCT inputs, MULT IN and S&H IN. D_BOOT holds SENSE within the BAT54S VF of the follower output, which limits at the rail, so SENSE <= V+ + 0.5 V holds beyond the declared fault range (design/readiness/s2b-protection-map.json precision_input_clamp)."
+        "Variant precision (adopted with S2b 2026-11-01, E15; phases 24-25): D = BAV199,215 (clamp_diode_ll), a low-leakage series pair with the BAT54S pin order, plus D_BOOT = BAT54S,215 across the follower (pins 1 and 2 SENSE, pin 3 BUFFERED), on the five 1V/OCT inputs, MULT IN and S&H IN. D_BOOT holds SENSE within the BAT54S VF of the follower output, which limits at the rail, so SENSE <= V+ + 0.5 V holds beyond the declared fault range (design/readiness/s2b-protection-map.json precision_input_clamp)."
       ],
       "uses": [
         "input_fault_switch"
@@ -469,7 +469,7 @@
       ],
       "variants": {
         "precision": {
-          "status": "UNADOPTED S2b candidate (phase 24; bootstrap clamp phase 25); canonical adoption needs a separate approval",
+          "status": "ADOPTED with S2b 2026-11-01 (E15); phase 24 BAV199 clamp, phase 25 bootstrap clamp; BAV199 facts UNSOURCED until a manufacturer-hosted copy is compared",
           "part_overrides": {
             "D": {
               "part_id": "clamp_diode_ll"
