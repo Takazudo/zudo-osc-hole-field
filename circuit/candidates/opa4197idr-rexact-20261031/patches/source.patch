@@ -1,0 +1,2444 @@
+diff --git a/.claude/skills/component-spec-audit/references/direct-routing.json b/.claude/skills/component-spec-audit/references/direct-routing.json
+index 9d6a03b4..f197543a 100644
+--- a/.claude/skills/component-spec-audit/references/direct-routing.json
++++ b/.claude/skills/component-spec-audit/references/direct-routing.json
+@@ -273,6 +273,10 @@
+     {
+       "line_id": "line-precision-feedback-c",
+       "negative": "unrelated 999999 precision-feedback-c"
++    },
++    {
++      "line_id": "line-op-precision-d",
++      "negative": "unrelated supplier 999999 op-precision-d"
+     }
+   ]
+ }
+diff --git a/.claude/skills/component-spec-audit/references/inventory.json b/.claude/skills/component-spec-audit/references/inventory.json
+index a39db11b..c9b4134e 100644
+--- a/.claude/skills/component-spec-audit/references/inventory.json
++++ b/.claude/skills/component-spec-audit/references/inventory.json
+@@ -2,8 +2,8 @@
+   "schema_version": 1,
+   "generator_specs": [],
+   "assertions": {
+-    "orderable_lines": 68,
+-    "fitted_lines": 49,
++    "orderable_lines": 69,
++    "fitted_lines": 50,
+     "dnp_or_hand_fit_lines": 19
+   },
+   "exclusions": [],
+@@ -891,6 +891,19 @@
+       "source_state": "AVAILABLE",
+       "function": "1 nF precision-output local compensation capacitor",
+       "placements": []
++    },
++    {
++      "line_id": "line-op-precision-d",
++      "mpn": "OPA4197IDR",
++      "manufacturer": "Texas Instruments",
++      "lcsc": "C2058532",
++      "package": "SOIC-14",
++      "dnp": false,
++      "owner_skill": "component-ti-opa4197idr",
++      "identity_state": "VERIFIED",
++      "source_state": "AVAILABLE",
++      "function": "precision candidate",
++      "placements": []
+     }
+   ]
+ }
+diff --git a/.claude/skills/component-ti-opa4197idr/SKILL.md b/.claude/skills/component-ti-opa4197idr/SKILL.md
+new file mode 100644
+index 00000000..f9a1916a
+--- /dev/null
++++ b/.claude/skills/component-ti-opa4197idr/SKILL.md
+@@ -0,0 +1,24 @@
++---
++name: component-ti-opa4197idr
++description: Use whenever an exact part identity, supplier code, manufacturer, pinout, package, role, source gap, or substitution for this bundle is relevant. Resolve exact Texas Instruments OPA4197IDR evidence for its roles, pinout, package, limits, interactions and substitution review; preserve open source and physical checks.
++---
++
++# Exact component evidence owner
++
++Run `pnpm circuit:check`, read every local JSON record, and cite fact/source IDs with conditions and exact locators. Keep each record aligned with the matching inventory line and direct-routing fixture. Do not infer procurement, physical fit, system safety, or circuit qualification from a component datasheet or a provisional family model.
++
++## Human component reference
++
++[rec-op-precision-d](/docs/components/records/op-precision-d/) is generated from this exact component record.
++
++See the [component catalog](/docs/components/catalog/) and [cross-component rules](/docs/components/integration/). Generated component pages project only the records included by `circuit/publication/selection.json`; these JSON files remain the evidence source.
++
++## Candidate status
++
++UNADOPTED candidate from the phase-15 cost study. It is not in parts-shortlist.json and replaces no placement.
++
++## Open review points
++
++- Stock, lead time, consignment acceptance and assembly allocation remain dated project-state gaps unless a retained source says otherwise.
++- Package preview geometry is provisional family geometry. Confirm body, height, optical path, footprint and fixed-layout fit before hardware use.
++- Every pin map leaves board nets unassigned; the manual inventory provider does not bind schematic pins or placements.
+diff --git a/.claude/skills/component-ti-opa4197idr/coverage.json b/.claude/skills/component-ti-opa4197idr/coverage.json
+new file mode 100644
+index 00000000..e925063f
+--- /dev/null
++++ b/.claude/skills/component-ti-opa4197idr/coverage.json
+@@ -0,0 +1,97 @@
++{
++  "schema_version": 1,
++  "coverage": [
++    {
++      "coverage_id": "cov-op-precision-d-exact-orderable-identity",
++      "record_id": "rec-op-precision-d",
++      "domain": "exact orderable identity",
++      "status": "COVERED",
++      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
++      "fact_ids": [
++        "fact-op-precision-d-orderable-identity"
++      ],
++      "blocking_fact_ids": []
++    },
++    {
++      "coverage_id": "cov-op-precision-d-pinout",
++      "record_id": "rec-op-precision-d",
++      "domain": "pinout",
++      "status": "COVERED",
++      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
++      "fact_ids": [
++        "fact-op-precision-d-pinout"
++      ],
++      "blocking_fact_ids": []
++    },
++    {
++      "coverage_id": "cov-op-precision-d-electrical-limits",
++      "record_id": "rec-op-precision-d",
++      "domain": "electrical limits",
++      "status": "COVERED",
++      "reason": "Retained source supports the specific listed product-family limits; conditions remain attached to each fact.",
++      "fact_ids": [
++        "fact-op-precision-d-quiescent-current",
++        "fact-op-precision-d-input-bias-current",
++        "fact-op-precision-d-input-offset-voltage",
++        "fact-op-precision-d-input-bias-current-full-temperature",
++        "fact-op-precision-d-supply-absolute",
++        "fact-op-precision-d-input-absolute",
++        "fact-op-precision-d-supply-recommended",
++        "fact-op-precision-d-esd-steering",
++        "fact-op-precision-d-output-swing"
++      ],
++      "blocking_fact_ids": []
++    },
++    {
++      "coverage_id": "cov-op-precision-d-manufacturer-product-description",
++      "record_id": "rec-op-precision-d",
++      "domain": "manufacturer product description",
++      "status": "COVERED",
++      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
++      "fact_ids": [
++        "fact-op-precision-d-product-function"
++      ],
++      "blocking_fact_ids": []
++    },
++    {
++      "coverage_id": "cov-op-precision-d-mechanical-fit",
++      "record_id": "rec-op-precision-d",
++      "domain": "mechanical fit",
++      "status": "OPEN",
++      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
++      "fact_ids": [
++        "fact-op-precision-d-mechanical-fit"
++      ],
++      "blocking_fact_ids": [
++        "fact-op-precision-d-mechanical-fit"
++      ]
++    },
++    {
++      "coverage_id": "cov-op-precision-d-procurement",
++      "record_id": "rec-op-precision-d",
++      "domain": "procurement",
++      "status": "OPEN",
++      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
++      "fact_ids": [
++        "fact-op-precision-d-assembly-allocation",
++        "fact-op-precision-d-procurement-status"
++      ],
++      "blocking_fact_ids": [
++        "fact-op-precision-d-assembly-allocation"
++      ]
++    },
++    {
++      "coverage_id": "cov-op-precision-d-output-stability",
++      "record_id": "rec-op-precision-d",
++      "domain": "output stability",
++      "status": "OPEN",
++      "reason": "TI OPAx197 Final 1.3 model passes 12/12 specified cases for the revised fixed network, but physical cable, board parasitics, tolerance and temperature stability remain NOT RUN.",
++      "fact_ids": [
++        "fact-op-precision-d-output-stability"
++      ],
++      "blocking_fact_ids": [
++        "fact-op-precision-d-output-stability"
++      ]
++    }
++  ]
++}
+diff --git a/.claude/skills/component-ti-opa4197idr/facts.json b/.claude/skills/component-ti-opa4197idr/facts.json
+new file mode 100644
+index 00000000..7b954e24
+--- /dev/null
++++ b/.claude/skills/component-ti-opa4197idr/facts.json
+@@ -0,0 +1,301 @@
++{
++  "schema_version": 1,
++  "facts": [
++    {
++      "fact_id": "fact-op-precision-d-manufacturer",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "PROJECT_STATE",
++      "value": "Texas Instruments",
++      "unit": "NONE",
++      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
++      "locator": "src-op-precision-d-datasheet: title block or OSC-ES-1 row parts[id=op_precision].manufacturer",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-project-selection",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-jlc",
++      "class": "PROJECT_STATE",
++      "value": "UNADOPTED candidate: replaces the precision role package TSSOP-14 by SOIC-14 (phase-15 study); not in parts-shortlist.json",
++      "unit": "NONE",
++      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
++      "locator": "Identity section: JSON row componentModelEn=OPA4197IDR; candidate status from design/readiness/cost-reduction-study.json row opamps.precision_alternatives[mpn=OPA4197IDR]",
++      "provenance": "PROJECT-CHOICE",
++      "verdict": "NOT APPLICABLE",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-orderable-identity",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "PROJECT_STATE",
++      "value": {
++        "manufacturer": "Texas Instruments",
++        "mpn": "OPA4197IDR",
++        "package": "SOIC-14"
++      },
++      "unit": "NONE",
++      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
++      "locator": "Section/table audit: src-op-precision-d-datasheet physical PDF index 34, Addendum-Page 2, package option addendum row OPA4197IDR",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-pinout",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "PROJECT_STATE",
++      "value": "pin 1 OUT A -> pad 1; pin 2 IN- A -> pad 2; pin 3 IN+ A -> pad 3; pin 4 V+ -> pad 4; pin 5 IN+ B -> pad 5; pin 6 IN- B -> pad 6; pin 7 OUT B -> pad 7; pin 8 OUT C -> pad 8; pin 9 IN- C -> pad 9; pin 10 IN+ C -> pad 10; pin 11 V- -> pad 11; pin 12 IN+ D -> pad 12; pin 13 IN- D -> pad 13; pin 14 OUT D -> pad 14",
++      "unit": "NONE",
++      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
++      "locator": "src-op-precision-d-datasheet: Pin configuration \"D and PW Packages: OPA4197\", physical PDF index 3, printed 4",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-quiescent-current",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "typical_at_25C": 1.0,
++        "maximum_at_25C": 1.3,
++        "maximum_full_temperature": 1.5
++      },
++      "unit": "mA per amplifier",
++      "conditions": "IO = 0 A; TA = 25 C for typ/max at 25 C; TA = -40..125 C for full-temperature maximum.",
++      "locator": "src-op-precision-d-datasheet: PDF page index 7, printed page 8, Section 6.7, POWER SUPPLY, IQ row",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-input-bias-current",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "typical_at_25C": 5,
++        "maximum_at_25C": 20
++      },
++      "unit": "pA",
++      "conditions": "TA = 25 C; datasheet electrical characteristics at VS = +/-18 V.",
++      "locator": "src-op-precision-d-datasheet: PDF page index 6, printed page 7, Section 6.7, INPUT BIAS CURRENT, IB row",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-input-offset-voltage",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "typical_at_25C": 25,
++        "maximum_at_25C": 100
++      },
++      "unit": "uV",
++      "conditions": "VS = +/-18 V; TA = 25 C; VCM = VS/2, except the separate near-positive-rail row.",
++      "locator": "src-op-precision-d-datasheet: PDF page index 6, printed page 7, Section 6.7, OFFSET VOLTAGE, VOS row",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-product-function",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "PROJECT_STATE",
++      "value": "Manufacturer source identifies OPA4197IDR as the shortlisted precision device; this is not project suitability.",
++      "unit": "NONE",
++      "conditions": "Product family description only; no project application or electrical guarantee implied.",
++      "locator": "src-op-precision-d-datasheet: document title block and product description",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-procurement-status",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-jlc",
++      "class": "PROJECT_STATE",
++      "value": {
++        "lcsc": "C2058532",
++        "manufacturer": "Texas Instruments",
++        "mpn": "OPA4197IDR",
++        "variant": "Exact MPN and LCSC identity row; SOIC-14. Stock 6533 observed 2026-10-31 is a dated observation, not an allocation."
++      },
++      "unit": "NONE",
++      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
++      "locator": "Identity section: src-op-precision-d-jlc JSON row fields componentCode, stockCount and componentPrices",
++      "provenance": "DISTRIBUTOR-IDENTITY",
++      "verdict": "CONFIRMED - distributor identity only",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-mechanical-fit",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-study",
++      "class": "PROJECT_STATE",
++      "value": "SOIC-14 land shared with OPA4196IDR. Phase-15 courtyard-capacity trial: 85 of 89 placements fit; the 4 control-board placements collide with fixed control locality groups. Not physically checked.",
++      "unit": "NONE",
++      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
++      "locator": "Section/table audit: src-op-precision-d-shortlist: parts[id=op_precision].package; CAD receipt is provisional family geometry",
++      "provenance": "PROJECT-CHOICE",
++      "verdict": "NEEDS BENCH",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-output-stability",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-vendor-model",
++      "class": "PROJECT_STATE",
++      "value": {
++        "vendor_model_passes": 12,
++        "vendor_model_cases": 12,
++        "previous_ideal_diagnostic_failures": 6,
++        "previous_ideal_diagnostic_cases": 12,
++        "bench": "NOT RUN"
++      },
++      "unit": "NONE",
++      "conditions": "TI OPAx197 Final 1.3 generic core, PSpice mode in pinned KiCad 10.0.6 ngspice 44.2, 27 C, +/-12 V rails; fixed 100 ohm JACK feedback and 1 nF local feedback, two 499 ohm isolation resistors; +/-5 V steps and specified 12 load/cable cases. Model result only.",
++      "locator": "Section/table audit: src-op-precision-d-vendor-model OPAx197.LIB Model Usage Notes rows 1(a), 1(g), 1(n)-1(q), 2; design/reports/spice/precision-output-vendor.json cases/pass_count/fail_count",
++      "provenance": "PROJECT-CHOICE",
++      "verdict": "NEEDS BENCH",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-input-bias-current-full-temperature",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "maximum": 5
++      },
++      "unit": "nA",
++      "conditions": "TA = -40..125 C; Section 6.7 defaults VS = +/-4 V to +/-18 V, VCM = VOUT at midsupply, RLOAD = 10 kohm. The +/-15 nA subrow is PW package only and does not apply to D.",
++      "locator": "src-op-precision-d-datasheet: PDF page index 6, printed page 7, Section 6.7, INPUT BIAS CURRENT, IB full-temperature row (non-PW)",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-supply-absolute",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "ABSOLUTE_MAXIMUM",
++      "value": {
++        "dual_supply_V": 20,
++        "single_supply_V": 40
++      },
++      "unit": "V",
++      "conditions": "VS = (V+) - (V-); dual-supply maximum is +/-20 V, single-supply maximum 40 V, over operating free-air temperature. Absolute maximum stress rating, not an operating condition.",
++      "locator": "src-op-precision-d-datasheet: physical PDF p.4, printed p.5, section 6.1 Absolute Maximum Ratings, Supply voltage row",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-input-absolute",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "ABSOLUTE_MAXIMUM",
++      "value": {
++        "common_mode_below_V_minus_V": -0.5,
++        "common_mode_above_V_plus_V": 0.5,
++        "differential_above_supply_span_V": 0.2,
++        "input_current_mA": 10
++      },
++      "unit": "V and mA",
++      "conditions": "Signal input pins: common-mode voltage (V-) - 0.5 V to (V+) + 0.5 V; differential (V+) - (V-) + 0.2 V; input current +/-10 mA. Absolute maximum stress rating, not an operating condition.",
++      "locator": "src-op-precision-d-datasheet: physical PDF p.4, printed p.5, section 6.1 Absolute Maximum Ratings, Signal input pins rows",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-supply-recommended",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "RECOMMENDED_OPERATION",
++      "value": {
++        "minimum_span_V": 4.5,
++        "minimum_dual_V": 2.25,
++        "maximum_span_V": 36,
++        "maximum_dual_V": 18
++      },
++      "unit": "V",
++      "conditions": "Recommended supply VS = (V+) - (V-): 4.5 V (+/-2.25 V) to 36 V (+/-18 V). No behaviour is specified below the minimum.",
++      "locator": "src-op-precision-d-datasheet: physical PDF p.4, printed p.5, section 6.3 Recommended Operating Conditions, Supply voltage row",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-esd-steering",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "PROJECT_STATE",
++      "value": "Current-steering ESD diodes connect the input and output pins back to the internal power-supply lines, meeting at an absorption device or supply ESD cell; intended to stay inactive in normal operation. No forward voltage or in-circuit current rating is given.",
++      "unit": "NONE",
++      "conditions": "Manufacturer description of OPAx197 internal ESD structure (Electrical Overstress section). Structure only; it is not a guaranteed clamp level.",
++      "locator": "src-op-precision-d-datasheet: physical PDF p.24, printed p.25, section 7.3.7 Electrical Overstress and Figure 52",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-output-swing",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "no_load_max_mV": 25,
++        "rload_10k_max_mV": 125,
++        "rload_2k_max_mV": 500
++      },
++      "unit": "mV",
++      "conditions": "Voltage output swing from either rail, maximum, TA = 25 C, VS = +/-4 V to +/-18 V, RLOAD connected to VS/2. No temperature-range row.",
++      "locator": "Section/table audit: src-op-precision-d-datasheet physical PDF page index 7, printed p.8, section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, OUTPUT VO rows",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-assembly-allocation",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-study",
++      "class": "PROJECT_STATE",
++      "value": "UNSOURCED: factory stock allocation and assembly acceptance are not established by a search row",
++      "unit": "NONE",
++      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
++      "locator": "Section/table audit: src-op-precision-d-study JSON row opamps.precision_alternatives[mpn=OPA4197IDR].cost",
++      "provenance": "UNVERIFIED",
++      "verdict": "UNSOURCED",
++      "depends_on": [],
++      "expression": ""
++    }
++  ]
++}
+diff --git a/.claude/skills/component-ti-opa4197idr/interactions.json b/.claude/skills/component-ti-opa4197idr/interactions.json
+new file mode 100644
+index 00000000..a6c441cf
+--- /dev/null
++++ b/.claude/skills/component-ti-opa4197idr/interactions.json
+@@ -0,0 +1,17 @@
++{
++  "schema_version": 1,
++  "interactions": [
++    {
++      "interaction_id": "int-op-precision-d-project-role",
++      "record_ids": [
++        "rec-op-precision-d"
++      ],
++      "fact_ids": [
++        "fact-op-precision-d-project-selection",
++        "fact-op-precision-d-pinout"
++      ],
++      "conditions": "Project role from OSC-ES-1; schematic nets, board placements, pin assignment and circuit behavior remain unbound.",
++      "verdict": "NEEDS BENCH"
++    }
++  ]
++}
+diff --git a/.claude/skills/component-ti-opa4197idr/manifest.json b/.claude/skills/component-ti-opa4197idr/manifest.json
+new file mode 100644
+index 00000000..ba4e2670
+--- /dev/null
++++ b/.claude/skills/component-ti-opa4197idr/manifest.json
+@@ -0,0 +1,51 @@
++{
++  "schema_version": 1,
++  "skill": "component-ti-opa4197idr",
++  "records": [
++    {
++      "record_id": "rec-op-precision-d",
++      "line_id": "line-op-precision-d",
++      "kind": "standalone",
++      "parent_record_id": null,
++      "mpn": "OPA4197IDR",
++      "manufacturer": "Texas Instruments",
++      "lcsc": "C2058532",
++      "package": "SOIC-14",
++      "source_ids": [
++        "src-op-precision-d-datasheet",
++        "src-op-precision-d-jlc",
++        "src-op-precision-d-study",
++        "src-op-precision-d-output-model",
++        "src-op-precision-d-vendor-model"
++      ],
++      "fact_ids": [
++        "fact-op-precision-d-manufacturer",
++        "fact-op-precision-d-project-selection",
++        "fact-op-precision-d-orderable-identity",
++        "fact-op-precision-d-pinout",
++        "fact-op-precision-d-quiescent-current",
++        "fact-op-precision-d-input-bias-current",
++        "fact-op-precision-d-input-offset-voltage",
++        "fact-op-precision-d-product-function",
++        "fact-op-precision-d-procurement-status",
++        "fact-op-precision-d-mechanical-fit",
++        "fact-op-precision-d-output-stability",
++        "fact-op-precision-d-input-bias-current-full-temperature",
++        "fact-op-precision-d-supply-absolute",
++        "fact-op-precision-d-input-absolute",
++        "fact-op-precision-d-supply-recommended",
++        "fact-op-precision-d-esd-steering",
++        "fact-op-precision-d-output-swing",
++        "fact-op-precision-d-assembly-allocation"
++      ],
++      "interaction_ids": [
++        "int-op-precision-d-project-role"
++      ],
++      "open_domains": [
++        "mechanical fit",
++        "procurement",
++        "output stability"
++      ]
++    }
++  ]
++}
+diff --git a/.claude/skills/component-ti-opa4197idr/pin-map.json b/.claude/skills/component-ti-opa4197idr/pin-map.json
+new file mode 100644
+index 00000000..f7eb6c8c
+--- /dev/null
++++ b/.claude/skills/component-ti-opa4197idr/pin-map.json
+@@ -0,0 +1,98 @@
++{
++  "schema_version": 1,
++  "pin_maps": [
++    {
++      "pin_map_id": "pinmap-op-precision-d",
++      "record_id": "rec-op-precision-d",
++      "symbol": "OPA4197IDR",
++      "footprint": "SOIC-14_3.9x8.7mm_P1.27mm",
++      "pins": [
++        {
++          "symbol_pin": "1",
++          "name": "OUT A",
++          "footprint_pad": "1",
++          "function": "OUT A"
++        },
++        {
++          "symbol_pin": "2",
++          "name": "IN- A",
++          "footprint_pad": "2",
++          "function": "IN- A"
++        },
++        {
++          "symbol_pin": "3",
++          "name": "IN+ A",
++          "footprint_pad": "3",
++          "function": "IN+ A"
++        },
++        {
++          "symbol_pin": "4",
++          "name": "V+",
++          "footprint_pad": "4",
++          "function": "V+"
++        },
++        {
++          "symbol_pin": "5",
++          "name": "IN+ B",
++          "footprint_pad": "5",
++          "function": "IN+ B"
++        },
++        {
++          "symbol_pin": "6",
++          "name": "IN- B",
++          "footprint_pad": "6",
++          "function": "IN- B"
++        },
++        {
++          "symbol_pin": "7",
++          "name": "OUT B",
++          "footprint_pad": "7",
++          "function": "OUT B"
++        },
++        {
++          "symbol_pin": "8",
++          "name": "OUT C",
++          "footprint_pad": "8",
++          "function": "OUT C"
++        },
++        {
++          "symbol_pin": "9",
++          "name": "IN- C",
++          "footprint_pad": "9",
++          "function": "IN- C"
++        },
++        {
++          "symbol_pin": "10",
++          "name": "IN+ C",
++          "footprint_pad": "10",
++          "function": "IN+ C"
++        },
++        {
++          "symbol_pin": "11",
++          "name": "V-",
++          "footprint_pad": "11",
++          "function": "V-"
++        },
++        {
++          "symbol_pin": "12",
++          "name": "IN+ D",
++          "footprint_pad": "12",
++          "function": "IN+ D"
++        },
++        {
++          "symbol_pin": "13",
++          "name": "IN- D",
++          "footprint_pad": "13",
++          "function": "IN- D"
++        },
++        {
++          "symbol_pin": "14",
++          "name": "OUT D",
++          "footprint_pad": "14",
++          "function": "OUT D"
++        }
++      ],
++      "reviewed_by": "Issue #21 source comparison; schematic/placement/net mapping not performed."
++    }
++  ]
++}
+diff --git a/.claude/skills/component-ti-opa4197idr/routing.json b/.claude/skills/component-ti-opa4197idr/routing.json
+new file mode 100644
+index 00000000..697b7fe4
+--- /dev/null
++++ b/.claude/skills/component-ti-opa4197idr/routing.json
+@@ -0,0 +1,32 @@
++{
++  "schema_version": 1,
++  "routes": [
++    {
++      "route_id": "route-op-precision-d",
++      "record_id": "rec-op-precision-d",
++      "aliases": {
++        "mpn": [
++          "OPA4197IDR"
++        ],
++        "lcsc": [
++          "C2058532"
++        ],
++        "manufacturer": [
++          "Texas Instruments"
++        ],
++        "function": [
++          "precision"
++        ]
++      },
++      "positive": [
++        "OPA4197IDR",
++        "Texas Instruments OPA4197IDR",
++        "precision OPA4197IDR",
++        "C2058532"
++      ],
++      "negative": [
++        "unrelated 999999 op-precision-d"
++      ]
++    }
++  ]
++}
+diff --git a/.claude/skills/component-ti-opa4197idr/sources.json b/.claude/skills/component-ti-opa4197idr/sources.json
+new file mode 100644
+index 00000000..c0d49b0d
+--- /dev/null
++++ b/.claude/skills/component-ti-opa4197idr/sources.json
+@@ -0,0 +1,99 @@
++{
++  "schema_version": 1,
++  "sources": [
++    {
++      "source_id": "src-op-precision-d-datasheet",
++      "record_id": "rec-op-precision-d",
++      "document_title": "OPAx197 36-V, Precision, Rail-to-Rail Input/Output, Low Offset Voltage Operational Amplifiers",
++      "document_number": "SBOS737C",
++      "revision": "C",
++      "document_date": "March 2018",
++      "authoritative_url": "https://www.ti.com/lit/ds/symlink/opa4197.pdf",
++      "alternate_authoritative_url": "",
++      "retrieval_date": "2026-10-31",
++      "authority_class": "MANUFACTURER_PRIMARY",
++      "sha256": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd",
++      "availability": "AVAILABLE",
++      "physical_pdf_page_index": 3,
++      "printed_page_label": "4",
++      "locator": "Pin configuration/function table",
++      "evidence_extract": "Retained SBOS737C, revised March 2018 (same bytes as the OPA4197IPWR owner). The package option addendum (physical PDF index 34, Addendum-Page 2) lists OPA4197IDR as Active, Production, SOIC (D) 14 pins, 2500 LARGE T&R, NIPDAU, MSL Level-3-260C-168 HR, -40 to 125 C. The pin configuration (index 3, printed 4) is headed \"D and PW Packages: OPA4197, 14-Pin SOIC and TSSOP\" with one pin-function column for both. Section 6.7 (index 6, printed 7) gives the full-temperature input-bias maximum +/-5 nA for packages other than PW."
++    },
++    {
++      "source_id": "src-op-precision-d-jlc",
++      "record_id": "rec-op-precision-d",
++      "document_title": "JLCPCB parts-search response for OPA4197IDR",
++      "document_number": "C2058532",
++      "revision": "not stated in source",
++      "document_date": "2026-10-31",
++      "authoritative_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
++      "alternate_authoritative_url": "",
++      "retrieval_date": "2026-10-31",
++      "authority_class": "DISTRIBUTOR_IDENTITY",
++      "sha256": "632585005016cce491c8bc7a8b2b84b1286019f240d97d36891e37f2ae4113e9",
++      "availability": "AVAILABLE",
++      "physical_pdf_page_index": 0,
++      "printed_page_label": "JSON response",
++      "locator": "Identity section: JSON row data.componentPageInfo.list[componentModelEn=OPA4197IDR]",
++      "evidence_extract": "Row C2058532, Texas Instruments OPA4197IDR, SOIC-14, expand library; stock 6533 and tier prices on 2026-10-31. Technical claims remain outside distributor identity authority.",
++      "retained_path": ".circuit-cache/sources/readiness-20261031/jlc/OPA4197IDR.json",
++      "refresh_policy": "VOLATILE-HTML",
++      "identity_extract_sha256": "3f63d5900f6b1820f31f2b874d325ebbedbf7a3784f97c1ed36ec84a0d20d536",
++      "refresh_note": "Stock and price in this POST search response are not deterministic across time; the hash identifies only the inspected response bytes."
++    },
++    {
++      "source_id": "src-op-precision-d-study",
++      "record_id": "rec-op-precision-d",
++      "document_title": "OSC phase-14 cost-reduction study record",
++      "document_number": "design/readiness/cost-reduction-study.json",
++      "revision": "commit 8244440f",
++      "document_date": "2026-10-31",
++      "authoritative_url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/claude/project-thread-l2opxj/design/readiness/cost-reduction-study.json",
++      "alternate_authoritative_url": "",
++      "retrieval_date": "2026-10-31",
++      "authority_class": "PROJECT_GENERATOR",
++      "sha256": "f3b3d25045103bf6cafd03f586a3cdbb76502240d9f0b9027042f7b194b41015",
++      "availability": "AVAILABLE",
++      "physical_pdf_page_index": 0,
++      "printed_page_label": "not paginated",
++      "locator": "JSON row opamps.precision_alternatives[mpn=OPA4197IDR]",
++      "evidence_extract": "UNADOPTED candidate for the precision role: SOIC-14 package migration, same die rows, 89 packages per unit at the 30-99 tier."
++    },
++    {
++      "source_id": "src-op-precision-d-output-model",
++      "record_id": "rec-op-precision-d",
++      "document_title": "OSC-ES-1 diagnostic ideal precision-output sweep",
++      "document_number": "design/reports/spice/precision-output-sweep.json",
++      "revision": "base SHA b185391d30ec38293bc6c5e8b798a282b98baa25",
++      "document_date": "2026-09-28",
++      "authoritative_url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/base/osc-hole-field/design/reports/spice/precision-output-sweep.json",
++      "alternate_authoritative_url": "",
++      "retrieval_date": "2026-09-28",
++      "authority_class": "PROJECT_GENERATOR",
++      "sha256": "678a6ded43885195ba82f9dbcf73eeaff6c9750387a5e87491ed89f72ffd194c",
++      "availability": "AVAILABLE",
++      "physical_pdf_page_index": 0,
++      "printed_page_label": "not paginated",
++      "locator": "Section/table audit: JSON field cases; 12 diagnostic load/cable cases and 10% target",
++      "evidence_extract": "Diagnostic model only: 6 of 12 model cases exceed the 10% overshoot target; no vendor model or bench qualification."
++    },
++    {
++      "source_id": "src-op-precision-d-vendor-model",
++      "record_id": "rec-op-precision-d",
++      "document_title": "OPAx197 PSpice Model (Final 1.3)",
++      "document_number": "SBOMA34D",
++      "revision": "Final 1.3, 23JUN2022",
++      "document_date": "2022-06-23",
++      "authoritative_url": "https://www.ti.com/lit/zip/sboma34",
++      "alternate_authoritative_url": "",
++      "retrieval_date": "2026-09-28",
++      "authority_class": "MANUFACTURER_PRIMARY",
++      "sha256": "9e55fcaa23d54cee025dda3fa9872b11c41c531f82e0802c2b93d51e943666e5",
++      "availability": "AVAILABLE",
++      "physical_pdf_page_index": 0,
++      "printed_page_label": "not paginated (ZIP/OPAx197.LIB)",
++      "locator": "Section/table audit: ZIP entry OPAx197.LIB, header Model Usage Notes rows 1(a), 1(g), 1(n)-1(q), 2; .SUBCKT OPAx197. Library SHA-256 fc5b020e63346e511bd808bf41c856b0150b000bcf8a41fe00eeececb1f422a5",
++      "evidence_extract": "TI OPAx197 Final 1.3 dated 23JUN2022 states the single core applies to OPA197, OPA2197 and OPA4197. It models open-loop gain and phase with RL/CL effects, output impedance, settling, slew, capacitive-load overshoot and large-signal response. TI states the model is an aid, provided as-is. Copyrighted model bytes are retained in the ignored local cache; the URL and hashes enable verified reacquisition."
++    }
++  ]
++}
+diff --git a/circuit/cad-receipts/ic15-op_precision_d.receipt.json b/circuit/cad-receipts/ic15-op_precision_d.receipt.json
+new file mode 100644
+index 00000000..14ae178e
+--- /dev/null
++++ b/circuit/cad-receipts/ic15-op_precision_d.receipt.json
+@@ -0,0 +1,85 @@
++{
++  "receipt_version": 1,
++  "identity": {
++    "asset_id": "ic15-op_precision_d",
++    "record_id": "rec-op-precision-d",
++    "manufacturer": "Texas Instruments",
++    "mpn": "OPA4197IDR",
++    "package": "SOIC-14",
++    "variant_notes": "UNADOPTED candidate (phase 15)"
++  },
++  "acquisition": {
++    "provider": "KiCad 10 stock symbol and retained manufacturer/creator document",
++    "source_url": "https://www.ti.com/lit/ds/symlink/opa4197.pdf",
++    "acquired_on": "2026-10-31",
++    "original_filenames": [
++      "OPA4197IPWR.stock.kicad_sympart",
++      "OPA4197.pdf"
++    ],
++    "sha256": {
++      "circuit/sources/ic-library/cad/OPA4197IPWR.stock.kicad_sympart": "87569dbfd36e514e9ed68814ea7141f52516c395701c270a2484b85d640fc672",
++      "circuit/sources/ic-library/OPA4197.pdf": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd"
++    }
++  },
++  "representation": {
++    "files": [
++      "symbols/src/OPA4197IDR.kicad_sym"
++    ],
++    "formats": [
++      "kicad_sym"
++    ],
++    "units": "KiCad schematic units",
++    "original_paths": [
++      "circuit/sources/ic-library/cad/OPA4197IPWR.stock.kicad_sympart",
++      "circuit/sources/ic-library/OPA4197.pdf"
++    ]
++  },
++  "fidelity": {
++    "class": "derived",
++    "reason": "Source pin functions audited against the retained document; KiCad stock or custom graphics normalized for this draft identity.",
++    "evidence": [
++      "AVAILABLE",
++      "https://www.ti.com/lit/ds/symlink/opa4197.pdf"
++    ]
++  },
++  "derivation": {
++    "derived": true,
++    "input_sha256": {
++      "circuit/sources/ic-library/cad/OPA4197IPWR.stock.kicad_sympart": "87569dbfd36e514e9ed68814ea7141f52516c395701c270a2484b85d640fc672",
++      "circuit/sources/ic-library/OPA4197.pdf": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd"
++    },
++    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
++    "tool_version": "1",
++    "parameters": {
++      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required; derived from the OPA4197IPWR fragment with MPN, LCSC C2058532 and the SOIC-14 footprint; D and PW share one pin-function table (SBOS737C index 3, printed 4)"
++    },
++    "output_sha256": {
++      "symbols/src/OPA4197IDR.kicad_sym": "e442d34890b952b8cc342e536c0f52af66c640e4f9b540726749054f9465b068"
++    }
++  },
++  "cad_use": {
++    "symbol": "zudo-osc-hole-field:OPA4197IDR",
++    "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
++    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-14_3.9x8.7.wrl",
++    "transform": {
++      "offset": null,
++      "rotation": null,
++      "scale": null
++    },
++    "seating_plane": null
++  },
++  "checks": {
++    "performed": [
++      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
++    ],
++    "remaining_physical_checks": [
++      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release.",
++      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
++    ]
++  },
++  "publication": {
++    "preview_selected": false,
++    "download_published": false,
++    "permitted_scope": null
++  }
++}
+diff --git a/circuit/publication/selection.json b/circuit/publication/selection.json
+index 42e599a7..d343f8f4 100644
+--- a/circuit/publication/selection.json
++++ b/circuit/publication/selection.json
+@@ -599,8 +599,8 @@
+     }
+   ],
+   "expect": {
+-    "records": 68,
+-    "sources": 142,
++    "records": 69,
++    "sources": 147,
+     "integrationRules": 2,
+     "packages": 31
+   }
+diff --git a/design/power/rail-allocation-input.json b/design/power/rail-allocation-input.json
+index d746722e..cff2da03 100644
+--- a/design/power/rail-allocation-input.json
++++ b/design/power/rail-allocation-input.json
+@@ -154,8 +154,8 @@
+   },
+   "excluded_combinations": [
+     "Startup ramp faster than 1 ms or downstream distributed capacitor charging",
+-    "Any shorted or externally driven patch cable, output contention, or \u00b112 V cable fault",
+-    "Temperature outside 15\u201330 C and tolerance extremes not present in worksheet assumptions",
++    "Any shorted or externally driven patch cable, output contention, or ±12 V cable fault",
++    "Temperature outside 15–30 C and tolerance extremes not present in worksheet assumptions",
+     "Maximum simultaneous logic switching, LED PWM transients and relay/contact bounce",
+     "REF5050 reference and SH logic allowances above their draft planning values",
+     "More than one inlet per feed, cable voltage drop, shared return impedance or source-side sequencing"
+@@ -200,17 +200,24 @@
+     "H1:4": {
+       "feed": "A",
+       "rails": [
+-        "+12V"
++        "+12V",
++        "-12V"
+       ]
+     },
+     "H1:5": {
++      "feed": "A",
++      "rails": [
++        "+12V"
++      ]
++    },
++    "H1:6": {
+       "feed": "A",
+       "rails": [
+         "+12V",
+         "-12V"
+       ]
+     },
+-    "H1:6": {
++    "H1:7": {
+       "feed": "A",
+       "rails": [
+         "+12V",
+@@ -248,17 +255,24 @@
+     "H2:4": {
+       "feed": "B",
+       "rails": [
+-        "+12V"
++        "+12V",
++        "-12V"
+       ]
+     },
+     "H2:5": {
++      "feed": "B",
++      "rails": [
++        "+12V"
++      ]
++    },
++    "H2:6": {
+       "feed": "B",
+       "rails": [
+         "+12V",
+         "-12V"
+       ]
+     },
+-    "H2:6": {
++    "H2:7": {
+       "feed": "B",
+       "rails": [
+         "+12V",
+@@ -1472,10 +1486,17 @@
+     "X1:5": {
+       "feed": "B",
+       "rails": [
+-        "+5V"
++        "+12V",
++        "-12V"
+       ]
+     },
+     "X1:6": {
++      "feed": "B",
++      "rails": [
++        "+5V"
++      ]
++    },
++    "X1:7": {
+       "feed": "B",
+       "rails": [
+         "+12V",
+@@ -1520,10 +1541,17 @@
+     "X2:5": {
+       "feed": "B",
+       "rails": [
+-        "+5V"
++        "+12V",
++        "-12V"
+       ]
+     },
+     "X2:6": {
++      "feed": "B",
++      "rails": [
++        "+5V"
++      ]
++    },
++    "X2:7": {
+       "feed": "B",
+       "rails": [
+         "+12V",
+diff --git a/design/power/supply-architecture-input.json b/design/power/supply-architecture-input.json
+index 69b06b0a..cf55c727 100644
+--- a/design/power/supply-architecture-input.json
++++ b/design/power/supply-architecture-input.json
+@@ -97,17 +97,24 @@
+     "H1:4": {
+       "domain": "EXT",
+       "rails": [
+-        "+12V"
++        "+12V",
++        "-12V"
+       ]
+     },
+     "H1:5": {
++      "domain": "EXT",
++      "rails": [
++        "+12V"
++      ]
++    },
++    "H1:6": {
+       "domain": "EXT",
+       "rails": [
+         "+12V",
+         "-12V"
+       ]
+     },
+-    "H1:6": {
++    "H1:7": {
+       "domain": "EXT",
+       "rails": [
+         "+12V",
+@@ -145,17 +152,24 @@
+     "H2:4": {
+       "domain": "EXT",
+       "rails": [
+-        "+12V"
++        "+12V",
++        "-12V"
+       ]
+     },
+     "H2:5": {
++      "domain": "EXT",
++      "rails": [
++        "+12V"
++      ]
++    },
++    "H2:6": {
+       "domain": "EXT",
+       "rails": [
+         "+12V",
+         "-12V"
+       ]
+     },
+-    "H2:6": {
++    "H2:7": {
+       "domain": "EXT",
+       "rails": [
+         "+12V",
+@@ -1369,10 +1383,17 @@
+     "X1:5": {
+       "domain": "EXT",
+       "rails": [
+-        "+5V"
++        "+12V",
++        "-12V"
+       ]
+     },
+     "X1:6": {
++      "domain": "EXT",
++      "rails": [
++        "+5V"
++      ]
++    },
++    "X1:7": {
+       "domain": "EXT",
+       "rails": [
+         "+12V",
+@@ -1417,10 +1438,17 @@
+     "X2:5": {
+       "domain": "EXT",
+       "rails": [
+-        "+5V"
++        "+12V",
++        "-12V"
+       ]
+     },
+     "X2:6": {
++      "domain": "EXT",
++      "rails": [
++        "+5V"
++      ]
++    },
++    "X2:7": {
+       "domain": "EXT",
+       "rails": [
+         "+12V",
+diff --git a/design/spec/cells/test_cells.py b/design/spec/cells/test_cells.py
+index 6cfe564b..b8f13225 100644
+--- a/design/spec/cells/test_cells.py
++++ b/design/spec/cells/test_cells.py
+@@ -94,7 +94,7 @@ class UnusedActiveUnitContract(unittest.TestCase):
+  def test_spare_opamp_comparator_and_schmitt_inputs_are_defined(self):
+   op=cell_parts('high_impedance_input',representative_uid('high_impedance_input'))
+   for p in op:
+-   if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) and p.unit in (2,3,4):
++   if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')) and p.unit in (2,3,4):
+     self.assertIn('AGND',p.pins.values())
+     self.assertEqual(len({v for v in p.pins.values() if v!='AGND'}),1)
+     self.assertNotIn(None,p.pins.values())
+diff --git a/design/spec/model_contracts.py b/design/spec/model_contracts.py
+index e18fd34d..2a9a773d 100644
+--- a/design/spec/model_contracts.py
++++ b/design/spec/model_contracts.py
+@@ -96,7 +96,7 @@ def compiled_precision_contract(parts, projection):
+         raise ValueError('precision amplifier units must share one physical package')
+     unused_nodes = set()
+     for p in amp:
+-        if p.prefix != 'U' or p.symbol != 'zudo-osc-hole-field:OPA4197IPWR' or p.attributes.get('MPN') != 'OPA4197IPWR':
++        if p.prefix != 'U' or p.symbol.split(':')[-1] not in ('OPA4197IPWR', 'OPA4197IDR') or p.attributes.get('MPN') != p.symbol.split(':')[-1]:
+             raise ValueError('precision compiled amplifier identity changed')
+         if p.unit == 1:
+             pins = {'1': 'DRIVE', '2': 'FB', '3': 'SIGNAL'}
+diff --git a/design/spec/modules/build_envelope_current.py b/design/spec/modules/build_envelope_current.py
+index cbf6f110..45475f8f 100644
+--- a/design/spec/modules/build_envelope_current.py
++++ b/design/spec/modules/build_envelope_current.py
+@@ -12,7 +12,8 @@ def build():
+   a=dict(zip(RAILS,a));b=dict(zip(RAILS,b))
+   for r in RAILS:typ[r]+=count*a[r];upper[r]+=count*b[r]
+   rows.append({'load':name,'count':count,'typical_unit_mA':a,'planning_unit_mA':b,'basis':basis})
+- for sym,key in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('LM13700M_NOPB','ota')]:
++ for sym,key in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('OPA4197IDR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('LM13700M_NOPB','ota')]:
++  if not counts[sym] and sym.startswith('OPA4197'):continue
+   r=LOADS[key];add(sym,counts[sym],[r['typical_unit_mA'][v] for v in RAILS],[r['planning_unit_mA'][v] for v in RAILS],r['basis'])
+  add('LM393BIDR',counts['LM393BIDR'],(.6,0,0),(1,0,0),'Whole dual packages on +12V/AGND; inherited planning allowance, no -12V comparator current. Pullups separate.')
+  for sym in ('SN74HC00DR','SN74HC74DR','SN74HC14DR','CD74HC221M96'):
+diff --git a/design/spec/modules/build_filter_current.py b/design/spec/modules/build_filter_current.py
+index 1c72e1c1..82d56fb5 100644
+--- a/design/spec/modules/build_filter_current.py
++++ b/design/spec/modules/build_filter_current.py
+@@ -13,7 +13,8 @@ def build():
+         a=dict(zip(RAILS,a));z=dict(zip(RAILS,z))
+         for r in RAILS:typ[r]+=qty*a[r];upper[r]+=qty*z[r]
+         rows.append({'load':label,'count':qty,'typical_unit_mA':a,'planning_unit_mA':z,'basis':basis})
+-    for symbol,id in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('LM13700M_NOPB','ota')]:
++    for symbol,id in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('OPA4197IDR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('LM13700M_NOPB','ota')]:
++        if not counts[symbol] and symbol.startswith('OPA4197'):continue
+         x=LOADS[id];add(symbol,counts[symbol],[x['typical_unit_mA'][r] for r in RAILS],[x['planning_unit_mA'][r] for r in RAILS],x['basis'])
+     add('Four magnitude indicators',4,(.25,.25,0),(1.25,1.25,0),'OSC-ES-1 brightness envelope; per-rail peaks need not coincide.')
+     add('Four external output loads',4,(.05,.05,0),(.5,.5,0),'5 V into 100k typical / 10k planning load; no simultaneous-short guarantee.')
+diff --git a/design/spec/modules/build_manual_ab_current.py b/design/spec/modules/build_manual_ab_current.py
+index 2f971a34..f87bcbe7 100644
+--- a/design/spec/modules/build_manual_ab_current.py
++++ b/design/spec/modules/build_manual_ab_current.py
+@@ -26,7 +26,7 @@ def build():
+                           'typical_unit_mA': typical_unit,
+                           'planning_maximum_unit_mA': max_unit, 'basis': basis})
+ 
+-    for symbol, load_id in (('OPA4197IPWR', 'opamp_precision'),
++    for symbol, load_id in (('OPA4197IPWR', 'opamp_precision'), ('OPA4197IDR', 'opamp_precision'),
+                             ('OPA4196IDR', 'opamp_indicator'),
+                             ('ADG5412FBRUZ', 'fault_switches')):
+         count = counts[symbol]
+diff --git a/design/spec/modules/build_mixer_current.py b/design/spec/modules/build_mixer_current.py
+index ca88f6a7..06bd21a4 100644
+--- a/design/spec/modules/build_mixer_current.py
++++ b/design/spec/modules/build_mixer_current.py
+@@ -20,7 +20,7 @@ def build_one(name,family,instances):
+         a=dict(zip(SUPPLIES,lo));b=dict(zip(SUPPLIES,hi))
+         rows.append({'load':label,'count':qty,'typical_unit_mA':a,'planning_unit_mA':b,'basis':basis})
+         for rail in SUPPLIES:typ[rail]+=qty*a[rail];plan[rail]+=qty*b[rail]
+-    for symbol,id in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('LM393BIDR','comparators'),('LM13700M_NOPB','ota')]:
++    for symbol,id in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('OPA4197IDR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('LM393BIDR','comparators'),('LM13700M_NOPB','ota')]:
+         if not counts[symbol]:continue
+         x=LOADS[id]
+         add(symbol,counts[symbol],[x['typical_unit_mA'][r] for r in SUPPLIES],
+diff --git a/design/spec/modules/build_mult_current.py b/design/spec/modules/build_mult_current.py
+index fa42eb3b..84ac45ca 100644
+--- a/design/spec/modules/build_mult_current.py
++++ b/design/spec/modules/build_mult_current.py
+@@ -26,7 +26,7 @@ def build():
+                           'typical_unit_mA': typical_unit,
+                           'planning_maximum_unit_mA': max_unit, 'basis': basis})
+ 
+-    for symbol, load_id in (('OPA4197IPWR', 'opamp_precision'),
++    for symbol, load_id in (('OPA4197IPWR', 'opamp_precision'), ('OPA4197IDR', 'opamp_precision'),
+                             ('OPA4196IDR', 'opamp_indicator'),
+                             ('ADG5412FBRUZ', 'fault_switches')):
+         count = counts[symbol]
+diff --git a/design/spec/modules/build_offset_current.py b/design/spec/modules/build_offset_current.py
+index 3476f44d..4e01aee3 100644
+--- a/design/spec/modules/build_offset_current.py
++++ b/design/spec/modules/build_offset_current.py
+@@ -16,7 +16,8 @@ def build():
+         a=dict(zip(RAILS,a));b=dict(zip(RAILS,b))
+         for r in RAILS:typ[r]+=n*a[r];upper[r]+=n*b[r]
+         rows.append({'load':label,'count':n,'typical_unit_mA':a,'planning_unit_mA':b,'basis':basis})
+-    for symbol,id in [('OPA4197IPWR','opamp_precision'),('OPA4196IDR','opamp_audio'),('ADG5412FBRUZ','fault_switches'),('LM393BIDR','comparators')]:
++    for symbol,id in [('OPA4197IPWR','opamp_precision'),('OPA4197IDR','opamp_precision'),('OPA4196IDR','opamp_audio'),('ADG5412FBRUZ','fault_switches'),('LM393BIDR','comparators')]:
++        if not counts[symbol] and symbol.startswith('OPA4197'):continue
+         x=LOADS[id]
+         add(symbol,counts[symbol],[x['typical_unit_mA'][r] for r in RAILS],[x['planning_unit_mA'][r] for r in RAILS],x['basis'])
+     for label,id,count in [('three magnitude LEDs','magnitude_leds',3),('one clip LED','clip_leds',1),('one manual offset pot','dc_pots',1),('one external output load','output_loads',1)]:
+diff --git a/design/spec/modules/build_oscillator_current.py b/design/spec/modules/build_oscillator_current.py
+index a787b2ad..3fefe23a 100644
+--- a/design/spec/modules/build_oscillator_current.py
++++ b/design/spec/modules/build_oscillator_current.py
+@@ -10,7 +10,7 @@ RAILS=('+12V','-12V','+5V')
+ def sheet(f, copies):
+     packages={p.key.rsplit('.',1)[0]:p.symbol.split(':')[-1] for p in f.parts if p.prefix=='U'}
+     count=Counter(packages.values());typ=dict.fromkeys(RAILS,0.0);upper=typ.copy();rows=[]
+-    for symbol,load_id in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('LM393BIDR','comparators')]:
++    for symbol,load_id in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('OPA4197IDR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('LM393BIDR','comparators')]:
+         n=count[symbol]
+         if not n:continue
+         a=LOADS[load_id]['typical_unit_mA'].copy();z=LOADS[load_id]['planning_unit_mA'].copy()
+diff --git a/design/spec/modules/build_sample_hold_current.py b/design/spec/modules/build_sample_hold_current.py
+index 0d682dea..0904a82a 100644
+--- a/design/spec/modules/build_sample_hold_current.py
++++ b/design/spec/modules/build_sample_hold_current.py
+@@ -8,7 +8,7 @@ LOADS={x['id']:x for x in BUDGET['loads']}
+ RAILS=('+12V','-12V','+5V')
+ OUT=ROOT/'design/reports/current/sample_hold.json'
+ ROLE_BY_SYMBOL={
+- 'OPA4196IDR':'opamp_audio','OPA4197IPWR':'opamp_precision','ADG5412FBRUZ':'fault_switches','LF398M_NOPB':'sample_hold','LM393BIDR':'comparators'
++ 'OPA4196IDR':'opamp_audio','OPA4197IPWR':'opamp_precision','OPA4197IDR':'opamp_precision','ADG5412FBRUZ':'fault_switches','LF398M_NOPB':'sample_hold','LM393BIDR':'comparators'
+ }
+ 
+ def build():
+diff --git a/design/spec/modules/build_wavefolder_current.py b/design/spec/modules/build_wavefolder_current.py
+index d27168af..0faf30f0 100644
+--- a/design/spec/modules/build_wavefolder_current.py
++++ b/design/spec/modules/build_wavefolder_current.py
+@@ -12,7 +12,8 @@ def build():
+   a=dict(zip(RAILS,a));z=dict(zip(RAILS,z))
+   for r in RAILS:typ[r]+=count*a[r];upper[r]+=count*z[r]
+   rows.append({'load':label,'count':count,'typical_unit_mA':a,'planning_unit_mA':z,'basis':basis})
+- for sym,key in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('LM13700M_NOPB','ota')]:
++ for sym,key in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('OPA4197IDR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('LM13700M_NOPB','ota')]:
++  if not counts[sym] and sym.startswith('OPA4197'):continue
+   r=LOADS[key];add(sym,counts[sym],[r['typical_unit_mA'][v] for v in RAILS],[r['planning_unit_mA'][v] for v in RAILS],r['basis'])
+  add('REF5050 allocation',1,(.8,0,0),(1.2,0,0),'Local reference supply allocation, not an established full-temperature maximum; buffer quads counted above.')
+  add('Three magnitude LEDs',3,(.25,.25,0),(1.25,1.25,0),'OSC-ES-1 brightness/load envelope; no output indicator.')
+@@ -24,13 +25,15 @@ def build():
+  add('Four diode clamp feeds',4,(.2,.2,0),(1,1,0),'Per stage10k feed: |drive|<=10V gives<=1mA in the passive clamp under the stated normal headroom envelope.')
+  add('Four fold feedback paths',4,(.02,.02,0),(.2,.2,0),'At most20V differential/100k =0.2mA per feedback resistor; conservative planning condition, not amplifier short limit.')
+  auxiliary=[p for p in f.parts if p.attributes.get('Role','').startswith('wavefolder:R_') and any(p.attributes['Role']=='wavefolder:R_'+k for k in ('CONTROL_MANUAL','CONTROL_DEPTH','CONTROL_FB','CONTROL_INV_IN','CONTROL_INV_FB','REF25_TOP','REF25_BOTTOM','TARGET_IN','TARGET_FB','INPUT_ATTEN_TOP','OFFSET_FEED','DRIVE_SIGNAL','DRIVE_BIAS_MANUAL','DRIVE_BIAS_BUFFER','DRIVE_FB','DRIVE_INV_IN','DRIVE_INV_FB','OUTPUT_RF','OUTPUT_RG','PRE_GAIN_FIXED','AC_RETURN'))]
+- bound=sum(20/number(p.value)*1000 for p in auxiliary)
++ # R-exact candidate series elements belong to one branch: charge the branch total.
++ chain=lambda p:number(p.value)+sum(number(q.value) for q in f.parts if q.attributes.get('Role','').startswith(p.attributes['Role']+'_SER'))
++ bound=sum(20/chain(p)*1000 for p in auxiliary)
+  add('Other local signal/control resistor paths',1,(bound/8,bound/8,0),(bound,bound,0),'Sum20V/R over explicit captured resistor list, applied conservatively to both rails; typical allocation uses one eighth of this envelope. Does not include startup/fault currents.')
+  add('Command clamp resistor',1,(.02,.02,0),(1.1,1.1,0),'10k with up to11V differential under bounded normal amplifier/reference envelope.')
+  add('Offset/input low-side divider loads',1,(.02,.02,0),(.05,.05,0),'Low-side200ohm input divider and1k offset return are driven through their large upper resistors; separate small reserve avoids assuming20V across them.')
+  add('External output load',1,(.05,.05,0),(.5,.5,0),'5V into100k typical/10k planning. Output shorts and control-step peaks unqualified.')
+  add('Input isolation enables',1,(0,0,.15),(0,0,.25),'Three approximately5V/101k enable feeds plus digital-input reserve.')
+- return {'schema_version':1,'module':'wavefolder','authority':'PROPOSAL (planning, owner-delegated)','status':'Captured current planning; not a guaranteed maximum or hardware measurement','IC_packages_per_instance':dict(sorted(counts.items())),'breakdown':rows,'auxiliary_resistors':[{'role':p.attributes['Role'],'value_ohm':number(p.value)} for p in auxiliary],'instances':[{'instance':i,'planning_typical_mA':{r:round(typ[r],6) for r in RAILS},'planning_upper_mA':{r:round(upper[r],6) for r in RAILS},'guaranteed_maximum_mA':dict.fromkeys(RAILS,None)} for i in INSTANCES],'planning_upper_total_mA':{r:round(2*upper[r],6) for r in RAILS},'guaranteed_maximum_status':'NOT ESTABLISHED - actual device corners, dynamic controls, startup, output faults and physical board unqualified','decoupling_nF_per_instance':100*sum('_C_DEC_' in p.key for p in f.parts),'audio_coupling_nominal_nF_per_instance':1000,'note':'One active OTA section but whole dual package charged. Internal branch estimates replace a single preliminary lumped allowance. #33/#34 owns full-instrument current closure; no new module bulk.'}
++ return {'schema_version':1,'module':'wavefolder','authority':'PROPOSAL (planning, owner-delegated)','status':'Captured current planning; not a guaranteed maximum or hardware measurement','IC_packages_per_instance':dict(sorted(counts.items())),'breakdown':rows,'auxiliary_resistors':[{'role':p.attributes['Role'],'value_ohm':chain(p)} for p in auxiliary],'instances':[{'instance':i,'planning_typical_mA':{r:round(typ[r],6) for r in RAILS},'planning_upper_mA':{r:round(upper[r],6) for r in RAILS},'guaranteed_maximum_mA':dict.fromkeys(RAILS,None)} for i in INSTANCES],'planning_upper_total_mA':{r:round(2*upper[r],6) for r in RAILS},'guaranteed_maximum_status':'NOT ESTABLISHED - actual device corners, dynamic controls, startup, output faults and physical board unqualified','decoupling_nF_per_instance':100*sum('_C_DEC_' in p.key for p in f.parts),'audio_coupling_nominal_nF_per_instance':1000,'note':'One active OTA section but whole dual package charged. Internal branch estimates replace a single preliminary lumped allowance. #33/#34 owns full-instrument current closure; no new module bulk.'}
+ 
+ def main(check=False):
+  p=ROOT/'design/reports/current/wavefolder.json';s=json.dumps(build(),indent=2)+'\n'
+diff --git a/design/spec/modules/check_oscillator_reference.py b/design/spec/modules/check_oscillator_reference.py
+index 193436dd..f6b9859f 100644
+--- a/design/spec/modules/check_oscillator_reference.py
++++ b/design/spec/modules/check_oscillator_reference.py
+@@ -1,5 +1,6 @@
+ """Source-derived normal-operation reference loads; no short-current guarantee."""
+ import json
++import re
+ from collections import Counter
+ from .oscillator import ROOT, family, octave_family, specification
+ from .io_partition import AMP_MAPS
+@@ -15,6 +16,11 @@ def build(f=None):
+     evidence=json.loads((ROOT/'.claude/skills/component-ti-opa4197ipwr/facts.json').read_text())
+     bias_fact=next(x for x in evidence['facts'] if x['fact_id']=='fact-op-precision-input-bias-current-full-temperature')
+     assert bias_fact['unit']=='nA' and c['input_bias_bound_A']>=bias_fact['value']['maximum']*1e-9-1e-20,'reference bias bound is below the retained exact-package maximum'
++    soic=ROOT/'.claude/skills/component-ti-opa4197idr/facts.json'
++    if soic.exists():
++        # UNADOPTED option-B candidate: the SOIC-14 owner carries its own bound.
++        soic_fact=next(x for x in json.loads(soic.read_text())['facts'] if x['fact_id']=='fact-op-precision-d-input-bias-current-full-temperature')
++        assert soic_fact['unit']=='nA' and c['input_bias_bound_A']>=soic_fact['value']['maximum']*1e-9-1e-20,'reference bias bound is below the SOIC-14 maximum'
+     v=c['reference_abs_max_V']; rail=c['supply_abs_max_V']; tol=c['fixed_resistance_tolerance_fraction']; bias=c['input_bias_bound_A']*1000
+     receiver=c['nonprecision_receiver_current_allowance_A']*1000
+     assert c['driver_limit_mA']==2 and c['maximum_panel_pots_per_pair']==6
+@@ -48,18 +54,23 @@ def build(f=None):
+                     loads.append({'key':p.key,'kind':'panel pot' if panel else 'trim','nominal_ohm':resistance,'resistance_tolerance_fraction':t,'wiper_bound_mA':wiper,'maximum_mA':current})
+                 elif p.prefix.startswith('R'):
+                     resistance=number(p.value); voltage=v+rail
++                    tap=p.pins['2']
++                    # R-exact candidate series elements extend one fixed branch.
++                    while re.search(r'_SER\d+$',tap or ''):
++                        q=next(q for q in f.parts if q.prefix.startswith('R') and q.pins.get('1')==tap)
++                        resistance+=number(q.value);tap=q.pins['2']
+                     if p.key in dividers:
+                         lower=parts[dividers[p.key]]
+-                        assert set(lower.pins.values())=={p.pins['2'],'AGND'}
++                        assert set(lower.pins.values())=={tap,'AGND'}
+                         resistance+=number(lower.value);voltage=v
+                     loads.append({'key':p.key,'kind':'fixed branch','maximum_mA':voltage/(resistance*(1-tol))*1000+receiver})
+-                elif p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) and p.unit in range(1,5):
++                elif p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')) and p.unit in range(1,5):
+                     out,minus,plus=AMP_MAPS[p.unit-1];assert p.pins[plus]==net
+-                    loads.append({'key':p.key,'kind':'input bias','maximum_mA':bias if p.symbol.endswith('OPA4197IPWR') else receiver})
++                    loads.append({'key':p.key,'kind':'input bias','maximum_mA':bias if p.symbol.endswith(('OPA4197IPWR','OPA4197IDR')) else receiver})
+                 else:raise ValueError(f'unclassified reference load {p.key}')
+             assert loads,f'missing local fanout {net}'
+             assert pots<=c['maximum_panel_pots_per_pair'],'panel fanout exceeded'
+-            driver=next(p for p in f.parts if p.symbol.endswith('OPA4197IPWR') and p.unit in range(1,5) and p.pins[AMP_MAPS[p.unit-1][0]]==net+'_DRIVE')
++            driver=next(p for p in f.parts if p.symbol.endswith(('OPA4197IPWR','OPA4197IDR')) and p.unit in range(1,5) and p.pins[AMP_MAPS[p.unit-1][0]]==net+'_DRIVE')
+             out,minus,plus=AMP_MAPS[driver.unit-1]
+             assert driver.pins[plus]=='OSC_REF'+pol and driver.pins[minus]==net+'_FB'
+             for suffix,value in [('ISO',c['isolation_ohm']),('FB',c['feedback_ohm']),('FAST',c['compensation_F'])]:
+@@ -73,7 +84,7 @@ def build(f=None):
+     for p in f.parts:
+         for pin,net in p.pins.items():
+             if net not in ('OSC_REF5','OSC_REFN5'):continue
+-            assert p.symbol.endswith('OPA4197IPWR') and p.unit in range(1,5) and pin==AMP_MAPS[p.unit-1][2],f'raw source loaded by {p.key}'
++            assert p.symbol.endswith(('OPA4197IPWR','OPA4197IDR')) and p.unit in range(1,5) and pin==AMP_MAPS[p.unit-1][2],f'raw source loaded by {p.key}'
+     source=[]
+     for pol in ('5','N5'):
+         net='OSC_REF'+pol;loads=[]
+@@ -98,7 +109,7 @@ def build(f=None):
+     attribution=[]
+     for inst in specification()[1][:5]:
+         for p in f.parts:
+-            if p.symbol.endswith('OPA4197IPWR') and p.unit==5:
++            if p.symbol.endswith(('OPA4197IPWR','OPA4197IDR')) and p.unit==5:
+                 caps=[q for q in f.parts if q.attributes.get('Decouples')==p.key.rsplit('.',1)[0]]
+                 assert len(caps)==2 and {n for q in caps for n in q.pins.values()}=={'+12V','-12V','AGND'}
+                 attribution.append({'ref':designator(p,inst),'supply_pins':p.pins,'bypass_refs':[designator(q,inst) for q in caps],'bypass_F_each':1e-7})
+diff --git a/design/spec/modules/envelope.py b/design/spec/modules/envelope.py
+index fcac0a51..c2d9a716 100644
+--- a/design/spec/modules/envelope.py
++++ b/design/spec/modules/envelope.py
+@@ -3,6 +3,7 @@
+ Index allocation 41–46; only rails are global. No physical validation claimed.
+ """
+ from design.spec.modules.io_partition import refined
++import re
+ from collections import defaultdict
+ from dataclasses import replace
+ from design.spec.modules.oscillator import Builder,PLACEMENTS,RAILS
+@@ -123,7 +124,8 @@ class EnvelopeBuilder(Builder):
+    for j,rail in enumerate(rails):self.c('DEC_'+key+'_'+str(j),'100 nF',rail,'AGND')
+    self.island=old
+   counts=defaultdict(int);assigned={};out=[]
+-  for p in self.parts:
++  # R-exact series tails number after every existing part (designator lock).
++  for p in sorted(self.parts,key=lambda q:bool(re.search(r'_SER\d+\.',q.key))):
+    prefix='R' if p.prefix=='RB' else p.prefix;key=(prefix,p.key.rsplit('.',1)[0])
+    if key not in assigned:counts[prefix]+=1;assigned[key]=counts[prefix]
+    n=assigned[key];index=len(out)
+@@ -173,10 +175,10 @@ def family():
+  b.device('CD74HC221M96','EOC_TIMER','U',{'1':'AGND','2':'COMPLETE','3':'READY','14':'EOC_C','15':'EOC_RCX','4':'EOC','13':None,'9':'AGND','10':'AGND','11':'AGND','6':None,'7':None,'12':None,'5':None,'16':'+5V','8':'AGND'})
+  b.r('EOC_TIME','47 kΩ','+5V','EOC_RCX');b.device(CATALOG[SHORTLIST['c_slew']['mpn']],'EOC_TIME','C',{'1':'EOC_RCX','2':'EOC_C'},value='100 nF C0G')
+  # Local references 8V peak, 9V curved target, 1V pedestal and 50mV floor.
+- for key,rf in [('REF8','60 kΩ'),('REF9','80 kΩ')]:
+-  b.amp(key,'precision','REF5',key+'_FB',key);b.r(key+'_FB',rf,key,key+'_FB');b.r(key+'_RG','100 kΩ',key+'_FB','AGND')
++ for key,rf,rg in [('REF8','60 kΩ','100 kΩ'),('REF9','40 kΩ','50 kΩ')]:
++  b.amp(key,'precision','REF5',key+'_FB',key);b.r(key+'_FB',rf,key,key+'_FB');b.r(key+'_RG',rg,key+'_FB','AGND')
+  b.r('REF1_TOP','40 kΩ','REF5','REF1_RAW');b.r('REF1_BOTTOM','10 kΩ','REF1_RAW','AGND');b.amp('REF1','precision','REF1_RAW','REF1','REF1')
+- b.r('FLOOR_TOP','79 kΩ','REF5','FLOOR_REF');b.r('FLOOR_BOTTOM','22 kΩ','FLOOR_REF','AGND')
++ b.series('FLOOR_TOP',('47 kΩ','32 kΩ'),'REF5','FLOOR_REF');b.r('FLOOR_BOTTOM','22 kΩ','FLOOR_REF','AGND')
+  b.r('TOP_THRESHOLD','100 kΩ','REF9','TOP_THRESHOLD');b.r('TOP_HYSTERESIS','10 MΩ','TOP_LOW','TOP_THRESHOLD')
+  b.r('BOTTOM_SENSE','100 kΩ','FALL_CURVE_V','BOTTOM_SENSE');b.r('BOTTOM_HYSTERESIS','10 MΩ','BOTTOM_LOW','BOTTOM_SENSE')
+  b.cmp('TOP_CMP','TOP_THRESHOLD','FALL_CURVE_V','TOP_LOW');b.schmitt('TOP_LOGIC','TOP_LOW','TOP_RAW')
+@@ -210,7 +212,7 @@ def family():
+  b.amp('FALL_CURVE','cv','FALL_CURVE_PLUS','FALL_CURVE_FB','FALL_CURVE_V');b.r('FALL_CURVE_FB','100 kΩ','FALL_CURVE_V','FALL_CURVE_FB');b.r('FALL_CURVE_RG','100 kΩ','FALL_CURVE_FB','AGND')
+  b.switch('SLOPE_SELECT',[('RISE_LINEAR','REF9','RISE_DRIVE'),('RISE_CURVE','RISE_CURVE_V','RISE_DRIVE'),('FALL_LINEAR','REF9','FALL_DRIVE'),('FALL_CURVE','FALL_CURVE_V','FALL_DRIVE')])
+  for k in ('RISE','FALL'):
+-  b.r(k+'_DRIVE_TOP','899 kΩ',k+'_DRIVE',k+'_OTA_SIGNAL');b.r(k+'_DRIVE_BOTTOM','1 kΩ',k+'_OTA_SIGNAL','AGND')
++  b.series(k+'_DRIVE_TOP',('820 kΩ','78.7 kΩ'),k+'_DRIVE',k+'_OTA_SIGNAL');b.r(k+'_DRIVE_BOTTOM','1 kΩ',k+'_OTA_SIGNAL','AGND')
+  b.device('LM13700M_NOPB','OTA','U',{'1':'RISE_IABC','2':None,'3':'RISE_OTA_SIGNAL','4':'RISE_OFFSET','5':'RISE_OTA_CURRENT','6':'-12V','7':'AGND','8':None,'9':None,'10':'AGND','11':'+12V','12':'FALL_OTA_CURRENT','13':'FALL_OTA_SIGNAL','14':'FALL_OFFSET','15':None,'16':'FALL_IABC'})
+  for k in ('RISE','FALL'):b.r(k+'_CURRENT_SUM','100 Ω',k+'_OTA_CURRENT','ENV_STORAGE')
+  b.device(CATALOG[SHORTLIST['c_slew']['mpn']],'TIMING_CAP','C',{'1':'ENV_STORAGE','2':'AGND'},value='100 nF C0G')
+@@ -219,12 +221,13 @@ def family():
+  b.switch('STORAGE_CLAMP',[('HOLD_ENABLE','REF8','HOLD_CLAMP'),('RESET_CAP','AGND','IDLE_CLAMP'),('AGND','AGND','AGND'),('AGND','AGND','AGND')])
+  b.r('HOLD_CLAMP','100 Ω','HOLD_CLAMP','ENV_STORAGE');b.r('IDLE_CLAMP','100 Ω','IDLE_CLAMP','ENV_STORAGE')
+  # BIP=1.25*ENV-5: plus=ENV*5/9, noninverting gain2.25, REF5 feed1.
+- b.r('BIP_PLUS_TOP','64 kΩ','ENV_BUFFER','BIP_PLUS');b.r('BIP_PLUS_BOTTOM','80 kΩ','BIP_PLUS','AGND')
+- b.amp('BIP','cv','BIP_PLUS','BIP_SUM','BIP_CORE');b.r('BIP_REF','100 kΩ','REF5','BIP_SUM');b.r('BIP_FB','100 kΩ','BIP_CORE','BIP_SUM');b.r('BIP_GROUND','400 kΩ','BIP_SUM','AGND')
++ b.r('BIP_PLUS_TOP','40 kΩ','ENV_BUFFER','BIP_PLUS');b.r('BIP_PLUS_BOTTOM','50 kΩ','BIP_PLUS','AGND')
++ b.amp('BIP','cv','BIP_PLUS','BIP_SUM','BIP_CORE');b.r('BIP_REF','100 kΩ','REF5','BIP_SUM');b.r('BIP_FB','100 kΩ','BIP_CORE','BIP_SUM');b.r('BIP_GROUND','402 kΩ','BIP_SUM','AGND')
+  for k in ('RISE','FALL'):b.cell('stage_indicator',k,{'ENV_BUFFERED':'ENV_BUFFER','NOT_OWN_STAGE':'NOT_'+k},panel='L:{}.{}.stage'.format('{}',k),led=True)
+  for key,signal in [('ENV','ENV_BUFFER'),('BIP','BIP_CORE'),('EOC','EOC'),('STG','STAGE_HIGH')]:
+   b.cell('general_output',key,{'SIGNAL':signal,'JACK':key+'_TIP'})
+   b.device('WQP518MA','J_'+key,'J',{'T':key+'_TIP','S':'AGND','TN':None},panel='J:{}.{}'.format('{}',key),island='')
++ b.flush_series()
+  return b.finish_envelope()
+ 
+ 
+diff --git a/design/spec/modules/io_partition.py b/design/spec/modules/io_partition.py
+index 72e84c8f..6de900cf 100644
+--- a/design/spec/modules/io_partition.py
++++ b/design/spec/modules/io_partition.py
+@@ -33,7 +33,7 @@ def region(part, family):
+ 
+ 
+ def spare(part):
+-    if part.symbol.endswith(('OPA4196IDR', 'OPA4197IPWR')) and part.unit in range(1,5):
++    if part.symbol.endswith(('OPA4196IDR', 'OPA4197IPWR', 'OPA4197IDR')) and part.unit in range(1,5):
+         out, minus, plus = AMP_MAPS[part.unit-1]
+         return part.pins[out] == part.pins[minus] and part.pins[plus] == 'AGND'
+     if part.symbol.endswith('SN74HC14DR') and part.unit in range(1,7):
+@@ -69,13 +69,13 @@ def refine(family):
+         elif not attrs.get('Island'):
+             attrs['Island'] = f'IO_CORE:${{SHEETNAME}}'
+         p = replace(p, attributes=attrs)
+-        if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','SN74HC14DR')):
++        if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR','SN74HC14DR')):
+             groups[p.symbol].append(p)
+         else:
+             result.append(p)
+     extra_ordinal = max((p.ordinal for p in family.parts if p.prefix == 'U'), default=0)
+     for symbol, entries in groups.items():
+-        is_amp = symbol.endswith(('OPA4196IDR','OPA4197IPWR'))
++        is_amp = symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR'))
+         maps = AMP_MAPS if is_amp else SCHMITT_MAPS
+         power_unit = len(maps)+1
+         package_templates = [p for p in entries if p.unit == power_unit]
+@@ -135,7 +135,7 @@ def refine(family):
+         p = rows[-1]
+         supply = {pin: net for q in rows for pin, net in q.pins.items()}
+         sym = p.symbol.split(':')[-1]
+-        rail_pins = {'OPA4196IDR':('4','11'),'OPA4197IPWR':('4','11'),
++        rail_pins = {'OPA4196IDR':('4','11'),'OPA4197IPWR':('4','11'),'OPA4197IDR':('4','11'),
+                      'SN74HC14DR':('14',),'SN74HC00DR':('14',),'SN74HC74DR':('14',),
+                      'CD74HC221M96':('16',),'REF5050AIDR':('2',),'LM393BIDR':('8','4'),
+                      'ADG5412FBRUZ':('13','4'),'LM13700M_NOPB':('11','6'),
+@@ -183,15 +183,32 @@ def refine(family):
+                                       'Island': 'IO_STAGE_OPTICAL:${SHEETNAME}'})
+         optical.append(p)
+     result_family = replace(result_family, parts=tuple(optical))
+-    return result_family
++    return replace(result_family, parts=tuple(precision_package(p) for p in result_family.parts))
++
++
++def precision_package(part):
++    # UNADOPTED phase-16 candidate, control-board option B: precision packages
++    # outside the control region move to the pin-identical SOIC-14 OPA4197IDR;
++    # the four control-board packages keep TSSOP-14 OPA4197IPWR.
++    if not part.symbol.endswith('OPA4197IPWR') or part.attributes.get('BoardRegion') == 'control':
++        return part
++    from design.spec.cells._builder import SHORTLIST, CATALOG, load_symbol
++    record = SHORTLIST['op_precision_d']
++    symbol = load_symbol(CATALOG[record['mpn']])
++    footprint = symbol.body.split('(property "Footprint" "', 1)[1].split('"', 1)[0]
++    attrs = {**part.attributes, 'MPN': record['mpn'], 'Manufacturer': record['manufacturer'],
++             'LCSC': record.get('lcsc', '')}
++    return replace(part, symbol=symbol.lib_id, footprint=footprint,
++                   value=record['mpn'] if part.value == 'OPA4197IPWR' else part.value, attributes=attrs)
+ 
+ 
+ def channel_signatures(family):
+     """Electrical identity independent of physical channel pin allocation."""
+     signatures=[]
+     for p in family.parts:
+-        maps=AMP_MAPS if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) else SCHMITT_MAPS if p.symbol.endswith('SN74HC14DR') else ()
++        maps=AMP_MAPS if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')) else SCHMITT_MAPS if p.symbol.endswith('SN74HC14DR') else ()
+         if not maps or p.unit>len(maps) or spare(p):continue
+-        signatures.append((p.symbol,p.attributes.get('LogicalCellKey') or p.key,
++        # The option-B SOIC-14 OPA4197IDR is pin-identical to OPA4197IPWR.
++        signatures.append((p.symbol.replace('OPA4197IDR','OPA4197IPWR'),p.attributes.get('LogicalCellKey') or p.key,
+                            p.attributes.get('Role',''),tuple(p.pins[k] for k in maps[p.unit-1])))
+     return sorted(signatures)
+diff --git a/design/spec/modules/offset_model_contract.py b/design/spec/modules/offset_model_contract.py
+index ea03dffe..cf096902 100644
+--- a/design/spec/modules/offset_model_contract.py
++++ b/design/spec/modules/offset_model_contract.py
+@@ -30,7 +30,7 @@ def model_contract(parts):
+ 
+     def amp(role, plus, minus, out):
+         p = one(role)
+-        if (p.prefix != 'U' or p.symbol != SOURCE_LIBRARY + 'OPA4197IPWR' or
++        if (p.prefix != 'U' or p.symbol not in (SOURCE_LIBRARY + 'OPA4197IPWR', SOURCE_LIBRARY + 'OPA4197IDR') or
+                 p.unit not in (1, 2, 3, 4)):
+             raise ValueError(f'AO model amplifier identity changed: {role}')
+         output, negative, positive = AMP_MAPS[p.unit - 1]
+diff --git a/design/spec/modules/oscillator.py b/design/spec/modules/oscillator.py
+index 19b9f595..32513624 100644
+--- a/design/spec/modules/oscillator.py
++++ b/design/spec/modules/oscillator.py
+@@ -3,7 +3,7 @@
+ Reserved master indices: O1..O5 = 11..15; OCTAVE_REF = 16.
+ ALFA 2020 v7 source/pin evidence: design/standard/pin-maps/vco.json.
+ """
+-from design.spec.modules.io_partition import refined
++from design.spec.modules.io_partition import refined, precision_package
+ from collections import defaultdict
+ from dataclasses import replace
+ import json, re
+@@ -54,6 +54,16 @@ class Builder:
+         self.device(CATALOG[SHORTLIST[identity]['mpn']],kind+'_'+key,kind,{'1':a,'2':b},value=value,mpn=None if exact else '')
+ 
+     def r(self,key,value,a,b):self.passive('R',key,value,a,b)
++
++    def series(self,key,values,a,z):
++        # R-exact candidate: the first element keeps the original key and slot;
++        # added elements are appended last so existing designators stay locked.
++        nets=[a]+[f'{key}_SER{n}' for n in range(1,len(values))]+[z]
++        self.r(key,values[0],nets[0],nets[1])
++        self.__dict__.setdefault('series_tails',[]).extend((f'{key}_SER{n}',v,nets[n],nets[n+1]) for n,v in enumerate(values[1:],1))
++
++    def flush_series(self):
++        for tail in self.__dict__.pop('series_tails',[]):self.r(*tail)
+     def c(self,key,value,a,b):self.passive('C',key,value,a,b)
+ 
+     def amp(self,key,role,plus,minus,out):
+@@ -83,7 +93,7 @@ class Builder:
+         # unused channels as followers at ground, including power units.
+         groups=defaultdict(list);rest=[]
+         for p in self.parts:
+-            if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')):
++            if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')):
+                 if p.unit==1:groups[(p.symbol,p.attributes['Island'])].append(p)
+             else:rest.append(p)
+         for (symbol,island),channels in groups.items():
+@@ -152,7 +162,7 @@ def family():
+     b.amp('LFO_OFFSET','cv','LOCAL_REFN5','LFO_FB','LFO_REF');b.r('LFO_RF','40 kΩ','LFO_REF','LFO_FB');b.r('LFO_RG','100 kΩ','LFO_FB','AGND')
+     b.device('2MS1T1B1M2QES-5','RANGE','SW',{'3':'LFO_REF','2':'RANGE_CV','1':'AGND'},panel='C:{}.VCO/LFO',island='')
+     b.r('RANGE_PD','10 MΩ','RANGE_CV','AGND')
+-    for key,value,net in [('PITCH','100 kΩ','1V_BUFFER'),('OCT','100 kΩ','OCT_CV'),('TUNE','250 kΩ','TUNE_MANUAL'),('FINE','5 MΩ','FINE_MANUAL'),('FM','200 kΩ','FM_DEPTH'),('RANGE','100 kΩ','RANGE_CV'),('BIAS','82.5 kΩ','LOCAL_REF5')]:b.r('PITCH_'+key,value,net,'EXPO_SUM')
++    for key,value,net in [('PITCH','100 kΩ','1V_BUFFER'),('OCT','100 kΩ','OCT_CV'),('TUNE',('200 kΩ','50 kΩ'),'TUNE_MANUAL'),('FINE',('1 MΩ',)*5,'FINE_MANUAL'),('FM','200 kΩ','FM_DEPTH'),('RANGE','100 kΩ','RANGE_CV'),('BIAS','82.5 kΩ','LOCAL_REF5')]:b.series('PITCH_'+key,value,net,'EXPO_SUM') if isinstance(value,tuple) else b.r('PITCH_'+key,value,net,'EXPO_SUM')
+     b.trim('BASE_TRIM','10 kΩ','BASE_REFN5','BASE_ADJ','BASE_REF5');b.r('BASE_FEED','1 MΩ','BASE_ADJ','EXPO_SUM')
+     # ALFA external -5 V recommendation avoids contradictory internal-zener
+     # narrative versus VEE absolute limit. Driver/load sequencing remains a gate.
+@@ -160,10 +170,10 @@ def family():
+     b.device('AS3340D','CORE','U',{str(i):net for i,net in enumerate(['SCALE1','SCALE2','VEE5','PULSE_RAW','PWM_PIN','HARD_PIN','HF_PIN','SAW_RAW','SOFT_PIN','TRI_RAW','TIMING_CAP','AGND','LINEAR_REF','SCALE_PIN','EXPO_SUM','+12V'],1)})
+     b.parts.append(Part('VEE_POWER_FLAG','Fixture:PWR_FLAG','#FLG',1,0,50.8,50.8,{'1':'VEE5'},value='LOCAL_BUFFER_SUPPLY',attributes={'Role':'oscillator:driven local -5 V declaration','MPN':'','Manufacturer':'','LCSC':'','PanelUid':'','Island':b.island}))
+     b.r('RZ_FIXED','24 kΩ','SCALE1','RZ_TRIM');b.trim('RZ_TRIM','10 kΩ','RZ_TRIM','AGND')
+-    b.r('RT','5.72 kΩ','SCALE2','AGND')
++    b.series('RT',('5.1 kΩ','620 Ω'),'SCALE2','AGND')
+     b.r('RS_FIXED','1.5 kΩ','SCALE_PIN','SCALE_ADJ');b.trim('SCALE_TRIM','1 kΩ','SCALE_ADJ','AGND')
+     b.c('SCALE_BYPASS','100 nF','SCALE_PIN','AGND');b.c('CF','1 nF C0G','TIMING_CAP','AGND')
+-    b.r('LINEAR_REFERENCE','1.2 MΩ','+12V','LINEAR_REF');b.r('LINEAR_FILTER','470 Ω','LINEAR_REF','LINEAR_FILTER');b.c('LINEAR_FILTER','10 nF','LINEAR_FILTER','AGND')
++    b.series('LINEAR_REFERENCE',('1 MΩ','200 kΩ'),'+12V','LINEAR_REF');b.r('LINEAR_FILTER','470 Ω','LINEAR_REF','LINEAR_FILTER');b.c('LINEAR_FILTER','10 nF','LINEAR_FILTER','AGND')
+     b.trim('HF_TRIM','20 kΩ','HF_PIN','LINEAR_REF','AGND')
+     b.r('PULSE_LOAD','51 kΩ','PULSE_RAW','AGND')
+     b.cell('gate_trigger_input','SYNC',{'BUFFERED':'SYNC_BUFFER','REF_5V':'LOCAL_REF5','GATE_REF':'OSC_GATE_REF','GATE_HIGH':'SYNC_GATE'})
+@@ -171,15 +181,15 @@ def family():
+     for mode in ('SOFT','HARD'):
+         b.r(mode+'_PD','100 kΩ',mode+'_DRIVE','AGND');b.r(mode+'_LIMIT','10 kΩ',mode+'_DRIVE',mode+'_EDGE');b.c(mode+'_AC','1 nF',mode+'_EDGE',mode+'_PIN')
+     # PWM command .2 + .72*manual + .36*depth, then clamp near 0..4 V.
+-    b.amp('PWM_SUM','cv','AGND','PWM_SUM','PWM_NEG');b.r('PWM_FB','72 kΩ','PWM_NEG','PWM_SUM')
+-    for name,value,net in [('MAN','100 kΩ','PW_MANUAL'),('CV','200 kΩ','PWM_DEPTH'),('OFFSET','1.8 MΩ','LOCAL_REF5')]:b.r('PWM_'+name,value,net,'PWM_SUM')
++    b.amp('PWM_SUM','cv','AGND','PWM_SUM','PWM_NEG');b.series('PWM_FB',('40 kΩ','32 kΩ'),'PWM_NEG','PWM_SUM')
++    for name,value,net in [('MAN','100 kΩ','PW_MANUAL'),('CV','200 kΩ','PWM_DEPTH'),('OFFSET',('1 MΩ','820 kΩ'),'LOCAL_REF5')]:b.series('PWM_'+name,value,net,'PWM_SUM') if isinstance(value,tuple) else b.r('PWM_'+name,value,net,'PWM_SUM')
+     b.amp('PWM_INVERT','cv','AGND','PWM_INV','PWM_DRIVE');b.r('PWM_INV_IN','100 kΩ','PWM_NEG','PWM_INV');b.r('PWM_INV_FB','100 kΩ','PWM_DRIVE','PWM_INV')
+-    b.r('REF4_TOP','25 kΩ','LOCAL_REF5','REF4_RAW');b.r('REF4_BOT','100 kΩ','REF4_RAW','AGND');b.amp('REF4','cv','REF4_RAW','REF4','REF4')
++    b.r('REF4_TOP','24.9 kΩ','LOCAL_REF5','REF4_RAW');b.r('REF4_BOT','100 kΩ','REF4_RAW','AGND');b.amp('REF4','cv','REF4_RAW','REF4','REF4')
+     b.r('PWM_LIMIT','10 kΩ','PWM_DRIVE','PWM_PIN');b.device('BAT54S_215','PWM_CLAMP','D',{'1':'AGND','3':'PWM_PIN','2':'REF4'})
+     # Scale inferred raw 0..4 V triangle / 0..8 V saw at +12 V.
+-    for key,rinput,rtop in [('TRI','40 kΩ','250 kΩ'),('SAW','80 kΩ','125 kΩ')]:
+-        b.r(key+'_BIAS_TOP',rtop,'LOCAL_REF5',key+'_BIAS');b.r(key+'_BIAS_BOT','100 kΩ',key+'_BIAS','AGND')
+-        b.amp(key+'_SCALE','audio',key+'_BIAS',key+'_SUM',key+'_SCALED');b.r(key+'_IN',rinput,key+'_RAW',key+'_SUM');b.r(key+'_FB','100 kΩ',key+'_SCALED',key+'_SUM')
++    for key,rinput,rtop in [('TRI','40 kΩ',('200 kΩ','50 kΩ')),('SAW',('40 kΩ','40 kΩ'),('75 kΩ','50 kΩ'))]:
++        b.series(key+'_BIAS_TOP',rtop,'LOCAL_REF5',key+'_BIAS');b.r(key+'_BIAS_BOT','100 kΩ',key+'_BIAS','AGND')
++        b.amp(key+'_SCALE','audio',key+'_BIAS',key+'_SUM',key+'_SCALED');(b.series(key+'_IN',rinput,key+'_RAW',key+'_SUM') if isinstance(rinput,tuple) else b.r(key+'_IN',rinput,key+'_RAW',key+'_SUM'));b.r(key+'_FB','100 kΩ',key+'_SCALED',key+'_SUM')
+     # Pulse is squared in a 0/5 V domain so its amplitude does not depend on
+     # the unqualified AS3340 pulse high level at +12 V.
+     b.r('PUL_DIV_TOP','100 kΩ','PULSE_RAW','PULSE_HALF');b.r('PUL_DIV_BOT','100 kΩ','PULSE_HALF','AGND')
+@@ -207,6 +217,7 @@ def family():
+             b.r(key+'_ISO', '100 Ω', key+'_DRIVE', key)
+             b.r(key+'_FB', '100 Ω', key, key+'_FB')
+             b.c(key+'_FAST', '1 nF', key+'_DRIVE', key+'_FB')
++    b.flush_series()
+     return b.finish('oscillator',sensitive=('TIMING_CAP','EXPO_SUM','SCALE_PIN','SCALE1','SCALE2','LINEAR_REF','HF_PIN'))
+ 
+ 
+@@ -214,7 +225,8 @@ def octave_family():
+     b=Builder('OSC_SHARED_REFERENCE')
+     b.cell('reference_generator','SHARED',{'REF_5V':'OSC_REF5','REF_N5V':'OSC_REFN5','GATE_REF':'OSC_GATE_REF'})
+     b.cell('octave_reference','SHARED',{'REF_5V':'OSC_REF5','T0':'OCT_BOTTOM','BOTTOM':'OCT_BOTTOM','T5':'OCT_TOP','TOP':'OCT_TOP',**{f'OCT{i}':f'OSC_OCT{i}' for i in range(6)}})
+-    return b.finish('octave_reference',sensitive=(),globals=RAILS+REFS)
++    f=b.finish('octave_reference',sensitive=(),globals=RAILS+REFS)
++    return replace(f,parts=tuple(precision_package(p) for p in f.parts))
+ 
+ 
+ def specification():
+diff --git a/design/spec/modules/oscillator_sine_projection.py b/design/spec/modules/oscillator_sine_projection.py
+index 4982a971..dc18c3de 100644
+--- a/design/spec/modules/oscillator_sine_projection.py
++++ b/design/spec/modules/oscillator_sine_projection.py
+@@ -29,7 +29,7 @@ def sine_parts(parts):
+                     p.symbol != LIBRARY + 'RT0603BRD07100KL' or set(p.pins) != {'1', '2'}):
+                 raise ValueError(f'Unsupported sine resistor primitive: {role}')
+         else:
+-            if (p.prefix != 'U' or p.symbol not in (LIBRARY + 'OPA4196IDR', LIBRARY + 'OPA4197IPWR') or
++            if (p.prefix != 'U' or p.symbol not in (LIBRARY + 'OPA4196IDR', LIBRARY + 'OPA4197IPWR', LIBRARY + 'OPA4197IDR') or
+                     p.unit not in (1, 2, 3, 4) or set(p.pins) != set(AMP_MAPS[p.unit - 1])):
+                 raise ValueError(f'Unsupported sine amplifier primitive: {role}')
+     return selected
+diff --git a/design/spec/modules/run_manual_ab_spice.py b/design/spec/modules/run_manual_ab_spice.py
+index ba562580..208565a0 100644
+--- a/design/spec/modules/run_manual_ab_spice.py
++++ b/design/spec/modules/run_manual_ab_spice.py
+@@ -19,7 +19,7 @@ OUT=ROOT/'design/reports/spice/manual_ab.json'
+ def make_deck(load, cable, harness):
+     f=family()
+     remote=[p for p in f.parts if p.attributes.get('Role')=='internal_selector_buffer:A']
+-    assert len(remote)==1 and remote[0].symbol.endswith('OPA4197IPWR')
++    assert len(remote)==1 and remote[0].symbol.endswith(('OPA4197IPWR','OPA4197IDR'))
+     out,minus,plus=AMP_MAPS[remote[0].unit-1]
+     assert remote[0].pins[plus]=='SELECTOR_COMMON' and remote[0].attributes['BoardRegion']=='control'
+     precision=next(p for p in f.parts if p.attributes.get('Role')=='precision_output:A')
+diff --git a/design/spec/modules/run_oscillator_spice.py b/design/spec/modules/run_oscillator_spice.py
+index a7f4d455..b4ccfe8e 100644
+--- a/design/spec/modules/run_oscillator_spice.py
++++ b/design/spec/modules/run_oscillator_spice.py
+@@ -21,7 +21,7 @@ def primitives(parts):
+     for p in parts:
+         if p.prefix in ('R','RB','C'):
+             rows.append(f'{p.prefix[0]}{name(p.key)} {net(p.pins["1"])} {net(p.pins["2"])} {number(p.value):g}')
+-        elif p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) and p.unit in MAPS:
++        elif p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')) and p.unit in MAPS:
+             out,minus,plus=MAPS[p.unit]
+             rows.append(f'E{name(p.key)} {net(p.pins[out])} 0 {net(p.pins[plus])} {net(p.pins[minus])} 1e6')
+     return rows
+diff --git a/design/spec/modules/run_wavefolder_spice.py b/design/spec/modules/run_wavefolder_spice.py
+index a28a4f11..7e2a6a72 100644
+--- a/design/spec/modules/run_wavefolder_spice.py
++++ b/design/spec/modules/run_wavefolder_spice.py
+@@ -56,7 +56,7 @@ def common(fold=5,bias=0,*,depth=0,bias_cv=0,offset=-.3,mismatch=False,sine=Fals
+   role=p.attributes.get('Role','')
+   if p.prefix in ('R','RB','C'):
+    lines.append(f'{p.prefix[0]}{name(p.key)} {mapped(p.pins["1"])} {mapped(p.pins["2"])} {number(p.value):g}')
+-  elif p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) and p.unit in MAPS:
++  elif p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')) and p.unit in MAPS:
+    out,minus,plus=MAPS[p.unit]
+    if role=='wavefolder:CURRENT_SERVO':lines.append(f'B{name(p.key)} {mapped(p.pins[out])} 0 V=10.5*tanh(1e5*(v({mapped(p.pins[plus])})-v({mapped(p.pins[minus])}))/10.5)')
+    else:lines.append(f'E{name(p.key)} {mapped(p.pins[out])} 0 {mapped(p.pins[plus])} {mapped(p.pins[minus])} 1e6')
+diff --git a/design/spec/modules/sample_hold_model_contract.py b/design/spec/modules/sample_hold_model_contract.py
+index b28b3c95..5b921671 100644
+--- a/design/spec/modules/sample_hold_model_contract.py
++++ b/design/spec/modules/sample_hold_model_contract.py
+@@ -55,7 +55,7 @@ def model_contract(parts, facts):
+         if amplifier:
+             power = [p for p in found if p.unit == 5]
+             for p in power:
+-                if (p.dnp or p.prefix != 'U' or p.symbol != LIBRARY + 'OPA4197IPWR' or
++                if (p.dnp or p.prefix != 'U' or p.symbol not in (LIBRARY + 'OPA4197IPWR', LIBRARY + 'OPA4197IDR') or
+                         p.pins != {'4': '+12V', '11': '-12V'}):
+                     raise ValueError('lag amplifier power identity changed')
+             found = [p for p in found if p.unit != 5]
+@@ -66,7 +66,7 @@ def model_contract(parts, facts):
+ 
+     def amp(role):
+         p = one(role, True)
+-        if p.prefix != 'U' or p.symbol != LIBRARY + 'OPA4197IPWR' or p.unit not in (1, 2, 3, 4):
++        if p.prefix != 'U' or p.symbol not in (LIBRARY + 'OPA4197IPWR', LIBRARY + 'OPA4197IDR') or p.unit not in (1, 2, 3, 4):
+             raise ValueError('lag model amplifier identity changed')
+         out, minus, plus = AMP_MAPS[p.unit - 1]
+         if set(p.pins) != {out, minus, plus} or p.pins[out] != p.pins[minus]:
+diff --git a/design/spec/modules/test_envelope.py b/design/spec/modules/test_envelope.py
+index 828bf03f..213b850d 100644
+--- a/design/spec/modules/test_envelope.py
++++ b/design/spec/modules/test_envelope.py
+@@ -60,10 +60,10 @@ class EnvelopeContract(unittest.TestCase):
+   names=[p.key for p in self.f.parts];self.assertEqual(len(names),len(set(names)))
+  def test_values_and_output_scaling(self):
+   roles={p.attributes.get('Role'):p for p in self.f.parts}
+-  self.assertEqual(roles['envelope:R_BIP_PLUS_TOP'].value,'64 kΩ')
++  self.assertEqual(roles['envelope:R_BIP_PLUS_TOP'].value,'40 kΩ')
+   self.assertAlmostEqual((1+100/100+100/400)*80/(64+80),1.25)
+   self.assertEqual(roles['envelope:R_BIP_REF'].value,'100 kΩ')
+-  self.assertEqual(roles['envelope:R_FLOOR_TOP'].value,'79 kΩ')
++  self.assertEqual(roles['envelope:R_FLOOR_TOP'].value,'47 kΩ')
+   self.assertEqual(roles['envelope:R_FLOOR_BOTTOM'].value,'22 kΩ')
+   self.assertAlmostEqual((5*22/101*101-5)/100-1,.05)
+   self.assertAlmostEqual((9*100+5)/101-1,804/101)
+diff --git a/design/spec/modules/test_filter.py b/design/spec/modules/test_filter.py
+index cbe086c0..7f85e5df 100644
+--- a/design/spec/modules/test_filter.py
++++ b/design/spec/modules/test_filter.py
+@@ -70,7 +70,7 @@ class FilterContract(unittest.TestCase):
+         names={p.key for p in self.parts};self.assertEqual(len(names),len(self.parts))
+         packages=defaultdict(set)
+         for p in self.parts:
+-            if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')):packages[p.ordinal].add(p.unit)
++            if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')):packages[p.ordinal].add(p.unit)
+         self.assertTrue(all(units=={1,2,3,4,5} for units in packages.values()))
+ 
+     def test_current_and_vendor_source_are_honest(self):
+diff --git a/design/spec/modules/test_manual_ab.py b/design/spec/modules/test_manual_ab.py
+index 477a4563..fe5a606f 100644
+--- a/design/spec/modules/test_manual_ab.py
++++ b/design/spec/modules/test_manual_ab.py
+@@ -56,12 +56,12 @@ class ManualABContract(unittest.TestCase):
+         self.assertEqual(len(jacks), 3)
+         self.assertTrue(all(part.pins['TN'] is None for part in jacks))
+         amps = [part for part in self.family.parts
+-                if part.symbol.endswith('OPA4197IPWR') and part.unit in (1, 2, 3, 4)]
++                if part.symbol.endswith(('OPA4197IPWR','OPA4197IDR')) and part.unit in (1, 2, 3, 4)]
+         self.assertEqual(len(amps), 8)
+         positive_nets = [part.pins[{1: '3', 2: '5', 3: '10', 4: '12'}[part.unit]] for part in amps]
+         self.assertCountEqual(positive_nets, ['A_SENSE', 'B_SENSE', 'SELECTOR_COMMON', 'SELECTOR_REMOTE', *(['AGND']*4)])
+         outputs = [part for part in self.family.parts
+-                   if part.symbol.endswith('OPA4197IPWR') and 'OUT_BUFFERED' in part.pins.values() and part.attributes.get('Role')=='precision_output:A']
++                   if part.symbol.endswith(('OPA4197IPWR','OPA4197IDR')) and 'OUT_BUFFERED' in part.pins.values() and part.attributes.get('Role')=='precision_output:A']
+         self.assertEqual(len(outputs), 1)
+         indicators = [part for part in self.family.parts if part.symbol.endswith('OPA4196IDR')]
+         monitored = {part.pins[number] for part in indicators
+@@ -73,14 +73,14 @@ class ManualABContract(unittest.TestCase):
+     def test_complete_packages_and_current_report_is_honest(self):
+         packages = {}
+         for part in self.family.parts:
+-            if part.symbol.endswith(('OPA4196IDR', 'OPA4197IPWR')):
++            if part.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')):
+                 packages.setdefault((part.symbol, part.ordinal), set()).add(part.unit)
+-        self.assertEqual(len([key for key in packages if key[0].endswith('OPA4197IPWR')]), 2)
++        self.assertEqual(len([key for key in packages if key[0].endswith(('OPA4197IPWR','OPA4197IDR'))]), 2)
+         self.assertEqual(len([key for key in packages if key[0].endswith('OPA4196IDR')]), 1)
+         self.assertTrue(all(units == {1, 2, 3, 4, 5} for units in packages.values()))
+         report = current_report()
+         self.assertEqual(report['IC_packages_per_instance'], {
+-            'ADG5412FBRUZ': 2, 'OPA4196IDR': 1, 'OPA4197IPWR': 2})
++            'ADG5412FBRUZ': 2, 'OPA4196IDR': 1, 'OPA4197IDR': 1, 'OPA4197IPWR': 1})
+         row = report['instances'][0]
+         self.assertEqual(row['typical_mA_per_rail'], {'+12V': 11.1605, '-12V': 10.3605, '+5V': .1})
+         self.assertEqual(row['planning_maximum_mA_per_rail'], {'+12V': 19.8505, '-12V': 18.6505, '+5V': .15})
+diff --git a/design/spec/modules/test_mult.py b/design/spec/modules/test_mult.py
+index bdac9398..3257648c 100644
+--- a/design/spec/modules/test_mult.py
++++ b/design/spec/modules/test_mult.py
+@@ -37,7 +37,7 @@ class MultContract(unittest.TestCase):
+         self.assertEqual(len(jacks), 4)
+         self.assertTrue(all(part.pins['TN'] is None for part in jacks))
+         amps = [part for part in self.family.parts
+-                if part.symbol.endswith('OPA4197IPWR') and part.unit in (1, 2, 3, 4)]
++                if part.symbol.endswith(('OPA4197IPWR','OPA4197IDR')) and part.unit in (1, 2, 3, 4)]
+         self.assertEqual(len(amps), 4)
+         positive_nets = [part.pins[{1: '3', 2: '5', 3: '10', 4: '12'}[part.unit]] for part in amps]
+         self.assertCountEqual(positive_nets, ['IN_SENSE', 'IN_BUFFER', 'IN_BUFFER', 'IN_BUFFER'])
+@@ -48,14 +48,14 @@ class MultContract(unittest.TestCase):
+     def test_packages_complete_and_current_report_is_honest(self):
+         packages = {}
+         for part in self.family.parts:
+-            if part.symbol.endswith(('OPA4196IDR', 'OPA4197IPWR')):
++            if part.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')):
+                 packages.setdefault((part.symbol, part.ordinal), set()).add(part.unit)
+-        self.assertEqual(len([key for key in packages if key[0].endswith('OPA4197IPWR')]), 1)
++        self.assertEqual(len([key for key in packages if key[0].endswith(('OPA4197IPWR','OPA4197IDR'))]), 1)
+         self.assertEqual(len([key for key in packages if key[0].endswith('OPA4196IDR')]), 1)
+         self.assertTrue(all(units == {1, 2, 3, 4, 5} for units in packages.values()))
+         report = current_report()
+         self.assertEqual(report['IC_packages_per_instance'], {
+-            'ADG5412FBRUZ': 1, 'OPA4196IDR': 1, 'OPA4197IPWR': 1})
++            'ADG5412FBRUZ': 1, 'OPA4196IDR': 1, 'OPA4197IDR': 1})
+         row = report['instances'][0]
+         self.assertEqual(row['typical_mA_per_rail'], {'+12V': 5.86, '-12V': 5.46, '+5V': .05})
+         self.assertEqual(row['planning_maximum_mA_per_rail'], {'+12V': 11.05, '-12V': 10.45, '+5V': .075})
+diff --git a/design/spec/modules/test_oscillator.py b/design/spec/modules/test_oscillator.py
+index 33d1e4e9..a071b7fd 100644
+--- a/design/spec/modules/test_oscillator.py
++++ b/design/spec/modules/test_oscillator.py
+@@ -4,6 +4,7 @@ import json, math, unittest
+ from design.spec.modules.oscillator import ROOT, family, octave_family, panel_bindings, specification, INSTANCES
+ from design.spec.modules.build_oscillator_current import build
+ from scripts.schgen.core import designator
++from design.spec.modules.run_oscillator_spice import number
+ 
+ 
+ class OscillatorContract(unittest.TestCase):
+@@ -54,7 +55,11 @@ class OscillatorContract(unittest.TestCase):
+ 
+     def test_range_and_pitch_ratios(self):
+         for key,value in [('PITCH','100 kΩ'),('OCT','100 kΩ'),('TUNE','250 kΩ'),('FINE','5 MΩ'),('FM','200 kΩ'),('RANGE','100 kΩ')]:
+-            p=self.parts['R_PITCH_'+key+'.0'];self.assertEqual(p.value,value);self.assertEqual(p.pins['2'],'EXPO_SUM')
++            p=self.parts['R_PITCH_'+key+'.0'];total=number(p.value);end=p.pins['2']
++            # UNADOPTED R-exact candidate: follow appended series elements.
++            while end.startswith('PITCH_'+key+'_SER'):
++                q=next(q for q in self.parts.values() if q.pins.get('1')==end);total+=number(q.value);end=q.pins['2']
++            self.assertAlmostEqual(total,number(value));self.assertEqual(end,'EXPO_SUM')
+         self.assertEqual(self.parts['RANGE.0'].pins,{'3':'LFO_REF','2':'RANGE_CV','1':'AGND'})
+         self.assertAlmostEqual(5*(1+40000/100000),7)
+         self.assertEqual(2**7,128)
+@@ -67,7 +72,7 @@ class OscillatorContract(unittest.TestCase):
+         self.assertEqual(pins['2'],'SINE_BASE');self.assertEqual(pins['6'],'SINE_C1');self.assertEqual(pins['3'],'SINE_C2')
+         groups={}
+         for p in self.f.parts:
+-            if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')):groups.setdefault(p.ordinal,set()).add(p.unit)
++            if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')):groups.setdefault(p.ordinal,set()).add(p.unit)
+         self.assertTrue(all(units=={1,2,3,4,5} for units in groups.values()))
+         self.assertTrue(all(1<=p.ordinal<=99 for p in self.f.parts))
+ 
+diff --git a/design/spec/modules/wavefolder.py b/design/spec/modules/wavefolder.py
+index a8a867c0..46786574 100644
+--- a/design/spec/modules/wavefolder.py
++++ b/design/spec/modules/wavefolder.py
+@@ -3,6 +3,7 @@
+ Index allocation W2=51, W1=52. No hardware or stability qualification claimed.
+ """
+ from design.spec.modules.io_partition import refined
++import re
+ from collections import defaultdict
+ from dataclasses import replace
+ from design.spec.modules.oscillator import Builder,PLACEMENTS,RAILS
+@@ -45,7 +46,8 @@ class WavefolderBuilder(Builder):
+     if p.key.startswith('C_DEC_'):attrs['Island']='FOLDER_'+('LEDS' if tag=='LED' else 'CORE')+':${SHEETNAME}'
+     compiled.append(replace(p,key=tag+'_'+p.key,attributes=attrs))
+   counts=defaultdict(int);assigned={};out=[]
+-  for p in compiled:
++  # R-exact series tails number after every existing part (designator lock).
++  for p in sorted(compiled,key=lambda q:bool(re.search(r'_SER\d+\.',q.key))):
+    prefix='R' if p.prefix=='RB' else p.prefix;key=(prefix,p.key.rsplit('.',1)[0])
+    if key not in assigned:counts[prefix]+=1;assigned[key]=counts[prefix]
+    n=assigned[key];pos=len(out)
+@@ -100,7 +102,7 @@ def family():
+   b.amp(k,'audio',k+'_CLIP',k+'_SUM',k+'_OUT')
+   b.r(k+'_INPUT','100 kΩ',previous,k+'_SUM');b.r(k+'_FEEDBACK','100 kΩ',k+'_OUT',k+'_SUM')
+   previous=k+'_OUT'
+- b.amp('OUTPUT_SCALE','audio','F4_OUT','OUTPUT_FB','PRE_AC');b.r('OUTPUT_RF','70 kΩ','PRE_AC','OUTPUT_FB');b.r('OUTPUT_RG','10 kΩ','OUTPUT_FB','AGND')
++ b.amp('OUTPUT_SCALE','audio','F4_OUT','OUTPUT_FB','PRE_AC');b.series('OUTPUT_RF',('20 kΩ','50 kΩ'),'PRE_AC','OUTPUT_FB');b.r('OUTPUT_RG','10 kΩ','OUTPUT_FB','AGND')
+  # Ten exact100nF C0G parts yield1uF nominal without inventing a film MPN.
+  for i in range(10):b.device(CATALOG[SHORTLIST['c_slew']['mpn']],f'AC_BANK{i}','C',{'1':'PRE_AC','2':'AC_NODE'},value='100 nF C0G')
+  b.r('AC_RETURN','100 kΩ','AC_NODE','AGND');b.amp('AC_BUFFER','audio','AC_NODE','AC_BUFFER','AC_BUFFER')
+@@ -108,6 +110,7 @@ def family():
+  b.cell('level_attenuator','LEVEL',{'REMOTE_INPUT':'LEVEL_REMOTE','OUT':'LEVEL_OUT'},panel='C:{}.LEVEL')
+  b.cell('general_output','OUT',{'SIGNAL':'LEVEL_OUT','JACK':'OUT_TIP'})
+  b.device('WQP518MA','J_OUT','J',{'T':'OUT_TIP','S':'AGND','TN':None},panel='J:{}.OUT',island='')
++ b.flush_series()
+  return b.complete()
+ 
+ 
+diff --git a/design/standard/catalogue-publication.json b/design/standard/catalogue-publication.json
+index ef374424..42d126c2 100644
+--- a/design/standard/catalogue-publication.json
++++ b/design/standard/catalogue-publication.json
+@@ -87,7 +87,12 @@
+       "unblock": "Released optional-model publication retaining the mapping aid and honest no-model status. GH acceptance remains separately owned by issue63."
+     }
+   ],
+-  "intentional_exclusions": [],
++  "intentional_exclusions": [
++    {
++      "record_id": "rec-op-precision-d",
++      "reason": "UNADOPTED phase-15 candidate for the precision-role SOIC-14 migration; not selected, so no generated catalog page."
++    }
++  ],
+   "document_constraints": [
+     {
+       "record_id": "rec-c-slew",
+diff --git a/design/standard/parts-shortlist.json b/design/standard/parts-shortlist.json
+index 4a65d6db..ba341c07 100644
+--- a/design/standard/parts-shortlist.json
++++ b/design/standard/parts-shortlist.json
+@@ -42,6 +42,23 @@
+         "note": "Inherited handoff code; previous pre-order indication is not current availability."
+       }
+     },
++    {
++      "id": "op_precision_d",
++      "manufacturer": "Texas Instruments",
++      "mpn": "OPA4197IDR",
++      "package": "SOIC-14",
++      "roles": [
++        "precision (UNADOPTED option-B candidate: non-control packages)"
++      ],
++      "lcsc": "C2058532",
++      "sourcing": {
++        "checked_date": "2026-10-31",
++        "status": "LISTED; stock UNVERIFIED",
++        "source_url": "https://jlcpcb.com/partdetail/TexasInstruments-OPA4197IDR/C2058532",
++        "jlcpcb_assembly": "UNVERIFIED",
++        "note": "Phase-15 read-only JLC search identity; UNADOPTED candidate."
++      }
++    },
+     {
+       "id": "fault_switch",
+       "manufacturer": "Analog Devices",
+diff --git a/scripts/checks/io_partition60.py b/scripts/checks/io_partition60.py
+index 32f42b4a..5d4cfdb1 100644
+--- a/scripts/checks/io_partition60.py
++++ b/scripts/checks/io_partition60.py
+@@ -145,7 +145,7 @@ def source_data(families=None, instances=None):
+                 if n is not None:
+                     nets[netname(n)].append({'ref':ref,'unit':p.unit,'pin':pin,'region':reg,'island':island,
+                                            'role':p.attributes.get('Role',''),'type':pin_types[pin], 'uid':uid})
+-            if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) and p.unit in range(1,5):
++            if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')) and p.unit in range(1,5):
+                 output,minus,_=AMP_MAPS[p.unit-1]
+                 if p.pins[minus] != p.pins[output]:sensitive.add(netname(p.pins[minus]))
+     for p in packages.values():
+diff --git a/scripts/checks/test_io_partition60.py b/scripts/checks/test_io_partition60.py
+index 28c0e49f..30589bcc 100644
+--- a/scripts/checks/test_io_partition60.py
++++ b/scripts/checks/test_io_partition60.py
+@@ -81,7 +81,7 @@ class BoundaryTests(unittest.TestCase):
+         added = report['current_repacking_added_packages']['packages']
+         self.assertEqual({p['ref'] for p in added}, {u['ref'] for u in self.units if u['key'].startswith('IO_EXTRA_')})
+         self.assertEqual(len(added), 11)
+-        self.assertEqual(sum(p['mpn']=='OPA4197IPWR' for p in added), 7)
++        self.assertEqual(sum(p['mpn'] in ('OPA4197IPWR','OPA4197IDR') for p in added), 7)
+         historical = report['historical_issue60_increment']
+         self.assertEqual(historical['package_counts'], {'OPA4196IDR':4,'OPA4197IPWR':2})
+         self.assertEqual(historical['planning_quiescent_delta_mA']['+12V'], 16)
+diff --git a/scripts/schgen/analyze_rail_options.py b/scripts/schgen/analyze_rail_options.py
+index b742e765..f0a85396 100644
+--- a/scripts/schgen/analyze_rail_options.py
++++ b/scripts/schgen/analyze_rail_options.py
+@@ -19,7 +19,7 @@ def build():
+     loads={x['id']:x for x in standard['loads']}
+     placements=json.loads((ROOT/'design/grid/placements.lock.json').read_text())['placements']
+     lamps=Counter(x['uid'].split('.')[-1] for x in placements if x['uid'].startswith('L:'))
+-    n_precision=stats['IC_count_by_part']['OPA4197IPWR']
++    n_precision=stats['IC_count_by_part'].get('OPA4197IPWR',0)+stats['IC_count_by_part'].get('OPA4197IDR',0)
+     n_dc=stats['components_by_type']['PTV09A-4020F-B104']
+     iq_precision=loads['opamp_precision']['planning_unit_mA']['-12V']
+     iq_replacement=loads['opamp_audio']['planning_unit_mA']['-12V']
+diff --git a/scripts/schgen/audit_master.py b/scripts/schgen/audit_master.py
+index 28c34d49..513a0cd5 100644
+--- a/scripts/schgen/audit_master.py
++++ b/scripts/schgen/audit_master.py
+@@ -122,7 +122,7 @@ def check(families,instances,netlist):
+     # negative-rail bypass capacitors, two on each of ten offset/mixer instances.
+     # #60 adds four mixer quads + eight bypasses, and two A/B remote
+     # buffers (quad, two bypasses and two isolation resistors each).
+-    expected_signal_refs=5723+20+4*3+2*5+5*(6*3+2*3)+12  # #62 fanout plus #61 stage limiters
++    expected_signal_refs=5723+20+4*3+2*5+5*(6*3+2*3)+12+80  # #62 fanout plus #61 stage limiters, plus 80 UNADOPTED R-exact series elements
+     if signal_ref_count!=expected_signal_refs:
+         errors.append(f'signal/reference designator lock drift: {signal_ref_count} != {expected_signal_refs}')
+     if len(refs)!=expected_signal_refs+len(power_refs):
+diff --git a/scripts/schgen/build_rail_ledger.py b/scripts/schgen/build_rail_ledger.py
+index 761863c0..fa5ede9b 100644
+--- a/scripts/schgen/build_rail_ledger.py
++++ b/scripts/schgen/build_rail_ledger.py
+@@ -26,7 +26,7 @@ FEEDS = ('A', 'B')
+ # Exact package supply pins from design/standard/pin-maps/*.json and the
+ # retained symbol/source pairing. Signal inputs tied to a rail are excluded.
+ SUPPLY_PIN_NUMBERS = {
+-    'REF5050AIDR': ('2', '4'), 'OPA4197IPWR': ('4', '11'),
++    'REF5050AIDR': ('2', '4'), 'OPA4197IPWR': ('4', '11'), 'OPA4197IDR': ('4', '11'),
+     'OPA4196IDR': ('4', '11'), 'ADG5412FBRUZ': ('13', '4', '5'),
+     'LM393BIDR': ('8', '4'), 'SN74HC14DR': ('14', '7'),
+     'CD74HC221M96': ('16', '8'), 'LF398M_NOPB': ('12', '3', '10'),
+@@ -118,10 +118,10 @@ def worksheet_loads(report):
+                           'planning_allowance_mA': {r: round(count * unit[r], 6) for r in RAILS},
+                           'manufacturer_guaranteed_quiescent_only_mA':
+                           {r: round(count * unit[r], 6) for r in RAILS}
+-                          if label in ('OPA4196IDR', 'OPA4197IPWR', 'OPA4196IDR whole quad package')
++                          if label in ('OPA4196IDR', 'OPA4197IPWR', 'OPA4197IDR', 'OPA4196IDR whole quad package')
+                           else None,
+                           'quiescent_condition': 'Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8'
+-                          if label in ('OPA4196IDR', 'OPA4197IPWR', 'OPA4196IDR whole quad package') else None,
++                          if label in ('OPA4196IDR', 'OPA4197IPWR', 'OPA4197IDR', 'OPA4196IDR whole quad package') else None,
+                           'guaranteed_complete_load_maximum_mA': {r: None for r in RAILS},
+                           'guaranteed_maximum_reason': 'Worksheet source and operating conditions do not bound the complete dynamic/startup/fault load.',
+                           'basis': item.get('basis', item.get('source', 'Worksheet planning assumption; see source row'))})
+diff --git a/scripts/schgen/test_rail_ledger.py b/scripts/schgen/test_rail_ledger.py
+index f877498e..14001435 100644
+--- a/scripts/schgen/test_rail_ledger.py
++++ b/scripts/schgen/test_rail_ledger.py
+@@ -13,10 +13,10 @@ class RailLedger(unittest.TestCase):
+     def test_complete_ledger_and_ref5050_pin(self):
+         report = build(self.source)
+         self.assertEqual(report['physical_package_count'], 650)
+-        self.assertEqual(len(report['worksheet_loads']), 347)
++        self.assertEqual(len(report['worksheet_loads']), 351)
+         self.assertEqual(report['selected_domain']['id'], 'EXT')
+         self.assertEqual(report['selected_domain']['module_count'], 33)
+-        self.assertEqual(report['selected_domain']['worksheet_load_count'], 347)
++        self.assertEqual(report['selected_domain']['worksheet_load_count'], 351)
+         self.assertEqual(report['selected_domain']['physical_ic_package_count'], 650)
+         self.assertEqual(report['original_single_source_ceiling_mA'], {'+12V': 960, '-12V': 640, '+5V': 400})
+         for rail in ('+12V', '-12V', '+5V'):
+diff --git a/scripts/schgen/test_schematic_status.py b/scripts/schgen/test_schematic_status.py
+index 7d11bb22..b005fb1a 100644
+--- a/scripts/schgen/test_schematic_status.py
++++ b/scripts/schgen/test_schematic_status.py
+@@ -14,13 +14,13 @@ class SchematicStatus(unittest.TestCase):
+     def test_oscillator_population_and_totals_follow_current_source(self):
+         report = json.loads(OSCILLATOR_REPORT.read_text())
+         body = oscillator_current(report)
+-        self.assertIn('4 `OPA4197IPWR`', body)
++        self.assertIn('4 `OPA4197IDR`', body)
+         self.assertIn('339.500 / 335.000 / 30.000', body)
+         self.assertIn('NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED', body)
+-        report['sheets'][0]['fitted_IC_packages_per_instance']['OPA4197IPWR'] += 1
++        report['sheets'][0]['fitted_IC_packages_per_instance']['OPA4197IDR'] += 1
+         report['planning_upper_total_mA']['+12V'] += 6
+         body = oscillator_current(report)
+-        self.assertIn('5 `OPA4197IPWR`', body)
++        self.assertIn('5 `OPA4197IDR`', body)
+         self.assertIn('345.500 / 335.000 / 30.000', body)
+ 
+     def test_oscillator_population_cannot_omit_or_duplicate_a_sheet(self):
+@@ -28,7 +28,7 @@ class SchematicStatus(unittest.TestCase):
+         for rows in (report['sheets'][:1], [report['sheets'][0]] * 2):
+             with self.subTest(count=len(rows)), self.assertRaises(ValueError):
+                 oscillator_current({**report, 'sheets': rows})
+-        report['sheets'][0]['fitted_IC_packages_per_instance']['OPA4197IPWR'] = -1
++        report['sheets'][0]['fitted_IC_packages_per_instance']['OPA4197IDR'] = -1
+         with self.assertRaisesRegex(ValueError, 'population'):
+             oscillator_current(report)
+ 
+diff --git a/symbols/src/OPA4197IDR.kicad_sym b/symbols/src/OPA4197IDR.kicad_sym
+new file mode 100644
+index 00000000..ffed5e4c
+--- /dev/null
++++ b/symbols/src/OPA4197IDR.kicad_sym
+@@ -0,0 +1,413 @@
++(kicad_symbol_lib
++  (version 20231120)
++  (generator "kicad_symbol_editor")
++  (generator_version "8.0")
++(symbol "OPA4197IDR"
++  (property "LCSC" "C2058532" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
++  (property "Manufacturer" "Texas Instruments" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
++  (property "MPN" "OPA4197IDR" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
++		(exclude_from_sim no)
++		(in_bom yes)
++		(on_board yes)
++		(in_pos_files yes)
++		(duplicate_pin_numbers_are_jumpers no)
++		(property "Reference" "U"
++			(at 0 3.81 0)
++			(show_name no)
++			(do_not_autoplace no)
++			(effects
++				(font
++					(size 1.27 1.27)
++				)
++				(justify left)
++			)
++		)
++		(property "Value" "OPA4197IDR"
++			(at 0 -3.81 0)
++			(show_name no)
++			(do_not_autoplace no)
++			(effects
++				(font
++					(size 1.27 1.27)
++				)
++				(justify left)
++			)
++		)
++		(property "Footprint" "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm"
++			(at 0 0 0)
++			(show_name no)
++			(do_not_autoplace no)
++			(hide yes)
++			(effects
++				(font
++					(size 1.27 1.27)
++				)
++			)
++		)
++		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/opa4197.pdf"
++			(at 0 0 0)
++			(show_name no)
++			(do_not_autoplace no)
++			(hide yes)
++			(effects
++				(font
++					(size 1.27 1.27)
++				)
++			)
++		)
++		(property "Description" "Quad 36V, Precision, Rail-to-Rail Input/Output, Low Offset Voltage, Operational Amplifier, SOIC-14"
++			(at 0 0 0)
++			(show_name no)
++			(do_not_autoplace no)
++			(hide yes)
++			(effects
++				(font
++					(size 1.27 1.27)
++				)
++			)
++		)
++		(property "ki_locked" ""
++			(at 0 0 0)
++			(show_name no)
++			(do_not_autoplace no)
++			(effects
++				(font
++					(size 1.27 1.27)
++				)
++			)
++		)
++		(property "ki_keywords" "quad opamp rtor"
++			(at 0 0 0)
++			(show_name no)
++			(do_not_autoplace no)
++			(hide yes)
++			(effects
++				(font
++					(size 1.27 1.27)
++				)
++			)
++		)
++		(property "ki_fp_filters" "SOIC*3.9x8.7mm*P1.27mm*"
++			(at 0 0 0)
++			(show_name no)
++			(do_not_autoplace no)
++			(hide yes)
++			(effects
++				(font
++					(size 1.27 1.27)
++				)
++			)
++		)
++		(symbol "OPA4197IDR_1_1"
++			(polyline
++				(pts
++					(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
++				)
++				(stroke
++					(width 0.254)
++					(type default)
++				)
++				(fill
++					(type background)
++				)
++			)
++			(pin output line
++				(at 7.62 0 180)
++				(length 2.54)
++				(name ""
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "1"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin input line
++				(at -7.62 -2.54 0)
++				(length 2.54)
++				(name "-"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "2"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin input line
++				(at -7.62 2.54 0)
++				(length 2.54)
++				(name "+"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "3"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++		)
++		(symbol "OPA4197IDR_2_1"
++			(polyline
++				(pts
++					(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
++				)
++				(stroke
++					(width 0.254)
++					(type default)
++				)
++				(fill
++					(type background)
++				)
++			)
++			(pin input line
++				(at -7.62 2.54 0)
++				(length 2.54)
++				(name "+"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "5"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin input line
++				(at -7.62 -2.54 0)
++				(length 2.54)
++				(name "-"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "6"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin output line
++				(at 7.62 0 180)
++				(length 2.54)
++				(name ""
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "7"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++		)
++		(symbol "OPA4197IDR_3_1"
++			(polyline
++				(pts
++					(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
++				)
++				(stroke
++					(width 0.254)
++					(type default)
++				)
++				(fill
++					(type background)
++				)
++			)
++			(pin output line
++				(at 7.62 0 180)
++				(length 2.54)
++				(name ""
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "8"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin input line
++				(at -7.62 -2.54 0)
++				(length 2.54)
++				(name "-"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "9"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin input line
++				(at -7.62 2.54 0)
++				(length 2.54)
++				(name "+"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "10"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++		)
++		(symbol "OPA4197IDR_4_1"
++			(polyline
++				(pts
++					(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
++				)
++				(stroke
++					(width 0.254)
++					(type default)
++				)
++				(fill
++					(type background)
++				)
++			)
++			(pin input line
++				(at -7.62 2.54 0)
++				(length 2.54)
++				(name "+"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "12"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin input line
++				(at -7.62 -2.54 0)
++				(length 2.54)
++				(name "-"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "13"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin output line
++				(at 7.62 0 180)
++				(length 2.54)
++				(name ""
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "14"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++		)
++		(symbol "OPA4197IDR_5_1"
++			(pin power_in line
++				(at -2.54 7.62 270)
++				(length 3.81)
++				(name "V+"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "4"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin power_in line
++				(at -2.54 -7.62 90)
++				(length 3.81)
++				(name "V-"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "11"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++		)
++		(embedded_fonts no)
++	)
++)

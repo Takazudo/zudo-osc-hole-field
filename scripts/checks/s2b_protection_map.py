@@ -78,6 +78,17 @@ TMUX6112_ROWS = [
     ('Hold-node leakage', 'PASS', 'IS(OFF)/ID(OFF) -0.14 .. +0.05 nA at 85 C, ID(ON) -0.25 .. +0.1 nA (6.5, index 5); +/-15 V table, not a +/-12 V guarantee'),
     ('Fault protection', 'NOT APPLICABLE', 'Not fault protected; analog pins VSS - 0.3 .. VDD + 0.3 V (6.1, index 4). The envelope switches are internal, not jack facing'),
     ('Logic before rails', 'FAIL', 'SELx absolute maximum is VDD + 0.3 V (6.1, index 4). +5 V logic present while +12 V is absent exceeds it unless current is limited below 30 mA; needs a sequencing or series-resistor check'),
+    ('Logic before rails, PD definition 1', 'FAIL',
+     'Definition 1 holds +5 V <= 0.8 V until both analog rails exceed about 1.5 V and only requires +5 V <= 0.8 V by the time the first analog rail leaves. '
+     'The HC00/HC14 drivers of SEL run from +5 V, so SEL <= V(+5 V) <= 0.8 V in those windows. 0.8 V <= VDD + 0.3 V needs VDD >= 0.5 V; for VDD < 0.5 V '
+     'the excess is up to 0.5 V on ramp-up and on discharge. After release (VDD >= 1.5 V) the row holds only while V(+5 V) <= V(+12 V) + 0.3 V, which the '
+     'common ramp gives (CALCULATED, conditional on the PD slopes). 6.1 lists VDIG and IDIG as separate limits with no current-limited exception, so no series '
+     'resistor makes the voltage row hold'),
+    ('SEL series resistor (current row only)', 'PROPOSED',
+     'IDIG <= 30 mA (6.1, index 4) needs R >= 0.8 V / 30 mA = 27 ohm under definition 1, and R >= 5.5 V / 30 mA = 183 ohm if +5 V is fully up '
+     'with VDD at 0 V (5.5 V is a PROPOSED +5 V ceiling, not a sourced PD value). A 1 kOhm series resistor per SEL, as on the existing ADG5412F IN drive, '
+     'bounds IDIG to <= 0.8 mA (definition 1) or <= 5.5 mA (unsequenced). Its drop into the 6 MOhm SEL pull-down (6.5, index 5) is <= 0.02 %. '
+     'The voltage row needs either SEL held <= 0.3 V until VDD >= 0.5 V (an OSC enable such as #59 P59-C ENABLE_OK) or a PD bound of 0.3 V instead of 0.8 V'),
 ]
 
 
