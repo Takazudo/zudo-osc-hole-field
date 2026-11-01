@@ -1,0 +1,273 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-clamp-diode-ll-manufacturer",
+      "record_id": "rec-clamp-diode-ll",
+      "source_id": "src-clamp-diode-ll-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Nexperia",
+      "unit": "NONE",
+      "conditions": "Manufacturer named on the retained data sheet. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
+      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 0, printed 1 / 10, title block",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-ll-project-selection",
+      "record_id": "rec-clamp-diode-ll",
+      "source_id": "src-clamp-diode-ll-protection-map",
+      "class": "PROJECT_STATE",
+      "value": "UNADOPTED S2b candidate (precision input clamp pair (S2b candidate)): the precision variant of high_impedance_input on the 1V/OCT, MULT IN and S&H IN inputs; canonical adoption needs a separate approval",
+      "unit": "NONE",
+      "conditions": "Candidate record circuit/candidates/s2b-tmux-20261101 only; not a supplier allocation.",
+      "locator": "Section/table audit: src-clamp-diode-ll-protection-map JSON section precision_input_clamp",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-ll-orderable-identity",
+      "record_id": "rec-clamp-diode-ll",
+      "source_id": "src-clamp-diode-ll-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Nexperia",
+        "mpn": "BAV199,215",
+        "package": "SOT-23"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete orderable identifier; the retained data sheet lists type number BAV199 in SOT23 only, so the ,215 packing suffix is not established by manufacturer bytes. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
+      "locator": "Section/table audit: src-clamp-diode-ll-datasheet: physical PDF index 1, printed 2 / 10, Table 3 Ordering information lists BAV199 / SOT23 without a packing suffix",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-ll-pinout",
+      "record_id": "rec-clamp-diode-ll",
+      "source_id": "src-clamp-diode-ll-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 A1 anode (diode 1) -> pad 1; pin 2 K2 cathode (diode 2) -> pad 2; pin 3 K1/A2 cathode (diode 1) and anode (diode 2) -> pad 3",
+      "unit": "NONE",
+      "conditions": "No schematic or placement binding is claimed by this record. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
+      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 0, printed 1 / 10, Section 5, Table 2 Pinning information",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-ll-product-function",
+      "record_id": "rec-clamp-diode-ll",
+      "source_id": "src-clamp-diode-ll-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies BAV199 as an epitaxial, medium-speed switching, low-leakage double diode in SOT23 with the two diodes connected in series; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product description only. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
+      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 0, printed 1 / 10, Sections 1 General description and 2 Features and benefits",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-ll-reverse-voltage-absolute",
+      "record_id": "rec-clamp-diode-ll",
+      "source_id": "src-clamp-diode-ll-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "VR_max_V": 75,
+        "VRRM_max_V": 85
+      },
+      "unit": "V",
+      "conditions": "Per diode; limiting values (IEC 60134). Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
+      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 1, printed 2 / 10, Table 5 Limiting values, VR and VRRM rows",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-ll-forward-current-absolute",
+      "record_id": "rec-clamp-diode-ll",
+      "source_id": "src-clamp-diode-ll-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "IF_single_loaded_mA": 160,
+        "IF_double_loaded_mA": 140,
+        "IFRM_mA": 500,
+        "IFSM_1us_A": 4,
+        "IFSM_1ms_A": 1,
+        "IFSM_1s_A": 0.5
+      },
+      "unit": "mA and A",
+      "conditions": "Per diode; IFSM square wave, Tj(init) = 25 C. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
+      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 1, printed 2 / 10, Table 5 Limiting values, IF, IFRM and IFSM rows",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-ll-power-thermal",
+      "record_id": "rec-clamp-diode-ll",
+      "source_id": "src-clamp-diode-ll-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "Ptot_mW": 250,
+        "Tj_max_C": 150,
+        "Tamb_C": [
+          -65,
+          150
+        ],
+        "Rth_ja_K_per_W": 500,
+        "Rth_jsp_K_per_W": 360
+      },
+      "unit": "mW, C and K/W",
+      "conditions": "Ptot per device, one diode loaded, Tamb <= 25 C, FR4 single-sided standard footprint (note 1); Rth(j-a) single diode loaded in free air. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
+      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 1, printed 2 / 10, Table 5 Ptot/Tj/Tamb rows; Table 6 Thermal characteristics at physical PDF index 2",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-ll-forward-voltage",
+      "record_id": "rec-clamp-diode-ll",
+      "source_id": "src-clamp-diode-ll-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "at_1mA_max_mV": 900,
+        "at_10mA_max_mV": 1000,
+        "at_50mA_max_mV": 1100,
+        "at_150mA_max_mV": 1250
+      },
+      "unit": "mV",
+      "conditions": "Maximum VF per diode at Tj = 25 C only; no minimum, no maximum below 1 mA and no maximum at another temperature. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
+      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 2, printed 3 / 10, Table 7 Characteristics, VF rows",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-ll-reverse-current",
+      "record_id": "rec-clamp-diode-ll",
+      "source_id": "src-clamp-diode-ll-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "max_25C_nA": 5,
+        "max_150C_nA": 80,
+        "typ_25C_nA": 0.003,
+        "typ_150C_nA": 3,
+        "VR_V": 75
+      },
+      "unit": "nA",
+      "conditions": "Per diode at VR = 75 V; Tj = 25 C and Tj = 150 C rows. Project use at VR <= 20 V assumes IR does not rise as VR falls. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
+      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 2, printed 3 / 10, Table 7 Characteristics, IR rows",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-ll-reverse-current-temperature",
+      "record_id": "rec-clamp-diode-ll",
+      "source_id": "src-clamp-diode-ll-datasheet",
+      "class": "TYPICAL_CURVE",
+      "value": "Fig. 4 gives IR versus Tj at VR = 75 V, 25..150 C, as curve (1) maximum values and curve (2) typical values. Project readings of curve (1): 25 C 5 nA, 40 C about 6.6 nA, 50 C about 7.8 nA, 70 C about 13 nA, 150 C 80 nA. Curve (2): 25 C 0.003 nA, 50 C about 0.011 nA. No curve below 25 C.",
+      "unit": "NONE",
+      "conditions": "Readings from a log-scale figure, about +/-10 %; endpoints agree with the Table 7 maxima. The project treats curve (1) as the bound at 40 C and 70 C and assumes IR does not rise as Tj falls below 25 C. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
+      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 3, printed 4 / 10, Figure 4 (Fig. 4) Reverse current as a function of junction temperature",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-ll-capacitance-recovery",
+      "record_id": "rec-clamp-diode-ll",
+      "source_id": "src-clamp-diode-ll-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "Cd_typ_pF": 2,
+        "trr_typ_us": 0.8,
+        "trr_max_us": 3,
+        "VFRM_max_V": 1.75
+      },
+      "unit": "pF, us and V",
+      "conditions": "Cd at VR = 0 V, f = 1 MHz, Tj = 25 C (typical only); trr at IF = IR = 10 mA, IR(meas) = 1 mA, RL = 100 ohm; VFRM at IF = 10 mA, tr = 20 ns. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
+      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 2, printed 3 / 10, Table 7 Characteristics, Cd, trr and VFRM rows",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-ll-procurement-status",
+      "record_id": "rec-clamp-diode-ll",
+      "source_id": "src-clamp-diode-ll-jlc",
+      "class": "PROJECT_STATE",
+      "value": {
+        "lcsc": "C40919",
+        "manufacturer": "Nexperia",
+        "mpn": "BAV199,215",
+        "variant": "Exact MPN and LCSC identity row; SOT-23. Stock 86068 observed 2026-11-01 is a dated observation, not an allocation."
+      },
+      "unit": "NONE",
+      "conditions": "Distributor identity only.",
+      "locator": "Identity section: src-clamp-diode-ll-jlc JSON row fields componentCode, componentModelEn, stockCount and componentPrices",
+      "provenance": "DISTRIBUTOR-IDENTITY",
+      "verdict": "CONFIRMED - distributor identity only",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-ll-assembly-allocation",
+      "record_id": "rec-clamp-diode-ll",
+      "source_id": "src-clamp-diode-ll-jlc",
+      "class": "PROJECT_STATE",
+      "value": "UNSOURCED: factory stock allocation and assembly acceptance are not established by a search row",
+      "unit": "NONE",
+      "conditions": "Dated search row only.",
+      "locator": "Section/table audit: src-clamp-diode-ll-jlc JSON row stockCount",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-ll-mechanical-fit",
+      "record_id": "rec-clamp-diode-ll",
+      "source_id": "src-clamp-diode-ll-protection-map",
+      "class": "PROJECT_STATE",
+      "value": "Reuses the project SOT-23 land and the provisional IC_SOT-23 envelope of BAT54S,215; the BAV199 package outline (Fig. 8, index 5) is not compared with it and nothing is physically checked.",
+      "unit": "NONE",
+      "conditions": "Project geometry only.",
+      "locator": "Section/table audit: src-clamp-diode-ll-protection-map JSON section precision_input_clamp",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-ll-input-overdrive",
+      "record_id": "rec-clamp-diode-ll",
+      "source_id": "src-clamp-diode-ll-protection-map",
+      "class": "PROJECT_STATE",
+      "value": "Rail clamp at SENSE behind R_LIMIT 10 kOhm: while the TMUX7412F still passes between VDD and VDD + VT, this diode alone lets SENSE exceed V+ by min(VT, VF), and neither has a maximum at this current (VT 0.7 V typical at 25 C; BAV199 VF maximum only at >= 1 mA). Phase 25 adds D_BOOT (BAT54S,215 across the follower), which holds SENSE <= V+ + 0.27 V at 25 C; the input current (<= about 70 uA) is far below the 10 mA row.",
+      "unit": "NONE",
+      "conditions": "OPA4197 SBOS737C 6.1 lists the voltage and current rows separately with no current-limited exception.",
+      "locator": "Section/table audit: src-clamp-diode-ll-protection-map JSON row precision_input_clamp.opa4197_input_absolute_maximum",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

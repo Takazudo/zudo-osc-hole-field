@@ -1,0 +1,80 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-clamp_diode_ll",
+    "record_id": "rec-clamp-diode-ll",
+    "manufacturer": "Nexperia",
+    "mpn": "BAV199,215",
+    "package": "SOT-23",
+    "variant_notes": "UNADOPTED S2b candidate (phase 24 precision input clamp)"
+  },
+  "acquisition": {
+    "provider": "Retained manufacturer-authored document (JLCPCB-hosted copy); project-generated symbol",
+    "source_url": "https://jlc-prod-smt.oss-eu-central-1.aliyuncs.com/smtDataManualFile/8586176023968272384-C40919.pdf",
+    "acquired_on": "2026-11-01",
+    "original_filenames": [
+      "C40919.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/BAV199.pdf": "c09cdf672eb4274e137efcf7a0d4e34fc8de099a975cfe8efa3a5a3c560cdf81"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/BAV199_215.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/ic-library/BAV199.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Pin functions transcribed from the retained BAV199 v.3 Table 2 by the named generator; pin geometry matches BAT54S_215; the SOT-23 land is reused.",
+    "evidence": [
+      "AVAILABLE",
+      "https://jlc-prod-smt.oss-eu-central-1.aliyuncs.com/smtDataManualFile/8586176023968272384-C40919.pdf"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/BAV199.pdf": "c09cdf672eb4274e137efcf7a0d4e34fc8de099a975cfe8efa3a5a3c560cdf81"
+    },
+    "tool": "scripts/libgen/build_s2b_switch_assets.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "BAV199 v.3 Table 2 pinning (index 0): 1 A1, 2 K2, 3 K1/A2; junction-diode graphics; SOT-23 land shared with BAT54S,215"
+    },
+    "output_sha256": {
+      "symbols/src/BAV199_215.kicad_sym": "3b0c46ffe573c609e3ffb748dc94905d5697d8556592f7a51d85876e1b870cf7"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:BAV199_215",
+    "footprint": "zudo-osc-hole-field:SOT-23",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-23.wrl",
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "scripts/libgen/check_lib.py and check_ic_evidence.py in the phase-24 scratch worktree"
+    ],
+    "remaining_physical_checks": [
+      "Compare the BAV199 SOT23 outline (Fig. 8, index 5) and reflow footprint (Fig. 9, index 6) with the reused SOT-23 land before hardware use."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

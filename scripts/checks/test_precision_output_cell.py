@@ -195,12 +195,12 @@ class PrecisionOutputCandidateTests(unittest.TestCase):
         for case in cases:
             self.assertTrue(case["transient_requirements_within_original_maxima"])
             self.assertFalse(case["original_strict_limiter_windows_met_arithmetically"])
-            self.assertEqual(case["positive_limiter_window_mA"]["+12V"], 0)
-            self.assertAlmostEqual(case["unrounded_transient_demand_mA"]["+12V"], 2049.64)
+            self.assertEqual(case["positive_limiter_window_mA"]["+12V"], 100)
+            self.assertAlmostEqual(case["unrounded_transient_demand_mA"]["+12V"], 1949.64)
             self.assertAlmostEqual(case["physical_ceiling_minus_unrounded_demand_mA"]["-12V"], 52.34)
         mixed = report["mixed_LED_and_input_switch_sensitivity"]
         self.assertEqual(mixed["actual_existing_ADG_package_count"], 110)
-        self.assertEqual(mixed["hypothetical_110_TMUX_delta_mA"]["+12V"], -77)
+        self.assertAlmostEqual(mixed["hypothetical_110_TMUX_delta_mA"]["+12V"], 6.924)
         self.assertTrue(mixed["with_conditioned_exact_110_input_switch_substitution"]["original_strict_limiter_windows_met_arithmetically"])
 
     def test_generated_bounds_and_model_receipt_match_inputs_without_running_oracle(self):

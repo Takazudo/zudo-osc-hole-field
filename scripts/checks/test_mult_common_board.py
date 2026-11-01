@@ -66,7 +66,8 @@ class MultCommon(unittest.TestCase):
     def test_power_and_scope_counts(self):
         current=json.loads((ROOT/'design/reports/current/mult.json').read_text())
         self.assertEqual(self.p['current_report'],current)
-        self.assertEqual(self.p['return_planning_sum_mA'],21.575);self.assertIsNone(self.p['return_guaranteed_mA'])
+        # UNADOPTED S2b candidate: TMUX7412F loads replace ADG5412F; stage38 README's 21.575 is the canonical worksheet.
+        self.assertEqual(self.p['return_planning_sum_mA'],20.675);self.assertIsNone(self.p['return_guaranteed_mA'])
         n=self.p['counts'];self.assertEqual(n['populated_candidate_packages_each_including_header'],len(self.p['packages_B1'])+1)
         self.assertEqual(n['two_mult_main_boards'],2);self.assertEqual(n['main_unique_designs'],1)
         self.assertEqual(n['header_ends_including_distribution'],2*n['power_cables'])

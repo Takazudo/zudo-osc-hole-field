@@ -23,7 +23,11 @@ for path in (ROOT/'symbols/src').glob('*.kicad_sym'):
 
 PIN_ALIASES={
  'fault_switch':{'S':'3','D':'2','IN':'1','VDD':'13','VSS':'4','GND':'5'},
+ # S2b candidate (user decision 2026-11-01): TMUX7412F WQFN Table 6-1, channel 1 only.
+ 'fault_switch_tmux':{'S':'1','D':'16','IN':'15','VDD':'11','VSS':'2','GND':'3'},
  'clamp_diode':{'A':'1','MID':'3','K':'2'},
+ # S2b candidate precision clamp (phase 24): BAV199 v.3 Table 2, same pin order as BAT54S.
+ 'clamp_diode_ll':{'A':'1','MID':'3','K':'2'},
  'reference':{'VIN':'2','GND':'4','OUT':'6','TRIM':'5','TEMP':'3'},
  'comparator':{'PLUS':'3','MINUS':'2','OUT':'1','VCC':'8','GND':'4'},
  'schmitt':{'IN':'1','OUT':'2','VCC':'14','GND':'7'},
@@ -37,7 +41,7 @@ PIN_ALIASES={
  'trim_103':{'END1':'1','WIPER':'2','END2':'3'},
 }
 AMP={'IN+':'3','IN-':'2','OUT':'1','V+':'4','V-':'11'}
-PREFIX={'r_feedback':'R','c_feedback':'C','r_general':'R','r_precision':'R','r_power':'R','r_ladder':'R','c_small':'C','c_bypass':'C','c_bulk':'C','c_slew':'C','signal_diode':'D','clamp_diode':'D','led_white':'D','led_red':'D','pot_103':'RV','pot_104':'RV','pot_504':'RV','trim_102':'RV','trim_103':'RV','npn':'Q','mosfet':'Q'}
+PREFIX={'r_feedback':'R','c_feedback':'C','r_general':'R','r_precision':'R','r_power':'R','r_ladder':'R','c_small':'C','c_bypass':'C','c_bulk':'C','c_slew':'C','signal_diode':'D','clamp_diode':'D','clamp_diode_ll':'D','led_white':'D','led_red':'D','pot_103':'RV','pot_104':'RV','pot_504':'RV','trim_102':'RV','trim_103':'RV','npn':'Q','mosfet':'Q'}
 
 
 def load_symbol(name):
@@ -81,28 +85,40 @@ def _exact_value(part,record):
  return id in known and abs(val-known[id]) <= abs(known[id])*1e-9
 
 
-def cell_parts(cell_id,panel_uid,nets=None,*,ordinal_start=1,instance_tag=''):
+def cell_parts(cell_id,panel_uid,nets=None,*,ordinal_start=1,instance_tag='',variant=None):
  """Return every physical unit for one cell, with caller-supplied port net names.
 
  `nets` maps standard terminal names to module nets; unspecified names are local
  to this cell and namespaced by panel UID, preventing accidental joining.
+ A named `variant` replaces part fields per ref from the standard's
+ cells[].variants; keys, nets and ordinals stay those of the base cell.
+ Its added_parts follow the base parts; callers move them last with
+ late_last() so existing designators stay locked.
  """
  if cell_id not in CELLS:raise KeyError(cell_id)
+ chosen=CELLS[cell_id]['variants'][variant] if variant else {}
+ overrides=chosen.get('part_overrides',{})
  if panel_uid not in UIDS:raise ValueError(f'unknown panel UID: {panel_uid}')
  nets=nets or {};cell=CELLS[cell_id];out=[]
  namespace=re.sub(r'[^A-Za-z0-9_]', '_', f'{cell_id}_{panel_uid}_{instance_tag}')
  label_prefix='C'+hashlib.sha1(namespace.encode()).hexdigest()[:6]
- if ordinal_start<1 or ordinal_start+len(cell['parts'])-1>99:raise ValueError('cell ordinals must fit 1..99')
+ specs=list(cell['parts'])+list(chosen.get('added_parts',[]))
+ if ordinal_start<1 or ordinal_start+len(specs)-1>99:raise ValueError('cell ordinals must fit 1..99')
  def net(value):
   if value=='NC':return None
   if value in ('+12V','-12V','+5V','AGND'):return nets.get(value,value)
   return nets.get(value,f'{label_prefix}_{value}')
- for ordinal,spec in enumerate(cell['parts'],ordinal_start):
+ for ordinal,spec in enumerate(specs,ordinal_start):
+  spec={**spec,**overrides.get(spec['ref'],{})}
   part_id,record,symbol=resolve(spec);term=spec['terminals'];aliases=AMP if spec.get('opamp_role') else PIN_ALIASES.get(part_id,{})
   assigned={aliases.get(key,key):net(value) for key,value in term.items()}
   if part_id=='fault_switch':
    # Unused switch channels are off; FF is intentionally not connected.
    assigned.update({n:net('AGND') for n in ('14','15','16','11','10','9','6','7','8')})
+  if part_id=='fault_switch_tmux':
+   # SCDS404B 9.4.3: unused SELx/Sx/Dx to GND; FF open drain left NC; the
+   # unconnected thermal pad 17 is tied to GND (Table 6-1 permits GND or VSS).
+   assigned.update({n:net('AGND') for n in ('12','14','13','9','7','8','4','6','5','17')});assigned['10']=None
   if part_id=='reference':assigned.update({'1':None,'7':None,'8':None})
   if part_id.startswith('pot_'):assigned.update({'4':None,'5':None})
   key=namespace+'__'+re.sub('[^A-Za-z0-9_]','_',spec['ref'])
@@ -126,7 +142,15 @@ def cell_parts(cell_id,panel_uid,nets=None,*,ordinal_start=1,instance_tag=''):
     pins={'5':'AGND','6':'+5V','7':None}
    if part_id=='schmitt' and unit in (2,3,4,5,6):
     pins={pin.number:'AGND' if pin.electrical=='input' else None for pin in symbol.units[unit]}
-   if part_id=='fault_switch' and unit in (2,3,4):pins={n:net('AGND') for n in pins}
+   if part_id in ('fault_switch','fault_switch_tmux') and unit in (2,3,4):pins={n:net('AGND') for n in pins}
    x=50.8+((len(out))%7)*50.8;y=50.8+((len(out))//7)*25.4
    out.append(Part(f'{key}.{unit}',symbol.lib_id,prefix,ordinal,unit,x,y,pins,value=_value(spec) or record['mpn'],footprint=footprint,attributes=attributes))
  return tuple(out)
+
+
+ADDED_ROLES={f"{c['id']}:{p['ref']}" for c in STANDARD['cells'] for v in c.get('variants',{}).values() for p in v.get('added_parts',[])}
+
+
+def late_last(parts):
+ """Stable partition: parts added by a cell variant go after every existing part."""
+ return [p for p in parts if p.attributes.get('Role') not in ADDED_ROLES]+[p for p in parts if p.attributes.get('Role') in ADDED_ROLES]

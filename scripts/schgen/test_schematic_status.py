@@ -14,30 +14,30 @@ class SchematicStatus(unittest.TestCase):
     def test_oscillator_population_and_totals_follow_current_source(self):
         report = json.loads(OSCILLATOR_REPORT.read_text())
         body = oscillator_current(report)
-        self.assertIn('4 `OPA4197IPWR`', body)
-        self.assertIn('339.500 / 335.000 / 30.000', body)
+        self.assertIn('4 `OPA4197IDR`', body)
+        self.assertIn('325.500 / 331.000 / 30.000', body)
         self.assertIn('NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED', body)
-        report['sheets'][0]['fitted_IC_packages_per_instance']['OPA4197IPWR'] += 1
+        report['sheets'][0]['fitted_IC_packages_per_instance']['OPA4197IDR'] += 1
         report['planning_upper_total_mA']['+12V'] += 6
         body = oscillator_current(report)
-        self.assertIn('5 `OPA4197IPWR`', body)
-        self.assertIn('345.500 / 335.000 / 30.000', body)
+        self.assertIn('5 `OPA4197IDR`', body)
+        self.assertIn('331.500 / 331.000 / 30.000', body)
 
     def test_oscillator_population_cannot_omit_or_duplicate_a_sheet(self):
         report = json.loads(OSCILLATOR_REPORT.read_text())
         for rows in (report['sheets'][:1], [report['sheets'][0]] * 2):
             with self.subTest(count=len(rows)), self.assertRaises(ValueError):
                 oscillator_current({**report, 'sheets': rows})
-        report['sheets'][0]['fitted_IC_packages_per_instance']['OPA4197IPWR'] = -1
+        report['sheets'][0]['fitted_IC_packages_per_instance']['OPA4197IDR'] = -1
         with self.assertRaisesRegex(ValueError, 'population'):
             oscillator_current(report)
 
     def test_current_mixer_totals_and_partial_scope(self):
         body = sections(self.report)['schematic-family-current']
-        self.assertIn('`mix5` | M5A, M5B | 79.200 / 73.200 / 1.000', body)
-        self.assertIn('`mix4_vca` | M4A, M4B | 93.200 / 87.200 / 1.000', body)
+        self.assertIn('`mix5` | M5A, M5B | 72.200 / 71.200 / 1.000', body)
+        self.assertIn('`mix4_vca` | M4A, M4B | 86.200 / 85.200 / 1.000', body)
         sh = next(line for line in body.splitlines() if '`sample_hold`' in line)
-        self.assertIn('109.700 / 105.300 / 0.000', sh)
+        self.assertIn('106.900 / 104.500 / 0.000', sh)
         self.assertIn('Partial known subtotal', sh)
         self.assertIn('NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED', sh)
         # Each instance is represented exactly once, including the shared reference.
@@ -50,7 +50,7 @@ class SchematicStatus(unittest.TestCase):
         row['planning_upper_subtotal_mA']['+12V'] += 1.25
         body = sections(self.report)['schematic-family-current']
         line = next(line for line in body.splitlines() if '`mix5`' in line)
-        self.assertIn('80.450 / 73.200 / 1.000', line)
+        self.assertIn('73.450 / 71.200 / 1.000', line)
         self.assertIn('NOT ESTABLISHED', line)
 
     def test_known_maximum_is_separate_and_one_unknown_keeps_family_unknown(self):

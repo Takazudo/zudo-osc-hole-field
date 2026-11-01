@@ -4,7 +4,7 @@ from collections import defaultdict
 from dataclasses import replace
 
 from scripts.schgen.core import Family, Instance
-from design.spec.cells._builder import ROOT, SHORTLIST, CATALOG, cell_parts, load_symbol, STANDARD
+from design.spec.cells._builder import ROOT, SHORTLIST, CATALOG, cell_parts, load_symbol, STANDARD, late_last
 from design.spec.modules.oscillator import Builder, PLACEMENTS, RAILS
 from design.spec.modules.sample_hold import footprint
 
@@ -37,11 +37,11 @@ class MultBuilder(Builder):
         return ({'PanelUid': template.replace('{}', '${SHEETNAME}')},
                 {instance: PLACEMENTS[template.format(instance)]['ref'] for instance in INSTANCES}) if template else ({'PanelUid': ''}, {})
 
-    def cell(self, cell_id, tag, nets, *, panel=None, role=None, led=False):
+    def cell(self, cell_id, tag, nets, *, panel=None, role=None, led=False, variant=None):
         # Cell-private pins are namespaced by the exact locked UID and tag. Only
         # the LED receives the physical panel binding; its driver stays local.
         uid = (panel or 'J:{}.IN').format(INSTANCES[0])
-        for part in cell_parts(cell_id, uid, nets, ordinal_start=1, instance_tag=tag):
+        for part in cell_parts(cell_id, uid, nets, ordinal_start=1, instance_tag=tag, variant=variant):
             attrs = {**part.attributes, 'PanelUid': '',
                      'Island': self.led_island if led else self.island}
             refs = {}
@@ -71,6 +71,7 @@ class MultBuilder(Builder):
                     attrs['Island'] = island
                 compiled.append(replace(part, key=tag + '_' + part.key, attributes=attrs))
 
+        compiled = late_last(compiled)
         # CORE and LED are compiled independently to keep indicator drivers next
         # to their panel LEDs; allocate one collision-free ref space afterward.
         assigned = {}
@@ -102,7 +103,7 @@ def family():
     builder.cell('input_fault_switch', 'IN', {'JACK': 'IN_TIP', 'PROTECTED': 'IN_PROTECTED'})
     builder.cell('high_impedance_input', 'IN',
                  {'PROTECTED': 'IN_PROTECTED', 'SENSE': 'IN_SENSE',
-                  'BUFFERED': 'IN_BUFFER'}, role='precision')
+                  'BUFFERED': 'IN_BUFFER'}, role='precision', variant='precision')
     builder.cell('magnitude_indicator', 'IN', {'MONITOR': 'IN_BUFFER'},
                  panel='L:{}.IN.mag', led=True)
     for output in OUTPUTS:

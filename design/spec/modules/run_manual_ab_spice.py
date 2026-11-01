@@ -19,7 +19,7 @@ OUT=ROOT/'design/reports/spice/manual_ab.json'
 def make_deck(load, cable, harness):
     f=family()
     remote=[p for p in f.parts if p.attributes.get('Role')=='internal_selector_buffer:A']
-    assert len(remote)==1 and remote[0].symbol.endswith('OPA4197IPWR')
+    assert len(remote)==1 and remote[0].symbol.endswith(('OPA4197IPWR','OPA4197IDR'))
     out,minus,plus=AMP_MAPS[remote[0].unit-1]
     assert remote[0].pins[plus]=='SELECTOR_COMMON' and remote[0].attributes['BoardRegion']=='control'
     precision=next(p for p in f.parts if p.attributes.get('Role')=='precision_output:A')

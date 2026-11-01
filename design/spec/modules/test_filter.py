@@ -50,7 +50,7 @@ class FilterContract(unittest.TestCase):
     def test_input_protection_and_only_four_input_indicators(self):
         jacks=[p for p in self.parts if p.symbol.endswith('WQP518MA')];self.assertEqual(len(jacks),8)
         self.assertTrue(all(p.pins['TN'] is None for p in jacks))
-        sources=[p.pins['3'] for p in self.parts if p.symbol.endswith('ADG5412FBRUZ') and p.unit==1]
+        sources=[p.pins['1'] for p in self.parts if p.symbol.endswith('TMUX7412FRRPR') and p.unit==1]
         self.assertEqual(set(sources),{k+'_TIP' for k in ('IN','FREQ','RES','GAIN')})
         leds=[p for p in self.parts if p.panel_refs and p.attributes['PanelUid'].startswith('L:')]
         self.assertEqual(len(leds),4)
@@ -70,7 +70,7 @@ class FilterContract(unittest.TestCase):
         names={p.key for p in self.parts};self.assertEqual(len(names),len(self.parts))
         packages=defaultdict(set)
         for p in self.parts:
-            if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')):packages[p.ordinal].add(p.unit)
+            if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')):packages[p.ordinal].add(p.unit)
         self.assertTrue(all(units=={1,2,3,4,5} for units in packages.values()))
 
     def test_current_and_vendor_source_are_honest(self):

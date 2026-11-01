@@ -12,7 +12,8 @@ def build():
   a=dict(zip(RAILS,a));b=dict(zip(RAILS,b))
   for r in RAILS:typ[r]+=count*a[r];upper[r]+=count*b[r]
   rows.append({'load':name,'count':count,'typical_unit_mA':a,'planning_unit_mA':b,'basis':basis})
- for sym,key in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('LM13700M_NOPB','ota')]:
+ for sym,key in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('OPA4197IDR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('TMUX7412FRRPR','fault_switches_tmux7412f'),('TMUX6112PWR','switches_tmux6112'),('LM13700M_NOPB','ota')]:
+  if not counts[sym] and sym.startswith(('OPA4197','ADG5412','TMUX')):continue
   r=LOADS[key];add(sym,counts[sym],[r['typical_unit_mA'][v] for v in RAILS],[r['planning_unit_mA'][v] for v in RAILS],r['basis'])
  add('LM393BIDR',counts['LM393BIDR'],(.6,0,0),(1,0,0),'Whole dual packages on +12V/AGND; inherited planning allowance, no -12V comparator current. Pullups separate.')
  for sym in ('SN74HC00DR','SN74HC74DR','SN74HC14DR','CD74HC221M96'):

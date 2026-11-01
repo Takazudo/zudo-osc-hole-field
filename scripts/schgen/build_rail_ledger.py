@@ -26,8 +26,9 @@ FEEDS = ('A', 'B')
 # Exact package supply pins from design/standard/pin-maps/*.json and the
 # retained symbol/source pairing. Signal inputs tied to a rail are excluded.
 SUPPLY_PIN_NUMBERS = {
-    'REF5050AIDR': ('2', '4'), 'OPA4197IPWR': ('4', '11'),
+    'REF5050AIDR': ('2', '4'), 'OPA4197IPWR': ('4', '11'), 'OPA4197IDR': ('4', '11'),
     'OPA4196IDR': ('4', '11'), 'ADG5412FBRUZ': ('13', '4', '5'),
+    'TMUX7412FRRPR': ('11', '2', '3'), 'TMUX6112PWR': ('13', '4', '5'),
     'LM393BIDR': ('8', '4'), 'SN74HC14DR': ('14', '7'),
     'CD74HC221M96': ('16', '8'), 'LF398M_NOPB': ('12', '3', '10'),
     'AS3340D': ('16', '3', '12'), 'LM13700M_NOPB': ('11', '6'),
@@ -113,15 +114,15 @@ def worksheet_loads(report):
             loads.append({'id': f"{row['instance']}:{index}", 'instance': row['instance'],
                           'label': label, 'source': row['source'], 'source_row': index,
                           'count': count, 'unit': 'whole package' if 'whole_packages' in item or 'whole package' in label.lower() or label in
-                          ('OPA4196IDR', 'OPA4197IPWR', 'ADG5412FBRUZ') else 'worksheet unit',
+                          ('OPA4196IDR', 'OPA4197IPWR', 'ADG5412FBRUZ', 'TMUX7412FRRPR', 'TMUX6112PWR') else 'worksheet unit',
                           'reported_assumed_typical_mA': {r: round(count * typical[r], 6) for r in RAILS},
                           'planning_allowance_mA': {r: round(count * unit[r], 6) for r in RAILS},
                           'manufacturer_guaranteed_quiescent_only_mA':
                           {r: round(count * unit[r], 6) for r in RAILS}
-                          if label in ('OPA4196IDR', 'OPA4197IPWR', 'OPA4196IDR whole quad package')
+                          if label in ('OPA4196IDR', 'OPA4197IPWR', 'OPA4197IDR', 'OPA4196IDR whole quad package')
                           else None,
                           'quiescent_condition': 'Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8'
-                          if label in ('OPA4196IDR', 'OPA4197IPWR', 'OPA4196IDR whole quad package') else None,
+                          if label in ('OPA4196IDR', 'OPA4197IPWR', 'OPA4197IDR', 'OPA4196IDR whole quad package') else None,
                           'guaranteed_complete_load_maximum_mA': {r: None for r in RAILS},
                           'guaranteed_maximum_reason': 'Worksheet source and operating conditions do not bound the complete dynamic/startup/fault load.',
                           'basis': item.get('basis', item.get('source', 'Worksheet planning assumption; see source row'))})

@@ -96,7 +96,7 @@ def compiled_precision_contract(parts, projection):
         raise ValueError('precision amplifier units must share one physical package')
     unused_nodes = set()
     for p in amp:
-        if p.prefix != 'U' or p.symbol != 'zudo-osc-hole-field:OPA4197IPWR' or p.attributes.get('MPN') != 'OPA4197IPWR':
+        if p.prefix != 'U' or p.symbol.split(':')[-1] not in ('OPA4197IPWR', 'OPA4197IDR') or p.attributes.get('MPN') != p.symbol.split(':')[-1]:
             raise ValueError('precision compiled amplifier identity changed')
         if p.unit == 1:
             pins = {'1': 'DRIVE', '2': 'FB', '3': 'SIGNAL'}

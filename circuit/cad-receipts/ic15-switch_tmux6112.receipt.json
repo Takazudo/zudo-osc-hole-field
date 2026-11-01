@@ -1,0 +1,80 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-switch_tmux6112",
+    "record_id": "rec-env-switch-t",
+    "manufacturer": "Texas Instruments",
+    "mpn": "TMUX6112PWR",
+    "package": "TSSOP-16",
+    "variant_notes": "UNADOPTED S2b candidate (decision E13, phase 18)"
+  },
+  "acquisition": {
+    "provider": "Retained manufacturer document; project-generated symbol and land",
+    "source_url": "https://www.ti.com/lit/ds/symlink/tmux6112.pdf",
+    "acquired_on": "2026-10-31",
+    "original_filenames": [
+      "TMUX6112.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/TMUX6112.pdf": "c0fab3135a4438048a759aa91b33480f95f01140885896e3bfa1202a9daa2ae1"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/TMUX6112PWR.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units and millimetres",
+    "original_paths": [
+      "circuit/sources/ic-library/TMUX6112.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Pin functions and land dimensions transcribed from the retained TI document by the named generator; no vendor CAD used.",
+    "evidence": [
+      "AVAILABLE",
+      "https://www.ti.com/lit/ds/symlink/tmux6112.pdf"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/TMUX6112.pdf": "c0fab3135a4438048a759aa91b33480f95f01140885896e3bfa1202a9daa2ae1"
+    },
+    "tool": "scripts/libgen/build_s2b_switch_assets.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "SCDS383F Table 5-1 TSSOP pins (index 3); pin 12 NC; same land as the ADG5412FBRUZ TSSOP-16 footprint"
+    },
+    "output_sha256": {
+      "symbols/src/TMUX6112PWR.kicad_sym": "4e4b5d8abedc55af26748f2c4d12c0fffe672144d324f1741e69afd9c703369d"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:TMUX6112PWR",
+    "footprint": "zudo-osc-hole-field:TSSOP-16_4.4x5mm_P0.65mm",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TSSOP-16_4.4x5.0.wrl",
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "scripts/libgen/check_lib.py and check_ic_evidence.py in the phase-18 scratch worktree"
+    ],
+    "remaining_physical_checks": [
+      "Confirm the TSSOP-16 PW outline against the reused ADG5412F family envelope and the SEL-hold timing before hardware use."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

@@ -8,7 +8,7 @@ LOADS={x['id']:x for x in BUDGET['loads']}
 RAILS=('+12V','-12V','+5V')
 OUT=ROOT/'design/reports/current/sample_hold.json'
 ROLE_BY_SYMBOL={
- 'OPA4196IDR':'opamp_audio','OPA4197IPWR':'opamp_precision','ADG5412FBRUZ':'fault_switches','LF398M_NOPB':'sample_hold','LM393BIDR':'comparators'
+ 'OPA4196IDR':'opamp_audio','OPA4197IPWR':'opamp_precision','OPA4197IDR':'opamp_precision','ADG5412FBRUZ':'fault_switches','TMUX7412FRRPR':'fault_switches_tmux7412f','TMUX6112PWR':'switches_tmux6112','LF398M_NOPB':'sample_hold','LM393BIDR':'comparators'
 }
 
 def build():

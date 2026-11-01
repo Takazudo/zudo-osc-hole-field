@@ -1,0 +1,329 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-env-switch-t-manufacturer",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Texas Instruments",
+      "unit": "NONE",
+      "conditions": "Manufacturer of the exact candidate identity.",
+      "locator": "src-env-switch-t-datasheet: title block, physical PDF index 0, printed 1",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-project-selection",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-study",
+      "class": "PROJECT_STATE",
+      "value": "UNADOPTED S2b candidate (envelope internal analog switch (S2b candidate)); user decision E13 2026-11-01 accepts the identity change; canonical adoption needs a separate approval",
+      "unit": "NONE",
+      "conditions": "Candidate record circuit/candidates/s2b-tmux-20261101; not a supplier allocation.",
+      "locator": "Section/table audit: src-env-switch-t-study JSON row scenarios[id=S2b]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-orderable-identity",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Texas Instruments",
+        "mpn": "TMUX6112PWR",
+        "package": "TSSOP-16"
+      },
+      "unit": "NONE",
+      "conditions": "Exact orderable identifier; does not establish stock.",
+      "locator": "Section/table audit: src-env-switch-t-datasheet package option addendum row TMUX6112PWR, physical PDF index 25",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-pinout",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 SEL1 logic -> pad 1; pin 2 D1 drain -> pad 2; pin 3 S1 source -> pad 3; pin 4 VSS negative supply -> pad 4; pin 5 GND reference -> pad 5; pin 6 S4 source -> pad 6; pin 7 D4 drain -> pad 7; pin 8 SEL4 logic -> pad 8; pin 9 SEL3 logic -> pad 9; pin 10 D3 drain -> pad 10; pin 11 S3 source -> pad 11; pin 12 no internal connection -> pad 12; pin 13 VDD positive supply -> pad 13; pin 14 S2 source -> pad 14; pin 15 D2 drain -> pad 15; pin 16 SEL2 logic -> pad 16",
+      "unit": "NONE",
+      "conditions": "No schematic or placement binding is claimed by this record.",
+      "locator": "src-env-switch-t-datasheet: Section 5, Table 5-1 Pin Functions (TSSOP column), physical PDF index 3, printed 4",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-product-function",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies TMUX6112PWR as a quad SPST switch; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product description only.",
+      "locator": "src-env-switch-t-datasheet: Section 3 Description, physical PDF index 0, printed 1",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-supply-absolute",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "VDD_to_VSS_max_V": 36,
+        "VDD_to_GND_min_V": -0.3,
+        "VDD_to_GND_max_V": 18,
+        "VSS_to_GND_min_V": -18,
+        "VSS_to_GND_max_V": 0.3
+      },
+      "unit": "V",
+      "conditions": "Absolute maximum; not an operating condition.",
+      "locator": "src-env-switch-t-datasheet: physical PDF index 4, printed 5, Section 6.1 Absolute Maximum Ratings, supply rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-digital-input-absolute",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "VDIG_min": "GND - 0.3",
+        "VDIG_max": "VDD + 0.3",
+        "IDIG_limit_mA": 30
+      },
+      "unit": "V and mA",
+      "conditions": "SEL1..SEL4; the voltage limit is referred to VDD, so logic above an unpowered VDD needs current limiting (project SEL hold).",
+      "locator": "src-env-switch-t-datasheet: physical PDF index 4, printed 5, Section 6.1 Absolute Maximum Ratings, VDIG and IDIG rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-analog-pin-absolute",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "VS_VD_min": "VSS - 0.3",
+        "VS_VD_max": "VDD + 0.3",
+        "IS_ID_limit_mA": 30
+      },
+      "unit": "V and mA",
+      "conditions": "Not fault protected.",
+      "locator": "src-env-switch-t-datasheet: physical PDF index 4, printed 5, Section 6.1 Absolute Maximum Ratings, VANA_IN and VANA_OUT rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-supply-range",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-datasheet",
+      "class": "RECOMMENDED_OPERATION",
+      "value": {
+        "VDD_minus_VSS_min_V": 10,
+        "VDD_minus_VSS_max_V": 34,
+        "dual_VDD_min_V": 5,
+        "dual_VDD_max_V": 17,
+        "dual_VSS_min_V": -17,
+        "dual_VSS_max_V": -5
+      },
+      "unit": "V",
+      "conditions": "Footnote 1: any value with 10 V <= VDD - VSS <= 34 V.",
+      "locator": "src-env-switch-t-datasheet: physical PDF index 5, printed 6, Section 6.4 Recommended Operating Conditions (continued), dual-supply rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-logic-thresholds",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "VIH_min_V": 2,
+        "VIL_max_V": 0.8
+      },
+      "unit": "V",
+      "conditions": "VDD = 15 V, VSS = -15 V, SELx pins.",
+      "locator": "src-env-switch-t-datasheet: physical PDF index 5, printed 6, Section 6.5 Electrical Characteristics (+/-15 V), DIGITAL INPUT VIH and VIL rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-select-pulldown",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-datasheet",
+      "class": "TYPICAL_CURVE",
+      "value": 6,
+      "unit": "Mohm",
+      "conditions": "SELx internal pull-down, typical only.",
+      "locator": "src-env-switch-t-datasheet: physical PDF index 5, printed 6, Section 6.5, RPD(IN) row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-ron-85c",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 210,
+      "unit": "ohm",
+      "conditions": "VS = +/-10 V, IS = 1 mA, TA = -40..85 C, +/-15 V table; +/-12 V is not a guaranteed table.",
+      "locator": "src-env-switch-t-datasheet: physical PDF index 5, printed 6, Section 6.5, RON row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-off-leakage-85c",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "min": -0.14,
+        "max": 0.05
+      },
+      "unit": "nA",
+      "conditions": "Switch off, VS = +/-10 V, VD = -/+10 V, TA = -40..85 C.",
+      "locator": "src-env-switch-t-datasheet: physical PDF index 5, printed 6, Section 6.5, IS(OFF) and ID(OFF) rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-on-leakage-85c",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "min": -0.25,
+        "max": 0.1
+      },
+      "unit": "nA",
+      "conditions": "Switch on, TA = -40..85 C.",
+      "locator": "src-env-switch-t-datasheet: physical PDF index 5, printed 6, Section 6.5, ID(ON) row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-normal-supply-current",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "IDD_max_85C": 22,
+        "ISS_max_85C": 11,
+        "IDD_max_125C": 23,
+        "ISS_max_125C": 12
+      },
+      "unit": "uA per package",
+      "conditions": "VA = 0 V or 3.3 V, VS = 0 V, maxima at TA = -40..85 C and -40..125 C, +/-15 V table.",
+      "locator": "src-env-switch-t-datasheet: physical PDF index 5, printed 6, Section 6.5 POWER SUPPLY IDD row (index 5) and ISS row (index 6)",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-truth-table",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-datasheet",
+      "class": "RECOMMENDED_OPERATION",
+      "value": "SELx = 1 turns the switch ON; SELx = 0 turns it OFF.",
+      "unit": "NONE",
+      "conditions": "TMUX6112 only.",
+      "locator": "src-env-switch-t-datasheet: physical PDF index 12, printed 13, Section 7.1, Table 7-2 TMUX6112 Truth Table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-procurement-status",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-jlc",
+      "class": "PROJECT_STATE",
+      "value": {
+        "lcsc": "C2673384",
+        "manufacturer": "Texas Instruments",
+        "mpn": "TMUX6112PWR",
+        "variant": "Exact MPN and LCSC identity row; TSSOP-16. Stock 493 observed 2026-10-31 is a dated observation, not an allocation."
+      },
+      "unit": "NONE",
+      "conditions": "Distributor identity only.",
+      "locator": "Identity section: src-env-switch-t-jlc JSON row fields componentCode, stockCount and componentPrices",
+      "provenance": "DISTRIBUTOR-IDENTITY",
+      "verdict": "CONFIRMED - distributor identity only",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-assembly-allocation",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-study",
+      "class": "PROJECT_STATE",
+      "value": "UNSOURCED: factory stock allocation and assembly acceptance are not established by a search row",
+      "unit": "NONE",
+      "conditions": "Dated search row only.",
+      "locator": "Section/table audit: src-env-switch-t-study JSON row scenarios[id=S2b].cost",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-mechanical-fit",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-study",
+      "class": "PROJECT_STATE",
+      "value": "TSSOP-16 land shared with ADG5412FBRUZ; provisional family envelope; not physically checked.",
+      "unit": "NONE",
+      "conditions": "Project geometry only.",
+      "locator": "Section/table audit: src-env-switch-t-study JSON row scenarios[id=S2b]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-env-switch-t-sel-hold",
+      "record_id": "rec-env-switch-t",
+      "source_id": "src-env-switch-t-protection-map",
+      "class": "PROJECT_STATE",
+      "value": "Each driven SEL line: 100 kOhm RC0603FR-07100KL pull-up from +5V; BAT54S,215 clamp (pin 3 and pin 1 SEL, pin 2 +12V); BAT54S,215 pull-down (pin 3 and pin 1 SEL, pin 2 logic output). Logic low <= 0.57 V at 25 C (VOL 0.33 V max + VF 0.24 V max at 0.1 mA); <= 0.65 V for 25..70 C with a project leakage bound of 50 uA. SEL <= VDD + 0.24 V at 25 C with +12V absent.",
+      "unit": "NONE",
+      "conditions": "Clamp current <= 52.5 uA (5.25 V / 100 kOhm). BAT54S VF and IR maxima exist at 25 C only; the 25..70 C leakage bound is a project bound (Fig. 2 typical 85 C reading x 1.25 max/typical ratio at 25 C), not a manufacturer maximum; below 25 C the VF rise is UNKNOWN.",
+      "locator": "Section/table audit: src-env-switch-t-protection-map JSON row envelope_internal_tmux6112[Logic before rails]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

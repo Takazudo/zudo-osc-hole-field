@@ -8,7 +8,7 @@ from dataclasses import replace
 from pathlib import Path
 import json,re
 from scripts.schgen.core import Family,Instance,Part
-from design.spec.cells._builder import ROOT,SHORTLIST,CATALOG,CELLS,cell_parts,load_symbol
+from design.spec.cells._builder import ROOT,SHORTLIST,CATALOG,CELLS,cell_parts,load_symbol,late_last
 
 PLACEMENTS={p['uid']:p for p in json.loads((ROOT/'design/grid/placements.lock.json').read_text())['placements']}
 INSTANCES=('H1','H2')
@@ -52,9 +52,9 @@ def part(id,key,prefix,ordinal,pins,page,*,value=None,mpn=None,panel=None,island
 @refined
 def family():
  panel_bindings();parts=[];ordinal=1
- def add(id,uid,nets,page,*,island='',panel_part=None):
+ def add(id,uid,nets,page,*,island='',panel_part=None,variant=None):
   nonlocal ordinal
-  cell=cell_parts(id,uid,nets,ordinal_start=ordinal)
+  cell=cell_parts(id,uid,nets,ordinal_start=ordinal,variant=variant)
   ordinal+=len(CELLS[id]['parts'])
   for p in cell:
    attrs={**p.attributes,'PanelUid':'','Island':island}
@@ -75,7 +75,7 @@ def family():
  add('high_impedance_input','J:H1.TRIGGER',{'PROTECTED':'TRIGGER_PROTECTED','BUFFERED':'TRIGGER_BUFFERED'},1)
  add('gate_trigger_input','J:H1.TRIGGER',{'BUFFERED':'TRIGGER_BUFFERED','REF_5V':'REF_5V','GATE_REF':'GATE_REF','GATE_HIGH':'TRIGGER_GATE'},1)
  add('input_fault_switch','J:H1.IN',{'JACK':'IN_TIP','PROTECTED':'IN_PROTECTED'},1)
- add('high_impedance_input','J:H1.IN',{'PROTECTED':'IN_PROTECTED','BUFFERED':'IN_BUFFERED'},1)
+ add('high_impedance_input','J:H1.IN',{'PROTECTED':'IN_PROTECTED','BUFFERED':'IN_BUFFERED'},1,variant='precision')
  add('switch_button_input','C:H1.SAMPLE',{'CONTACT':'CONTACT','ACTIVE':'BUTTON_ACTIVE'},1)
  add('magnitude_indicator','L:H1.TRIGGER.mag',{'MONITOR':'TRIGGER_BUFFERED'},1,island='L:${SHEETNAME}.TRIGGER.mag',panel_part=('Kingbright_White_0402','L:{}.TRIGGER.mag'))
  add('magnitude_indicator','L:H1.IN.mag',{'MONITOR':'IN_BUFFERED'},1,island='L:${SHEETNAME}.IN.mag',panel_part=('Kingbright_White_0402','L:{}.IN.mag'))
@@ -118,6 +118,7 @@ def family():
  # Reference ordinals are unique per prefix, not across unlike device classes.
  # This allows many local decouplers while preserving the generator's 1..99 range.
  allocated={};normalized=[];counters={}
+ parts=late_last(parts)
  for p in parts:
   # Non-panel diode references use a separate prefix namespace so fixed panel
   # LED designators (for example D109) cannot collide with internal bridge

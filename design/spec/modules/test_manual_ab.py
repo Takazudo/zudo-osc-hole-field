@@ -31,10 +31,10 @@ class ManualABContract(unittest.TestCase):
 
     def test_each_raw_source_isolated_before_buffer_and_toggle(self):
         switches = [part for part in self.family.parts
-                    if part.symbol.endswith('ADG5412FBRUZ') and part.unit == 1]
+                    if part.symbol.endswith('TMUX7412FRRPR') and part.unit == 1]
         self.assertEqual(len(switches), 2)
-        self.assertEqual({part.pins['3'] for part in switches}, {'A_TIP', 'B_TIP'})
-        self.assertEqual({part.pins['2'] for part in switches}, {'A_PROTECTED', 'B_PROTECTED'})
+        self.assertEqual({part.pins['1'] for part in switches}, {'A_TIP', 'B_TIP'})
+        self.assertEqual({part.pins['16'] for part in switches}, {'A_PROTECTED', 'B_PROTECTED'})
         toggle = next(part for part in self.family.parts if part.symbol.endswith('2MS1T1B1M2QES-5'))
         self.assertEqual(toggle.pins, {
             '1': 'SELECT_B_CONTACT', '2': 'SELECTOR_COMMON', '3': 'SELECT_A_CONTACT'})
@@ -56,12 +56,12 @@ class ManualABContract(unittest.TestCase):
         self.assertEqual(len(jacks), 3)
         self.assertTrue(all(part.pins['TN'] is None for part in jacks))
         amps = [part for part in self.family.parts
-                if part.symbol.endswith('OPA4197IPWR') and part.unit in (1, 2, 3, 4)]
+                if part.symbol.endswith(('OPA4197IPWR','OPA4197IDR')) and part.unit in (1, 2, 3, 4)]
         self.assertEqual(len(amps), 8)
         positive_nets = [part.pins[{1: '3', 2: '5', 3: '10', 4: '12'}[part.unit]] for part in amps]
         self.assertCountEqual(positive_nets, ['A_SENSE', 'B_SENSE', 'SELECTOR_COMMON', 'SELECTOR_REMOTE', *(['AGND']*4)])
         outputs = [part for part in self.family.parts
-                   if part.symbol.endswith('OPA4197IPWR') and 'OUT_BUFFERED' in part.pins.values() and part.attributes.get('Role')=='precision_output:A']
+                   if part.symbol.endswith(('OPA4197IPWR','OPA4197IDR')) and 'OUT_BUFFERED' in part.pins.values() and part.attributes.get('Role')=='precision_output:A']
         self.assertEqual(len(outputs), 1)
         indicators = [part for part in self.family.parts if part.symbol.endswith('OPA4196IDR')]
         monitored = {part.pins[number] for part in indicators
@@ -73,17 +73,17 @@ class ManualABContract(unittest.TestCase):
     def test_complete_packages_and_current_report_is_honest(self):
         packages = {}
         for part in self.family.parts:
-            if part.symbol.endswith(('OPA4196IDR', 'OPA4197IPWR')):
+            if part.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')):
                 packages.setdefault((part.symbol, part.ordinal), set()).add(part.unit)
-        self.assertEqual(len([key for key in packages if key[0].endswith('OPA4197IPWR')]), 2)
+        self.assertEqual(len([key for key in packages if key[0].endswith(('OPA4197IPWR','OPA4197IDR'))]), 2)
         self.assertEqual(len([key for key in packages if key[0].endswith('OPA4196IDR')]), 1)
         self.assertTrue(all(units == {1, 2, 3, 4, 5} for units in packages.values()))
         report = current_report()
         self.assertEqual(report['IC_packages_per_instance'], {
-            'ADG5412FBRUZ': 2, 'OPA4196IDR': 1, 'OPA4197IPWR': 2})
+            'TMUX7412FRRPR': 2, 'OPA4196IDR': 1, 'OPA4197IDR': 1, 'OPA4197IPWR': 1})
         row = report['instances'][0]
-        self.assertEqual(row['typical_mA_per_rail'], {'+12V': 11.1605, '-12V': 10.3605, '+5V': .1})
-        self.assertEqual(row['planning_maximum_mA_per_rail'], {'+12V': 19.8505, '-12V': 18.6505, '+5V': .15})
+        self.assertEqual(row['typical_mA_per_rail'], {'+12V': 10.0005, '-12V': 9.8805, '+5V': .1})
+        self.assertEqual(row['planning_maximum_mA_per_rail'], {'+12V': 18.4505, '-12V': 18.2505, '+5V': .15})
         self.assertTrue(all(value is None for value in row['guaranteed_maximum_mA_per_rail'].values()))
 
 

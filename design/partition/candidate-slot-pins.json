@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "status": "UNADOPTED CANDIDATE (s2b-tmux-20261101); source geometry only",
+  "pins": [
+    {
+      "ref": "RB4413",
+      "board": "JR",
+      "source": "circuit/routing/issue189/jr-rb4413-edge-bridge/pending-source-translation.json",
+      "reason": "The SOIC-14 and WQFN-16 reflows of the jack boards packed other parts into the slot that issue189 jr-rb4413-edge-bridge native evidence (pilot37988525124) binds to RB4413. The floorplan holds RB4413 at that recorded source slot and reserves the union of the slot and its pending 0.2 mm translation, so the reflow packs every other part around it and the recorded translation source stays current. Neighbouring parts moved, so the native pilot's clearance result does not transfer; native verification remains required at adoption."
+    }
+  ]
+}

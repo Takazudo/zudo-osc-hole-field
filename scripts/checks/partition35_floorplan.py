@@ -136,6 +136,13 @@ def build():
     for p in parts:
         if p['footprint'] not in shapes:shapes[p['footprint']]=footprint_geometry(ROOT/'footprints/kicad/zudo-osc-hole-field.pretty'/(p['footprint'].split(':')[1]+'.kicad_mod'))['courtyard_bbox_mm']
     placements=[];errors=[];grids={};available={}
+    pinned={}
+    pin_file=ROOT/'design/partition/candidate-slot-pins.json'
+    if pin_file.exists():
+        # UNADOPTED candidate: keep a movable jack resistor, and its pending translation target,
+        # on the slot that retained native routing evidence binds; the reflow packs around it.
+        for pin in json.loads(pin_file.read_text())['pins']:
+            pinned[pin['ref']]=next(c for c in json.loads((ROOT/pin['source']).read_text())['translations'] if c['ref']==pin['ref'])
     for board in (*JACK_BOARDS,'P','K'):
         spec=source['boards'][board]
         for side in ('F.Cu','B.Cu'):
@@ -171,6 +178,16 @@ def build():
                 if h['board']==board:
                     for net in h['pin_map'].values():
                         if net not in (None,'NC'):anchors[net].append(tuple(h['center_mm']))
+            for ref,change in pinned.items():
+                row=change['expected_source']
+                if row['board']!=board:continue
+                if ref not in {p['ref'] for p in free}:raise ValueError('candidate slot pin out of scope: '+ref)
+                dx,dy=change['delta_mm'];c=row['courtyard_mm']
+                grids[board,row['side']].fill([min(c[0],c[0]+dx),min(c[1],c[1]+dy),max(c[2],c[2]+dx),max(c[3],c[3]+dy)])
+                for net in pin_nets[ref].values():
+                    if net and net not in ('AGND','+12V','-12V','+5V'):anchors[net].append((row['x_mm'],row['y_mm']))
+                placements.append({k:v for k,v in row.items() if k!='kicad_orientation_deg'})
+                free=[p for p in free if p['ref']!=ref]
             homes=defaultdict(list)
             for p in parts:
                 if board_for(p)==board and p['panel_uid']:homes[p['instance']].append((lock[p['panel_uid']]['x_mm'],lock[p['panel_uid']]['y_mm']))

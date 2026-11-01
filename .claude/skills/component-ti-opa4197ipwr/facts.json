@@ -284,6 +284,43 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-input-common-mode-range",
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "minimum_below_V_minus_V": -0.1,
+        "maximum_above_V_plus_V": 0.1
+      },
+      "unit": "V",
+      "conditions": "Operating common-mode voltage range VCM = (V-) - 0.1 V .. (V+) + 0.1 V, table header VS = +/-4 V to +/-18 V (8 V to 36 V), TA = 25 C; no separate full-temperature VCM row. At the project +/-12 V rails this is -12.1 .. +12.1 V nominal.",
+      "locator": "src-op-precision-datasheet: PDF page index 6, printed page 7, Section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, INPUT VOLTAGE, Common-mode voltage range row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-input-stage-transition",
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "cmrr_min_dB_low_region_full_temperature": 110,
+        "cmrr_min_dB_high_region_full_temperature": 80,
+        "low_region": "(V-) - 0.1 V < VCM < (V+) - 3 V",
+        "high_region": "(V+) - 1.5 V < VCM < (V+)",
+        "unspecified_region": "(V+) - 3 V < VCM < (V+) - 1.5 V"
+      },
+      "unit": "dB",
+      "conditions": "CMRR minima at VS = +/-18 V, TA = -40..125 C: 110 dB for (V-) - 0.1 V < VCM < (V+) - 3 V and 80 dB for (V+) - 1.5 V < VCM < (V+). The input-stage transition region (V+) - 3 V .. (V+) - 1.5 V has no table limit (\"See Typical Characteristics\"). Offset VOS is specified separately at VCM = (V+) - 1.5 V (+/-100 uV max at 25 C). Rows are at VS = +/-18 V, not +/-12 V.",
+      "locator": "src-op-precision-datasheet: PDF page index 6, printed page 7, Section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, INPUT VOLTAGE, CMRR rows; OFFSET VOLTAGE VOS rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

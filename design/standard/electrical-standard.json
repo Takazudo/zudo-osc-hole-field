@@ -84,6 +84,11 @@
     ],
     "bipolar_envelope_equation": "BIP = 1.25*ENV - 5 V",
     "pitch_V_per_octave": 1,
+    "pitch_linear_range_V": [
+      -5,
+      8
+    ],
+    "pitch_linear_range_status": "USER DECISION 2026-11-01 13:41Z (decision card): option A1 of the phase-21 pitch-range study. Linear passing range of the 1V/OCT inputs only; calibrated accuracy stays limited to calibration.pitch_tracking_scope.",
     "pitch_resistor_tolerance_percent": 0.1,
     "gate_output_nominal_V": [
       0,
@@ -191,7 +196,7 @@
       "parts": [
         {
           "ref": "U",
-          "part_id": "fault_switch",
+          "part_id": "fault_switch_tmux",
           "terminals": {
             "S": "JACK",
             "D": "PROTECTED",
@@ -223,18 +228,182 @@
         }
       ],
       "connections": [
-        "One channel per input jack; source S always faces patch cable; drain D always faces local circuit.",
-        "Unused source/drain grounded, unused IN grounded, FF explicitly no-connect."
+        "One TMUX7412FRRPR per input jack, channel 1 only: overvoltage-protected source S1 (pad 1) always faces the patch cable; drain D1 (pad 16) always faces the local circuit; SEL1 (pad 15) is the enable.",
+        "Channels 2-4: S, D and SEL tied to GND (SCDS404B 9.4.3). FF (pad 10) explicitly no-connect. Thermal pad 17 tied to AGND (Table 6-1: not connected internally, GND or VSS recommended)."
       ],
       "notes": [
-        "Powered-off isolation replaces a naked rail-clamp path. GND must stay connected with patch sleeves. No ±55 V system rating is inferred; project fault range is ±12 V.",
-        "Fault switch uses ±12 V rails; ±15 V datasheet tables are planning references, not guaranteed ±12 V performance. Drain clamps/current limiting below remain mandatory.",
-        "Do not tie enable directly to +12 V. Require #24 power-sequence analysis for missing-rail and ground-loss cases."
+        "Powered-off isolation replaces a naked rail-clamp path. GND must stay connected with patch sleeves. No +/-60 V system rating is inferred; project fault range is +/-12 V.",
+        "Fault switch uses +/-12 V rails; +/-15 V datasheet tables are planning references, not guaranteed +/-12 V performance. Drain clamps/current limiting below remain mandatory.",
+        "Do not tie enable directly to +12 V. Require #24 power-sequence analysis for missing-rail and ground-loss cases.",
+        "One package per input (S2b ADG-2 packing): TI SCDS404B states per-input turn-off (9.4.2) but publishes no statement that undisturbed channels of a quad continue normally, so quad packing (ADG-3) is not used."
       ],
       "uses": [],
       "verification": [
         "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
-      ]
+      ],
+      "protection_identity_change": {
+        "decision": "E13",
+        "status": "UNADOPTED CANDIDATE TEXT; canonical adoption needs a separate approval",
+        "previous": {
+          "mpn": "ADG5412FBRUZ",
+          "package": "TSSOP-16",
+          "jack_pin": "S1 pin 3"
+        },
+        "current": {
+          "mpn": "TMUX7412FRRPR",
+          "package": "WQFN-16 RRP",
+          "jack_pin": "S1 pad 1",
+          "local_pin": "D1 pad 16",
+          "enable_pin": "SEL1 pad 15"
+        },
+        "packing": "ADG-2: one package per input (98 per unit)",
+        "fault_rows_source": "design/readiness/s2b-protection-map.json",
+        "fault_rows": [
+          {
+            "row": "F1 powered, +/-12 V on the jack (input_continuous_fault_V)",
+            "previous_adg5412f": "PASS",
+            "tmux7412f": "PASS",
+            "tmux7412f_basis": "Survival: overvoltage only beyond the supplies by VT (SCDS404B index 32, 9.3.2.4). Signal passing is a separate condition: VT is 0.7 V typical at 25 C only (7.5), RON rises exponentially within 3 V of VDD (9.3.4), and no RON maximum exists at +/-12 V (7.6 is +/-15 V +/-10 %, VS = -10..+10 V). Usable signal range: VSS .. VDD - 3 V, i.e. -12 .. +9 V at nominal rails. VDD - 3 V is guaranteed only with VSS = 0 V (7.8: RON <= 15 ohm at 85 C for VS = 0..7.8 V, VDD = 10.8..13.2 V); at +/-12 V dual supply it is an extrapolation; see usable_signal_range",
+            "s2b_disposition": "Survival unchanged. Signal passing is conditional on the usable signal range (-12 .. +9 V at nominal rails; VDD - 3 V guaranteed only at VSS = 0 V by 7.8, extrapolated at +/-12 V); see usable_signal_range"
+          },
+          {
+            "row": "F2 powered, jack beyond a rail (rail sag or external source above +/-12 V)",
+            "previous_adg5412f": "PASS",
+            "tmux7412f": "PASS",
+            "tmux7412f_basis": "Switch turns off regardless of logic; source to +/-60 V, 85 V source-to-supply and source-to-drain (index 31, 9.3.2.1; index 32, 9.3.2.4)",
+            "s2b_disposition": "Unchanged"
+          },
+          {
+            "row": "F3 unpowered, rails at 0 V, GND present, +/-12 V on the jack",
+            "previous_adg5412f": "PASS",
+            "tmux7412f": "PASS",
+            "tmux7412f_basis": "Sources Hi-Z, +/-60 V blocked (index 32, 9.3.2.2). IS(FA) grounded +/-125 uA is TYPICAL only (7.6 TYP column; no maximum), so source-side fault leakage has no guaranteed bound, as for ADG5412F. ID(FA) grounded +/-50 nA is a maximum at 85 C (7.6, index 6)",
+            "s2b_disposition": "Unchanged PASS for blocking; source-side fault leakage has no guaranteed bound (typical only), as for ADG5412F"
+          },
+          {
+            "row": "F4 unpowered, rails floating, GND present",
+            "previous_adg5412f": "PASS",
+            "tmux7412f": "PASS",
+            "tmux7412f_basis": "Hi-Z with VDD/VSS 0 V or floating (index 32). Floating-rail leakage recorded as typical only (protection59-sources.json)",
+            "s2b_disposition": "Unchanged"
+          },
+          {
+            "row": "F5 GND absent (return open, board unplugged)",
+            "previous_adg5412f": "FAIL",
+            "tmux7412f": "FAIL",
+            "tmux7412f_basis": "Same requirement (index 32, 9.3.2.2). No regression from ADG5412F",
+            "s2b_disposition": "Unchanged outside the protected envelope; same as the previous standard"
+          },
+          {
+            "row": "F6 one analog rail missing, other present",
+            "previous_adg5412f": "PASS",
+            "tmux7412f": "UNKNOWN",
+            "tmux7412f_basis": "-12 V missing, +12 V present: PASS, VSS = 0 V is a specified single supply (VDD - VSS >= 8 V; 7.4, 9.1). +12 V missing, -12 V present: UNKNOWN, VDD = 0 V is below the recommended VDD minimum of 5 V (7.4) while the UVLO is defined on VDD - VSS = 12 V (7.5), so the device is not powered off by that definition and no datasheet text covers the state",
+            "s2b_disposition": "Changed: -12 V-missing half PASS, +12 V-missing half UNKNOWN; the row is UNKNOWN until bench evidence or a supply-sequencing rule covers it"
+          },
+          {
+            "row": "F7 +5 V enable present before the analog rails (startup, R-ADG)",
+            "previous_adg5412f": "PASS",
+            "tmux7412f": "PASS",
+            "tmux7412f_basis": "Fail-safe logic: logic before supplies, switch OFF, logic to +44 V (index 32, 9.3.2.3)",
+            "s2b_disposition": "Unchanged"
+          },
+          {
+            "row": "F8 rail lift: a patched input must not energize an unpowered rail (bare-clamp rejection)",
+            "previous_adg5412f": "PASS",
+            "tmux7412f": "PASS",
+            "tmux7412f_basis": "Same statement: source ESD allows +/-60 V regardless of supply; powered-off protection prevents back-powering (index 32, 9.3.2.2 and 9.3.2.5)",
+            "s2b_disposition": "Unchanged"
+          },
+          {
+            "row": "F9 several inputs patched at once in one quad (ADG-1/ADG-3 packing)",
+            "previous_adg5412f": "PASS",
+            "tmux7412f": "UNKNOWN",
+            "tmux7412f_basis": "No published statement on undisturbed channels; only the 85 V source-to-drain stress rule (index 31) and -100 dB AC crosstalk. FF is shared across the four sources",
+            "s2b_disposition": "Avoided by ADG-2 one-per-input packing; the row stays UNKNOWN for any quad packing"
+          },
+          {
+            "row": "F10 drain leakage and RON on pitch-sensitive inputs",
+            "previous_adg5412f": "PASS",
+            "tmux7412f": "PASS",
+            "tmux7412f_basis": "Conditional: inside the usable signal range VSS .. VDD - 3 V (-12 .. +9 V at nominal rails) into the 100 k R_PD drain load. RON 14 ohm max and ID(ON) +/-2 nA max at 85 C exist in the +/-15 V +/-10 % table for VS = -10..+10 V (7.6); RON 15 ohm and RFLAT 0.5 ohm max at 85 C exist in the 12 V single-supply table for VS = 0..7.8 V (7.8, VSS = 0 V). Neither is a +/-12 V dual-supply guarantee. Above VDD - 3 V RON rises exponentially (9.3.4): UNKNOWN there",
+            "s2b_disposition": "Conditional PASS inside the usable signal range into the 100 k R_PD load; UNKNOWN above VDD - 3 V. The 1V/OCT inputs are checked against signals.pitch_linear_range_V in usable_signal_range"
+          },
+          {
+            "row": "F11 land and pin map (drop-in)",
+            "previous_adg5412f": "PASS",
+            "tmux7412f": "FAIL",
+            "tmux7412f_basis": "Orderable only as WQFN-16 RRP (addendum index 40); the TSSOP-16 PW package with the ADG pin order is marked Preview. New land and pin map: S1 = pad 1, D1 = pad 16, SEL1 = pad 15",
+            "s2b_disposition": "Resolved in this candidate by the TI RRP0016A land and the WQFN pin map"
+          }
+        ],
+        "usable_signal_range": {
+          "range_V": [
+            -12,
+            9
+          ],
+          "basis": "VSS .. VDD - 3 V at nominal +/-12 V rails (9.3.4). Guaranteed only with VSS = 0 V: 7.8 gives RON <= 15 ohm (-40..85 C) for VS = 0..7.8 V at VDD = 10.8..13.2 V. At +/-12 V dual supply the limit is an extrapolation, not a table condition. The fault detector opens the switch beyond VDD + VT / VSS - VT, VT 0.7 V typical at 25 C only (7.5)",
+          "roles": [
+            {
+              "role": "audio inputs (filter IN, mix4 1-4, mix5 1-5, wavefolder IN, manual_ab A/B, mult IN, sample_hold IN, offset IN)",
+              "inputs_per_unit": 37,
+              "normal_swing_V": [
+                -5,
+                5
+              ],
+              "class": "audio_nominal_V / mult nominal linear range",
+              "verdict": "PASS",
+              "margin_V": 4
+            },
+            {
+              "role": "bipolar CV inputs (envelope RISE/FALL, filter FREQ/RES/GAIN, mix4 ATTEN, offset OFFSET, oscillator FM/PWM, wavefolder FOLD/BIAS)",
+              "inputs_per_unit": 43,
+              "normal_swing_V": [
+                -5,
+                5
+              ],
+              "class": "bipolar_cv_nominal_V",
+              "verdict": "PASS",
+              "margin_V": 4
+            },
+            {
+              "role": "gate and trigger inputs (envelope SIG, oscillator SYNC, sample_hold TRIGGER)",
+              "inputs_per_unit": 13,
+              "normal_swing_V": [
+                0,
+                5
+              ],
+              "class": "gate_output_nominal_V (project gate level)",
+              "verdict": "PASS",
+              "margin_V": 4,
+              "note": "External gates above +9 V (common 0..10 V sources) enter the rising-RON region; into the high-impedance comparator path this is UNKNOWN, not FAIL"
+            },
+            {
+              "role": "pitch input (oscillator 1V/OCT)",
+              "inputs_per_unit": 5,
+              "normal_swing_V": [
+                -5,
+                8
+              ],
+              "class": "pitch_linear_range_V (USER DECISION 2026-11-01 13:41Z (decision card): option A1 of the phase-21 pitch-range study. Linear passing range of the 1V/OCT inputs only; calibrated accuracy stays limited to calibration.pitch_tracking_scope.)",
+              "verdict": "PASS",
+              "margin_V": 0.53,
+              "basis": {
+                "nominal_flat_top_V": 9.0,
+                "required_low_V": 11.53,
+                "low_band_flat_top_V": 8.53,
+                "rail_band_source": "design/power/supply-architecture-input.json source_requirement.required_load_voltage_magnitude_V +12V (requirement contract; source NOT SELECTED)"
+              },
+              "note": "Verdict covers signal passing only. The top of the declared range is compared with VDD - 3 V at the required +12V minimum; that limit is guaranteed only at VSS = 0 V (7.8) and extrapolated at +/-12 V. The bottom lies in the flat region down to VSS. Downstream: OPA4197 VCM (V-) - 0.1 .. (V+) + 0.1 V is guaranteed; its input-stage transition (V+) - 3 .. (V+) - 1.5 V has no CMRR limit, and the declared top stays below it at that minimum. Accuracy is a separate gate: calibration scope stays 0..5 V at 25 C, and the BAT54S clamp reverse leakage has only a 25 C maximum (2 uA at 25 V; Fig. 2 typical rises steeply with temperature), so the clamp-leakage term over the declared range and temperature is UNKNOWN"
+            }
+          ]
+        },
+        "review_corrections": [
+          "Phase 20: F1, F3, F6 and F10 revised after the independent review of 2026-11-01",
+          "Phase 22: signals.pitch_linear_range_V = [-5, 8] added as PROPOSED option A1 pending the user's answer; the 1V/OCT role row changes from FLAG to a computed verdict; the VDD - 3 V wording states the 7.8 guarantee at VSS = 0 V and the extrapolation at +/-12 V",
+          "Phase 25: signals.pitch_linear_range_status changed from PROPOSED to the user decision of 2026-11-01 13:41Z (A1, -5..+8 V); the range itself is unchanged"
+        ]
+      }
     },
     {
       "id": "high_impedance_input",
@@ -289,14 +458,44 @@
       "notes": [
         "100 kohm nominal at drain; switch on resistance adds series error. No independent 10 kohm pot may load the jack.",
         "Clamp leakage and input current, especially hot, remain part of the input error budget.",
-        "Nominal accuracy limited to ±5 V; ±12 V is a continuous survival requirement, not a linear input range."
+        "Nominal accuracy limited to ±5 V; ±12 V is a continuous survival requirement, not a linear input range.",
+        "Variant precision (UNADOPTED S2b candidate, phases 24-25): D = BAV199,215 (clamp_diode_ll), a low-leakage series pair with the BAT54S pin order, plus D_BOOT = BAT54S,215 across the follower (pins 1 and 2 SENSE, pin 3 BUFFERED), on the five 1V/OCT inputs, MULT IN and S&H IN. D_BOOT holds SENSE within the BAT54S VF of the follower output, which limits at the rail, so SENSE <= V+ + 0.5 V holds beyond the declared fault range (design/readiness/s2b-protection-map.json precision_input_clamp)."
       ],
       "uses": [
         "input_fault_switch"
       ],
       "verification": [
         "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
-      ]
+      ],
+      "variants": {
+        "precision": {
+          "status": "UNADOPTED S2b candidate (phase 24; bootstrap clamp phase 25); canonical adoption needs a separate approval",
+          "part_overrides": {
+            "D": {
+              "part_id": "clamp_diode_ll"
+            }
+          },
+          "applies_to": [
+            "oscillator 1V (1V/OCT pitch, 5 per unit)",
+            "mult IN (2 per unit)",
+            "sample_hold IN (2 per unit)"
+          ],
+          "reason": "BAT54S reverse current has only a 25 C maximum (2 uA at 25 V); BAV199 has a 25 C maximum of 5 nA and a Fig. 4 maximum curve to 150 C (mirror-sourced, UNSOURCED until a manufacturer-hosted copy is compared).",
+          "keys_unchanged": "Base part keys, nets, ordinals and Role attributes are those of the base cell; D changes identity and D_BOOT is added.",
+          "added_parts": [
+            {
+              "ref": "D_BOOT",
+              "part_id": "clamp_diode",
+              "terminals": {
+                "A": "SENSE",
+                "K": "SENSE",
+                "MID": "BUFFERED"
+              }
+            }
+          ],
+          "added_parts_note": "D_BOOT: BAT54S,215 with pins 1 and 2 on SENSE and pin 3 on BUFFERED, an antiparallel Schottky pair across the unity follower. When SENSE goes beyond a rail the follower output limits at that rail (no phase reversal, OPA4197/OPA4196 7.3.3) and SENSE stays within VF of it. In normal operation each diode sees only the follower offset. Added parts are numbered after every existing part."
+        }
+      }
     },
     {
       "id": "summing_node_input",

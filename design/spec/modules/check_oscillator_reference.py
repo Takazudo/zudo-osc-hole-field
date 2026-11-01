@@ -1,5 +1,6 @@
 """Source-derived normal-operation reference loads; no short-current guarantee."""
 import json
+import re
 from collections import Counter
 from .oscillator import ROOT, family, octave_family, specification
 from .io_partition import AMP_MAPS
@@ -15,6 +16,11 @@ def build(f=None):
     evidence=json.loads((ROOT/'.claude/skills/component-ti-opa4197ipwr/facts.json').read_text())
     bias_fact=next(x for x in evidence['facts'] if x['fact_id']=='fact-op-precision-input-bias-current-full-temperature')
     assert bias_fact['unit']=='nA' and c['input_bias_bound_A']>=bias_fact['value']['maximum']*1e-9-1e-20,'reference bias bound is below the retained exact-package maximum'
+    soic=ROOT/'.claude/skills/component-ti-opa4197idr/facts.json'
+    if soic.exists():
+        # UNADOPTED option-B candidate: the SOIC-14 owner carries its own bound.
+        soic_fact=next(x for x in json.loads(soic.read_text())['facts'] if x['fact_id']=='fact-op-precision-d-input-bias-current-full-temperature')
+        assert soic_fact['unit']=='nA' and c['input_bias_bound_A']>=soic_fact['value']['maximum']*1e-9-1e-20,'reference bias bound is below the SOIC-14 maximum'
     v=c['reference_abs_max_V']; rail=c['supply_abs_max_V']; tol=c['fixed_resistance_tolerance_fraction']; bias=c['input_bias_bound_A']*1000
     receiver=c['nonprecision_receiver_current_allowance_A']*1000
     assert c['driver_limit_mA']==2 and c['maximum_panel_pots_per_pair']==6
@@ -48,18 +54,23 @@ def build(f=None):
                     loads.append({'key':p.key,'kind':'panel pot' if panel else 'trim','nominal_ohm':resistance,'resistance_tolerance_fraction':t,'wiper_bound_mA':wiper,'maximum_mA':current})
                 elif p.prefix.startswith('R'):
                     resistance=number(p.value); voltage=v+rail
+                    tap=p.pins['2']
+                    # R-exact candidate series elements extend one fixed branch.
+                    while re.search(r'_SER\d+$',tap or ''):
+                        q=next(q for q in f.parts if q.prefix.startswith('R') and q.pins.get('1')==tap)
+                        resistance+=number(q.value);tap=q.pins['2']
                     if p.key in dividers:
                         lower=parts[dividers[p.key]]
-                        assert set(lower.pins.values())=={p.pins['2'],'AGND'}
+                        assert set(lower.pins.values())=={tap,'AGND'}
                         resistance+=number(lower.value);voltage=v
                     loads.append({'key':p.key,'kind':'fixed branch','maximum_mA':voltage/(resistance*(1-tol))*1000+receiver})
-                elif p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) and p.unit in range(1,5):
+                elif p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')) and p.unit in range(1,5):
                     out,minus,plus=AMP_MAPS[p.unit-1];assert p.pins[plus]==net
-                    loads.append({'key':p.key,'kind':'input bias','maximum_mA':bias if p.symbol.endswith('OPA4197IPWR') else receiver})
+                    loads.append({'key':p.key,'kind':'input bias','maximum_mA':bias if p.symbol.endswith(('OPA4197IPWR','OPA4197IDR')) else receiver})
                 else:raise ValueError(f'unclassified reference load {p.key}')
             assert loads,f'missing local fanout {net}'
             assert pots<=c['maximum_panel_pots_per_pair'],'panel fanout exceeded'
-            driver=next(p for p in f.parts if p.symbol.endswith('OPA4197IPWR') and p.unit in range(1,5) and p.pins[AMP_MAPS[p.unit-1][0]]==net+'_DRIVE')
+            driver=next(p for p in f.parts if p.symbol.endswith(('OPA4197IPWR','OPA4197IDR')) and p.unit in range(1,5) and p.pins[AMP_MAPS[p.unit-1][0]]==net+'_DRIVE')
             out,minus,plus=AMP_MAPS[driver.unit-1]
             assert driver.pins[plus]=='OSC_REF'+pol and driver.pins[minus]==net+'_FB'
             for suffix,value in [('ISO',c['isolation_ohm']),('FB',c['feedback_ohm']),('FAST',c['compensation_F'])]:
@@ -73,7 +84,7 @@ def build(f=None):
     for p in f.parts:
         for pin,net in p.pins.items():
             if net not in ('OSC_REF5','OSC_REFN5'):continue
-            assert p.symbol.endswith('OPA4197IPWR') and p.unit in range(1,5) and pin==AMP_MAPS[p.unit-1][2],f'raw source loaded by {p.key}'
+            assert p.symbol.endswith(('OPA4197IPWR','OPA4197IDR')) and p.unit in range(1,5) and pin==AMP_MAPS[p.unit-1][2],f'raw source loaded by {p.key}'
     source=[]
     for pol in ('5','N5'):
         net='OSC_REF'+pol;loads=[]
@@ -98,7 +109,7 @@ def build(f=None):
     attribution=[]
     for inst in specification()[1][:5]:
         for p in f.parts:
-            if p.symbol.endswith('OPA4197IPWR') and p.unit==5:
+            if p.symbol.endswith(('OPA4197IPWR','OPA4197IDR')) and p.unit==5:
                 caps=[q for q in f.parts if q.attributes.get('Decouples')==p.key.rsplit('.',1)[0]]
                 assert len(caps)==2 and {n for q in caps for n in q.pins.values()}=={'+12V','-12V','AGND'}
                 attribution.append({'ref':designator(p,inst),'supply_pins':p.pins,'bypass_refs':[designator(q,inst) for q in caps],'bypass_F_each':1e-7})

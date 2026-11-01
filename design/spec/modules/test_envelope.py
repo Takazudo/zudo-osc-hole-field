@@ -60,10 +60,10 @@ class EnvelopeContract(unittest.TestCase):
   names=[p.key for p in self.f.parts];self.assertEqual(len(names),len(set(names)))
  def test_values_and_output_scaling(self):
   roles={p.attributes.get('Role'):p for p in self.f.parts}
-  self.assertEqual(roles['envelope:R_BIP_PLUS_TOP'].value,'64 kΩ')
+  self.assertEqual(roles['envelope:R_BIP_PLUS_TOP'].value,'40 kΩ')
   self.assertAlmostEqual((1+100/100+100/400)*80/(64+80),1.25)
   self.assertEqual(roles['envelope:R_BIP_REF'].value,'100 kΩ')
-  self.assertEqual(roles['envelope:R_FLOOR_TOP'].value,'79 kΩ')
+  self.assertEqual(roles['envelope:R_FLOOR_TOP'].value,'47 kΩ')
   self.assertEqual(roles['envelope:R_FLOOR_BOTTOM'].value,'22 kΩ')
   self.assertAlmostEqual((5*22/101*101-5)/100-1,.05)
   self.assertAlmostEqual((9*100+5)/101-1,804/101)

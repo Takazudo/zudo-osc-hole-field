@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""R-exact candidate identities and per-role error table for the 14 non-stocked precision values.
+"""R-exact candidate identities and per-role error table for the 15 R-exact role rows.
 
 Inputs: retained read-only bytes in .circuit-cache/sources/readiness-20261031/ (git-ignored):
 jlc/<MPN>.json JLC search responses and spec/<MPN>.pdf Yageo spec sheets, retrieved
@@ -70,7 +70,7 @@ ROLES = {
         lambda v: 12 / v['R'] * 1e6, {'R': [1.2e6]}, {'R': [('1M', 1e6), ('200K', 200e3)]}, 5, 'uA', 'series'),
     'oscillator:R_PWM_OFFSET': (
         lambda v: 5 * v['FB'] / v['OFF'], {'FB': [72e3], 'OFF': [1.8e6]},
-        {'FB': [('40K', 40e3), ('32K', 32e3)], 'OFF': [('1M', 1e6), ('820K', 820e3)]}, 5, 'V', 'series'),
+        {'FB': [('40K', 40e3), ('32K', 32e3)], 'OFF': [('1M', 1e6), ('470K', 470e3), ('330K', 330e3)]}, 5, 'V', 'series'),
     'oscillator:R_PITCH_FINE': (
         lambda v: 5 * v['PITCH'] / v['FINE'], {'PITCH': [100e3], 'FINE': [5e6]},
         {'PITCH': [('100K', 100e3)], 'FINE': [('1M', 1e6)] * 5}, 5, 'V', 'series'),

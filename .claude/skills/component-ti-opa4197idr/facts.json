@@ -1,0 +1,338 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-op-precision-d-manufacturer",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Texas Instruments",
+      "unit": "NONE",
+      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
+      "locator": "src-op-precision-d-datasheet: title block or OSC-ES-1 row parts[id=op_precision].manufacturer",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-project-selection",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-jlc",
+      "class": "PROJECT_STATE",
+      "value": "UNADOPTED candidate: replaces the precision role package TSSOP-14 by SOIC-14 (phase-15 study); not in parts-shortlist.json",
+      "unit": "NONE",
+      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
+      "locator": "Identity section: JSON row componentModelEn=OPA4197IDR; candidate status from design/readiness/cost-reduction-study.json row opamps.precision_alternatives[mpn=OPA4197IDR]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-orderable-identity",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Texas Instruments",
+        "mpn": "OPA4197IDR",
+        "package": "SOIC-14"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
+      "locator": "Section/table audit: src-op-precision-d-datasheet physical PDF index 34, Addendum-Page 2, package option addendum row OPA4197IDR",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-pinout",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 OUT A -> pad 1; pin 2 IN- A -> pad 2; pin 3 IN+ A -> pad 3; pin 4 V+ -> pad 4; pin 5 IN+ B -> pad 5; pin 6 IN- B -> pad 6; pin 7 OUT B -> pad 7; pin 8 OUT C -> pad 8; pin 9 IN- C -> pad 9; pin 10 IN+ C -> pad 10; pin 11 V- -> pad 11; pin 12 IN+ D -> pad 12; pin 13 IN- D -> pad 13; pin 14 OUT D -> pad 14",
+      "unit": "NONE",
+      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
+      "locator": "src-op-precision-d-datasheet: Pin configuration \"D and PW Packages: OPA4197\", physical PDF index 3, printed 4",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-quiescent-current",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "typical_at_25C": 1.0,
+        "maximum_at_25C": 1.3,
+        "maximum_full_temperature": 1.5
+      },
+      "unit": "mA per amplifier",
+      "conditions": "IO = 0 A; TA = 25 C for typ/max at 25 C; TA = -40..125 C for full-temperature maximum.",
+      "locator": "src-op-precision-d-datasheet: PDF page index 7, printed page 8, Section 6.7, POWER SUPPLY, IQ row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-input-bias-current",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "typical_at_25C": 5,
+        "maximum_at_25C": 20
+      },
+      "unit": "pA",
+      "conditions": "TA = 25 C; datasheet electrical characteristics at VS = +/-18 V.",
+      "locator": "src-op-precision-d-datasheet: PDF page index 6, printed page 7, Section 6.7, INPUT BIAS CURRENT, IB row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-input-offset-voltage",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "typical_at_25C": 25,
+        "maximum_at_25C": 100
+      },
+      "unit": "uV",
+      "conditions": "VS = +/-18 V; TA = 25 C; VCM = VS/2, except the separate near-positive-rail row.",
+      "locator": "src-op-precision-d-datasheet: PDF page index 6, printed page 7, Section 6.7, OFFSET VOLTAGE, VOS row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-product-function",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies OPA4197IDR as the shortlisted precision device; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product family description only; no project application or electrical guarantee implied.",
+      "locator": "src-op-precision-d-datasheet: document title block and product description",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-procurement-status",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-jlc",
+      "class": "PROJECT_STATE",
+      "value": {
+        "lcsc": "C2058532",
+        "manufacturer": "Texas Instruments",
+        "mpn": "OPA4197IDR",
+        "variant": "Exact MPN and LCSC identity row; SOIC-14. Stock 6533 observed 2026-10-31 is a dated observation, not an allocation."
+      },
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
+      "locator": "Identity section: src-op-precision-d-jlc JSON row fields componentCode, stockCount and componentPrices",
+      "provenance": "DISTRIBUTOR-IDENTITY",
+      "verdict": "CONFIRMED - distributor identity only",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-mechanical-fit",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-study",
+      "class": "PROJECT_STATE",
+      "value": "SOIC-14 land shared with OPA4196IDR. Phase-15 courtyard-capacity trial: 85 of 89 placements fit; the 4 control-board placements collide with fixed control locality groups. Not physically checked.",
+      "unit": "NONE",
+      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
+      "locator": "Section/table audit: src-op-precision-d-shortlist: parts[id=op_precision].package; CAD receipt is provisional family geometry",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-output-stability",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-vendor-model",
+      "class": "PROJECT_STATE",
+      "value": {
+        "vendor_model_passes": 12,
+        "vendor_model_cases": 12,
+        "previous_ideal_diagnostic_failures": 6,
+        "previous_ideal_diagnostic_cases": 12,
+        "bench": "NOT RUN"
+      },
+      "unit": "NONE",
+      "conditions": "TI OPAx197 Final 1.3 generic core, PSpice mode in pinned KiCad 10.0.6 ngspice 44.2, 27 C, +/-12 V rails; fixed 100 ohm JACK feedback and 1 nF local feedback, two 499 ohm isolation resistors; +/-5 V steps and specified 12 load/cable cases. Model result only.",
+      "locator": "Section/table audit: src-op-precision-d-vendor-model OPAx197.LIB Model Usage Notes rows 1(a), 1(g), 1(n)-1(q), 2; design/reports/spice/precision-output-vendor.json cases/pass_count/fail_count",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-input-bias-current-full-temperature",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "maximum": 5
+      },
+      "unit": "nA",
+      "conditions": "TA = -40..125 C; Section 6.7 defaults VS = +/-4 V to +/-18 V, VCM = VOUT at midsupply, RLOAD = 10 kohm. The +/-15 nA subrow is PW package only and does not apply to D.",
+      "locator": "src-op-precision-d-datasheet: PDF page index 6, printed page 7, Section 6.7, INPUT BIAS CURRENT, IB full-temperature row (non-PW)",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-supply-absolute",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "dual_supply_V": 20,
+        "single_supply_V": 40
+      },
+      "unit": "V",
+      "conditions": "VS = (V+) - (V-); dual-supply maximum is +/-20 V, single-supply maximum 40 V, over operating free-air temperature. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-op-precision-d-datasheet: physical PDF p.4, printed p.5, section 6.1 Absolute Maximum Ratings, Supply voltage row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-input-absolute",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "common_mode_below_V_minus_V": -0.5,
+        "common_mode_above_V_plus_V": 0.5,
+        "differential_above_supply_span_V": 0.2,
+        "input_current_mA": 10
+      },
+      "unit": "V and mA",
+      "conditions": "Signal input pins: common-mode voltage (V-) - 0.5 V to (V+) + 0.5 V; differential (V+) - (V-) + 0.2 V; input current +/-10 mA. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-op-precision-d-datasheet: physical PDF p.4, printed p.5, section 6.1 Absolute Maximum Ratings, Signal input pins rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-supply-recommended",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-datasheet",
+      "class": "RECOMMENDED_OPERATION",
+      "value": {
+        "minimum_span_V": 4.5,
+        "minimum_dual_V": 2.25,
+        "maximum_span_V": 36,
+        "maximum_dual_V": 18
+      },
+      "unit": "V",
+      "conditions": "Recommended supply VS = (V+) - (V-): 4.5 V (+/-2.25 V) to 36 V (+/-18 V). No behaviour is specified below the minimum.",
+      "locator": "src-op-precision-d-datasheet: physical PDF p.4, printed p.5, section 6.3 Recommended Operating Conditions, Supply voltage row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-esd-steering",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Current-steering ESD diodes connect the input and output pins back to the internal power-supply lines, meeting at an absorption device or supply ESD cell; intended to stay inactive in normal operation. No forward voltage or in-circuit current rating is given.",
+      "unit": "NONE",
+      "conditions": "Manufacturer description of OPAx197 internal ESD structure (Electrical Overstress section). Structure only; it is not a guaranteed clamp level.",
+      "locator": "src-op-precision-d-datasheet: physical PDF p.24, printed p.25, section 7.3.7 Electrical Overstress and Figure 52",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-output-swing",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "no_load_max_mV": 25,
+        "rload_10k_max_mV": 125,
+        "rload_2k_max_mV": 500
+      },
+      "unit": "mV",
+      "conditions": "Voltage output swing from either rail, maximum, TA = 25 C, VS = +/-4 V to +/-18 V, RLOAD connected to VS/2. No temperature-range row.",
+      "locator": "Section/table audit: src-op-precision-d-datasheet physical PDF page index 7, printed p.8, section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, OUTPUT VO rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-assembly-allocation",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-study",
+      "class": "PROJECT_STATE",
+      "value": "UNSOURCED: factory stock allocation and assembly acceptance are not established by a search row",
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
+      "locator": "Section/table audit: src-op-precision-d-study JSON row opamps.precision_alternatives[mpn=OPA4197IDR].cost",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-input-common-mode-range",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "minimum_below_V_minus_V": -0.1,
+        "maximum_above_V_plus_V": 0.1
+      },
+      "unit": "V",
+      "conditions": "Operating common-mode voltage range VCM = (V-) - 0.1 V .. (V+) + 0.1 V, table header VS = +/-4 V to +/-18 V (8 V to 36 V), TA = 25 C; no separate full-temperature VCM row. At the project +/-12 V rails this is -12.1 .. +12.1 V nominal.",
+      "locator": "src-op-precision-d-datasheet: PDF page index 6, printed page 7, Section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, INPUT VOLTAGE, Common-mode voltage range row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-d-input-stage-transition",
+      "record_id": "rec-op-precision-d",
+      "source_id": "src-op-precision-d-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "cmrr_min_dB_low_region_full_temperature": 110,
+        "cmrr_min_dB_high_region_full_temperature": 80,
+        "low_region": "(V-) - 0.1 V < VCM < (V+) - 3 V",
+        "high_region": "(V+) - 1.5 V < VCM < (V+)",
+        "unspecified_region": "(V+) - 3 V < VCM < (V+) - 1.5 V"
+      },
+      "unit": "dB",
+      "conditions": "CMRR minima at VS = +/-18 V, TA = -40..125 C: 110 dB for (V-) - 0.1 V < VCM < (V+) - 3 V and 80 dB for (V+) - 1.5 V < VCM < (V+). The input-stage transition region (V+) - 3 V .. (V+) - 1.5 V has no table limit (\"See Typical Characteristics\"). Offset VOS is specified separately at VCM = (V+) - 1.5 V (+/-100 uV max at 25 C). Rows are at VS = +/-18 V, not +/-12 V.",
+      "locator": "src-op-precision-d-datasheet: PDF page index 6, printed page 7, Section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, INPUT VOLTAGE, CMRR rows; OFFSET VOLTAGE VOS rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

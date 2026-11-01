@@ -33,7 +33,7 @@ def region(part, family):
 
 
 def spare(part):
-    if part.symbol.endswith(('OPA4196IDR', 'OPA4197IPWR')) and part.unit in range(1,5):
+    if part.symbol.endswith(('OPA4196IDR', 'OPA4197IPWR', 'OPA4197IDR')) and part.unit in range(1,5):
         out, minus, plus = AMP_MAPS[part.unit-1]
         return part.pins[out] == part.pins[minus] and part.pins[plus] == 'AGND'
     if part.symbol.endswith('SN74HC14DR') and part.unit in range(1,7):
@@ -69,13 +69,13 @@ def refine(family):
         elif not attrs.get('Island'):
             attrs['Island'] = f'IO_CORE:${{SHEETNAME}}'
         p = replace(p, attributes=attrs)
-        if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','SN74HC14DR')):
+        if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR','SN74HC14DR')):
             groups[p.symbol].append(p)
         else:
             result.append(p)
     extra_ordinal = max((p.ordinal for p in family.parts if p.prefix == 'U'), default=0)
     for symbol, entries in groups.items():
-        is_amp = symbol.endswith(('OPA4196IDR','OPA4197IPWR'))
+        is_amp = symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR'))
         maps = AMP_MAPS if is_amp else SCHMITT_MAPS
         power_unit = len(maps)+1
         package_templates = [p for p in entries if p.unit == power_unit]
@@ -135,10 +135,10 @@ def refine(family):
         p = rows[-1]
         supply = {pin: net for q in rows for pin, net in q.pins.items()}
         sym = p.symbol.split(':')[-1]
-        rail_pins = {'OPA4196IDR':('4','11'),'OPA4197IPWR':('4','11'),
+        rail_pins = {'OPA4196IDR':('4','11'),'OPA4197IPWR':('4','11'),'OPA4197IDR':('4','11'),
                      'SN74HC14DR':('14',),'SN74HC00DR':('14',),'SN74HC74DR':('14',),
                      'CD74HC221M96':('16',),'REF5050AIDR':('2',),'LM393BIDR':('8','4'),
-                     'ADG5412FBRUZ':('13','4'),'LM13700M_NOPB':('11','6'),
+                     'ADG5412FBRUZ':('13','4'),'TMUX7412FRRPR':('11','2'),'TMUX6112PWR':('13','4'),'LM13700M_NOPB':('11','6'),
                      'AS3340D':('16','3'),'NOISE2':('1',),'LF398M_NOPB':('12','3')}[sym]
         for pin in rail_pins:
             rail = supply[pin]
@@ -183,15 +183,32 @@ def refine(family):
                                       'Island': 'IO_STAGE_OPTICAL:${SHEETNAME}'})
         optical.append(p)
     result_family = replace(result_family, parts=tuple(optical))
-    return result_family
+    return replace(result_family, parts=tuple(precision_package(p) for p in result_family.parts))
+
+
+def precision_package(part):
+    # UNADOPTED phase-16 candidate, control-board option B: precision packages
+    # outside the control region move to the pin-identical SOIC-14 OPA4197IDR;
+    # the four control-board packages keep TSSOP-14 OPA4197IPWR.
+    if not part.symbol.endswith('OPA4197IPWR') or part.attributes.get('BoardRegion') == 'control':
+        return part
+    from design.spec.cells._builder import SHORTLIST, CATALOG, load_symbol
+    record = SHORTLIST['op_precision_d']
+    symbol = load_symbol(CATALOG[record['mpn']])
+    footprint = symbol.body.split('(property "Footprint" "', 1)[1].split('"', 1)[0]
+    attrs = {**part.attributes, 'MPN': record['mpn'], 'Manufacturer': record['manufacturer'],
+             'LCSC': record.get('lcsc', '')}
+    return replace(part, symbol=symbol.lib_id, footprint=footprint,
+                   value=record['mpn'] if part.value == 'OPA4197IPWR' else part.value, attributes=attrs)
 
 
 def channel_signatures(family):
     """Electrical identity independent of physical channel pin allocation."""
     signatures=[]
     for p in family.parts:
-        maps=AMP_MAPS if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) else SCHMITT_MAPS if p.symbol.endswith('SN74HC14DR') else ()
+        maps=AMP_MAPS if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')) else SCHMITT_MAPS if p.symbol.endswith('SN74HC14DR') else ()
         if not maps or p.unit>len(maps) or spare(p):continue
-        signatures.append((p.symbol,p.attributes.get('LogicalCellKey') or p.key,
+        # The option-B SOIC-14 OPA4197IDR is pin-identical to OPA4197IPWR.
+        signatures.append((p.symbol.replace('OPA4197IDR','OPA4197IPWR'),p.attributes.get('LogicalCellKey') or p.key,
                            p.attributes.get('Role',''),tuple(p.pins[k] for k in maps[p.unit-1])))
     return sorted(signatures)
