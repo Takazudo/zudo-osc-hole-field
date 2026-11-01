@@ -5,15 +5,15 @@
  "predecessor_commit": "60c7c3ab78cba5e2fcd81973024894510e090cfb",
  "predecessor_tree": "ac352e97cd12719803e3115e7f43f40d90799067",
  "builds_on_record": "circuit/candidates/opa4197idr-rexact-20261031 (its source.patch is contained in this cumulative source.patch)",
- "source_patch_sha256": "5781b2153807d9500cbf0f4c645beaf82e90c23ab280641c64ae4603abc4439c",
- "changed_file_count": 263,
- "source_file_count": 98,
+ "source_patch_sha256": "b86e3b0986f239bd5d4fe02d10c0bf47d976931116406f7aadc7d5e9122b5bd6",
+ "changed_file_count": 264,
+ "source_file_count": 99,
  "retained_source_files": {
   "circuit/sources/ic-library/TMUX6112.pdf": "c0fab3135a4438048a759aa91b33480f95f01140885896e3bfa1202a9daa2ae1",
   "circuit/sources/ic-library/TMUX7412F.pdf": "7396d8a34f80b178a8b5c72272b5bb0eb7da7ad3182e7d3cd80d294fc32f26e5"
  },
  "retained_source_note": "The two TI PDFs are not in the patch; reproduce.sh copies them from the main repository .circuit-cache/sources and checks these hashes.",
- "successor_note": "Successor hashes are the phase-18 scratch-worktree tree after the reproduce.sh steps; generated files are not committed with this record.",
+ "successor_note": "Successor hashes are the phase-19 tree rebuilt from 60c7c3ab by reproduce.sh plus the phase-19 delta, then regen-all; generated files are not committed with this record.",
  "files": {
   ".claude/skills/component-spec-audit/references/direct-routing.json": {
    "kind": "source",
@@ -388,37 +388,37 @@
   "boards/osc-jack-right/sheets/envelope_E1_JR.kicad_sch": {
    "kind": "generated",
    "before_sha256": "7cc30f83fe98379c9604be28f717e2af42ce79d2bedaeb240560876b7ecec896",
-   "after_sha256": "15c2e428b2314a4d54598e367e0139058bbc0d4715cd5ee1dc9987ca79a22374"
+   "after_sha256": "698e17162d38776a6719dc0fbb2feabc147002c8b4de2ee4970676f4ea8c9d55"
   },
   "boards/osc-jack-right/sheets/envelope_E2_JR.kicad_sch": {
    "kind": "generated",
    "before_sha256": "ae3589018ffb2305a373003a75781b7d1cd2b8d13c55c4520ec6258642fdf148",
-   "after_sha256": "72d9672eabad6e6595eaeb00d0bbbde4a61f635a42920c421cd849c19aa49fbc"
+   "after_sha256": "3a18a1b0367f485b715a6f82ad03a18a573a1a1ede10db27c04c7cb21db7abef"
   },
   "boards/osc-jack-right/sheets/envelope_E3_JR.kicad_sch": {
    "kind": "generated",
    "before_sha256": "4e3062dc4cb4011eadf6cdb0e0c63e9967557df6bc2b182074498d5b03a3f3e7",
-   "after_sha256": "c550c0e10b93ad2e230e83e81044a66ed9270f8981af1f1f656e8dfe97915a15"
+   "after_sha256": "4e29ab1c74fa213ac1c69efc066442fd928208da1634221ee783b2e84be3ff8a"
   },
   "boards/osc-jack-right/sheets/envelope_E4_JR.kicad_sch": {
    "kind": "generated",
    "before_sha256": "5bb03ef5fc980b4178f73d6be3b26157baea8235b6e14bf71de366c96fbb14ae",
-   "after_sha256": "246083003fffe3ac2de52877cb61aabf59e52f783075b3070634a079c08d6381"
+   "after_sha256": "bdeb52e7c09f9d097261ed8fd978e863588f5b8858a6e81d31d9d02066e21dc8"
   },
   "boards/osc-jack-right/sheets/envelope_E5_JR.kicad_sch": {
    "kind": "generated",
    "before_sha256": "e56a0c361fdfc96a96015ab57a41002ee878954370105284748bb141c8c7417f",
-   "after_sha256": "942423d23d25583eecb139814a00b22fbe78d6a154ae1bdf3e3f0b84284da8a7"
+   "after_sha256": "0b73604719a3df0d56cdababdeef6fbbe12e385bb34309ccb00078ec27f61996"
   },
   "boards/osc-jack-right/sheets/envelope_E6_JR.kicad_sch": {
    "kind": "generated",
    "before_sha256": "f55f8996258fda83a96eb415f9bed5ab014b7a9de862f16bfe83c584955ada77",
-   "after_sha256": "bb389563c46cc14d0bb27ce17cdc0c3618a7f85ff371c9660dc04115334de143"
+   "after_sha256": "afd146c53f0477fd2d3f074e62acfc09129ef36cc99f26668fd5c1c9393099cd"
   },
   "boards/osc-jack-right/sheets/mix4_vca_M4A_JR.kicad_sch": {
    "kind": "generated",
    "before_sha256": "f5291da2eec9eaa356a12b7d8647bd32d6c8ea589f723b33dc8251c021d0a1b9",
-   "after_sha256": "ac35101051c4ef2f567c2e5b7604ba2a92dfe871a98a7f7337308c6ea74bd50c"
+   "after_sha256": "506ad9080a2652db0e2b48a3d2afa9ec252fdf05ef1554f21eb437532d276761"
   },
   "boards/osc-jack-right/sheets/mix4_vca_M4B_JR.kicad_sch": {
    "kind": "generated",
@@ -438,12 +438,12 @@
   "boards/osc-jack-right/sheets/offset_A02_JR.kicad_sch": {
    "kind": "generated",
    "before_sha256": "6dead4f895b6267ea4e4744068837fca44ec16511e2a1b872a27f70bf737f38c",
-   "after_sha256": "2ec9e2080f6cf833ba9b67a30929b7bf194a08c4d8cb0806b1a38b8a7c5c8614"
+   "after_sha256": "976ada58a7bb286b9491236d8348dedde4a4980f634cb60c33123e1a0448c38c"
   },
   "boards/osc-jack-right/sheets/offset_A03_JR.kicad_sch": {
    "kind": "generated",
    "before_sha256": "078cd0deda61f15a5e9553d7ff5f0e9e7d0619b1325ed617d61a0aca0ad48168",
-   "after_sha256": "04eac6c1c4fb61f5f231fd5d7f95986ca12609e5edf752be8f840a3f42d7f49f"
+   "after_sha256": "efb6d7355db97bce28c73c2a69af67ded149a7863f82ea90ba35734190306b4c"
   },
   "boards/osc-jack-right/sheets/offset_A04_JR.kicad_sch": {
    "kind": "generated",
@@ -458,7 +458,7 @@
   "boards/osc-jack-right/sheets/offset_A06_JR.kicad_sch": {
    "kind": "generated",
    "before_sha256": "ba96656fce45bcb91d88044205f1a45b513deb68fcabe7c71d635be672b876a9",
-   "after_sha256": "d2be616d9791855fa47f345ee3f0584bdb42b46cddb2a64501c205ad0cb7ef2e"
+   "after_sha256": "d15f1d281a99d0790c228d929ff57b0c9ba987edeb5db0d779bc54e342e7c3fc"
   },
   "boards/osc-jack-right/sheets/wavefolder_W1_JR.kicad_sch": {
    "kind": "generated",
@@ -513,32 +513,32 @@
   "design/boards/osc-jack-right.json": {
    "kind": "generated",
    "before_sha256": "316bd48de1b79bb8f1981dff53acd545f02f40c2df8ebedc7dae47114294e0a1",
-   "after_sha256": "acd43eddc9fd251e6a8eed4c706ffaa66ce0b93135ba515d7b6d36e2fd15470f"
+   "after_sha256": "ff099f153184ea005fe97be4ee67df4b42b287bb46d96486210c45e48b74f47d"
   },
   "design/partition/board-stack-candidate.svg": {
    "kind": "generated",
    "before_sha256": "846cd7903de21c1b593720c64ea485089d13d44f40fe36a8fdd6c0bbc6085a9b",
-   "after_sha256": "2a9e1b6c4a072a58c0e8fe52928aff049be42f567657518ccc0e1f8062dfa241"
+   "after_sha256": "03fd796f57b489fe3bacff8b38efb8bdf232c2eb18946d314dcb469077eae06c"
   },
-  "design/partition/candidate-slot-swaps.json": {
+  "design/partition/candidate-slot-pins.json": {
    "kind": "source",
    "before_sha256": null,
-   "after_sha256": "990e68efe6c43b6325f3cf36843f5fd3a719f34c990d8c284a01b6b140da0991"
+   "after_sha256": "b6e2253e789f44ad23d2bd6c86b8625aae526e33c6c5b08991fb27a1dc66f547"
   },
   "design/partition/floorplan-candidate.json": {
    "kind": "generated",
    "before_sha256": "913b1362bf927fc1b09a73f204c4b61230d49724f78c10c4c4c03f765720a597",
-   "after_sha256": "4ce9b84cdafa0b8dd0a33bbce9b4852601a942b2e6e7c960bd57dd3756349993"
+   "after_sha256": "167cb3be3f49e6dc9dc014eed4810f6a785dc3c14a9708b36d7b49dd8599d335"
   },
   "design/partition/orientation-oracle.json": {
    "kind": "generated",
    "before_sha256": "e7c3555d0d0921ff64b0744bbc738bd8668315334ba67a4a7b9eacd8dbddddd2",
-   "after_sha256": "7fe1ec83fce26ef879f49037f2570eb929b69b575cbfae98cbf8d7b6d264b5f5"
+   "after_sha256": "f55431a57947c3e679e542e40a52a6b42610fd3c49f7877acfb1643a6cfbc691"
   },
   "design/partition/partition.json": {
    "kind": "generated",
    "before_sha256": "d84b710ec5b6fe134ace159c4e3b4088c86f2cda658a5d386b23d9d540a48de1",
-   "after_sha256": "ee202a57b8f5f9922b0ce937ed2bef87074ae4f4439dca2ff269f1e149a75546"
+   "after_sha256": "e07df3f6916f962d48477e588f120c4ba5bd53035d57f5983cae1694e857ae21"
   },
   "design/power/fast-disconnect-candidate-report.json": {
    "kind": "generated",
@@ -633,7 +633,7 @@
   "design/reports/board-erc.json": {
    "kind": "generated",
    "before_sha256": "5579d5dcf7cb0a8da9ee75762a5196c0c9a98f47b8c1236e93e52004cb5114ac",
-   "after_sha256": "a41adc2f6b56bf1039041776491a44ddb37dbe7d51d194660d677e5740068e79"
+   "after_sha256": "0af7d921e30892d383eb0d535070fbb0e2d7dc6009f58004e85b225a1848d455"
   },
   "design/reports/board-net-tokens.json": {
    "kind": "generated",
@@ -648,7 +648,7 @@
   "design/reports/board-side-map.json": {
    "kind": "generated",
    "before_sha256": "42e4606d9f923dd1e397c2c0d0f137dfb1bcb37653a171baebf96a507343b506",
-   "after_sha256": "543cb55310801b6321bbae2d15a1a923868aa56cc47b2d0e873ff3d698064312"
+   "after_sha256": "5ac2cd3e7ffbc45e19f21492172aba99a820b6f621deebf17247c76b3b4fb447"
   },
   "design/reports/current/envelope.json": {
    "kind": "generated",
@@ -1093,7 +1093,7 @@
   "schematic/boards/osc-jack-right.net": {
    "kind": "generated",
    "before_sha256": "72c6107de18a75d4ff2583c8ef561dde0458f59beac5c7f13e7fc6fb19baf7cc",
-   "after_sha256": "e4344477755e3c17faaa523704cb98fddc3f8983f4bb62987658a609992fd180"
+   "after_sha256": "7515b498fd7ecff8b15b1586efa1abb4ec33f5a649f3568fd6441f37607ef571"
   },
   "schematic/cells/sheets/input_fault_switch.kicad_sch": {
    "kind": "generated",
@@ -1223,7 +1223,7 @@
   "scripts/checks/partition35_floorplan.py": {
    "kind": "source",
    "before_sha256": "6a6ee39bbb29f229152e6ed0b3f0cdffc567903272c1b9ba332476ad6a57b6b4",
-   "after_sha256": "3549d519ca3fc375f2ee6a6b4b2146fc0651774260f1bc0d6b1666d8d08131a8"
+   "after_sha256": "903526cacf901c9cca1b8cf989c90b81ff22d50d5b5abfc82dbf9d984060d893"
   },
   "scripts/checks/precision_output_cell.py": {
    "kind": "source",
@@ -1249,6 +1249,11 @@
    "kind": "source",
    "before_sha256": "074b410ddb014e4fa07d029ca1fb39a0abf7fc0df2800d260e6d015325d46c18",
    "after_sha256": "c38cf7e9fa0adc87ad7b195289d24ea3ddad1e2d041f2ba6f5227ab432f0fa2d"
+  },
+  "scripts/checks/test_mult_common_board.py": {
+   "kind": "source",
+   "before_sha256": "0d4bb59e272ff10870208b008f1ca72a04d4aa38aa484cf7e1bd1ca443cbebc4",
+   "after_sha256": "4cc3ac69de73bd17e8ac709ac44ccbbecbff7ef03d9d60b702b08ce85afca2c0"
   },
   "scripts/checks/test_precision_output_cell.py": {
    "kind": "source",
@@ -1330,5 +1335,7 @@
    "before_sha256": "9d34805993e9725551abd1b7df92c013e610c47254184ab610fb58d23d41d1cc",
    "after_sha256": "faf6d81be0e90f1eaada6bf4a5cbbe45504bc6a0025c81487eb3b1889b55554d"
   }
- }
+ },
+ "phase19_delta_patch_sha256": "aa79984526529c9bd457137a16439ac9ca7d79bcf7eb63954f1bf20d4f11894f",
+ "revision": "phase 19: RB4413 slot pin replaces the RB4413/RB4515 slot swap; stage38 planning-sum assertion follows the candidate worksheet"
 }

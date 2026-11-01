@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "status": "UNADOPTED CANDIDATE; check results of phase-18 scratch worktree runs 2026-11-01; not a validation",
+ "status": "UNADOPTED CANDIDATE; check results of scratch worktree runs 2026-11-01 (phase 18, revised phase 19); not a validation",
  "packing": {
   "decision": "ADG-2: one TMUX7412FRRPR per protected input (98 per unit); channels 2-4 tied to AGND",
   "basis": "TI SCDS404B 9.4.2 states only the faulted input turns off; FF is shared across four channels; no statement that undisturbed channels continue normally, so fault row F9 is UNKNOWN and quad packing (ADG-3) is not used"
@@ -48,11 +48,6 @@
    "detail": "6058 components (+72), 5165 nets; ERC 0 errors, 228 warnings match baseline; designator lock +12 +80 +72"
   },
   {
-   "step": "partition chain",
-   "status": "PASS",
-   "detail": "6056 physical rows, 473 crossings, 0 forbidden; K F 1437 / B 2100; JL B 596 / F 464; JR B 568 / F 463; fit remains OPEN"
-  },
-  {
    "step": "rail ledger / two-feed planning",
    "status": "PASS",
    "detail": "357 worksheet loads; selected +12V 1421.895 mA, -12V 1386.713 mA; computed minimum continuous +12V 1700->1600 mA, -12V 1600, +5V 300; minimum transient +12V 2000->1900"
@@ -77,46 +72,66 @@
    "detail": "72/72"
   },
   {
-   "step": "design/spec tests",
-   "status": "FAIL",
-   "detail": "137/138; wavefolder plot receipt fails as on the predecessor (matplotlib)"
-  },
-  {
-   "step": "scripts/checks tests",
-   "status": "FAIL",
-   "detail": "historical-stage bindings fail as on the predecessor (assembly_specification, connectivity_inventory, power_cleanup, family_reuse, mult_copper_plan, mult_substrate_comparison); mult_common_board failures 1->2; routing_placement_translations FAIL (new, see open item)"
-  },
-  {
-   "step": "test_ground_escape",
-   "status": "NOT RUN",
-   "detail": "shapely not installed"
-  },
-  {
    "step": "DRC, zone fill, #293 fill",
    "status": "NOT RUN",
    "detail": "not authorised for this phase"
   },
   {
-   "step": "independent reproduce.sh rebuild + verify_record.py --tree",
-   "status": "NOT RUN",
-   "detail": "time budget; the record was checked against the scratch tree it was cut from"
+   "step": "partition chain (phase 19, RB4413 slot pin)",
+   "status": "PASS",
+   "detail": "floorplan 0 errors; JR B 567 / F 464, JL B 596 / F 464, K F 1437 / B 2100; 153 JR packages moved vs phase 18, no other board; bypass maximum 2.535 mm; 473 crossings, 0 forbidden; fit remains OPEN"
+  },
+  {
+   "step": "scripts/checks/test_routing_placement_translations.py",
+   "status": "PASS",
+   "detail": "10/10; RB4413 at its recorded source slot; the pending translation is rejected only by connector JR-K-6-JR"
+  },
+  {
+   "step": "scripts/checks/test_mult_common_board.py",
+   "status": "FAIL",
+   "detail": "1 failure (test_deterministic_artifacts), the same test as canonical; planning-sum assertion follows the candidate worksheet 20.675 mA"
+  },
+  {
+   "step": "scripts/checks/test_ground_escape.py",
+   "status": "PASS",
+   "detail": "shapely 2.2.0 in a scratch venv; 4 PASS, 1 skipped (large ignored native inputs unavailable)"
+  },
+  {
+   "step": "scripts/checks historical-stage tests",
+   "status": "FAIL",
+   "detail": "assembly_specification (stage50 inventory.json binding) and connectivity_inventory (stage45 pad/netlist) PASS canonically; power_cleanup 6 F + 3 E vs canonical 1 F (U116 identity); family_reuse, mult_copper_plan, mult_substrate_comparison 1 failure each, the same tests as canonical"
+  },
+  {
+   "step": "scripts/checks/test_architecture_history.py",
+   "status": "PASS",
+   "detail": "with PYTHONPATH=scripts/checks; errors without it, as canonically"
+  },
+  {
+   "step": "design/spec tests",
+   "status": "FAIL",
+   "detail": "137/138; wavefolder plot receipt needs matplotlib (not installed)"
+  },
+  {
+   "step": "independent reproduce.sh rebuild from 60c7c3ab + verify_record.py --tree",
+   "status": "PASS",
+   "detail": "fresh worktree; 264/264 file hashes match, identical changed-file set; closing regen-master-reports.sh --check (includes regen-all --check) PASS on the independent tree"
+  },
+  {
+   "step": "phase-18 record independent rebuild + verify_record.py --tree",
+   "status": "PASS",
+   "detail": "263/263 file hashes matched before the phase-19 revision"
   }
  ],
  "open": [
   {
-   "item": "routing_placement_translations",
+   "item": "RB4413 native evidence after the reflow",
    "class": "technical uncertainty",
-   "detail": "WQFN reflow moves the JR packing: D4515 and R4507 overlap the issue189 jr-rb4413-edge-bridge expected source slot of RB4413 (285.34, 42.31 B.Cu), so the translation source is stale. No same-footprint swap restores the exact slot (R4507 sits at 283.74, 42.51). A TSSOP-sized courtyard reservation passed the test but failed the floorplan with 216 bypass supply-pad proximity errors and was reverted."
+   "detail": "The slot pin keeps the issue189 translation source current, but neighbouring JR parts moved; the native pilot clearance result does not transfer and native verification remains required at adoption."
   },
   {
    "item": "multi-channel fault behaviour (F9)",
    "class": "access/evidence gap",
    "detail": "TI does not state whether undisturbed channels keep operating during a fault on another channel; blocks ADG-3 quad packing."
-  },
-  {
-   "item": "PD-facing power contract keeps +12V 1700 mA",
-   "class": "user decision",
-   "detail": "Candidate supply-architecture input and ledger compute 1600 mA; design/architecture-278 power-contract text is unchanged; nothing is asked of PD."
   },
   {
    "item": "WQFN land, SEL-hold timing, mechanical fit",
@@ -132,6 +147,12 @@
    "item": "canonical adoption",
    "class": "explicit permission",
    "detail": "separate approval required"
+  }
+ ],
+ "decided": [
+  {
+   "item": "PD-facing +12V contract",
+   "resolution": "kept at 1700 mA (coordinator, phase 19); the candidate supply-architecture input computes 1600 mA internally"
   }
  ]
 }

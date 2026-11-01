@@ -2803,20 +2803,21 @@ index 42e599a7..2eb83e6f 100644
      "integrationRules": 2,
      "packages": 31
    }
-diff --git a/design/partition/candidate-slot-swaps.json b/design/partition/candidate-slot-swaps.json
+diff --git a/design/partition/candidate-slot-pins.json b/design/partition/candidate-slot-pins.json
 new file mode 100644
-index 00000000..84363d38
+index 00000000..542b484f
 --- /dev/null
-+++ b/design/partition/candidate-slot-swaps.json
-@@ -0,0 +1,11 @@
++++ b/design/partition/candidate-slot-pins.json
+@@ -0,0 +1,12 @@
 +{
 +  "schema_version": 1,
-+  "status": "UNADOPTED CANDIDATE (opa4197idr-rexact-20261031); source geometry only",
-+  "swaps": [
++  "status": "UNADOPTED CANDIDATE (s2b-tmux-20261101); source geometry only",
++  "pins": [
 +    {
-+      "refs": ["RB4413", "RB4515"],
++      "ref": "RB4413",
 +      "board": "JR",
-+      "reason": "The SOIC-14 OPA4197IDR reflow put RB4515 into the slot that issue189 jr-rb4413-edge-bridge evidence binds to RB4413. Swapping the two R0603 slots restores RB4413 at its recorded source position."
++      "source": "circuit/routing/issue189/jr-rb4413-edge-bridge/pending-source-translation.json",
++      "reason": "The SOIC-14 and WQFN-16 reflows of the jack boards packed other parts into the slot that issue189 jr-rb4413-edge-bridge native evidence (pilot37988525124) binds to RB4413. The floorplan holds RB4413 at that recorded source slot and reserves the union of the slot and its pending 0.2 mm translation, so the reflow packs every other part around it and the recorded translation source stays current. Neighbouring parts moved, so the native pilot's clearance result does not transfer; native verification remains required at adoption."
 +    }
 +  ]
 +}
@@ -5658,27 +5659,40 @@ index 32f42b4a..5d4cfdb1 100644
                  if p.pins[minus] != p.pins[output]:sensitive.add(netname(p.pins[minus]))
      for p in packages.values():
 diff --git a/scripts/checks/partition35_floorplan.py b/scripts/checks/partition35_floorplan.py
-index b22d6f13..e9f6ce4d 100644
+index b22d6f13..7595bee5 100644
 --- a/scripts/checks/partition35_floorplan.py
 +++ b/scripts/checks/partition35_floorplan.py
-@@ -225,6 +225,17 @@ def build():
-     debounce_source=json.loads((ROOT/'design/partition/control-debounce-locality.json').read_text())
-     placements,control_debounce=apply_debounce_locality(placements,io,source,connector,lock,shapes,debounce_source,optical_source)
-     for row in placements:row['kicad_orientation_deg']=((180 if row['side']=='B.Cu' else 0)-row['rotation_deg'])%360
-+    swaps=ROOT/'design/partition/candidate-slot-swaps.json'
-+    if swaps.exists():
-+        # UNADOPTED candidate: exchange the slots of two same-footprint movable parts.
-+        footprint={p['ref']:p['footprint'] for p in parts}
-+        for swap in json.loads(swaps.read_text())['swaps']:
-+            a,b=(next(i for i,row in enumerate(placements) if row['ref']==ref) for ref in swap['refs'])
-+            if (placements[a]['fixed'] or placements[b]['fixed'] or {placements[a]['board'],placements[b]['board']}!={swap['board']}
-+                    or footprint[swap['refs'][0]]!=footprint[swap['refs'][1]]):
-+                raise ValueError('candidate slot swap out of scope: '+'/'.join(swap['refs']))
-+            for key in ('x_mm','y_mm','rotation_deg','side','courtyard_mm','kicad_orientation_deg'):
-+                placements[a][key],placements[b][key]=placements[b][key],placements[a][key]
-     from scripts.checks.routing_placement_translations import apply_translations
-     placements=apply_translations(placements,source,json.loads((ROOT/'design/partition/routing-placement-translations.json').read_text()),headers=connector['headers'])
-     if Counter(p['ref'] for p in placements)!=Counter(p['ref'] for p in parts):errors.append('package roster mismatch')
+@@ -136,6 +136,13 @@ def build():
+     for p in parts:
+         if p['footprint'] not in shapes:shapes[p['footprint']]=footprint_geometry(ROOT/'footprints/kicad/zudo-osc-hole-field.pretty'/(p['footprint'].split(':')[1]+'.kicad_mod'))['courtyard_bbox_mm']
+     placements=[];errors=[];grids={};available={}
++    pinned={}
++    pin_file=ROOT/'design/partition/candidate-slot-pins.json'
++    if pin_file.exists():
++        # UNADOPTED candidate: keep a movable jack resistor, and its pending translation target,
++        # on the slot that retained native routing evidence binds; the reflow packs around it.
++        for pin in json.loads(pin_file.read_text())['pins']:
++            pinned[pin['ref']]=next(c for c in json.loads((ROOT/pin['source']).read_text())['translations'] if c['ref']==pin['ref'])
+     for board in (*JACK_BOARDS,'P','K'):
+         spec=source['boards'][board]
+         for side in ('F.Cu','B.Cu'):
+@@ -171,6 +178,16 @@ def build():
+                 if h['board']==board:
+                     for net in h['pin_map'].values():
+                         if net not in (None,'NC'):anchors[net].append(tuple(h['center_mm']))
++            for ref,change in pinned.items():
++                row=change['expected_source']
++                if row['board']!=board:continue
++                if ref not in {p['ref'] for p in free}:raise ValueError('candidate slot pin out of scope: '+ref)
++                dx,dy=change['delta_mm'];c=row['courtyard_mm']
++                grids[board,row['side']].fill([min(c[0],c[0]+dx),min(c[1],c[1]+dy),max(c[2],c[2]+dx),max(c[3],c[3]+dy)])
++                for net in pin_nets[ref].values():
++                    if net and net not in ('AGND','+12V','-12V','+5V'):anchors[net].append((row['x_mm'],row['y_mm']))
++                placements.append({k:v for k,v in row.items() if k!='kicad_orientation_deg'})
++                free=[p for p in free if p['ref']!=ref]
+             homes=defaultdict(list)
+             for p in parts:
+                 if board_for(p)==board and p['panel_uid']:homes[p['instance']].append((lock[p['panel_uid']]['x_mm'],lock[p['panel_uid']]['y_mm']))
 diff --git a/scripts/checks/precision_output_cell.py b/scripts/checks/precision_output_cell.py
 index e10a64b1..7df1d3e1 100644
 --- a/scripts/checks/precision_output_cell.py
@@ -5771,6 +5785,20 @@ index 28c0e49f..2ef671e6 100644
          historical = report['historical_issue60_increment']
          self.assertEqual(historical['package_counts'], {'OPA4196IDR':4,'OPA4197IPWR':2})
          self.assertEqual(historical['planning_quiescent_delta_mA']['+12V'], 16)
+diff --git a/scripts/checks/test_mult_common_board.py b/scripts/checks/test_mult_common_board.py
+index 79d4d8ae..6a497ca2 100644
+--- a/scripts/checks/test_mult_common_board.py
++++ b/scripts/checks/test_mult_common_board.py
+@@ -66,7 +66,8 @@ class MultCommon(unittest.TestCase):
+     def test_power_and_scope_counts(self):
+         current=json.loads((ROOT/'design/reports/current/mult.json').read_text())
+         self.assertEqual(self.p['current_report'],current)
+-        self.assertEqual(self.p['return_planning_sum_mA'],21.575);self.assertIsNone(self.p['return_guaranteed_mA'])
++        # UNADOPTED S2b candidate: TMUX7412F loads replace ADG5412F; stage38 README's 21.575 is the canonical worksheet.
++        self.assertEqual(self.p['return_planning_sum_mA'],20.675);self.assertIsNone(self.p['return_guaranteed_mA'])
+         n=self.p['counts'];self.assertEqual(n['populated_candidate_packages_each_including_header'],len(self.p['packages_B1'])+1)
+         self.assertEqual(n['two_mult_main_boards'],2);self.assertEqual(n['main_unique_designs'],1)
+         self.assertEqual(n['header_ends_including_distribution'],2*n['power_cables'])
 diff --git a/scripts/checks/test_precision_output_cell.py b/scripts/checks/test_precision_output_cell.py
 index 4c002688..c95630dc 100644
 --- a/scripts/checks/test_precision_output_cell.py
