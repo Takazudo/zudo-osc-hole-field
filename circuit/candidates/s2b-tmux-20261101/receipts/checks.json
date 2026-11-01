@@ -1,0 +1,137 @@
+{
+ "schema_version": 1,
+ "status": "UNADOPTED CANDIDATE; check results of phase-18 scratch worktree runs 2026-11-01; not a validation",
+ "packing": {
+  "decision": "ADG-2: one TMUX7412FRRPR per protected input (98 per unit); channels 2-4 tied to AGND",
+  "basis": "TI SCDS404B 9.4.2 states only the faulted input turns off; FF is shared across four channels; no statement that undisturbed channels continue normally, so fault row F9 is UNKNOWN and quad packing (ADG-3) is not used"
+ },
+ "package_result": {
+  "TMUX7412FRRPR": 98,
+  "TMUX6112PWR": 12,
+  "ADG5412FBRUZ": 0,
+  "BAT54S,215 (SEL hold)": 36,
+  "RC0603FR-07100KL (SEL hold)": 36
+ },
+ "designators": {
+  "added_over_predecessor_record": 72,
+  "existing_rows_moved": 0
+ },
+ "steps": [
+  {
+   "step": "apply cumulative source.patch to 60c7c3ab (clean worktree)",
+   "status": "PASS",
+   "detail": "98 source files byte-identical to scratch tree; build_s2b_switch_assets.py --check PASS"
+  },
+  {
+   "step": "libgen regen + check_lib",
+   "status": "PASS",
+   "detail": "99 symbols, 47 footprints, 118 receipts"
+  },
+  {
+   "step": "check_ic_evidence",
+   "status": "PASS",
+   "detail": "41/41"
+  },
+  {
+   "step": "zudo-circuit-doc validate / generate",
+   "status": "PASS",
+   "detail": "71 lines"
+  },
+  {
+   "step": "check_catalogue_publication",
+   "status": "PASS",
+   "detail": "published 58, blocked 10, excluded 3"
+  },
+  {
+   "step": "master netlist export + audit_master.py",
+   "status": "PASS",
+   "detail": "6058 components (+72), 5165 nets; ERC 0 errors, 228 warnings match baseline; designator lock +12 +80 +72"
+  },
+  {
+   "step": "partition chain",
+   "status": "PASS",
+   "detail": "6056 physical rows, 473 crossings, 0 forbidden; K F 1437 / B 2100; JL B 596 / F 464; JR B 568 / F 463; fit remains OPEN"
+  },
+  {
+   "step": "rail ledger / two-feed planning",
+   "status": "PASS",
+   "detail": "357 worksheet loads; selected +12V 1421.895 mA, -12V 1386.713 mA; computed minimum continuous +12V 1700->1600 mA, -12V 1600, +5V 300; minimum transient +12V 2000->1900"
+  },
+  {
+   "step": "envelope, wavefolder, manual_ab spice reruns",
+   "status": "PASS"
+  },
+  {
+   "step": "precision-output-cell, fast-disconnect, integrated-output, rail-monitor, negative-monitor candidate scripts",
+   "status": "PASS",
+   "detail": "protection58 audit regenerated first"
+  },
+  {
+   "step": "regen-master-reports.sh --check (includes regen-all --check, check_wrl_dimensions)",
+   "status": "PASS",
+   "detail": "run twice, the last after all edits"
+  },
+  {
+   "step": "scripts/schgen tests",
+   "status": "PASS",
+   "detail": "72/72"
+  },
+  {
+   "step": "design/spec tests",
+   "status": "FAIL",
+   "detail": "137/138; wavefolder plot receipt fails as on the predecessor (matplotlib)"
+  },
+  {
+   "step": "scripts/checks tests",
+   "status": "FAIL",
+   "detail": "historical-stage bindings fail as on the predecessor (assembly_specification, connectivity_inventory, power_cleanup, family_reuse, mult_copper_plan, mult_substrate_comparison); mult_common_board failures 1->2; routing_placement_translations FAIL (new, see open item)"
+  },
+  {
+   "step": "test_ground_escape",
+   "status": "NOT RUN",
+   "detail": "shapely not installed"
+  },
+  {
+   "step": "DRC, zone fill, #293 fill",
+   "status": "NOT RUN",
+   "detail": "not authorised for this phase"
+  },
+  {
+   "step": "independent reproduce.sh rebuild + verify_record.py --tree",
+   "status": "NOT RUN",
+   "detail": "time budget; the record was checked against the scratch tree it was cut from"
+  }
+ ],
+ "open": [
+  {
+   "item": "routing_placement_translations",
+   "class": "technical uncertainty",
+   "detail": "WQFN reflow moves the JR packing: D4515 and R4507 overlap the issue189 jr-rb4413-edge-bridge expected source slot of RB4413 (285.34, 42.31 B.Cu), so the translation source is stale. No same-footprint swap restores the exact slot (R4507 sits at 283.74, 42.51). A TSSOP-sized courtyard reservation passed the test but failed the floorplan with 216 bypass supply-pad proximity errors and was reverted."
+  },
+  {
+   "item": "multi-channel fault behaviour (F9)",
+   "class": "access/evidence gap",
+   "detail": "TI does not state whether undisturbed channels keep operating during a fault on another channel; blocks ADG-3 quad packing."
+  },
+  {
+   "item": "PD-facing power contract keeps +12V 1700 mA",
+   "class": "user decision",
+   "detail": "Candidate supply-architecture input and ledger compute 1600 mA; design/architecture-278 power-contract text is unchanged; nothing is asked of PD."
+  },
+  {
+   "item": "WQFN land, SEL-hold timing, mechanical fit",
+   "class": "technical uncertainty",
+   "detail": "NEEDS BENCH; no solder-joint or physical-fit verdict."
+  },
+  {
+   "item": "TMUX7412FRRPR stock",
+   "class": "access/evidence gap",
+   "detail": "JLC 2026-10-31 stock 512 vs 490 per lot (22 spare); dated read-only catalogue figure."
+  },
+  {
+   "item": "canonical adoption",
+   "class": "explicit permission",
+   "detail": "separate approval required"
+  }
+ ]
+}
