@@ -104,6 +104,8 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 - [`fact-op-precision-supply-recommended`](#fact-op-precision-supply-recommended)
 - [`fact-op-precision-esd-steering`](#fact-op-precision-esd-steering)
 - [`fact-op-precision-output-swing`](#fact-op-precision-output-swing)
+- [`fact-op-precision-input-common-mode-range`](#fact-op-precision-input-common-mode-range)
+- [`fact-op-precision-input-stage-transition`](#fact-op-precision-input-stage-transition)
 
 ### manufacturer product description
 
@@ -291,6 +293,34 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [Section/table audit: src-op-precision-datasheet physical PDF page index 7, printed p.8, section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, OUTPUT VO rows](#src-op-precision-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-op-precision-input-common-mode-range" />
+
+  **Fact:** `fact-op-precision-input-common-mode-range`
+
+  **Value:** `maximum_above_V_plus_V`=0.1; `minimum_below_V_minus_V`=-0.1 · **Unit:** `V`
+
+  **Conditions:** Operating common-mode voltage range VCM = (V-) - 0.1 V .. (V+) + 0.1 V, table header VS = +/-4 V to +/-18 V (8 V to 36 V), TA = 25 C; no separate full-temperature VCM row. At the project +/-12 V rails this is -12.1 .. +12.1 V nominal.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-op-precision-datasheet: PDF page index 6, printed page 7, Section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, INPUT VOLTAGE, Common-mode voltage range row](#src-op-precision-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-op-precision-input-stage-transition" />
+
+  **Fact:** `fact-op-precision-input-stage-transition`
+
+  **Value:** `cmrr_min_dB_high_region_full_temperature`=80; `cmrr_min_dB_low_region_full_temperature`=110; `high_region`=(V+) - 1.5 V \< VCM \< (V+); `low_region`=(V-) - 0.1 V \< VCM \< (V+) - 3 V; `unspecified_region`=(V+) - 3 V \< VCM \< (V+) - 1.5 V · **Unit:** `dB`
+
+  **Conditions:** CMRR minima at VS = +/-18 V, TA = -40..125 C: 110 dB for (V-) - 0.1 V \< VCM \< (V+) - 3 V and 80 dB for (V+) - 1.5 V \< VCM \< (V+). The input-stage transition region (V+) - 3 V .. (V+) - 1.5 V has no table limit ("See Typical Characteristics"). Offset VOS is specified separately at VCM = (V+) - 1.5 V (+/-100 uV max at 25 C). Rows are at VS = +/-18 V, not +/-12 V.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-op-precision-datasheet: PDF page index 6, printed page 7, Section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, INPUT VOLTAGE, CMRR rows; OFFSET VOLTAGE VOS rows](#src-op-precision-datasheet)
 </EvidenceFact>
 
 ### PROJECT\_STATE
