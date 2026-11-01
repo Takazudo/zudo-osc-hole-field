@@ -5,15 +5,21 @@
  "predecessor_commit": "60c7c3ab78cba5e2fcd81973024894510e090cfb",
  "predecessor_tree": "ac352e97cd12719803e3115e7f43f40d90799067",
  "builds_on_record": "circuit/candidates/opa4197idr-rexact-20261031 (its source.patch is contained in this cumulative source.patch)",
- "source_patch_sha256": "5b543a0ef20b4002e4191f71a733bc1468d59e5fa421cbd0dc373f6e2cce1c88",
- "changed_file_count": 276,
- "source_file_count": 107,
+ "source_patch_sha256": "20fd5503fff21e892bda7a534f9e5964447cd6e5d8ca98e71066d1b43f815951",
+ "changed_file_count": 290,
+ "source_file_count": 120,
  "retained_source_files": {
+  "circuit/sources/ic-library/BAV199.pdf": "c09cdf672eb4274e137efcf7a0d4e34fc8de099a975cfe8efa3a5a3c560cdf81",
   "circuit/sources/ic-library/TMUX6112.pdf": "c0fab3135a4438048a759aa91b33480f95f01140885896e3bfa1202a9daa2ae1",
   "circuit/sources/ic-library/TMUX7412F.pdf": "7396d8a34f80b178a8b5c72272b5bb0eb7da7ad3182e7d3cd80d294fc32f26e5"
  },
- "retained_source_note": "The two TI PDFs are not in the patch; reproduce.sh copies them from the main repository .circuit-cache/sources and checks these hashes.",
- "successor_note": "Successor hashes are the phase-22 tree rebuilt from 60c7c3ab by reproduce.sh; generated files are not committed with this record.",
+ "retained_source_note": "The two TI PDFs and the BAV199 v.3 mirror copy (JLCPCB-hosted; nexperia.com access-denied) are not in the patch; reproduce.sh copies them from the main repository .circuit-cache/sources and checks these hashes.",
+ "successor_note": "Successor hashes are the phase-24 tree rebuilt from 60c7c3ab by reproduce.sh; generated files are not committed with this record.",
+ "revision": "phase 24: BAV199,215 owner bundle (mirror-sourced, UNSOURCED facts) and the precision variant of high_impedance_input on the 1V/OCT, MULT IN and S&H IN inputs (9 per unit); precision_input_clamp section in the S2b protection map",
+ "phase19_delta_patch_sha256": "aa79984526529c9bd457137a16439ac9ca7d79bcf7eb63954f1bf20d4f11894f",
+ "phase20_delta_patch_sha256": "aea78b535566647989b7f8749604e04f1afd60bc5f70c087192950340936f1c6",
+ "phase22_delta_patch_sha256": "bcdc559d6d39619a11b5a2df40ffb7ce2edcbbad38d1f7299071067e0aa1f1c0",
+ "phase24_delta_patch_sha256": "9fa9c821e6c3cc88faffe5c6893a712aa0ae71356e990d641b7db85911b898b3",
  "files": {
   ".claude/skills/component-nexperia-bat54s-215/coverage.json": {
    "kind": "source",
@@ -30,15 +36,55 @@
    "before_sha256": "dbcb0a07dcc561fc7b1f7a88205831e2a8978a2392bde104180e024ceaeed38c",
    "after_sha256": "52d6680c49a2bc2c594e0d6bab37a18eee0d10c2092ce98d7e10617b001d6c4a"
   },
+  ".claude/skills/component-nexperia-bav199-215/SKILL.md": {
+   "kind": "source",
+   "before_sha256": null,
+   "after_sha256": "d888989fc170b38a312447e04a59f74726770b7a21506c5a418492c7d859aaad"
+  },
+  ".claude/skills/component-nexperia-bav199-215/coverage.json": {
+   "kind": "source",
+   "before_sha256": null,
+   "after_sha256": "c67a38b39d60402fcd645e1ea6f936fadd5ea94aa25cf7f07163a78d87e213ac"
+  },
+  ".claude/skills/component-nexperia-bav199-215/facts.json": {
+   "kind": "source",
+   "before_sha256": null,
+   "after_sha256": "2a1569011b4608b05f56fc9113e44026480e5f06d9a9f8040ec344b791013c1b"
+  },
+  ".claude/skills/component-nexperia-bav199-215/interactions.json": {
+   "kind": "source",
+   "before_sha256": null,
+   "after_sha256": "9808b49d8929803b64573f01c44d10d497ebb7638fe839f3b76d6bfce1f2157f"
+  },
+  ".claude/skills/component-nexperia-bav199-215/manifest.json": {
+   "kind": "source",
+   "before_sha256": null,
+   "after_sha256": "1f98bcab828362de6cb0d7e77c697dee1ba175f2d73c9abce93b149e08ae407e"
+  },
+  ".claude/skills/component-nexperia-bav199-215/pin-map.json": {
+   "kind": "source",
+   "before_sha256": null,
+   "after_sha256": "36267cc4fbb47cbae9cfc67ac208d67412c253ff0cb66e682aafe35244bc6192"
+  },
+  ".claude/skills/component-nexperia-bav199-215/routing.json": {
+   "kind": "source",
+   "before_sha256": null,
+   "after_sha256": "68897209589980e5c65fd90f3a6783cd054884138e7fe3f405b4fad53e5342c7"
+  },
+  ".claude/skills/component-nexperia-bav199-215/sources.json": {
+   "kind": "source",
+   "before_sha256": null,
+   "after_sha256": "975259e1a486342db7d3ea089bb9e3d876bac9a8844d05c1304be94c873ec8a6"
+  },
   ".claude/skills/component-spec-audit/references/direct-routing.json": {
    "kind": "source",
    "before_sha256": "c67cc6fdcf791257c1957cf7cbe97fbe978bc9175ed744d6eb7bcc402c9020ee",
-   "after_sha256": "b6e23b1eff8ede0ec4b0b75412acf4b8be52ab57e3a24902481c712ce3969642"
+   "after_sha256": "3d6db86e1c6c0014c160d93218a229285e92a0169f22270a62c6cb0918a8a250"
   },
   ".claude/skills/component-spec-audit/references/inventory.json": {
    "kind": "source",
    "before_sha256": "3ff8b15e3834349ec49030487c23a1ae3f8fcebc9ad88de7e3d9fb290f4a9a70",
-   "after_sha256": "9581fcdf3fd43dcde22f8171faeca024726b52b8b7ddacc9fea5888b6e76db33"
+   "after_sha256": "32a84b78cee86d18b867241d6e37bc95d8cb6ecff0366865c9a368dfefc0f407"
   },
   ".claude/skills/component-ti-opa4197idr/SKILL.md": {
    "kind": "source",
@@ -368,47 +414,47 @@
   "boards/osc-jack-left/sheets/mult_B1_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "e0b12729436a791fe335ddcaae22e95cfe56d7e6fab15814e6eaa2a5723e32b4",
-   "after_sha256": "e1f607b43bcc095d14d1630d698e0f679640d596e57d96f7b76e2a7c3483e632"
+   "after_sha256": "a17cbf6a3442ffb0aeb4c8cd0c01057005ccebdec8625548bf2c6b4666ff2490"
   },
   "boards/osc-jack-left/sheets/mult_B2_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "d21aca7ffd8df864b802a9ad3dd4b9903dec2295edf1a4346952ac9e3d803747",
-   "after_sha256": "eb3883d7870ea629deb69e05cf1d7418ab501b3254d8e12e2c46c2b14660b009"
+   "after_sha256": "6a38768f2afe729d5cef86bd847f8768024a64acd1f6e3ba004e4a127ef9869a"
   },
   "boards/osc-jack-left/sheets/oscillator_O1_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "407ec5513b77c00eff7c767c998acbe7ba74f2ce2c161b1b3f369955688d9f7c",
-   "after_sha256": "ce8c22f87c9f553918bf8df2d3884bbb39f59d2076bf9188c95b005ab1d6140f"
+   "after_sha256": "c503097cf7551a869151b9b97d96b68359b4caf71425ed3c27254f2294edc2ca"
   },
   "boards/osc-jack-left/sheets/oscillator_O2_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "2e5fa20a3e13aac663e863e7a5d13b54211f9dec5826b6e5c8738469f579b4d9",
-   "after_sha256": "769a5a29ec26af9a945f306910b71852a6434a55ca71be88fbe484033b14ec7d"
+   "after_sha256": "42b9bf29ccd0275328824965febfe6581cc6d5eeb83b4366f7560942e4b16860"
   },
   "boards/osc-jack-left/sheets/oscillator_O3_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "75dc5426a66c51dfa0a602f7e9479214e8fa7610c14652a6f3c7b609efdaedc6",
-   "after_sha256": "07c092954c2b6e10233b5eae85d4734c4f30e1d5c96c8d746c8d1ae7135dedba"
+   "after_sha256": "95659a4b8cc0117831f9a673f4242750d428397313c523816baaf6369163461e"
   },
   "boards/osc-jack-left/sheets/oscillator_O4_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "6830614c8d81278f8170a950cc5aa71e79f81354069e83bc69dfe896300c0a91",
-   "after_sha256": "5621a9821def35e2cd0b63357616ce57bfc8bb2ddef349adc9f3b856363f7649"
+   "after_sha256": "4cee8d387d207db0909079b0bc0abd1143e737febc5df8b9c5436eff3ce29408"
   },
   "boards/osc-jack-left/sheets/oscillator_O5_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "830a97a4b1ae467b9fe4941c8e112fae43e9ffc49aa4efd6da58b8f9cb4a8ae1",
-   "after_sha256": "c36a4c661a1e9371e3699afe8b2c6d75e363a74cef3b94444a3ef1934fe59784"
+   "after_sha256": "79c9965d0e8c2e98f7d91e85ffd761a85c346703635bfe98c178c8d5c9d48af1"
   },
   "boards/osc-jack-left/sheets/sample_hold_H1_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "d89cb293f51bbf8adda10cc4383254b70bc31aa59bda7296a65d6896dc2928b1",
-   "after_sha256": "902f8e36dfd3bab7249c49868c88497242bb76aac42f136b9a899cc9979849ca"
+   "after_sha256": "ea4bfac423a6a006c64e1618cc9ce1104e41741bf2f04022556097d96094ec44"
   },
   "boards/osc-jack-left/sheets/sample_hold_H2_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "345c9e069e5dfee11271e43ca0e4c2b3d7635fd482fb9d87d63bdc9dfcb338a1",
-   "after_sha256": "950b7c5210d400cf29e72142d8d1e6e555a41353ad74623f9ab12ce09274d4a9"
+   "after_sha256": "74b11a68bdffaea9ef62f2af96c842fdf2540bcbd72e5163587444bdd792552b"
   },
   "boards/osc-jack-left/sheets/wavefolder_W2_JL.kicad_sch": {
    "kind": "generated",
@@ -495,6 +541,11 @@
    "before_sha256": "a9c5b0d9de4040d3efdcecdcb0a23914933f221dfa1754cc6b369c216ae3b7cb",
    "after_sha256": "5b9f7d0706caabdc7401b810c3c7ecfa1278e09ed2583439766112d698eabf94"
   },
+  "circuit/cad-receipts/ic15-clamp_diode_ll.receipt.json": {
+   "kind": "source",
+   "before_sha256": null,
+   "after_sha256": "6e36971e0d99aa81d77169add7fb3211a2a8d818584a082808a88efd2735ae14"
+  },
   "circuit/cad-receipts/ic15-fault_switch_tmux.receipt.json": {
    "kind": "source",
    "before_sha256": null,
@@ -513,12 +564,17 @@
   "circuit/generated/preflight.json": {
    "kind": "generated",
    "before_sha256": "bc3e81149d2d56fb82452cb4284646191c527d29749ae605350b0ff04122fde9",
-   "after_sha256": "2e1221e67d7e7eee83182a2f71a6c82450312ee5a436a54d11a99393ea553a72"
+   "after_sha256": "911314e3c705e8d8cc54b7a93f3f31bc7516221713a66810e4f1608ef0454015"
   },
   "circuit/publication/selection.json": {
    "kind": "source",
    "before_sha256": "134e44906f2c487d8cadbbb9af55cf01d9e514661c8f722843d10f17395f5adf",
-   "after_sha256": "528266db3c487b0b838144dd4b3638ad4757181f9ea09588d109756b1d8854e7"
+   "after_sha256": "eadba4b25630d53e29e84dfe9fa235c3425c3745650fef8d29cc683bdf689d22"
+  },
+  "circuit/sources/ic-library/BAV199.pdf": {
+   "kind": "retained-source",
+   "before_sha256": null,
+   "after_sha256": "c09cdf672eb4274e137efcf7a0d4e34fc8de099a975cfe8efa3a5a3c560cdf81"
   },
   "circuit/sources/ic-library/TMUX6112.pdf": {
    "kind": "retained-source",
@@ -573,12 +629,12 @@
   "design/power/fast-disconnect-candidate-report.json": {
    "kind": "generated",
    "before_sha256": "b67d370a91dd0261471ad53ac8356be30a57506d9b1fd875b13b6c94e626eed9",
-   "after_sha256": "cac9699f16f91a0001be5862ce24a8b0fcf155815b41bf0ed5c2203133f73587"
+   "after_sha256": "6893ff7dfe2d2ff19a60eef30f288ea8be70e8c7c9a66e5cbb20a25b5bf28d0b"
   },
   "design/power/integrated-output-candidate-report.json": {
    "kind": "generated",
    "before_sha256": "21d0534c6934251371b79cd82115624e02c71d8eb9b6e1fd56540c9aadb8d821",
-   "after_sha256": "3a97703305c5aa924eb64b639db90024ceba0db5a05e186fdd7ca5efbccae9fe"
+   "after_sha256": "1be441307e83d77f66f2cf21c7fd7373bced89bb163aedd93ac4e80b628464b9"
   },
   "design/power/monitor-permit-current-report.json": {
    "kind": "generated",
@@ -588,12 +644,12 @@
   "design/power/monitor-permit-native-report.json": {
    "kind": "generated",
    "before_sha256": "c5fc1ac4587bca5ca1faf28b18afbf1d0f7ba509f3430121a7c252a4a7d974b6",
-   "after_sha256": "a564ce3dff8c2e298159d64da8ea889b73518642489c2b386e62aac34db4a0cd"
+   "after_sha256": "84ca6da4461fd5d647d17755c51a72a85ccedf372a3ba94dcb27250beeb4d690"
   },
   "design/power/monitor-reference-capacitance-report.json": {
    "kind": "generated",
    "before_sha256": "cbfb7b75194f61a35eb0ad5a7c7b05eb29a4984207a0fa3d4453bd2f0f97526e",
-   "after_sha256": "436bcc42208d9450172d0fffdc670d95a3a8af50b62f8576b42956b9079747ad"
+   "after_sha256": "70189cb50fa0554a0c61b6c11dcccff88c374d7c57f8fa46243e2bb7b04ada82"
   },
   "design/power/monitor-reference-compatibility-report.json": {
    "kind": "generated",
@@ -618,12 +674,12 @@
   "design/power/precision-output-cell-model.json": {
    "kind": "generated",
    "before_sha256": "5325288121c0fd533a02da0fc58123711c421525f830425baf2246249f5593ca",
-   "after_sha256": "1762d5fdfbc71492f846dbbe433347ada8b1821cf15109ab5ede182365cff7ef"
+   "after_sha256": "8c7c3a82c5a610195af67234fcf895c174b6baf01e9fbe228cedec88a03dc0c1"
   },
   "design/power/precision-output-cell-report.json": {
    "kind": "generated",
    "before_sha256": "f1616df91906f50066dfb85476baec6b1648f9a88056a1be6586a20c16f8f9c3",
-   "after_sha256": "5f5e93951c3469460e06780365aadafaec29895be8dc00bcfb9ba8b1f51c9d55"
+   "after_sha256": "934fd9b480800f2a4b38024825a64f3d9ebd125646259b5747b119ccdc980fc3"
   },
   "design/power/protection58-audit.json": {
    "kind": "generated",
@@ -668,12 +724,12 @@
   "design/readiness/s2b-protection-map.json": {
    "kind": "generated",
    "before_sha256": "59bc03cf93883469dc18c89f7fcd4bc606ba80ac9bb168caedf132925189cfbe",
-   "after_sha256": "2a4a694c02240f24f930f077dd668394d19eb9aab2a0e241709e32ac883e394d"
+   "after_sha256": "90934441e4bbb2394167dd7b85a900686c6af33bd1213ca47f8d1df41ec70e72"
   },
   "design/reports/board-erc.json": {
    "kind": "generated",
    "before_sha256": "5579d5dcf7cb0a8da9ee75762a5196c0c9a98f47b8c1236e93e52004cb5114ac",
-   "after_sha256": "aefcd050579f141c6317d82e7cae099fec2a29f0f94b8e06e067f9848d01d4ab"
+   "after_sha256": "f12ebf542d006894ea5445fd6422ba281b16cea722d6fccae4d72d8a5b7d0b6b"
   },
   "design/reports/board-net-tokens.json": {
    "kind": "generated",
@@ -733,7 +789,7 @@
   "design/reports/current/sample_hold.json": {
    "kind": "generated",
    "before_sha256": "65fc5d850a39a41793ded31a9595dc096150ca618ddc00a3d18b054c9c01b189",
-   "after_sha256": "ed2cfb88907ad796b70e952bca3178e6f3bbade8c7430c2236c71ee206d78bb7"
+   "after_sha256": "05737677470150b043f0db51d1bc32509dfc46ca93ad0219f190ef3175377f40"
   },
   "design/reports/current/wavefolder.json": {
    "kind": "generated",
@@ -743,7 +799,7 @@
   "design/reports/io-partition.json": {
    "kind": "generated",
    "before_sha256": "a7da4f02fa118adeeda4ace6ff9e46fa430c4cdb5280bea6705241cac2a92a2f",
-   "after_sha256": "e32446545663536f3ab231c80e112f4401d872484a9b1e9f74c5f844676d5a02"
+   "after_sha256": "61de0a73f1b50cbb9cd3a32a1ed09e3a464c9fbd911a1a9869758b323fef9a8b"
   },
   "design/reports/master-audit.json": {
    "kind": "generated",
@@ -753,7 +809,7 @@
   "design/reports/netlist-stats.json": {
    "kind": "generated",
    "before_sha256": "186b900f9ca2067fdbe9340606cd6b16b0f927d924824bc1a85cf5bfb168b0ce",
-   "after_sha256": "3060bfc8b796432ddee8cc15712c8320163ac136bc395aab1178a89efff98f6a"
+   "after_sha256": "1b018ff5ff49fd06868185ceb57b8f62c8e64402685375d286d9645907654c49"
   },
   "design/reports/oscillator-reference-fanout.json": {
    "kind": "generated",
@@ -788,7 +844,7 @@
   "design/spec/cells/_builder.py": {
    "kind": "source",
    "before_sha256": "aefd73ab43e83f167ecd9cf3fb257e53dd4c837e0414b24ba46c289494150639",
-   "after_sha256": "5c6bc47160a92c482e540571548e57d1624fb651d7ea997309c1a42b13222269"
+   "after_sha256": "4eebf29bd029e80b81b66b851cf0bb61b52e1087a2e8fa20f594198bcc02647b"
   },
   "design/spec/cells/build_current.py": {
    "kind": "source",
@@ -870,6 +926,11 @@
    "before_sha256": "3372b2b650e34d0323c080ec094715c2ed44864418864db3b95a84eb82f18980",
    "after_sha256": "7a14e4fc8a41bf89eb8a4a11006e4618ba28c63ac99470a9aa19c94111b83f3a"
   },
+  "design/spec/modules/mult.py": {
+   "kind": "source",
+   "before_sha256": "f40b65f937569979431d9adeb067e25d9d3406dd3c27465cbd30b2389710aff3",
+   "after_sha256": "9c4ebf66abde1cca7dee388da1033d16074f8d6fe97fabaa07a2028e8a2f3b2d"
+  },
   "design/spec/modules/offset_model_contract.py": {
    "kind": "source",
    "before_sha256": "886ef0ed3c84ce4207f6967f5dd0fcef12f0ba6040e60aaa448441b6913b36ba",
@@ -878,7 +939,7 @@
   "design/spec/modules/oscillator.py": {
    "kind": "source",
    "before_sha256": "c83a10adb792265798ae453af4380300b6fde8d1e26afe6dca240412eb965d3e",
-   "after_sha256": "a1e4ac5f2c1994be3ddd2d61d523fe93a8b499ab96dfb3df7b1b16fb7fa139e0"
+   "after_sha256": "8334c798c2ba3c760cdaff4386330883dc201799058faae2ae9fdc061ae5eced"
   },
   "design/spec/modules/oscillator_sine_projection.py": {
    "kind": "source",
@@ -899,6 +960,11 @@
    "kind": "source",
    "before_sha256": "511745db43d67e4ecb7c32acc2b7dd60ef1dc0d7a067a396147761020e155431",
    "after_sha256": "04528efa7c040296e03230a6d8c8805630bc99e8fa5a46e6688b28534d4410cd"
+  },
+  "design/spec/modules/sample_hold.py": {
+   "kind": "source",
+   "before_sha256": "0fa352022e5ea991866dd8583042932da382f66aec17110de07e1fcf569fe45a",
+   "after_sha256": "8a593d41fef8f53051c65572e4b1f01a1db391d62b7910f15bd97d6bf7e76a32"
   },
   "design/spec/modules/sample_hold_model_contract.py": {
    "kind": "source",
@@ -1043,22 +1109,27 @@
   "design/standard/catalogue-publication.json": {
    "kind": "source",
    "before_sha256": "2d87aa0da40e06ea23ef95564d2bb86320cb24d0e687ca3efe293dd315c80b45",
-   "after_sha256": "92e62b8fde6bd0ea573813e0254b82f911dba385985b00586712003f75fef09e"
+   "after_sha256": "ad288e48948806194967b95ebab82868498c2c1b5d4696d8466311297096af1e"
   },
   "design/standard/electrical-standard.json": {
    "kind": "source",
    "before_sha256": "185f4775082a36873954323a2377844e0694631418ac510db08e3a0d39b56e53",
-   "after_sha256": "7e9457ac76cc057f4b3878ba07bc98f2b3b945076984b95d1129a4ebe9711174"
+   "after_sha256": "bc0cb709d5cd294b7fafe55c5fceddb286c53321bc51425d92efba6f3b70e74b"
   },
   "design/standard/ic-library-capture.json": {
    "kind": "source",
    "before_sha256": "eb3d06c6a9ef49d377bba6bd8cf363e27c065f487589ba4962f92a1ce6a2e8f5",
-   "after_sha256": "9204ae460838286472c952bdf27a1bcf43277ebbdfd3be5762c749f4de12e31f"
+   "after_sha256": "8b325591f569aa4c8481bcee578b1214866569af543156031f0d252f9027e7e9"
   },
   "design/standard/parts-shortlist.json": {
    "kind": "source",
    "before_sha256": "cd27a8abd9fc586b9ee18cb7070ff7dce918254404188ca30626f52b20df4f21",
-   "after_sha256": "3236c2dffff80924ff8c124b7c593f446f02904d261d43f6548bdf3de5a1a004"
+   "after_sha256": "3daba00984280e38a8a962701ea5fbbe1c1d9c28bf7ff389a64e28ce9af16a0b"
+  },
+  "design/standard/pin-maps/clamp_diode_ll.json": {
+   "kind": "source",
+   "before_sha256": null,
+   "after_sha256": "cad6131832a0408733a6421b0695cf270c4da667411f6182687caeddb69ac5f8"
   },
   "design/standard/pin-maps/fault_switch_tmux.json": {
    "kind": "source",
@@ -1093,7 +1164,7 @@
   "doc/src/content/docs/components/index.mdx": {
    "kind": "generated",
    "before_sha256": "8724c8fdf0d1337aee6e857d157ec49b28ae06d9a323643d3b61cc640985bcc9",
-   "after_sha256": "5450841ac36aee0c3a580a21ac7de37018263e0db0a7afc671ddaea3e2f937e5"
+   "after_sha256": "520d89ef65bd425586be316efd48c1c3675b88468a4f66aeedbcfadc3061dd66"
   },
   "doc/src/content/docs/components/records/clamp-diode/index.mdx": {
    "kind": "generated",
@@ -1138,7 +1209,7 @@
   "schematic/boards/osc-jack-left.net": {
    "kind": "generated",
    "before_sha256": "c84764a010afd8ee2af22aa8cd6412376a7d71667efa31b527618d049708eb66",
-   "after_sha256": "0e71df2faff7ed9316d920a55db4491eddb216640432d3c646f6e55402aa81c1"
+   "after_sha256": "3c4b4b51bfd37869507a000a661360d6d3c71b10c857fd1c0483f92de6d03129"
   },
   "schematic/boards/osc-jack-right.net": {
    "kind": "generated",
@@ -1153,7 +1224,7 @@
   "schematic/exports/master-hierarchy.pdf": {
    "kind": "generated",
    "before_sha256": "a99790c8b5dce3343c3ec8a036bafcf61e1d3cbc7188f9cfddc06fbf73d1d0c6",
-   "after_sha256": "38ff8ad6236bb8ad09341e0d152d3a77dbe7ea543719fdb4502ab8bd5fb13656"
+   "after_sha256": "f3e7c50969848e2dec16b892ae1217ffa2eaa8a5b7d8c7ae7a87aa457207e548"
   },
   "schematic/exports/sheets/envelope.svg": {
    "kind": "generated",
@@ -1183,7 +1254,7 @@
   "schematic/exports/sheets/mult.svg": {
    "kind": "generated",
    "before_sha256": "029f0fef5ef1c6bcfd6c769c49df7e7464c056f6a97cac2cf8975e7a429fc03e",
-   "after_sha256": "70c9902d2e183e3486b3d894153cc0c113b70f9212fc28db0f908553499cbfe0"
+   "after_sha256": "68a91b2cbc41d3dc622fcec90fbd95898ad6124948fe08eddeff6414ca17cbb9"
   },
   "schematic/exports/sheets/octave_reference.svg": {
    "kind": "generated",
@@ -1198,12 +1269,12 @@
   "schematic/exports/sheets/oscillator.svg": {
    "kind": "generated",
    "before_sha256": "30a5623436e52dd57bd3e90c46ddaf696ef17eb35c23873c70fc1360d8584fe9",
-   "after_sha256": "4e83b2d7d423c0b77d065d7a4b83cecd656c20c78b1610e49e69c7f25adf0091"
+   "after_sha256": "7133a0acf0ecbf95de26fd36829a339c0cf0b97979395c30fd83fc34415b2827"
   },
   "schematic/exports/sheets/sample_hold.svg": {
    "kind": "generated",
    "before_sha256": "fe6bff15a879aea3596029197b742e05bfc8b7955a65c34f0931e17172c663d6",
-   "after_sha256": "88c0d2a0882af22f438933dd3d1345c1715c9c6e6e5b12f42393fe55661deac5"
+   "after_sha256": "b3ba54194869d6dc53252f3aa878136f6696813de81bdc8238741a9a27d07dc7"
   },
   "schematic/exports/sheets/wavefolder.svg": {
    "kind": "generated",
@@ -1238,7 +1309,7 @@
   "schematic/sheets/mult.kicad_sch": {
    "kind": "generated",
    "before_sha256": "efb406faaaefa3afb3beef287569e2da8d47a386f5d325e76baefa2acbcd4945",
-   "after_sha256": "d9c2ceeea978194db59934907564b5e1bb8970310c6452b57bd45b76c43e7734"
+   "after_sha256": "f903e8a5098777cdbf281cf4b4938b50331a2b1f09ba03e99e79cca35ef76e1b"
   },
   "schematic/sheets/octave_reference.kicad_sch": {
    "kind": "generated",
@@ -1253,12 +1324,12 @@
   "schematic/sheets/oscillator.kicad_sch": {
    "kind": "generated",
    "before_sha256": "06ace0b9b5fae11377689cd39ddf67634cfd2ce4c6e143a000c0fd66cb05cece",
-   "after_sha256": "ed10b2f42944e96c4e50028866730fc95e31fbd94ceb3e13c1c84c7ffbbf25f8"
+   "after_sha256": "7f5b89ef2347a8bad9ee1f32b1e4aee8b7f4eafb53a2eab967a1e13f7828bdfa"
   },
   "schematic/sheets/sample_hold.kicad_sch": {
    "kind": "generated",
    "before_sha256": "200c390a88a9f08132a0e051666e5684128b6416a02fe458ae75a836d4d715f0",
-   "after_sha256": "779bc21bd7d77a50f107d005b1e4c842c5bad7130a36ed1d91d6ed43837cec26"
+   "after_sha256": "fc25f1b295bdbd9dd723e96163de6b999fbf6dae2a0bb825fe537b1c2389e6b4"
   },
   "schematic/sheets/wavefolder.kicad_sch": {
    "kind": "generated",
@@ -1293,7 +1364,7 @@
   "scripts/checks/s2b_protection_map.py": {
    "kind": "source",
    "before_sha256": "9b2a3653002918a85f541ca1372def37d506c811b6933509a247b49f5166f9ae",
-   "after_sha256": "c38ff4b652fe3a0d1bd3430e8208818ca06c37a29bfecaa16919ef46371be1b1"
+   "after_sha256": "ea84f5c4da1e36a6df00214e4b701a848baf04cf9de6a79f8c7ad344f6fefcc7"
   },
   "scripts/checks/test_fast_disconnect_candidate.py": {
    "kind": "source",
@@ -1328,12 +1399,12 @@
   "scripts/libgen/build_s2b_switch_assets.py": {
    "kind": "source",
    "before_sha256": null,
-   "after_sha256": "b871f9b4e35a2e511d9a09125fac040a3b5d8fd6e2f9cb28cdb4523c1af0c74f"
+   "after_sha256": "985c1af8a1a50af7b6db172c8497d2f957c5916b36be752f800dca4676139c53"
   },
   "scripts/libgen/fixtures/check_ic_evidence.py": {
    "kind": "source",
    "before_sha256": "f2717bef3e35134014513177214586eb1fb27e5b35d865afad3542645a897156",
-   "after_sha256": "81e53f061652b814082e325849ffa37cd13613bcda041d09c16776946c577aea"
+   "after_sha256": "49d051da84b78898767bce53664d07c86551b67deeb539058efe2439399cf371"
   },
   "scripts/libgen/regen.sh": {
    "kind": "source",
@@ -1375,6 +1446,11 @@
    "before_sha256": "8c51af24d3d49d83f868ee48955ff3e02df28869b331751c997b987e25b1a97e",
    "after_sha256": "9e88f0b569ce33d01ad5f1e45bfcabdbeedc57ed6f75af539947c0e1a4df9467"
   },
+  "symbols/src/BAV199_215.kicad_sym": {
+   "kind": "source",
+   "before_sha256": null,
+   "after_sha256": "3b0c46ffe573c609e3ffb748dc94905d5697d8556592f7a51d85876e1b870cf7"
+  },
   "symbols/src/OPA4197IDR.kicad_sym": {
    "kind": "source",
    "before_sha256": null,
@@ -1393,11 +1469,7 @@
   "symbols/zudo-osc-hole-field.kicad_sym": {
    "kind": "generated",
    "before_sha256": "9d34805993e9725551abd1b7df92c013e610c47254184ab610fb58d23d41d1cc",
-   "after_sha256": "faf6d81be0e90f1eaada6bf4a5cbbe45504bc6a0025c81487eb3b1889b55554d"
+   "after_sha256": "191129af6926e8450df54148bcd7814a9f15383ab7621e4f816fc41535a778ca"
   }
- },
- "phase19_delta_patch_sha256": "aa79984526529c9bd457137a16439ac9ca7d79bcf7eb63954f1bf20d4f11894f",
- "revision": "phase 22: PROPOSED pitch linear range (A1, pending the user), computed 1V/OCT row, VDD - 3 V guarantee wording, OPA4197 common-mode, BAT54S reverse-current curve and TMUX7412F 7.8 owner facts",
- "phase20_delta_patch_sha256": "aea78b535566647989b7f8749604e04f1afd60bc5f70c087192950340936f1c6",
- "phase22_delta_patch_sha256": "bcdc559d6d39619a11b5a2df40ffb7ce2edcbbad38d1f7299071067e0aa1f1c0"
+ }
 }

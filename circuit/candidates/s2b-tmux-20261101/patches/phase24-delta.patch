@@ -1,0 +1,1365 @@
+diff --git a/.claude/skills/component-nexperia-bav199-215/SKILL.md b/.claude/skills/component-nexperia-bav199-215/SKILL.md
+new file mode 100644
+index 0000000..2dea524
+--- /dev/null
++++ b/.claude/skills/component-nexperia-bav199-215/SKILL.md
+@@ -0,0 +1,19 @@
++---
++name: component-nexperia-bav199-215
++description: Use whenever an exact part identity, supplier code, manufacturer, pinout, package, role, source gap, or substitution for this bundle is relevant. Resolve exact Nexperia BAV199,215 evidence for its roles, pinout, package, limits, interactions and substitution review; preserve open source and physical checks.
++---
++
++# Exact component evidence owner
++
++Run `pnpm circuit:check`, read every local JSON record, and cite fact/source IDs with conditions and exact locators. Keep each record aligned with the matching inventory line and direct-routing fixture. Do not infer procurement, physical fit, system safety, or circuit qualification from a component datasheet.
++
++## Candidate status
++
++UNADOPTED S2b candidate (phase 24). It is the clamp of the `precision` variant of `high_impedance_input` (1V/OCT, MULT IN and S&H IN) and is bound to placements only inside `circuit/candidates/s2b-tmux-20261101/`; canonical adoption needs a separate approval. The record is an intentional catalogue exclusion, so no generated page exists.
++
++The retained data sheet is the JLCPCB-hosted copy of Nexperia BAV199 v.3; the nexperia.com URL was access-denied and was not worked around.
++
++## Open review points
++
++- exact orderable identity; pinout; electrical limits; manufacturer product description; mechanical fit; procurement; op-amp input overdrive remain open.
++- Stock, lead time, consignment acceptance and assembly allocation remain dated project-state gaps.
+diff --git a/.claude/skills/component-nexperia-bav199-215/coverage.json b/.claude/skills/component-nexperia-bav199-215/coverage.json
+new file mode 100644
+index 0000000..87d783f
+--- /dev/null
++++ b/.claude/skills/component-nexperia-bav199-215/coverage.json
+@@ -0,0 +1,113 @@
++{
++  "schema_version": 1,
++  "coverage": [
++    {
++      "coverage_id": "cov-clamp-diode-ll-exact-orderable-identity",
++      "record_id": "rec-clamp-diode-ll",
++      "domain": "exact orderable identity",
++      "status": "OPEN",
++      "reason": "The retained data sheet names type BAV199 in SOT23; the ,215 packing suffix appears only in the distributor row, and the nexperia.com page was access-denied.",
++      "fact_ids": [
++        "fact-clamp-diode-ll-orderable-identity",
++        "fact-clamp-diode-ll-procurement-status"
++      ],
++      "blocking_fact_ids": [
++        "fact-clamp-diode-ll-orderable-identity"
++      ]
++    },
++    {
++      "coverage_id": "cov-clamp-diode-ll-pinout",
++      "record_id": "rec-clamp-diode-ll",
++      "domain": "pinout",
++      "status": "OPEN",
++      "reason": "The mirrored pinning table covers every pad; it stays UNSOURCED until compared with a manufacturer-hosted copy. No project nets are assigned by this record.",
++      "fact_ids": [
++        "fact-clamp-diode-ll-pinout"
++      ],
++      "blocking_fact_ids": [
++        "fact-clamp-diode-ll-pinout"
++      ]
++    },
++    {
++      "coverage_id": "cov-clamp-diode-ll-electrical-limits",
++      "record_id": "rec-clamp-diode-ll",
++      "domain": "electrical limits",
++      "status": "OPEN",
++      "reason": "Limits are transcribed from the mirrored data sheet with their conditions; UNSOURCED until a manufacturer-hosted copy confirms the bytes.",
++      "fact_ids": [
++        "fact-clamp-diode-ll-reverse-voltage-absolute",
++        "fact-clamp-diode-ll-forward-current-absolute",
++        "fact-clamp-diode-ll-power-thermal",
++        "fact-clamp-diode-ll-forward-voltage",
++        "fact-clamp-diode-ll-reverse-current",
++        "fact-clamp-diode-ll-reverse-current-temperature",
++        "fact-clamp-diode-ll-capacitance-recovery"
++      ],
++      "blocking_fact_ids": [
++        "fact-clamp-diode-ll-reverse-voltage-absolute",
++        "fact-clamp-diode-ll-forward-current-absolute",
++        "fact-clamp-diode-ll-power-thermal",
++        "fact-clamp-diode-ll-forward-voltage",
++        "fact-clamp-diode-ll-reverse-current",
++        "fact-clamp-diode-ll-reverse-current-temperature",
++        "fact-clamp-diode-ll-capacitance-recovery"
++      ]
++    },
++    {
++      "coverage_id": "cov-clamp-diode-ll-manufacturer-product-description",
++      "record_id": "rec-clamp-diode-ll",
++      "domain": "manufacturer product description",
++      "status": "OPEN",
++      "reason": "The mirrored document identifies the product; manufacturer-host comparison is pending. This is not application qualification.",
++      "fact_ids": [
++        "fact-clamp-diode-ll-product-function",
++        "fact-clamp-diode-ll-manufacturer"
++      ],
++      "blocking_fact_ids": [
++        "fact-clamp-diode-ll-product-function",
++        "fact-clamp-diode-ll-manufacturer"
++      ]
++    },
++    {
++      "coverage_id": "cov-clamp-diode-ll-mechanical-fit",
++      "record_id": "rec-clamp-diode-ll",
++      "domain": "mechanical fit",
++      "status": "OPEN",
++      "reason": "Land and envelope are reused draft geometry; physical fit is not validated.",
++      "fact_ids": [
++        "fact-clamp-diode-ll-mechanical-fit"
++      ],
++      "blocking_fact_ids": [
++        "fact-clamp-diode-ll-mechanical-fit"
++      ]
++    },
++    {
++      "coverage_id": "cov-clamp-diode-ll-procurement",
++      "record_id": "rec-clamp-diode-ll",
++      "domain": "procurement",
++      "status": "OPEN",
++      "reason": "Stock, lead time, consignment and assembly allocation remain unverified.",
++      "fact_ids": [
++        "fact-clamp-diode-ll-assembly-allocation",
++        "fact-clamp-diode-ll-procurement-status"
++      ],
++      "blocking_fact_ids": [
++        "fact-clamp-diode-ll-assembly-allocation"
++      ]
++    },
++    {
++      "coverage_id": "cov-clamp-diode-ll-input-overdrive",
++      "record_id": "rec-clamp-diode-ll",
++      "domain": "op-amp input overdrive",
++      "status": "OPEN",
++      "reason": "Silicon VF has no maximum below 1 mA, so SENSE versus the OPA4197 (V+) + 0.5 V row is UNKNOWN in the VDD..VDD + VT window.",
++      "fact_ids": [
++        "fact-clamp-diode-ll-input-overdrive",
++        "fact-clamp-diode-ll-forward-voltage"
++      ],
++      "blocking_fact_ids": [
++        "fact-clamp-diode-ll-input-overdrive"
++      ]
++    }
++  ]
++}
+diff --git a/.claude/skills/component-nexperia-bav199-215/facts.json b/.claude/skills/component-nexperia-bav199-215/facts.json
+new file mode 100644
+index 0000000..7abff5a
+--- /dev/null
++++ b/.claude/skills/component-nexperia-bav199-215/facts.json
+@@ -0,0 +1,273 @@
++{
++  "schema_version": 1,
++  "facts": [
++    {
++      "fact_id": "fact-clamp-diode-ll-manufacturer",
++      "record_id": "rec-clamp-diode-ll",
++      "source_id": "src-clamp-diode-ll-datasheet",
++      "class": "PROJECT_STATE",
++      "value": "Nexperia",
++      "unit": "NONE",
++      "conditions": "Manufacturer named on the retained data sheet. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
++      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 0, printed 1 / 10, title block",
++      "provenance": "UNVERIFIED",
++      "verdict": "UNSOURCED",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-clamp-diode-ll-project-selection",
++      "record_id": "rec-clamp-diode-ll",
++      "source_id": "src-clamp-diode-ll-protection-map",
++      "class": "PROJECT_STATE",
++      "value": "UNADOPTED S2b candidate (precision input clamp pair (S2b candidate)): the precision variant of high_impedance_input on the 1V/OCT, MULT IN and S&H IN inputs; canonical adoption needs a separate approval",
++      "unit": "NONE",
++      "conditions": "Candidate record circuit/candidates/s2b-tmux-20261101 only; not a supplier allocation.",
++      "locator": "Section/table audit: src-clamp-diode-ll-protection-map JSON section precision_input_clamp",
++      "provenance": "PROJECT-CHOICE",
++      "verdict": "NOT APPLICABLE",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-clamp-diode-ll-orderable-identity",
++      "record_id": "rec-clamp-diode-ll",
++      "source_id": "src-clamp-diode-ll-datasheet",
++      "class": "PROJECT_STATE",
++      "value": {
++        "manufacturer": "Nexperia",
++        "mpn": "BAV199,215",
++        "package": "SOT-23"
++      },
++      "unit": "NONE",
++      "conditions": "Exact complete orderable identifier; the retained data sheet lists type number BAV199 in SOT23 only, so the ,215 packing suffix is not established by manufacturer bytes. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
++      "locator": "Section/table audit: src-clamp-diode-ll-datasheet: physical PDF index 1, printed 2 / 10, Table 3 Ordering information lists BAV199 / SOT23 without a packing suffix",
++      "provenance": "UNVERIFIED",
++      "verdict": "UNSOURCED",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-clamp-diode-ll-pinout",
++      "record_id": "rec-clamp-diode-ll",
++      "source_id": "src-clamp-diode-ll-datasheet",
++      "class": "PROJECT_STATE",
++      "value": "pin 1 A1 anode (diode 1) -> pad 1; pin 2 K2 cathode (diode 2) -> pad 2; pin 3 K1/A2 cathode (diode 1) and anode (diode 2) -> pad 3",
++      "unit": "NONE",
++      "conditions": "No schematic or placement binding is claimed by this record. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
++      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 0, printed 1 / 10, Section 5, Table 2 Pinning information",
++      "provenance": "UNVERIFIED",
++      "verdict": "UNSOURCED",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-clamp-diode-ll-product-function",
++      "record_id": "rec-clamp-diode-ll",
++      "source_id": "src-clamp-diode-ll-datasheet",
++      "class": "PROJECT_STATE",
++      "value": "Manufacturer source identifies BAV199 as an epitaxial, medium-speed switching, low-leakage double diode in SOT23 with the two diodes connected in series; this is not project suitability.",
++      "unit": "NONE",
++      "conditions": "Product description only. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
++      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 0, printed 1 / 10, Sections 1 General description and 2 Features and benefits",
++      "provenance": "UNVERIFIED",
++      "verdict": "UNSOURCED",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-clamp-diode-ll-reverse-voltage-absolute",
++      "record_id": "rec-clamp-diode-ll",
++      "source_id": "src-clamp-diode-ll-datasheet",
++      "class": "ABSOLUTE_MAXIMUM",
++      "value": {
++        "VR_max_V": 75,
++        "VRRM_max_V": 85
++      },
++      "unit": "V",
++      "conditions": "Per diode; limiting values (IEC 60134). Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
++      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 1, printed 2 / 10, Table 5 Limiting values, VR and VRRM rows",
++      "provenance": "UNVERIFIED",
++      "verdict": "UNSOURCED",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-clamp-diode-ll-forward-current-absolute",
++      "record_id": "rec-clamp-diode-ll",
++      "source_id": "src-clamp-diode-ll-datasheet",
++      "class": "ABSOLUTE_MAXIMUM",
++      "value": {
++        "IF_single_loaded_mA": 160,
++        "IF_double_loaded_mA": 140,
++        "IFRM_mA": 500,
++        "IFSM_1us_A": 4,
++        "IFSM_1ms_A": 1,
++        "IFSM_1s_A": 0.5
++      },
++      "unit": "mA and A",
++      "conditions": "Per diode; IFSM square wave, Tj(init) = 25 C. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
++      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 1, printed 2 / 10, Table 5 Limiting values, IF, IFRM and IFSM rows",
++      "provenance": "UNVERIFIED",
++      "verdict": "UNSOURCED",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-clamp-diode-ll-power-thermal",
++      "record_id": "rec-clamp-diode-ll",
++      "source_id": "src-clamp-diode-ll-datasheet",
++      "class": "ABSOLUTE_MAXIMUM",
++      "value": {
++        "Ptot_mW": 250,
++        "Tj_max_C": 150,
++        "Tamb_C": [
++          -65,
++          150
++        ],
++        "Rth_ja_K_per_W": 500,
++        "Rth_jsp_K_per_W": 360
++      },
++      "unit": "mW, C and K/W",
++      "conditions": "Ptot per device, one diode loaded, Tamb <= 25 C, FR4 single-sided standard footprint (note 1); Rth(j-a) single diode loaded in free air. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
++      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 1, printed 2 / 10, Table 5 Ptot/Tj/Tamb rows; Table 6 Thermal characteristics at physical PDF index 2",
++      "provenance": "UNVERIFIED",
++      "verdict": "UNSOURCED",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-clamp-diode-ll-forward-voltage",
++      "record_id": "rec-clamp-diode-ll",
++      "source_id": "src-clamp-diode-ll-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "at_1mA_max_mV": 900,
++        "at_10mA_max_mV": 1000,
++        "at_50mA_max_mV": 1100,
++        "at_150mA_max_mV": 1250
++      },
++      "unit": "mV",
++      "conditions": "Maximum VF per diode at Tj = 25 C only; no minimum, no maximum below 1 mA and no maximum at another temperature. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
++      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 2, printed 3 / 10, Table 7 Characteristics, VF rows",
++      "provenance": "UNVERIFIED",
++      "verdict": "UNSOURCED",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-clamp-diode-ll-reverse-current",
++      "record_id": "rec-clamp-diode-ll",
++      "source_id": "src-clamp-diode-ll-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "max_25C_nA": 5,
++        "max_150C_nA": 80,
++        "typ_25C_nA": 0.003,
++        "typ_150C_nA": 3,
++        "VR_V": 75
++      },
++      "unit": "nA",
++      "conditions": "Per diode at VR = 75 V; Tj = 25 C and Tj = 150 C rows. Project use at VR <= 20 V assumes IR does not rise as VR falls. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
++      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 2, printed 3 / 10, Table 7 Characteristics, IR rows",
++      "provenance": "UNVERIFIED",
++      "verdict": "UNSOURCED",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-clamp-diode-ll-reverse-current-temperature",
++      "record_id": "rec-clamp-diode-ll",
++      "source_id": "src-clamp-diode-ll-datasheet",
++      "class": "TYPICAL_CURVE",
++      "value": "Fig. 4 gives IR versus Tj at VR = 75 V, 25..150 C, as curve (1) maximum values and curve (2) typical values. Project readings of curve (1): 25 C 5 nA, 40 C about 6.6 nA, 50 C about 7.8 nA, 70 C about 13 nA, 150 C 80 nA. Curve (2): 25 C 0.003 nA, 50 C about 0.011 nA. No curve below 25 C.",
++      "unit": "NONE",
++      "conditions": "Readings from a log-scale figure, about +/-10 %; endpoints agree with the Table 7 maxima. The project treats curve (1) as the bound at 40 C and 70 C and assumes IR does not rise as Tj falls below 25 C. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
++      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 3, printed 4 / 10, Figure 4 (Fig. 4) Reverse current as a function of junction temperature",
++      "provenance": "UNVERIFIED",
++      "verdict": "UNSOURCED",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-clamp-diode-ll-capacitance-recovery",
++      "record_id": "rec-clamp-diode-ll",
++      "source_id": "src-clamp-diode-ll-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "Cd_typ_pF": 2,
++        "trr_typ_us": 0.8,
++        "trr_max_us": 3,
++        "VFRM_max_V": 1.75
++      },
++      "unit": "pF, us and V",
++      "conditions": "Cd at VR = 0 V, f = 1 MHz, Tj = 25 C (typical only); trr at IF = IR = 10 mA, IR(meas) = 1 mA, RL = 100 ohm; VFRM at IF = 10 mA, tr = 20 ns. Transcribed from the JLCPCB-hosted mirror of BAV199 v.3; UNSOURCED until the bytes are compared with a manufacturer-hosted copy (nexperia.com access-denied 2026-11-01).",
++      "locator": "src-clamp-diode-ll-datasheet: physical PDF index 2, printed 3 / 10, Table 7 Characteristics, Cd, trr and VFRM rows",
++      "provenance": "UNVERIFIED",
++      "verdict": "UNSOURCED",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-clamp-diode-ll-procurement-status",
++      "record_id": "rec-clamp-diode-ll",
++      "source_id": "src-clamp-diode-ll-jlc",
++      "class": "PROJECT_STATE",
++      "value": {
++        "lcsc": "C40919",
++        "manufacturer": "Nexperia",
++        "mpn": "BAV199,215",
++        "variant": "Exact MPN and LCSC identity row; SOT-23. Stock 86068 observed 2026-11-01 is a dated observation, not an allocation."
++      },
++      "unit": "NONE",
++      "conditions": "Distributor identity only.",
++      "locator": "Identity section: src-clamp-diode-ll-jlc JSON row fields componentCode, componentModelEn, stockCount and componentPrices",
++      "provenance": "DISTRIBUTOR-IDENTITY",
++      "verdict": "CONFIRMED - distributor identity only",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-clamp-diode-ll-assembly-allocation",
++      "record_id": "rec-clamp-diode-ll",
++      "source_id": "src-clamp-diode-ll-jlc",
++      "class": "PROJECT_STATE",
++      "value": "UNSOURCED: factory stock allocation and assembly acceptance are not established by a search row",
++      "unit": "NONE",
++      "conditions": "Dated search row only.",
++      "locator": "Section/table audit: src-clamp-diode-ll-jlc JSON row stockCount",
++      "provenance": "UNVERIFIED",
++      "verdict": "UNSOURCED",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-clamp-diode-ll-mechanical-fit",
++      "record_id": "rec-clamp-diode-ll",
++      "source_id": "src-clamp-diode-ll-protection-map",
++      "class": "PROJECT_STATE",
++      "value": "Reuses the project SOT-23 land and the provisional IC_SOT-23 envelope of BAT54S,215; the BAV199 package outline (Fig. 8, index 5) is not compared with it and nothing is physically checked.",
++      "unit": "NONE",
++      "conditions": "Project geometry only.",
++      "locator": "Section/table audit: src-clamp-diode-ll-protection-map JSON section precision_input_clamp",
++      "provenance": "PROJECT-CHOICE",
++      "verdict": "NEEDS BENCH",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-clamp-diode-ll-input-overdrive",
++      "record_id": "rec-clamp-diode-ll",
++      "source_id": "src-clamp-diode-ll-protection-map",
++      "class": "PROJECT_STATE",
++      "value": "Rail clamp at SENSE behind R_LIMIT 10 kOhm: while the TMUX7412F still passes between VDD and VDD + VT, SENSE can exceed V+ by min(VT, VF). Neither has a maximum at this current (VT 0.7 V typical at 25 C; BAV199 VF maximum only at >= 1 mA), so the OPA4197 common-mode absolute maximum (V+) + 0.5 V is UNKNOWN; the input current (<= about 70 uA) is far below its 10 mA row.",
++      "unit": "NONE",
++      "conditions": "OPA4197 SBOS737C 6.1 lists the voltage and current rows separately with no current-limited exception.",
++      "locator": "Section/table audit: src-clamp-diode-ll-protection-map JSON row precision_input_clamp.opa4197_input_absolute_maximum",
++      "provenance": "PROJECT-CHOICE",
++      "verdict": "NEEDS BENCH",
++      "depends_on": [],
++      "expression": ""
++    }
++  ]
++}
+diff --git a/.claude/skills/component-nexperia-bav199-215/interactions.json b/.claude/skills/component-nexperia-bav199-215/interactions.json
+new file mode 100644
+index 0000000..2fbe078
+--- /dev/null
++++ b/.claude/skills/component-nexperia-bav199-215/interactions.json
+@@ -0,0 +1,18 @@
++{
++  "schema_version": 1,
++  "interactions": [
++    {
++      "interaction_id": "int-clamp-diode-ll-project-role",
++      "record_ids": [
++        "rec-clamp-diode-ll"
++      ],
++      "fact_ids": [
++        "fact-clamp-diode-ll-project-selection",
++        "fact-clamp-diode-ll-pinout",
++        "fact-clamp-diode-ll-reverse-current-temperature"
++      ],
++      "conditions": "S2b candidate precision-input role; schematic binding exists only inside the unadopted candidate record.",
++      "verdict": "NEEDS BENCH"
++    }
++  ]
++}
+diff --git a/.claude/skills/component-nexperia-bav199-215/manifest.json b/.claude/skills/component-nexperia-bav199-215/manifest.json
+new file mode 100644
+index 0000000..74c57ad
+--- /dev/null
++++ b/.claude/skills/component-nexperia-bav199-215/manifest.json
+@@ -0,0 +1,51 @@
++{
++  "schema_version": 1,
++  "skill": "component-nexperia-bav199-215",
++  "records": [
++    {
++      "record_id": "rec-clamp-diode-ll",
++      "line_id": "line-clamp-diode-ll",
++      "kind": "standalone",
++      "parent_record_id": null,
++      "mpn": "BAV199,215",
++      "manufacturer": "Nexperia",
++      "lcsc": "C40919",
++      "package": "SOT-23",
++      "source_ids": [
++        "src-clamp-diode-ll-datasheet",
++        "src-clamp-diode-ll-jlc",
++        "src-clamp-diode-ll-protection-map"
++      ],
++      "fact_ids": [
++        "fact-clamp-diode-ll-manufacturer",
++        "fact-clamp-diode-ll-project-selection",
++        "fact-clamp-diode-ll-orderable-identity",
++        "fact-clamp-diode-ll-pinout",
++        "fact-clamp-diode-ll-product-function",
++        "fact-clamp-diode-ll-reverse-voltage-absolute",
++        "fact-clamp-diode-ll-forward-current-absolute",
++        "fact-clamp-diode-ll-power-thermal",
++        "fact-clamp-diode-ll-forward-voltage",
++        "fact-clamp-diode-ll-reverse-current",
++        "fact-clamp-diode-ll-reverse-current-temperature",
++        "fact-clamp-diode-ll-capacitance-recovery",
++        "fact-clamp-diode-ll-procurement-status",
++        "fact-clamp-diode-ll-assembly-allocation",
++        "fact-clamp-diode-ll-mechanical-fit",
++        "fact-clamp-diode-ll-input-overdrive"
++      ],
++      "interaction_ids": [
++        "int-clamp-diode-ll-project-role"
++      ],
++      "open_domains": [
++        "exact orderable identity",
++        "pinout",
++        "electrical limits",
++        "manufacturer product description",
++        "mechanical fit",
++        "procurement",
++        "op-amp input overdrive"
++      ]
++    }
++  ]
++}
+diff --git a/.claude/skills/component-nexperia-bav199-215/pin-map.json b/.claude/skills/component-nexperia-bav199-215/pin-map.json
+new file mode 100644
+index 0000000..031fc2c
+--- /dev/null
++++ b/.claude/skills/component-nexperia-bav199-215/pin-map.json
+@@ -0,0 +1,32 @@
++{
++  "schema_version": 1,
++  "pin_maps": [
++    {
++      "pin_map_id": "pinmap-clamp-diode-ll",
++      "record_id": "rec-clamp-diode-ll",
++      "symbol": "BAV199_215",
++      "footprint": "SOT-23",
++      "pins": [
++        {
++          "symbol_pin": "1",
++          "name": "A1",
++          "footprint_pad": "1",
++          "function": "A1 anode (diode 1)"
++        },
++        {
++          "symbol_pin": "2",
++          "name": "K2",
++          "footprint_pad": "2",
++          "function": "K2 cathode (diode 2)"
++        },
++        {
++          "symbol_pin": "3",
++          "name": "K1/A2",
++          "footprint_pad": "3",
++          "function": "K1/A2 cathode (diode 1) and anode (diode 2)"
++        }
++      ],
++      "reviewed_by": "Phase-24 source comparison against the retained data sheet; schematic binding only inside the unadopted candidate."
++    }
++  ]
++}
+diff --git a/.claude/skills/component-nexperia-bav199-215/routing.json b/.claude/skills/component-nexperia-bav199-215/routing.json
+new file mode 100644
+index 0000000..3964806
+--- /dev/null
++++ b/.claude/skills/component-nexperia-bav199-215/routing.json
+@@ -0,0 +1,32 @@
++{
++  "schema_version": 1,
++  "routes": [
++    {
++      "route_id": "route-clamp-diode-ll",
++      "record_id": "rec-clamp-diode-ll",
++      "aliases": {
++        "mpn": [
++          "BAV199,215",
++          "BAV199"
++        ],
++        "lcsc": [
++          "C40919"
++        ],
++        "manufacturer": [
++          "Nexperia"
++        ],
++        "function": [
++          "precision input clamp pair"
++        ]
++      },
++      "positive": [
++        "BAV199,215",
++        "Nexperia BAV199,215",
++        "C40919"
++      ],
++      "negative": [
++        "unrelated 999999 clamp-diode-ll"
++      ]
++    }
++  ]
++}
+diff --git a/.claude/skills/component-nexperia-bav199-215/sources.json b/.claude/skills/component-nexperia-bav199-215/sources.json
+new file mode 100644
+index 0000000..7ce0a73
+--- /dev/null
++++ b/.claude/skills/component-nexperia-bav199-215/sources.json
+@@ -0,0 +1,64 @@
++{
++  "schema_version": 1,
++  "sources": [
++    {
++      "source_id": "src-clamp-diode-ll-datasheet",
++      "record_id": "rec-clamp-diode-ll",
++      "document_title": "BAV199 Low-leakage double diode, Product data sheet",
++      "document_number": "BAV199",
++      "revision": "v.3",
++      "document_date": "1 September 2020",
++      "authoritative_url": "https://jlc-prod-smt.oss-eu-central-1.aliyuncs.com/smtDataManualFile/8586176023968272384-C40919.pdf",
++      "alternate_authoritative_url": "https://assets.nexperia.com/documents/data-sheet/BAV199.pdf",
++      "retrieval_date": "2026-11-01",
++      "authority_class": "MANUFACTURER_MIRROR",
++      "sha256": "c09cdf672eb4274e137efcf7a0d4e34fc8de099a975cfe8efa3a5a3c560cdf81",
++      "availability": "AVAILABLE",
++      "physical_pdf_page_index": 0,
++      "printed_page_label": "1 / 10",
++      "locator": "Section 5, Table 2 Pinning information",
++      "evidence_extract": "Nexperia-authored BAV199 v.3 product data sheet (1 September 2020, Table 8 revision history index 7), retained as the JLCPCB-hosted copy linked from the C40919 parts row (signed download URL; query string not retained). The nexperia.com asset URL returned Access Denied on 2026-11-01 and was not worked around, so the bytes are not compared with the manufacturer host. Table 2 (index 0): pin 1 A1 anode (diode 1), pin 2 K2 cathode (diode 2), pin 3 K1, A2. Table 3 (index 1): type number BAV199, package SOT23; no packing suffix is listed.",
++      "retained_path": "circuit/sources/ic-library/BAV199.pdf"
++    },
++    {
++      "source_id": "src-clamp-diode-ll-jlc",
++      "record_id": "rec-clamp-diode-ll",
++      "document_title": "JLCPCB parts-search response for BAV199,215",
++      "document_number": "C40919",
++      "revision": "not stated in source",
++      "document_date": "2026-11-01",
++      "authoritative_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
++      "alternate_authoritative_url": "",
++      "retrieval_date": "2026-11-01",
++      "authority_class": "DISTRIBUTOR_IDENTITY",
++      "sha256": "b05336ec13796ce86bcd4bfd6fb55a6da1a7d60ab967bda895019b980c816fca",
++      "availability": "AVAILABLE",
++      "physical_pdf_page_index": 0,
++      "printed_page_label": "JSON response",
++      "locator": "Identity section: JSON row data.componentPageInfo.list[componentCode=C40919]",
++      "evidence_extract": "Row C40919, Nexperia BAV199,215, SOT-23, expand library; stock 86068 and tier price 0.0383 USD (1-99) on 2026-11-01. Technical claims remain outside distributor identity authority.",
++      "retained_path": ".circuit-cache/sources/readiness-20261101/jlc/BAV199.json",
++      "refresh_policy": "VOLATILE-HTML",
++      "identity_extract_sha256": "94f68332e8fc98cfe1c62a23df419a4fce30f131db9ca161edab02cc4b0d3789",
++      "refresh_note": "Stock and price in this POST search response are not deterministic across time; the hash identifies only the inspected response bytes."
++    },
++    {
++      "source_id": "src-clamp-diode-ll-protection-map",
++      "record_id": "rec-clamp-diode-ll",
++      "document_title": "S2b protection map",
++      "document_number": "design/readiness/s2b-protection-map.json",
++      "revision": "S2b candidate record, phase 24",
++      "document_date": "2026-11-01",
++      "authoritative_url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/claude/project-thread-l2opxj/design/readiness/s2b-protection-map.json",
++      "alternate_authoritative_url": "",
++      "retrieval_date": "2026-11-01",
++      "authority_class": "PROJECT_GENERATOR",
++      "sha256": "90934441e4bbb2394167dd7b85a900686c6af33bd1213ca47f8d1df41ec70e72",
++      "availability": "AVAILABLE",
++      "physical_pdf_page_index": 0,
++      "printed_page_label": "not paginated",
++      "locator": "JSON section: precision_input_clamp",
++      "evidence_extract": "Placement count of the precision variant and the before/after leakage drift per role (pitch, MULT, S&H) at 0-40 C; OPA4197 input absolute-maximum row."
++    }
++  ]
++}
+diff --git a/.claude/skills/component-spec-audit/references/direct-routing.json b/.claude/skills/component-spec-audit/references/direct-routing.json
+index 78e8046..db2b4b1 100644
+--- a/.claude/skills/component-spec-audit/references/direct-routing.json
++++ b/.claude/skills/component-spec-audit/references/direct-routing.json
+@@ -285,6 +285,10 @@
+     {
+       "line_id": "line-env-switch-t",
+       "negative": "unrelated supplier 999999 env-switch-t"
++    },
++    {
++      "line_id": "line-clamp-diode-ll",
++      "negative": "unrelated supplier 999999 clamp-diode-ll"
+     }
+   ]
+ }
+diff --git a/.claude/skills/component-spec-audit/references/inventory.json b/.claude/skills/component-spec-audit/references/inventory.json
+index 4591e3c..5f9e62e 100644
+--- a/.claude/skills/component-spec-audit/references/inventory.json
++++ b/.claude/skills/component-spec-audit/references/inventory.json
+@@ -2,8 +2,8 @@
+   "schema_version": 1,
+   "generator_specs": [],
+   "assertions": {
+-    "orderable_lines": 71,
+-    "fitted_lines": 52,
++    "orderable_lines": 72,
++    "fitted_lines": 53,
+     "dnp_or_hand_fit_lines": 19
+   },
+   "exclusions": [],
+@@ -930,6 +930,19 @@
+       "source_state": "AVAILABLE",
+       "function": "envelope internal analog switch (S2b candidate)",
+       "placements": []
++    },
++    {
++      "line_id": "line-clamp-diode-ll",
++      "mpn": "BAV199,215",
++      "manufacturer": "Nexperia",
++      "lcsc": "C40919",
++      "package": "SOT-23",
++      "dnp": false,
++      "owner_skill": "component-nexperia-bav199-215",
++      "identity_state": "UNRESOLVED",
++      "source_state": "AVAILABLE",
++      "function": "precision input clamp pair (S2b candidate)",
++      "placements": []
+     }
+   ]
+ }
+diff --git a/circuit/cad-receipts/ic15-clamp_diode_ll.receipt.json b/circuit/cad-receipts/ic15-clamp_diode_ll.receipt.json
+new file mode 100644
+index 0000000..baa7563
+--- /dev/null
++++ b/circuit/cad-receipts/ic15-clamp_diode_ll.receipt.json
+@@ -0,0 +1,80 @@
++{
++  "receipt_version": 1,
++  "identity": {
++    "asset_id": "ic15-clamp_diode_ll",
++    "record_id": "rec-clamp-diode-ll",
++    "manufacturer": "Nexperia",
++    "mpn": "BAV199,215",
++    "package": "SOT-23",
++    "variant_notes": "UNADOPTED S2b candidate (phase 24 precision input clamp)"
++  },
++  "acquisition": {
++    "provider": "Retained manufacturer-authored document (JLCPCB-hosted copy); project-generated symbol",
++    "source_url": "https://jlc-prod-smt.oss-eu-central-1.aliyuncs.com/smtDataManualFile/8586176023968272384-C40919.pdf",
++    "acquired_on": "2026-11-01",
++    "original_filenames": [
++      "C40919.pdf"
++    ],
++    "sha256": {
++      "circuit/sources/ic-library/BAV199.pdf": "c09cdf672eb4274e137efcf7a0d4e34fc8de099a975cfe8efa3a5a3c560cdf81"
++    }
++  },
++  "representation": {
++    "files": [
++      "symbols/src/BAV199_215.kicad_sym"
++    ],
++    "formats": [
++      "kicad_sym"
++    ],
++    "units": "KiCad schematic units",
++    "original_paths": [
++      "circuit/sources/ic-library/BAV199.pdf"
++    ]
++  },
++  "fidelity": {
++    "class": "derived",
++    "reason": "Pin functions transcribed from the retained BAV199 v.3 Table 2 by the named generator; pin geometry matches BAT54S_215; the SOT-23 land is reused.",
++    "evidence": [
++      "AVAILABLE",
++      "https://jlc-prod-smt.oss-eu-central-1.aliyuncs.com/smtDataManualFile/8586176023968272384-C40919.pdf"
++    ]
++  },
++  "derivation": {
++    "derived": true,
++    "input_sha256": {
++      "circuit/sources/ic-library/BAV199.pdf": "c09cdf672eb4274e137efcf7a0d4e34fc8de099a975cfe8efa3a5a3c560cdf81"
++    },
++    "tool": "scripts/libgen/build_s2b_switch_assets.py",
++    "tool_version": "1",
++    "parameters": {
++      "normalization": "BAV199 v.3 Table 2 pinning (index 0): 1 A1, 2 K2, 3 K1/A2; junction-diode graphics; SOT-23 land shared with BAT54S,215"
++    },
++    "output_sha256": {
++      "symbols/src/BAV199_215.kicad_sym": "3b0c46ffe573c609e3ffb748dc94905d5697d8556592f7a51d85876e1b870cf7"
++    }
++  },
++  "cad_use": {
++    "symbol": "zudo-osc-hole-field:BAV199_215",
++    "footprint": "zudo-osc-hole-field:SOT-23",
++    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-23.wrl",
++    "transform": {
++      "offset": null,
++      "rotation": null,
++      "scale": null
++    },
++    "seating_plane": null
++  },
++  "checks": {
++    "performed": [
++      "scripts/libgen/check_lib.py and check_ic_evidence.py in the phase-24 scratch worktree"
++    ],
++    "remaining_physical_checks": [
++      "Compare the BAV199 SOT23 outline (Fig. 8, index 5) and reflow footprint (Fig. 9, index 6) with the reused SOT-23 land before hardware use."
++    ]
++  },
++  "publication": {
++    "preview_selected": false,
++    "download_published": false,
++    "permitted_scope": null
++  }
++}
+diff --git a/circuit/publication/selection.json b/circuit/publication/selection.json
+index 2eb83e6..0894fb4 100644
+--- a/circuit/publication/selection.json
++++ b/circuit/publication/selection.json
+@@ -599,8 +599,8 @@
+     }
+   ],
+   "expect": {
+-    "records": 71,
+-    "sources": 155,
++    "records": 72,
++    "sources": 158,
+     "integrationRules": 2,
+     "packages": 31
+   }
+diff --git a/design/spec/cells/_builder.py b/design/spec/cells/_builder.py
+index 8d9ff48..d950a2b 100644
+--- a/design/spec/cells/_builder.py
++++ b/design/spec/cells/_builder.py
+@@ -26,6 +26,8 @@ PIN_ALIASES={
+  # S2b candidate (user decision 2026-11-01): TMUX7412F WQFN Table 6-1, channel 1 only.
+  'fault_switch_tmux':{'S':'1','D':'16','IN':'15','VDD':'11','VSS':'2','GND':'3'},
+  'clamp_diode':{'A':'1','MID':'3','K':'2'},
++ # S2b candidate precision clamp (phase 24): BAV199 v.3 Table 2, same pin order as BAT54S.
++ 'clamp_diode_ll':{'A':'1','MID':'3','K':'2'},
+  'reference':{'VIN':'2','GND':'4','OUT':'6','TRIM':'5','TEMP':'3'},
+  'comparator':{'PLUS':'3','MINUS':'2','OUT':'1','VCC':'8','GND':'4'},
+  'schmitt':{'IN':'1','OUT':'2','VCC':'14','GND':'7'},
+@@ -39,7 +41,7 @@ PIN_ALIASES={
+  'trim_103':{'END1':'1','WIPER':'2','END2':'3'},
+ }
+ AMP={'IN+':'3','IN-':'2','OUT':'1','V+':'4','V-':'11'}
+-PREFIX={'r_feedback':'R','c_feedback':'C','r_general':'R','r_precision':'R','r_power':'R','r_ladder':'R','c_small':'C','c_bypass':'C','c_bulk':'C','c_slew':'C','signal_diode':'D','clamp_diode':'D','led_white':'D','led_red':'D','pot_103':'RV','pot_104':'RV','pot_504':'RV','trim_102':'RV','trim_103':'RV','npn':'Q','mosfet':'Q'}
++PREFIX={'r_feedback':'R','c_feedback':'C','r_general':'R','r_precision':'R','r_power':'R','r_ladder':'R','c_small':'C','c_bypass':'C','c_bulk':'C','c_slew':'C','signal_diode':'D','clamp_diode':'D','clamp_diode_ll':'D','led_white':'D','led_red':'D','pot_103':'RV','pot_104':'RV','pot_504':'RV','trim_102':'RV','trim_103':'RV','npn':'Q','mosfet':'Q'}
+ 
+ 
+ def load_symbol(name):
+@@ -83,13 +85,16 @@ def _exact_value(part,record):
+  return id in known and abs(val-known[id]) <= abs(known[id])*1e-9
+ 
+ 
+-def cell_parts(cell_id,panel_uid,nets=None,*,ordinal_start=1,instance_tag=''):
++def cell_parts(cell_id,panel_uid,nets=None,*,ordinal_start=1,instance_tag='',variant=None):
+  """Return every physical unit for one cell, with caller-supplied port net names.
+ 
+  `nets` maps standard terminal names to module nets; unspecified names are local
+  to this cell and namespaced by panel UID, preventing accidental joining.
++ A named `variant` replaces part fields per ref from the standard's
++ cells[].variants; keys, nets and ordinals stay those of the base cell.
+  """
+  if cell_id not in CELLS:raise KeyError(cell_id)
++ overrides=CELLS[cell_id]['variants'][variant]['part_overrides'] if variant else {}
+  if panel_uid not in UIDS:raise ValueError(f'unknown panel UID: {panel_uid}')
+  nets=nets or {};cell=CELLS[cell_id];out=[]
+  namespace=re.sub(r'[^A-Za-z0-9_]', '_', f'{cell_id}_{panel_uid}_{instance_tag}')
+@@ -100,6 +105,7 @@ def cell_parts(cell_id,panel_uid,nets=None,*,ordinal_start=1,instance_tag=''):
+   if value in ('+12V','-12V','+5V','AGND'):return nets.get(value,value)
+   return nets.get(value,f'{label_prefix}_{value}')
+  for ordinal,spec in enumerate(cell['parts'],ordinal_start):
++  spec={**spec,**overrides.get(spec['ref'],{})}
+   part_id,record,symbol=resolve(spec);term=spec['terminals'];aliases=AMP if spec.get('opamp_role') else PIN_ALIASES.get(part_id,{})
+   assigned={aliases.get(key,key):net(value) for key,value in term.items()}
+   if part_id=='fault_switch':
+diff --git a/design/spec/modules/mult.py b/design/spec/modules/mult.py
+index 8c1674b..b856218 100644
+--- a/design/spec/modules/mult.py
++++ b/design/spec/modules/mult.py
+@@ -37,11 +37,11 @@ class MultBuilder(Builder):
+         return ({'PanelUid': template.replace('{}', '${SHEETNAME}')},
+                 {instance: PLACEMENTS[template.format(instance)]['ref'] for instance in INSTANCES}) if template else ({'PanelUid': ''}, {})
+ 
+-    def cell(self, cell_id, tag, nets, *, panel=None, role=None, led=False):
++    def cell(self, cell_id, tag, nets, *, panel=None, role=None, led=False, variant=None):
+         # Cell-private pins are namespaced by the exact locked UID and tag. Only
+         # the LED receives the physical panel binding; its driver stays local.
+         uid = (panel or 'J:{}.IN').format(INSTANCES[0])
+-        for part in cell_parts(cell_id, uid, nets, ordinal_start=1, instance_tag=tag):
++        for part in cell_parts(cell_id, uid, nets, ordinal_start=1, instance_tag=tag, variant=variant):
+             attrs = {**part.attributes, 'PanelUid': '',
+                      'Island': self.led_island if led else self.island}
+             refs = {}
+@@ -102,7 +102,7 @@ def family():
+     builder.cell('input_fault_switch', 'IN', {'JACK': 'IN_TIP', 'PROTECTED': 'IN_PROTECTED'})
+     builder.cell('high_impedance_input', 'IN',
+                  {'PROTECTED': 'IN_PROTECTED', 'SENSE': 'IN_SENSE',
+-                  'BUFFERED': 'IN_BUFFER'}, role='precision')
++                  'BUFFERED': 'IN_BUFFER'}, role='precision', variant='precision')
+     builder.cell('magnitude_indicator', 'IN', {'MONITOR': 'IN_BUFFER'},
+                  panel='L:{}.IN.mag', led=True)
+     for output in OUTPUTS:
+diff --git a/design/spec/modules/oscillator.py b/design/spec/modules/oscillator.py
+index 2c2b253..cea3a89 100644
+--- a/design/spec/modules/oscillator.py
++++ b/design/spec/modules/oscillator.py
+@@ -74,9 +74,9 @@ class Builder:
+         identity='trim_102' if value=='1 kΩ' else 'trim_103'
+         self.device(CATALOG[SHORTLIST[identity]['mpn']],key,'RV',{'1':a,'2':w,'3':b or w},value=value,mpn=SHORTLIST[identity]['mpn'] if value in ('1 kΩ','10 kΩ') else '')
+ 
+-    def cell(self,id,tag,nets,*,panel=None,role=None):
++    def cell(self,id,tag,nets,*,panel=None,role=None,variant=None):
+         uid=(panel or 'J:{}.1V').format('O1')
+-        generated=cell_parts(id,uid,nets,ordinal_start=1,instance_tag=tag)
++        generated=cell_parts(id,uid,nets,ordinal_start=1,instance_tag=tag,variant=variant)
+         for p in generated:
+             attrs={**p.attributes,'PanelUid':'','Island':self.island};refs={}
+             if panel and p.prefix=='RV':
+@@ -148,7 +148,8 @@ def family():
+         template='J:{}.{}'.format('{}',key)
+         b.device('WQP518MA','J_'+key,'J',{'T':key+'_TIP','S':'AGND','TN':None},panel=template,island='')
+         b.cell('input_fault_switch',key,{'JACK':key+'_TIP','PROTECTED':key+'_PROTECTED'})
+-        b.cell('high_impedance_input',key,{'PROTECTED':key+'_PROTECTED','BUFFERED':key+'_BUFFER'},role='precision' if key=='1V' else 'cv')
++        b.cell('high_impedance_input',key,{'PROTECTED':key+'_PROTECTED','BUFFERED':key+'_BUFFER'},role='precision' if key=='1V' else 'cv',
++               variant='precision' if key=='1V' else None)
+     for key in ('FM','PWM'):
+         b.cell('remote_buffer',key,{'SIGNAL':key+'_BUFFER','REMOTE':key+'_REMOTE'})
+         b.cell('bipolar_attenuverter',key,{'REMOTE_INPUT':key+'_REMOTE','BUFFERED_INPUT':key+'_BUFFER','OUT':key+'_DEPTH'},panel='C:{}.{}±'.format('{}',key))
+diff --git a/design/spec/modules/sample_hold.py b/design/spec/modules/sample_hold.py
+index f89abe0..2b7a4b2 100644
+--- a/design/spec/modules/sample_hold.py
++++ b/design/spec/modules/sample_hold.py
+@@ -52,9 +52,9 @@ def part(id,key,prefix,ordinal,pins,page,*,value=None,mpn=None,panel=None,island
+ @refined
+ def family():
+  panel_bindings();parts=[];ordinal=1
+- def add(id,uid,nets,page,*,island='',panel_part=None):
++ def add(id,uid,nets,page,*,island='',panel_part=None,variant=None):
+   nonlocal ordinal
+-  cell=cell_parts(id,uid,nets,ordinal_start=ordinal)
++  cell=cell_parts(id,uid,nets,ordinal_start=ordinal,variant=variant)
+   ordinal+=len(CELLS[id]['parts'])
+   for p in cell:
+    attrs={**p.attributes,'PanelUid':'','Island':island}
+@@ -75,7 +75,7 @@ def family():
+  add('high_impedance_input','J:H1.TRIGGER',{'PROTECTED':'TRIGGER_PROTECTED','BUFFERED':'TRIGGER_BUFFERED'},1)
+  add('gate_trigger_input','J:H1.TRIGGER',{'BUFFERED':'TRIGGER_BUFFERED','REF_5V':'REF_5V','GATE_REF':'GATE_REF','GATE_HIGH':'TRIGGER_GATE'},1)
+  add('input_fault_switch','J:H1.IN',{'JACK':'IN_TIP','PROTECTED':'IN_PROTECTED'},1)
+- add('high_impedance_input','J:H1.IN',{'PROTECTED':'IN_PROTECTED','BUFFERED':'IN_BUFFERED'},1)
++ add('high_impedance_input','J:H1.IN',{'PROTECTED':'IN_PROTECTED','BUFFERED':'IN_BUFFERED'},1,variant='precision')
+  add('switch_button_input','C:H1.SAMPLE',{'CONTACT':'CONTACT','ACTIVE':'BUTTON_ACTIVE'},1)
+  add('magnitude_indicator','L:H1.TRIGGER.mag',{'MONITOR':'TRIGGER_BUFFERED'},1,island='L:${SHEETNAME}.TRIGGER.mag',panel_part=('Kingbright_White_0402','L:{}.TRIGGER.mag'))
+  add('magnitude_indicator','L:H1.IN.mag',{'MONITOR':'IN_BUFFERED'},1,island='L:${SHEETNAME}.IN.mag',panel_part=('Kingbright_White_0402','L:{}.IN.mag'))
+diff --git a/design/standard/catalogue-publication.json b/design/standard/catalogue-publication.json
+index d743fdb..eab7044 100644
+--- a/design/standard/catalogue-publication.json
++++ b/design/standard/catalogue-publication.json
+@@ -99,6 +99,10 @@
+     {
+       "record_id": "rec-env-switch-t",
+       "reason": "UNADOPTED S2b candidate (decision E13); bound only inside circuit/candidates/s2b-tmux-20261101, so no generated catalog page."
++    },
++    {
++      "record_id": "rec-clamp-diode-ll",
++      "reason": "UNADOPTED S2b candidate (phase 24 precision input clamp); bound only inside circuit/candidates/s2b-tmux-20261101, so no generated catalog page."
+     }
+   ],
+   "document_constraints": [
+diff --git a/design/standard/electrical-standard.json b/design/standard/electrical-standard.json
+index cc20194..9a348f4 100644
+--- a/design/standard/electrical-standard.json
++++ b/design/standard/electrical-standard.json
+@@ -457,14 +457,32 @@
+       "notes": [
+         "100 kohm nominal at drain; switch on resistance adds series error. No independent 10 kohm pot may load the jack.",
+         "Clamp leakage and input current, especially hot, remain part of the input error budget.",
+-        "Nominal accuracy limited to ±5 V; ±12 V is a continuous survival requirement, not a linear input range."
++        "Nominal accuracy limited to ±5 V; ±12 V is a continuous survival requirement, not a linear input range.",
++        "Variant precision (UNADOPTED S2b candidate, phase 24): D = BAV199,215 (clamp_diode_ll), a low-leakage series pair with the BAT54S pin order, on the five 1V/OCT inputs, MULT IN and S&H IN. Its silicon VF has no maximum below 1 mA, so SENSE versus the OPA4197 (V+) + 0.5 V absolute maximum in the VDD .. VDD + VT window is UNKNOWN (design/readiness/s2b-protection-map.json precision_input_clamp)."
+       ],
+       "uses": [
+         "input_fault_switch"
+       ],
+       "verification": [
+         "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+-      ]
++      ],
++      "variants": {
++        "precision": {
++          "status": "UNADOPTED S2b candidate (phase 24); canonical adoption needs a separate approval",
++          "part_overrides": {
++            "D": {
++              "part_id": "clamp_diode_ll"
++            }
++          },
++          "applies_to": [
++            "oscillator 1V (1V/OCT pitch, 5 per unit)",
++            "mult IN (2 per unit)",
++            "sample_hold IN (2 per unit)"
++          ],
++          "reason": "BAT54S reverse current has only a 25 C maximum (2 uA at 25 V); BAV199 has a 25 C maximum of 5 nA and a Fig. 4 maximum curve to 150 C (mirror-sourced, UNSOURCED until a manufacturer-hosted copy is compared).",
++          "keys_unchanged": "Part keys, nets, ordinals and Role attributes are those of the base cell; only the D part identity changes."
++        }
++      }
+     },
+     {
+       "id": "summing_node_input",
+diff --git a/design/standard/ic-library-capture.json b/design/standard/ic-library-capture.json
+index 08e4105..898b794 100644
+--- a/design/standard/ic-library-capture.json
++++ b/design/standard/ic-library-capture.json
+@@ -2,8 +2,8 @@
+   "schema_version": 1,
+   "date": "2026-10-02",
+   "status": "capture-grade unvalidated draft",
+-  "shortlist_count": 41,
+-  "captured_count": 41,
++  "shortlist_count": 42,
++  "captured_count": 42,
+   "blocked_count": 0,
+   "rows": [
+     {
+@@ -251,6 +251,12 @@
+       "mpn": "TMUX6112PWR",
+       "status": "CAPTURED DRAFT",
+       "reason": null
++    },
++    {
++      "id": "clamp_diode_ll",
++      "mpn": "BAV199,215",
++      "status": "CAPTURED DRAFT",
++      "reason": null
+     }
+   ],
+   "boundaries": [
+diff --git a/design/standard/parts-shortlist.json b/design/standard/parts-shortlist.json
+index cb14014..f76461e 100644
+--- a/design/standard/parts-shortlist.json
++++ b/design/standard/parts-shortlist.json
+@@ -337,6 +337,23 @@
+         "note": "Current factory allocation and exact identity await #15/#21 evidence; no stock reservation."
+       }
+     },
++    {
++      "id": "clamp_diode_ll",
++      "manufacturer": "Nexperia",
++      "mpn": "BAV199,215",
++      "package": "SOT-23",
++      "roles": [
++        "precision input clamp pair (S2b candidate)"
++      ],
++      "lcsc": "C40919",
++      "sourcing": {
++        "checked_date": "2026-11-01",
++        "status": "LISTED; stock UNVERIFIED",
++        "source_url": "https://jlcpcb.com/partdetail/C40919",
++        "jlcpcb_assembly": "UNVERIFIED",
++        "note": "Phase-24 read-only JLC search identity; UNADOPTED S2b candidate (precision input clamp)."
++      }
++    },
+     {
+       "id": "npn",
+       "manufacturer": "Nexperia",
+diff --git a/design/standard/pin-maps/clamp_diode_ll.json b/design/standard/pin-maps/clamp_diode_ll.json
+new file mode 100644
+index 0000000..e226029
+--- /dev/null
++++ b/design/standard/pin-maps/clamp_diode_ll.json
+@@ -0,0 +1,51 @@
++{
++  "schema_version": 1,
++  "role_id": "clamp_diode_ll",
++  "identity": {
++    "manufacturer": "Nexperia",
++    "mpn": "BAV199,215",
++    "lcsc": "C40919",
++    "status": "UNADOPTED S2b candidate"
++  },
++  "cad": {
++    "symbol": "zudo-osc-hole-field:BAV199_215",
++    "footprint": "zudo-osc-hole-field:SOT-23"
++  },
++  "source": {
++    "availability": "AVAILABLE",
++    "authority": "MANUFACTURER_MIRROR",
++    "url": "https://jlc-prod-smt.oss-eu-central-1.aliyuncs.com/smtDataManualFile/8586176023968272384-C40919.pdf",
++    "retained_path": "circuit/sources/ic-library/BAV199.pdf",
++    "sha256": "c09cdf672eb4274e137efcf7a0d4e34fc8de099a975cfe8efa3a5a3c560cdf81",
++    "physical_pdf_page_index": 0,
++    "printed_page_label": "1 / 10",
++    "locator": "Section 5, Table 2 Pinning information"
++  },
++  "nets": "Unassigned in this record; candidate schematic binding lives in circuit/candidates/s2b-tmux-20261101.",
++  "pins": [
++    {
++      "datasheet_pin": "1",
++      "function": "A1 anode (diode 1)",
++      "symbol_pin": "1",
++      "footprint_pad": "1",
++      "source_locator": "circuit/sources/ic-library/BAV199.pdf, physical PDF p.0, printed p.1 / 10, Section 5, Table 2 Pinning information",
++      "verdict": "DRAFT - source-backed pin identity; board net unassigned"
++    },
++    {
++      "datasheet_pin": "2",
++      "function": "K2 cathode (diode 2)",
++      "symbol_pin": "2",
++      "footprint_pad": "2",
++      "source_locator": "circuit/sources/ic-library/BAV199.pdf, physical PDF p.0, printed p.1 / 10, Section 5, Table 2 Pinning information",
++      "verdict": "DRAFT - source-backed pin identity; board net unassigned"
++    },
++    {
++      "datasheet_pin": "3",
++      "function": "K1/A2 cathode (diode 1) and anode (diode 2)",
++      "symbol_pin": "3",
++      "footprint_pad": "3",
++      "source_locator": "circuit/sources/ic-library/BAV199.pdf, physical PDF p.0, printed p.1 / 10, Section 5, Table 2 Pinning information",
++      "verdict": "DRAFT - source-backed pin identity; board net unassigned"
++    }
++  ]
++}
+diff --git a/scripts/checks/s2b_protection_map.py b/scripts/checks/s2b_protection_map.py
+index f3e7e5e..5e908a4 100644
+--- a/scripts/checks/s2b_protection_map.py
++++ b/scripts/checks/s2b_protection_map.py
+@@ -9,7 +9,9 @@ UNADOPTED: nothing here changes the standard, the schematic or the inventory.
+ import argparse
+ import collections
+ import hashlib
++import functools
+ import json
++import math
+ import sys
+ from pathlib import Path
+ 
+@@ -125,9 +127,8 @@ def pitch_role():
+             'note': ('Verdict covers signal passing only. The top of the declared range is compared with VDD - 3 V at the required +12V minimum; that limit '
+                      'is guaranteed only at VSS = 0 V (7.8) and extrapolated at +/-12 V. The bottom lies in the flat region down to VSS. Downstream: '
+                      'OPA4197 VCM (V-) - 0.1 .. (V+) + 0.1 V is guaranteed; its input-stage transition (V+) - 3 .. (V+) - 1.5 V has no CMRR limit, and the '
+-                     'declared top stays below it at that minimum. Accuracy is a separate gate: calibration scope stays 0..5 V at 25 C, and the '
+-                     'BAT54S clamp reverse leakage has only a 25 C maximum (2 uA at 25 V; Fig. 2 typical rises steeply with temperature), so the '
+-                     'clamp-leakage term over the declared range and temperature is UNKNOWN')}
++                     'declared top stays below it at that minimum. Accuracy is a separate gate: calibration scope stays 0..5 V at 25 C; the '
++                     'clamp-leakage term is in precision_input_clamp (BAV199,215 precision variant on these inputs)')}
+ 
+ TMUX6112_ROWS = [
+     ('Pin map', 'PASS', 'TSSOP-16 order matches the ADG5412F land: SEL1 1, D1 2, S1 3, VSS 4, GND 5 ... pin 12 is NC where ADG has FF, which the project leaves unconnected (SCDS383F Table 5-1, index 3)'),
+@@ -142,6 +143,105 @@ TMUX6112_ROWS = [
+ ]
+ 
+ 
++# Phase 24: leakage of the high_impedance_input clamp at SENSE, before (BAT54S,215) and after
++# (BAV199,215, precision variant). BAT54S: project digitisation of the typical Fig. 2 curves at
++# 25 C and 85 C (fact-clamp-diode-reverse-current-temperature), log-interpolated in temperature.
++BAT54S_VR_V = [1, 5, 10, 15, 20, 25, 30]
++BAT54S_TYP_UA = {25: [0.25, 0.48, 0.71, 1.02, 1.32, 1.59, 1.91], 85: [19.2, 27.5, 36.5, 43, 49.8, 57, 65]}
++# BAV199 v.3 Fig. 4 curve (1) maximum values at VR = 75 V (project readings; Table 7 gives the 25 C
++# and 150 C endpoints) and curve (2) typical values; fact-clamp-diode-ll-reverse-current-temperature.
++BAV199_MAX_NA = {25: 5.0, 40: 6.6, 70: 13.0}
++BAV199_TYP_NA = {25: 0.003, 40: 0.0066, 70: 0.035}
++TMUX_RON_OHM = 14  # SCDS404B 7.6 RON maximum, +/-15 V table, -40..85 C (fact-fault-switch-t-ron-85c)
++CENTS_PER_V = 1200
++TEMPS = {'0-40 C': (0, 40), '0-70 C': (0, 70)}
++
++
++def _interp_log(xs, ys, x):
++    for i in range(len(xs) - 1):
++        if xs[i] <= x <= xs[i + 1]:
++            f = (x - xs[i]) / (xs[i + 1] - xs[i])
++            return math.exp(math.log(ys[i]) * (1 - f) + math.log(ys[i + 1]) * f)
++    raise ValueError(x)
++
++
++def bat54s_typ_ua(vr, temp):
++    a, b = (math.log(_interp_log(BAT54S_VR_V, BAT54S_TYP_UA[t], vr)) for t in (25, 85))
++    return math.exp(a + (b - a) * (temp - 25) / 60)
++
++
++@functools.lru_cache(maxsize=None)
++def spec():
++    return specification()
++
++
++def clamp_placements():
++    families, instances = spec()
++    copies = collections.Counter(i.family for i in instances)
++    out = collections.Counter()
++    for family in families:
++        for part in family.parts:
++            if part.attributes.get('Role') == 'high_impedance_input:D' and part.unit == 1:
++                out[(family.name, part.key.rsplit('.', 1)[0], part.attributes.get('MPN'))] += copies[family.name]
++    return out
++
++
++def precision_clamp():
++    standard = json.loads(STANDARD.read_text())
++    cell = next(c for c in standard['cells'] if c['id'] == 'high_impedance_input')
++    values = {p['ref']: p.get('value') for p in cell['parts']}
++    signals = standard['signals']
++    source = signals['output_series_ohm'] + TMUX_RON_OHM
++    r_eff = values['R_LIMIT'] + values['R_PD'] * source / (values['R_PD'] + source)
++    rail = signals['rails_V']['+12V']
++    # Part-key suffixes of the D clamp in each precision input (cell namespace + instance tag).
++    roles = [('pitch (oscillator 1V/OCT)', 'oscillator', '_1V_1V__D', signals['pitch_linear_range_V'], 'pitch_linear_range_V'),
++             ('MULT IN', 'mult', '_IN_IN__D', signals['bipolar_cv_nominal_V'], 'bipolar_cv_nominal_V'),
++             ('S&H IN', 'sample_hold', '_H1_IN___D', signals['bipolar_cv_nominal_V'], 'bipolar_cv_nominal_V')]
++    placed = clamp_placements()
++
++    def error_v(v, temp):  # upper diode leaks into SENSE at VR = rail - V, lower diode out at rail + V
++        return -(bat54s_typ_ua(rail + v, temp) - bat54s_typ_ua(rail - v, temp)) * 1e-6 * r_eff
++
++    rows = []
++    for name, family, tag, span, span_key in roles:
++        hits = {(k, m): n for (f, k, m), n in placed.items() if f == family and k.endswith(tag)}
++        grid = [span[0] + 0.5 * i for i in range(int((span[1] - span[0]) / 0.5) + 1)]
++        row = {'role': name, 'range_V': span, 'range_source': 'signals.' + span_key, 'placements': [{'stem': k, 'mpn': m, 'per_unit': n} for (k, m), n in sorted(hits.items())]}
++        for label, (lo, hi) in TEMPS.items():
++            before = max(abs(error_v(v, t) - error_v(v, 25)) for v in grid for t in range(lo, hi + 1))
++            bound = (BAV199_MAX_NA[hi] + BAV199_MAX_NA[25]) * 1e-9 * r_eff
++            typical = (BAV199_TYP_NA[hi] + BAV199_TYP_NA[25]) * 1e-9 * r_eff
++            row[label] = {'before_bat54s_typical_drift_mV': round(before * 1e3, 3), 'before_bat54s_typical_drift_cents': round(before * CENTS_PER_V, 2),
++                          'before_bat54s_guaranteed': 'UNKNOWN (BAT54S IR maximum only at 25 C)',
++                          'after_bav199_bound_mV': round(bound * 1e3, 4), 'after_bav199_bound_cents': round(bound * CENTS_PER_V, 3),
++                          'after_bav199_typical_mV': round(typical * 1e3, 5)}
++        rows.append(row)
++    return {
++        'status': 'UNADOPTED S2b candidate (phase 24): precision variant of high_impedance_input',
++        'model': {'r_eff_ohm': round(r_eff, 1), 'r_eff_basis': 'R_LIMIT + R_PD || (signals.output_series_ohm + TMUX7412F RON 14 ohm)',
++                  'drift_definition': 'max over the role range (0.5 V steps) and the temperature span of |e(V,T) - e(V,25 C)|; cents at 1 V/oct (1 mV = 1.2 c)',
++                  'before': 'BAT54S,215 typical Fig. 2 curves (project digitisation), log-interpolated in temperature and extrapolated below 25 C; no guaranteed bound exists',
++                  'after_bound': '(IR max at the top temperature + IR max at 25 C) x r_eff; BAV199 Fig. 4 curve (1) at VR = 75 V, assuming IR does not rise at lower VR or below 25 C; source is the JLCPCB-hosted mirror (UNSOURCED until a manufacturer-hosted copy is compared)',
++                  'after_typical': 'Fig. 4 curve (2) typical values'},
++        'roles': rows,
++        'placements_per_unit': {m: sum(n for (_, _, mm), n in placed.items() if mm == m) for m in sorted({m for (_, _, m) in placed})},
++        'opa4197_input_absolute_maximum': {
++            'rows': 'SBOS737C 6.1 (index 4): signal input pins, common-mode (V-) - 0.5 .. (V+) + 0.5 V; current +/-10 mA. Footnote (1) is the general stress note; '
++                    'no footnote lets the voltage row be exceeded when the current is limited. 7.3.7 (index 24-25): the ESD steering diodes are intended to remain '
++                    'inactive in normal operation; current-limiting resistors and TVS are named only for EOS events',
++            'reading': 'Both rows apply. The VDD .. VDD + VT window is therefore not PASS on the current row alone',
++            'declared_contract': 'With input_continuous_fault_V +/-12 V and the required load-rail minima (+12V 11.53 V, -12V 11.74 V) the jack exceeds the local rail by '
++                                 'at most 0.47 V / 0.26 V: PASS against (V+) + 0.5 V with 0.03 V margin, independent of the clamp diode',
++            'beyond_contract': 'A source at the supply maximum (+12V 12.3 V at source) against a load rail at 11.53 V gives 0.77 V. Then SENSE - V+ <= min(VT, VF): '
++                               'BAT54S VF <= 0.24 V at 0.1 mA, 25 C only (PASS at 25 C, UNKNOWN below); BAV199 VF has no maximum below 1 mA (UNKNOWN)',
++            'current_row': 'PASS: (V_D - V+) / R_LIMIT <= about 70 uA for VT 0.7 V typical, far below 10 mA',
++            'verdict_bat54s': 'PASS within the declared contract; beyond it PASS at 25 C only',
++            'verdict_bav199': 'PASS within the declared contract; beyond it UNKNOWN',
++            'proposed_fix': 'Bootstrapped clamp: BAT54S,215 pins 1 and 2 to SENSE, pin 3 to BUFFERED (antiparallel across the follower). SENSE <= OUT + VF <= V+ + 0.24 V at 25 C '
++                            'and the diode reverse voltage is the follower offset, so leakage needs no hot rail-referred maximum. Not built in this record'}}
++
++
+ def source_receipts():
+     out = {}
+     for key, (title, path, url) in SOURCES.items():
+@@ -154,7 +254,7 @@ def source_receipts():
+ def placements():
+     pinmap = json.loads((ROOT / '.claude/skills/component-adi-adg5412fbruz/pin-map.json').read_text())['pin_maps'][0]['pins']
+     names = {p['symbol_pin']: p['name'] for p in pinmap}
+-    families, instances = specification()
++    families, instances = spec()
+     copies = collections.Counter(i.family for i in instances)
+     rows, errors = [], []
+     for family in families:
+@@ -191,7 +291,8 @@ def build():
+             'fault_row_summary': {name: dict(collections.Counter(f[key][0] for f in FAULTS))
+                                   for name, key in (('adg5412f', 'adg'), ('tmux7412f', 'tmux'))},
+             'usable_signal_range': {**USABLE_RANGE, 'roles': USABLE_RANGE['roles'] + [pitch_role()]},
+-            'envelope_internal_tmux6112': [{'row': a, 'verdict': b, 'basis': c} for a, b, c in TMUX6112_ROWS]}
++            'envelope_internal_tmux6112': [{'row': a, 'verdict': b, 'basis': c} for a, b, c in TMUX6112_ROWS],
++            'precision_input_clamp': precision_clamp()}
+ 
+ 
+ def main():
+diff --git a/scripts/libgen/build_s2b_switch_assets.py b/scripts/libgen/build_s2b_switch_assets.py
+index 00f65d5..9d1c613 100644
+--- a/scripts/libgen/build_s2b_switch_assets.py
++++ b/scripts/libgen/build_s2b_switch_assets.py
+@@ -5,6 +5,10 @@ Source bytes: circuit/sources/ic-library/TMUX7412F.pdf (TI SCDS404B) and
+ circuit/sources/ic-library/TMUX6112.pdf (TI SCDS383F). Pin numbers follow
+ SCDS404B Table 6-1 (WQFN column) and SCDS383F Table 5-1 (TSSOP column). Land
+ dimensions follow drawing 4224816/A, physical PDF index 44-46 of SCDS404B.
++
++Phase 24 adds the BAV199,215 precision-input clamp symbol (circuit/sources/ic-library/
++BAV199.pdf, Nexperia BAV199 v.3, Table 2 pinning, physical PDF index 0). It reuses the
++existing SOT-23 land; the pin geometry matches BAT54S_215 so the cell wiring is unchanged.
+ """
+ import argparse
+ import sys
+@@ -79,6 +83,40 @@ def symbol(mpn, part):
+     return text + '  )\n )\n)\n'
+ 
+ 
++# Nexperia BAV199 v.3 Table 2: 1 A1 anode (diode 1), 2 K2 cathode (diode 2),
++# 3 K1/A2 common. Same pin numbers and positions as BAT54S_215.
++CLAMP_LL = {'mpn': 'BAV199,215', 'name': 'BAV199_215', 'lcsc': 'C40919', 'footprint': 'SOT-23',
++            'url': 'https://assets.nexperia.com/documents/data-sheet/BAV199.pdf'}
++
++
++def clamp_symbol():
++    name, mpn, lcsc, fp, url = (CLAMP_LL[k] for k in ('name', 'mpn', 'lcsc', 'footprint', 'url'))
++    hidden = '(effects (font (size 1.27 1.27)) (hide yes))'
++    stroke = '(stroke (width 0) (type default)) (fill (type none))'
++    text = ('(kicad_symbol_lib\n  (version 20231120)\n  (generator "kicad_symbol_editor")\n  (generator_version "8.0")\n'
++            f' (symbol "{name}"\n  (pin_names (offset 0)) (exclude_from_sim no) (in_bom yes) (on_board yes)\n'
++            f'  (property "Reference" "D" (at 2.54 -5.08 0) {font()})\n'
++            f'  (property "Value" "{name}" (at -6.35 3.175 0) {font()})\n'
++            f'  (property "Footprint" "zudo-osc-hole-field:{fp}" (at 0 0 0) {hidden})\n'
++            f'  (property "Datasheet" "{url}" (at 0 0 0) {hidden})\n'
++            f'  (property "Description" "Low-leakage series double diode, VR 75 V, SOT-23; UNADOPTED S2b precision-input candidate" (at 0 0 0) {hidden})\n'
++            f'  (property "MPN" "{mpn}" (at 0 0 0) {hidden})\n'
++            f'  (property "Manufacturer" "Nexperia" (at 0 0 0) {hidden})\n'
++            f'  (property "LCSC" "{lcsc}" (at 0 0 0) {hidden})\n'
++            f'  (symbol "{name}_0_1"\n')
++    # Two series junction diodes, A1 -> K1/A2 -> K2, without Schottky cathode hooks.
++    for pts in ('(xy -4.445 1.27) (xy -4.445 -1.27) (xy -2.54 0) (xy -4.445 1.27)', '(xy -2.54 -1.27) (xy -2.54 1.27)',
++                '(xy -3.81 0) (xy -1.27 0)', '(xy -1.905 0) (xy 1.905 0)', '(xy 1.27 0) (xy 3.81 0)',
++                '(xy 1.905 1.27) (xy 1.905 -1.27) (xy 3.81 0) (xy 1.905 1.27)', '(xy 3.81 -1.27) (xy 3.81 1.27)'):
++        text += f'    (polyline (pts {pts}) {stroke})\n'
++    text += '    (circle (center 0 0) (radius 0.254) (stroke (width 0) (type default)) (fill (type outline)))\n  )\n'
++    text += f'  (symbol "{name}_1_1"\n'
++    text += (f'    (pin passive line (at -7.62 0 0) (length 3.81) (name "A" {font()}) (number "1" {font()}))\n'
++             f'    (pin passive line (at 7.62 0 180) (length 3.81) (name "K" {font()}) (number "2" {font()}))\n'
++             f'    (pin passive line (at 0 -5.08 90) (length 5.08) (name "COM" {font()}) (number "3" {font()}))\n')
++    return text + '  )\n )\n)\n'
++
++
+ def rrp_footprint():
+     dx, dy, _ = RRP_BODY
+     text = (f'(footprint "{RRP}" (version 20260206) (generator "s2b_switch_assets")\n'
+@@ -127,11 +165,12 @@ def generate(check=False):
+             path.write_text(text)
+     for mpn, part in PARTS.items():
+         emit(ROOT/'symbols/src'/(mpn+'.kicad_sym'), symbol(mpn, part))
++    emit(ROOT/'symbols/src'/(CLAMP_LL['name']+'.kicad_sym'), clamp_symbol())
+     emit(ROOT/'footprints/kicad/zudo-osc-hole-field.pretty'/(RRP+'.kicad_mod'), rrp_footprint())
+     emit(ROOT/'footprints/kicad/zudo-osc-hole-field.3dshapes'/RRP_MODEL,
+          render(RRP, RRP_BODY, 'Provisional envelope: TI RRP0016A 4224816/A outline maxima 4.1 x 4.1 x 0.8 mm. '
+                 'UNADOPTED S2b candidate; no land-pattern, solder-joint or physical-fit verdict.'))
+-    print(f'{"PASS" if check else "Generated"} S2b switch assets: {len(PARTS)} symbols, 1 WQFN land; physical fit unqualified')
++    print(f'{"PASS" if check else "Generated"} S2b switch assets: {len(PARTS) + 1} symbols, 1 WQFN land; physical fit unqualified')
+ 
+ 
+ if __name__ == '__main__':
+diff --git a/scripts/libgen/fixtures/check_ic_evidence.py b/scripts/libgen/fixtures/check_ic_evidence.py
+index 628a439..f81b991 100644
+--- a/scripts/libgen/fixtures/check_ic_evidence.py
++++ b/scripts/libgen/fixtures/check_ic_evidence.py
+@@ -55,7 +55,7 @@ def main():
+     if x['verdict']!='UNSOURCED':errors.append(f'{id}: unresolved source has promoted pin row')
+   checked+=1
+  if capture['captured_count']!=captured or capture['blocked_count']!=blocked:errors.append('capture count mismatch')
+- if captured!=41 or blocked!=0:errors.append(f'expected 41/41 coverage including exact precision-feedback passives, found {captured}/{len(parts)}')
++ if captured!=42 or blocked!=0:errors.append(f'expected 42/42 coverage including exact precision-feedback passives and the S2b precision clamp, found {captured}/{len(parts)}')
+  if errors:
+   for e in errors:print('FAIL:',e,file=sys.stderr)
+   return 1
+diff --git a/symbols/src/BAV199_215.kicad_sym b/symbols/src/BAV199_215.kicad_sym
+new file mode 100644
+index 0000000..8e25ff3
+--- /dev/null
++++ b/symbols/src/BAV199_215.kicad_sym
+@@ -0,0 +1,31 @@
++(kicad_symbol_lib
++  (version 20231120)
++  (generator "kicad_symbol_editor")
++  (generator_version "8.0")
++ (symbol "BAV199_215"
++  (pin_names (offset 0)) (exclude_from_sim no) (in_bom yes) (on_board yes)
++  (property "Reference" "D" (at 2.54 -5.08 0) (effects (font (size 1.27 1.27))))
++  (property "Value" "BAV199_215" (at -6.35 3.175 0) (effects (font (size 1.27 1.27))))
++  (property "Footprint" "zudo-osc-hole-field:SOT-23" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
++  (property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/BAV199.pdf" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
++  (property "Description" "Low-leakage series double diode, VR 75 V, SOT-23; UNADOPTED S2b precision-input candidate" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
++  (property "MPN" "BAV199,215" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
++  (property "Manufacturer" "Nexperia" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
++  (property "LCSC" "C40919" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
++  (symbol "BAV199_215_0_1"
++    (polyline (pts (xy -4.445 1.27) (xy -4.445 -1.27) (xy -2.54 0) (xy -4.445 1.27)) (stroke (width 0) (type default)) (fill (type none)))
++    (polyline (pts (xy -2.54 -1.27) (xy -2.54 1.27)) (stroke (width 0) (type default)) (fill (type none)))
++    (polyline (pts (xy -3.81 0) (xy -1.27 0)) (stroke (width 0) (type default)) (fill (type none)))
++    (polyline (pts (xy -1.905 0) (xy 1.905 0)) (stroke (width 0) (type default)) (fill (type none)))
++    (polyline (pts (xy 1.27 0) (xy 3.81 0)) (stroke (width 0) (type default)) (fill (type none)))
++    (polyline (pts (xy 1.905 1.27) (xy 1.905 -1.27) (xy 3.81 0) (xy 1.905 1.27)) (stroke (width 0) (type default)) (fill (type none)))
++    (polyline (pts (xy 3.81 -1.27) (xy 3.81 1.27)) (stroke (width 0) (type default)) (fill (type none)))
++    (circle (center 0 0) (radius 0.254) (stroke (width 0) (type default)) (fill (type outline)))
++  )
++  (symbol "BAV199_215_1_1"
++    (pin passive line (at -7.62 0 0) (length 3.81) (name "A" (effects (font (size 1.27 1.27)))) (number "1" (effects (font (size 1.27 1.27)))))
++    (pin passive line (at 7.62 0 180) (length 3.81) (name "K" (effects (font (size 1.27 1.27)))) (number "2" (effects (font (size 1.27 1.27)))))
++    (pin passive line (at 0 -5.08 90) (length 5.08) (name "COM" (effects (font (size 1.27 1.27)))) (number "3" (effects (font (size 1.27 1.27)))))
++  )
++ )
++)

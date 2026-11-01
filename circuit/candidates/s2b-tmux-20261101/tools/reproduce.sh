@@ -7,14 +7,16 @@ set -euo pipefail
 tree=$(cd "$1" && pwd -P); record=$(cd "$2" && pwd -P); main=$(cd "$3" && pwd -P)
 cd "$tree"
 git apply --whitespace=nowarn "$record/patches/source.patch"
-# The two TI datasheets are retained bytes (not in the text patch); verify, then place.
+# The two TI datasheets and the BAV199 mirror copy (phase 24) are retained bytes (not in the
+# text patch); verify, then place.
 mkdir -p .circuit-cache && cp -a "$main/.circuit-cache/sources" .circuit-cache/
 while read -r sum dest cache; do
-  cp "$main/.circuit-cache/sources/readiness-20261031/ds/$cache" "$dest"
+  cp "$main/.circuit-cache/sources/$cache" "$dest"
   echo "$sum  $dest" | sha256sum -c -
 done <<'L'
-7396d8a34f80b178a8b5c72272b5bb0eb7da7ad3182e7d3cd80d294fc32f26e5 circuit/sources/ic-library/TMUX7412F.pdf tmux7412f.pdf
-c0fab3135a4438048a759aa91b33480f95f01140885896e3bfa1202a9daa2ae1 circuit/sources/ic-library/TMUX6112.pdf tmux6112.pdf
+7396d8a34f80b178a8b5c72272b5bb0eb7da7ad3182e7d3cd80d294fc32f26e5 circuit/sources/ic-library/TMUX7412F.pdf readiness-20261031/ds/tmux7412f.pdf
+c0fab3135a4438048a759aa91b33480f95f01140885896e3bfa1202a9daa2ae1 circuit/sources/ic-library/TMUX6112.pdf readiness-20261031/ds/tmux6112.pdf
+c09cdf672eb4274e137efcf7a0d4e34fc8de099a975cfe8efa3a5a3c560cdf81 circuit/sources/ic-library/BAV199.pdf readiness-20261101/ds/bav199.pdf
 L
 git add -N .
 bash scripts/libgen/regen.sh

@@ -14,6 +14,7 @@ separate approval.
 | 19 | RB4413 slot pin; stage38 assertion; independent rebuild | `patches/phase19-delta.patch` |
 | 20 | Review corrections: F1/F3/F6/F10 and the usable signal range; SEL hold redesigned; PWM_OFFSET made exact; 15 R-exact role rows; TMUX6112 S/D comment; WQFN pin-1 silk mark; cost section | `patches/phase20-delta.patch` |
 | 22 | Pitch linear range `signals.pitch_linear_range_V` = −5…+8 V added as **PROPOSED** option A1, pending the user's answer; the 1V/OCT row is now computed (PASS); VDD − 3 V wording states the 7.8 guarantee at VSS = 0 V; new owner facts for OPA4197 common-mode range, BAT54S reverse current versus temperature and TMUX7412F 7.8 (phase 21 was a desk study with no record change) | `patches/phase22-delta.patch` |
+| 24 | BAV199,215 owner bundle (JLCPCB-hosted mirror of BAV199 v.3; its facts are UNSOURCED until a manufacturer-hosted copy is compared). New `precision` variant of `high_impedance_input` fits it on the five 1V/OCT inputs, MULT IN and S&H IN (9 per unit). New `precision_input_clamp` section in the protection map: drift before and after, and the OPA4197 input absolute-maximum reading (phase 23 was a desk study) | `patches/phase24-delta.patch` |
 
 ## Decision
 
@@ -40,15 +41,17 @@ The record is one cumulative change set against predecessor commit
 | PD-facing +12V contract | 1700 mA | **unchanged, 1700 mA** (coordinator, phase 19) | | `design/architecture-278/` text untouched |
 | JR placement of RB4413 | locality reflow | pinned at the issue189 recorded source slot | | `design/partition/candidate-slot-pins.json` |
 | WQFN land | none | `TI_RRP0016A`, plus an F.SilkS pin-1 corner mark (project addition; the courtyard is unchanged) | | `scripts/libgen/build_s2b_switch_assets.py` |
+| Input clamp `D` of `high_impedance_input`, variant `precision` (phase 24) | BAT54S,215 | BAV199,215 (SOT-23, `clamp_diode_ll`, C40919), same pin order (1 A1, 2 K2, 3 K1/A2) and same SOT-23 land. Part keys, nets, ordinals and Role attributes are unchanged; only the identity changes. The other 89 inputs keep BAT54S,215 | 9 (oscillator 1V × 5, MULT IN × 2, S&H IN × 2) | standard `cells[high_impedance_input].variants.precision`, `cells/_builder.py`, `oscillator.py`, `mult.py`, `sample_hold.py` |
 
 New parts are numbered after every existing part. 8234/8234 earlier key-to-designator rows
 are unchanged, and the designator lock takes +12, +85 and +108 (`audit_master.py`).
 
 Owner bundles: `.claude/skills/component-ti-opa4197idr/`,
-`.claude/skills/component-ti-tmux7412frrpr/` and `.claude/skills/component-ti-tmux6112pwr/`.
+`.claude/skills/component-ti-tmux7412frrpr/`, `.claude/skills/component-ti-tmux6112pwr/` and
+(phase 24) `.claude/skills/component-nexperia-bav199-215/`.
 Each has its own inventory line, direct-routing case, publication selection, shortlist row,
 pin map and CAD receipt. The two TI PDFs (`circuit/sources/ic-library/TMUX7412F.pdf`,
-`TMUX6112.pdf`) are retained bytes. Phase 22 adds facts only (no identity change) to the
+`TMUX6112.pdf`) and the BAV199 mirror copy (`BAV199.pdf`) are retained bytes. Phase 22 adds facts only (no identity change) to the
 canonical `.claude/skills/component-ti-opa4197ipwr/` and `.claude/skills/component-nexperia-bat54s-215/`
 bundles, from their already retained datasheets.
 
@@ -59,7 +62,7 @@ switch its own SEL pin, and FF is shared across the four channels. TI does not s
 other channels keep operating, so F9 is UNKNOWN and quad packing (ADG-3) is not used. ADG-2
 costs +$244.90 per unit and +$1124.83 per lot more than ADG-3.
 
-## Cost: priced-line subtotal $1483.99 per unit, $6732.55 per lot
+## Cost: priced-line subtotal $1484.08 per unit, $6733.31 per lot
 
 This is a subtotal of priced lines only, not a unit cost. The full breakdown is under `cost` in
 `receipts/checks.json`. Prices are the retained JLC 2026-10-31 tiers, and a lot is 5 units.
@@ -71,11 +74,12 @@ This is a subtotal of priced lines only, not a unit cost. The full breakdown is 
 | Op-amps as fitted: 85 IDR + 4 IPWR instead of 89 IDR | +$40.59 | +$188.05 |
 | SEL hold: 36 RC0603FR-07100KL + 72 BAT54S,215 | +$2.12 | +$8.14 |
 | PWM_OFFSET exact (820K 17 → 12, plus 470K × 5 and 330K × 5) | +$0.19 | +$0.96 |
-| **Priced-line subtotal** | **$1483.99** | **$6732.55** |
+| Precision clamp (phase 24): 9 BAV199,215 ($0.0383, 1–99 tier at 9 and 45) replace 9 BAT54S,215 (input clamp line 98 → 89) | +$0.09 | +$0.76 |
+| **Priced-line subtotal** | **$1484.08** | **$6733.31** |
 
 - Unpriced lines are excluded and remain UNKNOWN: BAS16GW-QX, the jacks, LEDs, switches, AS3340D, NOISE2 and the remaining capacitor groups.
 - The review's corrected figure before this phase, $1482.78 per unit and $6728.94 per lot, is reproduced by the first three adjustments plus the phase-18 hold of $1.10 per unit.
-- Stock: TMUX7412FRRPR 512 against 490 per lot.
+- Stock: TMUX7412FRRPR 512 against 490 per lot. BAV199,215 86 068 (2026-11-01) against 45 per lot.
 
 ## Fault-row table (E13; generated by `scripts/checks/s2b_protection_map.py`)
 
@@ -120,13 +124,53 @@ minimum returns FAIL. If the user picks another option, edit the two `signals` f
 | `fact-clamp-diode-reverse-current-temperature` | Fig. 2, typical only: 25 °C about 0.3 µA (1 V) to 1.5–2 µA (30 V); 85 °C about 15–20 µA to about 60 µA; 125 °C about 200–500 µA. The only maximum is 2 µA at 25 V, 25 °C | BAT54S Fig. 2, printed 3/9 |
 | `fact-fault-switch-t-ron-12v-single` | RON ≤ 11 / 15 / 18 ohm (25 / 85 / 125 °C), RFLAT ≤ 0.5 ohm, ΔRON ≤ 0.6 ohm (85 °C) for VS 0…7.8 V, VDD 10.8…13.2 V, VSS 0 V | SCDS404B 7.8, printed 13 |
 
-**Finding (technical uncertainty, canonical cell, not specific to S2b).** In `high_impedance_input`
-the BAT54S clamp sits at `SENSE`, behind `R_LIMIT` 10 kOhm. The net reverse current of the two
-diodes (upper at VR = 12 − V, lower at VR = 12 + V) flows through about 10–11 kOhm with a patched
-low-impedance source. From the typical curves only, at +8 V this is about 0.5–0.8 µA at 25 °C
-(about 5–9 mV, mostly a scale term removed by calibration). At 85 °C it is about 15–20 µA (about
-150–220 mV). No maximum bounds it away from 25 °C, so pitch drift from the clamp over temperature is
-UNKNOWN. The A1 range does not change this term. It needs a separate pitch-path study.
+**Finding (phase 22; resolved for the precision inputs in phase 24).** The BAT54S clamp at `SENSE`
+has no reverse-current maximum away from 25 °C. Phase 24 below replaces it on the precision inputs.
+
+## Precision input clamp (phase 24; generated by `s2b_protection_map.py`, section `precision_input_clamp`)
+
+The 5 pitch inputs, MULT IN and S&H IN use the `precision` variant of `high_impedance_input`.
+In this variant, D is BAV199,215 in place of BAT54S,215. Leakage flows through
+R_eff = R_LIMIT + R_PD ∥ (998 Ω source + 14 Ω RON) = 11.0 kΩ. Drift is the maximum of |e(V,T) − e(V,25 °C)|
+over the role range and 0…40 °C; cents are at 1 V/oct.
+
+| Role | Per unit | Range | Before: BAT54S, typical only | After: BAV199 bound | After: BAV199 typical |
+|---|---:|---|---|---|---|
+| Pitch (1V/OCT) | 5 | −5…+8 V (PROPOSED A1) | 13.4 mV = 16.1 c; no guaranteed bound (UNKNOWN) | ≤ 0.128 mV = 0.15 c | 0.0001 mV |
+| MULT IN | 2 | ±5 V | 8.3 mV = 9.9 c; UNKNOWN | ≤ 0.128 mV = 0.15 c | 0.0001 mV |
+| S&H IN | 2 | ±5 V | 8.3 mV = 9.9 c; UNKNOWN | ≤ 0.128 mV = 0.15 c | 0.0001 mV |
+
+- **How the bound is formed.** The bound is (IR at 40 °C + IR at 25 °C) × R_eff. It uses the
+  BAV199 Fig. 4 maximum curve at VR = 75 V: 6.6 nA at 40 °C, a project reading, and 5 nA at 25 °C
+  from Table 7.
+- **Assumptions behind the bound.** IR does not rise at lower VR, and it does not rise below
+  25 °C.
+- **Source status.** The source is the JLCPCB-hosted mirror. nexperia.com returned Access Denied,
+  and that block was not worked around. The validator therefore keeps every BAV199 fact
+  UNSOURCED until a manufacturer-hosted copy is compared.
+- **0…70 °C.** The JSON gives these too: before, 134.8 c pitch and 82.0 c MULT/S&H (typical);
+  after, ≤ 0.24 c.
+
+**OPA4197 input absolute maximum (SBOS737C 6.1, index 4).** The table has two separate rows:
+
+- common-mode voltage, (V−) − 0.5 V … (V+) + 0.5 V;
+- input current, ±10 mA.
+
+No footnote lets the voltage row be exceeded when the current is limited. Section 7.3.7 says the
+ESD diodes are intended to stay inactive in normal operation. The VDD…VDD + VT window therefore
+cannot pass on the current row alone.
+
+- **Inside the declared contract: PASS for both clamps.** `input_continuous_fault_V` is ±12 V
+  and the required load-rail minima are 11.53 V and −11.74 V. The jack can then exceed the local
+  rail by at most 0.47 V or 0.26 V. That is within 0.5 V, with 0.03 V margin.
+- **Beyond the contract.** Take a source at the supply maximum (12.3 V at the source) against a
+  load rail of 11.53 V: the overdrive is 0.77 V. SENSE − V+ is then at most min(VT, VF):
+  - BAT54S: ≤ 0.24 V at 0.1 mA, but only at 25 °C.
+  - BAV199: no VF maximum below 1 mA, so the result is **UNKNOWN**.
+- **Current row: PASS.** The current is ≤ about 70 µA.
+- **Proposed fix (not built): a bootstrapped BAT54S.** Connect pins 1 and 2 to SENSE and pin 3
+  to BUFFERED. Then SENSE ≤ OUT + 0.24 V at 25 °C. The diode reverse voltage is the follower
+  offset, so leakage no longer needs a hot rail-referred maximum.
 
 ## SEL hold (phase 20 redesign)
 
@@ -168,11 +212,11 @@ resistor out of the logic-low path. A BAT54S pull-down sinks SEL into the logic 
 
 ## Contents
 
-- `patches/source.patch` is the cumulative text diff of the 107 source files from 60c7c3ab.
-- `patches/phase19-delta.patch`, `patches/phase20-delta.patch` and `patches/phase22-delta.patch` each hold one revision.
+- `patches/source.patch` is the cumulative text diff of the 120 source files from 60c7c3ab.
+- `patches/phase19-delta.patch`, `patches/phase20-delta.patch`, `patches/phase22-delta.patch` and `patches/phase24-delta.patch` each hold one revision.
   Applied in order on top of the previous source set, they reproduce the source files exactly.
-- `receipts/application-receipt.json` lists all 276 changed files with before and after sha256
-  and kind: source, generated, or retained-source (the 2 TI PDFs).
+- `receipts/application-receipt.json` lists all 290 changed files with before and after sha256
+  and kind: source, generated, or retained-source (the 2 TI PDFs and the BAV199 mirror copy).
 - `receipts/checks.json` holds the step results, the cost section ("priced-line subtotal"),
   the SEL-hold figures and rows, and the open items.
 - `tools/reproduce.sh` gives the generation order; it also regenerates the S2b protection map
@@ -189,7 +233,7 @@ python3 circuit/candidates/s2b-tmux-20261101/tools/verify_record.py --tree <wt>
 ```
 
 `reproduce.sh` reads the main repository's ignored `.circuit-cache/sources` and checks the
-sha256 of both TI PDFs. It never writes to the main repository.
+sha256 of the three retained PDFs. It never writes to the main repository.
 
 Run the heavy native steps with the guard outside and the KiCad lock inside:
 `bash $HOME/.claude/scripts/heavy-guard.sh -- flock /tmp/kicad-native.lock <cmd>`. The
