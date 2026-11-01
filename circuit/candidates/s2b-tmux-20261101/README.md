@@ -274,6 +274,10 @@ resistor out of the logic-low path. A BAT54S pull-down sinks SEL into the logic 
 - Re-recording issue189 would have needed a new native pilot.
 - Neighbouring parts moved, so the pilot's clearance result does not transfer. Native
   verification remains required at adoption.
+- Phase 29 (decision E15 minimal-move reflow) replaced this file with
+  `design/partition/adopted-placement-pins.json`. That file pins every unchanged-footprint
+  JL/JR/K package at its pre-adoption (539ff382) slot and keeps the RB4413 reservation.
+  Only swapped ICs, with their bypass capacitors, evicted small passives and added parts move.
 
 ## Contents
 

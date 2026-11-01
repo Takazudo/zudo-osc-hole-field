@@ -5,7 +5,9 @@ import argparse
 from functools import lru_cache
 from collections import Counter, defaultdict
 import json
+import copy
 import math
+import statistics
 from pathlib import Path
 import sys
 ROOT=Path(__file__).resolve().parents[2]
@@ -15,9 +17,20 @@ from scripts.partition.model import JACK_BOARDS
 from scripts.checks.connector_packing35 import board_for,pads
 from scripts.checks.partition35_diagnostic import footprint_geometry
 from scripts.pcbgen.netlist import TOKEN, parse, many, one
-from scripts.checks.jack_locality import place_jack_locality,stable_sum
+from scripts.checks.jack_locality import place_jack_locality,stable_sum,FACE_PENALTY_MM,GAP_MM,masks_for,nearest
 from scripts.checks.core_locality import spread_module_homes
 OUT=ROOT/'design/partition/floorplan-candidate.json'
+PINS=ROOT/'design/partition/adopted-placement-pins.json'
+RELEASE_ROUNDS=400
+RELEASE_STEP_MM=1.5
+WHOLE_MODULE_AFTER=4
+WHOLE_BOARD_AFTER=8
+CLUSTER_RADIUS_MM=24.0
+CLUSTER_STEP_MM=0.5
+EVICT_COST_MM=3.0
+EVICT_MAX_AREA_MM2=15.0
+BUCKET_MM=5.0
+BYPASS_LIMIT_MM=json.loads((ROOT/'design/partition/bypass-placement-evidence.json').read_text())['proposal']['maximum_supply_pad_to_capacitor_rail_pad_mm']
 SCALE=4
 
 
@@ -127,6 +140,172 @@ def check_bypasses(parts,placements,pin_nets):
 
 
 
+def grid_free(grid,b,gap=.35):
+    x0,y0,x1,y1=b;s=grid.scale
+    x0=math.floor((x0-gap)*s);x1=math.ceil((x1+gap)*s);y0=math.floor((y0-gap)*s);y1=math.ceil((y1+gap)*s)
+    if x0<0 or y0<0 or x1>grid.width or y1>grid.height:return False
+    mask=((1<<(x1-x0))-1)<<x0
+    return not any(grid.rows[y]&mask for y in range(y0,y1))
+
+
+def pad_point(footprint,pin,side,rotation,x,y):
+    px,py=footprint_pads(footprint)[pin]
+    px,py=turn((-px if side=='B.Cu' else px,py),rotation)
+    return (px+x,py+y)
+
+
+def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped_slots,reservations,extra,report):
+    """Decision E15 minimal-move reflow: pin unchanged packages on their pre-adoption slots. Each swapped IC
+    moves as one rigid cluster with its bypass capacitors to the cheapest legal pose near its old slot,
+    evicting the fewest small pinned passives; when nothing near fits, the nearest board-wide pose that only
+    evicts small passives is used. Evicted packages join the added ones in the locality placer."""
+    rows=pin_rows.get(board,{})
+    if not rows and not any(r['board']==board for r in swapped_slots.values()):return free,[]
+    by_ref={p['ref']:p for p in free}
+    gap=GAP_MM.get(board,.35)
+    swapped=sorted(r for r,s in swapped_slots.items() if s['board']==board)
+    members={ic:sorted((p for p in free if p['decouples_ref']==ic),key=lambda p:p['ref']) for ic in swapped}
+    in_cluster={c['ref'] for cs in members.values() for c in cs}
+    boxes={}
+    for ref,row in rows.items():
+        part=by_ref.get(ref)
+        if part is None or part['footprint']!=row['footprint']:raise ValueError('stale adopted placement pin '+ref)
+        c=row['courtyard_mm'];dx,dy=reservations.get(ref,(0,0))
+        boxes[ref]=[min(c[0],c[0]+dx),min(c[1],c[1]+dy),max(c[2],c[2]+dx),max(c[3],c[3]+dy)]
+    tht={ref:through_hole(rows[ref]['footprint']) for ref in rows}
+    faces=lambda ref:('F.Cu','B.Cu') if tht[ref] else (rows[ref]['side'],)
+    released=set(extra)|in_cluster
+    # Same spacing convention as the locality placer's occupancy masks: the courtyard gap on the
+    # right/bottom edge only, so pins keep their original spacing instead of doubling it.
+    def occupy_box(g,b):g.fill([b[0],b[1],b[2]+gap,b[3]+gap],0)
+    def box_free(g,b):return grid_free(g,[b[0],b[1],b[2]+gap,b[3]+gap],0)
+    def evictable(ref):
+        # A capacitor of a pinned IC stays with that IC so its bypass loop is not broken.
+        if ref in reservations or tht[ref] or ref[:1] in ('U','J'):return False
+        if by_ref[ref]['decouples_ref'] in rows and by_ref[ref]['decouples_ref'] not in released:return False
+        b=shapes[rows[ref]['footprint']]
+        return (b[2]-b[0])*(b[3]-b[1])<=EVICT_MAX_AREA_MM2
+    def buckets(b):
+        return [(i,j) for i in range(int(b[0]//BUCKET_MM),int(b[2]//BUCKET_MM)+1) for j in range(int(b[1]//BUCKET_MM),int(b[3]//BUCKET_MM)+1)]
+    index=defaultdict(set)
+    for ref in rows:
+        if ref in released:continue
+        for face in faces(ref):
+            for k in buckets(boxes[ref]):index[face,k].add(ref)
+    def hits(face,b):
+        e=[b[0]-gap,b[1]-gap,b[2]+gap,b[3]+gap];out=set()
+        for k in buckets(e):
+            for ref in index.get((face,k),()):
+                if ref in released:continue
+                c=boxes[ref]
+                if c[0]<e[2] and e[0]<c[2] and c[1]<e[3] and e[1]<c[3]:out.add(ref)
+        return out
+    occ={}
+    for side in ('F.Cu','B.Cu'):
+        occ[side]=copy.copy(grids[board,side]);occ[side].rows=list(grids[board,side].rows)
+    n=int(round(CLUSTER_RADIUS_MM/CLUSTER_STEP_MM));steps=[k*CLUSTER_STEP_MM for k in range(-n,n+1)]
+    offsets=sorted(((dx,dy) for dx in steps for dy in steps if math.hypot(dx,dy)<=CLUSTER_RADIUS_MM),key=lambda d:(math.hypot(*d),d))
+    def poses(part,side,thetas):
+        for horizontal in (False,True):
+            cells=bypass_cells(part,members[part['ref']],side,shapes,pin_nets,horizontal)
+            for theta in thetas:
+                yield theta,cells,[(cpart,*turn(p,theta),(angle+theta)%360,oriented_box(shapes[cpart['footprint']],side,(angle+theta)%360)) for cpart,angle,p in cells]
+    def local_pose(part,slot):
+        best=None;thetas=(slot['rotation_deg'],*(t for t in (0,90,180,270) if t!=slot['rotation_deg']))
+        for side in (slot['side'],'B.Cu' if slot['side']=='F.Cu' else 'F.Cu'):
+            penalty=0.0 if side==slot['side'] else FACE_PENALTY_MM
+            shapes_side=[local for _,_,local in poses(part,side,thetas)]
+            for dx,dy in offsets:
+                d=math.hypot(dx,dy)+penalty
+                if best is not None and d>=best[0]:break
+                cx,cy=slot['x_mm']+dx,slot['y_mm']+dy
+                for local in shapes_side:
+                    placed=[(cpart,x+cx,y+cy,rotation,[b[0]+x+cx,b[1]+y+cy,b[2]+x+cx,b[3]+y+cy]) for cpart,x,y,rotation,b in local]
+                    if not all(box_free(occ[side],b) for *_,b in placed):continue
+                    hit=set().union(*(hits(side,b) for *_,b in placed))
+                    if not all(evictable(r) for r in hit):continue
+                    cost=d+EVICT_COST_MM*len(hit)
+                    if best is None or cost<best[0]:best=(cost,side,placed,hit)
+        return best
+    def wide_pose(part,slot):
+        # Board-wide nearest fit on a grid holding hardware, placed clusters and every non-evictable pin.
+        best=None
+        for side in (slot['side'],'B.Cu' if slot['side']=='F.Cu' else 'F.Cu'):
+            g=copy.copy(occ[side]);g.rows=list(occ[side].rows)
+            for ref in rows:
+                if ref not in released and side in faces(ref) and not evictable(ref):occupy_box(g,boxes[ref])
+            penalty=0.0 if side==slot['side'] else FACE_PENALTY_MM
+            for theta,cells,_ in poses(part,side,(0,90,180,270)):
+                local=[]
+                for cpart,angle,(x,y) in cells:
+                    b=oriented_box(shapes[cpart['footprint']],side,angle);local.append([b[0]+x,b[1]+y,b[2]+x,b[3]+y])
+                envelope,masks=masks_for(local,g.scale,theta,oriented_box,gap)
+                found=nearest(g,masks,(round((slot['x_mm']+envelope[0])*g.scale),round((slot['y_mm']+envelope[1])*g.scale)))
+                if found is None:continue
+                d,xx,yy=found;cost=d/g.scale+penalty
+                if best is not None and cost>=best[0]:continue
+                ox,oy=xx/g.scale-envelope[0],yy/g.scale-envelope[1];placed=[]
+                for cpart,angle,p in cells:
+                    x,y=turn(p,theta);x+=ox;y+=oy;rotation=(angle+theta)%360
+                    b=oriented_box(shapes[cpart['footprint']],side,rotation);placed.append((cpart,x,y,rotation,[b[0]+x,b[1]+y,b[2]+x,b[3]+y]))
+                hit=set().union(*(hits(side,b) for *_,b in placed))
+                if all(evictable(r) for r in hit):best=(cost,side,placed,hit)
+        return best
+    clusters={};evicted=set();moves=[];wide=[];unplaced=[]
+    for ic in swapped:
+        part=by_ref.get(ic)
+        if part is None:raise ValueError('swapped slot without a free package '+ic)
+        slot=swapped_slots[ic];best=local_pose(part,slot)
+        if best is None:
+            best=wide_pose(part,slot)
+            if best is not None:wide.append(ic)
+        if best is None:
+            unplaced.append(ic);continue
+        cost,side,placed,hit=best
+        released|=hit;evicted|=hit
+        for cpart,x,y,rotation,b in placed:
+            for face in (('F.Cu','B.Cu') if through_hole(cpart['footprint']) else (side,)):occupy_box(occ[face],b)
+            clusters[cpart['ref']]={'ref':cpart['ref'],'board':board,'fixed':False,'x_mm':x,'y_mm':y,'rotation_deg':rotation,
+                                    'side':side,'courtyard_mm':b,'bypass_cluster':ic}
+        moves.append(math.dist((placed[0][1],placed[0][2]),(slot['x_mm'],slot['y_mm'])))
+    pinned={}
+    for ref,row in rows.items():
+        if ref in released:continue
+        for face in faces(ref):occupy_box(grids[board,face],boxes[ref])
+        pinned[ref]={k:v for k,v in row.items() if k!='footprint'}
+    for row in clusters.values():
+        for face in (('F.Cu','B.Cu') if through_hole(by_ref[row['ref']]['footprint']) else (row['side'],)):occupy_box(grids[board,face],row['courtyard_mm'])
+    out=[*pinned.values(),*clusters.values()]
+    for row in out:
+        for net in pin_nets[row['ref']].values():
+            if net and net not in ('AGND','+12V','-12V','+5V'):anchors[net].append((row['x_mm'],row['y_mm']))
+    report[board]={'pinned':len(pinned),'swapped_clusters':len(swapped),'cluster_capacitors':len(in_cluster),
+                   'clusters_board_wide':wide,'clusters_to_locality':unplaced,
+                   'cluster_move_mm':{'max':round(max(moves,default=0),3),'median':round(statistics.median(moves),3) if moves else 0},
+                   'evicted':sorted(evicted)}
+    taken=set(pinned)|set(clusters)
+    return [p for p in free if p['ref'] not in taken],out
+
+
+def release_window(board,unit,count,pin_rows,swapped_slots,pin_nets,extra,instance_of):
+    """Unpin packages around one that found no legal slot: a growing window first, then its whole module,
+    then the whole board (the full locality reflow, which is known to fit)."""
+    rows=pin_rows.get(board,{})
+    if count>=WHOLE_BOARD_AFTER:return set(rows)-extra
+    if count>=WHOLE_MODULE_AFTER:return {ref for ref in rows if instance_of[ref]==instance_of[unit]}-extra
+    if unit in swapped_slots:c=swapped_slots[unit]['courtyard_mm']
+    elif unit in rows:c=rows[unit]['courtyard_mm']
+    else:
+        nets={n for n in pin_nets[unit].values() if n and n not in ('AGND','+12V','-12V','+5V')}
+        pts=[(r['x_mm'],r['y_mm']) for ref,r in rows.items() if nets & set(pin_nets[ref].values())]
+        if not pts:raise ValueError('no pinned neighbour to release for '+unit)
+        x=statistics.median(p[0] for p in pts);y=statistics.median(p[1] for p in pts);c=[x,y,x,y]
+    r=RELEASE_STEP_MM*count
+    window=[c[0]-r,c[1]-r,c[2]+r,c[3]+r]
+    hit={ref for ref,row in rows.items() if ref not in extra and row['courtyard_mm'][0]<window[2] and window[0]<row['courtyard_mm'][2] and row['courtyard_mm'][1]<window[3] and window[1]<row['courtyard_mm'][3]}
+    return hit
+
+
 def build():
     source=json.loads((ROOT/'design/partition/partition-input.json').read_text())
     io=json.loads((ROOT/'design/reports/io-partition.json').read_text());lock={p['uid']:p for p in json.loads((ROOT/'design/grid/placements.lock.json').read_text())['placements']}
@@ -136,13 +315,12 @@ def build():
     for p in parts:
         if p['footprint'] not in shapes:shapes[p['footprint']]=footprint_geometry(ROOT/'footprints/kicad/zudo-osc-hole-field.pretty'/(p['footprint'].split(':')[1]+'.kicad_mod'))['courtyard_bbox_mm']
     placements=[];errors=[];grids={};available={}
-    pinned={}
-    pin_file=ROOT/'design/partition/candidate-slot-pins.json'
-    if pin_file.exists():
-        # UNADOPTED candidate: keep a movable jack resistor, and its pending translation target,
-        # on the slot that retained native routing evidence binds; the reflow packs around it.
-        for pin in json.loads(pin_file.read_text())['pins']:
-            pinned[pin['ref']]=next(c for c in json.loads((ROOT/pin['source']).read_text())['translations'] if c['ref']==pin['ref'])
+    adopted=json.loads(PINS.read_text()) if PINS.exists() else {'pins':[],'swapped_slots':[],'reservations':[]}
+    pin_rows=defaultdict(dict)
+    for row in adopted['pins']:pin_rows[row['board']][row['ref']]=row
+    swapped_slots={row['ref']:row for row in adopted['swapped_slots']}
+    reservations={row['ref']:row['delta_mm'] for row in adopted['reservations']}
+    adopted_report={}
     for board in (*JACK_BOARDS,'P','K'):
         spec=source['boards'][board]
         for side in ('F.Cu','B.Cu'):
@@ -166,60 +344,66 @@ def build():
                 if side in reserve['sides']:g.fill(reserve['rect'])
             available[board+' '+side]=sum(g.width-row.bit_count() for row in g.rows)/(g.scale*g.scale)
         free=sorted((p for p in parts if board_for(p)==board and not p['panel_uid']),key=lambda p:(-p['courtyard']['area_mm2'],p['ref']))
-        if board in JACK_BOARDS:
-            anchors=defaultdict(list)
-            for p in parts:
-                if board_for(p)!=board or not p['panel_uid']:continue
-                point=lock[p['panel_uid']];angle=math.radians(point['rot_deg']);co,si=math.cos(angle),math.sin(angle)
-                for pin,(x,y) in footprint_pads(p['footprint']).items():
-                    net=pin_nets[p['ref']].get(pin)
-                    if net:anchors[net].append((point['x_mm']+x*co-y*si,point['y_mm']+x*si+y*co))
-            for h in connector['headers']:
-                if h['board']==board:
+        def place_board(free,extra):
+            if board in JACK_BOARDS:
+                anchors=defaultdict(list)
+                for p in parts:
+                    if board_for(p)!=board or not p['panel_uid']:continue
+                    point=lock[p['panel_uid']];angle=math.radians(point['rot_deg']);co,si=math.cos(angle),math.sin(angle)
+                    for pin,(x,y) in footprint_pads(p['footprint']).items():
+                        net=pin_nets[p['ref']].get(pin)
+                        if net:anchors[net].append((point['x_mm']+x*co-y*si,point['y_mm']+x*si+y*co))
+                for h in connector['headers']:
+                    if h['board']==board:
+                        for net in h['pin_map'].values():
+                            if net not in (None,'NC'):anchors[net].append(tuple(h['center_mm']))
+                free,rows=apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped_slots,reservations,extra,adopted_report)
+                homes=defaultdict(list)
+                for p in parts:
+                    if board_for(p)==board and p['panel_uid']:homes[p['instance']].append((lock[p['panel_uid']]['x_mm'],lock[p['panel_uid']]['y_mm']))
+                instance_anchor={k:(stable_sum(x for x,_ in v)/len(v),stable_sum(y for _,y in v)/len(v)) for k,v in homes.items()}
+                return rows+(place_jack_locality(board,free,grids,shapes,pin_nets,anchors,
+                    lambda parent,caps,side,horizontal:bypass_cells(parent,caps,side,shapes,pin_nets,horizontal),turn,oriented_box,instance_anchor))
+            if board=='K':
+                # Core locality (#43): the core has no panel hardware, so its headers anchor
+                # each net and each module is pulled toward the headers that carry its nets.
+                anchors=defaultdict(list);net_instances=defaultdict(set);homes=defaultdict(list)
+                for p in free:
+                    for net in pin_nets[p['ref']].values():net_instances[net].add(p['instance'])
+                for h in connector['headers']:
+                    if h['board']!=board:continue
                     for net in h['pin_map'].values():
-                        if net not in (None,'NC'):anchors[net].append(tuple(h['center_mm']))
-            for ref,change in pinned.items():
-                row=change['expected_source']
-                if row['board']!=board:continue
-                if ref not in {p['ref'] for p in free}:raise ValueError('candidate slot pin out of scope: '+ref)
-                dx,dy=change['delta_mm'];c=row['courtyard_mm']
-                grids[board,row['side']].fill([min(c[0],c[0]+dx),min(c[1],c[1]+dy),max(c[2],c[2]+dx),max(c[3],c[3]+dy)])
-                for net in pin_nets[ref].values():
-                    if net and net not in ('AGND','+12V','-12V','+5V'):anchors[net].append((row['x_mm'],row['y_mm']))
-                placements.append({k:v for k,v in row.items() if k!='kicad_orientation_deg'})
-                free=[p for p in free if p['ref']!=ref]
-            homes=defaultdict(list)
-            for p in parts:
-                if board_for(p)==board and p['panel_uid']:homes[p['instance']].append((lock[p['panel_uid']]['x_mm'],lock[p['panel_uid']]['y_mm']))
-            instance_anchor={k:(stable_sum(x for x,_ in v)/len(v),stable_sum(y for _,y in v)/len(v)) for k,v in homes.items()}
-            placements.extend(place_jack_locality(board,free,grids,shapes,pin_nets,anchors,
-                lambda parent,caps,side,horizontal:bypass_cells(parent,caps,side,shapes,pin_nets,horizontal),turn,oriented_box,instance_anchor))
-            free=[]
-        if board=='K':
-            # Core locality (#43): the core has no panel hardware, so its headers anchor
-            # each net and each module is pulled toward the headers that carry its nets.
-            anchors=defaultdict(list);net_instances=defaultdict(set);homes=defaultdict(list)
-            for p in free:
-                for net in pin_nets[p['ref']].values():net_instances[net].add(p['instance'])
-            for h in connector['headers']:
-                if h['board']!=board:continue
-                for net in h['pin_map'].values():
-                    if net in (None,'NC'):continue
-                    anchors[net].append(tuple(h['center_mm']))
-                    if net not in ('AGND','+12V','-12V','+5V'):
-                        for instance in net_instances[net]:homes[instance].append(h['center_mm'])
-            instance_anchor={k:(stable_sum(x for x,_ in v)/len(v),stable_sum(y for _,y in v)/len(v)) for k,v in homes.items()}
-            # Header homes crowd ~1300 packages into one corner; spread the module homes so each
-            # module gets contiguous room, then legalize module by module (#43 congestion review).
-            areas=defaultdict(float)
-            for p in free:
-                b=shapes[p['footprint']];areas[p['instance']]+=(b[2]-b[0]+.35)*(b[3]-b[1]+.35)
-            notch=[spec['outline'][3][0],spec['outline'][3][1],spec['outline'][2][0],spec['outline'][4][1]]
-            instance_anchor=spread_module_homes(instance_anchor,areas,(4.3,8.3,313.7,291.7),holes=[notch],fill=.45)
-            placements.extend(place_jack_locality(board,free,grids,shapes,pin_nets,anchors,
-                lambda parent,caps,side,horizontal:bypass_cells(parent,caps,side,shapes,pin_nets,horizontal),turn,oriented_box,instance_anchor,
-                lambda part:through_hole(part['footprint']),module_order=True))
-            free=[]
+                        if net in (None,'NC'):continue
+                        anchors[net].append(tuple(h['center_mm']))
+                        if net not in ('AGND','+12V','-12V','+5V'):
+                            for instance in net_instances[net]:homes[instance].append(h['center_mm'])
+                free,rows=apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped_slots,reservations,extra,adopted_report)
+                homes={k:v for k,v in homes.items() if k in {p['instance'] for p in free}}
+                instance_anchor={k:(stable_sum(x for x,_ in v)/len(v),stable_sum(y for _,y in v)/len(v)) for k,v in homes.items()}
+                # Header homes crowd ~1300 packages into one corner; spread the module homes so each
+                # module gets contiguous room, then legalize module by module (#43 congestion review).
+                areas=defaultdict(float)
+                for p in free:
+                    b=shapes[p['footprint']];areas[p['instance']]+=(b[2]-b[0]+.35)*(b[3]-b[1]+.35)
+                notch=[spec['outline'][3][0],spec['outline'][3][1],spec['outline'][2][0],spec['outline'][4][1]]
+                instance_anchor=spread_module_homes(instance_anchor,areas,(4.3,8.3,313.7,291.7),holes=[notch],fill=.45)
+                return rows+(place_jack_locality(board,free,grids,shapes,pin_nets,anchors,
+                    lambda parent,caps,side,horizontal:bypass_cells(parent,caps,side,shapes,pin_nets,horizontal),turn,oriented_box,instance_anchor,
+                    lambda part:through_hole(part['footprint']),module_order=True))
+
+        if board in JACK_BOARDS or board=='K':
+            base={side:list(grids[board,side].rows) for side in ('F.Cu','B.Cu')};extra=set();failures=Counter()
+            for _ in range(RELEASE_ROUNDS):
+                for side in ('F.Cu','B.Cu'):grids[board,side].rows=list(base[side])
+                try:
+                    rows=place_board(free,extra);break
+                except ValueError as exc:
+                    if not str(exc).startswith('jack locality overflow '):raise
+                    unit=str(exc).split()[-1];failures[unit]+=1
+                    extra|=release_window(board,unit,failures[unit],pin_rows,swapped_slots,pin_nets,extra,{p['ref']:p['instance'] for p in parts})
+            else:raise ValueError('adopted placement release rounds exhausted '+board)
+            adopted_report[board]['release_rounds']=sum(failures.values());adopted_report[board]['window_released']=sorted(extra)
+            placements.extend(rows);free=[]
         for p in free:
             location=grids[board,'B.Cu'].place(shapes[p['footprint']])
             if location is None and board in JACK_BOARDS:location=grids[board,'F.Cu'].place(shapes[p['footprint']])
@@ -251,6 +435,7 @@ def build():
             'control_bypass_locality':{'source':'design/partition/control-bypass-locality.json',**control_bypasses},
             'control_debounce_locality':{'source':'design/partition/control-debounce-locality.json',**control_debounce},
             'bypass_proximity':{'status':'DERIVED geometry only; routed loop #38 NOT RUN','evidence':'design/partition/bypass-placement-evidence.json','project_pad_distance_limit_mm':json.loads((ROOT/'design/partition/bypass-placement-evidence.json').read_text())['proposal']['maximum_supply_pad_to_capacitor_rail_pad_mm'],'pairs':bypass,'maximum_supply_pad_distance_mm':max((r['supply_pad_centre_distance_mm'] for r in bypass),default=0)},
+            'adopted_placement_pins':{'source':'design/partition/adopted-placement-pins.json','status':'Decision E15 minimal-move reflow; source geometry only','boards':adopted_report},
             'usable_grid_area_after_exclusions_mm2':available,
             'counts':{b:dict(Counter(p['side'] for p in placements if p['board']==b)) for b in source['boards']},
             'limits':['No PCB generated, routed, soldered or physically fitted.','First-fit failure is not an infeasibility proof; every reported successful footprint has its full courtyard.',
