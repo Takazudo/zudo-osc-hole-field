@@ -15,6 +15,7 @@ separate approval.
 | 20 | Review corrections: F1/F3/F6/F10 and the usable signal range; SEL hold redesigned; PWM_OFFSET made exact; 15 R-exact role rows; TMUX6112 S/D comment; WQFN pin-1 silk mark; cost section | `patches/phase20-delta.patch` |
 | 22 | Pitch linear range `signals.pitch_linear_range_V` = −5…+8 V added as **PROPOSED** option A1, pending the user's answer; the 1V/OCT row is now computed (PASS); VDD − 3 V wording states the 7.8 guarantee at VSS = 0 V; new owner facts for OPA4197 common-mode range, BAT54S reverse current versus temperature and TMUX7412F 7.8 (phase 21 was a desk study with no record change) | `patches/phase22-delta.patch` |
 | 24 | BAV199,215 owner bundle (JLCPCB-hosted mirror of BAV199 v.3; its facts are UNSOURCED until a manufacturer-hosted copy is compared). New `precision` variant of `high_impedance_input` fits it on the five 1V/OCT inputs, MULT IN and S&H IN (9 per unit). New `precision_input_clamp` section in the protection map: drift before and after, and the OPA4197 input absolute-maximum reading (phase 23 was a desk study) | `patches/phase24-delta.patch` |
+| 25 | Bootstrap clamp `D_BOOT` (BAT54S,215, pins 1 and 2 SENSE, pin 3 BUFFERED) added to the `precision` variant on the same 9 inputs, so SENSE ≤ V+ + 0.27 V at 25 °C also beyond the declared fault range; designator lock +9; protection map gains the bootstrap error and the revised absolute-maximum verdict; pitch linear range −5…+8 V (option A1) is now the user's decision of 2026-11-01 13:41Z (`signals.pitch_linear_range_status`, decision **E14**), no longer PROPOSED | `patches/phase25-delta.patch` |
 
 ## Decision
 
@@ -22,6 +23,11 @@ The user chose S2b on the decision card of 2026-11-01 04:59Z. That choice accept
 the protected-switch identity in the electrical standard. It is recorded as decision **E13** in
 `project/osc-hole-field/electrical-decisions.json` and as `cells[0].protection_identity_change`
 in `design/standard/electrical-standard.json`.
+
+On the decision card of 2026-11-01 13:41Z the user set the 1V/OCT pitch linear range to
+−5…+8 V (option A1 of the phase-21 study). It is decision **E14** and
+`signals.pitch_linear_range_status` in the standard. It is the linear passing range only;
+calibrated accuracy stays limited to `calibration.pitch_tracking_scope`.
 
 ## Every changed role
 
@@ -42,9 +48,10 @@ The record is one cumulative change set against predecessor commit
 | JR placement of RB4413 | locality reflow | pinned at the issue189 recorded source slot | | `design/partition/candidate-slot-pins.json` |
 | WQFN land | none | `TI_RRP0016A`, plus an F.SilkS pin-1 corner mark (project addition; the courtyard is unchanged) | | `scripts/libgen/build_s2b_switch_assets.py` |
 | Input clamp `D` of `high_impedance_input`, variant `precision` (phase 24) | BAT54S,215 | BAV199,215 (SOT-23, `clamp_diode_ll`, C40919), same pin order (1 A1, 2 K2, 3 K1/A2) and same SOT-23 land. Part keys, nets, ordinals and Role attributes are unchanged; only the identity changes. The other 89 inputs keep BAT54S,215 | 9 (oscillator 1V × 5, MULT IN × 2, S&H IN × 2) | standard `cells[high_impedance_input].variants.precision`, `cells/_builder.py`, `oscillator.py`, `mult.py`, `sample_hold.py` |
+| Bootstrap clamp `D_BOOT`, variant `precision` (phase 25) | none | BAT54S,215 across the unity follower: pins 1 and 2 on SENSE, pin 3 on BUFFERED (antiparallel pair). Added parts are moved after every existing part (`late_last()`), so all 8427 earlier key-to-designator rows are unchanged; new refs DO1106…DO1506, D3107/D3207, DH117/DH217 | 9 | standard `variants.precision.added_parts`, `cells/_builder.py`, `oscillator.py`, `mult.py`, `sample_hold.py`, `audit_master.py` |
 
-New parts are numbered after every existing part. 8234/8234 earlier key-to-designator rows
-are unchanged, and the designator lock takes +12, +85 and +108 (`audit_master.py`).
+New parts are numbered after every existing part. 8234/8234 canonical key-to-designator rows
+are unchanged (and 8427/8427 across phase 25), and the designator lock takes +12, +85, +108 and (phase 25) +9 (`audit_master.py`).
 
 Owner bundles: `.claude/skills/component-ti-opa4197idr/`,
 `.claude/skills/component-ti-tmux7412frrpr/`, `.claude/skills/component-ti-tmux6112pwr/` and
@@ -62,7 +69,7 @@ switch its own SEL pin, and FF is shared across the four channels. TI does not s
 other channels keep operating, so F9 is UNKNOWN and quad packing (ADG-3) is not used. ADG-2
 costs +$244.90 per unit and +$1124.83 per lot more than ADG-3.
 
-## Cost: priced-line subtotal $1484.08 per unit, $6733.31 per lot
+## Cost: priced-line subtotal $1484.33 per unit, $6734.27 per lot
 
 This is a subtotal of priced lines only, not a unit cost. The full breakdown is under `cost` in
 `receipts/checks.json`. Prices are the retained JLC 2026-10-31 tiers, and a lot is 5 units.
@@ -75,7 +82,8 @@ This is a subtotal of priced lines only, not a unit cost. The full breakdown is 
 | SEL hold: 36 RC0603FR-07100KL + 72 BAT54S,215 | +$2.12 | +$8.14 |
 | PWM_OFFSET exact (820K 17 → 12, plus 470K × 5 and 330K × 5) | +$0.19 | +$0.96 |
 | Precision clamp (phase 24): 9 BAV199,215 ($0.0383, 1–99 tier at 9 and 45) replace 9 BAT54S,215 (input clamp line 98 → 89) | +$0.09 | +$0.76 |
-| **Priced-line subtotal** | **$1484.08** | **$6733.31** |
+| Bootstrap clamp (phase 25): 9 BAT54S,215 (input clamp line 89 → 98) | +$0.25 | +$0.96 |
+| **Priced-line subtotal** | **$1484.33** | **$6734.27** |
 
 - Unpriced lines are excluded and remain UNKNOWN: BAS16GW-QX, the jacks, LEDs, switches, AS3340D, NOISE2 and the remaining capacitor groups.
 - The review's corrected figure before this phase, $1482.78 per unit and $6728.94 per lot, is reproduced by the first three adjustments plus the phase-18 hold of $1.10 per unit.
@@ -109,7 +117,7 @@ supply it is an extrapolation, not a table condition (owner fact `fact-fault-swi
 | Audio: filter IN, MIX4 1-4, MIX5 1-5, FOLD IN, A/B, MULT IN, S&H IN, OFFSET IN | 37 | ±5 V (`audio_nominal_V`) | PASS, 4 V margin |
 | Bipolar CV: envelope RISE/FALL, filter FREQ/RES/GAIN, MIX4 ATTEN, OFFSET, oscillator FM/PWM, FOLD/BIAS | 43 | ±5 V (`bipolar_cv_nominal_V`) | PASS, 4 V margin |
 | Gate and trigger: envelope SIG, oscillator SYNC, S&H TRIGGER | 13 | 0…5 V project gate level | PASS. External gates above +9 V are UNKNOWN (high-impedance comparator path) |
-| Pitch: oscillator 1V/OCT | 5 | −5…+8 V, `signals.pitch_linear_range_V`, **PROPOSED** (option A1, pending the user's answer) | **PASS** for signal passing, 0.53 V margin: the top is compared with VDD − 3 V = 8.53 V at the required +12 V minimum of 11.53 V (`supply-architecture-input.json`; extrapolated from 7.8). Accuracy is a separate gate; see the clamp-leakage finding below |
+| Pitch: oscillator 1V/OCT | 5 | −5…+8 V, `signals.pitch_linear_range_V`, **USER DECISION** 2026-11-01 13:41Z (option A1; decision E14) | **PASS** for signal passing, 0.53 V margin: the top is compared with VDD − 3 V = 8.53 V at the required +12 V minimum of 11.53 V (`supply-architecture-input.json`; extrapolated from 7.8). Accuracy is a separate gate; see the clamp-leakage finding below |
 
 ## Pitch range and owner facts (phase 22)
 
@@ -136,7 +144,7 @@ over the role range and 0…40 °C; cents are at 1 V/oct.
 
 | Role | Per unit | Range | Before: BAT54S, typical only | After: BAV199 bound | After: BAV199 typical |
 |---|---:|---|---|---|---|
-| Pitch (1V/OCT) | 5 | −5…+8 V (PROPOSED A1) | 13.4 mV = 16.1 c; no guaranteed bound (UNKNOWN) | ≤ 0.128 mV = 0.15 c | 0.0001 mV |
+| Pitch (1V/OCT) | 5 | −5…+8 V (user decision A1, E14) | 13.4 mV = 16.1 c; no guaranteed bound (UNKNOWN) | ≤ 0.128 mV = 0.15 c | 0.0001 mV |
 | MULT IN | 2 | ±5 V | 8.3 mV = 9.9 c; UNKNOWN | ≤ 0.128 mV = 0.15 c | 0.0001 mV |
 | S&H IN | 2 | ±5 V | 8.3 mV = 9.9 c; UNKNOWN | ≤ 0.128 mV = 0.15 c | 0.0001 mV |
 
@@ -168,9 +176,49 @@ cannot pass on the current row alone.
   - BAT54S: ≤ 0.24 V at 0.1 mA, but only at 25 °C.
   - BAV199: no VF maximum below 1 mA, so the result is **UNKNOWN**.
 - **Current row: PASS.** The current is ≤ about 70 µA.
-- **Proposed fix (not built): a bootstrapped BAT54S.** Connect pins 1 and 2 to SENSE and pin 3
-  to BUFFERED. Then SENSE ≤ OUT + 0.24 V at 25 °C. The diode reverse voltage is the follower
-  offset, so leakage no longer needs a hot rail-referred maximum.
+- **Built in phase 25: the bootstrap clamp `D_BOOT`.** See the next section.
+
+## Bootstrap clamp D_BOOT (phase 25; same generated section)
+
+D_BOOT is a BAT54S,215 across the unity follower, with pins 1 and 2 on SENSE and pin 3 on
+BUFFERED. It is fitted on the same 9 inputs, beside the BAV199 rail clamp.
+
+**Absolute maximum beyond the declared contract: PASS at 25 °C.**
+
+- SENSE − V+ ≤ VF(D_BOOT) + I × ZO ≤ 0.24 + 0.026 = **0.27 V**, a margin of 0.23 V to the
+  (V+) + 0.5 V row. The negative side is symmetric.
+- **Why the follower output limits at the rail.** Both op-amps state no phase reversal: OPA4197
+  SBOS737C 7.3.3 and OPA4196 SBOS869 7.3.3.
+- **The current I.** I ≤ 70 µA when the TMUX7412F drain is inside its own Dx ≤ VDD + 0.7 V
+  absolute maximum. At that current the BAT54S VF is ≤ 0.24 V (0.1 mA row, 25 °C).
+- **ZO.** 375 Ω is a typical figure only.
+- **Below 25 °C: UNKNOWN as a guarantee.** The BAT54S has no VF curve or maximum there. A
+  general Schottky temperature coefficient of about 1–2 mV/K would use about 0.05 V of the
+  margin at 0 °C.
+
+**Added error.** The follower holds the D_BOOT diode voltage at its offset VOS. The diode current
+is therefore 2 Is sinh(VOS / Vt), and the error at SENSE is that current × R_eff.
+
+- **This term needs Is.** The phase 24 note that "leakage needs no hot maximum" overstated it:
+  the bootstrap reduces the voltage across the diode, not the need for an Is maximum.
+- **At 25 °C: bounded.** With Is ≤ 2 µA (Table 7 at 25 V) and |VOS| ≤ 100 µV, the error is
+  ≤ 0.171 mV = 0.21 c, a fixed offset that the 25 °C trim removes.
+- **Drift 0…40 °C: typical only.** This uses Is = the typical IR at 1 V and |VOS| = 100 µV
+  plus the drift maximum (OPA4197 4.5 µV/°C) or the drift typical (OPA4196 0.8 µV/°C). There is
+  no hot IR maximum, so the guaranteed drift is UNKNOWN.
+
+| Role | Follower | BAV199 term (bound, unchanged) | D_BOOT drift (typical) | Total |
+|---|---|---|---|---|
+| Pitch | OPA4197 | ≤ 0.15 c | 0.096 c | 0.25 c |
+| MULT IN | OPA4197 | ≤ 0.15 c | 0.096 c | 0.25 c |
+| S&H IN | OPA4196 | ≤ 0.15 c | 0.055 c | 0.21 c |
+
+- **The BAV199 term is not degraded.** The D_BOOT current is set by VOS alone and does not
+  divert the BAV199 leakage, which still flows through R_eff. The two terms simply add.
+- **0…70 °C (typical):** D_BOOT drift is 1.7 c on the OPA4197 inputs and 0.76 c on the OPA4196
+  input.
+- **NOT RUN:** the fault rows with one rail missing or the follower unpowered, and transient
+  conduction while the follower slews.
 
 ## SEL hold (phase 20 redesign)
 
@@ -213,7 +261,7 @@ resistor out of the logic-low path. A BAT54S pull-down sinks SEL into the logic 
 ## Contents
 
 - `patches/source.patch` is the cumulative text diff of the 120 source files from 60c7c3ab.
-- `patches/phase19-delta.patch`, `patches/phase20-delta.patch`, `patches/phase22-delta.patch` and `patches/phase24-delta.patch` each hold one revision.
+- `patches/phase19-delta.patch`, `patches/phase20-delta.patch`, `patches/phase22-delta.patch`, `patches/phase24-delta.patch` and `patches/phase25-delta.patch` each hold one revision.
   Applied in order on top of the previous source set, they reproduce the source files exactly.
 - `receipts/application-receipt.json` lists all 290 changed files with before and after sha256
   and kind: source, generated, or retained-source (the 2 TI PDFs and the BAV199 mirror copy).
@@ -247,7 +295,10 @@ reverse order can deadlock.
 | `scripts/checks/test_assembly_specification.py` (stage50) | FAIL (canonical PASS) | Historical binding to the canonical `inventory.json` hash |
 | `scripts/checks/test_connectivity_inventory.py` (stage45) | FAIL (canonical PASS) | Historical pad/netlist binding to the canonical part set |
 | `scripts/checks/test_power_cleanup.py` (stage54) | 6 F + 3 E (canonical 1 F) | Historical "exact fitted identity U116" binding to OPA4197IPWR |
-| `test_family_reuse`, `test_mult_copper_plan`, `test_mult_substrate_comparison`, `test_mult_common_board` | 1 FAIL each, the same test as canonical | Historical determinism and source-hash bindings |
+| `test_mult_copper_plan`, `test_mult_substrate_comparison` | 1 FAIL each, the same test as canonical | Historical determinism and source-hash bindings |
+| `test_family_reuse` | 2 FAIL (canonical 1) | Phase 25: frozen MULT jack count 36 (now 37 with D_BOOT) and `proposal.json` determinism |
+| `test_mult_common_board` | 3 FAIL (canonical 1) | Phase 25: frozen 36 B1 packages (now 37), `layout.json` determinism, and the hard-coded populated count 37 in stage38 `generate.py` (now 38) |
+| `scripts/checks/test_partition35.py` | 1 FAIL (canonical PASS) | Phase 25: frozen JL part count 1060 (now 1069 with 9 D_BOOT). These historical baselines are not re-baselined in the record (policy review at adoption) |
 | `scripts/checks/test_architecture_history.py` | PASS with `PYTHONPATH=scripts/checks` | Errors without that path, as canonically |
 | `scripts/checks/test_ground_escape.py` | PASS with shapely 2.2.0 (scratch venv); 1 skipped | Large ignored native inputs unavailable |
 | DRC, zone fill, #293 fill | NOT RUN | Not authorized |

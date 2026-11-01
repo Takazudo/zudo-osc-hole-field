@@ -1,11 +1,11 @@
 {
  "schema_version": 1,
  "status": "UNADOPTED CANDIDATE; NOT CANONICAL, NOT VALIDATED, NOT A MANUFACTURING OR ORDER INPUT",
- "decision": "E13 (S2b, user decision card 2026-11-01T04:59Z); canonical adoption requires a separate approval",
+ "decision": "E13 (S2b, user decision card 2026-11-01T04:59Z) and E14 (pitch linear range A1, user decision card 2026-11-01T13:41Z); canonical adoption requires a separate approval",
  "predecessor_commit": "60c7c3ab78cba5e2fcd81973024894510e090cfb",
  "predecessor_tree": "ac352e97cd12719803e3115e7f43f40d90799067",
  "builds_on_record": "circuit/candidates/opa4197idr-rexact-20261031 (its source.patch is contained in this cumulative source.patch)",
- "source_patch_sha256": "20fd5503fff21e892bda7a534f9e5964447cd6e5d8ca98e71066d1b43f815951",
+ "source_patch_sha256": "fec86edb17135d01a883934f061cd007e24223630e49eb6e85ac0b22f616c792",
  "changed_file_count": 290,
  "source_file_count": 120,
  "retained_source_files": {
@@ -14,8 +14,8 @@
   "circuit/sources/ic-library/TMUX7412F.pdf": "7396d8a34f80b178a8b5c72272b5bb0eb7da7ad3182e7d3cd80d294fc32f26e5"
  },
  "retained_source_note": "The two TI PDFs and the BAV199 v.3 mirror copy (JLCPCB-hosted; nexperia.com access-denied) are not in the patch; reproduce.sh copies them from the main repository .circuit-cache/sources and checks these hashes.",
- "successor_note": "Successor hashes are the phase-24 tree rebuilt from 60c7c3ab by reproduce.sh; generated files are not committed with this record.",
- "revision": "phase 24: BAV199,215 owner bundle (mirror-sourced, UNSOURCED facts) and the precision variant of high_impedance_input on the 1V/OCT, MULT IN and S&H IN inputs (9 per unit); precision_input_clamp section in the S2b protection map",
+ "successor_note": "Successor hashes are the phase-25 tree rebuilt from 60c7c3ab by reproduce.sh; generated files are not committed with this record.",
+ "revision": "phase 25: bootstrap clamp D_BOOT (BAT54S,215; pins 1 and 2 SENSE, pin 3 BUFFERED) added to the precision variant on the same 9 inputs (designator lock +9, late-ordered so no earlier designator moves); bootstrap error and revised OPA4197 input absolute-maximum verdict in the S2b protection map; pitch linear range -5..+8 V (A1) changed from PROPOSED to the user decision of 2026-11-01 13:41Z (E14). Phase 24: BAV199,215 owner bundle and precision variant.",
  "phase19_delta_patch_sha256": "aa79984526529c9bd457137a16439ac9ca7d79bcf7eb63954f1bf20d4f11894f",
  "phase20_delta_patch_sha256": "aea78b535566647989b7f8749604e04f1afd60bc5f70c087192950340936f1c6",
  "phase22_delta_patch_sha256": "bcdc559d6d39619a11b5a2df40ffb7ce2edcbbad38d1f7299071067e0aa1f1c0",
@@ -44,12 +44,12 @@
   ".claude/skills/component-nexperia-bav199-215/coverage.json": {
    "kind": "source",
    "before_sha256": null,
-   "after_sha256": "c67a38b39d60402fcd645e1ea6f936fadd5ea94aa25cf7f07163a78d87e213ac"
+   "after_sha256": "b40084d692c1f70896416379f6edfdd24f25718a1f58d95f52dda1d9c74be039"
   },
   ".claude/skills/component-nexperia-bav199-215/facts.json": {
    "kind": "source",
    "before_sha256": null,
-   "after_sha256": "2a1569011b4608b05f56fc9113e44026480e5f06d9a9f8040ec344b791013c1b"
+   "after_sha256": "0bfd5ee23d7087f155e97a171e8db70e5bfae66c0e5882d6dcb796edd32446d8"
   },
   ".claude/skills/component-nexperia-bav199-215/interactions.json": {
    "kind": "source",
@@ -74,7 +74,7 @@
   ".claude/skills/component-nexperia-bav199-215/sources.json": {
    "kind": "source",
    "before_sha256": null,
-   "after_sha256": "975259e1a486342db7d3ea089bb9e3d876bac9a8844d05c1304be94c873ec8a6"
+   "after_sha256": "e2d742a0c43e91522c8d77567742817d4671a9244d51f0e11aad9de965be4bd4"
   },
   ".claude/skills/component-spec-audit/references/direct-routing.json": {
    "kind": "source",
@@ -334,27 +334,27 @@
   "boards/osc-core/sheets/oscillator_O1_K.kicad_sch": {
    "kind": "generated",
    "before_sha256": "ae566265a659c8d46aac77648fcdbde7a31e1a2af0a953fc0b6d07ab44286112",
-   "after_sha256": "fd52c90aff200740b5062901697306f49f4c581df82c36e8e7f6a8b56c5dcd2d"
+   "after_sha256": "ce70c00204465b590877699142425441bce58d5ee1e8984acb0f2cf4921c2264"
   },
   "boards/osc-core/sheets/oscillator_O2_K.kicad_sch": {
    "kind": "generated",
    "before_sha256": "10dfa3d76ef502b3a284b994f1acb36a579d02fd82d4a72041927063904be840",
-   "after_sha256": "ebf94955f76497ee9c19d1c4fe2ea8af9efe942a74f126ca288018b0d2e70f48"
+   "after_sha256": "0dcbf02b84b7739eb1f9a7673d80674c106a2baf88b04a65c9b7f0a928b5f656"
   },
   "boards/osc-core/sheets/oscillator_O3_K.kicad_sch": {
    "kind": "generated",
    "before_sha256": "8aba8743b560b5f2aa586d9984dd37ddf2432659784b2c92dfbf696ee43e4bca",
-   "after_sha256": "e43ed0c13aed3402a2de31fd4b1e16dc30aaf1bede996db95b51f2217cf2bd6e"
+   "after_sha256": "9dba32da74bebe26b2dfb5a854d55f1afbf9ea7b9f9d9fe7781e8d869d7213a4"
   },
   "boards/osc-core/sheets/oscillator_O4_K.kicad_sch": {
    "kind": "generated",
    "before_sha256": "854b948442205d4a162ed884e45b23944550ec1a3d74607f9f087aa3e0ac73b9",
-   "after_sha256": "72b0e2c5cbb813e6f22fbc779ac31a22e806e4a3f7bd2044089154cc832fd95b"
+   "after_sha256": "fd7ada96511726eb7f0a47f8952d19b96da6a24d41b8655cefdd42e1cd3121ae"
   },
   "boards/osc-core/sheets/oscillator_O5_K.kicad_sch": {
    "kind": "generated",
    "before_sha256": "6780051dd8e99cc50146a669eff0d720677a78da44143612f45c42acc680e51f",
-   "after_sha256": "8a21a75de4dc96397d12310f4610bd3ea4faea351ce062f22d148fb84b01751c"
+   "after_sha256": "f14529a9b8a4dcf5e75e0e4d703db5588530d7d493945f3c0700a3f974872453"
   },
   "boards/osc-core/sheets/sample_hold_H1_K.kicad_sch": {
    "kind": "generated",
@@ -379,87 +379,87 @@
   "boards/osc-jack-left/sheets/filter_F1_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "e1cc2bd9b9726ba1ad82e31b447427930b29f889f052c24912b253d9ad37b537",
-   "after_sha256": "d66cb49705d66ab39f129c52c961e0317da674c5b61b4984c818516539aa13d0"
+   "after_sha256": "a48c4191c44d354ea660d75c7be50443e3ebe1a204f10b5dda25ab7d853129ba"
   },
   "boards/osc-jack-left/sheets/filter_F2_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "d1b1fbcd151a930c3de87f37f8662630a28577b4c5e012e0a3a25e7367a8319e",
-   "after_sha256": "e760db37e53e04845d74744cd937a917e082a0a111971c55c773e1a0aaa9058a"
+   "after_sha256": "8be7e8e495cb0d39ea6d914974e4eac01e15dd86244a686ef051849c483fdd13"
   },
   "boards/osc-jack-left/sheets/filter_F3_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "260acce00949a11bfe017d45dbbd1e0097d693ea6a4d5873c75b73377dfb392d",
-   "after_sha256": "9bea74bc89987b11b1b817d9991854cba37958c19c1a937e3948b932d3cd21f2"
+   "after_sha256": "67f8bdda478cbfbaf998f284fbd1cc38f1aef91398f85242caaaa663f17dbc3b"
   },
   "boards/osc-jack-left/sheets/manual_ab_X1_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "3d677d113e72eb17c5abdd7ea0627e1cbd08f51a0e48341a3115cac7fbe315ea",
-   "after_sha256": "7e259fc1fbe100e7502e2a0c3a6a032bc71fa5839fcc493ae7890f9e89c6a3a6"
+   "after_sha256": "b82eb72ec65383b1aa1b6c3e96f17f90106673c3659bf260ab499db72220147f"
   },
   "boards/osc-jack-left/sheets/manual_ab_X2_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "1eae10a8ebc67d4515be81db3bfbf3200b2486d18b4822cd388cc83656084804",
-   "after_sha256": "14dd74c883ab8cecc9b63190b574d5658d349e146fac22cc2e17645aaadc7b0a"
+   "after_sha256": "9c2ea8e900974eb87925a83745f5fd871050b77b1bc48c0ef38111bb342c924e"
   },
   "boards/osc-jack-left/sheets/mix5_M5A_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "9a48a927ceaef007306597abbc2707c05ab624d1864bfe6ee25172c67d4bd83e",
-   "after_sha256": "5bdb75394d1d9675ea0d532bc3b0e6f67142d4a82f243a85f592626b3fe25bc7"
+   "after_sha256": "8fb6856e38419e80d34b742030a2b080c5c298c6285d4b2ad1576306fa317d11"
   },
   "boards/osc-jack-left/sheets/mix5_M5B_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "fc6a476435be0956fdc12777f7a80d3b92b1f6cadba2b5a7d89fb185fbc29a01",
-   "after_sha256": "7c9bce3f0c36f18032088ddcccd7977e032a8e214ddc72ee70e1e02ab0d42f98"
+   "after_sha256": "b413b33c2936236ba9e4535d913e9bac8c73bbacb78dde0441d3b7a2f3974d78"
   },
   "boards/osc-jack-left/sheets/mult_B1_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "e0b12729436a791fe335ddcaae22e95cfe56d7e6fab15814e6eaa2a5723e32b4",
-   "after_sha256": "a17cbf6a3442ffb0aeb4c8cd0c01057005ccebdec8625548bf2c6b4666ff2490"
+   "after_sha256": "4018dad118b2ea8e21fe26f6fa0455c52a9e771d702b42a80c74419fd7f06a32"
   },
   "boards/osc-jack-left/sheets/mult_B2_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "d21aca7ffd8df864b802a9ad3dd4b9903dec2295edf1a4346952ac9e3d803747",
-   "after_sha256": "6a38768f2afe729d5cef86bd847f8768024a64acd1f6e3ba004e4a127ef9869a"
+   "after_sha256": "241055ce40725e8886a5a01dbaf2a75a148c87120500bf16c5bca2cf17591223"
   },
   "boards/osc-jack-left/sheets/oscillator_O1_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "407ec5513b77c00eff7c767c998acbe7ba74f2ce2c161b1b3f369955688d9f7c",
-   "after_sha256": "c503097cf7551a869151b9b97d96b68359b4caf71425ed3c27254f2294edc2ca"
+   "after_sha256": "e56e222f682e7e0d77597cf8877e4bf5e515d9e37cec7a3a46550363c186754d"
   },
   "boards/osc-jack-left/sheets/oscillator_O2_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "2e5fa20a3e13aac663e863e7a5d13b54211f9dec5826b6e5c8738469f579b4d9",
-   "after_sha256": "42b9bf29ccd0275328824965febfe6581cc6d5eeb83b4366f7560942e4b16860"
+   "after_sha256": "2cee536267722db1a9b947e7076fa23c01a8038601fd63c80b9d365369d49cff"
   },
   "boards/osc-jack-left/sheets/oscillator_O3_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "75dc5426a66c51dfa0a602f7e9479214e8fa7610c14652a6f3c7b609efdaedc6",
-   "after_sha256": "95659a4b8cc0117831f9a673f4242750d428397313c523816baaf6369163461e"
+   "after_sha256": "76863c68b1496a2aa8a35f4ebee4e5f233fa60cdd7a4c6c2782224e7f409f637"
   },
   "boards/osc-jack-left/sheets/oscillator_O4_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "6830614c8d81278f8170a950cc5aa71e79f81354069e83bc69dfe896300c0a91",
-   "after_sha256": "4cee8d387d207db0909079b0bc0abd1143e737febc5df8b9c5436eff3ce29408"
+   "after_sha256": "f4a00a2cdc0badbfb9545ee71de894c2bf4f5b32e8f23732cfdc4aebd5b32931"
   },
   "boards/osc-jack-left/sheets/oscillator_O5_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "830a97a4b1ae467b9fe4941c8e112fae43e9ffc49aa4efd6da58b8f9cb4a8ae1",
-   "after_sha256": "79c9965d0e8c2e98f7d91e85ffd761a85c346703635bfe98c178c8d5c9d48af1"
+   "after_sha256": "124bf73810124c57f8407cfdc76b641d72d183c003f9da94465e48255cdb3e3d"
   },
   "boards/osc-jack-left/sheets/sample_hold_H1_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "d89cb293f51bbf8adda10cc4383254b70bc31aa59bda7296a65d6896dc2928b1",
-   "after_sha256": "ea4bfac423a6a006c64e1618cc9ce1104e41741bf2f04022556097d96094ec44"
+   "after_sha256": "bfdaa5da35e0223cdc929f1898bf089c0608b89243337150ada0b62bfe23208a"
   },
   "boards/osc-jack-left/sheets/sample_hold_H2_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "345c9e069e5dfee11271e43ca0e4c2b3d7635fd482fb9d87d63bdc9dfcb338a1",
-   "after_sha256": "74b11a68bdffaea9ef62f2af96c842fdf2540bcbd72e5163587444bdd792552b"
+   "after_sha256": "ca1e271583986b47741883c301f8dfad019cc3c534688cc3b84d2813e4069670"
   },
   "boards/osc-jack-left/sheets/wavefolder_W2_JL.kicad_sch": {
    "kind": "generated",
    "before_sha256": "37e93ac735b58e799cdba074c47d44a1997113990e5d1af4ef1cdba944bdfef5",
-   "after_sha256": "1d2b4b9b2331a59ee2a1bdf00a5ba7578dbf2c5655db6ccc2d1db6f6988287b2"
+   "after_sha256": "eddabf28bdb044b759c5c41cf1c373526bfaf6ca7dfda590976b170469a4ccb3"
   },
   "boards/osc-jack-right/sheets/envelope_E1_JR.kicad_sch": {
    "kind": "generated",
@@ -594,7 +594,7 @@
   "design/boards/osc-jack-left.json": {
    "kind": "generated",
    "before_sha256": "d868c0729950c1f4babcde8a5adf5c3f9ce86341cf5b79afe190a0daff237f3d",
-   "after_sha256": "c8decfb16b17093510e9b68d92a98706307d67b3d5ff1e8865fb677b705137a6"
+   "after_sha256": "77636afd33376d41b162f361cff942cd66d913c26a85a5738f32092150f208a9"
   },
   "design/boards/osc-jack-right.json": {
    "kind": "generated",
@@ -604,7 +604,7 @@
   "design/partition/board-stack-candidate.svg": {
    "kind": "generated",
    "before_sha256": "846cd7903de21c1b593720c64ea485089d13d44f40fe36a8fdd6c0bbc6085a9b",
-   "after_sha256": "a5087551c53fc784645bef42c3022983471c533b2dc3093ffcc53042a17c804a"
+   "after_sha256": "dbcf23c1ff3bbb9a9f98b44a0c2ed5295aa1ac988a4d1201d4728c7109870c33"
   },
   "design/partition/candidate-slot-pins.json": {
    "kind": "source",
@@ -614,27 +614,27 @@
   "design/partition/floorplan-candidate.json": {
    "kind": "generated",
    "before_sha256": "913b1362bf927fc1b09a73f204c4b61230d49724f78c10c4c4c03f765720a597",
-   "after_sha256": "dbf2fab12529b360629c02bd17cbec63be93d6a74ee38a3f3cc42c45b88afe12"
+   "after_sha256": "ea85a31fb63430d16692ea5a4f189e0c63c620aee8df2a91ec7d5677ca41a5e3"
   },
   "design/partition/orientation-oracle.json": {
    "kind": "generated",
    "before_sha256": "e7c3555d0d0921ff64b0744bbc738bd8668315334ba67a4a7b9eacd8dbddddd2",
-   "after_sha256": "95f2ac8a39a43642ed8b0d3a0e401e3eff94a8aabc21a220b0fa53b0d64a465b"
+   "after_sha256": "57afb61f959ce8391c3819778eea716c9fca8390f3ad37fae6f57875159269aa"
   },
   "design/partition/partition.json": {
    "kind": "generated",
    "before_sha256": "d84b710ec5b6fe134ace159c4e3b4088c86f2cda658a5d386b23d9d540a48de1",
-   "after_sha256": "d2b955082a02c4a920afb4f1cee3f6fcdff71a90715808b9fe6434c3c1d5c36e"
+   "after_sha256": "76f9e274b08bbd381bddb137d8b76af155bafeb62cf1e553e103d827ab5ad401"
   },
   "design/power/fast-disconnect-candidate-report.json": {
    "kind": "generated",
    "before_sha256": "b67d370a91dd0261471ad53ac8356be30a57506d9b1fd875b13b6c94e626eed9",
-   "after_sha256": "6893ff7dfe2d2ff19a60eef30f288ea8be70e8c7c9a66e5cbb20a25b5bf28d0b"
+   "after_sha256": "1dcc6b69f5217bae558d076a124b14ca17585ec9a73d10836a25211fb8050cd5"
   },
   "design/power/integrated-output-candidate-report.json": {
    "kind": "generated",
    "before_sha256": "21d0534c6934251371b79cd82115624e02c71d8eb9b6e1fd56540c9aadb8d821",
-   "after_sha256": "1be441307e83d77f66f2cf21c7fd7373bced89bb163aedd93ac4e80b628464b9"
+   "after_sha256": "91700a3552f62238eb51706e1386556507babbbf9851ffc675182916e6ce272d"
   },
   "design/power/monitor-permit-current-report.json": {
    "kind": "generated",
@@ -644,7 +644,7 @@
   "design/power/monitor-permit-native-report.json": {
    "kind": "generated",
    "before_sha256": "c5fc1ac4587bca5ca1faf28b18afbf1d0f7ba509f3430121a7c252a4a7d974b6",
-   "after_sha256": "84ca6da4461fd5d647d17755c51a72a85ccedf372a3ba94dcb27250beeb4d690"
+   "after_sha256": "23836a319913c987b09b7b388a2ef87c75d0cd6fb1df94c0c8f96fad0e1a5a72"
   },
   "design/power/monitor-reference-capacitance-report.json": {
    "kind": "generated",
@@ -674,12 +674,12 @@
   "design/power/precision-output-cell-model.json": {
    "kind": "generated",
    "before_sha256": "5325288121c0fd533a02da0fc58123711c421525f830425baf2246249f5593ca",
-   "after_sha256": "8c7c3a82c5a610195af67234fcf895c174b6baf01e9fbe228cedec88a03dc0c1"
+   "after_sha256": "4476db55d461caefd9b1fc0cd5bc149210481f77fea979d3483bd877abcb95d6"
   },
   "design/power/precision-output-cell-report.json": {
    "kind": "generated",
    "before_sha256": "f1616df91906f50066dfb85476baec6b1648f9a88056a1be6586a20c16f8f9c3",
-   "after_sha256": "934fd9b480800f2a4b38024825a64f3d9ebd125646259b5747b119ccdc980fc3"
+   "after_sha256": "5c93b58d4356a51d312d6291acc844fe41ceceb1b1fc92093ceef57b50a85bf3"
   },
   "design/power/protection58-audit.json": {
    "kind": "generated",
@@ -724,12 +724,12 @@
   "design/readiness/s2b-protection-map.json": {
    "kind": "generated",
    "before_sha256": "59bc03cf93883469dc18c89f7fcd4bc606ba80ac9bb168caedf132925189cfbe",
-   "after_sha256": "90934441e4bbb2394167dd7b85a900686c6af33bd1213ca47f8d1df41ec70e72"
+   "after_sha256": "e8ecfcfa344439c8da3255b1ed9327e5e9ef7faf2aa749e9f66bdf7ef055702f"
   },
   "design/reports/board-erc.json": {
    "kind": "generated",
    "before_sha256": "5579d5dcf7cb0a8da9ee75762a5196c0c9a98f47b8c1236e93e52004cb5114ac",
-   "after_sha256": "f12ebf542d006894ea5445fd6422ba281b16cea722d6fccae4d72d8a5b7d0b6b"
+   "after_sha256": "c9b9eb231e9ff941e1b4616c204476cbe893a9b480b9158f132450239bdeea18"
   },
   "design/reports/board-net-tokens.json": {
    "kind": "generated",
@@ -739,12 +739,12 @@
   "design/reports/board-projection.json": {
    "kind": "generated",
    "before_sha256": "2748e77346e2f86992f30215ba0261a184b7e72baf1d39ee50d74cbe393e4168",
-   "after_sha256": "0f8a25cb4bf055dac5ff24bd17a786a609d095f2c40e1adb0baf155b5de79d03"
+   "after_sha256": "67259efe4c4bbcb03271ee548b4ff013e9c040445f113bdeb1bc0411d6630938"
   },
   "design/reports/board-side-map.json": {
    "kind": "generated",
    "before_sha256": "42e4606d9f923dd1e397c2c0d0f137dfb1bcb37653a171baebf96a507343b506",
-   "after_sha256": "937c623a90bef20f5052d9593785fc2b632f970188ec27a337b01751abb9aaef"
+   "after_sha256": "a473932ae158fe90b6c3d66861b1b06973edda22ea46c66888f167f3205ed447"
   },
   "design/reports/current/envelope.json": {
    "kind": "generated",
@@ -789,7 +789,7 @@
   "design/reports/current/sample_hold.json": {
    "kind": "generated",
    "before_sha256": "65fc5d850a39a41793ded31a9595dc096150ca618ddc00a3d18b054c9c01b189",
-   "after_sha256": "05737677470150b043f0db51d1bc32509dfc46ca93ad0219f190ef3175377f40"
+   "after_sha256": "2999133eff66ace44e727563ea6dac92eeb1818489b94b4b93ae97462b3361f7"
   },
   "design/reports/current/wavefolder.json": {
    "kind": "generated",
@@ -799,17 +799,17 @@
   "design/reports/io-partition.json": {
    "kind": "generated",
    "before_sha256": "a7da4f02fa118adeeda4ace6ff9e46fa430c4cdb5280bea6705241cac2a92a2f",
-   "after_sha256": "61de0a73f1b50cbb9cd3a32a1ed09e3a464c9fbd911a1a9869758b323fef9a8b"
+   "after_sha256": "cd6b07cb196b48fd1a13d05df46a8c6209b2c73904b7082c88014dce5fbf5a45"
   },
   "design/reports/master-audit.json": {
    "kind": "generated",
    "before_sha256": "3b343d424583d7b9bc8cd8092ac2483ce39b9e4c2fb3ed3edf4d9a04ee6b6520",
-   "after_sha256": "e4b5363bb697f347bca1631533a81a042e6236eebf1dbb9e35ee14368bd60c1c"
+   "after_sha256": "e32a324700b6d22ddec23529f27e7d07c0c89c9296619ca45ccb47b3b4b870ba"
   },
   "design/reports/netlist-stats.json": {
    "kind": "generated",
    "before_sha256": "186b900f9ca2067fdbe9340606cd6b16b0f927d924824bc1a85cf5bfb168b0ce",
-   "after_sha256": "1b018ff5ff49fd06868185ceb57b8f62c8e64402685375d286d9645907654c49"
+   "after_sha256": "2d78426a8318e601fc408ad1612a2a08a39e934fe55a4aa915cdb7cb632f2e92"
   },
   "design/reports/oscillator-reference-fanout.json": {
    "kind": "generated",
@@ -844,7 +844,7 @@
   "design/spec/cells/_builder.py": {
    "kind": "source",
    "before_sha256": "aefd73ab43e83f167ecd9cf3fb257e53dd4c837e0414b24ba46c289494150639",
-   "after_sha256": "4eebf29bd029e80b81b66b851cf0bb61b52e1087a2e8fa20f594198bcc02647b"
+   "after_sha256": "de1921d86be3614843f3769c4c8e964d26988b2e7b61ae31a23ccebd160b5bc4"
   },
   "design/spec/cells/build_current.py": {
    "kind": "source",
@@ -929,7 +929,7 @@
   "design/spec/modules/mult.py": {
    "kind": "source",
    "before_sha256": "f40b65f937569979431d9adeb067e25d9d3406dd3c27465cbd30b2389710aff3",
-   "after_sha256": "9c4ebf66abde1cca7dee388da1033d16074f8d6fe97fabaa07a2028e8a2f3b2d"
+   "after_sha256": "1ba4ea84f6d2291090233af91049cbc288a4c4cd840041271fab8590930da135"
   },
   "design/spec/modules/offset_model_contract.py": {
    "kind": "source",
@@ -939,7 +939,7 @@
   "design/spec/modules/oscillator.py": {
    "kind": "source",
    "before_sha256": "c83a10adb792265798ae453af4380300b6fde8d1e26afe6dca240412eb965d3e",
-   "after_sha256": "8334c798c2ba3c760cdaff4386330883dc201799058faae2ae9fdc061ae5eced"
+   "after_sha256": "b497dff42044f54cf9f97d431b8cd350675d689e64d86c237180028ed5c19225"
   },
   "design/spec/modules/oscillator_sine_projection.py": {
    "kind": "source",
@@ -964,7 +964,7 @@
   "design/spec/modules/sample_hold.py": {
    "kind": "source",
    "before_sha256": "0fa352022e5ea991866dd8583042932da382f66aec17110de07e1fcf569fe45a",
-   "after_sha256": "8a593d41fef8f53051c65572e4b1f01a1db391d62b7910f15bd97d6bf7e76a32"
+   "after_sha256": "ac58c06f79a6b90ebbfb48c757a2f504dbfd279f4fc07fdbbb1654e446ee5be0"
   },
   "design/spec/modules/sample_hold_model_contract.py": {
    "kind": "source",
@@ -1114,7 +1114,7 @@
   "design/standard/electrical-standard.json": {
    "kind": "source",
    "before_sha256": "185f4775082a36873954323a2377844e0694631418ac510db08e3a0d39b56e53",
-   "after_sha256": "bc0cb709d5cd294b7fafe55c5fceddb286c53321bc51425d92efba6f3b70e74b"
+   "after_sha256": "1f805fcb26e924575df04e82e1353aaa4aadbe344f14218d82348cdf1d3eba7b"
   },
   "design/standard/ic-library-capture.json": {
    "kind": "source",
@@ -1199,17 +1199,17 @@
   "project/osc-hole-field/electrical-decisions.json": {
    "kind": "source",
    "before_sha256": "a07d89a46501e09b9caddecae8cc341a1b715252f8a42f10f5e0d86dc5e25728",
-   "after_sha256": "4a30c864c537eddf80c326b667c9231f59e2d4d5a6f11d4035dd709fedd33482"
+   "after_sha256": "6eeaa87a0c2e76616c394605892212e8196aac1cd56681c98d3c264f51b1560e"
   },
   "schematic/boards/osc-core.net": {
    "kind": "generated",
    "before_sha256": "b550a5fbe80c63df12f89aac867894d8448ac61d2bb4e4d623130f31f0a08242",
-   "after_sha256": "96ff9837727c9089e5d9c62e5562d83c06e8e3752915a06d39f1a87fae5e62b9"
+   "after_sha256": "ab7ce8930d2807578a3233639f4eea8c3bc11ee100f48bd79f3766f1a13c169e"
   },
   "schematic/boards/osc-jack-left.net": {
    "kind": "generated",
    "before_sha256": "c84764a010afd8ee2af22aa8cd6412376a7d71667efa31b527618d049708eb66",
-   "after_sha256": "3c4b4b51bfd37869507a000a661360d6d3c71b10c857fd1c0483f92de6d03129"
+   "after_sha256": "463fd4bfecc595602925685bf27ecfc877aa8668290703cd308210a836b5f969"
   },
   "schematic/boards/osc-jack-right.net": {
    "kind": "generated",
@@ -1224,7 +1224,7 @@
   "schematic/exports/master-hierarchy.pdf": {
    "kind": "generated",
    "before_sha256": "a99790c8b5dce3343c3ec8a036bafcf61e1d3cbc7188f9cfddc06fbf73d1d0c6",
-   "after_sha256": "f3e7c50969848e2dec16b892ae1217ffa2eaa8a5b7d8c7ae7a87aa457207e548"
+   "after_sha256": "2a855ca1adb9172ba006bd9cbee24434b3be6ee0d1c97cff0f7597a8b20fcf90"
   },
   "schematic/exports/sheets/envelope.svg": {
    "kind": "generated",
@@ -1254,7 +1254,7 @@
   "schematic/exports/sheets/mult.svg": {
    "kind": "generated",
    "before_sha256": "029f0fef5ef1c6bcfd6c769c49df7e7464c056f6a97cac2cf8975e7a429fc03e",
-   "after_sha256": "68a91b2cbc41d3dc622fcec90fbd95898ad6124948fe08eddeff6414ca17cbb9"
+   "after_sha256": "4474923b400521239cacf9d88b400516aa9a3217ae4728a1f241288e0e7bec46"
   },
   "schematic/exports/sheets/octave_reference.svg": {
    "kind": "generated",
@@ -1269,12 +1269,12 @@
   "schematic/exports/sheets/oscillator.svg": {
    "kind": "generated",
    "before_sha256": "30a5623436e52dd57bd3e90c46ddaf696ef17eb35c23873c70fc1360d8584fe9",
-   "after_sha256": "7133a0acf0ecbf95de26fd36829a339c0cf0b97979395c30fd83fc34415b2827"
+   "after_sha256": "c015125fe9d42bafe989e6df2872e5e8dfced3ad5e35b1e1462ea96165e91484"
   },
   "schematic/exports/sheets/sample_hold.svg": {
    "kind": "generated",
    "before_sha256": "fe6bff15a879aea3596029197b742e05bfc8b7955a65c34f0931e17172c663d6",
-   "after_sha256": "b3ba54194869d6dc53252f3aa878136f6696813de81bdc8238741a9a27d07dc7"
+   "after_sha256": "d15d96920f39b301932f3c39632a6565033384aaae0ebab0d0dae6638bb332ef"
   },
   "schematic/exports/sheets/wavefolder.svg": {
    "kind": "generated",
@@ -1309,7 +1309,7 @@
   "schematic/sheets/mult.kicad_sch": {
    "kind": "generated",
    "before_sha256": "efb406faaaefa3afb3beef287569e2da8d47a386f5d325e76baefa2acbcd4945",
-   "after_sha256": "f903e8a5098777cdbf281cf4b4938b50331a2b1f09ba03e99e79cca35ef76e1b"
+   "after_sha256": "ca0e314f258d04f439342d53c3ea830598bd859c9f8ae4bebde8b5ada689c7d7"
   },
   "schematic/sheets/octave_reference.kicad_sch": {
    "kind": "generated",
@@ -1324,12 +1324,12 @@
   "schematic/sheets/oscillator.kicad_sch": {
    "kind": "generated",
    "before_sha256": "06ace0b9b5fae11377689cd39ddf67634cfd2ce4c6e143a000c0fd66cb05cece",
-   "after_sha256": "7f5b89ef2347a8bad9ee1f32b1e4aee8b7f4eafb53a2eab967a1e13f7828bdfa"
+   "after_sha256": "0ee170ea607bf63a3eb9ba104b94909844bddc552588ae84ae3bbc4000906370"
   },
   "schematic/sheets/sample_hold.kicad_sch": {
    "kind": "generated",
    "before_sha256": "200c390a88a9f08132a0e051666e5684128b6416a02fe458ae75a836d4d715f0",
-   "after_sha256": "fc25f1b295bdbd9dd723e96163de6b999fbf6dae2a0bb825fe537b1c2389e6b4"
+   "after_sha256": "a7985b614adfb805aae9248fc980e1b992b5e335b8a7ce356a80de3c78cca352"
   },
   "schematic/sheets/wavefolder.kicad_sch": {
    "kind": "generated",
@@ -1364,7 +1364,7 @@
   "scripts/checks/s2b_protection_map.py": {
    "kind": "source",
    "before_sha256": "9b2a3653002918a85f541ca1372def37d506c811b6933509a247b49f5166f9ae",
-   "after_sha256": "ea84f5c4da1e36a6df00214e4b701a848baf04cf9de6a79f8c7ad344f6fefcc7"
+   "after_sha256": "04748eb7633ae5e60c9afbd831b1c881d009a59b7222d2f1f980d851f7fea123"
   },
   "scripts/checks/test_fast_disconnect_candidate.py": {
    "kind": "source",
@@ -1419,7 +1419,7 @@
   "scripts/schgen/audit_master.py": {
    "kind": "source",
    "before_sha256": "74221df0bef68b6c2759e153ce6de2130d7ffacc681eeae81ddc7a5d98cf80d7",
-   "after_sha256": "a5a63290907934fc6836ff9850911ac3bf4c0c63357f15ac989ab4bcda1227ae"
+   "after_sha256": "f7511b07451dc3ea17a58195148601a8e306ab92f37c283f3000aa1571c972a4"
   },
   "scripts/schgen/build_rail_ledger.py": {
    "kind": "source",
@@ -1471,5 +1471,6 @@
    "before_sha256": "9d34805993e9725551abd1b7df92c013e610c47254184ab610fb58d23d41d1cc",
    "after_sha256": "191129af6926e8450df54148bcd7814a9f15383ab7621e4f816fc41535a778ca"
   }
- }
+ },
+ "phase25_delta_patch_sha256": "501a877d7c547147c88aa4d54f910980e60e51ae0804cf329794cc0d46e2d4cc"
 }
