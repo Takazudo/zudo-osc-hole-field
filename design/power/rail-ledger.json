@@ -9757,24 +9757,24 @@
     {
       "id": "A01:0",
       "instance": "A01",
-      "label": "OPA4197IDR",
+      "label": "OPA4197IPWR",
       "source": "design/reports/current/offset.json",
       "source_row": 0,
-      "count": 3,
-      "unit": "worksheet unit",
+      "count": 1,
+      "unit": "whole package",
       "reported_assumed_typical_mA": {
-        "+12V": 12,
-        "-12V": 12,
+        "+12V": 4,
+        "-12V": 4,
         "+5V": 0
       },
       "planning_allowance_mA": {
-        "+12V": 18.0,
-        "-12V": 18.0,
+        "+12V": 6.0,
+        "-12V": 6.0,
         "+5V": 0
       },
       "manufacturer_guaranteed_quiescent_only_mA": {
-        "+12V": 18.0,
-        "-12V": 18.0,
+        "+12V": 6.0,
+        "-12V": 6.0,
         "+5V": 0
       },
       "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
@@ -9794,9 +9794,46 @@
     {
       "id": "A01:1",
       "instance": "A01",
-      "label": "OPA4196IDR",
+      "label": "OPA4197IDR",
       "source": "design/reports/current/offset.json",
       "source_row": 1,
+      "count": 2,
+      "unit": "worksheet unit",
+      "reported_assumed_typical_mA": {
+        "+12V": 8,
+        "-12V": 8,
+        "+5V": 0
+      },
+      "planning_allowance_mA": {
+        "+12V": 12.0,
+        "-12V": 12.0,
+        "+5V": 0
+      },
+      "manufacturer_guaranteed_quiescent_only_mA": {
+        "+12V": 12.0,
+        "-12V": 12.0,
+        "+5V": 0
+      },
+      "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
+      "guaranteed_complete_load_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      },
+      "guaranteed_maximum_reason": "Worksheet source and operating conditions do not bound the complete dynamic/startup/fault load.",
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here.",
+      "feed": "A",
+      "active_rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    {
+      "id": "A01:2",
+      "instance": "A01",
+      "label": "OPA4196IDR",
+      "source": "design/reports/current/offset.json",
+      "source_row": 2,
       "count": 1,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -9829,11 +9866,11 @@
       ]
     },
     {
-      "id": "A01:2",
+      "id": "A01:3",
       "instance": "A01",
       "label": "TMUX7412FRRPR",
       "source": "design/reports/current/offset.json",
-      "source_row": 2,
+      "source_row": 3,
       "count": 2,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -9862,11 +9899,11 @@
       ]
     },
     {
-      "id": "A01:3",
+      "id": "A01:4",
       "instance": "A01",
       "label": "LM393BIDR",
       "source": "design/reports/current/offset.json",
-      "source_row": 3,
+      "source_row": 4,
       "count": 2,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -9895,11 +9932,11 @@
       ]
     },
     {
-      "id": "A01:4",
+      "id": "A01:5",
       "instance": "A01",
       "label": "three magnitude LEDs",
       "source": "design/reports/current/offset.json",
-      "source_row": 4,
+      "source_row": 5,
       "count": 3,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -9928,11 +9965,11 @@
       ]
     },
     {
-      "id": "A01:5",
+      "id": "A01:6",
       "instance": "A01",
       "label": "one clip LED",
       "source": "design/reports/current/offset.json",
-      "source_row": 5,
+      "source_row": 6,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -9961,11 +9998,11 @@
       ]
     },
     {
-      "id": "A01:6",
+      "id": "A01:7",
       "instance": "A01",
       "label": "one manual offset pot",
       "source": "design/reports/current/offset.json",
-      "source_row": 6,
+      "source_row": 7,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -9994,11 +10031,11 @@
       ]
     },
     {
-      "id": "A01:7",
+      "id": "A01:8",
       "instance": "A01",
       "label": "one external output load",
       "source": "design/reports/current/offset.json",
-      "source_row": 7,
+      "source_row": 8,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10027,11 +10064,11 @@
       ]
     },
     {
-      "id": "A01:8",
+      "id": "A01:9",
       "instance": "A01",
       "label": "REF5050 local generator and rail ladder",
       "source": "design/reports/current/offset.json",
-      "source_row": 8,
+      "source_row": 9,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10060,11 +10097,11 @@
       ]
     },
     {
-      "id": "A01:9",
+      "id": "A01:10",
       "instance": "A01",
       "label": "two input-switch enable feeds",
       "source": "design/reports/current/offset.json",
-      "source_row": 9,
+      "source_row": 10,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10092,11 +10129,11 @@
       ]
     },
     {
-      "id": "A01:10",
+      "id": "A01:11",
       "instance": "A01",
       "label": "internal command and feedback load",
       "source": "design/reports/current/offset.json",
-      "source_row": 10,
+      "source_row": 11,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10127,24 +10164,24 @@
     {
       "id": "A02:0",
       "instance": "A02",
-      "label": "OPA4197IDR",
+      "label": "OPA4197IPWR",
       "source": "design/reports/current/offset.json",
       "source_row": 0,
-      "count": 3,
-      "unit": "worksheet unit",
+      "count": 1,
+      "unit": "whole package",
       "reported_assumed_typical_mA": {
-        "+12V": 12,
-        "-12V": 12,
+        "+12V": 4,
+        "-12V": 4,
         "+5V": 0
       },
       "planning_allowance_mA": {
-        "+12V": 18.0,
-        "-12V": 18.0,
+        "+12V": 6.0,
+        "-12V": 6.0,
         "+5V": 0
       },
       "manufacturer_guaranteed_quiescent_only_mA": {
-        "+12V": 18.0,
-        "-12V": 18.0,
+        "+12V": 6.0,
+        "-12V": 6.0,
         "+5V": 0
       },
       "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
@@ -10164,9 +10201,46 @@
     {
       "id": "A02:1",
       "instance": "A02",
-      "label": "OPA4196IDR",
+      "label": "OPA4197IDR",
       "source": "design/reports/current/offset.json",
       "source_row": 1,
+      "count": 2,
+      "unit": "worksheet unit",
+      "reported_assumed_typical_mA": {
+        "+12V": 8,
+        "-12V": 8,
+        "+5V": 0
+      },
+      "planning_allowance_mA": {
+        "+12V": 12.0,
+        "-12V": 12.0,
+        "+5V": 0
+      },
+      "manufacturer_guaranteed_quiescent_only_mA": {
+        "+12V": 12.0,
+        "-12V": 12.0,
+        "+5V": 0
+      },
+      "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
+      "guaranteed_complete_load_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      },
+      "guaranteed_maximum_reason": "Worksheet source and operating conditions do not bound the complete dynamic/startup/fault load.",
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here.",
+      "feed": "B",
+      "active_rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    {
+      "id": "A02:2",
+      "instance": "A02",
+      "label": "OPA4196IDR",
+      "source": "design/reports/current/offset.json",
+      "source_row": 2,
       "count": 1,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -10199,11 +10273,11 @@
       ]
     },
     {
-      "id": "A02:2",
+      "id": "A02:3",
       "instance": "A02",
       "label": "TMUX7412FRRPR",
       "source": "design/reports/current/offset.json",
-      "source_row": 2,
+      "source_row": 3,
       "count": 2,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -10232,11 +10306,11 @@
       ]
     },
     {
-      "id": "A02:3",
+      "id": "A02:4",
       "instance": "A02",
       "label": "LM393BIDR",
       "source": "design/reports/current/offset.json",
-      "source_row": 3,
+      "source_row": 4,
       "count": 2,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10265,11 +10339,11 @@
       ]
     },
     {
-      "id": "A02:4",
+      "id": "A02:5",
       "instance": "A02",
       "label": "three magnitude LEDs",
       "source": "design/reports/current/offset.json",
-      "source_row": 4,
+      "source_row": 5,
       "count": 3,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10298,11 +10372,11 @@
       ]
     },
     {
-      "id": "A02:5",
+      "id": "A02:6",
       "instance": "A02",
       "label": "one clip LED",
       "source": "design/reports/current/offset.json",
-      "source_row": 5,
+      "source_row": 6,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10331,11 +10405,11 @@
       ]
     },
     {
-      "id": "A02:6",
+      "id": "A02:7",
       "instance": "A02",
       "label": "one manual offset pot",
       "source": "design/reports/current/offset.json",
-      "source_row": 6,
+      "source_row": 7,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10364,11 +10438,11 @@
       ]
     },
     {
-      "id": "A02:7",
+      "id": "A02:8",
       "instance": "A02",
       "label": "one external output load",
       "source": "design/reports/current/offset.json",
-      "source_row": 7,
+      "source_row": 8,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10397,11 +10471,11 @@
       ]
     },
     {
-      "id": "A02:8",
+      "id": "A02:9",
       "instance": "A02",
       "label": "REF5050 local generator and rail ladder",
       "source": "design/reports/current/offset.json",
-      "source_row": 8,
+      "source_row": 9,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10430,11 +10504,11 @@
       ]
     },
     {
-      "id": "A02:9",
+      "id": "A02:10",
       "instance": "A02",
       "label": "two input-switch enable feeds",
       "source": "design/reports/current/offset.json",
-      "source_row": 9,
+      "source_row": 10,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10462,11 +10536,11 @@
       ]
     },
     {
-      "id": "A02:10",
+      "id": "A02:11",
       "instance": "A02",
       "label": "internal command and feedback load",
       "source": "design/reports/current/offset.json",
-      "source_row": 10,
+      "source_row": 11,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10497,24 +10571,24 @@
     {
       "id": "A03:0",
       "instance": "A03",
-      "label": "OPA4197IDR",
+      "label": "OPA4197IPWR",
       "source": "design/reports/current/offset.json",
       "source_row": 0,
-      "count": 3,
-      "unit": "worksheet unit",
+      "count": 1,
+      "unit": "whole package",
       "reported_assumed_typical_mA": {
-        "+12V": 12,
-        "-12V": 12,
+        "+12V": 4,
+        "-12V": 4,
         "+5V": 0
       },
       "planning_allowance_mA": {
-        "+12V": 18.0,
-        "-12V": 18.0,
+        "+12V": 6.0,
+        "-12V": 6.0,
         "+5V": 0
       },
       "manufacturer_guaranteed_quiescent_only_mA": {
-        "+12V": 18.0,
-        "-12V": 18.0,
+        "+12V": 6.0,
+        "-12V": 6.0,
         "+5V": 0
       },
       "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
@@ -10534,9 +10608,46 @@
     {
       "id": "A03:1",
       "instance": "A03",
-      "label": "OPA4196IDR",
+      "label": "OPA4197IDR",
       "source": "design/reports/current/offset.json",
       "source_row": 1,
+      "count": 2,
+      "unit": "worksheet unit",
+      "reported_assumed_typical_mA": {
+        "+12V": 8,
+        "-12V": 8,
+        "+5V": 0
+      },
+      "planning_allowance_mA": {
+        "+12V": 12.0,
+        "-12V": 12.0,
+        "+5V": 0
+      },
+      "manufacturer_guaranteed_quiescent_only_mA": {
+        "+12V": 12.0,
+        "-12V": 12.0,
+        "+5V": 0
+      },
+      "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
+      "guaranteed_complete_load_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      },
+      "guaranteed_maximum_reason": "Worksheet source and operating conditions do not bound the complete dynamic/startup/fault load.",
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here.",
+      "feed": "A",
+      "active_rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    {
+      "id": "A03:2",
+      "instance": "A03",
+      "label": "OPA4196IDR",
+      "source": "design/reports/current/offset.json",
+      "source_row": 2,
       "count": 1,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -10569,11 +10680,11 @@
       ]
     },
     {
-      "id": "A03:2",
+      "id": "A03:3",
       "instance": "A03",
       "label": "TMUX7412FRRPR",
       "source": "design/reports/current/offset.json",
-      "source_row": 2,
+      "source_row": 3,
       "count": 2,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -10602,11 +10713,11 @@
       ]
     },
     {
-      "id": "A03:3",
+      "id": "A03:4",
       "instance": "A03",
       "label": "LM393BIDR",
       "source": "design/reports/current/offset.json",
-      "source_row": 3,
+      "source_row": 4,
       "count": 2,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10635,11 +10746,11 @@
       ]
     },
     {
-      "id": "A03:4",
+      "id": "A03:5",
       "instance": "A03",
       "label": "three magnitude LEDs",
       "source": "design/reports/current/offset.json",
-      "source_row": 4,
+      "source_row": 5,
       "count": 3,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10668,11 +10779,11 @@
       ]
     },
     {
-      "id": "A03:5",
+      "id": "A03:6",
       "instance": "A03",
       "label": "one clip LED",
       "source": "design/reports/current/offset.json",
-      "source_row": 5,
+      "source_row": 6,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10701,11 +10812,11 @@
       ]
     },
     {
-      "id": "A03:6",
+      "id": "A03:7",
       "instance": "A03",
       "label": "one manual offset pot",
       "source": "design/reports/current/offset.json",
-      "source_row": 6,
+      "source_row": 7,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10734,11 +10845,11 @@
       ]
     },
     {
-      "id": "A03:7",
+      "id": "A03:8",
       "instance": "A03",
       "label": "one external output load",
       "source": "design/reports/current/offset.json",
-      "source_row": 7,
+      "source_row": 8,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10767,11 +10878,11 @@
       ]
     },
     {
-      "id": "A03:8",
+      "id": "A03:9",
       "instance": "A03",
       "label": "REF5050 local generator and rail ladder",
       "source": "design/reports/current/offset.json",
-      "source_row": 8,
+      "source_row": 9,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10800,11 +10911,11 @@
       ]
     },
     {
-      "id": "A03:9",
+      "id": "A03:10",
       "instance": "A03",
       "label": "two input-switch enable feeds",
       "source": "design/reports/current/offset.json",
-      "source_row": 9,
+      "source_row": 10,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10832,11 +10943,11 @@
       ]
     },
     {
-      "id": "A03:10",
+      "id": "A03:11",
       "instance": "A03",
       "label": "internal command and feedback load",
       "source": "design/reports/current/offset.json",
-      "source_row": 10,
+      "source_row": 11,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -10867,24 +10978,24 @@
     {
       "id": "A04:0",
       "instance": "A04",
-      "label": "OPA4197IDR",
+      "label": "OPA4197IPWR",
       "source": "design/reports/current/offset.json",
       "source_row": 0,
-      "count": 3,
-      "unit": "worksheet unit",
+      "count": 1,
+      "unit": "whole package",
       "reported_assumed_typical_mA": {
-        "+12V": 12,
-        "-12V": 12,
+        "+12V": 4,
+        "-12V": 4,
         "+5V": 0
       },
       "planning_allowance_mA": {
-        "+12V": 18.0,
-        "-12V": 18.0,
+        "+12V": 6.0,
+        "-12V": 6.0,
         "+5V": 0
       },
       "manufacturer_guaranteed_quiescent_only_mA": {
-        "+12V": 18.0,
-        "-12V": 18.0,
+        "+12V": 6.0,
+        "-12V": 6.0,
         "+5V": 0
       },
       "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
@@ -10904,9 +11015,46 @@
     {
       "id": "A04:1",
       "instance": "A04",
-      "label": "OPA4196IDR",
+      "label": "OPA4197IDR",
       "source": "design/reports/current/offset.json",
       "source_row": 1,
+      "count": 2,
+      "unit": "worksheet unit",
+      "reported_assumed_typical_mA": {
+        "+12V": 8,
+        "-12V": 8,
+        "+5V": 0
+      },
+      "planning_allowance_mA": {
+        "+12V": 12.0,
+        "-12V": 12.0,
+        "+5V": 0
+      },
+      "manufacturer_guaranteed_quiescent_only_mA": {
+        "+12V": 12.0,
+        "-12V": 12.0,
+        "+5V": 0
+      },
+      "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
+      "guaranteed_complete_load_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      },
+      "guaranteed_maximum_reason": "Worksheet source and operating conditions do not bound the complete dynamic/startup/fault load.",
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here.",
+      "feed": "B",
+      "active_rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    {
+      "id": "A04:2",
+      "instance": "A04",
+      "label": "OPA4196IDR",
+      "source": "design/reports/current/offset.json",
+      "source_row": 2,
       "count": 1,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -10939,11 +11087,11 @@
       ]
     },
     {
-      "id": "A04:2",
+      "id": "A04:3",
       "instance": "A04",
       "label": "TMUX7412FRRPR",
       "source": "design/reports/current/offset.json",
-      "source_row": 2,
+      "source_row": 3,
       "count": 2,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -10972,11 +11120,11 @@
       ]
     },
     {
-      "id": "A04:3",
+      "id": "A04:4",
       "instance": "A04",
       "label": "LM393BIDR",
       "source": "design/reports/current/offset.json",
-      "source_row": 3,
+      "source_row": 4,
       "count": 2,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11005,11 +11153,11 @@
       ]
     },
     {
-      "id": "A04:4",
+      "id": "A04:5",
       "instance": "A04",
       "label": "three magnitude LEDs",
       "source": "design/reports/current/offset.json",
-      "source_row": 4,
+      "source_row": 5,
       "count": 3,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11038,11 +11186,11 @@
       ]
     },
     {
-      "id": "A04:5",
+      "id": "A04:6",
       "instance": "A04",
       "label": "one clip LED",
       "source": "design/reports/current/offset.json",
-      "source_row": 5,
+      "source_row": 6,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11071,11 +11219,11 @@
       ]
     },
     {
-      "id": "A04:6",
+      "id": "A04:7",
       "instance": "A04",
       "label": "one manual offset pot",
       "source": "design/reports/current/offset.json",
-      "source_row": 6,
+      "source_row": 7,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11104,11 +11252,11 @@
       ]
     },
     {
-      "id": "A04:7",
+      "id": "A04:8",
       "instance": "A04",
       "label": "one external output load",
       "source": "design/reports/current/offset.json",
-      "source_row": 7,
+      "source_row": 8,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11137,11 +11285,11 @@
       ]
     },
     {
-      "id": "A04:8",
+      "id": "A04:9",
       "instance": "A04",
       "label": "REF5050 local generator and rail ladder",
       "source": "design/reports/current/offset.json",
-      "source_row": 8,
+      "source_row": 9,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11170,11 +11318,11 @@
       ]
     },
     {
-      "id": "A04:9",
+      "id": "A04:10",
       "instance": "A04",
       "label": "two input-switch enable feeds",
       "source": "design/reports/current/offset.json",
-      "source_row": 9,
+      "source_row": 10,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11202,11 +11350,11 @@
       ]
     },
     {
-      "id": "A04:10",
+      "id": "A04:11",
       "instance": "A04",
       "label": "internal command and feedback load",
       "source": "design/reports/current/offset.json",
-      "source_row": 10,
+      "source_row": 11,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11237,24 +11385,24 @@
     {
       "id": "A05:0",
       "instance": "A05",
-      "label": "OPA4197IDR",
+      "label": "OPA4197IPWR",
       "source": "design/reports/current/offset.json",
       "source_row": 0,
-      "count": 3,
-      "unit": "worksheet unit",
+      "count": 1,
+      "unit": "whole package",
       "reported_assumed_typical_mA": {
-        "+12V": 12,
-        "-12V": 12,
+        "+12V": 4,
+        "-12V": 4,
         "+5V": 0
       },
       "planning_allowance_mA": {
-        "+12V": 18.0,
-        "-12V": 18.0,
+        "+12V": 6.0,
+        "-12V": 6.0,
         "+5V": 0
       },
       "manufacturer_guaranteed_quiescent_only_mA": {
-        "+12V": 18.0,
-        "-12V": 18.0,
+        "+12V": 6.0,
+        "-12V": 6.0,
         "+5V": 0
       },
       "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
@@ -11274,9 +11422,46 @@
     {
       "id": "A05:1",
       "instance": "A05",
-      "label": "OPA4196IDR",
+      "label": "OPA4197IDR",
       "source": "design/reports/current/offset.json",
       "source_row": 1,
+      "count": 2,
+      "unit": "worksheet unit",
+      "reported_assumed_typical_mA": {
+        "+12V": 8,
+        "-12V": 8,
+        "+5V": 0
+      },
+      "planning_allowance_mA": {
+        "+12V": 12.0,
+        "-12V": 12.0,
+        "+5V": 0
+      },
+      "manufacturer_guaranteed_quiescent_only_mA": {
+        "+12V": 12.0,
+        "-12V": 12.0,
+        "+5V": 0
+      },
+      "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
+      "guaranteed_complete_load_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      },
+      "guaranteed_maximum_reason": "Worksheet source and operating conditions do not bound the complete dynamic/startup/fault load.",
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here.",
+      "feed": "A",
+      "active_rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    {
+      "id": "A05:2",
+      "instance": "A05",
+      "label": "OPA4196IDR",
+      "source": "design/reports/current/offset.json",
+      "source_row": 2,
       "count": 1,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -11309,11 +11494,11 @@
       ]
     },
     {
-      "id": "A05:2",
+      "id": "A05:3",
       "instance": "A05",
       "label": "TMUX7412FRRPR",
       "source": "design/reports/current/offset.json",
-      "source_row": 2,
+      "source_row": 3,
       "count": 2,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -11342,11 +11527,11 @@
       ]
     },
     {
-      "id": "A05:3",
+      "id": "A05:4",
       "instance": "A05",
       "label": "LM393BIDR",
       "source": "design/reports/current/offset.json",
-      "source_row": 3,
+      "source_row": 4,
       "count": 2,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11375,11 +11560,11 @@
       ]
     },
     {
-      "id": "A05:4",
+      "id": "A05:5",
       "instance": "A05",
       "label": "three magnitude LEDs",
       "source": "design/reports/current/offset.json",
-      "source_row": 4,
+      "source_row": 5,
       "count": 3,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11408,11 +11593,11 @@
       ]
     },
     {
-      "id": "A05:5",
+      "id": "A05:6",
       "instance": "A05",
       "label": "one clip LED",
       "source": "design/reports/current/offset.json",
-      "source_row": 5,
+      "source_row": 6,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11441,11 +11626,11 @@
       ]
     },
     {
-      "id": "A05:6",
+      "id": "A05:7",
       "instance": "A05",
       "label": "one manual offset pot",
       "source": "design/reports/current/offset.json",
-      "source_row": 6,
+      "source_row": 7,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11474,11 +11659,11 @@
       ]
     },
     {
-      "id": "A05:7",
+      "id": "A05:8",
       "instance": "A05",
       "label": "one external output load",
       "source": "design/reports/current/offset.json",
-      "source_row": 7,
+      "source_row": 8,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11507,11 +11692,11 @@
       ]
     },
     {
-      "id": "A05:8",
+      "id": "A05:9",
       "instance": "A05",
       "label": "REF5050 local generator and rail ladder",
       "source": "design/reports/current/offset.json",
-      "source_row": 8,
+      "source_row": 9,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11540,11 +11725,11 @@
       ]
     },
     {
-      "id": "A05:9",
+      "id": "A05:10",
       "instance": "A05",
       "label": "two input-switch enable feeds",
       "source": "design/reports/current/offset.json",
-      "source_row": 9,
+      "source_row": 10,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11572,11 +11757,11 @@
       ]
     },
     {
-      "id": "A05:10",
+      "id": "A05:11",
       "instance": "A05",
       "label": "internal command and feedback load",
       "source": "design/reports/current/offset.json",
-      "source_row": 10,
+      "source_row": 11,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11607,24 +11792,24 @@
     {
       "id": "A06:0",
       "instance": "A06",
-      "label": "OPA4197IDR",
+      "label": "OPA4197IPWR",
       "source": "design/reports/current/offset.json",
       "source_row": 0,
-      "count": 3,
-      "unit": "worksheet unit",
+      "count": 1,
+      "unit": "whole package",
       "reported_assumed_typical_mA": {
-        "+12V": 12,
-        "-12V": 12,
+        "+12V": 4,
+        "-12V": 4,
         "+5V": 0
       },
       "planning_allowance_mA": {
-        "+12V": 18.0,
-        "-12V": 18.0,
+        "+12V": 6.0,
+        "-12V": 6.0,
         "+5V": 0
       },
       "manufacturer_guaranteed_quiescent_only_mA": {
-        "+12V": 18.0,
-        "-12V": 18.0,
+        "+12V": 6.0,
+        "-12V": 6.0,
         "+5V": 0
       },
       "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
@@ -11644,9 +11829,46 @@
     {
       "id": "A06:1",
       "instance": "A06",
-      "label": "OPA4196IDR",
+      "label": "OPA4197IDR",
       "source": "design/reports/current/offset.json",
       "source_row": 1,
+      "count": 2,
+      "unit": "worksheet unit",
+      "reported_assumed_typical_mA": {
+        "+12V": 8,
+        "-12V": 8,
+        "+5V": 0
+      },
+      "planning_allowance_mA": {
+        "+12V": 12.0,
+        "-12V": 12.0,
+        "+5V": 0
+      },
+      "manufacturer_guaranteed_quiescent_only_mA": {
+        "+12V": 12.0,
+        "-12V": 12.0,
+        "+5V": 0
+      },
+      "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
+      "guaranteed_complete_load_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      },
+      "guaranteed_maximum_reason": "Worksheet source and operating conditions do not bound the complete dynamic/startup/fault load.",
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here.",
+      "feed": "B",
+      "active_rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    {
+      "id": "A06:2",
+      "instance": "A06",
+      "label": "OPA4196IDR",
+      "source": "design/reports/current/offset.json",
+      "source_row": 2,
       "count": 1,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -11679,11 +11901,11 @@
       ]
     },
     {
-      "id": "A06:2",
+      "id": "A06:3",
       "instance": "A06",
       "label": "TMUX7412FRRPR",
       "source": "design/reports/current/offset.json",
-      "source_row": 2,
+      "source_row": 3,
       "count": 2,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -11712,11 +11934,11 @@
       ]
     },
     {
-      "id": "A06:3",
+      "id": "A06:4",
       "instance": "A06",
       "label": "LM393BIDR",
       "source": "design/reports/current/offset.json",
-      "source_row": 3,
+      "source_row": 4,
       "count": 2,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11745,11 +11967,11 @@
       ]
     },
     {
-      "id": "A06:4",
+      "id": "A06:5",
       "instance": "A06",
       "label": "three magnitude LEDs",
       "source": "design/reports/current/offset.json",
-      "source_row": 4,
+      "source_row": 5,
       "count": 3,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11778,11 +12000,11 @@
       ]
     },
     {
-      "id": "A06:5",
+      "id": "A06:6",
       "instance": "A06",
       "label": "one clip LED",
       "source": "design/reports/current/offset.json",
-      "source_row": 5,
+      "source_row": 6,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11811,11 +12033,11 @@
       ]
     },
     {
-      "id": "A06:6",
+      "id": "A06:7",
       "instance": "A06",
       "label": "one manual offset pot",
       "source": "design/reports/current/offset.json",
-      "source_row": 6,
+      "source_row": 7,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11844,11 +12066,11 @@
       ]
     },
     {
-      "id": "A06:7",
+      "id": "A06:8",
       "instance": "A06",
       "label": "one external output load",
       "source": "design/reports/current/offset.json",
-      "source_row": 7,
+      "source_row": 8,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11877,11 +12099,11 @@
       ]
     },
     {
-      "id": "A06:8",
+      "id": "A06:9",
       "instance": "A06",
       "label": "REF5050 local generator and rail ladder",
       "source": "design/reports/current/offset.json",
-      "source_row": 8,
+      "source_row": 9,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11910,11 +12132,11 @@
       ]
     },
     {
-      "id": "A06:9",
+      "id": "A06:10",
       "instance": "A06",
       "label": "two input-switch enable feeds",
       "source": "design/reports/current/offset.json",
-      "source_row": 9,
+      "source_row": 10,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -11942,11 +12164,11 @@
       ]
     },
     {
-      "id": "A06:10",
+      "id": "A06:11",
       "instance": "A06",
       "label": "internal command and feedback load",
       "source": "design/reports/current/offset.json",
-      "source_row": 10,
+      "source_row": 11,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -18718,7 +18940,7 @@
     {
       "ref": "U7106",
       "instance": "A01",
-      "symbol": "OPA4197IDR",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -18836,7 +19058,7 @@
     {
       "ref": "U7206",
       "instance": "A02",
-      "symbol": "OPA4197IDR",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -18954,7 +19176,7 @@
     {
       "ref": "U7306",
       "instance": "A03",
-      "symbol": "OPA4197IDR",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -19072,7 +19294,7 @@
     {
       "ref": "U7406",
       "instance": "A04",
-      "symbol": "OPA4197IDR",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -19190,7 +19412,7 @@
     {
       "ref": "U7506",
       "instance": "A05",
-      "symbol": "OPA4197IDR",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -19308,7 +19530,7 @@
     {
       "ref": "U7606",
       "instance": "A06",
-      "symbol": "OPA4197IDR",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -20316,7 +20538,7 @@
     "status": "REQUIREMENT ONLY / NON-ORDERABLE / NOT-ENERGIZABLE",
     "module_count": 33,
     "shared_reference_count": 1,
-    "worksheet_load_count": 357,
+    "worksheet_load_count": 363,
     "physical_ic_package_count": 650,
     "raw_inlet_nets": [
       "+12V_IN",

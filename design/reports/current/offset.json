@@ -6,14 +6,30 @@
   "IC_packages_per_instance": {
     "LM393BIDR": 2,
     "OPA4196IDR": 1,
-    "OPA4197IDR": 3,
+    "OPA4197IDR": 2,
+    "OPA4197IPWR": 1,
     "REF5050AIDR": 1,
     "TMUX7412FRRPR": 2
   },
   "breakdown": [
     {
+      "load": "OPA4197IPWR",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 4,
+        "-12V": 4,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 6.0,
+        "-12V": 6.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
       "load": "OPA4197IDR",
-      "count": 3,
+      "count": 2,
       "typical_unit_mA": {
         "+12V": 4,
         "-12V": 4,

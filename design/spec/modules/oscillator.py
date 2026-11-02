@@ -228,7 +228,7 @@ def octave_family():
     b.cell('reference_generator','SHARED',{'REF_5V':'OSC_REF5','REF_N5V':'OSC_REFN5','GATE_REF':'OSC_GATE_REF'})
     b.cell('octave_reference','SHARED',{'REF_5V':'OSC_REF5','T0':'OCT_BOTTOM','BOTTOM':'OCT_BOTTOM','T5':'OCT_TOP','TOP':'OCT_TOP',**{f'OCT{i}':f'OSC_OCT{i}' for i in range(6)}})
     f=b.finish('octave_reference',sensitive=(),globals=RAILS+REFS)
-    return replace(f,parts=tuple(precision_package(p) for p in f.parts))
+    return replace(f,parts=tuple(precision_package(p,f.name) for p in f.parts))
 
 
 def specification():

@@ -183,14 +183,27 @@ def refine(family):
                                       'Island': 'IO_STAGE_OPTICAL:${SHEETNAME}'})
         optical.append(p)
     result_family = replace(result_family, parts=tuple(optical))
-    return replace(result_family, parts=tuple(precision_package(p) for p in result_family.parts))
+    return replace(result_family, parts=tuple(precision_package(p, result_family.name) for p in result_family.parts))
 
 
-def precision_package(part):
-    # UNADOPTED phase-16 candidate, control-board option B: precision packages
-    # outside the control region move to the pin-identical SOIC-14 OPA4197IDR;
-    # the four control-board packages keep TSSOP-14 OPA4197IPWR.
+def _tssop_retention():
+    import json
+    from pathlib import Path
+    data = json.loads((Path(__file__).resolve().parents[3] / 'design/partition/precision-tssop-retention.json').read_text())
+    return {(r['family'], r['package_key'], r['board_region']) for r in data['packages']}
+
+
+TSSOP_RETENTION = _tssop_retention()
+
+
+def precision_package(part, family=None):
+    # Adopted control-board option B (E15): precision packages outside the control
+    # region move to the pin-identical SOIC-14 OPA4197IDR; the four control-board
+    # packages keep TSSOP-14 OPA4197IPWR, as do the jack-board packages listed in
+    # design/partition/precision-tssop-retention.json (minimal-move locality).
     if not part.symbol.endswith('OPA4197IPWR') or part.attributes.get('BoardRegion') == 'control':
+        return part
+    if (family, part.key.rsplit('.', 1)[0], part.attributes.get('BoardRegion')) in TSSOP_RETENTION:
         return part
     from design.spec.cells._builder import SHORTLIST, CATALOG, load_symbol
     record = SHORTLIST['op_precision_d']

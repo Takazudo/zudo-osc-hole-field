@@ -324,3 +324,24 @@ reverse order can deadlock.
 | `scripts/checks/test_ground_escape.py` | PASS with shapely 2.2.0 (scratch venv); 1 skipped | Large ignored native inputs unavailable |
 | DRC, zone fill, #293 fill | NOT RUN | Not authorized |
 | Physical fit, WQFN solder and thermal pad, SEL-hold timing and behaviour below 25 C | NOT RUN | NEEDS BENCH |
+
+## Phase 30 amendment: six JR offset packages keep OPA4197IPWR
+
+- U7106, U7206, U7306, U7406, U7506 and U7606 (offset family, `jack` region,
+  package `CORE_PACK_OPA4197IPWR_2`) stay OPA4197IPWR (TSSOP-14). The list lives in
+  `design/partition/precision-tssop-retention.json`, and `precision_package()` reads it.
+- Reason: none of their SOIC-14 OPA4197IDR clusters landed within 24 mm of the
+  pre-adoption slot. Panel hardware surrounds those slots, so the minimal-move
+  floorplan moved them up to 120 mm, which lengthens precision signal paths.
+- Fitted precision op-amps change from 85 IDR + 4 IPWR to 79 IDR + 10 IPWR.
+- Cost, from the retained JLC 2026-10-31 tiers via `cost_reduction_study.price`:
+
+  | Mix | Per unit | Per lot |
+  |---|---:|---:|
+  | 85 IDR + 4 IPWR | $259.73 | $1155.26 |
+  | 79 IDR + 10 IPWR | $310.27 | $1405.83 |
+  | Change | +$50.54 | +$250.57 |
+
+  The IPWR unit price falls from $12.6095 to $11.5760 at the 10-piece tier.
+  The priced-line subtotal becomes $1534.87 per unit and $6984.84 per lot.
+  The receipts above are unchanged, because they record the adoption.

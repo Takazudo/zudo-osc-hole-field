@@ -1,0 +1,11 @@
+{
+ "schema_version": 1,
+ "status": "SOURCE INPUT; decision E15 minimal-move follow-up (phase 30)",
+ "rule": "A jack-board precision package keeps OPA4197IPWR (TSSOP-14) when its SOIC-14 OPA4197IDR cluster cannot land within 24 mm of its pre-adoption slot in the minimal-move floorplan. A long move lengthens precision signal paths, which is a locality and noise problem.",
+ "evidence": "design/partition/floorplan-candidate.json adopted_placement_pins.boards.JR.clusters_board_wide at a2a0232a: U7106, U7206, U7306, U7406, U7506 and U7606 moved up to 120.383 mm",
+ "packages": [
+  {"family": "offset", "package_key": "CORE_PACK_OPA4197IPWR_2", "board_region": "jack", "board": "JR",
+   "refs": ["U7106", "U7206", "U7306", "U7406", "U7506", "U7606"],
+   "reason": "SOIC-14 clusters found no legal pose within 24 mm (panel hardware around the old TSSOP-14 slots)"}
+ ]
+}
