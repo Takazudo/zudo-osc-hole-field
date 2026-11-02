@@ -28,8 +28,9 @@ p = next(p for p in f.parts if p.key=='LF398.1')
 actual=exported_pin_nets(Path(sys.argv[1]).read_text())
 held=[actual[(designator(p,i),'7')] for i in instances[:2]]
 assert held==['/H1/RAW_HELD','/H2/RAW_HELD'],held
-changed = replace(f, parts=tuple(replace(p, pins={**p.pins, '8': 'DELIBERATELY_WRONG'}) if q.key==p.key else q for q in f.parts))
-differences = verify((changed, *families[1:]), instances, Path(sys.argv[1]).read_text())
+from design.spec.modules.io_partition import base_family
+changed = tuple(replace(g, parts=tuple(replace(q, pins={**q.pins, '8': 'DELIBERATELY_WRONG'}) if q.key==p.key else q for q in g.parts)) if base_family(g.name)=='sample_hold' else g for g in families)
+differences = verify(changed, instances, Path(sys.argv[1]).read_text())
 assert len(differences) == 2, differences
 print('PASS: H1/H2 held outputs remain separate; deliberate hold-node change rejected in both instances')
 PY

@@ -10,7 +10,6 @@
         "O1",
         "O2",
         "O3",
-        "O4",
         "O5"
       ],
       "fitted_IC_packages_per_instance": {
@@ -40,6 +39,175 @@
         {
           "symbol": "OPA4197IDR",
           "whole_packages": 4,
+          "typical_unit_mA": {
+            "+12V": 4,
+            "-12V": 4,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "source": "OSC-ES-1 preliminary load opamp_precision"
+        },
+        {
+          "symbol": "TMUX7412FRRPR",
+          "whole_packages": 4,
+          "typical_unit_mA": {
+            "+12V": 0.32,
+            "-12V": 0.26,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 0.6,
+            "-12V": 0.5,
+            "+5V": 0
+          },
+          "source": "OSC-ES-1 preliminary load fault_switches_tmux7412f"
+        },
+        {
+          "symbol": "LM393BIDR",
+          "whole_packages": 2,
+          "typical_unit_mA": {
+            "+12V": 0.6,
+            "-12V": 0,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 1,
+            "-12V": 0,
+            "+5V": 0
+          },
+          "source": "OSC-ES-1 preliminary load comparators"
+        },
+        {
+          "load": "AS3340D core",
+          "quantity": 1,
+          "typical_unit_mA": {
+            "+12V": 5,
+            "-12V": 8,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 6.5,
+            "-12V": 10,
+            "+5V": 0
+          },
+          "basis": "ALFA v7 p4 +15 V typical table for positive current; negative current 8/10 mA remains a planning allowance at buffered -5 V, not a manufacturer maximum."
+        },
+        {
+          "load": "Four 10 kohm jack loads",
+          "quantity": 4,
+          "typical_unit_mA": {
+            "+12V": 0.05,
+            "-12V": 0.05,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 0.5,
+            "-12V": 0.5,
+            "+5V": 0
+          },
+          "basis": "OSC-ES-1 output-load envelope, not short-circuit demand."
+        },
+        {
+          "load": "Internal resistive/reference/shaper load reserve",
+          "quantity": 1,
+          "typical_unit_mA": {
+            "+12V": 10,
+            "-12V": 10,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 17,
+            "-12V": 17,
+            "+5V": 0
+          },
+          "basis": "Includes sine tail, feedback and 10 kohm audio pots; conservative estimate pending operating-point measurement. Issue #62 adds 5 mA per analog rail for bounded local reference output current; no credit against the original reserve."
+        },
+        {
+          "load": "5 V conditioning reserve",
+          "quantity": 1,
+          "typical_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 3
+          },
+          "planning_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 6
+          },
+          "basis": "HC14, comparator pullups and ADG enables; estimate, not a guaranteed maximum."
+        }
+      ],
+      "planning_typical_mA_per_instance": {
+        "+12V": 37.04,
+        "-12V": 38.6,
+        "+5V": 3.0
+      },
+      "planning_upper_mA_per_instance": {
+        "+12V": 59.9,
+        "-12V": 61.0,
+        "+5V": 6.0
+      },
+      "guaranteed_maximum_mA_per_instance": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      },
+      "maximum_status": "NOT ESTABLISHED - core conditions differ, dynamic/temperature/fault load bounds unqualified",
+      "startup_capacitors_nF_per_instance": 3300
+    },
+    {
+      "family": "oscillator_tssop",
+      "instances": [
+        "O4"
+      ],
+      "fitted_IC_packages_per_instance": {
+        "AS3340D": 1,
+        "LM393BIDR": 2,
+        "OPA4196IDR": 6,
+        "OPA4197IDR": 3,
+        "OPA4197IPWR": 1,
+        "SN74HC14DR": 1,
+        "TMUX7412FRRPR": 4
+      },
+      "breakdown": [
+        {
+          "symbol": "OPA4196IDR",
+          "whole_packages": 6,
+          "typical_unit_mA": {
+            "+12V": 0.56,
+            "-12V": 0.56,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 1.0,
+            "-12V": 1.0,
+            "+5V": 0
+          },
+          "source": "OSC-ES-1 preliminary load opamp_audio"
+        },
+        {
+          "symbol": "OPA4197IPWR",
+          "whole_packages": 1,
+          "typical_unit_mA": {
+            "+12V": 4,
+            "-12V": 4,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "source": "OSC-ES-1 preliminary load opamp_precision"
+        },
+        {
+          "symbol": "OPA4197IDR",
+          "whole_packages": 3,
           "typical_unit_mA": {
             "+12V": 4,
             "-12V": 4,

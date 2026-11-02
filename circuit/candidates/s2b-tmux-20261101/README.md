@@ -345,3 +345,32 @@ reverse order can deadlock.
   The IPWR unit price falls from $12.6095 to $11.5760 at the 10-piece tier.
   The priced-line subtotal becomes $1534.87 per unit and $6984.84 per lot.
   The receipts above are unchanged, because they record the adoption.
+
+## Phase 31 amendment: four JL packages keep OPA4197IPWR
+
+- The SOIC-14 OPA4197IDR clusters of four JL packages would move more than 24 mm in
+  the minimal-move floorplan, so they stay OPA4197IPWR (TSSOP-14):
+
+  | Ref | Instance | Package | SOIC-14 move |
+  |---|---|---|---:|
+  | U3405 | X2 | `IO_EXTRA_5` | 47.74 mm |
+  | U3305 | X1 | `IO_EXTRA_5` | 27.54 mm |
+  | U204 | H2 | `reference_generator_J_H1_TRIGGER___A3` | 24.96 mm |
+  | U1418 | O4 | `IO_EXTRA_18` | 24.64 mm |
+
+- U1118, U1218, U1318, U1518 and U104 land within 24 mm and stay OPA4197IDR.
+  The largest JL cluster move is now 23.69 mm.
+- X1 and X2 are both retained, so the manual_ab entry applies to the whole family.
+  O4 and H2 use instance-scoped entries. A shared hierarchical sheet carries one
+  footprint per symbol, so the generator renders those two instances from cloned
+  `oscillator_tssop` and `sample_hold_tssop` master sheets. Board sheet names are unchanged.
+- Fitted precision op-amps change from 79 IDR + 10 IPWR to 75 IDR + 14 IPWR:
+
+  | Mix | Per unit | Per lot |
+  |---|---:|---:|
+  | 79 IDR + 10 IPWR | $310.27 | $1405.83 |
+  | 75 IDR + 14 IPWR | $346.73 | $1581.29 |
+  | Change | +$36.46 | +$175.46 |
+
+  The priced-line subtotal becomes $1571.33 per unit and $7160.30 per lot.
+  JLC stock of 1842 OPA4197IPWR covers the 70-piece lot.

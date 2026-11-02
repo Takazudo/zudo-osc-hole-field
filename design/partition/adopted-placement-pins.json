@@ -3,13 +3,13 @@
  "status": "ADOPTED placement-pin input (decision E15, S2b adoption 2026-11-01); source geometry only",
  "rule": "Every free JL/JR/K package whose footprint is unchanged keeps its pre-adoption slot. A swapped IC is tried on its old slot (same face, four rotations) beside its pinned bypass capacitors within the bypass limit; when no rotation fits, the IC and its capacitors are released. Released and added packages are placed by the locality placer around the pins.",
  "baseline": {
-  "commit": "539ff382dc5d4490f20603033e2940f768f349a0",
+  "commit": "539ff382",
   "floorplan": "design/partition/floorplan-candidate.json",
   "floorplan_sha256": "913b1362bf927fc1b09a73f204c4b61230d49724f78c10c4c4c03f765720a597"
  },
  "generated_by": "scripts/checks/build_adopted_placement_pins.py",
  "counts": {
-  "JL": 851,
+  "JL": 855,
   "JR": 849,
   "K": 3317
  },
@@ -52,7 +52,6 @@
   "U1409",
   "U1410",
   "U1411",
-  "U1418",
   "U1501",
   "U1502",
   "U1503",
@@ -65,7 +64,6 @@
   "U1603",
   "U1604",
   "U203",
-  "U204",
   "U205",
   "U209",
   "U2102",
@@ -95,10 +93,8 @@
   "U3202",
   "U3301",
   "U3302",
-  "U3305",
   "U3401",
   "U3402",
-  "U3405",
   "U4102",
   "U4103",
   "U4104",
@@ -840,23 +836,6 @@
    "bypass_cluster": "U1411"
   },
   {
-   "old_footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
-   "ref": "U1418",
-   "board": "JL",
-   "fixed": false,
-   "x_mm": 73.46,
-   "y_mm": 78.02000000000001,
-   "rotation_deg": 90,
-   "side": "F.Cu",
-   "courtyard_mm": [
-    70.6,
-    74.17000000000002,
-    76.58999999999999,
-    81.87
-   ],
-   "bypass_cluster": "U1418"
-  },
-  {
    "old_footprint": "zudo-osc-hole-field:TSSOP-16_4.4x5mm_P0.65mm",
    "ref": "U1501",
    "board": "JL",
@@ -1056,23 +1035,6 @@
     117.24
    ],
    "bypass_cluster": "U203"
-  },
-  {
-   "old_footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
-   "ref": "U204",
-   "board": "JL",
-   "fixed": false,
-   "x_mm": 108.13,
-   "y_mm": 149.62,
-   "rotation_deg": 270,
-   "side": "F.Cu",
-   "courtyard_mm": [
-    105.0,
-    145.77,
-    110.99,
-    153.47
-   ],
-   "bypass_cluster": "U204"
   },
   {
    "old_footprint": "zudo-osc-hole-field:TSSOP-16_4.4x5mm_P0.65mm",
@@ -1568,23 +1530,6 @@
    "bypass_cluster": "U3302"
   },
   {
-   "old_footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
-   "ref": "U3305",
-   "board": "JL",
-   "fixed": false,
-   "x_mm": 158.12,
-   "y_mm": 139.32999999999998,
-   "rotation_deg": 0,
-   "side": "B.Cu",
-   "courtyard_mm": [
-    154.27,
-    136.2,
-    161.97,
-    142.19
-   ],
-   "bypass_cluster": "U3305"
-  },
-  {
    "old_footprint": "zudo-osc-hole-field:TSSOP-16_4.4x5mm_P0.65mm",
    "ref": "U3401",
    "board": "JL",
@@ -1617,23 +1562,6 @@
     124.96
    ],
    "bypass_cluster": "U3402"
-  },
-  {
-   "old_footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
-   "ref": "U3405",
-   "board": "JL",
-   "fixed": false,
-   "x_mm": 159.13,
-   "y_mm": 149.67999999999998,
-   "rotation_deg": 270,
-   "side": "F.Cu",
-   "courtyard_mm": [
-    156.0,
-    145.82999999999998,
-    161.99,
-    153.52999999999997
-   ],
-   "bypass_cluster": "U3405"
   },
   {
    "old_footprint": "zudo-osc-hole-field:TSSOP-16_4.4x5mm_P0.65mm",
@@ -78086,6 +78014,23 @@
    "bypass_cluster": "U1417"
   },
   {
+   "footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+   "ref": "U1418",
+   "board": "JL",
+   "fixed": false,
+   "x_mm": 73.46,
+   "y_mm": 78.02000000000001,
+   "rotation_deg": 90,
+   "side": "F.Cu",
+   "courtyard_mm": [
+    70.6,
+    74.17000000000002,
+    76.58999999999999,
+    81.87
+   ],
+   "bypass_cluster": "U1418"
+  },
+  {
    "footprint": "zudo-osc-hole-field:SOIC-16_3.9x9.9mm_P1.27mm",
    "ref": "U1505",
    "board": "K",
@@ -78287,6 +78232,23 @@
     129.9
    ],
    "bypass_cluster": "U201"
+  },
+  {
+   "footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+   "ref": "U204",
+   "board": "JL",
+   "fixed": false,
+   "x_mm": 108.13,
+   "y_mm": 149.62,
+   "rotation_deg": 270,
+   "side": "F.Cu",
+   "courtyard_mm": [
+    105.0,
+    145.77,
+    110.99,
+    153.47
+   ],
+   "bypass_cluster": "U204"
   },
   {
    "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
@@ -79156,6 +79118,23 @@
    "bypass_cluster": "U3304"
   },
   {
+   "footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+   "ref": "U3305",
+   "board": "JL",
+   "fixed": false,
+   "x_mm": 158.12,
+   "y_mm": 139.32999999999998,
+   "rotation_deg": 0,
+   "side": "B.Cu",
+   "courtyard_mm": [
+    154.27,
+    136.2,
+    161.97,
+    142.19
+   ],
+   "bypass_cluster": "U3305"
+  },
+  {
    "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
    "ref": "U3404",
    "board": "JL",
@@ -79171,6 +79150,23 @@
     129.93
    ],
    "bypass_cluster": "U3404"
+  },
+  {
+   "footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+   "ref": "U3405",
+   "board": "JL",
+   "fixed": false,
+   "x_mm": 159.13,
+   "y_mm": 149.67999999999998,
+   "rotation_deg": 270,
+   "side": "F.Cu",
+   "courtyard_mm": [
+    156.0,
+    145.82999999999998,
+    161.99,
+    153.52999999999997
+   ],
+   "bypass_cluster": "U3405"
   },
   {
    "footprint": "zudo-osc-hole-field:SOIC-8_3.9x4.9mm_P1.27mm",

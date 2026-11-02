@@ -80,7 +80,7 @@ class ManualABContract(unittest.TestCase):
         self.assertTrue(all(units == {1, 2, 3, 4, 5} for units in packages.values()))
         report = current_report()
         self.assertEqual(report['IC_packages_per_instance'], {
-            'TMUX7412FRRPR': 2, 'OPA4196IDR': 1, 'OPA4197IDR': 1, 'OPA4197IPWR': 1})
+            'TMUX7412FRRPR': 2, 'OPA4196IDR': 1, 'OPA4197IPWR': 2})
         row = report['instances'][0]
         self.assertEqual(row['typical_mA_per_rail'], {'+12V': 10.0005, '-12V': 9.8805, '+5V': .1})
         self.assertEqual(row['planning_maximum_mA_per_rail'], {'+12V': 18.4505, '-12V': 18.2505, '+5V': .15})

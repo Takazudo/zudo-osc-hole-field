@@ -85,7 +85,9 @@ class OscillatorContract(unittest.TestCase):
 
     def test_current_is_derived_and_shared_reference_counted_once(self):
         report=build();self.assertEqual(report['shared_reference_count'],1)
-        self.assertEqual(report['sheets'][0]['instances'],list(INSTANCES))
+        # O4 renders the TSSOP retention split (design/partition/precision-tssop-retention.json).
+        self.assertEqual(sorted(n for s in report['sheets'][:-1] for n in s['instances']),sorted(INSTANCES))
+        self.assertEqual(report['sheets'][1]['instances'],['O4'])
         for row in report['sheets']:
             self.assertTrue(all(v is None for v in row['guaranteed_maximum_mA_per_instance'].values()))
         for rail,value in report['planning_upper_total_mA'].items():

@@ -1403,24 +1403,24 @@
     {
       "id": "O4:1",
       "instance": "O4",
-      "label": "OPA4197IDR",
+      "label": "OPA4197IPWR",
       "source": "design/reports/current/oscillator.json",
       "source_row": 1,
-      "count": 4,
+      "count": 1,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
-        "+12V": 16,
-        "-12V": 16,
+        "+12V": 4,
+        "-12V": 4,
         "+5V": 0
       },
       "planning_allowance_mA": {
-        "+12V": 24.0,
-        "-12V": 24.0,
+        "+12V": 6.0,
+        "-12V": 6.0,
         "+5V": 0
       },
       "manufacturer_guaranteed_quiescent_only_mA": {
-        "+12V": 24.0,
-        "-12V": 24.0,
+        "+12V": 6.0,
+        "-12V": 6.0,
         "+5V": 0
       },
       "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
@@ -1440,9 +1440,46 @@
     {
       "id": "O4:2",
       "instance": "O4",
-      "label": "TMUX7412FRRPR",
+      "label": "OPA4197IDR",
       "source": "design/reports/current/oscillator.json",
       "source_row": 2,
+      "count": 3,
+      "unit": "whole package",
+      "reported_assumed_typical_mA": {
+        "+12V": 12,
+        "-12V": 12,
+        "+5V": 0
+      },
+      "planning_allowance_mA": {
+        "+12V": 18.0,
+        "-12V": 18.0,
+        "+5V": 0
+      },
+      "manufacturer_guaranteed_quiescent_only_mA": {
+        "+12V": 18.0,
+        "-12V": 18.0,
+        "+5V": 0
+      },
+      "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
+      "guaranteed_complete_load_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      },
+      "guaranteed_maximum_reason": "Worksheet source and operating conditions do not bound the complete dynamic/startup/fault load.",
+      "basis": "OSC-ES-1 preliminary load opamp_precision",
+      "feed": "A",
+      "active_rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    {
+      "id": "O4:3",
+      "instance": "O4",
+      "label": "TMUX7412FRRPR",
+      "source": "design/reports/current/oscillator.json",
+      "source_row": 3,
       "count": 4,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -1471,11 +1508,11 @@
       ]
     },
     {
-      "id": "O4:3",
+      "id": "O4:4",
       "instance": "O4",
       "label": "LM393BIDR",
       "source": "design/reports/current/oscillator.json",
-      "source_row": 3,
+      "source_row": 4,
       "count": 2,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -1503,11 +1540,11 @@
       ]
     },
     {
-      "id": "O4:4",
+      "id": "O4:5",
       "instance": "O4",
       "label": "AS3340D core",
       "source": "design/reports/current/oscillator.json",
-      "source_row": 4,
+      "source_row": 5,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -1536,11 +1573,11 @@
       ]
     },
     {
-      "id": "O4:5",
+      "id": "O4:6",
       "instance": "O4",
       "label": "Four 10 kohm jack loads",
       "source": "design/reports/current/oscillator.json",
-      "source_row": 5,
+      "source_row": 6,
       "count": 4,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -1569,11 +1606,11 @@
       ]
     },
     {
-      "id": "O4:6",
+      "id": "O4:7",
       "instance": "O4",
       "label": "Internal resistive/reference/shaper load reserve",
       "source": "design/reports/current/oscillator.json",
-      "source_row": 6,
+      "source_row": 7,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -1602,11 +1639,11 @@
       ]
     },
     {
-      "id": "O4:7",
+      "id": "O4:8",
       "instance": "O4",
       "label": "5 V conditioning reserve",
       "source": "design/reports/current/oscillator.json",
-      "source_row": 7,
+      "source_row": 8,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -6664,21 +6701,21 @@
       "label": "OPA4197IPWR",
       "source": "design/reports/current/manual_ab.json",
       "source_row": 0,
-      "count": 1,
+      "count": 2,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
-        "+12V": 4,
-        "-12V": 4,
+        "+12V": 8,
+        "-12V": 8,
         "+5V": 0
       },
       "planning_allowance_mA": {
-        "+12V": 6.0,
-        "-12V": 6.0,
+        "+12V": 12.0,
+        "-12V": 12.0,
         "+5V": 0
       },
       "manufacturer_guaranteed_quiescent_only_mA": {
-        "+12V": 6.0,
-        "-12V": 6.0,
+        "+12V": 12.0,
+        "-12V": 12.0,
         "+5V": 0
       },
       "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
@@ -6698,46 +6735,9 @@
     {
       "id": "X1:1",
       "instance": "X1",
-      "label": "OPA4197IDR",
-      "source": "design/reports/current/manual_ab.json",
-      "source_row": 1,
-      "count": 1,
-      "unit": "worksheet unit",
-      "reported_assumed_typical_mA": {
-        "+12V": 4,
-        "-12V": 4,
-        "+5V": 0
-      },
-      "planning_allowance_mA": {
-        "+12V": 6.0,
-        "-12V": 6.0,
-        "+5V": 0
-      },
-      "manufacturer_guaranteed_quiescent_only_mA": {
-        "+12V": 6.0,
-        "-12V": 6.0,
-        "+5V": 0
-      },
-      "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
-      "guaranteed_complete_load_maximum_mA": {
-        "+12V": null,
-        "-12V": null,
-        "+5V": null
-      },
-      "guaranteed_maximum_reason": "Worksheet source and operating conditions do not bound the complete dynamic/startup/fault load.",
-      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here.",
-      "feed": "B",
-      "active_rails": [
-        "+12V",
-        "-12V"
-      ]
-    },
-    {
-      "id": "X1:2",
-      "instance": "X1",
       "label": "OPA4196IDR",
       "source": "design/reports/current/manual_ab.json",
-      "source_row": 2,
+      "source_row": 1,
       "count": 1,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -6770,11 +6770,11 @@
       ]
     },
     {
-      "id": "X1:3",
+      "id": "X1:2",
       "instance": "X1",
       "label": "TMUX7412FRRPR",
       "source": "design/reports/current/manual_ab.json",
-      "source_row": 3,
+      "source_row": 2,
       "count": 2,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -6803,11 +6803,11 @@
       ]
     },
     {
-      "id": "X1:4",
+      "id": "X1:3",
       "instance": "X1",
       "label": "Magnitude indicator envelope",
       "source": "design/reports/current/manual_ab.json",
-      "source_row": 4,
+      "source_row": 3,
       "count": 3,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -6836,11 +6836,11 @@
       ]
     },
     {
-      "id": "X1:5",
+      "id": "X1:4",
       "instance": "X1",
       "label": "External output load",
       "source": "design/reports/current/manual_ab.json",
-      "source_row": 5,
+      "source_row": 4,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -6869,11 +6869,11 @@
       ]
     },
     {
-      "id": "X1:6",
+      "id": "X1:5",
       "instance": "X1",
       "label": "Input-isolator enable feeds",
       "source": "design/reports/current/manual_ab.json",
-      "source_row": 6,
+      "source_row": 5,
       "count": 2,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -6901,11 +6901,11 @@
       ]
     },
     {
-      "id": "X1:7",
+      "id": "X1:6",
       "instance": "X1",
       "label": "10 MΩ selector-common bias load",
       "source": "design/reports/current/manual_ab.json",
-      "source_row": 7,
+      "source_row": 6,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -6939,21 +6939,21 @@
       "label": "OPA4197IPWR",
       "source": "design/reports/current/manual_ab.json",
       "source_row": 0,
-      "count": 1,
+      "count": 2,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
-        "+12V": 4,
-        "-12V": 4,
+        "+12V": 8,
+        "-12V": 8,
         "+5V": 0
       },
       "planning_allowance_mA": {
-        "+12V": 6.0,
-        "-12V": 6.0,
+        "+12V": 12.0,
+        "-12V": 12.0,
         "+5V": 0
       },
       "manufacturer_guaranteed_quiescent_only_mA": {
-        "+12V": 6.0,
-        "-12V": 6.0,
+        "+12V": 12.0,
+        "-12V": 12.0,
         "+5V": 0
       },
       "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
@@ -6973,46 +6973,9 @@
     {
       "id": "X2:1",
       "instance": "X2",
-      "label": "OPA4197IDR",
-      "source": "design/reports/current/manual_ab.json",
-      "source_row": 1,
-      "count": 1,
-      "unit": "worksheet unit",
-      "reported_assumed_typical_mA": {
-        "+12V": 4,
-        "-12V": 4,
-        "+5V": 0
-      },
-      "planning_allowance_mA": {
-        "+12V": 6.0,
-        "-12V": 6.0,
-        "+5V": 0
-      },
-      "manufacturer_guaranteed_quiescent_only_mA": {
-        "+12V": 6.0,
-        "-12V": 6.0,
-        "+5V": 0
-      },
-      "quiescent_condition": "Full-temperature zero-output-current, four channels per package; retained TI PDF physical page 7, printed page 8",
-      "guaranteed_complete_load_maximum_mA": {
-        "+12V": null,
-        "-12V": null,
-        "+5V": null
-      },
-      "guaranteed_maximum_reason": "Worksheet source and operating conditions do not bound the complete dynamic/startup/fault load.",
-      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here.",
-      "feed": "B",
-      "active_rails": [
-        "+12V",
-        "-12V"
-      ]
-    },
-    {
-      "id": "X2:2",
-      "instance": "X2",
       "label": "OPA4196IDR",
       "source": "design/reports/current/manual_ab.json",
-      "source_row": 2,
+      "source_row": 1,
       "count": 1,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -7045,11 +7008,11 @@
       ]
     },
     {
-      "id": "X2:3",
+      "id": "X2:2",
       "instance": "X2",
       "label": "TMUX7412FRRPR",
       "source": "design/reports/current/manual_ab.json",
-      "source_row": 3,
+      "source_row": 2,
       "count": 2,
       "unit": "whole package",
       "reported_assumed_typical_mA": {
@@ -7078,11 +7041,11 @@
       ]
     },
     {
-      "id": "X2:4",
+      "id": "X2:3",
       "instance": "X2",
       "label": "Magnitude indicator envelope",
       "source": "design/reports/current/manual_ab.json",
-      "source_row": 4,
+      "source_row": 3,
       "count": 3,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -7111,11 +7074,11 @@
       ]
     },
     {
-      "id": "X2:5",
+      "id": "X2:4",
       "instance": "X2",
       "label": "External output load",
       "source": "design/reports/current/manual_ab.json",
-      "source_row": 5,
+      "source_row": 4,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -7144,11 +7107,11 @@
       ]
     },
     {
-      "id": "X2:6",
+      "id": "X2:5",
       "instance": "X2",
       "label": "Input-isolator enable feeds",
       "source": "design/reports/current/manual_ab.json",
-      "source_row": 6,
+      "source_row": 5,
       "count": 2,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -7176,11 +7139,11 @@
       ]
     },
     {
-      "id": "X2:7",
+      "id": "X2:6",
       "instance": "X2",
       "label": "10 MΩ selector-common bias load",
       "source": "design/reports/current/manual_ab.json",
-      "source_row": 7,
+      "source_row": 6,
       "count": 1,
       "unit": "worksheet unit",
       "reported_assumed_typical_mA": {
@@ -13377,7 +13340,7 @@
     {
       "ref": "U1418",
       "instance": "O4",
-      "symbol": "OPA4197IDR",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -13715,7 +13678,7 @@
     {
       "ref": "U204",
       "instance": "H2",
-      "symbol": "OPA4197IDR",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -14806,7 +14769,7 @@
     {
       "ref": "U3305",
       "instance": "X1",
-      "symbol": "OPA4197IDR",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -14873,7 +14836,7 @@
     {
       "ref": "U3405",
       "instance": "X2",
-      "symbol": "OPA4197IDR",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -20538,7 +20501,7 @@
     "status": "REQUIREMENT ONLY / NON-ORDERABLE / NOT-ENERGIZABLE",
     "module_count": 33,
     "shared_reference_count": 1,
-    "worksheet_load_count": 363,
+    "worksheet_load_count": 362,
     "physical_ic_package_count": 650,
     "raw_inlet_nets": [
       "+12V_IN",

@@ -1,11 +1,64 @@
 {
  "schema_version": 1,
- "status": "SOURCE INPUT; decision E15 minimal-move follow-up (phase 30)",
+ "status": "SOURCE INPUT; decision E15 minimal-move follow-up (phases 30-31)",
  "rule": "A jack-board precision package keeps OPA4197IPWR (TSSOP-14) when its SOIC-14 OPA4197IDR cluster cannot land within 24 mm of its pre-adoption slot in the minimal-move floorplan. A long move lengthens precision signal paths, which is a locality and noise problem.",
- "evidence": "design/partition/floorplan-candidate.json adopted_placement_pins.boards.JR.clusters_board_wide at a2a0232a: U7106, U7206, U7306, U7406, U7506 and U7606 moved up to 120.383 mm",
+ "evidence": [
+  "design/partition/floorplan-candidate.json adopted_placement_pins.boards.JR.clusters_board_wide at a2a0232a: U7106, U7206, U7306, U7406, U7506 and U7606 moved up to 120.383 mm",
+  "design/partition/floorplan-candidate.json adopted_placement_pins.boards.JL at 89bbba52: U3405 47.74 mm, U3305 27.54 mm, U204 24.96 mm and U1418 24.64 mm exceed 24 mm; U1318 23.69, U1218 23.69, U1118 23.32 and U1518 19.30 mm stay SOIC-14"
+ ],
  "packages": [
-  {"family": "offset", "package_key": "CORE_PACK_OPA4197IPWR_2", "board_region": "jack", "board": "JR",
-   "refs": ["U7106", "U7206", "U7306", "U7406", "U7506", "U7606"],
-   "reason": "SOIC-14 clusters found no legal pose within 24 mm (panel hardware around the old TSSOP-14 slots)"}
- ]
+  {
+   "family": "offset",
+   "package_key": "CORE_PACK_OPA4197IPWR_2",
+   "board_region": "jack",
+   "board": "JR",
+   "refs": [
+    "U7106",
+    "U7206",
+    "U7306",
+    "U7406",
+    "U7506",
+    "U7606"
+   ],
+   "reason": "SOIC-14 clusters found no legal pose within 24 mm (panel hardware around the old TSSOP-14 slots)"
+  },
+  {
+   "family": "manual_ab",
+   "package_key": "IO_EXTRA_5",
+   "board_region": "jack",
+   "board": "JL",
+   "refs": [
+    "U3305",
+    "U3405"
+   ],
+   "reason": "SOIC-14 clusters would move 27.54 mm (X1) and 47.74 mm (X2), beyond 24 mm; both instances are retained, so the entry is family-level"
+  },
+  {
+   "family": "oscillator",
+   "package_key": "IO_EXTRA_18",
+   "board_region": "jack",
+   "board": "JL",
+   "instances": [
+    "O4"
+   ],
+   "refs": [
+    "U1418"
+   ],
+   "reason": "SOIC-14 cluster would move 24.64 mm; O1, O2, O3 and O5 land within 24 mm and stay OPA4197IDR"
+  },
+  {
+   "family": "sample_hold",
+   "package_key": "reference_generator_J_H1_TRIGGER___A3",
+   "board_region": "jack",
+   "board": "JL",
+   "instances": [
+    "H2"
+   ],
+   "refs": [
+    "U204"
+   ],
+   "reason": "SOIC-14 cluster would move 24.96 mm; H1 (U104) stays OPA4197IDR"
+  }
+ ],
+ "instance_scope": "An entry with 'instances' applies only to those instances; the generator gives them a cloned '<family>_tssop' master sheet because a shared hierarchical sheet carries one footprint per symbol."
 }

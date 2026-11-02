@@ -144,7 +144,8 @@ def build(allocation=None):
     for row in budget['instances']:
         data = json.loads((ROOT / row['source']).read_text())
         sheet = next((s for s in data['sheets'] if row['instance'] in s['instances']), None) if 'sheets' in data else data
-        declared = sheet.get('fitted_IC_packages_per_instance', sheet.get('IC_packages_per_instance',
+        own = next((r for r in data.get('instances', []) if isinstance(r, dict) and r.get('instance') == row['instance']), {})
+        declared = own.get('fitted_package_count') or sheet.get('fitted_IC_packages_per_instance', sheet.get('IC_packages_per_instance',
                     sheet.get('fitted_package_count_per_instance', {})))
         actual = Counter(p['symbol'] for p in by_instance[row['instance']])
         for symbol, count in declared.items():

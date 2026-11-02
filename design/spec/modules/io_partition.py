@@ -190,10 +190,64 @@ def _tssop_retention():
     import json
     from pathlib import Path
     data = json.loads((Path(__file__).resolve().parents[3] / 'design/partition/precision-tssop-retention.json').read_text())
-    return {(r['family'], r['package_key'], r['board_region']) for r in data['packages']}
+    return ({(r['family'], r['package_key'], r['board_region']) for r in data['packages'] if 'instances' not in r},
+            [r for r in data['packages'] if 'instances' in r])
 
 
-TSSOP_RETENTION = _tssop_retention()
+TSSOP_RETENTION, TSSOP_INSTANCE_RETENTION = _tssop_retention()
+TSSOP_SPLIT_SUFFIX = '_tssop'
+
+
+def base_family(name):
+    """Source family of a TSSOP instance split (see split_tssop_instances)."""
+    return name[:-len(TSSOP_SPLIT_SUFFIX)] if name.endswith(TSSOP_SPLIT_SUFFIX) else name
+
+
+def split_tssop_instances(families, instances, strict=True):
+    # A shared hierarchical sheet carries one footprint per symbol for every
+    # instance, so an instance-scoped OPA4197IPWR retention becomes a cloned
+    # family (own master sheet) that only the retained instances use.
+    from design.spec.cells._builder import SHORTLIST, CATALOG, load_symbol
+    record = SHORTLIST['op_precision']
+    symbol = load_symbol(CATALOG[record['mpn']])
+    footprint = symbol.body.split('(property "Footprint" "', 1)[1].split('"', 1)[0]
+    by_name = {f.name: f for f in families}
+    entries = [e for e in TSSOP_INSTANCE_RETENTION if e['family'] in by_name]
+    clones = {}
+    for entry in entries:
+        base = by_name[entry['family']]
+        name = base.name + TSSOP_SPLIT_SUFFIX
+        clone = clones.get(name, base)
+        parts = []
+        for p in clone.parts:
+            if (p.symbol.endswith('OPA4197IDR') and p.key.rsplit('.', 1)[0] == entry['package_key']
+                    and p.attributes.get('BoardRegion') == entry['board_region']):
+                attrs = {**p.attributes, 'MPN': record['mpn'], 'Manufacturer': record['manufacturer'],
+                         'LCSC': record.get('lcsc', '')}
+                p = replace(p, symbol=symbol.lib_id, footprint=footprint,
+                            value=record['mpn'] if p.value == 'OPA4197IDR' else p.value, attributes=attrs)
+            parts.append(p)
+        if parts == list(clone.parts):
+            raise ValueError(f"{entry['family']}: no OPA4197IDR {entry['package_key']} in {entry['board_region']}")
+        clones[name] = replace(clone, name=name, parts=tuple(parts))
+    target = {i: e['family'] + TSSOP_SPLIT_SUFFIX for e in entries for i in e['instances']}
+    known = {i.name for i in instances}
+    if strict and set(target) - known:
+        raise ValueError(f'unknown retained instances: {sorted(set(target) - known)}')
+    out_families = []
+    for f in families:
+        out_families.append(f)
+        if f.name + TSSOP_SPLIT_SUFFIX in clones:
+            out_families.append(clones[f.name + TSSOP_SPLIT_SUFFIX])
+    out_instances = tuple(replace(i, family=target[i.name]) if i.name in target else i for i in instances)
+    return tuple(out_families), out_instances
+
+
+def instance_family(family, instance_name):
+    """The family (base or TSSOP split) that one instance of a source family renders."""
+    from scripts.schgen.core import Instance
+    fs, ins = split_tssop_instances((family,), (Instance(family.name, instance_name, 1),), strict=False)
+    return next(f for f in fs if f.name == ins[0].family)
 
 
 def precision_package(part, family=None):
