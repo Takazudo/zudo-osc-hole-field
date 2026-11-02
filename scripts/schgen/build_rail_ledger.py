@@ -172,7 +172,9 @@ def build(allocation=None):
         load['feed'] = entry['feed']
         load['active_rails'] = expected_rails
         if load['label'] in SUPPLY_PIN_NUMBERS:
-            package_rails = {r for p in by_instance[load['instance']] if p['symbol'] == load['label'] for r in p['rails']}
+            # A TSSOP-retention split fits pin-identical OPA4197IPWR where the family worksheet line says OPA4197IDR.
+            same = {'OPA4197IDR', 'OPA4197IPWR'} if load['label'] in ('OPA4197IDR', 'OPA4197IPWR') else {load['label']}
+            package_rails = {r for p in by_instance[load['instance']] if p['symbol'] in same for r in p['rails']}
             if not set(expected_rails).issubset(package_rails):
                 raise ValueError(f"worksheet IC load assigned off actual supply pin: {load['id']}")
     noise_loads = [x for x in loads if x['instance'] == 'N1' and x['label'] == 'NOISE2 filtered digital supply']

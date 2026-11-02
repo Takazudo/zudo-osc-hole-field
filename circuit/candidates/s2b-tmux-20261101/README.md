@@ -382,3 +382,22 @@ reverse order can deadlock.
 - Swapped clusters (op-amps, TMUX7412F) and added diodes take the legal pose within 24 mm that causes the
   least half-perimeter growth on their own signal nets, then the nearest one.
   `scripts/checks/partition35_floorplan.py` holds the rule; JR placements are unchanged.
+
+## Phase 33 amendment: twelve K packages keep OPA4197IPWR
+
+- On the phase 32 floorplan, eleven K clusters found no legal pose within 24 mm:
+  U4240, U4241, U4341, U4439, U4440, U4441, U4540, U4541 (envelope), U5206 (W1), U7404 and U7405 (A04).
+  After those eleven were retained, U4539 (E5) went board-wide (24.85 mm) and is retained too.
+- They use instance-scoped entries. Instances that retain the same packages share one cloned master
+  sheet: `envelope_tssop_e2`, `envelope_tssop_e3`, `envelope_tssop_e4_e5`, `wavefolder_tssop`, `offset_tssop`.
+- The largest K cluster move is now 24.0 mm.
+- Fitted precision op-amps change from 75 IDR + 14 IPWR to 63 IDR + 26 IPWR:
+
+  | Mix | Per unit | Per lot |
+  |---|---:|---:|
+  | 75 IDR + 14 IPWR | $346.73 | $1581.29 |
+  | 63 IDR + 26 IPWR | $456.10 | $2006.79 |
+  | Change | +$109.37 | +$425.50 |
+
+  The priced-line subtotal becomes $1680.70 per unit and $7585.80 per lot.
+  JLC stock of 1842 OPA4197IPWR covers the 130-piece lot.

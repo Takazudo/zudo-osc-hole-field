@@ -200,47 +200,68 @@ TSSOP_SPLIT_SUFFIX = '_tssop'
 
 def base_family(name):
     """Source family of a TSSOP instance split (see split_tssop_instances)."""
-    return name[:-len(TSSOP_SPLIT_SUFFIX)] if name.endswith(TSSOP_SPLIT_SUFFIX) else name
+    return name.split(TSSOP_SPLIT_SUFFIX, 1)[0] if TSSOP_SPLIT_SUFFIX in name else name
+
+
+def tssop_groups(family_name):
+    """Instance groups of one family that share the same retained packages: {clone name: (instances, entries)}."""
+    entries = [e for e in TSSOP_INSTANCE_RETENTION if e['family'] == family_name]
+    keys = defaultdict(list)
+    for e in entries:
+        for i in e['instances']:
+            keys[i].append(e)
+    groups = defaultdict(list)
+    for i, es in keys.items():
+        groups[tuple(sorted((e['package_key'], e['board_region']) for e in es))].append(i)
+    out = {}
+    for sig, insts in sorted(groups.items(), key=lambda kv: sorted(kv[1])):
+        name = family_name + TSSOP_SPLIT_SUFFIX + ('' if len(groups) == 1 else '_' + '_'.join(sorted(insts)).lower())
+        out[name] = (sorted(insts), [e for e in entries if (e['package_key'], e['board_region']) in sig])
+    return out
 
 
 def split_tssop_instances(families, instances, strict=True):
     # A shared hierarchical sheet carries one footprint per symbol for every
     # instance, so an instance-scoped OPA4197IPWR retention becomes a cloned
-    # family (own master sheet) that only the retained instances use.
+    # family (own master sheet) used only by the instances that retain the same packages.
     from design.spec.cells._builder import SHORTLIST, CATALOG, load_symbol
     record = SHORTLIST['op_precision']
     symbol = load_symbol(CATALOG[record['mpn']])
     footprint = symbol.body.split('(property "Footprint" "', 1)[1].split('"', 1)[0]
-    by_name = {f.name: f for f in families}
-    entries = [e for e in TSSOP_INSTANCE_RETENTION if e['family'] in by_name]
-    clones = {}
-    for entry in entries:
-        base = by_name[entry['family']]
-        name = base.name + TSSOP_SPLIT_SUFFIX
-        clone = clones.get(name, base)
-        parts = []
-        for p in clone.parts:
-            if (p.symbol.endswith('OPA4197IDR') and p.key.rsplit('.', 1)[0] == entry['package_key']
-                    and p.attributes.get('BoardRegion') == entry['board_region']):
-                attrs = {**p.attributes, 'MPN': record['mpn'], 'Manufacturer': record['manufacturer'],
-                         'LCSC': record.get('lcsc', '')}
-                p = replace(p, symbol=symbol.lib_id, footprint=footprint,
-                            value=record['mpn'] if p.value == 'OPA4197IDR' else p.value, attributes=attrs)
-            parts.append(p)
-        if parts == list(clone.parts):
-            raise ValueError(f"{entry['family']}: no OPA4197IDR {entry['package_key']} in {entry['board_region']}")
-        clones[name] = replace(clone, name=name, parts=tuple(parts))
-    target = {i: e['family'] + TSSOP_SPLIT_SUFFIX for e in entries for i in e['instances']}
+    clones = defaultdict(list)
+    target = {}
+    for base in families:
+        for name, (insts, entries) in tssop_groups(base.name).items():
+            parts = list(base.parts)
+            for entry in entries:
+                before = list(parts)
+                parts = [replace(p, symbol=symbol.lib_id, footprint=footprint,
+                                 value=record['mpn'] if p.value == 'OPA4197IDR' else p.value,
+                                 attributes={**p.attributes, 'MPN': record['mpn'], 'Manufacturer': record['manufacturer'],
+                                             'LCSC': record.get('lcsc', '')})
+                         if (p.symbol.endswith('OPA4197IDR') and p.key.rsplit('.', 1)[0] == entry['package_key']
+                             and p.attributes.get('BoardRegion') == entry['board_region']) else p for p in parts]
+                if parts == before:
+                    raise ValueError(f"{entry['family']}: no OPA4197IDR {entry['package_key']} in {entry['board_region']}")
+            clones[base.name].append(replace(base, name=name, parts=tuple(parts)))
+            target.update({i: name for i in insts})
     known = {i.name for i in instances}
     if strict and set(target) - known:
         raise ValueError(f'unknown retained instances: {sorted(set(target) - known)}')
     out_families = []
     for f in families:
         out_families.append(f)
-        if f.name + TSSOP_SPLIT_SUFFIX in clones:
-            out_families.append(clones[f.name + TSSOP_SPLIT_SUFFIX])
+        out_families.extend(clones.get(f.name, ()))
     out_instances = tuple(replace(i, family=target[i.name]) if i.name in target else i for i in instances)
     return tuple(out_families), out_instances
+
+
+def instance_package_counts(family, instance_name):
+    """Whole fitted IC packages of one instance, after any TSSOP split."""
+    from collections import Counter
+    g = instance_family(family, instance_name)
+    return dict(sorted(Counter({p.key.rsplit('.', 1)[0]: p.symbol.split(':')[-1]
+                                for p in g.parts if p.prefix == 'U' and not p.dnp}.values()).items()))
 
 
 def instance_family(family, instance_name):

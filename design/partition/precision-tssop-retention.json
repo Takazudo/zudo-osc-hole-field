@@ -1,10 +1,12 @@
 {
  "schema_version": 1,
- "status": "SOURCE INPUT; decision E15 minimal-move follow-up (phases 30-31)",
+ "status": "SOURCE INPUT; decision E15 minimal-move follow-up (phases 30-32)",
  "rule": "A jack-board precision package keeps OPA4197IPWR (TSSOP-14) when its SOIC-14 OPA4197IDR cluster cannot land within 24 mm of its pre-adoption slot in the minimal-move floorplan. A long move lengthens precision signal paths, which is a locality and noise problem.",
  "evidence": [
   "design/partition/floorplan-candidate.json adopted_placement_pins.boards.JR.clusters_board_wide at a2a0232a: U7106, U7206, U7306, U7406, U7506 and U7606 moved up to 120.383 mm",
-  "design/partition/floorplan-candidate.json adopted_placement_pins.boards.JL at 89bbba52: U3405 47.74 mm, U3305 27.54 mm, U204 24.96 mm and U1418 24.64 mm exceed 24 mm; U1318 23.69, U1218 23.69, U1118 23.32 and U1518 19.30 mm stay SOIC-14"
+  "design/partition/floorplan-candidate.json adopted_placement_pins.boards.JL at 89bbba52: U3405 47.74 mm, U3305 27.54 mm, U204 24.96 mm and U1418 24.64 mm exceed 24 mm; U1318 23.69, U1218 23.69, U1118 23.32 and U1518 19.30 mm stay SOIC-14",
+  "Phase 32 floorplan (protection-part locality, growth-aware poses) at a01b8a22: K clusters U4240 43.53, U4241 62.61, U4341 29.16, U4439 26.07, U4440 43.05, U4441 37.73, U4540 26.82, U4541 26.79, U5206 27.08, U7404 27.73 and U7405 78.55 mm found no legal pose within 24 mm",
+  "Phase 33 floorplan after the first K retention: U4539 (E5) found no legal pose within 24 mm (24.85 mm board-wide)"
  ],
  "packages": [
   {
@@ -58,7 +60,97 @@
     "U204"
    ],
    "reason": "SOIC-14 cluster would move 24.96 mm; H1 (U104) stays OPA4197IDR"
+  },
+  {
+   "family": "envelope",
+   "package_key": "CORE_PACK_OPA4197IPWR_0",
+   "board_region": "core",
+   "board": "K",
+   "instances": [
+    "E4",
+    "E5"
+   ],
+   "refs": [
+    "U4439",
+    "U4539"
+   ],
+   "reason": "SOIC-14 cluster found no legal pose within 24 mm of its pre-adoption slot (phase 32 floorplan)"
+  },
+  {
+   "family": "envelope",
+   "package_key": "CORE_PACK_OPA4197IPWR_1",
+   "board_region": "core",
+   "board": "K",
+   "instances": [
+    "E2",
+    "E4",
+    "E5"
+   ],
+   "refs": [
+    "U4240",
+    "U4440",
+    "U4540"
+   ],
+   "reason": "SOIC-14 cluster found no legal pose within 24 mm of its pre-adoption slot (phase 32 floorplan)"
+  },
+  {
+   "family": "envelope",
+   "package_key": "CORE_PACK_OPA4197IPWR_2",
+   "board_region": "core",
+   "board": "K",
+   "instances": [
+    "E2",
+    "E3",
+    "E4",
+    "E5"
+   ],
+   "refs": [
+    "U4241",
+    "U4341",
+    "U4441",
+    "U4541"
+   ],
+   "reason": "SOIC-14 cluster found no legal pose within 24 mm of its pre-adoption slot (phase 32 floorplan)"
+  },
+  {
+   "family": "wavefolder",
+   "package_key": "CORE_PACK_OPA4197IPWR_0",
+   "board_region": "core",
+   "board": "K",
+   "instances": [
+    "W1"
+   ],
+   "refs": [
+    "U5206"
+   ],
+   "reason": "SOIC-14 cluster found no legal pose within 24 mm of its pre-adoption slot (phase 32 floorplan)"
+  },
+  {
+   "family": "offset",
+   "package_key": "CORE_PACK_OPA4197IPWR_0",
+   "board_region": "core",
+   "board": "K",
+   "instances": [
+    "A04"
+   ],
+   "refs": [
+    "U7404"
+   ],
+   "reason": "SOIC-14 cluster found no legal pose within 24 mm of its pre-adoption slot (phase 32 floorplan)"
+  },
+  {
+   "family": "offset",
+   "package_key": "CORE_PACK_OPA4197IPWR_1",
+   "board_region": "core",
+   "board": "K",
+   "instances": [
+    "A04"
+   ],
+   "refs": [
+    "U7405"
+   ],
+   "reason": "SOIC-14 cluster found no legal pose within 24 mm of its pre-adoption slot (phase 32 floorplan)"
   }
  ],
- "instance_scope": "An entry with 'instances' applies only to those instances; the generator gives them a cloned '<family>_tssop' master sheet because a shared hierarchical sheet carries one footprint per symbol."
+ "instance_scope": "An entry with 'instances' applies only to those instances. Instances that retain the same packages share one cloned master sheet, '<family>_tssop' when the family has one such group, else '<family>_tssop_<instances>'; a shared hierarchical sheet carries one footprint per symbol."
 }

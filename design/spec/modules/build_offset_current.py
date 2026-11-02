@@ -1,5 +1,6 @@
 """Per-instance AO planning current from captured packages and standard cells."""
 from collections import Counter
+from design.spec.modules.io_partition import instance_package_counts
 import json
 from design.spec.modules.offset import ROOT, family, INSTANCES
 
@@ -28,7 +29,7 @@ def build():
     return {'schema_version':1,'module':'offset','authority':'PROPOSAL (planning, owner-delegated)',
             'status':'Package and cell planning worksheet; not guaranteed maxima',
             'IC_packages_per_instance':dict(sorted(counts.items())),'breakdown':rows,
-            'instances':[{'instance':i,'planning_typical_mA':{r:round(typ[r],6) for r in RAILS},'planning_upper_mA':{r:round(upper[r],6) for r in RAILS},'guaranteed_maximum_mA':{r:None for r in RAILS}} for i in INSTANCES],
+            'instances':[{'instance':i,'fitted_package_count':instance_package_counts(f,i),'planning_typical_mA':{r:round(typ[r],6) for r in RAILS},'planning_upper_mA':{r:round(upper[r],6) for r in RAILS},'guaranteed_maximum_mA':{r:None for r in RAILS}} for i in INSTANCES],
             'planning_upper_total_mA':{r:round(len(INSTANCES)*upper[r],6) for r in RAILS},
             'guaranteed_maximum_status':'NOT ESTABLISHED - reference, LED, output, signal, temperature, fault and startup loads unqualified',
             'note':'All whole OPA packages and both comparator packages per instance are counted. ±15 V mathematical sum exceeds available rail/output swing. #33/#34 must reconcile six-cell load with whole-instrument ceilings.'}

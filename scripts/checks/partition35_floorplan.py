@@ -305,10 +305,14 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
         near=sorted(ref for ref in placed_at if ref not in released or ref in clusters if nets & set(pin_nets[ref].values()))
         if not near:
             boot_far.append(part['ref']);continue
-        # Anchor on the amplifier it bootstraps (its input is on the same jack-input net), so the diode
-        # adds no length to that amplifier's output net; else on the rail-clamp diode, else the net members.
-        diodes=([ref for ref in near if ref[:1]=='U'] or [ref for ref in near if by_ref.get(ref,{}).get('mpn') in PROTECTION_DIODES]
-                or near)
+        # Anchor on its amplifiers when any (for an S2b bootstrap diode, the amplifier it bootstraps, so the
+        # diode adds no output-net length), else on one non-logic IC sharing most of its nets.
+        ics=[ref for ref in near if ref[:1]=='U']
+        most=max((len(nets & set(pin_nets[ref].values())) for ref in ics),default=0)
+        top=[ref for ref in ics if len(nets & set(pin_nets[ref].values()))==most]
+        amps=[ref for ref in ics if by_ref.get(ref,{}).get('mpn','').startswith('OPA')]
+        diodes=(amps or ([min(top,key=lambda ref:(by_ref.get(ref,{}).get('mpn','').startswith('SN74'),ref))] if top else [])
+                or [ref for ref in near if by_ref.get(ref,{}).get('mpn') in PROTECTION_DIODES] or near)
         x=statistics.median(placed_at[r][0] for r in diodes);y=statistics.median(placed_at[r][1] for r in diodes)
         side=Counter(placed_at[r][2] for r in diodes).most_common(1)[0][0]
         members[part['ref']]=[]
