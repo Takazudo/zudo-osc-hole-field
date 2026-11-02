@@ -374,3 +374,11 @@ reverse order can deadlock.
 
   The priced-line subtotal becomes $1571.33 per unit and $7160.30 per lot.
   JLC stock of 1842 OPA4197IPWR covers the 70-piece lot.
+
+## Phase 32 amendment: protection-part locality in the minimal-move floorplan
+
+- Pinned BAV199 and BAT54S diodes are no longer evictable, so a rail clamp keeps its pre-adoption slot.
+- An added diode (D_BOOT) is placed within 24 mm of the amplifier it bootstraps, whose input is on the same jack-input net.
+- Swapped clusters (op-amps, TMUX7412F) and added diodes take the legal pose within 24 mm that causes the
+  least half-perimeter growth on their own signal nets, then the nearest one.
+  `scripts/checks/partition35_floorplan.py` holds the rule; JR placements are unchanged.

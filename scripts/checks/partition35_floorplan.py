@@ -27,8 +27,12 @@ WHOLE_MODULE_AFTER=4
 WHOLE_BOARD_AFTER=8
 CLUSTER_RADIUS_MM=24.0
 CLUSTER_STEP_MM=0.5
+GROWTH_DISTANCE_WEIGHT=0.1
 EVICT_COST_MM=3.0
 EVICT_MAX_AREA_MM2=15.0
+# Phase 32 locality: S2b rail-clamp and bootstrap diodes never leave their slot by eviction, and an
+# added one is placed within CLUSTER_RADIUS_MM of the pinned parts on its own input nets.
+PROTECTION_DIODES=('BAV199,215','BAT54S,215')
 BUCKET_MM=5.0
 BYPASS_LIMIT_MM=json.loads((ROOT/'design/partition/bypass-placement-evidence.json').read_text())['proposal']['maximum_supply_pad_to_capacitor_rail_pad_mm']
 SCALE=4
@@ -166,6 +170,10 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
     swapped=sorted(r for r,s in swapped_slots.items() if s['board']==board)
     members={ic:sorted((p for p in free if p['decouples_ref']==ic),key=lambda p:p['ref']) for ic in swapped}
     in_cluster={c['ref'] for cs in members.values() for c in cs}
+    net_refs=defaultdict(set)
+    for ref,nets in pin_nets.items():
+        for n in nets.values():
+            if n:net_refs[n].add(ref)
     boxes={}
     for ref,row in rows.items():
         part=by_ref.get(ref)
@@ -182,6 +190,7 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
     def evictable(ref):
         # A capacitor of a pinned IC stays with that IC so its bypass loop is not broken.
         if ref in reservations or tht[ref] or ref[:1] in ('U','J'):return False
+        if by_ref[ref]['mpn'] in PROTECTION_DIODES:return False
         if by_ref[ref]['decouples_ref'] in rows and by_ref[ref]['decouples_ref'] not in released:return False
         b=shapes[rows[ref]['footprint']]
         return (b[2]-b[0])*(b[3]-b[1])<=EVICT_MAX_AREA_MM2
@@ -210,13 +219,32 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
             cells=bypass_cells(part,members[part['ref']],side,shapes,pin_nets,horizontal)
             for theta in thetas:
                 yield theta,cells,[(cpart,*turn(p,theta),(angle+theta)%360,oriented_box(shapes[cpart['footprint']],side,(angle+theta)%360)) for cpart,angle,p in cells]
-    def local_pose(part,slot):
+    placed_at={ref:(row['x_mm'],row['y_mm'],row['side']) for ref,row in rows.items()}
+    def growth_cost(part,slot,baseline):
+        # Phase 32: score a pose by the worst half-perimeter growth it causes on the part's own signal
+        # nets (other members at their current slots), then by distance; baseline False = added part.
+        nets=[n for n in set(pin_nets[part['ref']].values()) if n and n not in ('AGND','+12V','-12V','+5V')]
+        mine={part['ref']}|{c['ref'] for c in members.get(part['ref'],())}
+        groups=[]
+        for n in nets:
+            pts=[placed_at[r][:2] for r in net_refs[n] if r not in mine and r in placed_at and (r not in released or r in clusters)]
+            if pts:
+                xs=[x for x,_ in pts];ys=[y for _,y in pts]
+                hp=lambda x,y,xs=xs,ys=ys:max(*xs,x)-min(*xs,x)+max(*ys,y)-min(*ys,y)
+                groups.append((hp,hp(slot['x_mm'],slot['y_mm']) if baseline else max(xs)-min(xs)+max(ys)-min(ys)))
+        def cost(cx,cy):
+            g=max((hp(cx,cy)-base for hp,base in groups),default=0.0)
+            return max(g,0.0)+GROWTH_DISTANCE_WEIGHT*math.hypot(cx-slot['x_mm'],cy-slot['y_mm'])
+        return cost
+    def local_pose(part,slot,baseline=True):
         best=None;thetas=(slot['rotation_deg'],*(t for t in (0,90,180,270) if t!=slot['rotation_deg']))
+        score=growth_cost(part,slot,baseline)
+        ranked=sorted(((score(slot['x_mm']+dx,slot['y_mm']+dy),dx,dy) for dx,dy in offsets))
         for side in (slot['side'],'B.Cu' if slot['side']=='F.Cu' else 'F.Cu'):
             penalty=0.0 if side==slot['side'] else FACE_PENALTY_MM
             shapes_side=[local for _,_,local in poses(part,side,thetas)]
-            for dx,dy in offsets:
-                d=math.hypot(dx,dy)+penalty
+            for s,dx,dy in ranked:
+                d=s+penalty
                 if best is not None and d>=best[0]:break
                 cx,cy=slot['x_mm']+dx,slot['y_mm']+dy
                 for local in shapes_side:
@@ -267,7 +295,34 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
             for face in (('F.Cu','B.Cu') if through_hole(cpart['footprint']) else (side,)):occupy_box(occ[face],b)
             clusters[cpart['ref']]={'ref':cpart['ref'],'board':board,'fixed':False,'x_mm':x,'y_mm':y,'rotation_deg':rotation,
                                     'side':side,'courtyard_mm':b,'bypass_cluster':ic}
+            placed_at[cpart['ref']]=(x,y,side)
         moves.append(math.dist((placed[0][1],placed[0][2]),(slot['x_mm'],slot['y_mm'])))
+    boots={};boot_far=[]
+    added=sorted((p for p in free if p['ref'] not in rows and p['ref'] not in clusters and p['ref'] not in in_cluster
+                  and p['mpn'] in PROTECTION_DIODES),key=lambda p:p['ref'])
+    for part in added:
+        nets={n for n in pin_nets[part['ref']].values() if n and n not in ('AGND','+12V','-12V','+5V')}
+        near=sorted(ref for ref in placed_at if ref not in released or ref in clusters if nets & set(pin_nets[ref].values()))
+        if not near:
+            boot_far.append(part['ref']);continue
+        # Anchor on the amplifier it bootstraps (its input is on the same jack-input net), so the diode
+        # adds no length to that amplifier's output net; else on the rail-clamp diode, else the net members.
+        diodes=([ref for ref in near if ref[:1]=='U'] or [ref for ref in near if by_ref.get(ref,{}).get('mpn') in PROTECTION_DIODES]
+                or near)
+        x=statistics.median(placed_at[r][0] for r in diodes);y=statistics.median(placed_at[r][1] for r in diodes)
+        side=Counter(placed_at[r][2] for r in diodes).most_common(1)[0][0]
+        members[part['ref']]=[]
+        best=local_pose(part,{'x_mm':x,'y_mm':y,'rotation_deg':0,'side':side},baseline=False)
+        if best is None:
+            boot_far.append(part['ref']);continue
+        cost,side,placed,hit=best
+        released|=hit;evicted|=hit
+        for cpart,px,py,rotation,b in placed:
+            occupy_box(occ[side],b)
+            boots[cpart['ref']]={'ref':cpart['ref'],'board':board,'fixed':False,'x_mm':px,'y_mm':py,'rotation_deg':rotation,
+                                 'side':side,'courtyard_mm':b,'protection_locality':diodes[0]}
+            placed_at[cpart['ref']]=(px,py,side)
+    clusters.update(boots)
     pinned={}
     for ref,row in rows.items():
         if ref in released:continue
@@ -282,7 +337,7 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
     report[board]={'pinned':len(pinned),'swapped_clusters':len(swapped),'cluster_capacitors':len(in_cluster),
                    'clusters_board_wide':wide,'clusters_to_locality':unplaced,
                    'cluster_move_mm':{'max':round(max(moves,default=0),3),'median':round(statistics.median(moves),3) if moves else 0},
-                   'evicted':sorted(evicted)}
+                   'evicted':sorted(evicted),'protection_diodes_placed':len(boots),'protection_diodes_beyond_radius':boot_far}
     taken=set(pinned)|set(clusters)
     return [p for p in free if p['ref'] not in taken],out
 
