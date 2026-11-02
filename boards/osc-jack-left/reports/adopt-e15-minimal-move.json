@@ -285,5 +285,129 @@
   "rule": "parity 0, DRC errors 0, unconnected <= pre-adoption baseline + open edges of affected (ripped) nets left unrouted",
   "limit": 404,
   "result": "PASS"
+ },
+ "review_items": {
+  "precision_net_growth": {
+   "status": "REVIEW ITEM (accepted by coordinator decision, phase 33); 10 mm was a screening threshold, not a specification row",
+   "placement_half_perimeter_vs_539ff382": {
+    "precision_nets": 69,
+    "max_growth_mm": 33.5,
+    "nets_over_10mm": [
+     [
+      "/O2/C1e2eb4_SENSE",
+      33.5
+     ],
+     [
+      "/O1/C1e2eb4_SENSE",
+      32.5
+     ],
+     [
+      "/O5/C1e2eb4_SENSE",
+      25.25
+     ],
+     [
+      "/B1/Cc6361b_FB",
+      24.0
+     ],
+     [
+      "/B1/IN_SENSE",
+      23.14
+     ],
+     [
+      "/B1/Caac36a_DRIVE",
+      20.89
+     ],
+     [
+      "/B1/Caac36a_FB",
+      20.89
+     ],
+     [
+      "/B1/Cc6361b_DRIVE",
+      19.28
+     ],
+     [
+      "/B2/Caac36a_FB",
+      16.99
+     ],
+     [
+      "/B2/Caac36a_DRIVE",
+      16.99
+     ],
+     [
+      "/B2/IN_SENSE",
+      16.6
+     ],
+     [
+      "/O4/1V_BUFFER",
+      15.5
+     ],
+     [
+      "/B2/Cc6361b_DRIVE",
+      12.08
+     ],
+     [
+      "/O3/1V_BUFFER",
+      12.0
+     ],
+     [
+      "/O4/C1e2eb4_SENSE",
+      11.47
+     ]
+    ]
+   },
+   "routed_track_length_vs_eea8b18c": {
+    "nets_over_10mm": [
+     [
+      "/B2/Caac36a_DRIVE",
+      38.13
+     ],
+     [
+      "/B1/Cc6361b_DRIVE",
+      25.86
+     ],
+     [
+      "/B2/Caac36a_FB",
+      23.4
+     ],
+     [
+      "/B2/IN_SENSE",
+      22.52
+     ],
+     [
+      "/B1/C9c7ace_DRIVE",
+      17.82
+     ],
+     [
+      "/B1/Caac36a_DRIVE",
+      13.47
+     ],
+     [
+      "/B2/C9c7ace_DRIVE",
+      12.96
+     ],
+     [
+      "/B2/Cc6361b_DRIVE",
+      11.39
+     ]
+    ],
+    "unrouted_precision_nets_routed_before": [
+     "/B1/C9c7ace_FB",
+     "/B1/Cc6361b_FB",
+     "/B1/IN_SENSE",
+     "/H1/SLEW_BUFFERED",
+     "/O1/1V_BUFFER",
+     "/O1/C1e2eb4_SENSE",
+     "/O2/1V_BUFFER",
+     "/O2/C1e2eb4_SENSE",
+     "/O3/1V_BUFFER",
+     "/O4/1V_BUFFER",
+     "/O4/C1e2eb4_SENSE",
+     "/O5/1V_BUFFER",
+     "/O5/C1e2eb4_SENSE",
+     "/X2/SELECTOR_REMOTE"
+    ]
+   },
+   "priority": "Pitch-path SENSE and 1V_BUFFER nets first in the AGND-aware routing pass"
+  }
  }
 }
