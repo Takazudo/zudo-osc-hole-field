@@ -1,0 +1,270 @@
+{
+ "schema_version": 1,
+ "board": "osc-jack-left",
+ "status": "UNVALIDATED DRAFT; decision E15 minimal-move layout pass",
+ "placement_source": {
+  "floorplan": "design/partition/floorplan-candidate.json",
+  "pins": "design/partition/adopted-placement-pins.json",
+  "tssop_retention": "design/partition/precision-tssop-retention.json"
+ },
+ "rip_up": {
+  "tool": "scripts/pcbgen/adopt_minimal_move.py",
+  "old_pcb_commit": "80f9e32c8eadc82f59caef83eb41c81ed9522473",
+  "footprints_moved_to_origin": 163,
+  "moved_swapped_or_added": 215,
+  "removed_signal_items": 10074,
+  "removed_plane_items_near_moved": 981,
+  "affected_signal_nets": 232,
+  "ripped_signal_nets_total": 337,
+  "note": "Signal nets on moved, swapped or added pads ripped whole; plane copper only inside old/new courtyards +0.3 mm; then copper in DRC copper errors and dangling remnants on ripped nets (partial signal nets ripped whole)."
+ },
+ "routing": {
+  "grid_router": "scripts/pcbgen/route_jack_grid.py stage code and promotion gates (rails, signals-local, 12-net batches with rejected batches set aside). Whole-board negotiate, region, rip-up-and-reroute and repair stages not run: unaffected copper unchanged.",
+  "stages": {
+   "rail-fanout": {
+    "adopted": true,
+    "open_edges_before": 1060,
+    "open_edges_after": 852
+   },
+   "rail-links": {
+    "adopted": true,
+    "open_edges_before": 852,
+    "open_edges_after": 817
+   },
+   "rail-escapes": {
+    "adopted": true,
+    "open_edges_before": 817,
+    "open_edges_after": 706
+   },
+   "agnd-stitch-1": {
+    "adopted": false,
+    "open_edges_before": 405,
+    "open_edges_after": 405
+   }
+  },
+  "signal_batches": [
+   {
+    "stage": "adopt-e15-signals-01",
+    "adopted": true,
+    "open_edges_before": 706,
+    "open_edges_after": 694,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-02",
+    "adopted": false,
+    "open_edges_before": 694,
+    "open_edges_after": 676,
+    "rejection_reason": "connected_pad_group_split"
+   },
+   {
+    "stage": "adopt-e15-signals-03",
+    "adopted": true,
+    "open_edges_before": 694,
+    "open_edges_after": 674,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-04",
+    "adopted": true,
+    "open_edges_before": 674,
+    "open_edges_after": 655,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-05",
+    "adopted": true,
+    "open_edges_before": 655,
+    "open_edges_after": 632,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-06",
+    "adopted": true,
+    "open_edges_before": 632,
+    "open_edges_after": 615,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-07",
+    "adopted": true,
+    "open_edges_before": 615,
+    "open_edges_after": 598,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-08",
+    "adopted": true,
+    "open_edges_before": 598,
+    "open_edges_after": 588,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-09",
+    "adopted": true,
+    "open_edges_before": 588,
+    "open_edges_after": 568,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-10",
+    "adopted": true,
+    "open_edges_before": 568,
+    "open_edges_after": 550,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-11",
+    "adopted": false,
+    "open_edges_before": 550,
+    "open_edges_after": 530,
+    "rejection_reason": "connected_pad_group_split"
+   },
+   {
+    "stage": "adopt-e15-signals-12",
+    "adopted": false,
+    "open_edges_before": 550,
+    "open_edges_after": 550,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-13",
+    "adopted": true,
+    "open_edges_before": 550,
+    "open_edges_after": 526,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-14",
+    "adopted": false,
+    "open_edges_before": 526,
+    "open_edges_after": 500,
+    "rejection_reason": "connected_pad_group_split"
+   },
+   {
+    "stage": "adopt-e15-signals-15",
+    "adopted": true,
+    "open_edges_before": 526,
+    "open_edges_after": 513,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-16",
+    "adopted": true,
+    "open_edges_before": 513,
+    "open_edges_after": 490,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-17",
+    "adopted": true,
+    "open_edges_before": 490,
+    "open_edges_after": 468,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-18",
+    "adopted": true,
+    "open_edges_before": 468,
+    "open_edges_after": 458,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-19",
+    "adopted": false,
+    "open_edges_before": 458,
+    "open_edges_after": 458,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-20",
+    "adopted": true,
+    "open_edges_before": 458,
+    "open_edges_after": 443,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-21",
+    "adopted": true,
+    "open_edges_before": 443,
+    "open_edges_after": 429,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-22",
+    "adopted": true,
+    "open_edges_before": 429,
+    "open_edges_after": 425,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-23",
+    "adopted": true,
+    "open_edges_before": 425,
+    "open_edges_after": 405,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-24",
+    "adopted": false,
+    "open_edges_before": 405,
+    "open_edges_after": 388,
+    "rejection_reason": "connected_pad_group_split"
+   },
+   {
+    "stage": "adopt-e15-signals-25",
+    "adopted": false,
+    "open_edges_before": 405,
+    "open_edges_after": 405,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-26",
+    "adopted": false,
+    "open_edges_before": 405,
+    "open_edges_after": 389,
+    "rejection_reason": "connected_pad_group_split"
+   },
+   {
+    "stage": "adopt-e15-signals-27",
+    "adopted": false,
+    "open_edges_before": 405,
+    "open_edges_after": 390,
+    "rejection_reason": "connected_pad_group_split"
+   },
+   {
+    "stage": "adopt-e15-signals-28",
+    "adopted": false,
+    "open_edges_before": 405,
+    "open_edges_after": 387,
+    "rejection_reason": "connected_pad_group_split"
+   }
+  ]
+ },
+ "final": {
+  "kicad_version": "10.0.6",
+  "board_sha256": "7dea1da1e7296aeb72645a77645bd7db0d6b84ffa1c5140e11c45ab637d427b4",
+  "drc_errors": 0,
+  "drc_warnings": 452,
+  "schematic_parity": 0,
+  "drc_unconnected": 405,
+  "native_open_edges": 405,
+  "native_open_edges_affected_signal": 326,
+  "native_open_edges_plane": 3,
+  "native_open_edges_unaffected": 76,
+  "unaffected_nets_worse_than_baseline": []
+ },
+ "baseline": {
+  "commit": "80f9e32c8eadc82f59caef83eb41c81ed9522473",
+  "drc_errors": 0,
+  "native_open_edges": 140,
+  "native_open_edges_affected_signal": 30,
+  "native_open_edges_plane": 31,
+  "native_open_edges_unaffected": 79
+ },
+ "acceptance": {
+  "rule": "parity 0, DRC errors 0, unconnected <= pre-adoption baseline + open edges of affected (ripped) nets left unrouted",
+  "limit": 469,
+  "result": "PASS"
+ }
+}
