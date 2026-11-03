@@ -22,11 +22,9 @@ def board(*items):
 
 
 class MergeAcceptanceTests(unittest.TestCase):
-    def test_reviewed_cuts_require_full_audit_and_exact_bounded_source_plan(self):
+    def test_reviewed_cut_scope_requires_the_exact_bounded_source_plan(self):
         import copy
         from scripts.pcbgen.route_shards import merge,reviewed_cut_scope
-        with self.assertRaisesRegex(ValueError,'require complete warning'):
-            merge('osc-jack-left',[],'no-work',reviewed_cut_plan=Path('must-not-read'))
         dump={'pads':[{'uuid':'ground','net':'AGND','xy':[5e6,5e6]}],
               'tracks':[{'uuid':U[0],'net':'signal','a':[4e6,5e6],'b':[6e6,5e6],'width':.2e6}],
               'vias':[],'islands':{'AGND':[['ground'],['main']]}}
@@ -46,10 +44,8 @@ class MergeAcceptanceTests(unittest.TestCase):
             with self.subTest(mutation=mutation),self.assertRaises(ValueError):
                 reviewed_cut_scope(p,'osc-jack-left','source',d,r)
 
-    def test_batch_option_cannot_skip_full_warning_evidence(self):
+    def test_batch_option_rejects_unsupported_sizes(self):
         from scripts.pcbgen.route_shards import merge
-        with self.assertRaisesRegex(ValueError,'requires complete warning'):
-            merge('osc-core',[],'must-not-run',native_zone_batch_size=16)
         for size in (0,8,True):
             with self.assertRaisesRegex(ValueError,'batch size'):
                 merge('osc-core',[],'must-not-run',complete_native_warnings=True,native_zone_batch_size=size)
@@ -76,9 +72,11 @@ class MergeAcceptanceTests(unittest.TestCase):
                 if failure=='error':ad['violations'].append(dict(type='clearance',severity='error',items=[]))
                 def workspace(board_id,name):
                     folder=root/name;folder.mkdir();return folder
-                def evidence(*args):
+                def evidence(before_board,after_board,*args,**kwargs):
                     if failure=='evidence':raise ValueError('fixture context changed')
-                    return append_observations(bd,{old,shifted}),append_observations(ad,{old,shifted}),{'status':'test native observations'}
+                    return append_observations(bd,{old,shifted}),append_observations(ad,{old,shifted}),dict(
+                        status=driver.COMPLETE_EVIDENCE_STATUS,before_source_sha256=driver.sha_file(before_board),
+                        after_source_sha256=driver.sha_file(after_board),new_hole_object_identities=[],new_silk_identities=[])
                 with patch.object(route_shards,'ROOT',root),patch.object(driver,'workspace',side_effect=workspace),\
                      patch.object(driver,'check',side_effect=[(bd,before),(report(shifted),after),(ad,fresh)]),\
                      patch('scripts.pcbgen.complete_native_warnings.audit_current_reports',side_effect=evidence) as audit:
@@ -88,6 +86,36 @@ class MergeAcceptanceTests(unittest.TestCase):
                 self.assertEqual(receipt['adopted'],failure=='none')
                 if failure!='none':self.assertEqual(target.read_text(),original)
                 if failure=='evidence':self.assertEqual(receipt['rejection_reason'],'incomplete_native_warning_evidence')
+
+    def test_capped_merge_requires_complete_evidence_without_any_option(self):
+        from scripts.pcbgen import route_shards,route_jack_grid as driver
+        from scripts.pcbgen.test_grid_router import crossing_board
+        listed=[f'w{i:03d}' for i in range(199)]
+        def report(uids):
+            return {'violations':[dict(type='silk_overlap',severity='warning',items=[{'uuid':u}]) for u in uids],'schematic_parity':[]}
+        for outcome in ('complete','hidden-new','failed','unbound'):
+            with self.subTest(outcome=outcome),tempfile.TemporaryDirectory() as directory:
+                root=Path(directory);target=root/'boards/osc-jack-left/osc-jack-left.kicad_pcb'
+                target.parent.mkdir(parents=True);original=board(seg(U[0],'A'));target.write_text(original)
+                proposal=root/'delta.json';proposal.write_text(json.dumps(delta(original,board(seg(U[0],'A'),seg(U[1],'B')))))
+                before={**crossing_board(),'open_edges':3,'islands':{'A':[['a0','a1']],'B':[['b0'],['b1']]}}
+                after={**before,'open_edges':1,'islands':{}}
+                def workspace(board_id,name):
+                    folder=root/name;folder.mkdir();return folder
+                def evidence(before_board,after_board,before_drc,after_drc,*args,**kwargs):
+                    if outcome=='failed':raise ValueError('unsupported capped warning domain')
+                    proof=dict(status=driver.COMPLETE_EVIDENCE_STATUS,before_source_sha256=driver.sha_file(before_board),
+                               after_source_sha256=driver.sha_file(after_board) if outcome!='unbound' else '0'*64,
+                               new_hole_object_identities=[],new_silk_identities=[])
+                    return report(listed),report(listed+(['new'] if outcome=='hidden-new' else [])),proof
+                with patch.object(route_shards,'ROOT',root),patch.object(driver,'workspace',side_effect=workspace),\
+                     patch.object(driver,'check',side_effect=[(report(listed),before),(report(listed),after),(report(listed),after)]),\
+                     patch('scripts.pcbgen.complete_native_warnings.audit_current_reports',side_effect=evidence) as audit:
+                    receipt=route_shards.merge('osc-jack-left',[proposal],'capped')
+                self.assertEqual(audit.call_count,1)
+                self.assertTrue(receipt['raw_promotion_gate']['adopted'])
+                self.assertEqual(receipt['adopted'],outcome=='complete')
+                if outcome!='complete':self.assertEqual(target.read_text(),original)
 
     def test_reverted_geometry_and_native_error_evidence_survive_next_attempt(self):
         from scripts.pcbgen import route_shards,route_jack_grid as driver

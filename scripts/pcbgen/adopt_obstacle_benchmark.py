@@ -45,9 +45,15 @@ def checked_copy(board_id,source,label):
     return target,drc,dump
 
 
-def publication_copy(board_id,checked,drc,dump,limit=95*1024*1024):
-    """Keep large derived fills out of Git only after native refill equivalence."""
+def publication_copy(board_id,checked,drc,dump,limit=95*1024*1024,capped=False):
+    """Keep large derived fills out of Git only after native refill equivalence.
+
+    A capped warning report cannot prove that the refilled publication bytes carry no
+    new warning, and the complete-warning proof is bound to the checked bytes, so a
+    capped adoption must publish exactly the audited board.
+    """
     if checked.stat().st_size<limit:return checked,{}
+    if capped:raise driver.StageRejected('capped warning report: publication refill would replace the audited bytes')
     text,count=without_zone_cache(checked.read_text())
     compact=driver.workspace(board_id,'189-compact')/checked.name;compact.write_text(text)
     if not count or compact.stat().st_size>=limit:raise ValueError('board remains too large after derived cache removal')
@@ -77,7 +83,7 @@ def main():
     def complete_copper(text):return {u:sorted(x[2] for x in items) for u,items in copper_block_groups(text).items()}
     if complete_copper(replayed.read_text())!=complete_copper(candidate.read_text()):
         raise ValueError('copper replay differs from benchmark candidate')
-    _,before_drc,before=checked_copy(board_id,board,'189-adopt-base')
+    base,before_drc,before=checked_copy(board_id,board,'189-adopt-base')
     baseline_dump=json.loads((a.benchmark_dir/'input'/'dump.json').read_text())
     if driver.connectivity_signature(before)!=driver.connectivity_signature(baseline_dump):
         raise driver.StageRejected('current settled baseline differs from benchmark')
@@ -85,8 +91,12 @@ def main():
     fresh,fresh_drc,fresh_dump=checked_copy(board_id,checked,'189-adopt-fresh')
     if driver.connectivity_signature(after)!=driver.connectivity_signature(fresh_dump):
         raise driver.StageRejected('independent replay connectivity differs')
-    gate=driver.promotion_gate(before,fresh_dump,before_drc,fresh_drc)
-    publication,cache_receipt=publication_copy(board_id,fresh,fresh_drc,fresh_dump) if gate['adopted'] else (fresh,{})
+    # Capped native reports must be completed from source-bound evidence before the unchanged gate decides.
+    capped=driver.warning_capped(before_drc,fresh_drc)
+    evidence=driver.workspace(board_id,'189-adopt-complete-warnings')/'native-audits' if capped else None
+    gate=driver.warning_complete_gate(base,fresh,before,fresh_dump,before_drc,fresh_drc,evidence)
+    gate=driver.enforce_warning_completeness(gate,before_drc,fresh_drc,sha(base),sha(fresh))
+    publication,cache_receipt=publication_copy(board_id,fresh,fresh_drc,fresh_dump,capped=bool(capped)) if gate['adopted'] else (fresh,{})
     receipt={'schema':'obstacle-benchmark-adoption-1','benchmark_sha256':sha(report_path),
              'benchmark_source':report['new_ref'],'input_board_sha256':sha(board),
              'candidate_board_sha256':sha(publication),'native_filled_board_sha256':sha(fresh),

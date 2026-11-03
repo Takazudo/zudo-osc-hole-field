@@ -604,31 +604,90 @@ def promotion_gate(before,after,before_drc,after_drc):
             'split_pad_groups':splits,'new_warning_identities':new_warnings,'native_errors':native_errors}
 
 
-def complete_gate(board_id,current,candidate,receipt,spec,zone_batch_size=16):
-    """Re-run the unchanged promotion gate on complete warning inputs when a native report hit the cap.
+# complete_native_warnings.complete_reports() proof status; any other status is not complete evidence.
+COMPLETE_EVIDENCE_STATUS='COMPLETE NATIVE HOLE OBSERVATIONS APPENDED; NO ORIGINAL FINDING REMOVED'
+GATE_KEYS=('adopted','split_pad_groups','new_warning_identities','native_errors')
 
-    KiCad 10.0.6 lists at most 199 warnings per type and has no uncapped option, so capped
-    reports are completed from source-bound native fixtures (complete_native_warnings). The
-    raw verdict is kept; evidence that cannot be completed rejects the stage (fail closed).
+
+def warning_capped(before_drc,after_drc):
+    from scripts.pcbgen.complete_native_warnings import capped_types
+    return sorted(capped_types(before_drc)|capped_types(after_drc))
+
+
+def verify_warning_proof(proof,before_sha,after_sha):
+    """Complete evidence must be the auditor's proof for exactly these two boards."""
+    if not isinstance(proof,dict):raise ValueError('complete native warning evidence missing')
+    if proof.get('status')!=COMPLETE_EVIDENCE_STATUS:raise ValueError('complete native warning evidence status: '+str(proof.get('status')))
+    if proof.get('before_source_sha256')!=before_sha or proof.get('after_source_sha256')!=after_sha:
+        raise ValueError('complete native warning evidence source hash mismatch')
+    if proof.get('new_hole_object_identities')!=[] or proof.get('new_silk_identities')!=[]:
+        raise ValueError('complete native warning evidence reports new identities')
+
+
+def sha_file(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def warning_complete_gate(before_board,after_board,before,after,before_drc,after_drc,evidence,
+                          prerequisites=True,zone_batch_size=16,reviewed_removed_uuids=(),auditor=None,force=False):
+    """promotion_gate() on complete warning inputs; completion is mandatory whenever a report hit the cap.
+
+    KiCad 10.0.6 lists at most 199 warnings per type and has no uncapped option, so a
+    capped before or after report can hide a new warning identity. Such reports are
+    completed from source-bound native fixtures (complete_native_warnings) and the
+    unchanged promotion_gate() decides on the completed inputs. The raw verdict is kept.
+    Missing, failed, unsupported or source-mismatched evidence rejects (fail closed),
+    independent of any command-line option. force also completes uncapped reports, as
+    route_shards --complete-native-warnings always did: appended native hole observations
+    can then reconcile an identity listing difference on uncapped reports too.
     """
-    from scripts.pcbgen.complete_native_warnings import audit_current_reports,capped_types
-    before_drc=json.loads(current.with_name('drc.json').read_text());after_drc=json.loads(candidate.with_name('drc.json').read_text())
-    capped=sorted(capped_types(before_drc)|capped_types(after_drc))
-    if not capped:return receipt
-    receipt['capped_warning_types']=capped
-    receipt['raw_promotion_gate']={k:receipt[k] for k in ('adopted','split_pad_groups','new_warning_identities','native_errors')}
-    if receipt['split_pad_groups'] or receipt['native_errors'] or receipt['open_edges_after']>=receipt['open_edges_before']:
-        receipt['complete_native_warning_evidence_status']='NOT RUN: native prerequisites failed'
-        return receipt
-    evidence=workspace(board_id,spec['name']+'-complete-warnings')/'native-audits'
+    gate=promotion_gate(before,after,before_drc,after_drc)
+    capped=warning_capped(before_drc,after_drc)
+    if not capped and not force:
+        return {**gate,'complete_native_warning_evidence_status':'NOT REQUIRED: no warning type reached the native cap'}
+    result={**gate,'capped_warning_types':capped,'raw_promotion_gate':{k:gate[k] for k in GATE_KEYS}}
+    # Completed warnings cannot repair connectivity, native errors or a missing gain.
+    if gate['split_pad_groups'] or gate['native_errors'] or after['open_edges']>=before['open_edges'] or not prerequisites:
+        result.update(adopted=False,complete_native_warning_evidence_status='NOT RUN: native prerequisites failed')
+        return result
+    if auditor is None:
+        from scripts.pcbgen.complete_native_warnings import audit_current_reports as auditor
+    before_sha,after_sha=sha_file(before_board),sha_file(after_board)
     try:
-        complete_before,complete_after,proof=audit_current_reports(current,candidate,before_drc,after_drc,evidence,zone_batch_size=zone_batch_size)
-    except (ValueError,RuntimeError,OSError,subprocess.SubprocessError) as error:
-        receipt.update(adopted=False,rejection_reason='incomplete_native_warning_evidence',native_warning_evidence_error=str(error))
-        return receipt
-    receipt['complete_native_warning_evidence']=proof
-    receipt.update(promotion_gate(json.loads(current.with_name('dump.json').read_text()),
-                                  json.loads(candidate.with_name('dump.json').read_text()),complete_before,complete_after))
+        options={'zone_batch_size':zone_batch_size}
+        if reviewed_removed_uuids:options['reviewed_removed_uuids']=list(reviewed_removed_uuids)
+        complete_before,complete_after,proof=auditor(before_board,after_board,before_drc,after_drc,evidence,**options)
+        verify_warning_proof(proof,before_sha,after_sha)
+        if sha_file(before_board)!=before_sha or sha_file(after_board)!=after_sha:
+            raise ValueError('board bytes changed during complete native warning audits')
+    except Exception as error:  # any audit failure is missing evidence: reject, never adopt on the capped report
+        result.update(adopted=False,rejection_reason='incomplete_native_warning_evidence',
+                      native_warning_evidence_error=f'{type(error).__name__}: {error}',
+                      complete_native_warning_evidence_status='REJECTED: incomplete native warning evidence')
+        return result
+    result['complete_native_warning_evidence']=proof
+    result.update(promotion_gate(before,after,complete_before,complete_after))
+    result['complete_native_warning_evidence_status']='COMPLETE: source-bound native evidence'
+    return result
+
+
+def enforce_warning_completeness(receipt,before_drc,after_drc,before_sha,after_sha):
+    """Last check before any promotion: a capped adoption needs complete evidence for these exact bytes."""
+    if not receipt.get('adopted') or not warning_capped(before_drc,after_drc):return receipt
+    try:verify_warning_proof(receipt.get('complete_native_warning_evidence'),before_sha,after_sha)
+    except ValueError as error:
+        receipt.update(adopted=False,rejection_reason='incomplete_native_warning_evidence',native_warning_evidence_error=str(error),
+                       complete_native_warning_evidence_status='REJECTED: incomplete native warning evidence')
+    return receipt
+
+
+def complete_gate(board_id,current,candidate,receipt,spec,zone_batch_size=16,auditor=None,force=False):
+    """Driver wrapper: gate the stage receipt with warning_complete_gate() on the stage's native reports."""
+    before_drc=json.loads(current.with_name('drc.json').read_text());after_drc=json.loads(candidate.with_name('drc.json').read_text())
+    before=json.loads(current.with_name('dump.json').read_text());after=json.loads(candidate.with_name('dump.json').read_text())
+    capped=warning_capped(before_drc,after_drc)
+    evidence=workspace(board_id,spec['name']+'-complete-warnings')/'native-audits' if capped or force else None
+    receipt.update(warning_complete_gate(current,candidate,before,after,before_drc,after_drc,evidence,
+                                         zone_batch_size=zone_batch_size,auditor=auditor,force=force))
     return receipt
 
 
@@ -641,7 +700,7 @@ def main():
     p.add_argument('--res',type=float,help='negotiation raster in mm for every negotiated stage (default: per-board table)')
     p.add_argument('--iterations',type=int,help='negotiation iteration cap for every negotiated stage (default: per-board table)')
     p.add_argument('--after-promote',help='shell command run after each promotion, with STAGE, OPEN_BEFORE and OPEN_AFTER set (CI pushes)')
-    p.add_argument('--complete-native-warnings',action='store_true',help='complete capped native warning reports from source-bound fixtures before the gate')
+    p.add_argument('--complete-native-warnings',action='store_true',help='also complete uncapped warning reports; capped reports always require complete evidence')
     p.add_argument('--native-zone-batch-size',type=int,default=16,choices=(1,4,16))
     p.add_argument('--shard',help='I/N: route only shard I of N hotspot-region shards planned from the start board (region stages only)')
     a=p.parse_args()
@@ -698,13 +757,13 @@ def main():
         # Count improvements can conceal disconnected feeds/returns on another net.
         # Check after the optional stitching transaction, so temporary AGND splits
         # may be repaired in the disposable candidate but never promoted.
-        receipt.update(promotion_gate(json.loads(current.with_name('dump.json').read_text()),
-                                      json.loads(candidate.with_name('dump.json').read_text()),
-                                      json.loads(current.with_name('drc.json').read_text()),
-                                      json.loads(candidate.with_name('drc.json').read_text())))
-        if a.complete_native_warnings:receipt=complete_gate(a.board_id,current,candidate,receipt,spec,a.native_zone_batch_size)
+        # Mandatory for every stage: capped reports are completed (or the stage rejected) regardless of options.
+        receipt=complete_gate(a.board_id,current,candidate,receipt,spec,a.native_zone_batch_size,force=a.complete_native_warnings)
         receipt['input_board_sha256']=hashlib.sha256(current.read_bytes()).hexdigest()
         receipt['candidate_board_sha256']=hashlib.sha256(candidate.read_bytes()).hexdigest()
+        receipt=enforce_warning_completeness(receipt,json.loads(current.with_name('drc.json').read_text()),
+                                             json.loads(candidate.with_name('drc.json').read_text()),
+                                             receipt['input_board_sha256'],receipt['candidate_board_sha256'])
         if not receipt['adopted'] and (receipt['split_pad_groups'] or receipt['new_warning_identities']) and 'rejection_reason' not in receipt:
             receipt['rejection_reason']='connected_pad_group_split' if receipt['split_pad_groups'] else 'new_native_warning'
         if not receipt['adopted'] and 'rejection_reason' in receipt:print(f"{spec['name']}: rejected: {receipt['rejection_reason']}",flush=True)
