@@ -466,8 +466,8 @@ def stage(board_id,current,spec,definition,log):
         if spec.get('chunk') and not spec.get('rrr_rounds'):FAILED.update(r['net'] for r in results if not r['path'])
     spaced,rows,links,removed=drop_links(hole_spacing_culprits(rows,links,dump,removed),rows,links,removed,dump)
     if spaced:log(f"{spec['name']}: dropped {len(spaced)} links with a via below the hole-to-hole minimum")
-    dropped=[]
-    for attempt in range(4):
+    dropped=[];split_dropped=[]
+    for attempt in range(8):
         work=workspace(board_id,spec['name']);proposal=work/'proposal.json';candidate=work/f'{board_id}.kicad_pcb'
         proposal.write_text(json.dumps({'board_sha256':hashlib.sha256(current.read_bytes()).hexdigest(),'removed_uuids':removed,'copper':rows})+'\n')
         run('bash','scripts/kicad/run.sh','python3','scripts/pcbgen/grid_apply.py',rel(current),rel(proposal),'--output',rel(candidate))
@@ -486,6 +486,13 @@ def stage(board_id,current,spec,definition,log):
                 bad={r['uuid'] for r in rows if r['kind']=='via'}
             log(f"{spec['name']}: {split} split; dropping links with copper on {sorted(plane_layers)}")
             if not bad:raise StageRejected(f"{split} split without attributable copper")
+        if not bad and spec.get('agnd_guard'):
+            # The raster fill guard can miss a route that rings an AGND pour fragment; drop the
+            # nearest new link to every AGND pad group the candidate disconnected and retry.
+            near=split_culprits(split_pad_groups(json.loads(original.with_name('dump.json').read_text()),after),after,rows,links,nets={'AGND'})
+            if near:
+                culprits,rows,links,removed=drop_links(near,rows,links,removed,dump);split_dropped+=culprits
+                log(f"{spec['name']}: dropped {len(culprits)} links next to {len(near)} disconnected AGND pad groups; retrying");continue
         if not bad:break
         culprits=[l for l in links if bad & set(l['copper_uuids'])]
         if not culprits:raise StageRejected("DRC errors not attributable to new copper")
@@ -503,7 +510,7 @@ def stage(board_id,current,spec,definition,log):
     candidate,after,drc=verify,fresh,drc_v
     before=json.loads(original.with_name('dump.json').read_text())['open_edges']
     receipt={'stage':spec['name'],'status':'NATIVE CHECKED DRAFT STAGE','open_edges_before':before,'open_edges_after':after['open_edges'],
-             'links_added':len(links),'links_dropped_for_drc':len(dropped),'links_dropped_for_hole_spacing':len(spaced),'copper_rows':len(rows),
+             'links_added':len(links),'links_dropped_for_drc':len(dropped),'links_dropped_for_hole_spacing':len(spaced),'links_dropped_for_agnd_split':len(split_dropped),'copper_rows':len(rows),
              'ripped':len(removed)+(len(repair_details['removed_source_uuids']) if repair_details else 0),
              'drc_errors':0,'drc_warnings':sum(v['severity']=='warning' for v in drc['violations']),'parity':0,
              'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}
@@ -529,6 +536,27 @@ def hole_spacing_culprits(rows,links,dump,removed=(),min_nm=MIN_HOLE_TO_HOLE_NM)
             if q['uuid'] not in bad and np.hypot(*np.subtract(q['at_nm'],r['at_nm']))-(q['drill_nm']+r['drill_nm'])/2<min_nm:
                 bad.add(r['uuid']);break
     return [l for l in links if bad & set(l['copper_uuids'])]
+
+
+def split_culprits(splits,after,rows,links,nets,radius_mm=12.0):
+    """For each split group of the named nets, the new link nearest its stranded pads (within radius_mm)."""
+    pads={p['uuid']:np.array(p['xy'],float) for p in after['pads']}
+    labels={n:{u:i for i,g in enumerate(after['islands'].get(n,[])) for u in g} for n in nets}
+    owner={u:l for l in links for u in l['copper_uuids']};found=[]
+    for s in splits:
+        if s['net'] not in nets:continue
+        lab=labels[s['net']];major=collections.Counter(lab.get(u) for u in s['previously_connected_pads']).most_common(1)[0][0]
+        stranded=[pads[u] for u in s['previously_connected_pads'] if lab.get(u)!=major and u in pads]
+        best=None
+        for r in rows:
+            if r['uuid'] not in owner:continue
+            if r['kind']=='via':pts=[np.array(r['at_nm'],float)]
+            else:
+                a,b=np.array(r['start_nm'],float),np.array(r['end_nm'],float);pts=[a+(b-a)*t for t in np.linspace(0,1,5)]
+            d=min(np.hypot(*(q-x)) for q in stranded for x in pts)
+            if d<=radius_mm*1e6 and (best is None or d<best[0]):best=(d,owner[r['uuid']])
+        if best and best[1] not in found:found.append(best[1])
+    return found
 
 
 def drop_links(culprits,rows,links,removed,dump):

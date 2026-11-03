@@ -162,5 +162,17 @@ class AnalogTierTests(unittest.TestCase):
         self.assertLess(names.index('analog-pitch'),names.index('analog-sense'))
 
 
+class SplitCulpritTests(unittest.TestCase):
+    def test_nearest_new_link_to_stranded_agnd_pads_is_named(self):
+        after={'pads':[{'uuid':u,'xy':xy} for u,xy in (('p1',[0,0]),('p2',[1e6,0]),('p3',[50e6,0]))],
+               'islands':{'AGND':[['p3','x','y'],['p1','p2']]}}
+        rows=[{'uuid':'s1','kind':'segment','start_nm':[0,3e6],'end_nm':[2e6,3e6]},{'uuid':'v2','kind':'via','at_nm':[0,8e6]},
+              {'uuid':'v3','kind':'via','at_nm':[90e6,0]}]
+        links=[{'net':'a','copper_uuids':['s1']},{'net':'b','copper_uuids':['v2']},{'net':'c','copper_uuids':['v3']}]
+        splits=[{'net':'AGND','previously_connected_pads':['p1','p2','p3','x','y']},{'net':'SIG','previously_connected_pads':['p1']}]
+        self.assertEqual(driver.split_culprits(splits,after,rows,links,nets={'AGND'}),[links[0]])
+        self.assertEqual(driver.split_culprits(splits,after,rows[2:],links,nets={'AGND'}),[])
+
+
 if __name__=='__main__':
     unittest.main()
