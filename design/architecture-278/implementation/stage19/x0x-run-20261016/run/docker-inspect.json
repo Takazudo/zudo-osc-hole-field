@@ -1,0 +1,287 @@
+[
+  {
+    "AppArmorProfile": "",
+    "Args": [
+      "-s",
+      "KILL",
+      "600",
+      "python3",
+      "-B",
+      "/control/stage19_container.py"
+    ],
+    "Config": {
+      "AttachStderr": false,
+      "AttachStdin": false,
+      "AttachStdout": false,
+      "Cmd": [
+        "-s",
+        "KILL",
+        "600",
+        "python3",
+        "-B",
+        "/control/stage19_container.py"
+      ],
+      "Domainname": "",
+      "Entrypoint": [
+        "/usr/bin/timeout"
+      ],
+      "Env": [
+        "XDG_CONFIG_HOME=/output/config",
+        "XDG_CACHE_HOME=/output/cache",
+        "TMPDIR=/output/tmp",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "HOME=/output/home",
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "LANG=C.UTF-8",
+        "LANGUAGE=C.UTF-8",
+        "LC_ALL=C.UTF-8"
+      ],
+      "Hostname": "d476713a67d2",
+      "Image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+      "Labels": {
+        "org.opencontainers.image.authors": "https://groups.google.com/a/kicad.org/g/devlist",
+        "org.opencontainers.image.description": "Image containing KiCad EDA, python and the stock symbol and footprint libraries for use in automation workflows",
+        "org.opencontainers.image.documentation": "https://docs.kicad.org/",
+        "org.opencontainers.image.licenses": "GPL-3.0-or-later",
+        "org.opencontainers.image.source": "https://gitlab.com/kicad/kicad-ci/kicad-cli-docker",
+        "org.opencontainers.image.url": "https://kicad.org",
+        "org.opencontainers.image.vendor": "KiCad",
+        "osc.run_nonce": "9c288f95f704df39f8dd46ea704688b433dbe6c8bdc714f18979d5376488bd74"
+      },
+      "OpenStdin": false,
+      "StdinOnce": false,
+      "Tty": false,
+      "User": "kicad",
+      "Volumes": null,
+      "WorkingDir": "/output"
+    },
+    "Created": "2026-10-16T19:18:22.19426148Z",
+    "Driver": "overlayfs",
+    "ExecIDs": null,
+    "HostConfig": {
+      "AutoRemove": false,
+      "Binds": null,
+      "BlkioDeviceReadBps": [],
+      "BlkioDeviceReadIOps": [],
+      "BlkioDeviceWriteBps": [],
+      "BlkioDeviceWriteIOps": [],
+      "BlkioWeight": 0,
+      "BlkioWeightDevice": [],
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "Cgroup": "",
+      "CgroupParent": "",
+      "CgroupnsMode": "private",
+      "ConsoleSize": [
+        0,
+        0
+      ],
+      "ContainerIDFile": "",
+      "CpuCount": 0,
+      "CpuPercent": 0,
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuRealtimePeriod": 0,
+      "CpuRealtimeRuntime": 0,
+      "CpuShares": 0,
+      "CpusetCpus": "",
+      "CpusetMems": "",
+      "DeviceCgroupRules": null,
+      "DeviceRequests": null,
+      "Devices": [],
+      "Dns": null,
+      "DnsOptions": [],
+      "DnsSearch": [],
+      "ExtraHosts": null,
+      "GroupAdd": null,
+      "IOMaximumBandwidth": 0,
+      "IOMaximumIOps": 0,
+      "IpcMode": "none",
+      "Isolation": "",
+      "Links": null,
+      "LogConfig": {
+        "Config": {},
+        "Type": "none"
+      },
+      "MaskedPaths": [
+        "/proc/acpi",
+        "/proc/asound",
+        "/proc/interrupts",
+        "/proc/kcore",
+        "/proc/keys",
+        "/proc/latency_stats",
+        "/proc/sched_debug",
+        "/proc/scsi",
+        "/proc/timer_list",
+        "/proc/timer_stats",
+        "/sys/devices/virtual/powercap",
+        "/sys/firmware"
+      ],
+      "Memory": 4294967296,
+      "MemoryReservation": 0,
+      "MemorySwap": 4294967296,
+      "MemorySwappiness": null,
+      "Mounts": [
+        {
+          "ReadOnly": true,
+          "Source": "/mnt/c/Users/takaz/Documents/Codex/2026-10-16/task-3/osc-stage19-verifier/design/architecture-278/implementation/stage17/generated",
+          "Target": "/inputs/stage17/generated",
+          "Type": "bind"
+        },
+        {
+          "ReadOnly": true,
+          "Source": "/mnt/c/Users/takaz/Documents/Codex/2026-10-16/task-3/osc-stage19-verifier/design/architecture-278/implementation/stage18/generated",
+          "Target": "/inputs/stage18/generated",
+          "Type": "bind"
+        },
+        {
+          "ReadOnly": true,
+          "Source": "/home/takazudo/osc-stage18-native-001",
+          "Target": "/control",
+          "Type": "bind"
+        },
+        {
+          "ReadOnly": true,
+          "Source": "/home/takazudo/osc-stage18-native-001/empty",
+          "Target": "/dev/mqueue",
+          "Type": "bind"
+        }
+      ],
+      "NanoCpus": 2000000000,
+      "NetworkMode": "none",
+      "OomKillDisable": null,
+      "OomScoreAdj": 0,
+      "PidMode": "",
+      "PidsLimit": 128,
+      "PortBindings": {},
+      "Privileged": false,
+      "PublishAllPorts": false,
+      "ReadonlyPaths": [
+        "/proc/bus",
+        "/proc/fs",
+        "/proc/irq",
+        "/proc/sys",
+        "/proc/sysrq-trigger"
+      ],
+      "ReadonlyRootfs": true,
+      "RestartPolicy": {
+        "MaximumRetryCount": 0,
+        "Name": "no"
+      },
+      "Runtime": "runc",
+      "SecurityOpt": [
+        "no-new-privileges"
+      ],
+      "ShmSize": 67108864,
+      "Tmpfs": {
+        "/output": "rw,noexec,nosuid,nodev,size=262144000,mode=1777"
+      },
+      "UTSMode": "",
+      "Ulimits": [],
+      "UsernsMode": "",
+      "VolumeDriver": "",
+      "VolumesFrom": null
+    },
+    "HostnamePath": "/var/lib/docker/containers/d476713a67d278f76f2714d739dd67d6963bdbbe51b1ebb857bf5dd24dade0b5/hostname",
+    "HostsPath": "/var/lib/docker/containers/d476713a67d278f76f2714d739dd67d6963bdbbe51b1ebb857bf5dd24dade0b5/hosts",
+    "Id": "d476713a67d278f76f2714d739dd67d6963bdbbe51b1ebb857bf5dd24dade0b5",
+    "Image": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "ImageManifestDescriptor": {
+      "digest": "sha256:40568bc95527f3a673a31a9b59badf512e71046c2d5068a364503c525f946a4e",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "platform": {
+        "architecture": "amd64",
+        "os": "linux"
+      },
+      "size": 3041
+    },
+    "LogPath": "",
+    "MountLabel": "",
+    "Mounts": [
+      {
+        "Destination": "/inputs/stage17/generated",
+        "Mode": "",
+        "Propagation": "rprivate",
+        "RW": false,
+        "Source": "/mnt/c/Users/takaz/Documents/Codex/2026-10-16/task-3/osc-stage19-verifier/design/architecture-278/implementation/stage17/generated",
+        "Type": "bind"
+      },
+      {
+        "Destination": "/inputs/stage18/generated",
+        "Mode": "",
+        "Propagation": "rprivate",
+        "RW": false,
+        "Source": "/mnt/c/Users/takaz/Documents/Codex/2026-10-16/task-3/osc-stage19-verifier/design/architecture-278/implementation/stage18/generated",
+        "Type": "bind"
+      },
+      {
+        "Destination": "/control",
+        "Mode": "",
+        "Propagation": "rprivate",
+        "RW": false,
+        "Source": "/home/takazudo/osc-stage18-native-001",
+        "Type": "bind"
+      },
+      {
+        "Destination": "/dev/mqueue",
+        "Mode": "",
+        "Propagation": "rprivate",
+        "RW": false,
+        "Source": "/home/takazudo/osc-stage18-native-001/empty",
+        "Type": "bind"
+      }
+    ],
+    "Name": "/osc-stage18-native-001",
+    "NetworkSettings": {
+      "Networks": {
+        "none": {
+          "Aliases": null,
+          "DNSNames": null,
+          "DriverOpts": null,
+          "EndpointID": "a5261fde2c7059b1f848ce20db9a771f1a25bbb2300293ebbe2b8cb4725ac26b",
+          "Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "GwPriority": 0,
+          "IPAMConfig": null,
+          "IPAddress": "",
+          "IPPrefixLen": 0,
+          "IPv6Gateway": "",
+          "Links": null,
+          "MacAddress": "",
+          "NetworkID": "b0b5d515b84042e330755c396a9d75a49fa8444389efd36c22f9b8dfac7279b7"
+        }
+      },
+      "Ports": {},
+      "SandboxID": "e34b23465909b053047fbba3f25afbda7c4f03ab9e0d84cf2323038e38ef8fea",
+      "SandboxKey": "/var/run/docker/netns/e34b23465909"
+    },
+    "Path": "/usr/bin/timeout",
+    "Platform": "linux",
+    "ProcessLabel": "",
+    "ResolvConfPath": "/var/lib/docker/containers/d476713a67d278f76f2714d739dd67d6963bdbbe51b1ebb857bf5dd24dade0b5/resolv.conf",
+    "RestartCount": 0,
+    "State": {
+      "Dead": false,
+      "Error": "",
+      "ExitCode": 0,
+      "FinishedAt": "0001-01-01T00:00:00Z",
+      "OOMKilled": false,
+      "Paused": false,
+      "Pid": 3503373,
+      "Restarting": false,
+      "Running": true,
+      "StartedAt": "2026-10-16T19:18:22.811163511Z",
+      "Status": "running"
+    },
+    "Storage": {
+      "RootFS": {
+        "Snapshot": {
+          "Name": "overlayfs"
+        }
+      }
+    }
+  }
+]

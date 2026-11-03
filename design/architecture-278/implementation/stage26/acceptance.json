@@ -1,0 +1,117 @@
+{
+  "authority": "OWNER_APPROVED_CURRENT_AO_ACCEPTANCE_SCOPE",
+  "baseline_commit": "f30d653e733a85fe00b1c187a5f571a983a3b47a",
+  "current_use": "COARSE_MUSICAL_CV_MANIPULATION",
+  "effective_UTC": "2026-10-17T04:03:00Z",
+  "filter_exception": {
+    "dielectric": "X7R",
+    "disposition": "SELECT_FOR_SOURCE_CANDIDATE_ONLY",
+    "global_c_small_policy_changed": false,
+    "module": "A01",
+    "mpn": "C0603C103J5RACTU",
+    "nominal_F": 1e-08,
+    "other_compensation_storage_timing_policy_changed": false,
+    "ref": "C7105",
+    "role": "manual OFFSET smoothing, not pitch reference or storage"
+  },
+  "hardware_acceptance": false,
+  "implementation_scope": {
+    "A02_A06_replication_authorized": false,
+    "architecture_adopted": false,
+    "implemented_instance": "A01",
+    "native_request": "NONE",
+    "production_CAD_changed": false
+  },
+  "new_numeric_accuracy_limit": null,
+  "owner_intent_en": "ATTEN/OFFSET is for coarse musical CV manipulation, with relaxed accuracy requirements. Preserve VCO 1 V/oct tracking.",
+  "owner_quote_ja": "それなら適当で良さそう\nオシレーターのピッチについても、もし厳密に音階を指定したいなら別途クオンタイザーを使うので、こちらの楽器的には1V/octに追従できていること以上は必要ない\n\natten offsetは特に、雑にCVをいじるものだから求められる条件は緩い",
+  "pot_disposition": {
+    "nominal_ohm": 100000,
+    "reason": "Keep current/response unchanged; initial loaded knob law is not an accuracy failure.",
+    "ref": "RV1308",
+    "selected_mpn": "PTV09A-4020F-B104",
+    "stage25_B103_status": "SUPERSEDED_AS_UNNECESSARY_FOR_CURRENT_USE"
+  },
+  "precision_factory_calibration_required": false,
+  "precision_pitch_cv_service_claim": false,
+  "prescribed_voltage_at_knob_positions": false,
+  "removed_obligations": [
+    "close_2mV_complete_static_budget",
+    "precision_baseline_factory_protocol",
+    "precision_reference_replacement",
+    "spare_matched_inverter_rewire",
+    "lower_pot_impedance_for_precision",
+    "pitch_grade_AO_temperature_time_guarantee",
+    "precision_audio_center_null",
+    "independent_CV_gain_trim_for_2mV"
+  ],
+  "retained_checks": [
+    "electrical_safety",
+    "stable_operation",
+    "useful_control_range",
+    "noise_and_control_artifacts",
+    "clipping_headroom_and_recovery",
+    "sensible_loading",
+    "practical_settling",
+    "manufacturing_and_assembly"
+  ],
+  "retained_nominal_function": {
+    "equation": "OUT = gain * IN + manual_offset + OFFSET_CV",
+    "gain_range": [
+      -1,
+      1
+    ],
+    "input_V": [
+      -5,
+      5
+    ],
+    "internal_clip_indication_nominal_V": [
+      -10,
+      10
+    ],
+    "manual_offset_V": [
+      -5,
+      5
+    ],
+    "offset_cv_V": [
+      -5,
+      5
+    ],
+    "sum_extreme_V": [
+      -15,
+      15
+    ],
+    "sum_extreme_is_linear_output_promise": false
+  },
+  "retired_criteria": {
+    "precision_output_load_error_V": {
+      "authority": "Engineering interpretation of coarse utility scope: retire precision numeric load acceptance, retain loading and stability checks",
+      "current_limit": null,
+      "disposition": "NOT_APPLICABLE_CURRENT_AO_SCOPE",
+      "historical_value": 0.001,
+      "origin": "OSC-ES-1 associated precision load-change target"
+    },
+    "static_precision_error_V": {
+      "authority": "Explicit owner relaxation of blanket calibrated static precision",
+      "current_limit": null,
+      "disposition": "NOT_APPLICABLE_CURRENT_AO_SCOPE",
+      "historical_value": 0.002,
+      "origin": "OSC-ES-1 owner-delegated engineering proposal, not an original owner numeric requirement"
+    }
+  },
+  "schema_version": 1,
+  "scope_interpretation": "This override applies only to A01-A06 utility transfer. An upstream quantizer cannot repair downstream VCO tracking error; oscillator and all other precision contracts remain unchanged.",
+  "scope_modules": [
+    "A01",
+    "A02",
+    "A03",
+    "A04",
+    "A05",
+    "A06"
+  ],
+  "scope_paths": [
+    "IN through ATTEN to OUT",
+    "OFFSET CV jack to OUT",
+    "manual OFFSET to OUT"
+  ]
+}

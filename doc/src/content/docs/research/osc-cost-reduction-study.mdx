@@ -1,0 +1,200 @@
+---
+title: "OSC cost-reduction study"
+description: "Unadopted, priced alternatives for the ADG5412F input switches, the OPA4197/OPA4196 quads and the 14 non-stocked precision resistor values, with the spec rows each one changes."
+sidebar_position: 41
+---
+
+**UNADOPTED research.** This page selects no part. The standard, inventory, schematic, PCB and BOM are unchanged. No order, quote or fabrication file exists. The study is measured against HEAD 34063a00 with P59-A rev2 not applied.
+
+The machine-readable record is `design/readiness/cost-reduction-study.json`. `scripts/checks/cost_reduction_study.py` builds it from the read-only JLC search responses and TI datasheets retained in `.circuit-cache/sources/readiness-20261031/`, all retrieved 2026-10-31.
+
+Cost rules:
+
+- Unit cost uses the JLC tier that contains the per-unit quantity.
+- Lot cost uses the tier that contains five times that quantity.
+- Distributor rows give price and stock only. Electrical rows come from the cited manufacturer datasheet sections.
+
+## Research question
+
+| Field | Entry |
+|---|---|
+| Research ID | OSC-COST-20261031 |
+| Problem | The known part subtotal is $3232.47 per unit and $15453.96 per 5-unit lot (`bom-cost-evidence.json`). Three lines carry $2912.47 of it: ADG5412FBRUZ ×110, OPA4197IPWR ×89 and OPA4196IDR ×174. ADG5412FBRUZ JLC stock is 0 |
+| Requirements kept in view | Input-protection rows in [the electrical standard](../architecture/osc-electrical-standard.mdx); `roles` swap policy; `calibration` rows `static_precision_error_V` 0.002 and `octave_step_error_V` 0.002; 0.1 % `r_precision` class; PD contract headroom of 10.6 mA (+12 V) and 19 mA (−12 V) normal load before the next continuous step |
+| Decision this research informs | Which cost reductions go to the user and which can proceed as engineering work |
+
+## Classification rule
+
+| Class | Meaning |
+|---|---|
+| Engineering | Every spec row still holds. The change needs renewed checks, a footprint migration or a model rerun, and nothing else |
+| User decision | The change alters a recorded architecture decision, fails or relaxes a spec row, or changes the PD contract (that also needs PD agreement) |
+
+## 1. ADG5412FBRUZ: what the 110 placements do
+
+| Function | Placements per unit | Spec row |
+|---|---|---|
+| `input_fault_switch`: one per input jack, channel 1 only. The source faces the jack and the drain faces the local circuit; IN is held on from +5 V through 1 kΩ with a 100 kΩ pulldown | 98 | "Every input jack first meets an ADG5412FBRUZ **source** terminal"; a bare clamp to a supply rail is rejected |
+| Envelope `SLOPE_SELECT` (4 channels: REF9 or curve voltage to the rise/fall drives) | 6 | Internal selector. Not a jack-facing protection role |
+| Envelope `STORAGE_CLAMP` (2 channels used: hold clamp to REF8, reset of the storage capacitor) | 6 | Internal switch on the storage node; leakage matters |
+
+Per instance the input switches are: envelope 3, filter 4, mix5 5, mix4_vca 5, oscillator 4, offset 2, wavefolder 3, sample_hold 2, manual_ab 2 and mult 1. Each one is a quad carrying one channel.
+
+### Alternatives
+
+| ID | Proposal | Packages | Unit price | Per unit | Per lot | Stock | Ledger change (+12 / −12 V) | Rows it changes | Class |
+|---|---|---|---|---|---|---|---|---|---|
+| ADG-0 | HEAD | 110 | $13.5494 | $1490.43 | $7452.17 | **0** | — | — | baseline |
+| ADG-1 | Pack input channels into quads per module group, ADG5412F kept | 36 + 12 = 48 | $13.5494 | $650.37 | $3251.86 | **0** | −80.6 / −43.4 mA | No retained fact covers how a fault on one channel affects the others (UNKNOWN; the same gap P59-B recorded). Jack-locality floorplan fit NOT RUN. Stock 0 remains a blocker | engineering, gated by the cross-channel evidence gap |
+| ADG-2 | TMUX7412FRRPR, one per input, S toward the jack | 98 | $3.95 | $387.10 | $1777.96 | 512 | −68.6 / −19.6 mA | Switch identity in the standard. TSSOP-16 → WQFN-16 4×4 footprint. D pins are not overvoltage protected. Powered-off protection needs GND. Floating-rail leakage is typical only. protection58 and P59-A rev2 checks need a rerun | user decision |
+| ADG-3 | TMUX7412FRRPR, quad-packed as ADG-1 | 36 | $3.95 | $142.20 | $653.13 | 512 | −105.8 / −50.6 mA | All rows from ADG-1 and ADG-2 | user decision |
+| ADG-4 | Discrete series resistor plus BAT54S rail clamp, no switch | 0 | BAT54S,215 $0.0283 | under $6 | — | ample | removes switch IDD | **FAIL**: the standard rejects a bare clamp to a supply rail, because an incoming patch can energize an unpowered rail | user decision (reverses a recorded rejection) |
+
+Notes on the ledger column:
+
+- All ledger changes are CALCULATED. ADG figures use the 1.3 / 0.7 mA quad planning unit (`fact-fault-switch-normal-idd`, ±15 V table) used by the P59-B worksheets.
+- TMUX7412F figures use its IDD/ISS maximum of 0.6 / 0.5 mA at ±16.5 V (TI SCDS404B). The two sets of conditions are not the same.
+- Packing per module instance across groups gives the same 36 packages at HEAD.
+
+The 12 envelope internal switches can stay on ADG5412F or move to a non-fault-protected quad. Every row below has the same open items:
+
+- On-resistance, hold-node leakage and the ±12 V rating are UNKNOWN. No manufacturer datasheet for these parts is retained.
+- Pin-map compatibility with the ADG5412F TSSOP-16 land is UNKNOWN.
+
+| MPN | Package | Per unit (12) | Per lot | Stock |
+|---|---|---|---|---|
+| ADG5412FBRUZ (keep) | TSSOP-16 | $162.59 | $812.96 | **0** |
+| TMUX6112PWR | TSSOP-16 | $60.29 | $280.60 | 493 |
+| DG412DY (Renesas) | SOIC-16 | $25.08 | $125.39 | **0** |
+| ADG1412YRUZ | TSSOP-16 | $108.76 | $495.36 | **0** |
+
+## 2. Op-amp quads per role
+
+Package counts per unit are: precision OPA4197IPWR 89, audio/cv OPA4196IDR 141 and indicator OPA4196IDR 33. The indicator packages are LED_PACK, IND_PACK and magnitude_indicator.
+
+The Iq change applies to every section in a package, whether used or not: `packages × 4 × ΔIq(max over temperature)`. It falls equally on +12 V and −12 V.
+
+### Precision role (OPA4197IPWR, $974.20 per unit, $4525.78 per lot)
+
+| MPN | Package | VOS max at 25 °C | Iq max per amplifier | Per unit | Per lot | Δ per unit | Iq change | Rows it changes | Class |
+|---|---|---|---|---|---|---|---|---|---|
+| OPA4197IDR | SOIC-14 | 100 µV (same die and datasheet) | 1.5 mA | $219.14 | $967.21 | **−$755.06** | 0 | Role package TSSOP-14 → SOIC-14, an explicit footprint migration under `swap_policy`. Full-temperature IB improves from 15 to 5 nA (the 15 nA subrow is PW only). Board fit of the larger land NOT RUN | engineering |
+| OPA4192IDR | SOIC-14 | 25 µV (75 µV over temperature) | 1.5 mA | $216.22 | $989.86 | −$757.98 | 0 | Footprint migration as above. A different die needs renewed loop, stability and input-protection checks | engineering |
+| OPA4991IPWR | TSSOP-14 | 830 µV (850 µV over temperature) | 0.75 mA | $79.57 | $343.85 | −$894.63 | −267.0 mA | Same land; the exact pin map must be retained. One amplifier uses 42 % of the 2 mV static and octave-step rows, so paths with two or more untrimmed stages need a per-path stack. GBW is 4.5 MHz against 10 MHz | user decision |
+| OPA4171AIPWR | TSSOP-14 | 1.8 mV (2.0 mV over temperature) | 0.65 mA | $87.89 | $354.80 | −$886.31 | −302.6 mA | **FAIL**: a single amplifier consumes the 2 mV static and octave-step rows. Input range ends at (V+) − 2 V. GBW 3 MHz, SR 1.5 V/µs | user decision |
+
+Sources: OPA4197 is TI SBOS737C §6.7. OPA4192 is SBOS620E. OPA4991 is SBOS969F §6.7. OPA4171 is SBOS516H §5.7, printed page 8.
+
+### Audio, cv and indicator roles (OPA4196IDR, $447.84 per unit, $2124.97 per lot)
+
+OPA4196 is the lowest-Iq quad in the evidence set, at 0.25 mA maximum per amplifier. Every cheaper evidenced quad raises Iq, and the PD headroom is only 10.6 mA on +12 V.
+
+| Scope | MPN | Per unit | Δ per unit | Iq change per rail | Fits PD headroom | Other rows | Class |
+|---|---|---|---|---|---|---|---|
+| All 174 | TL074HIDR | $31.11 | −$416.73 | +612.5 mA | **no** | Renewed loop and headroom checks | user decision (PD contract change) |
+| All 174 | LM324DR | $22.86 | −$424.98 | +348.0 mA | **no** | VIO 7 mV max. Input range ends at VCC − 2 V over the full range | user decision |
+| All 174 | OPA4171AIDR | $168.41 | −$279.43 | +278.4 mA | **no** | Input range ends at (V+) − 2 V | user decision |
+| Indicator 33 | TL074HIDR | $8.46 | about −$76 | +116.2 mA | **no** | — | user decision |
+| Indicator 33 | LM324DR | $6.10 | about −$79 | +66.0 mA | **no** alone | — | user decision |
+| Indicator 33 | OPA4171AIDR | $38.92 | about −$46 | +52.8 mA | **no** alone | — | user decision |
+
+Sources: TL074H is SLOS080W §5.7 (Iq from `source-receipts.json`). LM324 is SLOS066AE §6.7, LM324 columns; ICC is 3 mA maximum for four amplifiers.
+
+The indicator Δ figures assume the remaining 141 OPA4196 stay in the 100–499 tier.
+
+The indicator swaps fit only when combined with a switch change that frees ledger current:
+
+- OPA4171AIDR fits with ADG-1: −12 V headroom becomes 19 + 43.4 − 52.8 = 9.6 mA.
+- LM324DR fits with ADG-3: −12 V headroom becomes 19 + 50.6 − 66.0 = 3.6 mA.
+
+The saving is at most about $79 per unit, so **keeping OPA4196IDR is recommended**.
+
+## 3. The 14 non-stocked precision values
+
+Error policy:
+
+- All 0.1 % thin-film choices keep the role's 0.1 % tolerance class. A series pair of two 0.1 % parts stays within 0.1 % worst case.
+- The column below is the **nominal** shift.
+- `r_general` choices are Yageo RC0603FR 1 % thick film. They move the role out of the `r_precision` class, and their tempco is not retained here.
+- None of the new values have a retained Yageo spec sheet yet. They are distributor identity only.
+
+| Value | Role ×qty | Proposal | Parts | Result (nominal) | Nominal shift | Added placements | Stock covers lot | Plan |
+|---|---|---|---|---|---|---|---|---|
+| 80k | R_REF9_FB ×6 | rescale RF 40 k / RG 50 k | 40K | REF9 9.0 V | 0 | 0 | yes | R-exact, R-min |
+| 80k | R_REF9_FB ×6 | nearest | 80K6 | 9.03 V | +0.333 % | 0 | yes | — |
+| 80k + 64k | R_BIP_PLUS_BOTTOM / TOP ×6 | rescale TOP 40 k / BOTTOM 50 k | 40K, 50K | BIP gain 1.25 | 0 | 0 | yes | R-exact, R-min |
+| 80k + 64k | same | nearest | 80K6 / 64K9 | gain 1.2541 / 1.2422 | +0.332 / −0.621 % | 0 | yes | — |
+| 400k | R_BIP_GROUND ×6 | nearest | 402K | gain 1.2493 | −0.055 % | 0 | yes | R-exact, R-min |
+| 400k | same | rescale REF/FB/GROUND 50 k / 50 k / 200 k | 50K, 200K | 1.25 | 0 | 0 | yes | — |
+| 80k | R_SAW_IN ×5 | series | 40K + 40K | SAW gain 1.25 | 0 | 5 | yes | R-exact |
+| 80k | same | nearest | 80K6 | 1.2407 | −0.744 % | 0 | yes | R-min |
+| 899k | R_RISE/FALL_DRIVE_TOP ×12 | series | 820K + 78K7 | 1/900 attenuation | +0.033 % | 12 | yes | R-exact |
+| 899k | same | nearest | 887K | — | +1.351 % | 0 | **no (stock 0)** | R-min |
+| 250k | R_PITCH_TUNE ×5 | series | 200K + 50K | TUNE span 2.0 V | 0 | 5 | yes | R-exact |
+| 250k | same | nearest | 249K | 2.008 V | +0.402 % | 0 | yes | R-min |
+| 250k | R_TRI_BIAS_TOP ×5 | series | 200K + 50K | TRI_BIAS 1.4286 V | 0 | 5 | yes | R-exact |
+| 250k | same | nearest | 249K | 1.4327 V | +0.287 % | 0 | yes | R-min |
+| 79k | R_FLOOR_TOP ×6 | series | 47K + 32K | FLOOR_REF 1.0891 V | 0 | 6 | yes | R-exact |
+| 79k | same | nearest | 78K7 | 1.0924 V | +0.298 % | 0 | yes | R-min |
+| 5.72k | R_RT ×5 | series | 5K1 + 620R | 5.72 kΩ | 0 | 5 | yes (620R stock 120) | R-exact |
+| 5.72k | same | nearest | 5K76 | 5.76 kΩ | +0.699 % | 0 | yes | R-min |
+| 25k | R_REF4_TOP ×5 | nearest | 24K9 | REF4 4.0032 V | +0.080 % | 0 | yes | R-exact, R-min |
+| 72k | R_PWM_FB ×5 | series | 40K + 32K | PWM scale 0.72 | 0 | 5 | yes | R-exact |
+| 72k | same | nearest | 71K5 | 0.715 | −0.694 % | 0 | yes | R-min |
+| 125k | R_SAW_BIAS_TOP ×5 | series | 75K + 50K | SAW_BIAS 2.2222 V | 0 | 5 | yes | R-exact |
+| 125k | same | nearest | 124K | 2.2321 V | +0.446 % | 0 | yes | R-min |
+| 1.2M | R_LINEAR_REFERENCE ×5 | series | 1M + 200K | 10.0 µA | 0 | 5 | yes | R-exact |
+| 1.2M | same | r_general | RC0603FR-071M2L | 10.0 µA, 1 % class | 0 | 0 | yes | R-min |
+| 1.8M | R_PWM_OFFSET ×5 | series | 1M + 820K | PWM offset 0.1978 V | −1.099 % | 5 | yes | R-exact |
+| 1.8M | same | r_general | RC0603FR-071M8L | 0.2 V, 1 % class | 0 | 0 | **no (stock 14)** | R-min |
+| 5M | R_PITCH_FINE ×5 | series | 5 × 1M | FINE span 0.1 V | 0 | 20 | yes | R-exact |
+| 5M | same | r_general | RC0603FR-075M1L | 0.098 V, 1 % class | −1.961 % | 0 | yes | R-min |
+| 70k | R_OUTPUT_RF ×2 | series | 20K + 50K | gain 8.0 | 0 | 2 | yes | R-exact |
+| 70k | same | nearest | 69K8 | 7.98 | −0.250 % | 0 | yes | R-min |
+
+Rescales that would put a lower total resistance on the shared LOCAL_REF5 node are listed in the JSON but kept out of both plans, because the LOCAL_REF5 load budget is not checked. These are the TRI_BIAS 50 k / 20 k, SAW_BIAS 50 k / 40 k and REF4 10 k / 40 k rescales.
+
+### Error-budget impact by role
+
+| Role | What the shift affects | Bound in the standard |
+|---|---|---|
+| REF9, BIP divider and gain, FLOOR_REF, DRIVE attenuation | Envelope references and the BIP = 1.25·ENV − 5 V mapping | `bipolar_envelope_equation`. Rescale and series options are exact. The 402k −0.055 % gain shift is −5.5 mV at ENV = 8 V |
+| R_RT, R_LINEAR_REFERENCE | AS3340 scale and linear reference inside trimmed networks | Pitch target of 5 cents after calibration. Whether the trims can absorb +0.70 % is UNKNOWN |
+| R_PITCH_TUNE, R_PITCH_FINE | Span of manual knobs only. The calibrated 1 V/oct path (PITCH 100 k) is untouched | No row bounds the knob span. The `pitch_resistor_tolerance_percent` scope for these resistors needs a user ruling before `r_general` |
+| R_SAW_IN, R_SAW_BIAS, R_TRI_BIAS, R_OUTPUT_RF | Audio amplitude and DC offset | `audio_nominal_V` ±5 V. No amplitude tolerance row exists. The worst R-min shift is −0.744 %, or 37 mV at 5 V |
+| R_PWM_FB, R_PWM_OFFSET, R_REF4 | PWM command and clamp reference (cv role) | None tighter than the clamp. The R-exact offset shift is −2.2 mV |
+
+### Plans
+
+| Plan | Per unit | Per lot | Added placements per unit | Worst nominal shift | Stock short of lot | Class |
+|---|---|---|---|---|---|---|
+| R-exact | $6.72 | $33.62 | 80 | −1.099 % (PWM offset) | none | Engineering. It adds schematic and PCB placements, so the #293 fill and DRC must rerun |
+| R-min | $2.68 | $13.38 | 0 | −1.961 % (FINE span) | 899k (887K stock 0), 1.8M thick film (stock 14) | User decision: it changes nominals beyond the 0.1 % class, and the 1 % parts change the passive class |
+
+## 4. Target per-unit part cost
+
+All totals are the known subtotal. The unpriced lines stay UNKNOWN: BAS16GW-QX ×464, WQP518MA ×180, APHHS1005QWF/D ×104, 2MS3T1B1M2QES, AS3340D, NOISE2, and the remaining capacitor groups.
+
+| Scenario | Content | Per unit | Per lot (per unit) | Class | ADG5412F stock-0 blocker |
+|---|---|---|---|---|---|
+| S0 | HEAD + R-exact | $3239.19 | $15487.58 ($3097.52) | engineering | yes |
+| S1b | OPA4197IDR + R-exact | $2484.13 | $11929.01 ($2385.80) | engineering (footprint migration) | yes |
+| S1 | ADG-1 + OPA4197IDR + R-exact | **$1644.07** | $7728.70 ($1545.74) | engineering, gated by the cross-channel evidence gap | yes |
+| S2c | ADG-2 + envelope on ADG5412F + OPA4197IDR + R-exact | $1543.39 | $7067.76 ($1413.55) | user decision | 12 envelope parts |
+| S2 | ADG-3 + envelope on ADG5412F + OPA4197IDR + R-exact | $1298.49 | $5942.93 ($1188.59) | user decision | 12 envelope parts |
+| S2b | ADG-3 + envelope on TMUX6112PWR + OPA4197IDR + R-exact | **$1196.19** | $5410.57 ($1082.11) | user decision plus the TMUX6112 evidence gap | none |
+
+OPA4991IPWR on the precision role would remove a further $139.57 per unit relative to OPA4197IDR. It is a user decision and is not in the scenarios.
+
+The OPA4196 alternatives are not in the scenarios: each one needs a PD contract change, for at most about $79 per unit when restricted to the indicator role.
+
+## Open gaps
+
+| Gap | Class |
+|---|---|
+| How a fault on one ADG5412F or TMUX7412F channel affects the other channels | access/evidence gap |
+| Jack-locality floorplan fit for packed switches and for the SOIC-14 precision land | technical uncertainty (model rerun NOT RUN) |
+| TMUX6112PWR, DG412DY and ADG1412YRUZ manufacturer datasheets: RON, hold-node leakage, rating, pin map | access/evidence gap |
+| Yageo spec sheets for the new RT0603 values and the RC0603 high values | access/evidence gap |
+| Whether the AS3340 trims absorb R_RT or R_LINEAR_REFERENCE shifts | technical uncertainty |
+| LOCAL_REF5 load budget, before any rescale on that node | technical uncertainty |

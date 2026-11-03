@@ -29,7 +29,7 @@ def sine_parts(parts):
                     p.symbol != LIBRARY + 'RT0603BRD07100KL' or set(p.pins) != {'1', '2'}):
                 raise ValueError(f'Unsupported sine resistor primitive: {role}')
         else:
-            if (p.prefix != 'U' or p.symbol not in (LIBRARY + 'OPA4196IDR', LIBRARY + 'OPA4197IPWR') or
+            if (p.prefix != 'U' or p.symbol not in (LIBRARY + 'OPA4196IDR', LIBRARY + 'OPA4197IPWR', LIBRARY + 'OPA4197IDR') or
                     p.unit not in (1, 2, 3, 4) or set(p.pins) != set(AMP_MAPS[p.unit - 1])):
                 raise ValueError(f'Unsupported sine amplifier primitive: {role}')
     return selected

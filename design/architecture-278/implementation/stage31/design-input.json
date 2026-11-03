@@ -1,0 +1,662 @@
+{
+  "status": "DESIGN_STUDY_INPUT_NOT_MEASURED",
+  "scope": "A01 J-SIG (7 conductors) and J-PWR (4 conductors) between A01-jack and A01-middle; common entry into the A01-middle carrier ring",
+  "parameters": {
+    "wire_od_mm": {
+      "value": 1.0,
+      "range": [
+        0.76,
+        1.0
+      ],
+      "class": "MAKER_SPEC_RANGE",
+      "source": ".claude/skills/component-jst-gh/facts.json#fact-gh-contact-rating",
+      "note": "JST eGH SSHL-002T-P0.2 applicable insulation OD. No wire MPN is selected (Stage28 Q-H02), so every envelope uses the upper end."
+    },
+    "awg_range": {
+      "value": [
+        30,
+        26
+      ],
+      "class": "MAKER_SPEC_RANGE",
+      "source": ".claude/skills/component-jst-gh/facts.json#fact-gh-contact-rating"
+    },
+    "mated_height_mm": {
+      "value": 7.3,
+      "class": "MAKER_SPEC_REFERENCE",
+      "source": ".claude/skills/component-jst-gh/facts.json#fact-gh7-housing-geometry",
+      "note": "Reference mated height. The housing exit sits this far from the board face."
+    },
+    "bend_radius_maker_value": {
+      "value": null,
+      "class": "UNKNOWN",
+      "source": ".claude/skills/component-jst-gh/facts.json#fact-gh7-header-assembly",
+      "note": "JST eGH states no bend radius; the wire maker must state it (Q-H01/Q-H02)."
+    },
+    "conductors": {
+      "J-SIG": 7,
+      "J-PWR": 4,
+      "class": "PROJECT_DATA",
+      "source": "design/architecture-278/implementation/stage28/harness-ledger.json"
+    },
+    "round_bundle_factor": {
+      "J-SIG": 3.0,
+      "J-PWR": 2.414213562373095,
+      "class": "DESIGN_MODEL",
+      "note": "Bundle diameter / OD for round conductors: 7 hexagonally packed = 3; 4 in a ring = 1 + sqrt 2 (Stage30)."
+    },
+    "flat_layer": {
+      "class": "DESIGN_MODEL",
+      "note": "FLAT_SINGLE_LAYER legs are modelled as n side-by-side round conductors one OD apart along the stated horizontal axis; the fan-out and gather transitions are not modelled."
+    },
+    "placement_margin_mm": {
+      "value": 0.5,
+      "class": "STAGE30_ASSUMPTION",
+      "note": "Allowance for wire placement and part tolerance; required surface clearance to every modelled keep-out and between the two cables."
+    },
+    "design_bend_radius_mm": {
+      "value": 5.0,
+      "class": "STAGE30_ASSUMPTION",
+      "note": "5 x OD, for comparison only. Each route also reports the largest uniform radius it admits."
+    },
+    "straight_lead_mm": {
+      "value": 2.0,
+      "class": "DESIGN_CHOICE",
+      "note": "Straight conductor length kept from each housing exit before the first bend; no maker value is retained."
+    },
+    "release_travel_mm": {
+      "value": 15,
+      "class": "STAGE10_PROPOSAL",
+      "source": "stage10 connector_release_sweeps scope: Mated7.3mm+15mm axial release"
+    },
+    "sweep_xy_margin_mm": {
+      "value": 2.0,
+      "class": "STAGE10_PROPOSAL",
+      "source": "stage10 connector_release_sweeps scope: 2mm latch/tool XY margin proposal"
+    },
+    "service_slack_mm": {
+      "value": 10,
+      "class": "STAGE10_PROPOSAL",
+      "source": "Stage10 minimum proxy slack rule for GH cuts (Stage30 route-input)"
+    },
+    "stage10_cut_mm": {
+      "value": [
+        90,
+        3
+      ],
+      "class": "STAGE10_PROPOSAL",
+      "note": "Compared only; not a requirement. Stage31 lengths are design lengths, never cut lengths."
+    },
+    "component_body_height_mm": {
+      "value": 3.0,
+      "class": "STAGE30_ASSUMPTION",
+      "note": "Envelope for A01-jack rear SMD parts. The nearby R0603/C0603 parts have no height in the retained evidence (component-passives-family facts carry no dimensions)."
+    },
+    "foreign_depth": {
+      "value": null,
+      "class": "UNKNOWN",
+      "note": "The Stage30 cap (z 34) is dropped. Each route reports, per foreign part under it, the highest top z that part may reach; that is a requirement, not an assumption.",
+      "sources": [
+        ".claude/skills/component-qingpu-wqp518ma/facts.json#fact-wqp-panel-stack",
+        ".claude/skills/component-dailywell-2ms1t1b1m2qes-5/facts.json#fact-2ms1-panel-fit"
+      ]
+    },
+    "foreign_depth_search_top_z_mm": {
+      "value": 48.4,
+      "class": "DESIGN_MODEL",
+      "note": "Foreign-depth volumes are searched up to the A01-middle front face."
+    },
+    "foreign_pcb_rear_z_mm": {
+      "value": 21.6,
+      "class": "STAGE10_CONDITIONAL",
+      "source": "design/grid/placements.lock.json default assembly PCB z -20 plus 1.6 mm (assembly.locked_hardware)"
+    },
+    "rail_section_mm": {
+      "width": 6,
+      "depth": 12,
+      "class": "STAGE10_PROPOSAL",
+      "source": "stage10 carrier_frames.middle rails_boxes_mm / z_mm"
+    },
+    "foreign_depth_cap_reference_mm": {
+      "value": 34,
+      "class": "STAGE30_ASSUMPTION",
+      "note": "Used only as the K3 comparison reference (12.4 mm rear-side height above z 21.6); no route relies on it."
+    },
+    "robust_spare_mm": {
+      "value": 0.15,
+      "class": "DESIGN_CHOICE",
+      "note": "K4: smallest spare beyond the placement margin (after the 0.1 mm sampling deduction) a candidate should keep."
+    },
+    "notch_allowance_mm": {
+      "value": 0.3,
+      "class": "DESIGN_CHOICE",
+      "note": "Each proposed notch is the window and depth the route envelope needs (margin included), widened and deepened by 0.3 mm (0.1 mm sampling deduction plus the K4 spare) and rounded outward to 0.1 mm."
+    }
+  },
+  "candidates": [
+    {
+      "id": "A",
+      "title": "Headers kept; two shallow notches in the middle carrier left rail",
+      "header_moves": {},
+      "rail_reliefs": [
+        {
+          "id": "N1",
+          "obstacle": "rail:middle:0",
+          "y_mm": [
+            162.1,
+            166.7
+          ],
+          "relieved_top_z_mm": 43.7,
+          "status": "PROPOSAL_NOT_ADOPTED",
+          "link": "J-SIG"
+        },
+        {
+          "id": "N2",
+          "obstacle": "rail:middle:0",
+          "y_mm": [
+            180.9,
+            185.1
+          ],
+          "relieved_top_z_mm": 44.2,
+          "status": "PROPOSAL_NOT_ADOPTED",
+          "link": "J-PWR"
+        }
+      ],
+      "routes": {
+        "J-SIG": {
+          "dressing": "ROUND_BUNDLE",
+          "waypoints_mm": [
+            [
+              210,
+              173,
+              56.4
+            ],
+            [
+              216,
+              164.4,
+              56.4
+            ],
+            [
+              216,
+              164.4,
+              46.0
+            ],
+            [
+              253.5,
+              164.4,
+              46.0
+            ],
+            [
+              260,
+              160.5,
+              46.0
+            ],
+            [
+              260,
+              160.5,
+              34.1
+            ],
+            [
+              260,
+              150,
+              34.1
+            ]
+          ]
+        },
+        "J-PWR": {
+          "dressing": "ROUND_BUNDLE",
+          "waypoints_mm": [
+            [
+              226,
+              173,
+              56.5
+            ],
+            [
+              226,
+              183,
+              56.5
+            ],
+            [
+              226,
+              183,
+              46.3
+            ],
+            [
+              251,
+              183,
+              46.3
+            ],
+            [
+              270,
+              170,
+              46.3
+            ],
+            [
+              283,
+              163,
+              46.3
+            ],
+            [
+              283,
+              163,
+              34.1
+            ],
+            [
+              283,
+              150,
+              34.1
+            ]
+          ]
+        }
+      },
+      "retention": [
+        {
+          "id": "R1",
+          "link": "J-SIG",
+          "at": "notch N1 floor",
+          "kind": "saddle in the notch with a strap or tie over the bundle; strap anchorage formed in the rail flank (local carrier shape)",
+          "dimensions_mm": null,
+          "status": "PROPOSAL_NOT_ADOPTED"
+        },
+        {
+          "id": "R2",
+          "link": "J-PWR",
+          "at": "notch N2 floor",
+          "kind": "saddle in the notch with a strap or tie over the bundle; strap anchorage formed in the rail flank (local carrier shape)",
+          "dimensions_mm": null,
+          "status": "PROPOSAL_NOT_ADOPTED"
+        }
+      ],
+      "assembly": [
+        "Fit the jack carrier, A01-jack, the middle carrier and A01-middle as in Stage10.",
+        "Mate the GHR housings into J-SIG:middle and J-PWR:middle along -z to +z from the panel side, with the front panel off.",
+        "Lay each bundle over its notch saddle and fit R1/R2.",
+        "Form the free loop at the local end and mate J-SIG:local and J-PWR:local from the rear, left of the A01-middle edge (x < 232).",
+        "Fit the core onto the DIN connector and connect K-PWR last. Service: disconnect K-PWR, then withdraw the core 40 mm; J-SIG and J-PWR are not touched."
+      ],
+      "comparison_axes": {
+        "headers": "unchanged",
+        "rail": "two top notches",
+        "dressing": "round bundles"
+      }
+    },
+    {
+      "id": "B",
+      "title": "Middle headers moved into the clear strip and turned 90 degrees; two shallow notches",
+      "header_moves": {
+        "A01:J-SIG:middle": {
+          "origin_mm": [
+            268.0,
+            171.5
+          ],
+          "rotation_deg": 90
+        },
+        "A01:J-PWR:middle": {
+          "origin_mm": [
+            288.0,
+            174.7
+          ],
+          "rotation_deg": 90
+        }
+      },
+      "rail_reliefs": [
+        {
+          "id": "N1",
+          "obstacle": "rail:middle:0",
+          "y_mm": [
+            168.6,
+            173.8
+          ],
+          "relieved_top_z_mm": 43.7,
+          "status": "PROPOSAL_NOT_ADOPTED",
+          "link": "J-SIG"
+        },
+        {
+          "id": "N2",
+          "obstacle": "rail:middle:0",
+          "y_mm": [
+            180.9,
+            185.1
+          ],
+          "relieved_top_z_mm": 44.2,
+          "status": "PROPOSAL_NOT_ADOPTED",
+          "link": "J-PWR"
+        }
+      ],
+      "routes": {
+        "J-SIG": {
+          "dressing": "ROUND_BUNDLE",
+          "waypoints_mm": [
+            [
+              210,
+              173,
+              56.4
+            ],
+            [
+              216,
+              164.4,
+              56.4
+            ],
+            [
+              216,
+              164.4,
+              46.0
+            ],
+            [
+              234,
+              164.4,
+              46.0
+            ],
+            [
+              240,
+              171.5,
+              46.0
+            ],
+            [
+              258,
+              171.5,
+              46.0
+            ],
+            [
+              258,
+              171.5,
+              34.1
+            ],
+            [
+              268,
+              171.5,
+              34.1
+            ]
+          ]
+        },
+        "J-PWR": {
+          "dressing": "ROUND_BUNDLE",
+          "waypoints_mm": [
+            [
+              226,
+              173,
+              56.5
+            ],
+            [
+              226,
+              183,
+              56.5
+            ],
+            [
+              226,
+              183,
+              46.3
+            ],
+            [
+              272,
+              183,
+              46.3
+            ],
+            [
+              278,
+              174.7,
+              46.3
+            ],
+            [
+              278,
+              174.7,
+              34.1
+            ],
+            [
+              288,
+              174.7,
+              34.1
+            ]
+          ]
+        }
+      },
+      "retention": [
+        {
+          "id": "R1",
+          "link": "J-SIG",
+          "at": "notch N1 floor",
+          "kind": "saddle in the notch with a strap or tie over the bundle; strap anchorage formed in the rail flank (local carrier shape)",
+          "dimensions_mm": null,
+          "status": "PROPOSAL_NOT_ADOPTED"
+        },
+        {
+          "id": "R2",
+          "link": "J-PWR",
+          "at": "notch N2 floor",
+          "kind": "saddle in the notch with a strap or tie over the bundle; strap anchorage formed in the rail flank (local carrier shape)",
+          "dimensions_mm": null,
+          "status": "PROPOSAL_NOT_ADOPTED"
+        }
+      ],
+      "assembly": [
+        "Fit the jack carrier, A01-jack, the middle carrier and A01-middle as in Stage10.",
+        "Mate the GHR housings into J-SIG:middle and J-PWR:middle along -z to +z from the panel side, with the front panel off.",
+        "Lay each bundle over its notch saddle and fit R1/R2.",
+        "Form the free loop at the local end and mate J-SIG:local and J-PWR:local from the rear, left of the A01-middle edge (x < 232).",
+        "Fit the core onto the DIN connector and connect K-PWR last. Service: disconnect K-PWR, then withdraw the core 40 mm; J-SIG and J-PWR are not touched."
+      ],
+      "comparison_axes": {
+        "headers": "J-SIG:middle and J-PWR:middle moved and turned 90 degrees (pin rows along y)",
+        "rail": "two top notches",
+        "dressing": "round bundles"
+      }
+    },
+    {
+      "id": "C",
+      "title": "Middle headers translated; flat single-layer conductors through the existing 2.4 mm slot, rail unchanged",
+      "header_moves": {
+        "A01:J-SIG:middle": {
+          "origin_mm": [
+            265.0,
+            165.0
+          ],
+          "rotation_deg": 0
+        },
+        "A01:J-PWR:middle": {
+          "origin_mm": [
+            283.0,
+            174.2
+          ],
+          "rotation_deg": 0
+        }
+      },
+      "rail_reliefs": [],
+      "routes": {
+        "J-SIG": {
+          "dressing": "FLAT_SINGLE_LAYER",
+          "flat": {
+            "legs": [
+              3,
+              4
+            ],
+            "axis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "waypoints_mm": [
+            [
+              210,
+              173,
+              57.6
+            ],
+            [
+              217.5,
+              165.6,
+              57.6
+            ],
+            [
+              217.5,
+              165.6,
+              47.2
+            ],
+            [
+              255.0,
+              165.6,
+              47.2
+            ],
+            [
+              255.0,
+              165.6,
+              34.1
+            ],
+            [
+              265.0,
+              165.0,
+              34.1
+            ]
+          ]
+        },
+        "J-PWR": {
+          "dressing": "FLAT_SINGLE_LAYER",
+          "flat": {
+            "legs": [
+              3,
+              4
+            ],
+            "axis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "waypoints_mm": [
+            [
+              226,
+              173,
+              57.6
+            ],
+            [
+              223,
+              183.8,
+              57.6
+            ],
+            [
+              223,
+              183.8,
+              47.2
+            ],
+            [
+              251,
+              183.8,
+              47.2
+            ],
+            [
+              259,
+              183.8,
+              41.0
+            ],
+            [
+              268,
+              174.2,
+              41.0
+            ],
+            [
+              274,
+              174.2,
+              34.1
+            ],
+            [
+              283,
+              174.2,
+              34.1
+            ]
+          ]
+        }
+      },
+      "retention": [
+        {
+          "id": "R1",
+          "link": "J-SIG",
+          "at": "slot over rail:middle:0 at y 165.6",
+          "kind": "comb or lacing that keeps one layer, on a low-friction liner bonded to the rail top",
+          "dimensions_mm": null,
+          "status": "PROPOSAL_NOT_ADOPTED"
+        },
+        {
+          "id": "R2",
+          "link": "J-PWR",
+          "at": "slot over rail:middle:0 at y 183.8",
+          "kind": "comb or lacing that keeps one layer, on a low-friction liner bonded to the rail top",
+          "dimensions_mm": null,
+          "status": "PROPOSAL_NOT_ADOPTED"
+        }
+      ],
+      "assembly": [
+        "Fit the jack carrier, A01-jack, the middle carrier and A01-middle as in Stage10.",
+        "Mate the GHR housings into J-SIG:middle and J-PWR:middle along -z to +z from the panel side, with the front panel off.",
+        "Fan each bundle out into one layer before the A01-middle edge, slide it through the slot over the rail with the liner and comb, and gather it again inside the ring.",
+        "Form the free loop at the local end and mate J-SIG:local and J-PWR:local from the rear, left of the A01-middle edge (x < 232).",
+        "Fit the core onto the DIN connector and connect K-PWR last. Service: disconnect K-PWR, then withdraw the core 40 mm; J-SIG and J-PWR are not touched."
+      ],
+      "comparison_axes": {
+        "headers": "J-SIG:middle and J-PWR:middle translated, not turned",
+        "rail": "unchanged",
+        "dressing": "flat single layer through the slot, round elsewhere"
+      }
+    }
+  ],
+  "recommendation": {
+    "id": "B",
+    "criteria": {
+      "K1": "every modelled check passes: routes clear every known keep-out and the other cable by the placement margin, all bends fit at the design radius, moved sweeps clear all known obstacles",
+      "K2": "all four release sweeps lie outside every foreign XY projection",
+      "K3": "no route needs a foreign rear-side height below 12.4 mm (the Stage30 cap, z 34, above the foreign PCB rear z 21.6)",
+      "K4": "the tightest spare beyond the placement margin is at least 0.15 mm"
+    },
+    "threshold_class": "DESIGN_CHOICE",
+    "rationale": [
+      "B is the only candidate meeting K1-K4.",
+      "Moving J-SIG:middle and J-PWR:middle into the strip between the J*10 jacks and the SW*01 switches and turning them 90 degrees keeps both release sweeps at least 0.5 mm from every foreign XY projection and known obstacle; at the Stage10 positions both sweeps overlap J1510/J1610/J1710.",
+      "With the pin rows along y, each hook bends about the pin-row axis, so all conductors of a cable bend with the same radius.",
+      "The notch depth can grow if a later check needs more clearance; C has no such freedom inside the 2.4 mm slot."
+    ]
+  },
+  "pre_prototype_measurements": [
+    {
+      "id": "M31-01",
+      "item": "Wire MPN, insulation OD and dressed bundle diameter for 4 and 7 conductors",
+      "why": "every envelope uses OD 1.0 and packing factors 2.414 / 3.0"
+    },
+    {
+      "id": "M31-02",
+      "item": "Wire maker minimum static bend radius",
+      "why": "the routes use 5 mm; each route reports the largest radius it admits"
+    },
+    {
+      "id": "M31-03",
+      "item": "Straight length needed behind the GHR housing before a bend",
+      "why": "2 mm is a design choice; JST states none"
+    },
+    {
+      "id": "M31-04",
+      "item": "Actual stack heights: A01-jack rear face, A01-middle front face, middle carrier rail top/front, mount spacer and screw-head heights",
+      "why": "the corridor under A01-middle and the notch floors are sized from Stage10 planning z values"
+    },
+    {
+      "id": "M31-05",
+      "item": "Rear-side height of the foreign parts each route passes over (bounds in candidates.json)",
+      "why": "foreign depth is unknown; the route is only clear below the reported bound"
+    },
+    {
+      "id": "M31-06",
+      "item": "Middle carrier rail stiffness and strength with the notches, with notch edge radius and finish",
+      "why": "rail strength after the notch is NOT_CALCULATED"
+    },
+    {
+      "id": "M31-07",
+      "item": "GH unmating travel and release from the panel side at the moved middle headers: latch access, axial pull, finger/tool space and the space the cable needs below the hook while the housing is withdrawn",
+      "why": "the Stage10 15 mm release makes the hook dip to about z 17.6, through the foreign PCB plane whose outline is unknown"
+    },
+    {
+      "id": "M31-08",
+      "item": "Mock-up path length per cable, including the free loop at the local end and the release cases (M-09)",
+      "why": "design lengths are not cut lengths"
+    },
+    {
+      "id": "M31-09",
+      "item": "Strap/tie geometry for the notch saddles and the pull load they take (M-12)",
+      "why": "retention dimensions are null"
+    }
+  ]
+}

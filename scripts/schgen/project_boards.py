@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from design.spec.instrument import specification
 from design.spec.cells._builder import load_symbol
+from design.spec.modules.io_partition import base_family
 from scripts.schgen.core import Family, Instance, LibrarySymbol, Part, designator, render
 
 FIXTURES = {'LM2902', 'LM2903', 'R', 'Conn_01x02', 'PWR_FLAG', 'GND', 'VCC'}
@@ -92,7 +93,7 @@ def project(partition=None):
             slices[board].append(replace(part, pins=pins, panel_ref=ref, panel_refs={}, attributes=attrs))
         for board, parts in slices.items():
             board_id = short_to_id[board]
-            name = f'{source_family.name}_{inst.name}_{board}'
+            name = f'{base_family(source_family.name)}_{inst.name}_{board}'
             all_nets = sorted({n for part in parts for n in part.pins.values() if n is not None})
             families[board_id].append(Family(name, tuple(parts), tuple(all_nets), (), source_family.paper))
             instances[board_id].append(Instance(name, inst.name, inst.index))

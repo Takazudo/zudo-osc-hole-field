@@ -1,0 +1,25 @@
+# Stage40 work and verification receipt
+
+Task: improve repeated Stage39A mult-cell bypass/feedback locality and derive an exact copper integration plan from current native JL bytes, without canonical changes. Baseline ab4193cf6b769bda0b86ff45656cbe71db2c1d39 freshly matched draft PR287; latest Issue278 report and PR description read. Existing workspace/bootstrap/repository/circuit workflow applies; portable bootstrap already consumed, not repeated. Stage38/39 results remain immutable. Parent286 and foreign families untouched.
+
+Before edits `pnpm circuit:check` PASS: manual68-line inventory, no schematic/placement binding, pin-asset check performed. Explicit source-only/canonical-preservation instruction overrides generic native-regeneration-at-start rule. Independent reviewer assigned native ownership/copper audit before implementation; no duplicate implementation active.
+
+First findings retained: native audit found 16 Stage39 footprint conflicts against actual native connectors/test points absent from the earlier report-only placement screen. Initial all-rear packing failed at U3101; a bounded 90-construction all-rear search found no complete candidate. Mixed-face 90/400-construction candidates improved Stage39 bypass distances but regressed current-native bypass locality and were rejected as the final proposal. A 1,600-construction rigid-native-bypass search in the original bottom region also found no complete candidate; this is bounded search failure, not a continuous impossibility proof. The widened Y118.5..163.5 region retains all native foreign placement and fixed front parts.
+
+Independent early review identified the terminal-only MST mislabeled as a route lower bound, missing inverse net alias/global rail checks, and rectangular courtyard corner handling under nonorthogonal rotation. All three corrected before final review; regression tests cover them. No native or physical results invented.
+
+ All generated artifacts are additive source plans, not a modified native board or routed candidate. No physical or native qualification claimed.
+
+Commands completed: `pnpm check`; before/after `pnpm circuit:check`; `python3 [-O] -m unittest discover -s scripts/checks -p test_mult_substrate_comparison.py` (8 tests each); historical `architecture_history.verify_binding` over all seven checkpoints/eight modules in normal and optimized Python. All PASS. The local historical suite was not replayed in full; exact-head CI supplies the established bounded full workflow.
+
+Final bounded search: NumPy2.3.5 seed40,1,600 constructions and up to8 coordinate-descent sweeps. Native IC/bypass clusters preserved. Bypass sum87.096271→14.85mm, feedback terminal-MST proxy68.607885→20.376686mm; native B1/B2 feedback53.404402/44.426699mm. 62 proposed moves,1,609private copper objects,31,816preserved,32shared old-pad contacts and23new-pad clearance review candidates. No shared-branch connectivity resolution claimed.
+
+First focused test run: 8 tests, one deterministic-report failure because in-memory feedback endpoints were tuples while JSON deserialized as lists. Generator now emits lists directly; assertions were not relaxed. Final normal/optimized rerun follows below. SVG rendered with installed Playwright/Chromium via `page.set_content` and inspected; labels/text fit, overlaid front/rear faces are color-coded. Search author dependency is not required by CI.
+
+Final `python3 -m unittest discover -s scripts/checks -p test_mult_copper_plan.py`: **8 PASS**,5.119s. Final `python3 -O -m unittest discover -s scripts/checks -p test_mult_copper_plan.py`: **8 PASS**,6.397s. Coverage includes deterministic JSON/SVG/source bindings, full native occurrence counts, ownership/private/shared boundary, fixed/+34mm geometry, retained bypass clusters/locality, zone definitions/nonqualification, duplicate UUID/quoted parser fixtures, inverse alias/rail mutations, nonorthogonal rectangle corners and unsupported arc/pad rejection. `git diff --check` PASS. No canonical or historical tracked file changed.
+
+Not run locally: KiCad regeneration, routing, ERC/DRC, native connectivity, aggregate regeneration, full historical replay, mechanical/optical/electrical physical verification. Exact-head existing CI will be monitored to terminal status after reviewed normal push; its result is posted in the existing Issue278 report and PR287 description without rewriting this receipt's precommit status. Hardware remains unqualified regardless of CI.
+
+Final reviewer additionally requested a fail-closed cell-region guard: proposed courtyards must remain within the region used to query native obstacles. Added explicit generator rejection and independent test assertion before final re-review. Reviewer also checked all pairwise pad distances in each rigid IC/two-capacitor cluster, not only the six summary bypass distances.
+
+After the final region-guard edit and regeneration, focused normal **8 PASS** (6.263s) and optimized **8 PASS** (4.599s). This supersedes the earlier timings. Independent final review follows these final substantive bytes.

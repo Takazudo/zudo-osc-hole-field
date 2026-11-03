@@ -125,6 +125,107 @@
       "verdict": "NEEDS BENCH",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-forward-current-absolute",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "IF_mA": 200,
+        "IFRM_mA": 300,
+        "IFSM_mA": 600
+      },
+      "unit": "mA",
+      "conditions": "Limiting values per diode: IF 200 mA at Tamb = 25 C; IFRM 300 mA at tp <= 1 s, duty <= 0.5; IFSM 600 mA at tp < 10 ms, Tj(init) = 25 C. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-clamp-diode-datasheet: physical PDF p.1, printed 2/9, Table 5 Limiting values, IF/IFRM/IFSM rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-forward-voltage",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "at_0p1mA_max_mV": 240,
+        "at_1mA_max_mV": 320,
+        "at_10mA_max_mV": 400,
+        "at_30mA_max_mV": 500,
+        "at_100mA_max_mV": 800
+      },
+      "unit": "mV",
+      "conditions": "Maximum VF per diode, pulsed tp <= 300 us, duty <= 0.02, Tamb = 25 C only; no minimum and no temperature range given.",
+      "locator": "src-clamp-diode-datasheet: physical PDF p.2, printed 3/9, Table 7 Characteristics, VF rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-reverse-current",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "max_uA": 2,
+        "VR_V": 25
+      },
+      "unit": "uA",
+      "conditions": "Maximum IR per diode at VR = 25 V, pulsed tp <= 300 us, duty <= 0.02, Tamb = 25 C only.",
+      "locator": "Section/table audit: src-clamp-diode-datasheet physical PDF page index 2, printed 3/9, Table 7 Characteristics, IR row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-power-thermal",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "Ptot_mW": 250,
+        "Tj_max_C": 150,
+        "Rth_ja_K_per_W": 500
+      },
+      "unit": "mW, C and K/W",
+      "conditions": "Ptot 250 mW at Tamb <= 25 C on single-sided FR4 with standard footprint (note 1); Tj 150 C; Rth(j-a) 500 K/W. Note on Schottky thermal runaway from reverse losses applies. Absolute maximum stress rating, not an operating condition.",
+      "locator": "Section/table audit: src-clamp-diode-datasheet physical PDF page index 1, printed 2/9, Table 5 Limiting values Ptot/Tj rows and Table 6 Thermal characteristics Rth(j-a) row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-forward-voltage-temperature",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "TYPICAL_CURVE",
+      "value": "Fig. 1 gives typical IF versus VF at Tamb = 125, 85 and 25 C only. No VF maximum exists at any temperature other than 25 C, and no curve below 25 C is given.",
+      "unit": "NONE",
+      "conditions": "Typical curves only; they do not bound VF over temperature.",
+      "locator": "Section/table audit: src-clamp-diode-datasheet physical PDF page index 2, printed 3/9, Fig. 1 Forward current as a function of forward voltage; typical values",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-reverse-current-temperature",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "TYPICAL_CURVE",
+      "value": "Fig. 2 gives typical IR versus VR (0..30 V) at Tamb = 125, 85 and 25 C only. Approximate project readings of the typical curves: 25 C about 0.3 uA at 1 V rising to about 1.5..2 uA at 30 V; 85 C about 15..20 uA at 1 V rising to about 60 uA at 30 V; 125 C about 200..500 uA. The only maximum is Table 7, 2 uA at VR = 25 V and 25 C.",
+      "unit": "NONE",
+      "conditions": "Typical curves only, log scale, readings approximate; they do not bound IR at any temperature other than the 25 C, 25 V table row.",
+      "locator": "Section/table audit: src-clamp-diode-datasheet physical PDF page index 2, printed 3/9, Fig. 2 Reverse current as a function of reverse voltage; typical values",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

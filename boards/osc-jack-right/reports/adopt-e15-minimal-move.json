@@ -1,0 +1,160 @@
+{
+ "schema_version": 1,
+ "board": "osc-jack-right",
+ "status": "UNVALIDATED DRAFT; decision E15 minimal-move layout pass",
+ "placement_source": {
+  "floorplan": "design/partition/floorplan-candidate.json",
+  "pins": "design/partition/adopted-placement-pins.json",
+  "tssop_retention": "design/partition/precision-tssop-retention.json"
+ },
+ "rip_up": {
+  "tool": "scripts/pcbgen/adopt_minimal_move.py",
+  "old_pcb_commit": "eea8b18c69035e754f0346da95beea217e78d09d",
+  "footprints_moved_to_origin": 86,
+  "moved_swapped_or_added": 129,
+  "removed_signal_items": 8583,
+  "removed_plane_items_near_moved": 693,
+  "affected_signal_nets": 129,
+  "ripped_signal_nets_total": 225,
+  "note": "Signal nets on moved, swapped or added pads ripped whole; plane copper only inside old/new courtyards +0.3 mm; then copper in DRC copper errors and dangling remnants on ripped nets (partial signal nets ripped whole)."
+ },
+ "routing": {
+  "grid_router": "scripts/pcbgen/route_jack_grid.py stage code and promotion gates (rails, signals-local, 12-net batches with rejected batches set aside). Whole-board negotiate, region, rip-up-and-reroute and repair stages not run: unaffected copper unchanged.",
+  "stages": {
+   "rail-fanout": {
+    "adopted": true,
+    "open_edges_before": 751,
+    "open_edges_after": 622
+   },
+   "rail-links": {
+    "adopted": false,
+    "open_edges_before": 622,
+    "open_edges_after": 592
+   },
+   "rail-escapes": {
+    "adopted": true,
+    "open_edges_before": 622,
+    "open_edges_after": 502
+   }
+  },
+  "signal_batches": [
+   {
+    "stage": "adopt-e15-signals-01",
+    "adopted": true,
+    "open_edges_before": 497,
+    "open_edges_after": 477,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-02",
+    "adopted": true,
+    "open_edges_before": 477,
+    "open_edges_after": 457,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-03",
+    "adopted": true,
+    "open_edges_before": 457,
+    "open_edges_after": 436,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-04",
+    "adopted": false,
+    "open_edges_before": 436,
+    "open_edges_after": 416,
+    "rejection_reason": "connected_pad_group_split"
+   },
+   {
+    "stage": "adopt-e15-signals-05",
+    "adopted": true,
+    "open_edges_before": 436,
+    "open_edges_after": 421,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-06",
+    "adopted": true,
+    "open_edges_before": 421,
+    "open_edges_after": 404,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-07",
+    "adopted": true,
+    "open_edges_before": 404,
+    "open_edges_after": 389,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-08",
+    "adopted": false,
+    "open_edges_before": 389,
+    "open_edges_after": 382,
+    "rejection_reason": "connected_pad_group_split"
+   },
+   {
+    "stage": "adopt-e15-signals-09",
+    "adopted": false,
+    "open_edges_before": 389,
+    "open_edges_after": 371,
+    "rejection_reason": "connected_pad_group_split"
+   },
+   {
+    "stage": "adopt-e15-signals-10",
+    "adopted": false,
+    "open_edges_before": 389,
+    "open_edges_after": 370,
+    "rejection_reason": "connected_pad_group_split"
+   },
+   {
+    "stage": "adopt-e15-signals-11",
+    "adopted": false,
+    "open_edges_before": 389,
+    "open_edges_after": 370,
+    "rejection_reason": "connected_pad_group_split"
+   },
+   {
+    "stage": "adopt-e15-signals-12",
+    "adopted": true,
+    "open_edges_before": 389,
+    "open_edges_after": 368,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-13",
+    "adopted": false,
+    "open_edges_before": 368,
+    "open_edges_after": 355,
+    "rejection_reason": "connected_pad_group_split"
+   }
+  ]
+ },
+ "final": {
+  "kicad_version": "10.0.6",
+  "board_sha256": "389f5c75b9d5c85a38870460e9e775a29bebcb6389871a5dc454540d03035555",
+  "drc_errors": 0,
+  "drc_warnings": 478,
+  "schematic_parity": 0,
+  "drc_unconnected": 368,
+  "native_open_edges": 368,
+  "native_open_edges_affected_signal": 264,
+  "native_open_edges_plane": 8,
+  "native_open_edges_unaffected": 96,
+  "unaffected_nets_worse_than_baseline": []
+ },
+ "baseline": {
+  "commit": "eea8b18c69035e754f0346da95beea217e78d09d",
+  "drc_errors": 0,
+  "native_open_edges": 162,
+  "native_open_edges_affected_signal": 11,
+  "native_open_edges_plane": 34,
+  "native_open_edges_unaffected": 117
+ },
+ "acceptance": {
+  "rule": "parity 0, DRC errors 0, unconnected <= pre-adoption baseline + open edges of affected (ripped) nets left unrouted",
+  "limit": 434,
+  "result": "PASS"
+ }
+}

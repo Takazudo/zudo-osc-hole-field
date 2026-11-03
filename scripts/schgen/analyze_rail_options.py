@@ -19,7 +19,7 @@ def build():
     loads={x['id']:x for x in standard['loads']}
     placements=json.loads((ROOT/'design/grid/placements.lock.json').read_text())['placements']
     lamps=Counter(x['uid'].split('.')[-1] for x in placements if x['uid'].startswith('L:'))
-    n_precision=stats['IC_count_by_part']['OPA4197IPWR']
+    n_precision=stats['IC_count_by_part'].get('OPA4197IPWR',0)+stats['IC_count_by_part'].get('OPA4197IDR',0)
     n_dc=stats['components_by_type']['PTV09A-4020F-B104']
     iq_precision=loads['opamp_precision']['planning_unit_mA']['-12V']
     iq_replacement=loads['opamp_audio']['planning_unit_mA']['-12V']

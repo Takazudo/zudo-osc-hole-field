@@ -4,11 +4,11 @@
   "authority": "PROPOSAL (planning, owner-delegated)",
   "status": "Captured current planning; not a guaranteed maximum or hardware measurement",
   "IC_packages_per_instance": {
-    "ADG5412FBRUZ": 3,
     "LM13700M_NOPB": 1,
     "OPA4196IDR": 7,
-    "OPA4197IPWR": 1,
-    "REF5050AIDR": 1
+    "OPA4197IDR": 1,
+    "REF5050AIDR": 1,
+    "TMUX7412FRRPR": 3
   },
   "breakdown": [
     {
@@ -27,7 +27,7 @@
       "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
     },
     {
-      "load": "OPA4197IPWR",
+      "load": "OPA4197IDR",
       "count": 1,
       "typical_unit_mA": {
         "+12V": 4,
@@ -42,19 +42,19 @@
       "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
     },
     {
-      "load": "ADG5412FBRUZ",
+      "load": "TMUX7412FRRPR",
       "count": 3,
       "typical_unit_mA": {
-        "+12V": 0.9,
-        "-12V": 0.5,
+        "+12V": 0.32,
+        "-12V": 0.26,
         "+5V": 0
       },
       "planning_unit_mA": {
-        "+12V": 1.3,
-        "-12V": 0.7,
+        "+12V": 0.6,
+        "-12V": 0.5,
         "+5V": 0
       },
-      "basis": "ADG5412F Rev C Table 1 p4 \u00b115 V normal-mode table; extrapolation allowance at project \u00b112 V, not guaranteed at this voltage."
+      "basis": "UNADOPTED S2b candidate: TMUX7412F SCDS404B Section 7.6 (index 7) +/-16.5 V IDD/ISS, 25 C typical and -40..125 C maximum; not guaranteed at project +/-12 V."
     },
     {
       "load": "LM13700M_NOPB",
@@ -371,14 +371,21 @@
   "instances": [
     {
       "instance": "W2",
+      "fitted_package_count": {
+        "LM13700M_NOPB": 1,
+        "OPA4196IDR": 7,
+        "OPA4197IDR": 1,
+        "REF5050AIDR": 1,
+        "TMUX7412FRRPR": 3
+      },
       "planning_typical_mA": {
-        "+12V": 19.661134,
-        "-12V": 17.611134,
+        "+12V": 17.921134,
+        "-12V": 16.891134,
         "+5V": 0.15
       },
       "planning_upper_mA": {
-        "+12V": 44.219069,
-        "-12V": 41.169069,
+        "+12V": 42.119069,
+        "-12V": 40.569069,
         "+5V": 0.25
       },
       "guaranteed_maximum_mA": {
@@ -389,14 +396,21 @@
     },
     {
       "instance": "W1",
+      "fitted_package_count": {
+        "LM13700M_NOPB": 1,
+        "OPA4196IDR": 7,
+        "OPA4197IPWR": 1,
+        "REF5050AIDR": 1,
+        "TMUX7412FRRPR": 3
+      },
       "planning_typical_mA": {
-        "+12V": 19.661134,
-        "-12V": 17.611134,
+        "+12V": 17.921134,
+        "-12V": 16.891134,
         "+5V": 0.15
       },
       "planning_upper_mA": {
-        "+12V": 44.219069,
-        "-12V": 41.169069,
+        "+12V": 42.119069,
+        "-12V": 40.569069,
         "+5V": 0.25
       },
       "guaranteed_maximum_mA": {
@@ -407,8 +421,8 @@
     }
   ],
   "planning_upper_total_mA": {
-    "+12V": 88.438138,
-    "-12V": 82.338138,
+    "+12V": 84.238138,
+    "-12V": 81.138138,
     "+5V": 0.5
   },
   "guaranteed_maximum_status": "NOT ESTABLISHED - actual device corners, dynamic controls, startup, output faults and physical board unqualified",

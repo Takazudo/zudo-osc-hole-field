@@ -18,7 +18,7 @@ class PowerRequirementTests(unittest.TestCase):
     def test_return_limit_is_not_sum_of_transient_minima(self):
         rows = power_requirements(self.contract, self.supply)
         self.assertEqual(rows['AGND']['current_mA']['whole_domain_maximum_return_magnitude'], 4600)
-        self.assertEqual(rows['AGND']['current_mA']['sum_of_rail_transient_minima'], 4300)
+        self.assertEqual(rows['AGND']['current_mA']['sum_of_rail_transient_minima'], 4200)
         self.assertNotIn('whole_domain_transient_requirement', rows['AGND']['current_mA'])
 
     def test_stale_report_after_authored_source_change_is_rejected(self):
@@ -35,7 +35,7 @@ class PowerRequirementTests(unittest.TestCase):
         rows = {r['net']: r for r in report['allowed_crossings']}
         self.assertEqual(rows['AGND']['current_mA']['whole_domain_maximum_return_magnitude'], 4625)
         self.assertEqual(rows['+5V']['current_mA']['whole_domain_maximum_delivered_current'], 525)
-        self.assertEqual(rows['AGND']['current_mA']['sum_of_rail_transient_minima'], 4300)
+        self.assertEqual(rows['AGND']['current_mA']['sum_of_rail_transient_minima'], 4200)
 
     def test_stale_return_or_continuous_derivation_is_rejected(self):
         for key, value in [('worst_single_return_contact_A', 4.4),
@@ -81,7 +81,7 @@ class BoundaryTests(unittest.TestCase):
         added = report['current_repacking_added_packages']['packages']
         self.assertEqual({p['ref'] for p in added}, {u['ref'] for u in self.units if u['key'].startswith('IO_EXTRA_')})
         self.assertEqual(len(added), 11)
-        self.assertEqual(sum(p['mpn']=='OPA4197IPWR' for p in added), 7)
+        self.assertEqual(sum(p['mpn'] in ('OPA4197IPWR','OPA4197IDR') for p in added), 7)
         historical = report['historical_issue60_increment']
         self.assertEqual(historical['package_counts'], {'OPA4196IDR':4,'OPA4197IPWR':2})
         self.assertEqual(historical['planning_quiescent_delta_mA']['+12V'], 16)

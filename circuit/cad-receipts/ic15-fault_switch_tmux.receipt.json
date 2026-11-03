@@ -1,0 +1,87 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-fault_switch_tmux",
+    "record_id": "rec-fault-switch-t",
+    "manufacturer": "Texas Instruments",
+    "mpn": "TMUX7412FRRPR",
+    "package": "WQFN-16 RRP",
+    "variant_notes": "UNADOPTED S2b candidate (decision E13, phase 18)"
+  },
+  "acquisition": {
+    "provider": "Retained manufacturer document; project-generated symbol and land",
+    "source_url": "https://www.ti.com/lit/ds/symlink/tmux7412f.pdf",
+    "acquired_on": "2026-10-31",
+    "original_filenames": [
+      "TMUX7412F.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/TMUX7412F.pdf": "7396d8a34f80b178a8b5c72272b5bb0eb7da7ad3182e7d3cd80d294fc32f26e5"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/TMUX7412FRRPR.kicad_sym",
+      "footprints/kicad/zudo-osc-hole-field.pretty/TI_RRP0016A.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TI_RRP0016A.wrl"
+    ],
+    "formats": [
+      "kicad_sym",
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "KiCad schematic units and millimetres",
+    "original_paths": [
+      "circuit/sources/ic-library/TMUX7412F.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Pin functions and land dimensions transcribed from the retained TI document by the named generator; no vendor CAD used.",
+    "evidence": [
+      "AVAILABLE",
+      "https://www.ti.com/lit/ds/symlink/tmux7412f.pdf"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/TMUX7412F.pdf": "7396d8a34f80b178a8b5c72272b5bb0eb7da7ad3182e7d3cd80d294fc32f26e5"
+    },
+    "tool": "scripts/libgen/build_s2b_switch_assets.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "SCDS404B Table 6-1 WQFN pads (index 2); 4224816/A outline, land example and stencil (index 44-46): 16 pads 0.6 x 0.3 mm at 0.65 mm pitch, 3.8 mm pad-centre span, 2.6 mm thermal pad 17, 4 x 1.15 mm paste apertures at 0.675 mm offsets, 0.07 mm NSMD mask margin; 4.1 x 4.1 x 0.8 mm envelope from outline maxima; F.SilkS pin-1 corner mark (project addition, no drawing dimension)"
+    },
+    "output_sha256": {
+      "symbols/src/TMUX7412FRRPR.kicad_sym": "b7656a1df870ad211447f0f0419f3492a6b49b9e075cc0d7d7bd1e271468655b",
+      "footprints/kicad/zudo-osc-hole-field.pretty/TI_RRP0016A.kicad_mod": "e12d5c3599e7c6e7bd4426cae9f62ea22c5f786b4069eb11c2cf833c06bfbdc7",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TI_RRP0016A.wrl": "0bccb5c641f7b253d78b12e1550ab6c24745b0a19cc8dc432da0435d1bfbd0b5"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:TMUX7412FRRPR",
+    "footprint": "zudo-osc-hole-field:TI_RRP0016A",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TI_RRP0016A.wrl",
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "scripts/libgen/check_lib.py and check_ic_evidence.py in the phase-18 scratch worktree"
+    ],
+    "remaining_physical_checks": [
+      "Confirm WQFN solder joints, thermal-pad voiding, stencil release and the jack-board floorplan by assembly review before hardware use.",
+      "Confirm the multi-channel fault behaviour with TI before any quad packing; this candidate uses one package per input."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

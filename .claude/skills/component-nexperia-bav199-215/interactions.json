@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "interactions": [
+    {
+      "interaction_id": "int-clamp-diode-ll-project-role",
+      "record_ids": [
+        "rec-clamp-diode-ll"
+      ],
+      "fact_ids": [
+        "fact-clamp-diode-ll-project-selection",
+        "fact-clamp-diode-ll-pinout",
+        "fact-clamp-diode-ll-reverse-current-temperature"
+      ],
+      "conditions": "S2b candidate precision-input role; schematic binding exists only inside the unadopted candidate record.",
+      "verdict": "NEEDS BENCH"
+    }
+  ]
+}

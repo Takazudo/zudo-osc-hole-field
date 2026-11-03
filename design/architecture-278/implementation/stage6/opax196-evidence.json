@@ -1,0 +1,200 @@
+{
+  "archive_bytes": 27388,
+  "archive_sha256": "9c264813a36536f743c166b6a101904b76ed08f049f2eeb127a438cc6e8ccdf5",
+  "availability": "AVAILABLE manufacturer family model; no execution or simulator validation",
+  "declared_model_capabilities": [
+    "Aol/phase withRL/CL",
+    "GBW",
+    "CMRR/PSRR",
+    "Zid/Zic",
+    "frequency-dependentZo",
+    "supply/outputcurrent",
+    "noise",
+    "swing/currentlimit",
+    "settling/overshoot/slew",
+    "overload",
+    "bias/offset/offsetdrift/commonmode",
+    "ESD cells"
+  ],
+  "dialect_features": [
+    "PSpice PARAMS",
+    "VALUE/IF/LIMIT/TABLE/PWR behavioral expressions",
+    "VSWITCH",
+    "temperature expression TEMP",
+    "R_NOISELESS RES T_ABS=-273.15"
+  ],
+  "inspected_line_evidence": [
+    {
+      "line": 21,
+      "text": "* Date: 29AUG2022"
+    },
+    {
+      "line": 28,
+      "text": "* Model Version: Final 1.5"
+    },
+    {
+      "line": 87,
+      "text": "* 2. OPAx196 model is used for OPA196, OPA2196, OPA4196 devices, since all"
+    },
+    {
+      "line": 90,
+      "text": ".SUBCKT OPAx196 IN+ IN- VCC VEE OUT"
+    },
+    {
+      "line": 121,
+      "text": "C_C_COM0      ESDP MID  6.4P"
+    },
+    {
+      "line": 122,
+      "text": "C_C_COM1      MID ESDN  6.4P"
+    },
+    {
+      "line": 123,
+      "text": "C_C_DIFF      ESDN ESDP  1.6P"
+    },
+    {
+      "line": 147,
+      "text": "I_I_B         N24207 MID DC 5.25P"
+    },
+    {
+      "line": 148,
+      "text": "I_I_OS        ESDN MID DC 2.75P"
+    },
+    {
+      "line": 149,
+      "text": "I_I_Q         VCC VEE DC 140U"
+    },
+    {
+      "line": 150,
+      "text": "R_R1          IN+ ESDP R_NOISELESS 100"
+    },
+    {
+      "line": 168,
+      "text": "R_R2          IN- ESDN R_NOISELESS 100"
+    },
+    {
+      "line": 174,
+      "text": "R_R3          ESDP MID R_NOISELESS 1T"
+    },
+    {
+      "line": 180,
+      "text": "R_R4          MID ESDN R_NOISELESS 1T"
+    },
+    {
+      "line": 230,
+      "text": "R_R_DIFF      ESDN ESDP R_NOISELESS 100MEG"
+    },
+    {
+      "line": 278,
+      "text": "X_U4          N25397 N24207 VOS_DRIFT_OPAx196  PARAMS: DC=1.36E-05 POL=1"
+    },
+    {
+      "line": 279,
+      "text": "+  DRIFT=0.5E-6"
+    },
+    {
+      "line": 419,
+      "text": ".SUBCKT VOS_DRIFT_OPAx196  VOS+ VOS- PARAMS: DC=1.36E-05 POL=1 DRIFT=0.5E-6"
+    },
+    {
+      "line": 420,
+      "text": "E1 VOS+ VOS- VALUE={DC+POL*DRIFT*(TEMP-27)}"
+    }
+  ],
+  "limitations": [
+    "TI as-is model with no warranty; model may change.",
+    "Per-channel generic family model does not qualify package crosstalk/thermal coupling, fittedPCB, contacts, tolerance or fault states.",
+    "Source availability does not establish simulator dialect compatibility, convergence, regression against TI reference cases or exact-run native admission.",
+    "No simulator,model testcircuit,native tool or model executable launched."
+  ],
+  "member": "OPAx196.LIB",
+  "member_bytes": 16622,
+  "member_inventory": [
+    {
+      "bytes": 16622,
+      "name": "OPAx196.LIB",
+      "sha256": "31142f5dbd71b758d887ee8a411692fc4c1309c8f47100af4ba5bed7e173c430"
+    },
+    {
+      "bytes": 813,
+      "name": "OPAx196.LIBsig",
+      "sha256": "82484bb289d661a2589fbee0d08e3ecb98111e61966f81e5e0b2f1cb3a5635ed"
+    },
+    {
+      "bytes": 9216,
+      "name": "OPAx196.OLB",
+      "sha256": "6fdc0d7d330dcfb1a181576ed9bd96998bd511ce16d4061ceddaa71a66012745"
+    },
+    {
+      "bytes": 560,
+      "name": "OPAx196_Test_Circuit-PSpiceFiles/SCHEMATIC/Aol_Gain/Aol_Gain.mrk",
+      "sha256": "fb4f2fd4036e0cb7f8bdca4c1f3596beb2d7033d1d224cbea29e1a7ca318f1e2"
+    },
+    {
+      "bytes": 2750,
+      "name": "OPAx196_Test_Circuit-PSpiceFiles/SCHEMATIC/Aol_Gain/Aol_Gain.prb",
+      "sha256": "7027f18e6c4033c38dc8c372ae808e90d861d680d3ef864cce2089053ecdf169"
+    },
+    {
+      "bytes": 1852,
+      "name": "OPAx196_Test_Circuit-PSpiceFiles/SCHEMATIC/Aol_Gain.sim",
+      "sha256": "0bf534a1751e99bac324f4ea3fa4138b9128c3c594604b619106f99fd1f8f560"
+    },
+    {
+      "bytes": 881,
+      "name": "OPAx196_Test_Circuit-PSpiceFiles/SCHEMATIC/TRANS/TRANS.mrk",
+      "sha256": "c58b18b01174bf01f09f809ab62731a35abafe8838e3788c4a3e4ebb9b233fbe"
+    },
+    {
+      "bytes": 1256,
+      "name": "OPAx196_Test_Circuit-PSpiceFiles/SCHEMATIC/TRANS/TRANS.prb",
+      "sha256": "f7f21903c322af3a6a3666c7dff5f4ce2e3bda0805ffdaca0019a1d44b832ad4"
+    },
+    {
+      "bytes": 1826,
+      "name": "OPAx196_Test_Circuit-PSpiceFiles/SCHEMATIC/TRANS.sim",
+      "sha256": "83e9eb0ebb705fe0a679bb11d3fb943e82101e9afc703daa75e8175929a12085"
+    },
+    {
+      "bytes": 50176,
+      "name": "OPAx196_Test_Circuit.DSN",
+      "sha256": "b455bec49870c9a5f7bdf7b244bc41b91e6fa2554ad97bac75dddef5d524a701"
+    },
+    {
+      "bytes": 6879,
+      "name": "OPAx196_Test_Circuit.OPJ",
+      "sha256": "07e66d34a245a3413190eeb0165a8b355e03f0c3fab091bdfdeb4cd8a0add0c5"
+    }
+  ],
+  "member_sha256": "31142f5dbd71b758d887ee8a411692fc4c1309c8f47100af4ba5bed7e173c430",
+  "model_family": [
+    "OPA196",
+    "OPA2196",
+    "OPA4196"
+  ],
+  "parameter_scope": "inspected internal macro-model element values only; no guaranteed device bounds or solved terminal behavior",
+  "parameters": {
+    "C_common_each_F": 6.4e-12,
+    "C_differential_F": 1.6e-12,
+    "I_I_B_A": 5.25e-12,
+    "I_I_OS_A": 2.7499999999999998e-12,
+    "I_I_Q_A": 0.00014,
+    "R_common_each_ohm": 1000000000000.0,
+    "R_differential_ohm": 100000000.0,
+    "R_input_each_ohm": 100.0,
+    "Vos_internal_DC_V": 1.36e-05,
+    "Vos_internal_drift_V_per_C": 5e-07,
+    "Vos_reference_temperature_C": 27.0
+  },
+  "release_date": "29AUG2022",
+  "subcircuit": "OPAx196",
+  "subcircuit_pin_order": [
+    "IN+",
+    "IN-",
+    "VCC",
+    "VEE",
+    "OUT"
+  ],
+  "url": "https://www.ti.com/lit/zip/SBOMAF9",
+  "version": "Final1.5"
+}

@@ -1,0 +1,7 @@
+First Stage53 preflight source run (before native routing):
+  File "design/architecture-278/implementation/stage53/in4-study/preflight.py", line24, in run
+    ids={old['objects'][k]['uuid'] for k in group}
+KeyError: 'uuid'
+Native pad records use semantic keys, unlike track/via records. Corrected to
+filter UUID-bearing objects when finding existing via exits. No input/native
+geometry changed and no acceptance threshold relaxed. Rerun passed.

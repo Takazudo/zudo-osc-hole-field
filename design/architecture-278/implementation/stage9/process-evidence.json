@@ -1,0 +1,107 @@
+{
+  "scope": "Bounded published capability search: Eurocircuits, JLCPCB and PCBWay only; not exhaustive supplier certification",
+  "construction": {
+    "substrate": "rigid FR4 candidate; exact laminate not selected",
+    "thickness_mm": 1.6,
+    "copper_layers_proposed": 2,
+    "interior_features": "nonplated routed openings/edge notches",
+    "source_stage": "Stage8 preserved"
+  },
+  "sources": [
+    {
+      "id": "euro-mechanical",
+      "url": "https://www.eurocircuits.com/technical-guidelines/pcb-design-guidelines/mechanical/",
+      "retrieved_utc": "2026-10-15",
+      "sha256": "205fecc3b2f252164790e4ac30b850c574d4c7ffcdbdd2677c32411da33fbaea",
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "locator": "Mechanical Tolerances; Contour; page update history2021-11-16",
+      "facts": {
+        "standard_tool_diameter_mm": 2,
+        "minimum_slot_width_mm": 0.5,
+        "cutout_dimension_plusminus_mm": 0.2,
+        "cutout_position_plusminus_mm": 0.2
+      },
+      "application_limits": "Tighter tolerances require explicit drawing/tool-list request; no published \u00b1.05+.05 acceptance for X1. Latest tolerance table also checked.",
+      "supplier_acceptance_of_X1": false
+    },
+    {
+      "id": "euro-current-tolerances",
+      "url": "https://www.eurocircuits.com/technical-guidelines/understanding-manufacturing-tolerances-on-a-pcb/tolerances-on-a-pcb/",
+      "retrieved_utc": "2026-10-15",
+      "sha256": "f64b2b255545725873910b7b19d8fe187db782d9adbecfbc19f325ea3f4e9a8b",
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "locator": "Specification Table / Break-Routing; Drilling",
+      "facts": {
+        "profile_dimension_plusminus_mm": 0.2,
+        "profile_cutout_to_hole_position_plusminus_mm": 0.2,
+        "minimum_slot_width_mm": 0.5,
+        "outer_copper_edge_mm": 0.25,
+        "inner_copper_edge_mm": 0.4
+      },
+      "application_limits": "Profile/cutout registration is specifically to holes. \u00b1.05 nonplated round-hole size does not establish contour accuracy. Outer.25 criterion matches proposed two-layer board; no manufacturing acceptance implied.",
+      "supplier_acceptance_of_X1": false
+    },
+    {
+      "id": "jlc-capabilities",
+      "url": "https://jlcpcb.com/capabilities/pcb-capabilities",
+      "retrieved_utc": "2026-10-15",
+      "sha256": "d2c5c889e3192842a6af0201c3db92d55e5173ba2dc4126df65fc33187899530",
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "locator": "Rigid PCB / PCB Specifications / Dimension Tolerance; Drilling / Slots; Outline / Routed",
+      "facts": {
+        "FR4_supported": true,
+        "thickness_1p6_mm_supported": true,
+        "regular_outline_plusminus_mm": 0.2,
+        "precision_outline_plusminus_mm": 0.1,
+        "precision_minimum_dimensions_mm": [
+          50,
+          50
+        ],
+        "precision_tooling_holes_minimum": 3,
+        "precision_tooling_hole_diameter_minimum_mm": 1.5,
+        "NPTH_slot_width_minimum_mm": 1,
+        "NPTH_slot_size_plusminus_mm": 0.2,
+        "hole_position_plusminus_mm": 0.075,
+        "routed_copper_edge_mm": 0.2
+      },
+      "application_limits": "Outline dimensional tolerance is not cutout-to-copper registration. Precision requires tooling holes on different corners. No separate contour positional bound stated; hole position is not substituted. X1-control36\u00d732 fails bare-board precision size condition; panel applicability not established.",
+      "supplier_acceptance_of_X1": false
+    },
+    {
+      "id": "pcbway-capabilities",
+      "url": "https://www.pcbway.com/capabilities.html",
+      "retrieved_utc": "2026-10-15",
+      "sha256": "fe84f2ba80801389cde81241399b75bc41a01470ffa484ac96845142f151d333",
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "locator": "Advanced table headers: Normal process / Medium difficulty / High difficulty[Non-standard review,Unable to make]; row32 Shape tolerance; row8 Hole position; row11 Slot",
+      "facts": {
+        "normal_shape_plusminus_mm_minimum": 0.15,
+        "medium_shape_plusminus_mm_range": [
+          0.1,
+          0.15
+        ],
+        "shape_below_0p10_mm_column": "Unable to make",
+        "hole_position_normal_plusminus_mm": 0.075,
+        "hole_position_nonstandard_review_plusminus_mm": 0.05,
+        "nonplated_slot_minimum_mm": 0.8
+      },
+      "application_limits": "The raw HTML row/header alignment was inspected: below\u00b1.10 shape tolerance is in Unable to make, not Non-standard review. Independent hole-position capability is not contour-position acceptance. This page is general process capability, not an X1 quote.",
+      "supplier_acceptance_of_X1": false
+    }
+  ],
+  "present_process": {
+    "requested_dimension_plusminus_mm": 0.05,
+    "requested_position_plusminus_mm": 0.05,
+    "maximum_combined_boundary_allowance_mm": 0.135,
+    "required_outer_land_edge_mm": 0.25,
+    "nominal_pin_margin_mm": 0.1
+  },
+  "conclusion": "No inspected publication establishes the requested separate \u00b1.05 dimensional/\u00b1.05 positional contour controls for these cutouts. General capabilities cannot be promoted to actual construction acceptance. Alternative avoids the close cutouts rather than assuming their precision.",
+  "raw_retention": "Ignored .circuit-cache/sources/architecture278-stage9-process with actual downloaded bytes and HTTP headers; no raw publication or outreach.",
+  "no_outreach": true,
+  "hardware_acceptance": false
+}

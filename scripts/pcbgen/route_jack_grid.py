@@ -12,7 +12,7 @@ stage writes a receipt under boards/<id>/reports/grid-routing/. Draft only:
 electrical and physical qualification remain NOT RUN.
 """
 from __future__ import annotations
-import argparse,collections,hashlib,json,os,shutil,subprocess,sys,time
+import argparse,collections,hashlib,json,os,re,shutil,subprocess,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
@@ -42,6 +42,11 @@ RRR_BUDGETS=[{'rrr_max_rip':4,'window_mm':12.0},{'rrr_max_rip':8,'window_mm':16.
 SIGNAL_LAYERS=['F.Cu','In2.Cu','In3.Cu','B.Cu']
 LAYER_COST=[3.0,1.0,1.0,1.5,1.0,3.0]
 RAILS=['+12V','-12V','+5V']
+# AGND is poured on both outer layers and planed on In1; a rail link may not separate AGND copper inside any of them.
+AGND_POUR_LAYERS=['F.Cu','B.Cu','In1.Cu']
+# Board setup min_hole_to_hole (each board's .kicad_pro). KiCad reports at most 199 warnings per type,
+# so a board already above that cap cannot show a new hole warning reliably: new vias must never create one.
+MIN_HOLE_TO_HOLE_NM=250_000
 # The core is twice a jack half's area; a 0.05 mm six-layer negotiation raster would not fit in memory.
 NEGOTIATE_RES={'osc-core':0.075}
 # Fewer forked workers on the core keep its shared rasters within this machine's memory.
@@ -54,8 +59,13 @@ COMMON=dict(layers=SIGNAL_LAYERS)
 STAGES=[
     {'name':'terminal-arrays','terminal_arrays':True},
     {'name':'rail-fanout','nets':['+12V','-12V'],'planes':PLANES,'clearance':.25,'rail_width':.4},
-    {'name':'rail-links','nets':RAILS,'clearance':.25,'rail_width':.4},
-    {'name':'rail-escapes','nets':RAILS,'clearance':.25,'rail_width':.25,'res':.05,'window_mm':6},
+    {'name':'rail-links','nets':RAILS,'clearance':.25,'rail_width':.4,'agnd_guard':True},
+    {'name':'rail-escapes','nets':RAILS,'clearance':.25,'rail_width':.25,'res':.05,'window_mm':6,'agnd_guard':True},
+    # AGND-aware analog tiers, routed before the general signal stages: the pitch-path SENSE and
+    # 1V_BUFFER nets first, then every other SENSE/1V_BUFFER net, then the remaining precision op-amp nets.
+    # Each tier guards the AGND pours on all three AGND layers; a tier with no open net is skipped.
+    *({'name':name,'analog_tier':tier,'signals':True,'agnd_guard':True,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,
+       'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for name,tier in (('analog-pitch',0),('analog-sense',1),('analog-precision',2))),
     # Negotiated (PathFinder) routing of every signal net on a 0.05 mm grid; leftovers go to the batches below.
     # A run stops after budget_s and saves its state, so each heavy-guard run stays short.
     {'name':'negotiate','negotiate':True,'res':.05,'iterations':60,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
@@ -139,6 +149,32 @@ def terminal_array(dump,board_id,definition):
                 rows.append({'kind':'via','uuid':stable_uuid(board_id,'terminal-array',f"{p['ref']}:{i}:{j}"),'net':p['net'],'at_nm':[x,y],
                              'diameter_nm':int(round(spec['via_diameter_mm']*1e6)),'drill_nm':int(round(spec['via_drill_mm']*1e6)),'layers':['F.Cu','B.Cu'],'locked':False})
     return rows,[{'net':'terminal arrays','copper_uuids':[r['uuid'] for r in rows]}]
+
+
+NET_TOKENS=ROOT/'design/reports/board-net-tokens.json'
+# Pitch path: the oscillator sheets' expo-converter SENSE nodes and their 1 V reference buffer.
+PITCH_SHEET=re.compile(r'^/O\d+/')
+SENSE_NET=re.compile(r'(_SENSE|/1V_BUFFER)$')
+# Precision op-amp packages (OPA4196/OPA4197 in TSSOP-14 or SOIC-14), identified by footprint value.
+PRECISION_VALUE=re.compile(r'^OPA419[67]')
+
+
+def analog_tiers(dump,board_text):
+    """Open signal nets in AGND-aware routing order: [pitch SENSE/1V_BUFFER, other SENSE/1V_BUFFER, other precision op-amp nets].
+
+    PCB net names are source-net tokens (scripts/schgen/project_boards.py net_token); the token
+    report maps them back to schematic names so sheet and node names select the tiers.
+    """
+    names=json.loads(NET_TOKENS.read_text())
+    refs=set();blocks=board_text.split('\n\t(footprint "')[1:]
+    for b in blocks:
+        ref=re.search(r'\(property "Reference" "([^"]+)"',b);val=re.search(r'\(property "Value" "([^"]+)"',b)
+        if ref and val and PRECISION_VALUE.match(val.group(1)):refs.add(ref.group(1))
+    open_nets={n for n,g in dump['islands'].items() if len(g)>1 and n not in (*RAILS,'AGND')}
+    precision={p['net'] for p in dump['pads'] if p['ref'] in refs}&open_nets
+    sense={n for n in open_nets if SENSE_NET.search(names.get(n,n))}
+    pitch={n for n in sense if PITCH_SHEET.match(names.get(n,n))}
+    return [sorted(pitch),sorted(sense-pitch),sorted(precision-sense)]
 
 
 def signal_chunk(dump,chunk,min_span_mm=None,max_span_mm=None,skip=(),only=None):
@@ -409,7 +445,9 @@ def stage(board_id,current,spec,definition,log):
     else:
         rrr=spec.get('rrr_rounds')
         if rrr and RRR_ROUND['done']:return None,None
-        chunk=lambda:spec.get('nets') or signal_chunk(dump,spec.get('chunk'),max_span_mm=spec.get('max_span_mm'),
+        tier=analog_tiers(dump,current.read_text())[spec['analog_tier']] if 'analog_tier' in spec else None
+        if tier is not None and RUN['shard']:tier=[n for n in tier if n in set(RUN['shard']['nets'])]
+        chunk=lambda:tier if tier is not None else spec.get('nets') or signal_chunk(dump,spec.get('chunk'),max_span_mm=spec.get('max_span_mm'),
                                                       skip=RRR_TRIED if rrr else (FAILED if spec.get('chunk') else ()),
                                                       only=set(RUN['shard']['nets']) if RUN['shard'] else None)
         nets=chunk()
@@ -421,13 +459,15 @@ def stage(board_id,current,spec,definition,log):
         if rrr:RRR_TRIED.update(nets)
         kwargs={k:v for k,v in spec.items() if k in ('planes','clearance','rail_width','signal_width','signal_via_diameter','grow','res','window_mm','full_board','max_expansions','escape_halo_mm','rrr_rounds')}
         if rrr:kwargs.update(RRR_BUDGETS[RRR_ROUND['round']])
-        kwargs['fill_guards']={'-12V':'In3.Cu'}
+        kwargs['fill_guards']={'-12V':'In3.Cu',**({'AGND':AGND_POUR_LAYERS} if spec.get('agnd_guard') else {})}
         if RUN['shard']:kwargs['rip_only']=set(RUN['shard']['nets'])  # a shard rips only the nets it owns
         results,removed=route(dump,nets,allowed_layers=SIGNAL_LAYERS,layer_cost=LAYER_COST,rail_nets=RAILS,log=log,**kwargs,**neck_kwargs(board_id))
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
         if spec.get('chunk') and not spec.get('rrr_rounds'):FAILED.update(r['net'] for r in results if not r['path'])
-    dropped=[]
-    for attempt in range(4):
+    spaced,rows,links,removed=drop_links(hole_spacing_culprits(rows,links,dump,removed),rows,links,removed,dump)
+    if spaced:log(f"{spec['name']}: dropped {len(spaced)} links with a via below the hole-to-hole minimum")
+    dropped=[];split_dropped=[]
+    for attempt in range(8):
         work=workspace(board_id,spec['name']);proposal=work/'proposal.json';candidate=work/f'{board_id}.kicad_pcb'
         proposal.write_text(json.dumps({'board_sha256':hashlib.sha256(current.read_bytes()).hexdigest(),'removed_uuids':removed,'copper':rows})+'\n')
         run('bash','scripts/kicad/run.sh','python3','scripts/pcbgen/grid_apply.py',rel(current),rel(proposal),'--output',rel(candidate))
@@ -446,17 +486,18 @@ def stage(board_id,current,spec,definition,log):
                 bad={r['uuid'] for r in rows if r['kind']=='via'}
             log(f"{spec['name']}: {split} split; dropping links with copper on {sorted(plane_layers)}")
             if not bad:raise StageRejected(f"{split} split without attributable copper")
+        if not bad and spec.get('agnd_guard'):
+            # The raster fill guard can miss a route that rings an AGND pour fragment; drop the
+            # nearest new link to every AGND pad group the candidate disconnected and retry.
+            near=split_culprits(split_pad_groups(json.loads(original.with_name('dump.json').read_text()),after),after,rows,links,nets={'AGND'})
+            if near:
+                culprits,rows,links,removed=drop_links(near,rows,links,removed,dump);split_dropped+=culprits
+                log(f"{spec['name']}: dropped {len(culprits)} links next to {len(near)} disconnected AGND pad groups; retrying");continue
         if not bad:break
         culprits=[l for l in links if bad & set(l['copper_uuids'])]
         if not culprits:raise StageRejected("DRC errors not attributable to new copper")
-        if removed:
-            # A rerouted (ripped) net loses its whole new route and gets its old copper back.
-            ripped_nets={i['net'] for k in ('tracks','vias') for i in dump[k] if i['uuid'] in set(removed)}
-            back={l['net'] for l in culprits}&ripped_nets
-            culprits+=[l for l in links if l['net'] in back and l not in culprits]
-            removed=[u for u in removed if not any(i['uuid']==u and i['net'] in back for k in ('tracks','vias') for i in dump[k])]
-        drop={u for l in culprits for u in l['copper_uuids']};dropped+=culprits
-        rows=[r for r in rows if r['uuid'] not in drop];links=[l for l in links if l not in culprits]
+        # A rerouted (ripped) net loses its whole new route and gets its old copper back.
+        culprits,rows,links,removed=drop_links(culprits,rows,links,removed,dump);dropped+=culprits
         log(f"{spec['name']}: dropped {len(culprits)} links with DRC errors; retrying")
     else:raise StageRejected("DRC errors persist after dropping culprit links")
     # A candidate checked where it was built has read lower than the same file checked fresh
@@ -469,12 +510,65 @@ def stage(board_id,current,spec,definition,log):
     candidate,after,drc=verify,fresh,drc_v
     before=json.loads(original.with_name('dump.json').read_text())['open_edges']
     receipt={'stage':spec['name'],'status':'NATIVE CHECKED DRAFT STAGE','open_edges_before':before,'open_edges_after':after['open_edges'],
-             'links_added':len(links),'links_dropped_for_drc':len(dropped),'copper_rows':len(rows),
+             'links_added':len(links),'links_dropped_for_drc':len(dropped),'links_dropped_for_hole_spacing':len(spaced),'links_dropped_for_agnd_split':len(split_dropped),'copper_rows':len(rows),
              'ripped':len(removed)+(len(repair_details['removed_source_uuids']) if repair_details else 0),
              'drc_errors':0,'drc_warnings':sum(v['severity']=='warning' for v in drc['violations']),'parity':0,
              'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}
     if repair_details:receipt['local_repair']=repair_details
     return candidate,receipt
+
+
+def hole_spacing_culprits(rows,links,dump,removed=(),min_nm=MIN_HOLE_TO_HOLE_NM):
+    """Links owning a new via whose drill edge is closer than min_nm to another drill (existing or new)."""
+    gone=set(removed)
+    holes=[(p['xy'],p['drill']) for p in dump.get('pads',[]) if p.get('drill')]+[(v['xy'],v['drill']) for v in dump.get('vias',[]) if v['uuid'] not in gone]
+    new=[r for r in rows if r['kind']=='via']
+    bad=set()
+    if holes and new:
+        tree=cKDTree([h[0] for h in holes]);widest=max(h[1] for h in holes)
+        for r in new:
+            for i in tree.query_ball_point(r['at_nm'],(r['drill_nm']+widest)/2+min_nm):
+                if np.hypot(*np.subtract(holes[i][0],r['at_nm']))-(holes[i][1]+r['drill_nm'])/2<min_nm:bad.add(r['uuid']);break
+    # Between new vias, the later row yields to the earlier one.
+    for i,r in enumerate(new):
+        if r['uuid'] in bad:continue
+        for q in new[:i]:
+            if q['uuid'] not in bad and np.hypot(*np.subtract(q['at_nm'],r['at_nm']))-(q['drill_nm']+r['drill_nm'])/2<min_nm:
+                bad.add(r['uuid']);break
+    return [l for l in links if bad & set(l['copper_uuids'])]
+
+
+def split_culprits(splits,after,rows,links,nets,radius_mm=12.0):
+    """For each split group of the named nets, the new link nearest its stranded pads (within radius_mm)."""
+    pads={p['uuid']:np.array(p['xy'],float) for p in after['pads']}
+    labels={n:{u:i for i,g in enumerate(after['islands'].get(n,[])) for u in g} for n in nets}
+    owner={u:l for l in links for u in l['copper_uuids']};found=[]
+    for s in splits:
+        if s['net'] not in nets:continue
+        lab=labels[s['net']];major=collections.Counter(lab.get(u) for u in s['previously_connected_pads']).most_common(1)[0][0]
+        stranded=[pads[u] for u in s['previously_connected_pads'] if lab.get(u)!=major and u in pads]
+        best=None
+        for r in rows:
+            if r['uuid'] not in owner:continue
+            if r['kind']=='via':pts=[np.array(r['at_nm'],float)]
+            else:
+                a,b=np.array(r['start_nm'],float),np.array(r['end_nm'],float);pts=[a+(b-a)*t for t in np.linspace(0,1,5)]
+            d=min(np.hypot(*(q-x)) for q in stranded for x in pts)
+            if d<=radius_mm*1e6 and (best is None or d<best[0]):best=(d,owner[r['uuid']])
+        if best and best[1] not in found:found.append(best[1])
+    return found
+
+
+def drop_links(culprits,rows,links,removed,dump):
+    """Remove culprit links; a ripped net with a culprit loses its whole new route and keeps its old copper."""
+    culprits=list(culprits)
+    if removed:
+        ripped_nets={i['net'] for k in ('tracks','vias') for i in dump[k] if i['uuid'] in set(removed)}
+        back={l['net'] for l in culprits}&ripped_nets
+        culprits+=[l for l in links if l['net'] in back and l not in culprits]
+        removed=[u for u in removed if not any(i['uuid']==u and i['net'] in back for k in ('tracks','vias') for i in dump[k])]
+    drop={u for l in culprits for u in l['copper_uuids']}
+    return culprits,[r for r in rows if r['uuid'] not in drop],[l for l in links if l not in culprits],removed
 
 
 def connected_pad_groups(dump):
@@ -510,6 +604,93 @@ def promotion_gate(before,after,before_drc,after_drc):
             'split_pad_groups':splits,'new_warning_identities':new_warnings,'native_errors':native_errors}
 
 
+# complete_native_warnings.complete_reports() proof status; any other status is not complete evidence.
+COMPLETE_EVIDENCE_STATUS='COMPLETE NATIVE HOLE OBSERVATIONS APPENDED; NO ORIGINAL FINDING REMOVED'
+GATE_KEYS=('adopted','split_pad_groups','new_warning_identities','native_errors')
+
+
+def warning_capped(before_drc,after_drc):
+    from scripts.pcbgen.complete_native_warnings import capped_types
+    return sorted(capped_types(before_drc)|capped_types(after_drc))
+
+
+def verify_warning_proof(proof,before_sha,after_sha):
+    """Complete evidence must be the auditor's proof for exactly these two boards."""
+    if not isinstance(proof,dict):raise ValueError('complete native warning evidence missing')
+    if proof.get('status')!=COMPLETE_EVIDENCE_STATUS:raise ValueError('complete native warning evidence status: '+str(proof.get('status')))
+    if proof.get('before_source_sha256')!=before_sha or proof.get('after_source_sha256')!=after_sha:
+        raise ValueError('complete native warning evidence source hash mismatch')
+    if proof.get('new_hole_object_identities')!=[] or proof.get('new_silk_identities')!=[]:
+        raise ValueError('complete native warning evidence reports new identities')
+
+
+def sha_file(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def warning_complete_gate(before_board,after_board,before,after,before_drc,after_drc,evidence,
+                          prerequisites=True,zone_batch_size=16,reviewed_removed_uuids=(),auditor=None,force=False):
+    """promotion_gate() on complete warning inputs; completion is mandatory whenever a report hit the cap.
+
+    KiCad 10.0.6 lists at most 199 warnings per type and has no uncapped option, so a
+    capped before or after report can hide a new warning identity. Such reports are
+    completed from source-bound native fixtures (complete_native_warnings) and the
+    unchanged promotion_gate() decides on the completed inputs. The raw verdict is kept.
+    Missing, failed, unsupported or source-mismatched evidence rejects (fail closed),
+    independent of any command-line option. force also completes uncapped reports, as
+    route_shards --complete-native-warnings always did: appended native hole observations
+    can then reconcile an identity listing difference on uncapped reports too.
+    """
+    gate=promotion_gate(before,after,before_drc,after_drc)
+    capped=warning_capped(before_drc,after_drc)
+    if not capped and not force:
+        return {**gate,'complete_native_warning_evidence_status':'NOT REQUIRED: no warning type reached the native cap'}
+    result={**gate,'capped_warning_types':capped,'raw_promotion_gate':{k:gate[k] for k in GATE_KEYS}}
+    # Completed warnings cannot repair connectivity, native errors or a missing gain.
+    if gate['split_pad_groups'] or gate['native_errors'] or after['open_edges']>=before['open_edges'] or not prerequisites:
+        result.update(adopted=False,complete_native_warning_evidence_status='NOT RUN: native prerequisites failed')
+        return result
+    if auditor is None:
+        from scripts.pcbgen.complete_native_warnings import audit_current_reports as auditor
+    before_sha,after_sha=sha_file(before_board),sha_file(after_board)
+    try:
+        options={'zone_batch_size':zone_batch_size}
+        if reviewed_removed_uuids:options['reviewed_removed_uuids']=list(reviewed_removed_uuids)
+        complete_before,complete_after,proof=auditor(before_board,after_board,before_drc,after_drc,evidence,**options)
+        verify_warning_proof(proof,before_sha,after_sha)
+        if sha_file(before_board)!=before_sha or sha_file(after_board)!=after_sha:
+            raise ValueError('board bytes changed during complete native warning audits')
+    except Exception as error:  # any audit failure is missing evidence: reject, never adopt on the capped report
+        result.update(adopted=False,rejection_reason='incomplete_native_warning_evidence',
+                      native_warning_evidence_error=f'{type(error).__name__}: {error}',
+                      complete_native_warning_evidence_status='REJECTED: incomplete native warning evidence')
+        return result
+    result['complete_native_warning_evidence']=proof
+    result.update(promotion_gate(before,after,complete_before,complete_after))
+    result['complete_native_warning_evidence_status']='COMPLETE: source-bound native evidence'
+    return result
+
+
+def enforce_warning_completeness(receipt,before_drc,after_drc,before_sha,after_sha):
+    """Last check before any promotion: a capped adoption needs complete evidence for these exact bytes."""
+    if not receipt.get('adopted') or not warning_capped(before_drc,after_drc):return receipt
+    try:verify_warning_proof(receipt.get('complete_native_warning_evidence'),before_sha,after_sha)
+    except ValueError as error:
+        receipt.update(adopted=False,rejection_reason='incomplete_native_warning_evidence',native_warning_evidence_error=str(error),
+                       complete_native_warning_evidence_status='REJECTED: incomplete native warning evidence')
+    return receipt
+
+
+def complete_gate(board_id,current,candidate,receipt,spec,zone_batch_size=16,auditor=None,force=False):
+    """Driver wrapper: gate the stage receipt with warning_complete_gate() on the stage's native reports."""
+    before_drc=json.loads(current.with_name('drc.json').read_text());after_drc=json.loads(candidate.with_name('drc.json').read_text())
+    before=json.loads(current.with_name('dump.json').read_text());after=json.loads(candidate.with_name('dump.json').read_text())
+    capped=warning_capped(before_drc,after_drc)
+    evidence=workspace(board_id,spec['name']+'-complete-warnings')/'native-audits' if capped or force else None
+    receipt.update(warning_complete_gate(current,candidate,before,after,before_drc,after_drc,evidence,
+                                         zone_batch_size=zone_batch_size,auditor=auditor,force=force))
+    return receipt
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__.splitlines()[0]);p.add_argument('board_id',choices=('osc-jack-left','osc-jack-right','osc-core'))
     p.add_argument('--from-stage',default=STAGES[0]['name']);p.add_argument('--to-stage');p.add_argument('--promote',action='store_true')
@@ -519,6 +700,8 @@ def main():
     p.add_argument('--res',type=float,help='negotiation raster in mm for every negotiated stage (default: per-board table)')
     p.add_argument('--iterations',type=int,help='negotiation iteration cap for every negotiated stage (default: per-board table)')
     p.add_argument('--after-promote',help='shell command run after each promotion, with STAGE, OPEN_BEFORE and OPEN_AFTER set (CI pushes)')
+    p.add_argument('--complete-native-warnings',action='store_true',help='also complete uncapped warning reports; capped reports always require complete evidence')
+    p.add_argument('--native-zone-batch-size',type=int,default=16,choices=(1,4,16))
     p.add_argument('--shard',help='I/N: route only shard I of N hotspot-region shards planned from the start board (region stages only)')
     a=p.parse_args()
     RUN.update(workers=a.workers,res=a.res,iterations=a.iterations,deadline=time.time()+a.max_minutes*60 if a.max_minutes else None)
@@ -574,15 +757,16 @@ def main():
         # Count improvements can conceal disconnected feeds/returns on another net.
         # Check after the optional stitching transaction, so temporary AGND splits
         # may be repaired in the disposable candidate but never promoted.
-        receipt.update(promotion_gate(json.loads(current.with_name('dump.json').read_text()),
-                                      json.loads(candidate.with_name('dump.json').read_text()),
-                                      json.loads(current.with_name('drc.json').read_text()),
-                                      json.loads(candidate.with_name('drc.json').read_text())))
+        # Mandatory for every stage: capped reports are completed (or the stage rejected) regardless of options.
+        receipt=complete_gate(a.board_id,current,candidate,receipt,spec,a.native_zone_batch_size,force=a.complete_native_warnings)
         receipt['input_board_sha256']=hashlib.sha256(current.read_bytes()).hexdigest()
         receipt['candidate_board_sha256']=hashlib.sha256(candidate.read_bytes()).hexdigest()
-        if receipt['split_pad_groups'] or receipt['new_warning_identities']:
+        receipt=enforce_warning_completeness(receipt,json.loads(current.with_name('drc.json').read_text()),
+                                             json.loads(candidate.with_name('drc.json').read_text()),
+                                             receipt['input_board_sha256'],receipt['candidate_board_sha256'])
+        if not receipt['adopted'] and (receipt['split_pad_groups'] or receipt['new_warning_identities']) and 'rejection_reason' not in receipt:
             receipt['rejection_reason']='connected_pad_group_split' if receipt['split_pad_groups'] else 'new_native_warning'
-            print(f"{spec['name']}: rejected: {receipt['rejection_reason']}",flush=True)
+        if not receipt['adopted'] and 'rejection_reason' in receipt:print(f"{spec['name']}: rejected: {receipt['rejection_reason']}",flush=True)
         if receipt['adopted']:
             # Retain a source replay against the canonical bytes that will be
             # replaced. Refill is intentionally repeated after replay.

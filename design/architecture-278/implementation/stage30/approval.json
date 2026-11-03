@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-17",
+  "decided_by": "OWNER",
+  "record_source": "Owner instruction to the local Claude Code session continuing Issue #278 / draft PR #287 at 00266037a7e2134c9c6c70d1ae95695932e7f1f6",
+  "subject": "Stage29 DIN contact-position mapping for J17909 and J17910",
+  "mapping": "candidate_position(row, n) = Stage10_position(row, 33-n)",
+  "status": "DESIGN_ONLY_PROVISIONAL",
+  "order_change": "Design work may use the Stage29 mapping before the physical check M-01; M-01 still decides final adoption (Q-O01).",
+  "scope_includes": [
+    "Use the Stage29 mapping as the current design-study contact position data for A01",
+    "Update design calculations that use DIN contact XY",
+    "Prepare M-01 1:1 prints and an empty record sheet"
+  ],
+  "scope_excludes": [
+    "manufacturing or assembly qualification",
+    "canonical schematic, board or library changes",
+    "native KiCad, ERC/DRC or simulation runs",
+    "ordering, quotes, uploads or supplier contact",
+    "overall architecture adoption",
+    "D02 or overall manufacturing fit as a pass",
+    "binding contact numbers to production copper"
+  ],
+  "unchanged": [
+    "physical contact IDs, nets, NC and pin attributes",
+    "the 96-hole set, female fixing holes, board planes and locked placements",
+    "Stage29 and earlier decisions and evidence (kept as history)"
+  ]
+}

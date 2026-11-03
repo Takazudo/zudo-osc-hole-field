@@ -1,0 +1,64 @@
+{
+  "status": "PASS_SOURCE_AND_RENDER_REVIEW_ONLY",
+  "reviewer": "fresh-context /root/stage36_review",
+  "source_revision": "02e83bb6955d97958248946bd11d2e3f14014ad3",
+  "reviewed_sha256": {
+    "design/architecture-278/implementation/stage36/structure-review/README.md": "28cfbe6bba61233d7747a0369fabb05d6e360b0128a75ce17137b93108a98821",
+    "design/architecture-278/implementation/stage36/structure-review/THREE-LICENSE.txt": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601",
+    "design/architecture-278/implementation/stage36/structure-review/build.py": "eb317a5cdbc944af2b13b10845a48b8352bf575397a8160d0ea2e330debcca41",
+    "design/architecture-278/implementation/stage36/structure-review/check_review.py": "0bfabf11254128211466c22f600f2b5d0b8a117d741234cb170f578673f3648b",
+    "design/architecture-278/implementation/stage36/structure-review/current-exploded.png": "98d4b080447fcdfdff04b04a3ecd36f54c021fd9e2fd49b86000b76240d40561",
+    "design/architecture-278/implementation/stage36/structure-review/current-whole.png": "6027fa04a74745337fc77d1d9e0517d9c47ee5316d9874d8195d69e93169ff44",
+    "design/architecture-278/implementation/stage36/structure-review/delivery.json": "14875bea4eddd9ed939f34f177698794bc5db3db11a136f1e62d899b66f30bff",
+    "design/architecture-278/implementation/stage36/structure-review/extract.py": "c2d36689f02c63449cfca9aa1ccfc45d7f7385d5f3dd3a4396f3a09d4beca99d",
+    "design/architecture-278/implementation/stage36/structure-review/historical-render.json": "609cef92c8fc74c4bece7a24e33de2344576f7a630539430d9ff3d96654a6cb8",
+    "design/architecture-278/implementation/stage36/structure-review/osc-structure-review.html": "86c916ab4fea9db831ff6ef07cba27f7d07c5f79c3723883aa12efb6c24223e1",
+    "design/architecture-278/implementation/stage36/structure-review/render-checks.json": "6562c6f5cde6d4f719aa1958cd5032bbcc1084ea712e9e57e1be64b9f2ba7a0e",
+    "design/architecture-278/implementation/stage36/structure-review/shell.html": "9d4d9abb830fac4726af693101450ab22fe47237db2c3a3da3f77f6695505d16",
+    "design/architecture-278/implementation/stage36/structure-review/view-data.json": "adfa112109034c46f89118a122249006c51a8f69975df12ddee9287da18cc84f",
+    "design/architecture-278/implementation/stage36/structure-review/viewer.js": "5b38f78141bf31c7242ea631f0e9bd6623662459549326ef5a97d14cbf1674bd"
+  },
+  "review_finding": "Panel camera initially mirrored locked X. Corrected to labelled +z Panel XY projection; independent orientation regression passed after final substantive change.",
+  "checks": [
+    {
+      "command": "python3 [and python3 -O] design/architecture-278/implementation/stage36/structure-review/extract.py --check",
+      "result": "PASS source bindings and deterministic data"
+    },
+    {
+      "command": "python3 [and python3 -O] design/architecture-278/implementation/stage36/structure-review/build.py --check",
+      "result": "PASS deterministic embedded HTML"
+    },
+    {
+      "command": "python3 design/architecture-278/implementation/stage36/structure-review/check_review.py",
+      "result": "PASS Chromium WebGL render; zero JS errors/external requests, layer/explode and Panel XY orientation; independently repeated"
+    },
+    {
+      "command": "python3 scripts/architecture278/implementation/stage36_interface_cassette.py --check --check-review",
+      "result": "PASS frozen Stage36 binding; C36 verdict remains failed"
+    },
+    {
+      "command": "COREPACK_HOME=/workspace/shared/corepack corepack pnpm circuit:check",
+      "result": "PASS before/after; manual inventory scope, no schematic/placement binding"
+    },
+    {
+      "command": "COREPACK_HOME=/workspace/shared/corepack corepack pnpm check",
+      "result": "PASS source/generated freshness and docs type check"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "historical_replay": "Not repeated: all previous tracked files unchanged; frozen Stage36 binding passes.",
+  "not_run": [
+    "native KiCad",
+    "ERC/DRC",
+    "simulation",
+    "physical validation",
+    "deployment",
+    "ordering",
+    "manufacturing release"
+  ],
+  "delivery": "GitHub artifact explicitly authorized after Library HTTP401 failure; no credential retry/workaround.",
+  "canonical_changed": false
+}

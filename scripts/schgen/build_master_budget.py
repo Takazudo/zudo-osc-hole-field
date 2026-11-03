@@ -8,6 +8,7 @@ sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 from design.spec.instrument import specification
+from design.spec.modules.io_partition import base_family
 
 RAILS=('+12V','-12V','+5V')
 REPORTS={x:ROOT/'design/reports/current'/f'{x}.json' for x in
@@ -39,7 +40,7 @@ def build():
     _,instances=specification();records=[]
     for inst in instances:
         if inst.name=='POWER':continue
-        module='oscillator' if inst.family=='octave_reference' else inst.family
+        module='oscillator' if inst.family=='octave_reference' else base_family(inst.family)
         path,rows=modules[module]
         if inst.name not in rows:raise ValueError(f'missing current row {inst.name} in {path}')
         row=rows[inst.name];typ,typ_key=first(row,TYPICAL);upper,upper_key=first(row,UPPER)
@@ -49,10 +50,10 @@ def build():
         if maximum is not None and (not isinstance(maximum,dict) or any(r not in maximum for r in RAILS)):
             raise ValueError(f'invalid maximum field in {path}: {inst.name}')
         maximum=maximum or {r:None for r in RAILS}
-        records.append({'instance':inst.name,'family':inst.family,'source':str(path.relative_to(ROOT)),
+        records.append({'instance':inst.name,'family':base_family(inst.family),'source':str(path.relative_to(ROOT)),
                         'reported_typical_subtotal_mA':typ,'planning_upper_subtotal_mA':upper,
                         'guaranteed_maximum_mA':maximum,
-                        'partial':inst.family=='sample_hold',
+                        'partial':base_family(inst.family)=='sample_hold',
                         'source_fields':{'typical':typ_key,'planning_upper':upper_key}})
     if len(records)!=34 or len({x['instance'] for x in records})!=34:
         raise ValueError('expected 33 modules plus one shared octave reference current row')

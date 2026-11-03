@@ -1,0 +1,102 @@
+"""Adversarial partition controls; synthetic acceptance is not hardware evidence."""
+from pathlib import Path
+import copy,importlib.util,json,sys,unittest
+HERE=Path(__file__).resolve().parent;sys.path.insert(0,str(HERE))
+spec=importlib.util.spec_from_file_location('stage49_accept',HERE/'accept.py');a=importlib.util.module_from_spec(spec);spec.loader.exec_module(a)
+
+def fixture():
+ objects={'source':dict(kind='pad',ref='R8270',pin='2',net='AGND'),'main':dict(kind='via',uuid=a.TARGET,net='AGND'),'signal-a':dict(kind='pad',ref='A',pin='1',net=a.NET),'signal-b':dict(kind='pad',ref='B',pin='1',net=a.NET)}
+ retired=[]
+ for i,uid in enumerate(a.RETIRED):
+  k='retire'+str(i);retired.append(k);objects[k]=dict(kind='via' if i==2 else 'segment',uuid=uid,net=a.NET)
+ ground=[['source'],['main']]
+ for i in range(13):
+  k='island'+str(i);objects[k]=dict(kind='pad',ref=k,pin='1',net='AGND');ground.append([k])
+ other=[]
+ for i in range(104):
+  k='other'+str(i);objects[k]=dict(kind='pad',ref=k,pin='1',net='OTHER');other.append([k])
+ old=dict(objects=objects,groups={'AGND':ground,a.NET:[retired+['signal-a','signal-b']],'OTHER':other},native_open_edges=117)
+ new=copy.deepcopy(old)
+ for k in retired:del new['objects'][k]
+ new['groups']['AGND']=[['source','main']]+ground[2:];new['groups'][a.NET]=[['signal-a','signal-b','new0','new1','new2']];new['native_open_edges']=116
+ copper=[]
+ for i in range(3):
+  k='new'+str(i);new['objects'][k]=dict(kind='via' if i==2 else 'segment',uuid=k,net=a.NET);copper.append(dict(uuid=k))
+ return old,new,dict(copper=copper)
+
+class AcceptanceTests(unittest.TestCase):
+ def setUp(self):self.old,self.new,self.proposal=fixture()
+ def test_exact_merge(self):self.assertTrue(a.connectivity(self.old,self.new,self.proposal)['accepted'])
+ def test_wrong_ground_merge(self):
+  self.new['groups']['AGND'][0]=['source','island0'];self.new['groups']['AGND'][1]=['main']
+  with self.assertRaises(ValueError):a.connectivity(self.old,self.new,self.proposal)
+ def test_other_signal_merge_even_if_count_claim_unchanged(self):
+  self.new['groups']['OTHER'][0]+=self.new['groups']['OTHER'].pop()
+  with self.assertRaises(ValueError):a.connectivity(self.old,self.new,self.proposal)
+ def test_retained_net_changed(self):
+  self.new['objects']['signal-a']['net']='AGND'
+  with self.assertRaises(ValueError):a.connectivity(self.old,self.new,self.proposal)
+ def test_missing_retained_object(self):
+  del self.new['objects']['signal-a']
+  with self.assertRaises(ValueError):a.connectivity(self.old,self.new,self.proposal)
+ def test_new_only_island(self):
+  self.new['groups'][a.NET][0].remove('new0');self.new['groups'][a.NET].append(['new0'])
+  with self.assertRaises(ValueError):a.connectivity(self.old,self.new,self.proposal)
+ def test_unexpected_added_object(self):
+  self.new['objects']['extra']=dict(kind='via',uuid='extra',net='AGND')
+  with self.assertRaises(ValueError):a.connectivity(self.old,self.new,self.proposal)
+ def test_duplicate_component_membership(self):
+  self.new['groups']['AGND'][0].append('main')
+  with self.assertRaises(ValueError):a.connectivity(self.old,self.new,self.proposal)
+ def test_omitted_new_object_from_groups(self):
+  self.new['groups'][a.NET][0].remove('new0')
+  with self.assertRaises(ValueError):a.connectivity(self.old,self.new,self.proposal)
+ def test_wrong_open_count(self):
+  self.new['native_open_edges']=117
+  with self.assertRaises(ValueError):a.connectivity(self.old,self.new,self.proposal)
+ def test_hidden_non_silk_warning_cap(self):
+  d={'violations':[dict(type='via_dangling',severity='warning',items=[dict(uuid=str(i))]) for i in range(199)]}
+  with self.assertRaisesRegex(ValueError,'capped warning'):a.warning_gate(d,d)
+ def test_new_uncapped_warning(self):
+  d={'violations':[dict(type='via_dangling',severity='warning',items=[dict(uuid='new')])]}
+  with self.assertRaises(ValueError):a.warning_gate({'violations':[]},d)
+ def test_existing_silk_cap_explicitly_unresolved(self):
+  d={'violations':[dict(type='silk_overlap',severity='warning',items=[dict(uuid=str(i))]) for i in range(199)]}
+  self.assertEqual(a.warning_gate(d,d)['capped_silkscreen_identity_nonregression'],'UNRESOLVED')
+ def test_local_false_retirement_contract(self):
+  base=a.ROOT/'.circuit-cache/stage44-b2-fresh/osc-jack-left.kicad_pcb';proposal=a.ROOT/'design/architecture-278/implementation/stage49/led-tail-cleanup/proposal.json'
+  if not base.exists() or not proposal.exists():self.skipTest('ignored native inputs unavailable')
+  p=a.read(proposal);p['retirements'][0]['contract'][-1]='AGND'
+  with self.assertRaisesRegex(ValueError,'exact authorized proposal'):a.identity(base.read_text(),base.read_text(),p)
+ def test_local_false_removed_allowlist(self):
+  base=a.ROOT/'.circuit-cache/stage44-b2-fresh/osc-jack-left.kicad_pcb';proposal=a.ROOT/'design/architecture-278/implementation/stage49/led-tail-cleanup/proposal.json'
+  if not base.exists() or not proposal.exists():self.skipTest('ignored native inputs unavailable')
+  p=a.read(proposal);p['removed_uuids'].append('unapproved')
+  with self.assertRaisesRegex(ValueError,'exact authorized proposal'):a.identity(base.read_text(),base.read_text(),p)
+ def test_wrong_new_net(self):
+  self.new['objects']['new2']['net']='AGND'
+  with self.assertRaises(ValueError):a.connectivity(self.old,self.new,self.proposal)
+ def test_local_unapproved_via_shift(self):
+  base=a.ROOT/'.circuit-cache/stage44-b2-fresh/osc-jack-left.kicad_pcb';proposal=HERE/'proposal.json'
+  if not base.exists():self.skipTest('ignored baseline unavailable')
+  p=a.read(proposal);p['copper'][2]['at_nm'][0]+=10000
+  with self.assertRaisesRegex(ValueError,'exact authorized proposal'):a.identity(base.read_text(),base.read_text(),p)
+ def test_added_via_tenting_override_rejected(self):
+  p={'copper':a._p.additions()};raw='(kicad_pcb '+''.join(a.exact_added_block(r) for r in p['copper'])+')'
+  a.exact_added_properties(raw,p)
+  raw=raw.replace('(size 0.6)','(tenting (front no)) (size 0.6)')
+  with self.assertRaises(ValueError):a.exact_added_properties(raw,p)
+ def test_retained_evidence_bindings(self):
+  bindings=a.read(HERE/'settlement.json')['evidence_sha256']
+  for prefix,folder,label in [('first','stage49-trial1','pass1'),('fresh','stage49-fresh','passfresh')]:
+   for name in [f'drc-{label}.json',f'drc-{label}.json.execution.json',f'acceptance-{label}.json']:
+    self.assertEqual(a.sha(HERE/'evidence'/f'{prefix}-{name}'),bindings[f'.circuit-cache/{folder}/{name}'])
+  self.assertEqual(a.sha(HERE/'proposal.json'),bindings[str((HERE/'proposal.json').relative_to(a.ROOT))])
+ def test_local_saved_board_replay(self):
+  base=a.ROOT/'.circuit-cache/stage44-b2-fresh';candidate=a.ROOT/'.circuit-cache/stage49-trial1';proposal=a.ROOT/'design/architecture-278/implementation/stage49/led-tail-cleanup/proposal.json'
+  paths=[base/'osc-jack-left.kicad_pcb',base/'connectivity-passfresh.json',candidate/'osc-jack-left.kicad_pcb',candidate/'connectivity-pass1.json',proposal]
+  if not all(p.exists() for p in paths):self.skipTest('ignored native replay artifacts unavailable')
+  p=a.read(proposal)
+  self.assertTrue(a.identity(paths[0].read_text(),paths[2].read_text(),p)['accepted'])
+  self.assertTrue(a.connectivity(a.read(paths[1]),a.read(paths[3]),p)['accepted'])
+if __name__=='__main__':unittest.main()

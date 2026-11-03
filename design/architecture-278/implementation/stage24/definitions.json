@@ -1,0 +1,102 @@
+{
+  "annotations": {
+    "count": 22,
+    "physical_land_definition": null,
+    "reason": "Wire gauge, entry, strain relief and serviceability are not selected; no fictitious physical terminal pads."
+  },
+  "din": {
+    "annular_ring_screen_mm": 0.254,
+    "assembly_process": "THROUGH_HOLE_SOLDER_PROCESS_NOT_REFLOW_QUALIFIED",
+    "board_installation_transform": null,
+    "board_thickness_mm": null,
+    "component_view_xy_down_matrix": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        -1
+      ]
+    ],
+    "female_fixing_holes_plated": false,
+    "finished_hole_nominal_mm": 1.0,
+    "finished_hole_tolerance_mm": 0.1,
+    "jlc_default_hole_minus_mm": 0.08,
+    "jlc_default_hole_plus_mm": 0.13,
+    "jlc_default_position_axis_mm": 0.075,
+    "manufacturing_drill_diameter_mm": null,
+    "mask_expansion_per_side_mm": 0.05,
+    "pad_diameter_mm": 2.0,
+    "paste": false,
+    "plated_contact_holes": true,
+    "required_position_diameter_mm": 0.05
+  },
+  "electrical": {
+    "ac_frequency_sensitivities_Hz": [
+      1000,
+      10000,
+      20000
+    ],
+    "existing_static_target_V": 0.002,
+    "filter_cap_sensitivities_F": [
+      1e-08,
+      1e-09
+    ],
+    "frequency_requirements_approved": false,
+    "hardware_correction_applied": false,
+    "independent_resistor_tolerance_fraction": 0.001,
+    "manual_return_sensitivities_ohm": [
+      10000000.0,
+      100000000.0,
+      1000000000.0
+    ],
+    "matched_ratio_sensitivities": [
+      0.0001,
+      0.000125
+    ],
+    "new_criteria_approved": false,
+    "reference_initial_sensitivity_fraction": 0.001,
+    "reference_nominal_V": 5.0
+  },
+  "process": {
+    "any_color_2oz_pad_spacing_mm": 0.2,
+    "black_white_1oz_pad_spacing_mm": 0.13,
+    "mask_expansion_per_side_mm": 0.05,
+    "mask_status": "CONSERVATIVE_PROPOSED_OPENING; current JLC capability permits 1:1; confirm stack/process at DFM",
+    "min_mask_to_neighbor_trace_mm": 0.09,
+    "min_smd_copper_gap_mm": 0.15,
+    "paste_scale_xy": 1.0,
+    "paste_status": "PROPOSED_1_TO_1; JLC may optimize; red-glue stencil dimensions are not paste rules",
+    "stencil_selected": false,
+    "stencil_thickness_sensitivity_mm": [
+      0.1,
+      0.12
+    ]
+  },
+  "smd": {
+    "C0603": {
+      "center_abs_x_mm": 0.8,
+      "courtyard_mm": [
+        3.1,
+        1.5
+      ],
+      "courtyard_status": "MANUFACTURER_DENSITY_B",
+      "pad_length_mm": 0.95,
+      "pad_width_mm": 1.0,
+      "source": "stage21:footprint_decisions.capacitor.density_patterns_mm.B"
+    },
+    "R0603": {
+      "center_abs_x_mm": 0.85,
+      "courtyard_mm": [
+        3.2,
+        1.5
+      ],
+      "courtyard_status": "PROPOSED_ENGINEERING_CLEARANCE_NOT_VENDOR_REQUIREMENT",
+      "pad_length_mm": 0.9,
+      "pad_width_mm": 0.8,
+      "source": "stage22:evidence.resistor_mounting.reflow_mm"
+    }
+  },
+  "status": "CANDIDATE_SOURCE_ONLY_NOT_ADOPTED"
+}

@@ -1,0 +1,44 @@
+{
+  "aggregate_regeneration": "NOT RUN: outside exact native scope",
+  "full_diagnostic": {
+    "counts": {
+      "pins": 561,
+      "references": 118,
+      "unit_UUIDs": 154
+    },
+    "mismatch_counts": {
+      "NC": 3,
+      "properties": 9,
+      "unit_pins": 61,
+      "unit_slots": 61
+    },
+    "omission_waivers": []
+  },
+  "guard_result": "PASS exit=0 secs=229 min_mem_mb=10131 reason=-",
+  "hardware_acceptance": false,
+  "native": {
+    "opportunities_consumed": 1,
+    "retries": 0,
+    "status": "PASS"
+  },
+  "official_comparator": {
+    "error": "unit slot roster mismatch C7101",
+    "exit": 1,
+    "status": "FAIL"
+  },
+  "pnpm_check": "NOT RUN: pnpm unavailable",
+  "pnpm_circuit_check": "NOT RUN: pnpm command not found",
+  "post_retention_verification": {
+    "bytes": 687620,
+    "files": 40,
+    "observed_at_unix": 1792178449.060044,
+    "status": "PASS"
+  },
+  "source_revalidation": "PASS: 72 input / 155 verification / 5 runtime hashes and exact request reconstruction",
+  "synthetic_stage19": {
+    "command": "python3 -B -m unittest discover -s scripts/architecture278/implementation -p test_stage19*.py",
+    "seconds": 0.347,
+    "status": "PASS",
+    "tests": 34
+  }
+}

@@ -175,6 +175,95 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-vco-absolute-maximum-supply",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "VCC_to_VEE_max_V": 24,
+        "VCC_to_VEE_min_V": -0.5,
+        "VCC_to_GND_max_V": 18,
+        "VCC_to_GND_min_V": -0.5
+      },
+      "unit": "V",
+      "conditions": "Voltage between VCC and VEE pins +24 V / -0.5 V; between VCC and GND +18 V / -0.5 V. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-vco-datasheet: physical PDF p.2, printed p.3, Absolute Maximum Ratings, VCC rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-vco-absolute-maximum-pins",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "any_pin_current_mA": 40,
+        "control_or_reference_pin_to_GND_V": 6,
+        "multiplier_output_max_V": 6,
+        "multiplier_output_min_V": -1
+      },
+      "unit": "V and mA",
+      "conditions": "Current through any pin +/-40 mA; frequency-control or reference-current pin to GND +/-6 V; multiplier output to GND +6 V / -1 V. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-vco-datasheet: physical PDF p.2, printed p.3, Absolute Maximum Ratings, pin rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-vco-positive-supply-current",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-datasheet",
+      "class": "TYPICAL_CURVE",
+      "value": {
+        "min_mA": 4,
+        "typ_mA": 5,
+        "max_mA": 6.5
+      },
+      "unit": "mA",
+      "conditions": "Table titled \"Typical Electrical Characteristics\": VCC = +15 V, VEE = internal Zener, TA = 20 C. Min/typ/max columns are printed, but the table is titled typical and gives no other supply or temperature condition, so the 6.5 mA maximum is not a guarantee at the OSC +12 V / -5 V operating point.",
+      "locator": "Section/table audit: src-vco-datasheet physical PDF page index 3, printed p.4, Typical Electrical Characteristics table, Positive Supply Current row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-vco-supply-voltage-ranges",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-datasheet",
+      "class": "TYPICAL_CURVE",
+      "value": {
+        "positive_min_V": 10,
+        "positive_max_V": 18,
+        "negative_min_V": -4.5,
+        "negative_max_V": -18
+      },
+      "unit": "V",
+      "conditions": "Same typical table (VCC = +15 V, VEE = internal Zener, TA = 20 C): positive supply range +10 V to +18 V; negative supply range -4.5 V to -18 V. Note 8: current limiting resistor required for negative supplies greater than -6 V.",
+      "locator": "Section/table audit: src-vco-datasheet physical PDF page index 3, printed p.4, Typical Electrical Characteristics table, Positive and Negative Supply Voltage Range rows and Note 8",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-vco-negative-supply-guidance",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "On-chip 7.4 V Zener; for negative supplies beyond -7.5 V a series resistor REE = (VEE - 7.4) / 0.008 is required between pin 3 and the supply; keeping VEE = -5 V from an external supply is recommended to minimise self-heating. No Zener tolerance, current range or VEE pin current table is given.",
+      "unit": "NONE",
+      "conditions": "Manufacturer application text only; it is not a guaranteed Zener voltage or pin current.",
+      "locator": "Section/table audit: src-vco-datasheet physical PDF page index 0, printed p.1, Description paragraph on the on-chip Zener and REE formula",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

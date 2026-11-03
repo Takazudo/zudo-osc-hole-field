@@ -1,0 +1,22 @@
+GH4 SUBMISSION CANDIDATE - source 537ab6a60272437458f1bfe923ca361c8a2ed09e
+All dimensions in mm. Top component view. See fabrication-drawing.pdf.
+
+80 x 100 overall, including two 10 mm rails. Functional board 80 x 80.
+One-up supplied design, no additional array or automatically added rails.
+FR-4, 2 layers, 1.6 mm, 1 oz outer copper, green mask, white silk, lead-free HASL.
+
+gh4-coupon-Edge_Cuts.gm1 = CLOSED OUTER ROUTING PERIMETER ONLY.
+gh4-coupon-V-CUT-SCORE-ONLY.gm2 = TWO V-SCORES ONLY, NOT ROUTING/SLOTS/COPPER.
+Scores: X0..80 at Y-10 and Y-90, both full width. Stroke is annotation width only.
+Retain rails through assembly. Confirm score interpretation in supplier CAM.
+All Gerber, drill and CPL coordinates share absolute metric origin; Y is up.
+
+Top copper .gtl, bottom copper .gbl; masks .gts/.gbs; paste .gtp/.gbp;
+silk .gto/.gbo. Bottom copper/paste/silk are intentionally empty.
+NPTH.drl contains three diameter-2 tooling holes. PTH.drl is intentionally empty.
+No gbrjob included: authoritative overall dimensions/finish are specified here.
+
+Standard Assembly, top only, J1 exact JST BM04B-GHS-TBT(LF)(SN), C161692.
+No substitutes. Four signal lands plus two MP lands have paste. TP/fiducials bare.
+Assembly BOM and CPL are supplied separately. Verify pin 1 and all six lands.
+Not an order authorization, vendor CAM approval or physical test result.

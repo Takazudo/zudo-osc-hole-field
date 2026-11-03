@@ -1,0 +1,65 @@
+# B1 / B2 populated common-board study — Stage38
+
+**Reject the coplanar standalone extraction under the retained edge rule.** The populated source trial reproduces an identical assembled-board target at a34mm translation, but that does not make it installable. Four actual adjacent-pad boundaries leave only0.62mm where two separate boards require1.00mm for their retained0.5mm copper-edge clearances. The resulting0.38mm unavoidable overlap exists even before adding board-to-board assembly clearance. No threshold, terminal, panel position, net or canonical board is changed to make it pass.
+
+Baseline `8dbbc9d835832b0b55d7745692963fe2da0d29e8`; additive proposal only. Earlier owner-approved rear-face work does not adopt this new outline, header, support or optical arrangement. Parent286 and all prior stages remain unchanged. [Populated diagram](layout.svg) · [checkable geometry, pins and failures](layout.json) · [identical assembly target](assembly-target.csv) · [review](REVIEW.md) · [verification](VERIFICATION.md).
+
+## Concrete candidate and identity
+
+B1 outline is the rectangle **x7..39, y132..174.5mm (32×42.5)**; B2 is exactly x41..73 at the same y. Trial PCB front/rear depths10/11.6mm copy the incumbent jack-plane proposal after sign conversion, not a measured jack seating datum. Nominal inter-board gap is2mm; real registration/bow and assembled tolerance remain unestablished. The outline contains the actual fixed four jack pads/courtyards, fixed LED, reverse-side31electronic packages, one new header and one proposed support location. It is a **replacement design study**, not a board that can be inserted alongside unchanged JL. Incumbent JL occupies the same plane/region and remains canonical.
+
+There are **36 retained circuit packages +1 proposed header per main board**. The four jacks and LED stay at their locked coordinates on the front face; all31non-panel packages are placed on the rear face with mirrored footprint pad coordinates. Every source physical pin, explicit NC, grounded spare channel, bypass and component value is retained. B2 uses the same footprints, rotations, local nets and values with reference aliases; all coordinates shift34mm. Local nets are separately scoped to B1/B2 in the source circuit, never shorted between modules.
+
+The single OPA4197IPWR package U3102 contains the input buffer and all three compensated precision outputs; its five units stay together. U3103 retains its indicator channel and three grounded spare channels. All six499Ω output resistors remain **1210**, not0603. Source MPNs are copied, not replaced. R3102(1kΩ), R3104(10kΩ) and R3114(5.6kΩ), and their B2 aliases, have **no selected MPN**. CSV is an assembly comparison target, not a procurement/release BOM. Jack supplier identity and actual hardware qualification retain their existing limitations.
+
+The placement algorithm packs source courtyard envelopes with0.25mm between rear packages, excludes through-hole pad/tail XY reservations expanded0.5mm, and retains the project's0.5mm copper-edge requirement. It is a capacity layout, **not routed copper or an optimized low-noise layout**. Every bypass retains its owner; straight supply-pad distances are reported individually as diagnostics, with actual routed loop length unknown. Sensitive IN_PROTECTED/IN_SENSE and all precision feedback remain on this one board. No performance, leakage, transient or decoupling-quality pass is inferred from common ownership.
+
+## Verified dimensions and source limits
+
+- Jack: retained WQP518MA footprint, PJ398SM family-equivalent drawing evidence and exact pad centres/sizes/drills. Body9×10.5mm; courtyard9.5×13.9mm; nominal row courtyard gap0.10mm and minimum copper gap0.62mm. Courtyard stroke, manufacturing/position tolerance, installed shoulder and tail dimensions are not silently treated as zero. Actual WQP518MA board-to-panel seating, nuts and clamp range remain unknown.
+- LED: exact APHHS1005QWF/D land evidence, manufacturer PDF hash/locator retained in `design/mechanical/kingbright-white-land.json`; project lands0.65×0.5mm with0.3mm gap. Fixed XY remains unchanged. One main board includes the emitter electrically, but its optical path at the assumed jack plane is **unproved**. A separate optical substrate is an explicit alternative, not already counted as built.
+- ICs/passives: actual committed footprint pads/courtyards, bound in JSON; IC-library source capture and current module specification retained. These are source land/courtyard envelopes, not guaranteed maximum3D body solids or qualified solder shapes. No invented package heights fill missing Z data.
+- Power header/socket: retained manufacturer TS0770/TS0449 evidence for3M D2508-6002-AR /89108-0101. Both cached primary PDFs were rehashed successfully. Maximum header XY17.6022×8.7122mm follows stated drawing tolerances. Finished-hole recommendation0.8128..0.9652mm is retained;1.6mm pad diameter is a **new land proposal** pending drill/annular-ring/process qualification. No released footprint or production CAD is created.
+
+## Connector, power and retention proposal
+
+P8 is rear-facing at **(28,169)** on B1 and(62,169) on B2. Header/socket opposing-face coordinates come from the reviewed Stage36 eight-position pattern; pins connect equal numbers. Both are explicitly transformed into common panel-front XY: header component-face local(x,y) becomes(centerX−x,centerY+y), while the opposing socket mating-face local(x,y) becomes(centerX−x,centerY−y). This is the same backside-X reflection used for rear SMT, with the additional opposing-face reflection for the socket. Original Stage36 global coordinates are not reused. Its new Stage37 semantic map is1:+12V,2:AGND,3:−12V,4:AGND,5:+5V,6:AGND,7:NC,8:NC. This is **bespoke internal power, not Eurorack and not Stage36 J-PWR**: Stage36 used1:+12,2:−12,3:+5,4:AGND, then fourNC. Same shell with incompatible wiring is a mis-mating hazard; a physically differentiated/keyed installation is required before adoption. Labels alone are insufficient. No A01 current or service result is inherited.
+
+Per-module current worksheet is retained verbatim: typical+12/−12/+5 =5.86/5.46/0.05mA; conditional planning11.05/10.45/0.075mA. Sum of planning rail magnitudes is21.575mA per feed,43.15mA for two modules, **not a guaranteed return maximum or connector rating**. Do not divide by three AGND contacts or assume current cancellation. Fault/clamp, shorts, startup, capacitive loading and back-drive remain excluded; guaranteed maxima and complete source/return protection remain unknown. No added active load or changed circuit is introduced.
+
+One proposed insulating support is centered(10.5,166), translated for B2. Proposed drill3.4mm, body reservation6.4mm and tool reservation8mm are **project choices**, with depth trial11.6..20mm. Support MPN/material, carrier anchorage, board stiffness and strength are not selected. The four panel-fastened jack bushings are additional proposed attachment points, not proven mechanical support. Do not load jack solder joints during unplugging. No50N or service-retention result is claimed.
+
+First rejected header position(28,168) put the symmetric grip reservation into J210:T's expanded terminal reservation. Moving only the proposed header1mm down clears that local screen; all terminal/panel coordinates stay fixed. The necessary local header-Y interval is **168.8411..169.1439mm**, from the tail/grip lower bound and outline/body+1mm upper bound. It is narrow and conditional, not a measured feasible tolerance interval. The final point169passes these necessary local screens; unknown actual grip, cable exit and full3D assembly prevent a service pass. Body/grip projections also reach retained selector-board reservations; eight pairs are listed separately. Their exact board planes are known source proposals, but actual header/socket maximum and sweep remain unresolved. Installed fit or15mm withdrawal is not established.
+
+## Decisive boundary rejection and other screens
+
+| Boundary | Foreign tip / own sleeve | Required foreign board end ≥ | Required candidate start ≤ | Result |
+|---|---|---:|---:|---|
+| B1 left |J108:T / J109:S |133.485 |133.105 |0.38mm impossible overlap |
+| B1 right |J208:T / J209:S |133.485 |133.105 |same |
+| B2 left |J308:T / J309:S |133.485 |133.105 |same |
+| B2 right |J408:T / J409:S |133.485 |133.105 |same |
+
+The calculation uses actual retained pads: foreign y127+4.92+2.13/2=132.985; own y141−6.48−1.83/2=133.605. Their0.62gap cannot contain two0.5edge clearances. A shaped edge cannot avoid overlapping required copper-clearance regions at the shared jack-center X. The proof applies to disjoint **coplanar** boards retaining these pads/rules; it does not prove every deeper-board/front-adapter architecture impossible. Moving the terminal, reducing the edge rule or silently absorbing foreign jacks is outside this candidate.
+
+Final necessary local source screens: no rear courtyard pair overlap at0.25mm; no rear package into expanded own through-terminal reservations; no header/body/grip into populated packages; no final grip into expanded own terminals; no support-tool/package or support/header hit; all source copper pads meet0.5mm from this trial outline. These passes coexist with the decisive neighboring-board boundary failure. There is no manufacturing, physical or routing pass.
+
+Seven foreign fixed-hardware courtyard projections are retained (four neighboring oscillator pulse jacks and three front-group octave selectors), along with eight selector-board body/grip projection pairs. Unknown seated depths, tails, other populated incumbent regions, cable/support sweeps and optical structures remain occupied/unknown. They are not counted as confirmed physical collisions merely because XY intersects.
+
+**Stage37's95pairs across41reservations remain a separate rejected rear-array study.** They were all conceptual/unknown projection pairs, not95actual collisions. This candidate neither resolves them nor uses them to reject B1. Its four0.38mm separation failures are new numerical source constraints. Incumbent JL coexistence is an explicit replacement dependency, not an empty-space assumption.
+
+## Counts with scoped denominators
+
+For **B1+B2 only**, current circuits occupy the shared JL board: zero exclusive mult boards, no inter-board mult analog links, and shared power not separately attributable. Whole instrument remains ten canonical board drafts; none is deleted here.
+
+The candidate target is2identical main boards /1unique main-board design,74installed circuit+header packages total,2power ribbons,4board-header ends including2distribution headers,4socket terminations and4mating actions. The74main-board packages exclude the2distribution headers and4cable sockets. Same MPN/value population on both boards does not make cable lengths identical. Counts exclude clamps, carrier, bushings, fasteners and any additional terminal adaptation.
+
+If LED seating requires one optical substrate per module, the conditional total becomes4boards /2unique designs. Emitters move from main board to optical substrate without duplication;4LED wires and8solder joints are one possible connection method. It changes the LED feedback interconnect and needs electrical/mechanical evaluation. This alternative is not implemented or qualified here. AO or other module-family counts are not expanded. No manufacturing cost or saving is claimed without complete layouts and quotes; none were requested.
+
+## Decision and next bounded work
+
+Identical source assembly and34mm translation are established as a **target**, but this particular standalone coplanar extraction is rejected for both instances. Preserve the front-active electrical boundary as a useful option; do not expand reuse to other families from this failed mechanical candidate.
+
+The smallest next source comparison is either (a) keep a shared front substrate containing the tightly spaced adjacent terminal rows, or (b) retain front adapters and place an identical mult electronics board at a separately supported depth. Both introduce explicit new board/interface consequences, particularly raw input/output-sense and optical interconnects in(b). No owner choice is required merely to compare those reversible alternatives; adopting either, changing a locked hardware position or loosening a rule requires a separate decision. This stage stops before developing either alternative.
+
+Unpowered measurement inputs remain: exact jack seating/tail and nut stack, optical plane/visibility, installed foreign selector/terminal envelopes, registration and board bow, exact seated connector height and cable exits, selected ribbon static/repeated-flex limits, supported removal/grip trajectory, and support/carrier strength. Reject any interference, unsupported withdrawal, wrong-mate possibility or pad/edge-rule violation; do not measure around the already proven coplanar boundary failure. Later powered tests require separate authorization and numerical accuracy/noise/fault criteria. No mock-up, energization, fabrication, order, production routing or merge occurred.

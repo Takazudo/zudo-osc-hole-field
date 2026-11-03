@@ -1,0 +1,36 @@
+{
+  "acceptance_boundary": "Representation-only correction for unchanged 72 native inputs and retained XML SHA256 289f7771d87b81dafec5178dc42d1889a9671997c333dc42f51660f047ebc238. Complete identities, connectivity, singleton NCs, exclusion flags and metadata remain enforced. Original FAIL stays historical.",
+  "baseline_commit": "f62c8650710bfa9d013e2e14ca2305c172160737",
+  "checks": {
+    "circuit_check": "PASS; 68 inventory lines, 0 declared placements; not electrical validation",
+    "deterministic_replay": "PASS; 118 references, 561 pins, 154 UUIDs, 196 NCs",
+    "historical_tracked_diff_at_review": "EMPTY",
+    "pinned_source_hashes": "All four source manifest hashes verified",
+    "retained_regressions": "43 PASS"
+  },
+  "findings": [],
+  "hardware_acceptance": false,
+  "implementation_authorship": false,
+  "independence": "Separate reviewer agent independently inspected pinned exporter/parser/connection-graph sources, retained XML and implementation; authored only these review receipts. No comparator/test authorship or native admission claim.",
+  "native_execution": "NOT RUN by reviewer; prior single opportunity consumed",
+  "remaining": [
+    "19 unresolved passive MPNs",
+    "Unbound DIN/land footprints",
+    "No ERC, DRC, simulation, hardware or electrical acceptance"
+  ],
+  "resolved_review_comments": [
+    "Removed fallback import of historical comparator after initial red run.",
+    "Added representative-unit Role substitution and correlated aggregate-field substitution regression.",
+    "Added bounded custom-unit-name and alternate-body rejection regression."
+  ],
+  "reviewed_sha256": {
+    "design/architecture-278/implementation/stage20/README.md": "be5e9e4f0e0b21fedb5a34001e6600982853f16f3e5979244c843d5f1b607827",
+    "design/architecture-278/implementation/stage20/exporter-source.json": "a22235c304477734bd929091b59e637ab27db16938cbb30df7478197de3ffff7",
+    "design/architecture-278/implementation/stage20/replay-report.json": "ab112dcff19f64ca0a4f41dbbd05d6afeb3a53ca4c9656e853e7834b825ecbcb",
+    "scripts/architecture278/implementation/stage20_observation.py": "7ef67634f4658d1b9d8fe3cf9ca665e830138d6673cec88cfca14b376c9ae271",
+    "scripts/architecture278/implementation/stage20_replay.py": "d7f12d3b1d17ee8749f641549de9b1753dee7939fd4790bb3645535c331303b3",
+    "scripts/architecture278/implementation/test_stage20_observation.py": "0e1b765de4bd6993fe2f3fdd8195a5cff95477c3eba9b24bd17ab699842aee18"
+  },
+  "reviewer": "/root/stage20_independent_review",
+  "status": "PASS independent source review"
+}

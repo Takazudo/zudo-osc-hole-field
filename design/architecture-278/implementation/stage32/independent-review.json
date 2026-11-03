@@ -1,0 +1,151 @@
+{
+  "findings": [
+    {
+      "finding": "RV-DIP reservations did not contain the hook envelope (housing sweep XY only); the installed hook already reached below z 34",
+      "id": "H1",
+      "resolution": "RV-DIP = union of hook envelopes below z 34 for installed and every release case at constant length + sweep + margin; independent test sweep; re-verified (0 samples outside)",
+      "severity": "HIGH"
+    },
+    {
+      "finding": "Static model left out ~29 mm stored slack; release lengthened the hook without shortening the loop",
+      "id": "H2",
+      "resolution": "installed at design length with the surplus in the local loop; every release case keeps the design length; slide = change of middle-side arc length; re-verified (136.000 / 150.000 mm)",
+      "severity": "HIGH"
+    },
+    {
+      "finding": "Tolerance taken at one point; strap bow at guide centre",
+      "id": "M1",
+      "resolution": "min over samples of clearance - margin - stack; strap rows use the footprint maximum bow; re-verified",
+      "severity": "MEDIUM"
+    },
+    {
+      "finding": "K4 depended on unstated stack choices (bore, seating, bow span, interior bow)",
+      "id": "M2",
+      "resolution": "strap bore and saddle seating added; bow over the board length; bow sensitivity reported; uniform diagonal bow fails K4 and is an open condition; runs lowered 0.2 mm; re-verified 0.199 / 0.200",
+      "severity": "MEDIUM"
+    },
+    {
+      "finding": "panel_rear_z 2.0 misquoted Stage10 (rear z 0)",
+      "id": "M3",
+      "resolution": "panel rear z 0, front z -2, pinned by validation; toggle bound recomputed (15.13); re-verified",
+      "severity": "MEDIUM"
+    },
+    {
+      "finding": "Latch access ignored cable bundles and own guide",
+      "id": "M4",
+      "resolution": "rigid (incl. all guides) and cable distances reported separately; re-verified 3.53 / 4.62 / 3.83",
+      "severity": "MEDIUM"
+    },
+    {
+      "finding": "Strap reopening by front access contradicted the data",
+      "id": "M5",
+      "resolution": "both front corridors BLOCKED; reopen only with A01-middle removed; re-verified",
+      "severity": "MEDIUM"
+    },
+    {
+      "finding": "Machine status hid the maker bend-rule failure",
+      "id": "M6",
+      "resolution": "S9 added; B32 CONDITIONAL_PENDING_WIRE_SELECTION, failed [S9]; re-verified",
+      "severity": "MEDIUM"
+    },
+    {
+      "finding": "MAKER_DOC could cite a NOT_OBTAINED document",
+      "id": "L1",
+      "resolution": "rejected; test added; re-verified",
+      "severity": "LOW"
+    },
+    {
+      "finding": "pcb_bow_fraction cited the JLC page that states no bow",
+      "id": "L2",
+      "resolution": "JLC removed as a source, noted as negative evidence; re-verified",
+      "severity": "LOW"
+    },
+    {
+      "finding": "Tip deflection ignored the grooves; README N2 wording",
+      "id": "L3",
+      "resolution": "grooved section used (0.08634 mm); wording fixed; re-verified",
+      "severity": "LOW"
+    },
+    {
+      "finding": "Criteria coverage gaps (default rule, S8 release bounds, S4 robust)",
+      "id": "L4",
+      "resolution": "explicit per-prefix rules; S8 includes release bounds; S4 includes robust sweep; re-verified",
+      "severity": "LOW"
+    },
+    {
+      "finding": "Tests missed the bugs",
+      "id": "L5",
+      "resolution": "containment, min-over-samples, cable-aware access, pins and constant-length tests added; re-verified",
+      "severity": "LOW"
+    },
+    {
+      "finding": "2MS3 bound took nut/washer at nominal",
+      "id": "L6",
+      "resolution": "-0.25 applied; re-verified",
+      "severity": "LOW"
+    },
+    {
+      "finding": "Uniform diagonal bow used 171.3 mm instead of the 170.95 mm outline diagonal",
+      "id": "R1",
+      "resolution": "derived from the A01-middle outline (1.282 mm, spare -0.382); fixed by the lead after the re-review",
+      "severity": "LOW"
+    },
+    {
+      "finding": "Local slack loop shape not stated as a surrogate",
+      "id": "R2",
+      "resolution": "README open condition and assembly step state it is a surrogate tied to M32-08 / M-12; fixed by the lead after the re-review",
+      "severity": "LOW"
+    },
+    {
+      "finding": "RV containment test reused middle_envelopes()",
+      "id": "R3",
+      "resolution": "test builds release envelopes itself for every travel and case incl. local-only; fixed by the lead after the re-review",
+      "severity": "LOW"
+    }
+  ],
+  "reviewed_sha256": {
+    "design/architecture-278/implementation/stage31/approval.json": "9c7859937d32c52470892bc949770da8acdaf96fde68039f4b089eb55aeedd40",
+    "design/architecture-278/implementation/stage31/design-input.json": "b23e274fba0e13ef4e055918b9570556cf6044f3078062594bcd1b0f4516d58b",
+    "design/architecture-278/implementation/stage32/README.md": "ee07a515186e3c1b1a3a19479da2283fdc5b1267a36c9262635d191a8b841f77",
+    "design/architecture-278/implementation/stage32/analysis.json": "e505e1a4b692040391f13442bf97f656184f9539c0a3945cb3c11cf8521a75e7",
+    "design/architecture-278/implementation/stage32/approval.json": "c95e30b61609d2e4979b4680a140c9bb66a3fd2ac10164ae53f6c3aa31451a4e",
+    "design/architecture-278/implementation/stage32/design-input.json": "ae953a61e39535b922663e58de919955d1dd70e27c883132578d9689c5f90e54",
+    "design/architecture-278/implementation/stage32/envelope.json": "0f8b8a54a77bf58409186575745792400720a8478ee08079483014628c66ec57",
+    "design/architecture-278/implementation/stage32/envelope.svg": "22ef8f179f55f70880b3f18fe52c947fc9cea277df83b656876572c316e143c1",
+    "design/architecture-278/implementation/stage32/model.json": "429c3a68ed5da9a8f91dfa7af4af0de92ac5b77df696e5a1b7b891d15c01ab4b",
+    "design/architecture-278/implementation/stage32/neighbour.json": "ed336993dc8af2a1958ee3053e62c40852f6e9273f0d37e115d55a2fc1df2feb",
+    "design/architecture-278/implementation/stage32/report.json": "cf41f028e654288094fa2adf6e123f350d15ffc5cc4dcff8828b6936524625b8",
+    "design/architecture-278/implementation/stage32/sources.json": "a3f20c6750aa99fe68ce28f6373a9dee32a51ca116bd44d5e4e16b1697de9344",
+    "design/architecture-278/implementation/stage32/summary.md": "076940af5a16b5837bcff0c160d61141b05e5becea5026ebf1a333a22eb2d1e5",
+    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+    "scripts/architecture278/implementation/check_source.py": "3c2310b4f8186257dd75e33ffdd27b0ae26473a0ca0a9fdb0d2cc194e47325be",
+    "scripts/architecture278/implementation/stage28_din_harness.py": "49fab6a30d86e3f3aa9898e2268e3258532a49affaefc4f7203e306b2235468a",
+    "scripts/architecture278/implementation/stage30_din_design_integration.py": "a092803e4a68a0d90a81d4f50b3f8f09a74948a4f2195f4ec122ba0f2b5eef26",
+    "scripts/architecture278/implementation/stage31_cable_entry_redesign.py": "ecb6faae2a802841b8651e49b2c993291bd6598962c5079257828b1b2cc1add0",
+    "scripts/architecture278/implementation/stage32_service_envelope.py": "f38de834ecc125cf891e2604f5783333594d7a56a146577a03e3c97ba822240e",
+    "scripts/architecture278/implementation/test_stage32_service_envelope.py": "935b035125ae1ad3e063bdcd39758f7ab5b58c14cfaa58794c23d5b60438739b"
+  },
+  "reviewer": "independent fresh-context Claude Code subagent (cloud), 2026-10-17/18",
+  "rounds": [
+    {
+      "commit": "25dfc932e3dc08c3b5bb570029c76f007110eb3f",
+      "counts": {
+        "HIGH": 2,
+        "LOW": 6,
+        "MEDIUM": 6
+      },
+      "result": "CHANGES_REQUESTED"
+    },
+    {
+      "commit": "58d857c795127f59416324b7f4e2614eedfb7dca",
+      "counts": {
+        "HIGH": 0,
+        "LOW": 3,
+        "MEDIUM": 0
+      },
+      "result": "PASS_SOURCE_REVIEW_ONLY"
+    }
+  ],
+  "scope": "source review only; native KiCad, ERC/DRC, simulation, physical and measured checks NOT RUN; nothing adopted",
+  "status": "PASS_SOURCE_REVIEW_ONLY"
+}

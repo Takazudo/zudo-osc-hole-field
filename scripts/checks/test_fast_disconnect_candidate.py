@@ -95,7 +95,7 @@ class FastDisconnectCandidateTests(unittest.TestCase):
             self.assertLess(abs(n["jack_V"] - vin), 0.001)
             self.assertAlmostEqual((n["source_common_V"] - n["drive_V"]) / 4 + (n["source_common_V"] - n["jack_V"]) / 1002, 0.004, places=12)
         budget = calculate(self.spec)["hybrid_power_sensitivity"]["sixteen_precision_at_current_ramp"]
-        self.assertGreater(budget["normal_mA"]["-12V"], 1500)
+        self.assertAlmostEqual(budget["normal_mA"]["-12V"], 1473.7561956605568, places=6)  # S2b candidate TMUX planning loads
 
     def test_hybrid_concurrency_retains_sense_release_charge(self):
         row = calculate(self.spec)["hybrid_collapse"]

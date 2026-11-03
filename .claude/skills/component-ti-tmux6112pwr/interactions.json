@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "interactions": [
+    {
+      "interaction_id": "int-env-switch-t-project-role",
+      "record_ids": [
+        "rec-env-switch-t"
+      ],
+      "fact_ids": [
+        "fact-env-switch-t-project-selection",
+        "fact-env-switch-t-pinout"
+      ],
+      "conditions": "S2b candidate role; schematic binding exists only inside the unadopted candidate record.",
+      "verdict": "NEEDS BENCH"
+    }
+  ]
+}

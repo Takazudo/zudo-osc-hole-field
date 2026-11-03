@@ -10,7 +10,7 @@ class NativeComponentFieldsTests(unittest.TestCase):
         cls.rows={r['ref']:r for r in cls.projection['packages']}
 
     def test_complete_inventory_and_distinct_native_properties(self):
-        self.assertEqual(len(self.rows),3594)
+        self.assertEqual(len(self.rows),3787)
         row=self.rows['U103']
         self.assertEqual(row['native_fields']['Role'],'reference_generator:A1')
         self.assertEqual(row['source_properties']['Role'],'reference_generator:A3')

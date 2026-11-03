@@ -1,0 +1,40 @@
+{
+  "authorship_exclusion": "Reviewer authored stage12_budget.py, tests, budget input/report and BUDGET.md. Those are excluded from independent review and are reviewed by separate root/code/mechanical reviewers.",
+  "checks": [
+    "Exact capacitor primary PDF hash independently verified; page1 nominal specification and page4 typical-only disclaimer inspected; page2 DC-bias graph visually inspected. Reported broad typical intervals consistent with plotted curve, not guaranteed bounds.",
+    "Two candidate capacitor changes preserve all90package topology and pins;4.23uF initial minimum and1/4.23 combinedretention calculation correct. EffectiveC/ESR/aging and input13.2V application remain unresolved.",
+    "Root composition independently maps all106 actual endpoints and physicaledge domain terms including GH header soldertermination, preserves267predecessorfiles and checks exacttwo-capacitor overlay/topology.",
+    "Criteria distinguish static calibrated2mV, load-induced1mV, attenendpoint/centre0.5%, OSC5cent tracking and idealAO algebra check. No borrowedX1timing or invented A01pitchcriterion.",
+    "Recommended source mapping retains originalPCBspreading/neck domain and separately accountscontacts/wires/source; later broaderwording remains unresolved, not silentlyadopted.",
+    "Final11 root composition tests independently PASS, including proposed-domain status. Recomputed assessment report equals final bytes; all retained input source hashes current. STAGE12 summary correctly separates criteria and candidate-only capacitor limits."
+  ],
+  "hardware_acceptance": false,
+  "native": "NOT RUN",
+  "physical": "NOT RUN",
+  "remaining": [
+    "Effective capacitor C/ESR at actual bias/temperature/age and regulator application remain unqualified.",
+    "Complete source/return/current/accuracy and A01 calibration/acceptance criteria remain unresolved."
+  ],
+  "reviewer": "Independent electrical review of Stage12 capacitor overlay, immutable criteria history and root composition source",
+  "simulation": "NOT RUN",
+  "source_sha256": {
+    "design/architecture-278/implementation/STAGE12.md": "0dbf946017dabd59a95cf682622cdc9a643f0c0855a1897ffe7be54342247413",
+    "design/architecture-278/implementation/stage12/CAPACITORS.md": "40dce1fc97ca48dd20a9c48a394b4f3a67642309e8e74fb01859423e5f464a1a",
+    "design/architecture-278/implementation/stage12/CRITERIA-HISTORY.md": "f296f158457fb7270b0a28b6af4b352b0cb80e06de95f01db492ecdcab832eb5",
+    "design/architecture-278/implementation/stage12/assessment-report.json": "8dbce8da5ad8cf40922589c13253380be3e4b693ce5471d9f0085266222c722b",
+    "design/architecture-278/implementation/stage12/capacitor-input.json": "57c785843ef9ece84d582dcb567bae0ebe3c375ef56f26d396f06f930ded0048",
+    "design/architecture-278/implementation/stage12/capacitor-report.json": "9f1809611e69eef7edda3c114b46e41c436a5be14a0b1dfb5e7f008ad7a5848d",
+    "design/architecture-278/implementation/stage12/criteria-history.json": "664b11f9b80ba0b47d5dee87f520cc6779425c429af35c83c8da52c1783a1906",
+    "design/architecture-278/implementation/stage12/scope.json": "32be716cd1ff0c227d701f76b42b66ac719c0efdd5d3ad7e2c1ece9d20ced214",
+    "scripts/architecture278/implementation/stage12_assessment.py": "4007eacfba4a26224c200ffc581f7264da375aeacf9065ed5766b866988f3a65",
+    "scripts/architecture278/implementation/stage12_capacitors.py": "d2cd39acd0c782cb33cd9483bdb5aebb260c5a020c5ae97a3ae71630e58361ad",
+    "scripts/architecture278/implementation/test_stage12_assessment.py": "7359a34960d61e46b725594671a6a4643e756fa31603e8d0228432ed2ac8a8c6",
+    "scripts/architecture278/implementation/test_stage12_capacitors.py": "37923e4b01493f2a9c5d2072ffeb9509ba69b41700a2d5f8d127d2cfb3fccbd4"
+  },
+  "tests": {
+    "assessment_scope": "History plus domain/contact/shared-edge/endpoint, criterion promotion and capacitor topology/arithmetic/guarantee mutations",
+    "capacitor_tests_independently_passed": 15,
+    "current_assessment_history_tests_independently_passed": 11,
+    "own_budget_tests_not_independent": 19
+  }
+}

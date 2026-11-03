@@ -87,7 +87,7 @@
       "record_id": "rec-ota",
       "source_id": "src-ota-datasheet",
       "class": "GUARANTEED_ELECTRICAL",
-      "value": "No exact-part electrical limits promoted from retained evidence.",
+      "value": "Absolute maximum ratings are promoted as separate facts; operating electrical characteristics and project supply suitability are not promoted.",
       "unit": "NONE",
       "conditions": "The task has not promoted a source-backed limit for this exact shortlist record.",
       "locator": "src-ota-datasheet: exact component electrical-characteristics table not promoted",
@@ -121,6 +121,27 @@
       "locator": "Section/table audit: src-ota-shortlist: parts[id=ota].package; CAD receipt is provisional family geometry",
       "provenance": "PROJECT-CHOICE",
       "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-ota-absolute-maximum",
+      "record_id": "rec-ota",
+      "source_id": "src-ota-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "supply_span_V": 36,
+        "supply_dual_V": 18,
+        "differential_input_V": 5,
+        "diode_bias_current_mA": 2,
+        "amplifier_bias_current_mA": 2,
+        "buffer_output_current_mA": 20
+      },
+      "unit": "V and mA",
+      "conditions": "Supply 36 VDC or +/-18 V; DC input voltage between +VS and -VS; differential input +/-5 V; ID and IABC 2 mA; buffer output 20 mA (package dissipation limited). Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-ota-datasheet: physical PDF p.3, printed p.4, section 6.1 Absolute Maximum Ratings",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
     }

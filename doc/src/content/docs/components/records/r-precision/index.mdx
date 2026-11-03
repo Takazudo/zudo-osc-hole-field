@@ -100,6 +100,7 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 **Facts in this domain:**
 
 - [`fact-r-precision-resistance`](#fact-r-precision-resistance)
+- [`fact-r-precision-power`](#fact-r-precision-power)
 
 ### manufacturer product description
 
@@ -165,6 +166,20 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [Section/table audit: src-r-precision-datasheet: PDF page index 0, product specifications, resistance/tolerance fields](#src-r-precision-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-r-precision-power" />
+
+  **Fact:** `fact-r-precision-power`
+
+  **Value:** `at_C`=70; `max_continuous_V`=75; `power_W`=0.1 · **Unit:** `W and V`
+
+  **Conditions:** RT0603BRD07100KL product specification: power 0.1 W at 70 C; 75 V maximum continuous voltage at full rated power. Applies to the representative MPN; other RT0603BRD values need their own record. Derating above 70 C not retained.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [Section/table audit: src-r-precision-datasheet physical PDF page index 0, printed not paginated, Specifications block, Power and Voltage DC rows](#src-r-precision-datasheet)
 </EvidenceFact>
 
 ### PROJECT\_STATE

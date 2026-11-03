@@ -1,0 +1,31 @@
+# A01 interface and electrical source allocation
+
+This is one OFFSET1/A01 demonstrator, preserving90 physical packages,118 units,285 source pins,17 bypass associations and nine fixed devices. The original29K/59JR/2P ownership becomes rear core/front jack/front control without splitting packages or changing source nets. Sixteen source pins remain NC. Twenty source packages lack selected complete MPNs; the RV1308 capturedB104 versus panel metadataB103 discrepancy remains explicit. This work does not host POWER, replicate A01 or qualify hardware.
+
+Four distinct GH sizes define the service harnesses: J-SIG7 positions, C-SIG6, J-PWR4 and K-PWR3. The GH6 candidate lands derive from the retained JST six-circuit header/housing table and mounting-surface drawing: BM06B-GHS-TBT(LF)(SN), GHR-06V-S and SSHL-002T-P0.2. Native footprint validation was not run. The four sizes prevent identical-size conflicting maps within this A01 set; a carrier coding proposal is still required against compatible X1/OSC plugs. Labels are not physical keying.
+
+There are20 GH wire conductors,40 crimp contacts, eight headers and eight housings. Fourteen permanent factory terminal wires add28 wire-end terminations, giving34 physical wires total. This does not automatically add28 assembly solder joints relative to direct mounting. The four LEDs retain a supported local substrate: source pad to local wire land, permanent wire, elevated-board land and local circuit are distinct graph segments. All three jack sleeves and tips have their actual proposed extensions; TN terminals remain NC.
+
+The rear96-position DIN pair assigns eight c-row signals and eight b-row AGND returns. The other80 contacts remain NC; they still count physically. Thus96 DIN mated contacts plus40 GH contacts gives136 mated contacts. Main power uses a separate GH3 harness, not the DIN signal mate. Its suitability remains unresolved.
+
+## Path and return accounting
+
+`interfaces-report.json` contains actual proposed padXYZ, all source/transport nodes and explicitly typed copper, wire and connector edges. `electrical-report.json` separates wire cuts from complete net-pad allocations and includes every269 non-NC source endpoint in local connectivity paths, all106 rail/AGND endpoint paths and all21 drive-boundary paths across the eight crossing signal nets. Local feedback branches connect locally rather than taking an artificial detour through connector pads. No routed length is invented.
+
+Copper allocation is1.15×octileXY plus5mm detour,2mm joint allowance and absolute face-depth difference. GH pair and DIN pair internal allocations are15mm and25mm respectively. These are engineering allocation inputs, not measured internal conductor lengths. The GH cuts are90±3mm J-SIG/J-PWR,75±3mm C-SIG and115±3mm K-PWR. Permanent terminal cuts are85±3mm. Source terminal datums are nominal; actual tail position, wire exit, bends, strain relief and factory process remain unqualified.
+
+The current largest crossing net-pad allocation is467.579375722mm, IN_BUFFER from U7106:1 to U7104:12. Seven crossing allocations exceed300mm as a historical sensitivity. Their largest harness cut is93mm. These are separate measures: the retained cable/harness obligation is not silently replaced by a300mm complete-copper-path threshold, and a short harness does not establish low noise, DC accuracy or loop stability.
+
+IN_REMOTE begins at R7113:2 after the100Ω isolation resistor. The upstream U7104:14 drive and R7114 feedback are separate preserved local-net paths. The pot-wiper paths likewise retain the1kΩ input/filter/bias/receiver continuations in the source graph. REF5/REFN5 fanout includes rear reference circuitry, front comparators and the100kΩ offset pot, rather than modeling just one destination. Every bypass rail and ground pin remains in the endpoint inventory. Local connection allocations do not prove placement locality, routing or parasitics.
+
+## Conditional budgets and unresolved limits
+
+The source-conditioned GH two-contact maximum is60mΩ initially and100mΩ after the stated tests, before wire, crimps or copper. Those available bounds do not establish the retained0.5mΩ whole-return or1mΩ rail-transfer targets. They are not measured minimum resistance or proof that every actual connector fails. No low-resistance strap has been selected, no DIN parallel-ground reduction is credited, and no equal sharing or cancellation is assumed across the two J-SIG returns or eight DIN returns. The0.5A/contact,20mV hot-distribution and0.20V full-path-loss obligations remain unchanged; complete current/impedance evidence is absent.
+
+With ideal±5V references, virtual ground and an unloaded100kΩ pot, REF5 sources a nominal0.640984mA subtotal and REFN5 sinks0.600mA. Comparator/opamp bias and position-dependent wiper loading add terms; these subtotals are not guaranteed source capability or a2mA qualification. Exact REF5050 electrical limits remain unpromoted in its owner evidence. Retained OPA4197/OPA4196 and LM393B facts keep their temperature, load, common-mode and package conditions.
+
+The eight crossing-net capacitance rows count every physical harness branch once, including both REF branches. A100pF/m wire-only sensitivity is explicitly hypothetical. Actual aggregate wire/PCB/connector/receiver/mutual capacitance remains unknown against the retained1nF obligation. External patch loads, the longer local LED and output-feedback paths, protection/fault returns and actual return planes still require analysis or characterization. Quiescent opamp current principally flows between rails; it is not automatically an AGND load. The report does not claim a complete operating-current envelope.
+
+The retained transfer intent can mathematically sum three±5V terms to±15V, beyond the±12V supplies. Actual output swing, clipping recovery and overload behavior are not established by that arithmetic.
+
+Native KiCad, ERC/DRC, full routing, simulation and physical acceptance are NOT RUN. The immediate electrical dependencies are accepted terminal/wire construction, actual conductor/contact/return impedance, all-branch capacitance and the assembled reference, attenuverter, summer and output-loop behavior. No short-path, inventory or placement result closes those unknowns.

@@ -1,0 +1,132 @@
+{
+  "CAD": "NOT RUN",
+  "absolute_acceptance_equation": "r(V)=OUT(V)\u2212[Btarget+Gdesired*INmeasured+CVmeasured]; Btarget selected BEFORE adjustment. Do not substitute measuredOUT0 for Btarget.",
+  "baseline_commit": "c6a62d3c820fdbd7dfe0efe160e0758bb4942687",
+  "component_geometry_changed": false,
+  "existing_model_support": {
+    "CV_gain_10V_span_error_interval_V": [
+      -0.001999700039995167,
+      0.002000099999999172
+    ],
+    "CV_gain_only_max_abs_error_at5V_V": 0.001000049999999586,
+    "condition": "Coherent initial25C network matching sensitivity only; no actual-condition whole-cell bound or calibrated result.",
+    "initial25C_CV_gain_interval": [
+      0.9998000299960005,
+      1.00020001
+    ],
+    "manual_endpoint_and_midpoint_characterization": {
+      "manual_high": {
+        "fixed_setting_error_interval_V": [
+          -0.006498200349943417,
+          0.005500499999999242
+        ],
+        "nominal_out_V": 4.999500049995
+      },
+      "manual_low": {
+        "fixed_setting_error_interval_V": [
+          -0.015521522022019951,
+          0.01647522692267067
+        ],
+        "nominal_out_V": -4.999500049995
+      },
+      "zero": {
+        "fixed_setting_error_interval_V": [
+          -0.004998017217346341,
+          0.004988031168960531
+        ],
+        "nominal_out_V": 0.0
+      }
+    },
+    "manual_scope": "Historical nominal fractions/reference sensitivity characterize range and centre; these are not prescribed-voltage accuracy limits at knob positions.",
+    "remaining_for_actual_baseline_and_all_other_static_terms_V": 0.000999950000000414
+  },
+  "factory_calibration_performed": false,
+  "finite_procedure": [
+    {
+      "action": "Record DUT identity,actual rails/reference,source/receiver grounds,source impedance,meteruncertainty andload. Warmup20min perstandard. Propose25C initialtest; final temperature/time envelope remainsunadopted.",
+      "step": 1
+    },
+    {
+      "action": "IN=CV=0; chooseATTEN centre and declaredBtarget=0V. Physically setOFFSET usingmeter, thenfreezecontrols. Record achievedbaseline error,not silentlyzeroed readings. If targetunreachable,failsetup; no mathcorrection.",
+      "step": 2
+    },
+    {
+      "action": "With10kohm proposedstaticload andallcontrolsheld, apply externalCV\u22125,\u22122.5,0,+2.5,+5V inbothdirections, measuringatinputjack. Reportraw absolute residual againstBtarget+CV andpairedgain/intercept separately. No adjustmentbetweensamples. Includeuncertainty whenassessingunchanged2mVtarget.",
+      "step": 3
+    },
+    {
+      "action": "HoldCV=0,controlsunchanged; sampleOUT at0,1,5,15,30min(proposedwindow). Record drift frominitial andabsolute deviationfromBtarget; recheck\u00b15Vgain atwindowend. Noautozero. Thiswindowis notadoptedservicequalification.",
+      "step": 4
+    },
+    {
+      "action": "MoveOFFSET throughcentre/endpoints andback; characterizeactualrange,centrenonzero,approachdirection/repeatability andsettling withoutinventedvoltage tolerances. Then physicallysetBtarget\u22122/0/+2V andrepeatCVsweep atATTEN0/.5/1 selectedsettings. Only useunclippedverifiedheadroom; \u00b17Vsum notguaranteed byanalysis. Invalidheadroom meansNOTRUN,notpass. Re-establishbaselineafterATTENchange.",
+      "step": 5
+    },
+    {
+      "action": "INpath verification remainsseparate: CV=0; physically selectdesiredINgain\u22121/0/+1 whereattainable,thenadjustmanualBtarget0 andholdboth. SweepIN\u22125/0/+5 againstBtarget+Gdesired*IN. If endpointgain unreachable,recordspecificINadjustmentgap,notexternalCVfailure. Frontcontrolmovement doesnotpreservegainsetting.",
+      "step": 6
+    },
+    {
+      "action": "EstablishnominalOUT\u22125/0/+5V withdeclaredsources/controls; alternateinstrument-open and10kohm whileallsettingsheld. MeasureOUT10k\u2212OUTopen againstdistinct1mVcriterion; no rezeroing, inputchange orcontroladjustmentwithinpair. Recordsettling andactualinstrumentloading.",
+      "step": 7
+    },
+    {
+      "action": "Repeatbaseline/gains aftercontrolmovement andpowercycle asproposedpersistencecharacterization. Do notclaimlifetime/tempqualification. Record pass/fail/NOTRUN perlane andactualconditions; no aggregate acceptancewithoutapprovedfactoryprotocol.",
+      "step": 8
+    }
+  ],
+  "hardware_acceptance": false,
+  "load_change_target_V": 0.001,
+  "minimum_gap_and_remedy": {
+    "current_gap": "No accepted executablefactoryprocedure,actual-condition errorbound or physicalverification. MissingCVgaintrim alone does notprovehardwarefailure; as-builtCVgain may meetbudget.",
+    "if_CV_gain_fails": "First isolatepairedCVslope frombaseline/input/loading/drift. If repeatableCVgain alone exceedsthe approvedstaticallocation, existingcontrols cannot correctit. Minimumproposedfunctionalremedy is ONE independent stableCVpathgain-adjustment degreeoffreedom inlocalCVsummerbranch, preservingotherpath gains; exactimplementation would requireseparateapproval andanalysis. No partsearch ortrimdesign here.",
+    "if_baseline_or_drift_fails": "UseexistingOFFSET forreachablebaseline; do nottreat initialrezero asdriftrepair. Identifymeasuredsource(input,reference,return,amplifier) beforeproposingits specificremedy; no blanketredesign.",
+    "next_step": "Review/adopt proposedfactorymeasurementcontract and authorize a separatebenchverification task on anavailableprototype, with declaredenvironment/uncertainty. No componentimplementation is presentlyjustified orauthorized."
+  },
+  "native": "NOT RUN",
+  "owner_decision": {
+    "authority": "Owner delegation in this conversation,2026-10-16; intended-use approval only",
+    "component_implementation_authorized": false,
+    "criteria_unchanged": true,
+    "factory_protocol_approved": false,
+    "manual_offset_use": "continuous musical control set by ear or meter",
+    "physical_execution_authorized": false,
+    "precision_priorities": [
+      "accurate external-CV transfer",
+      "stability after adjustment"
+    ],
+    "prescribed_voltage_at_knob_positions": false
+  },
+  "paired_gain_equation": "Gcv=[OUT(CVhi)\u2212OUT(CVlo)]/[CVhi\u2212CVlo], unchanged other stimuli/controls/load. Diagnostic intercept cancellation only.",
+  "persistence": {
+    "ATTEN_moved": "INgain and possibly offset change; factory INgain/baseline settings do not persist. Re-establish intended gain/baseline for verification.",
+    "CV_gain_after_control_moves": "Idealmodel gr*gcv independent ofbothcontrols; physical invariance must be verified, not assumed from ratios.",
+    "OFFSET_moved": "Previous Btarget setting/zero is no longer retained. User may choose another reachable offset by ear/meter; this does not invalidate intended use. Reset a declared Btarget physically for absolute verification.",
+    "controls_held": "Only measured same-setting performance persists over verified conditions/time; stability not proven by one zero reading.",
+    "power_or_environment_change": "No persistence guarantee without measurement at specified conditions."
+  },
+  "physical": "NOT RUN",
+  "physical_actuators": {
+    "ATTEN": "Select IN gain with independent source/meter; cannot independently change externalCVgain. Lock before OFFSET baseline adjustment; reverify baseline after any ATTEN change.",
+    "OFFSET": "Adjust reachable Btarget with IN=CV=0 by observing independent meter; real front control, no added trim. Factory setup is temporary control positioning.",
+    "external_CV_gain": "No independent fitted actuator; gr*gcv remains set by approved network ratios. Screen as built, do not claim calibration-corrected gain.",
+    "stored_correction": "None; no mathematical subtraction or software correction applied."
+  },
+  "preserved_predecessor_files": 394,
+  "protocol_status": "PROPOSED_UNADOPTED",
+  "remaining_budget_equation": "|achieved baseline error| + uncertainty contribution + input/protection/nonlinearity/drift/output/return terms <= remaining budget, without duplicate terms.0.99995mV is an algebraic necessary allowance, not a new setup tolerance or simultaneous allocation per term.",
+  "simulation": "NOT RUN",
+  "source_sha256": {
+    "design/architecture-278/implementation/STAGE15-PROCEDURE.md": "98f702b3d7120d511036b81c4b010d6ff4342fb521b68977c3ea0e35274bb08a",
+    "design/architecture-278/implementation/stage15-completion/allocation-report.json": "cb15da768ea96b693205691f8c68db09b4d82abfef4b276d0c1e0afeceb938ae",
+    "design/architecture-278/implementation/stage15-procedure/owner-decision.json": "16ab69d806862360eb76db7c6e797259a67e1374547acea4bcaca9d6f85f2af4",
+    "design/architecture-278/implementation/stage15-procedure/scope.json": "0dbdb97c8f92352c93c7c63935699b3aefa3d17076257148dae844903c6f27f5",
+    "design/spec/modules/offset.py": "f25f3430ae1263dad830d255b653707afc8b2d502e1e7070cf3a977e51d1b642",
+    "design/standard/electrical-standard.json": "185f4775082a36873954323a2377844e0694631418ac510db08e3a0d39b56e53",
+    "doc/src/content/docs/architecture/osc-block-ao.mdx": "aae398244c72570571ccc0ef9c7e6148bc20b05db702e13e6f9c753dd192b927",
+    "scripts/architecture278/implementation/stage15_electrical.py": "84055a21116b077ac4a8460c926e77180a6cce2cba5febd624254b5bd5b6cd6d",
+    "scripts/architecture278/implementation/stage15_procedure.py": "feac8348ad038c66d285d2f0484725108a324214f582c42f36b91f27324e148c",
+    "scripts/architecture278/implementation/test_stage15_procedure.py": "36ed00654f8489ae4523899af38519c7855fcd8af936ee28f6b357f092153bfa"
+  },
+  "static_target_V": 0.002
+}

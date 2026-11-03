@@ -36,9 +36,9 @@ class CellContract(unittest.TestCase):
  def test_source_facing_switch_and_clamp_polarity(self):
   uid=representative_uid('input_fault_switch');parts=cell_parts('input_fault_switch',uid,{'JACK':'PORT','PROTECTED':'SAFE'})
   switch=next(p for p in parts if p.key.endswith('__U.1'))
-  self.assertEqual((switch.pins['3'],switch.pins['2']),('PORT','SAFE'))
+  self.assertEqual((switch.pins['1'],switch.pins['16']),('PORT','SAFE'))
   power=next(p for p in parts if p.key.endswith('__U.5'))
-  self.assertEqual((power.pins['13'],power.pins['4']),('+12V','-12V'))
+  self.assertEqual((power.pins['11'],power.pins['2']),('+12V','-12V'))
   inp=cell_parts('high_impedance_input',representative_uid('high_impedance_input'))
   diode=next(p for p in inp if p.symbol.endswith('BAT54S_215'))
   self.assertEqual((diode.pins['1'],diode.pins['2']),('-12V','+12V'))
@@ -94,7 +94,7 @@ class UnusedActiveUnitContract(unittest.TestCase):
  def test_spare_opamp_comparator_and_schmitt_inputs_are_defined(self):
   op=cell_parts('high_impedance_input',representative_uid('high_impedance_input'))
   for p in op:
-   if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) and p.unit in (2,3,4):
+   if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')) and p.unit in (2,3,4):
     self.assertIn('AGND',p.pins.values())
     self.assertEqual(len({v for v in p.pins.values() if v!='AGND'}),1)
     self.assertNotIn(None,p.pins.values())

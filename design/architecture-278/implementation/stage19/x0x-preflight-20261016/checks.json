@@ -1,0 +1,63 @@
+{
+  "checks": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/architecture278/implementation",
+        "-p",
+        "test_stage19*.py"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 1.8158377190120518
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-O",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/architecture278/implementation",
+        "-p",
+        "test_stage19*.py"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 2.0766201190417632
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/architecture278/implementation",
+        "-p",
+        "test_stage18*.py"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 215.6676678340882
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "scripts/architecture278/implementation/stage18_compat.py",
+        "--check"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 49.61144948902074
+    }
+  ],
+  "native_executed": false,
+  "circuit_check": "NOT RUN: pnpm absent from existing WSL shell; no install",
+  "aggregate_regeneration": "NOT RUN: would invoke out-of-scope native operations"
+}

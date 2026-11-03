@@ -3,6 +3,7 @@
 Index allocation 41–46; only rails are global. No physical validation claimed.
 """
 from design.spec.modules.io_partition import refined
+import re
 from collections import defaultdict
 from dataclasses import replace
 from design.spec.modules.oscillator import Builder,PLACEMENTS,RAILS
@@ -68,10 +69,27 @@ class EnvelopeBuilder(Builder):
   self.device('LM393BIDR',key,'U',{str(i):{1:out,2:minus,3:plus,4:'AGND',8:'+12V'}.get(i) for i in range(1,9)})
   self.r(key+'_PULL','4.7 kΩ','+5V',out)
  def switch(self,key,channels):
-  # ADG5412F channel tuples are (IN,S,D); all four channels captured.
+  # S2b candidate: TMUX6112PWR keeps the ADG5412F TSSOP-16 pin order (SCDS383F
+  # Table 5-1; pin 12 NC). Tuples are (SEL, first terminal, second terminal): channel 1
+  # lands them on S1/D1, channels 2-4 on D/S (pins 15/14, 10/11, 7/6) as the ADG mapping
+  # did; the switch is bidirectional with equal IS(OFF)/ID(OFF) limits (SCDS383F 6.5).
+  # SELx is limited to VDD + 0.3 V (SCDS383F 6.1), so each driven SEL gets a SEL hold.
   pins={'13':'+12V','4':'-12V','5':'AGND','12':None}
-  for ns,(en,s,d) in zip([('1','3','2'),('16','15','14'),('9','10','11'),('8','7','6')],channels):pins.update(zip(ns,(en,s,d)))
-  self.device('ADG5412FBRUZ',key,'U',pins)
+  for n,(ns,(en,s,d)) in enumerate(zip([('1','3','2'),('16','15','14'),('9','10','11'),('8','7','6')],channels),1):
+   sel=en
+   if en!='AGND':
+    sel=f'{key}_SEL{n}';self.__dict__.setdefault('sel_holds',[]).append((f'{key}_SELH{n}',en,sel))
+   pins.update(zip(ns,(sel,s,d)))
+  self.device('TMUX6112PWR',key,'U',pins)
+ def flush_sel_holds(self):
+  # Appended after every existing part so the designator lock only grows.
+  # SEL hold: 100 kOhm pull-up to +5V; BAT54S diode 2 (pin 3 anode, pin 2 cathode) clamps SEL
+  # to +12V, a second BAT54S pulls SEL down into the logic output; diode 1 of each is shorted
+  # (pins 1 and 3 on SEL). No series resistor carries the clamp leakage in logic low.
+  for key,logic,sel in self.__dict__.pop('sel_holds',[]):
+   self.device(CATALOG['RC0603FR-07100KL'],'R_'+key,'R',{'1':'+5V','2':sel},value='100 kΩ')
+   self.device(CATALOG['BAT54S,215'],key+'_D','D',{'1':sel,'2':'+12V','3':sel})
+   self.device(CATALOG['BAT54S,215'],key+'_PD','D',{'1':sel,'2':logic,'3':sel})
  def finish_envelope(self):
   # Pack real logic/comparator channels, preserving canonical pin functions.
   configs={
@@ -123,7 +141,8 @@ class EnvelopeBuilder(Builder):
    for j,rail in enumerate(rails):self.c('DEC_'+key+'_'+str(j),'100 nF',rail,'AGND')
    self.island=old
   counts=defaultdict(int);assigned={};out=[]
-  for p in self.parts:
+  # R-exact series tails number after every existing part (designator lock).
+  for p in sorted(self.parts,key=lambda q:(bool(re.search(r'_SER\d+\.',q.key)) or '_SELH' in q.key,'_SELH' in q.key)):
    prefix='R' if p.prefix=='RB' else p.prefix;key=(prefix,p.key.rsplit('.',1)[0])
    if key not in assigned:counts[prefix]+=1;assigned[key]=counts[prefix]
    n=assigned[key];index=len(out)
@@ -173,10 +192,10 @@ def family():
  b.device('CD74HC221M96','EOC_TIMER','U',{'1':'AGND','2':'COMPLETE','3':'READY','14':'EOC_C','15':'EOC_RCX','4':'EOC','13':None,'9':'AGND','10':'AGND','11':'AGND','6':None,'7':None,'12':None,'5':None,'16':'+5V','8':'AGND'})
  b.r('EOC_TIME','47 kΩ','+5V','EOC_RCX');b.device(CATALOG[SHORTLIST['c_slew']['mpn']],'EOC_TIME','C',{'1':'EOC_RCX','2':'EOC_C'},value='100 nF C0G')
  # Local references 8V peak, 9V curved target, 1V pedestal and 50mV floor.
- for key,rf in [('REF8','60 kΩ'),('REF9','80 kΩ')]:
-  b.amp(key,'precision','REF5',key+'_FB',key);b.r(key+'_FB',rf,key,key+'_FB');b.r(key+'_RG','100 kΩ',key+'_FB','AGND')
+ for key,rf,rg in [('REF8','60 kΩ','100 kΩ'),('REF9','40 kΩ','50 kΩ')]:
+  b.amp(key,'precision','REF5',key+'_FB',key);b.r(key+'_FB',rf,key,key+'_FB');b.r(key+'_RG',rg,key+'_FB','AGND')
  b.r('REF1_TOP','40 kΩ','REF5','REF1_RAW');b.r('REF1_BOTTOM','10 kΩ','REF1_RAW','AGND');b.amp('REF1','precision','REF1_RAW','REF1','REF1')
- b.r('FLOOR_TOP','79 kΩ','REF5','FLOOR_REF');b.r('FLOOR_BOTTOM','22 kΩ','FLOOR_REF','AGND')
+ b.series('FLOOR_TOP',('47 kΩ','32 kΩ'),'REF5','FLOOR_REF');b.r('FLOOR_BOTTOM','22 kΩ','FLOOR_REF','AGND')
  b.r('TOP_THRESHOLD','100 kΩ','REF9','TOP_THRESHOLD');b.r('TOP_HYSTERESIS','10 MΩ','TOP_LOW','TOP_THRESHOLD')
  b.r('BOTTOM_SENSE','100 kΩ','FALL_CURVE_V','BOTTOM_SENSE');b.r('BOTTOM_HYSTERESIS','10 MΩ','BOTTOM_LOW','BOTTOM_SENSE')
  b.cmp('TOP_CMP','TOP_THRESHOLD','FALL_CURVE_V','TOP_LOW');b.schmitt('TOP_LOGIC','TOP_LOW','TOP_RAW')
@@ -210,7 +229,7 @@ def family():
  b.amp('FALL_CURVE','cv','FALL_CURVE_PLUS','FALL_CURVE_FB','FALL_CURVE_V');b.r('FALL_CURVE_FB','100 kΩ','FALL_CURVE_V','FALL_CURVE_FB');b.r('FALL_CURVE_RG','100 kΩ','FALL_CURVE_FB','AGND')
  b.switch('SLOPE_SELECT',[('RISE_LINEAR','REF9','RISE_DRIVE'),('RISE_CURVE','RISE_CURVE_V','RISE_DRIVE'),('FALL_LINEAR','REF9','FALL_DRIVE'),('FALL_CURVE','FALL_CURVE_V','FALL_DRIVE')])
  for k in ('RISE','FALL'):
-  b.r(k+'_DRIVE_TOP','899 kΩ',k+'_DRIVE',k+'_OTA_SIGNAL');b.r(k+'_DRIVE_BOTTOM','1 kΩ',k+'_OTA_SIGNAL','AGND')
+  b.series(k+'_DRIVE_TOP',('820 kΩ','78.7 kΩ'),k+'_DRIVE',k+'_OTA_SIGNAL');b.r(k+'_DRIVE_BOTTOM','1 kΩ',k+'_OTA_SIGNAL','AGND')
  b.device('LM13700M_NOPB','OTA','U',{'1':'RISE_IABC','2':None,'3':'RISE_OTA_SIGNAL','4':'RISE_OFFSET','5':'RISE_OTA_CURRENT','6':'-12V','7':'AGND','8':None,'9':None,'10':'AGND','11':'+12V','12':'FALL_OTA_CURRENT','13':'FALL_OTA_SIGNAL','14':'FALL_OFFSET','15':None,'16':'FALL_IABC'})
  for k in ('RISE','FALL'):b.r(k+'_CURRENT_SUM','100 Ω',k+'_OTA_CURRENT','ENV_STORAGE')
  b.device(CATALOG[SHORTLIST['c_slew']['mpn']],'TIMING_CAP','C',{'1':'ENV_STORAGE','2':'AGND'},value='100 nF C0G')
@@ -219,12 +238,14 @@ def family():
  b.switch('STORAGE_CLAMP',[('HOLD_ENABLE','REF8','HOLD_CLAMP'),('RESET_CAP','AGND','IDLE_CLAMP'),('AGND','AGND','AGND'),('AGND','AGND','AGND')])
  b.r('HOLD_CLAMP','100 Ω','HOLD_CLAMP','ENV_STORAGE');b.r('IDLE_CLAMP','100 Ω','IDLE_CLAMP','ENV_STORAGE')
  # BIP=1.25*ENV-5: plus=ENV*5/9, noninverting gain2.25, REF5 feed1.
- b.r('BIP_PLUS_TOP','64 kΩ','ENV_BUFFER','BIP_PLUS');b.r('BIP_PLUS_BOTTOM','80 kΩ','BIP_PLUS','AGND')
- b.amp('BIP','cv','BIP_PLUS','BIP_SUM','BIP_CORE');b.r('BIP_REF','100 kΩ','REF5','BIP_SUM');b.r('BIP_FB','100 kΩ','BIP_CORE','BIP_SUM');b.r('BIP_GROUND','400 kΩ','BIP_SUM','AGND')
+ b.r('BIP_PLUS_TOP','40 kΩ','ENV_BUFFER','BIP_PLUS');b.r('BIP_PLUS_BOTTOM','50 kΩ','BIP_PLUS','AGND')
+ b.amp('BIP','cv','BIP_PLUS','BIP_SUM','BIP_CORE');b.r('BIP_REF','100 kΩ','REF5','BIP_SUM');b.r('BIP_FB','100 kΩ','BIP_CORE','BIP_SUM');b.r('BIP_GROUND','402 kΩ','BIP_SUM','AGND')
  for k in ('RISE','FALL'):b.cell('stage_indicator',k,{'ENV_BUFFERED':'ENV_BUFFER','NOT_OWN_STAGE':'NOT_'+k},panel='L:{}.{}.stage'.format('{}',k),led=True)
  for key,signal in [('ENV','ENV_BUFFER'),('BIP','BIP_CORE'),('EOC','EOC'),('STG','STAGE_HIGH')]:
   b.cell('general_output',key,{'SIGNAL':signal,'JACK':key+'_TIP'})
   b.device('WQP518MA','J_'+key,'J',{'T':key+'_TIP','S':'AGND','TN':None},panel='J:{}.{}'.format('{}',key),island='')
+ b.flush_series()
+ b.flush_sel_holds()
  return b.finish_envelope()
 
 

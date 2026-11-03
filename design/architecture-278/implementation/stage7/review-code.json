@@ -1,0 +1,161 @@
+{
+  "acceptance": {
+    "architecture_adopted": false,
+    "hardware_accepted": false,
+    "native_ERC_DRC": "NOT RUN",
+    "physical": "NOT RUN",
+    "simulation": "NOT RUN",
+    "source_stage_only": true,
+    "upstream_POWER_connector_distribution": "OPEN"
+  },
+  "checks": {
+    "all_four_report_source_hash_maps": "CURRENT verified before receipt",
+    "all_stage7_unit_tests": {
+      "demonstrator": 15,
+      "electrical": 13,
+      "interfaces": 12,
+      "mechanical": 13,
+      "passed": 53,
+      "provenance": "Independent review run: 51 PASS; final two mechanical containment mutations added subsequently, root final run: 53 PASS."
+    },
+    "generator_checks": [
+      "stage7_mechanical --check PASS",
+      "stage7_interfaces --check PASS",
+      "stage7_electrical --check PASS",
+      "stage7_demonstrator --check PASS"
+    ],
+    "git_diff_check": "PASS",
+    "independent_arithmetic": [
+      "all15 wire actualXYZ straight-distance/minimum-slack calculations",
+      "selected5V gain/loading via independent divider expression",
+      "998ohm/1nF RC pole",
+      "20V/(2x2200ohm) overlap sensitivity",
+      "200uV/100mohm contact-only2mA sensitivity"
+    ]
+  },
+  "electrical_review": {
+    "complete_signal_allocations_mm": [
+      309.7917467517516,
+      307.93941100061534,
+      320.23825132875174
+    ],
+    "each_signal_total_wire_max_mm": 141,
+    "observations": [
+      "No300mm complete-path failure rule imported; wire envelope and complete developed allocation remain separate, with aggregatecapacitanceUNKNOWN.",
+      "A/B harness capacitance loads U3305followers before2.2k selectorresistors; those resistors are not credited asdriverisolation.",
+      "SELECTOR_REMOTE hasnominal998ohm seriesisolation; passiveRC and15nA sensitivities preserve ideal-source/source-condition limitations.",
+      "Localoutput precisionfeedback, protection,18capturedsourceassertions andfull182pin inventory retained. Sourcecurrent planning isbound to rail-budget-preliminary.json, but isnot measured/guaranteed current.",
+      "TwoGHcontacts yield60/100mohm sourceinitial/after-test maxima excludingwire/crimp/copper. FourAGNDwires do notestablish equalsharing or inherited0.5mohm/200uV compliance.",
+      "Earlier transport NCcount incorrectly includedMPpads and prior-report path wasincorrect; both arefixed andtests pass."
+    ],
+    "rail_AGND_NC_endpoint_counts": [
+      26,
+      46,
+      5
+    ]
+  },
+  "independence": {
+    "authored_not_independent": "stage7_interfaces, footprint/input/report/narrative are authored by this reviewer; separate root/electrical reviews provide their independent coverage. Interface hashes below identify composition inputs, not self-review independence.",
+    "independently_reviewed": [
+      "root stage7_demonstrator and mutation tests",
+      "electrical agent stage7_electrical source/report/tests",
+      "mechanical agent stage7_mechanical source/report/tests"
+    ]
+  },
+  "mechanical_review": {
+    "bypass_repair": {
+      "C3308_U3305_positive_pad_mm": 2.2975,
+      "C3309_U3305_negative_pad_mm": 2.3512775782539865,
+      "note": "Initial11.4256/7.3390mm regressions were identified andboundedrepair completed."
+    },
+    "explicit_mounts": 7,
+    "foreign_THT_substrate_apertures": 42,
+    "minimum_positive_web_diagnostic_mm": {
+      "X1-control": 0.54,
+      "X1-jack": 0.42
+    },
+    "remaining_constraints": [
+      "Zero bounded courtyard/drill/mount/service intersections isnotfullsolid acceptance.",
+      "Thin0.42/0.54mm webs areconnectivity diagnostics, notfabrication/stiffness approval.",
+      "Mountedge/containment/clamp-face checks included; carrier-to-enclosure loadpath,fasteners,insulation andactualforce remainunknown.",
+      "Five rearfixture projections areseparated onlyunder explicitproposedZrequirements, not sourcedselectedhardware.",
+      "Unknown neighboring functions/POWER volumes remainreserved, neverfree."
+    ],
+    "resolved_prior_opposite_pairs": 25,
+    "substrate_components_each": 1
+  },
+  "remaining_feedback_geometry_tradeoffs": {
+    "C3301_fast_branch_current_mm": [
+      9.117796128999565,
+      9.373884266940765
+    ],
+    "R3316_OUT_TIP_to_J1009T_before_after_mm": [
+      11.427029360249328,
+      54.14715597332884
+    ],
+    "scope": "Explicit localfeedback comparison; whole topology retained but routing/loopstability notqualified. Do notclaim all feedbackdistances unchanged."
+  },
+  "source_conservation_review": {
+    "OSC_paths_unchanged": 225,
+    "OSC_returns_unchanged": 240,
+    "bypass_associations": 10,
+    "fixed_X1_panel_centres": 7,
+    "fixed_panel_centres": 438,
+    "functions": 33,
+    "observations": [
+      "Direct ledger reconstruction and owner/host validation preserve complete ICs, grounded spare units, source NCs and ten bypass associations.",
+      "Root exact8-edge multiset prevents duplicate AGND branch substitution; physical wires remain15 rather than endpoint-pair counts.",
+      "All56 source placements and5904 ownership overlay retain unchanged other populations; no otherK/POWER host is invented."
+    ],
+    "physical_pin_NC_records": 182,
+    "source_packages": 56,
+    "units": 76,
+    "whole_instrument_packages": 5904
+  },
+  "source_sha256": {
+    "design/architecture-278/implementation/stage7/INTERFACES.md": "6848c333029cedbc7d329ec6e8aeb3d7a69c83a3eb7cdd920255605302a0f763",
+    "design/architecture-278/implementation/stage7/demonstrator-report.json": "b3a02706f80e20b3fa1c96ac644c9724a3ccbe559a86495fbc7b251b68ca0fad",
+    "design/architecture-278/implementation/stage7/electrical-report.json": "30d22b905a2c4e4637b700bded1a82752a331e8c912a64ecc9f0b0de5d425c23",
+    "design/architecture-278/implementation/stage7/footprints/JST_GH4_BM_TopEntry_Candidate.kicad_mod": "e31245b923b8fa03dc3fbe6419e6644ef7f6372e0088c4423b1b73ffa36d4a00",
+    "design/architecture-278/implementation/stage7/interface-input.json": "4e665e4da5f8a72daee36c0660bd191423841d204f6726365341e091c3ad2b9e",
+    "design/architecture-278/implementation/stage7/interfaces-report.json": "45a472721d7541b3de02ca20d0c243e0d5f693a4535812c5ae8dc4d2b0e98fbd",
+    "design/architecture-278/implementation/stage7/mechanical-input.json": "c57e010ada43bd51757ed2d1f12005b4c42ad88d8646c79ba0333a3580d66a17",
+    "design/architecture-278/implementation/stage7/mechanical-report.json": "a3946ca5f41751a4ce01cc37a70a5657a79f8c3c751888c7e89f6ef32380741a",
+    "design/architecture-278/implementation/stage7/scope.json": "cd8931a9f17de9f62832c4ed4d8ce4e6ca538133af355c8eb9166e8c9967b188",
+    "scripts/architecture278/implementation/check_source.py": "ea561770806dcd11eb990a865c2924d773f900a96be6f208121b48edaf3ef119",
+    "scripts/architecture278/implementation/stage7_demonstrator.py": "bf857b35c7504843bb57ba8dd0f699fefdfad08777e725aaedfb008a0ad72376",
+    "scripts/architecture278/implementation/stage7_electrical.py": "cfa650c2862b2afcf282ba95bac5d6982612d43a579d8d890f83655d8cfc5baf",
+    "scripts/architecture278/implementation/stage7_interfaces.py": "bcda866923f4cef4c7b154fa45823a044e64b11ac03adfe1054c239241aee984",
+    "scripts/architecture278/implementation/stage7_mechanical.py": "fe1450236382500668f525fcee19c68ed773c1d614fff6cada467a39bcb2a3c1",
+    "scripts/architecture278/implementation/test_stage7_demonstrator.py": "58c2821c7c4f72a460111c3018f06a3ed7ed84e95af32238d45f82a0acca278f",
+    "scripts/architecture278/implementation/test_stage7_electrical.py": "0b299b51d2767ef185fd7a4c02e20b24384ba52774c25f88f6bff9bb09b3d1de",
+    "scripts/architecture278/implementation/test_stage7_interfaces.py": "b9df7c0abf5db510c428ef5f60cb3785e50703af2e94e40a4a98aa1d95c321c4",
+    "scripts/architecture278/implementation/test_stage7_mechanical.py": "557a4e20dce6f87575580bc6630075aaae9de578bb9018678afb44fbce2038ff"
+  },
+  "status": "INDEPENDENT SOURCE REVIEW COMPLETE; PHYSICAL/ELECTRICAL QUALIFICATION OPEN",
+  "transport_review": {
+    "active_NC_MP_solder_joints": [
+      30,
+      6,
+      16
+    ],
+    "conductors": 15,
+    "crimps": 30,
+    "harnesses": 4,
+    "headers": 8,
+    "housings": 8,
+    "middle_trace_edges": 8,
+    "minimum_service_proxy_slack_mm": 12.768607576059757,
+    "observations": [
+      "GH7 J-PWR usesactive1/3/5/7 with2/4/6unwired; onlysame-size pair isidenticallymappedGH4signals. Partialinsertion/vendorcoding stillunqualified.",
+      "All source/transport pin/XYZ bindings and +5V jack-only assignment checked. Eachharness has2matedcontacts; eachfullsignal uses4.",
+      "Front mountingfaces20/21.6mm andmiddleGH48.4mm remain distinct. Normal15mm withdrawal/body/strainreservations areexplicitproposals, notmeasured service."
+    ],
+    "signal_rail_AGND_conductors": [
+      6,
+      5,
+      4
+    ],
+    "total_solder_joints": 52
+  }
+}

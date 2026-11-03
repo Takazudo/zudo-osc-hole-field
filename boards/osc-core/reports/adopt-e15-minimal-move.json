@@ -1,0 +1,388 @@
+{
+ "schema_version": 1,
+ "board": "osc-core",
+ "status": "UNVALIDATED DRAFT; decision E15 minimal-move layout pass",
+ "placement_source": {
+  "floorplan": "design/partition/floorplan-candidate.json",
+  "pins": "design/partition/adopted-placement-pins.json",
+  "tssop_retention": "design/partition/precision-tssop-retention.json"
+ },
+ "rip_up": {
+  "tool": "scripts/pcbgen/adopt_minimal_move.py",
+  "old_pcb_commit": "48a91f6d972a4085cf647ad7e8c8d34f548c5d3f",
+  "footprints_moved_to_origin": 328,
+  "moved_swapped_or_added": 524,
+  "removed_signal_items": 32933,
+  "removed_plane_items_near_moved": 1466,
+  "affected_signal_nets": 803,
+  "ripped_signal_nets_total": 1085,
+  "note": "Signal nets on moved, swapped or added pads ripped whole; plane copper only inside old/new courtyards +0.3 mm; then copper in DRC copper errors and dangling remnants on ripped nets (partial signal nets ripped whole)."
+ },
+ "routing": {
+  "grid_router": "scripts/pcbgen/route_jack_grid.py stage code and promotion gates (rails, signals-local, 12-net batches with rejected batches set aside). Whole-board negotiate, region, rip-up-and-reroute and repair stages not run: unaffected copper unchanged.",
+  "stages": {},
+  "signal_batches": [],
+  "status": "BLOCKED: rip-up and stub cleanup only. rail-fanout, rail-links and rail-escapes each exceed the 1800 s maximum run on this board (exit 124 at 1780 s, nothing promoted); a 12-net signal batch needs about 9 min of native verification per batch, so 1085 ripped nets do not fit local runs. Needs CI routing or a larger run budget."
+ },
+ "final": {
+  "kicad_version": "10.0.6",
+  "board_sha256": "f4c5a1f69792f72aadab8c628933fef8e336f6f47bf5ccfa9df9aed386beae7c",
+  "drc_errors": 0,
+  "drc_warnings": 646,
+  "schematic_parity": 0,
+  "drc_unconnected": 499,
+  "native_open_edges": 3948,
+  "native_open_edges_affected_signal": 2730,
+  "native_open_edges_plane": 626,
+  "native_open_edges_unaffected": 592,
+  "unaffected_nets_worse_than_baseline": []
+ },
+ "baseline": {
+  "commit": "48a91f6d972a4085cf647ad7e8c8d34f548c5d3f",
+  "drc_errors": 0,
+  "native_open_edges": 4283,
+  "native_open_edges_affected_signal": 437,
+  "native_open_edges_plane": 3254,
+  "native_open_edges_unaffected": 592,
+  "source": "native ratsnest of the pre-adoption board at 466b6589 (boards/osc-core has no committed ratsnest report)"
+ },
+ "acceptance": {
+  "rule": "parity 0, DRC errors 0, unconnected <= pre-adoption baseline + open edges of affected (ripped) nets left unrouted",
+  "limit": 7639,
+  "measure": "native ratsnest open edges (KiCad DRC JSON caps each list at 499 items on this board)",
+  "result": "PASS"
+ },
+ "review_items": {
+  "precision_net_growth": {
+   "status": "REVIEW ITEM; placement half-perimeter vs 539ff382",
+   "precision_nets": 496,
+   "max_growth_mm": 91.47,
+   "nets_over_10mm": [
+    [
+     "/E2/REFN5",
+     91.47
+    ],
+    [
+     "/E2/REF9",
+     38.07
+    ],
+    [
+     "/A01/C8e6645_DRIVE",
+     34.25
+    ],
+    [
+     "/E4/REF9",
+     34.22
+    ],
+    [
+     "/E4/REF9_FB",
+     32.17
+    ],
+    [
+     "/E2/FALL_EXPO_DRIVE",
+     30.75
+    ],
+    [
+     "/E4/RISE_EXPO_REF",
+     30.5
+    ],
+    [
+     "/E4/RISE_EXPO_EMITTER",
+     30.5
+    ],
+    [
+     "/E2/RISE_EXPO_SUM",
+     29.98
+    ],
+    [
+     "/E2/REF5",
+     28.48
+    ],
+    [
+     "/E2/FALL_EXPO_SUM",
+     28.25
+    ],
+    [
+     "/E3/RISE_EXPO_EMITTER",
+     25.5
+    ],
+    [
+     "/E3/REF1",
+     25.5
+    ],
+    [
+     "/E3/REF9",
+     25.5
+    ],
+    [
+     "/E5/REF5",
+     24.29
+    ],
+    [
+     "/E1/REF9_FB",
+     24.0
+    ],
+    [
+     "/E1/REF9",
+     24.0
+    ],
+    [
+     "/E1/REF1_RAW",
+     24.0
+    ],
+    [
+     "/E1/REF1",
+     24.0
+    ],
+    [
+     "/E4/ENV_BUFFER",
+     23.48
+    ],
+    [
+     "/E3/RISE_EXPO_DRIVE",
+     22.51
+    ],
+    [
+     "/W2/C73c7d0_RAW_5V",
+     22.32
+    ],
+    [
+     "/E1/ENV_STORAGE",
+     21.76
+    ],
+    [
+     "/O4/OCT_FILTER",
+     21.5
+    ],
+    [
+     "/O4/OCT_CV",
+     21.5
+    ],
+    [
+     "/O4/LOCAL_REFN5",
+     21.48
+    ],
+    [
+     "/O4/TUNE_MANUAL",
+     21.46
+    ],
+    [
+     "/O4/FINE_MANUAL",
+     21.46
+    ],
+    [
+     "/O4/BASE_REFN5_DRIVE",
+     21.19
+    ],
+    [
+     "/E3/RISE_EXPO_SUM",
+     20.51
+    ],
+    [
+     "/E3/GATE_REF",
+     20.42
+    ],
+    [
+     "/E2/FALL_EXPO_EMITTER",
+     20.17
+    ],
+    [
+     "/E1/FALL_EXPO_DRIVE",
+     19.96
+    ],
+    [
+     "/E6/REFN5",
+     19.73
+    ],
+    [
+     "/E5/REF1",
+     19.6
+    ],
+    [
+     "/E3/REF5",
+     19.39
+    ],
+    [
+     "/O4/BASE_REFN5_FB",
+     18.94
+    ],
+    [
+     "/E6/ENV_STORAGE",
+     18.45
+    ],
+    [
+     "/O5/SINE_REFN5_FB",
+     18.0
+    ],
+    [
+     "/O5/SINE_REFN5_DRIVE",
+     18.0
+    ],
+    [
+     "/O5/SINE_REF5_FB",
+     18.0
+    ],
+    [
+     "/O5/SINE_REF5_DRIVE",
+     18.0
+    ],
+    [
+     "/E6/REF8",
+     17.71
+    ],
+    [
+     "/A02/C38cac0_W_SENSE",
+     17.52
+    ],
+    [
+     "/E6/Cf89b5a_INV",
+     17.5
+    ],
+    [
+     "/E1/FALL_EXPO_REF",
+     17.0
+    ],
+    [
+     "/E1/FALL_EXPO_EMITTER",
+     17.0
+    ],
+    [
+     "/E1/ENV_BUFFER",
+     17.0
+    ],
+    [
+     "/O4/BASE_REF5_FB",
+     16.97
+    ],
+    [
+     "/O4/BASE_REF5_DRIVE",
+     16.97
+    ],
+    [
+     "/E4/REF8_FB",
+     16.97
+    ],
+    [
+     "/E6/FALL_EXPO_SUM",
+     16.73
+    ],
+    [
+     "/E2/REF8_FB",
+     16.47
+    ],
+    [
+     "/E6/Cf89b5a_RAW_5V",
+     14.73
+    ],
+    [
+     "/E1/REF5",
+     14.67
+    ],
+    [
+     "/E6/REF9",
+     14.64
+    ],
+    [
+     "/E6/REF1",
+     14.04
+    ],
+    [
+     "/E2/FALL_EXPO_REF",
+     14.0
+    ],
+    [
+     "/O4/SINE_REF5_DRIVE",
+     13.88
+    ],
+    [
+     "/M4B/Cd90fa0_INV",
+     13.58
+    ],
+    [
+     "/W2/C73c7d0_GATE_RAW",
+     13.56
+    ],
+    [
+     "/F3/EXPO_SCALE_SUM",
+     12.5
+    ],
+    [
+     "/F3/EXPO_COMMAND",
+     12.5
+    ],
+    [
+     "/F3/C835e04_RAW_5V",
+     12.5
+    ],
+    [
+     "/F3/C835e04_INV",
+     12.5
+    ],
+    [
+     "/E2/REF8",
+     11.79
+    ],
+    [
+     "/A06/Cc045d2_W_SENSE",
+     11.76
+    ],
+    [
+     "/M4B/REFN5",
+     11.52
+    ],
+    [
+     "/A06/C38cac0_W_SENSE",
+     11.5
+    ],
+    [
+     "/O4/SINE_REF5_FB",
+     11.38
+    ],
+    [
+     "/E2/Cf89b5a_INV",
+     11.32
+    ],
+    [
+     "/M4B/Cd90fa0_GATE_RAW",
+     11.29
+    ],
+    [
+     "/O4/LOCAL_REF5_DRIVE",
+     11.1
+    ],
+    [
+     "/E4/ENV_STORAGE",
+     10.95
+    ],
+    [
+     "/OCTAVE_REF/C5c0054_T2",
+     10.55
+    ],
+    [
+     "/E6/ENV_BUFFER",
+     10.5
+    ],
+    [
+     "/E6/REF8_FB",
+     10.42
+    ],
+    [
+     "/OCTAVE_REF/C5c0054_T1",
+     10.29
+    ],
+    [
+     "/A03/C38cac0_W_SENSE",
+     10.28
+    ],
+    [
+     "/E3/REF1_RAW",
+     10.02
+    ],
+    [
+     "/F1/EXPO_EMITTER",
+     10.0
+    ]
+   ]
+  }
+ }
+}

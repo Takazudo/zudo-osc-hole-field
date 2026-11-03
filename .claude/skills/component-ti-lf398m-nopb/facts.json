@@ -162,6 +162,25 @@
       "verdict": "NEEDS BENCH",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-sample-hold-absolute-maximum",
+      "record_id": "rec-sample-hold",
+      "source_id": "src-sample-hold-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "supply_V": 18,
+        "input_V": 18,
+        "logic_to_reference_max_V": 7,
+        "logic_to_reference_min_V": -30
+      },
+      "unit": "V",
+      "conditions": "Supply +/-18 V; input voltage +/-18 V; logic-to-logic-reference differential 7 V / -30 V (see datasheet note 4). Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-sample-hold-datasheet: physical PDF p.3, printed p.4, section 6.1 Absolute Maximum Ratings",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

@@ -1,0 +1,58 @@
+{
+  "authorship_exclusion": "Authored Stage13 capacitor input/generator/report/tests/CAPACITORS.md. Those files are excluded from this independent review; electrical/mechanical/root reviewers cover them. Independently reviewed root composition, calibration, package model and integration listed here.",
+  "checks": {
+    "breakdown": {
+      "capacitor_author_tests": 19,
+      "independent_calibration_tests": 15,
+      "independent_composition_tests": 16,
+      "independent_package_tests": 18
+    },
+    "focused_tests": 68,
+    "generator_checks": "Capacitor/package/calibration checks PASS; finalcomposition --check including allfourreviewreceipts PASS; predecessorwrapper PASS",
+    "historical_predecessor_wrapper": "PASS: preserve all289 first; rebuild frozenStage12 report; exactly3 mutable integration paths checked at5452566c; allother receipt sources checkedlive. No frozenfile edited.",
+    "independent_geometry": "Four pad coordinates reconstructed from density-B local centres with rear mirror and whole-package rotation; six actual pin-distance rows independently recomputed: PASS",
+    "primary_geometry_evidence": "Family printed15/physical14 land drawing visually inspected; exact body maxima checked against primary part documents",
+    "result": "PASS"
+  },
+  "hardware_acceptance": false,
+  "remaining_constraints": [
+    "Effective operating capacitance, full-conditionESR, startup/inrush/reversal/leakage budgets remain unqualified",
+    "Input capacitor return separation increases; local pad distances are not routing or loop-impedance proof",
+    "Four changed pad endpoints invalidate incident historical path metrics; full overlay graph rebudget remains open",
+    "Two existing controls cannot independently correct three affine observables; temporary presets are not persistent hardware calibration",
+    "Other-function solids and physical assembly remain unresolved; no native/simulation/hardware acceptance"
+  ],
+  "resolved_findings": [
+    "Root now reconstructs exact retained Stage12 resistor-corner parameters instead of trusting self-consistent reported cases",
+    "CALIBRATION.md equation corrected fromB(x) toB(a,x), consistent with modeled offset coupling",
+    "Stage12 historical receipts bind mutable integration files. New Stage13 wrapper checks those exact3allowlisted paths at reviewedcommit while retaining all frozen-source/report checks; two rejection tests verify no hash waiver or broad historical fallback."
+  ],
+  "reviewed": [
+    "Exact90packages/118units,88unchanged placements, four changed source pads and incident-edge invalidation; no inherited complete-path metric promoted",
+    "Actual density-B land sizes, positive-stripe registration, body/courtyard bounds, retained core obstacles and read-only frozen Stage11 model intersections",
+    "Coherent11source-corner calibration cases, coupledintercept Jacobian, boundedsettings, unadjustable CVgain and unavailable mathematical correction",
+    "Independent source-corner reconstruction,315residual arithmetic checks and4saturationcases; historical criteria/unknownload/headroom preserved",
+    "Final STAGE13 summary, calibration/package narratives and no-native generator integration"
+  ],
+  "reviewer": "code_review_stage2",
+  "source_sha256": {
+    "design/architecture-278/implementation/README.md": "d31699ad21a0bedb98765c3c10274e130e31cb7281b660aefe23180bd1606dec",
+    "design/architecture-278/implementation/STAGE13.md": "42e37e405b8ee84446cb44063bb767bb9cc71b845dc13490aa0d4d7f51edf1a3",
+    "design/architecture-278/implementation/stage13/CALIBRATION.md": "651bd7381f1975db4a32a3f11ce6344c1a6f05c623ff1c6de566d4aa4bf55325",
+    "design/architecture-278/implementation/stage13/PACKAGES.md": "6abfb037b7c8f1d07b262bff3d8295586e286012bbbcfc2062886a0e93b756e8",
+    "design/architecture-278/implementation/stage13/assessment-report.json": "a653a816f0b0072dca0b9d07dc6f220a978111dee10309a76d0effde1813c005",
+    "design/architecture-278/implementation/stage13/calibration-input.json": "d27ba571ab06737ab1702f2ba5522fe06571fd03cde3d3b8c1156196faaa428e",
+    "design/architecture-278/implementation/stage13/calibration-report.json": "39ca85076b6ad3c158895a26c1c8f906c9231e8fa00272ff1c40c91d09a8eb98",
+    "design/architecture-278/implementation/stage13/package-input.json": "7d26f234a694ee946cabdca471d9fa545772d16cdb262324191e9f2432067799",
+    "design/architecture-278/implementation/stage13/package-report.json": "a467994f4b0bc90cd22c27bc9cb2a46b44c38f35eb676133589b77df9933b83d",
+    "design/architecture-278/implementation/stage13/scope.json": "01549d8c6230713e349c90cc8de4d8d91f32e2b25c5e9f659e342b1d3564f484",
+    "scripts/architecture278/implementation/check_source.py": "d46eef46e65a992f809c7f10e029f1ccfeabaf974e8eda0f493345d01a5d1dfd",
+    "scripts/architecture278/implementation/stage13_assessment.py": "beecfe8dbb3b4de0f0a504a1e7b2f9296927086387b9e75f6e126bad378b4cf6",
+    "scripts/architecture278/implementation/stage13_calibration.py": "a24edf6e2a6c5d28873ca2adda26ebe49efc5374e15147f8b312733152926ed7",
+    "scripts/architecture278/implementation/stage13_packages.py": "eefc869df49613e108c85af4ad217c02d70e5cd239f5f3a395be2e7f6820270b",
+    "scripts/architecture278/implementation/test_stage13_assessment.py": "b927cf53506ba9af1f86fda84cf1783c6bf92c23f3981822fa44dd03ae42353f",
+    "scripts/architecture278/implementation/test_stage13_calibration.py": "4cf2cdb12245ecf2da1b6b05e9c1bf3138d7cdd691ea6d74a45f81e37d664cd9",
+    "scripts/architecture278/implementation/test_stage13_packages.py": "46703da1a96c45e5ecd2589ee9b20270b154e0d791cdadfb5257796652539898"
+  },
+  "status": "FROZEN SOURCE REVIEW COMPLETE; APPLICATION/HARDWARE ACCEPTANCE OPEN"
+}

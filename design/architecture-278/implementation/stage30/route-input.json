@@ -1,0 +1,28 @@
+{
+  "status": "ROUTE_STUDY_INPUT_ASSUMPTIONS_NOT_MEASURED",
+  "scope": "A01 J-PWR GH cable (H-J-PWR-1..4) between A01:J-PWR:local and A01:J-PWR:middle; separate from the DIN correction",
+  "assumptions": {
+    "wire_od_mm": {"value": 1.0, "basis": "upper end of the JST GH applicable insulation OD 0.76-1.0 (Stage28 harness-policy)", "status": "ASSUMPTION"},
+    "bundle_diameter_factor": {"value": 2.414213562373095, "basis": "four round conductors packed in a circle: (1 + sqrt 2) x OD", "status": "ASSUMPTION"},
+    "placement_margin_mm": {"value": 0.5, "basis": "allowance for wire placement and part tolerance; clearance unqualified", "status": "ASSUMPTION"},
+    "component_body_height_mm": {"value": 3.0, "basis": "envelope above the face for A01 SMD/SOIC parts whose heights Stage10 does not record", "status": "ASSUMPTION"},
+    "min_bend_radius_mm": {"value": 5.0, "basis": "5 x OD for comparison only; the harness maker must state the real limit (Q-H01/Q-H02)", "status": "ASSUMPTION"},
+    "foreign_unknown_depth_top_z_mm": {"value": 34, "basis": "Stage10 gives no depth behind the locked foreign hardware PCBs (z 21.6); Stage30 caps that unknown volume at the A01-middle carrier front; route-study reports the cap at which each candidate would meet it", "status": "ASSUMPTION"},
+    "release_travel_mm": {"value": 15, "basis": "Stage10 GH release sweep: mated 7.3 mm plus 15 mm axial release", "status": "STAGE10_PROPOSAL"},
+    "service_slack_mm": {"value": 10, "basis": "Stage10 minimum proxy slack rule for GH cuts", "status": "STAGE10_PROPOSAL"},
+    "w2_sensitivity_od_mm": [0.76, 1.0],
+    "w2_sensitivity_margin_mm": [0.0, 0.5]
+  },
+  "candidates": [
+    {"id": "W1", "title": "Bypass the J-SIG middle release sweep at proxy height", "existing_geometry": true,
+     "waypoints_mm": [[226, 173, 46], [262, 160, 46], [272, 158.8, 44], [283, 150, 36]]},
+    {"id": "W2", "title": "Run in the slot between the middle carrier rail top and the A01-middle front face", "existing_geometry": true,
+     "waypoints_mm": [[226, 173, 46], [231, 172, 47.2], [270, 159.2, 47.2], [283, 150, 36]]},
+    {"id": "W3", "title": "Wrap below the jack board edge and pass in front of the middle carrier", "existing_geometry": true,
+     "waypoints_mm": [[226, 173, 46], [226, 192, 46], [226, 192, 32], [275, 165, 32], [283, 150, 36]]},
+    {"id": "W4", "title": "Pass a local relief in the middle carrier left rail (minimum change, proposal only)", "existing_geometry": false,
+     "waypoints_mm": [[226, 173, 46], [250, 165, 45.6], [272, 159.2, 38], [283, 150, 36]],
+     "modification": {"kind": "RAIL_TOP_RELIEF", "obstacle": "rail:middle:0", "y_mm": [158, 177], "relieved_top_z_mm": 43.5,
+       "status": "PROPOSAL_NOT_ADOPTED; needs owner approval and a mechanical re-check of the middle carrier rail"}}
+  ]
+}

@@ -145,7 +145,7 @@ def source_data(families=None, instances=None):
                 if n is not None:
                     nets[netname(n)].append({'ref':ref,'unit':p.unit,'pin':pin,'region':reg,'island':island,
                                            'role':p.attributes.get('Role',''),'type':pin_types[pin], 'uid':uid})
-            if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) and p.unit in range(1,5):
+            if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')) and p.unit in range(1,5):
                 output,minus,_=AMP_MAPS[p.unit-1]
                 if p.pins[minus] != p.pins[output]:sensitive.add(netname(p.pins[minus]))
     for p in packages.values():

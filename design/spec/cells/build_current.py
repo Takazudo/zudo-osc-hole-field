@@ -14,7 +14,7 @@ def build():
   subtotal={r:0.0 for r in RAILS};basis=[];unquantified=[]
   for part in cell['parts']:
    role=part.get('opamp_role');id=part.get('part_id')
-   load_id='opamp_precision' if role=='precision' else 'opamp_indicator' if role=='indicator' else 'opamp_audio' if role=='audio' else 'opamp_cv' if role=='cv' else 'fault_switches' if id=='fault_switch' else 'comparators' if id=='comparator' else None
+   load_id='opamp_precision' if role=='precision' else 'opamp_indicator' if role=='indicator' else 'opamp_audio' if role=='audio' else 'opamp_cv' if role=='cv' else 'fault_switches' if id=='fault_switch' else 'fault_switches_tmux7412f' if id=='fault_switch_tmux' else 'comparators' if id=='comparator' else None
    if load_id:
     load=LOADS[load_id];numbers=dict(load['planning_unit_mA'])
     if id=='comparator' and cell['id']=='gate_trigger_input':numbers['-12V']=0

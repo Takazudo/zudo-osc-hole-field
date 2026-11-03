@@ -1,0 +1,6 @@
+# Preserve reviewed raw KiCad SVG bytes, including its trailing spaces.
+review-only/*.svg -whitespace
+review-only/**/*.svg -whitespace
+# Windows-generated receipts intentionally retain their reviewed CRLF bytes.
+review-only/audit.json whitespace=cr-at-eol
+review-only/bom-review-only.csv whitespace=cr-at-eol

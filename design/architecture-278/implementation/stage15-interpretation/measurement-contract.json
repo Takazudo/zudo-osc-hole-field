@@ -1,0 +1,47 @@
+{
+  "calibration_performed": false,
+  "common_conditions": {
+    "execution": "NOT RUN; proposal only",
+    "measurement_plane": "IN/OFFSET_TIP and OUT_TIP relative to declared source/receiver grounds; record meter uncertainty, source Thevenin impedance and actual load impedance",
+    "rails": "Record actual positive/negative rails, reference and ground shifts; no new tolerance",
+    "range": "Only unclipped states within verified headroom for accuracy; overload characterization separate",
+    "temperature": "Proposed25C characterization point, not a newly adopted service condition or tolerance",
+    "warmup": "20 minutes from canonical standard; record actual stabilization"
+  },
+  "lanes": {
+    "calibrated_path": {
+      "acceptance_status": "OPEN_MISSING_FACTORY_PROCEDURE",
+      "allowed_adjustments": "No adjustment performed or authorized here. Factoryprocedure must identify real permissible actuators, sequence,range,persistence and independent verification points. Existingfrontcontrols are not assumed independentgain trims; no numerical subtraction/fitting counts as physicalcalibration",
+      "held_controls": "Record desiredgain/manualoffset and exact control positions; once permittedfactoryadjustment is completed, lock settings across verification sweep; usercontrol changes require separately defined acceptance states",
+      "load": "Propose10kohm static acceptance load, explicitly unadopted; finalfactoryprotocol must specify load",
+      "metric": "Compare actual output after approvedfactoryprocedure with approved targettransfer; retain2mV canonical static target. No postcal residual available",
+      "reference": "Independent calibrated external sources/meter and specified desiredmanualoffset; no nominal pot endpoint or on-board reference treated as perfect",
+      "stimulus": "Propose externalCV sweep and IN centre/\u00b11 endpoints, manualmid/endpoints and selected mixed states, all unclipped; final acceptance grid must be approved"
+    },
+    "fixed_setting": {
+      "allowed_adjustments": "None during a state; moving to another declared state is setup, not calibration",
+      "held_controls": "Lock recorded ATTEN/OFFSET per state; rails, temperature, reference and load fixed during readings",
+      "load": "Propose10kohm atOUT_TIP with instrument loading recorded; historical resistor-only values exclude output stage",
+      "metric": "Uncalibrated fixed-setting residual; historical16.475227mV max and6.00105mV manualendpoint sensitivity are not postcal acceptance bounds",
+      "reference": "Ideal electrical-fraction law (2a-1)*IN+CV+5*(2x-1), using measured external inputs; nominal5V manual reference is a diagnostic assumption",
+      "stimulus": "Retain ten historical states at recorded electrical a/x fractions; include manual endpoints with IN=CV=0"
+    },
+    "paired_CV": {
+      "allowed_adjustments": "None within sweep; difference or fitted slope is diagnostic only, no output correction or calibration coefficients applied",
+      "held_controls": "Set and record ATTEN/OFFSET once; no changes across paired readings; actual reference/rails/temp and load unchanged",
+      "load": "Propose10kohm fixed throughout slope/intercept measurement; no mixing open andloaded points",
+      "metric": "Gain=(OUT(+5)\u2212OUT(\u22125))/(CV(+5)\u2212CV(\u22125)); report intercept/OUT0 and each raw residual separately. Constant intercept cancels only to extent stable; pairedspan error not a2mV absolute acceptance test",
+      "reference": "Independent traceable external voltage readings, not on-boardREF5 or nominal pot fraction; record OUT0 separately",
+      "stimulus": "IN=0; external OFFSET_CV sweep\u22125,0,+5V measured atjack, using same source impedance"
+    },
+    "same_setting_load": {
+      "allowed_adjustments": "None between paired loads; do not rezero or change stimulus to restore target output after load changes",
+      "held_controls": "Hold inputs, ATTEN/OFFSET, calibrationstate, rails/temp/reference and groundconnection unchanged within each pair; record settling",
+      "load": "Open\u219210kohm ascanonical; record actual resistance and instrument loading",
+      "metric": "OUT10k\u2212OUTopen at same setting; retain distinct1mV target, not summed into or replaced by calibrated2mV target",
+      "reference": "Same external meter/referenceplane for both readings; open means documented instrument load",
+      "stimulus": "Establish nominal\u22125,0,+5V output test states using declared input/control setup, then alternate open and10kohm atOUT_TIP"
+    }
+  },
+  "status": "PROPOSED_UNADOPTED"
+}

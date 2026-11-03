@@ -344,6 +344,36 @@
       "basis": "ADG5412F Rev C Table 1 p4 ±15 V normal-mode table; extrapolation allowance at project ±12 V, not guaranteed at this voltage."
     },
     {
+      "id": "fault_switches_tmux7412f",
+      "quantity": 98,
+      "typical_unit_mA": {
+        "+12V": 0.32,
+        "-12V": 0.26,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 0.6,
+        "-12V": 0.5,
+        "+5V": 0
+      },
+      "basis": "UNADOPTED S2b candidate: TMUX7412F SCDS404B Section 7.6 (index 7) +/-16.5 V IDD/ISS, 25 C typical and -40..125 C maximum; not guaranteed at project +/-12 V."
+    },
+    {
+      "id": "switches_tmux6112",
+      "quantity": 12,
+      "typical_unit_mA": {
+        "+12V": 0.017,
+        "-12V": 0.008,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 0.023,
+        "-12V": 0.012,
+        "+5V": 0
+      },
+      "basis": "UNADOPTED S2b candidate: TMUX6112 SCDS383F Section 6.5 (index 5-6) +/-15 V IDD/ISS, 25 C typical and -40..125 C maximum; not guaranteed at project +/-12 V. SEL-hold divider current is not included."
+    },
+    {
       "id": "ota",
       "quantity": 16,
       "typical_unit_mA": {

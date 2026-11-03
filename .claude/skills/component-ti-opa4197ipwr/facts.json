@@ -197,6 +197,130 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-supply-absolute",
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "dual_supply_V": 20,
+        "single_supply_V": 40
+      },
+      "unit": "V",
+      "conditions": "VS = (V+) - (V-); dual-supply maximum is +/-20 V, single-supply maximum 40 V, over operating free-air temperature. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-op-precision-datasheet: physical PDF p.4, printed p.5, section 6.1 Absolute Maximum Ratings, Supply voltage row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-input-absolute",
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "common_mode_below_V_minus_V": -0.5,
+        "common_mode_above_V_plus_V": 0.5,
+        "differential_above_supply_span_V": 0.2,
+        "input_current_mA": 10
+      },
+      "unit": "V and mA",
+      "conditions": "Signal input pins: common-mode voltage (V-) - 0.5 V to (V+) + 0.5 V; differential (V+) - (V-) + 0.2 V; input current +/-10 mA. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-op-precision-datasheet: physical PDF p.4, printed p.5, section 6.1 Absolute Maximum Ratings, Signal input pins rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-supply-recommended",
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "class": "RECOMMENDED_OPERATION",
+      "value": {
+        "minimum_span_V": 4.5,
+        "minimum_dual_V": 2.25,
+        "maximum_span_V": 36,
+        "maximum_dual_V": 18
+      },
+      "unit": "V",
+      "conditions": "Recommended supply VS = (V+) - (V-): 4.5 V (+/-2.25 V) to 36 V (+/-18 V). No behaviour is specified below the minimum.",
+      "locator": "src-op-precision-datasheet: physical PDF p.4, printed p.5, section 6.3 Recommended Operating Conditions, Supply voltage row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-esd-steering",
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Current-steering ESD diodes connect the input and output pins back to the internal power-supply lines, meeting at an absorption device or supply ESD cell; intended to stay inactive in normal operation. No forward voltage or in-circuit current rating is given.",
+      "unit": "NONE",
+      "conditions": "Manufacturer description of OPAx197 internal ESD structure (Electrical Overstress section). Structure only; it is not a guaranteed clamp level.",
+      "locator": "src-op-precision-datasheet: physical PDF p.24, printed p.25, section 7.3.7 Electrical Overstress and Figure 52",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-output-swing",
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "no_load_max_mV": 25,
+        "rload_10k_max_mV": 125,
+        "rload_2k_max_mV": 500
+      },
+      "unit": "mV",
+      "conditions": "Voltage output swing from either rail, maximum, TA = 25 C, VS = +/-4 V to +/-18 V, RLOAD connected to VS/2. No temperature-range row.",
+      "locator": "Section/table audit: src-op-precision-datasheet physical PDF page index 7, printed p.8, section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, OUTPUT VO rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-input-common-mode-range",
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "minimum_below_V_minus_V": -0.1,
+        "maximum_above_V_plus_V": 0.1
+      },
+      "unit": "V",
+      "conditions": "Operating common-mode voltage range VCM = (V-) - 0.1 V .. (V+) + 0.1 V, table header VS = +/-4 V to +/-18 V (8 V to 36 V), TA = 25 C; no separate full-temperature VCM row. At the project +/-12 V rails this is -12.1 .. +12.1 V nominal.",
+      "locator": "src-op-precision-datasheet: PDF page index 6, printed page 7, Section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, INPUT VOLTAGE, Common-mode voltage range row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-precision-input-stage-transition",
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "cmrr_min_dB_low_region_full_temperature": 110,
+        "cmrr_min_dB_high_region_full_temperature": 80,
+        "low_region": "(V-) - 0.1 V < VCM < (V+) - 3 V",
+        "high_region": "(V+) - 1.5 V < VCM < (V+)",
+        "unspecified_region": "(V+) - 3 V < VCM < (V+) - 1.5 V"
+      },
+      "unit": "dB",
+      "conditions": "CMRR minima at VS = +/-18 V, TA = -40..125 C: 110 dB for (V-) - 0.1 V < VCM < (V+) - 3 V and 80 dB for (V+) - 1.5 V < VCM < (V+). The input-stage transition region (V+) - 3 V .. (V+) - 1.5 V has no table limit (\"See Typical Characteristics\"). Offset VOS is specified separately at VCM = (V+) - 1.5 V (+/-100 uV max at 25 C). Rows are at VS = +/-18 V, not +/-12 V.",
+      "locator": "src-op-precision-datasheet: PDF page index 6, printed page 7, Section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, INPUT VOLTAGE, CMRR rows; OFFSET VOLTAGE VOS rows",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

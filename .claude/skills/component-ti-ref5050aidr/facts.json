@@ -87,7 +87,7 @@
       "record_id": "rec-reference",
       "source_id": "src-reference-datasheet",
       "class": "GUARANTEED_ELECTRICAL",
-      "value": "No exact-part electrical limits promoted from retained evidence.",
+      "value": "Absolute maximum ratings are promoted as separate facts; operating electrical characteristics and project supply suitability are not promoted.",
       "unit": "NONE",
       "conditions": "The task has not promoted a source-backed limit for this exact shortlist record.",
       "locator": "src-reference-datasheet: exact component electrical-characteristics table not promoted",
@@ -121,6 +121,42 @@
       "locator": "Section/table audit: src-reference-shortlist: parts[id=reference].package; CAD receipt is provisional family geometry",
       "provenance": "PROJECT-CHOICE",
       "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-reference-absolute-maximum",
+      "record_id": "rec-reference",
+      "source_id": "src-reference-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "VIN_min_V": -0.3,
+        "VIN_max_V": 18,
+        "VOUT_min_V": -0.3,
+        "VOUT_max_V": 5.5
+      },
+      "unit": "V",
+      "conditions": "REF50xxI and REF50xxAI row (note 2): input -0.3 V to 18 V; output -0.3 V to 5.5 V. The 48 V row applies to REF50xxEI only. Absolute maximum stress rating, not an operating condition.",
+      "locator": "src-reference-datasheet: physical PDF p.4, printed p.5, section 6.1 Absolute Maximum Ratings and note 2",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-reference-input-recommended",
+      "record_id": "rec-reference",
+      "source_id": "src-reference-datasheet",
+      "class": "RECOMMENDED_OPERATION",
+      "value": {
+        "VIN_min_above_VOUT_V": 0.2,
+        "VIN_max_V": 18
+      },
+      "unit": "V",
+      "conditions": "REF50xxI/AI: VIN from VOUT + 0.2 V to 18 V; for REF5050 that is 5.2 V minimum.",
+      "locator": "src-reference-datasheet: physical PDF p.4, printed p.5, section 6.3 Recommended Operating Conditions, VIN row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
     }

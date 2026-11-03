@@ -1,0 +1,69 @@
+{
+ "schema_version": 1,
+ "status": "UNADOPTED CANDIDATE; route comparison and 25 C source arithmetic only; no schematic change made",
+ "routes": [
+  {
+   "id": "ADG-envelope",
+   "content": "S2: envelope switches stay on ADG5412FBRUZ (12 per unit)",
+   "per_unit_usd": 1298.49,
+   "per_lot_usd": 5942.93,
+   "delta_vs_S2b_per_unit_usd": 102.3,
+   "blocker": "ADG5412FBRUZ stock 0 against 60 parts per 5-unit lot",
+   "TMUX6112_row": "not applicable (ADG5412F logic rows already PASS with the existing sequencing)"
+  },
+  {
+   "id": "SEL-hold",
+   "content": "S2b plus, per SEL: 100 kOhm series RC0603FR-07100KL and BAT54S,215 (pin 3 = SEL, pin 2 = +12 V, pin 1 = AGND)",
+   "added_parts_per_unit": {
+    "BAT54S_215": 36,
+    "RC0603FR-07100KL": 36
+   },
+   "added_placements_per_unit": 72,
+   "added_per_unit_usd": 1.1,
+   "added_per_lot_usd": 5.49,
+   "per_unit_usd": 1197.29,
+   "per_lot_usd": 5416.06,
+   "stock": {
+    "BAT54S_215": 221108,
+    "RC0603FR-07100KL": 8997036
+   },
+   "TMUX6112_row": {
+    "verdict": "CONDITIONAL PASS at 25 C",
+    "basis": "Under definition 1 the clamp current is <= 0.008 mA, so SEL <= VDD + 240 mV maximum (BAT54S VF at 0.1 mA, 25 C). Unsequenced with +5 V at the PROPOSED 5.5 V ceiling: <= 0.055 mA, also inside the 0.1 mA row. Both stay below VDD + 0.3 V.",
+    "open": [
+     "BAT54S VF has no maximum away from 25 C (fact-clamp-diode-forward-voltage-temperature); the 60 mV margin at cold is UNKNOWN",
+     "Both BAT54S diodes leak <= 2 uA each at 25 V: <= 0.40 V drop in 100 kOhm, plus 1.6 % into the 6 MOhm typical pull-down; SEL high stays about 4.5 V at +5 V, above VIH 2 V",
+     "Series RC with the SEL and diode capacitance adds roughly microsecond delay; envelope clock is 50 us; not simulated",
+     "Board K placement and the #293 fill/DRC would need a rerun"
+    ]
+   }
+  },
+  {
+   "id": "PD-0.3V",
+   "content": "S2b with the PD definition-1 bound tightened from 0.8 V to 0.3 V",
+   "per_unit_usd": 1196.19,
+   "per_lot_usd": 5410.57,
+   "saving_vs_SEL_hold_per_unit_usd": 1.1,
+   "blocker": "PD contract change; not clearly cheapest (saves only the SEL-hold parts)"
+  }
+ ],
+ "recommendation": "SEL-hold: lowest-cost route that does not need a PD change; it avoids the ADG5412F stock-0 blocker",
+ "sources": {
+  "scenario_totals": "design/readiness/cost-reduction-study.json and doc research page section 4",
+  "prices": [
+   {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "BAT54S_215",
+    "retrieved": "2026-10-31",
+    "response_sha256": "3e39bc91a299160126931a2057ff0947ede9716db8ed76881c273e2cf68ebb08"
+   },
+   {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RC0603FR-07100KL",
+    "retrieved": "2026-10-31",
+    "response_sha256": "850dcfa8d10f21e2178bffa83fcb598cadc5f10b4d1f7eb3a3c4b7d65a17f9a1"
+   }
+  ],
+  "tmux6112": "SCDS383F 6.1 (index 4) VDIG GND-0.3..VDD+0.3 V, IDIG +/-30 mA; 6.5 (index 5) RPD 6 MOhm"
+ }
+}

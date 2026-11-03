@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-clamp-diode-ll-exact-orderable-identity",
+      "record_id": "rec-clamp-diode-ll",
+      "domain": "exact orderable identity",
+      "status": "OPEN",
+      "reason": "The retained data sheet names type BAV199 in SOT23; the ,215 packing suffix appears only in the distributor row, and the nexperia.com page was access-denied.",
+      "fact_ids": [
+        "fact-clamp-diode-ll-orderable-identity",
+        "fact-clamp-diode-ll-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-clamp-diode-ll-orderable-identity"
+      ]
+    },
+    {
+      "coverage_id": "cov-clamp-diode-ll-pinout",
+      "record_id": "rec-clamp-diode-ll",
+      "domain": "pinout",
+      "status": "OPEN",
+      "reason": "The mirrored pinning table covers every pad; it stays UNSOURCED until compared with a manufacturer-hosted copy. No project nets are assigned by this record.",
+      "fact_ids": [
+        "fact-clamp-diode-ll-pinout"
+      ],
+      "blocking_fact_ids": [
+        "fact-clamp-diode-ll-pinout"
+      ]
+    },
+    {
+      "coverage_id": "cov-clamp-diode-ll-electrical-limits",
+      "record_id": "rec-clamp-diode-ll",
+      "domain": "electrical limits",
+      "status": "OPEN",
+      "reason": "Limits are transcribed from the mirrored data sheet with their conditions; UNSOURCED until a manufacturer-hosted copy confirms the bytes.",
+      "fact_ids": [
+        "fact-clamp-diode-ll-reverse-voltage-absolute",
+        "fact-clamp-diode-ll-forward-current-absolute",
+        "fact-clamp-diode-ll-power-thermal",
+        "fact-clamp-diode-ll-forward-voltage",
+        "fact-clamp-diode-ll-reverse-current",
+        "fact-clamp-diode-ll-reverse-current-temperature",
+        "fact-clamp-diode-ll-capacitance-recovery"
+      ],
+      "blocking_fact_ids": [
+        "fact-clamp-diode-ll-reverse-voltage-absolute",
+        "fact-clamp-diode-ll-forward-current-absolute",
+        "fact-clamp-diode-ll-power-thermal",
+        "fact-clamp-diode-ll-forward-voltage",
+        "fact-clamp-diode-ll-reverse-current",
+        "fact-clamp-diode-ll-reverse-current-temperature",
+        "fact-clamp-diode-ll-capacitance-recovery"
+      ]
+    },
+    {
+      "coverage_id": "cov-clamp-diode-ll-manufacturer-product-description",
+      "record_id": "rec-clamp-diode-ll",
+      "domain": "manufacturer product description",
+      "status": "OPEN",
+      "reason": "The mirrored document identifies the product; manufacturer-host comparison is pending. This is not application qualification.",
+      "fact_ids": [
+        "fact-clamp-diode-ll-product-function",
+        "fact-clamp-diode-ll-manufacturer"
+      ],
+      "blocking_fact_ids": [
+        "fact-clamp-diode-ll-product-function",
+        "fact-clamp-diode-ll-manufacturer"
+      ]
+    },
+    {
+      "coverage_id": "cov-clamp-diode-ll-mechanical-fit",
+      "record_id": "rec-clamp-diode-ll",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "Land and envelope are reused draft geometry; physical fit is not validated.",
+      "fact_ids": [
+        "fact-clamp-diode-ll-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-clamp-diode-ll-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-clamp-diode-ll-procurement",
+      "record_id": "rec-clamp-diode-ll",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Stock, lead time, consignment and assembly allocation remain unverified.",
+      "fact_ids": [
+        "fact-clamp-diode-ll-assembly-allocation",
+        "fact-clamp-diode-ll-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-clamp-diode-ll-assembly-allocation"
+      ]
+    },
+    {
+      "coverage_id": "cov-clamp-diode-ll-input-overdrive",
+      "record_id": "rec-clamp-diode-ll",
+      "domain": "op-amp input overdrive",
+      "status": "OPEN",
+      "reason": "Silicon VF has no maximum below 1 mA; the bootstrap clamp D_BOOT (phase 25) bounds SENSE at 25 C only, so below 25 C the (V+) + 0.5 V row stays UNKNOWN as a guarantee.",
+      "fact_ids": [
+        "fact-clamp-diode-ll-input-overdrive",
+        "fact-clamp-diode-ll-forward-voltage"
+      ],
+      "blocking_fact_ids": [
+        "fact-clamp-diode-ll-input-overdrive"
+      ]
+    }
+  ]
+}

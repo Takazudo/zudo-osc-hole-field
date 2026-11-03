@@ -1,0 +1,11 @@
+# Harness and complete-path metrics are separate
+
+The reproducible report keeps225exact crossings per retained scenario. Each row separates wire cut range, GH/DIN developed contact allocations, front/middle/rear PCB trace allocations and total. The original harness envelope is evaluated only where wire exists; direct shared-to-rear branches have no wire metric, not an invented zero-length pass. Historical complete-path300mm sensitivity results retain all old allowances and38/50/38 failures for the stage3baseline/stage3refined/stage4shared-repair scenarios.
+
+There are190 wired endpoint rows but160 distinct signal conductors. The actual85 harnesses carry270 conductors:160 signal and110 AGND. Several endpoint rows share one physical conductor; endpoint rows must not be summed as separate cables or capacitance. Every physical cut is60±3mm in this source allocation;57mm minimum is used for service-slack checks,63mm maximum for length accounting. These are unmeasured source allocations.
+
+The GH-pair15mm and DIN-pair25mm developed allocations and trace1.15 octile routing factor plus5mm segment/1mm each endpoint tolerance are unchanged. No wire pass removes connector or trace terms. All rows retain assembled electrical qualification UNKNOWN and combined acceptance NOT QUALIFIED. Neither the original length envelope nor the historical complete-path comparison supplies actual capacitance, error, phase margin, return quality or noise performance.
+
+All nine shared direct-capacitance networks retain aggregate unique-segment accounting across five instances. Actual extracted capacitances remainnull. The five selected1kohm/100nF receiver switching loads remain a separate dynamic obligation, not hidden within or substituted for the1nF direct envelope. Numerical circuit sensitivities and characterization requirements are separate evidence; no simulation or native campaign is launched.
+
+The explicit Stage5 eight-header repair is a fourth225-row scenario. It changes26 path allocations and23 return records, preserves38 historical strict overlength rows and leaves the maximum334.018298mm. All270 physical wires retain at least12.224881mm minimum-cut straight-distance slack against the10mm allocation. This does not certify cable bends or assembled service access.

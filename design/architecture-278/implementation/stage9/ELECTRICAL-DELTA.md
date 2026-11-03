@@ -1,0 +1,22 @@
+# Electrical consequences of the one elevated-board alternative
+
+The alternative keeps all56 original X1 packages,76 units and seven fixed panel devices. Forty-nine nonfixed packages stay whole on the elevated jack/control boards; the fixed jacks, selector and LEDs retain their positions. Each0402 LED remains soldered to a local support PCB. No LED is treated as a free-standing wired component.
+
+Fifteen permanent factory-terminated wires connect the fixed terminal plane to elevated PCB lands: three jack tips, three jack sleeves, six LED A/K connections and three selector contacts. The three jack TN terminals remain NC. Together with the existing15 service-harness conductors this is30 physical wires. There are zero additional mating interfaces or crimps. The initially considered GH7/GH3 terminal ports were rejected because their mechanical compatibility with existing power ports would permit incompatible power/signal mating.
+
+The15 added wires have30 wire-end terminations: nine jack/switch tails, six LED-support board wire lands and15 elevated-board lands. This is not automatically30 additional solder joints relative to Stage8: direct-tail termination replaces former directPCB attachment, and NC mechanical retention remains unspecified. The six LED device pads are separate from the six support-board wire lands. The proposed35±3mm wire cuts, nominal endpoint geometry and Z27 dogleg polylines are candidate engineering inputs. The report checks both straight endpoint distance and proposed developed polyline length against the stated10mm slack proposal. Positive slack does not qualify bend radii, wire-guide insulation, accepted termination reach or physical installation. Actual factory tail datums, insulation, wire identity, accepted solder process and strain relief remain unresolved.
+
+| Extension | Electrical consequence |
+| --- | --- |
+| J809/J909 tip | Added conductor is before the ADG5412F protection. Its capacitance, coupling and external fault exposure cannot be treated as already protected internal copper. |
+| J1009 tip | One physical wire carries the output load path and lies within the remote-feedback loop. Count it once physically; account for it in both loop and load analyses. |
+| Three jack sleeves | Added series return impedance and possible external patch ground-loop paths. No equal return sharing or cancellation is assumed. |
+| Three LED A/K pairs | Preserve bridge polarity and signed current paths. Neither wire is an AGND substitute. Added loop parasitics and headroom need evaluation. |
+| SW608 contacts1/3 | Retain A/B selection after their respective2.2kΩ resistors. The mapping is not reversed to simplify wiring. |
+| SW608 common2 | High impedance when open; added capacitance, leakage and switching behavior matter. It must not be treated as an ordinary low-impedance power return. |
+
+Each LED has a separate source-pad-to-local-wire-land allocation, including the1.6mm through-board barrel; the wire begins on the rear face of its support board, not directly on the0402 pad. The report retains this local copper allocation separately from the wire cut. At38mm maximum each, the15 wire cuts sum to570mm of inventory. This is not a570mm signal path. The existing service headers also move in depth; front J-PWR moves to(129.5,172), and middle C-PWR moves in Y; Stage8's path, wire-slack and return numbers therefore cannot be carried forward as actual Stage9 values. Full paths, aggregate capacitance and return impedance need a later bounded recalculation using the finalized geometry. The global cable/capacitance obligations remain in force; this delta report does not waive them or substitute a new complete-path300mm rule.
+
+Routine service replaces either of two separate factory subassemblies, jack or control. Each subassembly disconnects its own two existing service ports. Individual terminal repair is a factory operation rather than a home-soldering requirement. This service policy does not itself establish connector access, mechanical support, assembly quality or electrical qualification.
+
+The smallest electrical follow-up is to settle accepted terminal and wire construction, then calculate the affected full paths and current-return impedances and characterize the changed output-feedback and selector-open behavior. No simulation, native KiCad, physical test or assembled acceptance is claimed here. The reproducible delta generator validates the exact15 source pin/net correspondences and reports these limits; it does not perform full routing.

@@ -1,0 +1,379 @@
+{
+  "ESR_scope": "C7102 max0.7ohm at100kHz25C only. Neither full-condition ESR<=1.5ohm stability nor1..1.5ohm noise recommendation is established.",
+  "accuracy_recommendation": "Separate scope: evaluate a precision matched-ratio implementation or explicit independent adjustment of OFFSET-CV gain (R7124/R7123 times R7126/R7125) against the retained2mV total static budget, including all other errors. No values/topology changed here. Product alternative: explicitly limit A01 to nonprecision modulation/manual offset instead of promising calibrated precision pitch-CV service; existing criteria remain until owner decision. Existing two controls cannot supply this independent correction.",
+  "architecture_adopted": false,
+  "backfeed_qualified": false,
+  "buffer_conditions": {
+    "PW_bias_max_full_temperature_A": 1.5e-08,
+    "bias_conditions": "PW package \u221240..125C at table testconditions including midsupply commonmode; sensitivity not guaranteed\u00b112V/5V assembled bound",
+    "input_abs_commonmode_beyond_rails_V": 0.5,
+    "input_abs_current_A": 0.01,
+    "off_state_input_current_bound_A": null,
+    "sha256": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd",
+    "source": "TI OPAx197 SBOS737C \u00a76.7 physical6 printed7 PW bias; \u00a76.1 physical4 printed5 absolute limits; \u00a77.3.7 physical24/25 printed25/26 Figure52 input ESD steering",
+    "url": "https://www.ti.com/lit/ds/symlink/opa4197.pdf",
+    "warning": "Absolute maxima are not permitted normal injection targets. Input ESD paths can backfeed a collapsed rail; supply ramp/current limiting and safe fault-test plan unresolved."
+  },
+  "buffer_output_loads_historical": {
+    "REF5_nominal_unloaded_source_A": 0.0006409836065573772,
+    "REF5_with_position_load_max_sampled_A": 0.0006414835565623766,
+    "REFN5_nominal_unloaded_sink_A": 0.0006000000000000001,
+    "REFN5_with_position_load_max_sampled_A": 0.0006004999500049995,
+    "endpoints": {
+      "REF5": [
+        {
+          "owner": "rear-core",
+          "pin": "1",
+          "ref": "R7101"
+        },
+        {
+          "owner": "rear-core",
+          "pin": "1",
+          "ref": "R7103"
+        },
+        {
+          "owner": "front-control",
+          "pin": "3",
+          "ref": "RV1308"
+        },
+        {
+          "owner": "rear-core",
+          "pin": "1",
+          "ref": "U7104"
+        },
+        {
+          "owner": "rear-core",
+          "pin": "2",
+          "ref": "U7104"
+        },
+        {
+          "owner": "front-jack",
+          "pin": "3",
+          "ref": "U7107"
+        }
+      ],
+      "REFN5": [
+        {
+          "owner": "rear-core",
+          "pin": "1",
+          "ref": "R7102"
+        },
+        {
+          "owner": "front-control",
+          "pin": "1",
+          "ref": "RV1308"
+        },
+        {
+          "owner": "rear-core",
+          "pin": "7",
+          "ref": "U7104"
+        },
+        {
+          "owner": "front-jack",
+          "pin": "2",
+          "ref": "U7108"
+        }
+      ]
+    },
+    "scope": "Ideal \u00b15V, virtual-ground inversion and unloaded comparator inputs; reference buffers source/sink these loads, REF5050 raw output feeds buffer input. Bias/leakage/transient/stability not zero or qualified."
+  },
+  "capacitor_accounting": [
+    {
+      "MPN": "T491C475K050AT",
+      "actual_peak_current_A": null,
+      "assumed_linear_ramp_sensitivities": [
+        {
+          "actual_ramp_or_current_guaranteed": false,
+          "assumed_ramp_s": 0.001,
+          "capacitor_current_interval_A": [
+            0.055836,
+            0.068244
+          ]
+        },
+        {
+          "actual_ramp_or_current_guaranteed": false,
+          "assumed_ramp_s": 0.01,
+          "capacitor_current_interval_A": [
+            0.005583599999999999,
+            0.0068244
+          ]
+        },
+        {
+          "actual_ramp_or_current_guaranteed": false,
+          "assumed_ramp_s": 0.1,
+          "capacitor_current_interval_A": [
+            0.0005583599999999999,
+            0.00068244
+          ]
+        }
+      ],
+      "conditioned_leakage_A": {
+        "125": 2.88e-05,
+        "25": 2.4e-06,
+        "85": 2.4e-05
+      },
+      "continuous_reverse_allowed": false,
+      "guaranteed_discharge_time_s": null,
+      "initial_C_interval_F": [
+        4.23e-06,
+        5.1700000000000005e-06
+      ],
+      "initial_charge_interval_C": [
+        5.5836e-05,
+        6.8244e-05
+      ],
+      "initial_energy_interval_J": [
+        0.0003685176,
+        0.00045041039999999997
+      ],
+      "leakage_conditions": "Rated voltage after5min/25C;85/125C multipliers are separate temperature qualification steps, not startup or combined lifetime bounds",
+      "ref": "C7101",
+      "scope": "Independent initial-tolerance capacitor arithmetic at stated voltage. No actual ramp, effective service C, inrush or qualified energy discharge path asserted.",
+      "short_transient_reverse_limits_V": {
+        "125": 0.5,
+        "25": 7.5,
+        "85": 2.5
+      },
+      "voltage_V": 13.2
+    },
+    {
+      "MPN": "T491D226K035AT",
+      "actual_peak_current_A": null,
+      "assumed_linear_ramp_sensitivities": [
+        {
+          "actual_ramp_or_current_guaranteed": false,
+          "assumed_ramp_s": 0.001,
+          "capacitor_current_interval_A": [
+            0.09899999999999999,
+            0.12100000000000001
+          ]
+        },
+        {
+          "actual_ramp_or_current_guaranteed": false,
+          "assumed_ramp_s": 0.01,
+          "capacitor_current_interval_A": [
+            0.009899999999999999,
+            0.012100000000000001
+          ]
+        },
+        {
+          "actual_ramp_or_current_guaranteed": false,
+          "assumed_ramp_s": 0.1,
+          "capacitor_current_interval_A": [
+            0.0009899999999999998,
+            0.0012100000000000001
+          ]
+        }
+      ],
+      "conditioned_leakage_A": {
+        "125": 9.240000000000001e-05,
+        "25": 7.7e-06,
+        "85": 7.7e-05
+      },
+      "continuous_reverse_allowed": false,
+      "guaranteed_discharge_time_s": null,
+      "initial_C_interval_F": [
+        1.98e-05,
+        2.4200000000000002e-05
+      ],
+      "initial_charge_interval_C": [
+        9.9e-05,
+        0.00012100000000000001
+      ],
+      "initial_energy_interval_J": [
+        0.0002475,
+        0.00030250000000000003
+      ],
+      "leakage_conditions": "Rated voltage after5min/25C;85/125C multipliers are separate temperature qualification steps, not startup or combined lifetime bounds",
+      "ref": "C7102",
+      "scope": "Independent initial-tolerance capacitor arithmetic at stated voltage. No actual ramp, effective service C, inrush or qualified energy discharge path asserted.",
+      "short_transient_reverse_limits_V": {
+        "125": 0.35000000000000003,
+        "25": 5.25,
+        "85": 1.75
+      },
+      "voltage_V": 5
+    }
+  ],
+  "charge_balance": "I_REF_out = Ceff*dVraw/dt + I_C7102_leak + I_U7104_input + I_board + I_injection; supply also bears C7101/C7107 charge and leakage plus REF IQ. No available startup-current guarantee => no guaranteed rise time.",
+  "discharge_balance": "I_discharge(V,t,state) has no guaranteed positive lower bound. Maximum leakage and operating sink rating cannot establish a safe wait time. Charged RAW5V can inject into an unpowered buffer through rail ESD steering; REF VOUT-to-VIN reverse current is unspecified here.",
+  "discharge_time_upper_bound_s": null,
+  "disposition": "CONDITIONAL_CANDIDATE",
+  "disposition_reason": "Retain this exact pair as conditional candidate with named validation cases. Source conditions do not demonstrate a deterministic violation, guaranteed startup or safe discharge. No new capacitor search or silent protection/bleed addition. A failed named case must produce an evidenced rejection or a separately scoped correction, not automatic redesign.",
+  "effective_service_C_and_ESR_qualified": false,
+  "hardware_acceptance": false,
+  "load_separation": "REF5050 feeds C7102 and U7104:3 input. U7104 output supplies REF5 pot/divider/inverter loads from amplifier rails; these are not direct RAW5V DC loads. C7101 leakage/charging draw from+12V and return AGND; C7102 leakage/charging draw from REF and return AGND. Startup and all other source loads remain additional.",
+  "native": "NOT RUN",
+  "physical": "NOT RUN",
+  "raw_reference_conditioned_load_subtotals": [
+    {
+      "C7102_conditioned_leakage_A": 7.7e-06,
+      "buffer_abs_bias_sensitivity_A": 1.5e-08,
+      "complete_or_joint_condition_bound": false,
+      "raw_reference_load_subtotal_A": 7.715000000000002e-06,
+      "scope": "Conservative15nA PW bias sensitivity plus separately conditioned rated-voltage capacitor leakage; no board leakage, transient charging, off-state injection or shared-condition guarantee.",
+      "temperature_C": 25
+    },
+    {
+      "C7102_conditioned_leakage_A": 7.7e-05,
+      "buffer_abs_bias_sensitivity_A": 1.5e-08,
+      "complete_or_joint_condition_bound": false,
+      "raw_reference_load_subtotal_A": 7.701500000000001e-05,
+      "scope": "Conservative15nA PW bias sensitivity plus separately conditioned rated-voltage capacitor leakage; no board leakage, transient charging, off-state injection or shared-condition guarantee.",
+      "temperature_C": 85
+    },
+    {
+      "C7102_conditioned_leakage_A": 9.240000000000001e-05,
+      "buffer_abs_bias_sensitivity_A": 1.5e-08,
+      "complete_or_joint_condition_bound": false,
+      "raw_reference_load_subtotal_A": 9.241500000000002e-05,
+      "scope": "Conservative15nA PW bias sensitivity plus separately conditioned rated-voltage capacitor leakage; no board leakage, transient charging, off-state injection or shared-condition guarantee.",
+      "temperature_C": 125
+    }
+  ],
+  "raw_reference_endpoints": [
+    "C7102:1",
+    "U7101:6",
+    "U7104:3"
+  ],
+  "reference_conditions": {
+    "IQ_conditions": "\u221240..125C,ILOAD=0,CL=1uF and stated VIN; application must meet stability conditions",
+    "IQ_max_full_temperature_A": 0.0012,
+    "VIN_abs_V": [
+      -0.3,
+      18
+    ],
+    "VOUT_abs_V": [
+      -0.3,
+      5.5
+    ],
+    "guaranteed_VOUT_to_VIN_reverse_current_A": null,
+    "guaranteed_off_state_sink_A": null,
+    "guaranteed_startup_current_A": null,
+    "operating_VIN_min_over_VOUT_V": 0.2,
+    "operating_output_current_A": [
+      -0.01,
+      0.01
+    ],
+    "short_circuit_condition": "VOUT=0; typical, no minimum/maximum startup guarantee",
+    "short_circuit_typical_A": 0.025,
+    "source": "TI SBOS410O October2025 \u00a76.1/6.3 physical4 printed5;\u00a76.5 physical6/7 printed7/8;\u00a78.4.1 physical25 printed26; AI D-package ordering addendum",
+    "turn_on_condition": "To0.1%,25C,ILOAD=0,CL=1uF,stated VIN range; not a22uF guarantee",
+    "turn_on_test_capacitance_F": 1e-06,
+    "turn_on_typical_s": 0.0002
+  },
+  "retained_C7107_nominal_charge_at13p2V_C": 1.3199999999999999e-06,
+  "retained_C7107_scope": "Separate nominal100nF sensitivity, not added to a guaranteed interval; C7107 unchanged.",
+  "simulation": "NOT RUN",
+  "source_sha256": {
+    "design/architecture-278/implementation/stage10/inventory-report.json": "b88055d78d3cb5a7722e993e4b8d33b347e4eb2c4492e9a523c3eb968d8c8af0",
+    "design/architecture-278/implementation/stage11/electrical-report.json": "0656f4ee664cd872590d8bf42e5e6bfd02a3239288a26b28afb3b4c57bc2f10d",
+    "design/architecture-278/implementation/stage13/calibration-report.json": "39ca85076b6ad3c158895a26c1c8f906c9231e8fa00272ff1c40c91d09a8eb98",
+    "design/architecture-278/implementation/stage13/capacitor-input.json": "d0abb430257b3def8dd36d24821d137bbee9f37d0d4b80e0595e7c04a297fa3e",
+    "design/architecture-278/implementation/stage13/capacitor-report.json": "b87ab1c5060d076a0e27cb679ae41447e24298768299445fbf40c76a6faeedb0",
+    "design/architecture-278/implementation/stage14/electrical-input.json": "6fd85c88af592721ebecd422547e2e5f097cffac316bfef9bf45324118b99208",
+    "design/architecture-278/implementation/stage14/interfaces-report.json": "44a962602b887f3a401a2f2356b0bdd603357ff1c4152899345eeb013f8f0643",
+    "scripts/architecture278/implementation/stage14_electrical.py": "4a3e3cda909ee22f5738c665339dca6e8eac3b8fc31e596c91355403b2ac58d1",
+    "scripts/architecture278/implementation/test_stage14_electrical.py": "94ebaf610f8cb513b663900dc18da352c7b35626d848fab4a0559706d035ec02"
+  },
+  "startup_time_upper_bound_s": null,
+  "status": "CONDITIONAL CANDIDATE; NOT QUALIFIED",
+  "supply_conditioned_subtotals": [
+    {
+      "complete_or_joint_condition_bound": false,
+      "input_cap_leakage_conditioned_A": 2.4e-06,
+      "raw_output_load_subtotal_A": 7.715000000000002e-06,
+      "reference_IQ_conditioned_A": 0.0012,
+      "represented_supply_current_subtotal_A": 0.0012101149999999999,
+      "temperature_C": 25
+    },
+    {
+      "complete_or_joint_condition_bound": false,
+      "input_cap_leakage_conditioned_A": 2.4e-05,
+      "raw_output_load_subtotal_A": 7.701500000000001e-05,
+      "reference_IQ_conditioned_A": 0.0012,
+      "represented_supply_current_subtotal_A": 0.0013010149999999998,
+      "temperature_C": 85
+    },
+    {
+      "complete_or_joint_condition_bound": false,
+      "input_cap_leakage_conditioned_A": 2.88e-05,
+      "raw_output_load_subtotal_A": 9.241500000000002e-05,
+      "reference_IQ_conditioned_A": 0.0012,
+      "represented_supply_current_subtotal_A": 0.001321215,
+      "temperature_C": 125
+    }
+  ],
+  "validation_cases": [
+    {
+      "criterion": "Verify operating limits, actual capacitor DC polarity and separately conditioned effectiveC/ESR. Complete DC/load accuracy remains separate Stage13-open acceptance.",
+      "id": "normal",
+      "observables": "VIN,VRAW,VREF5,VREFN5,REF and buffer rail currents,noise and leakage",
+      "status": "NOT RUN",
+      "stimulus": "Intended rail/load/temperature corners after warmup"
+    },
+    {
+      "criterion": "No abs-max excursion; meet normal limits when settled; establish startup performance against a separately approved timing target.\u00b110mA operating and25mA typical are not startup-current bounds.",
+      "id": "fast_start",
+      "observables": "Capacitor and REF current, input/output overshoot, charge, rail droop,settling",
+      "status": "NOT RUN",
+      "stimulus": "Simultaneous supply application at declared source impedance and fastest intended ramp"
+    },
+    {
+      "criterion": "Characterize loss/recovery and no damaging injection. Accepted ramp and settling envelope must be defined before physical admission.",
+      "id": "slow_brownout",
+      "observables": "REF/buffer outputs,oscillation,rail current,monotonicity,recovery",
+      "status": "NOT RUN",
+      "stimulus": "Slow ramp,hold near dropout,brownout and recovery"
+    },
+    {
+      "criterion": "Obtain safe reverse-current conditions from manufacturer or approved characterization; absolute VOUT limit alone does not qualify reverse conduction.",
+      "id": "reference_supply_loss",
+      "observables": "VOUT\u2212VIN,reverse current,charge destination,AGND motion",
+      "status": "NOT RUN",
+      "stimulus": "REF VIN collapse with output initially charged; model independent source/rail timing explicitly"
+    },
+    {
+      "criterion": "No uncontrolled rail-clamp injection; verify exact input conditions and safe current-limited test boundaries before execution. Normal15nA bias is inapplicable.",
+      "id": "buffer_supply_loss",
+      "observables": "U7104:3 relative to each rail,ESD injection,phantom rail charging,REF recovery",
+      "status": "NOT RUN",
+      "stimulus": "RAW5V remains charged while U7104 positive/negative rails collapse"
+    },
+    {
+      "criterion": "Bound missing-rail intervals and recovery; no linear buffer assumption before both supplies valid; protection/downstream loads included.",
+      "id": "unequal_rails",
+      "observables": "Positive/negative reference and output excursions,rail currents,polarity",
+      "status": "NOT RUN",
+      "stimulus": "+12V-first,\u221212V-first,+5V-first and all loss orders in actual common-rail topology"
+    },
+    {
+      "criterion": "Factory surge test is not arbitrary hotplug authorization; establish safe peak/current/energy envelope for exact parts and circuit.",
+      "id": "rapid_restart",
+      "observables": "Inrush,overshoot,residual charge,REF/buffer injection,source current",
+      "status": "NOT RUN",
+      "stimulus": "Short power interruptions and restart with residual capacitor charge,declared source impedance"
+    },
+    {
+      "criterion": "No continuous capacitor reversal; manufacturer short-transient fractions are not a duration-qualified system allowance and do not override TI\u22120.3V limits.",
+      "id": "reverse_ringing",
+      "observables": "C7101/C7102 terminal differential,REFVIN/VOUT relative toGND",
+      "status": "NOT RUN",
+      "stimulus": "Actual source/wiring transient and local ground displacement"
+    },
+    {
+      "criterion": "No guaranteed wait from leakage maxima. Establish measured/guaranteed discharged service condition and safe procedure before hardware service; no bleed added.",
+      "id": "discharge_service",
+      "observables": "All stored-voltage decay and backfeed paths,energy at service contacts",
+      "status": "NOT RUN",
+      "stimulus": "Power removed with both capacitors charged and all patch/source states represented"
+    },
+    {
+      "criterion": "Verify effective output1..50uF and applicable ESR/stability requirements;100kHz25C0.7ohm alone is insufficient; separate noise recommendation retained.",
+      "id": "stability",
+      "observables": "EffectiveC,ESR across relevant frequency,REF oscillation/noise/ringing",
+      "status": "NOT RUN",
+      "stimulus": "Intendedtemperature,bias,age/load/line steps andactual layout"
+    }
+  ]
+}

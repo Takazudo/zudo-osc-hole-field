@@ -1,0 +1,105 @@
+{
+  "status": "Stage11 source design refinement only; no physical acceptance",
+  "rear_crossmember_width_mm": 6,
+  "control_rail_depth_mm": 8,
+  "body_nominal_xy_mm": [
+    10,
+    10
+  ],
+  "body_clearance_each_side_mm": 0.2,
+  "cradle_front_lip_z_mm": [
+    2.2,
+    3.2
+  ],
+  "cradle_front_hole_diameter_mm": 8,
+  "cradle_rear_bridge_z_mm": [
+    12.6,
+    18.6
+  ],
+  "cradle_rear_bridge_height_y_mm": 7,
+  "cradle_insulator_pad_z_mm": [
+    11.6,
+    12.6
+  ],
+  "mount_tail_relief_diameter_mm": 4,
+  "rear_shaft_relief_diameter_mm": 3.4,
+  "relief_position_allowance_mm": 0.2,
+  "manufacturing_dimension_allowance_mm": 0.2,
+  "bearing_shim_requirement_mm": [
+    0.1,
+    0.4
+  ],
+  "loads": {
+    "PCB_service_N": 5,
+    "pot_push_N": 10,
+    "pot_side_N": 5,
+    "pot_external_torque_Nm": 0.2,
+    "DIN_insertion_sensitivity_N": 90,
+    "DIN_withdrawal_sensitivity_N": 60,
+    "deflection_screen_mm": 0.5,
+    "insulator_bridge_screen_mm": 0.2,
+    "status": "Named engineering planning assumptions, not owner acceptance, measured operating forces or rated assembled strength."
+  },
+  "fasteners": {
+    "PCB_M2p5_drill_mm": 3.8,
+    "PCB_sleeve_OD_mm": 3.5,
+    "PCB_sleeve_ID_mm": 2.7,
+    "PCB_flange_OD_mm": 5,
+    "PCB_flange_thickness_mm": 0.5,
+    "anchor_M3_drill_mm": 3.4,
+    "anchor_washer_OD_mm": 6,
+    "anchor_tool_OD_mm": 7,
+    "cleat_plate_thickness_mm": 3,
+    "anchor_edge_distance_mm": 5,
+    "joint_preload_range_N": [
+      100,
+      500
+    ],
+    "status": "Candidate dimensions and preload sensitivity only; screw grade/length/torque/locking and sleeve tolerances not selected. Thin sleeve wall is not credited as dielectric barrier; flange/interface pad provides separation.",
+    "PCB_hole_tolerance_mm": 0.1,
+    "PCB_sleeve_tolerance_mm": 0.05
+  },
+  "insulation": {
+    "required_nonfunctional_metal_clearance_mm": 1,
+    "guide_max_removed_mm": 2,
+    "guide_min_open_mm": 1,
+    "wire_max_finished_OD_requirement_mm": 0.8,
+    "guide_insert_wall_requirement_mm": 0.1,
+    "qualification": "Dimensional requirements only; actual wire/insert, creepage, contamination and wear not qualified."
+  },
+  "feed": {
+    "nets": [
+      "+12V",
+      "-12V",
+      "AGND"
+    ],
+    "stud_x_mm": [
+      250,
+      267,
+      284
+    ],
+    "stud_y_mm": 160,
+    "middle_face_z_mm": 51,
+    "rear_face_z_mm": 68.2,
+    "width_mm": 10,
+    "thickness_mm": 1,
+    "bend_y_mm": 146,
+    "bend_radius_mm": 3,
+    "maximum_developed_mm": 100,
+    "stud_drill_mm": 3.4,
+    "washer_OD_mm": 8,
+    "terminal_pad_width_mm": 12,
+    "insulating_barrier_thickness_mm": 2,
+    "dimension_tolerance_mm": 0.2,
+    "placement_allowance_mm": 0.4,
+    "wing_outline_mm": [
+      236,
+      154,
+      312,
+      174
+    ],
+    "cassette_slide_negative_y_mm": 30,
+    "side_exit_x_mm": 340,
+    "status": "Separate alternative three-strap feed envelope. Existing K-PWR GH hardware remains in baseline; no parallel-current credit. Electrical adoption, contact stack and current rating unqualified."
+  }
+}
