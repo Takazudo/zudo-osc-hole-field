@@ -33,6 +33,9 @@ EVICT_MAX_AREA_MM2=15.0
 # Phase 32 locality: S2b rail-clamp and bootstrap diodes never leave their slot by eviction, and an
 # added one is placed within CLUSTER_RADIUS_MM of the pinned parts on its own input nets.
 PROTECTION_DIODES=('BAV199,215','BAT54S,215')
+# Phase 33: boards whose evicted passives are re-placed near their own slot. JL keeps the accepted
+# d867e53e placement (locality placer for evicted parts); JR evicts nothing.
+EVICTED_LOCAL_BOARDS=('K',)
 BUCKET_MM=5.0
 BYPASS_LIMIT_MM=json.loads((ROOT/'design/partition/bypass-placement-evidence.json').read_text())['proposal']['maximum_supply_pad_to_capacitor_rail_pad_mm']
 SCALE=4
@@ -236,7 +239,7 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
             g=max((hp(cx,cy)-base for hp,base in groups),default=0.0)
             return max(g,0.0)+GROWTH_DISTANCE_WEIGHT*math.hypot(cx-slot['x_mm'],cy-slot['y_mm'])
         return cost
-    def local_pose(part,slot,baseline=True):
+    def local_pose(part,slot,baseline=True,evict=True):
         best=None;thetas=(slot['rotation_deg'],*(t for t in (0,90,180,270) if t!=slot['rotation_deg']))
         score=growth_cost(part,slot,baseline)
         ranked=sorted(((score(slot['x_mm']+dx,slot['y_mm']+dy),dx,dy) for dx,dy in offsets))
@@ -251,17 +254,17 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
                     placed=[(cpart,x+cx,y+cy,rotation,[b[0]+x+cx,b[1]+y+cy,b[2]+x+cx,b[3]+y+cy]) for cpart,x,y,rotation,b in local]
                     if not all(box_free(occ[side],b) for *_,b in placed):continue
                     hit=set().union(*(hits(side,b) for *_,b in placed))
-                    if not all(evictable(r) for r in hit):continue
+                    if not all(evictable(r) for r in hit) or hit and not evict:continue
                     cost=d+EVICT_COST_MM*len(hit)
                     if best is None or cost<best[0]:best=(cost,side,placed,hit)
         return best
-    def wide_pose(part,slot):
+    def wide_pose(part,slot,evict=True):
         # Board-wide nearest fit on a grid holding hardware, placed clusters and every non-evictable pin.
         best=None
         for side in (slot['side'],'B.Cu' if slot['side']=='F.Cu' else 'F.Cu'):
             g=copy.copy(occ[side]);g.rows=list(occ[side].rows)
             for ref in rows:
-                if ref not in released and side in faces(ref) and not evictable(ref):occupy_box(g,boxes[ref])
+                if ref not in released and side in faces(ref) and (not evict or not evictable(ref)):occupy_box(g,boxes[ref])
             penalty=0.0 if side==slot['side'] else FACE_PENALTY_MM
             for theta,cells,_ in poses(part,side,(0,90,180,270)):
                 local=[]
@@ -277,7 +280,7 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
                     x,y=turn(p,theta);x+=ox;y+=oy;rotation=(angle+theta)%360
                     b=oriented_box(shapes[cpart['footprint']],side,rotation);placed.append((cpart,x,y,rotation,[b[0]+x,b[1]+y,b[2]+x,b[3]+y]))
                 hit=set().union(*(hits(side,b) for *_,b in placed))
-                if all(evictable(r) for r in hit):best=(cost,side,placed,hit)
+                if all(evictable(r) for r in hit) and (evict or not hit):best=(cost,side,placed,hit)
         return best
     clusters={};evicted=set();moves=[];wide=[];unplaced=[]
     for ic in swapped:
@@ -327,6 +330,23 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
                                  'side':side,'courtyard_mm':b,'protection_locality':diodes[0]}
             placed_at[cpart['ref']]=(px,py,side)
     clusters.update(boots)
+    relocated={};far=[]
+    if board in EVICTED_LOCAL_BOARDS:
+        # An evicted passive is re-placed near its own slot (least growth on its nets) without evicting
+        # anything, instead of joining the board-wide locality placer.
+        for ref in sorted(evicted):
+            part=by_ref[ref];row=rows[ref];members[ref]=[]
+            slot={'x_mm':row['x_mm'],'y_mm':row['y_mm'],'rotation_deg':row['rotation_deg'],'side':row['side']}
+            best=local_pose(part,slot,evict=False) or wide_pose(part,slot,evict=False)
+            if best is None:
+                far.append(ref);continue
+            _,side,placed,_=best
+            for cpart,px,py,rotation,b in placed:
+                occupy_box(occ[side],b)
+                relocated[cpart['ref']]={'ref':cpart['ref'],'board':board,'fixed':False,'x_mm':px,'y_mm':py,'rotation_deg':rotation,
+                                         'side':side,'courtyard_mm':b,'evicted_near_slot':True}
+                placed_at[cpart['ref']]=(px,py,side)
+    clusters.update(relocated)
     pinned={}
     for ref,row in rows.items():
         if ref in released:continue
@@ -341,7 +361,8 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
     report[board]={'pinned':len(pinned),'swapped_clusters':len(swapped),'cluster_capacitors':len(in_cluster),
                    'clusters_board_wide':wide,'clusters_to_locality':unplaced,
                    'cluster_move_mm':{'max':round(max(moves,default=0),3),'median':round(statistics.median(moves),3) if moves else 0},
-                   'evicted':sorted(evicted),'protection_diodes_placed':len(boots),'protection_diodes_beyond_radius':boot_far}
+                   'evicted':sorted(evicted),'protection_diodes_placed':len(boots),'protection_diodes_beyond_radius':boot_far,
+                   'evicted_replaced_near_slot':len(relocated),'evicted_to_locality':far}
     taken=set(pinned)|set(clusters)
     return [p for p in free if p['ref'] not in taken],out
 
