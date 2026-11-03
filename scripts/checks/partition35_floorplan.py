@@ -21,6 +21,7 @@ from scripts.checks.jack_locality import place_jack_locality,stable_sum,FACE_PEN
 from scripts.checks.core_locality import spread_module_homes
 OUT=ROOT/'design/partition/floorplan-candidate.json'
 PINS=ROOT/'design/partition/adopted-placement-pins.json'
+EXCEPTIONS=ROOT/'design/partition/protection-locality-exceptions.json'
 RELEASE_ROUNDS=400
 RELEASE_STEP_MM=1.5
 WHOLE_MODULE_AFTER=4
@@ -513,6 +514,11 @@ def build():
     placements=apply_translations(placements,source,json.loads((ROOT/'design/partition/routing-placement-translations.json').read_text()),headers=connector['headers'])
     if Counter(p['ref'] for p in placements)!=Counter(p['ref'] for p in parts):errors.append('package roster mismatch')
     bypass,bypass_errors=check_bypasses(parts,placements,pin_nets);errors.extend(bypass_errors)
+    # A protection diode outside its locality radius needs a recorded, justified exception.
+    excepted={(e['board'],e['ref']) for e in json.loads(EXCEPTIONS.read_text())['exceptions']}
+    for board,r in adopted_report.items():
+        for ref in r.get('protection_diodes_beyond_radius',[]):
+            if (board,ref) not in excepted:errors.append('protection diode beyond locality radius without a recorded exception '+board+' '+ref)
     return {'schema_version':1,'status':'FAIL' if errors else 'PASS - conservative courtyard capacity proposal only',
             'errors':errors,'control_slew_locality':{'source':'design/partition/control-locality.json','status':'SOURCE GEOMETRY ONLY; native/routed/physical checks required','groups':locality},'grid_mm_by_board':{b:(.1 if b in JACK_BOARDS else .25) for b in source['boards']},'courtyard_gap_mm':.35,'drawn_edge_margin_mm':.30,'native_cached_inflation_ceiling_mm':.05,'native_free_clearance_lower_bound_mm':.25,'placements':placements,
             'control_bypass_locality':{'source':'design/partition/control-bypass-locality.json',**control_bypasses},
