@@ -31,6 +31,10 @@ CLUSTER_STEP_MM=0.5
 GROWTH_DISTANCE_WEIGHT=0.1
 EVICT_COST_MM=3.0
 EVICT_MAX_AREA_MM2=15.0
+# Phase 36: largest move of one pinned bypass capacitor that makes room for a protection diode, and
+# how many single-capacitor poses are tried per face.
+NUDGE_MAX_MM=2.0
+NUDGE_TRIALS=40
 # Phase 32 locality: S2b rail-clamp and bootstrap diodes never leave their slot by eviction, and an
 # added one is placed within CLUSTER_RADIUS_MM of the pinned parts on its own input nets.
 PROTECTION_DIODES=('BAV199,215','BAT54S,215')
@@ -283,7 +287,46 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
                 hit=set().union(*(hits(side,b) for *_,b in placed))
                 if all(evictable(r) for r in hit) and (evict or not hit):best=(cost,side,placed,hit)
         return best
-    clusters={};evicted=set();moves=[];wide=[];unplaced=[]
+    def supply_gap(cap,x,y,rotation,side,footprint):
+        # Closest cap rail pad to a pin of its IC on the same rail, mm.
+        rail=next((n for n in pin_nets[cap].values() if n in ('+12V','-12V','+5V')),None);ic=by_ref[cap]['decouples_ref']
+        if rail is None or ic not in rows:return math.inf
+        u=rows[ic];pins=[k for k,n in pin_nets[ic].items() if n==rail];mine=[k for k,n in pin_nets[cap].items() if n==rail]
+        return min(math.dist(pad_point(footprint,a,side,rotation,x,y),pad_point(u['footprint'],b,u['side'],u['rotation_deg'],u['x_mm'],u['y_mm']))
+                   for a in mine for b in pins)
+    def nudged_pose(part,slot):
+        # Phase 36: a protection diode with no legal pose in its radius may take the pose of one pinned
+        # bypass capacitor that moves at most NUDGE_MAX_MM, on its own face, without lengthening its supply loop.
+        score=growth_cost(part,slot,False);thetas=(0,90,180,270)
+        ranked=sorted((score(slot['x_mm']+dx,slot['y_mm']+dy),dx,dy) for dx,dy in offsets)
+        for side in (slot['side'],'B.Cu' if slot['side']=='F.Cu' else 'F.Cu'):
+            shapes_side=[local for _,_,local in poses(part,side,thetas)];tried=0
+            for s,dx,dy in ranked:
+                cx,cy=slot['x_mm']+dx,slot['y_mm']+dy
+                for local in shapes_side:
+                    placed=[(cpart,x+cx,y+cy,rotation,[b[0]+x+cx,b[1]+y+cy,b[2]+x+cx,b[3]+y+cy]) for cpart,x,y,rotation,b in local]
+                    if not all(box_free(occ[side],b) for *_,b in placed):continue
+                    hit=set().union(*(hits(side,b) for *_,b in placed))
+                    if len(hit)!=1:continue
+                    cap=next(iter(hit));ic=by_ref[cap]['decouples_ref']
+                    if not ic or ic not in rows or ic in released or tht[cap] or cap in reservations or rows[cap]['side']!=side:continue
+                    tried+=1
+                    if tried>NUDGE_TRIALS:break
+                    row=rows[cap];saved=list(occ[side].rows)
+                    for *_,b in placed:occupy_box(occ[side],b)
+                    released.add(cap);members[cap]=[]
+                    found=local_pose(by_ref[cap],{'x_mm':row['x_mm'],'y_mm':row['y_mm'],'rotation_deg':row['rotation_deg'],'side':row['side']},evict=False)
+                    occ[side].rows=saved
+                    if found is not None:
+                        _,cside,cplaced,_=found;c=cplaced[0];move=math.dist((c[1],c[2]),(row['x_mm'],row['y_mm']))
+                        before=supply_gap(cap,row['x_mm'],row['y_mm'],row['rotation_deg'],row['side'],row['footprint'])
+                        after=supply_gap(cap,c[1],c[2],c[3],cside,row['footprint'])
+                        if cside==row['side'] and move<=NUDGE_MAX_MM and after<=max(before,BYPASS_LIMIT_MM):
+                            return (s,side,placed,set()),{'diode':part['ref'],'capacitor':cap,'ic':ic,'move_mm':round(move,3),
+                                                          'supply_gap_mm':[round(before,3),round(after,3)],'placed':cplaced}
+                    released.discard(cap);members.pop(cap,None)
+        return None,None
+    clusters={};evicted=set();moves=[];wide=[];unplaced=[];nudges=[]
     for ic in swapped:
         part=by_ref.get(ic)
         if part is None:raise ValueError('swapped slot without a free package '+ic)
@@ -321,7 +364,8 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
         side=Counter(placed_at[r][2] for r in diodes).most_common(1)[0][0]
         members[part['ref']]=[]
         slot={'x_mm':x,'y_mm':y,'rotation_deg':0,'side':side}
-        best=local_pose(part,slot,baseline=False)
+        best=local_pose(part,slot,baseline=False);nudge=None
+        if best is None:best,nudge=nudged_pose(part,slot)
         if best is None:
             # Nothing legal within the radius: the nearest free board-wide pose, still recorded as beyond it.
             boot_far.append(part['ref']);best=wide_pose(part,slot,evict=False)
@@ -333,6 +377,13 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
             boots[cpart['ref']]={'ref':cpart['ref'],'board':board,'fixed':False,'x_mm':px,'y_mm':py,'rotation_deg':rotation,
                                  'side':side,'courtyard_mm':b,'protection_locality':diodes[0]}
             placed_at[cpart['ref']]=(px,py,side)
+        if nudge:
+            for cpart,px,py,rotation,b in nudge['placed']:
+                occupy_box(occ[side],b)
+                boots[cpart['ref']]={'ref':cpart['ref'],'board':board,'fixed':False,'x_mm':px,'y_mm':py,'rotation_deg':rotation,
+                                     'side':side,'courtyard_mm':b,'nudged_for':part['ref']}
+                placed_at[cpart['ref']]=(px,py,side)
+            nudges.append({k:v for k,v in nudge.items() if k!='placed'})
     clusters.update(boots)
     relocated={};far=[]
     if board in EVICTED_LOCAL_BOARDS:
@@ -366,6 +417,7 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
                    'clusters_board_wide':wide,'clusters_to_locality':unplaced,
                    'cluster_move_mm':{'max':round(max(moves,default=0),3),'median':round(statistics.median(moves),3) if moves else 0},
                    'evicted':sorted(evicted),'protection_diodes_placed':len(boots),'protection_diodes_beyond_radius':boot_far,
+                   **({'protection_diode_nudges':nudges} if nudges else {}),
                    'evicted_replaced_near_slot':len(relocated),'evicted_to_locality':far}
     taken=set(pinned)|set(clusters)
     return [p for p in free if p['ref'] not in taken],out

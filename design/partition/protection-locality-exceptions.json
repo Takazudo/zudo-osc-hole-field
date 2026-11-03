@@ -8,8 +8,14 @@
    "board": "K",
    "mpn": "BAT54S,215",
    "anchor": "U4206 (TMUX6112PWR); no amplifier shares its nets",
-   "anchor_mm": [242.48, 261.57],
-   "placed_mm": [242.81, 289.18],
+   "anchor_mm": [
+    242.48,
+    261.57
+   ],
+   "placed_mm": [
+    242.81,
+    289.18
+   ],
    "distance_mm": 27.61,
    "radius_mm": 24.0,
    "nets": {
@@ -23,16 +29,92 @@
     "free_after_evicting_small_passives": 0,
     "occupied_by_hardware_placed_clusters_or_outline": 13252,
     "blocked_only_by_non_evictable_pinned_parts": 1092,
-    "most_frequent_blockers": ["U4245", "U4233", "U4241", "U4243", "U4232", "C4250", "C4270", "D4205", "C4263", "C4266"],
+    "most_frequent_blockers": [
+     "U4245",
+     "U4233",
+     "U4241",
+     "U4243",
+     "U4232",
+     "C4250",
+     "C4270",
+     "D4205",
+     "C4263",
+     "C4266"
+    ],
     "nearest_single_blocker_poses": [
-     {"offset_mm": [-10.0, 0.0], "face": "F.Cu", "blocker": "C4270", "blocker_role": "bypass capacitor of pinned U4245"},
-     {"offset_mm": [-6.0, -14.0], "face": "F.Cu", "blocker": "C4249", "blocker_role": "bypass capacitor of pinned U4232"},
-     {"offset_mm": [-6.0, 14.0], "face": "F.Cu", "blocker": "C4267", "blocker_role": "bypass capacitor of pinned U4243"}
+     {
+      "offset_mm": [
+       -10.0,
+       0.0
+      ],
+      "face": "F.Cu",
+      "blocker": "C4270",
+      "blocker_role": "bypass capacitor of pinned U4245"
+     },
+     {
+      "offset_mm": [
+       -6.0,
+       -14.0
+      ],
+      "face": "F.Cu",
+      "blocker": "C4249",
+      "blocker_role": "bypass capacitor of pinned U4232"
+     },
+     {
+      "offset_mm": [
+       -6.0,
+       14.0
+      ],
+      "face": "F.Cu",
+      "blocker": "C4267",
+      "blocker_role": "bypass capacitor of pinned U4243"
+     }
     ]
    },
    "electrical_impact": "Both nets are logic-level envelope slope-select control (an HC00 gate output to an analog-switch select input), not a precision analog node. The extra 3.6 mm beyond the radius adds trace length and a little capacitance on a slow select line. This is a design assumption, not a measurement.",
-   "proposed_resolution": "PROPOSED: nudge C4270 within U4245's bypass-proximity limit so that D4233 fits 10 mm from U4206. That moves pinned copper, so it needs a K re-sync and rip-up. Deferred until the K rail stages are adopted.",
-   "decision": "user decision"
+   "proposed_resolution": "Phase 36 trial (generator rule nudged_pose: one pinned bypass capacitor may move at most 2.0 mm on its own face without lengthening its supply loop): rejected. Only C4270 (U4245) and C4249 (U4232) are sole blockers of in-radius poses. With either released, the nearest legal pose for C4270 is 20.43 mm away, which lengthens its supply-pad gap from 2.52 mm to 18.11 mm, and C4249 has no legal pose at all. No minimal move exists, so the exception stands.",
+   "decision": "user decision (keep the exception, or allow a multi-part re-placement)",
+   "nudge_trial": {
+    "rule": "scripts/checks/partition35_floorplan.py nudged_pose",
+    "max_move_mm": 2.0,
+    "candidates": [
+     {
+      "capacitor": "C4270",
+      "ic": "U4245",
+      "diode_offset_mm": [
+       -10.0,
+       0.0
+      ],
+      "nearest_capacitor_pose_mm": 20.427,
+      "supply_gap_mm": [
+       2.515,
+       18.111
+      ],
+      "result": "rejected: move > 2.0 mm and supply loop lengthened"
+     },
+     {
+      "capacitor": "C4249",
+      "ic": "U4232",
+      "diode_offset_mm": [
+       -6.0,
+       -14.0
+      ],
+      "nearest_capacitor_pose_mm": null,
+      "result": "rejected: no legal capacitor pose"
+     },
+     {
+      "capacitor": "C4250",
+      "ic": "U4233",
+      "nearest_capacitor_pose_mm": 17.357,
+      "supply_gap_mm": [
+       2.515,
+       19.116
+      ],
+      "result": "rejected: move > 2.0 mm and supply loop lengthened"
+     }
+    ],
+    "not_tried": "moves of two or more pinned parts"
+   }
   }
  ]
 }
