@@ -48,14 +48,37 @@ def identity(v):return (v['type'],v['severity'],tuple(sorted(i['uuid'] for i in 
 def normalized(rows):return {(a,b,tuple(c)) for a,b,c in rows}
 
 
-def append_observations(drc, observations):
+def append_observations(drc, observations, kinds=HOLE_TYPES):
     result=copy.deepcopy(drc);known={identity(v) for v in drc['violations']}
     for kind,severity,ids in sorted(observations):
-        if kind not in HOLE_TYPES:raise ValueError('unsupported appended observation')
+        if kind not in kinds:raise ValueError('unsupported appended observation')
         if (kind,severity,ids) not in known:
             result['violations'].append(dict(type=kind,severity=severity,items=[{'uuid':u} for u in ids],
                                             description='Complete pinned-native hole fixture observation'))
     return result
+
+
+SILK_TYPES=('silk_overlap','silk_over_copper')
+CAP=199
+
+
+def capped_types(drc):
+    counts=collections.Counter(v['type'] for v in drc['violations'] if v['severity']=='warning')
+    return {kind for kind,n in counts.items() if n>=CAP}
+
+
+def preexisting_capped_silk(before_drc, after_drc, before_text):
+    """After-report silk identities on objects already in the before board, for silk types the before report capped.
+
+    Valid only once complete_reports has proved, from complete native fixtures, that no
+    added copper and no growing zone creates a silk identity and that every non-routing
+    object is byte-identical: such an identity is then a pairwise native finding on
+    unchanged objects, which the capped before report merely did not list.
+    """
+    present=set(UUID_RE.findall(before_text))
+    kinds=capped_types(before_drc)&set(SILK_TYPES)
+    return {identity(v) for v in after_drc['violations']
+            if v['type'] in kinds and v['severity']=='warning' and v['items'] and all(i.get('uuid') in present for i in v['items'])}
 
 
 def check_caps(drc):
@@ -239,7 +262,10 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
         found.update(identity(v) for v in rows)
     if found!=normalized(mask['new_mask_identities']):raise ValueError('silk identity union incomplete')
     if found:raise ValueError('new complete native silk warning identities')
-    return append_observations(before_drc,old),append_observations(after_drc,new),dict(
+    silk=preexisting_capped_silk(before_drc,after_drc,before_board.read_text())
+    complete_before=append_observations(append_observations(before_drc,old),silk,kinds=SILK_TYPES)
+    return complete_before,append_observations(after_drc,new),dict(
+        before_capped_silk_identities_appended=len(silk),
         status='COMPLETE NATIVE HOLE OBSERVATIONS APPENDED; NO ORIGINAL FINDING REMOVED',
         before_hole_identities=len(old),after_hole_identities=len(new),new_hole_object_identities=[],
         new_silk_identities=[],before_source_sha256=sha(before_board),after_source_sha256=sha(after_board),

@@ -146,6 +146,33 @@ class CompleteWarningTests(unittest.TestCase):
         from scripts.pcbgen.complete_native_warnings import identity
         self.assertEqual({identity(v) for v in before['violations']},{identity(v) for v in after['violations']})
 
+    def test_capped_silk_samples_that_shift_are_reconciled_and_new_silk_still_fails(self):
+        from scripts.pcbgen.complete_native_warnings import preexisting_capped_silk
+        from scripts.pcbgen.route_jack_grid import promotion_gate
+        u=lambda i:f'00000000-0000-4000-8000-{i:012d}'
+        row=lambda kind,a,b:dict(type=kind,severity='warning',items=[{'uuid':u(a)},{'uuid':u(b)}])
+        before_text=' '.join(f'(uuid "{u(i)}")' for i in range(1000))
+        for kind in ('silk_overlap','silk_over_copper'):
+            with self.subTest(kind=kind):
+                before={'violations':[row(kind,i,i+1) for i in range(0,398,2)],'schematic_parity':[]}
+                # Same 250 native findings, a different 199-row sample after an unrelated change.
+                after={'violations':[row(kind,i,i+1) for i in range(102,500,2)],'schematic_parity':[]}
+                dump={'pads':[],'islands':{},'open_edges':1}
+                self.assertTrue(promotion_gate({**dump,'open_edges':2},dump,before,after)['new_warning_identities'])
+                silk=preexisting_capped_silk(before,after,before_text)
+                full=append_observations(before,silk,kinds=('silk_overlap','silk_over_copper'))
+                gate=promotion_gate({**dump,'open_edges':2},dump,full,after)
+                self.assertEqual((gate['adopted'],gate['new_warning_identities']),(True,[]))
+                # A finding on an object the before board lacks is never reconciled.
+                after['violations'][0]=dict(type=kind,severity='warning',items=[{'uuid':u(1)},{'uuid':'11111111-0000-4000-8000-000000000000'}])
+                full=append_observations(before,preexisting_capped_silk(before,after,before_text),kinds=('silk_overlap','silk_over_copper'))
+                self.assertFalse(promotion_gate({**dump,'open_edges':2},dump,full,after)['adopted'])
+
+    def test_uncapped_silk_is_never_reconciled(self):
+        from scripts.pcbgen.complete_native_warnings import preexisting_capped_silk
+        row=dict(type='silk_overlap',severity='warning',items=[{'uuid':'00000000-0000-4000-8000-000000000001'}])
+        self.assertEqual(preexisting_capped_silk({'violations':[]},{'violations':[row]},'(uuid "00000000-0000-4000-8000-000000000001")'),set())
+
     def test_no_other_warning_type_can_be_appended(self):
         with self.assertRaises(ValueError):append_observations({'violations':[]},{('track_dangling','warning',('a',))})
 

@@ -140,5 +140,27 @@ class HoleSpacingTests(unittest.TestCase):
         self.assertEqual(driver.AGND_POUR_LAYERS,['F.Cu','B.Cu','In1.Cu'])
 
 
+class CompleteGateTests(unittest.TestCase):
+    def files(self,folder,name,drc,dump):
+        import pathlib
+        d=pathlib.Path(folder)/name;d.mkdir();(d/'drc.json').write_text(json.dumps(drc));(d/'dump.json').write_text(json.dumps(dump));return d/'b.kicad_pcb'
+
+    def test_uncapped_reports_keep_the_raw_verdict_without_audits(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as f:
+            cur=self.files(f,'a',{'violations':[]},{});cand=self.files(f,'b',{'violations':[]},{})
+            receipt={'adopted':True}
+            self.assertIs(driver.complete_gate('x',cur,cand,receipt,{'name':'s'}),receipt);self.assertEqual(receipt,{'adopted':True})
+
+    def test_capped_reports_without_prerequisites_skip_audits_and_keep_the_rejection(self):
+        import tempfile
+        row={'type':'silk_overlap','severity':'warning','items':[]}
+        with tempfile.TemporaryDirectory() as f:
+            cur=self.files(f,'a',{'violations':[row]*199},{});cand=self.files(f,'b',{'violations':[row]*199},{})
+            r=driver.complete_gate('x',cur,cand,{'adopted':False,'split_pad_groups':[{'net':'AGND'}],'new_warning_identities':[],'native_errors':False,
+                                              'open_edges_before':2,'open_edges_after':1},{'name':'s'})
+            self.assertEqual((r['adopted'],r['capped_warning_types'],r['complete_native_warning_evidence_status']),(False,['silk_overlap'],'NOT RUN: native prerequisites failed'))
+
+
 if __name__=='__main__':
     unittest.main()

@@ -543,6 +543,34 @@ def promotion_gate(before,after,before_drc,after_drc):
             'split_pad_groups':splits,'new_warning_identities':new_warnings,'native_errors':native_errors}
 
 
+def complete_gate(board_id,current,candidate,receipt,spec,zone_batch_size=16):
+    """Re-run the unchanged promotion gate on complete warning inputs when a native report hit the cap.
+
+    KiCad 10.0.6 lists at most 199 warnings per type and has no uncapped option, so capped
+    reports are completed from source-bound native fixtures (complete_native_warnings). The
+    raw verdict is kept; evidence that cannot be completed rejects the stage (fail closed).
+    """
+    from scripts.pcbgen.complete_native_warnings import audit_current_reports,capped_types
+    before_drc=json.loads(current.with_name('drc.json').read_text());after_drc=json.loads(candidate.with_name('drc.json').read_text())
+    capped=sorted(capped_types(before_drc)|capped_types(after_drc))
+    if not capped:return receipt
+    receipt['capped_warning_types']=capped
+    receipt['raw_promotion_gate']={k:receipt[k] for k in ('adopted','split_pad_groups','new_warning_identities','native_errors')}
+    if receipt['split_pad_groups'] or receipt['native_errors'] or receipt['open_edges_after']>=receipt['open_edges_before']:
+        receipt['complete_native_warning_evidence_status']='NOT RUN: native prerequisites failed'
+        return receipt
+    evidence=workspace(board_id,spec['name']+'-complete-warnings')/'native-audits'
+    try:
+        complete_before,complete_after,proof=audit_current_reports(current,candidate,before_drc,after_drc,evidence,zone_batch_size=zone_batch_size)
+    except (ValueError,RuntimeError,OSError,subprocess.SubprocessError) as error:
+        receipt.update(adopted=False,rejection_reason='incomplete_native_warning_evidence',native_warning_evidence_error=str(error))
+        return receipt
+    receipt['complete_native_warning_evidence']=proof
+    receipt.update(promotion_gate(json.loads(current.with_name('dump.json').read_text()),
+                                  json.loads(candidate.with_name('dump.json').read_text()),complete_before,complete_after))
+    return receipt
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__.splitlines()[0]);p.add_argument('board_id',choices=('osc-jack-left','osc-jack-right','osc-core'))
     p.add_argument('--from-stage',default=STAGES[0]['name']);p.add_argument('--to-stage');p.add_argument('--promote',action='store_true')
@@ -552,6 +580,8 @@ def main():
     p.add_argument('--res',type=float,help='negotiation raster in mm for every negotiated stage (default: per-board table)')
     p.add_argument('--iterations',type=int,help='negotiation iteration cap for every negotiated stage (default: per-board table)')
     p.add_argument('--after-promote',help='shell command run after each promotion, with STAGE, OPEN_BEFORE and OPEN_AFTER set (CI pushes)')
+    p.add_argument('--complete-native-warnings',action='store_true',help='complete capped native warning reports from source-bound fixtures before the gate')
+    p.add_argument('--native-zone-batch-size',type=int,default=16,choices=(1,4,16))
     p.add_argument('--shard',help='I/N: route only shard I of N hotspot-region shards planned from the start board (region stages only)')
     a=p.parse_args()
     RUN.update(workers=a.workers,res=a.res,iterations=a.iterations,deadline=time.time()+a.max_minutes*60 if a.max_minutes else None)
@@ -611,11 +641,12 @@ def main():
                                       json.loads(candidate.with_name('dump.json').read_text()),
                                       json.loads(current.with_name('drc.json').read_text()),
                                       json.loads(candidate.with_name('drc.json').read_text())))
+        if a.complete_native_warnings:receipt=complete_gate(a.board_id,current,candidate,receipt,spec,a.native_zone_batch_size)
         receipt['input_board_sha256']=hashlib.sha256(current.read_bytes()).hexdigest()
         receipt['candidate_board_sha256']=hashlib.sha256(candidate.read_bytes()).hexdigest()
-        if receipt['split_pad_groups'] or receipt['new_warning_identities']:
+        if not receipt['adopted'] and (receipt['split_pad_groups'] or receipt['new_warning_identities']) and 'rejection_reason' not in receipt:
             receipt['rejection_reason']='connected_pad_group_split' if receipt['split_pad_groups'] else 'new_native_warning'
-            print(f"{spec['name']}: rejected: {receipt['rejection_reason']}",flush=True)
+        if not receipt['adopted'] and 'rejection_reason' in receipt:print(f"{spec['name']}: rejected: {receipt['rejection_reason']}",flush=True)
         if receipt['adopted']:
             # Retain a source replay against the canonical bytes that will be
             # replaced. Refill is intentionally repeated after replay.
