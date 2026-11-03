@@ -5,7 +5,7 @@ provisional PD supply context; writes ledger.json. Unknowns stay null, no
 efficiency or rating is invented, and conditional savings stay in their own row.
 """
 from pathlib import Path
-import hashlib, json, sys
+import hashlib, json, subprocess, sys
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
@@ -17,6 +17,12 @@ INPUTS = {
     'stage54_accounting': 'design/architecture-278/implementation/stage54/power-cleanup/accounting.json',
     'pd_supply_input': 'design/architecture-278/integration/power-contract/supply-input.json',
 }
+# OSC/PD contract fixed by owner decision (PWR-D3/D5 review; PD side unchanged).
+# The canonical requirement may fall below it, as after the S2b adoption (0bf32f59).
+CONTRACT_CONTINUOUS_mA = {'+12V': 1700, '-12V': 1600, '+5V': 300}
+CONTRACT_TRANSIENT_mA = {'+12V': 2000, '-12V': 1900, '+5V': 400}
+# Stage54 accounting was derived from this supply-architecture revision (pre-S2b).
+STAGE54_BASELINE_COMMIT = '80e8027163dd836e4034131026c3f4e5c4f81c8d'
 
 
 def require(ok, msg):
@@ -28,12 +34,20 @@ def read(rel):
     return json.loads((ROOT / rel).read_text())
 
 
+def historical(rel, commit):
+    return json.loads(subprocess.check_output(['git', 'show', f'{commit}:{rel}'], cwd=ROOT))
+
+
 def sha(rel):
     return hashlib.sha256((ROOT / rel).read_bytes()).hexdigest()
 
 
 def r6(x):
     return round(x, 6)
+
+
+def amps(currents_mA):
+    return ' / '.join('%.3f' % (currents_mA[r] / 1000) for r in RAILS)
 
 
 def watts(currents_mA, volts):
@@ -51,11 +65,13 @@ def build():
     env = arch_in['load_envelope']
 
     # Cross-check the brief's figures against current evidence before use.
-    require(sel['minimum_continuous_mA'] == {'+12V': 1700, '-12V': 1600, '+5V': 300}, 'continuous requirement')
-    require(sel['minimum_transient_mA'] == {'+12V': 2000, '-12V': 1900, '+5V': 400}, 'transient requirement')
+    for r in RAILS:
+        require(sel['minimum_continuous_mA'][r] <= CONTRACT_CONTINUOUS_mA[r], 'continuous requirement ' + r)
+        require(sel['minimum_transient_mA'][r] <= CONTRACT_TRANSIENT_mA[r], 'transient requirement ' + r)
     require(s54['EXT_normal_with_allowances_after_Iq_mA'] == {'+12V': 1492.819166, '-12V': 1393.56866, '+5V': 224.286445}, 'Stage54 conditional planning')
     require(s54['removed_Iq_mA'] == {'planning_Iq': {'+12V': 42.0, '-12V': 42.0, '+5V': 0.0}, 'typical': {'+12V': 27.36, '-12V': 27.36, '+5V': 0.0}}, 'Stage54 Iq')
-    require(s54['EXT_normal_with_allowances_before_mA'] == sel['normal_with_allowances_mA'], 'Stage54 baseline equals canonical requirement')
+    s54_base = historical(INPUTS['supply_architecture'], STAGE54_BASELINE_COMMIT)['selected_requirement']
+    require(s54['EXT_normal_with_allowances_before_mA'] == s54_base['normal_with_allowances_mA'], 'Stage54 baseline equals its bound canonical revision')
     require(all(v is None for v in budget['guaranteed_maximum_mA'].values()), 'guaranteed maxima must stay unknown')
     for r in RAILS:
         require(abs(sum(i['planning_upper_subtotal_mA'][r] for i in budget['instances']) + budget['synth_inlet']['worst_voltage_and_resistance_bleeder_current_mA'][r] - budget['reported_planning_upper_subtotal_mA'][r]) < 1e-5, 'planning subtotal ' + r)
@@ -88,7 +104,7 @@ def build():
         'normal_planning_stage54_conditional': {
             'classification': 'UNADOPTED CONDITIONAL (Stage54 idle-quad removal, max-Iq allowance)',
             'mA': s54['EXT_normal_with_allowances_after_Iq_mA'],
-            'basis': 'Stage54 accounting.json; not booked against any requirement'},
+            'basis': 'Stage54 accounting.json on the pre-S2b canonical baseline (%s); superseded by the S2b adoption 0bf32f59; not booked against any requirement' % STAGE54_BASELINE_COMMIT[:8]},
         'startup_envelope_10ms': {
             'classification': 'CONSERVATIVE ENVELOPE (normal planning plus full-capacitance ramp; not a simultaneous operating point)',
             'mA': {r: r6(normal[r] + sel['full_capacitance_ramp_increment_mA'][r]) for r in RAILS},
@@ -99,12 +115,14 @@ def build():
             'basis': env['fault_basis']},
         'continuous_requirement': {
             'classification': 'CONTRACT REQUIREMENT (minimum source delivery)',
-            'mA': sel['minimum_continuous_mA'],
-            'basis': 'normal planning x (1 + %s reserve), rounded up to %s mA' % (env['reserve_fraction'], env['current_rounding_mA'])},
+            'mA': CONTRACT_CONTINUOUS_mA,
+            'canonical_rule_result_mA': sel['minimum_continuous_mA'],
+            'basis': 'fixed contract; canonical_rule_result_mA is normal planning x (1 + %s reserve), rounded up to %s mA, and stays at or below it' % (env['reserve_fraction'], env['current_rounding_mA'])},
         'transient_requirement_20ms': {
             'classification': 'CONTRACT REQUIREMENT (minimum source delivery for %s ms)' % src['transient_requirement_duration_ms'],
-            'mA': sel['minimum_transient_mA'],
-            'basis': 'supply-architecture.json selected_requirement.minimum_transient_mA'},
+            'mA': CONTRACT_TRANSIENT_mA,
+            'canonical_requirement_mA': sel['minimum_transient_mA'],
+            'basis': 'fixed contract; supply-architecture.json selected_requirement.minimum_transient_mA is at or below it'},
         'interface_maximum': {
             'classification': 'CONTRACT INTERFACE LIMIT (source current limit must stay at or below)',
             'mA': src['maximum_delivered_current_mA'],
@@ -192,7 +210,7 @@ def build():
                                                    '15V': power['normal_planning']['efficiency_needed']['nominal_15V_3A']['current_pd_chain_converters']},
             'ledger_stage54_efficiency_needed': {'14V': power['normal_planning_stage54_conditional']['efficiency_needed']['board_b_input_screen_14V_3A']['current_pd_chain_converters'],
                                                  '15V': power['normal_planning_stage54_conditional']['efficiency_needed']['nominal_15V_3A']['current_pd_chain_converters']},
-            'cause': 'The brief quoted the unadopted Stage54 conditional loads (1.493 / 1.394 / 0.224 A) as planning normal; PD probed those. Canonical planning normal is 1.535 / 1.436 / 0.224 A. Residual difference between the PD probe and this ledger\'s Stage54 row is small and comes from PD including indicator/feedback current and its own floor terms.',
+            'cause': 'The brief quoted the unadopted Stage54 conditional loads (%s A) as planning normal; PD probed those. Canonical planning normal is %s A. Residual difference between the PD probe and this ledger\'s Stage54 row is small and comes from PD including indicator/feedback current and its own floor terms.' % (amps(stage54), amps(normal)),
             'resolution': 'Canonical rows govern requirements; the Stage54 row stays conditional. Not averaged.'},
     }
     # Indicator LEDs sit before the PTCs, so PTC1 carries only the external load.
