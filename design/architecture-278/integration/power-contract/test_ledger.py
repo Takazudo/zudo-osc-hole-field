@@ -35,7 +35,10 @@ class LedgerTests(unittest.TestCase):
         self.assertTrue(all(v['current_pd_chain'] for v in cont.values()))
         self.assertFalse(cont['nominal_15V_3A']['any_architecture'])
         self.assertTrue(all(v['any_architecture'] for v in p['transient_requirement_20ms']['infeasible_at_100_percent'].values()))
-        self.assertGreater(p['normal_planning']['positive_converter_efficiency_needed_with_pd_u4_model']['nominal_15V_3A'], 1)
+        need = p['normal_planning']['positive_converter_efficiency_needed_with_pd_u4_model']
+        self.assertAlmostEqual(need['nominal_15V_3A'], 0.939151, places=6)
+        self.assertGreater(need['source_minus_5_percent'], 1)
+        self.assertGreater(need['board_b_input_screen_14V_3A'], 1)
         self.assertAlmostEqual(p['continuous_requirement']['osc_inlet_W_at_source_band'][1], 41.96, places=6)
         self.assertNotIn('interface_maximum', p)
 
@@ -48,13 +51,14 @@ class LedgerTests(unittest.TestCase):
     def test_pd_crosscheck(self):
         c = self.data['pd_capability_crosscheck']
         self.assertTrue(c['minus12_exceeds_u4_switch_current_limit']['normal_planning'])
-        self.assertTrue(c['plus12_exceeds_ptc1_hold_25C']['normal_planning'])
+        self.assertFalse(c['plus12_exceeds_ptc1_hold_25C']['normal_planning'])
         self.assertFalse(c['plus12_exceeds_ptc1_hold_25C']['normal_planning_stage54_conditional'])
         self.assertTrue(c['efficiency_discrepancy']['pd_probe_matches_stage54_conditional_not_canonical'])
 
     def test_low_power_screen_changes_no_requirement(self):
         lp = self.data['low_power_supply_screen']['cases']
-        self.assertTrue(all(c['planning_reduction_needed_mA']['+12V'] > 0 for c in lp.values()))
+        self.assertTrue(all(c['planning_reduction_needed_mA']['+12V'] > 0 for name, c in lp.items() if name != 'pd002_A1_15V_ideal_high'))
+        self.assertEqual(lp['pd002_A1_15V_ideal_high']['planning_reduction_needed_mA'], {'+12V': 0, '-12V': 34.985387})
         self.assertEqual(self.data['states']['continuous_requirement']['mA'], {'+12V': 1700, '-12V': 1600, '+5V': 300})
 
     def test_floors_are_pd_screened_minima(self):

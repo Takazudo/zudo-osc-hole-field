@@ -11,6 +11,8 @@ from pathlib import Path
 import hashlib, json, math, sys
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+from ledger import CONTRACT_CONTINUOUS_mA, CONTRACT_TRANSIENT_mA
 ROOT = HERE.parents[3]
 RAILS = ('+12V', '-12V', '+5V')
 INPUTS = {
@@ -31,7 +33,8 @@ P_INTERNAL = 'internal_signal_path'
 P_OPER = 'operation_state_dependent'
 CATEGORY = {
     'OPA4197IPWR': Q_IC, 'OPA4196IDR': Q_IC, 'OPA4196IDR whole quad package': Q_IC,
-    'ADG5412FBRUZ': Q_IC, 'LM13700M_NOPB': Q_IC, 'LM393BIDR': Q_IC, 'AS3340D core': Q_IC,
+    'ADG5412FBRUZ': Q_IC, 'TMUX7412FRRPR': Q_IC, 'TMUX6112PWR': Q_IC, 'OPA4197IDR': Q_IC,
+    'LM13700M_NOPB': Q_IC, 'LM393BIDR': Q_IC, 'AS3340D core': Q_IC,
     'LF398M_NOPB': Q_IC, 'NOISE2 filtered digital supply': Q_IC,
     'SN74HC00DR': Q_LOGIC, 'SN74HC74DR': Q_LOGIC, 'SN74HC14DR': Q_LOGIC, 'CD74HC221M96': Q_LOGIC,
     'REF5050 local generator and rail ladder': S_STATIC, 'REF5050 allocation': S_STATIC,
@@ -234,11 +237,11 @@ def build():
             'CALCULATED from OSC-owner-reported fitted capacitance; UNVERIFIED; not a contract value',
             add(canonical, ramp_fitted), 'Canonical planning plus the ramp of the fitted 49.9 / 42.2 / 24.5 uF (+20 %) at the 10 ms minimum soft start. The contract keeps the 150 / 150 / 100 uF ceiling and the transient requirement unchanged; a later capacitance addition up to the ceiling stays allowed.', rule=False),
         'transient_requirement_20ms': level(
-            'CONTRACT REQUIREMENT (unchanged)', sel['minimum_transient_mA'],
-            'canonical + ramp + one external-forcing fault, rounded; supply-architecture.json', rule=False),
+            'CONTRACT REQUIREMENT (unchanged)', CONTRACT_TRANSIENT_mA,
+            'fixed contract; covers canonical + ramp + one external-forcing fault (supply-architecture.json requirement is at or below it)', rule=False),
         'continuous_requirement': level(
-            'CONTRACT REQUIREMENT (unchanged)', sel['minimum_continuous_mA'],
-            'canonical x 1.1, rounded up to 100 mA', rule=False),
+            'CONTRACT REQUIREMENT (unchanged)', CONTRACT_CONTINUOUS_mA,
+            'fixed contract; canonical x 1.1 rounded up to 100 mA (supply-architecture.json) is at or below it', rule=False),
     }
     levels['heavy_realistic_patch']['rail_output_W_nominal_one_rail_at_a_time'] = r6(levels['heavy_realistic_patch']['rail_output_W_nominal'] - overlap_W)
     # Startup inrush per common ramp length (PWR-C1 candidate). Steady part = heavy
@@ -260,6 +263,7 @@ def build():
     require(levels['canonical_planning_all_upper_terms']['continuous_rule_result_mA'] == sel['minimum_continuous_mA'], 'continuous rule')
     for r in RAILS:
         require(sel['minimum_transient_mA'][r] >= canonical[r] + ramp[r] + fault[r] - 1e-6, 'transient covers startup and fault ' + r)
+        require(sel['minimum_continuous_mA'][r] <= CONTRACT_CONTINUOUS_mA[r] and sel['minimum_transient_mA'][r] <= CONTRACT_TRANSIENT_mA[r], 'canonical requirement within contract ' + r)
 
     budget_steps = {
         'fixed_quiescent_and_static_planning_mA': fixed_plan,
@@ -268,9 +272,11 @@ def build():
         'patch_signal_and_operation_planning_mA': var_plan,
         'canonical_planning_mA': canonical,
         'reserve_x1_1_and_100mA_rounding_mA': sub(sel['minimum_continuous_mA'], canonical),
-        'continuous_requirement_mA': sel['minimum_continuous_mA'],
-        'startup_ramp_and_fault_to_transient_mA': sub(sel['minimum_transient_mA'], sel['minimum_continuous_mA']),
-        'transient_requirement_mA': sel['minimum_transient_mA'],
+        'canonical_continuous_rule_mA': sel['minimum_continuous_mA'],
+        'contract_margin_above_canonical_continuous_mA': sub(CONTRACT_CONTINUOUS_mA, sel['minimum_continuous_mA']),
+        'continuous_requirement_mA': CONTRACT_CONTINUOUS_mA,
+        'startup_ramp_and_fault_to_transient_mA': sub(CONTRACT_TRANSIENT_mA, CONTRACT_CONTINUOUS_mA),
+        'transient_requirement_mA': CONTRACT_TRANSIENT_mA,
     }
     share = {r: r6(fixed_plan[r] / canonical[r]) for r in RAILS}
 

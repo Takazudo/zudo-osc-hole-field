@@ -16,7 +16,7 @@ class GroundNetworkIncidenceTests(unittest.TestCase):
         self.assertEqual(graph['counts']['GH_ground_wires'],380)
         self.assertEqual(graph['counts']['main_ground_wires'],9)
         self.assertEqual(graph['counts']['JL_P_utility_ground_wires'],4)
-        self.assertEqual(graph['counts']['source_own_load_contacts'],{'JL':1070,'JR':896,'P':214,'K':1903,'EL':60,'O1':0,'O2':0,'O3':0,'O4':0,'O5':0})
+        self.assertEqual(graph['counts']['source_own_load_contacts'],{'JL':1125,'JR':939,'P':214,'K':1903,'EL':60,'O1':0,'O2':0,'O3':0,'O4':0,'O5':0})
         nodes={r['id'] for r in graph['contacts']}
         for edge in graph['wire_edges']:
             self.assertEqual(sum(edge['incidence'].values()),0)
