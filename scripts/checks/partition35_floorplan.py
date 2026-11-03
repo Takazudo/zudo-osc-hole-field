@@ -344,14 +344,14 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
                                     'side':side,'courtyard_mm':b,'bypass_cluster':ic}
             placed_at[cpart['ref']]=(x,y,side)
         moves.append(math.dist((placed[0][1],placed[0][2]),(slot['x_mm'],slot['y_mm'])))
-    boots={};boot_far=[]
+    boots={};boot_far=[];far_bindings=report.setdefault('_protection_far',{})[board]={}  # reset on every release round
     added=sorted((p for p in free if p['ref'] not in rows and p['ref'] not in clusters and p['ref'] not in in_cluster
                   and p['mpn'] in PROTECTION_DIODES),key=lambda p:p['ref'])
     for part in added:
         nets={n for n in pin_nets[part['ref']].values() if n and n not in ('AGND','+12V','-12V','+5V')}
         near=sorted(ref for ref in placed_at if ref not in released or ref in clusters if nets & set(pin_nets[ref].values()))
         if not near:
-            boot_far.append(part['ref']);continue
+            boot_far.append(part['ref']);far_bindings[part['ref']]={'mpn':part['mpn'],'nets':sorted(nets),'anchor_refs':[]};continue
         # Anchor on its amplifiers when any (for an S2b bootstrap diode, the amplifier it bootstraps, so the
         # diode adds no output-net length), else on one non-logic IC sharing most of its nets.
         ics=[ref for ref in near if ref[:1]=='U']
@@ -368,7 +368,8 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
         if best is None:best,nudge=nudged_pose(part,slot)
         if best is None:
             # Nothing legal within the radius: the nearest free board-wide pose, still recorded as beyond it.
-            boot_far.append(part['ref']);best=wide_pose(part,slot,evict=False)
+            boot_far.append(part['ref']);far_bindings[part['ref']]={'mpn':part['mpn'],'nets':sorted(nets),'anchor_refs':sorted(diodes)}
+            best=wide_pose(part,slot,evict=False)
             if best is None:continue
         cost,side,placed,hit=best
         released|=hit;evicted|=hit
@@ -440,6 +441,56 @@ def release_window(board,unit,count,pin_rows,swapped_slots,pin_nets,extra,instan
     window=[c[0]-r,c[1]-r,c[2]+r,c[3]+r]
     hit={ref for ref,row in rows.items() if ref not in extra and row['courtyard_mm'][0]<window[2] and window[0]<row['courtyard_mm'][2] and row['courtyard_mm'][1]<window[3] and window[1]<row['courtyard_mm'][3]}
     return hit
+
+
+EXCEPTION_STATES=('PROVISIONAL','APPROVED')
+
+
+def protection_exception_errors(exceptions,far,placed,by_ref,radius=CLUSTER_RADIUS_MM):
+    """Errors unless every beyond-radius diode has exactly one exception matching its current binding.
+
+    far: {board: {ref: {'mpn','nets','anchor_refs'}}} from the placer; placed/by_ref: final rows and packages.
+    An exception binds MPN, nets, anchor refs and MPNs, anchor and diode poses within a tolerance and the
+    centre distance; a stale record (diode now inside the radius or absent) is an error, not a silent pass.
+    PROVISIONAL records pass the floorplan check but are not permanent approval; APPROVED needs a recorded approval.
+    """
+    errors=[];seen=set()
+    beyond={(board,ref):row for board,rows in far.items() for ref,row in rows.items()}
+    for e in exceptions:
+        key=(e.get('board'),e.get('ref'));label=' '.join(map(str,key))
+        if key in seen:errors.append('duplicate protection locality exception '+label);continue
+        seen.add(key)
+        if key not in beyond:errors.append('stale protection locality exception (diode not beyond radius) '+label);continue
+        b=e.get('binding');state=e.get('adoption_state')
+        if not isinstance(b,dict):errors.append('protection locality exception without binding '+label);continue
+        if state not in EXCEPTION_STATES:errors.append('protection locality exception adoption state invalid '+label)
+        elif state=='APPROVED' and not (isinstance(e.get('approval'),dict) and e['approval'].get('decision') and e['approval'].get('by')):
+            errors.append('approved protection locality exception without a recorded approval '+label)
+        actual=beyond[key];ref=key[1];row=placed.get(ref)
+        anchors=[placed.get(a) for a in actual['anchor_refs']]
+        checks={'mpn':(b.get('mpn'),by_ref.get(ref,{}).get('mpn')),'nets':(sorted(b.get('nets',[])),actual['nets']),
+                'anchor_refs':(sorted(b.get('anchor_refs',[])),actual['anchor_refs']),
+                'anchor_mpns':(sorted(b.get('anchor_mpns',[])),sorted(by_ref.get(a,{}).get('mpn') for a in actual['anchor_refs']))}
+        for field,(want,got) in checks.items():
+            if want!=got:errors.append(f'protection locality exception {label} {field} differs: recorded {want}, actual {got}')
+        if row is None or row.get('board')!=key[0] or any(a is None for a in anchors) or not anchors:
+            errors.append('protection locality exception '+label+' has no placed diode or anchor');continue
+        tol=b.get('position_tolerance_mm');dtol=b.get('distance_tolerance_mm')
+        if not (isinstance(tol,(int,float)) and 0<tol<=0.1 and isinstance(dtol,(int,float)) and 0<dtol<=0.1):
+            errors.append('protection locality exception '+label+' tolerance missing or above 0.1 mm');continue
+        centre=(statistics.median(a['x_mm'] for a in anchors),statistics.median(a['y_mm'] for a in anchors))
+        diode=(row['x_mm'],row['y_mm'])
+        for field,want,got in (('anchor_mm',b.get('anchor_mm'),centre),('placed_mm',b.get('placed_mm'),diode)):
+            if not (isinstance(want,list) and len(want)==2 and math.dist(want,got)<=tol):
+                errors.append(f'protection locality exception {label} {field} differs: recorded {want}, actual {[round(v,3) for v in got]}')
+        if b.get('side')!=row.get('side'):errors.append(f"protection locality exception {label} side differs: recorded {b.get('side')}, actual {row.get('side')}")
+        distance=math.dist(centre,diode)
+        if not isinstance(b.get('distance_mm'),(int,float)) or abs(distance-b['distance_mm'])>dtol:
+            errors.append(f"protection locality exception {label} distance differs: recorded {b.get('distance_mm')}, actual {distance:.3f}")
+        if b.get('radius_mm')!=radius:errors.append(f"protection locality exception {label} radius differs: recorded {b.get('radius_mm')}, rule {radius}")
+    for key in sorted(set(beyond)-seen):
+        errors.append('protection diode beyond locality radius without a recorded exception '+' '.join(key))
+    return errors
 
 
 def build():
@@ -566,11 +617,13 @@ def build():
     placements=apply_translations(placements,source,json.loads((ROOT/'design/partition/routing-placement-translations.json').read_text()),headers=connector['headers'])
     if Counter(p['ref'] for p in placements)!=Counter(p['ref'] for p in parts):errors.append('package roster mismatch')
     bypass,bypass_errors=check_bypasses(parts,placements,pin_nets);errors.extend(bypass_errors)
-    # A protection diode outside its locality radius needs a recorded, justified exception.
-    excepted={(e['board'],e['ref']) for e in json.loads(EXCEPTIONS.read_text())['exceptions']}
+    # A protection diode outside its locality radius needs a recorded exception bound to its exact
+    # identity, nets, anchor and pose; the binding never carries over to a changed placement.
+    far=adopted_report.pop('_protection_far',{})
     for board,r in adopted_report.items():
-        for ref in r.get('protection_diodes_beyond_radius',[]):
-            if (board,ref) not in excepted:errors.append('protection diode beyond locality radius without a recorded exception '+board+' '+ref)
+        if sorted(r.get('protection_diodes_beyond_radius',[]))!=sorted(far.get(board,{})):errors.append('protection diode binding bookkeeping mismatch '+board)
+    errors.extend(protection_exception_errors(json.loads(EXCEPTIONS.read_text())['exceptions'],far,
+                                              {p['ref']:p for p in placements},{p['ref']:p for p in parts}))
     return {'schema_version':1,'status':'FAIL' if errors else 'PASS - conservative courtyard capacity proposal only',
             'errors':errors,'control_slew_locality':{'source':'design/partition/control-locality.json','status':'SOURCE GEOMETRY ONLY; native/routed/physical checks required','groups':locality},'grid_mm_by_board':{b:(.1 if b in JACK_BOARDS else .25) for b in source['boards']},'courtyard_gap_mm':.35,'drawn_edge_margin_mm':.30,'native_cached_inflation_ceiling_mm':.05,'native_free_clearance_lower_bound_mm':.25,'placements':placements,
             'control_bypass_locality':{'source':'design/partition/control-bypass-locality.json',**control_bypasses},

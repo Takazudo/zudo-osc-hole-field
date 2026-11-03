@@ -1,12 +1,40 @@
 {
  "schema_version": 1,
- "status": "PROPOSED exception record; source geometry only, not routed or measured",
- "rule": "An added S2b protection diode is placed within 24 mm (CLUSTER_RADIUS_MM) of its anchor: the amplifiers on its own nets, else the one non-logic IC sharing most of its nets (scripts/checks/partition35_floorplan.py). A diode that cannot be placed inside the radius must be listed here.",
+ "status": "PROVISIONAL exception record bound to net/anchor/MPN/pose; source geometry only, not routed or measured",
+ "rule": "An added S2b protection diode is placed within 24 mm (CLUSTER_RADIUS_MM) of its anchor: the amplifiers on its own nets, else the one non-logic IC sharing most of its nets (scripts/checks/partition35_floorplan.py). A diode that cannot be placed inside the radius must be listed here. Each record carries a binding (MPN, nets, anchor refs and MPNs, anchor and diode poses with a tolerance, centre distance) that scripts/checks/partition35_floorplan.py protection_exception_errors() compares with the current placement; a changed placement or a stale record fails. adoption_state PROVISIONAL is not a permanent approval; APPROVED requires a recorded approval.",
  "exceptions": [
   {
    "ref": "D4233",
    "board": "K",
    "mpn": "BAT54S,215",
+   "adoption_state": "PROVISIONAL",
+   "adoption_note": "Provisional comparison input for the current 27.61 mm placement. Not a permanent exception and not user approval; see the SEL network review below.",
+   "binding": {
+    "mpn": "BAT54S,215",
+    "nets": [
+     "/E2/FALL_CURVE",
+     "/E2/SLOPE_SELECT_SEL4"
+    ],
+    "anchor_refs": [
+     "U4206"
+    ],
+    "anchor_mpns": [
+     "TMUX6112PWR"
+    ],
+    "anchor_mm": [
+     242.48,
+     261.57
+    ],
+    "placed_mm": [
+     242.81,
+     289.18
+    ],
+    "side": "F.Cu",
+    "distance_mm": 27.61,
+    "radius_mm": 24.0,
+    "position_tolerance_mm": 0.05,
+    "distance_tolerance_mm": 0.01
+   },
    "anchor": "U4206 (TMUX6112PWR); no amplifier shares its nets",
    "anchor_mm": [
     242.48,
@@ -71,9 +99,9 @@
      }
     ]
    },
-   "electrical_impact": "Both nets are logic-level envelope slope-select control (an HC00 gate output to an analog-switch select input), not a precision analog node. The extra 3.6 mm beyond the radius adds trace length and a little capacitance on a slow select line. This is a design assumption, not a measurement.",
+   "electrical_impact": "Design assumption only, not measured. The earlier wording ('slow select line', 'extra 3.6 mm adds a little capacitance') is withdrawn as unproven: /E2/FALL_CURVE = READY AND FALL AND CURVED changes at envelope stage transitions, and a centre-distance excess is not a trace length. See sel_network_review.",
    "proposed_resolution": "Phase 36 trial (generator rule nudged_pose: one pinned bypass capacitor may move at most 2.0 mm on its own face without lengthening its supply loop): rejected. Only C4270 (U4245) and C4249 (U4232) are sole blockers of in-radius poses. With either released, the nearest legal pose for C4270 is 20.43 mm away, which lengthens its supply-pad gap from 2.52 mm to 18.11 mm, and C4249 has no legal pose at all. No minimal move exists, so the exception stands.",
-   "decision": "user decision (keep the exception, or allow a multi-part re-placement)",
+   "decision": "owner decision pending: keep the provisional exception as a comparison input, or approve a multi-part re-placement of the SEL hold networks",
    "nudge_trial": {
     "rule": "scripts/checks/partition35_floorplan.py nudged_pose",
     "max_move_mm": 2.0,
@@ -114,6 +142,12 @@
      }
     ],
     "not_tried": "moves of two or more pinned parts"
+   },
+   "sel_network_review": {
+    "path": "circuit/reviews/osc1-d4233-sel-network/README.md",
+    "geometry": "circuit/reviews/osc1-d4233-sel-network/sel-hold-geometry.json",
+    "board_sha256": "dda33a25479c9993f71e33d49129cf16414828b3dd2083b6d4f91a65421c728c",
+    "summary": "SEL4 hold network: D4232 17.10 mm, D4233 27.61 mm, RB4234 (100 kOhm pull-up) 95.18 mm from U4206; FALL_CURVE driver U4229.3 39.69 mm. 32 of 36 core SEL hold nets have a member beyond 24 mm; no SEL net is routed. A D4233-only permanent exception is not supported by this evidence."
    }
   }
  ]
