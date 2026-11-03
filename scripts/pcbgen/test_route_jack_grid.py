@@ -112,5 +112,33 @@ class StitchedCandidateTests(unittest.TestCase):
         self.assertEqual((board,receipt['open_edges_after']),('signal-board',150))
 
 
+class HoleSpacingTests(unittest.TestCase):
+    def via(self,uid,x,y):return {'kind':'via','uuid':uid,'net':'n','at_nm':[x,y],'drill_nm':300_000}
+
+    def test_new_vias_below_the_hole_minimum_drop_their_link_only(self):
+        dump={'pads':[{'xy':[0,0],'drill':1_000_000}],'vias':[{'uuid':'old','xy':[5_000_000,0],'drill':300_000}]}
+        rows=[self.via('a',600_000,0),self.via('b',5_400_000,0),self.via('c',9_000_000,0),self.via('d',9_100_000,0),self.via('e',20e6,0)]
+        links=[{'net':'n','copper_uuids':[u]} for u in 'abcde']
+        bad=driver.hole_spacing_culprits(rows,links,dump)
+        # a: 0.6-0.65=-0.05 mm to the pad drill; b: 0.1 mm to the old via; d yields to c (0.1-0.3 mm edge gap).
+        self.assertEqual([l['copper_uuids'] for l in bad],[['a'],['b'],['d']])
+        self.assertEqual(driver.hole_spacing_culprits(rows,links,dump,removed=['old'])[1]['copper_uuids'],['d'])
+
+    def test_vias_at_the_minimum_are_kept(self):
+        rows=[self.via('a',0,0),self.via('b',550_000,0)]
+        self.assertEqual(driver.hole_spacing_culprits(rows,[{'net':'n','copper_uuids':['a','b']}],{'pads':[],'vias':[]}),[])
+
+    def test_dropping_a_ripped_net_link_restores_its_old_copper(self):
+        dump={'tracks':[{'uuid':'t','net':'s'}],'vias':[]}
+        links=[{'net':'s','copper_uuids':['x']},{'net':'s','copper_uuids':['y']},{'net':'r','copper_uuids':['z']}]
+        rows=[{'uuid':u} for u in 'xyz']
+        culprits,rows,links,removed=driver.drop_links([links[0]],rows,links,['t'],dump)
+        self.assertEqual((len(culprits),[r['uuid'] for r in rows],removed),(2,['z'],[]))
+
+    def test_rail_links_guard_every_agnd_pour_layer(self):
+        spec=next(s for s in driver.STAGES if s['name']=='rail-links')
+        self.assertTrue(spec['agnd_guard']);self.assertEqual(driver.AGND_POUR_LAYERS,['F.Cu','B.Cu','In1.Cu'])
+
+
 if __name__=='__main__':
     unittest.main()

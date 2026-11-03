@@ -502,7 +502,9 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
 
     # Fill guards: a signal path may share a plane-fill layer only if the fill keeps
     # every plane via/pad in as few connected regions as before.
-    guards={raster.layers.index(layer):raster.net_id[n] for n,layer in (fill_guards or {}).items() if n in raster.net_id}
+    # A guard names one fill layer, or several for a net poured on more than one layer (AGND).
+    guards={raster.layers.index(layer):raster.net_id[n] for n,layers in (fill_guards or {}).items() if n in raster.net_id
+            for layer in ([layers] if isinstance(layers,str) else layers)}
     # Exclude physical outline padding and bounded-search fences from fill paths.
     # This is still an approximate screen: exact zone shapes and native refill
     # connectivity remain mandatory acceptance checks, even when this passes.

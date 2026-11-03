@@ -42,6 +42,11 @@ RRR_BUDGETS=[{'rrr_max_rip':4,'window_mm':12.0},{'rrr_max_rip':8,'window_mm':16.
 SIGNAL_LAYERS=['F.Cu','In2.Cu','In3.Cu','B.Cu']
 LAYER_COST=[3.0,1.0,1.0,1.5,1.0,3.0]
 RAILS=['+12V','-12V','+5V']
+# AGND is poured on both outer layers and planed on In1; a rail link may not separate AGND copper inside any of them.
+AGND_POUR_LAYERS=['F.Cu','B.Cu','In1.Cu']
+# Board setup min_hole_to_hole (each board's .kicad_pro). KiCad reports at most 199 warnings per type,
+# so a board already above that cap cannot show a new hole warning reliably: new vias must never create one.
+MIN_HOLE_TO_HOLE_NM=250_000
 # The core is twice a jack half's area; a 0.05 mm six-layer negotiation raster would not fit in memory.
 NEGOTIATE_RES={'osc-core':0.075}
 # Fewer forked workers on the core keep its shared rasters within this machine's memory.
@@ -54,7 +59,7 @@ COMMON=dict(layers=SIGNAL_LAYERS)
 STAGES=[
     {'name':'terminal-arrays','terminal_arrays':True},
     {'name':'rail-fanout','nets':['+12V','-12V'],'planes':PLANES,'clearance':.25,'rail_width':.4},
-    {'name':'rail-links','nets':RAILS,'clearance':.25,'rail_width':.4},
+    {'name':'rail-links','nets':RAILS,'clearance':.25,'rail_width':.4,'agnd_guard':True},
     {'name':'rail-escapes','nets':RAILS,'clearance':.25,'rail_width':.25,'res':.05,'window_mm':6},
     # Negotiated (PathFinder) routing of every signal net on a 0.05 mm grid; leftovers go to the batches below.
     # A run stops after budget_s and saves its state, so each heavy-guard run stays short.
@@ -421,11 +426,13 @@ def stage(board_id,current,spec,definition,log):
         if rrr:RRR_TRIED.update(nets)
         kwargs={k:v for k,v in spec.items() if k in ('planes','clearance','rail_width','signal_width','signal_via_diameter','grow','res','window_mm','full_board','max_expansions','escape_halo_mm','rrr_rounds')}
         if rrr:kwargs.update(RRR_BUDGETS[RRR_ROUND['round']])
-        kwargs['fill_guards']={'-12V':'In3.Cu'}
+        kwargs['fill_guards']={'-12V':'In3.Cu',**({'AGND':AGND_POUR_LAYERS} if spec.get('agnd_guard') else {})}
         if RUN['shard']:kwargs['rip_only']=set(RUN['shard']['nets'])  # a shard rips only the nets it owns
         results,removed=route(dump,nets,allowed_layers=SIGNAL_LAYERS,layer_cost=LAYER_COST,rail_nets=RAILS,log=log,**kwargs,**neck_kwargs(board_id))
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
         if spec.get('chunk') and not spec.get('rrr_rounds'):FAILED.update(r['net'] for r in results if not r['path'])
+    spaced,rows,links,removed=drop_links(hole_spacing_culprits(rows,links,dump,removed),rows,links,removed,dump)
+    if spaced:log(f"{spec['name']}: dropped {len(spaced)} links with a via below the hole-to-hole minimum")
     dropped=[]
     for attempt in range(4):
         work=workspace(board_id,spec['name']);proposal=work/'proposal.json';candidate=work/f'{board_id}.kicad_pcb'
@@ -449,14 +456,8 @@ def stage(board_id,current,spec,definition,log):
         if not bad:break
         culprits=[l for l in links if bad & set(l['copper_uuids'])]
         if not culprits:raise StageRejected("DRC errors not attributable to new copper")
-        if removed:
-            # A rerouted (ripped) net loses its whole new route and gets its old copper back.
-            ripped_nets={i['net'] for k in ('tracks','vias') for i in dump[k] if i['uuid'] in set(removed)}
-            back={l['net'] for l in culprits}&ripped_nets
-            culprits+=[l for l in links if l['net'] in back and l not in culprits]
-            removed=[u for u in removed if not any(i['uuid']==u and i['net'] in back for k in ('tracks','vias') for i in dump[k])]
-        drop={u for l in culprits for u in l['copper_uuids']};dropped+=culprits
-        rows=[r for r in rows if r['uuid'] not in drop];links=[l for l in links if l not in culprits]
+        # A rerouted (ripped) net loses its whole new route and gets its old copper back.
+        culprits,rows,links,removed=drop_links(culprits,rows,links,removed,dump);dropped+=culprits
         log(f"{spec['name']}: dropped {len(culprits)} links with DRC errors; retrying")
     else:raise StageRejected("DRC errors persist after dropping culprit links")
     # A candidate checked where it was built has read lower than the same file checked fresh
@@ -469,12 +470,44 @@ def stage(board_id,current,spec,definition,log):
     candidate,after,drc=verify,fresh,drc_v
     before=json.loads(original.with_name('dump.json').read_text())['open_edges']
     receipt={'stage':spec['name'],'status':'NATIVE CHECKED DRAFT STAGE','open_edges_before':before,'open_edges_after':after['open_edges'],
-             'links_added':len(links),'links_dropped_for_drc':len(dropped),'copper_rows':len(rows),
+             'links_added':len(links),'links_dropped_for_drc':len(dropped),'links_dropped_for_hole_spacing':len(spaced),'copper_rows':len(rows),
              'ripped':len(removed)+(len(repair_details['removed_source_uuids']) if repair_details else 0),
              'drc_errors':0,'drc_warnings':sum(v['severity']=='warning' for v in drc['violations']),'parity':0,
              'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}
     if repair_details:receipt['local_repair']=repair_details
     return candidate,receipt
+
+
+def hole_spacing_culprits(rows,links,dump,removed=(),min_nm=MIN_HOLE_TO_HOLE_NM):
+    """Links owning a new via whose drill edge is closer than min_nm to another drill (existing or new)."""
+    gone=set(removed)
+    holes=[(p['xy'],p['drill']) for p in dump.get('pads',[]) if p.get('drill')]+[(v['xy'],v['drill']) for v in dump.get('vias',[]) if v['uuid'] not in gone]
+    new=[r for r in rows if r['kind']=='via']
+    bad=set()
+    if holes and new:
+        tree=cKDTree([h[0] for h in holes]);widest=max(h[1] for h in holes)
+        for r in new:
+            for i in tree.query_ball_point(r['at_nm'],(r['drill_nm']+widest)/2+min_nm):
+                if np.hypot(*np.subtract(holes[i][0],r['at_nm']))-(holes[i][1]+r['drill_nm'])/2<min_nm:bad.add(r['uuid']);break
+    # Between new vias, the later row yields to the earlier one.
+    for i,r in enumerate(new):
+        if r['uuid'] in bad:continue
+        for q in new[:i]:
+            if q['uuid'] not in bad and np.hypot(*np.subtract(q['at_nm'],r['at_nm']))-(q['drill_nm']+r['drill_nm'])/2<min_nm:
+                bad.add(r['uuid']);break
+    return [l for l in links if bad & set(l['copper_uuids'])]
+
+
+def drop_links(culprits,rows,links,removed,dump):
+    """Remove culprit links; a ripped net with a culprit loses its whole new route and keeps its old copper."""
+    culprits=list(culprits)
+    if removed:
+        ripped_nets={i['net'] for k in ('tracks','vias') for i in dump[k] if i['uuid'] in set(removed)}
+        back={l['net'] for l in culprits}&ripped_nets
+        culprits+=[l for l in links if l['net'] in back and l not in culprits]
+        removed=[u for u in removed if not any(i['uuid']==u and i['net'] in back for k in ('tracks','vias') for i in dump[k])]
+    drop={u for l in culprits for u in l['copper_uuids']}
+    return culprits,[r for r in rows if r['uuid'] not in drop],[l for l in links if l not in culprits],removed
 
 
 def connected_pad_groups(dump):
