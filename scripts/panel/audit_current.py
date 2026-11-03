@@ -10,6 +10,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from design.spec.instrument import specification
+from design.spec.modules.io_partition import tssop_groups
 from scripts.schgen.core import designator
 
 OUT = ROOT / 'design/panel/current-audit/audit.json'
@@ -39,6 +40,8 @@ def compare_features(lock, table, params):
 def circuit_bindings():
     families, instances = specification()
     by_family = {f.name: f for f in families}
+    # A TSSOP-retention clone family is defined by its base family's module.
+    module = {clone: base for base in by_family for clone in tssop_groups(base)}
     rows = []
     for instance in instances:
         for part in by_family[instance.family].parts:
@@ -48,7 +51,7 @@ def circuit_bindings():
             rows.append({'uid': uid, 'instance': instance.name, 'circuit_family': instance.family,
                          'reference': designator(part, instance), 'mpn': part.attributes.get('MPN'),
                          'value': part.value, 'symbol': part.symbol, 'role': part.attributes.get('Role'),
-                         'pins': part.pins, 'source': f'design/spec/modules/{instance.family}.py'})
+                         'pins': part.pins, 'source': f'design/spec/modules/{module.get(instance.family, instance.family)}.py'})
     return indexed(rows, 'uid')
 
 def build():
