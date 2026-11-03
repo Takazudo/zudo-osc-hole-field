@@ -319,9 +319,12 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
         x=statistics.median(placed_at[r][0] for r in diodes);y=statistics.median(placed_at[r][1] for r in diodes)
         side=Counter(placed_at[r][2] for r in diodes).most_common(1)[0][0]
         members[part['ref']]=[]
-        best=local_pose(part,{'x_mm':x,'y_mm':y,'rotation_deg':0,'side':side},baseline=False)
+        slot={'x_mm':x,'y_mm':y,'rotation_deg':0,'side':side}
+        best=local_pose(part,slot,baseline=False)
         if best is None:
-            boot_far.append(part['ref']);continue
+            # Nothing legal within the radius: the nearest free board-wide pose, still recorded as beyond it.
+            boot_far.append(part['ref']);best=wide_pose(part,slot,evict=False)
+            if best is None:continue
         cost,side,placed,hit=best
         released|=hit;evicted|=hit
         for cpart,px,py,rotation,b in placed:
