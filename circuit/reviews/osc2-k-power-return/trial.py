@@ -74,7 +74,28 @@ def precision_returns(before,after):
             'left_main_refs':sorted({ref(u) for u in lost})[:50]}
 
 
-def trial(key,base_work):
+def resumed_stage(spec,base,before):
+    """The fresh-copy verified candidate an interrupted run left behind, as stage() would return it.
+
+    stage() writes <name>-verify only after the candidate passed DRC, parity and the
+    fresh-copy connectivity comparison; a container restart can then lose the gate.
+    Link counts are not retained there, so only native counts are reported.
+    """
+    verify=ROOT/'.circuit-cache'/f"{BOARD_ID}-grid-{spec['name']}-verify"/f'{BOARD_ID}.kicad_pcb'
+    if not all(verify.with_name(n).exists() for n in ('drc.json','dump.json',verify.name)):return None,None
+    drc=json.loads(verify.with_name('drc.json').read_text());after=json.loads(verify.with_name('dump.json').read_text())
+    if after.get('board_sha256') not in (None,sha(verify)):raise RuntimeError('verified dump does not describe the candidate bytes')
+    if any(v['severity']=='error' for v in drc['violations']) or drc['schematic_parity']:raise RuntimeError('verified candidate has native errors')
+    proposal=json.loads((ROOT/'.circuit-cache'/f"{BOARD_ID}-grid-{spec['name']}"/'proposal.json').read_text())
+    if proposal['board_sha256']!=K3409_SHA:raise RuntimeError('proposal was not built on K3409')
+    return verify,{'stage':spec['name'],'status':'NATIVE CHECKED DRAFT STAGE','resumed_from_verified_candidate':True,
+                   'open_edges_before':before['open_edges'],'open_edges_after':after['open_edges'],
+                   'copper_rows':len(proposal['copper']),'new_vias':sum(r['kind']=='via' for r in proposal['copper']),'ripped':len(proposal['removed_uuids']),
+                   'drc_errors':0,'drc_warnings':sum(v['severity']=='warning' for v in drc['violations']),'parity':0,
+                   'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}
+
+
+def trial(key,base_work,resume=False):
     h=HYPOTHESES[key];spec=h['spec']
     definition=json.loads((ROOT/'design/boards'/f'{BOARD_ID}.json').read_text())
     base=base_work/f'{BOARD_ID}.kicad_pcb'
@@ -82,7 +103,8 @@ def trial(key,base_work):
     before=json.loads(base.with_name('dump.json').read_text());before_drc=json.loads(base.with_name('drc.json').read_text())
     log=lambda m:print(m,flush=True)
     t0=time.time()
-    candidate,receipt=driver.run_stage(BOARD_ID,base,spec,definition,log)
+    candidate,receipt=resumed_stage(spec,base,before) if resume else (None,None)
+    if candidate is None:candidate,receipt=driver.run_stage(BOARD_ID,base,spec,definition,log)
     out={'schema':'osc2-k-power-return-trial-1','hypothesis':key,'changes':h['changes'],'keeps':h['keeps'],'spec':spec,
          'limits':LIMITS,'end_condition':END,'input_board_sha256':K3409_SHA,
          'started_utc':datetime.datetime.fromtimestamp(t0,datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -139,11 +161,12 @@ def record_baseline(work):
 def main():
     p=argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('hypothesis',choices=['baseline','record-baseline',*HYPOTHESES])
+    p.add_argument('--resume',action='store_true',help='gate the verified candidate an interrupted run left behind')
     a=p.parse_args()
     if a.hypothesis=='baseline':baseline();return
     work=ROOT/'.circuit-cache'/f'{BOARD_ID}-grid-osc2-base'
     if a.hypothesis=='record-baseline':record_baseline(work);return
-    trial(a.hypothesis,work)
+    trial(a.hypothesis,work,a.resume)
 
 
 if __name__=='__main__':main()
