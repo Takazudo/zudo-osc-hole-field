@@ -12,7 +12,7 @@ stage writes a receipt under boards/<id>/reports/grid-routing/. Draft only:
 electrical and physical qualification remain NOT RUN.
 """
 from __future__ import annotations
-import argparse,collections,hashlib,json,os,shutil,subprocess,sys,time
+import argparse,collections,hashlib,json,os,re,shutil,subprocess,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
@@ -61,6 +61,11 @@ STAGES=[
     {'name':'rail-fanout','nets':['+12V','-12V'],'planes':PLANES,'clearance':.25,'rail_width':.4},
     {'name':'rail-links','nets':RAILS,'clearance':.25,'rail_width':.4,'agnd_guard':True},
     {'name':'rail-escapes','nets':RAILS,'clearance':.25,'rail_width':.25,'res':.05,'window_mm':6,'agnd_guard':True},
+    # AGND-aware analog tiers, routed before the general signal stages: the pitch-path SENSE and
+    # 1V_BUFFER nets first, then every other SENSE/1V_BUFFER net, then the remaining precision op-amp nets.
+    # Each tier guards the AGND pours on all three AGND layers; a tier with no open net is skipped.
+    *({'name':name,'analog_tier':tier,'signals':True,'agnd_guard':True,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,
+       'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for name,tier in (('analog-pitch',0),('analog-sense',1),('analog-precision',2))),
     # Negotiated (PathFinder) routing of every signal net on a 0.05 mm grid; leftovers go to the batches below.
     # A run stops after budget_s and saves its state, so each heavy-guard run stays short.
     {'name':'negotiate','negotiate':True,'res':.05,'iterations':60,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
@@ -144,6 +149,32 @@ def terminal_array(dump,board_id,definition):
                 rows.append({'kind':'via','uuid':stable_uuid(board_id,'terminal-array',f"{p['ref']}:{i}:{j}"),'net':p['net'],'at_nm':[x,y],
                              'diameter_nm':int(round(spec['via_diameter_mm']*1e6)),'drill_nm':int(round(spec['via_drill_mm']*1e6)),'layers':['F.Cu','B.Cu'],'locked':False})
     return rows,[{'net':'terminal arrays','copper_uuids':[r['uuid'] for r in rows]}]
+
+
+NET_TOKENS=ROOT/'design/reports/board-net-tokens.json'
+# Pitch path: the oscillator sheets' expo-converter SENSE nodes and their 1 V reference buffer.
+PITCH_SHEET=re.compile(r'^/O\d+/')
+SENSE_NET=re.compile(r'(_SENSE|/1V_BUFFER)$')
+# Precision op-amp packages (OPA4196/OPA4197 in TSSOP-14 or SOIC-14), identified by footprint value.
+PRECISION_VALUE=re.compile(r'^OPA419[67]')
+
+
+def analog_tiers(dump,board_text):
+    """Open signal nets in AGND-aware routing order: [pitch SENSE/1V_BUFFER, other SENSE/1V_BUFFER, other precision op-amp nets].
+
+    PCB net names are source-net tokens (scripts/schgen/project_boards.py net_token); the token
+    report maps them back to schematic names so sheet and node names select the tiers.
+    """
+    names=json.loads(NET_TOKENS.read_text())
+    refs=set();blocks=board_text.split('\n\t(footprint "')[1:]
+    for b in blocks:
+        ref=re.search(r'\(property "Reference" "([^"]+)"',b);val=re.search(r'\(property "Value" "([^"]+)"',b)
+        if ref and val and PRECISION_VALUE.match(val.group(1)):refs.add(ref.group(1))
+    open_nets={n for n,g in dump['islands'].items() if len(g)>1 and n not in (*RAILS,'AGND')}
+    precision={p['net'] for p in dump['pads'] if p['ref'] in refs}&open_nets
+    sense={n for n in open_nets if SENSE_NET.search(names.get(n,n))}
+    pitch={n for n in sense if PITCH_SHEET.match(names.get(n,n))}
+    return [sorted(pitch),sorted(sense-pitch),sorted(precision-sense)]
 
 
 def signal_chunk(dump,chunk,min_span_mm=None,max_span_mm=None,skip=(),only=None):
@@ -414,7 +445,9 @@ def stage(board_id,current,spec,definition,log):
     else:
         rrr=spec.get('rrr_rounds')
         if rrr and RRR_ROUND['done']:return None,None
-        chunk=lambda:spec.get('nets') or signal_chunk(dump,spec.get('chunk'),max_span_mm=spec.get('max_span_mm'),
+        tier=analog_tiers(dump,current.read_text())[spec['analog_tier']] if 'analog_tier' in spec else None
+        if tier is not None and RUN['shard']:tier=[n for n in tier if n in set(RUN['shard']['nets'])]
+        chunk=lambda:tier if tier is not None else spec.get('nets') or signal_chunk(dump,spec.get('chunk'),max_span_mm=spec.get('max_span_mm'),
                                                       skip=RRR_TRIED if rrr else (FAILED if spec.get('chunk') else ()),
                                                       only=set(RUN['shard']['nets']) if RUN['shard'] else None)
         nets=chunk()
@@ -433,8 +466,8 @@ def stage(board_id,current,spec,definition,log):
         if spec.get('chunk') and not spec.get('rrr_rounds'):FAILED.update(r['net'] for r in results if not r['path'])
     spaced,rows,links,removed=drop_links(hole_spacing_culprits(rows,links,dump,removed),rows,links,removed,dump)
     if spaced:log(f"{spec['name']}: dropped {len(spaced)} links with a via below the hole-to-hole minimum")
-    dropped=[]
-    for attempt in range(4):
+    dropped=[];split_dropped=[]
+    for attempt in range(8):
         work=workspace(board_id,spec['name']);proposal=work/'proposal.json';candidate=work/f'{board_id}.kicad_pcb'
         proposal.write_text(json.dumps({'board_sha256':hashlib.sha256(current.read_bytes()).hexdigest(),'removed_uuids':removed,'copper':rows})+'\n')
         run('bash','scripts/kicad/run.sh','python3','scripts/pcbgen/grid_apply.py',rel(current),rel(proposal),'--output',rel(candidate))
@@ -453,6 +486,13 @@ def stage(board_id,current,spec,definition,log):
                 bad={r['uuid'] for r in rows if r['kind']=='via'}
             log(f"{spec['name']}: {split} split; dropping links with copper on {sorted(plane_layers)}")
             if not bad:raise StageRejected(f"{split} split without attributable copper")
+        if not bad and spec.get('agnd_guard'):
+            # The raster fill guard can miss a route that rings an AGND pour fragment; drop the
+            # nearest new link to every AGND pad group the candidate disconnected and retry.
+            near=split_culprits(split_pad_groups(json.loads(original.with_name('dump.json').read_text()),after),after,rows,links,nets={'AGND'})
+            if near:
+                culprits,rows,links,removed=drop_links(near,rows,links,removed,dump);split_dropped+=culprits
+                log(f"{spec['name']}: dropped {len(culprits)} links next to {len(near)} disconnected AGND pad groups; retrying");continue
         if not bad:break
         culprits=[l for l in links if bad & set(l['copper_uuids'])]
         if not culprits:raise StageRejected("DRC errors not attributable to new copper")
@@ -470,7 +510,7 @@ def stage(board_id,current,spec,definition,log):
     candidate,after,drc=verify,fresh,drc_v
     before=json.loads(original.with_name('dump.json').read_text())['open_edges']
     receipt={'stage':spec['name'],'status':'NATIVE CHECKED DRAFT STAGE','open_edges_before':before,'open_edges_after':after['open_edges'],
-             'links_added':len(links),'links_dropped_for_drc':len(dropped),'links_dropped_for_hole_spacing':len(spaced),'copper_rows':len(rows),
+             'links_added':len(links),'links_dropped_for_drc':len(dropped),'links_dropped_for_hole_spacing':len(spaced),'links_dropped_for_agnd_split':len(split_dropped),'copper_rows':len(rows),
              'ripped':len(removed)+(len(repair_details['removed_source_uuids']) if repair_details else 0),
              'drc_errors':0,'drc_warnings':sum(v['severity']=='warning' for v in drc['violations']),'parity':0,
              'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}
@@ -496,6 +536,27 @@ def hole_spacing_culprits(rows,links,dump,removed=(),min_nm=MIN_HOLE_TO_HOLE_NM)
             if q['uuid'] not in bad and np.hypot(*np.subtract(q['at_nm'],r['at_nm']))-(q['drill_nm']+r['drill_nm'])/2<min_nm:
                 bad.add(r['uuid']);break
     return [l for l in links if bad & set(l['copper_uuids'])]
+
+
+def split_culprits(splits,after,rows,links,nets,radius_mm=12.0):
+    """For each split group of the named nets, the new link nearest its stranded pads (within radius_mm)."""
+    pads={p['uuid']:np.array(p['xy'],float) for p in after['pads']}
+    labels={n:{u:i for i,g in enumerate(after['islands'].get(n,[])) for u in g} for n in nets}
+    owner={u:l for l in links for u in l['copper_uuids']};found=[]
+    for s in splits:
+        if s['net'] not in nets:continue
+        lab=labels[s['net']];major=collections.Counter(lab.get(u) for u in s['previously_connected_pads']).most_common(1)[0][0]
+        stranded=[pads[u] for u in s['previously_connected_pads'] if lab.get(u)!=major and u in pads]
+        best=None
+        for r in rows:
+            if r['uuid'] not in owner:continue
+            if r['kind']=='via':pts=[np.array(r['at_nm'],float)]
+            else:
+                a,b=np.array(r['start_nm'],float),np.array(r['end_nm'],float);pts=[a+(b-a)*t for t in np.linspace(0,1,5)]
+            d=min(np.hypot(*(q-x)) for q in stranded for x in pts)
+            if d<=radius_mm*1e6 and (best is None or d<best[0]):best=(d,owner[r['uuid']])
+        if best and best[1] not in found:found.append(best[1])
+    return found
 
 
 def drop_links(culprits,rows,links,removed,dump):

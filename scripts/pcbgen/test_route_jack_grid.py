@@ -162,5 +162,39 @@ class CompleteGateTests(unittest.TestCase):
             self.assertEqual((r['adopted'],r['capped_warning_types'],r['complete_native_warning_evidence_status']),(False,['silk_overlap'],'NOT RUN: native prerequisites failed'))
 
 
+class AnalogTierTests(unittest.TestCase):
+    def test_pitch_sense_first_then_other_sense_then_precision_op_amp_nets(self):
+        import tempfile,pathlib
+        names={'T1':'/O1/C1e2eb4_SENSE','T2':'/O2/1V_BUFFER','T3':'/F1/C72459f_SENSE','T4':'/O1/FB','T5':'/O1/OUT','T6':'/O3/C1b3f1d_SENSE'}
+        board='(kicad_pcb\n\t(footprint "lib:TSSOP-14"\n\t\t(property "Reference" "U1")\n\t\t(property "Value" "OPA4197IPWR")\n\t)\n\t(footprint "lib:SOIC-14"\n\t\t(property "Reference" "U2")\n\t\t(property "Value" "LM324")\n\t)\n)'
+        dump={'islands':{n:[['a'],['b']] for n in ('T1','T2','T3','T4','T5','AGND','+12V')}|{'T6':[['a']]},
+              'pads':[{'ref':'U1','net':n} for n in ('T1','T4','AGND')]+[{'ref':'U2','net':'T5'}]}
+        with tempfile.TemporaryDirectory() as d:
+            path=pathlib.Path(d)/'tokens.json';path.write_text(json.dumps(names));saved=driver.NET_TOKENS;driver.NET_TOKENS=path
+            try:tiers=driver.analog_tiers(dump,board)
+            finally:driver.NET_TOKENS=saved
+        # T6 is already connected; T5 sits on a non-precision op-amp; rails and AGND are never tiers.
+        self.assertEqual(tiers,[['T1','T2'],['T3'],['T4']])
+
+    def test_analog_tiers_guard_agnd_and_precede_the_signal_batches(self):
+        names=[s['name'] for s in driver.STAGES]
+        for name in ('analog-pitch','analog-sense','analog-precision'):
+            self.assertTrue(driver.STAGES[names.index(name)]['agnd_guard'])
+            self.assertLess(names.index(name),names.index('negotiate'))
+        self.assertLess(names.index('analog-pitch'),names.index('analog-sense'))
+
+
+class SplitCulpritTests(unittest.TestCase):
+    def test_nearest_new_link_to_stranded_agnd_pads_is_named(self):
+        after={'pads':[{'uuid':u,'xy':xy} for u,xy in (('p1',[0,0]),('p2',[1e6,0]),('p3',[50e6,0]))],
+               'islands':{'AGND':[['p3','x','y'],['p1','p2']]}}
+        rows=[{'uuid':'s1','kind':'segment','start_nm':[0,3e6],'end_nm':[2e6,3e6]},{'uuid':'v2','kind':'via','at_nm':[0,8e6]},
+              {'uuid':'v3','kind':'via','at_nm':[90e6,0]}]
+        links=[{'net':'a','copper_uuids':['s1']},{'net':'b','copper_uuids':['v2']},{'net':'c','copper_uuids':['v3']}]
+        splits=[{'net':'AGND','previously_connected_pads':['p1','p2','p3','x','y']},{'net':'SIG','previously_connected_pads':['p1']}]
+        self.assertEqual(driver.split_culprits(splits,after,rows,links,nets={'AGND'}),[links[0]])
+        self.assertEqual(driver.split_culprits(splits,after,rows[2:],links,nets={'AGND'}),[])
+
+
 if __name__=='__main__':
     unittest.main()
