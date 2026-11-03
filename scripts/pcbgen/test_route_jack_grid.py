@@ -136,8 +136,8 @@ class HoleSpacingTests(unittest.TestCase):
         self.assertEqual((len(culprits),[r['uuid'] for r in rows],removed),(2,['z'],[]))
 
     def test_rail_links_guard_every_agnd_pour_layer(self):
-        spec=next(s for s in driver.STAGES if s['name']=='rail-links')
-        self.assertTrue(spec['agnd_guard']);self.assertEqual(driver.AGND_POUR_LAYERS,['F.Cu','B.Cu','In1.Cu'])
+        for name in ('rail-links','rail-escapes'):self.assertTrue(next(s for s in driver.STAGES if s['name']==name)['agnd_guard'])
+        self.assertEqual(driver.AGND_POUR_LAYERS,['F.Cu','B.Cu','In1.Cu'])
 
 
 if __name__=='__main__':
