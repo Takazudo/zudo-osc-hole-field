@@ -1,0 +1,103 @@
+{
+ "schema_version": 1,
+ "policy": "Superseded studies replay every assertion unchanged in a worktree at the first parent of the adopted commit that superseded them (owner-delegated decision, 2026-11-03). Their test bytes must equal that commit. Current-tree discovery excludes them. Nothing is skipped or deleted; re-deriving a study against current sources is new work, not a test fix.",
+ "studies": [
+  {
+   "path": "scripts/architecture278/implementation",
+   "runner": "scripts/checks/architecture_history.py",
+   "commit": "3570012a088b07e5110642ed04f59688a3d819e1",
+   "superseded_by": "25d79eb51050c97b4fd99a23626875234c6678fa",
+   "reason": "Architecture-278 packet checkpoints and current-source modules: main G06 confirmation (02d69fbd) edited project/osc-hole-field/block-contracts.json, electrical-decisions.json, open-issues.json and design/spec/modules/filter.py, which this study binds byte-for-byte; the replay guard forbids any later edit of a checkpoint-era file, and S2b later changed far more"
+  },
+  {
+   "path": "scripts/architecture278/test_ledger.py",
+   "commit": "3570012a088b07e5110642ed04f59688a3d819e1",
+   "superseded_by": "25d79eb51050c97b4fd99a23626875234c6678fa",
+   "reason": "Architecture-278 source ledger: main G06 confirmation (02d69fbd) edited project/osc-hole-field/block-contracts.json, electrical-decisions.json, open-issues.json and design/spec/modules/filter.py, which this study binds byte-for-byte"
+  },
+  {
+   "path": "scripts/architecture278/test_electrical.py",
+   "commit": "539ff382dc5d4490f20603033e2940f768f349a0",
+   "superseded_by": "0bf32f593b6136feb64c47725d2bc813cc80d661",
+   "reason": "Architecture-278 electrical study: the adopted S2b switch change replaced ADG5412FBRUZ with TMUX7412FRRPR/TMUX6112PWR and moved partition, netlists and power sources this study binds (+12 V load case 339.5 -> 359.4 mA)"
+  },
+  {
+   "path": "design/architecture-278/implementation/stage36/whole-layout-review/test_source.py",
+   "commit": "3570012a088b07e5110642ed04f59688a3d819e1",
+   "superseded_by": "25d79eb51050c97b4fd99a23626875234c6678fa",
+   "reason": "Stage36 whole-layout review source hashes: main G06 confirmation (02d69fbd) edited project/osc-hole-field/block-contracts.json, electrical-decisions.json, open-issues.json and design/spec/modules/filter.py, which this study binds byte-for-byte; partition.json also changed with S2b"
+  },
+  {
+   "path": "design/architecture-278/implementation/stage45/connectivity-inventory/test_inventory.py",
+   "commit": "539ff382dc5d4490f20603033e2940f768f349a0",
+   "superseded_by": "0bf32f593b6136feb64c47725d2bc813cc80d661",
+   "reason": "Stage45 connectivity inventory: the adopted S2b switch change replaced ADG5412FBRUZ with TMUX7412FRRPR/TMUX6112PWR and moved partition, netlists and power sources this study binds (JL pad/netlist binding)"
+  },
+  {
+   "path": "scripts/checks/test_connectivity_inventory.py",
+   "commit": "539ff382dc5d4490f20603033e2940f768f349a0",
+   "superseded_by": "0bf32f593b6136feb64c47725d2bc813cc80d661",
+   "reason": "Repository-suite wrapper of the Stage45 inventory test; same supersession"
+  },
+  {
+   "path": "design/architecture-278/implementation/stage50/assembly-specification/test_evaluate.py",
+   "commit": "539ff382dc5d4490f20603033e2940f768f349a0",
+   "superseded_by": "0bf32f593b6136feb64c47725d2bc813cc80d661",
+   "reason": "Stage50 assembly specification bindings: the adopted S2b switch change replaced ADG5412FBRUZ with TMUX7412FRRPR/TMUX6112PWR and moved partition, netlists and power sources this study binds (component inventory)"
+  },
+  {
+   "path": "scripts/checks/test_assembly_specification.py",
+   "commit": "539ff382dc5d4490f20603033e2940f768f349a0",
+   "superseded_by": "0bf32f593b6136feb64c47725d2bc813cc80d661",
+   "reason": "Repository-suite wrapper of the Stage50 test; same supersession"
+  },
+  {
+   "path": "design/architecture-278/implementation/stage54/power-cleanup/test_cleanup.py",
+   "commit": "3570012a088b07e5110642ed04f59688a3d819e1",
+   "superseded_by": "25d79eb51050c97b4fd99a23626875234c6678fa",
+   "reason": "Stage54 idle-quad cleanup study (unadopted): main G06 confirmation (02d69fbd) edited project/osc-hole-field/block-contracts.json, electrical-decisions.json, open-issues.json and design/spec/modules/filter.py, which this study binds byte-for-byte; S2b later replaced the ADG5412 quads it studies"
+  },
+  {
+   "path": "scripts/checks/test_power_cleanup.py",
+   "commit": "3570012a088b07e5110642ed04f59688a3d819e1",
+   "superseded_by": "25d79eb51050c97b4fd99a23626875234c6678fa",
+   "reason": "Repository-suite wrapper of the Stage54 test; same supersession"
+  },
+  {
+   "path": "scripts/checks/test_mult_copper_plan.py",
+   "commit": "3570012a088b07e5110642ed04f59688a3d819e1",
+   "superseded_by": "25d79eb51050c97b4fd99a23626875234c6678fa",
+   "reason": "Stage40 mult copper plan study: main G06 confirmation (02d69fbd) edited project/osc-hole-field/block-contracts.json, electrical-decisions.json, open-issues.json and design/spec/modules/filter.py, which this study binds byte-for-byte; S2b later changed the U3101 package pins"
+  },
+  {
+   "path": "scripts/checks/test_mult_substrate_comparison.py",
+   "commit": "3570012a088b07e5110642ed04f59688a3d819e1",
+   "superseded_by": "25d79eb51050c97b4fd99a23626875234c6678fa",
+   "reason": "Stage40 mult substrate comparison deterministic artifacts: main G06 confirmation (02d69fbd) edited project/osc-hole-field/block-contracts.json, electrical-decisions.json, open-issues.json and design/spec/modules/filter.py, which this study binds byte-for-byte"
+  },
+  {
+   "path": "scripts/checks/test_full_b1_retirement.py",
+   "commit": "80f9e32c8eadc82f59caef83eb41c81ed9522473",
+   "superseded_by": "2ba881d7124aa60b8d6dac5a49201233ed95e75a",
+   "reason": "Stage42 full-B1 retirement proof binds the JL board; the E15 JL minimal-move layout pass with TSSOP retention changed it"
+  },
+  {
+   "path": "scripts/pcbgen/test_foil_collar_geometry.py",
+   "commit": "539ff382dc5d4490f20603033e2940f768f349a0",
+   "superseded_by": "0bf32f593b6136feb64c47725d2bc813cc80d661",
+   "reason": "Unselected JL-K GH foil-collar proposal binds partition.json through the peripheral-epoch transition chain; the adopted S2b switch change replaced ADG5412FBRUZ with TMUX7412FRRPR/TMUX6112PWR and moved partition, netlists and power sources this study binds"
+  },
+  {
+   "path": "scripts/pcbgen/test_peripheral_ground_source.py",
+   "commit": "539ff382dc5d4490f20603033e2940f768f349a0",
+   "superseded_by": "0bf32f593b6136feb64c47725d2bc813cc80d661",
+   "reason": "Peripheral-ground source epoch chain proves whole-partition and IO-report equality through named historical transitions; the adopted S2b switch change added 202 partition rows, changed 112 package faces and rewrote io-partition.json outside those transitions"
+  },
+  {
+   "path": "scripts/pcbgen/test_reconstruct_foil_collar.py",
+   "commit": "539ff382dc5d4490f20603033e2940f768f349a0",
+   "superseded_by": "0bf32f593b6136feb64c47725d2bc813cc80d661",
+   "reason": "Reconstruction of the unselected JL-K foil-collar proposal; bound to partition.json through the same peripheral-epoch chain, which the S2b adoption superseded"
+  }
+ ]
+}

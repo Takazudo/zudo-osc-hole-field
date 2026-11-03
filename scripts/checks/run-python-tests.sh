@@ -44,10 +44,27 @@ done
 mapfile -t ordered_discovery_roots < <(printf '%s\n' "${!discovery_roots[@]}" | sort)
 total_tests=0
 
+# Superseded studies replay unchanged at their pinned commits (scripts/checks/frozen-studies.json).
+frozen_studies=scripts/checks/frozen_studies.py
+if [[ -f "$frozen_studies" ]]; then
+  printf '%s\n' 'Replaying superseded studies at their pinned commits'
+  if output=$(python3 "$frozen_studies" replay 2>&1); then
+    printf '%s\n' "$output"
+  else
+    status=$?
+    printf '%s\n' "$output" >&2
+    exit "$status"
+  fi
+  count=$(printf '%s\n' "$output" | sed -nE 's/^Ran ([0-9]+) tests? in frozen study worktrees/\1/p' | tail -n 1)
+  total_tests=$((total_tests + ${count:-0}))
+fi
+
 for directory in "${ordered_discovery_roots[@]}"; do
   printf 'Discovering tests under %s/\n' "$directory"
   command=(python3 -m unittest discover --start-directory "$directory" --pattern 'test_*.py')
-  if [[ "$directory" == scripts/architecture278/implementation ]]; then
+  if [[ -f "$frozen_studies" ]]; then
+    command=(python3 "$frozen_studies" discover "$directory")
+  elif [[ "$directory" == scripts/architecture278/implementation ]]; then
     command=(python3 scripts/checks/architecture_history.py)
   fi
   if output=$("${command[@]}" 2>&1); then

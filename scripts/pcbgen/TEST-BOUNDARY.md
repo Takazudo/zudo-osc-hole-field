@@ -125,3 +125,18 @@ with `always()` and rejects anything except two successes. All original commands
 and the regeneration drift artifact are retained. See
 [`CI-TIMEOUT-DIAGNOSIS.md`](../checks/CI-TIMEOUT-DIAGNOSIS.md) for the original
 timeouts, resource duplication and validation boundary.
+
+## Superseded studies
+
+Some retained study tests assert that current canonical bytes still equal the
+revision they studied. Adopted changes made that false on purpose: main's G06
+confirmation (merged in `25d79eb5`), the S2b switch adoption (`0bf32f59`) and the
+E15 JL layout pass (`2ba881d7`). `scripts/checks/frozen-studies.json` lists each
+such test, the adopted commit that superseded it and why. `scripts/checks/frozen_studies.py`
+replays every listed test unchanged in a disposable worktree at the first parent of
+that commit, where it last passed; the test bytes must be identical at HEAD and
+at that commit. Current-tree discovery excludes only the listed modules. The
+whole `scripts/architecture278/implementation` packet, including its checkpoint
+adapter above, is replayed this way at `3570012a`. These replays show the studies
+still hold for the revision they studied; they are not evidence about current
+sources. Re-deriving a study against current sources is new work, not a test fix.
