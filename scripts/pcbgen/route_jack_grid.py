@@ -654,7 +654,10 @@ def warning_complete_gate(before_board,after_board,before,after,before_drc,after
     before_sha,after_sha=sha_file(before_board),sha_file(after_board)
     try:
         options={'zone_batch_size':zone_batch_size}
-        if reviewed_removed_uuids:options['reviewed_removed_uuids']=list(reviewed_removed_uuids)
+        if reviewed_removed_uuids:
+            from scripts.pcbgen.audit_added_mask import StageRemovals
+            stage=isinstance(reviewed_removed_uuids,StageRemovals)
+            options['reviewed_removed_uuids']=reviewed_removed_uuids if stage else list(reviewed_removed_uuids)
         complete_before,complete_after,proof=auditor(before_board,after_board,before_drc,after_drc,evidence,**options)
         verify_warning_proof(proof,before_sha,after_sha)
         if sha_file(before_board)!=before_sha or sha_file(after_board)!=after_sha:
@@ -665,6 +668,9 @@ def warning_complete_gate(before_board,after_board,before,after,before_drc,after
                       complete_native_warning_evidence_status='REJECTED: incomplete native warning evidence')
         return result
     result['complete_native_warning_evidence']=proof
+    if reviewed_removed_uuids:
+        from scripts.pcbgen.audit_added_mask import removal_source
+        result['copper_removal_scope']={'source':removal_source(reviewed_removed_uuids),'removed_objects':len(reviewed_removed_uuids)}
     result.update(promotion_gate(before,after,complete_before,complete_after))
     result['complete_native_warning_evidence_status']='COMPLETE: source-bound native evidence'
     return result
@@ -686,8 +692,11 @@ def complete_gate(board_id,current,candidate,receipt,spec,zone_batch_size=16,aud
     before=json.loads(current.with_name('dump.json').read_text());after=json.loads(candidate.with_name('dump.json').read_text())
     capped=warning_capped(before_drc,after_drc)
     evidence=workspace(board_id,spec['name']+'-complete-warnings')/'native-audits' if capped or force else None
+    # Rip-up stages (negotiate-open, region-*, rrr-*) remove copper; their own exact delta is the removal scope.
+    from scripts.pcbgen.audit_added_mask import stage_removed_uuids
+    removed=stage_removed_uuids(current.read_text(),candidate.read_text())
     receipt.update(warning_complete_gate(current,candidate,before,after,before_drc,after_drc,evidence,
-                                         zone_batch_size=zone_batch_size,auditor=auditor,force=force))
+                                         zone_batch_size=zone_batch_size,reviewed_removed_uuids=removed,auditor=auditor,force=force))
     return receipt
 
 

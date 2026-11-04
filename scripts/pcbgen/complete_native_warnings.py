@@ -16,7 +16,7 @@ import re
 import subprocess
 
 from scripts.pcbgen.audit_hole_pairs import possible_pairs
-from scripts.pcbgen.audit_added_mask import unchanged_nonrouting, new_silk_identities, added_copper_scope, reviewed_copper_removals
+from scripts.pcbgen.audit_added_mask import unchanged_nonrouting, new_silk_identities, added_copper_scope, reviewed_copper_removals, removal_source, removal_arguments, StageRemovals
 from scripts.pcbgen.uuid_tools import top_level_spans,UUID_RE
 
 HOLE_TYPES={'hole_to_hole','holes_co_located'}
@@ -242,6 +242,8 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
     if mask['unchanged_nonrouting_objects']!=count:raise ValueError('silk invariance mismatch')
     scope=added_copper_scope(before_board.read_text(),after_board.read_text(),reviewed_removed_uuids=reviewed_removed_uuids)
     if mask.get('reviewed_copper_removals',{})!=cut_scope:raise ValueError('silk reviewed cut scope mismatch')
+    if cut_scope and mask.get('copper_removal_source','reviewed')!=removal_source(reviewed_removed_uuids):
+        raise ValueError('silk copper removal source mismatch')
     expected_copper=set(scope)
     if 'added_copper_source_scope' in mask and mask['added_copper_source_scope']!=scope:
         raise ValueError('silk source scope mismatch')
@@ -271,7 +273,7 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
         new_silk_identities=[],before_source_sha256=sha(before_board),after_source_sha256=sha(after_board),
         zone_evidence=zone_proof,
         audit_result_sha256=[sha(Path(p)/'result.json') for p in (before_audit,after_audit,mask_audit)],
-        **({'reviewed_copper_removals':cut_scope} if cut_scope else {}))
+        **({'reviewed_copper_removals':cut_scope,'copper_removal_source':removal_source(reviewed_removed_uuids)} if cut_scope else {}))
 
 
 def audit_current_reports(before_board, after_board, before_drc, after_drc, output, zone_batch_size=1, reviewed_removed_uuids=()):
@@ -285,18 +287,22 @@ def audit_current_reports(before_board, after_board, before_drc, after_drc, outp
     relative=lambda p:str(Path(p).resolve().relative_to(root))
     scope=added_copper_scope(Path(before_board).read_text(),Path(after_board).read_text(),reviewed_removed_uuids=reviewed_removed_uuids)
     cuts=reviewed_copper_removals(Path(before_board).read_text(),Path(after_board).read_text(),reviewed_removed_uuids)
-    (output/'added-copper-scope.json').write_text(json.dumps(dict(before_sha256=sha(before_board),after_sha256=sha(after_board),copper=scope,**({'reviewed_copper_removals':cuts} if cuts else {})),indent=2)+'\n')
+    source=removal_source(reviewed_removed_uuids)
+    (output/'added-copper-scope.json').write_text(json.dumps(dict(before_sha256=sha(before_board),after_sha256=sha(after_board),copper=scope,**({'reviewed_copper_removals':cuts,'copper_removal_source':source} if cuts else {})),indent=2)+'\n')
     commands=[['scripts/pcbgen/audit_hole_pairs.py',relative(before_board),relative(before_audit)],
               ['scripts/pcbgen/audit_hole_pairs.py',relative(after_board),relative(after_audit)],
               ['scripts/pcbgen/audit_added_mask.py',relative(before_board),relative(after_board),relative(mask_audit),'--expected-copper',str(len(scope)),'--expected-vias',str(sum(k=='via' for k in scope.values()))],
               ['scripts/pcbgen/audit_zone_silk_scope.py',relative(before_board),relative(after_board),relative(zone_audit),'--classify']]
     if zone_batch_size!=1:commands[-1].extend(['--batch-size',str(zone_batch_size)])
-    for command in commands[2:]:
-        for uid in sorted(cuts):command.extend(['--reviewed-cut-uuid',uid])
+    if cuts:
+        # A stage scope can name thousands of objects, so it travels as a hash-bound file, not argv.
+        arguments=removal_arguments(reviewed_removed_uuids,output/'stage-removal-scope.json',before_board,after_board)
+        if source=='stage':arguments[1]=relative(arguments[1])
+        for command in commands[2:]:command.extend(arguments)
     for command in commands:
         subprocess.run(['bash','scripts/kicad/run.sh','python3',*command],cwd=root,check=True)
     result=complete_reports(before_board,after_board,before_drc,after_drc,before_audit,after_audit,mask_audit,zone_audit,
-                            **({'reviewed_removed_uuids':sorted(cuts)} if cuts else {}))
+                            **({'reviewed_removed_uuids':StageRemovals(sorted(cuts)) if source=='stage' else sorted(cuts)} if cuts else {}))
     for name,value in zip(('complete-before-drc','complete-after-drc','proof'),result):
         (output/(name+'.json')).write_text(json.dumps(value,indent=2)+'\n')
     return result

@@ -35,6 +35,28 @@ class CompleteWarningTests(unittest.TestCase):
                 self.assertEqual(manifest['reviewed_copper_removals'],{uid:'via'})
                 self.assertEqual(len(manifest['copper']),1)
 
+    def test_stage_removals_travel_as_a_bound_file_to_mask_and_zone_audits(self):
+        from unittest.mock import patch
+        from scripts.pcbgen.complete_native_warnings import audit_current_reports
+        from scripts.pcbgen.audit_added_mask import StageRemovals,stage_removed_uuids,read_stage_removals
+        from scripts.pcbgen.test_audit_added_mask import board,item
+        root=Path(__file__).resolve().parents[2]
+        with tempfile.TemporaryDirectory(dir=root) as folder:
+            before=Path(folder)/'before.kicad_pcb';after=Path(folder)/'after.kicad_pcb'
+            before.write_text(board(*(item(i) for i in range(30)),item(90,'via')));after.write_text(board(item(0),item(91,'via')))
+            removed=stage_removed_uuids(before.read_text(),after.read_text())
+            with patch('scripts.pcbgen.complete_native_warnings.subprocess.run') as run,patch('scripts.pcbgen.complete_native_warnings.complete_reports',return_value=({}, {}, {})) as verify:
+                output=Path(folder)/'audit';audit_current_reports(before,after,{}, {},output,zone_batch_size=16,reviewed_removed_uuids=removed)
+                commands=[c.args[0] for c in run.call_args_list];self.assertEqual(len(commands),4)
+                scope=str((output/'stage-removal-scope.json').resolve().relative_to(root))
+                self.assertTrue(all(c[-2:]==['--stage-removal-scope',scope] for c in commands[2:]))
+                self.assertFalse(any('--reviewed-cut-uuid' in c for c in commands))
+                passed=verify.call_args.kwargs['reviewed_removed_uuids']
+                self.assertIsInstance(passed,StageRemovals);self.assertEqual(passed,removed)
+                self.assertEqual(read_stage_removals(output/'stage-removal-scope.json',before,after),removed)
+                manifest=json.loads((output/'added-copper-scope.json').read_text())
+                self.assertEqual(manifest['copper_removal_source'],'stage');self.assertEqual(len(manifest['reviewed_copper_removals']),30)
+
     def test_native_zone_pair_warning_blocks_even_when_added_copper_is_clean(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory);uid='00000000-0000-4000-8000-000000000001'

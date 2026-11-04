@@ -4,7 +4,7 @@ from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
 from scripts.pcbgen.complete_native_warnings import SILK_TARGET_LAYERS
 from scripts.pcbgen.uuid_tools import top_level_spans,replace_spans,UUID_RE
-from scripts.pcbgen.audit_added_mask import unchanged_nonrouting,new_silk_identities
+from scripts.pcbgen.audit_added_mask import unchanged_nonrouting,new_silk_identities,read_stage_removals
 
 
 def zone_metadata(text):
@@ -163,4 +163,7 @@ def main(before_path,after_path,output,classify=False,batch_size=1,resume=None,r
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('before',type=Path);parser.add_argument('after',type=Path);parser.add_argument('output',type=Path);parser.add_argument('--classify',action='store_true');parser.add_argument('--batch-size',type=int,default=1);parser.add_argument('--resume-from',type=Path);parser.add_argument('--reviewed-cut-uuid',action='append',default=[]);args=parser.parse_args();main(args.before,args.after,args.output,args.classify,args.batch_size,args.resume_from,args.reviewed_cut_uuid)
+    parser=argparse.ArgumentParser();parser.add_argument('before',type=Path);parser.add_argument('after',type=Path);parser.add_argument('output',type=Path);parser.add_argument('--classify',action='store_true');parser.add_argument('--batch-size',type=int,default=1);parser.add_argument('--resume-from',type=Path);parser.add_argument('--reviewed-cut-uuid',action='append',default=[]);parser.add_argument('--stage-removal-scope',type=Path);args=parser.parse_args()
+    if args.stage_removal_scope and args.reviewed_cut_uuid:parser.error('use reviewed cuts or a stage removal scope, not both')
+    cuts=read_stage_removals(args.stage_removal_scope,args.before,args.after) if args.stage_removal_scope else args.reviewed_cut_uuid
+    main(args.before,args.after,args.output,args.classify,args.batch_size,args.resume_from,cuts)
