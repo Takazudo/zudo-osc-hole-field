@@ -1,0 +1,144 @@
+{
+ "adopted": false,
+ "after": {
+  "agnd_islands": 23,
+  "agnd_open_edges": 22,
+  "open_edges": 3363,
+  "other_signal_open_edges": 3324,
+  "rail_open_edges": {
+   "+12V": 6,
+   "+5V": 4,
+   "-12V": 7
+  }
+ },
+ "before": {
+  "agnd_islands": 23,
+  "agnd_open_edges": 22,
+  "open_edges": 3409,
+  "other_signal_open_edges": 3324,
+  "rail_open_edges": {
+   "+12V": 26,
+   "+5V": 12,
+   "-12V": 25
+  }
+ },
+ "fabrication_outputs": "NOT CREATED",
+ "final_gate": {
+  "adopted": false,
+  "candidate_board_sha256": "2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751",
+  "capped_warning_types": [
+   "silk_over_copper",
+   "silk_overlap"
+  ],
+  "complete_native_warning_evidence_status": "REJECTED: incomplete native warning evidence",
+  "input_board_sha256": "dda33a25479c9993f71e33d49129cf16414828b3dd2083b6d4f91a65421c728c",
+  "native_errors": false,
+  "native_warning_evidence_error": "CalledProcessError: Command '['bash', 'scripts/kicad/run.sh', 'python3', 'scripts/pcbgen/audit_zone_silk_scope.py', '.circuit-cache/osc-core-grid-osc3-pilot-start/osc-core.kicad_pcb', '.circuit-cache/osc-core-grid-osc3-pilot-h3-escapes-split-repair-verify/osc-core.kicad_pcb', '.circuit-cache/osc-core-grid-osc3-k-pilot-complete-warnings/native-audits/zones', '--classify', '--batch-size', '16']' returned non-zero exit status 137.",
+  "new_warning_identities": [],
+  "open_edges_after": 3363,
+  "open_edges_before": 3409,
+  "rejection_reason": "incomplete_native_warning_evidence",
+  "split_pad_groups": [],
+  "stage": "osc3-k-pilot"
+ },
+ "input_board_sha256": "dda33a25479c9993f71e33d49129cf16414828b3dd2083b6d4f91a65421c728c",
+ "precision_returns": {
+  "agnd_pads_joined_main": 0,
+  "agnd_pads_left_main": 0,
+  "left_main_refs": [],
+  "main_agnd_group_after": 3071,
+  "main_agnd_group_before": 3071
+ },
+ "promoted": false,
+ "qualification": "NOT RUN: electrical, thermal and physical qualification",
+ "schema": "osc3-k-pilot-1",
+ "sequence": [
+  "h1-plane-escapes",
+  "h2-5v-trunks",
+  "h3-escapes-split-repair"
+ ],
+ "started_utc": "2026-11-04T07:26:27Z",
+ "status": "NATIVE CHECKED DRAFT STAGE",
+ "steps": [
+  {
+   "candidate_sha256": "ce29b19b7a0c00e2ca20e3c01b12466d837fce23bdd93e9da84ef97c23657e95",
+   "input_sha256": "dda33a25479c9993f71e33d49129cf16414828b3dd2083b6d4f91a65421c728c",
+   "links_added": 28,
+   "links_dropped_for_agnd_split": 2,
+   "new_warning_identities": [],
+   "open_edges_after": 3381,
+   "open_edges_before": 3409,
+   "raw_gate_adopted": true,
+   "spec": {
+    "agnd_guard": true,
+    "clearance": 0.25,
+    "name": "osc3-pilot-h1-plane-escapes",
+    "nets": [
+     "+12V",
+     "-12V"
+    ],
+    "planes": {
+     "+12V": "In4.Cu",
+     "-12V": "In3.Cu"
+    },
+    "rail_width": 0.25,
+    "res": 0.05
+   },
+   "split_pad_groups": 0,
+   "step": "h1-plane-escapes"
+  },
+  {
+   "candidate_sha256": "7fe355f680af8bf563c3d389b1f08b542e4bbe42de29f26bce0d3f1fc057cf38",
+   "input_sha256": "ce29b19b7a0c00e2ca20e3c01b12466d837fce23bdd93e9da84ef97c23657e95",
+   "links_added": 8,
+   "links_dropped_for_agnd_split": 0,
+   "new_warning_identities": [],
+   "open_edges_after": 3373,
+   "open_edges_before": 3381,
+   "raw_gate_adopted": true,
+   "spec": {
+    "agnd_guard": true,
+    "clearance": 0.25,
+    "name": "osc3-pilot-h2-5v-trunks",
+    "nets": [
+     "+5V"
+    ],
+    "rail_width": 0.25,
+    "res": 0.05,
+    "window_mm": 24
+   },
+   "split_pad_groups": 0,
+   "step": "h2-5v-trunks"
+  },
+  {
+   "candidate_sha256": "2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751",
+   "input_sha256": "7fe355f680af8bf563c3d389b1f08b542e4bbe42de29f26bce0d3f1fc057cf38",
+   "links_added": 10,
+   "links_dropped_for_agnd_split": 1,
+   "new_warning_identities": [],
+   "open_edges_after": 3363,
+   "open_edges_before": 3373,
+   "raw_gate_adopted": true,
+   "spec": {
+    "agnd_guard": true,
+    "clearance": 0.25,
+    "name": "osc3-pilot-h3-escapes-split-repair",
+    "nets": [
+     "+12V",
+     "-12V",
+     "+5V"
+    ],
+    "rail_width": 0.25,
+    "res": 0.05,
+    "window_mm": 6
+   },
+   "split_pad_groups": 0,
+   "step": "h3-escapes-split-repair"
+  }
+ ],
+ "tool": {
+  "kicad_cli_version": "10.0.6",
+  "wrapper": "scripts/kicad/run.sh"
+ },
+ "wall_seconds": 44537
+}
