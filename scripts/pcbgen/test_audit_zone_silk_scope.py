@@ -1,5 +1,6 @@
-import unittest
-from scripts.pcbgen.audit_zone_silk_scope import zone_metadata,zone_fixture_parts,zone_fixture_text,native_zone_signature,zone_fixture_batch_text,artwork_batches
+import subprocess,unittest
+from unittest import mock
+from scripts.pcbgen.audit_zone_silk_scope import PROBE_PREFIX,probe_fixture,zone_metadata,zone_fixture_parts,zone_fixture_text,native_zone_signature,zone_fixture_batch_text,artwork_batches
 
 
 class ZoneScopeTests(unittest.TestCase):
@@ -59,6 +60,18 @@ class ZoneScopeTests(unittest.TestCase):
         zone='(zone (uuid "00000000-0000-4000-8000-000000000001") (layer "F.Cu"))'
         with self.assertRaisesRegex(ValueError,'ambiguous'):
             zone_metadata('(kicad_pcb '+zone+zone+')')
+
+
+    def test_fixture_probe_runs_in_a_child_and_needs_exactly_one_observation(self):
+        def child(stdout):
+            return mock.patch('scripts.pcbgen.audit_zone_silk_scope.subprocess.run',
+                              return_value=subprocess.CompletedProcess([],0,stdout=stdout))
+        with child('noise\n'+PROBE_PREFIX+'{"zone_uuids": ["z"]}\n') as run:
+            self.assertEqual(probe_fixture('board.kicad_pcb',3),{'zone_uuids':['z']})
+            self.assertIn('--native-fixture-probe',run.call_args.args[0])
+        for stdout in ('noise\n',PROBE_PREFIX+'{}\n'+PROBE_PREFIX+'{}\n'):
+            with child(stdout),self.assertRaisesRegex(ValueError,'no single observation'):
+                probe_fixture('board.kicad_pcb',3)
 
 
 if __name__=='__main__':unittest.main()
