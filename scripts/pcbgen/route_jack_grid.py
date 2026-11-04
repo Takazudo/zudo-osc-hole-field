@@ -68,11 +68,11 @@ STAGES=[
        'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for name,tier in (('analog-pitch',0),('analog-sense',1),('analog-precision',2))),
     # Negotiated (PathFinder) routing of every signal net on a 0.05 mm grid; leftovers go to the batches below.
     # A run stops after budget_s and saves its state, so each heavy-guard run stays short.
-    {'name':'negotiate','negotiate':True,'res':.05,'iterations':60,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
+    {'name':'negotiate','negotiate':True,'agnd_guard':True,'res':.05,'iterations':60,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
     # Second negotiated pass over what is still open, after the sequential stages.
-    {'name':'negotiate-open','negotiate':True,'open_only':True,'halo_mm':1.5,'res':.05,'iterations':40,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
+    {'name':'negotiate-open','negotiate':True,'agnd_guard':True,'open_only':True,'halo_mm':1.5,'res':.05,'iterations':40,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
     # Hotspot regions: rip all signal copper in a few clusters of stranded pins and renegotiate it.
-    *({'name':f'region-{i:02d}','negotiate':True,'regions':True,'eps_mm':8,'margin_mm':3,'regions_per_stage':8,'res':.05,'iterations':40,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,9)),
+    *({'name':f'region-{i:02d}','negotiate':True,'agnd_guard':True,'regions':True,'eps_mm':8,'margin_mm':3,'regions_per_stage':8,'res':.05,'iterations':40,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,9)),
     # Short local nets first.
     {'name':'signals-local','signals':True,'agnd_guard':True,'max_span_mm':8,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
     # Then the remaining open signal nets, shortest first, in checked and promoted batches
@@ -80,10 +80,10 @@ STAGES=[
     *({'name':f'signals-{i:02d}','signals':True,'agnd_guard':True,'chunk':120,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,41)),
     # Rip-up and reroute: probe each failed island with other signal copper as a cost,
     # rip the few nets in its way, route it, then reroute the ripped nets; all-or-nothing.
-    *({'name':f'rrr-{i:02d}','signals':True,'chunk':80,'rrr_rounds':2,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,25)),  # room for three re-offer rounds; unused batches are skipped
+    *({'name':f'rrr-{i:02d}','signals':True,'agnd_guard':True,'chunk':80,'rrr_rounds':2,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,25)),  # room for three re-offer rounds; unused batches are skipped
     {'name':'agnd-stitch-1','agnd_stitch':True},
     {'name':'signal-escapes','signals':True,'agnd_guard':True,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']},'res':.05,'window_mm':6},
-    *({'name':f'repair-{i:02d}','repair':True,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']},'res':.05,'window_mm':8} for i in range(1,9)),
+    *({'name':f'repair-{i:02d}','repair':True,'agnd_guard':True,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']},'res':.05,'window_mm':8} for i in range(1,9)),
     {'name':'agnd-stitch-2','agnd_stitch':True},
 ]
 
@@ -354,6 +354,14 @@ def hotspot_regions(dump,eps_mm):
     return sorted(regions,key=lambda r:(-r[2],tuple(r[0])))
 
 
+def stage_fill_guards(spec,routes_agnd=False):
+    """Plane fills a stage's new signal copper must not split; AGND pours too when the stage guards AGND.
+
+    A repair that routes AGND itself never guards the AGND fill against its own net.
+    """
+    return {'-12V':'In3.Cu',**({'AGND':AGND_POUR_LAYERS} if spec.get('agnd_guard') and not routes_agnd else {})}
+
+
 def stage(board_id,current,spec,definition,log):
     original=current
     repair_details=None
@@ -389,7 +397,7 @@ def stage(board_id,current,spec,definition,log):
             kwargs['grow']={**kwargs.get('grow',{}),'AGND':max(0,kwargs.get('grow',{}).get('AGND',0))}
             rails=[*RAILS,'AGND']
         results,removed=route(repair_search_dump(dump,spec),nets_to_repair,allowed_layers=layers,layer_cost=LAYER_COST,rail_nets=rails,
-                              fill_guards={'-12V':'In3.Cu'},diagnostics=repair_details['routing_diagnostics'],log=log,**kwargs,**neck_kwargs(board_id))
+                              fill_guards=stage_fill_guards(spec,routes_agnd='repair_ground_pad_uuids' in spec),diagnostics=repair_details['routing_diagnostics'],log=log,**kwargs,**neck_kwargs(board_id))
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
         current=cut_board;removed=[]
     elif spec.get('agnd_stitch'):
@@ -426,7 +434,7 @@ def stage(board_id,current,spec,definition,log):
         results,removed=negotiate(dump,nets,res=RUN['res'] or NEGOTIATE_RES.get(board_id,spec['res']),layer_cost=LAYER_COST,clearance=spec['clearance'],width=spec['signal_width'],
                                   via_diameter=spec['signal_via_diameter'],allowed_layers=SIGNAL_LAYERS,grow=spec['grow'],
                                   iterations=RUN['iterations'] or NEGOTIATE_ITERATIONS.get(board_id,spec['iterations']),present=0.5,present_growth=1.8,history=0.5,workers=RUN['workers'] or NEGOTIATE_WORKERS.get(board_id,spec['workers']),
-                                  fill_guards={'-12V':'In3.Cu'},log=log,deadline=(RUN['deadline']-FINALIZE_MARGIN_S if RUN['deadline'] else time.time()+spec['budget_s']),
+                                  fill_guards=stage_fill_guards(spec),log=log,deadline=(RUN['deadline']-FINALIZE_MARGIN_S if RUN['deadline'] else time.time()+spec['budget_s']),
                                   state_path=str(ROOT/'.circuit-cache'/f"{board_id}-{spec['name']}-{hashlib.sha256(current.read_bytes()).hexdigest()[:16]}.pkl"),**neck_kwargs(board_id))
         # Out of time: the negotiation state is saved; rerun this stage to continue it.
         if results is None:return None,'resume'
@@ -459,7 +467,7 @@ def stage(board_id,current,spec,definition,log):
         if rrr:RRR_TRIED.update(nets)
         kwargs={k:v for k,v in spec.items() if k in ('planes','clearance','rail_width','signal_width','signal_via_diameter','grow','res','window_mm','full_board','max_expansions','escape_halo_mm','rrr_rounds')}
         if rrr:kwargs.update(RRR_BUDGETS[RRR_ROUND['round']])
-        kwargs['fill_guards']={'-12V':'In3.Cu',**({'AGND':AGND_POUR_LAYERS} if spec.get('agnd_guard') else {})}
+        kwargs['fill_guards']=stage_fill_guards(spec)
         if RUN['shard']:kwargs['rip_only']=set(RUN['shard']['nets'])  # a shard rips only the nets it owns
         results,removed=route(dump,nets,allowed_layers=SIGNAL_LAYERS,layer_cost=LAYER_COST,rail_nets=RAILS,log=log,**kwargs,**neck_kwargs(board_id))
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
