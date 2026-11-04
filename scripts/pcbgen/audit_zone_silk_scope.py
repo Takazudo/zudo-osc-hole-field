@@ -63,6 +63,38 @@ def native_zone_signature(poly):
     return hashlib.sha256(poly.Format().encode()).hexdigest()
 
 
+def text_rows(board):
+    objects=list(board.GetDrawings())
+    for fp in board.GetFootprints():objects.extend([*fp.GetFields(),*fp.GraphicalItems()])
+    return {x.m_Uuid.AsString():x.GetShownText(True) for x in objects if hasattr(x,'GetShownText')}
+
+
+PROBE_FLAG='--native-fixture-probe';PROBE_PREFIX='NATIVE-FIXTURE-PROBE '
+
+
+def native_fixture_view(fixture,layer):
+    """Every native fixture observation the parent checks, from one loaded board."""
+    import pcbnew
+    loaded=pcbnew.LoadBoard(str(fixture));zones=list(loaded.Zones())
+    view=dict(zone_uuids=[z.m_Uuid.AsString() for z in zones],
+              copper=bool(list(loaded.GetTracks()) or any(list(fp.Pads()) for fp in loaded.GetFootprints())),
+              artwork_ids=[x.m_Uuid.AsString() for x in list(loaded.GetFootprints())+[x for x in loaded.GetDrawings() if x.GetLayer()!=pcbnew.Edge_Cuts]],
+              texts=text_rows(loaded))
+    if len(zones)==1:
+        try:view['geometry_signature']=native_zone_signature(zones[0].GetFilledPolysList(layer))
+        except ValueError as error:view['geometry_error']=str(error)
+    return view
+
+
+def probe_fixture(fixture,layer):
+    # pcbnew.LoadBoard boards are never released (taking SWIG ownership breaks the
+    # next load), so each fixture is read in a child process to keep memory per batch.
+    out=subprocess.run([sys.executable,__file__,PROBE_FLAG,str(fixture),str(layer)],check=True,stdout=subprocess.PIPE,text=True).stdout
+    rows=[line[len(PROBE_PREFIX):] for line in out.splitlines() if line.startswith(PROBE_PREFIX)]
+    if len(rows)!=1:raise ValueError('native fixture probe returned no single observation')
+    return json.loads(rows[0])
+
+
 def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pcbnew,batch_size=1,resume=None):
     """Native full-zone/silk pairs wherever added filled area could collide."""
     settings=json.loads(after_path.with_suffix('.kicad_pro').read_text())['board']['design_settings']['rules']
@@ -86,10 +118,6 @@ def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pc
     (output/f'zone-{uid}-scope.json').write_text(json.dumps(scope,indent=2)+'\n')
     progress=output/f'zone-{uid}-progress.jsonl';progress.write_text('')
     print(f'zone {uid}: {len(selected)}/{len(items)} artwork items, {2*len(batches)} paired fixtures',flush=True)
-    def text_rows(board):
-        objects=list(board.GetDrawings())
-        for fp in board.GetFootprints():objects.extend([*fp.GetFields(),*fp.GraphicalItems()])
-        return {x.m_Uuid.AsString():x.GetShownText(True) for x in objects if hasattr(x,'GetShownText')}
     sources=[(before_path,before),(after_path,after)];receipts=[];unions=[set(),set()];source_signatures={}
     for stage,(source,board) in enumerate(sources):
         source_text=source.read_text();texts=text_rows(board);native_zone=next(z for z in board.Zones() if z.m_Uuid.AsString()==uid)
@@ -101,14 +129,15 @@ def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pc
             fixture=folder/source.name
             fixture.write_text(zone_fixture_text(parts,item_uids[0]) if batch_size==1 else zone_fixture_batch_text(parts,item_uids))
             for suffix in ('.kicad_pro','.kicad_dru'):shutil.copyfile(source.with_suffix(suffix),fixture.with_suffix(suffix))
-            loaded=pcbnew.LoadBoard(str(fixture));zones=list(loaded.Zones())
-            if len(zones)!=1 or zones[0].m_Uuid.AsString()!=uid:raise ValueError('fixture zone identity changed')
-            if list(loaded.GetTracks()) or any(list(fp.Pads()) for fp in loaded.GetFootprints()):raise ValueError('unrelated fixture copper remains')
-            actual_ids=[x.m_Uuid.AsString() for x in list(loaded.GetFootprints())+[x for x in loaded.GetDrawings() if x.GetLayer()!=pcbnew.Edge_Cuts]]
+            view=probe_fixture(fixture,layer)
+            if view['zone_uuids']!=[uid]:raise ValueError('fixture zone identity changed')
+            if view['copper']:raise ValueError('unrelated fixture copper remains')
+            actual_ids=view['artwork_ids']
             if len(actual_ids)!=len(set(actual_ids)) or set(actual_ids)!=set(item_uids):raise ValueError('fixture artwork scope changed')
-            actual=text_rows(loaded)
+            actual=view['texts']
             if any(texts.get(k)!=v for k,v in actual.items()):raise ValueError('fixture rendered text changed')
-            geometry_signature=native_zone_signature(zones[0].GetFilledPolysList(layer))
+            if 'geometry_error' in view:raise ValueError(view['geometry_error'])
+            geometry_signature=view['geometry_signature']
             if geometry_signature!=source_signatures[str(stage)]:raise ValueError('fixture native zone shape changed')
             report=folder/'drc.json'
             if (stage,index) in completed:
@@ -162,7 +191,9 @@ def main(before_path,after_path,output,classify=False,batch_size=1,resume=None,r
     (output/'result.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))
 
 
-if __name__=='__main__':
+if __name__=='__main__' and sys.argv[1:2]==[PROBE_FLAG]:
+    print(PROBE_PREFIX+json.dumps(native_fixture_view(Path(sys.argv[2]),int(sys.argv[3]))),flush=True)
+elif __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('before',type=Path);parser.add_argument('after',type=Path);parser.add_argument('output',type=Path);parser.add_argument('--classify',action='store_true');parser.add_argument('--batch-size',type=int,default=1);parser.add_argument('--resume-from',type=Path);parser.add_argument('--reviewed-cut-uuid',action='append',default=[]);parser.add_argument('--stage-removal-scope',type=Path);args=parser.parse_args()
     if args.stage_removal_scope and args.reviewed_cut_uuid:parser.error('use reviewed cuts or a stage removal scope, not both')
     cuts=read_stage_removals(args.stage_removal_scope,args.before,args.after) if args.stage_removal_scope else args.reviewed_cut_uuid
