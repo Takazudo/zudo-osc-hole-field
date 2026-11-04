@@ -953,7 +953,9 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
     for net,why in sorted(failures.items()):log(f'NEGOTIATE unroutable {net}: {why}')
     # Plane fills sharing a signal layer: accept routes one by one, dropping any that split the fill.
     split_dropped=set()
-    for gname,glayer in (fill_guards or {}).items():
+    # A guard names one fill layer, or several for a net poured on more than one layer (AGND);
+    # each layer is judged in turn on the routes no earlier layer dropped.
+    for gname,glayer in [(n,l) for n,ls in (fill_guards or {}).items() for l in ([ls] if isinstance(ls,str) else ls)]:
         if gname not in raster.net_id:continue
         gl=raster.layers.index(glayer);P=raster.net_id[gname]
         guard=FillGuard(raster.label[gl],P,fill_clearance,res);k_cl=disc(width/2+res);k_v=disc(vr)
@@ -974,7 +976,7 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
             if len(batch)==1:split_dropped.add(batch[0]);return region
             mid=len(batch)//2
             return accept(batch[mid:],accept(batch[:mid],region))
-        todo=[net for net in order if routes.get(net) is not None and net not in conflicted]
+        todo=[net for net in order if routes.get(net) is not None and net not in conflicted and net not in split_dropped]
         region=guard.region
         for i in range(0,len(todo),256):region=accept(todo[i:i+256],region)
         log(f'NEGOTIATE {gname} fill guard dropped {len(split_dropped)} nets')
