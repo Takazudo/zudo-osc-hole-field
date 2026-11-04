@@ -316,6 +316,17 @@ class AnalogTierTests(unittest.TestCase):
             self.assertLess(names.index(name),names.index('negotiate'))
         self.assertLess(names.index('analog-pitch'),names.index('analog-sense'))
 
+    def test_every_signal_routing_stage_guards_agnd(self):
+        # OSC3: an unguarded rrr-01 (JR 255 -> 211) split the ~1040-pad AGND group and was rejected.
+        routing=[s for s in driver.STAGES if s.get('signals') or s.get('negotiate') or s.get('repair')]
+        self.assertTrue({'negotiate','negotiate-open','region-01','rrr-01','repair-01','signals-local','signal-escapes'}<={s['name'] for s in routing})
+        for spec in routing:self.assertTrue(spec.get('agnd_guard'),spec['name'])
+
+    def test_stage_fill_guards(self):
+        self.assertEqual(driver.stage_fill_guards({}),{'-12V':'In3.Cu'})
+        self.assertEqual(driver.stage_fill_guards({'agnd_guard':True}),{'-12V':'In3.Cu','AGND':driver.AGND_POUR_LAYERS})
+        self.assertEqual(driver.stage_fill_guards({'agnd_guard':True},routes_agnd=True),{'-12V':'In3.Cu'})
+
     def test_general_signal_stages_guard_agnd(self):
         # Unguarded batches split the ~1040-pad AGND group and were rejected (OSC3: JR signals-01 312 -> 219).
         guarded=[s['name'] for s in driver.STAGES if s['name']=='signals-local' or s['name']=='signal-escapes'
