@@ -32,15 +32,26 @@ def load(p,n):return json.loads(Path(p).with_name(n).read_text())
 
 def main():
     p=argparse.ArgumentParser(description=__doc__.splitlines()[0]);p.add_argument('--promote',action='store_true')
+    p.add_argument('--resume-gate',action='store_true',help='skip routing: gate the retained final candidate of the previous receipt (hashes must match)')
     a=p.parse_args();log=lambda m:print(m,flush=True)
     board=ROOT/'boards'/BOARD_ID/f'{BOARD_ID}.kicad_pcb'
     if sha(board)!=K3409_SHA:raise RuntimeError('adopted K board is not K3409')
     definition=json.loads((ROOT/'design/boards'/f'{BOARD_ID}.json').read_text())
-    work=driver.workspace(BOARD_ID,'osc3-pilot-start');start=work/board.name;shutil.copyfile(board,start)
-    drc0,dump0=driver.check(start)
-    if any(v['severity']=='error' for v in drc0['violations']) or drc0['schematic_parity']:raise RuntimeError('start board not clean')
-    t0=time.time();steps=[];current=start
-    for key in SEQUENCE:
+    t0=time.time();steps=[]
+    if a.resume_gate:
+        # An earlier run's settled start copy and checked final candidate, bound by their recorded hashes.
+        prev=json.loads((HERE/'osc3-k-pilot.json').read_text());steps=prev['steps']
+        start=ROOT/'.circuit-cache'/f'{BOARD_ID}-grid-osc3-pilot-start'/board.name
+        kept=[s for s in steps if s.get('raw_gate_adopted')]
+        current=ROOT/'.circuit-cache'/f"{BOARD_ID}-grid-osc3-pilot-{kept[-1]['step']}-verify"/board.name
+        if sha(start)!=K3409_SHA or sha(current)!=kept[-1]['candidate_sha256']:raise RuntimeError('retained pilot workspaces do not match the receipt')
+        dump0=load(start,'dump.json')
+    else:
+        work=driver.workspace(BOARD_ID,'osc3-pilot-start');start=work/board.name;shutil.copyfile(board,start)
+        drc0,dump0=driver.check(start)
+        if any(v['severity']=='error' for v in drc0['violations']) or drc0['schematic_parity']:raise RuntimeError('start board not clean')
+        current=start
+    for key in ([] if a.resume_gate else SEQUENCE):
         spec={**osc2.HYPOTHESES[key]['spec'],'name':'osc3-pilot-'+key}
         before=load(current,'dump.json');before_drc=load(current,'drc.json')
         candidate,receipt=driver.run_stage(BOARD_ID,current,spec,definition,log)
@@ -55,7 +66,7 @@ def main():
                       'input_sha256':sha(current),'candidate_sha256':sha(candidate)})
         log(f"{key}: {receipt['open_edges_before']} -> {receipt['open_edges_after']} raw gate {'pass' if kept else 'FAIL'}")
         if kept:current=candidate
-    out={'schema':'osc3-k-pilot-1','status':'NATIVE CHECKED DRAFT STAGE','qualification':'NOT RUN: electrical, thermal and physical qualification',
+    out={'schema':'osc3-k-pilot-1','resumed_gate':a.resume_gate,'status':'NATIVE CHECKED DRAFT STAGE','qualification':'NOT RUN: electrical, thermal and physical qualification',
          'fabrication_outputs':'NOT CREATED','input_board_sha256':K3409_SHA,'sequence':SEQUENCE,'steps':steps,
          'tool':{'kicad_cli_version':driver.run('bash','scripts/kicad/run.sh','kicad-cli','version').strip(),'wrapper':'scripts/kicad/run.sh'},
          'started_utc':datetime.datetime.fromtimestamp(t0,datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),'adopted':False,'promoted':False}
