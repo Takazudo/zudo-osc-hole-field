@@ -95,7 +95,7 @@ def resumed_stage(spec,base,before):
                    'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}
 
 
-def trial(key,base_work,resume=False):
+def trial(key,base_work,resume=False,audit_not_run=None):
     h=HYPOTHESES[key];spec=h['spec']
     definition=json.loads((ROOT/'design/boards'/f'{BOARD_ID}.json').read_text())
     base=base_work/f'{BOARD_ID}.kicad_pcb'
@@ -118,7 +118,13 @@ def trial(key,base_work,resume=False):
         if (receipt['open_edges_after']>=receipt['open_edges_before'] or
             driver.split_pad_groups(before,json.loads(candidate.with_name('dump.json').read_text()))):
             candidate,receipt=driver.stitched(BOARD_ID,base,candidate,receipt,spec,definition,log)
-        receipt=driver.complete_gate(BOARD_ID,base,candidate,receipt,spec)
+        if audit_not_run:
+            # Raw gate only; the capped reports stay incomplete and nothing may be adopted from this receipt.
+            gate=driver.promotion_gate(before,json.loads(candidate.with_name('dump.json').read_text()),before_drc,json.loads(candidate.with_name('drc.json').read_text()))
+            receipt.update(gate,capped_warning_types=driver.warning_capped(before_drc,json.loads(candidate.with_name('drc.json').read_text())),
+                           raw_gate_would_adopt=gate['adopted'],adopted=False,rejection_reason='incomplete_native_warning_evidence',
+                           complete_native_warning_evidence_status='NOT RUN: '+audit_not_run)
+        else:receipt=driver.complete_gate(BOARD_ID,base,candidate,receipt,spec)
         receipt['candidate_board_sha256']=sha(candidate)
         after=json.loads(candidate.with_name('dump.json').read_text())
         if not receipt['adopted'] and (receipt['split_pad_groups'] or receipt['new_warning_identities']) and 'rejection_reason' not in receipt:
@@ -161,12 +167,13 @@ def record_baseline(work):
 def main():
     p=argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('hypothesis',choices=['baseline','record-baseline',*HYPOTHESES])
+    p.add_argument('--audit-not-run',metavar='REASON',help='record the raw gate only, with the complete-warning audit NOT RUN for REASON (never adoptable)')
     p.add_argument('--resume',action='store_true',help='gate the verified candidate an interrupted run left behind')
     a=p.parse_args()
     if a.hypothesis=='baseline':baseline();return
     work=ROOT/'.circuit-cache'/f'{BOARD_ID}-grid-osc2-base'
     if a.hypothesis=='record-baseline':record_baseline(work);return
-    trial(a.hypothesis,work,a.resume)
+    trial(a.hypothesis,work,a.resume,a.audit_not_run)
 
 
 if __name__=='__main__':main()

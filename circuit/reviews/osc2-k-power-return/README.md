@@ -21,7 +21,9 @@ Each step stays a separate native-checked stage so a failure keeps the earlier g
 The remaining 23 supply pins that no trial reached need the local structural change
 described below, not a longer search.
 
-Adoption is not yet possible for any candidate: see "Complete warning evidence" below.
+No candidate is adoptable from these receipts: the mandatory complete-warning audit
+did not finish for any of them (see below). The audit should run once, on the
+sequenced pilot candidate, on a host or CI job that can hold it.
 
 ## Starting point (same for every trial)
 
@@ -62,7 +64,8 @@ does not edit it. Inputs, kept copper and limits are recorded in each receipt.
 | New listed warning identities | 0 | 0 (`track_dangling` −2) | 0 (`track_dangling` −2) |
 | Culprit links dropped by the AGND guard | 2 | 0 | 1 |
 | Raw `promotion_gate` | would adopt | would adopt | would adopt |
-| Complete warning evidence | see below | see below | see below |
+| Complete warning evidence | REJECTED: audit killed (exit 137) | NOT RUN (time) | NOT RUN (time) |
+| Adoptable from this receipt | no | no | no |
 
 Notes:
 
@@ -102,19 +105,25 @@ on In2. Coupling of that +5 V copper to precision signals and its current capaci
 trunk between clusters can carry a share of the cluster current that this
 comparison did not compute.
 
-## Complete warning evidence
+## Complete warning evidence: not obtained for any trial
 
 Both K reports cap `silk_over_copper` and `silk_overlap` at 199, so the mandatory
-gate needs source-bound complete evidence before any adoption.
+gate needs source-bound complete evidence before any adoption. None was obtained:
 
-- H1: the first audit was killed by the kernel (exit 137, out of memory) while
-  three trials ran at once on a 15 GiB host. The gate rejected it as incomplete
-  evidence, which is the intended fail-closed result. It is being rerun alone.
-- H2 and H3: audits were still running when the time limit or a container restart
-  ended them; they are being rerun one at a time.
+- H1: the audit was killed by the kernel (exit 137, out of memory) while three
+  trials ran at once on a 15 GiB host. The gate rejected it as incomplete
+  evidence, which is the intended fail-closed result (`h1-plane-escapes.json`).
+- H2 and H3: the audit (`audit_zone_silk_scope.py`, 16 artwork items per batch)
+  took about 2 minutes per batch. The first AGND pour zone alone needed 94 batches
+  for H3; H2 finished both pour zones' first pass (94 and 42 batches) before its
+  120-minute limit stopped it. Trial limits and two container restarts cut every
+  run, so these receipts record the raw gate with the audit `NOT RUN` and
+  `adopted: false` (`trial.py --audit-not-run`).
 
-Until a trial's receipt shows `COMPLETE: source-bound native evidence`, its raw
-gate result is not an adoption decision.
+The raw gate result is a comparison input, not an adoption decision. OSC1's
+one-via demonstration audit took 701 s; the audit cost grows with the copper a
+candidate adds near the capped silk, so the pilot should be audited once at the
+end, not per hypothesis.
 
 ## In2/In3 dedicated planes were not tried
 
@@ -126,7 +135,7 @@ needs its own impact count first, as the review says.
 
 | File | Content |
 | --- | --- |
-| `trial.py` | Trial driver; `--resume` gates a verified candidate that an interrupted run left behind |
+| `trial.py` | Trial driver; `--resume` gates a verified candidate that an interrupted run left behind; `--audit-not-run` records the raw gate only, never adoptable |
 | `baseline.json` | K3409 native summary used by every trial |
 | `h1-plane-escapes.json`, `h2-5v-trunks.json`, `h3-escapes-split-repair.json` | Trial receipts (spec, keeps, limits, native counts, gate result, timing) |
 | `*-copper.json` | Copper delta of each candidate against K3409, for replay |
