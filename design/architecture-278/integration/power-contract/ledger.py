@@ -19,6 +19,10 @@ INPUTS = {
 }
 # OSC/PD contract fixed by owner decision (PWR-D3/D5 review; PD side unchanged).
 # The canonical requirement may fall below it, as after the S2b adoption (0bf32f59).
+# Owner decision 2026-11-04 03:07Z (option 1): keep +12 V at 1700 mA as margin; the rule is canonical <= contract.
+CONTRACT_DECISION = ('ADOPTED owner decision 2026-11-04T03:07Z (option 1): the contract stays at 1700 / 1600 / 300 mA '
+                     'continuous and 2000 / 1900 / 400 mA transient; +12 V keeps 1700 mA as margin above the post-S2b canonical '
+                     'rule result, and the check is canonical <= contract. No contract number changed.')
 CONTRACT_CONTINUOUS_mA = {'+12V': 1700, '-12V': 1600, '+5V': 300}
 CONTRACT_TRANSIENT_mA = {'+12V': 2000, '-12V': 1900, '+5V': 400}
 # Stage54 accounting was derived from this supply-architecture revision (pre-S2b).
@@ -117,11 +121,13 @@ def build():
             'classification': 'CONTRACT REQUIREMENT (minimum source delivery)',
             'mA': CONTRACT_CONTINUOUS_mA,
             'canonical_rule_result_mA': sel['minimum_continuous_mA'],
+            'decision': CONTRACT_DECISION,
             'basis': 'fixed contract; canonical_rule_result_mA is normal planning x (1 + %s reserve), rounded up to %s mA, and stays at or below it' % (env['reserve_fraction'], env['current_rounding_mA'])},
         'transient_requirement_20ms': {
             'classification': 'CONTRACT REQUIREMENT (minimum source delivery for %s ms)' % src['transient_requirement_duration_ms'],
             'mA': CONTRACT_TRANSIENT_mA,
             'canonical_requirement_mA': sel['minimum_transient_mA'],
+            'decision': CONTRACT_DECISION,
             'basis': 'fixed contract; supply-architecture.json selected_requirement.minimum_transient_mA is at or below it'},
         'interface_maximum': {
             'classification': 'CONTRACT INTERFACE LIMIT (source current limit must stay at or below)',

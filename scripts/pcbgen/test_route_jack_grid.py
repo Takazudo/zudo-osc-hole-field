@@ -266,6 +266,20 @@ class CompleteGateTests(unittest.TestCase):
             r=driver.complete_gate('osc-core',self.before_board,self.after_board,{'stage':'s'},{'name':'s'},auditor=self.auditor(complete_before,complete_after))
         self.assertTrue(r['adopted']);self.assertEqual(self.calls[0][2],evidence/'native-audits');self.assertEqual(self.calls[0][3],{'zone_batch_size':16})
 
+    def test_driver_wrapper_passes_the_stage_rip_up_delta_as_removal_scope(self):
+        from scripts.pcbgen.audit_added_mask import StageRemovals
+        from scripts.pcbgen.test_audit_added_mask import board,item
+        before,after,complete_before,complete_after=self.capped_pair()
+        self.before_board.write_text(board(*(item(i) for i in range(20))));self.after_board.write_text(board(item(0),item(40)))
+        for path,drc,dump in ((self.before_board,before,self.before),(self.after_board,after,self.after)):
+            path.with_name('drc.json').write_text(json.dumps(drc));path.with_name('dump.json').write_text(json.dumps(dump))
+        with unittest.mock.patch.object(driver,'workspace',return_value=self.before_board.parent/'evidence'):
+            r=driver.complete_gate('osc-jack-left',self.before_board,self.after_board,{'stage':'negotiate-open'},{'name':'negotiate-open'},
+                                   auditor=self.auditor(complete_before,complete_after))
+        removed=self.calls[0][3]['reviewed_removed_uuids']
+        self.assertIsInstance(removed,StageRemovals);self.assertEqual(len(removed),19)
+        self.assertTrue(r['adopted']);self.assertEqual(r['copper_removal_scope'],{'source':'stage','removed_objects':19})
+
     def test_main_calls_the_gate_unconditionally(self):
         import ast,inspect
         tree=ast.parse(inspect.getsource(driver.main))
@@ -301,6 +315,14 @@ class AnalogTierTests(unittest.TestCase):
             self.assertTrue(driver.STAGES[names.index(name)]['agnd_guard'])
             self.assertLess(names.index(name),names.index('negotiate'))
         self.assertLess(names.index('analog-pitch'),names.index('analog-sense'))
+
+    def test_general_signal_stages_guard_agnd(self):
+        # Unguarded batches split the ~1040-pad AGND group and were rejected (OSC3: JR signals-01 312 -> 219).
+        guarded=[s['name'] for s in driver.STAGES if s['name']=='signals-local' or s['name']=='signal-escapes'
+                 or (s['name'].startswith('signals-') and s['name'][8:].isdigit())]
+        self.assertEqual(len(guarded),42)
+        for spec in driver.STAGES:
+            if spec['name'] in guarded:self.assertTrue(spec['agnd_guard'],spec['name'])
 
 
 class SplitCulpritTests(unittest.TestCase):

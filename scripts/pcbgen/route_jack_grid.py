@@ -74,15 +74,15 @@ STAGES=[
     # Hotspot regions: rip all signal copper in a few clusters of stranded pins and renegotiate it.
     *({'name':f'region-{i:02d}','negotiate':True,'regions':True,'eps_mm':8,'margin_mm':3,'regions_per_stage':8,'res':.05,'iterations':40,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,9)),
     # Short local nets first.
-    {'name':'signals-local','signals':True,'max_span_mm':8,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
+    {'name':'signals-local','signals':True,'agnd_guard':True,'max_span_mm':8,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
     # Then the remaining open signal nets, shortest first, in checked and promoted batches
     # (the core needs more batches than a jack half; empty batches are skipped).
-    *({'name':f'signals-{i:02d}','signals':True,'chunk':120,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,41)),
+    *({'name':f'signals-{i:02d}','signals':True,'agnd_guard':True,'chunk':120,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,41)),
     # Rip-up and reroute: probe each failed island with other signal copper as a cost,
     # rip the few nets in its way, route it, then reroute the ripped nets; all-or-nothing.
     *({'name':f'rrr-{i:02d}','signals':True,'chunk':80,'rrr_rounds':2,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,25)),  # room for three re-offer rounds; unused batches are skipped
     {'name':'agnd-stitch-1','agnd_stitch':True},
-    {'name':'signal-escapes','signals':True,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']},'res':.05,'window_mm':6},
+    {'name':'signal-escapes','signals':True,'agnd_guard':True,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']},'res':.05,'window_mm':6},
     *({'name':f'repair-{i:02d}','repair':True,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']},'res':.05,'window_mm':8} for i in range(1,9)),
     {'name':'agnd-stitch-2','agnd_stitch':True},
 ]
@@ -654,7 +654,10 @@ def warning_complete_gate(before_board,after_board,before,after,before_drc,after
     before_sha,after_sha=sha_file(before_board),sha_file(after_board)
     try:
         options={'zone_batch_size':zone_batch_size}
-        if reviewed_removed_uuids:options['reviewed_removed_uuids']=list(reviewed_removed_uuids)
+        if reviewed_removed_uuids:
+            from scripts.pcbgen.audit_added_mask import StageRemovals
+            stage=isinstance(reviewed_removed_uuids,StageRemovals)
+            options['reviewed_removed_uuids']=reviewed_removed_uuids if stage else list(reviewed_removed_uuids)
         complete_before,complete_after,proof=auditor(before_board,after_board,before_drc,after_drc,evidence,**options)
         verify_warning_proof(proof,before_sha,after_sha)
         if sha_file(before_board)!=before_sha or sha_file(after_board)!=after_sha:
@@ -665,6 +668,9 @@ def warning_complete_gate(before_board,after_board,before,after,before_drc,after
                       complete_native_warning_evidence_status='REJECTED: incomplete native warning evidence')
         return result
     result['complete_native_warning_evidence']=proof
+    if reviewed_removed_uuids:
+        from scripts.pcbgen.audit_added_mask import removal_source
+        result['copper_removal_scope']={'source':removal_source(reviewed_removed_uuids),'removed_objects':len(reviewed_removed_uuids)}
     result.update(promotion_gate(before,after,complete_before,complete_after))
     result['complete_native_warning_evidence_status']='COMPLETE: source-bound native evidence'
     return result
@@ -686,8 +692,11 @@ def complete_gate(board_id,current,candidate,receipt,spec,zone_batch_size=16,aud
     before=json.loads(current.with_name('dump.json').read_text());after=json.loads(candidate.with_name('dump.json').read_text())
     capped=warning_capped(before_drc,after_drc)
     evidence=workspace(board_id,spec['name']+'-complete-warnings')/'native-audits' if capped or force else None
+    # Rip-up stages (negotiate-open, region-*, rrr-*) remove copper; their own exact delta is the removal scope.
+    from scripts.pcbgen.audit_added_mask import stage_removed_uuids
+    removed=stage_removed_uuids(current.read_text(),candidate.read_text())
     receipt.update(warning_complete_gate(current,candidate,before,after,before_drc,after_drc,evidence,
-                                         zone_batch_size=zone_batch_size,auditor=auditor,force=force))
+                                         zone_batch_size=zone_batch_size,reviewed_removed_uuids=removed,auditor=auditor,force=force))
     return receipt
 
 
