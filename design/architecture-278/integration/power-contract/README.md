@@ -10,6 +10,11 @@ no converter efficiency is booked. Canonical OSC schematic, PCB, BOM, placement,
   hashes are in `supply-input.json`
 - Rebuild: `python3 design/architecture-278/integration/power-contract/ledger.py`, then `decompose.py` (`--check` verifies each)
 - PD quotation check: `python3 design/architecture-278/integration/power-contract/verify_pd_pin.py <zudo-pd checkout>`
+
+**Contract figures decided by the owner on 2026-11-04 (03:07Z, option 1).** The OSC/PD
+contract stays at 1700 / 1600 / 300 mA continuous and 2000 / 1900 / 400 mA for 20 ms.
+After the S2b adoption (0bf32f59), the canonical +12 V rule result is 1600 mA. +12 V keeps
+1700 mA as margin, and `ledger.py` checks canonical ≤ contract. No contract number changed.
   (read-only `git show` at the pinned commit; prints NOT RUN without a checkout)
 - PD capability screen: zudo-pd draft PR #219 `6071e1757c7678a4b5ed0af069a9eae202c6ee2d`,
   `manufacturing/supply-capability.json` (sha256 `e5864272…2b8d`), quoted under
