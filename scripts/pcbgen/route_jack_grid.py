@@ -74,15 +74,15 @@ STAGES=[
     # Hotspot regions: rip all signal copper in a few clusters of stranded pins and renegotiate it.
     *({'name':f'region-{i:02d}','negotiate':True,'regions':True,'eps_mm':8,'margin_mm':3,'regions_per_stage':8,'res':.05,'iterations':40,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,9)),
     # Short local nets first.
-    {'name':'signals-local','signals':True,'max_span_mm':8,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
+    {'name':'signals-local','signals':True,'agnd_guard':True,'max_span_mm':8,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
     # Then the remaining open signal nets, shortest first, in checked and promoted batches
     # (the core needs more batches than a jack half; empty batches are skipped).
-    *({'name':f'signals-{i:02d}','signals':True,'chunk':120,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,41)),
+    *({'name':f'signals-{i:02d}','signals':True,'agnd_guard':True,'chunk':120,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,41)),
     # Rip-up and reroute: probe each failed island with other signal copper as a cost,
     # rip the few nets in its way, route it, then reroute the ripped nets; all-or-nothing.
     *({'name':f'rrr-{i:02d}','signals':True,'chunk':80,'rrr_rounds':2,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,25)),  # room for three re-offer rounds; unused batches are skipped
     {'name':'agnd-stitch-1','agnd_stitch':True},
-    {'name':'signal-escapes','signals':True,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']},'res':.05,'window_mm':6},
+    {'name':'signal-escapes','signals':True,'agnd_guard':True,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']},'res':.05,'window_mm':6},
     *({'name':f'repair-{i:02d}','repair':True,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']},'res':.05,'window_mm':8} for i in range(1,9)),
     {'name':'agnd-stitch-2','agnd_stitch':True},
 ]

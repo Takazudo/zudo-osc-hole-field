@@ -316,6 +316,14 @@ class AnalogTierTests(unittest.TestCase):
             self.assertLess(names.index(name),names.index('negotiate'))
         self.assertLess(names.index('analog-pitch'),names.index('analog-sense'))
 
+    def test_general_signal_stages_guard_agnd(self):
+        # Unguarded batches split the ~1040-pad AGND group and were rejected (OSC3: JR signals-01 312 -> 219).
+        guarded=[s['name'] for s in driver.STAGES if s['name']=='signals-local' or s['name']=='signal-escapes'
+                 or (s['name'].startswith('signals-') and s['name'][8:].isdigit())]
+        self.assertEqual(len(guarded),42)
+        for spec in driver.STAGES:
+            if spec['name'] in guarded:self.assertTrue(spec['agnd_guard'],spec['name'])
+
 
 class SplitCulpritTests(unittest.TestCase):
     def test_nearest_new_link_to_stranded_agnd_pads_is_named(self):
