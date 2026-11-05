@@ -1,5 +1,5 @@
 {
- "adopted": false,
+ "adopted": true,
  "after": {
   "agnd_islands": 23,
   "agnd_open_edges": 22,
@@ -22,22 +22,46 @@
    "-12V": 25
   }
  },
+ "copper_replay": {
+  "base_sha256": "dda33a25479c9993f71e33d49129cf16414828b3dd2083b6d4f91a65421c728c",
+  "path": "circuit/reviews/osc3-k-pilot/osc3-k-pilot-copper.json",
+  "sha256": "d5983abea5238e9fc00df22e192dff14673b3b49eb9803087543a10e9b21a65e"
+ },
  "fabrication_outputs": "NOT CREATED",
  "final_gate": {
-  "adopted": false,
+  "adopted": true,
   "candidate_board_sha256": "2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751",
   "capped_warning_types": [
    "silk_over_copper",
    "silk_overlap"
   ],
-  "complete_native_warning_evidence_status": "REJECTED: incomplete native warning evidence",
+  "complete_native_warning_evidence": {
+   "after_hole_identities": 80,
+   "after_source_sha256": "2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751",
+   "audit_result_sha256": [
+    "c234ac3ea3eb9ee2c8daaddf35b66d2c5e627ce5ba8c59155516d1b60585bf9a",
+    "b7581b8b453fd7a680b2418122c245572128caf4322738419dc553f35fa7bd45",
+    "c91c6d003134f784beb7590d29c0d0ff2256fe6f2ed8e0e25f34f387396d1bbb"
+   ],
+   "before_capped_silk_identities_appended": 398,
+   "before_hole_identities": 80,
+   "before_source_sha256": "dda33a25479c9993f71e33d49129cf16414828b3dd2083b6d4f91a65421c728c",
+   "new_hole_object_identities": [],
+   "new_silk_identities": [],
+   "status": "COMPLETE NATIVE HOLE OBSERVATIONS APPENDED; NO ORIGINAL FINDING REMOVED",
+   "zone_evidence": {
+    "new_zone_silk_identities": [],
+    "zone_evidence_method": "complete paired artwork batches",
+    "zone_fixture_count": 582,
+    "zone_result_sha256": "c28e25d89324b09b7c174f5286839210d4dc18967999b6d403c8ccca1a0c7e12"
+   }
+  },
+  "complete_native_warning_evidence_status": "COMPLETE: source-bound native evidence",
   "input_board_sha256": "dda33a25479c9993f71e33d49129cf16414828b3dd2083b6d4f91a65421c728c",
   "native_errors": false,
-  "native_warning_evidence_error": "CalledProcessError: Command '['bash', 'scripts/kicad/run.sh', 'python3', 'scripts/pcbgen/audit_zone_silk_scope.py', '.circuit-cache/osc-core-grid-osc3-pilot-start/osc-core.kicad_pcb', '.circuit-cache/osc-core-grid-osc3-pilot-h3-escapes-split-repair-verify/osc-core.kicad_pcb', '.circuit-cache/osc-core-grid-osc3-k-pilot-complete-warnings/native-audits/zones', '--classify', '--batch-size', '16']' returned non-zero exit status 137.",
   "new_warning_identities": [],
   "open_edges_after": 3363,
   "open_edges_before": 3409,
-  "rejection_reason": "incomplete_native_warning_evidence",
   "split_pad_groups": [],
   "stage": "osc3-k-pilot"
  },
@@ -49,15 +73,16 @@
   "main_agnd_group_after": 3071,
   "main_agnd_group_before": 3071
  },
- "promoted": false,
+ "promoted": true,
  "qualification": "NOT RUN: electrical, thermal and physical qualification",
+ "resumed_gate": true,
  "schema": "osc3-k-pilot-1",
  "sequence": [
   "h1-plane-escapes",
   "h2-5v-trunks",
   "h3-escapes-split-repair"
  ],
- "started_utc": "2026-11-04T07:26:27Z",
+ "started_utc": "2026-11-04T22:09:28Z",
  "status": "NATIVE CHECKED DRAFT STAGE",
  "steps": [
   {
@@ -140,5 +165,5 @@
   "kicad_cli_version": "10.0.6",
   "wrapper": "scripts/kicad/run.sh"
  },
- "wall_seconds": 44537
+ "wall_seconds": 64361
 }
