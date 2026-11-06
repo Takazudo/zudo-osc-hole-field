@@ -38,11 +38,14 @@ class ChainResumeTests(unittest.TestCase):
         return path
 
     def progress(self,current,steps,**extra):
+        extra.setdefault('current_sha256',chain.sha(current))
         (self.here/'t-progress.json').write_text(json.dumps({'steps':steps,'current':str(current.relative_to(self.root)),**extra}))
 
-    def kept(self,name,candidate):return {'step':name,'raw_gate_adopted':True,'candidate_sha256':chain.sha(candidate)}
+    def kept(self,name,candidate,input_sha=None):
+        return {'step':name,'raw_gate_adopted':True,'input_sha256':input_sha or chain.sha(self.board),'candidate_sha256':chain.sha(candidate)}
 
     def stitched_progress(self):
+        # rrr-01 has no input hash, as dd1c5cfa (the running J3 revision) records steps that kept nothing.
         self.put('rrr-02-verify','unstitched',9)
         stitched=self.put('rrr-02-stitch-verify','stitched',7)
         self.progress(stitched,[{'step':'rrr-01','result':'nothing to do'},self.kept('rrr-02',stitched)])
@@ -78,6 +81,48 @@ class ChainResumeTests(unittest.TestCase):
         stitched=self.stitched_progress();other=self.put('rrr-01-verify','stitched',7)
         self.progress(other,[{'step':'rrr-01','result':'nothing to do'},self.kept('rrr-02',stitched)])
         with self.assertRaisesRegex(RuntimeError,'not the kept candidate of rrr-02'):self.main('rrr-01','rrr-02','--resume-from','rrr-02')
+
+    def test_kept_steps_must_descend_from_the_adopted_board(self):
+        stitched=self.stitched_progress()
+        self.progress(stitched,[{'step':'rrr-01','result':'nothing to do'},self.kept('rrr-02',stitched,'0'*64)])
+        with self.assertRaisesRegex(RuntimeError,'rrr-02 did not run on the recorded chain'):self.main('rrr-01','rrr-02','--resume-from','rrr-02')
+        first=self.put('rrr-01-verify','first',8)
+        self.progress(stitched,[self.kept('rrr-01',first),self.kept('rrr-02',stitched)])
+        with self.assertRaisesRegex(RuntimeError,'rrr-02 did not run on the recorded chain'):self.main('rrr-01','rrr-02','--resume-from','rrr-02')
+        self.progress(stitched,[{'step':'rrr-01','result':'nothing to do','input_sha256':'0'*64},self.kept('rrr-02',stitched)])
+        with self.assertRaisesRegex(RuntimeError,'rrr-01 did not run on the recorded chain'):self.main('rrr-01','rrr-02','--resume-from','rrr-02')
+        self.progress(stitched,[self.kept('rrr-01',first),self.kept('rrr-02',stitched,chain.sha(first))])
+        self.main('rrr-01','rrr-02','--resume-from','rrr-02')
+        self.assertEqual(self.gates,[(self.start,stitched,True)])
+
+    def test_progress_of_a_run_on_an_older_board_never_resumes_over_a_newer_one(self):
+        self.board.write_text('older');self.put('osc3-t-start','older',10);stitched=self.stitched_progress()
+        self.board.write_text('newer');self.put('osc3-t-start','newer',10)
+        with self.assertRaisesRegex(RuntimeError,'rrr-02 did not run on the recorded chain'):self.main('rrr-01','rrr-02','--resume-from','rrr-02','--promote')
+        self.assertEqual((self.board.read_text(),self.gates),('newer',[]))
+
+    def test_a_fresh_start_resets_the_progress_before_any_stage(self):
+        self.stitched_progress()
+        def workspace(board_id,name):
+            work=chain.cache(name);shutil.rmtree(work,ignore_errors=True);work.mkdir(parents=True);return work
+        def check(board):
+            board.with_name('dump.json').write_text(json.dumps({'open_edges':10,'pads':[],'islands':{}}));board.with_name('drc.json').write_text(json.dumps(CLEAN))
+            return CLEAN,{'open_edges':10,'pads':[],'islands':{}}
+        with unittest.mock.patch.object(driver,'workspace',workspace),unittest.mock.patch.object(driver,'check',check),\
+             unittest.mock.patch.object(driver,'run_stage',side_effect=KeyboardInterrupt):
+            with self.assertRaises(KeyboardInterrupt):self.main('rrr-01','rrr-02')
+        progress=json.loads((self.here/'t-progress.json').read_text())
+        self.assertEqual((progress['steps'],progress['current_sha256']),([],chain.sha(self.board)))
+        with self.assertRaisesRegex(RuntimeError,'not the stages through rrr-02'):self.main('rrr-01','rrr-02','--resume-from','rrr-02')
+        self.assertEqual(self.gates,[])
+
+    def test_progress_must_record_the_current_hash(self):
+        stitched=self.stitched_progress();progress=json.loads((self.here/'t-progress.json').read_text())
+        del progress['current_sha256'];(self.here/'t-progress.json').write_text(json.dumps(progress))
+        with self.assertRaisesRegex(RuntimeError,'cannot resume t: KeyError'):self.main('rrr-01','rrr-02','--resume-from','rrr-02')
+
+    def test_duplicate_stage_names_are_rejected(self):
+        with unittest.mock.patch('sys.stderr'),self.assertRaises(SystemExit):self.main('rrr-01','rrr-01')
 
     def test_stale_start_copy_fails_closed(self):
         self.stitched_progress();self.start.write_text('older')
