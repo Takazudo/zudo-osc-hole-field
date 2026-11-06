@@ -16,6 +16,8 @@ FIXTURE = Path(__file__).with_name('fixtures') / 'h-packing-contract.json'
 AMP_MAPS = (('1', '2', '3'), ('7', '6', '5'), ('8', '9', '10'), ('14', '13', '12'))
 # OPA4197IDR entered with the S2b source change set (2e490ca8); see fixture lineage.
 DEVICES = {'OPA4196IDR', 'OPA4197IDR', 'OPA4197IPWR', 'TL074HIDR'}
+# The exact refs S2b moved; pinned here so a fixture edit cannot widen the lineage.
+S2B_REFS = frozenset((i, f'U{b + n}') for i, b in (('H1', 100), ('H2', 200)) for n in (3, 4, 16, 17, 18))
 
 
 def channel(instance, ref, unit, device, pins):
@@ -99,7 +101,12 @@ def digest(snapshot):
 def revert_lineage(snapshot, lineage):
     """Undo the recorded package change; the result must be the previously pinned snapshot."""
     change = lineage['package_change']
-    refs = {tuple(r) for r in change['refs']}
+    refs = [tuple(r) for r in change['refs']]
+    if len(refs) != len(S2B_REFS) or set(refs) != S2B_REFS:
+        raise ValueError('lineage: package_change refs differ from the documented S2b refs')
+    if (change['from'], change['to']) != ('OPA4197IPWR', 'OPA4197IDR'):
+        raise ValueError('lineage: package_change devices differ from the documented S2b change')
+    refs = set(refs)
     reverted = copy.deepcopy(snapshot)
     for row in reverted['channels']:
         if (row['instance'], row['ref']) in refs:

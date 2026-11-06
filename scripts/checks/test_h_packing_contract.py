@@ -22,6 +22,16 @@ class HPackingContract(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'lineage'):
             contract.validate_lineage(changed)
 
+    def test_appended_lineage_ref_is_rejected(self):
+        changed = copy.deepcopy(self.fixture)
+        # U102 is still OPA4197IPWR; without the pinned ref list this edit would revert cleanly.
+        for row in changed['repository']['channels']:
+            if (row['instance'], row['ref']) == ('H1', 'U102'):
+                row['device'] = 'OPA4197IDR'
+        changed['lineage']['package_change']['refs'].append(['H1', 'U102'])
+        with self.assertRaisesRegex(ValueError, 'documented S2b refs'):
+            contract.validate_lineage(changed)
+
     def test_lineage_cannot_absorb_a_net_change(self):
         changed = copy.deepcopy(self.fixture)
         row = next(r for r in changed['repository']['channels'] if r['ref'] == 'U103' and not r['spare'])
