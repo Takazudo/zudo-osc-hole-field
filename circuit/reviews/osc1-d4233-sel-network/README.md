@@ -1,5 +1,8 @@
 # D4233 SEL network review (OSC1, R6)
 
+Record of 2026-11-03 on K3409 (`dda33a25…`); the 2026-11-07 recheck on K3363 and the
+placement comparison are appended at the end and leave this record unchanged.
+
 Status: source review of an unvalidated draft. Nothing here is routed, simulated
 or measured. It replaces no decision; the D4233 exception stays `PROVISIONAL`.
 
@@ -60,3 +63,67 @@ placement exists; moves of two or more pinned parts were not tried.
 3. Before either outcome is called complete: route or estimate the SEL and
    FALL_CURVE traces, obtain the missing capacitance and low-temperature VF
    evidence, and bench the SEL levels, edge timing and power sequencing.
+
+## 2026-11-07 recheck on K3363: unchanged, 32 of 36 SEL nets still have a member beyond 24 mm and none has copper
+
+The accepted core is now K3363 (`2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751`,
+the OSC3 power/return pilot). That pilot added rail copper only. Every SEL hold
+member and logic driver sits where it sat on K3409, row for row.
+
+| Item on K3363 | Value |
+| --- | --- |
+| SEL hold nets (12 TMUX6112, SEL pins 1/16/9/8 not tied to AGND) | 36 |
+| Nets with a member beyond 24 mm | 32 (32 pull-ups and D4233) |
+| Largest member distance | 96.67 mm (RB4233, `/E2/SLOPE_SELECT_SEL3`) |
+| U4206 SEL4 | D4232 17.10 mm, D4233 27.61 mm, RB4234 95.18 mm, driver U4229.3 39.69 mm |
+| Tracks or vias on any SEL net | none |
+| Tracks or vias on any pull-down driver net | none |
+
+`sel-hold-geometry-k3363-20261107.json` holds every row. It was regenerated
+from the board text by the existing host-only script, which needs no pcbnew:
+`python3 scripts/checks/sel_hold_geometry.py -o circuit/reviews/osc1-d4233-sel-network/sel-hold-geometry-k3363-20261107.json`.
+The K3409 file `sel-hold-geometry.json` stays as the record bound to
+`design/partition/protection-locality-exceptions.json`.
+
+## 2026-11-07 placement comparison: re-placing only the far parts leaves 10 nets beyond 24 mm, moving all 108 leaves 8 and one part without a pose
+
+This is a proposal for the owner's decision, not a placement change. No board,
+spec or placement file was edited. Nothing was routed, refilled or DRC-checked.
+D4233 stays `PROVISIONAL`.
+
+`scripts/checks/sel_hold_placement_compare.py` searches free poses for the SEL
+hold parts near each SEL pad and writes
+`sel-hold-placement-compare-k3363-20261107.json`.
+
+- **Pose search.** It uses a 0.5 mm grid within 24 mm of the switch, at 0°, 90°, 180° and 270°, on the part's own side.
+- **Legality.** A pose must fit inside the Edge.Cuts polygon, including the notch, less 0.5 mm.
+- **Spacing.** It must keep 0.6 mm from every staying courtyard, matching the generator's K gap. It must also clear through-hole pads and footprint keepouts.
+- **Cost.** The cost is the distance to the SEL pad plus 4 mm per foreign copper object under a new pad.
+- **Ordering.** Greedy placement is order-dependent. Six orders were tried, and the best is kept and listed in `order_trials`.
+
+| | Status quo | A: move only parts beyond 24 mm | B: move all 108 SEL hold parts |
+| --- | ---: | ---: | ---: |
+| Parts moved | 0 | 22 | 102 |
+| Parts with no legal pose within 40 mm | 0 | 0 | 1 (D4436) |
+| SEL nets with a member beyond 24 mm | 32 | 10 | 8 |
+| U4206 SEL4 (D4233 network) resolved | no | no | yes: D4233 16.5 mm, D4232 23.6 mm, RB4234 14.1 mm |
+| Existing tracks/vias invalidated at old poses | 0 | 38 (+5V) | 97 (+5V and +12V) |
+| Foreign copper under new pads | 0 | 5 objects, 5 signal nets | 2 objects (+12V, one signal net) |
+| Moved parts over the AGND surface pours | 0 | 22 | 102 |
+| Locked R21 panel hardware on K | none in `placements.lock.json` | no conflict | no conflict |
+| Nearest locked footprint (JST / test point) courtyard gap | | 0.60 mm | 0.60 mm |
+
+What the comparison shows:
+
+- **A is legal but incomplete.** Re-placing the far pull-ups next to their switches fixes 22 of 32 networks. The remaining 10 are all on E2 (U4206, U4208) and E4 (U4406, U4408). D4233 has no legal pose within 24 mm while its neighbours stay, which agrees with the phase-36 search.
+- **B fixes the D4233 network but is not a complete placement.** It uses space that A cannot. D4436 then has no legal pose at all, and 8 networks on E2, E4 and E5 stay beyond 24 mm. Its copper cost is 2.5 times larger, because the +12V clamp connections are re-made too.
+- **E2 and E4 need a regional decision.** Neither variant clears them. A complete fix there also needs other parts moved, beyond the SEL hold networks. That is a wider floorplan decision for the owner, not something to adopt implicitly.
+- **Every move needs native work later.** It needs AGND pour refill, +5V or +12V reconnection, the listed foreign-copper rip-ups and a native DRC. Those runs need admission and are NOT RUN here.
+
+Limits: courtyards are axis-aligned bounds and side changes are not searched.
+Silkscreen, assembly, thermal and electrical effects are not checked. Centre
+distance is not trace length. The finite greedy search does not prove that no
+better placement exists.
+
+Reproduce (host only, about 5 minutes):
+`python3 scripts/checks/sel_hold_placement_compare.py -o circuit/reviews/osc1-d4233-sel-network/sel-hold-placement-compare-k3363-20261107.json`.
