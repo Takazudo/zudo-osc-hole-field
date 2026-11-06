@@ -63,6 +63,22 @@ The two SLEW controls occupy R21 cells `[7,6]` and `[7,7]` (zero-based). The pro
 | Physical prototype | None documented |
 | Verification | No instrument bench result is documented |
 
+### Current OSC PCB routing checkpoint (2026-11-07)
+
+The single current record is `circuit/routing/osc-pcb-current-checkpoint.json`. `scripts/checks/osc_pcb_checkpoint.py` fails when it disagrees with the board bytes, receipts or these pages. Open-edge counts come from complete native connectivity receipts, not from the capped raw DRC listing.
+
+| Board | Accepted state | Board SHA256 | Accepted receipt |
+| --- | --- | --- | --- |
+| Core, `osc-core` | **K3363**: +12 V 6, −12 V 7, +5 V 4, AGND 22, signals 3,324 | `2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751` | `circuit/reviews/osc3-k-pilot/osc3-k-pilot.json` |
+| Left jack, `osc-jack-left` | **JL184**: rails 0, AGND 3, signals 181 | `a7fe68606591186cc955178b949e1c5ce8df0d0ba5829d328bb6bebb119ca251` | `boards/osc-jack-left/reports/grid-routing/rrr-01.json` |
+| Right jack, `osc-jack-right` | **JR192**: rails 0, AGND 8, signals 184 | `f6106300bae4e253f4b869dd24d14cb2428715215917b33ebacaa0f9031bfaa8` | `boards/osc-jack-right/reports/grid-routing/rrr-01.json` |
+
+- **Candidate status:** a new WSL K signal candidate is running in the manager's 2026-11-07 round on the owner's WSL host. It is not adopted, and no receipt for it is committed.
+- **Next action:** when that candidate finishes, gate it against K3363 with the existing promotion gate, and adopt it only if it passes. Separately, refresh the stale `boards/*/reports/routing.json` records (they still show K3409 / JL268 / JR312 from 2026-11-03) with one admitted native `scripts/pcbgen/current_state.py` run.
+- **Boundary:** all three boards are unvalidated routed drafts with incomplete routing. Electrical, thermal and physical qualification are NOT RUN. No fabrication outputs exist.
+
+Older K1402 / JL117 / JR130 figures belong to an earlier design epoch and stay as dated history on the verification pages.
+
 ## Explicit claim boundary
 
 The current specification does not claim a fabrication-ready schematic, PCB, BOM/CPL, native ERC/DRC result, qualified panel and board stack, jack thread or connector fit, or button-plunger reach. It also does not claim ADDAC215-like precision, a 25-second slew, 20-minute sample hold, through-zero FM, clickless A/B switching, calibrated volts-per-octave tracking, a validated power or thermal budget, or surge protection. Those statements require circuit evidence, exact mechanical data, and bench results at the relevant revision.

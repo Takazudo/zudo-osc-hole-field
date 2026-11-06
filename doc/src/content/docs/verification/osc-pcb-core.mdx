@@ -42,16 +42,35 @@ Four layers fall below the 1.5× margin used for the jack halves, so the core ta
 - In4.Cu is a continuous +12 V plane.
 - +5 V is routed as 0.4 mm tracks.
 
-## Current status
+## Current status: K3363 accepted, routing incomplete
 
-| Native check (KiCad 10.0.6) | Result |
+The accepted core board is **K3363**, recorded on 2026-11-07 in the current checkpoint `circuit/routing/osc-pcb-current-checkpoint.json`. `scripts/checks/osc_pcb_checkpoint.py` fails if this page, the board bytes or the receipt stop agreeing with that record.
+
+| Item | Accepted K3363 state |
+| --- | --- |
+| Board SHA256 | `2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751` |
+| Accepted by | Commit `3db6b51f` (2026-11-05), the sequenced K power/return pilot, 3,409 → 3,363 open edges |
+| Receipt | `circuit/reviews/osc3-k-pilot/osc3-k-pilot.json`, mirrored in `boards/osc-core/reports/grid-routing/osc3-k-pilot.json` |
+| Native open edges | **3,363**: +12 V 6, −12 V 7, +5 V 4, AGND 22, signals 3,324 |
+| AGND | 23 islands; the main AGND group keeps its 3,071 pads |
+| Native errors / new warning identities | None / none, with complete source-bound warning evidence |
+| Candidate | A new WSL K signal candidate is running in the manager's 2026-11-07 round. It is **not adopted** and contributes nothing to these counts. |
+| Next action | Gate that candidate against K3363 with the existing promotion gate when it finishes. Then refresh `boards/osc-core/reports/routing.json` with one admitted native run. |
+
+The counts above come from the complete native connectivity receipt. The raw DRC listing in `reports/drc.json` caps each warning type at 199 entries and is not a connectivity count. `boards/osc-core/reports/routing.json` still records the earlier K3409 board bytes (2026-11-03) and is stale until the admitted refresh runs.
+
+### Historical K1402 epoch (2026-10-10)
+
+The table below belongs to a different design epoch, before the E15 locality source changes. It is kept as dated history and does not describe the current board.
+
+| Native check (KiCad 10.0.6) | Result at 2026-10-10 |
 | --- | --- |
 | Outline / stack | 310 × 284 mm minus the 56 × 46 mm notch; six copper layers, 1.6 mm, 2 oz proposal |
 | Footprints | 3,594 netlisted (8 DNP), 13,406 pads |
 | Native open edges | **1,402**: +12 V 80, −12 V 80, +5 V 0, AGND 213, signals 1,029 |
 | DRC errors / schematic parity | **0 / 0** |
 
-`scripts/pcbgen/route_jack_grid.py` ran these stages:
+In the historical epoch, `scripts/pcbgen/route_jack_grid.py` ran these stages:
 
 1. ±12 V plane fanouts and rail links (7,355 → 5,977).
 2. A negotiated (PathFinder) pass over all signal nets on a 0.075 mm raster with two workers, finalized at its saved state (→ 2,975).
@@ -65,7 +84,7 @@ Each stage is applied to a disposable copy and checked with native DRC, schemati
 
 Still to run under #43: further rip-up rounds and hotspot-region renegotiation for the remaining signal edges, and ±12 V rail escapes.
 
-The renders below predate the accepted 1,402-edge revision. Native receipts and the table describe current copper.
+The renders below predate the accepted K3363 revision. The current checkpoint and its receipt describe current copper.
 
 ![Core top: unvalidated routed draft in progress](/assets/osc-hole-field/osc-core-top.png)
 
@@ -141,10 +160,10 @@ checks 382 added-copper fixtures and 42 paired-zone fixtures, and preserves all
 1,827 complete findings on both sides. The ordinary capped report still contains
 619 findings; that smaller number is not a complete warning inventory. Removing
 derived fill-cache fields for publication passes native refill equivalence.
-The current published board SHA256 is
+The published board SHA256 at that epoch was
 `fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10`.
 
-Continue from this accepted board and preserve its 133,551 copper objects.
+At that epoch, work continued from this board and preserved its 133,551 copper objects.
 [PR #222](https://github.com/Takazudo/zudo-osc-hole-field/pull/222) has a separate
 118-segment supply replay under native evaluation; its unfinished run is not
 accepted routing progress. [PR #227](https://github.com/Takazudo/zudo-osc-hole-field/pull/227)
