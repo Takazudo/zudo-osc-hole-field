@@ -13,19 +13,53 @@ class HPackingContract(unittest.TestCase):
     def test_live_repository_matches_reviewed_source(self):
         contract.validate(contract.repository_snapshot(), self.fixture['repository'], 'repository')
 
+    def test_lineage_explains_the_repin_exactly(self):
+        contract.validate_lineage(self.fixture)
+
+    def test_unlisted_package_change_breaks_lineage(self):
+        changed = copy.deepcopy(self.fixture)
+        next(r for r in changed['repository']['channels'] if r['ref'] == 'U102')['device'] = 'OPA4197IDR'
+        with self.assertRaisesRegex(ValueError, 'lineage'):
+            contract.validate_lineage(changed)
+
+    def test_appended_lineage_ref_is_rejected(self):
+        changed = copy.deepcopy(self.fixture)
+        # U102 is still OPA4197IPWR; without the pinned ref list this edit would revert cleanly.
+        for row in changed['repository']['channels']:
+            if (row['instance'], row['ref']) == ('H1', 'U102'):
+                row['device'] = 'OPA4197IDR'
+        changed['lineage']['package_change']['refs'].append(['H1', 'U102'])
+        with self.assertRaisesRegex(ValueError, 'documented S2b refs'):
+            contract.validate_lineage(changed)
+
+    def test_lineage_cannot_absorb_a_net_change(self):
+        changed = copy.deepcopy(self.fixture)
+        row = next(r for r in changed['repository']['channels'] if r['ref'] == 'U103' and not r['spare'])
+        row['nets'][2] = 'AGND'
+        with self.assertRaisesRegex(ValueError, 'lineage'):
+            contract.validate_lineage(changed)
+
     def test_only_documented_device_difference_in_active_channels(self):
         def active(snapshot):
             return {(r['instance'], r['ref'], r['unit'], tuple(r['nets'])): r['device']
                     for r in snapshot['channels'] if not r['spare']}
         source = active(self.fixture['repository'])
         self.assertEqual(len(source), 22)
+        # The variants are retained pre-S2b candidate evidence, so the source now also differs by
+        # the S2b OPA4197IPWR->OPA4197IDR package change recorded in fixture['lineage'].
+        lineage = self.fixture['lineage']['package_change']
+        s2b_refs = {tuple(r) for r in lineage['refs']}
+        s2b = {(i, ref, lineage['to'], lineage['from'])
+               for (i, ref, _, _), device in source.items() if (i, ref) in s2b_refs}
+        self.assertEqual({(i, ref) for i, ref, _, _ in s2b},
+                         {('H1', 'U103'), ('H1', 'U104'), ('H2', 'U203'), ('H2', 'U204')})
         for name, candidate in self.fixture['variants'].items():
             with self.subTest(variant=name):
                 other = active(candidate)
                 self.assertEqual(source.keys(), other.keys())
                 changes = {(k[0], k[1], source[k], other[k]) for k in source if source[k] != other[k]}
                 self.assertEqual(changes, {('H1', 'U110', 'OPA4196IDR', 'TL074HIDR'),
-                                           ('H2', 'U210', 'OPA4196IDR', 'TL074HIDR')})
+                                           ('H2', 'U210', 'OPA4196IDR', 'TL074HIDR')} | s2b)
                 self.assertEqual(candidate['ic_packages'], 26)
         self.assertEqual(self.fixture['repository']['ic_packages'], 38)
 
