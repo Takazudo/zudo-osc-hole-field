@@ -20,7 +20,7 @@ def build_one(name,family,instances):
         a=dict(zip(SUPPLIES,lo));b=dict(zip(SUPPLIES,hi))
         rows.append({'load':label,'count':qty,'typical_unit_mA':a,'planning_unit_mA':b,'basis':basis})
         for rail in SUPPLIES:typ[rail]+=qty*a[rail];plan[rail]+=qty*b[rail]
-    for symbol,id in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('LM393BIDR','comparators'),('LM13700M_NOPB','ota')]:
+    for symbol,id in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('OPA4197IDR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('TMUX7412FRRPR','fault_switches_tmux7412f'),('TMUX6112PWR','switches_tmux6112'),('LM393BIDR','comparators'),('LM13700M_NOPB','ota')]:
         if not counts[symbol]:continue
         x=LOADS[id]
         add(symbol,counts[symbol],[x['typical_unit_mA'][r] for r in SUPPLIES],

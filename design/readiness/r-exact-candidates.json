@@ -1,0 +1,1039 @@
+{
+ "schema_version": 1,
+ "status": "UNADOPTED candidates; not an order file",
+ "retrieved": "2026-10-31",
+ "tolerance_model": "Every element at +/-0.1 % independently (all sign corners); TCR, ageing and solder drift are not included",
+ "r_precision_policy": {
+  "tolerance_percent": 0.1,
+  "target_tempco_ppm_per_K": 25,
+  "minimum_power_W": 0.1,
+  "minimum_working_voltage_V": 50
+ },
+ "roles": [
+  {
+   "role": "envelope:R_REF9_FB (with R_REF9_RG)",
+   "proposal": "rescale",
+   "instances_per_unit": 6,
+   "unit": "V",
+   "head_values_ohm": {
+    "RF": [
+     80000.0
+    ],
+    "RG": [
+     100000.0
+    ]
+   },
+   "r_exact_elements": {
+    "RF": [
+     "40K"
+    ],
+    "RG": [
+     "50K"
+    ]
+   },
+   "shared_with_other_row": [],
+   "added_placements_per_unit": 0,
+   "head_nominal": 9.0,
+   "r_exact_nominal": 9.0,
+   "nominal_shift_percent": 0.0,
+   "head_tolerance_band_percent": [
+    -0.0888,
+    0.089
+   ],
+   "r_exact_band_vs_head_nominal_percent": [
+    -0.0888,
+    0.089
+   ]
+  },
+  {
+   "role": "envelope:R_BIP_PLUS_TOP / R_BIP_PLUS_BOTTOM / R_BIP_GROUND",
+   "proposal": "rescale + nearest",
+   "instances_per_unit": 6,
+   "unit": "gain",
+   "head_values_ohm": {
+    "FB": [
+     100000.0
+    ],
+    "REF": [
+     100000.0
+    ],
+    "GND": [
+     400000.0
+    ],
+    "TOP": [
+     64000.0
+    ],
+    "BOT": [
+     80000.0
+    ]
+   },
+   "r_exact_elements": {
+    "GND": [
+     "402K"
+    ],
+    "TOP": [
+     "40K"
+    ],
+    "BOT": [
+     "50K"
+    ]
+   },
+   "shared_with_other_row": [],
+   "added_placements_per_unit": 0,
+   "head_nominal": 1.25,
+   "r_exact_nominal": 1.249309,
+   "nominal_shift_percent": -0.0553,
+   "head_tolerance_band_percent": [
+    -0.1998,
+    0.2002
+   ],
+   "r_exact_band_vs_head_nominal_percent": [
+    -0.2549,
+    0.1448
+   ]
+  },
+  {
+   "role": "oscillator:R_SAW_IN",
+   "proposal": "series",
+   "instances_per_unit": 5,
+   "unit": "gain",
+   "head_values_ohm": {
+    "FB": [
+     100000.0
+    ],
+    "IN": [
+     80000.0
+    ]
+   },
+   "r_exact_elements": {
+    "IN": [
+     "40K",
+     "40K"
+    ]
+   },
+   "shared_with_other_row": [],
+   "added_placements_per_unit": 5,
+   "head_nominal": 1.25,
+   "r_exact_nominal": 1.25,
+   "nominal_shift_percent": 0.0,
+   "head_tolerance_band_percent": [
+    -0.1998,
+    0.2002
+   ],
+   "r_exact_band_vs_head_nominal_percent": [
+    -0.1998,
+    0.2002
+   ]
+  },
+  {
+   "role": "envelope:R_RISE_DRIVE_TOP / R_FALL_DRIVE_TOP",
+   "proposal": "series",
+   "instances_per_unit": 12,
+   "unit": "ratio",
+   "head_values_ohm": {
+    "TOP": [
+     899000.0
+    ],
+    "BOT": [
+     1000.0
+    ]
+   },
+   "r_exact_elements": {
+    "TOP": [
+     "820K",
+     "78K7"
+    ]
+   },
+   "shared_with_other_row": [],
+   "added_placements_per_unit": 12,
+   "head_nominal": 0.001111,
+   "r_exact_nominal": 0.001111,
+   "nominal_shift_percent": 0.0333,
+   "head_tolerance_band_percent": [
+    -0.1996,
+    0.2
+   ],
+   "r_exact_band_vs_head_nominal_percent": [
+    -0.1663,
+    0.2334
+   ]
+  },
+  {
+   "role": "oscillator:R_PITCH_TUNE",
+   "proposal": "series",
+   "instances_per_unit": 5,
+   "unit": "V",
+   "head_values_ohm": {
+    "PITCH": [
+     100000.0
+    ],
+    "TUNE": [
+     250000.0
+    ]
+   },
+   "r_exact_elements": {
+    "TUNE": [
+     "200K",
+     "50K"
+    ]
+   },
+   "shared_with_other_row": [],
+   "added_placements_per_unit": 5,
+   "head_nominal": 2.0,
+   "r_exact_nominal": 2.0,
+   "nominal_shift_percent": 0.0,
+   "head_tolerance_band_percent": [
+    -0.1998,
+    0.2002
+   ],
+   "r_exact_band_vs_head_nominal_percent": [
+    -0.1998,
+    0.2002
+   ]
+  },
+  {
+   "role": "oscillator:R_TRI_BIAS_TOP",
+   "proposal": "series",
+   "instances_per_unit": 5,
+   "unit": "V",
+   "head_values_ohm": {
+    "TOP": [
+     250000.0
+    ],
+    "BOT": [
+     100000.0
+    ]
+   },
+   "r_exact_elements": {
+    "TOP": [
+     "200K",
+     "50K"
+    ]
+   },
+   "shared_with_other_row": [],
+   "added_placements_per_unit": 5,
+   "head_nominal": 1.428571,
+   "r_exact_nominal": 1.428571,
+   "nominal_shift_percent": 0.0,
+   "head_tolerance_band_percent": [
+    -0.1428,
+    0.1429
+   ],
+   "r_exact_band_vs_head_nominal_percent": [
+    -0.1428,
+    0.1429
+   ]
+  },
+  {
+   "role": "envelope:R_FLOOR_TOP",
+   "proposal": "series",
+   "instances_per_unit": 6,
+   "unit": "V",
+   "head_values_ohm": {
+    "TOP": [
+     79000.0
+    ],
+    "BOT": [
+     22000.0
+    ]
+   },
+   "r_exact_elements": {
+    "TOP": [
+     "47K",
+     "32K"
+    ]
+   },
+   "shared_with_other_row": [],
+   "added_placements_per_unit": 6,
+   "head_nominal": 1.089109,
+   "r_exact_nominal": 1.089109,
+   "nominal_shift_percent": 0.0,
+   "head_tolerance_band_percent": [
+    -0.1563,
+    0.1565
+   ],
+   "r_exact_band_vs_head_nominal_percent": [
+    -0.1563,
+    0.1565
+   ]
+  },
+  {
+   "role": "oscillator:R_RT",
+   "proposal": "series",
+   "instances_per_unit": 5,
+   "unit": "ohm",
+   "head_values_ohm": {
+    "R": [
+     5720.0
+    ]
+   },
+   "r_exact_elements": {
+    "R": [
+     "5K1",
+     "620R"
+    ]
+   },
+   "shared_with_other_row": [],
+   "added_placements_per_unit": 5,
+   "head_nominal": 5720.0,
+   "r_exact_nominal": 5720.0,
+   "nominal_shift_percent": 0.0,
+   "head_tolerance_band_percent": [
+    -0.1,
+    0.1
+   ],
+   "r_exact_band_vs_head_nominal_percent": [
+    -0.1,
+    0.1
+   ]
+  },
+  {
+   "role": "oscillator:R_REF4_TOP",
+   "proposal": "nearest",
+   "instances_per_unit": 5,
+   "unit": "V",
+   "head_values_ohm": {
+    "TOP": [
+     25000.0
+    ],
+    "BOT": [
+     100000.0
+    ]
+   },
+   "r_exact_elements": {
+    "TOP": [
+     "24K9"
+    ]
+   },
+   "shared_with_other_row": [],
+   "added_placements_per_unit": 0,
+   "head_nominal": 4.0,
+   "r_exact_nominal": 4.003203,
+   "nominal_shift_percent": 0.0801,
+   "head_tolerance_band_percent": [
+    -0.04,
+    0.04
+   ],
+   "r_exact_band_vs_head_nominal_percent": [
+    0.0401,
+    0.1199
+   ]
+  },
+  {
+   "role": "oscillator:R_PWM_FB",
+   "proposal": "series",
+   "instances_per_unit": 5,
+   "unit": "gain",
+   "head_values_ohm": {
+    "FB": [
+     72000.0
+    ],
+    "MAN": [
+     100000.0
+    ]
+   },
+   "r_exact_elements": {
+    "FB": [
+     "40K",
+     "32K"
+    ]
+   },
+   "shared_with_other_row": [],
+   "added_placements_per_unit": 5,
+   "head_nominal": 0.72,
+   "r_exact_nominal": 0.72,
+   "nominal_shift_percent": 0.0,
+   "head_tolerance_band_percent": [
+    -0.1998,
+    0.2002
+   ],
+   "r_exact_band_vs_head_nominal_percent": [
+    -0.1998,
+    0.2002
+   ]
+  },
+  {
+   "role": "oscillator:R_SAW_BIAS_TOP",
+   "proposal": "series",
+   "instances_per_unit": 5,
+   "unit": "V",
+   "head_values_ohm": {
+    "TOP": [
+     125000.0
+    ],
+    "BOT": [
+     100000.0
+    ]
+   },
+   "r_exact_elements": {
+    "TOP": [
+     "75K",
+     "50K"
+    ]
+   },
+   "shared_with_other_row": [],
+   "added_placements_per_unit": 5,
+   "head_nominal": 2.222222,
+   "r_exact_nominal": 2.222222,
+   "nominal_shift_percent": 0.0,
+   "head_tolerance_band_percent": [
+    -0.1111,
+    0.1111
+   ],
+   "r_exact_band_vs_head_nominal_percent": [
+    -0.1111,
+    0.1111
+   ]
+  },
+  {
+   "role": "oscillator:R_LINEAR_REFERENCE",
+   "proposal": "series",
+   "instances_per_unit": 5,
+   "unit": "uA",
+   "head_values_ohm": {
+    "R": [
+     1200000.0
+    ]
+   },
+   "r_exact_elements": {
+    "R": [
+     "1M",
+     "200K"
+    ]
+   },
+   "shared_with_other_row": [],
+   "added_placements_per_unit": 5,
+   "head_nominal": 10.0,
+   "r_exact_nominal": 10.0,
+   "nominal_shift_percent": 0.0,
+   "head_tolerance_band_percent": [
+    -0.0999,
+    0.1001
+   ],
+   "r_exact_band_vs_head_nominal_percent": [
+    -0.0999,
+    0.1001
+   ]
+  },
+  {
+   "role": "oscillator:R_PWM_OFFSET",
+   "proposal": "series",
+   "instances_per_unit": 5,
+   "unit": "V",
+   "head_values_ohm": {
+    "FB": [
+     72000.0
+    ],
+    "OFF": [
+     1800000.0
+    ]
+   },
+   "r_exact_elements": {
+    "FB": [
+     "40K",
+     "32K"
+    ],
+    "OFF": [
+     "1M",
+     "470K",
+     "330K"
+    ]
+   },
+   "shared_with_other_row": [
+    "FB"
+   ],
+   "added_placements_per_unit": 10,
+   "head_nominal": 0.2,
+   "r_exact_nominal": 0.2,
+   "nominal_shift_percent": 0.0,
+   "head_tolerance_band_percent": [
+    -0.1998,
+    0.2002
+   ],
+   "r_exact_band_vs_head_nominal_percent": [
+    -0.1998,
+    0.2002
+   ]
+  },
+  {
+   "role": "oscillator:R_PITCH_FINE",
+   "proposal": "series",
+   "instances_per_unit": 5,
+   "unit": "V",
+   "head_values_ohm": {
+    "PITCH": [
+     100000.0
+    ],
+    "FINE": [
+     5000000.0
+    ]
+   },
+   "r_exact_elements": {
+    "FINE": [
+     "1M",
+     "1M",
+     "1M",
+     "1M",
+     "1M"
+    ]
+   },
+   "shared_with_other_row": [],
+   "added_placements_per_unit": 20,
+   "head_nominal": 0.1,
+   "r_exact_nominal": 0.1,
+   "nominal_shift_percent": 0.0,
+   "head_tolerance_band_percent": [
+    -0.1998,
+    0.2002
+   ],
+   "r_exact_band_vs_head_nominal_percent": [
+    -0.1998,
+    0.2002
+   ]
+  },
+  {
+   "role": "wavefolder:R_OUTPUT_RF",
+   "proposal": "series",
+   "instances_per_unit": 2,
+   "unit": "gain",
+   "head_values_ohm": {
+    "RF": [
+     70000.0
+    ],
+    "RG": [
+     10000.0
+    ]
+   },
+   "r_exact_elements": {
+    "RF": [
+     "20K",
+     "50K"
+    ]
+   },
+   "shared_with_other_row": [],
+   "added_placements_per_unit": 2,
+   "head_nominal": 8.0,
+   "r_exact_nominal": 8.0,
+   "nominal_shift_percent": 0.0,
+   "head_tolerance_band_percent": [
+    -0.1748,
+    0.1752
+   ],
+   "r_exact_band_vs_head_nominal_percent": [
+    -0.1748,
+    0.1752
+   ]
+  }
+ ],
+ "added_placements_per_unit": 85,
+ "lines": [
+  {
+   "mpn": "RT0603BRD071ML",
+   "jlc": {
+    "lcsc": "C326730",
+    "brand": "YAGEO",
+    "stock": 113978,
+    "stock_covers_lot": true,
+    "unit_price_usd": 0.0363,
+    "lot_unit_price_usd": 0.0363
+   },
+   "jlc_receipt": {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RT0603BRD071ML",
+    "retrieved": "2026-10-31",
+    "response_sha256": "273d2f7af645cc82a9157c480daa34af93ef21f058f574d0e2d4a5fd86b25d13"
+   },
+   "manufacturer_spec": {
+    "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD071ML",
+    "retrieved": "2026-10-31",
+    "sha256": "01bf03479b58570f1e2d8850d75be89c3e7b7e8be1d042ec1aaca7ae58a9b706",
+    "authority_class": "MANUFACTURER_PRIMARY",
+    "mpn_printed": true,
+    "resistance": "1 MOhms",
+    "tolerance": "0.1%",
+    "power": "0.1 W (70C)",
+    "tcr": "-/+25 ppm/C",
+    "voltage_dc": "75 V (Max Continuous Voltage at",
+    "r_precision_class": "PASS"
+   },
+   "qty_per_unit_added_or_changed": 35
+  },
+  {
+   "mpn": "RT0603BRD07200KL",
+   "jlc": {
+    "lcsc": "C728585",
+    "brand": "YAGEO",
+    "stock": 227297,
+    "stock_covers_lot": true,
+    "unit_price_usd": 0.0562,
+    "lot_unit_price_usd": 0.0562
+   },
+   "jlc_receipt": {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RT0603BRD07200KL",
+    "retrieved": "2026-10-31",
+    "response_sha256": "7b422ec9baffaeb59f8987b3818d1d3aba0aa58baf93ddb23ae4c8f31698201c"
+   },
+   "manufacturer_spec": {
+    "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD07200KL",
+    "retrieved": "2026-10-31",
+    "sha256": "7810e7e854359b05ba5e6198e5ced55ee513adea279be936212387764e110267",
+    "authority_class": "MANUFACTURER_PRIMARY",
+    "mpn_printed": true,
+    "resistance": "200 kOhms",
+    "tolerance": "0.1%",
+    "power": "0.1 W (70C)",
+    "tcr": "-/+25 ppm/C",
+    "voltage_dc": "75 V (Max Continuous Voltage at",
+    "r_precision_class": "PASS"
+   },
+   "qty_per_unit_added_or_changed": 15
+  },
+  {
+   "mpn": "RT0603BRD0720KL",
+   "jlc": {
+    "lcsc": "C723637",
+    "brand": "YAGEO",
+    "stock": 44525,
+    "stock_covers_lot": true,
+    "unit_price_usd": 0.0358,
+    "lot_unit_price_usd": 0.0358
+   },
+   "jlc_receipt": {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RT0603BRD0720KL",
+    "retrieved": "2026-10-31",
+    "response_sha256": "db458cdc37cb75a58f246cb666a6129e6d5a9cc27ec882057621c063e9ffa083"
+   },
+   "manufacturer_spec": {
+    "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0720KL",
+    "retrieved": "2026-10-31",
+    "sha256": "97c943ac14e52af77baefe39aae528b24af6ee605100700a1a0e18827a3e25d0",
+    "authority_class": "MANUFACTURER_PRIMARY",
+    "mpn_printed": true,
+    "resistance": "20 kOhms",
+    "tolerance": "0.1%",
+    "power": "0.1 W (70C)",
+    "tcr": "-/+25 ppm/C",
+    "voltage_dc": "75 V (Max Continuous Voltage at",
+    "r_precision_class": "PASS"
+   },
+   "qty_per_unit_added_or_changed": 2
+  },
+  {
+   "mpn": "RT0603BRD0724K9L",
+   "jlc": {
+    "lcsc": "C136967",
+    "brand": "YAGEO",
+    "stock": 14756,
+    "stock_covers_lot": true,
+    "unit_price_usd": 0.0394,
+    "lot_unit_price_usd": 0.0394
+   },
+   "jlc_receipt": {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RT0603BRD0724K9L",
+    "retrieved": "2026-10-31",
+    "response_sha256": "aa42eb587ff2dbda1a32a7e4c9841db8b7867b04b26673a9d61dfa85d01f647f"
+   },
+   "manufacturer_spec": {
+    "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0724K9L",
+    "retrieved": "2026-10-31",
+    "sha256": "7a54ce1656532debb062ca786665aabf9726ae9a1d66208de706ca9baf1baf47",
+    "authority_class": "MANUFACTURER_PRIMARY",
+    "mpn_printed": true,
+    "resistance": "24.9 kOhms",
+    "tolerance": "0.1%",
+    "power": "0.1 W (70C)",
+    "tcr": "-/+25 ppm/C",
+    "voltage_dc": "75 V (Max Continuous Voltage at",
+    "r_precision_class": "PASS"
+   },
+   "qty_per_unit_added_or_changed": 5
+  },
+  {
+   "mpn": "RT0603BRD0732KL",
+   "jlc": {
+    "lcsc": "C861325",
+    "brand": "YAGEO",
+    "stock": 7667,
+    "stock_covers_lot": true,
+    "unit_price_usd": 0.047,
+    "lot_unit_price_usd": 0.047
+   },
+   "jlc_receipt": {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RT0603BRD0732KL",
+    "retrieved": "2026-10-31",
+    "response_sha256": "00543fcb9fed3c521ccf63807b14f01ad8abad38d23f46668e20bb317bf1fe0a"
+   },
+   "manufacturer_spec": {
+    "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0732KL",
+    "retrieved": "2026-10-31",
+    "sha256": "61f7aea4da11e75fe58fe42eebe18ee9a988c98266598888c1fc00a330d68a41",
+    "authority_class": "MANUFACTURER_PRIMARY",
+    "mpn_printed": true,
+    "resistance": "32 kOhms",
+    "tolerance": "0.1%",
+    "power": "0.1 W (70C)",
+    "tcr": "-/+25 ppm/C",
+    "voltage_dc": "75 V (Max Continuous Voltage at",
+    "r_precision_class": "PASS"
+   },
+   "qty_per_unit_added_or_changed": 11
+  },
+  {
+   "mpn": "RT0603BRD07330KL",
+   "jlc": {
+    "lcsc": "C861327",
+    "brand": "YAGEO",
+    "stock": 4226,
+    "stock_covers_lot": true,
+    "unit_price_usd": 0.0422,
+    "lot_unit_price_usd": 0.0422
+   },
+   "jlc_receipt": {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RT0603BRD07330KL",
+    "retrieved": "2026-10-31",
+    "response_sha256": "08ceda364f84c85e1f246e994117203724dc604b8b453f41c0402390e9792713"
+   },
+   "manufacturer_spec": {
+    "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD07330KL",
+    "retrieved": "2026-10-31",
+    "sha256": "5f1cd00ea1dbd73c57484e7b4443b2ddfcf5c445902d929962647f435d4f113d",
+    "authority_class": "MANUFACTURER_PRIMARY",
+    "mpn_printed": true,
+    "resistance": "330 kOhms",
+    "tolerance": "0.1%",
+    "power": "0.1 W (70C)",
+    "tcr": "-/+25 ppm/C",
+    "voltage_dc": "75 V (Max Continuous Voltage at",
+    "r_precision_class": "PASS"
+   },
+   "qty_per_unit_added_or_changed": 5
+  },
+  {
+   "mpn": "RT0603BRD07402KL",
+   "jlc": {
+    "lcsc": "C705774",
+    "brand": "YAGEO",
+    "stock": 1283,
+    "stock_covers_lot": true,
+    "unit_price_usd": 0.0356,
+    "lot_unit_price_usd": 0.0356
+   },
+   "jlc_receipt": {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RT0603BRD07402KL",
+    "retrieved": "2026-10-31",
+    "response_sha256": "9a8dc1f029765feaac717cb16a7cd11d8e97d4e0ce39c85cedf751fb1b104836"
+   },
+   "manufacturer_spec": {
+    "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD07402KL",
+    "retrieved": "2026-10-31",
+    "sha256": "8e863c53cfe6607cdbc6b21d63787194feaa2e25f2e3b38c80f5ee40d31a4fa2",
+    "authority_class": "MANUFACTURER_PRIMARY",
+    "mpn_printed": true,
+    "resistance": "402 kOhms",
+    "tolerance": "0.1%",
+    "power": "0.1 W (70C)",
+    "tcr": "-/+25 ppm/C",
+    "voltage_dc": "75 V (Max Continuous Voltage at",
+    "r_precision_class": "PASS"
+   },
+   "qty_per_unit_added_or_changed": 6
+  },
+  {
+   "mpn": "RT0603BRD0740KL",
+   "jlc": {
+    "lcsc": "C861392",
+    "brand": "YAGEO",
+    "stock": 229130,
+    "stock_covers_lot": true,
+    "unit_price_usd": 0.037,
+    "lot_unit_price_usd": 0.037
+   },
+   "jlc_receipt": {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RT0603BRD0740KL",
+    "retrieved": "2026-10-31",
+    "response_sha256": "1b53cb971fc018f30caa70de699c101eb6248195864166c5366cd3decd32f118"
+   },
+   "manufacturer_spec": {
+    "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0740KL",
+    "retrieved": "2026-10-31",
+    "sha256": "0f2c777dbb37453e14cd79b481c61f66162fbfceeaab7751b86189ee3093c28e",
+    "authority_class": "MANUFACTURER_PRIMARY",
+    "mpn_printed": true,
+    "resistance": "40 kOhms",
+    "tolerance": "0.1%",
+    "power": "0.1 W (70C)",
+    "tcr": "-/+25 ppm/C",
+    "voltage_dc": "75 V (Max Continuous Voltage at",
+    "r_precision_class": "PASS"
+   },
+   "qty_per_unit_added_or_changed": 27
+  },
+  {
+   "mpn": "RT0603BRD07470KL",
+   "jlc": {
+    "lcsc": "C705778",
+    "brand": "YAGEO",
+    "stock": 60476,
+    "stock_covers_lot": true,
+    "unit_price_usd": 0.0375,
+    "lot_unit_price_usd": 0.0375
+   },
+   "jlc_receipt": {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RT0603BRD07470KL",
+    "retrieved": "2026-10-31",
+    "response_sha256": "4165ab4cbeefcddca5dc54ea166c53dc2fffbeb4cb1454dc33e72f3f70b7fb17"
+   },
+   "manufacturer_spec": {
+    "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD07470KL",
+    "retrieved": "2026-10-31",
+    "sha256": "c81e2428186dd4db369f7638b9b9578e6f7977ed23879582ff0a7b40b0feabe5",
+    "authority_class": "MANUFACTURER_PRIMARY",
+    "mpn_printed": true,
+    "resistance": "470 kOhms",
+    "tolerance": "0.1%",
+    "power": "0.1 W (70C)",
+    "tcr": "-/+25 ppm/C",
+    "voltage_dc": "75 V (Max Continuous Voltage at",
+    "r_precision_class": "PASS"
+   },
+   "qty_per_unit_added_or_changed": 5
+  },
+  {
+   "mpn": "RT0603BRD0747KL",
+   "jlc": {
+    "lcsc": "C326725",
+    "brand": "YAGEO",
+    "stock": 19249,
+    "stock_covers_lot": true,
+    "unit_price_usd": 0.0294,
+    "lot_unit_price_usd": 0.0294
+   },
+   "jlc_receipt": {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RT0603BRD0747KL",
+    "retrieved": "2026-10-31",
+    "response_sha256": "026b53a83ba03a3270dda2c927e6ad276d71139cc1258d85cf0b67bb21b02d4a"
+   },
+   "manufacturer_spec": {
+    "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0747KL",
+    "retrieved": "2026-10-31",
+    "sha256": "7ec7c34facb968cfe0c3ced48fe04898817600c8df63dff00b8b41e311c453a1",
+    "authority_class": "MANUFACTURER_PRIMARY",
+    "mpn_printed": true,
+    "resistance": "47 kOhms",
+    "tolerance": "0.1%",
+    "power": "0.1 W (70C)",
+    "tcr": "-/+25 ppm/C",
+    "voltage_dc": "75 V (Max Continuous Voltage at",
+    "r_precision_class": "PASS"
+   },
+   "qty_per_unit_added_or_changed": 6
+  },
+  {
+   "mpn": "RT0603BRD0750KL",
+   "jlc": {
+    "lcsc": "C861451",
+    "brand": "YAGEO",
+    "stock": 278234,
+    "stock_covers_lot": true,
+    "unit_price_usd": 0.034,
+    "lot_unit_price_usd": 0.034
+   },
+   "jlc_receipt": {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RT0603BRD0750KL",
+    "retrieved": "2026-10-31",
+    "response_sha256": "3cd5017749dd60a4b87acdccb6c00001d655a8ededfe8906f69fd54ce2c24b5c"
+   },
+   "manufacturer_spec": {
+    "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0750KL",
+    "retrieved": "2026-10-31",
+    "sha256": "b2ef0d1c8da4f4a48ee28020df206299b4766b6a1479eb05288185ee393e4a74",
+    "authority_class": "MANUFACTURER_PRIMARY",
+    "mpn_printed": true,
+    "resistance": "50 kOhms",
+    "tolerance": "0.1%",
+    "power": "0.1 W (70C)",
+    "tcr": "-/+25 ppm/C",
+    "voltage_dc": "75 V (Max Continuous Voltage at",
+    "r_precision_class": "PASS"
+   },
+   "qty_per_unit_added_or_changed": 29
+  },
+  {
+   "mpn": "RT0603BRD075K1L",
+   "jlc": {
+    "lcsc": "C122969",
+    "brand": "YAGEO",
+    "stock": 336091,
+    "stock_covers_lot": true,
+    "unit_price_usd": 0.0322,
+    "lot_unit_price_usd": 0.0322
+   },
+   "jlc_receipt": {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RT0603BRD075K1L",
+    "retrieved": "2026-10-31",
+    "response_sha256": "00b67b32e41f16735c846476c43b652e7eea4224fdeb9c5a78c9590b570713a8"
+   },
+   "manufacturer_spec": {
+    "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD075K1L",
+    "retrieved": "2026-10-31",
+    "sha256": "bd94ca293ad05a05d437b2f655702902278d0e09f0292ef043f9037283c4bd36",
+    "authority_class": "MANUFACTURER_PRIMARY",
+    "mpn_printed": true,
+    "resistance": "5.1 kOhms",
+    "tolerance": "0.1%",
+    "power": "0.1 W (70C)",
+    "tcr": "-/+25 ppm/C",
+    "voltage_dc": "75 V (Max Continuous Voltage at",
+    "r_precision_class": "PASS"
+   },
+   "qty_per_unit_added_or_changed": 5
+  },
+  {
+   "mpn": "RT0603BRD07620RL",
+   "jlc": {
+    "lcsc": "C861501",
+    "brand": "YAGEO",
+    "stock": 120,
+    "stock_covers_lot": true,
+    "unit_price_usd": 0.0614,
+    "lot_unit_price_usd": 0.0614
+   },
+   "jlc_receipt": {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RT0603BRD07620RL",
+    "retrieved": "2026-10-31",
+    "response_sha256": "e6b43a383e1cfd138aee0c416d085fca667c1b2d94d4a8e200c98f2787de1d39"
+   },
+   "manufacturer_spec": {
+    "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD07620RL",
+    "retrieved": "2026-10-31",
+    "sha256": "716e78a5bf5996ac169921da90725e92a63cd8d35ef35742487ff51e20449745",
+    "authority_class": "MANUFACTURER_PRIMARY",
+    "mpn_printed": true,
+    "resistance": "620 Ohms",
+    "tolerance": "0.1%",
+    "power": "0.1 W (70C)",
+    "tcr": "-/+25 ppm/C",
+    "voltage_dc": "75 V (Max Continuous Voltage at",
+    "r_precision_class": "PASS"
+   },
+   "qty_per_unit_added_or_changed": 5
+  },
+  {
+   "mpn": "RT0603BRD0775KL",
+   "jlc": {
+    "lcsc": "C723587",
+    "brand": "YAGEO",
+    "stock": 175471,
+    "stock_covers_lot": true,
+    "unit_price_usd": 0.0368,
+    "lot_unit_price_usd": 0.0368
+   },
+   "jlc_receipt": {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RT0603BRD0775KL",
+    "retrieved": "2026-10-31",
+    "response_sha256": "6550e3288070155a215e12ddf5572621cc7a39869eaee2ab4eaa146f370885dd"
+   },
+   "manufacturer_spec": {
+    "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0775KL",
+    "retrieved": "2026-10-31",
+    "sha256": "db1c621910b05b32a38b339f6d5dd6f85189121e9c9713af52eac8745e2fd235",
+    "authority_class": "MANUFACTURER_PRIMARY",
+    "mpn_printed": true,
+    "resistance": "75 kOhms",
+    "tolerance": "0.1%",
+    "power": "0.1 W (70C)",
+    "tcr": "-/+25 ppm/C",
+    "voltage_dc": "75 V (Max Continuous Voltage at",
+    "r_precision_class": "PASS"
+   },
+   "qty_per_unit_added_or_changed": 5
+  },
+  {
+   "mpn": "RT0603BRD0778K7L",
+   "jlc": {
+    "lcsc": "C861558",
+    "brand": "YAGEO",
+    "stock": 8511,
+    "stock_covers_lot": true,
+    "unit_price_usd": 0.0437,
+    "lot_unit_price_usd": 0.0437
+   },
+   "jlc_receipt": {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RT0603BRD0778K7L",
+    "retrieved": "2026-10-31",
+    "response_sha256": "ec5be0c9ae87ae03de5c51e579f255f56461c722ecd5b963c1daf15086d0ace6"
+   },
+   "manufacturer_spec": {
+    "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0778K7L",
+    "retrieved": "2026-10-31",
+    "sha256": "d99fd6d8c0102a71968024e59befff61668c7a094de521b0a74cd4bc8b8df418",
+    "authority_class": "MANUFACTURER_PRIMARY",
+    "mpn_printed": true,
+    "resistance": "78.7 kOhms",
+    "tolerance": "0.1%",
+    "power": "0.1 W (70C)",
+    "tcr": "-/+25 ppm/C",
+    "voltage_dc": "75 V (Max Continuous Voltage at",
+    "r_precision_class": "PASS"
+   },
+   "qty_per_unit_added_or_changed": 12
+  },
+  {
+   "mpn": "RT0603BRD07820KL",
+   "jlc": {
+    "lcsc": "C861571",
+    "brand": "YAGEO",
+    "stock": 8752,
+    "stock_covers_lot": true,
+    "unit_price_usd": 0.0412,
+    "lot_unit_price_usd": 0.0412
+   },
+   "jlc_receipt": {
+    "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "keyword": "RT0603BRD07820KL",
+    "retrieved": "2026-10-31",
+    "response_sha256": "73f158906a83eb347237654e18de842350e99bab1bb9ad6a881a441c56b48abf"
+   },
+   "manufacturer_spec": {
+    "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD07820KL",
+    "retrieved": "2026-10-31",
+    "sha256": "aa08cbe8fce3eeefc576689dd6c080457d127714af0d44edb7414a31e41999b0",
+    "authority_class": "MANUFACTURER_PRIMARY",
+    "mpn_printed": true,
+    "resistance": "820 kOhms",
+    "tolerance": "0.1%",
+    "power": "0.1 W (70C)",
+    "tcr": "-/+25 ppm/C",
+    "voltage_dc": "75 V (Max Continuous Voltage at",
+    "r_precision_class": "PASS"
+   },
+   "qty_per_unit_added_or_changed": 12
+  }
+ ],
+ "lines_r_precision_pass": 16,
+ "board_impact": {
+  "board": "K (osc-core)",
+  "basis": "design/partition/partition.json assignment of every affected role reference",
+  "implied_reruns": [
+   "schematic regeneration and master audit (designator locks)",
+   "partition35 floorplan chain",
+   "osc-core placement and routing",
+   "#293 zone fill (input changed)",
+   "osc-core DRC"
+  ]
+ }
+}

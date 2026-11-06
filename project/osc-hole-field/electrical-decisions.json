@@ -103,5 +103,72 @@
     "reply_to_message_id": "Sentinel_e42d8619f9e48191ba0d29e55b00a8e3",
     "relay_instruction_id": "osc-moya-g06-confirmed-intent-reconcile-c84d733b-4635-4c72-9bfb-ec230b380009",
     "scope": "Documentation, source comments and decision metadata only; no connection, component, value, package, topology or code-behavior change."
+  },
+  {
+    "id": "E11",
+    "topic": "PWR-D3 supply architecture",
+    "decision": "D3-A: revised zudo-pd path at 20 V / 5 A (USB-PD 20 V PDO, Board P plus Board B change) with a 5 A e-marked cable supplies OSC through OSC-EXT-PWR-8-R1. The OSC contract (continuous, 20 ms transient, maximum, source bands, ripple, capacitance, startup) is unchanged.",
+    "rationale": "Only option in the record meeting both continuous and transient delivery rows on paper; the 15 V / 3 A Board B cannot carry the contract (R5). Gates stay open: TVS2200 vs STUSB4500 clamp margin (L7, blocking), interface-maximum limiter, reverse blocking and all-rail shutdown (R7, G3, G4), efficiency, ripple and source bands (L6, G6, G7).",
+    "status": "decision confirmed; PD-side design, circuit and physical qualification remain open; no hardware or manufacturing adoption",
+    "authority": "USER-CONFIRMED DECISION",
+    "date": "2026-10-31",
+    "standard": "design/architecture-278/integration/power-contract/README.md",
+    "confirmation_utc": "2026-10-31T11:11Z",
+    "source": "Owner decision card (combined PWR-D3/PWR-D5 question from design/architecture-278/integration/power-contract/decision-input-pwr-d3-d5.md), relayed by the project coordinator",
+    "decision_card_message_id": "cmsg_01Pv35emdXEU6gCRF3teSpo23Q1CUhqDN2ebZaArfgF1Ru",
+    "scope": "Decision metadata and documentation only; no OSC requirement, connection, component, value, package, topology or code-behavior change."
+  },
+  {
+    "id": "E12",
+    "topic": "PWR-D5 degraded-mode policy",
+    "decision": "D5-1: no degraded mode. Full OSC runs only on a supply contract that meets the OSC table; otherwise no rail is enabled (accept or refuse). The usage-limit re-basing (D5-2) and switchable power domains (D5-3) are not adopted.",
+    "rationale": "OSC demand is mostly fixed quiescent and resistor current in one EXT domain, so a supply-side limit yields brownout, which the no-partial-supply fault policy forbids. Requires contract detection before enable and all-rail shutdown on renegotiation, lower contract, removal or brownout (G12, PD-003 L2).",
+    "status": "decision confirmed; contract detection and all-rail shutdown circuit (#59, G12) and physical qualification remain open; no hardware or manufacturing adoption",
+    "authority": "USER-CONFIRMED DECISION",
+    "date": "2026-10-31",
+    "standard": "design/architecture-278/integration/power-contract/README.md",
+    "confirmation_utc": "2026-10-31T11:11Z",
+    "source": "Owner decision card (combined PWR-D3/PWR-D5 question from design/architecture-278/integration/power-contract/decision-input-pwr-d3-d5.md), relayed by the project coordinator",
+    "decision_card_message_id": "cmsg_01Pv35emdXEU6gCRF3teSpo23Q1CUhqDN2ebZaArfgF1Ru",
+    "scope": "Decision metadata and documentation only; no OSC requirement, connection, component, value, package, topology or code-behavior change."
+  },
+  {
+    "id": "E13",
+    "topic": "S2b protected-switch identity (input_fault_switch)",
+    "decision": "S2b: the jack-input protected switch changes from ADG5412FBRUZ to TMUX7412FRRPR (S1 on the jack), one package per input; the 12 envelope-internal switches change to TMUX6112PWR with a SEL hold on each of the 36 SEL lines (100 kOhm pull-up to +5V, BAT54S,215 clamp to +12V, BAT54S,215 pull-down to the logic output; revised phase 20).",
+    "rationale": "Phase-14..17 cost study: ADG5412FBRUZ stock 0. TMUX7412F matches fault rows F1-F5, F7, F8 and F10 within the usable signal range (F6 +12 V-missing half UNKNOWN, revised phase 20) (s2b-protection-map.json); F9 (several inputs faulted in one quad) has no TI statement, so packing stays one per input. TMUX6112 SELx is limited to VDD + 0.3 V, so the hold keeps +5 V logic from driving an unpowered +12 V pin.",
+    "status": "ADOPTED into the canonical specification 2026-11-01 (E15); physical qualification and bench checks remain open; no hardware or manufacturing adoption",
+    "authority": "USER-CONFIRMED DECISION",
+    "date": "2026-11-01",
+    "standard": "design/standard/electrical-standard.json cells[id=input_fault_switch].protection_identity_change",
+    "confirmation_utc": "2026-11-01T04:59Z",
+    "source": "Owner decision card choosing S2b, relayed by the project coordinator (phase 18)",
+    "scope": "Accepts changing the protected-switch identity in the standard. Canonical adoption of the candidate is a separate approval."
+  },
+  {
+    "id": "E14",
+    "topic": "1V/OCT pitch linear range",
+    "decision": "signals.pitch_linear_range_V = [-5, 8] V (option A1 of the phase-21 pitch-range study): the linear passing range of the five 1V/OCT inputs. Calibrated accuracy stays limited to calibration.pitch_tracking_scope.",
+    "rationale": "Top of +8 V stays below the TMUX7412F flat-RON limit VDD - 3 V at the required +12 V minimum of 11.53 V with 0.53 V margin (s2b-protection-map.json usable_signal_range, extrapolated from SCDS404B 7.8); the bottom lies in the flat region down to VSS.",
+    "status": "ADOPTED with S2b 2026-11-01 (E15)",
+    "authority": "USER-CONFIRMED DECISION",
+    "date": "2026-11-01",
+    "standard": "design/standard/electrical-standard.json signals.pitch_linear_range_V and pitch_linear_range_status",
+    "confirmation_utc": "2026-11-01T13:41Z",
+    "source": "Owner decision card on the pitch range, relayed by the project coordinator (phase 25)",
+    "scope": "Sets the declared pitch range; it does not change the calibration scope or establish measured tracking."
+  },
+  {
+    "id": "E15",
+    "topic": "Canonical adoption of the S2b record",
+    "decision": "Adopt circuit/candidates/s2b-tmux-20261101 (E13 switch identities, the precision variant with BAV199 and D_BOOT, R-exact, OPA4197IDR, E14 pitch range) into the canonical specification, schematics and generated outputs, and run the #293 zone fill and DRC on the affected boards.",
+    "rationale": "Adoption summary (phase 25) and adoption-prep branch osc-s2b-adoption-prep: 288 of 290 receipt files identical; the two differing files carry the merged f8e048f3 TMUX6112 definition-1 rows restated for the SEL hold (accepted by the coordinator, below 25 C UNKNOWN kept).",
+    "status": "ADOPTED (schematic and specification); PCBs, routing and hardware remain unvalidated drafts",
+    "authority": "USER-CONFIRMED DECISION",
+    "date": "2026-11-01",
+    "standard": "design/standard/electrical-standard.json cells[input_fault_switch].protection_identity_change, cells[high_impedance_input].variants.precision",
+    "confirmation_utc": "2026-11-01T16:07Z",
+    "source": "Owner decision card approving adoption plus #293 fill and DRC, relayed by the project coordinator (phase 27)",
+    "scope": "Adopts the design change set. It does not validate any board, does not authorise fabrication or ordering, and keeps the stage45/50/54 historical bindings as recorded FAILs pending the owner's policy review."
   }
 ]

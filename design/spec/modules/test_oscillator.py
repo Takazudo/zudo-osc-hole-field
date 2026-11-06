@@ -4,6 +4,7 @@ import json, math, unittest
 from design.spec.modules.oscillator import ROOT, family, octave_family, panel_bindings, specification, INSTANCES
 from design.spec.modules.build_oscillator_current import build
 from scripts.schgen.core import designator
+from design.spec.modules.run_oscillator_spice import number
 
 
 class OscillatorContract(unittest.TestCase):
@@ -38,9 +39,9 @@ class OscillatorContract(unittest.TestCase):
     def test_every_input_protected_and_normals_unused(self):
         jacks=[p for p in self.f.parts if p.symbol.endswith('WQP518MA')]
         self.assertEqual(len(jacks),8);self.assertTrue(all(p.pins['TN'] is None for p in jacks))
-        switches=[p for p in self.f.parts if p.symbol.endswith('ADG5412FBRUZ') and p.unit==1]
+        switches=[p for p in self.f.parts if p.symbol.endswith('TMUX7412FRRPR') and p.unit==1]
         self.assertEqual(len(switches),4)
-        self.assertEqual({p.pins['3'] for p in switches},{k+'_TIP' for k in ('1V','FM','PWM','SYNC')})
+        self.assertEqual({p.pins['1'] for p in switches},{k+'_TIP' for k in ('1V','FM','PWM','SYNC')})
 
     def test_octave_endpoint_aliases_are_real_connections(self):
         resistors=[p for p in self.ref.parts if p.attributes['Role'].startswith('octave_reference:R')]
@@ -54,7 +55,11 @@ class OscillatorContract(unittest.TestCase):
 
     def test_range_and_pitch_ratios(self):
         for key,value in [('PITCH','100 kΩ'),('OCT','100 kΩ'),('TUNE','250 kΩ'),('FINE','5 MΩ'),('FM','200 kΩ'),('RANGE','100 kΩ')]:
-            p=self.parts['R_PITCH_'+key+'.0'];self.assertEqual(p.value,value);self.assertEqual(p.pins['2'],'EXPO_SUM')
+            p=self.parts['R_PITCH_'+key+'.0'];total=number(p.value);end=p.pins['2']
+            # UNADOPTED R-exact candidate: follow appended series elements.
+            while end.startswith('PITCH_'+key+'_SER'):
+                q=next(q for q in self.parts.values() if q.pins.get('1')==end);total+=number(q.value);end=q.pins['2']
+            self.assertAlmostEqual(total,number(value));self.assertEqual(end,'EXPO_SUM')
         self.assertEqual(self.parts['RANGE.0'].pins,{'3':'LFO_REF','2':'RANGE_CV','1':'AGND'})
         self.assertAlmostEqual(5*(1+40000/100000),7)
         self.assertEqual(2**7,128)
@@ -67,7 +72,7 @@ class OscillatorContract(unittest.TestCase):
         self.assertEqual(pins['2'],'SINE_BASE');self.assertEqual(pins['6'],'SINE_C1');self.assertEqual(pins['3'],'SINE_C2')
         groups={}
         for p in self.f.parts:
-            if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')):groups.setdefault(p.ordinal,set()).add(p.unit)
+            if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')):groups.setdefault(p.ordinal,set()).add(p.unit)
         self.assertTrue(all(units=={1,2,3,4,5} for units in groups.values()))
         self.assertTrue(all(1<=p.ordinal<=99 for p in self.f.parts))
 
@@ -80,7 +85,9 @@ class OscillatorContract(unittest.TestCase):
 
     def test_current_is_derived_and_shared_reference_counted_once(self):
         report=build();self.assertEqual(report['shared_reference_count'],1)
-        self.assertEqual(report['sheets'][0]['instances'],list(INSTANCES))
+        # O4 renders the TSSOP retention split (design/partition/precision-tssop-retention.json).
+        self.assertEqual(sorted(n for s in report['sheets'][:-1] for n in s['instances']),sorted(INSTANCES))
+        self.assertEqual(report['sheets'][1]['instances'],['O4'])
         for row in report['sheets']:
             self.assertTrue(all(v is None for v in row['guaranteed_maximum_mA_per_instance'].values()))
         for rail,value in report['planning_upper_total_mA'].items():

@@ -1,0 +1,53 @@
+{
+  "working_directory": "/workspace/zudo-osc-hole-field",
+  "guarded_runs": [
+    {
+      "command": "bash .circuit-cache/stage44/branches.sh",
+      "log": ".circuit-cache/stage44/branches.log"
+    },
+    {
+      "command": "bash .circuit-cache/stage44/placement-v1.sh",
+      "log": ".circuit-cache/stage44/placement-v1.log"
+    },
+    {
+      "command": "bash .circuit-cache/stage44/placement-v2.sh",
+      "log": ".circuit-cache/stage44/placement-v2.log"
+    },
+    {
+      "command": "bash .circuit-cache/stage44/power.sh",
+      "log": ".circuit-cache/stage44/power.log"
+    },
+    {
+      "command": "/workspace/shared/osc-ci-python/bin/python design/architecture-278/implementation/stage44/b2-specific/route_anchor.py .circuit-cache/stage44-b2-power/dump-power.json .circuit-cache/stage44-b2-power/anchor-proposal.json",
+      "log": ".circuit-cache/stage44/anchor.log"
+    },
+    {
+      "command": "bash .circuit-cache/stage44/anchor-apply.sh",
+      "log": ".circuit-cache/stage44/anchor-apply.log"
+    },
+    {
+      "command": "/workspace/shared/osc-ci-python/bin/python design/architecture-278/implementation/stage44/b2-specific/route_signals.py .circuit-cache/stage44-b2-anchor/dump-anchor.json .circuit-cache/stage44-b2-anchor/receipt.json .circuit-cache/stage44-b2-anchor/signals-priority-proposal.json --resolution .05 --priority-net X4C67F313FD4F29BCBD2D",
+      "log": ".circuit-cache/stage44/signals-priority.log"
+    },
+    {
+      "command": "bash .circuit-cache/stage44/routed-check.sh",
+      "log": ".circuit-cache/stage44/routed-check.log"
+    },
+    {
+      "command": "bash .circuit-cache/stage44/settle.sh",
+      "log": ".circuit-cache/stage44/settle.log"
+    }
+  ],
+  "source_commands": [
+    "pnpm check",
+    "pnpm circuit:check",
+    "python3 -m unittest scripts.checks.test_b2_specific scripts.checks.test_b2_specific_settlement scripts.checks.test_b2_translation scripts.checks.test_full_b1_power scripts.checks.test_full_b1_retirement scripts.checks.test_full_b1_settlement scripts.checks.test_mult_copper_plan scripts.checks.test_native_pilot_connectivity scripts.checks.test_native_pilot_identity scripts.checks.test_native_pilot_metrics scripts.checks.test_native_pilot_power scripts.checks.test_native_pilot_settlement",
+    "same selected modules with python3 -O",
+    "verify_binding for all seven CHECKPOINTS in scripts.checks.architecture_history, normal and optimized Python",
+    "compile() all Stage44 source and focused tests",
+    "git diff --check"
+  ],
+  "limits": "Native/tool process success is not acceptance. Inspect semantic reports. Exact driver bodies and output hashes are retained.",
+  "guard_wrapper": "bash /home/agent/.codex/scripts/heavy-guard.sh --label <run label> -- <command>",
+  "first_signal_attempt_inside_anchor_apply": "/workspace/shared/osc-ci-python/bin/python design/architecture-278/implementation/stage44/b2-specific/route_signals.py .circuit-cache/stage44-b2-anchor/dump-anchor.json .circuit-cache/stage44-b2-anchor/receipt.json .circuit-cache/stage44-b2-anchor/signals-proposal.json --resolution .05"
+}

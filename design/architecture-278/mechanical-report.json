@@ -1,0 +1,2813 @@
+{
+  "baseline_o1": {
+    "conductors": 51,
+    "crimps": 102,
+    "cut_conductor_length_max_mm": 4209,
+    "harnesses": 11,
+    "mating_interfaces": 102
+  },
+  "blockers": [
+    "Exact J/P seating and enclosure/support force qualification absent",
+    "15 mm rear-card width not placed or routed; rear terminal conversion and package fit unresolved",
+    "20 mm finger envelopes overlap adjacent 17 mm pitch: sequential narrow-tool release required, exact latch force/tool unselected",
+    "Middle two-face connection multiplicity and service pinout unresolved; cannot certify assembly count",
+    "Alpha 6821 bend minimum 9.398 mm retained; 9 mm connector envelope remains allocation; installed cable solid NOT CHECKED",
+    "No stiffness/deflection or cover/support solids; side-frame rail and load path require owner enclosure constraints",
+    "All-six trim bodies and complete test-point positions need source/schematic/PCB implementation; HF trim exact identity absent"
+  ],
+  "candidate_o1_same_paths": {
+    "additional_services": "OPEN; 13 net classes, no inferred 13-pin connector",
+    "conductor_segments": 102,
+    "crimps": 204,
+    "cut_conductor_length_max_mm": 8670,
+    "harnesses": 22,
+    "mating_interfaces": 204,
+    "test_adapters": "OPEN; excluded from final connection totals"
+  },
+  "existing_rear_terminals": [
+    {
+      "board": "JL",
+      "center_mm": [
+        40,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "+12V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990001",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        40,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "+12V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990002",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "JL",
+      "center_mm": [
+        57,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "-12V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990003",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        57,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "-12V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990004",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "JL",
+      "center_mm": [
+        74,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "+5V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990005",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        74,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "+5V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990006",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "JL",
+      "center_mm": [
+        91,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990007",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        91,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990008",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "JL",
+      "center_mm": [
+        108,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990009",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        108,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990010",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "JL",
+      "center_mm": [
+        125,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990011",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        125,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990012",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "JR",
+      "center_mm": [
+        193,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "+12V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990013",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        193,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "+12V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990014",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "JR",
+      "center_mm": [
+        210,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "-12V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990015",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        210,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "-12V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990016",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "JR",
+      "center_mm": [
+        227,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "+5V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990017",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        227,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "+5V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990018",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "JR",
+      "center_mm": [
+        244,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990019",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        244,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990020",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "JR",
+      "center_mm": [
+        261,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990021",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        261,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990022",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "JR",
+      "center_mm": [
+        278,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990023",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        278,
+        160
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990024",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "P",
+      "center_mm": [
+        142,
+        179
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "+12V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990025",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        142,
+        175
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "+12V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990026",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "P",
+      "center_mm": [
+        159,
+        179
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "-12V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990027",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        159,
+        175
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "-12V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990028",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "P",
+      "center_mm": [
+        176,
+        179
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "+5V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990029",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        176,
+        175
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "+5V",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990030",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "P",
+      "center_mm": [
+        193,
+        179
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990031",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        193,
+        175
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990032",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "P",
+      "center_mm": [
+        210,
+        179
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990033",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        210,
+        179
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990034",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "P",
+      "center_mm": [
+        227,
+        179
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990035",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "K",
+      "center_mm": [
+        227,
+        179
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "function": "existing shared rail/return terminal",
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "protection": "upstream source protection unresolved #59/#247",
+      "reference": "TP990036",
+      "service": "retain factory termination; removable card must disconnect without owner soldering; connector conversion OPEN",
+      "side": "F.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "support_load_path": "factory strain relief/support required; solder land not structural support",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    }
+  ],
+  "harnesses": [
+    {
+      "baseline_conductor_length_max_mm": 680,
+      "baseline_crimps": 16,
+      "baseline_cut_length_max_mm": 85,
+      "baseline_mating_interfaces": 16,
+      "candidate_conductor_length_max_mm": 1360,
+      "candidate_crimps": 32,
+      "candidate_front_link_max_mm": 90,
+      "candidate_mating_interfaces": 32,
+      "candidate_rear_link_max_mm": 80,
+      "candidate_segments": 16,
+      "conductors": 8,
+      "final_status": "Not a BOM: same-path two-link comparison; final services/returns and connector grouping OPEN",
+      "id": "JL-K-15",
+      "returns": 4
+    },
+    {
+      "baseline_conductor_length_max_mm": 680,
+      "baseline_crimps": 16,
+      "baseline_cut_length_max_mm": 85,
+      "baseline_mating_interfaces": 16,
+      "candidate_conductor_length_max_mm": 1360,
+      "candidate_crimps": 32,
+      "candidate_front_link_max_mm": 90,
+      "candidate_mating_interfaces": 32,
+      "candidate_rear_link_max_mm": 80,
+      "candidate_segments": 16,
+      "conductors": 8,
+      "final_status": "Not a BOM: same-path two-link comparison; final services/returns and connector grouping OPEN",
+      "id": "JL-K-16",
+      "returns": 4
+    },
+    {
+      "baseline_conductor_length_max_mm": 553,
+      "baseline_crimps": 14,
+      "baseline_cut_length_max_mm": 79,
+      "baseline_mating_interfaces": 14,
+      "candidate_conductor_length_max_mm": 1190,
+      "candidate_crimps": 28,
+      "candidate_front_link_max_mm": 90,
+      "candidate_mating_interfaces": 28,
+      "candidate_rear_link_max_mm": 80,
+      "candidate_segments": 14,
+      "conductors": 7,
+      "final_status": "Not a BOM: same-path two-link comparison; final services/returns and connector grouping OPEN",
+      "id": "K-O1-1",
+      "returns": 3
+    },
+    {
+      "baseline_conductor_length_max_mm": 553,
+      "baseline_crimps": 14,
+      "baseline_cut_length_max_mm": 79,
+      "baseline_mating_interfaces": 14,
+      "candidate_conductor_length_max_mm": 1190,
+      "candidate_crimps": 28,
+      "candidate_front_link_max_mm": 90,
+      "candidate_mating_interfaces": 28,
+      "candidate_rear_link_max_mm": 80,
+      "candidate_segments": 14,
+      "conductors": 7,
+      "final_status": "Not a BOM: same-path two-link comparison; final services/returns and connector grouping OPEN",
+      "id": "K-O1-2",
+      "returns": 4
+    },
+    {
+      "baseline_conductor_length_max_mm": 249,
+      "baseline_crimps": 6,
+      "baseline_cut_length_max_mm": 83,
+      "baseline_mating_interfaces": 6,
+      "candidate_conductor_length_max_mm": 510,
+      "candidate_crimps": 12,
+      "candidate_front_link_max_mm": 90,
+      "candidate_mating_interfaces": 12,
+      "candidate_rear_link_max_mm": 80,
+      "candidate_segments": 6,
+      "conductors": 3,
+      "final_status": "Not a BOM: same-path two-link comparison; final services/returns and connector grouping OPEN",
+      "id": "K-P-81",
+      "returns": 1
+    },
+    {
+      "baseline_conductor_length_max_mm": 249,
+      "baseline_crimps": 6,
+      "baseline_cut_length_max_mm": 83,
+      "baseline_mating_interfaces": 6,
+      "candidate_conductor_length_max_mm": 510,
+      "candidate_crimps": 12,
+      "candidate_front_link_max_mm": 90,
+      "candidate_mating_interfaces": 12,
+      "candidate_rear_link_max_mm": 80,
+      "candidate_segments": 6,
+      "conductors": 3,
+      "final_status": "Not a BOM: same-path two-link comparison; final services/returns and connector grouping OPEN",
+      "id": "K-P-82",
+      "returns": 1
+    },
+    {
+      "baseline_conductor_length_max_mm": 249,
+      "baseline_crimps": 6,
+      "baseline_cut_length_max_mm": 83,
+      "baseline_mating_interfaces": 6,
+      "candidate_conductor_length_max_mm": 510,
+      "candidate_crimps": 12,
+      "candidate_front_link_max_mm": 90,
+      "candidate_mating_interfaces": 12,
+      "candidate_rear_link_max_mm": 80,
+      "candidate_segments": 6,
+      "conductors": 3,
+      "final_status": "Not a BOM: same-path two-link comparison; final services/returns and connector grouping OPEN",
+      "id": "K-P-83",
+      "returns": 1
+    },
+    {
+      "baseline_conductor_length_max_mm": 249,
+      "baseline_crimps": 6,
+      "baseline_cut_length_max_mm": 83,
+      "baseline_mating_interfaces": 6,
+      "candidate_conductor_length_max_mm": 510,
+      "candidate_crimps": 12,
+      "candidate_front_link_max_mm": 90,
+      "candidate_mating_interfaces": 12,
+      "candidate_rear_link_max_mm": 80,
+      "candidate_segments": 6,
+      "conductors": 3,
+      "final_status": "Not a BOM: same-path two-link comparison; final services/returns and connector grouping OPEN",
+      "id": "K-P-84",
+      "returns": 1
+    },
+    {
+      "baseline_conductor_length_max_mm": 249,
+      "baseline_crimps": 6,
+      "baseline_cut_length_max_mm": 83,
+      "baseline_mating_interfaces": 6,
+      "candidate_conductor_length_max_mm": 510,
+      "candidate_crimps": 12,
+      "candidate_front_link_max_mm": 90,
+      "candidate_mating_interfaces": 12,
+      "candidate_rear_link_max_mm": 80,
+      "candidate_segments": 6,
+      "conductors": 3,
+      "final_status": "Not a BOM: same-path two-link comparison; final services/returns and connector grouping OPEN",
+      "id": "K-P-85",
+      "returns": 1
+    },
+    {
+      "baseline_conductor_length_max_mm": 249,
+      "baseline_crimps": 6,
+      "baseline_cut_length_max_mm": 83,
+      "baseline_mating_interfaces": 6,
+      "candidate_conductor_length_max_mm": 510,
+      "candidate_crimps": 12,
+      "candidate_front_link_max_mm": 90,
+      "candidate_mating_interfaces": 12,
+      "candidate_rear_link_max_mm": 80,
+      "candidate_segments": 6,
+      "conductors": 3,
+      "final_status": "Not a BOM: same-path two-link comparison; final services/returns and connector grouping OPEN",
+      "id": "K-P-86",
+      "returns": 1
+    },
+    {
+      "baseline_conductor_length_max_mm": 249,
+      "baseline_crimps": 6,
+      "baseline_cut_length_max_mm": 83,
+      "baseline_mating_interfaces": 6,
+      "candidate_conductor_length_max_mm": 510,
+      "candidate_crimps": 12,
+      "candidate_front_link_max_mm": 90,
+      "candidate_mating_interfaces": 12,
+      "candidate_rear_link_max_mm": 80,
+      "candidate_segments": 6,
+      "conductors": 3,
+      "final_status": "Not a BOM: same-path two-link comparison; final services/returns and connector grouping OPEN",
+      "id": "K-P-87",
+      "returns": 1
+    }
+  ],
+  "interference_table": [
+    {
+      "margin_mm": 7.5,
+      "name": "rear selector to middle front connector allowance",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 12.7,
+      "name": "rear component to closed cover",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 10.904,
+      "name": "middle/rear opposed connectors plus two bend allocations",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 2.0,
+      "name": "adjacent card edge",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": -3,
+      "name": "simultaneous adjacent finger cylinders",
+      "status": "CONFLICT; REVISE"
+    },
+    {
+      "margin_mm": 45,
+      "name": "external workspace minus extraction stroke",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 4.5,
+      "name": "trim-0 card containment",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 4.5,
+      "name": "trim-1 card containment",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 4.5,
+      "name": "trim-2 card containment",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 4.5,
+      "name": "trim-3 card containment",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 4.5,
+      "name": "trim-4 card containment",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 4.5,
+      "name": "trim-5 card containment",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 11,
+      "name": "adjacent trim reservations",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 5.5,
+      "name": "probe-0 card containment",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 5.5,
+      "name": "probe-1 card containment",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 5.5,
+      "name": "probe-2 card containment",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 5.5,
+      "name": "probe-3 card containment",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 13,
+      "name": "adjacent probe reservations",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 1.4,
+      "name": "support-0 card containment",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 1.4,
+      "name": "support-1 card containment",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 13.8,
+      "name": "adjacent support reservations",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 0.0,
+      "name": "connector-0 card containment",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 0.0,
+      "name": "connector-1 card containment",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 2,
+      "name": "adjacent connector reservations",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 20.0,
+      "name": "same card trim-0 / trim-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 46.0,
+      "name": "same card trim-0 / trim-2 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 72.0,
+      "name": "same card trim-0 / trim-3 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 98.0,
+      "name": "same card trim-0 / trim-4 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 124.0,
+      "name": "same card trim-0 / trim-5 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 159.0,
+      "name": "same card trim-0 / probe-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 173.0,
+      "name": "same card trim-0 / probe-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 187.0,
+      "name": "same card trim-0 / probe-2 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 201.0,
+      "name": "same card trim-0 / probe-3 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 10.4,
+      "name": "same card trim-0 / support-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 240.4,
+      "name": "same card trim-0 / support-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 137.0,
+      "name": "same card trim-0 / connector-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 215.0,
+      "name": "same card trim-0 / connector-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 20.0,
+      "name": "same card trim-1 / trim-2 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 46.0,
+      "name": "same card trim-1 / trim-3 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 72.0,
+      "name": "same card trim-1 / trim-4 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 98.0,
+      "name": "same card trim-1 / trim-5 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 133.0,
+      "name": "same card trim-1 / probe-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 147.0,
+      "name": "same card trim-1 / probe-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 161.0,
+      "name": "same card trim-1 / probe-2 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 175.0,
+      "name": "same card trim-1 / probe-3 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 36.4,
+      "name": "same card trim-1 / support-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 214.4,
+      "name": "same card trim-1 / support-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 111.0,
+      "name": "same card trim-1 / connector-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 189.0,
+      "name": "same card trim-1 / connector-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 20.0,
+      "name": "same card trim-2 / trim-3 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 46.0,
+      "name": "same card trim-2 / trim-4 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 72.0,
+      "name": "same card trim-2 / trim-5 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 107.0,
+      "name": "same card trim-2 / probe-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 121.0,
+      "name": "same card trim-2 / probe-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 135.0,
+      "name": "same card trim-2 / probe-2 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 149.0,
+      "name": "same card trim-2 / probe-3 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 62.4,
+      "name": "same card trim-2 / support-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 188.4,
+      "name": "same card trim-2 / support-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 85.0,
+      "name": "same card trim-2 / connector-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 163.0,
+      "name": "same card trim-2 / connector-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 20.0,
+      "name": "same card trim-3 / trim-4 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 46.0,
+      "name": "same card trim-3 / trim-5 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 81.0,
+      "name": "same card trim-3 / probe-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 95.0,
+      "name": "same card trim-3 / probe-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 109.0,
+      "name": "same card trim-3 / probe-2 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 123.0,
+      "name": "same card trim-3 / probe-3 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 88.4,
+      "name": "same card trim-3 / support-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 162.4,
+      "name": "same card trim-3 / support-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 59.0,
+      "name": "same card trim-3 / connector-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 137.0,
+      "name": "same card trim-3 / connector-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 20.0,
+      "name": "same card trim-4 / trim-5 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 55.0,
+      "name": "same card trim-4 / probe-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 69.0,
+      "name": "same card trim-4 / probe-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 83.0,
+      "name": "same card trim-4 / probe-2 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 97.0,
+      "name": "same card trim-4 / probe-3 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 114.4,
+      "name": "same card trim-4 / support-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 136.4,
+      "name": "same card trim-4 / support-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 33.0,
+      "name": "same card trim-4 / connector-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 111.0,
+      "name": "same card trim-4 / connector-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 29.0,
+      "name": "same card trim-5 / probe-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 43.0,
+      "name": "same card trim-5 / probe-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 57.0,
+      "name": "same card trim-5 / probe-2 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 71.0,
+      "name": "same card trim-5 / probe-3 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 140.4,
+      "name": "same card trim-5 / support-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 110.4,
+      "name": "same card trim-5 / support-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 7.0,
+      "name": "same card trim-5 / connector-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 85.0,
+      "name": "same card trim-5 / connector-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 10.0,
+      "name": "same card probe-0 / probe-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 24.0,
+      "name": "same card probe-0 / probe-2 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 38.0,
+      "name": "same card probe-0 / probe-3 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 175.4,
+      "name": "same card probe-0 / support-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 77.4,
+      "name": "same card probe-0 / support-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 10.0,
+      "name": "same card probe-0 / connector-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 52.0,
+      "name": "same card probe-0 / connector-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 10.0,
+      "name": "same card probe-1 / probe-2 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 24.0,
+      "name": "same card probe-1 / probe-3 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 189.4,
+      "name": "same card probe-1 / support-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 63.4,
+      "name": "same card probe-1 / support-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 24.0,
+      "name": "same card probe-1 / connector-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 38.0,
+      "name": "same card probe-1 / connector-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 10.0,
+      "name": "same card probe-2 / probe-3 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 203.4,
+      "name": "same card probe-2 / support-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 49.4,
+      "name": "same card probe-2 / support-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 38.0,
+      "name": "same card probe-2 / connector-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 24.0,
+      "name": "same card probe-2 / connector-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 217.4,
+      "name": "same card probe-3 / support-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 35.4,
+      "name": "same card probe-3 / support-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 52.0,
+      "name": "same card probe-3 / connector-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 10.0,
+      "name": "same card probe-3 / connector-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 256.8,
+      "name": "same card support-0 / support-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 153.4,
+      "name": "same card support-0 / connector-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 231.4,
+      "name": "same card support-0 / connector-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 91.4,
+      "name": "same card support-1 / connector-0 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 13.4,
+      "name": "same card support-1 / connector-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "margin_mm": 66.0,
+      "name": "same card connector-0 / connector-1 bounding-box separation",
+      "status": "CONDITIONAL ALLOCATION"
+    },
+    {
+      "name": "Exact latch/mating sweep, rail solids, neighbor components, cable solid curvature and deflection",
+      "status": "NOT CHECKED; exact solids/forces unavailable"
+    }
+  ],
+  "locked_positions": [
+    {
+      "accent": true,
+      "assembly_group": "front",
+      "assembly_pcb_z_mm": -16,
+      "block": "O1",
+      "col": 0,
+      "component": "alps-srbv160803",
+      "domain": "O",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "controls",
+      "hole_d_mm": 7.0,
+      "hole_status": "PROPOSAL",
+      "key": "OCT",
+      "kind": "octave",
+      "label": "OCT",
+      "ref": "SW101",
+      "rot_deg": 0,
+      "row": 0,
+      "slug": "C_O1_OCT",
+      "uid": "C:O1.OCT",
+      "x_mm": 14.5,
+      "y_mm": 185.0
+    },
+    {
+      "accent": false,
+      "block": "O1",
+      "col": 0,
+      "component": "dailywell-2ms1",
+      "domain": "P",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "controls",
+      "hole_d_mm": 5.2,
+      "hole_status": "PROPOSAL",
+      "key": "VCO/LFO",
+      "kind": "switch",
+      "label": "RANGE",
+      "ref": "SW102",
+      "rot_deg": 0,
+      "row": 1,
+      "slug": "C_O1_VCO-LFO",
+      "uid": "C:O1.VCO/LFO",
+      "x_mm": 14.5,
+      "y_mm": 199.0
+    },
+    {
+      "accent": false,
+      "block": "O1",
+      "col": 0,
+      "component": "dailywell-2ms3",
+      "domain": "P",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "controls",
+      "hole_d_mm": 5.2,
+      "hole_status": "PROPOSAL",
+      "key": "SYNC",
+      "kind": "switch",
+      "label": "SYNC",
+      "ref": "SW103",
+      "rot_deg": 0,
+      "row": 2,
+      "slug": "C_O1_SYNC",
+      "uid": "C:O1.SYNC",
+      "x_mm": 14.5,
+      "y_mm": 213.0
+    },
+    {
+      "accent": false,
+      "block": "O1",
+      "col": 0,
+      "component": "bourns-ptv09a-4020f-b103",
+      "domain": "P",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "controls",
+      "hole_d_mm": 6.3,
+      "hole_status": "PROPOSAL",
+      "key": "TUNE",
+      "kind": "pot",
+      "label": "TUNE",
+      "ref": "RV104",
+      "rot_deg": 0,
+      "row": 3,
+      "slug": "C_O1_TUNE",
+      "uid": "C:O1.TUNE",
+      "x_mm": 14.5,
+      "y_mm": 227.0
+    },
+    {
+      "accent": false,
+      "block": "O1",
+      "col": 0,
+      "component": "bourns-ptv09a-4020f-b103",
+      "domain": "P",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "controls",
+      "hole_d_mm": 6.3,
+      "hole_status": "PROPOSAL",
+      "key": "FINE",
+      "kind": "pot",
+      "label": "FINE",
+      "ref": "RV105",
+      "rot_deg": 0,
+      "row": 4,
+      "slug": "C_O1_FINE",
+      "uid": "C:O1.FINE",
+      "x_mm": 14.5,
+      "y_mm": 241.0
+    },
+    {
+      "accent": false,
+      "block": "O1",
+      "col": 0,
+      "component": "bourns-ptv09a-4020f-b103",
+      "domain": "P",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "controls",
+      "hole_d_mm": 6.3,
+      "hole_status": "PROPOSAL",
+      "key": "FM\u00b1",
+      "kind": "pot",
+      "label": "FM \u00b1",
+      "ref": "RV106",
+      "rot_deg": 0,
+      "row": 5,
+      "slug": "C_O1_FMPM",
+      "uid": "C:O1.FM\u00b1",
+      "x_mm": 14.5,
+      "y_mm": 255.0
+    },
+    {
+      "accent": false,
+      "block": "O1",
+      "col": 0,
+      "component": "bourns-ptv09a-4020f-b103",
+      "domain": "P",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "controls",
+      "hole_d_mm": 6.3,
+      "hole_status": "PROPOSAL",
+      "key": "PW",
+      "kind": "pot",
+      "label": "PW",
+      "ref": "RV107",
+      "rot_deg": 0,
+      "row": 6,
+      "slug": "C_O1_PW",
+      "uid": "C:O1.PW",
+      "x_mm": 14.5,
+      "y_mm": 269.0
+    },
+    {
+      "accent": false,
+      "block": "O1",
+      "col": 0,
+      "component": "bourns-ptv09a-4020f-b103",
+      "domain": "P",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "controls",
+      "hole_d_mm": 6.3,
+      "hole_status": "PROPOSAL",
+      "key": "PWM\u00b1",
+      "kind": "pot",
+      "label": "PWM \u00b1",
+      "ref": "RV108",
+      "rot_deg": 0,
+      "row": 7,
+      "slug": "C_O1_PWMPM",
+      "uid": "C:O1.PWM\u00b1",
+      "x_mm": 14.5,
+      "y_mm": 283.0
+    },
+    {
+      "accent": true,
+      "assembly_group": "rear",
+      "assembly_pcb_z_mm": -29,
+      "block": "O2",
+      "col": 1,
+      "component": "alps-srbv160803",
+      "domain": "O",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "controls",
+      "hole_d_mm": 7.0,
+      "hole_status": "PROPOSAL",
+      "key": "OCT",
+      "kind": "octave",
+      "label": "OCT",
+      "ref": "SW201",
+      "rot_deg": 180,
+      "row": 0,
+      "slug": "C_O2_OCT",
+      "uid": "C:O2.OCT",
+      "x_mm": 31.5,
+      "y_mm": 185.0
+    },
+    {
+      "accent": false,
+      "block": "O2",
+      "col": 1,
+      "component": "dailywell-2ms1",
+      "domain": "P",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "controls",
+      "hole_d_mm": 5.2,
+      "hole_status": "PROPOSAL",
+      "key": "VCO/LFO",
+      "kind": "switch",
+      "label": "RANGE",
+      "ref": "SW202",
+      "rot_deg": 0,
+      "row": 1,
+      "slug": "C_O2_VCO-LFO",
+      "uid": "C:O2.VCO/LFO",
+      "x_mm": 31.5,
+      "y_mm": 199.0
+    },
+    {
+      "accent": false,
+      "block": "O2",
+      "col": 1,
+      "component": "dailywell-2ms3",
+      "domain": "P",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "controls",
+      "hole_d_mm": 5.2,
+      "hole_status": "PROPOSAL",
+      "key": "SYNC",
+      "kind": "switch",
+      "label": "SYNC",
+      "ref": "SW203",
+      "rot_deg": 0,
+      "row": 2,
+      "slug": "C_O2_SYNC",
+      "uid": "C:O2.SYNC",
+      "x_mm": 31.5,
+      "y_mm": 213.0
+    },
+    {
+      "accent": false,
+      "block": "O2",
+      "col": 1,
+      "component": "bourns-ptv09a-4020f-b103",
+      "domain": "P",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "controls",
+      "hole_d_mm": 6.3,
+      "hole_status": "PROPOSAL",
+      "key": "TUNE",
+      "kind": "pot",
+      "label": "TUNE",
+      "ref": "RV204",
+      "rot_deg": 0,
+      "row": 3,
+      "slug": "C_O2_TUNE",
+      "uid": "C:O2.TUNE",
+      "x_mm": 31.5,
+      "y_mm": 227.0
+    },
+    {
+      "accent": false,
+      "block": "O2",
+      "col": 1,
+      "component": "bourns-ptv09a-4020f-b103",
+      "domain": "P",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "controls",
+      "hole_d_mm": 6.3,
+      "hole_status": "PROPOSAL",
+      "key": "FINE",
+      "kind": "pot",
+      "label": "FINE",
+      "ref": "RV205",
+      "rot_deg": 0,
+      "row": 4,
+      "slug": "C_O2_FINE",
+      "uid": "C:O2.FINE",
+      "x_mm": 31.5,
+      "y_mm": 241.0
+    },
+    {
+      "accent": false,
+      "block": "O2",
+      "col": 1,
+      "component": "bourns-ptv09a-4020f-b103",
+      "domain": "P",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "controls",
+      "hole_d_mm": 6.3,
+      "hole_status": "PROPOSAL",
+      "key": "FM\u00b1",
+      "kind": "pot",
+      "label": "FM \u00b1",
+      "ref": "RV206",
+      "rot_deg": 0,
+      "row": 5,
+      "slug": "C_O2_FMPM",
+      "uid": "C:O2.FM\u00b1",
+      "x_mm": 31.5,
+      "y_mm": 255.0
+    },
+    {
+      "accent": false,
+      "block": "O2",
+      "col": 1,
+      "component": "bourns-ptv09a-4020f-b103",
+      "domain": "P",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "controls",
+      "hole_d_mm": 6.3,
+      "hole_status": "PROPOSAL",
+      "key": "PW",
+      "kind": "pot",
+      "label": "PW",
+      "ref": "RV207",
+      "rot_deg": 0,
+      "row": 6,
+      "slug": "C_O2_PW",
+      "uid": "C:O2.PW",
+      "x_mm": 31.5,
+      "y_mm": 269.0
+    },
+    {
+      "accent": false,
+      "block": "O2",
+      "col": 1,
+      "component": "bourns-ptv09a-4020f-b103",
+      "domain": "P",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "controls",
+      "hole_d_mm": 6.3,
+      "hole_status": "PROPOSAL",
+      "key": "PWM\u00b1",
+      "kind": "pot",
+      "label": "PWM \u00b1",
+      "ref": "RV208",
+      "rot_deg": 0,
+      "row": 7,
+      "slug": "C_O2_PWMPM",
+      "uid": "C:O2.PWM\u00b1",
+      "x_mm": 31.5,
+      "y_mm": 283.0
+    },
+    {
+      "accent": true,
+      "block": "O1",
+      "col": 0,
+      "component": "qingpu-wqp518ma",
+      "direction": "in",
+      "domain": "JL",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "jacks",
+      "hole_d_mm": 6.2,
+      "hole_status": "PROPOSAL",
+      "key": "1V",
+      "kind": "jack",
+      "label": "1V/OCT",
+      "ref": "J101",
+      "rot_deg": 0,
+      "row": 0,
+      "slug": "J_O1_1V",
+      "uid": "J:O1.1V",
+      "x_mm": 14.5,
+      "y_mm": 29.0
+    },
+    {
+      "accent": false,
+      "block": "O1",
+      "col": 0,
+      "component": "qingpu-wqp518ma",
+      "direction": "in",
+      "domain": "JL",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "jacks",
+      "hole_d_mm": 6.2,
+      "hole_status": "PROPOSAL",
+      "key": "FM",
+      "kind": "jack",
+      "label": "FM",
+      "ref": "J102",
+      "rot_deg": 0,
+      "row": 1,
+      "slug": "J_O1_FM",
+      "uid": "J:O1.FM",
+      "x_mm": 14.5,
+      "y_mm": 43.0
+    },
+    {
+      "accent": false,
+      "block": "O1",
+      "col": 0,
+      "component": "qingpu-wqp518ma",
+      "direction": "in",
+      "domain": "JL",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "jacks",
+      "hole_d_mm": 6.2,
+      "hole_status": "PROPOSAL",
+      "key": "PWM",
+      "kind": "jack",
+      "label": "PWM",
+      "ref": "J103",
+      "rot_deg": 0,
+      "row": 2,
+      "slug": "J_O1_PWM",
+      "uid": "J:O1.PWM",
+      "x_mm": 14.5,
+      "y_mm": 57.0
+    },
+    {
+      "accent": false,
+      "block": "O1",
+      "col": 0,
+      "component": "qingpu-wqp518ma",
+      "direction": "in",
+      "domain": "JL",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "jacks",
+      "hole_d_mm": 6.2,
+      "hole_status": "PROPOSAL",
+      "key": "SYNC",
+      "kind": "jack",
+      "label": "SYNC CV",
+      "ref": "J104",
+      "rot_deg": 0,
+      "row": 3,
+      "slug": "J_O1_SYNC",
+      "uid": "J:O1.SYNC",
+      "x_mm": 14.5,
+      "y_mm": 71.0
+    },
+    {
+      "accent": true,
+      "block": "O1",
+      "col": 0,
+      "component": "qingpu-wqp518ma",
+      "direction": "out",
+      "domain": "JL",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "jacks",
+      "hole_d_mm": 6.2,
+      "hole_status": "PROPOSAL",
+      "key": "SIN",
+      "kind": "jack",
+      "label": "SIN",
+      "ref": "J105",
+      "rot_deg": 0,
+      "row": 4,
+      "slug": "J_O1_SIN",
+      "uid": "J:O1.SIN",
+      "x_mm": 14.5,
+      "y_mm": 85.0
+    },
+    {
+      "accent": true,
+      "block": "O1",
+      "col": 0,
+      "component": "qingpu-wqp518ma",
+      "direction": "out",
+      "domain": "JL",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "jacks",
+      "hole_d_mm": 6.2,
+      "hole_status": "PROPOSAL",
+      "key": "TRI",
+      "kind": "jack",
+      "label": "TRI",
+      "ref": "J106",
+      "rot_deg": 0,
+      "row": 5,
+      "slug": "J_O1_TRI",
+      "uid": "J:O1.TRI",
+      "x_mm": 14.5,
+      "y_mm": 99.0
+    },
+    {
+      "accent": true,
+      "block": "O1",
+      "col": 0,
+      "component": "qingpu-wqp518ma",
+      "direction": "out",
+      "domain": "JL",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "jacks",
+      "hole_d_mm": 6.2,
+      "hole_status": "PROPOSAL",
+      "key": "SAW",
+      "kind": "jack",
+      "label": "SAW",
+      "ref": "J107",
+      "rot_deg": 0,
+      "row": 6,
+      "slug": "J_O1_SAW",
+      "uid": "J:O1.SAW",
+      "x_mm": 14.5,
+      "y_mm": 113.0
+    },
+    {
+      "accent": true,
+      "block": "O1",
+      "col": 0,
+      "component": "qingpu-wqp518ma",
+      "direction": "out",
+      "domain": "JL",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "jacks",
+      "hole_d_mm": 6.2,
+      "hole_status": "PROPOSAL",
+      "key": "PUL",
+      "kind": "jack",
+      "label": "PUL",
+      "ref": "J108",
+      "rot_deg": 0,
+      "row": 7,
+      "slug": "J_O1_PUL",
+      "uid": "J:O1.PUL",
+      "x_mm": 14.5,
+      "y_mm": 127.0
+    },
+    {
+      "accent": true,
+      "block": "O2",
+      "col": 1,
+      "component": "qingpu-wqp518ma",
+      "direction": "in",
+      "domain": "JL",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "jacks",
+      "hole_d_mm": 6.2,
+      "hole_status": "PROPOSAL",
+      "key": "1V",
+      "kind": "jack",
+      "label": "1V/OCT",
+      "ref": "J201",
+      "rot_deg": 0,
+      "row": 0,
+      "slug": "J_O2_1V",
+      "uid": "J:O2.1V",
+      "x_mm": 31.5,
+      "y_mm": 29.0
+    },
+    {
+      "accent": false,
+      "block": "O2",
+      "col": 1,
+      "component": "qingpu-wqp518ma",
+      "direction": "in",
+      "domain": "JL",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "jacks",
+      "hole_d_mm": 6.2,
+      "hole_status": "PROPOSAL",
+      "key": "FM",
+      "kind": "jack",
+      "label": "FM",
+      "ref": "J202",
+      "rot_deg": 0,
+      "row": 1,
+      "slug": "J_O2_FM",
+      "uid": "J:O2.FM",
+      "x_mm": 31.5,
+      "y_mm": 43.0
+    },
+    {
+      "accent": false,
+      "block": "O2",
+      "col": 1,
+      "component": "qingpu-wqp518ma",
+      "direction": "in",
+      "domain": "JL",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "jacks",
+      "hole_d_mm": 6.2,
+      "hole_status": "PROPOSAL",
+      "key": "PWM",
+      "kind": "jack",
+      "label": "PWM",
+      "ref": "J203",
+      "rot_deg": 0,
+      "row": 2,
+      "slug": "J_O2_PWM",
+      "uid": "J:O2.PWM",
+      "x_mm": 31.5,
+      "y_mm": 57.0
+    },
+    {
+      "accent": false,
+      "block": "O2",
+      "col": 1,
+      "component": "qingpu-wqp518ma",
+      "direction": "in",
+      "domain": "JL",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "jacks",
+      "hole_d_mm": 6.2,
+      "hole_status": "PROPOSAL",
+      "key": "SYNC",
+      "kind": "jack",
+      "label": "SYNC CV",
+      "ref": "J204",
+      "rot_deg": 0,
+      "row": 3,
+      "slug": "J_O2_SYNC",
+      "uid": "J:O2.SYNC",
+      "x_mm": 31.5,
+      "y_mm": 71.0
+    },
+    {
+      "accent": true,
+      "block": "O2",
+      "col": 1,
+      "component": "qingpu-wqp518ma",
+      "direction": "out",
+      "domain": "JL",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "jacks",
+      "hole_d_mm": 6.2,
+      "hole_status": "PROPOSAL",
+      "key": "SIN",
+      "kind": "jack",
+      "label": "SIN",
+      "ref": "J205",
+      "rot_deg": 0,
+      "row": 4,
+      "slug": "J_O2_SIN",
+      "uid": "J:O2.SIN",
+      "x_mm": 31.5,
+      "y_mm": 85.0
+    },
+    {
+      "accent": true,
+      "block": "O2",
+      "col": 1,
+      "component": "qingpu-wqp518ma",
+      "direction": "out",
+      "domain": "JL",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "jacks",
+      "hole_d_mm": 6.2,
+      "hole_status": "PROPOSAL",
+      "key": "TRI",
+      "kind": "jack",
+      "label": "TRI",
+      "ref": "J206",
+      "rot_deg": 0,
+      "row": 5,
+      "slug": "J_O2_TRI",
+      "uid": "J:O2.TRI",
+      "x_mm": 31.5,
+      "y_mm": 99.0
+    },
+    {
+      "accent": true,
+      "block": "O2",
+      "col": 1,
+      "component": "qingpu-wqp518ma",
+      "direction": "out",
+      "domain": "JL",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "jacks",
+      "hole_d_mm": 6.2,
+      "hole_status": "PROPOSAL",
+      "key": "SAW",
+      "kind": "jack",
+      "label": "SAW",
+      "ref": "J207",
+      "rot_deg": 0,
+      "row": 6,
+      "slug": "J_O2_SAW",
+      "uid": "J:O2.SAW",
+      "x_mm": 31.5,
+      "y_mm": 113.0
+    },
+    {
+      "accent": true,
+      "block": "O2",
+      "col": 1,
+      "component": "qingpu-wqp518ma",
+      "direction": "out",
+      "domain": "JL",
+      "domain_status": "PROPOSAL",
+      "family": "OSC",
+      "field": "jacks",
+      "hole_d_mm": 6.2,
+      "hole_status": "PROPOSAL",
+      "key": "PUL",
+      "kind": "jack",
+      "label": "PUL",
+      "ref": "J208",
+      "rot_deg": 0,
+      "row": 7,
+      "slug": "J_O2_PUL",
+      "uid": "J:O2.PUL",
+      "x_mm": 31.5,
+      "y_mm": 127.0
+    }
+  ],
+  "octave_instances": [
+    {
+      "adapter_group": "front",
+      "extension_length_mm": 0,
+      "knob_index_correction_deg": 0,
+      "pcb_z_mm": -16,
+      "rotation_deg": 0,
+      "uid": "C:O1.OCT"
+    },
+    {
+      "adapter_group": "rear",
+      "extension_length_mm": 13,
+      "knob_index_correction_deg": 180,
+      "pcb_z_mm": -29,
+      "rotation_deg": 180,
+      "uid": "C:O2.OCT"
+    },
+    {
+      "adapter_group": "front",
+      "extension_length_mm": 0,
+      "knob_index_correction_deg": 0,
+      "pcb_z_mm": -16,
+      "rotation_deg": 0,
+      "uid": "C:O3.OCT"
+    },
+    {
+      "adapter_group": "rear",
+      "extension_length_mm": 13,
+      "knob_index_correction_deg": 180,
+      "pcb_z_mm": -29,
+      "rotation_deg": 180,
+      "uid": "C:O4.OCT"
+    },
+    {
+      "adapter_group": "front",
+      "extension_length_mm": 0,
+      "knob_index_correction_deg": 0,
+      "pcb_z_mm": -16,
+      "rotation_deg": 0,
+      "uid": "C:O5.OCT"
+    }
+  ],
+  "parameters": {
+    "additional_shared_service_contact_count": null,
+    "cable_bend_radius_allocation_mm": 9.398,
+    "card_area_status": "15 x 266 reservation is not package placement or routing capacity proof; widening may conflict with adjacent access",
+    "card_width_mm": 15,
+    "card_y_mm": [
+      24,
+      290
+    ],
+    "component_rear_height_mm": 5,
+    "connector_height_allowance_mm": 9,
+    "connector_reservation_length_mm": 12,
+    "connector_reservation_width_mm": 15,
+    "connector_y_mm": [
+      188,
+      266
+    ],
+    "cover_inner_z_mm": -120,
+    "finger_diameter_mm": 20,
+    "free_clearance_mm": 2,
+    "front_link_max_mm": 90,
+    "middle_face_z_mm": -50,
+    "middle_trace_max_mm": 100,
+    "pcb_thickness_mm": 1.6,
+    "pcb_thickness_tolerance_mm": 0.2,
+    "probe_diameter_mm": 4,
+    "probe_y_mm": [
+      206,
+      220,
+      234,
+      248
+    ],
+    "rear_external_work_depth_mm": 80,
+    "rear_extraction_stroke_mm": 35,
+    "rear_face_z_mm": -100,
+    "rear_link_max_mm": 80,
+    "relative_plane_tolerance_mm": 0.5,
+    "requirements": "No new panel holes; supports anchor enclosure carrier, not panel centre changes; rail and connector dimensions unresolved",
+    "schema_version": 1,
+    "status": "PROJECT-CHOICE bounded candidate only; no selected connector or physical qualification",
+    "support_collar_diameter_mm": 3.2,
+    "support_y_mm": [
+      27,
+      287
+    ],
+    "test_adapter_wire_count": null,
+    "tool_diameter_mm": 6,
+    "trim_y_mm": [
+      42,
+      68,
+      94,
+      120,
+      146,
+      172
+    ]
+  },
+  "selector_envelope": {
+    "body_support_z_mm": [
+      -4,
+      7.5
+    ],
+    "bushing_diameter_mm": 9,
+    "bushing_length_mm": 7,
+    "conservative_body_support_xy_mm": [
+      -9.1,
+      -10.5,
+      9.1,
+      8.0
+    ],
+    "locator": "Drawing No.7: all three dimensions views, mounting holes, circuit diagram",
+    "main_body_xy_mm": [
+      -8.1,
+      -10.5,
+      8.1,
+      8.0
+    ],
+    "mount_hole_diameter_mm": 2,
+    "mount_holes_xy_mm": [
+      [
+        -8,
+        -1.1
+      ],
+      [
+        8,
+        -1.1
+      ]
+    ],
+    "mount_pad_classification": "MP1/MP2 are mechanical features absent from electrical circuit; plating is unspecified. Retain PTH diameter 2.6 / drill 2.0, annular ring 0.3. No NPTH reclassification.",
+    "mount_pad_diameter_mm": 2.6,
+    "physical_pdf_page_index": 3,
+    "shaft_flat_length_mm": 7,
+    "shaft_length_from_body_face_mm": 15,
+    "shaft_length_tolerance_mm": 0.5,
+    "terminal_hole_diameter_mm": 0.9,
+    "terminal_pad_diameter_mm": 1.55,
+    "terminal_rows_y_mm": [
+      -9.15,
+      9.15
+    ],
+    "terminal_tail_note": "Conservative terminal-tail keepout uses \u00d80.9 bores around terminal centers as an assembly allowance, not a claim of \u00d80.9 solid pins. Main asymmetric body ends at y=+8 but the terminal row is y=+9.15.",
+    "terminal_tail_xy_mm": [
+      -5.45,
+      -9.6,
+      5.45,
+      9.6
+    ],
+    "terminal_tail_z_mm": [
+      -4,
+      0
+    ],
+    "uncertainty": "18.2 span retained as full-width conservative envelope; no exact solid contour inferred. 18.3 terminal rows centered on indicated shaft centerline by drawing symmetry (dimension to each row not individually toleranced). No general body, tail, hole-position or bushing tolerance given."
+  },
+  "source_sha256": {
+    "design/architecture-278/interface-contract.json": "1a96d576f5b33536014da093b6d0bf1e34b7ef5816dd1a35fb6d26465d4e656b",
+    "design/architecture-278/mechanical-input.json": "e96da01b0242fc277db6ff72e4e02c0c64ba508fd68c8bf358b6bd98f5c7d562",
+    "design/architecture-278/source-ledger.json": "708826e21e701dd04cea00e283360d4b7d6d48f78ef235a709b694927a538ce1",
+    "design/connectors/jst-gh.json": "b16baa17b0d7453a617057031b54f0c62abb56ea528b40c02918b4b1a89d1f2d",
+    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+    "design/mechanical/facts/jack.json": "d858de77f8333182e806b02d693200802de40b6892bd21e5b069844c9e115bf2",
+    "design/mechanical/facts/pot.json": "927b517d782a5831a4e3e573eed8df8ada015944f92b92a71494a71425db9aa5",
+    "design/mechanical/selector-assembly.json": "b5715d25d4d4b44bc664eac9697d83c95741b02af9a906d0c849f40da7e560bb",
+    "design/partition/harness-wire-evidence.json": "f2e67dc157b6643ff4857aaa9b3e1ce60c1a76739ed4734b7672d11d63a172c6",
+    "design/partition/loom-candidate.json": "5fe3d9f7b1b946a54e81b82dd64355e9836228d8f1d0415589c657f7bff6bcc8",
+    "design/partition/mechanical-candidate.json": "1688080a0dbf2fadd5a8f6b0628d868850ba982aaef453086fa3a5ba8fe63349",
+    "design/partition/partition.json": "d84b710ec5b6fe134ace159c4e3b4088c86f2cda658a5d386b23d9d540a48de1"
+  },
+  "status": "REVISE; source-derived and proposed bounds only; physical qualification NOT RUN",
+  "trims": [
+    {
+      "access": "rear powered calibration only under separately authorized safe bench procedure; replacement power-off/discharged",
+      "key": "BASE_TRIM.0",
+      "mpn": "TC33X-2-103E",
+      "owner": "rear-core",
+      "pins": {
+        "1": "/O1/BASE_REFN5",
+        "2": "/O1/BASE_ADJ",
+        "3": "/O1/BASE_REF5"
+      },
+      "proposed_xy_mm": [
+        14.5,
+        42
+      ],
+      "proposed_z_mm": -101.6,
+      "ref": "RVO1106",
+      "status": "Proposed rear-facing adjustment axis, exact body/actuator geometry OPEN",
+      "tool_diameter_mm": 6,
+      "value": "10 k\u03a9"
+    },
+    {
+      "access": "rear powered calibration only under separately authorized safe bench procedure; replacement power-off/discharged",
+      "key": "RZ_TRIM.0",
+      "mpn": "TC33X-2-103E",
+      "owner": "rear-core",
+      "pins": {
+        "1": "/O1/RZ_TRIM",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "proposed_xy_mm": [
+        14.5,
+        68
+      ],
+      "proposed_z_mm": -101.6,
+      "ref": "RVO1107",
+      "status": "Proposed rear-facing adjustment axis, exact body/actuator geometry OPEN",
+      "tool_diameter_mm": 6,
+      "value": "10 k\u03a9"
+    },
+    {
+      "access": "rear powered calibration only under separately authorized safe bench procedure; replacement power-off/discharged",
+      "key": "SCALE_TRIM.0",
+      "mpn": "TC33X-2-102E",
+      "owner": "rear-core",
+      "pins": {
+        "1": "/O1/SCALE_ADJ",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "proposed_xy_mm": [
+        14.5,
+        94
+      ],
+      "proposed_z_mm": -101.6,
+      "ref": "RVO1108",
+      "status": "Proposed rear-facing adjustment axis, exact body/actuator geometry OPEN",
+      "tool_diameter_mm": 6,
+      "value": "1 k\u03a9"
+    },
+    {
+      "access": "rear powered calibration only under separately authorized safe bench procedure; replacement power-off/discharged",
+      "key": "HF_TRIM.0",
+      "mpn": "",
+      "owner": "rear-core",
+      "pins": {
+        "1": "/O1/HF_PIN",
+        "2": "/O1/LINEAR_REF",
+        "3": "AGND"
+      },
+      "proposed_xy_mm": [
+        14.5,
+        120
+      ],
+      "proposed_z_mm": -101.6,
+      "ref": "RVO1109",
+      "status": "Proposed rear-facing adjustment axis, exact body/actuator geometry OPEN",
+      "tool_diameter_mm": 6,
+      "value": "20 k\u03a9"
+    },
+    {
+      "access": "rear powered calibration only under separately authorized safe bench procedure; replacement power-off/discharged",
+      "key": "SINE_SYMMETRY.0",
+      "mpn": "TC33X-2-103E",
+      "owner": "rear-core",
+      "pins": {
+        "1": "/O1/SINE_REFN5",
+        "2": "/O1/SINE_OFFSET",
+        "3": "/O1/SINE_REF5"
+      },
+      "proposed_xy_mm": [
+        14.5,
+        146
+      ],
+      "proposed_z_mm": -101.6,
+      "ref": "RVO1110",
+      "status": "Proposed rear-facing adjustment axis, exact body/actuator geometry OPEN",
+      "tool_diameter_mm": 6,
+      "value": "10 k\u03a9"
+    },
+    {
+      "access": "rear powered calibration only under separately authorized safe bench procedure; replacement power-off/discharged",
+      "key": "SINE_LEVEL.0",
+      "mpn": "TC33X-2-103E",
+      "owner": "rear-core",
+      "pins": {
+        "1": "/O1/SINE_GAIN_TRIM",
+        "2": "/O1/SINE_GAIN_SUM",
+        "3": "/O1/SINE_GAIN_SUM"
+      },
+      "proposed_xy_mm": [
+        14.5,
+        172
+      ],
+      "proposed_z_mm": -101.6,
+      "ref": "RVO1111",
+      "status": "Proposed rear-facing adjustment axis, exact body/actuator geometry OPEN",
+      "tool_diameter_mm": 6,
+      "value": "10 k\u03a9"
+    }
+  ]
+}

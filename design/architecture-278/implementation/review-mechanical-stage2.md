@@ -1,0 +1,51 @@
+# Independent mechanical/service review: actual-pad assembly stage
+
+Reviewer: independently delegated mechanical/service/code review agent, 2026-10-15. This receipt applies only to the exact bytes below. It does not amend or inherit the previous stage's receipt. No native KiCad, aggregate regeneration or physical experiment was run by this reviewer.
+
+## Result and scope
+
+The final independent source screen finds **zero same-plane/same-face courtyard conflicts, zero conditional-plane through-pad conflicts, zero locked panel datum/rotation mismatches and zero DIN/middle-header/shared-island projection conflicts** across the four recorded alternatives. There is one opposite-face middle-header/shared-island XY projection: O4:M:K-O1-1 [71.65,168.9,84.35,175] overlaps the projection of R1616 [70.86,168.59,74.14,170.41]. This is not a same-face courtyard collision; actual board thickness, component heights, lands and through-vias still require checking. These are bounded source screens, not complete installed-solid acceptance. Mechanical, service and Stage 1 acceptance remain **OPEN**.
+
+The source inventory contains 250 packages including the nonphysical declaration, with 249 physical packages placed: 65 O1 front hardware/electronics, 30 shared-reference packages and 154 O1 rear packages. Seventeen front headers are separately represented, giving 82 front placements per instance. `front_instances` supplies five sets of 82, with actual 180-degree O2/O4 selector rotations and their 29 mm PCB depths; O1/O3/O5 selectors retain 0 degrees and 16 mm. Other front depths remain the conditional 20 mm proposal. Whole package preservation and electrical parity have their separate source/electrical checks; this review does not convert geometric copies into all-five electrical qualification.
+
+The independent checker accounts for all **438 locked hardware centres** using committed footprint proxies: 180 jacks, 101 pots, 30 toggles, eight buttons, five selectors and 114 LED emitters. It checks actual locked rotations and extracts their through-pad keepouts. These are footprint/courtyard projections, not complete manufacturer's installed volumes. LED emitter proxies do not represent the entire optical path, panel window, light pipe or neighboring body clearance.
+
+`python3 scripts/architecture278/implementation/assembly_mechanical_review.py` and its `--check` reproduction both passed at these source hashes. “Passed” means deterministic screening completed with the reported findings; it does not hide the rejected centred-pair arrangement or the unresolved Z projections. The checker records exact coordinates and source hashes in `assembly-mechanical-review.json`.
+
+## Findings corrected during independent review
+
+1. Four adjacent pairs of selector-linked middle headers initially overlapped on the single middle front face. Staggered front selector depths did not excuse a common-plane middle collision. The middle header layout now gives them separate reservations.
+2. Nineteen front header/through-pad conflicts were found when the screen expanded from an O1 template to all 438 hardware items. These included neighboring oscillator pot pads, O2/O4 rotated selector pads, and O5's neighboring F1/X1/H1 controls. Packing now consumes actual neighboring locked through-pad geometry; synthetic copies of O1 alone were insufficient.
+3. Replicating O1 selector geometry without rotation initially disagreed with the O2/O4 lock. Explicit instance transforms now preserve the actual centres, 180-degree rotations and staggered depths.
+4. The original shared-reference island overlapped the O2 DIN body reservation in projection, including all four shared amplifier packages. Its revised [50,135,95,172] mm allocation clears all recorded DIN reservations in the screen. The complete shared 30-package group is retained. The final source explicitly places all eight shared supply-bypass associations near their ICs. One resulting opposite-face middle-header/R1616 projection remains a depth/PCB detail to qualify, as recorded above.
+5. The original inherited fixture/service receipt did not apply to the revised rear placement. The separate mechanical-feasibility source demonstrates a compact 103 × 115 mm whole-cluster arrangement at all original five card origins, with candidate-specific fixture reservations. It retains all eight groups and six trim tool reservations per card. No old support or extraction qualification is reused.
+
+## Remaining conflicts and limits
+
+- **Centred pair is not a valid full-five arrangement.** Its O1/O2 cards at y88..203 mm overlap the retained O3/O4 reservations at y5..120 mm by 32 mm. The checker reports both collisions. It is an isolated two-card routing comparison only. Original compact origins and the explicit five-card two-row layout have no card-box overlap; the retained 150 mm comparison fits only with its three old smaller reservations, not five expanded copies.
+- **350 projected hardware overlaps remain unresolved in Z.** These are not 350 established collisions: panel-side SMT, rear-side SMT, selector PCB planes, LED planes and middle-plane components can occupy different depths. They require actual installed body/lead/tail/latch/optical volumes and tolerance envelopes. The source cannot call them clear simply because nominal PCB planes differ.
+- **No exact whole-instrument occupied-volume model exists.** The other 28 functions' active components, carrier PCB outlines, supports, power/source infrastructure, connector flanges and fixed-hardware seated datums are not fully populated by this work. The all-438 proxy screen accounts for their panel hardware only.
+- **Main connector/fixture mechanics remain conditional.** DIN female/male tail/drill geometry, flange fixing, guide engagement before electrical contact, mating misalignment and keying need exact solids. Supports, handle feet, probes and power straps are reservation boxes; bends, insulation, fastener heads/tool corridors, insertion/extraction force, stiffness and torque remain unqualified.
+- **Service clearance is not established by a nominal wire slack number.** The current minimum remaining geometric slack is about 12.480 mm against the 10 mm allocation. Wire bend radius, actual pin-to-contact routing, cable sweep, strain relief and connector release access remain open. The proposed 40 mm withdrawal with middle/adjacent boards installed needs a complete swept-solid check and power-off/discharged isolation procedure; no owner soldering or safe calibration operation is proven.
+- **Rear trim access remains an allocation.** Six 6 mm XY screwdriver reservations per card do not prove screw-axis/shaft clearance, cover opening or measurement access through the installed frame. Exact HF trim identity and package/height reconciliations remain open. The 5 mm package procurement envelope is not source-confirmed for every fitted part.
+- **Routing remains a material blocker.** Recomputing actual front pads and headers overturns the earlier near-300 mm centre-based impression: compact original origins have maximum 355.814 mm with 20 overlength endpoint paths; the five-card two-row comparison has maximum 488.311 mm with 100. The centred pair still has 17 at maximum 367.138 mm and is mechanically incompatible with the retained upper cards. These are this source's allocation results, not native copper extraction. Further placement search must preserve the complete path/return/capacitance obligations, not obtain a geometric pass by dropping endpoints.
+
+## Exact identities and next work
+
+The placement consumes retained WQP518MA, PTV09A, SRBV160803, Dailywell toggle and compact LED footprint sources. Their inherited exact-manufacturer/family and installed-fit uncertainty remains; a source footprint does not upgrade those evidence verdicts. JST BM02/03/04/07B-GHS-TBT(LF)(SN) and corresponding GHR housings/SSHL-002T-P0.2 contacts use the retained manufacturer land evidence in `front-evidence.json`; exact mated geometry and wire/strain-relief qualification remain open. Selected HARTING 09032966824/09031966922 evidence remains the design packet's source basis, with its stated limitations. No missing passive or trim MPN was assigned by this review.
+
+The next bounded source work should join a feasible whole-five placement with complete actual-pad routing/return/capacitance budgets, then construct the missing installed and service swept solids against all hardware and the remaining functions. An independent finite placement/orientation search may compare alternatives, but this receipt does not cover later geometry changes. Native KiCad 10.0.6/ERC/DRC and physical checks are **NOT RUN** without genuine separate admission and capabilities. No fabrication, purchase, architecture adoption or energization is approved.
+
+## Reviewed source bytes (SHA-256)
+
+- `scripts/architecture278/implementation/assembly.py`: `7d453aea98dabe67640c40c381011b0cd4327d5c28141f141bcf513c927c4c39`
+- `design/architecture-278/implementation/assembly.json`: `a90f5c24ad06f302c2a95161ccb9706e6e5bbf7be4c77d364cb9657a0e74a325`
+- `design/architecture-278/implementation/assembly-report.json`: `2d8f9cbb7316011c8885fe46c1e2a785a7afb07f8ec4efdb5630bde124c498b0`
+- `design/architecture-278/implementation/compact-rear.json`: `54f3763d49e9712e9a51f553ff1e15b4c8e7814d6cd9c80f6f28e46b72299bb2`
+- `scripts/architecture278/implementation/front_evidence.py`: `3cc090eedc698b91373ed27d59b7d5c583206bcea68b9156ed0047e9900d7357`
+- `design/architecture-278/implementation/front-evidence.json`: `6f04deb55555d3035fb1bbf6bef3f36a7f4ae003f397a0c606592fc83e73bf62`
+- `scripts/architecture278/implementation/assembly_mechanical_review.py`: `e9607cb5a3d5d47657095282a0fd7cff34ee1150559161b218120e38cf244405`
+- `design/architecture-278/implementation/assembly-mechanical-review.json`: `b9ad1cc96ae07c76490de6fcec9873a1cf1663cb1f8dee63d7a36be6cb60c4dc`
+- `scripts/architecture278/implementation/mechanical_feasibility.py`: `2483d0dff28e2aa5a7f036e6013f852ece5aefa871fef228dcd6e3a36851b749`
+- `design/architecture-278/implementation/mechanical-feasibility.json`: `24d0a96854df73a1702e7b1eeecc8d95f448a5b2a531a04c4cdcb92f5150a8b9`
+- `design/architecture-278/implementation/mechanical-feasibility.svg`: `761e416970360a3c4f17f1369edc6cd0ee43dbb810a393c27775980055329d7d`

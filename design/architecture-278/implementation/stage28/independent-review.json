@@ -1,0 +1,86 @@
+{
+  "architecture_adopted": false,
+  "baseline_commit": "b58068fbaeb65886958a67a4f4978613414e31c5",
+  "checks": [
+    {
+      "command": "python3 -m unittest test_stage28_din_harness (cwd scripts/architecture278/implementation)",
+      "result": "PASS",
+      "tests": 18
+    },
+    {
+      "command": "python3 -O -m unittest test_stage28_din_harness (cwd scripts/architecture278/implementation)",
+      "result": "PASS",
+      "tests": 18
+    },
+    {
+      "command": "python3 scripts/architecture278/implementation/stage28_din_harness.py --check --check-cache",
+      "result": "PASS"
+    }
+  ],
+  "hardware_acceptance": false,
+  "independent_findings": [
+    "Mirror finding independently derived: locked frame x right/y down/z rear is right-handed; both HARTING view arrows look from body toward board (female A above body, tails down; male B below body, tails up). Female viewed along -z gives drawing-to-global det +1, male along +z det -1; the drawings are mutually consistent (Xm = diag(1,-1) Xf, so det Mf = -det Mm). Fitted Stage10 labels give Mf=[[0,1],[1,0]] (det -1) and Mm=[[0,-1],[1,0]] (det +1) with Mm diag(1,-1)=Mf: mated-consistent but both mirrored.",
+    "Root cause traced to stage6/mechanical-input.json matrices asserted at stage6_mechanical.py:12-14, which act on a paper frame (u right, v down, v=-Y); Stage10 signed_transform copies them. Their dets are not drawing-to-global dets.",
+    "Proper-handed relabelings are hole-grid symmetries with det -1 (column or row reversal). With the female 0.3 offset toward row a, only column reversal keeps the Stage10 fixing holes; row reversal shifts them 0.6 mm. This is conditional on the offset side, which remains open (Q-M04, M-01).",
+    "Mated net continuity is preserved because both boards carry net(label P) at the same position P and the physical contact k at P on the female mates with male contact k at P. The 09031966922 loading is all standard pin type A, so mating sequence is unaffected; the consequence is contact numbering, inspection and orientation, not a short.",
+    "D03/D04/D05/D07/D14 values read against the rendered HARTING drawings (96x Ø1±0.1, position Ø0.05 without datum letters, 2x Ø2.8 +0.1 at 90±0.1, symmetry 0.1 to A, offset 0.3±0.1, female tail 2.9 +0.15/-0.05, male tail 3 +0.4); 0.075*sqrt(2)=0.106 mm > 0.025 mm arithmetic correct. JST GH policy (AWG30-26, insulation OD 0.76-1.0, 50 V, 105 C, SSHL-002T-P0.2) matches design/connectors/sources/jst-gh.pdf page 1.",
+    "Harness ledger reproduces 20 GH conductors in 4 links (7/4/6/3), 14 permanent tails, 96 DIN contacts (16 assigned on b1-b8/c1-c8, 80 NC), 22 non-BOM land annotations with exclusion flags, and 20 source NC endpoints. Measured path, cut, bend radius, anchor and clearance stay null; all results NOT_RUN.",
+    "Mutation tests reject missing contact, one-side mirror, both-side relabel (via D02 binding), contact swap, one-connector net swap, NC contact made live, unsupported pass in status or free text, zeroed unknown/nominal/tolerance, empty post-answer decision, moved header/flange/grid/land, frame flip and trimmer loss.",
+    "Full historical replay (--check-history) is root integration verification and was not independently run in this review."
+  ],
+  "native": "NOT_RUN",
+  "native_execution": "NONE",
+  "production_CAD_changed": false,
+  "purchase_or_contact": "NONE",
+  "remaining": [
+    "D02 remains CONFLICT_REQUIRES_DECISION; the column-reversal candidate is not adopted and no board copper may bind DIN labels to XY until Q-M01, M-01 and owner decision Q-O01.",
+    "Fixing-hole offset side, finished-versus-tool hole diameter, Ø0.05 position capability, board thickness, mating forces, process limits, cleaning and inspection class remain UNCONFIRMED or UNDECIDED; the questionnaire is unsent and no supplier contact occurred.",
+    "Harness wire MPNs, lengths, bend radii, anchors and clearances remain undetermined pending fit-up measurement; every physical and inspection check is NOT_RUN.",
+    "No production CAD, native KiCad execution, fabrication output, architecture adoption or hardware acceptance is authorized by this source review."
+  ],
+  "resolved_findings": [
+    "D-1 (HIGH): report.json was stale (source hashes of stage28/README.md and check_source.py) and the generated-files test skipped report.json. Regenerated; the test now compares report.json with preservation_baseline taken from disk.",
+    "D-2 (MEDIUM): 'only column reversal' was unconditional while D05 leaves the offset side open. Now stated as conditional in README, report.din.hole_preserving_condition, D02, Q-M01 and M-01 records the offset side.",
+    "D-3 (MEDIUM): Stage6 paper-frame (v=-Y) root cause and Stage10 signed_transform note added (report.din.stage6_frame_note, README); pin-type-A mating note added (report.din.mated_contact_types).",
+    "D-4 (MEDIUM): tail OD up to 1.0 mm through a 1.0 mm guide allowed zero clearance. Policy now requires OD strictly below the guide minimum open diameter bound per row from Stage10 carrier_wire_guides; clearance_mm null UNDETERMINED (Q-H03).",
+    "D-5 (LOW-MEDIUM): D06 changed to UNCONFIRMED with retention left open consistent with D09; D11 softened to what the drawings state.",
+    "D-6 (LOW): nominal/tolerance <= 0 rejected; case-insensitive free-text claim guard over all source strings; non-empty decision if/then enforced; missing-contact tests assert messages."
+  ],
+  "reviewed_UTC": "2026-10-17T11:12:51.124584+00:00",
+  "reviewed_sha256": {
+    "design/architecture-278/implementation/cluster-refinement-report.json": "4a165b296e1269032a00a2626ca99b8caa17372a328c61a2107f8e20e874779e",
+    "design/architecture-278/implementation/stage10/mechanical-input.json": "31fab83774216f9b011f5f262fbde71c7ce9282e12f6142a6a62a9e488fdab19",
+    "design/architecture-278/implementation/stage10/mechanical-report.json": "956e83e449d2667654679822125015ed96566b849b54902083bf54ca2bf8ffd7",
+    "design/architecture-278/implementation/stage15/interfaces-report.json": "c45cbfbe0e83cab64853daa10b964dd173c4997d2560ff20cca20d6ae5ed93ca",
+    "design/architecture-278/implementation/stage21/inventory-input.json": "991b24386c364e6751e16bd117946669e0326dbb2ec66c446b9a6585890047e2",
+    "design/architecture-278/implementation/stage22/evidence.json": "587b3b884668fd3a24183abb58a2ee379a79abbcbdaebc758de9328fb6e846d1",
+    "design/architecture-278/implementation/stage25/fabrication-request.md": "692e96c4cad40437627716c7e76b0331fc24be1d8eb0af0912d7f0df48a0fd72",
+    "design/architecture-278/implementation/stage28/README.md": "eb5c4adab7b90659f9b990306449757e39a5ef132ff6e3aeb82aa48ca5479ab5",
+    "design/architecture-278/implementation/stage28/assembly-candidate.svg": "4277433b7af929bf1be6a494bd898847770296a4aebd193e69c1b2ce26cc0e6e",
+    "design/architecture-278/implementation/stage28/din-decision-table.md": "d1385f0c4c0082fd4d21f34f54134bba699fe03670fe3f1eb9522ab151f30657",
+    "design/architecture-278/implementation/stage28/din-requirements.json": "800c4d7d153dac8014a995b6803ab505c36a944b9d69f3d2d1e1be8dfb1fa7bb",
+    "design/architecture-278/implementation/stage28/harness-ledger.json": "93327a08fbe521f10ccf0b5ce5b040aefe84b86726661cdd7bbfb22d7ef98061",
+    "design/architecture-278/implementation/stage28/harness-ledger.md": "1464be280d5070785b912411c919e0dcef642a1fa369ed9ac15bdc41eb0140d7",
+    "design/architecture-278/implementation/stage28/harness-policy.json": "39211b34aed8e17af0f302aeb64801adc9bd601d9dbafec2ef53b70f0a4b457d",
+    "design/architecture-278/implementation/stage28/measurement-checklist.md": "1569383fe247c3f135c6ae5570263abd8a557be9503da14e6dedce5b3fef659c",
+    "design/architecture-278/implementation/stage28/measurements.json": "7599c70d774188d33c57d88f2900893795e4769742779a56be1f532f8e4262c5",
+    "design/architecture-278/implementation/stage28/questionnaire.md": "58a2d681ec9be46893850524c49cbcabe57f7ba0a2c94209908fbcacf7f7e7ac",
+    "design/architecture-278/implementation/stage28/questions.json": "38d641c2e8a5b874fd454144612a13a733bbfa88f44d06eb5dc2a8784dd099c2",
+    "design/architecture-278/implementation/stage28/report.json": "552beaafe632ee583f4194efabc4d72a9e3ee9a88f436b34aa2a8f770ba095a6",
+    "design/architecture-278/implementation/stage28/sources.json": "c62af1ae267581c8bd26fc018dabf5bc0cbde18e4cf9f70bb749fb8120b48c9b",
+    "design/architecture-278/implementation/stage5/din-evidence.json": "92e5c54c23ba6aab69e0036951f66ef5e1e2c4f6a1bbdc99d88e07a306c50f17",
+    "design/connectors/sources/jst-gh.pdf": "b1dcb317b6b9a4fbbedd2dbf42c64c95306a252d23de8933b85fcf161240b722",
+    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+    "scripts/architecture278/implementation/check_source.py": "40158e2956eeee6439199344271aca234b4363b08d7b3bd596282a5f85136c1c",
+    "scripts/architecture278/implementation/stage22_requirements.py": "a2d8563039987cb3bdcc214acb44f4b5c2da263183809c84a846dd61d652d75c",
+    "scripts/architecture278/implementation/stage28_din_harness.py": "49fab6a30d86e3f3aa9898e2268e3258532a49affaefc4f7203e306b2235468a",
+    "scripts/architecture278/implementation/test_stage28_din_harness.py": "53dd5120170e31c3ecee9eaa62878d9c0b4bb44e051072281402cee4cb92a311"
+  },
+  "reviewer": "independent subagent stage28-reviewer",
+  "reviewer_changes": [
+    "design/architecture-278/implementation/stage28/independent-review.md",
+    "design/architecture-278/implementation/stage28/independent-review.json"
+  ],
+  "scope": "Stage28 HARTING DIN 41612 type C pair decision table, DIN handedness analysis, A01 vendor-terminated harness ledger, questionnaire, measurement checklist and preservation guards.",
+  "status": "PASS_SOURCE_REVIEW_ONLY"
+}

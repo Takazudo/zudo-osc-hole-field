@@ -1,0 +1,445 @@
+{
+  "questions": [
+    {
+      "ask": "Does 'board drillings 96x Ø1±0,1' on 0903296X824 rev C and 0903196X922 rev B specify the finished plated hole diameter or the drill tool diameter? If tool diameter, what finished diameter range do you recommend for the solder tails?",
+      "decision": [
+        {
+          "if": "Finished plated 0.90-1.10",
+          "then": "Keep D03 interpretation; require the fabricator to guarantee finished size (Q-F01)."
+        },
+        {
+          "if": "Drill tool diameter",
+          "then": "Replace D03 with HARTING's finished range; recompute pad/annular ring; re-ask Q-F01 with the new interval."
+        }
+      ],
+      "id": "Q-M02",
+      "recipient": "CONNECTOR_MANUFACTURER",
+      "why": "The two readings give different fabrication instructions; Stage24/25 used finished diameter as a proposal only."
+    },
+    {
+      "ask": "Is the ⊕ Ø0,05 position tolerance on the 96 board drillings intended relative to the basic 2.54 grid only (no datum), and what measurement reference do you expect (pattern best fit or a stated datum)?",
+      "decision": [
+        {
+          "if": "Pattern-only best fit",
+          "then": "Ask fabricators for pattern positional capability (Q-F02); first-article report uses best fit."
+        },
+        {
+          "if": "Datum-referenced",
+          "then": "Add the datum to the drilling specification and the first-article report."
+        }
+      ],
+      "id": "Q-M03",
+      "recipient": "CONNECTOR_MANUFACTURER",
+      "why": "The frame carries no datum letters; per-axis ±0.05 is not an acceptable substitute."
+    },
+    {
+      "ask": "For 09032966824, are the 2x Ø2,8 +0,1 fixing holes intended plated or non-plated, which side of row b is the 0,3 offset, and what fastener or rivet and torque do you recommend?",
+      "decision": [
+        {
+          "if": "Non-plated, offset toward row a",
+          "then": "Stage24 NPTH candidate and Stage10 flange XY stay; ask Q-F03 for NPTH tolerance."
+        },
+        {
+          "if": "Plated",
+          "then": "Change the candidate to plated with finished 2.8 +0.1/-0; recheck copper clearance to contacts."
+        },
+        {
+          "if": "Offset toward row c",
+          "then": "Stage10 flange XY is 0.6 mm off; raise a geometry correction decision before any board binding."
+        }
+      ],
+      "id": "Q-M04",
+      "recipient": "CONNECTOR_MANUFACTURER",
+      "why": "Drawing states size, spacing and symmetry but not plating or fastener."
+    },
+    {
+      "ask": "Do you recommend board fastening for the male 09031966922 (flange Ø2,55 holes) when mated with 09032966824 in a board-to-board stack with 40 mm axial withdrawal service?",
+      "decision": [
+        {
+          "if": "Not required",
+          "then": "Keep D06: no male board holes."
+        },
+        {
+          "if": "Required",
+          "then": "Record a separate geometry change proposal; locked positions unchanged."
+        }
+      ],
+      "id": "Q-M05",
+      "recipient": "CONNECTOR_MANUFACTURER",
+      "why": "Board drillings show no fixing holes, but retention under service load is not documented here."
+    },
+    {
+      "ask": "What board thickness range, and minimum tail protrusion, do you specify for the solder tails of both parts?",
+      "decision": [
+        {
+          "if": "Range includes 1.6 mm with adequate protrusion",
+          "then": "Propose 1.6 mm as candidate; confirm with assembler (Q-A02)."
+        },
+        {
+          "if": "Range excludes 1.6 mm",
+          "then": "Pick the nearest fabricator standard inside the range; recheck seating window D08."
+        }
+      ],
+      "id": "Q-M06",
+      "recipient": "CONNECTOR_MANUFACTURER",
+      "why": "Drawings give tail lengths but no board thickness."
+    },
+    {
+      "ask": "Confirm the board-to-board distance window for this exact pair (catalogue 18.3-20 mm) and the reference surfaces it is measured between.",
+      "decision": [
+        {
+          "if": "Window confirmed between mounting surfaces",
+          "then": "Keep Stage10 19.2 mm; set spacer tolerance so the stack stays inside."
+        },
+        {
+          "if": "Different reference",
+          "then": "Recompute the stack before any mechanical binding."
+        }
+      ],
+      "id": "Q-M07",
+      "recipient": "CONNECTOR_MANUFACTURER",
+      "why": "Catalogue value was retained in Stage5; reference surfaces are not stated in the repository."
+    },
+    {
+      "ask": "State insertion and withdrawal force and rated mating cycles for 09032966824 with 09031966922 (performance level 2).",
+      "decision": [
+        {
+          "if": "Values provided",
+          "then": "Replace the 90 N planning load with the stated maximum; rerun carrier deflection sensitivity."
+        },
+        {
+          "if": "Not provided",
+          "then": "Measure on samples (M-08) before carrier acceptance."
+        }
+      ],
+      "id": "Q-M08",
+      "recipient": "CONNECTOR_MANUFACTURER",
+      "why": "Not retained; carrier and handle load path depend on it."
+    },
+    {
+      "ask": "State wave and selective soldering temperature/time limits and any reflow prohibition for both parts.",
+      "decision": [
+        {
+          "if": "Wave/selective allowed within assembler profile",
+          "then": "Proceed to Q-A01 with these limits."
+        },
+        {
+          "if": "Hand soldering only",
+          "then": "Ask assembler for hand soldering by a certified operator with inspection; owner hand soldering remains excluded."
+        }
+      ],
+      "id": "Q-M09",
+      "recipient": "CONNECTOR_MANUFACTURER",
+      "why": "Mixed-process acceptance needs exact-part limits."
+    },
+    {
+      "ask": "Which cleaning processes and agents are allowed for both parts after soldering?",
+      "decision": [
+        {
+          "if": "Aqueous allowed",
+          "then": "Still check any open-frame trimmer on the same board (Stage27)."
+        },
+        {
+          "if": "No-clean only",
+          "then": "Specify no-clean flux on the DIN boards."
+        }
+      ],
+      "id": "Q-M10",
+      "recipient": "CONNECTOR_MANUFACTURER",
+      "why": "No cleaning data retained."
+    },
+    {
+      "ask": "Do you confirm that the drawing view A (female) and view B (male) board drillings are seen from the connector body toward the board, i.e. the copper pattern on the component side reproduces the drawing unmirrored?",
+      "decision": [
+        {
+          "if": "Confirmed",
+          "then": "Resolve D02 with the proper-handed candidate (Q-O01)."
+        },
+        {
+          "if": "Views are from the solder side",
+          "then": "Stage10 labeled positions are correct; close D02 as consistent."
+        }
+      ],
+      "id": "Q-M01",
+      "recipient": "CONNECTOR_MANUFACTURER",
+      "why": "Stage28 reading of the arrows conflicts with the Stage6/Stage10 labeled placement. The answer, together with the fixing-hole offset side (Q-M04), selects column or row reversal."
+    },
+    {
+      "ask": "Can you guarantee finished plated hole 0.90-1.10 mm (nominal 1.00) for 192 soldered THT contact holes on a multilayer ENIG FR4 board using your ±0.05 'press-fit hole' option, and does that option change plating thickness or solderability?",
+      "decision": [
+        {
+          "if": "Yes, applicable to soldered holes",
+          "then": "D14 route remains first choice for size; continue with Q-F02."
+        },
+        {
+          "if": "Press-fit only / no",
+          "then": "Default +0.13/-0.08 cannot meet 0.90-1.10 at any nominal; go to precision fabricator comparison."
+        }
+      ],
+      "id": "Q-F01",
+      "recipient": "PCB_FABRICATOR",
+      "why": "The option is published for press-fit holes."
+    },
+    {
+      "ask": "Can you hold a Ø0.05 mm positional zone for a 3x32 hole pattern at 2.54 basic pitch relative to the pattern itself, and how would you report it (CMM/optical, sample size)?",
+      "decision": [
+        {
+          "if": "Yes with report",
+          "then": "Accept the route pending first-article M-03."
+        },
+        {
+          "if": "Only ±0.075 per axis",
+          "then": "Not compliant (up to 0.106 radial vs 0.025); compare a precision fabricator; adapter/connector change stays a separate design decision."
+        }
+      ],
+      "id": "Q-F02",
+      "recipient": "PCB_FABRICATOR",
+      "why": "Published default position is ±0.075 per axis."
+    },
+    {
+      "ask": "What size tolerance can you hold for two Ø2.80 +0.10/-0 holes (plated and non-plated variants), at 90.00 ±0.10 centres and symmetric within 0.1 to the contact pattern?",
+      "decision": [
+        {
+          "if": "Meets +0.10/-0 and 0.1 symmetry",
+          "then": "Keep D05 candidate."
+        },
+        {
+          "if": "Only ±0.2 or default",
+          "then": "Not compliant; precision fabricator or reamed/post-drilled holes need a separate decision."
+        }
+      ],
+      "id": "Q-F03",
+      "recipient": "PCB_FABRICATOR",
+      "why": "The ±0.05 option range 0.55-2.0 excludes 2.8 mm; no round NPTH tolerance is published."
+    },
+    {
+      "ask": "Will you supply a first-article report with measured finished diameters and positions for all 96 contact holes and both fixing holes per board type?",
+      "decision": [
+        {
+          "if": "Yes",
+          "then": "Use it as M-02/M-03/M-04 evidence for the sampled boards only."
+        },
+        {
+          "if": "No",
+          "then": "Plan independent measurement on received boards."
+        }
+      ],
+      "id": "Q-F04",
+      "recipient": "PCB_FABRICATOR",
+      "why": "Sample evidence is required before any route acceptance."
+    },
+    {
+      "ask": "Will you place and solder HARTING 09032966824 and 09031966922 (customer-supplied or sourced by you) on your THT line in a mixed SMD+THT order, by wave or selective soldering, holding the body seated and square in a fixture?",
+      "decision": [
+        {
+          "if": "Yes with fixture",
+          "then": "Proceed to process definition with Q-M09 limits."
+        },
+        {
+          "if": "Hand solder only",
+          "then": "Accept only with a named certified operator, inspection class and records."
+        },
+        {
+          "if": "No",
+          "then": "Compare another assembler; no owner soldering."
+        }
+      ],
+      "id": "Q-A01",
+      "recipient": "PCB_ASSEMBLER",
+      "why": "Generic mixed capability is not exact-part acceptance."
+    },
+    {
+      "ask": "Which board thickness do you require for wave/selective soldering of these tails, and what minimum tail protrusion do you accept?",
+      "decision": [
+        {
+          "if": "Compatible with Q-M06",
+          "then": "Fix the candidate thickness."
+        },
+        {
+          "if": "Conflict",
+          "then": "Owner decision on thickness versus process."
+        }
+      ],
+      "id": "Q-A02",
+      "recipient": "PCB_ASSEMBLER",
+      "why": "Economic PCBA is limited to 0.8-1.6 mm."
+    },
+    {
+      "ask": "Can you build or accept a soldering fixture that seats the female against its two fixing holes and holds the male square, optionally soldering the pair mated on a gauge?",
+      "decision": [
+        {
+          "if": "Yes",
+          "then": "Specify fixture datums from D05 and the mated-gauge check M-07."
+        },
+        {
+          "if": "No",
+          "then": "Fixture becomes an owner-supplied item; separate decision."
+        }
+      ],
+      "id": "Q-A03",
+      "recipient": "PCB_ASSEMBLER",
+      "why": "Seating and squareness drive mating and position."
+    },
+    {
+      "ask": "State your THT solder profile, flux type and preheat for these parts and confirm it is within the manufacturer limits from Q-M09.",
+      "decision": [
+        {
+          "if": "Within limits",
+          "then": "Record profile as process evidence."
+        },
+        {
+          "if": "Unknown limits",
+          "then": "Hold until Q-M09 answered."
+        }
+      ],
+      "id": "Q-A04",
+      "recipient": "PCB_ASSEMBLER",
+      "why": "Process record is required for traceability."
+    },
+    {
+      "ask": "Do you clean after THT soldering; with what process? Can boards be processed no-clean?",
+      "decision": [
+        {
+          "if": "No-clean available",
+          "then": "Prefer no-clean pending Q-M10."
+        },
+        {
+          "if": "Aqueous only",
+          "then": "Check compatibility for every part on the board."
+        }
+      ],
+      "id": "Q-A05",
+      "recipient": "PCB_ASSEMBLER",
+      "why": "Cleaning compatibility is unconfirmed."
+    },
+    {
+      "ask": "What THT joint acceptance class and hole-fill criterion apply, what inspection records do you supply, and how are nonconforming boards dispositioned?",
+      "decision": [
+        {
+          "if": "Class and records stated",
+          "then": "Bind them to D13 and M-11 records."
+        },
+        {
+          "if": "Visual only, no class",
+          "then": "Not sufficient for acceptance; agree a class before ordering."
+        }
+      ],
+      "id": "Q-A06",
+      "recipient": "PCB_ASSEMBLER",
+      "why": "Inspection evidence must be defined before ordering."
+    },
+    {
+      "ask": "Can you build the four GH cable assemblies (7, 4, 6 and 3 positions, 1:1 straight, JST GHR-0nV-S housings with SSHL-002T-P0.2 contacts crimped with the JST-specified applicator) at lengths we provide after fit-up measurement, with 100% continuity/isolation test and per-cable test records?",
+      "decision": [
+        {
+          "if": "Yes with records",
+          "then": "Harness route H1 (assembler or harness vendor builds and tests)."
+        },
+        {
+          "if": "Only stock lengths",
+          "then": "Choose stock length only if M-09 slack window contains it; otherwise custom."
+        }
+      ],
+      "id": "Q-H01",
+      "recipient": "HARNESS_MAKER",
+      "why": "Termination and test must be completed by the vendor."
+    },
+    {
+      "ask": "Which wire do you propose (AWG 26 to 30 within JST GH range, insulation OD 0.76-1.0 mm, rated >=50 V and >=105 C), and state its MPN, insulation material and rating?",
+      "decision": [
+        {
+          "if": "AWG26 with OD in range",
+          "then": "Accept as candidate for GH conductors."
+        },
+        {
+          "if": "Thinner gauge",
+          "then": "Accept only for signal conductors after current check; power/return stay AWG26."
+        }
+      ],
+      "id": "Q-H02",
+      "recipient": "HARNESS_MAKER",
+      "why": "JST states 1.0 A only at AWG26; Stage10 power-return contract retains 0.5 A contact limit."
+    },
+    {
+      "ask": "Can you supply and factory-solder the 14 permanent tail wires (LED lands and jack S/T terminals to A01-jack tail lands, through carrier guide bores whose minimum open diameter is 1.0 mm (Stage10); state the wire OD and the clearance you require), with ID marking, pull test and continuity records?",
+      "decision": [
+        {
+          "if": "Yes",
+          "then": "Tail route T1 at PCBA assembler or harness vendor."
+        },
+        {
+          "if": "No",
+          "then": "Replace permanent tails by a connectorized design only as a separate design decision."
+        }
+      ],
+      "id": "Q-H03",
+      "recipient": "HARNESS_MAKER",
+      "why": "Owner hand soldering is excluded."
+    },
+    {
+      "ask": "Which harness workmanship standard and class (for example IPC/WHMA-A-620 class 2 or 3) and which test voltage/limit for insulation resistance do you apply?",
+      "decision": [
+        {
+          "if": "Standard and limits stated",
+          "then": "Bind to inspection items I-IR and I-VIS."
+        },
+        {
+          "if": "None",
+          "then": "Define acceptance criteria in the order before release."
+        }
+      ],
+      "id": "Q-H04",
+      "recipient": "HARNESS_MAKER",
+      "why": "Inspection limits are not yet defined."
+    },
+    {
+      "ask": "Owner decision: adopt the proper-handed DIN label-to-position candidate (contact numbers and nets kept, positions within the fixed 96-hole grid reassigned along columns) for future board copper, or keep the Stage10 assignment pending Q-M01?",
+      "decision": [
+        {
+          "if": "Adopt candidate after Q-M01/M-01 confirm",
+          "then": "Separate source update of the DIN placement transform; Stage10 bytes remain historical."
+        },
+        {
+          "if": "Keep Stage10",
+          "then": "D02 stays CONFLICT; no board binding allowed."
+        }
+      ],
+      "id": "Q-O01",
+      "recipient": "OWNER",
+      "why": "Changing which hole carries which net is a design change; not adopted here."
+    },
+    {
+      "ask": "Owner decision: plated or non-plated female fixing holes, after Q-M04 and Q-F03?",
+      "decision": [
+        {
+          "if": "NPTH",
+          "then": "Keep Stage24 candidate."
+        },
+        {
+          "if": "Plated",
+          "then": "Update candidate and clearance check."
+        }
+      ],
+      "id": "Q-O02",
+      "recipient": "OWNER",
+      "why": "Process and grounding choice."
+    },
+    {
+      "ask": "Owner decision: approve fit-up measurement on a mechanical mock (unpowered) to measure harness paths, slack and anchors (M-09, M-10, M-12)?",
+      "decision": [
+        {
+          "if": "Approved",
+          "then": "Run measurement checklist; record values; then order custom lengths."
+        },
+        {
+          "if": "Not approved",
+          "then": "Harness lengths remain UNDETERMINED; no harness order."
+        }
+      ],
+      "id": "Q-O03",
+      "recipient": "OWNER",
+      "why": "Lengths cannot be fixed from straight-line proxies."
+    }
+  ],
+  "status": "UNSENT_QUESTIONNAIRE_NO_EXTERNAL_CONTACT"
+}

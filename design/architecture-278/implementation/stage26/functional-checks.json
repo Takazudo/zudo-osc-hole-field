@@ -1,0 +1,66 @@
+{
+  "clipping_headroom_and_recovery": {
+    "accepted": false,
+    "method": "Source sum/headroom screen and later extreme-combination/recovery characterization.",
+    "numeric_accuracy_limit": null,
+    "physical_status": "NOT_RUN",
+    "requirement": "Retain +/-5V contribution ranges and nominal +/-10V internal clip indication; +/-15V algebra is not a realizable +/-12V-powered output. Recover from overrange without latch-up.",
+    "source": "A01 documented headroom contract"
+  },
+  "electrical_safety": {
+    "accepted": false,
+    "method": "Review exact limits and conditional fault states; later controlled test using approved safety procedure.",
+    "numeric_accuracy_limit": null,
+    "physical_status": "NOT_RUN",
+    "requirement": "Retain protection, device ratings, power/thermal, missing-rail/backfeed and output fault obligations; coarse precision grants no safety waiver.",
+    "source": "Stage22 role/rating analysis; unchanged global protection contracts"
+  },
+  "manufacturing_and_assembly": {
+    "accepted": false,
+    "method": "Use dated receipts and source definitions; subsequent process/fit qualification is not waived.",
+    "numeric_accuracy_limit": null,
+    "physical_status": "NOT_RUN",
+    "requirement": "Exact sourcing, footprint/pad/mask/paste, component profiles, DIN position/fixing and externally completed wiring remain gates.",
+    "source": "Stage23-25 candidate/source process evidence"
+  },
+  "noise_and_control_artifacts": {
+    "accepted": false,
+    "method": "Later listen/measure with quiet inputs and representative audio/CV patches; record signal-relative noise and objectionable artifacts, not a new unsupported mV threshold.",
+    "numeric_accuracy_limit": null,
+    "physical_status": "NOT_RUN",
+    "requirement": "Assess hum, hiss, pickup, wiper noise and audible/control modulation after setting and during motion; do not treat arbitrary noise as acceptable.",
+    "source": "Engineering retained functional quality obligation"
+  },
+  "practical_settling": {
+    "accepted": false,
+    "method": "Nominal RC diagnostic plus later real control steps/movement under bias, component tolerance and harness loads. No new tight settling deadline.",
+    "numeric_accuracy_limit": null,
+    "physical_status": "NOT_RUN",
+    "requirement": "Retain1kohm/10Mohm/10nF manual filter; assess response without prolonged lag or ringing and without removing useful noise filtering.",
+    "source": "Existing manual filter, owner coarse utility use"
+  },
+  "sensible_loading": {
+    "accepted": false,
+    "method": "Source load/current ledger and later same-setting load sweep; observe range/headroom/current/thermal and musically material sag.",
+    "numeric_accuracy_limit": null,
+    "physical_status": "NOT_RUN",
+    "requirement": "Retain nominal100kohm protected inputs and existing output sensing/isolation. Report output change open/100k/10k without the retired A-cell1mV precision gate.",
+    "source": "Existing minimum10kohm load envelope; owner coarse utility interpretation"
+  },
+  "stable_operation": {
+    "accepted": false,
+    "method": "Later actual loop/load and startup characterization; no stability pass from static arithmetic.",
+    "numeric_accuracy_limit": null,
+    "physical_status": "NOT_RUN",
+    "requirement": "No sustained oscillation; preserve current compensation and assess actual harness, capacitive/resistive loads and startup.",
+    "source": "Existing OPA4197/output/remote compensation contracts"
+  },
+  "useful_control_range": {
+    "accepted": false,
+    "method": "Source polarity/range check and later full-travel sweep in both directions; observe usable endpoints and center.",
+    "numeric_accuracy_limit": null,
+    "physical_status": "NOT_RUN",
+    "requirement": "Retain continuous no-detent OFFSET, intended bipolar manual range, ATTEN inversion/zero/positive behavior and independent CV addition. No fixed shaft-position accuracy promise.",
+    "source": "Owner use; retained A01 function and Stage15 no-detent decision"
+  }
+}

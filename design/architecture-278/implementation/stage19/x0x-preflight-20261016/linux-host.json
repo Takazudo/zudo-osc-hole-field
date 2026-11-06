@@ -1,0 +1,78 @@
+{
+  "container_name_check": {
+    "argv": [
+      "docker",
+      "ps",
+      "-a",
+      "--filter",
+      "name=^/osc-stage18-native-001$",
+      "--format",
+      "{{.ID}}"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "disk": {
+    "/": {
+      "free": 362661588992,
+      "total": 802086977536,
+      "used": 398606426112
+    },
+    "/mnt/c": {
+      "free": 480775831552,
+      "total": 998408974336,
+      "used": 517633142784
+    },
+    "/var/lib/docker": {
+      "free": 362661588992,
+      "total": 802086977536,
+      "used": 398606426112
+    }
+  },
+  "docker": {
+    "CgroupDriver": "systemd",
+    "CgroupVersion": "2",
+    "ContainersRunning": 0,
+    "CpuCfsQuota": true,
+    "DockerRootDir": "/var/lib/docker",
+    "Driver": "overlayfs",
+    "MemoryLimit": true,
+    "PidsLimit": true,
+    "ServerVersion": "29.3.0",
+    "SwapLimit": true
+  },
+  "guard_sha256": "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+  "guard_status": {
+    "argv": [
+      "bash",
+      "/home/takazudo/.codex/scripts/heavy-guard.sh",
+      "status"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "stdout": "mem_avail_mb=10221 min_mem_mb=2048 slots=1 dir=/home/takazudo/.agent-guard/heavy\nslot-0: free\n"
+  },
+  "host": "x0x",
+  "image": {
+    "Architecture": "amd64",
+    "Id": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "Os": "linux",
+    "RepoDigests": [
+      "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec"
+    ]
+  },
+  "kernel": "6.18.33.2-microsoft-standard-WSL2",
+  "live_enforcement": "NOT YET PROVEN; no new container launched; must inspect actual nonce-bound proofs after fresh owner approval",
+  "memory": [
+    "MemTotal:       12247692 kB",
+    "MemFree:         9243712 kB",
+    "MemAvailable:   10466684 kB",
+    "Buffers:          409900 kB"
+  ],
+  "native_executed": false,
+  "run_parent_mode": "0o750",
+  "run_path": "/home/takazudo/osc-stage18-native-001",
+  "run_path_absent": true,
+  "utc": "2026-10-16T19:01:45Z"
+}

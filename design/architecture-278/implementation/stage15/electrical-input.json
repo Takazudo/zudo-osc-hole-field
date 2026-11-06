@@ -1,0 +1,205 @@
+{
+  "calibration_changed": false,
+  "candidate_only": true,
+  "conditional_sensitivities": {
+    "PW_each_input_bias_A": 1.5e-08,
+    "each_opamp_offset_V": 0.0001,
+    "reference_initial_fraction": 0.001,
+    "reference_initial_scope": "REF5050AI standard-grade initial0.1% sensitivity at table conditions; common reference source enters positive reference once, not duplicated at negative reference. No complete operating/temperature/noise bound."
+  },
+  "criteria": {
+    "new_criteria_approved": false,
+    "output_load_change_target_V": 0.001,
+    "pitch_guarantee": false,
+    "static_target_V": 0.002
+  },
+  "device": "LT5400AIMS8E-2#PBF",
+  "finite_recommendation": "Stop after candidate source integration. Preserve precision intent. Next separately scoped work must define the A01 operating-temperature/calibration/error allocation and evaluate the retained reference-inverter ratio and control-loading contributions against a reserved remainder for amplifier/reference/load/return effects. Identify one justified necessary correction with a closed contribution budget before further implementation. These networks alone do not establish2mV complete static or1mV load-change accuracy. No automatic component search, knob fitting, product-role downgrade or hardware execution.",
+  "instance": "A01",
+  "manufacturer": "Analog Devices / Linear Technology",
+  "matching": {
+    "CMRR_special_bound_used": false,
+    "absolute_resistor_tolerance_fraction": 0.075,
+    "matching_drift_max_per_C": 1e-06,
+    "matching_drift_typical_per_C": 2e-07,
+    "nominal_each_ohm": 100000,
+    "ratio_error_25C_fraction": 0.0001,
+    "ratio_error_I_full_temperature_fraction": 0.000125,
+    "specified_temperature_C": [
+      -40,
+      85
+    ],
+    "temperature_accounting": "Use full-temperature ratio envelope directly; do not add matching drift or absoluteTC again. Matching drift only useful for separate anchored delta-temperature calculation. No long-term/moisture/reflow typical shift promoted to lifetime maximum."
+  },
+  "network_loading": {
+    "absolute_resistance_interval_ohm": [
+      92500,
+      107500
+    ],
+    "assumed_terminal_difference_envelope_V": 12,
+    "limits": {
+      "any_two_pins_absolute_max_V": 80,
+      "each_resistor_absolute_max_W": 0.8,
+      "junction_absolute_max_C": 150,
+      "operating_voltage_feature_V": 75,
+      "package_theta_JA_C_per_W": 40,
+      "package_theta_JC_C_per_W": 10,
+      "resistor_to_EP_typical_pF": 5.5,
+      "resistor_to_resistor_typical_pF": 1.4
+    },
+    "scope": "Conditional declared linear signal allocation, not measured waveform or output swing guarantee. Any overrail/unpowered/fault state excluded and separately unknown.",
+    "source_locators": [
+      {
+        "locator": "Features +/-75V operating voltage",
+        "physical_pdf_page_index": 0,
+        "printed_page_label": "1"
+      },
+      {
+        "locator": "Absolute Maximum Ratings and pin drawing thermal coefficients; Notes2/3 on printed4",
+        "physical_pdf_page_index": 1,
+        "printed_page_label": "2"
+      },
+      {
+        "locator": "Distributed Capacitance typical columns",
+        "physical_pdf_page_index": 3,
+        "printed_page_label": "4"
+      },
+      {
+        "locator": "Thermal Considerations sum resistor dissipation; elevated ambient derating",
+        "physical_pdf_page_index": 5,
+        "printed_page_label": "6"
+      }
+    ]
+  },
+  "networks": {
+    "RN7101": {
+      "EP9": "AGND",
+      "elements": {
+        "R1": "R7121",
+        "R2": "R7122",
+        "R3": "R7123",
+        "R4": "R7124"
+      },
+      "unused_elements": []
+    },
+    "RN7102": {
+      "EP9": "AGND",
+      "elements": {
+        "R1": "R7125",
+        "R2": "R7126"
+      },
+      "unused_elements": [
+        "R3",
+        "R4"
+      ]
+    }
+  },
+  "package": "MS8E 8-lead MSOP exposed pad9",
+  "pin_pairs": {
+    "R1": [
+      "1",
+      "8"
+    ],
+    "R2": [
+      "2",
+      "7"
+    ],
+    "R3": [
+      "3",
+      "6"
+    ],
+    "R4": [
+      "4",
+      "5"
+    ]
+  },
+  "required_unknown_terms": [
+    "external-source, jack, ADG5412F on-resistance/leakage/protection,100k pulldown and10k sense input loading",
+    "pot total resistance,taper,contact resistance,position resolution/repeatability and installed loading",
+    "actual opamp offset/commonmode/supply/temperature/bias/loading and finite open-loop gain",
+    "REF5050 operating initial/drift/noise/stability/startup with retained KEMET pair",
+    "resistor differential temperature gradients,aging,moisture,reflow and network stray capacitance",
+    "source/receiver local-ground displacement and both resistance-domain obligations with shared return currents",
+    "output open-to10k load change,headroom,current drive,stability and feedback compensation",
+    "missing/unequal rail,backfeed,protection,charge/discharge and clip threshold behavior"
+  ],
+  "retained_discrete_pairs": {
+    "atten": [
+      "R7117",
+      "R7118"
+    ],
+    "individual_tolerance_fraction": 0.001,
+    "negative_reference": [
+      "R7101",
+      "R7102"
+    ],
+    "scope": "Retained Stage12 exact100k and Stage11 candidate10k initial0.1% evidence; no new TCR tracking guarantee."
+  },
+  "source": {
+    "authority": "MANUFACTURER_PRIMARY",
+    "locators": [
+      {
+        "extract": "R1 pins1/8;R2 2/7;R3 3/6;R4 4/5; exposed pad9 floating internally; -2 four100k resistors.",
+        "locator": "Pin Configuration; Available Options",
+        "physical_pdf_page_index": 1,
+        "printed_page_label": "2"
+      },
+      {
+        "extract": "Exact A grade I MS8E -2 orderable; specified -40..85C.",
+        "locator": "Order Information LT5400AIMS8E-2#PBF row",
+        "physical_pdf_page_index": 2,
+        "printed_page_label": "3"
+      },
+      {
+        "extract": "Any-resistor matching max0.010%25C,max0.0125%-40..85C; matchingTC max1ppm/C; absolute tolerance7.5%; drift parameter not100%tested.",
+        "locator": "Electrical Characteristics A-grade resistor matching and Note4/5/6",
+        "physical_pdf_page_index": 3,
+        "printed_page_label": "4"
+      },
+      {
+        "extract": "EP not DC connected to resistors; quiet AC ground recommended. Matching is largest/smallest, not independent plus/minus tolerance per element.",
+        "locator": "Where to Connect the Exposed Pad; Matching Specification",
+        "physical_pdf_page_index": 5,
+        "printed_page_label": "6"
+      }
+    ],
+    "retrieved_UTC": "2026-10-16",
+    "revision": "5400fc Rev C",
+    "sha256": "3bd808eb2c603ce009456913cfacdd9339f645dec08a8bfa8437a6dd5ea71028",
+    "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/5400fc.pdf"
+  },
+  "source_model": "Stage12 coherent transfer; no new knob fit, persistent calibration or saturation model. Positions are electrical fractions, not measured shaft settings.",
+  "supplier_order_code": null,
+  "supporting_primary": {
+    "amplifier": {
+      "locator": "6.7 Electrical Characteristics; input offset and PW inputbias rows; retained Stage12/14 primary evidence",
+      "physical_pdf_page_index": 6,
+      "printed_page_label": "7",
+      "revision": "SBOS737C March2018",
+      "scope": "100uV offset at specified table conditions including +/-18V offset row;15nA full-temperature PW bias at table commonmode. Sensitivities only, not installed +/-12V/commonmode/temperature guarantee.",
+      "sha256": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd",
+      "url": "https://www.ti.com/lit/ds/symlink/opa4197.pdf"
+    },
+    "reference": {
+      "locators": [
+        {
+          "extract": "REF50xxAI standard grade initial accuracy0.1%, drift8ppm/C.",
+          "locator": "Device comparison table REF50xxAI standard grade",
+          "physical_pdf_page_index": 2,
+          "printed_page_label": "3"
+        },
+        {
+          "extract": "Standard-grade initial accuracy max+/-0.1%;25C,ILOAD0,CL1uF,VIN=VOUT+0.2V..18V unless otherwise noted.",
+          "locator": "6.5 Electrical Characteristics REF50xxI and REF50xxAI",
+          "physical_pdf_page_index": 6,
+          "printed_page_label": "7"
+        }
+      ],
+      "revision": "SBOS410O October2025",
+      "scope": "Initial source sensitivity only; drift/noise/line/load not silently included. Startup/discharge conditions remain Stage14-open.",
+      "sha256": "33b13191ad54693f9a4f52e226b354757ad092d2cec6b2c31dba2fecb710d0c6",
+      "url": "https://www.ti.com/lit/ds/symlink/ref50.pdf"
+    }
+  },
+  "termination_scope": "EP9 quiet local AGND is project implementation of manufacturer AC-shield recommendation, not an internal resistor connection or extra DC load. Unused RN7102 R3/R4 both ends NC is explicit engineering choice; no manufacturer unused-element termination mandate found. Distributed capacitance/actual quiet return and coupling remain unqualified."
+}

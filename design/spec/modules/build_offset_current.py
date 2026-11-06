@@ -1,5 +1,6 @@
 """Per-instance AO planning current from captured packages and standard cells."""
 from collections import Counter
+from design.spec.modules.io_partition import instance_package_counts
 import json
 from design.spec.modules.offset import ROOT, family, INSTANCES
 
@@ -16,7 +17,8 @@ def build():
         a=dict(zip(RAILS,a));b=dict(zip(RAILS,b))
         for r in RAILS:typ[r]+=n*a[r];upper[r]+=n*b[r]
         rows.append({'load':label,'count':n,'typical_unit_mA':a,'planning_unit_mA':b,'basis':basis})
-    for symbol,id in [('OPA4197IPWR','opamp_precision'),('OPA4196IDR','opamp_audio'),('ADG5412FBRUZ','fault_switches'),('LM393BIDR','comparators')]:
+    for symbol,id in [('OPA4197IPWR','opamp_precision'),('OPA4197IDR','opamp_precision'),('OPA4196IDR','opamp_audio'),('ADG5412FBRUZ','fault_switches'),('TMUX7412FRRPR','fault_switches_tmux7412f'),('TMUX6112PWR','switches_tmux6112'),('LM393BIDR','comparators')]:
+        if not counts[symbol] and symbol.startswith(('OPA4197','ADG5412','TMUX')):continue
         x=LOADS[id]
         add(symbol,counts[symbol],[x['typical_unit_mA'][r] for r in RAILS],[x['planning_unit_mA'][r] for r in RAILS],x['basis'])
     for label,id,count in [('three magnitude LEDs','magnitude_leds',3),('one clip LED','clip_leds',1),('one manual offset pot','dc_pots',1),('one external output load','output_loads',1)]:
@@ -27,7 +29,7 @@ def build():
     return {'schema_version':1,'module':'offset','authority':'PROPOSAL (planning, owner-delegated)',
             'status':'Package and cell planning worksheet; not guaranteed maxima',
             'IC_packages_per_instance':dict(sorted(counts.items())),'breakdown':rows,
-            'instances':[{'instance':i,'planning_typical_mA':{r:round(typ[r],6) for r in RAILS},'planning_upper_mA':{r:round(upper[r],6) for r in RAILS},'guaranteed_maximum_mA':{r:None for r in RAILS}} for i in INSTANCES],
+            'instances':[{'instance':i,'fitted_package_count':instance_package_counts(f,i),'planning_typical_mA':{r:round(typ[r],6) for r in RAILS},'planning_upper_mA':{r:round(upper[r],6) for r in RAILS},'guaranteed_maximum_mA':{r:None for r in RAILS}} for i in INSTANCES],
             'planning_upper_total_mA':{r:round(len(INSTANCES)*upper[r],6) for r in RAILS},
             'guaranteed_maximum_status':'NOT ESTABLISHED - reference, LED, output, signal, temperature, fault and startup loads unqualified',
             'note':'All whole OPA packages and both comparator packages per instance are counted. ±15 V mathematical sum exceeds available rail/output swing. #33/#34 must reconcile six-cell load with whole-instrument ceilings.'}

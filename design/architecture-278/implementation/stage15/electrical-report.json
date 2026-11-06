@@ -1,0 +1,2532 @@
+{
+  "CAD": "NOT RUN",
+  "architecture_adopted": false,
+  "before_after_CV_gain": {
+    "after_scope": "Candidate two-network ratio-only bounds above; historical Stage13 controls/calibration result unchanged.",
+    "prior_independent_four_resistor_0p1percent_5V_error_interval_V": [
+      -0.019960059920099416,
+      0.020040060080099842
+    ]
+  },
+  "complete_load_error_bound_V": null,
+  "complete_static_error_bound_V": null,
+  "conditioned_error_allocation": [
+    {
+      "CV5V_network_only_error_interval_V": [
+        -0.0009998500199975835,
+        0.001000049999999586
+      ],
+      "CV5V_remaining_static_allocation_before_other_terms_V": 0.000999950000000414,
+      "CV_gain_interval": [
+        0.9998000299960005,
+        1.00020001
+      ],
+      "network_delta_fraction": 0.0001,
+      "network_ratio_condition": "25C",
+      "ratio_interval_scope": "Conservative product of two within-network ratios; no cross-package matching assumed. Network-only gain envelope, not whole-cell accuracy.",
+      "remaining_discrete_scope": "Unchanged0.1% initial resistor sensitivity only; no full-temperature guarantee for remaining discrete pairs.",
+      "states": [
+        {
+          "CV_V": 5,
+          "actual_headroom_established": false,
+          "atten_fraction": 0.5,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.0013005408328314247,
+          "conditional_15nA_known_bias_sum_V": 0.005447790394747726,
+          "conditional_partial_absolute_sum_V": 0.012744700857197228,
+          "conditional_reference_0p1percent_initial_sum_V": 4.993024193152085e-06,
+          "ideal_control_law_V": 5.0,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100120.02100099999,
+            "atten_noninverting": 7005.956393740669,
+            "manual_noninverting": 25937.762078595646,
+            "negative_reference_inverting": 4993.019200129662,
+            "output_inverting": 100,
+            "remote_inverting": 10018.517643049157,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107510.75
+          },
+          "manual_fraction": 0.5,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002000100000001,
+            "IN_buffer": 0.001351499030898133,
+            "REF_negative": 0.9986048386307717,
+            "REF_positive": 0.000998604838630417,
+            "atten_amp": 2.002402422422423,
+            "manual_amp": 1.00020001,
+            "output": 1.0,
+            "remote_buffer": 1.0008509133915244,
+            "restore": 2.0000999999999998,
+            "summer": 4.000700029999999
+          },
+          "maximum_witness": {
+            "error_V": 0.005983098120839969,
+            "params": {
+              "ga": 1.0001,
+              "gcv": 1.0001,
+              "gm": 1.0001,
+              "gr": 1.0001,
+              "ka": 1.0,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.0001
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.0001
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.005991376605424925,
+            "params": {
+              "ga": 1.0,
+              "gcv": 0.9999000099990001,
+              "gm": 1.0,
+              "gr": 0.9999000099990001,
+              "ka": 1.0,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.0001,
+              1.0
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0001,
+              1.0
+            ]
+          },
+          "nominal_loaded_V": 5.0,
+          "nominal_loading_error_V": 0.0,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "CV_only",
+          "static_target_remaining_after_conditional_partial_V": -0.010744700857197228,
+          "vin_V": 0,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 0,
+          "actual_headroom_established": false,
+          "atten_fraction": 1,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.0015005408307914205,
+          "conditional_15nA_known_bias_sum_V": 0.005523086977889572,
+          "conditional_partial_absolute_sum_V": 0.014020698199050163,
+          "conditional_reference_0p1percent_initial_sum_V": 4.993024193152085e-06,
+          "ideal_control_law_V": 5.0,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100120.02100099999,
+            "atten_noninverting": 2002.2022022022022,
+            "manual_noninverting": 25937.762078595646,
+            "negative_reference_inverting": 4993.019200129662,
+            "output_inverting": 100,
+            "remote_inverting": 20042.044044044043,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107510.75
+          },
+          "manual_fraction": 0.5,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002000100000001,
+            "IN_buffer": 1.0000001898201798,
+            "REF_negative": 0.9986048386307717,
+            "REF_positive": 0.000998604838630417,
+            "atten_amp": 2.002402422422423,
+            "manual_amp": 1.00020001,
+            "output": 1.0,
+            "remote_buffer": 2.0022022022022026,
+            "restore": 2.0000999999999998,
+            "summer": 4.000700029999999
+          },
+          "maximum_witness": {
+            "error_V": 0.004983997221738257,
+            "params": {
+              "ga": 1.0001,
+              "gcv": 1.0001,
+              "gm": 1.0001,
+              "gr": 1.0001,
+              "ka": 0.9980019980019981,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              1.001,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.0001
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.0001
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.006992077366176019,
+            "params": {
+              "ga": 0.9999000099990001,
+              "gcv": 1.0,
+              "gm": 1.0,
+              "gr": 0.9999000099990001,
+              "ka": 1.002002002002002,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              1.001,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.0001,
+              1.0
+            ],
+            "summer_normalized_elements": [
+              1.0001,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "nominal_loaded_V": 4.999000099990001,
+          "nominal_loading_error_V": -0.0009999000099991662,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "IN_positive",
+          "static_target_remaining_after_conditional_partial_V": -0.012020698199050163,
+          "vin_V": 5,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 0,
+          "actual_headroom_established": false,
+          "atten_fraction": 0,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.0013005408328314247,
+          "conditional_15nA_known_bias_sum_V": 0.005222456317228912,
+          "conditional_partial_absolute_sum_V": 0.022533076479519357,
+          "conditional_reference_0p1percent_initial_sum_V": 4.993024193152085e-06,
+          "ideal_control_law_V": -5.0,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100120.02100099999,
+            "atten_noninverting": 2002.2022022022022,
+            "manual_noninverting": 25937.762078595646,
+            "negative_reference_inverting": 4993.019200129662,
+            "output_inverting": 100,
+            "remote_inverting": 0,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107510.75
+          },
+          "manual_fraction": 0.5,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002000100000001,
+            "IN_buffer": 1.0022024124224225,
+            "REF_negative": 0.9986048386307717,
+            "REF_positive": 0.000998604838630417,
+            "atten_amp": 2.002402422422423,
+            "manual_amp": 1.00020001,
+            "output": 1.0,
+            "remote_buffer": 0.0,
+            "restore": 2.0000999999999998,
+            "summer": 4.000700029999999
+          },
+          "maximum_witness": {
+            "error_V": 0.01596941581300726,
+            "params": {
+              "ga": 0.9999000099990001,
+              "gcv": 1.0,
+              "gm": 1.0,
+              "gr": 0.9999000099990001,
+              "ka": 0.9980019980019981,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              1.001,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0001,
+              1.0
+            ],
+            "summer_normalized_elements": [
+              1.0001,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.01600508630526587,
+            "params": {
+              "ga": 1.0001,
+              "gcv": 1.0001,
+              "gm": 1.0001,
+              "gr": 1.0001,
+              "ka": 1.002002002002002,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              1.001,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.0001
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.0001
+            ]
+          },
+          "nominal_loaded_V": -5.0,
+          "nominal_loading_error_V": 0.0,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "IN_negative",
+          "static_target_remaining_after_conditional_partial_V": -0.02053307647951936,
+          "vin_V": 5,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 0,
+          "actual_headroom_established": false,
+          "atten_fraction": 0.5,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.0013005408328314247,
+          "conditional_15nA_known_bias_sum_V": 0.005447790394747726,
+          "conditional_partial_absolute_sum_V": 0.01850384359941682,
+          "conditional_reference_0p1percent_initial_sum_V": 4.993024193152085e-06,
+          "ideal_control_law_V": 0.0,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100120.02100099999,
+            "atten_noninverting": 7005.956393740669,
+            "manual_noninverting": 25937.762078595646,
+            "negative_reference_inverting": 4993.019200129662,
+            "output_inverting": 100,
+            "remote_inverting": 10018.517643049157,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107510.75
+          },
+          "manual_fraction": 0.5,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002000100000001,
+            "IN_buffer": 0.001351499030898133,
+            "REF_negative": 0.9986048386307717,
+            "REF_positive": 0.000998604838630417,
+            "atten_amp": 2.002402422422423,
+            "manual_amp": 1.00020001,
+            "output": 1.0,
+            "remote_buffer": 1.0008509133915244,
+            "restore": 2.0000999999999998,
+            "summer": 4.000700029999999
+          },
+          "maximum_witness": {
+            "error_V": 0.00823106254707698,
+            "params": {
+              "ga": 1.0001,
+              "gcv": 1.0001,
+              "gm": 1.0001,
+              "gr": 1.0001,
+              "ka": 0.9980019980019981,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              1.001,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.0001
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.0001
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.011750519347644518,
+            "params": {
+              "ga": 1.0001,
+              "gcv": 1.0001,
+              "gm": 1.0001,
+              "gr": 1.0001,
+              "ka": 1.002002002002002,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              1.001,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.0001
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.0001
+            ]
+          },
+          "nominal_loaded_V": -0.0017493877142999992,
+          "nominal_loading_error_V": -0.0017493877142999992,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "IN_centre",
+          "static_target_remaining_after_conditional_partial_V": -0.01650384359941682,
+          "vin_V": 5,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 0,
+          "actual_headroom_established": false,
+          "atten_fraction": 0.5,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.0015010109289249254,
+          "conditional_15nA_known_bias_sum_V": 0.005148995190566847,
+          "conditional_partial_absolute_sum_V": 0.02314723076680894,
+          "conditional_reference_0p1percent_initial_sum_V": 0.005010511011011012,
+          "ideal_control_law_V": -5.0,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100120.02100099999,
+            "atten_noninverting": 7005.956393740669,
+            "manual_noninverting": 1000.0999999999999,
+            "negative_reference_inverting": 10011.001,
+            "output_inverting": 100,
+            "remote_inverting": 10018.517643049157,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107510.75
+          },
+          "manual_fraction": 0,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002000100000004,
+            "IN_buffer": 0.0013514990308989283,
+            "REF_negative": 2.002202202202202,
+            "REF_positive": 1.0021022022022024,
+            "atten_amp": 2.0024024224224233,
+            "manual_amp": 1.0002000100000004,
+            "output": 1.0,
+            "remote_buffer": 1.0008509133915249,
+            "restore": 2.0000999999999998,
+            "summer": 4.00070003
+          },
+          "maximum_witness": {
+            "error_V": 0.011486713636306156,
+            "params": {
+              "ga": 1.0,
+              "gcv": 1.0,
+              "gm": 0.9999000099990001,
+              "gr": 0.9999000099990001,
+              "ka": 1.0,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0001,
+              1.0
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0001,
+              1.0,
+              1.0
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.010511011011010929,
+            "params": {
+              "ga": 1.0001,
+              "gcv": 1.0001,
+              "gm": 1.0001,
+              "gr": 1.0001,
+              "ka": 1.0,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.0001
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.0001
+            ]
+          },
+          "nominal_loaded_V": -4.999500049995,
+          "nominal_loading_error_V": 0.0004999500049995831,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "manual_low",
+          "static_target_remaining_after_conditional_partial_V": -0.02114723076680894,
+          "vin_V": 0,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 0,
+          "actual_headroom_established": false,
+          "atten_fraction": 0.5,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.0013005904884844848,
+          "conditional_15nA_known_bias_sum_V": 0.004998830175566847,
+          "conditional_partial_absolute_sum_V": 0.012799620714044337,
+          "conditional_reference_0p1percent_initial_sum_V": 0.005000500000000003,
+          "ideal_control_law_V": 5.0,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100120.02100099999,
+            "atten_noninverting": 7005.956393740669,
+            "manual_noninverting": 1000.0999999999999,
+            "negative_reference_inverting": 0,
+            "output_inverting": 100,
+            "remote_inverting": 10018.517643049157,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107510.75
+          },
+          "manual_fraction": 1,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002000100000004,
+            "IN_buffer": 0.0013514990308980401,
+            "REF_negative": 8.881784197001252e-16,
+            "REF_positive": 1.0001000000000007,
+            "atten_amp": 2.0024024224224233,
+            "manual_amp": 1.0002000100000004,
+            "output": 1.0,
+            "remote_buffer": 1.0008509133915249,
+            "restore": 2.0000999999999998,
+            "summer": 4.000700029999999
+          },
+          "maximum_witness": {
+            "error_V": 0.0005000000000006111,
+            "params": {
+              "ga": 1.0001,
+              "gcv": 1.0001,
+              "gm": 1.0001,
+              "gr": 1.0001,
+              "ka": 1.0,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.0001
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.0001
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.0014997000499930024,
+            "params": {
+              "ga": 1.0,
+              "gcv": 1.0,
+              "gm": 0.9999000099990001,
+              "gr": 0.9999000099990001,
+              "ka": 1.0,
+              "kn": 1.0
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              0.999,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0001,
+              1.0
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0001,
+              1.0,
+              1.0
+            ]
+          },
+          "nominal_loaded_V": 4.999500049995,
+          "nominal_loading_error_V": -0.0004999500049995831,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "manual_high",
+          "static_target_remaining_after_conditional_partial_V": -0.010799620714044337,
+          "vin_V": 0,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 0,
+          "actual_headroom_established": false,
+          "atten_fraction": 0.5,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.0014005259585444794,
+          "conditional_15nA_known_bias_sum_V": 0.00539196687920329,
+          "conditional_partial_absolute_sum_V": 0.022198509215239626,
+          "conditional_reference_0p1percent_initial_sum_V": 0.0025030654797615526,
+          "ideal_control_law_V": -2.5,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100120.02100099999,
+            "atten_noninverting": 7005.956393740669,
+            "manual_noninverting": 19715.0130467327,
+            "negative_reference_inverting": 7494.200529030164,
+            "output_inverting": 100,
+            "remote_inverting": 10018.517643049157,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107510.75
+          },
+          "manual_fraction": 0.25,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002000100000001,
+            "IN_buffer": 0.0013514990308984842,
+            "REF_negative": 1.498841604647638,
+            "REF_positive": 0.5006130959523105,
+            "atten_amp": 2.002402422422423,
+            "manual_amp": 1.0002000100000004,
+            "output": 1.0,
+            "remote_buffer": 1.0008509133915244,
+            "restore": 2.0000999999999998,
+            "summer": 4.000700029999999
+          },
+          "maximum_witness": {
+            "error_V": 0.012902950897730303,
+            "params": {
+              "ga": 1.0,
+              "gcv": 1.0,
+              "gm": 0.9999000099990001,
+              "gr": 0.9999000099990001,
+              "ka": 1.0,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0001,
+              1.0
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0001,
+              1.0,
+              1.0
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.0030654797615548013,
+            "params": {
+              "ga": 1.0001,
+              "gcv": 1.0001,
+              "gm": 1.0001,
+              "gr": 1.0001,
+              "ka": 1.0,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.0001
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.0001
+            ]
+          },
+          "nominal_loaded_V": -2.4950722323411263,
+          "nominal_loading_error_V": 0.004927767658873705,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "manual_quarter",
+          "static_target_remaining_after_conditional_partial_V": -0.020198509215239628,
+          "vin_V": 0,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 0,
+          "actual_headroom_established": false,
+          "atten_fraction": 0.5,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.0013005031623047098,
+          "conditional_15nA_known_bias_sum_V": 0.005317024873912988,
+          "conditional_partial_absolute_sum_V": 0.01703937001240351,
+          "conditional_reference_0p1percent_initial_sum_V": 0.002498064349931857,
+          "ideal_control_law_V": 2.5,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100120.02100099999,
+            "atten_noninverting": 7005.956393740669,
+            "manual_noninverting": 19715.0130467327,
+            "negative_reference_inverting": 2498.066843010055,
+            "output_inverting": 100,
+            "remote_inverting": 10018.517643049157,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107510.75
+          },
+          "manual_fraction": 0.75,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002000100000004,
+            "IN_buffer": 0.0013514990308984842,
+            "REF_negative": 0.49961386821588016,
+            "REF_positive": 0.49961286998637133,
+            "atten_amp": 2.0024024224224233,
+            "manual_amp": 1.0002000100000004,
+            "output": 1.0,
+            "remote_buffer": 1.0008509133915244,
+            "restore": 2.0001,
+            "summer": 4.000700029999999
+          },
+          "maximum_witness": {
+            "error_V": -0.0019356500681380062,
+            "params": {
+              "ga": 1.0001,
+              "gcv": 1.0001,
+              "gm": 1.0001,
+              "gr": 1.0001,
+              "ka": 1.0,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.0001
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.0001
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.007923777626253958,
+            "params": {
+              "ga": 1.0,
+              "gcv": 1.0,
+              "gm": 0.9999000099990001,
+              "gr": 0.9999000099990001,
+              "ka": 1.0,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.0001,
+              1.0
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0001,
+              1.0,
+              1.0
+            ]
+          },
+          "nominal_loaded_V": 2.4950722323411263,
+          "nominal_loading_error_V": -0.004927767658873705,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "manual_three_quarter",
+          "static_target_remaining_after_conditional_partial_V": -0.01503937001240351,
+          "vin_V": 0,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 1,
+          "actual_headroom_established": false,
+          "atten_fraction": 0.75,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.00140043682074221,
+          "conditional_15nA_known_bias_sum_V": 0.0053734172797621875,
+          "conditional_partial_absolute_sum_V": 0.01842752280839529,
+          "conditional_reference_0p1percent_initial_sum_V": 0.002498064349931857,
+          "ideal_control_law_V": 4.0,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100120.02100099999,
+            "atten_noninverting": 5755.252329419756,
+            "manual_noninverting": 19715.0130467327,
+            "negative_reference_inverting": 2498.066843010055,
+            "output_inverting": 100,
+            "remote_inverting": 15028.715430650027,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107510.75
+          },
+          "manual_fraction": 0.75,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002000100000004,
+            "IN_buffer": 0.5001688239053133,
+            "REF_negative": 0.49961386821588016,
+            "REF_positive": 0.49961286998637133,
+            "atten_amp": 2.0024024224224233,
+            "manual_amp": 1.0002000100000004,
+            "output": 1.0,
+            "remote_buffer": 1.501370172892111,
+            "restore": 2.0001,
+            "summer": 4.000700029999999
+          },
+          "maximum_witness": {
+            "error_V": -0.0015668161628252797,
+            "params": {
+              "ga": 1.0001,
+              "gcv": 1.0001,
+              "gm": 1.0001,
+              "gr": 1.0001,
+              "ka": 0.9980019980019981,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              1.001,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.0001
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.0001
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.009155604357959035,
+            "params": {
+              "ga": 0.9999000099990001,
+              "gcv": 0.9999000099990001,
+              "gm": 0.9999000099990001,
+              "gr": 0.9999000099990001,
+              "ka": 1.002002002002002,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              1.001,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.0001,
+              1.0
+            ],
+            "summer_normalized_elements": [
+              1.0001,
+              1.0001,
+              1.0001,
+              1.0
+            ]
+          },
+          "nominal_loaded_V": 3.9946411062898664,
+          "nominal_loading_error_V": -0.00535889371013365,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "mixed",
+          "static_target_remaining_after_conditional_partial_V": -0.016427522808395288,
+          "vin_V": 1,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 0,
+          "actual_headroom_established": false,
+          "atten_fraction": 0.5,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.0013005408328314247,
+          "conditional_15nA_known_bias_sum_V": 0.005447790394747726,
+          "conditional_partial_absolute_sum_V": 0.011746348444926159,
+          "conditional_reference_0p1percent_initial_sum_V": 4.993024193152085e-06,
+          "ideal_control_law_V": 0.0,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100120.02100099999,
+            "atten_noninverting": 7005.956393740669,
+            "manual_noninverting": 25937.762078595646,
+            "negative_reference_inverting": 4993.019200129662,
+            "output_inverting": 100,
+            "remote_inverting": 10018.517643049157,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107510.75
+          },
+          "manual_fraction": 0.5,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002000100000001,
+            "IN_buffer": 0.001351499030898133,
+            "REF_negative": 0.9986048386307717,
+            "REF_positive": 0.000998604838630417,
+            "atten_amp": 2.002402422422423,
+            "manual_amp": 1.00020001,
+            "output": 1.0,
+            "remote_buffer": 1.0008509133915244,
+            "restore": 2.0000999999999998,
+            "summer": 4.000700029999999
+          },
+          "maximum_witness": {
+            "error_V": 0.004983048120840247,
+            "params": {
+              "ga": 1.0001,
+              "gcv": 1.0001,
+              "gm": 1.0001,
+              "gr": 1.0001,
+              "ka": 1.0,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.0001
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.0001
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.0049930241931538544,
+            "params": {
+              "ga": 1.0001,
+              "gcv": 1.0001,
+              "gm": 1.0001,
+              "gr": 1.0001,
+              "ka": 1.0,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.0001
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.0001
+            ]
+          },
+          "nominal_loaded_V": 0.0,
+          "nominal_loading_error_V": 0.0,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "zero",
+          "static_target_remaining_after_conditional_partial_V": -0.009746348444926159,
+          "vin_V": 0,
+          "within_nominal_supply_rails": true
+        }
+      ]
+    },
+    {
+      "CV5V_network_only_error_interval_V": [
+        -0.0012497656640558796,
+        0.00125007812499911
+      ],
+      "CV5V_remaining_static_allocation_before_other_terms_V": 0.0007499218750008901,
+      "CV_gain_interval": [
+        0.9997500468671888,
+        1.0002500156249998
+      ],
+      "network_delta_fraction": 0.000125,
+      "network_ratio_condition": "I_grade_minus40_to85C",
+      "ratio_interval_scope": "Conservative product of two within-network ratios; no cross-package matching assumed. Network-only gain envelope, not whole-cell accuracy.",
+      "remaining_discrete_scope": "Unchanged0.1% initial resistor sensitivity only; no full-temperature guarantee for remaining discrete pairs.",
+      "states": [
+        {
+          "CV_V": 5,
+          "actual_headroom_established": false,
+          "atten_fraction": 0.5,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.001300590854933625,
+          "conditional_15nA_known_bias_sum_V": 0.0054479417539883565,
+          "conditional_partial_absolute_sum_V": 0.012994693359659665,
+          "conditional_reference_0p1percent_initial_sum_V": 4.993273822519132e-06,
+          "ideal_control_law_V": 5.0,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100125.02656406249,
+            "atten_noninverting": 7006.306660911923,
+            "manual_noninverting": 25939.058853231592,
+            "negative_reference_inverting": 4993.268829247082,
+            "output_inverting": 100,
+            "remote_inverting": 10019.018525104051,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107513.4375
+          },
+          "manual_fraction": 0.5,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002500156249998,
+            "IN_buffer": 0.001351566599937376,
+            "REF_negative": 0.9986547645041813,
+            "REF_positive": 0.0009986547645038264,
+            "atten_amp": 2.002502533783784,
+            "manual_amp": 1.0002500156249998,
+            "output": 1.0,
+            "remote_buffer": 1.0009009515588463,
+            "restore": 2.0001249999999997,
+            "summer": 4.000875046874999
+          },
+          "maximum_witness": {
+            "error_V": 0.006233375376446304,
+            "params": {
+              "ga": 1.000125,
+              "gcv": 1.000125,
+              "gm": 1.000125,
+              "gr": 1.000125,
+              "ka": 1.0,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.000125
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.000125
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.006241167476915166,
+            "params": {
+              "ga": 1.0,
+              "gcv": 0.9998750156230471,
+              "gm": 1.0,
+              "gr": 0.9998750156230471,
+              "ka": 1.0,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.000125,
+              1.0
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.000125,
+              1.0
+            ]
+          },
+          "nominal_loaded_V": 5.0,
+          "nominal_loading_error_V": 0.0,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "CV_only",
+          "static_target_remaining_after_conditional_partial_V": -0.010994693359659665,
+          "vin_V": 0,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 0,
+          "actual_headroom_established": false,
+          "atten_fraction": 1,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.001500600852018594,
+          "conditional_15nA_known_bias_sum_V": 0.005523242101629966,
+          "conditional_partial_absolute_sum_V": 0.014270654436978834,
+          "conditional_reference_0p1percent_initial_sum_V": 4.993273822519132e-06,
+          "ideal_control_law_V": 5.0,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100125.02656406249,
+            "atten_noninverting": 2002.3023035534281,
+            "manual_noninverting": 25939.058853231592,
+            "negative_reference_inverting": 4993.268829247082,
+            "output_inverting": 100,
+            "remote_inverting": 20043.04605856982,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107513.4375
+          },
+          "manual_fraction": 0.5,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002500156249998,
+            "IN_buffer": 1.0000501854550448,
+            "REF_negative": 0.9986547645041813,
+            "REF_positive": 0.0009986547645038264,
+            "atten_amp": 2.002502533783784,
+            "manual_amp": 1.0002500156249998,
+            "output": 1.0,
+            "remote_buffer": 2.0023023035534284,
+            "restore": 2.0001249999999997,
+            "summer": 4.000875046874999
+          },
+          "maximum_witness": {
+            "error_V": 0.005234224526670772,
+            "params": {
+              "ga": 1.000125,
+              "gcv": 1.000125,
+              "gm": 1.000125,
+              "gr": 1.000125,
+              "ka": 0.9980019980019981,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              1.001,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.000125
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.000125
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.0072418182095077555,
+            "params": {
+              "ga": 0.9998750156230471,
+              "gcv": 1.0,
+              "gm": 1.0,
+              "gr": 0.9998750156230471,
+              "ka": 1.002002002002002,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              1.001,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.000125,
+              1.0
+            ],
+            "summer_normalized_elements": [
+              1.000125,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "nominal_loaded_V": 4.999000099990001,
+          "nominal_loading_error_V": -0.0009999000099991662,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "IN_positive",
+          "static_target_remaining_after_conditional_partial_V": -0.012270654436978834,
+          "vin_V": 5,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 0,
+          "actual_headroom_established": false,
+          "atten_fraction": 0,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.001300590854933625,
+          "conditional_15nA_known_bias_sum_V": 0.0052225964107514185,
+          "conditional_partial_absolute_sum_V": 0.022784045155945693,
+          "conditional_reference_0p1percent_initial_sum_V": 4.993273822519132e-06,
+          "ideal_control_law_V": -5.0,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100125.02656406249,
+            "atten_noninverting": 2002.3023035534281,
+            "manual_noninverting": 25939.058853231592,
+            "negative_reference_inverting": 4993.268829247082,
+            "output_inverting": 100,
+            "remote_inverting": 0,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107513.4375
+          },
+          "manual_fraction": 0.5,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002500156249998,
+            "IN_buffer": 1.0022525181587838,
+            "REF_negative": 0.9986547645041813,
+            "REF_positive": 0.0009986547645038264,
+            "atten_amp": 2.002502533783784,
+            "manual_amp": 1.0002500156249998,
+            "output": 1.0,
+            "remote_buffer": 0.0,
+            "restore": 2.0001249999999997,
+            "summer": 4.000875046874999
+          },
+          "maximum_witness": {
+            "error_V": 0.016218707601836968,
+            "params": {
+              "ga": 0.9998750156230471,
+              "gcv": 1.0,
+              "gm": 1.0,
+              "gr": 0.9998750156230471,
+              "ka": 0.9980019980019981,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              1.001,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.000125,
+              1.0
+            ],
+            "summer_normalized_elements": [
+              1.000125,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.01625586461643813,
+            "params": {
+              "ga": 1.000125,
+              "gcv": 1.000125,
+              "gm": 1.000125,
+              "gr": 1.000125,
+              "ka": 1.002002002002002,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              1.001,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.000125
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.000125
+            ]
+          },
+          "nominal_loaded_V": -5.0,
+          "nominal_loading_error_V": 0.0,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "IN_negative",
+          "static_target_remaining_after_conditional_partial_V": -0.020784045155945695,
+          "vin_V": 5,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 0,
+          "actual_headroom_established": false,
+          "atten_fraction": 0.5,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.001300590854933625,
+          "conditional_15nA_known_bias_sum_V": 0.0054479417539883565,
+          "conditional_partial_absolute_sum_V": 0.01850463270495228,
+          "conditional_reference_0p1percent_initial_sum_V": 4.993273822519132e-06,
+          "ideal_control_law_V": 0.0,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100125.02656406249,
+            "atten_noninverting": 7006.306660911923,
+            "manual_noninverting": 25939.058853231592,
+            "negative_reference_inverting": 4993.268829247082,
+            "output_inverting": 100,
+            "remote_inverting": 10019.018525104051,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107513.4375
+          },
+          "manual_fraction": 0.5,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002500156249998,
+            "IN_buffer": 0.001351566599937376,
+            "REF_negative": 0.9986547645041813,
+            "REF_positive": 0.0009986547645038264,
+            "atten_amp": 2.002502533783784,
+            "manual_amp": 1.0002500156249998,
+            "output": 1.0,
+            "remote_buffer": 1.0009009515588463,
+            "restore": 2.0001249999999997,
+            "summer": 4.000875046874999
+          },
+          "maximum_witness": {
+            "error_V": 0.00823147406419652,
+            "params": {
+              "ga": 1.000125,
+              "gcv": 1.000125,
+              "gm": 1.000125,
+              "gr": 1.000125,
+              "ka": 0.9980019980019981,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              1.001,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.000125
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.000125
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.011751106822207782,
+            "params": {
+              "ga": 1.000125,
+              "gcv": 1.000125,
+              "gm": 1.000125,
+              "gr": 1.000125,
+              "ka": 1.002002002002002,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              1.001,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.000125
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.000125
+            ]
+          },
+          "nominal_loaded_V": -0.0017493877142999992,
+          "nominal_loading_error_V": -0.0017493877142999992,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "IN_centre",
+          "static_target_remaining_after_conditional_partial_V": -0.016504632704952282,
+          "vin_V": 5,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 0,
+          "actual_headroom_established": false,
+          "atten_fraction": 0.5,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.0015010709736549487,
+          "conditional_15nA_known_bias_sum_V": 0.005149131611354385,
+          "conditional_partial_absolute_sum_V": 0.023397069108922364,
+          "conditional_reference_0p1percent_initial_sum_V": 0.00501076151464245,
+          "ideal_control_law_V": -5.0,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100125.02656406249,
+            "atten_noninverting": 7006.306660911923,
+            "manual_noninverting": 1000.1500006249373,
+            "negative_reference_inverting": 10011.501506255623,
+            "output_inverting": 100,
+            "remote_inverting": 10019.018525104051,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107513.4375
+          },
+          "manual_fraction": 0,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002500156250003,
+            "IN_buffer": 0.001351566599938181,
+            "REF_negative": 2.002302303553429,
+            "REF_positive": 1.00215230292849,
+            "atten_amp": 2.002502533783784,
+            "manual_amp": 1.0002500156250003,
+            "output": 1.0,
+            "remote_buffer": 1.0009009515588465,
+            "restore": 2.0001249999999997,
+            "summer": 4.000875046875
+          },
+          "maximum_witness": {
+            "error_V": 0.011736105009270581,
+            "params": {
+              "ga": 1.0,
+              "gcv": 1.0,
+              "gm": 0.9998750156230471,
+              "gr": 0.9998750156230471,
+              "ka": 1.0,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.000125,
+              1.0
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.000125,
+              1.0,
+              1.0
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.01076151464245445,
+            "params": {
+              "ga": 1.000125,
+              "gcv": 1.000125,
+              "gm": 1.000125,
+              "gr": 1.000125,
+              "ka": 1.0,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.000125
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.000125
+            ]
+          },
+          "nominal_loaded_V": -4.999500049995,
+          "nominal_loading_error_V": 0.0004999500049995831,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "manual_low",
+          "static_target_remaining_after_conditional_partial_V": -0.021397069108922362,
+          "vin_V": 0,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 0,
+          "actual_headroom_established": false,
+          "atten_fraction": 0.5,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.0013006405130692508,
+          "conditional_15nA_known_bias_sum_V": 0.00499895908876055,
+          "conditional_partial_absolute_sum_V": 0.013049940309940083,
+          "conditional_reference_0p1percent_initial_sum_V": 0.00500075000312469,
+          "ideal_control_law_V": 5.0,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100125.02656406249,
+            "atten_noninverting": 7006.306660911923,
+            "manual_noninverting": 1000.1500006249373,
+            "negative_reference_inverting": 0,
+            "output_inverting": 100,
+            "remote_inverting": 10019.018525104051,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107513.4375
+          },
+          "manual_fraction": 1,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002500156250003,
+            "IN_buffer": 0.0013515665999372928,
+            "REF_negative": 8.881784197001252e-16,
+            "REF_positive": 1.000150000624938,
+            "atten_amp": 2.002502533783784,
+            "manual_amp": 1.0002500156250003,
+            "output": 1.0,
+            "remote_buffer": 1.0009009515588465,
+            "restore": 2.0001249999999997,
+            "summer": 4.000875046874999
+          },
+          "maximum_witness": {
+            "error_V": 0.0007500031246872041,
+            "params": {
+              "ga": 1.000125,
+              "gcv": 1.000125,
+              "gm": 1.000125,
+              "gr": 1.000125,
+              "ka": 1.0,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.000125
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.000125
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.001749590704985593,
+            "params": {
+              "ga": 1.0,
+              "gcv": 1.0,
+              "gm": 0.9998750156230471,
+              "gr": 0.9998750156230471,
+              "ka": 1.0,
+              "kn": 1.0
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              0.999,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.000125,
+              1.0
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.000125,
+              1.0,
+              1.0
+            ]
+          },
+          "nominal_loaded_V": 4.999500049995,
+          "nominal_loading_error_V": -0.0004999500049995831,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "manual_high",
+          "static_target_remaining_after_conditional_partial_V": -0.011049940309940083,
+          "vin_V": 0,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 0,
+          "actual_headroom_established": false,
+          "atten_fraction": 0.5,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.0014005809794655681,
+          "conditional_15nA_known_bias_sum_V": 0.0053921154475123495,
+          "conditional_partial_absolute_sum_V": 0.02232317570278764,
+          "conditional_reference_0p1percent_initial_sum_V": 0.0025031906220855673,
+          "ideal_control_law_V": -2.5,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100125.02656406249,
+            "atten_noninverting": 7006.306660911923,
+            "manual_noninverting": 19715.998711139244,
+            "negative_reference_inverting": 7494.575206272298,
+            "output_inverting": 100,
+            "remote_inverting": 10019.018525104051,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107513.4375
+          },
+          "manual_fraction": 0.25,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002500156249998,
+            "IN_buffer": 0.0013515665999377369,
+            "REF_negative": 1.4989165401710005,
+            "REF_positive": 0.5006381244171134,
+            "atten_amp": 2.0025025337837836,
+            "manual_amp": 1.0002500156249998,
+            "output": 1.0,
+            "remote_buffer": 1.0009009515588463,
+            "restore": 2.0001249999999997,
+            "summer": 4.000875046875
+          },
+          "maximum_witness": {
+            "error_V": 0.013027288653724156,
+            "params": {
+              "ga": 1.0,
+              "gcv": 1.0,
+              "gm": 0.9998750156230471,
+              "gr": 0.9998750156230471,
+              "ka": 1.0,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.000125,
+              1.0
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.000125,
+              1.0,
+              1.0
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.00319062208556975,
+            "params": {
+              "ga": 1.000125,
+              "gcv": 1.000125,
+              "gm": 1.000125,
+              "gr": 1.000125,
+              "ka": 1.0,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.000125
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.000125
+            ]
+          },
+          "nominal_loaded_V": -2.4950722323411263,
+          "nominal_loading_error_V": 0.004927767658873705,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "manual_quarter",
+          "static_target_remaining_after_conditional_partial_V": -0.02032317570278764,
+          "vin_V": 0,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 0,
+          "actual_headroom_established": false,
+          "atten_fraction": 0.5,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.0013005531825235487,
+          "conditional_15nA_known_bias_sum_V": 0.005317169695449627,
+          "conditional_partial_absolute_sum_V": 0.01716427642687886,
+          "conditional_reference_0p1percent_initial_sum_V": 0.002498189242221256,
+          "ideal_control_law_V": 2.5,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100125.02656406249,
+            "atten_noninverting": 7006.306660911923,
+            "manual_noninverting": 19715.998711139244,
+            "negative_reference_inverting": 2498.1917354240995,
+            "output_inverting": 100,
+            "remote_inverting": 10019.018525104051,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107513.4375
+          },
+          "manual_fraction": 0.75,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002500156250003,
+            "IN_buffer": 0.0013515665999377369,
+            "REF_negative": 0.49963884672366765,
+            "REF_positive": 0.4996378484442512,
+            "atten_amp": 2.002502533783784,
+            "manual_amp": 1.0002500156250003,
+            "output": 1.0,
+            "remote_buffer": 1.0009009515588465,
+            "restore": 2.000125,
+            "summer": 4.000875046874999
+          },
+          "maximum_witness": {
+            "error_V": -0.0018107577787360718,
+            "params": {
+              "ga": 1.000125,
+              "gcv": 1.000125,
+              "gm": 1.000125,
+              "gr": 1.000125,
+              "ka": 1.0,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.000125
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.000125
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.00804836430668443,
+            "params": {
+              "ga": 1.0,
+              "gcv": 1.0,
+              "gm": 0.9998750156230471,
+              "gr": 0.9998750156230471,
+              "ka": 1.0,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.000125,
+              1.0
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.000125,
+              1.0,
+              1.0
+            ]
+          },
+          "nominal_loaded_V": 2.4950722323411263,
+          "nominal_loading_error_V": -0.004927767658873705,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "manual_three_quarter",
+          "static_target_remaining_after_conditional_partial_V": -0.015164276426878861,
+          "vin_V": 0,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 1,
+          "actual_headroom_established": false,
+          "atten_fraction": 0.75,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.0014004918372067985,
+          "conditional_15nA_known_bias_sum_V": 0.005373564920672423,
+          "conditional_partial_absolute_sum_V": 0.01862736514452658,
+          "conditional_reference_0p1percent_initial_sum_V": 0.002498189242221256,
+          "ideal_control_law_V": 4.0,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100125.02656406249,
+            "atten_noninverting": 5755.540066859156,
+            "manual_noninverting": 19715.998711139244,
+            "negative_reference_inverting": 2498.1917354240995,
+            "output_inverting": 100,
+            "remote_inverting": 15029.466800676562,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107513.4375
+          },
+          "manual_fraction": 0.75,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002500156250003,
+            "IN_buffer": 0.5001938301584574,
+            "REF_negative": 0.49963884672366765,
+            "REF_positive": 0.4996378484442512,
+            "atten_amp": 2.002502533783784,
+            "manual_amp": 1.0002500156250003,
+            "output": 1.0,
+            "remote_buffer": 1.5014452348328238,
+            "restore": 2.000125,
+            "summer": 4.000875046874999
+          },
+          "maximum_witness": {
+            "error_V": -0.001366911995279274,
+            "params": {
+              "ga": 1.000125,
+              "gcv": 1.000125,
+              "gm": 1.000125,
+              "gr": 1.000125,
+              "ka": 0.9980019980019981,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              1.001,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.000125
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.000125
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.009355119144426105,
+            "params": {
+              "ga": 0.9998750156230471,
+              "gcv": 0.9998750156230471,
+              "gm": 0.9998750156230471,
+              "gr": 0.9998750156230471,
+              "ka": 1.002002002002002,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              1.001,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.000125,
+              1.0
+            ],
+            "summer_normalized_elements": [
+              1.000125,
+              1.000125,
+              1.000125,
+              1.0
+            ]
+          },
+          "nominal_loaded_V": 3.9946411062898664,
+          "nominal_loading_error_V": -0.00535889371013365,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "mixed",
+          "static_target_remaining_after_conditional_partial_V": -0.016627365144526583,
+          "vin_V": 1,
+          "within_nominal_supply_rails": true
+        },
+        {
+          "CV_V": 0,
+          "actual_headroom_established": false,
+          "atten_fraction": 0.5,
+          "coherent_resistor_witness_count": 1024,
+          "complete_error_bound_V": null,
+          "complete_static_criterion_met": null,
+          "conditional_100uV_each_offset_sum_V": 0.001300590854933625,
+          "conditional_15nA_known_bias_sum_V": 0.0054479417539883565,
+          "conditional_partial_absolute_sum_V": 0.011746799705265404,
+          "conditional_reference_0p1percent_initial_sum_V": 4.993273822519132e-06,
+          "ideal_control_law_V": 0.0,
+          "known_abs_bias_coefficients_ohm": {
+            "atten_inverting": 100125.02656406249,
+            "atten_noninverting": 7006.306660911923,
+            "manual_noninverting": 25939.058853231592,
+            "negative_reference_inverting": 4993.268829247082,
+            "output_inverting": 100,
+            "remote_inverting": 10019.018525104051,
+            "restore_inverting": 107500.0,
+            "summer_inverting": 107513.4375
+          },
+          "manual_fraction": 0.5,
+          "maximum_abs_opamp_offset_coefficients": {
+            "CV_buffer": 1.0002500156249998,
+            "IN_buffer": 0.001351566599937376,
+            "REF_negative": 0.9986547645041813,
+            "REF_positive": 0.0009986547645038264,
+            "atten_amp": 2.002502533783784,
+            "manual_amp": 1.0002500156249998,
+            "output": 1.0,
+            "remote_buffer": 1.0009009515588463,
+            "restore": 2.0001249999999997,
+            "summer": 4.000875046874999
+          },
+          "maximum_witness": {
+            "error_V": 0.004983297251447321,
+            "params": {
+              "ga": 1.000125,
+              "gcv": 1.000125,
+              "gm": 1.000125,
+              "gr": 1.000125,
+              "ka": 1.0,
+              "kn": 0.9980019980019981
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              1.001,
+              0.999
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.000125
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.000125
+            ]
+          },
+          "minimum_witness": {
+            "error_V": -0.004993273822520902,
+            "params": {
+              "ga": 1.000125,
+              "gcv": 1.000125,
+              "gm": 1.000125,
+              "gr": 1.000125,
+              "ka": 1.0,
+              "kn": 1.002002002002002
+            },
+            "remaining_discrete_normalized_elements": [
+              0.999,
+              0.999,
+              0.999,
+              1.001
+            ],
+            "restore_normalized_used_elements": [
+              1.0,
+              1.000125
+            ],
+            "summer_normalized_elements": [
+              1.0,
+              1.0,
+              1.0,
+              1.000125
+            ]
+          },
+          "nominal_loaded_V": 0.0,
+          "nominal_loading_error_V": 0.0,
+          "partial_is_complete_bound": false,
+          "ratio_witness_scope": "Coherent endpoint witnesses, not exhaustive all-error or continuous-temperature optimization. Each network largest/smallest<=1+delta. Shared summer feedback element retained.",
+          "state": "zero",
+          "static_target_remaining_after_conditional_partial_V": -0.009746799705265404,
+          "vin_V": 0,
+          "within_nominal_supply_rails": true
+        }
+      ]
+    }
+  ],
+  "criteria": {
+    "new_criteria_approved": false,
+    "output_load_change_target_V": 0.001,
+    "pitch_guarantee": false,
+    "static_target_V": 0.002
+  },
+  "device": "LT5400AIMS8E-2#PBF",
+  "error_ledger": {
+    "bias": "Known impedance sensitivities include network absolute tolerance7.5%, separate from ratio precision. Unknown input-source/protection, REF output and return impedances remain additional.15nA PW evidence is conditioned, not a universal off-state/commonmode bound.",
+    "calibration": "No knob fitting performed. Existing two user pots remain rank2; improved CV matching is passive ratio control, not a third adjustment actuator or permanent calibration.",
+    "load": "Same setting open-to10k at-5/0/+5V; existing feedback controls998ohm feedforward drop while linear. Neither that drop nor zero from this load-free model is a residual-load result.",
+    "modeled": "Nominal loaded wipers plus coherent shared summer/restore ratio witnesses and unchanged atten/negative-reference ratios.",
+    "offsets": "Ten amplifier contributions with actual coherent gain coefficients.100uV table-conditioned sensitivity, not guaranteed installed +/-12V full-temperature error. No offset calibration subtraction.",
+    "reference": "Common source initial-error sensitivity enters REF_positive once; inversion propagates it. REF_positive amplifier offset and REF_negative amplifier offset are distinct. Drift/noise/regulation/charge/stability remain open.",
+    "return": "Actual source-to-receiver ground displacement times each signal gain plus shared return paths; no equal sharing, allocation-as-copper or blanket2mV assignment.",
+    "temperature": "Full-temperature network ratio spec used once. No additional matchingTC or absoluteTC added. Remaining resistors/pots/amplifiers/reference/thermal gradients need separate operating evidence."
+  },
+  "finite_recommendation": "Stop after candidate source integration. Preserve precision intent. Next separately scoped work must define the A01 operating-temperature/calibration/error allocation and evaluate the retained reference-inverter ratio and control-loading contributions against a reserved remainder for amplifier/reference/load/return effects. Identify one justified necessary correction with a closed contribution budget before further implementation. These networks alone do not establish2mV complete static or1mV load-change accuracy. No automatic component search, knob fitting, product-role downgrade or hardware execution.",
+  "hardware_acceptance": false,
+  "load_change_cases": [
+    {
+      "criterion_V": 0.001,
+      "criterion_met": null,
+      "open_to_10k_change_V": null,
+      "output_V": -5
+    },
+    {
+      "criterion_V": 0.001,
+      "criterion_met": null,
+      "open_to_10k_change_V": null,
+      "output_V": 0
+    },
+    {
+      "criterion_V": 0.001,
+      "criterion_met": null,
+      "open_to_10k_change_V": null,
+      "output_V": 5
+    }
+  ],
+  "native": "NOT RUN",
+  "network_loading": {
+    "buffer_scope": "Sum actual signed branch currents at each output once; summer output supplies both feedback R7124 and restore input R7125. Other existing loads, feedback currents, rail IQ and transient parasitics remain additional. Not a total rail current guarantee.",
+    "declared_12V_differential_allocation_per_used_element": {
+      "maximum_current_A": 0.00012972972972972972,
+      "maximum_power_W": 0.0015567567567567567,
+      "not_guaranteed_signal_or_fault_bound": true
+    },
+    "output_loading_map": {
+      "CV_input_buffer": [
+        "R7123"
+      ],
+      "atten_amplifier": [
+        "R7121"
+      ],
+      "manual_buffer": [
+        "R7122"
+      ],
+      "restore_amplifier": [
+        "R7126"
+      ],
+      "summer_amplifier": [
+        "R7124",
+        "R7125"
+      ]
+    },
+    "package_conditional_power_W": {
+      "RN7101": 0.006227027027027027,
+      "RN7102": 0.0031135135135135134
+    },
+    "package_thetaJA_temperature_rise_sensitivity_C": {
+      "RN7101": 0.24908108108108107,
+      "RN7102": 0.12454054054054053
+    },
+    "parasitic_scope": "5.5pF resistor-to-EP and1.4pF resistor-to-resistor are typical, not maximum lumped capacitor guarantees. No pole, settling/noise/stability or EMI acceptance inferred.",
+    "per_state_branch_allocations": [
+      {
+        "branches": {
+          "R7121": {
+            "current_at_min_R_A": 0.0,
+            "maximum_abs_witness_differential_V": 0.0,
+            "power_at_min_R_W": 0.0
+          },
+          "R7122": {
+            "current_at_min_R_A": 5.396784581714573e-08,
+            "maximum_abs_witness_differential_V": 0.00499202573808598,
+            "power_at_min_R_W": 2.694088753482473e-10
+          },
+          "R7123": {
+            "current_at_min_R_A": 5.4054054054054054e-05,
+            "maximum_abs_witness_differential_V": 5,
+            "power_at_min_R_W": 0.0002702702702702703
+          },
+          "R7124": {
+            "current_at_min_R_A": 5.411467756126643e-05,
+            "maximum_abs_witness_differential_V": 5.005607674417145,
+            "power_at_min_R_W": 0.00027087684529928453
+          },
+          "R7125": {
+            "current_at_min_R_A": 5.411467756126643e-05,
+            "maximum_abs_witness_differential_V": 5.005607674417145,
+            "power_at_min_R_W": 0.00027087684529928453
+          },
+          "R7126": {
+            "current_at_min_R_A": 5.412144189596158e-05,
+            "maximum_abs_witness_differential_V": 5.006233375376446,
+            "power_at_min_R_W": 0.00027094456874305993
+          }
+        },
+        "scope": "Ideal virtual-ground linear witness potentials; dividing by minimum absolute resistance is conservative sensitivity, not simultaneous exact extrema or total rail current.",
+        "state": "CV_only"
+      },
+      {
+        "branches": {
+          "R7121": {
+            "current_at_min_R_A": 5.404325512314713e-05,
+            "maximum_abs_witness_differential_V": 4.999001098891109,
+            "power_at_min_R_W": 0.00027016229174826504
+          },
+          "R7122": {
+            "current_at_min_R_A": 5.396784581714573e-08,
+            "maximum_abs_witness_differential_V": 0.00499202573808598,
+            "power_at_min_R_W": 2.694088753482473e-10
+          },
+          "R7123": {
+            "current_at_min_R_A": 0.0,
+            "maximum_abs_witness_differential_V": 0.0,
+            "power_at_min_R_W": 0.0
+          },
+          "R7124": {
+            "current_at_min_R_A": 5.4103877280493144e-05,
+            "maximum_abs_witness_differential_V": 5.004608648445616,
+            "power_at_min_R_W": 0.0002707687321523962
+          },
+          "R7125": {
+            "current_at_min_R_A": 5.4103877280493144e-05,
+            "maximum_abs_witness_differential_V": 5.004608648445616,
+            "power_at_min_R_W": 0.0002707687321523962
+          },
+          "R7126": {
+            "current_at_min_R_A": 5.4110640265153194e-05,
+            "maximum_abs_witness_differential_V": 5.005234224526671,
+            "power_at_min_R_W": 0.0002708364285661957
+          }
+        },
+        "scope": "Ideal virtual-ground linear witness potentials; dividing by minimum absolute resistance is conservative sensitivity, not simultaneous exact extrema or total rail current.",
+        "state": "IN_positive"
+      },
+      {
+        "branches": {
+          "R7121": {
+            "current_at_min_R_A": 5.4162270378486596e-05,
+            "maximum_abs_witness_differential_V": 5.01001001001001,
+            "power_at_min_R_W": 0.0002713535167610865
+          },
+          "R7122": {
+            "current_at_min_R_A": 5.396784581714573e-08,
+            "maximum_abs_witness_differential_V": 0.00499202573808598,
+            "power_at_min_R_W": 2.694088753482473e-10
+          },
+          "R7123": {
+            "current_at_min_R_A": 0.0,
+            "maximum_abs_witness_differential_V": 0.0,
+            "power_at_min_R_W": 0.0
+          },
+          "R7124": {
+            "current_at_min_R_A": 5.422301525408177e-05,
+            "maximum_abs_witness_differential_V": 5.015628911002564,
+            "power_at_min_R_W": 0.0002719625229501055
+          },
+          "R7125": {
+            "current_at_min_R_A": 5.422301525408177e-05,
+            "maximum_abs_witness_differential_V": 5.015628911002564,
+            "power_at_min_R_W": 0.0002719625229501055
+          },
+          "R7126": {
+            "current_at_min_R_A": 5.4229793130988524e-05,
+            "maximum_abs_witness_differential_V": 5.016255864616438,
+            "power_at_min_R_W": 0.0002720305178302574
+          }
+        },
+        "scope": "Ideal virtual-ground linear witness potentials; dividing by minimum absolute resistance is conservative sensitivity, not simultaneous exact extrema or total rail current.",
+        "state": "IN_negative"
+      },
+      {
+        "branches": {
+          "R7121": {
+            "current_at_min_R_A": 7.303939306116317e-08,
+            "maximum_abs_witness_differential_V": 0.006756143858157593,
+            "power_at_min_R_W": 4.934646468337358e-10
+          },
+          "R7122": {
+            "current_at_min_R_A": 5.396784581714573e-08,
+            "maximum_abs_witness_differential_V": 0.00499202573808598,
+            "power_at_min_R_W": 2.694088753482473e-10
+          },
+          "R7123": {
+            "current_at_min_R_A": 0.0,
+            "maximum_abs_witness_differential_V": 0.0,
+            "power_at_min_R_W": 0.0
+          },
+          "R7124": {
+            "current_at_min_R_A": 1.2702311478316868e-07,
+            "maximum_abs_witness_differential_V": 0.011749638117443102,
+            "power_at_min_R_W": 1.4924756312526688e-09
+          },
+          "R7125": {
+            "current_at_min_R_A": 1.2702311478316868e-07,
+            "maximum_abs_witness_differential_V": 0.011749638117443102,
+            "power_at_min_R_W": 1.4924756312526688e-09
+          },
+          "R7126": {
+            "current_at_min_R_A": 1.2703899267251655e-07,
+            "maximum_abs_witness_differential_V": 0.011751106822207782,
+            "power_at_min_R_W": 1.4928487734804137e-09
+          }
+        },
+        "scope": "Ideal virtual-ground linear witness potentials; dividing by minimum absolute resistance is conservative sensitivity, not simultaneous exact extrema or total rail current.",
+        "state": "IN_centre"
+      },
+      {
+        "branches": {
+          "R7121": {
+            "current_at_min_R_A": 0.0,
+            "maximum_abs_witness_differential_V": 0.0,
+            "power_at_min_R_W": 0.0
+          },
+          "R7122": {
+            "current_at_min_R_A": 5.4156854693017296e-05,
+            "maximum_abs_witness_differential_V": 5.0095090591041,
+            "power_at_min_R_W": 0.0002712992541972545
+          },
+          "R7123": {
+            "current_at_min_R_A": 0.0,
+            "maximum_abs_witness_differential_V": 0.0,
+            "power_at_min_R_W": 0.0
+          },
+          "R7124": {
+            "current_at_min_R_A": 5.4163624299853915e-05,
+            "maximum_abs_witness_differential_V": 5.010135247736487,
+            "power_at_min_R_W": 0.00027136708324985466
+          },
+          "R7125": {
+            "current_at_min_R_A": 5.4163624299853915e-05,
+            "maximum_abs_witness_differential_V": 5.010135247736487,
+            "power_at_min_R_W": 0.00027136708324985466
+          },
+          "R7126": {
+            "current_at_min_R_A": 5.41703947528914e-05,
+            "maximum_abs_witness_differential_V": 5.0107615146424545,
+            "power_at_min_R_W": 0.00027143492926077773
+          }
+        },
+        "scope": "Ideal virtual-ground linear witness potentials; dividing by minimum absolute resistance is conservative sensitivity, not simultaneous exact extrema or total rail current.",
+        "state": "manual_low"
+      },
+      {
+        "branches": {
+          "R7121": {
+            "current_at_min_R_A": 0.0,
+            "maximum_abs_witness_differential_V": 0.0,
+            "power_at_min_R_W": 0.0
+          },
+          "R7122": {
+            "current_at_min_R_A": 5.404864918913515e-05,
+            "maximum_abs_witness_differential_V": 4.999500049995001,
+            "power_at_min_R_W": 0.0002702162243232435
+          },
+          "R7123": {
+            "current_at_min_R_A": 0.0,
+            "maximum_abs_witness_differential_V": 0.0,
+            "power_at_min_R_W": 0.0
+          },
+          "R7124": {
+            "current_at_min_R_A": 5.4055405270283786e-05,
+            "maximum_abs_witness_differential_V": 5.00012498750125,
+            "power_at_min_R_W": 0.00027028378260145273
+          },
+          "R7125": {
+            "current_at_min_R_A": 5.4055405270283786e-05,
+            "maximum_abs_witness_differential_V": 5.00012498750125,
+            "power_at_min_R_W": 0.00027028378260145273
+          },
+          "R7126": {
+            "current_at_min_R_A": 5.406216219594256e-05,
+            "maximum_abs_witness_differential_V": 5.000750003124687,
+            "power_at_min_R_W": 0.00027035135777028714
+          }
+        },
+        "scope": "Ideal virtual-ground linear witness potentials; dividing by minimum absolute resistance is conservative sensitivity, not simultaneous exact extrema or total rail current.",
+        "state": "manual_high"
+      },
+      {
+        "branches": {
+          "R7121": {
+            "current_at_min_R_A": 0.0,
+            "maximum_abs_witness_differential_V": 0.0,
+            "power_at_min_R_W": 0.0
+          },
+          "R7122": {
+            "current_at_min_R_A": 2.7054756127000603e-05,
+            "maximum_abs_witness_differential_V": 2.502564941747556,
+            "power_at_min_R_W": 6.77062841909616e-05
+          },
+          "R7123": {
+            "current_at_min_R_A": 0.0,
+            "maximum_abs_witness_differential_V": 0.0,
+            "power_at_min_R_W": 0.0
+          },
+          "R7124": {
+            "current_at_min_R_A": 2.705813797151648e-05,
+            "maximum_abs_witness_differential_V": 2.5028777623652743,
+            "power_at_min_R_W": 6.772321181992002e-05
+          },
+          "R7125": {
+            "current_at_min_R_A": 2.705813797151648e-05,
+            "maximum_abs_witness_differential_V": 2.5028777623652743,
+            "power_at_min_R_W": 6.772321181992002e-05
+          },
+          "R7126": {
+            "current_at_min_R_A": 2.7061520238762917e-05,
+            "maximum_abs_witness_differential_V": 2.5031906220855697,
+            "power_at_min_R_W": 6.774014368105018e-05
+          }
+        },
+        "scope": "Ideal virtual-ground linear witness potentials; dividing by minimum absolute resistance is conservative sensitivity, not simultaneous exact extrema or total rail current.",
+        "state": "manual_quarter"
+      },
+      {
+        "branches": {
+          "R7121": {
+            "current_at_min_R_A": 0.0,
+            "maximum_abs_witness_differential_V": 0.0,
+            "power_at_min_R_W": 0.0
+          },
+          "R7122": {
+            "current_at_min_R_A": 2.700070067020341e-05,
+            "maximum_abs_witness_differential_V": 2.4975648119938154,
+            "power_at_min_R_W": 6.743599989307786e-05
+          },
+          "R7123": {
+            "current_at_min_R_A": 0.0,
+            "maximum_abs_witness_differential_V": 0.0,
+            "power_at_min_R_W": 0.0
+          },
+          "R7124": {
+            "current_at_min_R_A": 2.7004075757787184e-05,
+            "maximum_abs_witness_differential_V": 2.4978770075953145,
+            "power_at_min_R_W": 6.745285994673862e-05
+          },
+          "R7125": {
+            "current_at_min_R_A": 2.7004075757787184e-05,
+            "maximum_abs_witness_differential_V": 2.4978770075953145,
+            "power_at_min_R_W": 6.745285994673862e-05
+          },
+          "R7126": {
+            "current_at_min_R_A": 2.7007451267256907e-05,
+            "maximum_abs_witness_differential_V": 2.498189242221264,
+            "power_at_min_R_W": 6.746972421567624e-05
+          }
+        },
+        "scope": "Ideal virtual-ground linear witness potentials; dividing by minimum absolute resistance is conservative sensitivity, not simultaneous exact extrema or total rail current.",
+        "state": "manual_three_quarter"
+      },
+      {
+        "branches": {
+          "R7121": {
+            "current_at_min_R_A": 5.406149244795634e-06,
+            "maximum_abs_witness_differential_V": 0.5000688051435962,
+            "power_at_min_R_W": 2.703446593272908e-06
+          },
+          "R7122": {
+            "current_at_min_R_A": 2.700070067020341e-05,
+            "maximum_abs_witness_differential_V": 2.4975648119938154,
+            "power_at_min_R_W": 6.743599989307786e-05
+          },
+          "R7123": {
+            "current_at_min_R_A": 1.081081081081081e-05,
+            "maximum_abs_witness_differential_V": 1,
+            "power_at_min_R_W": 1.081081081081081e-05
+          },
+          "R7124": {
+            "current_at_min_R_A": 4.322306293340058e-05,
+            "maximum_abs_witness_differential_V": 3.9981333213395533,
+            "power_at_min_R_W": 0.0001728115681643854
+          },
+          "R7125": {
+            "current_at_min_R_A": 4.322306293340058e-05,
+            "maximum_abs_witness_differential_V": 3.9981333213395533,
+            "power_at_min_R_W": 0.0001728115681643854
+          },
+          "R7126": {
+            "current_at_min_R_A": 4.322846581626725e-05,
+            "maximum_abs_witness_differential_V": 3.9986330880047207,
+            "power_at_min_R_W": 0.00017285477375660722
+          }
+        },
+        "scope": "Ideal virtual-ground linear witness potentials; dividing by minimum absolute resistance is conservative sensitivity, not simultaneous exact extrema or total rail current.",
+        "state": "mixed"
+      },
+      {
+        "branches": {
+          "R7121": {
+            "current_at_min_R_A": 0.0,
+            "maximum_abs_witness_differential_V": 0.0,
+            "power_at_min_R_W": 0.0
+          },
+          "R7122": {
+            "current_at_min_R_A": 5.396784581714573e-08,
+            "maximum_abs_witness_differential_V": 0.00499202573808598,
+            "power_at_min_R_W": 2.694088753482473e-10
+          },
+          "R7123": {
+            "current_at_min_R_A": 0.0,
+            "maximum_abs_witness_differential_V": 0.0,
+            "power_at_min_R_W": 0.0
+          },
+          "R7124": {
+            "current_at_min_R_A": 5.3974591797872866e-08,
+            "maximum_abs_witness_differential_V": 0.00499264974130324,
+            "power_at_min_R_W": 2.6947623177659793e-10
+          },
+          "R7125": {
+            "current_at_min_R_A": 5.3974591797872866e-08,
+            "maximum_abs_witness_differential_V": 0.00499264974130324,
+            "power_at_min_R_W": 2.6947623177659793e-10
+          },
+          "R7126": {
+            "current_at_min_R_A": 5.398133862184759e-08,
+            "maximum_abs_witness_differential_V": 0.004993273822520902,
+            "power_at_min_R_W": 2.6954360504510814e-10
+          }
+        },
+        "scope": "Ideal virtual-ground linear witness potentials; dividing by minimum absolute resistance is conservative sensitivity, not simultaneous exact extrema or total rail current.",
+        "state": "zero"
+      }
+    ],
+    "rating_scope": "800mW per resistor is absolute maximum, not unrestricted operating allowance; keep junction below150C and derate with ambient using total package power. ThetaJA40C/W sensitivity presumes relevant thermal installation, not verified board performance. +/-12V node envelope would span24V any-to-any, below75V operating feature and80V absolute; faults/ESD remain unqualified.",
+    "ratings": {
+      "any_two_pins_absolute_max_V": 80,
+      "each_resistor_absolute_max_W": 0.8,
+      "junction_absolute_max_C": 150,
+      "operating_voltage_feature_V": 75,
+      "package_theta_JA_C_per_W": 40,
+      "package_theta_JC_C_per_W": 10,
+      "resistor_to_EP_typical_pF": 5.5,
+      "resistor_to_resistor_typical_pF": 1.4
+    },
+    "resistance_interval_ohm": [
+      92500,
+      107500
+    ],
+    "unused_and_EP": {
+      "EP9_each": "Quiet local AGND, no internal DC resistor-terminal connection. No additional modeled DC load; displacement current and shared return coupling are not zero or quantified.",
+      "RN7102_R3_R4": "Both terminals NC: zero ideal DC current/power; actual leakage, parasitic pickup and assembly faults not bounded."
+    }
+  },
+  "networks": {
+    "RN7101": {
+      "EP9": "AGND",
+      "elements": {
+        "R1": "R7121",
+        "R2": "R7122",
+        "R3": "R7123",
+        "R4": "R7124"
+      },
+      "unused_elements": []
+    },
+    "RN7102": {
+      "EP9": "AGND",
+      "elements": {
+        "R1": "R7125",
+        "R2": "R7126"
+      },
+      "unused_elements": [
+        "R3",
+        "R4"
+      ]
+    }
+  },
+  "physical": "NOT RUN",
+  "pin_pairs": {
+    "R1": [
+      "1",
+      "8"
+    ],
+    "R2": [
+      "2",
+      "7"
+    ],
+    "R3": [
+      "3",
+      "6"
+    ],
+    "R4": [
+      "4",
+      "5"
+    ]
+  },
+  "pitch_acceptance": false,
+  "required_unknown_terms": [
+    "external-source, jack, ADG5412F on-resistance/leakage/protection,100k pulldown and10k sense input loading",
+    "pot total resistance,taper,contact resistance,position resolution/repeatability and installed loading",
+    "actual opamp offset/commonmode/supply/temperature/bias/loading and finite open-loop gain",
+    "REF5050 operating initial/drift/noise/stability/startup with retained KEMET pair",
+    "resistor differential temperature gradients,aging,moisture,reflow and network stray capacitance",
+    "source/receiver local-ground displacement and both resistance-domain obligations with shared return currents",
+    "output open-to10k load change,headroom,current drive,stability and feedback compensation",
+    "missing/unequal rail,backfeed,protection,charge/discharge and clip threshold behavior"
+  ],
+  "simulation": "NOT RUN",
+  "source_sha256": {
+    "design/architecture-278/implementation/stage12/budget-report.json": "5a33568cda9572c16a6f3c6867a12ad3859e44895efefd5daba6b1f2885de797",
+    "design/architecture-278/implementation/stage13/calibration-report.json": "39ca85076b6ad3c158895a26c1c8f906c9231e8fa00272ff1c40c91d09a8eb98",
+    "design/architecture-278/implementation/stage14/electrical-input.json": "6fd85c88af592721ebecd422547e2e5f097cffac316bfef9bf45324118b99208",
+    "design/architecture-278/implementation/stage14/electrical-report.json": "959c09f9430d9da34d986e403eb46382b2acd71cdf2950b7a6ff022ec434cec7",
+    "design/architecture-278/implementation/stage15/electrical-input.json": "97ba95655f27118f3de3ff78688f90b78c9331bde59e46cbfa49fe3e2f91e47b",
+    "scripts/architecture278/implementation/stage12_budget.py": "709cbb97be3462cafa9012995bc7b429399e1a000a99ae8e10e9ff4fc49f6c38",
+    "scripts/architecture278/implementation/stage15_electrical.py": "84055a21116b077ac4a8460c926e77180a6cce2cba5febd624254b5bd5b6cd6d",
+    "scripts/architecture278/implementation/test_stage15_electrical.py": "3b6d5b19c0775606e0fd9e0cac7522b813e0b9a023524105cb04cb7cb3f1bea4"
+  },
+  "status": "CANDIDATE MATCHED RATIOS; COMPLETE A01 ACCURACY UNRESOLVED",
+  "temperature_accounting": "Use full-temperature ratio envelope directly; do not add matching drift or absoluteTC again. Matching drift only useful for separate anchored delta-temperature calculation. No long-term/moisture/reflow typical shift promoted to lifetime maximum.",
+  "termination_scope": "EP9 quiet local AGND is project implementation of manufacturer AC-shield recommendation, not an internal resistor connection or extra DC load. Unused RN7102 R3/R4 both ends NC is explicit engineering choice; no manufacturer unused-element termination mandate found. Distributed capacitance/actual quiet return and coupling remain unqualified."
+}

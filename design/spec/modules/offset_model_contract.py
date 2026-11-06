@@ -30,7 +30,7 @@ def model_contract(parts):
 
     def amp(role, plus, minus, out):
         p = one(role)
-        if (p.prefix != 'U' or p.symbol != SOURCE_LIBRARY + 'OPA4197IPWR' or
+        if (p.prefix != 'U' or p.symbol not in (SOURCE_LIBRARY + 'OPA4197IPWR', SOURCE_LIBRARY + 'OPA4197IDR') or
                 p.unit not in (1, 2, 3, 4)):
             raise ValueError(f'AO model amplifier identity changed: {role}')
         output, negative, positive = AMP_MAPS[p.unit - 1]

@@ -1,0 +1,27 @@
+$ zudo-circuit-doc check && pnpm --dir doc check
+SCOPE: inventory provider=manual; schematic/placement binding not performed (68 lines, 0 declared placements unverified); pin-asset check performed
+PASS: component-spec contract; 68 lines; offline=True; refreshed=none
+ok   validate: canonical validator passed
+provider        circuit-component-spec (contract v1)
+view model      v2
+records         58 selected of 68 available
+sources         122 selected of 140 available, 118 linkable
+fields          91 publish, 8 deny (662 values withheld)
+urls            118 allowed of 122 considered
+generatedPages  62
+publishedCoverageDomains 295
+publishedFacts  528
+publishedIntegrationRules 2
+publishedInteractions 56
+publishedPinMaps 58
+publishedRecords 58
+publishedSources 122
+ok   generated pages: doc/src/content/docs/components is up to date
+ok   preflight: circuit/generated/preflight.json is up to date
+ok   models: 31 selected, up to date
+31 committed footprint previews are current and safe
+ok   footprints: previews up to date
+check passed: generated output is up to date
+$ zfb check
+info running /workspace/zudo-osc-hole-field/doc/node_modules/.bin/tsc --noEmit
+✓ checked 1 collection and tsc — no errors

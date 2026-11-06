@@ -1,0 +1,120 @@
+{
+  "diagnostics": [
+    {
+      "endpoints": [
+        "R2316.2"
+      ],
+      "guard_layers": [
+        "In3.Cu"
+      ],
+      "net": "XED7C19D453619667580D",
+      "phase": "path_rejected",
+      "reason": "fill_guard_disconnection"
+    },
+    {
+      "attempts": [
+        {
+          "expanded": 1624,
+          "limit": 300000,
+          "window_cells": [
+            111,
+            483,
+            0,
+            413
+          ]
+        },
+        {
+          "expanded": 1624,
+          "limit": 1500000,
+          "window_cells": [
+            0,
+            483,
+            0,
+            413
+          ]
+        }
+      ],
+      "endpoints": [
+        "R2316.2"
+      ],
+      "max_expansions": 1500000,
+      "net": "XED7C19D453619667580D",
+      "phase": "route",
+      "reason": "search_exhausted",
+      "window_mm": 30
+    }
+  ],
+  "dump_sha256": "d08f3077d3b31416e3a6c56176a23603e52a14e3a045cfae7518ea77b1582d2f",
+  "links": [],
+  "parameters": {
+    "allowed_layers": [
+      "F.Cu",
+      "In2.Cu",
+      "In3.Cu",
+      "B.Cu"
+    ],
+    "bounds_mm": [
+      205,
+      72,
+      246,
+      120
+    ],
+    "clearance": 0.2,
+    "edge_clearance": 0.5,
+    "fill_guards": {
+      "-12V": "In3.Cu"
+    },
+    "grow": {
+      "+12V": 0.05,
+      "+5V": 0.05,
+      "-12V": 0.05,
+      "AGND": 0.05
+    },
+    "hole_clearance": 0.25,
+    "max_expansions": 1500000,
+    "res": 0.1,
+    "signal_width": 0.2,
+    "via_cost": 60,
+    "via_diameter": 0.6,
+    "via_drill": 0.3,
+    "window_mm": 30
+  },
+  "results": [
+    {
+      "island": [
+        "R2316.2"
+      ],
+      "net": "XED7C19D453619667580D",
+      "path": null
+    }
+  ],
+  "seed": [
+    {
+      "end_nm": [
+        227980882,
+        113013236
+      ],
+      "kind": "segment",
+      "layer": "B.Cu",
+      "net": "XED7C19D453619667580D",
+      "start_nm": [
+        229010000,
+        113390000
+      ],
+      "uuid": "60bd429c-45f4-5d3a-95bd-bfc13e3fa17e",
+      "width_nm": 200000
+    },
+    {
+      "at_nm": [
+        227980882,
+        113013236
+      ],
+      "diameter_nm": 600000,
+      "drill_nm": 300000,
+      "kind": "via",
+      "net": "XED7C19D453619667580D",
+      "uuid": "3d6ccadf-03fa-51d1-bdb0-7d198cc15261"
+    }
+  ],
+  "synthetic_seed_membership": "proposal only; requires native confirmation"
+}

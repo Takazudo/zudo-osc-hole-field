@@ -1,0 +1,115 @@
+{
+  "drivers": {
+    ".circuit-cache/stage43/diagnose.sh": {
+      "sha256": "cb3f3c3855c30f2a5afea39fc01b83494fa27a03786a1150912bf82fc0b48a51",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nbash scripts/kicad/run.sh python3 design/architecture-278/implementation/stage43/b2-translation/power.py .circuit-cache/stage43-b2-exact-v2\nbash scripts/kicad/run.sh python3 design/architecture-278/implementation/stage43/b2-translation/mapping.py .circuit-cache/stage43-b2-exact-v2\n"
+    },
+    ".circuit-cache/stage43/final-diagnostics.sh": {
+      "sha256": "2105cbf23593e56e772b80458b248eccf28d388014cf9bdc31b8b244426ab1f6",
+      "command_text": "#!/bin/bash\nset -uo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nbash scripts/kicad/run.sh python3 design/architecture-278/implementation/stage43/b2-translation/mapping.py .circuit-cache/stage43-b2-exact-v2\nmapping_status=$?\nbash scripts/kicad/run.sh python3 design/architecture-278/implementation/stage43/b2-translation/native_identity.py .circuit-cache/stage43-b2-intended\nidentity_status=$?\nprintf 'mapping_status=%s native_identity_status=%s (both expected rejection, no candidate acceptance)\\n' \"$mapping_status\" \"$identity_status\"\n[[ \"$mapping_status\" == 1 && \"$identity_status\" == 1 ]]\n"
+    },
+    ".circuit-cache/stage43/mapping-final.sh": {
+      "sha256": "92deb3cf1d393eda420b0f3cab166837bf93466a7f6f30226c9db67d0ec1bb81",
+      "command_text": "#!/bin/bash\nset -uo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nbash scripts/kicad/run.sh python3 design/architecture-278/implementation/stage43/b2-translation/mapping.py .circuit-cache/stage43-b2-exact-v2\nstatus=$?\n[[ \"$status\" == 1 ]] || exit 1\npython3 - <<'PY'\nimport json\np='.circuit-cache/stage43-b2-exact-v2/mapping-audit.json'\nd=json.load(open(p))\nif d['exact_translation_verified'] or not d['pose_deviations'] or d['pad_count']!=115 or d['copper_count']!=1160:raise SystemExit('missing/unexpected mapping diagnostic')\nprint('Expected strict pose rejection confirmed by completed bound diagnostic')\nPY\n"
+    },
+    ".circuit-cache/stage43/mapping.sh": {
+      "sha256": "86350ea549f6a1c8aae4488b8c1a056f940ebe08e0c0ca52f270f5bb3a2d090d",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nbash scripts/kicad/run.sh python3 design/architecture-278/implementation/stage43/b2-translation/mapping.py .circuit-cache/stage43-b2-exact-v2\n"
+    },
+    ".circuit-cache/stage43/translate-first.sh": {
+      "sha256": "9c3316680ea12b04159ee9ddab45bbfa2670916199f6f34b6e44162efa58ae79",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nroot=design/architecture-278/implementation/stage43/b2-translation\nwork=.circuit-cache/stage43-b2-exact\nbash scripts/kicad/run.sh python3 \"$root/prepare.py\" \"$work\"\nbash scripts/kicad/run.sh python3 scripts/pcbgen/grid_apply.py \"$work/osc-jack-left.kicad_pcb\" \"$work/proposal.json\" --output \"$work/routed.kicad_pcb\"\ncp \"$work/routed.kicad_pcb\" \"$work/osc-jack-left.kicad_pcb\"\nbash scripts/kicad/run.sh kicad-cli pcb drc --schematic-parity --refill-zones --save-board --format json --severity-all -o \"$work/drc-first.json\" \"$work/osc-jack-left.kicad_pcb\"\nbash scripts/kicad/run.sh python3 design/architecture-278/implementation/stage41/native-pilot/connectivity.py \"$work/osc-jack-left.kicad_pcb\" \"$work/connectivity.json\"\n"
+    },
+    ".circuit-cache/stage43/translate-v2.sh": {
+      "sha256": "eb99a508932949e152b938dc69d9b608a543ebf0ad42009d4a093e414e0ae5ba",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nroot=design/architecture-278/implementation/stage43/b2-translation\nwork=.circuit-cache/stage43-b2-exact-v2\nbash scripts/kicad/run.sh python3 \"$root/prepare.py\" \"$work\"\nbash scripts/kicad/run.sh python3 scripts/pcbgen/grid_apply.py \"$work/osc-jack-left.kicad_pcb\" \"$work/proposal.json\" --output \"$work/routed.kicad_pcb\"\ncp \"$work/routed.kicad_pcb\" \"$work/osc-jack-left.kicad_pcb\"\nbash scripts/kicad/run.sh kicad-cli pcb drc --schematic-parity --refill-zones --save-board --format json --severity-all -o \"$work/drc-first.json\" \"$work/osc-jack-left.kicad_pcb\"\nbash scripts/kicad/run.sh python3 design/architecture-278/implementation/stage41/native-pilot/connectivity.py \"$work/osc-jack-left.kicad_pcb\" \"$work/connectivity.json\"\n"
+    },
+    ".circuit-cache/stage43/translate.sh": {
+      "sha256": "9c3316680ea12b04159ee9ddab45bbfa2670916199f6f34b6e44162efa58ae79",
+      "command_text": "#!/bin/bash\nset -euo pipefail\nsource /workspace/task-tools/kicad-10.0.6/env.sh\nroot=design/architecture-278/implementation/stage43/b2-translation\nwork=.circuit-cache/stage43-b2-exact\nbash scripts/kicad/run.sh python3 \"$root/prepare.py\" \"$work\"\nbash scripts/kicad/run.sh python3 scripts/pcbgen/grid_apply.py \"$work/osc-jack-left.kicad_pcb\" \"$work/proposal.json\" --output \"$work/routed.kicad_pcb\"\ncp \"$work/routed.kicad_pcb\" \"$work/osc-jack-left.kicad_pcb\"\nbash scripts/kicad/run.sh kicad-cli pcb drc --schematic-parity --refill-zones --save-board --format json --severity-all -o \"$work/drc-first.json\" \"$work/osc-jack-left.kicad_pcb\"\nbash scripts/kicad/run.sh python3 design/architecture-278/implementation/stage41/native-pilot/connectivity.py \"$work/osc-jack-left.kicad_pcb\" \"$work/connectivity.json\"\n"
+    }
+  },
+  "logs": {
+    ".circuit-cache/stage43/audit-final-normal.log": {
+      "sha256": "e62631eab85cccde99823caa50a3c153c07e211ac6b70b356b5a8807d92a1421",
+      "bytes": 7165
+    },
+    ".circuit-cache/stage43/audit-final-optimized.log": {
+      "sha256": "e62631eab85cccde99823caa50a3c153c07e211ac6b70b356b5a8807d92a1421",
+      "bytes": 7165
+    },
+    ".circuit-cache/stage43/audit-normal.log": {
+      "sha256": "691fd3269cf09ed4813e5b4457046ab7d00118cd10bca3f45decc32196a9172c",
+      "bytes": 7165
+    },
+    ".circuit-cache/stage43/circuit-check.log": {
+      "sha256": "07a2f28172f86ec3ebb60044f4eaad6da83999d0a61d5b14bf6b088ac70acca4",
+      "bytes": 246
+    },
+    ".circuit-cache/stage43/diagnose.log": {
+      "sha256": "7bcc162c13b8bb449bff08535107a6c7016d9844fc16d314d1b274eb4457b419",
+      "bytes": 1540
+    },
+    ".circuit-cache/stage43/final-diagnostics.log": {
+      "sha256": "f0dc0fa1d778b133c87b062c5b5dc8f67f8024b9289d516a437f7da22496c7dc",
+      "bytes": 4683
+    },
+    ".circuit-cache/stage43/focused-final-normal.log": {
+      "sha256": "6255422a8b389873b8a3de3d49c46c44decad55d96302e15f7b6668db46e79c1",
+      "bytes": 476
+    },
+    ".circuit-cache/stage43/focused-final-optimized.log": {
+      "sha256": "a71529d5c7824deb5e6818e5db9333d8cae339a79d163b754f17ee4782dc5349",
+      "bytes": 476
+    },
+    ".circuit-cache/stage43/intended-audit.log": {
+      "sha256": "bb2e1420c00245eefc7f7014f827c35f334301c0c7ef86eb362465d1e983fe27",
+      "bytes": 647
+    },
+    ".circuit-cache/stage43/intended.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    ".circuit-cache/stage43/mapping-final.log": {
+      "sha256": "f968a3d166756dd51f3bbe23335073c4e42441658e9bb9076c8eb7ea7e6966d1",
+      "bytes": 1594
+    },
+    ".circuit-cache/stage43/mapping.log": {
+      "sha256": "a99cd7dff86fc4df6bbda9fd8dcd342138e3675b6c7df2c2b0065e6f1aa8c17f",
+      "bytes": 1566
+    },
+    ".circuit-cache/stage43/pnpm-check.log": {
+      "sha256": "028e9fcfd2ffee79cf33af7bbc9d7d82931c5ef9d31847ea177e04bdffe0b04e",
+      "bytes": 1211
+    },
+    ".circuit-cache/stage43/tests-normal.log": {
+      "sha256": "af39dda36802247e7095755a42eea263e3225ea75a97a90443197c7a1c2d151a",
+      "bytes": 282
+    },
+    ".circuit-cache/stage43/tests-optimized.log": {
+      "sha256": "0808e01e2c43f6bccd1b25fd5a09ca82cf0ff6c75912a5deed5fa60af8cacfbf",
+      "bytes": 282
+    },
+    ".circuit-cache/stage43/translate-v2.log": {
+      "sha256": "42ed098d09645e1ea653b1b61737f5ee902a00d76fb2af5eac8b5598695f0ffa",
+      "bytes": 1394
+    },
+    ".circuit-cache/stage43/translate.log": {
+      "sha256": "7d9c2f7e1b18c37c5fe07b5dd0dae6a2ae984a37abb69af6b65898af3697117f",
+      "bytes": 1494
+    }
+  },
+  "limits": "First failures and failed native outputs are evidence, not passed checks. Review VERIFICATION.md for distinctions.",
+  "source_commands": [
+    "python -m unittest scripts.checks.test_native_pilot_identity scripts.checks.test_native_pilot_connectivity scripts.checks.test_native_pilot_power scripts.checks.test_native_pilot_settlement scripts.checks.test_native_pilot_metrics scripts.checks.test_mult_copper_plan scripts.checks.test_b1_scope scripts.checks.test_full_b1_power scripts.checks.test_full_b1_retirement scripts.checks.test_full_b1_settlement scripts.checks.test_b2_translation",
+    "python -O -m unittest scripts.checks.test_native_pilot_identity scripts.checks.test_native_pilot_connectivity scripts.checks.test_native_pilot_power scripts.checks.test_native_pilot_settlement scripts.checks.test_native_pilot_metrics scripts.checks.test_mult_copper_plan scripts.checks.test_b1_scope scripts.checks.test_full_b1_power scripts.checks.test_full_b1_retirement scripts.checks.test_full_b1_settlement scripts.checks.test_b2_translation",
+    "pnpm check",
+    "pnpm circuit:check",
+    "python -m py_compile design/architecture-278/implementation/stage43/b2-translation/*.py",
+    "git diff --check",
+    "python [-O] - <<'PY'\nfrom pathlib import Path\nfrom scripts.checks.architecture_history import CHECKPOINTS,verify_binding\nfor c,m in CHECKPOINTS.items():verify_binding(Path.cwd(),c,m)\nPY",
+    "python [-O] design/architecture-278/implementation/stage43/b2-translation/audit.py .circuit-cache/stage43-b2-exact-v2 (each expected exit1); cmp final audit JSON normal/optimized",
+    "python design/architecture-278/implementation/stage43/b2-translation/intended.py .circuit-cache/stage43-b2-exact-v2 .circuit-cache/stage43-b2-intended",
+    "python design/architecture-278/implementation/stage43/b2-translation/audit.py .circuit-cache/stage43-b2-intended"
+  ]
+}

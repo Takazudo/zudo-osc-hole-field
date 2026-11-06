@@ -3,12 +3,12 @@
 Reserved master indices: O1..O5 = 11..15; OCTAVE_REF = 16.
 ALFA 2020 v7 source/pin evidence: design/standard/pin-maps/vco.json.
 """
-from design.spec.modules.io_partition import refined
+from design.spec.modules.io_partition import refined, precision_package
 from collections import defaultdict
 from dataclasses import replace
 import json, re
 from scripts.schgen.core import Family, Instance, Part
-from design.spec.cells._builder import ROOT, STANDARD, SHORTLIST, CATALOG, CELLS, cell_parts, load_symbol
+from design.spec.cells._builder import ROOT, STANDARD, SHORTLIST, CATALOG, CELLS, cell_parts, load_symbol, late_last
 from design.spec.modules.sample_hold import footprint
 
 INSTANCES = ('O1','O2','O3','O4','O5')
@@ -54,6 +54,16 @@ class Builder:
         self.device(CATALOG[SHORTLIST[identity]['mpn']],kind+'_'+key,kind,{'1':a,'2':b},value=value,mpn=None if exact else '')
 
     def r(self,key,value,a,b):self.passive('R',key,value,a,b)
+
+    def series(self,key,values,a,z):
+        # R-exact candidate: the first element keeps the original key and slot;
+        # added elements are appended last so existing designators stay locked.
+        nets=[a]+[f'{key}_SER{n}' for n in range(1,len(values))]+[z]
+        self.r(key,values[0],nets[0],nets[1])
+        self.__dict__.setdefault('series_tails',[]).extend((f'{key}_SER{n}',v,nets[n],nets[n+1]) for n,v in enumerate(values[1:],1))
+
+    def flush_series(self):
+        for tail in self.__dict__.pop('series_tails',[]):self.r(*tail)
     def c(self,key,value,a,b):self.passive('C',key,value,a,b)
 
     def amp(self,key,role,plus,minus,out):
@@ -64,9 +74,9 @@ class Builder:
         identity='trim_102' if value=='1 kΩ' else 'trim_103'
         self.device(CATALOG[SHORTLIST[identity]['mpn']],key,'RV',{'1':a,'2':w,'3':b or w},value=value,mpn=SHORTLIST[identity]['mpn'] if value in ('1 kΩ','10 kΩ') else '')
 
-    def cell(self,id,tag,nets,*,panel=None,role=None):
+    def cell(self,id,tag,nets,*,panel=None,role=None,variant=None):
         uid=(panel or 'J:{}.1V').format('O1')
-        generated=cell_parts(id,uid,nets,ordinal_start=1,instance_tag=tag)
+        generated=cell_parts(id,uid,nets,ordinal_start=1,instance_tag=tag,variant=variant)
         for p in generated:
             attrs={**p.attributes,'PanelUid':'','Island':self.island};refs={}
             if panel and p.prefix=='RV':
@@ -78,12 +88,13 @@ class Builder:
             self.parts.append(replace(p,attributes=attrs,panel_refs=refs))
 
     def finish(self,name,*,sensitive=(),globals=RAILS+REFS):
+        self.parts=late_last(self.parts)
         # Pack amplifier channels on the same explicitly local island. Standard
         # cell compiler emits whole quads; preserve every used channel and tie
         # unused channels as followers at ground, including power units.
         groups=defaultdict(list);rest=[]
         for p in self.parts:
-            if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')):
+            if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')):
                 if p.unit==1:groups[(p.symbol,p.attributes['Island'])].append(p)
             else:rest.append(p)
         for (symbol,island),channels in groups.items():
@@ -138,7 +149,8 @@ def family():
         template='J:{}.{}'.format('{}',key)
         b.device('WQP518MA','J_'+key,'J',{'T':key+'_TIP','S':'AGND','TN':None},panel=template,island='')
         b.cell('input_fault_switch',key,{'JACK':key+'_TIP','PROTECTED':key+'_PROTECTED'})
-        b.cell('high_impedance_input',key,{'PROTECTED':key+'_PROTECTED','BUFFERED':key+'_BUFFER'},role='precision' if key=='1V' else 'cv')
+        b.cell('high_impedance_input',key,{'PROTECTED':key+'_PROTECTED','BUFFERED':key+'_BUFFER'},role='precision' if key=='1V' else 'cv',
+               variant='precision' if key=='1V' else None)
     for key in ('FM','PWM'):
         b.cell('remote_buffer',key,{'SIGNAL':key+'_BUFFER','REMOTE':key+'_REMOTE'})
         b.cell('bipolar_attenuverter',key,{'REMOTE_INPUT':key+'_REMOTE','BUFFERED_INPUT':key+'_BUFFER','OUT':key+'_DEPTH'},panel='C:{}.{}±'.format('{}',key))
@@ -152,7 +164,7 @@ def family():
     b.amp('LFO_OFFSET','cv','LOCAL_REFN5','LFO_FB','LFO_REF');b.r('LFO_RF','40 kΩ','LFO_REF','LFO_FB');b.r('LFO_RG','100 kΩ','LFO_FB','AGND')
     b.device('2MS1T1B1M2QES-5','RANGE','SW',{'3':'LFO_REF','2':'RANGE_CV','1':'AGND'},panel='C:{}.VCO/LFO',island='')
     b.r('RANGE_PD','10 MΩ','RANGE_CV','AGND')
-    for key,value,net in [('PITCH','100 kΩ','1V_BUFFER'),('OCT','100 kΩ','OCT_CV'),('TUNE','250 kΩ','TUNE_MANUAL'),('FINE','5 MΩ','FINE_MANUAL'),('FM','200 kΩ','FM_DEPTH'),('RANGE','100 kΩ','RANGE_CV'),('BIAS','82.5 kΩ','LOCAL_REF5')]:b.r('PITCH_'+key,value,net,'EXPO_SUM')
+    for key,value,net in [('PITCH','100 kΩ','1V_BUFFER'),('OCT','100 kΩ','OCT_CV'),('TUNE',('200 kΩ','50 kΩ'),'TUNE_MANUAL'),('FINE',('1 MΩ',)*5,'FINE_MANUAL'),('FM','200 kΩ','FM_DEPTH'),('RANGE','100 kΩ','RANGE_CV'),('BIAS','82.5 kΩ','LOCAL_REF5')]:b.series('PITCH_'+key,value,net,'EXPO_SUM') if isinstance(value,tuple) else b.r('PITCH_'+key,value,net,'EXPO_SUM')
     b.trim('BASE_TRIM','10 kΩ','BASE_REFN5','BASE_ADJ','BASE_REF5');b.r('BASE_FEED','1 MΩ','BASE_ADJ','EXPO_SUM')
     # ALFA external -5 V recommendation avoids contradictory internal-zener
     # narrative versus VEE absolute limit. Driver/load sequencing remains a gate.
@@ -160,10 +172,10 @@ def family():
     b.device('AS3340D','CORE','U',{str(i):net for i,net in enumerate(['SCALE1','SCALE2','VEE5','PULSE_RAW','PWM_PIN','HARD_PIN','HF_PIN','SAW_RAW','SOFT_PIN','TRI_RAW','TIMING_CAP','AGND','LINEAR_REF','SCALE_PIN','EXPO_SUM','+12V'],1)})
     b.parts.append(Part('VEE_POWER_FLAG','Fixture:PWR_FLAG','#FLG',1,0,50.8,50.8,{'1':'VEE5'},value='LOCAL_BUFFER_SUPPLY',attributes={'Role':'oscillator:driven local -5 V declaration','MPN':'','Manufacturer':'','LCSC':'','PanelUid':'','Island':b.island}))
     b.r('RZ_FIXED','24 kΩ','SCALE1','RZ_TRIM');b.trim('RZ_TRIM','10 kΩ','RZ_TRIM','AGND')
-    b.r('RT','5.72 kΩ','SCALE2','AGND')
+    b.series('RT',('5.1 kΩ','620 Ω'),'SCALE2','AGND')
     b.r('RS_FIXED','1.5 kΩ','SCALE_PIN','SCALE_ADJ');b.trim('SCALE_TRIM','1 kΩ','SCALE_ADJ','AGND')
     b.c('SCALE_BYPASS','100 nF','SCALE_PIN','AGND');b.c('CF','1 nF C0G','TIMING_CAP','AGND')
-    b.r('LINEAR_REFERENCE','1.2 MΩ','+12V','LINEAR_REF');b.r('LINEAR_FILTER','470 Ω','LINEAR_REF','LINEAR_FILTER');b.c('LINEAR_FILTER','10 nF','LINEAR_FILTER','AGND')
+    b.series('LINEAR_REFERENCE',('1 MΩ','200 kΩ'),'+12V','LINEAR_REF');b.r('LINEAR_FILTER','470 Ω','LINEAR_REF','LINEAR_FILTER');b.c('LINEAR_FILTER','10 nF','LINEAR_FILTER','AGND')
     b.trim('HF_TRIM','20 kΩ','HF_PIN','LINEAR_REF','AGND')
     b.r('PULSE_LOAD','51 kΩ','PULSE_RAW','AGND')
     b.cell('gate_trigger_input','SYNC',{'BUFFERED':'SYNC_BUFFER','REF_5V':'LOCAL_REF5','GATE_REF':'OSC_GATE_REF','GATE_HIGH':'SYNC_GATE'})
@@ -171,15 +183,15 @@ def family():
     for mode in ('SOFT','HARD'):
         b.r(mode+'_PD','100 kΩ',mode+'_DRIVE','AGND');b.r(mode+'_LIMIT','10 kΩ',mode+'_DRIVE',mode+'_EDGE');b.c(mode+'_AC','1 nF',mode+'_EDGE',mode+'_PIN')
     # PWM command .2 + .72*manual + .36*depth, then clamp near 0..4 V.
-    b.amp('PWM_SUM','cv','AGND','PWM_SUM','PWM_NEG');b.r('PWM_FB','72 kΩ','PWM_NEG','PWM_SUM')
-    for name,value,net in [('MAN','100 kΩ','PW_MANUAL'),('CV','200 kΩ','PWM_DEPTH'),('OFFSET','1.8 MΩ','LOCAL_REF5')]:b.r('PWM_'+name,value,net,'PWM_SUM')
+    b.amp('PWM_SUM','cv','AGND','PWM_SUM','PWM_NEG');b.series('PWM_FB',('40 kΩ','32 kΩ'),'PWM_NEG','PWM_SUM')
+    for name,value,net in [('MAN','100 kΩ','PW_MANUAL'),('CV','200 kΩ','PWM_DEPTH'),('OFFSET',('1 MΩ','470 kΩ','330 kΩ'),'LOCAL_REF5')]:b.series('PWM_'+name,value,net,'PWM_SUM') if isinstance(value,tuple) else b.r('PWM_'+name,value,net,'PWM_SUM')
     b.amp('PWM_INVERT','cv','AGND','PWM_INV','PWM_DRIVE');b.r('PWM_INV_IN','100 kΩ','PWM_NEG','PWM_INV');b.r('PWM_INV_FB','100 kΩ','PWM_DRIVE','PWM_INV')
-    b.r('REF4_TOP','25 kΩ','LOCAL_REF5','REF4_RAW');b.r('REF4_BOT','100 kΩ','REF4_RAW','AGND');b.amp('REF4','cv','REF4_RAW','REF4','REF4')
+    b.r('REF4_TOP','24.9 kΩ','LOCAL_REF5','REF4_RAW');b.r('REF4_BOT','100 kΩ','REF4_RAW','AGND');b.amp('REF4','cv','REF4_RAW','REF4','REF4')
     b.r('PWM_LIMIT','10 kΩ','PWM_DRIVE','PWM_PIN');b.device('BAT54S_215','PWM_CLAMP','D',{'1':'AGND','3':'PWM_PIN','2':'REF4'})
     # Scale inferred raw 0..4 V triangle / 0..8 V saw at +12 V.
-    for key,rinput,rtop in [('TRI','40 kΩ','250 kΩ'),('SAW','80 kΩ','125 kΩ')]:
-        b.r(key+'_BIAS_TOP',rtop,'LOCAL_REF5',key+'_BIAS');b.r(key+'_BIAS_BOT','100 kΩ',key+'_BIAS','AGND')
-        b.amp(key+'_SCALE','audio',key+'_BIAS',key+'_SUM',key+'_SCALED');b.r(key+'_IN',rinput,key+'_RAW',key+'_SUM');b.r(key+'_FB','100 kΩ',key+'_SCALED',key+'_SUM')
+    for key,rinput,rtop in [('TRI','40 kΩ',('200 kΩ','50 kΩ')),('SAW',('40 kΩ','40 kΩ'),('75 kΩ','50 kΩ'))]:
+        b.series(key+'_BIAS_TOP',rtop,'LOCAL_REF5',key+'_BIAS');b.r(key+'_BIAS_BOT','100 kΩ',key+'_BIAS','AGND')
+        b.amp(key+'_SCALE','audio',key+'_BIAS',key+'_SUM',key+'_SCALED');(b.series(key+'_IN',rinput,key+'_RAW',key+'_SUM') if isinstance(rinput,tuple) else b.r(key+'_IN',rinput,key+'_RAW',key+'_SUM'));b.r(key+'_FB','100 kΩ',key+'_SCALED',key+'_SUM')
     # Pulse is squared in a 0/5 V domain so its amplitude does not depend on
     # the unqualified AS3340 pulse high level at +12 V.
     b.r('PUL_DIV_TOP','100 kΩ','PULSE_RAW','PULSE_HALF');b.r('PUL_DIV_BOT','100 kΩ','PULSE_HALF','AGND')
@@ -207,6 +219,7 @@ def family():
             b.r(key+'_ISO', '100 Ω', key+'_DRIVE', key)
             b.r(key+'_FB', '100 Ω', key, key+'_FB')
             b.c(key+'_FAST', '1 nF', key+'_DRIVE', key+'_FB')
+    b.flush_series()
     return b.finish('oscillator',sensitive=('TIMING_CAP','EXPO_SUM','SCALE_PIN','SCALE1','SCALE2','LINEAR_REF','HF_PIN'))
 
 
@@ -214,7 +227,8 @@ def octave_family():
     b=Builder('OSC_SHARED_REFERENCE')
     b.cell('reference_generator','SHARED',{'REF_5V':'OSC_REF5','REF_N5V':'OSC_REFN5','GATE_REF':'OSC_GATE_REF'})
     b.cell('octave_reference','SHARED',{'REF_5V':'OSC_REF5','T0':'OCT_BOTTOM','BOTTOM':'OCT_BOTTOM','T5':'OCT_TOP','TOP':'OCT_TOP',**{f'OCT{i}':f'OSC_OCT{i}' for i in range(6)}})
-    return b.finish('octave_reference',sensitive=(),globals=RAILS+REFS)
+    f=b.finish('octave_reference',sensitive=(),globals=RAILS+REFS)
+    return replace(f,parts=tuple(precision_package(p,f.name) for p in f.parts))
 
 
 def specification():

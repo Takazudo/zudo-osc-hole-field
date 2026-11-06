@@ -20,11 +20,11 @@ Current-load recalculation against the historical pinned-source ceilings; these 
 
 | Domain | Normal +12 / −12 / +5 mA | Conditional ramp/fault +12 / −12 / +5 mA | −12 V margin | Status |
 | --- | --- | --- | --- | --- |
-| A | 578.625 / 556.124 / 82.663 | 678.505 / 655.344 / 103.463 | -15.344 mA | REJECTED - pinned current ceiling exceeded |
-| B | 503.555 / 464.805 / 76.970 | 603.435 / 564.025 / 97.770 | 75.975 mA | PASS - arithmetic only |
-| C | 506.100 / 467.999 / 111.428 | 605.980 / 567.219 / 132.228 | 72.781 mA | PASS - arithmetic only |
+| A | 554.125 / 549.124 / 82.663 | 654.005 / 648.344 / 103.463 | -8.344 mA | REJECTED - pinned current ceiling exceeded |
+| B | 476.047 / 455.653 / 76.970 | 575.927 / 554.873 / 97.770 | 85.127 mA | PASS - arithmetic only |
+| C | 474.184 / 456.295 / 111.428 | 574.064 / 555.515 / 132.228 | 84.485 mA | PASS - arithmetic only |
 
-The current single-source comparison is **1505.819 / 1414.569 / 177.286 mA**. The two-source −12 V excess is **140.448 mA**. Three is only the aggregate arithmetic candidate count; the declared domain allocation still fails where the table reports a negative margin.
+The current single-source comparison is **1421.895 / 1386.713 / 177.286 mA**. The two-source −12 V excess is **112.592 mA**. Three is only the aggregate arithmetic candidate count; the declared domain allocation still fails where the table reports a negative margin.
 
 {/* power-comparison:end */}
 
@@ -44,13 +44,13 @@ The current arithmetic and geometric reservation do **not** establish a usable s
 
 {/* power-current:start */}
 
-All 33 signal modules, the shared reference, 347 worksheet loads and 650 fitted IC packages belong to `EXT`. These counts describe the captured master; the separate protection candidate is not a fitted implementation.
+All 33 signal modules, the shared reference, 362 worksheet loads and 650 fitted IC packages belong to `EXT`. These counts describe the captured master; the separate protection candidate is not a fitted implementation.
 
 | Requirement | +12 V | −12 V (magnitude) | +5 V |
 | --- | --- | --- | --- |
-| Normal planning load including allowances | 1,534.819 mA | 1,435.569 mA | 224.286 mA |
-| Minimum continuous delivery | 1,700 mA | 1,600 mA | 300 mA |
-| Minimum transient delivery for at least 20 ms | 2,000 mA | 1,900 mA | 400 mA |
+| Normal planning load including allowances | 1,450.895 mA | 1,407.713 mA | 224.286 mA |
+| Minimum continuous delivery | 1,600 mA | 1,600 mA | 300 mA |
+| Minimum transient delivery for at least 20 ms | 1,900 mA | 1,900 mA | 400 mA |
 | Maximum delivered current, including limiter tolerance | 2,100 mA | 2,000 mA | 500 mA |
 | Full capacitance ramp increment | 224.64 mA | 222.66 mA | 62.40 mA |
 | Source magnitude band, including ripple | 12.00…12.30 V | 12.00…12.20 V | 5.05…5.10 V |
@@ -80,7 +80,7 @@ Source or inlet current limiting must allow the transient delivery and impose th
 
 The checker allows the full **4.6 A** maximum delivered-current sum in any one AGND conductor. At **0.020 Ω** per complete conductor, the worst return shift is **92 mV**. Source maxima plus this shift are **12.392 / 12.292 / 5.192 V**. The separate current allocations are **40 mV** for protection and **20 mV** for board distribution. Including these allocations, worst total rail-plus-return losses are **194 / 192 / 162 mV**.
 
-Minimum continuous delivery evaluated at source-band maxima requires **41.96 W**; this is not an upper delivered-power or fault-power ceiling. Protection dissipation allocations are **68 / 64 / 12 mW**, and the conservative single return path dissipates **0.4232 W**. These calculations depend on the declared wire/contact/current bounds; installed temperature rise, source losses and limiter dynamics are unqualified. Ground is not fused, switched or disconnected to cure a loop.
+Minimum continuous delivery evaluated at source-band maxima requires **40.73 W**; this is not an upper delivered-power or fault-power ceiling. Protection dissipation allocations are **64 / 64 / 12 mW**, and the conservative single return path dissipates **0.4232 W**. These calculations depend on the declared wire/contact/current bounds; installed temperature rise, source losses and limiter dynamics are unqualified. Ground is not fused, switched or disconnected to cure a loop.
 
 {/* power-return:end */}
 
@@ -105,6 +105,15 @@ The exact circuit in #59 must implement load-side three-rail monitoring, inhibit
 A powered external patch can drive the source-facing ADG5412F input or the **output** resistor and precision-sense path into unpowered amplifier rails. Keeping input switches correctly oriented does not protect those output paths. #59 must supply a source-backed isolation or bounded discharge/shunt design and fault-energy analysis; #57 owns actual partial-rail, powered-off and opposite-drive tests. Buffered octave taps remain within EXT, but an unplugged receiver board is still a partial-power case. No live internal service or hot plugging is allowed: power down the source and external patched devices before handling the inlet or internal connectors.
 
 Reversed/shifted wiring, ground-open faults, startup retries, brownout, thermal hold/trip, discharge and restart remain explicit tests. Polarization and TVS pulse ratings alone do not establish survival. Any future return to pinned P+B requires the original current-limited 5 V first power with B disconnected, 5 V/15 V-only programming and retained readback before a 20 V-capable charger. No programmed state, source capacity or physical measurement has been invented.
+
+## Supply direction and low-capability policy (user-confirmed)
+
+**User-confirmed decision — 2026-10-31 11:11 UTC, owner decision card `cmsg_01Pv35emdXEU6gCRF3teSpo23Q1CUhqDN2ebZaArfgF1Ru` (electrical decisions E11 and E12).**
+
+- **PWR-D3 = D3-A.** OSC is supplied by a revised zudo-pd path at 20 V / 5 A (USB-PD 20 V PDO, Board P and Board B change) with a 5 A e-marked cable, delivering through `OSC-EXT-PWR-8-R1`. The 15 V / 3 A Board B cannot carry the contract.
+- **PWR-D5 = D5-1.** There is no degraded mode. Full OSC runs only on a supply contract that meets the table above; otherwise no rail is enabled. Renegotiation, a lower contract, charger removal or brownout shuts all rails down together and counts as a power cycle.
+
+Every OSC requirement above is unchanged. The decision adopts no hardware. The TVS2200 versus STUSB4500 clamp margin is still blocking. The interface-maximum limiter, reverse blocking, contract detection and all-rail shutdown (#59) are not designed, and efficiency, ripple and source bands are **NOT RUN**. The record and the OSC-side interface numbers for the PD revision are in `design/architecture-278/integration/power-contract/` (`README.md`, `pd-interface-20v.md`).
 
 ## Review and continuation
 

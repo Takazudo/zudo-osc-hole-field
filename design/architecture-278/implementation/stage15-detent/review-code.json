@@ -1,0 +1,44 @@
+{
+  "CAD": "NOT RUN",
+  "authorship_exclusion": "Authored only this independent review receipt and narrative. Did not author the detent generator, tests, report, primary receipt, contract or source integration.",
+  "checks": {
+    "deterministic_report": "PASS exact build comparison",
+    "predecessor": "PASS stage15_detent.py --check-predecessor",
+    "root_tests": 5,
+    "root_tests_result": "PASS"
+  },
+  "findings": [],
+  "hardware_acceptance": false,
+  "independent_review": true,
+  "limitations": [
+    "Review establishes selected ordering option and source consistency, not supplied physical-part inspection or electrical acceptance.",
+    "Final full guard is root-owned."
+  ],
+  "native": "NOT RUN",
+  "physical": "NOT RUN",
+  "result": "PASS bounded no-centre-detent source and preservation review",
+  "reviewed": [
+    "Exact C:A01.OFFSET -> pot_104 -> PTV09A-4020F-B104 -> captured RV1308 identity chain.",
+    "Independently viewed manufacturer physical PDF page 0 How To Order leader lines; option 0 is No Detent, option 2 is Center. Cached PDF SHA256 matches retained exact owner source.",
+    "The selected part already has no detent; no substitute, component geometry or production-source modification is required.",
+    "Continuous means normal potentiometer travel with end stops, not endless rotation. Nominal electrical centre does not provide a tactile click or guaranteed zero.",
+    "Meter-guided declared-baseline procedure remains intact; 2 mV post-factory static-path and separate 1 mV same-setting load criteria are unchanged.",
+    "Preservation inventory matches 406 baseline files; live immutable bytes and exact historical mutable review bindings verified. check_source adds narrow predecessor wrapper and current receipt gate."
+  ],
+  "reviewer": "independent_graph_review",
+  "simulation": "NOT RUN",
+  "source_sha256": {
+    ".claude/skills/component-bourns-ptv09a-4020f-b104/manifest.json": "f2ffe6910d20f2180933da63bc54a9cf392c3502ba3a1e09ab625b937ec31864",
+    ".claude/skills/component-bourns-ptv09a-4020f-b104/sources.json": "483119cec01f53212cfc5250f6dde939393d38c8390724dce8b49c09dc36dc1c",
+    "design/architecture-278/implementation/STAGE15-DETENT.md": "e28292e92cda7aa8296bf6ac19903d05aae35ad341446ce81e6caee3fc79fda8",
+    "design/architecture-278/implementation/stage10/inventory-report.json": "b88055d78d3cb5a7722e993e4b8d33b347e4eb2c4492e9a523c3eb968d8c8af0",
+    "design/architecture-278/implementation/stage15-detent/detent-report.json": "dbcd56c55227e58b00832ef6cead8b8d04c2021bdf3aaebcc312b3c7846ab0cb",
+    "design/architecture-278/implementation/stage15-detent/primary-evidence.json": "590611bc29e3f7e2588ea677c901dfc085abd97b3adc97908b62c428ce774fb2",
+    "design/architecture-278/implementation/stage15-detent/scope.json": "6b2d718f1b7d021079533f68b933cfd21574f62e8b9c2ec08626e411454f628c",
+    "design/standard/electrical-standard.json": "185f4775082a36873954323a2377844e0694631418ac510db08e3a0d39b56e53",
+    "design/standard/parts-shortlist.json": "cd27a8abd9fc586b9ee18cb7070ff7dce918254404188ca30626f52b20df4f21",
+    "scripts/architecture278/implementation/check_source.py": "07fe1c61d157dc5487217b7235b06a8476fca6780762736e29c7072837fcb6ab",
+    "scripts/architecture278/implementation/stage15_detent.py": "cea166f953f8c4151291c786cba98f67bc53a42879ead014d1f0baf739a0a770",
+    "scripts/architecture278/implementation/test_stage15_detent.py": "21107a07d370ce44a5bfc051eaff12e0a6136e16b2ed57eea2f8cc2fb8d0ff03"
+  }
+}

@@ -1,0 +1,154 @@
+{
+ "schema_version": 1,
+ "status": "PROVISIONAL exception record bound to net/anchor/MPN/pose; source geometry only, not routed or measured",
+ "rule": "An added S2b protection diode is placed within 24 mm (CLUSTER_RADIUS_MM) of its anchor: the amplifiers on its own nets, else the one non-logic IC sharing most of its nets (scripts/checks/partition35_floorplan.py). A diode that cannot be placed inside the radius must be listed here. Each record carries a binding (MPN, nets, anchor refs and MPNs, anchor and diode poses with a tolerance, centre distance) that scripts/checks/partition35_floorplan.py protection_exception_errors() compares with the current placement; a changed placement or a stale record fails. adoption_state PROVISIONAL is not a permanent approval; APPROVED requires a recorded approval.",
+ "exceptions": [
+  {
+   "ref": "D4233",
+   "board": "K",
+   "mpn": "BAT54S,215",
+   "adoption_state": "PROVISIONAL",
+   "adoption_note": "Provisional comparison input for the current 27.61 mm placement. Not a permanent exception and not user approval; see the SEL network review below.",
+   "binding": {
+    "mpn": "BAT54S,215",
+    "nets": [
+     "/E2/FALL_CURVE",
+     "/E2/SLOPE_SELECT_SEL4"
+    ],
+    "anchor_refs": [
+     "U4206"
+    ],
+    "anchor_mpns": [
+     "TMUX6112PWR"
+    ],
+    "anchor_mm": [
+     242.48,
+     261.57
+    ],
+    "placed_mm": [
+     242.81,
+     289.18
+    ],
+    "side": "F.Cu",
+    "distance_mm": 27.61,
+    "radius_mm": 24.0,
+    "position_tolerance_mm": 0.05,
+    "distance_tolerance_mm": 0.01
+   },
+   "anchor": "U4206 (TMUX6112PWR); no amplifier shares its nets",
+   "anchor_mm": [
+    242.48,
+    261.57
+   ],
+   "placed_mm": [
+    242.81,
+    289.18
+   ],
+   "distance_mm": 27.61,
+   "radius_mm": 24.0,
+   "nets": {
+    "XFB1FA11952923A1A5F8C": "/E2/SLOPE_SELECT_SEL4 (U4206 select input, D4232, RB4234)",
+    "XFEED735F75B4AF9E6F26": "/E2/FALL_CURVE (U4229 SN74HC00DR output)"
+   },
+   "search_evidence": {
+    "method": "Instrumented copy of the generator at the committed floorplan (identical output): every 1 mm offset within 24 mm of the anchor, both faces, rotations 0 and 90",
+    "poses_sampled": 14344,
+    "free": 0,
+    "free_after_evicting_small_passives": 0,
+    "occupied_by_hardware_placed_clusters_or_outline": 13252,
+    "blocked_only_by_non_evictable_pinned_parts": 1092,
+    "most_frequent_blockers": [
+     "U4245",
+     "U4233",
+     "U4241",
+     "U4243",
+     "U4232",
+     "C4250",
+     "C4270",
+     "D4205",
+     "C4263",
+     "C4266"
+    ],
+    "nearest_single_blocker_poses": [
+     {
+      "offset_mm": [
+       -10.0,
+       0.0
+      ],
+      "face": "F.Cu",
+      "blocker": "C4270",
+      "blocker_role": "bypass capacitor of pinned U4245"
+     },
+     {
+      "offset_mm": [
+       -6.0,
+       -14.0
+      ],
+      "face": "F.Cu",
+      "blocker": "C4249",
+      "blocker_role": "bypass capacitor of pinned U4232"
+     },
+     {
+      "offset_mm": [
+       -6.0,
+       14.0
+      ],
+      "face": "F.Cu",
+      "blocker": "C4267",
+      "blocker_role": "bypass capacitor of pinned U4243"
+     }
+    ]
+   },
+   "electrical_impact": "Design assumption only, not measured. The earlier wording ('slow select line', 'extra 3.6 mm adds a little capacitance') is withdrawn as unproven: /E2/FALL_CURVE = READY AND FALL AND CURVED changes at envelope stage transitions, and a centre-distance excess is not a trace length. See sel_network_review.",
+   "proposed_resolution": "Phase 36 trial (generator rule nudged_pose: one pinned bypass capacitor may move at most 2.0 mm on its own face without lengthening its supply loop): rejected. Only C4270 (U4245) and C4249 (U4232) are sole blockers of in-radius poses. With either released, the nearest legal pose for C4270 is 20.43 mm away, which lengthens its supply-pad gap from 2.52 mm to 18.11 mm, and C4249 has no legal pose at all. No minimal move exists, so the exception stands.",
+   "decision": "owner decision pending: keep the provisional exception as a comparison input, or approve a multi-part re-placement of the SEL hold networks",
+   "nudge_trial": {
+    "rule": "scripts/checks/partition35_floorplan.py nudged_pose",
+    "max_move_mm": 2.0,
+    "candidates": [
+     {
+      "capacitor": "C4270",
+      "ic": "U4245",
+      "diode_offset_mm": [
+       -10.0,
+       0.0
+      ],
+      "nearest_capacitor_pose_mm": 20.427,
+      "supply_gap_mm": [
+       2.515,
+       18.111
+      ],
+      "result": "rejected: move > 2.0 mm and supply loop lengthened"
+     },
+     {
+      "capacitor": "C4249",
+      "ic": "U4232",
+      "diode_offset_mm": [
+       -6.0,
+       -14.0
+      ],
+      "nearest_capacitor_pose_mm": null,
+      "result": "rejected: no legal capacitor pose"
+     },
+     {
+      "capacitor": "C4250",
+      "ic": "U4233",
+      "nearest_capacitor_pose_mm": 17.357,
+      "supply_gap_mm": [
+       2.515,
+       19.116
+      ],
+      "result": "rejected: move > 2.0 mm and supply loop lengthened"
+     }
+    ],
+    "not_tried": "moves of two or more pinned parts"
+   },
+   "sel_network_review": {
+    "path": "circuit/reviews/osc1-d4233-sel-network/README.md",
+    "geometry": "circuit/reviews/osc1-d4233-sel-network/sel-hold-geometry.json",
+    "board_sha256": "dda33a25479c9993f71e33d49129cf16414828b3dd2083b6d4f91a65421c728c",
+    "summary": "SEL4 hold network: D4232 17.10 mm, D4233 27.61 mm, RB4234 (100 kOhm pull-up) 95.18 mm from U4206; FALL_CURVE driver U4229.3 39.69 mm. 32 of 36 core SEL hold nets have a member beyond 24 mm; no SEL net is routed. A D4233-only permanent exception is not supported by this evidence."
+   }
+  }
+ ]
+}

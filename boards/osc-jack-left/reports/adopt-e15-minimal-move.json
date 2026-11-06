@@ -1,0 +1,413 @@
+{
+ "schema_version": 1,
+ "board": "osc-jack-left",
+ "status": "UNVALIDATED DRAFT; decision E15 minimal-move layout pass",
+ "placement_source": {
+  "floorplan": "design/partition/floorplan-candidate.json",
+  "pins": "design/partition/adopted-placement-pins.json",
+  "tssop_retention": "design/partition/precision-tssop-retention.json"
+ },
+ "rip_up": {
+  "tool": "scripts/pcbgen/adopt_minimal_move.py",
+  "old_pcb_commit": "eea8b18c69035e754f0346da95beea217e78d09d",
+  "footprints_moved_to_origin": 158,
+  "moved_swapped_or_added": 216,
+  "removed_signal_items": 10444,
+  "removed_plane_items_near_moved": 973,
+  "affected_signal_nets": 240,
+  "ripped_signal_nets_total": 343,
+  "note": "Signal nets on moved, swapped or added pads ripped whole; plane copper only inside old/new courtyards +0.3 mm; then copper in DRC copper errors and dangling remnants on ripped nets (partial signal nets ripped whole)."
+ },
+ "routing": {
+  "grid_router": "scripts/pcbgen/route_jack_grid.py stage code and promotion gates (rails, signals-local, 12-net batches with rejected batches set aside). Whole-board negotiate, region, rip-up-and-reroute and repair stages not run: unaffected copper unchanged.",
+  "stages": {
+   "rail-fanout": {
+    "adopted": true,
+    "open_edges_before": 1066,
+    "open_edges_after": 865
+   },
+   "rail-links": {
+    "adopted": true,
+    "open_edges_before": 865,
+    "open_edges_after": 831
+   },
+   "rail-escapes": {
+    "adopted": true,
+    "open_edges_before": 831,
+    "open_edges_after": 720
+   },
+   "signals-local": {
+    "adopted": true,
+    "open_edges_before": 720,
+    "open_edges_after": 700
+   },
+   "agnd-stitch-1": {
+    "adopted": false,
+    "open_edges_before": 336,
+    "open_edges_after": 336
+   }
+  },
+  "signal_batches": [
+   {
+    "stage": "adopt-e15-signals-01",
+    "adopted": true,
+    "open_edges_before": 700,
+    "open_edges_after": 681,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-02",
+    "adopted": true,
+    "open_edges_before": 681,
+    "open_edges_after": 661,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-03",
+    "adopted": true,
+    "open_edges_before": 661,
+    "open_edges_after": 640,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-04",
+    "adopted": false,
+    "open_edges_before": 640,
+    "open_edges_after": 617,
+    "rejection_reason": "connected_pad_group_split"
+   },
+   {
+    "stage": "adopt-e15-signals-05",
+    "adopted": true,
+    "open_edges_before": 640,
+    "open_edges_after": 619,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-06",
+    "adopted": true,
+    "open_edges_before": 619,
+    "open_edges_after": 594,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-07",
+    "adopted": true,
+    "open_edges_before": 594,
+    "open_edges_after": 571,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-08",
+    "adopted": true,
+    "open_edges_before": 571,
+    "open_edges_after": 562,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-09",
+    "adopted": true,
+    "open_edges_before": 562,
+    "open_edges_after": 544,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-10",
+    "adopted": false,
+    "open_edges_before": 544,
+    "open_edges_after": 524,
+    "rejection_reason": "connected_pad_group_split"
+   },
+   {
+    "stage": "adopt-e15-signals-11",
+    "adopted": false,
+    "open_edges_before": 544,
+    "open_edges_after": 544,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-12",
+    "adopted": true,
+    "open_edges_before": 544,
+    "open_edges_after": 521,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-13",
+    "adopted": true,
+    "open_edges_before": 521,
+    "open_edges_after": 499,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-14",
+    "adopted": true,
+    "open_edges_before": 499,
+    "open_edges_after": 474,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-15",
+    "adopted": true,
+    "open_edges_before": 474,
+    "open_edges_after": 463,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-16",
+    "adopted": true,
+    "open_edges_before": 463,
+    "open_edges_after": 445,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-17",
+    "adopted": true,
+    "open_edges_before": 445,
+    "open_edges_after": 431,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-18",
+    "adopted": false,
+    "open_edges_before": 431,
+    "open_edges_after": 431,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-19",
+    "adopted": false,
+    "open_edges_before": 431,
+    "open_edges_after": 412,
+    "rejection_reason": "connected_pad_group_split"
+   },
+   {
+    "stage": "adopt-e15-signals-20",
+    "adopted": false,
+    "open_edges_before": 431,
+    "open_edges_after": 411,
+    "rejection_reason": "connected_pad_group_split"
+   },
+   {
+    "stage": "adopt-e15-signals-21",
+    "adopted": true,
+    "open_edges_before": 431,
+    "open_edges_after": 410,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-22",
+    "adopted": true,
+    "open_edges_before": 410,
+    "open_edges_after": 393,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-23",
+    "adopted": true,
+    "open_edges_before": 393,
+    "open_edges_after": 383,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-24",
+    "adopted": false,
+    "open_edges_before": 383,
+    "open_edges_after": 362,
+    "rejection_reason": "connected_pad_group_split"
+   },
+   {
+    "stage": "adopt-e15-signals-25",
+    "adopted": true,
+    "open_edges_before": 383,
+    "open_edges_after": 377,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-26",
+    "adopted": true,
+    "open_edges_before": 377,
+    "open_edges_after": 361,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-27",
+    "adopted": false,
+    "open_edges_before": 361,
+    "open_edges_after": 361,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-28",
+    "adopted": true,
+    "open_edges_before": 361,
+    "open_edges_after": 349,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-29",
+    "adopted": true,
+    "open_edges_before": 349,
+    "open_edges_after": 340,
+    "rejection_reason": null
+   },
+   {
+    "stage": "adopt-e15-signals-30",
+    "adopted": true,
+    "open_edges_before": 340,
+    "open_edges_after": 336,
+    "rejection_reason": null
+   }
+  ]
+ },
+ "final": {
+  "kicad_version": "10.0.6",
+  "board_sha256": "e928aecf389d390864272545ff9320f33264342c3e4ef2e436aee8be3c63768d",
+  "drc_errors": 0,
+  "drc_warnings": 454,
+  "schematic_parity": 0,
+  "drc_unconnected": 336,
+  "native_open_edges": 336,
+  "native_open_edges_affected_signal": 261,
+  "native_open_edges_plane": 3,
+  "native_open_edges_unaffected": 72,
+  "unaffected_nets_worse_than_baseline": []
+ },
+ "baseline": {
+  "commit": "eea8b18c69035e754f0346da95beea217e78d09d",
+  "drc_errors": 0,
+  "native_open_edges": 140,
+  "native_open_edges_affected_signal": 29,
+  "native_open_edges_plane": 31,
+  "native_open_edges_unaffected": 80
+ },
+ "acceptance": {
+  "rule": "parity 0, DRC errors 0, unconnected <= pre-adoption baseline + open edges of affected (ripped) nets left unrouted",
+  "limit": 404,
+  "result": "PASS"
+ },
+ "review_items": {
+  "precision_net_growth": {
+   "status": "REVIEW ITEM (accepted by coordinator decision, phase 33); 10 mm was a screening threshold, not a specification row",
+   "placement_half_perimeter_vs_539ff382": {
+    "precision_nets": 69,
+    "max_growth_mm": 33.5,
+    "nets_over_10mm": [
+     [
+      "/O2/C1e2eb4_SENSE",
+      33.5
+     ],
+     [
+      "/O1/C1e2eb4_SENSE",
+      32.5
+     ],
+     [
+      "/O5/C1e2eb4_SENSE",
+      25.25
+     ],
+     [
+      "/B1/Cc6361b_FB",
+      24.0
+     ],
+     [
+      "/B1/IN_SENSE",
+      23.14
+     ],
+     [
+      "/B1/Caac36a_DRIVE",
+      20.89
+     ],
+     [
+      "/B1/Caac36a_FB",
+      20.89
+     ],
+     [
+      "/B1/Cc6361b_DRIVE",
+      19.28
+     ],
+     [
+      "/B2/Caac36a_FB",
+      16.99
+     ],
+     [
+      "/B2/Caac36a_DRIVE",
+      16.99
+     ],
+     [
+      "/B2/IN_SENSE",
+      16.6
+     ],
+     [
+      "/O4/1V_BUFFER",
+      15.5
+     ],
+     [
+      "/B2/Cc6361b_DRIVE",
+      12.08
+     ],
+     [
+      "/O3/1V_BUFFER",
+      12.0
+     ],
+     [
+      "/O4/C1e2eb4_SENSE",
+      11.47
+     ]
+    ]
+   },
+   "routed_track_length_vs_eea8b18c": {
+    "nets_over_10mm": [
+     [
+      "/B2/Caac36a_DRIVE",
+      38.13
+     ],
+     [
+      "/B1/Cc6361b_DRIVE",
+      25.86
+     ],
+     [
+      "/B2/Caac36a_FB",
+      23.4
+     ],
+     [
+      "/B2/IN_SENSE",
+      22.52
+     ],
+     [
+      "/B1/C9c7ace_DRIVE",
+      17.82
+     ],
+     [
+      "/B1/Caac36a_DRIVE",
+      13.47
+     ],
+     [
+      "/B2/C9c7ace_DRIVE",
+      12.96
+     ],
+     [
+      "/B2/Cc6361b_DRIVE",
+      11.39
+     ]
+    ],
+    "unrouted_precision_nets_routed_before": [
+     "/B1/C9c7ace_FB",
+     "/B1/Cc6361b_FB",
+     "/B1/IN_SENSE",
+     "/H1/SLEW_BUFFERED",
+     "/O1/1V_BUFFER",
+     "/O1/C1e2eb4_SENSE",
+     "/O2/1V_BUFFER",
+     "/O2/C1e2eb4_SENSE",
+     "/O3/1V_BUFFER",
+     "/O4/1V_BUFFER",
+     "/O4/C1e2eb4_SENSE",
+     "/O5/1V_BUFFER",
+     "/O5/C1e2eb4_SENSE",
+     "/X2/SELECTOR_REMOTE"
+    ]
+   },
+   "priority": "Pitch-path SENSE and 1V_BUFFER nets first in the AGND-aware routing pass"
+  }
+ }
+}

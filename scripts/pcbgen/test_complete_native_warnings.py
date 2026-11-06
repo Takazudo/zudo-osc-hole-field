@@ -1,3 +1,4 @@
+import shutil
 import tempfile
 import json
 import hashlib
@@ -34,6 +35,69 @@ class CompleteWarningTests(unittest.TestCase):
                 manifest=json.loads((output/'added-copper-scope.json').read_text())
                 self.assertEqual(manifest['reviewed_copper_removals'],{uid:'via'})
                 self.assertEqual(len(manifest['copper']),1)
+
+    def test_stage_removals_travel_as_a_bound_file_to_mask_and_zone_audits(self):
+        from unittest.mock import patch
+        from scripts.pcbgen.complete_native_warnings import audit_current_reports
+        from scripts.pcbgen.audit_added_mask import StageRemovals,stage_removed_uuids,read_stage_removals
+        from scripts.pcbgen.test_audit_added_mask import board,item
+        root=Path(__file__).resolve().parents[2]
+        with tempfile.TemporaryDirectory(dir=root) as folder:
+            before=Path(folder)/'before.kicad_pcb';after=Path(folder)/'after.kicad_pcb'
+            before.write_text(board(*(item(i) for i in range(30)),item(90,'via')));after.write_text(board(item(0),item(91,'via')))
+            removed=stage_removed_uuids(before.read_text(),after.read_text())
+            with patch('scripts.pcbgen.complete_native_warnings.subprocess.run') as run,patch('scripts.pcbgen.complete_native_warnings.complete_reports',return_value=({}, {}, {})) as verify:
+                output=Path(folder)/'audit';audit_current_reports(before,after,{}, {},output,zone_batch_size=16,reviewed_removed_uuids=removed)
+                commands=[c.args[0] for c in run.call_args_list];self.assertEqual(len(commands),4)
+                scope=str((output/'stage-removal-scope.json').resolve().relative_to(root))
+                self.assertTrue(all(c[-2:]==['--stage-removal-scope',scope] for c in commands[2:]))
+                self.assertFalse(any('--reviewed-cut-uuid' in c for c in commands))
+                passed=verify.call_args.kwargs['reviewed_removed_uuids']
+                self.assertIsInstance(passed,StageRemovals);self.assertEqual(passed,removed)
+                self.assertEqual(read_stage_removals(output/'stage-removal-scope.json',before,after),removed)
+                manifest=json.loads((output/'added-copper-scope.json').read_text())
+                self.assertEqual(manifest['copper_removal_source'],'stage');self.assertEqual(len(manifest['reviewed_copper_removals']),30)
+
+    def test_resume_copies_completed_audits_and_continues_the_zone_audit(self):
+        from unittest.mock import patch
+        from scripts.pcbgen.complete_native_warnings import audit_current_reports
+        from scripts.pcbgen.test_audit_added_mask import board,item
+        root=Path(__file__).resolve().parents[2];uid='00000000-0000-4000-8000-000000000001'
+        with tempfile.TemporaryDirectory(dir=root) as folder:
+            before=Path(folder)/'before.kicad_pcb';after=Path(folder)/'after.kicad_pcb'
+            before.write_text(board(item(0)));after.write_text(board(item(0),item(2,'via')))
+            digest=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+            prior=Path(folder)/'prior'
+            def write(name,row):(prior/name).mkdir(parents=True,exist_ok=True);(prior/name/'result.json').write_text(json.dumps(row))
+            def interrupted(after_sha=None):
+                a,b=digest(before),digest(after);after_sha=after_sha or b
+                if prior.exists():shutil.rmtree(prior)
+                prior.mkdir();(prior/'added-copper-scope.json').write_text(json.dumps({'before_sha256':a,'after_sha256':after_sha}))
+                write('holes-before',dict(version='10.0.6',source_sha256=a,fixtures=[]))
+                write('holes-after',dict(version='10.0.6',source_sha256=a,fixtures=[]))  # wrong source: rerun
+                write('silk',dict(version='10.0.6',before_sha256=a,after_sha256=b,added_copper_scope_complete=True))
+                write('zones',dict(status='STARTED; NO COMPLETE ZONE EVIDENCE',version='10.0.6',before_sha256=a,after_sha256=b))
+            def audit(output,**options):
+                with patch('scripts.pcbgen.complete_native_warnings.subprocess.run') as run,patch('scripts.pcbgen.complete_native_warnings.complete_reports',return_value=({}, {}, {})):
+                    audit_current_reports(before,after,{}, {},output,resume_from=prior,**options)
+                    return [c.args[0][3:] for c in run.call_args_list]
+            interrupted();output=Path(folder)/'audit'
+            commands=audit(output,zone_batch_size=16)
+            self.assertEqual([c[0] for c in commands],['scripts/pcbgen/audit_hole_pairs.py','scripts/pcbgen/audit_zone_silk_scope.py'])
+            self.assertEqual(commands[0][1],str(after.relative_to(root)))
+            self.assertEqual(commands[1][-2:],['--resume-from',str((prior/'zones').relative_to(root))])
+            self.assertEqual((output/'holes-before'/'result.json').read_bytes(),(prior/'holes-before'/'result.json').read_bytes())
+            self.assertTrue((output/'silk'/'result.json').exists());self.assertFalse((output/'zones').exists())
+            write('zones',dict(version='10.0.6',before_sha256=digest(before),after_sha256=digest(after),zone_silk_scope_complete=True))
+            self.assertEqual(len(audit(Path(folder)/'complete-zones',zone_batch_size=16)),1)
+            interrupted()
+            self.assertFalse(any('--resume-from' in c for c in audit(Path(folder)/'single',zone_batch_size=1)))
+            before.write_text(board(item(0),item(1,'via')));interrupted()
+            commands=audit(Path(folder)/'cut',zone_batch_size=16,reviewed_removed_uuids=[uid])
+            self.assertEqual(len(commands),2);self.assertFalse(any('--resume-from' in c for c in commands))
+            before.write_text(board(item(0)));interrupted('0'*64)
+            with self.assertRaisesRegex(ValueError,'resume evidence source mismatch'):audit(Path(folder)/'stale',zone_batch_size=16)
+            with self.assertRaisesRegex(ValueError,'separate directory'):audit(prior,zone_batch_size=16)
 
     def test_native_zone_pair_warning_blocks_even_when_added_copper_is_clean(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -145,6 +209,33 @@ class CompleteWarningTests(unittest.TestCase):
         before=append_observations(raw(a),{a,b});after=append_observations(raw(b),{a,b})
         from scripts.pcbgen.complete_native_warnings import identity
         self.assertEqual({identity(v) for v in before['violations']},{identity(v) for v in after['violations']})
+
+    def test_capped_silk_samples_that_shift_are_reconciled_and_new_silk_still_fails(self):
+        from scripts.pcbgen.complete_native_warnings import preexisting_capped_silk
+        from scripts.pcbgen.route_jack_grid import promotion_gate
+        u=lambda i:f'00000000-0000-4000-8000-{i:012d}'
+        row=lambda kind,a,b:dict(type=kind,severity='warning',items=[{'uuid':u(a)},{'uuid':u(b)}])
+        before_text=' '.join(f'(uuid "{u(i)}")' for i in range(1000))
+        for kind in ('silk_overlap','silk_over_copper'):
+            with self.subTest(kind=kind):
+                before={'violations':[row(kind,i,i+1) for i in range(0,398,2)],'schematic_parity':[]}
+                # Same 250 native findings, a different 199-row sample after an unrelated change.
+                after={'violations':[row(kind,i,i+1) for i in range(102,500,2)],'schematic_parity':[]}
+                dump={'pads':[],'islands':{},'open_edges':1}
+                self.assertTrue(promotion_gate({**dump,'open_edges':2},dump,before,after)['new_warning_identities'])
+                silk=preexisting_capped_silk(before,after,before_text)
+                full=append_observations(before,silk,kinds=('silk_overlap','silk_over_copper'))
+                gate=promotion_gate({**dump,'open_edges':2},dump,full,after)
+                self.assertEqual((gate['adopted'],gate['new_warning_identities']),(True,[]))
+                # A finding on an object the before board lacks is never reconciled.
+                after['violations'][0]=dict(type=kind,severity='warning',items=[{'uuid':u(1)},{'uuid':'11111111-0000-4000-8000-000000000000'}])
+                full=append_observations(before,preexisting_capped_silk(before,after,before_text),kinds=('silk_overlap','silk_over_copper'))
+                self.assertFalse(promotion_gate({**dump,'open_edges':2},dump,full,after)['adopted'])
+
+    def test_uncapped_silk_is_never_reconciled(self):
+        from scripts.pcbgen.complete_native_warnings import preexisting_capped_silk
+        row=dict(type='silk_overlap',severity='warning',items=[{'uuid':'00000000-0000-4000-8000-000000000001'}])
+        self.assertEqual(preexisting_capped_silk({'violations':[]},{'violations':[row]},'(uuid "00000000-0000-4000-8000-000000000001")'),set())
 
     def test_no_other_warning_type_can_be_appended(self):
         with self.assertRaises(ValueError):append_observations({'violations':[]},{('track_dangling','warning',('a',))})

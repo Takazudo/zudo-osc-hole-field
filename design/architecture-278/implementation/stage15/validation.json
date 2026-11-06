@@ -1,0 +1,142 @@
+{
+  "CAD": "NOT RUN",
+  "CI": "No native workflow authorized; commit marker[skip ci]",
+  "DRC": "NOT RUN",
+  "ERC": "NOT RUN",
+  "PR286": "draft/unmerged",
+  "architecture_adopted": false,
+  "baseline_commit": "cc005dc4d45bd516f9f00dd91eaa9a4243822b01",
+  "checks": {
+    "circuit_before_after": {
+      "command": "pnpm circuit:check",
+      "scope": "Manual68 inventory lines,0declaredplacements; schematic binding NOT PERFORMED; pin-asset check performed. Stage15 isolated candidate outside canonicalcatalog.",
+      "status": "PASS"
+    },
+    "documentation_type": {
+      "command": "pnpm check",
+      "status": "PASS"
+    },
+    "focused_final": {
+      "command": "python3 -m unittest discover -s scripts/architecture278/implementation -p 'test_stage15_*.py'",
+      "status": "PASS",
+      "tests": 41
+    },
+    "full_source_guard": {
+      "command": "python3 scripts/architecture278/implementation/check_source.py",
+      "preserved_predecessor_files": 336,
+      "status": "PASS"
+    },
+    "implementation_tests": {
+      "command": "python3 -m unittest discover -s scripts/architecture278/implementation -p 'test_*.py'",
+      "status": "PASS",
+      "tests": 684
+    },
+    "packet_tests": {
+      "command": "python3 -m unittest discover -s scripts/architecture278 -p 'test_*.py'",
+      "status": "PASS",
+      "tests": 86
+    },
+    "whitespace_scope": {
+      "command": "git diff --cached --check; candidate source whitelist",
+      "status": "PASS"
+    }
+  },
+  "date_UTC": "2026-10-16",
+  "hardware_acceptance": false,
+  "initial_guard_failure": "Stale narrative review hash after before/after table edit during execution; independent final narrative re-reviewed, hashes refreshed, fullguard rerun PASS. No source assertion weakened.",
+  "log_receipts": {
+    "circuit_after": {
+      "final_lines": [
+        "$ zudo-circuit-doc validate",
+        "SCOPE: inventory provider=manual; schematic/placement binding not performed (68 lines, 0 declared placements unverified); pin-asset check performed",
+        "PASS: component-spec contract; 68 lines; offline=True; refreshed=none"
+      ],
+      "location": "Session-local log; retained digest/extract, not committed raw log",
+      "sha256": "07a2f28172f86ec3ebb60044f4eaad6da83999d0a61d5b14bf6b088ac70acca4"
+    },
+    "circuit_before": {
+      "final_lines": [
+        "$ zudo-circuit-doc validate",
+        "SCOPE: inventory provider=manual; schematic/placement binding not performed (68 lines, 0 declared placements unverified); pin-asset check performed",
+        "PASS: component-spec contract; 68 lines; offline=True; refreshed=none"
+      ],
+      "location": "Session-local log; retained digest/extract, not committed raw log",
+      "sha256": "07a2f28172f86ec3ebb60044f4eaad6da83999d0a61d5b14bf6b088ac70acca4"
+    },
+    "documentation_type": {
+      "final_lines": [
+        "ok   preflight: circuit/generated/preflight.json is up to date",
+        "ok   models: 31 selected, up to date",
+        "31 committed footprint previews are current and safe",
+        "ok   footprints: previews up to date",
+        "check passed: generated output is up to date",
+        "$ zfb check",
+        "info running /workspace/zudo-osc-hole-field/doc/node_modules/.bin/tsc --noEmit",
+        "\u2713 checked 1 collection and tsc \u2014 no errors"
+      ],
+      "location": "Session-local log; retained digest/extract, not committed raw log",
+      "sha256": "028e9fcfd2ffee79cf33af7bbc9d7d82931c5ef9d31847ea177e04bdffe0b04e"
+    },
+    "focused_final": {
+      "final_lines": [
+        ".........................................",
+        "----------------------------------------------------------------------",
+        "Ran 41 tests in 3.856s",
+        "",
+        "OK",
+        "PASS Stage14 frozen evidence; mutable integration verified at cc005dc4d45bd516f9f00dd91eaa9a4243822b01"
+      ],
+      "location": "Session-local log; retained digest/extract, not committed raw log",
+      "sha256": "19500b7feff54654125e1a8250ec2d8e471deb2759a0bf464c004aa390366c89"
+    },
+    "full_source_guard": {
+      "final_lines": [
+        "PASS Stage14 four pads/five edges and all106 endpoint allocations; electrical acceptance OPEN",
+        "PASS conditioned charge/load source arithmetic; CONDITIONAL_CANDIDATE, electrical acceptance OPEN",
+        "PASS Stage14 frozen evidence; mutable integration verified at cc005dc4d45bd516f9f00dd91eaa9a4243822b01",
+        "PASS Stage15 86 packages/291 pads; physical acceptance OPEN",
+        "PASS Stage15 complete migrated graph and108 returns; electrical acceptance OPEN",
+        "PASS Stage15 conditioned source allocation; complete static/load acceptance OPEN",
+        "PASS Stage15 source composition; hardware acceptance OPEN",
+        "PASS isolated candidate scope; PR285 and all canonical bytes unchanged; native NOT RUN"
+      ],
+      "location": "Session-local log; retained digest/extract, not committed raw log",
+      "sha256": "24fcdfb7e567f98bdc92a2010f5f64ee5dfa601719a878fce418f17bb1b44c86"
+    },
+    "implementation_tests": {
+      "final_lines": [
+        "............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................",
+        "----------------------------------------------------------------------",
+        "Ran 684 tests in 89.238s",
+        "",
+        "OK",
+        "PASS Stage14 frozen evidence; mutable integration verified at cc005dc4d45bd516f9f00dd91eaa9a4243822b01"
+      ],
+      "location": "Session-local log; retained digest/extract, not committed raw log",
+      "sha256": "b784e77eeaa8c9104caa660fb3398d3dd4c7fd804db5fd64d19b82d6da9465ab"
+    },
+    "packet_tests": {
+      "final_lines": [
+        "......................................................................................",
+        "----------------------------------------------------------------------",
+        "Ran 86 tests in 7.878s",
+        "",
+        "OK"
+      ],
+      "location": "Session-local log; retained digest/extract, not committed raw log",
+      "sha256": "55af10e063577694029b6949cd4dbed32fa3f2bae3b1d420a5bfa2812b50efff"
+    }
+  },
+  "native": "NOT RUN",
+  "new_stage15_tests": 41,
+  "parked_PR_heads": {
+    "260": "5af0e7b675123b40367078ee605a1355bae49a62",
+    "277": "fdac23b2611dcb26f840c520348771821ea9c35d",
+    "285": "d218fc537818dcbbd470eb15d192cfc8d0be5f0a"
+  },
+  "physical": "NOT RUN",
+  "simulation": "NOT RUN",
+  "site_build": "NOT RUN: no publication/site source change",
+  "test_success_is_electrical_acceptance": false,
+  "total_source_tests": 770
+}

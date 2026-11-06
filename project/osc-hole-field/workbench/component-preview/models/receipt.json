@@ -1,0 +1,50 @@
+{
+  "scope": "Source-only browser display; no canonical CAD selection or publication profile change",
+  "acquired_on": "2026-10-18",
+  "units": "mm",
+  "fidelity": "derived; neither asset exact-vendor",
+  "sources": {
+    "pot": {
+      "author": "Devrin Talen / KiCad contributors",
+      "url": "https://gitlab.com/kicad/libraries/kicad-packages3D/-/raw/cef48f63464c8ba65c189c679e9e02198b186372/Potentiometer_THT.3dshapes/Potentiometer_Bourns_PTV09A-4F_L20mm_Single_Vertical.step",
+      "original_filename": "Potentiometer_Bourns_PTV09A-4F_L20mm_Single_Vertical.step",
+      "license": "CC BY-SA 4.0 with KiCad design-use exception; see POT-LICENSE.md",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "fidelity": "drawing-derived family exterior; not manufacturer model"
+    },
+    "jack": {
+      "author": "Jolin",
+      "url": "https://jolin.tech/componentslibrary",
+      "archive_url": "https://static1.squarespace.com/static/6205a490f0a9487aff7a16c3/t/6a502266b62f93790c5758d9/1783636582321/jolin-components.zip",
+      "original_filename": "STEP\\jack_socket_WQP518MA_Thonkiconn_3.5mm.step",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "fidelity": "third-party named-part model; complete drawing match unverified"
+    }
+  },
+  "sha256": {
+    "pot.step": "1ac24ffc6326fad9c1eb5fb452cf9e53eaba64e8b8030723c89c2825625612d0",
+    "jack.step": "d7ecc56c2ac549a56f66bbbdaf0ce8dc9dd484956b5f1d27ca8d95f62d07ef21",
+    "meshes.json": "fd520f2c809e971c99907230ad0b2e0f67818349047cbde30cc55104d215379d",
+    "POT-LICENSE.md": "45d2bce75e5a4208f5afb01b8fb2c406e700371c4fe2b5f5cd5c443d46db4d8f"
+  },
+  "derivation": {
+    "tool": "CadQuery 2.7.0 / OCP 7.8.1.1",
+    "script": "tessellate.py",
+    "linear_tolerance_mm": 0.08,
+    "angular_tolerance_rad": 0.15,
+    "changes": "Tessellation, rounded vertex coordinates to 6 decimals; runtime rigid transforms and illustrative colors described in README.md"
+  },
+  "checks": [
+    "STEP import",
+    "positive source signed volume",
+    "bounds and pot cylindrical shaft radius",
+    "proper rigid runtime transforms",
+    "source/destination hashes"
+  ],
+  "remaining": [
+    "Physical seating",
+    "Full exact-part drawing/pin comparison",
+    "Manufacturing and assembly qualification"
+  ]
+}

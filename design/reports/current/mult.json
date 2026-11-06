@@ -5,13 +5,13 @@
   "status": "Unvalidated per-instance rail estimate; not measured and not a guaranteed maximum",
   "units": "mA",
   "IC_packages_per_instance": {
-    "ADG5412FBRUZ": 1,
     "OPA4196IDR": 1,
-    "OPA4197IPWR": 1
+    "OPA4197IDR": 1,
+    "TMUX7412FRRPR": 1
   },
   "breakdown": [
     {
-      "load": "OPA4197IPWR",
+      "load": "OPA4197IDR",
       "count": 1,
       "typical_unit_mA": {
         "+12V": 4,
@@ -41,19 +41,19 @@
       "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
     },
     {
-      "load": "ADG5412FBRUZ",
+      "load": "TMUX7412FRRPR",
       "count": 1,
       "typical_unit_mA": {
-        "+12V": 0.9,
-        "-12V": 0.5,
+        "+12V": 0.32,
+        "-12V": 0.26,
         "+5V": 0
       },
       "planning_maximum_unit_mA": {
-        "+12V": 1.3,
-        "-12V": 0.7,
+        "+12V": 0.6,
+        "-12V": 0.5,
         "+5V": 0
       },
-      "basis": "ADG5412F Rev C Table 1 p4 \u00b115 V normal-mode table; extrapolation allowance at project \u00b112 V, not guaranteed at this voltage."
+      "basis": "UNADOPTED S2b candidate: TMUX7412F SCDS404B Section 7.6 (index 7) +/-16.5 V IDD/ISS, 25 C typical and -40..125 C maximum; not guaranteed at project +/-12 V."
     },
     {
       "load": "Magnitude indicator envelope",
@@ -105,13 +105,13 @@
     {
       "instance": "B1",
       "typical_mA_per_rail": {
-        "+12V": 5.86,
-        "-12V": 5.46,
+        "+12V": 5.28,
+        "-12V": 5.22,
         "+5V": 0.05
       },
       "planning_maximum_mA_per_rail": {
-        "+12V": 11.05,
-        "-12V": 10.45,
+        "+12V": 10.35,
+        "-12V": 10.25,
         "+5V": 0.075
       },
       "guaranteed_maximum_mA_per_rail": {
@@ -123,13 +123,13 @@
     {
       "instance": "B2",
       "typical_mA_per_rail": {
-        "+12V": 5.86,
-        "-12V": 5.46,
+        "+12V": 5.28,
+        "-12V": 5.22,
         "+5V": 0.05
       },
       "planning_maximum_mA_per_rail": {
-        "+12V": 11.05,
-        "-12V": 10.45,
+        "+12V": 10.35,
+        "-12V": 10.25,
         "+5V": 0.075
       },
       "guaranteed_maximum_mA_per_rail": {

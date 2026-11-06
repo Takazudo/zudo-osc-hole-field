@@ -1,0 +1,121 @@
+{
+  "status": "ONE conditional elevatedcontinuousboard comparison; notarchitectureadoption orhardwareacceptance",
+  "front_panel_face_z_mm": 35,
+  "front_rear_face_z_mm": 36.6,
+  "fixed_terminal_reference_z_mm": 20,
+  "continuous_boards": {
+    "X1-jack": [
+      101,
+      111.6,
+      176.7,
+      179.5
+    ],
+    "X1-control": [
+      90,
+      265,
+      126,
+      297
+    ]
+  },
+  "terminal_wire": {
+    "nominal_mm": 35,
+    "cut_tolerance_mm": 3,
+    "required_geometric_slack_mm": 10,
+    "method": "15 permanentfactoryterminated insulatedwires,30endterminations; noowner soldering, noadditionalmatingconnectors. Exactwire/solder/strainprocessqualificationOPEN.",
+    "dogleg_z_mm": 27
+  },
+  "terminal_land": {
+    "diameter_mm": 1.6,
+    "drill_mm": 0.8,
+    "source": "Newcandidate solderlanding geometry; not fabricated footprint acceptance"
+  },
+  "LED_island": {
+    "size_mm": [
+      6,
+      6
+    ],
+    "board_z_mm": [
+      20,
+      21.6
+    ],
+    "ordinary_outline_boundary_allowance_mm": 0.4,
+    "wire_landing_offset_x_mm": 1.5,
+    "wire_landing_y_offset_mm": 1.5,
+    "registration": "CaptiveinsulatingLEDholder registersoriginalcentre/face; holderintegratedwithfixedhardwarecarrier; nofreestanding0402 oruserassembly."
+  },
+  "service_headers": {
+    "front_pad_z_mm": 36.6,
+    "middle_pad_z_mm": 48.4,
+    "middle_C_PWR_delta_mm": [
+      0,
+      -5
+    ],
+    "mated_height_reference_mm": 7.3,
+    "normal_extraction_stroke_proposal_mm": 15,
+    "front_J_PWR_origin_mm": [
+      129.5,
+      172
+    ],
+    "middle_window_margin_mm": 2
+  },
+  "backing": {
+    "frame_z_mm": [
+      29.5,
+      34
+    ],
+    "insulator_z_mm": [
+      34,
+      35
+    ],
+    "rib_width_mm": 5,
+    "material": "Proposed6061-T6; retainedStage8supplierE70GPa; monolithicframewithinsulatingPCBcontactshoe",
+    "anchor_refs": [
+      "J809",
+      "J909",
+      "J1009",
+      "SW608"
+    ],
+    "anchor_type": "Proposedcaptive splitbody/bushing saddles reactingthroughpanel-clampedhardware shoulders. ExactWQPthread/nut/panelclamp andSWstack dimensionsOPEN; noexistingextra enclosureholeinvented.",
+    "clamp_required_z_mm": [
+      2,
+      29
+    ],
+    "collar_outer_radius_mm": 5.5,
+    "service_force_N": 5,
+    "planning_deflection_mm": 0.5,
+    "load_path": "GHhousing\u2192solder/hold-down+PCBlocalbackingshoe\u2192insulatingpad\u2192rigidcarrier\u2192captivesplitclamps/bodyshoulders\u2192panelclamp\u2192panel/enclosure. SW608body/actuator\u2192dedicatedcaptivesaddle\u2192panelclamp; solderterminalsneverstructuralreaction.",
+    "temporary_release": "Twointegratedgrips supportwholefrontassemblybeforelastpanelnutisreleased; captivehardwarestayswithassembly. Operatorhold isexplicittemporaryloadpath, notunrestrainedharness orloosescrew.",
+    "wire_guide_bore_mm": 2,
+    "minimum_remaining_section_width_mm": {
+      "X1-jack": 1,
+      "X1-control": 0.54
+    },
+    "planning_stress_MPa": 80,
+    "wire_guide_process": {
+      "nominal_bore_diameter_mm": 1.2,
+      "diameter_tolerance_mm": 0.2,
+      "radial_position_allowance_mm": 0.3,
+      "maximum_removed_envelope_diameter_mm": 2,
+      "minimum_open_diameter_mm": 1,
+      "status": "PROPOSED ordinary machining requirement; 2 mm removed envelope includes diameter and radial position allowance. Insulated wire/insert OD must fit 1 mm minimum aperture; exact materials and supplier acceptance OPEN."
+    }
+  },
+  "solid_requirements": {
+    "all_neighbor_fixed_body_tail_max_z_beneath_frame_mm": 29,
+    "continuous_board_front_courtyard_body_bound_mm": 5,
+    "status": "Requiredclearanceenvelopes, NOT observed438hardwaretaildimensions. ActualneighborPCB/body/tail solidsstillunknown."
+  },
+  "service_access": {
+    "unit": "Twofactorybuiltsubassemblies: jackgroup(3jacks/3LEDs/49minuscontrolpackages/carrier/jackboard) andselector(SW608/controlpackages/carrier/controlboard). Eachdisconnectsits2existingports, individualterminalrepairfactoryonly.",
+    "sequence": [
+      "Poweroff/discharge; openrearcover and remove rearOSCcards overlappingselectedservicewindow projections usingretainedcardprocedure.",
+      "AccessretainedfrontGHlatches and15mmnormalwithdrawal throughfournewdefinedmiddlebackplane windows. Inspectconditionalsourcewindowclearance; no uncutmiddlepassageassumed.",
+      "Supportselectedfactorysubassemblyusingintegratedgrips; disconnectits2GHports whileintegratedbackingreactsPCBloads.",
+      "Open/remove the proposed removable front panel while retaining all other function harnesses with their required supports; hold selected unit by its captive carrier grips. Only then release its front nuts and captive retainers; retain unit before the last nut releases.",
+      "Withdrawreleasedsubassemblytowardpanelinterior thenpresentthroughremovablefrontpanelserviceopening; frontpanelmustberemovablefromenclosure aspartofproposedservicearrangement. No oversizedassemblypassesindividualjackholes.",
+      "Install factory replacement, restore fixed registration/clamps and front panel, reconnect its two ports, reinstall rear cards and rear cover, and verify before power. No middle covers are assumed."
+    ],
+    "unresolved_access": "Proposedremovablefrontpanelserviceopening mustaccommodatejacksubassembly75.7\u00d767.9mm plusgrips andselector36\u00d732mm. Thisexplicitfrontpanel/removableenclosurearrangementisnotexistingverifiedhardware; otherfunctionharnessclearance/retention remainsrequired. Rearwindows provideplugaccessonly, notPCBwithdrawal."
+  },
+  "physical_acceptance": false
+}

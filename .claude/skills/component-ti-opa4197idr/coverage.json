@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-op-precision-d-exact-orderable-identity",
+      "record_id": "rec-op-precision-d",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
+      "fact_ids": [
+        "fact-op-precision-d-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-op-precision-d-pinout",
+      "record_id": "rec-op-precision-d",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-op-precision-d-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-op-precision-d-electrical-limits",
+      "record_id": "rec-op-precision-d",
+      "domain": "electrical limits",
+      "status": "COVERED",
+      "reason": "Retained source supports the specific listed product-family limits; conditions remain attached to each fact.",
+      "fact_ids": [
+        "fact-op-precision-d-quiescent-current",
+        "fact-op-precision-d-input-bias-current",
+        "fact-op-precision-d-input-offset-voltage",
+        "fact-op-precision-d-input-bias-current-full-temperature",
+        "fact-op-precision-d-supply-absolute",
+        "fact-op-precision-d-input-absolute",
+        "fact-op-precision-d-supply-recommended",
+        "fact-op-precision-d-esd-steering",
+        "fact-op-precision-d-output-swing",
+        "fact-op-precision-d-input-common-mode-range",
+        "fact-op-precision-d-input-stage-transition"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-op-precision-d-manufacturer-product-description",
+      "record_id": "rec-op-precision-d",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-op-precision-d-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-op-precision-d-mechanical-fit",
+      "record_id": "rec-op-precision-d",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-op-precision-d-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-op-precision-d-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-op-precision-d-procurement",
+      "record_id": "rec-op-precision-d",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-op-precision-d-assembly-allocation",
+        "fact-op-precision-d-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-op-precision-d-assembly-allocation"
+      ]
+    },
+    {
+      "coverage_id": "cov-op-precision-d-output-stability",
+      "record_id": "rec-op-precision-d",
+      "domain": "output stability",
+      "status": "OPEN",
+      "reason": "TI OPAx197 Final 1.3 model passes 12/12 specified cases for the revised fixed network, but physical cable, board parasitics, tolerance and temperature stability remain NOT RUN.",
+      "fact_ids": [
+        "fact-op-precision-d-output-stability"
+      ],
+      "blocking_fact_ids": [
+        "fact-op-precision-d-output-stability"
+      ]
+    }
+  ]
+}

@@ -175,6 +175,24 @@ class RipUpTests(unittest.TestCase):
                        res=0.1,clearance=0.2,signal_width=0.2,layer_cost=[1.0],log=lambda m:None)[0]
         self.assertEqual({r['net'] for r in repaired if r['path']},{'A','B'})
 
+    def test_a_guard_may_name_several_fill_layers(self):
+        dump=crossing_board()
+        dump['pads'].append({'uuid':'pp','ref':'RP','pad':'1','net':'P','xy':[int(0.8*MM),int(0.8*MM)],'layers':['B.Cu'],
+                             'poly':square(0.8,0.8),'drill':0,'npth':False,'locked':False})
+        common=dict(rrr_rounds=2,fill_clearance=0.2,res=0.1,clearance=0.2,signal_width=0.2,layer_cost=[1.0],log=lambda m:None)
+        one=route(dump,['A','B'],fill_guards={'P':'B.Cu'},**common)[0]
+        listed=route(dump,['A','B'],fill_guards={'P':['B.Cu']},**common)[0]
+        self.assertEqual([r['path'] for r in one],[r['path'] for r in listed])
+
+    def test_negotiate_guard_may_name_several_fill_layers(self):
+        dump=crossing_board()
+        dump['pads'].append({'uuid':'pp','ref':'RP','pad':'1','net':'P','xy':[int(0.8*MM),int(0.8*MM)],'layers':['B.Cu'],
+                             'poly':square(0.8,0.8),'drill':0,'npth':False,'locked':False})
+        common=dict(res=0.1,clearance=0.2,width=0.2,layer_cost=[1.0],fill_clearance=0.2,log=lambda m:None)
+        one=negotiate(dump,['A','B'],fill_guards={'P':'B.Cu'},**common)[0]
+        listed=negotiate(dump,['A','B'],fill_guards={'P':['B.Cu']},**common)[0]
+        self.assertEqual([r['path'] for r in one],[r['path'] for r in listed])
+
 
 class NativeSearchTests(unittest.TestCase):
     def test_native_and_python_search_agree_on_cost(self):

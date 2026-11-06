@@ -1,0 +1,239 @@
+[
+  {
+    "Id": "d4b139e9ac517d0c42399a7bd2c0340c01193448d729c48b7cfdd0a419fc6c54",
+    "Created": "2026-10-16T10:35:45.289028965Z",
+    "Path": "/usr/bin/timeout",
+    "Args": [
+      "-s",
+      "KILL",
+      "110",
+      "python3",
+      "-c",
+      "import pathlib,time,json,os\np=pathlib.Path('/output');(p/'nested').mkdir()\n(p/'nested/binary.bin').write_bytes(bytes(range(256))*16384)\n(p/'empty.log').write_bytes(b'')\n(p/'synthetic.net').write_text('SYNTHETIC ONLY; NOT A KICAD NETLIST\\n')\n(p/'manifest-ready.json').write_text(json.dumps({'synthetic':True,'native_commands':0,'cpu.max':pathlib.Path('/sys/fs/cgroup/cpu.max').read_text(),'memory.max':pathlib.Path('/sys/fs/cgroup/memory.max').read_text(),'output_capacity':os.statvfs(p).f_blocks*os.statvfs(p).f_frsize}))\ntime.sleep(100)\n"
+    ],
+    "State": {
+      "Status": "running",
+      "Running": true,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 3114626,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-10-16T10:35:45.432861118Z",
+      "FinishedAt": "0001-01-01T00:00:00Z"
+    },
+    "Image": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "ResolvConfPath": "/var/lib/docker/containers/d4b139e9ac517d0c42399a7bd2c0340c01193448d729c48b7cfdd0a419fc6c54/resolv.conf",
+    "HostnamePath": "/var/lib/docker/containers/d4b139e9ac517d0c42399a7bd2c0340c01193448d729c48b7cfdd0a419fc6c54/hostname",
+    "HostsPath": "/var/lib/docker/containers/d4b139e9ac517d0c42399a7bd2c0340c01193448d729c48b7cfdd0a419fc6c54/hosts",
+    "LogPath": "",
+    "Name": "/osc-retention-synthetic-20261016-001",
+    "RestartCount": 0,
+    "Driver": "overlayfs",
+    "Platform": "linux",
+    "MountLabel": "",
+    "ProcessLabel": "",
+    "AppArmorProfile": "",
+    "ExecIDs": null,
+    "HostConfig": {
+      "Binds": null,
+      "ContainerIDFile": "",
+      "LogConfig": {
+        "Type": "none",
+        "Config": {}
+      },
+      "NetworkMode": "none",
+      "PortBindings": {},
+      "RestartPolicy": {
+        "Name": "no",
+        "MaximumRetryCount": 0
+      },
+      "AutoRemove": false,
+      "VolumeDriver": "",
+      "VolumesFrom": null,
+      "ConsoleSize": [
+        0,
+        0
+      ],
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "CgroupnsMode": "private",
+      "Dns": null,
+      "DnsOptions": [],
+      "DnsSearch": [],
+      "ExtraHosts": null,
+      "GroupAdd": null,
+      "IpcMode": "none",
+      "Cgroup": "",
+      "Links": null,
+      "OomScoreAdj": 0,
+      "PidMode": "",
+      "Privileged": false,
+      "PublishAllPorts": false,
+      "ReadonlyRootfs": true,
+      "SecurityOpt": [
+        "no-new-privileges"
+      ],
+      "Tmpfs": {
+        "/output": "rw,noexec,nosuid,nodev,size=262144000,mode=1777"
+      },
+      "UTSMode": "",
+      "UsernsMode": "",
+      "ShmSize": 67108864,
+      "Runtime": "runc",
+      "Isolation": "",
+      "CpuShares": 0,
+      "Memory": 4294967296,
+      "NanoCpus": 2000000000,
+      "CgroupParent": "",
+      "BlkioWeight": 0,
+      "BlkioWeightDevice": [],
+      "BlkioDeviceReadBps": [],
+      "BlkioDeviceWriteBps": [],
+      "BlkioDeviceReadIOps": [],
+      "BlkioDeviceWriteIOps": [],
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuRealtimePeriod": 0,
+      "CpuRealtimeRuntime": 0,
+      "CpusetCpus": "",
+      "CpusetMems": "",
+      "Devices": [],
+      "DeviceCgroupRules": null,
+      "DeviceRequests": null,
+      "MemoryReservation": 0,
+      "MemorySwap": 4294967296,
+      "MemorySwappiness": null,
+      "OomKillDisable": null,
+      "PidsLimit": 128,
+      "Ulimits": [],
+      "CpuCount": 0,
+      "CpuPercent": 0,
+      "IOMaximumIOps": 0,
+      "IOMaximumBandwidth": 0,
+      "Mounts": [
+        {
+          "Type": "bind",
+          "Source": "/mnt/c/Users/takaz/Documents/Codex/2026-10-16/task-3/native-run-001/empty",
+          "Target": "/dev/mqueue",
+          "ReadOnly": true
+        }
+      ],
+      "MaskedPaths": [
+        "/proc/acpi",
+        "/proc/asound",
+        "/proc/interrupts",
+        "/proc/kcore",
+        "/proc/keys",
+        "/proc/latency_stats",
+        "/proc/sched_debug",
+        "/proc/scsi",
+        "/proc/timer_list",
+        "/proc/timer_stats",
+        "/sys/devices/virtual/powercap",
+        "/sys/firmware"
+      ],
+      "ReadonlyPaths": [
+        "/proc/bus",
+        "/proc/fs",
+        "/proc/irq",
+        "/proc/sys",
+        "/proc/sysrq-trigger"
+      ]
+    },
+    "Storage": {
+      "RootFS": {
+        "Snapshot": {
+          "Name": "overlayfs"
+        }
+      }
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "/mnt/c/Users/takaz/Documents/Codex/2026-10-16/task-3/native-run-001/empty",
+        "Destination": "/dev/mqueue",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ],
+    "Config": {
+      "Hostname": "d4b139e9ac51",
+      "Domainname": "",
+      "User": "kicad",
+      "AttachStdin": false,
+      "AttachStdout": false,
+      "AttachStderr": false,
+      "Tty": false,
+      "OpenStdin": false,
+      "StdinOnce": false,
+      "Env": [
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "LANG=C.UTF-8",
+        "LANGUAGE=C.UTF-8",
+        "LC_ALL=C.UTF-8"
+      ],
+      "Cmd": [
+        "-s",
+        "KILL",
+        "110",
+        "python3",
+        "-c",
+        "import pathlib,time,json,os\np=pathlib.Path('/output');(p/'nested').mkdir()\n(p/'nested/binary.bin').write_bytes(bytes(range(256))*16384)\n(p/'empty.log').write_bytes(b'')\n(p/'synthetic.net').write_text('SYNTHETIC ONLY; NOT A KICAD NETLIST\\n')\n(p/'manifest-ready.json').write_text(json.dumps({'synthetic':True,'native_commands':0,'cpu.max':pathlib.Path('/sys/fs/cgroup/cpu.max').read_text(),'memory.max':pathlib.Path('/sys/fs/cgroup/memory.max').read_text(),'output_capacity':os.statvfs(p).f_blocks*os.statvfs(p).f_frsize}))\ntime.sleep(100)\n"
+      ],
+      "Image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+      "Volumes": null,
+      "WorkingDir": "",
+      "Entrypoint": [
+        "/usr/bin/timeout"
+      ],
+      "Labels": {
+        "org.opencontainers.image.authors": "https://groups.google.com/a/kicad.org/g/devlist",
+        "org.opencontainers.image.description": "Image containing KiCad EDA, python and the stock symbol and footprint libraries for use in automation workflows",
+        "org.opencontainers.image.documentation": "https://docs.kicad.org/",
+        "org.opencontainers.image.licenses": "GPL-3.0-or-later",
+        "org.opencontainers.image.source": "https://gitlab.com/kicad/kicad-ci/kicad-cli-docker",
+        "org.opencontainers.image.url": "https://kicad.org",
+        "org.opencontainers.image.vendor": "KiCad"
+      }
+    },
+    "NetworkSettings": {
+      "SandboxID": "f2ccb26e5d0ffc9a8e7227b195a9496b696073c3bc46695fc3e5e9d8af81cfbd",
+      "SandboxKey": "/var/run/docker/netns/f2ccb26e5d0f",
+      "Ports": {},
+      "Networks": {
+        "none": {
+          "IPAMConfig": null,
+          "Links": null,
+          "Aliases": null,
+          "DriverOpts": null,
+          "GwPriority": 0,
+          "NetworkID": "b0b5d515b84042e330755c396a9d75a49fa8444389efd36c22f9b8dfac7279b7",
+          "EndpointID": "5994fc7b3ee6eb8295d657359ff43090ec6892a0d2a08dc4f7386cfafdfe25f6",
+          "Gateway": "",
+          "IPAddress": "",
+          "MacAddress": "",
+          "IPPrefixLen": 0,
+          "IPv6Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "DNSNames": null
+        }
+      }
+    },
+    "ImageManifestDescriptor": {
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "digest": "sha256:40568bc95527f3a673a31a9b59badf512e71046c2d5068a364503c525f946a4e",
+      "size": 3041,
+      "platform": {
+        "architecture": "amd64",
+        "os": "linux"
+      }
+    }
+  }
+]

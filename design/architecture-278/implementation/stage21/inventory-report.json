@@ -1,0 +1,1182 @@
+{
+  "candidates": {
+    "C7104": {
+      "candidate_mpn": "C0603C100J5GACTU",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "missing_decision": "Specify acceptable feedback bandwidth/phase margin with amplifier/load and PCB parasitics;10pF nominal and C0G do not qualify stability.",
+      "nominal_value_SI": 1e-11,
+      "ratings": {
+        "ESR_ohm": null,
+        "aging_percent_per_decade_hour": 0,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.8
+        ],
+        "body_tolerance_mm": [
+          0.15,
+          0.15,
+          0.07
+        ],
+        "brand": "KEMET candidate; exact identifier verified in group specsheet",
+        "candidate_only": true,
+        "dielectric": "C0G",
+        "effective_capacitance_at_bias_F": null,
+        "kind": "C",
+        "manufacturer_document_issuer": "YAGEO Group",
+        "rated_voltage_V": 50,
+        "source_id": "C0603C100J5GACTU",
+        "supplier_order_code": null,
+        "temperature_coefficient": {
+          "ppm_per_C": 30
+        },
+        "temperature_range_C": [
+          -55,
+          125
+        ],
+        "tolerance_fraction": 0.05,
+        "value_SI": 1e-11
+      },
+      "role": "bipolar_attenuverter:C_FB",
+      "selected_mpn": null
+    },
+    "C7105": {
+      "candidate_mpn": "C0603C103J5RACTU",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "missing_decision": "Specify effective capacitance and acceptable RC/settling over DC bias, temperature and aging; typical Y-SIM curves are not guaranteed bounds.",
+      "nominal_value_SI": 1e-08,
+      "ratings": {
+        "ESR_ohm": null,
+        "aging_percent_per_decade_hour": 3,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.8
+        ],
+        "body_tolerance_mm": [
+          0.15,
+          0.15,
+          0.1
+        ],
+        "brand": "KEMET candidate; exact identifier verified in group specsheet",
+        "candidate_only": true,
+        "dielectric": "X7R",
+        "effective_capacitance_at_bias_F": null,
+        "kind": "C",
+        "manufacturer_document_issuer": "YAGEO Group",
+        "rated_voltage_V": 50,
+        "source_id": "C0603C103J5RACTU",
+        "supplier_order_code": null,
+        "temperature_coefficient": {
+          "condition": "Relative25C,0VDC; not DC-bias effective capacitance",
+          "fraction": 0.15
+        },
+        "temperature_range_C": [
+          -55,
+          125
+        ],
+        "tolerance_fraction": 0.05,
+        "value_SI": 1e-08
+      },
+      "role": "dc_control_source:C_W",
+      "selected_mpn": null
+    },
+    "R7101": {
+      "candidate_mpn": "RT0603BRD0710KL",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 31.606961258558215,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Approve negative-reference ratio/error allocation across independent 0.1% parts, differential temperature and aging; Stage15 static target2mV is not established by nominal tolerance.",
+      "nominal_value_SI": 10000.0,
+      "ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD0710KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 10000
+      },
+      "role": "reference_generator:R_INV",
+      "selected_mpn": null
+    },
+    "R7102": {
+      "candidate_mpn": "RT0603BRD0710KL",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 31.606961258558215,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Approve negative-reference ratio/error allocation across independent 0.1% parts, differential temperature and aging; Stage15 static target2mV is not established by nominal tolerance.",
+      "nominal_value_SI": 10000.0,
+      "ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD0710KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 10000
+      },
+      "role": "reference_generator:R_FB",
+      "selected_mpn": null
+    },
+    "R7103": {
+      "candidate_mpn": "RT0603BRD0722KL",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 46.88069965348214,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Bound reference-generator load current and voltage across this22k resistor over rails/startup/fault, and budget its gain/loading sensitivity.",
+      "nominal_value_SI": 22000.0,
+      "ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD0722KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 22000
+      },
+      "role": "reference_generator:R_GTOP",
+      "selected_mpn": null
+    },
+    "R7106": {
+      "candidate_mpn": "RT0603BRD071KL",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 9.99499874937461,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Bound switch/protection drive voltage, pulse energy, missing-rail/backfeed duration and hot dissipation for this1k resistor.",
+      "nominal_value_SI": 1000.0,
+      "ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD071KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 1000
+      },
+      "role": "input_fault_switch:R_DRIVE",
+      "selected_mpn": null
+    },
+    "R7108": {
+      "candidate_mpn": "RT0603BRD0710KL",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 31.606961258558215,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Bound protected-input differential voltage and fault duration/current; approve leakage, noise and input-loading error for10k.",
+      "nominal_value_SI": 10000.0,
+      "ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD0710KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 10000
+      },
+      "role": "high_impedance_input:R_LIMIT",
+      "selected_mpn": null
+    },
+    "R7110": {
+      "candidate_mpn": "RT0603BRD071KL",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 9.99499874937461,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Bound switch/protection drive voltage, pulse energy, missing-rail/backfeed duration and hot dissipation for this1k resistor.",
+      "nominal_value_SI": 1000.0,
+      "ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD071KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 1000
+      },
+      "role": "input_fault_switch:R_DRIVE",
+      "selected_mpn": null
+    },
+    "R7112": {
+      "candidate_mpn": "RT0603BRD0710KL",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 31.606961258558215,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Bound protected-input differential voltage and fault duration/current; approve leakage, noise and input-loading error for10k.",
+      "nominal_value_SI": 10000.0,
+      "ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD0710KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 10000
+      },
+      "role": "high_impedance_input:R_LIMIT",
+      "selected_mpn": null
+    },
+    "R7113": {
+      "candidate_mpn": "RT0603BRD07100RL",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 3.1606961258558215,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Bound amplifier current limit, output-short duration/duty and differential voltage across100ohm; approve output stability and thermal margin.",
+      "nominal_value_SI": 100.0,
+      "ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD07100RL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 100
+      },
+      "role": "remote_buffer:R_ISO",
+      "selected_mpn": null
+    },
+    "R7114": {
+      "candidate_mpn": "RT0603BRD0710KL",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 31.606961258558215,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Approve feedback noise/bias-current error and gain/compensation stability with the actual output load and temperature.",
+      "nominal_value_SI": 10000.0,
+      "ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD0710KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 10000
+      },
+      "role": "remote_buffer:R_FB",
+      "selected_mpn": null
+    },
+    "R7115": {
+      "candidate_mpn": "RT0603BRD071KL",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 9.99499874937461,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Approve loaded-control end-point/error budget and settling with actual pot resistance/contact/taper and input bias.",
+      "nominal_value_SI": 1000.0,
+      "ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD071KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 1000
+      },
+      "role": "bipolar_attenuverter:R_W",
+      "selected_mpn": null
+    },
+    "R7116": {
+      "candidate_mpn": "RC0603FR-0710ML",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 75,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Approve wiper-open failsafe voltage/settling and leakage/contamination error for10Mohm across temperature/humidity.",
+      "nominal_value_SI": 10000000.0,
+      "ratings": {
+        "TCR_ppm_per_C": 100,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RC0603FR-0710ML",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.01,
+        "value_SI": 10000000.0
+      },
+      "role": "bipolar_attenuverter:R_FAIL",
+      "selected_mpn": null
+    },
+    "R7119": {
+      "candidate_mpn": "RT0603BRD071KL",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 9.99499874937461,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Approve loaded-control filtering, settling and bias-current error with actual pot/contact and C7105 effective capacitance.",
+      "nominal_value_SI": 1000.0,
+      "ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD071KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 1000
+      },
+      "role": "dc_control_source:R_W",
+      "selected_mpn": null
+    },
+    "R7120": {
+      "candidate_mpn": "RC0603FR-0710ML",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 75,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Approve wiper-open failsafe voltage/settling and leakage/contamination error for10Mohm across temperature/humidity.",
+      "nominal_value_SI": 10000000.0,
+      "ratings": {
+        "TCR_ppm_per_C": 100,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RC0603FR-0710ML",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.01,
+        "value_SI": 10000000.0
+      },
+      "role": "dc_control_source:R_FAIL",
+      "selected_mpn": null
+    },
+    "R7130": {
+      "candidate_mpn": "RT0603BRD075K6L",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 23.652484013312428,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Bound per-leg differential voltage/current and hot dissipation and approve indicator threshold/loading error.",
+      "nominal_value_SI": 5600.0,
+      "ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD075K6L",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 5600
+      },
+      "role": "magnitude_indicator:R_SENSE",
+      "selected_mpn": null
+    },
+    "R7131": {
+      "candidate_mpn": "RT0603BRD075K6L",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 23.652484013312428,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Bound per-leg differential voltage/current and hot dissipation and approve indicator threshold/loading error.",
+      "nominal_value_SI": 5600.0,
+      "ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD075K6L",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 5600
+      },
+      "role": "magnitude_indicator:R_SENSE",
+      "selected_mpn": null
+    },
+    "R7132": {
+      "candidate_mpn": "RT0603BRD075K6L",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 23.652484013312428,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Bound per-leg differential voltage/current and hot dissipation and approve indicator threshold/loading error.",
+      "nominal_value_SI": 5600.0,
+      "ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD075K6L",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 5600
+      },
+      "role": "magnitude_indicator:R_SENSE",
+      "selected_mpn": null
+    },
+    "R7135": {
+      "candidate_mpn": "RT0603BRD0722K1L",
+      "common_requirements": [
+        "Bound actual differential voltage, local ambient and fault duration/duty; establish derating margin.",
+        "Approve solder/assembly process and reviewed land pattern.",
+        "Confirm exact supplier lot, lifecycle and order-time PCBA availability; catalog listing is not allocation."
+      ],
+      "conditional_70C_working_voltage_bound_V": 46.987125896355906,
+      "in_circuit_rating_pass": null,
+      "missing_decision": "Specify LED current/brightness and clip threshold over rails, LED forward-voltage range and temperature; bound resistor dissipation.",
+      "nominal_value_SI": 22100.0,
+      "ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD0722K1L",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 22100
+      },
+      "role": "clip_detector:R_LED",
+      "selected_mpn": null
+    }
+  },
+  "counts": {
+    "capacitors": 2,
+    "distinct_candidates": 9,
+    "non_BOM_non_board_annotations": 22,
+    "resistors": 17,
+    "unbound_DIN": 2,
+    "unselected_references": 19
+  },
+  "electrical_acceptance": false,
+  "footprint_comparison": {
+    "C0603": {
+      "captured_mm": {
+        "overall_pad_length_mm": 2.2,
+        "pad_center_abs_x": 0.7,
+        "pad_gap_mm": 0.6,
+        "pad_length_x": 0.8,
+        "pad_width_y": 0.9
+      },
+      "delta_captured_minus_recommended_mm": {
+        "A": {
+          "pad_center_abs_x": -0.2,
+          "pad_length_x": -0.35,
+          "pad_width_y": -0.2
+        },
+        "B": {
+          "pad_center_abs_x": -0.1,
+          "pad_length_x": -0.15,
+          "pad_width_y": -0.1
+        },
+        "C": {
+          "pad_center_abs_x": 0.1,
+          "pad_length_x": 0.05,
+          "pad_width_y": 0.0
+        }
+      },
+      "qualified": false
+    },
+    "R0603": {
+      "captured_mm": {
+        "overall_pad_length_mm": 2.31,
+        "pad_center_abs_x": 0.75,
+        "pad_gap_mm": 0.69,
+        "pad_length_x": 0.81,
+        "pad_width_y": 0.86
+      },
+      "qualified": false
+    }
+  },
+  "footprint_decisions": {
+    "DIN": {
+      "flange_holes": null,
+      "missing_decision": "Obtain exact dimensioned manufacturer PCB drawing and mating/solder-side pin numbering transform; choose board thickness, plated finished-hole tolerances, pad annulus, tail protrusion, fixing flange and mate/support stack. Do not derive a production drill from rectangular contact section alone. Coding removes contacts and cannot silently change96-pin logical roster.",
+      "pad_mm": null,
+      "qualified": false,
+      "recommended_finished_hole_mm": null,
+      "retained_evidence": {
+        "female": {
+          "authority": "manufacturer-authored PDF on distributor mirror",
+          "flange_hole_centres_mm": null,
+          "flange_hole_diameters_mm": null,
+          "identity_pitch_length_locator": "physical page0, printed1/4; 96contacts rowsa/b/c,2.54mm pitch,2.9mm termination, fixing flange",
+          "local_cache": ".circuit-cache/sources/architecture278-harting/document.pdf",
+          "manufacturer": "HARTING",
+          "mpn": "09032966824",
+          "recommended_finished_hole_mm": null,
+          "recommended_pad_mm": null,
+          "section_locator": "physical page2, printed3/4; visually inspected dimensioned solder termination cross section",
+          "sha256": "978b11ceab4ffa9b0bf7661240a6b32eb54bec8197e8bf1f726761b88db0eed6",
+          "termination_length_mm": 2.9,
+          "termination_section_ranges_mm": [
+            [
+              0.68,
+              0.75
+            ],
+            [
+              0.29,
+              0.31
+            ]
+          ],
+          "url": "https://www.evg.de/media/files_public/a0a86f4d04cc31683711477663ba720c/Harting_FEDERLEISTE-09_03_296_6824-103.pdf"
+        },
+        "male": {
+          "authority": "manufacturer-authored PDF on distributor mirror",
+          "flange_hole_centres_mm": null,
+          "flange_hole_diameters_mm": null,
+          "identity_pitch_length_locator": "physical page0, printed1/5;96contacts rowsa/b/c,2.54mm pitch,3.0mm termination, fixing flange",
+          "local_cache": ".circuit-cache/sources/architecture278-harting-male/document.pdf",
+          "manufacturer": "HARTING",
+          "mpn": "09031966922",
+          "recommended_finished_hole_mm": null,
+          "recommended_pad_mm": null,
+          "section_locator": "physical page3, printed4/5; visually inspected dimensioned solder termination cross section",
+          "sha256": "736b7a87209f7e1e59610d3897b9922aab8fe4833276fb43af16165aa26a982e",
+          "termination_length_mm": 3,
+          "termination_section_ranges_mm": [
+            [
+              0.575,
+              0.6
+            ],
+            [
+              0.5,
+              0.55
+            ]
+          ],
+          "url": "https://assets.rs-online.com/image/upload/v1763385649/Datasheets/c29c606e19ded3a09c39bbc6b0188822.pdf"
+        }
+      }
+    },
+    "annotations": {
+      "missing_decision": "Choose direct-solder wire land versus physical terminal/connector after specifying wire gauge/stranding/insulation, entry direction, solder process, strain relief, pull/service load and board thickness. Retain22 logical annotations in_bom=false/on_board=false until separately reviewed physical design.",
+      "mpn_applicable": false,
+      "qualified": false
+    },
+    "capacitor": {
+      "density_patterns_mm": {
+        "A": {
+          "courtyard": [
+            4,
+            2.1
+          ],
+          "pad_center_abs_x": 0.9,
+          "pad_length_x": 1.15,
+          "pad_width_y": 1.1
+        },
+        "B": {
+          "courtyard": [
+            3.1,
+            1.5
+          ],
+          "pad_center_abs_x": 0.8,
+          "pad_length_x": 0.95,
+          "pad_width_y": 1
+        },
+        "C": {
+          "courtyard": [
+            2.4,
+            1.2
+          ],
+          "pad_center_abs_x": 0.6,
+          "pad_length_x": 0.75,
+          "pad_width_y": 0.9
+        }
+      },
+      "missing_decision": "Choose solder process and density level. Captured C0603 is not any listed pattern. Review pad, mask, paste and courtyard changes separately; levelC requires process qualification.",
+      "qualified": false,
+      "source_ids": [
+        "kemet-c0g",
+        "kemet-x7r"
+      ]
+    },
+    "resistor": {
+      "missing_decision": "Acquire applicable YAGEO RT/RC chip-resistor mounting guide and select assembly process/land pattern. Exact product body/termination dimensions alone do not qualify captured R0603.",
+      "qualified": false,
+      "recommended_pattern_mm": null
+    }
+  },
+  "native_execution": "NONE",
+  "preservation": {
+    "all_preexisting_tracked_bytes_preserved_except": [
+      "design/architecture-278/implementation/WORK.md"
+    ],
+    "baseline_commit": "e2e580aed4620e86357341d660bbf04f356d33f2"
+  },
+  "retained_XML_scope": "Stage20 unchanged118refs/561pins/154UUIDs/196NCs only; no qualification of changed inputs.",
+  "selected_MPN_count_changed": false,
+  "source_sha256": {
+    "design/architecture-278/implementation/stage11/identity-input.json": "cae9a6881b2f40457edeaa5fb7c48896764b02477fe096347766e5eb1de645ea",
+    "design/architecture-278/implementation/stage16/inputs-report.json": "214297b7b19f9ae6027d1f036407f005319929961338631896f984655a4c0ebc",
+    "design/architecture-278/implementation/stage17/generated/transport-component-rows.json": "5c110aa74cdc0209516a2d7dede17cddc3eeed10f3cb824d08e3d4c6759ccf10",
+    "design/architecture-278/implementation/stage21/README.md": "0c5de8458b6c4507298b9387db90496667cb6be5f45be34e8a7782d770512cc5",
+    "design/architecture-278/implementation/stage21/footprint-input.json": "5bc44fba98f37129fd526a9cca2366236f46767feda0f4d393dfce7dcc5b36f7",
+    "design/architecture-278/implementation/stage21/inventory-input.json": "991b24386c364e6751e16bd117946669e0326dbb2ec66c446b9a6585890047e2",
+    "design/architecture-278/implementation/stage4/mechanical-input.json": "f493fe0573c990528e75348d67d3dd7ff4554fe6455f03234cdf2290bdfe5340",
+    "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod": "5deb5924199e36857d3a90a22828d73ed4b82ee4fe3c54e0d80c60130ecb7524",
+    "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod": "25cf0c8152ddf3adbf6c02140174cf5c53cfe865e425d689fb901c6ff1fab6d0",
+    "scripts/architecture278/implementation/stage21_inventory.py": "699672c1585174ac5c6ee25b0b4393aaa0e4e2bb960ee32fa2c87afa1eceeb03",
+    "scripts/architecture278/implementation/test_stage21_inventory.py": "d7bf9ebd1c05192e5e764a995ef27100c1330ce0e29954cd700e410224d32b98"
+  },
+  "status": "SOURCE_AUDIT_PASS_SELECTION_AND_PHYSICAL_ACCEPTANCE_OPEN",
+  "supplier_observations": {
+    "C0603C100J5GACTU": [
+      {
+        "allocation_confirmed": false,
+        "error": "HTTP Error 403: Forbidden",
+        "observed": null,
+        "retrieved_at": "2026-10-16T20:23:00.354101+00:00",
+        "status": "HTTP403",
+        "supplier": "LCSC",
+        "url": "https://www.lcsc.com/search?q=C0603C100J5GACTU"
+      },
+      {
+        "allocation_confirmed": false,
+        "observed": null,
+        "retrieved_at": "2026-10-16T20:20:10.427758+00:00",
+        "source_id": "jlc-search-C0603C100J5GACTU",
+        "status": "SEARCH_INCONCLUSIVE",
+        "supplier": "JLCPCB",
+        "url": "https://jlcpcb.com/parts/componentSearch?searchTxt=C0603C100J5GACTU"
+      }
+    ],
+    "C0603C103J5RACTU": [
+      {
+        "allocation_confirmed": false,
+        "error": "HTTP Error 403: Forbidden",
+        "observed": null,
+        "retrieved_at": "2026-10-16T20:23:00.366134+00:00",
+        "status": "HTTP403",
+        "supplier": "LCSC",
+        "url": "https://www.lcsc.com/search?q=C0603C103J5RACTU"
+      },
+      {
+        "allocation_confirmed": false,
+        "observed": null,
+        "retrieved_at": "2026-10-16T20:20:11.103816+00:00",
+        "source_id": "jlc-search-C0603C103J5RACTU",
+        "status": "SEARCH_INCONCLUSIVE",
+        "supplier": "JLCPCB",
+        "url": "https://jlcpcb.com/parts/componentSearch?searchTxt=C0603C103J5RACTU"
+      }
+    ],
+    "RC0603FR-0710ML": [
+      {
+        "allocation_confirmed": false,
+        "error": "HTTP Error 403: Forbidden",
+        "observed": null,
+        "retrieved_at": "2026-10-16T20:23:00.366284+00:00",
+        "status": "HTTP403",
+        "supplier": "LCSC",
+        "url": "https://www.lcsc.com/search?q=RC0603FR-0710ML"
+      },
+      {
+        "allocation_confirmed": false,
+        "observed": {
+          "assemblyComponentFlag": false,
+          "componentBrandEn": "YAGEO",
+          "componentCode": "C114606",
+          "componentLibraryType": "expand",
+          "componentModelEn": "RC0603FR-0710ML",
+          "componentSpecificationEn": "0603",
+          "overseasStockCount": 1051974
+        },
+        "retrieved_at": "2026-10-16T20:21:54.357235+00:00",
+        "source_id": "jlc-C114606",
+        "status": "EXACT_LISTING",
+        "supplier": "JLCPCB",
+        "url": "https://jlcpcb.com/partdetail/C114606"
+      }
+    ],
+    "RT0603BRD07100RL": [
+      {
+        "allocation_confirmed": false,
+        "error": "HTTP Error 403: Forbidden",
+        "observed": null,
+        "retrieved_at": "2026-10-16T20:23:00.366405+00:00",
+        "status": "HTTP403",
+        "supplier": "LCSC",
+        "url": "https://www.lcsc.com/search?q=RT0603BRD07100RL"
+      },
+      {
+        "allocation_confirmed": false,
+        "observed": {
+          "assemblyComponentFlag": false,
+          "componentBrandEn": "YAGEO",
+          "componentCode": "C122970",
+          "componentLibraryType": "expand",
+          "componentModelEn": "RT0603BRD07100RL",
+          "componentSpecificationEn": "0603",
+          "overseasStockCount": 429521
+        },
+        "retrieved_at": "2026-10-16T20:22:53.189973+00:00",
+        "source_id": "jlc-C122970",
+        "status": "EXACT_LISTING",
+        "supplier": "JLCPCB",
+        "url": "https://jlcpcb.com/partdetail/C122970"
+      }
+    ],
+    "RT0603BRD0710KL": [
+      {
+        "allocation_confirmed": false,
+        "error": "HTTP Error 403: Forbidden",
+        "observed": null,
+        "retrieved_at": "2026-10-16T20:23:00.366467+00:00",
+        "status": "HTTP403",
+        "supplier": "LCSC",
+        "url": "https://www.lcsc.com/search?q=RT0603BRD0710KL"
+      },
+      {
+        "allocation_confirmed": false,
+        "observed": {
+          "assemblyComponentFlag": false,
+          "componentBrandEn": "YAGEO",
+          "componentCode": "C95204",
+          "componentLibraryType": "expand",
+          "componentModelEn": "RT0603BRD0710KL",
+          "componentSpecificationEn": "0603",
+          "overseasStockCount": 2062045
+        },
+        "retrieved_at": "2026-10-16T20:21:54.953164+00:00",
+        "source_id": "jlc-C95204",
+        "status": "EXACT_LISTING",
+        "supplier": "JLCPCB",
+        "url": "https://jlcpcb.com/partdetail/C95204"
+      }
+    ],
+    "RT0603BRD071KL": [
+      {
+        "allocation_confirmed": false,
+        "error": "HTTP Error 403: Forbidden",
+        "observed": null,
+        "retrieved_at": "2026-10-16T20:23:01.269174+00:00",
+        "status": "HTTP403",
+        "supplier": "LCSC",
+        "url": "https://www.lcsc.com/search?q=RT0603BRD071KL"
+      },
+      {
+        "allocation_confirmed": false,
+        "observed": {
+          "assemblyComponentFlag": false,
+          "componentBrandEn": "YAGEO",
+          "componentCode": "C110776",
+          "componentLibraryType": "expand",
+          "componentModelEn": "RT0603BRD071KL",
+          "componentSpecificationEn": "0603",
+          "overseasStockCount": 1767823
+        },
+        "retrieved_at": "2026-10-16T20:17:19.055977+00:00",
+        "source_id": "jlc-C110776",
+        "status": "EXACT_LISTING",
+        "supplier": "JLCPCB",
+        "url": "https://jlcpcb.com/partdetail/Yageo-RT0603BRD071KL/C110776"
+      }
+    ],
+    "RT0603BRD0722K1L": [
+      {
+        "allocation_confirmed": false,
+        "error": "HTTP Error 403: Forbidden",
+        "observed": null,
+        "retrieved_at": "2026-10-16T20:23:01.269337+00:00",
+        "status": "HTTP403",
+        "supplier": "LCSC",
+        "url": "https://www.lcsc.com/search?q=RT0603BRD0722K1L"
+      },
+      {
+        "allocation_confirmed": false,
+        "observed": null,
+        "retrieved_at": "2026-10-16T20:20:10.775411+00:00",
+        "source_id": "jlc-search-RT0603BRD0722K1L",
+        "status": "SEARCH_INCONCLUSIVE",
+        "supplier": "JLCPCB",
+        "url": "https://jlcpcb.com/parts/componentSearch?searchTxt=RT0603BRD0722K1L"
+      }
+    ],
+    "RT0603BRD0722KL": [
+      {
+        "allocation_confirmed": false,
+        "error": "HTTP Error 403: Forbidden",
+        "observed": null,
+        "retrieved_at": "2026-10-16T20:23:01.269524+00:00",
+        "status": "HTTP403",
+        "supplier": "LCSC",
+        "url": "https://www.lcsc.com/search?q=RT0603BRD0722KL"
+      },
+      {
+        "allocation_confirmed": false,
+        "observed": {
+          "assemblyComponentFlag": false,
+          "componentBrandEn": "YAGEO",
+          "componentCode": "C469656",
+          "componentLibraryType": "expand",
+          "componentModelEn": "RT0603BRD0722KL",
+          "componentSpecificationEn": "0603",
+          "overseasStockCount": 47385
+        },
+        "retrieved_at": "2026-10-16T20:21:54.350215+00:00",
+        "source_id": "jlc-C469656",
+        "status": "EXACT_LISTING",
+        "supplier": "JLCPCB",
+        "url": "https://jlcpcb.com/partdetail/C469656"
+      }
+    ],
+    "RT0603BRD075K6L": [
+      {
+        "allocation_confirmed": false,
+        "error": "HTTP Error 403: Forbidden",
+        "observed": null,
+        "retrieved_at": "2026-10-16T20:23:01.269576+00:00",
+        "status": "HTTP403",
+        "supplier": "LCSC",
+        "url": "https://www.lcsc.com/search?q=RT0603BRD075K6L"
+      },
+      {
+        "allocation_confirmed": false,
+        "observed": {
+          "assemblyComponentFlag": false,
+          "componentBrandEn": "YAGEO",
+          "componentCode": "C179095",
+          "componentLibraryType": "expand",
+          "componentModelEn": "RT0603BRD075K6L",
+          "componentSpecificationEn": "0603",
+          "overseasStockCount": 13821
+        },
+        "retrieved_at": "2026-10-16T20:21:54.835570+00:00",
+        "source_id": "jlc-C179095",
+        "status": "EXACT_LISTING",
+        "supplier": "JLCPCB",
+        "url": "https://jlcpcb.com/partdetail/C179095"
+      }
+    ]
+  }
+}

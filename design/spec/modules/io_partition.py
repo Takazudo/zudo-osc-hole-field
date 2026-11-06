@@ -33,7 +33,7 @@ def region(part, family):
 
 
 def spare(part):
-    if part.symbol.endswith(('OPA4196IDR', 'OPA4197IPWR')) and part.unit in range(1,5):
+    if part.symbol.endswith(('OPA4196IDR', 'OPA4197IPWR', 'OPA4197IDR')) and part.unit in range(1,5):
         out, minus, plus = AMP_MAPS[part.unit-1]
         return part.pins[out] == part.pins[minus] and part.pins[plus] == 'AGND'
     if part.symbol.endswith('SN74HC14DR') and part.unit in range(1,7):
@@ -69,13 +69,13 @@ def refine(family):
         elif not attrs.get('Island'):
             attrs['Island'] = f'IO_CORE:${{SHEETNAME}}'
         p = replace(p, attributes=attrs)
-        if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','SN74HC14DR')):
+        if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR','SN74HC14DR')):
             groups[p.symbol].append(p)
         else:
             result.append(p)
     extra_ordinal = max((p.ordinal for p in family.parts if p.prefix == 'U'), default=0)
     for symbol, entries in groups.items():
-        is_amp = symbol.endswith(('OPA4196IDR','OPA4197IPWR'))
+        is_amp = symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR'))
         maps = AMP_MAPS if is_amp else SCHMITT_MAPS
         power_unit = len(maps)+1
         package_templates = [p for p in entries if p.unit == power_unit]
@@ -135,10 +135,10 @@ def refine(family):
         p = rows[-1]
         supply = {pin: net for q in rows for pin, net in q.pins.items()}
         sym = p.symbol.split(':')[-1]
-        rail_pins = {'OPA4196IDR':('4','11'),'OPA4197IPWR':('4','11'),
+        rail_pins = {'OPA4196IDR':('4','11'),'OPA4197IPWR':('4','11'),'OPA4197IDR':('4','11'),
                      'SN74HC14DR':('14',),'SN74HC00DR':('14',),'SN74HC74DR':('14',),
                      'CD74HC221M96':('16',),'REF5050AIDR':('2',),'LM393BIDR':('8','4'),
-                     'ADG5412FBRUZ':('13','4'),'LM13700M_NOPB':('11','6'),
+                     'ADG5412FBRUZ':('13','4'),'TMUX7412FRRPR':('11','2'),'TMUX6112PWR':('13','4'),'LM13700M_NOPB':('11','6'),
                      'AS3340D':('16','3'),'NOISE2':('1',),'LF398M_NOPB':('12','3')}[sym]
         for pin in rail_pins:
             rail = supply[pin]
@@ -183,15 +183,120 @@ def refine(family):
                                       'Island': 'IO_STAGE_OPTICAL:${SHEETNAME}'})
         optical.append(p)
     result_family = replace(result_family, parts=tuple(optical))
-    return result_family
+    return replace(result_family, parts=tuple(precision_package(p, result_family.name) for p in result_family.parts))
+
+
+def _tssop_retention():
+    import json
+    from pathlib import Path
+    data = json.loads((Path(__file__).resolve().parents[3] / 'design/partition/precision-tssop-retention.json').read_text())
+    return ({(r['family'], r['package_key'], r['board_region']) for r in data['packages'] if 'instances' not in r},
+            [r for r in data['packages'] if 'instances' in r])
+
+
+TSSOP_RETENTION, TSSOP_INSTANCE_RETENTION = _tssop_retention()
+TSSOP_SPLIT_SUFFIX = '_tssop'
+
+
+def base_family(name):
+    """Source family of a TSSOP instance split (see split_tssop_instances)."""
+    return name.split(TSSOP_SPLIT_SUFFIX, 1)[0] if TSSOP_SPLIT_SUFFIX in name else name
+
+
+def tssop_groups(family_name):
+    """Instance groups of one family that share the same retained packages: {clone name: (instances, entries)}."""
+    entries = [e for e in TSSOP_INSTANCE_RETENTION if e['family'] == family_name]
+    keys = defaultdict(list)
+    for e in entries:
+        for i in e['instances']:
+            keys[i].append(e)
+    groups = defaultdict(list)
+    for i, es in keys.items():
+        groups[tuple(sorted((e['package_key'], e['board_region']) for e in es))].append(i)
+    out = {}
+    for sig, insts in sorted(groups.items(), key=lambda kv: sorted(kv[1])):
+        name = family_name + TSSOP_SPLIT_SUFFIX + ('' if len(groups) == 1 else '_' + '_'.join(sorted(insts)).lower())
+        out[name] = (sorted(insts), [e for e in entries if (e['package_key'], e['board_region']) in sig])
+    return out
+
+
+def split_tssop_instances(families, instances, strict=True):
+    # A shared hierarchical sheet carries one footprint per symbol for every
+    # instance, so an instance-scoped OPA4197IPWR retention becomes a cloned
+    # family (own master sheet) used only by the instances that retain the same packages.
+    from design.spec.cells._builder import SHORTLIST, CATALOG, load_symbol
+    record = SHORTLIST['op_precision']
+    symbol = load_symbol(CATALOG[record['mpn']])
+    footprint = symbol.body.split('(property "Footprint" "', 1)[1].split('"', 1)[0]
+    clones = defaultdict(list)
+    target = {}
+    for base in families:
+        for name, (insts, entries) in tssop_groups(base.name).items():
+            parts = list(base.parts)
+            for entry in entries:
+                before = list(parts)
+                parts = [replace(p, symbol=symbol.lib_id, footprint=footprint,
+                                 value=record['mpn'] if p.value == 'OPA4197IDR' else p.value,
+                                 attributes={**p.attributes, 'MPN': record['mpn'], 'Manufacturer': record['manufacturer'],
+                                             'LCSC': record.get('lcsc', '')})
+                         if (p.symbol.endswith('OPA4197IDR') and p.key.rsplit('.', 1)[0] == entry['package_key']
+                             and p.attributes.get('BoardRegion') == entry['board_region']) else p for p in parts]
+                if parts == before:
+                    raise ValueError(f"{entry['family']}: no OPA4197IDR {entry['package_key']} in {entry['board_region']}")
+            clones[base.name].append(replace(base, name=name, parts=tuple(parts)))
+            target.update({i: name for i in insts})
+    known = {i.name for i in instances}
+    if strict and set(target) - known:
+        raise ValueError(f'unknown retained instances: {sorted(set(target) - known)}')
+    out_families = []
+    for f in families:
+        out_families.append(f)
+        out_families.extend(clones.get(f.name, ()))
+    out_instances = tuple(replace(i, family=target[i.name]) if i.name in target else i for i in instances)
+    return tuple(out_families), out_instances
+
+
+def instance_package_counts(family, instance_name):
+    """Whole fitted IC packages of one instance, after any TSSOP split."""
+    from collections import Counter
+    g = instance_family(family, instance_name)
+    return dict(sorted(Counter({p.key.rsplit('.', 1)[0]: p.symbol.split(':')[-1]
+                                for p in g.parts if p.prefix == 'U' and not p.dnp}.values()).items()))
+
+
+def instance_family(family, instance_name):
+    """The family (base or TSSOP split) that one instance of a source family renders."""
+    from scripts.schgen.core import Instance
+    fs, ins = split_tssop_instances((family,), (Instance(family.name, instance_name, 1),), strict=False)
+    return next(f for f in fs if f.name == ins[0].family)
+
+
+def precision_package(part, family=None):
+    # Adopted control-board option B (E15): precision packages outside the control
+    # region move to the pin-identical SOIC-14 OPA4197IDR; the four control-board
+    # packages keep TSSOP-14 OPA4197IPWR, as do the jack-board packages listed in
+    # design/partition/precision-tssop-retention.json (minimal-move locality).
+    if not part.symbol.endswith('OPA4197IPWR') or part.attributes.get('BoardRegion') == 'control':
+        return part
+    if (family, part.key.rsplit('.', 1)[0], part.attributes.get('BoardRegion')) in TSSOP_RETENTION:
+        return part
+    from design.spec.cells._builder import SHORTLIST, CATALOG, load_symbol
+    record = SHORTLIST['op_precision_d']
+    symbol = load_symbol(CATALOG[record['mpn']])
+    footprint = symbol.body.split('(property "Footprint" "', 1)[1].split('"', 1)[0]
+    attrs = {**part.attributes, 'MPN': record['mpn'], 'Manufacturer': record['manufacturer'],
+             'LCSC': record.get('lcsc', '')}
+    return replace(part, symbol=symbol.lib_id, footprint=footprint,
+                   value=record['mpn'] if part.value == 'OPA4197IPWR' else part.value, attributes=attrs)
 
 
 def channel_signatures(family):
     """Electrical identity independent of physical channel pin allocation."""
     signatures=[]
     for p in family.parts:
-        maps=AMP_MAPS if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) else SCHMITT_MAPS if p.symbol.endswith('SN74HC14DR') else ()
+        maps=AMP_MAPS if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR','OPA4197IDR')) else SCHMITT_MAPS if p.symbol.endswith('SN74HC14DR') else ()
         if not maps or p.unit>len(maps) or spare(p):continue
-        signatures.append((p.symbol,p.attributes.get('LogicalCellKey') or p.key,
+        # The option-B SOIC-14 OPA4197IDR is pin-identical to OPA4197IPWR.
+        signatures.append((p.symbol.replace('OPA4197IDR','OPA4197IPWR'),p.attributes.get('LogicalCellKey') or p.key,
                            p.attributes.get('Role',''),tuple(p.pins[k] for k in maps[p.unit-1])))
     return sorted(signatures)

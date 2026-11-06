@@ -1,0 +1,195 @@
+{
+  "accuracy_recommendation": "Separate scope: evaluate a precision matched-ratio implementation or explicit independent adjustment of OFFSET-CV gain (R7124/R7123 times R7126/R7125) against the retained2mV total static budget, including all other errors. No values/topology changed here. Product alternative: explicitly limit A01 to nonprecision modulation/manual offset instead of promising calibrated precision pitch-CV service; existing criteria remain until owner decision. Existing two controls cannot supply this independent correction.",
+  "added_components": [],
+  "buffer": "OPA4197IPWR",
+  "buffer_conditions": {
+    "PW_bias_max_full_temperature_A": 1.5e-08,
+    "bias_conditions": "PW package \u221240..125C at table testconditions including midsupply commonmode; sensitivity not guaranteed\u00b112V/5V assembled bound",
+    "input_abs_commonmode_beyond_rails_V": 0.5,
+    "input_abs_current_A": 0.01,
+    "off_state_input_current_bound_A": null,
+    "sha256": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd",
+    "source": "TI OPAx197 SBOS737C \u00a76.7 physical6 printed7 PW bias; \u00a76.1 physical4 printed5 absolute limits; \u00a77.3.7 physical24/25 printed25/26 Figure52 input ESD steering",
+    "url": "https://www.ti.com/lit/ds/symlink/opa4197.pdf",
+    "warning": "Absolute maxima are not permitted normal injection targets. Input ESD paths can backfeed a collapsed rail; supply ramp/current limiting and safe fault-test plan unresolved."
+  },
+  "calibration_changed": false,
+  "device": "REF5050AIDR",
+  "disposition": "CONDITIONAL_CANDIDATE",
+  "disposition_reason": "Retain this exact pair as conditional candidate with named validation cases. Source conditions do not demonstrate a deterministic violation, guaranteed startup or safe discharge. No new capacitor search or silent protection/bleed addition. A failed named case must produce an evidenced rejection or a separately scoped correction, not automatic redesign.",
+  "evidence": {
+    "C7101": {
+      "locator": "Exact MPN, Dimensions and Specifications; generated10/15/2026",
+      "physical_pdf_page_index": 0,
+      "printed_page_label": "unlabelled",
+      "retrieved_date": "2026-10-15",
+      "sha256": "ddcf6c45b9ff3cc0331329679e96c6eca8295cf941a47738b17ea23219de06e9",
+      "typical_curves_disclaimer": {
+        "locator": "Simulation/typical response not specification",
+        "physical_pdf_page_index": 3,
+        "printed_page_label": "unlabelled"
+      },
+      "url": "https://www.yageogroup.com/component-documentation/download/specsheet/T491C475K050AT"
+    },
+    "C7102": {
+      "locator": "Exact MPN, Dimensions and Specifications; generated10/15/2026",
+      "physical_pdf_page_index": 0,
+      "printed_page_label": "unlabelled",
+      "retrieved_date": "2026-10-15",
+      "sha256": "608b5c99cb0a5cdf8504d697085b714bf7fefe62d2eba6c0d9c5dd97c4f891a4",
+      "typical_curves_disclaimer": {
+        "locator": "Simulation/typical response not specification",
+        "physical_pdf_page_index": 3,
+        "printed_page_label": "unlabelled"
+      },
+      "url": "https://www.yageogroup.com/component-documentation/download/specsheet/T491D226K035AT"
+    },
+    "family": {
+      "additional_locators": [
+        {
+          "locator": "Qualification temperature stability,endurance,surge",
+          "physical_pdf_page_index": 2,
+          "printed_page_label": "3"
+        },
+        {
+          "locator": "35V exact D226 row; K10% and Ttermination footnotes",
+          "physical_pdf_page_index": 11,
+          "printed_page_label": "12"
+        },
+        {
+          "locator": "50V exact C475 row; K10% and Ttermination footnotes",
+          "physical_pdf_page_index": 12,
+          "printed_page_label": "13"
+        },
+        {
+          "locator": "Voltage derating and ripple",
+          "physical_pdf_page_index": 13,
+          "printed_page_label": "14"
+        },
+        {
+          "locator": "Polarity/reverse voltage and Table2 densityB lands/courtyards",
+          "physical_pdf_page_index": 14,
+          "printed_page_label": "15"
+        }
+      ],
+      "locator": "Performance characteristics120Hz25C and leakage conditions",
+      "physical_pdf_page_index": 1,
+      "printed_page_label": "2",
+      "revision": "2026-07-08",
+      "sha256": "c3c5bb70009b606c87b40156259670ca9c8452f172b73faa9e2dbf2fcee3522d",
+      "url": "https://content.kemet.com/datasheets/KEM_T2005_T491.pdf"
+    },
+    "reference": {
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "locator": "PhysicalPDF25/printed26 \u00a78.4.1 Figure8-6; REF50xxAI row; ordering addendum exactREF5050AIDR",
+      "physical_pdf_page_index": 25,
+      "previous_bundle_sha256": "d2da9488194dba11732c85c498b563c12e0bb6b3e2d21631022dde9bff51a13d",
+      "printed_page_label": "26",
+      "raw_cache": ".circuit-cache/sources/architecture278-stage11-identity/ref50.pdf",
+      "retrieved_UTC": "2026-10-15",
+      "revision": "SBOS410O October2025",
+      "scope": "New bytes differ from earlier retained digest despite sameRevO; no canonical owner-record promotion",
+      "sha256": "33b13191ad54693f9a4f52e226b354757ad092d2cec6b2c31dba2fecb710d0c6",
+      "url": "https://www.ti.com/lit/ds/symlink/ref50.pdf"
+    }
+  },
+  "reference_conditions": {
+    "IQ_conditions": "\u221240..125C,ILOAD=0,CL=1uF and stated VIN; application must meet stability conditions",
+    "IQ_max_full_temperature_A": 0.0012,
+    "VIN_abs_V": [
+      -0.3,
+      18
+    ],
+    "VOUT_abs_V": [
+      -0.3,
+      5.5
+    ],
+    "guaranteed_VOUT_to_VIN_reverse_current_A": null,
+    "guaranteed_off_state_sink_A": null,
+    "guaranteed_startup_current_A": null,
+    "operating_VIN_min_over_VOUT_V": 0.2,
+    "operating_output_current_A": [
+      -0.01,
+      0.01
+    ],
+    "short_circuit_condition": "VOUT=0; typical, no minimum/maximum startup guarantee",
+    "short_circuit_typical_A": 0.025,
+    "source": "TI SBOS410O October2025 \u00a76.1/6.3 physical4 printed5;\u00a76.5 physical6/7 printed7/8;\u00a78.4.1 physical25 printed26; AI D-package ordering addendum",
+    "turn_on_condition": "To0.1%,25C,ILOAD=0,CL=1uF,stated VIN range; not a22uF guarantee",
+    "turn_on_test_capacitance_F": 1e-06,
+    "turn_on_typical_s": 0.0002
+  },
+  "validation_cases": [
+    {
+      "criterion": "Verify operating limits, actual capacitor DC polarity and separately conditioned effectiveC/ESR. Complete DC/load accuracy remains separate Stage13-open acceptance.",
+      "id": "normal",
+      "observables": "VIN,VRAW,VREF5,VREFN5,REF and buffer rail currents,noise and leakage",
+      "status": "NOT RUN",
+      "stimulus": "Intended rail/load/temperature corners after warmup"
+    },
+    {
+      "criterion": "No abs-max excursion; meet normal limits when settled; establish startup performance against a separately approved timing target.\u00b110mA operating and25mA typical are not startup-current bounds.",
+      "id": "fast_start",
+      "observables": "Capacitor and REF current, input/output overshoot, charge, rail droop,settling",
+      "status": "NOT RUN",
+      "stimulus": "Simultaneous supply application at declared source impedance and fastest intended ramp"
+    },
+    {
+      "criterion": "Characterize loss/recovery and no damaging injection. Accepted ramp and settling envelope must be defined before physical admission.",
+      "id": "slow_brownout",
+      "observables": "REF/buffer outputs,oscillation,rail current,monotonicity,recovery",
+      "status": "NOT RUN",
+      "stimulus": "Slow ramp,hold near dropout,brownout and recovery"
+    },
+    {
+      "criterion": "Obtain safe reverse-current conditions from manufacturer or approved characterization; absolute VOUT limit alone does not qualify reverse conduction.",
+      "id": "reference_supply_loss",
+      "observables": "VOUT\u2212VIN,reverse current,charge destination,AGND motion",
+      "status": "NOT RUN",
+      "stimulus": "REF VIN collapse with output initially charged; model independent source/rail timing explicitly"
+    },
+    {
+      "criterion": "No uncontrolled rail-clamp injection; verify exact input conditions and safe current-limited test boundaries before execution. Normal15nA bias is inapplicable.",
+      "id": "buffer_supply_loss",
+      "observables": "U7104:3 relative to each rail,ESD injection,phantom rail charging,REF recovery",
+      "status": "NOT RUN",
+      "stimulus": "RAW5V remains charged while U7104 positive/negative rails collapse"
+    },
+    {
+      "criterion": "Bound missing-rail intervals and recovery; no linear buffer assumption before both supplies valid; protection/downstream loads included.",
+      "id": "unequal_rails",
+      "observables": "Positive/negative reference and output excursions,rail currents,polarity",
+      "status": "NOT RUN",
+      "stimulus": "+12V-first,\u221212V-first,+5V-first and all loss orders in actual common-rail topology"
+    },
+    {
+      "criterion": "Factory surge test is not arbitrary hotplug authorization; establish safe peak/current/energy envelope for exact parts and circuit.",
+      "id": "rapid_restart",
+      "observables": "Inrush,overshoot,residual charge,REF/buffer injection,source current",
+      "status": "NOT RUN",
+      "stimulus": "Short power interruptions and restart with residual capacitor charge,declared source impedance"
+    },
+    {
+      "criterion": "No continuous capacitor reversal; manufacturer short-transient fractions are not a duration-qualified system allowance and do not override TI\u22120.3V limits.",
+      "id": "reverse_ringing",
+      "observables": "C7101/C7102 terminal differential,REFVIN/VOUT relative toGND",
+      "status": "NOT RUN",
+      "stimulus": "Actual source/wiring transient and local ground displacement"
+    },
+    {
+      "criterion": "No guaranteed wait from leakage maxima. Establish measured/guaranteed discharged service condition and safe procedure before hardware service; no bleed added.",
+      "id": "discharge_service",
+      "observables": "All stored-voltage decay and backfeed paths,energy at service contacts",
+      "status": "NOT RUN",
+      "stimulus": "Power removed with both capacitors charged and all patch/source states represented"
+    },
+    {
+      "criterion": "Verify effective output1..50uF and applicable ESR/stability requirements;100kHz25C0.7ohm alone is insufficient; separate noise recommendation retained.",
+      "id": "stability",
+      "observables": "EffectiveC,ESR across relevant frequency,REF oscillation/noise/ringing",
+      "status": "NOT RUN",
+      "stimulus": "Intendedtemperature,bias,age/load/line steps andactual layout"
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+diff --git a/design/spec/cells/_builder.py b/design/spec/cells/_builder.py
+index a73d7fc8..54e9d808 100644
+--- a/design/spec/cells/_builder.py
++++ b/design/spec/cells/_builder.py
+@@ -95,7 +95,8 @@ def cell_parts(cell_id,panel_uid,nets=None,*,ordinal_start=1,instance_tag=''):
+  if ordinal_start<1 or ordinal_start+len(cell['parts'])-1>99:raise ValueError('cell ordinals must fit 1..99')
+  def net(value):
+   if value=='NC':return None
+-  if value in ('+12V','-12V','+5V','AGND'):return nets.get(value,value)
++  # P59-C: ENABLE_OK is the harness permit; io_partition renames it per family branch.
++  if value in ('+12V','-12V','+5V','AGND','ENABLE_OK'):return nets.get(value,value)
+   return nets.get(value,f'{label_prefix}_{value}')
+  for ordinal,spec in enumerate(cell['parts'],ordinal_start):
+   part_id,record,symbol=resolve(spec);term=spec['terminals'];aliases=AMP if spec.get('opamp_role') else PIN_ALIASES.get(part_id,{})
+diff --git a/design/spec/modules/io_partition.py b/design/spec/modules/io_partition.py
+index 72e84c8f..dafac5c7 100644
+--- a/design/spec/modules/io_partition.py
++++ b/design/spec/modules/io_partition.py
+@@ -183,9 +183,19 @@ def refine(family):
+                                       'Island': 'IO_STAGE_OPTICAL:${SHEETNAME}'})
+         optical.append(p)
+     result_family = replace(result_family, parts=tuple(optical))
++    # P59-C: one buffered ENABLE_OK conductor per module family (power sheet driver).
++    branch = permit_branch(family.name)
++    if any('ENABLE_OK' in p.pins.values() for p in result_family.parts):
++        result_family = replace(result_family, global_nets=(*result_family.global_nets, branch),
++            parts=tuple(replace(p, pins={k: branch if v == 'ENABLE_OK' else v for k, v in p.pins.items()})
++                        for p in result_family.parts))
+     return result_family
+ 
+ 
++def permit_branch(name):
++    return 'ENABLE_OK_' + name.upper()
++
++
+ def channel_signatures(family):
+     """Electrical identity independent of physical channel pin allocation."""
+     signatures=[]
+diff --git a/design/spec/modules/power.py b/design/spec/modules/power.py
+index e0a13053..295330c3 100644
+--- a/design/spec/modules/power.py
++++ b/design/spec/modules/power.py
+@@ -12,7 +12,12 @@ from design.spec.cells._builder import load_symbol
+ 
+ RAILS = ('+12V', '-12V', '+5V')
+ RAW = ('+12V_IN', '-12V_IN', '+5V_IN')
+-GLOBAL_NETS = (*RAILS, *RAW, 'AGND')
++# P59-C (#59, UNADOPTED): one buffered permit conductor per module family.
++PERMIT_BRANCHES = ('envelope', 'filter', 'manual_ab', 'mix4_vca', 'mix5', 'mult', 'offset', 'oscillator', 'sample_hold', 'wavefolder')
++GLOBAL_NETS = (*RAILS, *RAW, 'AGND', *('ENABLE_OK_' + b.upper() for b in PERMIT_BRANCHES))
++# Candidate monitor parts excluded from the master: Q101/R122..R124 are the
++# isolated draft's dummy sink load, replaced here by the branch buffers.
++PERMIT_DUMMY = ('Q101', 'R122', 'R123', 'R124')
+ IDENTITIES = {
+     'OSC_EXT_INLET_R1': ('CN', 'Logical eight-contact inlet, NOT SELECTED'),
+     'OSC_EXT_BOUNDARY_R1': ('XB', 'Unimplemented source/protection requirement'),
+@@ -76,7 +81,49 @@ def family() -> Family:
+             value=rail, island='POWER_PROBE')
+     add('TestPoint', 'TP_GND', {'1': 'AGND'}, 50.8, 279.4,
+         value='AGND', island='POWER_PROBE')
+-    return Family('01_power_interfaces', tuple(parts), global_nets=GLOBAL_NETS)
++    parts += permit_parts()
++    return Family('01_power_interfaces', tuple(parts), global_nets=GLOBAL_NETS, paper='A1')
++
++
++def permit_parts() -> list[Part]:
++    """Monitor/permit candidate (design/power/monitor-permit-draft.json) on the master power sheet.
++
++    VN is the -12V load rail. PERMIT_Q (SN74LVC1G74 Q, high = permit) feeds one
++    SN74LVC1G17 buffer per family branch. Nothing here is selected or qualified.
++    """
++    from dataclasses import replace
++    from scripts.schgen.generate_monitor_permit import specification as permit_specification
++    (draft,), _, _ = permit_specification()
++    rename = {'VN': '-12V'}
++    shift = {'U': 0, 'R': 10, 'C': 10}
++    out: list[Part] = []
++    template_u = next(p for p in draft.parts if p.key.startswith('U104.'))
++    template_c = next(p for p in draft.parts if p.key.startswith('C101.'))
++    for p in draft.parts:
++        ref = p.key.split('.')[0]
++        if ref in PERMIT_DUMMY or p.prefix == 'J':
++            continue
++        pins = {k: rename.get(v, v) for k, v in p.pins.items()}
++        n = len(out)
++        out.append(replace(p, key='PERMIT_' + p.key, ordinal=p.ordinal + shift[p.prefix], pins=pins,
++                           page=1, x=50.8 + (n % 8) * 63.5, y=330.2 + (n // 8) * 38.1,
++                           attributes={**p.attributes, 'Island': 'POWER_PERMIT',
++                                       'Implementation': 'Unvalidated physical draft (P59-C, unadopted)'}))
++    for number, branch in enumerate(PERMIT_BRANCHES, 1):
++        net = 'ENABLE_OK_' + branch.upper()
++        n = len(out)
++        out.append(replace(template_u, key=f'PERMIT_BUF_{number}.1', ordinal=6 + number,
++                           pins={'1': None, '2': 'PERMIT_Q', '3': 'AGND', '4': net, '5': '+5V'},
++                           page=1, x=50.8 + (n % 8) * 63.5, y=330.2 + (n // 8) * 38.1,
++                           attributes={**template_u.attributes, 'Island': 'POWER_PERMIT',
++                                       'Role': 'UNSELECTED DRAFT: ' + branch + ' ENABLE_OK branch buffer'}))
++        n = len(out)
++        out.append(replace(template_c, key=f'PERMIT_BUF_C{number}.1', ordinal=20 + number,
++                           pins={'1': '+5V', '2': 'AGND'},
++                           page=1, x=50.8 + (n % 8) * 63.5, y=330.2 + (n // 8) * 38.1,
++                           attributes={**template_c.attributes, 'Island': 'POWER_PERMIT',
++                                       'Role': 'UNSELECTED DRAFT: branch buffer bypass'}))
++    return out
+ 
+ 
+ def specification():
+diff --git a/design/spec/modules/test_envelope.py b/design/spec/modules/test_envelope.py
+index 828bf03f..62ebca3a 100644
+--- a/design/spec/modules/test_envelope.py
++++ b/design/spec/modules/test_envelope.py
+@@ -44,7 +44,7 @@ class EnvelopeContract(unittest.TestCase):
+    self.assertEqual(active,[expected] if expected!='idle' else [])
+  def test_sensitive_storage_never_reaches_panel_or_lamps(self):
+   self.assertIn('ENV_STORAGE',self.f.sensitive_nets)
+-  self.assertEqual(set(self.f.global_nets),{'+12V','-12V','+5V','AGND'})
++  self.assertEqual({n for n in self.f.global_nets if not n.startswith('ENABLE_OK_')},{'+12V','-12V','+5V','AGND'})
+   contacts=[p for p in self.f.parts if 'ENV_STORAGE' in p.pins.values()]
+   self.assertEqual(len(contacts),6)
+   self.assertTrue(all(p.attributes['Island']=='ENV_CORE:${SHEETNAME}' and not p.panel_refs for p in contacts))
+diff --git a/design/spec/modules/test_filter.py b/design/spec/modules/test_filter.py
+index cbe086c0..ab0772ae 100644
+--- a/design/spec/modules/test_filter.py
++++ b/design/spec/modules/test_filter.py
+@@ -55,7 +55,7 @@ class FilterContract(unittest.TestCase):
+         leds=[p for p in self.parts if p.panel_refs and p.attributes['PanelUid'].startswith('L:')]
+         self.assertEqual(len(leds),4)
+         self.assertTrue(all(p.attributes['Island']=='FILTER_LEDS:${SHEETNAME}' for p in leds))
+-        self.assertEqual(set(self.f.global_nets),{'+12V','-12V','+5V','AGND'})
++        self.assertEqual({n for n in self.f.global_nets if not n.startswith('ENABLE_OK_')},{'+12V','-12V','+5V','AGND'})
+ 
+     def test_current_limits_and_soft_limiter_are_populated(self):
+         for role in ('BP','LP','RES','DRY'):
+diff --git a/design/spec/modules/test_mixers.py b/design/spec/modules/test_mixers.py
+index 235c3a9f..053a4596 100644
+--- a/design/spec/modules/test_mixers.py
++++ b/design/spec/modules/test_mixers.py
+@@ -17,7 +17,7 @@ class MixerContract(unittest.TestCase):
+                              {r['ref'] for r in rows if r['instance']==inst.name})
+             self.assertEqual({p.attributes['PanelUid'].replace('${SHEETNAME}',inst.name) for p in panel},
+                              {r['uid'] for r in rows if r['instance']==inst.name})
+-        self.assertEqual(set(f.global_nets),{'+12V','-12V','+5V','AGND'})
++        self.assertEqual({n for n in f.global_nets if not n.startswith('ENABLE_OK_')},{'+12V','-12V','+5V','AGND'})
+         for p in f.parts:
+             self.assertTrue(set(f.sensitive_nets).isdisjoint(f.global_nets))
+         return f
+diff --git a/design/spec/modules/test_wavefolder.py b/design/spec/modules/test_wavefolder.py
+index b9e2849e..29fa30ca 100644
+--- a/design/spec/modules/test_wavefolder.py
++++ b/design/spec/modules/test_wavefolder.py
+@@ -46,7 +46,7 @@ class WavefolderContract(unittest.TestCase):
+   self.assertTrue(all(p.value=='100 nF C0G' and p.pins=={'1':'PRE_AC','2':'AC_NODE'} for p in caps))
+   self.assertIn('AC_NODE',self.f.sensitive_nets)
+   self.assertTrue(all(not(set(self.f.sensitive_nets)&set(p.pins.values())) for p in self.f.parts if p.panel_refs))
+-  self.assertEqual(set(self.f.global_nets),{'+12V','-12V','+5V','AGND'})
++  self.assertEqual({n for n in self.f.global_nets if not n.startswith('ENABLE_OK_')},{'+12V','-12V','+5V','AGND'})
+   self.assertEqual(self.roles['wavefolder:R_DRIVE_BIAS_BUFFER'].value,'1 MΩ')
+   self.assertEqual(self.roles['wavefolder:R_DRIVE_BIAS_MANUAL'].value,'1 MΩ')
+   self.assertEqual(self.roles['wavefolder:R_BIAS_SENSE'].value,'12.4 kΩ')
+diff --git a/design/standard/electrical-standard.json b/design/standard/electrical-standard.json
+index cfaa8a54..f5f0c34e 100644
+--- a/design/standard/electrical-standard.json
++++ b/design/standard/electrical-standard.json
+@@ -217,14 +217,15 @@
+           "value": 1000,
+           "unit": "ohm",
+           "terminals": {
+-            "1": "+5V",
++            "1": "ENABLE_OK",
+             "2": "ENABLE"
+           }
+         }
+       ],
+       "connections": [
+         "One channel per input jack; source S always faces patch cable; drain D always faces local circuit.",
+-        "Unused source/drain grounded, unused IN grounded, FF explicitly no-connect."
++        "Unused source/drain grounded, unused IN grounded, FF explicitly no-connect.",
++        "P59-C (#59, UNADOPTED): IN is driven from the family ENABLE_OK permit branch, low until every monitored rail is inside its window; the 100 kohm pull-down defines IN low while the branch driver is low or unpowered."
+       ],
+       "notes": [
+         "Powered-off isolation replaces a naked rail-clamp path. GND must stay connected with patch sleeves. No ±55 V system rating is inferred; project fault range is ±12 V.",

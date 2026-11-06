@@ -100,6 +100,12 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 **Facts in this domain:**
 
 - [`fact-clamp-diode-reverse-voltage`](#fact-clamp-diode-reverse-voltage)
+- [`fact-clamp-diode-forward-current-absolute`](#fact-clamp-diode-forward-current-absolute)
+- [`fact-clamp-diode-forward-voltage`](#fact-clamp-diode-forward-voltage)
+- [`fact-clamp-diode-reverse-current`](#fact-clamp-diode-reverse-current)
+- [`fact-clamp-diode-power-thermal`](#fact-clamp-diode-power-thermal)
+- [`fact-clamp-diode-forward-voltage-temperature`](#fact-clamp-diode-forward-voltage-temperature)
+- [`fact-clamp-diode-reverse-current-temperature`](#fact-clamp-diode-reverse-current-temperature)
 
 ### manufacturer product description
 
@@ -149,6 +155,38 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
 
+### ABSOLUTE\_MAXIMUM
+
+A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-clamp-diode-forward-current-absolute" />
+
+  **Fact:** `fact-clamp-diode-forward-current-absolute`
+
+  **Value:** `IFRM_mA`=300; `IFSM_mA`=600; `IF_mA`=200 · **Unit:** `mA`
+
+  **Conditions:** Limiting values per diode: IF 200 mA at Tamb = 25 C; IFRM 300 mA at tp \<= 1 s, duty \<= 0.5; IFSM 600 mA at tp \< 10 ms, Tj(init) = 25 C. Absolute maximum stress rating, not an operating condition.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-clamp-diode-datasheet: physical PDF p.1, printed 2/9, Table 5 Limiting values, IF/IFRM/IFSM rows](#src-clamp-diode-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-clamp-diode-power-thermal" />
+
+  **Fact:** `fact-clamp-diode-power-thermal`
+
+  **Value:** `Ptot_mW`=250; `Rth_ja_K_per_W`=500; `Tj_max_C`=150 · **Unit:** `mW, C and K/W`
+
+  **Conditions:** Ptot 250 mW at Tamb \<= 25 C on single-sided FR4 with standard footprint (note 1); Tj 150 C; Rth(j-a) 500 K/W. Note on Schottky thermal runaway from reverse losses applies. Absolute maximum stress rating, not an operating condition.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [Section/table audit: src-clamp-diode-datasheet physical PDF page index 1, printed 2/9, Table 5 Limiting values Ptot/Tj rows and Table 6 Thermal characteristics Rth(j-a) row](#src-clamp-diode-datasheet)
+</EvidenceFact>
+
 ### GUARANTEED\_ELECTRICAL
 
 A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.
@@ -165,6 +203,66 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [src-clamp-diode-datasheet: PDF page index 0, printed page 1, Table 1, reverse voltage VR row](#src-clamp-diode-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-clamp-diode-forward-voltage" />
+
+  **Fact:** `fact-clamp-diode-forward-voltage`
+
+  **Value:** `at_0p1mA_max_mV`=240; `at_100mA_max_mV`=800; `at_10mA_max_mV`=400; `at_1mA_max_mV`=320; `at_30mA_max_mV`=500 · **Unit:** `mV`
+
+  **Conditions:** Maximum VF per diode, pulsed tp \<= 300 us, duty \<= 0.02, Tamb = 25 C only; no minimum and no temperature range given.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-clamp-diode-datasheet: physical PDF p.2, printed 3/9, Table 7 Characteristics, VF rows](#src-clamp-diode-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-clamp-diode-reverse-current" />
+
+  **Fact:** `fact-clamp-diode-reverse-current`
+
+  **Value:** `VR_V`=25; `max_uA`=2 · **Unit:** `uA`
+
+  **Conditions:** Maximum IR per diode at VR = 25 V, pulsed tp \<= 300 us, duty \<= 0.02, Tamb = 25 C only.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [Section/table audit: src-clamp-diode-datasheet physical PDF page index 2, printed 3/9, Table 7 Characteristics, IR row](#src-clamp-diode-datasheet)
+</EvidenceFact>
+
+### TYPICAL\_CURVE
+
+A representative figure read from a characteristic curve. Typical values are not guaranteed and vary part to part.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-clamp-diode-forward-voltage-temperature" />
+
+  **Fact:** `fact-clamp-diode-forward-voltage-temperature`
+
+  **Value:** Fig. 1 gives typical IF versus VF at Tamb = 125, 85 and 25 C only. No VF maximum exists at any temperature other than 25 C, and no curve below 25 C is given. · **Unit:** `NONE`
+
+  **Conditions:** Typical curves only; they do not bound VF over temperature.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [Section/table audit: src-clamp-diode-datasheet physical PDF page index 2, printed 3/9, Fig. 1 Forward current as a function of forward voltage; typical values](#src-clamp-diode-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-clamp-diode-reverse-current-temperature" />
+
+  **Fact:** `fact-clamp-diode-reverse-current-temperature`
+
+  **Value:** Fig. 2 gives typical IR versus VR (0..30 V) at Tamb = 125, 85 and 25 C only. Approximate project readings of the typical curves: 25 C about 0.3 uA at 1 V rising to about 1.5..2 uA at 30 V; 85 C about 15..20 uA at 1 V rising to about 60 uA at 30 V; 125 C about 200..500 uA. The only maximum is Table 7, 2 uA at VR = 25 V and 25 C. · **Unit:** `NONE`
+
+  **Conditions:** Typical curves only, log scale, readings approximate; they do not bound IR at any temperature other than the 25 C, 25 V table row.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [Section/table audit: src-clamp-diode-datasheet physical PDF page index 2, printed 3/9, Fig. 2 Reverse current as a function of reverse voltage; typical values](#src-clamp-diode-datasheet)
 </EvidenceFact>
 
 ### PROJECT\_STATE
@@ -383,8 +481,10 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 
 | Recorded term           | What it means                                                                                                                                                      |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ABSOLUTE_MAXIMUM`      | A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.                                         |
 | `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| `TYPICAL_CURVE`         | A representative figure read from a characteristic curve. Typical values are not guaranteed and vary part to part.                                                 |
 
 ### Coverage status
 

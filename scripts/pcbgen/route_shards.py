@@ -194,11 +194,10 @@ def reviewed_cut_scope(plan,board_id,source_sha,dump,removed):
 def merge(board_id,delta_paths,label,repair_ground=False,complete_native_warnings=False,native_zone_batch_size=1,reviewed_cut_plan=None):
     """Apply every shard delta to the board, gate it natively, and promote it if open edges fall."""
     if type(native_zone_batch_size) is not int or native_zone_batch_size not in (1,4,16):raise ValueError('native zone batch size must be1,4or16')
-    if native_zone_batch_size!=1 and not complete_native_warnings:raise ValueError('native zone batching requires complete warning audits')
-    if reviewed_cut_plan is not None and not complete_native_warnings:raise ValueError('reviewed cuts require complete warning audits')
     cut_plan_bytes=Path(reviewed_cut_plan).read_bytes() if reviewed_cut_plan is not None else None
     cut_plan=json.loads(cut_plan_bytes) if cut_plan_bytes is not None else None
-    from scripts.pcbgen.route_jack_grid import PLANES,workspace,check,promotion_gate,connectivity_signature,split_pad_groups,stitched
+    from scripts.pcbgen.route_jack_grid import (PLANES,workspace,check,connectivity_signature,split_pad_groups,stitched,
+                                                warning_capped,warning_complete_gate,enforce_warning_completeness)
     board=ROOT/'boards'/board_id/f'{board_id}.kicad_pcb';base_text=board.read_text()
     sha=hashlib.sha256(base_text.encode()).hexdigest()
     deltas=[json.loads(Path(p).read_text()) for p in delta_paths]
@@ -264,36 +263,23 @@ def merge(board_id,delta_paths,label,repair_ground=False,complete_native_warning
              'copper_added':sum(a['net'] not in reverted for a in added.values()),'drc_errors':sum(v['severity']=='error' for v in drc['violations']),
              'drc_warnings':sum(v['severity']=='warning' for v in drc['violations']),'parity':len(drc['schematic_parity']),
              'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}
-    receipt.update(promotion_gate(before,after,before_drc,drc))
-    if complete_native_warnings:
-        receipt['native_zone_batch_size']=native_zone_batch_size
-        # Supplemental observations are opt-in and source-bound. Existing
-        # findings survive, and the same ordinary gate evaluates the result.
-        from scripts.pcbgen.complete_native_warnings import audit_current_reports
-        receipt['raw_promotion_gate']=promotion_gate(before,after,before_drc,drc)
-        # Complete warning inventories can reconcile sampled warnings, but
-        # cannot repair copper connectivity, native errors, or a missing gain.
-        # Reject these outcomes before spending hours on supplemental fixtures.
-        if receipt['split_pad_groups'] or receipt['native_errors'] or not agreement or after['open_edges']>=before['open_edges']:
-            receipt['adopted']=False
-            receipt['rejection_reason']='failed_native_prerequisites'
-            receipt['complete_native_warning_evidence_status']='NOT RUN: native prerequisites failed'
-        else:
-            evidence=workspace(board_id,'shards-complete-warnings')/'native-audits'
-            try:
-                options={} if native_zone_batch_size==1 else {'zone_batch_size':native_zone_batch_size}
-                if cut_plan is not None:
-                    actual=delta(base_text,candidate.read_text())
-                    cuts=reviewed_cut_scope(cut_plan,board_id,sha,before,actual['removed'])
-                    options['reviewed_removed_uuids']=cuts
-                    receipt['reviewed_cut_plan']={'path':str(reviewed_cut_plan),'sha256':hashlib.sha256(cut_plan_bytes).hexdigest(),'removed_uuids':cuts,'bounds_mm':cut_plan['stage']['repair_bounds_mm']}
-                complete_before,complete_after,proof=audit_current_reports(base,candidate,before_drc,drc,evidence,**options)
-                receipt['complete_native_warning_evidence']=proof
-                receipt.update(promotion_gate(before,after,complete_before,complete_after))
-            except (ValueError,RuntimeError,OSError,subprocess.SubprocessError) as error:
-                receipt['adopted']=False
-                receipt['rejection_reason']='incomplete_native_warning_evidence'
-                receipt['native_warning_evidence_error']=str(error)
+    cuts=()
+    if cut_plan is not None:
+        actual=delta(base_text,candidate.read_text())
+        cuts=reviewed_cut_scope(cut_plan,board_id,sha,before,actual['removed'])
+        receipt['reviewed_cut_plan']={'path':str(reviewed_cut_plan),'sha256':hashlib.sha256(cut_plan_bytes).hexdigest(),'removed_uuids':cuts,'bounds_mm':cut_plan['stage']['repair_bounds_mm']}
+    # Complete warning evidence is mandatory whenever a report hit the native cap, regardless of
+    # --complete-native-warnings; existing findings survive and the same ordinary gate decides.
+    capped=warning_capped(before_drc,drc)
+    evidence=workspace(board_id,'shards-complete-warnings')/'native-audits' if capped or complete_native_warnings else None
+    receipt.update(warning_complete_gate(base,candidate,before,after,before_drc,drc,evidence,prerequisites=agreement,
+                                         zone_batch_size=native_zone_batch_size,reviewed_removed_uuids=cuts,
+                                         force=complete_native_warnings))
+    if evidence is not None:receipt['native_zone_batch_size']=native_zone_batch_size
+    if receipt.get('complete_native_warning_evidence_status','').startswith('NOT RUN'):
+        receipt['rejection_reason']='failed_native_prerequisites'
+    receipt=enforce_warning_completeness(receipt,before_drc,drc,hashlib.sha256(base.read_bytes()).hexdigest(),
+                                         hashlib.sha256(candidate.read_bytes()).hexdigest())
     if stitch_receipt and 'agnd_stitch' in stitch_receipt:receipt['agnd_stitch']=stitch_receipt['agnd_stitch']
     if receipt['native_errors']:receipt['status']='REJECTED: fresh native DRC/parity errors'
     receipt['independent_connectivity_agrees']=agreement
@@ -314,7 +300,7 @@ def merge(board_id,delta_paths,label,repair_ground=False,complete_native_warning
         if hashlib.sha256(board.read_bytes()).hexdigest()!=sha:
             raise RuntimeError('canonical board changed during native checks; refuse stale promotion')
         native_candidate=candidate
-        candidate,cache=publication_copy(board_id,candidate,drc,after)
+        candidate,cache=publication_copy(board_id,candidate,drc,after,capped=bool(capped))
         receipt['native_filled_board_sha256']=hashlib.sha256(native_candidate.read_bytes()).hexdigest()
         receipt['candidate_board_sha256']=hashlib.sha256(candidate.read_bytes()).hexdigest()
         receipt['publication_cache']=cache
@@ -333,9 +319,9 @@ def main():
     m=sub.add_parser('merge',help='apply shard deltas to boards/<id>/<id>.kicad_pcb (KiCad via scripts/kicad/run.sh)')
     m.add_argument('board_id',choices=('osc-jack-left','osc-jack-right','osc-core'));m.add_argument('deltas',nargs='+');m.add_argument('--label',required=True)
     m.add_argument('--repair-ground',action='store_true',help='try existing AGND stitching before the complete membership gate')
-    m.add_argument('--native-zone-batch-size',type=int,choices=(1,4,16),default=1,help='opt-in bounded artwork batches; requires complete native warning audits')
-    m.add_argument('--complete-native-warnings',action='store_true',help='require source-bound complete native hole/silk evidence; unsupported scope rejects')
-    m.add_argument('--reviewed-cut-plan',type=Path,help='exact source-bound bounded repair plan; requires complete native warning audits')
+    m.add_argument('--native-zone-batch-size',type=int,choices=(1,4,16),default=1,help='bounded artwork batches for the mandatory complete native warning audits')
+    m.add_argument('--complete-native-warnings',action='store_true',help='also complete uncapped reports; capped reports always require source-bound complete evidence')
+    m.add_argument('--reviewed-cut-plan',type=Path,help='exact source-bound bounded repair plan, passed to the complete native warning audits')
     a=p.parse_args()
     if a.cmd=='delta':
         out=delta(a.base.read_text(),a.final.read_text());a.output.write_text(json.dumps(out)+'\n')

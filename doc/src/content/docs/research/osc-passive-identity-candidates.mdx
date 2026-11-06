@@ -1,0 +1,149 @@
+---
+title: "OSC passive identity and price candidates"
+description: "Unadopted exact-MPN candidates for the 1739 value-only OSC passive placements, with dated JLC catalog price and stock observations."
+sidebar_position: 40
+---
+
+**UNADOPTED research.** This page selects no part. The inventory, schematic and BOM do not change, and no order, quote or fabrication file exists. The machine-readable record is `design/readiness/bom-cost-evidence.json`, built by `scripts/checks/passive_candidates.py` from the read-only catalog bytes retained in `.circuit-cache/sources/readiness-20261031/`.
+
+## Research question
+
+| Field | Entry |
+|---|---|
+| Research ID | OSC-A10-PASSIVES-20261031 |
+| Function or problem being solved | 1739 placements per unit carry only a value. The generator intentionally leaves differing-value passive MPNs blank (`scripts/schgen/README.md`) |
+| Relevant project requirements | Each placement keeps its family: its symbol names the representative line (RC0603FR 1 %, RT0603BRD 0.1 %, KEMET C0G 50 V, Murata X7R, Bourns TC33X) |
+| Intended use and operating conditions | As already specified per cell. No value or topology changes here |
+| Research date and scope | 2026-10-31. Public JLC parts-search API reads (no cart, account or quote) and yageogroup.com spec sheets |
+| Decision this research will inform | Workflow B owner records and inventory lines for the passive values, and B3 part cost |
+
+## Comparison criteria
+
+| Criterion | Required, preferred, or exploratory | How it will be evaluated | Reference |
+|---|---|---|---|
+| Same manufacturer series as the symbol's representative line | Required | Ordering-code construction, then an exact model match | `component-passives-family` |
+| Exact orderable identity at a distributor | Required | Exact `componentModelEn` match in the JLC row; "JLCPCB Assembly" placeholder rows are rejected | `bom-cost-evidence.json` |
+| Manufacturer spec sheet naming the exact MPN | Required for adoption | Retained PDF whose text contains the MPN | yageogroup.com |
+| Stock covers a 5-unit lot | Preferred | JLC stock against 5 × qty | Dated observation |
+
+## Candidate register
+
+| Series | Value | Qty per unit | Candidate MPN | LCSC | Status | JLC stock | Tier price / per unit |
+|---|---|---|---|---|---|---|---|
+| RC0603FR-07 | 1 kΩ | 241 | RC0603FR-071KL | C22548 | CANDIDATE | 11797209 | $0.0036 / $0.87 |
+| RC0603FR-07 | 10 kΩ | 207 | RC0603FR-0710KL | C98220 | CANDIDATE | 8009666 | $0.0027 / $0.56 |
+| RT0603BRD07 | 10 kΩ | 160 | RT0603BRD0710KL | C95204 | CANDIDATE | 1822262 | $0.0302 / $4.83 |
+| RC0603FR-07 | 10 MΩ | 99 | RC0603FR-0710ML | C114606 | CANDIDATE | 2162478 | $0.0050 / $0.49 |
+| RC0603FR-07 | 5.6 kΩ | 92 | RC0603FR-075K6L | C114627 | CANDIDATE | 321074 | $0.0052 / $0.48 |
+| RT0603BRD07 | 100 Ω | 91 | RT0603BRD07100RL | C122970 | CANDIDATE | 356890 | $0.0320 / $2.91 |
+| RT0603BRD07 | 22 kΩ | 71 | RT0603BRD0722KL | C469656 | CANDIDATE | 40003 | $0.0401 / $2.85 |
+| RT0603BRD07 | 1 kΩ | 67 | RT0603BRD071KL | C110776 | CANDIDATE | 1524430 | $0.0281 / $1.88 |
+| C0603C-J5GACTU | 10 nF | 56 | C0603C103J5GACTU | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| C0603C-J5GACTU | 1 nF | 51 | C0603C102J5GACTU | C2181873 | CANDIDATE | 6481 | $0.0266 / $1.36 |
+| RC0603FR-07 | 100 Ω | 51 | RC0603FR-07100RL | C105588 | CANDIDATE | 1565505 | $0.0019 / $0.10 |
+| C0603C-J5GACTU | 10 pF | 47 | C0603C100J5GACTU | C2167326 | CANDIDATE | 690 | $0.0783 / $3.68 |
+| RT0603BRD07 | 200 kΩ | 34 | RT0603BRD07200KL | C728585 | CANDIDATE | 227297 | $0.0562 / $1.91 |
+| GRM188R7 | 1 µF | 30 | GRM188R71E105KA12D | C86020 | CANDIDATE | 113314 | $0.0475 / $1.43 |
+| RT0603BRD07 | 470 kΩ | 26 | RT0603BRD07470KL | C705778 | CANDIDATE | 60476 | $0.0375 / $0.97 |
+| RT0603BRD07 | 10 MΩ | 24 | RT0603BRD0710ML | C5160970 | CANDIDATE | 0 | $0.0399 / $0.96 |
+| RT0603BRD07 | 40 kΩ | 21 | RT0603BRD0740KL | C861392 | CANDIDATE | 229130 | $0.0370 / $0.78 |
+| RT0603BRD07 | 4.7 kΩ | 17 | RT0603BRD074K7L | C513565 | CANDIDATE | 70944 | $0.0381 / $0.65 |
+| RT0603BRD07 | 80 kΩ | 17 | RT0603BRD0780KL | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| RT0603BRD07 | 1 MΩ | 17 | RT0603BRD071ML | C326730 | CANDIDATE | 113978 | $0.0363 / $0.62 |
+| RT0603BRD07 | 300 kΩ | 15 | RT0603BRD07300KL | C705762 | CANDIDATE | 85979 | $0.0414 / $0.62 |
+| TC33X-2 | 50 kΩ | 15 | TC33X-2-503E | C913246 | CANDIDATE | 9143 | $0.1278 / $1.92 |
+| RT0603BRD07 | 200 Ω | 14 | RT0603BRD07200RL | C861216 | CANDIDATE | 255117 | $0.0401 / $0.56 |
+| RC0603FR-07 | 4.7 kΩ | 13 | RC0603FR-074K7L | C99782 | CANDIDATE | 9666348 | $0.0032 / $0.04 |
+| RT0603BRD07 | 33.2 kΩ | 13 | RT0603BRD0733K2L | C705767 | CANDIDATE | 11216 | $0.0376 / $0.49 |
+| RT0603BRD07 | 390 kΩ | 13 | RT0603BRD07390KL | C861364 | CANDIDATE | 5020 | $0.0616 / $0.80 |
+| RC0603FR-07 | 1.2 kΩ | 12 | RC0603FR-071K2L | C114605 | CANDIDATE | 904954 | $0.0028 / $0.03 |
+| RC0603FR-07 | 150 kΩ | 12 | RC0603FR-07150KL | C114660 | CANDIDATE | 216759 | $0.0042 / $0.05 |
+| RT0603BRD07 | 3.3 kΩ | 12 | RT0603BRD073K3L | C309653 | CANDIDATE | 203759 | $0.0463 / $0.56 |
+| RT0603BRD07 | 47 kΩ | 12 | RT0603BRD0747KL | C326725 | CANDIDATE | 19249 | $0.0294 / $0.35 |
+| RT0603BRD07 | 899 kΩ | 12 | RT0603BRD07899KL | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| RC0603FR-07 | 22.1 kΩ | 10 | RC0603FR-0722K1L | C137768 | CANDIDATE | 242825 | $0.0029 / $0.03 |
+| RT0603BRD07 | 49.9 kΩ | 10 | RT0603BRD0749K9L | C705780 | CANDIDATE | 177547 | $0.0312 / $0.31 |
+| RT0603BRD07 | 250 kΩ | 10 | RT0603BRD07250KL | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| RT0603BRD07 | 50 kΩ | 8 | RT0603BRD0750KL | C861451 | CANDIDATE | 278234 | $0.0340 / $0.27 |
+| C0603C-J5GACTU | 150 pF | 6 | C0603C151J5GACTU | C2649551 | CANDIDATE | 657 | $0.0164 / $0.10 |
+| C0603C-J5GACTU | 1 µF | 6 | — | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| RT0603BRD07 | 60 kΩ | 6 | RT0603BRD0760KL | C6460576 | CANDIDATE | 8034 | $0.0481 / $0.29 |
+| RT0603BRD07 | 64 kΩ | 6 | RT0603BRD0764KL | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| RT0603BRD07 | 79 kΩ | 6 | RT0603BRD0779KL | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| RT0603BRD07 | 400 kΩ | 6 | RT0603BRD07400KL | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| RT0603BRD07 | 470 Ω | 5 | RT0603BRD07470RL | C705779 | CANDIDATE | 82809 | $0.0343 / $0.17 |
+| RT0603BRD07 | 1.5 kΩ | 5 | RT0603BRD071K5L | C705741 | CANDIDATE | 324986 | $0.0329 / $0.16 |
+| RT0603BRD07 | 5.72 kΩ | 5 | RT0603BRD075K72L | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| RT0603BRD07 | 12.4 kΩ | 5 | RT0603BRD0712K4L | C861102 | CANDIDATE | 13028 | $0.0539 / $0.27 |
+| RT0603BRD07 | 24 kΩ | 5 | RT0603BRD0724KL | C326729 | CANDIDATE | 51320 | $0.0376 / $0.19 |
+| RT0603BRD07 | 25 kΩ | 5 | RT0603BRD0725KL | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| RT0603BRD07 | 51 kΩ | 5 | RT0603BRD0751KL | C861458 | CANDIDATE | 71790 | $0.0473 / $0.24 |
+| RT0603BRD07 | 68 kΩ | 5 | RT0603BRD0768KL | C705793 | CANDIDATE | 23453 | $0.0350 / $0.17 |
+| RT0603BRD07 | 72 kΩ | 5 | RT0603BRD0772KL | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| RT0603BRD07 | 82.5 kΩ | 5 | RT0603BRD0782K5L | C705796 | CANDIDATE | 21023 | $0.0345 / $0.17 |
+| RT0603BRD07 | 125 kΩ | 5 | RT0603BRD07125KL | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| RT0603BRD07 | 1.2 MΩ | 5 | RT0603BRD071M2L | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| RT0603BRD07 | 1.8 MΩ | 5 | RT0603BRD071M8L | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| RT0603BRD07 | 5 MΩ | 5 | RT0603BRD075ML | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| TC33X-2 | 20 kΩ | 5 | TC33X-2-203E | C720648 | CANDIDATE | 4360 | $0.1208 / $0.60 |
+| RT0603BRD07 | 2.2 kΩ | 4 | RT0603BRD072K2L | C861295 | CANDIDATE | 129485 | $0.0557 / $0.22 |
+| RT0603BRD07 | 20 kΩ | 4 | RT0603BRD0720KL | C723637 | CANDIDATE | 44525 | $0.0358 / $0.14 |
+| RT0603BRD07 | 1.3 kΩ | 3 | RT0603BRD071K3L | C705738 | CANDIDATE | 43575 | $0.0460 / $0.14 |
+| RT0603BRD07 | 68.1 kΩ | 3 | RT0603BRD0768K1L | C861521 | CANDIDATE | 5459 | $0.0507 / $0.15 |
+| RT0603BRD07 | 330 kΩ | 3 | RT0603BRD07330KL | C861327 | CANDIDATE | 4226 | $0.0422 / $0.13 |
+| TC33X-2 | 500 kΩ | 3 | TC33X-2-504E | C913259 | CANDIDATE | 2665 | $0.1349 / $0.40 |
+| RC0603FR-07 | 2.2 kΩ | 2 | RC0603FR-072K2L | C114662 | CANDIDATE | 2004466 | $0.0018 / $0.00 |
+| RT0603BRD07 | 70 kΩ | 2 | RT0603BRD0770KL | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| C0603C-J5GACTU | 33 pF | 1 | C0603C330J5GACTU | C21390358 | CANDIDATE | 2328 | $0.0270 / $0.03 |
+| C0603C-J5GACTU | 4.7 µF | 1 | — | — | UNKNOWN | UNKNOWN | UNKNOWN |
+| RT0603BRD07 | 22 Ω | 1 | RT0603BRD0722RL | C861239 | CANDIDATE | 13705 | $0.0406 / $0.04 |
+| RT0603BRD07 | 19.1 kΩ | 1 | RT0603BRD0719K1L | C861184 | CANDIDATE | 10579 | $0.0360 / $0.04 |
+
+CANDIDATE rows cover 1582 placements per unit. The 2 "distributor identity only" rows are GRM188R71E105KA12D (no Murata sheet is retained) and RT0603BRD0710ML (Yageo returns 404, and JLC stock is 0).
+
+## Values with no exact orderable identity (UNKNOWN)
+
+17 groups, 157 placements per unit.
+
+- **Precision resistors.** The values are not stocked at JLC, and Yageo returns no spec sheet for the constructed MPN. The values are non-E-series designs: 80 k, 899 k, 250 k, 64 k, 79 k, 400 k, 5.72 k, 25 k, 72 k, 125 k, 1.2 M, 1.8 M, 5 M and 70 k. Choosing an E96/E192 neighbour or a series pair changes circuit values, so it is a **design decision**.
+- **C0603C103J5GACTU (10 nF C0G 0603).** No JLC row, and Yageo/KEMET returns 404 for this code. A different size or series is a design decision.
+- **1 µF and 4.7 µF on the C0G symbol** (C_POR_DELAY, C_DIGITAL_BULK). No C0G candidate exists. The dielectric is a design decision.
+
+## Exact lines without an owner skill
+
+- **CL10A105KB8NNNC / C15849.** The zudo-pd (2f9bf5e) and zudo-led-lamp (ee8a705) `component-project-passives` bundles already own this line, with Samsung evidence. OSC can import it into `component-passives-family` as a subordinate record. JLC: base library, stock 12,252,704, $0.0143 at 1–499.
+- **RC0603FR-072K2L / C114662.** This is the same Yageo RC series as the existing `src-r-general-datasheet`. Its exact spec sheet is retained here (`spec/RC0603FR-072K2L.pdf`). JLC: stock 2,004,466, $0.0018 at 1–999.
+
+Both need a Workflow B subordinate record. That changes generated catalog pages, so it is left for adoption.
+
+## Part cost, CALCULATED from dated catalog tiers
+
+| Set | Per unit | Per 5-unit lot | Priced placements per unit | Unpriced placements per unit |
+|---|---|---|---|---|
+| Exact BOM lines | $3195.45 | $15292.22 | 3408 | 765 |
+| Value-only candidates | $37.02 | $161.74 | 1582 | 157 |
+| **Known subtotal** | **$3232.47** | **$15453.96** | | |
+
+The total part cost is **UNKNOWN**. These lines have no part offer: BAS16GW-QX, WQP518MA, APHHS1005QWF/D, 2MS3T1B1M2QES, AS3340D, NOISE2, plus the UNKNOWN value groups above.
+
+The figures exclude PCB fabrication, assembly fees, extended-part fees, tax and shipping. Prices are dated observations, not quotes.
+
+Stock below a 5-unit lot on 2026-10-31:
+
+| Part | Stock | Needed for 5 units |
+|---|---|---|
+| ADG5412FBRUZ | 0 | 550 |
+| PTV09A-4020F-B504 | 0 | 10 |
+| PTV09A-4020F-B104 | 4 | 240 |
+| C0603C101J5GACTU | 42 | 335 |
+| PTV09A-4020F-B103 | 125 | 255 |
+| RC1210FR-07499RL | 281 | 840 |
+| LM13700M/NOPB | 54 | 80 |
+| LF398M/NOPB | 5 | 10 |
+| RT0603BRD0710ML | 0 | 120 |
+
+## Gaps
+
+- No row is adopted. Owner bundles, inventory lines and generated pages wait for user adoption (Workflow B).
+- Distributor rows establish order identity, price and stock only. Electrical ratings come from the series records, not from these rows.
+- Murata GRM188R71E105KA12D has no retained manufacturer sheet.

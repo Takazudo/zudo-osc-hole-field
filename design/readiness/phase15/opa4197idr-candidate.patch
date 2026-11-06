@@ -1,0 +1,1835 @@
+diff --git a/.claude/skills/component-spec-audit/references/direct-routing.json b/.claude/skills/component-spec-audit/references/direct-routing.json
+index 9d6a03b4..f197543a 100644
+--- a/.claude/skills/component-spec-audit/references/direct-routing.json
++++ b/.claude/skills/component-spec-audit/references/direct-routing.json
+@@ -273,6 +273,10 @@
+     {
+       "line_id": "line-precision-feedback-c",
+       "negative": "unrelated 999999 precision-feedback-c"
++    },
++    {
++      "line_id": "line-op-precision-d",
++      "negative": "unrelated supplier 999999 op-precision-d"
+     }
+   ]
+ }
+diff --git a/.claude/skills/component-spec-audit/references/inventory.json b/.claude/skills/component-spec-audit/references/inventory.json
+index a39db11b..c9b4134e 100644
+--- a/.claude/skills/component-spec-audit/references/inventory.json
++++ b/.claude/skills/component-spec-audit/references/inventory.json
+@@ -2,8 +2,8 @@
+   "schema_version": 1,
+   "generator_specs": [],
+   "assertions": {
+-    "orderable_lines": 68,
+-    "fitted_lines": 49,
++    "orderable_lines": 69,
++    "fitted_lines": 50,
+     "dnp_or_hand_fit_lines": 19
+   },
+   "exclusions": [],
+@@ -891,6 +891,19 @@
+       "source_state": "AVAILABLE",
+       "function": "1 nF precision-output local compensation capacitor",
+       "placements": []
++    },
++    {
++      "line_id": "line-op-precision-d",
++      "mpn": "OPA4197IDR",
++      "manufacturer": "Texas Instruments",
++      "lcsc": "C2058532",
++      "package": "SOIC-14",
++      "dnp": false,
++      "owner_skill": "component-ti-opa4197idr",
++      "identity_state": "VERIFIED",
++      "source_state": "AVAILABLE",
++      "function": "precision candidate",
++      "placements": []
+     }
+   ]
+ }
+diff --git a/.claude/skills/component-ti-opa4197idr/SKILL.md b/.claude/skills/component-ti-opa4197idr/SKILL.md
+new file mode 100644
+index 00000000..f9a1916a
+--- /dev/null
++++ b/.claude/skills/component-ti-opa4197idr/SKILL.md
+@@ -0,0 +1,24 @@
++---
++name: component-ti-opa4197idr
++description: Use whenever an exact part identity, supplier code, manufacturer, pinout, package, role, source gap, or substitution for this bundle is relevant. Resolve exact Texas Instruments OPA4197IDR evidence for its roles, pinout, package, limits, interactions and substitution review; preserve open source and physical checks.
++---
++
++# Exact component evidence owner
++
++Run `pnpm circuit:check`, read every local JSON record, and cite fact/source IDs with conditions and exact locators. Keep each record aligned with the matching inventory line and direct-routing fixture. Do not infer procurement, physical fit, system safety, or circuit qualification from a component datasheet or a provisional family model.
++
++## Human component reference
++
++[rec-op-precision-d](/docs/components/records/op-precision-d/) is generated from this exact component record.
++
++See the [component catalog](/docs/components/catalog/) and [cross-component rules](/docs/components/integration/). Generated component pages project only the records included by `circuit/publication/selection.json`; these JSON files remain the evidence source.
++
++## Candidate status
++
++UNADOPTED candidate from the phase-15 cost study. It is not in parts-shortlist.json and replaces no placement.
++
++## Open review points
++
++- Stock, lead time, consignment acceptance and assembly allocation remain dated project-state gaps unless a retained source says otherwise.
++- Package preview geometry is provisional family geometry. Confirm body, height, optical path, footprint and fixed-layout fit before hardware use.
++- Every pin map leaves board nets unassigned; the manual inventory provider does not bind schematic pins or placements.
+diff --git a/.claude/skills/component-ti-opa4197idr/coverage.json b/.claude/skills/component-ti-opa4197idr/coverage.json
+new file mode 100644
+index 00000000..e925063f
+--- /dev/null
++++ b/.claude/skills/component-ti-opa4197idr/coverage.json
+@@ -0,0 +1,97 @@
++{
++  "schema_version": 1,
++  "coverage": [
++    {
++      "coverage_id": "cov-op-precision-d-exact-orderable-identity",
++      "record_id": "rec-op-precision-d",
++      "domain": "exact orderable identity",
++      "status": "COVERED",
++      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
++      "fact_ids": [
++        "fact-op-precision-d-orderable-identity"
++      ],
++      "blocking_fact_ids": []
++    },
++    {
++      "coverage_id": "cov-op-precision-d-pinout",
++      "record_id": "rec-op-precision-d",
++      "domain": "pinout",
++      "status": "COVERED",
++      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
++      "fact_ids": [
++        "fact-op-precision-d-pinout"
++      ],
++      "blocking_fact_ids": []
++    },
++    {
++      "coverage_id": "cov-op-precision-d-electrical-limits",
++      "record_id": "rec-op-precision-d",
++      "domain": "electrical limits",
++      "status": "COVERED",
++      "reason": "Retained source supports the specific listed product-family limits; conditions remain attached to each fact.",
++      "fact_ids": [
++        "fact-op-precision-d-quiescent-current",
++        "fact-op-precision-d-input-bias-current",
++        "fact-op-precision-d-input-offset-voltage",
++        "fact-op-precision-d-input-bias-current-full-temperature",
++        "fact-op-precision-d-supply-absolute",
++        "fact-op-precision-d-input-absolute",
++        "fact-op-precision-d-supply-recommended",
++        "fact-op-precision-d-esd-steering",
++        "fact-op-precision-d-output-swing"
++      ],
++      "blocking_fact_ids": []
++    },
++    {
++      "coverage_id": "cov-op-precision-d-manufacturer-product-description",
++      "record_id": "rec-op-precision-d",
++      "domain": "manufacturer product description",
++      "status": "COVERED",
++      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
++      "fact_ids": [
++        "fact-op-precision-d-product-function"
++      ],
++      "blocking_fact_ids": []
++    },
++    {
++      "coverage_id": "cov-op-precision-d-mechanical-fit",
++      "record_id": "rec-op-precision-d",
++      "domain": "mechanical fit",
++      "status": "OPEN",
++      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
++      "fact_ids": [
++        "fact-op-precision-d-mechanical-fit"
++      ],
++      "blocking_fact_ids": [
++        "fact-op-precision-d-mechanical-fit"
++      ]
++    },
++    {
++      "coverage_id": "cov-op-precision-d-procurement",
++      "record_id": "rec-op-precision-d",
++      "domain": "procurement",
++      "status": "OPEN",
++      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
++      "fact_ids": [
++        "fact-op-precision-d-assembly-allocation",
++        "fact-op-precision-d-procurement-status"
++      ],
++      "blocking_fact_ids": [
++        "fact-op-precision-d-assembly-allocation"
++      ]
++    },
++    {
++      "coverage_id": "cov-op-precision-d-output-stability",
++      "record_id": "rec-op-precision-d",
++      "domain": "output stability",
++      "status": "OPEN",
++      "reason": "TI OPAx197 Final 1.3 model passes 12/12 specified cases for the revised fixed network, but physical cable, board parasitics, tolerance and temperature stability remain NOT RUN.",
++      "fact_ids": [
++        "fact-op-precision-d-output-stability"
++      ],
++      "blocking_fact_ids": [
++        "fact-op-precision-d-output-stability"
++      ]
++    }
++  ]
++}
+diff --git a/.claude/skills/component-ti-opa4197idr/facts.json b/.claude/skills/component-ti-opa4197idr/facts.json
+new file mode 100644
+index 00000000..7b954e24
+--- /dev/null
++++ b/.claude/skills/component-ti-opa4197idr/facts.json
+@@ -0,0 +1,301 @@
++{
++  "schema_version": 1,
++  "facts": [
++    {
++      "fact_id": "fact-op-precision-d-manufacturer",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "PROJECT_STATE",
++      "value": "Texas Instruments",
++      "unit": "NONE",
++      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
++      "locator": "src-op-precision-d-datasheet: title block or OSC-ES-1 row parts[id=op_precision].manufacturer",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-project-selection",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-jlc",
++      "class": "PROJECT_STATE",
++      "value": "UNADOPTED candidate: replaces the precision role package TSSOP-14 by SOIC-14 (phase-15 study); not in parts-shortlist.json",
++      "unit": "NONE",
++      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
++      "locator": "Identity section: JSON row componentModelEn=OPA4197IDR; candidate status from design/readiness/cost-reduction-study.json row opamps.precision_alternatives[mpn=OPA4197IDR]",
++      "provenance": "PROJECT-CHOICE",
++      "verdict": "NOT APPLICABLE",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-orderable-identity",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "PROJECT_STATE",
++      "value": {
++        "manufacturer": "Texas Instruments",
++        "mpn": "OPA4197IDR",
++        "package": "SOIC-14"
++      },
++      "unit": "NONE",
++      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
++      "locator": "Section/table audit: src-op-precision-d-datasheet physical PDF index 34, Addendum-Page 2, package option addendum row OPA4197IDR",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-pinout",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "PROJECT_STATE",
++      "value": "pin 1 OUT A -> pad 1; pin 2 IN- A -> pad 2; pin 3 IN+ A -> pad 3; pin 4 V+ -> pad 4; pin 5 IN+ B -> pad 5; pin 6 IN- B -> pad 6; pin 7 OUT B -> pad 7; pin 8 OUT C -> pad 8; pin 9 IN- C -> pad 9; pin 10 IN+ C -> pad 10; pin 11 V- -> pad 11; pin 12 IN+ D -> pad 12; pin 13 IN- D -> pad 13; pin 14 OUT D -> pad 14",
++      "unit": "NONE",
++      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
++      "locator": "src-op-precision-d-datasheet: Pin configuration \"D and PW Packages: OPA4197\", physical PDF index 3, printed 4",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-quiescent-current",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "typical_at_25C": 1.0,
++        "maximum_at_25C": 1.3,
++        "maximum_full_temperature": 1.5
++      },
++      "unit": "mA per amplifier",
++      "conditions": "IO = 0 A; TA = 25 C for typ/max at 25 C; TA = -40..125 C for full-temperature maximum.",
++      "locator": "src-op-precision-d-datasheet: PDF page index 7, printed page 8, Section 6.7, POWER SUPPLY, IQ row",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-input-bias-current",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "typical_at_25C": 5,
++        "maximum_at_25C": 20
++      },
++      "unit": "pA",
++      "conditions": "TA = 25 C; datasheet electrical characteristics at VS = +/-18 V.",
++      "locator": "src-op-precision-d-datasheet: PDF page index 6, printed page 7, Section 6.7, INPUT BIAS CURRENT, IB row",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-input-offset-voltage",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "typical_at_25C": 25,
++        "maximum_at_25C": 100
++      },
++      "unit": "uV",
++      "conditions": "VS = +/-18 V; TA = 25 C; VCM = VS/2, except the separate near-positive-rail row.",
++      "locator": "src-op-precision-d-datasheet: PDF page index 6, printed page 7, Section 6.7, OFFSET VOLTAGE, VOS row",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-product-function",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "PROJECT_STATE",
++      "value": "Manufacturer source identifies OPA4197IDR as the shortlisted precision device; this is not project suitability.",
++      "unit": "NONE",
++      "conditions": "Product family description only; no project application or electrical guarantee implied.",
++      "locator": "src-op-precision-d-datasheet: document title block and product description",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-procurement-status",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-jlc",
++      "class": "PROJECT_STATE",
++      "value": {
++        "lcsc": "C2058532",
++        "manufacturer": "Texas Instruments",
++        "mpn": "OPA4197IDR",
++        "variant": "Exact MPN and LCSC identity row; SOIC-14. Stock 6533 observed 2026-10-31 is a dated observation, not an allocation."
++      },
++      "unit": "NONE",
++      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
++      "locator": "Identity section: src-op-precision-d-jlc JSON row fields componentCode, stockCount and componentPrices",
++      "provenance": "DISTRIBUTOR-IDENTITY",
++      "verdict": "CONFIRMED - distributor identity only",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-mechanical-fit",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-study",
++      "class": "PROJECT_STATE",
++      "value": "SOIC-14 land shared with OPA4196IDR. Phase-15 courtyard-capacity trial: 85 of 89 placements fit; the 4 control-board placements collide with fixed control locality groups. Not physically checked.",
++      "unit": "NONE",
++      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
++      "locator": "Section/table audit: src-op-precision-d-shortlist: parts[id=op_precision].package; CAD receipt is provisional family geometry",
++      "provenance": "PROJECT-CHOICE",
++      "verdict": "NEEDS BENCH",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-output-stability",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-vendor-model",
++      "class": "PROJECT_STATE",
++      "value": {
++        "vendor_model_passes": 12,
++        "vendor_model_cases": 12,
++        "previous_ideal_diagnostic_failures": 6,
++        "previous_ideal_diagnostic_cases": 12,
++        "bench": "NOT RUN"
++      },
++      "unit": "NONE",
++      "conditions": "TI OPAx197 Final 1.3 generic core, PSpice mode in pinned KiCad 10.0.6 ngspice 44.2, 27 C, +/-12 V rails; fixed 100 ohm JACK feedback and 1 nF local feedback, two 499 ohm isolation resistors; +/-5 V steps and specified 12 load/cable cases. Model result only.",
++      "locator": "Section/table audit: src-op-precision-d-vendor-model OPAx197.LIB Model Usage Notes rows 1(a), 1(g), 1(n)-1(q), 2; design/reports/spice/precision-output-vendor.json cases/pass_count/fail_count",
++      "provenance": "PROJECT-CHOICE",
++      "verdict": "NEEDS BENCH",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-input-bias-current-full-temperature",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "maximum": 5
++      },
++      "unit": "nA",
++      "conditions": "TA = -40..125 C; Section 6.7 defaults VS = +/-4 V to +/-18 V, VCM = VOUT at midsupply, RLOAD = 10 kohm. The +/-15 nA subrow is PW package only and does not apply to D.",
++      "locator": "src-op-precision-d-datasheet: PDF page index 6, printed page 7, Section 6.7, INPUT BIAS CURRENT, IB full-temperature row (non-PW)",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-supply-absolute",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "ABSOLUTE_MAXIMUM",
++      "value": {
++        "dual_supply_V": 20,
++        "single_supply_V": 40
++      },
++      "unit": "V",
++      "conditions": "VS = (V+) - (V-); dual-supply maximum is +/-20 V, single-supply maximum 40 V, over operating free-air temperature. Absolute maximum stress rating, not an operating condition.",
++      "locator": "src-op-precision-d-datasheet: physical PDF p.4, printed p.5, section 6.1 Absolute Maximum Ratings, Supply voltage row",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-input-absolute",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "ABSOLUTE_MAXIMUM",
++      "value": {
++        "common_mode_below_V_minus_V": -0.5,
++        "common_mode_above_V_plus_V": 0.5,
++        "differential_above_supply_span_V": 0.2,
++        "input_current_mA": 10
++      },
++      "unit": "V and mA",
++      "conditions": "Signal input pins: common-mode voltage (V-) - 0.5 V to (V+) + 0.5 V; differential (V+) - (V-) + 0.2 V; input current +/-10 mA. Absolute maximum stress rating, not an operating condition.",
++      "locator": "src-op-precision-d-datasheet: physical PDF p.4, printed p.5, section 6.1 Absolute Maximum Ratings, Signal input pins rows",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-supply-recommended",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "RECOMMENDED_OPERATION",
++      "value": {
++        "minimum_span_V": 4.5,
++        "minimum_dual_V": 2.25,
++        "maximum_span_V": 36,
++        "maximum_dual_V": 18
++      },
++      "unit": "V",
++      "conditions": "Recommended supply VS = (V+) - (V-): 4.5 V (+/-2.25 V) to 36 V (+/-18 V). No behaviour is specified below the minimum.",
++      "locator": "src-op-precision-d-datasheet: physical PDF p.4, printed p.5, section 6.3 Recommended Operating Conditions, Supply voltage row",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-esd-steering",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "PROJECT_STATE",
++      "value": "Current-steering ESD diodes connect the input and output pins back to the internal power-supply lines, meeting at an absorption device or supply ESD cell; intended to stay inactive in normal operation. No forward voltage or in-circuit current rating is given.",
++      "unit": "NONE",
++      "conditions": "Manufacturer description of OPAx197 internal ESD structure (Electrical Overstress section). Structure only; it is not a guaranteed clamp level.",
++      "locator": "src-op-precision-d-datasheet: physical PDF p.24, printed p.25, section 7.3.7 Electrical Overstress and Figure 52",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-output-swing",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-datasheet",
++      "class": "GUARANTEED_ELECTRICAL",
++      "value": {
++        "no_load_max_mV": 25,
++        "rload_10k_max_mV": 125,
++        "rload_2k_max_mV": 500
++      },
++      "unit": "mV",
++      "conditions": "Voltage output swing from either rail, maximum, TA = 25 C, VS = +/-4 V to +/-18 V, RLOAD connected to VS/2. No temperature-range row.",
++      "locator": "Section/table audit: src-op-precision-d-datasheet physical PDF page index 7, printed p.8, section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, OUTPUT VO rows",
++      "provenance": "PRIMARY-SPEC",
++      "verdict": "PASS - primary-source confirmed",
++      "depends_on": [],
++      "expression": ""
++    },
++    {
++      "fact_id": "fact-op-precision-d-assembly-allocation",
++      "record_id": "rec-op-precision-d",
++      "source_id": "src-op-precision-d-study",
++      "class": "PROJECT_STATE",
++      "value": "UNSOURCED: factory stock allocation and assembly acceptance are not established by a search row",
++      "unit": "NONE",
++      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
++      "locator": "Section/table audit: src-op-precision-d-study JSON row opamps.precision_alternatives[mpn=OPA4197IDR].cost",
++      "provenance": "UNVERIFIED",
++      "verdict": "UNSOURCED",
++      "depends_on": [],
++      "expression": ""
++    }
++  ]
++}
+diff --git a/.claude/skills/component-ti-opa4197idr/interactions.json b/.claude/skills/component-ti-opa4197idr/interactions.json
+new file mode 100644
+index 00000000..a6c441cf
+--- /dev/null
++++ b/.claude/skills/component-ti-opa4197idr/interactions.json
+@@ -0,0 +1,17 @@
++{
++  "schema_version": 1,
++  "interactions": [
++    {
++      "interaction_id": "int-op-precision-d-project-role",
++      "record_ids": [
++        "rec-op-precision-d"
++      ],
++      "fact_ids": [
++        "fact-op-precision-d-project-selection",
++        "fact-op-precision-d-pinout"
++      ],
++      "conditions": "Project role from OSC-ES-1; schematic nets, board placements, pin assignment and circuit behavior remain unbound.",
++      "verdict": "NEEDS BENCH"
++    }
++  ]
++}
+diff --git a/.claude/skills/component-ti-opa4197idr/manifest.json b/.claude/skills/component-ti-opa4197idr/manifest.json
+new file mode 100644
+index 00000000..ba4e2670
+--- /dev/null
++++ b/.claude/skills/component-ti-opa4197idr/manifest.json
+@@ -0,0 +1,51 @@
++{
++  "schema_version": 1,
++  "skill": "component-ti-opa4197idr",
++  "records": [
++    {
++      "record_id": "rec-op-precision-d",
++      "line_id": "line-op-precision-d",
++      "kind": "standalone",
++      "parent_record_id": null,
++      "mpn": "OPA4197IDR",
++      "manufacturer": "Texas Instruments",
++      "lcsc": "C2058532",
++      "package": "SOIC-14",
++      "source_ids": [
++        "src-op-precision-d-datasheet",
++        "src-op-precision-d-jlc",
++        "src-op-precision-d-study",
++        "src-op-precision-d-output-model",
++        "src-op-precision-d-vendor-model"
++      ],
++      "fact_ids": [
++        "fact-op-precision-d-manufacturer",
++        "fact-op-precision-d-project-selection",
++        "fact-op-precision-d-orderable-identity",
++        "fact-op-precision-d-pinout",
++        "fact-op-precision-d-quiescent-current",
++        "fact-op-precision-d-input-bias-current",
++        "fact-op-precision-d-input-offset-voltage",
++        "fact-op-precision-d-product-function",
++        "fact-op-precision-d-procurement-status",
++        "fact-op-precision-d-mechanical-fit",
++        "fact-op-precision-d-output-stability",
++        "fact-op-precision-d-input-bias-current-full-temperature",
++        "fact-op-precision-d-supply-absolute",
++        "fact-op-precision-d-input-absolute",
++        "fact-op-precision-d-supply-recommended",
++        "fact-op-precision-d-esd-steering",
++        "fact-op-precision-d-output-swing",
++        "fact-op-precision-d-assembly-allocation"
++      ],
++      "interaction_ids": [
++        "int-op-precision-d-project-role"
++      ],
++      "open_domains": [
++        "mechanical fit",
++        "procurement",
++        "output stability"
++      ]
++    }
++  ]
++}
+diff --git a/.claude/skills/component-ti-opa4197idr/pin-map.json b/.claude/skills/component-ti-opa4197idr/pin-map.json
+new file mode 100644
+index 00000000..f7eb6c8c
+--- /dev/null
++++ b/.claude/skills/component-ti-opa4197idr/pin-map.json
+@@ -0,0 +1,98 @@
++{
++  "schema_version": 1,
++  "pin_maps": [
++    {
++      "pin_map_id": "pinmap-op-precision-d",
++      "record_id": "rec-op-precision-d",
++      "symbol": "OPA4197IDR",
++      "footprint": "SOIC-14_3.9x8.7mm_P1.27mm",
++      "pins": [
++        {
++          "symbol_pin": "1",
++          "name": "OUT A",
++          "footprint_pad": "1",
++          "function": "OUT A"
++        },
++        {
++          "symbol_pin": "2",
++          "name": "IN- A",
++          "footprint_pad": "2",
++          "function": "IN- A"
++        },
++        {
++          "symbol_pin": "3",
++          "name": "IN+ A",
++          "footprint_pad": "3",
++          "function": "IN+ A"
++        },
++        {
++          "symbol_pin": "4",
++          "name": "V+",
++          "footprint_pad": "4",
++          "function": "V+"
++        },
++        {
++          "symbol_pin": "5",
++          "name": "IN+ B",
++          "footprint_pad": "5",
++          "function": "IN+ B"
++        },
++        {
++          "symbol_pin": "6",
++          "name": "IN- B",
++          "footprint_pad": "6",
++          "function": "IN- B"
++        },
++        {
++          "symbol_pin": "7",
++          "name": "OUT B",
++          "footprint_pad": "7",
++          "function": "OUT B"
++        },
++        {
++          "symbol_pin": "8",
++          "name": "OUT C",
++          "footprint_pad": "8",
++          "function": "OUT C"
++        },
++        {
++          "symbol_pin": "9",
++          "name": "IN- C",
++          "footprint_pad": "9",
++          "function": "IN- C"
++        },
++        {
++          "symbol_pin": "10",
++          "name": "IN+ C",
++          "footprint_pad": "10",
++          "function": "IN+ C"
++        },
++        {
++          "symbol_pin": "11",
++          "name": "V-",
++          "footprint_pad": "11",
++          "function": "V-"
++        },
++        {
++          "symbol_pin": "12",
++          "name": "IN+ D",
++          "footprint_pad": "12",
++          "function": "IN+ D"
++        },
++        {
++          "symbol_pin": "13",
++          "name": "IN- D",
++          "footprint_pad": "13",
++          "function": "IN- D"
++        },
++        {
++          "symbol_pin": "14",
++          "name": "OUT D",
++          "footprint_pad": "14",
++          "function": "OUT D"
++        }
++      ],
++      "reviewed_by": "Issue #21 source comparison; schematic/placement/net mapping not performed."
++    }
++  ]
++}
+diff --git a/.claude/skills/component-ti-opa4197idr/routing.json b/.claude/skills/component-ti-opa4197idr/routing.json
+new file mode 100644
+index 00000000..697b7fe4
+--- /dev/null
++++ b/.claude/skills/component-ti-opa4197idr/routing.json
+@@ -0,0 +1,32 @@
++{
++  "schema_version": 1,
++  "routes": [
++    {
++      "route_id": "route-op-precision-d",
++      "record_id": "rec-op-precision-d",
++      "aliases": {
++        "mpn": [
++          "OPA4197IDR"
++        ],
++        "lcsc": [
++          "C2058532"
++        ],
++        "manufacturer": [
++          "Texas Instruments"
++        ],
++        "function": [
++          "precision"
++        ]
++      },
++      "positive": [
++        "OPA4197IDR",
++        "Texas Instruments OPA4197IDR",
++        "precision OPA4197IDR",
++        "C2058532"
++      ],
++      "negative": [
++        "unrelated 999999 op-precision-d"
++      ]
++    }
++  ]
++}
+diff --git a/.claude/skills/component-ti-opa4197idr/sources.json b/.claude/skills/component-ti-opa4197idr/sources.json
+new file mode 100644
+index 00000000..c0d49b0d
+--- /dev/null
++++ b/.claude/skills/component-ti-opa4197idr/sources.json
+@@ -0,0 +1,99 @@
++{
++  "schema_version": 1,
++  "sources": [
++    {
++      "source_id": "src-op-precision-d-datasheet",
++      "record_id": "rec-op-precision-d",
++      "document_title": "OPAx197 36-V, Precision, Rail-to-Rail Input/Output, Low Offset Voltage Operational Amplifiers",
++      "document_number": "SBOS737C",
++      "revision": "C",
++      "document_date": "March 2018",
++      "authoritative_url": "https://www.ti.com/lit/ds/symlink/opa4197.pdf",
++      "alternate_authoritative_url": "",
++      "retrieval_date": "2026-10-31",
++      "authority_class": "MANUFACTURER_PRIMARY",
++      "sha256": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd",
++      "availability": "AVAILABLE",
++      "physical_pdf_page_index": 3,
++      "printed_page_label": "4",
++      "locator": "Pin configuration/function table",
++      "evidence_extract": "Retained SBOS737C, revised March 2018 (same bytes as the OPA4197IPWR owner). The package option addendum (physical PDF index 34, Addendum-Page 2) lists OPA4197IDR as Active, Production, SOIC (D) 14 pins, 2500 LARGE T&R, NIPDAU, MSL Level-3-260C-168 HR, -40 to 125 C. The pin configuration (index 3, printed 4) is headed \"D and PW Packages: OPA4197, 14-Pin SOIC and TSSOP\" with one pin-function column for both. Section 6.7 (index 6, printed 7) gives the full-temperature input-bias maximum +/-5 nA for packages other than PW."
++    },
++    {
++      "source_id": "src-op-precision-d-jlc",
++      "record_id": "rec-op-precision-d",
++      "document_title": "JLCPCB parts-search response for OPA4197IDR",
++      "document_number": "C2058532",
++      "revision": "not stated in source",
++      "document_date": "2026-10-31",
++      "authoritative_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
++      "alternate_authoritative_url": "",
++      "retrieval_date": "2026-10-31",
++      "authority_class": "DISTRIBUTOR_IDENTITY",
++      "sha256": "632585005016cce491c8bc7a8b2b84b1286019f240d97d36891e37f2ae4113e9",
++      "availability": "AVAILABLE",
++      "physical_pdf_page_index": 0,
++      "printed_page_label": "JSON response",
++      "locator": "Identity section: JSON row data.componentPageInfo.list[componentModelEn=OPA4197IDR]",
++      "evidence_extract": "Row C2058532, Texas Instruments OPA4197IDR, SOIC-14, expand library; stock 6533 and tier prices on 2026-10-31. Technical claims remain outside distributor identity authority.",
++      "retained_path": ".circuit-cache/sources/readiness-20261031/jlc/OPA4197IDR.json",
++      "refresh_policy": "VOLATILE-HTML",
++      "identity_extract_sha256": "3f63d5900f6b1820f31f2b874d325ebbedbf7a3784f97c1ed36ec84a0d20d536",
++      "refresh_note": "Stock and price in this POST search response are not deterministic across time; the hash identifies only the inspected response bytes."
++    },
++    {
++      "source_id": "src-op-precision-d-study",
++      "record_id": "rec-op-precision-d",
++      "document_title": "OSC phase-14 cost-reduction study record",
++      "document_number": "design/readiness/cost-reduction-study.json",
++      "revision": "commit 8244440f",
++      "document_date": "2026-10-31",
++      "authoritative_url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/claude/project-thread-l2opxj/design/readiness/cost-reduction-study.json",
++      "alternate_authoritative_url": "",
++      "retrieval_date": "2026-10-31",
++      "authority_class": "PROJECT_GENERATOR",
++      "sha256": "f3b3d25045103bf6cafd03f586a3cdbb76502240d9f0b9027042f7b194b41015",
++      "availability": "AVAILABLE",
++      "physical_pdf_page_index": 0,
++      "printed_page_label": "not paginated",
++      "locator": "JSON row opamps.precision_alternatives[mpn=OPA4197IDR]",
++      "evidence_extract": "UNADOPTED candidate for the precision role: SOIC-14 package migration, same die rows, 89 packages per unit at the 30-99 tier."
++    },
++    {
++      "source_id": "src-op-precision-d-output-model",
++      "record_id": "rec-op-precision-d",
++      "document_title": "OSC-ES-1 diagnostic ideal precision-output sweep",
++      "document_number": "design/reports/spice/precision-output-sweep.json",
++      "revision": "base SHA b185391d30ec38293bc6c5e8b798a282b98baa25",
++      "document_date": "2026-09-28",
++      "authoritative_url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/base/osc-hole-field/design/reports/spice/precision-output-sweep.json",
++      "alternate_authoritative_url": "",
++      "retrieval_date": "2026-09-28",
++      "authority_class": "PROJECT_GENERATOR",
++      "sha256": "678a6ded43885195ba82f9dbcf73eeaff6c9750387a5e87491ed89f72ffd194c",
++      "availability": "AVAILABLE",
++      "physical_pdf_page_index": 0,
++      "printed_page_label": "not paginated",
++      "locator": "Section/table audit: JSON field cases; 12 diagnostic load/cable cases and 10% target",
++      "evidence_extract": "Diagnostic model only: 6 of 12 model cases exceed the 10% overshoot target; no vendor model or bench qualification."
++    },
++    {
++      "source_id": "src-op-precision-d-vendor-model",
++      "record_id": "rec-op-precision-d",
++      "document_title": "OPAx197 PSpice Model (Final 1.3)",
++      "document_number": "SBOMA34D",
++      "revision": "Final 1.3, 23JUN2022",
++      "document_date": "2022-06-23",
++      "authoritative_url": "https://www.ti.com/lit/zip/sboma34",
++      "alternate_authoritative_url": "",
++      "retrieval_date": "2026-09-28",
++      "authority_class": "MANUFACTURER_PRIMARY",
++      "sha256": "9e55fcaa23d54cee025dda3fa9872b11c41c531f82e0802c2b93d51e943666e5",
++      "availability": "AVAILABLE",
++      "physical_pdf_page_index": 0,
++      "printed_page_label": "not paginated (ZIP/OPAx197.LIB)",
++      "locator": "Section/table audit: ZIP entry OPAx197.LIB, header Model Usage Notes rows 1(a), 1(g), 1(n)-1(q), 2; .SUBCKT OPAx197. Library SHA-256 fc5b020e63346e511bd808bf41c856b0150b000bcf8a41fe00eeececb1f422a5",
++      "evidence_extract": "TI OPAx197 Final 1.3 dated 23JUN2022 states the single core applies to OPA197, OPA2197 and OPA4197. It models open-loop gain and phase with RL/CL effects, output impedance, settling, slew, capacitive-load overshoot and large-signal response. TI states the model is an aid, provided as-is. Copyrighted model bytes are retained in the ignored local cache; the URL and hashes enable verified reacquisition."
++    }
++  ]
++}
+diff --git a/circuit/cad-receipts/ic15-op_precision_d.receipt.json b/circuit/cad-receipts/ic15-op_precision_d.receipt.json
+new file mode 100644
+index 00000000..14ae178e
+--- /dev/null
++++ b/circuit/cad-receipts/ic15-op_precision_d.receipt.json
+@@ -0,0 +1,85 @@
++{
++  "receipt_version": 1,
++  "identity": {
++    "asset_id": "ic15-op_precision_d",
++    "record_id": "rec-op-precision-d",
++    "manufacturer": "Texas Instruments",
++    "mpn": "OPA4197IDR",
++    "package": "SOIC-14",
++    "variant_notes": "UNADOPTED candidate (phase 15)"
++  },
++  "acquisition": {
++    "provider": "KiCad 10 stock symbol and retained manufacturer/creator document",
++    "source_url": "https://www.ti.com/lit/ds/symlink/opa4197.pdf",
++    "acquired_on": "2026-10-31",
++    "original_filenames": [
++      "OPA4197IPWR.stock.kicad_sympart",
++      "OPA4197.pdf"
++    ],
++    "sha256": {
++      "circuit/sources/ic-library/cad/OPA4197IPWR.stock.kicad_sympart": "87569dbfd36e514e9ed68814ea7141f52516c395701c270a2484b85d640fc672",
++      "circuit/sources/ic-library/OPA4197.pdf": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd"
++    }
++  },
++  "representation": {
++    "files": [
++      "symbols/src/OPA4197IDR.kicad_sym"
++    ],
++    "formats": [
++      "kicad_sym"
++    ],
++    "units": "KiCad schematic units",
++    "original_paths": [
++      "circuit/sources/ic-library/cad/OPA4197IPWR.stock.kicad_sympart",
++      "circuit/sources/ic-library/OPA4197.pdf"
++    ]
++  },
++  "fidelity": {
++    "class": "derived",
++    "reason": "Source pin functions audited against the retained document; KiCad stock or custom graphics normalized for this draft identity.",
++    "evidence": [
++      "AVAILABLE",
++      "https://www.ti.com/lit/ds/symlink/opa4197.pdf"
++    ]
++  },
++  "derivation": {
++    "derived": true,
++    "input_sha256": {
++      "circuit/sources/ic-library/cad/OPA4197IPWR.stock.kicad_sympart": "87569dbfd36e514e9ed68814ea7141f52516c395701c270a2484b85d640fc672",
++      "circuit/sources/ic-library/OPA4197.pdf": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd"
++    },
++    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
++    "tool_version": "1",
++    "parameters": {
++      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required; derived from the OPA4197IPWR fragment with MPN, LCSC C2058532 and the SOIC-14 footprint; D and PW share one pin-function table (SBOS737C index 3, printed 4)"
++    },
++    "output_sha256": {
++      "symbols/src/OPA4197IDR.kicad_sym": "e442d34890b952b8cc342e536c0f52af66c640e4f9b540726749054f9465b068"
++    }
++  },
++  "cad_use": {
++    "symbol": "zudo-osc-hole-field:OPA4197IDR",
++    "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
++    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-14_3.9x8.7.wrl",
++    "transform": {
++      "offset": null,
++      "rotation": null,
++      "scale": null
++    },
++    "seating_plane": null
++  },
++  "checks": {
++    "performed": [
++      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
++    ],
++    "remaining_physical_checks": [
++      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release.",
++      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
++    ]
++  },
++  "publication": {
++    "preview_selected": false,
++    "download_published": false,
++    "permitted_scope": null
++  }
++}
+diff --git a/circuit/generated/preflight.json b/circuit/generated/preflight.json
+index 5b63755d..e4587b06 100644
+--- a/circuit/generated/preflight.json
++++ b/circuit/generated/preflight.json
+@@ -5,7 +5,7 @@
+     "contractVersion": 1
+   },
+   "records": {
+-    "available": 68,
++    "available": 69,
+     "selected": 58,
+     "slugs": [
+       "b103",
+@@ -69,7 +69,7 @@
+     ]
+   },
+   "sources": {
+-    "available": 142,
++    "available": 147,
+     "selected": 123,
+     "linkable": 119,
+     "ids": [
+diff --git a/circuit/publication/selection.json b/circuit/publication/selection.json
+index 42e599a7..d343f8f4 100644
+--- a/circuit/publication/selection.json
++++ b/circuit/publication/selection.json
+@@ -599,8 +599,8 @@
+     }
+   ],
+   "expect": {
+-    "records": 68,
+-    "sources": 142,
++    "records": 69,
++    "sources": 147,
+     "integrationRules": 2,
+     "packages": 31
+   }
+diff --git a/design/standard/catalogue-publication.json b/design/standard/catalogue-publication.json
+index ef374424..42d126c2 100644
+--- a/design/standard/catalogue-publication.json
++++ b/design/standard/catalogue-publication.json
+@@ -87,7 +87,12 @@
+       "unblock": "Released optional-model publication retaining the mapping aid and honest no-model status. GH acceptance remains separately owned by issue63."
+     }
+   ],
+-  "intentional_exclusions": [],
++  "intentional_exclusions": [
++    {
++      "record_id": "rec-op-precision-d",
++      "reason": "UNADOPTED phase-15 candidate for the precision-role SOIC-14 migration; not selected, so no generated catalog page."
++    }
++  ],
+   "document_constraints": [
+     {
+       "record_id": "rec-c-slew",
+diff --git a/doc/src/content/docs/components/index.mdx b/doc/src/content/docs/components/index.mdx
+index 43f7fb56..3cf78135 100644
+--- a/doc/src/content/docs/components/index.mdx
++++ b/doc/src/content/docs/components/index.mdx
+@@ -22,18 +22,18 @@ This section publishes the validated component evidence this project already hol
+ 
+ | Item                  | Count |
+ | --------------------- | ----- |
+-| Owner bundles         | 35    |
+-| Records               | 68    |
+-| Standalone records    | 58    |
++| Owner bundles         | 36    |
++| Records               | 69    |
++| Standalone records    | 59    |
+ | Subordinate records   | 10    |
+-| Evidence sources      | 142   |
+-| Facts                 | 640   |
+-| Coverage domains      | 339   |
+-| Interactions          | 66    |
+-| Pin maps              | 68    |
+-| Pins                  | 387   |
+-| Inventory lines       | 68    |
+-| Fitted lines          | 49    |
++| Evidence sources      | 147   |
++| Facts                 | 658   |
++| Coverage domains      | 346   |
++| Interactions          | 67    |
++| Pin maps              | 69    |
++| Pins                  | 401   |
++| Inventory lines       | 69    |
++| Fitted lines          | 50    |
+ | DNP or hand-fit lines | 19    |
+ 
+ ## Raw agent resources
+diff --git a/symbols/src/OPA4197IDR.kicad_sym b/symbols/src/OPA4197IDR.kicad_sym
+new file mode 100644
+index 00000000..ffed5e4c
+--- /dev/null
++++ b/symbols/src/OPA4197IDR.kicad_sym
+@@ -0,0 +1,413 @@
++(kicad_symbol_lib
++  (version 20231120)
++  (generator "kicad_symbol_editor")
++  (generator_version "8.0")
++(symbol "OPA4197IDR"
++  (property "LCSC" "C2058532" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
++  (property "Manufacturer" "Texas Instruments" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
++  (property "MPN" "OPA4197IDR" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
++		(exclude_from_sim no)
++		(in_bom yes)
++		(on_board yes)
++		(in_pos_files yes)
++		(duplicate_pin_numbers_are_jumpers no)
++		(property "Reference" "U"
++			(at 0 3.81 0)
++			(show_name no)
++			(do_not_autoplace no)
++			(effects
++				(font
++					(size 1.27 1.27)
++				)
++				(justify left)
++			)
++		)
++		(property "Value" "OPA4197IDR"
++			(at 0 -3.81 0)
++			(show_name no)
++			(do_not_autoplace no)
++			(effects
++				(font
++					(size 1.27 1.27)
++				)
++				(justify left)
++			)
++		)
++		(property "Footprint" "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm"
++			(at 0 0 0)
++			(show_name no)
++			(do_not_autoplace no)
++			(hide yes)
++			(effects
++				(font
++					(size 1.27 1.27)
++				)
++			)
++		)
++		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/opa4197.pdf"
++			(at 0 0 0)
++			(show_name no)
++			(do_not_autoplace no)
++			(hide yes)
++			(effects
++				(font
++					(size 1.27 1.27)
++				)
++			)
++		)
++		(property "Description" "Quad 36V, Precision, Rail-to-Rail Input/Output, Low Offset Voltage, Operational Amplifier, SOIC-14"
++			(at 0 0 0)
++			(show_name no)
++			(do_not_autoplace no)
++			(hide yes)
++			(effects
++				(font
++					(size 1.27 1.27)
++				)
++			)
++		)
++		(property "ki_locked" ""
++			(at 0 0 0)
++			(show_name no)
++			(do_not_autoplace no)
++			(effects
++				(font
++					(size 1.27 1.27)
++				)
++			)
++		)
++		(property "ki_keywords" "quad opamp rtor"
++			(at 0 0 0)
++			(show_name no)
++			(do_not_autoplace no)
++			(hide yes)
++			(effects
++				(font
++					(size 1.27 1.27)
++				)
++			)
++		)
++		(property "ki_fp_filters" "SOIC*3.9x8.7mm*P1.27mm*"
++			(at 0 0 0)
++			(show_name no)
++			(do_not_autoplace no)
++			(hide yes)
++			(effects
++				(font
++					(size 1.27 1.27)
++				)
++			)
++		)
++		(symbol "OPA4197IDR_1_1"
++			(polyline
++				(pts
++					(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
++				)
++				(stroke
++					(width 0.254)
++					(type default)
++				)
++				(fill
++					(type background)
++				)
++			)
++			(pin output line
++				(at 7.62 0 180)
++				(length 2.54)
++				(name ""
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "1"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin input line
++				(at -7.62 -2.54 0)
++				(length 2.54)
++				(name "-"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "2"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin input line
++				(at -7.62 2.54 0)
++				(length 2.54)
++				(name "+"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "3"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++		)
++		(symbol "OPA4197IDR_2_1"
++			(polyline
++				(pts
++					(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
++				)
++				(stroke
++					(width 0.254)
++					(type default)
++				)
++				(fill
++					(type background)
++				)
++			)
++			(pin input line
++				(at -7.62 2.54 0)
++				(length 2.54)
++				(name "+"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "5"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin input line
++				(at -7.62 -2.54 0)
++				(length 2.54)
++				(name "-"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "6"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin output line
++				(at 7.62 0 180)
++				(length 2.54)
++				(name ""
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "7"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++		)
++		(symbol "OPA4197IDR_3_1"
++			(polyline
++				(pts
++					(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
++				)
++				(stroke
++					(width 0.254)
++					(type default)
++				)
++				(fill
++					(type background)
++				)
++			)
++			(pin output line
++				(at 7.62 0 180)
++				(length 2.54)
++				(name ""
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "8"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin input line
++				(at -7.62 -2.54 0)
++				(length 2.54)
++				(name "-"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "9"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin input line
++				(at -7.62 2.54 0)
++				(length 2.54)
++				(name "+"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "10"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++		)
++		(symbol "OPA4197IDR_4_1"
++			(polyline
++				(pts
++					(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
++				)
++				(stroke
++					(width 0.254)
++					(type default)
++				)
++				(fill
++					(type background)
++				)
++			)
++			(pin input line
++				(at -7.62 2.54 0)
++				(length 2.54)
++				(name "+"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "12"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin input line
++				(at -7.62 -2.54 0)
++				(length 2.54)
++				(name "-"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "13"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin output line
++				(at 7.62 0 180)
++				(length 2.54)
++				(name ""
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "14"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++		)
++		(symbol "OPA4197IDR_5_1"
++			(pin power_in line
++				(at -2.54 7.62 270)
++				(length 3.81)
++				(name "V+"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "4"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++			(pin power_in line
++				(at -2.54 -7.62 90)
++				(length 3.81)
++				(name "V-"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++				(number "11"
++					(effects
++						(font
++							(size 1.27 1.27)
++						)
++					)
++				)
++			)
++		)
++		(embedded_fonts no)
++	)
++)
+diff --git a/symbols/zudo-osc-hole-field.kicad_sym b/symbols/zudo-osc-hole-field.kicad_sym
+index 973f16b3..571ef085 100644
+--- a/symbols/zudo-osc-hole-field.kicad_sym
++++ b/symbols/zudo-osc-hole-field.kicad_sym
+@@ -5686,6 +5686,414 @@
+ 				)
+ 			)
+ 	)
++	(symbol "OPA4197IDR"
++	  (property "LCSC" "C2058532" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
++	  (property "Manufacturer" "Texas Instruments" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
++	  (property "MPN" "OPA4197IDR" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
++			(exclude_from_sim no)
++			(in_bom yes)
++			(on_board yes)
++			(in_pos_files yes)
++			(duplicate_pin_numbers_are_jumpers no)
++			(property "Reference" "U"
++				(at 0 3.81 0)
++				(show_name no)
++				(do_not_autoplace no)
++				(effects
++					(font
++						(size 1.27 1.27)
++					)
++					(justify left)
++				)
++			)
++			(property "Value" "OPA4197IDR"
++				(at 0 -3.81 0)
++				(show_name no)
++				(do_not_autoplace no)
++				(effects
++					(font
++						(size 1.27 1.27)
++					)
++					(justify left)
++				)
++			)
++			(property "Footprint" "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm"
++				(at 0 0 0)
++				(show_name no)
++				(do_not_autoplace no)
++				(hide yes)
++				(effects
++					(font
++						(size 1.27 1.27)
++					)
++				)
++			)
++			(property "Datasheet" "https://www.ti.com/lit/ds/symlink/opa4197.pdf"
++				(at 0 0 0)
++				(show_name no)
++				(do_not_autoplace no)
++				(hide yes)
++				(effects
++					(font
++						(size 1.27 1.27)
++					)
++				)
++			)
++			(property "Description" "Quad 36V, Precision, Rail-to-Rail Input/Output, Low Offset Voltage, Operational Amplifier, SOIC-14"
++				(at 0 0 0)
++				(show_name no)
++				(do_not_autoplace no)
++				(hide yes)
++				(effects
++					(font
++						(size 1.27 1.27)
++					)
++				)
++			)
++			(property "ki_locked" ""
++				(at 0 0 0)
++				(show_name no)
++				(do_not_autoplace no)
++				(effects
++					(font
++						(size 1.27 1.27)
++					)
++				)
++			)
++			(property "ki_keywords" "quad opamp rtor"
++				(at 0 0 0)
++				(show_name no)
++				(do_not_autoplace no)
++				(hide yes)
++				(effects
++					(font
++						(size 1.27 1.27)
++					)
++				)
++			)
++			(property "ki_fp_filters" "SOIC*3.9x8.7mm*P1.27mm*"
++				(at 0 0 0)
++				(show_name no)
++				(do_not_autoplace no)
++				(hide yes)
++				(effects
++					(font
++						(size 1.27 1.27)
++					)
++				)
++			)
++			(symbol "OPA4197IDR_1_1"
++				(polyline
++					(pts
++						(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
++					)
++					(stroke
++						(width 0.254)
++						(type default)
++					)
++					(fill
++						(type background)
++					)
++				)
++				(pin output line
++					(at 7.62 0 180)
++					(length 2.54)
++					(name ""
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++					(number "1"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++				)
++				(pin input line
++					(at -7.62 -2.54 0)
++					(length 2.54)
++					(name "-"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++					(number "2"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++				)
++				(pin input line
++					(at -7.62 2.54 0)
++					(length 2.54)
++					(name "+"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++					(number "3"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++				)
++			)
++			(symbol "OPA4197IDR_2_1"
++				(polyline
++					(pts
++						(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
++					)
++					(stroke
++						(width 0.254)
++						(type default)
++					)
++					(fill
++						(type background)
++					)
++				)
++				(pin input line
++					(at -7.62 2.54 0)
++					(length 2.54)
++					(name "+"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++					(number "5"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++				)
++				(pin input line
++					(at -7.62 -2.54 0)
++					(length 2.54)
++					(name "-"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++					(number "6"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++				)
++				(pin output line
++					(at 7.62 0 180)
++					(length 2.54)
++					(name ""
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++					(number "7"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++				)
++			)
++			(symbol "OPA4197IDR_3_1"
++				(polyline
++					(pts
++						(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
++					)
++					(stroke
++						(width 0.254)
++						(type default)
++					)
++					(fill
++						(type background)
++					)
++				)
++				(pin output line
++					(at 7.62 0 180)
++					(length 2.54)
++					(name ""
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++					(number "8"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++				)
++				(pin input line
++					(at -7.62 -2.54 0)
++					(length 2.54)
++					(name "-"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++					(number "9"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++				)
++				(pin input line
++					(at -7.62 2.54 0)
++					(length 2.54)
++					(name "+"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++					(number "10"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++				)
++			)
++			(symbol "OPA4197IDR_4_1"
++				(polyline
++					(pts
++						(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
++					)
++					(stroke
++						(width 0.254)
++						(type default)
++					)
++					(fill
++						(type background)
++					)
++				)
++				(pin input line
++					(at -7.62 2.54 0)
++					(length 2.54)
++					(name "+"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++					(number "12"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++				)
++				(pin input line
++					(at -7.62 -2.54 0)
++					(length 2.54)
++					(name "-"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++					(number "13"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++				)
++				(pin output line
++					(at 7.62 0 180)
++					(length 2.54)
++					(name ""
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++					(number "14"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++				)
++			)
++			(symbol "OPA4197IDR_5_1"
++				(pin power_in line
++					(at -2.54 7.62 270)
++					(length 3.81)
++					(name "V+"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++					(number "4"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++				)
++				(pin power_in line
++					(at -2.54 -7.62 90)
++					(length 3.81)
++					(name "V-"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++					(number "11"
++						(effects
++							(font
++								(size 1.27 1.27)
++							)
++						)
++					)
++				)
++			)
++			(embedded_fonts no)
++		)
+ 	(symbol "OPA4197IPWR"
+ 	  (property "LCSC" "C2057327" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+ 	  (property "Manufacturer" "Texas Instruments" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))

@@ -13,10 +13,11 @@ import json
 import math
 from pathlib import Path
 import re
+import shutil
 import subprocess
 
 from scripts.pcbgen.audit_hole_pairs import possible_pairs
-from scripts.pcbgen.audit_added_mask import unchanged_nonrouting, new_silk_identities, added_copper_scope, reviewed_copper_removals
+from scripts.pcbgen.audit_added_mask import unchanged_nonrouting, new_silk_identities, added_copper_scope, reviewed_copper_removals, removal_source, removal_arguments, StageRemovals
 from scripts.pcbgen.uuid_tools import top_level_spans,UUID_RE
 
 HOLE_TYPES={'hole_to_hole','holes_co_located'}
@@ -48,14 +49,37 @@ def identity(v):return (v['type'],v['severity'],tuple(sorted(i['uuid'] for i in 
 def normalized(rows):return {(a,b,tuple(c)) for a,b,c in rows}
 
 
-def append_observations(drc, observations):
+def append_observations(drc, observations, kinds=HOLE_TYPES):
     result=copy.deepcopy(drc);known={identity(v) for v in drc['violations']}
     for kind,severity,ids in sorted(observations):
-        if kind not in HOLE_TYPES:raise ValueError('unsupported appended observation')
+        if kind not in kinds:raise ValueError('unsupported appended observation')
         if (kind,severity,ids) not in known:
             result['violations'].append(dict(type=kind,severity=severity,items=[{'uuid':u} for u in ids],
                                             description='Complete pinned-native hole fixture observation'))
     return result
+
+
+SILK_TYPES=('silk_overlap','silk_over_copper')
+CAP=199
+
+
+def capped_types(drc):
+    counts=collections.Counter(v['type'] for v in drc['violations'] if v['severity']=='warning')
+    return {kind for kind,n in counts.items() if n>=CAP}
+
+
+def preexisting_capped_silk(before_drc, after_drc, before_text):
+    """After-report silk identities on objects already in the before board, for silk types the before report capped.
+
+    Valid only once complete_reports has proved, from complete native fixtures, that no
+    added copper and no growing zone creates a silk identity and that every non-routing
+    object is byte-identical: such an identity is then a pairwise native finding on
+    unchanged objects, which the capped before report merely did not list.
+    """
+    present=set(UUID_RE.findall(before_text))
+    kinds=capped_types(before_drc)&set(SILK_TYPES)
+    return {identity(v) for v in after_drc['violations']
+            if v['type'] in kinds and v['severity']=='warning' and v['items'] and all(i.get('uuid') in present for i in v['items'])}
 
 
 def check_caps(drc):
@@ -219,6 +243,8 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
     if mask['unchanged_nonrouting_objects']!=count:raise ValueError('silk invariance mismatch')
     scope=added_copper_scope(before_board.read_text(),after_board.read_text(),reviewed_removed_uuids=reviewed_removed_uuids)
     if mask.get('reviewed_copper_removals',{})!=cut_scope:raise ValueError('silk reviewed cut scope mismatch')
+    if cut_scope and mask.get('copper_removal_source','reviewed')!=removal_source(reviewed_removed_uuids):
+        raise ValueError('silk copper removal source mismatch')
     expected_copper=set(scope)
     if 'added_copper_source_scope' in mask and mask['added_copper_source_scope']!=scope:
         raise ValueError('silk source scope mismatch')
@@ -239,38 +265,82 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
         found.update(identity(v) for v in rows)
     if found!=normalized(mask['new_mask_identities']):raise ValueError('silk identity union incomplete')
     if found:raise ValueError('new complete native silk warning identities')
-    return append_observations(before_drc,old),append_observations(after_drc,new),dict(
+    silk=preexisting_capped_silk(before_drc,after_drc,before_board.read_text())
+    complete_before=append_observations(append_observations(before_drc,old),silk,kinds=SILK_TYPES)
+    return complete_before,append_observations(after_drc,new),dict(
+        before_capped_silk_identities_appended=len(silk),
         status='COMPLETE NATIVE HOLE OBSERVATIONS APPENDED; NO ORIGINAL FINDING REMOVED',
         before_hole_identities=len(old),after_hole_identities=len(new),new_hole_object_identities=[],
         new_silk_identities=[],before_source_sha256=sha(before_board),after_source_sha256=sha(after_board),
         zone_evidence=zone_proof,
         audit_result_sha256=[sha(Path(p)/'result.json') for p in (before_audit,after_audit,mask_audit)],
-        **({'reviewed_copper_removals':cut_scope} if cut_scope else {}))
+        **({'reviewed_copper_removals':cut_scope,'copper_removal_source':removal_source(reviewed_removed_uuids)} if cut_scope else {}))
 
 
-def audit_current_reports(before_board, after_board, before_drc, after_drc, output, zone_batch_size=1, reviewed_removed_uuids=()):
-    """Produce evidence for these exact native boards; never reuse stale audits."""
+AUDIT_NAMES=('holes-before','holes-after','silk','zones')
+
+
+def resumable_audits(resume_from, before_board, after_board):
+    """Completed sub-audits of an interrupted run on these exact bytes; complete_reports still re-verifies them."""
+    root=Path(resume_from);manifest=read(root/'added-copper-scope.json')
+    before_sha,after_sha=sha(before_board),sha(after_board)
+    if manifest.get('before_sha256')!=before_sha or manifest.get('after_sha256')!=after_sha:
+        raise ValueError('resume evidence source mismatch')
+    def result(name):
+        path=root/name/'result.json'
+        return read(path) if path.exists() else {}
+    done={}
+    for name,source in (('holes-before',before_sha),('holes-after',after_sha)):
+        row=result(name)
+        if row.get('version')=='10.0.6' and row.get('source_sha256')==source and 'fixtures' in row:done[name]=root/name
+    for name,flag in (('silk','added_copper_scope_complete'),('zones','zone_silk_scope_complete')):
+        row=result(name)
+        if row.get('version')=='10.0.6' and row.get('before_sha256')==before_sha and row.get('after_sha256')==after_sha and row.get(flag) is True:
+            done[name]=root/name
+    return done
+
+
+def audit_current_reports(before_board, after_board, before_drc, after_drc, output, zone_batch_size=1, reviewed_removed_uuids=(), resume_from=None):
+    """Produce evidence for these exact native boards; never reuse stale audits.
+
+    resume_from names an interrupted output for the same before/after bytes: its completed
+    sub-audits are copied, a partial batched zone audit continues through its own
+    byte-verified resume, and everything else reruns. All of it is re-verified below.
+    """
     if type(zone_batch_size) is not int or zone_batch_size not in (1,4,16):raise ValueError('native zone batch size must be1,4or16')
     root=Path(__file__).resolve().parents[2]
     output=Path(output)
+    if resume_from is not None and Path(resume_from).resolve()==output.resolve():raise ValueError('resume evidence must be a separate directory')
     output.mkdir(parents=True,exist_ok=False)
     before_audit=output/'holes-before';after_audit=output/'holes-after';mask_audit=output/'silk';zone_audit=output/'zones'
     # The pinned container mounts the checkout at /work, not the host path.
     relative=lambda p:str(Path(p).resolve().relative_to(root))
     scope=added_copper_scope(Path(before_board).read_text(),Path(after_board).read_text(),reviewed_removed_uuids=reviewed_removed_uuids)
     cuts=reviewed_copper_removals(Path(before_board).read_text(),Path(after_board).read_text(),reviewed_removed_uuids)
-    (output/'added-copper-scope.json').write_text(json.dumps(dict(before_sha256=sha(before_board),after_sha256=sha(after_board),copper=scope,**({'reviewed_copper_removals':cuts} if cuts else {})),indent=2)+'\n')
+    source=removal_source(reviewed_removed_uuids)
+    (output/'added-copper-scope.json').write_text(json.dumps(dict(before_sha256=sha(before_board),after_sha256=sha(after_board),copper=scope,**({'reviewed_copper_removals':cuts,'copper_removal_source':source} if cuts else {})),indent=2)+'\n')
     commands=[['scripts/pcbgen/audit_hole_pairs.py',relative(before_board),relative(before_audit)],
               ['scripts/pcbgen/audit_hole_pairs.py',relative(after_board),relative(after_audit)],
               ['scripts/pcbgen/audit_added_mask.py',relative(before_board),relative(after_board),relative(mask_audit),'--expected-copper',str(len(scope)),'--expected-vias',str(sum(k=='via' for k in scope.values()))],
               ['scripts/pcbgen/audit_zone_silk_scope.py',relative(before_board),relative(after_board),relative(zone_audit),'--classify']]
     if zone_batch_size!=1:commands[-1].extend(['--batch-size',str(zone_batch_size)])
-    for command in commands[2:]:
-        for uid in sorted(cuts):command.extend(['--reviewed-cut-uuid',uid])
-    for command in commands:
+    reused={}
+    if resume_from is not None:
+        resume_from=Path(resume_from)
+        reused=resumable_audits(resume_from,before_board,after_board)
+        # The zone auditor refuses resume with removal scopes and at batch size 1; those rerun fresh.
+        if 'zones' not in reused and not cuts and zone_batch_size!=1 and (resume_from/'zones'/'result.json').exists():
+            commands[-1].extend(['--resume-from',relative(resume_from/'zones')])
+    if cuts:
+        # A stage scope can name thousands of objects, so it travels as a hash-bound file, not argv.
+        arguments=removal_arguments(reviewed_removed_uuids,output/'stage-removal-scope.json',before_board,after_board)
+        if source=='stage':arguments[1]=relative(arguments[1])
+        for command in commands[2:]:command.extend(arguments)
+    for name,command in zip(AUDIT_NAMES,commands):
+        if name in reused:shutil.copytree(reused[name],output/name);continue
         subprocess.run(['bash','scripts/kicad/run.sh','python3',*command],cwd=root,check=True)
     result=complete_reports(before_board,after_board,before_drc,after_drc,before_audit,after_audit,mask_audit,zone_audit,
-                            **({'reviewed_removed_uuids':sorted(cuts)} if cuts else {}))
+                            **({'reviewed_removed_uuids':StageRemovals(sorted(cuts)) if source=='stage' else sorted(cuts)} if cuts else {}))
     for name,value in zip(('complete-before-drc','complete-after-drc','proof'),result):
         (output/(name+'.json')).write_text(json.dumps(value,indent=2)+'\n')
     return result

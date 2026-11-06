@@ -154,8 +154,8 @@
   },
   "excluded_combinations": [
     "Startup ramp faster than 1 ms or downstream distributed capacitor charging",
-    "Any shorted or externally driven patch cable, output contention, or \u00b112 V cable fault",
-    "Temperature outside 15\u201330 C and tolerance extremes not present in worksheet assumptions",
+    "Any shorted or externally driven patch cable, output contention, or ±12 V cable fault",
+    "Temperature outside 15–30 C and tolerance extremes not present in worksheet assumptions",
     "Maximum simultaneous logic switching, LED PWM transients and relay/contact bounce",
     "REF5050 reference and SH logic allowances above their draft planning values",
     "More than one inlet per feed, cable voltage drop, shared return impedance or source-side sequencing"
@@ -200,17 +200,24 @@
     "H1:4": {
       "feed": "A",
       "rails": [
-        "+12V"
+        "+12V",
+        "-12V"
       ]
     },
     "H1:5": {
+      "feed": "A",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "H1:6": {
       "feed": "A",
       "rails": [
         "+12V",
         "-12V"
       ]
     },
-    "H1:6": {
+    "H1:7": {
       "feed": "A",
       "rails": [
         "+12V",
@@ -248,17 +255,24 @@
     "H2:4": {
       "feed": "B",
       "rails": [
-        "+12V"
+        "+12V",
+        "-12V"
       ]
     },
     "H2:5": {
+      "feed": "B",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "H2:6": {
       "feed": "B",
       "rails": [
         "+12V",
         "-12V"
       ]
     },
-    "H2:6": {
+    "H2:7": {
       "feed": "B",
       "rails": [
         "+12V",
@@ -451,14 +465,14 @@
     "O4:3": {
       "feed": "A",
       "rails": [
-        "+12V"
+        "+12V",
+        "-12V"
       ]
     },
     "O4:4": {
       "feed": "A",
       "rails": [
-        "+12V",
-        "-12V"
+        "+12V"
       ]
     },
     "O4:5": {
@@ -476,6 +490,13 @@
       ]
     },
     "O4:7": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O4:8": {
       "feed": "A",
       "rails": [
         "+5V"
@@ -765,13 +786,14 @@
     "E1:4": {
       "feed": "B",
       "rails": [
-        "+12V"
+        "+12V",
+        "-12V"
       ]
     },
     "E1:5": {
       "feed": "B",
       "rails": [
-        "+5V"
+        "+12V"
       ]
     },
     "E1:6": {
@@ -795,21 +817,20 @@
     "E1:9": {
       "feed": "B",
       "rails": [
-        "+12V",
-        "-12V"
+        "+5V"
       ]
     },
     "E1:10": {
       "feed": "B",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "E1:11": {
       "feed": "B",
       "rails": [
-        "+12V",
-        "-12V"
+        "+5V"
       ]
     },
     "E1:12": {
@@ -822,7 +843,8 @@
     "E1:13": {
       "feed": "B",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "E1:14": {
@@ -832,6 +854,12 @@
       ]
     },
     "E1:15": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E1:16": {
       "feed": "B",
       "rails": [
         "+5V"
@@ -868,13 +896,14 @@
     "E2:4": {
       "feed": "B",
       "rails": [
-        "+12V"
+        "+12V",
+        "-12V"
       ]
     },
     "E2:5": {
       "feed": "B",
       "rails": [
-        "+5V"
+        "+12V"
       ]
     },
     "E2:6": {
@@ -898,21 +927,20 @@
     "E2:9": {
       "feed": "B",
       "rails": [
-        "+12V",
-        "-12V"
+        "+5V"
       ]
     },
     "E2:10": {
       "feed": "B",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "E2:11": {
       "feed": "B",
       "rails": [
-        "+12V",
-        "-12V"
+        "+5V"
       ]
     },
     "E2:12": {
@@ -925,7 +953,8 @@
     "E2:13": {
       "feed": "B",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "E2:14": {
@@ -935,6 +964,12 @@
       ]
     },
     "E2:15": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E2:16": {
       "feed": "B",
       "rails": [
         "+5V"
@@ -971,13 +1006,14 @@
     "E3:4": {
       "feed": "A",
       "rails": [
-        "+12V"
+        "+12V",
+        "-12V"
       ]
     },
     "E3:5": {
       "feed": "A",
       "rails": [
-        "+5V"
+        "+12V"
       ]
     },
     "E3:6": {
@@ -1001,21 +1037,20 @@
     "E3:9": {
       "feed": "A",
       "rails": [
-        "+12V",
-        "-12V"
+        "+5V"
       ]
     },
     "E3:10": {
       "feed": "A",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "E3:11": {
       "feed": "A",
       "rails": [
-        "+12V",
-        "-12V"
+        "+5V"
       ]
     },
     "E3:12": {
@@ -1028,7 +1063,8 @@
     "E3:13": {
       "feed": "A",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "E3:14": {
@@ -1038,6 +1074,12 @@
       ]
     },
     "E3:15": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E3:16": {
       "feed": "A",
       "rails": [
         "+5V"
@@ -1074,13 +1116,14 @@
     "E4:4": {
       "feed": "B",
       "rails": [
-        "+12V"
+        "+12V",
+        "-12V"
       ]
     },
     "E4:5": {
       "feed": "B",
       "rails": [
-        "+5V"
+        "+12V"
       ]
     },
     "E4:6": {
@@ -1104,21 +1147,20 @@
     "E4:9": {
       "feed": "B",
       "rails": [
-        "+12V",
-        "-12V"
+        "+5V"
       ]
     },
     "E4:10": {
       "feed": "B",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "E4:11": {
       "feed": "B",
       "rails": [
-        "+12V",
-        "-12V"
+        "+5V"
       ]
     },
     "E4:12": {
@@ -1131,7 +1173,8 @@
     "E4:13": {
       "feed": "B",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "E4:14": {
@@ -1141,6 +1184,12 @@
       ]
     },
     "E4:15": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E4:16": {
       "feed": "B",
       "rails": [
         "+5V"
@@ -1177,13 +1226,14 @@
     "E5:4": {
       "feed": "A",
       "rails": [
-        "+12V"
+        "+12V",
+        "-12V"
       ]
     },
     "E5:5": {
       "feed": "A",
       "rails": [
-        "+5V"
+        "+12V"
       ]
     },
     "E5:6": {
@@ -1207,21 +1257,20 @@
     "E5:9": {
       "feed": "A",
       "rails": [
-        "+12V",
-        "-12V"
+        "+5V"
       ]
     },
     "E5:10": {
       "feed": "A",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "E5:11": {
       "feed": "A",
       "rails": [
-        "+12V",
-        "-12V"
+        "+5V"
       ]
     },
     "E5:12": {
@@ -1234,7 +1283,8 @@
     "E5:13": {
       "feed": "A",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "E5:14": {
@@ -1244,6 +1294,12 @@
       ]
     },
     "E5:15": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E5:16": {
       "feed": "A",
       "rails": [
         "+5V"
@@ -1280,13 +1336,14 @@
     "E6:4": {
       "feed": "B",
       "rails": [
-        "+12V"
+        "+12V",
+        "-12V"
       ]
     },
     "E6:5": {
       "feed": "B",
       "rails": [
-        "+5V"
+        "+12V"
       ]
     },
     "E6:6": {
@@ -1310,21 +1367,20 @@
     "E6:9": {
       "feed": "B",
       "rails": [
-        "+12V",
-        "-12V"
+        "+5V"
       ]
     },
     "E6:10": {
       "feed": "B",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "E6:11": {
       "feed": "B",
       "rails": [
-        "+12V",
-        "-12V"
+        "+5V"
       ]
     },
     "E6:12": {
@@ -1337,7 +1393,8 @@
     "E6:13": {
       "feed": "B",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "E6:14": {
@@ -1347,6 +1404,12 @@
       ]
     },
     "E6:15": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E6:16": {
       "feed": "B",
       "rails": [
         "+5V"
@@ -2118,10 +2181,17 @@
     "A01:9": {
       "feed": "A",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "A01:10": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "A01:11": {
       "feed": "A",
       "rails": [
         "+12V",
@@ -2194,10 +2264,17 @@
     "A02:9": {
       "feed": "B",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "A02:10": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "A02:11": {
       "feed": "B",
       "rails": [
         "+12V",
@@ -2270,10 +2347,17 @@
     "A03:9": {
       "feed": "A",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "A03:10": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "A03:11": {
       "feed": "A",
       "rails": [
         "+12V",
@@ -2346,10 +2430,17 @@
     "A04:9": {
       "feed": "B",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "A04:10": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "A04:11": {
       "feed": "B",
       "rails": [
         "+12V",
@@ -2422,10 +2513,17 @@
     "A05:9": {
       "feed": "A",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "A05:10": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "A05:11": {
       "feed": "A",
       "rails": [
         "+12V",
@@ -2498,10 +2596,17 @@
     "A06:9": {
       "feed": "B",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "A06:10": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "A06:11": {
       "feed": "B",
       "rails": [
         "+12V",

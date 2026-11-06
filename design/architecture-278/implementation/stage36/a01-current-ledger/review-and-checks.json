@@ -1,0 +1,51 @@
+{
+  "status": "PASS_SOURCE_REVIEW_ONLY",
+  "reviewer": "fresh-context /root/stage36_review",
+  "baseline": "40ab8df2c4275d024957f5dc6a4cfd834a2e43fb",
+  "reviewed_sha256": {
+    "README.md": "3aa017158fcb64d8d883a1d0f2ae205f5e07216c9cb37c107e3506bd78a1c5b2",
+    "ledger.py": "80eba8c404421b50c8e4f7d33c63af8e7f4cfe3439cbacf1beaee8ab050b4665",
+    "ledger.json": "cbd12deddcea3a11f1d04a01e422644bd115695d32966fa785930cfc8a7cf467",
+    "sources.json": "08c364f8ca3362ed02efd4fb8c36f5db4fdbe7a3fcf6635c18aa6f4548aba30d",
+    "test_ledger.py": "7e663d835224f56788c2d8b91d2b91503d976f46b072d0c1e3c9efb249882842"
+  },
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s design/architecture-278/implementation/stage36/a01-current-ledger -p test_ledger.py",
+      "result": "PASS seven tests"
+    },
+    {
+      "command": "python3 -O -m unittest discover -s design/architecture-278/implementation/stage36/a01-current-ledger -p test_ledger.py",
+      "result": "PASS seven tests"
+    },
+    {
+      "command": "python3 design/architecture-278/implementation/stage36/a01-current-ledger/ledger.py --check",
+      "result": "PASS deterministic source bindings"
+    },
+    {
+      "command": "python3 -O design/architecture-278/implementation/stage36/a01-current-ledger/ledger.py --check",
+      "result": "PASS deterministic source bindings"
+    },
+    {
+      "command": "python3 scripts/architecture278/implementation/stage36_interface_cassette.py --check --check-review",
+      "result": "PASS"
+    },
+    {
+      "command": "COREPACK_HOME=/workspace/shared/corepack corepack pnpm circuit:check",
+      "result": "PASS"
+    },
+    {
+      "command": "COREPACK_HOME=/workspace/shared/corepack corepack pnpm check",
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "independent_evidence": "Primary tables visually checked; all 11 before subtotals agree with frozen Stage34 within 1e-15 A; final seven tests normal/-O and deterministic check independently pass. No remaining material finding.",
+  "first_review_finding": "README incorrectly identified SUM_NEG as U7105.7; corrected to U7105.8 and added regression before final review. Initial six tests passed; final seven pass.",
+  "historical_replay": "Not repeated: historical tracked files unchanged. Frozen Stage36 source/review guard passed; retained full replay at ac4083e.",
+  "limitations": "Source checks only; circuit check is manual inventory, no schematic/placement binding. No native/physical/simulation or hardware qualification.",
+  "scope": "A01 only; no substitutions/adoption, current/fault qualification, precision restart or canonical changes."
+}

@@ -1,0 +1,137 @@
+{
+  "status": "READ-ONLY REQUIREMENT HISTORY; NO CRITERIA OR GEOMETRY CHANGED",
+  "baseline_commit": "32317689d7e4b41b6c46c9f628d8b1156a3bf418",
+  "scope": "A01 and OSC DC/CV acceptance provenance; repository/retained issue packet only, no claim of live issue refresh",
+  "records": [
+    {
+      "id": "authority",
+      "classification": "Retained draft-capture criteria; not owner-certified hardware acceptance.",
+      "path": "project/osc-hole-field/electrical-decisions.json",
+      "commit": "32317689d7e4b41b6c46c9f628d8b1156a3bf418",
+      "git_blob": "a1492fb2863b0306a74a8bd22697ca1d7b48f955",
+      "sha256": "5f7bfab14614051cd33357d16f87453803b8e68eb16d2dcd8f52c55c9532ba8d",
+      "line_start": 63,
+      "line_end": 70,
+      "excerpt": "    \"id\": \"E07\",\n    \"authority\": \"PROPOSAL (planning, owner-delegated)\",\n    \"date\": \"2026-09-28\",\n    \"topic\": \"Factory calibration\",\n    \"decision\": \"Factory-fitted SMD trimmers with end-strapped wipers and bounded ranges; measured load and octave error targets.\",\n    \"rationale\": \"No owner soldering; 0.1% individual resistors do not certify pitch accuracy.\",\n    \"standard\": \"design/standard/electrical-standard.json\",\n    \"status\": \"accepted for draft capture; not hardware qualification\"",
+      "immutable_url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/32317689d7e4b41b6c46c9f628d8b1156a3bf418/project/osc-hole-field/electrical-decisions.json#L63"
+    },
+    {
+      "id": "standard",
+      "classification": "1mV load delta,2mV calibrated static/step,5cent0..5V25C tracking after20min are distinct retained planning targets.",
+      "path": "design/standard/electrical-standard.json",
+      "commit": "32317689d7e4b41b6c46c9f628d8b1156a3bf418",
+      "git_blob": "cfaa8a54ad7938e0b6699512ab67717b765e7594",
+      "sha256": "185f4775082a36873954323a2377844e0694631418ac510db08e3a0d39b56e53",
+      "line_start": 163,
+      "line_end": 179,
+      "excerpt": "  \"calibration\": {\n    \"assembly\": \"Factory-only soldering and socket population; factory adjustment through accessible test points.\",\n    \"warmup_minutes\": 20,\n    \"precision_output_load_error_V\": 0.001,\n    \"static_precision_error_V\": 0.002,\n    \"octave_step_error_V\": 0.002,\n    \"pitch_tracking_target_cents\": 5,\n    \"pitch_tracking_scope\": \"0..5 V at 25 C after factory calibration; target only, not guaranteed by resistor tolerance. #29 defines sweep and temperature characterization.\",\n    \"sample_hold\": \"No long-hold pitch accuracy promise; characterize droop separately from output load error.\",\n    \"pitch_voltage_error_caveat\": \"5 cents at 1 V/oct equals 4.166667 mV; oscillator exponential/core error and temperature must share this total budget. A 2 mV octave-step target alone does not prove five-octave tracking.\"\n  },\n  \"capacitance\": {\n    \"nominal_ceiling_uF\": {\n      \"+12V\": 150,\n      \"-12V\": 150,\n      \"+5V\": 100\n    },",
+      "immutable_url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/32317689d7e4b41b6c46c9f628d8b1156a3bf418/design/standard/electrical-standard.json#L163"
+    },
+    {
+      "id": "a01-owner-gap",
+      "classification": "A01 pitch-CV absolute error/temperature acceptance remains unresolved; do not infer oscillator tracking target applies unchanged.",
+      "path": "doc/src/content/docs/architecture/osc-block-ao.mdx",
+      "commit": "32317689d7e4b41b6c46c9f628d8b1156a3bf418",
+      "git_blob": "b558e2f2337e3b8215dd3b603935004d03138a2b",
+      "sha256": "aae398244c72570571ccc0ef9c7e6148bc20b05db702e13e6f9c753dd192b927",
+      "line_start": 55,
+      "line_end": 57,
+      "excerpt": "This is a **partial illustrative budget**, not a guaranteed sum in cents. The offset terms use nominal resistor ratios and omit the separate OFFSET input buffer, manual/reference paths and precision jack-output amplifier. Source impedance, real loading, amplifier input currents and simultaneous resistor errors also need a complete analysis. The [retained TI source](https://www.ti.com/lit/ds/symlink/opa4197.pdf) is SBOS737C, physical PDF index 6 / printed page 7, Section 6.7 VOS and drift rows (`src-op-precision-datasheet`; `fact-op-precision-input-offset-voltage`). Calibration must measure zero at ATTEN centre, ±1 endpoint gain, OFFSET CV unity, manual midpoint/endpoints, output DC and drift, and clip thresholds at ±10 V. An owner-defined cents tolerance is still required before accepting pitch-CV service.\n\n## Model and current evidence",
+      "immutable_url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/32317689d7e4b41b6c46c9f628d8b1156a3bf418/doc/src/content/docs/architecture/osc-block-ao.mdx#L55"
+    },
+    {
+      "id": "a01-model",
+      "classification": "Historical ideal-algebra model test, excludes physical output/protection/temperature; not measured A01 accuracy.",
+      "path": "doc/src/content/docs/architecture/osc-block-ao.mdx",
+      "commit": "32317689d7e4b41b6c46c9f628d8b1156a3bf418",
+      "git_blob": "b558e2f2337e3b8215dd3b603935004d03138a2b",
+      "sha256": "aae398244c72570571ccc0ef9c7e6148bc20b05db702e13e6f9c753dd192b927",
+      "line_start": 59,
+      "line_end": 61,
+      "excerpt": "Seven ideal-opamp ngspice DC cases in `design/spec/modules/spice/offset-*.cir` check gain −1/0/+1, mixed offset/CV and the mathematical ±15 V extreme. Every modeled `OUT_INTERNAL` differs from the algebraic target by under 1 mV. Before execution, `offset_model_contract.py` checks the captured resistor values and nets, amplifier inputs/output pins, wiper polarity and internal branch set. A wrong wire, swapped amplifier input, missing/duplicate/DNP modeled part or added internal branch is rejected before the ideal deck can return a misleading pass. The report records the checked projection and its idealized boundaries. Pot contact resistance, saturation, op-amp macromodel, output isolation, LEDs, temperature and recovery are not modeled. `design/reports/spice/offset.json` records the runs.\n\nThe planning worksheet `design/reports/current/offset.json` counts per cell three whole OPA4197 packages, one OPA4196, two ADG5412F, two comparator packages, one REF5050, three magnitude LEDs, one clip LED, manual pot, input feeds and an output load. The six-cell **planning upper** is +12 V 196.95 mA, −12 V 173.55 mA and +5 V 1.8 mA. Guaranteed maxima are null. The amount is material to #33/#34 rail closure and could force topology/package consolidation; it is neither a measured current nor a supplier guarantee.",
+      "immutable_url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/32317689d7e4b41b6c46c9f628d8b1156a3bf418/doc/src/content/docs/architecture/osc-block-ao.mdx#L59"
+    },
+    {
+      "id": "output-delta",
+      "classification": "Load change only; cannot allocate entire target to AGND or infer total static gain accuracy.",
+      "path": "doc/src/content/docs/architecture/osc-electrical-standard.mdx",
+      "commit": "32317689d7e4b41b6c46c9f628d8b1156a3bf418",
+      "git_blob": "1998d99490674c226c2083e55861f5347d458cb8",
+      "sha256": "ae0d5602a3ce0aa9f3293b1d6ac19e3f2d6b22499fcee0096a15b45e6f3e7e11",
+      "line_start": 32,
+      "line_end": 34,
+      "excerpt": "Nominal output loading is 100 kΩ; the design load envelope extends down to 10 kΩ. A 998 Ω general output loses 0.988% into 100 kΩ and 9.075% into 10 kΩ. Precision outputs instead sense the jack after the isolation resistor. Their **load-induced** DC error target is at most 1 mV between open circuit and 10 kΩ at −5, 0 and +5 V. The separate calibrated static path target is 2 mV. Neither target establishes sample-and-hold droop or oscillator tracking.\n\nNo jack switch contact creates a normal connection. Unpatched modules remain independent.",
+      "immutable_url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/32317689d7e4b41b6c46c9f628d8b1156a3bf418/doc/src/content/docs/architecture/osc-electrical-standard.mdx#L32"
+    },
+    {
+      "id": "osc-track",
+      "classification": "4.166667mV equivalent is total across reference/pitch/core, not available solely to harness return.",
+      "path": "doc/src/content/docs/architecture/osc-block-osc.mdx",
+      "commit": "32317689d7e4b41b6c46c9f628d8b1156a3bf418",
+      "git_blob": "39cad2dd5938ec6b95f260cbd647bc89fe97833a",
+      "sha256": "124b1e62dcb2a24491c7bd3b871e79b95cd0fe402b0643115dcfa17367928b55",
+      "line_start": 108,
+      "line_end": 110,
+      "excerpt": "The standard's 2 mV octave-step and five-cent tracking figures remain **targets**. Five cents at 1 V/oct is about 4.167 mV equivalent error, shared among the reference, pitch path and core. Individual 0.1% resistors alone cannot establish it.\n\n## Verification and remaining gates",
+      "immutable_url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/32317689d7e4b41b6c46c9f628d8b1156a3bf418/doc/src/content/docs/architecture/osc-block-osc.mdx#L108"
+    },
+    {
+      "id": "receiver-budget",
+      "classification": "Proposed1mV allocation and200uV return share; no owner adoption or measured pass.",
+      "path": "design/architecture-278/electrical.md",
+      "commit": "32317689d7e4b41b6c46c9f628d8b1156a3bf418",
+      "git_blob": "730430a56f11b3e88f2c02001d5a309ccd65e301",
+      "sha256": "6fbcfe5bc37f265f371c5399d3cb03779680bbf0253fdcf27dc7dda09b6c4dd5",
+      "line_start": 39,
+      "line_end": 41,
+      "excerpt": "Proposed worst-case absolute per-receiver error allocation is contact 100 µV, remote return 200 µV, loading 200 µV, drift 200 µV, peak noise 100 µV, source/buffer offset 200 µV: total **1000 µV**. Two adjacent receiver errors could differ by 2000 µV, leaving no margin against the 2 mV adjacent-step target. Correlation and actual transfer need review; bandwidth, temperature span and ageing interval are OPEN. DC error terms are Iload Rcontact, Ibias Zsource, gain/offset and remote AGND shift; drift is TC × ΔT plus ageing, noise is evaluated over a defined bandwidth with a reviewed peak convention. A local buffer leaves remote-ground error intact. Every actual term is unknown, so this budget is not passed. Five-cents tracking at 25 °C is a separate target and is not inferred from this allocation.\n\nThe existing conditional fanout report is retained with its exact local output/load rows, 100 Ω isolation, 100 Ω feedback, 1 nF compensation and 2 mA driver planning limit. Those values are historical powered-operation conditions, not new placement or stability authority. Feedback remains local. The eight controls retain their interface classifications: five unbuffered pots and three mechanical selectors. Nominal Rpot/4 is not a tolerance bound: a 100 kΩ pot with +20% resistance reaches 30 kΩ before source/contact impedance; 1 nF then yields 30 µs as a simple pole estimate only. Source drive, switch transitions, receiver nonlinearities, capacitance and settling still need qualification. No buffer is presumed for a wiper.",
+      "immutable_url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/32317689d7e4b41b6c46c9f628d8b1156a3bf418/design/architecture-278/electrical.md#L39"
+    },
+    {
+      "id": "original-plane",
+      "classification": "Plane ceiling added separately to wire+termination; GH alternate path separately uses contact bound.",
+      "path": "scripts/checks/partition35.py",
+      "commit": "32317689d7e4b41b6c46c9f628d8b1156a3bf418",
+      "git_blob": "15b73a49da10f79627d7f8b1ced5baf703928533",
+      "sha256": "0e3014d283177cf1d9a94b0e36f397950f6a59ff84081cb01ec6d9187686f938",
+      "line_start": 236,
+      "line_end": 238,
+      "excerpt": "    rwire=d['hot_resistance_requirement_ohm_per_m']*d['max_wire_length_mm']/1000+d['combined_termination_resistance_ohm'];rp=rwire+d['rail_plane_resistance_ceiling_ohm'];rg=rwire+d['return_plane_resistance_ceiling_ohm'];drop={rail:(amps*rp+d['single_return_max_A']*rg)*1000 for rail,amps in d['rail_max_A'].items()}\n    if max(drop.values())>20:errors.append('load distribution exceeds 20 mV')\n    wire_requirements=read('design/partition/harness-wire-evidence.json')['proposal']",
+      "immutable_url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/32317689d7e4b41b6c46c9f628d8b1156a3bf418/scripts/checks/partition35.py#L236"
+    },
+    {
+      "id": "later-expanded",
+      "classification": "Later expanded branch wording does not erase original PCB-only resistance scope.",
+      "path": "design/architecture-278/electrical.md",
+      "commit": "32317689d7e4b41b6c46c9f628d8b1156a3bf418",
+      "git_blob": "730430a56f11b3e88f2c02001d5a309ccd65e301",
+      "sha256": "6fbcfe5bc37f265f371c5399d3cb03779680bbf0253fdcf27dc7dda09b6c4dd5",
+      "line_start": 25,
+      "line_end": 27,
+      "excerpt": "| Branch plus K common ground ≤0.5 mΩ | Four return segments ×0.125 mΩ | Measured/extracted worst-case complete segments, shared return current and temperature |\n| Combined rail transfer ≤1 mΩ | Four rail segments ×0.25 mΩ | Connector/crimp/wire/trace/ageing and load topology |\n| Hot distribution ≤20 mV | I downstream × complete rail path | Dynamic peak and contact sharing bounds |",
+      "immutable_url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/32317689d7e4b41b6c46c9f628d8b1156a3bf418/design/architecture-278/electrical.md#L25"
+    },
+    {
+      "id": "retained-harness",
+      "classification": "300mm/1nF interconnect envelope remains design requirement distinct from DC accuracy and stability qualification.",
+      "path": "design/standard/electrical-standard.json",
+      "commit": "32317689d7e4b41b6c46c9f628d8b1156a3bf418",
+      "git_blob": "cfaa8a54ad7938e0b6699512ab67717b765e7594",
+      "sha256": "185f4775082a36873954323a2377844e0694631418ac510db08e3a0d39b56e53",
+      "line_start": 132,
+      "line_end": 139,
+      "excerpt": "  \"remote_controls\": {\n    \"max_harness_length_m\": 0.3,\n    \"max_harness_capacitance_F\": 1e-09,\n    \"allowed\": [\n      \"buffered signal\",\n      \"buffered reference\",\n      \"analog return\",\n      \"wiper into high-impedance input\",",
+      "immutable_url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/32317689d7e4b41b6c46c9f628d8b1156a3bf418/design/standard/electrical-standard.json#L132"
+    }
+  ],
+  "conclusions": [
+    "Electrical E01-E09 accepted for draft capture under owner-delegated PROPOSAL, not hardware-qualified values. User decision ledger does not supply a numeric A01 cents tolerance.",
+    "Retain original plane-only0.5mohm return/1mohm rail criteria and separately account contacts/wires/joints; expanded architecture whole-branch wording needs reconciliation, not automatic blanket rejection of GH.",
+    "No universal cents threshold applies to all functions. A01 owner-defined pitch-CV tolerance remains missing. OSC5cents is tracking target with stated calibration/range/temperature, not a new A01 absolute error limit.",
+    "Output load-induced1mV and calibrated static2mV are different tests; octave-step2mV and oscillator5cents are different obligations. Return shift requires actual common-path current and transfer sensitivity plus remaining error allocations.",
+    "Model pass criteria are scoped historical verification, not measured complete-module acceptance. Mechanical/strap/support elaboration remains frozen."
+  ],
+  "native": "NOT RUN",
+  "simulation": "NOT RUN",
+  "physical": "NOT RUN"
+}

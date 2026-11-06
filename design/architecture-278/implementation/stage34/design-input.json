@@ -1,0 +1,1373 @@
+{
+  "status": "DESIGN_STUDY_INPUT_NOT_MEASURED",
+  "scope": "A01 J-SIG/J-PWR whole-arch retention (RG34) on the R33 study baseline, conductor current budget and wire evidence. Every Stage32 and Stage33 parameter, tolerance, rule and bow case is inherited unchanged; Stage34 only adds values. Nothing here is measured.",
+  "inherits": "design/architecture-278/implementation/stage33/design-input.json",
+  "parameters": {
+    "guide_clearance_mm": {
+      "value": 0.3,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "radial play between the dressed bundle envelope (JST maximum OD + 0.25 mm dressing) and each guide wall, sleeve bore, end wall and cap; out-of-plane movement inside RG34 is bounded by this value"
+    },
+    "guide_wall_mm": {
+      "value": 1.2,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "wall, lid, cap and sleeve thickness (machined 6061-T6 with radiused cable edges, or an equivalent part)"
+    },
+    "former_clearance_mm": {
+      "value": 0.0,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "the former (inner block under the top leg, corners at the bend inner surface) is a contact guide surface in the arch plane; it stops the arch from sagging and the bends from tightening. Its height is set at assembly (former_setting_resolution_mm)"
+    },
+    "former_setting_resolution_mm": {
+      "value": 0.25,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "the former height is set at assembly (and after any harness replacement) so the top leg rests on it: lowered, then raised until it touches and locked (shim or captive screw). The remaining gap is at most this value, so at most twice it of slack can move into a free span; without the setting step the cut tolerance and the board bow leave 2.28 mm of slack (sensitivity)"
+    },
+    "guide_edge_radius_mm": {
+      "value": 0.5,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "every edge a conductor can touch (sleeve ends, channel entries, lid edges) is radiused; insulation protection"
+    },
+    "guide_closure_gap_max_mm": {
+      "value": 0.2,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "largest gap at a lid or sleeve parting line when closed on its positive stop; must stay below half the smallest wire OD so no conductor can enter (pinch) or pass (escape)"
+    },
+    "guide_fab_tolerance_mm": {
+      "value": 0.1,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "profile tolerance of RG34 surfaces; no part exists"
+    },
+    "guide_mount_float_mm": {
+      "value": 0.1,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "RG34 post to crossmember:rear:0 fastening float; no fastener selected"
+    },
+    "grip_length_design_mm": {
+      "value": 8.0,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "bundle length kept free for a two-finger grip above the fan-in during a 15 mm withdrawal (JST: hold the wire in a bundle within 15 degrees); the maker grip length gh_bundle_grip_length_mm stays UNCONFIRMED"
+    },
+    "cut_length_tolerance_mm": {
+      "value": 0.5,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "+/- on the design length after crimping; drives the former height and the slack bound; to be measured (M34-03, M-09)"
+    },
+    "registration_allowance_mm": {
+      "value": 1.0,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "REQUIREMENT, not a known value: largest relative position error between the rear carrier (RG34, core) and the jack/middle carriers (housings) that the design tolerates; sets the free length below each sleeve for an S-bend at the maker radius"
+    },
+    "inter_carrier_registration_mm": {
+      "value": null,
+      "class": "UNCONFIRMED",
+      "note": "the carriers bolt to enclosure cleats that are not designed; actual registration unknown (M34-06)"
+    },
+    "copper_E_lower_MPa": {
+      "value": 100000,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "lower end of annealed copper modulus, used only for the strands-only buckling load (friction check); not used for any retention bound"
+    },
+    "copper_density_g_cm3": {
+      "value": 8.96,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "reference value for the cable weight bound"
+    },
+    "insulation_density_upper_g_cm3": {
+      "value": 2.2,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "PTFE-class upper value so the cable weight is an upper bound for any insulation"
+    },
+    "friction_coefficient_upper": {
+      "value": 0.5,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "upper bound for insulation on a radiused guide surface; not measured (M34-04)"
+    }
+  },
+  "rg34": {
+    "role": "STUDY_RETENTION_DESIGN",
+    "title": "RG34: one slot channel per arch on the rear carrier (two walls, end walls, cap, settable former), with a removable split sleeve on each leg",
+    "post_box_mm": [
+      237.5,
+      167.5,
+      62.0,
+      243.5,
+      172.5
+    ],
+    "post_base_on": "crossmember:rear:0",
+    "parts_closed": {
+      "channel_lid": true,
+      "sleeve_clamshell": true
+    },
+    "lid_side": "-n (away from the core for J-PWR; open space for J-SIG)",
+    "joint": "the J-SIG channel is fastened to the J-PWR channel where their outer walls are closest; the J-PWR channel stands on the post",
+    "material": "same as the carriers (6061-T6) for the strength check; cable-contact finish (hard anodise or PTFE coat) UNCONFIRMED",
+    "service_withdrawal_ends_at_once": 1,
+    "former_scope": "The former is one settable part: the floor under the top leg and BOTH bend corners, including the bend-2 corner that runs down through the middle sleeve zone. The sleeves carry no inner arc; each closes only the outer side and the two n-walls of its leg and bend region. A fixed arc in the sleeve would let the cable cut between arcs at the corners and add slack (about 0.6 mm, independent review), so it is excluded by design."
+  },
+  "current_budget": {
+    "basis": "A01 circuit specification and evidence bundles (Stage34); replaces the Stage33 J-PWR inputs, which were Stage8 X1 values",
+    "classes": {
+      "typical_A": "nominal values at the stated operating point",
+      "conditional_max_A": "worst case of the stated conditions; not a guaranteed limit",
+      "established_max_A": "a hard limit backed by maker evidence; null where none exists",
+      "conditional_fault_A": "conditional maximum plus the fault increments of the stated fault case"
+    },
+    "conditions": [
+      "rails at the supply contract maxima +12.48 / -12.37 / +5.2 V (requirement only, R-SUPPLY)",
+      "100 kOhm network at -0.1 % (R-EV-PASSIVES); 92.5 kOhm for the Stage15 LT5400 network candidate",
+      "A01 signal and CV range +/-5 V nominal; outputs can reach the rails (rail-to-rail OPA4197)",
+      "quiescent maxima at full temperature from the evidence bundles"
+    ],
+    "links": {
+      "J-SIG": [
+        {
+          "pin": "1",
+          "net": "/A01/REF5",
+          "driver": "A01-core U7104A (OPA4197IPWR follower of REF5050)",
+          "loads": "A01-jack U7107 pin 3 (LM393BIDR input)",
+          "direction": "core -> jack (input-bias magnitude)",
+          "condition": "LM393B input bias, typical 25 C / maximum full temperature",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: no series resistor; OPA4197 short-circuit current not in the evidence bundle",
+          "sources": [
+            "R-A01-SPEC",
+            "R-STAGE15-INTERFACES",
+            "R-EV-LM393B",
+            "R-EV-OPA4197"
+          ],
+          "terms": [
+            {
+              "term": "LM393BIDR input bias (REF5)",
+              "kind": "current",
+              "A": [
+                3.5e-09,
+                5e-08
+              ],
+              "count": 1,
+              "sources": [
+                "R-EV-LM393B"
+              ],
+              "basis": "fact-comparator-input-bias-current: 3.5 nA typical 25 C, 50 nA maximum full temperature"
+            },
+            {
+              "term": "OPA4197 output short-circuit current (driver)",
+              "kind": "unknown",
+              "basis": "not in the R-EV-OPA4197 bundle; bounds a fault on this conductor"
+            }
+          ]
+        },
+        {
+          "pin": "2",
+          "net": "AGND",
+          "driver": "-",
+          "loads": "A01-jack AGND, parallel with J-SIG pin 7 and J-PWR pin 4",
+          "direction": "jack -> middle (net)",
+          "condition": "whole jack AGND total charged to this one conductor (sharing with the other AGND contacts UNKNOWN; equal sharing is not credited, Stage10 contract)",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: no limiting element; external ground loops through the jack sleeves are unbounded",
+          "sources": [
+            "R-STAGE15-INTERFACES",
+            "R-SUPPLY",
+            "R-STAGE10-ELECTRICAL"
+          ],
+          "terms": [
+            {
+              "term": "enable dividers R7105/R7109 (+5V via R7106/R7110 1 kOhm + 100 kOhm 1 %)",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                5.2
+              ],
+              "R_ohm": [
+                101000,
+                100000
+              ],
+              "count": 2,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES",
+                "R-SUPPLY"
+              ],
+              "basis": "+5 V into 1 kOhm + 100 kOhm (100 kOhm at -1 %)"
+            },
+            {
+              "term": "ADG5412F IGND (U7102, U7103)",
+              "kind": "current",
+              "A": [
+                0.0004,
+                0.0006
+              ],
+              "count": 2,
+              "sources": [
+                "R-STAGE8-ADG-EVIDENCE"
+              ],
+              "basis": "ADI ADG5412F rev C Table 1 IGND normal mode: 0.4 mA typical, 0.6 mA full-temperature maximum at +/-16.5 V (conditional at +/-12 V)",
+              "fault_A": 0.0005
+            },
+            {
+              "term": "magnitude senses R7130-R7132 5.6 kOhm (indicator drive returns)",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                5600,
+                5600
+              ],
+              "count": 3,
+              "sources": [
+                "R-A01-SPEC"
+              ],
+              "basis": "5 V / rail across 5.6 kOhm; resistor tolerance unknown (no MPN)"
+            },
+            {
+              "term": "clip divider R7133 + R7134",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                200000,
+                199800
+              ],
+              "count": 1,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES"
+              ],
+              "basis": "5 V / rail across 2 x 100 kOhm"
+            },
+            {
+              "term": "input pull-downs R7107/R7111 (external source current; may return via the patch sleeve)",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                100000,
+                99000
+              ],
+              "count": 2,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES"
+              ],
+              "basis": "5 V / rail into 100 kOhm 1 %"
+            },
+            {
+              "term": "output load via R7127 + R7128 (998 Ohm) into the contract 10 kOhm load",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                10998,
+                10988
+              ],
+              "count": 1,
+              "sources": [
+                "R-A01-SPEC",
+                "R-SUPPLY",
+                "R-EV-PASSIVES"
+              ],
+              "basis": "supply contract normal output 5 V / 10 kOhm; rail at -1 % isolation"
+            },
+            {
+              "term": "J-SIG signal returns (IN_BUFFER, OFFSET_BUFFER, SUM_NEG)",
+              "kind": "V_over_R",
+              "V": [
+                0.0,
+                12.48
+              ],
+              "R_ohm": [
+                100000,
+                92500
+              ],
+              "count": 3,
+              "sources": [
+                "R-A01-SPEC",
+                "R-STAGE15-ELECTRICAL"
+              ],
+              "basis": "counted in AGND only as a conservative bound; their DC loops close through the far amplifiers rails"
+            },
+            {
+              "term": "decoupling charge at the 10 ms soft start (12 x 100 nF, two analog rails)",
+              "kind": "current",
+              "A": [
+                0.0,
+                0.00144
+              ],
+              "count": 1,
+              "sources": [
+                "R-SUPPLY",
+                "R-A01-SPEC"
+              ],
+              "basis": "12 x 100 nF x 12 V / 10 ms soft_start_min_ms, no cancellation between rails"
+            },
+            {
+              "term": "output forced to the opposite 12 V across 998 Ohm (supply contract fault basis)",
+              "kind": "current",
+              "A": [
+                0.0,
+                0.0
+              ],
+              "count": 1,
+              "sources": [
+                "R-SUPPLY"
+              ],
+              "basis": "contract.load_envelope.fault_basis: 24.05 mA, 25 mA per analog rail increment",
+              "fault_A": 0.025
+            },
+            {
+              "term": "external ground-loop current through the jack sleeves",
+              "kind": "unknown",
+              "basis": "unbounded by any element; between modules or instruments"
+            }
+          ]
+        },
+        {
+          "pin": "3",
+          "net": "/A01/REFN5",
+          "driver": "A01-core U7104B (OPA4197IPWR inverter)",
+          "loads": "A01-jack U7108 pin 2 (LM393BIDR input)",
+          "direction": "jack <-> core (input-bias magnitude)",
+          "condition": "LM393B input bias, typical 25 C / maximum full temperature",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: no series resistor; OPA4197 short-circuit current not in the evidence bundle",
+          "sources": [
+            "R-A01-SPEC",
+            "R-EV-LM393B",
+            "R-EV-OPA4197"
+          ],
+          "terms": [
+            {
+              "term": "LM393BIDR input bias (REFN5)",
+              "kind": "current",
+              "A": [
+                3.5e-09,
+                5e-08
+              ],
+              "count": 1,
+              "sources": [
+                "R-EV-LM393B"
+              ],
+              "basis": "fact-comparator-input-bias-current: 3.5 nA typical 25 C, 50 nA maximum full temperature"
+            },
+            {
+              "term": "OPA4197 output short-circuit current (driver)",
+              "kind": "unknown",
+              "basis": "not in the R-EV-OPA4197 bundle; bounds a fault on this conductor"
+            }
+          ]
+        },
+        {
+          "pin": "4",
+          "net": "/A01/IN_BUFFER",
+          "driver": "A01-jack U7106A (OPA4197IPWR follower)",
+          "loads": "A01-core R7117 100 kOhm to the U7105A virtual ground, U7104 input",
+          "direction": "jack -> core for positive input",
+          "condition": "5 V nominal / output at the rail into the resistor floor",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: OPA4197 short-circuit current not in evidence; with the core unpowered the output drives a core input directly (Stage14 buffer warning)",
+          "sources": [
+            "R-A01-SPEC",
+            "R-STAGE15-ELECTRICAL",
+            "R-STAGE14-ELECTRICAL",
+            "R-EV-PASSIVES",
+            "R-EV-OPA4197"
+          ],
+          "terms": [
+            {
+              "term": "R7117 100 kOhm 0.1 % to ATTEN_SUM (U7105A input)",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                100000,
+                99900
+              ],
+              "count": 1,
+              "sources": [
+                "R-EV-PASSIVES",
+                "R-A01-SPEC",
+                "R-SUPPLY"
+              ],
+              "basis": "5 V nominal signal / output at the +12.48 V rail into the resistor (worst tolerance)"
+            },
+            {
+              "term": "OPA4197 output short-circuit current (driver)",
+              "kind": "unknown",
+              "basis": "not in the R-EV-OPA4197 bundle"
+            },
+            {
+              "term": "U7104 pin 12 input bias",
+              "kind": "current",
+              "A": [
+                null,
+                1.5e-08
+              ],
+              "count": 1,
+              "sources": [
+                "R-EV-OPA4197"
+              ],
+              "basis": "fact-op-precision-input-bias-current-full-temperature (value 15 as recorded; taken as nA, conservative)"
+            }
+          ]
+        },
+        {
+          "pin": "5",
+          "net": "/A01/OFFSET_BUFFER",
+          "driver": "A01-jack U7106B (OPA4197IPWR follower)",
+          "loads": "A01-core R7123 100 kOhm to SUM_NODE (U7105C virtual ground)",
+          "direction": "jack -> core for positive CV",
+          "condition": "5 V nominal / output at the rail into the resistor floor",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: OPA4197 short-circuit current not in evidence",
+          "sources": [
+            "R-A01-SPEC",
+            "R-STAGE15-ELECTRICAL",
+            "R-EV-PASSIVES"
+          ],
+          "terms": [
+            {
+              "term": "RN7101:3 (R7123) 100 kOhm to SUM_NODE",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                100000,
+                92500
+              ],
+              "count": 1,
+              "sources": [
+                "R-STAGE15-ELECTRICAL",
+                "R-A01-SPEC",
+                "R-SUPPLY"
+              ],
+              "basis": "5 V nominal signal / output at the +12.48 V rail into the resistor (worst tolerance)"
+            },
+            {
+              "term": "OPA4197 output short-circuit current (driver)",
+              "kind": "unknown",
+              "basis": "not in the R-EV-OPA4197 bundle"
+            }
+          ]
+        },
+        {
+          "pin": "6",
+          "net": "/A01/SUM_NEG",
+          "driver": "A01-core U7105C (OPA4197IPWR summer)",
+          "loads": "A01-jack R7125 100 kOhm to RESTORE_NODE (U7106C virtual ground)",
+          "direction": "core -> jack for positive SUM_NEG",
+          "condition": "5 V nominal / output at the rail into the resistor floor",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: OPA4197 short-circuit current not in evidence (an unpowered jack is protected by the 100 kOhm resistor)",
+          "sources": [
+            "R-A01-SPEC",
+            "R-STAGE15-ELECTRICAL",
+            "R-EV-PASSIVES"
+          ],
+          "terms": [
+            {
+              "term": "RN7102:1 (R7125) 100 kOhm to RESTORE_NODE",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                100000,
+                92500
+              ],
+              "count": 1,
+              "sources": [
+                "R-STAGE15-ELECTRICAL",
+                "R-A01-SPEC",
+                "R-SUPPLY"
+              ],
+              "basis": "5 V nominal signal / output at the +12.48 V rail into the resistor (worst tolerance)"
+            },
+            {
+              "term": "OPA4197 output short-circuit current (driver)",
+              "kind": "unknown",
+              "basis": "not in the R-EV-OPA4197 bundle"
+            }
+          ]
+        },
+        {
+          "pin": "7",
+          "net": "AGND",
+          "driver": "-",
+          "loads": "as pin 2",
+          "direction": "jack -> middle (net)",
+          "condition": "whole jack AGND total charged to this one conductor (sharing with the other AGND contacts UNKNOWN; equal sharing is not credited, Stage10 contract)",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: as pin 2",
+          "sources": [
+            "R-STAGE15-INTERFACES",
+            "R-SUPPLY",
+            "R-STAGE10-ELECTRICAL"
+          ],
+          "terms": [
+            {
+              "term": "enable dividers R7105/R7109 (+5V via R7106/R7110 1 kOhm + 100 kOhm 1 %)",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                5.2
+              ],
+              "R_ohm": [
+                101000,
+                100000
+              ],
+              "count": 2,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES",
+                "R-SUPPLY"
+              ],
+              "basis": "+5 V into 1 kOhm + 100 kOhm (100 kOhm at -1 %)"
+            },
+            {
+              "term": "ADG5412F IGND (U7102, U7103)",
+              "kind": "current",
+              "A": [
+                0.0004,
+                0.0006
+              ],
+              "count": 2,
+              "sources": [
+                "R-STAGE8-ADG-EVIDENCE"
+              ],
+              "basis": "ADI ADG5412F rev C Table 1 IGND normal mode: 0.4 mA typical, 0.6 mA full-temperature maximum at +/-16.5 V (conditional at +/-12 V)",
+              "fault_A": 0.0005
+            },
+            {
+              "term": "magnitude senses R7130-R7132 5.6 kOhm (indicator drive returns)",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                5600,
+                5600
+              ],
+              "count": 3,
+              "sources": [
+                "R-A01-SPEC"
+              ],
+              "basis": "5 V / rail across 5.6 kOhm; resistor tolerance unknown (no MPN)"
+            },
+            {
+              "term": "clip divider R7133 + R7134",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                200000,
+                199800
+              ],
+              "count": 1,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES"
+              ],
+              "basis": "5 V / rail across 2 x 100 kOhm"
+            },
+            {
+              "term": "input pull-downs R7107/R7111 (external source current; may return via the patch sleeve)",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                100000,
+                99000
+              ],
+              "count": 2,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES"
+              ],
+              "basis": "5 V / rail into 100 kOhm 1 %"
+            },
+            {
+              "term": "output load via R7127 + R7128 (998 Ohm) into the contract 10 kOhm load",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                10998,
+                10988
+              ],
+              "count": 1,
+              "sources": [
+                "R-A01-SPEC",
+                "R-SUPPLY",
+                "R-EV-PASSIVES"
+              ],
+              "basis": "supply contract normal output 5 V / 10 kOhm; rail at -1 % isolation"
+            },
+            {
+              "term": "J-SIG signal returns (IN_BUFFER, OFFSET_BUFFER, SUM_NEG)",
+              "kind": "V_over_R",
+              "V": [
+                0.0,
+                12.48
+              ],
+              "R_ohm": [
+                100000,
+                92500
+              ],
+              "count": 3,
+              "sources": [
+                "R-A01-SPEC",
+                "R-STAGE15-ELECTRICAL"
+              ],
+              "basis": "counted in AGND only as a conservative bound; their DC loops close through the far amplifiers rails"
+            },
+            {
+              "term": "decoupling charge at the 10 ms soft start (12 x 100 nF, two analog rails)",
+              "kind": "current",
+              "A": [
+                0.0,
+                0.00144
+              ],
+              "count": 1,
+              "sources": [
+                "R-SUPPLY",
+                "R-A01-SPEC"
+              ],
+              "basis": "12 x 100 nF x 12 V / 10 ms soft_start_min_ms, no cancellation between rails"
+            },
+            {
+              "term": "output forced to the opposite 12 V across 998 Ohm (supply contract fault basis)",
+              "kind": "current",
+              "A": [
+                0.0,
+                0.0
+              ],
+              "count": 1,
+              "sources": [
+                "R-SUPPLY"
+              ],
+              "basis": "contract.load_envelope.fault_basis: 24.05 mA, 25 mA per analog rail increment",
+              "fault_A": 0.025
+            },
+            {
+              "term": "external ground-loop current through the jack sleeves",
+              "kind": "unknown",
+              "basis": "unbounded by any element; between modules or instruments"
+            }
+          ]
+        }
+      ],
+      "J-PWR": [
+        {
+          "pin": "1",
+          "net": "+12V",
+          "driver": "upstream supply via A01-middle (power enters at A01:J-PWR:middle)",
+          "loads": "A01-jack: U7106 (4 x OPA4197), U7109 (4 x OPA4196), U7102/U7103 ADG5412F VDD, U7107/U7108 LM393BIDR, R7135 clip LED, magnitude senses, 6 x 100 nF",
+          "direction": "middle -> jack",
+          "condition": "sum of the terms (rails at the contract maxima, quiescent maxima at full temperature); fault adds the contract output-forced increment",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: no fuse, PTC, series element or regulator limit upstream; the supply contract maximum (2.1 A) is a requirement on an unselected source",
+          "sources": [
+            "R-A01-SPEC",
+            "R-STAGE15-INTERFACES",
+            "R-EV-OPA4197",
+            "R-EV-OPA4196",
+            "R-EV-LM393B",
+            "R-POWER-SPEC",
+            "R-SUPPLY",
+            "R-PLANNING-CURRENT"
+          ],
+          "terms": [
+            {
+              "term": "OPA4197 IQ, U7106 (4 amplifiers)",
+              "kind": "current",
+              "A": [
+                0.001,
+                0.0015
+              ],
+              "count": 4,
+              "sources": [
+                "R-EV-OPA4197"
+              ],
+              "basis": "fact-op-precision-quiescent-current: 1.0 mA typical, 1.5 mA full-temperature maximum per amplifier"
+            },
+            {
+              "term": "OPA4196 IQ, U7109 (4 amplifiers)",
+              "kind": "current",
+              "A": [
+                0.00014,
+                0.00025
+              ],
+              "count": 4,
+              "sources": [
+                "R-EV-OPA4196"
+              ],
+              "basis": "fact-op-audio-quiescent-current: 140 uA typical, 250 uA full-temperature maximum per amplifier"
+            },
+            {
+              "term": "ADG5412F IDD, U7102/U7103",
+              "kind": "current",
+              "A": [
+                0.0009,
+                0.0013
+              ],
+              "count": 2,
+              "sources": [
+                "R-STAGE8-ADG-EVIDENCE"
+              ],
+              "basis": "ADI ADG5412F rev C Table 1 normal mode IDD: 0.9 mA typical, 1.3 mA full-temperature maximum at +/-16.5 V (conditional at +/-12 V)"
+            },
+            {
+              "term": "magnitude senses R7130-R7132 (driven from the amplifier outputs; either rail)",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                5600,
+                5600
+              ],
+              "count": 3,
+              "sources": [
+                "R-A01-SPEC"
+              ],
+              "basis": "5 V / rail across 5.6 kOhm"
+            },
+            {
+              "term": "clip LED R7135 22.1 kOhm (+12V to -12V, LED drop ignored)",
+              "kind": "V_over_R",
+              "V": [
+                24.85,
+                24.85
+              ],
+              "R_ohm": [
+                22100,
+                22100
+              ],
+              "count": 1,
+              "sources": [
+                "R-A01-SPEC",
+                "R-SUPPLY"
+              ],
+              "basis": "rail to rail across 22.1 kOhm; tolerance unknown"
+            },
+            {
+              "term": "signal outputs of U7106 (IN_BUFFER, OFFSET_BUFFER, RESTORE feedback R7126)",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                100000,
+                92500
+              ],
+              "count": 3,
+              "sources": [
+                "R-A01-SPEC",
+                "R-STAGE15-ELECTRICAL"
+              ],
+              "basis": "each output at 5 V / the rail into its 100 kOhm (92.5 kOhm network floor)"
+            },
+            {
+              "term": "clip divider R7133 + R7134",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                200000,
+                199800
+              ],
+              "count": 1,
+              "sources": [
+                "R-A01-SPEC"
+              ],
+              "basis": "5 V / rail across 2 x 100 kOhm"
+            },
+            {
+              "term": "output load via 998 Ohm into the contract 10 kOhm load",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                10998,
+                10988
+              ],
+              "count": 1,
+              "sources": [
+                "R-A01-SPEC",
+                "R-SUPPLY"
+              ],
+              "basis": "supply contract normal output 5 V / 10 kOhm"
+            },
+            {
+              "term": "output forced to the opposite 12 V (supply contract fault increment)",
+              "kind": "current",
+              "A": [
+                0.0,
+                0.0
+              ],
+              "count": 1,
+              "sources": [
+                "R-SUPPLY"
+              ],
+              "basis": "contract.load_envelope.fault_increment_mA 25 per analog rail",
+              "fault_A": 0.025
+            },
+            {
+              "term": "LM393BIDR supply current, U7107/U7108",
+              "kind": "unknown",
+              "basis": "not in the R-EV-LM393B bundle; the 1 mA per package per rail planning reservation (R-PLANNING-CURRENT) is not datasheet evidence"
+            }
+          ]
+        },
+        {
+          "pin": "2",
+          "net": "-12V",
+          "driver": "upstream supply via A01-middle",
+          "loads": "as pin 1 (VSS / V- pins)",
+          "direction": "jack -> middle (conventional)",
+          "condition": "sum of the terms (rails at the contract maxima, quiescent maxima at full temperature); fault adds the contract output-forced increment",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: as pin 1",
+          "sources": [
+            "R-A01-SPEC",
+            "R-STAGE15-INTERFACES",
+            "R-EV-OPA4197",
+            "R-EV-OPA4196",
+            "R-POWER-SPEC",
+            "R-SUPPLY"
+          ],
+          "terms": [
+            {
+              "term": "OPA4197 IQ, U7106 (4 amplifiers)",
+              "kind": "current",
+              "A": [
+                0.001,
+                0.0015
+              ],
+              "count": 4,
+              "sources": [
+                "R-EV-OPA4197"
+              ],
+              "basis": "fact-op-precision-quiescent-current: 1.0 mA typical, 1.5 mA full-temperature maximum per amplifier"
+            },
+            {
+              "term": "OPA4196 IQ, U7109 (4 amplifiers)",
+              "kind": "current",
+              "A": [
+                0.00014,
+                0.00025
+              ],
+              "count": 4,
+              "sources": [
+                "R-EV-OPA4196"
+              ],
+              "basis": "fact-op-audio-quiescent-current: 140 uA typical, 250 uA full-temperature maximum per amplifier"
+            },
+            {
+              "term": "ADG5412F ISS, U7102/U7103",
+              "kind": "current",
+              "A": [
+                0.0005,
+                0.0007
+              ],
+              "count": 2,
+              "sources": [
+                "R-STAGE8-ADG-EVIDENCE"
+              ],
+              "basis": "ADI ADG5412F rev C Table 1 normal mode ISS: 0.5 mA typical, 0.7 mA full-temperature maximum at +/-16.5 V (conditional at +/-12 V)"
+            },
+            {
+              "term": "magnitude senses R7130-R7132 (driven from the amplifier outputs; either rail)",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                5600,
+                5600
+              ],
+              "count": 3,
+              "sources": [
+                "R-A01-SPEC"
+              ],
+              "basis": "5 V / rail across 5.6 kOhm"
+            },
+            {
+              "term": "clip LED R7135 22.1 kOhm (+12V to -12V, LED drop ignored)",
+              "kind": "V_over_R",
+              "V": [
+                24.85,
+                24.85
+              ],
+              "R_ohm": [
+                22100,
+                22100
+              ],
+              "count": 1,
+              "sources": [
+                "R-A01-SPEC",
+                "R-SUPPLY"
+              ],
+              "basis": "rail to rail across 22.1 kOhm; tolerance unknown"
+            },
+            {
+              "term": "signal outputs of U7106 (IN_BUFFER, OFFSET_BUFFER, RESTORE feedback R7126)",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                100000,
+                92500
+              ],
+              "count": 3,
+              "sources": [
+                "R-A01-SPEC",
+                "R-STAGE15-ELECTRICAL"
+              ],
+              "basis": "each output at 5 V / the rail into its 100 kOhm (92.5 kOhm network floor)"
+            },
+            {
+              "term": "clip divider R7133 + R7134",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                200000,
+                199800
+              ],
+              "count": 1,
+              "sources": [
+                "R-A01-SPEC"
+              ],
+              "basis": "5 V / rail across 2 x 100 kOhm"
+            },
+            {
+              "term": "output load via 998 Ohm into the contract 10 kOhm load",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                10998,
+                10988
+              ],
+              "count": 1,
+              "sources": [
+                "R-A01-SPEC",
+                "R-SUPPLY"
+              ],
+              "basis": "supply contract normal output 5 V / 10 kOhm"
+            },
+            {
+              "term": "output forced to the opposite 12 V (supply contract fault increment)",
+              "kind": "current",
+              "A": [
+                0.0,
+                0.0
+              ],
+              "count": 1,
+              "sources": [
+                "R-SUPPLY"
+              ],
+              "basis": "contract.load_envelope.fault_increment_mA 25 per analog rail",
+              "fault_A": 0.025
+            },
+            {
+              "term": "LM393BIDR supply current, U7107/U7108",
+              "kind": "unknown",
+              "basis": "not in the R-EV-LM393B bundle; the 1 mA per package per rail planning reservation (R-PLANNING-CURRENT) is not datasheet evidence"
+            }
+          ]
+        },
+        {
+          "pin": "3",
+          "net": "+5V",
+          "driver": "upstream supply via A01-middle",
+          "loads": "A01-jack R7106/R7110 enable dividers (1 kOhm + 100 kOhm), U7107/U7108 inputs",
+          "direction": "middle -> jack",
+          "condition": "5.2 V into the enable dividers plus LM393B input bias; ADG5412F logic input current not in evidence",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: as pin 1",
+          "sources": [
+            "R-A01-SPEC",
+            "R-STAGE15-INTERFACES",
+            "R-SUPPLY"
+          ],
+          "terms": [
+            {
+              "term": "enable dividers R7106/R7110 + R7105/R7109",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                5.2
+              ],
+              "R_ohm": [
+                101000,
+                100000
+              ],
+              "count": 2,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES",
+                "R-SUPPLY"
+              ],
+              "basis": "+5 V into 1 kOhm + 100 kOhm"
+            },
+            {
+              "term": "LM393BIDR inputs on +5V (U7107/U7108)",
+              "kind": "current",
+              "A": [
+                3.5e-09,
+                5e-08
+              ],
+              "count": 2,
+              "sources": [
+                "R-EV-LM393B"
+              ],
+              "basis": "input bias"
+            },
+            {
+              "term": "ADG5412F logic input current",
+              "kind": "unknown",
+              "basis": "not in evidence"
+            }
+          ]
+        },
+        {
+          "pin": "4",
+          "net": "AGND",
+          "driver": "-",
+          "loads": "A01-jack AGND, parallel with J-SIG pins 2 and 7",
+          "direction": "jack -> middle (net)",
+          "condition": "whole jack AGND total charged to this one conductor (sharing with the other AGND contacts UNKNOWN; equal sharing is not credited, Stage10 contract)",
+          "established_max_A": null,
+          "established_status": "UNKNOWN: as J-SIG pin 2",
+          "sources": [
+            "R-STAGE15-INTERFACES",
+            "R-SUPPLY",
+            "R-STAGE10-ELECTRICAL"
+          ],
+          "terms": [
+            {
+              "term": "enable dividers R7105/R7109 (+5V via R7106/R7110 1 kOhm + 100 kOhm 1 %)",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                5.2
+              ],
+              "R_ohm": [
+                101000,
+                100000
+              ],
+              "count": 2,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES",
+                "R-SUPPLY"
+              ],
+              "basis": "+5 V into 1 kOhm + 100 kOhm (100 kOhm at -1 %)"
+            },
+            {
+              "term": "ADG5412F IGND (U7102, U7103)",
+              "kind": "current",
+              "A": [
+                0.0004,
+                0.0006
+              ],
+              "count": 2,
+              "sources": [
+                "R-STAGE8-ADG-EVIDENCE"
+              ],
+              "basis": "ADI ADG5412F rev C Table 1 IGND normal mode: 0.4 mA typical, 0.6 mA full-temperature maximum at +/-16.5 V (conditional at +/-12 V)",
+              "fault_A": 0.0005
+            },
+            {
+              "term": "magnitude senses R7130-R7132 5.6 kOhm (indicator drive returns)",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                5600,
+                5600
+              ],
+              "count": 3,
+              "sources": [
+                "R-A01-SPEC"
+              ],
+              "basis": "5 V / rail across 5.6 kOhm; resistor tolerance unknown (no MPN)"
+            },
+            {
+              "term": "clip divider R7133 + R7134",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                200000,
+                199800
+              ],
+              "count": 1,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES"
+              ],
+              "basis": "5 V / rail across 2 x 100 kOhm"
+            },
+            {
+              "term": "input pull-downs R7107/R7111 (external source current; may return via the patch sleeve)",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                100000,
+                99000
+              ],
+              "count": 2,
+              "sources": [
+                "R-A01-SPEC",
+                "R-EV-PASSIVES"
+              ],
+              "basis": "5 V / rail into 100 kOhm 1 %"
+            },
+            {
+              "term": "output load via R7127 + R7128 (998 Ohm) into the contract 10 kOhm load",
+              "kind": "V_over_R",
+              "V": [
+                5.0,
+                12.48
+              ],
+              "R_ohm": [
+                10998,
+                10988
+              ],
+              "count": 1,
+              "sources": [
+                "R-A01-SPEC",
+                "R-SUPPLY",
+                "R-EV-PASSIVES"
+              ],
+              "basis": "supply contract normal output 5 V / 10 kOhm; rail at -1 % isolation"
+            },
+            {
+              "term": "J-SIG signal returns (IN_BUFFER, OFFSET_BUFFER, SUM_NEG)",
+              "kind": "V_over_R",
+              "V": [
+                0.0,
+                12.48
+              ],
+              "R_ohm": [
+                100000,
+                92500
+              ],
+              "count": 3,
+              "sources": [
+                "R-A01-SPEC",
+                "R-STAGE15-ELECTRICAL"
+              ],
+              "basis": "counted in AGND only as a conservative bound; their DC loops close through the far amplifiers rails"
+            },
+            {
+              "term": "decoupling charge at the 10 ms soft start (12 x 100 nF, two analog rails)",
+              "kind": "current",
+              "A": [
+                0.0,
+                0.00144
+              ],
+              "count": 1,
+              "sources": [
+                "R-SUPPLY",
+                "R-A01-SPEC"
+              ],
+              "basis": "12 x 100 nF x 12 V / 10 ms soft_start_min_ms, no cancellation between rails"
+            },
+            {
+              "term": "output forced to the opposite 12 V across 998 Ohm (supply contract fault basis)",
+              "kind": "current",
+              "A": [
+                0.0,
+                0.0
+              ],
+              "count": 1,
+              "sources": [
+                "R-SUPPLY"
+              ],
+              "basis": "contract.load_envelope.fault_basis: 24.05 mA, 25 mA per analog rail increment",
+              "fault_A": 0.025
+            },
+            {
+              "term": "external ground-loop current through the jack sleeves",
+              "kind": "unknown",
+              "basis": "unbounded by any element; between modules or instruments"
+            }
+          ]
+        }
+      ]
+    },
+    "stage33_inputs_superseded": {
+      "parameters": [
+        "j_pwr_conductor_current_max_A",
+        "j_pwr_agnd_return_bound_A"
+      ],
+      "reason": "Stage8 studies X1 (R-STAGE8-SCOPE: A01 implementation forbidden); its J_plus12/J_minus12 values are X1 jack-board currents, so Stage33 mislabelled them as A01-jack. The AGND bound summed rail-to-rail currents and put all return on J-PWR pin 4. Stage33 bytes stay unchanged as history."
+    }
+  },
+  "wire_candidates_added": [
+    {
+      "mpn": "Alpha Wire 6710",
+      "awg": 28,
+      "conductor": "tinned copper 7/36",
+      "strands": 7,
+      "strand_awg": 36,
+      "plating": "tin",
+      "insulation": "mPPE",
+      "od_min_mm": 0.8128,
+      "od_max_mm": 0.9144,
+      "voltage_V": 600,
+      "temperature_max_C": 105,
+      "bend_rule_x_od": 5,
+      "sources": [
+        "S-AW-6710"
+      ]
+    },
+    {
+      "mpn": "Alpha Wire 1851",
+      "awg": 30,
+      "conductor": "tinned copper 7/38",
+      "strands": 7,
+      "strand_awg": 38,
+      "plating": "tin",
+      "insulation": "PVC",
+      "od_min_mm": 0.762,
+      "od_max_mm": 0.8636,
+      "voltage_V": 600,
+      "temperature_max_C": 105,
+      "bend_rule_x_od": 10,
+      "sources": [
+        "S-AW-1851"
+      ]
+    },
+    {
+      "mpn": "Alpha Wire 6711",
+      "awg": 26,
+      "conductor": "tinned copper 7/34",
+      "strands": 7,
+      "strand_awg": 34,
+      "plating": "tin",
+      "insulation": "mPPE",
+      "od_min_mm": 0.9144,
+      "od_max_mm": 1.016,
+      "voltage_V": 600,
+      "temperature_max_C": 105,
+      "bend_rule_x_od": 5,
+      "sources": [
+        "S-AW-6711"
+      ]
+    },
+    {
+      "mpn": "Thermax M22759/18-26 (26-AMCFZ-1938)",
+      "awg": 26,
+      "conductor": "tin-plated copper 19/38",
+      "strands": 19,
+      "strand_awg": 38,
+      "plating": "tin",
+      "insulation": "ETFE",
+      "od_min_mm": 0.762,
+      "od_max_mm": 0.8636,
+      "voltage_V": 600,
+      "temperature_max_C": 150,
+      "bend_rule_x_od": null,
+      "sources": [
+        "S-THERMAX-M22759"
+      ]
+    }
+  ],
+  "stage33_wire_constructions": {
+    "Alpha Wire 1852": {
+      "strands": 7,
+      "strand_awg": 36
+    },
+    "Alpha Wire 1853": {
+      "strands": 7,
+      "strand_awg": 34
+    },
+    "Alpha Wire 2843/7": {
+      "strands": 7,
+      "strand_awg": 34
+    },
+    "Alpha Wire 422607": {
+      "strands": 7,
+      "strand_awg": 34
+    },
+    "Alpha Wire 782607": {
+      "strands": 7,
+      "strand_awg": 34
+    }
+  },
+  "procedure": {
+    "RG34 assembly": [
+      "Fit carriers, boards and the core as in Stage10; fit the RG34 post on crossmember:rear:0 (proposal).",
+      "From the rear (cover off): mate J-PWR at both ends, dress it into one arch and lay it into the J-PWR channel; set the J-PWR former (lower it, raise it until the top leg rests on it, gap <= former_setting_resolution_mm, lock it); close the J-PWR lid and both J-PWR sleeves.",
+      "Mate J-SIG at both ends, fit the J-SIG channel to the J-PWR channel, lay J-SIG in, set its former the same way, close its lid and both sleeves.",
+      "Check that each lid and sleeve sits on its stop (closure gap <= guide_closure_gap_max_mm) with no conductor in a parting line; refit the rear cover."
+    ],
+    "Connector service (one end at a time)": [
+      "Power off; remove the rear cover. The core may stay installed.",
+      "Open and remove only the sleeve of the end to be serviced; the channel, its lid and the other sleeve stay closed.",
+      "Press the latch, hold the bundle in the grip zone above the fan-in and pull within 15 degrees of +z; the cable slides through the channel and the opposite sleeve and the arch rises inside the channel (cap above the single-end raised top).",
+      "Re-mate along -z, pulling the arch back down onto the former; refit the sleeve and check its stop.",
+      "Never withdraw both ends of one cable with the lid closed: the raised arch would hit the cap (blocked by design). For harness replacement open the lid and both sleeves first."
+    ],
+    "Core service (unchanged order)": [
+      "Power off; remove the rear cover.",
+      "Disconnect K-PWR, release the four core screws and withdraw the core 40 mm along +z. RG34 and both arches stay in place; the J-PWR channel wall, not the cable, faces the core volume."
+    ],
+    "Harness replacement": [
+      "Power off; remove the rear cover; open both lids and all four sleeves.",
+      "Unmate the middle ends, then the local ends, from the rear; lift each cable out of its channel. No board, carrier or the core is removed.",
+      "Fit the new harness as in RG34 assembly, setting both formers again."
+    ],
+    "Front jack board removal": [
+      "Power off; remove the rear cover; open both lids and all four sleeves; unmate both middle ends and lift both cables out of their channels.",
+      "Remove RG34 (J-SIG channel from the J-PWR channel, then the J-PWR channel and post from crossmember:rear:0): the A01-jack M3/M4 screwdriver columns are used only with RG34 removed (the J-PWR channel is within K4 of the M4 column).",
+      "Lift each free middle end back over the A01-middle edge to x < 232 and remove the front panel assembly as in Stage10 with the cables attached to A01-jack."
+    ]
+  }
+}

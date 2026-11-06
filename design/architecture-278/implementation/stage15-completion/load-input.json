@@ -1,0 +1,163 @@
+{
+  "assumptions": {
+    "feedback_ohm": 100,
+    "load_ohm": 10000,
+    "scope": "Nominal captured passive values. Source analysis only; no component, geometry or calibration change. IdealDC CFAST open except separately parameterized leakage.",
+    "series_ohm": 998
+  },
+  "common_condition": {
+    "ADG_conditions": "RONmax11.2ohm25C at\u00b113.5V supplies,VS\u00b110V,IS\u221210mA; channelon leakage1.5nAmax25C at\u00b116.5V,VS=VD\u00b110V. Both outside actual\u00b112V rails; no interpolation guarantee.",
+    "A_DC_at_actual_conditions": null,
+    "OPA_AOL_at18V25C_min_dB": 120,
+    "OPA_AOL_at18V_fulltemp_min_dB": 110,
+    "OPA_CMRR_at18V25C_min_dB": 120,
+    "OPA_PSRR_max_V_per_V": 3e-06,
+    "OPA_PW_bias_fulltemp_max_A": 1.5e-08,
+    "OPA_bias_25C_max_A": 2e-11,
+    "OPA_bias_condition": "\u00a76.7 default VCM=VOUT=midsupply and RLOAD10k to midsupply, stated supplyrange;20pA25C distinct from15nA PW\u221240..125C. Off-midpoint input/output or different loading at\u00b112V needs same-condition bound; typical graphs are not guaranteed box.",
+    "OPA_offset_25C_at18V_max_V": 0.0001,
+    "clamp_retrieval": "BAT54S,215 primary URL HTTP403 on2026-10-16; retained owner identity/hash exists but no new performance extract promoted. Net clamp leakage at actual7..17V reverse across both diodes and25C/hot remains named required parameter.",
+    "offset_bias_compatibility": "100uV at\u00b118V25C and20pA default25C midpoint can form that reference-condition sensitivity, not actual\u00b112V\u00b15V commonmode whole-cell maximum. At\u00b112V midpoint, conditionalPSRR transfer136uV and20pA are reported separately with evidence conditions. No100uV+15nA mismatched25C label.",
+    "offset_midpoint_supply_transfer": {
+      "PSRR_sensitivity_extra_V": 3.6e-05,
+      "anchor_rails_V": [
+        -18,
+        18
+      ],
+      "conditional_midpoint25C_offset_ceiling_V": 0.000136,
+      "scope": "100uV anchor plus3uV/V*12V totalspan if PSRR maintained along same25C supplypath with VCM=VOUT=midsupply and10k load to midsupply. Not a guaranteed rectangular supply/commonmode/output/load/temperature bound. Do not append\u00b118V CMRR result to\u00b112V path without mixed-condition coverage.",
+      "target_rails_V": [
+        -12,
+        12
+      ],
+      "total_supply_change_V": 12
+    },
+    "output_impedance_typical_scope": "375ohm typical at1MHz,IO0 from\u00a76.7 p8 is not DC or maximum; never inserted into DC cases.",
+    "ro_DC_at_actual_conditions": null,
+    "target": "Actual\u00b112V rails,25C initially, each actual amplifier commonmode/output/load from ten-state matrix; future temperature range requires separately compatible parameters."
+  },
+  "criteria": {
+    "accepted_new_allocation": false,
+    "load_change_target_V": 0.001,
+    "static_target_V": 0.002
+  },
+  "engineering_scenarios": [
+    {
+      "A0": 500,
+      "id": "A500_ro0",
+      "ro_DC_ohm": 0
+    },
+    {
+      "A0": 500,
+      "id": "A500_ro100",
+      "ro_DC_ohm": 100
+    },
+    {
+      "A0": 1000,
+      "id": "A1000_ro0",
+      "ro_DC_ohm": 0
+    },
+    {
+      "A0": 1000,
+      "id": "A1000_ro100",
+      "ro_DC_ohm": 100
+    },
+    {
+      "A0": 10000,
+      "id": "A10000_ro100",
+      "ro_DC_ohm": 100
+    },
+    {
+      "A0": 100000,
+      "id": "A100000_ro100",
+      "ro_DC_ohm": 100
+    }
+  ],
+  "illustrative_single_input_allocation_V": 0.00025,
+  "required_parameters": [
+    {
+      "acceptance_relation": "Zcl <= RL*b/(|Vopen|-b); at5V and b1mV gives2.00040008ohm; b0.5mV gives1.00010001ohm",
+      "conditions": "\u00b112V rails;T25C and requested operatingrange; actual VCM and signed DRIVE/current for each output state",
+      "evidence_gap": "AOLtable\u00b118Vloaded tests and1MHztypZO do not supply same-condition unloadedA0/roDC.",
+      "id": "loop_DC",
+      "parameter": "A0 and roDC or directly ZclDC"
+    },
+    {
+      "acceptance_relation": "Exactpaired equation; illustrative remaining0.5mV shared between these andgroundshift. Highgain sensitivities1,100ohm,1,\u2212100ohm respectively.",
+      "conditions": "Same device,temperature,rails,input command and return geometry; only load changes",
+      "evidence_gap": "Independent static extrema do not establish actual pairedchange or cancellation; no load-conditional specification retained.",
+      "id": "paired_output_changes",
+      "parameter": "\u0394Vos,\u0394Ib\u2212,\u0394u and\u0394I_CFAST when switching open\u219210k"
+    },
+    {
+      "acceptance_relation": "Receiver differential shift contributes directly; sole remainingterm ceiling0.5mV in illustrative split.",
+      "conditions": "Open versus10k,allsharedloadstates,actualsamepath",
+      "evidence_gap": "Allocatedlength graph has no measured resistance or sharedreturncurrent state.",
+      "id": "return_change",
+      "parameter": "\u0394localAGND\u2212receiver return and feedback sense lead resistance/current"
+    },
+    {
+      "acceptance_relation": "At5V and100k pulldown, sole0.25mV allocation allowsS<=5.00025001ohm; sole1mV<=20.0040008ohm, divideallocation by actualstagegain.",
+      "conditions": "\u00b112V,25C/operatingtemperature,actualsourcecurrent and\u00b15Vsignal",
+      "evidence_gap": "Externalsourceimpedance not specified;ADG guaranteedtables use\u00b113.5V/16.5V,not\u00b112V.",
+      "id": "input_series",
+      "parameter": "Rexternal+cable+ADG5412FRON at actualsignal"
+    },
+    {
+      "acceptance_relation": "e=\u2212(S||100k)ID\u2212(10k+S||100k)(Ib+Iclamp); sole0.25mV nearS10ohm permitsnet sensecurrent24.975nA beforedividerotherterms.",
+      "conditions": "ADG on at\u00b112V;BAT54S reverse7..17V;actualVCM;T25C anddeclaredhot",
+      "evidence_gap": "20pAbias maximum is midpoint table; clampcurrent atactualreverseconditions not retained; ADGleakage givenotherrails.",
+      "id": "input_leak_bias",
+      "parameter": "IDchannel netdrainleakage andIb++Iclamp_net"
+    },
+    {
+      "acceptance_relation": "Replace nominalRs,Rf,Rp,Rlim in explicit equations; initial1% series witness1007.98ohm changes requiredloopgain proportionally.",
+      "conditions": "Asassembled temperature/aging state; no lifetime guarantee",
+      "evidence_gap": "No adoptedcommon-condition servicebound; R7108/R7112 canonical exactMPN blank,10000ohm nominal only.",
+      "id": "passives",
+      "parameter": "ActualR7127+R7128,R7129,R7107/R7111,R7108/R7112 and CFAST DC insulation"
+    },
+    {
+      "acceptance_relation": "Ideal\u00b15V jack requires\u00b15.499VDRIVE,\u00b10.5mA beforefeedbackbias; no clipping andsettlingcriterionmusthold.",
+      "conditions": "Eachsignedstate under\u00b112V,output10k andactualcablecapacitance;multichannelthermalstate",
+      "evidence_gap": "Algebra no saturation/transientmodel; retainedpastSPICE not rerun or adopted asphysicalevidence.",
+      "id": "headroom",
+      "parameter": "DRIVE swing and source/sinkcurrent capability plus stable settledresponse"
+    }
+  ],
+  "sources": {
+    "ADG5412F": {
+      "extract": "Ron11.2ohmmax25C at\u00b113.5V VS\u00b110V IS\u221210mA;onleakage1.5nAmax25C at\u00b116.5V VS=VD\u00b110V.",
+      "locator": "Table1 ANALOG SWITCH andLEAKAGECURRENTS",
+      "physical_pdf_page_index": 2,
+      "printed_page_label": "3",
+      "revision": "C October2017",
+      "sha256": "ea3d12f983fc79a728d302675a0428a6d244e95828154bc4c970d34e23195a96",
+      "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/adg5412f_5413f.pdf"
+    },
+    "BAT54S": {
+      "retained_owner_hash": "0baaac4f52b05b5d41932c445eb8dddc636e464b1f717d11ee41b27ba1202fe7",
+      "retrieval_status": "HTTP403; performance not newlyverified",
+      "url": "https://assets.nexperia.com/documents/data-sheet/BAT54S.pdf"
+    },
+    "OPA4197": {
+      "locators": [
+        {
+          "extract": "25C bias20pAmax;PWfulltemp15nA;offset100uVexplicit\u00b118V;PSRR3uV/Vmax;AOL120dB25C/110dBtemp at\u00b118Vloaded conditions.",
+          "locator": "\u00a76.7 offset,PSRR,bias,CMRR,AOL rows",
+          "physical_pdf_page_index": 6,
+          "printed_page_label": "7"
+        },
+        {
+          "extract": "ZO375ohmtyp at1MHz IO0; not DC maximum.",
+          "locator": "OUTPUT ZO row",
+          "physical_pdf_page_index": 7,
+          "printed_page_label": "8"
+        }
+      ],
+      "revision": "SBOS737C March2018",
+      "sha256": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd",
+      "url": "https://www.ti.com/lit/ds/symlink/opa4197.pdf"
+    }
+  }
+}

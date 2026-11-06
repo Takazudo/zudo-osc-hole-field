@@ -1,0 +1,46 @@
+{
+  "authorship_exclusion": "Authored only this review and test_stage14_electrical_independent.py. Did not author Stage14 implementation, input, report or implementation tests. Independently supplied primary-source findings before implementation.",
+  "checks": [
+    "Independently downloaded TI REF50 SBOS410O, TI OPAx197 SBOS737C and KEMET T491 2026-07-08 primary PDFs; actual byte hashes equal retained evidence. Exact AI current/settling conditions and PW-specific15nA bias checked.",
+    "Operating +/-10mA, typical25mA short circuit and typical200us/1uF startup are not guaranteed capacitor charging current or startup time.",
+    "KEMET rated-voltage after5min leakage and separate temperature test multipliers are not startup, combined service or lifetime guarantees. ESR100kHz25C remains conditioned.",
+    "Independently confirmed RAW5V edges connect only U7101:6,C7102:1,U7104:3. Buffer output loads are separate from direct reference load; input capacitor charge/leakage are supply loads.",
+    "Charge and energy independently recomputed using decimal microfarad-to-farad arithmetic. Output initial max121uC/302.5uJ and input initial max68.244uC at13.2V are correct.",
+    "OFF-state buffer ESD steering/backfeed, REF reverse conduction, unequal rails and residual charge are explicit unresolved conditions. Maximum leakage gives no guaranteed discharge wait.",
+    "Ten named NOT RUN validation cases give finite conditional disposition. Accuracy remedy and nonprecision product alternative preserve Stage13 rank limitation and existing criteria without changing components/calibration.",
+    "Final STAGE14 electrical narrative and current README accurately retain conditioned typical/operating distinctions, leakage/load subtotals, unknown discharge/backfeed, ten unexecuted validation cases and separate precision remedy/product decision. Final assessment equals independent fresh source build; graph-specific implementation remains covered by separate code review."
+  ],
+  "hardware_acceptance": false,
+  "independent_review": true,
+  "native": "NOT RUN",
+  "physical": "NOT RUN",
+  "remaining": [
+    "Startup, peak charging current, effective C/ESR, noise/stability and complete transient/board load remain unqualified.",
+    "No guaranteed off-state reverse current/discharge time or safe injection bound; named validation cases require separate authorization.",
+    "Complete A01 accuracy remains open; separate matched-ratio/independent CV-gain correction or explicit product capability decision recommended."
+  ],
+  "reviewer": "Independent Stage14 electrical reviewer; inherited model settings; exact model identifier unavailable",
+  "simulation": "NOT RUN",
+  "source_sha256": {
+    "design/architecture-278/implementation/README.md": "27eba73cb0093d96cf589bdb6c4812aba3b65182ffae198a9ee38c3487945abd",
+    "design/architecture-278/implementation/STAGE14.md": "a662c3101d4caf698b7de22f0f0bd24ecb10baaf0dca4e5a586d2985d7de0957",
+    "design/architecture-278/implementation/stage13/CALIBRATION.md": "651bd7381f1975db4a32a3f11ce6344c1a6f05c623ff1c6de566d4aa4bf55325",
+    "design/architecture-278/implementation/stage13/CAPACITORS.md": "43b287c2926b1d307f17581882b781286c95b5f846f8db452bcfd8e1fba3ca36",
+    "design/architecture-278/implementation/stage13/capacitor-input.json": "d0abb430257b3def8dd36d24821d137bbee9f37d0d4b80e0595e7c04a297fa3e",
+    "design/architecture-278/implementation/stage13/capacitor-report.json": "b87ab1c5060d076a0e27cb679ae41447e24298768299445fbf40c76a6faeedb0",
+    "design/architecture-278/implementation/stage14/assessment-report.json": "d17056041e42231ce709c2bf3b9902e76adc0f870917b180b6eaa482c81362ca",
+    "design/architecture-278/implementation/stage14/electrical-input.json": "6fd85c88af592721ebecd422547e2e5f097cffac316bfef9bf45324118b99208",
+    "design/architecture-278/implementation/stage14/electrical-report.json": "959c09f9430d9da34d986e403eb46382b2acd71cdf2950b7a6ff022ec434cec7",
+    "design/architecture-278/implementation/stage14/interfaces-report.json": "44a962602b887f3a401a2f2356b0bdd603357ff1c4152899345eeb013f8f0643",
+    "scripts/architecture278/implementation/stage14_assessment.py": "60f36cd437f8c6e5dcb6c6c52a82fd1220f5f3c86f31b4f3aecaa3ea7a6e0a7a",
+    "scripts/architecture278/implementation/stage14_electrical.py": "4a3e3cda909ee22f5738c665339dca6e8eac3b8fc31e596c91355403b2ac58d1",
+    "scripts/architecture278/implementation/test_stage14_electrical.py": "94ebaf610f8cb513b663900dc18da352c7b35626d848fab4a0559706d035ec02",
+    "scripts/architecture278/implementation/test_stage14_electrical_independent.py": "67f210781734064bac2f291ec213b23f307826417bff75624f3dce6c24a5a4a9"
+  },
+  "tests": {
+    "generator_check": "PASS",
+    "implementation_tests_passed": 11,
+    "reviewer_authored_independent_checks_passed": 4
+  },
+  "verdict": "No blocking source defect found in reviewed electrical scope; conditional candidate remains NOT QUALIFIED."
+}

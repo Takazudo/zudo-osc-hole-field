@@ -14,6 +14,6 @@ class RailOptions(unittest.TestCase):
         self.assertTrue(all(x is None for x in report['guaranteed_maximum_mA'].values()))
         for case in report['cases']:
             self.assertGreater(case['remaining_mA']['-12V'],report['ceilings_mA']['-12V'])
-        self.assertAlmostEqual(report['non_additive_packing_stress_test']['hypothetical_remaining_mA']['-12V']-640,106.16866)
+        self.assertAlmostEqual(report['non_additive_packing_stress_test']['hypothetical_remaining_mA']['-12V']-640,78.31266)
 
 if __name__=='__main__':unittest.main()

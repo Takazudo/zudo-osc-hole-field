@@ -98,6 +98,7 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 - [`fact-sample-hold-input-offset-voltage`](#fact-sample-hold-input-offset-voltage)
 - [`fact-sample-hold-input-bias-current`](#fact-sample-hold-input-bias-current)
 - [`fact-sample-hold-hold-step`](#fact-sample-hold-hold-step)
+- [`fact-sample-hold-absolute-maximum`](#fact-sample-hold-absolute-maximum)
 
 ### manufacturer product description
 
@@ -146,6 +147,24 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 ## Facts
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
+
+### ABSOLUTE\_MAXIMUM
+
+A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-sample-hold-absolute-maximum" />
+
+  **Fact:** `fact-sample-hold-absolute-maximum`
+
+  **Value:** `input_V`=18; `logic_to_reference_max_V`=7; `logic_to_reference_min_V`=-30; `supply_V`=18 · **Unit:** `V`
+
+  **Conditions:** Supply +/-18 V; input voltage +/-18 V; logic-to-logic-reference differential 7 V / -30 V (see datasheet note 4). Absolute maximum stress rating, not an operating condition.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-sample-hold-datasheet: physical PDF p.3, printed p.4, section 6.1 Absolute Maximum Ratings](#src-sample-hold-datasheet)
+</EvidenceFact>
 
 ### GUARANTEED\_ELECTRICAL
 
@@ -419,6 +438,7 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 
 | Recorded term           | What it means                                                                                                                                                      |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ABSOLUTE_MAXIMUM`      | A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.                                         |
 | `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
 

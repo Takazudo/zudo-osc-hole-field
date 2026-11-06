@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-18",
+  "decided_by": "OWNER",
+  "record_source": "Owner instruction to the local Claude Code session continuing Issue #278 / draft PR #287 at 698d91398db411d94117a4298810b1bd58f38d61",
+  "subject": "A01 J-PWR/J-SIG common cable-entry redesign study",
+  "status": "DESIGN_STUDY_CHANGES_ALLOWED",
+  "changeable": {
+    "carrier_local_shape": ["rail:middle:0"],
+    "header_refs": ["A01:J-SIG:local", "A01:J-SIG:middle", "A01:J-PWR:local", "A01:J-PWR:middle"],
+    "header_changes": ["position", "orientation"],
+    "provisional_cable_design_length": true
+  },
+  "fixed": [
+    "panel controls and jack placements (design/grid/placements.lock.json)",
+    "circuits, nets and terminal identities",
+    "the provisionally adopted DIN contact mapping, DIN positions and board planes",
+    "the service procedure: disconnect K-PWR, then withdraw the core 40 mm",
+    "real part occupancy, mating/release and tool space, and the carrier load path",
+    "no excessive bending, abrasion or tension on the conductors"
+  ],
+  "scope_excludes": [
+    "applying any change to hardware or manufacturing",
+    "canonical schematic, board or library changes",
+    "native KiCad, ERC/DRC or simulation runs",
+    "ordering, quotes, uploads or supplier contact",
+    "calling a design length a measured or cut length",
+    "promoting a calculation to a physical pass"
+  ]
+}

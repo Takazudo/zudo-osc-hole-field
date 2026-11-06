@@ -1,0 +1,37 @@
+{
+  "CAD": "NOT RUN",
+  "authorship_exclusion": "Authored stage15_load_allocation.py, test_stage15_load_allocation.py, load-input.json, load-report.json and test_stage15_allocation_independent.py. ALL these authored files are excluded from independent review bindings; root/code reviewers cover them. Reviewed independently root stage15_allocation.py, stage15_completion.py, their tests, allocation input/report, scope and root narrative.",
+  "checks": [
+    "Independent direct stage equations reproduce all16 counterfactual masks at ten states; offsets independently perturb inherited transfer and match root analytic ten coefficient expressions.",
+    "Signed decomposition closes exactly; same-corner counterfactual differences retain shared resistor/reference cross-products. Paired gain cancels intercept only under specified invariant conditions, not absolute error.",
+    "Loaded endpoint witnesses use the same coherent resistor/reference extrema and monotone output equation; signed finite-loop/load terms sum to loaded residual. This reviews integration only; authored load equation implementation excluded.",
+    "All four idealized corrections still leave reference initial sensitivity; reference necessary ceiling independently inverted. Residual deficits remain deficits and separate terms do not each reset the2mV budget.",
+    "Completion gate preserves predecessor file membership and hashes against exact approved10e3fbbd baseline; historical mutable integration bindings use baseline bytes only. Source bindings/finite values/acceptance and required review coverage are enforced.",
+    "Final narrative accurately distinguishes conditional25C matching/reference sensitivities,20pA25C versus15nAfulltemperature, midpoint/output/load-restricted PSRR transfer, missing actual\u00b112V A0/ro and ADG conditions, BAT54S HTTP403 and explicit inverse allowances.",
+    "Allocation-report and load-report source bindings verified current at review. Assessment-report was observed stale at completion-generator hash during root regeneration; it is deliberately not bound here. Root must regenerate final assessment before final source guard."
+  ],
+  "component_geometry_changed": false,
+  "hardware_acceptance": false,
+  "independent_review": true,
+  "native": "NOT RUN",
+  "physical": "NOT RUN",
+  "reviewer": "Electrical/load author independently reviewing root allocation, completion gate and narrative; inherited model settings, exact model identifier unavailable",
+  "simulation": "NOT RUN",
+  "source_sha256": {
+    "design/architecture-278/implementation/STAGE15-ALLOCATION.md": "0a70362dbaca1211bf4de0c60bdc2a01ab0770c6e08187facd5bfae3eee39725",
+    "design/architecture-278/implementation/stage15-completion/allocation-input.json": "77c9af9b4920a288a207005ada00b7e611a4b5c4b201e1a9eac13f3c73708d35",
+    "design/architecture-278/implementation/stage15-completion/allocation-report.json": "cb15da768ea96b693205691f8c68db09b4d82abfef4b276d0c1e0afeceb938ae",
+    "design/architecture-278/implementation/stage15-completion/scope.json": "9ec5aa64bd28a32ed217ca805270ad0d9ec2c7d7b4129670fdbe92002d5676e6",
+    "scripts/architecture278/implementation/stage15_allocation.py": "8652d279b2f7dae4051133e896ff057b8739e0296832bb960039b1070669b60b",
+    "scripts/architecture278/implementation/stage15_completion.py": "4b340c0d76dd85c016d244d65c71eb8f6c1176fe4ca472a1163e412b09c6214c",
+    "scripts/architecture278/implementation/test_stage15_allocation.py": "ede2f1b90923aef8c99db5fc49ad1fcc5f3978800d03c8f4cf6b2522d68a6aa8",
+    "scripts/architecture278/implementation/test_stage15_completion.py": "1fd3d36c5708bf74415aad92122c2ea49942f72110a5d9eba74acc7b9e56b224"
+  },
+  "tests": {
+    "independent_scope_note": "23 checks executed against root composition; reviewer-authored4crosschecks disclosed, excluded from bindings and require root review. Authored12loadtests not counted as independent review.",
+    "reviewer_authored_crosschecks_executed": 4,
+    "root_allocation_tests_passed": 9,
+    "separate_completion_tests_passed": 10
+  },
+  "verdict": "No blocking source defect found in reviewed independent scope. Conditional analysis does not establish actual whole-cell precision."
+}

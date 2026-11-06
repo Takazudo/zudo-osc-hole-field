@@ -16,6 +16,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from design.spec.instrument import specification
+from design.spec.modules.io_partition import base_family
 from design.spec.cells._builder import CELLS
 from scripts.schgen.core import designator
 
@@ -110,7 +111,7 @@ def build(contract=None):
             continue
         family = families[instance.family]
         existing_switch_packages.update(designator(p, instance) for p in family.parts
-                                        if p.symbol.endswith('ADG5412FBRUZ') and not p.dnp)
+                                        if p.symbol.endswith(('ADG5412FBRUZ', 'TMUX7412FRRPR', 'TMUX6112PWR')) and not p.dnp)
         jacks = {p.pins['T']: p for p in family.parts if p.prefix == 'J' and 'T' in p.pins}
         channels = 0
         for part in family.parts:
@@ -124,7 +125,7 @@ def build(contract=None):
             outputs.append({'uid': uid, 'instance': instance.name, 'tip_net': part.pins['2'], 'kind': 'precision' if precision else 'general', 'existing_series_ohm': 998, 'existing_sense_ohm': 100 if precision else None, 'isolation_channels_required': 2 if precision else 1, 'status': 'UNPROTECTED OUTPUT/SENSE; candidate not captured'})
             channels += 2 if precision else 1
         packages += math.ceil(channels / 4)
-        if instance.family == 'oscillator':
+        if base_family(instance.family) == 'oscillator':
             refs = sorted(n for n in family.global_nets if n.startswith('OSC_OCT'))
             demand(len(refs) == 6, 'Octave reference boundary changed')
             for net in refs:

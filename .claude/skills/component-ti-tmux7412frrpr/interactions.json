@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "interactions": [
+    {
+      "interaction_id": "int-fault-switch-t-project-role",
+      "record_ids": [
+        "rec-fault-switch-t"
+      ],
+      "fact_ids": [
+        "fact-fault-switch-t-project-selection",
+        "fact-fault-switch-t-pinout"
+      ],
+      "conditions": "S2b candidate role; schematic binding exists only inside the unadopted candidate record.",
+      "verdict": "NEEDS BENCH"
+    }
+  ]
+}

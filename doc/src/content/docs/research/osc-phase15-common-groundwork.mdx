@@ -1,0 +1,173 @@
+---
+title: "OSC S1/S2b common groundwork"
+description: "Unadopted trials for the OPA4197IDR footprint migration, the R-exact precision values and the S2b input-switch fault rows, verified in scratch worktrees."
+sidebar_position: 42
+---
+
+**UNADOPTED research.** This page records trials that were run in scratch worktrees at 36e89cc8. Nothing here changes the standard, the inventory, the schematic, the PCB or the generated component pages. No order, quote or fabrication file exists. Every board stays an unvalidated draft.
+
+| Item | Record |
+|---|---|
+| OPA4197IDR candidate owner, symbol and CAD receipt | `design/readiness/phase15/opa4197idr-candidate.patch` (applies cleanly to HEAD; not applied) |
+| Floorplan trial overlay | `design/readiness/phase15/floorplan-trial-overlay.py` (scratch worktree only) |
+| R-exact identities and error table | `design/readiness/r-exact-candidates.json`, built by `scripts/checks/r_exact_candidates.py` |
+| S2b jack-facing map and fault rows | `design/readiness/s2b-protection-map.json`, built by `scripts/checks/s2b_protection_map.py` |
+
+## 1. OPA4197IPWR → OPA4197IDR
+
+### Owner evidence: PASS in the scratch worktree
+
+The candidate bundle `component-ti-opa4197idr` (record `rec-op-precision-d`) reuses the retained TI SBOS737C bytes (SHA-256 `27653a7d…`).
+
+- The package option addendum (physical index 34, Addendum-Page 2) lists OPA4197IDR as Active, Production, SOIC (D) 14, 2500 LARGE T&R, MSL Level-3-260C-168 HR, −40 to 125 °C.
+- The pin configuration (index 3, printed 4) is headed "D and PW Packages: OPA4197, 14-Pin SOIC and TSSOP", with one pin-function column for both packages. The pin map is therefore unchanged.
+- The full-temperature input-bias maximum for D is ±5 nA; the ±15 nA subrow is PW only (§6.7, index 6, printed 7).
+- The JLC row C2058532 is distributor identity only: stock 6533 on 2026-10-31.
+
+The patch adds:
+
+- the owner bundle;
+- the inventory line `line-op-precision-d` and its routing case;
+- symbol fragment `symbols/src/OPA4197IDR.kicad_sym`, derived from the IPWR fragment with the SOIC-14 footprint;
+- CAD receipt `ic15-op_precision_d`;
+- an intentional catalog exclusion, so no component page is published.
+
+Trial results:
+
+| Check | Result |
+|---|---|
+| `zudo-circuit-doc validate` | PASS: 69 lines, pin-asset check performed. SCOPE: manual provider, no schematic or placement binding |
+| `scripts/libgen/check_lib.py` | PASS: 97 symbols, 46 footprints, 116 receipts |
+| `check_catalogue_publication.py` | PASS: 58 published, 10 blocked, 1 excluded |
+| `zudo-circuit-doc generate` | PASS. It rewrites only the counts in `components/index.mdx` |
+
+The patch does not migrate the role itself. Adopting OPA4197IDR also changes the following:
+
+- `parts-shortlist.json` `op_precision`;
+- `pin-maps/op_precision.json`;
+- `electrical-standard.json` `roles.precision.package`;
+- about 30 module, model-contract and test files that name the `OPA4197IPWR` symbol;
+- the regenerated sheets, netlist and audit.
+
+That full migration regeneration is **NOT RUN**.
+
+### Floorplan fit: 85 of 89 placements fit; the 4 control-board ones collide
+
+The trial overlay swaps the precision packages to `SOIC-14_3.9x8.7mm_P1.27mm`, with the OPA4196IDR courtyard of 7.4 × 9.63 mm instead of 7.7 × 5.99 mm. It then runs the partition chain.
+
+| Placements on SOIC-14 | First failure | Result |
+|---|---|---|
+| All 89 | `control_locality.py`: "slew courtyard collides: U102" | FAIL |
+| 87 (U102 and U202 kept on TSSOP) | `control_bypass_locality.py`: "Bypass courtyard outside P: U3303" | FAIL |
+| 85 (core K 68, jack JL/JR 17); U102, U202, U3303 and U3403 kept on TSSOP | none | **PASS**: floorplan, loom, mechanical, partition35 and drawing all pass |
+
+The four control-board parts sit in fixed source-locality groups: sample_hold H1/H2 slew islands U102 and U202, and the manual_ab X1 buffers U3303 and U3403. The panel hardware stays fixed (project rule 1).
+
+There are two ways forward:
+
+- **Option A:** redesign those groups in `control-locality.json` and `control-bypass-locality.json`.
+- **Option B:** keep two precision lines: 85 OPA4197IDR plus 4 OPA4197IPWR.
+  - Option B costs $259.73 per unit and $1155.26 per lot, against $219.14 for an all-IDR build and $974.20 at HEAD. That is −$714.47 per unit against HEAD.
+
+This trial is a courtyard capacity proposal only. Routing, DRC and physical fit are NOT RUN.
+
+## 2. R-exact: all 14 lines meet the `r_precision` class
+
+All 14 lines are Yageo RT0603BRD07 thin film, and each one has a retained manufacturer spec sheet that names the exact MPN. Each sheet shows 0.1 %, ±25 ppm/°C, 0.1 W at 70 °C and 75 V maximum continuous. That meets the `r_precision` policy of 0.1 %, 25 ppm, 0.1 W and 50 V.
+
+The cost is $7.15 per unit for the added or changed elements, with 80 added placements per unit. Every stock figure covers a 5-unit lot. The smallest margin is 620R: stock 120 against 25 needed.
+
+The tolerance model takes every element at ±0.1 % independently, across all sign corners. TCR, ageing and solder drift are excluded. Each band is relative to the HEAD nominal.
+
+| Role | Proposal | New elements | Added per unit | Nominal shift | HEAD band | R-exact band |
+|---|---|---|---|---|---|---|
+| REF9 (RF/RG) | rescale | 40K / 50K | 0 | 0 | ±0.089 % | ±0.089 % |
+| BIP divider and gain | rescale + nearest | TOP 40K, BOT 50K, GND 402K | 0 | −0.055 % | ±0.200 % | −0.255 / +0.145 % |
+| R_SAW_IN | series | 40K + 40K | 5 | 0 | ±0.200 % | ±0.200 % |
+| R_RISE/FALL_DRIVE_TOP | series | 820K + 78K7 | 12 | +0.033 % | ±0.200 % | −0.166 / +0.233 % |
+| R_PITCH_TUNE | series | 200K + 50K | 5 | 0 | ±0.200 % | ±0.200 % |
+| R_TRI_BIAS_TOP | series | 200K + 50K | 5 | 0 | ±0.143 % | ±0.143 % |
+| R_FLOOR_TOP | series | 47K + 32K | 6 | 0 | ±0.156 % | ±0.156 % |
+| R_RT | series | 5K1 + 620R | 5 | 0 | ±0.100 % | ±0.100 % |
+| R_REF4_TOP | nearest | 24K9 | 0 | +0.080 % | ±0.040 % | +0.040 / +0.120 % |
+| R_PWM_FB | series | 40K + 32K | 5 | 0 | ±0.200 % | ±0.200 % |
+| R_SAW_BIAS_TOP | series | 75K + 50K | 5 | 0 | ±0.111 % | ±0.111 % |
+| R_LINEAR_REFERENCE | series | 1M + 200K | 5 | 0 | ±0.100 % | ±0.100 % |
+| R_PWM_OFFSET (shares R_PWM_FB) | series | 1M + 820K | 5 | −1.099 % | ±0.200 % | −1.297 / −0.901 % |
+| R_PITCH_FINE | series | 5 × 1M | 20 | 0 | ±0.200 % | ±0.200 % |
+| R_OUTPUT_RF | series | 20K + 50K | 2 | 0 | ±0.175 % | ±0.175 % |
+
+The only band shifts are BIP, DRIVE, REF4 and PWM offset, at ≤ 0.12 % except the PWM offset. The PWM offset is −2.2 mV nominal, on a cv path that is clamped near 0..4 V. The calibrated 1 V/oct path (R_PITCH 100 k) is untouched.
+
+### Reruns that R-exact implies (none run)
+
+Every affected reference is on board **K (osc-core)**, per the `partition.json` assignment. Adoption needs:
+
+1. Spec edits, schematic regeneration, the master netlist and `audit_master.py` with an appended designator-lock increment, so existing designators stay stable.
+2. The partition chain. The overlay trial with 80 added R0603 placements passes the courtyard floorplan alone, and also together with the 85 SOIC-14 swaps.
+3. Osc-core placement and routing.
+4. **#293 zone fill.** This is now a changed input, so the "do not rerun unchanged" condition no longer blocks it. It still needs the fill budget or CPU decision recorded in A4. It is NOT RUN here.
+5. Osc-core DRC. NOT RUN.
+
+The OPA4197IDR migration adds the same reruns for K, JL and JR.
+
+## 3. S2b groundwork
+
+### Jack-facing pin: 98 of 98 inputs have the jack on the protected source
+
+`s2b_protection_map.py` reads the specification. For every `input_fault_switch` channel-1 part in the 31 placement groups (98 per unit):
+
+- ADG5412F pin 3 (S1, protected source) is on the jack-tip net.
+- Pin 2 (D1) is on the local `_PROTECTED` net.
+- There are 0 errors.
+
+The TMUX7412F WQFN mapping keeps the protected side toward the jack: S1 to pad 1 (jack), D1 to pad 16 (local), SEL1 to pad 15 (enable). SCDS404B Table 6-1 states that the drain pins are not overvoltage protected, so this orientation is mandatory.
+
+The TSSOP-16 PW TMUX7412F has the ADG pin order, but the datasheet marks it as Preview. A JLC search for TMUX7412FPWR returned no row.
+
+### Fault rows: TMUX7412F changes three rows
+
+Sources:
+
+- ADG5412F Rev. C (`circuit/sources/ic-library/ADG5412F.pdf`, `ea3d12f9…`);
+- TMUX7412F SCDS404B (`7396d8a3…`, the same bytes as `protection59-sources.json`).
+
+All limits come from ±15 V or ±16.5 V tables and are not ±12 V guarantees.
+
+| Fault row | ADG5412F | TMUX7412F | Changes |
+|---|---|---|---|
+| F1 powered, ±12 V on the jack | PASS | PASS | — |
+| F2 powered, jack beyond a rail | PASS (±55 V, 80 V channel stress) | PASS (±60 V, 85 V source-to-supply and source-to-drain) | — |
+| F3 unpowered, rails 0 V, GND present | PASS. Source leakage ±40 µA typical only; drain ±50 nA max at 85 °C | PASS. IS(FA) ±125 µA max; ID(FA) ±50 nA max at 85 °C | — (TMUX has guaranteed maxima) |
+| F4 unpowered, rails floating, GND present | PASS. Leakage ±10 µA typical only | PASS. Leakage typical only | — |
+| F5 GND absent | **FAIL** (a GND reference must be present) | **FAIL** (same) | — |
+| F6 one analog rail missing | PASS, conditional on VDD − VSS ≥ 8 V for the on state | PASS, same condition | — |
+| F7 +5 V enable before the analog rails | PASS (digital input protection, switch off) | PASS (fail-safe logic to 44 V) | — |
+| F8 an input must not energize an unpowered rail | PASS (source ESD has no rail diode) | PASS (powered-off protection; source ESD) | — |
+| F9 several inputs patched in one quad (packing) | **PASS**: Rev. C index 24 says "the channels undisturbed by the overvoltage input continue to operate normally without additional crosstalk". The project worst case is 24 V against the 80 V limit | **UNKNOWN**: no published statement; only the 85 V stress rule, −100 dB AC crosstalk and the shared FF | **yes** |
+| F10 RON and leakage on pitch inputs | PASS (14 Ω, ±2.0 nA at 85 °C) | PASS (14 Ω, ±2 nA at 85 °C) | — |
+| F11 land and pin map | PASS (current land) | **FAIL**: WQFN-16 only; new land needed | **yes** |
+
+Totals: ADG5412F has 10 PASS and 1 FAIL. TMUX7412F has 8 PASS, 2 FAIL and 1 UNKNOWN.
+
+The protection-standard change S2b needs is therefore explicit:
+
+1. Change the input-switch identity and land (F11).
+2. Accept TMUX7412F F9 as UNKNOWN, or keep one channel per package for jack inputs. That is ADG-2 instead of ADG-3.
+3. Keep the F5 limit, which is unchanged from today.
+
+For **ADG-1** (ADG5412F packing), F9 is now covered by a manufacturer statement. The earlier cross-channel evidence gap is closed for ADG5412F. The statement is qualitative and has no table limit.
+
+### Envelope internal switches on TMUX6112PWR
+
+Source: SCDS383F, `c0fab313…`, retained in the cache.
+
+| Row | Verdict | Basis |
+|---|---|---|
+| Pin map | PASS | The TSSOP-16 order matches the ADG land. Pin 12 is NC where ADG has FF, which the project leaves unconnected |
+| Logic sense | PASS | Logic 1 turns a switch on |
+| Supply | PASS | ±5..±17 V dual |
+| RON | PASS | 210 Ω max at ±10 V and 85 °C |
+| Hold-node leakage | PASS | Off leakage −0.14..+0.05 nA at 85 °C (±15 V table) |
+| Fault protection | NOT APPLICABLE | Internal nodes only. The analog pins are limited to VSS − 0.3..VDD + 0.3 V |
+| Logic before rails | **FAIL** | The SELx absolute maximum is VDD + 0.3 V. +5 V logic with +12 V absent exceeds it unless the current is limited below 30 mA. This needs a sequencing or series-resistor check |

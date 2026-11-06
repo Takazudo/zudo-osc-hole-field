@@ -1,0 +1,347 @@
+{
+  "headers_stage10": {
+    "A01:J-PWR:local": {
+      "axis": 1,
+      "board": "A01-jack",
+      "box_mm": [
+        221.525,
+        171.9,
+        230.475,
+        178.0
+      ],
+      "exit_mm": [
+        226.0,
+        173.0,
+        43.9
+      ],
+      "face_z_mm": 36.6,
+      "header_mpn": "BM04B-GHS-TBT(LF)(SN)",
+      "housing_mpn": "GHR-04V-S",
+      "origin_mm": [
+        226,
+        173
+      ],
+      "pins": {
+        "1": "+12V",
+        "2": "-12V",
+        "3": "+5V",
+        "4": "AGND",
+        "MP1": null,
+        "MP2": null
+      },
+      "sweep": {
+        "box_mm": [
+          219.525,
+          169.9,
+          232.475,
+          180.0
+        ],
+        "z_mm": [
+          36.6,
+          58.9
+        ]
+      }
+    },
+    "A01:J-PWR:middle": {
+      "axis": -1,
+      "board": "A01-middle",
+      "box_mm": [
+        278.525,
+        148.9,
+        287.475,
+        155.0
+      ],
+      "exit_mm": [
+        283.0,
+        150.0,
+        41.1
+      ],
+      "face_z_mm": 48.4,
+      "header_mpn": "BM04B-GHS-TBT(LF)(SN)",
+      "housing_mpn": "GHR-04V-S",
+      "origin_mm": [
+        283,
+        150
+      ],
+      "pins": {
+        "1": "+12V",
+        "2": "-12V",
+        "3": "+5V",
+        "4": "AGND",
+        "MP1": null,
+        "MP2": null
+      },
+      "sweep": {
+        "box_mm": [
+          276.525,
+          146.9,
+          289.475,
+          157.0
+        ],
+        "z_mm": [
+          26.1,
+          48.4
+        ]
+      }
+    },
+    "A01:J-SIG:local": {
+      "axis": 1,
+      "board": "A01-jack",
+      "box_mm": [
+        203.65,
+        171.9,
+        216.35,
+        178.0
+      ],
+      "exit_mm": [
+        210.0,
+        173.0,
+        43.9
+      ],
+      "face_z_mm": 36.6,
+      "header_mpn": "BM07B-GHS-TBT(LF)(SN)",
+      "housing_mpn": "GHR-07V-S",
+      "origin_mm": [
+        210,
+        173
+      ],
+      "pins": {
+        "1": "/A01/REF5",
+        "2": "AGND",
+        "3": "/A01/REFN5",
+        "4": "/A01/IN_BUFFER",
+        "5": "/A01/OFFSET_BUFFER",
+        "6": "/A01/SUM_NEG",
+        "7": "AGND",
+        "MP1": null,
+        "MP2": null
+      },
+      "sweep": {
+        "box_mm": [
+          201.65,
+          169.9,
+          218.35,
+          180.0
+        ],
+        "z_mm": [
+          36.6,
+          58.9
+        ]
+      }
+    },
+    "A01:J-SIG:middle": {
+      "axis": -1,
+      "board": "A01-middle",
+      "box_mm": [
+        253.65,
+        148.9,
+        266.35,
+        155.0
+      ],
+      "exit_mm": [
+        260.0,
+        150.0,
+        41.1
+      ],
+      "face_z_mm": 48.4,
+      "header_mpn": "BM07B-GHS-TBT(LF)(SN)",
+      "housing_mpn": "GHR-07V-S",
+      "origin_mm": [
+        260,
+        150
+      ],
+      "pins": {
+        "1": "/A01/REF5",
+        "2": "AGND",
+        "3": "/A01/REFN5",
+        "4": "/A01/IN_BUFFER",
+        "5": "/A01/OFFSET_BUFFER",
+        "6": "/A01/SUM_NEG",
+        "7": "AGND",
+        "MP1": null,
+        "MP2": null
+      },
+      "sweep": {
+        "box_mm": [
+          251.65,
+          146.9,
+          268.35,
+          157.0
+        ],
+        "z_mm": [
+          26.1,
+          48.4
+        ]
+      }
+    }
+  },
+  "not_modelled": [
+    "other harness cables (C-SIG, K-PWR, tails) as routed bodies",
+    "GHR housing latch geometry beyond the Stage10 sweep",
+    "fan-out and gather transitions of flat legs",
+    "twist of the conductors",
+    "foreign PCB outlines (only per-part XY projections are known); the release dips and the panel-side reach to the middle headers pass the foreign PCB plane z 20-21.6",
+    "the real GH unmating travel; the Stage10 15 mm axial release is used for every release case"
+  ],
+  "obstacle_classes": {
+    "DIN-mated-body": 1,
+    "board": 7,
+    "body": 90,
+    "core-extraction-40mm": 1,
+    "crossmember": 8,
+    "foreign": 429,
+    "foreign-depth": 429,
+    "handle": 2,
+    "head": 14,
+    "rail": 13,
+    "release": 8,
+    "spacer": 14,
+    "tab": 2,
+    "tool": 14
+  },
+  "parameters": {
+    "awg_range": {
+      "class": "MAKER_SPEC_RANGE",
+      "source": ".claude/skills/component-jst-gh/facts.json#fact-gh-contact-rating",
+      "value": [
+        30,
+        26
+      ]
+    },
+    "bend_radius_maker_value": {
+      "class": "UNKNOWN",
+      "note": "JST eGH states no bend radius; the wire maker must state it (Q-H01/Q-H02).",
+      "source": ".claude/skills/component-jst-gh/facts.json#fact-gh7-header-assembly",
+      "value": null
+    },
+    "component_body_height_mm": {
+      "class": "STAGE30_ASSUMPTION",
+      "note": "Envelope for A01-jack rear SMD parts. The nearby R0603/C0603 parts have no height in the retained evidence (component-passives-family facts carry no dimensions).",
+      "value": 3.0
+    },
+    "conductors": {
+      "J-PWR": 4,
+      "J-SIG": 7,
+      "class": "PROJECT_DATA",
+      "source": "design/architecture-278/implementation/stage28/harness-ledger.json"
+    },
+    "design_bend_radius_mm": {
+      "class": "STAGE30_ASSUMPTION",
+      "note": "5 x OD, for comparison only. Each route also reports the largest uniform radius it admits.",
+      "value": 5.0
+    },
+    "flat_layer": {
+      "class": "DESIGN_MODEL",
+      "note": "FLAT_SINGLE_LAYER legs are modelled as n side-by-side round conductors one OD apart along the stated horizontal axis; the fan-out and gather transitions are not modelled."
+    },
+    "foreign_depth": {
+      "class": "UNKNOWN",
+      "note": "The Stage30 cap (z 34) is dropped. Each route reports, per foreign part under it, the highest top z that part may reach; that is a requirement, not an assumption.",
+      "sources": [
+        ".claude/skills/component-qingpu-wqp518ma/facts.json#fact-wqp-panel-stack",
+        ".claude/skills/component-dailywell-2ms1t1b1m2qes-5/facts.json#fact-2ms1-panel-fit"
+      ],
+      "value": null
+    },
+    "foreign_depth_cap_reference_mm": {
+      "class": "STAGE30_ASSUMPTION",
+      "note": "Used only as the K3 comparison reference (12.4 mm rear-side height above z 21.6); no route relies on it.",
+      "value": 34
+    },
+    "foreign_depth_search_top_z_mm": {
+      "class": "DESIGN_MODEL",
+      "note": "Foreign-depth volumes are searched up to the A01-middle front face.",
+      "value": 48.4
+    },
+    "foreign_pcb_rear_z_mm": {
+      "class": "STAGE10_CONDITIONAL",
+      "source": "design/grid/placements.lock.json default assembly PCB z -20 plus 1.6 mm (assembly.locked_hardware)",
+      "value": 21.6
+    },
+    "mated_height_mm": {
+      "class": "MAKER_SPEC_REFERENCE",
+      "note": "Reference mated height. The housing exit sits this far from the board face.",
+      "source": ".claude/skills/component-jst-gh/facts.json#fact-gh7-housing-geometry",
+      "value": 7.3
+    },
+    "notch_allowance_mm": {
+      "class": "DESIGN_CHOICE",
+      "note": "Each proposed notch is the window and depth the route envelope needs (margin included), widened and deepened by 0.3 mm (0.1 mm sampling deduction plus the K4 spare) and rounded outward to 0.1 mm.",
+      "value": 0.3
+    },
+    "placement_margin_mm": {
+      "class": "STAGE30_ASSUMPTION",
+      "note": "Allowance for wire placement and part tolerance; required surface clearance to every modelled keep-out and between the two cables.",
+      "value": 0.5
+    },
+    "rail_section_mm": {
+      "class": "STAGE10_PROPOSAL",
+      "depth": 12,
+      "source": "stage10 carrier_frames.middle rails_boxes_mm / z_mm",
+      "width": 6
+    },
+    "release_travel_mm": {
+      "class": "STAGE10_PROPOSAL",
+      "source": "stage10 connector_release_sweeps scope: Mated7.3mm+15mm axial release",
+      "value": 15
+    },
+    "robust_spare_mm": {
+      "class": "DESIGN_CHOICE",
+      "note": "K4: smallest spare beyond the placement margin (after the 0.1 mm sampling deduction) a candidate should keep.",
+      "value": 0.15
+    },
+    "round_bundle_factor": {
+      "J-PWR": 2.414213562373095,
+      "J-SIG": 3.0,
+      "class": "DESIGN_MODEL",
+      "note": "Bundle diameter / OD for round conductors: 7 hexagonally packed = 3; 4 in a ring = 1 + sqrt 2 (Stage30)."
+    },
+    "service_slack_mm": {
+      "class": "STAGE10_PROPOSAL",
+      "source": "Stage10 minimum proxy slack rule for GH cuts (Stage30 route-input)",
+      "value": 10
+    },
+    "stage10_cut_mm": {
+      "class": "STAGE10_PROPOSAL",
+      "note": "Compared only; not a requirement. Stage31 lengths are design lengths, never cut lengths.",
+      "value": [
+        90,
+        3
+      ]
+    },
+    "straight_lead_mm": {
+      "class": "DESIGN_CHOICE",
+      "note": "Straight conductor length kept from each housing exit before the first bend; no maker value is retained.",
+      "value": 2.0
+    },
+    "sweep_xy_margin_mm": {
+      "class": "STAGE10_PROPOSAL",
+      "source": "stage10 connector_release_sweeps scope: 2mm latch/tool XY margin proposal",
+      "value": 2.0
+    },
+    "wire_od_mm": {
+      "class": "MAKER_SPEC_RANGE",
+      "note": "JST eGH SSHL-002T-P0.2 applicable insulation OD. No wire MPN is selected (Stage28 Q-H02), so every envelope uses the upper end.",
+      "range": [
+        0.76,
+        1.0
+      ],
+      "source": ".claude/skills/component-jst-gh/facts.json#fact-gh-contact-rating",
+      "value": 1.0
+    }
+  },
+  "status": "DESIGN_STUDY_INPUT_NOT_MEASURED",
+  "straight_proxies_cross_rail_middle_0": {
+    "H-J-PWR-1": true,
+    "H-J-PWR-2": true,
+    "H-J-PWR-3": true,
+    "H-J-PWR-4": true,
+    "H-J-SIG-1": true,
+    "H-J-SIG-2": true,
+    "H-J-SIG-3": true,
+    "H-J-SIG-4": true,
+    "H-J-SIG-5": true,
+    "H-J-SIG-6": true,
+    "H-J-SIG-7": true
+  }
+}

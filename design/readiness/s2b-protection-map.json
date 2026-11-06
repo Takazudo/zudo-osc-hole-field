@@ -1,0 +1,979 @@
+{
+ "schema_version": 1,
+ "status": "Adopted S2b (decisions E13, E15); fault rows revised after the independent review",
+ "sources": {
+  "adg": {
+   "title": "ADG5412F/ADG5413F data sheet Rev. C",
+   "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/adg5412f_5413f.pdf",
+   "path": "circuit/sources/ic-library/ADG5412F.pdf",
+   "sha256": "ea3d12f983fc79a728d302675a0428a6d244e95828154bc4c970d34e23195a96",
+   "authority_class": "MANUFACTURER_PRIMARY"
+  },
+  "tmux7412f": {
+   "title": "TMUX741xF SCDS404B (November 2022)",
+   "url": "https://www.ti.com/lit/ds/symlink/tmux7412f.pdf",
+   "path": ".circuit-cache/sources/readiness-20261031/ds/tmux7412f.pdf",
+   "sha256": "7396d8a34f80b178a8b5c72272b5bb0eb7da7ad3182e7d3cd80d294fc32f26e5",
+   "authority_class": "MANUFACTURER_PRIMARY"
+  },
+  "tmux6112": {
+   "title": "TMUX611x SCDS383F (July 2025)",
+   "url": "https://www.ti.com/lit/ds/symlink/tmux6112.pdf",
+   "path": ".circuit-cache/sources/readiness-20261031/ds/tmux6112.pdf",
+   "sha256": "c0fab3135a4438048a759aa91b33480f95f01140885896e3bfa1202a9daa2ae1",
+   "authority_class": "MANUFACTURER_PRIMARY"
+  }
+ },
+ "input_placements_per_unit": 98,
+ "placement_groups": 31,
+ "jack_on_protected_source_per_unit": 98,
+ "errors": [],
+ "placements": [
+  {
+   "family": "sample_hold",
+   "instances": 2,
+   "stem": "input_fault_switch_J_H1_TRIGGER___U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "TRIGGER_TIP",
+   "local_net": "TRIGGER_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "sample_hold",
+   "instances": 2,
+   "stem": "input_fault_switch_J_H1_IN___U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "IN_TIP",
+   "local_net": "IN_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "oscillator",
+   "instances": 5,
+   "stem": "input_fault_switch_J_O1_1V_1V__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "1V_TIP",
+   "local_net": "1V_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "oscillator",
+   "instances": 5,
+   "stem": "input_fault_switch_J_O1_1V_FM__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "FM_TIP",
+   "local_net": "FM_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "oscillator",
+   "instances": 5,
+   "stem": "input_fault_switch_J_O1_1V_PWM__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "PWM_TIP",
+   "local_net": "PWM_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "oscillator",
+   "instances": 5,
+   "stem": "input_fault_switch_J_O1_1V_SYNC__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "SYNC_TIP",
+   "local_net": "SYNC_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "filter",
+   "instances": 3,
+   "stem": "CORE_input_fault_switch_J_F1_IN_IN__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "IN_TIP",
+   "local_net": "IN_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "filter",
+   "instances": 3,
+   "stem": "CORE_input_fault_switch_J_F1_IN_FREQ__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "FREQ_TIP",
+   "local_net": "FREQ_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "filter",
+   "instances": 3,
+   "stem": "CORE_input_fault_switch_J_F1_IN_RES__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "RES_TIP",
+   "local_net": "RES_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "filter",
+   "instances": 3,
+   "stem": "CORE_input_fault_switch_J_F1_IN_GAIN__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "GAIN_TIP",
+   "local_net": "GAIN_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "envelope",
+   "instances": 6,
+   "stem": "CORE_input_fault_switch_J_E1_SIG_SIG__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "SIG_TIP",
+   "local_net": "SIG_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "envelope",
+   "instances": 6,
+   "stem": "CORE_input_fault_switch_J_E1_SIG_RISE__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "RISE_TIP",
+   "local_net": "RISE_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "envelope",
+   "instances": 6,
+   "stem": "CORE_input_fault_switch_J_E1_SIG_FALL__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "FALL_TIP",
+   "local_net": "FALL_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mult",
+   "instances": 2,
+   "stem": "CORE_input_fault_switch_J_B1_IN_IN__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "IN_TIP",
+   "local_net": "IN_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "manual_ab",
+   "instances": 2,
+   "stem": "CORE_input_fault_switch_J_X1_IN_A_A__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "A_TIP",
+   "local_net": "A_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "manual_ab",
+   "instances": 2,
+   "stem": "CORE_input_fault_switch_J_X1_IN_A_B__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "B_TIP",
+   "local_net": "B_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix5",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M5A_1_1__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "1_TIP",
+   "local_net": "1_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix5",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M5A_1_2__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "2_TIP",
+   "local_net": "2_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix5",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M5A_1_3__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "3_TIP",
+   "local_net": "3_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix5",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M5A_1_4__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "4_TIP",
+   "local_net": "4_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix5",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M5A_1_5__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "5_TIP",
+   "local_net": "5_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix4_vca",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M4A_1_1__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "1_TIP",
+   "local_net": "1_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix4_vca",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M4A_1_2__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "2_TIP",
+   "local_net": "2_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix4_vca",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M4A_1_3__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "3_TIP",
+   "local_net": "3_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix4_vca",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M4A_1_4__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "4_TIP",
+   "local_net": "4_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "mix4_vca",
+   "instances": 2,
+   "stem": "G1_input_fault_switch_J_M4A_1_ATTEN__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "ATTEN_TIP",
+   "local_net": "ATTEN_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "wavefolder",
+   "instances": 2,
+   "stem": "CORE_input_fault_switch_J_W2_IN_IN__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "IN_TIP",
+   "local_net": "IN_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "wavefolder",
+   "instances": 2,
+   "stem": "CORE_input_fault_switch_J_W2_IN_FOLD__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "FOLD_TIP",
+   "local_net": "FOLD_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "wavefolder",
+   "instances": 2,
+   "stem": "CORE_input_fault_switch_J_W2_IN_BIAS__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "BIAS_TIP",
+   "local_net": "BIAS_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "offset",
+   "instances": 6,
+   "stem": "CORE_input_fault_switch_J_A01_IN_IN__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "IN_TIP",
+   "local_net": "IN_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  },
+  {
+   "family": "offset",
+   "instances": 6,
+   "stem": "CORE_input_fault_switch_J_A01_IN_OFFSET__U",
+   "adg_source_pin": "3 (S1 protected source)",
+   "adg_drain_pin": "2 (D1 drain)",
+   "jack_net": "OFFSET_TIP",
+   "local_net": "OFFSET_PROTECTED",
+   "jack_faces": "SOURCE",
+   "tmux7412f_wqfn": {
+    "jack": "S1 pad 1",
+    "local": "D1 pad 16",
+    "enable": "SEL1 pad 15"
+   },
+   "tmux_protected_side_faces_jack": true
+  }
+ ],
+ "fault_rows": [
+  {
+   "row": "F1 powered, +/-12 V on the jack (input_continuous_fault_V)",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Within VSS - VT .. VDD + VT the switch passes the signal (Rev. C index 25, page 26, Power-On Protection); downstream 10 k + BAT54S unchanged"
+   },
+   "tmux7412f": {
+    "verdict": "PASS",
+    "basis": "Survival: overvoltage only beyond the supplies by VT (SCDS404B index 32, 9.3.2.4). Signal passing is a separate condition: VT is 0.7 V typical at 25 C only (7.5), RON rises exponentially within 3 V of VDD (9.3.4), and no RON maximum exists at +/-12 V (7.6 is +/-15 V +/-10 %, VS = -10..+10 V). Usable signal range: VSS .. VDD - 3 V, i.e. -12 .. +9 V at nominal rails. VDD - 3 V is guaranteed only with VSS = 0 V (7.8: RON <= 15 ohm at 85 C for VS = 0..7.8 V, VDD = 10.8..13.2 V); at +/-12 V dual supply it is an extrapolation; see usable_signal_range"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F2 powered, jack beyond a rail (rail sag or external source above +/-12 V)",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Switch turns off; source to +/-55 V, 80 V across the channel (index 25, page 26)"
+   },
+   "tmux7412f": {
+    "verdict": "PASS",
+    "basis": "Switch turns off regardless of logic; source to +/-60 V, 85 V source-to-supply and source-to-drain (index 31, 9.3.2.1; index 32, 9.3.2.4)"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F3 unpowered, rails at 0 V, GND present, +/-12 V on the jack",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Switch off, inputs high impedance, +/-55 V blocked (index 25, Power-Off Protection). Source leakage +/-40 uA typical only; drain leakage +/-50 nA max at 85 C (Table 1, index 2)"
+   },
+   "tmux7412f": {
+    "verdict": "PASS",
+    "basis": "Sources Hi-Z, +/-60 V blocked (index 32, 9.3.2.2). IS(FA) grounded +/-125 uA is TYPICAL only (7.6 TYP column; no maximum), so source-side fault leakage has no guaranteed bound, as for ADG5412F. ID(FA) grounded +/-50 nA is a maximum at 85 C (7.6, index 6)"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F4 unpowered, rails floating, GND present",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Off whether supplies are 0 V or floating (index 25). Floating drain leakage +/-10 uA typical only"
+   },
+   "tmux7412f": {
+    "verdict": "PASS",
+    "basis": "Hi-Z with VDD/VSS 0 V or floating (index 32). Floating-rail leakage recorded as typical only (protection59-sources.json)"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F5 GND absent (return open, board unplugged)",
+   "adg5412f": {
+    "verdict": "FAIL",
+    "basis": "Datasheet: a GND reference must always be present (index 25). Outside the protected envelope"
+   },
+   "tmux7412f": {
+    "verdict": "FAIL",
+    "basis": "Same requirement (index 32, 9.3.2.2). No regression from ADG5412F"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F6 one analog rail missing, other present",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Single-supply operation 8..44 V is specified; an input outside the remaining span is an overvoltage and turns the switch off. Conditional on VDD - VSS >= 8 V for the on state"
+   },
+   "tmux7412f": {
+    "verdict": "UNKNOWN",
+    "basis": "-12 V missing, +12 V present: PASS, VSS = 0 V is a specified single supply (VDD - VSS >= 8 V; 7.4, 9.1). +12 V missing, -12 V present: UNKNOWN, VDD = 0 V is below the recommended VDD minimum of 5 V (7.4) while the UVLO is defined on VDD - VSS = 12 V (7.5), so the device is not powered off by that definition and no datasheet text covers the state"
+   },
+   "changes_with_tmux7412f": true
+  },
+  {
+   "row": "F7 +5 V enable present before the analog rails (startup, R-ADG)",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Digital inputs tolerated without power; switch guaranteed off (index 25, Digital Input Protection); logic to 44 V"
+   },
+   "tmux7412f": {
+    "verdict": "PASS",
+    "basis": "Fail-safe logic: logic before supplies, switch OFF, logic to +44 V (index 32, 9.3.2.3)"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F8 rail lift: a patched input must not energize an unpowered rail (bare-clamp rejection)",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Source pins have specialized ESD with no diode path to the rails (index 24, ESD Performance)"
+   },
+   "tmux7412f": {
+    "verdict": "PASS",
+    "basis": "Same statement: source ESD allows +/-60 V regardless of supply; powered-off protection prevents back-powering (index 32, 9.3.2.2 and 9.3.2.5)"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F9 several inputs patched at once in one quad (ADG-1/ADG-3 packing)",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Rev. C index 24, page 25, Switch Architecture: \"the channels undisturbed by the overvoltage input continue to operate normally without additional crosstalk\"; 80 V channel stress (index 25). Project worst case 24 V. Qualitative manufacturer statement, no table limit"
+   },
+   "tmux7412f": {
+    "verdict": "UNKNOWN",
+    "basis": "No published statement on undisturbed channels; only the 85 V source-to-drain stress rule (index 31) and -100 dB AC crosstalk. FF is shared across the four sources"
+   },
+   "changes_with_tmux7412f": true
+  },
+  {
+   "row": "F10 drain leakage and RON on pitch-sensitive inputs",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "RON 14 ohm max, ID(on) +/-2.0 nA max at 85 C, +/-15 V table (Table 1); +/-12 V not guaranteed"
+   },
+   "tmux7412f": {
+    "verdict": "PASS",
+    "basis": "Conditional: inside the usable signal range VSS .. VDD - 3 V (-12 .. +9 V at nominal rails) into the 100 k R_PD drain load. RON 14 ohm max and ID(ON) +/-2 nA max at 85 C exist in the +/-15 V +/-10 % table for VS = -10..+10 V (7.6); RON 15 ohm and RFLAT 0.5 ohm max at 85 C exist in the 12 V single-supply table for VS = 0..7.8 V (7.8, VSS = 0 V). Neither is a +/-12 V dual-supply guarantee. Above VDD - 3 V RON rises exponentially (9.3.4): UNKNOWN there"
+   },
+   "changes_with_tmux7412f": false
+  },
+  {
+   "row": "F11 land and pin map (drop-in)",
+   "adg5412f": {
+    "verdict": "PASS",
+    "basis": "Current TSSOP-16 land"
+   },
+   "tmux7412f": {
+    "verdict": "FAIL",
+    "basis": "Orderable only as WQFN-16 RRP (addendum index 40); the TSSOP-16 PW package with the ADG pin order is marked Preview. New land and pin map: S1 = pad 1, D1 = pad 16, SEL1 = pad 15"
+   },
+   "changes_with_tmux7412f": true
+  }
+ ],
+ "fault_row_summary": {
+  "adg5412f": {
+   "PASS": 10,
+   "FAIL": 1
+  },
+  "tmux7412f": {
+   "PASS": 7,
+   "FAIL": 2,
+   "UNKNOWN": 2
+  }
+ },
+ "usable_signal_range": {
+  "range_V": [
+   -12,
+   9
+  ],
+  "basis": "VSS .. VDD - 3 V at nominal +/-12 V rails (9.3.4). Guaranteed only with VSS = 0 V: 7.8 gives RON <= 15 ohm (-40..85 C) for VS = 0..7.8 V at VDD = 10.8..13.2 V. At +/-12 V dual supply the limit is an extrapolation, not a table condition. The fault detector opens the switch beyond VDD + VT / VSS - VT, VT 0.7 V typical at 25 C only (7.5)",
+  "roles": [
+   {
+    "role": "audio inputs (filter IN, mix4 1-4, mix5 1-5, wavefolder IN, manual_ab A/B, mult IN, sample_hold IN, offset IN)",
+    "inputs_per_unit": 37,
+    "normal_swing_V": [
+     -5,
+     5
+    ],
+    "class": "audio_nominal_V / mult nominal linear range",
+    "verdict": "PASS",
+    "margin_V": 4
+   },
+   {
+    "role": "bipolar CV inputs (envelope RISE/FALL, filter FREQ/RES/GAIN, mix4 ATTEN, offset OFFSET, oscillator FM/PWM, wavefolder FOLD/BIAS)",
+    "inputs_per_unit": 43,
+    "normal_swing_V": [
+     -5,
+     5
+    ],
+    "class": "bipolar_cv_nominal_V",
+    "verdict": "PASS",
+    "margin_V": 4
+   },
+   {
+    "role": "gate and trigger inputs (envelope SIG, oscillator SYNC, sample_hold TRIGGER)",
+    "inputs_per_unit": 13,
+    "normal_swing_V": [
+     0,
+     5
+    ],
+    "class": "gate_output_nominal_V (project gate level)",
+    "verdict": "PASS",
+    "margin_V": 4,
+    "note": "External gates above +9 V (common 0..10 V sources) enter the rising-RON region; into the high-impedance comparator path this is UNKNOWN, not FAIL"
+   },
+   {
+    "role": "pitch input (oscillator 1V/OCT)",
+    "inputs_per_unit": 5,
+    "normal_swing_V": [
+     -5,
+     8
+    ],
+    "class": "pitch_linear_range_V (USER DECISION 2026-11-01 13:41Z (decision card): option A1 of the phase-21 pitch-range study. Linear passing range of the 1V/OCT inputs only; calibrated accuracy stays limited to calibration.pitch_tracking_scope.)",
+    "verdict": "PASS",
+    "margin_V": 0.53,
+    "basis": {
+     "nominal_flat_top_V": 9.0,
+     "required_low_V": 11.53,
+     "low_band_flat_top_V": 8.53,
+     "rail_band_source": "design/power/supply-architecture-input.json source_requirement.required_load_voltage_magnitude_V +12V (requirement contract; source NOT SELECTED)"
+    },
+    "note": "Verdict covers signal passing only. The top of the declared range is compared with VDD - 3 V at the required +12V minimum; that limit is guaranteed only at VSS = 0 V (7.8) and extrapolated at +/-12 V. The bottom lies in the flat region down to VSS. Downstream: OPA4197 VCM (V-) - 0.1 .. (V+) + 0.1 V is guaranteed; its input-stage transition (V+) - 3 .. (V+) - 1.5 V has no CMRR limit, and the declared top stays below it at that minimum. Accuracy is a separate gate: calibration scope stays 0..5 V at 25 C; the clamp-leakage term is in precision_input_clamp (BAV199,215 precision variant on these inputs)"
+   }
+  ]
+ },
+ "envelope_internal_tmux6112": [
+  {
+   "row": "Pin map",
+   "verdict": "PASS",
+   "basis": "TSSOP-16 order matches the ADG5412F land: SEL1 1, D1 2, S1 3, VSS 4, GND 5 ... pin 12 is NC where ADG has FF, which the project leaves unconnected (SCDS383F Table 5-1, index 3)"
+  },
+  {
+   "row": "Logic sense",
+   "verdict": "PASS",
+   "basis": "Logic 1 turns the switches on, as ADG5412F (Description, index 0)"
+  },
+  {
+   "row": "Supply",
+   "verdict": "PASS",
+   "basis": "+/-5 .. +/-17 V dual (Features, index 0)"
+  },
+  {
+   "row": "Signal range",
+   "verdict": "PASS",
+   "basis": "VA = VSS .. VDD; envelope nodes REF9/REF8/AGND are inside the rails when powered"
+  },
+  {
+   "row": "RON",
+   "verdict": "PASS",
+   "basis": "210 ohm max at VS = +/-10 V, 85 C (6.5, index 5) in series with the 899 k drive divider and the hold clamp"
+  },
+  {
+   "row": "Hold-node leakage",
+   "verdict": "PASS",
+   "basis": "IS(OFF)/ID(OFF) -0.14 .. +0.05 nA at 85 C, ID(ON) -0.25 .. +0.1 nA (6.5, index 5); +/-15 V table, not a +/-12 V guarantee"
+  },
+  {
+   "row": "Fault protection",
+   "verdict": "NOT APPLICABLE",
+   "basis": "Not fault protected; analog pins VSS - 0.3 .. VDD + 0.3 V (6.1, index 4). The envelope switches are internal, not jack facing"
+  },
+  {
+   "row": "Logic before rails",
+   "verdict": "PASS",
+   "basis": "SELx absolute maximum is VDD + 0.3 V (6.1, index 4). Candidate SEL hold: 100 k pull-up to +5 V, BAT54S clamp to +12V and a BAT54S pull-down to the logic output; SEL <= VDD + 0.24 V at 25 C (VF max at 0.1 mA). Below 25 C the VF margin is UNKNOWN (no curve)"
+  },
+  {
+   "row": "Logic before rails, PD definition 1",
+   "verdict": "PASS",
+   "basis": "Merged canonical row (f8e048f3) restated for the SEL hold. Definition 1 lets +5 V reach 0.8 V while VDD < 0.5 V; with the direct HC drive that exceeded VDD + 0.3 V. With the hold the driver only pulls SEL down through the BAT54S pull-down and the 100 k pull-up is clamped to +12V, so SEL <= VDD + 0.24 V at 25 C (VF max at 0.1 mA, hold current <= 54.5 uA) whatever the +5 V ramp; below 25 C UNKNOWN (no VF curve)"
+  },
+  {
+   "row": "SEL series resistor (current row only)",
+   "verdict": "PASS",
+   "basis": "Merged canonical row (f8e048f3): IDIG <= 30 mA (6.1, index 4). The SEL hold limits SEL current to the 100 k pull-up, <= 5.5 V / 100 k = 55 uA (5.5 V is a PROPOSED +5 V ceiling, not a sourced PD value), so the proposed separate 1 kOhm series resistor is not fitted"
+  }
+ ],
+ "precision_input_clamp": {
+  "status": "Adopted S2b (E15; phase 24 BAV199 rail clamp; phase 25 bootstrap clamp D_BOOT): precision variant of high_impedance_input",
+  "model": {
+   "r_eff_ohm": 11001.9,
+   "r_eff_basis": "R_LIMIT + R_PD || (signals.output_series_ohm + TMUX7412F RON 14 ohm)",
+   "drift_definition": "max over the role range (0.5 V steps) and the temperature span of |e(V,T) - e(V,25 C)|; cents at 1 V/oct (1 mV = 1.2 c)",
+   "before": "BAT54S,215 typical Fig. 2 curves (project digitisation), log-interpolated in temperature and extrapolated below 25 C; no guaranteed bound exists",
+   "after_bound": "(IR max at the top temperature + IR max at 25 C) x r_eff; BAV199 Fig. 4 curve (1) at VR = 75 V, assuming IR does not rise at lower VR or below 25 C; source is the JLCPCB-hosted mirror (UNSOURCED until a manufacturer-hosted copy is compared)",
+   "after_typical": "Fig. 4 curve (2) typical values",
+   "bootstrap": "D_BOOT error r_eff x 2 Is sinh(VOS / Vt); its diode voltage is set by the follower, so it adds to and does not divert the BAV199 leakage term, which is unchanged. Typical drift uses Is = BAT54S typical IR at 1 V (an upper estimate) and |VOS| = 100 uV + drift x |T - 25 C|"
+  },
+  "roles": [
+   {
+    "role": "pitch (oscillator 1V/OCT)",
+    "range_V": [
+     -5,
+     8
+    ],
+    "range_source": "signals.pitch_linear_range_V",
+    "follower": "OPA4197",
+    "placements": [
+     {
+      "stem": "high_impedance_input_J_O1_1V_1V__D",
+      "mpn": "BAV199,215",
+      "per_unit": 5
+     }
+    ],
+    "bootstrap_placements": [
+     {
+      "stem": "high_impedance_input_J_O1_1V_1V__D_BOOT",
+      "mpn": "BAT54S,215",
+      "per_unit": 5
+     }
+    ],
+    "bootstrap_25C": {
+     "offset_bound_mV": 0.1713,
+     "offset_bound_cents": 0.206,
+     "basis": "Is <= 2 uA (BAT54S IR maximum at 25 V, 25 C), |VOS| <= 100 uV; a fixed offset removed by the 25 C trim"
+    },
+    "0-40 C": {
+     "before_bat54s_typical_drift_mV": 13.385,
+     "before_bat54s_typical_drift_cents": 16.06,
+     "before_bat54s_guaranteed": "UNKNOWN (BAT54S IR maximum only at 25 C)",
+     "after_bav199_bound_mV": 0.1276,
+     "after_bav199_bound_cents": 0.153,
+     "after_bav199_typical_mV": 0.00011,
+     "bootstrap_typical_drift_mV": 0.0797,
+     "bootstrap_typical_drift_cents": 0.096,
+     "bootstrap_guaranteed": "UNKNOWN (no BAT54S IR maximum above 25 C; VOS drift maximum)",
+     "total_after_cents": 0.249
+    },
+    "0-70 C": {
+     "before_bat54s_typical_drift_mV": 112.335,
+     "before_bat54s_typical_drift_cents": 134.8,
+     "before_bat54s_guaranteed": "UNKNOWN (BAT54S IR maximum only at 25 C)",
+     "after_bav199_bound_mV": 0.198,
+     "after_bav199_bound_cents": 0.238,
+     "after_bav199_typical_mV": 0.00042,
+     "bootstrap_typical_drift_mV": 1.4385,
+     "bootstrap_typical_drift_cents": 1.726,
+     "bootstrap_guaranteed": "UNKNOWN (no BAT54S IR maximum above 25 C; VOS drift maximum)",
+     "total_after_cents": 1.964
+    }
+   },
+   {
+    "role": "MULT IN",
+    "range_V": [
+     -5,
+     5
+    ],
+    "range_source": "signals.bipolar_cv_nominal_V",
+    "follower": "OPA4197",
+    "placements": [
+     {
+      "stem": "CORE_high_impedance_input_J_B1_IN_IN__D",
+      "mpn": "BAV199,215",
+      "per_unit": 2
+     }
+    ],
+    "bootstrap_placements": [
+     {
+      "stem": "CORE_high_impedance_input_J_B1_IN_IN__D_BOOT",
+      "mpn": "BAT54S,215",
+      "per_unit": 2
+     }
+    ],
+    "bootstrap_25C": {
+     "offset_bound_mV": 0.1713,
+     "offset_bound_cents": 0.206,
+     "basis": "Is <= 2 uA (BAT54S IR maximum at 25 V, 25 C), |VOS| <= 100 uV; a fixed offset removed by the 25 C trim"
+    },
+    "0-40 C": {
+     "before_bat54s_typical_drift_mV": 8.278,
+     "before_bat54s_typical_drift_cents": 9.93,
+     "before_bat54s_guaranteed": "UNKNOWN (BAT54S IR maximum only at 25 C)",
+     "after_bav199_bound_mV": 0.1276,
+     "after_bav199_bound_cents": 0.153,
+     "after_bav199_typical_mV": 0.00011,
+     "bootstrap_typical_drift_mV": 0.0797,
+     "bootstrap_typical_drift_cents": 0.096,
+     "bootstrap_guaranteed": "UNKNOWN (no BAT54S IR maximum above 25 C; VOS drift maximum)",
+     "total_after_cents": 0.249
+    },
+    "0-70 C": {
+     "before_bat54s_typical_drift_mV": 68.323,
+     "before_bat54s_typical_drift_cents": 81.99,
+     "before_bat54s_guaranteed": "UNKNOWN (BAT54S IR maximum only at 25 C)",
+     "after_bav199_bound_mV": 0.198,
+     "after_bav199_bound_cents": 0.238,
+     "after_bav199_typical_mV": 0.00042,
+     "bootstrap_typical_drift_mV": 1.4385,
+     "bootstrap_typical_drift_cents": 1.726,
+     "bootstrap_guaranteed": "UNKNOWN (no BAT54S IR maximum above 25 C; VOS drift maximum)",
+     "total_after_cents": 1.964
+    }
+   },
+   {
+    "role": "S&H IN",
+    "range_V": [
+     -5,
+     5
+    ],
+    "range_source": "signals.bipolar_cv_nominal_V",
+    "follower": "OPA4196",
+    "placements": [
+     {
+      "stem": "high_impedance_input_J_H1_IN___D",
+      "mpn": "BAV199,215",
+      "per_unit": 2
+     }
+    ],
+    "bootstrap_placements": [
+     {
+      "stem": "high_impedance_input_J_H1_IN___D_BOOT",
+      "mpn": "BAT54S,215",
+      "per_unit": 2
+     }
+    ],
+    "bootstrap_25C": {
+     "offset_bound_mV": 0.1713,
+     "offset_bound_cents": 0.206,
+     "basis": "Is <= 2 uA (BAT54S IR maximum at 25 V, 25 C), |VOS| <= 100 uV; a fixed offset removed by the 25 C trim"
+    },
+    "0-40 C": {
+     "before_bat54s_typical_drift_mV": 8.278,
+     "before_bat54s_typical_drift_cents": 9.93,
+     "before_bat54s_guaranteed": "UNKNOWN (BAT54S IR maximum only at 25 C)",
+     "after_bav199_bound_mV": 0.1276,
+     "after_bav199_bound_cents": 0.153,
+     "after_bav199_typical_mV": 0.00011,
+     "bootstrap_typical_drift_mV": 0.0462,
+     "bootstrap_typical_drift_cents": 0.055,
+     "bootstrap_guaranteed": "UNKNOWN (no BAT54S IR maximum above 25 C; VOS drift typical only)",
+     "total_after_cents": 0.209
+    },
+    "0-70 C": {
+     "before_bat54s_typical_drift_mV": 68.323,
+     "before_bat54s_typical_drift_cents": 81.99,
+     "before_bat54s_guaranteed": "UNKNOWN (BAT54S IR maximum only at 25 C)",
+     "after_bav199_bound_mV": 0.198,
+     "after_bav199_bound_cents": 0.238,
+     "after_bav199_typical_mV": 0.00042,
+     "bootstrap_typical_drift_mV": 0.6349,
+     "bootstrap_typical_drift_cents": 0.762,
+     "bootstrap_guaranteed": "UNKNOWN (no BAT54S IR maximum above 25 C; VOS drift typical only)",
+     "total_after_cents": 1.0
+    }
+   }
+  ],
+  "placements_per_unit": {
+   "BAT54S,215": 89,
+   "BAV199,215": 9
+  },
+  "bootstrap_per_unit": 9,
+  "opa4197_input_absolute_maximum": {
+   "rows": "SBOS737C 6.1 (index 4): signal input pins, common-mode (V-) - 0.5 .. (V+) + 0.5 V; current +/-10 mA. Footnote (1) is the general stress note; no footnote lets the voltage row be exceeded when the current is limited. 7.3.7 (index 24-25): the ESD steering diodes are intended to remain inactive in normal operation; current-limiting resistors and TVS are named only for EOS events. OPA4196 (S&H IN) has the same rows in SBOS869 6.1",
+   "reading": "Both rows apply. The VDD .. VDD + VT window is therefore not PASS on the current row alone",
+   "declared_contract": "With input_continuous_fault_V +/-12 V and the required load-rail minima (+12V 11.53 V, -12V 11.74 V) the jack exceeds the local rail by at most 0.47 V / 0.26 V: PASS against (V+) + 0.5 V with 0.03 V margin, independent of the clamp diode",
+   "beyond_contract_without_bootstrap": "A source at the supply maximum (+12V 12.3 V at source) against a load rail at 11.53 V gives 0.77 V. Then SENSE - V+ <= min(VT, VF): BAT54S rail clamp VF <= 0.24 V at 0.1 mA, 25 C only; BAV199 VF has no maximum below 1 mA (UNKNOWN)",
+   "beyond_contract_with_bootstrap": {
+    "bound": "SENSE - V+ <= VF(D_BOOT) + I x ZO <= 0.24 + 0.026 = 0.266 V",
+    "basis": "The follower output limits at the rail (no phase reversal: OPA4197 SBOS737C 7.3.3 index 21, OPA4196 SBOS869 7.3.3 index 20). With the TMUX7412F drain inside its own absolute maximum (Dx <= VDD + 0.7 V, SCDS404B 7.1; beyond it the switch row fails first), I <= 70 uA through R_LIMIT and BAT54S VF <= 0.24 V (0.1 mA row, 25 C). ZO 375 ohm is the typical open-loop output impedance at 1 MHz (no maximum)",
+    "margin_V": 0.234,
+    "verdict": "PASS at 25 C (margin 0.23 V); below 25 C the BAT54S VF has no curve or maximum, so it is PASS only if VF rises by less than the margin (a Schottky tempco of about -1 to -2 mV/K, a general figure and not a BAT54S datasheet value, would add about 0.05 V at 0 C): UNKNOWN as a guarantee",
+    "negative_side": "Symmetric: SENSE >= V- - 0.266 V"
+   },
+   "current_row": "PASS: <= 70 uA, far below 10 mA; the follower output sinks or sources the same current",
+   "verdict_bav199_without_bootstrap": "PASS within the declared contract; beyond it UNKNOWN",
+   "verdict_with_bootstrap": "PASS within the declared contract; beyond it PASS at 25 C, UNKNOWN below 25 C (typical PASS)",
+   "not_covered": "Rail-missing and unpowered rows: with the follower unpowered D_BOOT clamps SENSE to the output pin, whose ESD diodes go to the dead rail; the BAV199 rail clamp is unchanged. Follower slewing: D_BOOT conducts while |SENSE - OUT| exceeds about 0.2 V during fast edges (transient only). NOT RUN"
+  }
+ }
+}

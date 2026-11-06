@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-17",
+  "decided_by": "OWNER",
+  "record_source": "Owner instruction to the Claude Code Cloud session (Stage33) continuing Issue #278 / draft PR #287 at 9a3b91169658569eb5702ef24f336b73b84c70ff: maker-compliant large-radius A01 harness and service-envelope design study",
+  "subject": "A01 J-SIG/J-PWR large-radius routing that respects the wire makers' bend rules, assembly and servicing, in one service model with the installed state, latch access, the 15 mm withdrawal and the core 40 mm movement",
+  "status": "DESIGN_STUDY_CHANGES_ALLOWED",
+  "changeable": {
+    "header_refs": [
+      "A01:J-SIG:middle",
+      "A01:J-PWR:middle"
+    ],
+    "header_changes": [
+      "position",
+      "orientation"
+    ],
+    "cable": [
+      "provisional design length",
+      "bundling",
+      "retention"
+    ],
+    "carrier_local_shape": [
+      "rail:middle:0"
+    ]
+  },
+  "broader_change_proposals": {
+    "header_mounting_face": "Moving A01:J-SIG:middle / A01:J-PWR:middle from the A01-middle front face (z 48.4) to its rear face (z 50). The board plane is unchanged, but the footprint side changes, so it is treated as a broader change: proposed for an owner decision, not adopted"
+  },
+  "fixed": [
+    "panel controls and jacks (design/grid/placements.lock.json)",
+    "nets and pin identities",
+    "locked component part numbers",
+    "DIN mapping and DIN positions",
+    "board planes",
+    "the service order: disconnect K-PWR, then withdraw the core 40 mm",
+    "A01:J-SIG:local and A01:J-PWR:local positions",
+    "the 15 mm withdrawal basis, the 0.5 mm placement margin and the 0.15 mm K4 threshold"
+  ],
+  "approval_required_before_use": [
+    "any broader change listed above",
+    "any change to a neighbouring (foreign) board, its outline or its parts",
+    "any reservation of volume",
+    "any adoption into canonical CAD"
+  ],
+  "scope_excludes": [
+    "merging, canonical CAD adoption, KiCad regeneration or fabrication output",
+    "ordering, quotes, purchases, uploads or supplier contact",
+    "native KiCad, ERC/DRC or simulation",
+    "energisation and physical tests",
+    "calling a design length a measured or cut length",
+    "promoting a calculation to a physical pass"
+  ]
+}

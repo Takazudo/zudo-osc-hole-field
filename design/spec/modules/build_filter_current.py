@@ -13,7 +13,8 @@ def build():
         a=dict(zip(RAILS,a));z=dict(zip(RAILS,z))
         for r in RAILS:typ[r]+=qty*a[r];upper[r]+=qty*z[r]
         rows.append({'load':label,'count':qty,'typical_unit_mA':a,'planning_unit_mA':z,'basis':basis})
-    for symbol,id in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('LM13700M_NOPB','ota')]:
+    for symbol,id in [('OPA4196IDR','opamp_audio'),('OPA4197IPWR','opamp_precision'),('OPA4197IDR','opamp_precision'),('ADG5412FBRUZ','fault_switches'),('TMUX7412FRRPR','fault_switches_tmux7412f'),('TMUX6112PWR','switches_tmux6112'),('LM13700M_NOPB','ota')]:
+        if not counts[symbol] and symbol.startswith(('OPA4197','ADG5412','TMUX')):continue
         x=LOADS[id];add(symbol,counts[symbol],[x['typical_unit_mA'][r] for r in RAILS],[x['planning_unit_mA'][r] for r in RAILS],x['basis'])
     add('Four magnitude indicators',4,(.25,.25,0),(1.25,1.25,0),'OSC-ES-1 brightness envelope; per-rail peaks need not coincide.')
     add('Four external output loads',4,(.05,.05,0),(.5,.5,0),'5 V into 100k typical / 10k planning load; no simultaneous-short guarantee.')

@@ -1,0 +1,19 @@
+{
+  "status": "APPROVED exact single bounded native operation",
+  "reviewer": "independent_review delegated agent; separate from runner author",
+  "source_commit": "5469def6cdf2a5f0f9d4a61cec88efbc7ac2130b",
+  "container_id": "928b3c5da5cc83a930a84448a0ff504f232d3bac27fd4dced70f19a80589fd51",
+  "reviewed_sha256": {
+    "container_runner.py": "66a8f6c6c2d73b37f5c6d560664d92397ee7c8d2c688348b02bc395e3f97717a",
+    "host_runner.py": "e7f4bf6aa4a00abfd03f7fd797027abe930a1af358725ed13f0e09502c598b25",
+    "capability.json": "13feb105c62716ba216ab8c0e885cf7e281b4667791725e5f87d96c794f2ae3d",
+    "docker-argv.json": "f3d3715257e8dff40a58ff9b1deccfd9935534bc3d3d97229966959265f6a4f4",
+    "input-binding.json": "e796b061d0b8f3a51434ca3ca29ba55724c34620ca506bc12f22a5001643366e",
+    "proposal.json": "4ed555d7ded9ab2b5bdee76a71658e16bafc28f2ef6234717e031b35f36d1abd"
+  },
+  "docker_inspect_sha256": "0ddf10b044250931e203b82c4617e2c1d6082da873b76f0ed8b8d8bb0d37a7b5",
+  "native_authorization": "Version only first; exactly 10.0.6 permits one sch export netlist --format kicadsexpr -o /output/netlist.net /inputs/a01.kicad_sch; no retries or other native operations",
+  "enforcement": "Observed cgroup cpu.max200000/100000 memory.max4294967296 swap0 pids128; shared tmpfs262144000 bytes; <=250MiB retention plus <=12MiB metadata; readonly root/inputs/control/mqueue, nonroot uid/gid1000 no root groups, alternate regular output locations not writable, network only lo; timeout KILL600 entire container; single held heavy guard checked by runner",
+  "scope": "Logical native parse and independent parity only; no electrical/PCB/procurement acceptance",
+  "native_commands_run_by_reviewer": false
+}

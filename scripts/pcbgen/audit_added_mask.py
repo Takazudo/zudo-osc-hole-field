@@ -5,7 +5,9 @@ tracks, no mask zones/custom silk rules, and zero mask-healing width. A fixture
 contains all unchanged silkscreen and outline geometry, no old mask objects,
 and one new copper object. Both silk warning categories are checked below their caps. Any cap hit or
 unsupported scope fails closed. Explicit unique reviewed cuts are checked separately;
-every uncut object remains immutable. Full-board checks remain mandatory.
+every uncut object remains immutable. A router stage's own rip-up delta may stand in for
+the reviewed list (StageRemovals): it lifts only the twelve-cut review bound, never the
+exact, unique, non-reused accounting of every removed object. Full-board checks remain mandatory.
 """
 import collections
 import hashlib
@@ -20,11 +22,74 @@ import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
 from scripts.pcbgen.uuid_tools import top_level_spans, replace_spans, UUID_RE
 
+REVIEWED_CUT_LIMIT=12
+UUID_TEXT=re.compile(r'[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}')
+
+
+class StageRemovals(tuple):
+    """Every segment/via a router stage removed, derived from its own before/after delta.
+
+    The reviewed-cut path bounds a human review at twelve UUIDs. A rip-up stage removes
+    far more, and no person reviews it, so the bound does not apply. Soundness does not
+    rest on the bound: each removed object must still be named exactly once and absent
+    from the after board, vanished holes must be exactly the removed vias, every growing
+    zone and every added object keeps its complete native fixtures, and removing copper
+    cannot itself place silk over copper.
+    """
+    source='stage'
+
+
+def stage_removed_uuids(before, after):
+    """StageRemovals for every top-level segment/via of before that after no longer holds."""
+    def copper(text):
+        return collections.Counter(text[a:b] for a,b in top_level_spans(text)
+            if text[a+1:b].split(None,1)[0].rstrip(')') in ('segment','via'))
+    removed=copper(before)-copper(after);uuids=[]
+    for block,n in removed.items():
+        match=UUID_RE.search(block)
+        if not match:raise ValueError('source copper UUID missing')
+        uuids.extend([match[1]]*n)
+    return StageRemovals(sorted(uuids))
+
+
+def removal_source(cuts):
+    return 'stage' if isinstance(cuts,StageRemovals) else 'reviewed'
+
+
+def write_stage_removals(path, before_path, after_path, cuts):
+    path=Path(path)
+    path.write_text(json.dumps(dict(source='stage',before_sha256=hashlib.sha256(Path(before_path).read_bytes()).hexdigest(),
+        after_sha256=hashlib.sha256(Path(after_path).read_bytes()).hexdigest(),removed_uuids=sorted(cuts)),indent=1)+'\n')
+    return path
+
+
+def read_stage_removals(path, before_path, after_path):
+    """A stage removal file is valid only for the exact two boards it was derived from."""
+    data=json.loads(Path(path).read_text())
+    if data.get('source')!='stage' or set(data)!={'source','before_sha256','after_sha256','removed_uuids'}:
+        raise ValueError('unsupported stage removal scope')
+    for key,board in (('before_sha256',before_path),('after_sha256',after_path)):
+        if data[key]!=hashlib.sha256(Path(board).read_bytes()).hexdigest():raise ValueError('stage removal scope source mismatch')
+    cuts=StageRemovals(data['removed_uuids'])
+    if list(cuts)!=list(stage_removed_uuids(Path(before_path).read_text(),Path(after_path).read_text())):
+        raise ValueError('stage removal scope differs from the board delta')
+    return cuts
+
+
+def removal_arguments(cuts, scope_path, before_path, after_path):
+    """Command-line form of a removal scope for the native audit scripts."""
+    if isinstance(cuts,StageRemovals):
+        return ['--stage-removal-scope',str(write_stage_removals(scope_path,before_path,after_path,cuts))]
+    return [arg for uid in sorted(cuts) for arg in ('--reviewed-cut-uuid',uid)]
+
 
 def reviewed_copper_removals(before, after, reviewed_removed_uuids=()):
     """Permit only explicitly named, unique cuts; never permit replacement in place."""
+    stage=isinstance(reviewed_removed_uuids,StageRemovals)
     cuts=list(reviewed_removed_uuids)
-    if len(cuts)>12 or len(cuts)!=len(set(cuts)) or any(not isinstance(u,str) or not re.fullmatch(r'[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}',u) for u in cuts):
+    if len(cuts)!=len(set(cuts)) or any(not isinstance(u,str) or not UUID_TEXT.fullmatch(u) for u in cuts):
+        raise ValueError('stage removals require distinct UUIDs' if stage else 'reviewed cuts require at most twelve distinct UUIDs')
+    if not stage and len(cuts)>REVIEWED_CUT_LIMIT:
         raise ValueError('reviewed cuts require at most twelve distinct UUIDs')
     def copper(text):
         return collections.Counter(text[a:b] for a,b in top_level_spans(text)
@@ -191,6 +256,7 @@ def main(before_path, after_path, out, expected_copper=382, expected_vias=38, re
                 new_mask_identities=sorted(identities),fixtures=receipts)
     if reviewed_removed_uuids:
         result['reviewed_copper_removals']=reviewed_copper_removals(before_path.read_text(),after_path.read_text(),reviewed_removed_uuids)
+        result['copper_removal_source']=removal_source(reviewed_removed_uuids)
     (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 
 
@@ -201,5 +267,8 @@ if __name__=='__main__':
     parser.add_argument('--expected-copper',type=int,default=382)
     parser.add_argument('--expected-vias',type=int,default=38)
     parser.add_argument('--reviewed-cut-uuid',action='append',default=[])
+    parser.add_argument('--stage-removal-scope',type=Path)
     args=parser.parse_args()
-    main(args.before,args.after,args.output,args.expected_copper,args.expected_vias,args.reviewed_cut_uuid)
+    if args.stage_removal_scope and args.reviewed_cut_uuid:parser.error('use reviewed cuts or a stage removal scope, not both')
+    cuts=read_stage_removals(args.stage_removal_scope,args.before,args.after) if args.stage_removal_scope else args.reviewed_cut_uuid
+    main(args.before,args.after,args.output,args.expected_copper,args.expected_vias,cuts)

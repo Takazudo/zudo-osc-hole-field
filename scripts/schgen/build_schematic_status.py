@@ -80,7 +80,7 @@ def sections(report):
 
 def oscillator_current(report):
     rows = report['sheets']
-    if len(rows) != 2 or {row['family'] for row in rows} != {'oscillator', 'octave_reference'}:
+    if {row['family'] for row in rows} - {'oscillator', 'oscillator_tssop', 'octave_reference'} or not {'oscillator', 'octave_reference'} <= {row['family'] for row in rows}:
         raise ValueError('expected oscillator and shared-reference current sheets')
     instances = [name for row in rows for name in row['instances']]
     if not instances or len(instances) != len(set(instances)):

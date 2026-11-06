@@ -1,0 +1,299 @@
+{
+ "stage": "snap",
+ "status": "PROPOSAL VERIFICATION ONLY on scratch copies; candidate trees and repository schematics unchanged; no board, DRC or fill",
+ "kicad_cli_version": "10.0.6",
+ "variants": {
+  "UNI_ROYAL/BA1": {
+   "input_sha256": {
+    "candidate/library/Fixture.kicad_sym": "5cbc7c71986586e76deb1c4a73665250ef9b620e711847f41a9f2aa80bba73c6",
+    "candidate/library/zudo-osc-hole-field.kicad_sym": "99cf14a9123ea33bc07bcec052d40103ee10b257ec511796b1e2c276f1194156",
+    "candidate/rendered/variant/sheets/01_power_interfaces.kicad_sch": "c0f137c3aeb75b7ca8c0b0ddb8b6180791f0a77a0bb348ae35fe50f3bd0d6605",
+    "candidate/rendered/variant/sheets/envelope.kicad_sch": "a11b060287cb3d7b81f880a1dd86ec2edff336eef7883b39ab6242608137b70e",
+    "candidate/rendered/variant/sheets/filter.kicad_sch": "2b4f278fb12df928f6370d7c826c45e6e9e8ff6b674a82e90784a6ac258e8c5f",
+    "candidate/rendered/variant/sheets/manual_ab.kicad_sch": "a2bede19f63deffd234284804979369638cc663ea74fb25f21665ef94152c051",
+    "candidate/rendered/variant/sheets/mix4_vca.kicad_sch": "b1f3c93b5835cf73687446ee838aa3d764d34e3c3f419da03b3fdb4557599ddd",
+    "candidate/rendered/variant/sheets/mix5.kicad_sch": "b74a772dc6a397c8b35ff3c4d6a93e391c78539ce135ea3223daf34f63a0c6c0",
+    "candidate/rendered/variant/sheets/mult.kicad_sch": "876e5ecacf180f743ab69dd4febc3e51223a4913e9ee6f6376c2390d5c69fc92",
+    "candidate/rendered/variant/sheets/noise.kicad_sch": "7317cceabd442ac3057509166ae962dc1e4ea0f9e30b641567a8decbda99f013",
+    "candidate/rendered/variant/sheets/octave_reference.kicad_sch": "e3262e7f93594ad5e5421a322fd0354e61fad790b2ae366b04d2c79e6203e656",
+    "candidate/rendered/variant/sheets/offset.kicad_sch": "c903d72766c73ee4b6d7b87bd00457249f25a827f687da415b10dec7e3f059d0",
+    "candidate/rendered/variant/sheets/oscillator.kicad_sch": "5e92253312a5fa3c75e45c6244549e925ad734011e7eb61ed0feafd641f9826c",
+    "candidate/rendered/variant/sheets/sample_hold.kicad_sch": "4f47c04a24935a3960412a317d9de812f5b185efcae66046f815d1cc7850b924",
+    "candidate/rendered/variant/sheets/wavefolder.kicad_sch": "1c53d9c98688456a653b3a6da25b291d843f1ad64338a95dadc6c7fee377903e",
+    "candidate/rendered/variant/zudo-osc-hole-field.kicad_sch": "1ff18463822ffc9c16c6d30a5017c93353aa5b4b2a4a1fe5e3d6602da48b2440"
+   },
+   "runs": {
+    "erc": {
+     "cmd": [
+      "bash",
+      "scripts/kicad/run.sh",
+      "kicad-cli",
+      "sch",
+      "erc",
+      "--format",
+      "json",
+      "--severity-all",
+      "--units",
+      "mm",
+      "-o",
+      ".circuit-cache/opa4196-native/proposal-snap-outputs/UNI_ROYAL-BA1/erc.json",
+      ".circuit-cache/opa4196-native/proposal-snap/UNI_ROYAL/BA1/candidate/rendered/variant/zudo-osc-hole-field.kicad_sch"
+     ],
+     "exit": 0,
+     "log": ".circuit-cache/opa4196-native/proposal-snap-outputs/UNI_ROYAL-BA1/erc.log"
+    },
+    "netlist": {
+     "cmd": [
+      "bash",
+      "scripts/kicad/run.sh",
+      "kicad-cli",
+      "sch",
+      "export",
+      "netlist",
+      "--format",
+      "kicadsexpr",
+      "-o",
+      ".circuit-cache/opa4196-native/proposal-snap-outputs/UNI_ROYAL-BA1/netlist.net",
+      ".circuit-cache/opa4196-native/proposal-snap/UNI_ROYAL/BA1/candidate/rendered/variant/zudo-osc-hole-field.kicad_sch"
+     ],
+     "exit": 0,
+     "log": ".circuit-cache/opa4196-native/proposal-snap-outputs/UNI_ROYAL-BA1/netlist.log"
+    }
+   },
+   "output_sha256": {
+    "erc.json": "4e3514ee20d1cc852cc77131bf7139a0589d820e77cd79d88f9eddbdf0e4d596",
+    "netlist.net": "11a1df9ff6b916510f1bcb61ed004c753c50d06c05c5c9e9b0d9aae656fbb6b8"
+   },
+   "erc_before": {
+    "warning:endpoint_off_grid": 34,
+    "warning:pin_to_pin": 228
+   },
+   "erc_after": {
+    "warning:pin_to_pin": 228
+   },
+   "erc_new": [],
+   "nets_identical": true,
+   "components_identical": true,
+   "netlist_text_equal_except_pin_type_and_header": true
+  },
+  "UNI_ROYAL/RevP": {
+   "input_sha256": {
+    "candidate/library/Fixture.kicad_sym": "5cbc7c71986586e76deb1c4a73665250ef9b620e711847f41a9f2aa80bba73c6",
+    "candidate/library/zudo-osc-hole-field.kicad_sym": "99cf14a9123ea33bc07bcec052d40103ee10b257ec511796b1e2c276f1194156",
+    "candidate/rendered/variant/sheets/01_power_interfaces.kicad_sch": "c0f137c3aeb75b7ca8c0b0ddb8b6180791f0a77a0bb348ae35fe50f3bd0d6605",
+    "candidate/rendered/variant/sheets/envelope.kicad_sch": "a11b060287cb3d7b81f880a1dd86ec2edff336eef7883b39ab6242608137b70e",
+    "candidate/rendered/variant/sheets/filter.kicad_sch": "2b4f278fb12df928f6370d7c826c45e6e9e8ff6b674a82e90784a6ac258e8c5f",
+    "candidate/rendered/variant/sheets/manual_ab.kicad_sch": "a2bede19f63deffd234284804979369638cc663ea74fb25f21665ef94152c051",
+    "candidate/rendered/variant/sheets/mix4_vca.kicad_sch": "b1f3c93b5835cf73687446ee838aa3d764d34e3c3f419da03b3fdb4557599ddd",
+    "candidate/rendered/variant/sheets/mix5.kicad_sch": "b74a772dc6a397c8b35ff3c4d6a93e391c78539ce135ea3223daf34f63a0c6c0",
+    "candidate/rendered/variant/sheets/mult.kicad_sch": "876e5ecacf180f743ab69dd4febc3e51223a4913e9ee6f6376c2390d5c69fc92",
+    "candidate/rendered/variant/sheets/noise.kicad_sch": "7317cceabd442ac3057509166ae962dc1e4ea0f9e30b641567a8decbda99f013",
+    "candidate/rendered/variant/sheets/octave_reference.kicad_sch": "e3262e7f93594ad5e5421a322fd0354e61fad790b2ae366b04d2c79e6203e656",
+    "candidate/rendered/variant/sheets/offset.kicad_sch": "c903d72766c73ee4b6d7b87bd00457249f25a827f687da415b10dec7e3f059d0",
+    "candidate/rendered/variant/sheets/oscillator.kicad_sch": "6fc981868f27e5ee397939bcf2fc2242dc42527b2216bcb05778ee8a78d3785d",
+    "candidate/rendered/variant/sheets/sample_hold.kicad_sch": "4f47c04a24935a3960412a317d9de812f5b185efcae66046f815d1cc7850b924",
+    "candidate/rendered/variant/sheets/wavefolder.kicad_sch": "1c53d9c98688456a653b3a6da25b291d843f1ad64338a95dadc6c7fee377903e",
+    "candidate/rendered/variant/zudo-osc-hole-field.kicad_sch": "1ff18463822ffc9c16c6d30a5017c93353aa5b4b2a4a1fe5e3d6602da48b2440"
+   },
+   "runs": {
+    "erc": {
+     "cmd": [
+      "bash",
+      "scripts/kicad/run.sh",
+      "kicad-cli",
+      "sch",
+      "erc",
+      "--format",
+      "json",
+      "--severity-all",
+      "--units",
+      "mm",
+      "-o",
+      ".circuit-cache/opa4196-native/proposal-snap-outputs/UNI_ROYAL-RevP/erc.json",
+      ".circuit-cache/opa4196-native/proposal-snap/UNI_ROYAL/RevP/candidate/rendered/variant/zudo-osc-hole-field.kicad_sch"
+     ],
+     "exit": 0,
+     "log": ".circuit-cache/opa4196-native/proposal-snap-outputs/UNI_ROYAL-RevP/erc.log"
+    },
+    "netlist": {
+     "cmd": [
+      "bash",
+      "scripts/kicad/run.sh",
+      "kicad-cli",
+      "sch",
+      "export",
+      "netlist",
+      "--format",
+      "kicadsexpr",
+      "-o",
+      ".circuit-cache/opa4196-native/proposal-snap-outputs/UNI_ROYAL-RevP/netlist.net",
+      ".circuit-cache/opa4196-native/proposal-snap/UNI_ROYAL/RevP/candidate/rendered/variant/zudo-osc-hole-field.kicad_sch"
+     ],
+     "exit": 0,
+     "log": ".circuit-cache/opa4196-native/proposal-snap-outputs/UNI_ROYAL-RevP/netlist.log"
+    }
+   },
+   "output_sha256": {
+    "erc.json": "761ec8090a65f8412496363fcd949de31f673c23298b90652ca6496a26c61bda",
+    "netlist.net": "49c0b2a1705c5e3739410be73385a15671b253ea8c2dbf2a4251dc0902e5dab5"
+   },
+   "erc_before": {
+    "warning:endpoint_off_grid": 34,
+    "warning:pin_to_pin": 228
+   },
+   "erc_after": {
+    "warning:pin_to_pin": 228
+   },
+   "erc_new": [],
+   "nets_identical": true,
+   "components_identical": true,
+   "netlist_text_equal_except_pin_type_and_header": true
+  },
+  "YAGEO/BA1": {
+   "input_sha256": {
+    "candidate/library/Fixture.kicad_sym": "5cbc7c71986586e76deb1c4a73665250ef9b620e711847f41a9f2aa80bba73c6",
+    "candidate/library/zudo-osc-hole-field.kicad_sym": "99cf14a9123ea33bc07bcec052d40103ee10b257ec511796b1e2c276f1194156",
+    "candidate/rendered/variant/sheets/01_power_interfaces.kicad_sch": "c0f137c3aeb75b7ca8c0b0ddb8b6180791f0a77a0bb348ae35fe50f3bd0d6605",
+    "candidate/rendered/variant/sheets/envelope.kicad_sch": "a11b060287cb3d7b81f880a1dd86ec2edff336eef7883b39ab6242608137b70e",
+    "candidate/rendered/variant/sheets/filter.kicad_sch": "1d414ba1530e88a346eee68bd6ca0c64a62c81786c0ad89a19020a32b29d8c34",
+    "candidate/rendered/variant/sheets/manual_ab.kicad_sch": "a2bede19f63deffd234284804979369638cc663ea74fb25f21665ef94152c051",
+    "candidate/rendered/variant/sheets/mix4_vca.kicad_sch": "b1f3c93b5835cf73687446ee838aa3d764d34e3c3f419da03b3fdb4557599ddd",
+    "candidate/rendered/variant/sheets/mix5.kicad_sch": "b74a772dc6a397c8b35ff3c4d6a93e391c78539ce135ea3223daf34f63a0c6c0",
+    "candidate/rendered/variant/sheets/mult.kicad_sch": "876e5ecacf180f743ab69dd4febc3e51223a4913e9ee6f6376c2390d5c69fc92",
+    "candidate/rendered/variant/sheets/noise.kicad_sch": "7317cceabd442ac3057509166ae962dc1e4ea0f9e30b641567a8decbda99f013",
+    "candidate/rendered/variant/sheets/octave_reference.kicad_sch": "e3262e7f93594ad5e5421a322fd0354e61fad790b2ae366b04d2c79e6203e656",
+    "candidate/rendered/variant/sheets/offset.kicad_sch": "c903d72766c73ee4b6d7b87bd00457249f25a827f687da415b10dec7e3f059d0",
+    "candidate/rendered/variant/sheets/oscillator.kicad_sch": "5e92253312a5fa3c75e45c6244549e925ad734011e7eb61ed0feafd641f9826c",
+    "candidate/rendered/variant/sheets/sample_hold.kicad_sch": "4f47c04a24935a3960412a317d9de812f5b185efcae66046f815d1cc7850b924",
+    "candidate/rendered/variant/sheets/wavefolder.kicad_sch": "b22ad6f9c7a249f69cff6f301c00908f0dcb31358c8ebdfcd60ff504432f07e9",
+    "candidate/rendered/variant/zudo-osc-hole-field.kicad_sch": "1ff18463822ffc9c16c6d30a5017c93353aa5b4b2a4a1fe5e3d6602da48b2440"
+   },
+   "runs": {
+    "erc": {
+     "cmd": [
+      "bash",
+      "scripts/kicad/run.sh",
+      "kicad-cli",
+      "sch",
+      "erc",
+      "--format",
+      "json",
+      "--severity-all",
+      "--units",
+      "mm",
+      "-o",
+      ".circuit-cache/opa4196-native/proposal-snap-outputs/YAGEO-BA1/erc.json",
+      ".circuit-cache/opa4196-native/proposal-snap/YAGEO/BA1/candidate/rendered/variant/zudo-osc-hole-field.kicad_sch"
+     ],
+     "exit": 0,
+     "log": ".circuit-cache/opa4196-native/proposal-snap-outputs/YAGEO-BA1/erc.log"
+    },
+    "netlist": {
+     "cmd": [
+      "bash",
+      "scripts/kicad/run.sh",
+      "kicad-cli",
+      "sch",
+      "export",
+      "netlist",
+      "--format",
+      "kicadsexpr",
+      "-o",
+      ".circuit-cache/opa4196-native/proposal-snap-outputs/YAGEO-BA1/netlist.net",
+      ".circuit-cache/opa4196-native/proposal-snap/YAGEO/BA1/candidate/rendered/variant/zudo-osc-hole-field.kicad_sch"
+     ],
+     "exit": 0,
+     "log": ".circuit-cache/opa4196-native/proposal-snap-outputs/YAGEO-BA1/netlist.log"
+    }
+   },
+   "output_sha256": {
+    "erc.json": "27a93bc2b499a4a7c9e2c2223a65891e4b99c757a4f5b430b6cec3d742323f38",
+    "netlist.net": "31df7ced46d0a990c59ec51ee42029251202b91690e0f961d102af1017306d56"
+   },
+   "erc_before": {
+    "warning:endpoint_off_grid": 34,
+    "warning:pin_to_pin": 228
+   },
+   "erc_after": {
+    "warning:pin_to_pin": 228
+   },
+   "erc_new": [],
+   "nets_identical": true,
+   "components_identical": true,
+   "netlist_text_equal_except_pin_type_and_header": true
+  },
+  "YAGEO/RevP": {
+   "input_sha256": {
+    "candidate/library/Fixture.kicad_sym": "5cbc7c71986586e76deb1c4a73665250ef9b620e711847f41a9f2aa80bba73c6",
+    "candidate/library/zudo-osc-hole-field.kicad_sym": "99cf14a9123ea33bc07bcec052d40103ee10b257ec511796b1e2c276f1194156",
+    "candidate/rendered/variant/sheets/01_power_interfaces.kicad_sch": "c0f137c3aeb75b7ca8c0b0ddb8b6180791f0a77a0bb348ae35fe50f3bd0d6605",
+    "candidate/rendered/variant/sheets/envelope.kicad_sch": "a11b060287cb3d7b81f880a1dd86ec2edff336eef7883b39ab6242608137b70e",
+    "candidate/rendered/variant/sheets/filter.kicad_sch": "1d414ba1530e88a346eee68bd6ca0c64a62c81786c0ad89a19020a32b29d8c34",
+    "candidate/rendered/variant/sheets/manual_ab.kicad_sch": "a2bede19f63deffd234284804979369638cc663ea74fb25f21665ef94152c051",
+    "candidate/rendered/variant/sheets/mix4_vca.kicad_sch": "b1f3c93b5835cf73687446ee838aa3d764d34e3c3f419da03b3fdb4557599ddd",
+    "candidate/rendered/variant/sheets/mix5.kicad_sch": "b74a772dc6a397c8b35ff3c4d6a93e391c78539ce135ea3223daf34f63a0c6c0",
+    "candidate/rendered/variant/sheets/mult.kicad_sch": "876e5ecacf180f743ab69dd4febc3e51223a4913e9ee6f6376c2390d5c69fc92",
+    "candidate/rendered/variant/sheets/noise.kicad_sch": "7317cceabd442ac3057509166ae962dc1e4ea0f9e30b641567a8decbda99f013",
+    "candidate/rendered/variant/sheets/octave_reference.kicad_sch": "e3262e7f93594ad5e5421a322fd0354e61fad790b2ae366b04d2c79e6203e656",
+    "candidate/rendered/variant/sheets/offset.kicad_sch": "c903d72766c73ee4b6d7b87bd00457249f25a827f687da415b10dec7e3f059d0",
+    "candidate/rendered/variant/sheets/oscillator.kicad_sch": "6fc981868f27e5ee397939bcf2fc2242dc42527b2216bcb05778ee8a78d3785d",
+    "candidate/rendered/variant/sheets/sample_hold.kicad_sch": "4f47c04a24935a3960412a317d9de812f5b185efcae66046f815d1cc7850b924",
+    "candidate/rendered/variant/sheets/wavefolder.kicad_sch": "b22ad6f9c7a249f69cff6f301c00908f0dcb31358c8ebdfcd60ff504432f07e9",
+    "candidate/rendered/variant/zudo-osc-hole-field.kicad_sch": "1ff18463822ffc9c16c6d30a5017c93353aa5b4b2a4a1fe5e3d6602da48b2440"
+   },
+   "runs": {
+    "erc": {
+     "cmd": [
+      "bash",
+      "scripts/kicad/run.sh",
+      "kicad-cli",
+      "sch",
+      "erc",
+      "--format",
+      "json",
+      "--severity-all",
+      "--units",
+      "mm",
+      "-o",
+      ".circuit-cache/opa4196-native/proposal-snap-outputs/YAGEO-RevP/erc.json",
+      ".circuit-cache/opa4196-native/proposal-snap/YAGEO/RevP/candidate/rendered/variant/zudo-osc-hole-field.kicad_sch"
+     ],
+     "exit": 0,
+     "log": ".circuit-cache/opa4196-native/proposal-snap-outputs/YAGEO-RevP/erc.log"
+    },
+    "netlist": {
+     "cmd": [
+      "bash",
+      "scripts/kicad/run.sh",
+      "kicad-cli",
+      "sch",
+      "export",
+      "netlist",
+      "--format",
+      "kicadsexpr",
+      "-o",
+      ".circuit-cache/opa4196-native/proposal-snap-outputs/YAGEO-RevP/netlist.net",
+      ".circuit-cache/opa4196-native/proposal-snap/YAGEO/RevP/candidate/rendered/variant/zudo-osc-hole-field.kicad_sch"
+     ],
+     "exit": 0,
+     "log": ".circuit-cache/opa4196-native/proposal-snap-outputs/YAGEO-RevP/netlist.log"
+    }
+   },
+   "output_sha256": {
+    "erc.json": "d4b8c97741f99fa2d86a524c73ac9d0c7105411fa1b5dba4662528bec70b658f",
+    "netlist.net": "11caa98f668a2b27be14af5a2e2be2bf6d76451447d3495e0cdaf893062cb789"
+   },
+   "erc_before": {
+    "warning:endpoint_off_grid": 34,
+    "warning:pin_to_pin": 228
+   },
+   "erc_after": {
+    "warning:pin_to_pin": 228
+   },
+   "erc_new": [],
+   "nets_identical": true,
+   "components_identical": true,
+   "netlist_text_equal_except_pin_type_and_header": true
+  }
+ }
+}
