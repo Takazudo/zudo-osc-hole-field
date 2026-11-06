@@ -266,6 +266,34 @@ class CompleteGateTests(unittest.TestCase):
             r=driver.complete_gate('osc-core',self.before_board,self.after_board,{'stage':'s'},{'name':'s'},auditor=self.auditor(complete_before,complete_after))
         self.assertTrue(r['adopted']);self.assertEqual(self.calls[0][2],evidence/'native-audits');self.assertEqual(self.calls[0][3],{'zone_batch_size':16})
 
+    def test_driver_wrapper_resumes_only_kept_evidence_for_the_same_bytes(self):
+        before,after,complete_before,complete_after=self.capped_pair()
+        for board,drc,dump in ((self.before_board,before,self.before),(self.after_board,after,self.after)):
+            board.with_name('drc.json').write_text(json.dumps(drc));board.with_name('dump.json').write_text(json.dumps(dump))
+        cache=self.before_board.parent.parent/'cache'
+        def path(board_id,name):return cache/f'{board_id}-grid-{name}'
+        def workspace(board_id,name):
+            work=path(board_id,name)
+            if work.exists():shutil.rmtree(work)
+            work.mkdir(parents=True);return work
+        def interrupted(after_sha):
+            audits=path('osc-core','s-complete-warnings')/'native-audits';audits.mkdir(parents=True)
+            (audits/'added-copper-scope.json').write_text(json.dumps({'before_sha256':driver.sha_file(self.before_board),'after_sha256':after_sha}))
+        import shutil
+        with unittest.mock.patch.object(driver,'workspace_path',side_effect=path),unittest.mock.patch.object(driver,'workspace',side_effect=workspace):
+            interrupted(driver.sha_file(self.after_board))
+            r=driver.complete_gate('osc-core',self.before_board,self.after_board,{'stage':'s'},{'name':'s'},auditor=self.auditor(complete_before,complete_after),resume=True)
+            kept=cache/'osc-core-grid-s-complete-warnings-resume'/'native-audits'
+            self.assertTrue(r['adopted']);self.assertTrue(r['resumed_native_warning_evidence'])
+            self.assertEqual(self.calls[-1][3],{'zone_batch_size':16,'resume_from':kept})
+            self.assertFalse((path('osc-core','s-complete-warnings')/'native-audits').exists())
+            shutil.rmtree(cache);interrupted('0'*64)
+            r=driver.complete_gate('osc-core',self.before_board,self.after_board,{'stage':'s'},{'name':'s'},auditor=self.auditor(complete_before,complete_after),resume=True)
+            self.assertEqual(self.calls[-1][3],{'zone_batch_size':16});self.assertNotIn('resumed_native_warning_evidence',r)
+            shutil.rmtree(cache);interrupted(driver.sha_file(self.after_board))
+            driver.complete_gate('osc-core',self.before_board,self.after_board,{'stage':'s'},{'name':'s'},auditor=self.auditor(complete_before,complete_after))
+            self.assertEqual(self.calls[-1][3],{'zone_batch_size':16})
+
     def test_driver_wrapper_passes_the_stage_rip_up_delta_as_removal_scope(self):
         from scripts.pcbgen.audit_added_mask import StageRemovals
         from scripts.pcbgen.test_audit_added_mask import board,item

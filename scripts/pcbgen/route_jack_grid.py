@@ -97,9 +97,12 @@ def run(*args):
 def rel(p):return str(Path(p).resolve().relative_to(ROOT))
 
 
+def workspace_path(board_id,name):return ROOT/'.circuit-cache'/f'{board_id}-grid-{name}'
+
+
 def workspace(board_id,name):
     """Candidate folder two levels below the root so ${KIPRJMOD}/../../ library paths resolve."""
-    work=ROOT/'.circuit-cache'/f'{board_id}-grid-{name}'
+    work=workspace_path(board_id,name)
     if work.exists():shutil.rmtree(work)
     work.mkdir(parents=True);src=ROOT/'boards'/board_id
     for name_ in ('fp-lib-table','sym-lib-table',f'{board_id}.kicad_pro',f'{board_id}.kicad_sch'):shutil.copyfile(src/name_,work/name_)
@@ -636,7 +639,7 @@ def sha_file(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
 def warning_complete_gate(before_board,after_board,before,after,before_drc,after_drc,evidence,
-                          prerequisites=True,zone_batch_size=16,reviewed_removed_uuids=(),auditor=None,force=False):
+                          prerequisites=True,zone_batch_size=16,reviewed_removed_uuids=(),auditor=None,force=False,resume_from=None):
     """promotion_gate() on complete warning inputs; completion is mandatory whenever a report hit the cap.
 
     KiCad 10.0.6 lists at most 199 warnings per type and has no uncapped option, so a
@@ -661,7 +664,7 @@ def warning_complete_gate(before_board,after_board,before,after,before_drc,after
         from scripts.pcbgen.complete_native_warnings import audit_current_reports as auditor
     before_sha,after_sha=sha_file(before_board),sha_file(after_board)
     try:
-        options={'zone_batch_size':zone_batch_size}
+        options={'zone_batch_size':zone_batch_size,**({'resume_from':resume_from} if resume_from is not None else {})}
         if reviewed_removed_uuids:
             from scripts.pcbgen.audit_added_mask import StageRemovals
             stage=isinstance(reviewed_removed_uuids,StageRemovals)
@@ -694,17 +697,34 @@ def enforce_warning_completeness(receipt,before_drc,after_drc,before_sha,after_s
     return receipt
 
 
-def complete_gate(board_id,current,candidate,receipt,spec,zone_batch_size=16,auditor=None,force=False):
-    """Driver wrapper: gate the stage receipt with warning_complete_gate() on the stage's native reports."""
+def resume_evidence(board_id,name,current,candidate):
+    """Keep an interrupted audit of these exact boards aside before its workspace is recreated."""
+    prior=workspace_path(board_id,name);kept=prior.with_name(prior.name+'-resume')
+    if (prior/'native-audits'/'added-copper-scope.json').exists():
+        if kept.exists():shutil.rmtree(kept)
+        prior.rename(kept)
+    try:manifest=json.loads((kept/'native-audits'/'added-copper-scope.json').read_text())
+    except (FileNotFoundError,ValueError):return None
+    if manifest.get('before_sha256')!=sha_file(current) or manifest.get('after_sha256')!=sha_file(candidate):return None
+    return kept/'native-audits'
+
+
+def complete_gate(board_id,current,candidate,receipt,spec,zone_batch_size=16,auditor=None,force=False,resume=False):
+    """Driver wrapper: gate the stage receipt with warning_complete_gate() on the stage's native reports.
+
+    resume continues an interrupted audit of the same before/after bytes from its kept evidence.
+    """
     before_drc=json.loads(current.with_name('drc.json').read_text());after_drc=json.loads(candidate.with_name('drc.json').read_text())
     before=json.loads(current.with_name('dump.json').read_text());after=json.loads(candidate.with_name('dump.json').read_text())
-    capped=warning_capped(before_drc,after_drc)
-    evidence=workspace(board_id,spec['name']+'-complete-warnings')/'native-audits' if capped or force else None
+    capped=warning_capped(before_drc,after_drc);name=spec['name']+'-complete-warnings'
+    resume_from=resume_evidence(board_id,name,current,candidate) if resume and (capped or force) else None
+    evidence=workspace(board_id,name)/'native-audits' if capped or force else None
     # Rip-up stages (negotiate-open, region-*, rrr-*) remove copper; their own exact delta is the removal scope.
     from scripts.pcbgen.audit_added_mask import stage_removed_uuids
     removed=stage_removed_uuids(current.read_text(),candidate.read_text())
     receipt.update(warning_complete_gate(current,candidate,before,after,before_drc,after_drc,evidence,
-                                         zone_batch_size=zone_batch_size,reviewed_removed_uuids=removed,auditor=auditor,force=force))
+                                         zone_batch_size=zone_batch_size,reviewed_removed_uuids=removed,auditor=auditor,force=force,resume_from=resume_from))
+    if resume_from is not None:receipt['resumed_native_warning_evidence']=True
     return receipt
 
 
@@ -719,6 +739,7 @@ def main():
     p.add_argument('--after-promote',help='shell command run after each promotion, with STAGE, OPEN_BEFORE and OPEN_AFTER set (CI pushes)')
     p.add_argument('--complete-native-warnings',action='store_true',help='also complete uncapped warning reports; capped reports always require complete evidence')
     p.add_argument('--native-zone-batch-size',type=int,default=16,choices=(1,4,16))
+    p.add_argument('--resume-native-warnings',action='store_true',help='continue an interrupted complete-warning audit of the same before/after bytes')
     p.add_argument('--shard',help='I/N: route only shard I of N hotspot-region shards planned from the start board (region stages only)')
     a=p.parse_args()
     RUN.update(workers=a.workers,res=a.res,iterations=a.iterations,deadline=time.time()+a.max_minutes*60 if a.max_minutes else None)
@@ -775,7 +796,7 @@ def main():
         # Check after the optional stitching transaction, so temporary AGND splits
         # may be repaired in the disposable candidate but never promoted.
         # Mandatory for every stage: capped reports are completed (or the stage rejected) regardless of options.
-        receipt=complete_gate(a.board_id,current,candidate,receipt,spec,a.native_zone_batch_size,force=a.complete_native_warnings)
+        receipt=complete_gate(a.board_id,current,candidate,receipt,spec,a.native_zone_batch_size,force=a.complete_native_warnings,resume=a.resume_native_warnings)
         receipt['input_board_sha256']=hashlib.sha256(current.read_bytes()).hexdigest()
         receipt['candidate_board_sha256']=hashlib.sha256(candidate.read_bytes()).hexdigest()
         receipt=enforce_warning_completeness(receipt,json.loads(current.with_name('drc.json').read_text()),

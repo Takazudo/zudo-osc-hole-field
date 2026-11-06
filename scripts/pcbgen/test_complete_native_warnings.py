@@ -1,3 +1,4 @@
+import shutil
 import tempfile
 import json
 import hashlib
@@ -56,6 +57,47 @@ class CompleteWarningTests(unittest.TestCase):
                 self.assertEqual(read_stage_removals(output/'stage-removal-scope.json',before,after),removed)
                 manifest=json.loads((output/'added-copper-scope.json').read_text())
                 self.assertEqual(manifest['copper_removal_source'],'stage');self.assertEqual(len(manifest['reviewed_copper_removals']),30)
+
+    def test_resume_copies_completed_audits_and_continues_the_zone_audit(self):
+        from unittest.mock import patch
+        from scripts.pcbgen.complete_native_warnings import audit_current_reports
+        from scripts.pcbgen.test_audit_added_mask import board,item
+        root=Path(__file__).resolve().parents[2];uid='00000000-0000-4000-8000-000000000001'
+        with tempfile.TemporaryDirectory(dir=root) as folder:
+            before=Path(folder)/'before.kicad_pcb';after=Path(folder)/'after.kicad_pcb'
+            before.write_text(board(item(0)));after.write_text(board(item(0),item(2,'via')))
+            digest=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+            prior=Path(folder)/'prior'
+            def write(name,row):(prior/name).mkdir(parents=True,exist_ok=True);(prior/name/'result.json').write_text(json.dumps(row))
+            def interrupted(after_sha=None):
+                a,b=digest(before),digest(after);after_sha=after_sha or b
+                if prior.exists():shutil.rmtree(prior)
+                prior.mkdir();(prior/'added-copper-scope.json').write_text(json.dumps({'before_sha256':a,'after_sha256':after_sha}))
+                write('holes-before',dict(version='10.0.6',source_sha256=a,fixtures=[]))
+                write('holes-after',dict(version='10.0.6',source_sha256=a,fixtures=[]))  # wrong source: rerun
+                write('silk',dict(version='10.0.6',before_sha256=a,after_sha256=b,added_copper_scope_complete=True))
+                write('zones',dict(status='STARTED; NO COMPLETE ZONE EVIDENCE',version='10.0.6',before_sha256=a,after_sha256=b))
+            def audit(output,**options):
+                with patch('scripts.pcbgen.complete_native_warnings.subprocess.run') as run,patch('scripts.pcbgen.complete_native_warnings.complete_reports',return_value=({}, {}, {})):
+                    audit_current_reports(before,after,{}, {},output,resume_from=prior,**options)
+                    return [c.args[0][3:] for c in run.call_args_list]
+            interrupted();output=Path(folder)/'audit'
+            commands=audit(output,zone_batch_size=16)
+            self.assertEqual([c[0] for c in commands],['scripts/pcbgen/audit_hole_pairs.py','scripts/pcbgen/audit_zone_silk_scope.py'])
+            self.assertEqual(commands[0][1],str(after.relative_to(root)))
+            self.assertEqual(commands[1][-2:],['--resume-from',str((prior/'zones').relative_to(root))])
+            self.assertEqual((output/'holes-before'/'result.json').read_bytes(),(prior/'holes-before'/'result.json').read_bytes())
+            self.assertTrue((output/'silk'/'result.json').exists());self.assertFalse((output/'zones').exists())
+            write('zones',dict(version='10.0.6',before_sha256=digest(before),after_sha256=digest(after),zone_silk_scope_complete=True))
+            self.assertEqual(len(audit(Path(folder)/'complete-zones',zone_batch_size=16)),1)
+            interrupted()
+            self.assertFalse(any('--resume-from' in c for c in audit(Path(folder)/'single',zone_batch_size=1)))
+            before.write_text(board(item(0),item(1,'via')));interrupted()
+            commands=audit(Path(folder)/'cut',zone_batch_size=16,reviewed_removed_uuids=[uid])
+            self.assertEqual(len(commands),2);self.assertFalse(any('--resume-from' in c for c in commands))
+            before.write_text(board(item(0)));interrupted('0'*64)
+            with self.assertRaisesRegex(ValueError,'resume evidence source mismatch'):audit(Path(folder)/'stale',zone_batch_size=16)
+            with self.assertRaisesRegex(ValueError,'separate directory'):audit(prior,zone_batch_size=16)
 
     def test_native_zone_pair_warning_blocks_even_when_added_copper_is_clean(self):
         with tempfile.TemporaryDirectory() as directory:
