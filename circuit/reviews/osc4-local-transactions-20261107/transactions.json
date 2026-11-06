@@ -1,0 +1,416 @@
+{
+ "limits": {
+  "max_explicit_cuts": 12,
+  "max_frame_mm": 50.0,
+  "max_victim_nets": 2,
+  "refill": "route_jack_grid.check(): three equal island signatures, at most six refills",
+  "retries": "route_jack_grid.stage(): at most eight drop-and-retry passes",
+  "rip_up": "only the listed cuts; no rrr probe, no negotiation, no region pass",
+  "search": "route() bounds_mm=frame, max_expansions=300000 (route_jack_grid.py stage())",
+  "wall_minutes": 60
+ },
+ "residuals_sha256": "940541a5fa37eb815ada17781ee46b93cdad991a3579a19bad486df90d0e4b45",
+ "schema": "osc4-transactions-1",
+ "status": "PLAN ONLY; NOT RUN; every transaction needs one admitted native run and is never promoted by its driver",
+ "transactions": {
+  "osc-core": {
+   "input_board": "boards/osc-core/osc-core.kicad_pcb",
+   "input_board_sha256": "2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751",
+   "label": "K3363",
+   "rail_edges_not_selectable": [
+    {
+     "cuts": 1,
+     "gap_mm": 1.936,
+     "layer": "In3.Cu",
+     "net": "+12V",
+     "victim_nets": [
+      "XBF1D8FB56DA398292EB0"
+     ]
+    },
+    {
+     "cuts": 1,
+     "gap_mm": 2.672,
+     "layer": "In2.Cu",
+     "net": "+5V",
+     "victim_nets": [
+      "X48A4E0F74F630C42D873"
+     ]
+    },
+    {
+     "cuts": 2,
+     "gap_mm": 3.21,
+     "layer": "In3.Cu",
+     "net": "+5V",
+     "victim_nets": [
+      "XC702352809EDFD562791",
+      "XFD67769B873CAFBB4B81"
+     ]
+    }
+   ],
+   "transaction": {
+    "cut_layer": "F.Cu",
+    "cut_layer_is_shared_by_both_endpoints": true,
+    "cuts": [
+     {
+      "a": [
+       263.9,
+       260.2
+      ],
+      "b": [
+       263.9,
+       263.275
+      ],
+      "kind": "track",
+      "layer": "F.Cu",
+      "net": "X2F3A7CC8F73EA5105D43",
+      "uuid": "1fb44ff3-7a2e-57ed-a422-f5aa4dbf32bc",
+      "width": 0.2
+     }
+    ],
+    "edge": {
+     "from": {
+      "kind": "pad",
+      "layers": [
+       "F.Cu"
+      ],
+      "ref": "J900287.2",
+      "uuid": "2dea2c83-f04e-591f-b5ef-7e08b78d3538",
+      "xy": [
+       265.55,
+       263.0
+      ]
+     },
+     "from_xy": [
+      265.55,
+      263.0
+     ],
+     "gap_mm": 3.422,
+     "name": "AGND",
+     "net": "AGND",
+     "stranded_island_items": 2,
+     "stranded_island_pads": [
+      "R5243.2"
+     ],
+     "to": {
+      "kind": "pad",
+      "layers": [
+       "F.Cu"
+      ],
+      "ref": "R5243.2",
+      "uuid": "99b9babb-8a37-537b-b6be-eb141b2aaf8c",
+      "xy": [
+       262.41,
+       261.64
+      ]
+     },
+     "to_xy": [
+      262.41,
+      261.64
+     ]
+    },
+    "frame_mm": [
+     259.41,
+     257.1,
+     268.55,
+     266.375
+    ],
+    "frame_size_mm": [
+     9.14,
+     9.275
+    ],
+    "mode": "AGND ground corridor (route_jack_grid.py repair_selection(), repair_ground_pad_uuids)",
+    "spec": {
+     "agnd_guard": true,
+     "clearance": 0.2,
+     "grow": {
+      "+12V": 0.05,
+      "+5V": 0.05,
+      "-12V": 0.05,
+      "AGND": 0.05
+     },
+     "name": "osc4-k-agnd-r5243-2",
+     "repair": true,
+     "repair_bounds_mm": [
+      259.41,
+      257.1,
+      268.55,
+      266.375
+     ],
+     "repair_ground_pad_uuids": [
+      "99b9babb-8a37-537b-b6be-eb141b2aaf8c"
+     ],
+     "repair_layers": [
+      "F.Cu",
+      "In2.Cu",
+      "In3.Cu",
+      "B.Cu"
+     ],
+     "repair_source_uuids": [
+      "1fb44ff3-7a2e-57ed-a422-f5aa4dbf32bc"
+     ],
+     "repair_targets": [
+      "AGND"
+     ],
+     "res": 0.05,
+     "signal_via_diameter": 0.6,
+     "signal_width": 0.2,
+     "window_mm": 8
+    },
+    "victim_nets": [
+     "X2F3A7CC8F73EA5105D43"
+    ]
+   }
+  },
+  "osc-jack-left": {
+   "input_board": "boards/osc-jack-left/osc-jack-left.kicad_pcb",
+   "input_board_sha256": "a7fe68606591186cc955178b949e1c5ce8df0d0ba5829d328bb6bebb119ca251",
+   "label": "JL184",
+   "rail_edges_not_selectable": [],
+   "transaction": {
+    "cut_layer": "In3.Cu",
+    "cut_layer_is_shared_by_both_endpoints": false,
+    "cuts": [
+     {
+      "a": [
+       270.4,
+       131.8
+      ],
+      "b": [
+       269.7,
+       131.1
+      ],
+      "kind": "track",
+      "layer": "In3.Cu",
+      "net": "X0716A90E88E77BA653E9",
+      "uuid": "ded78b30-06e8-5b9a-9879-8c51b6d2903c",
+      "width": 0.2
+     },
+     {
+      "a": [
+       271.3,
+       131.8
+      ],
+      "b": [
+       270.4,
+       131.8
+      ],
+      "kind": "track",
+      "layer": "In3.Cu",
+      "net": "X0716A90E88E77BA653E9",
+      "uuid": "8fd8329c-89e2-532a-94a4-51bca7da2765",
+      "width": 0.2
+     }
+    ],
+    "edge": {
+     "from": {
+      "kind": "pad",
+      "layers": [
+       "B.Cu"
+      ],
+      "ref": "R2305.2",
+      "uuid": "41587408-3396-5f6d-aaa0-c9536a778faa",
+      "xy": [
+       270.31,
+       129.09
+      ]
+     },
+     "from_xy": [
+      270.31,
+      129.09
+     ],
+     "gap_mm": 4.1,
+     "name": "AGND",
+     "net": "AGND",
+     "stranded_island_items": 2,
+     "stranded_island_pads": [
+      "R8270.2"
+     ],
+     "to": {
+      "kind": "pad",
+      "layers": [
+       "B.Cu"
+      ],
+      "ref": "R8270.2",
+      "uuid": "b9d402b4-b8c4-5ab2-a8c0-3fd450c4809c",
+      "xy": [
+       270.31,
+       133.19
+      ]
+     },
+     "to_xy": [
+      270.31,
+      133.19
+     ]
+    },
+    "frame_mm": [
+     266.6,
+     126.09,
+     274.4,
+     136.19
+    ],
+    "frame_size_mm": [
+     7.8,
+     10.1
+    ],
+    "mode": "AGND ground corridor (route_jack_grid.py repair_selection(), repair_ground_pad_uuids)",
+    "spec": {
+     "agnd_guard": true,
+     "clearance": 0.2,
+     "grow": {
+      "+12V": 0.05,
+      "+5V": 0.05,
+      "-12V": 0.05,
+      "AGND": 0.05
+     },
+     "name": "osc4-jl-agnd-r8270-2",
+     "repair": true,
+     "repair_bounds_mm": [
+      266.6,
+      126.09,
+      274.4,
+      136.19
+     ],
+     "repair_ground_pad_uuids": [
+      "b9d402b4-b8c4-5ab2-a8c0-3fd450c4809c"
+     ],
+     "repair_layers": [
+      "F.Cu",
+      "In2.Cu",
+      "In3.Cu",
+      "B.Cu"
+     ],
+     "repair_source_uuids": [
+      "ded78b30-06e8-5b9a-9879-8c51b6d2903c",
+      "8fd8329c-89e2-532a-94a4-51bca7da2765"
+     ],
+     "repair_targets": [
+      "AGND"
+     ],
+     "res": 0.05,
+     "signal_via_diameter": 0.6,
+     "signal_width": 0.2,
+     "window_mm": 8
+    },
+    "victim_nets": [
+     "X0716A90E88E77BA653E9"
+    ]
+   }
+  },
+  "osc-jack-right": {
+   "input_board": "boards/osc-jack-right/osc-jack-right.kicad_pcb",
+   "input_board_sha256": "f6106300bae4e253f4b869dd24d14cb2428715215917b33ebacaa0f9031bfaa8",
+   "label": "JR192",
+   "rail_edges_not_selectable": [],
+   "transaction": {
+    "cut_layer": "In3.Cu",
+    "cut_layer_is_shared_by_both_endpoints": false,
+    "cuts": [
+     {
+      "a": [
+       396.9,
+       192.0
+      ],
+      "b": [
+       395.75,
+       190.85
+      ],
+      "kind": "track",
+      "layer": "In3.Cu",
+      "net": "X0B323EE56130229AB90F",
+      "uuid": "843151a2-99cb-5ccb-849f-d76bc20b86ba",
+      "width": 0.2
+     }
+    ],
+    "edge": {
+     "from": {
+      "kind": "pad",
+      "layers": [
+       "F.Cu"
+      ],
+      "ref": "U7506.6",
+      "uuid": "f10b1b9a-b251-5405-9833-4dac3271fe44",
+      "xy": [
+       396.43,
+       198.683
+      ]
+     },
+     "from_xy": [
+      396.43,
+      198.683
+     ],
+     "gap_mm": 9.863,
+     "name": "/A05/OFFSET_BUFFER",
+     "net": "X8C35A836AF988046FF6E",
+     "stranded_island_items": 1,
+     "stranded_island_pads": [
+      "U7509.5"
+     ],
+     "to": {
+      "kind": "pad",
+      "layers": [
+       "B.Cu"
+      ],
+      "ref": "U7509.5",
+      "uuid": "2d2f94c1-6334-57e6-979d-bfeb79bf67d8",
+      "xy": [
+       396.445,
+       188.82
+      ]
+     },
+     "to_xy": [
+      396.445,
+      188.82
+     ]
+    },
+    "frame_mm": [
+     392.65,
+     185.82,
+     400.0,
+     201.683
+    ],
+    "frame_size_mm": [
+     7.35,
+     15.863
+    ],
+    "mode": "explicit signal repair (route_jack_grid.py repair_selection(), repair_source_uuids + repair_bounds_mm)",
+    "spec": {
+     "agnd_guard": true,
+     "clearance": 0.2,
+     "grow": {
+      "+12V": 0.05,
+      "+5V": 0.05,
+      "-12V": 0.05,
+      "AGND": 0.05
+     },
+     "name": "osc4-jr-x8c35a836",
+     "repair": true,
+     "repair_bounds_mm": [
+      392.65,
+      185.82,
+      400.0,
+      201.683
+     ],
+     "repair_layers": [
+      "F.Cu",
+      "In2.Cu",
+      "In3.Cu",
+      "B.Cu"
+     ],
+     "repair_source_uuids": [
+      "843151a2-99cb-5ccb-849f-d76bc20b86ba"
+     ],
+     "repair_targets": [
+      "X8C35A836AF988046FF6E"
+     ],
+     "res": 0.05,
+     "signal_via_diameter": 0.6,
+     "signal_width": 0.2,
+     "window_mm": 8
+    },
+    "victim_nets": [
+     "X0B323EE56130229AB90F"
+    ]
+   }
+  }
+ }
+}

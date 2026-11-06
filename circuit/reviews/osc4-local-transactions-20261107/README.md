@@ -1,0 +1,123 @@
+# OSC4: named residuals and one bounded local transaction per board (2026-11-07)
+
+Status: a host-only plan for unvalidated drafts. Nothing was routed, refilled
+or DRC-checked. No board, spec or placement file changed, and no fabrication
+output exists. Each transaction below needs one admitted native run, listed
+under "Native runs" as NEEDS ADMISSION. Electrical, thermal and physical
+qualification are NOT RUN.
+
+## Text connectivity reproduces the native open-edge counts on all three accepted boards
+
+`scripts/checks/board_text_geometry.py` rebuilds the islands from the board
+text. It tests pads, tracks, vias and stored zone fills by shape overlap. The
+cached native dumps (`.circuit-cache`) are not available here, so the result
+was checked against the native counts in the receipts.
+
+| Board | Accepted file sha256 | Native receipt | Native | Text | By-net match |
+| --- | --- | --- | ---: | ---: | --- |
+| K3363 `osc-core` | `2c1d67b7…0ec6751` | `boards/osc-core/reports/grid-routing/osc3-k-pilot.json` | 3363 | 3363 | +12V 6, −12V 7, +5V 4, AGND 22 |
+| JL184 `osc-jack-left` | `a7fe6860…bb9ca251` | `boards/osc-jack-left/reports/grid-routing/rrr-01.json` | 184 | 184 | every net |
+| JR192 `osc-jack-right` | `f6106300…031bfaa8` | `boards/osc-jack-right/reports/grid-routing/rrr-01.json` | 192 | 192 | every net |
+
+`residuals.json` names every open edge by its nearest endpoints. That covers
+the K rails and AGND, and all of JL and JR. For each edge it also lists the
+foreign copper on a straight corridor on each signal layer. Explicit cut UUIDs
+are kept only where a bounded repair could use them. The corridor is an
+estimate: an empty corridor does not prove a route, and a blocked one does not
+disprove it.
+
+## K residuals: 17 rail edges and 22 AGND edges
+
+| Net | Open | Stranded items |
+| --- | ---: | --- |
+| +12V | 6 | single supply pins U2308.4, U4439.4, U4541.4, U4341.4, U4308.13, U7405.4 |
+| −12V | 7 | single pins U7405.11, U4540.11, U7404.11, U4541.11, U4439.11, U4240.11; one 106-item island: U4239/U4241/U4243/U4244/U4245 pin 11 with C4259/C4261/C4263/C4267/C4269/C4271 |
+| +5V | 4 | U4113.14; C4433.1 + U4416.14; C4146.1, C4149.1, U4129.14, U4132.4/.10; U4538.10 |
+| AGND | 22 | 22 small islands, 0.15–7.2 mm from the main group (listed in `residuals.json`) |
+
+The rail singles are the pins that OSC2 H1 plane escapes and H3 guarded rail
+escapes could not reach (`circuit/reviews/osc2-k-power-return/README.md`).
+
+## Selected transactions: one explicit cut per board, or two on JL
+
+`select_transactions.py` picks from the ranked corridor candidates in
+`residuals.json`. A candidate's corridor must open with 1–12 explicit signal
+cuts on one layer and nothing else. It may have at most two victim nets and a
+frame of at most 50 mm, matching the driver's `repair_selection()` and
+`repair_bounds()` limits. No earlier native transaction may have targeted it.
+A same-layer path is preferred, then fewest cuts, then shortest gap.
+`transactions.json` holds the exact specs, cut objects and frames.
+`transaction.py <board> --validate` re-checks them against the board text, and
+all three pass.
+
+| | K3363 | JL184 | JR192 |
+| --- | --- | --- | --- |
+| Target | AGND: stranded R5243.2 (1 kΩ) to J900287.2 | AGND: stranded R8270.2 to R2305.2 | `/A05/OFFSET_BUFFER`: U7509.5 (B.Cu) to U7506.6 (F.Cu) |
+| Gap | 3.42 mm, both pads F.Cu | 4.10 mm, both pads B.Cu | 9.86 mm |
+| Mode | ground corridor (`repair_ground_pad_uuids`) | ground corridor | explicit signal repair |
+| Cuts | 1 F.Cu track `1fb44ff3-7a2e-57ed-a422-f5aa4dbf32bc` | 2 In3 tracks `ded78b30-06e8-5b9a-9879-8c51b6d2903c`, `8fd8329c-89e2-532a-94a4-51bca7da2765` | 1 In3 track `843151a2-99cb-5ccb-849f-d76bc20b86ba` |
+| Victim net to restore | `/W1/AC_NODE` | `/F3/C3e5421_ENABLE` | `/A05/Cd4fa3b_LED_A` |
+| Frame (mm) | 259.41, 257.10 – 268.55, 266.375 (9.1 × 9.3) | 266.60, 126.09 – 274.40, 136.19 (7.8 × 10.1) | 392.65, 185.82 – 400.00, 201.683 (7.4 × 15.9) |
+
+These limits apply to every transaction:
+
+- **Cuts.** Only the listed cuts are made. There is no rip-up probe, negotiation or region pass.
+- **Victims.** The victim is rerouted inside the frame by the same `route()` call. The search is capped by `bounds_mm` and 300,000 expansions.
+- **Router arguments.** They are those of the `repair-NN` stages: clearance 0.2 mm (0.25 mm for the ground corridor), 0.05 mm raster, the AGND guard and the −12V In3 fill guard.
+- **AGND recovery.** If signal edges close but AGND splits, the driver's existing `stitched()` AGND stitch is the only allowed recovery.
+- **Native check.** Refills settle on three equal island signatures, with at most six refills and at most eight drop-and-retry passes. A fresh copy must reproduce the candidate's connectivity.
+- **Time.** Each run is bounded to 60 minutes.
+- **Acceptance.** The driver's `promotion_gate()` needs fewer open edges, no split pad group, no new warning identity and no native error or parity. Adoption also needs the complete-warning audit, which this driver does not run. A passing receipt is a comparison input, never a promotion.
+
+## None of the three repeats a preserved failed experiment
+
+- **JL and JR `rrr-02`/`rrr-03` on these exact inputs.** These were all-or-nothing rip-up probes over every open net, with budgets of 8 and 12 rips. They ended with 0 rips and open edges unchanged. JR `/A05/OFFSET_BUFFER` was among the offered nets. The transactions here use no probe. They declare one or two cuts, a fixed frame and repair-mode victim restoration. If one fails, it is not retried with a larger frame or budget.
+- **JR `repair-01`.** This was an unbounded terminal-local batch with 269 rips on an older input, rejected for split pad groups. The JR transaction targets one net with one cut.
+- **JL and JR `agnd-stitch-1`/`agnd-stitch-2`.** These placed a via into the In1 plane from every AGND island, with no cuts, and were non-improving. The K and JL transactions instead cut the named blocking copper and route a surface or In3 ground corridor.
+- **JL `negotiate`.** This was a whole-board PathFinder pass and is not repeated.
+- **issue189 records.** No native transaction targeted these endpoints. JL R8270.2 appears in the raster-only screen `jl121-ground-cut-screen` on JL121, with a different five-cut set on another net. K R5243.2 appears in the selection-only ranking `core-twelve-ground-screen`. Neither was a native run.
+- **The old OSC2 endpoint list is not reused.** All endpoints here are recomputed from the accepted K3363, JL184 and JR192 text.
+
+## A K −12V island stitch has more value but cannot be scoped to its endpoints
+
+The 106-item −12V island holds five op-amp V− pins and six decoupling
+capacitors. It is 16.1 mm from main −12V copper at U4206.4. Its straight B.Cu
+corridor has no blocker. One stitch would join 11 supply pins, more than any
+AGND edge.
+
+The existing driver cannot target a rail with named endpoints. `repair_selection()`
+rejects rail targets, and a rail stage serves the whole net. Such a stage would
+also re-offer the six −12V single pins that OSC2 H1 and H3 already failed on. An
+endpoint-scoped rail stitch needs a small driver option first. That is a
+decision for the manager or owner, so it was not selected.
+
+## Native runs: NEEDS ADMISSION
+
+Run each one from a checkout at this branch's head. That checkout must have
+the numerical venv from `scripts/pcbgen/README.md`. Each run writes its receipt
+and copper delta into this folder and leaves `boards/` untouched.
+
+```
+bash scripts/pcbgen/with_route_guard.sh timeout --signal=INT --kill-after=2m 60m .circuit-cache/ground-solver-venv/bin/python -u circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core
+bash scripts/pcbgen/with_route_guard.sh timeout --signal=INT --kill-after=2m 60m .circuit-cache/ground-solver-venv/bin/python -u circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-jack-left
+bash scripts/pcbgen/with_route_guard.sh timeout --signal=INT --kill-after=2m 60m .circuit-cache/ground-solver-venv/bin/python -u circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-jack-right
+```
+
+If the manager adopts a new K, the K plan is stale, and `transaction.py` refuses
+it on the hash check. Re-plan with the reproduce steps below.
+
+## Reproduce (host only)
+
+```
+python3 circuit/reviews/osc4-local-transactions-20261107/extract_residuals.py -o circuit/reviews/osc4-local-transactions-20261107/residuals.json
+python3 circuit/reviews/osc4-local-transactions-20261107/select_transactions.py
+python3 circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core --validate
+```
+
+| File | Content |
+| --- | --- |
+| `extract_residuals.py` | Named open edges, corridor estimates and ranked candidates; checks text against native counts |
+| `residuals.json` | Every K rail/AGND and JL/JR open edge with endpoints, pad UUIDs and corridor counts |
+| `select_transactions.py` | Deterministic choice of one transaction per board |
+| `transactions.json` | Exact driver specs, cut objects, victims, frames and limits |
+| `transaction.py` | Non-promoting native driver around `scripts/pcbgen/route_jack_grid.py` `run_stage()`; `--validate` is host-only |
