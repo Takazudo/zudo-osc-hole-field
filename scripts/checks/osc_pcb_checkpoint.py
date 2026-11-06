@@ -62,12 +62,14 @@ def check_board(board_id, entry, root):
     state = entry['native_state_record']
     native_record = json.loads((root / state['path']).read_text())
     recorded = native_record['source']['input_board_sha256']
-    if recorded != state['input_board_sha256']:
+    if recorded != state['input_board_sha256'] or native_record['checked_at_utc'] != state['checked_at_utc']:
         fail(board_id, 'native state record input differs from the checkpoint')
     if state['fresh'] != (recorded == entry['board_sha256']):
         fail(board_id, 'native state freshness flag is not truthful')
     if state['fresh']:
         check_fresh_record(board_id, native_record, entry)
+        if not native_record['checked_at_utc'] > state['superseded_checked_at_utc']:
+            fail(board_id, 'fresh native record is not newer than the superseded record')
 
 
 def check_fresh_record(board_id, record, entry):
@@ -75,10 +77,14 @@ def check_fresh_record(board_id, record, entry):
     native, conn = record['native'], entry['connectivity']
     expected = {'open_edges': conn['open_edges'], 'rail_open_edges': conn['rail_open_edges'],
                 'agnd_open_edges': conn['agnd_open_edges'], 'other_signal_open_edges': conn['signal_open_edges']}
+    if 'agnd_islands' in conn:
+        expected['agnd_islands'] = conn['agnd_islands']
     for key, value in expected.items():
         if native.get(key) != value:
             fail(board_id, f'fresh native record {key} disagrees with the checkpoint')
-    if (record.get('latest_adopted_receipt') or {}).get('sha256') != entry['receipt']['sha256']:
+    receipt = record.get('latest_adopted_receipt') or {}
+    paths = {entry['receipt']['path'], entry['receipt'].get('mirror')} - {None}
+    if receipt.get('sha256') != entry['receipt']['sha256'] or receipt.get('path') not in paths:
         fail(board_id, 'fresh native record does not name the accepted receipt')
 
 

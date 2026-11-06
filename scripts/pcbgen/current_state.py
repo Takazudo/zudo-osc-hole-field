@@ -57,6 +57,7 @@ def latest_receipt(board_id,source_sha):
     if len(found)!=1:return None
     path,r=found[0]
     gate=receipt_gate(r)
+    if gate is not r and not isinstance(r.get('after'),dict):return None
     agnd=r['after'].get('agnd_open_edges') if gate is not r else r.get('open_by_net_after',{}).get('AGND')
     return {'path':str(path.relative_to(ROOT)),'sha256':sha(path),'stage':gate.get('stage'),
             'open_edges_after':gate.get('open_edges_after'),'agnd_open_edges_after':agnd}

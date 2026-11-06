@@ -73,6 +73,32 @@ class OscPcbCheckpoint(unittest.TestCase):
             shutil.copyfile(guard.ROOT / path, root / path)
         return root
 
+    def refresh(self, root, board_id, checked_at='2026-11-08T00:00:00Z', **overrides):
+        """Rewrite one routing.json as a refresh would and mark it fresh; overrides forge single fields."""
+        changed = self.mutant()
+        entry = changed['boards'][board_id]
+        conn = entry['connectivity']
+        record_path = root / entry['native_state_record']['path']
+        record = json.loads(record_path.read_text())
+        record['source']['input_board_sha256'] = entry['board_sha256']
+        record['checked_at_utc'] = checked_at
+        record['native'].update(open_edges=conn['open_edges'], rail_open_edges=conn['rail_open_edges'],
+                                agnd_open_edges=conn['agnd_open_edges'],
+                                other_signal_open_edges=conn['signal_open_edges'])
+        if 'agnd_islands' in conn:
+            record['native']['agnd_islands'] = conn['agnd_islands']
+        receipt_path = entry['receipt'].get('mirror') or entry['receipt']['path']
+        record['latest_adopted_receipt'] = {'path': receipt_path, 'sha256': entry['receipt']['sha256']}
+        for key, value in overrides.items():
+            if key in record['native']:
+                record['native'][key] = value
+            else:
+                record['latest_adopted_receipt'][key] = value
+        record_path.write_text(json.dumps(record))
+        entry['native_state_record'].update(input_board_sha256=entry['board_sha256'],
+                                            checked_at_utc=checked_at, fresh=True)
+        return changed
+
     def test_forged_refresh_of_only_the_board_hash_is_rejected(self):
         with tempfile.TemporaryDirectory() as temp:
             root = self.forged_root(temp)
@@ -87,22 +113,26 @@ class OscPcbCheckpoint(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'fresh native record'):
                 guard.check(changed, root)
 
-    def test_genuine_fresh_record_is_accepted(self):
-        with tempfile.TemporaryDirectory() as temp:
-            root = self.forged_root(temp)
-            changed = self.mutant()
-            entry = changed['boards']['osc-jack-left']
-            conn = entry['connectivity']
-            record_path = root / entry['native_state_record']['path']
-            record = json.loads(record_path.read_text())
-            record['source']['input_board_sha256'] = entry['board_sha256']
-            record['native'].update(open_edges=conn['open_edges'], rail_open_edges=conn['rail_open_edges'],
-                                    agnd_open_edges=conn['agnd_open_edges'],
-                                    other_signal_open_edges=conn['signal_open_edges'])
-            record['latest_adopted_receipt'] = {'sha256': entry['receipt']['sha256']}
-            record_path.write_text(json.dumps(record))
-            entry['native_state_record'].update(input_board_sha256=entry['board_sha256'], fresh=True)
-            guard.check(changed, root)
+    def test_deeper_multi_field_forgeries_are_rejected(self):
+        old = self.checkpoint['boards']['osc-core']['native_state_record']['superseded_checked_at_utc']
+        cases = {
+            'old timestamp': ({'checked_at': old}, 'not newer'),
+            'AGND islands': ({'agnd_islands': 22}, 'agnd_islands'),
+            'receipt path': ({'path': 'boards/osc-core/reports/grid-routing/rail-links.json'}, 'accepted receipt'),
+            'receipt hash': ({'sha256': '0' * 64}, 'accepted receipt'),
+            'signal count': ({'other_signal_open_edges': 3325}, 'other_signal_open_edges'),
+        }
+        for name, (overrides, message) in cases.items():
+            with self.subTest(forgery=name), tempfile.TemporaryDirectory() as temp:
+                root = self.forged_root(temp)
+                with self.assertRaisesRegex(ValueError, message):
+                    guard.check(self.refresh(root, 'osc-core', **overrides), root)
+
+    def test_genuine_fresh_records_are_accepted(self):
+        for board_id in self.checkpoint['boards']:
+            with self.subTest(board=board_id), tempfile.TemporaryDirectory() as temp:
+                root = self.forged_root(temp)
+                guard.check(self.refresh(root, board_id), root)
 
     def test_doc_without_current_hash_is_rejected(self):
         changed = self.mutant()

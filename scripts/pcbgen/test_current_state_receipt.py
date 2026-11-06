@@ -54,6 +54,11 @@ class LatestReceipt(unittest.TestCase):
         unadopted_gate['final_gate']['adopted'] = False
         self.assertIsNone(self.resolve({'x.json': unadopted_gate}))
 
+    def test_final_gate_receipt_without_after_block_is_refused(self):
+        receipt = final_gate()
+        del receipt['after']
+        self.assertIsNone(self.resolve({'osc3-k-pilot.json': receipt}))
+
     def test_copper_files_and_ambiguity_are_ignored_or_refused(self):
         self.assertIsNone(self.resolve({'rrr-01-copper.json': top_level()}))
         self.assertIsNone(self.resolve({'rrr-01.json': top_level(), 'osc3-k-pilot.json': final_gate()}))
