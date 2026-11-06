@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""Unit tests for transaction.py with the native driver stubbed (no KiCad, numpy or scipy)."""
+"""Unit tests for circuit/reviews/osc4-local-transactions-20261107/transaction.py with the native driver stubbed (no KiCad, numpy or scipy)."""
 from __future__ import annotations
 import hashlib,importlib.util,json,tempfile,unittest
 from pathlib import Path
 from unittest import mock
 
-HERE=Path(__file__).resolve().parent
-spec=importlib.util.spec_from_file_location('osc4_transaction',HERE/'transaction.py')
+ROOT=Path(__file__).resolve().parents[2]
+DRIVER=ROOT/'circuit/reviews/osc4-local-transactions-20261107/transaction.py'
+spec=importlib.util.spec_from_file_location('osc4_transaction',DRIVER)
 tx=importlib.util.module_from_spec(spec);spec.loader.exec_module(tx)
 
 

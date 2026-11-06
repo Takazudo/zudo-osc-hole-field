@@ -123,4 +123,4 @@ python3 circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core
 | `select_transactions.py` | Deterministic choice of one transaction per board |
 | `transactions.json` | Exact driver specs, cut objects, victims, frames and limits |
 | `transaction.py` | Non-promoting native driver around `scripts/pcbgen/route_jack_grid.py` `run_stage()`; `--validate` is host-only |
-| `test_transaction.py` | Unit tests with the driver stubbed: hash refusal, plan-invalid gate, interrupted receipt (`python3 circuit/reviews/osc4-local-transactions-20261107/test_transaction.py`) |
+| `scripts/checks/test_osc4_transaction.py` | Unit tests for `transaction.py` with the driver stubbed: hash refusal, plan-invalid gate, interrupted receipt; run by `scripts/checks/run-python-tests.sh` |
