@@ -60,11 +60,26 @@ def check_board(board_id, entry, root):
     if conn['open_edges'] != conn['signal_open_edges'] + conn['agnd_open_edges'] + sum(conn['rail_open_edges'].values()):
         fail(board_id, 'open-edge split does not add up')
     state = entry['native_state_record']
-    recorded = json.loads((root / state['path']).read_text())['source']['input_board_sha256']
+    native_record = json.loads((root / state['path']).read_text())
+    recorded = native_record['source']['input_board_sha256']
     if recorded != state['input_board_sha256']:
         fail(board_id, 'native state record input differs from the checkpoint')
     if state['fresh'] != (recorded == entry['board_sha256']):
         fail(board_id, 'native state freshness flag is not truthful')
+    if state['fresh']:
+        check_fresh_record(board_id, native_record, entry)
+
+
+def check_fresh_record(board_id, record, entry):
+    """A fresh native record must carry the accepted counts and receipt, not just the board hash."""
+    native, conn = record['native'], entry['connectivity']
+    expected = {'open_edges': conn['open_edges'], 'rail_open_edges': conn['rail_open_edges'],
+                'agnd_open_edges': conn['agnd_open_edges'], 'other_signal_open_edges': conn['signal_open_edges']}
+    for key, value in expected.items():
+        if native.get(key) != value:
+            fail(board_id, f'fresh native record {key} disagrees with the checkpoint')
+    if (record.get('latest_adopted_receipt') or {}).get('sha256') != entry['receipt']['sha256']:
+        fail(board_id, 'fresh native record does not name the accepted receipt')
 
 
 def check_docs(checkpoint, root):

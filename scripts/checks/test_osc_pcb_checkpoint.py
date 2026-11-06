@@ -1,7 +1,10 @@
 """Mutation tests for the current OSC PCB checkpoint freshness guard."""
 import copy
 import json
+import shutil
+import tempfile
 import unittest
+from pathlib import Path
 from scripts.checks import osc_pcb_checkpoint as guard
 
 
@@ -56,6 +59,50 @@ class OscPcbCheckpoint(unittest.TestCase):
         changed['boards']['osc-core']['native_state_record']['fresh'] = True
         with self.assertRaisesRegex(ValueError, 'freshness flag'):
             guard.check(changed)
+
+    def forged_root(self, temp):
+        """Copy every file the guard reads into a scratch root."""
+        root = Path(temp)
+        paths = set(self.checkpoint['referenced_by'])
+        for entry in self.checkpoint['boards'].values():
+            paths |= {entry['board'], entry['receipt']['path'], entry['native_state_record']['path']}
+            if entry['receipt'].get('mirror'):
+                paths.add(entry['receipt']['mirror'])
+        for path in paths:
+            (root / path).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(guard.ROOT / path, root / path)
+        return root
+
+    def test_forged_refresh_of_only_the_board_hash_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = self.forged_root(temp)
+            guard.check(self.checkpoint, root)
+            changed = self.mutant()
+            entry = changed['boards']['osc-core']
+            record_path = root / entry['native_state_record']['path']
+            record = json.loads(record_path.read_text())
+            record['source']['input_board_sha256'] = entry['board_sha256']
+            record_path.write_text(json.dumps(record))
+            entry['native_state_record'].update(input_board_sha256=entry['board_sha256'], fresh=True)
+            with self.assertRaisesRegex(ValueError, 'fresh native record'):
+                guard.check(changed, root)
+
+    def test_genuine_fresh_record_is_accepted(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = self.forged_root(temp)
+            changed = self.mutant()
+            entry = changed['boards']['osc-jack-left']
+            conn = entry['connectivity']
+            record_path = root / entry['native_state_record']['path']
+            record = json.loads(record_path.read_text())
+            record['source']['input_board_sha256'] = entry['board_sha256']
+            record['native'].update(open_edges=conn['open_edges'], rail_open_edges=conn['rail_open_edges'],
+                                    agnd_open_edges=conn['agnd_open_edges'],
+                                    other_signal_open_edges=conn['signal_open_edges'])
+            record['latest_adopted_receipt'] = {'sha256': entry['receipt']['sha256']}
+            record_path.write_text(json.dumps(record))
+            entry['native_state_record'].update(input_board_sha256=entry['board_sha256'], fresh=True)
+            guard.check(changed, root)
 
     def test_doc_without_current_hash_is_rejected(self):
         changed = self.mutant()
