@@ -22,29 +22,56 @@ BOARD_ID='osc-core'
 
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def load(p,n):return json.loads(Path(p).with_name(n).read_text())
+def cache(name):return ROOT/'.circuit-cache'/f'{BOARD_ID}-grid-{name}'
+
+
+def resumed(label,stages,resume_from,base_sha):
+    """Bind the interrupted chain's kept candidate: `current` in <label>-progress.json, by hash.
+
+    The kept candidate of a stage is its fresh-copy `<stage>-verify` board, or `<stage>-stitch-verify`
+    when AGND stitching decided the stage; an unstitched predecessor is never substituted. Anything
+    stale or missing fails closed.
+    """
+    start=cache(f'osc3-{label}-start')/f'{BOARD_ID}.kicad_pcb'
+    try:
+        if sha(start)!=base_sha:raise RuntimeError('retained start copy is not the adopted board')
+        progress=json.loads((HERE/f'{label}-progress.json').read_text())
+        done=stages[:stages.index(resume_from)+1]
+        # An earlier resume's own marker step is history, not a stage.
+        recorded=[s for s in progress['steps'] if not s['step'].startswith('resumed:')]
+        if [s['step'] for s in recorded]!=done:
+            raise RuntimeError(f"progress records {[s['step'] for s in recorded]}, not the stages through {resume_from}")
+        kept=[s for s in recorded if s.get('raw_gate_adopted')]
+        if kept:
+            last=kept[-1]['step'];want=kept[-1]['candidate_sha256']
+            allowed={cache(f'{last}{x}-verify')/start.name for x in ('','-stitch')}
+        else:last,want,allowed='start',base_sha,{start}
+        current=ROOT/progress['current']
+        if current not in allowed:raise RuntimeError(f"progress current {progress['current']} is not the kept candidate of {last}")
+        if sha(current)!=want or progress.get('current_sha256',want)!=want:raise RuntimeError(f'kept candidate {progress["current"]} is stale')
+        dump0,drc0=load(start,'dump.json'),load(start,'drc.json')
+        after=load(current,'dump.json');gate=driver.promotion_gate(dump0,after,drc0,load(current,'drc.json')) if kept else None
+    except (OSError,KeyError,TypeError,ValueError) as e:raise RuntimeError(f'cannot resume {label}: {type(e).__name__}: {e}') from e
+    if gate is not None and not gate['adopted']:raise RuntimeError('resumed candidate fails the raw gate against the start')
+    step={'step':'resumed:'+','.join(done),'open_edges_before':dump0['open_edges'],'open_edges_after':after['open_edges'],
+          'raw_gate_adopted':bool(kept),'input_sha256':base_sha,'candidate_sha256':want,'candidate':progress['current']}
+    return start,dump0,current,[*progress['steps'],step]
 
 
 def main():
     p=argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('label');p.add_argument('stages',nargs='+');p.add_argument('--promote',action='store_true')
     p.add_argument('--max-minutes',type=float,help='stop starting new stages after this; the gate still runs')
-    p.add_argument('--resume-from',metavar='STAGE',help='continue after an interrupted chain from STAGE\'s fresh-copy verified candidate (re-gated raw against the start)')
+    p.add_argument('--resume-from',metavar='STAGE',help='continue after STAGE of an interrupted chain from the kept candidate in <label>-progress.json (bound by hash, re-gated raw against the start); list no later stages for a gate-only continuation')
     a=p.parse_args();log=lambda m:print(m,flush=True)
     names={s['name']:s for s in driver.STAGES}
     specs=[names[n] for n in a.stages]
     board=ROOT/'boards'/BOARD_ID/f'{BOARD_ID}.kicad_pcb';base_sha=sha(board)
     definition=json.loads((ROOT/'design/boards'/f'{BOARD_ID}.json').read_text())
     t0=time.time();deadline=t0+a.max_minutes*60 if a.max_minutes else None;steps=[]
+    def save():(HERE/f'{a.label}-progress.json').write_text(json.dumps({'steps':steps,'current':str(current.relative_to(ROOT)),'current_sha256':sha(current)},indent=1)+'\n')
     if a.resume_from:
-        # The interrupted run's settled start copy must still hold the adopted bytes.
-        start=ROOT/'.circuit-cache'/f'{BOARD_ID}-grid-osc3-{a.label}-start'/board.name
-        if sha(start)!=base_sha:raise RuntimeError('retained start copy is not the adopted board')
-        dump0=load(start,'dump.json')
-        current=ROOT/'.circuit-cache'/f'{BOARD_ID}-grid-{a.resume_from}-verify'/board.name
-        gate=driver.promotion_gate(dump0,load(current,'dump.json'),load(start,'drc.json'),load(current,'drc.json'))
-        if not gate['adopted']:raise RuntimeError('resumed candidate fails the raw gate against the start')
-        steps.append({'step':'resumed:'+','.join(a.stages[:a.stages.index(a.resume_from)+1]),'open_edges_before':dump0['open_edges'],
-                      'open_edges_after':load(current,'dump.json')['open_edges'],'raw_gate_adopted':True,'input_sha256':base_sha,'candidate_sha256':sha(current)})
+        start,dump0,current,steps=resumed(a.label,a.stages,a.resume_from,base_sha)
         specs=specs[a.stages.index(a.resume_from)+1:]
     else:
         work=driver.workspace(BOARD_ID,f'osc3-{a.label}-start');start=work/board.name;shutil.copyfile(board,start)
@@ -52,11 +79,11 @@ def main():
         if any(v['severity']=='error' for v in drc0['violations']) or drc0['schematic_parity']:raise RuntimeError('start board not clean')
         current=start
     for spec in specs:
-        if deadline and time.time()>deadline:steps.append({'step':spec['name'],'result':'not started: time budget'});continue
+        if deadline and time.time()>deadline:steps.append({'step':spec['name'],'result':'not started: time budget'});save();continue
         before=load(current,'dump.json');before_drc=load(current,'drc.json')
         candidate,receipt=driver.run_stage(BOARD_ID,current,spec,definition,log)
-        if receipt=='resume':steps.append({'step':spec['name'],'result':'time budget used inside stage'});continue
-        if candidate is None:steps.append({'step':spec['name'],'result':'nothing to do' if not receipt else {k:receipt.get(k) for k in ('rejection_reason','open_edges_before','open_edges_after')}});continue
+        if receipt=='resume':steps.append({'step':spec['name'],'result':'time budget used inside stage'});save();continue
+        if candidate is None:steps.append({'step':spec['name'],'result':'nothing to do' if not receipt else {k:receipt.get(k) for k in ('rejection_reason','open_edges_before','open_edges_after')}});save();continue
         if receipt['open_edges_after']>=receipt['open_edges_before'] or driver.split_pad_groups(before,load(candidate,'dump.json')):
             candidate,receipt=driver.stitched(BOARD_ID,current,candidate,receipt,spec,definition,log)
         gate=driver.promotion_gate(before,load(candidate,'dump.json'),before_drc,load(candidate,'drc.json'))
@@ -67,12 +94,12 @@ def main():
                       'input_sha256':sha(current),'candidate_sha256':sha(candidate)})
         log(f"{spec['name']}: {receipt['open_edges_before']} -> {receipt['open_edges_after']} raw gate {'pass' if kept else 'FAIL'}")
         if kept:current=candidate
-        (HERE/f'{a.label}-progress.json').write_text(json.dumps({'steps':steps,'current':str(current.relative_to(ROOT))},indent=1)+'\n')
+        save()
     out={'schema':'osc3-k-chain-1','label':a.label,'status':'NATIVE CHECKED DRAFT STAGE','qualification':'NOT RUN: electrical, thermal and physical qualification',
          'fabrication_outputs':'NOT CREATED','input_board_sha256':base_sha,'stages':a.stages,'steps':steps,
          'tool':{'kicad_cli_version':driver.run('bash','scripts/kicad/run.sh','kicad-cli','version').strip(),'wrapper':'scripts/kicad/run.sh'},
          'started_utc':datetime.datetime.fromtimestamp(t0,datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),'adopted':False,'promoted':False}
-    if current is start:out['rejection_reason']='no step passed its raw gate'
+    if current==start:out['rejection_reason']='no step passed its raw gate'
     else:
         receipt={'stage':f'osc3-{a.label}','open_edges_before':dump0['open_edges'],'open_edges_after':load(current,'dump.json')['open_edges']}
         receipt=driver.complete_gate(BOARD_ID,start,current,receipt,{'name':f'osc3-{a.label}'},resume=True)
