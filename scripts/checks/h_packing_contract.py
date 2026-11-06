@@ -4,7 +4,9 @@ Run: python3 scripts/checks/h_packing_contract.py --variants <after-directory>
 The optional CSV check does not generate CAD or alter either configuration.
 """
 import argparse
+import copy
 import csv
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -12,7 +14,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURE = Path(__file__).with_name('fixtures') / 'h-packing-contract.json'
 AMP_MAPS = (('1', '2', '3'), ('7', '6', '5'), ('8', '9', '10'), ('14', '13', '12'))
-DEVICES = {'OPA4196IDR', 'OPA4197IPWR', 'TL074HIDR'}
+# OPA4197IDR entered with the S2b source change set (2e490ca8); see fixture lineage.
+DEVICES = {'OPA4196IDR', 'OPA4197IDR', 'OPA4197IPWR', 'TL074HIDR'}
 
 
 def channel(instance, ref, unit, device, pins):
@@ -88,11 +91,37 @@ def validate(actual, expected, label):
             raise ValueError(f'{label}: {field} drift; review source lineage, do not auto-update fixture')
 
 
+def digest(snapshot):
+    blob = json.dumps(snapshot, sort_keys=True, separators=(',', ':')).encode()
+    return hashlib.sha256(blob).hexdigest()
+
+
+def revert_lineage(snapshot, lineage):
+    """Undo the recorded package change; the result must be the previously pinned snapshot."""
+    change = lineage['package_change']
+    refs = {tuple(r) for r in change['refs']}
+    reverted = copy.deepcopy(snapshot)
+    for row in reverted['channels']:
+        if (row['instance'], row['ref']) in refs:
+            if row['device'] != change['to']:
+                raise ValueError('lineage: listed ref does not carry the recorded package')
+            row['device'] = change['from']
+    return reverted
+
+
+def validate_lineage(fixture):
+    lineage = fixture['lineage']
+    if digest(revert_lineage(fixture['repository'], lineage)) != lineage['previous_repository_sha256']:
+        raise ValueError('lineage: repository is not the previous pin plus the recorded change; '
+                         'review source lineage, do not auto-update fixture')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--variants', type=Path)
     args = parser.parse_args()
     fixture = json.loads(FIXTURE.read_text())
+    validate_lineage(fixture)
     validate(repository_snapshot(), fixture['repository'], 'repository')
     if args.variants:
         for variant, expected in fixture['variants'].items():

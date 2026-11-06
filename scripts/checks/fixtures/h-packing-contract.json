@@ -17,6 +17,76 @@
       "design/spec/modules/io_partition.py": "3372b2b650e34d0323c080ec094715c2ed44864418864db3b95a84eb82f18980"
     }
   },
+  "lineage": {
+    "status": "Reviewed re-pin 2026-11-07; source-tracking only, no canonical adoption, analog equivalence or hardware validation",
+    "previous_pin": {
+      "pinned_by_commit": "3d552cde (owner, 2026-10-30, 'test: pin H packing source and candidate distinctions')",
+      "repository_base": "02d69fbd4ee4712ac2587b2d00e160d7a1a43e54 (received source snapshot, no Git ancestry imported)",
+      "source_sha256": {
+        "design/spec/modules/sample_hold.py": "0fa352022e5ea991866dd8583042932da382f66aec17110de07e1fcf569fe45a",
+        "design/spec/modules/io_partition.py": "3372b2b650e34d0323c080ec094715c2ed44864418864db3b95a84eb82f18980"
+      }
+    },
+    "previous_repository_sha256": "604366f5e949fd313f380ba4a646c17c9f3b6aae9d79935ed811b3455ea40621",
+    "package_change": {
+      "source_commit": "2e490ca829ca4ba648256e73cecb0aa752eeef64 (circuit: apply S2b record source change set)",
+      "from": "OPA4197IPWR",
+      "to": "OPA4197IDR",
+      "package_from": "TSSOP-14",
+      "package_to": "SOIC-14",
+      "refs": [
+        [
+          "H1",
+          "U103"
+        ],
+        [
+          "H1",
+          "U104"
+        ],
+        [
+          "H1",
+          "U116"
+        ],
+        [
+          "H1",
+          "U117"
+        ],
+        [
+          "H1",
+          "U118"
+        ],
+        [
+          "H2",
+          "U203"
+        ],
+        [
+          "H2",
+          "U204"
+        ],
+        [
+          "H2",
+          "U216"
+        ],
+        [
+          "H2",
+          "U217"
+        ],
+        [
+          "H2",
+          "U218"
+        ]
+      ],
+      "effect": "device field only; every channel net tuple, spare flag, BoardRegion and unit-5 supply pin map is unchanged"
+    },
+    "current_source": {
+      "repinned_at_commit": "234f5d1d9c10b3609d27b084ffd2fd7f37d42d6c",
+      "source_sha256": {
+        "design/spec/modules/sample_hold.py": "ac58c06f79a6b90ebbfb48c757a2f504dbfd279f4fc07fdbbb1654e446ee5be0",
+        "design/spec/modules/io_partition.py": "930acc3bf74937358668edfc05f0a4ffe590c5e242d1c1ea2f7bd28fdb12d395"
+      }
+    },
+    "variants_note": "variants are unchanged pre-S2b evidence from approved-dev-baseline-07ac1be8-20261026/after (provenance.input_sha256); that directory is not retained in this repository. circuit/candidates/opa4196-compact-20261029 is a different, later candidate that differs from these variants exactly at H1 U110 and H2 U210 (TL074HIDR to OPA4196IDR)."
+  },
   "repository": {
     "ic_packages": 38,
     "channels": [
@@ -72,7 +142,7 @@
         "instance": "H1",
         "ref": "U103",
         "unit": 1,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": false,
         "nets": [
           "REF_5V",
@@ -85,7 +155,7 @@
         "instance": "H1",
         "ref": "U103",
         "unit": 2,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": false,
         "nets": [
           "REF_N5V",
@@ -98,7 +168,7 @@
         "instance": "H1",
         "ref": "U103",
         "unit": 3,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": false,
         "nets": [
           "GATE_REF",
@@ -111,7 +181,7 @@
         "instance": "H1",
         "ref": "U103",
         "unit": 4,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -122,7 +192,7 @@
         "instance": "H1",
         "ref": "U104",
         "unit": 1,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": false,
         "nets": [
           "C1979a1_DRIVE",
@@ -135,7 +205,7 @@
         "instance": "H1",
         "ref": "U104",
         "unit": 2,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -146,7 +216,7 @@
         "instance": "H1",
         "ref": "U104",
         "unit": 3,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -157,7 +227,7 @@
         "instance": "H1",
         "ref": "U104",
         "unit": 4,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -354,7 +424,7 @@
         "instance": "H1",
         "ref": "U116",
         "unit": 1,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -365,7 +435,7 @@
         "instance": "H1",
         "ref": "U116",
         "unit": 2,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -376,7 +446,7 @@
         "instance": "H1",
         "ref": "U116",
         "unit": 3,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -387,7 +457,7 @@
         "instance": "H1",
         "ref": "U116",
         "unit": 4,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -398,7 +468,7 @@
         "instance": "H1",
         "ref": "U117",
         "unit": 1,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -409,7 +479,7 @@
         "instance": "H1",
         "ref": "U117",
         "unit": 2,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -420,7 +490,7 @@
         "instance": "H1",
         "ref": "U117",
         "unit": 3,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -431,7 +501,7 @@
         "instance": "H1",
         "ref": "U117",
         "unit": 4,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -442,7 +512,7 @@
         "instance": "H1",
         "ref": "U118",
         "unit": 1,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -453,7 +523,7 @@
         "instance": "H1",
         "ref": "U118",
         "unit": 2,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -464,7 +534,7 @@
         "instance": "H1",
         "ref": "U118",
         "unit": 3,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -475,7 +545,7 @@
         "instance": "H1",
         "ref": "U118",
         "unit": 4,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -578,7 +648,7 @@
         "instance": "H2",
         "ref": "U203",
         "unit": 1,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": false,
         "nets": [
           "REF_5V",
@@ -591,7 +661,7 @@
         "instance": "H2",
         "ref": "U203",
         "unit": 2,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": false,
         "nets": [
           "REF_N5V",
@@ -604,7 +674,7 @@
         "instance": "H2",
         "ref": "U203",
         "unit": 3,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": false,
         "nets": [
           "GATE_REF",
@@ -617,7 +687,7 @@
         "instance": "H2",
         "ref": "U203",
         "unit": 4,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -628,7 +698,7 @@
         "instance": "H2",
         "ref": "U204",
         "unit": 1,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": false,
         "nets": [
           "C1979a1_DRIVE",
@@ -641,7 +711,7 @@
         "instance": "H2",
         "ref": "U204",
         "unit": 2,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -652,7 +722,7 @@
         "instance": "H2",
         "ref": "U204",
         "unit": 3,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -663,7 +733,7 @@
         "instance": "H2",
         "ref": "U204",
         "unit": 4,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -860,7 +930,7 @@
         "instance": "H2",
         "ref": "U216",
         "unit": 1,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -871,7 +941,7 @@
         "instance": "H2",
         "ref": "U216",
         "unit": 2,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -882,7 +952,7 @@
         "instance": "H2",
         "ref": "U216",
         "unit": 3,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -893,7 +963,7 @@
         "instance": "H2",
         "ref": "U216",
         "unit": 4,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -904,7 +974,7 @@
         "instance": "H2",
         "ref": "U217",
         "unit": 1,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -915,7 +985,7 @@
         "instance": "H2",
         "ref": "U217",
         "unit": 2,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -926,7 +996,7 @@
         "instance": "H2",
         "ref": "U217",
         "unit": 3,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -937,7 +1007,7 @@
         "instance": "H2",
         "ref": "U217",
         "unit": 4,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -948,7 +1018,7 @@
         "instance": "H2",
         "ref": "U218",
         "unit": 1,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -959,7 +1029,7 @@
         "instance": "H2",
         "ref": "U218",
         "unit": 2,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -970,7 +1040,7 @@
         "instance": "H2",
         "ref": "U218",
         "unit": 3,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
@@ -981,7 +1051,7 @@
         "instance": "H2",
         "ref": "U218",
         "unit": 4,
-        "device": "OPA4197IPWR",
+        "device": "OPA4197IDR",
         "spare": true,
         "nets": [
           "GROUNDED_FOLLOWER"
