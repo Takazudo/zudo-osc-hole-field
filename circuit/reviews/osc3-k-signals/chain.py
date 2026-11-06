@@ -75,7 +75,7 @@ def main():
     if current is start:out['rejection_reason']='no step passed its raw gate'
     else:
         receipt={'stage':f'osc3-{a.label}','open_edges_before':dump0['open_edges'],'open_edges_after':load(current,'dump.json')['open_edges']}
-        receipt=driver.complete_gate(BOARD_ID,start,current,receipt,{'name':f'osc3-{a.label}'})
+        receipt=driver.complete_gate(BOARD_ID,start,current,receipt,{'name':f'osc3-{a.label}'},resume=True)
         receipt['input_board_sha256']=sha(start);receipt['candidate_board_sha256']=sha(current)
         receipt=driver.enforce_warning_completeness(receipt,load(start,'drc.json'),load(current,'drc.json'),receipt['input_board_sha256'],receipt['candidate_board_sha256'])
         receipt['split_pad_groups']=[{'net':s['net'],'pads':len(s['previously_connected_pads'])} for s in receipt['split_pad_groups']]
