@@ -63,17 +63,21 @@ def validate(board_id):
             'status':'PLAN VALID FOR NATIVE RUN' if not errors else 'PLAN INVALID'}
 
 
-def run(board_id):
-    import scripts.pcbgen.route_jack_grid as driver
-    from scripts.pcbgen.route_shards import delta
-    from scripts.pcbgen.copper_identity import retention
+def run(board_id,driver=None,delta=None,retention=None,out_dir=HERE):
+    """One native transaction. driver/delta/retention default to the real modules; tests inject stubs."""
     plan=load(board_id);spec=plan['transaction']['spec']
     source=ROOT/plan['input_board'];source_hash=sha(source)
     if source_hash!=plan['input_board_sha256']:raise SystemExit('accepted board changed; replan before running')
-    receipt={'schema':'osc4-transaction-receipt-1','status':'RUNNING','adopted':False,'board':board_id,
+    # The host-side plan checks (unique in-frame cuts, target pad in the frame, target net open) gate the native run.
+    checked=validate(board_id)
+    if checked['errors']:raise SystemExit('plan invalid: '+'; '.join(checked['errors']))
+    if driver is None:import scripts.pcbgen.route_jack_grid as driver
+    if delta is None:from scripts.pcbgen.route_shards import delta
+    if retention is None:from scripts.pcbgen.copper_identity import retention
+    receipt={'schema':'osc4-transaction-receipt-1','status':'RUNNING','adopted':False,'raw_gate_passed':False,'board':board_id,
              'input_board_sha256':source_hash,'plan_sha256':sha(HERE/'transactions.json'),'spec':spec,
              'started_utc':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())}
-    out=HERE/f'{spec["name"]}.json'
+    out=Path(out_dir)/f'{spec["name"]}.json'
     def save():out.write_text(json.dumps(receipt,indent=1,sort_keys=True)+'\n')
     save();t0=time.time()
     try:
@@ -88,6 +92,7 @@ def run(board_id):
             after=json.loads(candidate.with_name('dump.json').read_text())
             if after['open_edges']>=before['open_edges'] or driver.split_pad_groups(before,after):
                 candidate,stage=driver.stitched(board_id,base,candidate,stage,spec,definition,print)
+                receipt['stage']=stage  # carries stage.agnd_stitch when the board-wide stitch was used
                 after=json.loads(candidate.with_name('dump.json').read_text())
             fresh=driver.workspace(board_id,spec['name']+'-fresh')/source.name;shutil.copyfile(candidate,fresh)
             fresh_drc,verified=driver.check(fresh)
@@ -95,15 +100,20 @@ def run(board_id):
                 raise driver.StageRejected('fresh-copy connectivity differs from the candidate')
             gate=driver.promotion_gate(before,verified,before_drc,fresh_drc)
             replay=delta(source.read_text(),fresh.read_text())
-            (HERE/f'{spec["name"]}-copper.json').write_text(json.dumps(replay,sort_keys=True)+'\n')
-            receipt.update(raw_gate=gate,open_edges_after=verified['open_edges'],
+            (Path(out_dir)/f'{spec["name"]}-copper.json').write_text(json.dumps(replay,sort_keys=True)+'\n')
+            # 'adopted' stays False: this driver never promotes, and adoption also needs the complete-warning audit.
+            receipt.update(raw_gate=gate,raw_gate_passed=bool(gate['adopted']),open_edges_after=verified['open_edges'],
                            open_by_net_after={n:len(g)-1 for n,g in verified['islands'].items()},
                            retained_copper=retention(before,verified),candidate_sha256=sha(fresh),
                            complete_native_warning_evidence='NOT RUN: raw gate only; adoption needs the complete-warning audit',
-                           status='NATIVE CHECKED DISPOSABLE TRANSACTION; NOT PROMOTED')
+                           status=('NATIVE CHECKED; RAW GATE PASSED; NOT PROMOTED' if gate['adopted']
+                                   else 'NATIVE CHECKED; RAW GATE FAILED; NOT ADOPTED'))
         else:receipt['status']='REJECTED OR NOTHING TO DO; NOT ADOPTED'
     except Exception as error:
         receipt.update(status='ERROR; NOT ADOPTED',error=repr(error));raise
+    except BaseException as error:
+        # SIGINT from the timeout wrapper (KeyboardInterrupt) or SystemExit: record it, never leave RUNNING.
+        receipt.update(status='INTERRUPTED; NOT ADOPTED',error=repr(error));raise
     finally:
         receipt['wall_seconds']=round(time.time()-t0,1)
         if sha(source)!=source_hash:receipt['status']='ERROR: accepted board bytes changed during the run'

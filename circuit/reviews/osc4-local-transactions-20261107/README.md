@@ -64,10 +64,12 @@ These limits apply to every transaction:
 - **Cuts.** Only the listed cuts are made. There is no rip-up probe, negotiation or region pass.
 - **Victims.** The victim is rerouted inside the frame by the same `route()` call. The search is capped by `bounds_mm` and 300,000 expansions.
 - **Router arguments.** They are those of the `repair-NN` stages: clearance 0.2 mm (0.25 mm for the ground corridor), 0.05 mm raster, the AGND guard and the −12V In3 fill guard.
-- **AGND recovery.** If signal edges close but AGND splits, the driver's existing `stitched()` AGND stitch is the only allowed recovery.
+- **AGND recovery.** If signal edges close but AGND splits, the driver's existing `stitched()` is the only allowed recovery. It is not frame-bounded: it runs the board-wide `agnd_stitch` stage, which adds a via into the In1 AGND plane from every AGND island on the board. The receipt records its links and copper rows under `stage.agnd_stitch`, so that copper can be told apart from the frame-bounded repair.
 - **Native check.** Refills settle on three equal island signatures, with at most six refills and at most eight drop-and-retry passes. A fresh copy must reproduce the candidate's connectivity.
 - **Time.** Each run is bounded to 60 minutes.
+- **Plan gate.** `transaction.py` refuses a changed board by hash, then runs the same host-side `--validate` checks before any native call.
 - **Acceptance.** The driver's `promotion_gate()` needs fewer open edges, no split pad group, no new warning identity and no native error or parity. Adoption also needs the complete-warning audit, which this driver does not run. A passing receipt is a comparison input, never a promotion.
+- **Receipt.** `raw_gate_passed` and the status name the raw-gate result, while `adopted` always stays false. A run cut short by the timeout's SIGINT is saved as `INTERRUPTED; NOT ADOPTED` with the error, never left as `RUNNING`.
 
 ## None of the three repeats a preserved failed experiment
 
@@ -121,3 +123,4 @@ python3 circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core
 | `select_transactions.py` | Deterministic choice of one transaction per board |
 | `transactions.json` | Exact driver specs, cut objects, victims, frames and limits |
 | `transaction.py` | Non-promoting native driver around `scripts/pcbgen/route_jack_grid.py` `run_stage()`; `--validate` is host-only |
+| `test_transaction.py` | Unit tests with the driver stubbed: hash refusal, plan-invalid gate, interrupted receipt (`python3 circuit/reviews/osc4-local-transactions-20261107/test_transaction.py`) |
