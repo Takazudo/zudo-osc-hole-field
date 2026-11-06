@@ -13,6 +13,7 @@ import json
 import math
 from pathlib import Path
 import re
+import shutil
 import subprocess
 
 from scripts.pcbgen.audit_hole_pairs import possible_pairs
@@ -276,11 +277,40 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
         **({'reviewed_copper_removals':cut_scope,'copper_removal_source':removal_source(reviewed_removed_uuids)} if cut_scope else {}))
 
 
-def audit_current_reports(before_board, after_board, before_drc, after_drc, output, zone_batch_size=1, reviewed_removed_uuids=()):
-    """Produce evidence for these exact native boards; never reuse stale audits."""
+AUDIT_NAMES=('holes-before','holes-after','silk','zones')
+
+
+def resumable_audits(resume_from, before_board, after_board):
+    """Completed sub-audits of an interrupted run on these exact bytes; complete_reports still re-verifies them."""
+    root=Path(resume_from);manifest=read(root/'added-copper-scope.json')
+    before_sha,after_sha=sha(before_board),sha(after_board)
+    if manifest.get('before_sha256')!=before_sha or manifest.get('after_sha256')!=after_sha:
+        raise ValueError('resume evidence source mismatch')
+    def result(name):
+        path=root/name/'result.json'
+        return read(path) if path.exists() else {}
+    done={}
+    for name,source in (('holes-before',before_sha),('holes-after',after_sha)):
+        row=result(name)
+        if row.get('version')=='10.0.6' and row.get('source_sha256')==source and 'fixtures' in row:done[name]=root/name
+    for name,flag in (('silk','added_copper_scope_complete'),('zones','zone_silk_scope_complete')):
+        row=result(name)
+        if row.get('version')=='10.0.6' and row.get('before_sha256')==before_sha and row.get('after_sha256')==after_sha and row.get(flag) is True:
+            done[name]=root/name
+    return done
+
+
+def audit_current_reports(before_board, after_board, before_drc, after_drc, output, zone_batch_size=1, reviewed_removed_uuids=(), resume_from=None):
+    """Produce evidence for these exact native boards; never reuse stale audits.
+
+    resume_from names an interrupted output for the same before/after bytes: its completed
+    sub-audits are copied, a partial batched zone audit continues through its own
+    byte-verified resume, and everything else reruns. All of it is re-verified below.
+    """
     if type(zone_batch_size) is not int or zone_batch_size not in (1,4,16):raise ValueError('native zone batch size must be1,4or16')
     root=Path(__file__).resolve().parents[2]
     output=Path(output)
+    if resume_from is not None and Path(resume_from).resolve()==output.resolve():raise ValueError('resume evidence must be a separate directory')
     output.mkdir(parents=True,exist_ok=False)
     before_audit=output/'holes-before';after_audit=output/'holes-after';mask_audit=output/'silk';zone_audit=output/'zones'
     # The pinned container mounts the checkout at /work, not the host path.
@@ -294,12 +324,20 @@ def audit_current_reports(before_board, after_board, before_drc, after_drc, outp
               ['scripts/pcbgen/audit_added_mask.py',relative(before_board),relative(after_board),relative(mask_audit),'--expected-copper',str(len(scope)),'--expected-vias',str(sum(k=='via' for k in scope.values()))],
               ['scripts/pcbgen/audit_zone_silk_scope.py',relative(before_board),relative(after_board),relative(zone_audit),'--classify']]
     if zone_batch_size!=1:commands[-1].extend(['--batch-size',str(zone_batch_size)])
+    reused={}
+    if resume_from is not None:
+        resume_from=Path(resume_from)
+        reused=resumable_audits(resume_from,before_board,after_board)
+        # The zone auditor refuses resume with removal scopes and at batch size 1; those rerun fresh.
+        if 'zones' not in reused and not cuts and zone_batch_size!=1 and (resume_from/'zones'/'result.json').exists():
+            commands[-1].extend(['--resume-from',relative(resume_from/'zones')])
     if cuts:
         # A stage scope can name thousands of objects, so it travels as a hash-bound file, not argv.
         arguments=removal_arguments(reviewed_removed_uuids,output/'stage-removal-scope.json',before_board,after_board)
         if source=='stage':arguments[1]=relative(arguments[1])
         for command in commands[2:]:command.extend(arguments)
-    for command in commands:
+    for name,command in zip(AUDIT_NAMES,commands):
+        if name in reused:shutil.copytree(reused[name],output/name);continue
         subprocess.run(['bash','scripts/kicad/run.sh','python3',*command],cwd=root,check=True)
     result=complete_reports(before_board,after_board,before_drc,after_drc,before_audit,after_audit,mask_audit,zone_audit,
                             **({'reviewed_removed_uuids':StageRemovals(sorted(cuts)) if source=='stage' else sorted(cuts)} if cuts else {}))
