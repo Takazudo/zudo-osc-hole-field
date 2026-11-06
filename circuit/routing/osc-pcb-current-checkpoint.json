@@ -1,0 +1,165 @@
+{
+  "schema": "osc-pcb-current-checkpoint-1",
+  "recorded": "2026-11-07",
+  "status": "UNVALIDATED DRAFTS; ROUTING INCOMPLETE; electrical, thermal and physical qualification NOT RUN; no fabrication outputs",
+  "source_commit": "234f5d1d9c10b3609d27b084ffd2fd7f37d42d6c",
+  "connectivity_vs_drc": "Connectivity counts come from complete native connectivity receipts. The raw DRC listing in reports/drc.json is capped at 199 entries per warning type and is not a connectivity count.",
+  "boards": {
+    "osc-core": {
+      "label": "K3363",
+      "board": "boards/osc-core/osc-core.kicad_pcb",
+      "board_sha256": "2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751",
+      "accepted_by_commit": "3db6b51f (2026-11-05, sequenced K power/return pilot, 3409 -> 3363)",
+      "receipt": {
+        "path": "circuit/reviews/osc3-k-pilot/osc3-k-pilot.json",
+        "sha256": "22a6d6bdf0daadc1d2f892a9c83fb6fe9c2cc6e12d04158637b5420eecf85b60",
+        "stage": "osc3-k-pilot",
+        "gate": "final_gate",
+        "mirror": "boards/osc-core/reports/grid-routing/osc3-k-pilot.json"
+      },
+      "connectivity": {
+        "source": "receipt after block (summary counts)",
+        "open_edges": 3363,
+        "rail_open_edges": {
+          "+12V": 6,
+          "+5V": 4,
+          "-12V": 7
+        },
+        "agnd_open_edges": 22,
+        "agnd_islands": 23,
+        "main_agnd_group_pads": 3071,
+        "signal_open_edges": 3324,
+        "per_net_open_map_sha256": null,
+        "per_net_open_map_note": "NOT RETAINED: the K pilot receipt keeps summary counts only",
+        "island_signature_sha256": null,
+        "island_signature_note": "NOT RETAINED for this board revision; produced only by the native current_state.py refresh"
+      },
+      "native_state_record": {
+        "path": "boards/osc-core/reports/routing.json",
+        "input_board_sha256": "dda33a25479c9993f71e33d49129cf16414828b3dd2083b6d4f91a65421c728c",
+        "checked_at_utc": "2026-11-03T19:25:50Z",
+        "superseded_checked_at_utc": "2026-11-03T19:25:50Z",
+        "fresh": false,
+        "refresh": "NEEDS ADMISSION: native current_state.py run; see next_action.refresh_command"
+      }
+    },
+    "osc-jack-left": {
+      "label": "JL184",
+      "board": "boards/osc-jack-left/osc-jack-left.kicad_pcb",
+      "board_sha256": "a7fe68606591186cc955178b949e1c5ce8df0d0ba5829d328bb6bebb119ca251",
+      "accepted_by_commit": "92d3e71d (2026-11-06, rrr-01 stage, 185 -> 184)",
+      "receipt": {
+        "path": "boards/osc-jack-left/reports/grid-routing/rrr-01.json",
+        "sha256": "8537b77da1c17debaa8d5f404a26272bb29b89aad104f19070ab7c8a288a54c4",
+        "stage": "rrr-01",
+        "gate": "top-level"
+      },
+      "connectivity": {
+        "source": "receipt open_by_net_after (complete per-net open-edge map)",
+        "open_edges": 184,
+        "rail_open_edges": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 0
+        },
+        "agnd_open_edges": 3,
+        "signal_open_edges": 181,
+        "open_nets": 155,
+        "per_net_open_map_sha256": "89717cf2dae5b2104e0b38a01c96baab6be19690242fd6fa649f58885fdb9de1",
+        "island_signature_sha256": null,
+        "island_signature_note": "NOT RETAINED for this board revision; produced only by the native current_state.py refresh"
+      },
+      "native_state_record": {
+        "path": "boards/osc-jack-left/reports/routing.json",
+        "input_board_sha256": "6bd6e15393cf2edb8625615ab31f1987ae512402ab0cb41fee661d9703493dc8",
+        "checked_at_utc": "2026-11-03T19:01:46Z",
+        "superseded_checked_at_utc": "2026-11-03T19:01:46Z",
+        "fresh": false,
+        "refresh": "NEEDS ADMISSION: native current_state.py run; see next_action.refresh_command"
+      }
+    },
+    "osc-jack-right": {
+      "label": "JR192",
+      "board": "boards/osc-jack-right/osc-jack-right.kicad_pcb",
+      "board_sha256": "f6106300bae4e253f4b869dd24d14cb2428715215917b33ebacaa0f9031bfaa8",
+      "accepted_by_commit": "b9aa748a (2026-11-05, rrr-01 stage, 193 -> 192)",
+      "receipt": {
+        "path": "boards/osc-jack-right/reports/grid-routing/rrr-01.json",
+        "sha256": "7a111ee7177758499904c80722bdc7feb7a452b75634eeb95c8ce43f4e99d708",
+        "stage": "rrr-01",
+        "gate": "top-level"
+      },
+      "connectivity": {
+        "source": "receipt open_by_net_after (complete per-net open-edge map)",
+        "open_edges": 192,
+        "rail_open_edges": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 0
+        },
+        "agnd_open_edges": 8,
+        "signal_open_edges": 184,
+        "open_nets": 161,
+        "per_net_open_map_sha256": "08ac84afa5655e55c815e81dedb0e4328201cb6ef216b988dd84a2bfde9ae507",
+        "island_signature_sha256": null,
+        "island_signature_note": "NOT RETAINED for this board revision; produced only by the native current_state.py refresh"
+      },
+      "native_state_record": {
+        "path": "boards/osc-jack-right/reports/routing.json",
+        "input_board_sha256": "dd41af2dcb98303257afbd0c06dfe0eb7d81e21e56ad180b27cae5ea5d0dd51d",
+        "checked_at_utc": "2026-11-03T19:04:52Z",
+        "superseded_checked_at_utc": "2026-11-03T19:04:52Z",
+        "fresh": false,
+        "refresh": "NEEDS ADMISSION: native current_state.py run; see next_action.refresh_command"
+      }
+    }
+  },
+  "historical_epochs": [
+    {
+      "label": "K3409 / JL268 / JR312",
+      "recorded": "2026-11-03",
+      "note": "Stale native state records still in boards/*/reports/routing.json; they describe earlier board bytes and are superseded by this checkpoint."
+    },
+    {
+      "label": "K1402 / JL117 / JR130",
+      "recorded": "2026-10-10",
+      "note": "Different design epoch, before the E15 locality source changes. Kept as dated history; never transplanted onto current boards."
+    }
+  ],
+  "candidate": {
+    "status": "RUNNING, NOT ADOPTED",
+    "what": "A new K (osc-core) signal-routing candidate",
+    "owner": "Manager-run WSL round of 2026-11-07, separate worker",
+    "location": "The owner's WSL host; no receipt is committed in this repository",
+    "rule": "Do not count it as progress until its receipt passes the promotion gate and the board and receipt are merged."
+  },
+  "next_action": {
+    "summary": "When the WSL K signal candidate finishes, gate it against K3363 with the existing promotion gate. Adopt it only if it passes, then update this checkpoint. Independently, refresh the stale native state records with one admitted native run.",
+    "refresh_command": "bash scripts/pcbgen/with_route_guard.sh python3 scripts/pcbgen/current_state.py osc-core osc-jack-left osc-jack-right",
+    "refresh_status": "NEEDS ADMISSION (KiCad 10.0.6 through scripts/kicad/run.sh, one heavy slot)"
+  },
+  "referenced_by": {
+    "doc/src/content/docs/project/index.mdx": [
+      "osc-core",
+      "osc-jack-left",
+      "osc-jack-right"
+    ],
+    "doc/src/content/docs/project/next-actions.mdx": [
+      "osc-core",
+      "osc-jack-left",
+      "osc-jack-right"
+    ],
+    "doc/src/content/docs/project/osc-review-checkpoint.mdx": [
+      "osc-core",
+      "osc-jack-left",
+      "osc-jack-right"
+    ],
+    "doc/src/content/docs/verification/osc-pcb-core.mdx": [
+      "osc-core"
+    ],
+    "doc/src/content/docs/verification/osc-pcb-jack.mdx": [
+      "osc-jack-left",
+      "osc-jack-right"
+    ]
+  }
+}

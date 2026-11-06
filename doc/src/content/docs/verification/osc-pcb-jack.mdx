@@ -14,11 +14,28 @@ A cut-line bound (`scripts/pcbgen/cut_capacity.py`) showed that the four-layer h
 - **Neck-down at IC pin rows:** `scripts/pcbgen/neckdown_areas.py` draws a rule area (nothing disallowed) over every IC whose pins carried an open signal net on the routed drafts, covering its pads plus 2 mm, from `design/partition/neckdown-areas.json`. Each half's `.kicad_dru` lets Default-class signal copper inside these areas use 0.15 mm track width and 0.15 mm signal-to-signal clearance (0.2 mm / 0.2 mm elsewhere). This is common practice and within standard six-layer fabrication capability; it gives the router room to escape the quad op-amp pin rows. Rails and AGND keep their 0.25 mm net-class clearance, and the grid router applies the same rule per region.
 - **Evidence chain:** `scripts/checks/jack_locality.py` proves the partition changed only in jack package faces, jack bypass distances and the jack layer stack, and chains onto the earlier connector-locality transition. Superseded four-layer stage reports were removed; git history keeps them.
 
-## Current half-board status
+## Current half-board status: JL184 / JR192 accepted
+
+The accepted jack boards are **JL184** and **JR192**, recorded on 2026-11-07 in the current checkpoint `circuit/routing/osc-pcb-current-checkpoint.json`. `scripts/checks/osc_pcb_checkpoint.py` fails if this page, the board bytes or the receipts stop agreeing with that record.
+
+| Item | JL184 / `osc-jack-left` | JR192 / `osc-jack-right` |
+| --- | --- | --- |
+| Status | ROUTED DRAFT IN PROGRESS | ROUTED DRAFT IN PROGRESS |
+| Board SHA256 | `a7fe68606591186cc955178b949e1c5ce8df0d0ba5829d328bb6bebb119ca251` | `f6106300bae4e253f4b869dd24d14cb2428715215917b33ebacaa0f9031bfaa8` |
+| Accepted by | Commit `92d3e71d` (2026-11-06), rrr-01, 185 → 184 | Commit `b9aa748a` (2026-11-05), rrr-01, 193 → 192 |
+| Receipt | `boards/osc-jack-left/reports/grid-routing/rrr-01.json` | `boards/osc-jack-right/reports/grid-routing/rrr-01.json` |
+| Native open edges | **184**: rails 0, AGND 3, signals 181, on 155 nets | **192**: rails 0, AGND 8, signals 184, on 161 nets |
+| Native errors / schematic parity | None / 0 | None / 0 |
+
+The counts come from each receipt's complete per-net open map. The later rrr-02 and rrr-03 receipts on both boards were not adopted; they did not improve on these boards. The raw DRC listing in `reports/drc.json` caps each warning type at 199 entries and is not a connectivity count. Each half's `reports/routing.json` still records earlier board bytes from 2026-11-03 (JL268 and JR312) and is stale until one admitted native refresh runs. No jack candidate is pending in this round; the running WSL candidate is a K signal candidate and is not adopted.
+
+### Historical JL117 / JR130 epoch (2026-10-10)
+
+This table belongs to a different design epoch, before the E15 locality source changes. It is kept as dated history and does not describe the current boards.
 
 | Native check | JL / `osc-jack-left` | JR / `osc-jack-right` |
 | --- | --- | --- |
-| Status | ROUTED DRAFT IN PROGRESS | ROUTED DRAFT IN PROGRESS |
+| Status at 2026-10-10 | ROUTED DRAFT IN PROGRESS | ROUTED DRAFT IN PROGRESS |
 | Native open edges (DRC, settled zone refill) | **117** | **130** |
 | Remaining signal edges | 103 | 107 |
 | Remaining rail / ground edges | +12V 0, +5V 0, -12V 0, AGND 14 | +12V 0, +5V 0, -12V 0, AGND 23 |
@@ -28,7 +45,7 @@ A cut-line bound (`scripts/pcbgen/cut_capacity.py`) showed that the four-layer h
 
 Routing uses `scripts/pcbgen/route_jack_grid.py`: terminal via arrays, ±12 V plane fanouts, rail links, then a negotiated-congestion (PathFinder) pass over every signal net on a 0.05 mm grid (region stages re-run on a 0.035 mm grid inside the neck-down areas), rip-up-and-reroute batches for what it leaves open, with AGND stitching vias where new copper cuts a surface pour. Each stage is applied to a disposable copy, checked with native DRC, schematic parity and zone refill, and kept only when the native open-edge count falls. Rip-up-and-reroute re-offers still-open islands with 4, 8, 12 and then 20 victim nets per probe, and a stranded island joins whichever island of its net is cheapest to reach, not only the largest. Stage receipts are in `boards/<board-id>/reports/grid-routing/`; `reports/ratsnest.json` holds the native per-net topology after a single zone refill; the open-edge figures above come from DRC with refilled zones, which can be higher. Silkscreen/text warnings remain [#44](https://github.com/Takazudo/zudo-osc-hole-field/issues/44).
 
-The images below predate the #189 routing transactions; refreshed renders remain part of final integration. The table and native receipts describe the current copper.
+The images below predate the #189 routing transactions; refreshed renders remain part of final integration. The current checkpoint and its receipts describe the current copper.
 
 ![JL top: unvalidated routed draft](/assets/osc-hole-field/osc-jack-left-top.png)
 
@@ -321,7 +338,7 @@ six segments and one via. All 1,111 nonrouting objects are unchanged. Native
 KiCad 10.0.6 settled and independent fresh checks agree at 117, with DRC/parity
 0/0, no original group split and all 477 warning findings preserved. Complete
 audits cover two hole identities on each side, seven new-copper fixtures and
-20 paired-zone fixtures. The current JL board has 33,425 copper objects and
+20 paired-zone fixtures. At that epoch the JL board had 33,425 copper objects and
 SHA256 `e984c0a01156b5f282f0c849077c61572df30ee0c70dfe6c9db94fbfcfe52107`.
 Its full native run is
 [38038883190](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38038883190);
@@ -342,7 +359,7 @@ All 51,402 old copper objects and 1,080 nonrouting objects remain unchanged.
 Settled and independent fresh checks agree at 130, with native DRC/parity 0/0,
 no original group split and all 520 complete warning findings preserved. Full
 audits cover 24 hole identities on each side, 172 new-copper fixtures and
-50 paired-zone fixtures. The current JR board has 51,574 copper objects and
+50 paired-zone fixtures. At that epoch the JR board had 51,574 copper objects and
 SHA256 `e06b7471ddc8f5c8c498c5eb5bf8655cc6de539e92826a5701cf1de06356e136`.
 Its full native run is
 [38032373766](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38032373766);
