@@ -1,0 +1,225 @@
+{
+ "adopted": true,
+ "copper_replay": {
+  "base_sha256": "2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751",
+  "path": "circuit/reviews/osc3-k-signals/wsl-20261107a-copper.json",
+  "sha256": "667e518883a73090230fd6dc02c8719432d380ef687cb5565b308a58d5ef7710"
+ },
+ "fabrication_outputs": "NOT CREATED",
+ "final_gate": {
+  "adopted": true,
+  "candidate_board_sha256": "7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42",
+  "capped_warning_types": [
+   "silk_over_copper",
+   "silk_overlap"
+  ],
+  "complete_native_warning_evidence": {
+   "after_hole_identities": 80,
+   "after_source_sha256": "7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42",
+   "audit_result_sha256": [
+    "c9935c29c5b2cd31ae23c3d0fa73afb0122f19afd751685553aa489b6d3277f5",
+    "dab999424348bf2c9193315147f21ac10188e3be6f5d90d3a3a7bf5d1a2b49e9",
+    "fc1ea01473fc5138b1e2629b3d4a0c0b2195112d21f2e1b186c8c59cbd1e973f"
+   ],
+   "before_capped_silk_identities_appended": 398,
+   "before_hole_identities": 80,
+   "before_source_sha256": "2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751",
+   "new_hole_object_identities": [],
+   "new_silk_identities": [],
+   "status": "COMPLETE NATIVE HOLE OBSERVATIONS APPENDED; NO ORIGINAL FINDING REMOVED",
+   "zone_evidence": {
+    "new_zone_silk_identities": [],
+    "zone_evidence_method": "complete paired artwork batches",
+    "zone_fixture_count": 982,
+    "zone_result_sha256": "41c20ea08b19e01f9ba77ac428cad95d5c0413d9385cffba45a10bb1ae3d1142"
+   }
+  },
+  "complete_native_warning_evidence_status": "COMPLETE: source-bound native evidence",
+  "input_board_sha256": "2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751",
+  "native_errors": false,
+  "new_warning_identities": [],
+  "open_edges_after": 2518,
+  "open_edges_before": 3363,
+  "split_pad_groups": [],
+  "stage": "osc3-wsl-20261107a"
+ },
+ "input_board_sha256": "2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751",
+ "label": "wsl-20261107a",
+ "open_edges_after": 2518,
+ "open_edges_before": 3363,
+ "promoted": false,
+ "qualification": "NOT RUN: electrical, thermal and physical qualification",
+ "schema": "osc3-k-chain-1",
+ "stages": [
+  "analog-pitch",
+  "analog-sense",
+  "analog-precision",
+  "signals-local",
+  "signals-01",
+  "signals-02",
+  "signals-03",
+  "signals-04",
+  "signals-05",
+  "signals-06",
+  "signals-07",
+  "signals-08",
+  "signals-09",
+  "signals-10",
+  "signals-11",
+  "signals-12",
+  "signal-escapes"
+ ],
+ "started_utc": "2026-11-06T18:03:12Z",
+ "status": "NATIVE CHECKED DRAFT STAGE",
+ "steps": [
+  {
+   "candidate_sha256": "c307359169717782fceaa87e50dc0731d55dc6f35f0476bae4219d20edb1150b",
+   "input_sha256": "2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751",
+   "links_added": 38,
+   "links_dropped_for_agnd_split": 1,
+   "new_warning_identities": [],
+   "open_edges_after": 3325,
+   "open_edges_before": 3363,
+   "raw_gate_adopted": true,
+   "ripped": 0,
+   "split_pad_groups": 0,
+   "step": "analog-pitch"
+  },
+  {
+   "candidate_sha256": "dd4bc374514eb0e2fee37c533261116d8fd787c6c7a94de50622ebd4100aa42b",
+   "input_sha256": "c307359169717782fceaa87e50dc0731d55dc6f35f0476bae4219d20edb1150b",
+   "links_added": 56,
+   "links_dropped_for_agnd_split": 0,
+   "new_warning_identities": [],
+   "open_edges_after": 3269,
+   "open_edges_before": 3325,
+   "raw_gate_adopted": true,
+   "ripped": 0,
+   "split_pad_groups": 0,
+   "step": "analog-sense"
+  },
+  {
+   "result": {
+    "open_edges_after": 3269,
+    "open_edges_before": 3269,
+    "rejection_reason": null
+   },
+   "step": "analog-precision"
+  },
+  {
+   "candidate_sha256": "680808abcc3bfe22ece3d7cce94b66521600197d4f7c167d2a1d0fe65001e3ac",
+   "input_sha256": "dd4bc374514eb0e2fee37c533261116d8fd787c6c7a94de50622ebd4100aa42b",
+   "links_added": 127,
+   "links_dropped_for_agnd_split": 0,
+   "new_warning_identities": [],
+   "open_edges_after": 3142,
+   "open_edges_before": 3269,
+   "raw_gate_adopted": true,
+   "ripped": 0,
+   "split_pad_groups": 0,
+   "step": "signals-local"
+  },
+  {
+   "candidate_sha256": "51da8f1f0db565f743b8f12fdfb6ef3e5fb4f67d6e0afe88e87f75562ce736b4",
+   "input_sha256": "680808abcc3bfe22ece3d7cce94b66521600197d4f7c167d2a1d0fe65001e3ac",
+   "links_added": 165,
+   "links_dropped_for_agnd_split": 1,
+   "new_warning_identities": [],
+   "open_edges_after": 2977,
+   "open_edges_before": 3142,
+   "raw_gate_adopted": true,
+   "ripped": 0,
+   "split_pad_groups": 0,
+   "step": "signals-01"
+  },
+  {
+   "candidate_sha256": "aa4db4191aa18034d1e78c837a6e217f41d14ef946899cb0571c9b150812e984",
+   "input_sha256": "51da8f1f0db565f743b8f12fdfb6ef3e5fb4f67d6e0afe88e87f75562ce736b4",
+   "links_added": 143,
+   "links_dropped_for_agnd_split": 0,
+   "new_warning_identities": [],
+   "open_edges_after": 2834,
+   "open_edges_before": 2977,
+   "raw_gate_adopted": true,
+   "ripped": 0,
+   "split_pad_groups": 0,
+   "step": "signals-02"
+  },
+  {
+   "candidate_sha256": "773ac8e40b1fb494a4f43f46fe046c15d81469b4c02d8ca4a82aad38eece83b4",
+   "input_sha256": "aa4db4191aa18034d1e78c837a6e217f41d14ef946899cb0571c9b150812e984",
+   "links_added": 112,
+   "links_dropped_for_agnd_split": 3,
+   "new_warning_identities": [],
+   "open_edges_after": 2722,
+   "open_edges_before": 2834,
+   "raw_gate_adopted": true,
+   "ripped": 0,
+   "split_pad_groups": 0,
+   "step": "signals-03"
+  },
+  {
+   "candidate_sha256": "f593bc3645072e08a0c1c63e93e1a2e9e0d73763296442a545e710a2270c6055",
+   "input_sha256": "773ac8e40b1fb494a4f43f46fe046c15d81469b4c02d8ca4a82aad38eece83b4",
+   "links_added": 109,
+   "links_dropped_for_agnd_split": 2,
+   "new_warning_identities": [],
+   "open_edges_after": 2613,
+   "open_edges_before": 2722,
+   "raw_gate_adopted": true,
+   "ripped": 0,
+   "split_pad_groups": 0,
+   "step": "signals-04"
+  },
+  {
+   "candidate_sha256": "7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42",
+   "input_sha256": "f593bc3645072e08a0c1c63e93e1a2e9e0d73763296442a545e710a2270c6055",
+   "links_added": 95,
+   "links_dropped_for_agnd_split": 5,
+   "new_warning_identities": [],
+   "open_edges_after": 2518,
+   "open_edges_before": 2613,
+   "raw_gate_adopted": true,
+   "ripped": 0,
+   "split_pad_groups": 0,
+   "step": "signals-05"
+  },
+  {
+   "result": "not started: time budget",
+   "step": "signals-06"
+  },
+  {
+   "result": "not started: time budget",
+   "step": "signals-07"
+  },
+  {
+   "result": "not started: time budget",
+   "step": "signals-08"
+  },
+  {
+   "result": "not started: time budget",
+   "step": "signals-09"
+  },
+  {
+   "result": "not started: time budget",
+   "step": "signals-10"
+  },
+  {
+   "result": "not started: time budget",
+   "step": "signals-11"
+  },
+  {
+   "result": "not started: time budget",
+   "step": "signals-12"
+  },
+  {
+   "result": "not started: time budget",
+   "step": "signal-escapes"
+  }
+ ],
+ "tool": {
+  "kicad_cli_version": "10.0.6",
+  "wrapper": "scripts/kicad/run.sh"
+ },
+ "wall_seconds": 82356
+}
