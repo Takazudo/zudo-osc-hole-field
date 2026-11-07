@@ -120,7 +120,7 @@ These limits apply to every transaction:
 - **Time.** Each run is bounded to 60 minutes.
 - **Plan gate.** `transaction.py` refuses a changed board by hash, then runs the same host-side `--validate` checks before any native call.
 - **Acceptance.** The driver's `promotion_gate()` needs fewer open edges, no split pad group, no new warning identity and no native error or parity. Adoption also needs the complete-warning audit, which this driver does not run. A passing receipt is a comparison input, never a promotion.
-- **Receipt.** `raw_gate_passed` and the status name the raw-gate result, while `adopted` always stays false. A run cut short by the timeout's SIGINT is saved as `INTERRUPTED; NOT ADOPTED` with the error, never left as `RUNNING`.
+- **Receipt.** `raw_gate_passed` and the status name the raw-gate result, while `adopted` always stays false. A run cut short by the timeout's SIGINT is meant to be saved as `INTERRUPTED; NOT ADOPTED` with the error. That did not happen on run 42412490176: the K process ended with exit 137 and its receipt stayed `RUNNING`. See the 2026-11-08 Actions run results section and issue #308.
 
 ## None of the three repeats a preserved failed experiment
 

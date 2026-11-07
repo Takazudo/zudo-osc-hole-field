@@ -79,7 +79,8 @@ def choose(board_id,res,board):
 def main():
     p=argparse.ArgumentParser(description=__doc__.splitlines()[0]);p.add_argument('--residuals',type=Path,default=HERE/'residuals.json')
     p.add_argument('-o','--output',type=Path,default=HERE/'transactions.json')
-    p.add_argument('--board',action='append',help='replan only this board and keep the other entries unchanged')
+    p.add_argument('--board',action='append',choices=('osc-core','osc-jack-left','osc-jack-right'),
+                   help='replan only this board and keep the other entries unchanged')
     a=p.parse_args()
     previous=json.loads(a.output.read_text()) if a.board and a.output.exists() else None
     res=json.loads(a.residuals.read_text());out={'schema':'osc4-transactions-1',
