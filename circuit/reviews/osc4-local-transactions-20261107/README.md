@@ -6,6 +6,22 @@ output exists. Each transaction below needs one admitted native run, listed
 under "Native runs" as NEEDS ADMISSION. Electrical, thermal and physical
 qualification are NOT RUN.
 
+## 2026-11-08 K2518 replan: the K transaction still applies unchanged and is rebound to K2518
+
+The manager adopted K2518 (`7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42`,
+chain `wsl-20261107a`, 3363 to 2518 open edges) in place of K3363. Its copper is
+purely additive: 12,049 new objects and none removed. Rails and AGND are
+unchanged. The K plan was hash-bound to K3363, so it was replanned on the board
+text. No native run was made.
+
+- **Counts match.** Text connectivity matches K2518 exactly: 2518 open edges, with +12V 6, −12V 7, +5V 4 and AGND 22. The native source is `circuit/reviews/osc3-k-signals/wsl-20261107a-adoption.json`.
+- **K residuals are the same.** The same 39 rail and AGND edges are stranded, with the same gaps. Only one corridor count changed: the unselected AGND edge to R1579.2/R2332.2 now has 2 In3 cuts instead of 1.
+- **The selected K edge is unchanged.** The AGND edge from stranded R5243.2 to J900287.2 is still 3.42 mm on F.Cu. It still needs the single cut `1fb44ff3-7a2e-57ed-a422-f5aa4dbf32bc` on the victim `/W1/AC_NODE`. The K2518 delta adds no copper inside the frame and does not touch the victim net or the cut track.
+- **Only the K binding changed.** `residuals.json` (K entry) and `transactions.json` (K entry) are rebound to K2518, and the K transaction body is identical. `--validate` passes on all three boards.
+- **JL and JR are untouched.** Their boards did not change, and their entries are byte-identical. `extract_residuals.py --board osc-core` and `select_transactions.py --board osc-core` refresh one board and keep the others.
+
+The K3363 tables below are kept as the 2026-11-07 record. The K values in this section supersede them.
+
 ## Text connectivity reproduces the native open-edge counts on all three accepted boards
 
 `scripts/checks/board_text_geometry.py` rebuilds the islands from the board
@@ -111,8 +127,8 @@ it on the hash check. Re-plan with the reproduce steps below.
 ## Reproduce (host only)
 
 ```
-python3 circuit/reviews/osc4-local-transactions-20261107/extract_residuals.py -o circuit/reviews/osc4-local-transactions-20261107/residuals.json
-python3 circuit/reviews/osc4-local-transactions-20261107/select_transactions.py
+python3 circuit/reviews/osc4-local-transactions-20261107/extract_residuals.py --board osc-core -o circuit/reviews/osc4-local-transactions-20261107/residuals.json
+python3 circuit/reviews/osc4-local-transactions-20261107/select_transactions.py --board osc-core
 python3 circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core --validate
 ```
 
