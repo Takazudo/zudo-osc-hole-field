@@ -1,0 +1,76 @@
+{
+ "schema": "osc3-k-adoption-1",
+ "label": "wsl-20261107a",
+ "adopted_utc": "2026-11-07T17:41:21Z",
+ "adopted_by": "manager after independent review (round 2026-11-07)",
+ "board": "boards/osc-core/osc-core.kicad_pcb",
+ "incumbent_board_sha256": "2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751",
+ "candidate_board_sha256": "7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42",
+ "promotion": "plain file copy of .circuit-cache/osc-core-grid-signals-05-verify/osc-core.kicad_pcb over the incumbent, as chain.py --promote would do; the chain receipt keeps promoted:false because the chain itself did not promote",
+ "chain_receipt": {
+  "path": "circuit/reviews/osc3-k-signals/wsl-20261107a.json",
+  "sha256": "e6b59cb32790c6df21994dd07759f55da6079c7aa7440a095e8b75e46ff63bc6"
+ },
+ "mirrored_receipt": {
+  "path": "boards/osc-core/reports/grid-routing/osc3-wsl-20261107a.json",
+  "sha256": "e6b59cb32790c6df21994dd07759f55da6079c7aa7440a095e8b75e46ff63bc6"
+ },
+ "progress": {
+  "path": "circuit/reviews/osc3-k-signals/wsl-20261107a-progress.json",
+  "sha256": "ad0c122a3725f99bd9bc95c3bdc6bd4883a7707fb32d42435332fbc0d1e36ad7"
+ },
+ "copper_replay": {
+  "path": "circuit/reviews/osc3-k-signals/wsl-20261107a-copper.json",
+  "sha256": "667e518883a73090230fd6dc02c8719432d380ef687cb5565b308a58d5ef7710",
+  "base_sha256": "2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751"
+ },
+ "evidence_manifest": {
+  "path": "/mnt/c/Users/takaz/Dropbox/cclogs/zudo-osc-hole-field/round-20261107/k1107-evidence-manifest.json",
+  "sha256": "2481846242b5ebb84d7987afb5f319689929d398cb9f0eda38cd5ae79cdfff44"
+ },
+ "evidence_archive": {
+  "path": "/home/takazudo/k1107-evidence/k1107-wsl-20261107a-evidence.tar",
+  "sha256": "eaf477356915b48a0fb51e4b20f323e93c25313825bba9fbec9a7792fbafc3ab",
+  "size_bytes": 16533575680,
+  "verification": "every one of 65466 members matched the evidence manifest by size and sha256; the embedded manifest matches its recorded sha256",
+  "format": "uncompressed PAX tar on local disk (not Dropbox, not git)"
+ },
+ "tool_revision": "dd1c5cfa5a1c3a8cb69b69b7bffda0b7924d37df",
+ "review_summary": {
+  "open_edges": {
+   "before": 3363,
+   "after": 2518
+  },
+  "rail_open_edges": {
+   "+12V": 6,
+   "-12V": 7,
+   "+5V": 4,
+   "change": "unchanged"
+  },
+  "agnd": {
+   "open_edges": 22,
+   "islands": 23,
+   "change": "unchanged"
+  },
+  "signal_open_edges": {
+   "before": 3324,
+   "after": 2479
+  },
+  "copper": {
+   "segments_added": 11068,
+   "vias_added": 981,
+   "removed": 0,
+   "changed": 0
+  },
+  "footprints_edges_zone_outlines": "byte-identical",
+  "native_drc": {
+   "errors": 0,
+   "schematic_parity": 0,
+   "new_warning_identities": 0
+  },
+  "warning_evidence": "COMPLETE: source-bound native evidence"
+ },
+ "status": "UNVALIDATED DRAFT",
+ "qualification": "NOT RUN: electrical, thermal and physical qualification",
+ "fabrication_outputs": "NOT CREATED"
+}

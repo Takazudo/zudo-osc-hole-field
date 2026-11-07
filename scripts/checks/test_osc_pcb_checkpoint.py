@@ -2,6 +2,7 @@
 import copy
 import json
 import shutil
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -48,17 +49,55 @@ class OscPcbCheckpoint(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     guard.check(changed)
 
+    def test_adoption_record_must_match_and_bind_the_board(self):
+        changed = self.mutant()
+        changed['boards']['osc-core']['adoption']['sha256'] = '0' * 64
+        with self.assertRaisesRegex(ValueError, 'adoption record bytes'):
+            guard.check(changed)
+        with tempfile.TemporaryDirectory() as temp:
+            root = self.forged_root(temp)
+            entry = self.checkpoint['boards']['osc-core']
+            path = root / entry['adoption']['path']
+            path.parent.mkdir(parents=True, exist_ok=True)
+            record = json.loads((guard.ROOT / entry['adoption']['path']).read_text())
+            record['chain_receipt']['sha256'] = '0' * 64
+            path.write_text(json.dumps(record))
+            changed = self.mutant()
+            changed['boards']['osc-core']['adoption']['sha256'] = guard.sha(path)
+            with self.assertRaisesRegex(ValueError, 'does not bind the checkpoint receipt'):
+                guard.check(changed, root)
+
+    def test_agnd_islands_drift_is_rejected(self):
+        changed = self.mutant()
+        changed['boards']['osc-core']['connectivity']['agnd_islands'] = 22
+        with self.assertRaisesRegex(ValueError, 'agnd_islands'):
+            guard.check(changed)
+
     def test_rail_drift_is_rejected(self):
         changed = self.mutant()
         changed['boards']['osc-core']['connectivity']['rail_open_edges']['+5V'] = 0
         with self.assertRaisesRegex(ValueError, 'rail_open_edges'):
             guard.check(changed)
 
+    def stale_root(self, temp, board_id='osc-core'):
+        """A scratch root whose routing.json is the pre-J4 record (7d7c31ea^), which describes older board bytes."""
+        root = self.forged_root(temp)
+        path = self.checkpoint['boards'][board_id]['native_state_record']['path']
+        old = subprocess.run(['git', 'show', f'7d7c31ea^:{path}'], cwd=guard.ROOT, check=True,
+                             capture_output=True, text=True).stdout
+        (root / path).write_text(old)
+        return root, json.loads(old)
+
     def test_stale_native_record_cannot_be_called_fresh(self):
-        changed = self.mutant()
-        changed['boards']['osc-core']['native_state_record']['fresh'] = True
-        with self.assertRaisesRegex(ValueError, 'freshness flag'):
-            guard.check(changed)
+        with tempfile.TemporaryDirectory() as temp:
+            root, old = self.stale_root(temp)
+            changed = self.mutant()
+            changed['boards']['osc-core']['native_state_record'].update(
+                input_board_sha256=old['source']['input_board_sha256'], checked_at_utc=old['checked_at_utc'], fresh=True)
+            with self.assertRaisesRegex(ValueError, 'freshness flag'):
+                guard.check(changed, root)
+            changed['boards']['osc-core']['native_state_record']['fresh'] = False
+            guard.check(changed, root)
 
     def forged_root(self, temp):
         """Copy every file the guard reads into a scratch root."""
@@ -68,6 +107,8 @@ class OscPcbCheckpoint(unittest.TestCase):
             paths |= {entry['board'], entry['receipt']['path'], entry['native_state_record']['path']}
             if entry['receipt'].get('mirror'):
                 paths.add(entry['receipt']['mirror'])
+            if 'adoption' in entry:
+                paths.add(entry['adoption']['path'])
         for path in paths:
             (root / path).parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(guard.ROOT / path, root / path)
@@ -87,11 +128,17 @@ class OscPcbCheckpoint(unittest.TestCase):
                                 other_signal_open_edges=conn['signal_open_edges'])
         if 'agnd_islands' in conn:
             record['native']['agnd_islands'] = conn['agnd_islands']
+        record['native']['island_signature_sha256'] = conn['island_signature_sha256']
         receipt_path = entry['receipt'].get('mirror') or entry['receipt']['path']
-        record['latest_adopted_receipt'] = {'path': receipt_path, 'sha256': entry['receipt']['sha256']}
+        agnd_after = None if 'adoption' in entry else conn['agnd_open_edges']
+        record['latest_adopted_receipt'] = {'path': receipt_path, 'sha256': entry['receipt']['sha256'],
+                                            'agnd_open_edges_after': agnd_after}
+        record['receipt_agreement'] = {'open_edges': True, 'agnd_open_edges': None if agnd_after is None else True}
         for key, value in overrides.items():
             if key in record['native']:
                 record['native'][key] = value
+            elif key.startswith('agreement_'):
+                record['receipt_agreement'][key[len('agreement_'):]] = value
             else:
                 record['latest_adopted_receipt'][key] = value
         record_path.write_text(json.dumps(record))
@@ -101,15 +148,13 @@ class OscPcbCheckpoint(unittest.TestCase):
 
     def test_forged_refresh_of_only_the_board_hash_is_rejected(self):
         with tempfile.TemporaryDirectory() as temp:
-            root = self.forged_root(temp)
-            guard.check(self.checkpoint, root)
+            root, old = self.stale_root(temp)
+            entry = self.checkpoint['boards']['osc-core']
+            old['source']['input_board_sha256'] = entry['board_sha256']
+            (root / entry['native_state_record']['path']).write_text(json.dumps(old))
             changed = self.mutant()
-            entry = changed['boards']['osc-core']
-            record_path = root / entry['native_state_record']['path']
-            record = json.loads(record_path.read_text())
-            record['source']['input_board_sha256'] = entry['board_sha256']
-            record_path.write_text(json.dumps(record))
-            entry['native_state_record'].update(input_board_sha256=entry['board_sha256'], fresh=True)
+            changed['boards']['osc-core']['native_state_record'].update(
+                input_board_sha256=entry['board_sha256'], checked_at_utc=old['checked_at_utc'], fresh=True)
             with self.assertRaisesRegex(ValueError, 'fresh native record'):
                 guard.check(changed, root)
 
@@ -120,13 +165,38 @@ class OscPcbCheckpoint(unittest.TestCase):
             'AGND islands': ({'agnd_islands': 22}, 'agnd_islands'),
             'receipt path': ({'path': 'boards/osc-core/reports/grid-routing/rail-links.json'}, 'accepted receipt'),
             'receipt hash': ({'sha256': '0' * 64}, 'accepted receipt'),
-            'signal count': ({'other_signal_open_edges': 3325}, 'other_signal_open_edges'),
+            'signal count': ({'other_signal_open_edges': 2480}, 'other_signal_open_edges'),
+            'open-edge agreement': ({'agreement_open_edges': False}, 'open-edge receipt agreement'),
+            'AGND agreement claimed for a chain receipt': ({'agreement_agnd_open_edges': True}, 'AGND receipt agreement'),
+            'AGND count claimed for a chain receipt': ({'agnd_open_edges_after': 22}, 'AGND receipt copy disagrees'),
         }
         for name, (overrides, message) in cases.items():
             with self.subTest(forgery=name), tempfile.TemporaryDirectory() as temp:
                 root = self.forged_root(temp)
                 with self.assertRaisesRegex(ValueError, message):
                     guard.check(self.refresh(root, 'osc-core', **overrides), root)
+
+    def test_jack_agnd_agreement_cannot_be_null(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = self.forged_root(temp)
+            with self.assertRaisesRegex(ValueError, 'AGND receipt agreement'):
+                guard.check(self.refresh(root, 'osc-jack-left', agreement_agnd_open_edges=None), root)
+        with tempfile.TemporaryDirectory() as temp:
+            root = self.forged_root(temp)
+            forged = self.refresh(root, 'osc-jack-left', agreement_agnd_open_edges=None, agnd_open_edges_after=None)
+            with self.assertRaisesRegex(ValueError, 'AGND receipt copy disagrees'):
+                guard.check(forged, root)
+
+    def test_island_signature_drift_is_rejected(self):
+        changed = self.mutant()
+        changed['boards']['osc-jack-right']['connectivity']['island_signature_sha256'] = '0' * 64
+        with self.assertRaisesRegex(ValueError, 'island signature'):
+            guard.check(changed)
+
+    def test_live_fresh_records_pass(self):
+        for entry in self.checkpoint['boards'].values():
+            self.assertTrue(entry['native_state_record']['fresh'])
+        guard.check(self.checkpoint)
 
     def test_genuine_fresh_records_are_accepted(self):
         for board_id in self.checkpoint['boards']:
@@ -140,8 +210,13 @@ class OscPcbCheckpoint(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'osc-pcb-core.mdx'):
             guard.check(changed)
 
-    def test_candidate_is_not_recorded_as_adopted(self):
-        self.assertIn('NOT ADOPTED', self.checkpoint['candidate']['status'])
+    def test_candidate_status_matches_the_adoption_record(self):
+        # An adopted candidate must be the one whose adoption record names the current K board.
+        status = self.checkpoint['candidate']['status']
+        entry = self.checkpoint['boards']['osc-core']
+        record = json.loads((guard.ROOT / entry['adoption']['path']).read_text())
+        self.assertIn(f"{record['label']} ADOPTED", status)
+        self.assertEqual(record['candidate_board_sha256'], entry['board_sha256'])
 
 
 if __name__ == '__main__':
