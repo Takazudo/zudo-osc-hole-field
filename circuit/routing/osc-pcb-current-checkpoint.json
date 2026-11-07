@@ -2,35 +2,70 @@
   "schema": "osc-pcb-current-checkpoint-1",
   "recorded": "2026-11-07",
   "status": "UNVALIDATED DRAFTS; ROUTING INCOMPLETE; electrical, thermal and physical qualification NOT RUN; no fabrication outputs",
-  "source_commit": "234f5d1d9c10b3609d27b084ffd2fd7f37d42d6c",
+  "source_commit": "a1c69885 (K2518 promotion on wsl/k-signals-20261107; merged with origin/main c5ef424b)",
   "connectivity_vs_drc": "Connectivity counts come from complete native connectivity receipts. The raw DRC listing in reports/drc.json is capped at 199 entries per warning type and is not a connectivity count.",
   "boards": {
     "osc-core": {
-      "label": "K3363",
+      "label": "K2518",
       "board": "boards/osc-core/osc-core.kicad_pcb",
-      "board_sha256": "2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751",
-      "accepted_by_commit": "3db6b51f (2026-11-05, sequenced K power/return pilot, 3409 -> 3363)",
+      "board_sha256": "7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42",
+      "accepted_by_commit": "a1c69885 (2026-11-07, adopt the WSL K signal chain wsl-20261107a, 3363 -> 2518)",
+      "adopted": "2026-11-07 by manager decision after independent review",
       "receipt": {
-        "path": "circuit/reviews/osc3-k-pilot/osc3-k-pilot.json",
-        "sha256": "22a6d6bdf0daadc1d2f892a9c83fb6fe9c2cc6e12d04158637b5420eecf85b60",
-        "stage": "osc3-k-pilot",
+        "path": "circuit/reviews/osc3-k-signals/wsl-20261107a.json",
+        "sha256": "e6b59cb32790c6df21994dd07759f55da6079c7aa7440a095e8b75e46ff63bc6",
+        "stage": "osc3-wsl-20261107a",
         "gate": "final_gate",
-        "mirror": "boards/osc-core/reports/grid-routing/osc3-k-pilot.json"
+        "mirror": "boards/osc-core/reports/grid-routing/osc3-wsl-20261107a.json"
+      },
+      "adoption": {
+        "path": "circuit/reviews/osc3-k-signals/wsl-20261107a-adoption.json",
+        "sha256": "0ed09f6a4320273754daf9b2759c004d1978d728d92a224fc36d60dde5145897"
+      },
+      "stages": {
+        "kept": [
+          "analog-pitch",
+          "analog-sense",
+          "signals-local",
+          "signals-01",
+          "signals-02",
+          "signals-03",
+          "signals-04",
+          "signals-05"
+        ],
+        "not_kept": {
+          "analog-precision": "no improvement (3269 -> 3269)"
+        },
+        "not_started": [
+          "signals-06",
+          "signals-07",
+          "signals-08",
+          "signals-09",
+          "signals-10",
+          "signals-11",
+          "signals-12",
+          "signal-escapes"
+        ],
+        "not_started_reason": "480 min chain time budget"
       },
       "connectivity": {
-        "source": "receipt after block (summary counts)",
-        "open_edges": 3363,
+        "source": "adoption record review_summary (the chain receipt keeps total open edges only)",
+        "open_edges": 2518,
         "rail_open_edges": {
           "+12V": 6,
-          "+5V": 4,
-          "-12V": 7
+          "-12V": 7,
+          "+5V": 4
         },
         "agnd_open_edges": 22,
         "agnd_islands": 23,
-        "main_agnd_group_pads": 3071,
-        "signal_open_edges": 3324,
+        "signal_open_edges": 2479,
+        "main_agnd_group": {
+          "connected_items": 3071,
+          "pads": 2270,
+          "source": "manager independent review of 2026-11-07; not retained in a committed receipt, so the guard does not verify it"
+        },
         "per_net_open_map_sha256": null,
-        "per_net_open_map_note": "NOT RETAINED: the K pilot receipt keeps summary counts only",
+        "per_net_open_map_note": "NOT RETAINED: the K chain receipt and adoption record keep summary counts only",
         "island_signature_sha256": null,
         "island_signature_note": "NOT RETAINED for this board revision; produced only by the native current_state.py refresh"
       },
@@ -116,6 +151,11 @@
   },
   "historical_epochs": [
     {
+      "label": "K3363",
+      "recorded": "2026-11-05",
+      "note": "Accepted 2026-11-05 (commit 3db6b51f, receipt circuit/reviews/osc3-k-pilot/osc3-k-pilot.json, board 2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751); superseded 2026-11-07 by K2518."
+    },
+    {
       "label": "K3409 / JL268 / JR312",
       "recorded": "2026-11-03",
       "note": "Stale native state records still in boards/*/reports/routing.json; they describe earlier board bytes and are superseded by this checkpoint."
@@ -127,16 +167,16 @@
     }
   ],
   "candidate": {
-    "status": "RUNNING, NOT ADOPTED",
-    "what": "A new K (osc-core) signal-routing candidate",
-    "owner": "Manager-run WSL round of 2026-11-07, separate worker",
-    "location": "The owner's WSL host; no receipt is committed in this repository",
-    "rule": "Do not count it as progress until its receipt passes the promotion gate and the board and receipt are merged."
+    "status": "NONE PENDING; wsl-20261107a ADOPTED 2026-11-07",
+    "what": "The WSL K signal candidate wsl-20261107a was adopted as K2518 on 2026-11-07 after independent review",
+    "owner": "Manager-run WSL round of 2026-11-07",
+    "location": "Promoted on wsl/k-signals-20261107 (commit a1c69885)",
+    "rule": "Any later candidate counts as progress only after its receipt passes the promotion gate and the board and receipt are merged."
   },
   "next_action": {
-    "summary": "When the WSL K signal candidate finishes, gate it against K3363 with the existing promotion gate. Adopt it only if it passes, then update this checkpoint. Independently, refresh the stale native state records with one admitted native run.",
+    "summary": "Run the J4 native refresh so boards/*/reports/routing.json describe K2518, JL184 and JR192, then mark each fresh here. After that, continue K with bounded transactions from K2518, starting with the stages that were not started (signals-06..12, signal-escapes), each through the promotion gate.",
     "refresh_command": "bash scripts/pcbgen/with_route_guard.sh python3 scripts/pcbgen/current_state.py osc-core osc-jack-left osc-jack-right",
-    "refresh_status": "NEEDS ADMISSION (KiCad 10.0.6 through scripts/kicad/run.sh, one heavy slot)"
+    "refresh_status": "NEEDS ADMISSION (J4; KiCad 10.0.6 through scripts/kicad/run.sh, one heavy slot)"
   },
   "referenced_by": {
     "doc/src/content/docs/project/index.mdx": [

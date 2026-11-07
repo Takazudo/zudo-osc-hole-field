@@ -54,17 +54,18 @@ class LatestReceipt(unittest.TestCase):
         unadopted_gate['final_gate']['adopted'] = False
         self.assertIsNone(self.resolve({'x.json': unadopted_gate}))
 
-    def test_final_gate_receipt_without_after_block_is_refused(self):
+    def test_final_gate_receipt_without_after_block_has_unknown_agnd(self):
         receipt = final_gate()
         del receipt['after']
-        self.assertIsNone(self.resolve({'osc3-k-pilot.json': receipt}))
+        found = self.resolve({'osc3-wsl.json': receipt})
+        self.assertEqual((found['open_edges_after'], found['agnd_open_edges_after']), (3363, None))
 
     def test_copper_files_and_ambiguity_are_ignored_or_refused(self):
         self.assertIsNone(self.resolve({'rrr-01-copper.json': top_level()}))
         self.assertIsNone(self.resolve({'rrr-01.json': top_level(), 'osc3-k-pilot.json': final_gate()}))
 
     def test_current_boards_resolve_to_their_accepted_receipts(self):
-        expected = {'osc-core': ('osc3-k-pilot.json', 3363, 22), 'osc-jack-left': ('rrr-01.json', 184, 3),
+        expected = {'osc-core': ('osc3-wsl-20261107a.json', 2518, None), 'osc-jack-left': ('rrr-01.json', 184, 3),
                     'osc-jack-right': ('rrr-01.json', 192, 8)}
         for board_id, (name, edges, agnd) in expected.items():
             with self.subTest(board=board_id):

@@ -48,6 +48,30 @@ class OscPcbCheckpoint(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     guard.check(changed)
 
+    def test_adoption_record_must_match_and_bind_the_board(self):
+        changed = self.mutant()
+        changed['boards']['osc-core']['adoption']['sha256'] = '0' * 64
+        with self.assertRaisesRegex(ValueError, 'adoption record bytes'):
+            guard.check(changed)
+        with tempfile.TemporaryDirectory() as temp:
+            root = self.forged_root(temp)
+            entry = self.checkpoint['boards']['osc-core']
+            path = root / entry['adoption']['path']
+            path.parent.mkdir(parents=True, exist_ok=True)
+            record = json.loads((guard.ROOT / entry['adoption']['path']).read_text())
+            record['chain_receipt']['sha256'] = '0' * 64
+            path.write_text(json.dumps(record))
+            changed = self.mutant()
+            changed['boards']['osc-core']['adoption']['sha256'] = guard.sha(path)
+            with self.assertRaisesRegex(ValueError, 'does not bind the checkpoint receipt'):
+                guard.check(changed, root)
+
+    def test_agnd_islands_drift_is_rejected(self):
+        changed = self.mutant()
+        changed['boards']['osc-core']['connectivity']['agnd_islands'] = 22
+        with self.assertRaisesRegex(ValueError, 'agnd_islands'):
+            guard.check(changed)
+
     def test_rail_drift_is_rejected(self):
         changed = self.mutant()
         changed['boards']['osc-core']['connectivity']['rail_open_edges']['+5V'] = 0
@@ -68,6 +92,8 @@ class OscPcbCheckpoint(unittest.TestCase):
             paths |= {entry['board'], entry['receipt']['path'], entry['native_state_record']['path']}
             if entry['receipt'].get('mirror'):
                 paths.add(entry['receipt']['mirror'])
+            if 'adoption' in entry:
+                paths.add(entry['adoption']['path'])
         for path in paths:
             (root / path).parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(guard.ROOT / path, root / path)
@@ -140,8 +166,13 @@ class OscPcbCheckpoint(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'osc-pcb-core.mdx'):
             guard.check(changed)
 
-    def test_candidate_is_not_recorded_as_adopted(self):
-        self.assertIn('NOT ADOPTED', self.checkpoint['candidate']['status'])
+    def test_candidate_status_matches_the_adoption_record(self):
+        # An adopted candidate must be the one whose adoption record names the current K board.
+        status = self.checkpoint['candidate']['status']
+        entry = self.checkpoint['boards']['osc-core']
+        record = json.loads((guard.ROOT / entry['adoption']['path']).read_text())
+        self.assertIn(f"{record['label']} ADOPTED", status)
+        self.assertEqual(record['candidate_board_sha256'], entry['board_sha256'])
 
 
 if __name__ == '__main__':

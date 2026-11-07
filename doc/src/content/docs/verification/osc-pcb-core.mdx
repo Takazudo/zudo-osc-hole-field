@@ -42,22 +42,36 @@ Four layers fall below the 1.5× margin used for the jack halves, so the core ta
 - In4.Cu is a continuous +12 V plane.
 - +5 V is routed as 0.4 mm tracks.
 
-## Current status: K3363 accepted, routing incomplete
+## Current status: K2518 accepted, routing incomplete
 
-The accepted core board is **K3363**, recorded on 2026-11-07 in the current checkpoint `circuit/routing/osc-pcb-current-checkpoint.json`. `scripts/checks/osc_pcb_checkpoint.py` fails if this page, the board bytes or the receipt stop agreeing with that record.
+The accepted core board is **K2518**, recorded on 2026-11-07 in the current checkpoint `circuit/routing/osc-pcb-current-checkpoint.json`. `scripts/checks/osc_pcb_checkpoint.py` fails if this page, the board bytes, the receipt or the adoption record stop agreeing with that record. The board is an unvalidated draft. Electrical, thermal and physical qualification NOT RUN. Fabrication outputs NOT CREATED.
 
-| Item | Accepted K3363 state |
+| Item | Accepted K2518 state |
+| --- | --- |
+| Board SHA256 | `7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42` |
+| Adopted | 2026-11-07 by manager decision after an independent review; promotion commit `a1c69885`, 3,363 → 2,518 open edges |
+| Receipt | `circuit/reviews/osc3-k-signals/wsl-20261107a.json`, mirrored in `boards/osc-core/reports/grid-routing/osc3-wsl-20261107a.json` |
+| Adoption record | `circuit/reviews/osc3-k-signals/wsl-20261107a-adoption.json` |
+| Native open edges | **2,518**: +12 V 6, −12 V 7, +5 V 4, AGND 22, signals 2,479 |
+| AGND | 23 islands, unchanged from K3363. The independent review reports the main AGND group at 3,071 connected items (2,270 pads); no committed receipt retains that figure. |
+| Copper | 11,068 segments and 981 vias added; nothing removed or changed; footprints, edges and zone outlines byte-identical |
+| Native errors / parity / new warning identities | 0 / 0 / 0, with complete source-bound warning evidence |
+| Stages kept | analog-pitch, analog-sense, signals-local, signals-01 to signals-05 |
+| Stages not kept or not started | analog-precision gave no improvement (3,269 → 3,269). signals-06 to signals-12 and signal-escapes were not started within the 480 min chain budget. |
+| Candidate | wsl-20261107a was adopted as K2518 on 2026-11-07. No K candidate is pending. |
+| Next action | Run the J4 native refresh of `boards/osc-core/reports/routing.json`. Then continue with bounded transactions from K2518, starting with the stages that were not started. |
+
+The chain receipt keeps total open edges only; the rail, AGND and signal split comes from the adoption record's review summary. The raw DRC listing in `reports/drc.json` caps each warning type at 199 entries and is not a connectivity count. `boards/osc-core/reports/routing.json` still records the K3409 board bytes (2026-11-03) and is stale until J4 runs.
+
+### Historical K3363 state (accepted 2026-11-05, superseded 2026-11-07)
+
+| Item | K3363 state |
 | --- | --- |
 | Board SHA256 | `2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751` |
 | Accepted by | Commit `3db6b51f` (2026-11-05), the sequenced K power/return pilot, 3,409 → 3,363 open edges |
 | Receipt | `circuit/reviews/osc3-k-pilot/osc3-k-pilot.json`, mirrored in `boards/osc-core/reports/grid-routing/osc3-k-pilot.json` |
-| Native open edges | **3,363**: +12 V 6, −12 V 7, +5 V 4, AGND 22, signals 3,324 |
-| AGND | 23 islands; the main AGND group keeps its 3,071 pads |
-| Native errors / new warning identities | None / none, with complete source-bound warning evidence |
-| Candidate | A new WSL K signal candidate is running in the manager's 2026-11-07 round. It is **not adopted** and contributes nothing to these counts. |
-| Next action | Gate that candidate against K3363 with the existing promotion gate when it finishes. Then refresh `boards/osc-core/reports/routing.json` with one admitted native run. |
-
-The counts above come from the complete native connectivity receipt. The raw DRC listing in `reports/drc.json` caps each warning type at 199 entries and is not a connectivity count. `boards/osc-core/reports/routing.json` still records the earlier K3409 board bytes (2026-11-03) and is stale until the admitted refresh runs.
+| Native open edges | 3,363: +12 V 6, −12 V 7, +5 V 4, AGND 22, signals 3,324 |
+| AGND | 23 islands; main AGND group 3,071 connected items |
 
 ### Historical K1402 epoch (2026-10-10)
 
@@ -84,7 +98,7 @@ Each stage is applied to a disposable copy and checked with native DRC, schemati
 
 Still to run under #43: further rip-up rounds and hotspot-region renegotiation for the remaining signal edges, and ±12 V rail escapes.
 
-The renders below predate the accepted K3363 revision. The current checkpoint and its receipt describe current copper.
+The renders below predate the accepted K2518 revision. The current checkpoint and its receipt describe current copper.
 
 ![Core top: unvalidated routed draft in progress](/assets/osc-hole-field/osc-core-top.png)
 

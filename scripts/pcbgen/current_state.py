@@ -57,8 +57,9 @@ def latest_receipt(board_id,source_sha):
     if len(found)!=1:return None
     path,r=found[0]
     gate=receipt_gate(r)
-    if gate is not r and not isinstance(r.get('after'),dict):return None
-    agnd=r['after'].get('agnd_open_edges') if gate is not r else r.get('open_by_net_after',{}).get('AGND')
+    # osc3 chain receipts (osc3-k-chain-1) keep only total open edges; their AGND count is unknown, not zero.
+    if gate is not r:agnd=r['after'].get('agnd_open_edges') if isinstance(r.get('after'),dict) else None
+    else:agnd=r.get('open_by_net_after',{}).get('AGND')
     return {'path':str(path.relative_to(ROOT)),'sha256':sha(path),'stage':gate.get('stage'),
             'open_edges_after':gate.get('open_edges_after'),'agnd_open_edges_after':agnd}
 
@@ -107,7 +108,7 @@ def summarize(board_id,source,input_sha,output_sha,drc,dump,context):
         'latest_adopted_receipt':receipt,
         'receipt_agreement':None if receipt is None else {
             'open_edges':receipt['open_edges_after']==dump['open_edges'],
-            'agnd_open_edges':receipt['agnd_open_edges_after']==agnd},
+            'agnd_open_edges':None if receipt['agnd_open_edges_after'] is None else receipt['agnd_open_edges_after']==agnd},
         'fabrication_outputs':'NOT CREATED','qualification':'NOT RUN: electrical, thermal and physical qualification',
     }
 

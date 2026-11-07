@@ -49,6 +49,8 @@ def check_board(board_id, entry, root):
             fail(board_id, 'per-net open map disagrees with the receipt')
         observed = {'rail_open_edges': {k: nets.get(k, 0) for k in RAILS},
                     'agnd_open_edges': nets.get('AGND', 0), 'open_nets': len(nets)}
+    elif 'adoption' in entry:
+        observed = adoption_counts(board_id, entry, root)
     else:
         after = receipt['after']
         observed = {'rail_open_edges': after['rail_open_edges'], 'agnd_open_edges': after['agnd_open_edges'],
@@ -86,6 +88,28 @@ def check_fresh_record(board_id, record, entry):
     paths = {entry['receipt']['path'], entry['receipt'].get('mirror')} - {None}
     if receipt.get('sha256') != entry['receipt']['sha256'] or receipt.get('path') not in paths:
         fail(board_id, 'fresh native record does not name the accepted receipt')
+
+
+def adoption_counts(board_id, entry, root):
+    """Counts from an adoption record that is bound to this board and this receipt."""
+    path = root / entry['adoption']['path']
+    if sha(path) != entry['adoption']['sha256']:
+        fail(board_id, 'adoption record bytes differ from the checkpoint')
+    record = json.loads(path.read_text())
+    if record.get('candidate_board_sha256') != entry['board_sha256']:
+        fail(board_id, 'adoption record names a different board')
+    bound = {record['chain_receipt']['path']: record['chain_receipt']['sha256']}
+    if 'mirrored_receipt' in record:
+        bound[record['mirrored_receipt']['path']] = record['mirrored_receipt']['sha256']
+    for receipt_path in (entry['receipt']['path'], entry['receipt'].get('mirror')):
+        if receipt_path and bound.get(receipt_path) != entry['receipt']['sha256']:
+            fail(board_id, 'adoption record does not bind the checkpoint receipt')
+    summary = record['review_summary']
+    if summary['open_edges']['after'] != entry['connectivity']['open_edges']:
+        fail(board_id, 'open edges disagree with the adoption record')
+    return {'rail_open_edges': {k: summary['rail_open_edges'][k] for k in RAILS},
+            'agnd_open_edges': summary['agnd']['open_edges'], 'agnd_islands': summary['agnd']['islands'],
+            'signal_open_edges': summary['signal_open_edges']['after']}
 
 
 def check_docs(checkpoint, root):
