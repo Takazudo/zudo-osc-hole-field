@@ -1,14 +1,14 @@
 {
   "board": "boards/osc-core/osc-core.kicad_pcb",
   "board_id": "osc-core",
-  "checked_at_utc": "2026-11-03T19:25:50Z",
+  "checked_at_utc": "2026-11-07T19:12:15Z",
   "fabrication_outputs": "NOT CREATED",
   "latest_adopted_receipt": {
-    "agnd_open_edges_after": 22,
-    "open_edges_after": 3409,
-    "path": "boards/osc-core/reports/grid-routing/rail-links.json",
-    "sha256": "df5f3b1d411e774f14bfa1dde6980c05a243c173b514217fda504004a0760b3d",
-    "stage": "rail-links"
+    "agnd_open_edges_after": null,
+    "open_edges_after": 2518,
+    "path": "boards/osc-core/reports/grid-routing/osc3-wsl-20261107a.json",
+    "sha256": "e6b59cb32790c6df21994dd07759f55da6079c7aa7440a095e8b75e46ff63bc6",
+    "stage": "osc3-wsl-20261107a"
   },
   "method": {
     "command": "kicad-cli pcb drc --schematic-parity --refill-zones --save-board --format json --severity-all",
@@ -28,17 +28,17 @@
       "silk_over_copper": 199,
       "silk_overlap": 199,
       "text_height": 4,
-      "track_dangling": 7
+      "track_dangling": 5
     },
-    "drc_warnings_listed": 493,
-    "island_signature_sha256": "c9c6561fb62565c61f6fcdb7389babf4b75d53e79b7a8c9989ab7c2f22d39c98",
-    "open_edges": 3409,
-    "open_nets": 1401,
-    "other_signal_open_edges": 3324,
+    "drc_warnings_listed": 491,
+    "island_signature_sha256": "d65497b4fe7cb9d3b686a9db851fc39afb460325adcaead9916dfa857ba55329",
+    "open_edges": 2518,
+    "open_nets": 1061,
+    "other_signal_open_edges": 2479,
     "rail_open_edges": {
-      "+12V": 26,
-      "+5V": 12,
-      "-12V": 25
+      "+12V": 6,
+      "+5V": 4,
+      "-12V": 7
     },
     "schematic_parity": 0
   },
@@ -47,18 +47,18 @@
     "drc_report": "boards/osc-core/reports/drc.json"
   },
   "receipt_agreement": {
-    "agnd_open_edges": true,
+    "agnd_open_edges": null,
     "open_edges": true
   },
   "refilled_copy": {
     "adopted": false,
     "differs_from_input": false,
     "note": "Refill output is a check artifact; it never replaces the adopted board",
-    "output_board_sha256": "dda33a25479c9993f71e33d49129cf16414828b3dd2083b6d4f91a65421c728c"
+    "output_board_sha256": "7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42"
   },
   "schema": "osc-current-native-state-1",
   "source": {
-    "input_board_sha256": "dda33a25479c9993f71e33d49129cf16414828b3dd2083b6d4f91a65421c728c",
+    "input_board_sha256": "7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42",
     "project_sha256": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe",
     "rules_sha256": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
     "schematic_sha256": "cf3e98d9179ab1d96505d29612a4bd7138cdf782dcce53d145c73ef8789b41c6",
