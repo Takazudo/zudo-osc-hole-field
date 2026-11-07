@@ -108,6 +108,47 @@ bash scripts/pcbgen/with_route_guard.sh timeout --signal=INT --kill-after=2m 60m
 If the manager adopts a new K, the K plan is stale, and `transaction.py` refuses
 it on the hash check. Re-plan with the reproduce steps below.
 
+## GitHub Actions runs all three transactions in parallel and never pushes
+
+`.github/workflows/local-transactions.yml` runs the same command on
+github-hosted runners, one job per board in parallel. It uses the runner's
+Python with `scripts/pcbgen/numerical-requirements.txt` instead of the
+ground-solver venv. `with_route_guard.sh` execs the command directly there.
+
+- **What it checks first.** Each job checks out the branch's current commit and records its sha. Before the numerical install, the KiCad pull or any native call, it confirms that the plan's input hash equals the checked-out board's sha256, and runs `transaction.py <board> --validate`. A mismatch fails the job, and the reason goes into the run summary.
+- **Stale receipts are discarded.** The run step deletes any receipt already committed on the plan branch before the driver starts. Receipts are collected only from a run that started.
+- **What it never does.** The workflow never commits or pushes. The driver never promotes.
+- **What it uploads.** One artifact per board, kept for 7 days, holds:
+  - the receipt `<spec>.json` and `<spec>-copper.json`
+  - the `.circuit-cache` candidate workspaces (`-fresh` and every `-verify`: the board, `dump.json` and `drc.json`), up to 400 MB; larger files are listed in `excluded.txt` and in the summary
+  - `run.log`, `status.txt`, `memory-peak-kb.txt`, `precheck.txt`, `validate.json` and `source-sha.txt`
+  - `MANIFEST.sha256` covering every uploaded file
+
+The workflow file must be on `main` before it can be dispatched. Dispatch it
+from `main`. The jobs check out the commit of the `branch` input, so the plan
+branch does not need to carry the workflow:
+
+```
+gh workflow run local-transactions.yml --ref main -f branch=<plan-branch>
+gh workflow run local-transactions.yml --ref main -f branch=<plan-branch> -f boards=osc-core -f max_minutes=60
+```
+
+Runs share one concurrency group per plan branch and are never cancelled.
+GitHub keeps only one pending run per group: a newer dispatch for the same
+branch replaces one that is still queued.
+
+`boards` defaults to all three, and `max_minutes` defaults to 60 (1–80, with no leading zero).
+The job fails if `transaction.py` exits non-zero, but it still uploads what
+exists.
+
+To bring the results back:
+
+1. Download the artifacts: `gh run download <run-id> -D <dir>`.
+2. Verify each one inside its folder: `(cd <dir>/transaction-<board>-<run-id> && sha256sum -c MANIFEST.sha256)`.
+3. Confirm that `source-sha.txt` is the plan branch commit you dispatched.
+4. On the plan branch, copy `receipts/<spec>.json` and `receipts/<spec>-copper.json` into this folder. Commit them with the run URL in the commit body (`https://github.com/<owner>/<repo>/actions/runs/<run-id>`).
+5. Leave the workspace boards out of git. A receipt is a comparison input; adoption still needs the complete-warning audit and a separate decision.
+
 ## Reproduce (host only)
 
 ```
