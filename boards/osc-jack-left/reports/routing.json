@@ -1,14 +1,14 @@
 {
   "board": "boards/osc-jack-left/osc-jack-left.kicad_pcb",
   "board_id": "osc-jack-left",
-  "checked_at_utc": "2026-11-03T19:01:46Z",
+  "checked_at_utc": "2026-11-07T19:14:28Z",
   "fabrication_outputs": "NOT CREATED",
   "latest_adopted_receipt": {
     "agnd_open_edges_after": 3,
-    "open_edges_after": 268,
-    "path": "boards/osc-jack-left/reports/grid-routing/analog-precision.json",
-    "sha256": "35b3799e7c539e6b8c6b34b859c321ce6a29c49e4946ac961934390059b053cd",
-    "stage": "analog-precision"
+    "open_edges_after": 184,
+    "path": "boards/osc-jack-left/reports/grid-routing/rrr-01.json",
+    "sha256": "8537b77da1c17debaa8d5f404a26272bb29b89aad104f19070ab7c8a288a54c4",
+    "stage": "rrr-01"
   },
   "method": {
     "command": "kicad-cli pcb drc --schematic-parity --refill-zones --save-board --format json --severity-all",
@@ -21,7 +21,7 @@
     "agnd_open_edges": 3,
     "drc_errors": 0,
     "drc_errors_by_type": {},
-    "drc_unconnected_items_listed": 268,
+    "drc_unconnected_items_listed": 184,
     "drc_warnings_by_type": {
       "hole_to_hole": 1,
       "silk_edge_clearance": 8,
@@ -31,10 +31,10 @@
       "track_dangling": 4
     },
     "drc_warnings_listed": 454,
-    "island_signature_sha256": "a0608718b2cd7fd2fd430bd9977ffbd12933d65cedb00fa044c300d9fa9b6d0b",
-    "open_edges": 268,
-    "open_nets": 200,
-    "other_signal_open_edges": 265,
+    "island_signature_sha256": "2206900ef6b98c7eb287427ab99d139c282d052ea2f8cf5c12455d8c05cf79e4",
+    "open_edges": 184,
+    "open_nets": 155,
+    "other_signal_open_edges": 181,
     "rail_open_edges": {
       "+12V": 0,
       "+5V": 0,
@@ -54,11 +54,11 @@
     "adopted": false,
     "differs_from_input": false,
     "note": "Refill output is a check artifact; it never replaces the adopted board",
-    "output_board_sha256": "6bd6e15393cf2edb8625615ab31f1987ae512402ab0cb41fee661d9703493dc8"
+    "output_board_sha256": "a7fe68606591186cc955178b949e1c5ce8df0d0ba5829d328bb6bebb119ca251"
   },
   "schema": "osc-current-native-state-1",
   "source": {
-    "input_board_sha256": "6bd6e15393cf2edb8625615ab31f1987ae512402ab0cb41fee661d9703493dc8",
+    "input_board_sha256": "a7fe68606591186cc955178b949e1c5ce8df0d0ba5829d328bb6bebb119ca251",
     "project_sha256": "dc632022614d7d985ca97b60ad2546cbc6ddc908c303834ab60abe675191b20b",
     "rules_sha256": "4f8f95210209c4024c0bde764a6758293e2d294565d9a2d2b6e62ec09910073d",
     "schematic_sha256": "2f6607daf2167115f00d97a6fbe353d3290ec2c367f12dab754fdc81b51a4218",

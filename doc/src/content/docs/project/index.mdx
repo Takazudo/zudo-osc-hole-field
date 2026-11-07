@@ -63,6 +63,24 @@ The two SLEW controls occupy R21 cells `[7,6]` and `[7,7]` (zero-based). The pro
 | Physical prototype | None documented |
 | Verification | No instrument bench result is documented |
 
+### Current OSC PCB routing checkpoint (2026-11-07)
+
+The single current record is `circuit/routing/osc-pcb-current-checkpoint.json`. `scripts/checks/osc_pcb_checkpoint.py` fails when it disagrees with the board bytes, receipts or these pages. Open-edge counts come from complete native connectivity receipts, not from the capped raw DRC listing.
+
+| Board | Accepted state | Board SHA256 | Accepted receipt |
+| --- | --- | --- | --- |
+| Core, `osc-core` | **K2518**: +12 V 6, −12 V 7, +5 V 4, AGND 22, signals 2,479 | `7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42` | `circuit/reviews/osc3-k-signals/wsl-20261107a.json` |
+| Left jack, `osc-jack-left` | **JL184**: rails 0, AGND 3, signals 181 | `a7fe68606591186cc955178b949e1c5ce8df0d0ba5829d328bb6bebb119ca251` | `boards/osc-jack-left/reports/grid-routing/rrr-01.json` |
+| Right jack, `osc-jack-right` | **JR192**: rails 0, AGND 8, signals 184 | `f6106300bae4e253f4b869dd24d14cb2428715215917b33ebacaa0f9031bfaa8` | `boards/osc-jack-right/reports/grid-routing/rrr-01.json` |
+
+- **Candidate status:** the WSL K signal candidate wsl-20261107a was adopted as K2518 on 2026-11-07 by manager decision after an independent review (promotion commit `a1c69885`, adoption record `circuit/reviews/osc3-k-signals/wsl-20261107a-adoption.json`). Its kept stages are analog-pitch, analog-sense, signals-local and signals-01 to signals-05. analog-precision gave no improvement and was not kept. signals-06 to signals-12 and signal-escapes were not started within the 480 min chain budget. No K candidate is pending.
+- **History:** K3363 (board `2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751`, receipt `circuit/reviews/osc3-k-pilot/osc3-k-pilot.json`) was accepted on 2026-11-05 and superseded by K2518 on 2026-11-07.
+- **Native state records:** the J4 native refresh (commit `7d7c31ea`, 2026-11-07) rewrote `boards/*/reports/routing.json` and `drc.json` for K2518 / JL184 / JR192. Their counts and receipts agree with this checkpoint, and the guard checks that they stay fresh.
+- **Next action:** continue K with bounded transactions from K2518, starting with the stages that were not started (signals-06 to signals-12 and signal-escapes), each through the promotion gate. After any adoption, update this checkpoint and re-run the native refresh with admission.
+- **Boundary:** each board is an unvalidated draft with incomplete routing. Electrical, thermal and physical qualification NOT RUN. Fabrication outputs NOT CREATED.
+
+K3363 is dated history; K1402 / JL117 / JR130 belong to an earlier design epoch. Both stay as dated history on the verification pages.
+
 ## Explicit claim boundary
 
 The current specification does not claim a fabrication-ready schematic, PCB, BOM/CPL, native ERC/DRC result, qualified panel and board stack, jack thread or connector fit, or button-plunger reach. It also does not claim ADDAC215-like precision, a 25-second slew, 20-minute sample hold, through-zero FM, clickless A/B switching, calibrated volts-per-octave tracking, a validated power or thermal budget, or surge protection. Those statements require circuit evidence, exact mechanical data, and bench results at the relevant revision.

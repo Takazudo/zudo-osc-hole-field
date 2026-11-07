@@ -51,11 +51,23 @@ def latest_receipt(board_id,source_sha):
         if path.name.endswith('-copper.json'):continue
         try:r=json.loads(path.read_text())
         except ValueError:continue
-        if isinstance(r,dict) and r.get('adopted') and r.get('candidate_board_sha256')==source_sha:found.append((path,r))
+        if not isinstance(r,dict):continue
+        gate=receipt_gate(r)
+        if r.get('adopted') and gate.get('adopted') and gate.get('candidate_board_sha256')==source_sha:found.append((path,r))
     if len(found)!=1:return None
     path,r=found[0]
-    return {'path':str(path.relative_to(ROOT)),'sha256':sha(path),'stage':r.get('stage'),
-            'open_edges_after':r.get('open_edges_after'),'agnd_open_edges_after':r.get('open_by_net_after',{}).get('AGND')}
+    gate=receipt_gate(r)
+    # osc3 chain receipts (osc3-k-chain-1) keep only total open edges; their AGND count is unknown, not zero.
+    if gate is not r:agnd=r['after'].get('agnd_open_edges') if isinstance(r.get('after'),dict) else None
+    else:agnd=r.get('open_by_net_after',{}).get('AGND')
+    return {'path':str(path.relative_to(ROOT)),'sha256':sha(path),'stage':gate.get('stage'),
+            'open_edges_after':gate.get('open_edges_after'),'agnd_open_edges_after':agnd}
+
+
+def receipt_gate(r):
+    """Stage receipts keep the gate at top level; osc3 chain receipts keep it under final_gate."""
+    if 'candidate_board_sha256' not in r and isinstance(r.get('final_gate'),dict):return r['final_gate']
+    return r
 
 
 def summarize(board_id,source,input_sha,output_sha,drc,dump,context):
@@ -96,7 +108,7 @@ def summarize(board_id,source,input_sha,output_sha,drc,dump,context):
         'latest_adopted_receipt':receipt,
         'receipt_agreement':None if receipt is None else {
             'open_edges':receipt['open_edges_after']==dump['open_edges'],
-            'agnd_open_edges':receipt['agnd_open_edges_after']==agnd},
+            'agnd_open_edges':None if receipt['agnd_open_edges_after'] is None else receipt['agnd_open_edges_after']==agnd},
         'fabrication_outputs':'NOT CREATED','qualification':'NOT RUN: electrical, thermal and physical qualification',
     }
 

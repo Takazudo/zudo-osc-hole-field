@@ -4,7 +4,25 @@ description: "Merged recovery, assembly margin changes, and the remaining physic
 sidebar_position: 11
 ---
 
-## Current continuation — 2 October 2026
+## Current PCB routing checkpoint — 7 November 2026
+
+This section is the current routing recovery point. The single machine-readable record is `circuit/routing/osc-pcb-current-checkpoint.json`, and `scripts/checks/osc_pcb_checkpoint.py` fails when it disagrees with the board bytes, receipts or the pages that cite it. Source commit at recording: `234f5d1d`.
+
+| Board | Accepted state | Board SHA256 | Accepted receipt |
+| --- | --- | --- | --- |
+| Core, `osc-core` | **K2518**: +12 V 6, −12 V 7, +5 V 4, AGND 22, signals 2,479 | `7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42` | `circuit/reviews/osc3-k-signals/wsl-20261107a.json` |
+| Left jack, `osc-jack-left` | **JL184**: rails 0, AGND 3, signals 181 | `a7fe68606591186cc955178b949e1c5ce8df0d0ba5829d328bb6bebb119ca251` | `boards/osc-jack-left/reports/grid-routing/rrr-01.json` |
+| Right jack, `osc-jack-right` | **JR192**: rails 0, AGND 8, signals 184 | `f6106300bae4e253f4b869dd24d14cb2428715215917b33ebacaa0f9031bfaa8` | `boards/osc-jack-right/reports/grid-routing/rrr-01.json` |
+
+- **Candidate status:** the WSL K signal candidate wsl-20261107a was adopted as K2518 on 2026-11-07 by manager decision after an independent review (promotion commit `a1c69885`, adoption record `circuit/reviews/osc3-k-signals/wsl-20261107a-adoption.json`). Its kept stages are analog-pitch, analog-sense, signals-local and signals-01 to signals-05. analog-precision gave no improvement and was not kept. signals-06 to signals-12 and signal-escapes were not started within the 480 min chain budget. No K candidate is pending.
+- **History:** K3363 (board `2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751`, receipt `circuit/reviews/osc3-k-pilot/osc3-k-pilot.json`) was accepted on 2026-11-05 and superseded by K2518 on 2026-11-07.
+- **Native state records:** the J4 native refresh (commit `7d7c31ea`, 2026-11-07) rewrote `boards/*/reports/routing.json` and `drc.json` for K2518 / JL184 / JR192. Their counts and receipts agree with this checkpoint, and the guard checks that they stay fresh.
+- **Next action:** continue K with bounded transactions from K2518, starting with the stages that were not started (signals-06 to signals-12 and signal-escapes), each through the promotion gate. After any adoption, update this checkpoint and re-run the native refresh with admission.
+- **Boundary:** each board is an unvalidated draft with incomplete routing. Electrical, thermal and physical qualification NOT RUN. Fabrication outputs NOT CREATED.
+
+The full K connectivity count above is separate from the raw DRC listing, which KiCad 10.0.6 caps at 199 entries per warning type. K3363 is dated history from 2026-11-05 to 2026-11-07. K1402 / JL117 / JR130 records belong to an earlier design epoch; keep them dated and never transplant them onto current boards.
+
+## Engineering continuation — 2 October 2026 (dated)
 
 Start from the latest `main`. Completed recovery and bounded engineering
 checkpoints are merged there; the preserved issue-38 worktree is a

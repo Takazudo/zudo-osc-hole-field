@@ -1,0 +1,205 @@
+{
+  "schema": "osc-pcb-current-checkpoint-1",
+  "recorded": "2026-11-07",
+  "status": "UNVALIDATED DRAFTS; ROUTING INCOMPLETE; electrical, thermal and physical qualification NOT RUN; no fabrication outputs",
+  "source_commit": "cf6de445 on wsl/k-signals-20261107: K2518 promotion a1c69885 plus J4 refresh 7d7c31ea, merged with origin/main 39b758a1",
+  "connectivity_vs_drc": "Connectivity counts come from complete native connectivity receipts. The raw DRC listing in reports/drc.json is capped at 199 entries per warning type and is not a connectivity count.",
+  "boards": {
+    "osc-core": {
+      "label": "K2518",
+      "board": "boards/osc-core/osc-core.kicad_pcb",
+      "board_sha256": "7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42",
+      "accepted_by_commit": "a1c69885 (2026-11-07, adopt the WSL K signal chain wsl-20261107a, 3363 -> 2518)",
+      "adopted": "2026-11-07 by manager decision after independent review",
+      "receipt": {
+        "path": "circuit/reviews/osc3-k-signals/wsl-20261107a.json",
+        "sha256": "e6b59cb32790c6df21994dd07759f55da6079c7aa7440a095e8b75e46ff63bc6",
+        "stage": "osc3-wsl-20261107a",
+        "gate": "final_gate",
+        "mirror": "boards/osc-core/reports/grid-routing/osc3-wsl-20261107a.json"
+      },
+      "adoption": {
+        "path": "circuit/reviews/osc3-k-signals/wsl-20261107a-adoption.json",
+        "sha256": "214c227519132be81bef9396d8659f82799f7425a236f64c97e041e91cb3a0e1"
+      },
+      "stages": {
+        "kept": [
+          "analog-pitch",
+          "analog-sense",
+          "signals-local",
+          "signals-01",
+          "signals-02",
+          "signals-03",
+          "signals-04",
+          "signals-05"
+        ],
+        "not_kept": {
+          "analog-precision": "no improvement (3269 -> 3269)"
+        },
+        "not_started": [
+          "signals-06",
+          "signals-07",
+          "signals-08",
+          "signals-09",
+          "signals-10",
+          "signals-11",
+          "signals-12",
+          "signal-escapes"
+        ],
+        "not_started_reason": "480 min chain time budget"
+      },
+      "connectivity": {
+        "source": "adoption record review_summary (the chain receipt keeps total open edges only)",
+        "open_edges": 2518,
+        "rail_open_edges": {
+          "+12V": 6,
+          "-12V": 7,
+          "+5V": 4
+        },
+        "agnd_open_edges": 22,
+        "agnd_islands": 23,
+        "signal_open_edges": 2479,
+        "main_agnd_group": {
+          "connected_items": 3071,
+          "pads": 2270,
+          "source": "manager independent review of 2026-11-07; not retained in a committed receipt, so the guard does not verify it"
+        },
+        "per_net_open_map_sha256": null,
+        "per_net_open_map_note": "NOT RETAINED: the K chain receipt and adoption record keep summary counts only",
+        "island_signature_sha256": "d65497b4fe7cb9d3b686a9db851fc39afb460325adcaead9916dfa857ba55329",
+        "island_signature_note": "From the J4 native refresh record boards/osc-core/reports/routing.json (checked 2026-11-07T19:12:15Z); compared by the guard while the record is fresh"
+      },
+      "native_state_record": {
+        "path": "boards/osc-core/reports/routing.json",
+        "input_board_sha256": "7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42",
+        "checked_at_utc": "2026-11-07T19:12:15Z",
+        "superseded_checked_at_utc": "2026-11-03T19:25:50Z",
+        "fresh": true,
+        "refresh": "DONE: J4 native current_state.py run, committed in 7d7c31ea"
+      }
+    },
+    "osc-jack-left": {
+      "label": "JL184",
+      "board": "boards/osc-jack-left/osc-jack-left.kicad_pcb",
+      "board_sha256": "a7fe68606591186cc955178b949e1c5ce8df0d0ba5829d328bb6bebb119ca251",
+      "accepted_by_commit": "92d3e71d (2026-11-06, rrr-01 stage, 185 -> 184)",
+      "receipt": {
+        "path": "boards/osc-jack-left/reports/grid-routing/rrr-01.json",
+        "sha256": "8537b77da1c17debaa8d5f404a26272bb29b89aad104f19070ab7c8a288a54c4",
+        "stage": "rrr-01",
+        "gate": "top-level"
+      },
+      "connectivity": {
+        "source": "receipt open_by_net_after (complete per-net open-edge map)",
+        "open_edges": 184,
+        "rail_open_edges": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 0
+        },
+        "agnd_open_edges": 3,
+        "signal_open_edges": 181,
+        "open_nets": 155,
+        "per_net_open_map_sha256": "89717cf2dae5b2104e0b38a01c96baab6be19690242fd6fa649f58885fdb9de1",
+        "island_signature_sha256": "2206900ef6b98c7eb287427ab99d139c282d052ea2f8cf5c12455d8c05cf79e4",
+        "island_signature_note": "From the J4 native refresh record boards/osc-jack-left/reports/routing.json (checked 2026-11-07T19:14:28Z); compared by the guard while the record is fresh"
+      },
+      "native_state_record": {
+        "path": "boards/osc-jack-left/reports/routing.json",
+        "input_board_sha256": "a7fe68606591186cc955178b949e1c5ce8df0d0ba5829d328bb6bebb119ca251",
+        "checked_at_utc": "2026-11-07T19:14:28Z",
+        "superseded_checked_at_utc": "2026-11-03T19:01:46Z",
+        "fresh": true,
+        "refresh": "DONE: J4 native current_state.py run, committed in 7d7c31ea"
+      }
+    },
+    "osc-jack-right": {
+      "label": "JR192",
+      "board": "boards/osc-jack-right/osc-jack-right.kicad_pcb",
+      "board_sha256": "f6106300bae4e253f4b869dd24d14cb2428715215917b33ebacaa0f9031bfaa8",
+      "accepted_by_commit": "b9aa748a (2026-11-05, rrr-01 stage, 193 -> 192)",
+      "receipt": {
+        "path": "boards/osc-jack-right/reports/grid-routing/rrr-01.json",
+        "sha256": "7a111ee7177758499904c80722bdc7feb7a452b75634eeb95c8ce43f4e99d708",
+        "stage": "rrr-01",
+        "gate": "top-level"
+      },
+      "connectivity": {
+        "source": "receipt open_by_net_after (complete per-net open-edge map)",
+        "open_edges": 192,
+        "rail_open_edges": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 0
+        },
+        "agnd_open_edges": 8,
+        "signal_open_edges": 184,
+        "open_nets": 161,
+        "per_net_open_map_sha256": "08ac84afa5655e55c815e81dedb0e4328201cb6ef216b988dd84a2bfde9ae507",
+        "island_signature_sha256": "f09efe7d4b32a0f747dfd07cf4a93fd22748a0f9a13b4ee870eec0d67e773a28",
+        "island_signature_note": "From the J4 native refresh record boards/osc-jack-right/reports/routing.json (checked 2026-11-07T19:16:15Z); compared by the guard while the record is fresh"
+      },
+      "native_state_record": {
+        "path": "boards/osc-jack-right/reports/routing.json",
+        "input_board_sha256": "f6106300bae4e253f4b869dd24d14cb2428715215917b33ebacaa0f9031bfaa8",
+        "checked_at_utc": "2026-11-07T19:16:15Z",
+        "superseded_checked_at_utc": "2026-11-03T19:04:52Z",
+        "fresh": true,
+        "refresh": "DONE: J4 native current_state.py run, committed in 7d7c31ea"
+      }
+    }
+  },
+  "historical_epochs": [
+    {
+      "label": "K3363",
+      "recorded": "2026-11-05",
+      "note": "Accepted 2026-11-05 (commit 3db6b51f, receipt circuit/reviews/osc3-k-pilot/osc3-k-pilot.json, board 2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751); superseded 2026-11-07 by K2518."
+    },
+    {
+      "label": "K3409 / JL268 / JR312",
+      "recorded": "2026-11-03",
+      "note": "Native state records of 2026-11-03 for earlier board bytes. Replaced in boards/*/reports/routing.json by the J4 refresh (commit 7d7c31ea, 2026-11-07); git history keeps them."
+    },
+    {
+      "label": "K1402 / JL117 / JR130",
+      "recorded": "2026-10-10",
+      "note": "Different design epoch, before the E15 locality source changes. Kept as dated history; never transplanted onto current boards."
+    }
+  ],
+  "candidate": {
+    "status": "NONE PENDING; wsl-20261107a ADOPTED 2026-11-07",
+    "what": "The WSL K signal candidate wsl-20261107a was adopted as K2518 on 2026-11-07 after independent review",
+    "owner": "Manager-run WSL round of 2026-11-07",
+    "location": "Promoted on wsl/k-signals-20261107 (commit a1c69885)",
+    "rule": "Any later candidate counts as progress only after its receipt passes the promotion gate and the board and receipt are merged."
+  },
+  "next_action": {
+    "summary": "Continue K with bounded transactions from K2518, starting with the stages that were not started (signals-06..12, signal-escapes), each through the promotion gate. Update this checkpoint and re-run the J4-style native refresh after each adoption.",
+    "refresh_command": "bash scripts/pcbgen/with_route_guard.sh python3 scripts/pcbgen/current_state.py osc-core osc-jack-left osc-jack-right",
+    "refresh_status": "DONE for K2518 / JL184 / JR192 (J4, commit 7d7c31ea); re-run needs admission after any later adoption"
+  },
+  "referenced_by": {
+    "doc/src/content/docs/project/index.mdx": [
+      "osc-core",
+      "osc-jack-left",
+      "osc-jack-right"
+    ],
+    "doc/src/content/docs/project/next-actions.mdx": [
+      "osc-core",
+      "osc-jack-left",
+      "osc-jack-right"
+    ],
+    "doc/src/content/docs/project/osc-review-checkpoint.mdx": [
+      "osc-core",
+      "osc-jack-left",
+      "osc-jack-right"
+    ],
+    "doc/src/content/docs/verification/osc-pcb-core.mdx": [
+      "osc-core"
+    ],
+    "doc/src/content/docs/verification/osc-pcb-jack.mdx": [
+      "osc-jack-left",
+      "osc-jack-right"
+    ]
+  }
+}
