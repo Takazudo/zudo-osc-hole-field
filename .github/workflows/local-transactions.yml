@@ -54,7 +54,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           git check-ref-format --branch "$BRANCH" >/dev/null
-          if ! [[ $MAX_MINUTES =~ ^[0-9]+$ ]] || ((MAX_MINUTES < 1 || MAX_MINUTES > 80)); then echo "max_minutes must be 1-80"; exit 1; fi
+          # No leading zero: bash reads "0100" as octal while timeout reads it as 100 minutes.
+          if ! [[ $MAX_MINUTES =~ ^[1-9][0-9]?$ ]] || ((10#$MAX_MINUTES > 80)); then echo "max_minutes must be 1-80 without a leading zero"; exit 1; fi
           boards=()
           IFS=',' read -ra requested <<<"$BOARDS"
           for b in "${requested[@]}"; do
@@ -86,28 +87,20 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ needs.prepare.outputs.sha }}
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.10"
 
-      - name: Install pinned numerical dependencies
-        run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
-
-      - name: Pull the pinned KiCad oracle and build the A* core
+      - name: Check the plan against the checked-out board
+        id: precheck
         run: |
           mkdir -p "$RUNNER_TEMP/out"
           echo "$SHA" > "$RUNNER_TEMP/out/source-sha.txt"
           [[ -f $PLAN_DIR/transaction.py && -f $PLAN_DIR/transactions.json ]] || { echo "::error::$BRANCH has no OSC4 plan in $PLAN_DIR"; exit 1; }
-          source scripts/kicad/pin.env
-          docker pull --quiet "$KICAD_IMAGE"
-          bash scripts/kicad/run.sh kicad-cli version
-          python -c "from scripts.pcbgen.grid_router import native_astar; assert native_astar(), 'grid_astar.c did not compile'"
-
-      - name: Check the plan against the checked-out board
-        id: precheck
-        run: |
+          # Host-only: runs before the numerical install, the KiCad pull and the A* build.
           set +e
           python - <<'EOF' > "$RUNNER_TEMP/out/precheck.txt"
           import hashlib,json,os,sys
@@ -135,9 +128,23 @@ jobs:
             exit 1
           fi
 
+      - name: Install pinned numerical dependencies
+        run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
+
+      - name: Pull the pinned KiCad oracle and build the A* core
+        run: |
+          source scripts/kicad/pin.env
+          docker pull --quiet "$KICAD_IMAGE"
+          bash scripts/kicad/run.sh kicad-cli version
+          python -c "from scripts.pcbgen.grid_router import native_astar; assert native_astar(), 'grid_astar.c did not compile'"
+
       - name: Run the transaction
         id: run
+        env:
+          SPEC: ${{ steps.precheck.outputs.spec }}
         run: |
+          # A receipt committed on the plan branch must never be uploaded as this run's result.
+          rm -f "$PLAN_DIR/$SPEC.json" "$PLAN_DIR/$SPEC-copper.json"
           (
             peak=0
             while sleep 5; do
@@ -163,9 +170,12 @@ jobs:
           STATUS: ${{ steps.run.outputs.status }}
         run: |
           out="$RUNNER_TEMP/out";mkdir -p "$out/receipts" "$out/workspaces"
-          for f in "$PLAN_DIR/$SPEC.json" "$PLAN_DIR/$SPEC-copper.json"; do
-            [[ -f $f ]] && cp "$f" "$out/receipts/"
-          done
+          # Receipts only from a run that started (the run step deleted any committed copy first).
+          if [[ -n $STATUS ]]; then
+            for f in "$PLAN_DIR/$SPEC.json" "$PLAN_DIR/$SPEC-copper.json"; do
+              [[ -f $f ]] && cp "$f" "$out/receipts/"
+            done
+          fi
           budget=$((WORKSPACE_BUDGET_MB * 1024 * 1024));total=0;: > "$out/excluded.txt"
           # Final fresh copy first, then every checked candidate (-verify, including a -stitch-verify).
           mapfile -t dirs < <(ls -d ".circuit-cache/$BOARD-grid-$SPEC"*-fresh ".circuit-cache/$BOARD-grid-$SPEC"*-verify 2>/dev/null || true)
