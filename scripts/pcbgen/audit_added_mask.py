@@ -155,6 +155,48 @@ def new_silk_identities(drc, via_uuid):
     return [v for v in rows if any(i['uuid']==via_uuid for i in v['items'])]
 
 
+def shown_text(board):
+    items=list(board.GetDrawings())
+    for fp in board.GetFootprints():items.extend([*fp.GetFields(),*fp.GraphicalItems()])
+    return sorted((x.m_Uuid.AsString(),x.GetShownText(True)) for x in items if hasattr(x,'GetShownText'))
+
+
+def signature(v):
+    import pcbnew
+    if v.Type()==pcbnew.PCB_TRACE_T:
+        return ('segment',v.GetStart().x,v.GetStart().y,v.GetEnd().x,v.GetEnd().y,v.GetWidth(),
+                v.GetLayer(),v.HasSolderMask(),v.GetSolderMaskExpansion(),
+                v.IsTented(pcbnew.F_SilkS),v.IsTented(pcbnew.B_SilkS))
+    return (v.GetPosition().x,v.GetPosition().y,v.GetDrillValue(),v.GetWidth(pcbnew.F_Cu),
+            list(v.GetLayerSet().Seq()),v.GetSolderMaskExpansion(),
+            v.IsTented(pcbnew.F_SilkS),v.IsTented(pcbnew.B_SilkS))
+
+
+def as_json(value):return json.loads(json.dumps(value))
+
+
+PROBE_FLAG='--native-fixture-probe';PROBE_PREFIX='NATIVE-FIXTURE-PROBE ';PROBE_BATCH=32
+
+
+def native_fixture_view(fixture):
+    """Every native fixture observation the parent checks, from one loaded board."""
+    import pcbnew
+    loaded=pcbnew.LoadBoard(str(fixture));tracks=list(loaded.GetTracks())
+    return dict(fixture=str(fixture),sha256=hashlib.sha256(Path(fixture).read_bytes()).hexdigest(),track_uuids=[t.m_Uuid.AsString() for t in tracks],
+                signature=as_json(signature(tracks[0])) if len(tracks)==1 else None,
+                pads=any(list(fp.Pads()) for fp in loaded.GetFootprints()),texts=as_json(shown_text(loaded)))
+
+
+def probe_fixtures(fixtures):
+    # pcbnew.LoadBoard boards are never released (taking SWIG ownership breaks the next
+    # load), so fixtures are read in short-lived children, PROBE_BATCH at a time, as in
+    # audit_zone_silk_scope.py; the parent keeps no per-fixture board.
+    out=subprocess.run([sys.executable,__file__,PROBE_FLAG,*map(str,fixtures)],check=True,stdout=subprocess.PIPE,text=True).stdout
+    rows=[json.loads(line[len(PROBE_PREFIX):]) for line in out.splitlines() if line.startswith(PROBE_PREFIX)]
+    if [r.get('fixture') for r in rows]!=[str(f) for f in fixtures]:raise ValueError('native fixture probe did not return one observation per fixture')
+    return rows
+
+
 def main(before_path, after_path, out, expected_copper=382, expected_vias=38, reviewed_removed_uuids=()):
     import pcbnew
     version=subprocess.check_output(['kicad-cli','version'],text=True).strip()
@@ -199,10 +241,6 @@ def main(before_path, after_path, out, expected_copper=382, expected_vias=38, re
             for x,y in top_level_spans(block):
                 if block[x+1:y].split(None,1)[0].rstrip(')')=='pad':edits.append((a+x,a+y,''))
     common=replace_spans(text,edits)
-    def shown_text(board):
-        items=list(board.GetDrawings())
-        for fp in board.GetFootprints():items.extend([*fp.GetFields(),*fp.GraphicalItems()])
-        return sorted((x.m_Uuid.AsString(),x.GetShownText(True)) for x in items if hasattr(x,'GetShownText'))
     source_text=shown_text(after)
     settings=json.loads(after_path.with_suffix('.kicad_pro').read_text())['board']['design_settings']['rules']
     silk_clearance=math.ceil(settings['min_silk_clearance']*1_000_000)
@@ -216,7 +254,7 @@ def main(before_path, after_path, out, expected_copper=382, expected_vias=38, re
     if any(x.IsOnLayer(l) for x in artwork for l in (pcbnew.F_Mask,pcbnew.B_Mask)):
         raise ValueError('non-pad mask artwork unsupported')
     out.mkdir(parents=True,exist_ok=True);receipts=[];identities=set()
-    for i,via in enumerate(sorted(added,key=lambda v:v.m_Uuid.AsString())):
+    def write_fixture(i,via):
         folder=out/f'fixture-{i:03d}';folder.mkdir(exist_ok=True)
         path=folder/after_path.name
         for suffix in ('.kicad_pro','.kicad_dru'):
@@ -225,30 +263,27 @@ def main(before_path, after_path, out, expected_copper=382, expected_vias=38, re
         selected={u for u,bbox in scoped_items if bbox.Intersects(box)}
         scoped=replace_spans(common,[(a,b,'') for a,b,u in scoped_blocks if u not in selected])
         end=scoped.rfind(')');path.write_text(scoped[:end]+via_blocks[via.m_Uuid.AsString()]+'\n'+scoped[end:])
-        loaded=pcbnew.LoadBoard(str(path));tracks=list(loaded.GetTracks())
-        if len(tracks)!=1 or tracks[0].m_Uuid.AsString()!=via.m_Uuid.AsString():raise ValueError('fixture copper identity changed')
-        def signature(v):
-            if v.Type()==pcbnew.PCB_TRACE_T:
-                return ('segment',v.GetStart().x,v.GetStart().y,v.GetEnd().x,v.GetEnd().y,v.GetWidth(),
-                        v.GetLayer(),v.HasSolderMask(),v.GetSolderMaskExpansion(),
-                        v.IsTented(pcbnew.F_SilkS),v.IsTented(pcbnew.B_SilkS))
-            return (v.GetPosition().x,v.GetPosition().y,v.GetDrillValue(),v.GetWidth(pcbnew.F_Cu),
-                    list(v.GetLayerSet().Seq()),v.GetSolderMaskExpansion(),
-                    v.IsTented(pcbnew.F_SilkS),v.IsTented(pcbnew.B_SilkS))
-        if signature(tracks[0])!=signature(via):raise ValueError('fixture mask/hole geometry changed')
-        if any(list(fp.Pads()) for fp in loaded.GetFootprints()):raise ValueError('old pad masks remain')
-        actual_text=shown_text(loaded);text_ids={u for u,_ in actual_text}
-        if actual_text!=[(u,t) for u,t in source_text if u in text_ids]:raise ValueError('fixture text rendering changed')
-        report=folder/'drc.json'
-        subprocess.run(['kicad-cli','pcb','drc','--format','json','--severity-all','--output',str(report),str(path)],check=True,stdout=subprocess.DEVNULL)
-        drc=json.loads(report.read_text());rows=new_silk_identities(drc,via.m_Uuid.AsString())
-        for v in rows:
-            ids=tuple(sorted(x['uuid'] for x in v['items']))
-            if via.m_Uuid.AsString() not in ids:raise ValueError('silk warning not attributable to sole new copper object')
-            identities.add((v['type'],v['severity'],ids))
-        receipts.append(dict(copper_uuid=via.m_Uuid.AsString(),kind='via' if via.Type()==pcbnew.PCB_VIA_T else 'segment',native_mask_signature=signature(via),selected_native_bbox_uuids=sorted(selected),conservative_bbox_margin_nm=margin,
-                             violations=rows,report_sha256=hashlib.sha256(report.read_bytes()).hexdigest()))
-        print(f'{i+1}/{len(added)} copper fixtures, {len(identities)} new silk identities',flush=True)
+        return folder,path,selected,margin
+    ordered=sorted(added,key=lambda v:v.m_Uuid.AsString())
+    for first in range(0,len(ordered),PROBE_BATCH):
+        chunk=[(i,via,*write_fixture(i,via)) for i,via in enumerate(ordered[first:first+PROBE_BATCH],first)]
+        for (i,via,folder,path,selected,margin),view in zip(chunk,probe_fixtures([c[3] for c in chunk])):
+            if view['sha256']!=hashlib.sha256(path.read_bytes()).hexdigest():raise ValueError('native fixture probe read other bytes')
+            if view['track_uuids']!=[via.m_Uuid.AsString()]:raise ValueError('fixture copper identity changed')
+            if view['signature']!=as_json(signature(via)):raise ValueError('fixture mask/hole geometry changed')
+            if view['pads']:raise ValueError('old pad masks remain')
+            actual_text=[tuple(r) for r in view['texts']];text_ids={u for u,_ in actual_text}
+            if actual_text!=[(u,t) for u,t in source_text if u in text_ids]:raise ValueError('fixture text rendering changed')
+            report=folder/'drc.json'
+            subprocess.run(['kicad-cli','pcb','drc','--format','json','--severity-all','--output',str(report),str(path)],check=True,stdout=subprocess.DEVNULL)
+            drc=json.loads(report.read_text());rows=new_silk_identities(drc,via.m_Uuid.AsString())
+            for v in rows:
+                ids=tuple(sorted(x['uuid'] for x in v['items']))
+                if via.m_Uuid.AsString() not in ids:raise ValueError('silk warning not attributable to sole new copper object')
+                identities.add((v['type'],v['severity'],ids))
+            receipts.append(dict(copper_uuid=via.m_Uuid.AsString(),kind='via' if via.Type()==pcbnew.PCB_VIA_T else 'segment',native_mask_signature=signature(via),selected_native_bbox_uuids=sorted(selected),conservative_bbox_margin_nm=margin,
+                                 violations=rows,report_sha256=hashlib.sha256(report.read_bytes()).hexdigest()))
+            print(f'{i+1}/{len(added)} copper fixtures, {len(identities)} new silk identities',flush=True)
     result=dict(status='READ-ONLY NATIVE ADDED-MASK EVIDENCE; PROMOTION GATE UNCHANGED',version=version,
                 before_sha256=hashlib.sha256(before_path.read_bytes()).hexdigest(),after_sha256=hashlib.sha256(after_path.read_bytes()).hexdigest(),
                 unchanged_nonrouting_objects=count,added_unmasked_tracks=len(added)-len(vias),
@@ -260,7 +295,9 @@ def main(before_path, after_path, out, expected_copper=382, expected_vias=38, re
     (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 
 
-if __name__=='__main__':
+if __name__=='__main__' and sys.argv[1:2]==[PROBE_FLAG]:
+    for fixture in sys.argv[2:]:print(PROBE_PREFIX+json.dumps(native_fixture_view(Path(fixture))),flush=True)
+elif __name__=='__main__':
     import argparse
     parser=argparse.ArgumentParser()
     for name in ('before','after','output'):parser.add_argument(name,type=Path)
