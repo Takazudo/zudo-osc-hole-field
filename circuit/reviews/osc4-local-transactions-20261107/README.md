@@ -6,6 +6,41 @@ output exists. Each transaction below needs one admitted native run, listed
 under "Native runs" as NEEDS ADMISSION. Electrical, thermal and physical
 qualification are NOT RUN.
 
+## 2026-11-08 Actions run results: no transaction improved a board; K hit the 60-minute limit
+
+The three planned transactions ran once on GitHub Actions in run
+https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/42412490176. The run
+was dispatched from `main` with `branch=wsl/osc4-k-replan-20261107` and pinned to
+plan commit `8618299ab1231e7d12660e99784aaf9441ece024`. Every artifact manifest
+verifies, and each `source-sha.txt` equals that commit. No board changed, and
+nothing was adopted or promoted. Complete native warning evidence is NOT RUN for
+all three. No transaction is retried with a larger frame, budget or time limit.
+
+| | JL184 `osc4-jl-agnd-r8270-2` | JR192 `osc4-jr-x8c35a836` | K2518 `osc4-k-agnd-r5243-2` |
+| --- | --- | --- | --- |
+| Exit / receipt status | 0 / NATIVE CHECKED; RAW GATE FAILED; NOT ADOPTED | 0 / NATIVE CHECKED; RAW GATE FAILED; NOT ADOPTED | 137 / RUNNING (never finalised) |
+| raw_gate_passed | false | false | false (no gate reached) |
+| Open edges | 184 → 184 | 192 → 192 | 2518 at every completed native check |
+| Native errors / split groups / new warnings | none | none | not reached |
+| AGND stitch fallback | not used | not used | not reached |
+| Wall time / peak memory | 928 s / 2451 MB | 774 s / 2637 MB | 60 min (limit) / 4273 MB |
+| Receipt files | receipt and copper delta | receipt and copper delta | receipt only |
+
+The two jack runs restored their victim nets and failed only on the target:
+
+- **JL.** It cut the two In3 tracks and rerouted `/F3/C3e5421_ENABLE`. The R8270.2 ground route then failed with `search_exhausted` after 772 of 300,000 expansions.
+- **JR.** It cut the In3 track and rerouted `/A05/Cd4fa3b_LED_A`. The U7509.5 route failed with `search_exhausted` after 1283 expansions, and the J900069.3 end had no source inside the frame.
+- **What that means.** Exhausting so early means each stranded pad is enclosed inside its frame. The straight-corridor estimate in `residuals.json` did not see that, because it ignores pad escape geometry and copper on the other layers. It is a weak predictor for these pads.
+
+K was stopped by the run's 60-minute limit:
+
+- **What completed.** Each native check of K2518 took three refill passes of about 5–7 minutes. The base check, the check after the cut and the candidate check all reported 2518.
+- **What the log shows.** The log shows a route for the victim `/W1/AC_NODE` but none for the AGND target R5243.2. The fresh-copy check had started when the limit was reached.
+- **Reading the counts.** The candidate count was 2518, so the raw gate would have failed even if the run had finished. That conclusion comes from the log, not from a receipt.
+- **How it ended.** The process ended with exit 137 within a second of the limit. It printed no traceback, so `transaction.py`'s interrupt handler never wrote INTERRUPTED. The receipt kept its first-save status RUNNING. Why the SIGINT ended in an immediate SIGKILL was not determined.
+- **Open driver issue.** On the runner, `transaction.py` does not reliably finalise its receipt when stopped. It is not fixed here, and no native rerun was made.
+- **Time budget.** A K transaction needs four native checks, about 70 minutes, which the 60-minute default cannot fit.
+
 ## 2026-11-08 K2518 replan: the K transaction still applies unchanged and is rebound to K2518
 
 The manager adopted K2518 (`7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42`,
