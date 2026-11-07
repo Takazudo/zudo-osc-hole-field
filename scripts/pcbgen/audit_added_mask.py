@@ -182,7 +182,7 @@ def native_fixture_view(fixture):
     """Every native fixture observation the parent checks, from one loaded board."""
     import pcbnew
     loaded=pcbnew.LoadBoard(str(fixture));tracks=list(loaded.GetTracks())
-    return dict(fixture=str(fixture),track_uuids=[t.m_Uuid.AsString() for t in tracks],
+    return dict(fixture=str(fixture),sha256=hashlib.sha256(Path(fixture).read_bytes()).hexdigest(),track_uuids=[t.m_Uuid.AsString() for t in tracks],
                 signature=as_json(signature(tracks[0])) if len(tracks)==1 else None,
                 pads=any(list(fp.Pads()) for fp in loaded.GetFootprints()),texts=as_json(shown_text(loaded)))
 
@@ -268,6 +268,7 @@ def main(before_path, after_path, out, expected_copper=382, expected_vias=38, re
     for first in range(0,len(ordered),PROBE_BATCH):
         chunk=[(i,via,*write_fixture(i,via)) for i,via in enumerate(ordered[first:first+PROBE_BATCH],first)]
         for (i,via,folder,path,selected,margin),view in zip(chunk,probe_fixtures([c[3] for c in chunk])):
+            if view['sha256']!=hashlib.sha256(path.read_bytes()).hexdigest():raise ValueError('native fixture probe read other bytes')
             if view['track_uuids']!=[via.m_Uuid.AsString()]:raise ValueError('fixture copper identity changed')
             if view['signature']!=as_json(signature(via)):raise ValueError('fixture mask/hole geometry changed')
             if view['pads']:raise ValueError('old pad masks remain')

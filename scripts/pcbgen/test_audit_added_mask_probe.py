@@ -1,6 +1,9 @@
 """The silk (added-mask) auditor reads fixtures in short-lived children; pcbnew and kicad-cli are faked."""
+import hashlib
 import json
+import os
 import re
+import subprocess
 import sys
 import tempfile
 import types
@@ -53,11 +56,11 @@ class Text:
 
 
 class Board:
-    def __init__(self,tracks):self.tracks=tracks
+    def __init__(self,tracks):self.tracks=tracks;self.footprints=[];self.drawings=[Text()]
     def GetTracks(self):return list(self.tracks)
     def Zones(self):return []
-    def GetFootprints(self):return []
-    def GetDrawings(self):return [Text()]
+    def GetFootprints(self):return list(self.footprints)
+    def GetDrawings(self):return list(self.drawings)
     def GetDesignSettings(self):return types.SimpleNamespace(m_SolderMaskMinWidth=0)
 
 
@@ -73,14 +76,14 @@ class ProbeTests(unittest.TestCase):
         for path in (self.before,self.after):
             path.with_suffix('.kicad_pro').write_text(json.dumps({'board':{'design_settings':{'rules':{'min_silk_clearance':0.1}}}}))
             path.with_suffix('.kicad_dru').write_text('(version 1)\n')
-        self.loads={'parent':0,'child':0};self.in_child=False;self.probes=[];self.tamper=None
+        self.loads={'parent':0,'child':0};self.in_child=False;self.probes=[];self.tamper=None;self.row_tamper=None
         def kinds(text):return [(m[1],'via' if block.startswith('(via') else 'segment')
                                 for block in re.findall(r'\((?:via|segment)[^()]*(?:\([^()]*\)[^()]*)*\)',text) for m in [UUID.search(block)]]
         def load(path):
             self.loads['child' if self.in_child else 'parent']+=1
-            tracks=[Track(u,k) for u,k in kinds(Path(path).read_text())]
-            if self.in_child and self.tamper:tracks=self.tamper(tracks)
-            return Board(tracks)
+            loaded=Board([Track(u,k) for u,k in kinds(Path(path).read_text())])
+            if self.in_child and self.tamper:self.tamper(loaded)
+            return loaded
         fake.LoadBoard=load
         patch=unittest.mock.patch.dict(sys.modules,{'pcbnew':fake});patch.start();self.addCleanup(patch.stop)
 
@@ -88,7 +91,7 @@ class ProbeTests(unittest.TestCase):
         def run(args,**kw):
             if audit.PROBE_FLAG in args:
                 self.probes.append(len(args)-3);self.in_child=True
-                try:out=''.join(audit.PROBE_PREFIX+json.dumps(audit.native_fixture_view(Path(f)))+'\n' for f in args[3:])
+                try:out=''.join(audit.PROBE_PREFIX+json.dumps((self.row_tamper or (lambda r:r))(audit.native_fixture_view(Path(f))))+'\n' for f in args[3:])
                 finally:self.in_child=False
                 return types.SimpleNamespace(stdout=out)
             Path(args[args.index('--output')+1]).write_text(json.dumps({'violations':[]}))
@@ -110,11 +113,19 @@ class ProbeTests(unittest.TestCase):
         self.assertEqual(via['native_mask_signature'],[int(via['copper_uuid'][-4:]),3,300_000,200_000,[0,31],50_000,False,False])
 
     def test_fixture_observations_still_fail_closed(self):
-        for tamper,message in ((lambda t:t+t,'copper identity changed'),
-                               (lambda t:[type('T',(Track,),{'GetDrillValue':lambda self:1})(x.m_Uuid.AsString(),x.kind) for x in t],'mask/hole geometry changed')):
+        class Shown(Text):
+            def GetShownText(self,flag):return 'OSC2'
+        def retext(b):b.drawings=[Shown()]
+        def pads(b):b.footprints=[types.SimpleNamespace(Pads=lambda:['pad'],GetFields=lambda:[],GraphicalItems=lambda:[])]
+        def drill(b):b.tracks=[type('T',(Track,),{'GetDrillValue':lambda self:1})(x.m_Uuid.AsString(),x.kind) for x in b.tracks]
+        def twice(b):b.tracks=b.tracks+b.tracks
+        for tamper,message in ((twice,'copper identity changed'),(drill,'mask/hole geometry changed'),
+                               (pads,'old pad masks remain'),(retext,'fixture text rendering changed')):
             with self.subTest(message=message):
                 self.tamper=tamper
                 with self.assertRaisesRegex(ValueError,message):self.run_audit()
+        self.tamper=None;self.row_tamper=lambda r:{**r,'sha256':'0'*64}
+        with self.assertRaisesRegex(ValueError,'probe read other bytes'):self.run_audit()
 
     def test_probe_rows_must_bind_one_observation_to_each_fixture(self):
         row=lambda f:audit.PROBE_PREFIX+json.dumps({'fixture':f})
@@ -124,6 +135,51 @@ class ProbeTests(unittest.TestCase):
         with unittest.mock.patch.object(audit.subprocess,'run',return_value=types.SimpleNamespace(stdout='noise\n'+row('a')+'\n'+row('b')+'\n')) as run:
             self.assertEqual([r['fixture'] for r in audit.probe_fixtures([Path('a'),Path('b')])],['a','b'])
         self.assertEqual(run.call_args.args[0][1:],[audit.__file__,audit.PROBE_FLAG,'a','b']);self.assertTrue(run.call_args.kwargs['check'])
+
+
+FAKE_PCBNEW="""
+import re
+PCB_VIA_T,PCB_TRACE_T,F_SilkS,B_SilkS,F_Cu,Edge_Cuts=1,2,13,14,0,12
+class _U:
+    def __init__(self,t):self.t=t
+    def AsString(self):return self.t
+class _P:
+    def __init__(self,x,y):self.x,self.y=x,y
+class _Via:
+    def __init__(self,u):self.m_Uuid=_U(u)
+    def Type(self):return PCB_VIA_T
+    def GetPosition(self):return _P(7,8)
+    def GetDrillValue(self):return 300000
+    def GetWidth(self,*a):return 600000
+    def GetLayerSet(self):return type('S',(),{'Seq':lambda self:[0,31]})()
+    def GetSolderMaskExpansion(self):return 50000
+    def IsTented(self,layer):return layer==F_SilkS
+class _Board:
+    def __init__(self,ids):self.ids=ids
+    def GetTracks(self):return [_Via(u) for u in self.ids]
+    def GetFootprints(self):return []
+    def GetDrawings(self):return []
+def LoadBoard(path):
+    print('pcbnew noise on stdout')
+    return _Board(re.findall(r'uuid "([^"]+)"',open(path).read()))
+"""
+
+
+class RealChildTests(unittest.TestCase):
+    def test_probe_runs_the_main_branch_in_a_child_and_binds_rows_to_bytes(self):
+        with tempfile.TemporaryDirectory() as folder:
+            folder=Path(folder);(folder/'pcbnew.py').write_text(FAKE_PCBNEW)
+            fixtures=[folder/'a.kicad_pcb',folder/'b.kicad_pcb']
+            fixtures[0].write_text(board(item(1,'via')));fixtures[1].write_text(board(item(2,'via'),item(3,'via')))
+            env={**os.environ,'PYTHONPATH':os.pathsep.join(filter(None,[str(folder),os.environ.get('PYTHONPATH')]))}
+            with unittest.mock.patch.dict(os.environ,env):rows=audit.probe_fixtures(fixtures)
+            self.assertEqual([r['fixture'] for r in rows],[str(f) for f in fixtures])
+            self.assertEqual([r['sha256'] for r in rows],[hashlib.sha256(f.read_bytes()).hexdigest() for f in fixtures])
+            self.assertEqual([len(r['track_uuids']) for r in rows],[1,2])
+            self.assertEqual(rows[0]['signature'],[7,8,300000,600000,[0,31],50000,True,False]);self.assertIsNone(rows[1]['signature'])
+            self.assertEqual((rows[0]['pads'],rows[0]['texts']),(False,[]))
+            failed=subprocess.run([sys.executable,audit.__file__,audit.PROBE_FLAG,str(folder/'missing.kicad_pcb')],env=env,capture_output=True,text=True)
+            self.assertNotEqual(failed.returncode,0)
 
 
 if __name__=='__main__':unittest.main()
