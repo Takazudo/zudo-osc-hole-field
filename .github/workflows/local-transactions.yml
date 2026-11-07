@@ -1,0 +1,207 @@
+name: Local board transactions
+run-name: OSC4 transactions ${{ inputs.boards }} on ${{ inputs.branch }}
+
+# One job per board runs the planned bounded OSC4 transaction
+# (circuit/reviews/osc4-local-transactions-20261107/transaction.py) from the
+# branch's current commit. The driver never promotes; this workflow never commits
+# or pushes. Receipts, the copper delta, the checked candidate workspaces and logs
+# come back as artifacts with a sha256 manifest. Draft only: qualification NOT RUN.
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: Existing branch to read the boards and the OSC4 plan from
+        required: true
+        type: string
+      boards:
+        description: Comma-separated boards (osc-core, osc-jack-left, osc-jack-right)
+        required: false
+        default: osc-core,osc-jack-left,osc-jack-right
+        type: string
+      max_minutes:
+        description: Wall-clock limit per transaction in minutes (at most 80)
+        required: false
+        default: "60"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: local-transactions-${{ inputs.branch }}
+  cancel-in-progress: false
+
+env:
+  BRANCH: ${{ inputs.branch }}
+  BOARDS: ${{ inputs.boards }}
+  MAX_MINUTES: ${{ inputs.max_minutes }}
+  PLAN_DIR: circuit/reviews/osc4-local-transactions-20261107
+  # Largest total of candidate workspace files copied into one artifact; larger files are listed, not uploaded.
+  WORKSPACE_BUDGET_MB: "400"
+
+jobs:
+  prepare:
+    name: Pin the plan commit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      sha: ${{ steps.pin.outputs.sha }}
+      matrix: ${{ steps.pin.outputs.matrix }}
+    steps:
+      - name: Validate inputs and resolve the branch
+        id: pin
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git check-ref-format --branch "$BRANCH" >/dev/null
+          if ! [[ $MAX_MINUTES =~ ^[0-9]+$ ]] || ((MAX_MINUTES < 1 || MAX_MINUTES > 80)); then echo "max_minutes must be 1-80"; exit 1; fi
+          boards=()
+          IFS=',' read -ra requested <<<"$BOARDS"
+          for b in "${requested[@]}"; do
+            b=${b//[[:space:]]/}
+            [[ -z $b ]] && continue
+            [[ $b =~ ^(osc-core|osc-jack-left|osc-jack-right)$ ]] || { echo "unknown board: $b"; exit 1; }
+            boards+=("$b")
+          done
+          ((${#boards[@]})) || { echo "no board selected"; exit 1; }
+          sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/$BRANCH" --jq .sha)
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "matrix=$(printf '%s\n' "${boards[@]}" | sort -u | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
+          echo "Plan branch $BRANCH at $sha; boards: ${boards[*]}; limit ${MAX_MINUTES} min" >> "$GITHUB_STEP_SUMMARY"
+
+  transaction:
+    name: Transaction ${{ matrix.board }}
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      matrix:
+        board: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    env:
+      BOARD: ${{ matrix.board }}
+      SHA: ${{ needs.prepare.outputs.sha }}
+    steps:
+      - name: Check out the plan commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.10"
+
+      - name: Install pinned numerical dependencies
+        run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
+
+      - name: Pull the pinned KiCad oracle and build the A* core
+        run: |
+          mkdir -p "$RUNNER_TEMP/out"
+          echo "$SHA" > "$RUNNER_TEMP/out/source-sha.txt"
+          [[ -f $PLAN_DIR/transaction.py && -f $PLAN_DIR/transactions.json ]] || { echo "::error::$BRANCH has no OSC4 plan in $PLAN_DIR"; exit 1; }
+          source scripts/kicad/pin.env
+          docker pull --quiet "$KICAD_IMAGE"
+          bash scripts/kicad/run.sh kicad-cli version
+          python -c "from scripts.pcbgen.grid_router import native_astar; assert native_astar(), 'grid_astar.c did not compile'"
+
+      - name: Check the plan against the checked-out board
+        id: precheck
+        run: |
+          set +e
+          python - <<'EOF' > "$RUNNER_TEMP/out/precheck.txt"
+          import hashlib,json,os,sys
+          board=os.environ['BOARD'];plan=json.load(open(os.path.join(os.environ['PLAN_DIR'],'transactions.json')))['transactions'][board]
+          actual=hashlib.sha256(open(plan['input_board'],'rb').read()).hexdigest()
+          spec=(plan['transaction'] or {}).get('spec',{}).get('name','')
+          print(f"spec={spec}");print(f"plan_input_sha256={plan['input_board_sha256']}");print(f"board_sha256={actual}")
+          print('result='+('match' if actual==plan['input_board_sha256'] and spec else 'MISMATCH'))
+          EOF
+          python -u "$PLAN_DIR/transaction.py" "$BOARD" --validate > "$RUNNER_TEMP/out/validate.json"
+          validate=$?
+          set -e
+          cat "$RUNNER_TEMP/out/precheck.txt"
+          spec=$(sed -n 's/^spec=//p' "$RUNNER_TEMP/out/precheck.txt")
+          echo "spec=$spec" >> "$GITHUB_OUTPUT"
+          {
+            echo "### $BOARD at $SHA"
+            echo '```'
+            cat "$RUNNER_TEMP/out/precheck.txt" "$RUNNER_TEMP/out/validate.json"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          if ! grep -qx 'result=match' "$RUNNER_TEMP/out/precheck.txt" || ((validate)); then
+            echo "::error::$BOARD: the plan does not match the checked-out board or fails --validate; replan before running"
+            echo "precheck" > "$RUNNER_TEMP/out/status.txt"
+            exit 1
+          fi
+
+      - name: Run the transaction
+        id: run
+        run: |
+          (
+            peak=0
+            while sleep 5; do
+              used=$(awk '/^MemTotal:/{t=$2} /^MemAvailable:/{a=$2} END{print t-a}' /proc/meminfo)
+              ((used > peak)) && peak=$used && echo "$peak" > "$RUNNER_TEMP/out/memory-peak-kb.txt"
+            done
+          ) &
+          sampler=$!
+          set +e
+          # The OSC4 README command with the runner's python; with_route_guard.sh execs it directly on github-hosted runners.
+          bash scripts/pcbgen/with_route_guard.sh timeout --signal=INT --kill-after=2m "${MAX_MINUTES}m" \
+            python -u "$PLAN_DIR/transaction.py" "$BOARD" 2>&1 | tee "$RUNNER_TEMP/out/run.log"
+          status=${PIPESTATUS[0]}
+          set -e
+          kill "$sampler" || true
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "$status" > "$RUNNER_TEMP/out/status.txt"
+
+      - name: Collect receipts, candidate workspaces and the manifest
+        if: always() && steps.precheck.outputs.spec != ''
+        env:
+          SPEC: ${{ steps.precheck.outputs.spec }}
+          STATUS: ${{ steps.run.outputs.status }}
+        run: |
+          out="$RUNNER_TEMP/out";mkdir -p "$out/receipts" "$out/workspaces"
+          for f in "$PLAN_DIR/$SPEC.json" "$PLAN_DIR/$SPEC-copper.json"; do
+            [[ -f $f ]] && cp "$f" "$out/receipts/"
+          done
+          budget=$((WORKSPACE_BUDGET_MB * 1024 * 1024));total=0;: > "$out/excluded.txt"
+          # Final fresh copy first, then every checked candidate (-verify, including a -stitch-verify).
+          mapfile -t dirs < <(ls -d ".circuit-cache/$BOARD-grid-$SPEC"*-fresh ".circuit-cache/$BOARD-grid-$SPEC"*-verify 2>/dev/null || true)
+          for d in "${dirs[@]}"; do
+            for f in "$d"/*.kicad_pcb "$d/dump.json" "$d/drc.json"; do
+              [[ -f $f ]] || continue
+              size=$(stat -c %s "$f")
+              if ((total + size > budget)); then echo "$f $size" >> "$out/excluded.txt";continue;fi
+              mkdir -p "$out/workspaces/${d##*/}";cp "$f" "$out/workspaces/${d##*/}/";total=$((total + size))
+            done
+          done
+          (cd "$out" && find . -type f ! -name MANIFEST.sha256 -print0 | sort -z | xargs -0 sha256sum > MANIFEST.sha256)
+          {
+            echo "- exit status: ${STATUS:-not run}; peak host memory: $(( $(cat "$out/memory-peak-kb.txt" 2>/dev/null || echo 0) / 1024 )) MB"
+            echo "- receipts: $(ls "$out/receipts" | tr '\n' ' ')"
+            echo "- workspace files uploaded: $((total / 1024 / 1024)) MB of a ${WORKSPACE_BUDGET_MB} MB budget"
+            if [[ -s $out/excluded.txt ]]; then echo "- excluded (over budget):";sed 's/^/  - /' "$out/excluded.txt";fi
+            if [[ -f $out/receipts/$SPEC.json ]]; then
+              python -c "import json,sys;r=json.load(open(sys.argv[1]));print('- receipt:',r.get('status'),'| raw_gate_passed:',r.get('raw_gate_passed'),'| open edges:',r.get('open_edges_before'),'->',r.get('open_edges_after'))" "$out/receipts/$SPEC.json"
+            fi
+            grep -E 'open edges|rejected|Error|error' "$out/run.log" 2>/dev/null | tail -n 20 | sed 's/^/    /' || true
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the transaction artifact
+        if: always() && steps.precheck.outputs.spec != ''
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: transaction-${{ matrix.board }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/out/
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Fail on a transaction error
+        if: steps.run.outputs.status != '' && steps.run.outputs.status != '0'
+        env:
+          STATUS: ${{ steps.run.outputs.status }}
+        run: |
+          echo "::error::transaction.py exited with status $STATUS (whatever it wrote is in the artifact)"
+          exit 1

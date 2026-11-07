@@ -108,6 +108,41 @@ bash scripts/pcbgen/with_route_guard.sh timeout --signal=INT --kill-after=2m 60m
 If the manager adopts a new K, the K plan is stale, and `transaction.py` refuses
 it on the hash check. Re-plan with the reproduce steps below.
 
+## GitHub Actions runs all three transactions in parallel and never pushes
+
+`.github/workflows/local-transactions.yml` runs the same command on
+github-hosted runners, one job per board in parallel. It uses the runner's
+Python with `scripts/pcbgen/numerical-requirements.txt` instead of the
+ground-solver venv. `with_route_guard.sh` execs the command directly there.
+
+- **What it checks first.** Each job checks out the branch's current commit and records its sha. It confirms that the plan's input hash equals the checked-out board's sha256, and runs `transaction.py <board> --validate`. A mismatch fails the job before any native call, and the reason goes into the run summary.
+- **What it never does.** The workflow never commits or pushes. The driver never promotes.
+- **What it uploads.** One artifact per board, kept for 7 days, holds:
+  - the receipt `<spec>.json` and `<spec>-copper.json`
+  - the `.circuit-cache` candidate workspaces (`-fresh` and every `-verify`: the board, `dump.json` and `drc.json`), up to 400 MB; larger files are listed in `excluded.txt` and in the summary
+  - `run.log`, `status.txt`, `memory-peak-kb.txt`, `precheck.txt`, `validate.json` and `source-sha.txt`
+  - `MANIFEST.sha256` covering every uploaded file
+
+The workflow file must be on `main` before it can be dispatched. Dispatch it
+with:
+
+```
+gh workflow run local-transactions.yml --ref <branch> -f branch=<branch>
+gh workflow run local-transactions.yml --ref <branch> -f branch=<branch> -f boards=osc-core -f max_minutes=60
+```
+
+`boards` defaults to all three, and `max_minutes` defaults to 60 (at most 80).
+The job fails if `transaction.py` exits non-zero, but it still uploads what
+exists.
+
+To bring the results back:
+
+1. Download the artifacts: `gh run download <run-id> -D <dir>`.
+2. Verify each one inside its folder: `(cd <dir>/transaction-<board>-<run-id> && sha256sum -c MANIFEST.sha256)`.
+3. Confirm that `source-sha.txt` is the plan branch commit you dispatched.
+4. On the plan branch, copy `receipts/<spec>.json` and `receipts/<spec>-copper.json` into this folder. Commit them with the run URL in the commit body (`https://github.com/<owner>/<repo>/actions/runs/<run-id>`).
+5. Leave the workspace boards out of git. A receipt is a comparison input; adoption still needs the complete-warning audit and a separate decision.
+
 ## Reproduce (host only)
 
 ```
