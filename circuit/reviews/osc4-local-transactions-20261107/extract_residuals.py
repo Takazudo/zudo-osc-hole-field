@@ -17,8 +17,9 @@ sys.path.insert(0,str(ROOT/'scripts/checks'))
 import board_text_geometry as g
 
 BOARDS={
-    'osc-core':{'sha256':'2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751','label':'K3363',
-                'native':'boards/osc-core/reports/grid-routing/osc3-k-pilot.json'},
+    # K3363 (2c1d67b7..., osc3-k-pilot.json) was replaced by K2518 on 2026-11-07 (manager adoption of wsl-20261107a).
+    'osc-core':{'sha256':'7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42','label':'K2518',
+                'native':'circuit/reviews/osc3-k-signals/wsl-20261107a-adoption.json'},
     'osc-jack-left':{'sha256':'a7fe68606591186cc955178b949e1c5ce8df0d0ba5829d328bb6bebb119ca251','label':'JL184',
                      'native':'boards/osc-jack-left/reports/grid-routing/rrr-01.json'},
     'osc-jack-right':{'sha256':'f6106300bae4e253f4b869dd24d14cb2428715215917b33ebacaa0f9031bfaa8','label':'JR192',
@@ -36,6 +37,10 @@ MAX_CUTS=12;MAX_VICTIMS=2;MAX_FRAME_MM=50.0
 
 def native_counts(board_id):
     d=json.loads((ROOT/BOARDS[board_id]['native']).read_text())
+    if d.get('schema')=='osc3-k-adoption-1':
+        r=d['review_summary'];rails={n:r['rail_open_edges'][n] for n in RAILS}
+        return {'source':BOARDS[board_id]['native'],'bound_sha256':d['candidate_board_sha256'],
+                'open_edges':r['open_edges']['after'],'by_net':{**rails,'AGND':r['agnd']['open_edges']}}
     if board_id=='osc-core':
         a=d['after'];return {'source':BOARDS[board_id]['native'],'bound_sha256':d['final_gate']['candidate_board_sha256'],
                              'open_edges':a['open_edges'],'by_net':{**a['rail_open_edges'],'AGND':a['agnd_open_edges']}}
@@ -179,6 +184,13 @@ def main():
     p=argparse.ArgumentParser(description=__doc__.splitlines()[0]);p.add_argument('-o','--output',type=Path,required=True)
     p.add_argument('--board',choices=sorted(BOARDS),action='append')
     a=p.parse_args();names=json.loads((ROOT/'design/reports/board-net-tokens.json').read_text());tried=tried_tokens()
+    if a.board and a.output.exists():
+        # Single-board refresh: keep the other boards' entries exactly as they are.
+        out=json.loads(a.output.read_text())
+        for bid in a.board:
+            _,res=analyse(bid,names,tried);out['boards'][bid]=res
+            print(bid,res['label'],'text',res['text_open_edges'],'native',res['native']['open_edges'],'match',res['text_matches_native'],'candidates',len(res['ranked_candidates']),flush=True)
+        a.output.write_text(json.dumps(out,indent=1,sort_keys=True)+'\n');return
     out={'schema':'osc4-residuals-1','status':'HOST TEXT ANALYSIS; not a native result; corridor counts are straight-line estimates, not routes',
          'router_limits':{'clearance_mm':CLEARANCE,'signal_width_mm':SIGNAL_WIDTH,'max_cuts':MAX_CUTS,'max_victim_nets':MAX_VICTIMS,'max_frame_mm':MAX_FRAME_MM},
          'previously_targeted_identifiers':len(tried),'boards':{}}

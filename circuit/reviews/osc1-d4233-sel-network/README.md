@@ -127,3 +127,30 @@ better placement exists.
 
 Reproduce (host only, about 5 minutes):
 `python3 scripts/checks/sel_hold_placement_compare.py -o circuit/reviews/osc1-d4233-sel-network/sel-hold-placement-compare-k3363-20261107.json`.
+
+## 2026-11-08 K2518: 5 SEL nets now have copper, placement outcomes unchanged
+
+The manager adopted K2518 (`7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42`)
+in place of K3363. Its signal chain added copper only and moved no part. The
+2026-11-07 statement that no SEL net has copper holds for K3363 only.
+
+| Item on K2518 | Value |
+| --- | --- |
+| SEL nets with a member beyond 24 mm | 32 of 36 (unchanged) |
+| SEL nets with copper | 5: `/E1/STORAGE_CLAMP_SEL2`, `/E6/SLOPE_SELECT_SEL2`, `/E6/SLOPE_SELECT_SEL3`, `/E6/STORAGE_CLAMP_SEL1`, `/E6/STORAGE_CLAMP_SEL2` |
+| Pull-down driver nets with copper | 13 |
+| U4206 SEL4 and `/E2/FALL_CURVE` | still no copper |
+
+The placement comparison was rerun on K2518. Its placement results are
+identical: variant A moves 22 parts and leaves 10 nets beyond 24 mm, and
+variant B moves 102 parts, leaves 8 beyond and finds no pose for D4436. The
+copper cost is higher, because a move now also invalidates the new signal
+copper.
+
+| | A on K3363 | A on K2518 | B on K3363 | B on K2518 |
+| --- | ---: | ---: | ---: | ---: |
+| Tracks and vias invalidated at old poses | 38 | 42 | 97 | 147 |
+| Foreign copper objects under new pads | 5 | 6 | 2 | 9 |
+
+Files: `sel-hold-geometry-k2518-20261108.json` and `sel-hold-placement-compare-k2518-20261108.json`.
+The K3363 files are kept as the 2026-11-07 record.

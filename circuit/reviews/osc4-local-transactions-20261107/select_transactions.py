@@ -78,7 +78,11 @@ def choose(board_id,res,board):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__.splitlines()[0]);p.add_argument('--residuals',type=Path,default=HERE/'residuals.json')
-    p.add_argument('-o','--output',type=Path,default=HERE/'transactions.json');a=p.parse_args()
+    p.add_argument('-o','--output',type=Path,default=HERE/'transactions.json')
+    p.add_argument('--board',action='append',choices=('osc-core','osc-jack-left','osc-jack-right'),
+                   help='replan only this board and keep the other entries unchanged')
+    a=p.parse_args()
+    previous=json.loads(a.output.read_text()) if a.board and a.output.exists() else None
     res=json.loads(a.residuals.read_text());out={'schema':'osc4-transactions-1',
         'status':'PLAN ONLY; NOT RUN; every transaction needs one admitted native run and is never promoted by its driver',
         'residuals_sha256':hashlib.sha256(a.residuals.read_bytes()).hexdigest(),
@@ -87,6 +91,8 @@ def main():
                   'retries':'route_jack_grid.stage(): at most eight drop-and-retry passes','rip_up':'only the listed cuts; no rrr probe, no negotiation, no region pass'},
         'transactions':{}}
     for bid,r in res['boards'].items():
+        if previous is not None and bid not in a.board:
+            out['transactions'][bid]=previous['transactions'][bid];continue
         board=g.Board(ROOT/r['board'])
         if board.sha256!=r['board_sha256']:raise SystemExit(f'{bid}: board changed since residuals.json')
         t,rails=choose(bid,r,board)
