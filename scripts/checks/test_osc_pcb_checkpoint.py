@@ -128,6 +128,7 @@ class OscPcbCheckpoint(unittest.TestCase):
                                 other_signal_open_edges=conn['signal_open_edges'])
         if 'agnd_islands' in conn:
             record['native']['agnd_islands'] = conn['agnd_islands']
+        record['native']['island_signature_sha256'] = conn['island_signature_sha256']
         receipt_path = entry['receipt'].get('mirror') or entry['receipt']['path']
         agnd_after = None if 'adoption' in entry else conn['agnd_open_edges']
         record['latest_adopted_receipt'] = {'path': receipt_path, 'sha256': entry['receipt']['sha256'],
@@ -167,7 +168,7 @@ class OscPcbCheckpoint(unittest.TestCase):
             'signal count': ({'other_signal_open_edges': 2480}, 'other_signal_open_edges'),
             'open-edge agreement': ({'agreement_open_edges': False}, 'open-edge receipt agreement'),
             'AGND agreement claimed for a chain receipt': ({'agreement_agnd_open_edges': True}, 'AGND receipt agreement'),
-            'AGND count claimed for a chain receipt': ({'agnd_open_edges_after': 22}, 'AGND receipt agreement'),
+            'AGND count claimed for a chain receipt': ({'agnd_open_edges_after': 22}, 'AGND receipt copy disagrees'),
         }
         for name, (overrides, message) in cases.items():
             with self.subTest(forgery=name), tempfile.TemporaryDirectory() as temp:
@@ -180,6 +181,17 @@ class OscPcbCheckpoint(unittest.TestCase):
             root = self.forged_root(temp)
             with self.assertRaisesRegex(ValueError, 'AGND receipt agreement'):
                 guard.check(self.refresh(root, 'osc-jack-left', agreement_agnd_open_edges=None), root)
+        with tempfile.TemporaryDirectory() as temp:
+            root = self.forged_root(temp)
+            forged = self.refresh(root, 'osc-jack-left', agreement_agnd_open_edges=None, agnd_open_edges_after=None)
+            with self.assertRaisesRegex(ValueError, 'AGND receipt copy disagrees'):
+                guard.check(forged, root)
+
+    def test_island_signature_drift_is_rejected(self):
+        changed = self.mutant()
+        changed['boards']['osc-jack-right']['connectivity']['island_signature_sha256'] = '0' * 64
+        with self.assertRaisesRegex(ValueError, 'island signature'):
+            guard.check(changed)
 
     def test_live_fresh_records_pass(self):
         for entry in self.checkpoint['boards'].values():

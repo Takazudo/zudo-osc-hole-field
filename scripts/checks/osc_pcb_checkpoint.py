@@ -69,12 +69,12 @@ def check_board(board_id, entry, root):
     if state['fresh'] != (recorded == entry['board_sha256']):
         fail(board_id, 'native state freshness flag is not truthful')
     if state['fresh']:
-        check_fresh_record(board_id, native_record, entry)
+        check_fresh_record(board_id, native_record, entry, root)
         if not native_record['checked_at_utc'] > state['superseded_checked_at_utc']:
             fail(board_id, 'fresh native record is not newer than the superseded record')
 
 
-def check_fresh_record(board_id, record, entry):
+def check_fresh_record(board_id, record, entry, root):
     """A fresh native record must carry the accepted counts and receipt, not just the board hash."""
     native, conn = record['native'], entry['connectivity']
     expected = {'open_edges': conn['open_edges'], 'rail_open_edges': conn['rail_open_edges'],
@@ -91,10 +91,23 @@ def check_fresh_record(board_id, record, entry):
     agreement = record.get('receipt_agreement') or {}
     if agreement.get('open_edges') is not True:
         fail(board_id, 'fresh native record open-edge receipt agreement is not true')
-    # osc3 chain receipts carry no AGND count, so current_state records that agreement as null.
-    agnd_unknown = receipt.get('agnd_open_edges_after') is None
-    if agreement.get('agnd_open_edges') is not (None if agnd_unknown else True):
+    # Judge AGND from the accepted receipt file itself, not from the record's copy of it. osc3 chain
+    # receipts carry neither open_by_net_after nor an after block, so their AGND count is unknown.
+    real_agnd = receipt_agnd(json.loads((root / entry['receipt']['path']).read_text()))
+    if receipt.get('agnd_open_edges_after') != real_agnd:
+        fail(board_id, 'fresh native record AGND receipt copy disagrees with the receipt file')
+    if agreement.get('agnd_open_edges') is not (None if real_agnd is None else True):
         fail(board_id, 'fresh native record AGND receipt agreement is not consistent with its receipt')
+    if native.get('island_signature_sha256') != conn.get('island_signature_sha256'):
+        fail(board_id, 'fresh native record island signature disagrees with the checkpoint')
+
+
+def receipt_agnd(receipt):
+    if isinstance(receipt.get('open_by_net_after'), dict):
+        return receipt['open_by_net_after'].get('AGND')
+    if isinstance(receipt.get('after'), dict):
+        return receipt['after'].get('agnd_open_edges')
+    return None
 
 
 def adoption_counts(board_id, entry, root):
