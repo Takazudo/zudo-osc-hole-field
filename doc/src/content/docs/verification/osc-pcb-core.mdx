@@ -59,9 +59,9 @@ The accepted core board is **K2518**, recorded on 2026-11-07 in the current chec
 | Stages kept | analog-pitch, analog-sense, signals-local, signals-01 to signals-05 |
 | Stages not kept or not started | analog-precision gave no improvement (3,269 → 3,269). signals-06 to signals-12 and signal-escapes were not started within the 480 min chain budget. |
 | Candidate | wsl-20261107a was adopted as K2518 on 2026-11-07. No K candidate is pending. |
-| Next action | Run the J4 native refresh of `boards/osc-core/reports/routing.json`. Then continue with bounded transactions from K2518, starting with the stages that were not started. |
+| Next action | Continue with bounded transactions from K2518, starting with the stages that were not started, each through the promotion gate. |
 
-The chain receipt keeps total open edges only; the rail, AGND and signal split comes from the adoption record's review summary. The raw DRC listing in `reports/drc.json` caps each warning type at 199 entries and is not a connectivity count. `boards/osc-core/reports/routing.json` still records the K3409 board bytes (2026-11-03) and is stale until J4 runs.
+The chain receipt keeps total open edges only; the rail, AGND and signal split comes from the adoption record's review summary. The raw DRC listing in `reports/drc.json` caps each warning type at 199 entries and is not a connectivity count. The J4 native refresh (commit `7d7c31ea`, 2026-11-07) rewrote `boards/osc-core/reports/routing.json` for K2518. It agrees on 2,518 open edges, the rail split, AGND 22 open edges and 23 islands, and 2,479 signal edges, and it names the K2518 receipt. Its AGND receipt agreement is null because the chain receipt carries no AGND count.
 
 ### Historical K3363 state (accepted 2026-11-05, superseded 2026-11-07)
 

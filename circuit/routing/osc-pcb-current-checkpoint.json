@@ -20,7 +20,7 @@
       },
       "adoption": {
         "path": "circuit/reviews/osc3-k-signals/wsl-20261107a-adoption.json",
-        "sha256": "0ed09f6a4320273754daf9b2759c004d1978d728d92a224fc36d60dde5145897"
+        "sha256": "214c227519132be81bef9396d8659f82799f7425a236f64c97e041e91cb3a0e1"
       },
       "stages": {
         "kept": [
@@ -71,11 +71,11 @@
       },
       "native_state_record": {
         "path": "boards/osc-core/reports/routing.json",
-        "input_board_sha256": "dda33a25479c9993f71e33d49129cf16414828b3dd2083b6d4f91a65421c728c",
-        "checked_at_utc": "2026-11-03T19:25:50Z",
+        "input_board_sha256": "7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42",
+        "checked_at_utc": "2026-11-07T19:12:15Z",
         "superseded_checked_at_utc": "2026-11-03T19:25:50Z",
-        "fresh": false,
-        "refresh": "NEEDS ADMISSION: native current_state.py run; see next_action.refresh_command"
+        "fresh": true,
+        "refresh": "DONE: J4 native current_state.py run, committed in 7d7c31ea"
       }
     },
     "osc-jack-left": {
@@ -106,11 +106,11 @@
       },
       "native_state_record": {
         "path": "boards/osc-jack-left/reports/routing.json",
-        "input_board_sha256": "6bd6e15393cf2edb8625615ab31f1987ae512402ab0cb41fee661d9703493dc8",
-        "checked_at_utc": "2026-11-03T19:01:46Z",
+        "input_board_sha256": "a7fe68606591186cc955178b949e1c5ce8df0d0ba5829d328bb6bebb119ca251",
+        "checked_at_utc": "2026-11-07T19:14:28Z",
         "superseded_checked_at_utc": "2026-11-03T19:01:46Z",
-        "fresh": false,
-        "refresh": "NEEDS ADMISSION: native current_state.py run; see next_action.refresh_command"
+        "fresh": true,
+        "refresh": "DONE: J4 native current_state.py run, committed in 7d7c31ea"
       }
     },
     "osc-jack-right": {
@@ -141,11 +141,11 @@
       },
       "native_state_record": {
         "path": "boards/osc-jack-right/reports/routing.json",
-        "input_board_sha256": "dd41af2dcb98303257afbd0c06dfe0eb7d81e21e56ad180b27cae5ea5d0dd51d",
-        "checked_at_utc": "2026-11-03T19:04:52Z",
+        "input_board_sha256": "f6106300bae4e253f4b869dd24d14cb2428715215917b33ebacaa0f9031bfaa8",
+        "checked_at_utc": "2026-11-07T19:16:15Z",
         "superseded_checked_at_utc": "2026-11-03T19:04:52Z",
-        "fresh": false,
-        "refresh": "NEEDS ADMISSION: native current_state.py run; see next_action.refresh_command"
+        "fresh": true,
+        "refresh": "DONE: J4 native current_state.py run, committed in 7d7c31ea"
       }
     }
   },
@@ -158,7 +158,7 @@
     {
       "label": "K3409 / JL268 / JR312",
       "recorded": "2026-11-03",
-      "note": "Stale native state records still in boards/*/reports/routing.json; they describe earlier board bytes and are superseded by this checkpoint."
+      "note": "Native state records of 2026-11-03 for earlier board bytes. Replaced in boards/*/reports/routing.json by the J4 refresh (commit 7d7c31ea, 2026-11-07); git history keeps them."
     },
     {
       "label": "K1402 / JL117 / JR130",
@@ -174,9 +174,9 @@
     "rule": "Any later candidate counts as progress only after its receipt passes the promotion gate and the board and receipt are merged."
   },
   "next_action": {
-    "summary": "Run the J4 native refresh so boards/*/reports/routing.json describe K2518, JL184 and JR192, then mark each fresh here. After that, continue K with bounded transactions from K2518, starting with the stages that were not started (signals-06..12, signal-escapes), each through the promotion gate.",
+    "summary": "Continue K with bounded transactions from K2518, starting with the stages that were not started (signals-06..12, signal-escapes), each through the promotion gate. Update this checkpoint and re-run the J4-style native refresh after each adoption.",
     "refresh_command": "bash scripts/pcbgen/with_route_guard.sh python3 scripts/pcbgen/current_state.py osc-core osc-jack-left osc-jack-right",
-    "refresh_status": "NEEDS ADMISSION (J4; KiCad 10.0.6 through scripts/kicad/run.sh, one heavy slot)"
+    "refresh_status": "DONE for K2518 / JL184 / JR192 (J4, commit 7d7c31ea); re-run needs admission after any later adoption"
   },
   "referenced_by": {
     "doc/src/content/docs/project/index.mdx": [

@@ -88,6 +88,13 @@ def check_fresh_record(board_id, record, entry):
     paths = {entry['receipt']['path'], entry['receipt'].get('mirror')} - {None}
     if receipt.get('sha256') != entry['receipt']['sha256'] or receipt.get('path') not in paths:
         fail(board_id, 'fresh native record does not name the accepted receipt')
+    agreement = record.get('receipt_agreement') or {}
+    if agreement.get('open_edges') is not True:
+        fail(board_id, 'fresh native record open-edge receipt agreement is not true')
+    # osc3 chain receipts carry no AGND count, so current_state records that agreement as null.
+    agnd_unknown = receipt.get('agnd_open_edges_after') is None
+    if agreement.get('agnd_open_edges') is not (None if agnd_unknown else True):
+        fail(board_id, 'fresh native record AGND receipt agreement is not consistent with its receipt')
 
 
 def adoption_counts(board_id, entry, root):
@@ -134,8 +141,10 @@ def main():
     checkpoint = json.loads(CHECKPOINT.read_text())
     check(checkpoint)
     labels = ' / '.join(e['label'] for e in checkpoint['boards'].values())
+    native = ', '.join(f"{e['label']} {'fresh' if e['native_state_record']['fresh'] else 'STALE'}"
+                       for e in checkpoint['boards'].values())
     print(f'PASS: checkpoint {labels} matches board bytes, receipts and docs; '
-          f"candidate {checkpoint['candidate']['status']}; native refresh NOT RUN; qualification NOT RUN")
+          f"candidate {checkpoint['candidate']['status']}; native state records: {native}; qualification NOT RUN")
 
 
 if __name__ == '__main__':
