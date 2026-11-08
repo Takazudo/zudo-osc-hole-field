@@ -74,7 +74,7 @@ def digest(text):
     return hashlib.sha256(board_bytes(text)).hexdigest()
 
 
-# ---------------------------------------------------------------- inventory
+# ---------------------------------------------------------------- fail-closed selection
 
 def require_unique(objects_by_uuid,uuids,context):
     """Refuse, before any dict collapse, every selected UUID that names more than one object."""
@@ -82,6 +82,34 @@ def require_unique(objects_by_uuid,uuids,context):
     if ambiguous:
         raise ValueError(f'{context}: UUID is not unique, it names {len(objects_by_uuid[ambiguous[0]])} copper objects; selection is ambiguous: '+', '.join(ambiguous))
 
+
+def unique_objects(objects_by_uuid,selection,context):
+    """The one object per selected UUID, or ValueError; absent UUIDs are simply not in the result.
+
+    This is the only sanctioned way to turn a {uuid: [objects]} grouping into a
+    {uuid: object} view for a selection: the refusal and the collapse are one step.
+    """
+    selection=list(selection)
+    require_unique(objects_by_uuid,selection,context)
+    return {u:objects_by_uuid[u][0] for u in selection if objects_by_uuid.get(u)}
+
+
+def copper_uuid_spans(text):
+    """{uuid: [(kind,start,end),...]} for every top-level copper block, in file order.
+
+    Lightweight: no net, layer, geometry or hashing; a block without a UUID token
+    groups under None. Use this for removal and merge guards on large boards.
+    """
+    groups=collections.defaultdict(list)
+    for start,end in top_level_spans(text):
+        kind=KIND_RE.match(text,start)
+        if not kind or kind[1] not in COPPER_KINDS:continue
+        uid=UUID_RE.search(text,start,end)
+        groups[uid[1] if uid else None].append((kind[1],start,end))
+    return dict(groups)
+
+
+# ---------------------------------------------------------------- inventory
 
 def parse_geometry(block):
     geometry={}
@@ -132,7 +160,7 @@ def duplicate_groups(objects):
         items=groups[uid]
         if len(items)<2:continue
         out.append({'uuid':uid,'count':len(items),'kinds':sorted({o['kind'] for o in items}),'nets':sorted({o['net'] or '' for o in items}),
-                    'occurrences':[{'index':i,**{k:o[k] for k in ('kind','net','layers','geometry','span','block_sha256')}} for i,o in enumerate(items)]})
+                    'occurrences':[{'index':i,**{k:o[k] for k in ('kind','net','layers','geometry','span','uuid_span','block_sha256')}} for i,o in enumerate(items)]})
     return out
 
 
@@ -183,8 +211,10 @@ def load_allowlist(path=LEGACY_ALLOWLIST):
 
 
 def canonical_boards():
+    """Every tracked boards/<dir>/<name>.kicad_pcb, exactly one directory deep."""
     import subprocess
-    out=subprocess.check_output(['git','ls-files','boards/*/*.kicad_pcb'],cwd=ROOT,text=True)
+    # Without :(glob) git's `*` also matches `/`, which would widen the pathspec.
+    out=subprocess.check_output(['git','ls-files','--',':(glob)boards/*/*.kicad_pcb'],cwd=ROOT,text=True)
     return [ROOT/line for line in out.split() if line]
 
 
@@ -194,13 +224,11 @@ def drop_copper_blocks(text,removed,context='copper removal'):
     """Text without the copper blocks named in removed; every name must be unique and present."""
     removed=set(removed)
     if not removed:return text
-    groups=copper_uuid_groups(text)
-    require_unique(groups,removed,context)
-    missing=sorted(u for u in removed if u not in groups)
-    if missing:raise ValueError(f'{context}: ripped copper not found: {len(removed)-len(missing)}/{len(removed)}; missing '+', '.join(missing))
-    edits=[(groups[u][0]['span'][0],groups[u][0]['span'][1],'') for u in removed]
+    selected=unique_objects(copper_uuid_spans(text),removed,context)
+    missing=sorted(removed-selected.keys())
+    if missing:raise ValueError(f'{context}: ripped copper not found: {len(selected)}/{len(removed)}; missing '+', '.join(missing))
     # Keep the whitespace before each block, as grid_apply.py always did.
-    return replace_spans(text,edits)
+    return replace_spans(text,[(start,end,'') for _,start,end in selected.values()])
 
 
 # ---------------------------------------------------------------- normalization proposal
@@ -213,6 +241,35 @@ def all_uuid_tokens(text):
     return collections.Counter(m[1] for m in UUID_RE.finditer(text))
 
 
+def foreign_references(text,uid,own_spans):
+    """Every occurrence of uid outside its own copper (uuid ...) tokens, with the enclosing block kind.
+
+    KiCad groups list members by bare UUID (`(group ... (members <uuid> ...))`), and
+    other tools may hold the id elsewhere; renaming such an occurrence would change
+    the referrer silently, so the caller refuses normalization when any is found.
+    """
+    own=sorted(own_spans);refs=[];pos=text.find(uid)
+    blocks=None
+    while pos>=0:
+        end=pos+len(uid)
+        if not any(a<=pos and end<=b for a,b in own):
+            if blocks is None:blocks=list(top_level_spans(text))
+            block=next(((a,b) for a,b in blocks if a<=pos<b),None)
+            kind=KIND_RE.match(text,block[0])[1] if block else 'root'
+            head=text.rfind('(',0,pos);parent=KIND_RE.match(text,head)[1] if head>=0 and KIND_RE.match(text,head) else None
+            refs.append({'offset':pos,'block':kind,'context':parent})
+        pos=text.find(uid,end)
+    return refs
+
+
+def refuse_foreign_references(text,groups):
+    for g in groups:
+        refs=foreign_references(text,g['uuid'],[tuple(o['uuid_span']) for o in g['occurrences']])
+        if refs:
+            where=', '.join(f"{r['block']}/{r['context']}@{r['offset']}" for r in refs[:5])
+            raise ValueError(f"duplicate UUID {g['uuid']} is referenced outside its copper objects ({len(refs)}: {where}); normalization refused")
+
+
 def propose_normalization(text,path=None):
     """Rename every occurrence after the first in each duplicate group; return (manifest, proposed text).
 
@@ -220,20 +277,20 @@ def propose_normalization(text,path=None):
     (receipts, replay deltas, reviewed cut plans) to a legacy ID still resolve to one
     object. Later occurrences receive a UUIDv5 derived from the board sha256, the old
     UUID, the occurrence index and the block digest, so two runs are byte-identical and
-    a proposal made for other bytes cannot be applied.
+    a proposal made for other bytes cannot be applied. A duplicate UUID that appears
+    anywhere outside its own copper tokens (for example a group members list) refuses.
     """
     board_sha=digest(text);groups=duplicate_groups(copper_objects(text))
+    refuse_foreign_references(text,groups)
     taken=all_uuid_tokens(text);renames=[];edits=[]
     for g in groups:
         for occ in g['occurrences'][1:]:
-            start,end=occ['span'];block=text[start:end];m=UUID_RE.search(block)
             new=derived_uuid(board_sha,g['uuid'],occ['index'],occ['block_sha256'])
-            if taken.get(new):raise ValueError('derived UUID collides with an existing token: '+new)
+            if taken.get(new) or new in text:raise ValueError('derived UUID collides with an existing token: '+new)
             taken[new]=1
-            uuid_span=[start+m.start(1),start+m.end(1)]
             renames.append({'old_uuid':g['uuid'],'occurrence_index':occ['index'],'kind':occ['kind'],'net':occ['net'],'layers':occ['layers'],
-                            'geometry':occ['geometry'],'block_sha256':occ['block_sha256'],'span':occ['span'],'uuid_span':uuid_span,'new_uuid':new})
-            edits.append((uuid_span[0],uuid_span[1],new))
+                            'geometry':occ['geometry'],'block_sha256':occ['block_sha256'],'span':occ['span'],'uuid_span':occ['uuid_span'],'new_uuid':new})
+            edits.append((occ['uuid_span'][0],occ['uuid_span'][1],new))
     output=replace_spans(text,edits)
     manifest={'schema':MANIFEST_SCHEMA,'board':str(path) if path is not None else None,'input_board_sha256':board_sha,
               'output_board_sha256':digest(output),'policy':'first occurrence in file order keeps its UUID; every later occurrence is renamed',
@@ -242,19 +299,22 @@ def propose_normalization(text,path=None):
     return manifest,output
 
 
-def apply_manifest(text,manifest):
-    """Proposal text rebuilt from the input and the manifest; refuses stale or tampered manifests."""
+def rebuild(text,manifest):
+    """Input plus the manifest's renames, after every binding check; no preservation proof yet."""
     if manifest.get('schema')!=MANIFEST_SCHEMA:raise ValueError('unsupported normalization manifest schema')
-    board_sha=digest(text)
-    if manifest.get('input_board_sha256')!=board_sha:raise ValueError('normalization manifest was made for a different board')
-    edits=[];seen=set()
+    if manifest.get('input_board_sha256')!=digest(text):raise ValueError('normalization manifest was made for a different board')
+    taken=all_uuid_tokens(text);edits=[]
     for r in manifest['renames']:
         start,end=r['span'];block=text[start:end]
         if digest(block)!=r['block_sha256']:raise ValueError(f"normalization manifest block digest mismatch at {start}")
         us,ue=r['uuid_span']
         if not (start<=us<ue<=end) or text[us:ue]!=r['old_uuid']:raise ValueError(f'normalization manifest UUID token mismatch at {us}')
-        if r['new_uuid'] in seen or not UUID_RE.fullmatch(f'(uuid "{r["new_uuid"]}")'):raise ValueError('normalization manifest new UUID invalid or repeated')
-        seen.add(r['new_uuid']);edits.append((us,ue,r['new_uuid']))
+        new=r['new_uuid']
+        if not UUID_RE.fullmatch(f'(uuid "{new}")'):raise ValueError('normalization manifest new UUID invalid: '+str(new))
+        # Any existing token anywhere in the board (footprints, texts, zones, group members) or an
+        # earlier rename would turn the proposal into a board that gains a duplicate.
+        if taken.get(new) or new in text:raise ValueError('normalization manifest new UUID collides with an existing token: '+new)
+        taken[new]=1;edits.append((us,ue,new))
     output=replace_spans(text,edits)
     if digest(output)!=manifest.get('output_board_sha256'):raise ValueError('normalization manifest output digest mismatch')
     return output
@@ -262,24 +322,33 @@ def apply_manifest(text,manifest):
 
 def verify_normalization(input_text,output_text,manifest):
     """Proof that output differs from input only by the manifest's UUID tokens and keeps every object."""
-    rebuilt=apply_manifest(input_text,manifest)
+    rebuilt=rebuild(input_text,manifest)
     if board_bytes(rebuilt)!=board_bytes(output_text):raise ValueError('proposal bytes differ from input plus manifest renames')
     before,after=copper_objects(input_text),copper_objects(output_text)
     if len(before)!=len(after):raise ValueError('normalization changed the copper object count')
     strip=lambda o,t:t[o['span'][0]:o['uuid_span'][0]]+t[o['uuid_span'][1]:o['span'][1]] if o['uuid_span'] else t[o['span'][0]:o['span'][1]]
     if collections.Counter(strip(o,input_text) for o in before)!=collections.Counter(strip(o,output_text) for o in after):
         raise ValueError('normalization changed copper geometry outside the UUID tokens')
+    refuse_foreign_references(input_text,duplicate_groups(before))
     renamed={r['new_uuid'] for r in manifest['renames']}
     remaining=duplicate_groups(after)
     if any(g['uuid'] in renamed for g in remaining):raise ValueError('a renamed UUID is still duplicated')
     old_tokens,new_tokens=all_uuid_tokens(input_text),all_uuid_tokens(output_text)
     for r in manifest['renames']:
-        if new_tokens.get(r['new_uuid'])!=1 or old_tokens.get(r['new_uuid']):raise ValueError('new UUID token count is not exactly one: '+r['new_uuid'])
+        if new_tokens.get(r['new_uuid'])!=1 or old_tokens.get(r['new_uuid']) or output_text.count(r['new_uuid'])!=1:
+            raise ValueError('new UUID token count is not exactly one: '+r['new_uuid'])
     return {'input_board_sha256':digest(input_text),'output_board_sha256':digest(output_text),'renames':len(manifest['renames']),
             'objects':len(before),'counts':dict(sorted(collections.Counter(o['kind'] for o in before).items())),
             'duplicate_groups_before':len(duplicate_groups(before)),'duplicate_groups_after':len(remaining),
             'differing_bytes':sum(a!=b for a,b in zip(board_bytes(input_text),board_bytes(output_text))),
             'renamed_token_bytes':sum(sum(a!=b for a,b in zip(r['old_uuid'].encode(),r['new_uuid'].encode())) for r in manifest['renames'])}
+
+
+def apply_manifest(text,manifest):
+    """Proposal text rebuilt from the input and the manifest and proven; refuses stale or tampered manifests."""
+    output=rebuild(text,manifest)
+    verify_normalization(text,output,manifest)
+    return output
 
 
 # ---------------------------------------------------------------- CLI
@@ -290,21 +359,20 @@ def dumps(value):
 
 def main(argv=None):
     p=argparse.ArgumentParser(description=__doc__.splitlines()[0]);sub=p.add_subparsers(dest='cmd',required=True)
-    i=sub.add_parser('inventory',help='every copper object class count and every duplicate UUID group, as JSON')
+    i=sub.add_parser('inventory',help='every copper object class count and every duplicate UUID group, as a JSON list (one entry per board)')
     i.add_argument('boards',nargs='+',type=Path);i.add_argument('-o','--output',type=Path)
     c=sub.add_parser('check',help='exit 1 on any duplicate copper UUID not exactly allowlisted for the board bytes')
     c.add_argument('boards',nargs='*',type=Path,help='default: every tracked boards/*/*.kicad_pcb');c.add_argument('--allowlist',type=Path,default=LEGACY_ALLOWLIST)
     c.add_argument('--record',type=Path,help='write an allowlist entry file for the current duplicates instead of judging them')
     n=sub.add_parser('propose-normalization',help='dry-run rename of later duplicate occurrences into --out; never writes boards/')
     n.add_argument('board',type=Path);n.add_argument('--out',type=Path,required=True)
-    a=sub.add_parser('apply-manifest',help='rebuild a proposal from a board and its manifest into --out');a.add_argument('board',type=Path)
+    a=sub.add_parser('apply-manifest',help='rebuild and prove a proposal from a board and its manifest into --out');a.add_argument('board',type=Path)
     a.add_argument('manifest',type=Path);a.add_argument('--out',type=Path,required=True)
     v=sub.add_parser('verify',help='prove a proposal equals input plus manifest renames');v.add_argument('board',type=Path)
     v.add_argument('proposal',type=Path);v.add_argument('manifest',type=Path)
     args=p.parse_args(argv)
     if args.cmd=='inventory':
-        out=[inventory(load_board_text(b),rel(b)) for b in args.boards]
-        text=dumps(out if len(out)>1 else out[0])
+        text=dumps([inventory(load_board_text(b),rel(b)) for b in args.boards])
         if args.output:args.output.write_text(text)
         else:sys.stdout.write(text)
         return 0
@@ -324,7 +392,7 @@ def main(argv=None):
         return 0
     if args.cmd=='propose-normalization':
         refuse_boards_dir(args.out);text=load_board_text(args.board);manifest,output=propose_normalization(text,rel(args.board))
-        args.out.mkdir(parents=True,exist_ok=True);proof=verify_normalization(text,output,manifest)
+        proof=verify_normalization(text,output,manifest);args.out.mkdir(parents=True,exist_ok=True)
         (args.out/'manifest.json').write_text(dumps(manifest));(args.out/args.board.name).write_bytes(board_bytes(output))
         (args.out/'proof.json').write_text(dumps(proof))
         print(f"{len(manifest['renames'])} renames proposed for {manifest['duplicate_groups']} duplicate groups; wrote {args.out}");return 0
@@ -345,7 +413,8 @@ def rel(path):
 
 
 def refuse_boards_dir(path):
-    if (ROOT/'boards') in Path(path).resolve().parents or Path(path).resolve()==ROOT/'boards':
+    boards=(ROOT/'boards').resolve();target=Path(path).resolve()
+    if target==boards or boards in target.parents:
         raise SystemExit('refusing to write a proposal under boards/; canonical boards change only in a reviewed migration')
 
 

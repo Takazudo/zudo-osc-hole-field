@@ -1,5 +1,6 @@
 import json,subprocess,sys,tempfile,unittest
 from pathlib import Path
+from unittest.mock import patch
 from scripts.pcbgen import copper_identity as ci
 from scripts.pcbgen.copper_identity import (reject_new_uuid_collisions,retention,require_unique,copper_objects,duplicate_groups,
     inventory,check,drop_copper_blocks,propose_normalization,apply_manifest,verify_normalization,load_board_text,board_bytes,digest)
@@ -116,7 +117,8 @@ class InventoryTests(unittest.TestCase):
             self.assertEqual(run('check',str(p)).returncode,1)
             self.assertEqual(run('check',str(K_BOARD)).returncode,0)
             inv=json.loads(run('inventory',str(p)).stdout)
-            self.assertEqual(len(inv['duplicate_groups']),1)
+            self.assertIsInstance(inv,list);self.assertEqual(len(inv[0]['duplicate_groups']),1)
+            both=json.loads(run('inventory',str(p),str(p)).stdout);self.assertEqual(len(both),2)
 
 
 class RemovalAmbiguityTests(unittest.TestCase):
@@ -136,6 +138,12 @@ class RemovalAmbiguityTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'shard merge removal.*ambiguous'):merge_text(base,[d])
         ok={'base_sha256':'x','removed':[{'uuid':U[1],'net':'B'}],'added':[],'nets':['B']}
         self.assertEqual(merge_text(base,[ok]).count(U[0]),2)
+        # The guard uses the lightweight span grouper, so a block without a net token is still merged.
+        netless=board(seg(U[1],'B').replace('\t\t(net "B")\n',''),seg(U[2],'C'))
+        self.assertNotIn(U[2],merge_text(netless,[{'base_sha256':'x','removed':[{'uuid':U[2],'net':'C'}],'added':[],'nets':['C']}]))
+        from scripts.pcbgen.route_shards import copper_blocks
+        with self.assertRaisesRegex(ValueError,'unique copper view.*ambiguous'):copper_blocks(base)
+        self.assertEqual(set(copper_blocks(board(seg(U[1],'B')))),{U[1]})
 
     def test_stage_removed_uuids_refuses_a_removed_duplicate_occurrence(self):
         from scripts.pcbgen.audit_added_mask import stage_removed_uuids,reviewed_copper_removals,StageRemovals
@@ -162,6 +170,11 @@ class RemovalAmbiguityTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'ambiguous'):repair_selection(dump,{'repair':True,'repair_targets':['T'],'repair_source_uuids':sorted(cut)})
             with self.assertRaisesRegex(ValueError,'repair cut.*ambiguous'):
                 repair_bounds(dump,{'repair_source_uuids':sorted(cut),'repair_bounds_mm':[3,3,7,7]},['T'],cut)
+        clean={**dump,'tracks':dump['tracks'][2:],'vias':[]}
+        with self.assertRaisesRegex(ValueError,'unknown source copper'):repair_nets(clean,['T'],{U[5]})
+        # repair_bounds reaches repair_nets first, so an absent cut is named there; its own branch stays defensive.
+        with self.assertRaisesRegex(ValueError,'unknown source copper'):
+            repair_bounds(clean,{'repair_source_uuids':[U[5]],'repair_bounds_mm':[3,3,7,7]},['T'],{U[5]})
 
 
 class NormalizationTests(unittest.TestCase):
@@ -200,13 +213,34 @@ class NormalizationTests(unittest.TestCase):
         moved=json.loads(json.dumps(manifest));moved['renames'][0]['old_uuid']=U[5]
         with self.assertRaisesRegex(ValueError,'UUID token mismatch'):apply_manifest(self.text,moved)
         swapped=json.loads(json.dumps(manifest));swapped['renames'][0]['new_uuid']=swapped['renames'][1]['new_uuid']
-        with self.assertRaisesRegex(ValueError,'invalid or repeated'):apply_manifest(self.text,swapped)
+        with self.assertRaisesRegex(ValueError,'collides with an existing token'):apply_manifest(self.text,swapped)
+        malformed=json.loads(json.dumps(manifest));malformed['renames'][0]['new_uuid']='not-a-uuid'
+        with self.assertRaisesRegex(ValueError,'new UUID invalid'):apply_manifest(self.text,malformed)
         redirected=json.loads(json.dumps(manifest));redirected['renames'][0]['new_uuid']=U[6]
         with self.assertRaisesRegex(ValueError,'output digest'):apply_manifest(self.text,redirected)
+        # A new id equal to an existing non-copper token (the gr_text uuid) or to a surviving copper id is a new duplicate.
+        for existing in (U[9],U[3]):
+            aliased=json.loads(json.dumps(manifest));aliased['renames'][0]['new_uuid']=existing
+            with self.subTest(existing=existing),self.assertRaisesRegex(ValueError,'collides with an existing token'):apply_manifest(self.text,aliased)
+        with self.assertRaisesRegex(ValueError,'collides'):ci.rebuild(self.text,aliased)
         with self.assertRaisesRegex(ValueError,'schema'):apply_manifest(self.text,{**manifest,'schema':'other'})
         # A proposal with any byte outside the manifest's tokens fails the proof.
         with self.assertRaisesRegex(ValueError,'differ'):verify_normalization(self.text,out.replace('(width 0.2)','(width 0.3)',1),manifest)
         with self.assertRaisesRegex(ValueError,'differ'):verify_normalization(self.text,out+'\n',manifest)
+
+    def test_a_duplicate_referenced_outside_its_copper_refuses_normalization(self):
+        group='\t(group "stitch"\n\t\t(uuid "'+U[7]+'")\n\t\t(members\n\t\t\t'+U[0]+'\n\t\t\t'+U[3]+'\n\t\t)\n\t)\n'
+        text=board(seg(U[0]),seg(U[0],x=2),seg(U[3]),group)
+        with self.assertRaisesRegex(ValueError,U[0]+'.*referenced outside.*group/members@.*refused'):propose_normalization(text)
+        refs=ci.foreign_references(text,U[0],[tuple(o['uuid_span']) for o in duplicate_groups(copper_objects(text))[0]['occurrences']])
+        self.assertEqual([(r['block'],r['context']) for r in refs],[('group','members')])
+        # A manifest made for the same bytes without the members reference cannot be verified against a referencing board.
+        manifest,out=propose_normalization(board(seg(U[0]),seg(U[0],x=2),seg(U[3])))
+        referenced_manifest={**manifest,'input_board_sha256':digest(text),'output_board_sha256':digest(text)}
+        with self.assertRaises(ValueError):verify_normalization(text,text,referenced_manifest)
+        # A bare id in a text string counts too; a non-duplicate id in a members list does not block anything.
+        with self.assertRaisesRegex(ValueError,'gr_text'):propose_normalization(board(seg(U[0]),seg(U[0],x=2),'\t(gr_text "'+U[0]+'" (uuid "'+U[8]+'"))\n'))
+        self.assertEqual(len(propose_normalization(board(seg(U[0]),seg(U[0],x=2),seg(U[3]),group.replace(U[0],U[8])))[0]['renames']),1)
 
     def test_cli_writes_only_into_out_and_never_under_boards(self):
         with tempfile.TemporaryDirectory() as d:
@@ -219,8 +253,15 @@ class NormalizationTests(unittest.TestCase):
             r=run('verify',str(src),str(Path(d)/'prop/dup.kicad_pcb'),str(Path(d)/'prop/manifest.json'));self.assertEqual(r.returncode,0,r.stderr)
             r=run('apply-manifest',str(src),str(Path(d)/'prop/manifest.json'),'--out',str(Path(d)/'apply/dup.kicad_pcb'));self.assertEqual(r.returncode,0,r.stderr)
             self.assertEqual((Path(d)/'apply/dup.kicad_pcb').read_bytes(),board_bytes(proposal))
-            r=run('propose-normalization',str(src),'--out',str(ROOT/'boards/osc-core/proposal'))
-            self.assertNotEqual(r.returncode,0);self.assertIn('refusing',r.stderr);self.assertFalse((ROOT/'boards/osc-core/proposal').exists())
+            # Point the refusal at a boards/ tree inside the temporary directory, never at the canonical one.
+            fake_root=Path(d)/'repo';(fake_root/'boards/x').mkdir(parents=True)
+            with patch.object(ci,'ROOT',fake_root):
+                for out in (fake_root/'boards/x/proposal',fake_root/'boards',fake_root/'boards/x/../y'):
+                    with self.subTest(out=out),self.assertRaisesRegex(SystemExit,'refusing'):ci.main(['propose-normalization',str(src),'--out',str(out)])
+                with self.assertRaisesRegex(SystemExit,'refusing'):ci.main(['apply-manifest',str(src),str(Path(d)/'prop/manifest.json'),'--out',str(fake_root/'boards/x/dup.kicad_pcb')])
+                self.assertEqual(ci.main(['propose-normalization',str(src),'--out',str(fake_root/'elsewhere')]),0)
+            self.assertEqual(sorted(p.name for p in (fake_root/'boards/x').iterdir()),[])
+            with self.assertRaisesRegex(SystemExit,'refusing'):ci.refuse_boards_dir(ROOT/'boards/osc-core/proposal')
 
 
 if __name__=='__main__':unittest.main()
