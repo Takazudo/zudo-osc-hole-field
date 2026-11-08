@@ -80,7 +80,7 @@ def require_unique(objects_by_uuid,uuids,context):
     """Refuse, before any dict collapse, every selected UUID that names more than one object."""
     ambiguous=sorted(u for u in set(uuids) if len(objects_by_uuid.get(u,()))>1)
     if ambiguous:
-        raise ValueError(f'{context}: UUID names {len(objects_by_uuid[ambiguous[0]])} copper objects, selection is ambiguous: '+', '.join(ambiguous))
+        raise ValueError(f'{context}: UUID is not unique, it names {len(objects_by_uuid[ambiguous[0]])} copper objects; selection is ambiguous: '+', '.join(ambiguous))
 
 
 def parse_geometry(block):
