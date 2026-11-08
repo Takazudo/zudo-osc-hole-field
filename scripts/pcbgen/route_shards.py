@@ -155,10 +155,11 @@ def merge_text(base_text,deltas,reverted=frozenset()):
     removed={r['uuid'] for d,k in zip(deltas,keep) for r in d['removed'] if r['net'] in k and r['net'] not in reverted}
     added_rows=[a for d,k in zip(deltas,keep) for a in d['added'] if a['net'] in k and a['net'] not in reverted]
     added=[a['block'] for a in added_rows];surviving=set()
+    spans=list(top_level_spans(base_text))
     # A removal naming a legacy duplicate UUID would drop both objects; refuse it before the text walk.
-    # The lightweight span grouper keeps merge_text's tolerance of blocks without a net token.
-    unique_objects(copper_uuid_spans(base_text),removed,'shard merge removal')
-    chunks=[];last=0;spans=list(top_level_spans(base_text));dropped=0
+    # The lightweight span grouper reuses these spans and keeps the tolerance of blocks without a net token.
+    unique_objects(copper_uuid_spans(base_text,spans),removed,'shard merge removal')
+    chunks=[];last=0;dropped=0
     for start,end in spans:
         block=base_text[start:end]
         if block.startswith(('(segment','(via')):

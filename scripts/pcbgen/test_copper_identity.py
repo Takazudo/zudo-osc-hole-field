@@ -74,23 +74,26 @@ class InventoryTests(unittest.TestCase):
         require_unique(groups,[U[1]],'x');require_unique(groups,[],'x');require_unique(groups,['missing'],'x')
         with self.assertRaisesRegex(ValueError,'repair cut.*ambiguous.*'+U[0]):require_unique(groups,[U[1],U[0]],'repair cut')
 
-    def test_check_accepts_exact_allowlisted_group_and_rejects_everything_else(self):
-        text=board(seg(U[0]),seg(U[0],x=2),seg(U[1]))
-        inv=inventory(text);entry=ci.allowlist_entry(inv['sha256'],inv['duplicate_groups'])
+    def test_check_binds_by_path_and_exact_group_bytes_not_by_whole_board_bytes(self):
+        path='boards/x/x.kicad_pcb';text=board(seg(U[0]),seg(U[0],x=2),seg(U[1]))
+        inv=inventory(text,path);entry=ci.allowlist_entry(path,inv['sha256'],inv['duplicate_groups'])
+        self.assertEqual(entry['recorded_board_sha256'],digest(text))
         allowlist={'boards':[entry]}
-        self.assertEqual(check(text,allowlist)['violations'],[])
-        self.assertEqual(check(text,{'boards':[]})['violations'][0]['reason'],'duplicate copper UUID not in the legacy allowlist for this board sha256')
-        # Any byte change moves the board digest, so the entry no longer binds.
+        self.assertEqual(check(text,allowlist,path)['violations'],[])
+        self.assertEqual(check(text,{'boards':[]},path)['violations'][0]['reason'],'duplicate copper UUID not in the legacy allowlist for this board path')
+        self.assertEqual(len(check(text,allowlist,'boards/y/y.kicad_pcb')['violations']),1)
+        # Bytes outside the group may change (an additive adoption): the entry still binds.
+        elsewhere=board(seg(U[0]),seg(U[0],x=2),seg(U[1],width=0.3),seg(U[4],x=9)).replace('20250000','20250001')
+        self.assertNotEqual(digest(elsewhere),digest(text));self.assertEqual(check(elsewhere,allowlist,path)['violations'],[])
+        # A changed occurrence inside the group fails, as does a new group or a vanished group.
         changed=text.replace('(width 0.2)','(width 0.3)',1)
-        self.assertEqual(len(check(changed,allowlist)['violations']),1)
-        # An entry re-pinned to the new sha256 still rejects an occurrence whose bytes moved.
-        stale={'boards':[{**entry,'sha256':digest(changed)}]}
-        self.assertEqual(check(changed,stale)['violations'][0]['reason'],'allowlisted duplicate group bytes changed')
-        # A new duplicate group beside the allowlisted one fails, and a vanished group is reported.
+        self.assertEqual(check(changed,allowlist,path)['violations'][0]['reason'],'allowlisted duplicate group bytes changed')
         extra=board(seg(U[0]),seg(U[0],x=2),seg(U[1]),seg(U[1],x=3))
-        self.assertEqual(check(extra,{'boards':[{**entry,'sha256':digest(extra)}]})['violations'][0]['uuid'],U[1])
+        self.assertEqual([v['uuid'] for v in check(extra,allowlist,path)['violations']],[U[1]])
         gone=board(seg(U[0]),seg(U[1]))
-        self.assertEqual(check(gone,{'boards':[{**entry,'sha256':digest(gone)}]})['violations'][0]['reason'],'allowlisted duplicate group is absent from the board')
+        self.assertEqual(check(gone,allowlist,path)['violations'][0]['reason'],'allowlisted duplicate group is absent from the board')
+        third=board(seg(U[0]),seg(U[0],x=2),seg(U[0],x=3),seg(U[1]))
+        self.assertEqual(check(third,allowlist,path)['violations'][0]['reason'],'allowlisted duplicate group bytes changed')
 
     def test_canonical_k_board_carries_exactly_the_six_known_legacy_groups(self):
         text=load_board_text(K_BOARD);inv=inventory(text,'boards/osc-core/osc-core.kicad_pcb')
@@ -107,8 +110,10 @@ class InventoryTests(unittest.TestCase):
         results={b.relative_to(ROOT).as_posix():check(load_board_text(b),allowlist,b.relative_to(ROOT)) for b in boards}
         self.assertEqual({k:r['violations'] for k,r in results.items() if r['violations']},{})
         self.assertEqual({k:r['duplicate_groups'] for k,r in results.items() if r['duplicate_groups']},{'boards/osc-core/osc-core.kicad_pcb':6})
-        entry=[e for e in allowlist['boards'] if e['sha256']==K_SHA]
+        entry=[e for e in allowlist['boards'] if e['path']=='boards/osc-core/osc-core.kicad_pcb']
         self.assertEqual(len(entry),1);self.assertEqual({g['uuid'] for g in entry[0]['groups']},set(K_GROUPS))
+        self.assertEqual(entry[0]['recorded_board_sha256'],K_SHA)
+        self.assertTrue(all(b.is_file() and b.suffix=='.kicad_pcb' and len(b.relative_to(ROOT).parts)==3 for b in boards))
 
     def test_check_cli_exits_nonzero_for_an_unlisted_duplicate(self):
         with tempfile.TemporaryDirectory() as d:
@@ -224,7 +229,33 @@ class NormalizationTests(unittest.TestCase):
             with self.subTest(existing=existing),self.assertRaisesRegex(ValueError,'collides with an existing token'):apply_manifest(self.text,aliased)
         with self.assertRaisesRegex(ValueError,'collides'):ci.rebuild(self.text,aliased)
         with self.assertRaisesRegex(ValueError,'schema'):apply_manifest(self.text,{**manifest,'schema':'other'})
-        # A proposal with any byte outside the manifest's tokens fails the proof.
+        # Malformed manifests are ValueErrors, never KeyError/TypeError/IndexError.
+        without=dict(manifest);del without['renames']
+        with self.assertRaisesRegex(ValueError,'missing renames'):apply_manifest(self.text,without)
+        partial=json.loads(json.dumps(manifest));del partial['renames'][0]['uuid_span']
+        with self.assertRaisesRegex(ValueError,'rename 0 missing or malformed uuid_span'):apply_manifest(self.text,partial)
+        for bad in ('not a dict',{**manifest,'renames':'x'},{**manifest,'renames':[1]},{**manifest,'input_board_sha256':None}):
+            with self.subTest(bad=bad),self.assertRaisesRegex(ValueError,'normalization manifest'):ci.rebuild(self.text,bad)
+        short=json.loads(json.dumps(manifest));short['renames'][0]['span']=[1]
+        with self.assertRaisesRegex(ValueError,'malformed span'):apply_manifest(self.text,short)
+        # Every rename must target a later occurrence of a duplicated copper UUID: never a unique
+        # copper id, a first occurrence, or a non-copper block, even with consistent digests.
+        objects={o['uuid']:o for o in copper_objects(self.text) if o['uuid'] in (U[3],)}
+        first=next(o for o in copper_objects(self.text) if o['uuid']==U[0])
+        text_block=next((a,b) for a,b in ci.top_level_spans(self.text) if self.text[a:b].startswith('(gr_text'))
+        text_uuid=[text_block[0]+m.start(1) for m in [ci.UUID_RE.search(self.text[text_block[0]:text_block[1]])]][0]
+        targets={'unique copper':(U[3],0,objects[U[3]]['span'],objects[U[3]]['uuid_span'],objects[U[3]]['block_sha256']),
+                 'first occurrence':(U[0],0,first['span'],first['uuid_span'],first['block_sha256']),
+                 'non-copper block':(U[9],0,list(text_block),[text_uuid,text_uuid+36],digest(self.text[text_block[0]:text_block[1]]))}
+        for name,(old,index,span,uspan,bsha) in targets.items():
+            new='11111111-1111-4111-8111-%012d'%index
+            forged={**manifest,'renames':[{'old_uuid':old,'occurrence_index':index,'kind':'x','net':None,'layers':[],'geometry':{},
+                                           'block_sha256':bsha,'span':span,'uuid_span':uspan,'new_uuid':new}]}
+            forged_out=ci.replace_spans(self.text,[(uspan[0],uspan[1],new)]);forged['output_board_sha256']=digest(forged_out)
+            with self.subTest(name=name),self.assertRaisesRegex(ValueError,'does not target a later duplicate copper occurrence'):
+                verify_normalization(self.text,forged_out,forged)
+            with self.subTest(name=name),self.assertRaisesRegex(ValueError,'does not target a later duplicate'):apply_manifest(self.text,forged)
+        # The proof requires the differing bytes to equal the renamed token bytes exactly.
         with self.assertRaisesRegex(ValueError,'differ'):verify_normalization(self.text,out.replace('(width 0.2)','(width 0.3)',1),manifest)
         with self.assertRaisesRegex(ValueError,'differ'):verify_normalization(self.text,out+'\n',manifest)
 
@@ -233,7 +264,11 @@ class NormalizationTests(unittest.TestCase):
         text=board(seg(U[0]),seg(U[0],x=2),seg(U[3]),group)
         with self.assertRaisesRegex(ValueError,U[0]+'.*referenced outside.*group/members@.*refused'):propose_normalization(text)
         refs=ci.foreign_references(text,U[0],[tuple(o['uuid_span']) for o in duplicate_groups(copper_objects(text))[0]['occurrences']])
-        self.assertEqual([(r['block'],r['context']) for r in refs],[('group','members')])
+        self.assertEqual([(r['block'],r['context'],r['quoted']) for r in refs],[('group','members',False)])
+        # A quoted parenthesis before the reference does not change the enclosing form, and a quoted hit says so.
+        quoted='\t(gr_text "see ('+U[0]+') here" (uuid "'+U[8]+'"))\n'
+        hit=ci.foreign_references(board(seg(U[0]),seg(U[0],x=2),quoted),U[0],[tuple(o['uuid_span']) for o in duplicate_groups(copper_objects(board(seg(U[0]),seg(U[0],x=2),quoted)))[0]['occurrences']])
+        self.assertEqual([(r['block'],r['context'],r['quoted']) for r in hit],[('gr_text','gr_text',True)])
         # A manifest made for the same bytes without the members reference cannot be verified against a referencing board.
         manifest,out=propose_normalization(board(seg(U[0]),seg(U[0],x=2),seg(U[3])))
         referenced_manifest={**manifest,'input_board_sha256':digest(text),'output_board_sha256':digest(text)}
