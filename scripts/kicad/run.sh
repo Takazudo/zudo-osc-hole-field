@@ -52,7 +52,15 @@ run_docker() {
   local docker_bin=$1
   local home_dir=$2
   shift 2
-  "$docker_bin" run --rm --platform linux/amd64 --network none \
+  # --init: tini is PID 1, so a signal the client proxies into the container terminates
+  # kicad-cli instead of being ignored as PID 1 would. KICAD_ORACLE_CIDDIR (set by an owning
+  # driver such as the OSC4 transaction.py) receives one cidfile per container, so the driver
+  # can `docker stop` exactly its own containers: killing this client does not stop them (#308).
+  local -a owner_args=()
+  if [[ -n ${KICAD_ORACLE_CIDDIR:-} ]]; then
+    owner_args=(--cidfile "$KICAD_ORACLE_CIDDIR/oracle-$$-$(date +%s%N)-$RANDOM.cid")
+  fi
+  "$docker_bin" run --rm --init --platform linux/amd64 --network none ${owner_args[@]+"${owner_args[@]}"} \
     --user "$(id -u):$(id -g)" \
     --volume "$repo_root:/work" \
     --volume "$home_dir:/tmp/kicad-home" \
