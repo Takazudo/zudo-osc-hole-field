@@ -38,11 +38,10 @@ env:
   PLAN_DIR: circuit/reviews/osc4-local-transactions-20261107
   # Largest total of candidate workspace files copied into one artifact; larger files are listed, not uploaded.
   WORKSPACE_BUDGET_MB: "400"
-  # Time budget (minutes). The driver stops itself at max_minutes (receipt TIMED OUT); the timeout wrapper
-  # sends INT WRAPPER_GRACE later and KILL KILL_AFTER after that; setup, collection and upload take the rest.
-  # Their sum must stay within the transaction job's timeout-minutes (100), which `prepare` checks.
-  DEFAULT_MINUTES_CORE: "80"
-  DEFAULT_MINUTES_JACK: "60"
+  # Time budget (minutes). The per-board default comes from $PLAN_DIR/budgets.json on the plan commit (the
+  # driver reads the same file). The driver stops itself at max_minutes (receipt TIMED OUT); the timeout
+  # wrapper sends INT WRAPPER_GRACE later and KILL KILL_AFTER after that; setup, collection and upload take
+  # the rest. Their sum must stay within the transaction job's timeout-minutes (100), which `prepare` checks.
   WRAPPER_GRACE_MINUTES: "3"
   KILL_AFTER_MINUTES: "2"
   SETUP_ALLOWANCE_MINUTES: "10"
@@ -74,11 +73,19 @@ jobs:
             boards+=("$b")
           done
           ((${#boards[@]})) || { echo "no board selected"; exit 1; }
+          sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/$BRANCH" --jq .sha)
+          if [[ -z $MAX_MINUTES ]]; then
+            # Single budget source: the plan commit's budgets.json, which transaction.py reads too.
+            budgets_json=$(gh api "repos/$GITHUB_REPOSITORY/contents/$PLAN_DIR/budgets.json?ref=$sha" --jq .content | base64 -d) \
+              || { echo "::error::$BRANCH has no $PLAN_DIR/budgets.json; pass max_minutes explicitly"; exit 1; }
+          fi
           # Every selected board must fit the job: budget + wrapper grace + kill-after + setup/collection allowance <= job timeout.
           budgets=()
           for b in "${boards[@]}"; do
-            default=$DEFAULT_MINUTES_JACK; [[ $b == osc-core ]] && default=$DEFAULT_MINUTES_CORE
-            eff=${MAX_MINUTES:-$default}
+            if [[ -n $MAX_MINUTES ]]; then eff=$MAX_MINUTES; else
+              eff=$(jq -er --arg b "$b" '.minutes[$b]' <<<"$budgets_json") || { echo "::error::budgets.json has no entry for $b"; exit 1; }
+              [[ $eff =~ ^[1-9][0-9]?$ ]] || { echo "::error::budgets.json minutes for $b must be 1-99: $eff"; exit 1; }
+            fi
             total=$((eff + WRAPPER_GRACE_MINUTES + KILL_AFTER_MINUTES + SETUP_ALLOWANCE_MINUTES))
             if ((total > JOB_TIMEOUT_MINUTES)); then
               echo "::error::$b: budget ${eff} min + ${WRAPPER_GRACE_MINUTES} wrapper grace + ${KILL_AFTER_MINUTES} kill-after + ${SETUP_ALLOWANCE_MINUTES} setup allowance = ${total} min exceeds the ${JOB_TIMEOUT_MINUTES}-minute job timeout; lower max_minutes"
@@ -86,7 +93,6 @@ jobs:
             fi
             budgets+=("$b=${eff}")
           done
-          sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/$BRANCH" --jq .sha)
           echo "sha=$sha" >> "$GITHUB_OUTPUT"
           echo "matrix=$(printf '%s\n' "${boards[@]}" | sort -u | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
           echo "Plan branch $BRANCH at $sha; boards: ${boards[*]}; budgets (min): ${budgets[*]}; wrapper INT +${WRAPPER_GRACE_MINUTES} min, KILL +${KILL_AFTER_MINUTES} min" >> "$GITHUB_STEP_SUMMARY"
@@ -176,8 +182,8 @@ jobs:
             done
           ) &
           sampler=$!
-          default=$DEFAULT_MINUTES_JACK; [[ $BOARD == osc-core ]] && default=$DEFAULT_MINUTES_CORE
-          max=${MAX_MINUTES:-$default}
+          # Same source as prepare: budgets.json on the checked-out plan commit, read by the driver itself.
+          max=${MAX_MINUTES:-$(python "$PLAN_DIR/transaction.py" "$BOARD" --print-budget)}
           wrapper=$((max + WRAPPER_GRACE_MINUTES))
           printf 'max_minutes=%s\nwrapper_minutes=%s\nkill_after_minutes=%s\ninvocation=%s\n' "$max" "$wrapper" "$KILL_AFTER_MINUTES" "$INVOCATION" | tee "$RUNNER_TEMP/out/budget.txt"
           set +e

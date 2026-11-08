@@ -64,10 +64,12 @@ NOT RUN.
   invocation (exit 3), which includes the committed historical receipts in this folder: move or
   delete the file first. The workflow deletes it in the run step, stamps
   `<run id>-<attempt>-<board>` as the invocation, and verifies it when collecting.
-- **Budgets.** `--max-minutes` defaults to 80 for `osc-core` and 60 for the jacks; an explicit
-  value wins. The workflow's `max_minutes` input is now empty by default and resolves per board;
-  `prepare` fails when budget + 3 min wrapper grace + 2 min kill-after + 10 min setup allowance
-  exceeds the 100-minute job timeout. The plan's `limits.wall_minutes: 60` stays as the
+- **Budgets.** `budgets.json` in this folder is the single source: 80 minutes for `osc-core`,
+  60 for the jacks. `transaction.py` reads it for the `--max-minutes` default (`--print-budget`
+  shows it), and the workflow reads the same file from the plan commit; an explicit value wins.
+  The workflow's `max_minutes` input is now empty by default and resolves per board; `prepare`
+  fails when budget + 3 min wrapper grace + 2 min kill-after + 10 min setup allowance exceeds the
+  100-minute job timeout. The plan's `limits.wall_minutes: 60` stays as the
   2026-11-07 record. Frames, expansion limits, refill counts and retry policy are unchanged.
 - **Open budget question.** The job log counts five native checks for K, not four: base, after
   the cut, candidate, the stage's own fresh verify, and the driver's fresh copy, at 18–19 min
@@ -293,5 +295,6 @@ python3 circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core
 | `transactions.json` | Exact driver specs, cut objects, victims, frames and limits |
 | `transaction.py` | Non-promoting native driver around `scripts/pcbgen/route_jack_grid.py` `run_stage()`; `--validate` is host-only |
 | `scripts/checks/test_osc4_transaction.py` | Unit tests for `transaction.py` with the driver stubbed: hash refusal, plan-invalid gate, interrupted receipt; run by `scripts/checks/run-python-tests.sh` |
+| `budgets.json` | Default wall-clock budget per board in minutes, read by `transaction.py` and the workflow (2026-11-08) |
 | `lifecycle.py` | Receipt lifecycle for `transaction.py`: atomic writes, phase checkpoints, owned children and containers, signal handlers, `--reconcile` (2026-11-08) |
 | `scripts/checks/test_osc4_transaction_signals.py` | Process-level tests of the lifecycle through `timeout` + `with_route_guard.sh` with `osc4_signal_harness.py` and `osc4_fake_oracle.sh`; two docker tests skip without docker and the pinned image |

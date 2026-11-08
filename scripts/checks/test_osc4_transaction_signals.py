@@ -92,7 +92,7 @@ class LifecycleProcessTests(unittest.TestCase):
         self.assertTrue(all(c['pid']>0 and c['pgid']==c['pid'] for c in r['native_calls']))
         self.assertTrue(r['invocation']);self.assertRegex(r['source_revision'],r'^[0-9a-f]{40}$|^unknown$')
         self.assertTrue(r['environment']['hosted']);self.assertEqual(r['driver']['pid']>0,True);self.assertEqual(r['signals'],[])
-        self.assertEqual(r['max_minutes'],80);self.assertIn('driver default',r['budget_source'])
+        self.assertEqual(r['max_minutes'],80);self.assertIn('budgets.json',r['budget_source'])
         self.assertTrue((self.tmp/'out/osc4-test-copper.json').exists());self.assertNoOrphans(d)
 
     def test_completion_raw_gate_passed_sets_only_raw_gate_passed(self):
@@ -137,10 +137,35 @@ class LifecycleProcessTests(unittest.TestCase):
         self.assertNoOrphans(d);self.assertFalse(any(alive(p) for p in pids))
 
     def test_driver_deadline_finalises_timed_out(self):
-        d=self.start('--mode','sleep','--seconds','60',driver_args=('--max-minutes','0.03'));d.wait_for_oracle();rc=d.wait();r=d.read_receipt()
+        # 6 s deadline: the fake oracle (60 s sleep) is running well before it fires, even on a slow runner.
+        d=self.start('--mode','sleep','--seconds','60',driver_args=('--max-minutes','0.1'));d.wait_for_oracle(timeout=5);rc=d.wait();r=d.read_receipt()
         self.assertEqual(rc,124,d.output);self.assertEqual(r['status'],'TIMED OUT; NOT ADOPTED');self.assertEqual(r['terminal_outcome'],'TIMED_OUT')
         self.assertEqual((r['interrupt']['name'],r['interrupt']['forwarded_signal'],r['interrupt']['reason']),('SIGALRM',15,'driver deadline'))
         self.assertTrue(r['terminal']);self.assertNoFalseResult(r);self.assertNoOrphans(d)
+
+    def test_chatty_child_shutdown_is_drained_not_killed(self):
+        # The grandchild writes 300 KiB on the forwarded signal: without draining it would block on the pipe and be SIGKILLed.
+        d=self.start('--mode','verbose','--seconds','60',wrapper=TERM_PRESERVE);d.wait_for_oracle();rc=d.wait();r=d.read_receipt()
+        self.assertEqual(rc,143,d.output);self.assertEqual(r['native_calls'][0]['ended_by'],'exited after signal')
+        self.assertEqual(r['status'],'INTERRUPTED; NOT ADOPTED');self.assertNoOrphans(d)
+
+    def test_late_signals_after_the_result_is_decided_only_get_recorded(self):
+        # settle() cancels the deadline timer and demotes later signals: a COMPLETED receipt must stay COMPLETED.
+        script=f"""
+import importlib.util,json,os,signal,sys,time
+spec=importlib.util.spec_from_file_location('lc',{str(TX.with_name('lifecycle.py'))!r});lc=importlib.util.module_from_spec(spec);spec.loader.exec_module(lc)
+lc.install(deadline_seconds=0.2)
+r=lc.Receipt(sys.argv[1],{{'schema':lc.SCHEMA,'status':'NATIVE CHECKED; RAW GATE PASSED; NOT PROMOTED','terminal':True,'terminal_outcome':'COMPLETED','adopted':False,'raw_gate_passed':True,'signals':[]}})
+lc.STATE.receipt=r;r.save();lc.settle()
+time.sleep(0.6)                      # the 0.2 s deadline would have fired here without settle()
+os.kill(os.getpid(),signal.SIGINT);time.sleep(0.1)
+os.kill(os.getpid(),signal.SIGTERM);time.sleep(0.1)
+r.save();print('still running');sys.exit(0)
+"""
+        out=self.tmp/'late.json';done=subprocess.run([sys.executable,'-c',script,str(out)],capture_output=True,text=True,timeout=30)
+        self.assertEqual(done.returncode,0,done.stdout+done.stderr);self.assertIn('still running',done.stdout);r=json.loads(out.read_text())
+        self.assertEqual((r['status'],r['terminal_outcome'],r['terminal'],r['raw_gate_passed']),('NATIVE CHECKED; RAW GATE PASSED; NOT PROMOTED','COMPLETED',True,True))
+        self.assertEqual([x['name'] for x in r['signals']],['SIGINT','SIGTERM']);self.assertNotIn('interrupt',r)
 
     def test_sigkill_of_the_driver_leaves_a_checkpoint_and_reconcile_marks_killed(self):
         d=self.start('--mode','sleep','--seconds','60');pids=d.wait_for_oracle()
@@ -251,6 +276,10 @@ class ReconcileTests(unittest.TestCase):
         self.nonterminal(terminal=True,terminal_outcome='COMPLETED',status='NATIVE CHECKED; RAW GATE PASSED; NOT PROMOTED',raw_gate_passed=True);before=self.path.read_bytes()
         result=lifecycle.reconcile(self.path,137,invocation='run-1');self.assertEqual(result['action'],'kept');self.assertEqual(self.path.read_bytes(),before)
 
+    def test_terminal_receipt_from_another_invocation_is_refused_not_kept(self):
+        self.nonterminal(terminal=True,terminal_outcome='COMPLETED',status='NATIVE CHECKED; RAW GATE PASSED; NOT PROMOTED',raw_gate_passed=True);before=self.path.read_bytes()
+        result=lifecycle.reconcile(self.path,0,invocation='run-2');self.assertEqual((result['action'],result['exit_code']),('refused',4));self.assertEqual(self.path.read_bytes(),before)
+
     def test_missing_receipt_records_that_nothing_was_written(self):
         result=lifecycle.reconcile(self.path,130,invocation='run-1',board='osc-core',spec_name='osc4-test');r=json.loads(self.path.read_text())
         self.assertEqual(result['status'],'INTERRUPTED; NOT ADOPTED');self.assertFalse(r['recovery']['prior_present']);self.assertEqual(r['invocation'],'run-1');self.assertFalse(r['adopted'])
@@ -261,8 +290,10 @@ class ReconcileTests(unittest.TestCase):
         done=subprocess.run([sys.executable,str(TX),'osc-core','--reconcile','--exit-status','137','--invocation','44-1','--out-dir',str(self.tmp)],cwd=ROOT,capture_output=True,text=True)
         self.assertEqual(done.returncode,0,done.stdout+done.stderr);self.assertEqual(json.loads(done.stdout)['status'],'KILLED; OUTCOME UNKNOWN; NOT ADOPTED')
         self.assertEqual(json.loads(receipt.read_text())['terminal_outcome'],'KILLED')
-        done=subprocess.run([sys.executable,str(TX),'osc-core','--reconcile','--exit-status','unknown','--invocation','other','--out-dir',str(self.tmp)],cwd=ROOT,capture_output=True,text=True)
+        done=subprocess.run([sys.executable,str(TX),'osc-core','--reconcile','--exit-status','unknown','--invocation','44-1','--out-dir',str(self.tmp)],cwd=ROOT,capture_output=True,text=True)
         self.assertEqual(done.returncode,0);self.assertEqual(json.loads(done.stdout)['action'],'kept')
+        done=subprocess.run([sys.executable,str(TX),'osc-core','--reconcile','--exit-status','0','--invocation','other','--out-dir',str(self.tmp)],cwd=ROOT,capture_output=True,text=True)
+        self.assertEqual(done.returncode,4);self.assertEqual(json.loads(done.stdout)['action'],'refused')
 
 
 if __name__=='__main__':unittest.main()

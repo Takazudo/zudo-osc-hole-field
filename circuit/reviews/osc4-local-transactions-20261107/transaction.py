@@ -25,9 +25,11 @@ HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[2]
 sys.path.insert(0,str(ROOT));sys.path.insert(0,str(ROOT/'scripts/checks'));sys.path.insert(0,str(HERE))
 import lifecycle
 RAILS=('+12V','-12V','+5V')
-# Wall-clock budgets in minutes. K needs more native checks than a jack (see README 2026-11-08);
-# the plan's limits.wall_minutes=60 stays as the 2026-11-07 record. An explicit --max-minutes wins.
-DEFAULT_MINUTES={'osc-core':80,'osc-jack-left':60,'osc-jack-right':60}
+# Wall-clock budgets in minutes, one source for the driver and the workflow (budgets.json beside this
+# script). K needs more native checks than a jack (README 2026-11-08); the plan's limits.wall_minutes=60
+# stays as the 2026-11-07 record. An explicit --max-minutes wins.
+BUDGETS=HERE/'budgets.json'
+def default_minutes(board_id):return json.loads(BUDGETS.read_text())['minutes'][board_id]
 
 
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -152,6 +154,7 @@ def run(board_id,driver=None,delta=None,retention=None,out_dir=HERE,invocation=N
         if receipt.get('terminal_outcome') not in ('INTERRUPTED','TIMED_OUT'):receipt.update(status='INTERRUPTED; NOT ADOPTED',terminal_outcome='INTERRUPTED')
         receipt['error']=repr(error);raise
     finally:
+        lifecycle.settle()  # the result is decided: cancel the deadline, later signals are only recorded
         rec.end_phase();receipt['wall_seconds']=round(time.time()-t0,1);receipt['ended_utc']=lifecycle.utc()
         if sha(source)!=source_hash:receipt.update(status='ERROR: accepted board bytes changed during the run',terminal_outcome='ERROR')
         receipt['signals']=list(lifecycle.STATE.signals)
@@ -170,7 +173,8 @@ def main(argv=None,**injected):
     p=argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('board',choices=('osc-core','osc-jack-left','osc-jack-right'))
     p.add_argument('--validate',action='store_true',help='host-only plan check; no KiCad, no routing')
-    p.add_argument('--max-minutes',type=float,default=None,help='wall-clock budget; the driver stops itself and finalises TIMED OUT (default per board: %s)'%DEFAULT_MINUTES)
+    p.add_argument('--max-minutes',type=float,default=None,help='wall-clock budget; the driver stops itself and finalises TIMED OUT (default per board in budgets.json)')
+    p.add_argument('--print-budget',action='store_true',help='print the default budget in minutes for the board and exit')
     p.add_argument('--invocation',default=None,help='invocation id stamped into the receipt (default: generated; the workflow passes its run id)')
     p.add_argument('--grace-seconds',type=float,default=None,help='time an interrupted native child gets before SIGKILL (default %s or $OSC4_GRACE_SECONDS)'%lifecycle.DEFAULT_GRACE_SECONDS)
     p.add_argument('--out-dir',default=str(HERE),help=argparse.SUPPRESS)
@@ -180,12 +184,13 @@ def main(argv=None,**injected):
     a=p.parse_args(argv)
     if a.validate:
         r=validate(a.board);print(json.dumps(r,sort_keys=True));return 1 if r['errors'] else 0
+    if a.print_budget:print(default_minutes(a.board));return 0
     spec_name=load(a.board)['transaction']['spec']['name']
     if a.reconcile:
         r=lifecycle.reconcile(Path(a.out_dir)/f'{spec_name}.json',parse_exit_status(a.exit_status),invocation=a.invocation,board=a.board,spec_name=spec_name)
         print(json.dumps(r,sort_keys=True));return r['exit_code']
-    max_minutes=a.max_minutes if a.max_minutes is not None else DEFAULT_MINUTES[a.board]
-    budget_source='--max-minutes' if a.max_minutes is not None else f'driver default for {a.board}'
+    max_minutes=a.max_minutes if a.max_minutes is not None else default_minutes(a.board)
+    budget_source='--max-minutes' if a.max_minutes is not None else f'driver default for {a.board} (budgets.json)'
     lifecycle.install(deadline_seconds=max_minutes*60,grace=a.grace_seconds)
     try:run(a.board,invocation=a.invocation,max_minutes=max_minutes,budget_source=budget_source,out_dir=a.out_dir,cid_dir=a.cid_dir,**injected)
     except lifecycle.Interrupted as e:
