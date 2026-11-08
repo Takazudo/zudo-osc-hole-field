@@ -60,8 +60,22 @@ NOT RUN.
 - **Reconciliation.** `transaction.py <board> --reconcile --exit-status <N|unknown>
   --invocation <id>` is host-only. It finishes a nonterminal receipt from the exit status the
   shell saw, keeps a terminal receipt byte for byte, refuses a receipt from another invocation
-  (exit 4), appends the prior bytes to `<spec>.raw-events.jsonl`, and never sets a result. The
-  workflow's collect step runs it and uploads the receipt only when the invocation matches.
+  or an unreadable one (exit 4; `--force-reconcile-corrupt` finishes unreadable bytes after
+  preserving them, without stamping an invocation), appends the prior bytes to
+  `<spec>.raw-events.jsonl`, and never sets a result. The workflow's collect step runs it and
+  uploads the receipt only when the invocation matches; when the run step was cut off before it
+  reported an exit status, the receipt is still collected, nonterminal, with
+  `terminal_outcome: UNKNOWN`.
+- **Known limit: signals inside native code.** Python runs the handler only between bytecodes,
+  so a signal that lands inside a long ctypes call (`grid_router.native_astar`) waits until the
+  C call returns. If the wrapper's `--kill-after` ends the driver first, the collector
+  reconciles the last checkpoint as `KILLED; OUTCOME UNKNOWN; NOT ADOPTED`. Accepted behaviour:
+  nothing is adopted either way.
+- **Owned children are signalled by PID, never by a bare process group.** The driver records
+  each child's session id and start time at spawn and enumerates the remaining members from
+  `/proc`, so a reused PID of a reaped leader can never make it signal a foreign process. The
+  per-invocation cid directory under `.circuit-cache/` is removed when no owned container is
+  left in it; `*.tmp` and `*.raw-events.jsonl` in this folder are run artifacts and gitignored.
 - **Stale data.** The driver refuses to start when `<spec>.json` exists from another
   invocation (exit 3), which includes the committed historical receipts in this folder: move or
   delete the file first. The workflow deletes it in the run step, stamps

@@ -27,7 +27,7 @@ instead the owned children get a `docker` wrapper first on their PATH (docker_sh
 ever signalled.
 """
 from __future__ import annotations
-import hashlib,json,os,secrets,shlex,shutil,signal,subprocess,sys,time
+import hashlib,itertools,json,os,secrets,shlex,shutil,signal,subprocess,sys,time
 from pathlib import Path
 
 SCHEMA='osc4-transaction-receipt-2'
@@ -65,9 +65,23 @@ def source_revision(root):
 def new_invocation():return f"{time.strftime('%Y%m%dT%H%M%SZ',time.gmtime())}-{os.getpid()}-{secrets.token_hex(4)}"
 
 
+_TMP_COUNTER=itertools.count()
+
+
 def write_atomic(path,text):
-    path=Path(path);tmp=path.with_name(path.name+'.tmp')
-    tmp.write_text(text);os.replace(tmp,path)
+    """Write `text` to a uniquely named temp file, close it, then rename it over `path`.
+
+    The temp name is unique per write (pid, counter, random suffix): the signal handler saves the
+    receipt from inside an interrupted write_atomic, and a shared temp name would let the interrupted
+    writer's close() flush stale bytes into the inode the handler just renamed into place.
+    """
+    path=Path(path);tmp=path.with_name(f'{path.name}.{os.getpid()}.{next(_TMP_COUNTER)}.{secrets.token_hex(3)}.tmp')
+    try:
+        with open(tmp,'w') as f:f.write(text)
+        os.replace(tmp,path)
+    finally:
+        try:tmp.unlink()
+        except FileNotFoundError:pass
 
 
 class Interrupted(BaseException):
@@ -116,6 +130,11 @@ def _handle(signum,frame):
 
     Once the result is decided (settle()) or the receipt is terminal, a late signal is only recorded:
     it must never rewrite a COMPLETED result into INTERRUPTED/TIMED OUT.
+
+    Known limit: Python runs this handler only between bytecodes. A signal that lands inside a long
+    native ctypes call (grid_router.native_astar) is deferred until the C call returns; if the wrapper's
+    --kill-after ends the driver first, the collector reconciles the last checkpoint as
+    KILLED; OUTCOME UNKNOWN. That is accepted behaviour, not a silent gap: nothing is adopted either way.
     """
     name=_signal_name(signum);deadline=signum==DEADLINE_SIGNAL
     STATE.signals.append({'signal':int(signum),'name':name,'utc':utc()})
@@ -135,9 +154,7 @@ def _handle(signum,frame):
     if STATE.interrupting is not None:
         STATE.escalate=True;return
     for pid,proc in list(STATE.children.items()):
-        if proc.poll() is None:
-            try:os.killpg(pid,forward)
-            except ProcessLookupError:pass
+        _signal_child(proc,forward)
     STATE.interrupting=Interrupted(int(signum),'driver deadline' if deadline else f'{name} received')
     raise STATE.interrupting
 
@@ -170,12 +187,66 @@ def _drain(proc):
     except (OSError,ValueError):pass
 
 
-def _session_alive(pgid):
-    """True while any process of the child's session/process group exists (the leader may be gone already)."""
-    try:os.killpg(pgid,0)
+def alive(pid):
+    """True while `pid` exists and is not a zombie (os.kill 0 plus the /proc state when available)."""
+    try:os.kill(pid,0)
     except ProcessLookupError:return False
     except PermissionError:return True
-    return True
+    try:return _proc_stat(pid,Path('/proc'))['state']!='Z'
+    except (OSError,ValueError,KeyError):return True
+
+
+def _proc_stat(pid,proc_root):
+    """pid, state, pgrp, session and starttime from /proc/<pid>/stat (comm may hold spaces and parens)."""
+    text=(Path(proc_root)/str(pid)/'stat').read_text()
+    rest=text.rsplit(')',1)[1].split()  # fields 3..: state ppid pgrp session tty tpgid flags ... starttime is field 22
+    return {'pid':int(pid),'state':rest[0],'pgrp':int(rest[2]),'session':int(rest[3]),'starttime':int(rest[19])}
+
+
+def child_identity(pid,proc_root='/proc'):
+    """Session id and start time recorded right after Popen; they bind later lookups to this very child."""
+    try:sid=os.getsid(pid)
+    except OSError:sid=None
+    try:start=_proc_stat(pid,proc_root)['starttime']
+    except (OSError,ValueError,IndexError):start=None
+    return {'sid':sid,'starttime':start}
+
+
+def session_members(pgid,identity,proc_root='/proc',exclude=()):
+    """Live PIDs that belong to the child's process group AND its session and started no earlier than it.
+
+    A reaped leader's PID can be reused by an unrelated process, so membership is never inferred
+    from the PID alone (no killpg); without /proc or an identity there is nothing to enumerate.
+    """
+    root=Path(proc_root)
+    if identity.get('sid') is None or identity.get('starttime') is None or not root.is_dir():return []
+    found=[]
+    for entry in root.iterdir():
+        if not entry.name.isdigit() or int(entry.name) in exclude:continue
+        try:st=_proc_stat(entry.name,root)
+        except (OSError,ValueError,IndexError):continue
+        if st['pgrp']==pgid and st['session']==identity['sid'] and st['starttime']>=identity['starttime'] and st['state']!='Z':
+            found.append(st['pid'])
+    return found
+
+
+def _signal_pids(pids,signum):
+    for pid in pids:
+        try:os.kill(pid,signum)
+        except (ProcessLookupError,PermissionError):pass
+
+
+def _signal_child(proc,signum):
+    """Signal the leader (while unreaped) and the members of its own session, each by PID."""
+    if proc.poll() is None:
+        try:proc.send_signal(signum)
+        except (ProcessLookupError,PermissionError):pass
+    _signal_pids(session_members(proc.pid,getattr(proc,'osc4_identity',{}),exclude=(proc.pid,)),signum)
+
+
+def _session_alive(proc):
+    """True while the leader is unreaped or any process of its session/group (bound by sid and start time) remains."""
+    return proc.poll() is None or bool(session_members(proc.pid,getattr(proc,'osc4_identity',{}),exclude=(proc.pid,)))
 
 
 def _reap(proc,call):
@@ -185,12 +256,13 @@ def _reap(proc,call):
     ignores the signal) lives on, so the whole session must be empty before the exit counts as cooperative.
     """
     deadline=time.monotonic()+STATE.grace
-    while (proc.poll() is None or _session_alive(proc.pid)) and time.monotonic()<deadline and not STATE.escalate:
+    while _session_alive(proc) and time.monotonic()<deadline and not STATE.escalate:
         _drain(proc);time.sleep(0.05)
-    if proc.poll() is None or _session_alive(proc.pid):
-        try:os.killpg(proc.pid,signal.SIGKILL)
-        except ProcessLookupError:pass
-        proc.wait();call['ended_by']='SIGKILL after grace'
+    if _session_alive(proc):
+        members=session_members(proc.pid,getattr(proc,'osc4_identity',{}),exclude=(proc.pid,))
+        _signal_child(proc,signal.SIGKILL)
+        if proc.poll() is None:proc.wait()
+        call['ended_by']='SIGKILL after grace';call['killed_pids']=sorted(set([proc.pid]+members))
     else:call['ended_by']='exited after signal'
     _drain(proc)
 
@@ -264,11 +336,20 @@ def sweep_containers(receipt=None):
     return report
 
 
+def cleanup_cid_dir():
+    """Remove the per-invocation cid directory once no owned container is listed in it any more."""
+    d=STATE.cid_dir
+    if not d or not Path(d).is_dir():return
+    if owned_cidfiles(d):return  # a container the sweep could not stop stays discoverable
+    shutil.rmtree(d,ignore_errors=True);STATE.shim_dir=None
+
+
 def owned_run(*args):
     """Drop-in for route_jack_grid.run(): same arguments, output and failure, with the child owned by the driver.
 
-    The child starts in its own session so the whole oracle subtree (bash run.sh -> docker client) is
-    reachable by one killpg, and every call is checkpointed in the receipt with its PID/PGID.
+    The child starts in its own session so the whole oracle subtree (bash run.sh -> docker client) can be
+    enumerated by session id and start time and signalled PID by PID, and every call is checkpointed in
+    the receipt with its PID/PGID/SID.
     """
     receipt=STATE.receipt;mask=(*HANDLED,DEADLINE_SIGNAL)
     # Blocked until the child is registered and checkpointed: a signal in that window would otherwise
@@ -279,8 +360,10 @@ def owned_run(*args):
     try:
         proc=subprocess.Popen(args,cwd=STATE.cwd,env=child_env(),text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,start_new_session=True,
                               preexec_fn=lambda:signal.pthread_sigmask(signal.SIG_UNBLOCK,mask))
+        proc.osc4_identity=child_identity(proc.pid)
         STATE.children[proc.pid]=proc
-        call={'argv':[str(a) for a in args[:6]],'argc':len(args),'pid':proc.pid,'pgid':proc.pid,'started_utc':utc()}
+        call={'argv':[str(a) for a in args[:6]],'argc':len(args),'pid':proc.pid,'pgid':proc.pid,'sid':proc.osc4_identity['sid'],
+              'starttime_ticks':proc.osc4_identity['starttime'],'started_utc':utc()}
         if receipt is not None:
             receipt.data.setdefault('native_calls',[]).append(call);receipt.data['current_child']=call;receipt.save()
     except BaseException:
@@ -290,7 +373,7 @@ def owned_run(*args):
         signal.pthread_sigmask(signal.SIG_UNBLOCK,mask)
         out=proc.communicate()[0] or ''
     finally:
-        if proc.poll() is None or STATE.interrupting is not None or _session_alive(proc.pid):_reap(proc,call)
+        if STATE.interrupting is not None or _session_alive(proc):_reap(proc,call)
         if proc.stdout:proc.stdout.close()
         STATE.children.pop(proc.pid,None)
         call.update(ended_utc=utc(),returncode=proc.returncode)
@@ -311,14 +394,7 @@ def outcome_for_exit(exit_status):
     return 'ERROR','ERROR; NOT ADOPTED'
 
 
-def _alive(pid):
-    try:os.kill(pid,0)
-    except ProcessLookupError:return False
-    except PermissionError:return True
-    return True
-
-
-def reconcile(path,exit_status,invocation=None,board=None,spec_name=None):
+def reconcile(path,exit_status,invocation=None,board=None,spec_name=None,force_corrupt=False):
     """Collector side: finish a receipt the driver left nonterminal from the KNOWN process exit status.
 
     A receipt from another invocation is refused first (exit code 4), terminal or not; a terminal receipt is left untouched,
@@ -338,11 +414,15 @@ def reconcile(path,exit_status,invocation=None,board=None,spec_name=None):
     if invocation is not None and prior is not None and prior.get('invocation')!=invocation:
         return {'action':'refused','exit_code':4,'reason':f"receipt invocation {prior.get('invocation')!r} is not this run's {invocation!r}",
                 'status':prior.get('status'),'path':str(path)}
+    # A file that exists but does not parse could be anyone's; only an explicit force (after the run step
+    # deleted the committed copy, so the bytes are this run's partial write) reconciles it, bytes preserved.
+    if raw is not None and prior is None and not force_corrupt:
+        return {'action':'refused','exit_code':4,'reason':f'receipt is unreadable ({parse_error}); pass force_corrupt to reconcile it with its bytes preserved','path':str(path)}
     if prior is not None and prior.get('terminal') is True:
         return {'action':'kept','exit_code':0,'status':prior.get('status'),'terminal_outcome':prior.get('terminal_outcome'),'path':str(path)}
     outcome,status=outcome_for_exit(exit_status)
     data=dict(prior) if prior is not None else {'schema':SCHEMA,'board':board,'spec_name':spec_name,'started_utc':None}
-    if invocation is not None and prior is None:data['invocation']=invocation
+    if invocation is not None and raw is None:data['invocation']=invocation  # never stamped onto bytes we could not read
     last=(prior or {}).get('phases') or []
     recovery={'reconciled_utc':utc(),'exit_status':exit_status,'prior_present':raw is not None,'prior_status':(prior or {}).get('status'),
               'prior_terminal_outcome':(prior or {}).get('terminal_outcome'),'prior_sha256':sha_bytes(raw) if raw is not None else None,
@@ -351,7 +431,7 @@ def reconcile(path,exit_status,invocation=None,board=None,spec_name=None):
               'note':'terminal state written by the collector from the process exit status; the driver produced no result'}
     child=(prior or {}).get('current_child')
     if child and child.get('pid'):
-        recovery['child_at_exit']={**child,'alive_at_reconcile':_alive(int(child['pid'])),'action':'reported only; never signalled by the collector'}
+        recovery['child_at_exit']={**child,'alive_at_reconcile':alive(int(child['pid'])),'action':'reported only; never signalled by the collector'}
     cid_dir=(prior or {}).get('oracle_cid_dir')
     if cid_dir:
         # Containers the driver's own run.sh calls started are owned state; a SIGKILLed driver could not stop them.

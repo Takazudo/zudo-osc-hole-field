@@ -41,7 +41,7 @@ class TransactionTests(unittest.TestCase):
         driver=mock.Mock()
         with mock.patch.object(tx,'load',return_value=plan_for(self.board,'0'*64)):
             with self.assertRaisesRegex(SystemExit,'accepted board changed'):
-                tx.run('osc-core',driver=driver,delta=mock.Mock(),retention=mock.Mock(),out_dir=self.dir)
+                tx.run('osc-core',driver=driver,delta=mock.Mock(),retention=mock.Mock(),out_dir=self.dir,cid_dir=self.dir/'cids')
         driver.assert_not_called();self.assertFalse((self.dir/'osc4-test.json').exists())
 
     def test_invalid_plan_gates_the_native_run(self):
@@ -49,7 +49,7 @@ class TransactionTests(unittest.TestCase):
         with mock.patch.object(tx,'load',return_value=plan_for(self.board,self.sha)), \
              mock.patch.object(tx,'validate',return_value={'errors':['no target pad in the frame']}):
             with self.assertRaisesRegex(SystemExit,'plan invalid'):
-                tx.run('osc-core',driver=driver,delta=mock.Mock(),retention=mock.Mock(),out_dir=self.dir)
+                tx.run('osc-core',driver=driver,delta=mock.Mock(),retention=mock.Mock(),out_dir=self.dir,cid_dir=self.dir/'cids')
         driver.assert_not_called()
 
     def test_interrupt_is_recorded_not_left_running(self):
@@ -57,7 +57,7 @@ class TransactionTests(unittest.TestCase):
         with mock.patch.object(tx,'load',return_value=plan_for(self.board,self.sha)), \
              mock.patch.object(tx,'validate',return_value={'errors':[]}):
             with self.assertRaises(KeyboardInterrupt):
-                tx.run('osc-core',driver=driver,delta=mock.Mock(),retention=mock.Mock(),out_dir=self.dir)
+                tx.run('osc-core',driver=driver,delta=mock.Mock(),retention=mock.Mock(),out_dir=self.dir,cid_dir=self.dir/'cids')
         receipt=json.loads((self.dir/'osc4-test.json').read_text())
         self.assertEqual(receipt['status'],'INTERRUPTED; NOT ADOPTED')
         self.assertIn('KeyboardInterrupt',receipt['error'])

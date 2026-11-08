@@ -109,9 +109,10 @@ def run(board_id,driver=None,delta=None,retention=None,out_dir=HERE,invocation=N
              'driver':{'pid':os.getpid(),'pgid':os.getpgid(0),'python':sys.version.split()[0],'argv':sys.argv,'signal_handlers':lifecycle.STATE.installed},
              'max_minutes':max_minutes,'budget_source':budget_source,'grace_seconds':lifecycle.STATE.grace,
              'oracle_cid_dir':str(lifecycle.STATE.cid_dir),'phases':[],'native_calls':[],'current_child':None,'signals':[]}
-    rec=lifecycle.Receipt(out,receipt);lifecycle.STATE.receipt=rec;save=rec.save
-    save();t0=time.time()
+    rec=lifecycle.Receipt(out,receipt);save=rec.save;t0=time.time()
     try:
+        # Inside the try so that a signal between the first save and the first phase still reaches the finally.
+        lifecycle.STATE.receipt=rec;save()
         rec.checkpoint('base_check')
         base=driver.workspace(board_id,spec['name']+'-base')/source.name;shutil.copyfile(source,base)
         before_drc,before=driver.check(base)
@@ -161,7 +162,7 @@ def run(board_id,driver=None,delta=None,retention=None,out_dir=HERE,invocation=N
         # Only a completed gate may carry raw_gate_passed; nothing may carry adopted.
         if receipt['terminal_outcome']!='COMPLETED':receipt['raw_gate_passed']=False
         receipt['adopted']=False;receipt['terminal']=True
-        save();lifecycle.sweep_containers(rec);lifecycle.STATE.receipt=None
+        save();lifecycle.sweep_containers(rec);lifecycle.cleanup_cid_dir();lifecycle.STATE.receipt=None
 
 
 def parse_exit_status(text):
@@ -181,13 +182,15 @@ def main(argv=None,**injected):
     p.add_argument('--cid-dir',default=None,help=argparse.SUPPRESS)
     p.add_argument('--reconcile',action='store_true',help='collector mode: finish a receipt the driver left nonterminal from --exit-status; host-only')
     p.add_argument('--exit-status',default=None,help="with --reconcile: the driver's exit status as the shell saw it, or 'unknown'")
+    p.add_argument('--force-reconcile-corrupt',action='store_true',help='with --reconcile: also finish an unreadable receipt (its bytes go to <spec>.raw-events.jsonl)')
     a=p.parse_args(argv)
     if a.validate:
         r=validate(a.board);print(json.dumps(r,sort_keys=True));return 1 if r['errors'] else 0
     if a.print_budget:print(default_minutes(a.board));return 0
     spec_name=load(a.board)['transaction']['spec']['name']
     if a.reconcile:
-        r=lifecycle.reconcile(Path(a.out_dir)/f'{spec_name}.json',parse_exit_status(a.exit_status),invocation=a.invocation,board=a.board,spec_name=spec_name)
+        r=lifecycle.reconcile(Path(a.out_dir)/f'{spec_name}.json',parse_exit_status(a.exit_status),invocation=a.invocation,board=a.board,spec_name=spec_name,
+                              force_corrupt=a.force_reconcile_corrupt)
         print(json.dumps(r,sort_keys=True));return r['exit_code']
     max_minutes=a.max_minutes if a.max_minutes is not None else default_minutes(a.board)
     budget_source='--max-minutes' if a.max_minutes is not None else f'driver default for {a.board} (budgets.json)'

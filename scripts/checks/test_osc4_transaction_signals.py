@@ -25,12 +25,7 @@ TERM_PRESERVE=('timeout','--signal=TERM','--preserve-status','--kill-after=20s',
 INT_PRESERVE=('timeout','--signal=INT','--preserve-status','--kill-after=20s','3s')
 
 
-def alive(pid):
-    try:os.kill(pid,0)
-    except ProcessLookupError:return False
-    except PermissionError:return True
-    try:return 'Z' not in Path(f'/proc/{pid}/stat').read_text().split(')')[-1].split()[0]
-    except OSError:return True
+alive=lifecycle.alive
 
 
 def wait_until(predicate,timeout,what):
@@ -152,11 +147,12 @@ class LifecycleProcessTests(unittest.TestCase):
         d=self.start('--mode','ignore','--seconds','60',wrapper=TERM_PRESERVE);pids=d.wait_for_oracle();t0=time.monotonic();rc=d.wait();r=d.read_receipt()
         self.assertEqual(rc,143,d.output);self.assertEqual(r['status'],'INTERRUPTED; NOT ADOPTED')
         self.assertEqual(r['native_calls'][0]['ended_by'],'SIGKILL after grace');self.assertEqual(r['grace_seconds'],1.0)
+        self.assertIn(pids[1],r['native_calls'][0]['killed_pids'],'the grandchild that ignored the signal must be among the PIDs killed by name')
         self.assertNoOrphans(d);self.assertFalse(any(alive(p) for p in pids))
 
     def test_driver_deadline_finalises_timed_out(self):
-        # 6 s deadline: the fake oracle (60 s sleep) is running well before it fires, even on a slow runner.
-        d=self.start('--mode','sleep','--seconds','60',driver_args=('--max-minutes','0.1'));d.wait_for_oracle(timeout=5);rc=d.wait();r=d.read_receipt()
+        # 15 s deadline against a 60 s oracle sleep: only the sleep can exceed it, and the oracle is awaited for up to 60 s first.
+        d=self.start('--mode','sleep','--seconds','60',driver_args=('--max-minutes','0.25'));d.wait_for_oracle(timeout=60);rc=d.wait();r=d.read_receipt()
         self.assertEqual(rc,124,d.output);self.assertEqual(r['status'],'TIMED OUT; NOT ADOPTED');self.assertEqual(r['terminal_outcome'],'TIMED_OUT')
         self.assertEqual((r['interrupt']['name'],r['interrupt']['forwarded_signal'],r['interrupt']['reason']),('SIGALRM',15,'driver deadline'))
         self.assertTrue(r['terminal']);self.assertNoFalseResult(r);self.assertNoOrphans(d)
@@ -217,8 +213,8 @@ r.save();print('still running');sys.exit(0)
         if subprocess.run([docker,'image','inspect',image],capture_output=True).returncode:self.skipTest('pinned KiCad image is not present locally; no pull from a test')
         return docker
 
-    def docker_run_until_sleeping(self,docker,grace):
-        """Start the driver on the real run.sh (`sleep` in the pinned image), wait for that container, TERM the driver."""
+    def docker_start(self,docker,grace):
+        """Start the driver on the real run.sh (`sleep` in the pinned image) and wait for that container to run."""
         global CHILD_ENV
         saved=CHILD_ENV;CHILD_ENV={**CHILD_ENV,'OSC4_GRACE_SECONDS':grace}
         try:d=self.start('--mode','sleep','--seconds','60','--docker')
@@ -229,27 +225,78 @@ r.save();print('still running');sys.exit(0)
                 state=subprocess.run([docker,'inspect','-f','{{.State.Running}} {{.Config.Cmd}}',cid],capture_output=True,text=True).stdout
                 if state.startswith('true') and 'sleep' in state:return cid
             return None
-        wait_until(running,90,'the owned sleep container');target=running()
-        os.kill(d.proc.pid,signal.SIGTERM);rc=d.wait(timeout=120);r=d.read_receipt()
-        self.assertEqual(rc,143,d.output);self.assertEqual(r['status'],'INTERRUPTED; NOT ADOPTED');self.assertIn('ended_by',r['native_calls'][-1])
-        def gone():
-            state=subprocess.run([docker,'inspect','-f','{{.State.Running}}',target],capture_output=True,text=True)
-            return state.returncode!=0 or state.stdout.strip()!='true'
-        wait_until(gone,30,'the owned container to stop')
-        for cid in lifecycle.owned_containers(cids):
-            self.assertFalse(subprocess.run([docker,'inspect','-f','{{.State.Running}}',cid],capture_output=True,text=True).stdout.startswith('true'),cid)
-        return r
+        wait_until(running,90,'the owned sleep container');return d,running()
+
+    def container_running(self,docker,cid):
+        state=subprocess.run([docker,'inspect','-f','{{.State.Running}}',cid],capture_output=True,text=True)
+        return state.returncode==0 and state.stdout.strip()=='true'
 
     def test_docker_proxied_signal_stops_the_owned_container_with_init(self):
-        r=self.docker_run_until_sleeping(self.docker_or_skip(),grace='10')
+        docker=self.docker_or_skip();d,target=self.docker_start(docker,grace='10')
+        os.kill(d.proc.pid,signal.SIGTERM);rc=d.wait(timeout=120);r=d.read_receipt()
+        self.assertEqual(rc,143,d.output);self.assertEqual(r['status'],'INTERRUPTED; NOT ADOPTED')
         self.assertEqual(r['native_calls'][-1]['ended_by'],'exited after signal');self.assertNotIn('containers_stopped',r)
+        wait_until(lambda:not self.container_running(docker,target),30,'the owned container to stop')
+        self.assertFalse((self.tmp/'cids').exists(),'the cid directory is removed once no owned container is left')
 
-    def test_docker_orphaned_container_is_stopped_by_its_cidfile(self):
-        # Grace 0: the client is SIGKILLed at once, which orphans the container; the driver must docker stop exactly it.
-        r=self.docker_run_until_sleeping(self.docker_or_skip(),grace='0')
-        self.assertEqual(r['native_calls'][-1]['ended_by'],'SIGKILL after grace')
-        self.assertTrue(r.get('containers_stopped'),'the orphaned container was not stopped through its cidfile')
-        self.assertTrue(all(c['ok'] and c['action']=='docker stop' for c in r['containers_stopped']))
+    def test_docker_orphaned_container_is_stopped_by_the_collector_through_its_cidfile(self):
+        # A SIGKILLed driver (the #308 case) leaves the docker client and its container behind; the collector's
+        # reconcile stops exactly the containers listed in the driver's cid directory.
+        docker=self.docker_or_skip();d,target=self.docker_start(docker,grace='10')
+        os.kill(d.proc.pid,signal.SIGKILL);rc=d.wait(timeout=60);self.assertEqual(rc,-9)
+        time.sleep(2);self.assertTrue(self.container_running(docker,target),'without the driver the container keeps running: that is the orphan')
+        prior=d.read_receipt();call=prior['current_child'];self.assertTrue(call and call['pid'])
+        result=lifecycle.reconcile(d.receipt,137,invocation=prior['invocation']);r=d.read_receipt()
+        self.assertEqual(result['status'],'KILLED; OUTCOME UNKNOWN; NOT ADOPTED')
+        stopped=r['recovery']['containers_stopped'];self.assertTrue(stopped,'the collector did not stop the orphaned container')
+        self.assertTrue(all(c['ok'] and c['action']=='docker stop' for c in stopped));self.assertIn(target,[c['container'] for c in stopped])
+        wait_until(lambda:not self.container_running(docker,target),30,'the owned container to stop')
+        # The orphaned host processes (bash run.sh and the docker client) are the test's to clean up, by the recorded identity.
+        leftovers=[call['pid'],*lifecycle.session_members(call['pid'],{'sid':call['sid'],'starttime':call['starttime_ticks']},exclude=(call['pid'],))]
+        for pid in leftovers:
+            try:os.kill(pid,signal.SIGKILL)
+            except ProcessLookupError:pass
+        wait_until(lambda:not any(alive(p) for p in leftovers),10,'test-owned cleanup of the orphaned client')
+
+class OwnedChildTests(unittest.TestCase):
+    """In-process checks of lifecycle.owned_run and the /proc session enumeration."""
+    def setUp(self):
+        self._tmp=tempfile.TemporaryDirectory(prefix='osc4-owned-');self.tmp=Path(self._tmp.name)
+        self.saved=(lifecycle.STATE.cwd,lifecycle.STATE.cid_dir,lifecycle.STATE.shim_dir,lifecycle.STATE.receipt)
+        lifecycle.STATE.cwd=ROOT;lifecycle.STATE.cid_dir=None;lifecycle.STATE.shim_dir=None;lifecycle.STATE.receipt=None
+
+    def tearDown(self):
+        lifecycle.STATE.cwd,lifecycle.STATE.cid_dir,lifecycle.STATE.shim_dir,lifecycle.STATE.receipt=self.saved;self._tmp.cleanup()
+
+    def test_completed_child_never_triggers_a_kill(self):
+        from unittest import mock
+        with mock.patch.object(lifecycle.os,'kill') as kill,mock.patch.object(lifecycle.os,'killpg') as killpg,mock.patch.object(subprocess.Popen,'send_signal') as send:
+            out=lifecycle.owned_run('bash','-c','echo owned-ok')
+        self.assertEqual(out.strip(),'owned-ok');kill.assert_not_called();killpg.assert_not_called();send.assert_not_called()
+        self.assertEqual(lifecycle.STATE.children,{})
+
+    def test_failed_child_raises_without_any_kill(self):
+        from unittest import mock
+        with mock.patch.object(lifecycle.os,'kill') as kill,mock.patch.object(lifecycle.os,'killpg') as killpg:
+            with self.assertRaisesRegex(RuntimeError,'failed \\(7\\)'):lifecycle.owned_run('bash','-c','exit 7')
+        kill.assert_not_called();killpg.assert_not_called()
+
+    def test_session_members_are_bound_by_session_and_start_time_not_pid_alone(self):
+        proc=self.tmp/'proc'
+        def stat(pid,state,pgrp,session,start):
+            (proc/str(pid)).mkdir(parents=True);fields=['0']*52;fields[0]=state;fields[2]=str(pgrp);fields[3]=str(session);fields[19]=str(start)
+            (proc/str(pid)/'stat').write_text(f'{pid} (fake (name) x) '+' '.join(fields)+'\n')
+        stat(500,'S',500,500,1000)   # the reaped leader's PID, reused by an unrelated process in another session
+        stat(501,'S',500,900,1200)   # member: same group, the child's session, started after it
+        stat(502,'S',500,900,800)    # same group and session but started before the child: not ours
+        stat(503,'Z',500,900,1300)   # zombie member: nothing to signal
+        stat(504,'S',777,900,1300)   # the child's session, a different group
+        (proc/'self').mkdir();(proc/'not-a-pid').mkdir()
+        identity={'sid':900,'starttime':1000}
+        self.assertEqual(lifecycle.session_members(500,identity,proc_root=proc,exclude=(500,)),[501])
+        self.assertEqual(lifecycle.session_members(500,{'sid':None,'starttime':1000},proc_root=proc),[])
+        self.assertEqual(lifecycle.session_members(500,identity,proc_root=self.tmp/'absent'),[])
+
 
 class ReconcileTests(unittest.TestCase):
     def setUp(self):
@@ -262,13 +309,16 @@ class ReconcileTests(unittest.TestCase):
               'invocation':'run-1','phases':[{'phase':'stage','started_utc':'2026-11-08T00:00:00Z'}],**extra}
         self.path.write_text(json.dumps(data,indent=1,sort_keys=True)+'\n');return data
 
-    def test_malformed_partial_receipt_is_reconciled_with_its_bytes_kept(self):
+    def test_malformed_partial_receipt_is_refused_unless_forced_and_then_kept_byte_for_byte(self):
         raw=b'{"schema": "osc4-transaction-receipt-2", "status": "RUN';self.path.write_bytes(raw)
-        result=lifecycle.reconcile(self.path,137,invocation='run-1',board='osc-core',spec_name='osc4-test');r=json.loads(self.path.read_text())
+        refused=lifecycle.reconcile(self.path,137,invocation='run-1',board='osc-core',spec_name='osc4-test')
+        self.assertEqual((refused['action'],refused['exit_code']),('refused',4));self.assertEqual(self.path.read_bytes(),raw)
+        self.assertFalse(self.path.with_name('osc4-test.raw-events.jsonl').exists())
+        result=lifecycle.reconcile(self.path,137,invocation='run-1',board='osc-core',spec_name='osc4-test',force_corrupt=True);r=json.loads(self.path.read_text())
         self.assertEqual(result['action'],'reconciled');self.assertEqual(r['status'],'KILLED; OUTCOME UNKNOWN; NOT ADOPTED')
         self.assertIsNotNone(r['recovery']['prior_parse_error']);self.assertEqual(r['recovery']['prior_sha256'],lifecycle.sha_bytes(raw))
         self.assertFalse(r['adopted']);self.assertFalse(r['raw_gate_passed']);self.assertEqual((r['board'],r['spec_name']),('osc-core','osc4-test'))
-        self.assertFalse(r['recovery']['invocation_verified'])
+        self.assertFalse(r['recovery']['invocation_verified']);self.assertNotIn('invocation',r,'a foreign invocation is never stamped onto unreadable bytes')
         events=self.path.with_name('osc4-test.raw-events.jsonl').read_text().splitlines();self.assertEqual(json.loads(events[0])['prior_raw'],raw.decode())
 
     def test_unknown_exit_status_keeps_the_receipt_nonterminal(self):

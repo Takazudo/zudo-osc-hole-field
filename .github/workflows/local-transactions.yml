@@ -61,6 +61,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set -o pipefail  # a 404 from gh api must not be hidden by base64 -d succeeding on empty input
           git check-ref-format --branch "$BRANCH" >/dev/null
           # No leading zero: bash reads "0100" as octal while timeout reads it as 100 minutes.
           if [[ -n $MAX_MINUTES ]] && { ! [[ $MAX_MINUTES =~ ^[1-9][0-9]?$ ]] || ((10#$MAX_MINUTES > 80)); }; then echo "max_minutes must be empty or 1-80 without a leading zero"; exit 1; fi
@@ -169,6 +170,9 @@ jobs:
 
       - name: Run the transaction
         id: run
+        # Below the job timeout so that the collect step still runs when this step is cut off: the receipt is
+        # then reconciled with an unknown exit status (nonterminal, terminal_outcome UNKNOWN) and uploaded.
+        timeout-minutes: 95
         env:
           SPEC: ${{ steps.precheck.outputs.spec }}
         run: |
@@ -207,21 +211,25 @@ jobs:
           STATUS: ${{ steps.run.outputs.status }}
         run: |
           out="$RUNNER_TEMP/out";mkdir -p "$out/receipts" "$out/workspaces"
-          # Receipts only from a run that started (the run step deleted any committed copy first).
+          # Receipts only from a run that started (the run step deleted any committed copy first). With no exit
+          # status (the run step was cut off by its timeout or cancelled) an existing receipt is still collected:
+          # reconcile leaves it nonterminal with terminal_outcome UNKNOWN.
           receipt_note="not run"
-          if [[ -n $STATUS ]]; then
+          if [[ -n $STATUS || -f $PLAN_DIR/$SPEC.json ]]; then
             # A receipt the driver left nonterminal gets its terminal state from the exit status the shell saw
             # (INTERRUPTED / TIMED OUT / KILLED; OUTCOME UNKNOWN / ERROR); a terminal receipt is kept as is;
             # a receipt from another invocation is refused (exit 4) and not uploaded as this run's result.
+            # --force-reconcile-corrupt: the committed copy was deleted before the run, so unreadable bytes are
+            # this run's partial write; they are preserved in the raw-events file.
             set +e
-            python -u "$PLAN_DIR/transaction.py" "$BOARD" --reconcile --exit-status "$STATUS" --invocation "$INVOCATION" | tee "$out/reconcile.json"
+            python -u "$PLAN_DIR/transaction.py" "$BOARD" --reconcile --exit-status "${STATUS:-unknown}" --invocation "$INVOCATION" --force-reconcile-corrupt | tee "$out/reconcile.json"
             reconcile=${PIPESTATUS[0]}
             set -e
             if ((reconcile == 0)); then
               for f in "$PLAN_DIR/$SPEC.json" "$PLAN_DIR/$SPEC-copper.json" "$PLAN_DIR/$SPEC.raw-events.jsonl"; do
                 [[ -f $f ]] && cp "$f" "$out/receipts/"
               done
-              receipt_note="invocation $INVOCATION verified"
+              receipt_note="invocation $INVOCATION verified; exit status ${STATUS:-unknown}"
             else
               receipt_note="receipt NOT collected: reconcile exit $reconcile (invocation mismatch or error)"
               echo "::error::$BOARD: $receipt_note"
