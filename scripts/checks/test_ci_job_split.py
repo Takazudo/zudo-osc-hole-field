@@ -8,6 +8,10 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = '0755535b46939c82d70703277b347bc4ebb7252a'
+BUILD_STEP = '      - name: Build documentation site\n'
+WIND_AUDIT_STEP = (
+    '      - name: Audit zudo-wind utility candidates\n'
+    '        run: pnpm --dir doc exec zfb wind audit --project-root . --fail-on error\n\n')
 
 
 def jobs(source):
@@ -29,8 +33,15 @@ class JobSplitTests(unittest.TestCase):
     def test_trigger_permissions_and_unrelated_jobs_unchanged(self):
         self.assertEqual(self.before.split('\njobs:\n')[0],
                          self.after.split('\njobs:\n')[0])
-        self.assertEqual(self.old['documentation'], self.new['documentation'].split(
-            '  # Preserve the required check name;')[0])
+        # The documentation job is the pre-split job plus exactly one reviewed
+        # addition: the zudo-wind candidate audit introduced with the
+        # zudo-circuit-doc 0.3.0 / zfb 5.2.2 host migration (#154). Any other
+        # change to that job still fails here.
+        self.assertIn(WIND_AUDIT_STEP + BUILD_STEP, self.old['documentation'].replace(
+            BUILD_STEP, WIND_AUDIT_STEP + BUILD_STEP, 1))
+        self.assertEqual(
+            self.old['documentation'].replace(BUILD_STEP, WIND_AUDIT_STEP + BUILD_STEP, 1),
+            self.new['documentation'].split('  # Preserve the required check name;')[0])
         self.assertEqual(self.old['board-drc'], self.new['board-drc'])
         self.assertEqual(set(self.new), {'documentation', 'python-tests',
                                         'python-checks', 'aggregate-regeneration', 'board-drc'})
