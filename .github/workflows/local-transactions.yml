@@ -40,7 +40,7 @@ env:
   WORKSPACE_BUDGET_MB: "400"
   # Time budget (minutes). The per-board default comes from $PLAN_DIR/budgets.json on the plan commit (the
   # driver reads the same file). The driver stops itself at max_minutes (receipt TIMED OUT); the timeout
-  # wrapper sends INT WRAPPER_GRACE later and KILL KILL_AFTER after that; setup, collection and upload take
+  # wrapper sends TERM WRAPPER_GRACE later and KILL KILL_AFTER after that; setup, collection and upload take
   # the rest. Their sum must stay within the transaction job's timeout-minutes (100), which `prepare` checks.
   WRAPPER_GRACE_MINUTES: "3"
   KILL_AFTER_MINUTES: "2"
@@ -95,7 +95,7 @@ jobs:
           done
           echo "sha=$sha" >> "$GITHUB_OUTPUT"
           echo "matrix=$(printf '%s\n' "${boards[@]}" | sort -u | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
-          echo "Plan branch $BRANCH at $sha; boards: ${boards[*]}; budgets (min): ${budgets[*]}; wrapper INT +${WRAPPER_GRACE_MINUTES} min, KILL +${KILL_AFTER_MINUTES} min" >> "$GITHUB_STEP_SUMMARY"
+          echo "Plan branch $BRANCH at $sha; boards: ${boards[*]}; budgets (min): ${budgets[*]}; wrapper TERM +${WRAPPER_GRACE_MINUTES} min, KILL +${KILL_AFTER_MINUTES} min" >> "$GITHUB_STEP_SUMMARY"
 
   transaction:
     name: Transaction ${{ matrix.board }}
@@ -189,7 +189,10 @@ jobs:
           set +e
           # The OSC4 README command with the runner's python; with_route_guard.sh execs it directly on github-hosted runners.
           # The driver stops itself at --max-minutes and finalises its receipt; the wrapper is the backstop behind it.
-          bash scripts/pcbgen/with_route_guard.sh timeout --signal=INT --kill-after="${KILL_AFTER_MINUTES}m" "${wrapper}m" \
+          # TERM, not INT: on the ubuntu-26.04 image `timeout --signal=INT` SIGKILLs the child at once (exit 137,
+          # receipt left RUNNING; run 42412490176, reproduced by scripts/checks/test_osc4_transaction_signals.py in
+          # run 42490037580), while --signal=TERM is delivered and honoured. The driver handles both the same way.
+          bash scripts/pcbgen/with_route_guard.sh timeout --signal=TERM --kill-after="${KILL_AFTER_MINUTES}m" "${wrapper}m" \
             python -u "$PLAN_DIR/transaction.py" "$BOARD" --max-minutes "$max" --invocation "$INVOCATION" 2>&1 | tee "$RUNNER_TEMP/out/run.log"
           status=${PIPESTATUS[0]}
           set -e

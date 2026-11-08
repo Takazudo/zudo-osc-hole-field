@@ -2,7 +2,7 @@
 """Receipt lifecycle and signal propagation of circuit/reviews/osc4-local-transactions-20261107/transaction.py (issue #308).
 
 Every test starts the driver as a real process through the workflow's control path
-(`timeout --signal=... --kill-after=...` + `bash scripts/pcbgen/with_route_guard.sh`), with a stub
+(`timeout --signal=TERM --kill-after=...` + `bash scripts/pcbgen/with_route_guard.sh`, the workflow's form), with a stub
 native driver (osc4_signal_harness.py) whose native calls spawn osc4_fake_oracle.sh through
 lifecycle.owned_run. The hosted-runner variables are set for the child processes only, so
 with_route_guard.sh execs the command instead of queueing on the machine-wide heavy guard.
@@ -18,9 +18,11 @@ TX=ROOT/'circuit/reviews/osc4-local-transactions-20261107/transaction.py'
 spec=importlib.util.spec_from_file_location('osc4_lifecycle',TX.with_name('lifecycle.py'))
 lifecycle=importlib.util.module_from_spec(spec);spec.loader.exec_module(lifecycle)
 CHILD_ENV={**os.environ,'GITHUB_ACTIONS':'true','RUNNER_ENVIRONMENT':'github-hosted','OSC4_GRACE_SECONDS':'1'}
-INT=('timeout','--signal=INT','--kill-after=20s','3s')
-INT_PRESERVE=('timeout','--signal=INT','--preserve-status','--kill-after=20s','3s')
+# The workflow drives the wrapper with TERM: on the ubuntu-26.04 runner image `timeout --signal=INT` SIGKILLs the
+# child at once (exit 137, receipt left RUNNING; CI run 42490037580), which is the #308 symptom; GNU coreutils 9.4 delivers INT.
+TERM=('timeout','--signal=TERM','--kill-after=20s','3s')
 TERM_PRESERVE=('timeout','--signal=TERM','--preserve-status','--kill-after=20s','3s')
+INT_PRESERVE=('timeout','--signal=INT','--preserve-status','--kill-after=20s','3s')
 
 
 def alive(pid):
@@ -112,27 +114,43 @@ class LifecycleProcessTests(unittest.TestCase):
         self.assertIn('failed (7)',r['error']);self.assertTrue(r['terminal']);self.assertEqual(r['native_calls'][0]['returncode'],7)
         self.assertEqual(r['phase'],'base_check');self.assertNoFalseResult(r);self.assertNoOrphans(d)
 
-    def test_int_from_the_timeout_wrapper_finalises_interrupted(self):
-        d=self.start('--mode','sleep','--seconds','60',wrapper=INT);d.wait_for_oracle();rc=d.wait();r=d.read_receipt()
+    def test_term_from_the_timeout_wrapper_finalises_interrupted(self):
+        # The workflow's form: no --preserve-status, so the wrapper reports 124 once the driver exited after TERM.
+        d=self.start('--mode','sleep','--seconds','60',wrapper=TERM);d.wait_for_oracle();rc=d.wait();r=d.read_receipt()
         self.assertEqual(rc,124,f'wrapper exit {rc}; receipt {r["status"]}; output:\n{d.output}')
         self.assertEqual(r['status'],'INTERRUPTED; NOT ADOPTED');self.assertEqual(r['terminal_outcome'],'INTERRUPTED');self.assertTrue(r['terminal'])
-        self.assertEqual((r['interrupt']['signal'],r['interrupt']['name'],r['interrupt']['phase']),(2,'SIGINT','base_check'))
-        self.assertEqual(r['signals'][0]['name'],'SIGINT');self.assertEqual(r['native_calls'][0]['ended_by'],'exited after signal')
+        self.assertEqual((r['interrupt']['signal'],r['interrupt']['name'],r['interrupt']['phase']),(15,'SIGTERM','base_check'))
+        self.assertEqual(r['signals'][0]['name'],'SIGTERM');self.assertEqual(r['native_calls'][0]['ended_by'],'exited after signal')
         self.assertIsNotNone(r['native_calls'][0]['returncode']);self.assertIsNone(r['current_child']);self.assertIn('wall_seconds',r)
-        self.assertIn('transaction stopped: SIGINT received',d.output);self.assertNoFalseResult(r);self.assertNoOrphans(d)
+        self.assertIn('transaction stopped: SIGTERM received',d.output);self.assertNoFalseResult(r);self.assertNoOrphans(d)
 
-    def test_int_exits_130_when_the_wrapper_preserves_status(self):
-        d=self.start('--mode','sleep','--seconds','60',wrapper=INT_PRESERVE);d.wait_for_oracle();rc=d.wait()
-        self.assertEqual(rc,130,d.output);self.assertEqual(d.read_receipt()['status'],'INTERRUPTED; NOT ADOPTED');self.assertNoOrphans(d)
-
-    def test_term_exits_143(self):
+    def test_term_exits_143_when_the_wrapper_preserves_status(self):
         d=self.start('--mode','sleep','--seconds','60',wrapper=TERM_PRESERVE);d.wait_for_oracle();rc=d.wait();r=d.read_receipt()
         self.assertEqual(rc,143,d.output);self.assertEqual(r['status'],'INTERRUPTED; NOT ADOPTED');self.assertEqual(r['interrupt']['name'],'SIGTERM')
         self.assertEqual(r['interrupt']['forwarded_signal'],15);self.assertNoFalseResult(r);self.assertNoOrphans(d)
 
+    def test_int_from_the_timeout_wrapper_is_either_honoured_or_reconciled_as_killed(self):
+        """INT depends on the host's `timeout`: GNU delivers it (130, INTERRUPTED); the ubuntu-26.04 image SIGKILLs the
+        driver at once (137, receipt RUNNING), the #308 symptom. Either way no result is invented and the collector finishes."""
+        d=self.start('--mode','sleep','--seconds','60',wrapper=INT_PRESERVE);pids=d.wait_for_oracle();rc=d.wait();r=d.read_receipt()
+        self.assertIn(rc,(130,137),f'wrapper exit {rc}; receipt {r["status"]}; output:\n{d.output}')
+        if rc==130:
+            print('\n[osc4] host timeout delivers --signal=INT: driver finalised',r['status'],flush=True)
+            self.assertEqual(r['status'],'INTERRUPTED; NOT ADOPTED');self.assertEqual(r['interrupt']['name'],'SIGINT');self.assertNoOrphans(d)
+        else:
+            print('\n[osc4] host timeout --signal=INT SIGKILLed the driver at once (the #308 symptom); receipt',r['status'],flush=True)
+            self.assertFalse(r['terminal']);self.assertEqual(r['phase'],'base_check')
+            result=lifecycle.reconcile(d.receipt,rc,invocation=r['invocation']);self.assertEqual(result['status'],'KILLED; OUTCOME UNKNOWN; NOT ADOPTED')
+            self.assertNoFalseResult(d.read_receipt())
+            # The SIGKILLed driver could not stop its (new-session) child; the test owns that cleanup.
+            for pid in pids:
+                try:os.killpg(pid,signal.SIGKILL)
+                except ProcessLookupError:pass
+            wait_until(lambda:not any(alive(p) for p in pids),5,'test-owned orphan cleanup')
+
     def test_uncooperative_child_is_killed_after_the_grace_period(self):
-        d=self.start('--mode','ignore','--seconds','60',wrapper=INT_PRESERVE);pids=d.wait_for_oracle();t0=time.monotonic();rc=d.wait();r=d.read_receipt()
-        self.assertEqual(rc,130,d.output);self.assertEqual(r['status'],'INTERRUPTED; NOT ADOPTED')
+        d=self.start('--mode','ignore','--seconds','60',wrapper=TERM_PRESERVE);pids=d.wait_for_oracle();t0=time.monotonic();rc=d.wait();r=d.read_receipt()
+        self.assertEqual(rc,143,d.output);self.assertEqual(r['status'],'INTERRUPTED; NOT ADOPTED')
         self.assertEqual(r['native_calls'][0]['ended_by'],'SIGKILL after grace');self.assertEqual(r['grace_seconds'],1.0)
         self.assertNoOrphans(d);self.assertFalse(any(alive(p) for p in pids))
 

@@ -170,12 +170,24 @@ def _drain(proc):
     except (OSError,ValueError):pass
 
 
+def _session_alive(pgid):
+    """True while any process of the child's session/process group exists (the leader may be gone already)."""
+    try:os.killpg(pgid,0)
+    except ProcessLookupError:return False
+    except PermissionError:return True
+    return True
+
+
 def _reap(proc,call):
-    """Grace period for a child that already received the forwarded signal, then SIGKILL on its session only."""
+    """Grace period for a child that already received the forwarded signal, then SIGKILL on its session only.
+
+    bash dies from SIGTERM at once while its foreground grandchild (the docker client, or an oracle that
+    ignores the signal) lives on, so the whole session must be empty before the exit counts as cooperative.
+    """
     deadline=time.monotonic()+STATE.grace
-    while proc.poll() is None and time.monotonic()<deadline and not STATE.escalate:
+    while (proc.poll() is None or _session_alive(proc.pid)) and time.monotonic()<deadline and not STATE.escalate:
         _drain(proc);time.sleep(0.05)
-    if proc.poll() is None:
+    if proc.poll() is None or _session_alive(proc.pid):
         try:os.killpg(proc.pid,signal.SIGKILL)
         except ProcessLookupError:pass
         proc.wait();call['ended_by']='SIGKILL after grace'
@@ -278,7 +290,7 @@ def owned_run(*args):
         signal.pthread_sigmask(signal.SIG_UNBLOCK,mask)
         out=proc.communicate()[0] or ''
     finally:
-        if proc.poll() is None:_reap(proc,call)
+        if proc.poll() is None or STATE.interrupting is not None or _session_alive(proc.pid):_reap(proc,call)
         if proc.stdout:proc.stdout.close()
         STATE.children.pop(proc.pid,None)
         call.update(ended_utc=utc(),returncode=proc.returncode)

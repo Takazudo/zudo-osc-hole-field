@@ -10,21 +10,23 @@ qualification are NOT RUN.
 
 Issue #308. No native run was made for this change; the behaviour below is
 proven by `scripts/checks/test_osc4_transaction_signals.py` with harmless
-stand-in children through the workflow's own control path (`timeout --signal=INT
+stand-in children through the workflow's own control path (`timeout --signal=TERM
 --kill-after` + `with_route_guard.sh`), and by two short docker tests that run
 `sleep` in the pinned image. A full native K replay under this lifecycle is
 NOT RUN.
 
 - **Why the K receipt stayed RUNNING.** The job log shows the run step ending 0.6 s after
   its 60-minute mark with exit 137 and no traceback, so the Python driver was SIGKILLed before
-  its `except BaseException` handler could write. Who sent that SIGKILL was not determined:
-  the same `timeout → with_route_guard.sh → python → bash run.sh → child` chain run here on
-  GNU coreutils 9.4 ends with exit 124, a traceback and an `INTERRUPTED` receipt. The runner
-  image was Ubuntu 26.04 (`coreutils 9.5-1ubuntu2+0.0.0~ubuntu25` in its readme), where
-  secondary sources place `timeout` among the tools served by uutils coreutils 0.8.0 rather
-  than GNU; the upstream uutils source waits the full `--kill-after` before SIGKILL, so it is
-  a suspect, not a finding. Running the uutils binary locally to settle it was blocked by the
-  sandbox policy. The lifecycle below no longer depends on that answer.
+  its `except BaseException` handler could write. The cause is the runner image's `timeout`:
+  on `ubuntu-latest` = Ubuntu 26.04, `timeout --signal=INT --kill-after=20s 3s python …`
+  ended the driver with SIGKILL at once (exit 137, receipt still `RUNNING`, no output), while
+  `--signal=TERM` through the same wrapper was delivered and honoured (exit 143, receipt
+  `INTERRUPTED`). CI run 42490037580 on this branch reproduced that with the lifecycle tests,
+  and the same chain on GNU coreutils 9.4 here delivers INT normally. Ubuntu 26.04 serves
+  `timeout` from uutils coreutils 0.8.0 (its readme lists `coreutils
+  9.5-1ubuntu2+0.0.0~ubuntu25`); the uutils internals were not traced further. The workflow
+  and the commands below therefore use `--signal=TERM`; the driver treats INT and TERM alike,
+  and the lifecycle below does not depend on the wrapper's behaviour either way.
 - **What the parent observed about containers.** Killing the host process tree of a guarded
   native job left the KiCad container running: `docker run` is only a client, and the container
   is not in the host process tree. `scripts/kicad/run.sh` is unchanged, because its bytes are
@@ -81,7 +83,7 @@ NOT RUN.
   The driver now receives TERM from the guard and finalises `INTERRUPTED` the same way.
 
 ```
-HEAVY_GUARD_MAX_RUN=6000 bash scripts/pcbgen/with_route_guard.sh timeout --signal=INT --kill-after=2m 83m .circuit-cache/ground-solver-venv/bin/python -u circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core --max-minutes 80
+HEAVY_GUARD_MAX_RUN=6000 bash scripts/pcbgen/with_route_guard.sh timeout --signal=TERM --kill-after=2m 83m .circuit-cache/ground-solver-venv/bin/python -u circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core --max-minutes 80
 python3 circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core --reconcile --exit-status "$status"
 ```
 
