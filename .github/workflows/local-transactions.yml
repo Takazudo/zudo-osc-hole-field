@@ -19,9 +19,9 @@ on:
         default: osc-core,osc-jack-left,osc-jack-right
         type: string
       max_minutes:
-        description: Wall-clock limit per transaction in minutes (at most 80)
+        description: Wall-clock budget per transaction in minutes (1-80). Empty = per-board default, 80 for osc-core and 60 for the jacks
         required: false
-        default: "60"
+        default: ""
         type: string
 
 permissions:
@@ -38,6 +38,15 @@ env:
   PLAN_DIR: circuit/reviews/osc4-local-transactions-20261107
   # Largest total of candidate workspace files copied into one artifact; larger files are listed, not uploaded.
   WORKSPACE_BUDGET_MB: "400"
+  # Time budget (minutes). The driver stops itself at max_minutes (receipt TIMED OUT); the timeout wrapper
+  # sends INT WRAPPER_GRACE later and KILL KILL_AFTER after that; setup, collection and upload take the rest.
+  # Their sum must stay within the transaction job's timeout-minutes (100), which `prepare` checks.
+  DEFAULT_MINUTES_CORE: "80"
+  DEFAULT_MINUTES_JACK: "60"
+  WRAPPER_GRACE_MINUTES: "3"
+  KILL_AFTER_MINUTES: "2"
+  SETUP_ALLOWANCE_MINUTES: "10"
+  JOB_TIMEOUT_MINUTES: "100"
 
 jobs:
   prepare:
@@ -55,7 +64,7 @@ jobs:
         run: |
           git check-ref-format --branch "$BRANCH" >/dev/null
           # No leading zero: bash reads "0100" as octal while timeout reads it as 100 minutes.
-          if ! [[ $MAX_MINUTES =~ ^[1-9][0-9]?$ ]] || ((10#$MAX_MINUTES > 80)); then echo "max_minutes must be 1-80 without a leading zero"; exit 1; fi
+          if [[ -n $MAX_MINUTES ]] && { ! [[ $MAX_MINUTES =~ ^[1-9][0-9]?$ ]] || ((10#$MAX_MINUTES > 80)); }; then echo "max_minutes must be empty or 1-80 without a leading zero"; exit 1; fi
           boards=()
           IFS=',' read -ra requested <<<"$BOARDS"
           for b in "${requested[@]}"; do
@@ -65,10 +74,22 @@ jobs:
             boards+=("$b")
           done
           ((${#boards[@]})) || { echo "no board selected"; exit 1; }
+          # Every selected board must fit the job: budget + wrapper grace + kill-after + setup/collection allowance <= job timeout.
+          budgets=()
+          for b in "${boards[@]}"; do
+            default=$DEFAULT_MINUTES_JACK; [[ $b == osc-core ]] && default=$DEFAULT_MINUTES_CORE
+            eff=${MAX_MINUTES:-$default}
+            total=$((eff + WRAPPER_GRACE_MINUTES + KILL_AFTER_MINUTES + SETUP_ALLOWANCE_MINUTES))
+            if ((total > JOB_TIMEOUT_MINUTES)); then
+              echo "::error::$b: budget ${eff} min + ${WRAPPER_GRACE_MINUTES} wrapper grace + ${KILL_AFTER_MINUTES} kill-after + ${SETUP_ALLOWANCE_MINUTES} setup allowance = ${total} min exceeds the ${JOB_TIMEOUT_MINUTES}-minute job timeout; lower max_minutes"
+              exit 1
+            fi
+            budgets+=("$b=${eff}")
+          done
           sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/$BRANCH" --jq .sha)
           echo "sha=$sha" >> "$GITHUB_OUTPUT"
           echo "matrix=$(printf '%s\n' "${boards[@]}" | sort -u | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
-          echo "Plan branch $BRANCH at $sha; boards: ${boards[*]}; limit ${MAX_MINUTES} min" >> "$GITHUB_STEP_SUMMARY"
+          echo "Plan branch $BRANCH at $sha; boards: ${boards[*]}; budgets (min): ${budgets[*]}; wrapper INT +${WRAPPER_GRACE_MINUTES} min, KILL +${KILL_AFTER_MINUTES} min" >> "$GITHUB_STEP_SUMMARY"
 
   transaction:
     name: Transaction ${{ matrix.board }}
@@ -82,6 +103,8 @@ jobs:
     env:
       BOARD: ${{ matrix.board }}
       SHA: ${{ needs.prepare.outputs.sha }}
+      # Stamped into the receipt by the driver and verified by the collect step, so only this run's receipt is uploaded.
+      INVOCATION: ${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.board }}
     steps:
       - name: Check out the plan commit
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -153,10 +176,15 @@ jobs:
             done
           ) &
           sampler=$!
+          default=$DEFAULT_MINUTES_JACK; [[ $BOARD == osc-core ]] && default=$DEFAULT_MINUTES_CORE
+          max=${MAX_MINUTES:-$default}
+          wrapper=$((max + WRAPPER_GRACE_MINUTES))
+          printf 'max_minutes=%s\nwrapper_minutes=%s\nkill_after_minutes=%s\ninvocation=%s\n' "$max" "$wrapper" "$KILL_AFTER_MINUTES" "$INVOCATION" | tee "$RUNNER_TEMP/out/budget.txt"
           set +e
           # The OSC4 README command with the runner's python; with_route_guard.sh execs it directly on github-hosted runners.
-          bash scripts/pcbgen/with_route_guard.sh timeout --signal=INT --kill-after=2m "${MAX_MINUTES}m" \
-            python -u "$PLAN_DIR/transaction.py" "$BOARD" 2>&1 | tee "$RUNNER_TEMP/out/run.log"
+          # The driver stops itself at --max-minutes and finalises its receipt; the wrapper is the backstop behind it.
+          bash scripts/pcbgen/with_route_guard.sh timeout --signal=INT --kill-after="${KILL_AFTER_MINUTES}m" "${wrapper}m" \
+            python -u "$PLAN_DIR/transaction.py" "$BOARD" --max-minutes "$max" --invocation "$INVOCATION" 2>&1 | tee "$RUNNER_TEMP/out/run.log"
           status=${PIPESTATUS[0]}
           set -e
           kill "$sampler" || true
@@ -171,10 +199,24 @@ jobs:
         run: |
           out="$RUNNER_TEMP/out";mkdir -p "$out/receipts" "$out/workspaces"
           # Receipts only from a run that started (the run step deleted any committed copy first).
+          receipt_note="not run"
           if [[ -n $STATUS ]]; then
-            for f in "$PLAN_DIR/$SPEC.json" "$PLAN_DIR/$SPEC-copper.json"; do
-              [[ -f $f ]] && cp "$f" "$out/receipts/"
-            done
+            # A receipt the driver left nonterminal gets its terminal state from the exit status the shell saw
+            # (INTERRUPTED / TIMED OUT / KILLED; OUTCOME UNKNOWN / ERROR); a terminal receipt is kept as is;
+            # a receipt from another invocation is refused (exit 4) and not uploaded as this run's result.
+            set +e
+            python -u "$PLAN_DIR/transaction.py" "$BOARD" --reconcile --exit-status "$STATUS" --invocation "$INVOCATION" | tee "$out/reconcile.json"
+            reconcile=${PIPESTATUS[0]}
+            set -e
+            if ((reconcile == 0)); then
+              for f in "$PLAN_DIR/$SPEC.json" "$PLAN_DIR/$SPEC-copper.json" "$PLAN_DIR/$SPEC.raw-events.jsonl"; do
+                [[ -f $f ]] && cp "$f" "$out/receipts/"
+              done
+              receipt_note="invocation $INVOCATION verified"
+            else
+              receipt_note="receipt NOT collected: reconcile exit $reconcile (invocation mismatch or error)"
+              echo "::error::$BOARD: $receipt_note"
+            fi
           fi
           budget=$((WORKSPACE_BUDGET_MB * 1024 * 1024));total=0;: > "$out/excluded.txt"
           # Final fresh copy first, then every checked candidate (-verify, including a -stitch-verify).
@@ -190,11 +232,12 @@ jobs:
           (cd "$out" && find . -type f ! -name MANIFEST.sha256 -print0 | sort -z | xargs -0 sha256sum > MANIFEST.sha256)
           {
             echo "- exit status: ${STATUS:-not run}; peak host memory: $(( $(cat "$out/memory-peak-kb.txt" 2>/dev/null || echo 0) / 1024 )) MB"
-            echo "- receipts: $(ls "$out/receipts" | tr '\n' ' ')"
+            echo "- budget: $(tr '\n' ' ' < "$out/budget.txt" 2>/dev/null || echo 'not run')"
+            echo "- receipts: $(ls "$out/receipts" | tr '\n' ' ') ($receipt_note)"
             echo "- workspace files uploaded: $((total / 1024 / 1024)) MB of a ${WORKSPACE_BUDGET_MB} MB budget"
             if [[ -s $out/excluded.txt ]]; then echo "- excluded (over budget):";sed 's/^/  - /' "$out/excluded.txt";fi
             if [[ -f $out/receipts/$SPEC.json ]]; then
-              python -c "import json,sys;r=json.load(open(sys.argv[1]));print('- receipt:',r.get('status'),'| raw_gate_passed:',r.get('raw_gate_passed'),'| open edges:',r.get('open_edges_before'),'->',r.get('open_edges_after'))" "$out/receipts/$SPEC.json"
+              python -c "import json,sys;r=json.load(open(sys.argv[1]));print('- receipt:',r.get('status'),'| terminal_outcome:',r.get('terminal_outcome'),'| raw_gate_passed:',r.get('raw_gate_passed'),'| open edges:',r.get('open_edges_before'),'->',r.get('open_edges_after'),'| last phase:',r.get('phase'),'| signals:',[s.get('name') for s in r.get('signals',[])])" "$out/receipts/$SPEC.json"
             fi
             grep -E 'open edges|rejected|Error|error' "$out/run.log" 2>/dev/null | tail -n 20 | sed 's/^/    /' || true
           } >> "$GITHUB_STEP_SUMMARY"
