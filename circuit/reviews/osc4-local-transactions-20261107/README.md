@@ -6,6 +6,109 @@ output exists. Each transaction below needs one admitted native run, listed
 under "Native runs" as NEEDS ADMISSION. Electrical, thermal and physical
 qualification are NOT RUN.
 
+## 2026-11-08 Receipt lifecycle: every run ends in a named terminal state, and the K budget is 80 minutes
+
+Issue #308. No native run was made for this change; the behaviour below is
+proven by `scripts/checks/test_osc4_transaction_signals.py` with harmless
+stand-in children through the workflow's own control path (`timeout --signal=TERM
+--kill-after` + `with_route_guard.sh`), and by two short docker tests that run
+`sleep` in the pinned image. A full native K replay under this lifecycle is
+NOT RUN.
+
+- **Why the K receipt stayed RUNNING.** The job log shows the run step ending 0.6 s after
+  its 60-minute mark with exit 137 and no traceback, so the Python driver was SIGKILLed before
+  its `except BaseException` handler could write. The cause is the runner image's `timeout`:
+  on `ubuntu-latest` = Ubuntu 26.04, `timeout --signal=INT --kill-after=20s 3s python …`
+  ended the driver with SIGKILL at once (exit 137, receipt still `RUNNING`, no output), while
+  `--signal=TERM` through the same wrapper was delivered and honoured (exit 143, receipt
+  `INTERRUPTED`). CI run 42490037580 on this branch reproduced that with the lifecycle tests,
+  and the same chain on GNU coreutils 9.4 here delivers INT normally. Ubuntu 26.04 serves
+  `timeout` from uutils coreutils 0.8.0 (its readme lists `coreutils
+  9.5-1ubuntu2+0.0.0~ubuntu25`); the uutils internals were not traced further. The workflow
+  and the commands below therefore use `--signal=TERM`; the driver treats INT and TERM alike,
+  and the lifecycle below does not depend on the wrapper's behaviour either way.
+- **What the parent observed about containers.** Killing the host process tree of a guarded
+  native job left the KiCad container running: `docker run` is only a client, and the container
+  is not in the host process tree. `scripts/kicad/run.sh` is unchanged, because its bytes are
+  retained native evidence (`scripts/panel/check_review_receipt.py` pins them; editing it
+  makes the panel review stale and needs a native rerun). Instead the driver puts a `docker`
+  wrapper first on its children's PATH (`lifecycle.docker_shim_dir`) that gives every
+  `docker run` `--init`, so a proxied SIGINT/SIGTERM terminates kicad-cli (PID 1 would ignore
+  it), and a `--cidfile` in the driver's own cid directory, so the driver can `docker stop`
+  exactly its own containers. Both paths are covered by the docker tests. Moving `--init` and
+  the cidfile into `run.sh` itself is a follow-up for the next native panel regeneration.
+- **Schema `osc4-transaction-receipt-2`.** The schema-1 fields keep their meaning. Added:
+  `invocation`, `source_revision`, `input_board`, `spec_name`, `environment` (hosted flag,
+  run id), `driver` (PID/PGID), `max_minutes`, `budget_source`, `grace_seconds`,
+  `oracle_cid_dir`, `phases` (one checkpoint written before each expensive step:
+  `base_check`, `stage`, `stitch`, `fresh_check`, `final_gate`), `native_calls` (every owned
+  child with PID/PGID, start/end, return code, and `ended_by` when it was signalled),
+  `current_child`, `signals`, `interrupt`, `terminal`, `terminal_outcome`, `ended_utc`,
+  `containers_stopped`, and `recovery` when the collector finished the receipt. Every write is
+  temp file + `os.replace`.
+- **Terminal states.** `NATIVE CHECKED; RAW GATE PASSED; NOT PROMOTED` / `RAW GATE FAILED;
+  NOT ADOPTED` (COMPLETED; the only state that may carry `raw_gate_passed: true`),
+  `REJECTED OR NOTHING TO DO; NOT ADOPTED` (REJECTED), `INTERRUPTED; NOT ADOPTED`
+  (SIGINT/SIGTERM/SIGHUP, exit 128+signal), `TIMED OUT; NOT ADOPTED` (the driver's own
+  `--max-minutes` deadline, exit 124), `KILLED; OUTCOME UNKNOWN; NOT ADOPTED` (exit 137 seen by
+  the collector), `ERROR; NOT ADOPTED`. A receipt whose process exit status nobody saw stays
+  nonterminal with `terminal_outcome: UNKNOWN`. `adopted` is always false.
+- **Signals.** The driver installs its own handlers. On a signal it writes the receipt first,
+  forwards the signal to the children it started (each runs in its own session), waits
+  `--grace-seconds` (default 6), SIGKILLs only those children, stops any owned container that
+  survived its client, finalises and exits 128+signal. Nothing else on the host is signalled.
+  Once the result is decided the handler no longer writes (the main thread may be writing the
+  same receipt); the signal is recorded in memory and the final save at the end of `run()`
+  carries it. A child that exits normally is never labelled killed: session stragglers get two
+  seconds and are then listed under `stragglers`, not signalled. The imported driver is reached
+  through its `route_jack_grid.RUNNER` hook; the receipt opens with a `preflight` phase before
+  plan validation and imports.
+- **Reconciliation.** `transaction.py <board> --reconcile --exit-status <N|unknown>
+  --invocation <id>` is host-only. It finishes a nonterminal receipt from the exit status the
+  shell saw, keeps a terminal receipt byte for byte, refuses a receipt from another invocation
+  or an unreadable one (exit 4; `--force-reconcile-corrupt` finishes unreadable bytes after
+  preserving them, without stamping an invocation), appends the prior bytes to
+  `<spec>.raw-events.jsonl`, and never sets a result. The workflow's collect step runs it and
+  uploads the receipt only when the invocation matches; when the run step was cut off before it
+  reported an exit status, the receipt is still collected, nonterminal, with
+  `terminal_outcome: UNKNOWN`.
+- **Known limit: signals inside native code.** Python runs the handler only between bytecodes,
+  so a signal that lands inside a long ctypes call (`grid_router.native_astar`) waits until the
+  C call returns. If the wrapper's `--kill-after` ends the driver first, the collector
+  reconciles the last checkpoint as `KILLED; OUTCOME UNKNOWN; NOT ADOPTED`. Accepted behaviour:
+  nothing is adopted either way.
+- **Owned children are signalled by PID, never by a bare process group.** The driver records
+  each child's session id and start time at spawn and enumerates the remaining members from
+  `/proc`, so a reused PID of a reaped leader can never make it signal a foreign process. The
+  per-invocation cid directory under `.circuit-cache/` is removed when no owned container is
+  left in it; `*.tmp` and `*.raw-events.jsonl` in this folder are run artifacts and gitignored.
+- **Stale data.** The driver refuses to start when `<spec>.json` exists from another
+  invocation (exit 3), which includes the committed historical receipts in this folder: move or
+  delete the file first. The workflow deletes it in the run step, stamps
+  `<run id>-<attempt>-<board>` as the invocation, and verifies it when collecting.
+- **Budgets.** `budgets.json` in this folder is the single source: 80 minutes for `osc-core`,
+  60 for the jacks. `transaction.py` reads it for the `--max-minutes` default (`--print-budget`
+  shows it), and the workflow reads the same file from the plan commit; an explicit value wins.
+  The workflow's `max_minutes` input is now empty by default and resolves per board; `prepare`
+  fails when budget + 3 min wrapper grace + 2 min kill-after + 10 min setup allowance exceeds the
+  100-minute job timeout. The plan's `limits.wall_minutes: 60` stays as the
+  2026-11-07 record. Frames, expansion limits, refill counts and retry policy are unchanged.
+- **Open budget question.** The job log counts five native checks for K, not four: base, after
+  the cut, candidate, the stage's own fresh verify, and the driver's fresh copy, at 18–19 min
+  each. 80 minutes reaches the fifth check but does not finish it; a complete K run needs about
+  95 minutes, which the 80-minute ceiling and the 100-minute job cannot hold. That decision is
+  left to the manager.
+- **Local runs.** `with_route_guard.sh` goes through heavy-guard locally, whose `--max-run`
+  default of 1800 s would TERM a 60–80 minute run; set `HEAVY_GUARD_MAX_RUN` above the budget.
+  The driver receives TERM from the guard and finalises `INTERRUPTED` the same way. The guard
+  escalates TERM to KILL after a fixed 10 s, so the driver's grace (default 6 s) plus its kill
+  and final save must fit inside that; do not raise `--grace-seconds` above about 8 s locally.
+
+```
+HEAVY_GUARD_MAX_RUN=6000 bash scripts/pcbgen/with_route_guard.sh timeout --signal=TERM --kill-after=2m 83m .circuit-cache/ground-solver-venv/bin/python -u circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core --max-minutes 80
+python3 circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core --reconcile --exit-status "$status"
+```
+
 ## 2026-11-08 Actions run results: no transaction improved a board; K hit the 60-minute limit
 
 The three planned transactions ran once on GitHub Actions in run
@@ -216,3 +319,6 @@ python3 circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core
 | `transactions.json` | Exact driver specs, cut objects, victims, frames and limits |
 | `transaction.py` | Non-promoting native driver around `scripts/pcbgen/route_jack_grid.py` `run_stage()`; `--validate` is host-only |
 | `scripts/checks/test_osc4_transaction.py` | Unit tests for `transaction.py` with the driver stubbed: hash refusal, plan-invalid gate, interrupted receipt; run by `scripts/checks/run-python-tests.sh` |
+| `budgets.json` | Default wall-clock budget per board in minutes, read by `transaction.py` and the workflow (2026-11-08) |
+| `lifecycle.py` | Receipt lifecycle for `transaction.py`: atomic writes, phase checkpoints, owned children and containers, signal handlers, `--reconcile` (2026-11-08) |
+| `scripts/checks/test_osc4_transaction_signals.py` | Process-level tests of the lifecycle through `timeout` + `with_route_guard.sh` with `osc4_signal_harness.py` and `osc4_fake_oracle.sh`; two docker tests skip without docker and the pinned image |
