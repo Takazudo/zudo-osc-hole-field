@@ -14,7 +14,7 @@ bash scripts/kicad/extract-stock.sh Device R
 bash scripts/kicad/smoke.sh
 ```
 
-`run.sh` mounts the repository at `/work`, sets it as the working directory, uses the caller's UID and GID for Docker, and gives KiCad a temporary writable home. Docker runs with `--rm --init --platform linux/amd64 --network none`; `--init` makes a proxied SIGINT/SIGTERM terminate kicad-cli (PID 1 would ignore it). When `KICAD_ORACLE_CIDDIR` names a directory, every `docker run` also writes its container id there (`--cidfile`), so an owning driver can `docker stop` exactly its own containers: a killed client leaves its container running (issue #308). The temporary home is removed after each command, and files written into the repository remain owned by the caller.
+`run.sh` mounts the repository at `/work`, sets it as the working directory, uses the caller's UID and GID for Docker, and gives KiCad a temporary writable home. Docker runs with `--rm --platform linux/amd64 --network none`. The temporary home is removed after each command, and files written into the repository remain owned by the caller.
 
 `extract-stock.sh Library Name` prints a stock symbol S-expression if that symbol exists, or a stock footprint S-expression otherwise. For example, `bash scripts/kicad/extract-stock.sh Device R` prints the resistor symbol and `bash scripts/kicad/extract-stock.sh Resistor_SMD R_0603_1608Metric` prints that footprint. The command does not copy or modify project files.
 
