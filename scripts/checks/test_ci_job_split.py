@@ -37,11 +37,10 @@ class JobSplitTests(unittest.TestCase):
         # addition: the zudo-wind candidate audit introduced with the
         # zudo-circuit-doc 0.3.0 / zfb 5.2.2 host migration (#154). Any other
         # change to that job still fails here.
-        self.assertIn(WIND_AUDIT_STEP + BUILD_STEP, self.old['documentation'].replace(
-            BUILD_STEP, WIND_AUDIT_STEP + BUILD_STEP, 1))
-        self.assertEqual(
-            self.old['documentation'].replace(BUILD_STEP, WIND_AUDIT_STEP + BUILD_STEP, 1),
-            self.new['documentation'].split('  # Preserve the required check name;')[0])
+        self.assertIn(BUILD_STEP, self.old['documentation'])
+        expected = self.old['documentation'].replace(BUILD_STEP, WIND_AUDIT_STEP + BUILD_STEP, 1)
+        self.assertEqual(expected, self.new['documentation'].split(
+            '  # Preserve the required check name;')[0])
         self.assertEqual(self.old['board-drc'], self.new['board-drc'])
         self.assertEqual(set(self.new), {'documentation', 'python-tests',
                                         'python-checks', 'aggregate-regeneration', 'board-drc'})

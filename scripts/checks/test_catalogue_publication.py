@@ -70,6 +70,29 @@ class PublicationCoverageTests(unittest.TestCase):
         self.lines[0]['function'] = 'part'
         with self.assertRaises(ValueError): self.check(sources=sources, facts=facts)
 
+    def test_constrained_record_cannot_be_published_through_a_document_exception(self):
+        self.lines[0]['function'] = 'part; FAMILY applicability UNSOURCED'
+        self.decisions['document_constraints'] = [{'record_id': 'parent', 'source_id': 'mirror',
+            'document_kind': 'specification', 'source_title': 'Actual cover title',
+            'authority_class': 'MANUFACTURER_MIRROR', 'applicability_fact_id': 'gap',
+            'applicability_verdict': 'UNSOURCED', 'required_record_terms': ['FAMILY', 'UNSOURCED']}]
+        sources = {'mirror': {'document_title': 'Actual cover title', 'authority_class': 'MANUFACTURER_MIRROR'}}
+        facts = {'gap': {'verdict': 'UNSOURCED', 'conditions': 'FAMILY applicability UNSOURCED'}}
+        self.selection['documentExceptions'] = [{'recordId': 'parent', 'reason': 'no public document'}]
+        with self.assertRaisesRegex(ValueError, 'parent: constrained document was replaced'):
+            self.check(sources=sources, facts=facts)
+        self.selection['documentExceptions'] = []
+        with self.assertRaisesRegex(ValueError, 'parent: selected constrained record has no document decision'):
+            self.check(sources=sources, facts=facts)
+        self.selection['documentSelections'] = [{'recordId': 'parent', 'sourceId': 'mirror', 'documentKind': 'specification'}]
+        self.selection['documentExceptions'] = [{'recordId': 'parent', 'reason': 'conflict'}]
+        with self.assertRaisesRegex(ValueError, 'both a document selection and a document exception'):
+            self.check(sources=sources, facts=facts)
+        self.selection['documentExceptions'] = [{'recordId': 'child', 'reason': 'unconstrained record'}]
+        self.selection['recordIds'] = ['parent', 'child']
+        self.decisions['blocked_records'] = []
+        self.assertEqual(self.check(sources=sources, facts=facts)['published'], 2)
+
 
 
 class RendererLockTests(unittest.TestCase):

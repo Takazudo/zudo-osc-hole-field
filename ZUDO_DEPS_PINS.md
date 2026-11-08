@@ -36,6 +36,12 @@ Updated by `/dev-bump-zudo-deps` on every sync — keep `pinned:` accurate.
   preact pragmas, the react-to-preact `tsconfig` path aliases and the Tailwind directives are gone.
   `doc/zfb.config.ts` selects the Classic look explicitly (`themePack: "default"`,
   `themePacks: ["default"]`) because zudo-doc 9 defaults to Graphite.
+  Two upstream findings from the 2026-11-08 migration are tracked where they live and worked
+  around in `doc/zfb.config.ts`: zudo-wind scanning zudo-doc's asset-viewer bodies
+  (Takazudo/zudo-front-builder#4647 → `assetViewerExclude: ["**/*.html"]`) and the
+  `zudo-circuit-doc scan` adjacency false positive on long search bodies
+  (Takazudo/zudo-circuit-doc#164 → the 5.27 `searchMaxBodyLength: 300` window is kept as this
+  site's accepted behaviour).
 
 ## zfb family (registry-pinned, not vendored)
 
@@ -56,8 +62,11 @@ Updated by `/dev-bump-zudo-deps` on every sync — keep `pinned:` accurate.
   at 9.1.4 (`create-zudo-doc@9.1.4` scaffold provenance above); the `@takazudo/zudo-circuit-doc`
   runtime `^0.3.0` requires peers `@takazudo/zudo-doc ^9.1.3` and `@takazudo/zfb ^5.2.2`, Node 24
   LTS (`>=24 <25`), pnpm 11.5.2 and TypeScript 5.9.
-  Fallback rule (ADR-003, 5.x line) — if the build or island hydration ever fails on zfb 5.2.2 but
-  passes on the previous 5.x patch release that `@takazudo/zudo-circuit-doc`'s `^5.2.2` peer floor
-  still accepts, pin the whole family (`@takazudo/zfb`, `-runtime`, `-md-wasm`) to that release here
-  and in `doc/package.json`, and file `/dev-upstream-report`. Falling back below the peer floor
-  (zfb 2.x / zudo-doc 5.x) means reverting the whole host migration, not a family pin.
+  Fallback rule (ADR-003, 5.x line) — there is no accepted fallback today: `@takazudo/zudo-circuit-doc`
+  0.3.0's peer floor is `^5.2.2`, and 5.2.2 is the first release that satisfies it, so no older zfb
+  release can stand in. If the build or island hydration ever fails on zfb 5.2.2, hold the family at
+  5.2.2, file the failure with `/dev-upstream-report` (zfb or zudo-circuit-doc, whichever owns the
+  cause), and report the site as blocked rather than pinning lower. Revisit this rule once a 5.2.x
+  release newer than 5.2.2 exists: from then on the fallback is the previous 5.2.x that the peer
+  floor accepts, pinned for all three packages here and in `doc/package.json`. Falling back below
+  the peer floor (zfb 2.x / zudo-doc 5.x) means reverting the whole host migration, not a family pin.
