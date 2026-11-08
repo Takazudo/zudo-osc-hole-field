@@ -55,8 +55,14 @@ NOT RUN.
   nonterminal with `terminal_outcome: UNKNOWN`. `adopted` is always false.
 - **Signals.** The driver installs its own handlers. On a signal it writes the receipt first,
   forwards the signal to the children it started (each runs in its own session), waits
-  `--grace-seconds` (default 15), SIGKILLs only those children, stops any owned container that
+  `--grace-seconds` (default 6), SIGKILLs only those children, stops any owned container that
   survived its client, finalises and exits 128+signal. Nothing else on the host is signalled.
+  Once the result is decided the handler no longer writes (the main thread may be writing the
+  same receipt); the signal is recorded in memory and the final save at the end of `run()`
+  carries it. A child that exits normally is never labelled killed: session stragglers get two
+  seconds and are then listed under `stragglers`, not signalled. The imported driver is reached
+  through its `route_jack_grid.RUNNER` hook; the receipt opens with a `preflight` phase before
+  plan validation and imports.
 - **Reconciliation.** `transaction.py <board> --reconcile --exit-status <N|unknown>
   --invocation <id>` is host-only. It finishes a nonterminal receipt from the exit status the
   shell saw, keeps a terminal receipt byte for byte, refuses a receipt from another invocation
@@ -94,7 +100,9 @@ NOT RUN.
   left to the manager.
 - **Local runs.** `with_route_guard.sh` goes through heavy-guard locally, whose `--max-run`
   default of 1800 s would TERM a 60–80 minute run; set `HEAVY_GUARD_MAX_RUN` above the budget.
-  The driver now receives TERM from the guard and finalises `INTERRUPTED` the same way.
+  The driver receives TERM from the guard and finalises `INTERRUPTED` the same way. The guard
+  escalates TERM to KILL after a fixed 10 s, so the driver's grace (default 6 s) plus its kill
+  and final save must fit inside that; do not raise `--grace-seconds` above about 8 s locally.
 
 ```
 HEAVY_GUARD_MAX_RUN=6000 bash scripts/pcbgen/with_route_guard.sh timeout --signal=TERM --kill-after=2m 83m .circuit-cache/ground-solver-venv/bin/python -u circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core --max-minutes 80

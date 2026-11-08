@@ -35,7 +35,10 @@ SCHEMA='osc4-transaction-receipt-2'
 OUTCOMES=('COMPLETED','REJECTED','INTERRUPTED','TIMED_OUT','KILLED','ERROR','UNKNOWN')
 DEADLINE_SIGNAL=signal.SIGALRM
 HANDLED=(signal.SIGINT,signal.SIGTERM,signal.SIGHUP)
-DEFAULT_GRACE_SECONDS=15.0
+# Below heavy-guard's fixed TERM -> KILL escalation of 10 s: a locally guarded driver must finish its own
+# grace, kill and receipt before the guard's SIGKILL. Hosted runs may pass a longer --grace-seconds.
+DEFAULT_GRACE_SECONDS=6.0
+STRAGGLER_WAIT_SECONDS=2.0
 
 
 def utc():return time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())
@@ -113,11 +116,18 @@ class Receipt:
 
 class State:
     def __init__(self):
-        self.receipt=None;self.children={};self.signals=[];self.interrupting=None;self.escalate=False
-        self.grace=DEFAULT_GRACE_SECONDS;self.cwd=None;self.cid_dir=None;self.shim_dir=None;self.installed=False;self.settled=False
+        self.grace=DEFAULT_GRACE_SECONDS;self.cwd=None;self.installed=False;self.reset()
+
+    def reset(self):
+        """Per-run state: a second run() in the same interpreter starts interruptible and without old signal records."""
+        self.receipt=None;self.children={};self.signals=[];self.interrupting=None;self.escalate=False;self.settled=False
+        self.cid_dir=None;self.shim_dir=None
 
 
 STATE=State()
+
+
+def reset():STATE.reset()
 
 
 def _signal_name(signum):
@@ -141,16 +151,20 @@ def _handle(signum,frame):
     forward=signal.SIGTERM if deadline else signum
     receipt=STATE.receipt
     decided=STATE.settled or (receipt is not None and receipt.data.get('terminal'))
+    if receipt is not None:receipt.data['signals']=list(STATE.signals)
+    if decided:
+        # The main thread is finalising and may itself be inside write_atomic for this receipt; a write from
+        # here could be overwritten by its later rename. The record stays in STATE.signals, which run()'s
+        # finally copies into the receipt and saves once more at the very end.
+        return
     if receipt is not None:
-        receipt.data['signals']=list(STATE.signals)
-        if STATE.interrupting is None and not decided:
+        if STATE.interrupting is None:
             receipt.data.update(status='TIMED OUT; NOT ADOPTED' if deadline else 'INTERRUPTED; NOT ADOPTED',
                                 terminal_outcome='TIMED_OUT' if deadline else 'INTERRUPTED',
                                 interrupt={'signal':int(signum),'name':name,'utc':utc(),'phase':receipt.data.get('phase'),
                                            'forwarded_signal':int(forward),'reason':'driver deadline' if deadline else f'{name} received'})
         # Written before anything else happens: a follow-up SIGKILL still leaves the signal on record.
         receipt.save()
-    if decided:return
     if STATE.interrupting is not None:
         STATE.escalate=True;return
     for pid,proc in list(STATE.children.items()):
@@ -161,6 +175,7 @@ def _handle(signum,frame):
 
 def install(deadline_seconds=None,grace=None):
     """Install the driver's handlers in the real process; unit tests calling run() directly keep Python's defaults."""
+    STATE.reset()
     if grace is not None:STATE.grace=float(grace)
     elif os.environ.get('OSC4_GRACE_SECONDS'):STATE.grace=float(os.environ['OSC4_GRACE_SECONDS'])
     for s in HANDLED:signal.signal(s,_handle)
@@ -249,6 +264,17 @@ def _session_alive(proc):
     return proc.poll() is None or bool(session_members(proc.pid,getattr(proc,'osc4_identity',{}),exclude=(proc.pid,)))
 
 
+def _settle_stragglers(proc,call):
+    """Success path: the leader exited on its own; give session stragglers (run.sh EXIT trap, docker client
+    teardown) a short moment and record, never kill, what remains. A completed call is never labelled killed."""
+    deadline=time.monotonic()+STRAGGLER_WAIT_SECONDS
+    while time.monotonic()<deadline:
+        left=session_members(proc.pid,getattr(proc,'osc4_identity',{}),exclude=(proc.pid,))
+        if not left:return
+        time.sleep(0.05)
+    call['stragglers']=left
+
+
 def _reap(proc,call):
     """Grace period for a child that already received the forwarded signal, then SIGKILL on its session only.
 
@@ -267,23 +293,32 @@ def _reap(proc,call):
     _drain(proc)
 
 
-def docker_shim_dir(cid_dir):
+def docker_shim_dir(cid_dir,real=None):
     """PATH entry for owned children only: a `docker` wrapper that gives every `docker run` --init and a cidfile.
 
     run.sh stays byte-identical (retained native evidence pins it); the wrapper forwards to the real
-    docker found on the driver's own PATH, so `command -v docker` in run.sh resolves to it.
+    docker found on the driver's own PATH, so `command -v docker` in run.sh resolves to it. The `run`
+    command is found after docker's global options (--context X, -H host, --config dir, -l level, --tls*).
     """
-    real=shutil.which('docker')
+    real=real or shutil.which('docker')
     if not real:return None
     d=Path(cid_dir)/'bin';d.mkdir(parents=True,exist_ok=True);shim=d/'docker'
     shim.write_text('#!/usr/bin/env bash\n'
                     f'# Owned-oracle docker wrapper written by {Path(__file__).name}; forwards to {real}.\n'
                     '# --init: a proxied SIGINT/SIGTERM then terminates kicad-cli instead of being ignored as PID 1.\n'
                     '# --cidfile: the owning driver docker-stops exactly these containers if their client is killed.\n'
+                    'globals=()\n'
+                    'while (($#)); do\n'
+                    '  case $1 in\n'
+                    '    --context|-c|--host|-H|--config|--log-level|-l|--tlscacert|--tlscert|--tlskey) globals+=("$1" "${2-}"); shift 2 ;;\n'
+                    '    -*) globals+=("$1"); shift ;;\n'
+                    '    *) break ;;\n'
+                    '  esac\n'
+                    'done\n'
                     'if [[ ${1:-} == run ]]; then\n'
-                    f'  shift; exec {shlex.quote(real)} run --init --cidfile {shlex.quote(str(cid_dir))}/"oracle-$$-$(date +%s%N)-$RANDOM.cid" "$@"\n'
+                    f'  shift; exec {shlex.quote(real)} ${{globals[@]+"${{globals[@]}}"}} run --init --cidfile {shlex.quote(str(cid_dir))}/"oracle-$$-$(date +%s%N)-$RANDOM.cid" "$@"\n'
                     'fi\n'
-                    f'exec {shlex.quote(real)} "$@"\n')
+                    f'exec {shlex.quote(real)} ${{globals[@]+"${{globals[@]}}"}} "$@"\n')
     shim.chmod(0o755);return d
 
 
@@ -313,12 +348,14 @@ def stop_owned_containers(cid_dir,stop_seconds=5):
     docker=shutil.which('docker');report=[];files=owned_cidfiles(cid_dir)
     if not docker or not files:return report
     try:
-        state=subprocess.run([docker,'inspect','-f','{{.Id}} {{.State.Running}}',*files.values()],capture_output=True,text=True,timeout=60)
+        state=subprocess.run([docker,'inspect','-f','{{.Id}} {{.State.Status}}',*files.values()],capture_output=True,text=True,timeout=60)
     except (OSError,subprocess.SubprocessError) as e:
         return [{'action':'docker inspect','ok':False,'error':repr(e),'utc':utc()}]
-    running={line.split()[0] for line in state.stdout.splitlines() if line.strip().endswith(' true')}
+    status={line.split()[0]:line.split()[1] for line in state.stdout.splitlines() if len(line.split())==2}
     for f,cid in files.items():
-        if not any(r.startswith(cid) or cid.startswith(r) for r in running):
+        found=[st for full,st in status.items() if full.startswith(cid) or cid.startswith(full)]
+        # Gone (removed by --rm) or finished: prune the cidfile. created/running/paused/restarting: stop it.
+        if not found or found[0] in ('exited','dead','removing'):
             try:f.unlink()
             except OSError:pass
             continue
@@ -368,12 +405,17 @@ def owned_run(*args):
             receipt.data.setdefault('native_calls',[]).append(call);receipt.data['current_child']=call;receipt.save()
     except BaseException:
         signal.pthread_sigmask(signal.SIG_UNBLOCK,mask);raise
-    out=''
+    out='';completed=False
     try:
         signal.pthread_sigmask(signal.SIG_UNBLOCK,mask)
-        out=proc.communicate()[0] or ''
+        out=proc.communicate()[0] or '';completed=True
     finally:
-        if STATE.interrupting is not None or _session_alive(proc):_reap(proc,call)
+        if not completed:
+            # Unwinding on something other than the lifecycle handler (KeyboardInterrupt, SystemExit, a failed
+            # communicate): the child was not asked to stop yet, so ask before the grace period starts.
+            if STATE.interrupting is None and _session_alive(proc):_signal_child(proc,signal.SIGTERM);call['forwarded']='SIGTERM while unwinding'
+            _reap(proc,call)
+        else:_settle_stragglers(proc,call)
         if proc.stdout:proc.stdout.close()
         STATE.children.pop(proc.pid,None)
         call.update(ended_utc=utc(),returncode=proc.returncode)

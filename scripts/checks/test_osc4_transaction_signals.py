@@ -83,7 +83,7 @@ class LifecycleProcessTests(unittest.TestCase):
         d=self.start('--mode','quick');rc=d.wait();r=d.read_receipt()
         self.assertEqual(rc,0,d.output);self.assertEqual(r['status'],'NATIVE CHECKED; RAW GATE FAILED; NOT ADOPTED')
         self.assertTrue(r['terminal']);self.assertEqual(r['terminal_outcome'],'COMPLETED');self.assertNoFalseResult(r)
-        self.assertEqual([p['phase'] for p in r['phases']],['base_check','stage','fresh_check','final_gate'])
+        self.assertEqual([p['phase'] for p in r['phases']],['preflight','base_check','stage','fresh_check','final_gate'])
         self.assertTrue(all(p['ended_utc'] for p in r['phases']))
         self.assertEqual([c['returncode'] for c in r['native_calls']],[0,0,0]);self.assertIsNone(r['current_child'])
         self.assertTrue(all(c['pid']>0 and c['pgid']==c['pid'] for c in r['native_calls']))
@@ -180,6 +180,20 @@ r.save();print('still running');sys.exit(0)
         self.assertEqual(done.returncode,0,done.stdout+done.stderr);self.assertIn('still running',done.stdout);r=json.loads(out.read_text())
         self.assertEqual((r['status'],r['terminal_outcome'],r['terminal'],r['raw_gate_passed']),('NATIVE CHECKED; RAW GATE PASSED; NOT PROMOTED','COMPLETED',True,True))
         self.assertEqual([x['name'] for x in r['signals']],['SIGINT','SIGTERM']);self.assertNotIn('interrupt',r)
+
+    def test_second_run_in_the_same_interpreter_is_interruptible_and_starts_clean(self):
+        # lifecycle.reset(): the first run completes; the second (sleep oracle, out2/) is interrupted and carries only its own signal.
+        d=self.start('--mode','quick','--then-sleep-run','--seconds','60');d.wait_for_oracle(count=5,timeout=60)
+        os.kill(d.proc.pid,signal.SIGTERM);rc=d.wait();first=d.read_receipt();second=json.loads((self.tmp/'out2/osc4-test.json').read_text())
+        self.assertEqual(rc,143,d.output);self.assertEqual(first['terminal_outcome'],'COMPLETED');self.assertEqual(first['signals'],[])
+        self.assertEqual(second['status'],'INTERRUPTED; NOT ADOPTED');self.assertEqual([x['name'] for x in second['signals']],['SIGTERM'])
+        self.assertNotEqual(first['invocation'],second['invocation']);self.assertNoOrphans(d)
+
+    def test_signal_during_preflight_leaves_a_finalised_receipt_and_no_cid_dir(self):
+        d=self.start('--mode','quick','--slow-validate','30',wrapper=TERM_PRESERVE)
+        wait_until(lambda:(self.tmp/'validating').exists(),10,'the preflight to start');rc=d.wait();r=d.read_receipt()
+        self.assertEqual(rc,143,d.output);self.assertEqual(r['status'],'INTERRUPTED; NOT ADOPTED');self.assertEqual(r['interrupt']['phase'],'preflight')
+        self.assertTrue(r['terminal']);self.assertEqual(r['native_calls'],[]);self.assertFalse((self.tmp/'cids').exists());self.assertEqual(d.oracle_pids(),[])
 
     def test_sigkill_of_the_driver_leaves_a_checkpoint_and_reconcile_marks_killed(self):
         d=self.start('--mode','sleep','--seconds','60');pids=d.wait_for_oracle()
@@ -280,6 +294,43 @@ class OwnedChildTests(unittest.TestCase):
         with mock.patch.object(lifecycle.os,'kill') as kill,mock.patch.object(lifecycle.os,'killpg') as killpg:
             with self.assertRaisesRegex(RuntimeError,'failed \\(7\\)'):lifecycle.owned_run('bash','-c','exit 7')
         kill.assert_not_called();killpg.assert_not_called()
+
+    def test_success_path_records_stragglers_without_killing(self):
+        from unittest import mock
+        lifecycle.STATE.receipt=lifecycle.Receipt(self.tmp/'r.json',{'native_calls':[]})
+        with mock.patch.object(lifecycle.os,'kill') as kill:
+            out=lifecycle.owned_run('bash','-c','sleep 20 >/dev/null 2>&1 & echo leader-done')  # the straggler must not hold the stdout pipe
+        call=lifecycle.STATE.receipt.data['native_calls'][0];stragglers=call.get('stragglers')
+        self.assertEqual(out.strip(),'leader-done');kill.assert_not_called();self.assertNotIn('ended_by',call)
+        self.assertTrue(stragglers,'the background sleep must be recorded as a straggler');self.assertTrue(all(alive(p) for p in stragglers))
+        for pid in stragglers:os.kill(pid,signal.SIGKILL)
+
+    def test_unwinding_on_a_foreign_exception_asks_the_child_to_stop_before_the_grace(self):
+        from unittest import mock
+        lifecycle.STATE.receipt=lifecycle.Receipt(self.tmp/'r.json',{'native_calls':[]});saved=lifecycle.STATE.grace;lifecycle.STATE.grace=3
+        try:
+            with mock.patch.object(subprocess.Popen,'communicate',side_effect=KeyboardInterrupt):
+                with self.assertRaises(KeyboardInterrupt):lifecycle.owned_run('bash','-c','exec sleep 30')
+        finally:lifecycle.STATE.grace=saved
+        call=lifecycle.STATE.receipt.data['native_calls'][0]
+        self.assertEqual(call['forwarded'],'SIGTERM while unwinding');self.assertEqual(call['ended_by'],'exited after signal');self.assertFalse(alive(call['pid']))
+
+    def test_route_jack_grid_native_spawn_goes_through_the_runner_hook(self):
+        import importlib.util as iu
+        if not (iu.find_spec('numpy') and iu.find_spec('scipy')):self.skipTest('route_jack_grid needs numpy and scipy')
+        sys.path.insert(0,str(ROOT));import scripts.pcbgen.route_jack_grid as rjg
+        seen=[];rjg.RUNNER=lambda *a:seen.append(a) or 'hooked'
+        try:self.assertEqual(rjg.run('bash','-c','echo not-run'),'hooked');self.assertEqual(seen,[('bash','-c','echo not-run')])
+        finally:rjg.RUNNER=None
+        self.assertEqual(rjg.run('bash','-c','echo default').strip(),'default')
+
+    def test_docker_shim_finds_run_after_global_options(self):
+        fake=self.tmp/'fake-docker';fake.write_text('#!/usr/bin/env bash\nprintf "%s\\n" "$@"\n');fake.chmod(0o755)
+        cid_dir=self.tmp/'cids';cid_dir.mkdir();shim=lifecycle.docker_shim_dir(cid_dir,real=str(fake))/'docker'
+        out=subprocess.run([str(shim),'--context','k','-l','debug','run','--rm','img','cmd'],capture_output=True,text=True,check=True).stdout.splitlines()
+        self.assertEqual(out[:7],['--context','k','-l','debug','run','--init','--cidfile']);self.assertTrue(out[7].startswith(str(cid_dir)));self.assertEqual(out[8:],['--rm','img','cmd'])
+        out=subprocess.run([str(shim),'run','img'],capture_output=True,text=True,check=True).stdout.splitlines();self.assertEqual((out[0],out[1],out[4]),('run','--init','img'))
+        out=subprocess.run([str(shim),'-H','tcp://x','ps','-a'],capture_output=True,text=True,check=True).stdout.splitlines();self.assertEqual(out,['-H','tcp://x','ps','-a'])
 
     def test_session_members_are_bound_by_session_and_start_time_not_pid_alone(self):
         proc=self.tmp/'proc'

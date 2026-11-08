@@ -20,13 +20,17 @@ AFTER={'open_edges':9,'islands':{'AGND':[['a','b']]},'pads':[]}
 
 
 class StubDriver:
+    """Mirrors route_jack_grid's RUNNER hook: transaction.run() installs lifecycle.owned_run there."""
     class StageRejected(RuntimeError):pass
+    RUNNER=None
 
     def __init__(self,tmp,mode,seconds,pidfile,reject=False,gate=False,docker=False):
         self.tmp=Path(tmp);self.mode=mode;self.seconds=seconds;self.pidfile=pidfile
         self.reject=reject;self.gate=gate;self.docker=docker;self.after=None
 
-    def run(self,*args):raise AssertionError('transaction.run() replaces this attribute with lifecycle.owned_run')
+    def run(self,*args):
+        if self.RUNNER is None:raise AssertionError('transaction.run() did not install lifecycle.owned_run on the RUNNER hook')
+        return self.RUNNER(*args)
 
     def workspace(self,board_id,name):
         d=self.tmp/name
@@ -67,6 +71,8 @@ def main():
     p.add_argument('--tmp',required=True);p.add_argument('--pidfile',required=True)
     p.add_argument('--mode',default='quick');p.add_argument('--seconds',default='60')
     p.add_argument('--reject',action='store_true');p.add_argument('--gate',action='store_true');p.add_argument('--docker',action='store_true')
+    p.add_argument('--then-sleep-run',action='store_true',help='after a completed quick run, start a second run (sleep oracle) into out2/ in the same interpreter')
+    p.add_argument('--slow-validate',type=float,default=0,help='seconds the patched validate() sleeps (a signal during preflight)')
     p.add_argument('driver_args',nargs=argparse.REMAINDER,help='arguments for transaction.py after the board')
     a=p.parse_args()
     tmp=Path(a.tmp);tmp.mkdir(parents=True,exist_ok=True);out=tmp/'out';out.mkdir(exist_ok=True)
@@ -75,9 +81,18 @@ def main():
           'transaction':{'spec':{'name':'osc4-test','repair_targets':['AGND']}}}
     driver=StubDriver(tmp/'ws',a.mode,a.seconds,a.pidfile,reject=a.reject,gate=a.gate,docker=a.docker)
     args=[x for x in a.driver_args if x!='--']
-    with mock.patch.object(tx,'load',return_value=plan),mock.patch.object(tx,'validate',return_value={'errors':[]}):
-        return tx.main(['osc-core',*args,'--out-dir',str(out),'--cid-dir',str(tmp/'cids')],
-                       driver=driver,delta=lambda a_,b_:{'stub':True},retention=lambda b_,a_:{'stub':True})
+    import time
+    def validate(board_id):
+        if a.slow_validate:
+            Path(a.pidfile).parent.joinpath('validating').write_text('1');time.sleep(a.slow_validate)
+        return {'errors':[]}
+    with mock.patch.object(tx,'load',return_value=plan),mock.patch.object(tx,'validate',validate):
+        code=tx.main(['osc-core',*args,'--out-dir',str(out),'--cid-dir',str(tmp/'cids')],
+                     driver=driver,delta=lambda a_,b_:{'stub':True},retention=lambda b_,a_:{'stub':True})
+        if code or not a.then_sleep_run:return code
+        out2=tmp/'out2';out2.mkdir(exist_ok=True);second=StubDriver(tmp/'ws2','sleep',a.seconds,a.pidfile)
+        return tx.main(['osc-core',*args,'--out-dir',str(out2),'--cid-dir',str(tmp/'cids2')],
+                       driver=second,delta=lambda a_,b_:{'stub':True},retention=lambda b_,a_:{'stub':True})
 
 
 if __name__=='__main__':sys.exit(main())

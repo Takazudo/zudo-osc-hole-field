@@ -88,10 +88,16 @@ STAGES=[
 ]
 
 
-def run(*args):
+RUNNER=None  # an owning driver (OSC4 transaction.py) may install its own subprocess runner here; same contract as _default_run
+
+
+def _default_run(*args):
     done=subprocess.run(args,cwd=ROOT,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
     if done.returncode:print(done.stdout[-3000:]);raise RuntimeError(f'{args[:4]} failed ({done.returncode})')
     return done.stdout
+
+
+def run(*args):return (RUNNER or _default_run)(*args)
 
 
 def rel(p):return str(Path(p).resolve().relative_to(ROOT))

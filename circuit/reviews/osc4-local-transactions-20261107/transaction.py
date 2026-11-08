@@ -79,12 +79,10 @@ def validate(board_id):
 
 def run(board_id,driver=None,delta=None,retention=None,out_dir=HERE,invocation=None,max_minutes=None,budget_source=None,cid_dir=None):
     """One native transaction. driver/delta/retention default to the real modules; tests inject stubs."""
+    lifecycle.reset()
     plan=load(board_id);spec=plan['transaction']['spec']
     source=ROOT/plan['input_board'];source_hash=sha(source)
     if source_hash!=plan['input_board_sha256']:raise SystemExit('accepted board changed; replan before running')
-    # The host-side plan checks (unique in-frame cuts, target pad in the frame, target net open) gate the native run.
-    checked=validate(board_id)
-    if checked['errors']:raise SystemExit('plan invalid: '+'; '.join(checked['errors']))
     invocation=invocation or lifecycle.new_invocation()
     out=Path(out_dir)/f'{spec["name"]}.json'
     if out.exists():
@@ -94,25 +92,30 @@ def run(board_id,driver=None,delta=None,retention=None,out_dir=HERE,invocation=N
         if prior!=invocation:
             raise lifecycle.StaleReceipt(f'{out} exists from invocation {prior!r}, not {invocation!r}; move or delete it before this run '
                                          '(the workflow run step does that). Nothing was started.')
-    if driver is None:import scripts.pcbgen.route_jack_grid as driver
-    if delta is None:from scripts.pcbgen.route_shards import delta
-    if retention is None:from scripts.pcbgen.copper_identity import retention
-    # Make the native children owned: the driver's run() helper spawns `bash scripts/kicad/run.sh ...`.
-    if hasattr(driver,'run'):driver.run=lifecycle.owned_run
-    lifecycle.STATE.cwd=ROOT
-    lifecycle.STATE.cid_dir=Path(cid_dir) if cid_dir else ROOT/'.circuit-cache'/f'osc4-oracle-cids-{invocation}'
-    lifecycle.STATE.cid_dir.mkdir(parents=True,exist_ok=True)
+    # The RUNNING receipt exists before anything slow (plan validation, driver imports, the git call): a signal in
+    # that window then still ends in a finalised receipt and a cleaned cid directory.
     receipt={'schema':lifecycle.SCHEMA,'status':'RUNNING','terminal':False,'terminal_outcome':None,'adopted':False,'raw_gate_passed':False,
              'board':board_id,'input_board':plan['input_board'],'input_board_sha256':source_hash,'plan_sha256':sha(HERE/'transactions.json'),
-             'spec':spec,'spec_name':spec['name'],'started_utc':lifecycle.utc(),'invocation':invocation,
-             'source_revision':lifecycle.source_revision(ROOT),'environment':lifecycle.environment(),
+             'spec':spec,'spec_name':spec['name'],'started_utc':lifecycle.utc(),'invocation':invocation,'source_revision':None,'environment':None,
              'driver':{'pid':os.getpid(),'pgid':os.getpgid(0),'python':sys.version.split()[0],'argv':sys.argv,'signal_handlers':lifecycle.STATE.installed},
              'max_minutes':max_minutes,'budget_source':budget_source,'grace_seconds':lifecycle.STATE.grace,
-             'oracle_cid_dir':str(lifecycle.STATE.cid_dir),'phases':[],'native_calls':[],'current_child':None,'signals':[]}
+             'oracle_cid_dir':None,'phases':[],'native_calls':[],'current_child':None,'signals':[]}
     rec=lifecycle.Receipt(out,receipt);save=rec.save;t0=time.time()
     try:
-        # Inside the try so that a signal between the first save and the first phase still reaches the finally.
-        lifecycle.STATE.receipt=rec;save()
+        lifecycle.STATE.cwd=ROOT
+        lifecycle.STATE.cid_dir=Path(cid_dir) if cid_dir else ROOT/'.circuit-cache'/f'osc4-oracle-cids-{invocation}'
+        lifecycle.STATE.cid_dir.mkdir(parents=True,exist_ok=True);receipt['oracle_cid_dir']=str(lifecycle.STATE.cid_dir)
+        lifecycle.STATE.receipt=rec;rec.checkpoint('preflight')
+        # The host-side plan checks (unique in-frame cuts, target pad in the frame, target net open) gate the native run.
+        checked=validate(board_id)
+        if checked['errors']:raise SystemExit('plan invalid: '+'; '.join(checked['errors']))
+        if driver is None:import scripts.pcbgen.route_jack_grid as driver
+        if delta is None:from scripts.pcbgen.route_shards import delta
+        if retention is None:from scripts.pcbgen.copper_identity import retention
+        # Make the native children owned: the driver's run() helper spawns `bash scripts/kicad/run.sh ...` through its RUNNER hook.
+        if hasattr(driver,'RUNNER'):driver.RUNNER=lifecycle.owned_run
+        elif hasattr(driver,'run'):driver.run=lifecycle.owned_run
+        receipt.update(source_revision=lifecycle.source_revision(ROOT),environment=lifecycle.environment())
         rec.checkpoint('base_check')
         base=driver.workspace(board_id,spec['name']+'-base')/source.name;shutil.copyfile(source,base)
         before_drc,before=driver.check(base)
@@ -148,7 +151,7 @@ def run(board_id,driver=None,delta=None,retention=None,out_dir=HERE,invocation=N
                            status=('NATIVE CHECKED; RAW GATE PASSED; NOT PROMOTED' if gate['adopted']
                                    else 'NATIVE CHECKED; RAW GATE FAILED; NOT ADOPTED'))
         else:receipt.update(status='REJECTED OR NOTHING TO DO; NOT ADOPTED',terminal_outcome='REJECTED')
-    except Exception as error:
+    except (Exception,SystemExit) as error:
         receipt.update(status='ERROR; NOT ADOPTED',terminal_outcome='ERROR',error=repr(error));raise
     except BaseException as error:
         # The lifecycle handler already named the signal; a bare KeyboardInterrupt/SystemExit is recorded here. Never left RUNNING.
@@ -162,7 +165,9 @@ def run(board_id,driver=None,delta=None,retention=None,out_dir=HERE,invocation=N
         # Only a completed gate may carry raw_gate_passed; nothing may carry adopted.
         if receipt['terminal_outcome']!='COMPLETED':receipt['raw_gate_passed']=False
         receipt['adopted']=False;receipt['terminal']=True
-        save();lifecycle.sweep_containers(rec);lifecycle.cleanup_cid_dir();lifecycle.STATE.receipt=None
+        save();lifecycle.sweep_containers(rec);lifecycle.cleanup_cid_dir()
+        # A signal that arrived while finalising was only recorded in STATE (the handler does not write then).
+        receipt['signals']=list(lifecycle.STATE.signals);save();lifecycle.STATE.receipt=None
 
 
 def parse_exit_status(text):

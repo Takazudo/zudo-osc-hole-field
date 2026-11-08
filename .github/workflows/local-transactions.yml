@@ -187,7 +187,11 @@ jobs:
           ) &
           sampler=$!
           # Same source as prepare: budgets.json on the checked-out plan commit, read by the driver itself.
-          max=${MAX_MINUTES:-$(python "$PLAN_DIR/transaction.py" "$BOARD" --print-budget)}
+          set -o pipefail
+          if [[ -n $MAX_MINUTES ]]; then max=$MAX_MINUTES; else
+            max=$(python "$PLAN_DIR/transaction.py" "$BOARD" --print-budget) || { echo "::error::$BOARD: transaction.py --print-budget failed; no budget for the driver"; exit 1; }
+            [[ $max =~ ^[1-9][0-9]*$ ]] || { echo "::error::$BOARD: --print-budget returned '$max', not a minute count"; exit 1; }
+          fi
           wrapper=$((max + WRAPPER_GRACE_MINUTES))
           printf 'max_minutes=%s\nwrapper_minutes=%s\nkill_after_minutes=%s\ninvocation=%s\n' "$max" "$wrapper" "$KILL_AFTER_MINUTES" "$INVOCATION" | tee "$RUNNER_TEMP/out/budget.txt"
           set +e
