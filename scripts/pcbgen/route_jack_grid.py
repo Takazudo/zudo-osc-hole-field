@@ -22,6 +22,7 @@ from scipy.sparse import coo_matrix
 from scipy.sparse.csgraph import connected_components
 from scripts.pcbgen.grid_router import route,copper_rows,negotiate
 from scripts.pcbgen.uuid_tools import stable_uuid
+from scripts.pcbgen.copper_identity import unique_objects
 from scripts.pcbgen.route_shards import area_plan,plan,region_key,region_nets,delta
 
 PLANES={'+12V':'In4.Cu','-12V':'In3.Cu'}
@@ -215,7 +216,11 @@ def repair_batch(dump,radius_mm=1.2,limit=30,only=None):
 
 def repair_nets(dump,targets,cut):
     """Only the selected targets and nets whose local copper was actually cut."""
-    objects={i['uuid']:i for kind in ('tracks','vias') for i in dump[kind]}
+    groups=collections.defaultdict(list)
+    for kind in ('tracks','vias'):
+        for i in dump[kind]:groups[i['uuid']].append(i)
+    # Refuse a cut naming two objects before the one-object-per-UUID view hides one of them.
+    objects=unique_objects(groups,cut,'repair cut')
     if not set(cut)<=objects.keys():raise ValueError('repair cut contains unknown source copper')
     affected={objects[u]['net'] for u in cut}
     if affected&{*RAILS,'AGND'}:raise ValueError('local signal repair cannot cut supply/ground copper')
@@ -285,10 +290,11 @@ def repair_bounds(dump,spec,targets,cut):
     objects=collections.defaultdict(list)
     for kind in ('tracks','vias'):
         for obj in dump[kind]:objects[obj['uuid']].append(obj)
+    selected=unique_objects(objects,cut,'bounded repair cut')
     for uid in cut:
-        if len(objects[uid])!=1:
-            raise ValueError('bounded repair cut UUID is not unique: '+uid)
-        obj=objects[uid][0]
+        if uid not in selected:
+            raise ValueError('bounded repair cut names no object: '+uid)
+        obj=selected[uid]
         points=[obj['a'],obj['b']] if 'a' in obj else [obj['xy']]
         radius=obj.get('width',obj.get('diameter',0))/2
         if not all(inside(xy,radius) for xy in points):

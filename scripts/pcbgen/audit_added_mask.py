@@ -21,6 +21,7 @@ import sys
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
 from scripts.pcbgen.uuid_tools import top_level_spans, replace_spans, UUID_RE
+from scripts.pcbgen.copper_identity import unique_objects
 
 REVIEWED_CUT_LIMIT=12
 UUID_TEXT=re.compile(r'[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}')
@@ -44,11 +45,18 @@ def stage_removed_uuids(before, after):
     def copper(text):
         return collections.Counter(text[a:b] for a,b in top_level_spans(text)
             if text[a+1:b].split(None,1)[0].rstrip(')') in ('segment','via'))
-    removed=copper(before)-copper(after);uuids=[]
+    old=copper(before);removed=old-copper(after);uuids=[]
     for block,n in removed.items():
         match=UUID_RE.search(block)
         if not match:raise ValueError('source copper UUID missing')
         uuids.extend([match[1]]*n)
+    # A removed object whose UUID also names a surviving or other removed object cannot be
+    # scoped by UUID at all; refuse before the list is handed to any UUID-keyed audit.
+    by_id=collections.defaultdict(list)
+    for block,n in old.items():
+        match=UUID_RE.search(block)
+        if match:by_id[match[1]].extend([block]*n)
+    unique_objects(by_id,uuids,'stage removal scope')
     return StageRemovals(sorted(uuids))
 
 
@@ -102,14 +110,15 @@ def reviewed_copper_removals(before, after, reviewed_removed_uuids=()):
         match=UUID_RE.search(block)
         if not match:raise ValueError('source copper UUID missing')
         by_id[match[1]].extend([block]*n)
+    selected=unique_objects(by_id,cuts,'stage removal' if stage else 'reviewed cut')
     scope={}
     for uid in cuts:
-        blocks=by_id.get(uid,[])
-        if len(blocks)!=1 or removed[blocks[0]]!=1:
-            raise ValueError('reviewed cut is missing, retained or ambiguous')
+        block=selected.get(uid)
+        if block is None or removed[block]!=1:
+            raise ValueError('reviewed cut is missing or retained')
         if any(UUID_RE.search(block)[1]==uid for block in new):
             raise ValueError('reviewed cut UUID reused')
-        scope[uid]=blocks[0][1:].split(None,1)[0].rstrip(')')
+        scope[uid]=block[1:].split(None,1)[0].rstrip(')')
     if sum(removed.values())!=len(cuts):raise ValueError('unreviewed copper removed or changed')
     return scope
 
