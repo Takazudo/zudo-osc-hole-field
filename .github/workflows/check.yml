@@ -48,6 +48,9 @@ jobs:
       - name: Check documentation
         run: pnpm check
 
+      - name: Audit zudo-wind utility candidates
+        run: pnpm --dir doc exec zfb wind audit --project-root . --fail-on error
+
       - name: Build documentation site
         run: pnpm build
 
