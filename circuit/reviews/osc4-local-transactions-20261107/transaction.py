@@ -99,7 +99,7 @@ def run(board_id,driver=None,delta=None,retention=None,out_dir=HERE,invocation=N
     if hasattr(driver,'run'):driver.run=lifecycle.owned_run
     lifecycle.STATE.cwd=ROOT
     lifecycle.STATE.cid_dir=Path(cid_dir) if cid_dir else ROOT/'.circuit-cache'/f'osc4-oracle-cids-{invocation}'
-    lifecycle.STATE.cid_dir.mkdir(parents=True,exist_ok=True);os.environ['KICAD_ORACLE_CIDDIR']=str(lifecycle.STATE.cid_dir)
+    lifecycle.STATE.cid_dir.mkdir(parents=True,exist_ok=True)
     receipt={'schema':lifecycle.SCHEMA,'status':'RUNNING','terminal':False,'terminal_outcome':None,'adopted':False,'raw_gate_passed':False,
              'board':board_id,'input_board':plan['input_board'],'input_board_sha256':source_hash,'plan_sha256':sha(HERE/'transactions.json'),
              'spec':spec,'spec_name':spec['name'],'started_utc':lifecycle.utc(),'invocation':invocation,

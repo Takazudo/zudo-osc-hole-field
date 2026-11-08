@@ -18,13 +18,16 @@ receipt durable at every step so that no process exit can leave it ambiguous:
 Native children run in their own session (start_new_session=True): the driver can signal the
 whole `bash scripts/kicad/run.sh -> docker` subtree, and a signal sent to the wrapper's process
 group reaches them only through the driver, which records it. The KiCad container itself is not
-in the host process tree: killing the docker client orphans it (observed on this host, #308). So
-run.sh writes each container id into the directory named by KICAD_ORACLE_CIDDIR, which the driver
-owns per invocation, and the driver `docker stop`s exactly those ids on its way out. Nothing
-outside those children and containers is ever signalled.
+in the host process tree: killing the docker client orphans it (observed on this host, #308), and
+kicad-cli as container PID 1 ignores a proxied SIGINT/SIGTERM. scripts/kicad/run.sh cannot carry
+the fix because its bytes are pinned by retained native evidence (scripts/panel/check_review_receipt.py);
+instead the owned children get a `docker` wrapper first on their PATH (docker_shim_dir) that adds
+`--init` and a `--cidfile` in the driver's own cid directory to every `docker run`, and the driver
+`docker stop`s exactly those ids on its way out. Nothing outside those children and containers is
+ever signalled.
 """
 from __future__ import annotations
-import hashlib,json,os,secrets,shutil,signal,subprocess,sys,time
+import hashlib,json,os,secrets,shlex,shutil,signal,subprocess,sys,time
 from pathlib import Path
 
 SCHEMA='osc4-transaction-receipt-2'
@@ -154,10 +157,38 @@ def _reap(proc,call):
     else:call['ended_by']='exited after signal'
 
 
+def docker_shim_dir(cid_dir):
+    """PATH entry for owned children only: a `docker` wrapper that gives every `docker run` --init and a cidfile.
+
+    run.sh stays byte-identical (retained native evidence pins it); the wrapper forwards to the real
+    docker found on the driver's own PATH, so `command -v docker` in run.sh resolves to it.
+    """
+    real=shutil.which('docker')
+    if not real:return None
+    d=Path(cid_dir)/'bin';d.mkdir(parents=True,exist_ok=True);shim=d/'docker'
+    shim.write_text('#!/usr/bin/env bash\n'
+                    f'# Owned-oracle docker wrapper written by {Path(__file__).name}; forwards to {real}.\n'
+                    '# --init: a proxied SIGINT/SIGTERM then terminates kicad-cli instead of being ignored as PID 1.\n'
+                    '# --cidfile: the owning driver docker-stops exactly these containers if their client is killed.\n'
+                    'if [[ ${1:-} == run ]]; then\n'
+                    f'  shift; exec {shlex.quote(real)} run --init --cidfile {shlex.quote(str(cid_dir))}/"oracle-$$-$(date +%s%N)-$RANDOM.cid" "$@"\n'
+                    'fi\n'
+                    f'exec {shlex.quote(real)} "$@"\n')
+    shim.chmod(0o755);return d
+
+
+def child_env():
+    """Environment for an owned child: the docker wrapper first on PATH when a cid directory is set."""
+    env=dict(os.environ)
+    shim=docker_shim_dir(STATE.cid_dir) if STATE.cid_dir else None
+    if shim:env['PATH']=f"{shim}{os.pathsep}{env.get('PATH','')}"
+    return env
+
+
 def owned_containers(cid_dir):
     """Container ids scripts/kicad/run.sh wrote into the driver's own KICAD_ORACLE_CIDDIR."""
     if not cid_dir or not Path(cid_dir).is_dir():return []
-    return [cid for f in sorted(Path(cid_dir).glob('*.cid')) for cid in [f.read_text().strip()] if cid]
+    return [cid for f in sorted(Path(cid_dir).glob('*.cid')) for cid in [f.read_text().strip()] if cid]  # the bin/ shim is not a cidfile
 
 
 def stop_owned_containers(cid_dir,stop_seconds=5):
@@ -188,7 +219,7 @@ def owned_run(*args):
     reachable by one killpg, and every call is checkpointed in the receipt with its PID/PGID.
     """
     receipt=STATE.receipt
-    proc=subprocess.Popen(args,cwd=STATE.cwd,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,start_new_session=True)
+    proc=subprocess.Popen(args,cwd=STATE.cwd,env=child_env(),text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,start_new_session=True)
     STATE.children[proc.pid]=proc
     call={'argv':[str(a) for a in args[:6]],'argc':len(args),'pid':proc.pid,'pgid':proc.pid,'started_utc':utc()}
     if receipt is not None:

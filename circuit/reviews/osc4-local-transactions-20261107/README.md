@@ -27,10 +27,14 @@ NOT RUN.
   sandbox policy. The lifecycle below no longer depends on that answer.
 - **What the parent observed about containers.** Killing the host process tree of a guarded
   native job left the KiCad container running: `docker run` is only a client, and the container
-  is not in the host process tree. `scripts/kicad/run.sh` now runs `docker run --init`, so a
-  proxied SIGINT/SIGTERM terminates kicad-cli (PID 1 would ignore it), and writes a cidfile per
-  container into `KICAD_ORACLE_CIDDIR` when an owning driver sets it, so that driver can
-  `docker stop` exactly its own containers. Both paths are covered by the docker tests.
+  is not in the host process tree. `scripts/kicad/run.sh` is unchanged, because its bytes are
+  retained native evidence (`scripts/panel/check_review_receipt.py` pins them; editing it
+  makes the panel review stale and needs a native rerun). Instead the driver puts a `docker`
+  wrapper first on its children's PATH (`lifecycle.docker_shim_dir`) that gives every
+  `docker run` `--init`, so a proxied SIGINT/SIGTERM terminates kicad-cli (PID 1 would ignore
+  it), and a `--cidfile` in the driver's own cid directory, so the driver can `docker stop`
+  exactly its own containers. Both paths are covered by the docker tests. Moving `--init` and
+  the cidfile into `run.sh` itself is a follow-up for the next native panel regeneration.
 - **Schema `osc4-transaction-receipt-2`.** The schema-1 fields keep their meaning. Added:
   `invocation`, `source_revision`, `input_board`, `spec_name`, `environment` (hosted flag,
   run id), `driver` (PID/PGID), `max_minutes`, `budget_source`, `grace_seconds`,
