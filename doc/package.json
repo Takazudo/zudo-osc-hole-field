@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=22.18.0"
+    "node": ">=24 <25"
   },
   "scripts": {
     "dev": "zudo-circuit-doc generate --config ../circuit.config.ts && run-parallel dev:zfb dev:history dev:circuit",
@@ -19,15 +19,13 @@
     "dev:circuit": "zudo-circuit-doc generate --watch --config ../circuit.config.ts"
   },
   "dependencies": {
-    "@takazudo/zfb": "2.21.0",
-    "@takazudo/zfb-runtime": "2.21.0",
-    "@takazudo/zfb-md-wasm": "2.21.0",
-    "@takazudo/zudo-doc": "5.27.0",
-    "@takazudo/zudo-doc-history-server": "5.27.0",
-    "@takazudo/zudo-circuit-doc": "^0.1.0",
+    "@takazudo/zfb": "5.2.2",
+    "@takazudo/zfb-runtime": "5.2.2",
+    "@takazudo/zfb-md-wasm": "5.2.2",
+    "@takazudo/zudo-doc": "9.1.4",
+    "@takazudo/zudo-doc-history-server": "9.1.4",
+    "@takazudo/zudo-circuit-doc": "^0.3.0",
     "zod": "^4.3.6",
-    "preact": "^10.29.1",
-    "preact-render-to-string": "^6.6.6",
     "diff": "^8.0.3"
   },
   "devDependencies": {

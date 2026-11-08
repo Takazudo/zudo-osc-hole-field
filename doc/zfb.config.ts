@@ -15,8 +15,19 @@ const site = zudoDoc({
   base: "/",
   // ADR-020: templates set the locale explicitly.
   defaultLocale: "en",
+  // Classic look (zudo-doc's `default` pack), selected explicitly: zudo-doc 9
+  // defaults to Graphite, and this project keeps its appearance unchanged.
+  themePack: "default",
   themePacks: ["default"],
   llmsTxt: true,
+  // Preserve the zudo-doc 5.27 search index window (300 characters per page),
+  // the accepted behaviour for this site: the search widget shows a short
+  // match-centred snippet either way, and the authored pages open with their
+  // summary. zudo-doc 9 defaults to 3000. (A longer window also exposed a
+  // `zudo-circuit-doc scan` false positive on the records index — two adjacent
+  // published table cells matching a withheld prompt — reported upstream as
+  // https://github.com/Takazudo/zudo-circuit-doc/issues/164.)
+  searchMaxBodyLength: 300,
   cjkFriendly: true,
   dynamicPageTransition: true,
   docHistory: true,
@@ -24,6 +35,16 @@ const site = zudoDoc({
   // hand-edited, so it carries no useful edit history of its own.
   docHistoryExclude: ["components", "components/**"],
   assetViewer: true,
+  // HTML under public/assets is a self-contained application (the 3 MB
+  // workbench), not a viewable document; its viewer page would only show the
+  // raw source. Excluding it is also a workaround for
+  // https://github.com/Takazudo/zudo-front-builder/issues/4647: zudo-doc 9
+  // inlines every text asset body into a virtual module that zfb 5's
+  // zudo-wind scanner reads for class candidates, and the workbench's JS
+  // template literals (`label-${kind}`) fail `zfb build` there (ZW001). The
+  // raw /assets/osc-hole-field/workbench.html URL the authored pages link is
+  // unaffected; SVG/TXT assets keep their viewer pages.
+  assetViewerExclude: ["**/*.html"],
   strictContentBridge: true,
   // ADR-016: ingest this project's `.claude/` tree (one level up from this
   // zfb project) so `/docs/claude/` and `/docs/claude-skills/<owner>/`

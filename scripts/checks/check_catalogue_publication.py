@@ -45,6 +45,9 @@ def check_publication(lines, records, selection, decisions, sources, facts, rend
     if decided != expected:
         raise ValueError(f'publication coverage differs: missing={sorted(expected-decided)}, stale={sorted(decided-expected)}')
     documents = keyed(selection['documentSelections'], 'recordId')
+    exceptions = keyed(selection.get('documentExceptions', []), 'recordId')
+    if documents.keys() & exceptions.keys():
+        raise ValueError('record has both a document selection and a document exception')
     record_by_id = keyed(records, 'record_id')
     for constraint in decisions['document_constraints']:
         identity = constraint['record_id']
@@ -52,6 +55,14 @@ def check_publication(lines, records, selection, decisions, sources, facts, rend
             raise ValueError('document constraint references an absent inventory record')
         if identity not in selected:
             continue
+        if identity in exceptions:
+            # Renderer 0.2.0+ can publish a record with a reviewed documentExceptions
+            # entry instead of a document. A constrained record pins a specific
+            # family document and its applicability warning, so an exception cannot
+            # satisfy it: that is a different publication decision to review.
+            raise ValueError(f'{identity}: constrained document was replaced by a documentExceptions entry')
+        if identity not in documents:
+            raise ValueError(f'{identity}: selected constrained record has no document decision')
         document = documents[identity]
         source = sources[constraint['source_id']]
         fact = facts[constraint['applicability_fact_id']]

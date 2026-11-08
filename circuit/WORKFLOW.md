@@ -50,7 +50,7 @@ A project may add its own top-level authored section (for example `testing/` or 
 
 1. Add the content under `doc/src/content/docs/<section>/`, with an `index.mdx` as the section's landing page.
 2. Give it a matching `categoryMatch` (equal to the section's directory name) wherever it appears in `headerNav` in `doc/zfb.config.ts`. Without a matching `categoryMatch`, the section's sidebar stays empty even though the pages exist.
-3. The header nav is capped at **6 top-level items** (zudo-doc 5.27.0; the zudo-circuit-doc project documentation's "Getting started → What you get" page states the same cap). Project, Architecture, Research, Decisions, Verification and Components already fill it, so add the new section as a `children` entry under one of the existing dropdown items instead of a seventh top-level entry.
+3. This scaffold retains **6 top-level header items** as a project navigation convention; it is not a document-ancestry rule. Project, Architecture, Research, Decisions, Verification and Components already fill it, so add the new section as a `children` entry under one of the existing dropdown items instead of a seventh top-level entry.
 4. `project/index.mdx` and `project/next-actions.mdx` stay required regardless of what you add — the Shared entry above reads them first, on every task.
 
 ## Commands
@@ -145,7 +145,7 @@ The validator recomputes the arithmetic. **Arithmetic is not dimensional proof:*
 
 1. Fill the brief in `doc/src/content/docs/project/index.mdx`: intended behavior, interfaces, power source, dimensions, environment, quantity, constraints and unknowns. Keep "Not entered" where the owner has not said.
 2. Draft functional blocks and operating states in `doc/src/content/docs/architecture/overview.mdx`. Name the decisions that constrain component selection. Start from responsibilities, not IC names.
-3. Record candidate components as authored research (copy `circuit/templates/project-docs/research/component-candidate.mdx` into `doc/src/content/docs/research/`). Candidates stay out of the inventory until selected.
+3. Record candidate components as authored research (copy `circuit/templates/project-docs/research/component-candidate.mdx` into `doc/src/content/docs/research/`). Candidates stay out of the fitted inventory until selected. An audited candidate may carry full evidence in an owner bundle through the separate `evidence.candidates` inventory.
 4. Put the most consequential uncertainties and the next bounded task in `doc/src/content/docs/project/next-actions.mdx`.
 5. Add integration rules only when a real interaction exists (see [Integration rules](#integration-rules)).
 6. Run `pnpm circuit:check` and `pnpm check`.
@@ -328,9 +328,10 @@ A preview is a rendering result. **A preview is not dimensional proof**, and a f
 
 ## Publication policy
 
-Adding evidence does not publish it. `circuit/publication/selection.json` lists exactly which record IDs, source IDs and linkable source IDs are published, one document selection per record (`documentKind` is `datasheet`, `specification` or `drawing`, chosen after inspecting the content), and the `expect` counts (`records`, `sources`, `integrationRules`, `packages`) that lock the published set. Zero is allowed.
+Adding evidence does not publish it. `circuit/publication/selection.json` lists exactly which record IDs, source IDs and linkable source IDs are published. Every selected record has exactly one document decision: a `documentSelections` entry (`documentKind` is `datasheet`, `specification`, `drawing` or `source-record`) or a `documentExceptions` entry (`recordId` and an honest `reason` that no document is available to publish). These lists are disjoint and together cover `recordIds`; the optional `documentExceptions` key defaults to `[]`. `expect` counts (`records`, `sources`, `integrationRules`, `packages`) lock the published set. Zero is allowed.
 
 - Selection and assets-allowlist edits happen **in the same task** as the evidence change and show up as a reviewable diff. No per-part conversational permission prompt is needed; the diff is the review.
+- Use `source-record` for a reviewed non-PDF source; its label is **Source record**, not a datasheet. Preserve the actual source title, authority and unresolved exact-part applicability. A `documentExceptions` reason is shown as document availability under the existing `reference.document.availability` matrix key; state what was checked, never describe distributor evidence as a manufacturer document or invent a URL. Keep relevant source IDs in `sourceIds` so they remain under Sources; select outbound URLs in `linkableSourceIds` only when approved. A mapped footprint with no declared model may publish footprint-only with an explicit unavailable-model notice. A declared model must resolve to a valid WRL contained in the configured model root; declared broken model references still fail. Missing geometry is never physical qualification.
 - Selecting a source publishes its metadata; an outbound link is published only for IDs in `linkableSourceIds`.
 - Raw sources and CAD files stay outside `doc/public/`. A file placed there deliberately must be listed in `circuit/publication/assets.json` with a reason; the publication scan fails otherwise. Generated previews under `doc/public/assets/component-previews/` are the only exception.
 
@@ -338,7 +339,7 @@ Adding evidence does not publish it. `circuit/publication/selection.json` lists 
 
 | Tool | Status | Needed for |
 | --- | --- | --- |
-| Node.js ≥22.18 | Required | Everything |
+| Node.js 24 LTS | Required | Everything |
 | pnpm 11 (via corepack) | Required | Install and scripts |
 | Python ≥3.10 (stdlib only) | Required | `pnpm circuit:check` (override the interpreter with `CIRCUIT_DOC_PYTHON`) |
 | git | Required | History, review diffs, doc history |

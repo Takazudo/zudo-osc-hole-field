@@ -3,88 +3,95 @@
   "scope": "Every current manual-inventory exact record, including DNP, requires an explicit publication decision. Passing this coverage check is not full catalogue completion or physical qualification.",
   "renderer": {
     "package": "@takazudo/zudo-circuit-doc",
-    "version": "0.1.0"
+    "version": "0.3.0",
+    "re_reviewed": "2026-11-08: every blocker re-reviewed against @takazudo/zudo-circuit-doc 0.3.0 with dry-run selections (#154, PR #312). The 0.1.0 renderer limits no longer apply; what remains is the CAD package preview lock and a reviewed selection diff, recorded per record below."
   },
   "blocked_records": [
     {
       "record_id": "rec-c-bulk",
       "blockers": [
-        "document-pdf-only"
+        "package-preview-lock",
+        "document-decision-pending"
       ],
-      "reason": "Exact detailed datasheet unavailable. Framework 0.1.0 requires a linkable PDF-labelled document; a manufacturer homepage or catalogue JSON must not be presented as that PDF.",
-      "unblock": "Released source-record or nullable-document support, or genuinely retained appropriate exact documentation; preserve current source gaps and lifecycle limits."
+      "reason": "Exact detailed datasheet unavailable (SOURCE UNAVAILABLE); retained sources are the Murata public catalogue response and project shortlist/ledger. Renderer 0.3.0 (since 0.2.0) accepts a reviewed `documentExceptions` entry or a `source-record` document kind, so the 0.1.0 PDF-only requirement is lifted. A 2026-11-08 dry-run selection with a documentExceptions entry passed the publication policy and stopped at the reviewed CAD package lock (the capacitor's footprint package has no rendered preview). Still unpublished: the owner chooses between a documentExceptions reason and a source-record selection of the catalogue response (never presented as the datasheet), and the package preview and lock follow in the same reviewed diff.",
+      "unblock": "Owner decision: documentExceptions reason or `source-record` for the Murata catalogue source; render the footprint preview with the pinned KiCad image; add the record, sources and expect counts to circuit/publication/selection.json; preserve the stated source gaps and lifecycle limits."
     },
     {
       "record_id": "rec-c-bypass",
       "blockers": [
-        "document-pdf-only"
+        "package-preview-lock",
+        "document-decision-pending"
       ],
-      "reason": "Exact detailed datasheet unavailable. Framework 0.1.0 requires a linkable PDF-labelled document; a manufacturer homepage or catalogue JSON must not be presented as that PDF.",
-      "unblock": "Released source-record or nullable-document support, or genuinely retained appropriate exact documentation; preserve current source gaps and lifecycle limits."
+      "reason": "Exact detailed datasheet unavailable (SOURCE UNAVAILABLE); retained sources are the Murata public catalogue response and project shortlist/ledger. Renderer 0.3.0 (since 0.2.0) accepts a reviewed `documentExceptions` entry or a `source-record` document kind, so the 0.1.0 PDF-only requirement is lifted. A 2026-11-08 dry-run selection with a documentExceptions entry passed the publication policy and stopped at the reviewed CAD package lock (the capacitor's footprint package has no rendered preview). Still unpublished: the owner chooses between a documentExceptions reason and a source-record selection of the catalogue response (never presented as the datasheet), and the package preview and lock follow in the same reviewed diff.",
+      "unblock": "Owner decision: documentExceptions reason or `source-record` for the Murata catalogue source; render the footprint preview with the pinned KiCad image; add the record, sources and expect counts to circuit/publication/selection.json; preserve the stated source gaps and lifecycle limits."
     },
     {
       "record_id": "rec-r-ladder",
       "blockers": [
-        "model-required"
+        "package-preview-lock"
       ],
-      "reason": "Retained footprint has no model reference. Framework 0.1.0 requires a WRL for every selected PCB record.",
-      "unblock": "Released optional-model publication that preserves footprint and pin checks, states absent geometry, and still rejects broken declared references; no invented model."
+      "reason": "Retained footprint has no model reference. Renderer 0.3.0 (since 0.2.0) publishes a mapped footprint without a declared model as footprint-only with an explicit unavailable-model notice, so the 0.1.0 WRL requirement is lifted. A 2026-11-08 dry-run selection passed the document and policy checks and stopped only at the reviewed CAD package lock (preview manifest 32 packages; this record adds a package that has no rendered footprint preview yet). Still unpublished: the preview must be rendered with the pinned KiCad image and the package lock raised in the same reviewed diff; no model is invented.",
+      "unblock": "Run `pnpm previews:generate` (pinned KiCad image) for the new footprint package, add the record with its datasheet documentSelection and linkable source to circuit/publication/selection.json, raise expect.packages, and pass `pnpm check` / `pnpm check:site`."
     },
     {
       "record_id": "rec-r-power",
       "blockers": [
-        "model-required"
+        "package-preview-lock"
       ],
-      "reason": "Retained footprint has no model reference. Framework 0.1.0 requires a WRL for every selected PCB record.",
-      "unblock": "Released optional-model publication that preserves footprint and pin checks, states absent geometry, and still rejects broken declared references; no invented model."
+      "reason": "Retained footprint has no model reference. Renderer 0.3.0 (since 0.2.0) publishes a mapped footprint without a declared model as footprint-only with an explicit unavailable-model notice, so the 0.1.0 WRL requirement is lifted. A 2026-11-08 dry-run selection passed the document and policy checks and stopped only at the reviewed CAD package lock (preview manifest 32 packages; this record adds a package that has no rendered footprint preview yet). Still unpublished: the preview must be rendered with the pinned KiCad image and the package lock raised in the same reviewed diff; no model is invented.",
+      "unblock": "Run `pnpm previews:generate` (pinned KiCad image) for the new footprint package, add the record with its datasheet documentSelection and linkable source to circuit/publication/selection.json, raise expect.packages, and pass `pnpm check` / `pnpm check:site`."
     },
     {
       "record_id": "rec-trim-102",
       "blockers": [
-        "model-required"
+        "package-preview-lock"
       ],
-      "reason": "Retained footprint has no model reference. Framework 0.1.0 requires a WRL for every selected PCB record.",
-      "unblock": "Released optional-model publication that preserves footprint and pin checks, states absent geometry, and still rejects broken declared references; no invented model."
+      "reason": "Retained footprint has no model reference. Renderer 0.3.0 (since 0.2.0) publishes a mapped footprint without a declared model as footprint-only with an explicit unavailable-model notice, so the 0.1.0 WRL requirement is lifted. A 2026-11-08 dry-run selection passed the document and policy checks and stopped only at the reviewed CAD package lock (preview manifest 32 packages; this record adds a package that has no rendered footprint preview yet). Still unpublished: the preview must be rendered with the pinned KiCad image and the package lock raised in the same reviewed diff; no model is invented.",
+      "unblock": "Run `pnpm previews:generate` (pinned KiCad image) for the new footprint package, add the record with its datasheet documentSelection and linkable source to circuit/publication/selection.json, raise expect.packages, and pass `pnpm check` / `pnpm check:site`."
     },
     {
       "record_id": "rec-trim-103",
       "blockers": [
-        "model-required"
+        "package-preview-lock"
       ],
-      "reason": "Retained footprint has no model reference. Framework 0.1.0 requires a WRL for every selected PCB record.",
-      "unblock": "Released optional-model publication that preserves footprint and pin checks, states absent geometry, and still rejects broken declared references; no invented model."
+      "reason": "Retained footprint has no model reference. Renderer 0.3.0 (since 0.2.0) publishes a mapped footprint without a declared model as footprint-only with an explicit unavailable-model notice, so the 0.1.0 WRL requirement is lifted. A 2026-11-08 dry-run selection passed the document and policy checks and stopped only at the reviewed CAD package lock (preview manifest 32 packages; this record adds a package that has no rendered footprint preview yet). Still unpublished: the preview must be rendered with the pinned KiCad image and the package lock raised in the same reviewed diff; no model is invented.",
+      "unblock": "Run `pnpm previews:generate` (pinned KiCad image) for the new footprint package, add the record with its datasheet documentSelection and linkable source to circuit/publication/selection.json, raise expect.packages, and pass `pnpm check` / `pnpm check:site`."
     },
     {
       "record_id": "rec-gh3-housing",
       "blockers": [
-        "model-required"
+        "package-preview-lock",
+        "numbering-aid-review"
       ],
-      "reason": "External housing/contact has an explicit NOT_FOR_PCB numbering-aid footprint without a WRL. Do not reclassify it as physical PCB geometry to satisfy the renderer.",
-      "unblock": "Released optional-model publication retaining the mapping aid and honest no-model status. GH acceptance remains separately owned by issue63."
+      "reason": "External housing/contact has an explicit NOT_FOR_PCB numbering-aid footprint without a WRL. Renderer 0.3.0 (since 0.2.0) would publish it footprint-only with an unavailable-model notice, so the 0.1.0 WRL requirement is lifted; it is not re-classified as physical PCB geometry. A 2026-11-08 dry-run selection stopped at the reviewed CAD package lock (the numbering aid has no rendered preview). Still unpublished: whether the numbering aid may be shown as a footprint preview is an owner review, and GH acceptance remains separately owned by issue63.",
+      "unblock": "Owner decision on publishing the NOT_FOR_PCB numbering aid as a footprint preview (or exempting it); then render the preview with the pinned KiCad image, add the record and raise expect.packages in a reviewed selection diff."
     },
     {
       "record_id": "rec-gh7-housing",
       "blockers": [
-        "model-required"
+        "package-preview-lock",
+        "numbering-aid-review"
       ],
-      "reason": "External housing/contact has an explicit NOT_FOR_PCB numbering-aid footprint without a WRL. Do not reclassify it as physical PCB geometry to satisfy the renderer.",
-      "unblock": "Released optional-model publication retaining the mapping aid and honest no-model status. GH acceptance remains separately owned by issue63."
+      "reason": "External housing/contact has an explicit NOT_FOR_PCB numbering-aid footprint without a WRL. Renderer 0.3.0 (since 0.2.0) would publish it footprint-only with an unavailable-model notice, so the 0.1.0 WRL requirement is lifted; it is not re-classified as physical PCB geometry. A 2026-11-08 dry-run selection stopped at the reviewed CAD package lock (the numbering aid has no rendered preview). Still unpublished: whether the numbering aid may be shown as a footprint preview is an owner review, and GH acceptance remains separately owned by issue63.",
+      "unblock": "Owner decision on publishing the NOT_FOR_PCB numbering aid as a footprint preview (or exempting it); then render the preview with the pinned KiCad image, add the record and raise expect.packages in a reviewed selection diff."
     },
     {
       "record_id": "rec-gh8-housing",
       "blockers": [
-        "model-required"
+        "package-preview-lock",
+        "numbering-aid-review"
       ],
-      "reason": "External housing/contact has an explicit NOT_FOR_PCB numbering-aid footprint without a WRL. Do not reclassify it as physical PCB geometry to satisfy the renderer.",
-      "unblock": "Released optional-model publication retaining the mapping aid and honest no-model status. GH acceptance remains separately owned by issue63."
+      "reason": "External housing/contact has an explicit NOT_FOR_PCB numbering-aid footprint without a WRL. Renderer 0.3.0 (since 0.2.0) would publish it footprint-only with an unavailable-model notice, so the 0.1.0 WRL requirement is lifted; it is not re-classified as physical PCB geometry. A 2026-11-08 dry-run selection stopped at the reviewed CAD package lock (the numbering aid has no rendered preview). Still unpublished: whether the numbering aid may be shown as a footprint preview is an owner review, and GH acceptance remains separately owned by issue63.",
+      "unblock": "Owner decision on publishing the NOT_FOR_PCB numbering aid as a footprint preview (or exempting it); then render the preview with the pinned KiCad image, add the record and raise expect.packages in a reviewed selection diff."
     },
     {
       "record_id": "rec-gh-contact",
       "blockers": [
-        "model-required"
+        "package-preview-lock",
+        "numbering-aid-review"
       ],
-      "reason": "External housing/contact has an explicit NOT_FOR_PCB numbering-aid footprint without a WRL. Do not reclassify it as physical PCB geometry to satisfy the renderer.",
-      "unblock": "Released optional-model publication retaining the mapping aid and honest no-model status. GH acceptance remains separately owned by issue63."
+      "reason": "External housing/contact has an explicit NOT_FOR_PCB numbering-aid footprint without a WRL. Renderer 0.3.0 (since 0.2.0) would publish it footprint-only with an unavailable-model notice, so the 0.1.0 WRL requirement is lifted; it is not re-classified as physical PCB geometry. A 2026-11-08 dry-run selection stopped at the reviewed CAD package lock (the numbering aid has no rendered preview). Still unpublished: whether the numbering aid may be shown as a footprint preview is an owner review, and GH acceptance remains separately owned by issue63.",
+      "unblock": "Owner decision on publishing the NOT_FOR_PCB numbering aid as a footprint preview (or exempting it); then render the preview with the pinned KiCad image, add the record and raise expect.packages in a reviewed selection diff."
     }
   ],
   "intentional_exclusions": [
