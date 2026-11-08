@@ -14,7 +14,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 from scripts.pcbgen.uuid_tools import top_level_spans,UUID_RE
-from scripts.pcbgen.copper_identity import reject_new_uuid_collisions
+from scripts.pcbgen.copper_identity import reject_new_uuid_collisions,require_unique
 
 NET_RE=re.compile(r'\(net\s+"((?:[^"\\]|\\.)*)"\)')
 LAYER_RE=re.compile(r'\(layer\s+"([^"]+)"\)')
@@ -154,6 +154,8 @@ def merge_text(base_text,deltas,reverted=frozenset()):
     removed={r['uuid'] for d,k in zip(deltas,keep) for r in d['removed'] if r['net'] in k and r['net'] not in reverted}
     added_rows=[a for d,k in zip(deltas,keep) for a in d['added'] if a['net'] in k and a['net'] not in reverted]
     added=[a['block'] for a in added_rows];surviving=set()
+    # A removal naming a legacy duplicate UUID would drop both objects; refuse it before the text walk.
+    require_unique(copper_block_groups(base_text),removed,'shard merge removal')
     chunks=[];last=0;spans=list(top_level_spans(base_text));dropped=0
     for start,end in spans:
         block=base_text[start:end]

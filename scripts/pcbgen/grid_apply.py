@@ -9,24 +9,16 @@ import argparse,hashlib,json
 from pathlib import Path
 import pcbnew,sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
-from scripts.pcbgen.uuid_tools import top_level_spans,UUID_RE
-from scripts.pcbgen.copper_identity import reject_new_uuid_collisions
+from scripts.pcbgen.copper_identity import reject_new_uuid_collisions,drop_copper_blocks,load_board_text,board_bytes
 
 def apply(board_path,proposal,output):
     if hashlib.sha256(Path(board_path).read_bytes()).hexdigest()!=proposal['board_sha256']:raise ValueError('proposal was made for a different board')
     removed=set(proposal['removed_uuids']);source=Path(board_path)
     if removed:
         # Drop ripped copper as text: removing SWIG-owned tracks corrupts later pcbnew calls.
-        text=source.read_text();keep=[];last=0;dropped=0
-        for start,end in top_level_spans(text):
-            block=text[start:end]
-            if block.startswith(('(segment','(via')):
-                match=UUID_RE.search(block)
-                if match and match[1] in removed:
-                    keep.append(text[last:start]);last=end;dropped+=1
-        keep.append(text[last:])
-        if dropped!=len(removed):raise ValueError(f'ripped copper not found: {dropped}/{len(removed)}')
-        source=Path(output).with_suffix('.ripped.kicad_pcb');source.write_text(''.join(keep))
+        # A removal UUID that names two objects is refused before anything is dropped.
+        ripped=drop_copper_blocks(load_board_text(source),removed,'grid_apply removal')
+        source=Path(output).with_suffix('.ripped.kicad_pcb');source.write_bytes(board_bytes(ripped))
     # LoadBoard reads <stem>.kicad_pro and SaveBoard writes it next to --output; a ripped copy
     # without its project loads default net classes and overwrites the candidate's project.
     project=Path(output).with_suffix('.kicad_pro');source_project=source.with_suffix('.kicad_pro')
