@@ -1,0 +1,189 @@
+{
+  "schema": "osc-pd-interface-handoff-1",
+  "status": "DEPENDENCY HANDOFF; NOT IMPLEMENTED OR ORDER-READY",
+  "source_commit": "433c88b27b2e49284fe1a717b47ba4226c829dd3",
+  "source_sha256": {
+    "project/osc-hole-field/electrical-decisions.json": "5aff88ac6988659d3537a49304f4f5df5bcccf9dc8665e6572fc474057f53f9b",
+    "design/power/supply-architecture-input.json": "92d9099f26cc5eda3408aa2aa6e134019f9914a64ec05e5df744d4cd179c0c1d",
+    "design/power/supply-architecture.json": "11de349b0c5ab2762dad8ac4d841a0705c70c7c0816dc110175bd55c739989ff",
+    "design/power/protection58-draft-contract.json": "9fa1c8ebda9a2878821110479238cc7cf14627792938ccb3517eecd38467d61f",
+    "design/spec/modules/power.py": "16e884bb8db08e8690e27daee42ab497cb2b8e0b08cbdae630ef3b9c2e4a2379",
+    "design/partition/partition-input.json": "1370eda314dadf2c06f92f0e2386489345c9441e56cefa4687f8f25647ae38df",
+    "design/architecture-278/integration/power-contract/ledger.py": "de0bfc252b68788a49ad88fd7b5b98170b022ea25578b242057415aaee1b8f19",
+    "design/architecture-278/integration/power-contract/README.md": "cbfa168567c0434d43219a6bfa273b748d4ffb760eebadd9ae22694c8e6cf18e",
+    "design/architecture-278/integration/power-contract/supply-input.json": "1bbdf402b9ed8f2a6a5bfdcc63af8e70c41245942396842559cd9a38b9dc348f"
+  },
+  "contract_decision": "ADOPTED owner decision 2026-11-04T03:07Z (option 1): the contract stays at 1700 / 1600 / 300 mA continuous and 2000 / 1900 / 400 mA transient; +12 V keeps 1700 mA as margin above the post-S2b canonical rule result, and the check is canonical <= contract. No contract number changed.",
+  "external_contract_continuous_mA": {
+    "+12V": 1700,
+    "-12V": 1600,
+    "+5V": 300
+  },
+  "external_contract_transient_mA": {
+    "+12V": 2000,
+    "-12V": 1900,
+    "+5V": 400
+  },
+  "canonical_rule_continuous_mA": {
+    "+12V": 1600,
+    "-12V": 1600,
+    "+5V": 300
+  },
+  "canonical_rule_transient_mA": {
+    "+12V": 1900,
+    "-12V": 1900,
+    "+5V": 400
+  },
+  "source_requirements": {
+    "voltage_magnitude_at_source_V": {
+      "+12V": [
+        12,
+        12.3
+      ],
+      "-12V": [
+        12,
+        12.2
+      ],
+      "+5V": [
+        5.05,
+        5.1
+      ]
+    },
+    "required_load_voltage_magnitude_V": {
+      "+12V": [
+        11.53,
+        12.48
+      ],
+      "-12V": [
+        11.74,
+        12.37
+      ],
+      "+5V": [
+        4.81,
+        5.2
+      ]
+    },
+    "max_total_rail_and_return_loss_V": 0.2,
+    "ripple_at_load_mVpp": 1,
+    "ripple_criterion": "Strictly below target; included within voltage bands; verify with bandwidth/setup recorded in qualification.",
+    "soft_start_min_ms": 10,
+    "transient_requirement_duration_ms": 20,
+    "nominal_capacitance_ceiling_uF": {
+      "+12V": 150,
+      "-12V": 150,
+      "+5V": 100
+    },
+    "capacitance_tolerance_fraction": 0.2,
+    "capacity_statement": "Generated continuous/transient values are minimum REQUIRED delivery at declared source bands. No available capacity is asserted.",
+    "fault_policy": "Source current limit and coordinated all-rail shutdown must prevent indefinite partial supply. Reverse-current blocking on all source outputs, active discharge under supervision and rail monitors at load are required; actual circuit and measured response remain #52/#57.",
+    "voltage_band_note": "Shared AGND drop can raise one rail magnitude while reducing another. Check source maximum plus worst return shift against every upper load limit, not only subtraction at minimum.",
+    "maximum_delivered_current_mA": {
+      "+12V": 2100,
+      "-12V": 2000,
+      "+5V": 500
+    },
+    "current_limit_contract": "Selected source or inlet must deliver minimum transient requirements with a positive planning window to maximum_delivered_current_mA, then bound each rail including tolerance to that maximum and coordinate all-rail shutdown. The 100 mA windows are proposals, not proven realizable limiter tolerances. Maximums are interface limits, not device ratings. Unbounded overshoot/fault energy cannot be admitted by the contact/cable checker; actual limiter dynamics require #52 circuit evidence and #57 tests.",
+    "minimum_continuous_current_mA": {
+      "+12V": 1600,
+      "-12V": 1600,
+      "+5V": 300
+    }
+  },
+  "logical_inlet": {
+    "interface_id": "OSC-EXT-PWR-8-R1",
+    "status": "REQUIREMENT ONLY; orderable header, mate and contacts NOT SELECTED; no guessed footprint",
+    "candidate_only": {
+      "manufacturer": "Molex",
+      "header_mpn": "43045-0800",
+      "housing_mpn": "43025-0800",
+      "contact_mpn": "43030-0007",
+      "supplier_order_code": null,
+      "status": "NOT SELECTED; manufacturer catalog maxima do not establish assembled derating or exact drawing"
+    },
+    "pin_map": {
+      "1": "+12V_IN",
+      "2": "-12V_IN",
+      "3": "+5V_IN",
+      "4": "NC",
+      "5": "AGND",
+      "6": "AGND",
+      "7": "AGND",
+      "8": "AGND"
+    },
+    "pin_numbering": "Contract numbers are logical until exact manufacturer mating-face/pad drawing is retained and reconciled in #52. Do not infer a physical footprint from this map.",
+    "min_required_simultaneous_contact_rating_A": 5,
+    "min_required_contact_voltage_V": 30,
+    "max_each_rail_conductor_current_A": 2.5,
+    "max_each_return_conductor_current_A": 5,
+    "hotplug": "PROHIBITED; ground is not guaranteed first-mate/last-break. Power down source and external patched devices before connecting/disconnecting.",
+    "harness": {
+      "construction": "Factory crimped copper, eight-position polarized/latching housing; pin 4 unpopulated; no bus CV/gate; 20 AWG minimum conductor size with insulation/crimp verified for chosen contact.",
+      "max_length_mm": 300,
+      "max_wire_ohm_per_m_at_hot_condition": 0.04,
+      "max_contact_and_crimp_path_ohm": 0.008,
+      "max_protection_drop_V": 0.04,
+      "max_distribution_drop_V": 0.02,
+      "ampacity_min_A_per_conductor": 5,
+      "return_current_rule": "Assume the entire sum of rail transient magnitudes may use any one ground conductor; never divide current equally between four contacts as a guarantee."
+    },
+    "reservation_xyz_mm": [
+      260,
+      248,
+      -85,
+      308,
+      293,
+      -45
+    ],
+    "body_and_mate_max_xyz_mm": [
+      30,
+      30,
+      16
+    ],
+    "cable_bend_and_latch_clearance_mm": 15,
+    "support": "Enclosure bracket and strain relief carry insertion/cable loads; no reliance on PCB solder joints. Reservation is a requirement, not a component model."
+  },
+  "guaranteed_whole_instrument_maximum_mA": {
+    "+12V": null,
+    "-12V": null,
+    "+5V": null
+  },
+  "measured_source_capacity_mA": {
+    "+12V": null,
+    "-12V": null,
+    "+5V": null
+  },
+  "order_scope": {
+    "functional_board_ids": [
+      "osc-jack-left",
+      "osc-jack-right",
+      "osc-control",
+      "osc-core",
+      "osc-stage-optical",
+      "osc-octave-1",
+      "osc-octave-2",
+      "osc-octave-3",
+      "osc-octave-4",
+      "osc-octave-5"
+    ],
+    "panel_separate": true,
+    "external_power_board_separate": true
+  },
+  "historical_pd_quotation_verification": {
+    "scope": "Existing pinned-PD quotation validator; exact local git-show baseline plus exact GitHub commit capability bytes",
+    "result": "PASS",
+    "baseline_commit": "65031f98f02677998efada217f64e731d39437f7",
+    "capability_commit": "6071e1757c7678a4b5ed0af069a9eae202c6ee2d",
+    "capability_sha256": "e5864272b5e1e4a1876a69c95dc9a2fcd5683fea61a3d783016a52f7b18e2b8d",
+    "validator_sha256": "45527ec63ae8f57d1fb42e3e7c6519ec42251db64ab6bd0940e52217051f4acd",
+    "sibling_checkout_changed": false,
+    "current_sibling_head_claim": "NOT INSPECTED; historical pins only",
+    "hardware_qualification": "NOT RUN",
+    "repository": "https://github.com/Takazudo/zudo-pd",
+    "capability_path": "manufacturing/supply-capability.json",
+    "validator_path": "design/architecture-278/integration/power-contract/verify_pd_pin.py",
+    "normal_command": "python3 design/architecture-278/integration/power-contract/verify_pd_pin.py /path/to/zudo-pd",
+    "retained_remote_bytes_local_path": ".circuit-cache/order-readiness-20261109/pd-capability-pinned.json",
+    "reader_fallback": "For exact capability_commit/capability_path only, read GitHub contents at that ref, base64 decode, verify capability_sha256, then use those bytes in the unmodified quotation assertions. Other reads remain git show baseline_commit:path.",
+    "local_artifact_availability": "Machine-local cache; re-acquire from exact GitHub commit if absent; fail if bytes unavailable or hash differs."
+  }
+}
