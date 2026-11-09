@@ -170,5 +170,18 @@
     "confirmation_utc": "2026-11-01T16:07Z",
     "source": "Owner decision card approving adoption plus #293 fill and DRC, relayed by the project coordinator (phase 27)",
     "scope": "Adopts the design change set. It does not validate any board, does not authorise fabrication or ordering, and keeps the stage45/50/54 historical bindings as recorded FAILs pending the owner's policy review."
+  },
+  {
+    "id": "E17",
+    "topic": "G07 envelope gate, trigger and stage behavior",
+    "authority": "USER-CONFIRMED BEHAVIOR",
+    "date": "2026-11-09",
+    "decision": "Accept the captured behavior for all six envelopes: SIG and the button are ORed, so pressing the button while SIG is high does not retrigger. A combined rising edge starts rise from the current level. ASR falls when the combined gate falls; AR completes its cycle; LOOP restarts after EOC. STG indicates the selected rise or fall phase and is low during sustain/idle. A simultaneous new trigger takes priority over completion/EOC.",
+    "rationale": "Owner selected Accept captured behavior (recommended) in the WSL implementation session; this settles the product behavior without changing the existing circuit.",
+    "status": "behavior confirmed; circuit, timing and physical qualification remain open; no hardware or manufacturing adoption",
+    "source": "https://github.com/Takazudo/zudo-osc-hole-field/issues/31#issuecomment-6736413844",
+    "standard": "design/spec/modules/envelope_logic.py",
+    "scope": "Decision metadata and current documentation only; no connection, component, value, package, topology, netlist or code-behavior change.",
+    "identifier_note": "E16 is intentionally unused in this electrical decision register to avoid confusion with the historical E16 routing/annulus campaign; no historical record is renumbered."
   }
 ]

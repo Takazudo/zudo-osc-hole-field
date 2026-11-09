@@ -98,6 +98,11 @@ def build():
     if len(trial_d) != 1:
         raise ValueError('trial nut envelopes differ; compute individually')
     edge = min(min(jack_x), lock['frame']['panel_width_mm']-max(jack_x))-next(iter(trial_d))/2
+    decisions = indexed(read('project/osc-hole-field/electrical-decisions.json'), 'id')
+    semantics = {}
+    for family, question, decision in [('VCF', 'G06', 'E10'), ('AR', 'G07', 'E17')]:
+        confirmed = decisions.get(decision, {}).get('authority') == 'USER-CONFIRMED BEHAVIOR'
+        semantics[family] = question + ('_CONFIRMED_' + decision if confirmed else '_OPEN')
     blocks = []
     for b in contracts:
         br = [r for r in bindings if r['instance'] == b['id']]
@@ -106,9 +111,9 @@ def build():
                        'outputs': sum(p['direction']=='out' for p in b['ports']), 'controls': len(b['controls']),
                        'leds': sum(r['kind']=='led' for r in br),
                        'electrical_overrides': sum(r['uid'].split(':')[1].split('.')[0]==b['id'] for r in overrides),
-                       'owner_semantics': 'G06_OPEN' if b['family']=='VCF' else 'G07_OPEN' if b['family']=='AR' else 'NO_NEW_QUESTION_IDENTIFIED',
+                       'owner_semantics': semantics.get(b['family'], 'NO_NEW_QUESTION_IDENTIFIED'),
                        'mapping': 'SOURCE_UID_REFERENCE_MATCH', 'physical_fit': 'NOT_RUN'})
-    paths = ['design/grid/placements.lock.json', 'project/osc-hole-field/workbench/layout/grid.json',
+    paths = ['project/osc-hole-field/electrical-decisions.json', 'design/grid/placements.lock.json', 'project/osc-hole-field/workbench/layout/grid.json',
              'project/osc-hole-field/block-contracts.json', 'design/panel/panel-params.json',
              'boards/panel/reports/feature-table.json', 'scripts/panel/audit_current.py',
              'scripts/schgen/core.py', 'project/osc-hole-field/workbench/reference/icons.json',
