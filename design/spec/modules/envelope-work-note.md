@@ -3,6 +3,11 @@
 Date: 2026-09-28. Authority: PROPOSAL (planning, owner-delegated).
 Unvalidated draft — not bench tested.
 
+Current supersession note (2026-11-09): E17 confirms the captured G07 behavior,
+recorded in issue #31 comment 6736413844. The dated pending-confirmation
+statements below describe the original capture; circuit/timing/physical gates
+remain open. No source circuit or model input changed with this confirmation.
+
 ## Request and initial state
 
 Read latest #31 including OSC-ES-1, AGENTS.md, canonical circuit workflow, spec

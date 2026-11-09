@@ -5,12 +5,11 @@ sidebar_position: 110
 ---
 
 :::caution[Unvalidated draft — not bench tested]
-Authority: **PROPOSAL (planning, owner-delegated)**. G07 semantics below are the
-chosen capture contract and remain an owner-confirmation item. No hardware
+G07 behavior is **USER-CONFIRMED** on 2026-11-09 in E17 ([owner decision](https://github.com/Takazudo/zudo-osc-hole-field/issues/31#issuecomment-6736413844)). The existing capture is unchanged; circuit and timing qualification remain open. No hardware
 performance, production readiness or fabrication release is claimed.
 :::
 
-## G07 truth table — frozen before circuit capture
+## G07 truth table — captured behavior confirmed by E17
 
 SIG is a gate/trigger input, with no envelope-follower mode. The debounced button
 is ORed with SIG before edge detection: pressing the button while SIG is already
@@ -355,7 +354,7 @@ one. No new module bulk is assigned. #33/#34 must reconcile these expanded count
 startup and measured loads with the whole-instrument rail ceilings; this page
 does not label that budget passing.
 
-Open gates are G07 owner confirmation; exact unresolved passive/trimmer sourcing;
+G07 behavior is confirmed; remaining gates are exact unresolved passive/trimmer sourcing;
 clock/reset/rail-sequence and brownout behavior; synchronizer and HC timing margins;
 minimum trigger width and bounce; OTA/exponential converter offsets, leakage,
 matching and temperature dependence; actual time endpoints and curved response;

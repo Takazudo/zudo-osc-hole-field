@@ -10,7 +10,7 @@
 | --- | --- | --- |
 | 438 centres | VERIFIED SOURCE MATCH | Every UID, kind, XY, reference and aperture in retained native feature table matches `design/grid/placements.lock.json` plus panel window parameters. 324 NPTH apertures + 114 undrilled windows. This is retained-data comparison, not a new native readback. |
 | 33 functions, 180 ports, 144 controls | VERIFIED SOURCE MATCH | Every field declared in block-contracts matches the imported grid. Expanding current `design/spec/instrument.py` then matches all 438 physical UIDs/references exactly once. Independent source-path review finds 98 inputs and 82 outputs with no reversals. Connectivity/performance is not established by UID matching. |
-| Labels | SOURCE CORRESPONDENCE; TWO OPEN SEMANTICS | Port/control keys and labels map to current parts. G06 and G07 below remain owner questions; no silent renaming or behavior change. Two A/B controls use module headings instead of separate control labels, explaining 142 control labels for 144 controls. |
+| Labels | SOURCE CORRESPONDENCE; BEHAVIOR CONFIRMED | Port/control keys and labels map to current parts. G06 and G07 captured behavior is confirmed by E10 and E17; circuit and physical qualification remain open. Two A/B controls use module headings instead of separate control labels, explaining 142 control labels for 144 controls. |
 | Imported pot values | 48 STALE ELECTRICAL ANNOTATIONS | Current DC-control parts select PTV09A-4020F-B104, not inherited B103. `audit.json.electrical_overrides` records each UID, old annotation, current MPN, role and source. Other pots: 51 B103 and 2 B504 (H1/H2 SLEW). Lock/grid/contract bytes and current circuit BOM remain unchanged. |
 | Perimeter jack claim | CORRECTED | Current outer x=14.5/303.5, not 6.5/311.5. Trial Ø8.3 nut gives 10.35 mm nearest edge and 7.35 mm beyond the inner border edge. No border intrusion for that trial. Exact nut fit is not qualified by this arithmetic. |
 | Actual border exclusions | RETAINED | Owner 0.27 mm copper lines at x=2.2/315.8 and y=2.2/295.8 remain excluded from clip coverage. P collars reach x=1.9/316.1, retaining 1.1 mm projection into the 0–3 mm border. No clip profile/strength is selected by this correction. |
@@ -31,26 +31,26 @@ Counts below are deterministic from `audit.json`; “mapped” means UID/referen
 | O3 | OSC | 4 / 4 | 8 | 0 | 3 | NO NEW QUESTION IDENTIFIED |
 | O4 | OSC | 4 / 4 | 8 | 0 | 3 | NO NEW QUESTION IDENTIFIED |
 | O5 | OSC | 4 / 4 | 8 | 0 | 3 | NO NEW QUESTION IDENTIFIED |
-| F1 | VCF | 4 / 4 | 6 | 4 | 3 | G06 OPEN |
-| F2 | VCF | 4 / 4 | 6 | 4 | 3 | G06 OPEN |
-| F3 | VCF | 4 / 4 | 6 | 4 | 3 | G06 OPEN |
+| F1 | VCF | 4 / 4 | 6 | 4 | 3 | G06 CONFIRMED E10 |
+| F2 | VCF | 4 / 4 | 6 | 4 | 3 | G06 CONFIRMED E10 |
+| F3 | VCF | 4 / 4 | 6 | 4 | 3 | G06 CONFIRMED E10 |
 | M5A | MIX5 | 5 / 1 | 6 | 7 | 0 | NO NEW QUESTION IDENTIFIED |
 | M5B | MIX5 | 5 / 1 | 6 | 7 | 0 | NO NEW QUESTION IDENTIFIED |
 | M4A | MIX4 | 5 / 1 | 6 | 7 | 1 | NO NEW QUESTION IDENTIFIED |
 | M4B | MIX4 | 5 / 1 | 6 | 7 | 1 | NO NEW QUESTION IDENTIFIED |
 | W2 | FOLD | 3 / 1 | 4 | 3 | 2 | NO NEW QUESTION IDENTIFIED |
 | W1 | FOLD | 3 / 1 | 4 | 3 | 2 | NO NEW QUESTION IDENTIFIED |
-| E1 | AR | 3 / 4 | 6 | 5 | 2 | G07 OPEN |
+| E1 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED E17 |
 | A01 | AO | 2 / 1 | 2 | 4 | 1 | NO NEW QUESTION IDENTIFIED |
-| E2 | AR | 3 / 4 | 6 | 5 | 2 | G07 OPEN |
+| E2 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED E17 |
 | A02 | AO | 2 / 1 | 2 | 4 | 1 | NO NEW QUESTION IDENTIFIED |
-| E3 | AR | 3 / 4 | 6 | 5 | 2 | G07 OPEN |
+| E3 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED E17 |
 | A03 | AO | 2 / 1 | 2 | 4 | 1 | NO NEW QUESTION IDENTIFIED |
-| E4 | AR | 3 / 4 | 6 | 5 | 2 | G07 OPEN |
+| E4 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED E17 |
 | A04 | AO | 2 / 1 | 2 | 4 | 1 | NO NEW QUESTION IDENTIFIED |
-| E5 | AR | 3 / 4 | 6 | 5 | 2 | G07 OPEN |
+| E5 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED E17 |
 | A05 | AO | 2 / 1 | 2 | 4 | 1 | NO NEW QUESTION IDENTIFIED |
-| E6 | AR | 3 / 4 | 6 | 5 | 2 | G07 OPEN |
+| E6 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED E17 |
 | A06 | AO | 2 / 1 | 2 | 4 | 1 | NO NEW QUESTION IDENTIFIED |
 | B1 | MULT | 1 / 3 | 0 | 1 | 0 | NO NEW QUESTION IDENTIFIED |
 | B2 | MULT | 1 / 3 | 0 | 1 | 0 | NO NEW QUESTION IDENTIFIED |
@@ -66,11 +66,11 @@ Counts below are deterministic from `audit.json`; “mapped” means UID/referen
 | Family | Current source paths / panel meaning |
 | --- | --- |
 | OSC O1–O5 | `oscillator.py`: 1V/OCT, FM, PWM, SYNC inputs; SIN/TRI/SAW/PUL outputs; OCT/RANGE/SYNC/TUNE/FINE/FM±/PW/PWM± remain. No panel lamps added. Six calibration trimmers remain internal. |
-| VCF F1–F3 | `filter.py`: IN plus FREQ/RES/GAIN CV inputs, LP/BP/HP and parallel dry OUT. **G06:** manual GAIN and GAIN CV/depth control dry OUT only, not LP/BP/HP. Existing implementation proposal; owner confirmation remains open in `filter-work-note.md`. |
+| VCF F1–F3 | `filter.py`: IN plus FREQ/RES/GAIN CV inputs, LP/BP/HP and parallel dry OUT. **G06:** manual GAIN and GAIN CV/depth control dry OUT only, not LP/BP/HP. Captured behavior confirmed by E10; the historical `filter-work-note.md` retains its dated proposal. |
 | MIX5 M5A/B | `mix5.py`, `mixer_common.py`: five attenuverting inputs, summed output and LEVEL. |
 | MIX4 M4A/B | `mix4_vca.py`, `mixer_common.py`: four attenuverting inputs, ATTEN CV/depth plus manual LEVEL command VCA; SUM output. |
 | FOLD W2/W1 | `wavefolder.py`: IN, FOLD/BIAS CV and OUT; FOLD/BIAS manual, FOLD CV depth and LEVEL remain. W2 stays left of W1. |
-| ENV E1–E6 | `envelope.py`, `envelope_logic.py`: **G07:** SIG is conditioned gate/trigger, ORed with manual TRIG; rising edges retrigger from present level. ASR sustains while high, AR completes, LOOP restarts after EOC. ENV/BIP/EOC/STG outputs; RISE/FALL, MODE/SHAPE/STAGE controls. Not an envelope follower; owner confirmation remains open. |
+| ENV E1–E6 | `envelope.py`, `envelope_logic.py`: **G07:** SIG is conditioned gate/trigger, ORed with manual TRIG; rising edges retrigger from present level. ASR sustains while high, AR completes, LOOP restarts after EOC. ENV/BIP/EOC/STG outputs; RISE/FALL, MODE/SHAPE/STAGE controls. Not an envelope follower; captured behavior confirmed by E17. Pressing TRIG while SIG is high creates no new edge; STG is low in sustain/idle; a simultaneous trigger takes priority over completion/EOC. |
 | AO A01–A06 | `offset.py`: IN attenuation/inversion plus manual OFFSET and OFFSET CV sum to OUT. |
 | MULT B1/B2 | `mult.py`: one input, three buffered outputs. |
 | SH H1/H2 | `sample_hold.py`: TRIGGER and IN; manual SAMPLE, B504 SLEW and OUT. No hidden noise normal. |
@@ -95,7 +95,7 @@ The placement lock owns XY/kind/apertures. Its imported `component` field and th
 
 ## Remaining decisions and next work
 
-1. Owner confirm or revise G06 dry OUT-only gain and G07 gate/trigger semantics before final panel wording. A different behavior requires an explicit circuit/label impact proposal; no circuit change is made here.
+1. Keep final panel wording consistent with confirmed G06/E10 dry OUT-only gain and G07/E17 gate/trigger semantics. Complete their circuit/timing/physical qualification separately; no circuit change is made here.
 2. Retain fixed panel positions. Resolve custom support/clip exclusions, selector carrier/adapter, optics and actual tool/service envelopes with dimensions and an integrated mock-up where source geometry cannot establish access. Conceptual envelope overlaps in the Stage36 whole-layout viewer are not proof of physical interference.
 3. Standalone GH4 coupon **not ordered**, purchase **deferred**, not a mandatory gate. Files remain optional historical work; cart untouched. Normal standard-part basis: manufacturer dimensions/recommended land/pin numbering, CAD and assembly-preview comparison. Custom latch/grip envelope belongs to integrated access design, not standard connector requalification or endurance testing. GH is not frozen: parent is comparing IDC/ribbon alternatives separately. No substitution is adopted; standard Eurorack power and bespoke signal pinouts must never become accidentally interchangeable.
 4. After correctness/semantics, plan aesthetic variants separately. This audit does not choose new styling, move controls, enlarge holes or change front artwork intent.
