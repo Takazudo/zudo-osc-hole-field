@@ -65,6 +65,9 @@ python3 scripts/checks/monitor_permit_rc.py
 python3 scripts/checks/monitor_permit_native.py
 bash scripts/kicad/run.sh python3 scripts/libgen/fixtures/check_wrl_dimensions.py
 
+# Derive coverage after every source/native generator has settled.
+python3 scripts/checks/instrument_readiness.py
+
 if [[ $check_mode == true ]]; then
   git diff --binary HEAD > "$after_diff"
   if ! cmp -s "$before_diff" "$after_diff"; then

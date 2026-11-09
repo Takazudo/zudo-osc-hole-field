@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "functional_units": {
+    "JL": {
+      "board": "boards/osc-jack-left/osc-jack-left.kicad_pcb",
+      "adoption": "canonical unvalidated draft",
+      "connectivity_report": "boards/osc-jack-left/reports/routing.json",
+      "remaining_issues": [
+        38,
+        59,
+        65
+      ]
+    },
+    "JR": {
+      "board": "boards/osc-jack-right/osc-jack-right.kicad_pcb",
+      "adoption": "canonical unvalidated draft",
+      "connectivity_report": "boards/osc-jack-right/reports/routing.json",
+      "remaining_issues": [
+        38,
+        59,
+        65
+      ]
+    },
+    "P": {
+      "board": "boards/osc-control/osc-control-routed-draft.kicad_pcb",
+      "adoption": "candidate; RV601 edge tab not adopted into canonical partition",
+      "connectivity_report": "design/partition/control-copper/ratsnest.json",
+      "remaining_issues": [
+        39,
+        38,
+        59,
+        65
+      ],
+      "candidate_definition": "design/partition/control-layout/osc-control.json"
+    },
+    "K": {
+      "board": "boards/osc-core/osc-core.kicad_pcb",
+      "adoption": "canonical unvalidated draft",
+      "connectivity_report": "boards/osc-core/reports/routing.json",
+      "remaining_issues": [
+        38,
+        59,
+        65
+      ]
+    },
+    "EL": {
+      "board": "boards/osc-stage-optical/osc-stage-optical.kicad_pcb",
+      "adoption": "canonical unvalidated draft",
+      "connectivity_report": "boards/osc-stage-optical/reports/routing.json",
+      "remaining_issues": [
+        42,
+        59,
+        64,
+        65
+      ]
+    },
+    "O1": {
+      "board": "boards/osc-octave-1/osc-octave-1.kicad_pcb",
+      "adoption": "canonical unvalidated draft",
+      "connectivity_report": "boards/osc-octave-1/reports/routing.json",
+      "remaining_issues": [
+        55,
+        65
+      ]
+    },
+    "O2": {
+      "board": "boards/osc-octave-2/osc-octave-2.kicad_pcb",
+      "adoption": "canonical unvalidated draft",
+      "connectivity_report": "boards/osc-octave-2/reports/routing.json",
+      "remaining_issues": [
+        55,
+        65
+      ]
+    },
+    "O3": {
+      "board": "boards/osc-octave-3/osc-octave-3.kicad_pcb",
+      "adoption": "canonical unvalidated draft",
+      "connectivity_report": "boards/osc-octave-3/reports/routing.json",
+      "remaining_issues": [
+        55,
+        65
+      ]
+    },
+    "O4": {
+      "board": "boards/osc-octave-4/osc-octave-4.kicad_pcb",
+      "adoption": "canonical unvalidated draft",
+      "connectivity_report": "boards/osc-octave-4/reports/routing.json",
+      "remaining_issues": [
+        55,
+        65
+      ]
+    },
+    "O5": {
+      "board": "boards/osc-octave-5/osc-octave-5.kicad_pcb",
+      "adoption": "canonical unvalidated draft",
+      "connectivity_report": "boards/osc-octave-5/reports/routing.json",
+      "remaining_issues": [
+        55,
+        65
+      ]
+    }
+  },
+  "panel": {
+    "board": "boards/panel/panel.kicad_pcb",
+    "native_review": "boards/panel/reports/native-review.json",
+    "adoption": "canonical board-only unvalidated draft",
+    "remaining_issues": [
+      55,
+      64,
+      65
+    ]
+  },
+  "assembly": [
+    "All electrical soldering and required programming must be completed externally before delivery; no owner soldering is assumed.",
+    "Supplier availability and assembly acceptance are UNKNOWN; declared supplier codes are not stock evidence.",
+    "Harnesses, mates, contacts, wire, supports, knobs, carriers, enclosure and programming/calibration are separate assembly obligations; PCB population coverage is not the complete purchased assembly BOM.",
+    "DNP parts and non-procured copper/support geometry are excluded from fitted procurement counts."
+  ],
+  "unresolved": [
+    "#311/#43: complete K routing, then fresh exact-byte native adoption evidence; JL/JR residual routing remains.",
+    "#39/#38: adopt the control candidate geometry and establish connected-copper electrical limits on selected sources.",
+    "#59/#57: replace abstract source/protection boundaries with exact circuitry; external supply realization and physical qualification remain open.",
+    "#21: resolve incomplete identities and exact owner evidence; supplier availability and assembly scope remain unaccepted.",
+    "#55/#64/#65: selector mechanics, optical/thermal performance and integrated fit require their actual evidence; no measurements are inferred.",
+    "Owner-confirmed ENV G07 semantics require implementation and timing verification; any provisional D4233/SEL acceptance remains separate. Manufacturing readiness requires the current decision register.",
+    "No manufacturing exports are authorized by this manifest alone; all applicable pre-order gates and exact revision review must pass."
+  ]
+}
