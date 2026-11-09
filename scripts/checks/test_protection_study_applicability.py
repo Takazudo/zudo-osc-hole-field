@@ -4,11 +4,24 @@ import hashlib
 import json
 import unittest
 import subprocess
+import os
+import sys
+import tempfile
 from unittest.mock import patch
 from scripts.checks import protection_study_applicability as bridge
 
 
 class ProtectionStudyApplicability(unittest.TestCase):
+    def test_direct_script_runs_without_pythonpath_from_another_directory(self):
+        environment = dict(os.environ)
+        environment.pop('PYTHONPATH', None)
+        with tempfile.TemporaryDirectory() as directory:
+            result = subprocess.run(
+                [sys.executable, str(bridge.ROOT / 'scripts/checks/protection_study_applicability.py')],
+                cwd=directory, env=environment, text=True, capture_output=True, check=True)
+        self.assertEqual(json.loads(result.stdout)['hardware_protection'],
+                         'OPEN; physical qualification NOT RUN')
+
     def test_live_inputs_and_all_arithmetic_match_the_retained_study_scope(self):
         self.assertIn('historical ADG savings are not current', bridge.verify()['status'])
 

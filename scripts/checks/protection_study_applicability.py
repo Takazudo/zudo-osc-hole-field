@@ -10,8 +10,10 @@ from functools import lru_cache
 import hashlib
 import json
 import subprocess
+import sys
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
 BASE = '433c88b27b2e49284fe1a717b47ba4226c829dd3'
 AUDIT = 'design/power/protection58-audit.json'
 PROJECTION = ('output_count', 'precision_count', 'outputs', 'reference_receivers')
