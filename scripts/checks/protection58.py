@@ -77,6 +77,103 @@ def check_candidate_research(research, root=ROOT):
     return missing_cache
 
 
+def conditioned_current(fact, count):
+    """Multiply a retained table row, never infer project supply applicability."""
+    scale = {'mA per package': 1, 'uA per package': .001}.get(fact['unit'])
+    demand(scale is not None, 'Unsupported switch current unit')
+    demand(type(count) is int and count >= 0, 'Invalid switch package count')
+    values = [fact['value'].get(k) for k in ('IDD_max_125C', 'ISS_max_125C')]
+    demand(all(type(v) in (int, float) and math.isfinite(v) and v >= 0 for v in values),
+           'Unsupported switch current value')
+    result = {rail: round(count * value * scale, 6)
+              for rail, value in zip(('+12V', '-12V'), values)}
+    demand(all(math.isfinite(v) for v in result.values()), 'Switch current overflow')
+    return result
+
+
+def switch_population(families, instances):
+    """Inventory fitted source packages, not manual catalogue population flags."""
+    identities = ('ADG5412FBRUZ', 'TMUX7412FRRPR', 'TMUX6112PWR')
+    packages = {}
+    for instance in instances:
+        for part in families[instance.family].parts:
+            role = part.attributes.get('Role', '')
+            symbol = part.symbol.rsplit(':', 1)[-1]
+            if part.dnp or not (symbol in identities or role.startswith('input_fault_switch:U')
+                                or role in ('envelope:SLOPE_SELECT', 'envelope:TRIGGER_GATE')):
+                continue
+            demand(symbol in identities, f'Unreviewed switch identity: {symbol}')
+            ref = designator(part, instance)
+            identity = {k: part.attributes.get(k, '') for k in ('Manufacturer', 'MPN', 'LCSC')}
+            demand(identity['MPN'] == part.symbol.rsplit(':', 1)[-1],
+                   f'Switch symbol/MPN mismatch: {ref}')
+            identity['footprint'] = part.footprint
+            if ref in packages:
+                demand(packages[ref]['identity'] == identity, f'Conflicting switch units: {ref}')
+            else:
+                packages[ref] = {'identity': identity, 'roles': set()}
+            packages[ref]['roles'].add(part.attributes.get('Role', ''))
+    inventory_path = ROOT / '.claude/skills/component-spec-audit/references/inventory.json'
+    inventory = json.loads(inventory_path.read_text())['lines']
+    fact_ids = {'TMUX7412FRRPR': 'fact-fault-switch-t-normal-supply-current',
+                'TMUX6112PWR': 'fact-env-switch-t-normal-supply-current'}
+    source_paths = {inventory_path, ROOT / 'design/standard/electrical-standard.json',
+                    ROOT / 'design/spec/instrument.py', ROOT / 'design/standard/parts-shortlist.json',
+                    ROOT / 'design/grid/placements.lock.json', ROOT / 'scripts/schgen/core.py',
+                    ROOT / 'scripts/libgen/build_symbol_lib.py', Path(__file__).resolve()}
+    source_paths.update((ROOT / 'symbols/src').glob('*.kicad_sym'))
+    source_paths.update(p for p in (ROOT / 'design/spec/modules').glob('*.py') if not p.name.startswith('test_'))
+    source_paths.update(p for p in (ROOT / 'design/spec/cells').glob('*.py') if not p.name.startswith('test_'))
+    groups = []
+    for mpn in identities:
+        refs = sorted(ref for ref, p in packages.items() if p['identity']['MPN'] == mpn)
+        if not refs:
+            continue
+        first = packages[refs[0]]['identity']
+        matches = [line for line in inventory if line['mpn'] == mpn
+                   and line['manufacturer'] == first['Manufacturer']]
+        demand(len(matches) == 1, f'Ambiguous switch owner: {mpn}')
+        line = matches[0]
+        for ref in refs:
+            identity = packages[ref]['identity']
+            demand(identity['Manufacturer'] == line['manufacturer']
+                   and identity['LCSC'] == line['lcsc'], f'Switch owner identity mismatch: {ref}')
+        owner = ROOT / '.claude/skills' / line['owner_skill']
+        facts_path, sources_path = owner / 'facts.json', owner / 'sources.json'
+        source_paths.update((facts_path, sources_path, owner / 'manifest.json'))
+        facts = json.loads(facts_path.read_text())['facts']
+        fact = next((f for f in facts if f['fact_id'] == fact_ids.get(mpn)), None)
+        evidence = None
+        if fact is not None:
+            sources = json.loads(sources_path.read_text())['sources']
+            source = next(s for s in sources if s['source_id'] == fact['source_id'])
+            demand(fact['class'] == 'GUARANTEED_ELECTRICAL'
+                   and fact['provenance'] == 'PRIMARY-SPEC'
+                   and fact['verdict'] == 'PASS - primary-source confirmed'
+                   and source['authority_class'] == 'MANUFACTURER_PRIMARY'
+                   and source['availability'] == 'AVAILABLE', 'Unconfirmed switch current source')
+            evidence = {'fact': fact, 'source_id': source['source_id'],
+                        'source_sha256': source['sha256'],
+                        'document_number': source['document_number'],
+                        'conditioned_125C_table_population_mA': conditioned_current(fact, len(refs))}
+        groups.append({'manufacturer': line['manufacturer'], 'mpn': mpn,
+                       'supplier_order_code': line['lcsc'], 'package': line['package'],
+                       'footprints': sorted({packages[r]['identity']['footprint'] for r in refs}),
+                       'count': len(refs), 'refs': refs,
+                       'roles_by_ref': {r: sorted(packages[r]['roles']) for r in refs},
+                       'current_evidence': evidence, 'guaranteed_project_current_mA': None,
+                       'project_current_verdict': 'UNSOURCED',
+                       'applicability': 'Retained table conditions are not project +/-12 V guarantees. '
+                                        'No family substitution, unused-channel reuse or current saving is booked.'})
+    return {'status': 'CURRENT SOURCE PACKAGE INVENTORY; not native placement or physical qualification',
+            'package_count': len(packages), 'groups': groups,
+            'guaranteed_project_total_mA': None,
+            'total_reason': 'Different source table conditions; actual project currents remain unresolved. '
+                            'Per-family table products must not be summed as a guaranteed project total.',
+            'input_sha256': {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
+                             for p in sorted(source_paths)}}
+
+
 def build(contract=None):
     contract = contract or json.loads((ROOT / 'design/power/supply-architecture-input.json').read_text())
     demand(set(contract['domains']) == {'EXT'}, 'Only one EXT source domain is permitted')
@@ -105,13 +202,11 @@ def build(contract=None):
     outputs = []
     packages = 0
     references = []
-    existing_switch_packages = set()
+    current_switches = switch_population(families, instances)
     for instance in instances:
         if instance.name == 'POWER':
             continue
         family = families[instance.family]
-        existing_switch_packages.update(designator(p, instance) for p in family.parts
-                                        if p.symbol.endswith(('ADG5412FBRUZ', 'TMUX7412FRRPR', 'TMUX6112PWR')) and not p.dnp)
         jacks = {p.pins['T']: p for p in family.parts if p.prefix == 'J' and 'T' in p.pins}
         channels = 0
         for part in family.parts:
@@ -152,9 +247,10 @@ def build(contract=None):
     reference_packages = sum(math.ceil(count / 4) for count in Counter(r['instance'] for r in references).values())
     candidate = next(s for s in research['sources'] if s['candidate'] == 'TMUX7412FRRPR')
     iq = candidate['normal_iq_screen']
-    replacement_count = len(existing_switch_packages) + packages + reference_packages
+    historical_adg_count = 110  # Frozen pre-S2b hypothetical, not current population.
+    replacement_count = historical_adg_count + packages + reference_packages
     candidate_current = {'+12V': replacement_count * iq['positive_mA'], '-12V': replacement_count * iq['negative_mA']}
-    old_current = {'+12V': len(existing_switch_packages) * 1.3, '-12V': len(existing_switch_packages) * .7}
+    old_current = {'+12V': historical_adg_count * 1.3, '-12V': historical_adg_count * .7}
     truth_table = [{'valid_rails': dict(zip(continuous, state)), 'required_signal_enable': all(state), 'implemented': False} for state in itertools.product((False, True), repeat=3)]
     return {
         'schema_version': 1,
@@ -173,16 +269,17 @@ def build(contract=None):
         'normal_positive_Iq_mA_sensitivity_global': math.ceil(channels / 4) * 1.3,
         'normal_positive_Iq_mA_sensitivity_local': packages * 1.3,
         'existing_aux_allowance_mA': contract['load_envelope']['auxiliary_allowance_mA']['+12V'],
-        'candidate_switch_sensitivity': {
-            'status': 'CONDITIONED PLANNING ONLY; no substitution, reuse or current saving booked',
+        'current_switch_population': current_switches,
+        'historical_candidate_switch_sensitivity': {
+            'status': 'HISTORICAL PRE-S2b HYPOTHETICAL ONLY; not current fitted population or available savings',
             'candidate': candidate['candidate'],
             'evidence_file': str(research_path.relative_to(ROOT)),
             'evidence_sha256': hashlib.sha256(research_path.read_bytes()).hexdigest(),
             'evidence_scope': 'Actual TI bytes inspected; metadata/extracts committed; development-only PDF cache is optional and never a hardware-validation gate',
             'conditions': iq['conditions'],
             'project_verdict': iq['project_verdict'],
-            'existing_ADG_package_refs': sorted(existing_switch_packages),
-            'existing_ADG_package_count': len(existing_switch_packages),
+            'assumed_pre_S2b_ADG_package_count': historical_adg_count,
+            'current_ADG_package_count': sum(g['count'] for g in current_switches['groups'] if g['mpn'] == 'ADG5412FBRUZ'),
             'receiver_local_quad_minimum': reference_packages,
             'new_module_and_receiver_local_quads': packages + reference_packages,
             'replace_existing_and_add_count': replacement_count,

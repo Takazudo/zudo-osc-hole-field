@@ -44,18 +44,71 @@ class ProtectionAuditTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, '40 mV'):
             audit.build(self.contract)
 
-    def test_candidate_sensitivity_does_not_book_reuse_or_close_gate(self):
+    def test_current_population_separates_adopted_identities_and_historical_screen(self):
         report = audit.build(self.contract)
-        candidate = report['candidate_switch_sensitivity']
-        self.assertEqual(candidate['existing_ADG_package_count'], 110)
-        self.assertEqual(len(set(candidate['existing_ADG_package_refs'])), 110)
+        population = report['current_switch_population']
+        groups = {g['mpn']: g for g in population['groups']}
+        self.assertEqual({mpn: g['count'] for mpn, g in groups.items()},
+                         {'TMUX7412FRRPR': 98, 'TMUX6112PWR': 12})
+        self.assertEqual(population['package_count'], 110)
+        bindings = population['input_sha256']
+        for path in ('design/standard/parts-shortlist.json', 'design/grid/placements.lock.json',
+                     'scripts/schgen/core.py', 'scripts/libgen/build_symbol_lib.py',
+                     'symbols/src/TMUX7412FRRPR.kicad_sym', 'symbols/src/TMUX6112PWR.kicad_sym'):
+            self.assertEqual(bindings[path], hashlib.sha256((audit.ROOT / path).read_bytes()).hexdigest())
+        self.assertEqual(len({r for g in groups.values() for r in g['refs']}), 110)
+        self.assertEqual(groups['TMUX7412FRRPR']['current_evidence']['conditioned_125C_table_population_mA'],
+                         {'+12V': 58.8, '-12V': 49.0})
+        self.assertEqual(groups['TMUX6112PWR']['current_evidence']['conditioned_125C_table_population_mA'],
+                         {'+12V': .276, '-12V': .144})
+        self.assertIsNone(population['guaranteed_project_total_mA'])
+        self.assertTrue(all(g['guaranteed_project_current_mA'] is None for g in groups.values()))
+        candidate = report['historical_candidate_switch_sensitivity']
+        self.assertEqual(candidate['assumed_pre_S2b_ADG_package_count'], 110)
+        self.assertEqual(candidate['current_ADG_package_count'], 0)
         self.assertEqual(candidate['new_module_and_receiver_local_quads'], 45)
         self.assertEqual(candidate['replace_existing_and_add_count'], 155)
         self.assertEqual(candidate['delta_to_existing_ADG_planning_mA'], {'+12V': -50.0, '-12V': .5})
+        self.assertIn('HISTORICAL', candidate['status'])
         self.assertEqual(candidate['project_verdict'], 'UNSOURCED')
         self.assertIsNone(report['selected_topology'])
         self.assertTrue(report['open_gates'])
         self.assertGreater(report['prospective_each_499ohm_dissipation_W'], .30)
+
+    def test_current_screen_rejects_unsupported_values_and_units(self):
+        fact = {'unit': 'uA per package', 'value': {'IDD_max_125C': 23, 'ISS_max_125C': 12}}
+        self.assertEqual(audit.conditioned_current(fact, 3), {'+12V': .069, '-12V': .036})
+        for value in (None, True, -1, float('nan'), float('inf'), '23'):
+            changed = copy.deepcopy(fact)
+            changed['value']['IDD_max_125C'] = value
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, 'Unsupported switch current value'):
+                audit.conditioned_current(changed, 3)
+        fact['unit'] = 'A'
+        with self.assertRaisesRegex(ValueError, 'Unsupported switch current unit'):
+            audit.conditioned_current(fact, 3)
+
+    def test_package_unit_identity_mismatch_rejected(self):
+        families, instances = audit.specification()
+        family_map = {f.name: f for f in families}
+        name = next(n for n, f in family_map.items()
+                    if any(p.attributes.get('MPN') == 'TMUX7412FRRPR' for p in f.parts))
+        family = family_map[name]
+        index = next(i for i, p in enumerate(family.parts) if p.attributes.get('MPN') == 'TMUX7412FRRPR')
+        parts = list(family.parts)
+        parts[index] = replace(parts[index], attributes={**parts[index].attributes, 'MPN': 'ADG5412FBRUZ'})
+        family_map[name] = replace(family, parts=tuple(parts))
+        with self.assertRaisesRegex(ValueError, 'symbol/MPN mismatch'):
+            audit.switch_population(family_map, instances)
+
+    def test_dnp_units_do_not_create_fitted_packages(self):
+        families, instances = audit.specification()
+        changed = {f.name: replace(f, parts=tuple(replace(p, dnp=True)
+                   if p.attributes.get('MPN') == 'TMUX6112PWR' else p for p in f.parts))
+                   for f in families}
+        population = audit.switch_population(changed, instances)
+        self.assertEqual(population['package_count'], 98)
+        self.assertEqual([g['mpn'] for g in population['groups']], ['TMUX7412FRRPR'])
+        self.assertIsNone(population['guaranteed_project_total_mA'])
 
     def test_candidate_selection_and_broken_source_receipt_rejected(self):
         original = json.loads((audit.ROOT / 'design/power/protection59-sources.json').read_text())
