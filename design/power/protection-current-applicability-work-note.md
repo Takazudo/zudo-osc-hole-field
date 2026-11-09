@@ -38,3 +38,23 @@ draft gate and component validation are run for this change. The implementation
 closure command must still exit 1 with its explicit BLOCKED message. Native
 and physical qualification are NOT RUN for this reporting-only change; parent
 owns full integration checks and independent review.
+
+## Historical replay and current applicability
+
+PR CI exposed three whole-report equality tests still comparing the historical
+candidate reports to the corrected live audit hash. The existing frozen-study
+mechanism now replays those three test modules unchanged at 433c88b2, the first
+parent of correction 6f70a838. Every original assertion still executes, including
+all model receipt and input hashes. No historical report, model or test byte is
+rewritten.
+
+The new current protection_study_applicability checker separately verifies the
+complete consumed audit projection (full output/reference records, not counts
+alone), every other report/model input binding, and each producer's complete
+arithmetic result. Any changed connection, producer, source input, retained
+report or unavailable historical revision fails. Its claim is only continued
+applicability of the unchanged diagnostic arithmetic and obligation inventory.
+The historical 110-ADG sensitivity is explicitly inapplicable to today's 98/12
+TMUX package population; no substitution saving or physical guarantee transfers.
+Future source/model changes require a new reviewed study, not another hash
+exception or a frozen false claim.
