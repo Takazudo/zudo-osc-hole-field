@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Instrument BOM identity and price coverage for the A/B readiness matrix.
 
+Historical A/B report helper; retained output is dated evidence.
+For current board/native membership use instrument_readiness.py.
+
 Counts physical placements from the generated instrument specification (one
 package per multi-unit IC). It is a coverage report, not a fabrication BOM: no
 order file, supplier code inference or price lookup is performed.
@@ -14,6 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from design.spec.instrument import specification  # noqa: E402
+from scripts.schgen.core import designator  # noqa: E402
 
 OUTPUT = ROOT / 'design/readiness/bom-readiness.json'
 LOT = 5
@@ -21,7 +25,7 @@ LOT = 5
 
 def build():
     families, instances = specification()
-    copies = collections.Counter(i.family for i in instances)
+    family_instances = {f.name: [i for i in instances if i.family == f.name] for f in families}
     inventory = json.loads((ROOT / '.claude/skills/component-spec-audit/references/inventory.json').read_text())
     owners = {line['mpn']: line['owner_skill'] for line in inventory['lines']}
     lines = collections.defaultdict(lambda: {'qty_per_unit': 0, 'lcsc': set(), 'manufacturer': set()})
@@ -30,13 +34,14 @@ def build():
     for family in families:
         packages = {}
         for part in family.parts:
-            stem = part.key.rsplit('.', 1)[0] if part.prefix == 'U' else part.key
-            packages.setdefault(stem, part)
+            # Physical reference, not symbol prefix: dual Q packages also have units.
+            instance = family_instances[family.name][0]
+            packages.setdefault(designator(part, instance), part)
         for part in packages.values():
             # '#'-prefixed parts are KiCad power flags, not physical placements.
             if part.abstract or not part.in_bom or part.dnp or part.prefix.startswith('#'):
                 continue
-            n = copies[family.name]
+            n = len(family_instances[family.name])
             placements += n
             mpn = part.attributes.get('MPN', '')
             if not mpn:
