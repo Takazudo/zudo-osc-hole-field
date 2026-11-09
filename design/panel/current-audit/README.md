@@ -31,26 +31,26 @@ Counts below are deterministic from `audit.json`; “mapped” means UID/referen
 | O3 | OSC | 4 / 4 | 8 | 0 | 3 | NO NEW QUESTION IDENTIFIED |
 | O4 | OSC | 4 / 4 | 8 | 0 | 3 | NO NEW QUESTION IDENTIFIED |
 | O5 | OSC | 4 / 4 | 8 | 0 | 3 | NO NEW QUESTION IDENTIFIED |
-| F1 | VCF | 4 / 4 | 6 | 4 | 3 | G06 CONFIRMED (E10) |
-| F2 | VCF | 4 / 4 | 6 | 4 | 3 | G06 CONFIRMED (E10) |
-| F3 | VCF | 4 / 4 | 6 | 4 | 3 | G06 CONFIRMED (E10) |
+| F1 | VCF | 4 / 4 | 6 | 4 | 3 | G06 CONFIRMED E10 |
+| F2 | VCF | 4 / 4 | 6 | 4 | 3 | G06 CONFIRMED E10 |
+| F3 | VCF | 4 / 4 | 6 | 4 | 3 | G06 CONFIRMED E10 |
 | M5A | MIX5 | 5 / 1 | 6 | 7 | 0 | NO NEW QUESTION IDENTIFIED |
 | M5B | MIX5 | 5 / 1 | 6 | 7 | 0 | NO NEW QUESTION IDENTIFIED |
 | M4A | MIX4 | 5 / 1 | 6 | 7 | 1 | NO NEW QUESTION IDENTIFIED |
 | M4B | MIX4 | 5 / 1 | 6 | 7 | 1 | NO NEW QUESTION IDENTIFIED |
 | W2 | FOLD | 3 / 1 | 4 | 3 | 2 | NO NEW QUESTION IDENTIFIED |
 | W1 | FOLD | 3 / 1 | 4 | 3 | 2 | NO NEW QUESTION IDENTIFIED |
-| E1 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED (E17) |
+| E1 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED E17 |
 | A01 | AO | 2 / 1 | 2 | 4 | 1 | NO NEW QUESTION IDENTIFIED |
-| E2 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED (E17) |
+| E2 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED E17 |
 | A02 | AO | 2 / 1 | 2 | 4 | 1 | NO NEW QUESTION IDENTIFIED |
-| E3 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED (E17) |
+| E3 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED E17 |
 | A03 | AO | 2 / 1 | 2 | 4 | 1 | NO NEW QUESTION IDENTIFIED |
-| E4 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED (E17) |
+| E4 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED E17 |
 | A04 | AO | 2 / 1 | 2 | 4 | 1 | NO NEW QUESTION IDENTIFIED |
-| E5 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED (E17) |
+| E5 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED E17 |
 | A05 | AO | 2 / 1 | 2 | 4 | 1 | NO NEW QUESTION IDENTIFIED |
-| E6 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED (E17) |
+| E6 | AR | 3 / 4 | 6 | 5 | 2 | G07 CONFIRMED E17 |
 | A06 | AO | 2 / 1 | 2 | 4 | 1 | NO NEW QUESTION IDENTIFIED |
 | B1 | MULT | 1 / 3 | 0 | 1 | 0 | NO NEW QUESTION IDENTIFIED |
 | B2 | MULT | 1 / 3 | 0 | 1 | 0 | NO NEW QUESTION IDENTIFIED |
