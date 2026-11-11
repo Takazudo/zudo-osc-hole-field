@@ -2,9 +2,17 @@
 
 This is the canonical working agreement between this project and its AI agents. `CLAUDE.md` and `AGENTS.md` only point here. Every agent, whatever tool it runs in, follows this file.
 
-The goal is that a short request such as "download this datasheet", "get the 3D model" or "check this spec" becomes durable, honest project knowledge: exact identity, retained evidence, regenerated documentation and a truthful statement of what is still unknown.
+The goal is that a short request such as "download this datasheet", "get the 3D model", or "check this spec" becomes durable, honest project knowledge: exact identity, retained evidence, regenerated documentation and a truthful statement of what is still unknown.
 
 Routine work that the request already covers (downloads, evidence updates, regeneration, checks) needs no extra permission prompt. Ask one focused question only when a missing exact identity, design choice or external access prevents a meaningful result.
+
+## Development orchestration
+
+For multi-session development, routing, native checks or other expensive computations, also follow [ORCHESTRATION.md](ORCHESTRATION.md). It defines the cloud-first manager/child/worker roles, Fable/Astra design boundary, Actions and VM resource admission, model selection, isolated writes, bounded waiting/retries, local escalation and serialized integration.
+
+Start from [orchestration/current-plan.md](orchestration/current-plan.md), then create bounded task briefs from [templates/orchestration-task.md](templates/orchestration-task.md). The top-level manager keeps the implementation/environment/model mapping and shared allocations current. More subagents do not imply more compute; never launch from an unadmitted or incomplete task brief.
+
+These operating documents are project-owned and hand-authored. They do not grant native-run admission, change tool pins or circuit/validation constraints, revive parked work, authorize purchases/deployment/fabrication, or replace the evidence workflow below. Existing source regeneration, independent review and required checks remain mandatory. Record unavailable checks as `NOT RUN`; do not treat a documentation-only orchestration change as a hardware pass.
 
 ## Shared entry
 
