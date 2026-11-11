@@ -64,7 +64,6 @@ class TransactionTests(unittest.TestCase):
         self.assertFalse(receipt['adopted']);self.assertFalse(receipt['raw_gate_passed'])
 
 
-if __name__=='__main__':unittest.main()
 
 
 WORKFLOW=ROOT/'.github/workflows/local-transactions.yml'
@@ -105,15 +104,19 @@ class HoldTests(unittest.TestCase):
         self.assertEqual(set(held),{'osc-core'});self.assertIn('K2226 adoption decision (#311)',held['osc-core'])
 
     def test_held_board_refused_with_zero_native_calls(self):
-        driver=mock.Mock()
         with mock.patch.object(tx,'run') as run,mock.patch.object(tx,'load') as load,mock.patch.object(tx.lifecycle,'install') as install:
             code=tx.main(['osc-core'])
-        self.assertEqual(code,4);run.assert_not_called();install.assert_not_called();driver.assert_not_called()
+        self.assertEqual(code,4);run.assert_not_called();install.assert_not_called();load.assert_not_called()
 
     def test_held_board_cli_message_and_validate_budget_unaffected(self):
         r=self.run_tx('osc-core');self.assertEqual(r.returncode,4);self.assertIn('NOT ADMITTED',r.stderr);self.assertEqual(r.stdout,'')
         self.assertEqual(self.run_tx('osc-core','--print-budget').stdout.strip(),'140')
-        self.assertEqual(self.run_tx('osc-core','--validate').returncode in (0,1),True)
+        v=self.run_tx('osc-core','--validate');self.assertIn('errors',json.loads(v.stdout))
+
+    def test_hold_cannot_be_dropped_while_the_k2518_plan_is_installed(self):
+        plan=json.loads((BUDGETS.parent/'transactions.json').read_text())['transactions']['osc-core']
+        if plan['input_board_sha256']=='7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42':
+            self.assertIn('osc-core',json.loads(BUDGETS.read_text()).get('holds',{}))
 
     def test_unheld_board_is_not_refused_by_the_hold(self):
         self.assertIsNone(tx.held_reason('osc-jack-left'))
@@ -122,3 +125,5 @@ class HoldTests(unittest.TestCase):
         text=WORKFLOW.read_text()
         self.assertIn("'.holds[$b] // empty'",text);self.assertLess(text.index(".holds[$b]"),text.index('echo "matrix='))
         self.assertLess(text.index(".holds[$b]"),text.index('eff=$MAX_MINUTES'))
+
+if __name__=='__main__':unittest.main()

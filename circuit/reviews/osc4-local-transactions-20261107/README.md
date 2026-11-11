@@ -6,7 +6,7 @@ output exists. Each transaction below needs one admitted native run, listed
 under "Native runs" as NEEDS ADMISSION. Electrical, thermal and physical
 qualification are NOT RUN.
 
-## 2026-11-08 Receipt lifecycle: every run ends in a named terminal state, and the K budget is 80 minutes
+## 2026-11-08 Receipt lifecycle: every run ends in a named terminal state, and the K budget is 80 minutes (corrected to 140 on 2026-11-11, see Budgets)
 
 Issue #308. No native run was made for this change; the behaviour below is
 proven by `scripts/checks/test_osc4_transaction_signals.py` with harmless
@@ -302,7 +302,7 @@ Runs share one concurrency group per plan branch and are never cancelled.
 GitHub keeps only one pending run per group: a newer dispatch for the same
 branch replaces one that is still queued.
 
-`boards` defaults to all three, and `max_minutes` is empty by default and resolves per board from `budgets.json` (1–140, with no leading zero); a held board is refused by `prepare`.
+`boards` defaults to all three, and `max_minutes` is empty by default and resolves per board from `budgets.json` (1–140, with no leading zero); a held board is refused by `prepare`, which now always reads `budgets.json`, so a plan branch without it cannot run.
 The job fails if `transaction.py` exits non-zero, but it still uploads what
 exists.
 
@@ -329,7 +329,7 @@ python3 circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core
 | `select_transactions.py` | Deterministic choice of one transaction per board |
 | `transactions.json` | Exact driver specs, cut objects, victims, frames and limits |
 | `transaction.py` | Non-promoting native driver around `scripts/pcbgen/route_jack_grid.py` `run_stage()`; `--validate` is host-only |
-| `scripts/checks/test_osc4_transaction.py` | Unit tests for `transaction.py` with the driver stubbed: hash refusal, plan-invalid gate, interrupted receipt; run by `scripts/checks/run-python-tests.sh` |
+| `scripts/checks/test_osc4_transaction.py` | Unit tests for `transaction.py` with the driver stubbed: hash refusal, plan-invalid gate, interrupted receipt, budget and timeout invariants read from the workflow, and the osc-core hold (refusal with zero native calls; hold required while the K2518 plan is installed); run by `scripts/checks/run-python-tests.sh` |
 | `budgets.json` | Default wall-clock budget per board in minutes, read by `transaction.py` and the workflow (2026-11-08) |
 | `lifecycle.py` | Receipt lifecycle for `transaction.py`: atomic writes, phase checkpoints, owned children and containers, signal handlers, `--reconcile` (2026-11-08) |
 | `scripts/checks/test_osc4_transaction_signals.py` | Process-level tests of the lifecycle through `timeout` + `with_route_guard.sh` with `osc4_signal_harness.py` and `osc4_fake_oracle.sh`; two docker tests skip without docker and the pinned image |
