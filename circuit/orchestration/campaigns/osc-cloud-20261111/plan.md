@@ -30,20 +30,34 @@ Cloud-first continuation campaign started by the owner on 2026-11-11 (thread roo
 - Manager VM: one heavy native process at a time; ≤ 10 GiB incremental memory budget, leaving ≥ 5 GiB for the manager, subagents and Docker.
 - Subagents: at most 3 concurrently, read-only or confined to their own worktree under `/home/user/wt/<task>`.
 
-## Recovery status (dependency of T1/T5–T9)
+## Recovery status
 
-The 2026-11-10 pause archives (`codex-order-readiness-20261109/`, five tar.gz with recorded SHA256) live on the owner's WSL host and Dropbox. They are not reachable from this cloud VM or the connected Mac checkout. The owner was asked for the minimal transfer. Until then every task that needs the K2226 bytes or the staged `.circuit-cache/order-readiness-20261110/` packets is **BLOCKED_ON_EVIDENCE_OR_ENVIRONMENT**. No retained WSL worktree, branch or cache may be deleted.
+The owner pointed to the Dropbox folder `/cclogs/zudo-osc-hole-field/codex-order-readiness-20261109/`, reachable read-only through the connected Mac (`~/Library/CloudStorage/Dropbox/...`). On 2026-11-11 the Mac-side SHA256 of all five archives matched the pause index, including `native-pause-20261109T203700Z.tar.gz` (601,926,045 bytes, `1cb067e2…`), whose remote presence had been unverified at pause. Dropbox therefore holds durable off-host copies.
 
-Files needed for the K2226 gate-only audit: the progress JSON (`53277b7f…`), `.circuit-cache/osc-core-grid-osc3-wsl-20261109a-start/` and the signals-12 verify directory (board, `dump.json`, `drc.json`, `.kicad_pro`, `.kicad_dru`), any partial complete-warnings evidence, and the archive manifest. See [exec-budget-design.md](exec-budget-design.md).
+Transferred to the cloud VM and re-hashed there: `engineering-20261109T182519Z` (`a4b83626…`), `owner-scope-final` (`9d0561f4…`), `pause-engineering` (`948c8a99…`), `pause-supplement` (`13b78ab5…`), the handoff JSON/Markdown files, and a K subset extracted from the native archive (`k2226-subset.tar.gz`, `31742b74…`). Large single-file staging timed out, so files move in 15–20 MB parts that are re-hashed after reassembly. The full native archive was not transferred: besides the K subset it holds only the completed Pair B fixture evidence (`mask304-pairB-{pre304,cur}`, 16,754 files) and the intermediate signals-06…11 stage directories, none needed by a current task. It stays durable in Dropbox and can be subset on demand. Transfer parts sit in the Mac checkout's ignored `.circuit-cache/cloud-transfer-20261111/`.
+
+K2226 recovered and verified in an isolated worktree at frozen source `433c88b2` (`/home/user/wt/k2226-audit`, not the frozen WSL worktree):
+
+| Item | SHA256 | Matches record |
+| --- | --- | --- |
+| signals-12-verify candidate | `680da674…3b656` | yes |
+| start board (= canonical K2518) | `7251dd93…be42` | yes; also equals current `main` |
+| progress JSON | `53277b7f…7e20` | yes |
+
+Progress lineage: signals-06…12, 2518→2513→2506→2502→2458→2369→2299→2226, each step's input hash equal to the previous candidate hash, all `raw_gate_adopted: true`, no split pad groups, no new warning identities. The final complete-warning audit is NOT RUN; K2226 is NOT ADOPTED.
+
+Applicability: no board, schgen or pcbgen file changed between `433c88b2` and `ebfbc094`, and canonical K is still K2518, so the frozen start applies. Readiness/protection/decision files that changed (E17 etc.) do not feed the K route or audit inputs; this will be re-checked at adoption time.
+
+Staged source packets (from the four non-native archives, unpacked under `/home/user/recovery/x/`, never into a tracked checkout): the SHA256 of each packet's `SHA256SUMS` and a full `sha256sum -c` of its contents both match the pause record for `parts-439-with-324` (`681dd5df…`), `parts439-input-closure` (`b9033096…`), `owner-scope-e20-r2` (`d8bce10b…`), `selector-stagger-source-r2` (`bb4adce5…`), `selector-tail-reconcile` (`f01fc0b9…`), `p-geometry-equality-r2` (`4d486fe1…`), `negative-hotswap-v2` (`6c83f9c1…`), `negative-precision-limiter-v2` (`e3ea2c81…`), `negative-precision-return-v3` (`0a7aa154…`), `return-interface-observability` (`44f946a4…`) and `uuid305-adapter-v2` (`3a905bc5…`). Cancelled-job recipes for MIX4 #327, P control retention B (#38/#39) and E2 #326 are in `pause-supplement`.
 
 ## Tasks
 
 | ID | Issue | Deliverable | Model / environment | State | Depends on |
 | --- | --- | --- | --- | --- | --- |
 | T0 | #315 | This record, backlog inventory, execution design | Manager | DONE (this PR) | — |
-| T1 | #311 | Recover and hash-verify K2226 and its start/context | Manager | BLOCKED (archive access) | owner transfer |
-| T2 | #311 | Shardable complete-warning audit (`--fixture-range`, assembler with coverage proof, negative controls) so the final audit fits bounded Actions jobs | Design check: Fable subagent; implementation: Opus subagent in own worktree | PLANNED | — |
-| T3 | #308 | Make the OSC4 K budget internally consistent (setup + five native checks + one retry reserve + upload within the job) without removing checks; no rerun on K2518 | Sonnet subagent after T2 design check | PLANNED | — |
+| T1 | #311 | Recover and hash-verify K2226 and its start/context | Manager | DONE (K subset; remainder not needed now) | — |
+| T2 | #311 | Shardable complete-warning audit per [design-decision-t2-t3.md](design-decision-t2-t3.md) | Design: Fable subagent (selected via Agent `model: fable`, effort not exposed); implementation: Opus subagent, worktree `/home/user/wt/t2` | RUNNING | — |
+| T3 | #308 | OSC4 osc-core budget 80→140 min driver / 170 min job with an explicit osc-core run hold until a new plan after #311 | Sonnet subagent, worktree `/home/user/wt/t3` | RUNNING | — |
 | T4 | #311 | Run the sharded final audit on K2226, then independent exact-byte review and single-integrator adoption decision | Actions, ≤4 jobs | PLANNED | T1, T2 |
 | T5 | #21/#324 | Install `parts-439-with-324` onto current main after baseline | Opus | BLOCKED (archive) | T1 archive, T4 ordering for K receipts |
 | T6 | #326 | SEL regional E2 experiment from reviewed recipe, new attempt ID | Actions/VM | BLOCKED (archive) | T1 archive |
