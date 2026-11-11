@@ -10,7 +10,7 @@ sidebar_position: 1
 
 A user patches signals between the instrument's labelled 3.5 mm jacks and adjusts the controls on the corresponding modules. Every connection is made with a cable: there are no hidden inter-module normals, including a default noise feed to either sample-and-hold input. The intended experience is to make the signal path legible through separate blocks rather than concealed routing.
 
-The handoff does not define a target user, use environment, prototype quantity, budget, or acceptance criteria for a successful first prototype. Those remain owner questions. `Scope10` is a separate project and is outside this instrument's scope.
+The R21 handoff does not define a target user, prototype quantity, budget, or acceptance criteria for a successful first prototype. Those remain owner questions; E20 now establishes the first manufacturing review as an externally assembled engineering prototype, with specimen-dependent #55/#64 tests retained for first article. Detailed test criteria still require engineering closure. The owner subsequently accepted indoor, non-condensing operation at 0–40°C ambient (E19, 2026-11-09). Internal component temperatures and installed thermal rise require separate evidence; the existing pitch calibration and accuracy scope at 25°C is unchanged. `Scope10` is a separate project and is outside this instrument's scope.
 
 The intended session is to supply power, patch a source into an independent block, adjust that block's controls, and observe its output before removing the patch leads and powering down. Manual patching between visible blocks is essential; performance goals such as precision tracking and through-zero FM remain later experiments rather than first-prototype claims.
 
@@ -50,7 +50,7 @@ The two SLEW controls occupy R21 cells `[7,6]` and `[7,7]` (zero-based). The pro
 - Preserve the R21 layout relationships: FOLD 2 stays left of FOLD 1, six OFFSET sections stay below the ENV columns, and both multiples remain one-input/three-output blocks.
 - Module inputs and outputs remain independent unless an explicit cable connects them. The S&H inputs have no default noise connection.
 - No qualified panel thickness, mounting datum, connector seating, or component height has been established.
-- The environment, operating temperature, quantity, budget, and prototype acceptance criteria are not specified in the R21 source.
+- E19 sets indoor, non-condensing operation at 0–40°C ambient. This is a product requirement, not completed environmental qualification. Quantity and budget remain unspecified. E20 establishes engineering-prototype review scope; the release-gate map separates pre-order criteria, pre-energization safeguards and required first-article evidence.
 
 ## Current design state
 
