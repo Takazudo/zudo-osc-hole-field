@@ -183,5 +183,40 @@
     "standard": "design/spec/modules/envelope_logic.py",
     "scope": "Decision metadata and current documentation only; no connection, component, value, package, topology, netlist or code-behavior change.",
     "identifier_note": "E16 is intentionally unused in this electrical decision register to avoid confusion with the historical E16 routing/annulus campaign; no historical record is renumbered."
+  },
+  {
+    "id": "E18",
+    "topic": "Regional SEL hold placement correction development",
+    "authority": "USER-AUTHORIZED DEVELOPMENT; NOT LAYOUT ADOPTION",
+    "date": "2026-11-09",
+    "decision": "Develop a regional internal placement correction around E2/E4 while preserving all 438 fixed front-panel hardware positions. Rework local copper as needed, then require native routing and electrical evidence before adoption.",
+    "rationale": "Owner selected Develop regional correction (recommended) after the retained 32-of-36 distant-network finding and incomplete A/B comparisons.",
+    "status": "Development authorized; D4233 remains provisional until a complete correction and required evidence are accepted. No prior incomplete placement variant, physical waiver or automatic promotion is approved.",
+    "source": "https://github.com/Takazudo/zudo-osc-hole-field/issues/315#issuecomment-6739048539",
+    "standard": "design/partition/protection-locality-exceptions.json",
+    "scope": "Separate source-owned regional implementation under #326 after disposition of frozen #311 chain. Preserve accepted electrical behavior and fixed hardware; retain original historical comparisons."
+  },
+  {
+    "id": "E19",
+    "topic": "Ambient operating environment",
+    "authority": "USER-CONFIRMED PRODUCT REQUIREMENT",
+    "date": "2026-11-09",
+    "decision": "Indoor, non-condensing operation at 0–40°C ambient.",
+    "scope": "Ambient qualification corners only; internal component/case/junction limits and installed thermal rise require separate evidence. Existing pitch calibration/accuracy scope at25°C is unchanged.",
+    "status": "Requirement accepted; implementation and environmental/physical qualification remain open.",
+    "source": "https://github.com/Takazudo/zudo-osc-hole-field/issues/315#issuecomment-6740309331",
+    "standard": "doc/src/content/docs/project/index.mdx"
+  },
+  {
+    "id": "E20",
+    "topic": "First manufacturing review scope",
+    "authority": "USER-CONFIRMED REVIEW SCOPE; NOT ORDER AUTHORIZATION",
+    "date": "2026-11-10",
+    "decision": "The first manufacturing review is for an externally assembled engineering prototype. Specimen-dependent selector installed-fit (#55) and optical/thermal (#64) tests are first-article obligations after fabrication.",
+    "rationale": "Owner selected Engineering prototype; first-article physical tests (Recommended).",
+    "status": "Scope confirmed; implementation, design/process/native pre-order gates and all physical qualification remain open.",
+    "source": "https://github.com/Takazudo/zudo-osc-hole-field/issues/315#issuecomment-6748038705",
+    "standard": "doc/src/content/docs/verification/osc-release-gates.mdx",
+    "scope": "No design-fault waiver, test pass, ordering, supplier contact or energization authorization. Preserve all #57 and #65 requirements according to their actual purpose; source realization and deterministic engineering remain pre-order, first-power safeguards remain before energization."
   }
 ]

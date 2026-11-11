@@ -1,27 +1,49 @@
 ---
-title: "Readiness gates — no premature manufacturing release"
-description: "Lists the design, mechanical, electrical, and manufacturing gates that remain before any release claim."
+title: "Readiness gates — engineering prototype and qualification"
+description: "Separates engineering-prototype order review, first-power safeguards and required first-article qualification."
 sidebar_position: 10
 ---
 
-## What is complete in this handoff
+## Selected first review scope
 
-A grid-based panel proposal, interactive flat/3D previews, two new SLEW positions, nominal lag calculations, behavioral tests, complete module inventory and a local-agent plan. These establish intent and software consistency only.
+Owner decision E20 selects an **externally assembled engineering prototype** for the first manufacturing review ([confirmation](https://github.com/Takazudo/zudo-osc-hole-field/issues/315#issuecomment-6748038705)). Specimen-dependent selector installed-fit (#55) and optical/thermal (#64) tests are first-article obligations after fabrication. This settles their timing, not their result or acceptance limits. All physical tests remain **NOT RUN**: no specimens, populated instrument or authorized test setup exist in this implementation session.
 
-## What blocks routing or an order
+E18 authorizes regional placement development, not adoption; D4233 remains provisional. E19 requires indoor, non-condensing operation at 0–40°C ambient. Installed component/case/junction temperatures require separate evidence, and the existing pitch calibration/accuracy scope at 25°C is unchanged. Preserve all 438 fixed hardware centres and all 33 independently patched module instances.
 
-| Gate | Evidence required |
+## Required before engineering-prototype order review
+
+| Gate | Required engineering evidence; still open until demonstrated |
 |---|---|
-| Mechanical stack | Exact jack/nut/panel fit; OCT/pot/toggle/button reach; supports; connector mates and access |
-| Circuit capture | Complete values/net graph, qualified supply arrangements, clear defaults, protections and gains |
-| S&H/SLEW | Acquisition, stored-target drift, output settling, hot bias/leakage, fast endpoint and retriggers |
-| Power | Exact as-built P/B revision, programmed PD state, load/thermal/ripple/startup tests |
-| CAD | Exact symbols/pads/models; native ERC/DRC; return paths; no false geometry scaling |
-| Assembly | Factory accepts every part, profile, connector, programming and final integration operation |
-| Publication | Evidence receipts, exact verdicts, native checks, generated pages and allowlist consistent |
+| Accepted source and circuitry | Real protection and supply interface, exact parts/pins/footprints, complete netlists, rail/current/capacitance ledger, fault and partial-power analysis, accepted electrical behavior; no abstract boundary as implemented protection |
+| S&H/SLEW | Source/model engineering for acquisition, stored-target drift, output settling, hot bias/leakage, fast endpoint and retrigger behavior must pass before order review. Required physical tests retain their existing accepted purpose and timing. E20 creates no new deferral or waiver for them, and no universal requirement to perform physical measurements before prototype fabrication. Any unresolved timing or acceptance classification remains explicit and must be resolved for the selected review scope |
+| Native boards and copper | Adopted canonical board roster and hashes; complete routing/connectivity, ERC/DRC/parity and complete warning comparison; connected-copper electrical/resistance evidence including combined J/P + K extraction in #38/#39/#43 |
+| #55 selector design/process | Dimensioned stack and tolerance allocations; exact custom extension/knob/carrier materials and fasteners, load paths and assembly access; justified torque/load/retention criteria defined before tests. Actual measurements are first-article evidence, but known dimensional conflicts or unresolved design/process choices cannot be deferred as measurements |
+| #64 optical/thermal design | Source-backed LED/resistor bounds, actual window/stack/orientation and current/thermal analysis; reproducible representative test protocol and acceptance criteria. Do not infer low-current brightness or installed temperature from nominal calculations |
+| #57 source realization | Exact realizable external supply/interface, required programmed image/configuration and external programming responsibility, protections and first-power procedure. Preserve revised E11/E12 direction and remaining external dependency; historical 15 V hardware is not automatically suitable for the revised 20 V design |
+| #65 assembly/process | Assembly-provider acceptance must cover every part, assembly profile, connector, required programming and final integration operation. Exact connectors/mates/wire/supports and integration sequence; documented filled/capped via-in-pad or qualified anti-wicking solder process as applicable. Provider process acceptance remains external evidence; CAD alone does not establish it. No owner electrical soldering assumed |
+| Reproducible manufacturing package | Checked revision, reviewed explicit order roster, BOM/CPL membership, fabrication/assembly settings, panel/harness/programming drawings, export inspection and reproducibility, source/tool/output hashes and independent review |
 
-`project/osc-hole-field/open-issues.json` is the actionable list. Closing it requires evidence, not changing a status string. A native DRC pass cannot establish electrical behavior. An exact package image cannot establish shaft reach.
+Implementation defects, computable failures and unresolved material owner decisions remain blockers. The scope decision does not waive a real engineering requirement. Detailed missing values must remain named; merely writing a test procedure does not satisfy them.
 
-## Manufacturing release directory
+## Before energization
 
-Keep a separate release gate. No file in this handoff is an order-ready Gerber, BOM or CPL. Do not upload old prototype review files to a fabricator. Generate manufacturing outputs only from a checked native KiCad revision and retain source/export hashes, assembly notes and reviewer decisions.
+#57 retains actual source evaluation, as-built source/population identity, programming/readback and safe initial-power safeguards before connecting the instrument or applying an unsafe charger. The historical P+B current-limited 5 V / B-disconnected / 5 V-and-15 V-only programming precondition remains applicable to that historical hardware; it is not a programming prescription for an unbuilt revised E11 source. The revised source needs its own verified configuration and bring-up procedure. No energization is authorized here.
+
+Protection, isolation and sequencing implementation must already be justified before ordering; post-build tests verify the built realization. Follow the staged first-power procedure so unverified startup/fault behavior is tested with appropriate safeguards before unrestricted operation. Do not move a prerequisite source or programming check after the operation it protects.
+
+## Required first-article evidence
+
+| Record | Retained obligations and limits |
+|---|---|
+| [#55](https://github.com/Takazudo/zudo-osc-hole-field/issues/55) | Actual selector/body/shaft/leg and carrier measurements; seating, engagement, torque/load path, wobble, clearances, service access, continuity and indexing. Preserve its numerical limits, actual materials and predeclared load criteria; no installed-fit closure from CAD alone |
+| [#64](https://github.com/Takazudo/zudo-osc-hole-field/issues/64) | Representative factory-assembled jack/indicator and stage optical stack; measured brightness/viewing angle/bleed, actual currents and installed temperatures at nominal, upper rail, startup, off/partial-power and fault states, across required ambient corners |
+| [#57](https://github.com/Takazudo/zudo-osc-hole-field/issues/57) | Remaining as-built capacity, rail/ripple/thermal/startup, connector/drop, isolation/backfeed and return-fault characterization after the necessary safe first-power prerequisites; no guaranteed maximum from an unmeasured ledger |
+| [#65](https://github.com/Takazudo/zudo-osc-hole-field/issues/65) | Integrated stack, support and loom fit/stiffness/access, wire/crimp/solder retention, hot contact/plane resistance, return currents and durability. Its existing first-article purpose is preserved; deterministic copper extraction and selected assembly process remain pre-order requirements |
+
+Use exact board/source/firmware and population revisions, instruments, ambient, setup, predeclared criteria, raw measurements and photographs under circuit/WORKFLOW.md Workflow F. Retain failures and rework history. No separate standard-connector coupon purchase is imposed; the deferred standalone GH4 coupon remains optional historical work. A standard connector datasheet does not prove the integrated assembly.
+
+## Review and release boundary
+
+Distinguish implementation complete, required pre-order evidence complete, manufacturing package ready for owner review, and physical/production qualification. None is established merely by this scope decision or green draft CI. The parent implementation tracker and physical issues remain open until their own acceptance is met.
+
+Preparing a reviewable package is authorized after its prerequisites pass. No current file is declared order-ready by this page. Generate outputs only from the exact checked native revision and retain inspection, reproducibility and review evidence. No purchase, quote, supplier contact, manufacturing upload/order, energization, release publication or documentation deployment is authorized. Do not upload historical prototype exports.
