@@ -6,7 +6,7 @@ output exists. Each transaction below needs one admitted native run, listed
 under "Native runs" as NEEDS ADMISSION. Electrical, thermal and physical
 qualification are NOT RUN.
 
-## 2026-11-08 Receipt lifecycle: every run ends in a named terminal state, and the K budget is 80 minutes
+## 2026-11-08 Receipt lifecycle: every run ends in a named terminal state, and the K budget is 80 minutes (corrected to 140 on 2026-11-11, see Budgets)
 
 Issue #308. No native run was made for this change; the behaviour below is
 proven by `scripts/checks/test_osc4_transaction_signals.py` with harmless
@@ -86,26 +86,37 @@ NOT RUN.
   invocation (exit 3), which includes the committed historical receipts in this folder: move or
   delete the file first. The workflow deletes it in the run step, stamps
   `<run id>-<attempt>-<board>` as the invocation, and verifies it when collecting.
-- **Budgets.** `budgets.json` in this folder is the single source: 80 minutes for `osc-core`,
-  60 for the jacks. `transaction.py` reads it for the `--max-minutes` default (`--print-budget`
-  shows it), and the workflow reads the same file from the plan commit; an explicit value wins.
-  The workflow's `max_minutes` input is now empty by default and resolves per board; `prepare`
-  fails when budget + 3 min wrapper grace + 2 min kill-after + 10 min setup allowance exceeds the
-  100-minute job timeout. The plan's `limits.wall_minutes: 60` stays as the
-  2026-11-07 record. Frames, expansion limits, refill counts and retry policy are unchanged.
-- **Open budget question.** The job log counts five native checks for K, not four: base, after
-  the cut, candidate, the stage's own fresh verify, and the driver's fresh copy, at 18–19 min
-  each. 80 minutes reaches the fifth check but does not finish it; a complete K run needs about
-  95 minutes, which the 80-minute ceiling and the 100-minute job cannot hold. That decision is
-  left to the manager.
+- **Budgets.** `budgets.json` in this folder is the single source: 140 minutes for `osc-core`
+  (corrected 2026-11-11 from 80), 60 for the jacks. `transaction.py` reads it for the
+  `--max-minutes` default (`--print-budget` shows it), and the workflow reads the same file from
+  the plan commit; an explicit value wins. `prepare` fails when budget + 3 min wrapper grace +
+  2 min kill-after + 10 min setup + 10 min collect allowance exceeds the 170-minute job timeout
+  (140 + 25 = 165); the run step is limited to 150 minutes. The plan's `limits.wall_minutes: 60`
+  stays as the 2026-11-07 record. Frames, expansion limits, refill counts and retry policy are
+  unchanged.
+- **The 140-minute budget.** The job log counts five native checks for K: base, after the cut,
+  candidate, the stage's own fresh verify, and the driver's fresh copy, at 18-19 min each. 80
+  minutes reached the fifth check but could not finish it, so no run under it could produce a
+  terminal receipt. 140 minutes holds the five checks, routing, the gate and one drop-and-retry
+  reserve; a transaction that needs all 8 retries stops as `TIMED OUT; NOT ADOPTED`. No transaction
+  is retried with a larger frame, budget or time limit. The 2026-11-11 change to 140 min corrects
+  a budget that could not hold the five mandatory checks; it is not a retry and admits no run.
+- **Holds.** `budgets.json` `holds` lists boards that the driver (exit 4, before any native
+  call) and the workflow `prepare` step refuse. `osc-core` is held: `osc4-k-agnd-r5243-2` on
+  K2518 already ran to a known non-improving result, so no OSC4 `osc-core` run happens until the
+  K2226 adoption decision (#311) is recorded and a new plan is selected with
+  `extract_residuals.py` / `select_transactions.py --board osc-core` on the then-canonical K
+  board. Only the commit that installs that `transactions.json` plan (new spec name, new
+  `input_board_sha256`) removes the hold. `--validate`, `--print-budget` and `--reconcile` are
+  unaffected.
 - **Local runs.** `with_route_guard.sh` goes through heavy-guard locally, whose `--max-run`
-  default of 1800 s would TERM a 60–80 minute run; set `HEAVY_GUARD_MAX_RUN` above the budget.
+  default of 1800 s would TERM a 60–140 minute run; set `HEAVY_GUARD_MAX_RUN` above the budget.
   The driver receives TERM from the guard and finalises `INTERRUPTED` the same way. The guard
   escalates TERM to KILL after a fixed 10 s, so the driver's grace (default 6 s) plus its kill
   and final save must fit inside that; do not raise `--grace-seconds` above about 8 s locally.
 
 ```
-HEAVY_GUARD_MAX_RUN=6000 bash scripts/pcbgen/with_route_guard.sh timeout --signal=TERM --kill-after=2m 83m .circuit-cache/ground-solver-venv/bin/python -u circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core --max-minutes 80
+HEAVY_GUARD_MAX_RUN=9000 bash scripts/pcbgen/with_route_guard.sh timeout --signal=TERM --kill-after=2m 143m .circuit-cache/ground-solver-venv/bin/python -u circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core --max-minutes 140
 python3 circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core --reconcile --exit-status "$status"
 ```
 
@@ -291,7 +302,7 @@ Runs share one concurrency group per plan branch and are never cancelled.
 GitHub keeps only one pending run per group: a newer dispatch for the same
 branch replaces one that is still queued.
 
-`boards` defaults to all three, and `max_minutes` defaults to 60 (1–80, with no leading zero).
+`boards` defaults to all three, and `max_minutes` is empty by default and resolves per board from `budgets.json` (1–140, with no leading zero); a held board is refused by `prepare`, which now always reads `budgets.json`, so a plan branch without it cannot run.
 The job fails if `transaction.py` exits non-zero, but it still uploads what
 exists.
 
@@ -318,7 +329,7 @@ python3 circuit/reviews/osc4-local-transactions-20261107/transaction.py osc-core
 | `select_transactions.py` | Deterministic choice of one transaction per board |
 | `transactions.json` | Exact driver specs, cut objects, victims, frames and limits |
 | `transaction.py` | Non-promoting native driver around `scripts/pcbgen/route_jack_grid.py` `run_stage()`; `--validate` is host-only |
-| `scripts/checks/test_osc4_transaction.py` | Unit tests for `transaction.py` with the driver stubbed: hash refusal, plan-invalid gate, interrupted receipt; run by `scripts/checks/run-python-tests.sh` |
+| `scripts/checks/test_osc4_transaction.py` | Unit tests for `transaction.py` with the driver stubbed: hash refusal, plan-invalid gate, interrupted receipt, budget and timeout invariants read from the workflow, and the osc-core hold (refusal with zero native calls; hold required while the K2518 plan is installed); run by `scripts/checks/run-python-tests.sh` |
 | `budgets.json` | Default wall-clock budget per board in minutes, read by `transaction.py` and the workflow (2026-11-08) |
 | `lifecycle.py` | Receipt lifecycle for `transaction.py`: atomic writes, phase checkpoints, owned children and containers, signal handlers, `--reconcile` (2026-11-08) |
 | `scripts/checks/test_osc4_transaction_signals.py` | Process-level tests of the lifecycle through `timeout` + `with_route_guard.sh` with `osc4_signal_harness.py` and `osc4_fake_oracle.sh`; two docker tests skip without docker and the pinned image |

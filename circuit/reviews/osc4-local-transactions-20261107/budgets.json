@@ -1,9 +1,12 @@
 {
+ "holds": {
+  "osc-core": "NOT ADMITTED: osc4-k-agnd-r5243-2 on K2518 already ran to a known non-improving result (README 2026-11-08). No OSC4 osc-core run until the K2226 adoption decision (#311) is recorded and a new plan is selected with extract_residuals.py / select_transactions.py --board osc-core on the then-canonical K board."
+ },
  "minutes": {
-  "osc-core": 80,
+  "osc-core": 140,
   "osc-jack-left": 60,
   "osc-jack-right": 60
  },
- "note": "Default wall-clock budget per board in minutes; read by transaction.py (--max-minutes default, --print-budget) and by .github/workflows/local-transactions.yml. K needs five native checks of about 18-19 min each (README 2026-11-08); an explicit max_minutes still wins. The plan's limits.wall_minutes=60 is the 2026-11-07 record.",
+ "note": "Default wall-clock budget per board in minutes; read by transaction.py (--max-minutes default, --print-budget) and by .github/workflows/local-transactions.yml. K needs five native checks of about 18-19 min each (README 2026-11-08) plus one drop-and-retry reserve, so 140 min is the smallest budget that can hold them; it is a configuration correction, not a retry, and admits no run. An explicit max_minutes still wins. `holds` lists boards the run path and the workflow refuse; a hold is removed only by the commit that installs a new transactions.json plan. The plan's limits.wall_minutes=60 is the 2026-11-07 record.",
  "schema": "osc4-transaction-budgets-1"
 }

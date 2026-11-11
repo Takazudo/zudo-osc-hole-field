@@ -86,7 +86,7 @@ def main():
         if a.slow_validate:
             Path(a.pidfile).parent.joinpath('validating').write_text('1');time.sleep(a.slow_validate)
         return {'errors':[]}
-    with mock.patch.object(tx,'load',return_value=plan),mock.patch.object(tx,'validate',validate):
+    with mock.patch.object(tx,'load',return_value=plan),mock.patch.object(tx,'validate',validate),mock.patch.object(tx,'held_reason',lambda b:None):
         code=tx.main(['osc-core',*args,'--out-dir',str(out),'--cid-dir',str(tmp/'cids')],
                      driver=driver,delta=lambda a_,b_:{'stub':True},retention=lambda b_,a_:{'stub':True})
         if code or not a.then_sleep_run:return code

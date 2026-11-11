@@ -19,7 +19,7 @@ on:
         default: osc-core,osc-jack-left,osc-jack-right
         type: string
       max_minutes:
-        description: Wall-clock budget per transaction in minutes (1-80). Empty = per-board default, 80 for osc-core and 60 for the jacks
+        description: Wall-clock budget per transaction in minutes (1-140). Empty = per-board default, 140 for osc-core and 60 for the jacks
         required: false
         default: ""
         type: string
@@ -41,11 +41,12 @@ env:
   # Time budget (minutes). The per-board default comes from $PLAN_DIR/budgets.json on the plan commit (the
   # driver reads the same file). The driver stops itself at max_minutes (receipt TIMED OUT); the timeout
   # wrapper sends TERM WRAPPER_GRACE later and KILL KILL_AFTER after that; setup, collection and upload take
-  # the rest. Their sum must stay within the transaction job's timeout-minutes (100), which `prepare` checks.
+  # the rest. Their sum must stay within the transaction job's timeout-minutes (170), which `prepare` checks.
   WRAPPER_GRACE_MINUTES: "3"
   KILL_AFTER_MINUTES: "2"
   SETUP_ALLOWANCE_MINUTES: "10"
-  JOB_TIMEOUT_MINUTES: "100"
+  COLLECT_ALLOWANCE_MINUTES: "10"
+  JOB_TIMEOUT_MINUTES: "170"
 
 jobs:
   prepare:
@@ -64,7 +65,7 @@ jobs:
           set -o pipefail  # a 404 from gh api must not be hidden by base64 -d succeeding on empty input
           git check-ref-format --branch "$BRANCH" >/dev/null
           # No leading zero: bash reads "0100" as octal while timeout reads it as 100 minutes.
-          if [[ -n $MAX_MINUTES ]] && { ! [[ $MAX_MINUTES =~ ^[1-9][0-9]?$ ]] || ((10#$MAX_MINUTES > 80)); }; then echo "max_minutes must be empty or 1-80 without a leading zero"; exit 1; fi
+          if [[ -n $MAX_MINUTES ]] && { ! [[ $MAX_MINUTES =~ ^[1-9][0-9]{0,2}$ ]] || ((10#$MAX_MINUTES > 140)); }; then echo "max_minutes must be empty or 1-140 without a leading zero"; exit 1; fi
           boards=()
           IFS=',' read -ra requested <<<"$BOARDS"
           for b in "${requested[@]}"; do
@@ -75,21 +76,23 @@ jobs:
           done
           ((${#boards[@]})) || { echo "no board selected"; exit 1; }
           sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/$BRANCH" --jq .sha)
-          if [[ -z $MAX_MINUTES ]]; then
-            # Single budget source: the plan commit's budgets.json, which transaction.py reads too.
-            budgets_json=$(gh api "repos/$GITHUB_REPOSITORY/contents/$PLAN_DIR/budgets.json?ref=$sha" --jq .content | base64 -d) \
-              || { echo "::error::$BRANCH has no $PLAN_DIR/budgets.json; pass max_minutes explicitly"; exit 1; }
-          fi
+          # budgets.json is read even for an explicit max_minutes: its `holds` refuse a board before any job starts.
+          budgets_json=$(gh api "repos/$GITHUB_REPOSITORY/contents/$PLAN_DIR/budgets.json?ref=$sha" --jq .content | base64 -d) \
+            || { echo "::error::$BRANCH has no $PLAN_DIR/budgets.json"; exit 1; }
+          for b in "${boards[@]}"; do
+            held=$(jq -r --arg b "$b" '.holds[$b] // empty' <<<"$budgets_json")
+            if [[ -n $held ]]; then echo "::error::$b is held: $held"; exit 1; fi
+          done
           # Every selected board must fit the job: budget + wrapper grace + kill-after + setup/collection allowance <= job timeout.
           budgets=()
           for b in "${boards[@]}"; do
             if [[ -n $MAX_MINUTES ]]; then eff=$MAX_MINUTES; else
               eff=$(jq -er --arg b "$b" '.minutes[$b]' <<<"$budgets_json") || { echo "::error::budgets.json has no entry for $b"; exit 1; }
-              [[ $eff =~ ^[1-9][0-9]?$ ]] || { echo "::error::budgets.json minutes for $b must be 1-99: $eff"; exit 1; }
+              [[ $eff =~ ^[1-9][0-9]{0,2}$ ]] && ((eff <= 140)) || { echo "::error::budgets.json minutes for $b must be 1-140: $eff"; exit 1; }
             fi
-            total=$((eff + WRAPPER_GRACE_MINUTES + KILL_AFTER_MINUTES + SETUP_ALLOWANCE_MINUTES))
+            total=$((eff + WRAPPER_GRACE_MINUTES + KILL_AFTER_MINUTES + SETUP_ALLOWANCE_MINUTES + COLLECT_ALLOWANCE_MINUTES))
             if ((total > JOB_TIMEOUT_MINUTES)); then
-              echo "::error::$b: budget ${eff} min + ${WRAPPER_GRACE_MINUTES} wrapper grace + ${KILL_AFTER_MINUTES} kill-after + ${SETUP_ALLOWANCE_MINUTES} setup allowance = ${total} min exceeds the ${JOB_TIMEOUT_MINUTES}-minute job timeout; lower max_minutes"
+              echo "::error::$b: budget ${eff} min + ${WRAPPER_GRACE_MINUTES} wrapper grace + ${KILL_AFTER_MINUTES} kill-after + ${SETUP_ALLOWANCE_MINUTES} setup + ${COLLECT_ALLOWANCE_MINUTES} collect allowance = ${total} min exceeds the ${JOB_TIMEOUT_MINUTES}-minute job timeout; lower max_minutes"
               exit 1
             fi
             budgets+=("$b=${eff}")
@@ -102,7 +105,7 @@ jobs:
     name: Transaction ${{ matrix.board }}
     needs: prepare
     runs-on: ubuntu-latest
-    timeout-minutes: 100
+    timeout-minutes: 170
     strategy:
       fail-fast: false
       matrix:
@@ -172,7 +175,7 @@ jobs:
         id: run
         # Below the job timeout so that the collect step still runs when this step is cut off: the receipt is
         # then reconciled with an unknown exit status (nonterminal, terminal_outcome UNKNOWN) and uploaded.
-        timeout-minutes: 95
+        timeout-minutes: 150
         env:
           SPEC: ${{ steps.precheck.outputs.spec }}
         run: |
