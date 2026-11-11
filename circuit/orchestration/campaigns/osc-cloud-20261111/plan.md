@@ -56,14 +56,15 @@ Staged source packets (from the four non-native archives, unpacked under `/home/
 | --- | --- | --- | --- | --- | --- |
 | T0 | #315 | This record, backlog inventory, execution design | Manager | DONE (this PR) | — |
 | T1 | #311 | Recover and hash-verify K2226 and its start/context | Manager | DONE (K subset; remainder not needed now) | — |
-| T2 | #311 | Shardable complete-warning audit per [design-decision-t2-t3.md](design-decision-t2-t3.md) | Design: Fable subagent (selected via Agent `model: fable`, effort not exposed); implementation: Opus subagent, worktree `/home/user/wt/t2` | RUNNING | — |
-| T3 | #308 | OSC4 osc-core budget 80→140 min driver / 170 min job with an explicit osc-core run hold until a new plan after #311 | Sonnet subagent, worktree `/home/user/wt/t3` | RUNNING | — |
-| T4 | #311 | Run the sharded final audit on K2226, then independent exact-byte review and single-integrator adoption decision | Actions, ≤4 jobs | PLANNED | T1, T2 |
-| T5 | #21/#324 | Install `parts-439-with-324` onto current main after baseline | Opus | BLOCKED (archive) | T1 archive, T4 ordering for K receipts |
-| T6 | #326 | SEL regional E2 experiment from reviewed recipe, new attempt ID | Actions/VM | BLOCKED (archive) | T1 archive |
-| T7 | #327 | MIX4 vendor-model comparison, new attempt ID | VM | BLOCKED (archive) | T1 archive |
-| T8 | #328 | NOISE2 bypass source fix rebased on the adopted K | Opus | BLOCKED (archive) | T1, T4 |
-| T9 | #38/#39, #59, #305 | P retention/current-copper, protection, UUID migration | — | BLOCKED (archive / evidence) | T1 archive, T4 |
+| T2 | #311 | Shardable complete-warning audit per [design-decision-t2-t3.md](design-decision-t2-t3.md) | Design: Fable subagent (selected via Agent `model: fable`, effort not exposed); implementation: Opus subagent, worktree `/home/user/wt/t2`; review: Fable subagent (APPROVE) | PR #333 (draft); 14/14 controls PASS, 30 host tests OK; CI NOT RUN (DNS incident) | — |
+| T3 | #308 | OSC4 osc-core budget 80→140 min driver / 170 min job with an explicit osc-core run hold until a new plan after #311 | Sonnet subagent, worktree `/home/user/wt/t3`; review: Opus subagent (APPROVE) | PR #331 (draft); 44 tests OK (1 skipped); CI NOT RUN (DNS incident) | — |
+| T3b | #315 | Install owner-scope packet E18/E19/E20 (`d8bce10b`) | Manager; review: Opus subagent | PR #332 (draft); regen/circuit:check/check/build/check:site PASS; CI NOT RUN (DNS incident) | — |
+| T4 | #311 | Run the sharded final audit on K2226, then independent exact-byte review and single-integrator adoption decision | Manager VM, one native slot, tool `41d664e` (the dispatch workflow is not on `main` yet, so Actions cannot run it) | RUNNING: pilot `silk:0:64` 163.4 s (2.55 s/fixture); 4,645 fixtures in 4 silk units of 1,184 plus holes-before/holes-after/zones, run serially | T1, T2 |
+| T5 | #21/#324 | Install `parts-439-with-324` onto current main after baseline | Opus | WAITING: ordering rule (packet recovered and verified) | T4 |
+| T6 | #326 | SEL regional E2 experiment from reviewed recipe, new attempt ID | Actions/VM | READY (recipe recovered) | native slot |
+| T7 | #327, #59 | MIX4 vendor-model comparison and precision 4990 comparison, attempts `*-run-20261111a1` in `/home/user/wt/{mix4-327,precision4990}-a20261111` at `d00638c` | Sonnet subagent, VM | RUNNING | native slot |
+| T8 | #328 | NOISE2 bypass source fix rebased on the adopted K | Opus | WAITING: ordering rule | T4 |
+| T9 | #38/#39, #59, #305 | P retention/current-copper, protection, UUID migration | — | WAITING: ordering rule (packets recovered and verified) | T4 |
 | T10 | #318 | Manufacturing review package | — | NOT STARTED: prerequisites unmet | all above |
 
 Ordering rule: any source/metadata change that alters K receipts (T5 parts identities, T8 bypass) is applied after the K2226 decision (T4) so the candidate's receipt binding stays valid; otherwise K2226 must be rebound or re-audited.
