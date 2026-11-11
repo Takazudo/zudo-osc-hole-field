@@ -185,6 +185,27 @@ def as_json(value):return json.loads(json.dumps(value))
 
 
 PROBE_FLAG='--native-fixture-probe';PROBE_PREFIX='NATIVE-FIXTURE-PROBE ';PROBE_BATCH=32
+SHARD_STATUS='SHARD ONLY; NOT COMPLETE EVIDENCE'
+
+
+def parse_fixture_range(text):
+    """START:END from the command line; alignment and bounds are checked against the scope."""
+    match=re.fullmatch(r'(0|[1-9][0-9]*):([1-9][0-9]*)',text or '')
+    if not match:raise ValueError('fixture range must be START:END')
+    return int(match[1]),int(match[2])
+
+
+def check_fixture_range(fixture_range, total):
+    # A start on a probe-batch boundary keeps every shard's probe batches identical to the monolith's.
+    start,end=fixture_range
+    if start%PROBE_BATCH or not 0<=start<end<=total:
+        raise ValueError(f'fixture range must start on a multiple of {PROBE_BATCH} and satisfy START < END <= {total}')
+    return start,end
+
+
+def ordered_scope_sha256(scope):
+    """Fixture index i is sorted(scope)[i] in every shard; this binds that order."""
+    return hashlib.sha256(json.dumps(sorted(scope)).encode()).hexdigest()
 
 
 def native_fixture_view(fixture):
@@ -206,7 +227,7 @@ def probe_fixtures(fixtures):
     return rows
 
 
-def main(before_path, after_path, out, expected_copper=382, expected_vias=38, reviewed_removed_uuids=()):
+def main(before_path, after_path, out, expected_copper=382, expected_vias=38, reviewed_removed_uuids=(), fixture_range=None):
     import pcbnew
     version=subprocess.check_output(['kicad-cli','version'],text=True).strip()
     if version!='10.0.6':raise ValueError('requires pinned native10.0.6')
@@ -214,6 +235,7 @@ def main(before_path, after_path, out, expected_copper=382, expected_vias=38, re
     (out/'started.json').write_text(json.dumps(dict(status='STARTED; NO NATIVE MASK RESULT YET',version=version,before_sha256=hashlib.sha256(before_path.read_bytes()).hexdigest(),after_sha256=hashlib.sha256(after_path.read_bytes()).hexdigest()),indent=2)+'\n')
     count=unchanged_nonrouting(before_path.read_text(),after_path.read_text(),reviewed_removed_uuids)
     scope=added_copper_scope(before_path.read_text(),after_path.read_text(),expected_copper,expected_vias,reviewed_removed_uuids)
+    start,end=(0,len(scope)) if fixture_range is None else check_fixture_range(fixture_range,len(scope))
     for suffix in ('.kicad_pro','.kicad_dru'):
         if before_path.with_suffix(suffix).read_bytes()!=after_path.with_suffix(suffix).read_bytes():
             raise ValueError('project/rules changed')
@@ -274,8 +296,8 @@ def main(before_path, after_path, out, expected_copper=382, expected_vias=38, re
         end=scoped.rfind(')');path.write_text(scoped[:end]+via_blocks[via.m_Uuid.AsString()]+'\n'+scoped[end:])
         return folder,path,selected,margin
     ordered=sorted(added,key=lambda v:v.m_Uuid.AsString())
-    for first in range(0,len(ordered),PROBE_BATCH):
-        chunk=[(i,via,*write_fixture(i,via)) for i,via in enumerate(ordered[first:first+PROBE_BATCH],first)]
+    for first in range(start,end,PROBE_BATCH):
+        chunk=[(i,via,*write_fixture(i,via)) for i,via in enumerate(ordered[first:min(first+PROBE_BATCH,end)],first)]
         for (i,via,folder,path,selected,margin),view in zip(chunk,probe_fixtures([c[3] for c in chunk])):
             if view['sha256']!=hashlib.sha256(path.read_bytes()).hexdigest():raise ValueError('native fixture probe read other bytes')
             if view['track_uuids']!=[via.m_Uuid.AsString()]:raise ValueError('fixture copper identity changed')
@@ -291,7 +313,7 @@ def main(before_path, after_path, out, expected_copper=382, expected_vias=38, re
                 if via.m_Uuid.AsString() not in ids:raise ValueError('silk warning not attributable to sole new copper object')
                 identities.add((v['type'],v['severity'],ids))
             receipts.append(dict(copper_uuid=via.m_Uuid.AsString(),kind='via' if via.Type()==pcbnew.PCB_VIA_T else 'segment',native_mask_signature=signature(via),selected_native_bbox_uuids=sorted(selected),conservative_bbox_margin_nm=margin,
-                                 violations=rows,report_sha256=hashlib.sha256(report.read_bytes()).hexdigest()))
+                                 violations=rows,report_sha256=hashlib.sha256(report.read_bytes()).hexdigest(),fixture_sha256=view['sha256']))
             print(f'{i+1}/{len(added)} copper fixtures, {len(identities)} new silk identities',flush=True)
     result=dict(status='READ-ONLY NATIVE ADDED-MASK EVIDENCE; PROMOTION GATE UNCHANGED',version=version,
                 before_sha256=hashlib.sha256(before_path.read_bytes()).hexdigest(),after_sha256=hashlib.sha256(after_path.read_bytes()).hexdigest(),
@@ -301,7 +323,14 @@ def main(before_path, after_path, out, expected_copper=382, expected_vias=38, re
     if reviewed_removed_uuids:
         result['reviewed_copper_removals']=reviewed_copper_removals(before_path.read_text(),after_path.read_text(),reviewed_removed_uuids)
         result['copper_removal_source']=removal_source(reviewed_removed_uuids)
-    (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    if fixture_range is None:
+        (out/'result.json').write_text(json.dumps(result,indent=2)+'\n');return
+    # A shard is never complete evidence: no completeness flag, so resumable_audits cannot accept it.
+    del result['added_copper_scope_complete']
+    result.update(status=SHARD_STATUS,fixture_range=[start,end],fixture_total=len(scope),ordered_scope_sha256=ordered_scope_sha256(scope),
+                  project_sha256=hashlib.sha256(after_path.with_suffix('.kicad_pro').read_bytes()).hexdigest(),
+                  rules_sha256=hashlib.sha256(after_path.with_suffix('.kicad_dru').read_bytes()).hexdigest())
+    (out/'shard-result.json').write_text(json.dumps(result,indent=2)+'\n')
 
 
 if __name__=='__main__' and sys.argv[1:2]==[PROBE_FLAG]:
@@ -314,7 +343,9 @@ elif __name__=='__main__':
     parser.add_argument('--expected-vias',type=int,default=38)
     parser.add_argument('--reviewed-cut-uuid',action='append',default=[])
     parser.add_argument('--stage-removal-scope',type=Path)
+    parser.add_argument('--fixture-range',help='START:END of sorted added copper; writes shard-result.json, never result.json')
     args=parser.parse_args()
     if args.stage_removal_scope and args.reviewed_cut_uuid:parser.error('use reviewed cuts or a stage removal scope, not both')
     cuts=read_stage_removals(args.stage_removal_scope,args.before,args.after) if args.stage_removal_scope else args.reviewed_cut_uuid
-    main(args.before,args.after,args.output,args.expected_copper,args.expected_vias,cuts)
+    main(args.before,args.after,args.output,args.expected_copper,args.expected_vias,cuts,
+         None if args.fixture_range is None else parse_fixture_range(args.fixture_range))
