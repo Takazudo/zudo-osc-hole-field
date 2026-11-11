@@ -1,0 +1,318 @@
+{
+  "status": "NATIVE CONTROL RECEIPT; FIXTURE TOOLING EVIDENCE ONLY; NOT BOARD EVIDENCE",
+  "tool_commit": "9eb7a9cd13d1dc5675c35be87c0f83016594e0b6",
+  "kicad_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "inspected_image_digest": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "fixture_manifest_sha256": "071eb9e4e49351da65987c3dd2df3444a441073f4b9fad97a79e767eafa9800e",
+  "controls": {
+    "12": "PASS",
+    "13": "PASS",
+    "14": "PASS"
+  },
+  "results": {
+    "clean": {
+      "units": [
+        "silk:0:32",
+        "silk:32:64",
+        "silk:64:80",
+        "holes-before",
+        "holes-after",
+        "zones"
+      ],
+      "unit_wall_seconds": {
+        "silk:0:32": 20.495,
+        "silk:32:64": 19.032,
+        "silk:64:80": 10.356,
+        "holes-before": 0.927,
+        "holes-after": 0.882,
+        "zones": 0.925
+      },
+      "monolithic_silk_wall_seconds": 45.55,
+      "sharded_outcome": "PASS",
+      "monolithic_outcome": "PASS",
+      "receipt": {
+        "status": "ASSEMBLED FROM SHARDS; RE-VERIFY WITH complete_reports; NOT AN ADOPTION",
+        "tool_commit": "9eb7a9cd13d1dc5675c35be87c0f83016594e0b6",
+        "tool_files": {
+          "scripts/pcbgen/audit_added_mask.py": "9c15f0fa55f15b9427c6440fe2a22b6095d3e0febd4cc0209aef37b973ecbe21",
+          "scripts/pcbgen/audit_hole_pairs.py": "befda038eca06dab143a8c080eb8e4ca0c7395af15970b0d2dc95d0fd1b714e2",
+          "scripts/pcbgen/audit_zone_silk_scope.py": "94b5d62a0d01da338797542435d99c57ba23fe18fec6784b8ba7f0377385825a",
+          "scripts/pcbgen/zone_batch_evidence.py": "0758435a10e50c804f77b2deae130d73dc10f78baa8d8d83b9ea439a2fa65190",
+          "scripts/pcbgen/zone_batch_resume.py": "0313c419afe41f6257f2953bb74d1d64f09aebdf9abbb9754ad8b85ddd5ce805",
+          "scripts/pcbgen/uuid_tools.py": "92db6d775250d9a375673f3e233079427226c081aa6efd571e4b58c9043fc68b",
+          "scripts/pcbgen/copper_identity.py": "aa6294f6e79006cf05e81dd580f741e10952b70a2ba29e85905fe35454a41c96",
+          "scripts/pcbgen/complete_native_warnings.py": "16487b8b503c4731477ce4a1a481f2383fb5cc7ec15122b0867ee5f50d290645",
+          "scripts/pcbgen/warning_shards.py": "269f84bdfb64b8f948a1941dab958a3e8894f5b78ad7ac3991fcd70ed9150b97",
+          "scripts/kicad/run.sh": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
+          "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246"
+        },
+        "kicad_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+        "inspected_image_digest": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+        "before_sha256": "cf4cec223e4aed92c8760d33340bc123c90cba30bad777e4e80485d1572fb5de",
+        "after_sha256": "b045c51da0a391fa3b85b0c860e3c848dd5c2704495b23df4a7f83ed838588cd",
+        "fixture_total": 80,
+        "ordered_scope_sha256": "08d8a71065d03e1c4849cf081be8af4ff804d087ed2407977962608ff313b0ea",
+        "silk_tiling": [
+          [
+            0,
+            32
+          ],
+          [
+            32,
+            64
+          ],
+          [
+            64,
+            80
+          ]
+        ],
+        "units": {
+          "holes-after": {
+            "receipt_sha256": "89988453b4bb198269e9db65783055c46df5ab5c6d8f1184f5769cef62e88e63",
+            "result_sha256": "1d85f8864146b78ba8ba21d15abb34455f5ab1f53e9e6e8059e25adee7d39167",
+            "github_run_id": null,
+            "run_attempt": null,
+            "wall_seconds": 0.882
+          },
+          "holes-before": {
+            "receipt_sha256": "6dc93e6eb7928f1836f9d3e3604cb6f0eb0cba14e374f559d74be9f5a33b9497",
+            "result_sha256": "8d816ba22336ab594ebb2c26a85c5312ab5966274754af40159282af0bb84c82",
+            "github_run_id": null,
+            "run_attempt": null,
+            "wall_seconds": 0.927
+          },
+          "silk:0:32": {
+            "receipt_sha256": "78469affd33e6727c07b63c2a94132c814b20764d7d3fabea6a26cad00c39542",
+            "result_sha256": "8685b5a169f51b86fc4ef60496633d7af5cbc1bee67038e683e65ee79b2fec88",
+            "github_run_id": null,
+            "run_attempt": null,
+            "wall_seconds": 20.495
+          },
+          "silk:32:64": {
+            "receipt_sha256": "2d42bae7f419bd9a0de9f0cc18b24d668e33775d72bb9997055963a4f945779a",
+            "result_sha256": "da39fcbdb28d21e47bcb46443cf9968685fbd3dfa268c7e54abf66f7d6910741",
+            "github_run_id": null,
+            "run_attempt": null,
+            "wall_seconds": 19.032
+          },
+          "silk:64:80": {
+            "receipt_sha256": "1eba445a0bb34a6847238264bd3a389e9382851f44158608e0affd46928ae2d4",
+            "result_sha256": "4ce259094a072900c64fbc21b9d2bea7055e91af833fea9ce8b353898dff3787",
+            "github_run_id": null,
+            "run_attempt": null,
+            "wall_seconds": 10.356
+          },
+          "zones": {
+            "receipt_sha256": "3e7dc62abba8d3ae69842bce52c024ab4ae90f96503b117e13d1b07e707886ec",
+            "result_sha256": "8ffaa1379bfa4785469fd2ea52cf0403bfee3dc245b054e169a028573aa9f58d",
+            "github_run_id": null,
+            "run_attempt": null,
+            "wall_seconds": 0.925
+          }
+        },
+        "silk_result_sha256": "140d6b51e7190dc63ca856e477881547d544d167e4341d01015b98c970dc4769"
+      },
+      "comparison": {
+        "fixtures": 80,
+        "differences": [],
+        "report_sha256_equal_count": 0,
+        "proof": {
+          "silk_audit_result_sha256": [
+            "a9f64ca098c4c0e1b889d18e5c3b1fa147266312f69ae0bb47e43bbe12c346ac",
+            "140d6b51e7190dc63ca856e477881547d544d167e4341d01015b98c970dc4769"
+          ]
+        },
+        "new_mask_identities": {
+          "monolithic": [],
+          "sharded": []
+        }
+      }
+    },
+    "planted": {
+      "units": [
+        "silk:0:32",
+        "silk:32:64",
+        "silk:64:81",
+        "holes-before",
+        "holes-after",
+        "zones"
+      ],
+      "unit_wall_seconds": {
+        "silk:0:32": 18.639,
+        "silk:32:64": 19.492,
+        "silk:64:81": 10.276,
+        "holes-before": 0.888,
+        "holes-after": 0.934,
+        "zones": 0.905
+      },
+      "monolithic_silk_wall_seconds": 45.76,
+      "sharded_outcome": "REJECTED: new complete native silk warning identities",
+      "monolithic_outcome": "REJECTED: new complete native silk warning identities",
+      "receipt": {
+        "status": "ASSEMBLED FROM SHARDS; RE-VERIFY WITH complete_reports; NOT AN ADOPTION",
+        "tool_commit": "9eb7a9cd13d1dc5675c35be87c0f83016594e0b6",
+        "tool_files": {
+          "scripts/pcbgen/audit_added_mask.py": "9c15f0fa55f15b9427c6440fe2a22b6095d3e0febd4cc0209aef37b973ecbe21",
+          "scripts/pcbgen/audit_hole_pairs.py": "befda038eca06dab143a8c080eb8e4ca0c7395af15970b0d2dc95d0fd1b714e2",
+          "scripts/pcbgen/audit_zone_silk_scope.py": "94b5d62a0d01da338797542435d99c57ba23fe18fec6784b8ba7f0377385825a",
+          "scripts/pcbgen/zone_batch_evidence.py": "0758435a10e50c804f77b2deae130d73dc10f78baa8d8d83b9ea439a2fa65190",
+          "scripts/pcbgen/zone_batch_resume.py": "0313c419afe41f6257f2953bb74d1d64f09aebdf9abbb9754ad8b85ddd5ce805",
+          "scripts/pcbgen/uuid_tools.py": "92db6d775250d9a375673f3e233079427226c081aa6efd571e4b58c9043fc68b",
+          "scripts/pcbgen/copper_identity.py": "aa6294f6e79006cf05e81dd580f741e10952b70a2ba29e85905fe35454a41c96",
+          "scripts/pcbgen/complete_native_warnings.py": "16487b8b503c4731477ce4a1a481f2383fb5cc7ec15122b0867ee5f50d290645",
+          "scripts/pcbgen/warning_shards.py": "269f84bdfb64b8f948a1941dab958a3e8894f5b78ad7ac3991fcd70ed9150b97",
+          "scripts/kicad/run.sh": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
+          "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246"
+        },
+        "kicad_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+        "inspected_image_digest": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+        "before_sha256": "cf4cec223e4aed92c8760d33340bc123c90cba30bad777e4e80485d1572fb5de",
+        "after_sha256": "86ad9cefdf011de61bb2f51418e06ccf74606844ed36b530cf3b9f355a485117",
+        "fixture_total": 81,
+        "ordered_scope_sha256": "861b1f7d6f67dadaff090faba1ff6f6dabf0ab273e571cefdf5f60b0740ce7fd",
+        "silk_tiling": [
+          [
+            0,
+            32
+          ],
+          [
+            32,
+            64
+          ],
+          [
+            64,
+            81
+          ]
+        ],
+        "units": {
+          "holes-after": {
+            "receipt_sha256": "a4434549de96e698b5ee7de2b2406316533ae3b4595f01feeb3b4d19f02f1019",
+            "result_sha256": "41abb1eb6cf0546f3ce98fadab0dc6f536cb3750e6262b3480281b158836d848",
+            "github_run_id": null,
+            "run_attempt": null,
+            "wall_seconds": 0.934
+          },
+          "holes-before": {
+            "receipt_sha256": "317b7808d29cdc9e5ee8c9ddae244376367ddc26e417f60ba9e861e491eff346",
+            "result_sha256": "8d816ba22336ab594ebb2c26a85c5312ab5966274754af40159282af0bb84c82",
+            "github_run_id": null,
+            "run_attempt": null,
+            "wall_seconds": 0.888
+          },
+          "silk:0:32": {
+            "receipt_sha256": "510572351c9d8ccd5a3df555844600f9ae6d60b7060cc49dd9f828170f516492",
+            "result_sha256": "c5de86505b09c39927b8e8fadd485bec2e177649e8e1ffbbf25697414e9ce3e6",
+            "github_run_id": null,
+            "run_attempt": null,
+            "wall_seconds": 18.639
+          },
+          "silk:32:64": {
+            "receipt_sha256": "efa430db9bb96d9dd5fb2c87590aa5e8c38d2a0706e7ccb0841f1264289fd474",
+            "result_sha256": "67d62ebbede7e5bfd2b47e019bdce150d7ce5fc55377e3bb0377073deba6a35d",
+            "github_run_id": null,
+            "run_attempt": null,
+            "wall_seconds": 19.492
+          },
+          "silk:64:81": {
+            "receipt_sha256": "c4fd7da6822a76d9441ccb6d5707301c338f2d9ef4967728588f5abeda9f6008",
+            "result_sha256": "e6621e38cac8e6f95878e24d57733b5a50a61a90f26629404a00f364df44e67a",
+            "github_run_id": null,
+            "run_attempt": null,
+            "wall_seconds": 10.276
+          },
+          "zones": {
+            "receipt_sha256": "5635297441994675ba93caf2dba68f8f99bcdef0ba02a93ce755ddcfdcb9153a",
+            "result_sha256": "3a0ac0e0354aaa960e2422a0c80822b2d2e491d5166d953bcea880c638415ac0",
+            "github_run_id": null,
+            "run_attempt": null,
+            "wall_seconds": 0.905
+          }
+        },
+        "silk_result_sha256": "70a81da5b4873dd83b1c51c4a57801f48085469cc3c84bfe61115b457e9ed984"
+      },
+      "comparison": {
+        "fixtures": 81,
+        "differences": [],
+        "report_sha256_equal_count": 0,
+        "proof": null,
+        "new_mask_identities": {
+          "monolithic": [
+            [
+              "silk_over_copper",
+              "warning",
+              [
+                "3ae1d74b-5815-5512-9b45-124294c0e9bb",
+                "a53d20ec-b99a-5337-a466-66cd2b6621c7"
+              ]
+            ]
+          ],
+          "sharded": [
+            [
+              "silk_over_copper",
+              "warning",
+              [
+                "3ae1d74b-5815-5512-9b45-124294c0e9bb",
+                "a53d20ec-b99a-5337-a466-66cd2b6621c7"
+              ]
+            ]
+          ]
+        }
+      }
+    },
+    "capped": {
+      "outcome": "SHARD FAILED",
+      "exit_status": 1,
+      "stderr_tail": [
+        "ValueError: silk fixture reached report cap; subdivide it"
+      ],
+      "receipt_written": false,
+      "shard_result_written": false
+    }
+  },
+  "started_utc": "2026-11-11T16:37:05+00:00",
+  "native_calls": [
+    {
+      "argv": [
+        "kicad-cli",
+        "pcb",
+        "drc",
+        "--format",
+        "json",
+        "--severity-all",
+        "--output",
+        ".circuit-cache/ws-native/src/before/drc.json",
+        ".circuit-cache/ws-native/src/before/warning-shards.kicad_pcb"
+      ],
+      "wall_seconds": 1.19
+    },
+    {
+      "argv": [
+        "kicad-cli",
+        "pcb",
+        "drc",
+        "--format",
+        "json",
+        "--severity-all",
+        "--output",
+        ".circuit-cache/ws-native/src/after-clean/drc.json",
+        ".circuit-cache/ws-native/src/after-clean/warning-shards.kicad_pcb"
+      ],
+      "wall_seconds": 1.05
+    },
+    {
+      "argv": [
+        "kicad-cli",
+        "pcb",
+        "drc",
+        "--format",
+        "json",
+        "--severity-all",
+        "--output",
+        ".circuit-cache/ws-native/src/after-planted/drc.json",
+        ".circuit-cache/ws-native/src/after-planted/warning-shards.kicad_pcb"
+      ],
+      "wall_seconds": 1.04
+    }
+  ],
+  "ended_utc": "2026-11-11T16:40:26+00:00"
+}

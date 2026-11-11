@@ -1,0 +1,431 @@
+name: Warning audit shards
+run-name: Warning audit shards ${{ inputs.label }} (${{ inputs.mode }})
+
+# Sharded complete-warning audit (scripts/pcbgen/warning_shards.py). The code is this workflow's own
+# commit (github.workflow_sha, the receipts' tool_commit); the boards come from before_commit/after_commit
+# in separate checkouts, are never executed, and are copied under .circuit-cache so run.sh's /work mount
+# sees them. Silk runs as fixed fixture ranges; holes-before, holes-after and zones run whole. Every unit
+# goes through scripts/kicad/run.sh on the pinned image and uploads its directory with its host receipt.
+# `full` mode assembles the native-audits tree host-only and re-verifies it with the unchanged
+# complete_reports: CLOUD VERIFICATION; NOT AN ADOPTION. `pilot` mode runs only the listed ranges:
+# PILOT TIMING; NOT EVIDENCE. Read-only: no commit, no branch update, no PR, no cache of board bytes.
+# Retry: "re-run failed jobs" at most once, only for a proven transient infrastructure failure; the
+# assembler rejects a second receipt for the same unit.
+on:
+  workflow_dispatch:
+    inputs:
+      label:
+        description: Run label (lowercase letters, digits, hyphens)
+        required: true
+        type: string
+      board_name:
+        description: Board file stem, e.g. warning-shards or osc-core
+        required: true
+        type: string
+      before_commit:
+        description: 40-hex commit holding the before board
+        required: true
+        type: string
+      before_dir:
+        description: Repository-relative directory of the before board at before_commit
+        required: true
+        type: string
+      after_commit:
+        description: 40-hex commit holding the after board
+        required: true
+        type: string
+      after_dir:
+        description: Repository-relative directory of the after board at after_commit
+        required: true
+        type: string
+      expected_before_sha256:
+        description: sha256 of the before .kicad_pcb
+        required: true
+        type: string
+      expected_after_sha256:
+        description: sha256 of the after .kicad_pcb
+        required: true
+        type: string
+      shard_size:
+        description: Silk fixtures per shard (a multiple of 32)
+        required: true
+        default: "32"
+        type: string
+      mode:
+        description: pilot (listed ranges only, no assembly) or full
+        required: true
+        default: pilot
+        type: choice
+        options:
+          - pilot
+          - full
+      pilot_ranges:
+        description: Comma-separated START:END silk ranges (pilot mode only)
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: warning-audit-shards-${{ inputs.label }}
+  cancel-in-progress: false
+
+env:
+  LABEL: ${{ inputs.label }}
+  BOARD_NAME: ${{ inputs.board_name }}
+  BEFORE_COMMIT: ${{ inputs.before_commit }}
+  BEFORE_DIR: ${{ inputs.before_dir }}
+  AFTER_COMMIT: ${{ inputs.after_commit }}
+  AFTER_DIR: ${{ inputs.after_dir }}
+  EXPECTED_BEFORE_SHA256: ${{ inputs.expected_before_sha256 }}
+  EXPECTED_AFTER_SHA256: ${{ inputs.expected_after_sha256 }}
+  SHARD_SIZE: ${{ inputs.shard_size }}
+  MODE: ${{ inputs.mode }}
+  PILOT_RANGES: ${{ inputs.pilot_ranges }}
+
+defaults:
+  run:
+    shell: bash
+    working-directory: code
+
+jobs:
+  prepare:
+    name: Validate inputs and plan units
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      units: ${{ steps.plan.outputs.units }}
+    steps:
+      - name: Validate inputs
+        working-directory: .
+        run: |
+          set -euo pipefail
+          [[ $LABEL =~ ^[a-z0-9][a-z0-9-]{0,62}$ ]] || { echo "::error::invalid label"; exit 1; }
+          [[ $BOARD_NAME =~ ^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$ ]] || { echo "::error::invalid board_name"; exit 1; }
+          for c in "$BEFORE_COMMIT" "$AFTER_COMMIT"; do [[ $c =~ ^[0-9a-f]{40}$ ]] || { echo "::error::commits must be 40-hex"; exit 1; }; done
+          for d in "$BEFORE_DIR" "$AFTER_DIR"; do
+            [[ $d =~ ^[A-Za-z0-9._-]+(/[A-Za-z0-9._-]+)*$ && ! $d =~ (^|/)\.\.?(/|$) ]] || { echo "::error::directories must be repository-relative without . or .."; exit 1; }
+          done
+          for h in "$EXPECTED_BEFORE_SHA256" "$EXPECTED_AFTER_SHA256"; do [[ $h =~ ^[0-9a-f]{64}$ ]] || { echo "::error::expected hashes must be sha256 hex"; exit 1; }; done
+          [[ $SHARD_SIZE =~ ^[1-9][0-9]{0,5}$ ]] && ((SHARD_SIZE % 32 == 0)) || { echo "::error::shard_size must be a multiple of 32"; exit 1; }
+          if [[ $MODE == pilot ]]; then
+            [[ $PILOT_RANGES =~ ^[0-9]+:[0-9]+(,[0-9]+:[0-9]+)*$ ]] || { echo "::error::pilot mode needs pilot_ranges START:END[,...]"; exit 1; }
+          elif [[ -n $PILOT_RANGES ]]; then echo "::error::pilot_ranges is for pilot mode only"; exit 1; fi
+
+      - name: Check out the tool commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: code
+          persist-credentials: false
+
+      - name: Check out the before data commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.before_commit }}
+          path: data-before
+          persist-credentials: false
+
+      - name: Check out the after data commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.after_commit }}
+          path: data-after
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.10"
+
+      - name: Stage the boards and check their hashes
+        run: |
+          set -euo pipefail
+          dest=".circuit-cache/warning-shards/$LABEL";rm -rf "$dest";mkdir -p "$dest/before" "$dest/after"
+          for side in before after; do
+            if [[ $side == before ]]; then data=../data-before;src="$data/$BEFORE_DIR";want=$EXPECTED_BEFORE_SHA256;else data=../data-after;src="$data/$AFTER_DIR";want=$EXPECTED_AFTER_SHA256;fi
+            root=$(realpath -e "$data")
+            for ext in kicad_pcb kicad_pro kicad_dru; do
+              [[ -f $src/$BOARD_NAME.$ext && ! -L $src/$BOARD_NAME.$ext ]] || { echo "::error::missing $side $BOARD_NAME.$ext"; exit 1; }
+              # A symlinked parent directory must not lead outside the data checkout.
+              real=$(realpath -e "$src/$BOARD_NAME.$ext")
+              [[ $real == "$root"/* && $real != "$root"/.git/* ]] || { echo "::error::$side $BOARD_NAME.$ext resolves outside the data checkout"; exit 1; }
+              cp "$src/$BOARD_NAME.$ext" "$dest/$side/"
+            done
+            echo "$want  $dest/$side/$BOARD_NAME.kicad_pcb" | sha256sum --check --strict
+          done
+
+      - name: Plan the units (host-only)
+        id: plan
+        run: |
+          set -euo pipefail
+          dest=".circuit-cache/warning-shards/$LABEL";args=()
+          [[ $MODE == pilot ]] && args=(--pilot-ranges "$PILOT_RANGES")
+          python scripts/pcbgen/warning_shards.py plan "$dest/before/$BOARD_NAME.kicad_pcb" "$dest/after/$BOARD_NAME.kicad_pcb" \
+            --shard-size "$SHARD_SIZE" --stage-removals-from-delta --output "$RUNNER_TEMP/plan.json" "${args[@]}" > /dev/null
+          echo "units=$(jq -c .units "$RUNNER_TEMP/plan.json")" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Plan $LABEL ($MODE) at tool commit $GITHUB_WORKFLOW_SHA"
+            [[ $MODE == pilot ]] && echo "PILOT TIMING; NOT EVIDENCE"
+            echo '```';jq . "$RUNNER_TEMP/plan.json";echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the plan
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: plan-${{ inputs.label }}-a${{ github.run_attempt }}
+          path: ${{ runner.temp }}/plan.json
+          if-no-files-found: error
+          retention-days: 14
+
+  unit:
+    name: Unit ${{ matrix.unit }}
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        unit: ${{ fromJSON(needs.prepare.outputs.units) }}
+    env:
+      UNIT: ${{ matrix.unit }}
+    steps:
+      - name: Check out the tool commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: code
+          persist-credentials: false
+
+      - name: Check out the before data commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.before_commit }}
+          path: data-before
+          persist-credentials: false
+
+      - name: Check out the after data commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.after_commit }}
+          path: data-after
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.10"
+
+      - name: Stage the boards and check their hashes
+        id: stage
+        run: |
+          set -euo pipefail
+          dest=".circuit-cache/warning-shards/$LABEL";rm -rf "$dest";mkdir -p "$dest/before" "$dest/after" "$dest/units"
+          for side in before after; do
+            if [[ $side == before ]]; then data=../data-before;src="$data/$BEFORE_DIR";want=$EXPECTED_BEFORE_SHA256;else data=../data-after;src="$data/$AFTER_DIR";want=$EXPECTED_AFTER_SHA256;fi
+            root=$(realpath -e "$data")
+            for ext in kicad_pcb kicad_pro kicad_dru; do
+              [[ -f $src/$BOARD_NAME.$ext && ! -L $src/$BOARD_NAME.$ext ]] || { echo "::error::missing $side $BOARD_NAME.$ext"; exit 1; }
+              # A symlinked parent directory must not lead outside the data checkout.
+              real=$(realpath -e "$src/$BOARD_NAME.$ext")
+              [[ $real == "$root"/* && $real != "$root"/.git/* ]] || { echo "::error::$side $BOARD_NAME.$ext resolves outside the data checkout"; exit 1; }
+              cp "$src/$BOARD_NAME.$ext" "$dest/$side/"
+            done
+            echo "$want  $dest/$side/$BOARD_NAME.kicad_pcb" | sha256sum --check --strict
+          done
+          echo "slug=${UNIT//:/-}" >> "$GITHUB_OUTPUT"
+
+      - name: Pull the pinned KiCad oracle
+        run: |
+          set -euo pipefail
+          [[ -z ${KICAD_CLI_BIN:-} ]] || { echo "::error::KICAD_CLI_BIN would select a native oracle"; exit 1; }
+          source scripts/kicad/pin.env
+          docker pull --quiet "$KICAD_IMAGE"
+          bash scripts/kicad/run.sh kicad-cli version
+
+      - name: Run the unit
+        id: run
+        timeout-minutes: 300
+        env:
+          SLUG: ${{ steps.stage.outputs.slug }}
+        run: |
+          dest=".circuit-cache/warning-shards/$LABEL";mkdir -p "$RUNNER_TEMP/log"
+          set +e
+          python -u scripts/pcbgen/warning_shards.py run-unit "$dest/before/$BOARD_NAME.kicad_pcb" "$dest/after/$BOARD_NAME.kicad_pcb" "$dest/units/$SLUG" \
+            --unit "$UNIT" --stage-removals-from-delta --before-commit "$BEFORE_COMMIT" --before-dir "$BEFORE_DIR" \
+            --after-commit "$AFTER_COMMIT" --after-dir "$AFTER_DIR" 2>&1 | tee "$RUNNER_TEMP/log/run.log"
+          status=${PIPESTATUS[0]}
+          set -e
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          [[ -f $dest/units/$SLUG/unit-receipt.json ]] && echo "receipt=yes" >> "$GITHUB_OUTPUT"
+          # A pilot unit is timing only. The marker also breaks its file manifest, so assemble would reject it.
+          if [[ $MODE == pilot && -d $dest/units/$SLUG ]]; then echo "PILOT TIMING; NOT EVIDENCE" > "$dest/units/$SLUG/PILOT-NOT-EVIDENCE"; fi
+          {
+            echo "### $UNIT: exit $status ($MODE)"
+            [[ $MODE == pilot ]] && echo "PILOT TIMING; NOT EVIDENCE"
+            if [[ -f $dest/units/$SLUG/unit-receipt.json ]]; then
+              jq -c '{unit,wall_seconds,host_used_memory_peak_kib,runner_image,tool_commit,inspected_image_digest,result_sha256}' "$dest/units/$SLUG/unit-receipt.json"
+            else echo "no unit receipt"; fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Index the log
+        if: always()
+        working-directory: ${{ runner.temp }}/log
+        run: |
+          [[ -f run.log ]] || exit 0
+          sha256sum run.log > SHA256SUMS
+
+      - name: Upload the unit (only with a terminal receipt; pilot units as pilot-*, never unit-*)
+        if: always() && steps.run.outputs.receipt == 'yes'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ inputs.mode == 'full' && 'unit' || 'pilot' }}-${{ steps.stage.outputs.slug }}-a${{ github.run_attempt }}
+          path: code/.circuit-cache/warning-shards/${{ inputs.label }}/units/${{ steps.stage.outputs.slug }}/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload the log
+        if: always() && steps.stage.outputs.slug != ''
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: log-${{ steps.stage.outputs.slug }}-a${{ github.run_attempt }}
+          path: ${{ runner.temp }}/log/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload what a unit without a terminal receipt left (diagnosis only; never assembled)
+        if: always() && steps.stage.outputs.slug != '' && steps.run.outputs.receipt != 'yes'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: partial-${{ steps.stage.outputs.slug }}-a${{ github.run_attempt }}
+          path: code/.circuit-cache/warning-shards/${{ inputs.label }}/units/${{ steps.stage.outputs.slug }}/
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Fail on a unit error
+        if: steps.run.outputs.status != '0'
+        env:
+          STATUS: ${{ steps.run.outputs.status }}
+        run: |
+          echo "::error::unit $UNIT exited with status ${STATUS:-unknown}; it has no admissible receipt"
+          exit 1
+
+  assemble:
+    name: Assemble and re-verify (host-only)
+    if: inputs.mode == 'full'
+    needs: [prepare, unit]
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Check out the tool commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: code
+          persist-credentials: false
+
+      - name: Check out the before data commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.before_commit }}
+          path: data-before
+          persist-credentials: false
+
+      - name: Check out the after data commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.after_commit }}
+          path: data-after
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.10"
+
+      - name: Stage the boards and check their hashes
+        run: |
+          set -euo pipefail
+          dest=".circuit-cache/warning-shards/$LABEL";rm -rf "$dest";mkdir -p "$dest/before" "$dest/after"
+          for side in before after; do
+            if [[ $side == before ]]; then data=../data-before;src="$data/$BEFORE_DIR";want=$EXPECTED_BEFORE_SHA256;else data=../data-after;src="$data/$AFTER_DIR";want=$EXPECTED_AFTER_SHA256;fi
+            root=$(realpath -e "$data")
+            for ext in kicad_pcb kicad_pro kicad_dru; do
+              [[ -f $src/$BOARD_NAME.$ext && ! -L $src/$BOARD_NAME.$ext ]] || { echo "::error::missing $side $BOARD_NAME.$ext"; exit 1; }
+              # A symlinked parent directory must not lead outside the data checkout.
+              real=$(realpath -e "$src/$BOARD_NAME.$ext")
+              [[ $real == "$root"/* && $real != "$root"/.git/* ]] || { echo "::error::$side $BOARD_NAME.$ext resolves outside the data checkout"; exit 1; }
+              cp "$src/$BOARD_NAME.$ext" "$dest/$side/"
+            done
+            echo "$want  $dest/$side/$BOARD_NAME.kicad_pcb" | sha256sum --check --strict
+            # The full-board report, when the data commit retains one, feeds the cloud verification only.
+            if [[ -f $src/drc.json && ! -L $src/drc.json ]]; then
+              real=$(realpath -e "$src/drc.json")
+              [[ $real == "$root"/* && $real != "$root"/.git/* ]] || { echo "::error::$side drc.json resolves outside the data checkout"; exit 1; }
+              cp "$src/drc.json" "$dest/$side-drc.json"
+            fi
+          done
+
+      - name: Download the unit artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: unit-*
+          path: code/.circuit-cache/warning-shards/${{ inputs.label }}/units
+
+      - name: Assemble the native-audits tree
+        run: |
+          set -euo pipefail
+          dest=".circuit-cache/warning-shards/$LABEL";out="$RUNNER_TEMP/out";mkdir -p "$out"
+          python -u scripts/pcbgen/warning_shards.py assemble "$dest/before/$BOARD_NAME.kicad_pcb" "$dest/after/$BOARD_NAME.kicad_pcb" \
+            "$dest/units" "$out/native-audits" --stage-removals-from-delta
+
+      - name: Re-verify with the unchanged complete_reports
+        id: verify
+        run: |
+          dest=".circuit-cache/warning-shards/$LABEL";out="$RUNNER_TEMP/out"
+          if [[ -f $dest/before-drc.json && -f $dest/after-drc.json ]]; then
+            set +e
+            python -u scripts/pcbgen/warning_shards.py verify "$dest/before/$BOARD_NAME.kicad_pcb" "$dest/after/$BOARD_NAME.kicad_pcb" \
+              "$out/native-audits" --before-drc "$dest/before-drc.json" --after-drc "$dest/after-drc.json" --stage-removals-from-delta \
+              > "$out/cloud-verification.json" 2> "$out/cloud-verification.err"
+            status=$?
+            set -e
+            if ((status == 0)); then outcome=PASS; else outcome="FAIL: $(tail -n 1 "$out/cloud-verification.err")"; fi
+          else
+            status=0;outcome="NOT RUN: a data commit retains no drc.json beside the board"
+          fi
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "$outcome" > "$out/cloud-verification-outcome.txt"
+          # Keep every unit's host receipt and start marker with the tree; assembly-receipt.json binds their hashes.
+          for unit in "$dest"/units/*/; do
+            name=$(basename "$unit");mkdir -p "$out/unit-receipts/$name"
+            for f in unit-receipt.json unit-started.json; do [[ -f $unit/$f ]] && cp "$unit/$f" "$out/unit-receipts/$name/"; done
+          done
+          (cd "$out" && find . -type f ! -name MANIFEST.sha256 -print0 | sort -z | xargs -0 sha256sum > MANIFEST.sha256)
+          {
+            echo "### CLOUD VERIFICATION; NOT AN ADOPTION"
+            echo "- $LABEL at tool commit $GITHUB_WORKFLOW_SHA"
+            echo "- complete_reports: $outcome"
+            jq -c '{status,fixture_total,silk_tiling,inspected_image_digest,silk_result_sha256}' "$out/native-audits/assembly-receipt.json"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the assembled tree
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-audits-${{ inputs.label }}-a${{ github.run_attempt }}
+          path: ${{ runner.temp }}/out/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Fail on a verification finding
+        if: steps.verify.outputs.status != '0'
+        run: |
+          echo "::error::complete_reports rejected the assembled tree (see cloud-verification.err)"
+          exit 1
