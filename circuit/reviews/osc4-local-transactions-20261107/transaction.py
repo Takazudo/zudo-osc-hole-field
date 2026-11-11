@@ -26,10 +26,11 @@ sys.path.insert(0,str(ROOT));sys.path.insert(0,str(ROOT/'scripts/checks'));sys.p
 import lifecycle
 RAILS=('+12V','-12V','+5V')
 # Wall-clock budgets in minutes, one source for the driver and the workflow (budgets.json beside this
-# script). K needs more native checks than a jack (README 2026-11-08); the plan's limits.wall_minutes=60
-# stays as the 2026-11-07 record. An explicit --max-minutes wins.
+# script). K needs five native checks (about 18-19 min each) plus one retry reserve, so 140 min (README
+# 2026-11-11); the plan's limits.wall_minutes=60 stays as the 2026-11-07 record. An explicit --max-minutes wins.
 BUDGETS=HERE/'budgets.json'
 def default_minutes(board_id):return json.loads(BUDGETS.read_text())['minutes'][board_id]
+def held_reason(board_id):return json.loads(BUDGETS.read_text()).get('holds',{}).get(board_id)
 
 
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -192,6 +193,9 @@ def main(argv=None,**injected):
     if a.validate:
         r=validate(a.board);print(json.dumps(r,sort_keys=True));return 1 if r['errors'] else 0
     if a.print_budget:print(default_minutes(a.board));return 0
+    if not a.reconcile:
+        held=held_reason(a.board)
+        if held:print(f'refusing to start: {held}',file=sys.stderr);return 4
     spec_name=load(a.board)['transaction']['spec']['name']
     if a.reconcile:
         r=lifecycle.reconcile(Path(a.out_dir)/f'{spec_name}.json',parse_exit_status(a.exit_status),invocation=a.invocation,board=a.board,spec_name=spec_name,

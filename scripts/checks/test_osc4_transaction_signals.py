@@ -89,7 +89,7 @@ class LifecycleProcessTests(unittest.TestCase):
         self.assertTrue(all(c['pid']>0 and c['pgid']==c['pid'] for c in r['native_calls']))
         self.assertTrue(r['invocation']);self.assertRegex(r['source_revision'],r'^[0-9a-f]{40}$|^unknown$')
         self.assertTrue(r['environment']['hosted']);self.assertEqual(r['driver']['pid']>0,True);self.assertEqual(r['signals'],[])
-        self.assertEqual(r['max_minutes'],80);self.assertIn('budgets.json',r['budget_source'])
+        self.assertEqual(r['max_minutes'],140);self.assertIn('budgets.json',r['budget_source'])
         self.assertTrue((self.tmp/'out/osc4-test-copper.json').exists());self.assertNoOrphans(d)
 
     def test_completion_raw_gate_passed_sets_only_raw_gate_passed(self):
