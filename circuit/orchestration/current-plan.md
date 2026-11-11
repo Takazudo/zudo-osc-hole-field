@@ -8,9 +8,9 @@ This is the initial task/environment/model mapping, not a dispatch receipt. No w
 
 | Field | Initial state / action before dispatch |
 | --- | --- |
-| Active campaign / top-level manager | Not assigned; select one Claude Code Cloud manager or Dots manager, record its session ID and reconcile any incumbent |
+| Active campaign / top-level manager | `osc-cloud-20261111` (2026-11-11): one Claude Code Cloud Project thread session is the sole manager and dispatcher; see [campaigns/osc-cloud-20261111/plan.md](campaigns/osc-cloud-20261111/plan.md) |
 | Hard-design authority | Fable or Astra in an actually selectable/confirmed session; otherwise pending |
-| Actions dispatcher | Not assigned; one child coordinator owns the shared admitted Actions allocation |
+| Actions dispatcher | The campaign manager itself (no separate child); ceiling 4 compute jobs plus 7-job CI reserve, recorded in the campaign plan |
 | Account concurrency / current headroom | Unknown; inspect current plan/settings, active work including other repositories, and runner-specific limits |
 | Ordinary CI / integration reserve | Must be explicitly allocated before compute fan-out; do not consume all capacity with routing |
 | Cloud implementation sessions | No new sessions admitted here; determine number from independent work and measured VM/session budgets |
