@@ -324,6 +324,14 @@ class FixtureAndWorkflowTests(unittest.TestCase):
         planted=shards.plan(folder/'before/warning-shards.kicad_pcb',folder/'after-planted/warning-shards.kicad_pcb',32)
         self.assertEqual(clean['units'][:3],['silk:0:32','silk:32:64','silk:64:80']);self.assertEqual(planted['fixture_total'],81)
 
+    def test_native_control_receipt_names_the_current_tool_bytes(self):
+        # A changed TOOL_FILES member leaves controls 12-14 NOT RUN until they are executed again (fixtures README).
+        receipt=json.loads((ROOT/'scripts/pcbgen/fixtures/warning-shards/native-controls-receipt.json').read_text())
+        self.assertEqual(receipt['controls'],{'12':'PASS','13':'PASS','14':'PASS'})
+        for pair in ('clean','planted'):self.assertEqual(receipt['results'][pair]['receipt']['tool_files'],shards.tool_files())
+        self.assertEqual(receipt['kicad_image'],shards.pinned_image())
+        self.assertEqual(receipt['inspected_image_digest'],DIGEST)
+
     def test_workflow_is_dispatch_only_read_only_and_artifact_only(self):
         text=(ROOT/'.github/workflows/warning-audit-shards.yml').read_text()
         on=text[text.index('\non:'):text.index('\npermissions:')]
@@ -336,6 +344,10 @@ class FixtureAndWorkflowTests(unittest.TestCase):
         self.assertTrue(minutes and max(minutes)<=330)
         self.assertIn('max-parallel: 4',text);self.assertIn('fail-fast: false',text)
         self.assertIn('CLOUD VERIFICATION; NOT AN ADOPTION',text);self.assertIn('PILOT TIMING; NOT EVIDENCE',text)
+        self.assertIn("inputs.mode == 'full' && 'unit' || 'pilot'",text);self.assertIn('PILOT-NOT-EVIDENCE',text)
+        self.assertEqual(re.findall(r'pattern: (\S+)',text),['unit-*'])
+        self.assertIn("steps.run.outputs.receipt != 'yes'",text);self.assertIn('unit-receipts',text)
+        self.assertEqual(text.count('resolves outside the data checkout'),4)
 
 
 if __name__=='__main__':unittest.main()

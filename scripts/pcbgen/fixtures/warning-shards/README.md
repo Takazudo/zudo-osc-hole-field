@@ -15,3 +15,13 @@ The native controls run on the pinned image through `scripts/kicad/run.sh`, one 
 14. Capped fixture: a via under 200 silkscreen lines must fail its shard at the 199-row report cap.
 
 `native-controls-receipt.json`, when present, records their outcome for one tool commit and image digest. Without it, controls 12-14 are NOT RUN.
+
+The receipt covers only the tool bytes it names in `results.clean.receipt.tool_files`, and `test_warning_shards` checks that they equal `warning_shards.tool_files()`. Any change to a `TOOL_FILES` member, or to the pinned image, makes controls 12-14 NOT RUN until they are executed again and a new receipt is committed. The receipt bytes are never edited by hand.
+
+Control 14's capped input is not committed. The control script derives it from the staged copy of `before/warning-shards.kicad_pcb`:
+
+- It inserts 200 `gr_line` items on `F.SilkS` immediately before the board's `(embedded_fonts` line. Item k = 0..199 runs from (139.7 + 0.003k, 74.5) to (139.7 + 0.003k, 75.5) mm, with x formatted to three decimals, stroke width 0.1 mm and `(type default)`. Its UUID is uuid5(`0d3c8e7a-91b2-4c55-8d2e-7a1f4b6c9e01`, `cap-line-<k>`).
+- The capped before board is that text. The capped after board adds, at the same place, one via at (140, 75) with size 0.6, drill 0.3, layers F.Cu/B.Cu, net GND and UUID uuid5(same namespace, `cap-via`).
+- Both boards use the fixture's `.kicad_pro` and `.kicad_dru`. The control runs `warning_shards.py run-unit … --unit silk:0:1` and expects the shard to fail with `silk fixture reached report cap; subdivide it`, leaving no `shard-result.json` and no unit receipt.
+
+`host_children_maxrss_kib` in a unit receipt is the Docker client's RSS, not the container's. The container is covered only by `host_used_memory_peak_kib`, a host-wide used-memory sample.

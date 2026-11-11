@@ -145,9 +145,13 @@ jobs:
           set -euo pipefail
           dest=".circuit-cache/warning-shards/$LABEL";rm -rf "$dest";mkdir -p "$dest/before" "$dest/after"
           for side in before after; do
-            if [[ $side == before ]]; then src="../data-before/$BEFORE_DIR";want=$EXPECTED_BEFORE_SHA256;else src="../data-after/$AFTER_DIR";want=$EXPECTED_AFTER_SHA256;fi
+            if [[ $side == before ]]; then data=../data-before;src="$data/$BEFORE_DIR";want=$EXPECTED_BEFORE_SHA256;else data=../data-after;src="$data/$AFTER_DIR";want=$EXPECTED_AFTER_SHA256;fi
+            root=$(realpath -e "$data")
             for ext in kicad_pcb kicad_pro kicad_dru; do
               [[ -f $src/$BOARD_NAME.$ext && ! -L $src/$BOARD_NAME.$ext ]] || { echo "::error::missing $side $BOARD_NAME.$ext"; exit 1; }
+              # A symlinked parent directory must not lead outside the data checkout.
+              real=$(realpath -e "$src/$BOARD_NAME.$ext")
+              [[ $real == "$root"/* && $real != "$root"/.git/* ]] || { echo "::error::$side $BOARD_NAME.$ext resolves outside the data checkout"; exit 1; }
               cp "$src/$BOARD_NAME.$ext" "$dest/$side/"
             done
             echo "$want  $dest/$side/$BOARD_NAME.kicad_pcb" | sha256sum --check --strict
@@ -221,9 +225,13 @@ jobs:
           set -euo pipefail
           dest=".circuit-cache/warning-shards/$LABEL";rm -rf "$dest";mkdir -p "$dest/before" "$dest/after" "$dest/units"
           for side in before after; do
-            if [[ $side == before ]]; then src="../data-before/$BEFORE_DIR";want=$EXPECTED_BEFORE_SHA256;else src="../data-after/$AFTER_DIR";want=$EXPECTED_AFTER_SHA256;fi
+            if [[ $side == before ]]; then data=../data-before;src="$data/$BEFORE_DIR";want=$EXPECTED_BEFORE_SHA256;else data=../data-after;src="$data/$AFTER_DIR";want=$EXPECTED_AFTER_SHA256;fi
+            root=$(realpath -e "$data")
             for ext in kicad_pcb kicad_pro kicad_dru; do
               [[ -f $src/$BOARD_NAME.$ext && ! -L $src/$BOARD_NAME.$ext ]] || { echo "::error::missing $side $BOARD_NAME.$ext"; exit 1; }
+              # A symlinked parent directory must not lead outside the data checkout.
+              real=$(realpath -e "$src/$BOARD_NAME.$ext")
+              [[ $real == "$root"/* && $real != "$root"/.git/* ]] || { echo "::error::$side $BOARD_NAME.$ext resolves outside the data checkout"; exit 1; }
               cp "$src/$BOARD_NAME.$ext" "$dest/$side/"
             done
             echo "$want  $dest/$side/$BOARD_NAME.kicad_pcb" | sha256sum --check --strict
@@ -253,6 +261,8 @@ jobs:
           set -e
           echo "status=$status" >> "$GITHUB_OUTPUT"
           [[ -f $dest/units/$SLUG/unit-receipt.json ]] && echo "receipt=yes" >> "$GITHUB_OUTPUT"
+          # A pilot unit is timing only. The marker also breaks its file manifest, so assemble would reject it.
+          if [[ $MODE == pilot && -d $dest/units/$SLUG ]]; then echo "PILOT TIMING; NOT EVIDENCE" > "$dest/units/$SLUG/PILOT-NOT-EVIDENCE"; fi
           {
             echo "### $UNIT: exit $status ($MODE)"
             [[ $MODE == pilot ]] && echo "PILOT TIMING; NOT EVIDENCE"
@@ -268,24 +278,31 @@ jobs:
           [[ -f run.log ]] || exit 0
           sha256sum run.log > SHA256SUMS
 
-      - name: Upload the unit (only with a terminal receipt)
+      - name: Upload the unit (only with a terminal receipt; pilot units as pilot-*, never unit-*)
         if: always() && steps.run.outputs.receipt == 'yes'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: unit-${{ steps.stage.outputs.slug }}-a${{ github.run_attempt }}
+          name: ${{ inputs.mode == 'full' && 'unit' || 'pilot' }}-${{ steps.stage.outputs.slug }}-a${{ github.run_attempt }}
           path: code/.circuit-cache/warning-shards/${{ inputs.label }}/units/${{ steps.stage.outputs.slug }}/
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 14
 
-      - name: Upload the log and whatever the unit left (diagnosis only; never assembled)
+      - name: Upload the log
         if: always() && steps.stage.outputs.slug != ''
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: log-${{ steps.stage.outputs.slug }}-a${{ github.run_attempt }}
-          path: |
-            ${{ runner.temp }}/log/
-            code/.circuit-cache/warning-shards/${{ inputs.label }}/units/${{ steps.stage.outputs.slug }}/
+          path: ${{ runner.temp }}/log/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload what a unit without a terminal receipt left (diagnosis only; never assembled)
+        if: always() && steps.stage.outputs.slug != '' && steps.run.outputs.receipt != 'yes'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: partial-${{ steps.stage.outputs.slug }}-a${{ github.run_attempt }}
+          path: code/.circuit-cache/warning-shards/${{ inputs.label }}/units/${{ steps.stage.outputs.slug }}/
           include-hidden-files: true
           if-no-files-found: ignore
           retention-days: 14
@@ -336,14 +353,22 @@ jobs:
           set -euo pipefail
           dest=".circuit-cache/warning-shards/$LABEL";rm -rf "$dest";mkdir -p "$dest/before" "$dest/after"
           for side in before after; do
-            if [[ $side == before ]]; then src="../data-before/$BEFORE_DIR";want=$EXPECTED_BEFORE_SHA256;else src="../data-after/$AFTER_DIR";want=$EXPECTED_AFTER_SHA256;fi
+            if [[ $side == before ]]; then data=../data-before;src="$data/$BEFORE_DIR";want=$EXPECTED_BEFORE_SHA256;else data=../data-after;src="$data/$AFTER_DIR";want=$EXPECTED_AFTER_SHA256;fi
+            root=$(realpath -e "$data")
             for ext in kicad_pcb kicad_pro kicad_dru; do
               [[ -f $src/$BOARD_NAME.$ext && ! -L $src/$BOARD_NAME.$ext ]] || { echo "::error::missing $side $BOARD_NAME.$ext"; exit 1; }
+              # A symlinked parent directory must not lead outside the data checkout.
+              real=$(realpath -e "$src/$BOARD_NAME.$ext")
+              [[ $real == "$root"/* && $real != "$root"/.git/* ]] || { echo "::error::$side $BOARD_NAME.$ext resolves outside the data checkout"; exit 1; }
               cp "$src/$BOARD_NAME.$ext" "$dest/$side/"
             done
             echo "$want  $dest/$side/$BOARD_NAME.kicad_pcb" | sha256sum --check --strict
             # The full-board report, when the data commit retains one, feeds the cloud verification only.
-            if [[ -f $src/drc.json && ! -L $src/drc.json ]]; then cp "$src/drc.json" "$dest/$side-drc.json"; fi
+            if [[ -f $src/drc.json && ! -L $src/drc.json ]]; then
+              real=$(realpath -e "$src/drc.json")
+              [[ $real == "$root"/* && $real != "$root"/.git/* ]] || { echo "::error::$side drc.json resolves outside the data checkout"; exit 1; }
+              cp "$src/drc.json" "$dest/$side-drc.json"
+            fi
           done
 
       - name: Download the unit artifacts
@@ -376,6 +401,11 @@ jobs:
           fi
           echo "status=$status" >> "$GITHUB_OUTPUT"
           echo "$outcome" > "$out/cloud-verification-outcome.txt"
+          # Keep every unit's host receipt and start marker with the tree; assembly-receipt.json binds their hashes.
+          for unit in "$dest"/units/*/; do
+            name=$(basename "$unit");mkdir -p "$out/unit-receipts/$name"
+            for f in unit-receipt.json unit-started.json; do [[ -f $unit/$f ]] && cp "$unit/$f" "$out/unit-receipts/$name/"; done
+          done
           (cd "$out" && find . -type f ! -name MANIFEST.sha256 -print0 | sort -z | xargs -0 sha256sum > MANIFEST.sha256)
           {
             echo "### CLOUD VERIFICATION; NOT AN ADOPTION"
