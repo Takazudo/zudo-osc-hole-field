@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-audio-feedback-c-manufacturer",
+      "record_id": "rec-audio-feedback-c",
+      "source_id": "src-audio-feedback-c-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "KEMET",
+      "unit": "NONE",
+      "conditions": "Exact primary-source component record; no installed qualification inferred.",
+      "locator": "Physical page0 Specifications and Dimensions tables; later plots explicitly simulation only",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-audio-feedback-c-identity",
+      "record_id": "rec-audio-feedback-c",
+      "source_id": "src-audio-feedback-c-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "KEMET",
+        "mpn": "C0603C100J5GACTU",
+        "package": "0603"
+      },
+      "unit": "NONE",
+      "conditions": "Complete exact title; TU packaging retained, no supplier stock inferred.",
+      "locator": "Physical page0 Specifications and Dimensions tables; later plots explicitly simulation only",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-audio-feedback-c-nominal",
+      "record_id": "rec-audio-feedback-c",
+      "source_id": "src-audio-feedback-c-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 1e-11,
+      "unit": "F",
+      "conditions": "Initial±5%;1MHz1Vrms measurement condition.",
+      "locator": "Physical page0 Specifications and Dimensions tables; later plots explicitly simulation only",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-audio-feedback-c-voltage",
+      "record_id": "rec-audio-feedback-c",
+      "source_id": "src-audio-feedback-c-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 50,
+      "unit": "V",
+      "conditions": "Rated DC voltage; dielectric withstand125V is a test, not operating rating. Series C0G DC-bias behavior does not establish installed AC heating or circuit stress.",
+      "locator": "Physical page0 Specifications and Dimensions tables; later plots explicitly simulation only",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-audio-feedback-c-temperature",
+      "record_id": "rec-audio-feedback-c",
+      "source_id": "src-audio-feedback-c-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "operating_min_C": -55,
+        "operating_max_C": 125,
+        "TCC_ppm_per_C": 30
+      },
+      "unit": "NONE",
+      "conditions": "C0G coefficient±30ppm/C referenced25C/0V; series states no aging or applied-rated-DC capacitance change. Installed stress/temperature still require evidence.",
+      "locator": "Physical page0 Specifications and Dimensions tables; later plots explicitly simulation only",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-audio-feedback-c-body",
+      "record_id": "rec-audio-feedback-c",
+      "source_id": "src-audio-feedback-c-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "L_mm": 1.6,
+        "W_mm": 0.8,
+        "T_mm": 0.8,
+        "LW_tolerance_mm": 0.15,
+        "T_tolerance_mm": 0.07
+      },
+      "unit": "NONE",
+      "conditions": "Source dimensions only; model height0.8mm is nominal, not worst-case assembled envelope.",
+      "locator": "Physical page0 Specifications and Dimensions tables; later plots explicitly simulation only",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-audio-feedback-c-mechanical-fit",
+      "record_id": "rec-audio-feedback-c",
+      "source_id": "src-audio-feedback-c-series",
+      "class": "PROJECT_STATE",
+      "value": "Existing pad centres±0.70,size0.80x0.90,gap0.60mm. DensityB recommends centres±0.80,size0.95x1.00; current pad length0.15 and width0.10 smaller, gap0.05smaller. Not identical to densityA/C either; process/land decision open.",
+      "unit": "NONE",
+      "conditions": "Primary mounting recommendation is not a hard physical-interference conclusion. Preserve current footprint; require reviewed land/process disposition and any resulting native/layout regeneration before order readiness.",
+      "locator": "0603 mounting Table3; physical0/3 electrical conditions and physical12 soldering",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-audio-feedback-c-application",
+      "record_id": "rec-audio-feedback-c",
+      "source_id": "src-audio-feedback-c-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "47 attenuverter10pF feedback capacitors OUT to SUM; internal±12V amplifier domain. Stability/bandwidth with total pad/trace parasitics, rail excursions/faults and installed temperature remain open;10pF nominal alone does not qualify compensation.",
+      "unit": "NONE",
+      "conditions": "Conditional26.4V differential is below50V rating, not a proven installed stress bound. Retain actual0..40C ambient requirement; do not infer internal temperature. Nonpolarized, external factory assembly required.",
+      "locator": "Physical page0 Specifications and Dimensions tables; later plots explicitly simulation only",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-audio-feedback-c-pinout",
+      "record_id": "rec-audio-feedback-c",
+      "source_id": "src-audio-feedback-c-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Two end terminations; project1→pad1 and2→pad2.",
+      "unit": "NONE",
+      "conditions": "No manufacturer terminal numbers inferred; project mappings preserved.",
+      "locator": "Physical page0 Specifications and Dimensions tables; later plots explicitly simulation only",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-audio-feedback-c-assembly",
+      "record_id": "rec-audio-feedback-c",
+      "source_id": "src-audio-feedback-c-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "External electrical assembly required; no provider process acceptance or current stock established.",
+      "unit": "NONE",
+      "conditions": "Exact primary-source component record; no installed qualification inferred.",
+      "locator": "Physical page0 Specifications and Dimensions tables; later plots explicitly simulation only",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}
