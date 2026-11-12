@@ -16,7 +16,9 @@ class MultCommon(unittest.TestCase):
     def test_full_packages_pins_and_unknown_mpn(self):
         # E13/E14 S2b adoption (2026-11-01): the MULT IN D_BOOT clamp raises B1 from 36 to 37 packages
         p=self.p['packages_B1'];self.assertEqual(len(p),37)
-        self.assertEqual([r for r,q in p.items() if not q['mpn']],['R3102','R3104','R3114'])
+        # Parts-439 identity packet (#21, #324): R3104 10 kOhm now carries exact Yageo RC0603FR-0710KL; R3102/R3114 stay unresolved.
+        self.assertEqual([r for r,q in p.items() if not q['mpn']],['R3102','R3114'])
+        self.assertEqual(p['R3104']['mpn'],'RC0603FR-0710KL')
         self.assertEqual([u['unit'] for u in p['U3102']['units']],[1,2,3,4,5])
         self.assertEqual(len(p['U3102']['pins']),14)
         self.assertEqual(len([q for q in p.values() if q['mpn']=='RC1210FR-07499RL']),6)
