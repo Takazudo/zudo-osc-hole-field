@@ -47,6 +47,22 @@ class ReadinessTests(unittest.TestCase):
             (root/'board').write_text('changed copper')
             self.assertEqual(readiness.retained_connectivity(root,'board','report')['status'], 'STALE OR UNBOUND')
 
+    def test_metadata_successor_binds_only_its_own_adopted_bytes(self):
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root/'board').write_text('successor')
+            (root/'report').write_text(json.dumps({'native_board_sha256': 'a'*64, 'native_unconnected_edge_count': 0}))
+            successor = {'adopted': {'sha256': 'a'*64}, 'path': 'r.json', 'receipt_sha256': 'b'*64}
+            with mock.patch.object(readiness, 'successor_for', return_value=successor):
+                result = readiness.retained_connectivity(root, 'board', 'report')
+            self.assertEqual(result['status'], 'MATCHED ADOPTED BYTES VIA METADATA-ONLY SUCCESSOR')
+            self.assertEqual(result['metadata_successor'], {'path': 'r.json', 'sha256': 'b'*64})
+            with mock.patch.object(readiness, 'successor_for', return_value={**successor, 'adopted': {'sha256': 'c'*64}}):
+                self.assertEqual(readiness.retained_connectivity(root, 'board', 'report')['status'], 'STALE OR UNBOUND')
+            with mock.patch.object(readiness, 'successor_for', return_value=None):
+                self.assertEqual(readiness.retained_connectivity(root, 'board', 'report')['status'], 'STALE OR UNBOUND')
+
     def test_current_state_uses_complete_edges_not_capped_drc(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

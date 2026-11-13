@@ -4,7 +4,7 @@ ENGINEERING COVERAGE ONLY; NOT ORDER READY; NOT A MANUFACTURING BOM
 
 Offline source and retained-file reconciliation. No new native, physical, availability or assembly acceptance.
 
-Reconciliation: DISCREPANCIES; discrepancies: 910.
+Reconciliation: MATCHED DECLARED FIELDS; discrepancies: 0.
 
 | Unit | Disposition | Retained complete native open edges | Identity-declared fitted rows | Incomplete fitted identity rows |
 | --- | --- | ---: | ---: | ---: |
