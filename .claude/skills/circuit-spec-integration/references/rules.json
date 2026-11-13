@@ -42,6 +42,21 @@
       "conditions": "100 ohm JACK-to-FB resistor and 1 nF DRIVE-to-FB capacitor in the OPA4197 precision-output cell. Manufacturer nominal values and ratings do not prove the assembled feedback loop or protection behavior.",
       "verdict": "NEEDS BENCH",
       "refusal": "Do not accept populated-output stability, fault current/thermal duty, tolerance, temperature, layout parasitics or factory assembly from exact MPN capture and nominal model sweeps."
+    },
+    {
+      "rule_id": "power-reservoir-bleeder-application",
+      "domain": "load-rail reservoir and discharge behavior",
+      "record_ids": [
+        "rec-power-reservoir",
+        "rec-power-bleeder"
+      ],
+      "fact_ids": [
+        "fact-power-reservoir-application",
+        "fact-power-bleeder-application"
+      ],
+      "conditions": "Three load rails use1uF reservoirs and2.2kohm bleeders. Stored-energy discharge, effective capacitance, hot thermal margins and startup/fault sequencing depend on the complete unimplemented protection circuit.",
+      "verdict": "NEEDS BENCH",
+      "refusal": "Do not accept rail discharge timing, safe partial-power behavior or thermal qualification from these nominal passive values and identity records."
     }
   ]
 }

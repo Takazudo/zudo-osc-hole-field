@@ -42,26 +42,38 @@ Four layers fall below the 1.5× margin used for the jack halves, so the core ta
 - In4.Cu is a continuous +12 V plane.
 - +5 V is routed as 0.4 mm tracks.
 
-## Current status: K2518 accepted, routing incomplete
+## Current status: K2226 accepted, routing incomplete
 
-The accepted core board is **K2518**, recorded on 2026-11-07 in the current checkpoint `circuit/routing/osc-pcb-current-checkpoint.json`. `scripts/checks/osc_pcb_checkpoint.py` fails if this page, the board bytes, the receipt or the adoption record stop agreeing with that record. The board is an unvalidated draft. Electrical, thermal and physical qualification NOT RUN. Fabrication outputs NOT CREATED.
+The accepted core board is **K2226**, recorded on 2026-11-13 in the current checkpoint `circuit/routing/osc-pcb-current-checkpoint.json`. `scripts/checks/osc_pcb_checkpoint.py` fails if this page, the board bytes, the receipt or the adoption record stop agreeing with that record. The board is an unvalidated draft. Electrical, thermal and physical qualification NOT RUN. Fabrication outputs NOT CREATED.
 
-| Item | Accepted K2518 state |
+| Item | Accepted K2226 state |
+| --- | --- |
+| Board SHA256 (adopted) | `680da674de7a9fd8b327a7fcff0293f17b40a2b7be1a214409b3802e3743b656` |
+| Current file SHA256 | `7311cd8e7aabb609c0a6d1a7f2ef42324c585d0c7b51f77c6bd3fc0338c54f22`: metadata-only successor K2226-parts439. Only 265 MPN and 265 Manufacturer footprint property values differ (parts-439); copper, placement, outlines and zones are byte-identical. Receipt `circuit/reviews/metadata-successors/osc-core-parts439.json`, verified from the adopted Git bytes by `scripts/checks/metadata_successor.py`. |
+| Adopted | 2026-11-13 by manager decision after an independent review (campaign osc-cloud-20261111); promotion commit `a339054e`, 2,518 → 2,226 open edges. The promotion is a plain file copy of the gate-only chain's signals-12 output. |
+| Receipt | `circuit/reviews/osc3-k-signals/wsl-20261109a.json`, mirrored in `boards/osc-core/reports/grid-routing/osc3-wsl-20261109a.json` |
+| Adoption record | `circuit/reviews/osc3-k-signals/wsl-20261109a-adoption.json` |
+| Evidence | `circuit/reviews/osc3-k-signals/evidence-x0x-20261113/` holds the sharded native warning audit and the gate-only chain evidence from the owner host x0x. Six of the seven audit units were reproduced on the cloud VM with equivalent verdicts. The zones unit was not reproduced there (NOT RUN: out of disk, then a container restart). |
+| Native open edges | **2,226**: +12 V 6, −12 V 7, +5 V 4, AGND 22, signals 2,187 |
+| AGND | 23 islands, unchanged from K2518; the rail and AGND island lists are identical. The adoption review counts the main AGND group at 3,071 connected items (2,270 pads), as on K2518; no committed receipt retains that figure. |
+| Copper | 4,288 segments and 357 vias added on 174 signal nets; nothing removed or changed. Footprints, Edge.Cuts and zone outlines are byte-identical; only the fills of five zones differ. The outer AGND pours lose about 980 mm² (F.Cu) and 808 mm² (B.Cu). The copper replay is a copper delta, not a byte-exact rebuild. |
+| Native errors / parity / new warning identities | 0 / 0 / 0, with complete source-bound warning evidence |
+| Stages kept | signals-06 to signals-12, continued from K2518 |
+| Stages not started | signal-escapes, within the chain time budget |
+| Candidate | wsl-20261109a was adopted as K2226 on 2026-11-13. No K candidate is pending. |
+| Next action | Select a new OSC4 osc-core plan on K2226, then continue with bounded transactions from K2226, each through the promotion gate. |
+
+The chain receipt keeps total open edges only; the rail, AGND and signal split comes from the adoption record's review summary. The raw DRC listing in `reports/drc.json` caps each warning type at 199 entries and is not a connectivity count. A native refresh on 2026-11-13 rewrote `boards/osc-core/reports/routing.json` for K2226. It agrees on 2,226 open edges, the rail split, AGND 22 open edges and 23 islands, and 2,187 signal edges, and it names the K2226 receipt. Its AGND receipt agreement is null because the chain receipt carries no AGND count.
+
+### Historical K2518 state (accepted 2026-11-07, superseded 2026-11-13)
+
+| Item | K2518 state |
 | --- | --- |
 | Board SHA256 | `7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42` |
-| Adopted | 2026-11-07 by manager decision after an independent review; promotion commit `a1c69885`, 3,363 → 2,518 open edges |
-| Receipt | `circuit/reviews/osc3-k-signals/wsl-20261107a.json`, mirrored in `boards/osc-core/reports/grid-routing/osc3-wsl-20261107a.json` |
-| Adoption record | `circuit/reviews/osc3-k-signals/wsl-20261107a-adoption.json` |
-| Native open edges | **2,518**: +12 V 6, −12 V 7, +5 V 4, AGND 22, signals 2,479 |
-| AGND | 23 islands, unchanged from K3363. The independent review reports the main AGND group at 3,071 connected items (2,270 pads); no committed receipt retains that figure. |
-| Copper | 11,068 segments and 981 vias added; nothing removed or changed; footprints, edges and zone outlines byte-identical |
-| Native errors / parity / new warning identities | 0 / 0 / 0, with complete source-bound warning evidence |
-| Stages kept | analog-pitch, analog-sense, signals-local, signals-01 to signals-05 |
-| Stages not kept or not started | analog-precision gave no improvement (3,269 → 3,269). signals-06 to signals-12 and signal-escapes were not started within the 480 min chain budget. |
-| Candidate | wsl-20261107a was adopted as K2518 on 2026-11-07. No K candidate is pending. |
-| Next action | Continue with bounded transactions from K2518, starting with the stages that were not started, each through the promotion gate. |
-
-The chain receipt keeps total open edges only; the rail, AGND and signal split comes from the adoption record's review summary. The raw DRC listing in `reports/drc.json` caps each warning type at 199 entries and is not a connectivity count. The J4 native refresh (commit `7d7c31ea`, 2026-11-07) rewrote `boards/osc-core/reports/routing.json` for K2518. It agrees on 2,518 open edges, the rail split, AGND 22 open edges and 23 islands, and 2,479 signal edges, and it names the K2518 receipt. Its AGND receipt agreement is null because the chain receipt carries no AGND count.
+| Accepted by | Commit `a1c69885` (2026-11-07), the WSL K signal chain wsl-20261107a, 3,363 → 2,518 open edges |
+| Receipt | `circuit/reviews/osc3-k-signals/wsl-20261107a.json`, mirrored in `boards/osc-core/reports/grid-routing/osc3-wsl-20261107a.json`; adoption record `circuit/reviews/osc3-k-signals/wsl-20261107a-adoption.json` |
+| Native open edges | 2,518: +12 V 6, −12 V 7, +5 V 4, AGND 22, signals 2,479 |
+| Stages kept | analog-pitch, analog-sense, signals-local, signals-01 to signals-05; analog-precision gave no improvement |
 
 ### Historical K3363 state (accepted 2026-11-05, superseded 2026-11-07)
 
@@ -98,7 +110,7 @@ Each stage is applied to a disposable copy and checked with native DRC, schemati
 
 Still to run under #43: further rip-up rounds and hotspot-region renegotiation for the remaining signal edges, and ±12 V rail escapes.
 
-The renders below predate the accepted K2518 revision. The current checkpoint and its receipt describe current copper.
+The renders below predate the accepted K2226 revision. The current checkpoint and its receipt describe current copper.
 
 ![Core top: unvalidated routed draft in progress](/assets/osc-hole-field/osc-core-top.png)
 

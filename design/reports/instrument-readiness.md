@@ -8,16 +8,16 @@ Reconciliation: MATCHED DECLARED FIELDS; discrepancies: 0.
 
 | Unit | Disposition | Retained complete native open edges | Identity-declared fitted rows | Incomplete fitted identity rows |
 | --- | --- | ---: | ---: | ---: |
-| EL | canonical unvalidated draft | 0 | 84 | 60 |
-| JL | canonical unvalidated draft | 184 | 945 | 153 |
-| JR | canonical unvalidated draft | 192 | 913 | 145 |
-| K | canonical unvalidated draft | 2518 | 2363 | 1394 |
+| EL | canonical unvalidated draft | 0 | 96 | 48 |
+| JL | canonical unvalidated draft | 184 | 1000 | 98 |
+| JR | canonical unvalidated draft | 192 | 956 | 102 |
+| K | canonical unvalidated draft | 2226 | 2628 | 1129 |
 | O1 | canonical unvalidated draft | 0 | 3 | 0 |
 | O2 | canonical unvalidated draft | 0 | 3 | 0 |
 | O3 | canonical unvalidated draft | 0 | 3 | 0 |
 | O4 | canonical unvalidated draft | 0 | 3 | 0 |
 | O5 | canonical unvalidated draft | 0 | 3 | 0 |
-| P | candidate; RV601 edge tab not adopted into canonical partition | 0 | 334 | 78 |
+| P | candidate; RV601 edge tab not adopted into canonical partition | 0 | 398 | 14 |
 
 The JSON companion contains exact file hashes, designator groups, membership discrepancies and owner identity states. Declared identities are not procurement or performance approval.
 

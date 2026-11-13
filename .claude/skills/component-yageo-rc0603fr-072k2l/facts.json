@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-power-bleeder-manufacturer",
+      "record_id": "rec-power-bleeder",
+      "source_id": "src-power-bleeder-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Yageo",
+      "unit": "NONE",
+      "conditions": "Exact manufacturer identity; manufacturer capitalization normalized to existing project convention.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-bleeder-identity",
+      "record_id": "rec-power-bleeder",
+      "source_id": "src-power-bleeder-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Yageo",
+        "mpn": "RC0603FR-072K2L",
+        "package": "0603"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete MPN; project footprint naming is not a manufacturer land-pattern approval.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-bleeder-supplier-identity",
+      "record_id": "rec-power-bleeder",
+      "source_id": "src-power-bleeder-lcsc",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Yageo",
+        "mpn": "RC0603FR-072K2L",
+        "lcsc": "C114662",
+        "variant": "0603 exact full suffix"
+      },
+      "unit": "NONE",
+      "conditions": "Observed 2026-11-09T09:54Z; stock is volatile, not reserved. Distributor identity only, never electrical evidence.",
+      "locator": "Section/row: HTML Product JSON-LD exact mpn, sku, brand and offers.inventoryLevel",
+      "provenance": "DISTRIBUTOR-IDENTITY",
+      "verdict": "CONFIRMED - distributor identity only",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-bleeder-nominal",
+      "record_id": "rec-power-bleeder",
+      "source_id": "src-power-bleeder-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 2200,
+      "unit": "ohm",
+      "conditions": "Nominal resistance ±1%; initial tolerance, not lifetime/fault drift.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-bleeder-power",
+      "record_id": "rec-power-bleeder",
+      "source_id": "src-power-bleeder-datasheet",
+      "class": "THERMAL_SOA",
+      "value": 0.1,
+      "unit": "W",
+      "conditions": "Standard-power code07, rated at70C; full power curve must be applied at higher ambient.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-bleeder-tcr",
+      "record_id": "rec-power-bleeder",
+      "source_id": "src-power-bleeder-series",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 100,
+      "unit": "ppm/degC",
+      "conditions": "Magnitude ±100ppm/C for10ohm<R<=10Mohm standard-power0603; TCR test +25/-55 and+25/+125C. Interpolation and self-heating are application assumptions.",
+      "locator": "Section/row: Physical page4/printed5 Table2; physical7/printed8 TCR test",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-bleeder-derating",
+      "record_id": "rec-power-bleeder",
+      "source_id": "src-power-bleeder-series",
+      "class": "THERMAL_SOA",
+      "value": {
+        "full_power_temperature_C": 70,
+        "zero_power_temperature_C": 155
+      },
+      "unit": "NONE",
+      "conditions": "Fig10-1 straight-line ambient derating above70C applies RC0402–RC2512. Actual mounting limits remain additional.",
+      "locator": "Section/row: Physical page6/printed7 Fig10-1 visually inspected",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-bleeder-body",
+      "record_id": "rec-power-bleeder",
+      "source_id": "src-power-bleeder-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "length": 1.6,
+        "width": 0.8,
+        "height": 0.45,
+        "each_dimension_tolerance": 0.1
+      },
+      "unit": "mm",
+      "conditions": "Nominal envelope and tolerances; not mounted maximum with solder.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-bleeder-mechanical-fit",
+      "record_id": "rec-power-bleeder",
+      "source_id": "src-power-bleeder-mounting",
+      "class": "PROJECT_STATE",
+      "value": "Existing R0603 family footprint/model and actual soldering process require review against manufacturer mounting guidance.",
+      "unit": "NONE",
+      "conditions": "No new land pattern, manufacturing acceptance or installed fit is established.",
+      "locator": "Section/row: Physical page3/printed4 reflow Table1 and project R0603.kicad_mod",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-bleeder-application",
+      "record_id": "rec-power-bleeder",
+      "source_id": "src-power-bleeder-mounting",
+      "class": "PROJECT_STATE",
+      "value": "Conditional85C calculation lies below the series power curve, but generic400K/W mounting estimate exceeds advised110C solder-joint temperature on the analog rails. Installed thermal suitability remains open.",
+      "unit": "NONE",
+      "conditions": "Initial-1% and-100ppm/C over60C gives2164.932ohm and71.942/70.680/12.490mW at12.48/12.37/5.20V; curve82.353mW at85C.85C ambient+71.942mW*400K/W gives113.777C. Resistance calculation omits self-heating/lifetime drift; actualRth/localambient unknown. This is conditional screening, not guaranteed limit, measurement or physical failure.",
+      "locator": "Section/row: Physical pages1–2/printed2–3; series Fig10-1; project supply voltage requirements",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-bleeder-pinout",
+      "record_id": "rec-power-bleeder",
+      "source_id": "src-power-bleeder-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Two end terminations; project terminal1 maps to pad1, terminal2 to pad2.",
+      "unit": "NONE",
+      "conditions": "Manufacturer drawing has no pin numbering; project convention, with rail on1 andAGND on2. No polarity, native connectivity or physical-fit qualification implied.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-bleeder-assembly",
+      "record_id": "rec-power-bleeder",
+      "source_id": "src-power-bleeder-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Supplier stock observation does not establish factory allocation, soldering acceptance or assembly responsibility completion.",
+      "unit": "NONE",
+      "conditions": "External electrical soldering required; no owner soldering assumed. No supplier contacted.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

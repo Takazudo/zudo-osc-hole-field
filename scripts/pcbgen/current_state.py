@@ -44,8 +44,24 @@ def pinned_image():
     raise ValueError('KICAD_IMAGE missing from pin.env')
 
 
+def metadata_successor(board_id,source_sha):
+    """The verified metadata-only successor receipt naming these bytes, or None (scripts/checks/metadata_successor.py)."""
+    from scripts.checks.metadata_successor import successor_for
+    return successor_for(f'boards/{board_id}/{board_id}.kicad_pcb',source_sha,ROOT)
+
+
 def latest_receipt(board_id,source_sha):
-    """The adopted stage receipt whose candidate hash is the current board, if any."""
+    """The adopted stage receipt whose candidate hash is the current board, if any.
+
+    A metadata-only successor resolves to the receipt of its adopted bytes, and only after
+    the successor receipt has re-derived the property-only difference from Git."""
+    direct=adopted_receipt(board_id,source_sha)
+    if direct is not None:return direct
+    successor=metadata_successor(board_id,source_sha)
+    return None if successor is None else adopted_receipt(board_id,successor['adopted']['sha256'])
+
+
+def adopted_receipt(board_id,source_sha):
     found=[]
     for path in sorted((ROOT/'boards'/board_id/'reports'/'grid-routing').glob('*.json')):
         if path.name.endswith('-copper.json'):continue
@@ -79,6 +95,7 @@ def summarize(board_id,source,input_sha,output_sha,drc,dump,context):
     agnd=open_by_net.get('AGND',0)
     signature=hashlib.sha256(json.dumps(driver.connectivity_signature(dump),sort_keys=True).encode()).hexdigest()
     receipt=latest_receipt(board_id,input_sha)
+    successor=metadata_successor(board_id,input_sha)
     return {
         'schema':SCHEMA,'board_id':board_id,'board':str(source.relative_to(ROOT)),
         'status':'NATIVE CHECKED UNVALIDATED DRAFT; ROUTING INCOMPLETE' if dump['open_edges'] else 'NATIVE CHECKED UNVALIDATED DRAFT',
@@ -106,6 +123,9 @@ def summarize(board_id,source,input_sha,output_sha,drc,dump,context):
                       else 'COMPLETE: no warning type reached the native cap'),
             'gate_rule':'route_jack_grid.warning_complete_gate requires source-bound complete evidence before any capped promotion'},
         'latest_adopted_receipt':receipt,
+        'metadata_successor':None if successor is None else {
+            'path':successor['path'],'sha256':successor['receipt_sha256'],
+            'adopted_board_sha256':successor['adopted']['sha256'],'adopted_label':successor['adopted']['label']},
         'receipt_agreement':None if receipt is None else {
             'open_edges':receipt['open_edges_after']==dump['open_edges'],
             'agnd_open_edges':None if receipt['agnd_open_edges_after'] is None else receipt['agnd_open_edges_after']==agnd},

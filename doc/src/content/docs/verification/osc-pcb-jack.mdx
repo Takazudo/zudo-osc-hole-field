@@ -21,13 +21,14 @@ The accepted jack boards are **JL184** and **JR192**, recorded on 2026-11-07 in 
 | Item | JL184 / `osc-jack-left` | JR192 / `osc-jack-right` |
 | --- | --- | --- |
 | Status | ROUTED DRAFT IN PROGRESS | ROUTED DRAFT IN PROGRESS |
-| Board SHA256 | `a7fe68606591186cc955178b949e1c5ce8df0d0ba5829d328bb6bebb119ca251` | `f6106300bae4e253f4b869dd24d14cb2428715215917b33ebacaa0f9031bfaa8` |
+| Board SHA256 (adopted) | `a7fe68606591186cc955178b949e1c5ce8df0d0ba5829d328bb6bebb119ca251` | `f6106300bae4e253f4b869dd24d14cb2428715215917b33ebacaa0f9031bfaa8` |
+| Current file SHA256 (metadata-only successor, parts-439) | `2cd30044054fcdbf8c94de27515a5bc763e98de12c0f3df212cf5d84ded1ee19`: 55 MPN and 55 Manufacturer values only; receipt `circuit/reviews/metadata-successors/osc-jack-left-parts439.json` | `653b20312851fad1dcf1a90806c1fdc558edf32dfc25d6675b43bb100ff9b3c1`: 43 MPN and 43 Manufacturer values only; receipt `circuit/reviews/metadata-successors/osc-jack-right-parts439.json` |
 | Accepted by | Commit `92d3e71d` (2026-11-06), rrr-01, 185 → 184 | Commit `b9aa748a` (2026-11-05), rrr-01, 193 → 192 |
 | Receipt | `boards/osc-jack-left/reports/grid-routing/rrr-01.json` | `boards/osc-jack-right/reports/grid-routing/rrr-01.json` |
 | Native open edges | **184**: rails 0, AGND 3, signals 181, on 155 nets | **192**: rails 0, AGND 8, signals 184, on 161 nets |
 | Native errors / schematic parity | None / 0 | None / 0 |
 
-The counts come from each receipt's complete per-net open map. The later rrr-02 and rrr-03 receipts on both boards were not adopted; they did not improve on these boards. The raw DRC listing in `reports/drc.json` caps each warning type at 199 entries and is not a connectivity count. The J4 native refresh (commit `7d7c31ea`, 2026-11-07) rewrote each half's `reports/routing.json`; both agree with these counts and name their rrr-01 receipts. No jack candidate is pending. The WSL K signal candidate wsl-20261107a was adopted as K2518 on 2026-11-07 and does not change these boards. Both halves are unvalidated drafts. Electrical, thermal and physical qualification NOT RUN. Fabrication outputs NOT CREATED.
+The counts come from each receipt's complete per-net open map. The later rrr-02 and rrr-03 receipts on both boards were not adopted; they did not improve on these boards. The raw DRC listing in `reports/drc.json` caps each warning type at 199 entries and is not a connectivity count. The J4 native refresh (commit `7d7c31ea`, 2026-11-07) rewrote each half's `reports/routing.json`; both agree with these counts and name their rrr-01 receipts. No jack candidate is pending. The WSL K signal chain wsl-20261109a was adopted as K2226 on 2026-11-13 and does not change these boards. Both halves are unvalidated drafts. Electrical, thermal and physical qualification NOT RUN. Fabrication outputs NOT CREATED.
 
 ### Historical JL117 / JR130 epoch (2026-10-10)
 

@@ -1,0 +1,178 @@
+{
+ "schema": "osc-protection-study-transition/1",
+ "study": "Protection study applicability across the parts-439-with-324 identity packet (#21, #324)",
+ "historical_study_base": "433c88b27b2e49284fe1a717b47ba4226c829dd3",
+ "transition_base": "05b149862dbacb34af275995cc891bae18f0bb20",
+ "transition_commit": "58d6b5814186c4f3f6e0f9c18fa1b53267ed4e0c",
+ "supersedes_current_check": "scripts/checks/test_protection_study_applicability.py (frozen at transition_base)",
+ "retained_reports": [
+  "design/power/fast-disconnect-candidate-report.json",
+  "design/power/integrated-output-candidate-report.json",
+  "design/power/precision-output-cell-report.json",
+  "design/power/precision-output-cell-model.json"
+ ],
+ "obligation_projection": {
+  "audit": "design/power/protection58-audit.json",
+  "fields": [
+   "output_count",
+   "precision_count",
+   "outputs",
+   "reference_receivers"
+  ],
+  "equals_historical_study_base": true
+ },
+ "changed_bound_inputs": {
+  "design/spec/cells/_builder.py": {
+   "study_sha256": "de1921d86be3614843f3769c4c8e964d26988b2e7b61ae31a23ccebd160b5bc4",
+   "current_sha256": "38974710ca3b0fd23d4608cea04251cf5110d91141e6a1e89385f46211ad2a56",
+   "bound_by": [
+    "design/power/precision-output-cell-model.json"
+   ],
+   "unified_diff_sha256": "2a1c5664ccf6f7fa891417d0ae71d654fa17db28f17b6dad6f78e5e22d47ab89",
+   "consumed_by": "precision-output-cell-model.json binds it by hash; the model consumes it only through design.spec.model_contracts.current_precision_contract()",
+   "precision_model_source_projection_sha256": {
+    "transition_base": "75b766f4192d28c4767f36da197b9e0946e4a732a6d5da73739f017fa26d9089",
+    "current": "75b766f4192d28c4767f36da197b9e0946e4a732a6d5da73739f017fa26d9089"
+   }
+  },
+  "design/standard/electrical-standard.json": {
+   "study_sha256": "cefe02a48f9f57b13bfc01e470a60d036356aad6927bd2c5dac10438bc4e9850",
+   "current_sha256": "0cdef30d4848414c794b7561c07bef6c5cf63a19f7f79a0fd21866412e0e40fe",
+   "bound_by": [
+    "design/power/fast-disconnect-candidate-report.json",
+    "design/power/integrated-output-candidate-report.json",
+    "design/power/precision-output-cell-report.json",
+    "design/power/precision-output-cell-model.json"
+   ],
+   "delta": [
+    {
+     "pointer": "/cells/1/parts/1/part_id",
+     "cell": "high_impedance_input",
+     "ref": "R_LIMIT",
+     "before": "r_general",
+     "after": "r_protected_sense_limit"
+    },
+    {
+     "pointer": "/cells/6/parts/2/part_id",
+     "cell": "bipolar_attenuverter",
+     "ref": "R_FAIL",
+     "before": "r_general",
+     "after": "r_audio_failbias"
+    },
+    {
+     "pointer": "/cells/6/parts/5/part_id",
+     "cell": "bipolar_attenuverter",
+     "ref": "C_FB",
+     "before": "c_small",
+     "after": "c_audio_feedback"
+    },
+    {
+     "pointer": "/cells/7/parts/2/part_id",
+     "cell": "dc_control_source",
+     "ref": "R_FAIL",
+     "before": "r_general",
+     "after": "r_dc_failbias"
+    },
+    {
+     "pointer": "/cells/7/parts/3/part_id",
+     "cell": "dc_control_source",
+     "ref": "C_W",
+     "before": "c_small",
+     "after": "c_dc_wiper"
+    },
+    {
+     "pointer": "/cells/8/parts/2/part_id",
+     "cell": "level_attenuator",
+     "ref": "R_FAIL",
+     "before": "r_general",
+     "after": "r_audio_failbias"
+    },
+    {
+     "pointer": "/cells/9/parts/4/part_id",
+     "cell": "reference_generator",
+     "ref": "R_INV",
+     "before": "r_precision",
+     "after": "r_reference_inverter"
+    },
+    {
+     "pointer": "/cells/9/parts/5/part_id",
+     "cell": "reference_generator",
+     "ref": "R_FB",
+     "before": "r_precision",
+     "after": "r_reference_inverter"
+    },
+    {
+     "pointer": "/cells/14/parts/0/part_id",
+     "cell": "stage_indicator",
+     "ref": "R_TOP",
+     "before": "r_general",
+     "after": "r_stage_top"
+    },
+    {
+     "pointer": "/cells/15/parts/0/part_id",
+     "cell": "switch_button_input",
+     "ref": "R_PULL",
+     "before": "r_general",
+     "after": "r_contact_pullup"
+    },
+    {
+     "pointer": "/cells/15/parts/1/part_id",
+     "cell": "switch_button_input",
+     "ref": "R_SER",
+     "before": "r_general",
+     "after": "r_contact_debounce"
+    }
+   ],
+   "consumed_projection_sha256": {
+    "signals": "2ad0f097bf9ffd5307ab7d89562d92e48b950495a932c9fe0d9a44e6b6c741fc",
+    "supply_architecture": "c6c120eba71d5156d046792030a7c256fa2d254cec25a951fef153426e4ede62",
+    "cells[id=general_output]": "1d07132ea080026a980d6089ea4b9bf1a70ee58f8298b61766b67813de4056b5",
+    "cells[id=precision_output]": "84ff6ab5b9baa703f6a486b35d1bcdf632f3659c139deb5dd3d0550edf538c16"
+   },
+   "consumed_by": "calculate()/validate() of fast_disconnect_candidate, integrated_output_candidate and precision_output_cell"
+  }
+ },
+ "unchanged_bound_inputs": [
+  "design/power/fast-disconnect-candidate-sources.json",
+  "design/power/fast-disconnect-candidate.json",
+  "design/power/integrated-output-candidate-sources.json",
+  "design/power/integrated-output-candidate.json",
+  "design/power/precision-output-cell-report.json",
+  "design/power/precision-output-cell-sources.json",
+  "design/power/precision-output-cell.json",
+  "design/power/protection59-sources.json",
+  "design/power/rail-ledger.json",
+  "design/power/supply-architecture.json",
+  "design/spec/cells/sweep_precision_vendor.py",
+  "scripts/checks/fast_disconnect_candidate.py",
+  "scripts/checks/integrated_output_candidate.py",
+  "scripts/checks/precision_output_cell.py",
+  "scripts/checks/precision_output_cell_model.py",
+  "scripts/kicad/pin.env",
+  "scripts/kicad/run.sh"
+ ],
+ "arithmetic": {
+  "design/power/fast-disconnect-candidate-report.json": {
+   "calculated_sha256": "0172609f97c6575c95f6a0002383abce7d16a88b783a014265761dd2f4611048",
+   "equals_retained": true
+  },
+  "design/power/integrated-output-candidate-report.json": {
+   "calculated_sha256": "e4aac4e5f34d10ae32899b5e0022813f2a197600172485e308df893df20f89ce",
+   "equals_retained": true
+  },
+  "design/power/precision-output-cell-report.json": {
+   "calculated_sha256": "344f9cb161d58b04f95f8e94b38a86dfcee55989cf67afa850c231322bd39b09",
+   "equals_retained": true
+  }
+ },
+ "current_switch_counts": {
+  "TMUX7412FRRPR": 98,
+  "TMUX6112PWR": 12
+ },
+ "not_run": [
+  "precision-output-cell-model.json ngspice sweep (native oracle); applicability rests on the equal source projection and unchanged deck inputs, not a re-run",
+  "physical protection qualification"
+ ],
+ "status": "PASS: identity-only input changes reach no consumed field; diagnostic arithmetic and obligations unchanged; historical ADG savings are not current",
+ "hardware_protection": "OPEN; physical qualification NOT RUN"
+}

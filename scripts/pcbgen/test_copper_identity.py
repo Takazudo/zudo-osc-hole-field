@@ -2,12 +2,15 @@ import json,subprocess,sys,tempfile,unittest
 from pathlib import Path
 from unittest.mock import patch
 from scripts.pcbgen import copper_identity as ci
+from scripts.checks.metadata_successor import successor_for
 from scripts.pcbgen.copper_identity import (reject_new_uuid_collisions,retention,require_unique,copper_objects,duplicate_groups,
     inventory,check,drop_copper_blocks,propose_normalization,apply_manifest,verify_normalization,load_board_text,board_bytes,digest)
 
 ROOT=Path(__file__).resolve().parents[2]
 K_BOARD=ROOT/'boards/osc-core/osc-core.kicad_pcb'
-K_SHA='7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42'
+K_SHA='680da674de7a9fd8b327a7fcff0293f17b40a2b7be1a214409b3802e3743b656'
+# K2518, where the six legacy groups were recorded; the K2226 adoption left them byte-identical.
+K_RECORDED_SHA='7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42'
 K_GROUPS={'5d905700-2dea-5407-bfdb-7d54a9887d2f':'via','6ad7a8ef-06c4-5daf-8c20-536f50fb0495':'segment',
           '7a9f1a78-0122-5c1a-807d-edd14509239d':'segment','7bc22643-4022-5e36-b5d2-8117e4041966':'segment',
           '8ed29fa2-46b9-5922-8b00-41d148dd7308':'segment','9dd204e2-36b2-5742-bd54-f78d414e5f80':'segment'}
@@ -97,7 +100,18 @@ class InventoryTests(unittest.TestCase):
 
     def test_canonical_k_board_carries_exactly_the_six_known_legacy_groups(self):
         text=load_board_text(K_BOARD);inv=inventory(text,'boards/osc-core/osc-core.kicad_pcb')
-        self.assertEqual(inv['sha256'],K_SHA)
+        # A metadata-only successor of K2226 is accepted only through its receipt, which re-derives a
+        # property-only (MPN/Manufacturer/LCSC) difference from the adopted K2226 Git bytes.
+        successor=successor_for('boards/osc-core/osc-core.kicad_pcb',inv['sha256'],ROOT)
+        self.assertEqual(inv['sha256'] if successor is None else successor['adopted']['sha256'],K_SHA)
+        if successor is not None:
+            adopted=inventory(subprocess.run(['git','cat-file','blob',successor['adopted']['git_blob']],cwd=ROOT,
+                                             capture_output=True,check=True).stdout.decode('latin-1'),'adopted')
+            self.assertEqual(adopted['sha256'],K_SHA)
+            # Byte offsets shift with the longer property values; the copper group bytes must not.
+            unspanned=lambda groups:[{**g,'occurrences':[{k:v for k,v in o.items() if k not in ('span','uuid_span')} for o in g['occurrences']]} for g in groups]
+            self.assertEqual(unspanned(adopted['duplicate_groups']),unspanned(inv['duplicate_groups']))
+            self.assertEqual((adopted['counts'],adopted['objects']),(inv['counts'],inv['objects']))
         self.assertEqual({g['uuid']:g['kinds'][0] for g in inv['duplicate_groups']},K_GROUPS)
         for g in inv['duplicate_groups']:
             self.assertEqual(g['count'],2);self.assertEqual(g['nets'],['AGND']);self.assertEqual(len(g['kinds']),1)
@@ -112,7 +126,7 @@ class InventoryTests(unittest.TestCase):
         self.assertEqual({k:r['duplicate_groups'] for k,r in results.items() if r['duplicate_groups']},{'boards/osc-core/osc-core.kicad_pcb':6})
         entry=[e for e in allowlist['boards'] if e['path']=='boards/osc-core/osc-core.kicad_pcb']
         self.assertEqual(len(entry),1);self.assertEqual({g['uuid'] for g in entry[0]['groups']},set(K_GROUPS))
-        self.assertEqual(entry[0]['recorded_board_sha256'],K_SHA)
+        self.assertEqual(entry[0]['recorded_board_sha256'],K_RECORDED_SHA)
         self.assertTrue(all(b.is_file() and b.suffix=='.kicad_pcb' and len(b.relative_to(ROOT).parts)==3 for b in boards))
 
     def test_check_cli_exits_nonzero_for_an_unlisted_duplicate(self):
