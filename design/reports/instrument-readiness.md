@@ -11,7 +11,7 @@ Reconciliation: MATCHED DECLARED FIELDS; discrepancies: 0.
 | EL | canonical unvalidated draft | 0 | 84 | 60 |
 | JL | canonical unvalidated draft | 184 | 945 | 153 |
 | JR | canonical unvalidated draft | 192 | 913 | 145 |
-| K | canonical unvalidated draft | 2518 | 2363 | 1394 |
+| K | canonical unvalidated draft | 2226 | 2363 | 1394 |
 | O1 | canonical unvalidated draft | 0 | 3 | 0 |
 | O2 | canonical unvalidated draft | 0 | 3 | 0 |
 | O3 | canonical unvalidated draft | 0 | 3 | 0 |

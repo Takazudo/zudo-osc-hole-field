@@ -65,7 +65,7 @@ class LatestReceipt(unittest.TestCase):
         self.assertIsNone(self.resolve({'rrr-01.json': top_level(), 'osc3-k-pilot.json': final_gate()}))
 
     def test_current_boards_resolve_to_their_accepted_receipts(self):
-        expected = {'osc-core': ('osc3-wsl-20261107a.json', 2518, None), 'osc-jack-left': ('rrr-01.json', 184, 3),
+        expected = {'osc-core': ('osc3-wsl-20261109a.json', 2226, None), 'osc-jack-left': ('rrr-01.json', 184, 3),
                     'osc-jack-right': ('rrr-01.json', 192, 8)}
         for board_id, (name, edges, agnd) in expected.items():
             with self.subTest(board=board_id):
