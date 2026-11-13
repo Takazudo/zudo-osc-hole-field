@@ -26,4 +26,13 @@ class Checkpoint(unittest.TestCase):
  def test_recorded_successor_hash_without_verified_receipt_refused(self):
   entry={'board_sha256':sha(b'k'),'metadata_successor':{'path':'r.json','sha256':'0'*64,'successor_board_sha256':sha(b'edited')}}
   with self.assertRaisesRegex(ValueError,'receipt does not bind'):canonical_checkpoint(self.fake(b'edited',entry))
+ def test_verified_receipt_must_match_checkpoint_binding(self):
+  from unittest import mock
+  entry={'board_sha256':sha(b'k'),'metadata_successor':{'path':'r.json','sha256':'1'*64,'successor_board_sha256':sha(b'edited')}}
+  good={'path':'r.json','receipt_sha256':'1'*64,'adopted':{'sha256':sha(b'k')}}
+  for field,bad in (('path',{**good,'path':'other.json'}),('sha',{**good,'receipt_sha256':'2'*64}),('adopted',{**good,'adopted':{'sha256':'3'*64}})):
+   with self.subTest(field),mock.patch('scripts.checks.metadata_successor.successor_for',return_value=bad):
+    with self.assertRaisesRegex(ValueError,'receipt does not bind'):canonical_checkpoint(self.fake(b'edited',entry))
+  with mock.patch('scripts.checks.metadata_successor.successor_for',return_value=good):
+   root=self.fake(b'edited',entry);self.assertEqual(canonical_checkpoint(root),(sha(b'edited'),[root/'r.json',root/'scripts/checks/metadata_successor.py']))
 if __name__=='__main__':unittest.main()
