@@ -3,6 +3,9 @@
 This is a source courtyard and supply-pad screen, not electrical qualification.
 """
 import math
+from pathlib import Path
+from scripts.pcbgen.bypass_supply_pins import source_bypass_binding
+ROOT=Path(__file__).resolve().parents[2]
 from collections import Counter
 from scripts.pcbgen.placement_geometry import Box, inside_outline
 
@@ -83,11 +86,11 @@ def apply_bypass_locality(placements, io, source, connectors, lock, shapes, prop
     pin_nets = {ref: {} for ref in parts}
     for unit in io['package_units']:
         pin_nets[unit['ref']].update(unit['pins'])
-    def points(ref, net):
+    def points(ref, exact_pin):
         row = final[ref]
         values = []
         for pin, value in pin_nets[ref].items():
-            if value != net:
+            if pin != exact_pin:
                 continue
             x, y = footprint_pads(parts[ref]['footprint'])[pin]
             x, y = turn((-x if row['side']=='B.Cu' else x, y), row['rotation_deg'])
@@ -96,11 +99,11 @@ def apply_bypass_locality(placements, io, source, connectors, lock, shapes, prop
     distances = []
     for cap in sorted(all_caps, key=lambda p: p['ref']):
         ref, parent = cap['ref'], cap['decouples_ref']
-        rail = next(n for n in pin_nets[ref].values() if n in ('+12V', '-12V', '+5V'))
-        distance = min(math.dist(a, b) for a in points(ref, rail) for b in points(parent, rail))
+        cap_pin, rail, supply_pin = source_bypass_binding(ROOT,parts[parent],cap,pin_nets)
+        distance = min(math.dist(a, b) for a in points(ref, cap_pin) for b in points(parent, supply_pin))
         if final[ref]['side'] != final[parent]['side'] or distance > 3:
             raise ValueError('P bypass exceeds same-face 3 mm supply-pad screen: '+ref)
-        distances.append({'capacitor': ref, 'IC': parent, 'rail': rail,
+        distances.append({'capacitor': ref, 'IC': parent, 'rail': rail,'capacitor_pad':cap_pin,'IC_supply_pad':supply_pin,
                           'supply_pad_centre_distance_mm': distance})
     return result, {'status': 'Source geometry only; native routing and physical qualification required',
                     'moved_references': sorted(all_refs), 'preserved_slew_references': sorted(preserved),
