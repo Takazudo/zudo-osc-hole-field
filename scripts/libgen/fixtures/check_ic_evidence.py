@@ -55,7 +55,7 @@ def main():
     if x['verdict']!='UNSOURCED':errors.append(f'{id}: unresolved source has promoted pin row')
   checked+=1
  if capture['captured_count']!=captured or capture['blocked_count']!=blocked:errors.append('capture count mismatch')
- if captured!=42 or blocked!=0:errors.append(f'expected 42/42 coverage including exact precision-feedback passives and the S2b precision clamp, found {captured}/{len(parts)}')
+ if captured!=54 or blocked!=0:errors.append(f'expected 54/54 coverage including exact precision-feedback passives, the S2b precision clamp and the twelve parts-439 role identities, found {captured}/{len(parts)}')
  if errors:
   for e in errors:print('FAIL:',e,file=sys.stderr)
   return 1

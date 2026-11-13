@@ -50,7 +50,8 @@ def main():
  if len(sys.argv)!=2:raise SystemExit('usage: build_ic_erc_fixture.py <output-directory>')
  out=Path(sys.argv[1]);out.mkdir(parents=True,exist_ok=True)
  lib={};parts=[];placed=0
- selected=shortlist_symbols()
+ # Several shortlist roles may share one exact MPN (and so one symbol); each symbol is placed once.
+ selected=list(dict.fromkeys(shortlist_symbols()))
  for ordinal,(name,prefix) in enumerate(selected,1):
   symbol=library_symbol(name);lib[symbol.lib_id]=symbol
   for unit in sorted(symbol.units):
