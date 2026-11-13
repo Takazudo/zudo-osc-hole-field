@@ -1,56 +1,47 @@
 {
   "schema": "osc-pcb-current-checkpoint-1",
-  "recorded": "2026-11-07",
+  "recorded": "2026-11-13",
   "status": "UNVALIDATED DRAFTS; ROUTING INCOMPLETE; electrical, thermal and physical qualification NOT RUN; no fabrication outputs",
-  "source_commit": "cf6de445 on wsl/k-signals-20261107: K2518 promotion a1c69885 plus J4 refresh 7d7c31ea, merged with origin/main 39b758a1",
+  "source_commit": "a339054e on claude/osc-311-k2226-adopt: K2226 promotion over origin/main 05b14986, with evidence commit 9f9d05af cherry-picked as 93b539d4",
   "connectivity_vs_drc": "Connectivity counts come from complete native connectivity receipts. The raw DRC listing in reports/drc.json is capped at 199 entries per warning type and is not a connectivity count.",
   "boards": {
     "osc-core": {
-      "label": "K2518",
+      "label": "K2226",
       "board": "boards/osc-core/osc-core.kicad_pcb",
-      "board_sha256": "7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42",
-      "accepted_by_commit": "a1c69885 (2026-11-07, adopt the WSL K signal chain wsl-20261107a, 3363 -> 2518)",
-      "adopted": "2026-11-07 by manager decision after independent review",
+      "board_sha256": "680da674de7a9fd8b327a7fcff0293f17b40a2b7be1a214409b3802e3743b656",
+      "accepted_by_commit": "a339054e (2026-11-13, adopt the WSL K signal chain wsl-20261109a, 2518 -> 2226)",
+      "adopted": "2026-11-13 by manager decision after independent review (campaign osc-cloud-20261111)",
       "receipt": {
-        "path": "circuit/reviews/osc3-k-signals/wsl-20261107a.json",
-        "sha256": "e6b59cb32790c6df21994dd07759f55da6079c7aa7440a095e8b75e46ff63bc6",
-        "stage": "osc3-wsl-20261107a",
+        "path": "circuit/reviews/osc3-k-signals/wsl-20261109a.json",
+        "sha256": "72433da5f30983388d32ad918535f6f27d817dee96322ace7b95a5c73f2f22d8",
+        "stage": "osc3-wsl-20261109a",
         "gate": "final_gate",
-        "mirror": "boards/osc-core/reports/grid-routing/osc3-wsl-20261107a.json"
+        "mirror": "boards/osc-core/reports/grid-routing/osc3-wsl-20261109a.json"
       },
       "adoption": {
-        "path": "circuit/reviews/osc3-k-signals/wsl-20261107a-adoption.json",
-        "sha256": "214c227519132be81bef9396d8659f82799f7425a236f64c97e041e91cb3a0e1"
+        "path": "circuit/reviews/osc3-k-signals/wsl-20261109a-adoption.json",
+        "sha256": "4daea1106b0ab858b6c891452f0771ec4171cc612a8ee3bcb5e4e71c555fa4e1"
       },
       "stages": {
+        "base": "K2518 (wsl-20261107a)",
         "kept": [
-          "analog-pitch",
-          "analog-sense",
-          "signals-local",
-          "signals-01",
-          "signals-02",
-          "signals-03",
-          "signals-04",
-          "signals-05"
-        ],
-        "not_kept": {
-          "analog-precision": "no improvement (3269 -> 3269)"
-        },
-        "not_started": [
           "signals-06",
           "signals-07",
           "signals-08",
           "signals-09",
           "signals-10",
           "signals-11",
-          "signals-12",
+          "signals-12"
+        ],
+        "not_kept": {},
+        "not_started": [
           "signal-escapes"
         ],
-        "not_started_reason": "480 min chain time budget"
+        "not_started_reason": "chain time budget"
       },
       "connectivity": {
         "source": "adoption record review_summary (the chain receipt keeps total open edges only)",
-        "open_edges": 2518,
+        "open_edges": 2226,
         "rail_open_edges": {
           "+12V": 6,
           "-12V": 7,
@@ -58,24 +49,24 @@
         },
         "agnd_open_edges": 22,
         "agnd_islands": 23,
-        "signal_open_edges": 2479,
+        "signal_open_edges": 2187,
         "main_agnd_group": {
           "connected_items": 3071,
           "pads": 2270,
-          "source": "manager independent review of 2026-11-07; not retained in a committed receipt, so the guard does not verify it"
+          "source": "K2226 adoption review of 2026-11-13 from the chain grid dumps; not retained in a committed receipt, so the guard does not verify it"
         },
         "per_net_open_map_sha256": null,
         "per_net_open_map_note": "NOT RETAINED: the K chain receipt and adoption record keep summary counts only",
-        "island_signature_sha256": "d65497b4fe7cb9d3b686a9db851fc39afb460325adcaead9916dfa857ba55329",
-        "island_signature_note": "From the J4 native refresh record boards/osc-core/reports/routing.json (checked 2026-11-07T19:12:15Z); compared by the guard while the record is fresh"
+        "island_signature_sha256": "b41e16bcbe622f455247875ce24f53ab918b645f7709fe1632bbf656d57b2eb7",
+        "island_signature_note": "From the K2226 native refresh record boards/osc-core/reports/routing.json (checked 2026-11-13T18:18:36Z); compared by the guard while the record is fresh"
       },
       "native_state_record": {
         "path": "boards/osc-core/reports/routing.json",
-        "input_board_sha256": "7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42",
-        "checked_at_utc": "2026-11-07T19:12:15Z",
-        "superseded_checked_at_utc": "2026-11-03T19:25:50Z",
+        "input_board_sha256": "680da674de7a9fd8b327a7fcff0293f17b40a2b7be1a214409b3802e3743b656",
+        "checked_at_utc": "2026-11-13T18:18:36Z",
+        "superseded_checked_at_utc": "2026-11-07T19:12:15Z",
         "fresh": true,
-        "refresh": "DONE: J4 native current_state.py run, committed in 7d7c31ea"
+        "refresh": "DONE: native current_state.py osc-core run on 2026-11-13 under the shared native slot lock (KiCad 10.0.6, pinned image); refilled output bytes equal the input"
       }
     },
     "osc-jack-left": {
@@ -151,6 +142,11 @@
   },
   "historical_epochs": [
     {
+      "label": "K2518",
+      "recorded": "2026-11-07",
+      "note": "Accepted 2026-11-07 (commit a1c69885, receipt circuit/reviews/osc3-k-signals/wsl-20261107a.json, adoption record circuit/reviews/osc3-k-signals/wsl-20261107a-adoption.json, board 7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42); superseded 2026-11-13 by K2226."
+    },
+    {
       "label": "K3363",
       "recorded": "2026-11-05",
       "note": "Accepted 2026-11-05 (commit 3db6b51f, receipt circuit/reviews/osc3-k-pilot/osc3-k-pilot.json, board 2c1d67b7e306a3ebf8ebed276a37d899cca43f683d6686afed6a1688e0ec6751); superseded 2026-11-07 by K2518."
@@ -167,16 +163,16 @@
     }
   ],
   "candidate": {
-    "status": "NONE PENDING; wsl-20261107a ADOPTED 2026-11-07",
-    "what": "The WSL K signal candidate wsl-20261107a was adopted as K2518 on 2026-11-07 after independent review",
-    "owner": "Manager-run WSL round of 2026-11-07",
-    "location": "Promoted on wsl/k-signals-20261107 (commit a1c69885)",
+    "status": "NONE PENDING; wsl-20261109a ADOPTED 2026-11-13",
+    "what": "The gate-only WSL K signal chain wsl-20261109a was adopted as K2226 on 2026-11-13 after independent review",
+    "owner": "Manager, campaign osc-cloud-20261111",
+    "location": "Evidence commit 9f9d05af (origin/wsl/k2226-final-x0x-20261113); promoted on claude/osc-311-k2226-adopt (commit a339054e)",
     "rule": "Any later candidate counts as progress only after its receipt passes the promotion gate and the board and receipt are merged."
   },
   "next_action": {
-    "summary": "Continue K with bounded transactions from K2518, starting with the stages that were not started (signals-06..12, signal-escapes), each through the promotion gate. Update this checkpoint and re-run the J4-style native refresh after each adoption.",
+    "summary": "Select a new OSC4 osc-core plan on K2226 with extract_residuals.py / select_transactions.py --board osc-core (the osc-core OSC4 hold stays until then), then continue K with bounded transactions from K2226, including the signal-escapes stage that was not started, each through the promotion gate. Update this checkpoint and re-run the native refresh after each adoption.",
     "refresh_command": "bash scripts/pcbgen/with_route_guard.sh python3 scripts/pcbgen/current_state.py osc-core osc-jack-left osc-jack-right",
-    "refresh_status": "DONE for K2518 / JL184 / JR192 (J4, commit 7d7c31ea); re-run needs admission after any later adoption"
+    "refresh_status": "DONE for K2226 (2026-11-13 refresh) and for JL184 / JR192 (J4, commit 7d7c31ea; boards unchanged); re-run needs admission after any later adoption"
   },
   "referenced_by": {
     "doc/src/content/docs/project/index.mdx": [

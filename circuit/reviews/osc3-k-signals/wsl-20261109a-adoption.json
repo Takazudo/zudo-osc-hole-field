@@ -1,0 +1,91 @@
+{
+ "schema": "osc3-k-adoption-1",
+ "label": "wsl-20261109a",
+ "adopted_utc": "2026-11-13T17:58:01Z",
+ "adopted_by": "manager after independent review (campaign osc-cloud-20261111)",
+ "board": "boards/osc-core/osc-core.kicad_pcb",
+ "incumbent_board_sha256": "7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42",
+ "candidate_board_sha256": "680da674de7a9fd8b327a7fcff0293f17b40a2b7be1a214409b3802e3743b656",
+ "promotion": "plain file copy of .circuit-cache/osc-core-grid-signals-12-verify/osc-core.kicad_pcb (the signals-12 output; signal-escapes was not started within the chain time budget) over the incumbent, as chain.py --promote would do; the chain receipt keeps promoted:false because the gate-only chain (--resume-from signal-escapes, no --promote) did not promote",
+ "chain_receipt": {
+  "path": "circuit/reviews/osc3-k-signals/wsl-20261109a.json",
+  "sha256": "72433da5f30983388d32ad918535f6f27d817dee96322ace7b95a5c73f2f22d8"
+ },
+ "mirrored_receipt": {
+  "path": "boards/osc-core/reports/grid-routing/osc3-wsl-20261109a.json",
+  "sha256": "72433da5f30983388d32ad918535f6f27d817dee96322ace7b95a5c73f2f22d8"
+ },
+ "progress": {
+  "path": "circuit/reviews/osc3-k-signals/wsl-20261109a-progress.json",
+  "sha256": "53277b7ff756cdacf76b2f3faf4b65a558c883fa2100eb40ec705d7b20587e20"
+ },
+ "copper_replay": {
+  "path": "circuit/reviews/osc3-k-signals/wsl-20261109a-copper.json",
+  "sha256": "9bbe00b7782428346d71041ea8f4092e423aa017ba4ea23303f3cc2e25c95afe",
+  "base_sha256": "7251dd933af810b7c659c9b90c6f6d9ba32d55ea432b0414c26c8b26b6b4be42",
+  "note": "a copper delta, not a byte-exact rebuild: replaying it with merge_text gives 4a26dbfc..., because block order and zone refills differ from the candidate bytes (same as the K2518 precedent)"
+ },
+ "evidence_archive": [
+  {
+   "path": "circuit/reviews/osc3-k-signals/evidence-x0x-20261113/k2226-final-x0x-evidence.tar.gz",
+   "sha256": "06b965b5568e3dc3c20f67eed85968ee692431b27b4fc279b7d249c56be3051f",
+   "size_bytes": 11956831,
+   "content": "sharded native warning audit of 7251dd93 -> 680da674 (holes-before, holes-after, four silk shards, two zone scopes) with unit receipts, logs and the host-only assembly receipt",
+   "format": "gzip-compressed tar, committed in git (no LFS)"
+  },
+  {
+   "path": "circuit/reviews/osc3-k-signals/evidence-x0x-20261113/k2226-gate-x0x-evidence.tar.gz",
+   "sha256": "d20b7dfa9b5051a1a91e37eb94e8fb17a242159d39478fe7100f874d3a91bb3e",
+   "size_bytes": 252810,
+   "content": "gate-only chain log and meta, the native-audit proof, and byte-identical copies of the chain receipt and copper replay",
+   "format": "gzip-compressed tar, committed in git (no LFS)"
+  }
+ ],
+ "evidence_provenance": {
+  "evidence_commit": "9f9d05af0766c569911614eabcdf9ac0f82ddbb3 (origin/wsl/k2226-final-x0x-20261113), cherry-picked",
+  "audit_host": "owner host x0x (WSL), 2026-11-13",
+  "sharding_tool_revision": "41d664eebe4b9d52e88679bb365f9e1d607d1d7e",
+  "independent_reproduction": "six of seven audit units reproduced on the cloud VM with equivalent verdicts (silk equal; holes equal after sorting identity order); zones unit NOT RUN on the VM (ENOSPC, then a container restart), so zones evidence comes from x0x only"
+ },
+ "tool_revision": "433c88b27b2e49284fe1a717b47ba4226c829dd3",
+ "review_summary": {
+  "open_edges": {
+   "before": 2518,
+   "after": 2226
+  },
+  "rail_open_edges": {
+   "+12V": 6,
+   "-12V": 7,
+   "+5V": 4,
+   "change": "unchanged; island lists identical"
+  },
+  "agnd": {
+   "open_edges": 22,
+   "islands": 23,
+   "change": "unchanged; island lists identical"
+  },
+  "signal_open_edges": {
+   "before": 2479,
+   "after": 2187
+  },
+  "copper": {
+   "segments_added": 4288,
+   "vias_added": 357,
+   "removed": 0,
+   "changed": 0,
+   "nets_touched": "174 signal nets; no rail or AGND copper added"
+  },
+  "footprints_edges_zone_outlines": "byte-identical (3986 footprints, 6 Edge.Cuts gr_lines, 351 zone outlines and settings); only the filled polygons of 5 zones differ (AGND F.Cu, B.Cu, In1.Cu; -12V In3.Cu; +12V In4.Cu)",
+  "agnd_outer_fill": "fill pieces F.Cu 24 -> 25, B.Cu 19 -> 20; pour area about -980 mm2 on F.Cu and -808 mm2 on B.Cu",
+  "native_drc": {
+   "errors": 0,
+   "schematic_parity": 0,
+   "new_warning_identities": 0,
+   "note": "491 listed warning identities identical before and after; the reviewer re-ran DRC on 680da674 with the pinned image"
+  },
+  "warning_evidence": "COMPLETE: source-bound native evidence"
+ },
+ "status": "UNVALIDATED DRAFT",
+ "qualification": "NOT RUN: electrical, thermal and physical qualification",
+ "fabrication_outputs": "NOT CREATED"
+}

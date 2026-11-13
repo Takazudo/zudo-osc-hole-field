@@ -11,7 +11,7 @@ Reconciliation: DISCREPANCIES; discrepancies: 910.
 | EL | canonical unvalidated draft | 0 | 96 | 48 |
 | JL | canonical unvalidated draft | 184 | 1000 | 98 |
 | JR | canonical unvalidated draft | 192 | 956 | 102 |
-| K | canonical unvalidated draft | 2518 | 2628 | 1129 |
+| K | canonical unvalidated draft | 2226 | 2628 | 1129 |
 | O1 | canonical unvalidated draft | 0 | 3 | 0 |
 | O2 | canonical unvalidated draft | 0 | 3 | 0 |
 | O3 | canonical unvalidated draft | 0 | 3 | 0 |
