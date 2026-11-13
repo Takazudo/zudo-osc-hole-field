@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-dc-wiper-c-manufacturer",
+      "record_id": "rec-dc-wiper-c",
+      "source_id": "src-dc-wiper-c-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Murata",
+      "unit": "NONE",
+      "conditions": "Exact primary-source component record; no installed qualification inferred.",
+      "locator": "Exact part system and D packaging row; rated values/dimensions; physical26/printed27 mounting lands",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-dc-wiper-c-identity",
+      "record_id": "rec-dc-wiper-c",
+      "source_id": "src-dc-wiper-c-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Murata",
+        "mpn": "GRM1885C1H103JA01D",
+        "package": "0603"
+      },
+      "unit": "NONE",
+      "conditions": "Complete exact order code; Murata D explicitly maps to180mm paper W8P4 reel4000. No supplier stock inferred.",
+      "locator": "Exact part system and D packaging row; rated values/dimensions; physical26/printed27 mounting lands",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-dc-wiper-c-nominal",
+      "record_id": "rec-dc-wiper-c",
+      "source_id": "src-dc-wiper-c-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 1e-08,
+      "unit": "F",
+      "conditions": "Initial±5%; Murata1kHz±10%,1Vrms±0.2 at room temperature.",
+      "locator": "Exact part system and D packaging row; rated values/dimensions; physical26/printed27 mounting lands",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-dc-wiper-c-voltage",
+      "record_id": "rec-dc-wiper-c",
+      "source_id": "src-dc-wiper-c-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 50,
+      "unit": "V",
+      "conditions": "Rated DC voltage, not dielectric-proof operating rating. AC superposition/pulse peak-to-peak or zero-to-peak and abnormal surge/static/pulse must stay within rating; self-heating below20C at25C ambient and body below125C under specified AC/pulse use.",
+      "locator": "Exact part system and D packaging row; rated values/dimensions; physical26/printed27 mounting lands",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-dc-wiper-c-temperature",
+      "record_id": "rec-dc-wiper-c",
+      "source_id": "src-dc-wiper-c-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "operating_min_C": -55,
+        "operating_max_C": 125,
+        "TCC_ppm_per_C": 30
+      },
+      "unit": "NONE",
+      "conditions": "C0G. Murata table coefficient25..125C referenced25C; below25C TableA stage limits must be respected, not extrapolated coefficient.",
+      "locator": "Exact part system and D packaging row; rated values/dimensions; physical26/printed27 mounting lands",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-dc-wiper-c-body",
+      "record_id": "rec-dc-wiper-c",
+      "source_id": "src-dc-wiper-c-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "L_mm": 1.6,
+        "W_mm": 0.8,
+        "T_mm": 0.8,
+        "LW_tolerance_mm": 0.1,
+        "T_tolerance_mm": 0.1
+      },
+      "unit": "NONE",
+      "conditions": "Source dimensions only; model height0.8mm is nominal, not worst-case assembled envelope.",
+      "locator": "Exact part system and D packaging row; rated values/dimensions; physical26/printed27 mounting lands",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-dc-wiper-c-mechanical-fit",
+      "record_id": "rec-dc-wiper-c",
+      "source_id": "src-dc-wiper-c-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Existing gap0.60mm fits source0.6..0.8; existing pad length0.80 vs recommended0.6..0.7 and width0.90 vs0.6..0.8 each exceed upper recommendation0.1mm. Exact±0.1body reflow row applies; no silent use of wider-tolerance row.",
+      "unit": "NONE",
+      "conditions": "Primary mounting recommendation is not a hard physical-interference conclusion. Preserve current footprint; require reviewed land/process disposition and any resulting native/layout regeneration before order readiness.",
+      "locator": "Exact part system and D packaging row; rated values/dimensions; physical26/printed27 mounting lands",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-dc-wiper-c-application",
+      "record_id": "rec-dc-wiper-c",
+      "source_id": "src-dc-wiper-c-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "48 internal DC-wiper10nF filter capacitors, W_SENSE to AGND; accepted±5V reference endpoints; actual settling, leakage, noise, startup/fault and installed temperature remain open.",
+      "unit": "NONE",
+      "conditions": "Conditional26.4V differential is below50V rating, not a proven installed stress bound. Retain actual0..40C ambient requirement; do not infer internal temperature. Nonpolarized, external factory assembly required.",
+      "locator": "Exact part system and D packaging row; rated values/dimensions; physical26/printed27 mounting lands",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-dc-wiper-c-pinout",
+      "record_id": "rec-dc-wiper-c",
+      "source_id": "src-dc-wiper-c-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Two end terminations; project1→pad1 and2→pad2.",
+      "unit": "NONE",
+      "conditions": "No manufacturer terminal numbers inferred; project mappings preserved.",
+      "locator": "Exact part system and D packaging row; rated values/dimensions; physical26/printed27 mounting lands",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-dc-wiper-c-assembly",
+      "record_id": "rec-dc-wiper-c",
+      "source_id": "src-dc-wiper-c-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "External electrical assembly required; no provider process acceptance or current stock established.",
+      "unit": "NONE",
+      "conditions": "Exact primary-source component record; no installed qualification inferred.",
+      "locator": "Exact part system and D packaging row; rated values/dimensions; physical26/printed27 mounting lands",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

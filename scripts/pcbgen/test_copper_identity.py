@@ -2,6 +2,7 @@ import json,subprocess,sys,tempfile,unittest
 from pathlib import Path
 from unittest.mock import patch
 from scripts.pcbgen import copper_identity as ci
+from scripts.checks.metadata_successor import successor_for
 from scripts.pcbgen.copper_identity import (reject_new_uuid_collisions,retention,require_unique,copper_objects,duplicate_groups,
     inventory,check,drop_copper_blocks,propose_normalization,apply_manifest,verify_normalization,load_board_text,board_bytes,digest)
 
@@ -99,7 +100,18 @@ class InventoryTests(unittest.TestCase):
 
     def test_canonical_k_board_carries_exactly_the_six_known_legacy_groups(self):
         text=load_board_text(K_BOARD);inv=inventory(text,'boards/osc-core/osc-core.kicad_pcb')
-        self.assertEqual(inv['sha256'],K_SHA)
+        # A metadata-only successor of K2226 is accepted only through its receipt, which re-derives a
+        # property-only (MPN/Manufacturer/LCSC) difference from the adopted K2226 Git bytes.
+        successor=successor_for('boards/osc-core/osc-core.kicad_pcb',inv['sha256'],ROOT)
+        self.assertEqual(inv['sha256'] if successor is None else successor['adopted']['sha256'],K_SHA)
+        if successor is not None:
+            adopted=inventory(subprocess.run(['git','cat-file','blob',successor['adopted']['git_blob']],cwd=ROOT,
+                                             capture_output=True,check=True).stdout.decode('latin-1'),'adopted')
+            self.assertEqual(adopted['sha256'],K_SHA)
+            # Byte offsets shift with the longer property values; the copper group bytes must not.
+            unspanned=lambda groups:[{**g,'occurrences':[{k:v for k,v in o.items() if k not in ('span','uuid_span')} for o in g['occurrences']]} for g in groups]
+            self.assertEqual(unspanned(adopted['duplicate_groups']),unspanned(inv['duplicate_groups']))
+            self.assertEqual((adopted['counts'],adopted['objects']),(inv['counts'],inv['objects']))
         self.assertEqual({g['uuid']:g['kinds'][0] for g in inv['duplicate_groups']},K_GROUPS)
         for g in inv['duplicate_groups']:
             self.assertEqual(g['count'],2);self.assertEqual(g['nets'],['AGND']);self.assertEqual(len(g['kinds']),1)

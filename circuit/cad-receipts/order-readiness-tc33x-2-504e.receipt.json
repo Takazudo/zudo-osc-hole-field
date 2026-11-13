@@ -1,0 +1,95 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "order-readiness-tc33x-2-504e",
+    "record_id": "rec-trim-504",
+    "manufacturer": "Bourns",
+    "mpn": "TC33X-2-504E",
+    "package": "3 mm SMD",
+    "variant_notes": "Derived project symbol identity only; existing footprint/model and all physical/application acceptance unchanged."
+  },
+  "acquisition": {
+    "provider": "Retained manufacturer-primary evidence and existing project symbol",
+    "library_release_tag": null,
+    "source_url": "https://www.bourns.com/docs/Product-Datasheets/TC33.pdf",
+    "acquired_on": "2026-11-10",
+    "original_filenames": [
+      "tc33.pdf"
+    ],
+    "sha256": {
+      "symbols/src/TC33X-2-103E.kicad_sym": "8cb866a6712be83932b25e353b09f9e6230be9379d27d8ca6cafc35035d68c5d",
+      ".circuit-cache/order-readiness-20261109/trimmer-23/tc33/chrome/tc33.pdf": "b13258ee9f777b70198554ad4ed43cab2167b2bdf31bdcbe52c4956bfff1adbf",
+      ".circuit-cache/order-readiness-20261110/parts-symbol-receipts/prepare.py": "9c0c61d1c0579af7bf7817d5d064b56d37e7fb28150f18d1ef9229771f12a594"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/TC33X-2-504E.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "symbols/src/TC33X-2-103E.kicad_sym",
+      ".circuit-cache/order-readiness-20261109/trimmer-23/tc33/chrome/tc33.pdf",
+      ".circuit-cache/order-readiness-20261110/parts-symbol-receipts/prepare.py"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Exact comparison permits only symbol names and identity/procurement property values; all geometry, pins and footprint fields equal retained project representative. Not manufacturer CAD.",
+    "evidence": [
+      "src-trim-504-datasheet: Physical page0 Electrical/Physical characteristics and TC33X-2 drawing; physical page1 resistance table and ordering"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "symbols/src/TC33X-2-103E.kicad_sym": "8cb866a6712be83932b25e353b09f9e6230be9379d27d8ca6cafc35035d68c5d",
+      ".circuit-cache/order-readiness-20261109/trimmer-23/tc33/chrome/tc33.pdf": "b13258ee9f777b70198554ad4ed43cab2167b2bdf31bdcbe52c4956bfff1adbf",
+      ".circuit-cache/order-readiness-20261110/parts-symbol-receipts/prepare.py": "9c0c61d1c0579af7bf7817d5d064b56d37e7fb28150f18d1ef9229771f12a594"
+    },
+    "tool": "prepare.py checked identity-only fragment comparison",
+    "tool_version": "1",
+    "parameters": {
+      "source_symbol": "TC33X-2-103E",
+      "target_symbol": "TC33X-2-504E",
+      "allowed_property_values": [
+        "MPN",
+        "Manufacturer",
+        "LCSC",
+        "Datasheet",
+        "Value"
+      ],
+      "geometry_and_pin_and_footprint_bytes_equal": true
+    },
+    "output_sha256": {
+      "symbols/src/TC33X-2-504E.kicad_sym": "2f9bcce96322b4c3f738a8639c54691ddd25a9d87f1015c4960cc40ca1f10ae4"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:TC33X-2-504E",
+    "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Exact output hash and normalized full fragment equality checked against retained own-source representative."
+    ],
+    "remaining_physical_checks": [
+      "All existing owner thermal, calibration, land/process, shaft/access and assembly domains remain open; no vendor CAD or qualified mounted fit."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-power-reservoir-manufacturer",
+      "record_id": "rec-power-reservoir",
+      "source_id": "src-power-reservoir-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Samsung Electro-Mechanics",
+      "unit": "NONE",
+      "conditions": "Exact manufacturer identity; manufacturer capitalization normalized to existing project convention.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-reservoir-identity",
+      "record_id": "rec-power-reservoir",
+      "source_id": "src-power-reservoir-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Samsung Electro-Mechanics",
+        "mpn": "CL10A105KB8NNNC",
+        "package": "C0603"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete MPN; project footprint naming is not a manufacturer land-pattern approval.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-reservoir-supplier-identity",
+      "record_id": "rec-power-reservoir",
+      "source_id": "src-power-reservoir-lcsc",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Samsung Electro-Mechanics",
+        "mpn": "CL10A105KB8NNNC",
+        "lcsc": "C15849",
+        "variant": "C0603 exact full suffix"
+      },
+      "unit": "NONE",
+      "conditions": "Observed 2026-11-09T09:54Z; stock is volatile, not reserved. Distributor identity only, never electrical evidence.",
+      "locator": "Section/row: HTML Product JSON-LD exact mpn, sku, brand and offers.inventoryLevel",
+      "provenance": "DISTRIBUTOR-IDENTITY",
+      "verdict": "CONFIRMED - distributor identity only",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-reservoir-nominal",
+      "record_id": "rec-power-reservoir",
+      "source_id": "src-power-reservoir-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 1e-06,
+      "unit": "F",
+      "conditions": "Nominal capacitance ±10%, measured 1 kHz ±10%, 1.0±0.2 Vrms; not guaranteed effective capacitance at DC rail bias.",
+      "locator": "Section/row: Physical pages 0–1, A.Part Number and C.Reliability judgement: capacitance",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-reservoir-rated-voltage",
+      "record_id": "rec-power-reservoir",
+      "source_id": "src-power-reservoir-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 50,
+      "unit": "VDC",
+      "conditions": "Rated DC voltage; withstand-test voltage is not an operating rating.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-reservoir-temperature",
+      "record_id": "rec-power-reservoir",
+      "source_id": "src-power-reservoir-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "minimum": -55,
+        "maximum": 85
+      },
+      "unit": "degC",
+      "conditions": "X5R temperature characteristic; ±15% change is additional to nominal tolerance and does not bound DC-bias/aging change.",
+      "locator": "Section/row: Physical page 1: temperature characteristics",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-reservoir-body",
+      "record_id": "rec-power-reservoir",
+      "source_id": "src-power-reservoir-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "length": 1.6,
+        "width": 0.8,
+        "height": 0.8,
+        "each_dimension_tolerance": 0.1
+      },
+      "unit": "mm",
+      "conditions": "Package body dimensions; not a qualified mounted envelope.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-reservoir-mechanical-fit",
+      "record_id": "rec-power-reservoir",
+      "source_id": "src-power-reservoir-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Existing C0603 footprint gap is 0.60 mm. Reference 1608 ±0.10 mm reflow recommendation is 0.63–0.73 mm gap, 0.71–0.81 mm pad length, 0.80–0.90 mm pad width. Existing pads are 0.80 by 0.90 mm.",
+      "unit": "NONE",
+      "conditions": "Recommendation requires actual board evaluation; 0.03 mm nominal gap difference remains unresolved, not an automatic measured fit failure. Existing family CAD and native board remain unchanged.",
+      "locator": "Section/row: Physical page 32, section5-4, 1608±0.10 row; project C0603.kicad_mod",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-reservoir-application",
+      "record_id": "rec-power-reservoir",
+      "source_id": "src-power-reservoir-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Effective reservoir capacitance under DC/AC bias, temperature, aging and installed transient conditions is not qualified.",
+      "unit": "NONE",
+      "conditions": "Used on +12V/-12V/+5V load rails; nominal1uF alone does not establish discharge, startup or ripple performance.",
+      "locator": "Section/row: Physical page15 section2-7; design/spec/modules/power.py",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-reservoir-pinout",
+      "record_id": "rec-power-reservoir",
+      "source_id": "src-power-reservoir-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Two end terminations; project terminal1 maps to pad1, terminal2 to pad2.",
+      "unit": "NONE",
+      "conditions": "Manufacturer drawing has no pin numbering; project convention, with rail on1 andAGND on2. No polarity, native connectivity or physical-fit qualification implied.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-power-reservoir-assembly",
+      "record_id": "rec-power-reservoir",
+      "source_id": "src-power-reservoir-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Supplier stock observation does not establish factory allocation, soldering acceptance or assembly responsibility completion.",
+      "unit": "NONE",
+      "conditions": "External electrical soldering required; no owner soldering assumed. No supplier contacted.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

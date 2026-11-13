@@ -6,9 +6,13 @@ qualifies no hardware; every board stays an unvalidated draft.
 """
 import hashlib
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from scripts.checks.metadata_successor import SuccessorError, verify as verify_successor  # noqa: E402
 CHECKPOINT = ROOT / 'circuit' / 'routing' / 'osc-pcb-current-checkpoint.json'
 RAILS = ('+12V', '-12V', '+5V')
 
@@ -25,8 +29,46 @@ def fail(board_id, what):
     raise ValueError(f'{board_id}: {what}; update the checkpoint from accepted evidence, do not weaken the guard')
 
 
+def current_board_sha256(entry):
+    """The bytes the working board must have: the adopted bytes, or their reviewed metadata-only successor."""
+    return entry['metadata_successor']['successor_board_sha256'] if 'metadata_successor' in entry else entry['board_sha256']
+
+
+def check_successor(board_id, entry, root):
+    """A metadata-only successor of the adopted board, re-derived from the adopted Git bytes.
+
+    The adopted hash, receipt and adoption evidence stay bound to the adopted bytes; only
+    MPN/Manufacturer/LCSC property values listed in the successor receipt may differ."""
+    successor = entry['metadata_successor']
+    path = root / successor['path']
+    if sha(path) != successor['sha256']:
+        fail(board_id, 'metadata successor receipt bytes differ from the checkpoint')
+    record = json.loads(path.read_text())
+    if record.get('board') != entry['board'] or record['adopted']['sha256'] != entry['board_sha256']:
+        fail(board_id, 'metadata successor does not start from the adopted checkpoint board bytes')
+    if record['successor']['sha256'] != successor['successor_board_sha256']:
+        fail(board_id, 'metadata successor receipt names different successor board bytes')
+    if sha(root / entry['board']) != successor['successor_board_sha256']:
+        fail(board_id, 'board bytes differ from the checkpoint metadata successor')
+
+
+def check_successor_derivation(board_id, entry, root):
+    """After the adoption evidence itself has been checked: the successor names it and its diff re-derives from Git."""
+    successor = entry['metadata_successor']
+    record = json.loads((root / successor['path']).read_text())
+    evidence = {entry['receipt']['path'], entry['receipt'].get('mirror'), entry.get('adoption', {}).get('path')} - {None}
+    if not evidence <= set(record['adopted']['evidence']):
+        fail(board_id, 'metadata successor does not name the adoption evidence')
+    try:
+        verify_successor(successor['path'], root, ROOT)
+    except SuccessorError as error:
+        fail(board_id, f'metadata successor rejected: {error}')
+
+
 def check_board(board_id, entry, root):
-    if sha(root / entry['board']) != entry['board_sha256']:
+    if 'metadata_successor' in entry:
+        check_successor(board_id, entry, root)
+    elif sha(root / entry['board']) != entry['board_sha256']:
         fail(board_id, 'board bytes differ from the checkpoint')
     receipt_path = root / entry['receipt']['path']
     if sha(receipt_path) != entry['receipt']['sha256']:
@@ -61,12 +103,14 @@ def check_board(board_id, entry, root):
             fail(board_id, f'{key} disagrees with the receipt')
     if conn['open_edges'] != conn['signal_open_edges'] + conn['agnd_open_edges'] + sum(conn['rail_open_edges'].values()):
         fail(board_id, 'open-edge split does not add up')
+    if 'metadata_successor' in entry:
+        check_successor_derivation(board_id, entry, root)
     state = entry['native_state_record']
     native_record = json.loads((root / state['path']).read_text())
     recorded = native_record['source']['input_board_sha256']
     if recorded != state['input_board_sha256'] or native_record['checked_at_utc'] != state['checked_at_utc']:
         fail(board_id, 'native state record input differs from the checkpoint')
-    if state['fresh'] != (recorded == entry['board_sha256']):
+    if state['fresh'] != (recorded == current_board_sha256(entry)):
         fail(board_id, 'native state freshness flag is not truthful')
     if state['fresh']:
         check_fresh_record(board_id, native_record, entry, root)
@@ -100,6 +144,14 @@ def check_fresh_record(board_id, record, entry, root):
         fail(board_id, 'fresh native record AGND receipt agreement is not consistent with its receipt')
     if native.get('island_signature_sha256') != conn.get('island_signature_sha256'):
         fail(board_id, 'fresh native record island signature disagrees with the checkpoint')
+    successor = entry.get('metadata_successor')
+    named = record.get('metadata_successor')
+    if successor is None:
+        if named is not None:
+            fail(board_id, 'fresh native record names a metadata successor the checkpoint does not')
+    elif (named or {}).get('path') != successor['path'] or named.get('sha256') != successor['sha256'] \
+            or named.get('adopted_board_sha256') != entry['board_sha256']:
+        fail(board_id, 'fresh native record does not name the checkpoint metadata successor')
 
 
 def receipt_agnd(receipt):
@@ -142,6 +194,8 @@ def check_docs(checkpoint, root):
             entry = checkpoint['boards'][board_id]
             if entry['board_sha256'] not in text or entry['label'] not in text:
                 raise ValueError(f'{doc}: does not name the current {board_id} label and hash')
+            if current_board_sha256(entry) not in text:
+                raise ValueError(f'{doc}: does not name the {board_id} metadata successor hash')
 
 
 def check(checkpoint, root=ROOT):

@@ -61,7 +61,19 @@
     "rec-precision-feedback-c",
     "rec-op-precision-d",
     "rec-fault-switch-t",
-    "rec-env-switch-t"
+    "rec-env-switch-t",
+    "rec-trim-203",
+    "rec-trim-503",
+    "rec-trim-504",
+    "rec-power-reservoir",
+    "rec-contact-pullup-r",
+    "rec-dc-failbias-r",
+    "rec-stage-top-r",
+    "rec-contact-debounce-r",
+    "rec-power-bleeder",
+    "rec-reference-inverter-r",
+    "rec-dc-wiper-c",
+    "rec-audio-feedback-c"
   ],
   "sourceIds": [
     "src-b103",
@@ -202,7 +214,38 @@
     "src-env-switch-t-protection-map",
     "src-op-precision-d-decision",
     "src-fault-switch-t-decision",
-    "src-env-switch-t-decision"
+    "src-env-switch-t-decision",
+    "src-trim-203-datasheet",
+    "src-trim-203-pcn",
+    "src-trim-503-datasheet",
+    "src-trim-503-pcn",
+    "src-trim-504-datasheet",
+    "src-trim-504-pcn",
+    "src-power-reservoir-datasheet",
+    "src-power-reservoir-lcsc",
+    "src-contact-pullup-r-datasheet",
+    "src-contact-pullup-r-series",
+    "src-contact-pullup-r-mounting",
+    "src-dc-failbias-r-datasheet",
+    "src-dc-failbias-r-series",
+    "src-dc-failbias-r-mounting",
+    "src-stage-top-r-datasheet",
+    "src-stage-top-r-series",
+    "src-stage-top-r-mounting",
+    "src-contact-debounce-r-datasheet",
+    "src-contact-debounce-r-lcsc",
+    "src-contact-debounce-r-series",
+    "src-contact-debounce-r-mounting",
+    "src-power-bleeder-datasheet",
+    "src-power-bleeder-lcsc",
+    "src-power-bleeder-series",
+    "src-power-bleeder-mounting",
+    "src-reference-inverter-r-datasheet",
+    "src-reference-inverter-r-series",
+    "src-reference-inverter-r-mounting",
+    "src-dc-wiper-c-datasheet",
+    "src-audio-feedback-c-datasheet",
+    "src-audio-feedback-c-series"
   ],
   "linkableSourceIds": [
     "src-b103",
@@ -336,7 +379,35 @@
     "src-env-switch-t-protection-map",
     "src-op-precision-d-decision",
     "src-fault-switch-t-decision",
-    "src-env-switch-t-decision"
+    "src-env-switch-t-decision",
+    "src-trim-203-datasheet",
+    "src-trim-203-pcn",
+    "src-trim-503-datasheet",
+    "src-trim-503-pcn",
+    "src-trim-504-datasheet",
+    "src-trim-504-pcn",
+    "src-power-reservoir-datasheet",
+    "src-contact-pullup-r-datasheet",
+    "src-contact-pullup-r-series",
+    "src-contact-pullup-r-mounting",
+    "src-dc-failbias-r-datasheet",
+    "src-dc-failbias-r-series",
+    "src-dc-failbias-r-mounting",
+    "src-stage-top-r-datasheet",
+    "src-stage-top-r-series",
+    "src-stage-top-r-mounting",
+    "src-contact-debounce-r-datasheet",
+    "src-contact-debounce-r-series",
+    "src-contact-debounce-r-mounting",
+    "src-power-bleeder-datasheet",
+    "src-power-bleeder-series",
+    "src-power-bleeder-mounting",
+    "src-reference-inverter-r-datasheet",
+    "src-reference-inverter-r-series",
+    "src-reference-inverter-r-mounting",
+    "src-dc-wiper-c-datasheet",
+    "src-audio-feedback-c-datasheet",
+    "src-audio-feedback-c-series"
   ],
   "documentSelections": [
     {
@@ -643,12 +714,72 @@
       "recordId": "rec-env-switch-t",
       "sourceId": "src-env-switch-t-datasheet",
       "documentKind": "datasheet"
+    },
+    {
+      "recordId": "rec-trim-203",
+      "sourceId": "src-trim-203-datasheet",
+      "documentKind": "datasheet"
+    },
+    {
+      "recordId": "rec-trim-503",
+      "sourceId": "src-trim-503-datasheet",
+      "documentKind": "datasheet"
+    },
+    {
+      "recordId": "rec-trim-504",
+      "sourceId": "src-trim-504-datasheet",
+      "documentKind": "datasheet"
+    },
+    {
+      "recordId": "rec-power-reservoir",
+      "sourceId": "src-power-reservoir-datasheet",
+      "documentKind": "datasheet"
+    },
+    {
+      "recordId": "rec-contact-pullup-r",
+      "sourceId": "src-contact-pullup-r-datasheet",
+      "documentKind": "datasheet"
+    },
+    {
+      "recordId": "rec-dc-failbias-r",
+      "sourceId": "src-dc-failbias-r-datasheet",
+      "documentKind": "datasheet"
+    },
+    {
+      "recordId": "rec-stage-top-r",
+      "sourceId": "src-stage-top-r-datasheet",
+      "documentKind": "datasheet"
+    },
+    {
+      "recordId": "rec-contact-debounce-r",
+      "sourceId": "src-contact-debounce-r-datasheet",
+      "documentKind": "datasheet"
+    },
+    {
+      "recordId": "rec-power-bleeder",
+      "sourceId": "src-power-bleeder-datasheet",
+      "documentKind": "datasheet"
+    },
+    {
+      "recordId": "rec-reference-inverter-r",
+      "sourceId": "src-reference-inverter-r-datasheet",
+      "documentKind": "datasheet"
+    },
+    {
+      "recordId": "rec-dc-wiper-c",
+      "sourceId": "src-dc-wiper-c-datasheet",
+      "documentKind": "datasheet"
+    },
+    {
+      "recordId": "rec-audio-feedback-c",
+      "sourceId": "src-audio-feedback-c-datasheet",
+      "documentKind": "datasheet"
     }
   ],
   "expect": {
-    "records": 72,
-    "sources": 162,
-    "integrationRules": 2,
-    "packages": 32
+    "records": 84,
+    "sources": 193,
+    "integrationRules": 3,
+    "packages": 33
   }
 }

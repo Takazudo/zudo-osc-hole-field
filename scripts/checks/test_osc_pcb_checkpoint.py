@@ -109,20 +109,26 @@ class OscPcbCheckpoint(unittest.TestCase):
                 paths.add(entry['receipt']['mirror'])
             if 'adoption' in entry:
                 paths.add(entry['adoption']['path'])
+            if 'metadata_successor' in entry:
+                paths.add(entry['metadata_successor']['path'])
         for path in paths:
             (root / path).parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(guard.ROOT / path, root / path)
         return root
 
-    def refresh(self, root, board_id, checked_at='2026-11-08T00:00:00Z', **overrides):
+    def refresh(self, root, board_id, checked_at='2026-11-14T00:00:00Z', **overrides):
         """Rewrite one routing.json as a refresh would and mark it fresh; overrides forge single fields."""
         changed = self.mutant()
         entry = changed['boards'][board_id]
         conn = entry['connectivity']
         record_path = root / entry['native_state_record']['path']
         record = json.loads(record_path.read_text())
-        record['source']['input_board_sha256'] = entry['board_sha256']
+        record['source']['input_board_sha256'] = guard.current_board_sha256(entry)
         record['checked_at_utc'] = checked_at
+        successor = entry.get('metadata_successor')
+        record['metadata_successor'] = None if successor is None else {
+            'path': successor['path'], 'sha256': successor['sha256'], 'adopted_board_sha256': entry['board_sha256'],
+            'adopted_label': entry['label']}
         record['native'].update(open_edges=conn['open_edges'], rail_open_edges=conn['rail_open_edges'],
                                 agnd_open_edges=conn['agnd_open_edges'],
                                 other_signal_open_edges=conn['signal_open_edges'])
@@ -137,12 +143,14 @@ class OscPcbCheckpoint(unittest.TestCase):
         for key, value in overrides.items():
             if key in record['native']:
                 record['native'][key] = value
+            elif key == 'metadata_successor':
+                record['metadata_successor'] = value
             elif key.startswith('agreement_'):
                 record['receipt_agreement'][key[len('agreement_'):]] = value
             else:
                 record['latest_adopted_receipt'][key] = value
         record_path.write_text(json.dumps(record))
-        entry['native_state_record'].update(input_board_sha256=entry['board_sha256'],
+        entry['native_state_record'].update(input_board_sha256=guard.current_board_sha256(entry),
                                             checked_at_utc=checked_at, fresh=True)
         return changed
 
@@ -150,11 +158,11 @@ class OscPcbCheckpoint(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             root, old = self.stale_root(temp)
             entry = self.checkpoint['boards']['osc-core']
-            old['source']['input_board_sha256'] = entry['board_sha256']
+            old['source']['input_board_sha256'] = guard.current_board_sha256(entry)
             (root / entry['native_state_record']['path']).write_text(json.dumps(old))
             changed = self.mutant()
             changed['boards']['osc-core']['native_state_record'].update(
-                input_board_sha256=entry['board_sha256'], checked_at_utc=old['checked_at_utc'], fresh=True)
+                input_board_sha256=guard.current_board_sha256(entry), checked_at_utc=old['checked_at_utc'], fresh=True)
             with self.assertRaisesRegex(ValueError, 'fresh native record'):
                 guard.check(changed, root)
 
@@ -209,6 +217,87 @@ class OscPcbCheckpoint(unittest.TestCase):
         changed['referenced_by']['doc/src/content/docs/verification/osc-pcb-core.mdx'].append('osc-jack-left')
         with self.assertRaisesRegex(ValueError, 'osc-pcb-core.mdx'):
             guard.check(changed)
+
+    def successor_boards(self):
+        boards = [b for b, e in self.checkpoint['boards'].items() if 'metadata_successor' in e]
+        self.assertEqual(sorted(boards), ['osc-core', 'osc-jack-left', 'osc-jack-right'])
+        return boards
+
+    def test_metadata_successor_keeps_adoption_bound_to_adopted_bytes(self):
+        for board_id in self.successor_boards():
+            entry = self.checkpoint['boards'][board_id]
+            receipt = json.loads((guard.ROOT / entry['metadata_successor']['path']).read_text())
+            self.assertEqual(receipt['adopted']['sha256'], entry['board_sha256'])
+            self.assertNotEqual(entry['board_sha256'], entry['metadata_successor']['successor_board_sha256'])
+            self.assertEqual(guard.sha(guard.ROOT / entry['board']), entry['metadata_successor']['successor_board_sha256'])
+
+    def test_metadata_successor_hash_drift_is_rejected(self):
+        for board_id in self.successor_boards():
+            for key, message in (('sha256', 'successor receipt bytes'),
+                                 ('successor_board_sha256', 'different successor board bytes')):
+                with self.subTest(board=board_id, key=key):
+                    changed = self.mutant()
+                    changed['boards'][board_id]['metadata_successor'][key] = '0' * 64
+                    with self.assertRaisesRegex(ValueError, message):
+                        guard.check(changed)
+
+    def test_dropping_the_successor_does_not_accept_the_changed_bytes(self):
+        changed = self.mutant()
+        del changed['boards']['osc-jack-left']['metadata_successor']
+        with self.assertRaisesRegex(ValueError, 'board bytes differ from the checkpoint'):
+            guard.check(changed)
+
+    def forged_successor(self, temp, board_id, mutate_receipt=None, mutate_board=None):
+        root = self.forged_root(temp)
+        changed = self.mutant()
+        entry = changed['boards'][board_id]
+        path = root / entry['metadata_successor']['path']
+        if mutate_receipt:
+            record = json.loads(path.read_text())
+            mutate_receipt(record)
+            path.write_text(json.dumps(record))
+            entry['metadata_successor']['sha256'] = guard.sha(path)
+        if mutate_board:
+            board = root / entry['board']
+            board.write_bytes(mutate_board(board.read_bytes()))
+            entry['metadata_successor']['successor_board_sha256'] = guard.sha(board)
+            record = json.loads(path.read_text())
+            record['successor']['sha256'] = guard.sha(board)
+            path.write_text(json.dumps(record))
+            entry['metadata_successor']['sha256'] = guard.sha(path)
+        return root, changed
+
+    def test_forged_successor_receipts_are_rejected(self):
+        cases = {
+            'unlisted footprint change': (lambda r: r['changes'].pop(), None, 'derived changes differ'),
+            'listed change with a different value': (lambda r: r['changes'][0].update(new='X'), None, 'derived changes differ'),
+            'adopted bytes from a different board': (lambda r: r['adopted'].update(sha256='0' * 64), None,
+                                                     'does not start from the adopted'),
+            'missing adoption evidence': (lambda r: r['adopted'].update(evidence=[]), None, 'adoption evidence'),
+            'copper change': (None, lambda b: b.replace(b'(width 0.2)', b'(width 0.21)', 1), 'non-property difference'),
+            'extra property': (None, lambda b: b.replace(b'\t\t(property "Value"', b'\t\t(property "LCSC" "C1"\n\t\t)\n\t\t(property "Value"', 1),
+                               'line count differs'),
+        }
+        for name, (receipt, board, message) in cases.items():
+            with self.subTest(forgery=name), tempfile.TemporaryDirectory() as temp:
+                root, changed = self.forged_successor(temp, 'osc-jack-right', receipt, board)
+                with self.assertRaisesRegex(ValueError, message):
+                    guard.check(changed, root)
+
+    def test_working_board_must_equal_the_successor(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = self.forged_root(temp)
+            board = root / self.checkpoint['boards']['osc-jack-right']['board']
+            board.write_bytes(board.read_bytes() + b'\n')
+            with self.assertRaisesRegex(ValueError, 'board bytes differ from the checkpoint metadata successor'):
+                guard.check(self.checkpoint, root)
+
+    def test_fresh_record_must_name_the_successor(self):
+        for value in (None, {'path': 'x', 'sha256': '0' * 64, 'adopted_board_sha256': '0' * 64}):
+            with self.subTest(value=value), tempfile.TemporaryDirectory() as temp:
+                root = self.forged_root(temp)
+                with self.assertRaisesRegex(ValueError, 'does not name the checkpoint metadata successor'):
+                    guard.check(self.refresh(root, 'osc-jack-left', metadata_successor=value), root)
 
     def test_candidate_status_matches_the_adoption_record(self):
         # An adopted candidate must be the one whose adoption record names the current K board.
