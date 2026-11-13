@@ -218,5 +218,18 @@
     "source": "https://github.com/Takazudo/zudo-osc-hole-field/issues/315#issuecomment-6748038705",
     "standard": "doc/src/content/docs/verification/osc-release-gates.mdx",
     "scope": "No design-fault waiver, test pass, ordering, supplier contact or energization authorization. Preserve all #57 and #65 requirements according to their actual purpose; source realization and deterministic engineering remain pre-order, first-power safeguards remain before energization."
+  },
+  {
+    "id": "E21",
+    "topic": "No-load start-up step: current-limit exception (PD20 Board B20)",
+    "authority": "USER-CONFIRMED DECISION",
+    "date": "2026-11-14",
+    "decision": "Replace the 2026-11-03 no-load slope exceptions (-12 V <= 1.47 V/ms, +5 V <= 0.95 V/ms) with a current limit. No load only: while |-12 V| <= 0.75 V the charging current is <= 350 mA into any bank up to 180 uF; while +5 V <= 0.45 V it is <= 180 mA into any bank up to 120 uF. No V/ms figure applies inside those regions. Conditions: (1) no load only; loaded starts keep 1.23 / 1.22 / 0.51 V/ms; (2) +12 V is on the common ramp during the step, and the start-skew and one-rail rows are not relaxed; (3) monotonic with no reversal; after the step the rail may lead the ideal common tracking ramp by at most 0.25 V and may hold flat while the ramp catches up, returning to the normal tracking difference within 15 ms of the ramp start; the band-entry skew row (all rails within 2 ms) still applies; (4) above the regions the base slope rows and every voltage-form skew row apply unchanged.",
+    "rationale": "No retained OSC datasheet gives a supply dV/dt, ramp-rate or charge limit. Inside the regions every rail IC is below its recommended minimum supply; TMUX7412F is below UVLO and powered off (SCDS404B 9.1, 9.3.2.2, 9.3.2.3) and latch-up immune (9.3.2.6). The step excursion is bounded by the region, so the only effect is charging current: 350 / 180 mA are 18 % / 45 % of the 1900 / 400 mA transient minimums and below the 2000 / 500 mA maxima.",
+    "status": "RECORDED as an interface-contract exception; PD figures are simulation only; B20 is not built; electrical acceptance and physical qualification remain open",
+    "confirmation_utc": "2026-11-13T19:42Z",
+    "source": "Owner acceptance in the project thread, relayed by the project coordinator; zudo-pd D1 contract-route note 2026-11-14",
+    "standard": "design/architecture-278/integration/power-contract/pd-interface-20v.md section 5 (E21 row)",
+    "scope": "Changes only the no-load start-up slope wording of the OSC-PD interface. It changes no OSC schematic, PCB, BOM or part, waives no other contract row, and does not cover injection from patched signals while the rails are low (R-INJ, #59)."
   }
 ]
