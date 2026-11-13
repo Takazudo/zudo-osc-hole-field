@@ -165,7 +165,7 @@ class OscPcbCheckpoint(unittest.TestCase):
             'AGND islands': ({'agnd_islands': 22}, 'agnd_islands'),
             'receipt path': ({'path': 'boards/osc-core/reports/grid-routing/rail-links.json'}, 'accepted receipt'),
             'receipt hash': ({'sha256': '0' * 64}, 'accepted receipt'),
-            'signal count': ({'other_signal_open_edges': 2480}, 'other_signal_open_edges'),
+            'signal count': ({'other_signal_open_edges': 2188}, 'other_signal_open_edges'),
             'open-edge agreement': ({'agreement_open_edges': False}, 'open-edge receipt agreement'),
             'AGND agreement claimed for a chain receipt': ({'agreement_agnd_open_edges': True}, 'AGND receipt agreement'),
             'AGND count claimed for a chain receipt': ({'agnd_open_edges_after': 22}, 'AGND receipt copy disagrees'),
