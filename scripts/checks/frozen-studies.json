@@ -116,6 +116,12 @@
    "commit": "433c88b27b2e49284fe1a717b47ba4226c829dd3",
    "superseded_by": "6f70a83861c67c46102932b71c53c90eed310e70",
    "reason": "Issue #317 corrects the live protection audit population after S2b. This retained unselected diagnostic binds the earlier whole audit hash, and precision sensitivity retains a hypothetical 110-ADG population. Replay every assertion unchanged at the correction parent. Current protection_study_applicability.py independently verifies unchanged consumed obligations, all other bound inputs and full arithmetic results; it explicitly rejects treating the historical substitution sensitivity as current."
+  },
+  {
+   "path": "scripts/checks/test_protection_study_applicability.py",
+   "commit": "05b149862dbacb34af275995cc891bae18f0bb20",
+   "superseded_by": "58d6b5814186c4f3f6e0f9c18fa1b53267ed4e0c",
+   "reason": "The parts-439-with-324 identity packet (#21/#324) renamed eleven part_id leaves in design/standard/electrical-standard.json and added passive identity roles to design/spec/cells/_builder.py; both are bytes-bound inputs of the retained protection studies, so the #317 live bridge correctly refuses the current tree. Replay its every assertion unchanged at the packet parent. The new reviewed study scripts/checks/protection_study_parts439.py (record design/power/protection-study-parts439.json) re-derives current applicability: exact recorded delta, consumed standard fields and the precision model source projection equal to base, unchanged obligations and full arithmetic. No historical report, hash or test byte is rewritten."
   }
  ]
 }
