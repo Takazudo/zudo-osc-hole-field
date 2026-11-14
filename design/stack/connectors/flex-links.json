@@ -5658,6 +5658,254 @@
         "range_mohm": "65.3 to 106.4 over thickness +/-0.005 and width +/-0.03"
       },
       "note": "connector contact resistance adds up to 0.03 ohm per end where stated (HMTCONN, Megastar)"
+    },
+    "st01h": {
+      "task": "osc-stack-20261114/ST-01h (DS-61, DS-63); worktree base 36f7ca6; store 86da75d",
+      "status": "evidence only; nothing selected",
+      "item1_factory_listing": {
+        "status": "SOURCED",
+        "capture": {
+          "path": "distributor-captures/jlcpcb-lcsc/zudo-osc-hole-field-st-01h-20261114/SHA256SUMS",
+          "sha256": "82f93edf9caec5f67af5f5bc4b76e2ef564fda64c8edf436b4973b03a57d8bff"
+        },
+        "captured": "2026-11-14",
+        "rows": [
+          {
+            "mpn": "FH12-8S-0.5SH(55)",
+            "lcsc": "C597995",
+            "class": "extended",
+            "stock": 5850
+          },
+          {
+            "mpn": "FH12-14S-0.5SH(55)",
+            "lcsc": "C5378715",
+            "class": "extended",
+            "stock": 3919
+          },
+          {
+            "mpn": "FH12-26S-0.5SH(55)",
+            "lcsc": "C202113",
+            "class": "extended",
+            "stock": 2291
+          },
+          {
+            "mpn": "FH12-40S-0.5SH(55)",
+            "lcsc": "C202114",
+            "class": "extended",
+            "stock": 11278,
+            "note": "ST-01g capture"
+          }
+        ],
+        "alternative_bossie": [
+          {
+            "mpn": "BX-FPC05-2H8PX",
+            "lcsc": "C18078358",
+            "stock": 218
+          },
+          {
+            "mpn": "BX-FPC05-2H14PX",
+            "lcsc": "C18078360",
+            "stock": 1415
+          },
+          {
+            "mpn": "BX-FPC05-2H26PX",
+            "lcsc": "C18078363",
+            "stock": 2100
+          }
+        ],
+        "note": "every count has stock >= 100, so no alternative is needed; the Bossie rows are recorded for completeness (all extended)"
+      },
+      "item2_lock_open": {
+        "source": {
+          "path": "hirose/fh12/fh12-catalog-pdf-2016-11-19-lcsc-mirror.pdf",
+          "sha256": "9f056f58ff000739633cc3cb7697ba185967083dcf1429b7ab10783b3f55bac5",
+          "page": "17, Connector Operating Instructions, bottom contact type"
+        },
+        "stated": "'Lift up the actuator. Use thumb or index finger.' then 'Fully insert the FPC/FFC parallel to mounting surface, with the exposed conductive traces facing down.'",
+        "open_height": {
+          "status": "UNSOURCED",
+          "reason": "not dimensioned on pages 4 or 17; the figures show the actuator lifted but carry no dimension"
+        },
+        "opening_side": {
+          "status": "UNSOURCED",
+          "reason": "the figures are not dimensioned and the hinge side cannot be read with certainty at the rendered scale"
+        },
+        "working_value": {
+          "value": 5.0,
+          "unit": "mm",
+          "status": "ASSUMED (DS-63)"
+        },
+        "contact_face": {
+          "value": "cable conductors face down, toward the board (bottom contact)",
+          "status": "SOURCED",
+          "page": 17
+        }
+      },
+      "item3_pad_labels": {
+        "source": {
+          "path": "hirose/fh12/fh12-catalog-pdf-2016-11-19-lcsc-mirror.pdf",
+          "sha256": "9f056f58ff000739633cc3cb7697ba185967083dcf1429b7ab10783b3f55bac5",
+          "page": "4 (top view) and 11 (land)"
+        },
+        "stated": "the 0.5SH top view marks a 'polarizing mark indicator' at one end and a 'Number of Contacts indicator' at the other; the horizontal land drawing on page 11 carries no 'No.1 contact' label (only the vertical type does)",
+        "contact_1_end": {
+          "status": "UNSOURCED",
+          "reason": "no figure assigns contact 1 to an end for the SH type; reading the polarizing mark as contact 1 would be ASSUMED"
+        },
+        "land_labels": {
+          "value": "vertical chain on the land: tab 2.2 +/- 0.1, then 1.5 +/- 0.1 from tab to pad row, then pad length 1.3 +/- 0.1; pads 0.3 +/- 0.03 wide at 0.5 +/- 0.05; B +/- 0.1 across the tabs' outer edges, C +/- 0.1 across their inner edges; tab width (B - C) / 2 = 1.8 mm (DERIVED)",
+          "status": "SOURCED (render, 130 dpi)"
+        },
+        "per_count": {
+          "8": {
+            "land_A": 3.5,
+            "land_B": 9.1,
+            "land_C": 5.5,
+            "fpc_A": 3.5,
+            "fpc_B": 4.5
+          },
+          "14": {
+            "land_A": 6.5,
+            "land_B": 12.1,
+            "land_C": 8.5,
+            "fpc_A": 6.5,
+            "fpc_B": 7.5
+          },
+          "26": {
+            "land_A": 12.5,
+            "land_B": 18.1,
+            "land_C": 14.5,
+            "fpc_A": 12.5,
+            "fpc_B": 13.5
+          },
+          "40": {
+            "land_A": 19.5,
+            "land_B": 25.1,
+            "land_C": 21.5,
+            "fpc_A": 19.5,
+            "fpc_B": 20.5
+          },
+          "status": "SOURCED",
+          "page": 11
+        }
+      },
+      "item4_room_envelope": {
+        "source": {
+          "path": "hirose/fh12/fh12-catalog-pdf-2016-11-19-lcsc-mirror.pdf",
+          "sha256": "9f056f58ff000739633cc3cb7697ba185967083dcf1429b7ab10783b3f55bac5",
+          "page": 4
+        },
+        "depth": {
+          "value": "5.6 mm overall in the side view (4.6 mm inner dimension); height 2 mm",
+          "status": "SOURCED",
+          "note": "that 5.6 mm reaches the lead tips is read from the side view"
+        },
+        "depth_vs_room_5_12": {
+          "value": "+0.48 mm (FH12 deeper)",
+          "status": "DERIVED"
+        },
+        "length_C_vs_0_5n_4_4": {
+          "value": {
+            "8": {
+              "fh12_C": 8.1,
+              "room": 8.4,
+              "difference": -0.3
+            },
+            "14": {
+              "fh12_C": 11.1,
+              "room": 11.4,
+              "difference": -0.3
+            },
+            "26": {
+              "fh12_C": 17.1,
+              "room": 17.4,
+              "difference": -0.3
+            },
+            "40": {
+              "fh12_C": 24.1,
+              "room": 24.4,
+              "difference": -0.3
+            }
+          },
+          "status": "DERIVED",
+          "note": "C = 0.5 n + 4.1; 0.3 mm shorter at every count"
+        }
+      },
+      "item5_cables": {
+        "status": "SOURCED",
+        "capture": {
+          "path": "distributor-captures/jlcpcb-lcsc/zudo-osc-hole-field-st-01e-20261114/SHA256SUMS",
+          "sha256": "4640f12e1e653dc2c1c66be30aeb2bf053cc0ea26c40e740ec9b84a4961f71a5"
+        },
+        "rows": [
+          {
+            "lcsc": "C26618",
+            "circuits": 40,
+            "maker": "LX",
+            "length_mm": 50,
+            "contacts": "same side",
+            "stock": 990,
+            "class": "extended"
+          },
+          {
+            "lcsc": "C32128",
+            "circuits": 26,
+            "maker": "LX",
+            "length_mm": 60,
+            "contacts": "same side",
+            "stock": 697,
+            "class": "extended"
+          },
+          {
+            "lcsc": "C68390",
+            "circuits": 14,
+            "maker": "LX",
+            "length_mm": 50,
+            "contacts": "same side",
+            "stock": 1004,
+            "class": "extended"
+          },
+          {
+            "lcsc": "C29534",
+            "circuits": 8,
+            "maker": "LX",
+            "length_mm": 50,
+            "contacts": "same side",
+            "stock": 772,
+            "class": "extended"
+          }
+        ],
+        "a771_coverage": {
+          "value": "A771 covers one part only: C31030, 40 circuits, 50 mm, B type (opposite-side stiffeners); it does not cover 8, 14 or 26 circuits nor the same-side C26618",
+          "status": "SOURCED",
+          "note": "the drawings of C26618, C32128, C68390 and C29534 are UNSOURCED"
+        }
+      },
+      "item6_short_cables": {
+        "status": "SOURCED",
+        "capture": {
+          "path": "distributor-captures/jlcpcb-lcsc/zudo-osc-hole-field-st-01h-20261114/SHA256SUMS",
+          "sha256": "82f93edf9caec5f67af5f5bc4b76e2ef564fda64c8edf436b4973b03a57d8bff"
+        },
+        "8_circuits": {
+          "value": "C81339, LX, 40 mm, same side, stock 933, extended"
+        },
+        "14_circuits": {
+          "value": "none shorter than 50 mm with stock >= 100; shortest same side is C68390 at 50 mm (1004); C41300 30 mm and C41299 25 mm are opposite-side with stock 0"
+        }
+      },
+      "item7_retained": [
+        {
+          "path": "hirose/fx20/fx20-series-catalog-rs-0900766b814db927-rs-mirror.pdf",
+          "sha256": "fbae5691665c60b56584d84df16bada50808b7ea23a90323a4e870840f7b162e",
+          "url": "https://docs.rs-online.com/9ecf/0900766b814db927.pdf"
+        },
+        {
+          "path": "harwin/flecto/flecto-series-sheet-rs-a700000012600594-rs-mirror.pdf",
+          "sha256": "9eca71162589b2eb924b8fd2236cf426f203e11f784f5080e82c0e86d1568514",
+          "url": "https://docs.rs-online.com/023d/A700000012600594.pdf"
+        }
+      ]
     }
   }
 }
