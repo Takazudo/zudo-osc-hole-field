@@ -24,9 +24,17 @@ Each sleeve has a 7.0 mm outer diameter and a 3.4 mm bore for an M3 screw that p
 
 - The 18 power and ground joints stay brass posts of 19.00 and 17.00 mm, because they carry the supply current.
 - A printed sleeve is not the only support of a board, not a datum for the octave selector and not used under a clamped screw near a hot part.
-- Tighten the nuts on printed sleeves lightly. UNSOURCED: creep of the printed material under screw load.
+- Never clamp K onto a printed sleeve; see the next section. UNSOURCED: creep of the printed material under screw load.
 
 Each sleeve takes one M3 screw from the panel side, with a washer and a nut on K's rear face. The screw lengths are not stated yet; ST-08 states them.
+
+## Until the design ruling, stop each sleeve nut at first contact
+
+ST-03 attempt a3 computed that a printed sleeve can bend K past its strain limit of 593 microstrain (`design/stack/mechanics/README.md`; plate model and forces ASSUMED, nothing measured). A sleeve that is longer than its posts lifts K. A short sleeve whose nut is drawn down pulls K: at the four sleeves 22 mm from a post, one eighth of a turn beyond contact already exceeds the limit. How a sleeve is fixed is therefore open and goes to the design authority. Until it rules:
+
+- Tighten the 18 post screws first.
+- Use a sleeve only if it is shorter than the posts of its gap. The proposed band is 0.05 to 0.30 mm shorter than the measured posts.
+- Turn each sleeve nut until its washer touches K, then stop.
 
 ## The three files come from one parameter list
 
