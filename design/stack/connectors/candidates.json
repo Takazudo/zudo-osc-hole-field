@@ -1,8 +1,8 @@
 {
  "schema_version": 2,
- "task": "osc-stack-20261114/ST-01b (addendum to ST-01@b4daa754)",
+ "task": "osc-stack-20261114/ST-01c (addenda ST-01b, ST-01c to ST-01@b4daa754)",
  "date": "2026-11-14",
- "status": "Evidence for the DA-01 D3 working pair; NOT SELECTED. D3 codes CONFIRMED against the prints; EL socket pass-through NEEDS_DESIGN; post survey PARTIAL. Fit, force and alignment NOT RUN (no specimen).",
+ "status": "Evidence for the DA-01 D3 working pair; NOT SELECTED. D3 codes CONFIRMED; MMS and CLT layouts SOURCED (ST-01c); CLT pass-through documented for -BE only, NEEDS_DESIGN for the working code; post survey done for Samtec and Harwin, PARTIAL overall. Fit, force and alignment NOT RUN.",
  "source_store": "Takazudo/circuit-dev-resources (private), branch claude/project-thread-zao1qg; cite path + sha256",
  "status_vocabulary": {
   "SOURCED": "Stated in a retained document (path and sha256 below). Catalog values are as printed; REF dimensions are reference only.",
@@ -234,6 +234,76 @@
    "document": "Design qualification MMS/TMMH 187548 rev 1",
    "url": "https://suddendocs.samtec.com/testreports/187548_report_rev_1_qua.pdf",
    "authority": "MANUFACTURER_PRIMARY"
+  },
+  "mms_fp": {
+   "path": "samtec/mms/mms-1xx-02-xxx-sv-recommended-pcb-layout-rev-c.pdf",
+   "sha256": "7353dedb12b9d3ee2dbce18f442ba7542ac87ad48d4304aacd0f1ad6d33078e3",
+   "document": "Recommended PCB layout MMS-1XX-02-XXX-SV-XX-XXX, revision C",
+   "url": "https://suddendocs.samtec.com/prints/mms-1xx-02-xxx-sv-xx-xxx-footprint.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "clt_fp": {
+   "path": "samtec/clt/clt-1xx-02-xx-d-recommended-pcb-layout-rev-j.pdf",
+   "sha256": "55368dafc562d29d1c0aaa02933cdeedc27fee0403cb53c40a9caecc1d05ab9f",
+   "document": "Recommended PCB layout CLT-1XX-02-XX-D-XX, revision J",
+   "url": "https://suddendocs.samtec.com/prints/clt-1xx-02-xx-d-xx-footprint.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "tw_th": {
+   "path": "samtec/tw-th/tw-th-print-rev-bk.pdf",
+   "sha256": "bbb5eddb3f6094b50c5225662d788ef71afba4497cdfe703c29d964e5ff15ac9",
+   "document": "Print TW-XX-XX-X-X-XXX-XXX-XXX-XX (through hole), revision BK, 4 sheets",
+   "url": "https://suddendocs.samtec.com/prints/tw-xx-xx-x-x-xxx-xxx-xxx-xx-mkt.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "jso_cat": {
+   "path": "samtec/jso/jso-catalog-page-f-226.pdf",
+   "sha256": "e9d1a8bb304bcfa65e83ebfff2470553bcf28feb2953421022047a256158a6e7",
+   "document": "JSO catalog page F-226",
+   "url": "https://suddendocs.samtec.com/catalog_english/jso.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "jso_print": {
+   "path": "samtec/jso/jso-print-rev-t.pdf",
+   "sha256": "69035482287b2be080c950a2a0816f7c8a3c71ddf116c7264c00ba3e45bed5b1",
+   "document": "Print JSO-XXXX-XX-X, revision T, 2 sheets",
+   "url": "https://suddendocs.samtec.com/prints/jso-xxxx-xx-x-mkt.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "so_cat": {
+   "path": "samtec/so/so-catalog-page-f-226.pdf",
+   "sha256": "bad93640d61ebeccca24c14fa7f0c9c667666ac6db4d7b7808443a50879b08ce",
+   "document": "SO catalog page F-226",
+   "url": "https://suddendocs.samtec.com/catalog_english/so.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "so_print": {
+   "path": "samtec/so/so-print-rev-az.pdf",
+   "sha256": "e2b2dbce5baaac8618e8e05a9036d22370760496bf5e5aac139d475ce3861682",
+   "document": "Print SO-XXXX-XX-XX-XX-X, revision AZ, 7 sheets",
+   "url": "https://suddendocs.samtec.com/prints/so-xxxx-xx-xx-xx-x-mkt.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "harwin_r30_101": {
+   "path": "harwin/r30/r30-101xx02-m3-female-female-spacer-drg-01995-issue-7.pdf",
+   "sha256": "3aaf7eaab650a65965a2b8baf20cfa591ee4d0f7260a56933eeace80da01c236",
+   "document": "Harwin R30-101XX02 M3 hexagonal female spacer, issue 7, 04.03.10",
+   "url": "https://content.harwin.com/asset/0716187d-0d25-460c-a548-a985f1e6734d/DRG-01995-Technical-Drawing-Datasheet-R30-101-pdf.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "harwin_r30_300": {
+   "path": "harwin/r30/r30-300xx02-m3-male-female-spacer-drg-01997-issue-22.pdf",
+   "sha256": "ea476817a3dbc3d27a8d30f14360c075d1e03c48f702f5aaf17c397abb574ed3",
+   "document": "Harwin R30-300XX02 M3 hexagonal male/female spacer, issue 22, 17.03.25",
+   "url": "https://content.harwin.com/asset/2e1cf175-8994-4cc5-9d06-7773afee3fca/DRG-01997-Technical-Drawing-Datasheet-R30-300-pdf.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "jlc_c": {
+   "path": "distributor-captures/jlcpcb-lcsc/zudo-osc-hole-field-st-01c-20261114/SHA256SUMS",
+   "sha256": "fd82eeb7cc1fbb3f29f339e63cc98fea41ad4e1ccbc5a368df9cdd7991c93413",
+   "document": "JLCPCB parts-search captures 2026-11-14 (ST-01c)",
+   "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+   "authority": "DISTRIBUTOR_CAPTURE"
   }
  },
  "working_pair": {
@@ -848,13 +918,68 @@
     "formula": "7.85 - 7.2"
    },
    "pass_through": {
-    "status": "NEEDS_DESIGN",
-    "reason": "Print CT (both sheets) does not state that a top-entry pin may pass through the -D insulator or show an open contact floor; the tip is 0.65 mm past the socket face and therefore into EL. Not decided here.",
-    "nearest_valid_options": [
-     "CLT-104-02-L-D-K-TR as written, pass-through UNSOURCED",
-     "CLT-104-02-L-D-BE-... bottom-entry insulator (print CT lists -BE), entry from the far side; suffix compatibility with -K not checked",
-     "the D3 fallback: six short harnesses EL to P"
-    ]
+    "status": "NEEDS_DESIGN (facts below; DA decides)",
+    "facts": [
+     {
+      "status": "SOURCED",
+      "value": "Layout revision J sheet 5 fig 5 is titled 'CLT-110-02-XX-D-BE-A (BOTTOM ENTRY/PASS THROUGH) SHOWN' and draws a 0.86 +0.05/-0.00 NPTH under each contact, pads 1.40 +/-0.03 long, 5.92 span; the -D pattern without -BE (fig 1) has no hole under the contacts",
+      "source": "clt_fp",
+      "locator": "sheets 1 and 5"
+     },
+     {
+      "status": "SOURCED",
+      "value": "-BE: bottom entry, 'see fig 6, use CLT-XX-DBE-XX'; fig 6 '-BE option (same as fig 1 except insulator)'; note 11: -BE body endwall after cutting 0.429 +/-0.08; table 1 lists -L(M)-D-BE contacts (C-114-22-L(M))",
+      "source": "clt_print",
+      "locator": "sheet 1, ordering block, fig 6, note 11, table 1"
+     },
+     {
+      "status": "SOURCED",
+      "value": "Section A-A draws the contact cavities; no dimension or note states an opening under the contact for the -D insulator",
+      "source": "clt_print",
+      "locator": "sheet 1, section A-A (reading of the drawing only)"
+     },
+     {
+      "status": "SOURCED",
+      "value": "-K polyimide pad 'available on pos 4 thru 50 only'; -TR '02 thru 36 pos only'; neither excludes -BE",
+      "source": "clt_print",
+      "locator": "sheet 1 ordering block"
+     },
+     {
+      "status": "SOURCED",
+      "value": "CLT insertion depth: top entry 1.40 mm minimum; bottom entry 2.57 mm minimum ('add board thickness for correct post OAL'); -BE 'required for bottom entry applications'",
+      "source": "clt_cat",
+      "locator": "specifications and other options"
+     },
+     {
+      "status": "SOURCED",
+      "value": "TLE (sister socket) insertion 2.08 to 4.37 mm 'with 0.38 mm wipe, pass-through, or 3.35 mm min for bottom entry'; CLT is 'same as TLE except' plating, current, voltage and insertion depth",
+      "source": "clt_cat",
+      "locator": "specifications"
+     },
+     {
+      "status": "SOURCED",
+      "value": "TW-SM pin section .020 [0.51] SQ REF, diagonal 0.72 mm (CALCULATED) inside the 0.86 hole",
+      "source": "tw_cw1",
+      "locator": "sheet 1, fig 1"
+     },
+     {
+      "status": "SOURCED",
+      "value": "Report 'High speed characterization TW with CLT 18 mm' holds only a fixture photograph (printed p. 23, fig 1) and an undimensioned routing graphic (p. 25, fig 2); no mated section or pass-through drawing",
+      "source": "hsc",
+      "locator": "printed pages 23 and 25"
+     }
+    ],
+    "nearest_valid_codes": [
+     "CLT-104-02-L-D-BE-K-TR (format valid on print CT; listed by JLCPCB as C6143646, extended, stock 0)",
+     "CLT-104-02-L-D-BE-TR (JLCPCB C6143652, stock 0; no pick-and-place pad)",
+     "CLT-104-02-L-D-K-TR as written: pass-through not documented for the non-BE insulator"
+    ],
+    "channel_capture": "jlc_c, CLT-104-02-L-D-BE.json (11 BE variants listed, all stock 0)",
+    "geometry": {
+     "status": "CALCULATED",
+     "value": "tip 0.65 past the socket face; with -BE the pattern needs 8 x 0.86 NPTH per site and the pad-to-hole web is 0.13 mm",
+     "formula": "7.85 - 7.2; 5.92/2 - 1.40 - (1.000 + 0.43)"
+    }
    }
   },
   "land_patterns": "land-patterns.json",
@@ -1516,24 +1641,948 @@
   }
  ],
  "posts": {
-  "survey_status": "PARTIAL",
-  "requirement": "conductive post threaded at both ends, usable as a jack-screw point, at 12.8, 17.0 and 18.8 mm",
+  "survey_status": "DONE for Samtec and Harwin; PARTIAL overall (Wuerth and PEM refused, Keystone not reached at a primary page)",
+  "class": "DA-01 D4/D6: mechanically fixed, conductive, threaded at both ends, usable as a jack-screw point; no reflowed spacer",
   "manufacturer_advice": {
    "status": "SOURCED",
    "value": "standoffs (SO) recommended; jack-screw standoffs (JSO) for multi-connector mates",
    "source": "spec",
    "locator": "page 7, section 5.8"
   },
-  "jack_screw_standoff_class": {
-   "status": "UNSOURCED",
-   "reason": "Samtec JSO/SO prints not retrieved in this pass; dimensions, thread and heights UNSOURCED"
+  "note_on_offsets": "Where no catalogue length equals the gap, the offset column gives the difference; no catalogue shim or washer with a thickness tolerance was retained, so closing it needs either a part made to drawing (no print exists) or a design-authority change of gap. The insertion column shows what each catalogue length would do to the D3 window; it is not a proposal. With the D3 stacker heights fixed, the body clearance is gap - 4.50 - A: at 18.00 mm it is 0.04 mm (A 13.462), at 12.65 mm 0.66 mm and at 12.00 mm it is negative (A 7.493), so a shorter catalogue post also re-opens the D3 'A' rule.",
+  "by_gap": {
+   "17.0_P_to_K_power": [
+    {
+     "code": "R30-1011702 (Harwin, F/F hex)",
+     "class": "female/female",
+     "length_mm": {
+      "status": "SOURCED",
+      "value": 17.0,
+      "source": "harwin_r30_101",
+      "locator": "table, R30-10117XX = 17.00"
+     },
+     "length_tolerance_note": "+/-0.15",
+     "offset_from_gap_mm": {
+      "status": "CALCULATED",
+      "value": 0.0,
+      "formula": "17.0 - 17.0"
+     },
+     "insertion_if_gap_set_to_this_length": {
+      "status": "CALCULATED",
+      "value": {
+       "insertion": 2.866,
+       "margin": [
+        -0.74,
+        1.45
+       ],
+       "in_window": true
+      },
+      "formula": "15.37 + 4.496 - 17.0; margin to 2.13..4.32"
+     },
+     "properties": {
+      "thread": {
+       "status": "SOURCED",
+       "value": "M3 x 0.5-6H, through tapped (spacers over 22 mm are not)",
+       "source": "harwin_r30_101",
+       "locator": "note 1 and section view"
+      },
+      "across_flats_mm": {
+       "status": "SOURCED",
+       "value": "5.30 to 5.50",
+       "source": "harwin_r30_101",
+       "locator": "end view"
+      },
+      "material_plating": {
+       "status": "SOURCED",
+       "value": "brass CW614N M to BS EN 12164 (CuZn39Pb3), finish nickel",
+       "source": "harwin_r30_101",
+       "locator": "title block"
+      },
+      "length_tolerance": {
+       "status": "SOURCED",
+       "value": "+/-0.10 up to 12 mm, +/-0.15 over 12 mm",
+       "source": "harwin_r30_101",
+       "locator": "L1 dimension"
+      },
+      "current_or_contact_resistance": "not stated by the maker"
+     }
+    },
+    {
+     "code": "R30-3001702 (Harwin, M/F hex)",
+     "class": "male/female",
+     "length_mm": {
+      "status": "SOURCED",
+      "value": 17.0,
+      "source": "harwin_r30_300",
+      "locator": "table 1(b), R30-3001702 L1 17.00"
+     },
+     "length_tolerance_note": "+/-0.15",
+     "offset_from_gap_mm": {
+      "status": "CALCULATED",
+      "value": 0.0,
+      "formula": "17.0 - 17.0"
+     },
+     "insertion_if_gap_set_to_this_length": {
+      "status": "CALCULATED",
+      "value": {
+       "insertion": 2.866,
+       "margin": [
+        -0.74,
+        1.45
+       ],
+       "in_window": true
+      },
+      "formula": "15.37 + 4.496 - 17.0; margin to 2.13..4.32"
+     },
+     "properties": {
+      "thread": {
+       "status": "SOURCED",
+       "value": "M3 x 0.5 male (6.00 long, 1.25 max run-out) and M3 x 0.5 female (L3 min 6.00 thread depth, L2 max 10.0 for lengths >= 11)",
+       "source": "harwin_r30_300",
+       "locator": "section view and table 1"
+      },
+      "across_flats_mm": {
+       "status": "SOURCED",
+       "value": "4.8 to 5.0",
+       "source": "harwin_r30_300",
+       "locator": "end view"
+      },
+      "material_plating": {
+       "status": "SOURCED",
+       "value": "brass CW614N M to BS EN 12164 (CuZn39Pb3), nickel-plated",
+       "source": "harwin_r30_300",
+       "locator": "title block"
+      },
+      "length_tolerance": {
+       "status": "SOURCED",
+       "value": "+/-0.10 up to 12 mm, +/-0.15 over 12 mm",
+       "source": "harwin_r30_300",
+       "locator": "L1 dimension"
+      },
+      "current_or_contact_resistance": "not stated by the maker"
+     }
+    },
+    {
+     "code": "SO-1715-05-xx-02 (Samtec, F/F, M3)",
+     "class": "female/female",
+     "length_mm": {
+      "status": "SOURCED",
+      "value": 17.15,
+      "source": "so_print",
+      "locator": "sheet 5, table 6, -1715 'C' 17.15 REF"
+     },
+     "length_tolerance_note": "not stated (REF)",
+     "offset_from_gap_mm": {
+      "status": "CALCULATED",
+      "value": 0.15,
+      "formula": "17.15 - 17.0"
+     },
+     "insertion_if_gap_set_to_this_length": {
+      "status": "CALCULATED",
+      "value": {
+       "insertion": 2.716,
+       "margin": [
+        -0.59,
+        1.6
+       ],
+       "in_window": true
+      },
+      "formula": "15.37 + 4.496 - 17.15; margin to 2.13..4.32"
+     },
+     "properties": {
+      "thread": {
+       "status": "SOURCED",
+       "value": "#4-40 (-01) or M3 x 0.5 (-02) or M2 x 0.4 (-03); thread engagement 4.76 mm",
+       "source": "so_print",
+       "locator": "sheet 1 threading block"
+      },
+      "across_flats_mm": {
+       "status": "SOURCED",
+       "value": "4.76 REF hex",
+       "source": "so_print",
+       "locator": "sheets 2, 3 and 5"
+      },
+      "material_plating": {
+       "status": "SOURCED",
+       "value": "material -01 6061 aluminium, -02 303 stainless steel; no plating stated",
+       "source": "so_print",
+       "locator": "sheet 1 material block"
+      },
+      "length_tolerance": "not stated: 'C' is REF on sheets 3 and 5; note 13: standoffs are designed 0.15 mm longer than connector stack heights",
+      "current_or_contact_resistance": "not stated by the maker",
+      "torque": {
+       "status": "SOURCED",
+       "value": "2.5 to 3.5 in-lb",
+       "source": "so_print",
+       "locator": "sheet 1 note 14"
+      }
+     }
+    },
+    {
+     "code": "SO-1715-03-xx-02 (Samtec, M/F, M3)",
+     "class": "male/female",
+     "length_mm": {
+      "status": "SOURCED",
+      "value": 17.15,
+      "source": "so_print",
+      "locator": "sheet 3, table 4, -1715 'C' 17.15 REF"
+     },
+     "length_tolerance_note": "not stated (REF)",
+     "offset_from_gap_mm": {
+      "status": "CALCULATED",
+      "value": 0.15,
+      "formula": "17.15 - 17.0"
+     },
+     "insertion_if_gap_set_to_this_length": {
+      "status": "CALCULATED",
+      "value": {
+       "insertion": 2.716,
+       "margin": [
+        -0.59,
+        1.6
+       ],
+       "in_window": true
+      },
+      "formula": "15.37 + 4.496 - 17.15; margin to 2.13..4.32"
+     },
+     "properties": {
+      "thread": {
+       "status": "SOURCED",
+       "value": "#4-40 (-01) or M3 x 0.5 (-02) or M2 x 0.4 (-03); thread engagement 4.76 mm",
+       "source": "so_print",
+       "locator": "sheet 1 threading block"
+      },
+      "across_flats_mm": {
+       "status": "SOURCED",
+       "value": "4.76 REF hex",
+       "source": "so_print",
+       "locator": "sheets 2, 3 and 5"
+      },
+      "material_plating": {
+       "status": "SOURCED",
+       "value": "material -01 6061 aluminium, -02 303 stainless steel; no plating stated",
+       "source": "so_print",
+       "locator": "sheet 1 material block"
+      },
+      "length_tolerance": "not stated: 'C' is REF on sheets 3 and 5; note 13: standoffs are designed 0.15 mm longer than connector stack heights",
+      "current_or_contact_resistance": "not stated by the maker",
+      "torque": {
+       "status": "SOURCED",
+       "value": "2.5 to 3.5 in-lb",
+       "source": "so_print",
+       "locator": "sheet 1 note 14"
+      }
+     }
+    },
+    {
+     "code": "JSO-1715-01 / JSO-1715-03-L (Samtec jack-screw standoff)",
+     "class": "jack screw",
+     "length_mm": {
+      "status": "SOURCED",
+      "value": 17.15,
+      "source": "jso_print",
+      "locator": "sheet 1, table 1, -1715 'A' 17.15"
+     },
+     "length_tolerance_note": "+/-0.05",
+     "offset_from_gap_mm": {
+      "status": "CALCULATED",
+      "value": 0.15,
+      "formula": "17.15 - 17.0"
+     },
+     "insertion_if_gap_set_to_this_length": {
+      "status": "CALCULATED",
+      "value": {
+       "insertion": 2.716,
+       "margin": [
+        -0.59,
+        1.6
+       ],
+       "in_window": true
+      },
+      "formula": "15.37 + 4.496 - 17.15; margin to 2.13..4.32"
+     },
+     "properties": {
+      "thread": "not stated on the print (screw MS-07-02, nut SN-03-02); threaded base fits a 2.20 mm board hole",
+      "across_flats_mm": {
+       "status": "SOURCED",
+       "value": "4.08 REF hex (jack screw head); 6.89 REF across flats (-03 base); body diameter 6.00 / 8.00 REF",
+       "source": "jso_print",
+       "locator": "sheets 1 and 2"
+      },
+      "material_plating": {
+       "status": "SOURCED",
+       "value": "stainless steel; nylon locking compound; no plating stated",
+       "source": "jso_cat",
+       "locator": "specifications"
+      },
+      "length_tolerance": {
+       "status": "SOURCED",
+       "value": "'A' +/-0.05",
+       "source": "jso_print",
+       "locator": "sheet 1, fig 1, '\"A\" +/-0.05 [.002]'"
+      },
+      "mounting": {
+       "status": "SOURCED",
+       "value": "-01 press-in: board cutout 6.35 with 8.00 keep-out; -03 threaded: 2.20 hole, fixed-side board max 3.16 mm; boards 1.57 mm min",
+       "source": "jso_print",
+       "locator": "sheet 1 cutout, sheet 2, note 2"
+      },
+      "torque": {
+       "status": "SOURCED",
+       "value": "2.5 to 3.5 in-lb",
+       "source": "jso_print",
+       "locator": "note 5"
+      },
+      "use_with": {
+       "status": "SOURCED",
+       "value": "SEAX, SEAX8, LPAX, LSHM (MMS is not listed)",
+       "source": "jso_cat",
+       "locator": "Use With"
+      },
+      "travel": "not stated",
+      "current_or_contact_resistance": "not stated by the maker"
+     }
+    }
+   ],
+   "18.8_JL_JR_to_K_power": [
+    {
+     "code": "R30-1011802 (Harwin, F/F)",
+     "class": "female/female",
+     "length_mm": {
+      "status": "SOURCED",
+      "value": 18.0,
+      "source": "harwin_r30_101",
+      "locator": "table, 18.00"
+     },
+     "length_tolerance_note": "+/-0.15",
+     "offset_from_gap_mm": {
+      "status": "CALCULATED",
+      "value": -0.8,
+      "formula": "18.0 - 18.8"
+     },
+     "insertion_if_gap_set_to_this_length": {
+      "status": "CALCULATED",
+      "value": {
+       "insertion": 3.846,
+       "margin": [
+        -1.72,
+        0.47
+       ],
+       "in_window": true
+      },
+      "formula": "17.35 + 4.496 - 18.0; margin to 2.13..4.32"
+     },
+     "properties": {
+      "thread": {
+       "status": "SOURCED",
+       "value": "M3 x 0.5-6H, through tapped (spacers over 22 mm are not)",
+       "source": "harwin_r30_101",
+       "locator": "note 1 and section view"
+      },
+      "across_flats_mm": {
+       "status": "SOURCED",
+       "value": "5.30 to 5.50",
+       "source": "harwin_r30_101",
+       "locator": "end view"
+      },
+      "material_plating": {
+       "status": "SOURCED",
+       "value": "brass CW614N M to BS EN 12164 (CuZn39Pb3), finish nickel",
+       "source": "harwin_r30_101",
+       "locator": "title block"
+      },
+      "length_tolerance": {
+       "status": "SOURCED",
+       "value": "+/-0.10 up to 12 mm, +/-0.15 over 12 mm",
+       "source": "harwin_r30_101",
+       "locator": "L1 dimension"
+      },
+      "current_or_contact_resistance": "not stated by the maker"
+     }
+    },
+    {
+     "code": "R30-1011902 (Harwin, F/F)",
+     "class": "female/female",
+     "length_mm": {
+      "status": "SOURCED",
+      "value": 19.0,
+      "source": "harwin_r30_101",
+      "locator": "table, 19.00"
+     },
+     "length_tolerance_note": "+/-0.15",
+     "offset_from_gap_mm": {
+      "status": "CALCULATED",
+      "value": 0.2,
+      "formula": "19.0 - 18.8"
+     },
+     "insertion_if_gap_set_to_this_length": {
+      "status": "CALCULATED",
+      "value": {
+       "insertion": 2.846,
+       "margin": [
+        -0.72,
+        1.47
+       ],
+       "in_window": true
+      },
+      "formula": "17.35 + 4.496 - 19.0; margin to 2.13..4.32"
+     },
+     "properties": {
+      "thread": {
+       "status": "SOURCED",
+       "value": "M3 x 0.5-6H, through tapped (spacers over 22 mm are not)",
+       "source": "harwin_r30_101",
+       "locator": "note 1 and section view"
+      },
+      "across_flats_mm": {
+       "status": "SOURCED",
+       "value": "5.30 to 5.50",
+       "source": "harwin_r30_101",
+       "locator": "end view"
+      },
+      "material_plating": {
+       "status": "SOURCED",
+       "value": "brass CW614N M to BS EN 12164 (CuZn39Pb3), finish nickel",
+       "source": "harwin_r30_101",
+       "locator": "title block"
+      },
+      "length_tolerance": {
+       "status": "SOURCED",
+       "value": "+/-0.10 up to 12 mm, +/-0.15 over 12 mm",
+       "source": "harwin_r30_101",
+       "locator": "L1 dimension"
+      },
+      "current_or_contact_resistance": "not stated by the maker"
+     }
+    },
+    {
+     "code": "R30-3001802 / R30-3001902 (Harwin, M/F)",
+     "class": "male/female",
+     "length_mm": {
+      "status": "SOURCED",
+      "value": 18.0,
+      "source": "harwin_r30_300",
+      "locator": "table 1(b), 18.00 / 19.00"
+     },
+     "length_tolerance_note": "+/-0.15",
+     "offset_from_gap_mm": {
+      "status": "CALCULATED",
+      "value": -0.8,
+      "formula": "18.0 - 18.8"
+     },
+     "insertion_if_gap_set_to_this_length": {
+      "status": "CALCULATED",
+      "value": {
+       "insertion": 3.846,
+       "margin": [
+        -1.72,
+        0.47
+       ],
+       "in_window": true
+      },
+      "formula": "17.35 + 4.496 - 18.0; margin to 2.13..4.32"
+     },
+     "properties": {
+      "thread": {
+       "status": "SOURCED",
+       "value": "M3 x 0.5 male (6.00 long, 1.25 max run-out) and M3 x 0.5 female (L3 min 6.00 thread depth, L2 max 10.0 for lengths >= 11)",
+       "source": "harwin_r30_300",
+       "locator": "section view and table 1"
+      },
+      "across_flats_mm": {
+       "status": "SOURCED",
+       "value": "4.8 to 5.0",
+       "source": "harwin_r30_300",
+       "locator": "end view"
+      },
+      "material_plating": {
+       "status": "SOURCED",
+       "value": "brass CW614N M to BS EN 12164 (CuZn39Pb3), nickel-plated",
+       "source": "harwin_r30_300",
+       "locator": "title block"
+      },
+      "length_tolerance": {
+       "status": "SOURCED",
+       "value": "+/-0.10 up to 12 mm, +/-0.15 over 12 mm",
+       "source": "harwin_r30_300",
+       "locator": "L1 dimension"
+      },
+      "current_or_contact_resistance": "not stated by the maker"
+     },
+     "also": "R30-3001902 at 19.00"
+    },
+    {
+     "code": "SO-1890-05-xx-02 (Samtec, F/F, M3)",
+     "class": "female/female",
+     "length_mm": {
+      "status": "SOURCED",
+      "value": 18.9,
+      "source": "so_print",
+      "locator": "sheet 5, table 6, -1890 'C' 18.90 REF"
+     },
+     "length_tolerance_note": "not stated (REF)",
+     "offset_from_gap_mm": {
+      "status": "CALCULATED",
+      "value": 0.1,
+      "formula": "18.9 - 18.8"
+     },
+     "insertion_if_gap_set_to_this_length": {
+      "status": "CALCULATED",
+      "value": {
+       "insertion": 2.946,
+       "margin": [
+        -0.82,
+        1.37
+       ],
+       "in_window": true
+      },
+      "formula": "17.35 + 4.496 - 18.9; margin to 2.13..4.32"
+     },
+     "properties": {
+      "thread": {
+       "status": "SOURCED",
+       "value": "#4-40 (-01) or M3 x 0.5 (-02) or M2 x 0.4 (-03); thread engagement 4.76 mm",
+       "source": "so_print",
+       "locator": "sheet 1 threading block"
+      },
+      "across_flats_mm": {
+       "status": "SOURCED",
+       "value": "4.76 REF hex",
+       "source": "so_print",
+       "locator": "sheets 2, 3 and 5"
+      },
+      "material_plating": {
+       "status": "SOURCED",
+       "value": "material -01 6061 aluminium, -02 303 stainless steel; no plating stated",
+       "source": "so_print",
+       "locator": "sheet 1 material block"
+      },
+      "length_tolerance": "not stated: 'C' is REF on sheets 3 and 5; note 13: standoffs are designed 0.15 mm longer than connector stack heights",
+      "current_or_contact_resistance": "not stated by the maker",
+      "torque": {
+       "status": "SOURCED",
+       "value": "2.5 to 3.5 in-lb",
+       "source": "so_print",
+       "locator": "sheet 1 note 14"
+      }
+     }
+    },
+    {
+     "code": "SO-1890-03-xx-02 (Samtec, M/F, M3)",
+     "class": "male/female",
+     "length_mm": {
+      "status": "SOURCED",
+      "value": 18.9,
+      "source": "so_print",
+      "locator": "sheet 3, table 4, -1890 'C' 18.90 REF"
+     },
+     "length_tolerance_note": "not stated (REF)",
+     "offset_from_gap_mm": {
+      "status": "CALCULATED",
+      "value": 0.1,
+      "formula": "18.9 - 18.8"
+     },
+     "insertion_if_gap_set_to_this_length": {
+      "status": "CALCULATED",
+      "value": {
+       "insertion": 2.946,
+       "margin": [
+        -0.82,
+        1.37
+       ],
+       "in_window": true
+      },
+      "formula": "17.35 + 4.496 - 18.9; margin to 2.13..4.32"
+     },
+     "properties": {
+      "thread": {
+       "status": "SOURCED",
+       "value": "#4-40 (-01) or M3 x 0.5 (-02) or M2 x 0.4 (-03); thread engagement 4.76 mm",
+       "source": "so_print",
+       "locator": "sheet 1 threading block"
+      },
+      "across_flats_mm": {
+       "status": "SOURCED",
+       "value": "4.76 REF hex",
+       "source": "so_print",
+       "locator": "sheets 2, 3 and 5"
+      },
+      "material_plating": {
+       "status": "SOURCED",
+       "value": "material -01 6061 aluminium, -02 303 stainless steel; no plating stated",
+       "source": "so_print",
+       "locator": "sheet 1 material block"
+      },
+      "length_tolerance": "not stated: 'C' is REF on sheets 3 and 5; note 13: standoffs are designed 0.15 mm longer than connector stack heights",
+      "current_or_contact_resistance": "not stated by the maker",
+      "torque": {
+       "status": "SOURCED",
+       "value": "2.5 to 3.5 in-lb",
+       "source": "so_print",
+       "locator": "sheet 1 note 14"
+      }
+     }
+    },
+    {
+     "code": "JSO-1865-01 / JSO-1865-03-L (Samtec jack-screw standoff)",
+     "class": "jack screw",
+     "length_mm": {
+      "status": "SOURCED",
+      "value": 18.65,
+      "source": "jso_print",
+      "locator": "sheet 1, table 1, -1865 'A' 18.65"
+     },
+     "length_tolerance_note": "+/-0.05",
+     "offset_from_gap_mm": {
+      "status": "CALCULATED",
+      "value": -0.15,
+      "formula": "18.65 - 18.8"
+     },
+     "insertion_if_gap_set_to_this_length": {
+      "status": "CALCULATED",
+      "value": {
+       "insertion": 3.196,
+       "margin": [
+        -1.07,
+        1.12
+       ],
+       "in_window": true
+      },
+      "formula": "17.35 + 4.496 - 18.65; margin to 2.13..4.32"
+     },
+     "properties": {
+      "thread": "not stated on the print (screw MS-07-02, nut SN-03-02); threaded base fits a 2.20 mm board hole",
+      "across_flats_mm": {
+       "status": "SOURCED",
+       "value": "4.08 REF hex (jack screw head); 6.89 REF across flats (-03 base); body diameter 6.00 / 8.00 REF",
+       "source": "jso_print",
+       "locator": "sheets 1 and 2"
+      },
+      "material_plating": {
+       "status": "SOURCED",
+       "value": "stainless steel; nylon locking compound; no plating stated",
+       "source": "jso_cat",
+       "locator": "specifications"
+      },
+      "length_tolerance": {
+       "status": "SOURCED",
+       "value": "'A' +/-0.05",
+       "source": "jso_print",
+       "locator": "sheet 1, fig 1, '\"A\" +/-0.05 [.002]'"
+      },
+      "mounting": {
+       "status": "SOURCED",
+       "value": "-01 press-in: board cutout 6.35 with 8.00 keep-out; -03 threaded: 2.20 hole, fixed-side board max 3.16 mm; boards 1.57 mm min",
+       "source": "jso_print",
+       "locator": "sheet 1 cutout, sheet 2, note 2"
+      },
+      "torque": {
+       "status": "SOURCED",
+       "value": "2.5 to 3.5 in-lb",
+       "source": "jso_print",
+       "locator": "note 5"
+      },
+      "use_with": {
+       "status": "SOURCED",
+       "value": "SEAX, SEAX8, LPAX, LSHM (MMS is not listed)",
+       "source": "jso_cat",
+       "locator": "Use With"
+      },
+      "travel": "not stated",
+      "current_or_contact_resistance": "not stated by the maker"
+     },
+     "next_longer": "-3500 (35.00)"
+    }
+   ],
+   "12.8_adapter_standoffs": [
+    {
+     "code": "R30-1011202 (Harwin, F/F)",
+     "class": "female/female",
+     "length_mm": {
+      "status": "SOURCED",
+      "value": 12.0,
+      "source": "harwin_r30_101",
+      "locator": "table, 12.00"
+     },
+     "length_tolerance_note": "+/-0.10",
+     "offset_from_gap_mm": {
+      "status": "CALCULATED",
+      "value": -0.8,
+      "formula": "12.0 - 12.8"
+     },
+     "insertion_if_gap_set_to_this_length": {
+      "status": "CALCULATED",
+      "value": {
+       "insertion": 4.356,
+       "margin": [
+        -2.23,
+        -0.04
+       ],
+       "in_window": false
+      },
+      "formula": "11.86 + 4.496 - 12.0; margin to 2.13..4.32"
+     },
+     "properties": {
+      "thread": {
+       "status": "SOURCED",
+       "value": "M3 x 0.5-6H, through tapped (spacers over 22 mm are not)",
+       "source": "harwin_r30_101",
+       "locator": "note 1 and section view"
+      },
+      "across_flats_mm": {
+       "status": "SOURCED",
+       "value": "5.30 to 5.50",
+       "source": "harwin_r30_101",
+       "locator": "end view"
+      },
+      "material_plating": {
+       "status": "SOURCED",
+       "value": "brass CW614N M to BS EN 12164 (CuZn39Pb3), finish nickel",
+       "source": "harwin_r30_101",
+       "locator": "title block"
+      },
+      "length_tolerance": {
+       "status": "SOURCED",
+       "value": "+/-0.10 up to 12 mm, +/-0.15 over 12 mm",
+       "source": "harwin_r30_101",
+       "locator": "L1 dimension"
+      },
+      "current_or_contact_resistance": "not stated by the maker"
+     }
+    },
+    {
+     "code": "R30-1011302 (Harwin, F/F)",
+     "class": "female/female",
+     "length_mm": {
+      "status": "SOURCED",
+      "value": 13.0,
+      "source": "harwin_r30_101",
+      "locator": "table, 13.00"
+     },
+     "length_tolerance_note": "+/-0.15",
+     "offset_from_gap_mm": {
+      "status": "CALCULATED",
+      "value": 0.2,
+      "formula": "13.0 - 12.8"
+     },
+     "insertion_if_gap_set_to_this_length": {
+      "status": "CALCULATED",
+      "value": {
+       "insertion": 3.356,
+       "margin": [
+        -1.23,
+        0.96
+       ],
+       "in_window": true
+      },
+      "formula": "11.86 + 4.496 - 13.0; margin to 2.13..4.32"
+     },
+     "properties": {
+      "thread": {
+       "status": "SOURCED",
+       "value": "M3 x 0.5-6H, through tapped (spacers over 22 mm are not)",
+       "source": "harwin_r30_101",
+       "locator": "note 1 and section view"
+      },
+      "across_flats_mm": {
+       "status": "SOURCED",
+       "value": "5.30 to 5.50",
+       "source": "harwin_r30_101",
+       "locator": "end view"
+      },
+      "material_plating": {
+       "status": "SOURCED",
+       "value": "brass CW614N M to BS EN 12164 (CuZn39Pb3), finish nickel",
+       "source": "harwin_r30_101",
+       "locator": "title block"
+      },
+      "length_tolerance": {
+       "status": "SOURCED",
+       "value": "+/-0.10 up to 12 mm, +/-0.15 over 12 mm",
+       "source": "harwin_r30_101",
+       "locator": "L1 dimension"
+      },
+      "current_or_contact_resistance": "not stated by the maker"
+     }
+    },
+    {
+     "code": "SO-1315-05-xx-02 (Samtec, F/F)",
+     "class": "female/female",
+     "length_mm": {
+      "status": "SOURCED",
+      "value": 13.15,
+      "source": "so_print",
+      "locator": "sheet 5, table 6, -1315 'C' 13.15 REF"
+     },
+     "length_tolerance_note": "not stated (REF)",
+     "offset_from_gap_mm": {
+      "status": "CALCULATED",
+      "value": 0.35,
+      "formula": "13.15 - 12.8"
+     },
+     "insertion_if_gap_set_to_this_length": {
+      "status": "CALCULATED",
+      "value": {
+       "insertion": 3.206,
+       "margin": [
+        -1.08,
+        1.11
+       ],
+       "in_window": true
+      },
+      "formula": "11.86 + 4.496 - 13.15; margin to 2.13..4.32"
+     },
+     "properties": {
+      "thread": {
+       "status": "SOURCED",
+       "value": "#4-40 (-01) or M3 x 0.5 (-02) or M2 x 0.4 (-03); thread engagement 4.76 mm",
+       "source": "so_print",
+       "locator": "sheet 1 threading block"
+      },
+      "across_flats_mm": {
+       "status": "SOURCED",
+       "value": "4.76 REF hex",
+       "source": "so_print",
+       "locator": "sheets 2, 3 and 5"
+      },
+      "material_plating": {
+       "status": "SOURCED",
+       "value": "material -01 6061 aluminium, -02 303 stainless steel; no plating stated",
+       "source": "so_print",
+       "locator": "sheet 1 material block"
+      },
+      "length_tolerance": "not stated: 'C' is REF on sheets 3 and 5; note 13: standoffs are designed 0.15 mm longer than connector stack heights",
+      "current_or_contact_resistance": "not stated by the maker",
+      "torque": {
+       "status": "SOURCED",
+       "value": "2.5 to 3.5 in-lb",
+       "source": "so_print",
+       "locator": "sheet 1 note 14"
+      }
+     },
+     "also": "SO-1215 at 12.15 REF"
+    },
+    {
+     "code": "JSO-1265-01 / JSO-1265-03-L (Samtec jack-screw standoff)",
+     "class": "jack screw",
+     "length_mm": {
+      "status": "SOURCED",
+      "value": 12.65,
+      "source": "jso_print",
+      "locator": "sheet 1, table 1, -1265 'A' 12.65"
+     },
+     "length_tolerance_note": "+/-0.05",
+     "offset_from_gap_mm": {
+      "status": "CALCULATED",
+      "value": -0.15,
+      "formula": "12.65 - 12.8"
+     },
+     "insertion_if_gap_set_to_this_length": {
+      "status": "CALCULATED",
+      "value": {
+       "insertion": 3.706,
+       "margin": [
+        -1.58,
+        0.61
+       ],
+       "in_window": true
+      },
+      "formula": "11.86 + 4.496 - 12.65; margin to 2.13..4.32"
+     },
+     "properties": {
+      "thread": "not stated on the print (screw MS-07-02, nut SN-03-02); threaded base fits a 2.20 mm board hole",
+      "across_flats_mm": {
+       "status": "SOURCED",
+       "value": "4.08 REF hex (jack screw head); 6.89 REF across flats (-03 base); body diameter 6.00 / 8.00 REF",
+       "source": "jso_print",
+       "locator": "sheets 1 and 2"
+      },
+      "material_plating": {
+       "status": "SOURCED",
+       "value": "stainless steel; nylon locking compound; no plating stated",
+       "source": "jso_cat",
+       "locator": "specifications"
+      },
+      "length_tolerance": {
+       "status": "SOURCED",
+       "value": "'A' +/-0.05",
+       "source": "jso_print",
+       "locator": "sheet 1, fig 1, '\"A\" +/-0.05 [.002]'"
+      },
+      "mounting": {
+       "status": "SOURCED",
+       "value": "-01 press-in: board cutout 6.35 with 8.00 keep-out; -03 threaded: 2.20 hole, fixed-side board max 3.16 mm; boards 1.57 mm min",
+       "source": "jso_print",
+       "locator": "sheet 1 cutout, sheet 2, note 2"
+      },
+      "torque": {
+       "status": "SOURCED",
+       "value": "2.5 to 3.5 in-lb",
+       "source": "jso_print",
+       "locator": "note 5"
+      },
+      "use_with": {
+       "status": "SOURCED",
+       "value": "SEAX, SEAX8, LPAX, LSHM (MMS is not listed)",
+       "source": "jso_cat",
+       "locator": "Use With"
+      },
+      "travel": "not stated",
+      "current_or_contact_resistance": "not stated by the maker"
+     },
+     "also": "-1315 at 13.15"
+    }
+   ]
   },
-  "fixed_posts_12_8_17_0_18_8": {
-   "status": "UNSOURCED",
-   "reason": "no post print retained; thread, across-flats, material, plating and tolerance UNSOURCED; survey NOT RUN for time (coordinator allowance)"
+  "press_fit_elements": {
+   "samtec_so_04": {
+    "status": "SOURCED",
+    "value": "SO-XXXX-04: female thread / press-in, head diameter 6.35, knurl 4.42 +/-0.05, height 'D' 1.65 / 1.75 / 3.10 / 3.18 REF, thread per table 7, board cutout 4.24 +/-0.08 with 8.44 +/-0.13 keep-out; material -03 304 stainless offered for -04 only; boards 1.57 mm minimum",
+    "source": "so_print",
+    "locator": "sheet 4, fig 4, table 5; sheet 1 material block and note 4"
+   },
+   "samtec_so_01": {
+    "status": "SOURCED",
+    "value": "SO-XXXX-01 female thread / press-in, knurl 4.67 +/-0.05, cutout 4.50 +/-0.08, keep-out 9.20 +/-0.13; stack heights 5.15 to 8.65 only",
+    "source": "so_print",
+    "locator": "sheet 1, fig 1; so_cat lead style -01"
+   },
+   "samtec_jso_01": {
+    "status": "SOURCED",
+    "value": "JSO press-in base: cutout 6.35, keep-out 8.00",
+    "source": "jso_print",
+    "locator": "sheet 1 recommended board cutout"
+   },
+   "push_out_torque_out": "not stated on any retained Samtec document",
+   "current_or_contact_resistance": "not stated on any retained Samtec document",
+   "wuerth_redcube_press_fit": {
+    "status": "UNSOURCED",
+    "route": "https://www.we-online.com/components/products/datasheet/7461061.pdf and https://www.we-online.com/en/components/products/WP-BUFU_FULL_PLAIN",
+    "result": "HTTP 403 (2026-11-14); not retried"
+   },
+   "pem_broaching_standoffs": {
+    "status": "UNSOURCED",
+    "route": "https://www.pemnet.com/products/product-finder/kfse-632-12/ and a distributor-hosted PEM data sheet",
+    "result": "fetch refused by the session permission layer (ST-01: AWS WAF challenge); not retried"
+   },
+   "keystone_swage": {
+    "status": "UNSOURCED",
+    "route": "web search",
+    "result": "only aggregator pages (globalspec, distributors) found; no Keystone-hosted page reached in the time allowed"
+   }
   },
-  "reflowed_smt": "refused by DA-01 D4; not surveyed again. ST-01 record kept below.",
-  "st01_record": {
+  "jack_screw_standoffs": {
+   "samtec_jso": "see by_gap rows; heights -0400 to -1865 and -3500; 'A' +/-0.05; stainless; press-in or threaded base; travel not stated; listed for SEAX, SEAX8, LPAX and LSHM only",
+   "samtec_jsom": "named on the SO catalog page for 15.24 mm only; print not fetched",
+   "other_makers": "not surveyed (UNSOURCED)"
+  },
+  "factory_channel": {
+   "source": "jlc_c",
+   "R30-1011702": "NOT LISTED",
+   "R30-1011802": "NOT LISTED",
+   "SO-1715-05": "NOT LISTED"
+  },
+  "st01_reflowed_record": {
    "requirement": "Conductive threaded post between facing 4 x 4 mm lands at gaps h+4.2 and h+6.0 mm (12.07 and 13.87 mm for h = 7.874; 11.1 and 12.9 mm at the planning h).",
    "reflowed_smt": [
     {
@@ -1587,18 +2636,6 @@
  },
  "sources_unavailable": [
   {
-   "what": "MMS -02 -SV recommended land pattern",
-   "reason": "no footprint link on the MMS product page (2026-11-14)"
-  },
-  {
-   "what": "CLT -D recommended land pattern and relief/pass-through detail",
-   "reason": "no document link on the CLT product page beyond print CT and catalog"
-  },
-  {
-   "what": "TW-TH (through-hole stacker) print",
-   "reason": "no print link found on the product page; not fetched"
-  },
-  {
    "what": "ST-01 history",
    "value": [
     {
@@ -1638,11 +2675,23 @@
     }
    ],
    "note": "the Samtec specification entry is withdrawn: DA-01 C6, now retained"
+  },
+  {
+   "what": "MMS -SV tail span",
+   "reason": "not dimensioned on print CZ or layout revision C"
+  },
+  {
+   "what": "Wuerth REDCUBE press-fit and PEM broaching standoff data",
+   "reason": "HTTP 403 / permission refusal 2026-11-14; not retried"
   }
  ],
  "checks_not_run": [
   "fit, force and alignment: no specimen",
   "candidate bundle: pin-asset check needs KiCad symbol and footprint, outside this brief",
   "KiCad: not allowed by the brief"
- ]
+ ],
+ "through_hole_stacker": {
+  "print": "tw_th",
+  "status": "retained (revision BK, 4 sheets); not needed by D3 (EL uses the SMT stacker); facts: insulator LCP, phos bronze terminal, min pushout 1 lb (note 4)"
+ }
 }
