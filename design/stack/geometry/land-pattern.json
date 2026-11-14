@@ -1,16 +1,51 @@
 {
-  "schema_version": 1,
-  "status": "PLANNING ENVELOPE; no connector is selected. ST-01 replaces this file with measured courtyards of the selected pair",
-  "source": "doc/src/content/docs/decisions/osc-direct-stack-plan.mdx, 'A footprint of about 5.8 mm x (2n + 1) mm'",
-  "frame": "width_mm is across the contact row, length_mm along it; the envelope is a courtyard, not a copper land",
-  "rule": {
-    "width_mm": 5.8,
-    "pitch_mm": 2.0,
-    "end_allowance_mm": 1.0
+ "schema_version": 2,
+ "status": "PLANNING ENVELOPES per connector half and row count; courtyard level, not copper lands. Every entry carries its own status and source; the candidate records which entry each pair used",
+ "frame": "width_mm is across the contact rows, length_mm along them. A rule gives length = pitch_mm x (positions per row - 1) + length_at_one_position_mm. An explicit entry keyed '<rows>x<positions per row>' overrides the rule of its half",
+ "halves": {
+  "K": {
+   "role": "Stacker half (TW-SM): on K for every joint to K; on the P tab F.Cu for the EL-to-P pair",
+   "rules": {
+    "1": {
+     "status": "DERIVED",
+     "width_mm": 6.04,
+     "pitch_mm": 2.0,
+     "length_at_one_position_mm": 1.52,
+     "derivation": "width = recommended pad span 5.54 mm + 2 x 0.25 mm courtyard margin; length = pad row (n - 1) x 2.00 + 1.02 mm + 2 x 0.25 mm",
+     "source": "TW-SM footprint revision C single-row pad span 5.54 mm and row length (n - 1) x 2.00 + 1.02 mm (reviews/da-01.md C9 and D3); the 0.25 mm courtyard margin is ASSUMED, the same margin DA-01 used for the 6.04 mm width"
+    },
+    "2": {
+     "status": "DERIVED",
+     "width_mm": 8.07,
+     "pitch_mm": 2.0,
+     "length_at_one_position_mm": 1.52,
+     "derivation": "width = double-row pattern 7.57 mm + 2 x 0.25 mm; length as the single row",
+     "source": "TW-SM double-row pattern 7.57 mm across, footprint revision C (reviews/da-01.md D3, evidence status); row length as the single-row footprint; 0.25 mm courtyard margin ASSUMED"
+    }
+   },
+   "explicit": {}
   },
-  "explicit_mm": {
-    "front": {},
-    "K": {}
-  },
-  "explicit_note": "Optional per-half overrides: {\"<positions>\": [width_mm, length_mm]}. 'front' is the half on JL, JR, P, EL or an adapter (for the EL-to-P pair, EL's half); 'K' is the half on K (for the EL-to-P pair, P's half). An empty map means the rule applies"
+  "front": {
+   "role": "Socket half: MMS -02 -SV on JL, JR, P and the adapters; CLT on EL B.Cu for the EL-to-P pair",
+   "rules": {
+    "1": {
+     "status": "PROVISIONAL",
+     "width_mm": 5.8,
+     "pitch_mm": 2.0,
+     "length_at_one_position_mm": 3.0,
+     "derivation": "the plan page planning envelope 5.8 mm x (2n + 1) mm",
+     "source": "PROVISIONAL socket envelope: doc/src/content/docs/decisions/osc-direct-stack-plan.mdx 'A footprint of about 5.8 mm x (2n + 1) mm'. The MMS land pattern comes from ST-01b and is not retained yet"
+    },
+    "2": {
+     "status": "PROVISIONAL",
+     "width_mm": 8.07,
+     "pitch_mm": 2.0,
+     "length_at_one_position_mm": 1.52,
+     "derivation": "set equal to the double-row stacker courtyard on the other board",
+     "source": "PROVISIONAL socket envelope: no CLT-104-02-L-D-K-TR land pattern is retained; ST-01b fetches it. The double-row stacker courtyard is used in its place"
+    }
+   },
+   "explicit": {}
+  }
+ }
 }

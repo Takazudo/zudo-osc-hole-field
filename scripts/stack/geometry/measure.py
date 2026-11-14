@@ -367,54 +367,10 @@ def today(ci):
             'K_rear_clearance_today_mm': round(part['enclosure']['inside_depth_mm'] - (-[b['face_z_mm'] for b in part['boards'] if b['board_key'] == 'K'][0] + 1.6) - ci['mechanical']['core_rear_ceiling_mm'], 3)}
 
 
-def standoffs(ci, edge=3.0, step=0.5):
-    def build(key):
-        idx = {'F': sg.RectIndex(), 'B': sg.RectIndex()}
-        for f in ci['boards'][key]:
-            if 'LoadWire' in f['lib']:
-                continue
-            if f['courtyard']:
-                idx[f['side']].add(f['courtyard'], None)
-            for p in f['pads']:
-                if p['drill']:
-                    idx['F'].add(p['bbox'], None)
-                    idx['B'].add(p['bbox'], None)
-                else:
-                    idx[f['side']].add(p['bbox'], None)
-        return idx
-
-    def free(idx, side, cx, cy, rad):
-        for r, _ in idx[side].near([cx - rad, cy - rad, cx + rad, cy + rad]):
-            dx = max(r[0] - cx, 0, cx - r[2])
-            dy = max(r[1] - cy, 0, cy - r[3])
-            if dx * dx + dy * dy < rad * rad:
-                return False
-        return True
-    ol = {b['board_key']: b['outline'] for b in ci['partition']['boards']}
-    kidx = build('K')
-    out = {}
-    for front in ('JL', 'JR', 'P'):
-        fidx = build(front)
-        poly = ol[front]
-        xs = [q[0] for q in poly]
-        ys = [q[1] for q in poly]
-        pts = []
-        x = min(xs) + edge
-        while x <= max(xs) - edge:
-            y = min(ys) + edge
-            while y <= max(ys) - edge:
-                if all(sg.point_in_poly(x + dx, y + dy, poly) and sg.point_in_poly(x + dx, y + dy, ol['K'])
-                       for dx, dy in ((0, 0), (edge, 0), (-edge, 0), (0, edge), (0, -edge))):
-                    if free(fidx, 'B', x, y, 3.0) and free(kidx, 'F', x, y, 3.0) and free(kidx, 'B', x, y, 2.6):
-                        pts.append((x, y))
-                y += step
-            x += step
-        kept = []
-        for p in pts:
-            if all((p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2 >= 64 for q in kept):
-                kept.append(p)
-        out[front] = len(kept)
-    return {'sites_8mm_apart': out, 'rule': 'front B.Cu and K F.Cu clear within 3.0 mm, K B.Cu within 2.6 mm, 3 mm inside both outlines, 0.5 mm grid, greedy 8 mm thinning'}
+def standoffs(ci):
+    sites = sg.interior_fastener_sites(ci)
+    return {'sites_8mm_apart': {k: len(v) for k, v in sites.items()}, 'rule': sg.INTERIOR_SITE_RULE,
+            'coordinates': 'stack-candidate.json fixings, kind "interior candidate"'}
 
 
 def units(cand):
