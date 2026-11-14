@@ -210,3 +210,21 @@ TW-TH print revision BK (`samtec/tw-th/tw-th-print-rev-bk.pdf`, `bbb5eddb…5ac9
 
 - **MMS −SV tail span:** not dimensioned on print CZ or on layout revision C.
 - **Press-fit data:** the Würth, PEM and Keystone routes are listed in the press-fit section above.
+
+## ST-01d flex links: no part of at most 5.0 mm is SOURCED above 0.5 A, and the Molex maker drawings stayed UNAVAILABLE (NEEDS_DESIGN)
+
+Full records are in `flex-links.json` and `flex-land-patterns.json`. Working codes only; nothing is selected.
+
+| Candidate | Role | Circuits SOURCED | Height | A per contact | Cycles | Factory listing (2026-11-14) |
+| --- | --- | --- | --- | --- | --- | --- |
+| Molex 52271 0522712279 (right angle, bottom contact, slider) | K rear and front (working code) | 16, 21, 22 | 3.00 mm | 0.5 | 30 | C588187 extended, stock 10; 16 ckt C588184 stock 1488 |
+| Molex 52610 0526102272 (vertical, slider) | front only | 10, 24 (22 listed) | 5.75 mm | 1.0 | 30 | C5465258 extended, stock 9 |
+| HDGC 1.0-B-22PWB (right angle, dual contact, non-ZIF) | second candidate | 4 to 35 | 4.49 mm | 0.5 | UNSOURCED | C2915499 extended, stock 851 |
+| JST FLZ nnFLZ-(R)SM2-TB (0.5 mm, ZIF) | 0.5 mm comparison | 6 to 33 | 2.0 mm | 0.5 | UNSOURCED | not queried |
+| Custom 2-layer factory flex with ground layer | link (working code) | any | 0.11 to 0.2 mm | UNSOURCED | n/a | factory capability pages |
+| Catalogue FFC (Premo-Flex, LX) | link alternative | Premo-Flex 4 to 60 | 0.12 to 0.27 mm | 1.2 (Premo-Flex) | n/a | no 22-circuit item at 30 to 80 mm listed |
+
+The factory's flex meets a 0.30 ± 0.05 mm tail (LX drawing) and does not meet the HDGC tail (0.30 ± 0.01 mm thickness, width ± 0.05 mm) without the ± 0.05 mm outline option; against the 52271 tail it is UNSOURCED.
+
+- UNAVAILABLE: Molex sales drawings, product and application specifications for 52271, 52610 and Premo-Flex (molex.com cut the transfer; one retry); Hirose FH12 catalogue (HTTP 403).
+- UNSOURCED: the 52271 and 52610 land pattern, body outline, actuator-open envelope and accepted tail; Premo-Flex exact lengths from 30 to 80 mm, termination thickness and minimum bend radius; JST FMN figures (glyphs outlined in the retained catalogue); HDGC and FLZ mating cycles; FLZ pads and factory listing; link current for LX and the custom flex; any low part above 0.5 A per contact; price and lead time.
