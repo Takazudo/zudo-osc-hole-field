@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "task": "osc-stack-20261114/ST-03@b4daa754",
-  "attempt": "a3 (on DS-27, DS-31, DS-33, DS-35 and DS-39 to DS-46; the rigid pair budgets keep their a2 inputs as the record of the way back)",
-  "base_commit": "8745ba5",
+  "attempt": "a4 (corrections after the independent code review, DS-54; on the decisions of attempt a3)",
+  "base_commit": "5b08af1",
   "status": "NEEDS_DESIGN: unvalidated paper study; toggle window, adapter capture and selector misfit contradict decisions; every physical check NOT RUN",
   "status_vocabulary": {
     "SOURCED": "Read from a named file or retrieved page whose SHA256 is recorded in sources.",
@@ -486,6 +486,12 @@
         "status": "SOURCED",
         "source": "S-DS",
         "locator": "DS-35"
+      },
+      "edge_spread_width_factor": {
+        "value": 2.0,
+        "status": "ASSUMED",
+        "reason": "A push at a free edge spreads at 45 degrees each side toward the supporting fixings, so the root moment acts over a width of 2 x span (slab practice)",
+        "to_source": "Plate finite-element model in ST-12"
       }
     }
   },
@@ -4537,285 +4543,61 @@
         "post JR": 6,
         "post P": 6
       },
-      "fixings": [
-        {
-          "id": "POWER-JL-+12V",
-          "kind": "post",
-          "board": "JL",
-          "xy": [
-            40,
-            160
+      "k_regions": {
+        "posts_and_sleeves": {
+          "interior_bay": {
+            "radius_mm": 79.6241,
+            "centre_xy": [
+              159.0,
+              88.0
+            ]
+          },
+          "edge_region_low_y": {
+            "span_mm": 153.1878,
+            "point_xy": [
+              159.0,
+              8.0
+            ]
+          },
+          "edge_region_high_y": {
+            "span_mm": 118.0889,
+            "point_xy": [
+              126.0,
+              292.0
+            ]
+          },
+          "post_rows_y_mm": [
+            160.0,
+            175.0
           ]
         },
-        {
-          "id": "POWER-JL--12V",
-          "kind": "post",
-          "board": "JL",
-          "xy": [
-            57,
-            160
-          ]
-        },
-        {
-          "id": "POWER-JL-+5V",
-          "kind": "post",
-          "board": "JL",
-          "xy": [
-            74,
-            160
-          ]
-        },
-        {
-          "id": "POWER-JL-AGND1",
-          "kind": "post",
-          "board": "JL",
-          "xy": [
-            91,
-            160
-          ]
-        },
-        {
-          "id": "POWER-JL-AGND2",
-          "kind": "post",
-          "board": "JL",
-          "xy": [
-            108,
-            160
-          ]
-        },
-        {
-          "id": "POWER-JL-AGND3",
-          "kind": "post",
-          "board": "JL",
-          "xy": [
-            125,
-            160
-          ]
-        },
-        {
-          "id": "POWER-JR-+12V",
-          "kind": "post",
-          "board": "JR",
-          "xy": [
-            193,
-            160
-          ]
-        },
-        {
-          "id": "POWER-JR--12V",
-          "kind": "post",
-          "board": "JR",
-          "xy": [
-            210,
-            160
-          ]
-        },
-        {
-          "id": "POWER-JR-+5V",
-          "kind": "post",
-          "board": "JR",
-          "xy": [
-            228,
-            160
-          ]
-        },
-        {
-          "id": "POWER-JR-AGND1",
-          "kind": "post",
-          "board": "JR",
-          "xy": [
-            245,
-            160
-          ]
-        },
-        {
-          "id": "POWER-JR-AGND2",
-          "kind": "post",
-          "board": "JR",
-          "xy": [
-            262,
-            160
-          ]
-        },
-        {
-          "id": "POWER-JR-AGND3",
-          "kind": "post",
-          "board": "JR",
-          "xy": [
-            279,
-            160
-          ]
-        },
-        {
-          "id": "POWER-P-+12V",
-          "kind": "post",
-          "board": "P",
-          "xy": [
-            142,
-            175
-          ]
-        },
-        {
-          "id": "POWER-P--12V",
-          "kind": "post",
-          "board": "P",
-          "xy": [
-            159,
-            175
-          ]
-        },
-        {
-          "id": "POWER-P-+5V",
-          "kind": "post",
-          "board": "P",
-          "xy": [
-            176,
-            175
-          ]
-        },
-        {
-          "id": "POWER-P-AGND1",
-          "kind": "post",
-          "board": "P",
-          "xy": [
-            193,
-            175
-          ]
-        },
-        {
-          "id": "POWER-P-AGND2",
-          "kind": "post",
-          "board": "P",
-          "xy": [
-            98.5,
-            175
-          ]
-        },
-        {
-          "id": "POWER-P-AGND3",
-          "kind": "post",
-          "board": "P",
-          "xy": [
-            110.0,
-            175
-          ]
-        },
-        {
-          "id": "JL-SUP-1",
-          "kind": "kept support",
-          "board": "JL",
-          "xy": [
-            6.5,
-            22.5
-          ]
-        },
-        {
-          "id": "JL-SUP-2",
-          "kind": "kept support",
-          "board": "JL",
-          "xy": [
-            6.5,
-            80
-          ]
-        },
-        {
-          "id": "JL-SUP-3",
-          "kind": "kept support",
-          "board": "JL",
-          "xy": [
-            6.5,
-            138
-          ]
-        },
-        {
-          "id": "JR-SUP-1",
-          "kind": "kept support",
-          "board": "JR",
-          "xy": [
-            311.5,
-            22.5
-          ]
-        },
-        {
-          "id": "JR-SUP-2",
-          "kind": "kept support",
-          "board": "JR",
-          "xy": [
-            311.5,
-            80
-          ]
-        },
-        {
-          "id": "JR-SUP-3",
-          "kind": "kept support",
-          "board": "JR",
-          "xy": [
-            311.5,
-            138
-          ]
-        },
-        {
-          "id": "K-SUP-3",
-          "kind": "kept support",
-          "board": "JL",
-          "xy": [
-            6.5,
-            160
-          ]
-        },
-        {
-          "id": "K-SUP-4",
-          "kind": "kept support",
-          "board": "JR",
-          "xy": [
-            311.5,
-            160
-          ]
-        },
-        {
-          "id": "K-SUP-5",
-          "kind": "kept support",
-          "board": "P",
-          "xy": [
-            6.5,
-            243
-          ]
-        },
-        {
-          "id": "K-SUP-6",
-          "kind": "kept support",
-          "board": "P",
-          "xy": [
-            311.5,
-            243
-          ]
-        },
-        {
-          "id": "K-SUP-7",
-          "kind": "kept support",
-          "board": "P",
-          "xy": [
-            6.5,
-            289.5
-          ]
-        },
-        {
-          "id": "K-SUP-8",
-          "kind": "kept support",
-          "board": "P",
-          "xy": [
-            255.5,
-            289.5
+        "posts_only": {
+          "interior_bay": {
+            "radius_mm": 79.6241,
+            "centre_xy": [
+              159.0,
+              88.0
+            ]
+          },
+          "edge_region_low_y": {
+            "span_mm": 156.205,
+            "point_xy": [
+              4.0,
+              8.0
+            ]
+          },
+          "edge_region_high_y": {
+            "span_mm": 136.8211,
+            "point_xy": [
+              4.0,
+              292.0
+            ]
+          },
+          "post_rows_y_mm": [
+            160.0,
+            175.0
           ]
         }
-      ],
-      "k_largest_bay": {
-        "radius_mm": 153.1878,
-        "centre_xy": [
-          159.0,
-          8
-        ],
-        "grid_mm": 1.0
       },
       "sleeves": [
         {
@@ -4825,8 +4607,6 @@
             6.5,
             22.5
           ],
-          "nearest_post": "POWER-JL-+12V",
-          "d_post_mm": 141.5221,
           "nearest_fixing": "JL-SUP-2",
           "d_fixing_mm": 57.5
         },
@@ -4835,10 +4615,8 @@
           "board": "JL",
           "xy": [
             6.5,
-            80
+            80.0
           ],
-          "nearest_post": "POWER-JL-+12V",
-          "d_post_mm": 86.7309,
           "nearest_fixing": "JL-SUP-1",
           "d_fixing_mm": 57.5
         },
@@ -4847,10 +4625,8 @@
           "board": "JL",
           "xy": [
             6.5,
-            138
+            138.0
           ],
-          "nearest_post": "POWER-JL-+12V",
-          "d_post_mm": 40.078,
           "nearest_fixing": "K-SUP-3",
           "d_fixing_mm": 22.0
         },
@@ -4861,8 +4637,6 @@
             311.5,
             22.5
           ],
-          "nearest_post": "POWER-JR-AGND3",
-          "d_post_mm": 141.2887,
           "nearest_fixing": "JR-SUP-2",
           "d_fixing_mm": 57.5
         },
@@ -4871,10 +4645,8 @@
           "board": "JR",
           "xy": [
             311.5,
-            80
+            80.0
           ],
-          "nearest_post": "POWER-JR-AGND3",
-          "d_post_mm": 86.3496,
           "nearest_fixing": "JR-SUP-1",
           "d_fixing_mm": 57.5
         },
@@ -4883,10 +4655,8 @@
           "board": "JR",
           "xy": [
             311.5,
-            138
+            138.0
           ],
-          "nearest_post": "POWER-JR-AGND3",
-          "d_post_mm": 39.246,
           "nearest_fixing": "K-SUP-4",
           "d_fixing_mm": 22.0
         },
@@ -4895,10 +4665,8 @@
           "board": "JL",
           "xy": [
             6.5,
-            160
+            160.0
           ],
-          "nearest_post": "POWER-JL-+12V",
-          "d_post_mm": 33.5,
           "nearest_fixing": "JL-SUP-3",
           "d_fixing_mm": 22.0
         },
@@ -4907,10 +4675,8 @@
           "board": "JR",
           "xy": [
             311.5,
-            160
+            160.0
           ],
-          "nearest_post": "POWER-JR-AGND3",
-          "d_post_mm": 32.5,
           "nearest_fixing": "JR-SUP-3",
           "d_fixing_mm": 22.0
         },
@@ -4919,10 +4685,8 @@
           "board": "P",
           "xy": [
             6.5,
-            243
+            243.0
           ],
-          "nearest_post": "POWER-JL-+12V",
-          "d_post_mm": 89.5056,
           "nearest_fixing": "K-SUP-7",
           "d_fixing_mm": 46.5
         },
@@ -4931,10 +4695,8 @@
           "board": "P",
           "xy": [
             311.5,
-            243
+            243.0
           ],
-          "nearest_post": "POWER-JR-AGND3",
-          "d_post_mm": 89.1361,
           "nearest_fixing": "K-SUP-8",
           "d_fixing_mm": 72.7891
         },
@@ -4945,8 +4707,6 @@
             6.5,
             289.5
           ],
-          "nearest_post": "POWER-JL-+12V",
-          "d_post_mm": 133.7628,
           "nearest_fixing": "K-SUP-5",
           "d_fixing_mm": 46.5
         },
@@ -4957,8 +4717,6 @@
             255.5,
             289.5
           ],
-          "nearest_post": "POWER-JR-AGND2",
-          "d_post_mm": 129.663,
           "nearest_fixing": "K-SUP-6",
           "d_fixing_mm": 72.7891
         }
@@ -4973,7 +4731,9 @@
           ],
           "positions": 5,
           "nearest_fixing": "K-SUP-3",
-          "d_fixing_mm": 22.9401
+          "d_fixing_mm": 22.9401,
+          "nearest_post": "POWER-JL-+12V",
+          "d_post_mm": 33.3542
         },
         {
           "id": "K-O1-2",
@@ -4984,7 +4744,9 @@
           ],
           "positions": 5,
           "nearest_fixing": "K-SUP-3",
-          "d_fixing_mm": 29.6015
+          "d_fixing_mm": 29.6015,
+          "nearest_post": "POWER-JL-+12V",
+          "d_post_mm": 38.2426
         },
         {
           "id": "K-O3-1",
@@ -4995,7 +4757,9 @@
           ],
           "positions": 5,
           "nearest_fixing": "POWER-JL-+12V",
-          "d_fixing_mm": 23.1193
+          "d_fixing_mm": 23.1193,
+          "nearest_post": "POWER-JL-+12V",
+          "d_post_mm": 23.1193
         },
         {
           "id": "K-O3-2",
@@ -5006,7 +4770,9 @@
           ],
           "positions": 5,
           "nearest_fixing": "POWER-JL-+12V",
-          "d_fixing_mm": 29.7405
+          "d_fixing_mm": 29.7405,
+          "nearest_post": "POWER-JL-+12V",
+          "d_post_mm": 29.7405
         },
         {
           "id": "K-O5-1",
@@ -5017,7 +4783,9 @@
           ],
           "positions": 5,
           "nearest_fixing": "POWER-P-AGND2",
-          "d_fixing_mm": 17.2699
+          "d_fixing_mm": 17.2699,
+          "nearest_post": "POWER-P-AGND2",
+          "d_post_mm": 17.2699
         },
         {
           "id": "K-O5-2",
@@ -5028,79 +4796,11 @@
           ],
           "positions": 5,
           "nearest_fixing": "POWER-P-AGND2",
-          "d_fixing_mm": 20.9344
+          "d_fixing_mm": 20.9344,
+          "nearest_post": "POWER-P-AGND2",
+          "d_post_mm": 20.9344
         }
-      ],
-      "candidate_stack": {
-        "K_face_z_mm": -30.6,
-        "K_rear_z_mm": -32.2,
-        "K_rear_parts_z_mm": -37.2,
-        "selector_tail_z_mm": -20,
-        "selector_tail_to_K_mm": 10.6,
-        "enclosure_inner_rear_z_mm": -40,
-        "rear_part_clearance_mm": 2.8,
-        "mated_heights_mm": {
-          "JL/K": 19.0,
-          "JR/K": 19.0,
-          "P/K": 17.0,
-          "O1/K": 13.0,
-          "O3/K": 13.0,
-          "O5/K": 13.0,
-          "EL/P": 7.2
-        },
-        "enclosure_depth_cases": [
-          {
-            "inside_depth_mm": 40,
-            "inner_rear_z_mm": -40,
-            "rear_part_clearance_mm": 2.8,
-            "decided": true
-          },
-          {
-            "inside_depth_mm": 34,
-            "inner_rear_z_mm": -34,
-            "rear_part_clearance_mm": -3.2,
-            "decided": false
-          }
-        ],
-        "stacker_height_by_gap": {
-          "JL/K": {
-            "gap_mm": 19.0,
-            "stacker_A_mm": 13.589,
-            "socket_mm": 4.5,
-            "body_gap_mm": 0.911
-          },
-          "JR/K": {
-            "gap_mm": 19.0,
-            "stacker_A_mm": 13.589,
-            "socket_mm": 4.5,
-            "body_gap_mm": 0.911
-          },
-          "O1/K": {
-            "gap_mm": 13.0,
-            "stacker_A_mm": 7.62,
-            "socket_mm": 4.5,
-            "body_gap_mm": 0.88
-          },
-          "O3/K": {
-            "gap_mm": 13.0,
-            "stacker_A_mm": 7.62,
-            "socket_mm": 4.5,
-            "body_gap_mm": 0.88
-          },
-          "O5/K": {
-            "gap_mm": 13.0,
-            "stacker_A_mm": 7.62,
-            "socket_mm": 4.5,
-            "body_gap_mm": 0.88
-          },
-          "P/K": {
-            "gap_mm": 17.0,
-            "stacker_A_mm": 11.684,
-            "socket_mm": 4.5,
-            "body_gap_mm": 0.816
-          }
-        }
-      }
+      ]
     }
   },
   "supports_disposition": [
