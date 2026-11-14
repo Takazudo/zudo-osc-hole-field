@@ -12,10 +12,11 @@ import link_electrical as le  # noqa: E402
 
 class Retained(unittest.TestCase):
     def test_retained_files_equal_a_fresh_run(self):
-        rj, rm, hj = le.generate()
+        rj, rm, hj, dj = le.generate()
         self.assertEqual((le.OUT / 'results.json').read_text(), rj, 'run link_electrical.py')
         self.assertEqual((le.OUT / 'README.md').read_text(), rm, 'run link_electrical.py')
         self.assertEqual((le.OUT / 'harness-baseline.json').read_text(), hj, 'run link_electrical.py')
+        self.assertEqual((le.OUT / 'ds62-table.json').read_text(), dj, 'run link_electrical.py')
 
     def test_every_input_has_a_status(self):
         inp = le.load_inputs()
@@ -241,6 +242,73 @@ class HarnessBaseline(unittest.TestCase):
         fl = self.hb.flat_levels(self.inp, 'pitch_1_0', 400, 'ANALOGUE', 'ANALOGUE')
         base, _ = self.hb.baseline(self.inp, self.pats)
         self.assertGreater(fl['flat one ground between (rule A)'], base['ANALOGUE>ANALOGUE']['min_V'])
+
+
+class AttemptA4(unittest.TestCase):
+    """a4 part 1: adapter class, signals_all and the DS-62 ratio table."""
+
+    @classmethod
+    def setUpClass(cls):
+        import ds62_table
+        cls.d = ds62_table
+        cls.inp = le.load_inputs()
+        cls.res = json.loads((le.OUT / 'results.json').read_text())
+        cls.tab = json.loads((le.OUT / 'ds62-table.json').read_text())
+
+    def test_class_rules_are_byte_identical_to_a3(self):
+        import hashlib
+        h = hashlib.sha256(json.dumps(self.inp['classes']['rules'], sort_keys=True).encode()).hexdigest()
+        self.assertEqual(h, '9929223c963d93faf8b5a8948589ae19fbc87b72f85e9187c796b2788a799d76')
+
+    def test_signals_all_extends_the_490_unchanged(self):
+        self.assertEqual(len(self.res['signals']), 490)
+        self.assertEqual(len(self.res['signals_all']), 511)
+        self.assertEqual(self.res['signals_all'][:490], self.res['signals'])
+
+    def test_adapter_signals_are_21_static_lines(self):
+        extra = self.d.all_signals(self.inp)[490:]
+        self.assertEqual(len(extra), 21)
+        self.assertEqual({s['class'] for s in extra}, {'STATIC'})
+        nets = {s['net'].split('/')[-1] for s in extra}
+        self.assertEqual(nets, {'OCT_SELECTED'} | {f'OSC_OCT{i}' for i in range(6)})
+
+    def test_static_adapter_link_is_8_circuits_with_one_ground(self):
+        a = self.tab['adapter_link']
+        self.assertEqual((a['flat_8']['circuits'], a['flat_8']['grounds']), (8, 1))
+        self.assertEqual((a['flat_14']['circuits'], a['flat_14']['grounds']), (14, 7))
+        self.assertLess(a['flat_14']['peak_V'], a['flat_8']['peak_V'])
+
+    def test_logic_and_wiper_never_share_a_cable(self):
+        base = {k: {'aggressor_class': k.split('>')[0], 'victim': k.split('>')[1]}
+                for k in ['LOGIC>WIPER', 'LOGIC>LOGIC', 'ANALOGUE>ANALOGUE']}
+        rows = self.d.pairs_allowed(base)
+        self.assertEqual([r[0] for r in rows], ['ANALOGUE>ANALOGUE', 'LOGIC>LOGIC'])
+        self.assertEqual(dict((r[0], r[3]) for r in rows)['LOGIC>LOGIC'], self.d.SIDE)
+
+    def test_configured_window_is_the_whole_cable(self):
+        self.assertGreaterEqual(self.inp['ds62']['window_half_width']['value'],
+                                max(c['circuits'] for c in self.inp['ds62']['cables']))
+        for n in (14, 26):
+            full, part = self.d.full_vs_clipped(self.inp, n)
+            self.assertEqual(full, part)
+
+    def test_a_narrow_window_overstates_coupling(self):
+        full, part = self.d.full_vs_clipped(self.inp, 26, half=4)
+        self.assertGreater(part['Cm_F'], full['Cm_F'])
+        self.assertGreater(part['M_eff_H'], full['M_eff_H'])
+
+    def test_rows_above_one_are_reported_as_needs_design(self):
+        above = self.tab['above_1']
+        self.assertTrue(above)
+        self.assertTrue(all(r['ratio'] > 1.0 for r in above))
+        self.assertTrue(all(r['ratio'] <= 1.0 for r in self.tab['table'] if r not in above))
+        readme = (le.OUT / 'README.md').read_text()
+        self.assertIn('## DS-62 at the lengths in use (NEEDS_DESIGN)', readme)
+
+    def test_largest_ratio_per_length_is_the_table_maximum(self):
+        for L, r in self.tab['largest_ratio_per_length'].items():
+            m = max(x['ratio'] for x in self.tab['table'] if x['length_mm'] == float(L))
+            self.assertEqual(r['ratio'], m)
 
 
 if __name__ == '__main__':

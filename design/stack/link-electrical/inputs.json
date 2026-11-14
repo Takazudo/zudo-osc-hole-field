@@ -385,5 +385,106 @@
    "status": "SOURCED",
    "source": "S-LOOM routes[].cut_length_max_mm per harness (the whole cut length taken as parallel run, ASSUMED upper bound) plus the same ASSUMED 5 mm per end as the flat link"
   }
+ },
+ "classes_adapter": {
+  "status": "DERIVED from SOURCED schematic specification (see ds62.adapter_evidence); added in attempt a4 part 1 beside classes.rules, which stays unchanged",
+  "scope": "the 21 signals of the adapter pairs K-O1-1 to K-O5-2 of the retained candidate (families K/O first and K/O second)",
+  "rules": [
+   {
+    "class": "STATIC",
+    "net_regex": "^(/O[0-9]+/)?OCT_SELECTED$"
+   },
+   {
+    "class": "STATIC",
+    "net_regex": "^OSC_OCT[0-5]$"
+   }
+  ],
+  "STATIC": {
+   "aggressor": "none while the instrument plays; a step only when the selector is turned by hand",
+   "victim": "PRECISION (the lines set the pitch)"
+  }
+ },
+ "ds62": {
+  "pitch": "pitch_0_5",
+  "cables": [
+   {
+    "code": "C81339",
+    "circuits": 8,
+    "length_mm": 40,
+    "status": "SOURCED",
+    "source": "DS-61 / ST-01h (cables in use); the coordinator brief names C81339 as the short 8-circuit cable"
+   },
+   {
+    "code": "C26618",
+    "circuits": 40,
+    "length_mm": 50,
+    "status": "SOURCED",
+    "source": "S-FLEX st01e.matching_summary 0.5mm_largest_both; DS-61"
+   },
+   {
+    "code": "C68390",
+    "circuits": 14,
+    "length_mm": 50,
+    "status": "SOURCED",
+    "source": "DS-61"
+   },
+   {
+    "code": "C29534",
+    "circuits": 8,
+    "length_mm": 50,
+    "status": "SOURCED",
+    "source": "DS-61"
+   },
+   {
+    "code": "C32128",
+    "circuits": 26,
+    "length_mm": 60,
+    "status": "SOURCED",
+    "source": "DS-61"
+   }
+  ],
+  "link_pattern": {
+   "value": "signals and grounds alternate starting with a signal (S G S G ...); no outer ground; logic beside logic and wiper beside wiper may lie side by side",
+   "status": "SOURCED (DS-62 rule per link)"
+  },
+  "window_half_width": {
+   "value": 40,
+   "status": "DERIVED",
+   "reason": "at least the largest cable size (40 circuits), so every conductor of every cable is in the 2-D solve and nothing is left out; a narrower window overstates coupling (fewer grounds share the return) and is kept only as a test"
+  },
+  "other_signals": {
+   "status": "ASSUMED",
+   "reason": "every other signal conductor is held at AC ground by its driver, as in attempts a2 and a3"
+  },
+  "selector_step": {
+   "swing_V": 1.0,
+   "edge_s": 5e-09,
+   "load_ohm": 1000.0,
+   "load_F": 1e-11,
+   "receiver_filter_s": 0.0001,
+   "status": "swing ASSUMED (five equal 10 kOhm ladder steps, DERIVED; the 1 V size from the 1 V/oct convention, ASSUMED); edge ASSUMED (a switch contact closing, no retained figure); load 1 kOhm SOURCED (R_OCT_SER) with 10 pF of line ASSUMED; receiver filter 1 kOhm x 100 nF = 100 us SOURCED (OCT_SER, OCT_FILTER)"
+  },
+  "adapter_evidence": [
+   {
+    "statement": "OSC_OCT0 to OSC_OCT5 are six buffered taps of one shared octave ladder fed from the 5 V reference; they are global references shared by all oscillators",
+    "source": "design/spec/modules/oscillator.py, octave_family() (b.cell octave_reference with REF_5V OSC_REF5 and OCT0..OCT5 -> OSC_OCT0..5) and REFS (line 16); design/spec/cells/build_doc.py octave_reference: buffered endpoints, five 10k resistors, six buffered octave taps",
+    "status": "SOURCED"
+   },
+   {
+    "statement": "each tap is driven by an OPA4197 voltage follower (U1602 to U1604); the ladder is fed by REF5050 U1601; source impedance is the closed-loop output impedance of the follower, not stated as a number (UNSOURCED); the 100 Ohm victim value of PRECISION is kept",
+    "source": "schematic/sheets/octave_reference.kicad_sch symbols U1601 REF5050AIDR, U1602..U1604 OPA4197IDR; design/architecture-278/implementation/candidate-netlist.json endpoints U1602 pins 13/14 OSC_OCT0, U1603 pins 1/2, 6/7, 8/9, 13/14 OSC_OCT1..4, U1604 pins 1/2 OSC_OCT5 (output tied to inverting input)",
+    "status": "SOURCED (driver); UNSOURCED (impedance figure)"
+   },
+   {
+    "statement": "OCT_SELECTED is the common of the hand-turned octave selector SRBV160803 (pins 1 and 10), whose positions 2 to 7 take OSC_OCT0 to OSC_OCT5; it is received through OCT_SER 1 kOhm into OCT_FILTER (100 nF and OCT_PD 10 MOhm to AGND), rebuffered by the precision amplifier OCT_RECEIVER to OCT_CV, which enters EXPO_SUM through PITCH_OCT 100 kOhm",
+    "source": "design/spec/modules/oscillator.py, family(): pins dict and b.device(SRBV160803, OCT_SELECTOR), b.r(OCT_SER), b.r(OCT_PD), b.c(OCT_FILTER), b.amp(OCT_RECEIVER, precision), PITCH_OCT 100 kOhm (lines 168 to 176)",
+    "status": "SOURCED"
+   },
+   {
+    "statement": "nothing on the seven lines is modulated, clocked or switched while the instrument plays; OCT_SELECTED steps only when the selector is turned by hand; the taps never change",
+    "source": "the same objects: no modulation, clock or switch other than the panel selector connects to OSC_OCT0..5 or OCT_SELECTED",
+    "status": "DERIVED"
+   }
+  ]
  }
 }
