@@ -7,6 +7,7 @@ board files and the two planning-parameter files beside the output. Nothing is
 copied from the plan page; the page is what check.py and the README reconcile.
 """
 import json
+import math
 import sys
 
 import stackgeom as sg
@@ -78,6 +79,7 @@ def build(ci, obstacles=None):
     k_parts = round(k_rear - ci['mechanical']['core_rear_ceiling_mm'], 4)
     sel_tail = round(min(bidx[k]['face_z_mm'] for k in adapters) + ci['mechanical']['selector_body_support_z_mm'][0], 4)
     enclosure = -params['enclosure_inside_depth_mm']
+    rule = params['stacker_rule']
     planes = {}
     for key, b in sorted(bidx.items()):
         if key in retired:
@@ -96,6 +98,11 @@ def build(ci, obstacles=None):
         'selector_tail_z_mm': sel_tail, 'selector_tail_to_K_mm': round(sel_tail - k_face, 4),
         'enclosure_inner_rear_z_mm': enclosure, 'rear_part_clearance_mm': round(k_parts - enclosure, 4),
         'mated_heights_mm': gaps,
+        'enclosure_depth_cases': [{'inside_depth_mm': dpt, 'inner_rear_z_mm': -dpt,
+                                   'rear_part_clearance_mm': round(k_parts + dpt, 4),
+                                   'decided': dpt == params['enclosure_inside_depth_mm']}
+                                  for dpt in params['enclosure_depth_cases_mm']],
+        'stacker_height_by_gap': {g: stacker_height(v, rule) for g, v in sorted(gaps.items()) if g.endswith('/K')},
     }
 
     # ---------------------------------------------------------- pairs
@@ -105,8 +112,8 @@ def build(ci, obstacles=None):
     def gh(key, ref):
         return fps[key][ref]['courtyard']
 
-    def add_pair(pid, family, front, back, n, pins, mated, source_harness, note=''):
-        pairs.append({'id': pid, 'family': family, 'boards': [front['board'], back['board']], 'positions': n,
+    def add_pair(pid, family, front, back, n, pins, mated, source_harness, note='', rows=1):
+        pairs.append({'id': pid, 'family': family, 'boards': [front['board'], back['board']], 'positions': n, 'rows': rows,
                       'pin_map': pins, 'mated_height_mm': mated, 'source_harness': source_harness,
                       'sites': {'front': front, 'back': back}, 'note': note})
 
@@ -156,17 +163,21 @@ def build(ci, obstacles=None):
             add_pair(pid, tkey, front, back, n, list(pins), gap, h['id'],
                      'pass-through: %s carried JL to P through K' % h['id'])
 
-    # EL plugs into a P tab; P passes the EL nets to K at K's existing sites
-    rot = params['el_rail_rotation']
+    # EL plugs into a P tab on six 2x4 pairs; P passes the EL nets to K at K's existing sites
+    el_rows = params['rows']['EL/P']
+    relief = params['el_relief_holes']
     for k, (h, a, b) in enumerate(sorted(el_harnesses, key=lambda t: t[1]['center_mm'][0] if t[1]['board'] == 'EL' else t[2]['center_mm'][0])):
         el_con, k_con = (a, b) if a['board'] == 'EL' else (b, a)
         signals = [x for x in ordered_pins(el_con['pin_map']) if x not in ('AGND', 'NC') + RAIL_NETS]
         egh, kgh = gh('EL', el_con['pcb_reference']), gh('K', k_con['pcb_reference'])
-        pins, _, _ = fill_template(templates['EL/P'], signals, rot[k % len(rot)])
-        front = make_site('EL', el_con['side'], el_con['center_mm'], el_con['pcb_reference'], egh, long_axis_x(egh))
-        back = make_site('P', 'F.Cu', el_con['center_mm'], None, None, long_axis_x(egh))
+        pins, _, _ = fill_template(templates['EL/P'], signals, params['el_rails'])
+        axis = long_axis_x(egh)
+        front = make_site('EL', el_con['side'], el_con['center_mm'], el_con['pcb_reference'], egh, axis)
+        back = make_site('P', 'F.Cu', el_con['center_mm'], None, None, axis)
         add_pair('EL-P-%s' % h['id'].split('-')[-1], 'EL/P', front, back, positions['EL/P'], pins, gaps['EL/P'],
-                 h['id'], 'EL takes its rails from P; rails rotate over sites (planning assumption)')
+                 h['id'], 'CLT socket on EL B.Cu, double-row TW-SM stacker on the P tab F.Cu; all three rails per site (DA-01 D3)',
+                 rows=el_rows)
+        pairs[-1]['relief_holes'] = relief_holes(el_con['center_mm'], positions['EL/P'], el_rows, relief, axis)
         pins2, _, _ = fill_template(templates['P/K for EL'], signals)
         front2 = make_site('P', 'B.Cu', el_con['center_mm'], None, None, long_axis_x(egh))
         back2 = make_site('K', k_con['side'], k_con['center_mm'], k_con['pcb_reference'], kgh, long_axis_x(kgh))
@@ -193,8 +204,9 @@ def build(ci, obstacles=None):
     m = params['tab_edge_margin_mm']
     step = params['window_step_mm']
     pad_g = model['opposite_face_through_hole_pad_growth_mm']
-    w_sub = max(sg.envelope(land, positions['SUB'], 'front')[0], sg.envelope(land, positions['SUB'], 'K')[0])
-    l_sub = max(sg.envelope(land, positions['SUB'], 'front')[1], sg.envelope(land, positions['SUB'], 'K')[1])
+    sub_env = [sg.envelope(land, positions['SUB'], half) for half in ('front', 'K')]
+    w_sub = max(e[0] for e in sub_env)
+    l_sub = max(e[1] for e in sub_env)
     control_tabs = []
     sub_sites = []
     k_conn_centres = {c['pcb_reference']: c['center_mm'] for c in part['connectors'] if c['board'] == 'K'}
@@ -303,14 +315,15 @@ def build(ci, obstacles=None):
     rects = []
     for p in el_sites:
         cx, cy = p['sites']['front']['center']
-        for half, fam in (('front', 'EL/P'), ('K', 'EL/P'), ('front', 'P/K for EL'), ('K', 'P/K for EL')):
-            w, l = sg.envelope(land, positions[fam], half)
+        # only the halves that sit on P: the stacker on the tab F.Cu and the socket of the P-to-K pass-through on its B.Cu
+        for half, fam in (('K', 'EL/P'), ('front', 'P/K for EL')):
+            w, l = sg.envelope(land, positions[fam], half, params['rows'].get(fam, 1))
             rects.append(sg.env_rect(cx, cy, w, l, p['sites']['front']['long_axis_x']))
     x0 = round(min(r[0] for r in rects) - m, 4)
     x1 = round(max(r[2] for r in rects) + m, 4)
     top = round(min(r[1] for r in rects) - m, 4)
     el_tab = {'id': 'TAB-EL', 'rect': [x0, top, x1, p_edge_y(bidx['P']['outline'], (x0 + x1) / 2)], 'board': 'P',
-              'basis': 'six EL site envelopes (both pairs, both halves) plus the edge margin, to the P edge'}
+              'basis': 'the P halves of the six EL sites (2x4 stacker on F.Cu, 1x6 pass-through socket on B.Cu) plus the edge margin, to the P edge'}
     tabs.insert(0, el_tab)
     pass_holes = []
     for s in part['supports']:
@@ -327,9 +340,10 @@ def build(ci, obstacles=None):
     for p in pairs:
         for half_name, half in (('front', 'front'), ('back', 'K')):
             s = p['sites'][half_name]
-            w, l = sg.envelope(land, p['positions'], half)
-            rect = sg.env_rect(s['center'][0], s['center'][1], w, l, s['long_axis_x'])
+            e = sg.envelope_info(land, p['positions'], half, p['rows'])
+            rect = sg.env_rect(s['center'][0], s['center'][1], e['width_mm'], e['length_mm'], s['long_axis_x'])
             s['envelope'] = rect
+            s['envelope_entry'] = '%s %s %s' % (half, e['key'], e['status'])
             skip = {s['replaces']} if s['replaces'] else set()
             s['blockers'] = [list(x) for x in obstacles[s['board']].hits(s['side'][0], rect, skip)]
 
@@ -350,10 +364,65 @@ def build(ci, obstacles=None):
         'sub_toggles': sub_sites,
         'selectors_kept': selectors,
         'retired': retired_items,
-        'land_pattern': {'source': land['source'], 'status': land['status'],
-                         'envelopes_mm': {half: {str(n): list(sg.envelope(land, n, half)) for n in sorted(set(positions.values()))}
-                                          for half in ('front', 'K')}},
+        'land_pattern': {'status': land['status'], 'envelopes_used': used_envelopes(land, pairs)},
+        'fixings': fixing_list(ci, posts),
+        'el_pot_passages': pot_passages(ci),
     }
+
+
+def stacker_height(gap, rule):
+    """DA-01 D3: stacker "A" <= gap - socket - clearance, rounded down to the 0.005 in step."""
+    step = rule['height_step_mm']
+    a = math.floor(round((gap - rule['socket_seated_height_mm'] - rule['body_clearance_mm']) / step, 6)) * step
+    return {'gap_mm': gap, 'stacker_A_mm': round(a, 3), 'socket_mm': rule['socket_seated_height_mm'],
+            'body_gap_mm': round(gap - a - rule['socket_seated_height_mm'], 3)}
+
+
+def relief_holes(center, positions, rows, relief, axis_x):
+    """One hole per pin of the double-row pattern: column i // rows, row i % rows."""
+    per_row = positions // rows
+    out = []
+    for i in range(positions):
+        col, row = i // rows, i % rows
+        u = (col - (per_row - 1) / 2) * relief['pitch_mm']
+        v = (row - (rows - 1) / 2) * relief['row_pitch_mm']
+        x, y = (center[0] + u, center[1] + v) if axis_x else (center[0] + v, center[1] + u)
+        out.append({'pin': i + 1, 'center': [round(x, 4), round(y, 4)], 'diameter_mm': relief['diameter_mm']})
+    return out
+
+
+def used_envelopes(land, pairs):
+    out = {}
+    for p in pairs:
+        for half in ('front', 'K'):
+            e = sg.envelope_info(land, p['positions'], half, p['rows'])
+            out.setdefault(half, {})[e['key']] = {'width_mm': e['width_mm'], 'length_mm': e['length_mm'],
+                                                  'status': e['status'], 'source': e['source']}
+    return {h: dict(sorted(v.items())) for h, v in sorted(out.items())}
+
+
+def fixing_list(ci, posts):
+    """Posts (at their K lands), the supports ST-03 keeps as tie posts, the 66-site interior candidate screen
+    that ST-03 adopted, and the PROVISIONAL added tie sites of DA-01 D4."""
+    fx = ci['parameters']['fixings']
+    sup = {s['id']: s for s in ci['partition']['supports']}
+    out = [{'id': p['id'], 'kind': 'post', 'xy': p['K_land'], 'status': 'partition load-side post'} for p in posts]
+    out += [{'id': i, 'kind': 'kept support', 'xy': sup[i]['position_mm'], 'status': fx['kept_support_basis']}
+            for i in fx['kept_support_ids']]
+    for front, pts in sorted(sg.interior_fastener_sites(ci).items()):
+        out += [{'id': 'INT-%s-%d' % (front, i), 'kind': 'interior candidate', 'xy': xy,
+                 'status': 'ST-02 interior fastener candidate (%s)' % sg.INTERIOR_SITE_RULE} for i, xy in enumerate(pts, 1)]
+    out += [{'id': t['id'], 'kind': 'tie site', 'xy': t['xy'], 'status': fx['provisional_tie_status']}
+            for t in fx['provisional_tie_sites']]
+    return out
+
+
+def pot_passages(ci):
+    d = ci['parameters']['el_pot_passage_diameter_mm']
+    holes = {tuple(f['origin']): f['ref'] for f in ci['boards']['EL'] if f['ref'].startswith('MH_EL-PASSAGE')}
+    return [{'uid': o['uid'], 'center': o['center_mm'], 'diameter_mm': d,
+             'previous_diameter_mm': o['diameter_mm'], 'el_footprint': holes.get(tuple(o['center_mm']))}
+            for o in ci['partition']['optical_passages'] if o['kind'] == 'pot']
 
 
 def generate(root=sg.ROOT):
