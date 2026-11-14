@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "status": "PLANNING ENVELOPE; no connector is selected. ST-01 replaces this file with measured courtyards of the selected pair",
+  "source": "doc/src/content/docs/decisions/osc-direct-stack-plan.mdx, 'A footprint of about 5.8 mm x (2n + 1) mm'",
+  "frame": "width_mm is across the contact row, length_mm along it; the envelope is a courtyard, not a copper land",
+  "rule": {
+    "width_mm": 5.8,
+    "pitch_mm": 2.0,
+    "end_allowance_mm": 1.0
+  },
+  "explicit_mm": {
+    "front": {},
+    "K": {}
+  },
+  "explicit_note": "Optional per-half overrides: {\"<positions>\": [width_mm, length_mm]}. 'front' is the half on JL, JR, P, EL or an adapter (for the EL-to-P pair, EL's half); 'K' is the half on K (for the EL-to-P pair, P's half). An empty map means the rule applies"
+}
