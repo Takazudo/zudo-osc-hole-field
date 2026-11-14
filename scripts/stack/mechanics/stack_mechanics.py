@@ -655,6 +655,8 @@ def render_all(data=None):
     c = Calc(data or load())
     blocks = {name: fn(c) for name, fn in RENDERERS.items()}
     blocks.update({name: fn(c) for name, fn in a3.RENDERERS.items()})
+    import stack_mechanics_a5 as a5
+    blocks.update({name: fn(c) for name, fn in a5.RENDERERS.items()})
     return blocks
 
 

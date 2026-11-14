@@ -1,4 +1,4 @@
-# ST-03 stack mechanics (paper study, attempts a3 and a4)
+# ST-03 stack mechanics (paper study, attempts a3 to a5)
 
 Status: unvalidated paper study. Every fit, force, strain, deflection and take-up check on real parts is NOT RUN, because no part, print or board exists. Nothing here is validated, adopted or selected.
 
@@ -6,7 +6,142 @@ Every number below is recomputed from [`stackups.json`](stackups.json) by `pytho
 
 Attempt a3 works on the decision rows DS-27, DS-31, DS-33, DS-35 and DS-39 to DS-46 (`decisions.md`, `S-DS`; reviews A2 and A3, `S-DA02`, `S-DA03`). Design review A3 replaced 191 of the 197 rigid K pairs with flat links latched on K's rear face. Twelve rigid pairs stay: six EL-to-P pairs and six 1×5 adapter pairs. A number that contradicts a decision is marked NEEDS_DESIGN.
 
-Status words: SOURCED (a file or a fetched page with its SHA256), DERIVED (a formula), ASSUMED (with the reason and what would source it), UNSOURCED (no document states it). No web request was made for a3.
+Status words: SOURCED (a file or a fetched page with its SHA256), DERIVED (a formula), ASSUMED (with the reason and what would source it), UNSOURCED (no document states it). No web request was made for a3 to a5.
+
+## Attempt a5: on ST-08's list K moves at most 0.64 mm at 5 g against 2.8 mm of rear clearance, every sleeve stays below 593 microstrain, and a push above 10.3 N at a corner certainly exceeds the limit
+
+Attempt a5 computes K on ST-08's fixing list (`design/stack/fixings/fixing-sites.json`, the `fixings` array pinned as `S-FIX`; decisions DS-66, DS-67 and DS-70). The list has 18 posts, the two kept corner sleeves JL-SUP-1 and JR-SUP-1, and the added sleeves SLV-U1, SLV-L1 and SLV-L2. Three fixing sets are computed: the posts alone, the list, and the list with one hypothetical fixing at (6.5, 243). The hypothetical fixing is not a site: it stands on a locked pot.
+
+**Which model bounds what.** A cantilever strip clamped along a line is no bound for a corner held at two points: the lower left region hangs from the post at (40, 160) and SLV-L1 at (93, 276) only. Attempt a5 therefore uses three models.
+
+- **Deflection: torsion-free grillage.** Beams lie on a 4 mm grid over K's outline, each beam with D (1 − ν) of its tributary width. Fixings are pinned nodes. For every displacement field its strain energy is at most the plate's, so its compliance is an upper bound. That makes the deflection under a single push an upper bound, and under the uniform load the load-weighted mean deflection an upper bound. A clamped sleeve or post holds more than a pinned node, which errs on the safe side. The 2 mm mesh gives the same 0.641 mm.
+- **Strain under a push: straight-cut lower bound.** Across any straight cut that leaves every fixing on one side, statics fixes the mean moment per width at P·d/l, and the peak is at least that. At a square corner the best cut gives d/l = 1/2: 57 microstrain per newton. This equals attempt a4's 45° estimate, which at a corner is therefore a lower bound and no longer only an estimate.
+- **Strain under the uniform load: grillage curvature.** This figure is not a bound. It is pessimistic at the pinned nodes, where all of a node's load enters through two beams. The a4 strip is shown beside it as the screen it was.
+
+### K's regions: farthest points and spans
+
+<!-- calc:a5_regions -->
+| Fixings | Farthest point of K from a fixing, mm | Region y < post rows: farthest, mm | Region y > post rows: farthest, mm | Largest circle inside K holding no fixing, radius, mm |
+| --- | --- | --- | --- | --- |
+| 18 posts only | 156.2 at [4.0, 8.0] | 156.2 at [4.0, 8.0] | 136.8 at [4.0, 292.0] | 79.6 at [159.0, 88.0] |
+| ST-08 list (18 posts, 5 sleeves) | 93.6 at [4.0, 247.0] | 87.2 at [239.0, 73.0] | 93.6 at [4.0, 247.0] | 76.0 at [80.0, 84.0] |
+| list + one hypothetical fixing at the left edge | 88.5 at [180.0, 292.0] | 87.2 at [239.0, 73.0] | 88.5 at [180.0, 292.0] | 76.0 at [80.0, 84.0] |
+<!-- /calc:a5_regions -->
+
+### Deflection and strain at 1 g and 5 g: within on the list; the posts alone move 8.7 mm
+
+<!-- calc:a5_k -->
+| Fixings | Region | Grillage deflection 1 g, mm | Grillage deflection 5 g, mm | Where (5 g) | Grillage strain 1 g, microstrain | Grillage strain 5 g, microstrain | Strain against 593 | a4 strip screen at 5 g: span, deflection mm / strain |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 18 posts only | from the post rows to the edge at y = 8 | 1.741 | 8.705 | [312.0, 8.0] | 176 | 880 | exceeds | 156.2: 3.094 / 406 |
+| 18 posts only | between the post rows | 0.089 | 0.446 | [312.0, 172.0] | 270 | 1352 | exceeds | n/a (held on both sides) |
+| 18 posts only | from the post rows to the edge at y = 292 | 0.618 | 3.092 | [312.0, 244.0] | 203 | 1015 | exceeds | 136.8: 1.821 / 311 |
+| ST-08 list (18 posts, 5 sleeves) | from the post rows to the edge at y = 8 | 0.046 | 0.229 | [248.0, 8.0] | 61 | 303 | within | 87.2: 0.300 / 126 |
+| ST-08 list (18 posts, 5 sleeves) | between the post rows | 0.015 | 0.077 | [4.0, 172.0] | 48 | 241 | within | n/a (held on both sides) |
+| ST-08 list (18 posts, 5 sleeves) | from the post rows to the edge at y = 292 | 0.128 | 0.641 | [4.0, 292.0] | 52 | 258 | within | 93.6: 0.399 / 146 |
+| list + one hypothetical fixing at the left edge | from the post rows to the edge at y = 8 | 0.045 | 0.225 | [248.0, 8.0] | 61 | 306 | within | 87.2: 0.300 / 126 |
+| list + one hypothetical fixing at the left edge | between the post rows | 0.012 | 0.058 | [4.0, 160.0] | 39 | 194 | within | n/a (held on both sides) |
+| list + one hypothetical fixing at the left edge | from the post rows to the edge at y = 292 | 0.070 | 0.350 | [216.0, 292.0] | 48 | 241 | within | 88.5: 0.318 / 130 |
+<!-- /calc:a5_k -->
+
+### The 90 mm rule in millimetres: 0.378 mm at (4, 247) and 0.641 mm at (4, 292) under 5 g, against 2.8 mm
+
+The list misses the 90 mm rule of DS-66 by 3.6 mm in distance (DS-70). In movement that miss costs nothing measurable here. The grillage bound at 5 g is 0.378 mm at (4, 247) and 0.641 mm at the corner (4, 292), the largest anywhere on K. Both stay far below the 2.8 mm rear clearance. The a4 strip at exactly 90 mm gives 0.341 mm, against 0.399 mm at 93.6 mm.
+
+<!-- calc:a5_points -->
+| Fixings | Grillage at (4, 247), 5 g, mm | Grillage at (4, 292), 5 g, mm | Largest anywhere on K, 5 g, mm | Against 2.8 mm rear clearance (DS-33) |
+| --- | --- | --- | --- | --- |
+| 18 posts only | 1.525 | 2.668 | 8.705 at [312.0, 8.0] | exceeds |
+| ST-08 list (18 posts, 5 sleeves) | 0.378 | 0.641 | 0.641 at [4.0, 292.0] | within |
+| list + one hypothetical fixing at the left edge | 0.001 | 0.103 | 0.350 at [216.0, 292.0] | within |
+
+| a4 strip screen: span, mm | Deflection at 5 g, mm | Strain, microstrain |
+| --- | --- | --- |
+| 93.6 | 0.399 | 146 |
+| 90.4 | 0.348 | 136 |
+| 90.0 | 0.341 | 135 |
+<!-- /calc:a5_points -->
+
+<!-- calc:a5_mesh -->
+| Grid step, mm | Largest deflection on the list, 5 g, mm | Where | At the first far point, mm | At the second far point, mm |
+| --- | --- | --- | --- | --- |
+| 4 | 0.641 | [4.0, 292.0] | 0.378 | 0.641 |
+| 2 | 0.641 | [4.0, 292.0] | 0.375 | 0.641 |
+<!-- /calc:a5_mesh -->
+
+### The 70 mm rule at the five sleeves: at most 539 microstrain, at SLV-L2 with its 70.0 mm span
+
+The strain follows the model of attempt a4: 4.80 × 10⁶ × error / span². It is computed for the printer's ±0.2 mm, for a sleeve 0.15 mm too long, and for the worst case of 0.55 mm (0.2 mm short allowance + 0.15 mm post + 0.2 mm print).
+
+<!-- calc:a5_sleeves -->
+| Sleeve | Kind | Gap, mm | Nearest other fixing, span mm | Strain at 0.2 mm error | Strain at 0.15 mm too long | Strain at 0.55 mm (worst case) | Against 593 microstrain |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| JL-SUP-1 | sleeve kept | 19.0 | POWER-JL-+12V 141.5 | 48 | 36 | 132 | within |
+| JR-SUP-1 | sleeve kept | 19.0 | POWER-JR-AGND3 141.4 | 48 | 36 | 132 | within |
+| SLV-U1 | sleeve added | 19.0 | POWER-JL-AGND3 126.6 | 60 | 45 | 165 | within |
+| SLV-L2 | sleeve added | 17.0 | POWER-JR-AGND1 70.0 | 196 | 147 | 539 | within |
+| SLV-L1 | sleeve added | 17.0 | POWER-P-AGND2 101.2 | 94 | 70 | 258 | within |
+<!-- /calc:a5_sleeves -->
+
+### A push on the rear face: at most 10.3 N at any square corner before the limit; the corner (4, 292) moves 2.3 mm per newton
+
+The ruling's "about 10 N" is confirmed as an upper bound on the safe force at a corner: a push above 10.3 N there exceeds 593 microstrain whatever the fixings. Whether a smaller push already exceeds the limit is not bounded here, because the peak moment lies above the mean. A plate finite-element model would close that (NOT RUN; ST-12). The fingertip rule of DS-66 stands on this figure.
+
+Along K's left edge the lower bound is 37 microstrain per newton at (4, 248), so at most 15.9 N there. The compliance is an upper bound: 0.800 mm/N at (4, 248) and 2.333 mm/N at (4, 292), the largest on the list's edge.
+
+<!-- calc:a5_push -->
+| Fixings | Push on K's rear face | Compliance, mm/N (grillage, upper bound) | Strain per newton, lower bound (straight cut), microstrain | Force at 593 microstrain, at most, N | Strain per newton, a4 estimate (45° spread), microstrain | Force at 593 microstrain, a4 estimate, N |
+| --- | --- | --- | --- | --- | --- | --- |
+| 18 posts only | push at [4.0, 248.0] | 2.220 | 42 | 14.0 | 57 | 10.3 |
+| 18 posts only | push at [4.0, 292.0] | 5.432 | 57 | 10.3 | 57 | 10.3 |
+| 18 posts only | largest compliance on the edge, push at [312.0, 8.0] | 10.180 | 57 | 10.4 | 57 | 10.3 |
+| ST-08 list (18 posts, 5 sleeves) | push at [4.0, 248.0] | 0.800 | 37 | 15.9 | 57 | 10.3 |
+| ST-08 list (18 posts, 5 sleeves) | push at [4.0, 292.0] | 2.333 | 57 | 10.3 | 57 | 10.3 |
+| ST-08 list (18 posts, 5 sleeves) | largest compliance on the edge, push at [4.0, 292.0] | 2.333 | 57 | 10.3 | 57 | 10.3 |
+| list + one hypothetical fixing at the left edge | push at [4.0, 248.0] | 0.006 | 9 | 67.5 | 57 | 10.3 |
+| list + one hypothetical fixing at the left edge | push at [4.0, 292.0] | 0.749 | 57 | 10.3 | 57 | 10.3 |
+| list + one hypothetical fixing at the left edge | largest compliance on the edge, push at [312.0, 244.0] | 1.041 | 37 | 16.0 | 57 | 10.3 |
+<!-- /calc:a5_push -->
+
+### The corner sleeves: 2.5 mm from two board edges on JL and JR, no hole or land there today, 22.7 of 29.4 mm² bearing left
+
+The board files show no footprint and no drill within the sleeve radius at either site on JL, JR or K. On JL and JR the site stands 2.5 mm from two edges, so the 7.0 mm sleeve overhangs both by 1.0 mm and bears on 22.7 of its 29.4 mm² annulus. On K it overhangs one edge and bears on 26.1 mm².
+
+Two alternatives, each as a figure only:
+
+- A 5.0 mm sleeve does not overhang but bears on 10.5 mm².
+- A move of 1.0 mm inward restores the full 29.4 mm², but it moves the sleeve toward the parts already near the site. On JR, footprint origins lie at 3.65 mm (R4615), 4.96 mm (R4616) and 5.51 mm (RB4607). On JL, no origin lies within 8 mm, but the courtyard of jack J101 is 3.25 mm away (`fixing-sites.json`). ST-08 lists the courtyard conflicts.
+
+The decision is the design authority's.
+
+<!-- calc:a5_corners -->
+| Sleeve | Board | Two nearest board edges, mm | Overhang, mm | Hole or land today | Bearing area left, mm² | Area with a 5.0 mm sleeve, mm² | Area moved 1.0 mm inward, mm² | Footprints within 8 mm (origin distance from the site) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| JL-SUP-1 | K | 2.50, 14.50 | 1.00 | no footprint within the sleeve radius | 26.1 of 29.4 | 10.5 | 29.4 | none |
+| JL-SUP-1 | JL | 2.50, 2.50 | 1.00 | no footprint within the sleeve radius | 22.7 of 29.4 | 10.5 | 29.4 | none |
+| JR-SUP-1 | K | 2.50, 14.50 | 1.00 | no footprint within the sleeve radius | 26.1 of 29.4 | 10.5 | 29.4 | none |
+| JR-SUP-1 | JR | 2.50, 2.50 | 1.00 | no footprint within the sleeve radius | 22.7 of 29.4 | 10.5 | 29.4 | R4615 (R0603) origin 3.65 mm; R4616 (R0603) origin 4.96 mm; RB4607 (R_1210_3225Metric) origin 5.51 mm; R4608 (R0603) origin 6.56 mm; D1801 (LED0402-Kingbright-White) origin 6.76 mm; RB4605 (R_1210_3225Metric) origin 7.20 mm |
+<!-- /calc:a5_corners -->
+
+### One more fixing at (6.5, 243): (4, 247) drops from 0.378 to 0.001 mm and the farthest point from 93.6 to 88.5 mm
+
+The fixing is not a site; it shows the size of the effect. The largest 5 g deflection falls from 0.641 to 0.350 mm. The corner push limit stays at 10.3 N, because a square corner sets it.
+
+### Parameters of attempt a5 with their status
+
+<!-- calc:a5_terms -->
+| Parameter | Value | Status | Source, formula or what would source it |
+| --- | --- | --- | --- |
+| `a5.rear_clearance_mm` | 2.8 | SOURCED | S-DS: DS-33: the depth stays about 40 mm, with 2.8 mm of rear clearance |
+| `a5.fixing_distance_rule_mm` | 90.0 | SOURCED | S-DS: DS-66: no point of K farther than 90 mm from a fixing |
+| `a5.sleeve_clamp_rule_mm` | 70.0 | SOURCED | S-DS: DS-66: a printed sleeve is clamped only where no other fixing of K lies within 70 mm |
+| `a5.far_points_xy` | [[4, 247], [4, 292]] | SOURCED | S-DS: DS-70: farthest point (4, 247) at 93.6 mm; lower left corner (4, 292) at 90.4 mm |
+| `a5.hypothetical_fixing_xy` | [6.5, 243] | ASSUMED | to source: Not a site; for comparison only |
+| `a5.sleeve_error_mm` | {'printer': 0.2, 'worst_case': 0.55, 'too_long': 0.15} | DERIVED | printer: a3.sleeve_print_tol_mm; worst case: -sleeve_length_allowance + post_length_tol + print tol (0.2 + 0.15 + 0.2); too long: print tol - allowance - post (0.2 - 0.2 + 0.15) |
+| `a5.grillage_step_mm` | 4.0 | ASSUMED | to source: Plate finite-element model in ST-12 |
+| `a5.grillage_stiffness_factor` | 0.85 | DERIVED | 1 - poisson_fr4: beams of D (1 - nu) per unit width and no torsion make a structure softer than the plate for every displacement field, so its compliance is an upper bound |
+| `a5.corner_sleeve_options` | {'smaller_outer_diameter_mm': 5.0, 'inward_move_mm': 1.0} | ASSUMED | to source: Design authority choice |
+<!-- /calc:a5_terms -->
 
 ## Heights move to DS-33; the JL, JR and adapter insertions shrink by 0.20 mm and the toggle gap grows by 0.20 mm
 
@@ -681,4 +816,5 @@ This is a definition of what a coupon must measure. It is not a specification, a
 ## Checks: unit tests and the calculator run; every physical check NOT RUN
 
 - Run: `python3 scripts/checks/frozen_studies.py discover scripts/stack/mechanics`, the calculator twice with a clean tree, and `pnpm circuit:check`.
+- NOT RUN: a plate finite-element model of K (none in this task's tools; ST-12), which would bound the strain under a push from above.
 - NOT RUN: fit, force, strain, deflection, take-up, print length and nut torque on real parts. No print, part or board exists. A coupon was declined by the owner (DS-35), and building anything is outside this task.
