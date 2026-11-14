@@ -240,3 +240,7 @@ Every listed cable is LX and every part is extended. 1.00 mm latching parts with
 
 - UNAVAILABLE: the 52271 drawing through LCSC and Mouser (both returned HTML, no PDF).
 - UNSOURCED: current per conductor of LX cables; mating cycles of every Chinese-maker part; geometry of the Megastar and XUNPU drawings (outlined glyphs, not yet read); a 0.5 mm LX drawing; any 1.00 mm vertical part of 5.0 mm or less; listings outside the captured searches.
+
+ST-01f fills these rows. The Megastar dual-contact part is read: rear flip, 2.0 mm closed and 3.1 mm open, 4 to 30 circuits, tail 0.30 ± 0.03 mm, no current or cycle rating. The LX 0.5 mm cable (A771) has a 0.3 ± 0.03 mm tail and 0.035 × 0.3 mm conductors, and its width is 0.5 (n + 1) mm. One conductor 50 mm long is 37.9 mΩ at 1.00 mm and 82.1 mΩ at 0.5 mm (DERIVED, ρ = 1.724e-8 Ω m). The two XUNPU 0.5 mm drawings remain UNSOURCED, because the vendor PDF is malformed and a re-fetch returned identical bytes.
+
+ST-01g: two readable 0.5 mm 40-circuit flip-lock bottom-contact parts. Bossie BX-FPC05-2H40PX (C18077651, stock 7567) is rated 0.5 A and 50 V, 2.0 mm high, with no mating cycles stated; its printed 40-pin row is inconsistent. Hirose FH12-40S-0.5SH(55) (C202114, stock 11278, extended) is rated 0.5 A DC (70 % with all contacts loaded) and 50 V AC, for 20 insertion cycles, 2.0 mm high, and takes a 0.3 ± 0.05 mm tail 0.5 (n + 1) mm wide. The open-actuator height and the side on which it opens are UNSOURCED for both.

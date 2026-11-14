@@ -1,5 +1,6 @@
 """Unit tests for the ST-04 power-post calculator: no network, no KiCad."""
 import copy
+import hashlib
 import json
 import sys
 import tempfile
@@ -88,7 +89,7 @@ class StackScreens(unittest.TestCase):
             self.assertEqual(j['post_code'], 'R30-1011702' if j['front_board'] == 'P' else 'R30-1011902')
         by = {j['id']: j for j in js}
         self.assertEqual(by['POWER-P-AGND2']['K_xy'], [98.5, 175.0])
-        self.assertEqual(by['POWER-JR-AGND3']['K_xy'], [279.0, 160])
+        self.assertEqual(by["POWER-JR-AGND3"]["K_xy"], [278.5, 160])
         counts = self.d['terms']['header_agnd_positions']['value']
         self.assertEqual(sum(counts.values()), 264)
 
@@ -127,6 +128,38 @@ class Continuation(unittest.TestCase):
         self.assertTrue(all(r['new_mm'] >= r['old_mm'] - 1e-9 for r in rows))
 
 
+class AttemptA2(unittest.TestCase):
+    def test_ds44_jr_lands_at_half_millimetre(self):
+        d = pp.load()
+        for j in d['joints']:
+            if j['front_board'] == 'JR' and j['carried_by']:
+                self.assertAlmostEqual(j['K_xy'][0] - j['present_front_xy'][0], 0.5, places=9)
+                self.assertEqual(j['K_xy'], j['front_xy'])
+
+    def test_decision_rows_pin(self):
+        src = pp.load()['sources']['S-DEC']
+        text = (pp.ROOT / src['path']).read_text().splitlines(True)
+        rows = [next(line for line in text if line.startswith(f'| {r} |')) for r in src['rows']]
+        self.assertEqual(hashlib.sha256(''.join(rows).encode()).hexdigest(), src['rows_sha256'])
+
+    def test_repository_sources_are_current(self):
+        """Every repository source is pinned by its file, its cited rows or its cited object, and the pin holds."""
+        for sid, src in pp.load()['sources'].items():
+            if not sid.startswith('S-'):
+                continue
+            with self.subTest(source=sid):
+                data = (pp.ROOT / src['path']).read_bytes()
+                if 'sha256' in src:
+                    self.assertEqual(hashlib.sha256(data).hexdigest(), src['sha256'])
+                elif 'locator_sha256' in src:
+                    cited = json.loads(data)
+                    for key in src['locator'].split('.'):
+                        cited = cited[key]
+                    canonical = json.dumps(cited, sort_keys=True, separators=(',', ':'))
+                    self.assertEqual(hashlib.sha256(canonical.encode()).hexdigest(), src['locator_sha256'])
+                else:
+                    self.assertIn('rows_sha256', src)
+
 class Readme(unittest.TestCase):
     def test_readme_tables_are_current(self):
         d = pp.load()
@@ -144,7 +177,7 @@ class Readme(unittest.TestCase):
         env = json.loads(pp.ENVELOPES.read_text())
         text = pp.README.read_text()
         hits = {m['ref'] for b in env['boards'].values() for m in b['hits']} & locked
-        # At the DA-02 ruled positions the clip LEDs and the pot are clear; the locked jacks enter (NEEDS_DESIGN).
+        # At the DS-44 positions the jack courtyards enter only the K-facing keep-out (through-hole, both faces); see README.
         self.assertEqual(hits, {'J1410', 'J1510', 'J1610', 'J1710'})
         for ref in sorted(hits):
             self.assertIn(ref, text)

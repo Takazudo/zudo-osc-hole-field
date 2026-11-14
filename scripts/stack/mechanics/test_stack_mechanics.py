@@ -1,11 +1,13 @@
-"""Tests for the ST-03 stack-mechanics calculator (attempt a2). No network, no KiCad."""
+"""Tests for the ST-03 stack-mechanics calculator (attempts a2 to a4). No network, no KiCad."""
 from pathlib import Path
 import hashlib
 import json
 import math
+import re
 import unittest
 
 import stack_mechanics as sm
+import stack_mechanics_a3 as a3mod
 import stack_mechanics_geometry as geo
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -13,6 +15,23 @@ ROOT = Path(__file__).resolve().parents[3]
 
 def sha(path):
     return hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
+
+
+def sha_rows(path, rows):
+    """Digest of the cited decision rows only: the decision log gains rows with every record."""
+    text = (ROOT / path).read_text()
+    picked = []
+    for row in rows:
+        found = re.findall(r'^\| %s \|.*$' % re.escape(row), text, re.M)
+        assert len(found) == 1, (row, len(found))
+        picked.append(found[0])
+    return hashlib.sha256('\n'.join(picked).encode()).hexdigest()
+
+
+def pin_is_current(source):
+    if 'rows' in source:
+        return sha_rows(source['path'], source['rows']) == source['rows_sha256']
+    return sha(source['path']) == source['sha256']
 
 
 class Base(unittest.TestCase):
@@ -151,7 +170,7 @@ class TestTerms(Base):
     def test_repository_sources_unchanged(self):
         for sid, s in self.data['sources'].items():
             if 'path' in s:
-                self.assertEqual(sha(s['path']), s['sha256'], sid)
+                self.assertTrue(pin_is_current(s), sid)
             if 'bundle' in s:
                 self.assertEqual(sha(s['bundle']), s['bundle_sha256'], sid)
 
@@ -204,6 +223,147 @@ class TestPhysics(Base):
         xs = self.c._xs
         cdf = sm.worst_of_n_cdf((sm.np.array([1.0]), 0), sm.convolve([0.2]), 1, xs)
         self.assertTrue(math.isclose(sm.quantile(xs, cdf, 0.5), 0.1, abs_tol=0.002))
+
+
+class TestAttemptA3(Base):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.a = a3mod.A3(cls.c)
+
+    def test_heights_reproduce_ds33(self):
+        a = self.a
+        self.assertEqual(a.p['K_face_z_mm'], -30.6)
+        self.assertEqual(a.p['gap_mm'], {'O': 13.0, 'P': 17.0, 'JL': 19.0, 'JR': 19.0, 'EL': 7.2})
+        for joint, (opn, close) in {'JL': (0.72, 1.47), 'P': (0.74, 1.45), 'O': (1.23, 0.96)}.items():
+            h = a.heights(joint, 'a3')
+            self.assertAlmostEqual(h['open'], opn, places=2, msg=joint)
+            self.assertAlmostEqual(h['close_window'], close, places=2, msg=joint)
+
+    def test_a2_inputs_are_frozen(self):
+        self.assertEqual(self.data['parameters']['da01']['gap_mm']['value']['JL'], 18.8)
+        self.assertEqual(self.c.v('post_length_tol'), 0.05)
+
+    def test_toggle_chain(self):
+        a = self.a
+        r = a.toggle_cases()
+        self.assertAlmostEqual(r[0]['nominal'], 1.36, places=3)
+        self.assertAlmostEqual(r[0]['wc'], 1.10, places=3)
+        self.assertAlmostEqual(r[1]['wc'], r[0]['wc'])
+        self.assertTrue(math.isclose(r[0]['rss'], 0.42, abs_tol=0.005))
+        self.assertAlmostEqual(sum(self.c.p_mismatch_terms()), 0.90, places=3)
+        lo, hi = a.p['toggle_window_mm']
+        self.assertLess(r[0]['nominal'] - r[0]['wc'], lo)
+        self.assertGreater(r[0]['nominal'] + r[0]['wc'], hi)
+        self.assertGreater(r[0]['nominal'] - r[0]['rss'], lo)
+
+    def test_adapters(self):
+        a = self.a
+        self.assertEqual(len(a.g['adapter_pairs']), 6)
+        final = a.adapter_xy('final')
+        self.assertLess(final['median'], 0.27)
+        self.assertGreater(final['median'], self.c.p['misalignment_mm']['final']['along'])
+        self.assertGreater(a.adapter_xy('capture')['median'], self.c.p['misalignment_mm']['initial']['along'])
+        _, _, rss = a.selector_misfit()
+        self.assertTrue(math.isclose(rss, 0.352, abs_tol=0.002))
+
+    def test_k_on_thirty_fixings(self):
+        counts = self.a.g['fixing_counts']
+        self.assertEqual(sum(v for k, v in counts.items() if k.startswith('post')), 18)
+        self.assertEqual(sum(v for k, v in counts.items() if k.startswith('kept support')), 12)
+
+    def test_item1_regions_reach_no_point_outside_k(self):
+        outline = geo.load_json(geo.SOURCES['stack_candidate'])['candidate']['planes']['K']['outline']
+        for key in ('posts_only', 'posts_and_sleeves'):
+            reg = self.a.g['k_regions'][key]
+            bay = reg['interior_bay']
+            self.assertTrue(geo.inside(bay['centre_xy'], outline))
+            self.assertLessEqual(bay['radius_mm'], geo.boundary_dist(bay['centre_xy'], outline) + 1e-6, key)
+            self.assertLess(reg['edge_region_low_y']['point_xy'][1], reg['post_rows_y_mm'][0])
+            self.assertGreater(reg['edge_region_high_y']['point_xy'][1], reg['post_rows_y_mm'][-1])
+        self.assertTrue(math.isclose(self.a.g['k_regions']['posts_only']['interior_bay']['radius_mm'], 79.6, abs_tol=0.1))
+        self.assertTrue(math.isclose(self.a.g['k_regions']['posts_only']['edge_region_low_y']['span_mm'], 156.2, abs_tol=0.1))
+
+    def test_item1_push_and_weight(self):
+        a, lim = self.a, self.c.dv('strain_design_limit')
+        region, _, _, per_n = a.k_governing('posts_only', ('push', 1.0))
+        self.assertIn('free-edge', region)
+        self.assertTrue(math.isclose(per_n * 1e6, 57.3, abs_tol=0.2))
+        self.assertLess(a.k_governing('posts_only', ('push', 5.0))[3], lim)
+        self.assertGreater(a.k_governing('posts_only', ('push', 20.0))[3], lim)
+        self.assertLess(a.k_governing('posts_only', ('g', a.p['handling_g']))[3], lim)
+        self.assertTrue(math.isclose(a.k_governing('posts_only', ('g', 1.0))[3] * 1e6, 81, abs_tol=1))
+        self.assertIn('1,146 microstrain', self.readme)
+
+    def test_item2_posts_only_bow_is_larger(self):
+        a = self.a
+        for p in a.g['adapter_pairs']:
+            self.assertGreaterEqual(p['d_post_mm'], p['d_fixing_mm'])
+        self.assertGreater(a.adapter_z('posts_only')[0][1], a.adapter_z('posts_and_sleeves')[0][1])
+        o1 = [p for p in a.g['adapter_pairs'] if p['id'] == 'K-O1-1'][0]
+        self.assertEqual(o1['nearest_fixing'], 'K-SUP-3')
+        self.assertTrue(o1['nearest_post'].startswith('POWER-'))
+
+    def test_item3_k_play_is_one_draw(self):
+        a = self.a
+        cap, fin = a.adapter_xy('capture'), a.adapter_xy('final')
+        for r, med, p95 in ((cap, 0.577, 0.886), (fin, 0.176, 0.285)):
+            self.assertTrue(math.isclose(r['median'], med, abs_tol=0.003))
+            self.assertTrue(math.isclose(r['p95'], p95, abs_tol=0.003))
+        limits, _ = a.adapter_board_limits('capture')
+        self.assertNotIn('K against the panel on its post screws', [n for n, _ in limits])
+
+    def test_item4_adapter_z_both_sides(self):
+        import stack_mechanics_a3 as m
+        v = m.adapter_z_verdict(self.a, 'posts_only')
+        self.assertTrue(math.isclose(v['wc_miss']['open'], 0.322, abs_tol=0.002))
+        self.assertTrue(math.isclose(v['wc_miss']['close'], 0.672, abs_tol=0.002))
+        self.assertLess(v['rss_miss']['open'], 0)
+        self.assertLess(v['rss_miss']['close'], 0)
+        self.assertIn('misses the opening side by 0.322', self.readme)
+
+    def test_item5_inside_is_orientation_free(self):
+        square = [[0, 0], [10, 0], [10, 10], [0, 10]]
+        for poly in (square, square[::-1]):
+            for pt in ([0, 5], [10, 5], [5, 0], [5, 10], [5, 5], [0, 0], [10, 10]):
+                self.assertTrue(geo.inside(pt, poly), (pt, poly))
+            self.assertFalse(geo.inside([11, 5], poly))
+
+    def test_sleeve_chain_and_rule(self):
+        a, lim = self.a, self.c.dv('strain_design_limit')
+        lo, hi = a.sleeve_clearance(False)
+        self.assertAlmostEqual(lo, -0.15)
+        self.assertAlmostEqual(hi, 0.55)
+        lo, hi = a.sleeve_clearance(True)
+        self.assertAlmostEqual(lo, 0.03)
+        self.assertAlmostEqual(hi, 0.32)
+        window = a.p['sleeve_sort_window_mm']
+        self.assertIn(f'{window[0]:.2f} to {window[1]:.2f} mm shorter than the posts', self.readme)
+        shortest = min(s['d_fixing_mm'] for s in a.g['sleeves'])
+        self.assertEqual(shortest, 22.0)
+        eighth = a.strain_pull(a.turn_travel(1 / 8), shortest)
+        self.assertGreater(eighth, lim)
+        self.assertTrue(math.isclose(eighth * 1e6, 620, abs_tol=1))
+        self.assertTrue(math.isclose(a.strain_pull(0.15, shortest) * 1e6, 1488, abs_tol=1))
+        self.assertTrue(math.isclose(a.strain_pull(0.55, shortest) * 1e6, 5455, abs_tol=1))
+        self.assertLess(c_allow := self.c.delta_allow(lim, shortest), a.turn_travel(1 / 8))
+        self.assertGreater(c_allow, 0)
+        for text in ('620 microstrain', '1,488 microstrain', '5,455 microstrain', 'until the washer just touches K, then stop'):
+            self.assertIn(text, self.readme)
+
+    def test_pins_are_current(self):
+        for sid in ('S-GEOM', 'S-PLAN', 'S-SPACER', 'S-DS', 'S-DA03'):
+            self.assertTrue(pin_is_current(self.data['sources'][sid]), sid)
+
+    def test_a3_parameters_have_a_basis(self):
+        for name, t in self.data['parameters']['a3'].items():
+            self.assertIn(t['status'], self.data['status_vocabulary'], name)
+            if t['status'] == 'SOURCED':
+                self.assertTrue(t.get('source') and t.get('locator'), name)
+            elif t['status'] == 'DERIVED':
+                self.assertTrue(t.get('formula'), name)
+            else:
+                self.assertTrue(t.get('reason') and t.get('to_source'), name)
 
 
 if __name__ == '__main__':

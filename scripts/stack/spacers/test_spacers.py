@@ -1,14 +1,21 @@
 """Unit tests for the printed spacer models: the retained STL files are read back and measured."""
+import contextlib
+import copy
+import io
 import json
 import math
 import struct
 import sys
+import tempfile
 import unittest
 from collections import Counter
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import spacers as sp  # noqa: E402
+
+REVIEW = sp.ROOT / 'circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-03.md'
 
 
 def read_stl(data):
@@ -45,6 +52,12 @@ def volume(tris):
                 + a[2] * (b[0] * c[1] - b[1] * c[0])) for a, b, c in tris) / 6
 
 
+def quiet(call, *args):
+    """Run a command-line entry with its output captured, so a test run stays readable."""
+    with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+        return call(*args)
+
+
 class RetainedModels(unittest.TestCase):
     def setUp(self):
         self.spec = sp.load()
@@ -63,6 +76,7 @@ class RetainedModels(unittest.TestCase):
             tris, normals = read_stl(data)
             edges = Counter(e for a, b, c in tris for e in ((a, b), (b, c), (c, a)))
             self.assertTrue(all(n == 1 and edges[(q, p)] == 1 for (p, q), n in edges.items()), name)
+            self.assertGreater(volume(tris), 0, name)
             for (a, b, c), stored in zip(tris, normals):
                 u, v = [b[i] - a[i] for i in range(3)], [c[i] - a[i] for i in range(3)]
                 n = (u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0])
@@ -79,14 +93,19 @@ class RetainedModels(unittest.TestCase):
             self.assertEqual(len(tris), 8 * self.sleeve['facets'])
             self.assertEqual(shells(tris), 1)
             self.assertEqual({round(z, 4) for _, _, z in points}, {0.0, round(length, 4)})
-            radii = {round(math.hypot(x, y), 3) for x, y, _ in points}
-            self.assertEqual(radii, {round(ri, 3), round(ro, 3)})
+            radii = [math.hypot(x, y) for x, y, _ in points]
+            self.assertTrue(all(min(abs(r - ri), abs(r - ro)) < 1e-3 for r in radii), m['id'])
+            self.assertTrue(any(abs(r - ri) < 1e-3 for r in radii) and any(abs(r - ro) < 1e-3 for r in radii), m['id'])
             self.assertAlmostEqual(volume(tris), self.prism_volume(length), delta=0.05)
 
     def test_no_sleeve_is_longer_than_its_gap(self):
-        self.assertLess(self.spec['length_allowance_mm'], 0)
+        allowance = self.spec['length_allowance_mm']
+        self.assertLess(allowance, 0)
         for m in self.spec['members']:
-            self.assertAlmostEqual(sp.length_mm(self.spec, m), m['gap_mm'] - 0.2, places=6)
+            tris, _ = read_stl(self.files[m['file']])
+            top = max(v[2] for t in tris for v in t)
+            self.assertLess(top, m['gap_mm'], m['id'])
+            self.assertAlmostEqual(top, m['gap_mm'] + allowance, places=4, msg=m['id'])
 
     def test_plate_holds_the_whole_set_without_touching(self):
         tris, _ = read_stl(self.files[self.spec['plate']['file']])
@@ -95,12 +114,106 @@ class RetainedModels(unittest.TestCase):
         self.assertEqual(shells(tris), len(places))
         centres = [(x, y) for _, x, y in places]
         nearest = min(math.dist(a, b) for i, a in enumerate(centres) for b in centres[i + 1:])
-        self.assertGreaterEqual(nearest - self.sleeve['outer_diameter_mm'], 4.0)
+        self.assertGreaterEqual(nearest - self.sleeve['outer_diameter_mm'], self.spec['plate']['min_gap_mm'])
         self.assertAlmostEqual(volume(tris), sum(self.prism_volume(sp.length_mm(self.spec, m)) for m, _, _ in places), delta=0.5)
 
-    def test_sleeve_fits_the_screw_and_the_keep_out(self):
-        self.assertGreater(self.sleeve['bore_diameter_mm'], 3.0)
-        self.assertLessEqual(self.sleeve['outer_diameter_mm'] / 2, 3.75)
+    def test_sleeve_is_the_one_the_design_review_states(self):
+        review = REVIEW.read_text()
+        self.assertGreater(self.sleeve['bore_diameter_mm'], self.sleeve['screw_nominal_diameter_mm'])
+        self.assertLessEqual(self.sleeve['outer_diameter_mm'] / 2, self.sleeve['keep_out_radius_mm'])
+        for token in ('outer diameter %s mm' % sp.fmt_mm(self.sleeve['outer_diameter_mm']),
+                      '%s mm keep-out radius' % sp.fmt_mm(self.sleeve['keep_out_radius_mm']),
+                      'bore %s mm' % sp.fmt_mm(self.sleeve['bore_diameter_mm'])):
+            self.assertIn(token, review)
+
+
+class RejectedParameters(unittest.TestCase):
+    """A parameter list that cannot give a printable set is refused with the defect named."""
+
+    def setUp(self):
+        self.spec = sp.load()
+
+    def found(self, edit):
+        spec = copy.deepcopy(self.spec)
+        edit(spec)
+        return ' / '.join(sp.problems(spec))
+
+    def test_the_retained_list_has_no_problem(self):
+        self.assertEqual(sp.problems(self.spec), [])
+
+    def test_swapped_diameters_are_refused(self):
+        def swap(spec):
+            s = spec['sleeve']
+            s['outer_diameter_mm'], s['bore_diameter_mm'] = s['bore_diameter_mm'], s['outer_diameter_mm']
+        self.assertIn('must exceed the bore', self.found(swap))
+
+    def test_a_bore_the_screw_cannot_pass_is_refused(self):
+        self.assertIn('must exceed the screw diameter', self.found(lambda spec: spec['sleeve'].update(bore_diameter_mm=0)))
+
+    def test_too_few_facets_are_refused(self):
+        self.assertIn('facets', self.found(lambda spec: spec['sleeve'].update(facets=2)))
+
+    def test_a_sleeve_outside_the_keep_out_is_refused(self):
+        self.assertIn('keep-out radius', self.found(lambda spec: spec['sleeve'].update(outer_diameter_mm=7.6)))
+
+    def test_a_sleeve_as_long_as_its_gap_is_refused(self):
+        self.assertIn('never longer than its gap', self.found(lambda spec: spec.update(length_allowance_mm=0.0)))
+
+    def test_sites_on_the_wrong_board_are_refused(self):
+        def move(spec):
+            spec['members'][0]['sites'] = {'P': 4, 'JR': 4}
+            spec['members'][1]['sites'] = {'JL': 4}
+        self.assertIn('are not the front boards of', self.found(move))
+
+    def test_sites_that_do_not_add_up_are_refused(self):
+        self.assertIn('do not add up', self.found(lambda spec: spec['members'][0].update(quantity=9)))
+
+    def test_a_crowded_plate_is_refused(self):
+        self.assertIn('between pieces', self.found(lambda spec: spec['plate'].update(pitch_mm=9.0)))
+
+    def test_load_names_the_file_and_the_defect(self):
+        spec = copy.deepcopy(self.spec)
+        spec['sleeve']['facets'] = 2
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'broken-set.json'
+            path.write_text(json.dumps(spec))
+            with self.assertRaisesRegex(ValueError, 'broken-set.json: sleeve.facets'):
+                sp.load(path)
+
+    def test_a_header_over_80_bytes_is_refused(self):
+        with self.assertRaisesRegex(ValueError, 'at most 80 bytes'):
+            sp.stl_bytes('x' * 40, [])
+        with self.assertRaisesRegex(ValueError, 'ASCII'):
+            sp.stl_bytes('gap-µ', [])
+
+    def test_a_label_never_rounds_the_modelled_length(self):
+        self.assertEqual([sp.fmt_mm(x) for x in (19.0, 18.8, 18.75)], ['19.0', '18.8', '18.75'])
+
+
+class CommandLine(unittest.TestCase):
+    def test_check_passes_on_the_retained_models(self):
+        self.assertEqual(quiet(sp.main, ['--check']), 0)
+
+    def test_an_unknown_flag_stops_before_anything_is_written(self):
+        with tempfile.TemporaryDirectory() as folder, mock.patch.object(sp, 'OUT', Path(folder) / 'generated'):
+            with self.assertRaises(SystemExit) as stop:
+                quiet(sp.main, ['--chek'])
+            self.assertEqual(stop.exception.code, 2)
+            self.assertFalse(sp.OUT.exists())
+
+    def test_writing_removes_a_model_that_is_no_longer_listed(self):
+        with tempfile.TemporaryDirectory() as folder, mock.patch.object(sp, 'OUT', Path(folder)):
+            (sp.OUT / 'stack-spacer-for-21mm-gap.stl').write_bytes(b'superseded')
+            self.assertEqual(quiet(sp.main, ['--check']), 1)
+            self.assertEqual(quiet(sp.main, []), 0)
+            self.assertEqual(sorted(p.name for p in sp.OUT.iterdir()), sorted(sp.outputs()))
+            self.assertEqual(quiet(sp.main, ['--check']), 0)
+
+    def test_writing_leaves_a_foreign_file_alone(self):
+        with tempfile.TemporaryDirectory() as folder, mock.patch.object(sp, 'OUT', Path(folder)):
+            (sp.OUT / 'notes.txt').write_text('kept')
+            self.assertEqual(quiet(sp.main, []), 1)
+            self.assertEqual([p.name for p in sp.OUT.iterdir()], ['notes.txt'])
 
 
 class AgreementWithTheStack(unittest.TestCase):
@@ -114,20 +227,37 @@ class AgreementWithTheStack(unittest.TestCase):
             for pair in m['between']:
                 self.assertEqual(gaps[pair]['gap_mm'], m['gap_mm'], pair)
 
-    def test_counts_are_the_kept_supports(self):
+    def test_each_length_serves_the_kept_supports_of_its_own_boards(self):
         kept = Counter(f['front_board'] for f in self.candidate['fixings'] if f['kind'] == 'kept support')
-        listed = Counter()
+        served = Counter()
         for m in self.spec['members']:
-            listed.update(m['sites'])
-            self.assertEqual(sum(m['sites'].values()), m['quantity'])
-        self.assertEqual(dict(listed), dict(kept))
+            self.assertEqual(sorted(m['sites']), sorted(pair.split('/')[0] for pair in m['between']), m['id'])
+            self.assertEqual(sum(m['sites'].values()), m['quantity'], m['id'])
+            for board, count in m['sites'].items():
+                self.assertEqual(kept[board], count, (m['id'], board))
+                served[board] += 1
+        self.assertEqual(dict(served), {board: 1 for board in kept})
 
     def test_readme_states_the_same_figures(self):
         text = (sp.ROOT / 'design/stack/spacers/README.md').read_text()
+        rows = [[cell.strip() for cell in line.split('|')] for line in text.splitlines() if line.startswith('| [')]
         for m in self.spec['members']:
-            for token in (m['file'], '%.1f mm' % m['gap_mm'], '%.1f mm' % sp.length_mm(self.spec, m)):
-                self.assertIn(token, text)
-        self.assertIn(self.spec['plate']['file'], text)
+            (row,) = [cells for cells in rows if m['file'] in cells[1]]
+            self.assertEqual(row[3], '%s mm' % sp.fmt_mm(m['gap_mm']), m['id'])
+            self.assertEqual(row[4], '%s mm' % sp.fmt_mm(sp.length_mm(self.spec, m)), m['id'])
+            self.assertEqual(row[5].split()[0], str(m['quantity']), m['id'])
+            self.assertEqual(row[6], str(m['spares']), m['id'])
+            if len(m['sites']) > 1:
+                for board, count in m['sites'].items():
+                    self.assertIn('%s %d' % (board, count), row[5])
+            self.assertIn('%d sleeves for the %s mm gap in rows of %d'
+                          % (m['quantity'] + m['spares'], sp.fmt_mm(m['gap_mm']), m['plate_columns']), text)
+        sleeve = self.spec['sleeve']
+        for token in (self.spec['plate']['file'],
+                      '%s mm outer diameter' % sp.fmt_mm(sleeve['outer_diameter_mm']),
+                      '%s mm bore' % sp.fmt_mm(sleeve['bore_diameter_mm']),
+                      '%s mm short' % sp.fmt_mm(-self.spec['length_allowance_mm'])):
+            self.assertIn(token, text)
 
 
 if __name__ == '__main__':

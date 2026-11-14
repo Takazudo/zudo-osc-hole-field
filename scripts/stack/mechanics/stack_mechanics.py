@@ -17,6 +17,8 @@ import sys
 
 import numpy as np
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 ROOT = Path(__file__).resolve().parents[3]
 DATA = ROOT / 'design/stack/mechanics/stackups.json'
 README = ROOT / 'design/stack/mechanics/README.md'
@@ -123,10 +125,10 @@ class Calc:
         return pair['positions_candidate']
 
     # ---------- heights (D3) ----------
-    def heights(self, joint):
-        gap = self.p['gap_mm'][joint]
+    def heights(self, joint, gap_mm=None, stacker_a_in=None):
+        gap = (gap_mm or self.p['gap_mm'])[joint]
         tip = self.p['stacker_tip_mm'][joint]
-        a_mm = self.p['stacker_A_in'][joint] * 25.4
+        a_mm = (stacker_a_in or self.p['stacker_A_in'])[joint] * 25.4
         if joint == 'EL':
             sock = self.p['socket_height_mm']['EL']
             ins = tip + sock - gap
@@ -649,8 +651,11 @@ RENDERERS = {
 
 
 def render_all(data=None):
+    import stack_mechanics_a3 as a3
     c = Calc(data or load())
-    return {name: fn(c) for name, fn in RENDERERS.items()}
+    blocks = {name: fn(c) for name, fn in RENDERERS.items()}
+    blocks.update({name: fn(c) for name, fn in a3.RENDERERS.items()})
+    return blocks
 
 
 BLOCK = re.compile(r'(<!-- calc:(\w+) -->\n)(?:(.*?)\n)?(<!-- /calc:\2 -->)', re.S)
