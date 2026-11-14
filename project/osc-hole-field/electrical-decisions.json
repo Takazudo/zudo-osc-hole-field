@@ -231,5 +231,18 @@
     "source": "Owner acceptance in the project thread, relayed by the project coordinator; zudo-pd D1 contract-route note 2026-11-14",
     "standard": "design/architecture-278/integration/power-contract/pd-interface-20v.md section 5 (E21 row)",
     "scope": "Changes only the no-load start-up slope wording of the OSC-PD interface. It changes no OSC schematic, PCB, BOM or part, waives no other contract row, and does not cover injection from patched signals while the rails are low (R-INJ, #59)."
+  },
+  {
+    "id": "E22",
+    "topic": "Shutdown load bounds, numeric \"absent\" and limiter let-through (PD20 Board B20 D2/D3)",
+    "authority": "USER-CONFIRMED DECISION",
+    "date": "2026-11-14",
+    "decision": "(1) D2 load: per rail and at any voltage during decay, OSC load current is between 0 mA and the section 0 maximum (2100 / 2000 / 500 mA), independently per rail; the PD discharge must meet the skew rows across per-rail load corners, at minimum 0 and canonical planning (1534.8 / 1435.6 / 224.3 mA) in all combinations. (2) Absent: a rail is absent when its magnitude is at or below its section 3 discharge level (+12 V <= 0.5 V, -12 V <= 0.6 V, +5 V <= 0.6 V); the about-1.5 V +5 V hold threshold is unchanged. (3) D3: the maximum-delivered row stays literal (let-through included); the PD side states worst-case let-through per rail (peak, duration above the maximum, I2t, detection-to-off), and an amended reading is a later owner decision checked against the selected inlet connector and cable.",
+    "rationale": "No OSC current measurement or below-minimum quiescent specification exists, so only the contract bounds can be committed. No bundle fact sets an absent level; the discharge level unifies discharged and absent and does not weaken any part-fact rule. OSC holds no part-level fault energy figure and the inlet connector is not selected, so the let-through envelope cannot yet be bounded.",
+    "status": "RECORDED as interface-contract wording; nothing measured; the driver interval (P59-A) and the TMUX7412F F6 state remain open on the OSC side",
+    "confirmation_utc": "2026-11-14T02:20Z",
+    "source": "Owner acceptance of the OSC recommendations for zudo-pd questions 6-8, relayed by the project coordinator",
+    "standard": "design/architecture-278/integration/power-contract/pd-interface-20v.md sections 1 and 3 (E22 rows)",
+    "scope": "Changes only OSC-PD interface wording. No OSC schematic, PCB, BOM or part change; no let-through amendment is adopted."
   }
 ]
