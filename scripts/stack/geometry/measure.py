@@ -76,17 +76,18 @@ def envelope_fits(ci, obs, land, positions):
     fps = _fps(ci)
     out = {}
     for contacts, n, label in ((3, positions['K/P'], 'GH3'), (7, positions['K/O'], 'GH7'), (8, positions['JL/K'], 'GH8')):
-        w, l = sg.envelope(land, n, 'front')
+        env = {half: sg.envelope(land, n, half) for half in ('front', 'K')}
         ok = total = 0
         fails = []
         for h, ends in _harness_sites(ci, fps, contacts):
-            good = all(_fit(obs, bk, f, w, l, (f['courtyard'][2] - f['courtyard'][0]) >= (f['courtyard'][3] - f['courtyard'][1]))
+            good = all(_fit(obs, bk, f, *env['K' if bk == 'K' else 'front'],
+                            (f['courtyard'][2] - f['courtyard'][0]) >= (f['courtyard'][3] - f['courtyard'][1]))
                        for bk, f in ends)
             total += 1
             ok += int(good)
             if not good:
                 fails.append(h['id'])
-        out[label] = {'positions': n, 'envelope_mm': [w, l], 'sites': total, 'fit_in_place_both_boards': ok, 'fails': fails}
+        out[label] = {'positions': n, 'envelope_mm': {half: list(v) for half, v in env.items()}, 'sites': total, 'fit_in_place_both_boards': ok, 'fails': fails}
     return out
 
 
@@ -178,7 +179,7 @@ def power_lands(ci, cand, rad):
     for p in cand['posts']:
         x, y = p['K_land']
         per.append({'post': p['id'], 'K_land': p['K_land'], 'K_B': _near(k, x, y, rad, 'B'), 'K_F': _near(k, x, y, rad, 'F')})
-    moved = [p for p in cand['posts'] if p['present_offset_mm'] > 0]
+    moved = [p for p in cand['posts'] if p['present_offset_mm'] > sg.OFFSET_TOL_MM]
     alt = {'F': set(), 'B': set()}
     for p in moved:
         x, y = p['front_land']
@@ -201,7 +202,7 @@ def power_lands(ci, cand, rad):
         'per_land': per,
         'K_lands_moved_to_front_land_y': {'F': len(alt['F']), 'B': len(alt['B'])},
         'front_lands': front,
-        'coaxial_pairs': sum(1 for p in cand['posts'] if p['present_offset_mm'] == 0),
+        'coaxial_pairs': sum(1 for p in cand['posts'] if p['present_offset_mm'] <= sg.OFFSET_TOL_MM),
         'offset_pairs': [{'post': p['id'], 'front_land': p['front_land'], 'K_land': p['K_land']} for p in moved],
     }
 
@@ -220,55 +221,61 @@ def tab_occupants(ci, cand):
     return out
 
 
+def _k_outline(ci):
+    return next(b for b in ci['partition']['boards'] if b['board_key'] == 'K')['outline']
+
+
 def k_area(ci, obs_all):
+    poly = _k_outline(ci)
+    m = ci['parameters']['board_edge_margin_mm']
+    xs = [q[0] for q in poly]
+    ys = [q[1] for q in poly]
     tot = ff = fb = 0
-    ol = ci['partition']['boards']
-    for x in range(5, 313):
-        for y in range(9, 291):
-            if x > 258 and y > 246:
+    for x in range(int(math.floor(min(xs))), int(math.ceil(max(xs)))):
+        for y in range(int(math.floor(min(ys))), int(math.ceil(max(ys)))):
+            r = [x, y, x + 1, y + 1]
+            if not sg.rect_inside_poly(r, poly, m):
                 continue
             tot += 1
-            r = [x, y, x + 1, y + 1]
             ff += not obs_all.hits('F', r)
             fb += not obs_all.hits('B', r)
     return {'cells_mm2': tot, 'free_F_percent': round(100 * ff / tot, 1), 'free_B_percent': round(100 * fb / tot, 1),
-            'scope': '1 mm cells, x 5..312, y 9..290 outside the notch; obstacle model with every K hole retained'}
+            'scope': '1 mm cells inside the partition K outline less the board-edge margin; obstacle model with every K hole retained'}
 
 
-def k_fragmentation(obs):
-    slots = 0
-    x = 182.0
-    while x <= 312.0:
-        y = 160.0
-        while y <= 180.0:
-            for lx, ly in ((13.0, 5.0), (5.0, 13.0)):
+def _probe(obs, poly, margin, region, sizes, faces):
+    """Count 0.5 mm grid centres in `region` where one of `sizes` fits inside K and is clear on every face."""
+    n = 0
+    x = region[0]
+    while x <= region[2] + 1e-9:
+        y = region[1]
+        while y <= region[3] + 1e-9:
+            for lx, ly in sizes:
                 r = [x - lx / 2, y - ly / 2, x + lx / 2, y + ly / 2]
-                if r[2] > 313.0:
+                if not sg.rect_inside_poly(r, poly, margin):
                     continue
-                if not obs.hits('F', r) and not obs.hits('B', r):
-                    slots += 1
+                if all(not obs.hits(f, r) for f in faces):
+                    n += 1
                     break
             y += 0.5
         x += 0.5
-    gh8 = 0
-    x = 182.0
-    while x <= 312.0:
-        y = 150.0
-        while y <= 200.0:
-            for lx, ly in ((13.94, 6.1), (6.1, 13.94)):
-                r = [x - lx / 2, y - ly / 2, x + lx / 2, y + ly / 2]
-                if r[2] > 313.5:
-                    continue
-                if not obs.hits('B', r):
-                    gh8 += 1
-                    break
-            y += 0.5
-        x += 0.5
-    return {'through_slot_13x5_positions_x182_312_y160_180': slots, 'GH8_B_positions_x182_312_y150_200': gh8}
+    return n
+
+
+def k_fragmentation(ci, obs):
+    poly = _k_outline(ci)
+    m = ci['parameters']['board_edge_margin_mm']
+    reg = ci['parameters']['K_probe_regions_mm']
+    return {
+        'through_slot_13x5_positions_x182_312_y160_180': _probe(obs, poly, m, reg['through_slot'], ((13.0, 5.0), (5.0, 13.0)), 'FB'),
+        'GH8_B_positions_x182_312_y150_200': _probe(obs, poly, m, reg['GH8_B'], ((13.94, 6.1), (6.1, 13.94)), 'B'),
+    }
 
 
 def trimmers(ci, obs_all, growth):
     k = ci['boards']['K']
+    poly = _k_outline(ci)
+    m = ci['parameters']['board_edge_margin_mm']
     tr = [f for f in k if 'TC33X' in f['lib']]
     front = sorted([f for f in tr if f['side'] == 'F'], key=lambda f: f['ref'])
     taken = []
@@ -282,9 +289,7 @@ def trimmers(ci, obs_all, growth):
         for dx, dy in cands:
             for ww, hh in ((w, h), (h, w)):
                 r = [cx + dx - ww / 2, cy + dy - hh / 2, cx + dx + ww / 2, cy + dy + hh / 2]
-                if not (4.5 < r[0] and r[2] < 313.5 and 8.5 < r[1] and r[3] < 291.5):
-                    continue
-                if r[2] > 257.5 and r[3] > 245.5:
+                if not sg.rect_inside_poly(r, poly, m):
                     continue
                 if not obs_all.hits('B', r) and all(not sg.inter(sg.grow(r, growth), t) for t in taken):
                     best = (dx, dy, r)
@@ -294,16 +299,26 @@ def trimmers(ci, obs_all, growth):
         if best:
             dist.append(math.hypot(best[0], best[1]))
             taken.append(best[2])
-    return {'F': len(front), 'B': sum(1 for f in tr if f['side'] == 'B'), 'relocatable_within_30mm': len(dist),
+    return {'F': len(front), 'B': sum(1 for f in tr if f['side'] == 'B'), 'relocatable_in_pm30mm_square_window': len(dist),
+            'search': 'centre shifts dx, dy each within +-30 mm on a 0.5 mm grid, nearest first; greedy in reference order',
             'median_move_mm': round(statistics.median(dist), 1) if dist else None,
             'longest_move_mm': round(max(dist), 1) if dist else None,
             'test_pads_F': sorted(f['ref'] for f in k if f['lib'].startswith('TestPad') and f['side'] == 'F')}
 
 
+def collar_overlap(x, y, r, poly):
+    """Width of a collar of radius r that lies over the outline, measured across the nearest edge (0 if clear)."""
+    inside = sg.point_in_poly(x, y, poly)
+    d = sg.distance_to_outline(x, y, poly)
+    if inside:
+        return round(min(2 * r, r + d), 3)
+    return round(max(0.0, r - d), 3)
+
+
 def supports(ci):
     sup = ci['partition']['supports']
     k_sup = [s for s in sup if s['board'] == 'K']
-    k_ol = [b for b in ci['partition']['boards'] if b['board_key'] == 'K'][0]['outline']
+    k_ol = _k_outline(ci)
     j = []
     for s in sup:
         if s['board'] in ('JL', 'JR'):
@@ -315,12 +330,9 @@ def supports(ci):
         if s['id'].startswith('P-SUP'):
             x, y = s['position_mm']
             r = s['collar_diameter_mm'] / 2
-            inside_k = sg.point_in_poly(x + r - 0.001, y, k_ol) or sg.point_in_poly(x - r + 0.001, y, k_ol)
-            edges = [q[0] for q in k_ol]
-            depth = None
-            if inside_k:
-                depth = round(min(abs((x + r) - e) if x < e else abs(e - (x - r)) for e in edges if abs(e - x) <= r), 3)
-            p.append({'support': s['id'], 'collar_over_K_outline': inside_k, 'overlap_mm': depth})
+            depth = collar_overlap(x, y, r, k_ol)
+            p.append({'support': s['id'], 'collar_over_K_outline': depth > 0, 'overlap_mm': depth if depth > 0 else None,
+                      'centre_inside_K': sg.point_in_poly(x, y, k_ol)})
     return {'J_near_K': j, 'P_collars': p, 'P_collars_over_K': sum(1 for e in p if e['collar_over_K_outline'])}
 
 
@@ -357,33 +369,26 @@ def today(ci):
 
 def standoffs(ci, edge=3.0, step=0.5):
     def build(key):
-        idx = {'F': {}, 'B': {}}
-
-        def add(side, r):
-            for i in range(int(r[0] // 5), int(r[2] // 5) + 1):
-                for j in range(int(r[1] // 5), int(r[3] // 5) + 1):
-                    idx[side].setdefault((i, j), []).append(r)
+        idx = {'F': sg.RectIndex(), 'B': sg.RectIndex()}
         for f in ci['boards'][key]:
             if 'LoadWire' in f['lib']:
                 continue
             if f['courtyard']:
-                add(f['side'], f['courtyard'])
+                idx[f['side']].add(f['courtyard'], None)
             for p in f['pads']:
                 if p['drill']:
-                    add('F', p['bbox'])
-                    add('B', p['bbox'])
+                    idx['F'].add(p['bbox'], None)
+                    idx['B'].add(p['bbox'], None)
                 else:
-                    add(f['side'], p['bbox'])
+                    idx[f['side']].add(p['bbox'], None)
         return idx
 
     def free(idx, side, cx, cy, rad):
-        for i in range(int((cx - rad) // 5), int((cx + rad) // 5) + 1):
-            for j in range(int((cy - rad) // 5), int((cy + rad) // 5) + 1):
-                for r in idx[side].get((i, j), ()):
-                    dx = max(r[0] - cx, 0, cx - r[2])
-                    dy = max(r[1] - cy, 0, cy - r[3])
-                    if dx * dx + dy * dy < rad * rad:
-                        return False
+        for r, _ in idx[side].near([cx - rad, cy - rad, cx + rad, cy + rad]):
+            dx = max(r[0] - cx, 0, cx - r[2])
+            dy = max(r[1] - cy, 0, cy - r[3])
+            if dx * dx + dy * dy < rad * rad:
+                return False
         return True
     ol = {b['board_key']: b['outline'] for b in ci['partition']['boards']}
     kidx = build('K')
@@ -456,13 +461,11 @@ def measure(ci, cand, ctx):
     params = ci['parameters']
     land = ci['land_pattern']
     model = params['obstacle_model']
-    obs = dict(ctx.obstacles)
-    for key in ('O2', 'O4'):
-        obs[key] = sg.Obstacles(ci['boards'][key], model)
+    obs = dict(ctx.obstacles, **sg.stack_obstacles(ci, ('O2', 'O4')))
     k_all = sg.Obstacles(ci['boards']['K'], model)
     sub = []
     for s in cand['sub_toggles']:
-        w, l = sg.envelope(land, params['positions']['SUB'], 'front')
+        w = max(sg.envelope(land, params['positions']['SUB'], half)[0] for half in ('front', 'K'))
         probe = params.get('probe_tab_top_mm')
         e = {'block': s['block'], 'window_mm': s['window_mm']}
         if probe is not None:
@@ -480,7 +483,7 @@ def measure(ci, cand, ctx):
         'tab_occupants_on_other_boards': tab_occupants(ci, cand),
         'K_footprints': len(ci['boards']['K']),
         'K_free_area': k_area(ci, k_all),
-        'K_fragmentation': k_fragmentation(ctx.obstacles['K']),
+        'K_fragmentation': k_fragmentation(ci, ctx.obstacles['K']),
         'K_trimmers': trimmers(ci, k_all, model['own_face_courtyard_growth_mm']),
         'interior_fastener_sites': standoffs(ci),
         'supports': supports(ci),
