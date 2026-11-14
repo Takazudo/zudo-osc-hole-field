@@ -93,14 +93,14 @@ Phase 0 writes new candidate files only, under `design/stack/`, `scripts/stack/`
 | DA-01 | Design review A1 of ST-01 and ST-03, and decisions D1 to D6 ([brief](da-01.md)) | Design authority: Fable agent at high effort, worktree `/home/user/wt/da-01` | RUNNING: attempt a1 launched 2026-11-14 18:30 UTC from `stack/wave-1` `d74bce0` | ST-01, ST-02, ST-03 | n/a |
 | ST-04 | Power-post joint design and electrical re-derivation ([brief](st-04.md)) | Opus child, worktree `/home/user/wt/st-04` | PLANNED; brief written; held for DA-01 (D6) | ST-01, ST-03, DA-01 | Design authority (packet A) |
 | ST-05 | Thermal paper screen ([brief](st-05.md)) | Opus child, worktree `/home/user/wt/st-05` | PLANNED, wave 2; brief written; held for DA-01 (D6) | DA-01 | Independent reviewer (packet C) |
-| ST-06 | SUB toggle specification for OSC2 and OSC4 ([brief](st-06.md)) | Opus child, worktree `/home/user/wt/st-06` | RUNNING: admitted by DS-08; attempt a1 launched 2026-11-14 18:30 UTC from `78246cf` | none | Design authority (packet B) |
+| ST-06 | SUB toggle specification for OSC2 and OSC4 ([brief](st-06.md)) | Opus child, worktree `/home/user/wt/st-06` | REPORTED 18:52 UTC: DONE, all eight items specified, none `NEEDS_DESIGN`. Commit `019fc7a`. Manager check: allowed writes only; 20 tests pass; `spec.json` matches its generator. One decision is requested: the node that clocks the divider (a squared sawtooth from the spare comparator half, proposed, or the existing pulse) | none | Design authority (packet B), pending |
 | ST-07 | Trimmer and test-point relocation plan ([brief](st-07.md)) | Opus child, worktree `/home/user/wt/st-07` | PLANNED, wave 2; brief written; held for DA-01 (D6) | DA-01 | Design authority (packet B) |
 | GA | Gate A: adopt or reject the direct stack on the Phase 0 evidence; decide Q3, Q4, Q5 and Q8 | Design authority: Fable agent at high effort | PLANNED | ST-01, ST-03, ST-04 | n/a |
 | Phase 1 to 3 | ST-10 to ST-31 of the plan page | Mapped at the campaign revision that follows Gate A | NOT PLANNED IN DETAIL | Gate A | n/a |
 
 Launch receipts: the three wave-1 children were started through the Agent tool with `model: opus` and no effort setting, each bound to its own worktree and brief. The in-session agent identifiers are kept in the manager session; they are not valid outside it and are not recorded here. DA-01 was started with `model: fable` and `effort: high`, as the owner directed; ST-06 with `model: opus` and no effort setting.
 
-Review packets: A is the design review of ST-01, ST-03 and ST-04 together with the Gate A decision; B is the design review of ST-06 and ST-07; C is the independent review of ST-02 and ST-05 by a child that implemented neither.
+Review packets: A is the design review of ST-01, ST-03 and ST-04 together with the Gate A decision; B is the design review of ST-06 and ST-07; C is the independent review of ST-02 and ST-05 by a child that implemented neither. The code of ST-02 and ST-03 had its independent review on 2026-11-14 with the built-in code review at medium effort over `scripts/stack/geometry` and `scripts/stack/mechanics`: ten findings, all verified or accepted by the manager, none changing a headline result. Eight are in ST-02's files and are being fixed in its one continuation; the two in ST-03's calculator (an RSS term missing from one strain case, and geometry constants that have diverged from the ST-02 candidate) go into ST-03's finish after DA-01.
 
 ## Integration procedure
 
@@ -123,5 +123,6 @@ Wall time and model usage per attempt, from the Agent tool's completion notices 
 | ST-01 | a1 | 18 min (1084 s) | 315,119 | 121 |
 | ST-02 | a1 | 22 min (1329 s) | 324,202 | 62 |
 | ST-03 | a1 | 21 min (1250 s) | 299,324 | 65 |
+| ST-06 | a1 | 23 min (1363 s) | 298,356 | 66 |
 
 The wall times that the children wrote into their result sections are their own estimates; the figures here are the measured ones. ST-01's result section says about 2.5 h, which is wrong.
