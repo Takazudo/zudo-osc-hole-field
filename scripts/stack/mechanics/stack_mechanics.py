@@ -125,10 +125,10 @@ class Calc:
         return pair['positions_candidate']
 
     # ---------- heights (D3) ----------
-    def heights(self, joint):
-        gap = self.p['gap_mm'][joint]
+    def heights(self, joint, gap_mm=None, stacker_a_in=None):
+        gap = (gap_mm or self.p['gap_mm'])[joint]
         tip = self.p['stacker_tip_mm'][joint]
-        a_mm = self.p['stacker_A_in'][joint] * 25.4
+        a_mm = (stacker_a_in or self.p['stacker_A_in'])[joint] * 25.4
         if joint == 'EL':
             sock = self.p['socket_height_mm']['EL']
             ins = tip + sock - gap

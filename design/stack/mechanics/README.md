@@ -1,4 +1,4 @@
-# ST-03 stack mechanics (paper study, attempt a3)
+# ST-03 stack mechanics (paper study, attempts a3 and a4)
 
 Status: unvalidated paper study. Every fit, force, strain, deflection and take-up check on real parts is NOT RUN, because no part, print or board exists. Nothing here is validated, adopted or selected.
 
@@ -21,7 +21,7 @@ K F.Cu moves to −30.6 mm and P F.Cu to −12.0 mm. The catalogue posts bring a
 | Post length tolerance, mm | +/-0.05 (ASSUMED) | +/-0.15 (SOURCED) | DS-33 |
 | Toggle gap, nominal, mm | 1.160 | 1.360 | DERIVED |
 | Toggle gap, worst case, mm | 0.26 to 2.06 | 0.26 to 2.46 | DERIVED |
-| Toggle take-up window, mm | 0.3 to 2.1 (D4) | 0.4 to 2.3 | DS-27 |
+| Toggle take-up window, mm | 0.3 to 2.1 (DA-01 D4) | 0.4 to 2.3 | DS-27 |
 | Fixings on K | 18 posts + 12 kept supports (+5 provisional) | 18 posts + 12 printed sleeves | DS-43 |
 | Rigid K pairs | 197 | 6 | DS-39 |
 <!-- /calc:a3_changes -->
@@ -64,25 +64,25 @@ Matching within 0.05 mm per unit (DA-02 E10) does not narrow the absolute range:
 | toggle body height | 0.200 |
 <!-- /calc:a3_toggle_terms -->
 
-## Six adapter pairs: final 0.177 mm at the median worst pair, inside the owner's DS-35 acceptance; capture misses 0.39 mm (NEEDS_DESIGN); Z closes on RSS only
+## Six adapter pairs: final 0.176 mm at the median worst pair, inside the owner's DS-35 acceptance; capture misses 0.39 mm (NEEDS_DESIGN); Z closes on RSS only
 
-The selector carrier is each adapter's datum (DS-31). The adapter hangs on its selector in the panel aperture until K comes down. K sits within ±0.25 mm on its post screws now that the pilots are withdrawn (DS-42, ASSUMED hole size). The order statistic is that of attempt a2: worst of six pairs, two per adapter, with per-adapter terms drawn once.
+The selector carrier is each adapter's datum (DS-31). The adapter hangs on its selector in the panel aperture until K comes down. K sits within ±0.25 mm on its post screws now that the pilots are withdrawn (DS-42, ASSUMED hole size). The order statistic is exact on a grid: worst of six pairs, two per adapter. K's play is drawn once for all six pairs (K is one board), the adapter terms once per adapter, and the pair terms once per pair. The board-level distributions use a 0.005 mm grid.
 
-- **Final.** 0.177 mm at the median, against 0.07 mm along the row and 0.16 mm across it. This lies inside what the owner accepted for rigid pairs (DS-35: at least 0.27 mm computed against 0.07 mm, with hand adjustment of the stacker as the remedy).
-- **Capture.** 0.58 mm at the median. The adapter rests anywhere in the 0.6 mm selector aperture clearance, so its pins can miss the 0.39 mm lead-in when K is lowered. DS-35 covers the final misalignment, not a pair that does not engage. A guide that centres each adapter before K comes down, or a hand check, is a design decision.
+- **Final.** 0.176 mm at the median (95th percentile 0.285 mm), against 0.07 mm along the row and 0.16 mm across it. This lies inside what the owner accepted for rigid pairs (DS-35: at least 0.27 mm computed against 0.07 mm, with hand adjustment of the stacker as the remedy).
+- **Capture.** 0.577 mm at the median (95th percentile 0.886 mm). The adapter rests anywhere in the 0.6 mm selector aperture clearance, so its pins can miss the 0.39 mm lead-in when K is lowered. DS-35 covers the final misalignment, not a pair that does not engage. A guide that centres each adapter before K comes down, or a hand check, is a design decision.
 
 <!-- calc:a3_adapters -->
 | Phase | Pairs | Worst pair, median, mm per axis | 95th percentile, mm | Worst case, mm | Against the sourced MMS limits (V-MMS-SPEC 5.1.1, 5.1.2) |
 | --- | --- | --- | --- | --- | --- |
-| capture | 6 | 0.579 | 0.887 | 1.429 | median: along misses 0.39; across misses 0.57 / p95: along misses 0.39; across misses 0.57 |
-| final | 6 | 0.177 | 0.286 | 0.629 | median: along misses 0.07; across misses 0.16 / p95: along misses 0.07; across misses 0.16 |
+| capture | 6 | 0.577 | 0.886 | 1.429 | median: along misses 0.39; across misses 0.57 / p95: along misses 0.39; across misses 0.57 |
+| final | 6 | 0.176 | 0.285 | 0.629 | median: along misses 0.07; across misses 0.16 / p95: along misses 0.07; across misses 0.16 |
 <!-- /calc:a3_adapters -->
 
 <!-- calc:a3_adapter_terms -->
-| Phase | Drawn once per adapter (uniform per axis, mm) | Drawn once per pair (uniform per axis, mm) |
-| --- | --- | --- |
-| capture | K against the panel on its post screws 0.250; selector hole position on the adapter 0.075; routed selector aperture position 0.100; selector leg float 0.100; rest offset within the selector aperture clearance 0.600 | SMT float, socket half 0.100; SMT float, stacker half 0.100; stacker lean at the tip 0.104 |
-| final | K against the panel on its post screws 0.250; selector hole position on the adapter 0.075; routed selector aperture position 0.100; selector leg float 0.100; less the minimum selector clearance 0.200 | SMT float, socket half 0.100; SMT float, stacker half 0.100; stacker lean at the tip 0.104 |
+| Phase | Drawn once for all six pairs (uniform per axis, mm) | Drawn once per adapter (uniform per axis, mm) | Drawn once per pair (uniform per axis, mm) |
+| --- | --- | --- | --- |
+| capture | K against the panel on its post screws 0.250 | selector hole position on the adapter 0.075; routed selector aperture position 0.100; selector leg float 0.100; rest offset within the selector aperture clearance 0.600 | SMT float, socket half 0.100; SMT float, stacker half 0.100; stacker lean at the tip 0.104 |
+| final | K against the panel on its post screws 0.250 | selector hole position on the adapter 0.075; routed selector aperture position 0.100; selector leg float 0.100; the sum with K, less the minimum selector clearance 0.200 | SMT float, socket half 0.100; SMT float, stacker half 0.100; stacker lean at the tip 0.104 |
 <!-- /calc:a3_adapter_terms -->
 
 The misfit between the K-located pairs and the panel-located shaft is 0.352 mm on root sum of squares, against the 0.2 mm selector budget. Even DA-01's remedy (7.3 mm apertures, 0.35 mm) leaves 0.002 mm. The shaft will bear on its aperture until the bushing nut is tightened; the owner's acceptance DS-35 does not name this. NEEDS_DESIGN.
@@ -104,43 +104,99 @@ The misfit between the K-located pairs and the panel-located shaft is 0.352 mm o
 | Over that clearance (RSS) | 0.002 |
 <!-- /calc:a3_selector -->
 
+Z is checked on both sides of the window. The verdict uses K's bow from the 18 posts alone, because a sleeve nut stopped at contact holds K in one direction at most. Worst case misses the opening side by 0.322 mm and the closing side by 0.672 mm. Root sum of squares meets both.
+
+<!-- calc:a3_adapter_z_sets -->
+| Fixings holding K in Z | Largest K bow at an adapter pair, mm | Worst case, mm | RSS, mm | Worst case verdict | RSS verdict |
+| --- | --- | --- | --- | --- | --- |
+| 18 posts only | 0.142 | 1.552 | 0.510 | misses the opening side by 0.322; misses the closing side by 0.672 | meets the opening side with 0.720 to spare; meets the closing side with 0.370 to spare |
+| 18 posts and 12 sleeves | 0.086 | 1.496 | 0.498 | misses the opening side by 0.266; misses the closing side by 0.616 | meets the opening side with 0.732 to spare; meets the closing side with 0.382 to spare |
+<!-- /calc:a3_adapter_z_sets -->
+
 <!-- calc:a3_adapter_z -->
-| Adapter Z term (carrier is the datum, DS-31; 13.0 mm gap) | mm |
+| Adapter Z term (carrier is the datum, DS-31; 13.0 mm gap; K bow from the 18 posts only) | mm |
 | --- | --- |
 | jack shoulder to JL front face | 0.200 |
 | JL thickness | 0.160 |
 | J post length | 0.150 |
 | J post seats | 0.040 |
-| K bow at the pair (screen model) | 0.086 |
+| K bow at the pair (screen model) | 0.142 |
 | selector seat on the panel | 0.200 |
 | selector carrier to the panel | 0.200 |
 | adapter thickness | 0.160 |
 | standoff, socket half | 0.050 |
 | standoff, stacker half | 0.050 |
 | stacker pin length t | 0.200 |
-| Worst case (K-O3-2) | 1.496 |
-| Root sum of squares (K-O3-2) | 0.498 |
+| Worst case (K-O1-2) | 1.552 |
+| Root sum of squares (K-O1-2) | 0.510 |
 | Gap may open by (window) | 1.230 |
 | Gap may close by (body clearance governs) | 0.880 |
-| Verdict | RSS meets both sides; worst case misses the closing side by 0.616 |
+| Verdict, worst case | misses the opening side by 0.322; misses the closing side by 0.672 |
+| Verdict, root sum of squares | meets the opening side with 0.720 to spare; meets the closing side with 0.370 to spare |
 <!-- /calc:a3_adapter_z -->
 
-## K on 30 fixings: within 593 microstrain under its weight, handling and a 5 N push; a 20 N push exceeds it at 717 microstrain under the load
+## K on 30 fixings: within 593 microstrain under its weight, handling and a 5 N push; a 20 N push at the free edge exceeds it at 1,146 microstrain (posts alone)
 
-Model (ASSUMED): a circular plate of K's 1.6 mm, with a radius equal to the largest circle inside K's outline that holds no fixing. It is found on a 1 mm grid over the 18 posts and 12 sleeves. Its centre lies on K's free edge at y = 8 mm, where the region between the sleeve columns at x = 6.5 and 311.5 mm and the post row at y = 160 mm has no support. A circular plate is not conservative at a free edge.
+All 18 posts stand in two rows, at y = 160 and 175 mm. K therefore has two regions that reach a free edge: from the rows to y = 8 mm, and from the rows to y = 292 mm. Each region is held along one side and at its ends at most. Three models bound K, each computed with the 18 posts only and with posts and sleeves. The verdict rests on the posts alone, because a sleeve nut stopped at contact holds K in one direction at most.
 
-- **Strain.** At the fixings it is 9 microstrain per newton, whatever the bay size. Under a 3 mm load patch it is 36 microstrain per newton, so a push stays below 593 microstrain up to about 16 N. Scale the per-newton row for another force.
-- **ASSUMED inputs.** E = 20 GPa, ν = 0.15, board density 1.85 g/cm³, parts doubling the mass, handling at 5 g, and a latch or cable push of 5 to 20 N, one at a time. No latch force is sourced; ST-01e can source it.
-- **Ceramic parts.** The rule of no ceramic part of 0805 or larger within 5 mm of a fixing (DS-42) stays with ST-08's list.
+- **Interior bay: circular plate.** The bay is the largest circle that lies inside K's outline and holds no fixing, on a 1 mm grid. The larger of the clamped and simply supported results is taken. This is a screen and does not bound K: the rim is held at points, not along a line.
+- **Free-edge region, uniform load: cantilever strip.** The strip is cantilevered from the nearest fixing over the longest distance from any point of the region to a fixing, in cylindrical bending. It bounds the uniform load because it ignores the side support and the twisting stiffness of the plate.
+- **Free-edge region, push at the free edge: cantilever strip.** The root moment is spread over an effective width of twice the span (45° spread, ASSUMED). This gives 57 microstrain per newton whatever the span.
+
+A push on the rear face governs at the free edge in every case. It stays below 593 microstrain up to about 10 N; scale the per-newton row for another force.
+
+ASSUMED inputs: E = 20 GPa, ν = 0.15, board density 1.85 g/cm³, parts doubling the mass, handling at 5 g, a latch or cable push of 5 to 20 N (one at a time), a 3 mm load patch and the 45° spread. No latch force is sourced; ST-01e can source it. The rule of no ceramic part of 0805 or larger within 5 mm of a fixing (DS-42) stays with ST-08's list.
+
+<!-- calc:a3_k_regions -->
+| Fixings | Largest circle inside the outline holding no fixing, mm | Free-edge region y < 160: farthest point from a fixing, mm | Free-edge region y > 175: farthest point from a fixing, mm |
+| --- | --- | --- | --- |
+| 18 posts only | radius 79.6 at [159.0, 88.0] | 156.2 from [4.0, 8.0] | 136.8 from [4.0, 292.0] |
+| 18 posts and 12 sleeves | radius 79.6 at [159.0, 88.0] | 153.2 from [159.0, 8.0] | 118.1 from [126.0, 292.0] |
+<!-- /calc:a3_k_regions -->
+
+<!-- calc:a3_k_governing -->
+| Load | Governing region, 18 posts only | Deflection, mm | Strain, microstrain | Governing region, posts and sleeves | Deflection, mm | Strain, microstrain | Verdict on the posts alone, against 593 microstrain |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| own weight (1 g) | free-edge region, low y (cantilever strip), 156.2 mm | 0.619 | 81 | free-edge region, low y (cantilever strip), 153.2 mm | 0.572 | 78 | within |
+| handling (5 g on the weight) | free-edge region, low y (cantilever strip), 156.2 mm | 3.094 | 406 | free-edge region, low y (cantilever strip), 153.2 mm | 2.862 | 390 | within |
+| push per newton (rescale) | free-edge region, low y (cantilever strip), 156.2 mm | 0.582 | 57 | free-edge region, low y (cantilever strip), 153.2 mm | 0.560 | 57 | within |
+| latch or cable push 5 N | free-edge region, low y (cantilever strip), 156.2 mm | 2.911 | 286 | free-edge region, low y (cantilever strip), 153.2 mm | 2.800 | 286 | within |
+| latch or cable push 20 N | free-edge region, low y (cantilever strip), 156.2 mm | 11.646 | 1146 | free-edge region, low y (cantilever strip), 153.2 mm | 11.200 | 1146 | exceeds |
+<!-- /calc:a3_k_governing -->
 
 <!-- calc:a3_k -->
-| Largest bay without a fixing: radius 153.2 mm, centre [159.0, 8] | Load | Deflection, clamped edge, mm | Deflection, simply supported edge, mm | Strain at the fixings (clamped edge), microstrain | Strain under the load, microstrain | Against 593 microstrain |
+| Fixings | Load | Region and model | Span or radius, mm | Deflection, mm | Strain, microstrain | Against 593 microstrain |
 | --- | --- | --- | --- | --- | --- | --- |
-| own weight (1 g) | uniform | 0.072 | 0.320 | 20 | n/a | within |
-| handling (5 g on the weight) | uniform | 0.358 | 1.602 | 98 | n/a | within |
-| per newton (rescale) | point, 3 mm patch | 0.067 | 0.183 | 9 | 36 | within |
-| latch or cable push 5 N, one at a time | point, 3 mm patch | 0.334 | 0.916 | 46 | 179 | within |
-| latch or cable push 20 N, one at a time | point, 3 mm patch | 1.337 | 3.662 | 182 | 717 | exceeds |
+| 18 posts only | own weight (1 g) | interior bay (circular plate) | 79.6 | 0.023 | 7 | within |
+| 18 posts only | own weight (1 g) | free-edge region, low y (cantilever strip) | 156.2 | 0.619 | 81 | within |
+| 18 posts only | own weight (1 g) | free-edge region, high y (cantilever strip) | 136.8 | 0.364 | 62 | within |
+| 18 posts only | handling (5 g on the weight) | interior bay (circular plate) | 79.6 | 0.117 | 36 | within |
+| 18 posts only | handling (5 g on the weight) | free-edge region, low y (cantilever strip) | 156.2 | 3.094 | 406 | within |
+| 18 posts only | handling (5 g on the weight) | free-edge region, high y (cantilever strip) | 136.8 | 1.821 | 311 | within |
+| 18 posts only | push per newton (rescale) | interior bay (circular plate) | 79.6 | 0.049 | 30 | within |
+| 18 posts only | push per newton (rescale) | free-edge region, low y (cantilever strip) | 156.2 | 0.582 | 57 | within |
+| 18 posts only | push per newton (rescale) | free-edge region, high y (cantilever strip) | 136.8 | 0.447 | 57 | within |
+| 18 posts only | latch or cable push 5 N | interior bay (circular plate) | 79.6 | 0.247 | 149 | within |
+| 18 posts only | latch or cable push 5 N | free-edge region, low y (cantilever strip) | 156.2 | 2.911 | 286 | within |
+| 18 posts only | latch or cable push 5 N | free-edge region, high y (cantilever strip) | 136.8 | 2.234 | 286 | within |
+| 18 posts only | latch or cable push 20 N | interior bay (circular plate) | 79.6 | 0.989 | 598 | exceeds |
+| 18 posts only | latch or cable push 20 N | free-edge region, low y (cantilever strip) | 156.2 | 11.646 | 1146 | exceeds |
+| 18 posts only | latch or cable push 20 N | free-edge region, high y (cantilever strip) | 136.8 | 8.935 | 1146 | exceeds |
+| 18 posts and 12 sleeves | own weight (1 g) | interior bay (circular plate) | 79.6 | 0.023 | 7 | within |
+| 18 posts and 12 sleeves | own weight (1 g) | free-edge region, low y (cantilever strip) | 153.2 | 0.572 | 78 | within |
+| 18 posts and 12 sleeves | own weight (1 g) | free-edge region, high y (cantilever strip) | 118.1 | 0.202 | 46 | within |
+| 18 posts and 12 sleeves | handling (5 g on the weight) | interior bay (circular plate) | 79.6 | 0.117 | 36 | within |
+| 18 posts and 12 sleeves | handling (5 g on the weight) | free-edge region, low y (cantilever strip) | 153.2 | 2.862 | 390 | within |
+| 18 posts and 12 sleeves | handling (5 g on the weight) | free-edge region, high y (cantilever strip) | 118.1 | 1.011 | 232 | within |
+| 18 posts and 12 sleeves | push per newton (rescale) | interior bay (circular plate) | 79.6 | 0.049 | 30 | within |
+| 18 posts and 12 sleeves | push per newton (rescale) | free-edge region, low y (cantilever strip) | 153.2 | 0.560 | 57 | within |
+| 18 posts and 12 sleeves | push per newton (rescale) | free-edge region, high y (cantilever strip) | 118.1 | 0.333 | 57 | within |
+| 18 posts and 12 sleeves | latch or cable push 5 N | interior bay (circular plate) | 79.6 | 0.247 | 149 | within |
+| 18 posts and 12 sleeves | latch or cable push 5 N | free-edge region, low y (cantilever strip) | 153.2 | 2.800 | 286 | within |
+| 18 posts and 12 sleeves | latch or cable push 5 N | free-edge region, high y (cantilever strip) | 118.1 | 1.664 | 286 | within |
+| 18 posts and 12 sleeves | latch or cable push 20 N | interior bay (circular plate) | 79.6 | 0.989 | 598 | exceeds |
+| 18 posts and 12 sleeves | latch or cable push 20 N | free-edge region, low y (cantilever strip) | 153.2 | 11.200 | 1146 | exceeds |
+| 18 posts and 12 sleeves | latch or cable push 20 N | free-edge region, high y (cantilever strip) | 118.1 | 6.656 | 1146 | exceeds |
 <!-- /calc:a3_k -->
 
 ## Printed sleeves: a sleeve can come out 0.15 mm too long or 0.55 mm too short; sort them by measurement and stop each nut at contact
@@ -188,7 +244,7 @@ With the rule, the clearance is 0.03 to 0.32 mm. The sleeve then only stops K wh
 | K-SUP-8 | P | 17.0 | K-SUP-6 72.8 | 0.654 | 57 | 136 | 498 | 290 |
 <!-- /calc:a3_sleeves -->
 
-## Parameters of attempt a3 with their status
+## Parameters of attempts a3 and a4 with their status
 
 <!-- calc:a3_terms -->
 | Parameter | Value | Status | Source, formula or what would source it |
@@ -215,6 +271,7 @@ With the rule, the clearance is 0.03 to 0.32 mm. The sleeve then only stops K wh
 | `a3.latch_force_N` | [5, 20] | ASSUMED | to source: ST-01e connector latch figures |
 | `a3.latch_patch_radius_mm` | 3.0 | ASSUMED | to source: ST-01e connector body size |
 | `a3.owner_acceptance` | DS-35: the final misalignment of rigid pairs (at least 0.27 mm computed against 0.07 mm) is an accepted risk; hand adjustment of hand-soldered stackers is the remedy | SOURCED | S-DS: DS-35 |
+| `a3.edge_spread_width_factor` | 2.0 | ASSUMED | to source: Plate finite-element model in ST-12 |
 <!-- /calc:a3_terms -->
 
 ## Record of attempt a2: the rigid pair budgets, closed by DS-39 and kept on their a2 inputs
