@@ -244,5 +244,18 @@
     "source": "Owner acceptance of the OSC recommendations for zudo-pd questions 6-8, relayed by the project coordinator",
     "standard": "design/architecture-278/integration/power-contract/pd-interface-20v.md sections 1 and 3 (E22 rows)",
     "scope": "Changes only OSC-PD interface wording. No OSC schematic, PCB, BOM or part change; no let-through amendment is adopted."
+  },
+  {
+    "id": "E23",
+    "topic": "Maximum-delivered current: steady-state limits with a let-through allowance (PD20 Board B20 D3)",
+    "authority": "USER-CONFIRMED DECISION",
+    "date": "2026-11-14",
+    "decision": "Amend E22 item 3. The 2.1 / 2.0 / 0.5 A maxima are steady-state limits. Per fault event and per rail, current may exceed the maximum only for <= 0.25 ms, with peak <= 130 A and I2t <= 0.1 A2s. Conditions: (1) one event per power cycle (latched all-rail shutdown, no automatic retry); (2) the figures are PD simulation and are replaced by a bench detection-to-off measurement; (3) the allowance is re-checked against the selected inlet connector and cable, including a re-run of the short with that cable; (4) shutdown, discharge, skew, E21/E22 definitions and trip points are unchanged. The #59 SI-3 deadline and SI-4 fault SOA use this allowance instead of the literal maxima.",
+    "rationale": "PD SIM worst case is 0.23 ms, 123 A, 0.092 A2s (zudo-pd d3-let-through-20261114.md). The OSC inlet path has no series part; the 20 AWG harness and return are far above 0.1 A2s; the +12 V switch candidate PSMN1R0-40YLD is rated IDM 1284 A (tp <= 10 us). The peak, set by the PD PRE capacitor and cable, is the figure that could bind the unselected -12 V and +5 V switch paths.",
+    "status": "RECORDED as interface-contract wording; nothing measured; inlet connector, cable and the -12 V / +5 V switch paths are not selected",
+    "confirmation_utc": "2026-11-14T08:35Z",
+    "source": "Owner decision card in the project thread (Accept with conditions); zudo-pd let-through request 2026-11-14",
+    "standard": "design/architecture-278/integration/power-contract/pd-interface-20v.md section 1; design/power/p59-full-onboard-plan.md owner decision 1",
+    "scope": "Changes the OSC-PD maximum-current wording and restates the #59 fault-current premise. No schematic, PCB, BOM or part change; no on-board current limiting is added."
   }
 ]
