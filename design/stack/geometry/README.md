@@ -14,7 +14,7 @@ This folder replaces the ad hoc measurements behind [the direct board-stack plan
 ```sh
 python3 scripts/stack/geometry/generate.py      # writes stack-candidate.json
 python3 scripts/stack/geometry/check.py         # writes check-report.json; exit 1 on any error
-python3 scripts/checks/frozen_studies.py discover scripts/stack/geometry   # 32 tests, about 9 s
+python3 scripts/checks/frozen_studies.py discover scripts/stack/geometry   # 39 tests, about 27 s
 ```
 
 After editing `land-pattern.json` or `parameters.json`, or after any board, partition or lock change, run both commands again. No KiCad and no network are needed.
@@ -31,14 +31,14 @@ After editing `land-pattern.json` or `parameters.json`, or after any board, part
 | `courtyard_blockers_declared` | An undeclared obstacle in a site envelope, or a declared one that the sources do not give |
 | `pin_budget` | A missing source net, more pin entries than positions, a non-AGND net on a template AGND position, a signal without an adjacent AGND where the rule is required, an unreplaced or a retired harness, a rail that no EL-to-P pair carries |
 | `pass_through_sites` | Fewer or more than 8 JL-to-P and 6 EL pass-through pairs |
-| `sub_toggle_windows` | A SUB pair outside its placement window, a toggle off its lock centre or across a selector courtyard, a toggle or pair outside its control tab |
+| `sub_toggle_windows` | A SUB pair outside its placement window; a toggle off its lock centre or across a selector courtyard; a toggle courtyard outside the union of its control tab and P's outline; a toggle courtyard on a P F.Cu obstacle or a toggle pad on a P B.Cu obstacle; a pair outside its control tab. The toggle tails against K F.Cu are NOT CHECKABLE: the retained native envelope of the toggle starts at the board face, so no tail protrusion is retained |
 | `post_coaxiality` | A post whose front land is not at the K land, or an offset land not carried inside a tab |
 | `p_tabs` | A tab that overlaps P itself, is not attached to P, overlaps a JL, JR or adapter outline, a support collar it does not pass, a seam carrier in P's z range, a kept selector courtyard, or a post land it does not carry; an EL pair outside the EL tab |
 | `retired_items` | A pair on O2 or O4, reuse of a retired K header, a wrong aperture count |
 | `facing_heights` | Two overlapping facing parts whose retained heights sum to the gap or more, or one part as tall as the gap |
 | `staleness` | A canonical input digest or candidate content that differs from a fresh generation; the message names the regeneration command |
 
-The 32 unit tests inject each fault class into a copy of the candidate (or, for the land pattern and the K plane, into a copy of the inputs) and require the specific message. Two staleness tests show that adding a track and a via to a board keeps the digest, and that moving a footprint by 0.5 mm changes it.
+The 39 unit tests inject each fault class into a copy of the candidate (or, for the land pattern and the K plane, into a copy of the inputs) and require the specific message. Two staleness tests show that adding a track and a via to a board keeps the digest, and that moving a footprint by 0.5 mm changes it. A third requires both tracked outputs to equal a fresh generation byte for byte; neither file records the commit or the clock, so regenerating at a new commit with unchanged inputs leaves the tree clean.
 
 ## The staleness digest covers footprint geometry, not routing
 
@@ -65,7 +65,7 @@ These are reported in `pin_budget` detail and are not failures, because the plan
 
 No facing-height collision exists among parts with retained heights. Heights come only from the native display-model envelopes in `design/mechanical/ic-envelope-native-report.json` (not seated heights), the selector tails in `selector-assembly.json` and the partition bulk reserves. Most overlapping facing pairs involve a part with no retained height: 694 in JL/K, 900 in JR/K, 693 in P/K, and 25 across the three adapter gaps. Those pairs are **NOT RUN**.
 
-## Reconciliation with the plan page: 116 reproduced, 2 corrected, 31 not checkable, 1 not run
+## Reconciliation with the plan page: 115 reproduced, 3 corrected, 31 not checkable, 1 not run
 
 Values come from `check-report.json` (`checks` and `measurements`) unless the row says otherwise. "Read" means read from a source file, not computed by the checker. A page figure that is an estimate for another task is NOT CHECKABLE here, with the missing source named.
 
@@ -118,12 +118,12 @@ Values come from `check-report.json` (`checks` and `measurements`) unless the ro
 | 1×3 pair window above the toggle (OSC2) | y = 180.15 to 180.85 | same | REPRODUCED (planning envelope) |
 | Overlap at the retired header centres | 0.6 at y = 181.5 and 188.5 | 0.6 at both, both oscillators | REPRODUCED |
 | K footprints | 3,986 | 3,986 | REPRODUCED |
-| K free area at courtyard level | F 37.6 %, B 39.1 % | 37.6 %, 39.1 % | REPRODUCED |
+| K free area at courtyard level | F 37.6 %, B 39.1 % | **F 37.5 %, B 39.0 %** (84,280 cells) | CORRECTED: the area is now derived from the partition K outline less the 0.30 mm board-edge margin. The earlier fixed rectangle (x 5–312, y 9–290, notch at x > 258 and y > 246), used by the planning script and the first ST-02 run, counted 200 cells that cross the notch edge outside K |
 | K lands with B.Cu footprints within 2.6 mm | 18 of 18, 54 in total, no F.Cu | 18, 54, 0 | REPRODUCED |
 | 13 × 5 through-slot in x 182–312, y 160–180 | none | 0 positions | REPRODUCED |
 | GH8 on K B.Cu in x 182–312, y 150–200 | none | 0 positions | REPRODUCED |
 | K trimmers | 44 F.Cu, 56 B.Cu | 44, 56 | REPRODUCED |
-| Trimmers with a free B.Cu position within ±30 mm | 42 of 44 | 42 of 44 | REPRODUCED |
+| Trimmers with a free B.Cu position inside a ±30 mm search window | 42 of 44 | 42 of 44 (`relocatable_in_pm30mm_square_window`: dx and dy each within ±30 mm) | REPRODUCED |
 | Median trimmer move | 8.9 mm | **9.1 mm** | CORRECTED: the greedy search is order-dependent; the checker takes trimmers in reference order, the planning script in file order. The figure is a screen, not a fixed property |
 | Longest trimmer move | 31.0 mm | 31.0 mm | REPRODUCED |
 | Interior fastener sites, 8 mm thinning | JL 37, P 26, JR 3 | 37, 26, 3 | REPRODUCED |
@@ -266,11 +266,12 @@ Each row is NOT CHECKABLE here: the named source does not exist in this reposito
 | 6 trimmers per oscillator for calibration access | ST-07 |
 | Seated datums of jack, pot and toggle (#65) | UNSOURCED datums |
 
-## Six checks are NOT RUN
+## Seven checks are NOT RUN
 
 - Copper clearance, DRC and routing of the stack: no stack board exists.
 - Tolerance stack-up, mating misalignment and force: no exact connector (ST-01, ST-03).
 - P body-carrier openings for the EL pairs: no carrier envelope is recorded in the sources.
 - Facing-height pairs with an unretained part height (counts above).
 - Fallback F2 part-move search (see its row).
+- SUB toggle tails against K F.Cu parts: no retained tail protrusion for the toggle.
 - Native KiCad oracle query: not needed for this attempt.
