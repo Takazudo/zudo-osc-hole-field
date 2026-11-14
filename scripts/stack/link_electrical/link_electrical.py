@@ -17,6 +17,7 @@ import numpy as np
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
 sys.path.insert(0, str(ROOT / 'scripts/stack/power_posts'))
+sys.path.insert(0, str(HERE))
 import power_posts as pp  # noqa: E402
 
 OUT = ROOT / 'design/stack/link-electrical'
@@ -468,7 +469,7 @@ def readme(inp, r):
     worst_open = max(x['I_n1_A'] for x in gc if x['case'] == 'one_post_open')
     lines = []
     w = lines.append
-    w('# Flat-link electrical bounds: ST-04 attempt a2 (paper, DS-41 checks 3 and 4 without positions)')
+    w('# Flat-link electrical bounds: ST-04 attempts a2 and a3 (paper, DS-41 checks 3 and 4 without positions; harness baseline DS-54)')
     w('')
     w(f'Task `{inp["task"]}`, launch commit `{inp["launch_commit"]}`. **Status: unvalidated paper bound.** Coupling, current share '
       'and resistance are NOT RUN as measurements; nothing is selected, adopted or bought. Every class, impedance, edge rate and '
@@ -643,25 +644,33 @@ def readme(inp, r):
     w('- **NOT RUN, connector contact coupling:** no connector coupling data is retained; covered only by the ASSUMED end length.')
     w('- **NOT RUN, ground share at the field positions:** waits for ST-02 a4 and the ruling.')
     w('- **NOT RUN, KiCad, DRC and `regen-all.sh`:** no board is changed.')
+    w('- **NOT RUN, harness coupling measurement and a field solver for the insulated wire bundle:** no harness is built; the wire permittivity is not on the Alpha sheet.')
     w('')
     return '\n'.join(lines)
 
 
 def generate():
+    import harness_baseline as hb
     inp = load_inputs()
     r = results(inp)
-    return results_json(inp, r), readme(inp, r)
+    b = hb.build(inp, r['signals'])
+    text = readme(inp, r)
+    marker = '## Checks: calculator and tests run'
+    text = text.replace(marker, '\n'.join(hb.readme_lines(inp, b, r['ground_counts'])) + '\n' + marker)
+    return results_json(inp, r), text, hb.to_json(inp, b)
 
 
 def main(argv):
-    rj, rm = generate()
+    rj, rm, hj = generate()
     if '--check' in argv:
-        ok = (OUT / 'results.json').read_text() == rj and (OUT / 'README.md').read_text() == rm
+        ok = (OUT / 'results.json').read_text() == rj and (OUT / 'README.md').read_text() == rm and \
+            (OUT / 'harness-baseline.json').read_text() == hj
         print('current' if ok else 'stale')
         return 0 if ok else 1
     (OUT / 'results.json').write_text(rj)
     (OUT / 'README.md').write_text(rm)
-    print('wrote', OUT / 'results.json', 'and README.md')
+    (OUT / 'harness-baseline.json').write_text(hj)
+    print('wrote results.json, harness-baseline.json and README.md in', OUT)
     return 0
 
 

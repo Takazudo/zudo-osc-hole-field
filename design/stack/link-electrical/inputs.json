@@ -37,6 +37,19 @@
   "T-MOM": {
    "reference": "2-D quasi-static method of moments for zero-thickness coplanar strips in a homogeneous medium of relative permittivity eps_eff, charge neutrality imposed (open boundary)",
    "validity": "conductor thickness 0.035 mm ignored against widths 0.3 and 0.65 mm; real cable is an inhomogeneous PET/adhesive laminate, bracketed by the eps_eff sweep; checked against the conformal-map formula for two coplanar strips (test)"
+  },
+  "S-LOOM": {
+   "path": "design/partition/loom-candidate.json",
+   "locator": "routes[].wire_mpn, routes[].cut_length_max_mm (flat lay, conductor order preserved)"
+  },
+  "S-ALPHA-6821": {
+   "path": "design/partition/sources/alpha-6821.pdf",
+   "sha256": "efd1d9ca96295017e43bec8534016f8d5d30c11a1a28fc8d37b6cf35b892a80a",
+   "locator": "Construction: conductor 26 (7/34) AWG, diameter 0.019 in; insulation 0.008 in wall MPPE-TPE, diameter 0.035 +/- 0.002 in"
+  },
+  "S-GH": {
+   "path": "design/connectors/jst-gh.json",
+   "locator": "pitch_mm 1.25; insulation_outer_diameter_mm [0.76, 1.0]"
   }
  },
  "cable": {
@@ -304,7 +317,24 @@
     ]
    }
   },
-  "status": "SOURCED as options (DS-51); return split ASSUMED: the aggressor's return divides among the window's grounds by least inductance (the posts are a much larger loop and carry no edge current)"
+  "status": "SOURCED as options (DS-51); return split ASSUMED: the aggressor's return divides among the window's grounds by least inductance (the posts are a much larger loop and carry no edge current)",
+  "C": {
+   "label": "two ground conductors between two signals (attempt a3 comparison)",
+   "window": [
+    "G",
+    "S",
+    "G",
+    "G",
+    "S",
+    "G"
+   ],
+   "pairs": {
+    "across_two_grounds": [
+     1,
+     4
+    ]
+   }
+  }
  },
  "ground_current": {
   "branches": [
@@ -329,5 +359,31 @@
    40
   ],
   "status": "SOURCED as options (DS-51; ST-02 a4 scope item 2)"
+ },
+ "harness": {
+  "pitch_mm": {
+   "value": 1.25,
+   "status": "SOURCED",
+   "source": "S-GH pitch_mm (GH header); the loom keeps the header order in a flat lay (S-LOOM route text); wire-to-wire spacing along the run equal to the pitch is ASSUMED (ribbon channel 10.19 mm for 8 wires in S-LOOM, 1.27 mm per wire)"
+  },
+  "conductor_diameter_mm": {
+   "value": 0.4826,
+   "status": "SOURCED",
+   "source": "S-ALPHA-6821 conductor diameter 0.019 in (stranded 7/34 taken as a solid round conductor of that diameter, ASSUMED)"
+  },
+  "insulation_diameter_mm": {
+   "value": 0.889,
+   "tolerance_mm": 0.051,
+   "status": "SOURCED",
+   "source": "S-ALPHA-6821 insulation diameter 0.035 +/- 0.002 in; inside the GH range 0.76 to 1.0 mm (S-GH)"
+  },
+  "eps_eff": {
+   "status": "ASSUMED",
+   "reason": "MPPE-TPE permittivity is not on the Alpha sheet; the same sweep as the flat cable is used and the comparison is made at the same upper value 3.2 for both, so the ratio of capacitive terms is nearly independent of it"
+  },
+  "length": {
+   "status": "SOURCED",
+   "source": "S-LOOM routes[].cut_length_max_mm per harness (the whole cut length taken as parallel run, ASSUMED upper bound) plus the same ASSUMED 5 mm per end as the flat link"
+  }
  }
 }
