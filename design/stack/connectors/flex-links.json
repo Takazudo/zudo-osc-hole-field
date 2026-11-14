@@ -5460,8 +5460,25 @@
         "contact_side_naming": "listing names 'Same Side' and 'Inverting'; drawing marks the printed face (印字面) on both ends; type letter B in the description, meaning UNSOURCED"
       },
       "lx_0_5mm": {
-        "status": "UNSOURCED",
-        "reason": "no 0.5 mm LX drawing fetched within the time allowance"
+        "source": {
+          "status": "SOURCED",
+          "path": "lx/ffc-0-5mm/lx-ffc-40p-0-5mm-50mm-drawing-a771-rev-a0-lcsc-mirror.pdf",
+          "sha256": "3f3f19b4952cf5ed4cb84f115948df889d02d0463ab7277a766f81645e136220",
+          "page": 1
+        },
+        "part": "C31030, 40P, 50 mm, type 'B' (stiffeners on opposite faces; listed as Inverting)",
+        "tail_thickness": "0.3 +/- 0.03 mm",
+        "surface_thickness": "0.12 +/- 0.03 mm",
+        "stiffener": "225 um, 8.0 +/- 2.0 mm long each end",
+        "exposed_length": "4.0 +/- 1.0 mm each end",
+        "conductor": "0.035 +/- 0.005 x 0.3 +/- 0.03 mm, tin 1 um min",
+        "pitch": "0.5 +/- 0.05",
+        "span": "19.5 +/- 0.05 at 40P = 0.5 (n - 1)",
+        "width": "20.5 +/- 0.08 at 40P = 0.5 (n + 1) (DERIVED from one count)",
+        "margin": "0.5 +/- 0.07",
+        "rating": "UL AWM 20624, 80 degC, 60 V",
+        "current": "UNSOURCED",
+        "contact_side_naming": "marking face (印字面) and no-marking face (无字面); B type puts the two stiffeners on opposite faces"
       }
     },
     "connector_candidates_1_0mm": {
@@ -5503,21 +5520,26 @@
         "accepted_cable": "0.30 mm thick; width 1.0 x (n + 1) +/- 0.05; conductors 0.70 at edge; stiffener 6.00 mm; exposed 3.00 mm"
       },
       "megastar_zx_1_0fpc_2h_hfj": {
-        "lock": "flip (rear press)",
-        "contact": "dual (双侧触点 in the listing)",
+        "lock": "flip, rear actuator (后压, pressed down behind the cable entry); opens upward at the rear",
+        "contact": "dual (both faces), per the listing; the drawing section shows contacts above and below the slot",
         "example": "C19269400 20P stock 2014",
         "source": {
           "status": "SOURCED",
           "path": "megastar/zx-1-0fpc-2h-hfj/zx-1-0fpc-2h-hfj20p-drawing-unrevised-lcsc-mirror.pdf",
           "sha256": "f3e928a00839c743df654b6117d6bc66df6aa0f073bda97b59484338f6d0c645",
-          "page": "1"
+          "page": 1
         },
-        "height": "2.0 mm (H2.0)",
-        "voltage": "50 V",
+        "height": "2.00 +/- 0.15 mm closed; 3.1 mm with the actuator open (side view)",
+        "voltage": "50 V AC/DC",
         "temperature": "-25 to +85 degC",
-        "current": "UNSOURCED",
-        "mating_cycles": "UNSOURCED",
-        "geometry": "NOT READ (drawing glyphs outlined; render before use)"
+        "current": "UNSOURCED (not in the drawing notes)",
+        "mating_cycles": "UNSOURCED (not stated)",
+        "geometry": "read from a 200 dpi render",
+        "drawing_revision": "rev 1, 2021-09-19 (rev 0 2015-07-28)",
+        "counts": "4 to 30",
+        "body": "DIMC = n + 4.04 (+/-0.15) long; depth 5.30 +/- 0.15 mm (section 5.9 ref)",
+        "contact_resistance": "<= 0.03 ohm",
+        "accepted_cable": "0.30 +/- 0.03 mm; width (DIMB - 0.1) +/- 0.05 = n + 0.92; conductor 0.5 at 1.00 +/- 0.05; exposed >= 3.5 mm; stiffener >= 4.5 mm"
       },
       "vertical_le_5mm": {
         "status": "UNSOURCED",
@@ -5539,7 +5561,7 @@
           "sha256": "dba4834530f67a121b37c7a094c2bb967bfe57593c6d916cabd86ca3a89cebf8",
           "page": "1"
         },
-        "rows": "NOT READ (glyphs outlined)"
+        "rows": "UNSOURCED: the retained PDF is malformed (poppler: circular xref, no trailer; pypdf: invalid /Pages); a plain re-fetch of the 05F file returned identical bytes (same SHA-256), so the vendor file itself cannot be rendered"
       },
       "xunpu_fpc_05fb_40ph20": {
         "lock": "flip",
@@ -5551,7 +5573,7 @@
           "sha256": "b3e1a9b068f95e2567732a2a554fc2675ccc89c9849ebd966e9df170d2ee6384",
           "page": "1"
         },
-        "rows": "NOT READ (glyphs outlined)"
+        "rows": "UNSOURCED: the retained PDF is malformed (poppler: circular xref, no trailer; pypdf: invalid /Pages); a plain re-fetch of the 05F file returned identical bytes (same SHA-256), so the vendor file itself cannot be rendered"
       }
     },
     "contact_sides": {
@@ -5565,6 +5587,21 @@
         "Mouser datasheet path for 0522712279 returned a script page, no PDF"
       ],
       "note": "stopped after two routes as instructed"
+    },
+    "conductor_resistance_50mm": {
+      "status": "DERIVED",
+      "resistivity": "1.724e-8 ohm m (annealed copper, 20 degC, IACS); tin plating and temperature rise ignored",
+      "1.0mm": {
+        "section": "0.035 x 0.65 mm = 0.02275 mm2 (from the LX 1.0 mm description '0.035*0.65'; width tolerance UNSOURCED)",
+        "value_mohm": 37.9,
+        "range_mohm": "33.2 to 44.2 over thickness +/-0.005 only"
+      },
+      "0.5mm": {
+        "section": "0.035 x 0.3 mm = 0.0105 mm2 (LX A771 table)",
+        "value_mohm": 82.1,
+        "range_mohm": "65.3 to 106.4 over thickness +/-0.005 and width +/-0.03"
+      },
+      "note": "connector contact resistance adds up to 0.03 ohm per end where stated (HMTCONN, Megastar)"
     }
   }
 }
