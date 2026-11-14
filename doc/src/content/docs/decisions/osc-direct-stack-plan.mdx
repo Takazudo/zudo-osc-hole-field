@@ -1,6 +1,6 @@
 ---
 title: "Direct board-stack plan"
-description: "Proposed successor to the cable-based ten-board stack: rigid board-to-board joints at the existing interface sites, bolted power posts, eight boards, no inter-board cable and, after design review A1, about 40 mm of inside depth (about 34 mm as first proposed)."
+description: "Proposed successor to the cable-based ten-board stack: eight boards on spacers at about 40 mm of inside depth, with bolted power posts. Since design review A3 the joints to the core board are flat flex links with a connector at each end; the rigid header stack first proposed is kept as the way back."
 sidebar_position: 86
 ---
 
@@ -24,7 +24,60 @@ The owner read this plan on 2026-11-14, asked to continue, and directed that the
 
 A decision of the design authority selects a design. It is recorded with the way to reverse it, and it never performs a purchase or an order that the design later needs.
 
+## Design review A3 of 2026-11-14: flex links are the working design, and one paper gate decides
+
+Three things happened after design review A1. Design review A2 changed its heights by 0.2 mm and added aids for the rigid pairs (decision rows DS-24 to DS-33). The owner then declined the connector coupon and accepted the small misalignment of the rigid pairs as a risk, asked for flex PCB to be researched and used if it is an acceptable way to go, and decided that the spacers are printed parts (rows DS-35, DS-37 and DS-38). Design review A3 decided for flex links (rows DS-39 to DS-46). The records are `reviews/da-02.md` and `reviews/da-03.md` in the campaign folder.
+
+Nothing is adopted, selected or bought. The cable partition stays the working design, and coupling, current share, fit and every physical check stay **NOT RUN**.
+
+Where this section and the sections below differ, this section holds. The section on design review A1 and the plan as first proposed stay below as the record of the rigid stack, which is the way back.
+
+| Item | After design reviews A1 and A2 (the way back) | After design review A3 (the working design) |
+| --- | --- | --- |
+| Joints to K | 197 rigid pairs with 777 positions; the stackers are hand soldered on a registration plate | About 49 flat links with a 1.00 mm FFC/FPC connector at each end replace 191 of the pairs. Twelve rigid pairs stay: six from EL to P and six at the selector adapters |
+| Link | None | A flex circuit or a catalogue flat jumper; which of the two is open. The connectors that were read are rated for at most 30 matings |
+| Sites | A pair at each harness connector site, with no neighbour moved | 382 sites are deleted and about 98 connector fields are placed anew. All 513 interface signals are re-routed on two boards each. K gets about 49 slots of about 24 × 1.5 mm, so that each link latches on K's rear face |
+| K plane and depth | F.Cu at z = −30.6 mm, rear face at −32.2 mm, about 40 mm of inside depth | Unchanged |
+| Gaps | 19.0 mm (JL, JR), 17.0 mm (P) and 13.0 mm (adapters) | Unchanged |
+| Fixings | About 48, with every pair within 40 mm of one | 30: the 18 power posts and 12 printed spacers |
+| Power | 18 bolted brass posts of 19.00 and 17.00 mm | Unchanged |
+| Alignment aids | Pilot locators, a registration plate, a closing-load rule and a draw-down by jack screws | Withdrawn. Four measures stay: the toggle take-up window, oversize post holes in K, the panel as the soldering fixture and the strain limit near fixings |
+| Closing | One closing of all pairs at about 750 N | 98 latches, closed one at a time; no mating load on the boards |
+| Gate A | Two steps: A-paper, then A-physical on a coupon | One gate on paper with five checks. The coupon is declined and A-physical is withdrawn |
+
+### The price of flex is a re-route of every interface signal
+
+The alternatives table below rejected a few large connectors per board because every interface signal would be re-routed. That reason still holds. What changed is the other side of the comparison. Reviews A1 and A2 found that the rigid stack needs 197 hand-soldered stackers and a closing procedure of about 1,100 screw operations, and the owner declined both the coupon and that hand work.
+
+- A link carries up to about 14 signals side by side over 40 to 60 mm. Coupling between neighbours is NOT RUN.
+- The worst ground contact is computed at 0.54 to 0.57 A, above the 0.5 A of the right-angle connector that was read. The links have spare positions for more ground contacts; the new share is NOT RUN.
+- A link can be mated at most 30 times, which limits how often K comes off.
+- Lowering K with about 49 link tails through 49 slots is the awkward assembly step.
+
+### Gate A-paper has five checks
+
+1. **Identity.** One connector pair and one link type, from retained maker documents.
+2. **Access.** Every link end can be plugged and latched with the boards on their spacers. The list of slots and connector fields on K, with the footprints each displaces.
+3. **Allocation.** Each of the 513 signals on a link with its ground positions, and the worst ground contact inside the connector's rating.
+4. **Coupling.** A computed bound for the worst neighbour pair, and a ground-layer or spacing rule where a precision net needs one.
+5. **Rework count.** Footprints moved and nets re-routed per board.
+
+The design returns to the rigid stack if the fields and slots displace more K footprints than the rigid design would, or if coupling has no solution within a 2-layer flex. On the first real boards the checks are continuity of every position, every latch closed by hand and one open-and-close of K.
+
+### Six items are raised for the owner after design review A3
+
+| Item | State |
+| --- | --- |
+| The price of flex: every interface signal re-routed and about 49 slots in K | Reported on 2026-11-14. The work continues on flex, because the owner asked for flex to be used if it is acceptable |
+| Custom flex circuits or catalogue flat jumpers | Open until the connector evidence of ST-01d is in |
+| Thirty matings per link | For information |
+| Six adapter stackers may need hand soldering (30 joints) | Open |
+| Printing 12 spacers plus spares | The models are in `design/stack/spacers/`; ST-08 confirms the sites and states the screw lengths |
+| Purchases | None; nothing is selected |
+
 ## Design review A1 of 2026-11-14: the stack continues as a changed design and waits for a coupon
+
+**Superseded in part by design reviews A2 and A3:** the coupon is declined, the heights changed by 0.2 mm and the joints to K become flex links; see the section above. This section stays as the record of the rigid stack, which is the way back.
 
 The design authority reviewed the first Phase 0 evidence (ST-01 connectors, ST-02 geometry, ST-03 mechanics) and took six decisions. The record is `circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-01.md`; the decision rows are DS-11 to DS-17 of `decisions.md` in the same folder. Nothing is adopted. The cable partition stays the working design, every figure in this section is a planning value on candidate files, and fit, force, alignment, strain and thermal checks stay **NOT RUN**.
 
@@ -383,7 +436,7 @@ The 34 mm figure uses the existing convention, measured from the panel front fac
 | 1.27 mm single-row pairs at every site | Fit pin for pin, but are fragile at 12.9 mm and tolerate less misalignment; kept as the fallback |
 | Spring contacts pressing on pads | Tolerant of height and position, but hold a permanent preload of the same order as the mating force and depend on contact pressure for every signal |
 | FFC or flex jumpers at every site | Still cables: 195 flex parts to plug |
-| A few large mezzanine connectors per board | Every interface signal would be re-routed to connector fields on boards whose routing is already the critical path |
+| A few large mezzanine connectors per board | **The working design since design review A3, as about 49 flat flex links.** Its cost stands: every interface signal is re-routed to connector fields on boards whose routing is already the critical path |
 | K at −20 mm | Needs windows in K or a different selector joint for 4 to 5 mm of depth |
 
 ## Phased sub-tasks
@@ -429,7 +482,7 @@ Phase 0 writes new candidate files only, for example under `design/stack/`. It d
 
 ### Gate A: adoption on the Phase 0 evidence
 
-**Changed by design review A1:** the gate is taken in two steps, A-paper and A-physical; see the design review section near the top of this page.
+**Changed by design reviews A1 and A3:** review A1 split the gate into two steps, A-paper and A-physical. The owner then declined the coupon, and review A3 set one gate on paper with five checks. See the design review sections near the top of this page.
 
 Phase 1 starts only after the direct stack is adopted (Q1). By the owner's direction of 2026-11-14 the design authority takes that decision. The evidence is an assemblable pair for all four heights (ST-01), paper stack-ups that close (ST-03) and a feasible power joint (ST-04). If the evidence does not close, the design authority chooses between a changed stack, a fallback from this page, and keeping the cable partition, and records the choice.
 
@@ -466,16 +519,16 @@ Each task re-reads the current generator and promotion tools before its brief is
 
 ## Open questions and who decides them
 
-The owner's direction of 2026-11-14 moves six of the seven open questions to the design authority. Each is decided when its evidence exists, and the decision is recorded in the campaign's decision log. Design review A1 answered Q3, Q4 and Q5 and split Q1 into two gate steps.
+The owner's direction of 2026-11-14 moves six of the seven open questions to the design authority. Each is decided when its evidence exists, and the decision is recorded in the campaign's decision log. Design review A1 answered Q3, Q4 and Q5 and split Q1 into two gate steps. The owner answered Q7 on 2026-11-14, and design review A3 changed Q1 and Q3.
 
 | ID | Question | Decided by | State, or planning assumption until decided |
 | --- | --- | --- | --- |
-| Q1 | Adopt the direct stack as the working architecture, replacing K at −100 mm and the 120 mm enclosure, on the Phase 0 evidence? | Design authority, at Gate A | Interim answer of 2026-11-14: continue as a changed design. Decided in two steps, A-paper and A-physical; the cable partition stays the working design until then |
-| Q3 | May the stack connectors come from outside the usual factory stock if stock parts cannot give the four mated heights? | Design authority for the design choice; a purchase stays with the owner | Decided on 2026-11-14 (DS-13): yes for the design. One family from outside the usual factory stock, as working codes; nothing is bought |
+| Q1 | Adopt the direct stack as the working architecture, replacing K at −100 mm and the 120 mm enclosure, on the Phase 0 evidence? | Design authority, at Gate A | Working design since design review A3: the spacer stack with flex links (DS-39, DS-40). Decided at one gate on paper with five checks (DS-41); the cable partition stays the working design until then |
+| Q3 | May the stack connectors come from outside the usual factory stock if stock parts cannot give the four mated heights? | Design authority for the design choice; a purchase stays with the owner | Decided on 2026-11-14 (DS-13): yes for the design. One family from outside the usual factory stock, as working codes; nothing is bought. For the joints to K the family changes to a 1.00 mm FFC/FPC connector with a flat link (DS-39); nothing is selected |
 | Q4 | Depth target: about 34 mm with one connector family, or about 31.5 mm with a second, finer family at the three adapters? | Design authority | Decided on 2026-11-14 (DS-13): about 40 mm with one family; about 37 mm is recorded as the way back |
 | Q5 | If the rigid EL joint fails its Phase 0 checks, which fallback: harnesses plugged on K's front face (K then needs the panel off to be refitted), harnesses plugged on K's rear face (about 68 part moves on K), or a flex EL? | Design authority | Decided on 2026-11-14 (DS-14): a rigid double-row joint through the P tab; if it fails, six short harnesses from EL to the P unit. F1 is withdrawn |
 | Q6 | Where does the PD supply live, and on which side does the power cable leave? The depth figure assumes the supply is outside the stack volume | Design authority, as far as the stack needs it; the inlet itself stays under #57 | Supply outside; inlet position open under #57 |
-| Q7 | Build a small connector coupon before the source re-plan? | **The owner**: it is a fabrication order and needs explicit approval | Definition by ST-09. Since design review A1 the coupon is the only way to adopt the joints to K |
+| Q7 | Build a small connector coupon before the source re-plan? | **The owner**: it is a fabrication order and needs explicit approval | Decided by the owner on 2026-11-14 (DS-35): no coupon. The small misalignment of the rigid pairs is an accepted risk |
 | Q8 | Confirm rear service: rear cover off, K jacked off the front boards, all trimmers on K's rear. It costs the trimmer moves and up to 54 small part moves on K's rear | Design authority | Rear service |
 
 ### Q2 is answered: SUB toggle
