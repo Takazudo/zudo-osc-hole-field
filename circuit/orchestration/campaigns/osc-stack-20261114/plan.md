@@ -84,10 +84,10 @@ Phase 0 writes new candidate files only, under `design/stack/`, `scripts/stack/`
 | ST-01 | Connector and spacer evidence, candidate bundles, selection proposal ([brief](st-01.md)) | Opus child, worktree `/home/user/wt/st-01`; web access for primary documents | RUNNING: attempt a1 launched 2026-11-14 18:03 UTC from `91246e9` | none | Design authority (packet A) |
 | ST-02 | Retained stack-geometry candidate and checker ([brief](st-02.md)) | Opus child, worktree `/home/user/wt/st-02` | RUNNING: attempt a1 launched 2026-11-14 18:03 UTC from `91246e9` | none; re-run with ST-01 footprints | Independent reviewer (packet C) |
 | ST-03 | Stack mechanics: datums, closing order, stack-ups, separation, coupon definition ([brief](st-03.md)) | Opus child, worktree `/home/user/wt/st-03` | RUNNING: attempt a1 (parametric start) launched 2026-11-14 18:03 UTC from `91246e9` | ST-01 figures to finish | Design authority (packet A) |
-| ST-04 | Power-post joint design and electrical re-derivation | Opus child | PLANNED | ST-01, ST-03 | Design authority (packet A) |
+| ST-04 | Power-post joint design and electrical re-derivation ([brief](st-04.md)) | Opus child, worktree `/home/user/wt/st-04` | PLANNED; brief written, not admitted | ST-01, ST-03 | Design authority (packet A) |
 | ST-05 | Thermal paper screen ([brief](st-05.md)) | Opus child, worktree `/home/user/wt/st-05` | PLANNED, wave 2; brief written, not admitted | none | Independent reviewer (packet C) |
 | ST-06 | SUB toggle specification for OSC2 and OSC4 ([brief](st-06.md)) | Opus child, worktree `/home/user/wt/st-06` | PLANNED, wave 2; brief written, not admitted | none | Design authority (packet B) |
-| ST-07 | Trimmer and test-point relocation plan | Opus child | PLANNED, wave 2 | none | Design authority (packet B) |
+| ST-07 | Trimmer and test-point relocation plan ([brief](st-07.md)) | Opus child, worktree `/home/user/wt/st-07` | PLANNED, wave 2; brief written, not admitted | none | Design authority (packet B) |
 | GA | Gate A: adopt or reject the direct stack on the Phase 0 evidence; decide Q3, Q4, Q5 and Q8 | Design authority: Fable agent at high effort | PLANNED | ST-01, ST-03, ST-04 | n/a |
 | Phase 1 to 3 | ST-10 to ST-31 of the plan page | Mapped at the campaign revision that follows Gate A | NOT PLANNED IN DETAIL | Gate A | n/a |
 
