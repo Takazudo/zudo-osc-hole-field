@@ -59,7 +59,7 @@ def make_site(board, side, center, replaces, gh_courtyard, axis_x):
             'replaces': replaces, 'replaced_gh_courtyard': gh_courtyard, 'long_axis_x': axis_x}
 
 
-def build(ci):
+def build(ci, obstacles=None):
     params = ci['parameters']
     land = ci['land_pattern']
     part = ci['partition']
@@ -175,10 +175,9 @@ def build(ci):
 
     # ---------------------------------------------------------- obstacles
     model = params['obstacle_model']
-    k_retired_refs = frozenset(retired_items['K_headers'])
-    obs_k = sg.Obstacles(ci['boards']['K'], model, drop=k_retired_refs,
-                         skip_hole=lambda f: f['ref'].startswith('MH_K-SERVICE'))
-    obs_p = sg.Obstacles(ci['boards']['P'], model)
+    if obstacles is None:
+        obstacles = sg.stack_obstacles(ci)
+    obs_k, obs_p = obstacles['K'], obstacles['P']
 
     # ---------------------------------------------------------- control tabs and SUB toggles
     sub = params['sub_toggle']
@@ -250,7 +249,7 @@ def build(ci):
         retired_overlap = []
         for kref in sorted(x for x in retired_items['K_headers'] if x in k_conn_centres):
             kx, ky = k_conn_centres[kref]
-            if abs(kx - cx) > 1e-6:
+            if abs(kx - cx) > sg.OFFSET_TOL_MM:
                 continue
             rect = sg.env_rect(cx, ky, w_sub, l_sub, True)
             depth = max([sg.overlap_depth(rect, t) for t in t_pads_g if sg.inter(rect, t)] or [0])
@@ -258,7 +257,7 @@ def build(ci):
         tab = [tab_x[0], tab_top, tab_x[1], p_edge]
         control_tabs.append({'id': 'TAB-CONTROL-' + blk, 'block': blk, 'rect': tab, 'board': 'P',
                              'basis': 'x: neighbouring selector courtyards less the edge margin; top: SUB site less half the envelope and the edge margin; bottom: P edge'})
-        sub_sites.append({'block': blk, 'uid': r['uid'], 'toggle_centre': [cx, cy], 'toggle_value': sub['reuse_value'],
+        sub_sites.append({'block': blk, 'uid': r['uid'], 'toggle_centre': [cx, cy], 'toggle_value': sub['reuse_value'], 'toggle_lib': toggle['lib'],
                           'toggle_courtyard': t_cy, 'toggle_pads': t_pads,
                           'corridor_x': [left, right], 'corridor_mm': round(right - left, 4),
                           'toggle_margins_mm': [round(t_cy[0] - left, 4), round(right - t_cy[2], 4)],
@@ -283,7 +282,7 @@ def build(ci):
                 'front_ref': ft['reference'], 'K_land': kt['center_mm'], 'K_ref': kt['reference'],
                 'present_offset_mm': off, 'land_courtyard_mm': ft['maximum_courtyard_mm'],
                 'proposed_front_land': ft['center_mm'], 'resolved_by': None}
-        if off > 1e-6:
+        if off > sg.OFFSET_TOL_MM:
             post['proposed_front_land'] = kt['center_mm']
             post['resolved_by'] = 'TAB-POWER'
             moved.append(post)
@@ -325,9 +324,6 @@ def build(ci):
         t['carried_posts'] = [p['id'] for p in posts if p['resolved_by'] == t['id']]
 
     # ---------------------------------------------------------- declared courtyard-level blockers
-    obstacles = {'K': obs_k, 'P': obs_p}
-    for key in ('JL', 'JR', 'EL', 'O1', 'O3', 'O5'):
-        obstacles[key] = sg.Obstacles(ci['boards'][key], model)
     for p in pairs:
         for half_name, half in (('front', 'front'), ('back', 'K')):
             s = p['sites'][half_name]
@@ -369,7 +365,6 @@ def generate(root=sg.ROOT):
         'provenance': {
             'generator': 'scripts/stack/geometry/generate.py',
             'regenerate': sg.REGEN_COMMAND,
-            'git_head': sg.git_head(root),
             'input_sha256': sg.input_hashes(root),
             'board_checkpoint_match': checkpoint_match(raw, root),
         },
@@ -395,9 +390,14 @@ def checkpoint_match(raw, root):
     return res
 
 
+def render(out):
+    """The tracked file text; it depends on the inputs only, never on the commit or the clock."""
+    return json.dumps(out, indent=1, sort_keys=False) + '\n'
+
+
 def main(argv):
     out, _ = generate()
-    text = json.dumps(out, indent=1, sort_keys=False) + '\n'
+    text = render(out)
     if '--stdout' in argv:
         sys.stdout.write(text)
     else:

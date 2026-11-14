@@ -6,7 +6,6 @@ clearance, a tolerance result or a physical fit.
 import hashlib
 import json
 import math
-import subprocess
 from pathlib import Path
 
 import kicad_extract
@@ -15,6 +14,8 @@ ROOT = Path(__file__).resolve().parents[3]
 OUT_DIR = ROOT / 'design/stack/geometry'
 CANDIDATE = OUT_DIR / 'stack-candidate.json'
 REPORT = OUT_DIR / 'check-report.json'
+# One threshold, in mm, for every "is this power post offset" decision (generator, checker, measurements).
+OFFSET_TOL_MM = 1e-3
 REGEN_COMMAND = 'python3 scripts/stack/geometry/generate.py && python3 scripts/stack/geometry/check.py'
 
 BOARD_FILES = {
@@ -53,13 +54,6 @@ def sha256_file(path):
 
 def canonical_digest(obj):
     return hashlib.sha256(json.dumps(obj, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
-
-
-def git_head(root=ROOT):
-    try:
-        return subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
-    except (OSError, subprocess.CalledProcessError):
-        return 'UNKNOWN'
 
 
 # ---------------------------------------------------------------- canonical inputs
@@ -189,12 +183,37 @@ def circle_rect(cx, cy, d):
 
 # ---------------------------------------------------------------- obstacle model
 
-class Obstacles:
-    """Courtyards grown on their own face, through-hole pads and holes grown on the opposite face."""
+class RectIndex:
+    """5 mm spatial hash of (rect, payload) items."""
     CELL = 5.0
 
+    def __init__(self):
+        self.items = []
+        self.cells = {}
+
+    def add(self, rect, payload):
+        k = len(self.items)
+        self.items.append((rect, payload))
+        for i in range(int(rect[0] // self.CELL), int(rect[2] // self.CELL) + 1):
+            for j in range(int(rect[1] // self.CELL), int(rect[3] // self.CELL) + 1):
+                self.cells.setdefault((i, j), []).append(k)
+
+    def near(self, rect):
+        """Items whose cells meet the cells of `rect` (a superset of the intersecting items), each once."""
+        seen = set()
+        for i in range(int(rect[0] // self.CELL), int(rect[2] // self.CELL) + 1):
+            for j in range(int(rect[1] // self.CELL), int(rect[3] // self.CELL) + 1):
+                for k in self.cells.get((i, j), ()):
+                    if k not in seen:
+                        seen.add(k)
+                        yield self.items[k]
+
+
+class Obstacles:
+    """Courtyards grown on their own face, through-hole pads and holes grown on the opposite face."""
+
     def __init__(self, fps, model, drop=frozenset(), skip_hole=lambda f: False):
-        self.items = {'F': [], 'B': []}
+        self.index = {'F': RectIndex(), 'B': RectIndex()}
         g_cy = model['own_face_courtyard_growth_mm']
         g_pad = model['opposite_face_through_hole_pad_growth_mm']
         g_hole = model['hole_growth_mm']
@@ -216,32 +235,58 @@ class Obstacles:
             other = 'B' if f['side'] == 'F' else 'F'
             for p in tht:
                 self._add(other, grow(p['bbox'], g_pad), f['ref'], 'through-hole pad')
-        self.index = {}
-        for s in 'FB':
-            idx = {}
-            for k, (r, ref, kind) in enumerate(self.items[s]):
-                for i in range(int(r[0] // self.CELL), int(r[2] // self.CELL) + 1):
-                    for j in range(int(r[1] // self.CELL), int(r[3] // self.CELL) + 1):
-                        idx.setdefault((i, j), []).append(k)
-            self.index[s] = idx
 
     def _add(self, side, rect, ref, kind):
-        self.items[side].append(([round(v, 4) for v in rect], ref, kind))
+        self.index[side].add([round(v, 4) for v in rect], (ref, kind))
 
     def hits(self, side, rect, skip=()):
-        seen = set()
-        out = []
-        idx = self.index[side]
-        for i in range(int(rect[0] // self.CELL), int(rect[2] // self.CELL) + 1):
-            for j in range(int(rect[1] // self.CELL), int(rect[3] // self.CELL) + 1):
-                for k in idx.get((i, j), ()):
-                    if k in seen:
-                        continue
-                    seen.add(k)
-                    r, ref, kind = self.items[side][k]
-                    if ref not in skip and inter(rect, r):
-                        out.append((ref, kind))
-        return sorted(set(out))
+        return sorted({payload for r, payload in self.index[side].near(rect)
+                       if payload[0] not in skip and inter(rect, r)})
+
+
+def retired_k_headers(ci):
+    """K-side headers of harnesses that end on a retired board."""
+    retired = set(ci['parameters']['retired_boards'])
+    con = {c['id']: c for c in ci['partition']['connectors']}
+    out = set()
+    for h in ci['partition']['harnesses']:
+        if any(b in retired for b in h['boards']):
+            out |= {con[cid]['pcb_reference'] for cid in h['header_ids'] if con[cid]['board'] == 'K'}
+    return frozenset(out)
+
+
+def stack_obstacles(ci, keys=('K', 'JL', 'JR', 'P', 'EL', 'O1', 'O3', 'O5')):
+    """Obstacle sets of the stack: K without its retired headers and service apertures, other boards as drawn."""
+    model = ci['parameters']['obstacle_model']
+    out = {}
+    for key in keys:
+        if key == 'K':
+            out[key] = Obstacles(ci['boards']['K'], model, drop=retired_k_headers(ci),
+                                 skip_hole=lambda f: f['ref'].startswith('MH_K-SERVICE'))
+        else:
+            out[key] = Obstacles(ci['boards'][key], model)
+    return out
+
+
+def rect_inside_poly(rect, poly, margin=0.0):
+    """The rectangle grown by `margin` lies inside a rectilinear outline (corners inside, no vertex inside)."""
+    r = grow(rect, margin)
+    eps = 1e-6
+    for x, y in ((r[0] + eps, r[1] + eps), (r[2] - eps, r[1] + eps), (r[2] - eps, r[3] - eps), (r[0] + eps, r[3] - eps)):
+        if not point_in_poly(x, y, poly):
+            return False
+    return not any(r[0] + eps < x < r[2] - eps and r[1] + eps < y < r[3] - eps for x, y in poly)
+
+
+def point_segment_distance(px, py, a, b):
+    (x1, y1), (x2, y2) = a, b
+    dx, dy = x2 - x1, y2 - y1
+    t = 0.0 if dx == dy == 0 else max(0.0, min(1.0, ((px - x1) * dx + (py - y1) * dy) / (dx * dx + dy * dy)))
+    return math.hypot(px - (x1 + t * dx), py - (y1 + t * dy))
+
+
+def distance_to_outline(px, py, poly):
+    return min(point_segment_distance(px, py, poly[i], poly[(i + 1) % len(poly)]) for i in range(len(poly)))
 
 
 # ---------------------------------------------------------------- land pattern

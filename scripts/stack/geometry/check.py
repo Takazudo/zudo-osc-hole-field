@@ -29,20 +29,9 @@ class Context:
         self.land = ci['land_pattern']
         self.boards = {b['board_key']: b for b in ci['partition']['boards']}
         self.fps = {k: {f['ref']: f for f in v} for k, v in ci['boards'].items()}
-        model = p['obstacle_model']
-        retired_k = set()
-        con = {c['id']: c for c in ci['partition']['connectors']}
-        for h in ci['partition']['harnesses']:
-            if any(b in p['retired_boards'] for b in h['boards']):
-                for cid in h['header_ids']:
-                    if con[cid]['board'] == 'K':
-                        retired_k.add(con[cid]['pcb_reference'])
-        self.retired_k = retired_k
-        self.obstacles = {'K': sg.Obstacles(ci['boards']['K'], model, drop=frozenset(retired_k),
-                                            skip_hole=lambda f: f['ref'].startswith('MH_K-SERVICE'))}
-        for key in ('JL', 'JR', 'P', 'EL', 'O1', 'O3', 'O5'):
-            self.obstacles[key] = sg.Obstacles(ci['boards'][key], model)
-        self.reference = generate.build(ci)
+        self.retired_k = sg.retired_k_headers(ci)
+        self.obstacles = sg.stack_obstacles(ci)
+        self.reference = generate.build(ci, self.obstacles)
         self.heights = {}
         for env in ci['mechanical']['model_envelopes']:
             if env['side'] != 'F.Cu':
@@ -81,7 +70,6 @@ def check_planes(cand, ctx, res):
         errs.append('K rear parts at z=%s pass the enclosure inner rear at z=%s' % (st['K_rear_parts_z_mm'], st['enclosure_inner_rear_z_mm']))
     for p in cand['pairs']:
         gap = '/'.join(p['boards']) if p['family'] != 'EL/P' else 'EL/P'
-        gap = {'K/O1': 'O1/K', 'K/O3': 'O3/K', 'K/O5': 'O5/K'}.get(gap, gap)
         if gap in st['mated_heights_mm'] and abs(p['mated_height_mm'] - st['mated_heights_mm'][gap]) > TOL:
             errs.append('pair %s mated height %s differs from gap %s %s' % (p['id'], p['mated_height_mm'], gap, st['mated_heights_mm'][gap]))
     res.check('planes_and_gaps', {'stack': ref}, errs)
@@ -210,8 +198,6 @@ def check_pins(cand, ctx, res):
             for net in h['signals']:
                 if net not in carried:
                     errs.append('pair %s does not carry %s of %s' % (j['id'], net, hid))
-        if h['boards'] == ['EL', 'K']:
-            pass
     rails_seen = {n for p in cand['pairs'] if p['family'] == 'EL/P' for n in p['pin_map'] if n in RAILS}
     for r in RAILS:
         if r not in rails_seen:
@@ -243,8 +229,44 @@ def check_pass_through(cand, ctx, res):
                                      'K_new_sites': sum(1 for s in sites if s['board'] == 'K')}, errs)
 
 
+def rect_in_tab_or_outline(rect, tab, outline, step=0.25):
+    """Every sample point of the rectangle lies in the tab or inside P's existing outline."""
+    nx = max(2, int((rect[2] - rect[0]) / step) + 1)
+    ny = max(2, int((rect[3] - rect[1]) / step) + 1)
+    for i in range(nx + 1):
+        x = rect[0] + (rect[2] - rect[0]) * i / nx
+        for j in range(ny + 1):
+            y = rect[1] + (rect[3] - rect[1]) * j / ny
+            in_tab = tab[0] - TOL <= x <= tab[2] + TOL and tab[1] - TOL <= y <= tab[3] + TOL
+            if not in_tab and not sg.point_in_poly(x, y, outline):
+                return False
+    return True
+
+
+def toggle_tail_screen(s, cand, ctx, errs):
+    """Toggle through-hole tails below P B.Cu against K F.Cu parts in the P/K gap."""
+    lib = s['toggle_lib']
+    tail = ctx.heights.get(lib, (None, 0.0))[1]
+    gap = cand['stack']['mated_heights_mm']['P/K']
+    under = sorted({ref for pad in s['toggle_pads'] for ref, _ in ctx.obstacles['K'].hits('F', pad)})
+    if not tail:
+        return {'status': 'NOT CHECKABLE', 'K_F_parts_under_toggle_pads': under,
+                'missing_source': 'toggle tail protrusion below P B.Cu: the retained native envelope of %s starts at the board face' % lib}
+    k_fps = ctx.fps['K']
+    unknown = []
+    for ref in under:
+        h = ctx.heights.get(k_fps[ref]['lib'], (None,))[0] if ref in k_fps else None
+        if h is None:
+            unknown.append(ref)
+        elif tail + h >= gap:
+            errs.append('SUB toggle %s tail %s mm and K part %s %s mm reach the %s mm P/K gap' % (s['block'], tail, ref, h, gap))
+    return {'status': 'NOT CHECKABLE' if unknown else 'PASS', 'tail_mm': tail, 'K_F_parts_under_toggle_pads': under,
+            'K_parts_without_retained_height': unknown}
+
+
 def check_sub(cand, ctx, res):
     errs = []
+    tails = {}
     ref = {s['block']: s for s in ctx.reference['sub_toggles']}
     tabs = {t['id']: t for t in cand['tabs']}
     pairs = {p['id']: p for p in cand['pairs']}
@@ -268,15 +290,24 @@ def check_sub(cand, ctx, res):
             errs.append('SUB toggle %s lacks its control tab or pair' % s['block'])
             continue
         t = tab['rect']
-        if not sg.inside(s['toggle_courtyard'][:1] + [t[1]] + s['toggle_courtyard'][2:3] + [t[3]], t):
-            errs.append('SUB toggle %s courtyard %s is not inside control tab %s' % (s['block'], s['toggle_courtyard'], t))
+        tc = s['toggle_courtyard']
+        if not rect_in_tab_or_outline(tc, t, ctx.boards['P']['outline']):
+            errs.append('SUB toggle %s courtyard %s is not inside control tab %s or P outline' % (s['block'], tc, t))
+        for ref, kind in ctx.obstacles['P'].hits('F', tc):
+            errs.append('SUB toggle %s courtyard %s overlaps P F.Cu obstacle %s (%s)' % (s['block'], tc, ref, kind))
+        pad_g = ctx.params['obstacle_model']['opposite_face_through_hole_pad_growth_mm']
+        for pad in s['toggle_pads']:
+            for ref, kind in ctx.obstacles['P'].hits('B', sg.grow(pad, pad_g)):
+                errs.append('SUB toggle %s pad %s overlaps P B.Cu obstacle %s (%s)' % (s['block'], pad, ref, kind))
+        tails[s['block']] = toggle_tail_screen(s, cand, ctx, errs)
         env = pair['sites']['front']['envelope']
         if not sg.inside(sg.grow(env, m)[:3] + [min(env[3] + m, t[3])], t):
             errs.append('SUB pair %s envelope %s is not inside control tab %s with %s mm margin' % (s['block'], env, t, m))
         if abs(pair['sites']['front']['center'][1] - y) > TOL:
             errs.append('SUB pair %s site differs from the recorded SUB site' % s['block'])
     res.check('sub_toggle_windows', {'windows': {s['block']: {'window_centre_y': s['window_centre_y'], 'window_mm': s['window_mm'],
-                                                              'site_centre': s['site_centre']} for s in cand['sub_toggles']}}, errs)
+                                                              'site_centre': s['site_centre']} for s in cand['sub_toggles']},
+                                   'toggle_tail_against_K': tails}, errs)
 
 
 def check_posts(cand, ctx, res):
@@ -288,7 +319,7 @@ def check_posts(cand, ctx, res):
         if abs(land[0] - p['K_land'][0]) > TOL or abs(land[1] - p['K_land'][1]) > TOL:
             errs.append('post %s is not coaxial: front land %s, K land %s' % (p['id'], land, p['K_land']))
             continue
-        if p['present_offset_mm'] <= TOL:
+        if p['present_offset_mm'] <= sg.OFFSET_TOL_MM:
             coax += 1
             continue
         t = tabs.get(p['resolved_by'])
@@ -404,7 +435,6 @@ def check_retired(cand, ctx, res):
 def facing_items(ctx, cand, key, face, region_poly, exclude):
     """Items of board `key` that face the gap from `face` ('F' or 'B'), with known heights or None."""
     out = []
-    sel_tail = None
     for f in ctx.ci['boards'][key]:
         if f['ref'] in exclude or f['lib'] == '' or not f['courtyard']:
             continue
@@ -435,7 +465,6 @@ def check_facing_heights(cand, ctx, res):
     posts = {p['front_ref'] for p in cand['posts']} | {p['K_ref'] for p in cand['posts']}
     exclude = replaced | posts | ctx.retired_k
     gaps = cand['stack']['mated_heights_mm']
-    k_outline = ctx.boards['K']['outline']
     for front in ('JL', 'JR', 'P', 'O1', 'O3', 'O5', 'EL'):
         back = 'P' if front == 'EL' else 'K'
         gap = gaps['EL/P' if front == 'EL' else front + '/K']
@@ -446,34 +475,23 @@ def check_facing_heights(cand, ctx, res):
         known = unknown = 0
         collisions = []
         single = []
-        idx = {}
-        for k, it in enumerate(b_items):
-            r = it[2]
-            for i in range(int(r[0] // 5), int(r[2] // 5) + 1):
-                for j in range(int(r[1] // 5), int(r[3] // 5) + 1):
-                    idx.setdefault((i, j), []).append(k)
+        idx = sg.RectIndex()
+        for it in b_items:
+            idx.add(it[2], it)
         for it in a_items + b_items:
             if it[3] is not None and it[3] >= gap:
                 single.append({'ref': it[0], 'height_mm': it[3], 'gap_mm': gap})
         for a in a_items:
-            seen = set()
-            r = a[2]
-            for i in range(int(r[0] // 5), int(r[2] // 5) + 1):
-                for j in range(int(r[1] // 5), int(r[3] // 5) + 1):
-                    for k in idx.get((i, j), ()):
-                        if k in seen:
-                            continue
-                        seen.add(k)
-                        b = b_items[k]
-                        if not sg.inter(a[2], b[2]):
-                            continue
-                        if a[3] is None or b[3] is None:
-                            unknown += 1
-                        else:
-                            known += 1
-                            if a[3] + b[3] >= gap:
-                                collisions.append({'front': a[0], 'front_height_mm': a[3], 'back': b[0],
-                                                   'back_height_mm': b[3], 'gap_mm': gap})
+            for _, b in idx.near(a[2]):
+                if not sg.inter(a[2], b[2]):
+                    continue
+                if a[3] is None or b[3] is None:
+                    unknown += 1
+                else:
+                    known += 1
+                    if a[3] + b[3] >= gap:
+                        collisions.append({'front': a[0], 'front_height_mm': a[3], 'back': b[0],
+                                           'back_height_mm': b[3], 'gap_mm': gap})
         for c in collisions:
             errs.append('facing-height collision in gap %s/%s (%s mm): %s %s mm + %s %s mm'
                         % (front, back, gap, c['front'], c['front_height_mm'], c['back'], c['back_height_mm']))
@@ -514,37 +532,53 @@ def run_checks(doc, ctx):
     return res
 
 
+NOT_RUN = [
+    'Copper clearance, DRC and routing of the stack: no stack board exists',
+    'Tolerance stack-up, mating misalignment and force: no exact connector (ST-01, ST-03)',
+    'P body-carrier openings for the EL pairs: no carrier envelope is recorded in the sources',
+    'Seated part heights: only native display-model envelopes and the listed reserves are retained; other heights are counted as unknown',
+    'SUB toggle tails against K F.Cu: no retained tail protrusion for the toggle (see sub_toggle_windows detail)',
+    'Native KiCad oracle query: not needed; boards parsed with plain Python and the extract matched the planning extract for K',
+]
+
+
+def build_report(doc, ctx, candidate_sha256, measurements=True):
+    """The check report; a measurement that raises becomes an error entry instead of a traceback."""
+    res = run_checks(doc, ctx)
+    errors = list(res.errors)
+    report = {
+        'schema_version': 1,
+        'status': 'COURTYARD-AND-PAD-LEVEL PLANNING SCREEN; not a copper clearance, tolerance result or physical fit; unvalidated draft',
+        'verdict': None,
+        'candidate_sha256': candidate_sha256,
+        'canonical_input_digest': sg.canonical_digest(ctx.ci),
+        'errors': errors,
+        'checks': res.checks,
+        'not_run': NOT_RUN,
+    }
+    if measurements:
+        import measure
+        try:
+            report['measurements'] = measure.measure(ctx.ci, doc['candidate'], ctx)
+        except Exception as exc:  # noqa: BLE001 - any measurement failure must still leave a report
+            errors.append('measurements: %s: %s' % (type(exc).__name__, exc))
+            report['measurements'] = None
+    report['verdict'] = 'FAIL' if errors else 'PASS'
+    return report
+
+
 def main(argv):
     raw = sg.load_raw()
     boards = sg.load_boards(raw)
     ci = sg.canonical_inputs(raw, boards)
     ctx = Context(ci)
     doc = json.loads(sg.CANDIDATE.read_text())
-    res = run_checks(doc, ctx)
-    report = {
-        'schema_version': 1,
-        'status': 'COURTYARD-AND-PAD-LEVEL PLANNING SCREEN; not a copper clearance, tolerance result or physical fit; unvalidated draft',
-        'verdict': 'FAIL' if res.errors else 'PASS',
-        'candidate_sha256': sg.sha256_file(sg.CANDIDATE),
-        'canonical_input_digest': sg.canonical_digest(ci),
-        'errors': res.errors,
-        'checks': res.checks,
-        'not_run': [
-            'Copper clearance, DRC and routing of the stack: no stack board exists',
-            'Tolerance stack-up, mating misalignment and force: no exact connector (ST-01, ST-03)',
-            'P body-carrier openings for the EL pairs: no carrier envelope is recorded in the sources',
-            'Seated part heights: only native display-model envelopes and the listed reserves are retained; other heights are counted as unknown',
-            'Native KiCad oracle query: not needed; boards parsed with plain Python and the extract matched the planning extract for K',
-        ],
-    }
-    if '--no-measurements' not in argv:
-        import measure
-        report['measurements'] = measure.measure(ci, doc['candidate'], ctx)
+    report = build_report(doc, ctx, sg.sha256_file(sg.CANDIDATE), '--no-measurements' not in argv)
     sg.REPORT.write_text(json.dumps(report, indent=1) + '\n')
-    print('verdict', report['verdict'], 'errors', len(res.errors))
-    for e in res.errors[:30]:
+    print('verdict', report['verdict'], 'errors', len(report['errors']))
+    for e in report['errors'][:30]:
         print('  ', e)
-    return 1 if res.errors else 0
+    return 1 if report['errors'] else 0
 
 
 if __name__ == '__main__':

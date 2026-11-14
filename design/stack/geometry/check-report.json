@@ -2,8 +2,8 @@
  "schema_version": 1,
  "status": "COURTYARD-AND-PAD-LEVEL PLANNING SCREEN; not a copper clearance, tolerance result or physical fit; unvalidated draft",
  "verdict": "PASS",
- "candidate_sha256": "e06a029d8cd52d1734181c781c9b691a8ab98fd4e873f728790181348b53d7a4",
- "canonical_input_digest": "d524cef5a0984bf7db3ce136796afe6d69366d6e94a107d0761695a6c63727fd",
+ "candidate_sha256": "8b302b93012b31253238f87c1743adf26723ef6dfde57ef2e9241e18b7048c98",
+ "canonical_input_digest": "d50dea1ad8a4b6efd1c1508d86f2b55ac2e9b0d34b59b45fb1ea581e32e510bb",
  "errors": [],
  "checks": {
   "planes_and_gaps": {
@@ -336,6 +336,18 @@
        179.95
       ]
      }
+    },
+    "toggle_tail_against_K": {
+     "O2": {
+      "status": "NOT CHECKABLE",
+      "K_F_parts_under_toggle_pads": [],
+      "missing_source": "toggle tail protrusion below P B.Cu: the retained native envelope of Toggle_Dailywell_2MS_T1B1M2 starts at the board face"
+     },
+     "O4": {
+      "status": "NOT CHECKABLE",
+      "K_F_parts_under_toggle_pads": [],
+      "missing_source": "toggle tail protrusion below P B.Cu: the retained native envelope of Toggle_Dailywell_2MS_T1B1M2 starts at the board face"
+     }
     }
    }
   },
@@ -560,7 +572,7 @@
    "status": "PASS",
    "errors": [],
    "detail": {
-    "digest": "d524cef5a0984bf7db3ce136796afe6d69366d6e94a107d0761695a6c63727fd"
+    "digest": "d50dea1ad8a4b6efd1c1508d86f2b55ac2e9b0d34b59b45fb1ea581e32e510bb"
    }
   }
  },
@@ -569,6 +581,7 @@
   "Tolerance stack-up, mating misalignment and force: no exact connector (ST-01, ST-03)",
   "P body-carrier openings for the EL pairs: no carrier envelope is recorded in the sources",
   "Seated part heights: only native display-model envelopes and the listed reserves are retained; other heights are counted as unknown",
+  "SUB toggle tails against K F.Cu: no retained tail protrusion for the toggle (see sub_toggle_windows detail)",
   "Native KiCad oracle query: not needed; boards parsed with plain Python and the extract matched the planning extract for K"
  ],
  "measurements": {
@@ -656,30 +669,48 @@
   "planning_envelope_fit_in_place": {
    "GH3": {
     "positions": 3,
-    "envelope_mm": [
-     5.8,
-     7.0
-    ],
+    "envelope_mm": {
+     "front": [
+      5.8,
+      7.0
+     ],
+     "K": [
+      5.8,
+      7.0
+     ]
+    },
     "sites": 127,
     "fit_in_place_both_boards": 127,
     "fails": []
    },
    "GH7": {
     "positions": 5,
-    "envelope_mm": [
-     5.8,
-     11.0
-    ],
+    "envelope_mm": {
+     "front": [
+      5.8,
+      11.0
+     ],
+     "K": [
+      5.8,
+      11.0
+     ]
+    },
     "sites": 10,
     "fit_in_place_both_boards": 10,
     "fails": []
    },
    "GH8": {
     "positions": 6,
-    "envelope_mm": [
-     5.8,
-     13.0
-    ],
+    "envelope_mm": {
+     "front": [
+      5.8,
+      13.0
+     ],
+     "K": [
+      5.8,
+      13.0
+     ]
+    },
     "sites": 58,
     "fit_in_place_both_boards": 58,
     "fails": []
@@ -1221,10 +1252,10 @@
   },
   "K_footprints": 3986,
   "K_free_area": {
-   "cells_mm2": 84480,
-   "free_F_percent": 37.6,
-   "free_B_percent": 39.1,
-   "scope": "1 mm cells, x 5..312, y 9..290 outside the notch; obstacle model with every K hole retained"
+   "cells_mm2": 84280,
+   "free_F_percent": 37.5,
+   "free_B_percent": 39.0,
+   "scope": "1 mm cells inside the partition K outline less the board-edge margin; obstacle model with every K hole retained"
   },
   "K_fragmentation": {
    "through_slot_13x5_positions_x182_312_y160_180": 0,
@@ -1233,7 +1264,8 @@
   "K_trimmers": {
    "F": 44,
    "B": 56,
-   "relocatable_within_30mm": 42,
+   "relocatable_in_pm30mm_square_window": 42,
+   "search": "centre shifts dx, dy each within +-30 mm on a 0.5 mm grid, nearest first; greedy in reference order",
    "median_move_mm": 9.1,
    "longest_move_mm": 31.0,
    "test_pads_F": [
@@ -1264,32 +1296,38 @@
     {
      "support": "P-SUP-1",
      "collar_over_K_outline": true,
-     "overlap_mm": 1.1
+     "overlap_mm": 1.1,
+     "centre_inside_K": false
     },
     {
      "support": "P-SUP-2",
      "collar_over_K_outline": true,
-     "overlap_mm": 1.1
+     "overlap_mm": 1.1,
+     "centre_inside_K": false
     },
     {
      "support": "P-SUP-3",
      "collar_over_K_outline": true,
-     "overlap_mm": 1.1
+     "overlap_mm": 1.1,
+     "centre_inside_K": false
     },
     {
      "support": "P-SUP-4",
      "collar_over_K_outline": true,
-     "overlap_mm": 1.1
+     "overlap_mm": 1.1,
+     "centre_inside_K": false
     },
     {
      "support": "P-SUP-5",
      "collar_over_K_outline": true,
-     "overlap_mm": 1.1
+     "overlap_mm": 1.1,
+     "centre_inside_K": false
     },
     {
      "support": "P-SUP-6",
      "collar_over_K_outline": false,
-     "overlap_mm": null
+     "overlap_mm": null,
+     "centre_inside_K": false
     }
    ],
    "P_collars_over_K": 5
