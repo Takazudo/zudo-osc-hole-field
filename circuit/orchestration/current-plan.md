@@ -8,9 +8,9 @@ This is the initial task/environment/model mapping, not a dispatch receipt. No w
 
 | Field | Initial state / action before dispatch |
 | --- | --- |
-| Active campaign / top-level manager | `osc-cloud-20261111` (2026-11-11): one Claude Code Cloud Project thread session is the sole manager and dispatcher; see [campaigns/osc-cloud-20261111/plan.md](campaigns/osc-cloud-20261111/plan.md) |
-| Hard-design authority | Fable or Astra in an actually selectable/confirmed session; otherwise pending |
-| Actions dispatcher | The campaign manager itself (no separate child); ceiling 4 compute jobs plus 7-job CI reserve, recorded in the campaign plan |
+| Active campaign / top-level manager | `osc-stack-20261114` (2026-11-14): the direct board-stack campaign; one Claude Code Cloud Project thread session is the sole manager, dispatcher and integrator; see [campaigns/osc-stack-20261114/plan.md](campaigns/osc-stack-20261114/plan.md). It holds K interface routing until its Gate A. The earlier `osc-cloud-20261111` has no runnable task left (T9c and T10 BLOCKED); its record stays at [campaigns/osc-cloud-20261111/plan.md](campaigns/osc-cloud-20261111/plan.md) |
+| Hard-design authority | Fable or Astra in an actually selectable/confirmed session; otherwise pending. In `osc-stack-20261114` the owner assigned hard architectural decisions to a Fable design agent at high effort (2026-11-14) |
+| Actions dispatcher | The active campaign's manager itself (no separate child). `osc-stack-20261114` admits ordinary CI only in its Phase 0, one pull request at a time. The ceiling of 4 compute jobs plus a 7-job CI reserve was the allocation of `osc-cloud-20261111`; a later compute wave needs a new numeric allocation in the campaign plan |
 | Account concurrency / current headroom | Unknown; inspect current plan/settings, active work including other repositories, and runner-specific limits |
 | Ordinary CI / integration reserve | Must be explicitly allocated before compute fan-out; do not consume all capacity with routing |
 | Cloud implementation sessions | No new sessions admitted here; determine number from independent work and measured VM/session budgets |
