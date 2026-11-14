@@ -1,5 +1,6 @@
 """Unit tests for the ST-04 power-post calculator: no network, no KiCad."""
 import copy
+import hashlib
 import json
 import sys
 import tempfile
@@ -136,11 +137,28 @@ class AttemptA2(unittest.TestCase):
                 self.assertEqual(j['K_xy'], j['front_xy'])
 
     def test_decision_rows_pin(self):
-        import hashlib
         src = pp.load()['sources']['S-DEC']
         text = (pp.ROOT / src['path']).read_text().splitlines(True)
         rows = [next(line for line in text if line.startswith(f'| {r} |')) for r in src['rows']]
         self.assertEqual(hashlib.sha256(''.join(rows).encode()).hexdigest(), src['rows_sha256'])
+
+    def test_repository_sources_are_current(self):
+        """Every repository source is pinned by its file, its cited rows or its cited object, and the pin holds."""
+        for sid, src in pp.load()['sources'].items():
+            if not sid.startswith('S-'):
+                continue
+            with self.subTest(source=sid):
+                data = (pp.ROOT / src['path']).read_bytes()
+                if 'sha256' in src:
+                    self.assertEqual(hashlib.sha256(data).hexdigest(), src['sha256'])
+                elif 'locator_sha256' in src:
+                    cited = json.loads(data)
+                    for key in src['locator'].split('.'):
+                        cited = cited[key]
+                    canonical = json.dumps(cited, sort_keys=True, separators=(',', ':'))
+                    self.assertEqual(hashlib.sha256(canonical.encode()).hexdigest(), src['locator_sha256'])
+                else:
+                    self.assertIn('rows_sha256', src)
 
 class Readme(unittest.TestCase):
     def test_readme_tables_are_current(self):
