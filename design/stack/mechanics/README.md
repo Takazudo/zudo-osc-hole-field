@@ -22,11 +22,11 @@ The geometry candidate still carries the cable-era heights. This study uses the 
 <!-- calc:notes -->
 | Height (note, not an error) | Geometry candidate, mm | Used here (DA-01), mm |
 | --- | --- | --- |
-| K F.Cu z | -30.400 | -30.400 |
-| JL/K gap | 18.800 | 18.800 |
-| JR/K gap | 18.800 | 18.800 |
+| K F.Cu z | -30.600 | -30.400 |
+| JL/K gap | 19.000 | 18.800 |
+| JR/K gap | 19.000 | 18.800 |
 | P/K gap | 17.000 | 17.000 |
-| O1/K gap | 12.800 | 12.800 |
+| O1/K gap | 13.000 | 12.800 |
 | EL/P gap | 7.200 | 7.200 |
 <!-- /calc:notes -->
 
@@ -50,10 +50,10 @@ Gap = pin tip + socket âˆ’ insertion (DA-01 D3). The open margin is insertion âˆ
 <!-- calc:heights -->
 | Joint | Gap, mm | Pin tip, mm | Stacker A, mm | Socket, mm | Insertion, mm | Gap may open by, mm | Gap may close by (window), mm | Body clearance, mm | Gap may close by (governing), mm | Height in the geometry candidate, mm (note only) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| JL to K | 18.800 | 17.350 | 13.462 | 4.500 | 3.050 | 0.920 | 1.270 | 0.838 | 0.838 | 18.800 |
-| JR to K | 18.800 | 17.350 | 13.462 | 4.500 | 3.050 | 0.920 | 1.270 | 0.838 | 0.838 | 18.800 |
+| JL to K | 18.800 | 17.350 | 13.462 | 4.500 | 3.050 | 0.920 | 1.270 | 0.838 | 0.838 | 19.000 |
+| JR to K | 18.800 | 17.350 | 13.462 | 4.500 | 3.050 | 0.920 | 1.270 | 0.838 | 0.838 | 19.000 |
 | P unit to K | 17.000 | 15.370 | 11.684 | 4.500 | 2.870 | 0.740 | 1.450 | 0.816 | 0.816 | 17.000 |
-| O1/O3/O5 to K | 12.800 | 11.860 | 7.493 | 4.500 | 3.560 | 1.430 | 0.760 | 0.807 | 0.760 | 12.800 |
+| O1/O3/O5 to K | 12.800 | 11.860 | 7.493 | 4.500 | 3.560 | 1.430 | 0.760 | 0.807 | 0.760 | 13.000 |
 | EL to P | 7.200 | 7.850 | 4.318 | 2.290 | 2.940 | 1.540 | open (pins pass through) | 0.592 | 0.592 | 7.200 |
 <!-- /calc:heights -->
 
