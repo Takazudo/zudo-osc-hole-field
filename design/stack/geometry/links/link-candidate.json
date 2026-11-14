@@ -10,12 +10,12 @@
    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
    "design/partition/partition.json": "7e3f5a39b001f80f38572c837a60e197fbb08ae588296e1d3bcb1339718db48f",
    "design/stack/geometry/check-report.json": "36a4fd1d819b264d7a63bee4899c6ef04ef0df8a0cafb1f60477f17de6d6c3bd",
-   "design/stack/geometry/links/link-options.json": "fe578b6b4a59a375749bf3142240c277cd8250a21d1269b382957b012fd04829",
+   "design/stack/geometry/links/link-options.json": "b0a60bf721b155200fc6a5b9304b20b84767638959c7f009a794f93f4e7bb4c9",
    "design/stack/geometry/parameters.json": "0a2edef523be698e3fbecda50f5576a5826de4a9346ed2102a5a10f2813d4577",
    "design/stack/geometry/stack-candidate.json": "9bd03493c0a98c36357c90ee56e86dec57eb3dd5d0793a84f49f34f1c5d25f54",
    "scripts/stack/geometry/kicad_extract.py": "23093e93bf8a5c9072310531d771f9592783673c13f9a23dd70eb9272505ecdd",
-   "scripts/stack/geometry/links.py": "103417f5b5c5e5ddd9d336a69333bfd45785a48edb632116b480095393784289",
-   "scripts/stack/geometry/links_readme.py": "474d33df396a691e89c5c78fdddde2f335a4eef01fdac1a6dc5a31581a5424e5",
+   "scripts/stack/geometry/links.py": "928814c730d87538e3eadcb03394bfd7ccc53fd45a86ea92e20c1149d0715f50",
+   "scripts/stack/geometry/links_readme.py": "d0f742ca4781f3fd9901c663cb53abc303b48494ec5240e38bd1819bcbd59d6f",
    "scripts/stack/geometry/stackgeom.py": "70db6b0833512a20029b743c49d9adf0fe1b69ef8bb4d0063afc3515cb07d7ab"
   }
  },
@@ -304,8 +304,8 @@
  "summary": [
   {
    "option": "P100-N20 G-PER-2S",
-   "size": "P100-N20",
    "ground_rule": "G-PER-2S",
+   "size": "P100-N20",
    "pitch_mm": 1.0,
    "circuits": 20,
    "signals_per_link": 13,
@@ -314,6 +314,32 @@
     "JR-K": "P100-N20",
     "P-K": "P100-N20",
     "JL-P via K": "P100-N20"
+   },
+   "size_per_joint": {
+    "JL-K": {
+     "size": "P100-N20",
+     "pitch_mm": 1.0,
+     "circuits": 20,
+     "signals_per_link": 13
+    },
+    "JR-K": {
+     "size": "P100-N20",
+     "pitch_mm": 1.0,
+     "circuits": 20,
+     "signals_per_link": 13
+    },
+    "P-K": {
+     "size": "P100-N20",
+     "pitch_mm": 1.0,
+     "circuits": 20,
+     "signals_per_link": 13
+    },
+    "JL-P via K": {
+     "size": "P100-N20",
+     "pitch_mm": 1.0,
+     "circuits": 20,
+     "signals_per_link": 13
+    }
    },
    "links": 45,
    "links_per_joint": {
@@ -415,8 +441,8 @@
   },
   {
    "option": "P100-N20 G-BETWEEN",
-   "size": "P100-N20",
    "ground_rule": "G-BETWEEN",
+   "size": "P100-N20",
    "pitch_mm": 1.0,
    "circuits": 20,
    "signals_per_link": 10,
@@ -425,6 +451,32 @@
     "JR-K": "P100-N20",
     "P-K": "P100-N20",
     "JL-P via K": "P100-N20"
+   },
+   "size_per_joint": {
+    "JL-K": {
+     "size": "P100-N20",
+     "pitch_mm": 1.0,
+     "circuits": 20,
+     "signals_per_link": 10
+    },
+    "JR-K": {
+     "size": "P100-N20",
+     "pitch_mm": 1.0,
+     "circuits": 20,
+     "signals_per_link": 10
+    },
+    "P-K": {
+     "size": "P100-N20",
+     "pitch_mm": 1.0,
+     "circuits": 20,
+     "signals_per_link": 10
+    },
+    "JL-P via K": {
+     "size": "P100-N20",
+     "pitch_mm": 1.0,
+     "circuits": 20,
+     "signals_per_link": 10
+    }
    },
    "links": 57,
    "links_per_joint": {
@@ -479,12 +531,12 @@
    "slot_area_mm2": 1221.0,
    "slot_area_share_of_K_pct": 1.4287,
    "K_displaced": {
-    "by_slots": 165,
-    "by_fields_only": 200,
-    "F.Cu": 53,
+    "by_slots": 164,
+    "by_fields_only": 203,
+    "F.Cu": 55,
     "B.Cu": 313,
-    "total": 365,
-    "outside_post_keepouts": 362,
+    "total": 367,
+    "outside_post_keepouts": 364,
     "rigid_return_criterion": 129
    },
    "front_displaced": {
@@ -508,7 +560,7 @@
      33.67
     ],
     "P-K": [
-     19.6326,
+     19.7411,
      42.073
     ],
     "JL-P via K": [
@@ -522,12 +574,12 @@
    ],
    "links_served_by_cable": 37,
    "cable_length_mm": 50.0,
-   "latch_not_shown": 30
+   "latch_not_shown": 29
   },
   {
    "option": "P100-N22 G-PER-2S",
-   "size": "P100-N22",
    "ground_rule": "G-PER-2S",
+   "size": "P100-N22",
    "pitch_mm": 1.0,
    "circuits": 22,
    "signals_per_link": 14,
@@ -536,6 +588,32 @@
     "JR-K": "P100-N22",
     "P-K": "P100-N22",
     "JL-P via K": "P100-N22"
+   },
+   "size_per_joint": {
+    "JL-K": {
+     "size": "P100-N22",
+     "pitch_mm": 1.0,
+     "circuits": 22,
+     "signals_per_link": 14
+    },
+    "JR-K": {
+     "size": "P100-N22",
+     "pitch_mm": 1.0,
+     "circuits": 22,
+     "signals_per_link": 14
+    },
+    "P-K": {
+     "size": "P100-N22",
+     "pitch_mm": 1.0,
+     "circuits": 22,
+     "signals_per_link": 14
+    },
+    "JL-P via K": {
+     "size": "P100-N22",
+     "pitch_mm": 1.0,
+     "circuits": 22,
+     "signals_per_link": 14
+    }
    },
    "links": 41,
    "links_per_joint": {
@@ -637,8 +715,8 @@
   },
   {
    "option": "P100-N22 G-BETWEEN",
-   "size": "P100-N22",
    "ground_rule": "G-BETWEEN",
+   "size": "P100-N22",
    "pitch_mm": 1.0,
    "circuits": 22,
    "signals_per_link": 11,
@@ -647,6 +725,32 @@
     "JR-K": "P100-N22",
     "P-K": "P100-N22",
     "JL-P via K": "P100-N22"
+   },
+   "size_per_joint": {
+    "JL-K": {
+     "size": "P100-N22",
+     "pitch_mm": 1.0,
+     "circuits": 22,
+     "signals_per_link": 11
+    },
+    "JR-K": {
+     "size": "P100-N22",
+     "pitch_mm": 1.0,
+     "circuits": 22,
+     "signals_per_link": 11
+    },
+    "P-K": {
+     "size": "P100-N22",
+     "pitch_mm": 1.0,
+     "circuits": 22,
+     "signals_per_link": 11
+    },
+    "JL-P via K": {
+     "size": "P100-N22",
+     "pitch_mm": 1.0,
+     "circuits": 22,
+     "signals_per_link": 11
+    }
    },
    "links": 57,
    "links_per_joint": {
@@ -748,8 +852,8 @@
   },
   {
    "option": "P050-N30 G-PER-2S",
-   "size": "P050-N30",
    "ground_rule": "G-PER-2S",
+   "size": "P050-N30",
    "pitch_mm": 0.5,
    "circuits": 30,
    "signals_per_link": 20,
@@ -758,6 +862,32 @@
     "JR-K": "P050-N30",
     "P-K": "P050-N30",
     "JL-P via K": "P050-N30"
+   },
+   "size_per_joint": {
+    "JL-K": {
+     "size": "P050-N30",
+     "pitch_mm": 0.5,
+     "circuits": 30,
+     "signals_per_link": 20
+    },
+    "JR-K": {
+     "size": "P050-N30",
+     "pitch_mm": 0.5,
+     "circuits": 30,
+     "signals_per_link": 20
+    },
+    "P-K": {
+     "size": "P050-N30",
+     "pitch_mm": 0.5,
+     "circuits": 30,
+     "signals_per_link": 20
+    },
+    "JL-P via K": {
+     "size": "P050-N30",
+     "pitch_mm": 0.5,
+     "circuits": 30,
+     "signals_per_link": 20
+    }
    },
    "links": 33,
    "links_per_joint": {
@@ -859,8 +989,8 @@
   },
   {
    "option": "P050-N30 G-BETWEEN",
-   "size": "P050-N30",
    "ground_rule": "G-BETWEEN",
+   "size": "P050-N30",
    "pitch_mm": 0.5,
    "circuits": 30,
    "signals_per_link": 15,
@@ -869,6 +999,32 @@
     "JR-K": "P050-N30",
     "P-K": "P050-N30",
     "JL-P via K": "P050-N30"
+   },
+   "size_per_joint": {
+    "JL-K": {
+     "size": "P050-N30",
+     "pitch_mm": 0.5,
+     "circuits": 30,
+     "signals_per_link": 15
+    },
+    "JR-K": {
+     "size": "P050-N30",
+     "pitch_mm": 0.5,
+     "circuits": 30,
+     "signals_per_link": 15
+    },
+    "P-K": {
+     "size": "P050-N30",
+     "pitch_mm": 0.5,
+     "circuits": 30,
+     "signals_per_link": 15
+    },
+    "JL-P via K": {
+     "size": "P050-N30",
+     "pitch_mm": 0.5,
+     "circuits": 30,
+     "signals_per_link": 15
+    }
    },
    "links": 41,
    "links_per_joint": {
@@ -970,8 +1126,8 @@
   },
   {
    "option": "P050-N40 G-PER-2S",
-   "size": "P050-N40",
    "ground_rule": "G-PER-2S",
+   "size": "P050-N40",
    "pitch_mm": 0.5,
    "circuits": 40,
    "signals_per_link": 26,
@@ -980,6 +1136,32 @@
     "JR-K": "P050-N40",
     "P-K": "P050-N40",
     "JL-P via K": "P050-N40"
+   },
+   "size_per_joint": {
+    "JL-K": {
+     "size": "P050-N40",
+     "pitch_mm": 0.5,
+     "circuits": 40,
+     "signals_per_link": 26
+    },
+    "JR-K": {
+     "size": "P050-N40",
+     "pitch_mm": 0.5,
+     "circuits": 40,
+     "signals_per_link": 26
+    },
+    "P-K": {
+     "size": "P050-N40",
+     "pitch_mm": 0.5,
+     "circuits": 40,
+     "signals_per_link": 26
+    },
+    "JL-P via K": {
+     "size": "P050-N40",
+     "pitch_mm": 0.5,
+     "circuits": 40,
+     "signals_per_link": 26
+    }
    },
    "links": 29,
    "links_per_joint": {
@@ -991,7 +1173,7 @@
    "unplaced_per_joint": {
     "JL-K": 0,
     "JR-K": 0,
-    "P-K": 7,
+    "P-K": 8,
     "JL-P via K": 1
    },
    "lower_bound_per_joint": {
@@ -1028,18 +1210,18 @@
      "max_site_distance_mm": 25.5
     }
    },
-   "placed": 21,
-   "unplaced": 8,
-   "slots": 21,
-   "slot_area_mm2": 677.25,
-   "slot_area_share_of_K_pct": 0.7924,
+   "placed": 20,
+   "unplaced": 9,
+   "slots": 20,
+   "slot_area_mm2": 645.0,
+   "slot_area_share_of_K_pct": 0.7547,
    "K_displaced": {
-    "by_slots": 81,
-    "by_fields_only": 83,
+    "by_slots": 80,
+    "by_fields_only": 71,
     "F.Cu": 30,
-    "B.Cu": 134,
-    "total": 164,
-    "outside_post_keepouts": 163,
+    "B.Cu": 121,
+    "total": 151,
+    "outside_post_keepouts": 150,
     "rigid_return_criterion": 129
    },
    "front_displaced": {
@@ -1063,7 +1245,7 @@
      37.1613
     ],
     "P-K": [
-     30.5024,
+     31.1494,
      64.1133
     ],
     "JL-P via K": [
@@ -1075,14 +1257,14 @@
     37.3398,
     39.3398
    ],
-   "links_served_by_cable": 21,
+   "links_served_by_cable": 20,
    "cable_length_mm": 50.0,
-   "latch_not_shown": 11
+   "latch_not_shown": 10
   },
   {
    "option": "P050-N40 G-BETWEEN",
-   "size": "P050-N40",
    "ground_rule": "G-BETWEEN",
+   "size": "P050-N40",
    "pitch_mm": 0.5,
    "circuits": 40,
    "signals_per_link": 20,
@@ -1091,6 +1273,32 @@
     "JR-K": "P050-N40",
     "P-K": "P050-N40",
     "JL-P via K": "P050-N40"
+   },
+   "size_per_joint": {
+    "JL-K": {
+     "size": "P050-N40",
+     "pitch_mm": 0.5,
+     "circuits": 40,
+     "signals_per_link": 20
+    },
+    "JR-K": {
+     "size": "P050-N40",
+     "pitch_mm": 0.5,
+     "circuits": 40,
+     "signals_per_link": 20
+    },
+    "P-K": {
+     "size": "P050-N40",
+     "pitch_mm": 0.5,
+     "circuits": 40,
+     "signals_per_link": 20
+    },
+    "JL-P via K": {
+     "size": "P050-N40",
+     "pitch_mm": 0.5,
+     "circuits": 40,
+     "signals_per_link": 20
+    }
    },
    "links": 33,
    "links_per_joint": {
@@ -1192,8 +1400,8 @@
   },
   {
    "option": "P100-N20-NL G-PER-2S",
-   "size": "P100-N20-NL",
    "ground_rule": "G-PER-2S",
+   "size": "P100-N20-NL",
    "pitch_mm": 1.0,
    "circuits": 20,
    "signals_per_link": 13,
@@ -1202,6 +1410,32 @@
     "JR-K": "P100-N20-NL",
     "P-K": "P100-N20-NL",
     "JL-P via K": "P100-N20-NL"
+   },
+   "size_per_joint": {
+    "JL-K": {
+     "size": "P100-N20-NL",
+     "pitch_mm": 1.0,
+     "circuits": 20,
+     "signals_per_link": 13
+    },
+    "JR-K": {
+     "size": "P100-N20-NL",
+     "pitch_mm": 1.0,
+     "circuits": 20,
+     "signals_per_link": 13
+    },
+    "P-K": {
+     "size": "P100-N20-NL",
+     "pitch_mm": 1.0,
+     "circuits": 20,
+     "signals_per_link": 13
+    },
+    "JL-P via K": {
+     "size": "P100-N20-NL",
+     "pitch_mm": 1.0,
+     "circuits": 20,
+     "signals_per_link": 13
+    }
    },
    "links": 45,
    "links_per_joint": {
@@ -1303,8 +1537,8 @@
   },
   {
    "option": "P100-N20-NL G-BETWEEN",
-   "size": "P100-N20-NL",
    "ground_rule": "G-BETWEEN",
+   "size": "P100-N20-NL",
    "pitch_mm": 1.0,
    "circuits": 20,
    "signals_per_link": 10,
@@ -1313,6 +1547,32 @@
     "JR-K": "P100-N20-NL",
     "P-K": "P100-N20-NL",
     "JL-P via K": "P100-N20-NL"
+   },
+   "size_per_joint": {
+    "JL-K": {
+     "size": "P100-N20-NL",
+     "pitch_mm": 1.0,
+     "circuits": 20,
+     "signals_per_link": 10
+    },
+    "JR-K": {
+     "size": "P100-N20-NL",
+     "pitch_mm": 1.0,
+     "circuits": 20,
+     "signals_per_link": 10
+    },
+    "P-K": {
+     "size": "P100-N20-NL",
+     "pitch_mm": 1.0,
+     "circuits": 20,
+     "signals_per_link": 10
+    },
+    "JL-P via K": {
+     "size": "P100-N20-NL",
+     "pitch_mm": 1.0,
+     "circuits": 20,
+     "signals_per_link": 10
+    }
    },
    "links": 57,
    "links_per_joint": {
@@ -1414,8 +1674,8 @@
   },
   {
    "option": "P100-N22-NL G-PER-2S",
-   "size": "P100-N22-NL",
    "ground_rule": "G-PER-2S",
+   "size": "P100-N22-NL",
    "pitch_mm": 1.0,
    "circuits": 22,
    "signals_per_link": 14,
@@ -1424,6 +1684,32 @@
     "JR-K": "P100-N22-NL",
     "P-K": "P100-N22-NL",
     "JL-P via K": "P100-N22-NL"
+   },
+   "size_per_joint": {
+    "JL-K": {
+     "size": "P100-N22-NL",
+     "pitch_mm": 1.0,
+     "circuits": 22,
+     "signals_per_link": 14
+    },
+    "JR-K": {
+     "size": "P100-N22-NL",
+     "pitch_mm": 1.0,
+     "circuits": 22,
+     "signals_per_link": 14
+    },
+    "P-K": {
+     "size": "P100-N22-NL",
+     "pitch_mm": 1.0,
+     "circuits": 22,
+     "signals_per_link": 14
+    },
+    "JL-P via K": {
+     "size": "P100-N22-NL",
+     "pitch_mm": 1.0,
+     "circuits": 22,
+     "signals_per_link": 14
+    }
    },
    "links": 41,
    "links_per_joint": {
@@ -1525,8 +1811,8 @@
   },
   {
    "option": "P100-N22-NL G-BETWEEN",
-   "size": "P100-N22-NL",
    "ground_rule": "G-BETWEEN",
+   "size": "P100-N22-NL",
    "pitch_mm": 1.0,
    "circuits": 22,
    "signals_per_link": 11,
@@ -1535,6 +1821,32 @@
     "JR-K": "P100-N22-NL",
     "P-K": "P100-N22-NL",
     "JL-P via K": "P100-N22-NL"
+   },
+   "size_per_joint": {
+    "JL-K": {
+     "size": "P100-N22-NL",
+     "pitch_mm": 1.0,
+     "circuits": 22,
+     "signals_per_link": 11
+    },
+    "JR-K": {
+     "size": "P100-N22-NL",
+     "pitch_mm": 1.0,
+     "circuits": 22,
+     "signals_per_link": 11
+    },
+    "P-K": {
+     "size": "P100-N22-NL",
+     "pitch_mm": 1.0,
+     "circuits": 22,
+     "signals_per_link": 11
+    },
+    "JL-P via K": {
+     "size": "P100-N22-NL",
+     "pitch_mm": 1.0,
+     "circuits": 22,
+     "signals_per_link": 11
+    }
    },
    "links": 57,
    "links_per_joint": {
@@ -4465,14 +4777,14 @@
         "smallest_penetration_mm": 1.0
        },
        {
-        "blocker": "front field on panel hardware SW1701",
-        "candidates": 83,
-        "smallest_penetration_mm": 0.6
-       },
-       {
         "blocker": "front field on hole MH_P-OPT-30",
         "candidates": 79,
         "smallest_penetration_mm": 0.8
+       },
+       {
+        "blocker": "front field on panel hardware SW1701",
+        "candidates": 66,
+        "smallest_penetration_mm": 0.6
        }
       ]
      }
@@ -5848,7 +6160,7 @@
       "most_frequent": [
        {
         "blocker": "front field on panel hardware RV602",
-        "candidates": 238,
+        "candidates": 198,
         "smallest_penetration_mm": 0.9
        },
        {
@@ -5858,7 +6170,7 @@
        },
        {
         "blocker": "front field on panel hardware RV603",
-        "candidates": 177,
+        "candidates": 176,
         "smallest_penetration_mm": 1.1
        }
       ]
@@ -5933,7 +6245,7 @@
        },
        {
         "blocker": "front field on panel hardware RV801",
-        "candidates": 150,
+        "candidates": 149,
         "smallest_penetration_mm": 1.1
        }
       ]
@@ -6008,7 +6320,7 @@
        },
        {
         "blocker": "front field on panel hardware RV1001",
-        "candidates": 146,
+        "candidates": 145,
         "smallest_penetration_mm": 1.1
        }
       ]
@@ -6671,12 +6983,9 @@
    "K_displaced_refs": {
     "by_slots": [
      "C1414",
-     "C1417",
      "C1446",
      "C1447",
      "C1506",
-     "C1512",
-     "C1519",
      "C2109",
      "C2136",
      "C2141",
@@ -6714,7 +7023,6 @@
      "Q4401",
      "R1247",
      "R1253",
-     "R1433",
      "R1445",
      "R1451",
      "R1464",
@@ -6724,7 +7032,7 @@
      "R1492",
      "R1494",
      "R1526",
-     "R1554",
+     "R1545",
      "R1558",
      "R1583",
      "R1584",
@@ -6778,6 +7086,9 @@
      "R8443",
      "R8477",
      "RB1101",
+     "RB1411",
+     "RB1414",
+     "RB1519",
      "RB4333",
      "RB4501",
      "RB4529",
@@ -6849,6 +7160,7 @@
      "C146",
      "C148",
      "C1507",
+     "C1545",
      "C1606",
      "C1609",
      "C2114",
@@ -6914,10 +7226,12 @@
      "R1254",
      "R1255",
      "R1285",
+     "R1425",
      "R1533",
      "R1534",
      "R1535",
-     "R1557",
+     "R1549",
+     "R1550",
      "R1567",
      "R1568",
      "R1569",
@@ -11482,13 +11796,13 @@
         "smallest_penetration_mm": 1.35
        },
        {
-        "blocker": "front field on panel hardware RV1101",
-        "candidates": 161,
+        "blocker": "front field on panel hardware RV1002",
+        "candidates": 151,
         "smallest_penetration_mm": 1.35
        },
        {
-        "blocker": "front field on panel hardware RV1002",
-        "candidates": 151,
+        "blocker": "front field on panel hardware RV1101",
+        "candidates": 141,
         "smallest_penetration_mm": 1.35
        }
       ]
@@ -11853,7 +12167,7 @@
        },
        {
         "blocker": "front field on panel hardware RV901",
-        "candidates": 146,
+        "candidates": 137,
         "smallest_penetration_mm": 1.24
        }
       ]
@@ -12177,18 +12491,18 @@
       "most_frequent": [
        {
         "blocker": "front field on panel hardware RV702",
-        "candidates": 197,
+        "candidates": 190,
         "smallest_penetration_mm": 1.24
-       },
-       {
-        "blocker": "front field on panel hardware RV602",
-        "candidates": 187,
-        "smallest_penetration_mm": 0.2
        },
        {
         "blocker": "front field on panel hardware RV603",
         "candidates": 140,
         "smallest_penetration_mm": 1.2
+       },
+       {
+        "blocker": "front field on panel hardware RV602",
+        "candidates": 131,
+        "smallest_penetration_mm": 0.2
        }
       ]
      }
@@ -12602,41 +12916,41 @@
      "circuits": 20,
      "placed": true,
      "slot_centre": [
-      79.3,
-      230.2
+      81.3,
+      228.2
      ],
      "direction": "+y",
      "slot_distance_from_centre_mm": 12.8062,
      "geometry": {
       "slot": [
-       68.3,
-       229.45,
-       90.3,
-       230.95
+       70.3,
+       227.45,
+       92.3,
+       228.95
       ],
       "front_connector": [
-       65.55,
-       217.26,
-       93.05,
-       223.8
+       67.55,
+       215.26,
+       95.05,
+       221.8
       ],
       "front_tail": [
-       68.8,
-       223.8,
-       89.8,
-       229.45
+       70.8,
+       221.8,
+       91.8,
+       227.45
       ],
       "K_tail": [
-       68.8,
-       230.95,
-       89.8,
-       236.6
+       70.8,
+       228.95,
+       91.8,
+       234.6
       ],
       "K_connector": [
-       65.55,
-       236.6,
-       93.05,
-       243.14
+       67.55,
+       234.6,
+       95.05,
+       241.14
       ],
       "a_mm": 6.4,
       "b_mm": 6.4
@@ -12645,26 +12959,28 @@
       "front B": [],
       "K F (slot)": [
        "R1464",
-       "R1492"
+       "R1492",
+       "RB1411",
+       "RB1519"
       ],
       "K B (slot)": [
        "C1414",
-       "C1417",
-       "C1512",
-       "C1519",
-       "R1433",
        "R1445",
        "R1451",
        "R1494",
-       "R1554",
-       "R1558"
+       "R1545",
+       "R1558",
+       "RB1414"
       ],
       "K B (field)": [
        "C1507",
+       "C1545",
+       "R1425",
        "R1533",
        "R1534",
        "R1535",
-       "R1557",
+       "R1549",
+       "R1550",
        "R1567",
        "R1568",
        "R1569",
@@ -12678,25 +12994,26 @@
        "RV504"
       ],
       "K tail": [
+       "C1414",
        "C1417",
-       "C1507",
        "C1512",
+       "C1519",
        "R1433",
+       "R1445",
+       "R1451",
        "R1494",
-       "R1533",
-       "R1534",
+       "R1545",
        "R1549",
        "R1550",
        "R1554",
-       "R1569"
+       "R1558",
+       "U1513"
       ]
      },
      "cable_needed_mm": 37.3398,
      "latch_reach": {
-      "neighbours_within_margin": [
-       "U1506"
-      ],
-      "verdict": "NOT SHOWN (neighbour heights not retained)"
+      "neighbours_within_margin": [],
+      "verdict": "open"
      }
     },
     {
@@ -17144,8 +17461,8 @@
        },
        {
         "blocker": "front field on panel hardware RV602",
-        "candidates": 202,
-        "smallest_penetration_mm": 0.0357
+        "candidates": 139,
+        "smallest_penetration_mm": 0.2571
        },
        {
         "blocker": "front field on panel hardware RV504",
@@ -22760,13 +23077,13 @@
         "smallest_penetration_mm": 1.35
        },
        {
-        "blocker": "front field on panel hardware RV1101",
-        "candidates": 149,
+        "blocker": "front field on panel hardware RV1002",
+        "candidates": 144,
         "smallest_penetration_mm": 1.35
        },
        {
-        "blocker": "front field on panel hardware RV1002",
-        "candidates": 144,
+        "blocker": "front field on panel hardware RV1101",
+        "candidates": 130,
         "smallest_penetration_mm": 1.35
        }
       ]
@@ -23131,7 +23448,7 @@
        },
        {
         "blocker": "front field on panel hardware RV901",
-        "candidates": 133,
+        "candidates": 123,
         "smallest_penetration_mm": 1.24
        }
       ]
@@ -23447,17 +23764,17 @@
       "most_frequent": [
        {
         "blocker": "front field on panel hardware RV702",
-        "candidates": 193,
+        "candidates": 186,
         "smallest_penetration_mm": 1.24
-       },
-       {
-        "blocker": "front field on panel hardware RV602",
-        "candidates": 178,
-        "smallest_penetration_mm": 1.2
        },
        {
         "blocker": "front field on panel hardware RV603",
         "candidates": 139,
+        "smallest_penetration_mm": 1.2
+       },
+       {
+        "blocker": "front field on panel hardware RV602",
+        "candidates": 120,
         "smallest_penetration_mm": 1.2
        }
       ]
@@ -24192,9 +24509,9 @@
         "smallest_penetration_mm": 0.585
        },
        {
-        "blocker": "front field on fixing keep-out POWER-JL--12V",
-        "candidates": 93,
-        "smallest_penetration_mm": 0.3777
+        "blocker": "front field on panel hardware J309",
+        "candidates": 80,
+        "smallest_penetration_mm": 1.045
        }
       ]
      }
@@ -26688,13 +27005,13 @@
         "smallest_penetration_mm": 0.7256
        },
        {
-        "blocker": "front field on panel hardware RV1101",
-        "candidates": 180,
+        "blocker": "front field on panel hardware RV1202",
+        "candidates": 178,
         "smallest_penetration_mm": 0.7256
        },
        {
-        "blocker": "front field on panel hardware RV1202",
-        "candidates": 178,
+        "blocker": "front field on panel hardware RV1101",
+        "candidates": 172,
         "smallest_penetration_mm": 0.7256
        }
       ]
@@ -32387,7 +32704,6 @@
      "U113",
      "U118",
      "U1405",
-     "U1601",
      "U1602",
      "U1604",
      "U2111",
@@ -32419,8 +32735,6 @@
      "U8108"
     ],
     "by_fields_only": [
-     "C1112",
-     "C1144",
      "C1436",
      "C1437",
      "C1520",
@@ -32441,19 +32755,9 @@
      "C8407",
      "C8442",
      "Q4204",
-     "R1120",
      "R1129",
      "R1133",
-     "R1134",
-     "R1137",
-     "R1138",
      "R1140",
-     "R1154",
-     "R1158",
-     "R1163",
-     "R1165",
-     "R1168",
-     "R1170",
      "R1246",
      "R1293",
      "R1454",
@@ -32478,8 +32782,8 @@
      "RB1528",
      "RV2110",
      "RV2111",
-     "U1113",
      "U1410",
+     "U1601",
      "U2210",
      "U2211",
      "U2215",
@@ -34696,7 +35000,7 @@
        },
        {
         "blocker": "front field on panel hardware RV901",
-        "candidates": 162,
+        "candidates": 159,
         "smallest_penetration_mm": 0.77
        }
       ]
@@ -35209,95 +35513,49 @@
      "size": "P050-N40",
      "capacity_signals": 26,
      "circuits": 40,
-     "placed": true,
-     "slot_centre": [
-      18.1667,
-      198.5
+     "placed": false,
+     "blocked_at_centre": [
+      {
+       "direction": "+x",
+       "blocker": "front field outside the P outline less 0.30 mm",
+       "penetration_mm": null
+      },
+      {
+       "direction": "-x",
+       "blocker": "front field outside the P outline less 0.30 mm",
+       "penetration_mm": null
+      },
+      {
+       "direction": "+y",
+       "blocker": "front field outside the P outline less 0.30 mm",
+       "penetration_mm": null
+      },
+      {
+       "direction": "-y",
+       "blocker": "front field on panel hardware SW103",
+       "penetration_mm": 3.3
+      }
      ],
-     "direction": "-y",
-     "slot_distance_from_centre_mm": 6.3246,
-     "geometry": {
-      "slot": [
-       7.4167,
-       197.75,
-       28.9167,
-       199.25
-      ],
-      "front_connector": [
-       5.7167,
-       204.9,
-       30.6167,
-       210.52
-      ],
-      "front_tail": [
-       7.9167,
-       199.25,
-       28.4167,
-       204.9
-      ],
-      "K_tail": [
-       7.9167,
-       192.1,
-       28.4167,
-       197.75
-      ],
-      "K_connector": [
-       5.7167,
-       186.48,
-       30.6167,
-       192.1
-      ],
-      "a_mm": 6.4,
-      "b_mm": 6.4
-     },
-     "displaced": {
-      "front B": [],
-      "K F (slot)": [],
-      "K B (slot)": [
-       "U1601"
-      ],
-      "K B (field)": [
-       "C1112",
-       "C1144",
-       "R1120",
-       "R1134",
-       "R1137",
-       "R1138",
-       "R1154",
-       "R1158",
-       "R1163",
-       "R1165",
-       "R1168",
-       "R1170",
-       "U1113"
+     "blocked_in_search": {
+      "candidates": 1764,
+      "outside_a_board_or_edge_web": 1188,
+      "most_frequent": [
+       {
+        "blocker": "front field on panel hardware SW203",
+        "candidates": 90,
+        "smallest_penetration_mm": 0.3
+       },
+       {
+        "blocker": "front field on front tail of P-K-P-L10",
+        "candidates": 87,
+        "smallest_penetration_mm": 1.9821
+       },
+       {
+        "blocker": "front field on panel hardware SW103",
+        "candidates": 82,
+        "smallest_penetration_mm": 0.3
+       }
       ]
-     },
-     "under_tails": {
-      "front tail": [
-       "SW102",
-       "SW202"
-      ],
-      "K tail": [
-       "DO1105",
-       "R1120",
-       "R1126",
-       "R1132",
-       "R1134",
-       "R1158",
-       "R1340",
-       "U1601"
-      ]
-     },
-     "cable_needed_mm": 37.3398,
-     "latch_reach": {
-      "neighbours_within_margin": [
-       "DO1105",
-       "R1126",
-       "R1164",
-       "R1166",
-       "R1340"
-      ],
-      "verdict": "NOT SHOWN (neighbour heights not retained)"
      }
     },
     {
@@ -38252,7 +38510,7 @@
        },
        {
         "blocker": "front field on panel hardware RV1101",
-        "candidates": 162,
+        "candidates": 157,
         "smallest_penetration_mm": 0.7256
        }
       ]
@@ -42184,8 +42442,8 @@
        },
        {
         "blocker": "front field on panel hardware SW1701",
-        "candidates": 104,
-        "smallest_penetration_mm": 0.44
+        "candidates": 80,
+        "smallest_penetration_mm": 0.6
        },
        {
         "blocker": "front field on hole MH_P-OPT-30",
@@ -42373,14 +42631,14 @@
         "smallest_penetration_mm": 1.0
        },
        {
-        "blocker": "front field on panel hardware SW1601",
-        "candidates": 110,
-        "smallest_penetration_mm": 0.44
+        "blocker": "front field on panel hardware SW1502",
+        "candidates": 100,
+        "smallest_penetration_mm": 1.0
        },
        {
-        "blocker": "front field on panel hardware SW1501",
-        "candidates": 102,
-        "smallest_penetration_mm": 0.44
+        "blocker": "front field on hole MH_P-OPT-16",
+        "candidates": 94,
+        "smallest_penetration_mm": 2.54
        }
       ]
      }
@@ -43512,14 +43770,14 @@
       "outside_a_board_or_edge_web": 543,
       "most_frequent": [
        {
-        "blocker": "front field on panel hardware RV602",
-        "candidates": 227,
-        "smallest_penetration_mm": 0.9
+        "blocker": "front field on panel hardware RV702",
+        "candidates": 214,
+        "smallest_penetration_mm": 1.59
        },
        {
-        "blocker": "front field on panel hardware RV702",
-        "candidates": 215,
-        "smallest_penetration_mm": 1.59
+        "blocker": "front field on panel hardware RV602",
+        "candidates": 185,
+        "smallest_penetration_mm": 0.9
        },
        {
         "blocker": "front field on panel hardware RV603",
@@ -43598,7 +43856,7 @@
        },
        {
         "blocker": "front field on panel hardware RV801",
-        "candidates": 153,
+        "candidates": 152,
         "smallest_penetration_mm": 1.59
        }
       ]
@@ -43673,7 +43931,7 @@
        },
        {
         "blocker": "front field on panel hardware RV1001",
-        "candidates": 151,
+        "candidates": 150,
         "smallest_penetration_mm": 1.59
        }
       ]
@@ -48879,13 +49137,13 @@
         "smallest_penetration_mm": 1.35
        },
        {
-        "blocker": "front field on panel hardware RV1101",
-        "candidates": 177,
+        "blocker": "front field on panel hardware RV1002",
+        "candidates": 158,
         "smallest_penetration_mm": 1.35
        },
        {
-        "blocker": "front field on panel hardware RV1001",
-        "candidates": 158,
+        "blocker": "front field on panel hardware RV1101",
+        "candidates": 153,
         "smallest_penetration_mm": 1.35
        }
       ]
@@ -49250,7 +49508,7 @@
        },
        {
         "blocker": "front field on panel hardware RV901",
-        "candidates": 162,
+        "candidates": 151,
         "smallest_penetration_mm": 1.74
        }
       ]
@@ -49563,17 +49821,17 @@
       "most_frequent": [
        {
         "blocker": "front field on panel hardware RV702",
-        "candidates": 212,
+        "candidates": 209,
         "smallest_penetration_mm": 1.74
        },
        {
-        "blocker": "front field on panel hardware RV602",
-        "candidates": 181,
-        "smallest_penetration_mm": 1.7
+        "blocker": "front field on panel hardware RV603",
+        "candidates": 136,
+        "smallest_penetration_mm": 0.14
        },
        {
         "blocker": "front field on panel hardware RV701",
-        "candidates": 144,
+        "candidates": 136,
         "smallest_penetration_mm": 1.74
        }
       ]
@@ -53706,8 +53964,8 @@
       "most_frequent": [
        {
         "blocker": "front field on panel hardware RV1201",
-        "candidates": 240,
-        "smallest_penetration_mm": 1.2733
+        "candidates": 199,
+        "smallest_penetration_mm": 1.4167
        },
        {
         "blocker": "front field on panel hardware RV1202",
@@ -53715,8 +53973,8 @@
         "smallest_penetration_mm": 1.4067
        },
        {
-        "blocker": "front field on panel hardware RV1101",
-        "candidates": 93,
+        "blocker": "front field on panel hardware RV1102",
+        "candidates": 92,
         "smallest_penetration_mm": 1.4167
        }
       ]
@@ -54371,13 +54629,13 @@
       "most_frequent": [
        {
         "blocker": "front field on panel hardware RV603",
-        "candidates": 202,
+        "candidates": 201,
         "smallest_penetration_mm": 0.0043
        },
        {
         "blocker": "front field on panel hardware RV602",
-        "candidates": 191,
-        "smallest_penetration_mm": 0.0357
+        "candidates": 133,
+        "smallest_penetration_mm": 1.7571
        },
        {
         "blocker": "front field on panel hardware RV504",
@@ -59797,13 +60055,13 @@
         "smallest_penetration_mm": 1.35
        },
        {
-        "blocker": "front field on panel hardware RV1101",
-        "candidates": 175,
+        "blocker": "front field on panel hardware RV1002",
+        "candidates": 156,
         "smallest_penetration_mm": 1.35
        },
        {
-        "blocker": "front field on panel hardware RV1002",
-        "candidates": 156,
+        "blocker": "front field on panel hardware RV1101",
+        "candidates": 152,
         "smallest_penetration_mm": 1.35
        }
       ]
@@ -60168,7 +60426,7 @@
        },
        {
         "blocker": "front field on panel hardware RV901",
-        "candidates": 152,
+        "candidates": 141,
         "smallest_penetration_mm": 1.74
        }
       ]
@@ -60490,18 +60748,18 @@
       "most_frequent": [
        {
         "blocker": "front field on panel hardware RV702",
-        "candidates": 207,
+        "candidates": 202,
         "smallest_penetration_mm": 1.74
-       },
-       {
-        "blocker": "front field on panel hardware RV602",
-        "candidates": 182,
-        "smallest_penetration_mm": 0.7
        },
        {
         "blocker": "front field on panel hardware RV603",
         "candidates": 134,
         "smallest_penetration_mm": 1.2
+       },
+       {
+        "blocker": "front field on panel hardware RV602",
+        "candidates": 125,
+        "smallest_penetration_mm": 0.7
        }
       ]
      }

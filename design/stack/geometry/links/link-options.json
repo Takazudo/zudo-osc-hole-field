@@ -519,7 +519,7 @@
    "option": "P100-N20 G-PER-2S",
    "envelope": "P100-N20 (latching, enclosing): field n + 7.5 by 6.54 mm, tail n + 1",
    "circuits_min": 1,
-   "rule": "per P-joint link without a legal place in the option, with every placed link of the option fixed: the largest n (field n + 7.5 mm) for which the same search finds a legal place around the same centre; bisection over n, which assumes that a shorter field never loses a place a longer one has (ASSUMED)"
+   "rule": "per P-joint link without a legal place in the option, in the option's order, with every placed link of the option fixed and each place found by the scan added before the next link: the largest n (field n + 7.5 mm) for which the same search finds a legal place around the same centre, and the signals that field carries under the option's ground rule; bisection over n, which assumes that a shorter field never loses a place a longer one has (ASSUMED)"
   }
  }
 }

@@ -28,6 +28,7 @@ LINK_FAMILIES = {'JL/K': 'JL-K', 'JR/K': 'JR-K', 'K/P': 'P-K', 'P/K for EL': 'P-
 JOINTS = ('JL-K', 'JR-K', 'P-K', 'JL-P via K')
 NON_SIGNAL = ('AGND', 'NC', '+12V', '-12V', '+5V')
 PANEL_KINDS = ('jack', 'led', 'pot', 'switch', 'button')
+K_DISPLACED = ('K F (slot)', 'K B (slot)', 'K B (field)')
 DIRS = ((1, 0), (-1, 0), (0, 1), (0, -1))
 DIR_NAMES = {(1, 0): '+x', (-1, 0): '-x', (0, 1): '+y', (0, -1): '-y'}
 
@@ -44,7 +45,7 @@ def val(entry):
 
 def load_inputs(root=sg.ROOT):
     raw = sg.load_raw(root)
-    boards = sg.load_boards(raw, root)
+    boards = sg.load_boards(raw, root, files={k: sg.BOARD_FILES[k] for k in ('K',) + FRONTS})
     ci = sg.canonical_inputs(raw, boards)
     cand = json.loads((Path(root) / 'design/stack/geometry/stack-candidate.json').read_text())['candidate']
     opts = json.loads((Path(root) / 'design/stack/geometry/links/link-options.json').read_text())
@@ -335,6 +336,8 @@ def add_placed(placed, front, geo, lid):
     placed.add('K', 'B', geo['K_tail'], 'K tail of ' + lid)
     placed.add('K', 'S', geo['slot'], 'slot of ' + lid)
     placed.add('K', 'B', geo['slot'], 'slot of ' + lid)
+    # where the cable rises to the slot, in plan under its own front board
+    placed.add(front, 'S', geo['slot'], 'slot of ' + lid)
 
 
 def evaluate(model, placed, front, geo, web):
@@ -351,6 +354,9 @@ def evaluate(model, placed, front, geo, web):
         return ('slot within %.1f mm of the K edge or outside K' % web, None), None
     if not sg.rect_inside_poly(kc, model.outline['K'], mg):
         return ('K field outside the K outline less %.2f mm' % mg, None), None
+    for rect, what in ((slot, 'slot'), (geo['front_tail'], 'front tail')):
+        if not sg.rect_inside_poly(rect, model.outline[front], 0.0):
+            return ('%s not under its own front board %s' % (what, front), None), None
     for rect, key, face, what in ((fc, front, 'B', 'front field'), (kc, 'K', 'B', 'K field'),
                                   (sg.grow(slot, web), 'K', 'F', 'slot web'),
                                   (sg.grow(slot, web), 'K', 'B', 'slot web')):
@@ -373,6 +379,11 @@ def evaluate(model, placed, front, geo, web):
             return ('%s on %s' % (what, h[0]), h[1]), None
     if placed.hit('K', 'S', kc) or placed.hit('K', 'S', geo['K_tail']):
         return ('K field or tail on another slot', None), None
+    for rect, key, face, what in ((fc, front, 'S', 'front field'), (geo['front_tail'], front, 'S', 'front tail'),
+                                  (slot, front, 'B', 'slot')):
+        h = placed.hit(key, face, rect)
+        if h:
+            return ('%s on %s (front board %s)' % (what, h[0], front), h[1]), None
     disp = {'front B': sorted(model.displaced(front, 'B', fc)),
             'K F (slot)': sorted(model.displaced('K', 'F', slot)),
             'K B (slot)': sorted(model.displaced('K', 'B', slot)),
@@ -464,7 +475,7 @@ def place_links(model, links, sizes, opts, cand):
                     'cable_needed_mm': cable_needed(geo['a_mm'], geo['b_mm'], gap, k_th, opts)})
         out.append(rec)
     # latch reach after all links are placed: K-rear footprints next to a K connector that no link displaces
-    all_disp = {x for r in out if r['placed'] for v in r['displaced'].values() for x in v}
+    all_disp = {x for r in out if r['placed'] for k in K_DISPLACED for x in r['displaced'][k]}
     for r in out:
         if not r['placed']:
             continue
@@ -538,10 +549,15 @@ def option_result(model, sites, size, rule, opts, cand, post_k, rigid_criterion,
         nets['K'] += l['signals']
     cable = val(opts['cable']['length_mm'])
     need = [l['cable_needed_mm'] for l in pl]
+    mixed = len({sizes[j]['id'] for j in joints}) > 1
     summary = {
-        'option': label or '%s %s' % (size['id'], rule), 'size': size['id'], 'ground_rule': rule, 'pitch_mm': size['pitch_mm'],
-        'circuits': n, 'signals_per_link': cap,
+        'option': label or '%s %s' % (size['id'], rule), 'ground_rule': rule,
+        # a mixed option has no single size: readers take the per-joint record
+        'size': None if mixed else size['id'], 'pitch_mm': None if mixed else size['pitch_mm'],
+        'circuits': None if mixed else n, 'signals_per_link': None if mixed else cap,
         'sizes_by_joint': {j: sizes[j]['id'] for j in joints},
+        'size_per_joint': {j: {'size': sizes[j]['id'], 'pitch_mm': sizes[j]['pitch_mm'], 'circuits': sizes[j]['circuits'],
+                               'signals_per_link': capacity(sizes[j]['circuits'], rule)} for j in joints},
         'links': len(placed), 'links_per_joint': {j: per_joint[j]['links'] for j in joints},
         'unplaced_per_joint': {j: per_joint[j]['links'] - per_joint[j]['placed'] for j in joints},
         'lower_bound_per_joint': lower,
@@ -639,7 +655,8 @@ def build_p_small(model, sites, opts, cand, post_k, criterion, details):
         cdet[s['option']] = d
     return {'status': ps['status'], 'joints': list(joints), 'summary': summ, 'options': det, 'best': best['option'],
             'best_rule': ps['best_rule'], 'combined': {'summary': combos, 'options': cdet},
-            'field_scan': field_scan(model, opts, cand, details, ps['field_scan'], joints)}
+            'field_scan': field_scan(model, opts, cand, details, ps['field_scan'], joints,
+                                     ps['field_scan']['option'].split(' ')[1])}
 
 
 def p_small_combo(model, sites, opts, cand, post_k, criterion, jid, small, rule):
@@ -661,7 +678,9 @@ def p_small_option(model, sites, opts, cand, post_k, criterion, size, rule):
     return s, d
 
 
-def field_scan(model, opts, cand, details, fs, joints):
+def field_scan(model, opts, cand, details, fs, joints, rule):
+    """Longest field that finds a legal place per unplaced P-joint link; each found place is added before the next
+    link is searched (in the option's order), so the scan's places do not overlap one another."""
     base = next(z for z in opts['sizes'] if z['id'] == fs['option'].split(' ')[0])
     links = details[fs['option']]['links']
     placed = Placed()
@@ -681,11 +700,19 @@ def field_scan(model, opts, cand, details, fs, joints):
                 lo, found = mid, best
             else:
                 hi = mid
+        if found:
+            add_placed(placed, l['front_board'], found[2], l['id'] + ' (scan)')
+        carried = capacity(lo, rule) if found else 0
         rows.append({'link': l['id'], 'centre': l['centre'], 'signals': l['signals'],
                      'largest_circuits_placed': lo if found else None,
                      'field_length_mm': val(scaled_size(base, lo)['field_length_mm']) if found else None,
+                     'signals_carried': carried, 'own_signals_fit': carried >= l['signals'],
                      'slot_centre': list(found[5]) if found else None})
-    return {'option': fs['option'], 'envelope': fs['envelope'], 'rule': fs['rule'], 'links': rows}
+    return {'option': fs['option'], 'envelope': fs['envelope'], 'rule': fs['rule'], 'ground_rule': rule,
+            'sequential': True, 'links': rows,
+            'links_whose_signals_fit': sum(1 for r in rows if r['own_signals_fit']),
+            'signals_carried_total': sum(r['signals_carried'] for r in rows),
+            'signals_needed_total': sum(r['signals'] for r in rows)}
 
 
 def scaled_size(base, n):
@@ -737,41 +764,60 @@ def render(out):
 
 # ---------------------------------------------------------------- checker
 
-def check(out, model, opts, sites):
+def check(out, model, opts, sites, cand):
     """Errors of a link candidate under the legality rules of the search (evaluate) plus capacity, coverage and cable.
 
-    Each placed link is re-evaluated against every other placed link of its option, so a candidate the search would
-    reject (outline, slot web, forbidden items on fields, slot and tails, items between the boards, overlap between
-    links) fails here with the search's own reason."""
+    Nothing recorded is trusted: each placed link's geometry is rebuilt from its slot centre, direction and size, its
+    grounds, cable length and displaced lists are recomputed and compared, and the rebuilt link is re-evaluated against
+    every other placed link of its option, so a candidate the search would reject fails with the search's own reason."""
     errs = []
     by_id = {s['id']: s for s in sites}
     cable = val(opts['cable']['length_mm'])
     web = val(opts['slot']['web_mm'])
+    size_by = {z['id']: z for z in opts['sizes'] + opts.get('p_small', {}).get('sizes', [])}
+    dir_by = {v: k for k, v in DIR_NAMES.items()}
+    gaps = cand['stack']['mated_heights_mm']
+    k_th = round(cand['stack']['K_face_z_mm'] - cand['stack']['K_rear_z_mm'], 4)
     for s in out['summary']:
-        cap, n = s['signals_per_link'], s['circuits']
+        rule = s['ground_rule']
         seen = []
         ls = out['options'][s['option']]['links']
         pl = [l for l in ls if l['placed']]
         for l in ls:
+            tag = '%s %s' % (s['option'], l['id'])
+            size = size_by[l['size']]
+            cap, n = capacity(size['circuits'], rule), size['circuits']
             sig = sum(len(by_id[m]['signals']) for m in l['members'])
             if sig != l['signals']:
-                errs.append('%s %s: members carry %d signals, the link records %d' % (s['option'], l['id'], sig, l['signals']))
-            lcap, ln = l.get('capacity_signals', cap), l.get('circuits', n)
-            if sig > lcap or l['signals'] + l['grounds'] > ln:
-                errs.append('%s %s: overfull, %d signals and %d grounds on %d circuits (capacity %d signals)'
-                            % (s['option'], l['id'], sig, l['grounds'], ln, lcap))
+                errs.append('%s: members carry %d signals, the link records %d' % (tag, sig, l['signals']))
+            if l['grounds'] != grounds_for(sig, rule):
+                errs.append('%s: records %d grounds, the rule gives %d' % (tag, l['grounds'], grounds_for(sig, rule)))
+            if sig > cap or sig + grounds_for(sig, rule) > n:
+                errs.append('%s: overfull, %d signals and %d grounds on %d circuits (capacity %d signals)'
+                            % (tag, sig, grounds_for(sig, rule), n, cap))
             seen += l['members']
             if not l['placed']:
                 continue
+            geo = link_geometry(l['slot_centre'][0], l['slot_centre'][1], dir_by[l['direction']], size, opts)
+            for k, v in geo.items():
+                rv = l['geometry'].get(k)
+                if rv is None or (isinstance(v, list) and any(abs(x - y) > 1e-6 for x, y in zip(v, rv))) or \
+                        (not isinstance(v, list) and abs(v - rv) > 1e-6):
+                    errs.append('%s: recorded %s %s differs from the rebuilt %s' % (tag, k, rv, v))
             others = Placed()
             for o in pl:
                 if o is not l:
                     add_placed(others, o['front_board'], o['geometry'], o['id'])
-            why, _ = evaluate(model, others, l['front_board'], l['geometry'], web)
+            why, disp = evaluate(model, others, l['front_board'], geo, web)
             if why:
-                errs.append('%s %s: %s%s' % (s['option'], l['id'], why[0], '' if why[1] is None else ' (%.4f mm)' % why[1]))
-            if l['cable_needed_mm'] > cable + 1e-9:
-                errs.append('%s %s: cable too short, needs %.2f mm against %.2f mm' % (s['option'], l['id'], l['cable_needed_mm'], cable))
+                errs.append('%s: %s%s' % (tag, why[0], '' if why[1] is None else ' (%.4f mm)' % why[1]))
+            elif disp != l['displaced']:
+                errs.append('%s: recorded displaced lists differ from the recomputed ones' % tag)
+            need = cable_needed(geo['a_mm'], geo['b_mm'], gaps[l['front_board'] + '/K'], k_th, opts)
+            if abs(need - l['cable_needed_mm']) > 1e-6:
+                errs.append('%s: recorded cable length %.4f mm differs from the recomputed %.4f mm' % (tag, l['cable_needed_mm'], need))
+            if need > cable + 1e-9:
+                errs.append('%s: cable too short, needs %.2f mm against %.2f mm' % (tag, need, cable))
         if sorted(seen) != sorted(i for i, x in by_id.items() if x['joint'] in s['sizes_by_joint']):
             errs.append('%s: sites not covered exactly once' % s['option'])
     return errs
@@ -785,10 +831,10 @@ def readme(out, small):
 
 
 def main(argv):
-    out, small = generate()
     if '--stdout' in argv:
-        sys.stdout.write(render(out))
+        sys.stdout.write(render(generate(with_p_small=False)[0]))
         return 0
+    out, small = generate()
     LINK_CANDIDATE.write_text(render(out))
     LINK_P_SMALL.write_text(render(small))
     LINK_README.write_text(readme(out, small))
