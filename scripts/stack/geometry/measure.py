@@ -412,6 +412,46 @@ def standoffs(ci, edge=3.0, step=0.5):
     return {'sites_8mm_apart': out, 'rule': 'front B.Cu and K F.Cu clear within 3.0 mm, K B.Cu within 2.6 mm, 3 mm inside both outlines, 0.5 mm grid, greedy 8 mm thinning'}
 
 
+def units(cand):
+    out = {}
+    for p in cand['pairs']:
+        if 'K' not in p['boards']:
+            continue
+        front = [b for b in p['boards'] if b != 'K'][0]
+        e = out.setdefault(front, {'pairs': 0, 'positions': 0})
+        e['pairs'] += 1
+        e['positions'] += p['positions']
+    for p in cand['posts']:
+        out[p['front_board']]['posts'] = out[p['front_board']].get('posts', 0) + 1
+    return out
+
+
+def misc(ci, cand):
+    lock_rows = ci['lock']['octave_rows']
+    kept = sorted(r['x_mm'] for r in lock_rows if r['block'] not in ci['parameters']['retired_boards'])
+    st = cand['stack']
+    planes = cand['planes']
+    p_fps = ci['boards']['P']
+    def size(lib):
+        f = next(f for f in p_fps if f['lib'] == lib)
+        c = f['courtyard']
+        return sorted([round(c[2] - c[0], 3), round(c[3] - c[1], 3)], reverse=True)
+    posts = cand['posts']
+    j_y = sorted({p['K_land'][1] for p in posts if p['front_board'] in ('JL', 'JR')})
+    p_y = sorted({p['front_land'][1] for p in posts if p['front_board'] == 'P'} | {p['K_land'][1] for p in posts if p['front_board'] == 'P'})
+    return {
+        'kept_selector_x_mm': kept, 'kept_selector_pitch_mm': sorted({round(b - a, 3) for a, b in zip(kept, kept[1:])}),
+        'P_three_position_toggles': sum(1 for f in p_fps if f['value'] == ci['parameters']['sub_toggle']['reuse_value']),
+        'P_pot_courtyard_mm': size('PTV09A-4020F'), 'P_button_courtyard_mm': size('Button_Omron_B3F_6x6_P6.5x4.5'),
+        'EL_rear_to_K_mm': round(planes['EL']['rear_z_mm'] - st['K_face_z_mm'], 3),
+        'P_rear_to_enclosure_mm': round(planes['P']['rear_z_mm'] - st['enclosure_inner_rear_z_mm'], 3),
+        'J_post_row_y': j_y, 'P_post_rows_y': p_y,
+        'J_to_P_post_row_spacing_mm': [round(min(p_y) - max(j_y), 3), round(max(p_y) - max(j_y), 3)],
+        'K_supports': sum(1 for s in ci['partition']['supports'] if s['board'] == 'K'),
+        'seam_carrier_z_mm': ci['partition']['jack_seam_carrier']['rear_z_mm'],
+    }
+
+
 def measure(ci, cand, ctx):
     params = ci['parameters']
     land = ci['land_pattern']
@@ -447,4 +487,6 @@ def measure(ci, cand, ctx):
         'selector_rear_envelopes_z_mm': selector_envelopes(ci),
         'today': today(ci),
         'sub_tab_probe': sub,
+        'front_units': units(cand),
+        'misc': misc(ci, cand),
     }
