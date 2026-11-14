@@ -5574,6 +5574,62 @@
           "page": "1"
         },
         "rows": "UNSOURCED: the retained PDF is malformed (poppler: circular xref, no trailer; pypdf: invalid /Pages); a plain re-fetch of the 05F file returned identical bytes (same SHA-256), so the vendor file itself cannot be rendered"
+      },
+      "bossie_bx_fpc05_2h40px": {
+        "listing": "C18077651, flip, bottom contact, stock 7567, extended (ST-01e capture)",
+        "source": {
+          "status": "SOURCED",
+          "path": "bossie/bx-fpc05-2h/bx-fpc05-2hnpx-drawing-rev-a-lcsc-mirror.pdf",
+          "sha256": "7fc4ae44b862c47e4386c4bb0ec3549c2283671dad1c854a7d67483f2885f066",
+          "page": 1
+        },
+        "lock": "flip (listing); the side on which it opens is UNSOURCED (title characters not legible at the rendered resolution)",
+        "contact": "bottom (listing 下接)",
+        "counts": "6 to 36 in steps of 2, then 40 and 50",
+        "height": "2.00 mm closed; open UNSOURCED (not drawn)",
+        "body": "A = 0.5 n + 4.4 (24.4 at 40) +/-0.20 long; depth 5.12 mm",
+        "land_pattern": "pads 0.30 wide x 1.25 mm at 0.50 pitch; two tabs 2.00 x 2.50 mm, 2.69 mm from the outer pad, 0.70 mm offset; pad span F +/-0.03",
+        "row_40_inconsistency": "the printed 40-pin row gives B, E and F as 18.5, which breaks the series pattern 0.5 (n - 1) = 19.5; B, E and F at 40 pins are UNSOURCED",
+        "accepted_cable": "0.30 mm thick; width D = 0.5 n + 0.5 (20.5 at 40) +/-0.03; conductor 0.30 +/- 0.03; exposed >= 3.00 mm; stiffener 6.00 mm",
+        "current": "0.5 A",
+        "voltage": "50 V",
+        "withstand": "500 V AC 1 min",
+        "contact_resistance": "<= 40 mohm",
+        "temperature": "-25 to +85 degC",
+        "mating_cycles": "UNSOURCED (not stated)"
+      },
+      "hirose_fh12_40s_0_5sh": {
+        "listing": {
+          "lcsc": "C202114",
+          "mpn": "FH12-40S-0.5SH(55)",
+          "class": "extended",
+          "stock": 11278,
+          "status": "SOURCED",
+          "capture": {
+            "path": "distributor-captures/jlcpcb-lcsc/zudo-osc-hole-field-st-01g-20261114/SHA256SUMS",
+            "sha256": "084a0987416a12e050fb8f4f7eb1ce23a69044d8d7305c522f905c33dbfc86c1"
+          },
+          "file": "FH12_40S_0_5SH_55_.json"
+        },
+        "source": {
+          "status": "SOURCED",
+          "path": "hirose/fh12/fh12-catalog-pdf-2016-11-19-lcsc-mirror.pdf",
+          "sha256": "9f056f58ff000739633cc3cb7697ba185967083dcf1429b7ab10783b3f55bac5",
+          "page": "specifications page; FH12-*S-0.5SH table (page 4); recommended FPC/land (pages 11-12)"
+        },
+        "lock": "flip-lock (FH12S has a strengthened flip-lock); the side on which it opens is UNSOURCED (drawing text not extracted)",
+        "contact": "bottom contact (FH12-*S-0.5SH; FH12A is the top-contact type)",
+        "counts": "6 to 50 in the 0.5 mm table (40 is CL586-0527-7)",
+        "height": "2.0 mm (FH12S: 2.4 mm); open UNSOURCED",
+        "body": "at 40: A 19.5, B 23.1, C 24.1, D 20.57 mm (catalog table; A = 0.5 (n - 1), C = 0.5 n + 4.1)",
+        "land_pattern": "contact pads 0.3 +/- 0.03 wide at 0.5 +/- 0.05; pad length 1.3 +/- 0.1; tab land 2.2 +/- 0.1 x 1.5 +/- 0.1 (dimension labels from the text layer; assignment of each label to a feature to be confirmed on a render); metal mask 0.25 +/- 0.03, thickness 0.15",
+        "accepted_cable": "0.3 +/- 0.05 mm at the end (FH12F: 0.18 +/- 0.05); FFC conductor 0.3 +/- 0.03, FPC 0.35 +/- 0.03; width B +/- 0.07 = 0.5 (n + 1) (13.0 at 25); exposed 3.5 min, stiffener 4.5 min; stiffener 0.188 mm min",
+        "current": "0.5 A DC; 70 % of the rating when all contacts carry current (note 1)",
+        "voltage": "50 V AC",
+        "withstand": "150 V AC 1 min",
+        "contact_resistance": "50 mohm max",
+        "temperature": "-40 to +85 degC",
+        "mating_cycles": "20 (durability, insertion/withdrawal)"
       }
     },
     "contact_sides": {
