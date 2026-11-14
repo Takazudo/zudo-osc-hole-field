@@ -52,7 +52,7 @@ The JL-to-P nets cross K on new 1×3 sites at the JL header coordinates (x, 150)
 
 ## The SUB pair window at OSC2 is 0.7 mm with the planning envelope
 
-With the 7.0 × 5.8 mm envelope along x, the pair clears the toggle pads, P B.Cu and K F.Cu (retired GH7 headers removed) for centres y = 180.15 to 180.85 at OSC2 and 179.05 to 180.85 at OSC4. The candidate places the pairs at the window centres, (31.5, 180.5) and (65.5, 179.95), so the control tabs reach y = 177.1 and 176.55. Any land pattern wider than 5.8 mm across the row closes the OSC2 window; re-run with the ST-01 footprint.
+With the 7.0 × 5.8 mm envelope along x, the pair clears the toggle pads, P B.Cu and K F.Cu (retired GH7 headers removed) for centres y = 180.15 to 180.85 at OSC2 and 179.05 to 180.85 at OSC4. The candidate places the pairs at the window centres, (31.5, 180.5) and (65.5, 179.95), so the control tabs reach y = 177.1 and 176.55. The window shrinks one for one with the envelope width across the row, so a 6.5 mm wide pattern leaves a single centre at OSC2 (y = 180.5, zero margin) and a wider one leaves none; re-run with the ST-01 footprint.
 
 ## Some pin-order rules cannot hold in the planned positions
 
@@ -266,7 +266,7 @@ Each row is NOT CHECKABLE here: the named source does not exist in this reposito
 | 6 trimmers per oscillator for calibration access | ST-07 |
 | Seated datums of jack, pot and toggle (#65) | UNSOURCED datums |
 
-## Checks NOT RUN
+## Six checks are NOT RUN
 
 - Copper clearance, DRC and routing of the stack: no stack board exists.
 - Tolerance stack-up, mating misalignment and force: no exact connector (ST-01, ST-03).

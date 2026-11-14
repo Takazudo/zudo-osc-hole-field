@@ -232,7 +232,8 @@ def build(ci):
         win = sg.runs(both, step)
         above = [w for w in win if w[1] < cy]
         if not above:
-            raise ValueError('no SUB pair window above the toggle at ' + blk)
+            raise ValueError('fit conflict: no SUB pair position above the toggle at %s for a %s x %s mm envelope; '
+                             'windows found: %s' % (blk, w_sub, l_sub, win))
         wmin, wmax = above[-1]
         site_y = round(round(((wmin + wmax) / 2) / step) * step, 4)
         tab_top = round(site_y - w_sub / 2 - m, 4)
