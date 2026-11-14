@@ -1,0 +1,95 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "order-readiness-rc0603fr-0710kl",
+    "record_id": "rec-contact-pullup-r",
+    "manufacturer": "Yageo",
+    "mpn": "RC0603FR-0710KL",
+    "package": "0603",
+    "variant_notes": "Derived project symbol identity only; existing footprint/model and all physical/application acceptance unchanged."
+  },
+  "acquisition": {
+    "provider": "Retained manufacturer-primary evidence and existing project symbol",
+    "library_release_tag": null,
+    "source_url": "https://yageogroup.com/component-documentation/download/specsheet/RC0603FR-0710KL",
+    "acquired_on": "2026-11-10",
+    "original_filenames": [
+      "RC0603FR-0710KL.pdf"
+    ],
+    "sha256": {
+      "symbols/src/RC0603FR-07100KL.kicad_sym": "1ec5cdf30dda13fb6539dd061bb9f06c11c80d696587e1c33ca1e19fd3e8e0c2",
+      ".circuit-cache/order-readiness-20261109/passive-ge10k/RC0603FR-0710KL.pdf": "48f8c8e6aba2c02953a331133c6fe6981afc0c3c3c118d6b83e62ff5a0364f43",
+      ".circuit-cache/order-readiness-20261110/parts-symbol-receipts/prepare.py": "9c0c61d1c0579af7bf7817d5d064b56d37e7fb28150f18d1ef9229771f12a594"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/RC0603FR-0710KL.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "symbols/src/RC0603FR-07100KL.kicad_sym",
+      ".circuit-cache/order-readiness-20261109/passive-ge10k/RC0603FR-0710KL.pdf",
+      ".circuit-cache/order-readiness-20261110/parts-symbol-receipts/prepare.py"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Exact comparison permits only symbol names and identity/procurement property values; all geometry, pins and footprint fields equal retained project representative. Not manufacturer CAD.",
+    "evidence": [
+      "src-contact-pullup-r-datasheet: Physical PDF page 0: exact identity title, ratings and dimensions tables"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "symbols/src/RC0603FR-07100KL.kicad_sym": "1ec5cdf30dda13fb6539dd061bb9f06c11c80d696587e1c33ca1e19fd3e8e0c2",
+      ".circuit-cache/order-readiness-20261109/passive-ge10k/RC0603FR-0710KL.pdf": "48f8c8e6aba2c02953a331133c6fe6981afc0c3c3c118d6b83e62ff5a0364f43",
+      ".circuit-cache/order-readiness-20261110/parts-symbol-receipts/prepare.py": "9c0c61d1c0579af7bf7817d5d064b56d37e7fb28150f18d1ef9229771f12a594"
+    },
+    "tool": "prepare.py checked identity-only fragment comparison",
+    "tool_version": "1",
+    "parameters": {
+      "source_symbol": "RC0603FR-07100KL",
+      "target_symbol": "RC0603FR-0710KL",
+      "allowed_property_values": [
+        "MPN",
+        "Manufacturer",
+        "LCSC",
+        "Datasheet",
+        "Value"
+      ],
+      "geometry_and_pin_and_footprint_bytes_equal": true
+    },
+    "output_sha256": {
+      "symbols/src/RC0603FR-0710KL.kicad_sym": "b25f7c8327f40e65e5a1399cfd92937c0e578b35b3f537b95c462fd4cb7b5b69"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:RC0603FR-0710KL",
+    "footprint": "zudo-osc-hole-field:R0603",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Exact output hash and normalized full fragment equality checked against retained own-source representative."
+    ],
+    "remaining_physical_checks": [
+      "All existing owner thermal, calibration, land/process, shaft/access and assembly domains remain open; no vendor CAD or qualified mounted fit."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

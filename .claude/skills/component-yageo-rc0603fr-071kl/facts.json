@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-contact-debounce-r-manufacturer",
+      "record_id": "rec-contact-debounce-r",
+      "source_id": "src-contact-debounce-r-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Yageo",
+      "unit": "NONE",
+      "conditions": "Exact manufacturer identity; manufacturer capitalization normalized to existing project convention.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-contact-debounce-r-identity",
+      "record_id": "rec-contact-debounce-r",
+      "source_id": "src-contact-debounce-r-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Yageo",
+        "mpn": "RC0603FR-071KL",
+        "package": "0603"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete MPN; project footprint naming is not a manufacturer land-pattern approval.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-contact-debounce-r-supplier-identity",
+      "record_id": "rec-contact-debounce-r",
+      "source_id": "src-contact-debounce-r-lcsc",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Yageo",
+        "mpn": "RC0603FR-071KL",
+        "lcsc": "C22548",
+        "variant": "0603 exact full suffix"
+      },
+      "unit": "NONE",
+      "conditions": "Observed2026-11-09T11:42Z; stock volatile/unreserved. Distributor identity only.",
+      "locator": "Section/row: HTML Product JSON-LD exact mpn, sku, brand and offers.inventoryLevel",
+      "provenance": "DISTRIBUTOR-IDENTITY",
+      "verdict": "CONFIRMED - distributor identity only",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-contact-debounce-r-nominal",
+      "record_id": "rec-contact-debounce-r",
+      "source_id": "src-contact-debounce-r-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 1000,
+      "unit": "ohm",
+      "conditions": "Nominal resistance ±1%; initial tolerance, not lifetime/fault drift.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-contact-debounce-r-power",
+      "record_id": "rec-contact-debounce-r",
+      "source_id": "src-contact-debounce-r-datasheet",
+      "class": "THERMAL_SOA",
+      "value": 0.1,
+      "unit": "W",
+      "conditions": "Standard-power code07, rated at70C; full power curve must be applied at higher ambient.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-contact-debounce-r-tcr",
+      "record_id": "rec-contact-debounce-r",
+      "source_id": "src-contact-debounce-r-series",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 100,
+      "unit": "ppm/degC",
+      "conditions": "Magnitude ±100ppm/C for10ohm<R<=10Mohm standard-power0603; TCR test +25/-55 and+25/+125C. Interpolation and self-heating are application assumptions.",
+      "locator": "Section/row: Physical page4/printed5 Table2; physical7/printed8 TCR test",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-contact-debounce-r-derating",
+      "record_id": "rec-contact-debounce-r",
+      "source_id": "src-contact-debounce-r-series",
+      "class": "THERMAL_SOA",
+      "value": {
+        "full_power_temperature_C": 70,
+        "zero_power_temperature_C": 155
+      },
+      "unit": "NONE",
+      "conditions": "Fig10-1 straight-line ambient derating above70C applies RC0402–RC2512. Actual mounting limits remain additional.",
+      "locator": "Section/row: Physical page6/printed7 Fig10-1 visually inspected",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-contact-debounce-r-body",
+      "record_id": "rec-contact-debounce-r",
+      "source_id": "src-contact-debounce-r-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "length": 1.6,
+        "width": 0.8,
+        "height": 0.45,
+        "each_dimension_tolerance": 0.1
+      },
+      "unit": "mm",
+      "conditions": "Nominal envelope and tolerances; not mounted maximum with solder.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-contact-debounce-r-mechanical-fit",
+      "record_id": "rec-contact-debounce-r",
+      "source_id": "src-contact-debounce-r-mounting",
+      "class": "PROJECT_STATE",
+      "value": "Existing R0603 family footprint/model and actual soldering process require review against manufacturer mounting guidance.",
+      "unit": "NONE",
+      "conditions": "No new land pattern, manufacturing acceptance or installed fit is established.",
+      "locator": "Section/row: Physical page3/printed4 reflow Table1 and project R0603.kicad_mod",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-contact-debounce-r-application",
+      "record_id": "rec-contact-debounce-r",
+      "source_id": "src-contact-debounce-r-mounting",
+      "class": "PROJECT_STATE",
+      "value": "Conditional normal CONTACT/DEBOUNCE0..5.20V screen below power curve; actual bounce/timing, poweroff/injection,localambient and soldering remain unqualified.",
+      "unit": "NONE",
+      "conditions": "32switch_button_input:R_SER onP only. Initial-1%,-100ppm/C over60C gives984.06ohm and27.478mW at5.20V; series curve82.353mW at85C. No selfheat/lifetime/fault guarantee.75V maximum does not override power: nominal100mW1kohm limit10V at70C.",
+      "locator": "Series Figure10-1 physical6/printed7; mounting thermal guidance physical1–2; standard switch_button_input:R_SER source row",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-contact-debounce-r-pinout",
+      "record_id": "rec-contact-debounce-r",
+      "source_id": "src-contact-debounce-r-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Two end terminations; project terminal1 maps to pad1, terminal2 to pad2.",
+      "unit": "NONE",
+      "conditions": "Two-end nonpolarized device; project1=CONTACT,2=DEBOUNCE for selected32instances. No manufacturer terminal numbers or physical qualification inferred.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-contact-debounce-r-assembly",
+      "record_id": "rec-contact-debounce-r",
+      "source_id": "src-contact-debounce-r-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Supplier stock observation does not establish factory allocation, soldering acceptance or assembly responsibility completion.",
+      "unit": "NONE",
+      "conditions": "External electrical soldering required; no owner soldering assumed. No supplier contacted.",
+      "locator": "Physical PDF page 0: exact identity and specification tables",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

@@ -15,6 +15,7 @@ from contextlib import contextmanager
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
+from scripts.pcbgen.control_oracle_policy import configuration, runtime
 from scripts.pcbgen.generate_control_ground_feasibility import generate
 from scripts.pcbgen.build_control_ground_bare import build
 from scripts.pcbgen.control_reference_layout import apply
@@ -30,16 +31,26 @@ STEM = 'osc-control-layout'
 
 
 @contextmanager
-def workspace():
+def workspace(evidence_dir=None):
     (ROOT/'.circuit-cache').mkdir(parents=True, exist_ok=True)
-    path = Path(tempfile.mkdtemp(prefix='control-layout-', dir=ROOT/'.circuit-cache'))
+    if evidence_dir is None:
+        path = Path(tempfile.mkdtemp(prefix='control-layout-', dir=ROOT/'.circuit-cache'))
+    else:
+        path = Path(evidence_dir).resolve()
+        if not path.is_relative_to((ROOT/'.circuit-cache').resolve()) or path == (ROOT/'.circuit-cache').resolve():
+            raise ValueError('Retained layout evidence must be inside .circuit-cache')
+        # Copied lib tables use ${KIPRJMOD}/../../footprints; only depth one resolves to the repository.
+        if path.parent != (ROOT/'.circuit-cache').resolve():
+            raise ValueError('Retained layout evidence must be a direct child of .circuit-cache')
+        path.mkdir(parents=True, exist_ok=False)
     try:
         yield path
     except Exception:
         print('Failed native evidence retained at', path, flush=True)
         raise
     else:
-        shutil.rmtree(path)
+        if evidence_dir is None:
+            shutil.rmtree(path)
 
 
 def project_bytes(bare, definition):
@@ -84,7 +95,10 @@ def negative_controls(bare, work):
     print('PASS: four native reference rejection controls; rejected outputs absent', flush=True)
 
 
-def check():
+def check(evidence_dir=None):
+    configuration(ROOT)
+    import pcbnew
+    oracle_identity = runtime(ROOT, pcbnew.GetBuildVersion(), subprocess.check_output(['kicad-cli', 'version'], text=True))
     digest = lambda path: hashlib.sha256(Path(path).read_bytes()).hexdigest()
     paths = [Path(__file__), ROOT/'scripts/pcbgen/control_reference_layout.py',
              ROOT/'scripts/pcbgen/control_bypass_geometry.py', ROOT/'design/reports/io-partition.json',
@@ -95,8 +109,10 @@ def check():
     paths += list((FOLDER/'sheets').rglob('*.kicad_sch'))
     tables = [FOLDER/name for name in ('fp-lib-table', 'sym-lib-table') if (FOLDER/name).exists()]
     paths += tables
-    before = {str(path): digest(path) for path in paths}
-    with workspace() as work:
+    paths += [PROPOSAL, ROOT/'scripts/kicad/pin.env', ROOT/'scripts/kicad/run.sh']
+    paths += sorted((ROOT/'scripts').rglob('*.py'))
+    before = {str(path.resolve()): digest(path) for path in paths}
+    with workspace(evidence_dir) as work:
         definition = work/'definition/osc-control.json'
         generate(PROPOSAL, definition)
         for suffix in ('.json', '.receipt.json', '.kicad_dru'):
@@ -152,6 +168,26 @@ def check():
                           'native_open_edges': 872, 'routing_complete': False,
                           'native_bypass_geometry': bypass_geometry,
                           'physical_qualification': 'NOT RUN'}, indent=2), flush=True)
+        combined = dict(before)
+        for name, expected in dependencies.items():
+            path = Path(name)
+            if not path.is_absolute():
+                path = ROOT/path
+            key = str(path.resolve())
+            if key in combined and combined[key] != expected:
+                raise ValueError('Conflicting base-check input hashes')
+            combined[key] = expected
+        if any(digest(name) != expected for name, expected in combined.items()):
+            raise ValueError('Base-check inputs changed before retention')
+        receipt = {'schema_version': 1, 'status': 'PASS UNROUTED DRAFT ONLY', 'oracle_identity': oracle_identity,
+                   'model_entry_allowed': False, 'source_sha256': combined,
+                   'native_open_edges': ratsnest['native_unconnected_edges'],
+                   'native_bypass_geometry': bypass_geometry,
+                   'artifacts_sha256': {str(path.relative_to(work)): digest(path)
+                                        for path in sorted(work.rglob('*')) if path.is_file()}}
+        if evidence_dir is not None:
+            (work/'layout-check-receipt.json').write_text(json.dumps(receipt, indent=2)+'\n')
+        return receipt
 
 
 if __name__ == '__main__':

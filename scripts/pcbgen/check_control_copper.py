@@ -1,4 +1,5 @@
 """Fresh native verification of the partial control-board copper checkpoint."""
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -9,6 +10,7 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
+from scripts.pcbgen.control_oracle_policy import configuration, runtime
 from scripts.pcbgen.control_copper_draft import build, require_connected_ground_copper
 from scripts.pcbgen.control_bypass_geometry import audit as audit_bypasses
 from scripts.pcbgen.control_ground_inventory import audit
@@ -44,9 +46,85 @@ def independent_refill(board, definition, output):
         shutil.copyfile(board.with_suffix(suffix),output.with_suffix(suffix))
 
 
-def check():
-    check_base()
+def retained_workspace(root, requested):
+    """Create a new evidence directory; never reuse or remove existing evidence."""
+    cache = (root / '.circuit-cache').resolve()
+    target = Path(requested)
+    if not target.is_absolute():
+        target = root / target
+    target = target.resolve()
+    if target == cache or not target.is_relative_to(cache):
+        raise ValueError('Retained evidence must be a new directory inside .circuit-cache')
+    # Board lib tables use ${KIPRJMOD}/../../footprints; only depth one resolves to the repository.
+    if target.parent != cache:
+        raise ValueError('Retained evidence must be a direct child of .circuit-cache')
+    if (cache / (target.name + '-layout')).exists():
+        raise FileExistsError('Retained layout evidence already exists for this id')
+    target.mkdir(parents=True, exist_ok=False)
+    return target
+
+
+def layout_workspace_path(work):
+    """Sibling of the copper evidence, at the same .circuit-cache depth."""
+    return work.parent / (work.name + '-layout')
+
+
+def retain_receipt(root, work, source_hashes, result, oracle_identity=None, layout_work=None):
+    """Index real completed native outputs; this function does not run a gate."""
+    digest = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+    layout = (work / 'layout-check') if layout_work is None else Path(layout_work).resolve()
+    nested = layout.is_relative_to(work)
+    if not nested and layout.parent != work.parent:
+        raise ValueError('Layout evidence must be inside or a sibling of the copper evidence')
+    if any(digest(path) != expected for path, expected in source_hashes.items()):
+        raise ValueError('Source changed before evidence retention')
+    required = ('drc.json', 'ratsnest.json', 'geometry.json', 'base-geometry.json',
+                'refilled.kicad_pcb', 'refilled-ratsnest.json', 'refilled-geometry.json')
+    required_layout = ('layout-check-receipt.json', 'bare-evidence/bare-native-receipt.json')
+    if (any(not (work / name).is_file() for name in required) or
+            any(not (layout / name).is_file() for name in required_layout)):
+        raise ValueError('Incomplete native evidence cannot receive a receipt')
+    sources, snapshots = {}, {}
+    for name, expected in source_hashes.items():
+        path = Path(name).resolve()
+        # Generated base-check inputs are already preserved and indexed as outputs.
+        if path.is_relative_to(work) or path.is_relative_to(layout):
+            continue
+        key = str(path.relative_to(root)) if path.is_relative_to(root) else str(path)
+        relative = (Path('source-inputs/repository') / path.relative_to(root)
+                    if path.is_relative_to(root) else
+                    Path('source-inputs/oracle') / path.relative_to(path.anchor))
+        destination = work / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(path, destination)
+        if digest(destination) != expected:
+            raise ValueError('Source changed while copying retained inputs')
+        sources[key], snapshots[key] = expected, str(relative)
+    if any(digest(path) != expected for path, expected in source_hashes.items()):
+        raise ValueError('Source changed during evidence retention')
+    (work / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
+    outputs = {str(path.relative_to(work)): digest(path)
+               for path in sorted(work.rglob('*')) if path.is_file()}
+    layout_outputs = {} if nested else {str(path.relative_to(layout)): digest(path)
+                                        for path in sorted(layout.rglob('*')) if path.is_file()}
+    receipt = {'schema_version': 1, 'board_id': 'osc-control', 'oracle_identity': oracle_identity,
+               'scope': 'Native routed-draft verification only; not electrical or manufacturing acceptance',
+               'model_entry_eligible': False,
+               'source_closure_complete': False,
+               'source_closure_review': 'PENDING independent review and native execution',
+               'base_check_detail': (str((layout / 'layout-check-receipt.json').relative_to(work)) if nested
+                                     else str(Path('..') / layout.name / 'layout-check-receipt.json')),
+               'layout_evidence_dir': None if nested else layout.name,
+               'layout_artifact_sha256': layout_outputs,
+               'source_snapshot_paths': snapshots,
+               'source_sha256': sources, 'artifact_sha256': outputs, 'result': result}
+    (work / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+
+
+def check(evidence_dir=None):
+    configuration(ROOT)
     import pcbnew
+    oracle_identity = runtime(ROOT, pcbnew.GetBuildVersion(), subprocess.check_output(['kicad-cli', 'version'], text=True))
     source = ROOT/'design/partition/control-copper/copper.json'
     retained_ratsnest = source.parent/'ratsnest.json'
     spec = json.loads(source.read_bytes())
@@ -63,11 +141,25 @@ def check():
     for board in (base,published):
         paths += [board.with_suffix(s) for s in ('.kicad_pcb','.kicad_pro','.kicad_sch','.kicad_dru')]
     paths += list((folder/'sheets').glob('*.kicad_sch'))
+    paths += [folder/'fp-lib-table', folder/'sym-lib-table']
+    paths += [ROOT/'scripts/kicad/pin.env', ROOT/'scripts/kicad/run.sh', ROOT/'scripts/pcbgen/check_control_layout.py',
+              ROOT/'scripts/pcbgen/ratsnest.py', ROOT/'scripts/pcbgen/route_kicad.py',
+              ROOT/'scripts/pcbgen/verify_local_links.py', ROOT/'scripts/pcbgen/uuid_tools.py',
+              ROOT/'scripts/schgen/core.py']
+    paths += sorted((ROOT/'scripts').rglob('*.py'))
     digest = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
     before = {str(p):digest(p) for p in paths}
     (ROOT/'.circuit-cache').mkdir(exist_ok=True)
-    work = Path(tempfile.mkdtemp(prefix='control-copper-',dir=ROOT/'.circuit-cache'))
+    work = (retained_workspace(ROOT, evidence_dir) if evidence_dir is not None else
+            Path(tempfile.mkdtemp(prefix='control-copper-',dir=ROOT/'.circuit-cache')))
     try:
+        layout_work = layout_workspace_path(work) if evidence_dir is not None else None
+        base_receipt = check_base(layout_work)
+        if evidence_dir is not None:
+            for name, expected in base_receipt['source_sha256'].items():
+                if name in before and before[name] != expected:
+                    raise ValueError('Conflicting routed/base-check source hashes')
+                before[name] = expected
         board = work/published.name
         shutil.copytree(folder/'sheets',work/'sheets')
         for name in ('fp-lib-table','sym-lib-table'):
@@ -146,13 +238,20 @@ def check():
                   'independent_reload_refill':'PASS: 0 open edges and all 344 ground contacts retained',
                   'board_sha256':digest(published),'routing_complete':True,
                   'electrical_current_resistance_acceptance':'NOT RUN','physical_qualification':'NOT RUN'}
+        if evidence_dir is not None:
+            retain_receipt(ROOT, work, before, result, oracle_identity, layout_work)
         print(json.dumps(result,indent=2),flush=True)
     except Exception:
         print('Failed partial copper evidence retained at',work,flush=True)
         raise
     else:
-        shutil.rmtree(work)
+        if evidence_dir is None:
+            shutil.rmtree(work)
+        else:
+            print('Completed native evidence retained at', work, flush=True)
 
 
 if __name__ == '__main__':
-    check()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--evidence-dir', help='New directory inside .circuit-cache; retain native outputs and exact input snapshots')
+    check(parser.parse_args().evidence_dir)

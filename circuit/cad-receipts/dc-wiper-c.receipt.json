@@ -1,0 +1,88 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "dc-wiper-c",
+    "record_id": "rec-dc-wiper-c",
+    "manufacturer": "Murata",
+    "mpn": "GRM1885C1H103JA01D",
+    "package": "0603",
+    "variant_notes": "Identity-only derived two-terminal symbol; actual existing C0603 lands differ from primary recommendations and remain OPEN."
+  },
+  "acquisition": {
+    "provider": "Manufacturer product sheet and retained project family symbol",
+    "library_release_tag": null,
+    "source_url": "https://search.murata.co.jp/Ceramy/image/img/A01X/G101/ENG/GRM1885C1H103JA01-01A.pdf",
+    "acquired_on": "2026-11-10",
+    "original_filenames": [
+      "GRM1885C1H103JA01-01A.pdf"
+    ],
+    "sha256": {
+      "symbols/src/C0603C101J5GACTU.kicad_sym": "6a81dbabb90ae37411e622cc0296a9384ef48771b59ff1b0e8f2185f7346a694",
+      ".circuit-cache/order-readiness-20261110/capacitors95/GRM1885C1H103JA01-01A.pdf": "3f5a339eb51502df7716dfd2d4c4e6d33e837abc0df5cb8e4fc1e6e275d09790",
+      ".circuit-cache/order-readiness-20261110/capacitors95/prepare.py": "d624d418c194a9bc3d5f98389e760daf297daa9eca45df11a65559b412baabe6"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/GRM1885C1H103JA01D.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "symbols/src/C0603C101J5GACTU.kicad_sym",
+      ".circuit-cache/order-readiness-20261110/capacitors95/GRM1885C1H103JA01-01A.pdf",
+      ".circuit-cache/order-readiness-20261110/capacitors95/prepare.py"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Project passive symbol geometry/pins preserved, exact identity fields changed; no manufacturer CAD fidelity or land acceptance claimed.",
+    "evidence": [
+      "src-dc-wiper-c-datasheet: Exact part system and D packaging row; rated values/dimensions; physical26/printed27 mounting lands"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "symbols/src/C0603C101J5GACTU.kicad_sym": "6a81dbabb90ae37411e622cc0296a9384ef48771b59ff1b0e8f2185f7346a694",
+      ".circuit-cache/order-readiness-20261110/capacitors95/GRM1885C1H103JA01-01A.pdf": "3f5a339eb51502df7716dfd2d4c4e6d33e837abc0df5cb8e4fc1e6e275d09790",
+      ".circuit-cache/order-readiness-20261110/capacitors95/prepare.py": "d624d418c194a9bc3d5f98389e760daf297daa9eca45df11a65559b412baabe6"
+    },
+    "tool": "Exact identity substitution from retained family symbol",
+    "tool_version": "1",
+    "parameters": {
+      "source_symbol": "C0603C101J5GACTU",
+      "target_symbol": "GRM1885C1H103JA01D",
+      "footprint_unchanged": "C0603"
+    },
+    "output_sha256": {
+      "symbols/src/GRM1885C1H103JA01D.kicad_sym": "f51c19b1a6c639de8824ff6a63b6bdefc3bbd8f105f470a2b9ba46cb7e6b2adb"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:GRM1885C1H103JA01D",
+    "footprint": "zudo-osc-hole-field:C0603",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Exact title, nominal value, rating and body dimensions inspected in manufacturer PDF."
+    ],
+    "remaining_physical_checks": [
+      "Primary recommended land mismatch requires engineering/process disposition; body tolerance, assembled thermal/voltage/stability and physical qualification remain OPEN."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

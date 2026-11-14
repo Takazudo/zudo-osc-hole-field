@@ -64,6 +64,22 @@ class LatestReceipt(unittest.TestCase):
         self.assertIsNone(self.resolve({'rrr-01-copper.json': top_level()}))
         self.assertIsNone(self.resolve({'rrr-01.json': top_level(), 'osc3-k-pilot.json': final_gate()}))
 
+    def test_metadata_successor_resolves_only_to_its_adopted_receipt(self):
+        # The working bytes (BOARD) are a successor of the adopted bytes (OTHER) named by the receipt.
+        with mock.patch.object(current_state, 'metadata_successor', return_value={'adopted': {'sha256': OTHER}}):
+            resolved = self.resolve({'rrr-01.json': top_level(candidate=OTHER)})
+        self.assertEqual(resolved['path'], 'boards/b/reports/grid-routing/rrr-01.json')
+        with mock.patch.object(current_state, 'metadata_successor', return_value=None):
+            self.assertIsNone(self.resolve({'rrr-01.json': top_level(candidate=OTHER)}))
+        with mock.patch.object(current_state, 'metadata_successor', return_value={'adopted': {'sha256': OTHER}}):
+            self.assertIsNone(self.resolve({'rrr-01.json': top_level(candidate='c' * 64)}))
+
+    def test_rejected_metadata_successor_is_not_swallowed(self):
+        from scripts.checks.metadata_successor import SuccessorError
+        with mock.patch.object(current_state, 'metadata_successor', side_effect=SuccessorError('forged')):
+            with self.assertRaisesRegex(SuccessorError, 'forged'):
+                self.resolve({'rrr-01.json': top_level(candidate=OTHER)})
+
     def test_current_boards_resolve_to_their_accepted_receipts(self):
         expected = {'osc-core': ('osc3-wsl-20261109a.json', 2226, None), 'osc-jack-left': ('rrr-01.json', 184, 3),
                     'osc-jack-right': ('rrr-01.json', 192, 8)}

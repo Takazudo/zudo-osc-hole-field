@@ -17,6 +17,7 @@ from scripts.partition.model import JACK_BOARDS
 from scripts.checks.connector_packing35 import board_for,pads
 from scripts.checks.partition35_diagnostic import footprint_geometry
 from scripts.pcbgen.netlist import TOKEN, parse, many, one
+from scripts.pcbgen.bypass_supply_pins import source_bypass_binding
 from scripts.checks.jack_locality import place_jack_locality,stable_sum,FACE_PENALTY_MM,GAP_MM,masks_for,nearest
 from scripts.checks.core_locality import spread_module_homes
 OUT=ROOT/'design/partition/floorplan-candidate.json'
@@ -119,10 +120,9 @@ def bypass_cells(parent,caps,side,shapes,pin_nets,horizontal=False):
     ipads=footprint_pads(parent['footprint']);cells=[(parent,0,(0,0))]
     for cap in caps:
         # A local supply such as a regulated VEE also counts as the decoupled rail.
-        rail=next(n for n in pin_nets[cap['ref']].values() if n!='AGND' and n in pin_nets[parent['ref']].values())
-        supply=next(pin for pin,n in pin_nets[parent['ref']].items() if n==rail)
+        cpin,rail,supply=source_bypass_binding(ROOT,parent,cap,pin_nets)
         sx,sy=ipads[supply];sx=-sx if side=='B.Cu' else sx
-        cpads=footprint_pads(cap['footprint']);cpin=next(pin for pin,n in pin_nets[cap['ref']].items() if n==rail)
+        cpads=footprint_pads(cap['footprint'])
         cx,cy=cpads[cpin];cx=-cx if side=='B.Cu' else cx
         angle=(180 if cx*sx>0 else 0) if horizontal else 90
         cx,cy=turn((cx,cy),angle)
@@ -135,19 +135,19 @@ def bypass_cells(parent,caps,side,shapes,pin_nets,horizontal=False):
 def check_bypasses(parts,placements,pin_nets):
     errors=[]
     limit=json.loads((ROOT/'design/partition/bypass-placement-evidence.json').read_text())['proposal']['maximum_supply_pad_to_capacitor_rail_pad_mm']
-    byref={p['ref']:p for p in placements};bypass=[]
+    byref={p['ref']:p for p in placements};part_byref={p['ref']:p for p in parts};bypass=[]
     for p in parts:
         if not p['decouples_ref'] or board_for(p) not in JACK_BOARDS:continue
         if p['ref'] not in byref or p['decouples_ref'] not in byref:continue
         c=byref[p['ref']];u=byref[p['decouples_ref']]
-        rail=next(n for n in pin_nets[p['ref']].values() if n in ('+12V','-12V','+5V'))
-        def point(ref,net):
-            item=byref[ref];part=next(q for q in parts if q['ref']==ref);pin=next(k for k,n in pin_nets[ref].items() if n==net);x,y=footprint_pads(part['footprint'])[pin]
+        cpin,rail,supply=source_bypass_binding(ROOT,part_byref[p['decouples_ref']],p,pin_nets)
+        def point(ref,pin):
+            item=byref[ref];part=part_byref[ref];x,y=footprint_pads(part['footprint'])[pin]
             x,y=turn((-x if item['side']=='B.Cu' else x,y),item['rotation_deg'])
             return [x+item['x_mm'],y+item['y_mm']]
-        distance=math.dist(point(p['ref'],rail),point(p['decouples_ref'],rail))
+        distance=math.dist(point(p['ref'],cpin),point(p['decouples_ref'],supply))
         if c['side']!=u['side'] or distance>limit:errors.append('bypass supply-pad proximity failed '+p['ref'])
-        bypass.append({'capacitor':p['ref'],'IC':p['decouples_ref'],'rail':rail,'board':c['board'],'same_face':c['side']==u['side'],'supply_pad_centre_distance_mm':distance})
+        bypass.append({'capacitor':p['ref'],'IC':p['decouples_ref'],'rail':rail,'capacitor_pad':cpin,'IC_supply_pad':supply,'board':c['board'],'same_face':c['side']==u['side'],'supply_pad_centre_distance_mm':distance})
     return bypass,errors
 
 
@@ -288,12 +288,12 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
                 if all(evictable(r) for r in hit) and (evict or not hit):best=(cost,side,placed,hit)
         return best
     def supply_gap(cap,x,y,rotation,side,footprint):
-        # Closest cap rail pad to a pin of its IC on the same rail, mm.
-        rail=next((n for n in pin_nets[cap].values() if n in ('+12V','-12V','+5V')),None);ic=by_ref[cap]['decouples_ref']
-        if rail is None or ic not in rows:return math.inf
-        u=rows[ic];pins=[k for k,n in pin_nets[ic].items() if n==rail];mine=[k for k,n in pin_nets[cap].items() if n==rail]
-        return min(math.dist(pad_point(footprint,a,side,rotation,x,y),pad_point(u['footprint'],b,u['side'],u['rotation_deg'],u['x_mm'],u['y_mm']))
-                   for a in mine for b in pins)
+        # Exact source supply pad; a same-net logic input is not a supply terminal.
+        ic=by_ref[cap]['decouples_ref']
+        if ic not in rows:return math.inf
+        cpin,rail,supply=source_bypass_binding(ROOT,by_ref[ic],by_ref[cap],pin_nets)
+        u=rows[ic]
+        return math.dist(pad_point(footprint,cpin,side,rotation,x,y),pad_point(u['footprint'],supply,u['side'],u['rotation_deg'],u['x_mm'],u['y_mm']))
     def nudged_pose(part,slot):
         # Phase 36: a protection diode with no legal pose in its radius may take the pose of one pinned
         # bypass capacitor that moves at most NUDGE_MAX_MM, on its own face, without lengthening its supply loop.

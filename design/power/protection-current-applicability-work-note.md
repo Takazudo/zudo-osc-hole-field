@@ -58,3 +58,26 @@ The historical 110-ADG sensitivity is explicitly inapplicable to today's 98/12
 TMUX package population; no substitution saving or physical guarantee transfers.
 Future source/model changes require a new reviewed study, not another hash
 exception or a frozen false claim.
+
+## Parts-439 identity packet re-study — issues #21/#324
+
+The parts-439-with-324 packet (58d6b581, parent 05b14986) changed two inputs
+that the retained reports bind by hash: eleven `part_id` leaves in
+`design/standard/electrical-standard.json` (cells high_impedance_input,
+bipolar_attenuverter, dc_control_source, level_attenuator, reference_generator,
+stage_indicator and switch_button_input) and the new passive identity roles in
+`design/spec/cells/_builder.py`. The #317 bridge therefore fails on the current
+tree, as designed. It is replayed unchanged at 05b14986 as a frozen study.
+
+`scripts/checks/protection_study_parts439.py` is the new reviewed study; it
+writes `design/power/protection-study-parts439.json` and `--check` re-derives it.
+It records the complete standard delta (every changed leaf must be a cell
+`part_id`) and proves live that the fields the three producers read (signals,
+supply_architecture, general_output and precision_output cells) are equal to
+the packet parent. The precision model consumes `_builder.py` only through
+`current_precision_contract()`; its fingerprint is computed in a disposable
+worktree at the packet parent and in the current tree, and must match. All other
+bound inputs, the #317 obligation projection and each producer's complete
+calculate() output are unchanged. No retained report, hash or test byte is
+rewritten. The ngspice model sweep and physical protection qualification are
+NOT RUN; the historical 110-ADG sensitivity remains inapplicable.

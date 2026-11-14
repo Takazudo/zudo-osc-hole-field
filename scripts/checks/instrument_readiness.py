@@ -15,6 +15,7 @@ from scripts.pcbgen.uuid_tools import top_level_spans
 from scripts.schgen.core import designator
 from scripts.schgen.project_boards import interface_family
 from design.spec.instrument import specification
+from scripts.checks.metadata_successor import successor_for, receipts as successor_receipts
 
 CONFIG = 'circuit/readiness/instrument-manifest.json'
 OUTPUT = 'design/reports/instrument-readiness.json'
@@ -98,10 +99,21 @@ def retained_connectivity(root, board, report_path):
     count = report.get('native_unconnected_edge_count', report.get('native_unconnected_edges'))
     if count is None:
         count = report.get('native', report.get('connectivity', {})).get('open_edges')
-    return {'path': report_path, 'sha256': digest(path), 'recorded_board_sha256': bound,
-            'status': 'MATCHED BOARD BYTES' if bound == digest(root / board) else 'STALE OR UNBOUND',
+    current = digest(root / board)
+    status = 'MATCHED BOARD BYTES' if bound == current else 'STALE OR UNBOUND'
+    successor = None
+    if bound != current:
+        successor = successor_for(board, current, root)
+        if successor is not None and successor['adopted']['sha256'] == bound:
+            # Property-only identity metadata changed; the receipt re-derived that from the Git bytes.
+            status = 'MATCHED ADOPTED BYTES VIA METADATA-ONLY SUCCESSOR'
+    result = {'path': report_path, 'sha256': digest(path), 'recorded_board_sha256': bound,
+            'status': status,
             'complete_native_open_edges': count,
             'scope': 'Board-byte binding only; other report input dependencies are not revalidated here. No new native execution or electrical qualification'}
+    if status.startswith('MATCHED ADOPTED'):
+        result['metadata_successor'] = {'path': successor['path'], 'sha256': successor['receipt_sha256']}
+    return result
 
 
 def build(root=ROOT):
@@ -133,6 +145,8 @@ def build(root=ROOT):
     inputs.add('scripts/libgen/build_symbol_lib.py')
     inputs.update(str(p.relative_to(root)) for p in (root / 'symbols/src').glob('*.kicad_sym'))
     checkpoint = json.loads((root / 'circuit/routing/osc-pcb-current-checkpoint.json').read_text())
+    inputs.update(successor_receipts(root))
+    inputs.add('scripts/checks/metadata_successor.py')
     for record in checkpoint['boards'].values():
         inputs.add(record['receipt']['path'])
         if record.get('adoption'):
@@ -258,7 +272,7 @@ def markdown(report):
              '| --- | --- | ---: | ---: | ---: |']
     for u in report['units']:
         evidence = u['retained_connectivity']
-        count = evidence.get('complete_native_open_edges') if evidence['status'] == 'MATCHED BOARD BYTES' else 'STALE/UNBOUND'
+        count = evidence.get('complete_native_open_edges') if evidence['status'].startswith('MATCHED') else 'STALE/UNBOUND'
         lines.append(f"| {u['key']} | {u['adoption']} | {count} | {u['counts'].get('fitted_identity_declared',0)} | {u['counts'].get('fitted_identity_incomplete',0)} |")
     lines += ['', 'The JSON companion contains exact file hashes, designator groups, membership discrepancies and owner identity states. Declared identities are not procurement or performance approval.', '',
               'P remains a geometry candidate. The panel is a separate board-only unit. Experimental, historical single-jack and alternative control files are excluded explicitly.', '',

@@ -19,9 +19,9 @@ def model_contract(parts):
     def passive(role, value, a, b):
         p = one(role)
         kind = 'C' if role == 'bipolar_attenuverter:C_FB' else 'R'
-        symbol = ('C0603C101J5GACTU' if kind == 'C' else
-                  'RC0603FR-07100KL' if role in ('bipolar_attenuverter:R_W',
-                                               'bipolar_attenuverter:R_FAIL') else
+        symbol = ('C0603C100J5GACTU' if kind == 'C' else
+                  'RC0603FR-0710ML' if role == 'bipolar_attenuverter:R_FAIL' else
+                  'RC0603FR-07100KL' if role == 'bipolar_attenuverter:R_W' else
                   'RT0603BRD07100KL')
         if p.prefix != kind or p.unit != 0 or p.symbol != SOURCE_LIBRARY + symbol:
             raise ValueError(f'AO model passive identity changed: {role}')

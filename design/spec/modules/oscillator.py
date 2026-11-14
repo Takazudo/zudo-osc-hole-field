@@ -71,8 +71,17 @@ class Builder:
         self.device(CATALOG[record['mpn']],key,'U',{str(n):{1:out,2:minus,3:plus,4:'+12V',11:'-12V'}.get(n) for n in range(1,15)})
 
     def trim(self,key,value,a,w,b=None):
-        identity='trim_102' if value=='1 kΩ' else 'trim_103'
-        self.device(CATALOG[SHORTLIST[identity]['mpn']],key,'RV',{'1':a,'2':w,'3':b or w},value=value,mpn=SHORTLIST[identity]['mpn'] if value in ('1 kΩ','10 kΩ') else '')
+        selected={
+            ('OSC_CORE:${SHEETNAME}','HF_TRIM'):('20 kΩ','trim_203'),
+            ('ENV_CORE:${SHEETNAME}','RISE_BASE'):('50 kΩ','trim_503'),
+            ('ENV_CORE:${SHEETNAME}','FALL_BASE'):('50 kΩ','trim_503'),
+            ('FILTER_CORE:${SHEETNAME}','EXPO_BASE_TRIM'):('50 kΩ','trim_503'),
+            ('FILTER_CORE:${SHEETNAME}','RESONANCE_MAX'):('500 kΩ','trim_504'),
+        }.get((self.island,key))
+        if selected and value!=selected[0]:
+            raise ValueError(('exact calibration trimmer value mismatch',self.island,key,value))
+        identity=selected[1] if selected else ('trim_102' if value=='1 kΩ' else 'trim_103')
+        self.device(CATALOG[SHORTLIST[identity]['mpn']],key,'RV',{'1':a,'2':w,'3':b or w},value=value,mpn=SHORTLIST[identity]['mpn'] if selected or value in ('1 kΩ','10 kΩ') else '')
 
     def cell(self,id,tag,nets,*,panel=None,role=None,variant=None):
         uid=(panel or 'J:{}.1V').format('O1')

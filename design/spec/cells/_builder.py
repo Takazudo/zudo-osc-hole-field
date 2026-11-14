@@ -41,7 +41,7 @@ PIN_ALIASES={
  'trim_103':{'END1':'1','WIPER':'2','END2':'3'},
 }
 AMP={'IN+':'3','IN-':'2','OUT':'1','V+':'4','V-':'11'}
-PREFIX={'r_feedback':'R','c_feedback':'C','r_general':'R','r_precision':'R','r_power':'R','r_ladder':'R','c_small':'C','c_bypass':'C','c_bulk':'C','c_slew':'C','signal_diode':'D','clamp_diode':'D','clamp_diode_ll':'D','led_white':'D','led_red':'D','pot_103':'RV','pot_104':'RV','pot_504':'RV','trim_102':'RV','trim_103':'RV','npn':'Q','mosfet':'Q'}
+PREFIX={'c_dc_wiper':'C','c_audio_feedback':'C','r_audio_failbias':'R','r_reference_inverter':'R','r_protected_sense_limit':'R','r_contact_debounce':'R','r_stage_top':'R','r_dc_failbias':'R','r_contact_pullup':'R','r_feedback':'R','c_feedback':'C','r_general':'R','r_precision':'R','r_power':'R','r_ladder':'R','c_small':'C','c_bypass':'C','c_bulk':'C','c_slew':'C','signal_diode':'D','clamp_diode':'D','clamp_diode_ll':'D','led_white':'D','led_red':'D','pot_103':'RV','pot_104':'RV','pot_504':'RV','trim_102':'RV','trim_103':'RV','npn':'Q','mosfet':'Q'}
 
 
 def load_symbol(name):
@@ -80,8 +80,10 @@ def _exact_value(part,record):
  # The shortlist contains one exact representative per passive role. No inferred
  # value can be assigned to that MPN; only a documented value match can clear it.
  val=part['value'];id=record['id']
+ if id in ('c_dc_wiper','c_audio_feedback') and part.get('unit') != 'F':return False
+ if id in ('r_audio_failbias','r_reference_inverter','r_protected_sense_limit','r_contact_debounce','r_contact_pullup','r_dc_failbias','r_stage_top') and part.get('unit') != 'ohm':return False
  if id in ('r_feedback','c_feedback') and part.get('unit') != ('ohm' if id=='r_feedback' else 'F'):return False
- known={'r_feedback':100,'c_feedback':1e-9,'r_general':100000,'r_precision':100000,'r_power':499,'r_ladder':10000,'c_small':1e-10,'c_bypass':1e-7,'c_bulk':4.7e-6,'c_slew':1e-7}
+ known={'c_dc_wiper':1e-8,'c_audio_feedback':1e-11,'r_audio_failbias':10000000,'r_reference_inverter':10000,'r_protected_sense_limit':10000,'r_contact_debounce':1000,'r_stage_top':150000,'r_dc_failbias':10000000,'r_contact_pullup':10000,'r_feedback':100,'c_feedback':1e-9,'r_general':100000,'r_precision':100000,'r_power':499,'r_ladder':10000,'c_small':1e-10,'c_bypass':1e-7,'c_bulk':4.7e-6,'c_slew':1e-7}
  return id in known and abs(val-known[id]) <= abs(known[id])*1e-9
 
 

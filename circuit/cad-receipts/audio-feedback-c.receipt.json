@@ -1,0 +1,88 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "audio-feedback-c",
+    "record_id": "rec-audio-feedback-c",
+    "manufacturer": "KEMET",
+    "mpn": "C0603C100J5GACTU",
+    "package": "0603",
+    "variant_notes": "Identity-only derived two-terminal symbol; actual existing C0603 lands differ from primary recommendations and remain OPEN."
+  },
+  "acquisition": {
+    "provider": "Manufacturer product sheet and retained project family symbol",
+    "library_release_tag": null,
+    "source_url": "https://yageogroup.com/component-documentation/download/specsheet/C0603C100J5GACTU",
+    "acquired_on": "2026-11-10",
+    "original_filenames": [
+      "C0603C100J5GACTU.pdf"
+    ],
+    "sha256": {
+      "symbols/src/C0603C101J5GACTU.kicad_sym": "6a81dbabb90ae37411e622cc0296a9384ef48771b59ff1b0e8f2185f7346a694",
+      ".circuit-cache/order-readiness-20261110/capacitors95/C0603C100J5GACTU.pdf": "1262b99eb92c332a39a9ff1dd60edc7eca8e20aa03fe24bee433ec80cd0ebe6e",
+      ".circuit-cache/order-readiness-20261110/capacitors95/prepare.py": "d624d418c194a9bc3d5f98389e760daf297daa9eca45df11a65559b412baabe6"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/C0603C100J5GACTU.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "symbols/src/C0603C101J5GACTU.kicad_sym",
+      ".circuit-cache/order-readiness-20261110/capacitors95/C0603C100J5GACTU.pdf",
+      ".circuit-cache/order-readiness-20261110/capacitors95/prepare.py"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Project passive symbol geometry/pins preserved, exact identity fields changed; no manufacturer CAD fidelity or land acceptance claimed.",
+    "evidence": [
+      "src-audio-feedback-c-datasheet: Physical page0 Specifications and Dimensions tables; later plots explicitly simulation only"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "symbols/src/C0603C101J5GACTU.kicad_sym": "6a81dbabb90ae37411e622cc0296a9384ef48771b59ff1b0e8f2185f7346a694",
+      ".circuit-cache/order-readiness-20261110/capacitors95/C0603C100J5GACTU.pdf": "1262b99eb92c332a39a9ff1dd60edc7eca8e20aa03fe24bee433ec80cd0ebe6e",
+      ".circuit-cache/order-readiness-20261110/capacitors95/prepare.py": "d624d418c194a9bc3d5f98389e760daf297daa9eca45df11a65559b412baabe6"
+    },
+    "tool": "Exact identity substitution from retained family symbol",
+    "tool_version": "1",
+    "parameters": {
+      "source_symbol": "C0603C101J5GACTU",
+      "target_symbol": "C0603C100J5GACTU",
+      "footprint_unchanged": "C0603"
+    },
+    "output_sha256": {
+      "symbols/src/C0603C100J5GACTU.kicad_sym": "44eaf789440cc91ec68ff2bb13d76bc249efcd8013cd95f7436d461df4201e1a"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:C0603C100J5GACTU",
+    "footprint": "zudo-osc-hole-field:C0603",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Exact title, nominal value, rating and body dimensions inspected in manufacturer PDF."
+    ],
+    "remaining_physical_checks": [
+      "Primary recommended land mismatch requires engineering/process disposition; body tolerance, assembled thermal/voltage/stability and physical qualification remain OPEN."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}
