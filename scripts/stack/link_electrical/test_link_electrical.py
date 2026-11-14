@@ -12,9 +12,10 @@ import link_electrical as le  # noqa: E402
 
 class Retained(unittest.TestCase):
     def test_retained_files_equal_a_fresh_run(self):
-        rj, rm = le.generate()
+        rj, rm, hj = le.generate()
         self.assertEqual((le.OUT / 'results.json').read_text(), rj, 'run link_electrical.py')
         self.assertEqual((le.OUT / 'README.md').read_text(), rm, 'run link_electrical.py')
+        self.assertEqual((le.OUT / 'harness-baseline.json').read_text(), hj, 'run link_electrical.py')
 
     def test_every_input_has_a_status(self):
         inp = le.load_inputs()
@@ -25,6 +26,23 @@ class Retained(unittest.TestCase):
         for pk in le.PITCHES:
             for r in inp['contact'][pk]['ratings_A']:
                 self.assertIn(r['status'], ('SOURCED', 'DERIVED', 'ASSUMED'))
+
+    def test_readme_has_no_stray_backslash_and_no_warning(self):
+        import warnings
+        self.assertNotIn('\\′', (le.OUT / 'README.md').read_text())
+        with warnings.catch_warnings():
+            warnings.simplefilter('error')
+            compile((Path(le.__file__)).read_text(), le.__file__, 'exec')
+
+    def test_changed_input_changes_text(self):
+        inp = copy.deepcopy(le.load_inputs())
+        inp['aggressors']['LOGIC']['load_F'] = 2.2e-11
+        inp['cable']['eps_eff']['value'] = [1.0, 2.0, 3.0]
+        r = le.results(inp)
+        text = le.readme(inp, r)
+        self.assertIn('load 22 pF', text)
+        self.assertIn('ε_eff swept 1 / 2 / 3', text)
+        self.assertNotIn('load 15 pF', text)
 
     def test_wave_sources_are_the_sourced_0_5mm_ratings(self):
         inp = le.load_inputs()
@@ -38,12 +56,24 @@ class Signals(unittest.TestCase):
     def test_counts_match_da03(self):
         inp = le.load_inputs()
         sig = le.classified_signals(inp)
-        self.assertEqual(len(sig), 492)
+        self.assertEqual(len(sig), 490)
         joints = {}
         for s in sig:
             joints[s['family']] = joints.get(s['family'], 0) + 1
-        self.assertEqual(joints, {'K/P': 246, 'JR/K': 108, 'JL/K': 100, 'P/K for EL': 18, 'JL/P pass-through': 16, 'SUB': 4})
-        self.assertEqual(sum(s['class'] == 'NC' for s in sig), 2)
+        self.assertEqual(joints, {'K/P': 246, 'JR/K': 106, 'JL/K': 100, 'P/K for EL': 18, 'JL/P pass-through': 16, 'SUB': 4})
+        self.assertFalse(any(s['class'] == 'NC' for s in sig))
+
+    def test_counts_equal_room_study(self):
+        site = json.loads((le.ROOT / 'design/stack/geometry/links/link-candidate.json').read_text())['site_counts']
+        sig = le.link_signals()
+        self.assertEqual(len(sig), site['signals'])
+        for fam, row in site['by_family'].items():
+            self.assertEqual(sum(s['family'] == fam for s in sig), row['signals'], fam)
+        r = json.loads((le.OUT / 'results.json').read_text())
+        self.assertEqual(sum(r['branch_signals'].values()), site['signals'])
+        for pk, opts in r['ground_counts'].items():
+            for rows in opts.values():
+                self.assertEqual(sum(x['signals'] for x in rows.values()), site['signals'])
 
     def test_classification_examples(self):
         inp = le.load_inputs()
@@ -121,14 +151,96 @@ class GroundCurrent(unittest.TestCase):
 
 
 class Counts(unittest.TestCase):
-    def test_rule_counts(self):
+    def test_capacities_equal_room_study(self):
+        sys.path.insert(0, str(le.ROOT / 'scripts/stack/geometry'))
+        import links
+        for n in (20, 22, 30, 40):
+            self.assertEqual(le.ds51_capacity(n, 'A'), links.capacity(n, 'G-PER-2S'))
+            self.assertEqual(le.ds51_capacity(n, 'B_inner'), links.capacity(n, 'G-BETWEEN'))
+        self.assertEqual([le.ds51_capacity(n, 'A') for n in (20, 22, 30, 40)], [13, 14, 20, 26])
+        self.assertEqual([le.ds51_capacity(n, 'B_inner') for n in (20, 22, 30, 40)], [10, 11, 15, 20])
+
+    def test_rule_counts_per_link(self):
         rj = json.loads((le.OUT / 'results.json').read_text())
         for pk, opts in rj['ground_counts'].items():
             for c, rows in opts.items():
                 for j, x in rows.items():
-                    self.assertEqual(x['rule_A']['grounds'], math.ceil(x['signals'] / 2))
-                    self.assertLessEqual(x['signals'] + x['rule_B']['grounds'], x['rule_B']['links'] * int(c))
+                    for k in ('rule_A', 'rule_B_inner', 'rule_B_outer'):
+                        y = x[k]
+                        self.assertEqual(y['links'], math.ceil(x['signals'] / y['signals_per_link']))
+                        self.assertLessEqual(x['signals'] + y['grounds'], y['links'] * int(c))
                     self.assertLessEqual(x['signals'] + x['grounds_rule'], x['links_rule'] * int(c))
+        x = le.ds51_counts(40, 20)
+        self.assertEqual((x['rule_A']['links'], x['rule_A']['grounds']), (4, 3 * 7 + 1))
+        self.assertEqual((x['rule_B_inner']['links'], x['rule_B_inner']['grounds']), (4, 36))
+
+    def test_grouping_tries_every_existing_cable(self):
+        sep = 'not in the same flat cable (separate link or ground layer)'
+        table = {('LOGIC', 'ANALOGUE'): sep, ('ANALOGUE', 'PRECISION'): sep, ('ANALOGUE', 'ANALOGUE'): 'side by side'}
+        verdicts = [{'pitch': 'pitch_1_0', 'aggressor': a, 'victim': v, 'need': table.get((a, v), 'side by side')}
+                    for a in le.AGGRESSORS for v in le.VICTIMS]
+        sig = [{'family': 'JL/K', 'front_board': 'JL', 'class': c} for c in ('LOGIC', 'ANALOGUE', 'PRECISION')]
+        out = le.ground_count(sig, verdicts, 'pitch_1_0', 20)['JL to K']
+        self.assertEqual(out['cables'], ['LOGIC + PRECISION', 'ANALOGUE'])
+
+
+class HarnessBaseline(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        import harness_baseline as hb
+        cls.hb = hb
+        cls.inp = le.load_inputs()
+        cls.pats = hb.harness_patterns(cls.inp)
+        cls.counts = hb.pattern_counts(cls.pats)
+
+    def test_pattern_sizes_and_ground_between(self):
+        self.assertEqual(self.counts['sizes'], {3: 127, 7: 10, 8: 58})
+        self.assertEqual(self.counts['adjacent_signals'], [])
+        self.assertEqual(len(self.counts['signal_beside_rail']), 6)
+        self.assertEqual(sum(p['classes'][0] == 'G' for p in self.pats), 0)
+        self.assertEqual(sum(c.count('G') for c in (p['classes'] for p in self.pats)), 380)
+
+    def test_manager_count_reproduced(self):
+        tri = {k: len(v) for k, v in self.counts['triples'].items()}
+        hs = self.counts['harness_count']
+        expected = {'ANALOGUE/PRECISION': (39, 34), 'ANALOGUE/WIPER': (14, 14), 'LOGIC/LOGIC': (17, 17),
+                    'LOGIC/PRECISION': (11, 11), 'ANALOGUE/LOGIC': (2, 2), 'PRECISION/PRECISION': (18, 18),
+                    'PRECISION/WIPER': (5, 5), 'WIPER/WIPER': (40, 40)}
+        for k, (t, h) in expected.items():
+            self.assertEqual((tri[k], hs[k]), (t, h), k)
+        self.assertEqual((tri['ANALOGUE/ANALOGUE'], hs['ANALOGUE/ANALOGUE']), (172, 80))
+        ko = [t for t in self.counts['triples']['ANALOGUE/ANALOGUE'] if t['harness'].startswith('K-O')]
+        self.assertEqual(len(ko), 25)
+        self.assertEqual(len({t['harness'] for t in ko}), 10)
+        self.assertEqual((172 - 25, 80 - 10), (147, 70))
+
+    def test_round_wire_capacitance_matches_formula(self):
+        for d in (1.25e-3, 2.5e-3):
+            c = self.hb.wire_capacitance_matrix([0.0, d], 0.2413e-3, 2.0)
+            ref = self.hb.two_wire_c(d, 0.2413e-3, 2.0)
+            self.assertLess(abs(-c[0, 1] - ref) / ref, 0.005)
+
+    def test_loom_wire_and_length(self):
+        self.assertTrue(all(p['wire_mpn'] == 'Alpha Wire 6821 BK005' for p in self.pats))
+        self.assertEqual(max(p['cut_length_mm'] for p in self.pats), 204)
+
+    def test_rule_keeps_flat_at_or_below_harness(self):
+        b = json.loads((le.OUT / 'harness-baseline.json').read_text())
+        names = {0: 'flat side by side', 1: 'flat one ground between (rule A)', 2: 'flat two grounds between'}
+        for pk, rule in b['rules'].items():
+            for r in b['comparison']:
+                if r['pitch'] != pk:
+                    continue
+                a, v = r['pair'].split('>')
+                need = rule[a + '/' + v]
+                self.assertIsNotNone(need)
+                self.assertLessEqual(r['ratio_to_min'][names[need]], 1.0)
+            self.assertIsNone(rule['LOGIC/WIPER'])
+
+    def test_fault_injection_longer_flat_exceeds(self):
+        fl = self.hb.flat_levels(self.inp, 'pitch_1_0', 400, 'ANALOGUE', 'ANALOGUE')
+        base, _ = self.hb.baseline(self.inp, self.pats)
+        self.assertGreater(fl['flat one ground between (rule A)'], base['ANALOGUE>ANALOGUE']['min_V'])
 
 
 if __name__ == '__main__':
