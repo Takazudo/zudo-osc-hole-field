@@ -1,11 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "status": "PLANNING PARAMETERS of the direct-stack proposal; not evidence and not a tolerance allocation",
   "k_plane": {
-    "adapter_mated_height_mm": 6.9,
-    "basis": "Plan page planning value: K F.Cu = adapter rear face - adapter mated height. Change it here; every plane, gap and clearance is re-derived"
+    "adapter_mated_height_mm": 12.8,
+    "basis": "reviews/da-01.md D3: MMS -02 -SV socket with TW-SM stacker closes at h = 12.8 mm. K F.Cu = adapter rear face - adapter mated height. Change it here; every plane, gap and clearance is re-derived"
   },
-  "enclosure_inside_depth_mm": 34,
+  "enclosure_inside_depth_mm": 40,
   "obstacle_model": {
     "own_face_courtyard_growth_mm": 0.35,
     "opposite_face_through_hole_pad_growth_mm": 0.3,
@@ -16,8 +16,18 @@
   "board_edge_margin_mm": 0.3,
   "board_edge_margin_basis": "scripts/partition/README.md 0.30 mm board-edge allocation; applied to every K-outline containment test of the measurements",
   "K_probe_regions_mm": {
-    "through_slot": [182, 160, 312, 180],
-    "GH8_B": [182, 150, 312, 200],
+    "through_slot": [
+      182,
+      160,
+      312,
+      180
+    ],
+    "GH8_B": [
+      182,
+      150,
+      312,
+      200
+    ],
     "basis": "Search regions (centre ranges) named on the plan page for the slot and K rear-header probes"
   },
   "power_land_neighbour_radius_mm": 2.6,
@@ -29,13 +39,82 @@
     "step_mm": 0.25
   },
   "envelope_sweep_mm": {
-    "3": [[5.8, 7.0], [6.1, 7.0], [6.1, 7.7], [6.5, 7.0], [6.5, 8.0], [7.0, 8.0]],
-    "6": [[5.8, 13.0], [6.1, 13.0], [6.1, 13.94], [6.5, 13.0], [6.5, 14.0]],
-    "5": [[5.8, 11.0], [6.1, 11.0], [6.1, 12.7], [6.5, 12.0]]
+    "3": [
+      [
+        5.8,
+        7.0
+      ],
+      [
+        6.1,
+        7.0
+      ],
+      [
+        6.1,
+        7.7
+      ],
+      [
+        6.5,
+        7.0
+      ],
+      [
+        6.5,
+        8.0
+      ],
+      [
+        7.0,
+        8.0
+      ]
+    ],
+    "6": [
+      [
+        5.8,
+        13.0
+      ],
+      [
+        6.1,
+        13.0
+      ],
+      [
+        6.1,
+        13.94
+      ],
+      [
+        6.5,
+        13.0
+      ],
+      [
+        6.5,
+        14.0
+      ]
+    ],
+    "5": [
+      [
+        5.8,
+        11.0
+      ],
+      [
+        6.1,
+        11.0
+      ],
+      [
+        6.1,
+        12.7
+      ],
+      [
+        6.5,
+        12.0
+      ]
+    ]
   },
   "longer_single_row_mm": {
-    "1x7": [5.8, 15.0],
-    "1x8": [5.8, 17.0]
+    "1x7": [
+      5.8,
+      15.0
+    ],
+    "1x8": [
+      5.8,
+      17.0
+    ]
   },
   "positions": {
     "K/P": 3,
@@ -44,7 +123,7 @@
     "K/O": 5,
     "JL/P pass-through": 3,
     "SUB": 3,
-    "EL/P": 6,
+    "EL/P": 8,
     "P/K for EL": 6
   },
   "pin_templates": {
@@ -56,19 +135,161 @@
     "K/O second": "SGSGS",
     "JL/P pass-through": "SGS",
     "SUB": "SGS",
-    "EL/P": "SGSRSR",
+    "EL/P": "SGGSSRRR",
     "P/K for EL": "SGSGSG",
-    "signal_beside_return_required": ["K/P", "JL/K", "JR/K", "JL/P pass-through", "SUB", "P/K for EL"],
-    "signal_beside_return_note": "Required where the plan page states the pin order or the rule. A 1x5 with four signals and one AGND, and the EL-to-P 1x6 with three signals and one AGND, cannot place every signal beside a return; check.py reports those signals"
+    "signal_beside_return_required": [
+      "K/P",
+      "JL/K",
+      "JR/K",
+      "JL/P pass-through",
+      "SUB",
+      "EL/P",
+      "P/K for EL"
+    ],
+    "signal_beside_return_note": "Required where the plan page or DA-01 D3 states the rule (EL/P: 3 signals, 2 AGND, 3 rails, each signal beside an AGND). A 1x5 adapter pair with four signals and one AGND cannot place every signal beside a return; check.py reports those signals",
+    "two_row_index_order": "A two-row pin map lists index i at column i // 2, row i % 2. Two positions are adjacent in the same column (other row) or in the same row (next column)"
   },
-  "el_rail_rotation": [["+12V", "-12V"], ["-12V", "+5V"], ["+5V", "+12V"]],
-  "el_rail_rotation_basis": "Planning assumption: a 1x6 EL-to-P pair has two rail positions, so each site carries two of the three rails in rotation and each rail reaches EL at four of the six sites",
   "sub_toggle": {
     "reuse_value": "2MS3T1B1M2QES",
     "reuse_board": "P",
     "basis": "Owner decision Q2 (SUB toggle); the plan reuses the three-position toggle already fitted on P. Its footprint geometry is copied from an existing P instance at rotation 0",
-    "retired_selectors": ["O2", "O4"],
-    "select_nets": ["SUB_SEL_A (planning)", "SUB_SEL_B (planning)"]
+    "retired_selectors": [
+      "O2",
+      "O4"
+    ],
+    "select_nets": [
+      "SUB_SEL_A (planning)",
+      "SUB_SEL_B (planning)"
+    ]
   },
-  "retired_boards": ["O2", "O4"]
+  "retired_boards": [
+    "O2",
+    "O4"
+  ],
+  "enclosure_depth_cases_mm": [
+    40,
+    34
+  ],
+  "enclosure_depth_basis": "reviews/da-01.md D3: depth target about 40 mm (decided); the plan page 34 mm case is reported as a second row and is not a check",
+  "rows": {
+    "EL/P": 2,
+    "basis": "reviews/da-01.md D3: EL joins P on six double-row 2x4 pairs; every other family is single row"
+  },
+  "el_rails": [
+    "+12V",
+    "-12V",
+    "+5V"
+  ],
+  "el_rails_basis": "reviews/da-01.md D3 and the ST-04 re-brief: each 2x4 EL site carries all three rails, 18 rail contacts on EL",
+  "drop_in_families": [
+    "K/P",
+    "JL/K",
+    "JR/K",
+    "K/O first",
+    "K/O second"
+  ],
+  "drop_in_basis": "Families whose halves replace a GH header in place and must lie inside its courtyard. The EL-to-P 2x4 is a new pattern; it is checked as must-be-clear instead",
+  "must_be_clear_families": [
+    "EL/P"
+  ],
+  "must_be_clear_basis": "reviews/da-01.md D3: the EL joint is decided; a courtyard-level conflict of its 2x4 halves is an error with its penetration depth, not a declared blocker",
+  "removed_carriers": [
+    "seam rear cradle",
+    "seam front lip",
+    "seam cross-member 1",
+    "seam cross-member 2"
+  ],
+  "removed_carriers_basis": "design/stack/mechanics/README.md supports table (ST-03): the seam cradle, its lips and both cross-members GO; DA-01 D3 accepts it for the y = 165..167 member",
+  "el_relief_holes": {
+    "diameter_mm": 1.0,
+    "status": "PROVISIONAL",
+    "row_pitch_mm": 2.0,
+    "pitch_mm": 2.0,
+    "basis": "reviews/da-01.md D3: the stacker tips pass the CLT socket by 0.65 mm, so EL has eight relief holes per site, one per pin of the 2x4 at 2.00 mm pitch and row spacing. The 1.0 mm diameter is a PROVISIONAL planning value (0.50 mm square pin); the socket print (ST-01b) fixes it"
+  },
+  "el_pair_heights_mm": {
+    "stacker_body": 4.32,
+    "socket": 2.29,
+    "pin_tip": 7.85,
+    "el_front_height": 1.75,
+    "basis": "reviews/da-01.md D3: TW-04-02-L-D-170-SM body top 4.32 mm, CLT 2.29 mm, tip 7.85 mm above P F.Cu, EL front height 1.75 mm"
+  },
+  "el_pot_passage_diameter_mm": 6.8,
+  "el_pot_passage_basis": "reviews/da-01.md D4: the 18 EL pot passages grow from 6.3 to 6.8 mm; EL board features, not panel apertures",
+  "stacker_rule": {
+    "socket_seated_height_mm": 4.5,
+    "body_clearance_mm": 0.8,
+    "height_step_mm": 0.127,
+    "basis": "reviews/da-01.md D3: stacker \"A\" <= gap - 4.50 - 0.80 mm, rounded down to 0.005 in (0.127 mm); socket seated height 4.50 mm"
+  },
+  "fixings": {
+    "reach_mm": 40,
+    "reach_basis": "reviews/da-01.md D4: every pair lies within 40 mm of a post or tie post",
+    "kept_support_ids": [
+      "JL-SUP-1",
+      "JL-SUP-2",
+      "JL-SUP-3",
+      "JR-SUP-1",
+      "JR-SUP-2",
+      "JR-SUP-3",
+      "K-SUP-3",
+      "K-SUP-4",
+      "K-SUP-5",
+      "K-SUP-6",
+      "K-SUP-7",
+      "K-SUP-8"
+    ],
+    "kept_support_basis": "design/stack/mechanics/README.md supports table (ST-03): 12 supports become tie posts",
+    "provisional_tie_sites": [
+      {
+        "id": "TIE-D4-1",
+        "xy": [
+          202,
+          255
+        ]
+      },
+      {
+        "id": "TIE-D4-2",
+        "xy": [
+          252,
+          241
+        ]
+      },
+      {
+        "id": "TIE-D4-3",
+        "xy": [
+          227,
+          80
+        ]
+      },
+      {
+        "id": "TIE-D4-4",
+        "xy": [
+          227,
+          38
+        ]
+      },
+      {
+        "id": "TIE-D4-5",
+        "xy": [
+          108,
+          80
+        ]
+      }
+    ],
+    "provisional_tie_status": "PROVISIONAL: reviews/da-01.md D4 sites \"near\" these coordinates; ST-08 fixes them and lists the part moves"
+  },
+  "adapter_standoffs": {
+    "per_adapter": 2,
+    "keepout_diameter_mm": 5.0,
+    "search_step_mm": 0.25,
+    "status": "PROVISIONAL",
+    "basis": "reviews/da-01.md D2 closing table: two new standoffs per adapter (O1, O3, O5) to K. The 5.0 mm keep-out (hole, screw head and standoff body on both boards) is a PROVISIONAL planning value; ST-08 fixes the sites and the hardware",
+    "diagnostic_keepouts_mm": [
+      4.0,
+      3.2,
+      2.2
+    ],
+    "diagnostic_basis": "Smaller keep-outs are searched for diagnosis only (2.2 mm is the bare support hole); the check uses keepout_diameter_mm"
+  }
 }
