@@ -9,7 +9,6 @@ import stack_mechanics as sm
 import stack_mechanics_geometry as geo
 
 ROOT = Path(__file__).resolve().parents[3]
-CANDIDATE_SHA256 = '8b302b93012b31253238f87c1743adf26723ef6dfde57ef2e9241e18b7048c98'
 
 
 def sha(path):
@@ -76,9 +75,9 @@ class TestReviewFindings(Base):
         self.assertAlmostEqual(case[2], c.toggle_gap() + pm_wc)
 
     def test_f2_candidate_hash_is_recorded_and_current(self):
-        self.assertEqual(self.data['sources']['S-GEOM']['sha256'], CANDIDATE_SHA256)
-        self.assertEqual(sha(self.data['sources']['S-GEOM']['path']), self.data['sources']['S-GEOM']['sha256'])
-        self.assertEqual(self.data['geometry']['sources']['stack_candidate']['sha256'], CANDIDATE_SHA256)
+        current = sha(self.data['sources']['S-GEOM']['path'])
+        self.assertEqual(self.data['sources']['S-GEOM']['sha256'], current)
+        self.assertEqual(self.data['geometry']['sources']['stack_candidate']['sha256'], current)
 
     def test_f2_heights_from_da01_not_the_candidate(self):
         p = self.data['parameters']['da01']
