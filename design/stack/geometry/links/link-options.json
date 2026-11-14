@@ -1,0 +1,288 @@
+{
+ "schema_version": 1,
+ "task": "osc-stack-20261114/ST-02 a4: flat-link option study (DS-39 to DS-41, DS-48, DS-51)",
+ "status": "OPTION STUDY PARAMETERS; courtyard level; unvalidated drafts; nothing selected",
+ "status_vocabulary": "SOURCED (file named), DERIVED (computed from SOURCED or retained figures), ASSUMED (working value, no document), UNSOURCED (no document; not used as a figure)",
+ "evidence_files": {
+  "flex_links": "design/stack/connectors/flex-links.json",
+  "flex_land_patterns": "design/stack/connectors/flex-land-patterns.json",
+  "st01e_and_st01g": "at integration commit a3b25d0 (stack/wave-1), read without merging: design/stack/connectors/flex-land-patterns.json and flex-links.json block st01e"
+ },
+ "sizes": [
+  {
+   "id": "P100-N20",
+   "pitch_mm": 1.0,
+   "circuits": 20,
+   "envelope": "latching, enclosing",
+   "stock_cable": {
+    "value": "C18797, 20 circuits, 50 mm, same-side contacts, stock 1014",
+    "status": "SOURCED",
+    "source": "a3b25d0:design/stack/connectors/flex-links.json st01e.matching_set rows (pitch 1.0, 20)"
+   },
+   "field_length_mm": {
+    "value": 27.5,
+    "formula": "largest sourced 1.00 mm latching body, CKMTW F-FPC1M-NP-B310 slider n + 7.0, plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.ckmtw_f_fpc1m_np_b310 body_length (SOURCED) with courtyard_rule (ASSUMED); encloses HMTCONN (n + 6) - 0.10 and Megastar n + 4.04"
+   },
+   "field_depth_mm": {
+    "value": 6.54,
+    "formula": "largest sourced 1.00 mm latching depth, HMTCONN FPC1.0-WFX11 6.04 including leads, plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hmtconn_fpc1_0_wfx11_np211_h20 body_depth (SOURCED) with courtyard_rule (ASSUMED); encloses CKMTW 5.4 and Megastar 5.30; the open flip-lock sweep in plan is not dimensioned"
+   },
+   "tail_width_mm": {
+    "value": 21.0,
+    "formula": "n + 1.00",
+    "status": "SOURCED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hmtconn_fpc1_0_wfx11_np211_h20 tail"
+   }
+  },
+  {
+   "id": "P100-N22",
+   "pitch_mm": 1.0,
+   "circuits": 22,
+   "envelope": "latching, enclosing",
+   "stock_cable": {
+    "value": "none of 30 to 80 mm",
+    "status": "SOURCED (absence in the captured listing)",
+    "source": "a3b25d0:design/stack/connectors/flex-links.json st01e.matching_set rows (pitch 1.0, 22)"
+   },
+   "field_length_mm": {
+    "value": 29.5,
+    "formula": "largest sourced 1.00 mm latching body, CKMTW F-FPC1M-NP-B310 slider n + 7.0, plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.ckmtw_f_fpc1m_np_b310 body_length (SOURCED) with courtyard_rule (ASSUMED); encloses HMTCONN (n + 6) - 0.10 and Megastar n + 4.04"
+   },
+   "field_depth_mm": {
+    "value": 6.54,
+    "formula": "largest sourced 1.00 mm latching depth, HMTCONN FPC1.0-WFX11 6.04 including leads, plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hmtconn_fpc1_0_wfx11_np211_h20 body_depth (SOURCED) with courtyard_rule (ASSUMED); encloses CKMTW 5.4 and Megastar 5.30; the open flip-lock sweep in plan is not dimensioned"
+   },
+   "tail_width_mm": {
+    "value": 23.0,
+    "formula": "n + 1.00",
+    "status": "SOURCED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hmtconn_fpc1_0_wfx11_np211_h20 tail"
+   }
+  },
+  {
+   "id": "P050-N30",
+   "pitch_mm": 0.5,
+   "circuits": 30,
+   "envelope": "latching, largest sourced body",
+   "stock_cable": {
+    "value": "C72269, 30 circuits, 50 mm, opposite-side contacts only (stock 994)",
+    "status": "SOURCED",
+    "source": "a3b25d0:design/stack/connectors/flex-links.json st01e.matching_set rows (pitch 0.5, 30)"
+   },
+   "field_length_mm": {
+    "value": 19.9,
+    "formula": "Bossie BX-FPC05-2HNPX flip lock 0.5 n + 4.4, plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.bossie_bx_fpc05_2hnpx body_length (SOURCED) with courtyard_rule (ASSUMED); larger than Hirose FH12 C 24.1 at 40"
+   },
+   "field_depth_mm": {
+    "value": 5.62,
+    "formula": "5.12 plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.bossie_bx_fpc05_2hnpx depth (SOURCED); open height UNSOURCED"
+   },
+   "tail_width_mm": {
+    "value": 15.5,
+    "formula": "0.5 (n + 1)",
+    "status": "SOURCED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hirose_fh12_0_5sh tail_width; Bossie 0.5 n + 0.5"
+   }
+  },
+  {
+   "id": "P050-N40",
+   "pitch_mm": 0.5,
+   "circuits": 40,
+   "envelope": "latching, largest sourced body",
+   "stock_cable": {
+    "value": "C26618, 40 circuits, 50 mm, same-side contacts, stock 990",
+    "status": "SOURCED",
+    "source": "a3b25d0:design/stack/connectors/flex-links.json st01e.matching_set rows (pitch 0.5, 40)"
+   },
+   "field_length_mm": {
+    "value": 24.9,
+    "formula": "Bossie BX-FPC05-2HNPX flip lock 0.5 n + 4.4, plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.bossie_bx_fpc05_2hnpx body_length (SOURCED) with courtyard_rule (ASSUMED); larger than Hirose FH12 C 24.1 at 40"
+   },
+   "field_depth_mm": {
+    "value": 5.62,
+    "formula": "5.12 plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.bossie_bx_fpc05_2hnpx depth (SOURCED); open height UNSOURCED"
+   },
+   "tail_width_mm": {
+    "value": 20.5,
+    "formula": "0.5 (n + 1)",
+    "status": "SOURCED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hirose_fh12_0_5sh tail_width; Bossie 0.5 n + 0.5"
+   }
+  },
+  {
+   "id": "P100-N20-NL",
+   "pitch_mm": 1.0,
+   "circuits": 20,
+   "envelope": "non-latching HDGC (second row)",
+   "stock_cable": {
+    "value": "C18797, 20 circuits, 50 mm, same-side contacts, stock 1014",
+    "status": "SOURCED",
+    "source": "a3b25d0:design/stack/connectors/flex-links.json st01e.matching_set rows (pitch 1.0, 20)"
+   },
+   "field_length_mm": {
+    "value": 22.5,
+    "formula": "body n + 2.00 plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "design/stack/connectors/flex-land-patterns.json entries.hdgc_1_0_b_npwb body_length_A (SOURCED) with courtyard_rule (ASSUMED)"
+   },
+   "field_depth_mm": {
+    "value": 7.04,
+    "formula": "lead extent 6.54 plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "design/stack/connectors/flex-land-patterns.json entries.hdgc_1_0_b_npwb lead_extent_y (SOURCED)"
+   },
+   "tail_width_mm": {
+    "value": 21.0,
+    "formula": "n + 1",
+    "status": "SOURCED",
+    "source": "design/stack/connectors/flex-land-patterns.json entries.hdgc_1_0_b_npwb tail"
+   }
+  },
+  {
+   "id": "P100-N22-NL",
+   "pitch_mm": 1.0,
+   "circuits": 22,
+   "envelope": "non-latching HDGC (second row)",
+   "stock_cable": {
+    "value": "none of 30 to 80 mm",
+    "status": "SOURCED (absence in the captured listing)",
+    "source": "a3b25d0:design/stack/connectors/flex-links.json st01e.matching_set rows (pitch 1.0, 22)"
+   },
+   "field_length_mm": {
+    "value": 24.5,
+    "formula": "body n + 2.00 plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "design/stack/connectors/flex-land-patterns.json entries.hdgc_1_0_b_npwb body_length_A (SOURCED) with courtyard_rule (ASSUMED)"
+   },
+   "field_depth_mm": {
+    "value": 7.04,
+    "formula": "lead extent 6.54 plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "design/stack/connectors/flex-land-patterns.json entries.hdgc_1_0_b_npwb lead_extent_y (SOURCED)"
+   },
+   "tail_width_mm": {
+    "value": 23.0,
+    "formula": "n + 1",
+    "status": "SOURCED",
+    "source": "design/stack/connectors/flex-land-patterns.json entries.hdgc_1_0_b_npwb tail"
+   }
+  }
+ ],
+ "ground_rules": [
+  {
+   "id": "G-PER-2S",
+   "text": "one ground position per two signals, as at today's sites (S G S)",
+   "capacity": "largest s with s + ceil(s / 2) <= n",
+   "status": "DERIVED from the retained pin templates; the rule itself is a DS-51 option"
+  },
+  {
+   "id": "G-BETWEEN",
+   "text": "a ground conductor between every two signals (S G S G ... S, no ground forced at the outer edges)",
+   "capacity": "largest s with 2 s - 1 <= n",
+   "status": "ASSUMED reading of DS-51; whether the outer conductors must also be grounds is a design question (with them: 2 s + 1 <= n)"
+  }
+ ],
+ "f4_reproduction": {
+  "capacity_positions": 22,
+  "status": "DERIVED: the count basis of reviews/da-03.md F4 (at most 22 present positions per link)"
+ },
+ "clustering": {
+  "join_radius_mm": {
+   "value": 35.0,
+   "status": "ASSUMED",
+   "basis": "a site joins a link only within this distance of the link's running centroid; the smallest radius that reproduces the JL-to-K and JL-to-P counts and distances of reviews/da-03.md F4 (scanned at 25, 26, 30, 35 and 40 mm); F4 does not retain its own rule"
+  },
+  "rule": "per joint and front board: seed = the unassigned site farthest from the centroid of the unassigned sites (ties by id); add the nearest unassigned site to the running centroid while the capacity holds and it lies within the join radius"
+ },
+ "slot": {
+  "width_extra_mm": {
+   "value": 1.0,
+   "status": "ASSUMED",
+   "source": "flex-land-patterns.json slot_rule (tail width + 2 x 0.5 mm)"
+  },
+  "length_mm": {
+   "value": 1.5,
+   "status": "ASSUMED",
+   "source": "flex-land-patterns.json slot_rule"
+  },
+  "web_mm": {
+   "value": 2.0,
+   "status": "ASSUMED",
+   "basis": "st-02.md scope of attempt a4 item 2: web to another slot, a hole or the K edge"
+  }
+ },
+ "cable": {
+  "length_mm": {
+   "value": 50.0,
+   "status": "SOURCED",
+   "source": "a3b25d0:design/stack/connectors/flex-links.json st01e: C18797 (20 circuits, 1.00 mm) and C26618 (40 circuits, 0.5 mm), both 50 mm"
+  },
+  "contacts": {
+   "value": "same side; Z path: front connector, bend, slot, bend, K connector; openings face each other across the slot",
+   "status": "SOURCED (cable type) / ASSUMED (path)"
+  },
+  "insertion_depth_mm": {
+   "value": 4.0,
+   "status": "DERIVED",
+   "basis": "stock cable exposed contacts 4 +/- 1 mm, taken as the insertion depth (SOURCED, a3b25d0:design/stack/connectors/flex-links.json st01e / ST-01g stock-cable rows)"
+  },
+  "straight_stiffened_outside_mm": {
+   "value": 4.0,
+   "status": "DERIVED",
+   "basis": "stock cable stiffener 8 +/- 2 mm (SOURCED, same block) less the 4.0 mm insertion; nominal values, tolerance not applied"
+  },
+  "bend_radius_mm": {
+   "value": 2.4,
+   "status": "DERIVED",
+   "basis": "12 x 0.2 mm 2-layer flex (jlc_design_tips, SOURCED in flex-links.json custom_flex_factory.min_bend_radius); no minimum bend radius is SOURCED for the stock cable"
+  },
+  "length_rule": "needed = 2 x insertion + a + b + V + (pi - 4) x R, with a and b the plan distances from each connector opening to the slot centre and V = gap + K thickness (both ends enter at the same height below their board's rear face, ASSUMED)"
+ },
+ "board_edge_margin_mm": {
+  "value": 0.3,
+  "status": "SOURCED",
+  "source": "design/stack/geometry/parameters.json board_edge_margin_mm"
+ },
+ "fixing_keepout_radius_mm": {
+  "K": 4.05,
+  "front": 3.75,
+  "status": "SOURCED for the 18 posts (parameters.json post_resites.screen_keepout_radius_mm); ASSUMED equal for the 12 kept supports (reviews/da-03.md F8: 7.0 mm spacer inside the 3.75 mm radius; nut and washer on K's rear face)"
+ },
+ "latch_access_margin_mm": {
+  "value": 1.0,
+  "status": "ASSUMED",
+  "basis": "a K-rear footprint within this margin of a K field and not displaced by it is listed as a latch-reach question; part heights there are not retained"
+ },
+ "search": {
+  "step_mm": {
+   "value": 2.0,
+   "status": "ASSUMED"
+  },
+  "radius_mm": {
+   "value": 24.0,
+   "status": "ASSUMED"
+  },
+  "distance_weight_per_mm": {
+   "value": 0.25,
+   "status": "ASSUMED",
+   "basis": "cost = displaced footprints + weight x slot distance from the link centre"
+  },
+  "rule": "links in a fixed order (joint, link id); for each, every slot centre on a square grid within the radius of the link centre and four directions of the cable (+x, -x, +y, -y); the legal candidate of least cost is kept and becomes an obstacle for later links; no backtracking"
+ }
+}
