@@ -3,6 +3,7 @@ from pathlib import Path
 import hashlib
 import json
 import math
+import re
 import unittest
 
 import stack_mechanics as sm
@@ -14,6 +15,23 @@ ROOT = Path(__file__).resolve().parents[3]
 
 def sha(path):
     return hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
+
+
+def sha_rows(path, rows):
+    """Digest of the cited decision rows only: the decision log gains rows with every record."""
+    text = (ROOT / path).read_text()
+    picked = []
+    for row in rows:
+        found = re.findall(r'^\| %s \|.*$' % re.escape(row), text, re.M)
+        assert len(found) == 1, (row, len(found))
+        picked.append(found[0])
+    return hashlib.sha256('\n'.join(picked).encode()).hexdigest()
+
+
+def pin_is_current(source):
+    if 'rows' in source:
+        return sha_rows(source['path'], source['rows']) == source['rows_sha256']
+    return sha(source['path']) == source['sha256']
 
 
 class Base(unittest.TestCase):
@@ -152,7 +170,7 @@ class TestTerms(Base):
     def test_repository_sources_unchanged(self):
         for sid, s in self.data['sources'].items():
             if 'path' in s:
-                self.assertEqual(sha(s['path']), s['sha256'], sid)
+                self.assertTrue(pin_is_current(s), sid)
             if 'bundle' in s:
                 self.assertEqual(sha(s['bundle']), s['bundle_sha256'], sid)
 
@@ -275,8 +293,7 @@ class TestAttemptA3(Base):
 
     def test_pins_are_current(self):
         for sid in ('S-GEOM', 'S-PLAN', 'S-SPACER', 'S-DS', 'S-DA03'):
-            s = self.data['sources'][sid]
-            self.assertEqual(sha(s['path']), s['sha256'], sid)
+            self.assertTrue(pin_is_current(self.data['sources'][sid]), sid)
 
     def test_a3_parameters_have_a_basis(self):
         for name, t in self.data['parameters']['a3'].items():
