@@ -14,6 +14,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import check  # noqa: E402
+import generate  # noqa: E402
+import measure  # noqa: E402
 import kicad_extract  # noqa: E402
 import stackgeom as sg  # noqa: E402
 
@@ -45,6 +47,15 @@ class CommittedCandidate(unittest.TestCase):
                          'stack-candidate.json is stale; regenerate with: ' + sg.REGEN_COMMAND)
         self.assertEqual(json.dumps(DOC['candidate'], sort_keys=True), json.dumps(CTX.reference, sort_keys=True),
                          'stack-candidate.json differs from a fresh generation; regenerate with: ' + sg.REGEN_COMMAND)
+
+    def test_tracked_outputs_depend_on_inputs_only(self):
+        out, _ = generate.generate()
+        self.assertNotIn('git_head', out['provenance'])
+        self.assertEqual(generate.render(out), sg.CANDIDATE.read_text(),
+                         'stack-candidate.json differs from a fresh generation; regenerate with: ' + sg.REGEN_COMMAND)
+        report = check.build_report(DOC, CTX, sg.sha256_file(sg.CANDIDATE))
+        self.assertEqual(json.dumps(report, indent=1) + '\n', sg.REPORT.read_text(),
+                         'check-report.json differs from a fresh check; regenerate with: ' + sg.REGEN_COMMAND)
 
     def test_plan_totals(self):
         res = check.run_checks(DOC, CTX)
@@ -232,6 +243,84 @@ class FaultInjection(unittest.TestCase):
         doc = copy.deepcopy(DOC)
         doc['candidate']['retired']['K_service_apertures'] = 187
         self.assertFault(doc, r'retired K service aperture count 187')
+
+
+class ContinuationC1(unittest.TestCase):
+    def test_toggle_courtyard_off_tab(self):
+        doc = copy.deepcopy(DOC)
+        s = next(x for x in doc['candidate']['sub_toggles'] if x['block'] == 'O2')
+        s['toggle_courtyard'][1] -= 12.0
+        s['toggle_courtyard'][3] -= 12.0
+        self.assertFault(doc, r'SUB toggle O2 courtyard .* is not inside control tab .* or P outline')
+
+    def test_toggle_tail_reported_not_checkable(self):
+        res = check.run_checks(DOC, CTX)
+        tails = res.checks['sub_toggle_windows']['detail']['toggle_tail_against_K']
+        self.assertEqual({v['status'] for v in tails.values()}, {'NOT CHECKABLE'})
+        self.assertIn('missing_source', tails['O2'])
+
+    def test_k_half_wider_than_front_half(self):
+        ci = copy.deepcopy(CI)
+        ci['land_pattern']['explicit_mm']['K']['3'] = [6.5, 7.0]
+        ctx = check.Context(ci)
+        obs = dict(ctx.obstacles, **sg.stack_obstacles(ci, ('O2', 'O4')))
+        fits = measure.envelope_fits(ci, obs, ci['land_pattern'], ci['parameters']['positions'])['GH3']
+        self.assertEqual(fits['envelope_mm'], {'front': [5.8, 7.0], 'K': [6.5, 7.0]})
+        expect = 0
+        for p in ctx.reference['pairs']:
+            if p['family'] != 'K/P':
+                continue
+            k = p['sites']['back']
+            rect = sg.env_rect(k['center'][0], k['center'][1], 6.5, 7.0, k['long_axis_x'])
+            expect += bool(ctx.obstacles['K'].hits('F', rect, {k['replaces']}))
+        self.assertGreater(expect, 0)
+        self.assertEqual(fits['sites'] - fits['fit_in_place_both_boards'], expect)
+        sub = next(s for s in ctx.reference['sub_toggles'] if s['block'] == 'O2')
+        tab_top = next(t for t in ctx.reference['tabs'] if t['id'] == 'TAB-CONTROL-O2')['rect'][1]
+        m = ci['parameters']['tab_edge_margin_mm']
+        self.assertAlmostEqual(tab_top, sub['site_centre'][1] - 6.5 / 2 - m, places=4)
+        probe = 178.0
+        ci['parameters']['probe_tab_top_mm'] = probe
+        short = next(e for e in measure.measure(ci, ctx.reference, ctx)['sub_tab_probe'] if e['block'] == 'O2')
+        self.assertAlmostEqual(short['shortfall_mm'], probe + m + 6.5 / 2 - sub['window_centre_y'][1], places=4)
+
+    def test_support_inside_k_does_not_raise(self):
+        ci = copy.deepcopy(CI)
+        sup = next(s for s in ci['partition']['supports'] if s['id'] == 'P-SUP-2')
+        sup['position_mm'] = [150.0, 238.0]
+        res = measure.supports(ci)
+        e = next(x for x in res['P_collars'] if x['support'] == 'P-SUP-2')
+        self.assertTrue(e['centre_inside_K'])
+        self.assertEqual(e['overlap_mm'], sup['collar_diameter_mm'])
+
+    def test_measurement_failure_becomes_report_error(self):
+        saved = measure.measure
+        measure.measure = lambda *a: (_ for _ in ()).throw(ValueError('injected'))
+        try:
+            report = check.build_report(DOC, CTX, 'x')
+        finally:
+            measure.measure = saved
+        self.assertEqual(report['verdict'], 'FAIL')
+        self.assertIn('measurements: ValueError: injected', report['errors'])
+
+    def test_sub_threshold_post_offset_agrees(self):
+        ci = copy.deepcopy(CI)
+        t = next(x for x in ci['partition']['load_side_terminals'] if x['reference'] == 'TP990001')
+        t['center_mm'] = [t['center_mm'][0] + sg.OFFSET_TOL_MM / 2, t['center_mm'][1]]
+        ctx = check.Context(ci)
+        cand = ctx.reference
+        post = next(p for p in cand['posts'] if p['id'] == 'POWER-JL-+12V')
+        self.assertGreater(post['present_offset_mm'], 0)
+        self.assertIsNone(post['resolved_by'])
+        res = check.Result()
+        check.check_posts(cand, ctx, res)
+        self.assertEqual(res.errors, [])
+        self.assertEqual(res.checks['post_coaxiality']['detail']['coaxial_today'], 14)
+        lands = measure.power_lands(ci, cand, ci['parameters']['power_land_neighbour_radius_mm'])
+        self.assertEqual(lands['coaxial_pairs'], 14)
+        self.assertEqual(len(lands['offset_pairs']), 4)
+
+    assertFault = FaultInjection.assertFault
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 ---
 title: "Direct board-stack plan"
-description: "Proposed successor to the cable-based ten-board stack: rigid board-to-board joints at the existing interface sites, bolted power posts, eight boards, no inter-board cable and about 34 mm of inside depth."
+description: "Proposed successor to the cable-based ten-board stack: rigid board-to-board joints at the existing interface sites, bolted power posts, eight boards, no inter-board cable and, after design review A1, about 40 mm of inside depth (about 34 mm as first proposed)."
 sidebar_position: 86
 ---
 
@@ -23,6 +23,46 @@ The owner read this plan on 2026-11-14, asked to continue, and directed that the
 | Panel artwork and legends | The owner |
 
 A decision of the design authority selects a design. It is recorded with the way to reverse it, and it never performs a purchase or an order that the design later needs.
+
+## Design review A1 of 2026-11-14: the stack continues as a changed design and waits for a coupon
+
+The design authority reviewed the first Phase 0 evidence (ST-01 connectors, ST-02 geometry, ST-03 mechanics) and took six decisions. The record is `circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-01.md`; the decision rows are DS-11 to DS-17 of `decisions.md` in the same folder. Nothing is adopted. The cable partition stays the working design, every figure in this section is a planning value on candidate files, and fit, force, alignment, strain and thermal checks stay **NOT RUN**.
+
+Where this section and the sections below differ, this section holds. The sections below keep the plan as first proposed, so that the reason for each change stays readable.
+
+| Item | As first proposed below | After design review A1 |
+| --- | --- | --- |
+| Connector pair at the joints to K | One 2.00 mm single-row family, to be found by ST-01 | An MMS −02 −SV socket on the front boards with a TW-SM stacker on K. These are working codes; nothing is selected or bought. The pair that ST-01 first recommended (an SMM socket) cannot give the three gaps |
+| Mated heights to K | 6.9 mm (adapters), 11.1 mm (P), 12.9 mm (JL, JR) | 12.8 mm, 17.0 mm and 18.8 mm |
+| K plane | F.Cu at z = −24.5 mm | F.Cu at z = −30.4 mm, rear face at −32.0 mm, rear parts to −37.0 mm |
+| Inside depth | About 34 mm | About 40 mm. About 37 mm is recorded as the way back; it leaves less Z margin |
+| EL to P joint | Single-row 1×6 pairs at 7.2 mm | Still 7.2 mm. Six double-row 2×4 pairs: a CLT socket on EL and a double-row TW-SM stacker on a wider P tab, with relief holes in EL |
+| Header positions per side | 813 | 825: the six EL pairs carry 48 positions in place of 36. K's 777 are unchanged |
+| Closing order | Build the stack on K and fit the panel last | The front boards go into the panel with their nuts loose, K is drawn on by jack screws, and the nuts are tightened last |
+| Fixings | 18 power posts and interior fasteners at candidate sites | Every pair lies within 40 mm of a post or tie post. Five added tie sites are provisional. Posts are 17.0 mm (P) and 18.8 mm (JL, JR) long and double as jack-screw points |
+| P in Z | Not stated | Free on its panel side; each toggle takes up Z through a compliant washer |
+| EL fallback (Q5) | F1: harnesses plugged on K's front face | Six short harnesses from EL to the P unit. F1 is withdrawn: with K closing last, a plug on K's hidden face cannot be mated |
+| Gate A | One decision on the Phase 0 evidence | Two steps: A-paper and A-physical |
+
+### One alignment limit cannot be closed on paper, so Gate A has two steps
+
+The manufacturer's specification allows 0.39 mm of initial misalignment along the contact row and 0.57 mm across it, and 0.07 mm and 0.16 mm of final misalignment. The paper budget meets the initial figure on root sum of squares. It misses the final figure along the row at the worst pair of a board in every closing order. Whether the real pair tolerates the expected 0.1 to 0.25 mm can only be measured.
+
+- **Gate A-paper.** After the re-runs of ST-02 and ST-03, ST-04 and the new task ST-08 (tie posts, jack screws and the closing fixture), the design authority confirms or ends the changed stack as the working design for Phase 1. Phase 1 then runs on candidate files only.
+- **Gate A-physical.** On the report of a connector coupon, the design authority adopts the stack and releases Phase 2. The conditions are in decision row DS-16: first-pass mating at an imposed offset of 0.25 mm per axis at each of the three gaps, at most 1.35 N per position, reflow float of at most 0.1 mm per half, and continuity over ±0.6 mm around the nominal gap.
+- Without the coupon, Gate A is negative for the joints to K and the cable partition stays. A first article of the real boards is not accepted in its place.
+
+The coupon build is a fabrication order and stays with the owner (Q7). The new task ST-09 writes its definition and creates no order file.
+
+### Five items are raised for the owner
+
+| Item | State |
+| --- | --- |
+| Build the connector coupon (Q7) | Asked on 2026-11-14; ST-09 writes the definition first |
+| Grow the three selector apertures from 7.0 to 7.3 mm | Held until ST-12 shows whether the 0.2 mm budget is met without it |
+| Questions to the assembler about stackers that have no pick-and-place pad or come in tubes | For the owner, when a coupon is quoted |
+| Who solders the jacks, pots and toggles, and on which fixture | Open. On paper the hardware-on-board scatter exceeds the jack aperture clearance in any design, the cable one included, unless the panel or a plate drilled like it is the soldering fixture |
+| Depth of about 40 mm | For information; enclosure and inlet planning under #57 start from it |
 
 ## Recommendation: stack K directly behind the front boards
 
@@ -104,6 +144,8 @@ flowchart LR
 
 ### The selector adapters set K's plane
 
+**Changed by design review A1:** `h_O` is 12.8 mm and K's F.Cu plane is at −30.4 mm; see the design review section near the top of this page.
+
 K must sit behind the selector tails at −20.0 mm and leave the adapter pair its mated height: `z_K = −17.6 − h_O`. For a 2.00 mm SMT socket with a pin strip, catalogue pages of one candidate family give a minimum mated height of about 6.2 to 6.5 mm. That bounds K at about −24.1 mm or deeper. The planning value −24.5 mm gives `h_O` = 6.9 mm and 4.5 mm between the selector tails and K.
 
 The mated heights of 6.9, 11.1 and 12.9 mm to K, and 7.2 mm between EL and P, follow from the board planes; they are not free choices. The front planes rest on hardware datums that are still UNSOURCED (jack shoulder, pot body, toggle seating; #65). If a front plane moves, only that pair's stacker height changes. K's final plane is fixed only when ST-01 shows one assemblable pair for every height.
@@ -111,6 +153,8 @@ The mated heights of 6.9, 11.1 and 12.9 mm to K, and 7.2 mm between EL and P, fo
 `design/mechanical/selector-assembly.json` records an earlier provisional core plane at z = −24 mm, which the two rear selector envelopes (z = −33 to −21.5 mm) crossed. Removing the OSC2 and OSC4 selectors removes that crossing.
 
 ### Assembly order: build the stack on K and fit the panel last
+
+**Changed by design review A1:** the stack now closes with the front boards in the panel and K drawn on last; see the design review section near the top of this page.
 
 The planned order makes every mate a two-board mate:
 
@@ -157,6 +201,8 @@ The planning assumption puts a low socket on each front board, about as tall as 
 Catalogue-level anchors, **NOT RETAINED** evidence: 2.00 mm SMT socket strips with SMT board stackers whose post height is ordered in 0.13 mm steps exist as a family (for example Samtec SMM with TMM or TW-SM), and SMT threaded steel spacers exist in M2 and M2.5 (for example Würth WA-SMSI). A 1.27 mm single-row pair would fit pin for pin and is the fallback; it is more fragile and less tolerant of misalignment.
 
 ### EL plugs into a P tab, so no cable ends on K
+
+**Changed by design review A1:** the six EL pairs are double-row 2×4 pairs on a wider P tab, and the fallback is six short harnesses from EL to the P unit; see the design review section near the top of this page.
 
 EL is the 0.4 mm indicator board at −4.2 mm. Its six GH8 headers sit at (218.5 + 17k, 172), k = 0 to 5, in the 12 mm strip between JR's edge at y = 164 and P's edge at y = 176. Only K lies behind that strip, 19.9 mm away. Two facing top-entry GH mates need 14.6 mm of it by the retained 7.3 mm reference height, which leaves about 5 mm of wire. A harness that ends on K's front face must also be re-mated on a hidden face whenever K is refitted.
 
@@ -296,6 +342,8 @@ The stack changes no load, no bank capacitance and no series element in the inle
 
 ## Resulting depth: about 34 mm for the board stack
 
+**Changed by design review A1:** K F.Cu at −30.4 mm, K rear face at −32.0 mm, rear parts to −37.0 mm and the enclosure inner rear at about −39.9 mm give about 40 mm of inside depth. The table below is the first proposal.
+
 | Element | z, mm | Basis |
 | --- | --- | --- |
 | K F.Cu | −24.5 | Adapter rear −17.6 less a 6.9 mm mated pair |
@@ -381,6 +429,8 @@ Phase 0 writes new candidate files only, for example under `design/stack/`. It d
 
 ### Gate A: adoption on the Phase 0 evidence
 
+**Changed by design review A1:** the gate is taken in two steps, A-paper and A-physical; see the design review section near the top of this page.
+
 Phase 1 starts only after the direct stack is adopted (Q1). By the owner's direction of 2026-11-14 the design authority takes that decision. The evidence is an assemblable pair for all four heights (ST-01), paper stack-ups that close (ST-03) and a feasible power joint (ST-04). If the evidence does not close, the design authority chooses between a changed stack, a fallback from this page, and keeping the cable partition, and records the choice.
 
 ### Phase 1: source re-plan
@@ -416,16 +466,16 @@ Each task re-reads the current generator and promotion tools before its brief is
 
 ## Open questions and who decides them
 
-The owner's direction of 2026-11-14 moves six of the seven open questions to the design authority. Each is decided when its evidence exists, and the decision is recorded in the campaign's decision log.
+The owner's direction of 2026-11-14 moves six of the seven open questions to the design authority. Each is decided when its evidence exists, and the decision is recorded in the campaign's decision log. Design review A1 answered Q3, Q4 and Q5 and split Q1 into two gate steps.
 
-| ID | Question | Decided by | Planning assumption until decided |
+| ID | Question | Decided by | State, or planning assumption until decided |
 | --- | --- | --- | --- |
-| Q1 | Adopt the direct stack as the working architecture, replacing K at −100 mm and the 120 mm enclosure, on the Phase 0 evidence? | Design authority, at Gate A | Phase 0 only; the cable partition stays the working design |
-| Q3 | May the stack connectors come from outside the usual factory stock if stock parts cannot give the four mated heights? | Design authority for the design choice; a purchase stays with the owner | Undecided; ST-01 reports both routes |
-| Q4 | Depth target: about 34 mm with one connector family, or about 31.5 mm with a second, finer family at the three adapters? | Design authority | About 34 mm |
-| Q5 | If the rigid EL joint fails its Phase 0 checks, which fallback: harnesses plugged on K's front face (K then needs the panel off to be refitted), harnesses plugged on K's rear face (about 68 part moves on K), or a flex EL? | Design authority | Rigid joint through the P tab; F1 if it fails |
-| Q6 | Where does the PD supply live, and on which side does the power cable leave? The 34 mm figure assumes the supply is outside the stack volume | Design authority, as far as the stack needs it; the inlet itself stays under #57 | Supply outside; inlet position open under #57 |
-| Q7 | Build a small connector coupon before the source re-plan? | **The owner**: it is a fabrication order and needs explicit approval | Definition only |
+| Q1 | Adopt the direct stack as the working architecture, replacing K at −100 mm and the 120 mm enclosure, on the Phase 0 evidence? | Design authority, at Gate A | Interim answer of 2026-11-14: continue as a changed design. Decided in two steps, A-paper and A-physical; the cable partition stays the working design until then |
+| Q3 | May the stack connectors come from outside the usual factory stock if stock parts cannot give the four mated heights? | Design authority for the design choice; a purchase stays with the owner | Decided on 2026-11-14 (DS-13): yes for the design. One family from outside the usual factory stock, as working codes; nothing is bought |
+| Q4 | Depth target: about 34 mm with one connector family, or about 31.5 mm with a second, finer family at the three adapters? | Design authority | Decided on 2026-11-14 (DS-13): about 40 mm with one family; about 37 mm is recorded as the way back |
+| Q5 | If the rigid EL joint fails its Phase 0 checks, which fallback: harnesses plugged on K's front face (K then needs the panel off to be refitted), harnesses plugged on K's rear face (about 68 part moves on K), or a flex EL? | Design authority | Decided on 2026-11-14 (DS-14): a rigid double-row joint through the P tab; if it fails, six short harnesses from EL to the P unit. F1 is withdrawn |
+| Q6 | Where does the PD supply live, and on which side does the power cable leave? The depth figure assumes the supply is outside the stack volume | Design authority, as far as the stack needs it; the inlet itself stays under #57 | Supply outside; inlet position open under #57 |
+| Q7 | Build a small connector coupon before the source re-plan? | **The owner**: it is a fabrication order and needs explicit approval | Definition by ST-09. Since design review A1 the coupon is the only way to adopt the joints to K |
 | Q8 | Confirm rear service: rear cover off, K jacked off the front boards, all trimmers on K's rear. It costs the trimmer moves and up to 54 small part moves on K's rear | Design authority | Rear service |
 
 ### Q2 is answered: SUB toggle
