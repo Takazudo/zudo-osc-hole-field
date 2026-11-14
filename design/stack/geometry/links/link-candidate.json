@@ -9,11 +9,13 @@
    "boards/osc-jack-right/osc-jack-right.kicad_pcb": "653b20312851fad1dcf1a90806c1fdc558edf32dfc25d6675b43bb100ff9b3c1",
    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
    "design/partition/partition.json": "7e3f5a39b001f80f38572c837a60e197fbb08ae588296e1d3bcb1339718db48f",
-   "design/stack/geometry/links/link-options.json": "3bb2641466986ec584c7a585f2e2b0a678f181d9f21a392c5cb98203919ca1b7",
+   "design/stack/geometry/check-report.json": "36a4fd1d819b264d7a63bee4899c6ef04ef0df8a0cafb1f60477f17de6d6c3bd",
+   "design/stack/geometry/links/link-options.json": "fe578b6b4a59a375749bf3142240c277cd8250a21d1269b382957b012fd04829",
    "design/stack/geometry/parameters.json": "0a2edef523be698e3fbecda50f5576a5826de4a9346ed2102a5a10f2813d4577",
    "design/stack/geometry/stack-candidate.json": "9bd03493c0a98c36357c90ee56e86dec57eb3dd5d0793a84f49f34f1c5d25f54",
    "scripts/stack/geometry/kicad_extract.py": "23093e93bf8a5c9072310531d771f9592783673c13f9a23dd70eb9272505ecdd",
-   "scripts/stack/geometry/links.py": "61a05521bdd7c5fa3e0d896cd05f1c4e3ec4f37ee340a07a0a5bdb3789223895",
+   "scripts/stack/geometry/links.py": "103417f5b5c5e5ddd9d336a69333bfd45785a48edb632116b480095393784289",
+   "scripts/stack/geometry/links_readme.py": "474d33df396a691e89c5c78fdddde2f335a4eef01fdac1a6dc5a31581a5424e5",
    "scripts/stack/geometry/stackgeom.py": "70db6b0833512a20029b743c49d9adf0fe1b69ef8bb4d0063afc3515cb07d7ab"
   }
  },
@@ -54,7 +56,18 @@
     "positions": 6,
     "signals": 4
    }
-  }
+  },
+  "sites_below_family_maximum": [
+   {
+    "site": "JR-K-27",
+    "family": "JR/K",
+    "signals": [
+     "/W1/IN_BUFFER",
+     "/W1/LEVEL_OUT"
+    ],
+    "family_maximum": 4
+   }
+  ]
  },
  "f4_reproduction": {
   "capacity_positions": 22,
@@ -96,21 +109,185 @@
   "da03_f4": {
    "JL-K": [
     9,
-    7
+    7,
+    10.9,
+    17.0
    ],
    "JR-K": [
     10,
-    8
+    8,
+    12.6,
+    28.6
    ],
    "P-K": [
     28,
-    19
+    19,
+    12.9,
+    24.9
    ],
    "JL-P via K": [
     2,
-    2
+    2,
+    17.0,
+    25.5
    ]
   }
+ },
+ "search_parameters": {
+  "step_mm": 2.0,
+  "radius_mm": 24.0,
+  "distance_weight_per_mm": 0.25,
+  "join_radius_mm": 35.0,
+  "slot_web_mm": 2.0,
+  "slot_width_extra_mm": 1.0,
+  "slot_length_mm": 1.5,
+  "insertion_mm": 4.0,
+  "straight_mm": 4.0,
+  "bend_radius_mm": 2.4,
+  "tail_run_mm": 6.4,
+  "latch_margin_mm": 1.0,
+  "fixings": {
+   "posts": 18,
+   "kept_supports": 12,
+   "other_declared": 0
+  }
+ },
+ "option_sizes": [
+  {
+   "id": "P100-N20",
+   "envelope": "latching, enclosing",
+   "stock_cable": {
+    "value": "C18797, 20 circuits, 50 mm, same-side contacts, stock 1014",
+    "status": "SOURCED",
+    "source": "a3b25d0:design/stack/connectors/flex-links.json st01e.matching_set rows (pitch 1.0, 20)"
+   },
+   "field_length": {
+    "value": 27.5,
+    "formula": "largest sourced 1.00 mm latching body, CKMTW F-FPC1M-NP-B310 slider n + 7.0, plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.ckmtw_f_fpc1m_np_b310 body_length (SOURCED) with courtyard_rule (ASSUMED); encloses HMTCONN (n + 6) - 0.10 and Megastar n + 4.04"
+   },
+   "field_depth": {
+    "value": 6.54,
+    "formula": "largest sourced 1.00 mm latching depth, HMTCONN FPC1.0-WFX11 6.04 including leads, plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hmtconn_fpc1_0_wfx11_np211_h20 body_depth (SOURCED) with courtyard_rule (ASSUMED); encloses CKMTW 5.4 and Megastar 5.30; the open flip-lock sweep in plan is not dimensioned"
+   }
+  },
+  {
+   "id": "P100-N22",
+   "envelope": "latching, enclosing",
+   "stock_cable": {
+    "value": "none of 30 to 80 mm",
+    "status": "SOURCED (absence in the captured listing)",
+    "source": "a3b25d0:design/stack/connectors/flex-links.json st01e.matching_set rows (pitch 1.0, 22)"
+   },
+   "field_length": {
+    "value": 29.5,
+    "formula": "largest sourced 1.00 mm latching body, CKMTW F-FPC1M-NP-B310 slider n + 7.0, plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.ckmtw_f_fpc1m_np_b310 body_length (SOURCED) with courtyard_rule (ASSUMED); encloses HMTCONN (n + 6) - 0.10 and Megastar n + 4.04"
+   },
+   "field_depth": {
+    "value": 6.54,
+    "formula": "largest sourced 1.00 mm latching depth, HMTCONN FPC1.0-WFX11 6.04 including leads, plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hmtconn_fpc1_0_wfx11_np211_h20 body_depth (SOURCED) with courtyard_rule (ASSUMED); encloses CKMTW 5.4 and Megastar 5.30; the open flip-lock sweep in plan is not dimensioned"
+   }
+  },
+  {
+   "id": "P050-N30",
+   "envelope": "latching, largest sourced body",
+   "stock_cable": {
+    "value": "C72269, 30 circuits, 50 mm, opposite-side contacts only (stock 994)",
+    "status": "SOURCED",
+    "source": "a3b25d0:design/stack/connectors/flex-links.json st01e.matching_set rows (pitch 0.5, 30)"
+   },
+   "field_length": {
+    "value": 19.9,
+    "formula": "Bossie BX-FPC05-2HNPX flip lock 0.5 n + 4.4, plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.bossie_bx_fpc05_2hnpx body_length (SOURCED) with courtyard_rule (ASSUMED); larger than Hirose FH12 C 24.1 at 40"
+   },
+   "field_depth": {
+    "value": 5.62,
+    "formula": "5.12 plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.bossie_bx_fpc05_2hnpx depth (SOURCED); open height UNSOURCED"
+   }
+  },
+  {
+   "id": "P050-N40",
+   "envelope": "latching, largest sourced body",
+   "stock_cable": {
+    "value": "C26618, 40 circuits, 50 mm, same-side contacts, stock 990",
+    "status": "SOURCED",
+    "source": "a3b25d0:design/stack/connectors/flex-links.json st01e.matching_set rows (pitch 0.5, 40)"
+   },
+   "field_length": {
+    "value": 24.9,
+    "formula": "Bossie BX-FPC05-2HNPX flip lock 0.5 n + 4.4, plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.bossie_bx_fpc05_2hnpx body_length (SOURCED) with courtyard_rule (ASSUMED); larger than Hirose FH12 C 24.1 at 40"
+   },
+   "field_depth": {
+    "value": 5.62,
+    "formula": "5.12 plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.bossie_bx_fpc05_2hnpx depth (SOURCED); open height UNSOURCED"
+   }
+  },
+  {
+   "id": "P100-N20-NL",
+   "envelope": "non-latching HDGC (second row)",
+   "stock_cable": {
+    "value": "C18797, 20 circuits, 50 mm, same-side contacts, stock 1014",
+    "status": "SOURCED",
+    "source": "a3b25d0:design/stack/connectors/flex-links.json st01e.matching_set rows (pitch 1.0, 20)"
+   },
+   "field_length": {
+    "value": 22.5,
+    "formula": "body n + 2.00 plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "design/stack/connectors/flex-land-patterns.json entries.hdgc_1_0_b_npwb body_length_A (SOURCED) with courtyard_rule (ASSUMED)"
+   },
+   "field_depth": {
+    "value": 7.04,
+    "formula": "lead extent 6.54 plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "design/stack/connectors/flex-land-patterns.json entries.hdgc_1_0_b_npwb lead_extent_y (SOURCED)"
+   }
+  },
+  {
+   "id": "P100-N22-NL",
+   "envelope": "non-latching HDGC (second row)",
+   "stock_cable": {
+    "value": "none of 30 to 80 mm",
+    "status": "SOURCED (absence in the captured listing)",
+    "source": "a3b25d0:design/stack/connectors/flex-links.json st01e.matching_set rows (pitch 1.0, 22)"
+   },
+   "field_length": {
+    "value": 24.5,
+    "formula": "body n + 2.00 plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "design/stack/connectors/flex-land-patterns.json entries.hdgc_1_0_b_npwb body_length_A (SOURCED) with courtyard_rule (ASSUMED)"
+   },
+   "field_depth": {
+    "value": 7.04,
+    "formula": "lead extent 6.54 plus 0.25 mm per side",
+    "status": "DERIVED",
+    "source": "design/stack/connectors/flex-land-patterns.json entries.hdgc_1_0_b_npwb lead_extent_y (SOURCED)"
+   }
+  }
+ ],
+ "cable_contacts": "same side; Z path: front connector, bend, slot, bend, K connector; openings face each other across the slot",
+ "da03_f4_signals": {
+  "K/P": 246,
+  "JR/K": 108,
+  "JL/K": 100,
+  "JL/P pass-through": 16,
+  "P/K for EL": 18,
+  "SUB": 4
  },
  "rigid_return_criterion": {
   "post_keepout_K_footprints": 116,
@@ -132,12 +309,24 @@
    "pitch_mm": 1.0,
    "circuits": 20,
    "signals_per_link": 13,
+   "sizes_by_joint": {
+    "JL-K": "P100-N20",
+    "JR-K": "P100-N20",
+    "P-K": "P100-N20",
+    "JL-P via K": "P100-N20"
+   },
    "links": 45,
    "links_per_joint": {
     "JL-K": 9,
     "JR-K": 11,
     "P-K": 23,
     "JL-P via K": 2
+   },
+   "unplaced_per_joint": {
+    "JL-K": 0,
+    "JR-K": 0,
+    "P-K": 16,
+    "JL-P via K": 1
    },
    "lower_bound_per_joint": {
     "JL-K": {
@@ -231,12 +420,24 @@
    "pitch_mm": 1.0,
    "circuits": 20,
    "signals_per_link": 10,
+   "sizes_by_joint": {
+    "JL-K": "P100-N20",
+    "JR-K": "P100-N20",
+    "P-K": "P100-N20",
+    "JL-P via K": "P100-N20"
+   },
    "links": 57,
    "links_per_joint": {
     "JL-K": 14,
     "JR-K": 14,
     "P-K": 27,
     "JL-P via K": 2
+   },
+   "unplaced_per_joint": {
+    "JL-K": 0,
+    "JR-K": 0,
+    "P-K": 19,
+    "JL-P via K": 1
    },
    "lower_bound_per_joint": {
     "JL-K": {
@@ -330,12 +531,24 @@
    "pitch_mm": 1.0,
    "circuits": 22,
    "signals_per_link": 14,
+   "sizes_by_joint": {
+    "JL-K": "P100-N22",
+    "JR-K": "P100-N22",
+    "P-K": "P100-N22",
+    "JL-P via K": "P100-N22"
+   },
    "links": 41,
    "links_per_joint": {
     "JL-K": 9,
     "JR-K": 10,
     "P-K": 20,
     "JL-P via K": 2
+   },
+   "unplaced_per_joint": {
+    "JL-K": 0,
+    "JR-K": 0,
+    "P-K": 14,
+    "JL-P via K": 1
    },
    "lower_bound_per_joint": {
     "JL-K": {
@@ -429,11 +642,23 @@
    "pitch_mm": 1.0,
    "circuits": 22,
    "signals_per_link": 11,
+   "sizes_by_joint": {
+    "JL-K": "P100-N22",
+    "JR-K": "P100-N22",
+    "P-K": "P100-N22",
+    "JL-P via K": "P100-N22"
+   },
    "links": 57,
    "links_per_joint": {
     "JL-K": 14,
     "JR-K": 14,
     "P-K": 27,
+    "JL-P via K": 2
+   },
+   "unplaced_per_joint": {
+    "JL-K": 0,
+    "JR-K": 0,
+    "P-K": 19,
     "JL-P via K": 2
    },
    "lower_bound_per_joint": {
@@ -528,12 +753,24 @@
    "pitch_mm": 0.5,
    "circuits": 30,
    "signals_per_link": 20,
+   "sizes_by_joint": {
+    "JL-K": "P050-N30",
+    "JR-K": "P050-N30",
+    "P-K": "P050-N30",
+    "JL-P via K": "P050-N30"
+   },
    "links": 33,
    "links_per_joint": {
     "JL-K": 8,
     "JR-K": 7,
     "P-K": 16,
     "JL-P via K": 2
+   },
+   "unplaced_per_joint": {
+    "JL-K": 0,
+    "JR-K": 0,
+    "P-K": 7,
+    "JL-P via K": 1
    },
    "lower_bound_per_joint": {
     "JL-K": {
@@ -627,12 +864,24 @@
    "pitch_mm": 0.5,
    "circuits": 30,
    "signals_per_link": 15,
+   "sizes_by_joint": {
+    "JL-K": "P050-N30",
+    "JR-K": "P050-N30",
+    "P-K": "P050-N30",
+    "JL-P via K": "P050-N30"
+   },
    "links": 41,
    "links_per_joint": {
     "JL-K": 9,
     "JR-K": 10,
     "P-K": 20,
     "JL-P via K": 2
+   },
+   "unplaced_per_joint": {
+    "JL-K": 0,
+    "JR-K": 0,
+    "P-K": 9,
+    "JL-P via K": 1
    },
    "lower_bound_per_joint": {
     "JL-K": {
@@ -726,12 +975,24 @@
    "pitch_mm": 0.5,
    "circuits": 40,
    "signals_per_link": 26,
+   "sizes_by_joint": {
+    "JL-K": "P050-N40",
+    "JR-K": "P050-N40",
+    "P-K": "P050-N40",
+    "JL-P via K": "P050-N40"
+   },
    "links": 29,
    "links_per_joint": {
     "JL-K": 8,
     "JR-K": 6,
     "P-K": 13,
     "JL-P via K": 2
+   },
+   "unplaced_per_joint": {
+    "JL-K": 0,
+    "JR-K": 0,
+    "P-K": 7,
+    "JL-P via K": 1
    },
    "lower_bound_per_joint": {
     "JL-K": {
@@ -825,12 +1086,24 @@
    "pitch_mm": 0.5,
    "circuits": 40,
    "signals_per_link": 20,
+   "sizes_by_joint": {
+    "JL-K": "P050-N40",
+    "JR-K": "P050-N40",
+    "P-K": "P050-N40",
+    "JL-P via K": "P050-N40"
+   },
    "links": 33,
    "links_per_joint": {
     "JL-K": 8,
     "JR-K": 7,
     "P-K": 16,
     "JL-P via K": 2
+   },
+   "unplaced_per_joint": {
+    "JL-K": 0,
+    "JR-K": 0,
+    "P-K": 7,
+    "JL-P via K": 1
    },
    "lower_bound_per_joint": {
     "JL-K": {
@@ -924,12 +1197,24 @@
    "pitch_mm": 1.0,
    "circuits": 20,
    "signals_per_link": 13,
+   "sizes_by_joint": {
+    "JL-K": "P100-N20-NL",
+    "JR-K": "P100-N20-NL",
+    "P-K": "P100-N20-NL",
+    "JL-P via K": "P100-N20-NL"
+   },
    "links": 45,
    "links_per_joint": {
     "JL-K": 9,
     "JR-K": 11,
     "P-K": 23,
     "JL-P via K": 2
+   },
+   "unplaced_per_joint": {
+    "JL-K": 0,
+    "JR-K": 0,
+    "P-K": 17,
+    "JL-P via K": 1
    },
    "lower_bound_per_joint": {
     "JL-K": {
@@ -1023,12 +1308,24 @@
    "pitch_mm": 1.0,
    "circuits": 20,
    "signals_per_link": 10,
+   "sizes_by_joint": {
+    "JL-K": "P100-N20-NL",
+    "JR-K": "P100-N20-NL",
+    "P-K": "P100-N20-NL",
+    "JL-P via K": "P100-N20-NL"
+   },
    "links": 57,
    "links_per_joint": {
     "JL-K": 14,
     "JR-K": 14,
     "P-K": 27,
     "JL-P via K": 2
+   },
+   "unplaced_per_joint": {
+    "JL-K": 0,
+    "JR-K": 0,
+    "P-K": 18,
+    "JL-P via K": 1
    },
    "lower_bound_per_joint": {
     "JL-K": {
@@ -1122,12 +1419,24 @@
    "pitch_mm": 1.0,
    "circuits": 22,
    "signals_per_link": 14,
+   "sizes_by_joint": {
+    "JL-K": "P100-N22-NL",
+    "JR-K": "P100-N22-NL",
+    "P-K": "P100-N22-NL",
+    "JL-P via K": "P100-N22-NL"
+   },
    "links": 41,
    "links_per_joint": {
     "JL-K": 9,
     "JR-K": 10,
     "P-K": 20,
     "JL-P via K": 2
+   },
+   "unplaced_per_joint": {
+    "JL-K": 0,
+    "JR-K": 0,
+    "P-K": 15,
+    "JL-P via K": 1
    },
    "lower_bound_per_joint": {
     "JL-K": {
@@ -1221,11 +1530,23 @@
    "pitch_mm": 1.0,
    "circuits": 22,
    "signals_per_link": 11,
+   "sizes_by_joint": {
+    "JL-K": "P100-N22-NL",
+    "JR-K": "P100-N22-NL",
+    "P-K": "P100-N22-NL",
+    "JL-P via K": "P100-N22-NL"
+   },
    "links": 57,
    "links_per_joint": {
     "JL-K": 14,
     "JR-K": 14,
     "P-K": 27,
+    "JL-P via K": 2
+   },
+   "unplaced_per_joint": {
+    "JL-K": 0,
+    "JR-K": 0,
+    "P-K": 19,
     "JL-P via K": 2
    },
    "lower_bound_per_joint": {
@@ -1792,6 +2113,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       134.0,
@@ -1889,6 +2213,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       130.0,
@@ -2001,6 +2328,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       112.0,
@@ -2122,6 +2452,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       28.0,
@@ -2222,6 +2555,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       64.0,
@@ -2340,6 +2676,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       46.0,
@@ -2418,6 +2757,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       44.0,
@@ -2513,6 +2855,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       99.0,
@@ -2640,6 +2985,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       69.0,
@@ -2729,6 +3077,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       288.0,
@@ -2846,6 +3197,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       218.0,
@@ -2946,6 +3300,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       236.0,
@@ -3082,6 +3439,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       254.0,
@@ -3199,6 +3559,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       284.0,
@@ -3317,6 +3680,9 @@
      "signals": 10,
      "grounds": 5,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       253.0,
@@ -3437,6 +3803,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       221.0,
@@ -3548,6 +3917,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       187.0,
@@ -3671,6 +4043,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       223.0,
@@ -3793,6 +4168,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       186.6667,
@@ -3908,6 +4286,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       239.0,
@@ -4048,6 +4429,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -4120,6 +4504,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       302.1667,
@@ -4236,6 +4623,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -4308,6 +4698,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -4380,6 +4773,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -4452,6 +4848,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -4522,6 +4921,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       223.1,
@@ -4661,6 +5063,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -4733,6 +5138,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       19.0,
@@ -4841,6 +5249,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       46.0,
@@ -4962,6 +5373,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       67.8333,
@@ -5080,6 +5494,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -5152,6 +5569,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       75.6667,
@@ -5279,6 +5699,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       97.5,
@@ -5393,6 +5816,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -5465,6 +5891,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -5537,6 +5966,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -5609,6 +6041,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -5681,6 +6116,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -5753,6 +6191,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -5825,6 +6266,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -5897,6 +6341,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -5961,6 +6408,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -6029,6 +6479,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       67.5,
@@ -6164,6 +6617,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P100-N20",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -6830,6 +7286,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       152.5,
@@ -6925,6 +7384,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       162.5,
@@ -7038,6 +7500,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       31.5,
@@ -7117,6 +7582,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       27.5,
@@ -7221,6 +7689,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       29.5,
@@ -7313,6 +7784,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       69.5,
@@ -7425,6 +7899,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       114.5,
@@ -7542,6 +8019,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       87.0,
@@ -7674,6 +8154,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       61.5,
@@ -7773,6 +8256,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       63.5,
@@ -7856,6 +8342,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       117.5,
@@ -7956,6 +8445,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       133.0,
@@ -8075,6 +8567,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       97.5,
@@ -8172,6 +8667,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       129.0,
@@ -8271,6 +8769,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       286.5,
@@ -8386,6 +8887,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       217.5,
@@ -8485,6 +8989,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       254.5,
@@ -8614,6 +9121,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       203.0,
@@ -8728,6 +9238,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       284.5,
@@ -8858,6 +9371,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       201.5,
@@ -8977,6 +9493,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       281.6667,
@@ -9100,6 +9619,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       250.5,
@@ -9203,6 +9725,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       233.0,
@@ -9335,6 +9860,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       185.5,
@@ -9455,6 +9983,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       199.5,
@@ -9583,6 +10114,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       237.5,
@@ -9703,6 +10237,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       265.0,
@@ -9824,6 +10361,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       235.5,
@@ -9960,6 +10500,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       295.0,
@@ -10076,6 +10619,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       301.9,
@@ -10191,6 +10737,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -10259,6 +10808,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       265.0,
@@ -10391,6 +10943,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -10461,6 +11016,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -10529,6 +11087,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       223.0,
@@ -10666,6 +11227,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -10736,6 +11300,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -10806,6 +11373,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -10876,6 +11446,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -10946,6 +11519,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -11016,6 +11592,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -11086,6 +11665,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -11156,6 +11738,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -11226,6 +11811,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -11296,6 +11884,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -11366,6 +11957,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       117.9,
@@ -11478,6 +12072,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -11548,6 +12145,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -11618,6 +12218,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       30.7,
@@ -11726,6 +12329,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       66.3,
@@ -11845,6 +12451,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -11915,6 +12524,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -11985,6 +12597,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       79.3,
@@ -12109,6 +12724,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -12177,6 +12795,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -12245,6 +12866,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       53.5,
@@ -12386,6 +13010,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -12915,6 +13542,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       134.0,
@@ -13017,6 +13647,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       130.0,
@@ -13137,6 +13770,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       112.0,
@@ -13263,6 +13899,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       28.0,
@@ -13361,6 +14000,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       64.0,
@@ -13482,6 +14124,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       46.0,
@@ -13560,6 +14205,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       44.0,
@@ -13655,6 +14303,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       99.0,
@@ -13785,6 +14436,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       97.0,
@@ -13884,6 +14538,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       288.0,
@@ -14002,6 +14659,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       218.0,
@@ -14107,6 +14767,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       236.0,
@@ -14244,6 +14907,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       254.0,
@@ -14368,6 +15034,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       284.0,
@@ -14490,6 +15159,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       254.0,
@@ -14616,6 +15288,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       186.6667,
@@ -14736,6 +15411,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       200.0,
@@ -14852,6 +15530,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       238.0,
@@ -14985,6 +15666,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       233.0,
@@ -15119,6 +15803,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       295.0,
@@ -15239,6 +15926,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       302.0714,
@@ -15358,6 +16048,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       263.3333,
@@ -15498,6 +16191,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -15572,6 +16268,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -15646,6 +16345,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -15718,6 +16420,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       212.3333,
@@ -15853,6 +16558,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -15927,6 +16635,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -16001,6 +16712,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       29.7857,
@@ -16112,6 +16826,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       63.3571,
@@ -16242,6 +16959,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -16310,6 +17030,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -16384,6 +17107,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -16458,6 +17184,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -16532,6 +17261,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -16606,6 +17338,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -16680,6 +17415,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -16754,6 +17492,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -16822,6 +17563,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -16890,6 +17634,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       83.5,
@@ -17047,6 +17794,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P100-N22",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -17739,6 +18489,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       152.5,
@@ -17836,6 +18589,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       150.5,
@@ -17956,6 +18712,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       31.5,
@@ -18036,6 +18795,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       29.5,
@@ -18142,6 +18904,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       29.5,
@@ -18237,6 +19002,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       63.5,
@@ -18358,6 +19126,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       114.5,
@@ -18482,6 +19253,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       87.0,
@@ -18617,6 +19391,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       61.5,
@@ -18713,6 +19490,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       63.5,
@@ -18797,6 +19577,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       117.5,
@@ -18899,6 +19682,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       133.0,
@@ -19023,6 +19809,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       97.5,
@@ -19118,6 +19907,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       121.0,
@@ -19216,6 +20008,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       286.5,
@@ -19335,6 +20130,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       217.5,
@@ -19433,6 +20231,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       254.5,
@@ -19563,6 +20364,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       203.0,
@@ -19680,6 +20484,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       284.5,
@@ -19814,6 +20621,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       199.5,
@@ -19934,6 +20744,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       281.6667,
@@ -20056,6 +20869,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       248.5,
@@ -20157,6 +20973,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       233.0,
@@ -20293,6 +21112,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       183.5,
@@ -20419,6 +21241,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       199.5,
@@ -20555,6 +21380,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       237.5,
@@ -20678,6 +21506,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       265.0,
@@ -20800,6 +21631,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       233.5,
@@ -20936,6 +21770,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       295.0,
@@ -21052,6 +21889,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       301.9,
@@ -21170,6 +22010,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -21238,6 +22081,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       263.0,
@@ -21373,6 +22219,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -21443,6 +22292,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -21511,6 +22363,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       227.0,
@@ -21650,6 +22505,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -21720,6 +22578,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -21790,6 +22651,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -21860,6 +22724,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -21930,6 +22797,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -22000,6 +22870,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -22070,6 +22943,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -22140,6 +23016,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -22210,6 +23089,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -22280,6 +23162,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -22350,6 +23235,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       117.9,
@@ -22454,6 +23342,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -22524,6 +23415,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -22594,6 +23488,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       20.7,
@@ -22706,6 +23603,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       64.3,
@@ -22832,6 +23732,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       30.7,
@@ -22960,6 +23863,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -23030,6 +23936,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -23100,6 +24009,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -23168,6 +24080,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -23236,6 +24151,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -23304,6 +24222,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -23600,6 +24521,9 @@
      "signals": 16,
      "grounds": 8,
      "circuits_used": 24,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       133.5,
@@ -23692,6 +24616,9 @@
      "signals": 16,
      "grounds": 8,
      "circuits_used": 24,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       129.5,
@@ -23798,6 +24725,9 @@
      "signals": 16,
      "grounds": 8,
      "circuits_used": 24,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       101.5,
@@ -23914,6 +24844,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       18.0,
@@ -23994,6 +24927,9 @@
      "signals": 16,
      "grounds": 8,
      "circuits_used": 24,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       48.5,
@@ -24071,6 +25007,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       81.0,
@@ -24153,6 +25092,9 @@
      "signals": 16,
      "grounds": 8,
      "circuits_used": 24,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       46.5,
@@ -24237,6 +25179,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       99.0,
@@ -24353,6 +25298,9 @@
      "signals": 16,
      "grounds": 8,
      "circuits_used": 24,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       269.5,
@@ -24466,6 +25414,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       218.0,
@@ -24561,6 +25512,9 @@
      "signals": 16,
      "grounds": 8,
      "circuits_used": 24,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       247.5,
@@ -24657,6 +25611,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       202.0,
@@ -24771,6 +25728,9 @@
      "signals": 18,
      "grounds": 9,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       268.6,
@@ -24883,6 +25843,9 @@
      "signals": 20,
      "grounds": 10,
      "circuits_used": 30,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       200.6,
@@ -25001,6 +25964,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       232.3333,
@@ -25123,6 +26089,9 @@
      "signals": 20,
      "grounds": 10,
      "circuits_used": 30,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       286.3889,
@@ -25236,6 +26205,9 @@
      "signals": 10,
      "grounds": 5,
      "circuits_used": 15,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       304.5,
@@ -25345,6 +26317,9 @@
      "signals": 19,
      "grounds": 10,
      "circuits_used": 29,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       266.0,
@@ -25476,6 +26451,9 @@
      "signals": 20,
      "grounds": 10,
      "circuits_used": 30,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -25556,6 +26534,9 @@
      "signals": 20,
      "grounds": 10,
      "circuits_used": 30,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       202.2,
@@ -25671,6 +26652,9 @@
      "signals": 19,
      "grounds": 10,
      "circuits_used": 29,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -25751,6 +26735,9 @@
      "signals": 20,
      "grounds": 10,
      "circuits_used": 30,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -25831,6 +26818,9 @@
      "signals": 20,
      "grounds": 10,
      "circuits_used": 30,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       13.5,
@@ -25939,6 +26929,9 @@
      "signals": 20,
      "grounds": 10,
      "circuits_used": 30,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       15.8,
@@ -26052,6 +27045,9 @@
      "signals": 20,
      "grounds": 10,
      "circuits_used": 30,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       68.0,
@@ -26173,6 +27169,9 @@
      "signals": 20,
      "grounds": 10,
      "circuits_used": 30,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       77.4,
@@ -26279,6 +27278,9 @@
      "signals": 2,
      "grounds": 1,
      "circuits_used": 3,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -26359,6 +27361,9 @@
      "signals": 20,
      "grounds": 10,
      "circuits_used": 30,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       128.1,
@@ -26476,6 +27481,9 @@
      "signals": 20,
      "grounds": 10,
      "circuits_used": 30,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -26546,6 +27554,9 @@
      "signals": 10,
      "grounds": 5,
      "circuits_used": 15,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -26614,6 +27625,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -26682,6 +27696,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       65.5,
@@ -26797,6 +27814,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P050-N30",
+     "capacity_signals": 20,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -27172,6 +28192,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       134.0,
@@ -27263,6 +28286,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       132.0,
@@ -27364,6 +28390,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       112.0,
@@ -27475,6 +28504,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       18.0,
@@ -27549,6 +28581,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       68.0,
@@ -27664,6 +28699,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       44.0,
@@ -27745,6 +28783,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       46.0,
@@ -27834,6 +28875,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       99.0,
@@ -27948,6 +28992,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       81.0,
@@ -28028,6 +29075,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       286.0,
@@ -28139,6 +29189,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       218.0,
@@ -28228,6 +29281,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       236.0,
@@ -28353,6 +29409,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       256.0,
@@ -28453,6 +29512,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       284.0,
@@ -28564,6 +29626,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       254.0,
@@ -28675,6 +29740,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       198.6667,
@@ -28789,6 +29857,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       202.0,
@@ -28894,6 +29965,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       234.0,
@@ -29015,6 +30089,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       233.0,
@@ -29134,6 +30211,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       301.0,
@@ -29243,6 +30323,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       302.0714,
@@ -29353,6 +30436,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       277.3333,
@@ -29472,6 +30558,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -29546,6 +30635,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       221.7857,
@@ -29670,6 +30762,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       220.5,
@@ -29761,6 +30856,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       202.3333,
@@ -29876,6 +30974,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -29950,6 +31051,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -30024,6 +31128,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       15.7857,
@@ -30132,6 +31239,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       67.3571,
@@ -30245,6 +31355,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       60.2143,
@@ -30353,6 +31466,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -30427,6 +31543,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       85.3571,
@@ -30557,6 +31676,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -30631,6 +31753,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -30705,6 +31830,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       128.6429,
@@ -30816,6 +31944,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -30890,6 +32021,9 @@
      "signals": 14,
      "grounds": 13,
      "circuits_used": 27,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -30958,6 +32092,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -31026,6 +32163,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": true,
      "slot_centre": [
       47.5,
@@ -31143,6 +32283,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P050-N30",
+     "capacity_signals": 15,
+     "circuits": 30,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -31461,6 +32604,9 @@
      "signals": 16,
      "grounds": 8,
      "circuits_used": 24,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       133.5,
@@ -31559,6 +32705,9 @@
      "signals": 16,
      "grounds": 8,
      "circuits_used": 24,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       129.5,
@@ -31669,6 +32818,9 @@
      "signals": 16,
      "grounds": 8,
      "circuits_used": 24,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       99.5,
@@ -31795,6 +32947,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       18.0,
@@ -31875,6 +33030,9 @@
      "signals": 16,
      "grounds": 8,
      "circuits_used": 24,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       48.5,
@@ -31952,6 +33110,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       81.0,
@@ -32048,6 +33209,9 @@
      "signals": 16,
      "grounds": 8,
      "circuits_used": 24,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       46.5,
@@ -32135,6 +33299,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       79.0,
@@ -32260,6 +33427,9 @@
      "signals": 16,
      "grounds": 8,
      "circuits_used": 24,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       269.5,
@@ -32376,6 +33546,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       218.0,
@@ -32477,6 +33650,9 @@
      "signals": 16,
      "grounds": 8,
      "circuits_used": 24,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       249.5,
@@ -32579,6 +33755,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       202.0,
@@ -32702,6 +33881,9 @@
      "signals": 26,
      "grounds": 13,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       265.8571,
@@ -32823,6 +34005,9 @@
      "signals": 24,
      "grounds": 12,
      "circuits_used": 36,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       188.0,
@@ -32951,6 +34136,9 @@
      "signals": 24,
      "grounds": 12,
      "circuits_used": 36,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       302.0455,
@@ -33075,6 +34263,9 @@
      "signals": 20,
      "grounds": 10,
      "circuits_used": 30,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -33157,6 +34348,9 @@
      "signals": 26,
      "grounds": 13,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       220.5909,
@@ -33288,6 +34482,9 @@
      "signals": 26,
      "grounds": 13,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -33374,6 +34571,9 @@
      "signals": 26,
      "grounds": 13,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -33454,6 +34654,9 @@
      "signals": 20,
      "grounds": 10,
      "circuits_used": 30,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -33540,6 +34743,9 @@
      "signals": 26,
      "grounds": 13,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -33626,6 +34832,9 @@
      "signals": 26,
      "grounds": 13,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       84.1154,
@@ -33759,6 +34968,9 @@
      "signals": 20,
      "grounds": 10,
      "circuits_used": 30,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       97.6,
@@ -33890,6 +35102,9 @@
      "signals": 26,
      "grounds": 13,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       29.8846,
@@ -33991,6 +35206,9 @@
      "signals": 6,
      "grounds": 3,
      "circuits_used": 9,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       18.1667,
@@ -34117,6 +35335,9 @@
      "signals": 20,
      "grounds": 10,
      "circuits_used": 30,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -34179,6 +35400,9 @@
      "signals": 2,
      "grounds": 1,
      "circuits_used": 3,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -34247,6 +35471,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       47.5,
@@ -34371,6 +35598,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P050-N40",
+     "capacity_signals": 26,
+     "circuits": 40,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -34740,6 +35970,9 @@
      "signals": 16,
      "grounds": 15,
      "circuits_used": 31,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       133.5,
@@ -34838,6 +36071,9 @@
      "signals": 16,
      "grounds": 15,
      "circuits_used": 31,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       129.5,
@@ -34948,6 +36184,9 @@
      "signals": 16,
      "grounds": 15,
      "circuits_used": 31,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       99.5,
@@ -35074,6 +36313,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       18.0,
@@ -35154,6 +36396,9 @@
      "signals": 16,
      "grounds": 15,
      "circuits_used": 31,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       48.5,
@@ -35231,6 +36476,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       81.0,
@@ -35327,6 +36575,9 @@
      "signals": 16,
      "grounds": 15,
      "circuits_used": 31,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       46.5,
@@ -35414,6 +36665,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       79.0,
@@ -35539,6 +36793,9 @@
      "signals": 16,
      "grounds": 15,
      "circuits_used": 31,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       269.5,
@@ -35655,6 +36912,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       218.0,
@@ -35756,6 +37016,9 @@
      "signals": 16,
      "grounds": 15,
      "circuits_used": 31,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       249.5,
@@ -35858,6 +37121,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       202.0,
@@ -35977,6 +37243,9 @@
      "signals": 18,
      "grounds": 17,
      "circuits_used": 35,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       268.6,
@@ -36095,6 +37364,9 @@
      "signals": 20,
      "grounds": 19,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       184.6,
@@ -36214,6 +37486,9 @@
      "signals": 12,
      "grounds": 11,
      "circuits_used": 23,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       232.3333,
@@ -36342,6 +37617,9 @@
      "signals": 20,
      "grounds": 19,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       284.3889,
@@ -36462,6 +37740,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       302.5,
@@ -36578,6 +37859,9 @@
      "signals": 19,
      "grounds": 18,
      "circuits_used": 37,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       226.0,
@@ -36720,6 +38004,9 @@
      "signals": 20,
      "grounds": 19,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -36800,6 +38087,9 @@
      "signals": 20,
      "grounds": 19,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       202.2,
@@ -36920,6 +38210,9 @@
      "signals": 19,
      "grounds": 18,
      "circuits_used": 37,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -37000,6 +38293,9 @@
      "signals": 20,
      "grounds": 19,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -37080,6 +38376,9 @@
      "signals": 20,
      "grounds": 19,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       13.5,
@@ -37194,6 +38493,9 @@
      "signals": 20,
      "grounds": 19,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       15.8,
@@ -37308,6 +38610,9 @@
      "signals": 20,
      "grounds": 19,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       70.0,
@@ -37434,6 +38739,9 @@
      "signals": 20,
      "grounds": 19,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       77.4,
@@ -37549,6 +38857,9 @@
      "signals": 2,
      "grounds": 1,
      "circuits_used": 3,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -37629,6 +38940,9 @@
      "signals": 20,
      "grounds": 19,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       126.1,
@@ -37750,6 +39064,9 @@
      "signals": 20,
      "grounds": 19,
      "circuits_used": 39,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -37820,6 +39137,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -37888,6 +39208,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -37956,6 +39279,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": true,
      "slot_centre": [
       47.5,
@@ -38080,6 +39406,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P050-N40",
+     "capacity_signals": 20,
+     "circuits": 40,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -38534,6 +39863,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       134.0,
@@ -38629,6 +39961,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       130.0,
@@ -38740,6 +40075,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       112.0,
@@ -38854,6 +40192,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       28.0,
@@ -38948,6 +40289,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       64.0,
@@ -39066,6 +40410,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       36.0,
@@ -39147,6 +40494,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       44.0,
@@ -39243,6 +40593,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       99.0,
@@ -39374,6 +40727,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       87.0,
@@ -39462,6 +40818,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       270.0,
@@ -39577,6 +40936,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       218.0,
@@ -39672,6 +41034,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       236.0,
@@ -39803,6 +41168,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       254.0,
@@ -39918,6 +41286,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       270.0,
@@ -40041,6 +41412,9 @@
      "signals": 10,
      "grounds": 5,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       253.0,
@@ -40157,6 +41531,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       219.0,
@@ -40270,6 +41647,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       199.0,
@@ -40392,6 +41772,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       237.0,
@@ -40505,6 +41888,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       186.6667,
@@ -40618,6 +42004,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       223.0,
@@ -40758,6 +42147,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -40830,6 +42222,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       302.1667,
@@ -40942,6 +42337,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -41014,6 +42412,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -41086,6 +42487,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -41158,6 +42562,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -41228,6 +42635,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       221.1,
@@ -41360,6 +42770,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -41432,6 +42845,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       17.0,
@@ -41538,6 +42954,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       60.0,
@@ -41660,6 +43079,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       79.8333,
@@ -41796,6 +43218,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -41868,6 +43293,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -41940,6 +43368,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       97.5,
@@ -42050,6 +43481,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -42122,6 +43556,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -42194,6 +43631,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -42266,6 +43706,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -42338,6 +43781,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -42410,6 +43856,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -42482,6 +43931,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -42554,6 +44006,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -42618,6 +44073,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -42686,6 +44144,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       83.5,
@@ -42830,6 +44291,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P100-N20-NL",
+     "capacity_signals": 13,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -43406,6 +44870,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       150.5,
@@ -43503,6 +44970,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       162.5,
@@ -43615,6 +45085,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       31.5,
@@ -43694,6 +45167,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       27.5,
@@ -43793,6 +45269,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       29.5,
@@ -43885,6 +45364,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       49.5,
@@ -43983,6 +45465,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       112.5,
@@ -44093,6 +45578,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       83.0,
@@ -44216,6 +45704,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       61.5,
@@ -44313,6 +45804,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       63.5,
@@ -44396,6 +45890,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       117.5,
@@ -44490,6 +45987,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       129.0,
@@ -44598,6 +46098,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       97.5,
@@ -44688,6 +46191,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       135.0,
@@ -44779,6 +46285,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       288.5,
@@ -44896,6 +46405,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       201.5,
@@ -44994,6 +46506,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       236.5,
@@ -45086,6 +46601,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       233.0,
@@ -45198,6 +46716,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       282.5,
@@ -45328,6 +46849,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       199.5,
@@ -45439,6 +46963,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       285.6667,
@@ -45558,6 +47085,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       248.5,
@@ -45652,6 +47182,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       233.0,
@@ -45778,6 +47311,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       185.5,
@@ -45895,6 +47431,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       203.5,
@@ -46018,6 +47557,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       237.5,
@@ -46128,6 +47670,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       253.0,
@@ -46242,6 +47787,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       235.5,
@@ -46375,6 +47923,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       301.0,
@@ -46487,6 +48038,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       301.9,
@@ -46600,6 +48154,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -46668,6 +48225,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       277.0,
@@ -46787,6 +48347,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -46857,6 +48420,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -46925,6 +48491,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       221.0,
@@ -47055,6 +48624,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -47125,6 +48697,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -47195,6 +48770,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -47265,6 +48843,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -47335,6 +48916,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -47405,6 +48989,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -47475,6 +49062,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -47545,6 +49135,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -47615,6 +49208,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -47685,6 +49281,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -47755,6 +49354,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       117.9,
@@ -47856,6 +49458,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -47926,6 +49531,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -47996,6 +49604,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       16.7,
@@ -48102,6 +49713,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       68.3,
@@ -48223,6 +49837,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       28.7,
@@ -48350,6 +49967,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       45.9,
@@ -48487,6 +50107,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -48557,6 +50180,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -48625,6 +50251,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -48693,6 +50322,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": true,
      "slot_centre": [
       67.5,
@@ -48826,6 +50458,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N20-NL",
+     "capacity_signals": 10,
+     "circuits": 20,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -49266,6 +50901,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       134.0,
@@ -49363,6 +51001,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       130.0,
@@ -49478,6 +51119,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       112.0,
@@ -49600,6 +51244,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       28.0,
@@ -49697,6 +51344,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       64.0,
@@ -49816,6 +51466,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       36.0,
@@ -49897,6 +51550,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       44.0,
@@ -49990,6 +51646,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       99.0,
@@ -50122,6 +51781,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       81.0,
@@ -50216,6 +51878,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       270.0,
@@ -50334,6 +51999,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       218.0,
@@ -50430,6 +52098,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       236.0,
@@ -50564,6 +52235,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       254.0,
@@ -50683,6 +52357,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       270.0,
@@ -50807,6 +52484,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       254.0,
@@ -50931,6 +52611,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       186.6667,
@@ -51054,6 +52737,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       200.0,
@@ -51168,6 +52854,9 @@
      "signals": 4,
      "grounds": 2,
      "circuits_used": 6,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       232.0,
@@ -51307,6 +52996,9 @@
      "signals": 12,
      "grounds": 6,
      "circuits_used": 18,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       223.0,
@@ -51433,6 +53125,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       295.0,
@@ -51554,6 +53249,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       302.0714,
@@ -51670,6 +53368,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -51744,6 +53445,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -51818,6 +53522,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -51892,6 +53599,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -51964,6 +53674,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -52038,6 +53751,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -52112,6 +53828,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -52186,6 +53905,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       15.7857,
@@ -52297,6 +54019,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       67.3571,
@@ -52420,6 +54145,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       66.2143,
@@ -52534,6 +54262,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -52608,6 +54339,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -52682,6 +54416,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -52756,6 +54493,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -52830,6 +54570,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -52904,6 +54647,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -52978,6 +54724,9 @@
      "signals": 14,
      "grounds": 7,
      "circuits_used": 21,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -53046,6 +54795,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -53114,6 +54866,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       83.5,
@@ -53269,6 +55024,9 @@
      "signals": 8,
      "grounds": 4,
      "circuits_used": 12,
+     "size": "P100-N22-NL",
+     "capacity_signals": 14,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -53872,6 +55630,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       152.5,
@@ -53966,6 +55727,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       150.5,
@@ -54080,6 +55844,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       31.5,
@@ -54160,6 +55927,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       27.5,
@@ -54262,6 +56032,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       29.5,
@@ -54354,6 +56127,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       63.5,
@@ -54472,6 +56248,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       112.5,
@@ -54590,6 +56369,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       83.0,
@@ -54722,6 +56504,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       63.5,
@@ -54817,6 +56602,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       63.5,
@@ -54900,6 +56688,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       117.5,
@@ -54999,6 +56790,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       133.0,
@@ -55118,6 +56912,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       97.5,
@@ -55211,6 +57008,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       135.0,
@@ -55305,6 +57105,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       288.5,
@@ -55423,6 +57226,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       205.5,
@@ -55533,6 +57339,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       234.5,
@@ -55632,6 +57441,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       233.0,
@@ -55749,6 +57561,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       282.5,
@@ -55873,6 +57688,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       199.5,
@@ -55985,6 +57803,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       281.6667,
@@ -56107,6 +57928,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       248.5,
@@ -56208,6 +58032,9 @@
      "signals": 4,
      "grounds": 3,
      "circuits_used": 7,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       231.0,
@@ -56344,6 +58171,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       185.5,
@@ -56462,6 +58292,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       223.5,
@@ -56592,6 +58425,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       237.5,
@@ -56711,6 +58547,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       267.0,
@@ -56830,6 +58669,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       239.5,
@@ -56978,6 +58820,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       299.0,
@@ -57095,6 +58940,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       301.9,
@@ -57211,6 +59059,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -57279,6 +59130,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       273.0,
@@ -57404,6 +59258,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -57474,6 +59331,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -57542,6 +59402,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       223.0,
@@ -57679,6 +59542,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -57749,6 +59615,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -57819,6 +59688,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -57889,6 +59761,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -57959,6 +59834,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -58029,6 +59907,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -58099,6 +59980,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -58169,6 +60053,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -58239,6 +60126,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -58309,6 +60199,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -58379,6 +60272,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       117.9,
@@ -58489,6 +60385,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -58559,6 +60458,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -58629,6 +60531,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       16.7,
@@ -58733,6 +60638,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       66.3,
@@ -58854,6 +60762,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": true,
      "slot_centre": [
       30.7,
@@ -58981,6 +60892,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -59051,6 +60965,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -59121,6 +61038,9 @@
      "signals": 10,
      "grounds": 9,
      "circuits_used": 19,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -59189,6 +61109,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -59257,6 +61180,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {
@@ -59325,6 +61251,9 @@
      "signals": 8,
      "grounds": 7,
      "circuits_used": 15,
+     "size": "P100-N22-NL",
+     "capacity_signals": 11,
+     "circuits": 22,
      "placed": false,
      "blocked_at_centre": [
       {

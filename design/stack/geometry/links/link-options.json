@@ -284,5 +284,242 @@
    "basis": "cost = displaced footprints + weight x slot distance from the link centre"
   },
   "rule": "links in a fixed order (joint, link id); for each, every slot centre on a square grid within the radius of the link centre and four directions of the cable (+x, -x, +y, -y); the legal candidate of least cost is kept and becomes an obstacle for later links; no backtracking"
+ },
+ "p_small": {
+  "status": "OPTION STUDY ADDITION (ST-02 a5 item 5, coordinator request); nothing selected",
+  "joints": [
+   "P-K",
+   "JL-P via K"
+  ],
+  "sizes": [
+   {
+    "id": "P100-N6",
+    "pitch_mm": 1.0,
+    "circuits": 6,
+    "envelope": "latching, enclosing (CKMTW length, HMTCONN depth)",
+    "field_length_mm": {
+     "value": 13.5,
+     "formula": "n + 7.0 plus 0.25 mm per side",
+     "status": "DERIVED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.ckmtw_f_fpc1m_np_b310 body_length (SOURCED) with courtyard_rule (ASSUMED)"
+    },
+    "field_depth_mm": {
+     "value": 6.54,
+     "formula": "6.04 plus 0.25 mm per side",
+     "status": "DERIVED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hmtconn_fpc1_0_wfx11_np211_h20 body_depth (SOURCED)"
+    },
+    "tail_width_mm": {
+     "value": 7.0,
+     "formula": "n + 1.00",
+     "status": "SOURCED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hmtconn_fpc1_0_wfx11_np211_h20 tail"
+    },
+    "stock_cable": {
+     "value": "opposite-side only: C90533 70 mm (998)",
+     "contacts": "opposite",
+     "length_mm": 70.0,
+     "status": "SOURCED",
+     "source": "design/stack/connectors/flex-links.json st01e matching_set rows and matching_summary (pitch 1.0, 6 circuits)"
+    }
+   },
+   {
+    "id": "P100-N8",
+    "pitch_mm": 1.0,
+    "circuits": 8,
+    "envelope": "latching, enclosing (CKMTW length, HMTCONN depth)",
+    "field_length_mm": {
+     "value": 15.5,
+     "formula": "n + 7.0 plus 0.25 mm per side",
+     "status": "DERIVED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.ckmtw_f_fpc1m_np_b310 body_length (SOURCED) with courtyard_rule (ASSUMED)"
+    },
+    "field_depth_mm": {
+     "value": 6.54,
+     "formula": "6.04 plus 0.25 mm per side",
+     "status": "DERIVED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hmtconn_fpc1_0_wfx11_np211_h20 body_depth (SOURCED)"
+    },
+    "tail_width_mm": {
+     "value": 9.0,
+     "formula": "n + 1.00",
+     "status": "SOURCED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hmtconn_fpc1_0_wfx11_np211_h20 tail"
+    },
+    "stock_cable": {
+     "value": "same-side: C88604 70 mm (970); opposite C26140 70 mm (1093)",
+     "contacts": "same",
+     "length_mm": 70.0,
+     "status": "SOURCED",
+     "source": "design/stack/connectors/flex-links.json st01e matching_set rows and matching_summary (pitch 1.0, 8 circuits)"
+    }
+   },
+   {
+    "id": "P100-N12",
+    "pitch_mm": 1.0,
+    "circuits": 12,
+    "envelope": "latching, enclosing (CKMTW length, HMTCONN depth)",
+    "field_length_mm": {
+     "value": 19.5,
+     "formula": "n + 7.0 plus 0.25 mm per side",
+     "status": "DERIVED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.ckmtw_f_fpc1m_np_b310 body_length (SOURCED) with courtyard_rule (ASSUMED)"
+    },
+    "field_depth_mm": {
+     "value": 6.54,
+     "formula": "6.04 plus 0.25 mm per side",
+     "status": "DERIVED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hmtconn_fpc1_0_wfx11_np211_h20 body_depth (SOURCED)"
+    },
+    "tail_width_mm": {
+     "value": 13.0,
+     "formula": "n + 1.00",
+     "status": "SOURCED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hmtconn_fpc1_0_wfx11_np211_h20 tail"
+    },
+    "stock_cable": {
+     "value": "same-side: C38477 60 mm (1000)",
+     "contacts": "same",
+     "length_mm": 60.0,
+     "status": "SOURCED",
+     "source": "design/stack/connectors/flex-links.json st01e matching_set rows and matching_summary (pitch 1.0, 12 circuits)"
+    }
+   },
+   {
+    "id": "P050-N8",
+    "pitch_mm": 0.5,
+    "circuits": 8,
+    "envelope": "latching, Bossie BX-FPC05-2HNPX",
+    "field_length_mm": {
+     "value": 8.9,
+     "formula": "0.5 n + 4.4 plus 0.25 mm per side",
+     "status": "DERIVED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.bossie_bx_fpc05_2hnpx body_length (SOURCED) with courtyard_rule (ASSUMED)"
+    },
+    "field_depth_mm": {
+     "value": 5.62,
+     "formula": "5.12 plus 0.25 mm per side",
+     "status": "DERIVED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.bossie_bx_fpc05_2hnpx depth (SOURCED)"
+    },
+    "tail_width_mm": {
+     "value": 4.5,
+     "formula": "0.5 (n + 1)",
+     "status": "SOURCED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hirose_fh12_0_5sh tail_width"
+    },
+    "stock_cable": {
+     "value": "same-side: C29534 50 mm (stock 772), C81339 40 mm (933)",
+     "contacts": "same",
+     "length_mm": 50.0,
+     "status": "SOURCED",
+     "source": "design/stack/connectors/flex-links.json st01e matching_set rows and matching_summary (pitch 0.5, 8 circuits)"
+    }
+   },
+   {
+    "id": "P050-N10",
+    "pitch_mm": 0.5,
+    "circuits": 10,
+    "envelope": "latching, Bossie BX-FPC05-2HNPX",
+    "field_length_mm": {
+     "value": 9.9,
+     "formula": "0.5 n + 4.4 plus 0.25 mm per side",
+     "status": "DERIVED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.bossie_bx_fpc05_2hnpx body_length (SOURCED) with courtyard_rule (ASSUMED)"
+    },
+    "field_depth_mm": {
+     "value": 5.62,
+     "formula": "5.12 plus 0.25 mm per side",
+     "status": "DERIVED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.bossie_bx_fpc05_2hnpx depth (SOURCED)"
+    },
+    "tail_width_mm": {
+     "value": 5.5,
+     "formula": "0.5 (n + 1)",
+     "status": "SOURCED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hirose_fh12_0_5sh tail_width"
+    },
+    "stock_cable": {
+     "value": "opposite-side only at stock >= 100: C14048 60 mm (511), C14435 65 mm (137); same-side C54646 50 mm has stock 78",
+     "contacts": "opposite",
+     "length_mm": 60.0,
+     "status": "SOURCED",
+     "source": "design/stack/connectors/flex-links.json st01e matching_set rows and matching_summary (pitch 0.5, 10 circuits)"
+    }
+   },
+   {
+    "id": "P050-N12",
+    "pitch_mm": 0.5,
+    "circuits": 12,
+    "envelope": "latching, Bossie BX-FPC05-2HNPX",
+    "field_length_mm": {
+     "value": 10.9,
+     "formula": "0.5 n + 4.4 plus 0.25 mm per side",
+     "status": "DERIVED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.bossie_bx_fpc05_2hnpx body_length (SOURCED) with courtyard_rule (ASSUMED)"
+    },
+    "field_depth_mm": {
+     "value": 5.62,
+     "formula": "5.12 plus 0.25 mm per side",
+     "status": "DERIVED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.bossie_bx_fpc05_2hnpx depth (SOURCED)"
+    },
+    "tail_width_mm": {
+     "value": 6.5,
+     "formula": "0.5 (n + 1)",
+     "status": "SOURCED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hirose_fh12_0_5sh tail_width"
+    },
+    "stock_cable": {
+     "value": "opposite-side only: C74676 50 mm (146)",
+     "contacts": "opposite",
+     "length_mm": 50.0,
+     "status": "SOURCED",
+     "source": "design/stack/connectors/flex-links.json st01e matching_set rows and matching_summary (pitch 0.5, 12 circuits)"
+    }
+   },
+   {
+    "id": "P050-N14",
+    "pitch_mm": 0.5,
+    "circuits": 14,
+    "envelope": "latching, Bossie BX-FPC05-2HNPX",
+    "field_length_mm": {
+     "value": 11.9,
+     "formula": "0.5 n + 4.4 plus 0.25 mm per side",
+     "status": "DERIVED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.bossie_bx_fpc05_2hnpx body_length (SOURCED) with courtyard_rule (ASSUMED)"
+    },
+    "field_depth_mm": {
+     "value": 5.62,
+     "formula": "5.12 plus 0.25 mm per side",
+     "status": "DERIVED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.bossie_bx_fpc05_2hnpx depth (SOURCED)"
+    },
+    "tail_width_mm": {
+     "value": 7.5,
+     "formula": "0.5 (n + 1)",
+     "status": "SOURCED",
+     "source": "a3b25d0:design/stack/connectors/flex-land-patterns.json entries.hirose_fh12_0_5sh tail_width"
+    },
+    "stock_cable": {
+     "value": "same-side: C68390 50 mm (1004)",
+     "contacts": "same",
+     "length_mm": 50.0,
+     "status": "SOURCED",
+     "source": "design/stack/connectors/flex-links.json st01e matching_set rows and matching_summary (pitch 0.5, 14 circuits)"
+    }
+   }
+  ],
+  "combine_jl_jr_with": [
+   "P050-N40",
+   "P100-N20"
+  ],
+  "best_rule": "fewest links without a legal place, then fewest K footprints displaced, then option order",
+  "field_scan": {
+   "option": "P100-N20 G-PER-2S",
+   "envelope": "P100-N20 (latching, enclosing): field n + 7.5 by 6.54 mm, tail n + 1",
+   "circuits_min": 1,
+   "rule": "per P-joint link without a legal place in the option, with every placed link of the option fixed: the largest n (field n + 7.5 mm) for which the same search finds a legal place around the same centre; bisection over n, which assumes that a shorter field never loses a place a longer one has (ASSUMED)"
+  }
  }
 }
