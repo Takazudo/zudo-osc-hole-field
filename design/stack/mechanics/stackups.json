@@ -1,0 +1,1219 @@
+{
+  "schema_version": 1,
+  "task": "osc-stack-20261114/ST-03@b4daa754",
+  "attempt": "a1 (parametric start)",
+  "base_commit": "91246e9b60d77c5beabc89db3d9149e52f89bb40",
+  "status": "PROPOSAL; paper stack-up of an unvalidated draft. No physical check exists; fit, force, strain and alignment are NOT RUN (#65).",
+  "status_vocabulary": {
+    "SOURCED": "Read from a named file or retrieved page whose SHA256 is recorded in sources.",
+    "DERIVED": "Computed by the formula given; the calculator recomputes it and the tests compare.",
+    "ASSUMED": "A planning value with the reason and what would source it. Never presented as sourced."
+  },
+  "sources": {
+    "S-PLAN": {
+      "path": "doc/src/content/docs/decisions/osc-direct-stack-plan.mdx",
+      "sha256": "7aea006cd770b17e8f97b5b63c2fa87ca81a17c70e1203db0f845310c7d4d7f6"
+    },
+    "S-PART": {
+      "path": "design/partition/partition.json",
+      "sha256": "7e3f5a39b001f80f38572c837a60e197fbb08ae588296e1d3bcb1339718db48f"
+    },
+    "S-MECH": {
+      "path": "design/partition/mechanical-candidate.json",
+      "sha256": "1688080a0dbf2fadd5a8f6b0628d868850ba982aaef453086fa3a5ba8fe63349"
+    },
+    "S-LOCK": {
+      "path": "design/grid/placements.lock.json",
+      "sha256": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8"
+    },
+    "S-OPT": {
+      "path": "design/partition/stage-optical-candidate.json",
+      "sha256": "b5c930b9bdb861c99fe02cb798678942c3fb5213948c272060b69b8bdde9d3f6"
+    },
+    "S-SEL": {
+      "path": "design/mechanical/selector-assembly.json",
+      "sha256": "b5715d25d4d4b44bc664eac9697d83c95741b02af9a906d0c849f40da7e560bb"
+    },
+    "S-REAR": {
+      "path": "design/mechanical/core-rear-allowance.json",
+      "sha256": "3d0f34a0fb6c5f83b31f1ed5b00f7ab300d2b2e8fb6a448ee71c93bd1662f872"
+    },
+    "S-JACK": {
+      "path": "design/mechanical/facts/jack.json",
+      "sha256": "d858de77f8333182e806b02d693200802de40b6892bd21e5b069844c9e115bf2",
+      "bundle": ".claude/skills/component-qingpu-wqp518ma/facts.json",
+      "bundle_sha256": "81d574c8814f6ffa06a5a343884949125250ec355714e78a11dd63da11d9a258"
+    },
+    "S-POT": {
+      "path": "design/mechanical/facts/pot.json",
+      "sha256": "927b517d782a5831a4e3e573eed8df8ada015944f92b92a71494a71425db9aa5",
+      "bundle": ".claude/skills/component-bourns-ptv09a-4020f-b103/facts.json",
+      "bundle_sha256": "05b3f14bc08981e69db4edfe6352c4690bd55b78899e121fabb90f28923f56f4"
+    },
+    "S-TOG": {
+      "path": "design/mechanical/facts/toggle.json",
+      "sha256": "e97c5a47e18d395a04754a363cac7f7ccff97a2489475a2d2633f1b7d181465e",
+      "bundle": ".claude/skills/component-dailywell-2ms3t1b1m2qes/facts.json",
+      "bundle_sha256": "cd0875ebe458cbcbb314cb405cf849230002015a0b065c5b87e6ebca98d96c3a"
+    },
+    "S-BTN": {
+      "path": "design/mechanical/facts/button.json",
+      "sha256": "8699642a06486323e735b04635ab244da941d06a637fccffb60949b078b151eb",
+      "bundle": ".claude/skills/component-omron-b3f-1020/facts.json",
+      "bundle_sha256": "20a19bd4dc332169e9939233e60771c0df71d801e5bbbeda5c9afa370cd4e3ab"
+    },
+    "S-OCT": {
+      "path": "design/mechanical/facts/octave-selector.json",
+      "sha256": "5b76391698d8be69ab315657258c6a62d0db55c77b18c55bcb8f4e49c90bb3f8",
+      "bundle": ".claude/skills/component-alps-alpine-srbv160803/facts.json",
+      "bundle_sha256": "52e2fe687abdf44f69ccb2054deb0c50d3ace0968d442b2ed162313104f6632e"
+    },
+    "S-JLC-PCB": {
+      "url": "https://jlcpcb.com/capabilities/PCB-capabilities",
+      "sha256": "b8cd5de9d33e1083e8108a4fad9255933b2ff5d4a5362469cf26cfaae22a18a8",
+      "retrieved_utc": "2026-11-14",
+      "class": "public manufacturer capability page (HTML bytes as served; a dynamic page may re-hash on a later fetch)",
+      "retention": "Not stored in circuit-dev-resources: this task may not write to GitHub. Hash recorded for a later retention task."
+    },
+    "S-JLC-WARP": {
+      "url": "https://jlcpcb.com/blog/pcb-warpage-control",
+      "sha256": "eb46a41788f2ace3f5bc3715adb8d7afa5fe7e1ff56264c59bbb23e6a91c632d",
+      "retrieved_utc": "2026-11-14",
+      "class": "manufacturer article; attributes 0.75% to 'IPC standard' without naming the document; not a capability guarantee"
+    },
+    "S-JLC-PCBA": {
+      "url": "https://jlcpcb.com/capabilities/pcb-assembly-capabilities",
+      "sha256": "01f8cc341bc03a88659c03410cd810dc90c0fe05d8444aca1856c5fcbdc48c3d",
+      "retrieved_utc": "2026-11-14",
+      "class": "public manufacturer capability page; retrieved to look for a placement-accuracy figure and none is stated (negative finding)"
+    },
+    "S-MURATA-GRM18": {
+      "url": "https://search.murata.co.jp/Ceramy/image/img/A01X/G101/ENG/GRM1885C1H103JA01-01A.pdf",
+      "sha256": "3f5a339eb51502df7716dfd2d4c4e6d33e837abc0df5cb8e4fc1e6e275d09790",
+      "retrieved_utc": "2026-11-14",
+      "class": "manufacturer specification of an inventory part; byte-identical to source src-dc-wiper-c-datasheet of .claude/skills/component-murata-grm1885c1h103ja01d",
+      "locator": "printed page 2 item 11 'Substrate Bending test' (flexure 1 mm, 5 s, no defects, capacitance within 5%); printed page 6 Fig.2 (1.6 mm FR4, supports 45 mm + 45 mm, R5 pressing tool)"
+    }
+  },
+  "parameters": {
+    "a_mm": [
+      0.1,
+      0.2,
+      0.3,
+      0.5
+    ],
+    "f_N": [
+      0.3,
+      0.5,
+      1.0
+    ],
+    "t_mm": [
+      0.1,
+      0.2,
+      0.3
+    ],
+    "meaning": {
+      "a": "allowed mating misalignment per pair, radial, from the connector manufacturer (ST-01)",
+      "f": "mating force per position (ST-01); unmating force per position is the separate term unmate_to_mate_ratio",
+      "t": "mated-height tolerance of one pair, +/- (ST-01)"
+    }
+  },
+  "terms": {
+    "panel_thickness": {
+      "value": 2.0,
+      "tol": 0.2,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-PART",
+      "locator": "panel.thickness_mm; tolerance from S-JLC-PCB 'Thickness Tolerance (Thickness>=1.0mm) +/-10%' (the panel is a fabricated PCB)"
+    },
+    "board_thickness_1p6": {
+      "value": 1.6,
+      "tol": 0.16,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-PART",
+      "locator": "boards[].thickness_mm for JL, JR, P, K, O*; tolerance S-JLC-PCB +/-10%"
+    },
+    "el_thickness": {
+      "value": 0.4,
+      "tol": 0.1,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-PART",
+      "locator": "osc-stage-optical thickness_mm; tolerance S-JLC-PCB 'Thickness < 1.0 mm +/-0.1mm'"
+    },
+    "jack_shoulder_to_board": {
+      "value": 8.0,
+      "tol": 0.2,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "source": "S-PART",
+      "locator": "mechanical_datum_table WQP518MA required_board_to_panel_rear_shoulder_mm",
+      "reason": "8.0 is the required value, not a part dimension; facts/jack.json shoulder_height_above_board_mm is UNSOURCED. +/-0.2 covers seating on solder and part variation as a planning allocation.",
+      "to_source": "Manufacturer drawing with a PCB seating-plane datum, or coupon measurement of seated shoulder height (#65)"
+    },
+    "toggle_body_height": {
+      "value": 8.64,
+      "tol": 0.2,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "source": "S-PART",
+      "locator": "mechanical_datum_table Dailywell body_height_candidate_mm",
+      "reason": "Candidate value; facts/toggle.json seated_height_board_to_shoulder_mm is UNSOURCED and the 2MS3 suffix gate is OPEN.",
+      "to_source": "Exact 2MS3 drawing with seating plane, or coupon measurement"
+    },
+    "toggle_nut_thickness": {
+      "value": 1.19,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-TOG",
+      "locator": "facts.nut_thickness_mm (MNU-2M01)"
+    },
+    "toggle_washer_thickness": {
+      "value": 0.46,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-TOG",
+      "locator": "facts.washer_thickness_mm (MNU-2M03)"
+    },
+    "p_front_face_z": {
+      "value": -11.8,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-PART",
+      "locator": "boards osc-control face_z_mm"
+    },
+    "post_length_tol": {
+      "value": 0.05,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "No post is selected; a turned standoff class value used for planning.",
+      "to_source": "ST-04 post drawing length tolerance"
+    },
+    "post_seat_tol": {
+      "value": 0.02,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Land plating and flatness under one post face; per face.",
+      "to_source": "ST-04 land design plus coupon C-6 gap measurement"
+    },
+    "connector_standoff_tol": {
+      "value": 0.05,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Solder-joint height and coplanarity of one SMT connector half above its board.",
+      "to_source": "ST-01 coplanarity specification; coupon C-3 height measurement"
+    },
+    "selector_seat_tol": {
+      "value": 0.2,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "facts/octave-selector.json seated_height is UNSOURCED; the adapter plane follows the carrier through the selector body.",
+      "to_source": "#55 selector coupon"
+    },
+    "bow_twist_ratio": {
+      "value": 0.0075,
+      "unit": "1",
+      "status": "SOURCED",
+      "source": "S-JLC-WARP",
+      "locator": "FAQ Q1: 'IPC standard is 0.75%'",
+      "note": "Secondary attribution; the fabricator states <=0.5% as routine, not as a guarantee."
+    },
+    "bow_model": {
+      "value": "kappa = 8 b / L; out-of-plane at distance d from the nearest fixing = kappa d^2 / 2 = 4 b d^2 / L",
+      "unit": "1",
+      "status": "ASSUMED",
+      "reason": "Uniform-curvature reading of a bow ratio b over the board's longest side L; fixings pull the board flat locally.",
+      "to_source": "Measured flatness of the received boards (first article)"
+    },
+    "bow_allocation": {
+      "value": 0.05,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Design allocation per board for residual bow at any pair; sets the fastener spacing.",
+      "to_source": "Design authority choice"
+    },
+    "murata_flexure": {
+      "value": 1.0,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-MURATA-GRM18",
+      "locator": "item 11 Substrate Bending test, Flexure 1mm"
+    },
+    "murata_span": {
+      "value": 90.0,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-MURATA-GRM18",
+      "locator": "Fig.2, supports 45 mm + 45 mm"
+    },
+    "murata_board": {
+      "value": 1.6,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-MURATA-GRM18",
+      "locator": "Substrate Bending test substrate thickness 1.6mm"
+    },
+    "strain_test_level": {
+      "value": 0.0011852,
+      "unit": "1",
+      "status": "DERIVED",
+      "formula": "6 t delta / L^2 (three-point bend surface strain at mid-span) = 6 x 1.6 x 1.0 / 90^2"
+    },
+    "strain_safety_factor": {
+      "value": 2.0,
+      "unit": "1",
+      "status": "ASSUMED",
+      "reason": "The test level is a pass condition, not a damage threshold; half of it is used as the design limit. The X5R/X7R parts on K have their own bending figures, not retrieved here.",
+      "to_source": "Design authority choice; bending specification of every ceramic part family fitted near the post rows"
+    },
+    "strain_design_limit": {
+      "value": 0.0005926,
+      "unit": "1",
+      "status": "DERIVED",
+      "formula": "strain_test_level / strain_safety_factor"
+    },
+    "k_strain_model": {
+      "value": "fixed-guided beam: eps = 3 t Delta / s^2",
+      "unit": "1",
+      "status": "ASSUMED",
+      "reason": "K is held flat by posts and fasteners on each side of the span s; a relative offset Delta between the two clamped rows bends the strip between them.",
+      "to_source": "Plate FE model in ST-12 or strain-gauge coupon C-6"
+    },
+    "shim_resolution": {
+      "value": 0.05,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Residual Z after a measured shim or paired-nut take-up at P's panel-side fixings.",
+      "to_source": "Take-up hardware design (ST-12) and first-article measurement"
+    },
+    "smt_float_front": {
+      "value": 0.1,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Placement plus reflow float of a pegless SMT connector half, radial. S-JLC-PCBA states no placement accuracy.",
+      "to_source": "ST-01 footprint guidance; coupon C-2 measurement"
+    },
+    "smt_float_k": {
+      "value": 0.1,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "As smt_float_front, for the K half.",
+      "to_source": "ST-01; coupon C-2"
+    },
+    "pin_lean_deg": {
+      "value": 0.5,
+      "unit": "deg",
+      "status": "ASSUMED",
+      "reason": "Lean of a tall single-row stacker after reflow; tip offset = H tan(theta).",
+      "to_source": "ST-01 true-position or tip-coplanarity specification; coupon C-3 lean measurement"
+    },
+    "hole_position_tol_axis": {
+      "value": 0.075,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-JLC-PCB",
+      "locator": "'Hole Position Tolerance +/-0.075 mm'",
+      "note": "Read as per axis relative to the board's copper image."
+    },
+    "hole_position_radial": {
+      "value": 0.1061,
+      "unit": "mm",
+      "status": "DERIVED",
+      "formula": "sqrt(2) x hole_position_tol_axis"
+    },
+    "pth_hole_tol_plus": {
+      "value": 0.13,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-JLC-PCB",
+      "locator": "'Through-holes: +0.13 / -0.08 mm'; also 'Slot Hole size Tolerance Plated: +0.13 / -0.08 mm'"
+    },
+    "pth_hole_tol_minus": {
+      "value": 0.08,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-JLC-PCB",
+      "locator": "as pth_hole_tol_plus"
+    },
+    "press_fit_hole_tol": {
+      "value": 0.05,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-JLC-PCB",
+      "locator": "'Press-fit holes: +/-0.05 mm (Finished hole size 0.55-2.0mm. Multilayer ENIG boards and circular holes only.)'",
+      "note": "Conditions: multilayer, ENIG, circular, named at order. JL/JR (6 layers), P and K qualify by layer count; the surface finish is not yet chosen; EL and O are two-layer and do not qualify."
+    },
+    "routed_hole_position_tol_axis": {
+      "value": 0.1,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-JLC-PCB",
+      "locator": "'+/-0.1mm(Precision) and +/-0.2mm(Regular) for CNC routing'",
+      "note": "Applied to the routed 7.0 mm selector aperture (above the 6.3 mm drill threshold in facts/jack.json); needs the precision option."
+    },
+    "routed_hole_position_radial": {
+      "value": 0.1414,
+      "unit": "mm",
+      "status": "DERIVED",
+      "formula": "sqrt(2) x routed_hole_position_tol_axis"
+    },
+    "loc_pin_diameter": {
+      "value": 2.0,
+      "plus": 0.0,
+      "minus": 0.006,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Ground dowel pin class chosen for planning; within the 0.55-2.0 mm press-fit hole range.",
+      "to_source": "Purchased pin drawing (ST-12)"
+    },
+    "loc_hole_clearance_precise": {
+      "value": 0.06,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Design choice: front-board round hole = pin + 0.06 in the press-fit tolerance class, so the minimum clearance is +0.01.",
+      "to_source": "Design authority"
+    },
+    "loc_slot_clearance": {
+      "value": 0.1,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Design choice: plated secondary slot width = pin + 0.10, so the minimum width clearance is +0.02 under the -0.08 slot tolerance.",
+      "to_source": "Design authority"
+    },
+    "r_loc_precise": {
+      "value": 0.058,
+      "unit": "mm",
+      "status": "DERIVED",
+      "formula": "(loc_hole_clearance_precise + press_fit_hole_tol + loc_pin_diameter.minus) / 2"
+    },
+    "r_loc_standard": {
+      "value": 0.118,
+      "unit": "mm",
+      "status": "DERIVED",
+      "formula": "(0.10 + pth_hole_tol_plus + loc_pin_diameter.minus) / 2, a round hole of pin + 0.10 in the ordinary through-hole class"
+    },
+    "r_slot": {
+      "value": 0.118,
+      "unit": "mm",
+      "status": "DERIVED",
+      "formula": "(loc_slot_clearance + pth_hole_tol_plus + loc_pin_diameter.minus) / 2"
+    },
+    "diag_pin_span_factor": {
+      "value": 0.9,
+      "unit": "1",
+      "status": "ASSUMED",
+      "reason": "Recommended locating pins sit near opposite corners of each board's bounding box, 0.9 of its diagonal apart. ST-02 must find clear positions.",
+      "to_source": "ST-02 placement of the locating holes"
+    },
+    "th_lead_float": {
+      "value": 0.1,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Radial float of a through-hole jack, pot or toggle body in its drilled pattern before soldering; lead sizes are not retained.",
+      "to_source": "Lead dimensions from the drawings versus finished drill sizes; first-article axis measurement"
+    },
+    "smd_led_float": {
+      "value": 0.1,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "0402 emitter placement and reflow float behind its window.",
+      "to_source": "Assembly provider placement data; #64 optical coupon"
+    },
+    "button_guide_float": {
+      "value": 0.15,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Custom plunger axis in its guide on the P body carrier, carrier on P.",
+      "to_source": "Carrier and plunger drawing (ST-12)"
+    },
+    "selector_leg_float": {
+      "value": 0.1,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Selector legs in their 2.0 mm PTH mounting holes on the adapter.",
+      "to_source": "#55 coupon"
+    },
+    "fr4_modulus": {
+      "value": 20000.0,
+      "unit": "N/mm^2",
+      "status": "ASSUMED",
+      "reason": "Typical in-plane flexural modulus of glass-epoxy laminate; no laminate datasheet is retained.",
+      "to_source": "Laminate datasheet of the fabricator's FR4 for the 0.4 mm EL"
+    },
+    "unmate_to_mate_ratio": {
+      "value": 1.0,
+      "unit": "1",
+      "status": "ASSUMED",
+      "reason": "Unmating force per position taken equal to mating force.",
+      "to_source": "ST-01 unmating force per contact"
+    },
+    "screw_axial_capacity": {
+      "value": 1000.0,
+      "unit": "N",
+      "status": "ASSUMED",
+      "reason": "Planning floor for one M2.5 post screw and its thread in the post.",
+      "to_source": "ST-04 post and screw drawings with thread engagement"
+    },
+    "m25_pitch": {
+      "value": 0.45,
+      "unit": "mm",
+      "status": "DERIVED",
+      "formula": "ISO metric coarse pitch implied by the M2.5 designation"
+    },
+    "el_site_pitch": {
+      "value": 17.0,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-PART",
+      "locator": "connectors EL-E1..E6 centres x = 218.5 + 17k, y = 172"
+    },
+    "el_post_pitch": {
+      "value": 17.0,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-PART",
+      "locator": "supports EL-OPT-1/8/15/22/29 at x = 227 + 17j, y = 172"
+    },
+    "el_cantilever": {
+      "value": 8.5,
+      "unit": "mm",
+      "status": "DERIVED",
+      "formula": "227 - 218.5: the outer EL sites (218.5 and 303.5) lie 8.5 mm outboard of the first and last tab posts"
+    },
+    "el_positions_per_site": {
+      "value": 6,
+      "unit": "count",
+      "status": "SOURCED",
+      "source": "S-PLAN",
+      "locator": "EL plugs into a P tab: six 1x6 pairs"
+    },
+    "posts_per_board": {
+      "value": 6,
+      "unit": "count",
+      "status": "SOURCED",
+      "source": "S-PLAN",
+      "locator": "Power joints: each branch keeps its six joints"
+    }
+  },
+  "apertures": {
+    "jack": {
+      "board": [
+        "JL",
+        "JR"
+      ],
+      "hole": 6.2,
+      "hole_plus": 0.13,
+      "hole_minus": 0.08,
+      "hole_status": "SOURCED (S-LOCK hole_d_mm 6.2, PROPOSAL; tolerance S-JACK fabrication_boundary)",
+      "part_max": 6.0,
+      "part_min": 5.9,
+      "part_status": "ASSUMED: bushing 6.0 is a DRAWING nominal (S-JACK) taken as maximum; 5.9 minimum assumed; thread UNSOURCED",
+      "hw_float_term": "th_lead_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    },
+    "pot": {
+      "board": [
+        "P"
+      ],
+      "hole": 6.3,
+      "hole_plus": 0.13,
+      "hole_minus": 0.08,
+      "hole_status": "SOURCED (S-LOCK 6.3 PROPOSAL; drilled class tolerance)",
+      "part_max": 6.0,
+      "part_min": 5.9,
+      "part_status": "SOURCED: shaft 6.0 +0/-0.1 (S-POT)",
+      "hw_float_term": "th_lead_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    },
+    "toggle": {
+      "board": [
+        "P"
+      ],
+      "hole": 5.2,
+      "hole_plus": 0.13,
+      "hole_minus": 0.08,
+      "hole_status": "SOURCED (S-LOCK 5.2 PROPOSAL; manufacturer recommends 4.95 with a 4.55 flat, S-TOG)",
+      "part_max": 4.826,
+      "part_min": 4.7,
+      "part_status": "DERIVED maximum: 10-48 UNS nominal major 0.190 in (S-TOG thread designation); minimum ASSUMED",
+      "hw_float_term": "th_lead_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    },
+    "sub_toggle": {
+      "board": [
+        "P"
+      ],
+      "hole": 5.2,
+      "hole_plus": 0.13,
+      "hole_minus": 0.08,
+      "hole_status": "SOURCED (S-PLAN: proposed 5.2 for the fitted toggles at C:O2.OCT and C:O4.OCT)",
+      "part_max": 4.826,
+      "part_min": 4.7,
+      "part_status": "as toggle",
+      "hw_float_term": "th_lead_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    },
+    "button": {
+      "board": [
+        "P"
+      ],
+      "hole": 5.0,
+      "hole_plus": 0.13,
+      "hole_minus": 0.08,
+      "hole_status": "SOURCED (S-LOCK 5.0 PROPOSAL)",
+      "part_max": 4.55,
+      "part_min": 4.45,
+      "part_status": "ASSUMED: custom plunger 4.5 (S-PART datum table) +/-0.05",
+      "hw_float_term": "button_guide_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    },
+    "selector": {
+      "board": [
+        "O1",
+        "O3",
+        "O5"
+      ],
+      "hole": 7.0,
+      "hole_plus": 0.1,
+      "hole_minus": 0.1,
+      "hole_status": "SOURCED (S-SEL panel 7.0 +/-0.1, project choice)",
+      "part_max": 6.1,
+      "part_min": 5.9,
+      "part_status": "SOURCED allocation: maximum 6.1 and radial wobble 0.2 (S-SEL shaft_clearance_budget); minimum ASSUMED",
+      "hw_float_term": "selector_leg_float",
+      "panel_pos_term": "routed_hole_position_radial",
+      "wobble": 0.2
+    },
+    "el_passage_pot": {
+      "board": [
+        "EL"
+      ],
+      "carrier": "P",
+      "hole": 6.3,
+      "hole_plus": 0.13,
+      "hole_minus": 0.08,
+      "hole_status": "SOURCED (S-OPT passage 6.3)",
+      "part_max": 6.0,
+      "part_min": 5.9,
+      "part_status": "SOURCED (S-POT)",
+      "hw_float_term": "th_lead_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    },
+    "el_passage_switch": {
+      "board": [
+        "EL"
+      ],
+      "carrier": "P",
+      "hole": 11.0,
+      "hole_plus": 0.13,
+      "hole_minus": 0.08,
+      "hole_status": "SOURCED (S-OPT passage 11)",
+      "part_max": 9.5873,
+      "part_min": 9.5873,
+      "part_status": "DERIVED: diagonal of the 8.13 x 5.08 toggle body (S-TOG); no body tolerance given",
+      "hw_float_term": "th_lead_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    },
+    "el_passage_button": {
+      "board": [
+        "EL"
+      ],
+      "carrier": "P",
+      "hole": 9.5,
+      "hole_plus": 0.13,
+      "hole_minus": 0.08,
+      "hole_status": "SOURCED (S-OPT passage 9.5)",
+      "part_max": 8.7681,
+      "part_min": 8.2024,
+      "part_status": "DERIVED: diagonal of the 6.0 +/-0.2 square body (S-BTN)",
+      "hw_float_term": "th_lead_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    },
+    "indicator": {
+      "board": [
+        "JL",
+        "JR",
+        "EL"
+      ],
+      "hole": null,
+      "hole_status": "SOURCED: bare-FR4 window 1.6 mm, no drill (S-PART panel.indicator_window); no mechanical interference",
+      "part_status": "No acceptance limit for emitter-to-window offset exists (#64)",
+      "hw_float_term": "smd_led_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    }
+  },
+  "geometry": {
+    "status": "DERIVED",
+    "formula": "scripts/stack/mechanics/stack_mechanics_geometry.py derive()",
+    "sources": {
+      "partition": {
+        "path": "design/partition/partition.json",
+        "sha256": "7e3f5a39b001f80f38572c837a60e197fbb08ae588296e1d3bcb1339718db48f"
+      },
+      "mechanical_candidate": {
+        "path": "design/partition/mechanical-candidate.json",
+        "sha256": "1688080a0dbf2fadd5a8f6b0628d868850ba982aaef453086fa3a5ba8fe63349"
+      },
+      "placements_lock": {
+        "path": "design/grid/placements.lock.json",
+        "sha256": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8"
+      },
+      "stage_optical": {
+        "path": "design/partition/stage-optical-candidate.json",
+        "sha256": "b5c930b9bdb861c99fe02cb798678942c3fb5213948c272060b69b8bdde9d3f6"
+      }
+    },
+    "units": {
+      "JL": {
+        "pairs": 29,
+        "positions": 162,
+        "mated_height_mm": 12.9,
+        "front_face_z_mm": -10.0,
+        "outline_bbox_mm": [
+          4.0,
+          20.0,
+          176.5,
+          164.0
+        ],
+        "longest_side_mm": 172.5,
+        "diagonal_mm": 224.7048,
+        "hardware_count": 143,
+        "posts": 6,
+        "diag_pins_r_max_mm": 216.809,
+        "post_locator_span_mm": 85.0,
+        "post_locator_r_max_mm": 187.1452,
+        "pair_to_nearest_post_max_mm": 126.6491,
+        "pair_to_nearest_stack_post_on_K_max_mm": 126.6491
+      },
+      "JR": {
+        "pairs": 27,
+        "positions": 162,
+        "mated_height_mm": 12.9,
+        "front_face_z_mm": -10.0,
+        "outline_bbox_mm": [
+          177.5,
+          20.0,
+          314.0,
+          164.0
+        ],
+        "longest_side_mm": 144.0,
+        "diagonal_mm": 198.4143,
+        "hardware_count": 139,
+        "posts": 6,
+        "diag_pins_r_max_mm": 190.3847,
+        "post_locator_span_mm": 85.0,
+        "post_locator_r_max_mm": 175.4087,
+        "pair_to_nearest_post_max_mm": 123.1787,
+        "pair_to_nearest_stack_post_on_K_max_mm": 123.1787
+      },
+      "P": {
+        "pairs": 135,
+        "positions": 423,
+        "mated_height_mm": 11.1,
+        "front_face_z_mm": -11.8,
+        "outline_bbox_mm": [
+          1.0,
+          176.0,
+          317.0,
+          292.0
+        ],
+        "longest_side_mm": 316.0,
+        "diagonal_mm": 336.6185,
+        "hardware_count": 141,
+        "posts": 6,
+        "diag_pins_r_max_mm": 320.8664,
+        "post_locator_span_mm": 85.0941,
+        "post_locator_r_max_mm": 194.2839,
+        "pair_to_nearest_post_max_mm": 167.0935,
+        "pair_to_nearest_stack_post_on_K_max_mm": 125.6155
+      },
+      "O1": {
+        "pairs": 2,
+        "positions": 10,
+        "mated_height_mm": 6.9,
+        "front_face_z_mm": -16.0,
+        "outline_bbox_mm": [
+          4.6,
+          171.0,
+          24.4,
+          195.5
+        ],
+        "longest_side_mm": 24.5,
+        "diagonal_mm": 31.5006,
+        "hardware_count": 1,
+        "posts": 0,
+        "diag_pins_r_max_mm": 20.1062
+      },
+      "O3": {
+        "pairs": 2,
+        "positions": 10,
+        "mated_height_mm": 6.9,
+        "front_face_z_mm": -16.0,
+        "outline_bbox_mm": [
+          38.6,
+          171.0,
+          58.4,
+          195.5
+        ],
+        "longest_side_mm": 24.5,
+        "diagonal_mm": 31.5006,
+        "hardware_count": 1,
+        "posts": 0,
+        "diag_pins_r_max_mm": 20.1062
+      },
+      "O5": {
+        "pairs": 2,
+        "positions": 10,
+        "mated_height_mm": 6.9,
+        "front_face_z_mm": -16.0,
+        "outline_bbox_mm": [
+          72.6,
+          171.0,
+          92.4,
+          195.5
+        ],
+        "longest_side_mm": 24.5,
+        "diagonal_mm": 31.5006,
+        "hardware_count": 1,
+        "posts": 0,
+        "diag_pins_r_max_mm": 20.1062
+      },
+      "EL": {
+        "pairs": 6,
+        "positions": 36,
+        "mated_height_mm": 7.2,
+        "front_face_z_mm": -4.2,
+        "outline_bbox_mm": [
+          210.0,
+          164.0,
+          317.0,
+          277.0
+        ],
+        "longest_side_mm": 113.0,
+        "diagonal_mm": 155.6213,
+        "hardware_count": 12,
+        "posts": 35,
+        "diag_pins_r_max_mm": 134.7641,
+        "post_locator_span_mm": 113.6002,
+        "post_locator_r_max_mm": 116.9562,
+        "pair_to_nearest_post_max_mm": 8.5
+      }
+    },
+    "K": {
+      "outline_bbox_mm": [
+        4.0,
+        8.0,
+        314.0,
+        292.0
+      ],
+      "longest_side_mm": 310.0,
+      "pairs": 197,
+      "positions": 777,
+      "pair_to_nearest_post_max_mm": 126.6491
+    },
+    "posts_mm": {
+      "JL": [
+        [
+          40,
+          160
+        ],
+        [
+          57,
+          160
+        ],
+        [
+          74,
+          160
+        ],
+        [
+          91,
+          160
+        ],
+        [
+          108,
+          160
+        ],
+        [
+          125,
+          160
+        ]
+      ],
+      "JR": [
+        [
+          193,
+          160
+        ],
+        [
+          210,
+          160
+        ],
+        [
+          227,
+          160
+        ],
+        [
+          244,
+          160
+        ],
+        [
+          261,
+          160
+        ],
+        [
+          278,
+          160
+        ]
+      ],
+      "P": [
+        [
+          142,
+          175.0
+        ],
+        [
+          159,
+          175.0
+        ],
+        [
+          176,
+          175.0
+        ],
+        [
+          193,
+          175.0
+        ],
+        [
+          210,
+          179
+        ],
+        [
+          227,
+          179
+        ]
+      ]
+    },
+    "el_post_count": 35,
+    "j_post_row_y_mm": [
+      160
+    ],
+    "p_post_rows_y_mm": [
+      175.0,
+      179
+    ],
+    "j_to_p_post_row_spacing_mm": [
+      15.0,
+      19.0
+    ],
+    "jl_jr_inner_post_span_mm": 68.0,
+    "hardware_class_counts": {
+      "jack": {
+        "JL": 100,
+        "JR": 80
+      },
+      "indicator": {
+        "JL": 43,
+        "JR": 59,
+        "EL": 12
+      },
+      "toggle": {
+        "P": 30
+      },
+      "pot": {
+        "P": 101
+      },
+      "sub_toggle": {
+        "P": 2
+      },
+      "button": {
+        "P": 8
+      },
+      "selector": {
+        "O1": 1,
+        "O3": 1,
+        "O5": 1
+      },
+      "el_passage_switch": {
+        "EL": 18
+      },
+      "el_passage_button": {
+        "EL": 6
+      },
+      "el_passage_pot": {
+        "EL": 18
+      }
+    },
+    "el_passage_diameters_mm": [
+      [
+        "el_passage_button",
+        9.5
+      ],
+      [
+        "el_passage_pot",
+        6.3
+      ],
+      [
+        "el_passage_switch",
+        11
+      ]
+    ]
+  },
+  "supports_disposition": [
+    {
+      "items": "JL-SUP-1..3, JR-SUP-1..3",
+      "ids": [
+        "JL-SUP-1",
+        "JL-SUP-2",
+        "JL-SUP-3",
+        "JR-SUP-1",
+        "JR-SUP-2",
+        "JR-SUP-3"
+      ],
+      "count": 6,
+      "counts_toward_87": true,
+      "disposition": "STAY at the same XY, change role: J-to-K tie posts (12.9 mm), no enclosure joint",
+      "reason": "Removes the second load loop through the side carrier; adds edge support to K's flatness along x = 6.5 and 311.5, where no power post exists"
+    },
+    {
+      "items": "JL-SUP-4, JR-SUP-4",
+      "ids": [
+        "JL-SUP-4",
+        "JR-SUP-4"
+      ],
+      "count": 2,
+      "counts_toward_87": true,
+      "disposition": "GO, merged with K-SUP-3/4",
+      "reason": "(6.5, 161.5) and (311.5, 161.5) lie 1.5 mm from K-SUP-3/4 at y = 160; one J-to-K tie post at (6.5, 160) and (311.5, 160) serves both, inside JL and JR (outline y <= 164)"
+    },
+    {
+      "items": "K-SUP-3, K-SUP-4",
+      "ids": [
+        "K-SUP-3",
+        "K-SUP-4"
+      ],
+      "count": 2,
+      "counts_toward_87": true,
+      "disposition": "STAY at the same XY, change role: the merged J-to-K tie posts",
+      "reason": "As above"
+    },
+    {
+      "items": "K-SUP-5..8",
+      "ids": [
+        "K-SUP-5",
+        "K-SUP-6",
+        "K-SUP-7",
+        "K-SUP-8"
+      ],
+      "count": 4,
+      "counts_toward_87": true,
+      "disposition": "STAY at the same XY, change role: P-to-K tie posts (11.1 mm), no frame joint",
+      "reason": "All four lie inside P's outline; fastening K to the frame as well as to the front boards closes a second load loop through the panel and enclosure"
+    },
+    {
+      "items": "K-SUP-1, K-SUP-2",
+      "ids": [
+        "K-SUP-1",
+        "K-SUP-2"
+      ],
+      "count": 2,
+      "counts_toward_87": true,
+      "disposition": "GO as clamped supports; optional Z-compliant bumper to the rear cover",
+      "reason": "At y = 10.5 no front board lies in front of them (J starts at y = 20), so a clamp there can only reach the frame"
+    },
+    {
+      "items": "P-SUP-1..5",
+      "ids": [
+        "P-SUP-1",
+        "P-SUP-2",
+        "P-SUP-3",
+        "P-SUP-4",
+        "P-SUP-5"
+      ],
+      "count": 5,
+      "counts_toward_87": true,
+      "disposition": "GO; replaced by P-to-K tie posts at interior candidates",
+      "reason": "Their 3.2 mm collars overlap K's outline edge by 1.1 mm at x = 3.5 and 314.5; moving them inward by >= 1.6 mm would clear K but still tie P to the frame"
+    },
+    {
+      "items": "P-SUP-6",
+      "ids": [
+        "P-SUP-6"
+      ],
+      "count": 1,
+      "counts_toward_87": true,
+      "disposition": "STAY only as a Z-compliant guide (no axial clamp)",
+      "reason": "(314.5, 289.5) lies in K's notch (x > 258, y > 246) where no K post can reach; a clamp would fix P's plane against K's"
+    },
+    {
+      "items": "P-OPT-* (30 clearance holes)",
+      "ids": "P-OPT-*",
+      "count": 30,
+      "counts_toward_87": true,
+      "disposition": "STAY",
+      "reason": "Clearance in P for the EL posts"
+    },
+    {
+      "items": "EL-OPT-1..35",
+      "ids": "EL-OPT-*",
+      "count": 35,
+      "counts_toward_87": true,
+      "disposition": "STAY, change role: EL-to-P collar posts that set the 7.2 mm gap and back EL during mating; two become locators with precision collars",
+      "reason": "EL takes plane and position from P; the five at y = 172 pass through the P tab (plan page)"
+    },
+    {
+      "items": "Seam rear cradle [172, 20, 182, 164], z -13.6..-11.6",
+      "ids": "jack_seam_carrier.rear_rect_mm",
+      "count": 1,
+      "counts_toward_87": false,
+      "disposition": "GO",
+      "reason": "Lies inside the J-to-K gap; K now holds both J boards through tie posts, so the seam needs no separate carrier. J-to-K tie posts within the seam reserves (x 172..182) replace it"
+    },
+    {
+      "items": "Seam front lips [175.2, 20, 178.8, 164]",
+      "ids": "jack_seam_carrier.front_lip_rect_mm",
+      "count": 2,
+      "counts_toward_87": false,
+      "disposition": "GO with the cradle",
+      "reason": "Attached to the cradle"
+    },
+    {
+      "items": "Cross-members y 17..19 and y 165..167, x -2..320",
+      "ids": "jack_seam_carrier.cross_members",
+      "count": 2,
+      "counts_toward_87": false,
+      "disposition": "GO",
+      "reason": "Same z range as the J-to-K gap and P's plane; they reach the enclosure frame and would close the second load loop; the y 165..167 member sits 1.5 mm from the EL tab"
+    },
+    {
+      "items": "Interior fastener candidates (planning screen): JL 37, P 26, JR 3",
+      "ids": "plan page 'Interior fastener sites'",
+      "count": 66,
+      "counts_toward_87": false,
+      "disposition": "USE as front-board-to-K tie posts at a spacing that puts every pair within d_req of a fixing; JR NEEDS_DESIGN",
+      "reason": "Posts alone leave pairs about 125 mm from the nearest fixing (bow table). JR's 3 sites cannot reach d_req without part moves on K or JR"
+    }
+  ],
+  "coupon": {
+    "status": "DEFINITION ONLY. Building it is a fabrication and assembly order that only the owner can place (plan question Q7). No file for ordering is produced.",
+    "boards": [
+      {
+        "id": "CK",
+        "role": "K-side coupon board",
+        "outline_mm": [
+          100,
+          60
+        ],
+        "thickness_mm": 1.6,
+        "layers": 6,
+        "contents": "The tallest stackers (12.9 mm pair) at 8 x 1x6 and 8 x 1x3 sites in two rows; 2 x 1x5 at the 6.9 mm height; two press-fit locating pins; four post lands of the ST-04 pattern with their screw holes; four 0603 MLCC footprints of the K families in line with the post rows, at 15 mm and 19 mm from the posts, each with a strain-gauge pad; daisy-chain copper through every contact; fiducials at each site"
+      },
+      {
+        "id": "CF",
+        "role": "front-board coupon (J/P class)",
+        "outline_mm": [
+          100,
+          60
+        ],
+        "thickness_mm": 1.6,
+        "layers": 6,
+        "contents": "Matching low sockets; one round precise locating hole and one plated slot; four WQP518MA and four PTV09A footprints soldered by the same through-hole process beside the sockets; daisy-chain return copper; post lands. Variant CF-dX has its locating hole offset by X = 0, 0.1, 0.2, 0.3 or 0.5 mm along the pair rows to impose a known misalignment"
+      },
+      {
+        "id": "CE (optional)",
+        "role": "0.4 mm EL-class coupon",
+        "outline_mm": [
+          60,
+          30
+        ],
+        "thickness_mm": 0.4,
+        "layers": 2,
+        "contents": "Two 1x6 sockets at 17 mm pitch with collar-post holes at the EL tab spacing, to test seating with and without a backing platen"
+      }
+    ],
+    "measurements": [
+      {
+        "id": "C-1",
+        "what": "Mating and unmating force per position: force-displacement on a guided press, per pair width, at least 10 cycles",
+        "finishes": "f and unmate_to_mate_ratio; screw and jacking loads"
+      },
+      {
+        "id": "C-2",
+        "what": "SMT float: optical coordinate measurement of each socket and stacker body against its fiducials after reflow",
+        "finishes": "smt_float_front, smt_float_k"
+      },
+      {
+        "id": "C-3",
+        "what": "Reflow lean and standoff: tip true position of each stacker pin and housing height above board",
+        "finishes": "pin_lean_deg, connector_standoff_tol"
+      },
+      {
+        "id": "C-4",
+        "what": "Alignment yield: mate CF-dX variants and record first-pass mates, continuity of every daisy chain, and damaged contacts",
+        "finishes": "a (the usable misalignment of the real pair, not only the catalogue figure)"
+      },
+      {
+        "id": "C-5",
+        "what": "Usable wipe: continuity of every chain while the post gap is raised in 0.05 mm shim steps from bottomed to open",
+        "finishes": "w, the usable mated-height range used in the Z table"
+      },
+      {
+        "id": "C-6",
+        "what": "K strain: strain gauges at the MLCC sites while shims of 0.025 to 0.2 mm under one post row impose Delta; MLCC capacitance and cracking after",
+        "finishes": "k_strain_model and the strain limit"
+      },
+      {
+        "id": "C-7",
+        "what": "Through-hole process compatibility: inspect open sockets for flux and solder after the jack and pot soldering",
+        "finishes": "plan requirement 6 (process), with ST-01"
+      },
+      {
+        "id": "C-8",
+        "what": "EL seating (optional CE): deflection and strain at f with and without the backing platen",
+        "finishes": "fr4_modulus for 0.4 mm and the EL seating method"
+      }
+    ]
+  },
+  "st01_figures_needed": [
+    {
+      "figure": "a",
+      "exact_need": "Allowed mating misalignment, radial or per axis, for the 1x3, 1x5 and 1x6 pairs at each mated height (6.9, 7.2, 11.1, 12.9 mm), with the drawing locator"
+    },
+    {
+      "figure": "f",
+      "exact_need": "Mating force per position (maximum) and unmating force per position (minimum and maximum), with cycle condition"
+    },
+    {
+      "figure": "t",
+      "exact_need": "Mated-height tolerance of each pair (stacker post height tolerance plus socket seating)"
+    },
+    {
+      "figure": "w",
+      "exact_need": "Usable contact engagement (wipe) range: the gap interval over which every contact is made without bottoming"
+    },
+    {
+      "figure": "lean",
+      "exact_need": "Pin true position or tip coplanarity of the tallest stacker after reflow (or the manufacturer's statement that none is given)"
+    },
+    {
+      "figure": "standoff",
+      "exact_need": "Housing coplanarity and seated height tolerance of each half"
+    },
+    {
+      "figure": "pegs",
+      "exact_need": "Whether a peg or hold-down option exists in the courtyard; this replaces the SMT float assumption"
+    },
+    {
+      "figure": "retention",
+      "exact_need": "Pad or housing retention force under unmating load (for the 777-position jacking)"
+    }
+  ]
+}
