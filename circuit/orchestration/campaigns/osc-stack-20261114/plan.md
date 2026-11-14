@@ -25,6 +25,7 @@ A decision of the design authority selects a design; it never performs the outwa
 | Field | Value (observed 2026-11-14 UTC) |
 | --- | --- |
 | Base | `main` at `b4daa754012cb557bf9a189afbbac7795009fc69` (merge of #352). Its tree equals #352's head `0de1319`, whose CI run [43613777463](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/43613777463) passed 7 of 7 jobs, including `regen-all.sh --check`. |
+| Merged since the base | #353 at `dc8a2aaf` (CI run [43625579211](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/43625579211), 7 of 7): this record, the briefs and the owner direction on the plan page. #354 carries the wave-1 evidence and the DA-01 record. |
 | Regeneration at the base | `bash scripts/checks/regen-all.sh --check` in the manager VM at `b4daa754`: exit 0 in 347 s through `heavy-guard.sh` (verdict PASS), no tracked change. This is the campaign's one start-of-work regeneration; Phase 0 children do not repeat it. |
 | Top-level manager, sole dispatcher and integrator | One Claude Code Cloud Project thread session (`https://claude.ai/code/session_01JXThoP3HSxfTMwSDwrkxP8`). Selected model family: Fable, confirmed from the session record at 17:52 UTC (configured and last-served model agree). |
 | Earlier campaign `osc-cloud-20261111` | No runnable task: T9c and T10 are BLOCKED and its thread shows as done. No live session or Actions run of that campaign was found at 17:52 UTC; the only run in progress was ordinary CI on the merge commit. Its records are untouched. |
@@ -58,26 +59,31 @@ A decision of the design authority selects a design; it never performs the outwa
 
 ```mermaid
 flowchart LR
-  ST01["ST-01 connector evidence"] --> ST03f["ST-03 finish"]
-  ST03["ST-03 mechanics, parametric"] --> ST03f
-  ST01 --> ST04["ST-04 power-post joint"]
-  ST03f --> ST04
-  ST01 --> ST02r["ST-02 re-run with footprints"]
-  ST02["ST-02 geometry candidate and checker"] --> ST02r
-  ST01 --> DA01["DA-01 design review A1"]
-  ST02 --> DA01
-  ST03 --> DA01
-  DA01 --> ST04
-  DA01 --> ST05
-  DA01 --> ST07
-  ST04 --> GA{"Gate A"}
-  ST03f --> GA
-  ST01 --> GA
-  ST06["ST-06 SUB toggle specification"] --> P1["Phase 1"]
-  ST07["ST-07 trimmer relocation plan"] --> P1
-  ST05["ST-05 thermal screen"] --> P1
-  ST02r --> P1
-  GA --> P1
+  W1["Wave 1: ST-01, ST-02, ST-03"] --> DA01["DA-01 review A1, decisions D1 to D6"]
+  DA01 --> ST01b["ST-01b connector addendum"]
+  DA01 --> ST02a2["ST-02 a2 geometry re-run"]
+  DA01 --> ST03a2["ST-03 a2 mechanics"]
+  DA01 --> ST05["ST-05 thermal screen at 40 mm"]
+  DA01 --> ST07["ST-07 trimmer relocation plan"]
+  ST01b --> ST04["ST-04 power-post joint"]
+  ST01b --> ST02p["ST-02 land-pattern run"]
+  ST02a2 --> ST02p
+  ST02a2 --> ST08["ST-08 tie posts, jack screws, fixture"]
+  ST01b --> ST08
+  ST07 -. site lists .- ST08
+  ST03a2 --> ST09["ST-09 coupon definition"]
+  ST01b --> ST09
+  ST02p --> GAP{"Gate A-paper"}
+  ST03a2 --> GAP
+  ST04 --> GAP
+  ST08 --> GAP
+  ST09 --> OWN["Owner decision Q7: build the coupon"]
+  OWN --> GAF{"Gate A-physical"}
+  GAP --> P1["Phase 1 on candidate files"]
+  ST06["ST-06 SUB toggle specification"] --> P1
+  ST07 --> P1
+  ST05 --> P1
+  GAF --> P2["Phase 2"]
 ```
 
 ## Tasks
@@ -87,20 +93,31 @@ Phase 0 writes new candidate files only, under `design/stack/`, `scripts/stack/`
 | ID | Deliverable | Model / environment | State | Depends on | Review |
 | --- | --- | --- | --- | --- | --- |
 | S0 | This record, the wave-1 briefs, the owner direction recorded in the plan page | Manager | DONE (`91246e9`) | none | n/a |
-| ST-01 | Connector and spacer evidence, selection proposal ([brief](st-01.md)) | Opus child, worktree `/home/user/wt/st-01`; web access for primary documents | REPORTED 18:21 UTC: `NEEDS_DESIGN`. Commit `5ab8306`; vendor files in `circuit-dev-resources` commit `f04bdd7` (its pull request 6). Manager check: allowed writes only; all 13 cited source hashes match the stored files. The candidate bundle was not created, because the pin-asset check needs a KiCad symbol and footprint that the brief excluded; it follows the family selection | none | DA-01, then packet A |
-| ST-02 | Retained stack-geometry candidate and checker ([brief](st-02.md)) | Opus child, worktree `/home/user/wt/st-02` | REPORTED 18:26 UTC: DONE. Commit `a95ff38`. Manager check: allowed writes only; 32 tests pass in 8.8 s; `check.py` PASS with 0 errors and unchanged report bytes. Reconciliation: 116 reproduced, 2 corrected, 31 not checkable, 1 not run. ST-01 retained no land pattern, so the default envelope stays; a re-run follows the `h` that DA-01 sets | none | Independent reviewer (packet C), pending |
-| ST-03 | Stack mechanics: datums, closing order, stack-ups, separation, coupon definition ([brief](st-03.md)) | Opus child, worktree `/home/user/wt/st-03` | REPORTED 18:24 UTC: PARTIAL with six `NEEDS_DESIGN` items; the paper stack does not close on worst case. Commit `d0dd0b3`. Manager check: allowed writes only; 14 tests pass. Of the eight ST-01 figures that finish it, only the insertion and withdrawal force are sourced; the finish follows DA-01 | ST-01 figures to finish | DA-01, then packet A |
-| DA-01 | Design review A1 of ST-01 and ST-03, and decisions D1 to D6 ([brief](da-01.md)) | Design authority: Fable agent at high effort, worktree `/home/user/wt/da-01` | RUNNING: attempt a1 launched 2026-11-14 18:30 UTC from `stack/wave-1` `d74bce0` | ST-01, ST-02, ST-03 | n/a |
-| ST-04 | Power-post joint design and electrical re-derivation ([brief](st-04.md)) | Opus child, worktree `/home/user/wt/st-04` | PLANNED; brief written; held for DA-01 (D6) | ST-01, ST-03, DA-01 | Design authority (packet A) |
-| ST-05 | Thermal paper screen ([brief](st-05.md)) | Opus child, worktree `/home/user/wt/st-05` | PLANNED, wave 2; brief written; held for DA-01 (D6) | DA-01 | Independent reviewer (packet C) |
+| ST-01 | Connector and spacer evidence, selection proposal ([brief](st-01.md)) | Opus child, worktree `/home/user/wt/st-01`; web access for primary documents | REPORTED 18:21 UTC: `NEEDS_DESIGN` (`5ab8306`; store commit `f04bdd7`). DA-01 rejected the recommended SMM pair and its 7.874 mm bound (findings C1, C2). ST-01b REPORTED 19:12 UTC: `NEEDS_DESIGN` for the EL pass-through, post survey PARTIAL (`5eda60f`; store commit `2401d54`, which retains the ten documents DA-01 fetched and the CLT print). All eleven working codes are CONFIRMED against the prints with the margins of D3. The stacker pad span of 5.54 mm and courtyard width of 6.04 mm are confirmed and the courtyard length is corrected to 2n + 0.75 mm. The factory channel lists the three sockets, the CLT socket and the 2×4 stacker, and none of the five K-joint stackers. The 1×3 stackers take no pick-and-place pad and lead style −07 is not supplied on tape and reel. Manager check: allowed writes only; all 25 distinct cited hashes match the store. No candidate bundle: the pin-asset check needs KiCad assets. **ST-01c RUNNING since 19:14 UTC** under DS-19: the post and jack-screw survey, the MMS and CLT land patterns, the CLT pass-through evidence | DA-01 | DA-01 done; ST-01b and ST-01c at Gate A-paper |
+| ST-02 | Retained stack-geometry candidate and checker ([brief](st-02.md)) | Opus child, worktree `/home/user/wt/st-02` | REPORTED 18:26 UTC: DONE (`a95ff38`; 32 tests; `check.py` PASS with 0 errors). Continuation c1 REPORTED 18:59 UTC: all eight code review findings fixed (`a9e1b25`). Manager check: allowed writes only; 39 tests pass in 26 s; a second `generate.py` and `check.py` run leaves the tree clean. One figure corrected (K free area at courtyard level F 37.5 %, B 39.0 %); totals 115 reproduced, 3 corrected, 31 not checkable, 1 not run. **Attempt a2 RUNNING since 19:07 UTC** under DS-18: re-run at `h` = 12.8 mm with the double-row EL pairs, the 6.8 mm EL passages and the new checks of DS-17. The sourced socket land pattern follows from ST-01b in a parameter-only run by the manager | DA-01; ST-01b for the socket land pattern | Independent reviewer (packet C), pending |
+| ST-03 | Stack mechanics: datums, closing order, stack-ups, separation, coupon definition ([brief](st-03.md)) | Opus child, worktree `/home/user/wt/st-03` | REPORTED 18:24 UTC: PARTIAL with six `NEEDS_DESIGN` items (`d0dd0b3`; 14 tests). DA-01 decided the six items and changed four conclusions (findings M1 to M10). **Attempt a2 (the one continuation) RUNNING since 19:04 UTC**: sourced limits per axis, worst pair of N, the baseline aperture row, the closing order of DS-12, Z at the sourced windows with the 40 mm rule, sourced forces, the coupon frame of DS-16, and code review findings F1 and F2 | DA-01 | DA-01 done; a2 at Gate A-paper |
+| DA-01 | Design review A1 of ST-01 and ST-03, and decisions D1 to D6 ([brief](da-01.md), [record](reviews/da-01.md)) | Design authority: Fable agent at high effort, worktree `/home/user/wt/da-01` | REPORTED 18:56 UTC: DONE (`aca64a6`). The stack continues as a changed design and is not adoptable before a coupon; decisions are rows DS-11 to DS-17 of [decisions.md](decisions.md). Manager check: only its two allowed files changed. It fetched ten vendor documents, which ST-01b retains | ST-01, ST-02, ST-03 | n/a |
+| ST-04 | Power-post joint design and electrical re-derivation ([brief](st-04.md)) | Opus child, worktree `/home/user/wt/st-04` | PLANNED; re-briefed under DS-17 (posts of 17.0 and 18.8 mm, EL fed from P); launch after ST-01b's post survey | ST-01b, ST-03 a2, DA-01 | Design authority (Gate A-paper) |
+| ST-05 | Thermal paper screen ([brief](st-05.md)) | Opus child, worktree `/home/user/wt/st-05` | PLANNED; the comparison uses a 40 mm case and keeps the 34 mm figures as a second row (DS-17); launch when a slot frees | DA-01 | Independent reviewer (packet C) |
 | ST-06 | SUB toggle specification for OSC2 and OSC4 ([brief](st-06.md)) | Opus child, worktree `/home/user/wt/st-06` | REPORTED 18:52 UTC: DONE, all eight items specified, none `NEEDS_DESIGN`. Commit `019fc7a`. Manager check: allowed writes only; 20 tests pass; `spec.json` matches its generator. One decision is requested: the node that clocks the divider (a squared sawtooth from the spare comparator half, proposed, or the existing pulse) | none | Design authority (packet B), pending |
-| ST-07 | Trimmer and test-point relocation plan ([brief](st-07.md)) | Opus child, worktree `/home/user/wt/st-07` | PLANNED, wave 2; brief written; held for DA-01 (D6) | DA-01 | Design authority (packet B) |
-| GA | Gate A: adopt or reject the direct stack on the Phase 0 evidence; decide Q3, Q4, Q5 and Q8 | Design authority: Fable agent at high effort | PLANNED | ST-01, ST-03, ST-04 | n/a |
-| Phase 1 to 3 | ST-10 to ST-31 of the plan page | Mapped at the campaign revision that follows Gate A | NOT PLANNED IN DETAIL | Gate A | n/a |
+| ST-07 | Trimmer and test-point relocation plan ([brief](st-07.md)) | Opus child, worktree `/home/user/wt/st-07` | PLANNED; runs as briefed with K's rear face at −32.0 mm (DS-17); launch when a slot frees; exchanges site lists with ST-08 | DA-01 | Design authority (packet B) |
+| ST-08 | Tie posts, jack screws and the closing fixture: the smallest set of tie sites for the 40 mm rule, part moves by reference, adapter standoffs, pilot pins, the jack-screw element and its load per point, ceramics near every site. Writes `design/stack/fixings/` only ([brief](st-08.md)) | Opus child, script-backed, worktree `/home/user/wt/st-08` | PLANNED (new under DS-17); launch after ST-02 a2 | ST-02 a2, ST-01b, ST-03 a2 | Design authority (Gate A-paper) |
+| ST-09 | Coupon definition as a retained specification: boards, parts, variants, measurements and the pass numbers of DS-16. Definition only; no order file ([brief](st-09.md)) | Opus child, worktree `/home/user/wt/st-09` | PLANNED (new under DS-17); launch after ST-03 a2 | ST-03 a2, ST-01b | Design authority (packet B) |
+| GA-paper | Gate A-paper: confirm or end the changed stack as the working design for Phase 1 on candidate files; re-decide the routing hold DS-06; decide Q6 and Q8 as far as the evidence allows | Design authority: Fable agent at high effort | PLANNED | ST-01b, ST-02 a2 with the land-pattern run, ST-03 a2, ST-04, ST-08 | n/a |
+| GA-physical | Gate A-physical: adopt the stack on the coupon report and release Phase 2 (conditions in DS-16) | Design authority: Fable agent at high effort | BLOCKED on the owner's coupon decision (Q7) and then on a coupon report. If the owner declines, the gate is negative for the K joints and the cable partition stays | ST-09; the owner's build and measurements | n/a |
+| Phase 1 to 3 | ST-10 to ST-31 of the plan page | Mapped at the campaign revision that follows Gate A-paper | NOT PLANNED IN DETAIL. Phase 1 runs on candidate files only; Phase 2 needs Gate A-physical | Gate A-paper | n/a |
 
-Launch receipts: the three wave-1 children were started through the Agent tool with `model: opus` and no effort setting, each bound to its own worktree and brief. The in-session agent identifiers are kept in the manager session; they are not valid outside it and are not recorded here. DA-01 was started with `model: fable` and `effort: high`, as the owner directed; ST-06 with `model: opus` and no effort setting.
+Launch receipts: the three wave-1 children were started through the Agent tool with `model: opus` and no effort setting, each bound to its own worktree and brief. The in-session agent identifiers are kept in the manager session; they are not valid outside it and are not recorded here. DA-01 was started with `model: fable` and `effort: high`, as the owner directed; ST-06 with `model: opus` and no effort setting. The second passes of 19:02 to 19:07 UTC (ST-01b, ST-03 a2, ST-02 a2) continue the same three children.
 
-Review packets: A is the design review of ST-01, ST-03 and ST-04 together with the Gate A decision; B is the design review of ST-06 and ST-07; C is the independent review of ST-02 and ST-05 by a child that implemented neither. The code of ST-02 and ST-03 had its independent review on 2026-11-14 with the built-in code review at medium effort over `scripts/stack/geometry` and `scripts/stack/mechanics`: ten findings, all verified or accepted by the manager, none changing a headline result. Eight are in ST-02's files and are being fixed in its one continuation; the two in ST-03's calculator (an RSS term missing from one strain case, and geometry constants that have diverged from the ST-02 candidate) go into ST-03's finish after DA-01.
+Review packets: the design review of ST-01 and ST-03 was taken early as DA-01 (DS-09). What remains is batched as follows. Packet A is the design authority's review of ST-01b, ST-02 a2, ST-03 a2, ST-04 and ST-08 together with the Gate A-paper decision. Packet B is the design review of ST-06, ST-07 and ST-09, with the decision on the node that clocks the SUB divider. Packet C is the independent review of ST-05 and of the code that ST-02 a2 and ST-03 a2 add, by a reviewer that implemented neither. The code of ST-02 and ST-03 had its first independent review on 2026-11-14 with the built-in code review at medium effort over `scripts/stack/geometry` and `scripts/stack/mechanics`: ten findings, all verified or accepted by the manager, none changing a headline result. The eight in ST-02's files are fixed (continuation c1, `a9e1b25`); the two in ST-03's calculator (an RSS term missing from one strain case, and geometry constants that have diverged from the ST-02 candidate) are in the scope of its attempt a2.
+
+## Open design items for Gate A-paper
+
+| Item | From | Options on record |
+| --- | --- | --- |
+| Whether a stacker pin can pass through the CLT socket on EL into relief holes | ST-01b: the socket print does not state it | The code of DS-14 with the pass-through ASSUMED until the coupon; the socket's bottom-entry option; the fallback of DS-14 (six short harnesses). ST-01c collects the documentary facts |
+| Supply form of the K-joint stackers | ST-01b | None of the five K-joint stacker codes is listed in the factory channel; the 1×3 stackers take no pick-and-place pad; lead style −07 is not supplied on tape and reel. These feed owner item 3 and the coupon's placement variants |
+| The node that clocks the SUB divider | ST-06 | A squared sawtooth from the spare comparator half (proposed) or the existing pulse; packet B |
 
 ## Integration procedure
 
@@ -124,5 +141,8 @@ Wall time and model usage per attempt, from the Agent tool's completion notices 
 | ST-02 | a1 | 22 min (1329 s) | 324,202 | 62 |
 | ST-03 | a1 | 21 min (1250 s) | 299,324 | 65 |
 | ST-06 | a1 | 23 min (1363 s) | 298,356 | 66 |
+| DA-01 | a1 | 27 min (1593 s) | 98,031 | 78 |
+| ST-02 | c1 | 6 min (361 s) | 365,912 | 20 |
+| ST-01 | c1 (ST-01b) | 10 min (585 s) | 114,549 | 54 |
 
-The wall times that the children wrote into their result sections are their own estimates; the figures here are the measured ones. ST-01's result section says about 2.5 h, which is wrong.
+The token figure is the one the completion notice reports; what it counts across a continuation is not documented. The wall times that the children wrote into their result sections are their own estimates; the figures here are the measured ones. ST-01's result section says about 2.5 h, which is wrong.
