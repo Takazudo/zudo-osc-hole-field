@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "status": "PLANNING PARAMETERS of the direct-stack proposal; not evidence and not a tolerance allocation",
+  "k_plane": {
+    "adapter_mated_height_mm": 6.9,
+    "basis": "Plan page planning value: K F.Cu = adapter rear face - adapter mated height. Change it here; every plane, gap and clearance is re-derived"
+  },
+  "enclosure_inside_depth_mm": 34,
+  "obstacle_model": {
+    "own_face_courtyard_growth_mm": 0.35,
+    "opposite_face_through_hole_pad_growth_mm": 0.3,
+    "hole_growth_mm": 0.3,
+    "basis": "scripts/partition/README.md: 0.35 mm drawn-courtyard free-placement separation and 0.30 mm edge allocation; the same 0.30 mm is applied to through-hole pads on the opposite face and to holes. Tracks, zones and copper are not modelled"
+  },
+  "tab_edge_margin_mm": 0.5,
+  "board_edge_margin_mm": 0.3,
+  "board_edge_margin_basis": "scripts/partition/README.md 0.30 mm board-edge allocation; applied to every K-outline containment test of the measurements",
+  "K_probe_regions_mm": {
+    "through_slot": [182, 160, 312, 180],
+    "GH8_B": [182, 150, 312, 200],
+    "basis": "Search regions (centre ranges) named on the plan page for the slot and K rear-header probes"
+  },
+  "power_land_neighbour_radius_mm": 2.6,
+  "window_step_mm": 0.05,
+  "probe_tab_top_mm": 178,
+  "probe_tab_top_basis": "The first control-tab sketch on the plan page ended at y = 178; measure.py reports how far the SUB pair falls short with that tab",
+  "shift_search": {
+    "max_mm": 2.0,
+    "step_mm": 0.25
+  },
+  "envelope_sweep_mm": {
+    "3": [[5.8, 7.0], [6.1, 7.0], [6.1, 7.7], [6.5, 7.0], [6.5, 8.0], [7.0, 8.0]],
+    "6": [[5.8, 13.0], [6.1, 13.0], [6.1, 13.94], [6.5, 13.0], [6.5, 14.0]],
+    "5": [[5.8, 11.0], [6.1, 11.0], [6.1, 12.7], [6.5, 12.0]]
+  },
+  "longer_single_row_mm": {
+    "1x7": [5.8, 15.0],
+    "1x8": [5.8, 17.0]
+  },
+  "positions": {
+    "K/P": 3,
+    "JL/K": 6,
+    "JR/K": 6,
+    "K/O": 5,
+    "JL/P pass-through": 3,
+    "SUB": 3,
+    "EL/P": 6,
+    "P/K for EL": 6
+  },
+  "pin_templates": {
+    "basis": "Planning pin orders from the plan page. S = signal slot (source signals in source pin order; an unfilled slot is NC), G = AGND, R = rail. ST-10 fixes the real pin maps",
+    "K/P": "SGS",
+    "JL/K": "SGSSGS",
+    "JR/K": "SGSSGS",
+    "K/O first": "SSGSS",
+    "K/O second": "SGSGS",
+    "JL/P pass-through": "SGS",
+    "SUB": "SGS",
+    "EL/P": "SGSRSR",
+    "P/K for EL": "SGSGSG",
+    "signal_beside_return_required": ["K/P", "JL/K", "JR/K", "JL/P pass-through", "SUB", "P/K for EL"],
+    "signal_beside_return_note": "Required where the plan page states the pin order or the rule. A 1x5 with four signals and one AGND, and the EL-to-P 1x6 with three signals and one AGND, cannot place every signal beside a return; check.py reports those signals"
+  },
+  "el_rail_rotation": [["+12V", "-12V"], ["-12V", "+5V"], ["+5V", "+12V"]],
+  "el_rail_rotation_basis": "Planning assumption: a 1x6 EL-to-P pair has two rail positions, so each site carries two of the three rails in rotation and each rail reaches EL at four of the six sites",
+  "sub_toggle": {
+    "reuse_value": "2MS3T1B1M2QES",
+    "reuse_board": "P",
+    "basis": "Owner decision Q2 (SUB toggle); the plan reuses the three-position toggle already fitted on P. Its footprint geometry is copied from an existing P instance at rotation 0",
+    "retired_selectors": ["O2", "O4"],
+    "select_nets": ["SUB_SEL_A (planning)", "SUB_SEL_B (planning)"]
+  },
+  "retired_boards": ["O2", "O4"]
+}

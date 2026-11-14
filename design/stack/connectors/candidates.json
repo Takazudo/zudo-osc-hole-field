@@ -1,0 +1,1648 @@
+{
+ "schema_version": 2,
+ "task": "osc-stack-20261114/ST-01b (addendum to ST-01@b4daa754)",
+ "date": "2026-11-14",
+ "status": "Evidence for the DA-01 D3 working pair; NOT SELECTED. D3 codes CONFIRMED against the prints; EL socket pass-through NEEDS_DESIGN; post survey PARTIAL. Fit, force and alignment NOT RUN (no specimen).",
+ "source_store": "Takazudo/circuit-dev-resources (private), branch claude/project-thread-zao1qg; cite path + sha256",
+ "status_vocabulary": {
+  "SOURCED": "Stated in a retained document (path and sha256 below). Catalog values are as printed; REF dimensions are reference only.",
+  "UNSOURCED": "No retained document states it. An observation (for example a distributor listing or a page read without retaining bytes) may be attached but is not evidence.",
+  "CALCULATED": "Arithmetic on SOURCED values with a stated expression; it is not a manufacturer statement.",
+  "DERIVED": "Geometry derived from SOURCED figures by a stated rule.",
+  "NEEDS_DESIGN": "The retained documents leave a decision open; not decided here."
+ },
+ "sources": {
+  "samtec-smm-catalog": {
+   "path": "samtec/smm/smm-catalog-page-f-226-pdf-2025-10-21.pdf",
+   "sha256": "c1ac1129e007eb08e742f94efe0f56245c3a852e7fd3bed6b36039249f0d81cb",
+   "url": "https://suddendocs.samtec.com/catalog_english/smm.pdf",
+   "authority": "MANUFACTURER_PRIMARY",
+   "revision": "F-226, PDF created 2025-10-21",
+   "pages": "physical index 0, printed label F-226"
+  },
+  "samtec-smm-print": {
+   "path": "samtec/smm/smm-1xx-xx-xx-s-single-row-print-rev-bm.pdf",
+   "sha256": "9a2cbd7ae2a7b113c637de853b3255143a7b5f1d0d7765c28455eb8568f1b2fc",
+   "url": "https://suddendocs.samtec.com/prints/smm-1xx-xx-xx-s-xx-xx-x-xx-mkt.pdf",
+   "authority": "MANUFACTURER_PRIMARY",
+   "revision": "drawing SMM-1XX-XX-XX-S-XX-XX-X-XX, revision BM",
+   "pages": "physical index 0, printed label sheet 1 of 1"
+  },
+  "samtec-tw-sm-catalog": {
+   "path": "samtec/tw-sm/tw-sm-tw-th-catalog-page-f-226-pdf-2025-10-20.pdf",
+   "sha256": "a165c6f3f2131addb0f8f039304c845cafbcd5603b79c7751986afbde7f89ee5",
+   "url": "https://suddendocs.samtec.com/catalog_english/tw_sm.pdf",
+   "authority": "MANUFACTURER_PRIMARY",
+   "revision": "F-226, PDF created 2025-10-20",
+   "pages": "physical index 0, printed label F-226"
+  },
+  "samtec-tmm-sm-catalog": {
+   "path": "samtec/tmm/tmm-smt-catalog-page-f-226-pdf-2025-10-20.pdf",
+   "sha256": "e8562d3ef3310bbfd5498807e31d665dfc9337ec81816d4cdb78c0f8b97b8867",
+   "url": "https://suddendocs.samtec.com/catalog_english/tmm_sm.pdf",
+   "authority": "MANUFACTURER_PRIMARY",
+   "revision": "F-226, PDF created 2025-10-20",
+   "pages": "physical index 0, printed label F-226"
+  },
+  "samtec-mms-catalog": {
+   "path": "samtec/mms/mms-catalog-page-f-226-pdf-2025-10-20.pdf",
+   "sha256": "8500181e673b139b5615b470c6338117194451c0e07a300ff76b7d592e06d531",
+   "url": "https://suddendocs.samtec.com/catalog_english/mms.pdf",
+   "authority": "MANUFACTURER_PRIMARY",
+   "revision": "F-226, PDF created 2025-10-20",
+   "pages": "physical index 0, printed label F-226"
+  },
+  "samtec-clt-catalog": {
+   "path": "samtec/clt/tle-clt-catalog-page-f-226-rev-22dec25.pdf",
+   "sha256": "6e62ac4a63718ae9e00ca477108d94d433f068b881eebfd4b5b790042bc3201c",
+   "url": "https://suddendocs.samtec.com/catalog_english/clt.pdf",
+   "authority": "MANUFACTURER_PRIMARY",
+   "revision": "F-226 Rev 22DEC25",
+   "pages": "physical index 0, printed label F-226"
+  },
+  "samtec-fw-sm-catalog": {
+   "path": "samtec/fw-sm/fw-sm-fw-th-catalog-page-f-226-rev-09dec25.pdf",
+   "sha256": "50e7855a8849ec6bd98c1da62958cee21d5eaa048376da48be19cc3f151ec1a3",
+   "url": "https://suddendocs.samtec.com/catalog_english/fw_sm.pdf",
+   "authority": "MANUFACTURER_PRIMARY",
+   "revision": "F-226 Rev 09 DEC25",
+   "pages": "physical index 0, printed label F-226"
+  },
+  "samtec-sfm-catalog": {
+   "path": "samtec/sfm/sfm-sfml-catalog-pages-f-226-pdf-2025-10-21.pdf",
+   "sha256": "23b9e96d912188761e51747e77ce1d228d05d0d2e3b4ca3aaefc5659cf67d366",
+   "url": "https://suddendocs.samtec.com/catalog_english/sfm.pdf",
+   "authority": "MANUFACTURER_PRIMARY",
+   "revision": "F-226, PDF created 2025-10-21",
+   "pages": "physical index 0 and 1, printed label F-226"
+  },
+  "samtec-fts-catalog": {
+   "path": "samtec/fts/fts-catalog-page-f-226-pdf-2025-10-20.pdf",
+   "sha256": "08db5d7457c3c9af569e97dad54d45564e3ac13787de52ba794dd14dab8c4cb4",
+   "url": "https://suddendocs.samtec.com/catalog_english/fts.pdf",
+   "authority": "MANUFACTURER_PRIMARY",
+   "revision": "F-226, PDF created 2025-10-20",
+   "pages": "physical index 0, printed label F-226"
+  },
+  "harwin-m22-spec": {
+   "path": "harwin/m22/m22-component-specification-c01812-issue-12.pdf",
+   "sha256": "384b5adbe3a565d953ecb059c75621b497e3e7bdbfa0a89e66f571be50e3f6a6",
+   "url": "https://content.harwin.com/asset/a2901ead-9d31-41f1-a824-556534a542fa/C018-C018XX-Component-Specification-M22-Series-2-00mm-pitch-PCB-connectors.pdf",
+   "authority": "MANUFACTURER_PRIMARY",
+   "revision": "C01812 Issue 12, 28.11.2022",
+   "pages": "physical index 1-2, printed labels 2-3"
+  },
+  "harwin-m22-training": {
+   "path": "harwin/m22/m20-m22-training-module-cp012-30092025.pdf",
+   "sha256": "fa9cfcafa4a6781ababf7de7f94eba0b840d1bb3671d649c2d5b5c8987db2a44",
+   "url": "https://content.harwin.com/asset/61b46dce-9223-443f-b797-b0dd649865c0/CP012-Product-Training-Module-Overview-Guide-to-the-Harwin-M20-2-54mm-pitch-and-M22-2mm-pitch-ranges.pdf",
+   "authority": "MANUFACTURER_PRIMARY",
+   "revision": "CP012/30092025",
+   "pages": "section 'Surface mount - tape and reel for auto-placement'"
+  },
+  "keystone-k75-p84": {
+   "path": "keystone/smt-standoffs/smt-standoffs-catalog-k75-p84-lcsc-mirror.pdf",
+   "sha256": "d0e559a6d323f88df03c065a305cc39187af871b5f96d7e1a09bc68688536cfd",
+   "url": "https://atta.szlcsc.com/upload/public/pdf/source/20251230/E41C74ECF85230DA8E38031183C0FB27.pdf",
+   "authority": "MANUFACTURER_MIRROR",
+   "revision": "Keystone K75 catalog p.84 (PDF title), PDF created 2025-05-12",
+   "pages": "physical index 0, printed label 84"
+  },
+  "jlc-captures": {
+   "path": "distributor-captures/jlcpcb-lcsc/zudo-osc-hole-field-st-01-20261114/SHA256SUMS",
+   "sha256": "6b12e9fe09712bcbb3acf00eeea6abfafc5935d99042c80d7df4d0b7d95d5614",
+   "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+   "authority": "DISTRIBUTOR_IDENTITY",
+   "revision": "captured 2026-11-14 (public parts-search API, signed image URLs removed)",
+   "pages": "one JSON file per keyword"
+  },
+  "spec": {
+   "path": "samtec/mms/mms-tmm-product-specification-rev-a-2022-08-15.pdf",
+   "sha256": "f7cc75253302d6b4d6a48469f1841f095a4ff2f4e2b9c9a12f9dd0796024ee10",
+   "document": "Product specification MMS/TW-TH/TW-SM/TMM, revision A, 2022-08-15",
+   "url": "https://suddendocs.samtec.com/productspecs/mms-tmm.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "mms_print": {
+   "path": "samtec/mms/mms-1xx-02-smt-print-rev-cz.pdf",
+   "sha256": "d19c85659d2712ed67ad31b5d9f251b4d0556da84de3ad9e1dfd7ff8c67e2130",
+   "document": "Print MMS-1XX-02-XXX-XX-XX-XX-X-XX, revision CZ, 4 sheets",
+   "url": "https://suddendocs.samtec.com/prints/mms-1xx-02-xxx-xx-xx-xx-x-xx-mkt.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "mms_cat": {
+   "path": "samtec/mms/mms-catalog-page-f-226-pdf-2025-10-20.pdf",
+   "sha256": "8500181e673b139b5615b470c6338117194451c0e07a300ff76b7d592e06d531",
+   "document": "MMS catalog page F-226",
+   "url": "https://suddendocs.samtec.com/catalog_english/mms.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "tw_cw1": {
+   "path": "samtec/tw-sm/tw-sm-print-sheet-1-rev-cw.pdf",
+   "sha256": "7eab7b79b8025486771214a79014a619487402916a0da61f143341faefde9e17",
+   "document": "Print TW-XX-XX-XXX-X-XXX-SM-XXX-XX-X-XX sheet 1 of 3, revision CW",
+   "url": "https://suddendocs.samtec.com/prints/tw-xx-xx-xxx-x-xxx-sm-xxx-xx-x-xx-mkt1.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "tw_cw2": {
+   "path": "samtec/tw-sm/tw-sm-print-sheet-2-rev-cw.pdf",
+   "sha256": "774e1f325e40636ed2731ef6f66a6a1dc07ee8da97d48a8fd1696ffc77112d53",
+   "document": "Print TW-SM second sheet, revision CW",
+   "url": "https://suddendocs.samtec.com/prints/tw-xx-xx-xxx-x-xxx-sm-xxx-xx-x-xx-mkt2.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "tw_da": {
+   "path": "samtec/tw-sm/tw-sm-print-rev-da.pdf",
+   "sha256": "5ebc9747de16c3e22064cd311cd5df98b331248a69685112900a9ced8a091a61",
+   "document": "Print TW-SM high temp, revision DA, 4 sheets",
+   "url": "https://suddendocs.samtec.com/prints/tw-xx-xx-xxx-x-xxx-sm-xxx-xx-x-xx-mkt.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "tw_fp": {
+   "path": "samtec/tw-sm/tw-recommended-pcb-layout-rev-c.pdf",
+   "sha256": "ab03319ec45dbfc53789f17286e63477745c8bb85eea27c6f75c04c6258ee8d0",
+   "document": "Recommended PCB layout TW-XX-XX-X-X-XXX-XXX-XXX-XX, revision C",
+   "url": "https://suddendocs.samtec.com/prints/tw-xx-xx-x-x-xxx-xxx-xxx-xx%20footprint.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "tw_cat": {
+   "path": "samtec/tw-sm/tw-sm-tw-th-catalog-page-f-226-pdf-2025-10-20.pdf",
+   "sha256": "a165c6f3f2131addb0f8f039304c845cafbcd5603b79c7751986afbde7f89ee5",
+   "document": "TW-SM/TW-TH catalog page F-226",
+   "url": "https://suddendocs.samtec.com/catalog_english/tw_sm.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "clt_print": {
+   "path": "samtec/clt/clt-1xx-02-xx-d-print-rev-ct.pdf",
+   "sha256": "0f2251dfcf25fb80a1f29209bce3a8cf8170c51c4ab75c6faee32055b343c6ef",
+   "document": "Print CLT-1XX-02-XX-D-XX-X-XX, revision CT, 2 sheets",
+   "url": "https://suddendocs.samtec.com/prints/clt-1xx-02-xx-d-xx-x-xx-mkt.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "clt_cat": {
+   "path": "samtec/clt/tle-clt-catalog-page-f-226-rev-22dec25.pdf",
+   "sha256": "6e62ac4a63718ae9e00ca477108d94d433f068b881eebfd4b5b790042bc3201c",
+   "document": "TLE/CLT catalog page F-226 Rev 22DEC25",
+   "url": "https://suddendocs.samtec.com/catalog_english/clt.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "qual": {
+   "path": "samtec/test-reports/mms-tmm-design-qualification-154341-rev-2.pdf",
+   "sha256": "02fd7a450b4eebd3b7666cc1751a57e48238d5c6f25d3c90047afe59dd740690",
+   "document": "Design qualification test report MMS/TMM 154341 rev 2",
+   "url": "https://suddendocs.samtec.com/testreports/154341_report_rev_2_qua.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "hsc": {
+   "path": "samtec/test-reports/tw-clt-18mm-high-speed-characterization-2006-01-30.pdf",
+   "sha256": "4d104d5de3026b7af19b4780405beb64d9c1c0f520662cdaa07a685a06d9d137",
+   "document": "High speed characterization TW with CLT, 18 mm",
+   "url": "https://suddendocs.samtec.com/testreports/hsc-report_tw-clt-18mm_web.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "jlc": {
+   "path": "distributor-captures/jlcpcb-lcsc/zudo-osc-hole-field-st-01b-20261114/SHA256SUMS",
+   "sha256": "174f3c90c5b170f666c61cc248b0ee33cec3cd37a3ee903cd4d50507bf5e3e06",
+   "document": "JLCPCB parts-search captures 2026-11-14 (distributor identity)",
+   "url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+   "authority": "DISTRIBUTOR_CAPTURE"
+  },
+  "smm_cat": {
+   "path": "samtec/smm/smm-catalog-page-f-226-pdf-2025-10-21.pdf",
+   "sha256": "c1ac1129e007eb08e742f94efe0f56245c3a852e7fd3bed6b36039249f0d81cb",
+   "document": "SMM catalog page F-226",
+   "url": "https://suddendocs.samtec.com/catalog_english/smm.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "hscs": {
+   "path": "samtec/test-reports/tw-clt-18mm-high-speed-characterization-2006-01-30.pdf",
+   "sha256": "4d104d5de3026b7af19b4780405beb64d9c1c0f520662cdaa07a685a06d9d137",
+   "document": "High speed characterization TW with CLT, 18 mm",
+   "url": "https://suddendocs.samtec.com/testreports/hsc-report_tw-clt-18mm_web.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "mated": {
+   "path": "samtec/mms/mmx-mated-views-rev-c.pdf",
+   "sha256": "ad465f4c8cfcf63a156f4f35a4e5f14ad97049f74d66fa21902e7a8a8f411a6b",
+   "document": "MMX Mated Views revision C (MMS with MMT only)",
+   "url": "https://suddendocs.samtec.com/prints/mmx%20mated%20document-mkt.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  },
+  "qual2": {
+   "path": "samtec/test-reports/mms-tmmh-design-qualification-187548-rev-1.pdf",
+   "sha256": "5c20b7fed8106971810c777f5a26f72200727cb2a5adfdc2419b1b7604f5f2eb",
+   "document": "Design qualification MMS/TMMH 187548 rev 1",
+   "url": "https://suddendocs.samtec.com/testreports/187548_report_rev_1_qua.pdf",
+   "authority": "MANUFACTURER_PRIMARY"
+  }
+ },
+ "working_pair": {
+  "family_id": "samtec-mms-02-sv+tw-sm",
+  "decision": "DA-01 D3 working codes",
+  "status": "NOT SELECTED",
+  "socket": "MMS-1nn-02-L-SV(-K-TR), 2.00 mm single row, front board B.Cu",
+  "stacker": "TW-nn-LL-L-S-AAA-SM, 2.00 mm single row, K F.Cu",
+  "mates": {
+   "status": "SOURCED",
+   "value": "each catalog page lists the other as mate",
+   "source": "mms_cat",
+   "locator": "printed F-226 mates block"
+  },
+  "gap_method": {
+   "formula": "gap = pin tip height + socket seated height - insertion",
+   "status": "DERIVED (DA-01 D3); reproduces the published 18 mm TW + CLT stack (hsc title page)",
+   "socket_seated_height_mm": {
+    "status": "SOURCED",
+    "value": "4.496 +0.102/-0.051",
+    "source": "mms_print",
+    "locator": "sheet 1 -SV side view"
+   },
+   "pin_tip_heights_mm": {
+    "status": "SOURCED",
+    "value": {
+     "02": 7.85,
+     "03": 11.86,
+     "04": 12.37,
+     "06": 15.37,
+     "07": 17.35,
+     "09": 9.86
+    },
+    "source": "tw_cw1",
+    "locator": "sheet 1 table 1, maximum 'A' with B zero"
+   },
+   "stacker_A": {
+    "status": "SOURCED",
+    "value": "ordered in .005 in steps from .170 in (4.32 mm), +/- .005 in; 12.07 mm max with -P on reel",
+    "source": "tw_cw1",
+    "locator": "fig 1, notes 8 and 10, packaging notes"
+   },
+   "A_rule": "A <= gap - 4.50 - 0.80 mm, rounded down to 0.005 in (DA-01 D3)"
+  },
+  "insertion_windows_mm": {
+   "mms_sv_top_entry": {
+    "status": "SOURCED",
+    "value": [
+     2.13,
+     4.32
+    ],
+    "source": "mms_cat",
+    "locator": "insertion depth block"
+   },
+   "smm": {
+    "status": "SOURCED",
+    "value": [
+     3.05,
+     3.25
+    ],
+    "source": "smm_cat",
+    "locator": "insertion depth block (0.20 mm window)"
+   },
+   "clt_top_entry_min": {
+    "status": "SOURCED",
+    "value": 1.4,
+    "source": "clt_cat",
+    "locator": "insertion depth block"
+   }
+  },
+  "misalignment_mm_deg": {
+   "initial_linear": {
+    "status": "SOURCED",
+    "value": {
+     "along_row_X": 0.39,
+     "across_row_Y_mms_sv": 0.57,
+     "across_row_Y_dv": 0.37
+    },
+    "source": "spec",
+    "locator": "page 4, section 5.1.1, table 1"
+   },
+   "final_linear": {
+    "status": "SOURCED",
+    "value": {
+     "along_row_X": 0.07,
+     "across_row_Y_single": 0.16,
+     "across_row_Y_double": 0.07
+    },
+    "source": "spec",
+    "locator": "page 4, section 5.1.2, table 5"
+   },
+   "initial_angular": {
+    "status": "SOURCED",
+    "value": {
+     "X_sv_deg": 8.0,
+     "Y_02_to_10_pos_deg": 4.5,
+     "Z_sv_02_to_10_pos_deg": 2.0
+    },
+    "source": "spec",
+    "locator": "page 5"
+   },
+   "final_angular": {
+    "status": "SOURCED",
+    "value": {
+     "X_sv_deg": 3.0,
+     "Y_02_to_10_pos_deg": 2.1,
+     "Z_sv_02_to_10_pos_deg": 1.0
+    },
+    "source": "spec",
+    "locator": "page 5"
+   }
+  },
+  "forces": {
+   "tested_pair_note": "Report 154341 tests MMS with TMM, not with TW-SM; same MMS contact, so the per-position values are the closest sourced figures.",
+   "mating_80pos_new_lb": {
+    "status": "SOURCED",
+    "value": [
+     12.77,
+     15.03
+    ],
+    "source": "qual",
+    "locator": "printed page 15 (MMS-140-02-S-DV-A with TMM-140-01-S-D-SM-A)"
+   },
+   "mating_80pos_after_100_cycles_lb": {
+    "status": "SOURCED",
+    "value": [
+     16.35,
+     23.83
+    ],
+    "source": "qual",
+    "locator": "printed page 15"
+   },
+   "unmating_80pos_new_lb": {
+    "status": "SOURCED",
+    "value": [
+     8.37,
+     10.34
+    ],
+    "source": "qual",
+    "locator": "printed page 15"
+   },
+   "unmating_80pos_after_100_cycles_lb": {
+    "status": "SOURCED",
+    "value": [
+     14.41,
+     17.66
+    ],
+    "source": "qual",
+    "locator": "printed page 15"
+   },
+   "mating_50pos_new_lb": {
+    "status": "SOURCED",
+    "value": [
+     7.98,
+     10.87
+    ],
+    "source": "qual",
+    "locator": "printed page 16"
+   },
+   "per_position_N": {
+    "status": "CALCULATED",
+    "value": {
+     "mating_new": [
+      0.71,
+      0.97
+     ],
+     "mating_after_100_cycles": [
+      0.91,
+      1.33
+     ],
+     "unmating_new": [
+      0.47,
+      0.57
+     ],
+     "unmating_after_100_cycles": [
+      0.8,
+      0.98
+     ]
+    },
+    "formula": "lb x 4.448 / positions"
+   },
+   "normal_force": {
+    "status": "SOURCED",
+    "value": "30 g minimum, gold",
+    "source": "spec",
+    "locator": "page 2, section 3.6"
+   },
+   "contact_resistance": {
+    "status": "SOURCED",
+    "value": "change 15 mOhm maximum",
+    "source": "spec",
+    "locator": "page 2, section 3.5"
+   },
+   "current": {
+    "status": "SOURCED",
+    "value": "3.9 A, one pin powered per row",
+    "source": "spec",
+    "locator": "page 2"
+   },
+   "durability": {
+    "status": "SOURCED",
+    "value": "500 cycles (S plating)",
+    "source": "spec",
+    "locator": "page 2"
+   }
+  },
+  "d3_codes": [
+   {
+    "code": "MMS-105-02-L-SV-K-TR",
+    "verdict": "CONFIRMED",
+    "checks": {
+     "positions": "105 = 5 positions, 1 to 36 range (mms_print sheet 1 ordering block)",
+     "lead_style": "-02 surface mount (print title MMS-1XX-02)",
+     "plating": "-L listed",
+     "row": "-SV single vertical",
+     "K": "-K on -SV and -DV, 3 positions minimum: 5 OK (sheet 1; sheet 3 fig 6)",
+     "TR": "-TR 2 to 36 positions: OK"
+    },
+    "supply": "tape and reel"
+   },
+   {
+    "code": "MMS-103-02-L-SV-K-TR",
+    "verdict": "CONFIRMED",
+    "checks": {
+     "positions": "3",
+     "K": "3 positions minimum: OK at the limit",
+     "TR": "OK"
+    },
+    "supply": "tape and reel"
+   },
+   {
+    "code": "MMS-106-02-L-SV-K-TR",
+    "verdict": "CONFIRMED",
+    "checks": {
+     "positions": "6",
+     "K": "OK",
+     "TR": "OK"
+    },
+    "supply": "tape and reel"
+   },
+   {
+    "verdict": "CONFIRMED",
+    "code": "TW-05-03-L-S-295-SM",
+    "gap_mm": 12.8,
+    "lead_style": "03",
+    "pin_tip_mm": {
+     "status": "SOURCED",
+     "value": 11.86,
+     "source": "tw_cw1",
+     "locator": "sheet 1, table 1, maximum 'A' (post 'B' zero) for lead -03"
+    },
+    "stacker_A_in": 0.295,
+    "stacker_A_mm": 7.493,
+    "A_rule_check": {
+     "status": "CALCULATED",
+     "value": "A <= 7.500 mm = 0.2953 in, rounded down to 0.295 in; within .170 minimum and lead -03 maximum 11.86 mm",
+     "formula": "A <= gap - 4.50 - 0.80, floor to 0.005 in (DA-01 D3)"
+    },
+    "B_mm": {
+     "status": "CALCULATED",
+     "value": 4.367,
+     "formula": "tip - A"
+    },
+    "insertion_mm": {
+     "status": "CALCULATED",
+     "value": 3.556,
+     "formula": "11.86 + 4.496 - 12.8"
+    },
+    "margin_mm": {
+     "status": "CALCULATED",
+     "value": [
+      -1.43,
+      0.76
+     ],
+     "formula": "[2.13 - insertion, 4.32 - insertion]"
+    },
+    "supply": "tube (note 6: tubes for 04 to 36 positions)",
+    "notes": "no -P ordered; -P allowed at 5 positions (note 10) but not in the working code"
+   },
+   {
+    "verdict": "CONFIRMED",
+    "code": "TW-03-06-L-S-460-SM",
+    "gap_mm": 17.0,
+    "lead_style": "06",
+    "pin_tip_mm": {
+     "status": "SOURCED",
+     "value": 15.37,
+     "source": "tw_cw1",
+     "locator": "sheet 1, table 1, maximum 'A' (post 'B' zero) for lead -06"
+    },
+    "stacker_A_in": 0.46,
+    "stacker_A_mm": 11.684,
+    "A_rule_check": {
+     "status": "CALCULATED",
+     "value": "A <= 11.700 mm = 0.4606 in, rounded down to 0.460 in; within .170 minimum and lead -06 maximum 15.37 mm",
+     "formula": "A <= gap - 4.50 - 0.80, floor to 0.005 in (DA-01 D3)"
+    },
+    "B_mm": {
+     "status": "CALCULATED",
+     "value": 3.686,
+     "formula": "tip - A"
+    },
+    "insertion_mm": {
+     "status": "CALCULATED",
+     "value": 2.866,
+     "formula": "15.37 + 4.496 - 17.0"
+    },
+    "margin_mm": {
+     "status": "CALCULATED",
+     "value": [
+      -0.74,
+      1.45
+     ],
+     "formula": "[2.13 - insertion, 4.32 - insertion]"
+    },
+    "supply": "bulk (note 6: 02 and 03 positions bulk)",
+    "notes": "-P not available at 3 positions (note 10: 4 to 36); no pick-and-place pad, placement UNSOURCED (DA owner item 3)"
+   },
+   {
+    "verdict": "CONFIRMED",
+    "code": "TW-06-06-L-S-460-SM",
+    "gap_mm": 17.0,
+    "lead_style": "06",
+    "pin_tip_mm": {
+     "status": "SOURCED",
+     "value": 15.37,
+     "source": "tw_cw1",
+     "locator": "sheet 1, table 1, maximum 'A' (post 'B' zero) for lead -06"
+    },
+    "stacker_A_in": 0.46,
+    "stacker_A_mm": 11.684,
+    "A_rule_check": {
+     "status": "CALCULATED",
+     "value": "A <= 11.700 mm = 0.4606 in, rounded down to 0.460 in; within .170 minimum and lead -06 maximum 15.37 mm",
+     "formula": "A <= gap - 4.50 - 0.80, floor to 0.005 in (DA-01 D3)"
+    },
+    "B_mm": {
+     "status": "CALCULATED",
+     "value": 3.686,
+     "formula": "tip - A"
+    },
+    "insertion_mm": {
+     "status": "CALCULATED",
+     "value": 2.866,
+     "formula": "15.37 + 4.496 - 17.0"
+    },
+    "margin_mm": {
+     "status": "CALCULATED",
+     "value": [
+      -0.74,
+      1.45
+     ],
+     "formula": "[2.13 - insertion, 4.32 - insertion]"
+    },
+    "supply": "tube",
+    "notes": "no -P ordered"
+   },
+   {
+    "verdict": "CONFIRMED",
+    "code": "TW-06-07-L-S-530-SM",
+    "gap_mm": 18.8,
+    "lead_style": "07",
+    "pin_tip_mm": {
+     "status": "SOURCED",
+     "value": 17.35,
+     "source": "tw_cw1",
+     "locator": "sheet 1, table 1, maximum 'A' (post 'B' zero) for lead -07"
+    },
+    "stacker_A_in": 0.53,
+    "stacker_A_mm": 13.462,
+    "A_rule_check": {
+     "status": "CALCULATED",
+     "value": "A <= 13.500 mm = 0.5315 in, rounded down to 0.530 in; within .170 minimum and lead -07 maximum 17.35 mm",
+     "formula": "A <= gap - 4.50 - 0.80, floor to 0.005 in (DA-01 D3)"
+    },
+    "B_mm": {
+     "status": "CALCULATED",
+     "value": 3.888,
+     "formula": "tip - A"
+    },
+    "insertion_mm": {
+     "status": "CALCULATED",
+     "value": 3.046,
+     "formula": "17.35 + 4.496 - 18.8"
+    },
+    "margin_mm": {
+     "status": "CALCULATED",
+     "value": [
+      -0.92,
+      1.27
+     ],
+     "formula": "[2.13 - insertion, 4.32 - insertion]"
+    },
+    "supply": "tube; -07 lead style not available on tape and reel (tw_cw1 packaging notes)",
+    "notes": "no -P ordered"
+   },
+   {
+    "verdict": "CONFIRMED",
+    "code": "TW-03-07-L-S-530-SM",
+    "gap_mm": 18.8,
+    "lead_style": "07",
+    "pin_tip_mm": {
+     "status": "SOURCED",
+     "value": 17.35,
+     "source": "tw_cw1",
+     "locator": "sheet 1, table 1, maximum 'A' (post 'B' zero) for lead -07"
+    },
+    "stacker_A_in": 0.53,
+    "stacker_A_mm": 13.462,
+    "A_rule_check": {
+     "status": "CALCULATED",
+     "value": "A <= 13.500 mm = 0.5315 in, rounded down to 0.530 in; within .170 minimum and lead -07 maximum 17.35 mm",
+     "formula": "A <= gap - 4.50 - 0.80, floor to 0.005 in (DA-01 D3)"
+    },
+    "B_mm": {
+     "status": "CALCULATED",
+     "value": 3.888,
+     "formula": "tip - A"
+    },
+    "insertion_mm": {
+     "status": "CALCULATED",
+     "value": 3.046,
+     "formula": "17.35 + 4.496 - 18.8"
+    },
+    "margin_mm": {
+     "status": "CALCULATED",
+     "value": [
+      -0.92,
+      1.27
+     ],
+     "formula": "[2.13 - insertion, 4.32 - insertion]"
+    },
+    "supply": "bulk; -07 lead style not available on tape and reel (tw_cw1 packaging notes)",
+    "notes": "no pad possible at 3 positions"
+   }
+  ],
+  "shallow_alternative": {
+   "h_mm": 9.885,
+   "codes": [
+    {
+     "verdict": "CONFIRMED (format and table 1)",
+     "code": "TW-x-02-L-S-180-SM",
+     "gap_mm": 9.885,
+     "lead_style": "02",
+     "pin_tip_mm": {
+      "status": "SOURCED",
+      "value": 7.85,
+      "source": "tw_cw1",
+      "locator": "sheet 1, table 1, maximum 'A' (post 'B' zero) for lead -02"
+     },
+     "stacker_A_in": 0.18,
+     "stacker_A_mm": 4.572,
+     "A_rule_check": {
+      "status": "CALCULATED",
+      "value": "A <= 4.585 mm = 0.1805 in, rounded down to 0.180 in; within .170 minimum and lead -02 maximum 7.85 mm",
+      "formula": "A <= gap - 4.50 - 0.80, floor to 0.005 in (DA-01 D3)"
+     },
+     "B_mm": {
+      "status": "CALCULATED",
+      "value": 3.278,
+      "formula": "tip - A"
+     },
+     "insertion_mm": {
+      "status": "CALCULATED",
+      "value": 2.461,
+      "formula": "7.85 + 4.496 - 9.885"
+     },
+     "margin_mm": {
+      "status": "CALCULATED",
+      "value": [
+       -0.33,
+       1.86
+      ],
+      "formula": "[2.13 - insertion, 4.32 - insertion]"
+     },
+     "supply": "see note 6",
+     "notes": "note 8: A .170 to .209 needs an additional repress"
+    },
+    {
+     "verdict": "CONFIRMED (format and table 1)",
+     "code": "TW-x-04-L-S-345-SM",
+     "gap_mm": 14.085,
+     "lead_style": "04",
+     "pin_tip_mm": {
+      "status": "SOURCED",
+      "value": 12.37,
+      "source": "tw_cw1",
+      "locator": "sheet 1, table 1, maximum 'A' (post 'B' zero) for lead -04"
+     },
+     "stacker_A_in": 0.345,
+     "stacker_A_mm": 8.763,
+     "A_rule_check": {
+      "status": "CALCULATED",
+      "value": "A <= 8.785 mm = 0.3459 in, rounded down to 0.345 in; within .170 minimum and lead -04 maximum 12.37 mm",
+      "formula": "A <= gap - 4.50 - 0.80, floor to 0.005 in (DA-01 D3)"
+     },
+     "B_mm": {
+      "status": "CALCULATED",
+      "value": 3.607,
+      "formula": "tip - A"
+     },
+     "insertion_mm": {
+      "status": "CALCULATED",
+      "value": 2.781,
+      "formula": "12.37 + 4.496 - 14.085"
+     },
+     "margin_mm": {
+      "status": "CALCULATED",
+      "value": [
+       -0.65,
+       1.54
+      ],
+      "formula": "[2.13 - insertion, 4.32 - insertion]"
+     },
+     "supply": "see note 6",
+     "notes": ""
+    },
+    {
+     "verdict": "CONFIRMED (format and table 1)",
+     "code": "TW-x-06-L-S-415-SM",
+     "gap_mm": 15.885,
+     "lead_style": "06",
+     "pin_tip_mm": {
+      "status": "SOURCED",
+      "value": 15.37,
+      "source": "tw_cw1",
+      "locator": "sheet 1, table 1, maximum 'A' (post 'B' zero) for lead -06"
+     },
+     "stacker_A_in": 0.415,
+     "stacker_A_mm": 10.541,
+     "A_rule_check": {
+      "status": "CALCULATED",
+      "value": "A <= 10.585 mm = 0.4167 in, rounded down to 0.415 in; within .170 minimum and lead -06 maximum 15.37 mm",
+      "formula": "A <= gap - 4.50 - 0.80, floor to 0.005 in (DA-01 D3)"
+     },
+     "B_mm": {
+      "status": "CALCULATED",
+      "value": 4.829,
+      "formula": "tip - A"
+     },
+     "insertion_mm": {
+      "status": "CALCULATED",
+      "value": 3.981,
+      "formula": "15.37 + 4.496 - 15.885"
+     },
+     "margin_mm": {
+      "status": "CALCULATED",
+      "value": [
+       -1.85,
+       0.34
+      ],
+      "formula": "[2.13 - insertion, 4.32 - insertion]"
+     },
+     "supply": "see note 6",
+     "notes": ""
+    }
+   ],
+   "worst_margin_mm": [
+    -0.33,
+    0.34
+   ]
+  },
+  "el_pair": {
+   "pair": [
+    "CLT-104-02-L-D-K-TR",
+    "TW-04-02-L-D-170-SM-P-TR"
+   ],
+   "gap_mm": 7.2,
+   "socket_code": {
+    "verdict": "CONFIRMED",
+    "checks": {
+     "format": "CLT-1XX-02-XX-D-XX-X-XX (clt_print sheet 1)",
+     "K": "-K on 4 to 50 positions per row: 4 OK",
+     "TR": "-TR 02 to 36: OK",
+     "P_option": "-P from 4 positions (not ordered)"
+    }
+   },
+   "stacker_code": {
+    "verdict": "CONFIRMED",
+    "checks": {
+     "row": "-D double row",
+     "A": ".170 = 4.318 mm, the minimum (tw_cw1 fig 1); note 8 repress applies",
+     "P": "-P on 4 to 36 positions, B >= 1.91: B = 7.85 - 4.318 = 3.53 OK (note 10)",
+     "TR": "-TR with -P needs A <= .475: OK"
+    }
+   },
+   "socket_height_mm": {
+    "status": "SOURCED",
+    "value": "2.29 +/- 0.05",
+    "source": "clt_print",
+    "locator": "sheet 1 side view"
+   },
+   "insertion_mm": {
+    "status": "CALCULATED",
+    "value": 2.94,
+    "formula": "7.85 - (7.2 - 2.29)"
+   },
+   "insertion_minimum_mm": {
+    "status": "SOURCED",
+    "value": 1.4,
+    "source": "clt_cat",
+    "locator": "top entry minimum insertion"
+   },
+   "margin_mm": {
+    "status": "CALCULATED",
+    "value": "+1.54 above the 1.40 minimum; open upward",
+    "formula": "2.94 - 1.40"
+   },
+   "tip_past_socket_face_mm": {
+    "status": "CALCULATED",
+    "value": 0.65,
+    "formula": "7.85 - 7.2"
+   },
+   "pass_through": {
+    "status": "NEEDS_DESIGN",
+    "reason": "Print CT (both sheets) does not state that a top-entry pin may pass through the -D insulator or show an open contact floor; the tip is 0.65 mm past the socket face and therefore into EL. Not decided here.",
+    "nearest_valid_options": [
+     "CLT-104-02-L-D-K-TR as written, pass-through UNSOURCED",
+     "CLT-104-02-L-D-BE-... bottom-entry insulator (print CT lists -BE), entry from the far side; suffix compatibility with -K not checked",
+     "the D3 fallback: six short harnesses EL to P"
+    ]
+   }
+  },
+  "land_patterns": "land-patterns.json",
+  "factory_channel": {
+   "source": {
+    "source": "jlc",
+    "locator": "per-code capture JSON; summary d3-code-summary.json"
+   },
+   "captured": "2026-11-14",
+   "note": "JLCPCB parts search; LCSC identity only through the listing's lcscGoodsUrl. 'Not listed' is a result. A listing is distributor identity, not manufacturer evidence.",
+   "results": {
+    "MMS-105-02-L-SV-K-TR": {
+     "jlc": "C3323733",
+     "library": "expand",
+     "stock": 10,
+     "minPurchaseNum": 1,
+     "leastPatchNumber": 0,
+     "package": "SMD,P=2mm",
+     "preferred": false
+    },
+    "MMS-103-02-L-SV-K-TR": {
+     "jlc": "C5799438",
+     "library": "expand",
+     "stock": 0,
+     "minPurchaseNum": 3,
+     "leastPatchNumber": 0,
+     "package": "SMD,P=2mm",
+     "preferred": false
+    },
+    "MMS-106-02-L-SV-K-TR": {
+     "jlc": "C6991117",
+     "library": "expand",
+     "stock": 0,
+     "minPurchaseNum": 2,
+     "leastPatchNumber": 0,
+     "package": "SMD,P=2mm",
+     "preferred": false
+    },
+    "TW-05-03-L-S-295-SM": "NOT LISTED",
+    "TW-03-06-L-S-460-SM": "NOT LISTED",
+    "TW-06-06-L-S-460-SM": "NOT LISTED",
+    "TW-06-07-L-S-530-SM": "NOT LISTED",
+    "TW-03-07-L-S-530-SM": "NOT LISTED",
+    "CLT-104-02-L-D-K-TR": {
+     "jlc": "C3322261",
+     "library": "expand",
+     "stock": 0,
+     "minPurchaseNum": 7,
+     "leastPatchNumber": 0,
+     "package": "SMD,P=2mm",
+     "preferred": false
+    },
+    "TW-04-02-L-D-170-SM-P-TR": {
+     "jlc": "C20387359",
+     "library": "expand",
+     "stock": 0,
+     "minPurchaseNum": 2,
+     "leastPatchNumber": 0,
+     "package": "SMD,P=2mm",
+     "preferred": false
+    },
+    "TW-05-02-L-S-180-SM": {
+     "jlc": "C20388456",
+     "library": "expand",
+     "stock": 0,
+     "minPurchaseNum": 3,
+     "leastPatchNumber": 0,
+     "package": "SMD,P=2mm",
+     "preferred": false
+    },
+    "TW-03-04-L-S-345-SM": "NOT LISTED",
+    "TW-06-04-L-S-345-SM": "NOT LISTED",
+    "TW-03-06-L-S-415-SM": "NOT LISTED",
+    "TW-06-06-L-S-415-SM": "NOT LISTED"
+   }
+  }
+ },
+ "demoted": [
+  {
+   "family_id": "samtec-smm+tw-sm",
+   "was": "ST-01 rank 1",
+   "reason": "DA-01 C1/C2: each TW-SM lead style serves one 0.2 mm band because the SMM insertion window is 3.05 to 3.25 mm; no lead-style set gives the three gaps 4.2 and 6.0 mm apart, and the 0.20 mm window is below ST-03's Z need (M6).",
+   "window": {
+    "status": "SOURCED",
+    "value": [
+     3.05,
+     3.25
+    ],
+    "source": "smm_cat",
+    "locator": "insertion depth block"
+   },
+   "st01_record": {
+    "family_id": "A-samtec-smm-tw-sm",
+    "rank": "recommended pair family (conditional, see open items)",
+    "pitch_mm": 2.0,
+    "rows": 1,
+    "halves": {
+     "socket": "Samtec SMM-1nn-02-L-S (SMT socket strip, single row)",
+     "stacker": "Samtec TW-nn-LL-L-S-HHH-SM (SMT board stacker, single row; HHH = stacker height in 0.001 in, LL = lead style)"
+    },
+    "orderable_part_numbers": {
+     "construction_rule": {
+      "status": "SOURCED",
+      "value": "SMM-1 [02-40 pins] -02 [plating F/L] -S [options -K, -P, -TR]; TW- [02-36 pins] -[lead style 02,03,04,06,07,09] -[plating F/L/T] -S -[stacker height in inches, 0.005 in steps] -SM [options -P, -A, -TR]",
+      "source": "samtec-smm-catalog + samtec-tw-sm-catalog",
+      "locator": "ordering-code blocks, physical page 0"
+     },
+     "socket_1x3": "SMM-103-02-L-S-K-TR (polyimide pick-and-place pad; -02 thru -05 require -TR)",
+     "socket_1x5": "SMM-105-02-L-S-K-TR",
+     "socket_1x6": "SMM-106-02-L-S-K-TR (or -P-TR)",
+     "stacker_1x3": "TW-03-LL-L-S-HHH-SM (no -P pick-and-place pad: -P is 04-36 positions only)",
+     "stacker_1x5": "TW-05-LL-L-S-HHH-SM-P-TR",
+     "stacker_1x6": "TW-06-LL-L-S-HHH-SM-P-TR",
+     "note": "LL and HHH per joint from the height table below. Which lead style is valid for a given stacker height is UNSOURCED (Samtec configurator not retained)."
+    },
+    "requirements": {
+     "R1_envelope": {
+      "socket_body_length": {
+       "status": "SOURCED",
+       "value": "No. of positions x 2.00 mm (+/-0.13 accumulated)",
+       "source": "samtec-smm-print",
+       "locator": "physical page 0, view -02 surface mount, dimension '(NO. OF POS. x .0787 [2.00]) +/- .005'"
+      },
+      "socket_tail_span_width": {
+       "status": "SOURCED",
+       "value": 4.32,
+       "source": "samtec-smm-print",
+       "locator": "physical page 0, SECT B-B, '.170 REF [4.32 REF]'",
+       "note": "REF dimension; unit mm"
+      },
+      "socket_body_height": {
+       "status": "SOURCED",
+       "value": 3.56,
+       "source": "samtec-smm-print",
+       "locator": "physical page 0, -02 view, '.140 REF [3.56 REF]'",
+       "note": "REF; unit mm"
+      },
+      "stacker_body_length": {
+       "status": "SOURCED",
+       "value": "No. of positions x 2.00 mm",
+       "source": "samtec-tw-sm-catalog",
+       "locator": "physical page 0, SM drawing 'No. of positions x (2.00) .0787'"
+      },
+      "stacker_single_row_tail_span": {
+       "status": "UNSOURCED",
+       "reason": "TW-SM single-row tail geometry is not dimensioned on the catalog page; the Samtec print and recommended layout were not retrieved."
+      },
+      "land_pattern_extents": {
+       "status": "UNSOURCED",
+       "reason": "Samtec recommended PCB layout not retained.",
+       "observation": "Planning estimate only: socket 4.32 mm tail span + 2 x 0.5 mm courtyard margin = 5.32 mm width; length n x 2.0 + 0.5 = 6.5 / 10.5 / 12.5 mm for 1x3 / 1x5 / 1x6"
+      },
+      "courtyard_estimate_vs_gh": {
+       "status": "CALCULATED",
+       "value": {
+        "1x3": "6.5 x 5.32 inside 7.7 x 6.1",
+        "1x5": "10.5 x 5.32 inside 12.7 x 6.1",
+        "1x6": "12.5 x 5.32 inside 13.94 x 6.1"
+       },
+       "expression": "length = 2.0*n + 0.5; width = 4.32 + 2*0.5",
+       "depends_on": [
+        "socket_tail_span_width",
+        "socket_body_length"
+       ],
+       "note": "Project planning margin of 0.5 mm per side; the stacker's own extents remain UNSOURCED, so this does not close R1."
+      }
+     },
+     "R2_both_smt": {
+      "socket": {
+       "status": "SOURCED",
+       "value": "Lead style -02 = surface mount",
+       "source": "samtec-smm-print",
+       "locator": "physical page 0, ordering block 'LEAD STYLE -02: SURFACE MOUNT'"
+      },
+      "stacker": {
+       "status": "SOURCED",
+       "value": "-SM termination",
+       "source": "samtec-tw-sm-catalog",
+       "locator": "physical page 0, top ordering block"
+      }
+     },
+     "R3_heights": {
+      "stacker_height_ordering": {
+       "status": "SOURCED",
+       "value": "Stacker height specified in inches, 0.005 in (0.13 mm) increments",
+       "source": "samtec-tw-sm-catalog",
+       "locator": "physical page 0, STACKER HEIGHT column"
+      },
+      "stacker_height_min_sm": {
+       "status": "SOURCED",
+       "value": 4.32,
+       "source": "samtec-tw-sm-catalog",
+       "locator": "physical page 0, SM drawing 'STACKER HEIGHT (4.32) .170 MIN'",
+       "note": "unit mm"
+      },
+      "lead_style_oal_mm": {
+       "status": "SOURCED",
+       "value": {
+        "-02": 7.85,
+        "-03": 11.86,
+        "-04": 12.37,
+        "-06": 15.37,
+        "-07": 17.35,
+        "-09": 9.86
+       },
+       "source": "samtec-tw-sm-catalog",
+       "locator": "physical page 0, LEAD STYLE / OAL table (SM)"
+      },
+      "mated_height_formula": {
+       "status": "UNSOURCED",
+       "reason": "Samtec states no TW-SM + SMM mated-height formula on the retained pages.",
+       "observation": "Geometric lower bound used here: mated height >= stacker height + socket body height, because the two insulators can at most touch."
+      },
+      "mated_height_min": {
+       "status": "CALCULATED",
+       "value": 7.874,
+       "expression": "stacker_height_min_sm + socket_body_height",
+       "depends_on": [
+        "stacker_height_min_sm",
+        "socket_body_height"
+       ],
+       "note": "Lower bound in mm. Both inputs are SOURCED; the socket height is a REF dimension."
+      },
+      "supported_h": {
+       "status": "CALCULATED",
+       "value": "h >= 7.874 mm, then in 0.127 mm steps",
+       "expression": "h = 3.556 + 0.127*k, k >= 34",
+       "depends_on": [
+        "stacker_height_min_sm",
+        "socket_body_height",
+        "stacker_height_ordering"
+       ],
+       "note": "Planning h = 6.9 is not reachable."
+      },
+      "example_height_set_h_7_874": [
+       {
+        "joint": "adapter gap h",
+        "target_mm": 7.874,
+        "stacker_code": "-170",
+        "stacker_height_in": 0.17,
+        "mated_mm": 7.874,
+        "error_mm": 0.0
+       },
+       {
+        "joint": "P gap h+4.2",
+        "target_mm": 12.074,
+        "stacker_code": "-335",
+        "stacker_height_in": 0.335,
+        "mated_mm": 12.065,
+        "error_mm": -0.009
+       },
+       {
+        "joint": "jack-board gap h+6.0",
+        "target_mm": 13.874,
+        "stacker_code": "-405",
+        "stacker_height_in": 0.405,
+        "mated_mm": 13.843,
+        "error_mm": -0.031
+       }
+      ],
+      "el_to_p_7_2": {
+       "status": "NOT COVERED",
+       "reason": "7.2 mm < 7.874 mm lower bound (shortfall 0.674 mm). Deterministic from SOURCED minimum stacker height and socket height."
+      }
+     },
+     "R4_electrical": {
+      "current_socket": {
+       "status": "SOURCED",
+       "value": "3.3 A per pin (2 pins powered), TMM/SMM",
+       "source": "samtec-smm-catalog",
+       "locator": "physical page 0, SPECIFICATIONS 'Current Rating (TMM/SMM)'"
+      },
+      "current_stacker": {
+       "status": "SOURCED",
+       "value": "3.9 A per pin (2 pins powered)",
+       "source": "samtec-tw-sm-catalog",
+       "locator": "physical page 0, SPECIFICATIONS 'Current Rating'"
+      },
+      "pair_current_basis": {
+       "status": "UNSOURCED",
+       "reason": "No rating stated for the TW + SMM mated pair, temperature-rise criterion or all-pins-powered condition."
+      },
+      "contact_resistance": {
+       "status": "UNSOURCED",
+       "reason": "Samtec product specification / test report not retrieved (HTTP 403)."
+      },
+      "return_share_check": "0.3-0.8 A first estimate is below both stated 2-pins-powered ratings; the lower contact-resistance bound needed for the share calculation is UNSOURCED."
+     },
+     "R5_mating": {
+      "misalignment": {
+       "status": "UNSOURCED",
+       "reason": "Not stated on retained pages; specification not retrieved."
+      },
+      "insertion_force": {
+       "status": "SOURCED",
+       "value": "3.0 oz max (0.83 N)",
+       "source": "samtec-smm-print",
+       "locator": "physical page 0, NOTES 2 'INSERTION FORCE TO BE: 3.0 oz. MAX'",
+       "note": "Note does not state per contact or the gauge; read as the socket's per-contact print limit"
+      },
+      "withdrawal_force": {
+       "status": "SOURCED",
+       "value": "0.4 oz min (0.11 N)",
+       "source": "samtec-smm-print",
+       "locator": "physical page 0, NOTES 3 'WITHDRAWAL FORCE TO BE: 0.4 oz. MIN'"
+      },
+      "retention_in_body": {
+       "status": "SOURCED",
+       "value": "1 lb min",
+       "source": "samtec-smm-print",
+       "locator": "physical page 0, NOTES 1"
+      },
+      "insertion_depth": {
+       "status": "SOURCED",
+       "value": "3.05 to 3.25 mm",
+       "source": "samtec-smm-catalog",
+       "locator": "physical page 0, SPECIFICATIONS 'Insertion Depth'"
+      },
+      "mating_cycles": {
+       "status": "SOURCED",
+       "value": "100 with 10 uin (0.25 um) Au (-L plating)",
+       "source": "samtec-smm-catalog",
+       "locator": "physical page 0, SPECIFICATIONS 'Max Cycles'"
+      }
+     },
+     "R6_process": {
+      "socket_pick_and_place": {
+       "status": "SOURCED",
+       "value": "-K polyimide film pad (2 positions minimum; -02 thru -05 require -TR); -P plastic pad (-02 thru -05 require -TR)",
+       "source": "samtec-smm-catalog",
+       "locator": "physical page 0, OTHER OPTIONS",
+       "note": "Pad diameter conflict: catalog -K '(5.50 mm) .217 DIA', print -K '.118 [3.00] DIA'; print -P pad '.300 [7.62] REF' wide"
+      },
+      "stacker_pick_and_place": {
+       "status": "SOURCED",
+       "value": "-P pick and place pad, 1.91 mm min post height, 04-36 positions only; -06 lead style with -P N/A",
+       "source": "samtec-tw-sm-catalog",
+       "locator": "physical page 0, OTHER OPTION -P",
+       "note": "A 1x3 TW-SM has no pick-and-place pad: requirement 6 fails for 1x3 stackers unless the factory places them another way (NEEDS BENCH / factory question)."
+      },
+      "stacker_locating_peg": {
+       "status": "SOURCED",
+       "value": "-A alignment pin is -D (double row) only",
+       "source": "samtec-tw-sm-catalog",
+       "locator": "physical page 0, OTHER OPTION -A",
+       "note": "Single-row TW-SM has no locating peg or weld tab on the retained page."
+      },
+      "coplanarity_socket": {
+       "status": "SOURCED",
+       "value": "0.10 mm max",
+       "source": "samtec-smm-catalog",
+       "locator": "PROCESSING 'SMT Lead Coplanarity'"
+      },
+      "coplanarity_stacker": {
+       "status": "SOURCED",
+       "value": "0.15 mm max (0.004 in stencil solution may be available)",
+       "source": "samtec-tw-sm-catalog",
+       "locator": "PROCESSING 'SMT Lead Coplanarity'"
+      },
+      "lead_free_solderable": {
+       "status": "SOURCED",
+       "value": "Yes (both halves)",
+       "source": "samtec-smm-catalog + samtec-tw-sm-catalog",
+       "locator": "PROCESSING"
+      },
+      "tall_stacker_reflow_stability": {
+       "status": "UNSOURCED",
+       "reason": "No statement on reflow stability of a tall single-row stacker."
+      },
+      "same_face_through_hole_soldering": {
+       "status": "UNSOURCED",
+       "reason": "No statement on wave or selective soldering exposure after reflow."
+      }
+     },
+     "R7_factory_channel": {
+      "observation": "JLCPCB parts search 2026-11-14 (distributor identity only, extended library, stock 0 for every exact single-row -L part):",
+      "listings": {
+       "SMM-103-02-L-S-K-TR": "C6489678",
+       "SMM-103-02-L-S-TR": "C7364162",
+       "SMM-105-02-L-S-K-TR": "C6229351",
+       "SMM-105-02-L-S": "C5900552",
+       "SMM-106-02-L-S-TR": "C6229379",
+       "SMM-106-02-L-S-P-TR": "C7083838",
+       "TW-06-02-L-S-170-SM": "C20389605",
+       "TW-06-02-L-S-229-SM-P-TR": "C20389611",
+       "TW-06-03-L-S-355-SM": "C7406030",
+       "TW-05-02-L-S-180-SM": "C20388456",
+       "TW-03-02-F-S-170-SM": "C20386444"
+      },
+      "verdict": "UNSOURCED for the exact stacker heights the stack needs (for example -170, -335 and -405 in one lead style); listings show only previously ordered heights, all with stock 0.",
+      "source": "jlc-captures"
+     }
+    },
+    "open_items": [
+     "Fixed 7.2 mm EL-to-P gap is below the family's 7.874 mm lower bound (design decision).",
+     "Contact resistance, mating misalignment and the mated-height statement need the Samtec specification, test report and stack-height data (SOURCE UNAVAILABLE here).",
+     "1x3 stacker has no pick-and-place pad and single row has no alignment pin: factory placement method and reflow stability are open.",
+     "Which lead style is valid for each stacker height is unsourced.",
+     "Recommended PCB layout (land extents) not retained; R1 is only an estimate for the stacker half.",
+     "Exact stacker heights are not stocked in the factory channel."
+    ]
+   }
+  },
+  {
+   "family_id": "samtec-clp+fw-sm",
+   "was": "ST-01 fallback",
+   "reason": "kept by DA-01 as a fallback of last resort; not needed by any D3 joint",
+   "st01_record": {
+    "family_id": "B-samtec-clp-fw-sm",
+    "rank": "fallback pair family",
+    "pitch_mm": 1.27,
+    "rows": 2,
+    "halves": {
+     "socket": "Samtec CLP-1nn-02-L-D (SMT socket, double row; catalog page not retrieved)",
+     "stacker": "Samtec FW-nn-LL-L-D-SSS-PPP-SM (micro board stacker, double row only)"
+    },
+    "orderable_part_numbers": {
+     "construction_rule": {
+      "status": "SOURCED",
+      "value": "FW- [02-50 pins/row] -[lead style -03/-05] -[plating F/L/G] -D -[stacker height in] -[post height in] [-A, -P, -TR]",
+      "source": "samtec-fw-sm-catalog",
+      "locator": "physical page 0, ordering block"
+     },
+     "mapping_note": "Positions are re-cut onto two rows: 1x3 -> FW-02 (2x2, one spare), 1x5 -> FW-03 (2x3, one spare), 1x6 -> FW-03 (2x3). The pin order changes from the GH order.",
+     "socket_1x3": "CLP-102-02-L-D(-TR) (catalog page SOURCE UNAVAILABLE; identity from channel listing only)",
+     "socket_1x5_1x6": "CLP-103-02-L-D(-TR)",
+     "stacker_1x3": "FW-02-LL-L-D-SSS-065-SM",
+     "stacker_1x5_1x6": "FW-03-LL-L-D-SSS-065-SM"
+    },
+    "requirements": {
+     "R1_envelope": {
+      "stacker_body": {
+       "status": "SOURCED",
+       "value": "length No. of positions x 1.27 mm; width (3.42) .135",
+       "source": "samtec-fw-sm-catalog",
+       "locator": "physical page 0, SURFACE MOUNT drawing"
+      },
+      "socket_body": {
+       "status": "UNSOURCED",
+       "reason": "CLP catalog page HTTP 403."
+      },
+      "land_pattern_extents": {
+       "status": "UNSOURCED",
+       "reason": "Recommended layouts not retained."
+      },
+      "courtyard_estimate_vs_gh": "2x3 body 3.81 x 3.42 mm is well inside every GH courtyard; socket extents unsourced"
+     },
+     "R2_both_smt": {
+      "stacker": {
+       "status": "SOURCED",
+       "value": "FW-SM surface mount",
+       "source": "samtec-fw-sm-catalog",
+       "locator": "title block 'samtec.com?FW-SM'"
+      },
+      "socket": {
+       "status": "UNSOURCED",
+       "reason": "CLP lead style -02 = SMT is shown only by channel listings."
+      }
+     },
+     "R3_heights": {
+      "mated_height_table": {
+       "status": "SOURCED",
+       "value": {
+        "FW-XX-03-X-X-233-065 with CLP -02": 8.13,
+        "FW-XX-03-X-X-303-065 with CLP -02": 9.91
+       },
+       "source": "samtec-fw-sm-catalog",
+       "locator": "physical page 0, MATED HEIGHT table ('Processing conditions will affect mated height')"
+      },
+      "stacker_height_ranges": {
+       "status": "SOURCED",
+       "value": {
+        "-03": "5.46 to 8.51 mm",
+        "-05": "6.30 to 15.49 mm"
+       },
+       "source": "samtec-fw-sm-catalog",
+       "locator": "physical page 0, LEAD STYLE / STACKER HEIGHT table"
+      },
+      "smaller_heights": {
+       "status": "SOURCED",
+       "value": "'Smaller stack heights' available, contact Samtec",
+       "source": "samtec-fw-sm-catalog",
+       "locator": "ALSO AVAILABLE box",
+       "note": "Not pursued: contacting Samtec is an outward action."
+      },
+      "mated_offset": {
+       "status": "CALCULATED",
+       "value": 2.212,
+       "expression": "8.13 - 0.233*25.4",
+       "depends_on": [
+        "mated_height_table"
+       ],
+       "note": "Both table rows give the same 2.21 mm offset (9.91 - 0.303*25.4 = 2.214)."
+      },
+      "supported_h": {
+       "status": "CALCULATED",
+       "value": "h >= 7.67 mm (lead -03 min 5.46 + 2.21), 0.127 mm steps; h+4.2 and h+6.0 within lead -05 up to 17.70 mm",
+       "expression": "mated = stacker + 2.21",
+       "depends_on": [
+        "mated_offset",
+        "stacker_height_ranges"
+       ],
+       "note": "Catalog range only"
+      },
+      "example_height_set": [
+       {
+        "joint": "adapter gap h",
+        "target_mm": 7.67,
+        "lead_style": "-03",
+        "stacker_code": "-215",
+        "stacker_height_mm": 5.461,
+        "mated_mm": 7.673
+       },
+       {
+        "joint": "P gap h+4.2",
+        "target_mm": 11.87,
+        "lead_style": "-05",
+        "stacker_code": "-380",
+        "stacker_height_mm": 9.652,
+        "mated_mm": 11.864
+       },
+       {
+        "joint": "jack-board gap h+6.0",
+        "target_mm": 13.67,
+        "lead_style": "-05",
+        "stacker_code": "-450",
+        "stacker_height_mm": 11.43,
+        "mated_mm": 13.642
+       },
+       {
+        "joint": "EL to P (fixed)",
+        "target_mm": 7.2,
+        "lead_style": "below catalog range",
+        "stacker_code": "-195",
+        "stacker_height_mm": 4.953,
+        "mated_mm": 7.165
+       }
+      ],
+      "el_to_p_7_2": {
+       "status": "NOT COVERED IN CATALOG RANGE",
+       "reason": "7.2 mm needs a 4.99 mm stacker, below the -03 minimum 5.46 mm; the 0.005 in grid gives 7.165 (.195) or 7.292 (.200) mm only through Samtec's non-standard 'smaller stack heights'. Channel listings such as FW-03-03-L-D-155-065 (C5642695) show sub-catalog heights exist as identities."
+      }
+     },
+     "R4_electrical": {
+      "current": {
+       "status": "UNSOURCED",
+       "reason": "Not printed on the retained FW-SM page; channel listing shows 3.3 A for CLP (distributor text only)."
+      },
+      "contact_resistance": {
+       "status": "UNSOURCED",
+       "reason": "Specification not retrieved."
+      }
+     },
+     "R5_mating": {
+      "misalignment": {
+       "status": "UNSOURCED",
+       "reason": "Not retained."
+      },
+      "forces": {
+       "status": "UNSOURCED",
+       "reason": "Not retained."
+      },
+      "mating_cycles": {
+       "status": "UNSOURCED",
+       "reason": "Not retained."
+      }
+     },
+     "R6_process": {
+      "pick_and_place": {
+       "status": "SOURCED",
+       "value": "-P pick and place pad: 5 positions per row minimum, SMT only",
+       "source": "samtec-fw-sm-catalog",
+       "locator": "OPTION -P",
+       "note": "FW-02 and FW-03 cannot take -P."
+      },
+      "alignment_pin": {
+       "status": "SOURCED",
+       "value": "-A alignment pin, 3 positions minimum, stacker height 5.46 to 15.75 mm, SMT only",
+       "source": "samtec-fw-sm-catalog",
+       "locator": "OPTION -A"
+      },
+      "coplanarity": {
+       "status": "SOURCED",
+       "value": "0.10 mm max (02-30)",
+       "source": "samtec-fw-sm-catalog",
+       "locator": "PROCESSING"
+      },
+      "same_face_through_hole_soldering": {
+       "status": "UNSOURCED",
+       "reason": "No statement."
+      }
+     },
+     "R7_factory_channel": {
+      "listings": {
+       "CLP-103-02-L-D-TR": "C5572843 (stock 40)",
+       "CLP-102-02-L-D-TR": "C5968780 (stock 10)",
+       "FW-03-03-L-D-155-065": "C5642695 (stock 0)",
+       "FW-02-03-L-D-160-075": "C3329548 (stock 0)"
+      },
+      "verdict": "UNSOURCED for the exact stacker heights needed; sockets are listed with some stock.",
+      "source": "jlc-captures"
+     }
+    },
+    "open_items": [
+     "CLP socket evidence (catalog, print) SOURCE UNAVAILABLE.",
+     "Pin map re-cut from single row to two rows on every site.",
+     "No pick-and-place pad on 2- and 3-per-row stackers; alignment pin available.",
+     "1.27 mm robustness and misalignment tolerance unsourced.",
+     "7.2 mm only via non-standard heights."
+    ]
+   }
+  }
+ ],
+ "excluded_families": [
+  {
+   "family": "Harwin M22 (2.00 mm)",
+   "reason": {
+    "status": "SOURCED",
+    "value": "SMT straight pin headers exist only in double row with 3.5 or 4.2 mm mating pin length; single-row SMT plug is right-angle only. No ordered stacker height.",
+    "source": "harwin-m22-training",
+    "locator": "section 'Surface mount - tape and reel for auto-placement'"
+   },
+   "useful_reference_values": {
+    "status": "SOURCED",
+    "value": {
+     "current": "2 A max per contact (except M22-301/302/304/305: 1 A)",
+     "contact_resistance": "20 mOhm max",
+     "durability": "300 operations (others)",
+     "insertion_force_max": "2.0 N per contact (M22-533/543/634/636/654/655/713/714)",
+     "withdrawal_force_min": "0.2 N per contact (same series)"
+    },
+    "source": "harwin-m22-spec",
+    "locator": "sections 2.2 and 2.4, printed pages 2-3"
+   }
+  },
+  {
+   "family": "Wuerth WR-PHD 2.00 mm",
+   "reason": {
+    "status": "UNSOURCED",
+    "reason": "Catalog page read on 2026-11-14 listed only dual-row SMT socket headers; bytes not retained (we-online.com 403 to downloads)."
+   }
+  },
+  {
+   "family": "hanxia HX PM2.0 / PZ2.0 TP-YQ (factory-channel 2.00 mm SMT female/male)",
+   "reason": {
+    "status": "UNSOURCED",
+    "reason": "Fixed heights only (listing text: female 4 mm, male 3.8 mm); drawings not retrievable as PDF. Channel stock 3651 / 3667 for the 1x6 parts (C42379205, C41417345)."
+   }
+  },
+  {
+   "family": "Samtec TMM-SM / FTS / SFM-TFM (fixed-height parts)",
+   "reason": "fixed heights; the MMS socket is no longer excluded (DA-01 C3): its height is fixed but the TW-SM stacker sets the gap",
+   "st01_reason": {
+    "status": "SOURCED",
+    "value": "Fixed post or body heights; no ordered stacker height in single row. SFM/TFM stack heights 6 to 12 mm in fixed steps; FTS -SV low profile; CLT socket is double row only.",
+    "source": "samtec-tmm-sm-catalog + samtec-mms-catalog + samtec-fts-catalog + samtec-sfm-catalog + samtec-clt-catalog",
+    "locator": "ordering blocks and key-specification table"
+   }
+  }
+ ],
+ "posts": {
+  "survey_status": "PARTIAL",
+  "requirement": "conductive post threaded at both ends, usable as a jack-screw point, at 12.8, 17.0 and 18.8 mm",
+  "manufacturer_advice": {
+   "status": "SOURCED",
+   "value": "standoffs (SO) recommended; jack-screw standoffs (JSO) for multi-connector mates",
+   "source": "spec",
+   "locator": "page 7, section 5.8"
+  },
+  "jack_screw_standoff_class": {
+   "status": "UNSOURCED",
+   "reason": "Samtec JSO/SO prints not retrieved in this pass; dimensions, thread and heights UNSOURCED"
+  },
+  "fixed_posts_12_8_17_0_18_8": {
+   "status": "UNSOURCED",
+   "reason": "no post print retained; thread, across-flats, material, plating and tolerance UNSOURCED; survey NOT RUN for time (coordinator allowance)"
+  },
+  "reflowed_smt": "refused by DA-01 D4; not surveyed again. ST-01 record kept below.",
+  "st01_record": {
+   "requirement": "Conductive threaded post between facing 4 x 4 mm lands at gaps h+4.2 and h+6.0 mm (12.07 and 13.87 mm for h = 7.874; 11.1 and 12.9 mm at the planning h).",
+   "reflowed_smt": [
+    {
+     "family": "Keystone SMT threaded metric standoffs (steel, tin plate, tape and reel with Kapton top)",
+     "status": "SOURCED (manufacturer mirror)",
+     "source": "keystone-k75-p84",
+     "locator": "physical page 0 (printed 84), 'Threaded Metric Standoffs' table",
+     "values": {
+      "thread": "M3",
+      "heights_mm": [
+       2.0,
+       3.0,
+       4.0,
+       6.0,
+       8.0,
+       10.0
+      ],
+      "catalog_numbers_as_printed": [
+       "24881",
+       "28442",
+       "24883",
+       "24884",
+       "24885",
+       "24886"
+      ],
+      "outside_diameter_mm": 5.56,
+      "mounting_hole_mm": 4.2,
+      "solder_pad_diameter_mm": 6.2,
+      "zero_height_insert_m2_5": "24929, OD 5.6 mm, pad 6.2 mm"
+     },
+     "finding": "Maximum 10 mm, below both required gaps; the 6.2 mm solder pad exceeds the 4 x 4 mm land. Torque, pull-out, resistance and current: not stated."
+    },
+    {
+     "family": "Wuerth WA-SMSI M2.5 SMT steel spacer",
+     "status": "UNSOURCED (SOURCE UNAVAILABLE: we-online.com 403)",
+     "observation": "Catalog page read 2026-11-14: OD 5.1 mm, ID 3.5 mm, L 0.5-10 mm in 0.5 mm steps plus 12.5 mm (9774125151R); JLCPCB lists 9774100151R as C5367370 (stock 312, 'M2.5 x 5.1 x L10+1.4'), not 9774125151R."
+    },
+    {
+     "family": "PEM SMTSO (ReelFast)",
+     "status": "UNSOURCED (SOURCE UNAVAILABLE: AWS WAF challenge)",
+     "observation": "Catalog listing read 2026-11-14: M2/M2.5/M3/M3.5 lengths 2-10 mm, tin plated; maximum 10 mm."
+    }
+   ],
+   "mechanically_fixed": {
+    "status": "UNSOURCED",
+    "reason": "No primary document for screwed hex standoffs, swage or press-fit posts was retained (PEM SO/KFE data sheets behind a WAF challenge; Keystone hex standoff pages seen only on a third-party index).",
+    "observation": "Keystone metric hex female standoffs (for example 24394, 24404) exist as catalog identities."
+   },
+   "finding": "No retained reflowed SMT spacer reaches 11.1 mm or more, and every retained SMT spacer needs a land larger than 4 x 4 mm. The one observed tall SMT part (WA-SMSI 12.5 mm, M2.5) is unretained and gives one height only. ST-04 should plan on mechanically fixed posts, which keeps the no-solder-in-load-path rule without an exception."
+  }
+ },
+ "sources_unavailable": [
+  {
+   "what": "MMS -02 -SV recommended land pattern",
+   "reason": "no footprint link on the MMS product page (2026-11-14)"
+  },
+  {
+   "what": "CLT -D recommended land pattern and relief/pass-through detail",
+   "reason": "no document link on the CLT product page beyond print CT and catalog"
+  },
+  {
+   "what": "TW-TH (through-hole stacker) print",
+   "reason": "no print link found on the product page; not fetched"
+  },
+  {
+   "what": "ST-01 history",
+   "value": [
+    {
+     "what": "Samtec product specifications and test reports for SMM, TW-SM, CLP, FW-SM (contact resistance, mating misalignment, normal force)",
+     "attempted": "https://suddendocs.samtec.com/productspecs/{smm,tw,tw-sm,tw-smm,smm-tw,tmm-smm,clt,...}.pdf and /testreports/tw-sm-tr.pdf",
+     "reason": "HTTP 403 (S3 AccessDenied XML) for every guessed path; the samtec.com product pages fetched did not expose a specification-document URL. Only sqt-tmmh.pdf (a different pair) resolved. SOURCE UNAVAILABLE, not a missing spec."
+    },
+    {
+     "what": "Samtec recommended PCB layouts (footprints) for SMM-S, TW-SM single row, FW-SM, CLP",
+     "attempted": "suddendocs.samtec.com footprint paths",
+     "reason": "Path not located; HTTP 403 on guessed paths."
+    },
+    {
+     "what": "Samtec catalog pages CLP, TMMH, SQT, ESQT, FTSH",
+     "attempted": "https://suddendocs.samtec.com/catalog_english/{clp,tmmh,sqt,esqt,ftsh}.pdf",
+     "reason": "HTTP 403."
+    },
+    {
+     "what": "Wuerth WA-SMSI datasheets (9774100151R, 9774125151R, 9774090151R) and WR-PHD 2.00 mm catalog",
+     "attempted": "https://www.we-online.com/components/products/datasheet/9774125151R.pdf and the catalog page",
+     "reason": "HTTP 403 Akamai 'Access Denied' for automated download, 2026-11-14. Catalog facts read through a page-reading tool are observations only and are not retained."
+    },
+    {
+     "what": "PEM SMTSO / SO / K data sheets",
+     "attempted": "https://www.pemnet.com/wp-content/uploads/sites/2/2022/06/{kdata,sodata}.pdf",
+     "reason": "HTTP 202 with an AWS WAF challenge and an empty body; one retry gave the same. Not worked around."
+    },
+    {
+     "what": "hanxia HX PZ2.0 / PM2.0 TP-YQ drawings",
+     "attempted": "https://www.lcsc.com/datasheet/lcsc_datasheet_2411220032_hanxia-HX-PZ2-0-1x6P-TP-YQ_C41417345.pdf",
+     "reason": "Returned an HTML viewer page, not PDF bytes."
+    },
+    {
+     "what": "Mill-Max and Preci-Dip 2.00 mm SMT socket/stacker literature",
+     "attempted": "mill-max.com product page; Preci-Dip search",
+     "reason": "Mill-Max page fetch failed (client error); not pursued further within the time budget."
+    }
+   ],
+   "note": "the Samtec specification entry is withdrawn: DA-01 C6, now retained"
+  }
+ ],
+ "checks_not_run": [
+  "fit, force and alignment: no specimen",
+  "candidate bundle: pin-asset check needs KiCad symbol and footprint, outside this brief",
+  "KiCad: not allowed by the brief"
+ ]
+}
