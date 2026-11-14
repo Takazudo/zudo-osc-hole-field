@@ -1,10 +1,12 @@
-"""Tests for the ST-03 stack-mechanics calculator (attempts a2 to a4). No network, no KiCad."""
+"""Tests for the ST-03 stack-mechanics calculator (attempts a2 to a5). No network, no KiCad."""
 from pathlib import Path
 import hashlib
 import json
 import math
 import re
 import unittest
+
+import numpy as np
 
 import stack_mechanics as sm
 import stack_mechanics_a3 as a3mod
@@ -29,6 +31,9 @@ def sha_rows(path, rows):
 
 
 def pin_is_current(source):
+    if 'json_key' in source:
+        array = json.loads((ROOT / source['path']).read_text())[source['json_key']]
+        return geo.fixings_array_sha256(array) == source['key_sha256']
     if 'rows' in source:
         return sha_rows(source['path'], source['rows']) == source['rows_sha256']
     return sha(source['path']) == source['sha256']
@@ -352,7 +357,7 @@ class TestAttemptA3(Base):
             self.assertIn(text, self.readme)
 
     def test_pins_are_current(self):
-        for sid in ('S-GEOM', 'S-PLAN', 'S-SPACER', 'S-DS', 'S-DA03'):
+        for sid in ('S-GEOM', 'S-PLAN', 'S-SPACER', 'S-DS', 'S-DA03', 'S-FIX'):
             self.assertTrue(pin_is_current(self.data['sources'][sid]), sid)
 
     def test_a3_parameters_have_a_basis(self):
@@ -364,6 +369,80 @@ class TestAttemptA3(Base):
                 self.assertTrue(t.get('formula'), name)
             else:
                 self.assertTrue(t.get('reason') and t.get('to_source'), name)
+
+
+
+class TestAttemptA5(Base):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        import stack_mechanics_a5 as a5mod
+        cls.m = a5mod
+        cls.a = a5mod.A5(cls.c)
+
+    def test_list_is_the_fixing_file(self):
+        fix = json.loads((ROOT / 'design/stack/fixings/fixing-sites.json').read_text())['fixings']
+        listed = [f['id'] for f in fix if f['kind'] != 'sleeve dropped']
+        self.assertEqual([f['id'] for f in self.a.g['fixings']], listed)
+        kinds = [f['kind'] for f in self.a.g['fixings']]
+        self.assertEqual((kinds.count('post'), kinds.count('sleeve kept'), kinds.count('sleeve added')), (18, 2, 3))
+        self.assertEqual(self.a.g['fixings_array_sha256'], self.data['sources']['S-FIX']['key_sha256'])
+
+    def test_farthest_points_match_st08(self):
+        reg = self.a.g['regions']
+        self.assertAlmostEqual(reg['list']['farthest']['span_mm'], 93.61, places=2)
+        self.assertEqual(reg['list']['farthest']['point_xy'], [4.0, 247.0])
+        self.assertAlmostEqual(reg['posts_only']['farthest']['span_mm'], 156.2, places=1)
+        corner = self.a.p['far_points_xy'][1]
+        self.assertAlmostEqual(min(geo.dist(corner, f['xy']) for f in self.a.g['fixings']), 90.4, places=1)
+
+    def test_grillage_reproduces_a_cantilever_strip(self):
+        """A rectangle held along one short side by pinned nodes 2 mm apart behaves as the strip of attempt a4."""
+        bending = self.a.flex * self.a.p['grillage_stiffness_factor']
+        length, width, step, q = 100.0, 40.0, 2.0, 1e-4
+        outline = [[0, 0], [width, 0], [width, length], [0, length]]
+        held = [(x, 0.0) for x in np.arange(0, width + 0.1, step)] + [(x, step) for x in np.arange(0, width + 0.1, step)]
+        gr = self.m.Grillage(outline, step, held, bending)
+        u = gr.uniform(q)
+        exact = q * (length - step) ** 4 / (8 * bending)
+        self.assertTrue(math.isclose(abs(gr.w_at(u, (width / 2, length))), exact, rel_tol=0.08))
+
+    def test_list_figures(self):
+        a, hg = self.a, self.a.a3.p['handling_g']
+        s = a.uniform_summary('list', hg)
+        self.assertTrue(math.isclose(s['max']['w'], 0.641, abs_tol=0.005))
+        self.assertLess(s['max']['w'], a.p['rear_clearance_mm'])
+        self.assertTrue(math.isclose(s['points'][0], 0.378, abs_tol=0.005))
+        self.assertGreater(a.uniform_summary('posts_only', hg)['max']['w'], a.p['rear_clearance_mm'])
+        plus = a.uniform_summary('list_plus_one', hg)
+        self.assertLess(plus['points'][0], s['points'][0])
+
+    def test_sleeve_strains(self):
+        lim = self.c.dv('strain_design_limit')
+        worst = self.a.p['sleeve_error_mm']['worst_case']
+        spans = [s['span_mm'] for s in self.a.g['sleeves']]
+        self.assertAlmostEqual(min(spans), 70.0, places=1)
+        self.assertAlmostEqual(max(spans), 141.5, places=1)
+        self.assertTrue(math.isclose(self.c.strain(worst, min(spans)) * 1e6, 539, abs_tol=1))
+        self.assertTrue(all(self.c.strain(worst, sp) <= lim for sp in spans))
+        self.assertAlmostEqual(self.a.p['grillage_stiffness_factor'], 1 - self.c.v('poisson_fr4'))
+
+    def test_push_bounds(self):
+        a, lim = self.a, self.c.dv('strain_design_limit')
+        lb, d, length, _ = a.cut_lower_bound('list', a.p['far_points_xy'][1])
+        self.assertTrue(math.isclose(d / length, 0.5, abs_tol=0.01))
+        self.assertTrue(math.isclose(lim / lb, 10.3, abs_tol=0.1))
+        comp, _ = a.compliance('list', node_xy=a.p['far_points_xy'][1])
+        self.assertTrue(math.isclose(comp, 2.333, abs_tol=0.01))
+
+    def test_corner_sleeves(self):
+        for sid in ('JL-SUP-1', 'JR-SUP-1'):
+            for board, f in self.a.g['corner_sleeves'][sid].items():
+                self.assertAlmostEqual(min(f['edge_distances_mm']), 2.5, places=3, msg=(sid, board))
+        refs = [p['ref'] for p in self.a.g['corner_sleeves']['JR-SUP-1']['JR']['footprints_within_8_mm']]
+        self.assertIn('R4615', refs)
+        area = self.m.annulus_area(3.5, 1.7, [(2.5, 'x'), (2.5, 'y')], None)
+        self.assertTrue(math.isclose(area, 22.7, abs_tol=0.2))
 
 
 if __name__ == '__main__':

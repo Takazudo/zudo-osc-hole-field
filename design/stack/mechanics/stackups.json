@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "task": "osc-stack-20261114/ST-03@b4daa754",
-  "attempt": "a4 (corrections after the independent code review, DS-54; on the decisions of attempt a3)",
-  "base_commit": "5b08af1",
+  "attempt": "a5 (K on the fixing list of ST-08: DS-66, DS-67, DS-70)",
+  "base_commit": "0c337f3",
   "status": "NEEDS_DESIGN: unvalidated paper study; toggle window, adapter capture and selector misfit contradict decisions; every physical check NOT RUN",
   "status_vocabulary": {
     "SOURCED": "Read from a named file or retrieved page whose SHA256 is recorded in sources.",
@@ -148,10 +148,13 @@
         "DS-43",
         "DS-44",
         "DS-45",
-        "DS-46"
+        "DS-46",
+        "DS-66",
+        "DS-67",
+        "DS-70"
       ],
-      "rows_sha256": "6878f3b34b8613e6eef119ca4ce7221af27b2e885e871f390169c10405e46e1d",
-      "note": "Decision rows DS-27, DS-31, DS-33, DS-35, DS-39 to DS-46. The pin covers these rows only (SHA256 of the row lines joined by a newline), so that a later decision row does not make the mechanics stale"
+      "rows_sha256": "9b2cce98a8339837c67a1a4676982bf7081a7b78c9ecfacb4c0310a6d82c5502",
+      "note": "Decision rows DS-27, DS-31, DS-33, DS-35, DS-39 to DS-46, DS-66, DS-67 and DS-70. The pin covers these rows only (SHA256 of the row lines joined by a newline), so that a later decision row does not make the mechanics stale"
     },
     "S-DA02": {
       "path": "circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-02.md",
@@ -167,6 +170,12 @@
       "path": "design/stack/spacers/spacer-set.json",
       "sha256": "b70580b3223639d7fb8a56a8687723e90f7e469f178ed0c4862de4eb72dceb4f",
       "note": "Printed sleeve set (DS-45)"
+    },
+    "S-FIX": {
+      "path": "design/stack/fixings/fixing-sites.json",
+      "json_key": "fixings",
+      "key_sha256": "fb175afbc0c4e52f2257f4e8b51c80f9f44546decfa918ed477ac2845b35bf3b",
+      "note": "Fixing list of ST-08 a1 part 1 (DS-70). The pin covers the `fixings` array only (SHA256 of its canonical JSON), because the provenance block changes with every decision row"
     }
   },
   "parameters": {
@@ -492,6 +501,79 @@
         "status": "ASSUMED",
         "reason": "A push at a free edge spreads at 45 degrees each side toward the supporting fixings, so the root moment acts over a width of 2 x span (slab practice)",
         "to_source": "Plate finite-element model in ST-12"
+      }
+    },
+    "a5": {
+      "rear_clearance_mm": {
+        "value": 2.8,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-33: the depth stays about 40 mm, with 2.8 mm of rear clearance"
+      },
+      "fixing_distance_rule_mm": {
+        "value": 90.0,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-66: no point of K farther than 90 mm from a fixing"
+      },
+      "sleeve_clamp_rule_mm": {
+        "value": 70.0,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-66: a printed sleeve is clamped only where no other fixing of K lies within 70 mm"
+      },
+      "far_points_xy": {
+        "value": [
+          [
+            4,
+            247
+          ],
+          [
+            4,
+            292
+          ]
+        ],
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-70: farthest point (4, 247) at 93.6 mm; lower left corner (4, 292) at 90.4 mm"
+      },
+      "hypothetical_fixing_xy": {
+        "value": [
+          6.5,
+          243
+        ],
+        "status": "ASSUMED",
+        "reason": "Scope item 6 of attempt a5: one hypothetical fixing at the left edge to size the effect; it stands on a locked pot and is not a site",
+        "to_source": "Not a site; for comparison only"
+      },
+      "sleeve_error_mm": {
+        "value": {
+          "printer": 0.2,
+          "worst_case": 0.55,
+          "too_long": 0.15
+        },
+        "status": "DERIVED",
+        "formula": "printer: a3.sleeve_print_tol_mm; worst case: -sleeve_length_allowance + post_length_tol + print tol (0.2 + 0.15 + 0.2); too long: print tol - allowance - post (0.2 - 0.2 + 0.15)"
+      },
+      "grillage_step_mm": {
+        "value": 4.0,
+        "status": "ASSUMED",
+        "reason": "Node spacing of the torsion-free grillage; the 2 mm mesh is reported as a convergence check",
+        "to_source": "Plate finite-element model in ST-12"
+      },
+      "grillage_stiffness_factor": {
+        "value": 0.85,
+        "status": "DERIVED",
+        "formula": "1 - poisson_fr4: beams of D (1 - nu) per unit width and no torsion make a structure softer than the plate for every displacement field, so its compliance is an upper bound"
+      },
+      "corner_sleeve_options": {
+        "value": {
+          "smaller_outer_diameter_mm": 5.0,
+          "inward_move_mm": 1.0
+        },
+        "status": "ASSUMED",
+        "reason": "Illustrations for item 5: a sleeve whose radius equals the 2.5 mm edge distance, and a move that ends the 1.0 mm overhang",
+        "to_source": "Design authority choice"
       }
     }
   },
@@ -4801,6 +4883,489 @@
           "d_post_mm": 20.9344
         }
       ]
+    },
+    "a5": {
+      "fixing_file": "design/stack/fixings/fixing-sites.json",
+      "fixings_array_sha256": "fb175afbc0c4e52f2257f4e8b51c80f9f44546decfa918ed477ac2845b35bf3b",
+      "fixings": [
+        {
+          "id": "POWER-JL-+12V",
+          "kind": "post",
+          "xy": [
+            40.0,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JL--12V",
+          "kind": "post",
+          "xy": [
+            57.0,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JL-+5V",
+          "kind": "post",
+          "xy": [
+            74.0,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JL-AGND1",
+          "kind": "post",
+          "xy": [
+            91.0,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JL-AGND2",
+          "kind": "post",
+          "xy": [
+            108.0,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JL-AGND3",
+          "kind": "post",
+          "xy": [
+            125.0,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JR-+12V",
+          "kind": "post",
+          "xy": [
+            193.0,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JR--12V",
+          "kind": "post",
+          "xy": [
+            210.0,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JR-+5V",
+          "kind": "post",
+          "xy": [
+            227.5,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JR-AGND1",
+          "kind": "post",
+          "xy": [
+            244.5,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JR-AGND2",
+          "kind": "post",
+          "xy": [
+            261.5,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JR-AGND3",
+          "kind": "post",
+          "xy": [
+            278.5,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-P-+12V",
+          "kind": "post",
+          "xy": [
+            142.0,
+            175.0
+          ]
+        },
+        {
+          "id": "POWER-P--12V",
+          "kind": "post",
+          "xy": [
+            159.0,
+            175.0
+          ]
+        },
+        {
+          "id": "POWER-P-+5V",
+          "kind": "post",
+          "xy": [
+            176.0,
+            175.0
+          ]
+        },
+        {
+          "id": "POWER-P-AGND1",
+          "kind": "post",
+          "xy": [
+            193.0,
+            175.0
+          ]
+        },
+        {
+          "id": "POWER-P-AGND2",
+          "kind": "post",
+          "xy": [
+            98.5,
+            175.0
+          ]
+        },
+        {
+          "id": "POWER-P-AGND3",
+          "kind": "post",
+          "xy": [
+            110.0,
+            174.5
+          ]
+        },
+        {
+          "id": "JL-SUP-1",
+          "kind": "sleeve kept",
+          "xy": [
+            6.5,
+            22.5
+          ]
+        },
+        {
+          "id": "JR-SUP-1",
+          "kind": "sleeve kept",
+          "xy": [
+            311.5,
+            22.5
+          ]
+        },
+        {
+          "id": "SLV-U1",
+          "kind": "sleeve added",
+          "xy": [
+            159.0,
+            38.0
+          ]
+        },
+        {
+          "id": "SLV-L2",
+          "kind": "sleeve added",
+          "xy": [
+            244.0,
+            230.0
+          ]
+        },
+        {
+          "id": "SLV-L1",
+          "kind": "sleeve added",
+          "xy": [
+            93.0,
+            276.0
+          ]
+        }
+      ],
+      "k_outline": [
+        [
+          4,
+          8
+        ],
+        [
+          314,
+          8
+        ],
+        [
+          314,
+          246
+        ],
+        [
+          258,
+          246
+        ],
+        [
+          258,
+          292
+        ],
+        [
+          4,
+          292
+        ]
+      ],
+      "regions": {
+        "posts_only": {
+          "interior_bay": {
+            "radius_mm": 79.6241,
+            "centre_xy": [
+              159.0,
+              88.0
+            ]
+          },
+          "edge_region_low_y": {
+            "span_mm": 156.205,
+            "point_xy": [
+              4.0,
+              8.0
+            ]
+          },
+          "edge_region_high_y": {
+            "span_mm": 136.8211,
+            "point_xy": [
+              4.0,
+              292.0
+            ]
+          },
+          "post_rows_y_mm": [
+            160.0,
+            174.5,
+            175.0
+          ],
+          "farthest": {
+            "span_mm": 156.205,
+            "point_xy": [
+              4.0,
+              8.0
+            ]
+          }
+        },
+        "list": {
+          "interior_bay": {
+            "radius_mm": 76.0,
+            "centre_xy": [
+              80.0,
+              84.0
+            ]
+          },
+          "edge_region_low_y": {
+            "span_mm": 87.1737,
+            "point_xy": [
+              239.0,
+              73.0
+            ]
+          },
+          "edge_region_high_y": {
+            "span_mm": 93.6056,
+            "point_xy": [
+              4.0,
+              247.0
+            ]
+          },
+          "post_rows_y_mm": [
+            160.0,
+            174.5,
+            175.0
+          ],
+          "farthest": {
+            "span_mm": 93.6056,
+            "point_xy": [
+              4.0,
+              247.0
+            ]
+          }
+        },
+        "list_plus_one": {
+          "interior_bay": {
+            "radius_mm": 76.0,
+            "centre_xy": [
+              80.0,
+              84.0
+            ]
+          },
+          "edge_region_low_y": {
+            "span_mm": 87.1737,
+            "point_xy": [
+              239.0,
+              73.0
+            ]
+          },
+          "edge_region_high_y": {
+            "span_mm": 88.459,
+            "point_xy": [
+              180.0,
+              292.0
+            ]
+          },
+          "post_rows_y_mm": [
+            160.0,
+            174.5,
+            175.0
+          ],
+          "farthest": {
+            "span_mm": 88.459,
+            "point_xy": [
+              180.0,
+              292.0
+            ]
+          }
+        }
+      },
+      "sleeves": [
+        {
+          "id": "JL-SUP-1",
+          "kind": "sleeve kept",
+          "xy": [
+            6.5,
+            22.5
+          ],
+          "gap_mm": 19.0,
+          "nearest_other_fixing": "POWER-JL-+12V",
+          "span_mm": 141.522
+        },
+        {
+          "id": "JR-SUP-1",
+          "kind": "sleeve kept",
+          "xy": [
+            311.5,
+            22.5
+          ],
+          "gap_mm": 19.0,
+          "nearest_other_fixing": "POWER-JR-AGND3",
+          "span_mm": 141.405
+        },
+        {
+          "id": "SLV-U1",
+          "kind": "sleeve added",
+          "xy": [
+            159.0,
+            38.0
+          ],
+          "gap_mm": 19.0,
+          "nearest_other_fixing": "POWER-JL-AGND3",
+          "span_mm": 126.649
+        },
+        {
+          "id": "SLV-L2",
+          "kind": "sleeve added",
+          "xy": [
+            244.0,
+            230.0
+          ],
+          "gap_mm": 17.0,
+          "nearest_other_fixing": "POWER-JR-AGND1",
+          "span_mm": 70.002
+        },
+        {
+          "id": "SLV-L1",
+          "kind": "sleeve added",
+          "xy": [
+            93.0,
+            276.0
+          ],
+          "gap_mm": 17.0,
+          "nearest_other_fixing": "POWER-P-AGND2",
+          "span_mm": 101.15
+        }
+      ],
+      "corner_sleeves": {
+        "JL-SUP-1": {
+          "K": {
+            "edge_distances_mm": [
+              2.5,
+              14.5
+            ],
+            "footprints_within_8_mm": [],
+            "board_file": "boards/osc-core/osc-core.kicad_pcb",
+            "board_sha256": "7311cd8e7aabb609c0a6d1a7f2ef42324c585d0c7b51f77c6bd3fc0338c54f22"
+          },
+          "JL": {
+            "edge_distances_mm": [
+              2.5,
+              2.5
+            ],
+            "footprints_within_8_mm": [],
+            "board_file": "boards/osc-jack-left/osc-jack-left.kicad_pcb",
+            "board_sha256": "2cd30044054fcdbf8c94de27515a5bc763e98de12c0f3df212cf5d84ded1ee19"
+          }
+        },
+        "JR-SUP-1": {
+          "K": {
+            "edge_distances_mm": [
+              2.5,
+              14.5
+            ],
+            "footprints_within_8_mm": [],
+            "board_file": "boards/osc-core/osc-core.kicad_pcb",
+            "board_sha256": "7311cd8e7aabb609c0a6d1a7f2ef42324c585d0c7b51f77c6bd3fc0338c54f22"
+          },
+          "JR": {
+            "edge_distances_mm": [
+              2.5,
+              2.5
+            ],
+            "footprints_within_8_mm": [
+              {
+                "ref": "R4615",
+                "lib": "R0603",
+                "origin_xy": [
+                  310.94,
+                  26.11
+                ],
+                "origin_distance_mm": 3.6532,
+                "drills_mm": []
+              },
+              {
+                "ref": "R4616",
+                "lib": "R0603",
+                "origin_xy": [
+                  306.54,
+                  22.51
+                ],
+                "origin_distance_mm": 4.96,
+                "drills_mm": []
+              },
+              {
+                "ref": "RB4607",
+                "lib": "R_1210_3225Metric",
+                "origin_xy": [
+                  307.3,
+                  26.07
+                ],
+                "origin_distance_mm": 5.5122,
+                "drills_mm": []
+              },
+              {
+                "ref": "R4608",
+                "lib": "R0603",
+                "origin_xy": [
+                  312.01,
+                  29.04
+                ],
+                "origin_distance_mm": 6.5599,
+                "drills_mm": []
+              },
+              {
+                "ref": "D1801",
+                "lib": "LED0402-Kingbright-White",
+                "origin_xy": [
+                  309.65,
+                  29.0
+                ],
+                "origin_distance_mm": 6.7581,
+                "drills_mm": []
+              },
+              {
+                "ref": "RB4605",
+                "lib": "R_1210_3225Metric",
+                "origin_xy": [
+                  310.9,
+                  29.67
+                ],
+                "origin_distance_mm": 7.1951,
+                "drills_mm": []
+              }
+            ],
+            "board_file": "boards/osc-jack-right/osc-jack-right.kicad_pcb",
+            "board_sha256": "653b20312851fad1dcf1a90806c1fdc558edf32dfc25d6675b43bb100ff9b3c1"
+          }
+        }
+      }
     }
   },
   "supports_disposition": [
