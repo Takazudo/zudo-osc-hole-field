@@ -35,19 +35,19 @@ The compact table for the ruling. Links per joint in the order JL to K / JR to K
 | Option | Signals per link | Links | Per joint | Lower bound | Slots (share of K) | K by slots / fields only | K F.Cu / B.Cu | K total / criterion | Front JL / JR / P | No legal place | Cable needed, mm | Served by 50 mm (of placed) | Latch reach not shown |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | P100-N20 G-PER-2S | 13 | 45 | 9 / 11 / 23 / 2 | 40 | 28 (1.08 %) | 129 / 153 | 49 / 234 | **282** / 129 | 55 / 91 / 12 | 17 | 37.3 to 39.3 | 28 of 28 | 22 |
-| P100-N20 G-BETWEEN | 10 | 57 | 14 / 14 / 27 / 2 | 50 | 37 (1.43 %) | 165 / 200 | 53 / 313 | **365** / 129 | 85 / 109 / 25 | 20 | 37.3 to 39.3 | 37 of 37 | 30 |
+| P100-N20 G-BETWEEN | 10 | 57 | 14 / 14 / 27 / 2 | 50 | 37 (1.43 %) | 164 / 203 | 55 / 313 | **367** / 129 | 85 / 109 / 25 | 20 | 37.3 to 39.3 | 37 of 37 | 29 |
 | P100-N22 G-PER-2S | 14 | 41 | 9 / 10 / 20 / 2 | 38 | 26 (1.10 %) | 129 / 143 | 56 / 217 | **272** / 129 | 64 / 92 / 17 | 15 | 37.3 to 39.3 | 26 of 26 | 22 |
 | P100-N22 G-BETWEEN | 11 | 57 | 14 / 14 / 27 / 2 | 47 | 36 (1.52 %) | 174 / 194 | 67 / 302 | **368** / 129 | 88 / 122 / 32 | 21 | 37.3 to 39.3 | 36 of 36 | 25 |
 | P050-N30 G-PER-2S | 20 | 33 | 8 / 7 / 16 / 2 | 27 | 25 (0.72 %) | 82 / 66 | 27 / 122 | **148** / 129 | 19 / 33 / 10 | 8 | 37.3 to 39.3 | 25 of 25 | 19 |
 | P050-N30 G-BETWEEN | 15 | 41 | 9 / 10 / 20 / 2 | 35 | 31 (0.90 %) | 109 / 104 | 34 / 180 | **213** / 129 | 23 / 46 / 9 | 10 | 37.3 to 39.3 | 31 of 31 | 24 |
-| P050-N40 G-PER-2S | 26 | 29 | 8 / 6 / 13 / 2 | 22 | 21 (0.79 %) | 81 / 83 | 30 / 134 | **164** / 129 | 29 / 35 / 4 | 8 | 37.3 to 39.3 | 21 of 21 | 11 |
+| P050-N40 G-PER-2S | 26 | 29 | 8 / 6 / 13 / 2 | 22 | 20 (0.75 %) | 80 / 71 | 30 / 121 | **151** / 129 | 29 / 35 / 4 | 9 | 37.3 to 39.3 | 20 of 20 | 10 |
 | P050-N40 G-BETWEEN | 20 | 33 | 8 / 7 / 16 / 2 | 27 | 25 (0.94 %) | 107 / 94 | 41 / 161 | **201** / 129 | 29 / 41 / 12 | 8 | 37.3 to 39.3 | 25 of 25 | 15 |
 | P100-N20-NL G-PER-2S | 13 | 45 | 9 / 11 / 23 / 2 | 40 | 27 (1.04 %) | 124 / 123 | 46 / 201 | **247** / 129 | 44 / 71 / 8 | 18 | 37.3 to 39.3 | 27 of 27 | 18 |
 | P100-N20-NL G-BETWEEN | 10 | 57 | 14 / 14 / 27 / 2 | 50 | 38 (1.47 %) | 153 / 168 | 56 / 266 | **321** / 129 | 73 / 83 / 17 | 19 | 37.3 to 39.3 | 38 of 38 | 23 |
 | P100-N22-NL G-PER-2S | 14 | 41 | 9 / 10 / 20 / 2 | 38 | 25 (1.05 %) | 129 / 105 | 47 / 187 | **234** / 129 | 45 / 75 / 2 | 16 | 37.3 to 39.3 | 25 of 25 | 18 |
 | P100-N22-NL G-BETWEEN | 11 | 57 | 14 / 14 / 27 / 2 | 47 | 36 (1.52 %) | 166 / 162 | 58 / 271 | **328** / 129 | 69 / 105 / 19 | 21 | 37.3 to 39.3 | 36 of 36 | 22 |
 
-Counts cover the placed links only: an option with links that have no legal place would displace more. The post keep-outs stay in both designs; K footprints that the links displace outside them: P100-N20 G-PER-2S 280, P100-N20 G-BETWEEN 362, P100-N22 G-PER-2S 270, P100-N22 G-BETWEEN 368, P050-N30 G-PER-2S 148, P050-N30 G-BETWEEN 211, P050-N40 G-PER-2S 163, P050-N40 G-BETWEEN 201, P100-N20-NL G-PER-2S 244, P100-N20-NL G-BETWEEN 317, P100-N22-NL G-PER-2S 233, P100-N22-NL G-BETWEEN 327.
+Counts cover the placed links only: an option with links that have no legal place would displace more. The post keep-outs stay in both designs; K footprints that the links displace outside them: P100-N20 G-PER-2S 280, P100-N20 G-BETWEEN 364, P100-N22 G-PER-2S 270, P100-N22 G-BETWEEN 368, P050-N30 G-PER-2S 148, P050-N30 G-BETWEEN 211, P050-N40 G-PER-2S 150, P050-N40 G-BETWEEN 201, P100-N20-NL G-PER-2S 244, P100-N20-NL G-BETWEEN 317, P100-N22-NL G-PER-2S 233, P100-N22-NL G-BETWEEN 327.
 
 ## P-K holds the most links without a legal place: 7 to 19 per option, of 8 to 21 unplaced in all
 
@@ -61,7 +61,7 @@ Panel-hardware pins on the front board's B.Cu are forbidden for a field (project
 | P100-N22 G-BETWEEN | 0 | 0 | 19 | 2 |
 | P050-N30 G-PER-2S | 0 | 0 | 7 | 1 |
 | P050-N30 G-BETWEEN | 0 | 0 | 9 | 1 |
-| P050-N40 G-PER-2S | 0 | 0 | 7 | 1 |
+| P050-N40 G-PER-2S | 0 | 0 | 8 | 1 |
 | P050-N40 G-BETWEEN | 0 | 0 | 7 | 1 |
 | P100-N20-NL G-PER-2S | 0 | 0 | 17 | 1 |
 | P100-N20-NL G-BETWEEN | 0 | 0 | 18 | 1 |
@@ -75,65 +75,67 @@ Addition of attempt a5 (item 5), in `link-candidate-p-small.json`. Only the P jo
 | Option | Links (P-K / JL-P) | No legal place | Slots | K displaced | Front JL / P | Cable needed mm | Stock cable (contacts, length) | Opposite-side only | Served / slack mm |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | P only P100-N6 G-PER-2S | 69 / 4 | 45 | 28 | 197 | 5 / 17 | 37.3 to 39.3 | opposite-side only: C90533 70 mm (998) | yes | 28 of 28 / 30.7 to 32.7 |
-| P only P100-N6 G-BETWEEN | 131 / 8 | 104 | 35 | 251 | 8 / 35 | 37.3 to 39.3 | opposite-side only: C90533 70 mm (998) | yes | 35 of 35 / 30.7 to 32.7 |
+| P only P100-N6 G-BETWEEN | 131 / 8 | 105 | 34 | 238 | 8 / 35 | 37.3 to 39.3 | opposite-side only: C90533 70 mm (998) | yes | 34 of 34 / 30.7 to 32.7 |
 | P only P100-N8 G-PER-2S | 66 / 4 | 48 | 22 | 192 | 4 / 29 | 37.3 to 39.3 | same-side: C88604 70 mm (970); opposite C26140 70 mm (1093) | no | 22 of 22 / 30.7 to 32.7 |
 | P only P100-N8 G-BETWEEN | 69 / 4 | 51 | 22 | 171 | 4 / 30 | 37.3 to 39.3 | same-side: C88604 70 mm (970); opposite C26140 70 mm (1093) | no | 22 of 22 / 30.7 to 32.7 |
 | P only P100-N12 G-PER-2S | 34 / 2 | 26 | 10 | 96 | 3 / 12 | 37.3 to 39.3 | same-side: C38477 60 mm (1000) | no | 10 of 10 / 20.7 to 22.7 |
 | P only P100-N12 G-BETWEEN | 45 / 4 | 33 | 16 | 153 | 9 / 18 | 37.3 to 39.3 | same-side: C38477 60 mm (1000) | no | 16 of 16 / 20.7 to 22.7 |
-| P only P050-N8 G-PER-2S | 66 / 4 | 0 | 70 | 199 | 3 / 13 | 37.3 to 39.3 | same-side: C29534 50 mm (stock 772), C81339 40 mm (933) | no | 70 of 70 / 10.7 to 12.7 |
-| P only P050-N8 G-BETWEEN | 69 / 4 | 0 | 73 | 221 | 3 / 10 | 37.3 to 39.3 | same-side: C29534 50 mm (stock 772), C81339 40 mm (933) | no | 73 of 73 / 10.7 to 12.7 |
+| P only P050-N8 G-PER-2S | 66 / 4 | 0 | 70 | 201 | 3 / 13 | 37.3 to 39.3 | same-side: C29534 50 mm (stock 772), C81339 40 mm (933) | no | 70 of 70 / 10.7 to 12.7 |
+| P only P050-N8 G-BETWEEN | 69 / 4 | 0 | 73 | 225 | 3 / 9 | 37.3 to 39.3 | same-side: C29534 50 mm (stock 772), C81339 40 mm (933) | no | 73 of 73 / 10.7 to 12.7 |
 | P only P050-N10 G-PER-2S | 45 / 4 | 0 | 49 | 147 | 1 / 4 | 37.3 to 39.3 | opposite-side only at stock >= 100: C14048 60 mm (511), C14435 65 mm (137); same-side C54646 50 mm has stock 78 | yes | 49 of 49 / 20.7 to 22.7 |
-| P only P050-N10 G-BETWEEN | 66 / 4 | 2 | 68 | 257 | 3 / 12 | 37.3 to 39.3 | opposite-side only at stock >= 100: C14048 60 mm (511), C14435 65 mm (137); same-side C54646 50 mm has stock 78 | yes | 68 of 68 / 20.7 to 22.7 |
-| P only P050-N12 G-PER-2S | 34 / 2 | 1 | 35 | 116 | 0 / 7 | 37.3 to 39.3 | opposite-side only: C74676 50 mm (146) | yes | 35 of 35 / 10.7 to 12.7 |
+| P only P050-N10 G-BETWEEN | 66 / 4 | 3 | 67 | 245 | 3 / 13 | 37.3 to 39.3 | opposite-side only at stock >= 100: C14048 60 mm (511), C14435 65 mm (137); same-side C54646 50 mm has stock 78 | yes | 67 of 67 / 20.7 to 22.7 |
+| P only P050-N12 G-PER-2S | 34 / 2 | 1 | 35 | 117 | 0 / 7 | 37.3 to 39.3 | opposite-side only: C74676 50 mm (146) | yes | 35 of 35 / 10.7 to 12.7 |
 | P only P050-N12 G-BETWEEN | 45 / 4 | 12 | 37 | 160 | 1 / 11 | 37.3 to 39.3 | opposite-side only: C74676 50 mm (146) | yes | 37 of 37 / 10.7 to 12.7 |
 | P only P050-N14 G-PER-2S | 34 / 2 | 14 | 22 | 99 | 1 / 7 | 37.3 to 39.3 | same-side: C68390 50 mm (1004) | no | 22 of 22 / 10.7 to 12.7 |
-| P only P050-N14 G-BETWEEN | 45 / 4 | 20 | 29 | 137 | 2 / 13 | 37.3 to 39.3 | same-side: C68390 50 mm (1004) | no | 29 of 29 / 10.7 to 12.7 |
+| P only P050-N14 G-BETWEEN | 45 / 4 | 20 | 29 | 149 | 2 / 13 | 37.3 to 39.3 | same-side: C68390 50 mm (1004) | no | 29 of 29 / 10.7 to 12.7 |
 
 A stock cable longer than the needed length leaves the difference as a slack loop in the gap; where it rests is NOT RUN. Whether the Z path takes same-side or opposite-side contacts depends on the connector orientations (ST-01e `contact_sides`), so an opposite-side-only row needs a dual-contact part at one end or another path.
 
 ## With the best P option, all joints together: JL/JR P050-N40 + P P050-N10 G-PER-2S places 63 of 63 links and displaces 215 K footprints against 129; JL/JR P100-N20 + P P050-N10 G-PER-2S places 69 of 69 links and displaces 303 K footprints against 129
 
-| Option | Links JL / JR / P / JL-P | No legal place per joint | Slots (share of K) | K slots / fields only | K total / criterion | Front JL / JR / P |
-| --- | --- | --- | --- | --- | --- | --- |
-| JL/JR P050-N40 + P P050-N10 G-PER-2S | 8 / 6 / 45 / 4 | 0 / 0 / 0 / 0 | 63 (1.09 %) | 119 / 96 | **215** / 129 | 29 / 35 / 4 |
-| JL/JR P100-N20 + P P050-N10 G-PER-2S | 9 / 11 / 45 / 4 | 0 / 0 / 0 / 0 | 69 (1.33 %) | 160 / 143 | **303** / 129 | 46 / 91 / 4 |
+Each joint keeps its own size in these rows, so the size and signals per link are given per joint (`size_per_joint` in the candidate), in the order JL to K / JR to K / P to K / JL to P through K.
 
-## 17 P-joint links of P100-N20 G-PER-2S have no legal place; with the other links fixed, 17 of them find one with a field of 9.5 to 18.5 mm
+| Option | Size per joint (signals per link) | Links JL / JR / P / JL-P | No legal place per joint | Slots (share of K) | K slots / fields only | K total / criterion | Front JL / JR / P |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| JL/JR P050-N40 + P P050-N10 G-PER-2S | P050-N40 (26) / P050-N40 (26) / P050-N10 (6) / P050-N10 (6) | 8 / 6 / 45 / 4 | 0 / 0 / 0 / 0 | 63 (1.09 %) | 119 / 96 | **215** / 129 | 29 / 35 / 4 |
+| JL/JR P100-N20 + P P050-N10 G-PER-2S | P100-N20 (13) / P100-N20 (13) / P050-N10 (6) / P050-N10 (6) | 9 / 11 / 45 / 4 | 0 / 0 / 0 / 0 | 69 (1.33 %) | 160 / 143 | **303** / 129 | 46 / 91 / 4 |
 
-Envelope: P100-N20 (latching, enclosing): field n + 7.5 by 6.54 mm, tail n + 1. Rule: per P-joint link without a legal place in the option, with every placed link of the option fixed: the largest n (field n + 7.5 mm) for which the same search finds a legal place around the same centre; bisection over n, which assumes that a shorter field never loses a place a longer one has (ASSUMED).
+## 17 P-joint links of P100-N20 G-PER-2S have no legal place; shorter fields place 17 of them but 0 carry their own signals (57 of 192 signals)
 
-| Link | Centre | Signals | Largest circuits that place | Field length mm | Slot centre |
-| --- | --- | --- | --- | --- | --- |
-| P-K-P-L01 | (293.3, 186.8) | 12 | 9 | 16.5 | (303.3, 186.8) |
-| P-K-P-L03 | (262.7, 186.8) | 12 | 6 | 13.5 | (252.7, 196.8) |
-| P-K-P-L04 | (249.7, 250.3) | 12 | 6 | 13.5 | (235.7, 244.3) |
-| P-K-P-L05 | (229.8, 273.7) | 12 | 2 | 9.5 | (233.8, 275.7) |
-| P-K-P-L06 | (238.3, 208.2) | 12 | 11 | 18.5 | (216.3, 216.2) |
-| P-K-P-L08 | (23.0, 269.0) | 12 | 4 | 11.5 | (41.0, 283.0) |
-| P-K-P-L12 | (62.7, 271.3) | 12 | 3 | 10.5 | (58.7, 269.3) |
-| P-K-P-L15 | (108.0, 199.0) | 12 | 5 | 12.5 | (88.0, 197.0) |
-| P-K-P-L16 | (142.0, 199.0) | 12 | 4 | 11.5 | (124.0, 185.0) |
-| P-K-P-L17 | (176.0, 199.0) | 12 | 4 | 11.5 | (160.0, 185.0) |
-| P-K-P-L18 | (137.8, 232.8) | 12 | 3 | 10.5 | (125.8, 226.8) |
-| P-K-P-L19 | (204.3, 228.1) | 12 | 11 | 18.5 | (216.3, 228.1) |
-| P-K-P-L20 | (142.0, 269.0) | 12 | 11 | 18.5 | (120.0, 267.0) |
-| P-K-P-L21 | (193.0, 269.0) | 12 | 4 | 11.5 | (177.0, 283.0) |
-| P-K-P-L22 | (171.8, 253.8) | 12 | 3 | 10.5 | (185.8, 247.8) |
-| P-K-P-L23 | (163.2, 230.5) | 4 | 3 | 10.5 | (141.2, 226.5) |
-| JL-P-K-P-L01 | (65.5, 276.0) | 8 | 3 | 10.5 | (65.5, 276.0) |
+Envelope: P100-N20 (latching, enclosing): field n + 7.5 by 6.54 mm, tail n + 1. Rule: per P-joint link without a legal place in the option, in the option's order, with every placed link of the option fixed and each place found by the scan added before the next link: the largest n (field n + 7.5 mm) for which the same search finds a legal place around the same centre, and the signals that field carries under the option's ground rule; bisection over n, which assumes that a shorter field never loses a place a longer one has (ASSUMED). Because the scan is sequential, its places overlap neither one another nor the option's placed links. Signals carried = capacity of the largest circuit count that places, under G-PER-2S. A link that does not carry its own signals needs a second link or another split of its sites, which is not searched here, so this scan is no way out for the option.
+
+| Link | Centre | Signals | Largest circuits that place | Field length mm | Signals carried | Carries its own signals | Slot centre |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| P-K-P-L01 | (293.3, 186.8) | 12 | 9 | 16.5 | 6 | no | (303.3, 186.8) |
+| P-K-P-L03 | (262.7, 186.8) | 12 | 6 | 13.5 | 4 | no | (252.7, 196.8) |
+| P-K-P-L04 | (249.7, 250.3) | 12 | 6 | 13.5 | 4 | no | (235.7, 244.3) |
+| P-K-P-L05 | (229.8, 273.7) | 12 | 2 | 9.5 | 1 | no | (233.8, 275.7) |
+| P-K-P-L06 | (238.3, 208.2) | 12 | 11 | 18.5 | 7 | no | (216.3, 216.2) |
+| P-K-P-L08 | (23.0, 269.0) | 12 | 4 | 11.5 | 2 | no | (41.0, 283.0) |
+| P-K-P-L12 | (62.7, 271.3) | 12 | 3 | 10.5 | 2 | no | (58.7, 269.3) |
+| P-K-P-L15 | (108.0, 199.0) | 12 | 5 | 12.5 | 3 | no | (88.0, 197.0) |
+| P-K-P-L16 | (142.0, 199.0) | 12 | 4 | 11.5 | 2 | no | (124.0, 185.0) |
+| P-K-P-L17 | (176.0, 199.0) | 12 | 4 | 11.5 | 2 | no | (160.0, 185.0) |
+| P-K-P-L18 | (137.8, 232.8) | 12 | 3 | 10.5 | 2 | no | (125.8, 226.8) |
+| P-K-P-L19 | (204.3, 228.1) | 12 | 11 | 18.5 | 7 | no | (216.3, 244.1) |
+| P-K-P-L20 | (142.0, 269.0) | 12 | 11 | 18.5 | 7 | no | (120.0, 267.0) |
+| P-K-P-L21 | (193.0, 269.0) | 12 | 4 | 11.5 | 2 | no | (177.0, 283.0) |
+| P-K-P-L22 | (171.8, 253.8) | 12 | 3 | 10.5 | 2 | no | (185.8, 247.8) |
+| P-K-P-L23 | (163.2, 230.5) | 4 | 3 | 10.5 | 2 | no | (177.2, 226.5) |
+| JL-P-K-P-L01 | (65.5, 276.0) | 8 | 3 | 10.5 | 2 | no | (63.5, 262.0) |
 
 ## P100-N20 G-PER-2S: 17 links have no legal place, each with its most frequent blocker in the search
 
 | Link | Centre | Signals | Candidates off a board or inside the edge web (of 1764) | Most frequent blockers on the boards (candidates, smallest penetration mm) |
 | --- | --- | --- | --- | --- |
-| P-K-P-L01 | (293.3, 186.8) | 12 | 1089 | front field on panel hardware SW1702 (109, 1.0); front field on panel hardware SW1701 (83, 0.6) |
+| P-K-P-L01 | (293.3, 186.8) | 12 | 1089 | front field on panel hardware SW1702 (109, 1.0); front field on hole MH_P-OPT-30 (79, 0.8) |
 | P-K-P-L03 | (262.7, 186.8) | 12 | 806 | front field on hole MH_P-OPT-16 (108, 0.8); front field on panel hardware SW1602 (107, 1.0) |
 | P-K-P-L04 | (249.7, 250.3) | 12 | 854 | front field on panel hardware RV1505 (130, 1.8); front field on panel hardware RV1405 (103, 1.1) |
 | P-K-P-L05 | (229.8, 273.7) | 12 | 762 | front field on panel hardware RV1307 (134, 1.7); front field on panel hardware RV1306 (108, 1.7) |
 | P-K-P-L06 | (238.3, 208.2) | 12 | 69 | front field on panel hardware SW1402 (130, 0.9); front field on panel hardware SW1403 (125, 0.9) |
 | P-K-P-L08 | (23.0, 269.0) | 12 | 920 | front field on panel hardware RV206 (148, 1.1); front field on panel hardware RV106 (125, 0.9) |
 | P-K-P-L12 | (62.7, 271.3) | 12 | 556 | front field on panel hardware RV407 (182, 1.4); front field on panel hardware RV406 (175, 1.4) |
-| P-K-P-L15 | (108.0, 199.0) | 12 | 618 | front field on panel hardware RV602 (238, 0.9); front field on panel hardware RV702 (197, 1.1) |
+| P-K-P-L15 | (108.0, 199.0) | 12 | 618 | front field on panel hardware RV602 (198, 0.9); front field on panel hardware RV702 (197, 1.1) |
 | P-K-P-L16 | (142.0, 199.0) | 12 | 348 | front field on panel hardware RV802 (210, 1.1); front field on panel hardware RV902 (192, 1.1) |
 | P-K-P-L17 | (176.0, 199.0) | 12 | 348 | front field on panel hardware RV1002 (208, 1.1); front field on panel hardware RV1102 (192, 1.1) |
 | P-K-P-L18 | (137.8, 232.8) | 12 | 0 | front field on panel hardware RV804 (230, 1.3); front field on panel hardware RV805 (185, 1.3) |
@@ -187,7 +189,7 @@ Envelope: P100-N20 (latching, enclosing): field n + 7.5 by 6.54 mm, tail n + 1. 
 | P-K-P-L08 | (215.1, 246.6) | 10 | 0 | front field on panel hardware RV1305 (248, 0.8); front field on panel hardware RV1205 (192, 1.4) |
 | P-K-P-L09 | (204.9, 274.6) | 10 | 694 | front field on panel hardware RV1207 (162, 1.5); front field on panel hardware RV1206 (158, 1.4) |
 | P-K-P-L10 | (208.3, 212.9) | 10 | 3 | front field on panel hardware RV1203 (288, 0.9); front field on panel hardware RV1202 (266, 0.9) |
-| P-K-P-L11 | (181.1, 190.6) | 10 | 634 | front field on panel hardware RV1102 (182, 1.4); front field on panel hardware RV1101 (161, 1.4) |
+| P-K-P-L11 | (181.1, 190.6) | 10 | 634 | front field on panel hardware RV1102 (182, 1.4); front field on panel hardware RV1002 (151, 1.4) |
 | P-K-P-L12 | (164.1, 277.4) | 10 | 832 | front field on panel hardware RV1007 (162, 1.4); front field on panel hardware RV907 (150, 1.4) |
 | P-K-P-L13 | (21.3, 271.8) | 10 | 1023 | front field on panel hardware RV206 (142, 1.6); front field on panel hardware RV207 (129, 1.2) |
 | P-K-P-L14 | (176.0, 245.2) | 10 | 0 | front field on panel hardware RV1105 (216, 1.3); front field on panel hardware RV1005 (209, 1.3) |
@@ -195,7 +197,7 @@ Envelope: P100-N20 (latching, enclosing): field n + 7.5 by 6.54 mm, tail n + 1. 
 | P-K-P-L16 | (143.7, 196.2) | 10 | 417 | front field on panel hardware RV902 (223, 1.2); front field on panel hardware RV802 (163, 1.2) |
 | P-K-P-L17 | (142.0, 245.2) | 10 | 0 | front field on panel hardware RV905 (216, 1.3); front field on panel hardware RV805 (210, 1.3) |
 | P-K-P-L19 | (130.1, 221.4) | 10 | 0 | front field on panel hardware RV803 (228, 1.4); front field on panel hardware RV804 (218, 1.4) |
-| P-K-P-L20 | (106.3, 196.2) | 10 | 713 | front field on panel hardware RV702 (197, 1.2); front field on panel hardware RV602 (187, 0.2) |
+| P-K-P-L20 | (106.3, 196.2) | 10 | 713 | front field on panel hardware RV702 (190, 1.2); front field on panel hardware RV603 (140, 1.2) |
 | P-K-P-L23 | (24.7, 238.2) | 10 | 512 | front field on panel hardware RV204 (223, 0.3); front field on panel hardware RV205 (175, 1.2) |
 | P-K-P-L24 | (51.9, 223.9) | 10 | 148 | front field on panel hardware RV304 (276, 0.1); front field on panel hardware RV404 (178, 0.1) |
 | P-K-P-L26 | (58.7, 257.8) | 10 | 40 | front field on panel hardware RV406 (225, 1.2); front field on panel hardware RV306 (196, 1.2) |
@@ -241,7 +243,7 @@ Envelope: P100-N20 (latching, enclosing): field n + 7.5 by 6.54 mm, tail n + 1. 
 | P-K-P-L18 | (117.9, 270.6) | +x | C1506, R1526, R1583, R1584 | C5126, C5127, R5117, R5119, U5105, U5106 | 3 | 37.3 | NOT SHOWN: D5110, R1582, RB1511 |
 | P-K-P-L21 | (30.7, 209.9) | -x | R1603, U1602, U1604 | C1606, C1609, R1129, R1133, R1608, R1610, U1601, U1602, U1604 | 0 | 37.3 | NOT SHOWN: R1119, R1126, R1132, R1340 |
 | P-K-P-L22 | (66.3, 209.8) | +x | C1446, C1447, R1477, R1478, R1481, U1412, U1414, U1415 | C1444, C1445, RB1427, RB1428, U1405, U1407, U1413 | 0 | 37.3 | NOT SHOWN: C1432, R1459, R1466 |
-| P-K-P-L25 | (79.3, 230.2) | +y | C1414, C1417, C1512, C1519, R1433, R1445, R1451, R1464, R1492, R1494, R1554, R1558 | C1507, R1533, R1534, R1535, R1557, R1567, R1568, R1569, RVO1511, U1513 | 0 | 37.3 | NOT SHOWN: U1506 |
+| P-K-P-L25 | (81.3, 228.2) | +y | C1414, R1445, R1451, R1464, R1492, R1494, R1545, R1558, RB1411, RB1414, RB1519 | C1507, C1545, R1425, R1533, R1534, R1535, R1549, R1550, R1567, R1568, R1569, RVO1511, U1513 | 0 | 37.3 | open |
 | JL-P-K-JL-L01 | (53.5, 136.0) | +x | C2109, C2136, C2141, Q2105, R2136, R2138, R2140, R2145, R2172, R2189, R2194, RB1101, RV2111 | C1212, C2114, C2145, D2106, D2123, R1140, R1252, R1253, R1254, R1285, R2127, R2132, R2137, R2168, R8132, RV2110 | 4 | 39.3 | NOT SHOWN: R1293, U1208, U2116 |
 
 ## Nets re-routed: every link signal moves on its front board and on K; sites lie up to 64.1 mm from their front field
@@ -249,12 +251,12 @@ Envelope: P100-N20 (latching, enclosing): field n + 7.5 by 6.54 mm, tail n + 1. 
 | Option | Nets re-routed JL / JR / P / K | Site to front field, mean / largest mm: JL-K / JR-K / P-K / JL-P via K |
 | --- | --- | --- |
 | P100-N20 G-PER-2S | 108 / 106 / 276 / 490 | 18.2 / 48.7; 16.1 / 36.7; 21.2 / 43.2; 21.1 / 38.0 |
-| P100-N20 G-BETWEEN | 108 / 106 / 276 / 490 | 11.8 / 32.5; 13.4 / 33.7; 19.6 / 42.1; 29.0 / 49.2 |
+| P100-N20 G-BETWEEN | 108 / 106 / 276 / 490 | 11.8 / 32.5; 13.4 / 33.7; 19.7 / 42.1; 29.0 / 49.2 |
 | P100-N22 G-PER-2S | 108 / 106 / 276 / 490 | 15.8 / 35.2; 16.4 / 36.7; 21.9 / 50.4; 21.2 / 35.3 |
 | P100-N22 G-BETWEEN | 108 / 106 / 276 / 490 | 11.3 / 20.6; 14.7 / 33.7; 18.6 / 42.1; - / - |
 | P050-N30 G-PER-2S | 108 / 106 / 276 / 490 | 18.0 / 36.9; 20.0 / 38.8; 27.8 / 61.4; 29.7 / 41.1 |
 | P050-N30 G-BETWEEN | 108 / 106 / 276 / 490 | 17.0 / 36.7; 16.3 / 35.1; 26.0 / 50.5; 28.1 / 52.9 |
-| P050-N40 G-PER-2S | 108 / 106 / 276 / 490 | 18.5 / 36.8; 20.4 / 37.2; 30.5 / 64.1; 29.6 / 53.3 |
+| P050-N40 G-PER-2S | 108 / 106 / 276 / 490 | 18.5 / 36.8; 20.4 / 37.2; 31.1 / 64.1; 29.6 / 53.3 |
 | P050-N40 G-BETWEEN | 108 / 106 / 276 / 490 | 18.5 / 36.8; 19.7 / 37.2; 27.6 / 61.4; 29.6 / 53.3 |
 | P100-N20-NL G-PER-2S | 108 / 106 / 276 / 490 | 17.6 / 35.8; 17.5 / 37.8; 24.5 / 55.3; 19.0 / 34.1 |
 | P100-N20-NL G-BETWEEN | 108 / 106 / 276 / 490 | 12.9 / 32.0; 14.3 / 31.9; 20.8 / 42.3; 20.2 / 37.9 |
@@ -270,12 +272,13 @@ Contacts: same side; Z path: front connector, bend, slot, bend, K connector; ope
 ## The search is greedy and does not backtrack, so a link without a place may still have one under another order
 
 - Links in a fixed order (joint, link id). For each: every slot centre on a 2.0 mm grid within 24.0 mm of the link centre (ASSUMED), four cable directions.
-- Fields: the front field lies inside the front board and the K field inside K (board-edge margin); neither lies on panel hardware, a hole, a fixing keep-out (18 posts, 12 kept supports, 0 other declared fixings), a tab or a SUB toggle on its face; the front field is not under an adapter outline or a kept selector envelope.
-- Slot: grown by its 2.0 mm web, it stays inside K and off holes, fixing keep-outs and the kept rigid pairs on both K faces, off other slots, and not under an adapter or a kept selector.
-- Tails (the stiffened run of 6.4 mm from each connector opening to the slot): screened against holes, fixing keep-outs (a post, or a sleeve with its screw head, nut and washer, stands in that run), tabs, SUB toggle pins and kept rigid pairs on the tail's face, and against fields, tails and slots of other links. The front tail is also screened against the adapters and kept selectors between the boards; the K tail runs behind K's rear face, where none of them is, so that screen does not apply to it. Panel pins and all other parts under a tail are only listed (`under_tails` in the candidate): whether they stand higher than the cable is a height question with no retained heights (NOT RUN).
+- Fields: the front field lies inside the front board and the K field inside K (board-edge margin); neither lies on panel hardware, a hole, a fixing keep-out (18 posts, 12 kept supports, 0 other declared fixings), a tab or a SUB toggle on its face; the front field is not under an adapter outline or a kept selector envelope. The front field and the front tail stay off the slots of other links that lie under the same front board (where those cables rise to K).
+- Slot: grown by its 2.0 mm web, it stays inside K and off holes, fixing keep-outs and the kept rigid pairs on both K faces, off other slots, and not under an adapter or a kept selector. The slot and the front tail lie in plan under the link's own front board, and the slot stays off other links' front fields and tails there.
+- Kept K/O rigid pairs are forbidden on K F.Cu only, where their envelope stands in the gap to the adapter. The TW-SM stacker is surface mount (its courtyard is the SMT pad span, `land-pattern.json`), so it does not stand through K, and a K field or tail on K's rear face over that envelope is allowed and counted as displacement only where a rear-face footprint lies under it.
+- Tails (the stiffened run of 6.4 mm from each connector opening to the slot): screened against holes, fixing keep-outs (a post, or a sleeve with its screw head, nut and washer, stands in that run), tabs and SUB toggle pins on the tail's face, and against fields, tails and slots of other links. The front tail is also screened against the adapters and kept selectors between the boards; the K tail runs behind K's rear face, where none of them is, so that screen does not apply to it. Panel pins and all other parts under a tail are only listed (`under_tails` in the candidate): whether they stand higher than the cable is a height question with no retained heights (NOT RUN).
 - Cost = displaced footprints (front field, slot on both K faces, K field) + 0.2 per mm of slot distance (ASSUMED). The cheapest legal candidate is kept and becomes an obstacle for later links. The counts are not minima.
 - A link without a legal candidate is reported with the blockers that rejected most candidates; it is not forced in. Another order, a wider radius or a different split of the sites may place more.
-- The checker (`links.check`) re-evaluates every placed link under the same rules against all other placed links of its option, and adds capacity, site coverage and cable length.
+- The checker (`links.check`) trusts nothing recorded: it rebuilds each placed link's geometry from its slot centre, direction and size, recomputes its grounds, capacity, displaced lists and cable length and compares them with the recorded ones, re-evaluates it under the same rules against all other placed links of its option, and checks site coverage and the cable length rule.
 - Latch reach: a K-rear footprint within 1.0 mm (ASSUMED) of a K connector that no link displaces is listed; its height is not retained, so reach is NOT SHOWN there. The front end is plugged with K off and has open access in every placed case.
 
 ## Four assumed parameters move the result most: field envelope, clustering radius, ground-rule reading and tail length

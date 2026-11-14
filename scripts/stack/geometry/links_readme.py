@@ -198,13 +198,20 @@ def render(out, small=None):
       'link centre (ASSUMED), four cable directions.' % (_fmt(sp['step_mm']), _fmt(sp['radius_mm'])))
     w('- Fields: the front field lies inside the front board and the K field inside K (board-edge margin); neither lies '
       'on panel hardware, a hole, a fixing keep-out (%d posts, %d kept supports, %d other declared fixings), a tab or a '
-      'SUB toggle on its face; the front field is not under an adapter outline or a kept selector envelope.'
-      % (fx['posts'], fx['kept_supports'], fx['other_declared']))
+      'SUB toggle on its face; the front field is not under an adapter outline or a kept selector envelope. The front '
+      'field and the front tail stay off the slots of other links that lie under the same front board (where those '
+      'cables rise to K).' % (fx['posts'], fx['kept_supports'], fx['other_declared']))
     w('- Slot: grown by its %s mm web, it stays inside K and off holes, fixing keep-outs and the kept rigid pairs on '
-      'both K faces, off other slots, and not under an adapter or a kept selector.' % _fmt(sp['slot_web_mm']))
+      'both K faces, off other slots, and not under an adapter or a kept selector. The slot and the front tail lie in '
+      'plan under the link\'s own front board, and the slot stays off other links\' front fields and tails there.'
+      % _fmt(sp['slot_web_mm']))
+    w('- Kept K/O rigid pairs are forbidden on K F.Cu only, where their envelope stands in the gap to the adapter. The '
+      'TW-SM stacker is surface mount (its courtyard is the SMT pad span, `land-pattern.json`), so it does not stand '
+      'through K, and a K field or tail on K\'s rear face over that envelope is allowed and counted as displacement '
+      'only where a rear-face footprint lies under it.')
     w('- Tails (the stiffened run of %s mm from each connector opening to the slot): screened against holes, fixing '
-      'keep-outs (a post, or a sleeve with its screw head, nut and washer, stands in that run), tabs, SUB toggle pins and '
-      'kept rigid pairs on the tail\'s face, and against fields, tails and slots of other links. The front tail is also '
+      'keep-outs (a post, or a sleeve with its screw head, nut and washer, stands in that run), tabs and SUB toggle pins '
+      'on the tail\'s face, and against fields, tails and slots of other links. The front tail is also '
       'screened against the adapters and kept selectors between the boards; the K tail runs behind K\'s rear face, '
       'where none of them is, so that screen does not apply to it. Panel pins and all other parts under a tail are '
       'only listed (`under_tails` in the candidate): whether they stand higher than the cable is a height question with '
@@ -214,8 +221,10 @@ def render(out, small=None):
       'minima.' % _fmt(sp['distance_weight_per_mm']))
     w('- A link without a legal candidate is reported with the blockers that rejected most candidates; it is not '
       'forced in. Another order, a wider radius or a different split of the sites may place more.')
-    w('- The checker (`links.check`) re-evaluates every placed link under the same rules against all other placed '
-      'links of its option, and adds capacity, site coverage and cable length.')
+    w('- The checker (`links.check`) trusts nothing recorded: it rebuilds each placed link\'s geometry from its slot '
+      'centre, direction and size, recomputes its grounds, capacity, displaced lists and cable length and compares '
+      'them with the recorded ones, re-evaluates it under the same rules against all other placed links of its option, '
+      'and checks site coverage and the cable length rule.')
     w('- Latch reach: a K-rear footprint within %s mm (ASSUMED) of a K connector that no link displaces is listed; its '
       'height is not retained, so reach is NOT SHOWN there. The front end is plugged with K off and has open access in '
       'every placed case.' % _fmt(sp['latch_margin_mm']))
@@ -279,12 +288,17 @@ def _p_small(w, ps, rig):
       % '; '.join('%s places %d of %d links and displaces %d K footprints against %d' % (
           s['option'], s['placed'], s['links'], s['K_displaced']['total'], rig['total']) for s in cs))
     w('')
-    w('| Option | Links JL / JR / P / JL-P | No legal place per joint | Slots (share of K) | K slots / fields only | K total / criterion | Front JL / JR / P |')
-    w('| --- | --- | --- | --- | --- | --- | --- |')
+    w('Each joint keeps its own size in these rows, so the size and signals per link are given per joint '
+      '(`size_per_joint` in the candidate), in the order JL to K / JR to K / P to K / JL to P through K.')
+    w('')
+    w('| Option | Size per joint (signals per link) | Links JL / JR / P / JL-P | No legal place per joint | Slots (share of K) | K slots / fields only | K total / criterion | Front JL / JR / P |')
+    w('| --- | --- | --- | --- | --- | --- | --- | --- |')
     for s in cs:
         k = s['K_displaced']
-        w('| %s | %s | %s | %d (%.2f %%) | %d / %d | **%d** / %d | %d / %d / %d |' % (
-            s['option'], ' / '.join(str(s['links_per_joint'][j]) for j in JOINTS),
+        spj = s['size_per_joint']
+        w('| %s | %s | %s | %s | %d (%.2f %%) | %d / %d | **%d** / %d | %d / %d / %d |' % (
+            s['option'], ' / '.join('%s (%d)' % (spj[j]['size'], spj[j]['signals_per_link']) for j in JOINTS),
+            ' / '.join(str(s['links_per_joint'][j]) for j in JOINTS),
             ' / '.join(str(s['unplaced_per_joint'][j]) for j in JOINTS), s['slots'], s['slot_area_share_of_K_pct'],
             k['by_slots'], k['by_fields_only'], k['total'], rig['total'],
             s['front_displaced']['JL'], s['front_displaced']['JR'], s['front_displaced']['P']))
@@ -292,14 +306,21 @@ def _p_small(w, ps, rig):
     fs = ps['field_scan']
     got = [r for r in fs['links'] if r['largest_circuits_placed'] is not None]
     lens = [r['field_length_mm'] for r in got]
-    w('## %d P-joint links of %s have no legal place; with the other links fixed, %d of them find one with a field of '
-      '%s to %s mm' % (len(fs['links']), fs['option'], len(got), _fmt(min(lens)) if lens else '-', _fmt(max(lens)) if lens else '-'))
+    w('## %d P-joint links of %s have no legal place; shorter fields place %d of them but %d carry their own signals '
+      '(%d of %d signals)' % (len(fs['links']), fs['option'], len(got), fs['links_whose_signals_fit'],
+                              fs['signals_carried_total'], fs['signals_needed_total']))
     w('')
-    w('Envelope: %s. Rule: %s.' % (fs['envelope'], fs['rule']))
+    w('Envelope: %s. Rule: %s. Because the scan is sequential, its places overlap neither one another nor the '
+      'option\'s placed links. Signals carried '
+      '= capacity of the largest circuit count that places, under %s. A link that does not carry its own signals needs '
+      'a second link or another split of its sites, which is not searched here, so this scan is no way out for the '
+      'option.' % (fs['envelope'], fs['rule'], fs['ground_rule']))
     w('')
-    w('| Link | Centre | Signals | Largest circuits that place | Field length mm | Slot centre |')
-    w('| --- | --- | --- | --- | --- | --- |')
+    w('| Link | Centre | Signals | Largest circuits that place | Field length mm | Signals carried | Carries its own signals | Slot centre |')
+    w('| --- | --- | --- | --- | --- | --- | --- | --- |')
     for r in fs['links']:
-        w('| %s | %s | %d | %s | %s | %s |' % (r['link'], _xy(r['centre']), r['signals'], _fmt(r['largest_circuits_placed']),
-                                             _fmt(r['field_length_mm']), _xy(r['slot_centre']) if r['slot_centre'] else '-'))
+        w('| %s | %s | %d | %s | %s | %d | %s | %s |' % (r['link'], _xy(r['centre']), r['signals'], _fmt(r['largest_circuits_placed']),
+                                                       _fmt(r['field_length_mm']), r['signals_carried'],
+                                                       'yes' if r['own_signals_fit'] else 'no',
+                                                       _xy(r['slot_centre']) if r['slot_centre'] else '-'))
     w('')
