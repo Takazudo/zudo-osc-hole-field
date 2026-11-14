@@ -64,6 +64,12 @@ flowchart LR
   ST03f --> ST04
   ST01 --> ST02r["ST-02 re-run with footprints"]
   ST02["ST-02 geometry candidate and checker"] --> ST02r
+  ST01 --> DA01["DA-01 design review A1"]
+  ST02 --> DA01
+  ST03 --> DA01
+  DA01 --> ST04
+  DA01 --> ST05
+  DA01 --> ST07
   ST04 --> GA{"Gate A"}
   ST03f --> GA
   ST01 --> GA
@@ -80,23 +86,26 @@ Phase 0 writes new candidate files only, under `design/stack/`, `scripts/stack/`
 
 | ID | Deliverable | Model / environment | State | Depends on | Review |
 | --- | --- | --- | --- | --- | --- |
-| S0 | This record, the wave-1 briefs, the owner direction recorded in the plan page | Manager | DONE (this commit) | none | n/a |
-| ST-01 | Connector and spacer evidence, candidate bundles, selection proposal ([brief](st-01.md)) | Opus child, worktree `/home/user/wt/st-01`; web access for primary documents | ADMITTED, wave 1 | none | Design authority (packet A) |
-| ST-02 | Retained stack-geometry candidate and checker ([brief](st-02.md)) | Opus child, worktree `/home/user/wt/st-02` | ADMITTED, wave 1 | none; re-run with ST-01 footprints | Independent reviewer (packet C) |
-| ST-03 | Stack mechanics: datums, closing order, stack-ups, separation, coupon definition ([brief](st-03.md)) | Opus child, worktree `/home/user/wt/st-03` | ADMITTED, wave 1 (parametric start) | ST-01 figures to finish | Design authority (packet A) |
-| ST-04 | Power-post joint design and electrical re-derivation | Opus child | PLANNED | ST-01, ST-03 | Design authority (packet A) |
-| ST-05 | Thermal paper screen | Opus child | PLANNED, wave 2 | none | Independent reviewer (packet C) |
-| ST-06 | SUB toggle specification for OSC2 and OSC4 | Opus child | PLANNED, wave 2 | none | Design authority (packet B) |
-| ST-07 | Trimmer and test-point relocation plan | Opus child | PLANNED, wave 2 | none | Design authority (packet B) |
+| S0 | This record, the wave-1 briefs, the owner direction recorded in the plan page | Manager | DONE (`91246e9`) | none | n/a |
+| ST-01 | Connector and spacer evidence, selection proposal ([brief](st-01.md)) | Opus child, worktree `/home/user/wt/st-01`; web access for primary documents | REPORTED 18:21 UTC: `NEEDS_DESIGN`. Commit `5ab8306`; vendor files in `circuit-dev-resources` commit `f04bdd7` (its pull request 6). Manager check: allowed writes only; all 13 cited source hashes match the stored files. The candidate bundle was not created, because the pin-asset check needs a KiCad symbol and footprint that the brief excluded; it follows the family selection | none | DA-01, then packet A |
+| ST-02 | Retained stack-geometry candidate and checker ([brief](st-02.md)) | Opus child, worktree `/home/user/wt/st-02` | REPORTED 18:26 UTC: DONE. Commit `a95ff38`. Manager check: allowed writes only; 32 tests pass in 8.8 s; `check.py` PASS with 0 errors and unchanged report bytes. Reconciliation: 116 reproduced, 2 corrected, 31 not checkable, 1 not run. ST-01 retained no land pattern, so the default envelope stays; a re-run follows the `h` that DA-01 sets | none | Independent reviewer (packet C), pending |
+| ST-03 | Stack mechanics: datums, closing order, stack-ups, separation, coupon definition ([brief](st-03.md)) | Opus child, worktree `/home/user/wt/st-03` | REPORTED 18:24 UTC: PARTIAL with six `NEEDS_DESIGN` items; the paper stack does not close on worst case. Commit `d0dd0b3`. Manager check: allowed writes only; 14 tests pass. Of the eight ST-01 figures that finish it, only the insertion and withdrawal force are sourced; the finish follows DA-01 | ST-01 figures to finish | DA-01, then packet A |
+| DA-01 | Design review A1 of ST-01 and ST-03, and decisions D1 to D6 ([brief](da-01.md)) | Design authority: Fable agent at high effort, worktree `/home/user/wt/da-01` | RUNNING: attempt a1 launched 2026-11-14 18:30 UTC from `stack/wave-1` `d74bce0` | ST-01, ST-02, ST-03 | n/a |
+| ST-04 | Power-post joint design and electrical re-derivation ([brief](st-04.md)) | Opus child, worktree `/home/user/wt/st-04` | PLANNED; brief written; held for DA-01 (D6) | ST-01, ST-03, DA-01 | Design authority (packet A) |
+| ST-05 | Thermal paper screen ([brief](st-05.md)) | Opus child, worktree `/home/user/wt/st-05` | PLANNED, wave 2; brief written; held for DA-01 (D6) | DA-01 | Independent reviewer (packet C) |
+| ST-06 | SUB toggle specification for OSC2 and OSC4 ([brief](st-06.md)) | Opus child, worktree `/home/user/wt/st-06` | REPORTED 18:52 UTC: DONE, all eight items specified, none `NEEDS_DESIGN`. Commit `019fc7a`. Manager check: allowed writes only; 20 tests pass; `spec.json` matches its generator. One decision is requested: the node that clocks the divider (a squared sawtooth from the spare comparator half, proposed, or the existing pulse) | none | Design authority (packet B), pending |
+| ST-07 | Trimmer and test-point relocation plan ([brief](st-07.md)) | Opus child, worktree `/home/user/wt/st-07` | PLANNED, wave 2; brief written; held for DA-01 (D6) | DA-01 | Design authority (packet B) |
 | GA | Gate A: adopt or reject the direct stack on the Phase 0 evidence; decide Q3, Q4, Q5 and Q8 | Design authority: Fable agent at high effort | PLANNED | ST-01, ST-03, ST-04 | n/a |
 | Phase 1 to 3 | ST-10 to ST-31 of the plan page | Mapped at the campaign revision that follows Gate A | NOT PLANNED IN DETAIL | Gate A | n/a |
 
-Review packets: A is the design review of ST-01, ST-03 and ST-04 together with the Gate A decision; B is the design review of ST-06 and ST-07; C is the independent review of ST-02 and ST-05 by a child that implemented neither.
+Launch receipts: the three wave-1 children were started through the Agent tool with `model: opus` and no effort setting, each bound to its own worktree and brief. The in-session agent identifiers are kept in the manager session; they are not valid outside it and are not recorded here. DA-01 was started with `model: fable` and `effort: high`, as the owner directed; ST-06 with `model: opus` and no effort setting.
+
+Review packets: A is the design review of ST-01, ST-03 and ST-04 together with the Gate A decision; B is the design review of ST-06 and ST-07; C is the independent review of ST-02 and ST-05 by a child that implemented neither. The code of ST-02 and ST-03 had its independent review on 2026-11-14 with the built-in code review at medium effort over `scripts/stack/geometry` and `scripts/stack/mechanics`: ten findings, all verified or accepted by the manager, none changing a headline result. Eight are in ST-02's files and are being fixed in its one continuation; the two in ST-03's calculator (an RSS term missing from one strain case, and geometry constants that have diverged from the ST-02 candidate) go into ST-03's finish after DA-01.
 
 ## Integration procedure
 
 1. A child reports with its result section filled and its commits on `stack/<task-id>`.
-2. The manager checks the allowed-writes list against `git diff --stat`, re-runs the task's own checks, and sends the result to its review packet.
+2. The manager checks the allowed-writes list against `git diff --stat`, re-runs the task's own checks, and sends the result to its review packet. When a later task or the design authority must read the result first, the manager merges it into the local integration branch `stack/wave-<n>` as candidate evidence with its review pending (DS-10); review findings are then fixed by follow-up commits.
 3. After review, the manager merges the child branch into `claude/project-thread-zao1qg` with a regular merge, runs `pnpm circuit:check`, `pnpm check` and the aggregate gates that the change touches, pushes, and opens one pull request per wave. CI on the pull request is the reference for the full Python suite, the native checks and `regen-all.sh --check`.
 4. A green pull request is merged with a regular merge. The branch is then fast-forwarded to `main`.
 5. This file and [decisions.md](decisions.md) are updated at every wave boundary; they are the durable checkpoint for a restart.
@@ -107,4 +116,13 @@ On restart, read this file and [decisions.md](decisions.md), list `/home/user/wt
 
 ## Time accounting
 
-Model usage per agent: unknown (not exposed). Wall time per task is recorded in each task result.
+Wall time and model usage per attempt, from the Agent tool's completion notices (the manager's own usage is not included):
+
+| Task | Attempt | Wall time | Subagent tokens | Tool uses |
+| --- | --- | --- | --- | --- |
+| ST-01 | a1 | 18 min (1084 s) | 315,119 | 121 |
+| ST-02 | a1 | 22 min (1329 s) | 324,202 | 62 |
+| ST-03 | a1 | 21 min (1250 s) | 299,324 | 65 |
+| ST-06 | a1 | 23 min (1363 s) | 298,356 | 66 |
+
+The wall times that the children wrote into their result sections are their own estimates; the figures here are the measured ones. ST-01's result section says about 2.5 h, which is wrong.
