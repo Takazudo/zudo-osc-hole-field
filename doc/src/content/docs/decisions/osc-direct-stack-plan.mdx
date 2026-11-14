@@ -8,11 +8,11 @@ Authority: **PROPOSAL (planning, owner-requested)**. Status: **NOT ADOPTED; unva
 
 This page plans a successor to the [conditional ten-board partition](./osc-board-partition.mdx). It changes no adopted design data. `design/partition/partition.json`, the placement lock, the routed board drafts, both decision registers and every generated page are untouched. Until the owner adopts the plan, the cable-based partition with K at −100 mm stays the working design.
 
-The owner asked on 2026-11-14 for board-to-board joints in place of cable-only connections, with cables kept only where board heights justify them, and accepted removing the OSC2 and OSC4 octave selectors. Every schematic and PCB remains an unvalidated draft. Fit, alignment, mating-force, thermal and electrical checks of this plan are **NOT RUN**: no exact connector is selected and no specimen exists.
+The owner asked on 2026-11-14 for board-to-board joints in place of cable-only connections, with cables kept only where board heights justify them, accepted removing the OSC2 and OSC4 octave selectors, and chose a SUB toggle as their replacement. Every schematic and PCB remains an unvalidated draft. Fit, alignment, mating-force, thermal and electrical checks of this plan are **NOT RUN**: no exact connector is selected and no specimen exists.
 
 ## Recommendation: stack K directly behind the front boards
 
-Keep the circuit partition, every front board plane and every placed part. Change four things:
+Keep the circuit partition, every front board plane and every placed part apart from the OSC2 and OSC4 selector change. Change four things in the stack:
 
 1. Move K's plane from −100 mm to about −24.5 mm.
 2. Replace the harness headers on both boards of each mate by a rigid pin-and-socket pair at the same coordinates.
@@ -25,18 +25,18 @@ Keep the circuit partition, every front board plane and every placed part. Chang
 | K F.Cu plane | −100 mm | about −24.5 mm (planning value) |
 | Enclosure inside depth | 120 mm proposal | about 34 mm for the board stack |
 | Wire harnesses between boards | 195: 127 GH3, 10 GH7, 58 GH8 | 0 |
-| Rigid board-to-board pairs | 0 | 201: 195 on K and 6 between EL and P |
-| Contact positions per side | 915 in harness housings | 807 in headers |
+| Rigid board-to-board pairs | 0 | 203: 197 on K and 6 between EL and P |
+| Contact positions per side | 915 in harness housings | 813 in headers |
 | Fitted crimps | 1,822 | 0 |
 | Main power joints | 18 soldered AWG14 wires on 36 lands | 18 bolted posts; no soldering at final assembly |
 | K latch-service apertures | 191 | 0 |
-| Board outlines | as in the partition | unchanged except tabs on P's upper edge |
+| Board outlines | as in the partition | unchanged except four tabs on P's upper edge |
 | Custom selector parts | 2 shaft extensions, 5 knobs, stepped carrier | 0 extensions, 3 knobs, single-plane carrier |
-| Panel centres | 438 fixed | 438 fixed; the two OSC2/OSC4 selector centres change or lose their control by owner decision |
+| Panel centres | 438 fixed | 438 fixed; the two OSC2/OSC4 selector centres carry a SUB toggle by owner decision |
 
 The supply inlet harness under #57 is outside this plan and would be the only cable left inside the instrument.
 
-The cost is concentrated in mechanics that cables used to absorb. Each front board seats onto K as one rigid mate, the largest with 133 pairs. Two front planes must agree with one rigid K. K's front face is unreachable once the stack is closed. The risk table below lists each of these with its check.
+The cost is concentrated in mechanics that cables used to absorb. Each front board seats onto K as one rigid mate, the largest with 135 pairs. Two front planes must agree with one rigid K. K's front face is unreachable once the stack is closed. The risk table below lists each of these with its check.
 
 ## The current layout already has the geometry of a rigid stack
 
@@ -51,6 +51,7 @@ The measurements come from `design/partition/partition.json` and the board files
 | Through-hole parts do not | The opposite face is occupied behind all 127 P sites (pot and toggle bodies), all 56 J sites and 144 of the 191 K sites. |
 | Power lands are nearly coaxial | 14 of 18 pairs are coaxial. The four P-branch pairs at x = 142, 159, 176 and 193 have the K land at y = 175 and the P land at y = 179. |
 | The strip between the jack boards and P is empty at P's level | JL and JR end at y = 164, and P begins at y = 176 for x above 94. Between x = 211 and 311 the only parts in front of the strip are EL's six headers and five EL post holes. Between x = 139 and 196 nothing is in front of it. No jack-board or adapter outline reaches either area, so P can grow tabs there. |
+| A toggle and its pair fit each freed selector position | At (31.5, 185) and (65.5, 185) the corridor between the neighbouring selector courtyards is 14.9 mm wide. A toggle courtyard of 8.64 × 6.5 mm leaves 3.13 mm at each side. A 1×3 pair above the toggle clears the toggle's pads and K's F.Cu for a centre at y = 180.15 to 180.85, once K's retired GH7 headers are gone. At the retired header centres themselves, y = 181.5 and 188.5, its envelope overlaps the toggle's pad clearance by 0.6 mm. |
 | K has room, but not behind its power lands | K holds 3,986 footprints with 37.6% of F.Cu and 39.1% of B.Cu free at courtyard level. Every one of the 18 K lands has B.Cu footprints within 2.6 mm of its centre, 54 in total, and no F.Cu neighbour that close. |
 | K's free area is fragmented | On a 0.5 mm grid K has no free position for a 13 × 5 mm through-slot in x = 182 to 312, y = 160 to 180, and none for a GH8 header on B.Cu in x = 182 to 312, y = 150 to 200. |
 | Trimmers can change face | K has 44 trimmers on F.Cu and 56 on B.Cu. A free B.Cu courtyard position inside a ±30 mm search window exists for 42 of the 44; the median move is 8.9 mm and the longest 31.0 mm. |
@@ -83,7 +84,7 @@ flowchart LR
   EL -- "6 rigid pairs, 7.2 mm" --> P
   JL -- "29 rigid pairs, 6 posts, 12.9 mm" --> K
   JR -- "27 rigid pairs, 6 posts, 12.9 mm" --> K
-  P -- "133 rigid pairs, 6 posts, 11.1 mm" --> K
+  P -- "135 rigid pairs, 6 posts, 11.1 mm" --> K
   O -- "6 rigid pairs, 6.9 mm" --> K
 ```
 
@@ -100,14 +101,14 @@ The mated heights of 6.9, 11.1 and 12.9 mm to K, and 7.2 mm between EL and P, fo
 The planned order makes every mate a two-board mate:
 
 1. Build the P unit: P, its body carrier and EL. EL's six pairs mate here.
-2. With K lying face up, seat one front unit at a time and bolt its posts: the three adapters (2 pairs each), the P unit (133 pairs), JL (29 pairs) and JR (27 pairs).
+2. With K lying face up, seat one front unit at a time and bolt its posts: the three adapters (2 pairs each), the P unit (135 pairs), JL (29 pairs) and JR (27 pairs).
 3. Fit the panel over the assembled stack and tighten the panel hardware last.
 
-Each front board then takes its XY position from K alone, so the front boards never have to agree with each other through the panel. The price moves to step 3: hardware at 438 centres is located by K and the connectors, and the panel apertures must accept the accumulated position error. ST-03 owns that stack-up and compares it with the reverse order, panel first and K last, in which all 195 K-side pairs would have to mate at once.
+Each front board then takes its XY position from K alone, so the front boards never have to agree with each other through the panel. The price moves to step 3: hardware at 438 centres is located by K and the connectors, and the panel apertures must accept the accumulated position error. ST-03 owns that stack-up and compares it with the reverse order, panel first and K last, in which all 197 K-side pairs would have to mate at once.
 
 In Z, the jack shoulders seat JL and JR on the panel, and the 12.9 mm posts carry that plane to K. P follows K through its 11.1 mm posts, so P's panel-side fixings must take up the remaining difference with shims or paired nuts and must not pull P toward the panel.
 
-Rear service reverses step 2 for K only: rear cover off, post screws and interior fasteners out, and K jacked off the front boards, which stay clamped to the panel. That unmates all 195 pairs together and needs jacking points (ST-03).
+Rear service reverses step 2 for K only: rear cover off, post screws and interior fasteners out, and K jacked off the front boards, which stay clamped to the panel. That unmates all 197 pairs together and needs jacking points (ST-03).
 
 ## Interconnect per board pair: one rigid family and bolted posts
 
@@ -118,11 +119,12 @@ Rear service reverses step 2 for K only: rear cover off, post screws and interio
 | JR to K | 27 GH8 harnesses; one carries 2 signals and leaves 4 contacts unused | 27 rigid 1×6 pairs; 2 signal positions stay unused | 162 |
 | JL to P | 4 GH3 harnesses from (x, 150) to (x, 276), x = 40, 57, 74, 91 | No direct joint. The 8 buffered nets pass through K on 4 new JL-to-K and 4 new P-to-K 1×3 pairs at the same header coordinates | 12 and 12 |
 | O1, O3, O5 to K | 6 GH7 harnesses: 7 signals and 7 AGND per adapter | 2 rigid 1×5 pairs per adapter: 7 signals and 3 AGND | 30 |
-| O2, O4 to K | 4 GH7 harnesses | Removed with the adapters; one site of up to five positions is reserved per oscillator for a replacement control on P | 0 |
+| O2, O4 to K | 4 GH7 harnesses | Removed with the adapters | 0 |
+| SUB toggles on P to K | None; the control is new | 2 rigid 1×3 pairs, one on each control tab: two select lines and AGND per oscillator. The pin map is a planning assumption that ST-06 fixes | 6 |
 | EL to K | 6 GH8 harnesses: 3 signals, 2 AGND, +12 V, −12 V, +5 V | No direct joint. EL mates a new P tab on 6 rigid 1×6 pairs. P passes the 18 signals to K on 6 rigid 1×6 pairs at K's existing sites | 36 and 36 |
 | Rails and AGND | 18 AWG14 wires up to 110 mm, soldered at both ends | 18 bolted conductive posts | 18 joints |
 
-The totals are 201 rigid pairs and 807 header positions per side: 527 signal, 268 AGND and 12 rail positions. Of these, 195 pairs and 771 positions are on K. The 26 nets that cross an intermediate board are counted at both joints. Today's harnesses carry 513 signal, 380 return and 18 rail conductors.
+The totals are 203 rigid pairs and 813 header positions per side: 531 signal, 270 AGND and 12 rail positions. Of these, 197 pairs and 777 positions are on K. The 26 nets that cross an intermediate board are counted at both joints. Today's harnesses carry 513 signal, 380 return and 18 rail conductors.
 
 ### Connector requirements for the evidence task
 
@@ -183,22 +185,50 @@ The existing rule that no solder joint or connector friction is a structural loa
 | Merge the core circuits into the front boards | Not planned | K's content needs more placement area than the rear faces of JL, JR and P offer, and every board would restart |
 | Add a second core layer behind K | Contingency only | Depth is no longer scarce: one more layer costs about 13 mm. It would relieve K's routing density but re-partitions the core, so it is considered only if the K routing campaign cannot close |
 
-## OSC2 and OSC4: selectors removed, one small control fits each freed position
+## OSC2 and OSC4: a SUB toggle replaces each octave selector
 
-The owner accepted on 2026-11-14 that OSC1, OSC3 and OSC5 keep their octave selectors and OSC2 and OSC4 may lose theirs (project thread message `cmsg_01Pv35emdXEU6gCRF3teSpo2JX8TtTajWKmC4wwvNRZWvh`). Removal deletes the two adapters at −29 mm, four GH7 harnesses, both 13 mm shaft extensions, two custom knobs and the stepped carrier. The three remaining selectors sit at 34 mm pitch in one plane, which is the "front" group of the [selector assembly](./osc-selector-assembly.mdx) and already clears its own fixture check. OSC2 and OSC4 then set pitch with TUNE (nominal ±2 octaves), FINE and RANGE.
+The owner accepted on 2026-11-14 that OSC1, OSC3 and OSC5 keep their octave selectors and OSC2 and OSC4 lose theirs (project thread message `cmsg_01Pv35emdXEU6gCRF3teSpo2JX8TtTajWKmC4wwvNRZWvh`). On the same day the owner chose the SUB toggle, candidate A below, for both freed positions (decision card `cmsg_01Pv35emdXEU6gCRF3teSpo2BxKqjv97b5t2fmmH1R9aPY`).
 
-Decision D06 (a real six-position switch for OCT) and D04 (142 control positions) currently cover all five oscillators. A new owner decision row is proposed in Phase 1; `decisions.json` is not edited here.
+Removal deletes the two adapters at −29 mm, four GH7 harnesses, both 13 mm shaft extensions, two custom knobs and the stepped carrier. The three remaining selectors sit at 34 mm pitch in one plane, which is the "front" group of the [selector assembly](./osc-selector-assembly.mdx) and already clears its own fixture check. OSC2 and OSC4 then set pitch with TUNE (nominal ±2 octaves), FINE and RANGE, and their octave input is held at zero octaves on K.
 
-The freed centres are (31.5, 185) and (65.5, 185). The corridor between the neighbouring selector courtyards is 14.9 mm wide. A tab of P about 14 mm wide, from P's edge at y = 194 up to about y = 178, can carry one control at the fixed centre. A toggle (8.64 × 6.5 mm courtyard) or a button (8.7 × 6.7 mm) fits with more than 2.6 mm at each side. A PTV09A pot (13.5 × 13.35 mm) leaves 0.7 mm to each selector courtyard. The panel aperture and legend at those centres are owner artwork.
+Decisions D04 (all 142 control positions are retained) and D06 (OCT is a real six-position switch) were taken with five octave selectors. The choice keeps all 142 positions and changes two of them from a selector to a toggle, so a new owner decision row is proposed in Phase 1. `project/osc-hole-field/decisions.json` is not edited here.
 
-| Candidate | What the player gets | Circuit effect | Risk |
-| --- | --- | --- | --- |
-| A. SUB toggle: PUL normal, −1 octave, −2 octaves | A phase-locked sub-oscillator square from the same core | One SN74HC74 and gating per oscillator, both already in the component inventory. No precision node is touched. The divided output has 50% duty, so PW and PWM do not act in the two sub positions | Low |
-| B. OCT ±1 toggle: −1, 0, +1 octave | Exact octave steps from the calibrated shared taps | No IC. The centre position is defined by a resistor to the 0 V tap; the existing selected-tap receiver stays | Lowest |
-| C. FM mode toggle: exponential or linear | FM that keeps the pitch centre | Routes the buffered FM signal to the AS3340 linear input. It touches the sensitive `LINEAR_REF` node on K and reverses the first draft's rejection of linear FM | Medium: analogue rework and new characterization |
-| D. Blank | Nothing | `OCT_SELECTED` tied to the 0 V tap on K; panel aperture closed in owner artwork | None |
+### The toggle switches the PUL output between the pulse and two sub-octave squares
 
-A pot-based feature such as glide is not proposed: it fits only with 0.7 mm margins and would enter the precision pitch path. Normalled connections are excluded by the existing rule against additional signal normals. The stack plan is independent of this choice. It reserves a control tab on P and one interface site per oscillator, and ST-06 starts after the owner picks (Q2).
+| Item | Plan | Status |
+| --- | --- | --- |
+| Control | A three-position toggle at each fixed centre: PUL normal, −1 octave, −2 octaves | Owner decision |
+| What the player gets | The PUL jack carries the oscillator's pulse, or a square one or two octaves below it that is locked to the same core. SIN, TRI and SAW do not change | Owner decision |
+| Part | 2MS3T1B1M2QES, the three-position toggle already fitted eleven times on P | Planning assumption |
+| Circuit | A two-stage divider, one SN74HC74 per oscillator, on K. The oscillator already squares its pulse into the 0/5 V signal `PULSE_LOGIC` ahead of the output scaler `PUL_SCALE`. The divider works in that logic domain and the selected square returns to the scaler input | Concept; ST-06 specifies it |
+| Limits of the feature | The sub squares have 50% duty, so PW and PWM do not act in the two sub positions. A divider clocked from the pulse stops whenever the pulse width reaches 0% or 100% | ST-06 chooses the clock node |
+| Joint to K | Two static select lines and AGND on one 1×3 pair per oscillator, in the pin order of every other P-to-K pair. No audio signal crosses the joint for this control | Planning assumption |
+| Sensitive nodes | The pitch sum, the timing capacitor and the references are not touched | ST-06 confirms |
+
+### The toggle and its pair fit the freed corridor if the control tab reaches y = 177
+
+The freed centres are (31.5, 185) and (65.5, 185). The corridor between the neighbouring selector courtyards is 14.9 mm wide. A tab of P 11 to 14 mm wide, from P's edge at y = 194 up to about y = 177, carries the toggle at the fixed centre and its pair above it.
+
+- The toggle courtyard of 8.64 × 6.5 mm leaves 3.13 mm to each selector courtyard.
+- The 1×3 pair, with its long axis along x, clears the toggle's pads on the tab and K's F.Cu for a centre at y = 180.15 to 180.85 at OSC2 and y = 179.05 to 180.85 at OSC4. K is clear there once the retired GH7 header at y = 181.5 is deleted, so no K part moves.
+- In place at the two retired header centres, y = 181.5 and 188.5, the pair's envelope overlaps the toggle's pad clearance by 0.6 mm.
+- Below the toggle the pair misses a free K position by 0.4 mm at OSC2 (R1173) and by 0.15 mm at OSC4 (trimmer RVO1406).
+- A tab that ends at y = 178, as first sketched, leaves the pair 0.55 mm short if it keeps 0.5 mm from the tab edge.
+
+The placement window is 0.7 mm at OSC2. ST-02 must confirm it with the selected connector footprint; moving R1173 would open the position below the toggle as a second option.
+
+The placement lock rows `C:O2.OCT` and `C:O4.OCT` keep their centres. Their identity, board domain and proposed panel hole (7.0 mm for the selector, 5.2 mm for the fitted toggles) change in the grid source that the lock is derived from. That revision is proposed in Phase 1 and is not made here. The panel aperture and legend are owner artwork.
+
+### Candidates offered to the owner
+
+| Candidate | What the player gets | Circuit effect | Risk | Outcome |
+| --- | --- | --- | --- | --- |
+| A. SUB toggle: PUL normal, −1 octave, −2 octaves | A phase-locked sub-oscillator square from the same core | One SN74HC74 and gating per oscillator, both already in the component inventory. No precision node is touched. The divided output has 50% duty, so PW and PWM do not act in the two sub positions | Low | **Chosen** |
+| B. OCT ±1 toggle: −1, 0, +1 octave | Exact octave steps from the calibrated shared taps | No IC. The centre position is defined by a resistor to the 0 V tap; the existing selected-tap receiver stays | Lowest | Not chosen |
+| C. FM mode toggle: exponential or linear | FM that keeps the pitch centre | Routes the buffered FM signal to the AS3340 linear input. It touches the sensitive `LINEAR_REF` node on K and reverses the first draft's rejection of linear FM | Medium: analogue rework and new characterization | Not chosen |
+| D. Blank | Nothing | `OCT_SELECTED` tied to the 0 V tap on K; panel aperture closed in owner artwork | None | Not chosen |
+
+A button (8.7 × 6.7 mm) would also fit. A pot-based feature such as glide was not offered: a PTV09A pot (13.5 × 13.35 mm) leaves 0.7 mm to each selector courtyard and would enter the precision pitch path. Normalled connections are excluded by the existing rule against additional signal normals.
 
 ## Routed drafts: K absorbs most of the rework, before its interface escapes exist
 
@@ -206,10 +236,10 @@ State is taken from `circuit/routing/osc-pcb-current-checkpoint.json` (2026-11-1
 
 | Board | Current state | Rework in this plan |
 | --- | --- | --- |
-| K, `osc-core` (K2226-parts439) | 2,226 open edges; the "signal-escapes" stage is not started | 187 header footprints swapped in place on F.Cu: 123 GH3, 58 GH8 and 6 GH7 sites. 8 new 1×3 sites for the pass-through nets; K is clear in place at 6, and R1286 and C1218 block the other 2. The 4 GH7 sites of O2 and O4 and all 191 Ø2.2 mm service apertures deleted. 44 trimmers and 2 test pads move from F.Cu to B.Cu. 18 post holes at the existing land centres, with up to 54 B.Cu neighbour moves. Interior fastener holes |
+| K, `osc-core` (K2226-parts439) | 2,226 open edges; the "signal-escapes" stage is not started | 187 header footprints swapped in place on F.Cu: 123 GH3, 58 GH8 and 6 GH7 sites. 8 new 1×3 sites for the pass-through nets; K is clear in place at 6, and R1286 and C1218 block the other 2. 2 new 1×3 sites for the SUB toggles near (31.5, 180.5) and (65.5, 180.5), clear once the retired headers are gone. The 4 GH7 sites of O2 and O4 and all 191 Ø2.2 mm service apertures deleted. 44 trimmers and 2 test pads move from F.Cu to B.Cu. 18 post holes at the existing land centres, with up to 54 B.Cu neighbour moves. Interior fastener holes. The SUB divider and gating added to the OSC2 and OSC4 cores |
 | JL, `osc-jack-left` (JL184) | 184 open edges | 25 GH8 sites to 1×6, 4 GH3 sites to 1×3 now mating K, 6 post lands with holes |
 | JR, `osc-jack-right` (JR192) | 192 open edges | 27 GH8 sites to 1×6, 6 post lands with holes, part moves for interior fasteners |
-| P, `osc-control` (routed draft) | 0 open edges | 127 GH3 sites to 1×3. The EL tab with 6 sites on each face, 5 post holes and 18 pass-through nets. The power tab with four lands moved to y = 175. 6 post lands. Two more tabs if a replacement control is chosen |
+| P, `osc-control` (routed draft) | 0 open edges | 127 GH3 sites to 1×3. The EL tab with 6 sites on each face, 5 post holes and 18 pass-through nets. The power tab with four lands moved to y = 175. 6 post lands. Two control tabs, each with a SUB toggle and one new 1×3 site |
 | EL, `osc-stage-optical` | 0 open edges | 6 GH8 sites to 1×6 with a new pin map; regenerate |
 | O1, O3, O5 | 0 open edges | 2 GH7 sites to 2 × 1×5 each; regenerate |
 | O2, O4 | 0 open edges | Retired |
@@ -237,9 +267,9 @@ The ≤0.5 mΩ joint figure is a planning requirement for two bolted faces and t
 
 Nothing in this plan closes a protection gate. `design/power/p59-full-onboard-plan.md` needs these restatements when the stack is adopted:
 
-- **SI-2 return integrity.** The local GND-loss matrix is written for "12 load-side wires, 195 GH harnesses". It becomes 18 posts of which 9 are AGND, 262 AGND header positions on K and 6 between EL and P. The unplugged-harness class disappears. A partly seated stack is a new fault class.
+- **SI-2 return integrity.** The local GND-loss matrix is written for "12 load-side wires, 195 GH harnesses". It becomes 18 posts of which 9 are AGND, 264 AGND header positions on K and 6 between EL and P. The unplugged-harness class disappears. A partly seated stack is a new fault class.
 - **SI-3 and SI-6 permit distribution.** Headers have no spare positions apart from 2 on JR. Each cross-board permit or sense line needs a new site pair on both boards.
-- **SI-5 isolation count.** The 30 octave receivers become 18 if both selectors go, or 24 with candidate B.
+- **SI-5 isolation count.** The 30 octave receivers become 18, because OSC2 and OSC4 have no selector.
 - **Reserved areas.** JL B.Cu [120,143,176.5,161], JR B.Cu [177.5,143,310,161] and K B.Cu [180,220,256,290] keep their XY. Parts in the J areas must fit the 12.9 mm gap less K's front parts, about 10 mm.
 
 ## E21 to E23 stay as written
@@ -247,7 +277,7 @@ Nothing in this plan closes a protection gate. `design/power/p59-full-onboard-pl
 The stack changes no load, no bank capacitance and no series element in the inlet path, so the wording of E21 (no-load start-up current limit), E22 (shutdown load bounds and the absent levels) and E23 (0.25 ms, 130 A, 0.1 A²s let-through) is unaffected. Three follow-ups remain:
 
 1. E23's re-check against the selected inlet connector and cable gains the posts and lands. At 0.1 A²s a 0.5 mΩ joint absorbs about 50 µJ.
-2. The rail ledger is refreshed for the OSC2/OSC4 change in ST-11. Candidate A adds two logic packages on +5 V.
+2. The rail ledger is refreshed for the OSC2/OSC4 change in ST-11. The SUB divider and its gating add +5 V logic load in two oscillators.
 3. The inlet reservation at z = −85 to −45 mm does not exist in a 34 mm case and must be re-reserved under #57.
 
 ## Resulting depth: about 34 mm for the board stack
@@ -269,9 +299,9 @@ The 34 mm figure uses the existing convention, measured from the panel front fac
 
 | Risk | Why it matters | Planned check | Physical gate |
 | --- | --- | --- | --- |
-| Seating a front board on K | The largest single mate is the P unit: 133 pairs and 417 positions. SMT connectors without pegs float in reflow and tall pins can lean, so every pair on a board must land inside the allowed misalignment | ST-03 XY budget per board against the manufacturer's allowed misalignment; lead-in or guide features | #65 NOT RUN |
+| Seating a front board on K | The largest single mate is the P unit: 135 pairs and 423 positions. SMT connectors without pegs float in reflow and tall pins can lean, so every pair on a board must land inside the allowed misalignment | ST-03 XY budget per board against the manufacturer's allowed misalignment; lead-in or guide features | #65 NOT RUN |
 | Panel fitted over an assembled stack | Hardware at 438 centres is located by K and the connectors, not by the panel. The apertures must accept the accumulated error, and a tightened nut must not drag a board sideways | ST-03 aperture clearance stack-up per hardware class, compared with the panel-first order | #65 NOT RUN |
-| Mating and unmating force | At a typical 0.5 to 1 N per position the P unit needs about 210 to 420 N, and jacking K off all 771 positions in rear service about 390 to 770 N. An estimate, not a part figure | ST-01 force per contact; ST-03 screw-driven closing and separation, jacking points and support under the boards | #65 NOT RUN |
+| Mating and unmating force | At a typical 0.5 to 1 N per position the P unit needs about 210 to 420 N, and jacking K off all 777 positions in rear service about 390 to 780 N. An estimate, not a part figure | ST-01 force per contact; ST-03 screw-driven closing and separation, jacking points and support under the boards | #65 NOT RUN |
 | Two front planes and one rigid K | J is located by jack shoulders and P by its carrier and toggles, with UNSOURCED datums. The J and P post rows are 15 to 19 mm apart, so a plane error bends K over a short span near ceramic parts | ST-03 datum scheme: K takes its plane from the J boards and P follows K; P's panel-side fixings take up the difference, or the P posts are matched to the measured gap | #65 NOT RUN |
 | Supports and carriers placed for the cable stack | The JL and JR supports at (6.5, 161.5) and (311.5, 161.5) are 1.5 mm from K's supports at (6.5, 160) and (311.5, 160). Five of P's six edge supports have Ø3.2 mm collars that overlap K's outline edge by 1.1 mm. The seam cradle and its cross-members lie at z = −13.6 to −11.6 mm inside the J-to-K gap and reach the enclosure frame. K's eight edge posts also fasten to that frame, which would close a second load loop through the panel | ST-03 decides the load path; ST-12 re-plans the supports, which are not panel hardware and may move | #65 NOT RUN |
 | EL as a rigid mate | EL is 0.4 mm thick. Its six sockets take 36 positions of mating force and reach P through openings in the body carrier | ST-02 tab and carrier check; ST-03 seating and removal method; fallbacks F1 to F3 (Q5) | #65 NOT RUN |
@@ -318,7 +348,7 @@ Phase 0 writes new candidate files only, for example under `design/stack/`. It d
 | ST-03 | Stack mechanics: datums, closing order, tolerance stack-ups, separation, coupon definition | Parametric start; ST-01 figures to finish | Design authority |
 | ST-04 | Power-post joint design and electrical re-derivation | ST-01 contact data; ST-03 datum scheme | Design authority |
 | ST-05 | Thermal paper screen | none | Independent reviewer |
-| ST-06 | OSC2/OSC4 replacement-control proposal | Owner answer to Q2 | Design authority |
+| ST-06 | SUB toggle specification for OSC2 and OSC4 | none; the owner answered Q2 | Design authority |
 | ST-07 | Trimmer and test-point relocation plan | none | Design authority for sensitive nodes |
 
 **ST-01.** Find exact candidates for 1×3, 1×5 and 1×6 at mated heights of 6.9, 7.2, 11.1 and 12.9 mm, and the conductive spacer class for ST-04. Establish every item of the connector requirements list from primary documents and mark each one SOURCED or UNSOURCED per candidate. Write candidate owner bundles through `component-spec-audit`, separate from the fitted inventory, and a comparison table. Done when one pair and one fallback are recommended with their open items. Escalate if no family covers all four heights.
@@ -331,7 +361,7 @@ Phase 0 writes new candidate files only, for example under `design/stack/`. It d
 
 **ST-05.** Build a power map per board from the retained current reports, compare the 34 mm and 120 mm cases at 40 °C ambient, name the hot parts and the vent or spreader options, and propose acceptance criteria for #64. The result is a screen; measurement stays NOT RUN.
 
-**ST-06.** After Q2, specify the chosen control: circuit, parts from the inventory, panel binding at the fixed centre, P tab outline, interface pins, rail-ledger delta and the checks ST-11 must run.
+**ST-06.** Specify the SUB toggle the owner chose for OSC2 and OSC4. Choose the divider's clock node: the existing `PULSE_LOGIC` stops when the pulse width reaches 0% or 100%, while the tied-off second half of the pulse comparator could square the sawtooth instead. Fix the select logic with parts from the inventory, the divider's power-up and sync behaviour, the level at the `PUL_SCALE` input and the octave input held at zero octaves. Give the panel binding at the fixed centres, the control-tab outline with the toggle and pair positions, the pin map of the pair, the rail-ledger delta, an ideal-model simulation plan and the checks ST-11 must run. Escalate if a pitch, timing or reference node would change.
 
 **ST-07.** List each of the 44 F.Cu trimmers and 2 test pads with module, role, node sensitivity, proposed B.Cu position, distance and added vias. Keep summing, scale and high-frequency trim nodes local; where a move is unacceptable, propose a rear-adjust part with an access hole and its evidence need.
 
@@ -343,8 +373,8 @@ Phase 1 starts only after the owner adopts the direct stack (Q1). The evidence f
 
 | ID | Deliverable | Depends on | Review |
 | --- | --- | --- | --- |
-| ST-10 | Partition source revision: connector pairs and pin maps, planes, P outline with tabs, posts, supports, enclosure, electrical screens; `partition35*.py`, `connector_packing35.py` and their tests; regenerated `partition.json` and pages; proposed decision rows | Gate A, ST-01 to ST-04, ST-07 | Design authority |
-| ST-11 | Schematic source: OSC2/OSC4 variant, post lands, connector identities; regeneration, pinned ERC and netlist parity | Gate A, ST-06, ST-10 pin maps | Independent reviewer |
+| ST-10 | Partition source revision: connector pairs and pin maps, planes, P outline with tabs, posts, supports, enclosure, electrical screens; `partition35*.py`, `connector_packing35.py` and their tests; regenerated `partition.json` and pages; proposed decision rows and the proposed grid revision for the two SUB controls | Gate A, ST-01 to ST-04, ST-07 | Design authority |
+| ST-11 | Schematic source: OSC2/OSC4 SUB variant, post lands, connector identities; regeneration, pinned ERC and netlist parity | Gate A, ST-06, ST-10 pin maps | Independent reviewer |
 | ST-12 | Mechanical source: three-selector single-plane assembly with the bushing-to-panel correction, supports and carriers re-planned for the stack, carrier openings for the EL pairs, enclosure and inlet reservation, 3D preview | Gate A, ST-03 | Design authority |
 
 ST-10 may be split into connector, mechanical and electrical parts with one writer for the aggregate output. The loom, ribbon and bend screens retire.
@@ -353,12 +383,12 @@ ST-10 may be split into connector, mechanical and electrical parts with one writ
 
 | ID | Board | Deliverable | Depends on |
 | --- | --- | --- | --- |
-| ST-20 | P | 127 site swaps, the EL tab with 12 new sites and 18 pass-through nets, the power tab, post lands, optional control tabs, stubs re-terminated | ST-10, ST-11 |
+| ST-20 | P | 127 site swaps, the EL tab with 12 new sites and 18 pass-through nets, the power tab, post lands, two control tabs with the SUB toggles and their sites, stubs re-terminated | ST-10, ST-11 |
 | ST-21 | O1, O3, O5, EL | Regenerated adapters; EL sites re-cut to 1×6; O2 and O4 retired | ST-10 to ST-12 |
 | ST-22 | JL | 29 site swaps, post lands, fastener sites | ST-10, ST-11 |
 | ST-23 | JR | 27 site swaps, post lands, fastener sites with part moves | ST-10, ST-11 |
-| ST-24 | K | 187 site swaps, 8 pass-through sites, 191 apertures and 4 adapter sites deleted | ST-10, ST-11 |
-| ST-25 | K | Trimmer, test-pad, post-neighbour and fastener-neighbour moves | ST-24, ST-07, ST-04 |
+| ST-24 | K | 187 site swaps, 8 pass-through sites, 2 SUB sites, 191 apertures and 4 adapter sites deleted | ST-10, ST-11 |
+| ST-25 | K | Trimmer, test-pad, post-neighbour and fastener-neighbour moves; SUB parts placed in the OSC2 and OSC4 cores | ST-24, ST-07, ST-04, ST-11 |
 | ST-26 | K | Routing resumes on the new footprints, including "signal-escapes" and the 8 pass-through nets | ST-25 |
 
 Each task re-reads the current generator and promotion tools before its brief is written, applies the change in the specification or generator, and regenerates. No board file is hand-edited.
@@ -375,7 +405,6 @@ Each task re-reads the current generator and promotion tools before its brief is
 | ID | Question | Planning assumption until answered |
 | --- | --- | --- |
 | Q1 | Adopt the direct stack as the working architecture, replacing K at −100 mm and the 120 mm enclosure, subject to the Phase 0 evidence? | Phase 0 only; the cable partition stays the working design |
-| Q2 | Which control replaces the OSC2 and OSC4 selectors: SUB toggle, OCT ±1 toggle, FM mode toggle, or blank? | Blank, with a control tab on P and one site reserved |
 | Q3 | May the stack connectors come from outside the usual factory stock if stock parts cannot give the four mated heights? | Undecided; ST-01 reports both routes |
 | Q4 | Depth target: about 34 mm with one connector family, or about 31.5 mm with a second, finer family at the three adapters? | About 34 mm |
 | Q5 | If the rigid EL joint fails its Phase 0 checks, which fallback: harnesses plugged on K's front face (K then needs the panel off to be refitted), harnesses plugged on K's rear face (about 68 part moves on K), or a flex EL? | Rigid joint through the P tab; F1 if it fails |
@@ -383,6 +412,12 @@ Each task re-reads the current generator and promotion tools before its brief is
 | Q7 | Build a small connector coupon before the source re-plan? It is a fabrication order and needs explicit approval | Definition only |
 | Q8 | Confirm rear service: rear cover off, K jacked off the front boards, all trimmers on K's rear. It costs the trimmer moves and up to 54 small part moves on K's rear | Rear service |
 
+### Q2 is answered: SUB toggle
+
+| ID | Question | Owner's answer |
+| --- | --- | --- |
+| Q2 | Which control replaces the OSC2 and OSC4 selectors: SUB toggle, OCT ±1 toggle, FM mode toggle, or blank? | SUB toggle, chosen on 2026-11-14 on decision card `cmsg_01Pv35emdXEU6gCRF3teSpo2BxKqjv97b5t2fmmH1R9aPY` |
+
 ## Validation boundary of this page
 
-Only this page is added. No design data, generator, board, receipt, decision register or generated page changes. The site-level counts and clearances are planning measurements at courtyard level from ad hoc scripts and are not retained evidence. The two P tabs are outline-level findings: carrier envelopes, posts and copper were not checked. Connector and spacer facts are catalogue-level and NOT RETAINED. The force, strain, resistance-share and temperature figures are estimates that the named tasks must replace. Routing, DRC, joined parity, fit, force, thermal and electrical checks of the stack are **NOT RUN**: no stack source, exact part or specimen exists. The physical gates #55, #57, #64 and #65 stay NOT RUN and #59 stays OPEN.
+Only this page is added. No design data, generator, board, receipt, decision register or generated page changes. The site-level counts and clearances are planning measurements at courtyard level from ad hoc scripts and are not retained evidence. The four P tabs are outline-level findings: carrier envelopes, posts and copper were not checked. The SUB circuit is a concept read from the oscillator source: no schematic, model or part allocation exists for it. Connector and spacer facts are catalogue-level and NOT RETAINED. The force, strain, resistance-share and temperature figures are estimates that the named tasks must replace. Routing, DRC, joined parity, fit, force, thermal and electrical checks of the stack are **NOT RUN**: no stack source, exact part or specimen exists. The physical gates #55, #57, #64 and #65 stay NOT RUN and #59 stays OPEN.
