@@ -258,6 +258,59 @@
         "value": "0.30 thick, width 1.0 x (n + 1) +/- 0.05, stiffener 6.00, exposed 3.00",
         "status": "SOURCED"
       }
+    },
+    "megastar_zx_1_0fpc_2h_hfj": {
+      "source": {
+        "path": "megastar/zx-1-0fpc-2h-hfj/zx-1-0fpc-2h-hfj20p-drawing-unrevised-lcsc-mirror.pdf",
+        "sha256": "f3e928a00839c743df654b6117d6bc66df6aa0f073bda97b59484338f6d0c645",
+        "page": 1
+      },
+      "n_range": {
+        "value": "4 to 30",
+        "status": "SOURCED"
+      },
+      "DIMA": {
+        "formula": "n - 1 (pad row)",
+        "status": "SOURCED"
+      },
+      "DIMB": {
+        "formula": "n + 1.02",
+        "status": "SOURCED"
+      },
+      "DIMC": {
+        "formula": "n + 4.04 (body length)",
+        "status": "SOURCED"
+      },
+      "pads": {
+        "value": "n pads 0.50 +/- 0.05 x 1.50 mm at 1.00 +/- 0.05 pitch; two mounting pads 1.50 x 2.50 mm, outer edge 2.95 +/- 0.05 mm beyond the outer signal pad centre, 0.6 mm offset; signal-row to tab-row extent 5.10 mm",
+        "status": "SOURCED"
+      },
+      "body_depth": {
+        "value": "5.30 +/- 0.15",
+        "unit": "mm",
+        "status": "SOURCED"
+      },
+      "height": {
+        "value": "2.00 closed, 3.1 open",
+        "unit": "mm",
+        "status": "SOURCED"
+      },
+      "courtyard": {
+        "formula": "x: n + 4.04 + 0.5; y: 5.30 + 0.5 plus the rear actuator sweep",
+        "status": "DERIVED (courtyard_rule ASSUMED)"
+      },
+      "tail": {
+        "value": "0.30 +/- 0.03, width n + 0.92 +/- 0.05",
+        "status": "SOURCED"
+      },
+      "slot_through_k": {
+        "formula": "n + 1.92 mm by 1.5 mm",
+        "status": "DERIVED from ASSUMED slot_rule"
+      }
+    },
+    "xunpu_fpc_05f_05fb": {
+      "status": "UNSOURCED",
+      "reason": "retained PDFs cannot be parsed (malformed xref); vendor bytes re-fetched identical"
     }
   }
 }
