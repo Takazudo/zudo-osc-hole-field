@@ -31,7 +31,7 @@ Gate state at planning time:
 | Loss screen | 40 mV drop budgets; PSMN1R0-40YLD 2.45 mΩ hot (VGS 4.5 V, 150 °C) resistance-only screen | Arithmetic and FET conditions | — |
 | Signal isolation | ADG5412FBRUZ owner (`component-adi-adg5412fbruz`): pinout, 1.3 mA/package IDD max at ±16.5 V, 16.5 Ω Ron max at ±13.5 V, 100 nA grounded-off leakage max, 10 µA floating leakage **typical only**, power-off isolation **requires GND**. #58 TI-amplifier diagnostic: 12/12 cases with lumped switch R/C and 2.74 k/10 M/10 nF. `precision-output-cell*`: AQY232G3 PhotoMOS cell with no analog ground pin, 24 powered-on cases. `integrated-output-candidate*`: ADG5401F, which also requires GND. `fast-disconnect-candidate*`: resistor-biased PNP form rejected. `proposals-59/` P59-A/B/C patches, unadopted | ADG owner facts; cell topologies and feedback values; rejection records | — |
 | Monitor/permit | `monitor-permit-draft*`: TPS37044 + TLV9022 + REF3433 + LVC1G17 ×2 + LVC1G74, isolated native capture with 0 ERC errors/warnings, a dummy load only. `rail-monitor-candidate*` static margins. `negative-monitor-network*`. `negative-inverter-candidate*` (OPA388). `monitor-fault-retiming*`. `monitor-permit-current-report.json` | Captured candidate circuit and calculators | Its assumption that the latch shares the original 20 mA allowance |
-| Rail switching | Recovered and untracked: `positive-path-100nf-capture`, LM74800MDRRR + 2× PSMN1R0-40YLDX + 100 nF C0G ramp, with a conditional 100 ms SOA screen. `negative-hotswap-v2`: LM5067 published window rejected at fixed Rs, LTC4253 programmed-SS accuracy open. `negative-precision-limiter-v2`/`return-v3`: an INA293A3/TLV3601/REF5020/TPS709 frontend with a 10 mΩ shunt | Topologies, rejection scopes and frontend graph | The `return-v3` "external/current-rise handoff" options. Under the owner decision these become synth-side obligations or an owner input (see below) |
+| Rail switching | Recovered and untracked: `positive-path-100nf-capture`, LM74800MDRRR + 2× PSMN1R0-40YLDX + 100 nF C0G ramp, with a conditional 100 ms SOA screen. `negative-hotswap-v2`: LM5067 published window rejected at fixed Rs, LTC4253 programmed-SS accuracy open. `negative-precision-limiter-v2`/`return-v3`: an INA293A3/TLV3601/REF5020/TPS709 frontend with a 10 mΩ shunt | Topologies, rejection scopes and frontend graph | The `return-v3` "external/current-rise handoff" options. Under the owner decisions these become synth-side obligations; current limiting is not adopted (see below) |
 | Return integrity | Recovered `return-interface-observability`: a 16-state proof that aggregate AGND voltage cannot detect a failed inlet return replaced by a patch sleeve | Counterexample and acceptance wording | The packet's source/harness-side implementation alternative |
 | Sequencing | Recovered `positive_sequence.py`: OFF→RAMP→READY→LATCHED, with admission requiring the predicate | Requirement model | — |
 
@@ -197,7 +197,7 @@ The TPS37044, TLV9022, REF3433, LVC1G17/74 and OPA388 sources are retained.
 - +5 V has no candidate at all.
 - A 10 mΩ shunt takes about 16 mV of the 40 mV budget.
 - Unsensed bias-branch currents.
-- Whether on-board current limiting is required. See the owner inputs.
+- No on-board current limiting: decided 2026-11-14, see the owner decisions.
 - The mounting-base temperature behind the SOA screen.
 - Downstream capacitor discharge in local fault loops.
 
