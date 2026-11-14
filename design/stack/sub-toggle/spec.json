@@ -1,0 +1,1063 @@
+{
+  "schema_version": 1,
+  "task": "osc-stack-20261114/ST-06@78246cf004f179250e773ed8c67434199cec471a",
+  "status": "PROPOSAL - unvalidated draft specification; no schematic, board or lock is changed",
+  "provenance": {
+    "launch_commit": "78246cf004f179250e773ed8c67434199cec471a",
+    "inputs_sha256_at_launch": {
+      "design/spec/modules/oscillator.py": "18393b0a9f580a91d7394a69a90cf89e2853f882fc55f37eeaa97f306c7c4377",
+      "design/spec/modules/oscillator-work-note.md": "8799745f39704b6d824ac0a3c5d598617fea79e750ca62ea397de570ccee377a",
+      "design/spec/modules/io_partition.py": "930acc3bf74937358668edfc05f0a4ffe590c5e242d1c1ea2f7bd28fdb12d395",
+      "design/standard/electrical-standard.json": "0cdef30d4848414c794b7561c07bef6c5cf63a19f7f79a0fd21866412e0e40fe",
+      "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+      "project/osc-hole-field/workbench/layout/grid.json": "b707f2fd04c23d08250026698cb3343254f04c1fd7a08c9f6bc36972c99df92a",
+      "design/reports/current/oscillator.json": "85a7287ec6c1d613736d7e7cc129ba4cae897213774122d6b069fedb4c0c01d1",
+      ".claude/skills/component-spec-audit/references/inventory.json": "91acd91bf12d0f344e00206c4e49db532cad7a591b87b758c21755309c0537ee",
+      ".claude/skills/component-ti-sn74hc74dr/facts.json": "c89ae11813aa1f19877ba4dfe09b9a29b71877bd174234e956048929ecc9fd62",
+      ".claude/skills/component-ti-sn74hc00dr/facts.json": "dcfdca01c4a461f6b053ae18f9bb08975c6202cf111c055d8db79fdd8a0a7f61",
+      ".claude/skills/component-ti-sn74hc14dr/facts.json": "c627f0accfb1a0cb3f7830362d4612755dea90a72e08f5e2420e7a908c4ebfb8",
+      ".claude/skills/component-ti-lm393bidr/facts.json": "423cf813be582053cc471bb8d78e67878e2d77dfb7a3af21aacbbfbcea433441",
+      ".claude/skills/component-dailywell-2ms3t1b1m2qes/facts.json": "cd0875ebe458cbcbb314cb405cf849230002015a0b065c5b87e6ebca98d96c3a",
+      ".claude/skills/component-dailywell-2ms3t1b1m2qes/pin-map.json": "0a3513ae8119e1d88a1b0a70e2272fe10bfa86e8824ea4dc80cf4ba54b4010d9",
+      ".claude/skills/component-ti-opa4196idr/facts.json": "78cab77d8a3d31259f2fdff7dc2797320ad3501de3957121d6615cc1c5b6b7ea",
+      ".claude/skills/component-alfa-rpar-as3340d/facts.json": "654460d51a45c06fe514e75b28f521992c96d831f9c76c8c0cbc4eb1e767f74d",
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-14_3.9x8.7mm_P1.27mm.kicad_mod": "d686d259c1e4bed4147735ed25de08a498e8626d082058f4f5e00168017b2337",
+      "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod": "25cf0c8152ddf3adbf6c02140174cf5c53cfe865e425d689fb901c6ff1fab6d0",
+      "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod": "5deb5924199e36857d3a90a22828d73ed4b82ee4fe3c54e0d80c60130ecb7524",
+      "footprints/kicad/zudo-osc-hole-field.pretty/Toggle_Dailywell_2MS_T1B1M2.kicad_mod": "11240c0c14b6378dc93f54d9146097b1b62384b0b9cab4b145dc1367be89daf4"
+    },
+    "external_inputs": {
+      "wave-1:design/stack/geometry/stack-candidate.json": "pair P-K-SUB-O2/O4 planning pin map [SUB_SEL_A, AGND, SUB_SEL_B]; P-to-K order signal-AGND-signal"
+    },
+    "generator": "scripts/stack/sub_toggle/sub_toggle.py"
+  },
+  "scope": {
+    "instances": [
+      "O2",
+      "O4"
+    ],
+    "board_core": "K, OSC2 and OSC4 cores",
+    "board_control": "P, control tabs at C:O2 and C:O4 centres",
+    "unchanged_instances": [
+      "O1",
+      "O3",
+      "O5"
+    ]
+  },
+  "decision_state": {
+    "item_1_clock_node": "PROPOSED: SAW_LOGIC from LM393 half B; the design authority decides",
+    "items_2_to_8": "PROPOSED inside DS-02; no pitch, timing or reference node changes",
+    "needs_design": []
+  },
+  "clock_node": {
+    "proposed": "saw",
+    "saw": {
+      "node": "SAW_LOGIC",
+      "source": "PULSE_CMP half B (LM393BIDR pins 5/6/7), today tied off",
+      "inputs": {
+        "2IN+ (pin 5)": "SUB_THRESH",
+        "2IN- (pin 6)": "SAW_RAW"
+      },
+      "edge": "SAW_LOGIC rises when SAW_RAW falls below the lower threshold, i.e. at the core reset; FF1 counts that edge",
+      "threshold": {
+        "thevenin_V": 2.5,
+        "thevenin_ohm": 50000.0,
+        "saw_rising_threshold_V": 2.618517,
+        "saw_falling_threshold_V": 2.380952,
+        "hysteresis_V": 0.237565,
+        "conditions": "Ideal: +5V = 5.000 V, comparator VOL = 0 V, output leakage 0, resistors at nominal. Thresholds scale with the +5 V rail; LM393B offset (<=4.0 mV full temperature, fact-comparator-input-offset-voltage) and VOL (not retained) shift them."
+      }
+    },
+    "pulse": {
+      "node": "PULSE_LOGIC",
+      "netlist": {
+        "schmitt": [
+          [
+            "SUB_A_DB",
+            "SUB_PUL_ON"
+          ],
+          [
+            "SUB_B_DB",
+            "SUB_DIV4_ON"
+          ],
+          [
+            "SUB_PUL_ON",
+            "SUB_PUL_OFF"
+          ],
+          [
+            "PULSE_LOGIC",
+            "PULSE_LOGIC_N"
+          ],
+          [
+            "PULSE_LOGIC_N",
+            "PULSE_CLEAN"
+          ]
+        ],
+        "nand_inputs": {
+          "SUB_CLK2": [
+            "PULSE_LOGIC_N",
+            "SUB_Q1"
+          ]
+        },
+        "ff1_clk": "PULSE_CLEAN",
+        "removed_parts": [
+          "R_SAW_PULL",
+          "R_SUB_TH_TOP",
+          "R_SUB_TH_BOT",
+          "R_SUB_TH_HYS",
+          "C_DEC_SUB_SCHMITT"
+        ],
+        "pulse_cmp_half_b": "unchanged tie-off: pin 5 AGND, pin 6 +5V, pin 7 NC"
+      }
+    }
+  },
+  "divider": {
+    "part": "SN74HC74DR (line-flipflop), one per SUB oscillator",
+    "ff1": "D1 = NAND(Q1, SUB_DIV4_ON): toggles in -2, settles to Q1=1 otherwise; CLK1 = SUB_CLK; 1PRE and 1CLR tied to +5V",
+    "ff2": "D2 = 2Q-bar; CLK2 = NAND(SUB_CLK_GATE, Q1); 2PRE = SUB_PUL_OFF (holds Q2=1 in PUL); 2CLR tied to +5V",
+    "power_up": "No reset network. All four (Q1, Q2) states lie on the count cycle; Q1 reaches 1 within one reset in PUL and -1, Q2 is preset asynchronously in PUL. During the first ~0.4-1.1 ms both debounce nodes are low, which the table maps to PUL.",
+    "sync": "The divider is not reset by SYNC. It counts core resets, including hard-sync resets once the saw has passed the upper threshold; its phase relative to the sync master is one of 2 or 4 and stays fixed while sync persists.",
+    "race_freedom": "SUB_CLK_GATE is upstream of SUB_CLK in the Schmitt chain, so it is low before FF1 can change Q1; CLK2 = NAND(SUB_CLK_GATE, Q1) therefore has one rising edge per counted reset for any gate delays. Proven by the unit test over delay corners.",
+    "unused": {
+      "1Q-bar (pin 6)": "no connect (output)",
+      "inputs": "none unused",
+      "rule": "No unused-input rule is retained in the bundles; the project convention (envelope.finish_envelope, io_partition.spare) is used for the added Schmitt package: input AGND, output no-connect."
+    },
+    "bypass": "100 nF GRM188R71H104KA93D from pin 14 (+5V) to AGND per package, as for every IC rail",
+    "pins": {
+      "1": "+5V",
+      "2": "SUB_D1",
+      "3": "SUB_CLK",
+      "4": "+5V",
+      "5": "SUB_Q1",
+      "6": null,
+      "7": "AGND",
+      "8": "SUB_Q2_N",
+      "9": "SUB_Q2",
+      "10": "SUB_PUL_OFF",
+      "11": "SUB_CLK2",
+      "12": "SUB_Q2_N",
+      "13": "+5V",
+      "14": "+5V"
+    }
+  },
+  "gating": {
+    "nand_part": "SN74HC00DR (line-nand)",
+    "nand_pins": {
+      "1": "PULSE_CLEAN",
+      "2": "SUB_PUL_ON",
+      "3": "SUB_PUL_TERM",
+      "4": "SUB_PUL_TERM",
+      "5": "SUB_Q2",
+      "6": "SUB_OUT",
+      "7": "AGND",
+      "8": "SUB_CLK2",
+      "9": "SUB_CLK_GATE",
+      "10": "SUB_Q1",
+      "11": "SUB_D1",
+      "12": "SUB_Q1",
+      "13": "SUB_DIV4_ON",
+      "14": "+5V"
+    },
+    "nand_units": [
+      {
+        "A": "PULSE_CLEAN",
+        "B": "SUB_PUL_ON",
+        "Y": "SUB_PUL_TERM",
+        "pins": [
+          "1",
+          "2",
+          "3"
+        ]
+      },
+      {
+        "A": "SUB_PUL_TERM",
+        "B": "SUB_Q2",
+        "Y": "SUB_OUT",
+        "pins": [
+          "4",
+          "5",
+          "6"
+        ]
+      },
+      {
+        "A": "SUB_CLK_GATE",
+        "B": "SUB_Q1",
+        "Y": "SUB_CLK2",
+        "pins": [
+          "9",
+          "10",
+          "8"
+        ]
+      },
+      {
+        "A": "SUB_Q1",
+        "B": "SUB_DIV4_ON",
+        "Y": "SUB_D1",
+        "pins": [
+          "12",
+          "13",
+          "11"
+        ]
+      }
+    ],
+    "schmitt_part": "SN74HC14DR (line-schmitt)",
+    "schmitt_sections": [
+      {
+        "in": "SUB_A_DB",
+        "out": "SUB_PUL_ON",
+        "role": "select A (PUL throw) debounced contact -> high when PUL"
+      },
+      {
+        "in": "SUB_B_DB",
+        "out": "SUB_DIV4_ON",
+        "role": "select B (-2 throw) debounced contact -> high when -2"
+      },
+      {
+        "in": "SUB_PUL_ON",
+        "out": "SUB_PUL_OFF",
+        "role": "complement: low when PUL; drives 2PRE"
+      },
+      {
+        "in": "SAW_LOGIC",
+        "out": "SUB_CLK_GATE",
+        "role": "clock chain stage 1: falls at the core reset"
+      },
+      {
+        "in": "SUB_CLK_GATE",
+        "out": "SUB_CLK",
+        "role": "clock chain stage 2: rises at the core reset; clocks FF1"
+      },
+      {
+        "in": "PULSE_LOGIC",
+        "out": "PULSE_LOGIC_N",
+        "role": "pulse squaring stage 1"
+      },
+      {
+        "in": "PULSE_LOGIC_N",
+        "out": "PULSE_CLEAN",
+        "role": "pulse squaring stage 2: same polarity as PULSE_LOGIC"
+      }
+    ],
+    "schmitt_packing": "Seven sections: io_partition.refine fills the five spare sections of the existing SYNC SN74HC14DR and adds one package with 2 used and 4 grounded spare sections.",
+    "output": "SUB_OUT = NAND(NAND(PULSE_CLEAN, SUB_PUL_ON), Q2) -> R_SUB_ISO 4.7 kΩ -> SUB_SELECTED -> PUL_SCALE IN+",
+    "select_conditioning": "Each select line uses the switch_button_input topology (10 kΩ pull-up, 1 kΩ, 100 nF, Schmitt) but placed in the oscillator core on K; the contact lines cross the joint, the logic does not."
+  },
+  "state_table": [
+    {
+      "state": "PUL position (pin-3 throw closed)",
+      "kind": "position",
+      "sel_a": 0,
+      "sel_b": 1,
+      "mode": "PUL",
+      "SUB_PUL_ON": 1,
+      "SUB_DIV4_ON": 0,
+      "SUB_PUL_OFF": 0,
+      "output": "PULSE_LOGIC"
+    },
+    {
+      "state": "-1 position (centre, both open)",
+      "kind": "position",
+      "sel_a": 1,
+      "sel_b": 1,
+      "mode": "DIV2",
+      "SUB_PUL_ON": 0,
+      "SUB_DIV4_ON": 0,
+      "SUB_PUL_OFF": 1,
+      "output": "square at f/2"
+    },
+    {
+      "state": "-2 position (pin-1 throw closed)",
+      "kind": "position",
+      "sel_a": 1,
+      "sel_b": 0,
+      "mode": "DIV4",
+      "SUB_PUL_ON": 0,
+      "SUB_DIV4_ON": 1,
+      "SUB_PUL_OFF": 1,
+      "output": "square at f/4"
+    },
+    {
+      "state": "travel between PUL and -1 (break before make)",
+      "kind": "travel",
+      "sel_a": 1,
+      "sel_b": 1,
+      "mode": "DIV2",
+      "SUB_PUL_ON": 0,
+      "SUB_DIV4_ON": 0,
+      "SUB_PUL_OFF": 1,
+      "output": "square at f/2"
+    },
+    {
+      "state": "travel between -1 and -2 (break before make)",
+      "kind": "travel",
+      "sel_a": 1,
+      "sel_b": 1,
+      "mode": "DIV2",
+      "SUB_PUL_ON": 0,
+      "SUB_DIV4_ON": 0,
+      "SUB_PUL_OFF": 1,
+      "output": "square at f/2"
+    },
+    {
+      "state": "both lines low: shorted harness, or the first ~0.4-1.1 ms after +5 V rises while both debounce capacitors charge",
+      "kind": "fault/power-up",
+      "sel_a": 0,
+      "sel_b": 0,
+      "mode": "PUL",
+      "SUB_PUL_ON": 1,
+      "SUB_DIV4_ON": 1,
+      "SUB_PUL_OFF": 0,
+      "output": "PULSE_LOGIC"
+    },
+    {
+      "state": "joint unmated or toggle missing (pull-ups only)",
+      "kind": "fault",
+      "sel_a": 1,
+      "sel_b": 1,
+      "mode": "DIV2",
+      "SUB_PUL_ON": 0,
+      "SUB_DIV4_ON": 0,
+      "SUB_PUL_OFF": 1,
+      "output": "square at f/2"
+    }
+  ],
+  "level": {
+    "transfer": "PUL_SCALED = 2*V(PUL_SCALE IN+) - V(LOCAL_REF5)",
+    "present_input": {
+      "node": "PULSE_LOGIC",
+      "high": "V(+5V) via PUL_PULL 4.7 kΩ (source 4.7 kΩ)",
+      "low": "LM393B VOL at ~1.06 mA sink (value not retained)"
+    },
+    "proposed_input": {
+      "node": "SUB_SELECTED",
+      "high": "SN74HC00 VOH at ~0 load via R_SUB_ISO 4.7 kΩ",
+      "low": "SN74HC00 VOL at ~0 load via R_SUB_ISO 4.7 kΩ",
+      "source_ohm": "4.7 kΩ + SN74HC00 output resistance in both states"
+    },
+    "bound": {
+      "input_V": [
+        0.0,
+        "V(+5V)"
+      ],
+      "PUL_SCALED_V": [
+        -5.0,
+        5.0
+      ],
+      "nominal_PUL_SCALED_V": [
+        -5.0,
+        5.0
+      ]
+    },
+    "argument": "A CMOS output with no DC load stays between its own GND and VCC pins, here AGND and +5V, as the present open-collector-plus-pull-up node does. Both input sets therefore lie in [0, V(+5V)] and PUL_SCALED in [-V(LOCAL_REF5), 2 V(+5V) - V(LOCAL_REF5)], nominally -5 to +5 V, the audio_nominal_V range of the electrical standard. The low level moves towards -5 V by 2*(VOL_LM393 - VOL_HC00); exact VOL/VOH rows are an evidence need.",
+    "partial_power": "With ±12 V absent and +5 V present, current into the unpowered PUL_SCALE input is limited by 4.7 kΩ to <= V(+5V)/4.7 kΩ = 1.064 mA, the same path the present PUL_PULL forms, against the retained 10 mA input-current absolute maximum (fact-op-audio-input-absolute)."
+  },
+  "debounce": {
+    "tau_open_ms": 1.1,
+    "tau_close_ms": 0.1,
+    "open_to_switch_ms_range": [
+      0.4082,
+      1.0818
+    ],
+    "close_to_switch_ms_range": [
+      0.1715,
+      0.0713
+    ],
+    "contact_current_mA": 0.5,
+    "conditions": "Single-pole RC into the Schmitt input; HC14 threshold rows are retained at VCC 4.5 V (fact-schmitt-schmitt-high/low) and applied to a 5.0 V swing as an indicative bound. Contact bounce duration of the toggle is not retained."
+  },
+  "octave_input": {
+    "proposal": "R_OCT_SER pin 1 to AGND; OCT_SELECTOR removed; R_OCT_SER, R_OCT_PD, C_OCT_FILTER, OCT_RECEIVER and PITCH_OCT stay. OCT_CV = receiver(0 V) = zero octaves.",
+    "reference_effect": "OSC_OCT0..5 lose the O2/O4 selector branches (owner decision DS-02) and gain nothing; no reference value, buffer or ladder element changes.",
+    "alternatives": [
+      {
+        "option": "R_OCT_SER pin 1 to OSC_OCT2 (0 V tap)",
+        "state": "NEEDS_DESIGN if chosen",
+        "reason": "adds a fixed 1 kΩ/100 nF/10 MΩ branch per SUB oscillator to a reference node; keeps the same calibrated zero as O1/O3/O5"
+      },
+      {
+        "option": "delete OCT chain and PITCH_OCT",
+        "state": "NEEDS_DESIGN if chosen",
+        "reason": "removes an input from the pitch sum EXPO_SUM"
+      },
+      {
+        "option": "leave OCT_SELECTED open on the 10 MΩ pull-down",
+        "state": "not proposed",
+        "reason": "high-impedance 10 MΩ node; an unconnected 1 kΩ pin needs an ERC no-connect"
+      }
+    ]
+  },
+  "parts": {
+    "added_K": [
+      {
+        "key": "U_SUB_FF",
+        "line": "line-flipflop",
+        "mpn": "SN74HC74DR",
+        "footprint": "SOIC-14_3.9x8.7mm_P1.27mm"
+      },
+      {
+        "key": "U_SUB_NAND",
+        "line": "line-nand",
+        "mpn": "SN74HC00DR",
+        "footprint": "SOIC-14_3.9x8.7mm_P1.27mm"
+      },
+      {
+        "key": "U_SUB_SCHMITT1 (packing overflow)",
+        "line": "line-schmitt",
+        "mpn": "SN74HC14DR",
+        "footprint": "SOIC-14_3.9x8.7mm_P1.27mm"
+      },
+      {
+        "key": "R_SUB_A_PULL",
+        "line": "line-contact-pullup-r",
+        "mpn": "RC0603FR-0710KL",
+        "value": "10 kΩ",
+        "footprint": "R0603",
+        "pins": {
+          "1": "+5V",
+          "2": "SUB_SEL_A"
+        }
+      },
+      {
+        "key": "R_SUB_A_SER",
+        "line": "line-contact-debounce-r",
+        "mpn": "RC0603FR-071KL",
+        "value": "1 kΩ",
+        "footprint": "R0603",
+        "pins": {
+          "1": "SUB_SEL_A",
+          "2": "SUB_A_DB"
+        }
+      },
+      {
+        "key": "C_SUB_A_DB",
+        "line": "line-c-bypass",
+        "mpn": "GRM188R71H104KA93D",
+        "value": "100 nF",
+        "footprint": "C0603",
+        "pins": {
+          "1": "SUB_A_DB",
+          "2": "AGND"
+        }
+      },
+      {
+        "key": "R_SUB_B_PULL",
+        "line": "line-contact-pullup-r",
+        "mpn": "RC0603FR-0710KL",
+        "value": "10 kΩ",
+        "footprint": "R0603",
+        "pins": {
+          "1": "+5V",
+          "2": "SUB_SEL_B"
+        }
+      },
+      {
+        "key": "R_SUB_B_SER",
+        "line": "line-contact-debounce-r",
+        "mpn": "RC0603FR-071KL",
+        "value": "1 kΩ",
+        "footprint": "R0603",
+        "pins": {
+          "1": "SUB_SEL_B",
+          "2": "SUB_B_DB"
+        }
+      },
+      {
+        "key": "C_SUB_B_DB",
+        "line": "line-c-bypass",
+        "mpn": "GRM188R71H104KA93D",
+        "value": "100 nF",
+        "footprint": "C0603",
+        "pins": {
+          "1": "SUB_B_DB",
+          "2": "AGND"
+        }
+      },
+      {
+        "key": "R_SAW_PULL",
+        "line": "line-r-precision",
+        "mpn": "UNRESOLVED (series representative, value not exact)",
+        "value": "4.7 kΩ",
+        "footprint": "R0603",
+        "pins": {
+          "1": "+5V",
+          "2": "SAW_LOGIC"
+        }
+      },
+      {
+        "key": "R_SUB_TH_TOP",
+        "line": "line-r-precision",
+        "mpn": "RT0603BRD07100KL",
+        "value": "100 kΩ",
+        "footprint": "R0603",
+        "pins": {
+          "1": "+5V",
+          "2": "SUB_THRESH"
+        }
+      },
+      {
+        "key": "R_SUB_TH_BOT",
+        "line": "line-r-precision",
+        "mpn": "RT0603BRD07100KL",
+        "value": "100 kΩ",
+        "footprint": "R0603",
+        "pins": {
+          "1": "SUB_THRESH",
+          "2": "AGND"
+        }
+      },
+      {
+        "key": "R_SUB_TH_HYS",
+        "line": "line-r-precision",
+        "mpn": "UNRESOLVED (series representative, value not exact)",
+        "value": "1 MΩ",
+        "footprint": "R0603",
+        "pins": {
+          "1": "SAW_LOGIC",
+          "2": "SUB_THRESH"
+        }
+      },
+      {
+        "key": "R_SUB_ISO",
+        "line": "line-r-precision",
+        "mpn": "UNRESOLVED (series representative, value not exact)",
+        "value": "4.7 kΩ",
+        "footprint": "R0603",
+        "pins": {
+          "1": "SUB_OUT",
+          "2": "SUB_SELECTED"
+        }
+      },
+      {
+        "key": "C_DEC_SUB_FF",
+        "line": "line-c-bypass",
+        "mpn": "GRM188R71H104KA93D",
+        "value": "100 nF",
+        "footprint": "C0603",
+        "pins": {
+          "1": "+5V",
+          "2": "AGND"
+        }
+      },
+      {
+        "key": "C_DEC_SUB_NAND",
+        "line": "line-c-bypass",
+        "mpn": "GRM188R71H104KA93D",
+        "value": "100 nF",
+        "footprint": "C0603",
+        "pins": {
+          "1": "+5V",
+          "2": "AGND"
+        }
+      },
+      {
+        "key": "C_DEC_SUB_SCHMITT",
+        "line": "line-c-bypass",
+        "mpn": "GRM188R71H104KA93D",
+        "value": "100 nF",
+        "footprint": "C0603",
+        "pins": {
+          "1": "+5V",
+          "2": "AGND"
+        }
+      }
+    ],
+    "added_P": [
+      {
+        "key": "SUB_TOGGLE",
+        "line": "line-2ms3",
+        "mpn": "2MS3T1B1M2QES",
+        "footprint": "Toggle_Dailywell_2MS_T1B1M2",
+        "pins": {
+          "1": "SUB_SEL_B",
+          "2": "AGND",
+          "3": "SUB_SEL_A"
+        }
+      }
+    ],
+    "changed": [
+      {
+        "part": "PULSE_CMP (LM393BIDR, existing)",
+        "pin": "5",
+        "name": "2IN+",
+        "from": "AGND",
+        "to": "SUB_THRESH"
+      },
+      {
+        "part": "PULSE_CMP (LM393BIDR, existing)",
+        "pin": "6",
+        "name": "2IN-",
+        "from": "+5V",
+        "to": "SAW_RAW"
+      },
+      {
+        "part": "PULSE_CMP (LM393BIDR, existing)",
+        "pin": "7",
+        "name": "2OUT",
+        "from": null,
+        "to": "SAW_LOGIC"
+      },
+      {
+        "part": "PUL_SCALE (OPA4196IDR section, existing)",
+        "pin": "IN+",
+        "name": "non-inverting input",
+        "from": "PULSE_LOGIC",
+        "to": "SUB_SELECTED"
+      },
+      {
+        "part": "R_OCT_SER (existing)",
+        "pin": "1",
+        "name": "selector side",
+        "from": "OCT_SELECTED",
+        "to": "AGND"
+      }
+    ],
+    "removed": [
+      {
+        "part": "OCT_SELECTOR",
+        "mpn": "SRBV160803",
+        "region": "selector (O2/O4 adapter)",
+        "reason": "owner decision DS-02; the adapter board and its GH7 harnesses are retired by the stack plan"
+      }
+    ],
+    "kept_unchanged": [
+      "R_OCT_SER (1 kΩ, pin 2 OCT_FILTER)",
+      "R_OCT_PD (10 MΩ)",
+      "C_OCT_FILTER (100 nF)",
+      "OCT_RECEIVER (precision follower)",
+      "PITCH_OCT (100 kΩ OCT_CV -> EXPO_SUM)",
+      "PUL_DIV_TOP/BOT, PULSE_CMP half A, REF25 divider, PUL_PULL 4.7 kΩ",
+      "PUL_RF/PUL_RREF 100 kΩ and the PUL output cell"
+    ],
+    "untouched_sensitive_and_reference_nets": [
+      "TIMING_CAP",
+      "EXPO_SUM",
+      "SCALE_PIN",
+      "SCALE1",
+      "SCALE2",
+      "LINEAR_REF",
+      "HF_PIN",
+      "LOCAL_REF5",
+      "LOCAL_REFN5",
+      "REF25",
+      "REF4",
+      "OSC_REF5",
+      "OSC_REFN5",
+      "OSC_GATE_REF",
+      "OSC_OCT0",
+      "OSC_OCT1",
+      "OSC_OCT2",
+      "OSC_OCT3",
+      "OSC_OCT4",
+      "OSC_OCT5"
+    ]
+  },
+  "joint": {
+    "pair": "1×3, one per SUB oscillator, P B.Cu to K F.Cu; connector not selected (ST-01)",
+    "pin_map": {
+      "1": "SUB_SEL_A",
+      "2": "AGND",
+      "3": "SUB_SEL_B"
+    },
+    "order_rule": "signal-AGND-signal, as every P-to-K 1×3 pair; pin n of the P half mates pin n of the K half",
+    "routing_note": "Toggle pad 3 is at x-2.54, pad 2 at the centre, pad 1 at x+2.54 (rot 0); a pair with pin 1 at -x reaches each throw without a crossing. A mirrored mate would swap PUL and -2 only; netlist parity catches it.",
+    "audio_across_joint": false,
+    "near_site_parts": "None added on P besides the toggle and the pair half. All K-side conditioning may sit anywhere in the OSC2/OSC4 core; nothing is required within the 0.7 mm window."
+  },
+  "toggle": {
+    "mpn": "2MS3T1B1M2QES",
+    "pins": {
+      "1": "SUB_SEL_B",
+      "2": "AGND",
+      "3": "SUB_SEL_A"
+    },
+    "evidence": {
+      "pin_labels": "unverified (pin-map.json: LEFT=3, COMMON=2, RIGHT=1)",
+      "contact_map": "UNSOURCED (fact-2ms3-contact)",
+      "suffix_equivalence": "UNSOURCED (fact-2ms3-suffix-equivalence)",
+      "assumption_shared_with": "SYNC_SELECT on all five oscillators (pin 2 common)"
+    },
+    "positions_grid_order": [
+      "PUL",
+      "-1",
+      "-2"
+    ]
+  },
+  "panel_binding": [
+    {
+      "instance": "O2",
+      "ref": "SW201",
+      "uid_now": "C:O2.OCT",
+      "uid_proposed": "C:O2.SUB",
+      "x_mm": 31.5,
+      "y_mm": 185.0
+    },
+    {
+      "instance": "O4",
+      "ref": "SW401",
+      "uid_now": "C:O4.OCT",
+      "uid_proposed": "C:O4.SUB",
+      "x_mm": 65.5,
+      "y_mm": 185.0
+    }
+  ],
+  "grid_revision_proposal": {
+    "state": "PROPOSAL for ST-10; not applied",
+    "row_changes": {
+      "uid": "C:Ox.OCT -> C:Ox.SUB",
+      "id": "Ox.OCT -> Ox.SUB",
+      "key": "OCT -> SUB",
+      "label": "OCT -> SUB",
+      "kind": "octave -> switch",
+      "component": "alps-srbv160803 -> dailywell-2ms3",
+      "diameter_mm": "8 -> 6",
+      "positions": "[-2,-1,0,1,2,3] -> [\"PUL\",\"-1\",\"-2\"]",
+      "accent": "owner artwork decision"
+    },
+    "lock_consequence": {
+      "domain": "O -> P",
+      "hole_d_mm": "7.0 -> 5.2 (fitted toggle class)",
+      "rot_deg": "180 -> 0 (as the other P toggles)",
+      "assembly_pcb_z_mm/assembly_group": "removed (selector-only fields)",
+      "x_mm/y_mm": "unchanged"
+    },
+    "reason_for_uid_rename": "io_partition.region() classifies any C:*.OCT uid as region \"selector\"; the toggle must be region \"control\" (P). Keeping the uid needs a special case.",
+    "alternative": "keep uid C:Ox.OCT and special-case region(); fewer renamed references, one exception"
+  },
+  "rail_delta": {
+    "proposed": {
+      "per_SUB_oscillator": {
+        "typical_mA": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 1.625
+        },
+        "planning_mA": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 3.59383
+        }
+      },
+      "ledger_total_two_oscillators": {
+        "typical_mA": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 3.25
+        },
+        "planning_mA": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 7.18766
+        }
+      },
+      "items": [
+        {
+          "load": "SN74HC74DR, SN74HC00DR, added SN74HC14DR packages",
+          "count": 3,
+          "typical_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0.2
+          },
+          "planning_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0.5
+          },
+          "basis": "Per-package planning reserve used for HC logic in the envelope worksheet (0.2 typical / 0.5 planning); fact-flipflop-quiescent-table-max 40 µA and fact-schmitt-quiescent-table-max 20 µA at VCC 6 V are static only. Not a guaranteed maximum."
+        },
+        {
+          "load": "Contact pull-ups 10 kΩ (one closed at an end position, both in the fault/power-up row)",
+          "count": 2,
+          "typical_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0.25
+          },
+          "planning_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0.5
+          },
+          "basis": "V(+5V)/10 kΩ = 0.5 mA per closed contact; envelope control-contact convention."
+        },
+        {
+          "load": "Saw comparator pull-up 4.7 kΩ",
+          "count": 1,
+          "typical_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0.5
+          },
+          "planning_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 1.06383
+          },
+          "basis": "Envelope comparator pull-up convention: 0.5 typical, 5 V/4.7 kΩ planning (output low)."
+        },
+        {
+          "load": "Saw threshold divider 2 × 100 kΩ and 1 MΩ hysteresis",
+          "count": 1,
+          "typical_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0.025
+          },
+          "planning_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0.03
+          },
+          "basis": "5 V / 200 kΩ = 0.025 mA plus <= 5 µA through 1 MΩ."
+        },
+        {
+          "load": "LM393BIDR half B activated",
+          "count": 0,
+          "typical_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0
+          },
+          "basis": "Whole-package allowance (0.6 typical / 1 planning on +12 V) already counts both halves; no delta."
+        }
+      ],
+      "schmitt_sections": 7,
+      "added_schmitt_packages": 1,
+      "guaranteed_maximum": null,
+      "status": "Planning deltas only; dynamic switching at audio rates (C·V·f below 0.01 mA for 50 pF nodes at 20 kHz) is inside the package reserve. Measured current NOT RUN."
+    },
+    "alternative_pulse": {
+      "per_SUB_oscillator": {
+        "typical_mA": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 0.9
+        },
+        "planning_mA": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 2.0
+        }
+      },
+      "ledger_total_two_oscillators": {
+        "typical_mA": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 1.8
+        },
+        "planning_mA": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 4.0
+        }
+      },
+      "items": [
+        {
+          "load": "SN74HC74DR, SN74HC00DR packages",
+          "count": 2,
+          "typical_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0.2
+          },
+          "planning_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0.5
+          },
+          "basis": "Per-package planning reserve used for HC logic in the envelope worksheet (0.2 typical / 0.5 planning); fact-flipflop-quiescent-table-max 40 µA and fact-schmitt-quiescent-table-max 20 µA at VCC 6 V are static only. Not a guaranteed maximum."
+        },
+        {
+          "load": "Contact pull-ups 10 kΩ (one closed at an end position, both in the fault/power-up row)",
+          "count": 2,
+          "typical_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0.25
+          },
+          "planning_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0.5
+          },
+          "basis": "V(+5V)/10 kΩ = 0.5 mA per closed contact; envelope control-contact convention."
+        },
+        {
+          "load": "LM393BIDR half B activated",
+          "count": 0,
+          "typical_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0
+          },
+          "basis": "Whole-package allowance (0.6 typical / 1 planning on +12 V) already counts both halves; no delta."
+        }
+      ],
+      "schmitt_sections": 5,
+      "added_schmitt_packages": 0,
+      "guaranteed_maximum": null,
+      "status": "Planning deltas only; dynamic switching at audio rates (C·V·f below 0.01 mA for 50 pF nodes at 20 kHz) is inside the package reserve. Measured current NOT RUN."
+    }
+  },
+  "area_K": {
+    "proposed": {
+      "parts": 17,
+      "by_footprint": {
+        "SOIC-14_3.9x8.7mm_P1.27mm": 3,
+        "R0603": 9,
+        "C0603": 5
+      },
+      "courtyard_mm2": 299.0004
+    },
+    "alternative_pulse": {
+      "parts": 11,
+      "by_footprint": {
+        "SOIC-14_3.9x8.7mm_P1.27mm": 2,
+        "R0603": 5,
+        "C0603": 4
+      },
+      "courtyard_mm2": 197.5624
+    },
+    "courtyards": {
+      "SOIC-14_3.9x8.7mm_P1.27mm": [
+        71.262,
+        [
+          7.4,
+          9.63
+        ]
+      ],
+      "R0603": [
+        5.9696,
+        [
+          3.28,
+          1.82
+        ]
+      ],
+      "C0603": [
+        6.2976,
+        [
+          3.28,
+          1.92
+        ]
+      ]
+    },
+    "note": "Courtyard rectangles from the project footprints; counts per SUB oscillator; no placement."
+  },
+  "implementation_notes_for_ST11": [
+    "Split the shared oscillator family into a SUB variant for O2 and O4; O4 is also split by precision-tssop-retention.json, so the SUB variant must compose with that split.",
+    "Builder.finish() maps SN74HC74DR and SN74HC00DR to the ±12 V bypass branch; add them to the +5 V branch, or io_partition.refine() raises \"orphaned bypass capacitors\".",
+    "Create the select conditioning with oscillator roles, not b.cell(\"switch_button_input\"): that role is a CONTROL_CELL and would move the parts to P.",
+    "Use the exact contact lines (RC0603FR-0710KL, RC0603FR-071KL) via CATALOG, as the cells do; b.r() would assign the RT0603BRD series with no MPN.",
+    "Append new parts after existing ones so the designator lock only grows.",
+    "Panel template: C:{}.SUB for the SUB variant (C:{}.OCT stays for O1/O3/O5)."
+  ],
+  "evidence_needs": [
+    {
+      "part": "ALFA RPAR AS3340D",
+      "need": "sawtooth output low and high level, shape and drive at +12 V / -5 V",
+      "used_for": "saw threshold window (needs low < 2.38 V and high > 2.62 V nominal) and LM393 input >= -0.3 V"
+    },
+    {
+      "part": "ALFA RPAR AS3340D",
+      "need": "pulse output polarity relative to the saw reset; PW input span for 0 % and 100 %",
+      "used_for": "comparison claims for the PULSE_LOGIC clock"
+    },
+    {
+      "part": "ALFA RPAR AS3340D",
+      "need": "hard and soft sync reset behaviour",
+      "used_for": "player-facing sync description"
+    },
+    {
+      "part": "Texas Instruments LM393BIDR",
+      "need": "VOL at about 1.1 mA sink; input common-mode range at VCC 12 V; large-signal response time",
+      "used_for": "HC14 VT- margin, SAW_RAW range, edge latency"
+    },
+    {
+      "part": "Texas Instruments SN74HC00DR",
+      "need": "VOH/VOL rows, input transition-time limit, propagation delay",
+      "used_for": "exact PUL level and timing model bracket (1..60 ns assumed)"
+    },
+    {
+      "part": "Texas Instruments SN74HC74DR / SN74HC14DR",
+      "need": "VOH/VOL rows and 5 V threshold rows; unused-input rule",
+      "used_for": "levels; the project convention replaces the missing rule"
+    },
+    {
+      "part": "Dailywell 2MS3T1B1M2QES",
+      "need": "contact map (common pin, lever-to-throw), break-before-make, bounce time, suffix equivalence",
+      "used_for": "pin map, legend order, debounce adequacy"
+    },
+    {
+      "part": "Texas Instruments OPA4196IDR",
+      "need": "input bias current",
+      "used_for": "IN+ error term across 4.7 kΩ (same as today)"
+    },
+    {
+      "part": "1×3 board-to-board pair",
+      "need": "no connector selected (ST-01)",
+      "used_for": "land pattern width against the 0.7 mm window"
+    }
+  ],
+  "verification_plan": {
+    "unit_tests_this_task": "python3 scripts/checks/frozen_studies.py discover scripts/stack/sub_toggle",
+    "ideal_simulation": [
+      {
+        "deck": "saw comparator",
+        "stimulus": "ideal saw PWL 0..8 V with 1 µs reset at 0.1 Hz, 100 Hz, 2 kHz, 20 kHz; 10 mV rms noise; swing variants 0.5..6 V and 0..10 V",
+        "model": "behavioural comparator, open collector, 4.7 kΩ pull-up, divider and 1 MΩ",
+        "pass": "thresholds within 1 mV of 2.6185 / 2.3810 V; exactly one SAW_LOGIC rising edge per reset"
+      },
+      {
+        "deck": "logic",
+        "stimulus": "SAW_LOGIC and PULSE_LOGIC with PW 0, 1, 50, 99, 100 %; truncated hard-sync cycles; all toggle states and transitions",
+        "model": "XSPICE d_dff, d_nand, d_inverter with 1..60 ns delays",
+        "pass": "PUL: output equals PULSE_LOGIC; -1: one output edge per reset, 50 % duty; -2: one per two resets; no output pulse < 1 µs in the sub positions"
+      },
+      {
+        "deck": "level",
+        "stimulus": "SUB_SELECTED 0/5 V through 4.7 kΩ",
+        "model": "ideal op-amp PUL_SCALE",
+        "pass": "PUL_SCALED -5.000/+5.000 V ±1 mV at nominal rails; identical to the present deck with PULSE_LOGIC"
+      },
+      {
+        "deck": "debounce",
+        "stimulus": "contact make with 5 bounces 50 µs..1 ms; power-up ramp of +5 V",
+        "model": "RC plus ideal Schmitt at both retained threshold corners",
+        "pass": "only states of the table occur; no state outside it; power-up passes through PUL only"
+      }
+    ],
+    "ST11_checks": [
+      {
+        "check": "ERC through scripts/kicad/run.sh (KiCad 10.0.6)",
+        "pass": "no new ERC error or warning class against the pre-change baseline"
+      },
+      {
+        "check": "netlist parity",
+        "pass": "exported netlist of O2/O4 contains every net and pin of this spec; O1/O3/O5 unchanged; sensitive and reference nets identical across variants except the removed selector pins"
+      },
+      {
+        "check": "model contract tests (test_oscillator and this task's test against the netlist)",
+        "pass": "no SRBV160803 in O2/O4; R_OCT_SER pin 1 = AGND; PUL_SCALE IN+ = SUB_SELECTED; HC packages on +5V/AGND with 100 nF; gate-level replay of the exported logic reproduces the state table"
+      },
+      {
+        "check": "check_oscillator.sh and pnpm circuit:check",
+        "pass": "pass"
+      },
+      {
+        "check": "rail ledger refresh (build_oscillator_current)",
+        "pass": "SUB variant +5 V row equals this delta"
+      }
+    ]
+  }
+}
