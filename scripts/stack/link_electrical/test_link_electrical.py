@@ -27,6 +27,23 @@ class Retained(unittest.TestCase):
             for r in inp['contact'][pk]['ratings_A']:
                 self.assertIn(r['status'], ('SOURCED', 'DERIVED', 'ASSUMED'))
 
+    def test_readme_has_no_stray_backslash_and_no_warning(self):
+        import warnings
+        self.assertNotIn('\\′', (le.OUT / 'README.md').read_text())
+        with warnings.catch_warnings():
+            warnings.simplefilter('error')
+            compile((Path(le.__file__)).read_text(), le.__file__, 'exec')
+
+    def test_changed_input_changes_text(self):
+        inp = copy.deepcopy(le.load_inputs())
+        inp['aggressors']['LOGIC']['load_F'] = 2.2e-11
+        inp['cable']['eps_eff']['value'] = [1.0, 2.0, 3.0]
+        r = le.results(inp)
+        text = le.readme(inp, r)
+        self.assertIn('load 22 pF', text)
+        self.assertIn('ε_eff swept 1 / 2 / 3', text)
+        self.assertNotIn('load 15 pF', text)
+
     def test_wave_sources_are_the_sourced_0_5mm_ratings(self):
         inp = le.load_inputs()
         vals = {r['value']: r['status'] for r in inp['contact']['pitch_0_5']['ratings_A']}
@@ -39,12 +56,24 @@ class Signals(unittest.TestCase):
     def test_counts_match_da03(self):
         inp = le.load_inputs()
         sig = le.classified_signals(inp)
-        self.assertEqual(len(sig), 492)
+        self.assertEqual(len(sig), 490)
         joints = {}
         for s in sig:
             joints[s['family']] = joints.get(s['family'], 0) + 1
-        self.assertEqual(joints, {'K/P': 246, 'JR/K': 108, 'JL/K': 100, 'P/K for EL': 18, 'JL/P pass-through': 16, 'SUB': 4})
-        self.assertEqual(sum(s['class'] == 'NC' for s in sig), 2)
+        self.assertEqual(joints, {'K/P': 246, 'JR/K': 106, 'JL/K': 100, 'P/K for EL': 18, 'JL/P pass-through': 16, 'SUB': 4})
+        self.assertFalse(any(s['class'] == 'NC' for s in sig))
+
+    def test_counts_equal_room_study(self):
+        site = json.loads((le.ROOT / 'design/stack/geometry/links/link-candidate.json').read_text())['site_counts']
+        sig = le.link_signals()
+        self.assertEqual(len(sig), site['signals'])
+        for fam, row in site['by_family'].items():
+            self.assertEqual(sum(s['family'] == fam for s in sig), row['signals'], fam)
+        r = json.loads((le.OUT / 'results.json').read_text())
+        self.assertEqual(sum(r['branch_signals'].values()), site['signals'])
+        for pk, opts in r['ground_counts'].items():
+            for rows in opts.values():
+                self.assertEqual(sum(x['signals'] for x in rows.values()), site['signals'])
 
     def test_classification_examples(self):
         inp = le.load_inputs()
@@ -122,14 +151,37 @@ class GroundCurrent(unittest.TestCase):
 
 
 class Counts(unittest.TestCase):
-    def test_rule_counts(self):
+    def test_capacities_equal_room_study(self):
+        sys.path.insert(0, str(le.ROOT / 'scripts/stack/geometry'))
+        import links
+        for n in (20, 22, 30, 40):
+            self.assertEqual(le.ds51_capacity(n, 'A'), links.capacity(n, 'G-PER-2S'))
+            self.assertEqual(le.ds51_capacity(n, 'B_inner'), links.capacity(n, 'G-BETWEEN'))
+        self.assertEqual([le.ds51_capacity(n, 'A') for n in (20, 22, 30, 40)], [13, 14, 20, 26])
+        self.assertEqual([le.ds51_capacity(n, 'B_inner') for n in (20, 22, 30, 40)], [10, 11, 15, 20])
+
+    def test_rule_counts_per_link(self):
         rj = json.loads((le.OUT / 'results.json').read_text())
         for pk, opts in rj['ground_counts'].items():
             for c, rows in opts.items():
                 for j, x in rows.items():
-                    self.assertEqual(x['rule_A']['grounds'], math.ceil(x['signals'] / 2))
-                    self.assertLessEqual(x['signals'] + x['rule_B']['grounds'], x['rule_B']['links'] * int(c))
+                    for k in ('rule_A', 'rule_B_inner', 'rule_B_outer'):
+                        y = x[k]
+                        self.assertEqual(y['links'], math.ceil(x['signals'] / y['signals_per_link']))
+                        self.assertLessEqual(x['signals'] + y['grounds'], y['links'] * int(c))
                     self.assertLessEqual(x['signals'] + x['grounds_rule'], x['links_rule'] * int(c))
+        x = le.ds51_counts(40, 20)
+        self.assertEqual((x['rule_A']['links'], x['rule_A']['grounds']), (4, 3 * 7 + 1))
+        self.assertEqual((x['rule_B_inner']['links'], x['rule_B_inner']['grounds']), (4, 36))
+
+    def test_grouping_tries_every_existing_cable(self):
+        sep = 'not in the same flat cable (separate link or ground layer)'
+        table = {('LOGIC', 'ANALOGUE'): sep, ('ANALOGUE', 'PRECISION'): sep, ('ANALOGUE', 'ANALOGUE'): 'side by side'}
+        verdicts = [{'pitch': 'pitch_1_0', 'aggressor': a, 'victim': v, 'need': table.get((a, v), 'side by side')}
+                    for a in le.AGGRESSORS for v in le.VICTIMS]
+        sig = [{'family': 'JL/K', 'front_board': 'JL', 'class': c} for c in ('LOGIC', 'ANALOGUE', 'PRECISION')]
+        out = le.ground_count(sig, verdicts, 'pitch_1_0', 20)['JL to K']
+        self.assertEqual(out['cables'], ['LOGIC + PRECISION', 'ANALOGUE'])
 
 
 class HarnessBaseline(unittest.TestCase):

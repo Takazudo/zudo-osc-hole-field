@@ -28,7 +28,7 @@ PITCHES = ('pitch_1_0', 'pitch_0_5')
 PITCH_LABEL = {'pitch_1_0': '1.00 mm', 'pitch_0_5': '0.5 mm'}
 AGGRESSORS = ('LOGIC', 'ANALOGUE')
 VICTIMS = ('PRECISION', 'WIPER', 'ANALOGUE', 'LOGIC')
-RAILS_AND_GROUND = ('AGND', '+12V', '-12V', '+5V')
+NON_SIGNAL = ('AGND', 'NC', '+12V', '-12V', '+5V')
 
 
 def load_inputs(path=INPUTS):
@@ -37,18 +37,32 @@ def load_inputs(path=INPUTS):
 
 # ---------------------------------------------------------------- signals and classes
 
+def is_link_pair(pr):
+    return 'K' in pr['boards'] and not pr['family'].startswith('K/O')
+
+
 def link_signals(root=ROOT):
-    """Every signal position of a K pair that goes to a link (all K pairs except the six adapter pairs)."""
+    """Every signal of a K pair that goes to a link (all K pairs except the six adapter pairs). NC, rail and AGND
+    positions are not signals, as in ST-02's room study (scripts/stack/geometry/links.py, NON_SIGNAL)."""
     cand = json.loads((root / 'design/stack/geometry/stack-candidate.json').read_text())['candidate']
     out = []
     for pr in cand['pairs']:
-        if 'K' not in pr['boards'] or pr['family'].startswith('K/O'):
+        if not is_link_pair(pr):
             continue
         front = [b for b in pr['boards'] if b != 'K'][0]
         for net in pr['pin_map']:
-            if net not in RAILS_AND_GROUND:
+            if net not in NON_SIGNAL:
                 out.append({'pair': pr['id'], 'family': pr['family'], 'front_board': front, 'net': net})
     return out
+
+
+def signal_census(root=ROOT):
+    """Counts for the README text: K-pair signals, adapter signals and NC positions on link pairs."""
+    cand = json.loads((root / 'design/stack/geometry/stack-candidate.json').read_text())['candidate']
+    k = [pr for pr in cand['pairs'] if 'K' in pr['boards']]
+    sig = lambda prs: sum(n not in NON_SIGNAL for pr in prs for n in pr['pin_map'])  # noqa: E731
+    return {'K_pair_signals': sig(k), 'adapter_signals': sig([pr for pr in k if not is_link_pair(pr)]),
+            'link_nc_positions': sum(n == 'NC' for pr in k if is_link_pair(pr) for n in pr['pin_map'])}
 
 
 def partition_kinds(root=ROOT):
@@ -249,16 +263,21 @@ def coupling_table(inp):
     return rows
 
 
-def sensitivity(inp, pitch='pitch_0_5', length=80):
+SENSITIVITY_CASE = ('pitch_0_5', -1)
+
+
+def sensitivity(inp, pitch=SENSITIVITY_CASE[0], length=None):
     """Worst configuration (upper eps) across the impedance and edge sweeps: the verdict's dependence on ASSUMED terms."""
     e = inp['cable']['eps_eff']['value'][-1]
+    length = inp['cable']['lengths_mm']['value'][SENSITIVITY_CASE[1]] if length is None else length
     rows = []
     for rule, pair in (('A', 'adjacent'), ('A', 'across_ground'), ('B', 'across_ground')):
         par = pair_parameters(inp, pitch, length, e, rule, pair)
         for agg in AGGRESSORS:
             n_e = len(inp['aggressors'][agg]['edge_s' if agg == 'LOGIC' else 'slew_V_per_s'])
             for vic in VICTIMS:
-                grid = [[victim_peak(par, agg, vic, inp, ie, ir)['edge_V'] for ir in range(3)] for ie in range(n_e)]
+                n_r = len(inp['victims'][vic]['source_ohm'])
+                grid = [[victim_peak(par, agg, vic, inp, ie, ir)['edge_V'] for ir in range(n_r)] for ie in range(n_e)]
                 rows.append({'rule': rule, 'pair': pair, 'aggressor': agg, 'victim': vic, 'grid_V': grid})
     return rows
 
@@ -330,18 +349,14 @@ def ground_count(signals, verdicts, pk, circuits):
     out = {}
     for j, counts in sorted(joints.items()):
         present = [c for c in order if counts.get(c)]
-        groups = [[]]
+        groups = []
         for c in present:
-            if any(need_between(verdicts, pk, c, o) == 2 for o in groups[-1]):
-                for g in groups[1:]:
-                    if not any(need_between(verdicts, pk, c, o) == 2 for o in g):
-                        g.append(c)
-                        break
-                else:
-                    groups.append([c])
+            for g in groups:
+                if not any(need_between(verdicts, pk, c, o) == 2 for o in g):
+                    g.append(c)
+                    break
             else:
-                groups[-1].append(c)
-        groups = [g for g in groups if g]
+                groups.append([c])
         grounds = links = 0
         for g in groups:
             n = sum(counts[c] for c in g)
@@ -350,14 +365,39 @@ def ground_count(signals, verdicts, pk, circuits):
             grounds += fixed + k
             links += k
         n_sig = sum(counts.values())
-        a_links = math.ceil((n_sig + math.ceil(n_sig / 2)) / circuits)
-        b_links = 1
-        while n_sig + n_sig + b_links > b_links * circuits:
-            b_links += 1
         out[j] = {'signals': n_sig, 'classes': {c: counts[c] for c in present}, 'cables': [' + '.join(g) for g in groups],
-                  'grounds_rule': grounds, 'links_rule': links,
-                  'rule_A': {'grounds': math.ceil(n_sig / 2), 'links': a_links},
-                  'rule_B': {'grounds': n_sig + b_links, 'links': b_links}}
+                  'grounds_rule': grounds, 'links_rule': links, **ds51_counts(n_sig, circuits)}
+    return out
+
+
+def ds51_capacity(n, rule):
+    """Signals per link, as ST-02's room study (scripts/stack/geometry/links.py, capacity()) for A and B_inner."""
+    s = 0
+    if rule == 'A':
+        while (s + 1) + math.ceil((s + 1) / 2) <= n:
+            s += 1
+    elif rule == 'B_inner':
+        while 2 * (s + 1) - 1 <= n:
+            s += 1
+    elif rule == 'B_outer':
+        while 2 * (s + 1) + 1 <= n:
+            s += 1
+    return s
+
+
+def ds51_grounds(s, rule):
+    return {'A': math.ceil(s / 2), 'B_inner': max(s - 1, 0), 'B_outer': s + 1}[rule]
+
+
+def ds51_counts(n_sig, circuits):
+    """Per link, links filled to capacity: rule A (one ground per two signals), rule B read without outer grounds
+    (s - 1 per link, the room study's reading and the present harness pattern) and with them (s + 1)."""
+    out = {}
+    for rule in ('A', 'B_inner', 'B_outer'):
+        cap = ds51_capacity(circuits, rule)
+        full, rem = divmod(n_sig, cap)
+        out['rule_' + rule] = {'signals_per_link': cap, 'links': full + (rem > 0),
+                               'grounds': full * ds51_grounds(cap, rule) + ds51_grounds(rem, rule)}
     return out
 
 
@@ -399,7 +439,7 @@ def current_table(inp, signals):
     for pk in PITCHES:
         ratings = inp['contact'][pk]['ratings_A']
         for b in inp['ground_current']['branches']:
-            nA = math.ceil(branch_signals[b] / 2)
+            nA = ds51_counts(branch_signals[b], inp['link_options'][pk][0])['rule_A']['grounds']
             for case, posts in inp['ground_current']['posts_cases'].items():
                 row = {'pitch': pk, 'branch': b, 'case': case, 'posts': posts,
                        'I_n1_A': worst_ground_contact(inp, pk, b, 1, posts, d),
@@ -411,6 +451,11 @@ def current_table(inp, signals):
 
 # ---------------------------------------------------------------- outputs
 
+def room_site_counts(root=ROOT):
+    """ST-02 a4's signal count (design/stack/geometry/links/link-candidate.json, site_counts), read only."""
+    return json.loads((root / 'design/stack/geometry/links/link-candidate.json').read_text())['site_counts']
+
+
 def results(inp):
     sig = classified_signals(inp)
     table = coupling_table(inp)
@@ -421,7 +466,7 @@ def results(inp):
         by_class[s['class']] = by_class.get(s['class'], 0) + 1
     rmin_max = {pk: link_ground_paths(inp, pk) for pk in PITCHES}
     return {'signals': sig, 'by_class': by_class, 'coupling': table, 'verdicts': verd,
-            'sensitivity_0_5mm_80mm': sensitivity(inp),
+            'sensitivity': sensitivity(inp), 'census': signal_census(), 'site_counts': room_site_counts(),
             'ground_counts': {pk: {str(c): ground_count(sig, verd, pk, c) for c in inp['link_options'][pk]} for pk in PITCHES},
             'ground_current': cur, 'branch_signals': branch_signals,
             'link_ground_path_ohm': {pk: {'min': a, 'max': b} for pk, (a, b) in rmin_max.items()}}
@@ -453,17 +498,30 @@ def db(x, va):
     return f'{20 * math.log10(x / va):.0f}'
 
 
+def sweep(xs, scale, unit):
+    return ' / '.join(f'{x * scale:g}' for x in xs) + ' ' + unit
+
+
+def pitch_heading(rows):
+    side = [x for x in rows if x['need'] == 'side by side']
+    gnd = [x for x in rows if SEP_RANK[x['need']] == 1]
+    sep = [x for x in rows if SEP_RANK[x['need']] == 2]
+    return (f'{len(side)} of {len(rows)} class pairs side by side, {len(gnd)} with a grounded neighbour, {len(sep)} not in one cable'
+            + (' (' + ', '.join(f'{x["aggressor"]} onto {x["victim"]}' for x in sep) + ')' if sep else ''))
+
+
 def readme(inp, r):
     L = inp['cable']['lengths_mm']['value']
-    e_hi = inp['cable']['eps_eff']['value'][-1]
+    eps = inp['cable']['eps_eff']['value']
+    e_hi = eps[-1]
+    la = inp['aggressors']['LOGIC']
+    an = inp['aggressors']['ANALOGUE']
     nsig = len(r['signals'])
-    nc = r['by_class'].get('NC', 0)
+    cen = r['census']
     joints = {}
     for s in r['signals']:
         joints[joint_of(s)] = joints.get(joint_of(s), 0) + 1
-    v05 = [x for x in r['verdicts'] if x['pitch'] == 'pitch_0_5']
-    v10 = [x for x in r['verdicts'] if x['pitch'] == 'pitch_1_0']
-    hard = sorted({(x['aggressor'], x['victim']) for x in r['verdicts'] if SEP_RANK[x['need']] == 2})
+    by_pitch = {pk: [x for x in r['verdicts'] if x['pitch'] == pk] for pk in PITCHES}
     gc = r['ground_current']
     worst_normal = max(x['I_n1_A'] for x in gc if x['case'] == 'normal')
     worst_open = max(x['I_n1_A'] for x in gc if x['case'] == 'one_post_open')
@@ -475,55 +533,58 @@ def readme(inp, r):
       'and resistance are NOT RUN as measurements; nothing is selected, adopted or bought. Every class, impedance, edge rate and '
       'limit below is ASSUMED unless a row says otherwise, and the limits are criteria for the design ruling (NEEDS_DESIGN).')
     w('')
-    w('This file and `results.json` are written by `python3 scripts/stack/link_electrical/link_electrical.py` from '
-      '[`inputs.json`](inputs.json); the tests fail if either differs from a fresh run. Status words: SOURCED (file and locator in '
+    w('This file, `results.json` and `harness-baseline.json` are written by `python3 scripts/stack/link_electrical/link_electrical.py` from '
+      '[`inputs.json`](inputs.json); the tests fail if any differs from a fresh run. Status words: SOURCED (file and locator in '
       '`inputs.json`), DERIVED (formula below), ASSUMED (reason in `inputs.json`), NOT RUN (reason given).')
     w('')
     # ---- signals
-    w(f'## {nsig} link signal positions in four coupling classes; {nc} of them are NC')
+    w(f'## {nsig} link signals in four coupling classes, the count of ST-02\'s room study ({r["site_counts"]["signals"]})')
     w('')
-    w(f'Every K pair of the retained candidate except the six adapter pairs, rail and AGND positions removed: {nsig} positions '
-      f'({nsig - nc} signals and {nc} NC positions on one JR pair), against 513 − 21 = 492 in DA-03 F4. The class comes from the '
+    w(f'Every K pair of the retained candidate except the six adapter pairs, with rail, AGND and NC positions removed (as '
+      f'`NON_SIGNAL` in `scripts/stack/geometry/links.py`): {cen["K_pair_signals"]} K-pair signals less {cen["adapter_signals"]} '
+      f'on the adapter pairs = {nsig}; {cen["link_nc_positions"]} NC positions on link pairs are not signals. The class comes from the '
       'partition\'s signal kind and the net name (`inputs.json` → `classes`, ASSUMED). Four planning nets of the SUB pairs '
       '(`O2:SUB_SEL_A` etc.) are not in the partition harnesses and are taken as LOGIC.')
     w('')
-    w('| Joint | ' + ' | '.join(['PRECISION', 'WIPER', 'ANALOGUE', 'LOGIC', 'NC']) + ' | Total |')
-    w('| --- | --- | --- | --- | --- | --- | --- |')
+    w('| Joint | ' + ' | '.join(VICTIMS) + ' | Total |')
+    w('| --- | ' + '--- | ' * len(VICTIMS) + '--- |')
     for j in sorted(joints):
         cnt = {}
         for s in r['signals']:
             if joint_of(s) == j:
                 cnt[s['class']] = cnt.get(s['class'], 0) + 1
-        w(f'| {j} | ' + ' | '.join(str(cnt.get(c, 0)) for c in ('PRECISION', 'WIPER', 'ANALOGUE', 'LOGIC', 'NC')) + f' | {joints[j]} |')
-    w('| **Total** | ' + ' | '.join(str(r['by_class'].get(c, 0)) for c in ('PRECISION', 'WIPER', 'ANALOGUE', 'LOGIC', 'NC')) + f' | {nsig} |')
+        w(f'| {j} | ' + ' | '.join(str(cnt.get(c, 0)) for c in VICTIMS) + f' | {joints[j]} |')
+    w('| **Total** | ' + ' | '.join(str(r['by_class'].get(c, 0)) for c in VICTIMS) + f' | {nsig} |')
     w('')
     w('| Class | Victim source impedance (sweep, nominal) | Victim limit | As aggressor |')
     w('| --- | --- | --- | --- |')
     for c in VICTIMS:
         vv = inp['victims'][c]
-        agg = {'PRECISION': 'ANALOGUE row (op-amp slew)', 'WIPER': 'none (hand-turned; STATIC)', 'ANALOGUE': f'{inp["aggressors"]["ANALOGUE"]["swing_V"]:.0f} V at {inp["aggressors"]["ANALOGUE"]["slew_V_per_s"][1] / 1e6:.0f} V/µs (10 to 40), and a 10 V 20 kHz sine',
-               'LOGIC': f'{inp["aggressors"]["LOGIC"]["swing_V"]:.0f} V in {inp["aggressors"]["LOGIC"]["edge_s"][1] * 1e9:.0f} ns (2 to 15), load 15 pF'}[c]
+        agg = {'PRECISION': 'ANALOGUE row (op-amp slew)', 'WIPER': 'none (hand-turned; STATIC)',
+               'ANALOGUE': f'{an["swing_V"]:g} V at {an["slew_V_per_s"][an["nominal_index"]] / 1e6:g} V/µs (sweep {sweep(an["slew_V_per_s"], 1e-6, "V/µs")}), '
+                           f'and a {an["sine_peak_V"]:g} V peak {an["sine_Hz"] / 1000:g} kHz sine',
+               'LOGIC': f'{la["swing_V"]:g} V in {la["edge_s"][la["nominal_index"]] * 1e9:g} ns (sweep {sweep(la["edge_s"], 1e9, "ns")}), load {la["load_F"] * 1e12:g} pF'}[c]
         w(f'| {c} | {", ".join(f"{x:g}" for x in vv["source_ohm"])} Ω, nominal {vv["source_ohm"][vv["nominal_index"]]:g} Ω | {vv["limit_V"] * 1000:g} mV | {agg} |')
     w('')
     # ---- coupling
-    side = sorted({(x['aggressor'], x['victim']) for x in r['verdicts'] if x['need'] == 'side by side'})
-    gnd = sorted({(x['aggressor'], x['victim']) for x in r['verdicts'] if SEP_RANK[x['need']] == 1})
-    head = ('LOGIC edges must not share a flat cable with ' + ', '.join(sorted({v for a, v in hard if a == 'LOGIC'})) +
-            ' at either pitch' if hard else 'every class pair fits in one cable')
-    w(f'## Coupling: {head}; {len(side)} of {len(r["verdicts"])} pitch-and-class pairs may sit side by side, {len(gnd)} need a grounded neighbour')
+    heads = {pk: pitch_heading(rows) for pk, rows in by_pitch.items()}
+    if len(set(heads.values())) == 1:
+        head = 'at both pitches ' + heads[PITCHES[0]]
+    else:
+        head = '; '.join(f'at {PITCH_LABEL[pk]} {h}' for pk, h in heads.items())
+    w(f'## Coupling under the ASSUMED absolute limits: {head}')
     w('')
-    hard_txt = ', '.join(f'{a} onto {v}' for a, v in hard) or 'none'
-    w(f'Pairs that fail even with grounds on both sides (upper permittivity {e_hi}, nominal impedance and edge): {hard_txt}. '
-      'The table gives the worst bound over 50 and 80 mm per pitch; voltage in mV, dB relative to the aggressor swing; '
-      '"sine" is the steady 20 kHz bleed. Rule A adjacent is two signals side by side; A across ground and B are one grounded '
-      'conductor between them (B also has grounds on the outer sides).')
+    w(f'Upper permittivity {e_hi}, nominal impedance and edge. The table gives the worst bound over {" and ".join(f"{x:g}" for x in L)} mm '
+      f'per pitch; voltage in mV, dB relative to the aggressor swing; "sine" is the steady {an["sine_Hz"] / 1000:g} kHz bleed. Rule A '
+      'adjacent is two signals side by side; A across ground and B are one grounded conductor between them (B also has grounds on '
+      'the outer sides).')
     w('')
-    for pk, vrows in (('pitch_1_0', v10), ('pitch_0_5', v05)):
-        w(f'### {PITCH_LABEL[pk]} pitch: worst crosstalk per class pair, {L[0]} / {L[1]} mm')
+    for pk in PITCHES:
+        w(f'### {PITCH_LABEL[pk]} pitch: worst crosstalk per class pair, {" / ".join(f"{x:g}" for x in L)} mm')
         w('')
-        w('| Aggressor → victim | Limit, mV | Side by side, mV (dB) | Ground between (A), mV (dB) | Ground between (B), mV (dB) | 20 kHz sine side by side, mV | Rule that follows |')
+        w(f'| Aggressor → victim | Limit, mV | Side by side, mV (dB) | Ground between (A), mV (dB) | Ground between (B), mV (dB) | {an["sine_Hz"] / 1000:g} kHz sine side by side, mV | Rule that follows |')
         w('| --- | --- | --- | --- | --- | --- | --- |')
-        for x in vrows:
+        for x in by_pitch[pk]:
             cells = []
             for key in ('A:adjacent', 'A:across_ground', 'B:across_ground'):
                 c = x['cfg'][key]
@@ -531,17 +592,19 @@ def readme(inp, r):
             sine = ' / '.join(mv(x['cfg']['A:adjacent'][l]['sine_V']) if 'sine_V' in x['cfg']['A:adjacent'][l] else '—' for l in L)
             w(f'| {x["aggressor"]} → {x["victim"]} | {x["limit_V"] * 1000:g} | {cells[0]} | {cells[1]} | {cells[2]} | {sine} | {x["need"]} |')
         w('')
+    wv = inp['victims']['WIPER']
+    r_w = wv['source_ohm'][wv['nominal_index']]
+    limits = ', '.join(f'{c} {inp["victims"][c]["limit_V"] * 1000:g} mV' for c in VICTIMS)
     w('Three ASSUMED terms carry these verdicts, and each is a design input. (1) The wiper victim has no receiver filter '
-      'capacitor credited: at 25 kΩ the coupled edge decays over R·C_tot of about 0.1 µs, and any filter capacitor at the '
+      f'capacitor credited: at {r_w / 1000:g} kΩ the coupled edge decays over R·C_tot, and any filter capacitor at the '
       'receiver divides it by C_filter/C_tot. (2) PRECISION nets are counted as aggressors at full analogue slew; most are DC '
-      'references or slow CVs, and PRECISION beside PRECISION is counted with a ground between although the 80 mm bound '
-      'exceeds 1 mV even then. (3) The victim limits (1 mV, 10 mV, 0.5 V) are peak criteria for nanosecond to microsecond '
-      'spikes; a pitch error depends on the area that the receiving stage integrates, which no retained source states. '
-      'No 2-layer flex with a ground layer is computed (DS-41 check 4): NOT RUN.')
+      'references or slow CVs. (3) The victim limits '
+      f'({limits}) are peak criteria for nanosecond to microsecond spikes; a pitch error depends on the area that the receiving '
+      'stage integrates, which no retained source states. No 2-layer flex with a ground layer is computed (DS-41 check 4): NOT RUN.')
     w('')
     w('### Per-unit-length terms behind the table (DERIVED)')
     w('')
-    w('| Pitch | Configuration | ε_eff | Cm at 50 mm + ends, pF | Victim total C, pF | Partial mutual a–v, nH | Loop mutual with ground return, nH |')
+    w(f'| Pitch | Configuration | ε_eff | Cm at {L[0]:g} mm + ends, pF | Victim total C, pF | Partial mutual a–v, nH | Loop mutual with ground return, nH |')
     w('| --- | --- | --- | --- | --- | --- | --- |')
     seen = set()
     for x in r['coupling']:
@@ -551,19 +614,20 @@ def readme(inp, r):
         seen.add(k)
         w(f'| {PITCH_LABEL[x["pitch"]]} | {x["rule"]} {x["pair"].replace("_", " ")} | {x["eps_eff"]} | {x["Cm_pF"]:.3f} | {x["Cv_total_pF"]:.3f} | {x["Lp_av_nH"]:.1f} | {x["M_eff_nH"]:.2f} |')
     w('')
-    w('Formulas. Capacitance: 2-D method of moments for coplanar strips in a homogeneous medium (ε_eff swept 1.0 / 2.1 / 3.2), '
-      'zero total charge, the other conductors of the window held at AC ground; checked against ε K(k\′)/K(k) for two strips '
+    w(f'Formulas. Capacitance: 2-D method of moments for coplanar strips in a homogeneous medium (ε_eff swept {" / ".join(f"{x:g}" for x in eps)}), '
+      "zero total charge, the other conductors of the window held at AC ground; checked against ε K(k')/K(k) for two strips "
       'in the tests. Inductance: Grover\'s parallel-filament mutual and Ruehli\'s bar self term, valid for length ≫ spacing; '
       'the aggressor return divides among the window\'s grounds by least inductance. Victim bound = capacitive term '
       'V·R·Cm/t_r·(1 − e^(−t_r/(R·C_tot))) plus the full loop term M·di/dt, di/dt = 2·I/t_r (both ASSUMED same sign). '
       f'Each end adds {inp["cable"]["end_equivalent_mm"]["value"]:g} mm of parallel run for the connector and fan-in (ASSUMED).')
     w('')
     # ---- sensitivity
-    w('### The verdicts turn on the victim impedance and the logic edge: sensitivity at 0.5 mm, 80 mm, ε_eff 3.2')
+    s_len = L[SENSITIVITY_CASE[1]]
+    w(f'### The verdicts turn on the victim impedance and the logic edge: sensitivity at {PITCH_LABEL[SENSITIVITY_CASE[0]]}, {s_len:g} mm, ε_eff {e_hi}')
     w('')
     w('| Configuration | Aggressor → victim | Edge or slew sweep (rows) × victim impedance sweep (columns), mV |')
     w('| --- | --- | --- |')
-    for x in r['sensitivity_0_5mm_80mm']:
+    for x in r['sensitivity']:
         if x['victim'] in ('PRECISION', 'WIPER') or x['aggressor'] == 'LOGIC':
             grid = '; '.join(' / '.join(f'{v * 1000:.3g}' for v in row) for row in x['grid_V'])
             w(f'| {x["rule"]} {x["pair"].replace("_", " ")} | {x["aggressor"]} → {x["victim"]} | {grid} |')
@@ -572,34 +636,39 @@ def readme(inp, r):
     tot = {}
     for pk in PITCHES:
         for c, rows in r['ground_counts'][pk].items():
-            tot[(pk, c)] = [sum(x[k] for x in rows.values()) for k in ('grounds_rule', 'links_rule')] + \
-                [sum(x['rule_A'][k] for x in rows.values()) for k in ('grounds', 'links')] + \
-                [sum(x['rule_B'][k] for x in rows.values()) for k in ('grounds', 'links')]
-    lo = min(v[0] for v in tot.values())
-    hi = max(v[0] for v in tot.values())
-    a_lo = min(v[2] for v in tot.values())
-    b_lo = min(v[4] for v in tot.values())
-    seps = sorted({s for pk in PITCHES for rows in r['ground_counts'][pk].values() for x in rows.values() for s in x['cables'] if len(x['cables']) > 1})
-    w(f'## The computed rule needs {lo} to {hi} grounds for the {nsig - nc} signals, against {a_lo} or more under rule A and {b_lo} or more under rule B')
+            tot[(pk, c)] = {k: [sum(x[k][q] for x in rows.values()) for q in ('grounds', 'links')] for k in ('rule_A', 'rule_B_inner', 'rule_B_outer')}
+            tot[(pk, c)]['own'] = [sum(x[q] for x in rows.values()) for q in ('grounds_rule', 'links_rule')]
+            tot[(pk, c)]['cap'] = {k: next(iter(rows.values()))[k]['signals_per_link'] for k in ('rule_A', 'rule_B_inner', 'rule_B_outer')}
+    lo = min(v['own'][0] for v in tot.values())
+    hi = max(v['own'][0] for v in tot.values())
+    ds = {k: (min(v[k][0] for v in tot.values()), max(v[k][0] for v in tot.values())) for k in ('rule_A', 'rule_B_inner', 'rule_B_outer')}
+    w(f'## The a2 class rule needs {lo} to {hi} grounds for the {nsig} signals; counted per link, rule A needs {ds["rule_A"][0]} to '
+      f'{ds["rule_A"][1]}, rule B {ds["rule_B_inner"][0]} to {ds["rule_B_inner"][1]} without outer grounds and '
+      f'{ds["rule_B_outer"][0]} to {ds["rule_B_outer"][1]} with them')
     w('')
-    w('Per joint and option, with free ordering inside a joint: classes in blocks, a ground between same-class neighbours only where '
-      'the class pair needs one, one ground between blocks that share a cable, one ground per link, and class pairs that may not '
-      'share a cable put in cables of their own (cable groups below). Rule A and rule B of DS-51 are counted the same way. '
-      'This is a lower bound: the class mix per link follows the clustering of ST-02 a4, which this count does not know.')
+    w('Own class rule, per joint and option, with free ordering inside a joint: classes in blocks, a ground between same-class '
+      'neighbours only where the class pair needs one, one ground between blocks that share a cable, one ground per link (at a '
+      'cable edge; no other outer grounds), and class pairs that may not share a cable put in cables of their own. A lower bound: '
+      'the class mix per link follows the clustering of ST-02 a4. DS-51 rules are counted per link with the capacities of the room '
+      'study (links filled to capacity per joint): rule A one ground per two signals; rule B read without outer grounds (s − 1 '
+      'grounds per link, the room study\'s reading and the present harness pattern) and with them (s + 1). Filling every link '
+      'to capacity per joint gives fewer links than the room study\'s clustering, which also respects site distances.')
     w('')
-    w('| Pitch | Circuits | Grounds / links, computed rule | Grounds / links, rule A | Grounds / links, rule B |')
-    w('| --- | --- | --- | --- | --- |')
+    w('| Pitch | Circuits | Own rule, grounds / links | Rule A, signals per link: grounds / links | Rule B inner only, signals per link: grounds / links | Rule B with outer grounds, signals per link: grounds / links |')
+    w('| --- | --- | --- | --- | --- | --- |')
     for (pk, c), v in tot.items():
-        w(f'| {PITCH_LABEL[pk]} | {c} | {v[0]} / {v[1]} | {v[2]} / {v[3]} | {v[4]} / {v[5]} |')
+        w(f'| {PITCH_LABEL[pk]} | {c} | {v["own"][0]} / {v["own"][1]} | ' + ' | '.join(
+            f'{v["cap"][k]}: {v[k][0]} / {v[k][1]}' for k in ('rule_A', 'rule_B_inner', 'rule_B_outer')) + ' |')
     w('')
     pk0 = PITCHES[0]
     c0 = str(inp['link_options'][pk0][0])
-    w(f'Per joint at {PITCH_LABEL[pk0]}, {c0} circuits (the other options differ only in link counts, see `results.json`):')
+    w(f'Per joint at {PITCH_LABEL[pk0]}, {c0} circuits (the other options in `results.json`):')
     w('')
-    w('| Joint | Signals | Cable groups | Grounds / links, computed rule | Rule A | Rule B |')
-    w('| --- | --- | --- | --- | --- | --- |')
+    w('| Joint | Signals | Cable groups | Own rule | Rule A | Rule B inner | Rule B outer |')
+    w('| --- | --- | --- | --- | --- | --- | --- |')
     for j, x in r['ground_counts'][pk0][c0].items():
-        w(f'| {j} | {x["signals"]} | {"; ".join(x["cables"])} | {x["grounds_rule"]} / {x["links_rule"]} | {x["rule_A"]["grounds"]} / {x["rule_A"]["links"]} | {x["rule_B"]["grounds"]} / {x["rule_B"]["links"]} |')
+        w(f'| {j} | {x["signals"]} | {"; ".join(x["cables"])} | {x["grounds_rule"]} / {x["links_rule"]} | ' +
+          ' | '.join(f'{x[k]["grounds"]} / {x[k]["links"]}' for k in ('rule_A', 'rule_B_inner', 'rule_B_outer')) + ' |')
     w('')
     # ---- ground current
     rmin_all = min(x['value'] for pk in PITCHES for x in inp['contact'][pk]['ratings_A'])
@@ -607,17 +676,19 @@ def readme(inp, r):
     w(f'## Ground current: the worst link ground contact carries at most {worst_normal:.3f} A normally and {worst_open:.3f} A with one post open, {word} the lowest rating swept ({rmin_all:g} A) at both pitches')
     w('')
     rp = r['link_ground_path_ohm']
+    d = pp.load()
     w('One link ground path is two contacts and one conductor. The bound gives the candidate path its minimum resistance (conductor '
-      'minimum, contacts 0 Ω ASSUMED) and no PCB term, and every alternative its maximum and the whole 0.5 mΩ common neck '
-      '(the partition35 method of the power-post README). Branch current 4.6 A (SOURCED, `single_return_A`). Post joints '
-      'from `power_posts.py` (0.4045 / 0.3952 mΩ).')
+      f'minimum, contacts {inp["contact"]["resistance_min_ohm"]["value"]:g} Ω ASSUMED) and no PCB term, and every alternative its '
+      f'maximum and the whole {pp.v(d, "return_plane_ohm") * 1000:g} mΩ common neck (the partition35 method of the power-post README). '
+      f'Branch current {pp.v(d, "single_return_A"):g} A (SOURCED, `single_return_A`). Post joints from `power_posts.py` ('
+      + ' / '.join(f'{b} {pp.joint_ohm(d, pp.branch_gap(b, d)) * 1000:.4f}' for b in inp['ground_current']['branches']) + ' mΩ).')
     w('')
     w('| Pitch | Link ground path, min / max, mΩ |')
     w('| --- | --- |')
     for pk in PITCHES:
         w(f'| {PITCH_LABEL[pk]} | {rp[pk]["min"] * 1000:.1f} / {rp[pk]["max"] * 1000:.1f} (conductor DERIVED, contact max SOURCED) |')
     w('')
-    w('| Pitch | Branch | AGND posts in place | Worst contact, one ground in the branch, A | Worst contact, rule A grounds (n), A | Smallest grounds per board meeting each rating |')
+    w('| Pitch | Branch | AGND posts in place | Worst contact, one ground in the branch, A | Worst contact, rule A grounds per link at the first option (n), A | Smallest grounds per board meeting each rating |')
     w('| --- | --- | --- | --- | --- | --- |')
     for x in gc:
         nm = ', '.join(f'{k} A: {v if v is not None else "none ≤ 2000"}' for k, v in x['n_min'].items())

@@ -172,7 +172,7 @@ def comparison(inp, base):
     rows = []
     for key, b in sorted(base.items()):
         for pk in le.PITCHES:
-            fl = flat_levels(inp, pk, 50, b['aggressor_class'], b['victim'])
+            fl = flat_levels(inp, pk, inp['cable']['lengths_mm']['value'][0], b['aggressor_class'], b['victim'])
             rows.append({'pair': key, 'pitch': pk, 'harness_min_V': b['min_V'], 'harness_median_V': b['median']['V'],
                          'flat_V': fl, 'ratio_to_min': {k: v / b['min_V'] for k, v in fl.items()},
                          'ratio_to_median': {k: v / b['median']['V'] for k, v in fl.items()}})
@@ -285,17 +285,24 @@ def readme_lines(inp, b, a2_counts):
       'signals here. Every other count matches.')
     w('')
     h = inp['harness']
-    w(f'## Against the quietest present harness, a flat link with one ground between stays at or below it for every class pair the harness shares')
+    L0 = inp['cable']['lengths_mm']['value'][0]
+    e_hi = inp['cable']['eps_eff']['value'][-1]
+    end = inp['cable']['end_equivalent_mm']['value']
+    one = 'flat one ground between (rule A)'
+    ok = all(x['ratio_to_min'][one] <= 1.0 for x in b['comparison'])
+    worst_one = max(x['ratio_to_min'][one] for x in b['comparison'])
+    w(f'## Against the quietest present harness, a {L0:g} mm flat link with one ground between {"stays at or below" if ok else "exceeds"} '
+      f'it for {"every" if ok else "some"} class pair the harness shares (largest ratio {worst_one:.2f})')
     w('')
     w(f'Harness geometry: round conductors of {h["conductor_diameter_mm"]["value"]} mm (SOURCED, Alpha 6821; stranding taken as '
       f'solid, ASSUMED) at {h["pitch_mm"]["value"]} mm pitch in a flat lay (SOURCED pitch; spacing along the run ASSUMED), '
       f'insulation {h["insulation_diameter_mm"]["value"]} mm (SOURCED) with unknown permittivity (ASSUMED sweep), each harness at '
-      'its own cut length from the loom candidate plus 5 mm per end, the whole length in parallel (ASSUMED upper bound). '
-      'Same aggressors, victim impedances and equations as attempt a2, both at ε_eff 3.2. Capacitance by charge simulation '
+      f'its own cut length from the loom candidate plus {end:g} mm per end, the whole length in parallel (ASSUMED upper bound). '
+      f'Same aggressors, victim impedances and equations as attempt a2, both at ε_eff {e_hi:g}. Capacitance by charge simulation '
       'for round wires (checked against π·ε/acosh(D/2r) in the tests). Every figure is a paper bound (DERIVED from '
       'ASSUMED terms); no harness coupling was ever measured.')
     w('')
-    w('| Aggressor > victim | Triples | Harness bound, mV: shortest / median / longest cut (mm) | Quietest harness, mV | Flat 1.00 mm, 50 mm: side by side / one ground / two grounds, ratio (dB) | Flat 0.5 mm, 50 mm: same |')
+    w(f'| Aggressor > victim | Triples | Harness bound, mV: shortest / median / longest cut (mm) | Quietest harness, mV | Flat {le.PITCH_LABEL[le.PITCHES[0]]}, {L0:g} mm: side by side / one ground / two grounds, ratio (dB) | Flat {le.PITCH_LABEL[le.PITCHES[1]]}, {L0:g} mm: same |')
     w('| --- | --- | --- | --- | --- | --- |')
     for key, bb in sorted(b['baseline'].items()):
         cells = []
@@ -321,28 +328,26 @@ def readme_lines(inp, b, a2_counts):
       'harness level to match, so it stays in separate cables, as in the harness. WIPER/WIPER is side by side because wipers '
       'are STATIC aggressors; LOGIC/LOGIC because the flat side-by-side bound is below the quietest LOGIC/LOGIC harness.')
     w('')
-    w('| Pitch | Circuits | Grounds / links, harness rule | Grounds / links, attempt a2 rule (absolute limits) | Rule A | Rule B |')
-    w('| --- | --- | --- | --- | --- | --- |')
+    w('| Pitch | Circuits | Harness rule, grounds / links | Attempt a2 rule (absolute limits) | Rule A | Rule B inner only (as the harness) | Rule B with outer grounds |')
+    w('| --- | --- | --- | --- | --- | --- | --- |')
     for pk in le.PITCHES:
         for cc, rows in b['tallies'][pk].items():
             a2 = a2_counts[pk][cc]
             g2 = sum(x['grounds_rule'] for x in a2.values())
             l2 = sum(x['links_rule'] for x in a2.values())
-            ga = sum(x['rule_A']['grounds'] for x in a2.values())
-            la = sum(x['rule_A']['links'] for x in a2.values())
-            gb = sum(x['rule_B']['grounds'] for x in a2.values())
-            lb = sum(x['rule_B']['links'] for x in a2.values())
-            w(f'| {le.PITCH_LABEL[pk]} | {cc} | {sum(x["grounds"] for x in rows.values())} / {sum(x["links"] for x in rows.values())} | {g2} / {l2} | {ga} / {la} | {gb} / {lb} |')
+            ds = ' | '.join(f'{sum(x[k]["grounds"] for x in a2.values())} / {sum(x[k]["links"] for x in a2.values())}'
+                            for k in ('rule_A', 'rule_B_inner', 'rule_B_outer'))
+            w(f'| {le.PITCH_LABEL[pk]} | {cc} | {sum(x["grounds"] for x in rows.values())} / {sum(x["links"] for x in rows.values())} | {g2} / {l2} | {ds} |')
     w('')
     w('Cable groups per joint under the harness rule: ' + '; '.join(f'{j}: {" | ".join(x["cables"])}' for j, x in b['tallies']['pitch_1_0'][str(inp['link_options']['pitch_1_0'][0])].items()) + '. Same counting method and lower-bound caveat as attempt a2.')
     w('')
     w('### What the comparison shows, and what it does not')
     w('')
-    w('It shows that, on the same equations and ASSUMED drive and impedance terms, a 50 mm flat link with one ground conductor '
+    w(f'It shows that, on the same equations and ASSUMED drive and impedance terms, a {L0:g} mm flat link with one ground conductor '
       f'between two signals couples less than the {min(p["cut_length_mm"] for p in b["patterns"]):g} to {max(p["cut_length_mm"] for p in b["patterns"]):g} mm GH harnesses that carry the same class pairs today, mainly because '
       'it is shorter and its return sits closer. It does not show that either is good enough: the present harness is an '
       'unvalidated draft too, its coupling was never computed before nor measured, and the absolute limits of attempt a2 '
-      '(1 mV, 10 mV, 0.5 V peak) would fail many harness instances as well. Those limits stay ASSUMED criteria for the ruling; '
+      '(' + ', '.join(f'{c} {inp["victims"][c]["limit_V"] * 1000:g} mV' for c in le.VICTIMS) + ' peak) would fail many harness instances as well. Those limits stay ASSUMED criteria for the ruling; '
       'no verdict on them is given here (NEEDS_DESIGN).')
     w('')
     return out

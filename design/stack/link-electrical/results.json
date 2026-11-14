@@ -1494,22 +1494,6 @@
    "class": "ANALOGUE"
   },
   {
-   "pair": "JR-K-27",
-   "family": "JR/K",
-   "front_board": "JR",
-   "net": "NC",
-   "kind": "(not in partition harnesses)",
-   "class": "NC"
-  },
-  {
-   "pair": "JR-K-27",
-   "family": "JR/K",
-   "front_board": "JR",
-   "net": "NC",
-   "kind": "(not in partition harnesses)",
-   "class": "NC"
-  },
-  {
    "pair": "JR-K-3",
    "family": "JR/K",
    "front_board": "JR",
@@ -3945,7 +3929,6 @@
  "by_class": {
   "ANALOGUE": 262,
   "PRECISION": 78,
-  "NC": 2,
   "WIPER": 99,
   "LOGIC": 51
  },
@@ -9855,7 +9838,7 @@
    "meets": true
   }
  ],
- "sensitivity_0_5mm_80mm": [
+ "sensitivity": [
   {
    "rule": "A",
    "pair": "adjacent",
@@ -10409,6 +10392,48 @@
    ]
   }
  ],
+ "census": {
+  "K_pair_signals": 511,
+  "adapter_signals": 21,
+  "link_nc_positions": 2
+ },
+ "site_counts": {
+  "pairs": 191,
+  "positions": 747,
+  "signals": 490,
+  "by_family": {
+   "JL/K": {
+    "pairs": 25,
+    "positions": 150,
+    "signals": 100
+   },
+   "JL/P pass-through": {
+    "pairs": 8,
+    "positions": 24,
+    "signals": 16
+   },
+   "JR/K": {
+    "pairs": 27,
+    "positions": 162,
+    "signals": 106
+   },
+   "K/P": {
+    "pairs": 123,
+    "positions": 369,
+    "signals": 246
+   },
+   "P/K for EL": {
+    "pairs": 6,
+    "positions": 36,
+    "signals": 18
+   },
+   "SUB": {
+    "pairs": 2,
+    "positions": 6,
+    "signals": 4
+   }
+  }
+ },
  "ground_counts": {
   "pitch_1_0": {
    "20": {
@@ -10425,12 +10450,19 @@
      "grounds_rule": 18,
      "links_rule": 7,
      "rule_A": {
-      "grounds": 50,
-      "links": 8
+      "signals_per_link": 13,
+      "links": 8,
+      "grounds": 54
      },
-     "rule_B": {
-      "grounds": 111,
-      "links": 11
+     "rule_B_inner": {
+      "signals_per_link": 10,
+      "links": 10,
+      "grounds": 90
+     },
+     "rule_B_outer": {
+      "signals_per_link": 9,
+      "links": 12,
+      "grounds": 112
      }
     },
     "JL to P through K": {
@@ -10444,12 +10476,19 @@
      "grounds_rule": 1,
      "links_rule": 1,
      "rule_A": {
-      "grounds": 8,
-      "links": 2
+      "signals_per_link": 13,
+      "links": 2,
+      "grounds": 9
      },
-     "rule_B": {
-      "grounds": 18,
-      "links": 2
+     "rule_B_inner": {
+      "signals_per_link": 10,
+      "links": 2,
+      "grounds": 14
+     },
+     "rule_B_outer": {
+      "signals_per_link": 9,
+      "links": 2,
+      "grounds": 18
      }
     },
     "JR to K": {
@@ -10465,12 +10504,19 @@
      "grounds_rule": 22,
      "links_rule": 7,
      "rule_A": {
-      "grounds": 53,
-      "links": 8
+      "signals_per_link": 13,
+      "links": 9,
+      "grounds": 57
      },
-     "rule_B": {
-      "grounds": 118,
-      "links": 12
+     "rule_B_inner": {
+      "signals_per_link": 10,
+      "links": 11,
+      "grounds": 95
+     },
+     "rule_B_outer": {
+      "signals_per_link": 9,
+      "links": 12,
+      "grounds": 118
      }
     },
     "P to K (with SUB and EL pass-through)": {
@@ -10490,12 +10536,19 @@
      "grounds_rule": 68,
      "links_rule": 19,
      "rule_A": {
-      "grounds": 134,
-      "links": 21
+      "signals_per_link": 13,
+      "links": 21,
+      "grounds": 144
      },
-     "rule_B": {
-      "grounds": 297,
-      "links": 29
+     "rule_B_inner": {
+      "signals_per_link": 10,
+      "links": 27,
+      "grounds": 241
+     },
+     "rule_B_outer": {
+      "signals_per_link": 9,
+      "links": 30,
+      "grounds": 298
      }
     }
    },
@@ -10513,12 +10566,19 @@
      "grounds_rule": 18,
      "links_rule": 7,
      "rule_A": {
-      "grounds": 50,
-      "links": 7
+      "signals_per_link": 14,
+      "links": 8,
+      "grounds": 50
      },
-     "rule_B": {
-      "grounds": 110,
-      "links": 10
+     "rule_B_inner": {
+      "signals_per_link": 11,
+      "links": 10,
+      "grounds": 90
+     },
+     "rule_B_outer": {
+      "signals_per_link": 10,
+      "links": 10,
+      "grounds": 111
      }
     },
     "JL to P through K": {
@@ -10532,12 +10592,19 @@
      "grounds_rule": 1,
      "links_rule": 1,
      "rule_A": {
-      "grounds": 8,
-      "links": 2
+      "signals_per_link": 14,
+      "links": 2,
+      "grounds": 8
      },
-     "rule_B": {
-      "grounds": 18,
-      "links": 2
+     "rule_B_inner": {
+      "signals_per_link": 11,
+      "links": 2,
+      "grounds": 14
+     },
+     "rule_B_outer": {
+      "signals_per_link": 10,
+      "links": 2,
+      "grounds": 18
      }
     },
     "JR to K": {
@@ -10553,12 +10620,19 @@
      "grounds_rule": 22,
      "links_rule": 7,
      "rule_A": {
-      "grounds": 53,
-      "links": 8
+      "signals_per_link": 14,
+      "links": 8,
+      "grounds": 53
      },
-     "rule_B": {
-      "grounds": 117,
-      "links": 11
+     "rule_B_inner": {
+      "signals_per_link": 11,
+      "links": 10,
+      "grounds": 96
+     },
+     "rule_B_outer": {
+      "signals_per_link": 10,
+      "links": 11,
+      "grounds": 117
      }
     },
     "P to K (with SUB and EL pass-through)": {
@@ -10578,12 +10652,19 @@
      "grounds_rule": 66,
      "links_rule": 17,
      "rule_A": {
-      "grounds": 134,
-      "links": 19
+      "signals_per_link": 14,
+      "links": 20,
+      "grounds": 134
      },
-     "rule_B": {
-      "grounds": 294,
-      "links": 26
+     "rule_B_inner": {
+      "signals_per_link": 11,
+      "links": 25,
+      "grounds": 243
+     },
+     "rule_B_outer": {
+      "signals_per_link": 10,
+      "links": 27,
+      "grounds": 295
      }
     }
    }
@@ -10603,12 +10684,19 @@
      "grounds_rule": 16,
      "links_rule": 5,
      "rule_A": {
-      "grounds": 50,
-      "links": 5
+      "signals_per_link": 20,
+      "links": 5,
+      "grounds": 50
      },
-     "rule_B": {
-      "grounds": 107,
-      "links": 7
+     "rule_B_inner": {
+      "signals_per_link": 15,
+      "links": 7,
+      "grounds": 93
+     },
+     "rule_B_outer": {
+      "signals_per_link": 14,
+      "links": 8,
+      "grounds": 108
      }
     },
     "JL to P through K": {
@@ -10622,12 +10710,19 @@
      "grounds_rule": 1,
      "links_rule": 1,
      "rule_A": {
-      "grounds": 8,
-      "links": 1
+      "signals_per_link": 20,
+      "links": 1,
+      "grounds": 8
      },
-     "rule_B": {
-      "grounds": 18,
-      "links": 2
+     "rule_B_inner": {
+      "signals_per_link": 15,
+      "links": 2,
+      "grounds": 14
+     },
+     "rule_B_outer": {
+      "signals_per_link": 14,
+      "links": 2,
+      "grounds": 18
      }
     },
     "JR to K": {
@@ -10643,12 +10738,19 @@
      "grounds_rule": 21,
      "links_rule": 6,
      "rule_A": {
-      "grounds": 53,
-      "links": 6
+      "signals_per_link": 20,
+      "links": 6,
+      "grounds": 53
      },
-     "rule_B": {
-      "grounds": 114,
-      "links": 8
+     "rule_B_inner": {
+      "signals_per_link": 15,
+      "links": 8,
+      "grounds": 98
+     },
+     "rule_B_outer": {
+      "signals_per_link": 14,
+      "links": 8,
+      "grounds": 114
      }
     },
     "P to K (with SUB and EL pass-through)": {
@@ -10668,12 +10770,19 @@
      "grounds_rule": 62,
      "links_rule": 13,
      "rule_A": {
-      "grounds": 134,
-      "links": 14
+      "signals_per_link": 20,
+      "links": 14,
+      "grounds": 134
      },
-     "rule_B": {
-      "grounds": 287,
-      "links": 19
+     "rule_B_inner": {
+      "signals_per_link": 15,
+      "links": 18,
+      "grounds": 250
+     },
+     "rule_B_outer": {
+      "signals_per_link": 14,
+      "links": 20,
+      "grounds": 288
      }
     }
    },
@@ -10691,12 +10800,19 @@
      "grounds_rule": 15,
      "links_rule": 4,
      "rule_A": {
-      "grounds": 50,
-      "links": 4
+      "signals_per_link": 26,
+      "links": 4,
+      "grounds": 50
      },
-     "rule_B": {
-      "grounds": 106,
-      "links": 6
+     "rule_B_inner": {
+      "signals_per_link": 20,
+      "links": 5,
+      "grounds": 95
+     },
+     "rule_B_outer": {
+      "signals_per_link": 19,
+      "links": 6,
+      "grounds": 106
      }
     },
     "JL to P through K": {
@@ -10710,12 +10826,19 @@
      "grounds_rule": 1,
      "links_rule": 1,
      "rule_A": {
-      "grounds": 8,
-      "links": 1
+      "signals_per_link": 26,
+      "links": 1,
+      "grounds": 8
      },
-     "rule_B": {
-      "grounds": 17,
-      "links": 1
+     "rule_B_inner": {
+      "signals_per_link": 20,
+      "links": 1,
+      "grounds": 15
+     },
+     "rule_B_outer": {
+      "signals_per_link": 19,
+      "links": 1,
+      "grounds": 17
      }
     },
     "JR to K": {
@@ -10731,12 +10854,19 @@
      "grounds_rule": 19,
      "links_rule": 4,
      "rule_A": {
-      "grounds": 53,
-      "links": 4
+      "signals_per_link": 26,
+      "links": 5,
+      "grounds": 53
      },
-     "rule_B": {
-      "grounds": 112,
-      "links": 6
+     "rule_B_inner": {
+      "signals_per_link": 20,
+      "links": 6,
+      "grounds": 100
+     },
+     "rule_B_outer": {
+      "signals_per_link": 19,
+      "links": 6,
+      "grounds": 112
      }
     },
     "P to K (with SUB and EL pass-through)": {
@@ -10756,12 +10886,19 @@
      "grounds_rule": 59,
      "links_rule": 10,
      "rule_A": {
-      "grounds": 134,
-      "links": 11
+      "signals_per_link": 26,
+      "links": 11,
+      "grounds": 134
      },
-     "rule_B": {
-      "grounds": 282,
-      "links": 14
+     "rule_B_inner": {
+      "signals_per_link": 20,
+      "links": 14,
+      "grounds": 254
+     },
+     "rule_B_outer": {
+      "signals_per_link": 19,
+      "links": 15,
+      "grounds": 283
      }
     }
    }
@@ -10774,8 +10911,8 @@
    "case": "normal",
    "posts": 3,
    "I_n1_A": 0.086307,
-   "I_ruleA_A": 0.0850713,
-   "n_ruleA": 58,
+   "I_ruleA_A": 0.0849909,
+   "n_ruleA": 62,
    "n_min": {
     "0.4": 1,
     "0.5": 1
@@ -10787,8 +10924,8 @@
    "case": "one_post_open",
    "posts": 2,
    "I_n1_A": 0.095282,
-   "I_ruleA_A": 0.0926038,
-   "n_ruleA": 58,
+   "I_ruleA_A": 0.0924357,
+   "n_ruleA": 62,
    "n_min": {
     "0.4": 1,
     "0.5": 1
@@ -10800,8 +10937,8 @@
    "case": "all_posts_open",
    "posts": 0,
    "I_n1_A": 4.6,
-   "I_ruleA_A": 0.301427,
-   "n_ruleA": 58,
+   "I_ruleA_A": 0.286874,
+   "n_ruleA": 62,
    "n_min": {
     "0.4": 41,
     "0.5": 31
@@ -10813,8 +10950,8 @@
    "case": "normal",
    "posts": 3,
    "I_n1_A": 0.086307,
-   "I_ruleA_A": 0.0851525,
-   "n_ruleA": 54,
+   "I_ruleA_A": 0.0850915,
+   "n_ruleA": 57,
    "n_min": {
     "0.4": 1,
     "0.5": 1
@@ -10826,8 +10963,8 @@
    "case": "one_post_open",
    "posts": 2,
    "I_n1_A": 0.095282,
-   "I_ruleA_A": 0.0927744,
-   "n_ruleA": 54,
+   "I_ruleA_A": 0.0926462,
+   "n_ruleA": 57,
    "n_min": {
     "0.4": 1,
     "0.5": 1
@@ -10839,8 +10976,8 @@
    "case": "all_posts_open",
    "posts": 0,
    "I_n1_A": 4.6,
-   "I_ruleA_A": 0.318055,
-   "n_ruleA": 54,
+   "I_ruleA_A": 0.305373,
+   "n_ruleA": 57,
    "n_min": {
     "0.4": 41,
     "0.5": 31
@@ -10852,8 +10989,8 @@
    "case": "normal",
    "posts": 3,
    "I_n1_A": 0.0858947,
-   "I_ruleA_A": 0.0833633,
-   "n_ruleA": 134,
+   "I_ruleA_A": 0.083202,
+   "n_ruleA": 144,
    "n_min": {
     "0.4": 1,
     "0.5": 1
@@ -10865,8 +11002,8 @@
    "case": "one_post_open",
    "posts": 2,
    "I_n1_A": 0.094666,
-   "I_ruleA_A": 0.0893701,
-   "n_ruleA": 134,
+   "I_ruleA_A": 0.0890565,
+   "n_ruleA": 144,
    "n_min": {
     "0.4": 1,
     "0.5": 1
@@ -10878,8 +11015,8 @@
    "case": "all_posts_open",
    "posts": 0,
    "I_n1_A": 4.6,
-   "I_ruleA_A": 0.17121,
-   "n_ruleA": 134,
+   "I_ruleA_A": 0.164162,
+   "n_ruleA": 144,
    "n_min": {
     "0.4": 41,
     "0.5": 31
@@ -10936,8 +11073,8 @@
    "case": "normal",
    "posts": 3,
    "I_n1_A": 0.0442889,
-   "I_ruleA_A": 0.0439772,
-   "n_ruleA": 54,
+   "I_ruleA_A": 0.0439829,
+   "n_ruleA": 53,
    "n_min": {
     "0.3": 1,
     "0.35": 1,
@@ -10951,8 +11088,8 @@
    "case": "one_post_open",
    "posts": 2,
    "I_n1_A": 0.0489419,
-   "I_ruleA_A": 0.0482534,
-   "n_ruleA": 54,
+   "I_ruleA_A": 0.0482657,
+   "n_ruleA": 53,
    "n_min": {
     "0.3": 1,
     "0.35": 1,
@@ -10966,8 +11103,8 @@
    "case": "all_posts_open",
    "posts": 0,
    "I_n1_A": 4.6,
-   "I_ruleA_A": 0.290037,
-   "n_ruleA": 54,
+   "I_ruleA_A": 0.294664,
+   "n_ruleA": 53,
    "n_min": {
     "0.3": 52,
     "0.35": 44,
@@ -11023,7 +11160,7 @@
  ],
  "branch_signals": {
   "JL": 116,
-  "JR": 108,
+  "JR": 106,
   "P": 268
  },
  "link_ground_path_ohm": {
