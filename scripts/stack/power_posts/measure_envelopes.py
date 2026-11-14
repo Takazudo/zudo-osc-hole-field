@@ -58,8 +58,10 @@ def main():
     # Keep-out circles per board: K lands use the K land, front lands the front land.
     circles = {b: [] for b in BOARDS}
     for j in design['joints']:
-        circles['K'].append((j['id'], j['K_xy'], land['K']['keepout_radius_mm']))
-        circles[j['front_board']].append((j['id'], j['front_xy'], land['front']['keepout_radius_mm']))
+        rk = land['K']['keepout_radius_mm']
+        rf = land['front']['keepout_radius_mm']
+        circles['K'].append((j['id'], j['K_xy'], {'F': rk, 'B': rk}))
+        circles[j['front_board']].append((j['id'], j['front_xy'], {'F': j.get('panel_side_keepout_radius_mm', rf), 'B': rf}))
     result = {'status': 'DERIVED courtyard-level planning screen; not a copper clearance, DRC or fit',
               'method': 'footprint courtyard box (pad box when none) against keep-out circles; through-hole parts count on both faces; '
                         'nearest free position = smallest shift (0.25 mm steps, 24 directions, up to 12 mm) whose box clears every post circle '
@@ -72,7 +74,7 @@ def main():
         for jid, c, r in circles[b]:
             for f in fps:
                 bx = box(f)
-                if not circle_hits(bx, c, r):
+                if not any(circle_hits(bx, c, r[face]) for face in faces(f)):
                     continue
                 per.append({'joint': jid, 'ref': f['ref'], 'lib': f['lib'], 'faces': list(faces(f)),
                             'origin': f['origin'], 'box': bx, 'tht': is_tht(f)})
@@ -86,7 +88,7 @@ def main():
                 for a in range(0, 360, 15):
                     dx, dy = d * math.cos(math.radians(a)), d * math.sin(math.radians(a))
                     nb = [m['box'][0] + dx, m['box'][1] + dy, m['box'][2] + dx, m['box'][3] + dy]
-                    if any(circle_hits(nb, c, r) for _, c, r in circles[b]):
+                    if any(circle_hits(nb, c, r[face]) for _, c, r in circles[b] for face in m['faces']):
                         continue
                     if any(stackgeom.inter(nb, o) for o in others):
                         continue

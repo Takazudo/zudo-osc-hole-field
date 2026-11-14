@@ -84,9 +84,47 @@ class StackScreens(unittest.TestCase):
         for j in js:
             if j['front_board'] == 'P' and j['carried_by']:
                 self.assertEqual(j['front_xy'], j['K_xy'])
-            self.assertEqual(j['gap_mm'], 17.0 if j['front_board'] == 'P' else 18.8)
+            self.assertEqual(j['gap_mm'], 17.0 if j['front_board'] == 'P' else 19.0)
+            self.assertEqual(j['post_code'], 'R30-1011702' if j['front_board'] == 'P' else 'R30-1011902')
+        by = {j['id']: j for j in js}
+        self.assertEqual(by['POWER-P-AGND2']['K_xy'], [98.5, 175.0])
+        self.assertEqual(by['POWER-JR-AGND3']['K_xy'], [279.0, 160])
         counts = self.d['terms']['header_agnd_positions']['value']
         self.assertEqual(sum(counts.values()), 264)
+
+
+class Continuation(unittest.TestCase):
+    def setUp(self):
+        self.d = pp.load()
+
+    def test_body_at_19mm(self):
+        self.assertAlmostEqual(pp.body_ohm(self.d, 19.0) / pp.body_ohm(self.d, 18.8), 19.0 / 18.8, places=12)
+        self.assertAlmostEqual(pp.joint_ohm(self.d, 19.0) * 1000, 0.4045, places=3)
+
+    def test_working_limit_covers_normal_and_post_loss(self):
+        lim = self.d['terms']['header_contact_working_limit_A']['value']
+        self.assertEqual(lim, 1.0)
+        for row in pp.fault_shares(self.d).values():
+            self.assertLess(max(row.values()), lim)
+        self.assertEqual(self.d['terms']['header_contact_limit_A']['value'], 1.6)
+
+    def test_spreading_rises_but_stays_under_ceiling(self):
+        old, new = pp.spreading(self.d, True), pp.spreading(self.d, False)
+        for k in old:
+            self.assertGreater(new[k]['parallel_ohm'], old[k]['parallel_ohm'])
+            self.assertLess(new[k]['parallel_ohm'], self.d['terms']['return_plane_ohm']['value'])
+        s = pp.p_share_with_spreading(self.d)
+        self.assertLess(s['old'], s['new'])
+        self.assertLess(s['new'], 1.0)
+
+    def test_cover_worsens(self):
+        rows, nprov = pp.p_pair_cover(self.d)
+        self.assertEqual(nprov, 2)
+        self.assertEqual(len(rows), 10)
+        self.assertEqual(sum(r['old_mm'] > 40 for r in rows), 4)
+        self.assertEqual(sum(r['new_mm'] > 40 for r in rows), 8)
+        self.assertEqual(sum(r['new_mm'] > 50 for r in rows), 5)
+        self.assertTrue(all(r['new_mm'] >= r['old_mm'] - 1e-9 for r in rows))
 
 
 class Readme(unittest.TestCase):
@@ -106,10 +144,12 @@ class Readme(unittest.TestCase):
         env = json.loads(pp.ENVELOPES.read_text())
         text = pp.README.read_text()
         hits = {m['ref'] for b in env['boards'].values() for m in b['hits']} & locked
-        self.assertEqual(hits, {'D13101', 'D14101', 'D15101', 'D16101', 'RV1201'})
-        for ref in ('D13101', 'RV1201'):
+        # At the DA-02 ruled positions the clip LEDs and the pot are clear; the locked jacks enter (NEEDS_DESIGN).
+        self.assertEqual(hits, {'J1410', 'J1510', 'J1610', 'J1710'})
+        for ref in sorted(hits):
             self.assertIn(ref, text)
-        self.assertIn('never moved', text)
+        self.assertIn('NEEDS_DESIGN', text)
+        self.assertIn('No jack or LED moves', text)
 
 
 if __name__ == '__main__':
