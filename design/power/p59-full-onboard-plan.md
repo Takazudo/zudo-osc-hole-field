@@ -298,6 +298,11 @@ and the next-actions docs.
    switch paths. SI-4 therefore needs no sense shunt. The recovered `return-v3` 10 mΩ frontend is
    not adopted for limiting. This rests on a requirement on the source and is not realized source
    capability, so it stays an explicit premise of the SI-3 deadline calculation.
+   **Restated by owner decision E23 (2026-11-14):** the EXT maxima are now steady-state limits with a
+   per-event let-through allowance of ≤0.25 ms above the maximum, ≤130 A peak and ≤0.1 A²s per rail
+   (`pd-interface-20v.md` §1). The SI-3 deadline and the SI-4 fault SOA use that allowance, not the
+   literal maxima. SI-4 path selection must take a peak of up to 130 A on ±12 V and 53.6 A on +5 V
+   (PD SIM worst cases are 123 / 53.6 A) and I²t ≤0.1 A²s. No on-board current limiting stays decided.
 2. **Fault recovery behaviour: working default.** The plan assumes recovery only by a full power
    cycle, with supervised discharge, because the fixed-placement rule leaves no position for a new
    panel control or indicator. A reset input or bounded automatic retry would reopen this item.
