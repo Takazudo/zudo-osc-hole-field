@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "task": "osc-stack-20261114/ST-01d",
+  "status": "PARTIAL: the HDGC envelope is SOURCED; the Molex 52271 and 52610 envelopes are UNSOURCED (maker drawings UNAVAILABLE); unvalidated draft",
+  "frame": "x along the contact row, centred; y away from the board edge toward the cable entry; z up from the board; mm",
+  "courtyard_rule": {"value": "body and pad extents grown by 0.25 mm on every side (same growth as land-patterns.json)", "status": "ASSUMED"},
+  "slot_rule": {"value": "slot width = tail width + 2 x 0.5 mm; slot length (through K, 1.6 mm board) = stiffened tail thickness + 2 x 0.5 mm, rounded up to 1.5 mm minimum; tail passes stiffener first", "status": "ASSUMED", "note": "clearance 0.5 mm per side covers the factory's +/-0.1 mm outline and drilling/routing tolerance of K, also UNSOURCED for K"},
+  "entries": {
+    "hdgc_1_0_b_npwb": {
+      "source": {"path": "hdgc/1-0-b-npwb/1-0-b-npwb-drawing-a0-2016-03-12-lcsc-mirror.pdf", "sha256": "f46910657efe347390c5e4996186dd48d194e198bc18bcd99df5afd04fb33ab5", "page": 1},
+      "n_range": {"value": "4 to 35", "status": "SOURCED"},
+      "body_length_A": {"formula": "n + 2.00 (+/-0.15)", "status": "SOURCED (table: n=22 gives 24.00)"},
+      "pad_row_span_B": {"formula": "n - 1.00 (+/-0.10)", "status": "SOURCED"},
+      "C_dimension": {"formula": "n + 1.10 (+/-0.10)", "status": "SOURCED", "note": "top-view slot width of the body"},
+      "pads": {"value": "n pads, 0.50 +/- 0.05 x 1.85 mm, pitch 1.00 mm, single row", "status": "SOURCED"},
+      "mounting_pads": {"value": "none drawn", "status": "SOURCED (absence on the layout view)"},
+      "body_depth_y": {"value": 2.85, "unit": "mm", "status": "SOURCED"},
+      "height_z": {"value": 4.49, "unit": "mm", "status": "SOURCED"},
+      "lead_extent_y": {"value": "6.54 +/- 0.15 mm from body rear to lead tip", "status": "SOURCED"},
+      "actuator_open_envelope": {"value": "none (non-ZIF)", "status": "DERIVED"},
+      "courtyard": {"formula": "x: n + 2.00 + 0.50; y: 6.54 + 0.50 (body plus leads); per courtyard_rule", "status": "DERIVED"},
+      "tail": {"value": {"thickness": "0.30 +/- 0.01 mm (as printed)", "width": "1.0 x (n + 1) +/- 0.05 mm", "outer_conductor_span": "1.0 x (n - 1) +/- 0.05 mm", "edge_to_first_conductor": "1.00 +/- 0.05 mm", "conductor_width": "0.70 +/- 0.05 mm", "exposed_contact_length": "4.00 mm", "stiffener_length": "9.00 mm", "contacts": "dual (either side)"}, "status": "SOURCED"},
+      "slot_through_k": {"formula": "width (n + 1) + 1.0 mm; length max(1.5, 0.30 + 1.0) = 1.5 mm; n=22 gives 24.0 x 1.5 mm", "status": "DERIVED from ASSUMED slot_rule"}
+    },
+    "molex_52271": {
+      "pads": {"status": "UNSOURCED"}, "mounting_pads": {"status": "UNSOURCED"}, "body_outline": {"status": "UNSOURCED"},
+      "actuator_open_envelope": {"status": "UNSOURCED"}, "courtyard": {"status": "UNSOURCED"},
+      "height_z": {"value": 3.0, "unit": "mm", "status": "SOURCED", "source": "molex/52271/0522711669-product-page-2018-10-17-farnell-mirror.pdf", "sha256": "ba342d0063edbe9cdc1fb59534ef56bde9e315e2023b0a594acfaf697cd3fc2d", "page": 1},
+      "tail_width": {"formula": "about n + 1 mm", "status": "ASSUMED", "basis": "common 1.00 mm FFC practice, matches LX 20P = 21 +/- 0.15 mm (SOURCED for LX only)"},
+      "slot_through_k": {"formula": "width n + 2 mm, length 1.5 mm; n=22 gives 24 x 1.5 mm", "status": "ASSUMED"},
+      "reason": "Molex SD-52271 and PS/AS-52271 UNAVAILABLE (molex.com transfer cut off, one retry)"
+    },
+    "molex_52610": {"height_z": {"value": 5.75, "unit": "mm", "status": "SOURCED", "source": "molex/52610/526101071-product-page-rs-a700000015453744-rs-mirror.pdf", "sha256": "a1477951c03052f8e68ba5d48d2f94f091d5c710c67a6ec5fa6010d49d03cb3a", "page": 1}, "other_rows": {"status": "UNSOURCED"}},
+    "jst_flz": {
+      "source": {"path": "jst/flz/flz-catalog-eflz-pdf-2025-06-20.pdf", "sha256": "bcaa7b681cceff1630512b1f55f2f3ea6dbbfb02554ffd545f7ffc91f7c16b22", "page": 2},
+      "contact_span_A": {"formula": "0.5 x (n - 1)", "status": "SOURCED (table: n=22 gives 10.5)"},
+      "body_length_B": {"formula": "A + 6.4", "status": "SOURCED (table: n=22 gives 16.9)"},
+      "depth": {"value": "3.2 mm closed; 4.6 mm with the actuator open", "status": "SOURCED (dimension labels; reading to be confirmed against the drawing view)"},
+      "height_z": {"value": 2.0, "unit": "mm", "status": "SOURCED", "page": 1},
+      "pads_and_tabs": {"status": "UNSOURCED", "note": "PC board layout is on page 2 but its labels did not extract cleanly; read the rendered page before use"},
+      "tail": {"value": {"thickness": "0.3 +/- 0.03 mm", "conductor_width": "0.35 +/- 0.04 mm", "pitch": "0.5 +/- 0.03 mm"}, "status": "SOURCED", "page": 1},
+      "slot_through_k": {"formula": "width 0.5 x n + 1.5 mm, length 1.5 mm; n=22 gives 12.5 x 1.5 mm", "status": "ASSUMED"}
+    }
+  }
+}

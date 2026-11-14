@@ -244,11 +244,14 @@ class Obstacles:
     def _add(self, side, rect, ref, kind):
         self.index[side].add([round(v, 4) for v in rect], (ref, kind))
 
-    def add_reserves(self, board, growth):
-        """Partition reserves (bulk-part allocations) of a board, grown like courtyards on their own faces."""
+    def add_reserves(self, board, growth, overrides=None):
+        """Partition reserves (bulk-part allocations) of a board, grown like courtyards on their own faces;
+        `overrides` maps a reserve id to a candidate rectangle."""
+        overrides = overrides or {}
         for r in board.get('reserves', []):
+            rect = overrides.get(r['id'], r['rect'])
             for side in r['sides']:
-                self._add(side[0], grow(r['rect'], growth), 'reserve ' + r['id'], 'reserve')
+                self._add(side[0], grow(rect, growth), 'reserve ' + r['id'], 'reserve')
 
     def circle_hits(self, side, cx, cy, r, skip=()):
         """(ref, kind, penetration_mm) of every obstacle a circle of radius r overlaps on one face."""
@@ -297,7 +300,8 @@ def stack_obstacles(ci, keys=('K', 'JL', 'JR', 'P', 'EL', 'O1', 'O3', 'O5')):
             out[key] = Obstacles(ci['boards'][key], model)
         if key in RESERVE_BOARDS:
             board = next(b for b in ci['partition']['boards'] if b['board_key'] == key)
-            out[key].add_reserves(board, model['own_face_courtyard_growth_mm'])
+            out[key].add_reserves(board, model['own_face_courtyard_growth_mm'],
+                                  ci['parameters'].get('reserve_overrides', {}).get(key, {}))
     return out
 
 
