@@ -6,6 +6,7 @@ import math
 import unittest
 
 import stack_mechanics as sm
+import stack_mechanics_a3 as a3mod
 import stack_mechanics_geometry as geo
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -204,6 +205,88 @@ class TestPhysics(Base):
         xs = self.c._xs
         cdf = sm.worst_of_n_cdf((sm.np.array([1.0]), 0), sm.convolve([0.2]), 1, xs)
         self.assertTrue(math.isclose(sm.quantile(xs, cdf, 0.5), 0.1, abs_tol=0.002))
+
+
+class TestAttemptA3(Base):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.a = a3mod.A3(cls.c)
+
+    def test_heights_reproduce_ds33(self):
+        a = self.a
+        self.assertEqual(a.p['K_face_z_mm'], -30.6)
+        self.assertEqual(a.p['gap_mm'], {'O': 13.0, 'P': 17.0, 'JL': 19.0, 'JR': 19.0, 'EL': 7.2})
+        for joint, (opn, close) in {'JL': (0.72, 1.47), 'P': (0.74, 1.45), 'O': (1.23, 0.96)}.items():
+            h = a.heights(joint, 'a3')
+            self.assertAlmostEqual(h['open'], opn, places=2, msg=joint)
+            self.assertAlmostEqual(h['close_window'], close, places=2, msg=joint)
+
+    def test_a2_inputs_are_frozen(self):
+        self.assertEqual(self.data['parameters']['da01']['gap_mm']['value']['JL'], 18.8)
+        self.assertEqual(self.c.v('post_length_tol'), 0.05)
+
+    def test_toggle_chain(self):
+        a = self.a
+        r = a.toggle_cases()
+        self.assertAlmostEqual(r[0]['nominal'], 1.36, places=3)
+        self.assertAlmostEqual(r[0]['wc'], 1.10, places=3)
+        self.assertAlmostEqual(r[1]['wc'], r[0]['wc'])
+        self.assertTrue(math.isclose(r[0]['rss'], 0.42, abs_tol=0.005))
+        self.assertAlmostEqual(sum(self.c.p_mismatch_terms()), 0.90, places=3)
+        lo, hi = a.p['toggle_window_mm']
+        self.assertLess(r[0]['nominal'] - r[0]['wc'], lo)
+        self.assertGreater(r[0]['nominal'] + r[0]['wc'], hi)
+        self.assertGreater(r[0]['nominal'] - r[0]['rss'], lo)
+
+    def test_adapters(self):
+        a = self.a
+        self.assertEqual(len(a.g['adapter_pairs']), 6)
+        final = a.adapter_xy('final')
+        self.assertLess(final['median'], 0.27)
+        self.assertGreater(final['median'], self.c.p['misalignment_mm']['final']['along'])
+        self.assertGreater(a.adapter_xy('capture')['median'], self.c.p['misalignment_mm']['initial']['along'])
+        _, _, rss = a.selector_misfit()
+        self.assertTrue(math.isclose(rss, 0.352, abs_tol=0.002))
+
+    def test_k_on_thirty_fixings(self):
+        a = self.a
+        counts = a.g['fixing_counts']
+        self.assertEqual(sum(v for k, v in counts.items() if k.startswith('post')), 18)
+        self.assertEqual(sum(v for k, v in counts.items() if k.startswith('kept support')), 12)
+        _, _, per_n_fix, per_n_load = a.point_case(1.0)
+        self.assertTrue(math.isclose(per_n_fix * 1e6, 9.1, abs_tol=0.1))
+        self.assertTrue(math.isclose(per_n_load * 1e6, 36, abs_tol=1))
+        self.assertGreater(a.point_case(20.0)[3], self.c.dv('strain_design_limit'))
+        self.assertLess(a.point_case(5.0)[3], self.c.dv('strain_design_limit'))
+
+    def test_sleeve_chain_and_rule(self):
+        a = self.a
+        lo, hi = a.sleeve_clearance(False)
+        self.assertAlmostEqual(lo, -0.15)
+        self.assertAlmostEqual(hi, 0.55)
+        lo, hi = a.sleeve_clearance(True)
+        self.assertAlmostEqual(lo, 0.03)
+        self.assertAlmostEqual(hi, 0.32)
+        shortest = min(s['d_fixing_mm'] for s in a.g['sleeves'])
+        self.assertEqual(shortest, 22.0)
+        self.assertGreater(a.strain_pull(a.turn_travel(1 / 8), shortest), self.c.dv('strain_design_limit'))
+        self.assertIn('stop', self.readme)
+
+    def test_pins_are_current(self):
+        for sid in ('S-GEOM', 'S-PLAN', 'S-SPACER', 'S-DS', 'S-DA03'):
+            s = self.data['sources'][sid]
+            self.assertEqual(sha(s['path']), s['sha256'], sid)
+
+    def test_a3_parameters_have_a_basis(self):
+        for name, t in self.data['parameters']['a3'].items():
+            self.assertIn(t['status'], self.data['status_vocabulary'], name)
+            if t['status'] == 'SOURCED':
+                self.assertTrue(t.get('source') and t.get('locator'), name)
+            elif t['status'] == 'DERIVED':
+                self.assertTrue(t.get('formula'), name)
+            else:
+                self.assertTrue(t.get('reason') and t.get('to_source'), name)
 
 
 if __name__ == '__main__':

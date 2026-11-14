@@ -58,6 +58,64 @@ def inside(pt, poly):
     return hit
 
 
+def largest_empty_circle(outline, points, step):
+    """Grid search for the point inside the outline farthest from every point."""
+    x0, y0, x1, y1 = bbox(outline)
+    best = (0.0, None)
+    y = y0
+    while y <= y1:
+        x = x0
+        while x <= x1:
+            if inside((x, y), outline):
+                d = min(dist((x, y), q) for q in points)
+                if d > best[0]:
+                    best = (d, [x, y])
+            x += step
+        y += step
+    return best
+
+
+EMPTY_CIRCLE_STEP_MM = 1.0  # grid of the largest-bay search on K
+
+
+def derive_a3(cand):
+    """Attempt a3: K on the 30 declared fixings (DS-43), the sleeves (DS-45) and the six adapter pairs."""
+    fx = [f for f in cand['fixings'] if f['declared'] and f['kind'] in ('post', 'kept support')]
+    k_outline = cand['planes']['K']['outline']
+    pts = [f['xy'] for f in fx]
+    radius, centre = largest_empty_circle(k_outline, pts, EMPTY_CIRCLE_STEP_MM)
+    posts = [f for f in fx if f['kind'] == 'post']
+    sleeves = []
+    for f in fx:
+        if f['kind'] != 'kept support':
+            continue
+        others = [g for g in fx if g['id'] != f['id']]
+        near_post = min(posts, key=lambda g: dist(f['xy'], g['xy']))
+        near_any = min(others, key=lambda g: dist(f['xy'], g['xy']))
+        sleeves.append({'id': f['id'], 'board': f['front_board'], 'xy': f['xy'],
+                        'nearest_post': near_post['id'], 'd_post_mm': r(dist(f['xy'], near_post['xy'])),
+                        'nearest_fixing': near_any['id'], 'd_fixing_mm': r(dist(f['xy'], near_any['xy']))})
+    adapters = []
+    for p in cand['pairs']:
+        board = p['sites']['front']['board']
+        if not board.startswith('O'):
+            continue
+        xy = p['sites']['front']['center']
+        near = min(fx, key=lambda g: dist(xy, g['xy']))
+        adapters.append({'id': p['id'], 'board': board, 'xy': xy, 'positions': p['positions'],
+                         'nearest_fixing': near['id'], 'd_fixing_mm': r(dist(xy, near['xy']))})
+    from collections import Counter
+    counts = Counter((f['kind'], f['front_board']) for f in fx)
+    return {
+        'fixing_counts': {f'{k} {b}': n for (k, b), n in sorted(counts.items())},
+        'fixings': [{'id': f['id'], 'kind': f['kind'], 'board': f['front_board'], 'xy': f['xy']} for f in fx],
+        'k_largest_bay': {'radius_mm': r(radius), 'centre_xy': centre, 'grid_mm': EMPTY_CIRCLE_STEP_MM},
+        'sleeves': sleeves,
+        'adapter_pairs': adapters,
+        'candidate_stack': cand['stack'],
+    }
+
+
 def derive(stackups=None):
     st = stackups if stackups is not None else json.loads(DATA.read_text())
     cand = load_json(SOURCES['stack_candidate'])['candidate']
@@ -141,6 +199,7 @@ def derive(stackups=None):
         'j_to_p_post_row_spacing_mm': [r(min(p_rows) - max(j_rows)), r(max(p_rows) - max(j_rows))],
         'jl_jr_inner_post_span_mm': r(min(jr_x) - max(jl_x)),
         'hardware_kind_counts': hardware,
+        'a3': derive_a3(cand),
     }
 
 
