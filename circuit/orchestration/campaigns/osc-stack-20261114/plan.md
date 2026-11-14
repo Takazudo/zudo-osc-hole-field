@@ -81,9 +81,9 @@ Phase 0 writes new candidate files only, under `design/stack/`, `scripts/stack/`
 | ID | Deliverable | Model / environment | State | Depends on | Review |
 | --- | --- | --- | --- | --- | --- |
 | S0 | This record, the wave-1 briefs, the owner direction recorded in the plan page | Manager | DONE (`91246e9`) | none | n/a |
-| ST-01 | Connector and spacer evidence, candidate bundles, selection proposal ([brief](st-01.md)) | Opus child, worktree `/home/user/wt/st-01`; web access for primary documents | RUNNING: attempt a1 launched 2026-11-14 18:23 UTC from `91246e9` | none | Design authority (packet A) |
-| ST-02 | Retained stack-geometry candidate and checker ([brief](st-02.md)) | Opus child, worktree `/home/user/wt/st-02` | RUNNING: attempt a1 launched 2026-11-14 18:23 UTC from `91246e9` | none; re-run with ST-01 footprints | Independent reviewer (packet C) |
-| ST-03 | Stack mechanics: datums, closing order, stack-ups, separation, coupon definition ([brief](st-03.md)) | Opus child, worktree `/home/user/wt/st-03` | RUNNING: attempt a1 (parametric start) launched 2026-11-14 18:23 UTC from `91246e9` | ST-01 figures to finish | Design authority (packet A) |
+| ST-01 | Connector and spacer evidence, candidate bundles, selection proposal ([brief](st-01.md)) | Opus child, worktree `/home/user/wt/st-01`; web access for primary documents | RUNNING: attempt a1 launched 2026-11-14 18:03 UTC from `91246e9` | none | Design authority (packet A) |
+| ST-02 | Retained stack-geometry candidate and checker ([brief](st-02.md)) | Opus child, worktree `/home/user/wt/st-02` | RUNNING: attempt a1 launched 2026-11-14 18:03 UTC from `91246e9` | none; re-run with ST-01 footprints | Independent reviewer (packet C) |
+| ST-03 | Stack mechanics: datums, closing order, stack-ups, separation, coupon definition ([brief](st-03.md)) | Opus child, worktree `/home/user/wt/st-03` | RUNNING: attempt a1 (parametric start) launched 2026-11-14 18:03 UTC from `91246e9` | ST-01 figures to finish | Design authority (packet A) |
 | ST-04 | Power-post joint design and electrical re-derivation | Opus child | PLANNED | ST-01, ST-03 | Design authority (packet A) |
 | ST-05 | Thermal paper screen | Opus child | PLANNED, wave 2 | none | Independent reviewer (packet C) |
 | ST-06 | SUB toggle specification for OSC2 and OSC4 | Opus child | PLANNED, wave 2 | none | Design authority (packet B) |
