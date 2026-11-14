@@ -1,9 +1,9 @@
 {
  "schema_version": 1,
- "task": "osc-stack-20261114/ST-04 a1 continuation c1",
+ "task": "osc-stack-20261114/ST-04 a1, continuation c1, attempt a2",
  "status": "PROPOSAL paper design; unvalidated draft; nothing selected, measured or qualified",
  "launch_commit": "4a00e72d9d8325909b5d8a318805c8098b71d842",
- "heights_note": "XY, counts and nets from S-GEOM (first planning heights); heights and planes from DA-02 E10 (K F.Cu z = -30.6 mm; JL/JR to K 19.0 mm; P to K 17.0 mm). Joint positions carry the DA-02 ST-04 rulings (JR +1.0 mm, P AGND2/AGND3 re-sited); S-GEOM still holds the old positions.",
+ "heights_note": "XY, counts and nets from S-GEOM (first planning heights); heights and planes from DA-02 E10 (K F.Cu z = -30.6 mm; JL/JR to K 19.0 mm; P to K 17.0 mm). Joint positions carry DS-44 (DA-03 F7: JR +0.5 mm, changing the +1.0 mm of DA-02) and the DA-02 re-site of P AGND2/AGND3; S-GEOM still holds the old positions.",
  "sources": {
   "S-PART": {
    "path": "design/partition/partition.json",
@@ -37,13 +37,14 @@
   },
   "S-GEOM": {
    "path": "design/stack/geometry/stack-candidate.json",
-   "sha256": "8b302b93012b31253238f87c1743adf26723ef6dfde57ef2e9241e18b7048c98",
-   "note": "first planning heights; XY, counts and nets only"
+   "sha256": "9bd03493c0a98c36357c90ee56e86dec57eb3dd5d0793a84f49f34f1c5d25f54",
+   "note": "first planning heights; XY, counts and nets only; re-pinned in attempt a2 (ST-02 a3 changed the file; the power-post XY here are this record's own)"
   },
   "S-MECH": {
    "path": "design/stack/mechanics/stackups.json",
-   "sha256": "000e5439d1ecf02d618eea2f7eefcd4b4cbf807a6a36244976ab74727bf993e2",
-   "locator": "geometry.fixings"
+   "locator": "geometry.fixings",
+   "locator_sha256": "3cdf38d06c7dda8ef1b1d78ef031a2fad202e1ecec6dfa002107bd85daf317eb",
+   "method": "SHA256 of the cited object as JSON with sorted keys and no spaces; the rest of the file is not pinned, because it carries pins of its own that change with every refresh"
   },
   "S-DA01": {
    "path": "circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-01.md",
@@ -51,7 +52,16 @@
   },
   "S-DEC": {
    "path": "circuit/orchestration/campaigns/osc-stack-20261114/decisions.md",
-   "sha256": "e4c5052d75c2ae825220fcab36e10019cd998f85beb3ebe4a2e17b4e7326a555"
+   "rows": [
+    "DS-32",
+    "DS-39",
+    "DS-41",
+    "DS-44",
+    "DS-51",
+    "DS-53"
+   ],
+   "rows_sha256": "d7dd7d70046a754fc1a121ecf24ba578408fdaea73318bd28a93a2a6446e2780",
+   "method": "SHA256 of the cited row lines, each with its newline, concatenated in the listed order; the rest of the log is not pinned"
   },
   "V-QUAL": {
    "path": "circuit-dev-resources:samtec/test-reports/mms-tmm-design-qualification-154341-rev-2.pdf",
@@ -83,8 +93,18 @@
   },
   "S-DA02": {
    "path": "circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-02.md",
-   "sha256": "081aef34f86ad807dc39525d3c39e105372ea13bb9ced32130a7b5164dcbe78d",
+   "sha256": "6701145c500663397ea008a93ed8d868c189c9da1ae1a9ed3b00ce7b115f99ad",
    "locator": "E10; E2; E3; Rulings on the ST-04 proposal"
+  },
+  "S-DA03": {
+   "path": "circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-03.md",
+   "sha256": "1d6dd047309a6a58025fae34d80b97079ce0dfbb59bad85d504196c456319f97",
+   "locator": "F7; F4; F1"
+  },
+  "V-HARWIN-STORE-M25": {
+   "path": "circuit-dev-resources:harwin/",
+   "status": "UNSOURCED",
+   "note": "attempt a2 searched the store at 2aaef4c: harwin/ holds r30 (M3) and m22 only; no M2.5 post of 19.00 mm, so M3 stays at the JR lands (DS-44)"
   }
  },
  "terms": {
@@ -763,7 +783,7 @@
    "front_ref": "TP990017",
    "K_ref": "TP990018",
    "front_xy": [
-    228.0,
+    227.5,
     160
    ],
    "present_front_xy": [
@@ -771,11 +791,11 @@
     160
    ],
    "K_xy": [
-    228.0,
+    227.5,
     160
    ],
    "gap_mm": 19.0,
-   "carried_by": "DA-02 ruling: +1.0 mm in x on JR and K",
+   "carried_by": "DA-03 ruling DS-44: +0.5 mm in x on JR and K",
    "panel_side": "screw head 5.5 mm, no washer (clip LED clearance)",
    "post_code": "R30-1011902",
    "panel_side_keepout_radius_mm": 3.0
@@ -787,7 +807,7 @@
    "front_ref": "TP990019",
    "K_ref": "TP990020",
    "front_xy": [
-    245.0,
+    244.5,
     160
    ],
    "present_front_xy": [
@@ -795,11 +815,11 @@
     160
    ],
    "K_xy": [
-    245.0,
+    244.5,
     160
    ],
    "gap_mm": 19.0,
-   "carried_by": "DA-02 ruling: +1.0 mm in x on JR and K",
+   "carried_by": "DA-03 ruling DS-44: +0.5 mm in x on JR and K",
    "panel_side": "screw head 5.5 mm, no washer (clip LED clearance)",
    "post_code": "R30-1011902",
    "panel_side_keepout_radius_mm": 3.0
@@ -811,7 +831,7 @@
    "front_ref": "TP990021",
    "K_ref": "TP990022",
    "front_xy": [
-    262.0,
+    261.5,
     160
    ],
    "present_front_xy": [
@@ -819,11 +839,11 @@
     160
    ],
    "K_xy": [
-    262.0,
+    261.5,
     160
    ],
    "gap_mm": 19.0,
-   "carried_by": "DA-02 ruling: +1.0 mm in x on JR and K",
+   "carried_by": "DA-03 ruling DS-44: +0.5 mm in x on JR and K",
    "panel_side": "screw head 5.5 mm, no washer (clip LED clearance)",
    "post_code": "R30-1011902",
    "panel_side_keepout_radius_mm": 3.0
@@ -835,7 +855,7 @@
    "front_ref": "TP990023",
    "K_ref": "TP990024",
    "front_xy": [
-    279.0,
+    278.5,
     160
    ],
    "present_front_xy": [
@@ -843,11 +863,11 @@
     160
    ],
    "K_xy": [
-    279.0,
+    278.5,
     160
    ],
    "gap_mm": 19.0,
-   "carried_by": "DA-02 ruling: +1.0 mm in x on JR and K",
+   "carried_by": "DA-03 ruling DS-44: +0.5 mm in x on JR and K",
    "panel_side": "screw head 5.5 mm, no washer (clip LED clearance)",
    "post_code": "R30-1011902",
    "panel_side_keepout_radius_mm": 3.0
@@ -1021,5 +1041,6 @@
    227,
    179
   ]
- }
+ },
+ "launch_commit_a2": "21d1cd9"
 }

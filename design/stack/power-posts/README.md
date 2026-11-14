@@ -1,6 +1,6 @@
-# Power posts: ST-04 joint design and electrical re-derivation (paper, attempt a1 with continuation c1)
+# Power posts: ST-04 joint design and electrical re-derivation (paper, attempt a1, continuation c1 and attempt a2)
 
-Task `osc-stack-20261114/ST-04`, 2026-11-14, launch commit `4a00e72`; continuation c1 on `a2831f7` applies the rulings of DA-02 (`reviews/da-02.md`, E10, E2, E3 and "Rulings on the ST-04 proposal"). **Status: unvalidated paper design.** Nothing is selected, bought, measured or qualified. Every joint resistance, current and fit below is NOT RUN on hardware; the hot Kelvin measurement of #65 stays open.
+Task `osc-stack-20261114/ST-04`, 2026-11-14, launch commit `4a00e72`; continuation c1 on `a2831f7` applies the rulings of DA-02 (`reviews/da-02.md`, E10, E2, E3 and "Rulings on the ST-04 proposal"); attempt a2 on `21d1cd9` applies DS-44 (DA-03 F7: the four JR lands at +0.5 mm in x instead of +1.0 mm). The flat-link coupling and ground-current bounds of attempt a2 are in [`../link-electrical/`](../link-electrical/README.md). **Status: unvalidated paper design.** Nothing is selected, bought, measured or qualified. Every joint resistance, current and fit below is NOT RUN on hardware; the hot Kelvin measurement of #65 stays open.
 
 Files:
 
@@ -8,7 +8,7 @@ Files:
 - [`envelopes.json`](envelopes.json): courtyard-level screen of the post keep-outs on K, JL, JR and P, with the nearest free position of every footprint inside. Written by `python3 scripts/stack/power_posts/measure_envelopes.py` (plain-Python board reader of ST-02; no KiCad).
 - `scripts/stack/power_posts/power_posts.py`: recomputes every table between `calc:` markers from the JSON (`--write-readme` refreshes them; the tests fail if they differ).
 
-Inputs: XY, counts and nets come from the geometry candidate (`design/stack/geometry/stack-candidate.json`, still at the first planning heights and the old land positions). Heights and planes come from DA-02 E10: K F.Cu at z = −30.6 mm; JL and JR to K 19.0 mm; P to K 17.0 mm. The joint positions in `joint-design.json` carry the DA-02 rulings: the four JR lands at +1.0 mm in x, and P's AGND2 and AGND3 on a second tab segment. The EL AGND count (12) and rail count per rail (6) are DERIVED from DS-14; the candidate still holds six 1×6 sites. Status words: SOURCED (file, hash, locator), DERIVED (formula), ASSUMED (with the check that closes it), UNSOURCED.
+Inputs: XY, counts and nets come from the geometry candidate (`design/stack/geometry/stack-candidate.json`, still at the first planning heights and the old land positions). Heights and planes come from DA-02 E10: K F.Cu at z = −30.6 mm; JL and JR to K 19.0 mm; P to K 17.0 mm. The joint positions in `joint-design.json` carry the rulings: the four JR lands at +0.5 mm in x (DS-44), and P's AGND2 and AGND3 on a second tab segment (DA-02, confirmed by DS-44). The EL AGND count (12) and rail count per rail (6) are DERIVED from DS-14; the candidate still holds six 1×6 sites. Status words: SOURCED (file, hash, locator), DERIVED (formula), ASSUMED (with the check that closes it), UNSOURCED.
 
 ## The method reproduces the partition's 15.321 / 15.058 / 11.113 mV, its contact shares and its 0.194 V budget
 
@@ -111,6 +111,14 @@ EL's own term reuses the partition's EL formula. It has six rail positions per r
 
 No maker states a current rating for any surveyed post (Harwin R30, Samtec SO, JSO). 4.6 A in one post is met on paper by its I²R only. The evidence need is a temperature-rise measurement at 4.6 A on the exact post (#65). The adiabatic rise uses ASSUMED brass density and heat capacity. The energy that lands in the contact spots is not localised here, because the spot size is UNSOURCED.
 
+## DS-44 changes no electrical figure: joint, spreading and drop stay as in c1; only the JR keep-out screen moves
+
+Attempt a2 applies DS-44. The JR +5 V and AGND1 to AGND3 lands move from x = 228, 245, 262, 279 (c1, +1.0 mm) to 227.5, 244.5, 261.5, 278.5 (+0.5 mm), on JR and K alike. P's AGND2 and AGND3 stay on `TAB-POWER-2` at (98.5, 175.0) and (110.0, 174.5); the catalogue posts stay R30-1011902 (19.00 mm) and R30-1011702 (17.00 mm).
+
+- **Thread.** M3 stays. The store (`circuit-dev-resources` at `2aaef4c`, `harwin/`) holds the R30 M3 drawings and the M22 connector documents only; a 19.00 mm M2.5 catalogue post is UNSOURCED, so the M2.5 preference of DS-44 does not apply.
+- **Unchanged figures.** No electrical term depends on the x of a JR land: joint 0.4045 mΩ (19.00 mm) and 0.3952 mΩ (17.00 mm), drop 7.110 / 6.969 / 4.863 mV, budget 0.181 / 0.179 / 0.147 V, worst header contact 0.565 / 0.565 / 0.542 A, the fault table and the P spreading of 0.191 to 0.226 mΩ are recomputed by the calculator below and equal c1's to the printed digit.
+- **Changed figures.** Only the keep-out screen of item 5: the K counts move from 32 F.Cu and 83 B.Cu (c1) to the counts in the `moves` table below, and the JR panel-side head clears the locked jacks by 0.25 mm (courtyard 3.25 mm from the land centre against the 3.0 mm keep-out) and the clip LEDs by 0.04 mm (courtyard 3.04 mm), as DS-44 states. The jack courtyards still enter the 3.75 mm K-facing keep-out on B.Cu because a through-hole courtyard counts on both faces; the nearest jack pad on B.Cu is 6.94 mm from the land centre, so no locked part conflicts with the post face. No jack or LED moves.
+
 ## Item 1 (ruled): catalogue Harwin brass spacers, R30-1011902 at 19.00 mm and R30-1011702 at 17.00 mm, ±0.15 mm, matched per unit
 
 DA-02 E10 decided this; nothing is made to drawing and nothing is selected or bought.
@@ -142,7 +150,7 @@ DA-02 E10 decided this; nothing is made to drawing and nothing is selected or bo
 - **An outer ring of unfilled vias was screened first and rejected.** That variant was a Ø9.5 mm land with the ring at r 4.0 outside the washer. It put 120 B.Cu and 89 F.Cu footprints of K inside the keep-out.
 - **Fabrication rules are UNSOURCED.** The 0.45 mm drill web on the front boards and filled and capped via-in-pad are the partition's existing process requirement (#65), not confirmed fab rules.
 
-## Item 4: JL and both P tab segments take a screw from the panel side; the ruled JR +1.0 mm shift meets the locked jacks (NEEDS_DESIGN)
+## Item 4: every land takes a screw from the panel side; at the DS-44 shift of +0.5 mm the JR heads clear the locked jacks by 0.25 mm and the clip LEDs by 0.04 mm
 
 The post is held to the front board by an M3 screw from the panel-side face into the post's front thread. There is no solder in the structural path; the land is solder-free copper under the post face. The panel-side face carries the screw head with a washer. The panel gap is 8.0 mm for J (F.Cu at −10.0, panel rear at −2.0) and 9.8 mm for P (F.Cu at −11.8). An M3 head of about 3 mm plus a 0.5 mm washer fits both; the head height is ASSUMED, with no screw drawing retained.
 
@@ -150,13 +158,13 @@ The post is held to the front board by an M3 screw from the panel-side face into
 | --- | --- | --- | --- |
 | JL, six lands | Clear within r 3.75 | DH214, R215, R226, R227 within r 3.75 (R226 has no free position within 12 mm; see `envelopes.json`) | Screw and washer; move the three movable parts, re-place R226 by hand |
 | JR, +12 V and −12 V | Clear | Clear | Screw and washer |
-| JR, +5 V and AGND1 to AGND3, shifted +1.0 mm to x = 228, 245, 262, 279 (DA-02 ruling) | Locked clip LEDs D13101 to D16101 clear (3.36 mm against the 3.0 mm head keep-out). **Locked jacks J1410, J1510, J1610, J1710 come to 2.75 mm, inside the 3.0 mm keep-out of a 5.5 mm head without a washer** | R7133, R7207, R7333, R7306 at 2.78 mm (movable) | **NEEDS_DESIGN.** At +1.0 mm the head reaches the jack courtyard with zero clearance. A scan of x −3 to +3 mm and y −4 to +0.5 mm (`envelopes.json` method, jack pads on B.Cu, courtyards on F.Cu) clears both locked parts only at +0.5 to +0.75 mm in x. At +0.5 mm the margin is 0.04 mm and 27 K footprints sit in the four K keep-outs. Choice for the design authority: +0.5 mm, or the a1 alternatives (M2.5 thread, a press-in element from the K side). No jack or LED moves |
+| JR, +5 V and AGND1 to AGND3, shifted +0.5 mm to x = 227.5, 244.5, 261.5, 278.5 (DS-44; c1 had +1.0 mm, which put the 5.5 mm head 0.25 mm into the jack courtyards) | Locked clip LEDs D13101 to D16101 at 3.04 mm and locked jacks J1410, J1510, J1610, J1710 at 3.25 mm, both outside the 3.0 mm keep-out of a 5.5 mm head without a washer | R7133, R7207, R7333, R7306 (movable); the jack courtyards count on B.Cu as through-hole parts, jack pads 6.94 mm away | Screw without washer, M3 (a 19.00 mm M2.5 post is UNSOURCED). The 0.04 mm LED margin is a planning-keep-out tolerance question accepted in DS-44. NEEDS_DESIGN stays only for the M2.5 option, if a post is found. No jack or LED moves |
 | P, four lands moved to the power tab (y = 175) | Clear (the tab has no parts) | Clear | Screw and washer |
 | P, AGND2 and AGND3 re-sited to (98.5, 175.0) and (110.0, 174.5) on the second tab segment (DA-02 ruling) | Clear (tab, no parts) | Clear | Screw and washer |
 
-## Item 5: at the ruled positions K needs 83 B.Cu and 32 F.Cu footprints out of the 18 keep-outs; 20 have no free position within 12 mm
+## Item 5: at the DS-44 positions K needs 82 B.Cu and 34 F.Cu footprints out of the 18 keep-outs; 20 have no free position within 12 mm
 
-This is the c1 re-run of the screen at the shifted JR lands and the re-sited P lands, which a1 reported NOT RUN. At the a1 positions the counts were 90 B.Cu and 33 F.Cu, with 24 footprints having no free position.
+This is the a2 re-run of the screen at the DS-44 JR lands (+0.5 mm) and the re-sited P lands, against the geometry candidate as it stands at `21d1cd9`. At the c1 positions (+1.0 mm) the counts were 83 B.Cu and 32 F.Cu with 20 footprints having no free position; at the a1 positions 90 B.Cu and 33 F.Cu with 24.
 
 - **Method.** The screen counts each footprint whose courtyard enters a keep-out circle: r 4.05 mm on K; on a front board, r 3.75 mm, or r 3.0 mm on the panel side of the four shifted JR lands, which carry a 5.5 mm head and no washer. A through-hole part counts on both faces. For each footprint it searches the smallest shift (0.25 mm steps, 24 directions, up to 12 mm) that clears every keep-out and every other same-face courtyard and stays inside the board outline.
 - **Comparison with the plan page.** The plan page counted 54 B.Cu footprints within 2.6 mm, a smaller circle than the washer and via ring proposed here.
@@ -166,11 +174,11 @@ This is the c1 re-run of the screen at the shifted JR lands and the re-sited P l
 <!-- calc:moves -->
 | Board | Face | Footprints in the keep-out | References | No free position within 12 mm |
 | --- | --- | --- | --- | --- |
-| K | F.Cu | 32 | C1242, C305, C4512, D2310, D4528, D4534, D4636, D8313, D8314, Q4504, R1141, R1157, R1289, R1290, R1298, R1299, R2395, R4501, R4504, R8342, R8349, R8363, RB4432, RB4433, RB4531, RB4633, RV2307, TP301, U1206, U1212, U4507, U4508 | none |
-| K | B.Cu | 83 | C1120, C1135, C1247, C306, C4521, C4523, C4535, C4537, C4554, C4627, C8236, C8339, D2309, D2315, D4404, D4530, D4630, D4631, D4634, D4635, Q4502, R1171, R1187, R1188, R1198, R1199, R1230, R1236, R1263, R1277, R1294, R1296, R2360, R2362, R2378, R2379, R2394, R2396, R4269, R4503, R4518, R4558, R4578, R4594, R4595, R4597, R4598, R5241, R7115, R7204, R8129, R8130, R8253, R8261, R8262, R8319, R8320, R8346, R8357, RB1120, RB4228, RB4431, RB4632, RB4635, RV4504, RVO1207, RVO1210, TP304, U1207, U1210, U1214, U1215, U4506, U4518, U4520, U4535, U4545, U4608, U8210, U8211, U8309, U8310, U8311 | C1247, D4530, D4634, D4635, Q4502, R1277, R4578, R4595, U1207, U1210, U1214, U1215, U4506, U4518, U4520, U4545, U8210, U8309, U8310, U8311 |
+| K | F.Cu | 34 | C1242, C305, C4512, D2310, D4528, D4534, D4636, D8313, D8314, Q4504, R1141, R1157, R1289, R1290, R1298, R1299, R2395, R4501, R4504, R8334, R8342, R8349, R8362, R8363, RB4432, RB4433, RB4531, RB4633, RV2307, TP301, U1206, U1212, U4507, U4508 | none |
+| K | B.Cu | 82 | C1120, C1135, C1247, C306, C4521, C4523, C4535, C4537, C4554, C4627, C8236, C8339, D2309, D2315, D4404, D4530, D4630, D4631, D4634, D4635, Q4502, R1171, R1187, R1188, R1198, R1199, R1230, R1236, R1263, R1277, R1294, R1296, R2360, R2362, R2378, R2379, R2394, R2396, R4269, R4503, R4518, R4558, R4578, R4594, R4595, R4597, R4598, R5241, R7115, R7204, R8129, R8130, R8253, R8261, R8262, R8319, R8320, R8357, RB1120, RB4228, RB4431, RB4632, RB4635, RV4504, RVO1207, RVO1210, TP304, U1207, U1210, U1214, U1215, U4506, U4518, U4520, U4535, U4545, U4608, U8210, U8211, U8309, U8310, U8311 | C1247, D4530, D4634, D4635, Q4502, R1277, R4578, R4595, U1207, U1210, U1214, U1215, U4506, U4518, U4520, U4545, U8210, U8309, U8310, U8311 |
 | JL | F.Cu | 0 | none | none |
 | JL | B.Cu | 4 | DH214, R215, R226, R227 | R226 |
-| JR | F.Cu | 8 | J1410, J1510, J1610, J1710, R7134, R7205, R7305, R7335 | J1410, J1510, J1610, J1710 |
+| JR | F.Cu | 4 | J1410, J1510, J1610, J1710 | J1410, J1510, J1610, J1710 |
 | JR | B.Cu | 8 | J1410, J1510, J1610, J1710, R7133, R7207, R7306, R7333 | J1410, J1510, J1610, J1710 |
 | P | F.Cu | 0 | none | none |
 | P | B.Cu | 0 | none | none |
@@ -181,10 +189,10 @@ The six re-positioned joints, one by one:
 <!-- calc:resited -->
 | Joint | K land | K footprints in the keep-out | K, no free position | Front land | Front footprints in the keep-out | Locked hardware in the keep-out |
 | --- | --- | --- | --- | --- | --- | --- |
-| POWER-JR-+5V | (228.0, 160) | 5: D8313, R8342, RB4531, U8309, U8310 | U8309, U8310 | (228.0, 160) | 3: J1410, R7133, R7134 | J1410 |
-| POWER-JR-AGND1 | (245.0, 160) | 6: C8339, D8314, R8346, R8349, R8363, U8311 | U8311 | (245.0, 160) | 3: J1510, R7205, R7207 | J1510 |
-| POWER-JR-AGND2 | (262.0, 160) | 9: D4631, D4635, RB4228, RB4431, RB4432, RB4433, RB4632, RB4633, RB4635 | D4635 | (262.0, 160) | 3: J1610, R7333, R7335 | J1610 |
-| POWER-JR-AGND3 | (279.0, 160) | 6: C4627, D4404, D4630, D4634, D4636, U4608 | D4634 | (279.0, 160) | 3: J1710, R7305, R7306 | J1710 |
+| POWER-JR-+5V | (227.5, 160) | 6: D8313, R8334, R8342, RB4531, U8309, U8310 | U8309, U8310 | (227.5, 160) | 2: J1410, R7133 | J1410 |
+| POWER-JR-AGND1 | (244.5, 160) | 6: C8339, D8314, R8349, R8362, R8363, U8311 | U8311 | (244.5, 160) | 2: J1510, R7207 | J1510 |
+| POWER-JR-AGND2 | (261.5, 160) | 9: D4631, D4635, RB4228, RB4431, RB4432, RB4433, RB4632, RB4633, RB4635 | D4635 | (261.5, 160) | 2: J1610, R7333 | J1610 |
+| POWER-JR-AGND3 | (278.5, 160) | 6: C4627, D4404, D4630, D4634, D4636, U4608 | D4634 | (278.5, 160) | 2: J1710, R7306 | J1710 |
 | POWER-P-AGND2 | (98.5, 175.0) | 2: R2379, RVO1210 | none | (98.5, 175.0) | 0: none | none |
 | POWER-P-AGND3 | (110.0, 174.5) | 7: D2309, D2310, R2378, R2394, R2395, R2396, RV2307 | none | (110.0, 174.5) | 0: none | none |
 <!-- /calc:resited -->
@@ -269,11 +277,11 @@ Counts for the matrix: 18 posts, 9 of them AGND (3 per branch). Header AGND posi
 
 ## Joint coordinates and nets
 
-The 18 joints are in `joint-design.json` → `joints`. Each joint has its net, its front and K coordinates, its gap and working catalogue code, and its candidate land references (TP990001 to TP990036). The coordinates are at the DA-02 ruled positions: the four P-tab lands at y = 175, the four JR lands at +1.0 mm and P AGND2 and AGND3 on `TAB-POWER-2`. `old_P_agnd_xy` keeps the two former P positions for the cover comparison. The geometry candidate still holds the old positions.
+The 18 joints are in `joint-design.json` → `joints`. Each joint has its net, its front and K coordinates, its gap and working catalogue code, and its candidate land references (TP990001 to TP990036). The coordinates are at the ruled positions: the four P-tab lands at y = 175, the four JR lands at +0.5 mm (DS-44) and P AGND2 and AGND3 on `TAB-POWER-2`. `old_P_agnd_xy` keeps the two former P positions for the cover comparison. The geometry candidate still holds the old positions.
 
 ## Checks: calculator and tests run; every physical and native check NOT RUN
 
-- **Run:** `python3 scripts/checks/frozen_studies.py discover scripts/stack/power_posts` (no network, no KiCad), `python3 -m json.tool` on both JSON files, `pnpm circuit:check` before and after (a1 and c1), and the plain-Python envelope screen at the ruled positions.
+- **Run:** `python3 scripts/checks/frozen_studies.py discover scripts/stack/power_posts` (no network, no KiCad), `python3 -m json.tool` on both JSON files, `pnpm circuit:check` before and after (a1, c1 and a2), and the plain-Python envelope screen at the ruled positions.
 - **NOT RUN, `pcbnew` queries:** the plain-Python reader of ST-02 was enough.
 - **NOT RUN, DRC and `regen-all.sh`:** forbidden by the brief.
 - **NOT RUN, hot Kelvin joint resistance, temperature rise at the contact limit and at 4.6 A in one post, thread torque, push-out and laminate creep:** no part or coupon exists (#65).

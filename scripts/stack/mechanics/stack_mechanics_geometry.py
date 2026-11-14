@@ -10,6 +10,7 @@ and the height notes compare the two.
 The fixing sets (kept supports and provisional tie sites) are read from
 stackups.json, because they are this task's dispositions and DA-01's decisions.
 """
+from collections import Counter
 from pathlib import Path
 import hashlib
 import json
@@ -47,7 +48,22 @@ def bbox(points):
     return [min(xs), min(ys), max(xs), max(ys)]
 
 
-def inside(pt, poly):
+def seg_dist(pt, a, b):
+    ax, ay = a
+    dx, dy = b[0] - ax, b[1] - ay
+    length2 = dx * dx + dy * dy
+    u = 0.0 if length2 == 0 else max(0.0, min(1.0, ((pt[0] - ax) * dx + (pt[1] - ay) * dy) / length2))
+    return math.hypot(pt[0] - ax - u * dx, pt[1] - ay - u * dy)
+
+
+def boundary_dist(pt, poly):
+    return min(seg_dist(pt, poly[i], poly[(i + 1) % len(poly)]) for i in range(len(poly)))
+
+
+def inside(pt, poly, eps=1e-9):
+    """Point in polygon, independent of the outline's orientation; a point on the boundary counts as inside."""
+    if boundary_dist(pt, poly) <= eps:
+        return True
     x, y = pt
     hit = False
     for i in range(len(poly)):
@@ -56,6 +72,86 @@ def inside(pt, poly):
         if (y1 > y) != (y2 > y) and x < x1 + (y - y1) * (x2 - x1) / (y2 - y1):
             hit = not hit
     return hit
+
+
+def grid(outline, step):
+    x0, y0, x1, y1 = bbox(outline)
+    nx, ny = int(round((x1 - x0) / step)), int(round((y1 - y0) / step))
+    for j in range(ny + 1):
+        for i in range(nx + 1):
+            pt = (x0 + i * step, y0 + j * step)
+            if inside(pt, outline):
+                yield pt
+
+
+def largest_inscribed_bay(outline, points, step):
+    """Largest circle that lies inside the outline and holds no fixing (grid search)."""
+    best = (0.0, None)
+    for pt in grid(outline, step):
+        d = min(boundary_dist(pt, outline), min(dist(pt, q) for q in points))
+        if d > best[0]:
+            best = (d, pt)
+    return best
+
+
+def farthest_in_region(outline, points, step, keep):
+    """Point of the region (outline points where keep(pt) holds) farthest from every fixing."""
+    best = (0.0, None)
+    for pt in grid(outline, step):
+        if not keep(pt):
+            continue
+        d = min(dist(pt, q) for q in points)
+        if d > best[0]:
+            best = (d, pt)
+    return best
+
+
+BAY_GRID_STEP_MM = 1.0  # grid of the bay and free-edge searches on K
+
+
+def k_regions(outline, fixings):
+    """Bay and free-edge spans of K for one fixing set (attempt a4 item 1)."""
+    pts = [f['xy'] for f in fixings]
+    rows = sorted({f['xy'][1] for f in fixings if f['kind'] == 'post'})
+    radius, centre = largest_inscribed_bay(outline, pts, BAY_GRID_STEP_MM)
+    out = {'interior_bay': {'radius_mm': r(radius), 'centre_xy': [r(c) for c in centre]}}
+    for name, keep in (('edge_region_low_y', lambda p: p[1] < rows[0]), ('edge_region_high_y', lambda p: p[1] > rows[-1])):
+        span, pt = farthest_in_region(outline, pts, BAY_GRID_STEP_MM, keep)
+        out[name] = {'span_mm': r(span), 'point_xy': [r(c) for c in pt]}
+    out['post_rows_y_mm'] = [r(y) for y in rows]
+    return out
+
+
+def derive_a3(cand):
+    """K on the 30 declared fixings (DS-43), the sleeves (DS-45) and the six adapter pairs."""
+    fx = [f for f in cand['fixings'] if f['declared'] and f['kind'] in ('post', 'kept support')]
+    posts = [f for f in fx if f['kind'] == 'post']
+    k_outline = cand['planes']['K']['outline']
+    sleeves = []
+    for f in fx:
+        if f['kind'] != 'kept support':
+            continue
+        near = min((g for g in fx if g['id'] != f['id']), key=lambda g: dist(f['xy'], g['xy']))
+        sleeves.append({'id': f['id'], 'board': f['front_board'], 'xy': [r(c) for c in f['xy']],
+                        'nearest_fixing': near['id'], 'd_fixing_mm': r(dist(f['xy'], near['xy']))})
+    adapters = []
+    for p in cand['pairs']:
+        board = p['sites']['front']['board']
+        if not board.startswith('O'):
+            continue
+        xy = p['sites']['front']['center']
+        near = min(fx, key=lambda g: dist(xy, g['xy']))
+        near_post = min(posts, key=lambda g: dist(xy, g['xy']))
+        adapters.append({'id': p['id'], 'board': board, 'xy': [r(c) for c in xy], 'positions': p['positions'],
+                         'nearest_fixing': near['id'], 'd_fixing_mm': r(dist(xy, near['xy'])),
+                         'nearest_post': near_post['id'], 'd_post_mm': r(dist(xy, near_post['xy']))})
+    counts = Counter((f['kind'], f['front_board']) for f in fx)
+    return {
+        'fixing_counts': {f'{k} {b}': n for (k, b), n in sorted(counts.items())},
+        'k_regions': {'posts_and_sleeves': k_regions(k_outline, fx), 'posts_only': k_regions(k_outline, posts)},
+        'sleeves': sleeves,
+        'adapter_pairs': adapters,
+    }
 
 
 def derive(stackups=None):
@@ -141,6 +237,7 @@ def derive(stackups=None):
         'j_to_p_post_row_spacing_mm': [r(min(p_rows) - max(j_rows)), r(max(p_rows) - max(j_rows))],
         'jl_jr_inner_post_span_mm': r(min(jr_x) - max(jl_x)),
         'hardware_kind_counts': hardware,
+        'a3': derive_a3(cand),
     }
 
 
