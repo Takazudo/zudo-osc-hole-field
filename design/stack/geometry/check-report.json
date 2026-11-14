@@ -1,0 +1,574 @@
+{
+ "schema_version": 1,
+ "status": "COURTYARD-AND-PAD-LEVEL PLANNING SCREEN; not a copper clearance, tolerance result or physical fit; unvalidated draft",
+ "verdict": "PASS",
+ "candidate_sha256": "13e007b6cd1b70f493e76c8f866afae402a82545b059f65d2c2a28bac76e8f12",
+ "canonical_input_digest": "c8fee6037d8c21808ea305e1c1a53c4ec85463c9dcafde7025bf170b0f2f6d18",
+ "errors": [],
+ "checks": {
+  "planes_and_gaps": {
+   "status": "PASS",
+   "errors": [],
+   "detail": {
+    "stack": {
+     "K_face_z_mm": -24.5,
+     "K_rear_z_mm": -26.1,
+     "K_rear_parts_z_mm": -31.1,
+     "selector_tail_z_mm": -20,
+     "selector_tail_to_K_mm": 4.5,
+     "enclosure_inner_rear_z_mm": -34,
+     "rear_part_clearance_mm": 2.9,
+     "mated_heights_mm": {
+      "JL/K": 12.9,
+      "JR/K": 12.9,
+      "P/K": 11.1,
+      "O1/K": 6.9,
+      "O3/K": 6.9,
+      "O5/K": 6.9,
+      "EL/P": 7.2
+     }
+    }
+   }
+  },
+  "coaxial_sites": {
+   "status": "PASS",
+   "errors": [],
+   "detail": {
+    "pairs": 203
+   }
+  },
+  "replacement_inside_gh_courtyard": {
+   "status": "PASS",
+   "errors": [],
+   "detail": {
+    "replaced_halves_checked": 382
+   }
+  },
+  "courtyard_blockers_declared": {
+   "status": "PASS",
+   "errors": [],
+   "detail": {
+    "declared_conflicts": [
+     {
+      "pair": "JL-K-X3",
+      "half": "back",
+      "board": "K",
+      "blockers": [
+       "C1230",
+       "DO1205",
+       "R1257",
+       "R1283",
+       "R1286",
+       "RVO1209"
+      ]
+     },
+     {
+      "pair": "JL-K-X4",
+      "half": "back",
+      "board": "K",
+      "blockers": [
+       "C1215",
+       "C1218",
+       "C1229",
+       "R1287",
+       "R2143",
+       "RB1210",
+       "RB1211"
+      ]
+     }
+    ]
+   }
+  },
+  "pin_budget": {
+   "status": "PASS",
+   "errors": [],
+   "detail": {
+    "totals": {
+     "pairs": 203,
+     "positions": 813,
+     "signal_positions": 531,
+     "used_signal": 529,
+     "unused": 2,
+     "AGND": 270,
+     "rail": 12,
+     "K_pairs": 197,
+     "K_positions": 777,
+     "K_AGND": 264,
+     "nets_counted_at_two_joints": 26
+    },
+    "signals_without_adjacent_AGND_where_not_required": {
+     "EL-P-E1": [
+      "/E1/NOT_FALL"
+     ],
+     "EL-P-E2": [
+      "/E2/NOT_FALL"
+     ],
+     "EL-P-E3": [
+      "/E3/NOT_FALL"
+     ],
+     "EL-P-E4": [
+      "/E4/NOT_FALL"
+     ],
+     "EL-P-E5": [
+      "/E5/NOT_FALL"
+     ],
+     "EL-P-E6": [
+      "/E6/NOT_FALL"
+     ],
+     "K-O1-1": [
+      "/O1/OCT_SELECTED",
+      "OSC_OCT2"
+     ],
+     "K-O3-1": [
+      "/O3/OCT_SELECTED",
+      "OSC_OCT2"
+     ],
+     "K-O5-1": [
+      "/O5/OCT_SELECTED",
+      "OSC_OCT2"
+     ]
+    }
+   }
+  },
+  "pass_through_sites": {
+   "status": "PASS",
+   "errors": [],
+   "detail": {
+    "new_sites": [
+     {
+      "pair": "JL-K-X1",
+      "board": "K",
+      "side": "F.Cu",
+      "center": [
+       40,
+       150
+      ],
+      "clear_in_place": true,
+      "blockers": []
+     },
+     {
+      "pair": "JL-K-X2",
+      "board": "K",
+      "side": "F.Cu",
+      "center": [
+       57,
+       150
+      ],
+      "clear_in_place": true,
+      "blockers": []
+     },
+     {
+      "pair": "JL-K-X3",
+      "board": "K",
+      "side": "F.Cu",
+      "center": [
+       74,
+       150
+      ],
+      "clear_in_place": false,
+      "blockers": [
+       "C1230",
+       "DO1205",
+       "R1257",
+       "R1283",
+       "R1286",
+       "RVO1209"
+      ]
+     },
+     {
+      "pair": "JL-K-X4",
+      "board": "K",
+      "side": "F.Cu",
+      "center": [
+       91,
+       150
+      ],
+      "clear_in_place": false,
+      "blockers": [
+       "C1215",
+       "C1218",
+       "C1229",
+       "R1287",
+       "R2143",
+       "RB1210",
+       "RB1211"
+      ]
+     },
+     {
+      "pair": "P-K-X1",
+      "board": "K",
+      "side": "F.Cu",
+      "center": [
+       40,
+       276
+      ],
+      "clear_in_place": true,
+      "blockers": []
+     },
+     {
+      "pair": "P-K-X2",
+      "board": "K",
+      "side": "F.Cu",
+      "center": [
+       57,
+       276
+      ],
+      "clear_in_place": true,
+      "blockers": []
+     },
+     {
+      "pair": "P-K-X3",
+      "board": "K",
+      "side": "F.Cu",
+      "center": [
+       74,
+       276
+      ],
+      "clear_in_place": true,
+      "blockers": []
+     },
+     {
+      "pair": "P-K-X4",
+      "board": "K",
+      "side": "F.Cu",
+      "center": [
+       91,
+       276
+      ],
+      "clear_in_place": true,
+      "blockers": []
+     },
+     {
+      "pair": "P-K-E1",
+      "board": "P",
+      "side": "B.Cu",
+      "center": [
+       218.5,
+       172
+      ],
+      "clear_in_place": true,
+      "blockers": []
+     },
+     {
+      "pair": "P-K-E2",
+      "board": "P",
+      "side": "B.Cu",
+      "center": [
+       235.5,
+       172
+      ],
+      "clear_in_place": true,
+      "blockers": []
+     },
+     {
+      "pair": "P-K-E3",
+      "board": "P",
+      "side": "B.Cu",
+      "center": [
+       252.5,
+       172
+      ],
+      "clear_in_place": true,
+      "blockers": []
+     },
+     {
+      "pair": "P-K-E4",
+      "board": "P",
+      "side": "B.Cu",
+      "center": [
+       269.5,
+       172
+      ],
+      "clear_in_place": true,
+      "blockers": []
+     },
+     {
+      "pair": "P-K-E5",
+      "board": "P",
+      "side": "B.Cu",
+      "center": [
+       286.5,
+       172
+      ],
+      "clear_in_place": true,
+      "blockers": []
+     },
+     {
+      "pair": "P-K-E6",
+      "board": "P",
+      "side": "B.Cu",
+      "center": [
+       303.5,
+       172
+      ],
+      "clear_in_place": true,
+      "blockers": []
+     }
+    ],
+    "K_new_sites_clear": 6,
+    "K_new_sites": 8
+   }
+  },
+  "sub_toggle_windows": {
+   "status": "PASS",
+   "errors": [],
+   "detail": {
+    "windows": {
+     "O2": {
+      "window_centre_y": [
+       180.15,
+       180.85
+      ],
+      "window_mm": 0.7,
+      "site_centre": [
+       31.5,
+       180.5
+      ]
+     },
+     "O4": {
+      "window_centre_y": [
+       179.05,
+       180.85
+      ],
+      "window_mm": 1.8,
+      "site_centre": [
+       65.5,
+       179.95
+      ]
+     }
+    }
+   }
+  },
+  "post_coaxiality": {
+   "status": "PASS",
+   "errors": [],
+   "detail": {
+    "posts": 18,
+    "coaxial_today": 14,
+    "offset_resolved_by_power_tab": [
+     "POWER-P-+12V",
+     "POWER-P--12V",
+     "POWER-P-+5V",
+     "POWER-P-AGND1"
+    ]
+   }
+  },
+  "p_tabs": {
+   "status": "PASS",
+   "errors": [],
+   "detail": {
+    "tabs": {
+     "TAB-EL": {
+      "rect": [
+       211.5,
+       168.6,
+       310.5,
+       176.0
+      ],
+      "min_distance_mm": {
+       "JL": 35.301,
+       "JR": 4.6,
+       "O1": 187.1,
+       "O3": 153.1,
+       "O5": 119.1,
+       "seam rear cradle": 29.8565,
+       "seam cross-member 1": 149.6,
+       "seam cross-member 2": 1.6,
+       "SW101": 187.45,
+       "SW301": 153.45,
+       "SW501": 119.45
+      }
+     },
+     "TAB-CONTROL-O2": {
+      "rect": [
+       24.55,
+       177.1,
+       38.45,
+       194.0
+      ],
+      "min_distance_mm": {
+       "JL": 13.1,
+       "JR": 139.6657,
+       "O1": 0.15,
+       "O3": 0.15,
+       "O5": 34.15,
+       "seam rear cradle": 134.191,
+       "seam cross-member 1": 158.1,
+       "seam cross-member 2": 10.1,
+       "SW101": 0.5,
+       "SW301": 0.5,
+       "SW501": 34.5
+      }
+     },
+     "TAB-CONTROL-O4": {
+      "rect": [
+       58.55,
+       176.55,
+       72.45,
+       194.0
+      ],
+      "min_distance_mm": {
+       "JL": 12.55,
+       "JR": 105.797,
+       "O1": 34.15,
+       "O3": 0.15,
+       "O5": 0.15,
+       "seam rear cradle": 100.338,
+       "seam cross-member 1": 157.55,
+       "seam cross-member 2": 9.55,
+       "SW101": 34.5,
+       "SW301": 0.5,
+       "SW501": 0.5
+      }
+     },
+     "TAB-POWER": {
+      "rect": [
+       139.0,
+       172.0,
+       196.0,
+       176.0
+      ],
+      "min_distance_mm": {
+       "JL": 8.0,
+       "JR": 8.0,
+       "O1": 114.6,
+       "O3": 80.6,
+       "O5": 46.6,
+       "seam rear cradle": 8.0,
+       "seam cross-member 1": 153.0,
+       "seam cross-member 2": 5.0,
+       "SW101": 114.95,
+       "SW301": 80.95,
+       "SW501": 46.95
+      }
+     }
+    },
+    "NOT_RUN": "P body-carrier envelope: no carrier geometry is recorded in the sources (text only in partition load paths)"
+   }
+  },
+  "retired_items": {
+   "status": "PASS",
+   "errors": [],
+   "detail": {
+    "boards": [
+     "O2",
+     "O4"
+    ],
+    "K_headers": [
+     "J900117",
+     "J900119",
+     "J900125",
+     "J900127"
+    ],
+    "K_service_apertures": 191
+   }
+  },
+  "facing_heights": {
+   "status": "PASS",
+   "errors": [],
+   "detail": {
+    "gaps": {
+     "JL/K": {
+      "gap_mm": 12.9,
+      "overlapping_pairs_with_known_heights": 68,
+      "overlapping_pairs_with_an_unretained_height": 694,
+      "front_items": 724,
+      "front_items_with_height": 214,
+      "back_items": 339,
+      "back_items_with_height": 61,
+      "tallest_front_mm": 5,
+      "tallest_back_mm": 1.75,
+      "collisions": []
+     },
+     "JR/K": {
+      "gap_mm": 12.9,
+      "overlapping_pairs_with_known_heights": 162,
+      "overlapping_pairs_with_an_unretained_height": 900,
+      "front_items": 649,
+      "front_items_with_height": 216,
+      "back_items": 374,
+      "back_items_with_height": 92,
+      "tallest_front_mm": 5,
+      "tallest_back_mm": 1.75,
+      "collisions": []
+     },
+     "P/K": {
+      "gap_mm": 11.1,
+      "overlapping_pairs_with_known_heights": 193,
+      "overlapping_pairs_with_an_unretained_height": 693,
+      "front_items": 262,
+      "front_items_with_height": 106,
+      "back_items": 685,
+      "back_items_with_height": 126,
+      "tallest_front_mm": 5,
+      "tallest_back_mm": 1.75,
+      "collisions": []
+     },
+     "O1/K": {
+      "gap_mm": 6.9,
+      "overlapping_pairs_with_known_heights": 0,
+      "overlapping_pairs_with_an_unretained_height": 3,
+      "front_items": 1,
+      "front_items_with_height": 1,
+      "back_items": 3,
+      "back_items_with_height": 0,
+      "tallest_front_mm": 2.4,
+      "tallest_back_mm": 0,
+      "collisions": []
+     },
+     "O3/K": {
+      "gap_mm": 6.9,
+      "overlapping_pairs_with_known_heights": 0,
+      "overlapping_pairs_with_an_unretained_height": 12,
+      "front_items": 1,
+      "front_items_with_height": 1,
+      "back_items": 12,
+      "back_items_with_height": 0,
+      "tallest_front_mm": 2.4,
+      "tallest_back_mm": 0,
+      "collisions": []
+     },
+     "O5/K": {
+      "gap_mm": 6.9,
+      "overlapping_pairs_with_known_heights": 0,
+      "overlapping_pairs_with_an_unretained_height": 10,
+      "front_items": 1,
+      "front_items_with_height": 1,
+      "back_items": 12,
+      "back_items_with_height": 0,
+      "tallest_front_mm": 2.4,
+      "tallest_back_mm": 0,
+      "collisions": []
+     },
+     "EL/P": {
+      "gap_mm": 7.2,
+      "overlapping_pairs_with_known_heights": 0,
+      "overlapping_pairs_with_an_unretained_height": 0,
+      "front_items": 0,
+      "front_items_with_height": 0,
+      "back_items": 42,
+      "back_items_with_height": 42,
+      "tallest_front_mm": 0,
+      "tallest_back_mm": 5.08,
+      "collisions": []
+     }
+    },
+    "height_source": "design/mechanical/ic-envelope-native-report.json native display-model z bounds (not seated heights), selector-assembly.json tails, partition bulk reserves; every other part height is unretained and counted as unknown"
+   }
+  },
+  "staleness": {
+   "status": "PASS",
+   "errors": [],
+   "detail": {
+    "digest": "c8fee6037d8c21808ea305e1c1a53c4ec85463c9dcafde7025bf170b0f2f6d18"
+   }
+  }
+ },
+ "not_run": [
+  "Copper clearance, DRC and routing of the stack: no stack board exists",
+  "Tolerance stack-up, mating misalignment and force: no exact connector (ST-01, ST-03)",
+  "P body-carrier openings for the EL pairs: no carrier envelope is recorded in the sources",
+  "Seated part heights: only native display-model envelopes and the listed reserves are retained; other heights are counted as unknown",
+  "Native KiCad oracle query: not needed; boards parsed with plain Python and the extract matched the planning extract for K"
+ ]
+}

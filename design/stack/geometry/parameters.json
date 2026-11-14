@@ -49,7 +49,8 @@
     "SUB": "SGS",
     "EL/P": "SGSRSR",
     "P/K for EL": "SGSGSG",
-    "signal_beside_return_required": ["K/P", "JL/K", "JR/K", "K/O first", "K/O second", "JL/P pass-through", "SUB", "P/K for EL"]
+    "signal_beside_return_required": ["K/P", "JL/K", "JR/K", "JL/P pass-through", "SUB", "P/K for EL"],
+    "signal_beside_return_note": "Required where the plan page states the pin order or the rule. A 1x5 with four signals and one AGND, and the EL-to-P 1x6 with three signals and one AGND, cannot place every signal beside a return; check.py reports those signals"
   },
   "el_rail_rotation": [["+12V", "-12V"], ["-12V", "+5V"], ["+5V", "+12V"]],
   "el_rail_rotation_basis": "Planning assumption: a 1x6 EL-to-P pair has two rail positions, so each site carries two of the three rails in rotation and each rail reaches EL at four of the six sites",
