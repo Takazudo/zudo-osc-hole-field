@@ -155,7 +155,7 @@ negative evidence only.
 - ISO7710 default-low needs a powered receiver.
 - The REF3433 output capacitance is unestablished because its Murata source is unavailable.
 - What is the deadline value, and is it guaranteed rather than typical?
-- What is the reset and recovery behaviour? See the owner inputs.
+- Recovery is by full power cycle only, the working default; see the owner decisions.
 
 **Evidence that closes it:**
 
@@ -290,21 +290,17 @@ and the next-actions docs.
 
 **New sources:** none beyond SI-2…SI-5.
 
-## Owner inputs still needed
+## Owner decisions and remaining inputs
 
-1. **Fault let-through premise.** The on-board fault deadline needs a current or energy bound during
-   detection. Two choices:
-   - Rely on the *existing* EXT requirement (≤2.1/2.0/0.5 A maximum including let-through).
-     This adds nothing to the contract.
-   - Add on-board current limiting. A 10 mΩ shunt costs about 16 mV of the 40 mV budget on ±12 V.
-
-   This decides the SI-4 topology.
-2. **Fault recovery behaviour.** After a latched fault, choose between:
-   - recovery only by a full power cycle, with supervised discharge;
-   - a reset input;
-   - bounded automatic retry.
-
-   No new panel control or indicator position is available under the fixed-placement rule.
+1. **Fault let-through premise: DECIDED 2026-11-14.** The on-board fault deadline is designed
+   against the existing EXT maximum-delivered requirement of ≤2.1/2.0/0.5 A, including let-through.
+   The boards add no current limiting of their own, so the 40 mV drop budget stays free for the
+   switch paths. SI-4 therefore needs no sense shunt. The recovered `return-v3` 10 mΩ frontend is
+   not adopted for limiting. This rests on a requirement on the source and is not realized source
+   capability, so it stays an explicit premise of the SI-3 deadline calculation.
+2. **Fault recovery behaviour: working default.** The plan assumes recovery only by a full power
+   cycle, with supervised discharge, because the fixed-placement rule leaves no position for a new
+   panel control or indicator. A reset input or bounded automatic retry would reopen this item.
 3. **Conditional:** owner input is needed only if SI-1 shows a transient above the
    2100/2000/500 mA maximum delivered current, or SI-6 shows the quads and rail switches do not fit
    the fixed placements. Both would change an existing target.
