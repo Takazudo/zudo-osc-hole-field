@@ -1,13 +1,14 @@
 {
   "schema_version": 1,
   "task": "osc-stack-20261114/ST-03@b4daa754",
-  "attempt": "a1 (parametric start)",
-  "base_commit": "91246e9b60d77c5beabc89db3d9149e52f89bb40",
-  "status": "PROPOSAL; paper stack-up of an unvalidated draft. No physical check exists; fit, force, strain and alignment are NOT RUN (#65).",
+  "attempt": "a2 (on DA-01 decisions D1 to D6)",
+  "base_commit": "c52e159",
+  "status": "PROPOSAL; paper stack-up of an unvalidated draft on the DA-01 decisions. Fit, force, alignment, strain and take-up are NOT RUN (no specimen; #65, Q7).",
   "status_vocabulary": {
     "SOURCED": "Read from a named file or retrieved page whose SHA256 is recorded in sources.",
     "DERIVED": "Computed by the formula given; the calculator recomputes it and the tests compare.",
-    "ASSUMED": "A planning value with the reason and what would source it. Never presented as sourced."
+    "ASSUMED": "A planning value with the reason and what would source it. Never presented as sourced.",
+    "UNSOURCED": "No retained or fetched document states it; the row names what would source it. Never used as a number."
   },
   "sources": {
     "S-PLAN": {
@@ -93,29 +94,211 @@
       "retrieved_utc": "2026-11-14",
       "class": "manufacturer specification of an inventory part; byte-identical to source src-dc-wiper-c-datasheet of .claude/skills/component-murata-grm1885c1h103ja01d",
       "locator": "printed page 2 item 11 'Substrate Bending test' (flexure 1 mm, 5 s, no defects, capacitance within 5%); printed page 6 Fig.2 (1.6 mm FR4, supports 45 mm + 45 mm, R5 pressing tool)"
+    },
+    "S-DA01": {
+      "path": "circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-01.md",
+      "sha256": "32d20a5c50a4aea3d7bc2c497e1d185b3f59677878f93ec2e599881c134f7dbf",
+      "note": "Design review A1 and decisions D1 to D6; its section 'Vendor documents fetched for this review' holds the manufacturer documents cited below. Those documents are not in this worktree; they are cited by name, revision and SHA256 as the review gives them."
+    },
+    "V-MMS-SPEC": {
+      "document": "Product Specification, 2.00 mm Classic Socket & Terminal Strip (MMS, TW-TH, TW-SM, TMM), revision A, 2022-08-15",
+      "file": "mms-tmm.pdf",
+      "sha256": "f7cc75253302d6b4d6a48469f1841f095a4ff2f4e2b9c9a12f9dd0796024ee10",
+      "cited_via": "S-DA01"
+    },
+    "V-MMS-PRINT": {
+      "document": "Print MMS-1XX-02-XXX-XX-XX-XX-X-XX, revision CZ",
+      "file": "mms-1xx-02-xxx-xx-xx-xx-x-xx-mkt.pdf",
+      "sha256": "d19c85659d2712ed67ad31b5d9f251b4d0556da84de3ad9e1dfd7ff8c67e2130",
+      "cited_via": "S-DA01"
+    },
+    "V-TWSM-PRINT": {
+      "document": "Print TW-XX-XX-XXX-X-XXX-SM-XXX-XX-X-XX sheet 1, revision CW (table 1, figure 1, notes 1 and 5)",
+      "file": "tw-xx-xx-xxx-x-xxx-sm-xxx-xx-x-xx-mkt1.pdf",
+      "sha256": "7eab7b79b8025486771214a79014a619487402916a0da61f143341faefde9e17",
+      "cited_via": "S-DA01"
+    },
+    "V-QUAL-154341": {
+      "document": "Design Qualification Test Report MMS/TMM, tracking code 154341 revision 2",
+      "file": "154341_report_rev_2_qua.pdf",
+      "sha256": "02fd7a450b4eebd3b7666cc1751a57e48238d5c6f25d3c90047afe59dd740690",
+      "cited_via": "S-DA01"
+    },
+    "V-CLT-PAGE": {
+      "document": "Retained TLE/CLT catalogue page, revision 22DEC25 (CLT socket 2.29 mm, insertion minimum 1.40 mm)",
+      "cited_via": "S-DA01 D3 evidence status",
+      "sha256": "not given in DA-01; ST-01b retains it"
+    },
+    "S-GEOM": {
+      "path": "design/stack/geometry/stack-candidate.json",
+      "sha256": "8b302b93012b31253238f87c1743adf26723ef6dfde57ef2e9241e18b7048c98",
+      "note": "XY only. The candidate still holds the plan-page heights; the mechanics take heights from parameters.da01."
     }
   },
   "parameters": {
-    "a_mm": [
-      0.1,
-      0.2,
-      0.3,
-      0.5
-    ],
-    "f_N": [
-      0.3,
-      0.5,
-      1.0
-    ],
-    "t_mm": [
-      0.1,
-      0.2,
-      0.3
-    ],
-    "meaning": {
-      "a": "allowed mating misalignment per pair, radial, from the connector manufacturer (ST-01)",
-      "f": "mating force per position (ST-01); unmating force per position is the separate term unmate_to_mate_ratio",
-      "t": "mated-height tolerance of one pair, +/- (ST-01)"
+    "meaning": "Heights, gaps, windows, misalignment limits and forces decided or sourced in DA-01. They replace the a/f/t grids of attempt a1.",
+    "da01": {
+      "K_face_z_mm": {
+        "value": -30.4,
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D1 item 2; D3 'K F.Cu z = -17.6 - 12.8 = -30.4 mm'"
+      },
+      "gap_mm": {
+        "value": {
+          "O": 12.8,
+          "P": 17.0,
+          "JL": 18.8,
+          "JR": 18.8,
+          "EL": 7.2
+        },
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D3 joint table; EL 'The gap stays 7.2 mm'"
+      },
+      "stacker_tip_mm": {
+        "value": {
+          "O": 11.86,
+          "P": 15.37,
+          "JL": 17.35,
+          "JR": 17.35,
+          "EL": 7.85
+        },
+        "status": "SOURCED",
+        "source": "V-TWSM-PRINT",
+        "locator": "table 1 maximum 'A' per lead style -03, -06, -07; EL -02 (DA-01 D3)"
+      },
+      "stacker_A_in": {
+        "value": {
+          "O": 0.295,
+          "P": 0.46,
+          "JL": 0.53,
+          "JR": 0.53,
+          "EL": 0.17
+        },
+        "status": "DERIVED",
+        "formula": "O, P, JL, JR: the D3 rule 'A <= gap - 4.50 - 0.80 mm, rounded down to 0.005 in', which gives the working codes TW-xx-03-L-S-295-SM, -06-L-S-460-SM and -07-L-S-530-SM. EL: read from the D3 code TW-04-02-L-D-170-SM-P-TR; it is not set by the 0.80 mm rule (body clearance 0.59 mm against the 2.29 mm CLT socket, shown in the heights table)"
+      },
+      "socket_height_mm": {
+        "value": {
+          "single": 4.5,
+          "EL": 2.29
+        },
+        "status": "SOURCED",
+        "source": "V-MMS-PRINT",
+        "locator": "MMS seated height 4.496 +0.102/-0.051 (sheet 1); CLT 2.29 mm from V-CLT-PAGE"
+      },
+      "insertion_window_mm": {
+        "value": {
+          "single": [
+            2.13,
+            4.32
+          ],
+          "EL_min": 1.4
+        },
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D3 evidence table (retained MMS catalogue page); EL: CLT top-entry insertion 1.40 mm minimum, pins pass through EL relief holes"
+      },
+      "body_clearance_rule_mm": {
+        "value": 0.8,
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D3 rule for the stacker height"
+      },
+      "t_mm": {
+        "value": 0.2,
+        "status": "ASSUMED",
+        "reason": "Pin-length and tip-height tolerance beyond the print's general +/-0.13 mm and 0.25 mm pin-to-pin limit (DA-01 D3)",
+        "to_source": "Coupon C-5; a manufacturer statement if the owner asks (owner item 4)"
+      },
+      "misalignment_mm": {
+        "value": {
+          "initial": {
+            "along": 0.39,
+            "across_single": 0.57,
+            "across_double_MMS": 0.37
+          },
+          "final": {
+            "along": 0.07,
+            "across_single": 0.16,
+            "across_double_MMS": 0.07
+          }
+        },
+        "status": "SOURCED",
+        "source": "V-MMS-SPEC",
+        "locator": "page 4, section 5.1.1 (X-axis figure, table 1) and 5.1.2 (X-axis figure, table 5); applying them to the TW-SM stacker is ASSUMED (DA-01 D1)"
+      },
+      "el_misalignment": {
+        "value": null,
+        "status": "UNSOURCED",
+        "reason": "The EL joint uses the CLT socket. DA-01 states double-row figures only for the MMS socket; no CLT misalignment figure is cited. The MMS double-row values are shown for reference only.",
+        "to_source": "CLT product specification (ST-01b)"
+      },
+      "mating_force_N": {
+        "value": [
+          0.84,
+          0.97,
+          1.33
+        ],
+        "status": "SOURCED",
+        "source": "V-QUAL-154341",
+        "locator": "printed pages 15-16 via DA-01 M9: 0.84 N (largest connector, new), 0.97 N (new, highest sample), 1.33 N (after 100 cycles); applying the double-row report to the single-row pair is ASSUMED"
+      },
+      "unmating_force_N": {
+        "value": [
+          0.47,
+          0.98
+        ],
+        "status": "SOURCED",
+        "source": "V-QUAL-154341",
+        "locator": "DA-01 M9"
+      },
+      "el_positions_per_pair": {
+        "value": 8,
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D3: six 2x4 pairs, 48 positions"
+      },
+      "positions_per_side_total": {
+        "value": 825,
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D6 plan-page figures: 825 positions per side in total"
+      },
+      "fixing_distance_rule_mm": {
+        "value": 40.0,
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D4 'Every pair lies within 40 mm of a post or tie post'"
+      },
+      "pin_sway_max_deg": {
+        "value": 2.0,
+        "status": "SOURCED",
+        "source": "V-TWSM-PRINT",
+        "locator": "note 1: 2 degrees maximum either direction"
+      },
+      "toggle_takeup_window_mm": {
+        "value": [
+          0.3,
+          2.1
+        ],
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D4 Z take-up row: washer stack works over 0.3 to 2.1 mm"
+      },
+      "k_vs_panel_selector_mm": {
+        "value": 0.1,
+        "status": "ASSUMED",
+        "reason": "DA-01 D4's term 'K against the panel 0.1' in the selector chain",
+        "to_source": "ST-12 with measured terms"
+      },
+      "selector_budget_mm": {
+        "value": 0.2,
+        "status": "SOURCED",
+        "source": "S-SEL",
+        "locator": "shaft_clearance_budget: (6.9 - 6.1)/2 - 0.2 wobble; kept as the budget by DA-01 D4"
+      }
     }
   },
   "terms": {
@@ -227,13 +410,6 @@
       "reason": "Uniform-curvature reading of a bow ratio b over the board's longest side L; fixings pull the board flat locally.",
       "to_source": "Measured flatness of the received boards (first article)"
     },
-    "bow_allocation": {
-      "value": 0.05,
-      "unit": "mm",
-      "status": "ASSUMED",
-      "reason": "Design allocation per board for residual bow at any pair; sets the fastener spacing.",
-      "to_source": "Design authority choice"
-    },
     "murata_flexure": {
       "value": 1.0,
       "unit": "mm",
@@ -281,13 +457,6 @@
       "reason": "K is held flat by posts and fasteners on each side of the span s; a relative offset Delta between the two clamped rows bends the strip between them.",
       "to_source": "Plate FE model in ST-12 or strain-gauge coupon C-6"
     },
-    "shim_resolution": {
-      "value": 0.05,
-      "unit": "mm",
-      "status": "ASSUMED",
-      "reason": "Residual Z after a measured shim or paired-nut take-up at P's panel-side fixings.",
-      "to_source": "Take-up hardware design (ST-12) and first-article measurement"
-    },
     "smt_float_front": {
       "value": 0.1,
       "unit": "mm",
@@ -306,7 +475,7 @@
       "value": 0.5,
       "unit": "deg",
       "status": "ASSUMED",
-      "reason": "Lean of a tall single-row stacker after reflow; tip offset = H tan(theta).",
+      "reason": "Planning value for lean after reflow; the print allows 2 degrees sway (pin_sway_max_deg, SOURCED), shown as a sensitivity row",
       "to_source": "ST-01 true-position or tip-coplanarity specification; coupon C-3 lean measurement"
     },
     "hole_position_tol_axis": {
@@ -337,14 +506,6 @@
       "source": "S-JLC-PCB",
       "locator": "as pth_hole_tol_plus"
     },
-    "press_fit_hole_tol": {
-      "value": 0.05,
-      "unit": "mm",
-      "status": "SOURCED",
-      "source": "S-JLC-PCB",
-      "locator": "'Press-fit holes: +/-0.05 mm (Finished hole size 0.55-2.0mm. Multilayer ENIG boards and circular holes only.)'",
-      "note": "Conditions: multilayer, ENIG, circular, named at order. JL/JR (6 layers), P and K qualify by layer count; the surface finish is not yet chosen; EL and O are two-layer and do not qualify."
-    },
     "routed_hole_position_tol_axis": {
       "value": 0.1,
       "unit": "mm",
@@ -368,12 +529,12 @@
       "reason": "Ground dowel pin class chosen for planning; within the 0.55-2.0 mm press-fit hole range.",
       "to_source": "Purchased pin drawing (ST-12)"
     },
-    "loc_hole_clearance_precise": {
-      "value": 0.06,
+    "loc_hole_clearance_standard": {
+      "value": 0.1,
       "unit": "mm",
       "status": "ASSUMED",
-      "reason": "Design choice: front-board round hole = pin + 0.06 in the press-fit tolerance class, so the minimum clearance is +0.01.",
-      "to_source": "Design authority"
+      "reason": "Design choice: collar-post round hole = post + 0.10 in the ordinary through-hole class",
+      "to_source": "ST-12 collar drawing"
     },
     "loc_slot_clearance": {
       "value": 0.1,
@@ -382,30 +543,17 @@
       "reason": "Design choice: plated secondary slot width = pin + 0.10, so the minimum width clearance is +0.02 under the -0.08 slot tolerance.",
       "to_source": "Design authority"
     },
-    "r_loc_precise": {
-      "value": 0.058,
-      "unit": "mm",
-      "status": "DERIVED",
-      "formula": "(loc_hole_clearance_precise + press_fit_hole_tol + loc_pin_diameter.minus) / 2"
-    },
     "r_loc_standard": {
       "value": 0.118,
       "unit": "mm",
       "status": "DERIVED",
-      "formula": "(0.10 + pth_hole_tol_plus + loc_pin_diameter.minus) / 2, a round hole of pin + 0.10 in the ordinary through-hole class"
+      "formula": "(loc_hole_clearance_standard + pth_hole_tol_plus + loc_pin_diameter.minus) / 2"
     },
     "r_slot": {
       "value": 0.118,
       "unit": "mm",
       "status": "DERIVED",
       "formula": "(loc_slot_clearance + pth_hole_tol_plus + loc_pin_diameter.minus) / 2"
-    },
-    "diag_pin_span_factor": {
-      "value": 0.9,
-      "unit": "1",
-      "status": "ASSUMED",
-      "reason": "Recommended locating pins sit near opposite corners of each board's bounding box, 0.9 of its diagonal apart. ST-02 must find clear positions.",
-      "to_source": "ST-02 placement of the locating holes"
     },
     "th_lead_float": {
       "value": 0.1,
@@ -442,13 +590,6 @@
       "reason": "Typical in-plane flexural modulus of glass-epoxy laminate; no laminate datasheet is retained.",
       "to_source": "Laminate datasheet of the fabricator's FR4 for the 0.4 mm EL"
     },
-    "unmate_to_mate_ratio": {
-      "value": 1.0,
-      "unit": "1",
-      "status": "ASSUMED",
-      "reason": "Unmating force per position taken equal to mating force.",
-      "to_source": "ST-01 unmating force per contact"
-    },
     "screw_axial_capacity": {
       "value": 1000.0,
       "unit": "N",
@@ -462,39 +603,26 @@
       "status": "DERIVED",
       "formula": "ISO metric coarse pitch implied by the M2.5 designation"
     },
-    "el_site_pitch": {
-      "value": 17.0,
+    "el_locator_ratio": {
+      "value": 1.0,
+      "unit": "1",
+      "status": "ASSUMED",
+      "reason": "EL's two close-collar posts sit near opposite ends of EL, so the farthest EL pair lies about one post spacing from the primary",
+      "to_source": "ST-12 choice of the two collar posts"
+    },
+    "poisson_fr4": {
+      "value": 0.15,
+      "unit": "1",
+      "status": "ASSUMED",
+      "reason": "Typical in-plane Poisson ratio of glass-epoxy laminate",
+      "to_source": "Laminate datasheet"
+    },
+    "jack_shoulder_local": {
+      "value": 0.2,
       "unit": "mm",
-      "status": "SOURCED",
-      "source": "S-PART",
-      "locator": "connectors EL-E1..E6 centres x = 218.5 + 17k, y = 172"
-    },
-    "el_post_pitch": {
-      "value": 17.0,
-      "unit": "mm",
-      "status": "SOURCED",
-      "source": "S-PART",
-      "locator": "supports EL-OPT-1/8/15/22/29 at x = 227 + 17j, y = 172"
-    },
-    "el_cantilever": {
-      "value": 8.5,
-      "unit": "mm",
-      "status": "DERIVED",
-      "formula": "227 - 218.5: the outer EL sites (218.5 and 303.5) lie 8.5 mm outboard of the first and last tab posts"
-    },
-    "el_positions_per_site": {
-      "value": 6,
-      "unit": "count",
-      "status": "SOURCED",
-      "source": "S-PLAN",
-      "locator": "EL plugs into a P tab: six 1x6 pairs"
-    },
-    "posts_per_board": {
-      "value": 6,
-      "unit": "count",
-      "status": "SOURCED",
-      "source": "S-PLAN",
-      "locator": "Power joints: each branch keeps its six joints"
+      "status": "ASSUMED",
+      "reason": "Local seat variation of the jacks next to a J pair relative to those next to its fixing; J's plane is the panel's through the shoulders (DA-01 M7)",
+      "to_source": "#65 seated-height measurement"
     }
   },
   "apertures": {
@@ -657,257 +785,3546 @@
     "status": "DERIVED",
     "formula": "scripts/stack/mechanics/stack_mechanics_geometry.py derive()",
     "sources": {
+      "stack_candidate": {
+        "path": "design/stack/geometry/stack-candidate.json",
+        "sha256": "8b302b93012b31253238f87c1743adf26723ef6dfde57ef2e9241e18b7048c98"
+      },
       "partition": {
         "path": "design/partition/partition.json",
         "sha256": "7e3f5a39b001f80f38572c837a60e197fbb08ae588296e1d3bcb1339718db48f"
       },
-      "mechanical_candidate": {
-        "path": "design/partition/mechanical-candidate.json",
-        "sha256": "1688080a0dbf2fadd5a8f6b0628d868850ba982aaef453086fa3a5ba8fe63349"
-      },
       "placements_lock": {
         "path": "design/grid/placements.lock.json",
         "sha256": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8"
-      },
-      "stage_optical": {
-        "path": "design/partition/stage-optical-candidate.json",
-        "sha256": "b5c930b9bdb861c99fe02cb798678942c3fb5213948c272060b69b8bdde9d3f6"
       }
     },
-    "units": {
-      "JL": {
-        "pairs": 29,
-        "positions": 162,
-        "mated_height_mm": 12.9,
-        "front_face_z_mm": -10.0,
-        "outline_bbox_mm": [
-          4.0,
-          20.0,
-          176.5,
-          164.0
-        ],
-        "longest_side_mm": 172.5,
-        "diagonal_mm": 224.7048,
-        "hardware_count": 143,
-        "posts": 6,
-        "diag_pins_r_max_mm": 216.809,
-        "post_locator_span_mm": 85.0,
-        "post_locator_r_max_mm": 187.1452,
-        "pair_to_nearest_post_max_mm": 126.6491,
-        "pair_to_nearest_stack_post_on_K_max_mm": 126.6491
-      },
-      "JR": {
-        "pairs": 27,
-        "positions": 162,
-        "mated_height_mm": 12.9,
-        "front_face_z_mm": -10.0,
-        "outline_bbox_mm": [
-          177.5,
-          20.0,
-          314.0,
-          164.0
-        ],
-        "longest_side_mm": 144.0,
-        "diagonal_mm": 198.4143,
-        "hardware_count": 139,
-        "posts": 6,
-        "diag_pins_r_max_mm": 190.3847,
-        "post_locator_span_mm": 85.0,
-        "post_locator_r_max_mm": 175.4087,
-        "pair_to_nearest_post_max_mm": 123.1787,
-        "pair_to_nearest_stack_post_on_K_max_mm": 123.1787
-      },
-      "P": {
-        "pairs": 135,
-        "positions": 423,
-        "mated_height_mm": 11.1,
-        "front_face_z_mm": -11.8,
-        "outline_bbox_mm": [
-          1.0,
-          176.0,
-          317.0,
-          292.0
-        ],
-        "longest_side_mm": 316.0,
-        "diagonal_mm": 336.6185,
-        "hardware_count": 141,
-        "posts": 6,
-        "diag_pins_r_max_mm": 320.8664,
-        "post_locator_span_mm": 85.0941,
-        "post_locator_r_max_mm": 194.2839,
-        "pair_to_nearest_post_max_mm": 167.0935,
-        "pair_to_nearest_stack_post_on_K_max_mm": 125.6155
-      },
-      "O1": {
-        "pairs": 2,
-        "positions": 10,
-        "mated_height_mm": 6.9,
-        "front_face_z_mm": -16.0,
-        "outline_bbox_mm": [
-          4.6,
-          171.0,
-          24.4,
-          195.5
-        ],
-        "longest_side_mm": 24.5,
-        "diagonal_mm": 31.5006,
-        "hardware_count": 1,
-        "posts": 0,
-        "diag_pins_r_max_mm": 20.1062
-      },
-      "O3": {
-        "pairs": 2,
-        "positions": 10,
-        "mated_height_mm": 6.9,
-        "front_face_z_mm": -16.0,
-        "outline_bbox_mm": [
-          38.6,
-          171.0,
-          58.4,
-          195.5
-        ],
-        "longest_side_mm": 24.5,
-        "diagonal_mm": 31.5006,
-        "hardware_count": 1,
-        "posts": 0,
-        "diag_pins_r_max_mm": 20.1062
-      },
-      "O5": {
-        "pairs": 2,
-        "positions": 10,
-        "mated_height_mm": 6.9,
-        "front_face_z_mm": -16.0,
-        "outline_bbox_mm": [
-          72.6,
-          171.0,
-          92.4,
-          195.5
-        ],
-        "longest_side_mm": 24.5,
-        "diagonal_mm": 31.5006,
-        "hardware_count": 1,
-        "posts": 0,
-        "diag_pins_r_max_mm": 20.1062
-      },
+    "candidate_heights_mm": {
+      "JL/K": 12.9,
+      "JR/K": 12.9,
+      "P/K": 11.1,
+      "O1/K": 6.9,
+      "O3/K": 6.9,
+      "O5/K": 6.9,
+      "EL/P": 7.2
+    },
+    "candidate_K_face_z_mm": -24.5,
+    "panel_size_mm": [
+      318,
+      298
+    ],
+    "outlines": {
       "EL": {
-        "pairs": 6,
-        "positions": 36,
-        "mated_height_mm": 7.2,
-        "front_face_z_mm": -4.2,
-        "outline_bbox_mm": [
+        "bbox_mm": [
           210.0,
           164.0,
           317.0,
           277.0
         ],
-        "longest_side_mm": 113.0,
-        "diagonal_mm": 155.6213,
-        "hardware_count": 12,
-        "posts": 35,
-        "diag_pins_r_max_mm": 134.7641,
-        "post_locator_span_mm": 113.6002,
-        "post_locator_r_max_mm": 116.9562,
-        "pair_to_nearest_post_max_mm": 8.5
+        "longest_side_mm": 113.0
+      },
+      "JL": {
+        "bbox_mm": [
+          4.0,
+          20.0,
+          176.5,
+          164.0
+        ],
+        "longest_side_mm": 172.5
+      },
+      "JR": {
+        "bbox_mm": [
+          177.5,
+          20.0,
+          314.0,
+          164.0
+        ],
+        "longest_side_mm": 144.0
+      },
+      "K": {
+        "bbox_mm": [
+          4.0,
+          8.0,
+          314.0,
+          292.0
+        ],
+        "longest_side_mm": 310.0
+      },
+      "O1": {
+        "bbox_mm": [
+          4.6,
+          171.0,
+          24.4,
+          195.5
+        ],
+        "longest_side_mm": 24.5
+      },
+      "O3": {
+        "bbox_mm": [
+          38.6,
+          171.0,
+          58.4,
+          195.5
+        ],
+        "longest_side_mm": 24.5
+      },
+      "O5": {
+        "bbox_mm": [
+          72.6,
+          171.0,
+          92.4,
+          195.5
+        ],
+        "longest_side_mm": 24.5
+      },
+      "P": {
+        "bbox_mm": [
+          1.0,
+          176.0,
+          317.0,
+          292.0
+        ],
+        "longest_side_mm": 316.0
       }
     },
-    "K": {
-      "outline_bbox_mm": [
-        4.0,
-        8.0,
-        314.0,
-        292.0
+    "fixings": {
+      "posts": [
+        {
+          "id": "POWER-JL-+12V",
+          "board": "JL",
+          "xy": [
+            40,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JL--12V",
+          "board": "JL",
+          "xy": [
+            57,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JL-+5V",
+          "board": "JL",
+          "xy": [
+            74,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JL-AGND1",
+          "board": "JL",
+          "xy": [
+            91,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JL-AGND2",
+          "board": "JL",
+          "xy": [
+            108,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JL-AGND3",
+          "board": "JL",
+          "xy": [
+            125,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR-+12V",
+          "board": "JR",
+          "xy": [
+            193,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR--12V",
+          "board": "JR",
+          "xy": [
+            210,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR-+5V",
+          "board": "JR",
+          "xy": [
+            227,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR-AGND1",
+          "board": "JR",
+          "xy": [
+            244,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR-AGND2",
+          "board": "JR",
+          "xy": [
+            261,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR-AGND3",
+          "board": "JR",
+          "xy": [
+            278,
+            160
+          ]
+        },
+        {
+          "id": "POWER-P-+12V",
+          "board": "P",
+          "xy": [
+            142,
+            175
+          ]
+        },
+        {
+          "id": "POWER-P--12V",
+          "board": "P",
+          "xy": [
+            159,
+            175
+          ]
+        },
+        {
+          "id": "POWER-P-+5V",
+          "board": "P",
+          "xy": [
+            176,
+            175
+          ]
+        },
+        {
+          "id": "POWER-P-AGND1",
+          "board": "P",
+          "xy": [
+            193,
+            175
+          ]
+        },
+        {
+          "id": "POWER-P-AGND2",
+          "board": "P",
+          "xy": [
+            210,
+            179
+          ]
+        },
+        {
+          "id": "POWER-P-AGND3",
+          "board": "P",
+          "xy": [
+            227,
+            179
+          ]
+        }
       ],
-      "longest_side_mm": 310.0,
-      "pairs": 197,
-      "positions": 777,
-      "pair_to_nearest_post_max_mm": 126.6491
-    },
-    "posts_mm": {
-      "JL": [
-        [
-          40,
-          160
-        ],
-        [
-          57,
-          160
-        ],
-        [
-          74,
-          160
-        ],
-        [
-          91,
-          160
-        ],
-        [
-          108,
-          160
-        ],
-        [
-          125,
-          160
-        ]
+      "kept_supports": [
+        {
+          "id": "JL-SUP-1",
+          "board": "JL",
+          "xy": [
+            6.5,
+            22.5
+          ]
+        },
+        {
+          "id": "JL-SUP-2",
+          "board": "JL",
+          "xy": [
+            6.5,
+            80
+          ]
+        },
+        {
+          "id": "JL-SUP-3",
+          "board": "JL",
+          "xy": [
+            6.5,
+            138
+          ]
+        },
+        {
+          "id": "K-SUP-3",
+          "board": "JL",
+          "xy": [
+            6.5,
+            160
+          ]
+        },
+        {
+          "id": "JR-SUP-1",
+          "board": "JR",
+          "xy": [
+            311.5,
+            22.5
+          ]
+        },
+        {
+          "id": "JR-SUP-2",
+          "board": "JR",
+          "xy": [
+            311.5,
+            80
+          ]
+        },
+        {
+          "id": "JR-SUP-3",
+          "board": "JR",
+          "xy": [
+            311.5,
+            138
+          ]
+        },
+        {
+          "id": "K-SUP-4",
+          "board": "JR",
+          "xy": [
+            311.5,
+            160
+          ]
+        },
+        {
+          "id": "K-SUP-5",
+          "board": "P",
+          "xy": [
+            6.5,
+            243
+          ]
+        },
+        {
+          "id": "K-SUP-6",
+          "board": "P",
+          "xy": [
+            311.5,
+            243
+          ]
+        },
+        {
+          "id": "K-SUP-7",
+          "board": "P",
+          "xy": [
+            6.5,
+            289.5
+          ]
+        },
+        {
+          "id": "K-SUP-8",
+          "board": "P",
+          "xy": [
+            255.5,
+            289.5
+          ]
+        }
       ],
-      "JR": [
-        [
-          193,
-          160
-        ],
-        [
-          210,
-          160
-        ],
-        [
-          227,
-          160
-        ],
-        [
-          244,
-          160
-        ],
-        [
-          261,
-          160
-        ],
-        [
-          278,
-          160
-        ]
-      ],
-      "P": [
-        [
-          142,
-          175.0
-        ],
-        [
-          159,
-          175.0
-        ],
-        [
-          176,
-          175.0
-        ],
-        [
-          193,
-          175.0
-        ],
-        [
-          210,
-          179
-        ],
-        [
-          227,
-          179
-        ]
+      "provisional": [
+        {
+          "id": "TIE-PROV-1",
+          "board": "P",
+          "xy": [
+            202,
+            255
+          ]
+        },
+        {
+          "id": "TIE-PROV-2",
+          "board": "P",
+          "xy": [
+            252,
+            241
+          ]
+        },
+        {
+          "id": "TIE-PROV-3",
+          "board": "JR",
+          "xy": [
+            227,
+            80
+          ]
+        },
+        {
+          "id": "TIE-PROV-4",
+          "board": "JR",
+          "xy": [
+            227,
+            38
+          ]
+        },
+        {
+          "id": "TIE-PROV-5",
+          "board": "JL",
+          "xy": [
+            108,
+            80
+          ]
+        }
       ]
     },
-    "el_post_count": 35,
-    "j_post_row_y_mm": [
+    "pairs": [
+      {
+        "id": "EL-P-E1",
+        "family": "EL/P",
+        "board": "EL",
+        "joint": "EL",
+        "xy": [
+          218.5,
+          172
+        ],
+        "positions_candidate": 6
+      },
+      {
+        "id": "EL-P-E2",
+        "family": "EL/P",
+        "board": "EL",
+        "joint": "EL",
+        "xy": [
+          235.5,
+          172
+        ],
+        "positions_candidate": 6
+      },
+      {
+        "id": "EL-P-E3",
+        "family": "EL/P",
+        "board": "EL",
+        "joint": "EL",
+        "xy": [
+          252.5,
+          172
+        ],
+        "positions_candidate": 6
+      },
+      {
+        "id": "EL-P-E4",
+        "family": "EL/P",
+        "board": "EL",
+        "joint": "EL",
+        "xy": [
+          269.5,
+          172
+        ],
+        "positions_candidate": 6
+      },
+      {
+        "id": "EL-P-E5",
+        "family": "EL/P",
+        "board": "EL",
+        "joint": "EL",
+        "xy": [
+          286.5,
+          172
+        ],
+        "positions_candidate": 6
+      },
+      {
+        "id": "EL-P-E6",
+        "family": "EL/P",
+        "board": "EL",
+        "joint": "EL",
+        "xy": [
+          303.5,
+          172
+        ],
+        "positions_candidate": 6
+      },
+      {
+        "id": "JL-K-1",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          23,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 22.6385,
+        "d_K_base": 22.6385,
+        "d_front_plus": 22.6385,
+        "d_K_plus": 22.6385
+      },
+      {
+        "id": "JL-K-10",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          23,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 16.5,
+        "d_K_base": 16.5,
+        "d_front_plus": 16.5,
+        "d_K_plus": 16.5
+      },
+      {
+        "id": "JL-K-11",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          40,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 33.5,
+        "d_K_base": 33.5,
+        "d_front_plus": 33.5,
+        "d_K_plus": 33.5
+      },
+      {
+        "id": "JL-K-12",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          57,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 50.5,
+        "d_K_base": 50.5,
+        "d_front_plus": 50.5,
+        "d_K_plus": 50.5
+      },
+      {
+        "id": "JL-K-13",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          74,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 67.5,
+        "d_K_base": 67.5,
+        "d_front_plus": 34.0,
+        "d_K_plus": 34.0
+      },
+      {
+        "id": "JL-K-14",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          91,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 80.0,
+        "d_K_base": 80.0,
+        "d_front_plus": 17.0,
+        "d_K_plus": 17.0
+      },
+      {
+        "id": "JL-K-15",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          108,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 80.0,
+        "d_K_base": 80.0,
+        "d_front_plus": 0.0,
+        "d_K_plus": 0.0
+      },
+      {
+        "id": "JL-K-16",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          125,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 80.0,
+        "d_K_base": 80.0,
+        "d_front_plus": 17.0,
+        "d_K_plus": 17.0
+      },
+      {
+        "id": "JL-K-17",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          142,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 81.7863,
+        "d_K_base": 81.7863,
+        "d_front_plus": 34.0,
+        "d_K_plus": 34.0
+      },
+      {
+        "id": "JL-K-18",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          159,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 86.9253,
+        "d_K_base": 86.9253,
+        "d_front_plus": 51.0,
+        "d_K_plus": 51.0
+      },
+      {
+        "id": "JL-K-19",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          23,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 22.9837,
+        "d_K_base": 22.9837,
+        "d_front_plus": 22.9837,
+        "d_K_plus": 22.9837
+      },
+      {
+        "id": "JL-K-2",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          40,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 36.9121,
+        "d_K_base": 36.9121,
+        "d_front_plus": 36.9121,
+        "d_K_plus": 36.9121
+      },
+      {
+        "id": "JL-K-20",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          40,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 37.1248,
+        "d_K_base": 37.1248,
+        "d_front_plus": 37.1248,
+        "d_K_plus": 37.1248
+      },
+      {
+        "id": "JL-K-21",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          57,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JL-K-22",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          74,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JL-K-23",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          91,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JL-K-24",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          108,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JL-K-25",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          125,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JL-K-3",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          57,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 52.8252,
+        "d_K_base": 52.8252,
+        "d_front_plus": 52.8252,
+        "d_K_plus": 52.8252
+      },
+      {
+        "id": "JL-K-4",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          74,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 69.2568,
+        "d_K_base": 69.2568,
+        "d_front_plus": 54.037,
+        "d_K_plus": 54.037
+      },
+      {
+        "id": "JL-K-5",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          91,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 85.9098,
+        "d_K_base": 85.9098,
+        "d_front_plus": 45.31,
+        "d_K_plus": 45.31
+      },
+      {
+        "id": "JL-K-6",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          108,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 102.6767,
+        "d_K_base": 102.6767,
+        "d_front_plus": 42.0,
+        "d_K_plus": 42.0
+      },
+      {
+        "id": "JL-K-7",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          125,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 119.5094,
+        "d_K_base": 119.5094,
+        "d_front_plus": 45.31,
+        "d_K_plus": 45.31
+      },
+      {
+        "id": "JL-K-8",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          142,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 123.1787,
+        "d_K_base": 123.1787,
+        "d_front_plus": 54.037,
+        "d_K_plus": 54.037
+      },
+      {
+        "id": "JL-K-9",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          159,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 126.6491,
+        "d_K_base": 126.6491,
+        "d_front_plus": 66.0681,
+        "d_K_plus": 66.0681
+      },
+      {
+        "id": "JL-K-X1",
+        "family": "JL/P pass-through",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          40,
+          150
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JL-K-X2",
+        "family": "JL/P pass-through",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          57,
+          150
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JL-K-X3",
+        "family": "JL/P pass-through",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          74,
+          150
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JL-K-X4",
+        "family": "JL/P pass-through",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          91,
+          150
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JR-K-1",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          193,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 119.5094,
+        "d_K_base": 119.5094,
+        "d_front_plus": 34.0,
+        "d_K_plus": 34.0
+      },
+      {
+        "id": "JR-K-10",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          227,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 80.0,
+        "d_K_base": 80.0,
+        "d_front_plus": 0.0,
+        "d_K_plus": 0.0
+      },
+      {
+        "id": "JR-K-11",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          244,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 67.5,
+        "d_K_base": 67.5,
+        "d_front_plus": 17.0,
+        "d_K_plus": 17.0
+      },
+      {
+        "id": "JR-K-12",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          261,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 50.5,
+        "d_K_base": 50.5,
+        "d_front_plus": 34.0,
+        "d_K_plus": 34.0
+      },
+      {
+        "id": "JR-K-13",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          278,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 33.5,
+        "d_K_base": 33.5,
+        "d_front_plus": 33.5,
+        "d_K_plus": 33.5
+      },
+      {
+        "id": "JR-K-14",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          295,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 16.5,
+        "d_K_base": 16.5,
+        "d_front_plus": 16.5,
+        "d_K_plus": 16.5
+      },
+      {
+        "id": "JR-K-15",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          193,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JR-K-16",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          210,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JR-K-17",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          227,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JR-K-18",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          244,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JR-K-19",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          261,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JR-K-2",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          210,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 102.6767,
+        "d_K_base": 102.6767,
+        "d_front_plus": 17.0,
+        "d_K_plus": 17.0
+      },
+      {
+        "id": "JR-K-20",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          278,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 37.1248,
+        "d_K_base": 37.1248,
+        "d_front_plus": 37.1248,
+        "d_K_plus": 37.1248
+      },
+      {
+        "id": "JR-K-21",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          295,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 22.9837,
+        "d_K_base": 22.9837,
+        "d_front_plus": 22.9837,
+        "d_K_plus": 22.9837
+      },
+      {
+        "id": "JR-K-22",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          193,
+          150
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JR-K-23",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          210,
+          150
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JR-K-24",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          227,
+          150
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JR-K-25",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          244,
+          150
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JR-K-26",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          261,
+          150
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JR-K-27",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          278,
+          150
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JR-K-3",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          227,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 85.9098,
+        "d_K_base": 85.9098,
+        "d_front_plus": 0.0,
+        "d_K_plus": 0.0
+      },
+      {
+        "id": "JR-K-4",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          244,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 69.2568,
+        "d_K_base": 69.2568,
+        "d_front_plus": 17.0,
+        "d_K_plus": 17.0
+      },
+      {
+        "id": "JR-K-5",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          261,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 52.8252,
+        "d_K_base": 52.8252,
+        "d_front_plus": 34.0,
+        "d_K_plus": 34.0
+      },
+      {
+        "id": "JR-K-6",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          278,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 36.9121,
+        "d_K_base": 36.9121,
+        "d_front_plus": 36.9121,
+        "d_K_plus": 36.9121
+      },
+      {
+        "id": "JR-K-7",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          295,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 22.6385,
+        "d_K_base": 22.6385,
+        "d_front_plus": 22.6385,
+        "d_K_plus": 22.6385
+      },
+      {
+        "id": "JR-K-8",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          193,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 80.0,
+        "d_K_base": 80.0,
+        "d_front_plus": 34.0,
+        "d_K_plus": 34.0
+      },
+      {
+        "id": "JR-K-9",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          210,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 80.0,
+        "d_K_base": 80.0,
+        "d_front_plus": 17.0,
+        "d_K_plus": 17.0
+      },
+      {
+        "id": "K-O1-1",
+        "family": "K/O first",
+        "board": "O1",
+        "joint": "O",
+        "xy": [
+          14.5,
+          181.5
+        ],
+        "positions_candidate": 5
+      },
+      {
+        "id": "K-O1-2",
+        "family": "K/O second",
+        "board": "O1",
+        "joint": "O",
+        "xy": [
+          14.5,
+          188.5
+        ],
+        "positions_candidate": 5
+      },
+      {
+        "id": "K-O3-1",
+        "family": "K/O first",
+        "board": "O3",
+        "joint": "O",
+        "xy": [
+          48.5,
+          181.5
+        ],
+        "positions_candidate": 5
+      },
+      {
+        "id": "K-O3-2",
+        "family": "K/O second",
+        "board": "O3",
+        "joint": "O",
+        "xy": [
+          48.5,
+          188.5
+        ],
+        "positions_candidate": 5
+      },
+      {
+        "id": "K-O5-1",
+        "family": "K/O first",
+        "board": "O5",
+        "joint": "O",
+        "xy": [
+          82.5,
+          181.5
+        ],
+        "positions_candidate": 5
+      },
+      {
+        "id": "K-O5-2",
+        "family": "K/O second",
+        "board": "O5",
+        "joint": "O",
+        "xy": [
+          82.5,
+          188.5
+        ],
+        "positions_candidate": 5
+      },
+      {
+        "id": "K-P-1",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          116.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 83.9658,
+        "d_K_base": 83.9658,
+        "d_front_plus": 83.9658,
+        "d_K_plus": 83.9658
+      },
+      {
+        "id": "K-P-10",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          252.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 7.1589,
+        "d_K_base": 7.1589,
+        "d_front_plus": 7.1589,
+        "d_K_plus": 7.1589
+      },
+      {
+        "id": "K-P-100",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          65.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 61.131,
+        "d_K_base": 61.131,
+        "d_front_plus": 61.131,
+        "d_K_plus": 61.131
+      },
+      {
+        "id": "K-P-101",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          48.5,
+          218.5
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 48.6236,
+        "d_K_base": 48.6236,
+        "d_front_plus": 48.6236,
+        "d_K_plus": 48.6236
+      },
+      {
+        "id": "K-P-102",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          65.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 59.357,
+        "d_K_base": 59.357,
+        "d_front_plus": 59.357,
+        "d_K_plus": 59.357
+      },
+      {
+        "id": "K-P-103",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          65.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 62.46,
+        "d_K_base": 62.46,
+        "d_front_plus": 62.46,
+        "d_K_plus": 62.46
+      },
+      {
+        "id": "K-P-104",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          65.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 60.208,
+        "d_K_base": 60.208,
+        "d_front_plus": 60.208,
+        "d_K_plus": 60.208
+      },
+      {
+        "id": "K-P-105",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          65.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 69.6419,
+        "d_K_base": 46.7787,
+        "d_front_plus": 69.6419,
+        "d_K_plus": 46.7787
+      },
+      {
+        "id": "K-P-106",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          65.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 59.0339,
+        "d_K_base": 59.0339,
+        "d_front_plus": 59.0339,
+        "d_K_plus": 59.0339
+      },
+      {
+        "id": "K-P-107",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          82.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 78.7163,
+        "d_K_base": 78.7163,
+        "d_front_plus": 78.7163,
+        "d_K_plus": 78.7163
+      },
+      {
+        "id": "K-P-108",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          65.5,
+          218.5
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 63.8847,
+        "d_K_base": 59.1143,
+        "d_front_plus": 63.8847,
+        "d_K_plus": 59.1143
+      },
+      {
+        "id": "K-P-109",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          82.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 76.2775,
+        "d_K_base": 76.2775,
+        "d_front_plus": 76.2775,
+        "d_K_plus": 76.2775
+      },
+      {
+        "id": "K-P-11",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          133.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 80.4503,
+        "d_K_base": 80.4503,
+        "d_front_plus": 68.5,
+        "d_K_plus": 68.5
+      },
+      {
+        "id": "K-P-110",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          82.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 76.0263,
+        "d_K_base": 76.0263,
+        "d_front_plus": 76.0263,
+        "d_K_plus": 76.0263
+      },
+      {
+        "id": "K-P-111",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          82.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 76.9415,
+        "d_K_base": 76.9415,
+        "d_front_plus": 76.9415,
+        "d_K_plus": 76.9415
+      },
+      {
+        "id": "K-P-112",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          99.5,
+          185.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 43.6606,
+        "d_K_base": 26.4055,
+        "d_front_plus": 43.6606,
+        "d_K_plus": 26.4055
+      },
+      {
+        "id": "K-P-113",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          82.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 77.666,
+        "d_K_base": 67.537,
+        "d_front_plus": 77.666,
+        "d_K_plus": 67.537
+      },
+      {
+        "id": "K-P-114",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          82.5,
+          218.5
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 73.7055,
+        "d_K_base": 59.1143,
+        "d_front_plus": 73.7055,
+        "d_K_plus": 59.1143
+      },
+      {
+        "id": "K-P-115",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          82.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 67.0914,
+        "d_K_base": 46.7787,
+        "d_front_plus": 67.0914,
+        "d_K_plus": 46.7787
+      },
+      {
+        "id": "K-P-116",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          150.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 94.3835,
+        "d_K_base": 94.3835,
+        "d_front_plus": 53.369,
+        "d_K_plus": 53.369
+      },
+      {
+        "id": "K-P-117",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          184.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 73.9003,
+        "d_K_base": 73.9003,
+        "d_front_plus": 22.4109,
+        "d_K_plus": 22.4109
+      },
+      {
+        "id": "K-P-118",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          167.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 90.3562,
+        "d_K_base": 90.3562,
+        "d_front_plus": 37.2324,
+        "d_K_plus": 37.2324
+      },
+      {
+        "id": "K-P-119",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          184.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 71.2969,
+        "d_K_base": 71.2969,
+        "d_front_plus": 33.0189,
+        "d_K_plus": 33.0189
+      },
+      {
+        "id": "K-P-12",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          252.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 34.6302,
+        "d_K_base": 34.6302,
+        "d_front_plus": 14.0089,
+        "d_K_plus": 14.0089
+      },
+      {
+        "id": "K-P-120",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          133.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 108.334,
+        "d_K_base": 108.334,
+        "d_front_plus": 74.0017,
+        "d_K_plus": 74.0017
+      },
+      {
+        "id": "K-P-121",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          133.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 94.3835,
+        "d_K_base": 94.3835,
+        "d_front_plus": 69.916,
+        "d_K_plus": 69.916
+      },
+      {
+        "id": "K-P-122",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          167.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 88.2397,
+        "d_K_base": 88.2397,
+        "d_front_plus": 44.4325,
+        "d_K_plus": 44.4325
+      },
+      {
+        "id": "K-P-123",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          150.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 105.201,
+        "d_K_base": 105.201,
+        "d_front_plus": 58.6195,
+        "d_K_plus": 58.6195
+      },
+      {
+        "id": "K-P-13",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          303.5,
+          219.75
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 24.5879,
+        "d_K_base": 24.5879,
+        "d_front_plus": 24.5879,
+        "d_K_plus": 24.5879
+      },
+      {
+        "id": "K-P-14",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          269.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 42.0476,
+        "d_K_base": 42.0476,
+        "d_front_plus": 17.5,
+        "d_K_plus": 17.5
+      },
+      {
+        "id": "K-P-15",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          252.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 48.5927,
+        "d_K_base": 48.5927,
+        "d_front_plus": 0.5,
+        "d_K_plus": 0.5
+      },
+      {
+        "id": "K-P-16",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          235.5,
+          192
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 15.5322,
+        "d_K_base": 15.5322,
+        "d_front_plus": 15.5322,
+        "d_K_plus": 15.5322
+      },
+      {
+        "id": "K-P-17",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          201.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 64.08,
+        "d_K_base": 64.08,
+        "d_front_plus": 0.5,
+        "d_K_plus": 0.5
+      },
+      {
+        "id": "K-P-18",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          218.5,
+          192
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 15.5322,
+        "d_K_base": 15.5322,
+        "d_front_plus": 15.5322,
+        "d_K_plus": 15.5322
+      },
+      {
+        "id": "K-P-19",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          201.5,
+          185.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 10.4043,
+        "d_K_base": 10.4043,
+        "d_front_plus": 10.4043,
+        "d_K_plus": 10.4043
+      },
+      {
+        "id": "K-P-2",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          218.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 42.2995,
+        "d_K_base": 42.2995,
+        "d_front_plus": 21.6391,
+        "d_K_plus": 21.6391
+      },
+      {
+        "id": "K-P-20",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          235.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 28.3064,
+        "d_K_base": 28.3064,
+        "d_front_plus": 28.3064,
+        "d_K_plus": 28.3064
+      },
+      {
+        "id": "K-P-21",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          218.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 50.589,
+        "d_K_base": 50.589,
+        "d_front_plus": 16.5,
+        "d_K_plus": 16.5
+      },
+      {
+        "id": "K-P-22",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          235.5,
+          219.75
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 41.6271,
+        "d_K_base": 41.6271,
+        "d_front_plus": 26.9038,
+        "d_K_plus": 26.9038
+      },
+      {
+        "id": "K-P-23",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          252.5,
+          219.75
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 48.0709,
+        "d_K_base": 48.0709,
+        "d_front_plus": 21.2559,
+        "d_K_plus": 21.2559
+      },
+      {
+        "id": "K-P-24",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          218.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 28.3064,
+        "d_K_base": 28.3064,
+        "d_front_plus": 28.3064,
+        "d_K_plus": 28.3064
+      },
+      {
+        "id": "K-P-25",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          218.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 61.002,
+        "d_K_base": 61.002,
+        "d_front_plus": 21.6391,
+        "d_K_plus": 21.6391
+      },
+      {
+        "id": "K-P-26",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          303.5,
+          192
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 51.6236,
+        "d_K_base": 32.9848,
+        "d_front_plus": 51.6236,
+        "d_K_plus": 32.9848
+      },
+      {
+        "id": "K-P-27",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          269.5,
+          219.75
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 48.0059,
+        "d_K_base": 48.0059,
+        "d_front_plus": 27.5284,
+        "d_K_plus": 27.5284
+      },
+      {
+        "id": "K-P-28",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          286.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 44.6542,
+        "d_K_base": 44.6542,
+        "d_front_plus": 44.6542,
+        "d_K_plus": 44.6542
+      },
+      {
+        "id": "K-P-29",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          235.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 52.4619,
+        "d_K_base": 52.4619,
+        "d_front_plus": 16.5,
+        "d_K_plus": 16.5
+      },
+      {
+        "id": "K-P-3",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          218.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 37.5666,
+        "d_K_base": 37.5666,
+        "d_front_plus": 32.5,
+        "d_K_plus": 32.5
+      },
+      {
+        "id": "K-P-30",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          269.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 50.3513,
+        "d_K_base": 46.7787,
+        "d_front_plus": 39.1312,
+        "d_K_plus": 39.1312
+      },
+      {
+        "id": "K-P-31",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          286.5,
+          219.75
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 34.1403,
+        "d_K_base": 34.1403,
+        "d_front_plus": 34.1403,
+        "d_K_plus": 34.1403
+      },
+      {
+        "id": "K-P-32",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          269.5,
+          192
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 44.4438,
+        "d_K_base": 33.1097,
+        "d_front_plus": 44.4438,
+        "d_K_plus": 33.1097
+      },
+      {
+        "id": "K-P-33",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          286.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 25.0799,
+        "d_K_base": 25.0799,
+        "d_front_plus": 25.0799,
+        "d_K_plus": 25.0799
+      },
+      {
+        "id": "K-P-34",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          252.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 37.1383,
+        "d_K_base": 37.1383,
+        "d_front_plus": 35.0036,
+        "d_K_plus": 35.0036
+      },
+      {
+        "id": "K-P-35",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          252.5,
+          192
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 28.6225,
+        "d_K_base": 28.6225,
+        "d_front_plus": 28.6225,
+        "d_K_plus": 28.6225
+      },
+      {
+        "id": "K-P-36",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          286.5,
+          192
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 56.7979,
+        "d_K_base": 33.1097,
+        "d_front_plus": 56.7979,
+        "d_K_plus": 33.1097
+      },
+      {
+        "id": "K-P-37",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          303.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 8.2462,
+        "d_K_base": 8.2462,
+        "d_front_plus": 8.2462,
+        "d_K_plus": 8.2462
+      },
+      {
+        "id": "K-P-38",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          303.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 37.855,
+        "d_K_base": 37.855,
+        "d_front_plus": 37.855,
+        "d_K_plus": 37.855
+      },
+      {
+        "id": "K-P-39",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          184.5,
+          185.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 13.1244,
+        "d_K_base": 13.1244,
+        "d_front_plus": 13.1244,
+        "d_K_plus": 13.1244
+      },
+      {
+        "id": "K-P-4",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          235.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 28.64,
+        "d_K_base": 28.64,
+        "d_front_plus": 28.64,
+        "d_K_plus": 28.64
+      },
+      {
+        "id": "K-P-40",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          99.5,
+          199.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 48.8083,
+        "d_K_base": 39.9155,
+        "d_front_plus": 48.8083,
+        "d_K_plus": 39.9155
+      },
+      {
+        "id": "K-P-41",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          116.5,
+          213.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 45.763,
+        "d_K_base": 45.763,
+        "d_front_plus": 45.763,
+        "d_K_plus": 45.763
+      },
+      {
+        "id": "K-P-42",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          99.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 90.5884,
+        "d_K_base": 90.5884,
+        "d_front_plus": 90.5884,
+        "d_K_plus": 90.5884
+      },
+      {
+        "id": "K-P-43",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          99.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 67.1584,
+        "d_K_base": 67.1584,
+        "d_front_plus": 67.1584,
+        "d_K_plus": 67.1584
+      },
+      {
+        "id": "K-P-44",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          116.5,
+          185.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 27.3907,
+        "d_K_base": 26.4055,
+        "d_front_plus": 27.3907,
+        "d_K_plus": 26.4055
+      },
+      {
+        "id": "K-P-45",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          116.5,
+          199.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 35.0179,
+        "d_K_base": 35.0179,
+        "d_front_plus": 35.0179,
+        "d_K_plus": 35.0179
+      },
+      {
+        "id": "K-P-46",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          99.5,
+          213.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 57.011,
+        "d_K_base": 53.6773,
+        "d_front_plus": 57.011,
+        "d_K_plus": 53.6773
+      },
+      {
+        "id": "K-P-47",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          116.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 70.7549,
+        "d_K_base": 70.7549,
+        "d_front_plus": 70.7549,
+        "d_K_plus": 70.7549
+      },
+      {
+        "id": "K-P-48",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          116.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 57.9159,
+        "d_K_base": 57.9159,
+        "d_front_plus": 57.9159,
+        "d_K_plus": 57.9159
+      },
+      {
+        "id": "K-P-49",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          133.5,
+          185.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 13.1244,
+        "d_K_base": 13.1244,
+        "d_front_plus": 13.1244,
+        "d_K_plus": 13.1244
+      },
+      {
+        "id": "K-P-5",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          235.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 21.0297,
+        "d_K_base": 21.0297,
+        "d_front_plus": 21.0297,
+        "d_K_plus": 21.0297
+      },
+      {
+        "id": "K-P-50",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          133.5,
+          199.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 25.4608,
+        "d_K_base": 25.4608,
+        "d_front_plus": 25.4608,
+        "d_K_plus": 25.4608
+      },
+      {
+        "id": "K-P-51",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          150.5,
+          213.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 38.9391,
+        "d_K_base": 38.9391,
+        "d_front_plus": 38.9391,
+        "d_K_plus": 38.9391
+      },
+      {
+        "id": "K-P-52",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          133.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 66.5451,
+        "d_K_base": 66.5451,
+        "d_front_plus": 66.5451,
+        "d_K_plus": 66.5451
+      },
+      {
+        "id": "K-P-53",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          99.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 78.5,
+        "d_K_base": 78.5,
+        "d_front_plus": 78.5,
+        "d_K_plus": 78.5
+      },
+      {
+        "id": "K-P-54",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          167.5,
+          185.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 13.1244,
+        "d_K_base": 13.1244,
+        "d_front_plus": 13.1244,
+        "d_K_plus": 13.1244
+      },
+      {
+        "id": "K-P-55",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          218.5,
+          219.75
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 41.6271,
+        "d_K_base": 41.6271,
+        "d_front_plus": 38.9206,
+        "d_K_plus": 38.9206
+      },
+      {
+        "id": "K-P-56",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          150.5,
+          185.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 13.1244,
+        "d_K_base": 13.1244,
+        "d_front_plus": 13.1244,
+        "d_K_plus": 13.1244
+      },
+      {
+        "id": "K-P-57",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          184.5,
+          199.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 25.4608,
+        "d_K_base": 25.4608,
+        "d_front_plus": 25.4608,
+        "d_K_plus": 25.4608
+      },
+      {
+        "id": "K-P-58",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          184.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 52.6901,
+        "d_K_base": 52.6901,
+        "d_front_plus": 33.0189,
+        "d_K_plus": 33.0189
+      },
+      {
+        "id": "K-P-59",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          184.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 66.5451,
+        "d_K_base": 66.5451,
+        "d_front_plus": 22.4109,
+        "d_K_plus": 22.4109
+      },
+      {
+        "id": "K-P-6",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          252.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 20.7183,
+        "d_K_base": 20.7183,
+        "d_front_plus": 20.7183,
+        "d_K_plus": 20.7183
+      },
+      {
+        "id": "K-P-60",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          184.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 78.9383,
+        "d_K_base": 78.9383,
+        "d_front_plus": 17.5,
+        "d_K_plus": 17.5
+      },
+      {
+        "id": "K-P-61",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          133.5,
+          213.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 38.9391,
+        "d_K_base": 38.9391,
+        "d_front_plus": 38.9391,
+        "d_K_plus": 38.9391
+      },
+      {
+        "id": "K-P-62",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          184.5,
+          213.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 38.9391,
+        "d_K_base": 38.9391,
+        "d_front_plus": 38.9391,
+        "d_K_plus": 38.9391
+      },
+      {
+        "id": "K-P-63",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          201.5,
+          199.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 21.7313,
+        "d_K_base": 21.7313,
+        "d_front_plus": 21.7313,
+        "d_K_plus": 21.7313
+      },
+      {
+        "id": "K-P-64",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          201.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 48.7468,
+        "d_K_base": 48.7468,
+        "d_front_plus": 28.0045,
+        "d_K_plus": 28.0045
+      },
+      {
+        "id": "K-P-65",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          176,
+          234
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 59.0,
+        "d_K_base": 59.0,
+        "d_front_plus": 33.4215,
+        "d_K_plus": 33.4215
+      },
+      {
+        "id": "K-P-66",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          201.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 62.5799,
+        "d_K_base": 62.5799,
+        "d_front_plus": 14.0089,
+        "d_K_plus": 14.0089
+      },
+      {
+        "id": "K-P-67",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          133.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 52.6901,
+        "d_K_base": 52.6901,
+        "d_front_plus": 52.6901,
+        "d_K_plus": 52.6901
+      },
+      {
+        "id": "K-P-68",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          159,
+          234
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 59.0,
+        "d_K_base": 59.0,
+        "d_front_plus": 47.8539,
+        "d_K_plus": 47.8539
+      },
+      {
+        "id": "K-P-69",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          150.5,
+          199.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 25.4608,
+        "d_K_base": 25.4608,
+        "d_front_plus": 25.4608,
+        "d_K_plus": 25.4608
+      },
+      {
+        "id": "K-P-7",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          235.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 39.8779,
+        "d_K_base": 39.8779,
+        "d_front_plus": 21.6391,
+        "d_K_plus": 21.6391
+      },
+      {
+        "id": "K-P-70",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          150.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 52.6901,
+        "d_K_base": 52.6901,
+        "d_front_plus": 52.6901,
+        "d_K_plus": 52.6901
+      },
+      {
+        "id": "K-P-71",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          150.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 80.4503,
+        "d_K_base": 80.4503,
+        "d_front_plus": 51.5,
+        "d_K_plus": 51.5
+      },
+      {
+        "id": "K-P-72",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          48.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 44.9444,
+        "d_K_base": 44.9444,
+        "d_front_plus": 44.9444,
+        "d_K_plus": 44.9444
+      },
+      {
+        "id": "K-P-73",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          142,
+          234
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 59.0,
+        "d_K_base": 59.0,
+        "d_front_plus": 59.0,
+        "d_K_plus": 59.0
+      },
+      {
+        "id": "K-P-74",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          150.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 66.5451,
+        "d_K_base": 66.5451,
+        "d_front_plus": 53.369,
+        "d_K_plus": 53.369
+      },
+      {
+        "id": "K-P-75",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          167.5,
+          199.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 25.4608,
+        "d_K_base": 25.4608,
+        "d_front_plus": 25.4608,
+        "d_K_plus": 25.4608
+      },
+      {
+        "id": "K-P-76",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          167.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 52.6901,
+        "d_K_base": 52.6901,
+        "d_front_plus": 44.4325,
+        "d_K_plus": 44.4325
+      },
+      {
+        "id": "K-P-77",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          167.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 80.4503,
+        "d_K_base": 80.4503,
+        "d_front_plus": 34.5,
+        "d_K_plus": 34.5
+      },
+      {
+        "id": "K-P-78",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          167.5,
+          213.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 38.9391,
+        "d_K_base": 38.9391,
+        "d_front_plus": 38.9391,
+        "d_K_plus": 38.9391
+      },
+      {
+        "id": "K-P-79",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          201.5,
+          213.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 35.0464,
+        "d_K_base": 35.0464,
+        "d_front_plus": 35.0464,
+        "d_K_plus": 35.0464
+      },
+      {
+        "id": "K-P-8",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          201.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 54.3898,
+        "d_K_base": 54.3898,
+        "d_front_plus": 28.0045,
+        "d_K_plus": 28.0045
+      },
+      {
+        "id": "K-P-80",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          167.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 66.5451,
+        "d_K_base": 66.5451,
+        "d_front_plus": 37.2324,
+        "d_K_plus": 37.2324
+      },
+      {
+        "id": "K-P-81",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          14.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 10.3078,
+        "d_K_base": 10.3078,
+        "d_front_plus": 10.3078,
+        "d_K_plus": 10.3078
+      },
+      {
+        "id": "K-P-82",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          14.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 22.0057,
+        "d_K_base": 22.0057,
+        "d_front_plus": 22.0057,
+        "d_K_plus": 22.0057
+      },
+      {
+        "id": "K-P-83",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          14.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 14.4222,
+        "d_K_base": 14.4222,
+        "d_front_plus": 14.4222,
+        "d_K_plus": 14.4222
+      },
+      {
+        "id": "K-P-84",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          14.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 37.855,
+        "d_K_base": 37.855,
+        "d_front_plus": 37.855,
+        "d_K_plus": 37.855
+      },
+      {
+        "id": "K-P-85",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          14.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 8.2462,
+        "d_K_base": 8.2462,
+        "d_front_plus": 8.2462,
+        "d_K_plus": 8.2462
+      },
+      {
+        "id": "K-P-86",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          31.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 29.6816,
+        "d_K_base": 29.6816,
+        "d_front_plus": 29.6816,
+        "d_K_plus": 29.6816
+      },
+      {
+        "id": "K-P-87",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          14.5,
+          218.5
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 25.773,
+        "d_K_base": 25.773,
+        "d_front_plus": 25.773,
+        "d_K_plus": 25.773
+      },
+      {
+        "id": "K-P-88",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          31.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 25.8312,
+        "d_K_base": 25.8312,
+        "d_front_plus": 25.8312,
+        "d_K_plus": 25.8312
+      },
+      {
+        "id": "K-P-89",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          31.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 32.3303,
+        "d_K_base": 32.3303,
+        "d_front_plus": 32.3303,
+        "d_K_plus": 32.3303
+      },
+      {
+        "id": "K-P-9",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          201.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 57.7603,
+        "d_K_base": 57.7603,
+        "d_front_plus": 14.0089,
+        "d_K_plus": 14.0089
+      },
+      {
+        "id": "K-P-90",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          31.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 27.7308,
+        "d_K_base": 27.7308,
+        "d_front_plus": 27.7308,
+        "d_K_plus": 27.7308
+      },
+      {
+        "id": "K-P-91",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          31.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 44.6542,
+        "d_K_base": 44.6542,
+        "d_front_plus": 44.6542,
+        "d_K_plus": 44.6542
+      },
+      {
+        "id": "K-P-92",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          31.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 25.0799,
+        "d_K_base": 25.0799,
+        "d_front_plus": 25.0799,
+        "d_K_plus": 25.0799
+      },
+      {
+        "id": "K-P-93",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          14.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 17.8885,
+        "d_K_base": 17.8885,
+        "d_front_plus": 17.8885,
+        "d_K_plus": 17.8885
+      },
+      {
+        "id": "K-P-94",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          31.5,
+          218.5
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 35.0036,
+        "d_K_base": 35.0036,
+        "d_front_plus": 35.0036,
+        "d_K_plus": 35.0036
+      },
+      {
+        "id": "K-P-95",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          48.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 42.5,
+        "d_K_base": 42.5,
+        "d_front_plus": 42.5,
+        "d_K_plus": 42.5
+      },
+      {
+        "id": "K-P-96",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          48.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 46.736,
+        "d_K_base": 46.736,
+        "d_front_plus": 46.736,
+        "d_K_plus": 46.736
+      },
+      {
+        "id": "K-P-97",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          48.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 43.6807,
+        "d_K_base": 43.6807,
+        "d_front_plus": 43.6807,
+        "d_K_plus": 43.6807
+      },
+      {
+        "id": "K-P-98",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          48.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 55.9732,
+        "d_K_base": 46.7787,
+        "d_front_plus": 55.9732,
+        "d_K_plus": 46.7787
+      },
+      {
+        "id": "K-P-99",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          48.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 42.0476,
+        "d_K_base": 42.0476,
+        "d_front_plus": 42.0476,
+        "d_K_plus": 42.0476
+      },
+      {
+        "id": "P-K-E1",
+        "family": "P/K for EL",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          218.5,
+          172
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 11.0114,
+        "d_K_base": 11.0114,
+        "d_front_plus": 11.0114,
+        "d_K_plus": 11.0114
+      },
+      {
+        "id": "P-K-E2",
+        "family": "P/K for EL",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          235.5,
+          172
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 11.0114,
+        "d_K_base": 11.0114,
+        "d_front_plus": 11.0114,
+        "d_K_plus": 11.0114
+      },
+      {
+        "id": "P-K-E3",
+        "family": "P/K for EL",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          252.5,
+          172
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 26.4433,
+        "d_K_base": 14.7054,
+        "d_front_plus": 26.4433,
+        "d_K_plus": 14.7054
+      },
+      {
+        "id": "P-K-E4",
+        "family": "P/K for EL",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          269.5,
+          172
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 43.0726,
+        "d_K_base": 14.7054,
+        "d_front_plus": 43.0726,
+        "d_K_plus": 14.7054
+      },
+      {
+        "id": "P-K-E5",
+        "family": "P/K for EL",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          286.5,
+          172
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 59.9103,
+        "d_K_base": 14.7054,
+        "d_front_plus": 59.9103,
+        "d_K_plus": 14.7054
+      },
+      {
+        "id": "P-K-E6",
+        "family": "P/K for EL",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          303.5,
+          172
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 71.4493,
+        "d_K_base": 14.4222,
+        "d_front_plus": 71.4493,
+        "d_K_plus": 14.4222
+      },
+      {
+        "id": "P-K-SUB-O2",
+        "family": "SUB",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          31.5,
+          180.5
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 67.3146,
+        "d_K_base": 22.1923,
+        "d_front_plus": 67.3146,
+        "d_K_plus": 22.1923
+      },
+      {
+        "id": "P-K-SUB-O4",
+        "family": "SUB",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          65.5,
+          179.95
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 76.66,
+        "d_K_base": 21.6853,
+        "d_front_plus": 76.66,
+        "d_K_plus": 21.6853
+      },
+      {
+        "id": "P-K-X1",
+        "family": "JL/P pass-through",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          40,
+          276
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 36.1179,
+        "d_K_base": 36.1179,
+        "d_front_plus": 36.1179,
+        "d_K_plus": 36.1179
+      },
+      {
+        "id": "P-K-X2",
+        "family": "JL/P pass-through",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          57,
+          276
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 52.2733,
+        "d_K_base": 52.2733,
+        "d_front_plus": 52.2733,
+        "d_K_plus": 52.2733
+      },
+      {
+        "id": "P-K-X3",
+        "family": "JL/P pass-through",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          74,
+          276
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 68.8368,
+        "d_K_base": 68.8368,
+        "d_front_plus": 68.8368,
+        "d_K_plus": 68.8368
+      },
+      {
+        "id": "P-K-X4",
+        "family": "JL/P pass-through",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          91,
+          276
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 85.5716,
+        "d_K_base": 85.5716,
+        "d_front_plus": 85.5716,
+        "d_K_plus": 85.5716
+      }
+    ],
+    "largest_bay": {
+      "base": {
+        "centre_pair": "JL-K-9",
+        "centre_xy": [
+          159,
+          38
+        ],
+        "radius_mm": 126.6491,
+        "pairs_inside": [
+          "JL-K-11",
+          "JL-K-12",
+          "JL-K-13",
+          "JL-K-14",
+          "JL-K-15",
+          "JL-K-16",
+          "JL-K-17",
+          "JL-K-18",
+          "JL-K-2",
+          "JL-K-22",
+          "JL-K-23",
+          "JL-K-24",
+          "JL-K-25",
+          "JL-K-3",
+          "JL-K-4",
+          "JL-K-5",
+          "JL-K-6",
+          "JL-K-7",
+          "JL-K-8",
+          "JL-K-9",
+          "JR-K-1",
+          "JR-K-10",
+          "JR-K-11",
+          "JR-K-12",
+          "JR-K-13",
+          "JR-K-15",
+          "JR-K-16",
+          "JR-K-17",
+          "JR-K-18",
+          "JR-K-2",
+          "JR-K-22",
+          "JR-K-23",
+          "JR-K-3",
+          "JR-K-4",
+          "JR-K-5",
+          "JR-K-6",
+          "JR-K-8",
+          "JR-K-9"
+        ]
+      },
+      "plus": {
+        "centre_pair": "K-P-42",
+        "centre_xy": [
+          99.5,
+          255.0
+        ],
+        "radius_mm": 90.5884,
+        "pairs_inside": [
+          "K-O3-1",
+          "K-O3-2",
+          "K-O5-1",
+          "K-O5-2",
+          "K-P-1",
+          "K-P-100",
+          "K-P-101",
+          "K-P-102",
+          "K-P-103",
+          "K-P-104",
+          "K-P-105",
+          "K-P-106",
+          "K-P-107",
+          "K-P-108",
+          "K-P-109",
+          "K-P-11",
+          "K-P-110",
+          "K-P-111",
+          "K-P-112",
+          "K-P-113",
+          "K-P-114",
+          "K-P-115",
+          "K-P-116",
+          "K-P-117",
+          "K-P-118",
+          "K-P-119",
+          "K-P-120",
+          "K-P-121",
+          "K-P-122",
+          "K-P-123",
+          "K-P-40",
+          "K-P-41",
+          "K-P-42",
+          "K-P-43",
+          "K-P-44",
+          "K-P-45",
+          "K-P-46",
+          "K-P-47",
+          "K-P-48",
+          "K-P-49",
+          "K-P-50",
+          "K-P-51",
+          "K-P-52",
+          "K-P-53",
+          "K-P-56",
+          "K-P-58",
+          "K-P-59",
+          "K-P-60",
+          "K-P-61",
+          "K-P-65",
+          "K-P-67",
+          "K-P-68",
+          "K-P-69",
+          "K-P-70",
+          "K-P-71",
+          "K-P-72",
+          "K-P-73",
+          "K-P-74",
+          "K-P-75",
+          "K-P-76",
+          "K-P-77",
+          "K-P-78",
+          "K-P-80",
+          "K-P-81",
+          "K-P-82",
+          "K-P-83",
+          "K-P-85",
+          "K-P-86",
+          "K-P-88",
+          "K-P-89",
+          "K-P-90",
+          "K-P-91",
+          "K-P-92",
+          "K-P-93",
+          "K-P-94",
+          "K-P-95",
+          "K-P-96",
+          "K-P-97",
+          "K-P-98",
+          "K-P-99",
+          "P-K-SUB-O4",
+          "P-K-X1",
+          "P-K-X2",
+          "P-K-X3",
+          "P-K-X4"
+        ]
+      }
+    },
+    "el_tab_post_pitch_mm": 17.0,
+    "el_outer_site_overhang_mm": 8.5,
+    "j_post_rows_y_mm": [
       160
     ],
     "p_post_rows_y_mm": [
-      175.0,
+      175,
       179
     ],
     "j_to_p_post_row_spacing_mm": [
@@ -915,57 +4332,14 @@
       19.0
     ],
     "jl_jr_inner_post_span_mm": 68.0,
-    "hardware_class_counts": {
-      "jack": {
-        "JL": 100,
-        "JR": 80
-      },
-      "indicator": {
-        "JL": 43,
-        "JR": 59,
-        "EL": 12
-      },
-      "toggle": {
-        "P": 30
-      },
-      "pot": {
-        "P": 101
-      },
-      "sub_toggle": {
-        "P": 2
-      },
-      "button": {
-        "P": 8
-      },
-      "selector": {
-        "O1": 1,
-        "O3": 1,
-        "O5": 1
-      },
-      "el_passage_switch": {
-        "EL": 18
-      },
-      "el_passage_button": {
-        "EL": 6
-      },
-      "el_passage_pot": {
-        "EL": 18
-      }
-    },
-    "el_passage_diameters_mm": [
-      [
-        "el_passage_button",
-        9.5
-      ],
-      [
-        "el_passage_pot",
-        6.3
-      ],
-      [
-        "el_passage_switch",
-        11
-      ]
-    ]
+    "hardware_kind_counts": {
+      "octave": 5,
+      "switch": 30,
+      "pot": 101,
+      "button": 8,
+      "led": 114,
+      "jack": 180
+    }
   },
   "supports_disposition": [
     {
@@ -980,7 +4354,7 @@
       ],
       "count": 6,
       "counts_toward_87": true,
-      "disposition": "STAY at the same XY, change role: J-to-K tie posts (12.9 mm), no enclosure joint",
+      "disposition": "STAY at the same XY, change role: J-to-K tie posts (18.8 mm, DA-01 D3), no enclosure joint",
       "reason": "Removes the second load loop through the side carrier; adds edge support to K's flatness along x = 6.5 and 311.5, where no power post exists"
     },
     {
@@ -1015,7 +4389,7 @@
       ],
       "count": 4,
       "counts_toward_87": true,
-      "disposition": "STAY at the same XY, change role: P-to-K tie posts (11.1 mm), no frame joint",
+      "disposition": "STAY at the same XY, change role: P-to-K tie posts (17.0 mm, DA-01 D3), no frame joint",
       "reason": "All four lie inside P's outline; fastening K to the frame as well as to the front boards closes a second load loop through the panel and enclosure"
     },
     {
@@ -1098,122 +4472,239 @@
       "ids": "plan page 'Interior fastener sites'",
       "count": 66,
       "counts_toward_87": false,
-      "disposition": "USE as front-board-to-K tie posts at a spacing that puts every pair within d_req of a fixing; JR NEEDS_DESIGN",
-      "reason": "Posts alone leave pairs about 125 mm from the nearest fixing (bow table). JR's 3 sites cannot reach d_req without part moves on K or JR"
+      "disposition": "USE as front-board-to-K tie posts where ST-08 needs them to put every pair within 40 mm of a fixing (DA-01 D4)",
+      "reason": "Posts and kept supports alone leave pairs up to 127 mm from the nearest fixing (coverage table). The 66 site coordinates are not retained, so this calculator cannot test them; DA-01 D4 adds five PROVISIONAL sites and ST-08 fixes the set"
     }
   ],
   "coupon": {
-    "status": "DEFINITION ONLY. Building it is a fabrication and assembly order that only the owner can place (plan question Q7). No file for ordering is produced.",
+    "status": "REQUIREMENTS FRAME ONLY (DA-01 D5). ST-09 writes the retained specification. Building it is an order only the owner can place (Q7). Nothing here is an order file, a fabrication output or a request for a price.",
     "boards": [
       {
         "id": "CK",
-        "role": "K-side coupon board",
-        "outline_mm": [
-          100,
-          60
-        ],
+        "role": "K-side board",
+        "outline_mm": "set by ST-09",
         "thickness_mm": 1.6,
-        "layers": 6,
-        "contents": "The tallest stackers (12.9 mm pair) at 8 x 1x6 and 8 x 1x3 sites in two rows; 2 x 1x5 at the 6.9 mm height; two press-fit locating pins; four post lands of the ST-04 pattern with their screw holes; four 0603 MLCC footprints of the K families in line with the post rows, at 15 mm and 19 mm from the posts, each with a strain-gauge pad; daisy-chain copper through every contact; fiducials at each site"
+        "contents": "TW-SM single-row stackers for the three gaps 12.8, 17.0 and 18.8 mm (lead styles -03, -06, -07), each gap at two stacker heights: 'A' by the D3 rule and 'A' = 4.32 mm (D5 change 2); at least 20 pairs per board per variant (change 4); posts of the ST-04 class setting each gap (change 1); one tie-post bay of 80 x 80 mm with pairs at its centre, closed by jack screws (change 6); strain-gauge pads at 0603 MLCC sites near the posts; daisy-chain copper through every contact; fiducials"
       },
       {
         "id": "CF",
-        "role": "front-board coupon (J/P class)",
-        "outline_mm": [
-          100,
-          60
-        ],
+        "role": "front-board board",
+        "outline_mm": "set by ST-09",
         "thickness_mm": 1.6,
-        "layers": 6,
-        "contents": "Matching low sockets; one round precise locating hole and one plated slot; four WQP518MA and four PTV09A footprints soldered by the same through-hole process beside the sockets; daisy-chain return copper; post lands. Variant CF-dX has its locating hole offset by X = 0, 0.1, 0.2, 0.3 or 0.5 mm along the pair rows to impose a known misalignment"
+        "contents": "MMS -02 -SV single-row sockets matching CK (change 1), carrying their polyimide pads through the through-hole soldering of jacks and pots on the same face (change 7); variants CF-along-X and CF-across-X impose an offset X = 0, 0.1, 0.2, 0.3 and 0.4 mm along the row and, separately, across it (change 3)"
       },
       {
-        "id": "CE (optional)",
-        "role": "0.4 mm EL-class coupon",
-        "outline_mm": [
-          60,
-          30
-        ],
+        "id": "CE",
+        "role": "0.4 mm EL-class board with a P-tab partner",
+        "outline_mm": "set by ST-09",
         "thickness_mm": 0.4,
-        "layers": 2,
-        "contents": "Two 1x6 sockets at 17 mm pitch with collar-post holes at the EL tab spacing, to test seating with and without a backing platen"
+        "contents": "CLT 2x4 sockets with double-row TW-SM stackers at 7.2 mm, with the eight relief holes per site (change 5); seated and removed with and without the backing platen"
       }
     ],
     "measurements": [
       {
         "id": "C-1",
-        "what": "Mating and unmating force per position: force-displacement on a guided press, per pair width, at least 10 cycles",
-        "finishes": "f and unmate_to_mate_ratio; screw and jacking loads"
+        "what": "Mating and unmating force per position, single-row pair, force-displacement over 10 cycles",
+        "pass": "Mating at most 1.35 N per position; unmating within the jack-screw plan of ST-08 (A-physical condition 2)"
       },
       {
         "id": "C-2",
-        "what": "SMT float: optical coordinate measurement of each socket and stacker body against its fiducials after reflow",
-        "finishes": "smt_float_front, smt_float_k"
+        "what": "Surface-mount float of each half after reflow",
+        "pass": "At most 0.1 mm per half (condition 3)"
       },
       {
         "id": "C-3",
-        "what": "Reflow lean and standoff: tip true position of each stacker pin and housing height above board",
-        "finishes": "pin_lean_deg, connector_standoff_tol"
+        "what": "Pin tip position and lean after reflow, at both stacker heights",
+        "pass": "Tip within 0.2 mm of nominal (condition 3)"
       },
       {
         "id": "C-4",
-        "what": "Alignment yield: mate CF-dX variants and record first-pass mates, continuity of every daisy chain, and damaged contacts",
-        "finishes": "a (the usable misalignment of the real pair, not only the catalogue figure)"
+        "what": "Alignment tolerance of the real pair under imposed offsets along and across the row",
+        "pass": "At 0.25 mm along and, separately, across: every pair mates on the first pass, every chain continuous, no contact damaged after 10 cycles, at each of the three gaps (condition 1). If it passes only at 0.1 mm or less, the K joints of JL, JR and P are not adopted"
       },
       {
         "id": "C-5",
-        "what": "Usable wipe: continuity of every chain while the post gap is raised in 0.05 mm shim steps from bottomed to open",
-        "finishes": "w, the usable mated-height range used in the Z table"
+        "what": "Usable engagement: continuity while the post gap is shimmed around nominal",
+        "pass": "Every chain continuous over +/-0.6 mm around the nominal gap (condition 4)"
       },
       {
         "id": "C-6",
-        "what": "K strain: strain gauges at the MLCC sites while shims of 0.025 to 0.2 mm under one post row impose Delta; MLCC capacitance and cracking after",
-        "finishes": "k_strain_model and the strain limit"
+        "what": "K strain at MLCC sites under imposed post-row mismatch",
+        "pass": "Replaces the beam model; the 593 microstrain design limit stands until then (D4)"
       },
       {
         "id": "C-7",
-        "what": "Through-hole process compatibility: inspect open sockets for flux and solder after the jack and pot soldering",
-        "finishes": "plan requirement 6 (process), with ST-01"
+        "what": "Sockets after through-hole soldering with pads on: flux or solder in the contacts",
+        "pass": "No contamination (no number set by DA-01)"
       },
       {
         "id": "C-8",
-        "what": "EL seating (optional CE): deflection and strain at f with and without the backing platen",
-        "finishes": "fr4_modulus for 0.4 mm and the EL seating method"
+        "what": "EL seating on CE with and without the platen: deflection, strain, insertion",
+        "pass": "No number set by DA-01"
+      },
+      {
+        "id": "C-9",
+        "what": "Dish of the 80 x 80 mm bay under the mating force, closed by jack screws",
+        "pass": "No number set by DA-01; compared with the plate estimate in this README"
       }
     ]
   },
-  "st01_figures_needed": [
-    {
-      "figure": "a",
-      "exact_need": "Allowed mating misalignment, radial or per axis, for the 1x3, 1x5 and 1x6 pairs at each mated height (6.9, 7.2, 11.1, 12.9 mm), with the drawing locator"
+  "fixings": {
+    "kept_supports": {
+      "JL-SUP-1": "JL",
+      "JL-SUP-2": "JL",
+      "JL-SUP-3": "JL",
+      "K-SUP-3": "JL",
+      "JR-SUP-1": "JR",
+      "JR-SUP-2": "JR",
+      "JR-SUP-3": "JR",
+      "K-SUP-4": "JR",
+      "K-SUP-5": "P",
+      "K-SUP-6": "P",
+      "K-SUP-7": "P",
+      "K-SUP-8": "P"
     },
+    "kept_supports_basis": "Attempt a1 support disposition (12 tie posts), board by the front board each ties to K",
+    "provisional_tie_sites": [
+      {
+        "id": "TIE-PROV-1",
+        "xy": [
+          202,
+          255
+        ]
+      },
+      {
+        "id": "TIE-PROV-2",
+        "xy": [
+          252,
+          241
+        ]
+      },
+      {
+        "id": "TIE-PROV-3",
+        "xy": [
+          227,
+          80
+        ]
+      },
+      {
+        "id": "TIE-PROV-4",
+        "xy": [
+          227,
+          38
+        ]
+      },
+      {
+        "id": "TIE-PROV-5",
+        "xy": [
+          108,
+          80
+        ]
+      }
+    ],
+    "provisional_status": "PROVISIONAL: DA-01 D4 positions 'near' these points, chosen by a greedy cover and not checked for clearance; ST-08 fixes them",
+    "adapter_standoffs": "Two per adapter (DA-01 D2); positions not placed (ST-08). Adapter pairs are treated as within one adapter outline of a fixing (ASSUMED)."
+  },
+  "open_figures": [
     {
-      "figure": "f",
-      "exact_need": "Mating force per position (maximum) and unmating force per position (minimum and maximum), with cycle condition"
+      "figure": "Final misalignment the real pair tolerates",
+      "exact_need": "Coupon C-4 at 0.25 mm imposed offset along and across the row at each gap (A-physical condition 1); the paper budget cannot close it"
     },
     {
       "figure": "t",
-      "exact_need": "Mated-height tolerance of each pair (stacker post height tolerance plus socket seating)"
+      "exact_need": "Pin-length and tip-height tolerance of the TW-SM stacker per lead style (ASSUMED 0.2 mm); coupon C-5 or a manufacturer statement"
     },
     {
-      "figure": "w",
-      "exact_need": "Usable contact engagement (wipe) range: the gap interval over which every contact is made without bottoming"
+      "figure": "SMT float and lean",
+      "exact_need": "Measured float per half and pin tip position after reflow (coupon C-2, C-3; A-physical condition 3)"
     },
     {
-      "figure": "lean",
-      "exact_need": "Pin true position or tip coplanarity of the tallest stacker after reflow (or the manufacturer's statement that none is given)"
+      "figure": "Single-row force",
+      "exact_need": "Mating and unmating force of the single-row MMS with TW-SM (coupon C-1); the sourced figures are for the double-row MMS with TMM"
     },
     {
-      "figure": "standoff",
-      "exact_need": "Housing coplanarity and seated height tolerance of each half"
+      "figure": "CLT misalignment and pass-through",
+      "exact_need": "CLT product specification and print: allowed misalignment of the double-row CLT and whether pins may pass through (ST-01b)"
     },
     {
-      "figure": "pegs",
-      "exact_need": "Whether a peg or hold-down option exists in the courtyard; this replaces the SMT float assumption"
+      "figure": "Socket land pattern",
+      "exact_need": "MMS -02 -SV recommended land pattern (ST-01b)"
     },
     {
-      "figure": "retention",
-      "exact_need": "Pad or housing retention force under unmating load (for the 777-position jacking)"
+      "figure": "Placement",
+      "exact_need": "Whether the assembler places pad-less 1x3 stackers and lead style -07 from tubes (owner item 3)"
+    }
+  ],
+  "closing_order": [
+    {
+      "step": 1,
+      "action": "Build the P unit: seat EL on P against the backing platen",
+      "XY": {
+        "EL": "two close-collar posts on P"
+      },
+      "Z": {
+        "EL": "P, through the collar posts (7.2 mm)"
+      },
+      "joint_chain": "EL to P: collar-post locator chain plus per-pair terms"
+    },
+    {
+      "step": 2,
+      "action": "Mate the three adapters onto K; tighten their standoff screws",
+      "XY": {
+        "O1, O3, O5": "their own two pairs on K (no other constraint yet)"
+      },
+      "Z": {
+        "O1, O3, O5": "K, through two standoffs each (12.8 mm)"
+      },
+      "joint_chain": "Adapter to K: per-pair terms only (N = 2 per adapter)"
+    },
+    {
+      "step": 3,
+      "action": "Panel face down; fit JL, JR and the P unit; every jack and toggle nut finger-loose",
+      "XY": {
+        "JL, JR": "jacks in apertures, free within the clearance",
+        "P": "pots, toggles, buttons in apertures, free within the clearance"
+      },
+      "Z": {
+        "JL, JR": "resting on jack shoulders",
+        "P": "resting, not yet set"
+      },
+      "joint_chain": "None mated"
+    },
+    {
+      "step": 4,
+      "action": "Lower K onto the tapered pilot pins; start every post and tie-post jack screw by hand",
+      "XY": {
+        "K": "coarse, by pilot pins (not locators)"
+      },
+      "Z": {
+        "K": "held on the jack screws"
+      },
+      "joint_chain": "Capture: board rest offset in its clearance + hardware-on-board + aperture position + per-pair terms, against the initial limits"
+    },
+    {
+      "step": 5,
+      "action": "Draw K down in quarter turns until the posts seat; tighten post and tie-post screws",
+      "XY": {
+        "JL, JR, P": "each board moves within its aperture clearance to the pairs' lead-in; K floats to the common fit"
+      },
+      "Z": {
+        "K": "J posts and J tie posts (18.8 mm)",
+        "P": "K, through P posts and tie posts (17.0 mm)"
+      },
+      "joint_chain": "Final: residual board offset beyond its minimum clearance + per-pair terms, against the final limits"
+    },
+    {
+      "step": 6,
+      "action": "Tighten the jack nuts, then the toggle nuts on their compliant take-up, then the selector bushing nuts",
+      "XY": {
+        "all": "frozen"
+      },
+      "Z": {
+        "JL, JR": "jack shoulders on the panel rear",
+        "P": "unchanged: compliant take-up, P free in Z"
+      },
+      "joint_chain": "Selector row: K against panel + two SMT floats + leg float + hole and aperture positions, against 0.2 mm"
     }
   ]
 }
