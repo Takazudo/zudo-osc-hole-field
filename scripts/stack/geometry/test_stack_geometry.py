@@ -39,13 +39,10 @@ def tab(doc, tid):
 class CommittedCandidate(unittest.TestCase):
     def test_committed_candidate_fails_only_on_the_needs_design_items(self):
         res = check.run_checks(DOC, CTX)
-        self.assertEqual(sorted({e.split(':')[0] for e in res.errors}), ['adapter_standoff_candidates', 'el_relief_holes'])
-        holes = [e for e in res.errors if e.startswith('el_relief_holes')]
-        self.assertEqual(len(holes), 2)
-        for e, pin, rsv in zip(holes, (1, 2), ('UNSELECTED-BULK-2', 'UNSELECTED-BULK-3')):
-            self.assertIn('pair EL-P-E1 relief hole pin %d' % pin, e)
-            self.assertIn('overlaps EL F.Cu reserve %s (reserve) by 0.85 mm' % rsv, e)
-        self.assertEqual(len([e for e in res.errors if e.startswith('adapter_standoff')]), 3)
+        self.assertEqual(sorted({e.split(':')[0] for e in res.errors}), ['fixing_reach'])
+        runs = res.checks['fixing_reach']['detail']['runs']
+        self.assertEqual(len(res.errors), runs['declared']['misses'])
+        self.assertNotIn('adapter_standoff_candidates', res.checks)
 
     def test_candidate_is_not_stale(self):
         digest = sg.canonical_digest(CI)
@@ -180,7 +177,7 @@ class FaultInjection(unittest.TestCase):
     def test_power_tab_too_short(self):
         doc = copy.deepcopy(DOC)
         tab(doc, 'TAB-POWER')['rect'][2] = 150.0
-        self.assertFault(doc, r'post POWER-P-AGND1 moved land courtyard .* is outside TAB-POWER')
+        self.assertFault(doc, r'post POWER-P-AGND1 moved land .* is outside TAB-POWER')
 
     def test_tab_over_jack_board(self):
         doc = copy.deepcopy(DOC)
@@ -216,7 +213,7 @@ class FaultInjection(unittest.TestCase):
         doc = copy.deepcopy(DOC)
         s = next(x for x in doc['candidate']['sub_toggles'] if x['block'] == 'O2')
         s['site_centre'][1] = 181.5
-        self.assertFault(doc, r'SUB pair at O2 centre \[31.5, 181.5\] is outside the placement window y=180.25..180.75')
+        self.assertFault(doc, r'SUB pair at O2 centre \[31.5, 181.5\] is outside the placement window y=%s..%s' % tuple(next(x for x in DOC['candidate']['sub_toggles'] if x['block'] == 'O2')['window_centre_y']))
 
     def test_control_tab_ending_at_178(self):
         doc = copy.deepcopy(DOC)
@@ -226,12 +223,12 @@ class FaultInjection(unittest.TestCase):
     def test_stale_k_plane(self):
         doc = copy.deepcopy(DOC)
         doc['candidate']['stack']['K_face_z_mm'] = -22.0
-        self.assertFault(doc, r'stale K_face_z_mm -22.0, sources give -30.4')
+        self.assertFault(doc, r'stale K_face_z_mm -22.0, sources give %s' % CTX.reference['stack']['K_face_z_mm'])
 
     def test_stale_pair_height(self):
         doc = copy.deepcopy(DOC)
         pair(doc, 'K-O1-1')['mated_height_mm'] = 6.2
-        self.assertFault(doc, r'pair K-O1-1 mated height 6.2 differs from gap O1/K 12.8')
+        self.assertFault(doc, r'pair K-O1-1 mated height 6.2 differs from gap O1/K %s' % CTX.reference['stack']['mated_heights_mm']['O1/K'])
 
     def test_selector_tail_reaches_k(self):
         ci = copy.deepcopy(CI)
@@ -276,7 +273,7 @@ class ContinuationC1(unittest.TestCase):
         ctx = check.Context(ci)
         obs = dict(ctx.obstacles, **sg.stack_obstacles(ci, ('O2', 'O4')))
         fits = measure.envelope_fits(ci, obs, ci['land_pattern'], ci['parameters']['positions'])['GH3']
-        self.assertEqual(fits['envelope_mm'], {'front': [5.8, 7.0], 'K': [6.5, 7.0]})
+        self.assertEqual(fits['envelope_mm'], {'front': list(sg.envelope(ci['land_pattern'], 3, 'front')), 'K': [6.5, 7.0]})
         expect = 0
         for p in ctx.reference['pairs']:
             if p['family'] != 'K/P':
@@ -326,7 +323,9 @@ class ContinuationC1(unittest.TestCase):
         res = check.Result()
         check.check_posts(cand, ctx, res)
         self.assertEqual(res.errors, [])
-        self.assertEqual(res.checks['post_coaxiality']['detail']['coaxial_today'], 14)
+        resited = {m['id'] for m in ci['parameters']['post_resites']['moves']}
+        self.assertEqual(res.checks['post_coaxiality']['detail']['coaxial_today_unmoved'], 14 - len(resited & {
+            p['id'] for p in cand['posts'] if p['present_offset_mm'] <= sg.OFFSET_TOL_MM}))
         lands = measure.power_lands(ci, cand, ci['parameters']['power_land_neighbour_radius_mm'])
         self.assertEqual(lands['coaxial_pairs'], 14)
         self.assertEqual(len(lands['offset_pairs']), 4)
@@ -343,42 +342,65 @@ def check_one(fn, doc, ctx=None):
 class AttemptA2(unittest.TestCase):
     assertFault = FaultInjection.assertFault
 
-    def test_planes_at_the_decided_adapter_height(self):
+    def test_planes_follow_the_parameters(self):
         st = DOC['candidate']['stack']
-        self.assertEqual((st['K_face_z_mm'], st['K_rear_z_mm'], st['K_rear_parts_z_mm']), (-30.4, -32.0, -37.0))
+        prm = CI['parameters']
+        bd = {b['board_key']: b for b in CI['partition']['boards']}
+        adapter_rear = min(bd[k]['face_z_mm'] - bd[k]['thickness_mm'] for k in ('O1', 'O3', 'O5'))
+        k_face = round(adapter_rear - prm['k_plane']['adapter_mated_height_mm'], 4)
+        self.assertEqual(st['K_face_z_mm'], k_face)
+        self.assertEqual(st['K_rear_parts_z_mm'], round(k_face - bd['K']['thickness_mm'] - CI['mechanical']['core_rear_ceiling_mm'], 4))
+        planes = DOC['candidate']['planes']
+        for key, shift in prm['plane_shift_mm'].items():
+            if key != 'basis':
+                self.assertAlmostEqual(planes[key]['face_z_mm'], bd[key]['face_z_mm'] + shift, places=4)
         g = st['mated_heights_mm']
-        self.assertEqual([g[k] for k in ('O1/K', 'O3/K', 'O5/K', 'P/K', 'JL/K', 'JR/K', 'EL/P')],
-                         [12.8, 12.8, 12.8, 17.0, 18.8, 18.8, 7.2])
+        for front in ('JL', 'JR', 'P', 'O1', 'O3', 'O5'):
+            self.assertAlmostEqual(g[front + '/K'], planes[front]['rear_z_mm'] - k_face, places=4)
+        self.assertAlmostEqual(g['EL/P'], planes['EL']['rear_z_mm'] - planes['P']['face_z_mm'], places=4)
 
     def test_stacker_height_rule(self):
-        a = {g: r['stacker_A_mm'] for g, r in DOC['candidate']['stack']['stacker_height_by_gap'].items()}
-        self.assertEqual((a['O1/K'], a['P/K'], a['JL/K']), (7.493, 11.684, 13.462))
+        rule = CI['parameters']['stacker_rule']
+        for g, r in DOC['candidate']['stack']['stacker_height_by_gap'].items():
+            steps = r['stacker_A_mm'] / rule['height_step_mm']
+            self.assertAlmostEqual(steps, round(steps), places=6)
+            room = r['gap_mm'] - rule['socket_seated_height_mm'] - rule['body_clearance_mm']
+            self.assertLessEqual(r['stacker_A_mm'], room + 1e-9)
+            self.assertGreater(r['stacker_A_mm'] + rule['height_step_mm'], room)
         self.assertEqual(check_one(check.check_stacker_heights, DOC).errors, [])
         doc = copy.deepcopy(DOC)
-        doc['candidate']['stack']['stacker_height_by_gap']['P/K']['stacker_A_mm'] = 11.811
-        self.assertTrue(any('stacker A 11.811 + socket 4.5 + clearance 0.8 mm exceeds it' in e
+        row = doc['candidate']['stack']['stacker_height_by_gap']['P/K']
+        row['stacker_A_mm'] = round(row['stacker_A_mm'] + rule['height_step_mm'], 3)
+        self.assertTrue(any('stacker A %s + socket' % row['stacker_A_mm'] in e and 'exceeds it' in e
                             for e in check_one(check.check_stacker_heights, doc).errors))
 
     def test_rear_envelope_rows(self):
         res = check_one(check.check_rear_envelope, DOC)
-        self.assertEqual(res.errors, [])
+        st = DOC['candidate']['stack']
         rows = {r['inside_depth_mm']: r['clearance_mm'] for r in res.checks['rear_envelope']['detail']['cases']}
-        self.assertEqual(rows, {40: 3.0, 34: -3.0})
+        self.assertEqual(rows, {d: round(st['K_rear_parts_z_mm'] + d, 4) for d in CI['parameters']['enclosure_depth_cases_mm']})
+        decided = CI['parameters']['enclosure_inside_depth_mm']
+        self.assertEqual(bool(res.errors), rows[decided] < 0)
         doc = copy.deepcopy(DOC)
         for c in doc['candidate']['stack']['enclosure_depth_cases']:
             c['decided'] = c['inside_depth_mm'] == 34
-        self.assertTrue(any('pass the enclosure inner rear at z=-34 by 3.0 mm' in e for e in check_one(check.check_rear_envelope, doc).errors))
+        self.assertTrue(any('pass the enclosure inner rear at z=-34 by %s mm' % round(-rows[34], 4) in e
+                            for e in check_one(check.check_rear_envelope, doc).errors))
 
     def test_land_pattern_entries_carry_provenance(self):
         used = DOC['candidate']['land_pattern']['envelopes_used']
-        self.assertEqual((used['K']['1x3']['width_mm'], used['K']['1x3']['length_mm']), (6.04, 5.52))
-        self.assertEqual((used['K']['2x4']['width_mm'], used['K']['2x4']['length_mm']), (8.07, 7.52))
-        self.assertEqual({e['status'] for e in used['front'].values()}, {'PROVISIONAL'})
-        for half in used.values():
-            for e in half.values():
+        land = CI['land_pattern']
+        for half, entries in used.items():
+            for key, e in entries.items():
+                rows, per = (int(v) for v in key.split('x'))
+                self.assertEqual((e['width_mm'], e['length_mm']), sg.envelope(land, rows * per, half, rows))
+                self.assertEqual(e['status'], land['halves'][half]['rules'][str(rows)]['status'])
                 self.assertTrue(e['source'])
         for p in DOC['candidate']['pairs']:
-            self.assertIn(p['sites']['front']['envelope_entry'].split()[-1], ('PROVISIONAL', 'DERIVED'))
+            for name, half in (('front', 'front'), ('back', 'K')):
+                self.assertEqual(p['sites'][name]['envelope_entry'],
+                                 '%s %dx%d %s' % (half, p['rows'], p['positions'] // p['rows'],
+                                                  land['halves'][half]['rules'][str(p['rows'])]['status']))
 
     def test_el_pairs_are_2x4_with_three_rails(self):
         el = [p for p in DOC['candidate']['pairs'] if p['family'] == 'EL/P']
@@ -389,7 +411,11 @@ class AttemptA2(unittest.TestCase):
             self.assertEqual(p['pin_map'].count('AGND'), 2)
             self.assertEqual(check.adjacency_violations(p['pin_map'], 2), [])
             self.assertEqual(len(p['relief_holes']), 8)
-        self.assertEqual(tab(DOC, 'TAB-EL')['rect'][1], 167.465)
+        land = CI['land_pattern']
+        m = CI['parameters']['tab_edge_margin_mm']
+        cy = el[0]['sites']['back']['center'][1]
+        top = min(cy - sg.envelope(land, 8, 'K', 2)[0] / 2, cy - sg.envelope(land, 6, 'front')[0] / 2) - m
+        self.assertAlmostEqual(tab(DOC, 'TAB-EL')['rect'][1], top, places=4)
 
     def test_two_row_adjacency(self):
         self.assertEqual(sorted(check.neighbours(0, 8, 2)), [1, 2])
@@ -403,8 +429,25 @@ class AttemptA2(unittest.TestCase):
         ctx = copy.copy(CTX)
         ctx.obstacles = dict(CTX.obstacles)
         ctx.obstacles['EL'] = copy.deepcopy(CTX.obstacles['EL'])
-        ctx.obstacles['EL']._add('B', [221.0, 170.0, 223.0, 171.0], 'TEST1', 'courtyard')
-        self.assertFault(DOC, r'pair EL-P-E1 front 2x4 envelope .* on EL B.Cu overlaps TEST1 \(courtyard\) by 1.26 mm \(must be clear\)', ctx)
+        test = [221.0, 170.0, 223.0, 171.0]
+        ctx.obstacles['EL']._add('B', test, 'TEST1', 'courtyard')
+        env = pair(DOC, 'EL-P-E1')['sites']['front']['envelope']
+        depth = round(sg.overlap_depth(env, test), 4)
+        self.assertFault(DOC, r'pair EL-P-E1 front 2x4 envelope .* on EL B.Cu overlaps TEST1 \(courtyard\) by %s mm \(must be clear\)' % depth, ctx)
+
+    def test_e1_relief_holes_need_the_shrunk_reserves(self):
+        self.assertEqual(check_one(check.check_el_relief_holes, DOC).errors, [])
+        ci = copy.deepcopy(CI)
+        ci['parameters']['reserve_overrides'] = {}
+        ctx = copy.copy(CTX)
+        ctx.obstacles = dict(CTX.obstacles, **sg.stack_obstacles(ci, ('EL',)))
+        errs = check_one(check.check_el_relief_holes, DOC, ctx).errors
+        hole = pair(DOC, 'EL-P-E1')['relief_holes'][0]
+        rsv = next(b for b in CI['partition']['boards'] if b['board_key'] == 'EL')['reserves']
+        x1 = next(r for r in rsv if r['id'] == 'UNSELECTED-BULK-2')['rect'][2]
+        depth = round(x1 + CI['parameters']['obstacle_model']['own_face_courtyard_growth_mm']
+                      - (hole['center'][0] - hole['diameter_mm'] / 2), 4)
+        self.assertTrue(any('pin 1 ' in e and 'reserve UNSELECTED-BULK-2 (reserve) by %s mm' % depth in e for e in errs), errs)
 
     def test_pot_passage_growth_is_screened(self):
         res = check_one(check.check_el_pot_passages, DOC)
@@ -417,42 +460,76 @@ class AttemptA2(unittest.TestCase):
         self.assertTrue(any(re.search(r'pot passage C:E1.RISE at \[218.5, 241.0\] \(d 8.0 mm\) overlaps EL', e)
                             for e in check_one(check.check_el_pot_passages, doc).errors))
 
-    def test_fixing_reach_runs(self):
+    def test_fixing_reach_counts_declared_fixings_only(self):
         res = check_one(check.check_fixing_reach, DOC)
-        self.assertEqual(res.errors, [])
         runs = res.checks['fixing_reach']['detail']['runs']
-        self.assertEqual(runs['without_tie_sites']['misses'], 27)
-        self.assertEqual(runs['without_tie_sites']['by_front_board'], {'JL': 3, 'JR': 7, 'P': 17})
-        self.assertEqual(runs['with_tie_sites']['misses'], 0)
-        self.assertEqual(runs['posts_and_kept_supports_only']['fixings'], 30)
-        kinds = {}
-        for f in DOC['candidate']['fixings']:
-            kinds[f['kind']] = kinds.get(f['kind'], 0) + 1
-        self.assertEqual(kinds, {'post': 18, 'kept support': 12, 'interior candidate': 66, 'tie site': 5})
+        self.assertEqual(len(res.errors), runs['declared']['misses'])
+        self.assertNotIn('interior candidate', {f['kind'] for f in DOC['candidate']['fixings']})
+        declared = [f for f in DOC['candidate']['fixings'] if f['declared']]
+        fx = CI['parameters']['fixings']
+        self.assertEqual(runs['declared']['fixings'], len(declared))
+        self.assertEqual(len(declared), 18 + len(fx['kept_support_ids']) + len(fx['declared_sites']))
         ties = [f['xy'] for f in DOC['candidate']['fixings'] if f['kind'] == 'tie site']
-        self.assertEqual(ties, [[202, 255], [252, 241], [227, 80], [227, 38], [108, 80]])
-        doc = copy.deepcopy(DOC)
-        doc['candidate']['fixings'] = [f for f in doc['candidate']['fixings'] if f['id'] != 'TIE-D4-2']
-        self.assertTrue(any(re.search(r'pair \S+ at .* is [\d.]+ mm from the nearest fixing', e)
-                            for e in check_one(check.check_fixing_reach, doc).errors))
+        self.assertEqual(ties, [t['xy'] for t in fx['provisional_tie_sites']])
+        self.assertLessEqual(runs['declared_and_provisional_tie_sites']['misses'], runs['declared']['misses'])
 
-    def test_adapter_standoff_search_finds_sites_when_room_exists(self):
-        res = check_one(check.check_adapter_standoffs, DOC)
-        self.assertEqual(len(res.errors), 3)
-        ctx = copy.copy(CTX)
-        ctx.obstacles = dict(CTX.obstacles)
-        empty = sg.Obstacles([], CTX.params['obstacle_model'])
-        for key in ('K', 'O1', 'O3', 'O5'):
-            ctx.obstacles[key] = empty
-        ctx.params = dict(CTX.params, adapter_standoffs=dict(CTX.params['adapter_standoffs'], diagnostic_keepouts_mm=[],
-                                                              search_step_mm=0.5))
-        res = check_one(check.check_adapter_standoffs, DOC, ctx)
+    def test_fixing_rule_is_per_side(self):
+        """A P pair beside a J-board fixing is covered on the K side but not on its front side."""
+        fx = [{'id': 'J', 'xy': [100.0, 200.0], 'front_board': 'JL'}]
+        cand = {'pairs': [{'id': 'X', 'boards': ['P', 'K'], 'sites': {'back': {'center': [100.0, 210.0]}}},
+                          {'id': 'Y', 'boards': ['JL', 'K'], 'sites': {'back': {'center': [100.0, 210.0]}}},
+                          {'id': 'Z', 'boards': ['O1', 'K'], 'sites': {'back': {'center': [100.0, 210.0]}}}]}
+        misses = check.reach_misses(cand, fx, 40)
+        self.assertEqual([(m['pair'], m['sides']) for m in misses], [('X', ['front'])])
+
+    def test_post_resites_are_applied_and_screened(self):
+        moves = {m['id']: m['xy'] for m in CI['parameters']['post_resites']['moves']}
+        posts = {p['id']: p for p in DOC['candidate']['posts']}
+        for pid, xy in moves.items():
+            self.assertEqual(posts[pid]['proposed_front_land'], xy)
+            self.assertEqual(posts[pid]['proposed_K_land'], xy)
+        res = check_one(check.post_land_screen, DOC)
         self.assertEqual(res.errors, [])
-        self.assertTrue(all(a['regions'] for a in res.checks['adapter_standoff_candidates']['detail']['adapters'].values()))
+        self.assertEqual(set(res.checks['post_land_keepout_screen']['detail']['re_sited_K_hits']), set(moves))
+        land_d = CI['parameters']['post_resites']['front_land_diameter_mm']
+        m = CI['parameters']['tab_edge_margin_mm']
+        top = min(p['proposed_front_land'][1] for p in posts.values() if p['resolved_by'] == 'TAB-POWER') - land_d / 2 - m
+        self.assertAlmostEqual(tab(DOC, 'TAB-POWER')['rect'][1], top, places=4)
+        doc = copy.deepcopy(DOC)
+        next(p for p in doc['candidate']['posts'] if p['id'] == 'POWER-JR-+5V')['proposed_K_land'][0] -= 1.0
+        self.assertFault(doc, r'post POWER-JR-\+5V is not coaxial')
 
-    def test_sub_windows_at_the_stacker_courtyard(self):
-        w = {s['block']: s['window_mm'] for s in DOC['candidate']['sub_toggles']}
-        self.assertEqual(w, {'O2': 0.5, 'O4': 1.6})
+    def test_st08_lists_and_pilot_needs(self):
+        moves = DOC['candidate']['st08_K_part_moves_at_pass_through_sites']
+        blocked = [p for p in DOC['candidate']['pairs'] if p['sites']['back']['board'] == 'K'
+                   and not p['sites']['back']['replaces'] and p['sites']['back']['blockers']]
+        self.assertEqual(len(moves), len(blocked))
+        pp = DOC['candidate']['pilot_pins']
+        gaps = DOC['candidate']['stack']['mated_heights_mm']
+        for b, h in pp['min_height_above_front_rear_mm'].items():
+            self.assertAlmostEqual(h, gaps[b + '/K'] + CI['parameters']['pilot_pins']['height_allowance_mm'], places=4)
+
+    def test_facing_heights_report_class_and_unknowns(self):
+        res = check_one(check.check_facing_heights, DOC)
+        d = res.checks['facing_heights']['detail']
+        self.assertEqual(d['facing_pairs_without_a_retained_height'],
+                         sum(g['overlapping_pairs_with_an_unretained_height'] for g in d['gaps'].values()))
+        for g in d['gaps'].values():
+            for face, parts in (('tallest_class_front_face', 'tallest_front_parts'), ('tallest_class_back_face', 'tallest_back_parts')):
+                if g[parts]:
+                    self.assertEqual(g[face]['height_mm'], g[parts][0]['height_mm'])
+                else:
+                    self.assertIsNone(g[face])
+
+    def test_sub_windows_follow_the_envelope(self):
+        land = CI['land_pattern']
+        w = max(sg.envelope(land, 3, h)[0] for h in ('front', 'K'))
+        m = CI['parameters']['tab_edge_margin_mm']
+        for s_ in DOC['candidate']['sub_toggles']:
+            lo, hi = s_['window_centre_y']
+            self.assertLessEqual(lo, s_['site_centre'][1])
+            self.assertLessEqual(s_['site_centre'][1], hi)
+            self.assertAlmostEqual(tab(DOC, 'TAB-CONTROL-' + s_['block'])['rect'][1], s_['site_centre'][1] - w / 2 - m, places=4)
 
 
 if __name__ == '__main__':

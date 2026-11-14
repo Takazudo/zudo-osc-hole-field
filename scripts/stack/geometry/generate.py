@@ -84,11 +84,12 @@ def build(ci, obstacles=None):
     for key, b in sorted(bidx.items()):
         if key in retired:
             continue
-        face = k_face if key == 'K' else b['face_z_mm']
+        face = k_face if key == 'K' else round(b['face_z_mm'] + params['plane_shift_mm'].get(key, 0), 4)
         planes[key] = {'face_z_mm': face, 'rear_z_mm': round(face - b['thickness_mm'], 4),
                        'thickness_mm': b['thickness_mm'], 'outline': b['outline'],
                        'plane_source': 'derived: adapter rear face minus adapter mated height' if key == 'K'
-                       else 'partition.json face_z_mm (unchanged)'}
+                       else ('partition.json face_z_mm shifted by %s mm (parameters plane_shift_mm)' % params['plane_shift_mm'][key]
+                             if key in params['plane_shift_mm'] else 'partition.json face_z_mm (unchanged)')}
     gaps = {}
     for front in ('JL', 'JR', 'P', 'O1', 'O3', 'O5'):
         gaps[front + '/K'] = round(planes[front]['rear_z_mm'] - k_face, 4)
@@ -284,6 +285,8 @@ def build(ci, obstacles=None):
 
     # ---------------------------------------------------------- power posts and power tab
     terms = {t['reference']: t for t in part['load_side_terminals']}
+    resite = {m['id']: m for m in params['post_resites']['moves']}
+    land_d = params['post_resites']['front_land_diameter_mm']
     posts = []
     moved = []
     for w in part['load_side_wires']:
@@ -297,18 +300,28 @@ def build(ci, obstacles=None):
         if off > sg.OFFSET_TOL_MM:
             post['proposed_front_land'] = kt['center_mm']
             post['resolved_by'] = 'TAB-POWER'
+        if w['id'] in resite:
+            mv = resite[w['id']]
+            post['proposed_front_land'] = list(mv['xy'])
+            post['proposed_K_land'] = list(mv['xy'])
+            post['resite'] = {'status': mv.get('status', 'ACCEPTED (da-02 rulings)'), 'basis': mv['basis']}
+            post['resolved_by'] = mv.get('tab', post['resolved_by'])
+        else:
+            post['proposed_K_land'] = list(kt['center_mm'])
+        if post['resolved_by']:
             moved.append(post)
         posts.append(post)
     tabs = list(control_tabs)
-    if moved:
-        xs = [p['K_land'][0] for p in moved]
-        ys = [p['K_land'][1] for p in moved]
-        cw, ch = moved[0]['land_courtyard_mm']
-        x0 = round(min(xs) - cw / 2 - m, 4)
-        x1 = round(max(xs) + cw / 2 + m, 4)
-        top = round(min(ys) - ch / 2 - m, 4)
-        tabs.append({'id': 'TAB-POWER', 'rect': [x0, top, x1, p_edge_y(bidx['P']['outline'], (x0 + x1) / 2)], 'board': 'P',
-                     'basis': 'moved P land courtyards at the K land centres plus the edge margin, to the P edge'})
+    for tid in sorted({p['resolved_by'] for p in moved}):
+        group = [p for p in moved if p['resolved_by'] == tid]
+        xs = [p['proposed_front_land'][0] for p in group]
+        ys = [p['proposed_front_land'][1] for p in group]
+        x0 = round(min(xs) - land_d / 2 - m, 4)
+        x1 = round(max(xs) + land_d / 2 + m, 4)
+        top = round(min(ys) - land_d / 2 - m, 4)
+        tabs.append({'id': tid, 'rect': [x0, top, x1, p_edge_y(bidx['P']['outline'], (x0 + x1) / 2)], 'board': 'P',
+                     'basis': 'Ø%s mm P lands of %s plus the edge margin, to the P edge (ST-04 items 3 and 6)'
+                              % (land_d, ', '.join(p['id'] for p in group))})
 
     # ---------------------------------------------------------- EL tab
     el_sites = [p for p in pairs if p['family'] == 'EL/P']
@@ -366,6 +379,9 @@ def build(ci, obstacles=None):
         'retired': retired_items,
         'land_pattern': {'status': land['status'], 'envelopes_used': used_envelopes(land, pairs)},
         'fixings': fixing_list(ci, posts),
+        'interior_candidate_sites': interior_sites(ci),
+        'pilot_pins': pilot_pin_needs(ci, gaps),
+        'st08_K_part_moves_at_pass_through_sites': st08_k_moves(pairs),
         'el_pot_passages': pot_passages(ci),
     }
 
@@ -387,7 +403,8 @@ def relief_holes(center, positions, rows, relief, axis_x):
         u = (col - (per_row - 1) / 2) * relief['pitch_mm']
         v = (row - (rows - 1) / 2) * relief['row_pitch_mm']
         x, y = (center[0] + u, center[1] + v) if axis_x else (center[0] + v, center[1] + u)
-        out.append({'pin': i + 1, 'center': [round(x, 4), round(y, 4)], 'diameter_mm': relief['diameter_mm']})
+        out.append({'pin': i + 1, 'center': [round(x, 4), round(y, 4)],
+                    'diameter_mm': round(relief['nominal_diameter_mm'] + relief['plus_tolerance_mm'], 4)})
     return out
 
 
@@ -406,14 +423,45 @@ def fixing_list(ci, posts):
     that ST-03 adopted, and the PROVISIONAL added tie sites of DA-01 D4."""
     fx = ci['parameters']['fixings']
     sup = {s['id']: s for s in ci['partition']['supports']}
-    out = [{'id': p['id'], 'kind': 'post', 'xy': p['K_land'], 'status': 'partition load-side post'} for p in posts]
-    out += [{'id': i, 'kind': 'kept support', 'xy': sup[i]['position_mm'], 'status': fx['kept_support_basis']}
-            for i in fx['kept_support_ids']]
-    for front, pts in sorted(sg.interior_fastener_sites(ci).items()):
-        out += [{'id': 'INT-%s-%d' % (front, i), 'kind': 'interior candidate', 'xy': xy,
-                 'status': 'ST-02 interior fastener candidate (%s)' % sg.INTERIOR_SITE_RULE} for i, xy in enumerate(pts, 1)]
-    out += [{'id': t['id'], 'kind': 'tie site', 'xy': t['xy'], 'status': fx['provisional_tie_status']}
-            for t in fx['provisional_tie_sites']]
+    outlines = {b['board_key']: b['outline'] for b in ci['partition']['boards'] if b['board_key'] in ('JL', 'JR', 'P')}
+
+    def board_of(xy):
+        hits = [k for k, ol in sorted(outlines.items()) if sg.point_in_poly(xy[0], xy[1], ol)]
+        return hits[0] if hits else None
+    out = [{'id': p['id'], 'kind': 'post', 'xy': p['proposed_K_land'], 'front_board': p['front_board'], 'declared': True,
+            'status': 'partition load-side post' + (' (re-sited)' if 'resite' in p else '')} for p in posts]
+    out += [{'id': i, 'kind': 'kept support', 'xy': sup[i]['position_mm'], 'front_board': board_of(sup[i]['position_mm']),
+             'declared': True, 'status': fx['kept_support_basis']} for i in fx['kept_support_ids']]
+    out += [{'id': t['id'], 'kind': 'declared site', 'xy': t['xy'], 'front_board': board_of(t['xy']), 'declared': True,
+             'status': fx['declared_sites_basis']} for t in fx['declared_sites']]
+    out += [{'id': t['id'], 'kind': 'tie site', 'xy': t['xy'], 'front_board': board_of(t['xy']), 'declared': False,
+             'status': fx['provisional_tie_status']} for t in fx['provisional_tie_sites']]
+    return out
+
+
+def interior_sites(ci):
+    """The interior clear sites of the ST-02 screen: candidates for ST-08, not fixings (reviews/da-02.md G4)."""
+    return {'rule': sg.INTERIOR_SITE_RULE, 'status': 'clear candidate sites; not fixings until ST-08 declares them',
+            'sites': {k: v for k, v in sorted(sg.interior_fastener_sites(ci).items())}}
+
+
+def pilot_pin_needs(ci, gaps):
+    pp = ci['parameters']['pilot_pins']
+    return {'status': pp['status'], 'per_board': pp['per_board'], 'min_spacing_mm': pp['min_spacing_mm'],
+            'holes_in_K': pp['holes_in_K'], 'radial_play_max_mm': pp['radial_play_max_mm'],
+            'land_engaged_before_first_tip_mm': pp['land_engaged_before_first_tip_mm'],
+            'min_height_above_front_rear_mm': {b: round(gaps[b + '/K'] + pp['height_allowance_mm'], 3) for b in sorted(pp['per_board'])},
+            'height_basis': pp['height_basis']}
+
+
+def st08_k_moves(pairs):
+    """K parts in the way of new pass-through sites on K, by reference (reviews/da-02.md G8, E8)."""
+    out = []
+    for p in sorted(pairs, key=lambda q: q['id']):
+        s = p['sites']['back']
+        if s['board'] == 'K' and not s['replaces'] and s['blockers']:
+            out.append({'pair': p['id'], 'K_site': s['center'], 'side': s['side'],
+                        'K_parts_to_move': sorted({b[0] for b in s['blockers']})})
     return out
 
 
