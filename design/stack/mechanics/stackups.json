@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "task": "osc-stack-20261114/ST-03@b4daa754",
-  "attempt": "a2 (on DA-01 decisions D1 to D6)",
-  "base_commit": "c52e159",
-  "status": "PROPOSAL; paper stack-up of an unvalidated draft on the DA-01 decisions. Fit, force, alignment, strain and take-up are NOT RUN (no specimen; #65, Q7).",
+  "attempt": "a3 (on DS-27, DS-31, DS-33, DS-35 and DS-39 to DS-46; the rigid pair budgets keep their a2 inputs as the record of the way back)",
+  "base_commit": "8745ba5",
+  "status": "NEEDS_DESIGN: unvalidated paper study; toggle window, adapter capture and selector misfit contradict decisions; every physical check NOT RUN",
   "status_vocabulary": {
     "SOURCED": "Read from a named file or retrieved page whose SHA256 is recorded in sources.",
     "DERIVED": "Computed by the formula given; the calculator recomputes it and the tests compare.",
@@ -133,6 +133,26 @@
       "path": "design/stack/geometry/stack-candidate.json",
       "sha256": "9bd03493c0a98c36357c90ee56e86dec57eb3dd5d0793a84f49f34f1c5d25f54",
       "note": "XY only. The candidate still holds the plan-page heights; the mechanics take heights from parameters.da01."
+    },
+    "S-DS": {
+      "path": "circuit/orchestration/campaigns/osc-stack-20261114/decisions.md",
+      "sha256": "549f633f90270f368d6e50d391bb100b47cf7bd3a850f633f12ff9c096c5dd79",
+      "note": "Decision rows DS-27, DS-31, DS-33, DS-35, DS-39 to DS-46"
+    },
+    "S-DA02": {
+      "path": "circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-02.md",
+      "sha256": "6701145c500663397ea008a93ed8d868c189c9da1ae1a9ed3b00ce7b115f99ad",
+      "note": "Design review A2: E4 toggle chain, E10 catalogue posts and matching"
+    },
+    "S-DA03": {
+      "path": "circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-03.md",
+      "sha256": "1d6dd047309a6a58025fae34d80b97079ce0dfbb59bad85d504196c456319f97",
+      "note": "Design review A3: F2 measures, F3 30 fixings, F8 printed sleeves"
+    },
+    "S-SPACER": {
+      "path": "design/stack/spacers/spacer-set.json",
+      "sha256": "5357a616987e429c674339c44fa5a689ec32e038c1487d32d8225f561d1a90f7",
+      "note": "Printed sleeve set (DS-45)"
     }
   },
   "parameters": {
@@ -298,6 +318,160 @@
         "status": "SOURCED",
         "source": "S-SEL",
         "locator": "shaft_clearance_budget: (6.9 - 6.1)/2 - 0.2 wobble; kept as the budget by DA-01 D4"
+      }
+    },
+    "a3": {
+      "K_face_z_mm": {
+        "value": -30.6,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-33: K front face at z = -30.6 mm"
+      },
+      "K_rear_z_mm": {
+        "value": -32.2,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-33: rear face at -32.2 mm"
+      },
+      "gap_mm": {
+        "value": {
+          "O": 13.0,
+          "P": 17.0,
+          "JL": 19.0,
+          "JR": 19.0,
+          "EL": 7.2
+        },
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-33: gaps 19.0 mm (JL, JR), 17.0 mm (P), 13.0 mm (adapters); EL 7.2 mm unchanged (DS-14, DS-28)"
+      },
+      "stacker_A_in": {
+        "value": {
+          "O": 0.3,
+          "P": 0.46,
+          "JL": 0.535,
+          "JR": 0.535,
+          "EL": 0.17
+        },
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-33: stacker heights by the unchanged rule .535, .460 and .300 in; EL .170 in unchanged (DA-01 D3)"
+      },
+      "P_front_face_z_mm": {
+        "value": -12.0,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-33: P's F.Cu sits at -12.0 mm"
+      },
+      "post_length_tol_mm": {
+        "value": 0.15,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-33: catalogue brass spacers at 19.00 and 17.00 mm +/-0.15 mm (DA-02 E10: retained drawings)"
+      },
+      "post_match_mm": {
+        "value": 0.05,
+        "status": "SOURCED",
+        "source": "S-DA02",
+        "locator": "E10: the spacers of one unit are measured and matched within 0.05 mm of each other; the lot mean keeps +/-0.15 mm"
+      },
+      "toggle_window_mm": {
+        "value": [
+          0.4,
+          2.3
+        ],
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-27: the washer window is 0.4 to 2.3 mm"
+      },
+      "k_post_hole_radial_play_mm": {
+        "value": 0.25,
+        "status": "ASSUMED",
+        "reason": "DS-42 / DA-03 F2: K sits within about +/-0.25 mm on its post screws, from an ASSUMED hole size (oversize by at least 0.5 mm on diameter)",
+        "to_source": "ST-12 hole and screw drawing"
+      },
+      "carrier_to_panel_mm": {
+        "value": 0.2,
+        "status": "ASSUMED",
+        "reason": "DS-31: how the selector carrier is anchored is UNSOURCED; taken equal to the selector seat term",
+        "to_source": "ST-12 carrier drawing; #55 selector coupon"
+      },
+      "selector_aperture_grown_mm": {
+        "value": 7.3,
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D4 selector row: the three selector apertures grow from 7.0 to 7.3 mm if ST-12 cannot show 0.2 mm (owner item 2)"
+      },
+      "sleeve_length_allowance_mm": {
+        "value": -0.2,
+        "status": "SOURCED",
+        "source": "S-SPACER",
+        "locator": "length_allowance_mm (DS-45: printed 0.2 mm short)"
+      },
+      "sleeve_print_tol_mm": {
+        "value": 0.2,
+        "status": "ASSUMED",
+        "reason": "DS-45: a home printer is ASSUMED to hold +/-0.2 mm on length; no document supports a figure",
+        "to_source": "Measured lengths of the printed set"
+      },
+      "m3_pitch_mm": {
+        "value": 0.5,
+        "status": "DERIVED",
+        "formula": "ISO metric coarse pitch implied by the M3 designation (DS-45)"
+      },
+      "caliper_error_mm": {
+        "value": 0.02,
+        "status": "ASSUMED",
+        "reason": "Reading error of a hobby digital caliper on a 17 to 19 mm length",
+        "to_source": "The owner's caliper specification"
+      },
+      "sleeve_sort_window_mm": {
+        "value": [
+          0.05,
+          0.3
+        ],
+        "status": "ASSUMED",
+        "reason": "Proposed owner rule of this attempt: keep a sleeve only if it is 0.05 to 0.30 mm shorter than the measured posts of its unit",
+        "to_source": "Design authority acceptance of the rule"
+      },
+      "fr4_density_g_cm3": {
+        "value": 1.85,
+        "status": "ASSUMED",
+        "reason": "Typical glass-epoxy laminate density",
+        "to_source": "Fabricator laminate datasheet"
+      },
+      "parts_mass_factor": {
+        "value": 2.0,
+        "status": "ASSUMED",
+        "reason": "K's mass with its parts taken as twice the bare board",
+        "to_source": "ST-07 parts list with masses"
+      },
+      "handling_g": {
+        "value": 5.0,
+        "status": "ASSUMED",
+        "reason": "A drop or knock of K alone on a bench taken as 5 g on its weight",
+        "to_source": "None practical; first-article handling"
+      },
+      "latch_force_N": {
+        "value": [
+          5,
+          20
+        ],
+        "status": "ASSUMED",
+        "reason": "No latch or cable push force is sourced; the brief gives 5 to 20 N per latch, one latch at a time",
+        "to_source": "ST-01e connector latch figures"
+      },
+      "latch_patch_radius_mm": {
+        "value": 3.0,
+        "status": "ASSUMED",
+        "reason": "Radius of the area a thumb or latch presses on K",
+        "to_source": "ST-01e connector body size"
+      },
+      "owner_acceptance": {
+        "value": "DS-35: the final misalignment of rigid pairs (at least 0.27 mm computed against 0.07 mm) is an accepted risk; hand adjustment of hand-soldered stackers is the remedy",
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-35"
       }
     }
   },
@@ -4339,6 +4513,580 @@
       "button": 8,
       "led": 114,
       "jack": 180
+    },
+    "a3": {
+      "fixing_counts": {
+        "kept support JL": 4,
+        "kept support JR": 4,
+        "kept support P": 4,
+        "post JL": 6,
+        "post JR": 6,
+        "post P": 6
+      },
+      "fixings": [
+        {
+          "id": "POWER-JL-+12V",
+          "kind": "post",
+          "board": "JL",
+          "xy": [
+            40,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JL--12V",
+          "kind": "post",
+          "board": "JL",
+          "xy": [
+            57,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JL-+5V",
+          "kind": "post",
+          "board": "JL",
+          "xy": [
+            74,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JL-AGND1",
+          "kind": "post",
+          "board": "JL",
+          "xy": [
+            91,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JL-AGND2",
+          "kind": "post",
+          "board": "JL",
+          "xy": [
+            108,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JL-AGND3",
+          "kind": "post",
+          "board": "JL",
+          "xy": [
+            125,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR-+12V",
+          "kind": "post",
+          "board": "JR",
+          "xy": [
+            193,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR--12V",
+          "kind": "post",
+          "board": "JR",
+          "xy": [
+            210,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR-+5V",
+          "kind": "post",
+          "board": "JR",
+          "xy": [
+            228,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR-AGND1",
+          "kind": "post",
+          "board": "JR",
+          "xy": [
+            245,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR-AGND2",
+          "kind": "post",
+          "board": "JR",
+          "xy": [
+            262,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR-AGND3",
+          "kind": "post",
+          "board": "JR",
+          "xy": [
+            279,
+            160
+          ]
+        },
+        {
+          "id": "POWER-P-+12V",
+          "kind": "post",
+          "board": "P",
+          "xy": [
+            142,
+            175
+          ]
+        },
+        {
+          "id": "POWER-P--12V",
+          "kind": "post",
+          "board": "P",
+          "xy": [
+            159,
+            175
+          ]
+        },
+        {
+          "id": "POWER-P-+5V",
+          "kind": "post",
+          "board": "P",
+          "xy": [
+            176,
+            175
+          ]
+        },
+        {
+          "id": "POWER-P-AGND1",
+          "kind": "post",
+          "board": "P",
+          "xy": [
+            193,
+            175
+          ]
+        },
+        {
+          "id": "POWER-P-AGND2",
+          "kind": "post",
+          "board": "P",
+          "xy": [
+            98.5,
+            175
+          ]
+        },
+        {
+          "id": "POWER-P-AGND3",
+          "kind": "post",
+          "board": "P",
+          "xy": [
+            110.0,
+            175
+          ]
+        },
+        {
+          "id": "JL-SUP-1",
+          "kind": "kept support",
+          "board": "JL",
+          "xy": [
+            6.5,
+            22.5
+          ]
+        },
+        {
+          "id": "JL-SUP-2",
+          "kind": "kept support",
+          "board": "JL",
+          "xy": [
+            6.5,
+            80
+          ]
+        },
+        {
+          "id": "JL-SUP-3",
+          "kind": "kept support",
+          "board": "JL",
+          "xy": [
+            6.5,
+            138
+          ]
+        },
+        {
+          "id": "JR-SUP-1",
+          "kind": "kept support",
+          "board": "JR",
+          "xy": [
+            311.5,
+            22.5
+          ]
+        },
+        {
+          "id": "JR-SUP-2",
+          "kind": "kept support",
+          "board": "JR",
+          "xy": [
+            311.5,
+            80
+          ]
+        },
+        {
+          "id": "JR-SUP-3",
+          "kind": "kept support",
+          "board": "JR",
+          "xy": [
+            311.5,
+            138
+          ]
+        },
+        {
+          "id": "K-SUP-3",
+          "kind": "kept support",
+          "board": "JL",
+          "xy": [
+            6.5,
+            160
+          ]
+        },
+        {
+          "id": "K-SUP-4",
+          "kind": "kept support",
+          "board": "JR",
+          "xy": [
+            311.5,
+            160
+          ]
+        },
+        {
+          "id": "K-SUP-5",
+          "kind": "kept support",
+          "board": "P",
+          "xy": [
+            6.5,
+            243
+          ]
+        },
+        {
+          "id": "K-SUP-6",
+          "kind": "kept support",
+          "board": "P",
+          "xy": [
+            311.5,
+            243
+          ]
+        },
+        {
+          "id": "K-SUP-7",
+          "kind": "kept support",
+          "board": "P",
+          "xy": [
+            6.5,
+            289.5
+          ]
+        },
+        {
+          "id": "K-SUP-8",
+          "kind": "kept support",
+          "board": "P",
+          "xy": [
+            255.5,
+            289.5
+          ]
+        }
+      ],
+      "k_largest_bay": {
+        "radius_mm": 153.1878,
+        "centre_xy": [
+          159.0,
+          8
+        ],
+        "grid_mm": 1.0
+      },
+      "sleeves": [
+        {
+          "id": "JL-SUP-1",
+          "board": "JL",
+          "xy": [
+            6.5,
+            22.5
+          ],
+          "nearest_post": "POWER-JL-+12V",
+          "d_post_mm": 141.5221,
+          "nearest_fixing": "JL-SUP-2",
+          "d_fixing_mm": 57.5
+        },
+        {
+          "id": "JL-SUP-2",
+          "board": "JL",
+          "xy": [
+            6.5,
+            80
+          ],
+          "nearest_post": "POWER-JL-+12V",
+          "d_post_mm": 86.7309,
+          "nearest_fixing": "JL-SUP-1",
+          "d_fixing_mm": 57.5
+        },
+        {
+          "id": "JL-SUP-3",
+          "board": "JL",
+          "xy": [
+            6.5,
+            138
+          ],
+          "nearest_post": "POWER-JL-+12V",
+          "d_post_mm": 40.078,
+          "nearest_fixing": "K-SUP-3",
+          "d_fixing_mm": 22.0
+        },
+        {
+          "id": "JR-SUP-1",
+          "board": "JR",
+          "xy": [
+            311.5,
+            22.5
+          ],
+          "nearest_post": "POWER-JR-AGND3",
+          "d_post_mm": 141.2887,
+          "nearest_fixing": "JR-SUP-2",
+          "d_fixing_mm": 57.5
+        },
+        {
+          "id": "JR-SUP-2",
+          "board": "JR",
+          "xy": [
+            311.5,
+            80
+          ],
+          "nearest_post": "POWER-JR-AGND3",
+          "d_post_mm": 86.3496,
+          "nearest_fixing": "JR-SUP-1",
+          "d_fixing_mm": 57.5
+        },
+        {
+          "id": "JR-SUP-3",
+          "board": "JR",
+          "xy": [
+            311.5,
+            138
+          ],
+          "nearest_post": "POWER-JR-AGND3",
+          "d_post_mm": 39.246,
+          "nearest_fixing": "K-SUP-4",
+          "d_fixing_mm": 22.0
+        },
+        {
+          "id": "K-SUP-3",
+          "board": "JL",
+          "xy": [
+            6.5,
+            160
+          ],
+          "nearest_post": "POWER-JL-+12V",
+          "d_post_mm": 33.5,
+          "nearest_fixing": "JL-SUP-3",
+          "d_fixing_mm": 22.0
+        },
+        {
+          "id": "K-SUP-4",
+          "board": "JR",
+          "xy": [
+            311.5,
+            160
+          ],
+          "nearest_post": "POWER-JR-AGND3",
+          "d_post_mm": 32.5,
+          "nearest_fixing": "JR-SUP-3",
+          "d_fixing_mm": 22.0
+        },
+        {
+          "id": "K-SUP-5",
+          "board": "P",
+          "xy": [
+            6.5,
+            243
+          ],
+          "nearest_post": "POWER-JL-+12V",
+          "d_post_mm": 89.5056,
+          "nearest_fixing": "K-SUP-7",
+          "d_fixing_mm": 46.5
+        },
+        {
+          "id": "K-SUP-6",
+          "board": "P",
+          "xy": [
+            311.5,
+            243
+          ],
+          "nearest_post": "POWER-JR-AGND3",
+          "d_post_mm": 89.1361,
+          "nearest_fixing": "K-SUP-8",
+          "d_fixing_mm": 72.7891
+        },
+        {
+          "id": "K-SUP-7",
+          "board": "P",
+          "xy": [
+            6.5,
+            289.5
+          ],
+          "nearest_post": "POWER-JL-+12V",
+          "d_post_mm": 133.7628,
+          "nearest_fixing": "K-SUP-5",
+          "d_fixing_mm": 46.5
+        },
+        {
+          "id": "K-SUP-8",
+          "board": "P",
+          "xy": [
+            255.5,
+            289.5
+          ],
+          "nearest_post": "POWER-JR-AGND2",
+          "d_post_mm": 129.663,
+          "nearest_fixing": "K-SUP-6",
+          "d_fixing_mm": 72.7891
+        }
+      ],
+      "adapter_pairs": [
+        {
+          "id": "K-O1-1",
+          "board": "O1",
+          "xy": [
+            14.5,
+            181.5
+          ],
+          "positions": 5,
+          "nearest_fixing": "K-SUP-3",
+          "d_fixing_mm": 22.9401
+        },
+        {
+          "id": "K-O1-2",
+          "board": "O1",
+          "xy": [
+            14.5,
+            188.5
+          ],
+          "positions": 5,
+          "nearest_fixing": "K-SUP-3",
+          "d_fixing_mm": 29.6015
+        },
+        {
+          "id": "K-O3-1",
+          "board": "O3",
+          "xy": [
+            48.5,
+            181.5
+          ],
+          "positions": 5,
+          "nearest_fixing": "POWER-JL-+12V",
+          "d_fixing_mm": 23.1193
+        },
+        {
+          "id": "K-O3-2",
+          "board": "O3",
+          "xy": [
+            48.5,
+            188.5
+          ],
+          "positions": 5,
+          "nearest_fixing": "POWER-JL-+12V",
+          "d_fixing_mm": 29.7405
+        },
+        {
+          "id": "K-O5-1",
+          "board": "O5",
+          "xy": [
+            82.5,
+            181.5
+          ],
+          "positions": 5,
+          "nearest_fixing": "POWER-P-AGND2",
+          "d_fixing_mm": 17.2699
+        },
+        {
+          "id": "K-O5-2",
+          "board": "O5",
+          "xy": [
+            82.5,
+            188.5
+          ],
+          "positions": 5,
+          "nearest_fixing": "POWER-P-AGND2",
+          "d_fixing_mm": 20.9344
+        }
+      ],
+      "candidate_stack": {
+        "K_face_z_mm": -30.6,
+        "K_rear_z_mm": -32.2,
+        "K_rear_parts_z_mm": -37.2,
+        "selector_tail_z_mm": -20,
+        "selector_tail_to_K_mm": 10.6,
+        "enclosure_inner_rear_z_mm": -40,
+        "rear_part_clearance_mm": 2.8,
+        "mated_heights_mm": {
+          "JL/K": 19.0,
+          "JR/K": 19.0,
+          "P/K": 17.0,
+          "O1/K": 13.0,
+          "O3/K": 13.0,
+          "O5/K": 13.0,
+          "EL/P": 7.2
+        },
+        "enclosure_depth_cases": [
+          {
+            "inside_depth_mm": 40,
+            "inner_rear_z_mm": -40,
+            "rear_part_clearance_mm": 2.8,
+            "decided": true
+          },
+          {
+            "inside_depth_mm": 34,
+            "inner_rear_z_mm": -34,
+            "rear_part_clearance_mm": -3.2,
+            "decided": false
+          }
+        ],
+        "stacker_height_by_gap": {
+          "JL/K": {
+            "gap_mm": 19.0,
+            "stacker_A_mm": 13.589,
+            "socket_mm": 4.5,
+            "body_gap_mm": 0.911
+          },
+          "JR/K": {
+            "gap_mm": 19.0,
+            "stacker_A_mm": 13.589,
+            "socket_mm": 4.5,
+            "body_gap_mm": 0.911
+          },
+          "O1/K": {
+            "gap_mm": 13.0,
+            "stacker_A_mm": 7.62,
+            "socket_mm": 4.5,
+            "body_gap_mm": 0.88
+          },
+          "O3/K": {
+            "gap_mm": 13.0,
+            "stacker_A_mm": 7.62,
+            "socket_mm": 4.5,
+            "body_gap_mm": 0.88
+          },
+          "O5/K": {
+            "gap_mm": 13.0,
+            "stacker_A_mm": 7.62,
+            "socket_mm": 4.5,
+            "body_gap_mm": 0.88
+          },
+          "P/K": {
+            "gap_mm": 17.0,
+            "stacker_A_mm": 11.684,
+            "socket_mm": 4.5,
+            "body_gap_mm": 0.816
+          }
+        }
+      }
     }
   },
   "supports_disposition": [

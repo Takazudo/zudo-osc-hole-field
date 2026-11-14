@@ -1,21 +1,227 @@
-# ST-03 stack mechanics (paper study, attempt a2)
+# ST-03 stack mechanics (paper study, attempt a3)
 
-Status: unvalidated paper study. Every fit, force, strain and take-up check on real parts is NOT RUN, because no part, coupon or board exists.
+Status: unvalidated paper study. Every fit, force, strain, deflection and take-up check on real parts is NOT RUN, because no part, print or board exists. Nothing here is validated, adopted or selected.
 
-Every number below is recomputed from [`stackups.json`](stackups.json) by `python3 scripts/stack/mechanics/stack_mechanics.py`. The tables sit between `calc:` markers. `--write-readme` refreshes them, and the unit tests fail if they differ. `--refresh-geometry` re-derives the XY block from the ST-02 geometry candidate (`design/stack/geometry/stack-candidate.json`, SHA256 recorded as `S-GEOM`).
+Every number below is recomputed from [`stackups.json`](stackups.json) by `python3 scripts/stack/mechanics/stack_mechanics.py`. The tables sit between `calc:` markers. `--write-readme` refreshes them, and the unit tests fail if they differ. `--refresh-geometry` re-derives the XY block from the ST-02 geometry candidate (`design/stack/geometry/stack-candidate.json`, SHA256 pinned as `S-GEOM`).
 
-Attempt a2 works on the decisions D1 to D6 of the design authority (`reviews/da-01.md`, `S-DA01`). It does not re-decide them. Where a number contradicts a decision, it is marked NEEDS_DESIGN.
+Attempt a3 works on the decision rows DS-27, DS-31, DS-33, DS-35 and DS-39 to DS-46 (`decisions.md`, `S-DS`; reviews A2 and A3, `S-DA02`, `S-DA03`). Design review A3 replaced 191 of the 197 rigid K pairs with flat links latched on K's rear face. Twelve rigid pairs stay: six EL-to-P pairs and six 1×5 adapter pairs. A number that contradicts a decision is marked NEEDS_DESIGN.
 
-Each term carries a status:
+Status words: SOURCED (a file or a fetched page with its SHA256), DERIVED (a formula), ASSUMED (with the reason and what would source it), UNSOURCED (no document states it). No web request was made for a3.
 
-- SOURCED: a file or a fetched page with its SHA256.
-- DERIVED: a formula.
-- ASSUMED: with the reason and what would source it.
-- UNSOURCED: no document states it.
+## Heights move to DS-33; the JL, JR and adapter insertions shrink by 0.20 mm and the toggle gap grows by 0.20 mm
 
-Vendor figures are cited by DA-01's section and its vendor-document table; nothing was fetched for a2.
+K F.Cu moves to −30.6 mm and P F.Cu to −12.0 mm. The catalogue posts bring a SOURCED ±0.15 mm, where a2 had ASSUMED ±0.05 mm. Every a2 figure in this table changes; the P joint and EL do not.
 
-## Heights come from DA-01 D3; the candidate's heights differ and are recorded as notes only
+<!-- calc:a3_changes -->
+| Figure | Attempt a2 | Attempt a3 | Basis |
+| --- | --- | --- | --- |
+| K F.Cu z, mm | -30.400 | -30.600 | DS-33 |
+| K rear face z, mm | -32.000 | -32.200 | DS-33 |
+| P F.Cu z, mm | -11.800 | -12.000 | DS-33 |
+| Post length tolerance, mm | +/-0.05 (ASSUMED) | +/-0.15 (SOURCED) | DS-33 |
+| Toggle gap, nominal, mm | 1.160 | 1.360 | DERIVED |
+| Toggle gap, worst case, mm | 0.26 to 2.06 | 0.26 to 2.46 | DERIVED |
+| Toggle take-up window, mm | 0.3 to 2.1 (D4) | 0.4 to 2.3 | DS-27 |
+| Fixings on K | 18 posts + 12 kept supports (+5 provisional) | 18 posts + 12 printed sleeves | DS-43 |
+| Rigid K pairs | 197 | 6 | DS-39 |
+<!-- /calc:a3_changes -->
+
+<!-- calc:a3_heights -->
+| Joint | Gap a2 / a3, mm | Stacker 'A' a2 / a3, mm | Insertion a2 / a3, mm | Gap may open by a2 / a3, mm | Window closing margin a2 / a3, mm | Body clearance a2 / a3, mm | State |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| JL to K | 18.8 / 19.0 | 13.462 / 13.589 | 3.05 / 2.85 | 0.92 / 0.72 | 1.27 / 1.47 | 0.838 / 0.911 | closed record (flat links, DS-39) |
+| JR to K | 18.8 / 19.0 | 13.462 / 13.589 | 3.05 / 2.85 | 0.92 / 0.72 | 1.27 / 1.47 | 0.838 / 0.911 | closed record (flat links, DS-39) |
+| P unit to K | 17.0 / 17.0 | 11.684 / 11.684 | 2.87 / 2.87 | 0.74 / 0.74 | 1.45 / 1.45 | 0.816 / 0.816 | closed record (flat links, DS-39) |
+| O1/O3/O5 to K | 12.8 / 13.0 | 7.493 / 7.620 | 3.56 / 3.36 | 1.43 / 1.23 | 0.76 / 0.96 | 0.807 / 0.880 | live: six rigid 1x5 pairs |
+| EL to P | 7.2 / 7.2 | 4.318 / 4.318 | 2.94 / 2.94 | 1.54 / 1.54 | open | 0.592 / 0.592 | live: six rigid 2x4 pairs, unchanged |
+<!-- /calc:a3_heights -->
+
+## Toggle window: worst case 0.26 to 2.46 mm misses DS-27's 0.4 to 2.3 mm on both ends; root sum of squares 0.94 to 1.78 mm fits (NEEDS_DESIGN)
+
+The chain runs from the jack shoulders on the panel rear through JL, the J post, K and the P post to P's front face and the toggle body. The panel thickness cancels. DS-27 derived 0.46 to 2.26 mm from the a2 chain (±0.9 mm with posts at ±0.05 mm). With the catalogue tolerance of DS-33 the worst case is ±1.10 mm.
+
+Matching within 0.05 mm per unit (DA-02 E10) does not narrow the absolute range: the lot mean of each length keeps ±0.15 mm. It narrows only the difference between toggles of one P, from 0.60 to 0.10 mm. The window must reach 0.26 to 2.46 mm, or the worst case must shrink, for example with posts matched to their nominal length rather than to each other. That is a design-authority question.
+
+<!-- calc:a3_toggle -->
+| Posts | Method | Nominal gap, mm | Gap range, mm | DS-27 window, mm | Verdict | Post part of the gap difference between two toggles of one P, mm (worst case) |
+| --- | --- | --- | --- | --- | --- | --- |
+| unmatched (each post +/-0.15 mm) | worst case | 1.360 | 0.26 to 2.46 | 0.4 to 2.3 | misses: 0.14 below, 0.16 above | 0.60 |
+| unmatched (each post +/-0.15 mm) | root sum of squares | 1.360 | 0.94 to 1.78 | 0.4 to 2.3 | inside | 0.60 |
+| matched within 0.05 mm per unit (lot mean still +/-0.15 mm) | worst case | 1.360 | 0.26 to 2.46 | 0.4 to 2.3 | misses: 0.14 below, 0.16 above | 0.10 |
+| matched within 0.05 mm per unit (lot mean still +/-0.15 mm) | root sum of squares | 1.360 | 0.94 to 1.78 | 0.4 to 2.3 | inside | 0.10 |
+<!-- /calc:a3_toggle -->
+
+<!-- calc:a3_toggle_terms -->
+| Toggle-gap term (panel thickness cancels: jacks and toggles both seat on the panel rear) | +/- mm |
+| --- | --- |
+| jack shoulder to JL/JR front face | 0.200 |
+| JL/JR thickness | 0.160 |
+| J post length | 0.150 |
+| J post seats, both ends | 0.040 |
+| P post length | 0.150 |
+| P post seats, both ends | 0.040 |
+| P thickness | 0.160 |
+| toggle body height | 0.200 |
+<!-- /calc:a3_toggle_terms -->
+
+## Six adapter pairs: final 0.177 mm at the median worst pair, inside the owner's DS-35 acceptance; capture misses 0.39 mm (NEEDS_DESIGN); Z closes on RSS only
+
+The selector carrier is each adapter's datum (DS-31). The adapter hangs on its selector in the panel aperture until K comes down. K sits within ±0.25 mm on its post screws now that the pilots are withdrawn (DS-42, ASSUMED hole size). The order statistic is that of attempt a2: worst of six pairs, two per adapter, with per-adapter terms drawn once.
+
+- **Final.** 0.177 mm at the median, against 0.07 mm along the row and 0.16 mm across it. This lies inside what the owner accepted for rigid pairs (DS-35: at least 0.27 mm computed against 0.07 mm, with hand adjustment of the stacker as the remedy).
+- **Capture.** 0.58 mm at the median. The adapter rests anywhere in the 0.6 mm selector aperture clearance, so its pins can miss the 0.39 mm lead-in when K is lowered. DS-35 covers the final misalignment, not a pair that does not engage. A guide that centres each adapter before K comes down, or a hand check, is a design decision.
+
+<!-- calc:a3_adapters -->
+| Phase | Pairs | Worst pair, median, mm per axis | 95th percentile, mm | Worst case, mm | Against the sourced MMS limits (V-MMS-SPEC 5.1.1, 5.1.2) |
+| --- | --- | --- | --- | --- | --- |
+| capture | 6 | 0.579 | 0.887 | 1.429 | median: along misses 0.39; across misses 0.57 / p95: along misses 0.39; across misses 0.57 |
+| final | 6 | 0.177 | 0.286 | 0.629 | median: along misses 0.07; across misses 0.16 / p95: along misses 0.07; across misses 0.16 |
+<!-- /calc:a3_adapters -->
+
+<!-- calc:a3_adapter_terms -->
+| Phase | Drawn once per adapter (uniform per axis, mm) | Drawn once per pair (uniform per axis, mm) |
+| --- | --- | --- |
+| capture | K against the panel on its post screws 0.250; selector hole position on the adapter 0.075; routed selector aperture position 0.100; selector leg float 0.100; rest offset within the selector aperture clearance 0.600 | SMT float, socket half 0.100; SMT float, stacker half 0.100; stacker lean at the tip 0.104 |
+| final | K against the panel on its post screws 0.250; selector hole position on the adapter 0.075; routed selector aperture position 0.100; selector leg float 0.100; less the minimum selector clearance 0.200 | SMT float, socket half 0.100; SMT float, stacker half 0.100; stacker lean at the tip 0.104 |
+<!-- /calc:a3_adapter_terms -->
+
+The misfit between the K-located pairs and the panel-located shaft is 0.352 mm on root sum of squares, against the 0.2 mm selector budget. Even DA-01's remedy (7.3 mm apertures, 0.35 mm) leaves 0.002 mm. The shaft will bear on its aperture until the bushing nut is tightened; the owner's acceptance DS-35 does not name this. NEEDS_DESIGN.
+
+<!-- calc:a3_selector -->
+| Selector misfit: K-located pairs against the panel-located shaft | mm, radial |
+| --- | --- |
+| K against the panel on its post screws | 0.250 |
+| SMT float, socket half | 0.100 |
+| SMT float, stacker half | 0.100 |
+| selector leg float | 0.100 |
+| selector hole position on the adapter | 0.106 |
+| routed aperture position | 0.141 |
+| Worst case | 0.797 |
+| Root sum of squares | 0.352 |
+| Selector clearance at 7.0 mm (budget) | 0.200 |
+| Over the budget (RSS) | 0.152 |
+| Selector clearance at 7.3 mm (DA-01 D4 remedy) | 0.350 |
+| Over that clearance (RSS) | 0.002 |
+<!-- /calc:a3_selector -->
+
+<!-- calc:a3_adapter_z -->
+| Adapter Z term (carrier is the datum, DS-31; 13.0 mm gap) | mm |
+| --- | --- |
+| jack shoulder to JL front face | 0.200 |
+| JL thickness | 0.160 |
+| J post length | 0.150 |
+| J post seats | 0.040 |
+| K bow at the pair (screen model) | 0.086 |
+| selector seat on the panel | 0.200 |
+| selector carrier to the panel | 0.200 |
+| adapter thickness | 0.160 |
+| standoff, socket half | 0.050 |
+| standoff, stacker half | 0.050 |
+| stacker pin length t | 0.200 |
+| Worst case (K-O3-2) | 1.496 |
+| Root sum of squares (K-O3-2) | 0.498 |
+| Gap may open by (window) | 1.230 |
+| Gap may close by (body clearance governs) | 0.880 |
+| Verdict | RSS meets both sides; worst case misses the closing side by 0.616 |
+<!-- /calc:a3_adapter_z -->
+
+## K on 30 fixings: within 593 microstrain under its weight, handling and a 5 N push; a 20 N push exceeds it at 717 microstrain under the load
+
+Model (ASSUMED): a circular plate of K's 1.6 mm, with a radius equal to the largest circle inside K's outline that holds no fixing. It is found on a 1 mm grid over the 18 posts and 12 sleeves. Its centre lies on K's free edge at y = 8 mm, where the region between the sleeve columns at x = 6.5 and 311.5 mm and the post row at y = 160 mm has no support. A circular plate is not conservative at a free edge.
+
+- **Strain.** At the fixings it is 9 microstrain per newton, whatever the bay size. Under a 3 mm load patch it is 36 microstrain per newton, so a push stays below 593 microstrain up to about 16 N. Scale the per-newton row for another force.
+- **ASSUMED inputs.** E = 20 GPa, ν = 0.15, board density 1.85 g/cm³, parts doubling the mass, handling at 5 g, and a latch or cable push of 5 to 20 N, one at a time. No latch force is sourced; ST-01e can source it.
+- **Ceramic parts.** The rule of no ceramic part of 0805 or larger within 5 mm of a fixing (DS-42) stays with ST-08's list.
+
+<!-- calc:a3_k -->
+| Largest bay without a fixing: radius 153.2 mm, centre [159.0, 8] | Load | Deflection, clamped edge, mm | Deflection, simply supported edge, mm | Strain at the fixings (clamped edge), microstrain | Strain under the load, microstrain | Against 593 microstrain |
+| --- | --- | --- | --- | --- | --- | --- |
+| own weight (1 g) | uniform | 0.072 | 0.320 | 20 | n/a | within |
+| handling (5 g on the weight) | uniform | 0.358 | 1.602 | 98 | n/a | within |
+| per newton (rescale) | point, 3 mm patch | 0.067 | 0.183 | 9 | 36 | within |
+| latch or cable push 5 N, one at a time | point, 3 mm patch | 0.334 | 0.916 | 46 | 179 | within |
+| latch or cable push 20 N, one at a time | point, 3 mm patch | 1.337 | 3.662 | 182 | 717 | exceeds |
+<!-- /calc:a3_k -->
+
+## Printed sleeves: a sleeve can come out 0.15 mm too long or 0.55 mm too short; sort them by measurement and stop each nut at contact
+
+The posts set the gap. A sleeve printed 0.2 mm short with ±0.2 mm on its length, against posts at ±0.15 mm, leaves a clearance from −0.15 to +0.55 mm between the sleeve end and K.
+
+- **Long end.** A sleeve longer than the local gap holds K off its posts. When the post screws are tightened, K bends over the sleeve: up to 1,488 microstrain at the four sleeves 22 mm from their neighbour (JL-SUP-3, JR-SUP-3, K-SUP-3, K-SUP-4).
+- **Short end.** If the nut is drawn down until K seats on the sleeve, K is pulled by up to 0.55 mm: 5,455 microstrain at those four sites, 9.2 times the limit.
+- **Nut feel.** It does not warn: K is about 700 N/mm stiff locally at a 22 mm span (point load on a clamped plate, ASSUMED), so the pull needs only an ordinary M3 torque.
+- **Model.** The strain follows a fixed-guided beam over the span to the nearest fixing (ASSUMED; it overstates the strain where the front board bends too).
+
+**Tightening rule for the owner (proposed, ASSUMED until the design authority accepts it):**
+
+1. Measure the posts of the unit with calipers; the matching step of DS-33 already does this. Measure each printed sleeve. Use a sleeve only if it is 0.05 to 0.30 mm shorter than the posts of its unit. Reprint any sleeve that is longer than that or shorter by more.
+2. Tighten all 18 post screws first.
+3. At each sleeve, turn the nut by hand until the washer just touches K, then stop. Do not turn it further: one eighth of a turn more (0.06 mm on an M3 thread) already reaches 620 microstrain at the four 22 mm sites. At the other eight sites it reaches 57 to 139 microstrain.
+
+With the rule, the clearance is 0.03 to 0.32 mm. The sleeve then only stops K when K moves more than that toward the front board, as DS-45 intends. A nut at contact carries no preload, so how it stays put (a lock nut or a thread-locking compound) is a design question. The creep of the printed material is UNSOURCED.
+
+<!-- calc:a3_sleeve_chain -->
+| Sleeve chain term | mm | Status |
+| --- | --- | --- |
+| Sleeve modelled short by | 0.200 | SOURCED (S-SPACER, DS-45) |
+| Print length tolerance | +/-0.20 | ASSUMED (DS-45) |
+| Post length tolerance (sets the local gap) | +/-0.15 | SOURCED (DS-33) |
+| Clearance sleeve end to K, no sorting | -0.15 to 0.55 | DERIVED (negative = sleeve longer than the gap) |
+| Clearance with the sorting rule (caliper error included) | 0.03 to 0.32 | DERIVED from the ASSUMED rule |
+| Nut travel per turn (M3 coarse) | 0.500 | DERIVED |
+<!-- /calc:a3_sleeve_chain -->
+
+<!-- calc:a3_sleeves -->
+| Sleeve | Board | Gap, mm | Nearest fixing, span s, mm | K pull allowed at 593 microstrain, mm | Strain from 1/8 turn past contact (0.0625 mm), microstrain | Strain, sleeve 0.15 mm too long, no sorting, microstrain | Strain, nut drawn down 0.55 mm, no sorting, microstrain | Strain, nut drawn down 0.32 mm, sorted, microstrain |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| JL-SUP-1 | JL | 19.0 | JL-SUP-2 57.5 | 0.408 | 91 | 218 | 798 | 465 |
+| JL-SUP-2 | JL | 19.0 | JL-SUP-1 57.5 | 0.408 | 91 | 218 | 798 | 465 |
+| JL-SUP-3 | JL | 19.0 | K-SUP-3 22.0 | 0.060 | 620 | 1488 | 5455 | 3174 |
+| JR-SUP-1 | JR | 19.0 | JR-SUP-2 57.5 | 0.408 | 91 | 218 | 798 | 465 |
+| JR-SUP-2 | JR | 19.0 | JR-SUP-1 57.5 | 0.408 | 91 | 218 | 798 | 465 |
+| JR-SUP-3 | JR | 19.0 | K-SUP-4 22.0 | 0.060 | 620 | 1488 | 5455 | 3174 |
+| K-SUP-3 | JL | 19.0 | JL-SUP-3 22.0 | 0.060 | 620 | 1488 | 5455 | 3174 |
+| K-SUP-4 | JR | 19.0 | JR-SUP-3 22.0 | 0.060 | 620 | 1488 | 5455 | 3174 |
+| K-SUP-5 | P | 17.0 | K-SUP-7 46.5 | 0.267 | 139 | 333 | 1221 | 710 |
+| K-SUP-6 | P | 17.0 | K-SUP-8 72.8 | 0.654 | 57 | 136 | 498 | 290 |
+| K-SUP-7 | P | 17.0 | K-SUP-5 46.5 | 0.267 | 139 | 333 | 1221 | 710 |
+| K-SUP-8 | P | 17.0 | K-SUP-6 72.8 | 0.654 | 57 | 136 | 498 | 290 |
+<!-- /calc:a3_sleeves -->
+
+## Parameters of attempt a3 with their status
+
+<!-- calc:a3_terms -->
+| Parameter | Value | Status | Source, formula or what would source it |
+| --- | --- | --- | --- |
+| `a3.K_face_z_mm` | -30.6 | SOURCED | S-DS: DS-33: K front face at z = -30.6 mm |
+| `a3.K_rear_z_mm` | -32.2 | SOURCED | S-DS: DS-33: rear face at -32.2 mm |
+| `a3.gap_mm` | {'O': 13.0, 'P': 17.0, 'JL': 19.0, 'JR': 19.0, 'EL': 7.2} | SOURCED | S-DS: DS-33: gaps 19.0 mm (JL, JR), 17.0 mm (P), 13.0 mm (adapters); EL 7.2 mm unchanged (DS-14, DS-28) |
+| `a3.stacker_A_in` | {'O': 0.3, 'P': 0.46, 'JL': 0.535, 'JR': 0.535, 'EL': 0.17} | SOURCED | S-DS: DS-33: stacker heights by the unchanged rule .535, .460 and .300 in; EL .170 in unchanged (DA-01 D3) |
+| `a3.P_front_face_z_mm` | -12.0 | SOURCED | S-DS: DS-33: P's F.Cu sits at -12.0 mm |
+| `a3.post_length_tol_mm` | 0.15 | SOURCED | S-DS: DS-33: catalogue brass spacers at 19.00 and 17.00 mm +/-0.15 mm (DA-02 E10: retained drawings) |
+| `a3.post_match_mm` | 0.05 | SOURCED | S-DA02: E10: the spacers of one unit are measured and matched within 0.05 mm of each other; the lot mean keeps +/-0.15 mm |
+| `a3.toggle_window_mm` | [0.4, 2.3] | SOURCED | S-DS: DS-27: the washer window is 0.4 to 2.3 mm |
+| `a3.k_post_hole_radial_play_mm` | 0.25 | ASSUMED | to source: ST-12 hole and screw drawing |
+| `a3.carrier_to_panel_mm` | 0.2 | ASSUMED | to source: ST-12 carrier drawing; #55 selector coupon |
+| `a3.selector_aperture_grown_mm` | 7.3 | SOURCED | S-DA01: D4 selector row: the three selector apertures grow from 7.0 to 7.3 mm if ST-12 cannot show 0.2 mm (owner item 2) |
+| `a3.sleeve_length_allowance_mm` | -0.2 | SOURCED | S-SPACER: length_allowance_mm (DS-45: printed 0.2 mm short) |
+| `a3.sleeve_print_tol_mm` | 0.2 | ASSUMED | to source: Measured lengths of the printed set |
+| `a3.m3_pitch_mm` | 0.5 | DERIVED | ISO metric coarse pitch implied by the M3 designation (DS-45) |
+| `a3.caliper_error_mm` | 0.02 | ASSUMED | to source: The owner's caliper specification |
+| `a3.sleeve_sort_window_mm` | [0.05, 0.3] | ASSUMED | to source: Design authority acceptance of the rule |
+| `a3.fr4_density_g_cm3` | 1.85 | ASSUMED | to source: Fabricator laminate datasheet |
+| `a3.parts_mass_factor` | 2.0 | ASSUMED | to source: ST-07 parts list with masses |
+| `a3.handling_g` | 5.0 | ASSUMED | to source: None practical; first-article handling |
+| `a3.latch_force_N` | [5, 20] | ASSUMED | to source: ST-01e connector latch figures |
+| `a3.latch_patch_radius_mm` | 3.0 | ASSUMED | to source: ST-01e connector body size |
+| `a3.owner_acceptance` | DS-35: the final misalignment of rigid pairs (at least 0.27 mm computed against 0.07 mm) is an accepted risk; hand adjustment of hand-soldered stackers is the remedy | SOURCED | S-DS: DS-35 |
+<!-- /calc:a3_terms -->
+
+## Record of attempt a2: the rigid pair budgets, closed by DS-39 and kept on their a2 inputs
+
+These sections are the record of the way back to rigid pairs (DS-40: "the rigid stack of DS-11 to DS-33 stands as reviewed" if Gate A-paper fails). The geometry is refreshed with the candidate, but their heights, tolerances and fixing sets are frozen at the a2 inputs (`parameters.da01`, DA-01 decisions). They are not moved to DS-33; the table above lists the changes a return would bring. Decisions after DA-01 overtake the statements in them that are marked NEEDS_DESIGN: the coupon (declined, DS-35), the 40 mm rule and the provisional sites (withdrawn, DS-42), and the toggle window (DS-27).
+
+### Heights come from DA-01 D3; the candidate's heights differ and are recorded as notes only
 
 The geometry candidate still carries the cable-era heights. This study uses the DA-01 parameter block (K F.Cu at −30.4 mm; gaps 12.8, 17.0, 18.8 and 7.2 mm). The differences are a note, not an error.
 
@@ -30,7 +236,7 @@ The geometry candidate still carries the cable-era heights. This study uses the 
 | EL/P gap | 7.200 | 7.200 |
 <!-- /calc:notes -->
 
-## Closing order D2: each step's datums and joint chains
+### Closing order D2: each step's datums and joint chains
 
 <!-- calc:closing -->
 | Step | Action (DA-01 D2) | XY set by | Z set by | Chain at this step |
@@ -43,7 +249,7 @@ The geometry candidate still carries the cable-era heights. This study uses the 
 | 6 | Tighten the jack nuts, then the toggle nuts on their compliant take-up, then the selector bushing nuts | all: frozen | JL, JR: jack shoulders on the panel rear; P: unchanged: compliant take-up, P free in Z | Selector row: K against panel + two SMT floats + leg float + hole and aperture positions, against 0.2 mm |
 <!-- /calc:closing -->
 
-## Every joint fits its sourced insertion window; body clearance governs the closing side
+### Every joint fits its sourced insertion window; body clearance governs the closing side
 
 Gap = pin tip + socket − insertion (DA-01 D3). The open margin is insertion − 2.13 mm. The closing margin is the smaller of 4.32 mm − insertion and the body clearance (gap − socket − "A"). The body clearance is DERIVED from the D3 codes. It is tighter than DA-01's ±0.74 mm window figure on the J and P joints (0.82 to 0.84 mm against 1.27 to 1.45 mm). That refines the D3 margin; it does not contradict it.
 
@@ -57,7 +263,7 @@ Gap = pin tip + socket − insertion (DA-01 D3). The open margin is insertion �
 | EL to P | 7.200 | 7.850 | 4.318 | 2.290 | 2.940 | 1.540 | open (pins pass through) | 0.592 | 0.592 | 7.200 |
 <!-- /calc:heights -->
 
-## Capture meets 0.39 mm at the median worst pair but misses at the 95th percentile on JL, JR and P (NEEDS_DESIGN against D5)
+### Capture meets 0.39 mm at the median worst pair but misses at the 95th percentile on JL, JR and P (NEEDS_DESIGN against D5)
 
 Allowed misalignment is tested per axis against the four limits DA-01 cites from the MMS product specification (`V-MMS-SPEC`, sections 5.1.1 and 5.1.2):
 
@@ -118,7 +324,7 @@ The stacker lean is ASSUMED at 0.5°. At the sourced 2° maximum sway of the sta
 
 The adopted scheme has no K-to-P pin chain, so no row above carries it (M4). The adapters ride on K (D4), so the 0.6 mm selector aperture clearance is not a term of the adapter pairs; it reappears only in the selector row below. Each board is charged its full offset from nominal, although a floating K removes the part common to all boards. That errs on the safe side.
 
-## The selector row is 0.267 mm on root sum of squares against the 0.2 mm budget (NEEDS_DESIGN, as D4 states)
+### The selector row is 0.267 mm on root sum of squares against the 0.2 mm budget (NEEDS_DESIGN, as D4 states)
 
 <!-- calc:selector -->
 | Selector-row term (adapters on K, D4) | mm, radial |
@@ -137,7 +343,7 @@ The adopted scheme has no K-to-P pin chain, so no row above carries it (M4). The
 
 ST-12 must show 0.2 mm with measured terms, or the three selector apertures grow from 7.0 to 7.3 mm (owner item 2).
 
-## Apertures fail on hardware-on-board terms in any order; the remedy is the soldering fixture
+### Apertures fail on hardware-on-board terms in any order; the remedy is the soldering fixture
 
 The baseline row sets every locating term to zero. It keeps only lead float, hole position and aperture position. It fails every class, which reproduces DA-01 M3: jack by 0.120 mm, pot by 0.070, toggle by 0.033, button by 0.027 and selector by 0.003 mm. The hardware must be soldered with the panel, or a plate drilled like it, as the fixture. That this fixture exists is ASSUMED (owner item 5). The order is decided on other grounds (D2).
 
@@ -162,7 +368,7 @@ EL passages, for reference. D4 enlarges the pot passages to 6.8 mm, and ST-02 ch
 | el_passage_button | 9.5 | 0.326 | 0.998 | 0.402 | fails by 0.076 |
 <!-- /calc:el_passages -->
 
-## Z closes on JL, JR, the adapters and EL; P still misses with the five provisional sites (NEEDS_DESIGN to ST-08)
+### Z closes on JL, JR, the adapters and EL; P still misses with the five provisional sites (NEEDS_DESIGN to ST-08)
 
 Z is tested against the sourced MMS window: the open and closing margins from the heights table, with `t` = 0.2 mm ASSUMED. The bow uses the screen model (0.75 %, deviation 4·b·d²/L from the nearest fixing). JL and JR take the panel's plane through the jack shoulders (M7). Their own term is then panel bow plus an ASSUMED 0.2 mm local shoulder term. The fixings are the 18 posts and the 12 kept supports, then the same with the five D4 sites added. The five sites are PROVISIONAL: ST-08 fixes them.
 
@@ -179,7 +385,7 @@ Z is tested against the sourced MMS window: the open and closing margins from th
 | EL to P | EL collar posts | EL-P-E1 0.216 | EL-P-E1 0.093 | 0.416 | 0.293 | 1.540 | 0.592 | RSS: open meets, close meets; WC: meets both |
 <!-- /calc:z_gap -->
 
-## The 40 mm rule is not met from the retained fixings: 107 pairs miss it, and 67 with the five provisional sites (NEEDS_DESIGN to ST-08)
+### The 40 mm rule is not met from the retained fixings: 107 pairs miss it, and 67 with the five provisional sites (NEEDS_DESIGN to ST-08)
 
 D4 says 27 pairs miss it (JL 3, JR 7, P 17) and that the five sites cover them. That count used the 66 interior candidate sites, whose coordinates are not retained in this repository. From the retained fixings (18 posts, 12 kept supports, five provisional sites), JL keeps 9 and P keeps 58 pairs beyond 40 mm. The distance is taken to the nearest fixing on the same front board. ST-08 must place the fixings that close the rule. This calculator re-tests any set written into `stackups.json` `fixings`.
 
@@ -202,7 +408,7 @@ D4 says 27 pairs miss it (JL 3, JR 7, P 17) and that the five sites cover them. 
 | P | 108.334 / 108.334 | 90.588 / 90.588 |
 <!-- /calc:coverage_worst -->
 
-## K dishes by about 1.3 to 3.5 mm under the mating load in its largest unfixed bay, so tie posts are needed for the closing force too
+### K dishes by about 1.3 to 3.5 mm under the mating load in its largest unfixed bay, so tie posts are needed for the closing force too
 
 Model (ASSUMED): a circular plate of K's thickness, with the bay radius equal to the farthest pair's distance to a fixing, under the bay's positions at f spread uniformly. w = qR⁴/(64D) for a clamped edge, ×(5 + ν)/(1 + ν) for a simply supported edge. E = 20 GPa and ν = 0.15 are ASSUMED. Coupon C-9 measures an 80 × 80 mm bay.
 
@@ -217,7 +423,7 @@ Model (ASSUMED): a circular plate of K's thickness, with the bay radius equal to
 | with the 5 provisional sites | K-P-42 | 90.588 | 263 | 1.33 | 350 | 2.044 | 9.155 |
 <!-- /calc:dish -->
 
-## K's 0.028 to 0.045 mm plane-mismatch allowance is a lower bound; P stays free in Z (D4)
+### K's 0.028 to 0.045 mm plane-mismatch allowance is a lower bound; P stays free in Z (D4)
 
 The fixed-guided beam treats P and J as rigid, so the allowance is a lower bound (M8). The a1 statement about a 0.05 mm shim is withdrawn. In the case where the toggle front nuts pull P, the root-sum-of-squares delta is the toggle gap plus the P mismatch (1.16 + 0.373 = 1.533 mm). This is the code-review fix F1.
 
@@ -240,7 +446,7 @@ The fixed-guided beam treats P and J as rigid, so the allowance is a lower bound
 | K pulled flat from 0.75% bow at fixings | n/a | n/a | n/a | 155 | 155 | within design limit |
 <!-- /calc:strain -->
 
-## The toggle gap reaches 0.26 mm on worst case, 0.04 mm below the D4 washer window (NEEDS_DESIGN to ST-12)
+### The toggle gap reaches 0.26 mm on worst case, 0.04 mm below the D4 washer window (NEEDS_DESIGN to ST-12)
 
 D4 states the washer stack works over 0.3 to 2.1 mm and also that the gap is 1.16 mm ±0.9 mm worst case. 1.16 − 0.9 = 0.26 mm, so the window must reach 0.26 mm or the worst case must shrink.
 
@@ -254,7 +460,7 @@ D4 states the washer stack works over 0.3 to 2.1 mm and also that the gap is 1.1
 | Rear jam nut thickness against the nominal gap | 1.190 vs 1.160 | SOURCED / DERIVED |
 <!-- /calc:toggle -->
 
-## K needs 653 to 1,033 N to mate its 777 positions and 365 to 761 N to separate
+### K needs 653 to 1,033 N to mate its 777 positions and 365 to 761 N to separate
 
 Sourced from the double-row qualification report via DA-01 M9 (`V-QUAL-154341`): 0.84, 0.97 and 1.33 N per position mating, 0.47 to 0.98 N unmating. Applying them to the single-row pair is ASSUMED. Per-board totals count each joint's own positions. "K, all joints" counts K's 777 positions. "All joints per side" counts the 825 of D6, including EL's 48. The draw-down load per fixing divides each board's mating force by its fixings (posts plus kept supports, then with the provisional sites).
 
@@ -270,7 +476,7 @@ Sourced from the double-row qualification report via DA-01 M9 (`V-QUAL-154341`):
 | All joints per side incl. EL (count: DA-01 D6) | 825 | 693 | 800 | 1097 | 388 to 808 |  |  |
 <!-- /calc:forces -->
 
-## EL cannot be seated or removed without a full-face backing platen (accepted in DA-01)
+### EL cannot be seated or removed without a full-face backing platen (accepted in DA-01)
 
 Each of the six sites carries 8 positions (2 × 4 CLT).
 
@@ -285,7 +491,7 @@ Each of the six sites carries 8 positions (2 × 4 CLT).
 | 0.300 | 1.33 | 10.6 | 1.424 | 8867 | 2.847 | 17733 | exceeds design limit |
 <!-- /calc:el_plate -->
 
-## Supports: 12 become tie posts, 9 go, P-SUP-6 becomes a compliant guide and 65 stay in role
+### Supports: 12 become tie posts, 9 go, P-SUP-6 becomes a compliant guide and 65 stay in role
 
 <!-- calc:supports -->
 | Items | Count | Disposition | Reason |
@@ -306,7 +512,7 @@ Each of the six sites carries 8 positions (2 × 4 CLT).
 | Total of the 87 partition supports | 87 |  |  |
 <!-- /calc:supports -->
 
-## The coupon is a requirements frame with DA-01's seven changes and the A-physical pass numbers
+### The coupon is a requirements frame with DA-01's seven changes and the A-physical pass numbers
 
 This is a definition of what a coupon must measure. It is not a specification, an order or a quote request. ST-09 writes the retained specification and outlines.
 
@@ -330,7 +536,7 @@ This is a definition of what a coupon must measure. It is not a specification, a
 | C-9 | Dish of the 80 x 80 mm bay under the mating force, closed by jack screws | No number set by DA-01; compared with the plate estimate in this README |
 <!-- /calc:coupon -->
 
-## Seven figures stay open
+### Seven figures stay open
 
 <!-- calc:open -->
 | Figure | Exact need |
@@ -344,7 +550,7 @@ This is a definition of what a coupon must measure. It is not a specification, a
 | Placement | Whether the assembler places pad-less 1x3 stackers and lead style -07 from tubes (owner item 3) |
 <!-- /calc:open -->
 
-## Every term with its status
+### Every term with its status
 
 <!-- calc:terms -->
 | Term | Value | Tolerance | Unit | Status | Source, formula or what would source it |
@@ -417,5 +623,5 @@ This is a definition of what a coupon must measure. It is not a specification, a
 
 ## Checks: unit tests and the calculator run; every physical check NOT RUN
 
-- Run: `python3 -m unittest scripts/stack/mechanics/test_stack_mechanics.py`, the calculator twice with a clean tree, `pnpm circuit:check`, and `frozen_studies.py discover`.
-- NOT RUN: fit, force, strain, dish and take-up on real parts. No coupon or board exists, and building one would be a fabrication action outside this task.
+- Run: `python3 scripts/checks/frozen_studies.py discover scripts/stack/mechanics`, the calculator twice with a clean tree, and `pnpm circuit:check`.
+- NOT RUN: fit, force, strain, deflection, take-up, print length and nut torque on real parts. No print, part or board exists. A coupon was declined by the owner (DS-35), and building anything is outside this task.
