@@ -561,12 +561,12 @@ def render_all(data=None):
     return {name: fn(c) for name, fn in RENDERERS.items()}
 
 
-BLOCK = re.compile(r'(<!-- calc:(\w+) -->\n)(.*?)(\n<!-- /calc:\2 -->)', re.S)
+BLOCK = re.compile(r'(<!-- calc:(\w+) -->\n)(?:(.*?)\n)?(<!-- /calc:\2 -->)', re.S)
 
 
 def fill_readme(text, blocks):
     def sub(m):
-        return m.group(1) + blocks[m.group(2)] + m.group(4)
+        return m.group(1) + blocks[m.group(2)] + '\n' + m.group(4)
     return BLOCK.sub(sub, text)
 
 
