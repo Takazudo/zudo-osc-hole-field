@@ -1,4 +1,4 @@
-# Stack connectors and posts: ST-01 evidence with the ST-01b addendum
+# Stack connectors and posts: ST-01 evidence with the ST-01b and ST-01c addenda
 
 Task `osc-stack-20261114/ST-01b`, 2026-11-14, built on DA-01 decision D3. Nothing here is selected, validated or qualified. Fit, force and alignment are NOT RUN because no specimen exists. The machine-readable records are [`candidates.json`](candidates.json) and [`land-patterns.json`](land-patterns.json). Vendor files are in the private `Takazudo/circuit-dev-resources` store (branch `claude/project-thread-zao1qg`), cited by path and SHA-256.
 
@@ -21,6 +21,14 @@ Status words: **SOURCED** (a retained document states it), **UNSOURCED** (none d
 | qual | `samtec/test-reports/mms-tmm-design-qualification-154341-rev-2.pdf` | 154341 rev 2 | `02fd7a450b4eebd3b7666cc1751a57e48238d5c6f25d3c90047afe59dd740690` |
 | hsc | `samtec/test-reports/tw-clt-18mm-high-speed-characterization-2006-01-30.pdf` | 2006-01-30 | `4d104d5de3026b7af19b4780405beb64d9c1c0f520662cdaa07a685a06d9d137` |
 | jlc | `distributor-captures/jlcpcb-lcsc/zudo-osc-hole-field-st-01b-20261114/SHA256SUMS` | capture 2026-11-14 | `174f3c90c5b170f666c61cc248b0ee33cec3cd37a3ee903cd4d50507bf5e3e06` |
+| mms_fp | `samtec/mms/mms-1xx-02-xxx-sv-recommended-pcb-layout-rev-c.pdf` | C, 2016-03-08 | `7353dedb12b9d3ee2dbce18f442ba7542ac87ad48d4304aacd0f1ad6d33078e3` |
+| clt_fp | `samtec/clt/clt-1xx-02-xx-d-recommended-pcb-layout-rev-j.pdf` | J, 2016-12-20 | `55368dafc562d29d1c0aaa02933cdeedc27fee0403cb53c40a9caecc1d05ab9f` |
+| tw_th | `samtec/tw-th/tw-th-print-rev-bk.pdf` | BK | `bbb5eddb3f6094b50c5225662d788ef71afba4497cdfe703c29d964e5ff15ac9` |
+| jso_cat / jso_print | `samtec/jso/jso-catalog-page-f-226.pdf` / `samtec/jso/jso-print-rev-t.pdf` | F-226 / T | `e9d1a8bb304bcfa65e83ebfff2470553bcf28feb2953421022047a256158a6e7` / `69035482287b2be080c950a2a0816f7c8a3c71ddf116c7264c00ba3e45bed5b1` |
+| so_cat / so_print | `samtec/so/so-catalog-page-f-226.pdf` / `samtec/so/so-print-rev-az.pdf` | F-226 / AZ | `bad93640d61ebeccca24c14fa7f0c9c667666ac6db4d7b7808443a50879b08ce` / `e2b2dbce5baaac8618e8e05a9036d22370760496bf5e5aac139d475ce3861682` |
+| harwin_r30_101 | `harwin/r30/r30-101xx02-m3-female-female-spacer-drg-01995-issue-7.pdf` | issue 7 | `3aaf7eaab650a65965a2b8baf20cfa591ee4d0f7260a56933eeace80da01c236` |
+| harwin_r30_300 | `harwin/r30/r30-300xx02-m3-male-female-spacer-drg-01997-issue-22.pdf` | issue 22 | `ea476817a3dbc3d27a8d30f14360c075d1e03c48f702f5aaf17c397abb574ed3` |
+| jlc_c | `distributor-captures/jlcpcb-lcsc/zudo-osc-hole-field-st-01c-20261114/SHA256SUMS` | capture 2026-11-14 | `fd82eeb7cc1fbb3f29f339e63cc98fea41ad4e1ccbc5a368df9cdd7991c93413` |
 
 The other DA-01 files (`mmx-mated-views-rev-c.pdf`, `mms-tmmh-design-qualification-187548-rev-1.pdf`) are retained but not cited for a figure.
 
@@ -104,12 +112,23 @@ How to read the margin column:
 - No stacker passes the pin-tip maximum of its lead style.
 - None of the 1×3 stackers can take a pick-and-place pad (−P covers 4 to 36 positions only), so their placement stays UNSOURCED.
 
-## NEEDS_DESIGN: print CT does not state that the EL socket lets the pin pass through
+## NEEDS_DESIGN: Samtec documents pass-through for the −BE socket only, and the working code has no −BE
 
-The tips stand 0.65 mm past the CLT socket face (7.85 − 7.2). Neither sheet of print CT states that a top-entry pin may pass through the −D insulator. These are the nearest options; none is chosen here:
+The tips stand 0.65 mm past the CLT socket face (7.85 − 7.2). What the documents show:
 
-- `CLT-104-02-L-D-K-TR` as written, with pass-through UNSOURCED.
-- The −BE bottom-entry insulator listed on print CT. Its suffix compatibility with −K has not been checked.
+- **Layout (clt_fp revision J, sheet 5, fig 5).** The pattern is titled "CLT-110-02-XX-D-BE-A (BOTTOM ENTRY/PASS THROUGH)" and draws a 0.86 mm NPTH under each contact. The standard −D pattern (fig 1) has none.
+- **Print (clt_print CT).** −BE is "same as fig 1 except insulator" (fig 6), with a 0.429 mm cut endwall (note 11). Table 1 lists the −L −D −BE contacts. Section A-A shows the contact cavities but neither dimensions nor notes an opening under the −D contact.
+- **Suffixes.** −K is offered for 4 to 50 positions and −TR for 02 to 36. Neither excludes −BE.
+- **Catalog (clt_cat).** Top entry needs at least 1.40 mm. Bottom entry needs at least 2.57 mm, "add board thickness". −BE is "required for bottom entry applications". Only the sister TLE socket states "pass-through" in words.
+- **Pin fit.** The TW-SM pin is 0.51 mm square (tw_cw1), a 0.72 mm diagonal (CALCULATED), inside the 0.86 mm hole.
+- **Characterization report (hsc).** It has only a fixture photograph (printed p. 23) and an undimensioned routing graphic (p. 25). It has no mated section.
+- **Channel.** JLCPCB lists `CLT-104-02-L-D-BE-K-TR` as C6143646 (extended, stock 0) and ten other −BE variants.
+
+Nearest valid codes, for the design authority; none is chosen here:
+
+- `CLT-104-02-L-D-BE-K-TR`.
+- `CLT-104-02-L-D-BE-TR`.
+- `CLT-104-02-L-D-K-TR` as written, with pass-through undocumented.
 - The D3 fallback of six short harnesses.
 
 ## Land patterns: the DA pad span and width hold, the row length is corrected
@@ -120,7 +139,8 @@ The full entries are in [`land-patterns.json`](land-patterns.json), in the frame
 - **The copper extent holds.** (n − 1) × 2.00 + 1.02 mm is correct as the copper extent along the row.
 - **The courtyard length is corrected.** The body and drawn outline are n × 2.00 mm (± 0.25 mm), so the courtyard length is 2n + 0.75 mm: 6.75, 10.75 and 12.75 mm for 1×3, 1×5 and 1×6.
 - **TW-SM double row 2×4.** Courtyard 8.07 × 8.75 mm.
-- **MMS −SV and CLT copper patterns are UNSOURCED.** The MMS courtyard is not derived; the planning fallback of 5.8 × (2n + 1) mm still holds. The CLT body gives a lower bound of 5.9 × 8.7 mm.
+- **MMS −SV copper is now SOURCED (ST-01c, mms_fp revision C).** Pads are 1.016 mm along the row and 2.085 mm across (DERIVED from the 5.44 mm span and 1.27 mm gap), staggered at 2.000 mm pitch. Each position has a 0.86 mm hole on the centreline marked "PASS THRU ONLY". Courtyard 5.94 × (2n + 1.19) mm: 7.19, 11.19 and 13.19 mm long. The width is 0.14 mm over the 5.8 mm planning envelope and inside the 6.04 mm stacker courtyard. The −SV tail span stays UNSOURCED.
+- **CLT −D copper is now SOURCED (clt_fp revision J).** Standard pattern: pads 0.89 × 1.91 mm, span 5.92 mm, 2.000 mm pitch. The −BE pattern adds a 0.86 +0.05/−0 mm NPTH under each contact and shortens the pads to 1.40 mm, leaving a 0.13 mm web to the hole (DERIVED). Courtyard 6.42 × 8.70 mm.
 
 ## The factory channel lists the three sockets, the CLT and two stackers; the K-joint stackers are not listed
 
@@ -138,14 +158,55 @@ The full entries are in [`land-patterns.json`](land-patterns.json), in the frame
 - **Captures:** stored under jlc. LCSC was seen only through each listing's `lcscGoodsUrl`.
 - **Evidence status:** a listing is distributor identity, not manufacturer evidence.
 
-## Post survey is PARTIAL: only the manufacturer's standoff advice is SOURCED
+## Posts: catalogue lengths exist at 17.0 mm (Harwin) and within 0.10 to 0.15 mm of 18.8 and 12.8 mm (Samtec)
 
-- **SOURCED.** The product specification recommends standoffs, and jack-screw standoffs for mates of several connectors (spec p. 7, §5.8).
-- **UNSOURCED.** The threaded post at 12.8, 17.0 and 18.8 mm has no retained print, so its thread, across-flats, material, plating and tolerance are all UNSOURCED. The jack-screw standoff class is also UNSOURCED.
-- **Refused.** Reflowed SMT spacers are refused by DA-01 D4. They were not surveyed again; the ST-01 record stays in `candidates.json`.
+The fitted class is mechanically fixed, conductive and threaded at both ends (DA-01 D4, D6). The full records are under `posts` in `candidates.json`. The Harwin files are `harwin/r30/r30-101xx02-…-issue-7.pdf` (`3aaf7eaa…c236`, F/F) and `…r30-300xx02-…-issue-22.pdf` (`ea476817…3ed5`, M/F). Samtec SO is `so-print-rev-az.pdf` (`e2b2dbce…1682`) and JSO is `jso-print-rev-t.pdf` (`69035482…d5b1`).
 
-## Sources not located: the MMS and CLT land patterns and the TW-TH print
+| Gap | Part | Length (mm) | Tolerance | Offset | Insertion if gap = length (margin) |
+| --- | --- | --- | --- | --- | --- |
+| 17.0 | Harwin R30-1011702, M3 F/F, A/F 5.30–5.50 | 17.00 | ±0.15 | 0 | 2.866 (−0.74/+1.45) |
+| 17.0 | Harwin R30-3001702, M3 M/F, A/F 4.8–5.0 | 17.00 | ±0.15 | 0 | 2.866 |
+| 17.0 | Samtec SO-1715-05 (F/F) / -03 (M/F), M3, hex 4.76 | 17.15 REF | not stated | +0.15 | 2.716 (−0.59/+1.60) |
+| 17.0 | Samtec JSO-1715 jack screw | 17.15 | ±0.05 | +0.15 | 2.716 |
+| 18.8 | Samtec SO-1890-05 / -03 | 18.90 REF | not stated | +0.10 | 2.946 (−0.82/+1.37) |
+| 18.8 | Samtec JSO-1865 jack screw | 18.65 | ±0.05 | −0.15 | 3.196 (−1.07/+1.12) |
+| 18.8 | Harwin R30-1011902 / R30-1011802 | 19.00 / 18.00 | ±0.15 | +0.20 / −0.80 | 2.846 / 3.846 |
+| 12.8 | Samtec JSO-1265 jack screw | 12.65 | ±0.05 | −0.15 | 3.706 (−1.58/+0.61) |
+| 12.8 | Harwin R30-1011302 / R30-1011202 | 13.00 / 12.00 | ±0.15 / ±0.10 | +0.20 / −0.80 | 3.356 / 4.356 (outside the window) |
+| 12.8 | Samtec SO-1315-05 (also -1215) | 13.15 REF | not stated | +0.35 | 3.206 |
 
-- **MMS land pattern:** the MMS product page links no footprint. The −SV tail span is not dimensioned on print CZ.
-- **CLT land pattern:** the CLT product page gives no layout link, so the relief holes are not dimensioned.
-- **TW-TH print:** no link was found, so it was not fetched.
+What the drawings state, by maker:
+
+- **Harwin.** Brass CW614N (CuZn39Pb3), nickel finish, M3 × 0.5-6H.
+- **Samtec SO.** 6061 aluminium or 303 stainless with no plating stated; #4-40, M3 or M2 thread. Its "C" length is REF, and note 13 says standoffs are made 0.15 mm longer than the connector stack.
+- **Samtec JSO.** Stainless steel; jack-screw thread size not printed. It is listed for SEAX, LPAX and LSHM only (not MMS), and its travel is not stated.
+- **Ratings, all three.** No maker states a current rating or contact resistance.
+
+Closing the gaps:
+
+- **No shim or washer.** No catalogue shim or washer with a thickness tolerance was retained. Closing an offset needs a part made to drawing (no print) or a change of gap.
+- **The D3 "A" rule ties shorter posts.** With the D3 stacker heights fixed, the body clearance is gap − 4.50 − "A". It is 0.04 mm at 18.00 mm and negative at 12.00 mm.
+
+## Press-fit threaded elements: only Samtec's press-in standoffs are SOURCED, with no push-out or torque-out figure
+
+- **SO −04 press-in female element (so_print sheet 4).** Knurl 4.42 ± 0.05 mm, board cutout 4.24 ± 0.08 mm, keep-out 8.44 ± 0.13 mm, heights 1.65 to 3.18 mm. Material 304 stainless is offered for −04 only.
+- **SO −01 press-in (sheet 1).** Cutout 4.50 ± 0.08 mm; offered from 5.15 to 8.65 mm only.
+- **JSO −01 press-in base.** Cutout 6.35 mm with an 8.00 mm keep-out.
+- **Board thickness.** All Samtec standoffs need boards of at least 1.57 mm. Threaded options take boards up to 3.16 mm.
+- **Not stated.** No push-out, torque-out, current or contact-resistance figure appears on any of these documents.
+- **Würth REDCUBE press-fit.** `we-online.com` datasheet and product page returned HTTP 403.
+- **PEM broaching standoffs.** The fetch was refused by the session's permission layer.
+- **Keystone swage standoffs.** Only aggregator pages were found. All three remain UNSOURCED.
+
+## Jack-screw standoffs: Samtec JSO is SOURCED; no other maker was reached
+
+The specification recommends jack-screw standoffs for multi-connector mates (spec p. 7, §5.8). The JSO series covers −0400 to −1865 and −3500, with "A" ± 0.05 mm. It is fixed by a press-in base or a threaded base with a nut, torqued to 2.5 to 3.5 in·lb. The JSOM is named on the SO catalogue page for 15.24 mm only; its print was not fetched. Other makers were not surveyed.
+
+## The through-hole stacker print is retained but not needed by D3
+
+TW-TH print revision BK (`samtec/tw-th/tw-th-print-rev-bk.pdf`, `bbb5eddb…5ac9`) is retained. Its only figure noted here is the 1 lb minimum push-out force. EL uses the surface-mount stacker in D3.
+
+## Still not located: the MMS −SV tail span, and the Würth, PEM and Keystone press-fit data
+
+- **MMS −SV tail span:** not dimensioned on print CZ or on layout revision C.
+- **Press-fit data:** the Würth, PEM and Keystone routes are listed in the press-fit section above.

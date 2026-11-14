@@ -1,0 +1,116 @@
+"""Unit tests for the ST-04 power-post calculator: no network, no KiCad."""
+import copy
+import json
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import power_posts as pp  # noqa: E402
+
+
+class Reproduction(unittest.TestCase):
+    def setUp(self):
+        self.d = pp.load()
+
+    def test_present_drop_matches_partition(self):
+        drop, rwire = pp.present_drop_mV(self.d)
+        part = json.loads((pp.ROOT / 'design/partition/partition.json').read_text())['power']['worst_load_distribution_drop_mV']
+        for rail in pp.RAILS:
+            self.assertAlmostEqual(drop[rail], part[rail], places=6)
+        self.assertAlmostEqual(rwire, 0.00163, places=9)
+        self.assertEqual([round(drop[r], 3) for r in pp.RAILS], [15.321, 15.058, 11.113])
+
+    def test_present_shares_match_partition(self):
+        part = json.loads((pp.ROOT / 'design/partition/partition.json').read_text())['power']['GH_normal_return_bounds']
+        for b, a in pp.present_shares(self.d).items():
+            self.assertAlmostEqual(a, part[b]['worst_single_contact_A'], places=9)
+
+    def test_present_budget_matches_supply(self):
+        sup = json.loads((pp.ROOT / 'design/power/supply-architecture.json').read_text())
+        text = json.dumps(sup)
+        for rail, val in pp.present_budget_V(self.d).items():
+            self.assertAlmostEqual(val, v := self.d['terms']['present_budget_V']['value'][rail], places=9, msg=v)
+        self.assertIn('"worst_rail_plus_return_loss_V": {"+12V": 0.194', text)
+
+
+class StackScreens(unittest.TestCase):
+    def setUp(self):
+        self.d = pp.load()
+        self.r = pp.results(self.d)
+
+    def test_limits_met_on_paper(self):
+        self.assertTrue(all(x < 20 for x in self.r['worst_drop_mV'].values()))
+        self.assertTrue(all(x < 0.20 for x in self.r['budget_V'].values()))
+        self.assertTrue(all(x < 20 for x in self.r['el_total_mV'].values()))
+        for b in pp.BRANCHES:
+            self.assertLess(self.r['joint_ohm'][b], min(self.r['requirement_ohm'].values()))
+            self.assertLess(self.r['shares'][b], self.d['terms']['header_contact_limit_A']['value'])
+
+    def test_gh_limit_is_exceeded_and_reported(self):
+        for b in pp.BRANCHES:
+            self.assertGreater(self.r['shares'][b], 0.5)
+        floor = 4.6 * 0.0005 / (0.00436 + 0.0005)
+        for b in pp.BRANCHES:
+            self.assertGreater(self.r['shares'][b], floor)
+
+    def test_requirement_formula_hits_20mV(self):
+        for rail, rj in self.r['requirement_ohm'].items():
+            self.assertAlmostEqual(pp.stack_drop_mV(self.d, rj)[rail], 20.0, places=9)
+
+    def test_face_term_moves_joint(self):
+        d = copy.deepcopy(self.d)
+        d['terms']['face_ohm']['value'] *= 2
+        self.assertAlmostEqual(pp.joint_ohm(d, 18.8) - pp.joint_ohm(self.d, 18.8), 2 * self.d['terms']['face_ohm']['value'], places=12)
+
+    def test_fault_shares_rise_as_posts_go(self):
+        for row in pp.fault_shares(self.d).values():
+            self.assertLess(row[3], row[2])
+            self.assertLess(row[2], row[1])
+            self.assertLess(row[1], row[0])
+            self.assertLess(row[0], 1.6)
+
+    def test_every_term_has_status_and_source(self):
+        for k, t in self.d['terms'].items():
+            self.assertIn(t['status'], ('SOURCED', 'DERIVED', 'ASSUMED'), k)
+            self.assertTrue(t['source'], k)
+            self.assertIn('unit', t, k)
+
+    def test_joints(self):
+        js = self.d['joints']
+        self.assertEqual(len(js), 18)
+        self.assertEqual(sum(j['net'] == 'AGND' for j in js), 9)
+        for j in js:
+            if j['front_board'] == 'P' and j['carried_by']:
+                self.assertEqual(j['front_xy'], j['K_xy'])
+            self.assertEqual(j['gap_mm'], 17.0 if j['front_board'] == 'P' else 18.8)
+        counts = self.d['terms']['header_agnd_positions']['value']
+        self.assertEqual(sum(counts.values()), 264)
+
+
+class Readme(unittest.TestCase):
+    def test_readme_tables_are_current(self):
+        d = pp.load()
+        env = json.loads(pp.ENVELOPES.read_text())
+        current = pp.README.read_text()
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp) / 'README.md'
+            p.write_text(current)
+            pp.write_readme(d, env, p)
+            self.assertEqual(p.read_text(), current, 'run power_posts.py --write-readme')
+
+    def test_locked_hardware_is_never_proposed_to_move(self):
+        lock = json.loads((pp.ROOT / 'design/grid/placements.lock.json').read_text())['placements']
+        locked = {r['ref'] for r in lock}
+        env = json.loads(pp.ENVELOPES.read_text())
+        text = pp.README.read_text()
+        hits = {m['ref'] for b in env['boards'].values() for m in b['hits']} & locked
+        self.assertEqual(hits, {'D13101', 'D14101', 'D15101', 'D16101', 'RV1201'})
+        for ref in ('D13101', 'RV1201'):
+            self.assertIn(ref, text)
+        self.assertIn('never moved', text)
+
+
+if __name__ == '__main__':
+    unittest.main()

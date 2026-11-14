@@ -32,6 +32,7 @@ class Context:
         self.retired_k = sg.retired_k_headers(ci)
         self.obstacles = sg.stack_obstacles(ci)
         self.reference = generate.build(ci, self.obstacles)
+        self.cache = {}
         self.heights = {}
         for env in ci['mechanical']['model_envelopes']:
             if env['side'] != 'F.Cu':
@@ -66,13 +67,60 @@ def check_planes(cand, ctx, res):
             errs.append('non-positive mated height %s %s' % (gap, value))
     if st['selector_tail_z_mm'] - st['K_face_z_mm'] <= 0:
         errs.append('selector tail at z=%s reaches K F.Cu at z=%s' % (st['selector_tail_z_mm'], st['K_face_z_mm']))
-    if st['K_rear_parts_z_mm'] - st['enclosure_inner_rear_z_mm'] < 0:
-        errs.append('K rear parts at z=%s pass the enclosure inner rear at z=%s' % (st['K_rear_parts_z_mm'], st['enclosure_inner_rear_z_mm']))
+    for key in ('enclosure_depth_cases', 'stacker_height_by_gap'):
+        if json.dumps(st.get(key), sort_keys=True) != json.dumps(ref[key], sort_keys=True):
+            errs.append('stale %s; sources give %s' % (key, ref[key]))
     for p in cand['pairs']:
         gap = '/'.join(p['boards']) if p['family'] != 'EL/P' else 'EL/P'
         if gap in st['mated_heights_mm'] and abs(p['mated_height_mm'] - st['mated_heights_mm'][gap]) > TOL:
             errs.append('pair %s mated height %s differs from gap %s %s' % (p['id'], p['mated_height_mm'], gap, st['mated_heights_mm'][gap]))
     res.check('planes_and_gaps', {'stack': ref}, errs)
+
+
+def check_rear_envelope(cand, ctx, res):
+    """K's rear parts against the decided enclosure depth; the other depth cases are reported rows."""
+    st = cand['stack']
+    errs = []
+    rows = []
+    for c in st['enclosure_depth_cases']:
+        clear = round(st['K_rear_parts_z_mm'] - c['inner_rear_z_mm'], 4)
+        rows.append({'inside_depth_mm': c['inside_depth_mm'], 'inner_rear_z_mm': c['inner_rear_z_mm'],
+                     'K_rear_parts_z_mm': st['K_rear_parts_z_mm'], 'clearance_mm': clear,
+                     'role': 'decided depth (checked)' if c['decided'] else 'reported row (not a check)'})
+        if c['decided'] and clear < 0:
+            errs.append('K rear parts at z=%s pass the enclosure inner rear at z=%s by %s mm'
+                        % (st['K_rear_parts_z_mm'], c['inner_rear_z_mm'], -clear))
+    res.check('rear_envelope', {'cases': rows, 'K_rear_z_mm': st['K_rear_z_mm'],
+                                'core_rear_ceiling_mm': ctx.ci['mechanical']['core_rear_ceiling_mm']}, errs)
+
+
+def check_stacker_heights(cand, ctx, res):
+    """DA-01 D3 rule per gap to K: A + socket + body clearance <= gap, with A on the 0.005 in step."""
+    errs = []
+    rule = ctx.params['stacker_rule']
+    for g, row in cand['stack']['stacker_height_by_gap'].items():
+        gap = cand['stack']['mated_heights_mm'][g]
+        a = row['stacker_A_mm']
+        steps = a / rule['height_step_mm']
+        if abs(steps - round(steps)) > 1e-6:
+            errs.append('gap %s stacker A %s mm is not a multiple of %s mm' % (g, a, rule['height_step_mm']))
+        if a + rule['socket_seated_height_mm'] + rule['body_clearance_mm'] > gap + TOL:
+            errs.append('gap %s (%s mm): stacker A %s + socket %s + clearance %s mm exceeds it' % (
+                g, gap, a, rule['socket_seated_height_mm'], rule['body_clearance_mm']))
+        if a <= 0:
+            errs.append('gap %s (%s mm) leaves no stacker height' % (g, gap))
+    el = ctx.params['el_pair_heights_mm']
+    gap_el = cand['stack']['mated_heights_mm']['EL/P']
+    bodies = round(el['stacker_body'] + el['socket'], 3)
+    if bodies >= gap_el:
+        errs.append('EL/P bodies %s + %s mm reach the %s mm gap' % (el['stacker_body'], el['socket'], gap_el))
+    el_t = ctx.boards['EL']['thickness_mm']
+    proud = round(el['pin_tip'] - gap_el - el_t, 3)
+    if proud > el['el_front_height']:
+        errs.append('EL/P stacker tips stand %s mm proud of EL F.Cu, above the %s mm front height' % (proud, el['el_front_height']))
+    res.check('stacker_heights', {'by_gap': cand['stack']['stacker_height_by_gap'],
+                                  'EL/P': {'gap_mm': gap_el, 'bodies_mm': bodies, 'body_gap_mm': round(gap_el - bodies, 3),
+                                           'tip_proud_of_EL_front_mm': proud, 'EL_front_height_mm': el['el_front_height']}}, errs)
 
 
 def check_coaxial(cand, ctx, res):
@@ -101,29 +149,42 @@ def check_coaxial(cand, ctx, res):
 def check_containment(cand, ctx, res):
     errs = []
     counted = 0
+    drop_in = set(ctx.params['drop_in_families'])
     for p in cand['pairs']:
         for name, half in (('front', 'front'), ('back', 'K')):
             s = p['sites'][name]
-            w, l = sg.envelope(ctx.land, p['positions'], half)
+            w, l = sg.envelope(ctx.land, p['positions'], half, p.get('rows', 1))
             rect = sg.env_rect(s['center'][0], s['center'][1], w, l, s['long_axis_x'])
             if any(abs(a - b) > TOL for a, b in zip(rect, s['envelope'])):
                 errs.append('pair %s %s envelope %s is stale; land pattern gives %s' % (p['id'], name, s['envelope'], rect))
-            if s['replaces']:
+            if s['replaces'] and p['family'] in drop_in:
                 gh = ctx.fps[s['board']][s['replaces']]['courtyard']
                 counted += 1
                 if not sg.inside(rect, gh):
                     errs.append('pair %s %s envelope %s lies outside the GH courtyard %s of %s on %s'
                                 % (p['id'], name, rect, gh, s['replaces'], s['board']))
-    res.check('replacement_inside_gh_courtyard', {'replaced_halves_checked': counted}, errs)
+    res.check('replacement_inside_gh_courtyard', {'replaced_halves_checked': counted,
+                                                  'families': sorted(drop_in)}, errs)
 
 
 def check_blockers(cand, ctx, res):
     errs = []
     declared = []
+    clear = set(ctx.params['must_be_clear_families'])
+    margin = ctx.params['board_edge_margin_mm']
     for p in cand['pairs']:
         for name in ('front', 'back'):
             s = p['sites'][name]
             skip = {s['replaces']} if s['replaces'] else set()
+            if p['family'] in clear:
+                for ref, kind, depth in ctx.obstacles[s['board']].hits_depth(s['side'][0], s['envelope'], skip):
+                    errs.append('pair %s %s %s envelope %s on %s %s overlaps %s (%s) by %s mm (must be clear)'
+                                % (p['id'], name, sg.envelope_info(ctx.land, p['positions'], 'front' if name == 'front' else 'K',
+                                                                   p.get('rows', 1))['key'],
+                                   s['envelope'], s['board'], s['side'], ref, kind, depth))
+                if s['board'] != 'P' and not sg.rect_inside_poly(s['envelope'], ctx.boards[s['board']]['outline'], margin):
+                    errs.append('pair %s %s envelope %s is not inside the %s outline with %s mm margin'
+                                % (p['id'], name, s['envelope'], s['board'], margin))
             got = [list(x) for x in ctx.obstacles[s['board']].hits(s['side'][0], s['envelope'], skip)]
             decl = [list(x) for x in s.get('blockers', [])]
             for x in got:
@@ -137,12 +198,22 @@ def check_blockers(cand, ctx, res):
     res.check('courtyard_blockers_declared', {'declared_conflicts': declared}, errs)
 
 
-def adjacency_violations(pins):
+def neighbours(i, n, rows):
+    """Adjacent indices: single row along the row; two rows (index i = column i // rows, row i % rows)
+    in the same column or the same row of the next column."""
+    if rows == 1:
+        return [j for j in (i - 1, i + 1) if 0 <= j < n]
+    col, row = divmod(i, rows)
+    cand = [(col, r) for r in range(rows) if r != row] + [(col - 1, row), (col + 1, row)]
+    return [c * rows + r for c, r in cand if 0 <= c < n // rows]
+
+
+def adjacency_violations(pins, rows=1):
     out = []
     for i, n in enumerate(pins):
         if n in ('AGND', 'NC') or n in RAILS:
             continue
-        nb = [pins[j] for j in (i - 1, i + 1) if 0 <= j < len(pins)]
+        nb = [pins[j] for j in neighbours(i, len(pins), rows)]
         if 'AGND' not in nb:
             out.append(n)
     return out
@@ -168,7 +239,7 @@ def check_pins(cand, ctx, res):
             if c == 'G' and n != 'AGND':
                 errs.append('pair %s puts %s on an AGND position of template %s' % (p['id'], n, template))
         if p['family'] in p_cfg['pin_templates']['signal_beside_return_required']:
-            for n in adjacency_violations(pins):
+            for n in adjacency_violations(pins, p.get('rows', 1)):
                 errs.append('pair %s: signal %s has no adjacent AGND (signal beside a return required)' % (p['id'], n))
         if p['source_harness']:
             by_source.setdefault(p['source_harness'], []).append(p)
@@ -198,13 +269,15 @@ def check_pins(cand, ctx, res):
             for net in h['signals']:
                 if net not in carried:
                     errs.append('pair %s does not carry %s of %s' % (j['id'], net, hid))
-    rails_seen = {n for p in cand['pairs'] if p['family'] == 'EL/P' for n in p['pin_map'] if n in RAILS}
-    for r in RAILS:
-        if r not in rails_seen:
-            errs.append('EL/P pairs do not carry rail %s to EL' % r)
+    for p in cand['pairs']:
+        if p['family'] == 'EL/P':
+            for r in ctx.params['el_rails']:
+                if r not in p['pin_map']:
+                    errs.append('EL/P pair %s does not carry rail %s to EL' % (p['id'], r))
     crossing = sum(len(harness[h]['signals']) for h, js in by_source.items() if len(js) == 2)
     totals['nets_counted_at_two_joints'] = crossing
-    lone = {p['id']: adjacency_violations(p['pin_map']) for p in cand['pairs'] if adjacency_violations(p['pin_map'])}
+    lone = {p['id']: adjacency_violations(p['pin_map'], p.get('rows', 1)) for p in cand['pairs']
+            if adjacency_violations(p['pin_map'], p.get('rows', 1))}
     res.check('pin_budget', {'totals': totals, 'signals_without_adjacent_AGND_where_not_required': lone}, errs)
 
 
@@ -354,6 +427,8 @@ def check_tabs(cand, ctx, res):
     carriers = [('seam rear cradle', carrier['rear_rect_mm'], carrier['rear_z_mm']),
                 ('seam front lip', carrier['front_lip_rect_mm'], carrier['front_lip_z_mm'])]
     carriers += [('seam cross-member %d' % i, c['rect_mm'], c['z_mm']) for i, c in enumerate(carrier['cross_members'], 1)]
+    removed = set(ctx.params['removed_carriers'])
+    carriers = [c for c in carriers if c[0] not in removed]
     pairs = {p['id']: p for p in cand['pairs']}
     m = ctx.params['tab_edge_margin_mm']
     for t in cand['tabs']:
@@ -398,7 +473,7 @@ def check_tabs(cand, ctx, res):
                         if s['board'] == 'P' and not sg.inside(sg.grow(s['envelope'], m)[:3] + [min(s['envelope'][3] + m, r[3])], r):
                             errs.append('pair %s envelope %s is not inside tab %s %s' % (p['id'], s['envelope'], t['id'], r))
         detail[t['id']] = d
-    res.check('p_tabs', {'tabs': detail, 'NOT_RUN': 'P body-carrier envelope: no carrier geometry is recorded in the sources (text only in partition load paths)'}, errs)
+    res.check('p_tabs', {'tabs': detail, 'removed_carriers': sorted(removed), 'NOT_RUN': 'P body-carrier envelope: no carrier geometry is recorded in the sources (text only in partition load paths)'}, errs)
 
 
 def rect_distance(a, b):
@@ -458,6 +533,10 @@ def facing_items(ctx, cand, key, face, region_poly, exclude):
     return out
 
 
+def tallest(items, n=3):
+    return [{'ref': it[0], 'height_mm': it[3], 'kind': it[4]} for it in sorted(items, key=lambda it: (-it[3], it[0]))[:n]]
+
+
 def check_facing_heights(cand, ctx, res):
     errs = []
     detail = {}
@@ -506,12 +585,247 @@ def check_facing_heights(cand, ctx, res):
             'back_items': len(b_items), 'back_items_with_height': len(b_known),
             'tallest_front_mm': max([it[3] for it in a_known] or [0]),
             'tallest_back_mm': max([it[3] for it in b_known] or [0]),
+            'tallest_front_parts': tallest(a_known), 'tallest_back_parts': tallest(b_known),
+            'stacker': cand['stack']['stacker_height_by_gap'].get(front + '/' + back),
             'collisions': collisions}
     res.check('facing_heights', {'gaps': detail, 'height_source': 'design/mechanical/ic-envelope-native-report.json native display-model z bounds (not seated heights), selector-assembly.json tails, partition bulk reserves; every other part height is unretained and counted as unknown'}, errs)
 
 
-CHECKS = [check_planes, check_coaxial, check_containment, check_blockers, check_pins, check_pass_through,
-          check_sub, check_posts, check_tabs, check_retired, check_facing_heights]
+def nearest_clearance(obs, side, cx, cy, r, skip, reach=6.0):
+    """Distance from a circle of radius r to the nearest grown obstacle on one face (negative = overlap)."""
+    best = None
+    for rect, payload in obs.index[side].near(sg.circle_rect(cx, cy, 2 * (r + reach))):
+        if payload[0] in skip:
+            continue
+        d = -sg.circle_rect_depth(cx, cy, r, rect)
+        if best is None or d < best[0]:
+            best = (round(d, 4), payload[0])
+    return best
+
+
+def check_el_relief_holes(cand, ctx, res):
+    """Eight relief holes per EL site against EL parts, holes, reserves and outline on both faces."""
+    errs = []
+    obs = ctx.obstacles['EL']
+    margin = ctx.params['board_edge_margin_mm']
+    outline = ctx.boards['EL']['outline']
+    ref = {p['id']: p.get('relief_holes') for p in ctx.reference['pairs'] if p['family'] == 'EL/P'}
+    rows = []
+    for p in cand['pairs']:
+        if p['family'] != 'EL/P':
+            continue
+        holes = p.get('relief_holes') or []
+        if holes != ref.get(p['id']):
+            errs.append('pair %s relief holes differ from the sources' % p['id'])
+        if len(holes) != p['positions']:
+            errs.append('pair %s has %d relief holes for %d positions' % (p['id'], len(holes), p['positions']))
+        skip = {p['sites']['front']['replaces']}
+        site_hits = []
+        for h in holes:
+            cx, cy = h['center']
+            r = h['diameter_mm'] / 2
+            for side in 'FB':
+                for oref, kind, depth in obs.circle_hits(side, cx, cy, r, skip):
+                    site_hits.append([h['pin'], side, oref, depth])
+                    errs.append('pair %s relief hole pin %d at %s (d %s mm) overlaps EL %s.Cu %s (%s) by %s mm'
+                                % (p['id'], h['pin'], h['center'], h['diameter_mm'], side, oref, kind, depth))
+            edge = sg.distance_to_outline(cx, cy, outline)
+            if not sg.point_in_poly(cx, cy, outline) or edge < r + margin:
+                errs.append('pair %s relief hole pin %d at %s is %s mm from the EL edge (needs %s)'
+                            % (p['id'], h['pin'], h['center'], round(edge, 4), r + margin))
+        rows.append({'pair': p['id'], 'holes': len(holes), 'conflicts': site_hits,
+                     'clear_holes': len(holes) - len({c[0] for c in site_hits})})
+    res.check('el_relief_holes', {'sites': rows, 'diameter_status': ctx.params['el_relief_holes']['status'],
+                                  'EL_windows': 'NOT CHECKABLE: no window geometry is recorded for EL in the sources'}, errs)
+
+
+def check_el_pot_passages(cand, ctx, res):
+    """The 18 EL pot passages at the decided diameter against EL parts, holes, reserves and outline."""
+    errs = []
+    obs = ctx.obstacles['EL']
+    margin = ctx.params['board_edge_margin_mm']
+    outline = ctx.boards['EL']['outline']
+    if cand['el_pot_passages'] != ctx.reference['el_pot_passages']:
+        errs.append('EL pot passages differ from the sources')
+    rows = []
+    for ps in cand['el_pot_passages']:
+        cx, cy = ps['center']
+        r = ps['diameter_mm'] / 2
+        if ps['el_footprint'] is None:
+            errs.append('pot passage %s at %s has no EL passage footprint' % (ps['uid'], ps['center']))
+        skip = {ps['el_footprint']}
+        hits = []
+        for side in 'FB':
+            for oref, kind, depth in obs.circle_hits(side, cx, cy, r, skip):
+                hits.append([side, oref, depth])
+                errs.append('pot passage %s at %s (d %s mm) overlaps EL %s.Cu %s (%s) by %s mm'
+                            % (ps['uid'], ps['center'], ps['diameter_mm'], side, oref, kind, depth))
+        edge = sg.distance_to_outline(cx, cy, outline)
+        if edge < r + margin:
+            errs.append('pot passage %s at %s is %s mm from the EL edge (needs %s)' % (ps['uid'], ps['center'], round(edge, 4), r + margin))
+        near = [nearest_clearance(obs, side, cx, cy, r, skip) for side in 'FB']
+        near = min((n for n in near if n), default=None)
+        rows.append({'uid': ps['uid'], 'center': ps['center'], 'diameter_mm': ps['diameter_mm'], 'conflicts': hits,
+                     'nearest_grown_obstacle': {'clearance_mm': near[0], 'ref': near[1]} if near else None})
+    res.check('el_pot_passages', {'passages': rows,
+                                  'EL_windows': 'NOT CHECKABLE: no window geometry is recorded for EL in the sources',
+                                  'EL_copper': 'NOT RUN: tracks and zones are outside the courtyard model'}, errs)
+
+
+def nearest_fixing(xy, fixings):
+    best = None
+    for f in fixings:
+        d = ((xy[0] - f['xy'][0]) ** 2 + (xy[1] - f['xy'][1]) ** 2) ** 0.5
+        if best is None or d < best[0]:
+            best = (round(d, 3), f['id'])
+    return best
+
+
+def check_fixing_reach(cand, ctx, res):
+    """DA-01 D4: every pair to K within the reach of a fixing. Fixings: posts, kept supports and the interior
+    candidates, without and with the PROVISIONAL added tie sites; only the run with the tie sites is a check."""
+    errs = []
+    reach = ctx.params['fixings']['reach_mm']
+    if cand['fixings'] != ctx.reference['fixings']:
+        errs.append('fixing list differs from the sources')
+    posts_supports = [f for f in cand['fixings'] if f['kind'] in ('post', 'kept support')]
+    base = [f for f in cand['fixings'] if f['kind'] != 'tie site']
+    full = cand['fixings']
+    runs = {}
+    for name, fx in (('posts_and_kept_supports_only', posts_supports), ('without_tie_sites', base), ('with_tie_sites', full)):
+        misses = []
+        for p in cand['pairs']:
+            if 'K' not in p['boards']:
+                continue
+            xy = p['sites']['back']['center']
+            d, fid = nearest_fixing(xy, fx)
+            if d > reach:
+                misses.append({'pair': p['id'], 'front_board': p['boards'][0], 'xy': xy, 'nearest': fid, 'distance_mm': d})
+        by_board = {}
+        for m in misses:
+            by_board[m['front_board']] = by_board.get(m['front_board'], 0) + 1
+        runs[name] = {'fixings': len(fx), 'misses': len(misses), 'by_front_board': dict(sorted(by_board.items())),
+                      'worst_mm': max([m['distance_mm'] for m in misses] or [0]),
+                      'missed_pairs': sorted(misses, key=lambda m: -m['distance_mm'])}
+    for m in runs['with_tie_sites']['missed_pairs']:
+        errs.append('pair %s at %s is %s mm from the nearest fixing %s (reach %s mm)' % (m['pair'], m['xy'], m['distance_mm'], m['nearest'], reach))
+    k_pairs = sum(1 for p in cand['pairs'] if 'K' in p['boards'])
+    el = []
+    collars = [{'id': s['id'], 'xy': s['position_mm']} for s in ctx.ci['partition']['supports'] if s['board'] == 'EL']
+    for p in cand['pairs']:
+        if p['family'] == 'EL/P':
+            d, fid = nearest_fixing(p['sites']['front']['center'], collars)
+            el.append({'pair': p['id'], 'nearest_EL_collar_post': fid, 'distance_mm': d})
+    res.check('fixing_reach', {'reach_mm': reach, 'K_pairs': k_pairs, 'runs': runs,
+                               'tie_site_status': ctx.params['fixings']['provisional_tie_status'],
+                               'EL_P_pairs_to_EL_collar_posts': el}, errs)
+
+
+def components(points, step):
+    """4-connected groups of grid points."""
+    left = set(points)
+    out = []
+    while left:
+        seed = left.pop()
+        group = [seed]
+        stack = [seed]
+        while stack:
+            x, y = stack.pop()
+            for q in ((round(x + step, 4), y), (round(x - step, 4), y), (x, round(y + step, 4)), (x, round(y - step, 4))):
+                if q in left:
+                    left.remove(q)
+                    group.append(q)
+                    stack.append(q)
+        out.append(sorted(group))
+    return sorted(out, key=lambda g: g[0])
+
+
+def standoff_search(ctx, key, cfg, margin, obs_k, k_out):
+    """Clear grid points of the configured keep-out, and per-face counts for every keep-out searched."""
+    step = cfg['search_step_mm']
+    ol = ctx.boards[key]['outline']
+    xs = [q[0] for q in ol]
+    ys = [q[1] for q in ol]
+    obs = ctx.obstacles[key]
+    clear = []
+    faces = {}
+    for d in [cfg['keepout_diameter_mm']] + cfg['diagnostic_keepouts_mm']:
+        rd = d / 2
+        cnt = {'inside_outlines': 0, key + ' F.Cu': 0, key + ' B.Cu': 0, 'K F.Cu': 0, 'K B.Cu': 0, 'all four': 0}
+        for x in sg.frange(min(xs), max(xs), step):
+            for y in sg.frange(min(ys), max(ys), step):
+                if not sg.point_in_poly(x, y, ol) or sg.distance_to_outline(x, y, ol) < rd + margin:
+                    continue
+                if not sg.point_in_poly(x, y, k_out):
+                    continue
+                cnt['inside_outlines'] += 1
+                ok = {key + ' F.Cu': not obs.circle_hits('F', x, y, rd), key + ' B.Cu': not obs.circle_hits('B', x, y, rd),
+                      'K F.Cu': not obs_k.circle_hits('F', x, y, rd), 'K B.Cu': not obs_k.circle_hits('B', x, y, rd)}
+                for k2, v in ok.items():
+                    cnt[k2] += v
+                if all(ok.values()):
+                    cnt['all four'] += 1
+                    if d == cfg['keepout_diameter_mm']:
+                        clear.append((x, y))
+        faces[str(d)] = cnt
+    return clear, faces
+
+
+def check_adapter_standoffs(cand, ctx, res):
+    """Candidate standoff centres per adapter, clear on both adapter faces and both K faces at the adapter gap.
+    A search only: ST-08 fixes the sites."""
+    errs = []
+    cfg = ctx.params['adapter_standoffs']
+    r = cfg['keepout_diameter_mm'] / 2
+    step = cfg['search_step_mm']
+    margin = ctx.params['board_edge_margin_mm']
+    obs_k = ctx.obstacles['K']
+    k_out = ctx.boards['K']['outline']
+    detail = {}
+    for key in ('O1', 'O3', 'O5'):
+        cache_key = ('standoffs', key, json.dumps(cfg, sort_keys=True), margin, id(ctx.obstacles[key]), id(obs_k))
+        if cache_key not in ctx.cache:
+            ctx.cache[cache_key] = standoff_search(ctx, key, cfg, margin, obs_k, k_out)
+        clear, faces = copy.deepcopy(ctx.cache[cache_key])
+        r = cfg['keepout_diameter_mm'] / 2
+        step = cfg['search_step_mm']
+        groups = components(clear, step)
+        regions = [{'bbox': [g[0][0], min(q[1] for q in g), g[-1][0], max(q[1] for q in g)],
+                    'centre': [round(sum(q[0] for q in g) / len(g), 3), round(sum(q[1] for q in g) / len(g), 3)],
+                    'points': len(g)} for g in groups]
+        far = farthest_pair(clear)
+        if far is None or far['distance_mm'] < 2 * r:
+            errs.append('adapter %s: no %d standoff sites of %s mm keep-out clear on %s and K (clear grid points %d, farthest pair %s mm)'
+                        % (key, cfg['per_adapter'], cfg['keepout_diameter_mm'], key, len(clear), far and far['distance_mm']))
+        detail[key] = {'gap_mm': cand['stack']['mated_heights_mm'][key + '/K'], 'clear_grid_points': len(clear),
+                       'clear_points_per_face_by_keepout_mm': faces,
+                       'regions': regions, 'farthest_region_pair': far}
+    res.check('adapter_standoff_candidates', {'keepout_diameter_mm': cfg['keepout_diameter_mm'], 'status': cfg['status'],
+                                              'faces': 'adapter F.Cu and B.Cu, K F.Cu and B.Cu (screw through K)',
+                                              'adapters': detail}, errs)
+
+
+def farthest_pair(points):
+    """Two clear points far apart (a lower bound of the largest spacing: taken among the extreme points)."""
+    if len(points) < 2:
+        return None
+    ext = {min(points), max(points), min(points, key=lambda q: (q[1], q[0])), max(points, key=lambda q: (q[1], q[0])),
+           min(points, key=lambda q: q[0] + q[1]), max(points, key=lambda q: q[0] + q[1]),
+           min(points, key=lambda q: q[0] - q[1]), max(points, key=lambda q: q[0] - q[1])}
+    ext = sorted(ext)
+    best = None
+    for i in range(len(ext)):
+        for j in range(i + 1, len(ext)):
+            a, b = ext[i], ext[j]
+            d = round(((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5, 3)
+            if best is None or d > best['distance_mm']:
+                best = {'sites': [list(a), list(b)], 'distance_mm': d}
+    return best
+
+
+CHECKS = [check_planes, check_rear_envelope, check_stacker_heights, check_coaxial, check_containment, check_blockers, check_pins, check_pass_through,
+          check_sub, check_posts, check_tabs, check_retired, check_facing_heights, check_el_relief_holes,
+          check_el_pot_passages, check_fixing_reach, check_adapter_standoffs]
 
 
 def run_checks(doc, ctx):
@@ -539,6 +853,9 @@ NOT_RUN = [
     'Seated part heights: only native display-model envelopes and the listed reserves are retained; other heights are counted as unknown',
     'SUB toggle tails against K F.Cu: no retained tail protrusion for the toggle (see sub_toggle_windows detail)',
     'Native KiCad oracle query: not needed; boards parsed with plain Python and the extract matched the planning extract for K',
+    'EL copper around the relief holes and the 6.8 mm pot passages: tracks and zones are outside the courtyard model',
+    'EL windows around the relief holes and passages: NOT CHECKABLE, no EL window geometry is recorded in the sources',
+    'Socket land patterns (MMS -02 -SV, CLT-104-02-L-D-K-TR): not retained; the socket halves use PROVISIONAL envelopes until ST-01b',
 ]
 
 
