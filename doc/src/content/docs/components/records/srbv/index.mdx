@@ -33,7 +33,7 @@ This record in the catalog: [SRBV160803](/docs/components/catalog/#rec-srbv)
 
 **Source state:** AVAILABLE
 
-**Coverage:** 1 open of 2 published
+**Coverage:** 2 open of 3 published
 
 ## Documents and package
 
@@ -93,9 +93,43 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 - [`fact-srbv-mechanical-fit`](#fact-srbv-mechanical-fit)
 
+### operating\_temperature
+
+<EvidenceAnchor id="cov-srbv-operating-temperature" />
+
+**Coverage ID:** `cov-srbv-operating-temperature` · **Status:** OPEN
+
+**Reason:** The retained catalogue prints no temperature range, so the operating temperature is UNSOURCED until a formal specification is retained.
+
+**Facts in this domain:**
+
+- [`fact-srbv-operating-temperature`](#fact-srbv-operating-temperature)
+
+**Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
+
+- [`fact-srbv-operating-temperature`](#fact-srbv-operating-temperature)
+
 ## Facts
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
+
+### RECOMMENDED\_OPERATION
+
+The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-srbv-operating-temperature" />
+
+  **Fact:** `fact-srbv-operating-temperature`
+
+  **Value:** The retained SRBV series catalogue (Update 2510) prints no operating or storage temperature for SRBV160803; its Note 1 says it shows only outline specifications. · **Unit:** `NONE`
+
+  **Conditions:** Read on all five pages of the retained catalogue (feature list, Product List, packing specifications, Drawing No.1 to No.10). No temperature limit is recorded until a formal specification is retained; no figure is inferred from another series. Says what the maker prints, not what the part reaches in this unvalidated draft instrument.
+
+  **Verdict:** UNSOURCED · **Provenance:** UNVERIFIED
+
+  **Evidence:** [`src-srbv-outline-specifications`](#src-srbv-outline-specifications) — Section feature list and Note 1 below table Product List, physical page 0; Drawing No.1 to No.10 sections, physical pages 1 to 4
+</EvidenceFact>
 
 ### PROJECT\_STATE
 
@@ -302,6 +336,26 @@ Every document cited above, with its identification, when it was retrieved, and 
 
 **Document URL:** [https://tech.alpsalpine.com/cms.media/product\_detail\_fig\_srbv\_ap\_1\_en\_173ba8d251.gif](https://tech.alpsalpine.com/cms.media/product_detail_fig_srbv_ap_1_en_173ba8d251.gif)
 
+### Alps Alpine SRBV Series catalogue, update 2510
+
+<EvidenceAnchor id="src-srbv-outline-specifications" />
+
+**Source ID:** `src-srbv-outline-specifications` · **Authority:** MANUFACTURER\_PRIMARY
+
+| Field           | Recorded value |
+| --------------- | -------------- |
+| Document number | SRBV           |
+| Revision        | 2510           |
+| Document date   | 2025-10        |
+| Retrieved       | 2026-09-28     |
+| Printed page    | not printed    |
+
+**Locator:** Section feature list, Product List table and Note 1 on physical page 0; Drawing No.1 to No.10 sections on physical pages 1 to 4
+
+**Availability:** AVAILABLE
+
+**Document URL:** [https://tech.alpsalpine.com/cms.media/product\_catalog\_sw\_04\_srbv\_en\_7f096645b6.pdf](https://tech.alpsalpine.com/cms.media/product_catalog_sw_04_srbv_en_7f096645b6.pdf)
+
 ## Legend
 
 What the recorded terms on this page mean, in ordinary words. The exact terms above are the ones that count; these descriptions explain them and never replace them.
@@ -312,6 +366,7 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 | --------------------------------- | --------------------------------------------------------------------------------------------------- |
 | `NEEDS BENCH`                     | Cannot be settled from documents. It needs measurement on real hardware before it can be relied on. |
 | `PASS - primary-source confirmed` | Confirmed against the manufacturer's own document for this exact part.                              |
+| `UNSOURCED`                       | No accepted source backs this value yet. Treat it as a claim, not a fact.                           |
 
 ### Provenance
 
@@ -319,12 +374,14 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 | ---------------- | --------------------------------------------------------- |
 | `PRIMARY-SPEC`   | Taken from the manufacturer's own specification document. |
 | `PROJECT-CHOICE` | A decision made by this project. No vendor asserts it.    |
+| `UNVERIFIED`     | Recorded, but not yet backed by an accepted source.       |
 
 ### Fact class
 
-| Recorded term   | What it means                                                                                                                                                      |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `PROJECT_STATE` | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| Recorded term           | What it means                                                                                                                                                      |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| `RECOMMENDED_OPERATION` | The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.                                                              |
 
 ### Coverage status
 

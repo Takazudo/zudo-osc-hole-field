@@ -42,6 +42,56 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-b103-operating-temperature",
+      "record_id": "rec-b103",
+      "source_id": "src-b103-resistance",
+      "class": "RECOMMENDED_OPERATION",
+      "value": {
+        "minimum": -10,
+        "maximum": 50
+      },
+      "unit": "degC",
+      "conditions": "Printed for the PTV09 series, which includes PTV09A-4020F-B103, under Environmental Characteristics as \"Operating Temperature -10 \u00b0C to +50 \u00b0C\"; an operating range in a characteristics list, not a table of absolute maximum ratings; no further condition is printed. Says what the maker prints, not what the part reaches in this unvalidated draft instrument.",
+      "locator": "Section Environmental Characteristics, row Operating Temperature, physical page 0 (no printed page label)",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-b103-power-rating",
+      "record_id": "rec-b103",
+      "source_id": "src-b103-resistance",
+      "class": "THERMAL_SOA",
+      "value": 0.05,
+      "unit": "W",
+      "conditions": "Printed under Environmental Characteristics as \"Power Rating (Linear and Audio) 0.05 watt\"; the line prints no temperature; the Derating Curve (fact-b103-derating) holds 100 % of the rating up to 50 \u00b0C ambient. Says what the maker prints, not what the part reaches in this unvalidated draft instrument.",
+      "locator": "Section Environmental Characteristics, row Power Rating (Linear and Audio), physical page 0 (no printed page label)",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-b103-derating",
+      "record_id": "rec-b103",
+      "source_id": "src-b103-derating",
+      "class": "THERMAL_SOA",
+      "value": {
+        "full_power_ratio_percent": 100,
+        "full_power_up_to_ambient_C": 50,
+        "curve_end_ambient_C": 70,
+        "curve_end_power_ratio_percent": 33
+      },
+      "unit": "NONE",
+      "conditions": "Read from the figure \"Derating Curve\" (Rating Power Ratio (%) over Ambient Temperature (\u00b0C)), not from a table: the solid line falls from 100 % at 50 \u00b0C to 33 % at 70 \u00b0C, where it ends; only these two end points are stated. The figure prints no point beyond 70 \u00b0C; the 33 % level is a printed axis label and is drawn as a dashed line from 0 to 70 \u00b0C. Applies to the 0.05 W rating. Says what the maker prints, not what the part reaches in this unvalidated draft instrument.",
+      "locator": "Figure Derating Curve, physical page 3 (no printed page label)",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

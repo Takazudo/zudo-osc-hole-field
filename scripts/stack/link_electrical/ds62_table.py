@@ -18,6 +18,27 @@ SIDE = 'side by side'
 
 # ---------------------------------------------------------------- the 511 signals
 
+VICTIM_TERMS = {'LOGIC': 'LOGIC', 'ANALOGUE': 'ANALOGUE', 'PRECISION': 'PRECISION', 'WIPER': 'WIPER', 'STATIC': 'PRECISION'}
+
+
+class NoVictimTerms(KeyError):
+    pass
+
+
+def victim_terms(cls):
+    """Victim entry of inputs.json for a class; a static line is a PRECISION victim because it sets the pitch."""
+    if cls not in VICTIM_TERMS:
+        raise NoVictimTerms(f'no victim terms for class {cls!r}')
+    return VICTIM_TERMS[cls]
+
+
+def pair_level(par, ag_cls, vic_cls, inp):
+    agg = hb.aggressor_of(ag_cls)
+    if agg is None:
+        raise ValueError(f'class {ag_cls!r} exerts no aggressor term')
+    return hb.level(par, agg, victim_terms(vic_cls), inp)[0]
+
+
 def adapter_rules(inp):
     return inp['classes_adapter']['rules'] + inp['classes']['rules']
 
@@ -39,6 +60,13 @@ def all_signals(inp, root=le.ROOT):
                               'kind': ' / '.join(sorted(kinds.get(net, {'(not in partition harnesses)'}))),
                               'class': le.classify(net, kinds, rules)})
     return base + extra
+
+
+def split_signals(inp, root=le.ROOT):
+    """(link signals, adapter signals), split where all_signals appends the adapter lines (review finding 4)."""
+    n = len(le.classified_signals(inp, root))
+    sig = all_signals(inp, root)
+    return sig[:n], sig[n:]
 
 
 # ---------------------------------------------------------------- flat-link windows
@@ -65,7 +93,16 @@ def clip(window, a, v, half):
 
 
 def placements(circuits, how, half):
-    """Worst-case candidates on a DS-62 link of this size: the pair at the cable edge and in the middle."""
+    """Worst-case candidates on a DS-62 link of this size: the pair at the cable edge and in the middle, each with
+    the aggressor on either side of the victim (review finding 3 of 2026-11-14 23:18 UTC)."""
+    out = []
+    for where, window, a, v in _placements_one_way(circuits, how, half):
+        out.append((where, window, a, v))
+        out.append((where, window, v, a))
+    return out
+
+
+def _placements_one_way(circuits, how, half):
     pat = link_pattern(circuits)
     out = []
     if how == ONE:
@@ -111,8 +148,8 @@ def ratio_table(inp, base):
                 ck = (cab['length_mm'], tuple(window), a, v)
                 if ck not in cache:
                     cache[ck] = window_parameters(inp, pk, cab['length_mm'], eps, window, a, v)
-                lv = hb.level(cache[ck], hb.aggressor_of(ag), vic, inp)[0]
-                by_where[where] = lv / base[key]['min_V']
+                lv = pair_level(cache[ck], ag, vic, inp)
+                by_where[where] = max(by_where.get(where, 0.0), lv / base[key]['min_V'])
                 if worst is None or lv > worst['V']:
                     worst = {'where': where, 'V': lv}
             rows.append({'cable': cab['code'], 'circuits': cab['circuits'], 'length_mm': cab['length_mm'], 'pair': key,
@@ -123,54 +160,81 @@ def ratio_table(inp, base):
 
 # ---------------------------------------------------------------- the adapter link
 
-def adapter_link(inp, base_patterns):
-    """Seven static lines: order, grounds and the selector-step bound on 8 and 14 circuits and on the present
-    adapter harness. The step is OCT_SELECTED moving by one ladder step; the victim is a neighbouring tap."""
-    t = inp['ds62']
-    s = t['selector_step']
-    pk = t['pitch']
-    eps = inp['cable']['eps_eff']['value'][-1]
-    nets = ['OCT_SELECTED'] + [f'OSC_OCT{i}' for i in range(6)]
-    layouts = {
-        8: {'order': nets + ['AGND'], 'window': ['S'] * 7 + ['G'], 'pair': (0, 1)},
-        14: {'order': [x for n in nets for x in (n, 'AGND')], 'window': ['S', 'G'] * 7, 'pair': (0, 2)}}
+ADAPTER_TAPS = [f'OSC_OCT{i}' for i in range(6)]
+ADAPTER_ORDERS = {
+    'part_1': {'circuits': 8, 'order': ['OCT_SELECTED'] + ADAPTER_TAPS + ['AGND']},
+    'ds79': {'circuits': 8, 'order': ADAPTER_TAPS + ['AGND', 'OCT_SELECTED']},
+    'alternating_14': {'circuits': 14, 'order': [x for n in ['OCT_SELECTED'] + ADAPTER_TAPS for x in (n, 'AGND')]}}
+
+
+def selector_inputs(inp):
+    s = inp['ds62']['selector_step']
     inp2 = copy.deepcopy(inp)
     inp2['aggressors']['SELECTOR'] = {'swing_V': s['swing_V'], 'slew_V_per_s': [s['swing_V'] / s['edge_s']], 'nominal_index': 0,
                                       'load_ohm': s['load_ohm'], 'load_F': s['load_F']}
+    return inp2
+
+
+def selector_bound(inp, par):
+    """Selector step on one victim: peak, area (V·R·Cm + M·ΔI) and the area over the receiver filter."""
+    s = inp['ds62']['selector_step']
     vv = inp['victims']['PRECISION']
     r = vv['source_ohm'][vv['nominal_index']]
+    x = le.victim_peak(par, 'SELECTOR', 'PRECISION', selector_inputs(inp))
+    i = s['swing_V'] / s['load_ohm'] + s['load_F'] * s['swing_V'] / s['edge_s']
+    area = s['swing_V'] * r * par['Cm_F'] + abs(par['M_eff_H']) * i
+    return {'peak_V': x['edge_V'], 'area_Vs': area, 'filtered_V': area / s['receiver_filter_s']}
 
-    def bound(par):
-        x = le.victim_peak(par, 'SELECTOR', 'PRECISION', inp2)
-        i = s['swing_V'] / s['load_ohm'] + s['load_F'] * s['swing_V'] / s['edge_s']
-        area = s['swing_V'] * r * par['Cm_F'] + abs(par['M_eff_H']) * i
-        return {'peak_V': x['edge_V'], 'area_Vs': area, 'filtered_V': area / s['receiver_filter_s']}
 
-    out = {}
-    for n, lay in layouts.items():
-        length = min(c['length_mm'] for c in t['cables'] if c['circuits'] == n)
-        par = window_parameters(inp, pk, length, eps, lay['window'], *lay['pair'])
-        out[f'flat_{n}'] = {'circuits': n, 'length_mm': length, 'order': lay['order'],
-                            'grounds': lay['order'].count('AGND'), **bound(par)}
+def selector_step(inp, order, length_mm):
+    """Worst tap of one adapter order at one cable length; every conductor of the cable in the solve."""
+    pk = inp['ds62']['pitch']
+    eps = inp['cable']['eps_eff']['value'][-1]
+    window = ['G' if n == 'AGND' else 'S' for n in order]
+    a = order.index('OCT_SELECTED')
+    rows = []
+    for v, n in enumerate(order):
+        if n in ADAPTER_TAPS:
+            rows.append({'victim': n, 'victim_pos': v + 1, **selector_bound(inp, window_parameters(inp, pk, length_mm, eps, window, a, v))})
+    w = max(rows, key=lambda r: r['peak_V'])
+    return {'order': order, 'aggressor_pos': a + 1, 'length_mm': length_mm, 'grounds': order.count('AGND'), **w}
+
+
+def adapter_link(inp, base_patterns):
+    """Seven static lines: the selector step on every adapter order and every cable in use for its size (review
+    finding 1: per cable, compared at one length), and on the present adapter harnesses."""
+    t = inp['ds62']
+    eps = inp['cable']['eps_eff']['value'][-1]
+    out = {'cases': []}
+    for name, o in ADAPTER_ORDERS.items():
+        for cab in t['cables']:
+            if cab['circuits'] == o['circuits']:
+                out['cases'].append({'name': name, 'cable': cab['code'], 'circuits': o['circuits'],
+                                     **selector_step(inp, o['order'], cab['length_mm'])})
     harness = []
     for p in base_patterns:
         if not p['id'].startswith('K-O') or 'OCT_SELECTED' not in ''.join(p['nets']):
             continue
         cls = ['G' if c == 'G' else 'S' for c in p['classes']]
         par = hb.harness_pair_parameters(inp, cls, 0, 2, p['cut_length_mm'], eps)
-        harness.append({'harness': p['id'], 'length_mm': p['cut_length_mm'], **bound(par)})
+        harness.append({'harness': p['id'], 'length_mm': p['cut_length_mm'], **selector_bound(inp, par)})
     q = min(harness, key=lambda x: x['peak_V'])
     out['harness_quietest'] = q
-    for n in (8, 14):
-        out[f'flat_{n}']['ratio_peak'] = out[f'flat_{n}']['peak_V'] / q['peak_V']
-        out[f'flat_{n}']['ratio_filtered'] = out[f'flat_{n}']['filtered_V'] / q['filtered_V']
+    for c in out['cases']:
+        c['ratio_peak'] = c['peak_V'] / q['peak_V']
+        c['ratio_filtered'] = c['filtered_V'] / q['filtered_V']
     return out
+
+
+def adapter_case(ad, name, cable):
+    return next(c for c in ad['cases'] if c['name'] == name and c['cable'] == cable)
 
 
 # ---------------------------------------------------------------- outputs
 
 def build(inp):
-    sig_all = all_signals(inp)
+    sig_link, sig_adapter = split_signals(inp)
+    sig_all = sig_link + sig_adapter
     pats = hb.harness_patterns(copy.deepcopy(inp) | {'classes': {'rules': adapter_rules(inp)}})
     base, counts = hb.baseline(inp, pats)
     old_base, _ = hb.baseline(inp)
@@ -179,7 +243,7 @@ def build(inp):
     for r in table:
         by_len.setdefault(r['length_mm'], []).append(r)
     largest = {L: max(rs, key=lambda r: r['ratio']) for L, rs in sorted(by_len.items())}
-    return {'signals_all': sig_all, 'adapter_classes': sorted({s['class'] for s in sig_all[490:]}),
+    return {'signals_all': sig_all, 'adapter_classes': sorted({s['class'] for s in sig_adapter}), 'n_link_signals': len(sig_link),
             'adapter_link': adapter_link(inp, pats), 'baseline': base,
             'baseline_change': {k: {'a3_min_V': old_base[k]['min_V'], 'a4_min_V': base[k]['min_V']}
                                 for k in base if k in old_base and abs(old_base[k]['min_V'] - base[k]['min_V']) > 1e-15},
@@ -210,34 +274,36 @@ def readme_lines(inp, b):
     for e in inp['ds62']['adapter_evidence']:
         w(f'- {e["statement"]}. Source: {e["source"]} ({e["status"]}).')
     w('')
-    w(f'Class for DS-62: {", ".join(cls)} for all {len(b["signals_all"]) - 490} adapter signals (`inputs.json` → `classes_adapter`, beside '
+    w(f'Class for DS-62: {", ".join(cls)} for all {len(b["signals_all"]) - b["n_link_signals"]} adapter signals (`inputs.json` → `classes_adapter`, beside '
       'the unchanged `classes.rules`). STATIC exerts nothing while the instrument plays, so two static lines need no ground between '
       'them; as victims they are PRECISION, because they set the pitch.')
     w('')
-    w('| Outcome | Circuits | Order (circuit 1 first) | Grounds | Cable length, mm |')
-    w('| --- | --- | --- | --- | --- |')
-    for n in (8, 14):
-        x = ad[f'flat_{n}']
-        w(f'| {"static (this result)" if n == 8 else "analogue"} | {n} | {", ".join(x["order"])} | {x["grounds"]} | {x["length_mm"]:g} |')
+    names = {'ds79': 'DS-79 order', 'part_1': 'part 1 order', 'alternating_14': '14 circuits, a ground after each line'}
+    w('| Order | Circuits | Order (circuit 1 first) | Grounds |')
+    w('| --- | --- | --- | --- |')
+    for name, o in ADAPTER_ORDERS.items():
+        w(f'| {names[name]} | {o["circuits"]} | {", ".join(o["order"])} | {o["order"].count("AGND")} |')
     w('')
     q = ad['harness_quietest']
     s = inp['ds62']['selector_step']
-    w(f'### Turning the selector by one step couples at most {ad["flat_8"]["peak_V"] * 1000:.3g} mV for nanoseconds into a neighbouring tap on 8 circuits; '
-      f'behind the receiver filter that is {ad["flat_8"]["filtered_V"] * 1e6:.3g} µV')
+    d40 = adapter_case(ad, 'ds79', 'C81339')
+    d50 = adapter_case(ad, 'ds79', 'C29534')
+    w(f'### One selector step couples {d40["peak_V"] * 1000:.3g} mV peak and {d40["filtered_V"] * 1e6:.3g} µV filtered into the worst tap on the DS-79 order at 40 mm '
+      f'({d50["peak_V"] * 1000:.3g} mV and {d50["filtered_V"] * 1e6:.3g} µV on the 50 mm fallback); it stays outside the criterion')
     w('')
     w(f'A step of {s["swing_V"]:g} V on OCT_SELECTED with a {s["edge_s"] * 1e9:g} ns edge into the {s["load_ohm"]:g} Ω receiver '
-      f'(terms in `inputs.json` → `ds62.selector_step`), victim the neighbouring tap at the PRECISION impedance. The filtered '
-      f'figure is the spike\'s area over the receiver\'s {s["receiver_filter_s"] * 1e6:g} µs filter (V·R·Cm + M·ΔI, DERIVED), '
-      'i.e. what reaches OCT_CV of an oscillator whose selector sits on the struck tap. It happens only during a hand turn, '
-      'when the pitch changes by an octave anyway, so it does not enter the DS-62 criterion, which compares coupling '
-      'while the instrument plays.')
+      f'(terms in `inputs.json` → `ds62.selector_step`), victim every tap at the PRECISION impedance and the worst one shown, every '
+      f'conductor of the cable in the solve. The filtered figure is the spike\'s area over the receiver\'s {s["receiver_filter_s"] * 1e6:g} µs '
+      'filter (V·R·Cm + M·ΔI, DERIVED), i.e. what reaches OCT_CV of an oscillator whose selector sits on the struck tap. It happens '
+      'only during a hand turn, when the pitch changes by an octave anyway, so it does not enter the DS-62 criterion (DS-79). '
+      'Each order is computed on every cable in use for its size, so 8 and 14 circuits compare at the same 50 mm.')
     w('')
-    w('| Path | Length, mm | Peak, mV | Filtered, µV | Ratio to the quietest present adapter harness (peak / filtered) |')
-    w('| --- | --- | --- | --- | --- |')
-    for n in (8, 14):
-        x = ad[f'flat_{n}']
-        w(f'| Flat {n} circuits | {x["length_mm"]:g} | {x["peak_V"] * 1000:.3g} | {x["filtered_V"] * 1e6:.3g} | {x["ratio_peak"]:.2f} / {x["ratio_filtered"]:.2f} |')
-    w(f'| Present harness {q["harness"]} (one ground between) | {q["length_mm"]:g} | {q["peak_V"] * 1000:.3g} | {q["filtered_V"] * 1e6:.3g} | 1 |')
+    w('| Order | Cable | Length, mm | Worst tap (position) | Peak, mV | Filtered, µV | Ratio to the quietest present adapter harness (peak / filtered) |')
+    w('| --- | --- | --- | --- | --- | --- | --- |')
+    for c in ad['cases']:
+        w(f'| {names[c["name"]]} | {c["cable"]} | {c["length_mm"]:g} | {c["victim"]} ({c["victim_pos"]}) | {c["peak_V"] * 1000:.3g} | '
+          f'{c["filtered_V"] * 1e6:.3g} | {c["ratio_peak"]:.2f} / {c["ratio_filtered"]:.2f} |')
+    w(f'| Present harness {q["harness"]} (one ground between) | loom | {q["length_mm"]:g} | | {q["peak_V"] * 1000:.3g} | {q["filtered_V"] * 1e6:.3g} | 1 |')
     w('')
     lg = b['largest']
     above = b['above_1']

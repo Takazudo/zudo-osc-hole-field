@@ -33,7 +33,7 @@ This record in the catalog: [APG1005SEC/E-T](/docs/components/catalog/#rec-kingb
 
 **Source state:** AVAILABLE
 
-**Coverage:** 2 open of 6 published
+**Coverage:** 2 open of 7 published
 
 ## Documents and package
 
@@ -141,6 +141,19 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 - [`fact-kingbright-red-current-limit`](#fact-kingbright-red-current-limit)
 
+### operating\_temperature
+
+<EvidenceAnchor id="cov-kingbright-red-operating-temperature" />
+
+**Coverage ID:** `cov-kingbright-red-operating-temperature` · **Status:** COVERED
+
+**Reason:** Manufacturer datasheet prints the operating temperature and junction temperature in its absolute maximum ratings table.
+
+**Facts in this domain:**
+
+- [`fact-kingbright-red-operating-temperature`](#fact-kingbright-red-operating-temperature)
+- [`fact-kingbright-red-junction-temperature`](#fact-kingbright-red-junction-temperature)
+
 ## Facts
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
@@ -161,6 +174,34 @@ A never-exceed limit. Reaching it may damage the part; it is not an operating ta
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [`src-kingbright-red-datasheet`](#src-kingbright-red-datasheet) — Page 2, Absolute Maximum Ratings table, DC Forward Current IF row
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-kingbright-red-operating-temperature" />
+
+  **Fact:** `fact-kingbright-red-operating-temperature`
+
+  **Value:** `maximum`=85; `minimum`=-40 · **Unit:** `degC`
+
+  **Conditions:** Printed for APG1005SEC/E-T in table "ABSOLUTE MAXIMUM RATINGS at TA=25°C" as "Operating Temperature, Top, -40 to +85, °C". The range stands in the absolute-maximum table; the sheet prints no separate recommended operating range. Says what the maker prints, not what the part reaches in this unvalidated draft instrument.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [`src-kingbright-red-absolute-maximum`](#src-kingbright-red-absolute-maximum) — Table ABSOLUTE MAXIMUM RATINGS at TA=25°C, row Operating Temperature, physical page 1, printed Page 2 / 4
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-kingbright-red-junction-temperature" />
+
+  **Fact:** `fact-kingbright-red-junction-temperature`
+
+  **Value:** 115 · **Unit:** `degC`
+
+  **Conditions:** Printed for APG1005SEC/E-T in table "ABSOLUTE MAXIMUM RATINGS at TA=25°C" as "Junction Temperature, Tj, 115, °C"; a maximum. Says what the maker prints, not what the part reaches in this unvalidated draft instrument.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [`src-kingbright-red-absolute-maximum`](#src-kingbright-red-absolute-maximum) — Table ABSOLUTE MAXIMUM RATINGS at TA=25°C, row Junction Temperature, physical page 1, printed Page 2 / 4
 </EvidenceFact>
 
 ### PROJECT\_STATE
@@ -315,6 +356,26 @@ Every document cited above, with its identification, when it was retrieved, and 
 | Printed page    | 1                     |
 
 **Locator:** Page 1, package dimensions figure, recommended soldering pattern figure, selection guide table; page 2, absolute maximum ratings table and electrical characteristics table.
+
+**Availability:** AVAILABLE
+
+**Document URL:** [https://www.kingbrightusa.com/images/catalog/spec/apg1005sec-e-t.pdf](https://www.kingbrightusa.com/images/catalog/spec/apg1005sec-e-t.pdf)
+
+### Kingbright APG1005SEC/E-T LED lamp datasheet
+
+<EvidenceAnchor id="src-kingbright-red-absolute-maximum" />
+
+**Source ID:** `src-kingbright-red-absolute-maximum` · **Authority:** MANUFACTURER\_PRIMARY
+
+| Field           | Recorded value        |
+| --------------- | --------------------- |
+| Document number | DSAM9600 / 1203013767 |
+| Revision        | V.10A                 |
+| Document date   | 03/12/2025            |
+| Retrieved       | 2026-09-28            |
+| Printed page    | 2                     |
+
+**Locator:** Table ABSOLUTE MAXIMUM RATINGS at TA=25°C, rows Junction Temperature and Operating Temperature, physical page 1, printed Page 2 / 4
 
 **Availability:** AVAILABLE
 
