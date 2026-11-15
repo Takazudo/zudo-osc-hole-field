@@ -1,4 +1,4 @@
-"""Tests for the ST-03 stack-mechanics calculator (attempts a2 to a5). No network, no KiCad."""
+"""Tests for the ST-03 stack-mechanics calculator (attempts a2 to a6). No network, no KiCad."""
 from pathlib import Path
 import hashlib
 import json
@@ -380,13 +380,14 @@ class TestAttemptA5(Base):
         cls.m = a5mod
         cls.a = a5mod.A5(cls.c)
 
-    def test_list_is_the_fixing_file(self):
+    def test_list_is_the_recorded_a1_list(self):
         fix = json.loads((ROOT / 'design/stack/fixings/fixing-sites.json').read_text())['fixings']
-        listed = [f['id'] for f in fix if f['kind'] != 'sleeve dropped']
-        self.assertEqual([f['id'] for f in self.a.g['fixings']], listed)
+        posts = [f['id'] for f in fix if f['kind'] == 'post']
+        a1 = [f['id'] for f in self.data['parameters']['a5']['st08_a1_sleeves']['value']]
+        self.assertEqual([f['id'] for f in self.a.g['fixings']], posts + a1)
         kinds = [f['kind'] for f in self.a.g['fixings']]
         self.assertEqual((kinds.count('post'), kinds.count('sleeve kept'), kinds.count('sleeve added')), (18, 2, 3))
-        self.assertEqual(self.a.g['fixings_array_sha256'], self.data['sources']['S-FIX']['key_sha256'])
+        self.assertEqual([f['xy'] for f in self.a.g['fixings'] if f['id'] == 'SLV-U1'], [[159.0, 38.0]])
 
     def test_farthest_points_match_st08(self):
         reg = self.a.g['regions']
@@ -441,8 +442,154 @@ class TestAttemptA5(Base):
                 self.assertAlmostEqual(min(f['edge_distances_mm']), 2.5, places=3, msg=(sid, board))
         refs = [p['ref'] for p in self.a.g['corner_sleeves']['JR-SUP-1']['JR']['footprints_within_8_mm']]
         self.assertIn('R4615', refs)
-        area = self.m.annulus_area(3.5, 1.7, [(2.5, 'x'), (2.5, 'y')], None)
+        area = self.m.annulus_area(3.5, 1.7, (0.0, 0.0), [((-2.5, -10.0), (-2.5, 10.0)), ((-10.0, -2.5), (10.0, -2.5))])
         self.assertTrue(math.isclose(area, 22.7, abs_tol=0.2))
+
+
+
+class TestAttemptA6(Base):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        import stack_mechanics_a5 as a5mod
+        import stack_mechanics_a6 as a6mod
+        cls.m5, cls.m6 = a5mod, a6mod
+        cls.a = a6mod.A6(cls.c)
+        cls.ruled = cls.a.movement('ruled')
+        cls.map = a6mod.load_map()
+
+    def test_pins(self):
+        fix = json.loads((ROOT / 'design/stack/fixings/fixing-sites.json').read_text())['fixings']
+        self.assertEqual(geo.fixings_array_sha256(fix), self.data['sources']['S-FIX']['key_sha256'])
+        self.assertEqual(self.a.g['fixings_array_sha256'], self.data['sources']['S-FIX']['key_sha256'])
+        for row in ('DS-72', 'DS-73', 'DS-74', 'DS-75', 'DS-76', 'DS-81'):
+            self.assertIn(row, self.data['sources']['S-DS']['rows'])
+        self.assertTrue(pin_is_current(self.data['sources']['S-DS']))
+        self.assertFalse([s['path'] for s in self.data['sources'].values() if 'gate' in s.get('path', '')])  # ST-02's gate file is not pinned
+
+    def test_ruled_list_is_the_active_entries(self):
+        fix = json.loads((ROOT / 'design/stack/fixings/fixing-sites.json').read_text())['fixings']
+        self.assertEqual(self.a.fixing_ids('ruled'), [f['id'] for f in fix if f['active']])
+        sleeves = {f['id']: f['xy'] for f in self.a.g['sets']['ruled']['fixings'] if f['kind'] != 'post'}
+        self.assertEqual(sleeves, {'SLV-U1': [74.0, 28.0], 'SLV-U2': [244.0, 24.0], 'SLV-L1': [93.0, 276.0], 'SLV-L2': [244.0, 230.0]})
+        self.assertEqual(len(self.a.fixing_ids('ruled')), 22)
+
+    def test_criterion_of_ds72(self):
+        m, auth = self.ruled, self.a.p['authority_figures']['movement_mm']
+        self.assertLessEqual(m['max']['w'], self.a.p['movement_limit_mm'])
+        self.assertEqual(m['max']['at'], [4.0, 292.0])
+        self.assertTrue(math.isclose(m['max']['w'], auth['max'], abs_tol=0.01))
+        self.assertTrue(math.isclose(m['points']['left_edge'], auth['left_edge'], abs_tol=0.01))
+        self.assertTrue(math.isclose(m['above_rows_max']['w'], auth['above_post_rows_max'], abs_tol=0.01))
+        self.assertLess(m['strain']['eps'], self.c.dv('strain_design_limit'))
+        m4 = self.a.movement('ruled', step=4.0, cover=False)
+        self.assertTrue(math.isclose(m4['strain']['eps'] * 1e6, self.a.p['authority_figures']['strain_microstrain_4mm_grid'], abs_tol=1))
+        self.assertTrue(math.isclose(m4['points']['above_post_rows'], auth['above_post_rows'], abs_tol=0.01))
+        self.assertTrue(math.isclose(m4['points']['upper_edge_middle'], auth['upper_edge_middle'], abs_tol=0.01))
+        self.assertTrue(self.a.passes(m))
+        self.assertIn('(DONE)', self.readme)
+
+    def test_grid_of_record_covers_k(self):
+        self.assertEqual(self.m6.outline_step(self.a.outline), self.a.p['grid_step_mm'])
+        self.assertTrue(self.a.grillage('ruled').covers)
+        self.assertTrue(self.ruled['covers'])
+
+    def test_no_merged_fixings_and_snaps_reported(self):
+        gr = self.a.grillage('ruled')
+        self.assertEqual(len(set(gr.fixed_nodes)), 22)
+        self.assertEqual(len(gr.snap_mm), 22)
+        self.assertLessEqual(max(gr.snap_mm), gr.h / math.sqrt(2) + 1e-9)
+        m1 = self.a.movement('ruled', step=self.a.p['snap_check_step_mm'])
+        self.assertLessEqual(max(m1['snap_mm']), 0.5 + 1e-9)
+        self.assertLess(abs(m1['max']['w'] - self.ruled['max']['w']), 0.05)
+
+    def test_sleeve_strains(self):
+        err = self.a.a5.p['sleeve_error_mm']['worst_case']
+        auth = self.a.p['authority_figures']['sleeve_strain_microstrain_worst_case']
+        for s in self.a.sleeve_rows('ruled'):
+            self.assertTrue(math.isclose(self.c.strain(err, s['span_mm']) * 1e6, auth[s['id']], abs_tol=1.5), s['id'])
+            self.assertLess(self.c.strain(err, s['span_mm']), self.c.dv('strain_design_limit'))
+
+    def test_comparison_rows(self):
+        alt = [s for s in self.a.sleeve_rows('ALT-L2-A') if s['id'] == 'ALT-L2-A'][0]
+        self.assertTrue(math.isclose(self.c.strain(0.55, alt['span_mm']) * 1e6, 588, abs_tol=1))
+        fx = self.a.g['sets']['ALT-L2-A']['fixings']
+        site = [f['xy'] for f in fx if f['id'] == 'ALT-L2-A'][0]
+        close = sorted(round(geo.dist(site, f['xy']), 2) for f in fx if f['id'] != 'ALT-L2-A' and geo.dist(site, f['xy']) < 70)
+        self.assertEqual(close, [67.0, 69.0, 69.25])
+        self.assertTrue(math.isclose(self.a.movement('a1')['max']['w'], 0.641, abs_tol=0.005))
+        for key, _ in self.m6.SETS:
+            self.assertTrue(self.a.passes(self.a.movement(key)), key)
+        ruled, plus = self.ruled, self.a.movement('ruled_plus_SLV-R1')
+        self.assertIn(f"from {ruled['above_rows_max']['w']:.2f} to {plus['above_rows_max']['w']:.2f} mm", self.readme)
+        ratio = plus['points']['above_post_rows'] / ruled['points']['above_post_rows']
+        self.assertTrue(0.28 < ratio < 0.4)
+
+    def test_map_regenerates(self):
+        mp = self.map
+        self.assertEqual(mp['inputs'], self.a.map_inputs())
+        self.assertLessEqual(mp['inputs']['map_pitch_mm'], 4.0)
+        gr = self.a.grillage('ruled')
+        sel = self.a.map_nodes(gr)
+        self.assertEqual([n[:2] for n in mp['nodes']], [[round(float(v), 3) for v in gr.nodes[k]] for k in sel])
+        sample = list(range(0, len(sel), 400))
+        comp = gr.point_compliance([sel[i] for i in sample])
+        for i, cval in zip(sample, comp):
+            self.assertTrue(math.isclose(mp['nodes'][i][2], cval, abs_tol=1e-5), mp['nodes'][i])
+        regions = self.m6.map_regions(mp['nodes'], mp['inputs']['map_pitch_mm'], [(t['mm_per_N'], t['rule']) for t in mp['thresholds']])
+        self.assertEqual(json.loads(json.dumps(regions)), mp['thresholds'])
+        names = {k['name']: k['mm_per_N'] for k in mp['corners']}
+        self.assertIsNotNone(names['notch corner'])
+        self.assertGreater(names['lower left corner'], 1.0)
+        self.assertTrue(math.isclose(self.a.push_at('ruled', (15.5, 234)), 0.42, abs_tol=0.02))
+        self.assertTrue(math.isclose(self.a.push_at('ruled', (31.5, 283)), 0.76, abs_tol=0.02))
+
+    # review findings of 23:18 UTC, each fails on the a5 code
+    def test_finding1_grid_must_cover_the_outline(self):
+        with self.assertRaises(ValueError):
+            self.m5.Grillage(self.a.g['k_outline'], 4.0, self.a.fixings_xy('ruled'), self.a.bending)
+
+    def test_finding2_merged_fixings_fail(self):
+        outline = [[0, 0], [40, 0], [40, 40], [0, 40]]
+        with self.assertRaises(self.m5.MergedFixings):
+            self.m5.Grillage(outline, 2.0, [(10.0, 10.0), (10.4, 10.3), (30.0, 30.0)], self.a.bending)
+
+    def test_finding3_no_straight_cut_gives_none(self):
+        lb, d, length, deg = self.a.a5.cut_lower_bound('list', (150.0, 170.0))
+        self.assertIsNone(lb)
+        self.assertEqual(self.m5.cut_cells(None, 593e-6)[1], 'n/a')
+
+    def test_finding4_scan_cache_follows_the_model(self):
+        data = json.loads(json.dumps(self.data))
+        data['parameters']['a5']['grillage_stiffness_factor']['value'] = 0.425
+        soft = self.m5.A5(sm.Calc(data)).compliance_scan('list')[0]
+        stiff = self.m5.A5(self.c).compliance_scan('list')[0]
+        self.assertTrue(math.isclose(soft, 2 * stiff, rel_tol=1e-6))
+
+    def test_finding5_empty_region_is_none(self):
+        self.assertIsNone(geo.farthest_in_region(self.a.g['k_outline'], [[100, 100]], 4.0, lambda p: False))
+
+    def test_finding6_edges_at_any_angle(self):
+        outer, inner, d = 3.5, 1.7, 2.5
+        normals = [0.0, 60.0]
+        edges = []
+        for deg in normals:
+            nx, ny = math.cos(math.radians(deg)), math.sin(math.radians(deg))
+            px, py = -d * nx, -d * ny
+            edges.append(((px - 10 * ny, py + 10 * nx), (px + 10 * ny, py - 10 * nx)))
+        area = self.m5.annulus_area(outer, inner, (0.0, 0.0), edges, n=800)
+        rr = np.linspace(inner, outer, 401)
+        rm, dr = (rr[1:] + rr[:-1]) / 2, rr[1] - rr[0]
+        th = np.linspace(0, 2 * math.pi, 2881)[:-1]
+        R, T = np.meshgrid(rm, th)
+        keep = np.ones(R.shape, bool)
+        for deg in normals:
+            nx, ny = math.cos(math.radians(deg)), math.sin(math.radians(deg))
+            keep &= R * (np.cos(T) * nx + np.sin(T) * ny) >= -d
+        reference = float((R * keep).sum() * dr * (th[1] - th[0]))
+        self.assertTrue(math.isclose(area, reference, abs_tol=0.1))
+        square = self.m5.annulus_area(outer, inner, (0.0, 0.0), [((-d, -10.0), (-d, 10.0)), ((-10.0, -d), (10.0, -d))])
+        self.assertGreater(area - square, 0.3)
 
 
 if __name__ == '__main__':

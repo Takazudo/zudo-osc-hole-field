@@ -122,10 +122,12 @@ def largest_inscribed_bay(outline, points, step):
 
 
 def farthest_in_region(outline, points, step, keep):
-    """Point of the region (outline points where keep(pt) holds) farthest from every fixing."""
+    """Point of the region (outline points where keep(pt) holds) farthest from every fixing; None if the region is empty."""
     px, py, _ = grid(outline, step)
-    mask = np.array([keep((x, y)) for x, y in zip(px, py)])
-    d = np.where(mask, nearest_dist_many(px, py, points), -1.0)
+    mask = np.array([bool(keep((x, y))) for x, y in zip(px, py)], dtype=bool)
+    if not mask.any():
+        return None
+    d = np.where(mask, nearest_dist_many(px, py, points), -np.inf)
     k = int(np.argmax(d))
     return float(d[k]), (float(px[k]), float(py[k]))
 
@@ -140,8 +142,8 @@ def k_regions(outline, fixings):
     radius, centre = largest_inscribed_bay(outline, pts, BAY_GRID_STEP_MM)
     out = {'interior_bay': {'radius_mm': r(radius), 'centre_xy': [r(c) for c in centre]}}
     for name, keep in (('edge_region_low_y', lambda p: p[1] < rows[0]), ('edge_region_high_y', lambda p: p[1] > rows[-1])):
-        span, pt = farthest_in_region(outline, pts, BAY_GRID_STEP_MM, keep)
-        out[name] = {'span_mm': r(span), 'point_xy': [r(c) for c in pt]}
+        found = farthest_in_region(outline, pts, BAY_GRID_STEP_MM, keep)
+        out[name] = {'span_mm': r(found[0]), 'point_xy': [r(c) for c in found[1]]} if found else {'span_mm': None, 'point_xy': None}
     out['post_rows_y_mm'] = [r(y) for y in rows]
     return out
 
@@ -220,18 +222,27 @@ def corner_sleeve_facts(site, boards):
     for b in boards:
         text = (ROOT / BOARD_FILES[b]).read_text()
         edges = board_edges(text)
-        facts[b] = {'edge_distances_mm': sorted(r(seg_dist(site, a, c)) for a, c in edges)[:2],
+        near = sorted(edges, key=lambda e: seg_dist(site, e[0], e[1]))[:2]
+        facts[b] = {'edge_distances_mm': [r(seg_dist(site, a, c)) for a, c in near],
+                    'nearest_edges_mm': [[[r(v) for v in a], [r(v) for v in c]] for a, c in near],
                     'footprints_within_8_mm': footprints_near(text, site, FOOTPRINT_SCREEN_MM),
                     'board_file': BOARD_FILES[b], 'board_sha256': sha256(BOARD_FILES[b])}
     return facts
 
 
-def derive_a5(part, extra_xy):
-    """Attempt a5: K on the fixing list of ST-08 (DS-66, DS-70)."""
+def nearest_other(f, pool):
+    """Nearest other fixing and its distance, to 3 decimals as the fixing file records it."""
+    near = min((g for g in pool if g['id'] != f['id']), key=lambda g: dist(f['xy'], g['xy']))
+    return near['id'], round(dist(f['xy'], near['xy']), 3)
+
+
+def derive_a5(part, extra_xy, a1_sleeves):
+    """Attempt a5: K on the fixing list of ST-08 a1 (DS-66, DS-70), kept as recorded: the 18 posts of the fixing file and
+    the five sleeves of that list (parameters.a5.st08_a1_sleeves)."""
     fix_doc = load_json(FIXING_FILE)
-    listed = [f for f in fix_doc['fixings'] if f['kind'] != 'sleeve dropped']
+    posts = [{'id': f['id'], 'kind': f['kind'], 'xy': f['xy']} for f in fix_doc['fixings'] if f['kind'] == 'post']
+    listed = posts + [dict(f) for f in a1_sleeves]
     k_outline = [b for b in part['boards'] if b['id'] == 'osc-core'][0]['outline']
-    posts = [f for f in listed if f['kind'] == 'post']
     extra = {'id': 'HYPOTHETICAL-LEFT', 'kind': 'hypothetical', 'xy': extra_xy}
     sets = {'posts_only': posts, 'list': listed, 'list_plus_one': listed + [extra]}
     regions = {}
@@ -240,18 +251,58 @@ def derive_a5(part, extra_xy):
         span, pt = farthest_in_region(k_outline, [f['xy'] for f in fx], BAY_GRID_STEP_MM, lambda q: True)
         reg['farthest'] = {'span_mm': r(span), 'point_xy': [r(c) for c in pt]}
         regions[key] = reg
-    sleeves = [{'id': f['id'], 'kind': f['kind'], 'xy': [r(c) for c in f['xy']], 'gap_mm': f['gap_mm'],
-                'nearest_other_fixing': f['nearest_other_fixing']['id'],
-                'span_mm': r(f['nearest_other_fixing']['distance_mm'])} for f in listed if f['kind'] != 'post']
-    corners = {f['id']: corner_sleeve_facts(f['xy'], [b for b in f['boards']]) for f in listed if f['kind'] == 'sleeve kept'}
+    sleeves = []
+    for f in listed:
+        if f['kind'] != 'post':
+            nid, span = nearest_other(f, listed)
+            sleeves.append({'id': f['id'], 'kind': f['kind'], 'xy': [r(c) for c in f['xy']], 'gap_mm': f['gap_mm'],
+                            'nearest_other_fixing': nid, 'span_mm': span})
+    corners = {f['id']: corner_sleeve_facts(f['xy'], list(f['boards'])) for f in listed if f['kind'] == 'sleeve kept'}
     return {
-        'fixing_file': FIXING_FILE,
-        'fixings_array_sha256': fixings_array_sha256(fix_doc['fixings']),
+        'fixing_list': 'ST-08 a1 (parameters.a5.st08_a1_sleeves and the posts of the fixing file)',
         'fixings': [{'id': f['id'], 'kind': f['kind'], 'xy': [r(c) for c in f['xy']]} for f in listed],
         'k_outline': k_outline,
         'regions': regions,
         'sleeves': sleeves,
         'corner_sleeves': corners,
+    }
+
+
+def derive_a6(part):
+    """Attempt a6: the ruled list of DA-03 c2 (DS-73 to DS-76): the active fixings of the fixing file, its reserve and
+    its alternatives, each sleeve with its nearest other fixing in the set it stands in."""
+    fix_doc = load_json(FIXING_FILE)
+    active = [f for f in fix_doc['fixings'] if f.get('active')]
+    k_outline = [b for b in part['boards'] if b['id'] == 'osc-core'][0]['outline']
+
+    def entry(f):
+        return {'id': f['id'], 'kind': f['kind'], 'xy': [r(c) for c in f['xy']], 'gap_mm': f['gap_mm']}
+
+    ruled = [entry(f) for f in active]
+    sets = {'ruled': ruled}
+    for f in fix_doc.get('reserve', []):
+        sets['ruled_plus_' + f['id']] = ruled + [entry(f)]
+    for f in fix_doc.get('alternatives', []):
+        sets[f['id']] = [g for g in ruled if g['id'] != f['replaces']] + [entry(f)]
+    out_sets = {}
+    for key, fx in sets.items():
+        reg = k_regions(k_outline, fx)
+        far = farthest_in_region(k_outline, [f['xy'] for f in fx], BAY_GRID_STEP_MM, lambda q: True)
+        reg['farthest'] = {'span_mm': r(far[0]), 'point_xy': [r(c) for c in far[1]]}
+        sleeves = []
+        for f in fx:
+            if f['kind'] != 'post':
+                nid, span = nearest_other(f, fx)
+                sleeves.append({'id': f['id'], 'nearest_other_fixing': nid, 'span_mm': span})
+        out_sets[key] = {'fixings': fx, 'regions': reg, 'sleeves': sleeves}
+    return {
+        'fixing_file': FIXING_FILE,
+        'fixings_array_sha256': fixings_array_sha256(fix_doc['fixings']),
+        'k_outline': k_outline,
+        'reserve': [{'id': f['id'], 'xy': f['xy'], 'decision': f.get('decision')} for f in fix_doc.get('reserve', [])],
+        'alternatives': [{'id': f['id'], 'xy': f['xy'], 'replaces': f['replaces'], 'findings': f.get('findings', []), 'decision': f.get('decision')}
+                         for f in fix_doc.get('alternatives', [])],
+        'sets': out_sets,
     }
 
 
@@ -339,7 +390,8 @@ def derive(stackups=None):
         'jl_jr_inner_post_span_mm': r(min(jr_x) - max(jl_x)),
         'hardware_kind_counts': hardware,
         'a3': derive_a3(cand),
-        'a5': derive_a5(part, st['parameters']['a5']['hypothetical_fixing_xy']['value']),
+        'a5': derive_a5(part, st['parameters']['a5']['hypothetical_fixing_xy']['value'], st['parameters']['a5']['st08_a1_sleeves']['value']),
+        'a6': derive_a6(part),
     }
 
 
