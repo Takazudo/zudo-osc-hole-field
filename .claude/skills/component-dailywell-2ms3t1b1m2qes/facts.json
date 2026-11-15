@@ -84,6 +84,40 @@
       "verdict": "UNSOURCED",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-2ms3-operating-temperature",
+      "record_id": "rec-dailywell-2ms3t1b1m2qes",
+      "source_id": "src-2ms3-catalog-specifications",
+      "class": "RECOMMENDED_OPERATION",
+      "value": {
+        "minimum": -40,
+        "maximum": 85
+      },
+      "unit": "degC",
+      "conditions": "Printed for the 2M series under SPECIFICATIONS as \"OPERATING TEMPERATURE: -40°C to 85°C.\". The retained -5 drawing prints -30°C to 85°C (fact-2ms3-drawing-operating-temperature): the two retained copies agree on the maximum and disagree on the minimum. The copy is retained from a third-party host (MANUFACTURER_MIRROR), not the maker's own byte stream, and the maker-hosted 2M Series file is SOURCE UNAVAILABLE, so the line is not promoted to primary-source confirmation. Says what the maker prints, not what the part reaches in this unvalidated draft instrument.",
+      "locator": "Section SPECIFICATIONS, row OPERATING TEMPERATURE, physical page 0, printed p.24",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-2ms3-drawing-operating-temperature",
+      "record_id": "rec-dailywell-2ms3t1b1m2qes",
+      "source_id": "src-2ms3-dw2",
+      "class": "RECOMMENDED_OPERATION",
+      "value": {
+        "minimum": -30,
+        "maximum": 85
+      },
+      "unit": "degC",
+      "conditions": "Printed on the drawing of the suffixed 2MS3T1B1M2QES-5 (title block REV. A, JAN-26-2010) under SPECIFICATIONS as \"OPERATING TEMPERATURE: -30°C to 85°C.\"; the line is drawn, not in the PDF text layer. It disagrees on the minimum with the 2M catalogue (fact-2ms3-operating-temperature, -40°C to 85°C), and the -5 drawing is not established as equivalent to the unsuffixed design MPN (fact-2ms3-suffix-equivalence). The drawing is likewise a third-party-hosted copy and is not promoted to primary-source confirmation. Says what the maker prints, not what the part reaches in this unvalidated draft instrument.",
+      "locator": "Section SPECIFICATIONS, row OPERATING TEMPERATURE, physical page 0 of drawing DW2 2MS3T1B1M2QES-5",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }
