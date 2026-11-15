@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "task": "osc-stack-20261114/ST-05 a2",
+ "task": "osc-stack-20261114/ST-05 a3",
  "status": "DONE",
  "provenance": {
   "pins": [
@@ -78,21 +78,21 @@
     "id": "link-gate-figures",
     "path": "design/stack/geometry/links/link-gate.json",
     "object": "derived: link_figures(record)",
-    "sha256": "4a8af0fec726b0a235b48ee592168e5b9f4b2e4d68746aa17ff60b688d195f6b",
+    "sha256": "86e4d78a48f87f8d1c988e39f1f726d4f33eddaad1df8bc45ead2575f9d580f5",
     "reads": "links, placed and slots of the summary; slot, loop and cable areas of the placed links"
    },
    {
     "id": "link-gate-displaced-k-ic-packages",
     "path": "design/stack/geometry/links/link-gate.json",
     "object": "displaced_k_ic_packages",
-    "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "sha256": "eee433209d077f0d48a1cf11e91f7719d6ef15a7acb1a2149b26cb01765dc872",
     "reads": "the rows of DS-97, or null while the key is absent"
    },
    {
     "id": "io-partition-exact-refs",
     "path": "design/reports/io-partition.json",
     "object": "physical_packages[mpn in EXACT_PARTS]",
-    "sha256": "8c1302602a63f8010458fbeca0c6afbfcee954e3ad07410cbf0f7d366d996d0a",
+    "sha256": "8e4b908f4c0b1b645a8fe8e050513a213d58707da5840ec5e06ecf12359d339d",
     "reads": "ref, mpn and instance of every CL10A105KB8NNNC and RC0603FR-072K2L package"
    },
    {
@@ -587,6 +587,169 @@
     "path": ".claude/skills/component-kingbright-apg1005sec-e-t/facts.json",
     "fact_id": "fact-kingbright-red-electrical",
     "sha256": "0e2814d0f04a6e5df17998a7a3f22f05df8a5a7e5ad03a7a03537897ff6117fb"
+   },
+   {
+    "id": "fact-b103-power-rating",
+    "path": ".claude/skills/component-bourns-ptv09a-4020f-b103/facts.json",
+    "fact_id": "fact-b103-power-rating",
+    "sha256": "4aa484bc8caa785bca1c7741a2f981173d204a1e4cb6db006e2e028ec5c206b5"
+   },
+   {
+    "id": "fact-b103-derating",
+    "path": ".claude/skills/component-bourns-ptv09a-4020f-b103/facts.json",
+    "fact_id": "fact-b103-derating",
+    "sha256": "0be0f423ebd6325374e7849ef11c3475fcd33794ba7fb960cae586b86a0179e4"
+   },
+   {
+    "id": "fact-b103-resistance",
+    "path": ".claude/skills/component-bourns-ptv09a-4020f-b103/facts.json",
+    "fact_id": "fact-b103-resistance",
+    "sha256": "e74a8e09baf87db2fe57d2eab8ebb368024d97076bead8c3363856ab62c8e6d1"
+   },
+   {
+    "id": "fact-b104-power-rating",
+    "path": ".claude/skills/component-bourns-ptv09a-4020f-b104/facts.json",
+    "fact_id": "fact-b104-power-rating",
+    "sha256": "35cf84c50aef30df24546600c058cd248373ee64952b481881fe5e7e6f96a5b3"
+   },
+   {
+    "id": "fact-b104-derating",
+    "path": ".claude/skills/component-bourns-ptv09a-4020f-b104/facts.json",
+    "fact_id": "fact-b104-derating",
+    "sha256": "5330036b8b6dd11371c03494e95f37d7b776a29cf3a1346f64a860681ee061b8"
+   },
+   {
+    "id": "fact-b104-resistance",
+    "path": ".claude/skills/component-bourns-ptv09a-4020f-b104/facts.json",
+    "fact_id": "fact-b104-resistance",
+    "sha256": "1d808b67ae9c360e36781bc451a3aa41b50e25fba0e5f62b7721cb6c4bccbe25"
+   },
+   {
+    "id": "fact-b504-power-rating",
+    "path": ".claude/skills/component-bourns-ptv09a-4020f-b504/facts.json",
+    "fact_id": "fact-b504-power-rating",
+    "sha256": "95dd096f5fd8190fa7a077cea803f505f2f8cee0d9b457724ae072617c089cd6"
+   },
+   {
+    "id": "fact-b504-derating",
+    "path": ".claude/skills/component-bourns-ptv09a-4020f-b504/facts.json",
+    "fact_id": "fact-b504-derating",
+    "sha256": "d24d90052a4204313d10246b04351e7d271765da363b32b3e147d3bca7e48261"
+   },
+   {
+    "id": "fact-b504-resistance",
+    "path": ".claude/skills/component-bourns-ptv09a-4020f-b504/facts.json",
+    "fact_id": "fact-b504-resistance",
+    "sha256": "2261866f039d24f5aca08121a37c94e9d7195417d12646b26a73fa057fe127bd"
+   },
+   {
+    "id": "fact-kingbright-white-junction-temperature",
+    "path": ".claude/skills/component-kingbright-aphhs1005qwf-d/facts.json",
+    "fact_id": "fact-kingbright-white-junction-temperature",
+    "sha256": "3ec648858d795e1a01ef52198275c97a8fc37fb2fb27a7d47bbe60fb1b9895e5"
+   },
+   {
+    "id": "fact-kingbright-red-junction-temperature",
+    "path": ".claude/skills/component-kingbright-apg1005sec-e-t/facts.json",
+    "fact_id": "fact-kingbright-red-junction-temperature",
+    "sha256": "9f15cde47daa0ecb796ce9e6467ba9cadae766e8911d40e8766294e39917ee18"
+   },
+   {
+    "id": "fact-srbv-operating-temperature",
+    "path": ".claude/skills/component-alps-alpine-srbv160803/facts.json",
+    "fact_id": "fact-srbv-operating-temperature",
+    "sha256": "7b8d33946596a90cb575300bfec21f99199075bab9faac7769fcc5c9692dc9f7"
+   },
+   {
+    "id": "control-netlist-pot-ends",
+    "path": "schematic/boards/osc-control.net",
+    "object": "derived: nets of pins 1 and 3 of every PTV09A-4020F",
+    "sha256": "e635c8203b5d5afcec985305bf3eae7892bda136e24714c0584ab6e3a9bb93e7",
+    "reads": "the nets at the two end pins of every panel pot"
+   },
+   {
+    "id": "fact-2ms1-operating-temperature",
+    "path": ".claude/skills/component-dailywell-2ms1t1b1m2qes-5/facts.json",
+    "fact_id": "fact-2ms1-operating-temperature",
+    "sha256": "faec17d6e861918185d012907e68e5a0857298ca1cd873e29e2e265132cd7cad"
+   },
+   {
+    "id": "fact-2ms3-operating-temperature",
+    "path": ".claude/skills/component-dailywell-2ms3t1b1m2qes/facts.json",
+    "fact_id": "fact-2ms3-operating-temperature",
+    "sha256": "d0c7fdc41429f3fb802d11727d25a29af8e95358f41551a9d30c047cf508f63d"
+   },
+   {
+    "id": "fact-2ms3-drawing-operating-temperature",
+    "path": ".claude/skills/component-dailywell-2ms3t1b1m2qes/facts.json",
+    "fact_id": "fact-2ms3-drawing-operating-temperature",
+    "sha256": "5a18bbdcf484e489bed1ef2b6010ff27b88cddd6cce3da7db9ea3eba33bd951b"
+   },
+   {
+    "id": "fact-kingbright-red-operating-temperature",
+    "path": ".claude/skills/component-kingbright-apg1005sec-e-t/facts.json",
+    "fact_id": "fact-kingbright-red-operating-temperature",
+    "sha256": "ace017f2b3917c389310cfc4295c3c71ecd062ace0151b22fa2e40b4390c34b7"
+   },
+   {
+    "id": "fact-kingbright-white-operating-temperature",
+    "path": ".claude/skills/component-kingbright-aphhs1005qwf-d/facts.json",
+    "fact_id": "fact-kingbright-white-operating-temperature",
+    "sha256": "fbab75f98fb236f5c57b20fae37fadb532c46c8fc3d5be89c0225ab62200ade1"
+   },
+   {
+    "id": "fact-b3f-operating-temperature",
+    "path": ".claude/skills/component-omron-b3f-1020/facts.json",
+    "fact_id": "fact-b3f-operating-temperature",
+    "sha256": "e2dbebeab6afd3cda5e28744c9299ac25a8655c6603340e99f2cf266a4680eec"
+   },
+   {
+    "id": "fact-b103-operating-temperature",
+    "path": ".claude/skills/component-bourns-ptv09a-4020f-b103/facts.json",
+    "fact_id": "fact-b103-operating-temperature",
+    "sha256": "af0ce22bd4797b13d9a73e2cacece4148939c4f882a4d6baf109e1d45b29f33f"
+   },
+   {
+    "id": "fact-b104-operating-temperature",
+    "path": ".claude/skills/component-bourns-ptv09a-4020f-b104/facts.json",
+    "fact_id": "fact-b104-operating-temperature",
+    "sha256": "081b4ee2d648a38a4be992a109e57ed86cfb9df9858646d24a8f7d91df90d902"
+   },
+   {
+    "id": "fact-b504-operating-temperature",
+    "path": ".claude/skills/component-bourns-ptv09a-4020f-b504/facts.json",
+    "fact_id": "fact-b504-operating-temperature",
+    "sha256": "474d55664c389c5ded9f686a1f0d7cc2f4314405eabc685f20a8f403c0997807"
+   },
+   {
+    "id": "fact-trim-102-operating-temperature",
+    "path": ".claude/skills/component-passives-family/facts.json",
+    "fact_id": "fact-trim-102-operating-temperature",
+    "sha256": "754c5b41a33b20a9287ee3ba23ffedc187a5cd30ab604edadba4199575777824"
+   },
+   {
+    "id": "fact-trim-103-operating-temperature",
+    "path": ".claude/skills/component-passives-family/facts.json",
+    "fact_id": "fact-trim-103-operating-temperature",
+    "sha256": "7d5266279e25a60fc97857cc1834d44f995a25538734a0f5e76c34641f4057c9"
+   },
+   {
+    "id": "fact-trim-203-operating-temperature",
+    "path": ".claude/skills/component-bourns-tc33x-2-203e/facts.json",
+    "fact_id": "fact-trim-203-operating-temperature",
+    "sha256": "e89b349585de9df5d52f7996b06fe110756b7ada91ba10be811beff17c6714df"
+   },
+   {
+    "id": "fact-trim-503-operating-temperature",
+    "path": ".claude/skills/component-bourns-tc33x-2-503e/facts.json",
+    "fact_id": "fact-trim-503-operating-temperature",
+    "sha256": "7d3ff26475dff5bc85a319710c8a1fdb3204c3cba942909d6d3465ca49b027af"
+   },
+   {
+    "id": "fact-trim-504-operating-temperature",
+    "path": ".claude/skills/component-bourns-tc33x-2-504e/facts.json",
+    "fact_id": "fact-trim-504-operating-temperature",
+    "sha256": "3aabc2c78162aca0b9afc370c2d7ae3a1b160992beb484ea04c991244774fb70"
    }
   ],
   "launch_commit": "6e503a68199fdd31f93b080ed11b21f0b2d1b2cf",
@@ -1246,6 +1409,42 @@
    "unit": "fact ids",
    "status": "SOURCED",
    "source": "pin fact-fault-switch-t-thermal-pad: the TMUX7412FRRPR pad fact ties the exposed pad to a net and holds no thermal resistance, junction limit or range"
+  },
+  "ground_nets": {
+   "value": [
+    "AGND",
+    "GND"
+   ],
+   "unit": "net names",
+   "status": "DERIVED",
+   "source": "the ground nets of the netlist are the 0 V reference of the rails of pin ledger-case-envelope; no other net of the control netlist holds a retained voltage"
+  },
+  "pot_resistance_tolerance": {
+   "value": 0.2,
+   "unit": "fraction",
+   "status": "SOURCED",
+   "source": "pins fact-b103-resistance, fact-b104-resistance and fact-b504-resistance: standard resistance tolerance of +/-20 %; the power of a pot is taken over the resistance less 20 % (DS-103)"
+  },
+  "plan_compare_decimals": {
+   "value": 2,
+   "unit": "decimals",
+   "status": "ASSUMED",
+   "source": "the plan figures are compared with the screen at the printed decimals of the row or at this many, whichever is finer, so that a figure printed as 35 W cannot read as reproducing 35.41 W"
+  },
+  "ambient_search_C": {
+   "value": [
+    -20.0,
+    80.0
+   ],
+   "unit": "degC",
+   "status": "ASSUMED",
+   "source": "search interval of the ambient at which a class reads its limit; the network is run at each trial ambient (DS-106 point 7)"
+  },
+  "stack_share_K": {
+   "value": 5.0,
+   "unit": "K",
+   "status": "SOURCED",
+   "source": "pins decision-DS-94 and decision-DS-106: a shift of the 40 mm stack against the 120 mm case above 5 K at either end is marked \"share of the 40 mm stack\""
   }
  },
  "inputs": {
@@ -5986,10 +6185,10 @@
     "instance": "H1",
     "symbol": "SN74HC14DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     130.7,
-     90.18
+     138.927,
+     94.93
     ],
     "courtyard_mm2": 71.262
    },
@@ -6034,7 +6233,7 @@
     "instance": "O1",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
      30.72,
      184.43
@@ -6118,9 +6317,9 @@
     "instance": "H1",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     130.72,
+     116.47,
      78.93
     ],
     "courtyard_mm2": 71.262
@@ -6180,8 +6379,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     129.13,
-     65.37
+     122.851,
+     61.745
     ],
     "courtyard_mm2": 71.262
    },
@@ -6550,9 +6749,9 @@
     "instance": "O3",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     41.93,
+     57.93,
      248.47
     ],
     "courtyard_mm2": 71.262
@@ -6562,10 +6761,10 @@
     "instance": "O3",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     27.95,
-     237.47
+     13.22,
+     241.417
     ],
     "courtyard_mm2": 71.262
    },
@@ -6574,10 +6773,10 @@
     "instance": "O3",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     30.68,
-     248.47
+     51.898,
+     260.72
     ],
     "courtyard_mm2": 71.262
    },
@@ -6682,10 +6881,10 @@
     "instance": "O4",
     "symbol": "AS3340D",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     77.56,
-     220.97
+     73.742,
+     235.217
     ],
     "courtyard_mm2": 80.66
    },
@@ -6706,10 +6905,10 @@
     "instance": "O4",
     "symbol": "SN74HC14DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     73.93,
-     198.97
+     66.93,
+     186.846
     ],
     "courtyard_mm2": 71.262
    },
@@ -6778,9 +6977,9 @@
     "instance": "O4",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     76.93,
+     93.43,
      209.97
     ],
     "courtyard_mm2": 71.262
@@ -6790,10 +6989,10 @@
     "instance": "O4",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     65.68,
-     211.72
+     44.462,
+     223.97
     ],
     "courtyard_mm2": 71.262
    },
@@ -6912,8 +7111,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     83.745,
-     247.7
+     76.495,
+     260.257
     ],
     "courtyard_mm2": 43.364
    },
@@ -6924,8 +7123,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     107.93,
-     260.72
+     108.305,
+     261.37
     ],
     "courtyard_mm2": 71.262
    },
@@ -6936,8 +7135,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     107.22,
-     259.81
+     107.595,
+     260.459
     ],
     "courtyard_mm2": 43.364
    },
@@ -6982,10 +7181,10 @@
     "instance": "O5",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     111.93,
-     247.72
+     123.774,
+     235.876
     ],
     "courtyard_mm2": 71.262
    },
@@ -7006,10 +7205,10 @@
     "instance": "O5",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     100.95,
-     247.72
+     81.031,
+     259.22
     ],
     "courtyard_mm2": 71.262
    },
@@ -7068,7 +7267,7 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     19.2,
+     24.45,
      201.05
     ],
     "courtyard_mm2": 43.364
@@ -7093,7 +7292,7 @@
     "side": "B.Cu",
     "xy": [
      10.85,
-     208.13
+     211.88
     ],
     "courtyard_mm2": 71.262
    },
@@ -7366,10 +7565,10 @@
     "instance": "F1",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     47.47,
-     129.18
+     56.345,
+     144.552
     ],
     "courtyard_mm2": 71.262
    },
@@ -7404,8 +7603,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     47.22,
-     130.68
+     38.845,
+     145.186
     ],
     "courtyard_mm2": 71.262
    },
@@ -7414,10 +7613,10 @@
     "instance": "F1",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     32.7,
-     125.97
+     23.861,
+     134.809
     ],
     "courtyard_mm2": 71.262
    },
@@ -7678,10 +7877,10 @@
     "instance": "F2",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     89.22,
-     77.2
+     65.796,
+     83.476
     ],
     "courtyard_mm2": 71.262
    },
@@ -7690,10 +7889,10 @@
     "instance": "F2",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
      89.22,
-     65.95
+     49.95
     ],
     "courtyard_mm2": 71.262
    },
@@ -7704,8 +7903,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     89.22,
-     70.7
+     99.345,
+     53.163
     ],
     "courtyard_mm2": 71.262
    },
@@ -7714,10 +7913,10 @@
     "instance": "F2",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     100.22,
-     79.93
+     112.241,
+     91.951
     ],
     "courtyard_mm2": 71.262
    },
@@ -7726,10 +7925,10 @@
     "instance": "F2",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     100.22,
-     68.68
+     109.236,
+     59.664
     ],
     "courtyard_mm2": 71.262
    },
@@ -7738,10 +7937,10 @@
     "instance": "F2",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     94.43,
-     90.58
+     105.39,
+     101.54
     ],
     "courtyard_mm2": 71.262
    },
@@ -7858,10 +8057,10 @@
     "instance": "F3",
     "symbol": "LM13700M_NOPB",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     139.84,
-     205.08
+     146.116,
+     228.504
     ],
     "courtyard_mm2": 80.66
    },
@@ -7873,7 +8072,7 @@
     "side": "B.Cu",
     "xy": [
      126.97,
-     216.59
+     214.59
     ],
     "courtyard_mm2": 80.66
    },
@@ -7906,10 +8105,10 @@
     "instance": "F3",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     123.93,
-     192.47
+     130.4,
+     168.322
     ],
     "courtyard_mm2": 71.262
    },
@@ -7918,10 +8117,10 @@
     "instance": "F3",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     126.97,
-     204.43
+     132.599,
+     225.439
     ],
     "courtyard_mm2": 71.262
    },
@@ -7942,10 +8141,10 @@
     "instance": "F3",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     135.18,
-     192.58
+     149.91,
+     196.527
     ],
     "courtyard_mm2": 71.262
    },
@@ -8328,8 +8527,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     209.31,
-     90.45
+     220.27,
+     79.49
     ],
     "courtyard_mm2": 43.364
    },
@@ -8350,10 +8549,10 @@
     "instance": "E1",
     "symbol": "SN74HC14DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     218.45,
-     80.18
+     213.254,
+     77.18
     ],
     "courtyard_mm2": 71.262
    },
@@ -8386,10 +8585,10 @@
     "instance": "E1",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     208.93,
-     66.97
+     201.805,
+     79.311
     ],
     "courtyard_mm2": 71.262
    },
@@ -8446,10 +8645,10 @@
     "instance": "E1",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     219.2,
-     68.93
+     227.685,
+     60.445
     ],
     "courtyard_mm2": 71.262
    },
@@ -8470,10 +8669,10 @@
     "instance": "E1",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     221.95,
-     92.18
+     229.744,
+     96.68
     ],
     "courtyard_mm2": 71.262
    },
@@ -8542,10 +8741,10 @@
     "instance": "E1",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     210.95,
-     91.43
+     226.33,
+     106.81
     ],
     "courtyard_mm2": 71.262
    },
@@ -8554,9 +8753,9 @@
     "instance": "E1",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     209.33,
+     232.08,
      77.45
     ],
     "courtyard_mm2": 71.262
@@ -8592,8 +8791,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     210.93,
-     71.47
+     223.18,
+     50.252
     ],
     "courtyard_mm2": 71.262
    },
@@ -8844,8 +9043,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     241.81,
-     213.33
+     231.935,
+     230.434
     ],
     "courtyard_mm2": 80.66
    },
@@ -8868,8 +9067,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     172.84,
-     234.33
+     182.84,
+     251.65
     ],
     "courtyard_mm2": 80.66
    },
@@ -8950,10 +9149,10 @@
     "instance": "E2",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     173.65,
-     274.7
+     173.974,
+     275.907
     ],
     "courtyard_mm2": 71.262
    },
@@ -8962,10 +9161,10 @@
     "instance": "E2",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "F.Cu",
+    "side": "B.Cu",
     "xy": [
-     248.45,
-     230.95
+     251.914,
+     232.95
     ],
     "courtyard_mm2": 71.262
    },
@@ -8976,8 +9175,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     173.65,
-     246.7
+     187.969,
+     261.019
     ],
     "courtyard_mm2": 71.262
    },
@@ -9036,8 +9235,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     263.2,
-     222.18
+     251.325,
+     242.748
     ],
     "courtyard_mm2": 71.262
    },
@@ -9082,10 +9281,10 @@
     "instance": "E2",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     254.65,
-     212.2
+     235.09,
+     206.959
     ],
     "courtyard_mm2": 71.262
    },
@@ -9094,10 +9293,10 @@
     "instance": "E2",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "F.Cu",
+    "side": "B.Cu",
     "xy": [
-     238.18,
-     231.95
+     233.93,
+     239.311
     ],
     "courtyard_mm2": 71.262
    },
@@ -9108,8 +9307,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     198.68,
-     214.58
+     213.186,
+     222.955
     ],
     "courtyard_mm2": 71.262
    },
@@ -9120,8 +9319,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     229.93,
-     214.58
+     220.555,
+     230.818
     ],
     "courtyard_mm2": 71.262
    },
@@ -9144,8 +9343,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     215.95,
-     196.33
+     216.45,
+     197.196
     ],
     "courtyard_mm2": 71.262
    },
@@ -9202,10 +9401,10 @@
     "instance": "E2",
     "symbol": "SN74HC74DR",
     "board": "K",
-    "side": "F.Cu",
+    "side": "B.Cu",
     "xy": [
-     193.7,
-     275.18
+     199.979,
+     271.555
     ],
     "courtyard_mm2": 71.262
    },
@@ -9418,10 +9617,10 @@
     "instance": "E3",
     "symbol": "CD74HC221M96",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     283.72,
-     37.785
+     297.484,
+     34.097
     ],
     "courtyard_mm2": 80.66
    },
@@ -9516,8 +9715,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     269.43,
-     55.95
+     280.18,
+     37.331
     ],
     "courtyard_mm2": 71.262
    },
@@ -9670,10 +9869,10 @@
     "instance": "E3",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     269.45,
-     58.68
+     258.075,
+     78.382
     ],
     "courtyard_mm2": 71.262
    },
@@ -9706,10 +9905,10 @@
     "instance": "E3",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     278.7,
-     49.43
+     258.348,
+     37.68
     ],
     "courtyard_mm2": 71.262
    },
@@ -9742,10 +9941,10 @@
     "instance": "E3",
     "symbol": "SN74HC74DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     281.43,
-     60.45
+     285.765,
+     76.629
     ],
     "courtyard_mm2": 71.262
    },
@@ -10042,9 +10241,9 @@
     "instance": "E4",
     "symbol": "LM393BIDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     302.81,
+     307.06,
      212.83
     ],
     "courtyard_mm2": 43.364
@@ -10092,8 +10291,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     281.18,
-     188.72
+     281.397,
+     188.845
     ],
     "courtyard_mm2": 71.262
    },
@@ -10126,10 +10325,10 @@
     "instance": "E4",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     292.22,
-     184.65
+     288.467,
+     170.644
     ],
     "courtyard_mm2": 71.262
    },
@@ -10162,7 +10361,7 @@
     "instance": "E4",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
      276.18,
      170.47
@@ -10176,8 +10375,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     289.18,
-     182.95
+     299.256,
+     172.874
     ],
     "courtyard_mm2": 71.262
    },
@@ -10210,10 +10409,10 @@
     "instance": "E4",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     305.68,
-     199.47
+     301.555,
+     192.325
     ],
     "courtyard_mm2": 71.262
    },
@@ -10258,10 +10457,10 @@
     "instance": "E4",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     278.2,
-     179.7
+     288.7,
+     161.513
     ],
     "courtyard_mm2": 71.262
    },
@@ -10356,7 +10555,7 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     292.2,
+     275.45,
      172.7
     ],
     "courtyard_mm2": 71.262
@@ -10464,8 +10663,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     291.47,
-     226.93
+     303.594,
+     233.93
     ],
     "courtyard_mm2": 71.262
    },
@@ -10524,8 +10723,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     185.95,
-     131.06
+     189.45,
+     124.998
     ],
     "courtyard_mm2": 43.364
    },
@@ -10702,10 +10901,10 @@
     "instance": "E5",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     174.95,
-     133.45
+     179.415,
+     116.788
     ],
     "courtyard_mm2": 71.262
    },
@@ -10714,10 +10913,10 @@
     "instance": "E5",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "F.Cu",
+    "side": "B.Cu",
     "xy": [
-     185.95,
-     140.7
+     191.579,
+     143.95
     ],
     "courtyard_mm2": 71.262
    },
@@ -10738,10 +10937,10 @@
     "instance": "E5",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     189.18,
-     134.58
+     193.645,
+     117.918
     ],
     "courtyard_mm2": 71.262
    },
@@ -10918,10 +11117,10 @@
     "instance": "E5",
     "symbol": "SN74HC74DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
      175.95,
-     124.33
+     108.83
     ],
     "courtyard_mm2": 71.262
    },
@@ -11266,10 +11465,10 @@
     "instance": "E6",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     285.93,
-     132.72
+     279.555,
+     121.678
     ],
     "courtyard_mm2": 71.262
    },
@@ -11302,9 +11501,9 @@
     "instance": "E6",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     267.7,
+     281.2,
      142.68
     ],
     "courtyard_mm2": 71.262
@@ -11352,8 +11551,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     296.95,
-     131.93
+     309.724,
+     139.305
     ],
     "courtyard_mm2": 71.262
    },
@@ -11386,10 +11585,10 @@
     "instance": "E6",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
      252.58,
-     133.2
+     122.7
     ],
     "courtyard_mm2": 71.262
    },
@@ -11410,10 +11609,10 @@
     "instance": "E6",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "F.Cu",
+    "side": "B.Cu",
     "xy": [
-     283.72,
-     130.68
+     288.185,
+     114.018
     ],
     "courtyard_mm2": 71.262
    },
@@ -11422,10 +11621,10 @@
     "instance": "E6",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     263.65,
-     132.45
+     269.775,
+     121.841
     ],
     "courtyard_mm2": 71.262
    },
@@ -11458,10 +11657,10 @@
     "instance": "E6",
     "symbol": "SN74HC74DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     294.93,
-     142.2
+     271.506,
+     148.476
     ],
     "courtyard_mm2": 71.262
    },
@@ -11470,10 +11669,10 @@
     "instance": "E6",
     "symbol": "SN74HC74DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     292.45,
-     120.95
+     292.579,
+     121.433
     ],
     "courtyard_mm2": 71.262
    },
@@ -11544,8 +11743,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     251.58,
-     130.45
+     241.68,
+     120.55
     ],
     "courtyard_mm2": 71.262
    },
@@ -11902,10 +12101,10 @@
     "instance": "W1",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     169.2,
-     206.47
+     163.829,
+     186.427
     ],
     "courtyard_mm2": 71.262
    },
@@ -12768,7 +12967,7 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     96.62,
+     112.37,
      112.88
     ],
     "courtyard_mm2": 71.262
@@ -12780,7 +12979,7 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     94.68,
+     93.43,
      120.22
     ],
     "courtyard_mm2": 71.262
@@ -12802,10 +13001,10 @@
     "instance": "M5A",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     105.93,
-     118.47
+     114.157,
+     123.22
     ],
     "courtyard_mm2": 71.262
    },
@@ -13450,10 +13649,10 @@
     "instance": "M4B",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     212.83,
-     181.93
+     218.455,
+     172.187
     ],
     "courtyard_mm2": 71.262
    },
@@ -13555,11 +13754,4792 @@
    }
   ],
   "place_source": {
-   "read": "floorplan",
-   "moved": 0,
-   "listed": 0
+   "read": "gate record displaced_k_ic_packages",
+   "moved": 85,
+   "listed": 99,
+   "kept": 14
   },
   "exact_part_places": {
+   "WQP518MA": [
+    {
+     "ref": "J509",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J609",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J709",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J510",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J610",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J710",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J101",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J102",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J103",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J104",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J105",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J106",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J107",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J108",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J201",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J202",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J203",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J204",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J205",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J206",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J207",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J208",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J301",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J302",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J303",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J304",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J305",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J306",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J307",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J308",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J401",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J402",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J403",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J404",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J405",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J406",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J407",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J408",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J501",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J502",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J503",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J504",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J505",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J506",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J507",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J508",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J601",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J602",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J603",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J604",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J605",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J606",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J607",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J608",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J701",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J702",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J703",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J704",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J705",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J706",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J707",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J708",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J801",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J802",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J803",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J804",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J805",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J806",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J807",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J808",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J1109",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J1209",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J1110",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J1210",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J1301",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J1302",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J1303",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J1304",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J1305",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J1306",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J1307",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J1401",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J1402",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J1403",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J1404",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J1405",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J1406",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J1407",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J1501",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J1502",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J1503",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J1504",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J1505",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J1506",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J1507",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J1601",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J1602",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J1603",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J1604",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J1605",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J1606",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J1607",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J1701",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J1702",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J1703",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J1704",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J1705",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J1706",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J1707",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J1801",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J1802",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J1803",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J1804",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J1805",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J1806",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J1807",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J109",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J209",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J110",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J210",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J309",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J409",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J310",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J410",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J809",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J909",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J1009",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J810",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J910",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J1010",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J901",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J902",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J903",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J904",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J905",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J906",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J1001",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J1002",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J1003",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J1004",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J1005",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J1006",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J1101",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J1102",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J1103",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J1104",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J1105",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J1106",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J1201",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      29.0
+     ]
+    },
+    {
+     "ref": "J1202",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      43.0
+     ]
+    },
+    {
+     "ref": "J1203",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      57.0
+     ]
+    },
+    {
+     "ref": "J1204",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      71.0
+     ]
+    },
+    {
+     "ref": "J1205",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      85.0
+     ]
+    },
+    {
+     "ref": "J1206",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      99.0
+     ]
+    },
+    {
+     "ref": "J907",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J1007",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J908",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J1008",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J1107",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J1207",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      113.0
+     ]
+    },
+    {
+     "ref": "J1108",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J1208",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J1308",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J1309",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J1310",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J1408",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J1409",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J1410",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J1508",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J1509",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J1510",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J1608",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J1609",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J1610",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J1708",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J1709",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J1710",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      155.0
+     ]
+    },
+    {
+     "ref": "J1808",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      127.0
+     ]
+    },
+    {
+     "ref": "J1809",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      141.0
+     ]
+    },
+    {
+     "ref": "J1810",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      155.0
+     ]
+    }
+   ],
+   "B3F-1020": [
+    {
+     "ref": "SW607",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "SW707",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "SW1304",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "SW1404",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "SW1504",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "SW1604",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "SW1704",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "SW1804",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      227.0
+     ]
+    }
+   ],
+   "APHHS1005QWF/D": [
+    {
+     "ref": "D509",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      88.65,
+      141.0
+     ]
+    },
+    {
+     "ref": "D609",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      105.65,
+      141.0
+     ]
+    },
+    {
+     "ref": "D709",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      122.65,
+      141.0
+     ]
+    },
+    {
+     "ref": "D510",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      88.65,
+      155.0
+     ]
+    },
+    {
+     "ref": "D610",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      105.65,
+      155.0
+     ]
+    },
+    {
+     "ref": "D710",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      122.65,
+      155.0
+     ]
+    },
+    {
+     "ref": "D601",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      105.65,
+      29.0
+     ]
+    },
+    {
+     "ref": "D602",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      105.65,
+      43.0
+     ]
+    },
+    {
+     "ref": "D603",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      105.65,
+      57.0
+     ]
+    },
+    {
+     "ref": "D604",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      105.65,
+      71.0
+     ]
+    },
+    {
+     "ref": "D701",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      122.65,
+      29.0
+     ]
+    },
+    {
+     "ref": "D702",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      122.65,
+      43.0
+     ]
+    },
+    {
+     "ref": "D703",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      122.65,
+      57.0
+     ]
+    },
+    {
+     "ref": "D704",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      122.65,
+      71.0
+     ]
+    },
+    {
+     "ref": "D801",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      139.65,
+      29.0
+     ]
+    },
+    {
+     "ref": "D802",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      139.65,
+      43.0
+     ]
+    },
+    {
+     "ref": "D803",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      139.65,
+      57.0
+     ]
+    },
+    {
+     "ref": "D804",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      139.65,
+      71.0
+     ]
+    },
+    {
+     "ref": "D1301",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      224.65,
+      29.0
+     ]
+    },
+    {
+     "ref": "D1302",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      224.65,
+      43.0
+     ]
+    },
+    {
+     "ref": "D1303",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      224.65,
+      57.0
+     ]
+    },
+    {
+     "ref": "D11305",
+     "board": "EL",
+     "side": "F.Cu",
+     "xy": [
+      224.4,
+      241.0
+     ]
+    },
+    {
+     "ref": "D11306",
+     "board": "EL",
+     "side": "F.Cu",
+     "xy": [
+      224.4,
+      255.0
+     ]
+    },
+    {
+     "ref": "D1401",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      241.65,
+      29.0
+     ]
+    },
+    {
+     "ref": "D1402",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      241.65,
+      43.0
+     ]
+    },
+    {
+     "ref": "D1403",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      241.65,
+      57.0
+     ]
+    },
+    {
+     "ref": "D11405",
+     "board": "EL",
+     "side": "F.Cu",
+     "xy": [
+      241.4,
+      241.0
+     ]
+    },
+    {
+     "ref": "D11406",
+     "board": "EL",
+     "side": "F.Cu",
+     "xy": [
+      241.4,
+      255.0
+     ]
+    },
+    {
+     "ref": "D1501",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      258.65,
+      29.0
+     ]
+    },
+    {
+     "ref": "D1502",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      258.65,
+      43.0
+     ]
+    },
+    {
+     "ref": "D1503",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      258.65,
+      57.0
+     ]
+    },
+    {
+     "ref": "D11505",
+     "board": "EL",
+     "side": "F.Cu",
+     "xy": [
+      258.4,
+      241.0
+     ]
+    },
+    {
+     "ref": "D11506",
+     "board": "EL",
+     "side": "F.Cu",
+     "xy": [
+      258.4,
+      255.0
+     ]
+    },
+    {
+     "ref": "D1601",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      275.65,
+      29.0
+     ]
+    },
+    {
+     "ref": "D1602",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      275.65,
+      43.0
+     ]
+    },
+    {
+     "ref": "D1603",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      275.65,
+      57.0
+     ]
+    },
+    {
+     "ref": "D11605",
+     "board": "EL",
+     "side": "F.Cu",
+     "xy": [
+      275.4,
+      241.0
+     ]
+    },
+    {
+     "ref": "D11606",
+     "board": "EL",
+     "side": "F.Cu",
+     "xy": [
+      275.4,
+      255.0
+     ]
+    },
+    {
+     "ref": "D1701",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      292.65,
+      29.0
+     ]
+    },
+    {
+     "ref": "D1702",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      292.65,
+      43.0
+     ]
+    },
+    {
+     "ref": "D1703",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      292.65,
+      57.0
+     ]
+    },
+    {
+     "ref": "D11705",
+     "board": "EL",
+     "side": "F.Cu",
+     "xy": [
+      292.4,
+      241.0
+     ]
+    },
+    {
+     "ref": "D11706",
+     "board": "EL",
+     "side": "F.Cu",
+     "xy": [
+      292.4,
+      255.0
+     ]
+    },
+    {
+     "ref": "D1801",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      309.65,
+      29.0
+     ]
+    },
+    {
+     "ref": "D1802",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      309.65,
+      43.0
+     ]
+    },
+    {
+     "ref": "D1803",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      309.65,
+      57.0
+     ]
+    },
+    {
+     "ref": "D11805",
+     "board": "EL",
+     "side": "F.Cu",
+     "xy": [
+      309.4,
+      241.0
+     ]
+    },
+    {
+     "ref": "D11806",
+     "board": "EL",
+     "side": "F.Cu",
+     "xy": [
+      309.4,
+      255.0
+     ]
+    },
+    {
+     "ref": "D109",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      20.65,
+      141.0
+     ]
+    },
+    {
+     "ref": "D309",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      54.65,
+      141.0
+     ]
+    },
+    {
+     "ref": "D809",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      139.65,
+      141.0
+     ]
+    },
+    {
+     "ref": "D909",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      156.65,
+      141.0
+     ]
+    },
+    {
+     "ref": "D1009",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      173.65,
+      141.0
+     ]
+    },
+    {
+     "ref": "D810",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      139.65,
+      155.0
+     ]
+    },
+    {
+     "ref": "D910",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      156.65,
+      155.0
+     ]
+    },
+    {
+     "ref": "D1010",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      173.65,
+      155.0
+     ]
+    },
+    {
+     "ref": "D901",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      156.65,
+      29.0
+     ]
+    },
+    {
+     "ref": "D902",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      156.65,
+      43.0
+     ]
+    },
+    {
+     "ref": "D903",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      156.65,
+      57.0
+     ]
+    },
+    {
+     "ref": "D904",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      156.65,
+      71.0
+     ]
+    },
+    {
+     "ref": "D905",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      156.65,
+      85.0
+     ]
+    },
+    {
+     "ref": "D906",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      156.65,
+      99.0
+     ]
+    },
+    {
+     "ref": "D1001",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      173.65,
+      29.0
+     ]
+    },
+    {
+     "ref": "D1002",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      173.65,
+      43.0
+     ]
+    },
+    {
+     "ref": "D1003",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      173.65,
+      57.0
+     ]
+    },
+    {
+     "ref": "D1004",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      173.65,
+      71.0
+     ]
+    },
+    {
+     "ref": "D1005",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      173.65,
+      85.0
+     ]
+    },
+    {
+     "ref": "D1006",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      173.65,
+      99.0
+     ]
+    },
+    {
+     "ref": "D1101",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      190.65,
+      29.0
+     ]
+    },
+    {
+     "ref": "D1102",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      190.65,
+      43.0
+     ]
+    },
+    {
+     "ref": "D1103",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      190.65,
+      57.0
+     ]
+    },
+    {
+     "ref": "D1104",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      190.65,
+      71.0
+     ]
+    },
+    {
+     "ref": "D1105",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      190.65,
+      85.0
+     ]
+    },
+    {
+     "ref": "D1106",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      190.65,
+      99.0
+     ]
+    },
+    {
+     "ref": "D1201",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      207.65,
+      29.0
+     ]
+    },
+    {
+     "ref": "D1202",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      207.65,
+      43.0
+     ]
+    },
+    {
+     "ref": "D1203",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      207.65,
+      57.0
+     ]
+    },
+    {
+     "ref": "D1204",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      207.65,
+      71.0
+     ]
+    },
+    {
+     "ref": "D1205",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      207.65,
+      85.0
+     ]
+    },
+    {
+     "ref": "D1206",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      207.65,
+      99.0
+     ]
+    },
+    {
+     "ref": "D907",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      156.65,
+      113.0
+     ]
+    },
+    {
+     "ref": "D1007",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      173.65,
+      113.0
+     ]
+    },
+    {
+     "ref": "D908",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      156.65,
+      127.0
+     ]
+    },
+    {
+     "ref": "D1107",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      190.65,
+      113.0
+     ]
+    },
+    {
+     "ref": "D1207",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      207.65,
+      113.0
+     ]
+    },
+    {
+     "ref": "D1108",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      190.65,
+      127.0
+     ]
+    },
+    {
+     "ref": "D1308",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      224.65,
+      127.0
+     ]
+    },
+    {
+     "ref": "D1309",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      224.65,
+      141.0
+     ]
+    },
+    {
+     "ref": "D1310",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      224.65,
+      155.0
+     ]
+    },
+    {
+     "ref": "D1408",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      241.65,
+      127.0
+     ]
+    },
+    {
+     "ref": "D1409",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      241.65,
+      141.0
+     ]
+    },
+    {
+     "ref": "D1410",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      241.65,
+      155.0
+     ]
+    },
+    {
+     "ref": "D1508",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      258.65,
+      127.0
+     ]
+    },
+    {
+     "ref": "D1509",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      258.65,
+      141.0
+     ]
+    },
+    {
+     "ref": "D1510",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      258.65,
+      155.0
+     ]
+    },
+    {
+     "ref": "D1608",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      275.65,
+      127.0
+     ]
+    },
+    {
+     "ref": "D1609",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      275.65,
+      141.0
+     ]
+    },
+    {
+     "ref": "D1610",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      275.65,
+      155.0
+     ]
+    },
+    {
+     "ref": "D1708",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      292.65,
+      127.0
+     ]
+    },
+    {
+     "ref": "D1709",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      292.65,
+      141.0
+     ]
+    },
+    {
+     "ref": "D1710",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      292.65,
+      155.0
+     ]
+    },
+    {
+     "ref": "D1808",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      309.65,
+      127.0
+     ]
+    },
+    {
+     "ref": "D1809",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      309.65,
+      141.0
+     ]
+    },
+    {
+     "ref": "D1810",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      309.65,
+      155.0
+     ]
+    }
+   ],
+   "PTV09A-4020F-B504": [
+    {
+     "ref": "RV807",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "RV808",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      283.0
+     ]
+    }
+   ],
+   "PTV09A-4020F-B103": [
+    {
+     "ref": "RV106",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV108",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      283.0
+     ]
+    },
+    {
+     "ref": "RV206",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV208",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      283.0
+     ]
+    },
+    {
+     "ref": "RV306",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV308",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      283.0
+     ]
+    },
+    {
+     "ref": "RV406",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV408",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      283.0
+     ]
+    },
+    {
+     "ref": "RV506",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV508",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      283.0
+     ]
+    },
+    {
+     "ref": "RV603",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "RV604",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "RV606",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV703",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "RV704",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "RV706",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV803",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "RV804",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "RV806",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV901",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      185.0
+     ]
+    },
+    {
+     "ref": "RV902",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "RV903",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "RV904",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "RV905",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV906",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV1001",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      185.0
+     ]
+    },
+    {
+     "ref": "RV1002",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "RV1003",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "RV1004",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "RV1005",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV1006",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV1101",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      185.0
+     ]
+    },
+    {
+     "ref": "RV1102",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "RV1103",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "RV1104",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "RV1105",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV1201",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      185.0
+     ]
+    },
+    {
+     "ref": "RV1202",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "RV1203",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "RV1204",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "RV1205",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV1007",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "RV1008",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      167.5,
+      283.0
+     ]
+    },
+    {
+     "ref": "RV1207",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "RV1208",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      283.0
+     ]
+    },
+    {
+     "ref": "RV1307",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "RV1407",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "RV1507",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "RV1607",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "RV1707",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "RV1807",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      269.0
+     ]
+    }
+   ],
+   "PTV09A-4020F-B104": [
+    {
+     "ref": "RV104",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "RV105",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV107",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "RV204",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "RV205",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV207",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "RV304",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "RV305",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV307",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "RV404",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "RV405",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV407",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "RV504",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      227.0
+     ]
+    },
+    {
+     "ref": "RV505",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV507",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "RV601",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      185.0
+     ]
+    },
+    {
+     "ref": "RV602",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "RV605",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV701",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      185.0
+     ]
+    },
+    {
+     "ref": "RV702",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "RV705",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV801",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      185.0
+     ]
+    },
+    {
+     "ref": "RV802",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "RV805",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      133.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV1305",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV1306",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV1405",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV1406",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV1505",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV1506",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV1605",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV1606",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV1705",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV1706",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV1805",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      241.0
+     ]
+    },
+    {
+     "ref": "RV1806",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV1106",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV1206",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      201.5,
+      255.0
+     ]
+    },
+    {
+     "ref": "RV907",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "RV908",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      150.5,
+      283.0
+     ]
+    },
+    {
+     "ref": "RV1107",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      269.0
+     ]
+    },
+    {
+     "ref": "RV1108",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      184.5,
+      283.0
+     ]
+    },
+    {
+     "ref": "RV1308",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      283.0
+     ]
+    },
+    {
+     "ref": "RV1408",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      283.0
+     ]
+    },
+    {
+     "ref": "RV1508",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      283.0
+     ]
+    },
+    {
+     "ref": "RV1608",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      283.0
+     ]
+    },
+    {
+     "ref": "RV1708",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      283.0
+     ]
+    },
+    {
+     "ref": "RV1808",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      283.0
+     ]
+    }
+   ],
+   "SRBV160803": [
+    {
+     "ref": "SW101",
+     "board": "O1",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      185.0
+     ]
+    },
+    {
+     "ref": "SW201",
+     "board": "O2",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      185.0
+     ]
+    },
+    {
+     "ref": "SW301",
+     "board": "O3",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      185.0
+     ]
+    },
+    {
+     "ref": "SW401",
+     "board": "O4",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      185.0
+     ]
+    },
+    {
+     "ref": "SW501",
+     "board": "O5",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      185.0
+     ]
+    }
+   ],
+   "2MS1T1B1M2QES-5": [
+    {
+     "ref": "SW102",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "SW202",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "SW302",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "SW402",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "SW502",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "SW1302",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "SW1303",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "SW1402",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "SW1403",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "SW1502",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "SW1503",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "SW1602",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "SW1603",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "SW1702",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "SW1703",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "SW1802",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      199.0
+     ]
+    },
+    {
+     "ref": "SW1803",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "SW608",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      99.5,
+      283.0
+     ]
+    },
+    {
+     "ref": "SW708",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      116.5,
+      283.0
+     ]
+    }
+   ],
+   "TC33X-2-103E": [
+    {
+     "ref": "RVO1106",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      49.85,
+      167.6
+     ]
+    },
+    {
+     "ref": "RVO1107",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      10.35,
+      174.45
+     ]
+    },
+    {
+     "ref": "RVO1110",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      48.95,
+      156.55
+     ]
+    },
+    {
+     "ref": "RVO1111",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      47.1,
+      173.6
+     ]
+    },
+    {
+     "ref": "RVO1206",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      88.95,
+      141.05
+     ]
+    },
+    {
+     "ref": "RVO1207",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      103.6,
+      155.45
+     ]
+    },
+    {
+     "ref": "RVO1210",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      96.35,
+      172.7
+     ]
+    },
+    {
+     "ref": "RVO1211",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      98.85,
+      162.35
+     ]
+    },
+    {
+     "ref": "RVO1306",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      30.7,
+      272.55
+     ]
+    },
+    {
+     "ref": "RVO1307",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      8.35,
+      248.35
+     ]
+    },
+    {
+     "ref": "RVO1310",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      13.1,
+      257.7
+     ]
+    },
+    {
+     "ref": "RVO1311",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      25.45,
+      267.55
+     ]
+    },
+    {
+     "ref": "RVO1406",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      66.85,
+      194.3
+     ]
+    },
+    {
+     "ref": "RVO1407",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      40.1,
+      204.7
+     ]
+    },
+    {
+     "ref": "RVO1410",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      52.95,
+      194.3
+     ]
+    },
+    {
+     "ref": "RVO1411",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      53.85,
+      230.95
+     ]
+    },
+    {
+     "ref": "RVO1506",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      94.1,
+      266.55
+     ]
+    },
+    {
+     "ref": "RVO1507",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      83.85,
+      234.3
+     ]
+    },
+    {
+     "ref": "RVO1510",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      99.2,
+      227.55
+     ]
+    },
+    {
+     "ref": "RVO1511",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      77.35,
+      242.45
+     ]
+    },
+    {
+     "ref": "RV2109",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      47.35,
+      104.8
+     ]
+    },
+    {
+     "ref": "RV2110",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      60.6,
+      127.2
+     ]
+    },
+    {
+     "ref": "RV2111",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      56.1,
+      130.7
+     ]
+    },
+    {
+     "ref": "RV2112",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      37.7,
+      106.3
+     ]
+    },
+    {
+     "ref": "RV2209",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      95.6,
+      85.55
+     ]
+    },
+    {
+     "ref": "RV2210",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      72.85,
+      77.2
+     ]
+    },
+    {
+     "ref": "RV2211",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      109.1,
+      93.2
+     ]
+    },
+    {
+     "ref": "RV2212",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      96.7,
+      61.05
+     ]
+    },
+    {
+     "ref": "RV2309",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      115.1,
+      192.3
+     ]
+    },
+    {
+     "ref": "RV2310",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      148.85,
+      190.45
+     ]
+    },
+    {
+     "ref": "RV2311",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      115.1,
+      205.3
+     ]
+    },
+    {
+     "ref": "RV2312",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      110.35,
+      197.6
+     ]
+    },
+    {
+     "ref": "RV6101",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      210.6,
+      117.95
+     ]
+    },
+    {
+     "ref": "RV6102",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      220.85,
+      116.05
+     ]
+    },
+    {
+     "ref": "RV6103",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      220.95,
+      111.8
+     ]
+    },
+    {
+     "ref": "RV6104",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      217.7,
+      139.3
+     ]
+    },
+    {
+     "ref": "RV4104",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      182.1,
+      67.3
+     ]
+    },
+    {
+     "ref": "RV4108",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      218.2,
+      61.3
+     ]
+    },
+    {
+     "ref": "RV4204",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      211.85,
+      239.8
+     ]
+    },
+    {
+     "ref": "RV4208",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      204.1,
+      248.3
+     ]
+    },
+    {
+     "ref": "RV4304",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      278.35,
+      68.3
+     ]
+    },
+    {
+     "ref": "RV4308",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      301.85,
+      54.45
+     ]
+    },
+    {
+     "ref": "RV4404",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      284.35,
+      199.3
+     ]
+    },
+    {
+     "ref": "RV4408",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      247.85,
+      184.6
+     ]
+    },
+    {
+     "ref": "RV4504",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      193.35,
+      181.2
+     ]
+    },
+    {
+     "ref": "RV4508",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      174.6,
+      167.05
+     ]
+    },
+    {
+     "ref": "RV4604",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      263.85,
+      141.55
+     ]
+    },
+    {
+     "ref": "RV4608",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      247.6,
+      122.2
+     ]
+    },
+    {
+     "ref": "RV8307",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      239.6,
+      153.45
+     ]
+    },
+    {
+     "ref": "RV8308",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      227.6,
+      144.05
+     ]
+    },
+    {
+     "ref": "RV8407",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      204.6,
+      202.95
+     ]
+    },
+    {
+     "ref": "RV8408",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      235.6,
+      184.6
+     ]
+    },
+    {
+     "ref": "RV5104",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      143.35,
+      257.2
+     ]
+    },
+    {
+     "ref": "RV5105",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      150.35,
+      275.3
+     ]
+    },
+    {
+     "ref": "RV5204",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      164.35,
+      219.3
+     ]
+    },
+    {
+     "ref": "RV5205",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      145.6,
+      216.45
+     ]
+    }
+   ],
+   "TC33X-2-102E": [
+    {
+     "ref": "RVO1108",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      28.7,
+      147.05
+     ]
+    },
+    {
+     "ref": "RVO1208",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      63.1,
+      150.35
+     ]
+    },
+    {
+     "ref": "RVO1308",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      48.85,
+      228.7
+     ]
+    },
+    {
+     "ref": "RVO1408",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      41.6,
+      218.7
+     ]
+    },
+    {
+     "ref": "RVO1508",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      76.85,
+      256.45
+     ]
+    },
+    {
+     "ref": "RV1601",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      24.85,
+      216.3
+     ]
+    },
+    {
+     "ref": "RV2107",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      72.85,
+      118.2
+     ]
+    },
+    {
+     "ref": "RV2207",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      81.85,
+      57.05
+     ]
+    },
+    {
+     "ref": "RV2307",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      113.1,
+      175.05
+     ]
+    },
+    {
+     "ref": "RV4102",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      208.35,
+      53.05
+     ]
+    },
+    {
+     "ref": "RV4106",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      227.85,
+      89.1
+     ]
+    },
+    {
+     "ref": "RV4202",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      217.85,
+      213.05
+     ]
+    },
+    {
+     "ref": "RV4206",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      262.95,
+      243.3
+     ]
+    },
+    {
+     "ref": "RV4302",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      242.1,
+      49.95
+     ]
+    },
+    {
+     "ref": "RV4306",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      245.6,
+      70.95
+     ]
+    },
+    {
+     "ref": "RV4402",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      246.35,
+      213.1
+     ]
+    },
+    {
+     "ref": "RV4406",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      251.95,
+      172.8
+     ]
+    },
+    {
+     "ref": "RV4502",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      169.35,
+      172.55
+     ]
+    },
+    {
+     "ref": "RV4506",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      158.7,
+      124.8
+     ]
+    },
+    {
+     "ref": "RV4602",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      279.45,
+      88.55
+     ]
+    },
+    {
+     "ref": "RV4606",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      298.1,
+      103.6
+     ]
+    }
+   ],
+   "TC33X-2-203E": [
+    {
+     "ref": "RVO1109",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      7.6,
+      180.45
+     ]
+    },
+    {
+     "ref": "RVO1209",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      68.6,
+      151.55
+     ]
+    },
+    {
+     "ref": "RVO1309",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      16.85,
+      234.3
+     ]
+    },
+    {
+     "ref": "RVO1409",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      81.85,
+      198.6
+     ]
+    },
+    {
+     "ref": "RVO1509",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      109.85,
+      234.05
+     ]
+    }
+   ],
+   "2MS3T1B1M2QES": [
+    {
+     "ref": "SW103",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      14.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "SW203",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      31.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "SW303",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      48.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "SW403",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      65.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "SW503",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      82.5,
+      213.0
+     ]
+    },
+    {
+     "ref": "SW1301",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      218.5,
+      185.0
+     ]
+    },
+    {
+     "ref": "SW1401",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      235.5,
+      185.0
+     ]
+    },
+    {
+     "ref": "SW1501",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      252.5,
+      185.0
+     ]
+    },
+    {
+     "ref": "SW1601",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      269.5,
+      185.0
+     ]
+    },
+    {
+     "ref": "SW1701",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      286.5,
+      185.0
+     ]
+    },
+    {
+     "ref": "SW1801",
+     "board": "P",
+     "side": "F.Cu",
+     "xy": [
+      303.5,
+      185.0
+     ]
+    }
+   ],
+   "TC33X-2-503E": [
+    {
+     "ref": "RV2108",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      72.2,
+      108.05
+     ]
+    },
+    {
+     "ref": "RV2208",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      102.2,
+      55.05
+     ]
+    },
+    {
+     "ref": "RV2308",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      134.1,
+      192.3
+     ]
+    },
+    {
+     "ref": "RV4103",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      218.2,
+      53.3
+     ]
+    },
+    {
+     "ref": "RV4107",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      203.2,
+      114.05
+     ]
+    },
+    {
+     "ref": "RV4203",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      227.35,
+      212.55
+     ]
+    },
+    {
+     "ref": "RV4207",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      245.1,
+      222.35
+     ]
+    },
+    {
+     "ref": "RV4303",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      265.6,
+      18.3
+     ]
+    },
+    {
+     "ref": "RV4307",
+     "board": "K",
+     "side": "F.Cu",
+     "xy": [
+      283.85,
+      22.1
+     ]
+    },
+    {
+     "ref": "RV4403",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      270.1,
+      216.7
+     ]
+    },
+    {
+     "ref": "RV4407",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      245.6,
+      179.7
+     ]
+    },
+    {
+     "ref": "RV4503",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      176.1,
+      186.7
+     ]
+    },
+    {
+     "ref": "RV4507",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      188.2,
+      122.3
+     ]
+    },
+    {
+     "ref": "RV4603",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      265.45,
+      89.3
+     ]
+    },
+    {
+     "ref": "RV4607",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      307.1,
+      112.95
+     ]
+    }
+   ],
+   "TC33X-2-504E": [
+    {
+     "ref": "RV2113",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      21.1,
+      118.2
+     ]
+    },
+    {
+     "ref": "RV2213",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      102.35,
+      88.45
+     ]
+    },
+    {
+     "ref": "RV2313",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      119.2,
+      169.05
+     ]
+    }
+   ],
    "CL10A105KB8NNNC": [
     {
      "ref": "C302",
@@ -13617,29 +18597,200 @@
       125.16
      ]
     }
+   ],
+   "APG1005SEC/E-T": [
+    {
+     "ref": "D9061",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      156.65,
+      101.05
+     ]
+    },
+    {
+     "ref": "D10061",
+     "board": "JL",
+     "side": "F.Cu",
+     "xy": [
+      173.65,
+      101.05
+     ]
+    },
+    {
+     "ref": "D11061",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      190.65,
+      101.05
+     ]
+    },
+    {
+     "ref": "D12061",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      207.65,
+      101.05
+     ]
+    },
+    {
+     "ref": "D13101",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      224.65,
+      157.05
+     ]
+    },
+    {
+     "ref": "D14101",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      241.65,
+      157.05
+     ]
+    },
+    {
+     "ref": "D15101",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      258.65,
+      157.05
+     ]
+    },
+    {
+     "ref": "D16101",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      275.65,
+      157.05
+     ]
+    },
+    {
+     "ref": "D17101",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      292.65,
+      157.05
+     ]
+    },
+    {
+     "ref": "D18101",
+     "board": "JR",
+     "side": "F.Cu",
+     "xy": [
+      309.65,
+      157.05
+     ]
+    }
    ]
   },
   "link_figures": {
-   "links": 71,
-   "placed": 67,
-   "slots": 67,
-   "slot_area_mm2": 1065.75,
-   "loop_plan_area_mm2": 5874.8387,
-   "cable_plan_area_mm2": 32445.0
+   "links": 61,
+   "placed": 61,
+   "slots": 61,
+   "slot_area_mm2": 1016.25,
+   "loop_plan_area_mm2": 5632.0133,
+   "cable_plan_area_mm2": 31095.0
   },
   "plan_heat_row_W": [
    34.83,
    41.1
   ],
+  "plan_heat_row_text": [
+   "34.83",
+   "41.1"
+  ],
   "operating_ranges": {
+   "2MS1T1B1M2QES-5": [
+    {
+     "fact_id": "fact-2ms1-operating-temperature",
+     "minimum": -40,
+     "maximum": 85,
+     "class": "RECOMMENDED_OPERATION",
+     "verdict": "UNSOURCED",
+     "provenance": "UNVERIFIED",
+     "printed_condition": null,
+     "third_party_copy": true
+    }
+   ],
+   "2MS3T1B1M2QES": [
+    {
+     "fact_id": "fact-2ms3-operating-temperature",
+     "minimum": -40,
+     "maximum": 85,
+     "class": "RECOMMENDED_OPERATION",
+     "verdict": "UNSOURCED",
+     "provenance": "UNVERIFIED",
+     "printed_condition": null,
+     "third_party_copy": true
+    },
+    {
+     "fact_id": "fact-2ms3-drawing-operating-temperature",
+     "minimum": -30,
+     "maximum": 85,
+     "class": "RECOMMENDED_OPERATION",
+     "verdict": "UNSOURCED",
+     "provenance": "UNVERIFIED",
+     "printed_condition": null,
+     "third_party_copy": true
+    }
+   ],
+   "APG1005SEC/E-T": [
+    {
+     "fact_id": "fact-kingbright-red-operating-temperature",
+     "minimum": -40,
+     "maximum": 85,
+     "class": "ABSOLUTE_MAXIMUM",
+     "verdict": "PASS - primary-source confirmed",
+     "provenance": "PRIMARY-SPEC",
+     "printed_condition": null,
+     "third_party_copy": false
+    }
+   ],
+   "APHHS1005QWF/D": [
+    {
+     "fact_id": "fact-kingbright-white-operating-temperature",
+     "minimum": -40,
+     "maximum": 85,
+     "class": "ABSOLUTE_MAXIMUM",
+     "verdict": "PASS - primary-source confirmed",
+     "provenance": "PRIMARY-SPEC",
+     "printed_condition": null,
+     "third_party_copy": false
+    }
+   ],
    "AS3340D": [],
+   "B3F-1020": [
+    {
+     "fact_id": "fact-b3f-operating-temperature",
+     "minimum": -25,
+     "maximum": 70,
+     "class": "RECOMMENDED_OPERATION",
+     "verdict": "PASS - primary-source confirmed",
+     "provenance": "PRIMARY-SPEC",
+     "printed_condition": "at 60%RH max.",
+     "third_party_copy": false
+    }
+   ],
    "BCM847BS": [],
    "CD74HC221M96": [],
    "CL10A105KB8NNNC": [
     {
      "fact_id": "fact-power-reservoir-temperature",
      "minimum": -55,
-     "maximum": 85
+     "maximum": 85,
+     "class": "GUARANTEED_ELECTRICAL",
+     "verdict": "PASS - primary-source confirmed",
+     "provenance": "PRIMARY-SPEC",
+     "printed_condition": null,
+     "third_party_copy": false
     }
    ],
    "LF398M_NOPB": [],
@@ -13649,6 +18800,42 @@
    "OPA4196IDR": [],
    "OPA4197IDR": [],
    "OPA4197IPWR": [],
+   "PTV09A-4020F-B103": [
+    {
+     "fact_id": "fact-b103-operating-temperature",
+     "minimum": -10,
+     "maximum": 50,
+     "class": "RECOMMENDED_OPERATION",
+     "verdict": "PASS - primary-source confirmed",
+     "provenance": "PRIMARY-SPEC",
+     "printed_condition": null,
+     "third_party_copy": false
+    }
+   ],
+   "PTV09A-4020F-B104": [
+    {
+     "fact_id": "fact-b104-operating-temperature",
+     "minimum": -10,
+     "maximum": 50,
+     "class": "RECOMMENDED_OPERATION",
+     "verdict": "PASS - primary-source confirmed",
+     "provenance": "PRIMARY-SPEC",
+     "printed_condition": null,
+     "third_party_copy": false
+    }
+   ],
+   "PTV09A-4020F-B504": [
+    {
+     "fact_id": "fact-b504-operating-temperature",
+     "minimum": -10,
+     "maximum": 50,
+     "class": "RECOMMENDED_OPERATION",
+     "verdict": "PASS - primary-source confirmed",
+     "provenance": "PRIMARY-SPEC",
+     "printed_condition": null,
+     "third_party_copy": false
+    }
+   ],
    "RC0603FR-072K2L": [],
    "REF5050AIDR": [],
    "SN74HC00DR": [],
@@ -13656,21 +18843,98 @@
     {
      "fact_id": "fact-schmitt-temperature",
      "minimum": -40,
-     "maximum": 85
+     "maximum": 85,
+     "class": "RECOMMENDED_OPERATION",
+     "verdict": "PASS - primary-source confirmed",
+     "provenance": "PRIMARY-SPEC",
+     "printed_condition": null,
+     "third_party_copy": false
     }
    ],
    "SN74HC74DR": [
     {
      "fact_id": "fact-flipflop-temperature",
      "minimum": -40,
-     "maximum": 85
+     "maximum": 85,
+     "class": "RECOMMENDED_OPERATION",
+     "verdict": "PASS - primary-source confirmed",
+     "provenance": "PRIMARY-SPEC",
+     "printed_condition": null,
+     "third_party_copy": false
+    }
+   ],
+   "SRBV160803": [],
+   "TC33X-2-102E": [
+    {
+     "fact_id": "fact-trim-102-operating-temperature",
+     "minimum": -40,
+     "maximum": 100,
+     "class": "RECOMMENDED_OPERATION",
+     "verdict": "PASS - primary-source confirmed",
+     "provenance": "PRIMARY-SPEC",
+     "printed_condition": null,
+     "third_party_copy": false
+    }
+   ],
+   "TC33X-2-103E": [
+    {
+     "fact_id": "fact-trim-103-operating-temperature",
+     "minimum": -40,
+     "maximum": 100,
+     "class": "RECOMMENDED_OPERATION",
+     "verdict": "PASS - primary-source confirmed",
+     "provenance": "PRIMARY-SPEC",
+     "printed_condition": null,
+     "third_party_copy": false
+    }
+   ],
+   "TC33X-2-203E": [
+    {
+     "fact_id": "fact-trim-203-operating-temperature",
+     "minimum": -40,
+     "maximum": 100,
+     "class": "RECOMMENDED_OPERATION",
+     "verdict": "PASS - primary-source confirmed",
+     "provenance": "PRIMARY-SPEC",
+     "printed_condition": null,
+     "third_party_copy": false
+    }
+   ],
+   "TC33X-2-503E": [
+    {
+     "fact_id": "fact-trim-503-operating-temperature",
+     "minimum": -40,
+     "maximum": 100,
+     "class": "RECOMMENDED_OPERATION",
+     "verdict": "PASS - primary-source confirmed",
+     "provenance": "PRIMARY-SPEC",
+     "printed_condition": null,
+     "third_party_copy": false
+    }
+   ],
+   "TC33X-2-504E": [
+    {
+     "fact_id": "fact-trim-504-operating-temperature",
+     "minimum": -40,
+     "maximum": 100,
+     "class": "RECOMMENDED_OPERATION",
+     "verdict": "PASS - primary-source confirmed",
+     "provenance": "PRIMARY-SPEC",
+     "printed_condition": null,
+     "third_party_copy": false
     }
    ],
    "TMUX6112PWR": [],
-   "TMUX7412FRRPR": []
+   "TMUX7412FRRPR": [],
+   "WQP518MA": []
   },
   "class_bundles": {
+   "2MS1T1B1M2QES-5": "component-dailywell-2ms1t1b1m2qes-5",
+   "2MS3T1B1M2QES": "component-dailywell-2ms3t1b1m2qes",
+   "APG1005SEC/E-T": "component-kingbright-apg1005sec-e-t",
+   "APHHS1005QWF/D": "component-kingbright-aphhs1005qwf-d",
    "AS3340D": "component-alfa-rpar-as3340d",
+   "B3F-1020": "component-omron-b3f-1020",
    "BCM847BS": "component-nexperia-bcm847bs-115",
    "CD74HC221M96": "component-ti-cd74hc221m96",
    "CL10A105KB8NNNC": "component-samsung-cl10a105kb8nnnc",
@@ -13681,13 +18945,766 @@
    "OPA4196IDR": "component-ti-opa4196idr",
    "OPA4197IDR": "component-ti-opa4197idr",
    "OPA4197IPWR": "component-ti-opa4197ipwr",
+   "PTV09A-4020F-B103": "component-bourns-ptv09a-4020f-b103",
+   "PTV09A-4020F-B104": "component-bourns-ptv09a-4020f-b104",
+   "PTV09A-4020F-B504": "component-bourns-ptv09a-4020f-b504",
    "RC0603FR-072K2L": "component-yageo-rc0603fr-072k2l",
    "REF5050AIDR": "component-ti-ref5050aidr",
    "SN74HC00DR": "component-ti-sn74hc00dr",
    "SN74HC14DR": "component-ti-sn74hc14dr",
    "SN74HC74DR": "component-ti-sn74hc74dr",
+   "SRBV160803": "component-alps-alpine-srbv160803",
+   "TC33X-2-102E": "component-passives-family",
+   "TC33X-2-103E": "component-passives-family",
+   "TC33X-2-203E": "component-bourns-tc33x-2-203e",
+   "TC33X-2-503E": "component-bourns-tc33x-2-503e",
+   "TC33X-2-504E": "component-bourns-tc33x-2-504e",
    "TMUX6112PWR": "component-ti-tmux6112pwr",
-   "TMUX7412FRRPR": "component-ti-tmux7412frrpr"
+   "TMUX7412FRRPR": "component-ti-tmux7412frrpr",
+   "WQP518MA": "component-qingpu-wqp518ma"
+  },
+  "panel_facts": {
+   "fact-b103-derating": {
+    "bundle": "component-bourns-ptv09a-4020f-b103",
+    "symbol": "PTV09A-4020F-B103",
+    "value": {
+     "full_power_ratio_percent": 100,
+     "full_power_up_to_ambient_C": 50,
+     "curve_end_ambient_C": 70,
+     "curve_end_power_ratio_percent": 33
+    },
+    "unit": "NONE",
+    "class": "THERMAL_SOA",
+    "verdict": "PASS - primary-source confirmed"
+   },
+   "fact-b103-power-rating": {
+    "bundle": "component-bourns-ptv09a-4020f-b103",
+    "symbol": "PTV09A-4020F-B103",
+    "value": 0.05,
+    "unit": "W",
+    "class": "THERMAL_SOA",
+    "verdict": "PASS - primary-source confirmed"
+   },
+   "fact-b103-resistance": {
+    "bundle": "component-bourns-ptv09a-4020f-b103",
+    "symbol": "PTV09A-4020F-B103",
+    "value": 10000,
+    "unit": "ohm",
+    "class": "GUARANTEED_ELECTRICAL",
+    "verdict": "PASS - primary-source confirmed"
+   },
+   "fact-b104-derating": {
+    "bundle": "component-bourns-ptv09a-4020f-b104",
+    "symbol": "PTV09A-4020F-B104",
+    "value": {
+     "full_power_ratio_percent": 100,
+     "full_power_up_to_ambient_C": 50,
+     "curve_end_ambient_C": 70,
+     "curve_end_power_ratio_percent": 33
+    },
+    "unit": "NONE",
+    "class": "THERMAL_SOA",
+    "verdict": "PASS - primary-source confirmed"
+   },
+   "fact-b104-power-rating": {
+    "bundle": "component-bourns-ptv09a-4020f-b104",
+    "symbol": "PTV09A-4020F-B104",
+    "value": 0.05,
+    "unit": "W",
+    "class": "THERMAL_SOA",
+    "verdict": "PASS - primary-source confirmed"
+   },
+   "fact-b104-resistance": {
+    "bundle": "component-bourns-ptv09a-4020f-b104",
+    "symbol": "PTV09A-4020F-B104",
+    "value": 100000,
+    "unit": "ohm",
+    "class": "GUARANTEED_ELECTRICAL",
+    "verdict": "PASS - primary-source confirmed"
+   },
+   "fact-b504-derating": {
+    "bundle": "component-bourns-ptv09a-4020f-b504",
+    "symbol": "PTV09A-4020F-B504",
+    "value": {
+     "full_power_ratio_percent": 100,
+     "full_power_up_to_ambient_C": 50,
+     "curve_end_ambient_C": 70,
+     "curve_end_power_ratio_percent": 33
+    },
+    "unit": "NONE",
+    "class": "THERMAL_SOA",
+    "verdict": "PASS - primary-source confirmed"
+   },
+   "fact-b504-power-rating": {
+    "bundle": "component-bourns-ptv09a-4020f-b504",
+    "symbol": "PTV09A-4020F-B504",
+    "value": 0.05,
+    "unit": "W",
+    "class": "THERMAL_SOA",
+    "verdict": "PASS - primary-source confirmed"
+   },
+   "fact-b504-resistance": {
+    "bundle": "component-bourns-ptv09a-4020f-b504",
+    "symbol": "PTV09A-4020F-B504",
+    "value": 500000,
+    "unit": "ohm",
+    "class": "GUARANTEED_ELECTRICAL",
+    "verdict": "PASS - primary-source confirmed"
+   },
+   "fact-kingbright-red-junction-temperature": {
+    "bundle": "component-kingbright-apg1005sec-e-t",
+    "symbol": "APG1005SEC/E-T",
+    "value": 115,
+    "unit": "degC",
+    "class": "ABSOLUTE_MAXIMUM",
+    "verdict": "PASS - primary-source confirmed"
+   },
+   "fact-kingbright-white-junction-temperature": {
+    "bundle": "component-kingbright-aphhs1005qwf-d",
+    "symbol": "APHHS1005QWF/D",
+    "value": 115,
+    "unit": "degC",
+    "class": "ABSOLUTE_MAXIMUM",
+    "verdict": "PASS - primary-source confirmed"
+   },
+   "fact-srbv-operating-temperature": {
+    "bundle": "component-alps-alpine-srbv160803",
+    "symbol": "SRBV160803",
+    "value": "The retained SRBV series catalogue (Update 2510) prints no operating or storage temperature for SRBV160803; its Note 1 says it shows only outline specifications.",
+    "unit": "NONE",
+    "class": "RECOMMENDED_OPERATION",
+    "verdict": "UNSOURCED"
+   }
+  },
+  "panel_parts": [
+   "PTV09A-4020F-B103",
+   "PTV09A-4020F-B104",
+   "PTV09A-4020F-B504",
+   "B3F-1020",
+   "2MS1T1B1M2QES-5",
+   "2MS3T1B1M2QES",
+   "APHHS1005QWF/D",
+   "APG1005SEC/E-T",
+   "TC33X-2-203E",
+   "TC33X-2-503E",
+   "TC33X-2-504E",
+   "TC33X-2-102E",
+   "TC33X-2-103E",
+   "SRBV160803",
+   "WQP518MA"
+  ],
+  "pot_ends": [
+   {
+    "ref": "RV1001",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X70DC76294A6404803334"
+   },
+   {
+    "ref": "RV1002",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XD35CC6F950919CDBDA22"
+   },
+   {
+    "ref": "RV1003",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X07234E2FF52429093754"
+   },
+   {
+    "ref": "RV1004",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XB77A49BB412844B458C3"
+   },
+   {
+    "ref": "RV1005",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X14E3C0C55CB1C4A95F24"
+   },
+   {
+    "ref": "RV1006",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X649135E2E9A5ED5B0367"
+   },
+   {
+    "ref": "RV1007",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XEA6E5859150D0A15C748"
+   },
+   {
+    "ref": "RV1008",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X1675C414E0F088C8B0F2"
+   },
+   {
+    "ref": "RV104",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "X9F47443B516E90FF872D",
+    "pin3": "X2842A95258EB703DE67C"
+   },
+   {
+    "ref": "RV105",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "X9F47443B516E90FF872D",
+    "pin3": "X2842A95258EB703DE67C"
+   },
+   {
+    "ref": "RV106",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X110EF417EBA43801D3CA"
+   },
+   {
+    "ref": "RV107",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "X2842A95258EB703DE67C"
+   },
+   {
+    "ref": "RV108",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X275914F8D0058F71EFF0"
+   },
+   {
+    "ref": "RV1101",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XA16BE2D8C2D07015E3FC"
+   },
+   {
+    "ref": "RV1102",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X665F99D69A5D3F2A216F"
+   },
+   {
+    "ref": "RV1103",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X91AB2074CD577F2FF2D8"
+   },
+   {
+    "ref": "RV1104",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X58381FC52FCDDA9B0131"
+   },
+   {
+    "ref": "RV1105",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X2620246FAC3FF931C427"
+   },
+   {
+    "ref": "RV1106",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "X7B5C74E08F15CF029DD6"
+   },
+   {
+    "ref": "RV1107",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XAC9F56A148C41BDAFC02"
+   },
+   {
+    "ref": "RV1108",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "X06C7F5D4F085BBED1E86",
+    "pin3": "XAC9F56A148C41BDAFC02"
+   },
+   {
+    "ref": "RV1201",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XB08FE271FD1E7E3F3792"
+   },
+   {
+    "ref": "RV1202",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XAD2A38741611D509A34E"
+   },
+   {
+    "ref": "RV1203",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X3878A543A34D0072B9DD"
+   },
+   {
+    "ref": "RV1204",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X3DAC76D7A558264A3F1B"
+   },
+   {
+    "ref": "RV1205",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X826169EDE09D7A95D8A3"
+   },
+   {
+    "ref": "RV1206",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "X2235AA409133311006A2"
+   },
+   {
+    "ref": "RV1207",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X1A9EF65F44F4B29DE1DC"
+   },
+   {
+    "ref": "RV1208",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X93B85254A7CAE093D017"
+   },
+   {
+    "ref": "RV1305",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "X214ED5A8892039CF8AA7"
+   },
+   {
+    "ref": "RV1306",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "X214ED5A8892039CF8AA7"
+   },
+   {
+    "ref": "RV1307",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XBB47CF2D4959FF3CCA75"
+   },
+   {
+    "ref": "RV1308",
+    "value": "PTV09A-4020F-B104",
+    "pin3": "X5BDE0CC9A020C6F2E113",
+    "pin1": "XD2D99513A5A51F131C78"
+   },
+   {
+    "ref": "RV1405",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "X9A343D229ADA66A13020"
+   },
+   {
+    "ref": "RV1406",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "X9A343D229ADA66A13020"
+   },
+   {
+    "ref": "RV1407",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X5FA328E898DBF1047AD9"
+   },
+   {
+    "ref": "RV1408",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "X47A1F716E3FE17CD7494",
+    "pin3": "XD724017984C2562351FC"
+   },
+   {
+    "ref": "RV1505",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "X69F956D2CD0D8F7D7812"
+   },
+   {
+    "ref": "RV1506",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "X69F956D2CD0D8F7D7812"
+   },
+   {
+    "ref": "RV1507",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X10EF5F2EA06ABBC332A2"
+   },
+   {
+    "ref": "RV1508",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "X05736A904C0279F1CE63",
+    "pin3": "XE2B9B937D5CAF54AD63F"
+   },
+   {
+    "ref": "RV1605",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "X89D5E3CA45DE92E8F54F"
+   },
+   {
+    "ref": "RV1606",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "X89D5E3CA45DE92E8F54F"
+   },
+   {
+    "ref": "RV1607",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X67D9684AF7D381D085BB"
+   },
+   {
+    "ref": "RV1608",
+    "value": "PTV09A-4020F-B104",
+    "pin3": "X6C227D1A4FFD615CE3B4",
+    "pin1": "XED9D669DEDB8C275FBBC"
+   },
+   {
+    "ref": "RV1705",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XED165ED96D75C15A85C4"
+   },
+   {
+    "ref": "RV1706",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XED165ED96D75C15A85C4"
+   },
+   {
+    "ref": "RV1707",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X8516142BE3CF69C34E20"
+   },
+   {
+    "ref": "RV1708",
+    "value": "PTV09A-4020F-B104",
+    "pin3": "X965884E569C2BD8409A5",
+    "pin1": "XC6A7664726BAFEE0BCFA"
+   },
+   {
+    "ref": "RV1805",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XC22E458B0CC1481C514F"
+   },
+   {
+    "ref": "RV1806",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XC22E458B0CC1481C514F"
+   },
+   {
+    "ref": "RV1807",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X73DBDA5E90E6EB5C88CC"
+   },
+   {
+    "ref": "RV1808",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "X2D597327EED2D1A7509E",
+    "pin3": "X45AEDA7EA8DE3AE9B3ED"
+   },
+   {
+    "ref": "RV204",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "X41B88AA72B8A732B279A",
+    "pin3": "XBB7C344851AF8D0601AC"
+   },
+   {
+    "ref": "RV205",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "X41B88AA72B8A732B279A",
+    "pin3": "XBB7C344851AF8D0601AC"
+   },
+   {
+    "ref": "RV206",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X7CA4825DF75BA1068B88"
+   },
+   {
+    "ref": "RV207",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XBB7C344851AF8D0601AC"
+   },
+   {
+    "ref": "RV208",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XF1EBD465D8DD5809EB46"
+   },
+   {
+    "ref": "RV304",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "X3BE215420217265BBCC4",
+    "pin3": "X37C0D40E8793B92EA1B7"
+   },
+   {
+    "ref": "RV305",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "X3BE215420217265BBCC4",
+    "pin3": "X37C0D40E8793B92EA1B7"
+   },
+   {
+    "ref": "RV306",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X1B3E855D0EAF37C63927"
+   },
+   {
+    "ref": "RV307",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "X37C0D40E8793B92EA1B7"
+   },
+   {
+    "ref": "RV308",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X2CA281339CB17909B79A"
+   },
+   {
+    "ref": "RV404",
+    "value": "PTV09A-4020F-B104",
+    "pin3": "X0B332CC3F3D75834394B",
+    "pin1": "XF2827D8A0A013B839CAA"
+   },
+   {
+    "ref": "RV405",
+    "value": "PTV09A-4020F-B104",
+    "pin3": "X0B332CC3F3D75834394B",
+    "pin1": "XF2827D8A0A013B839CAA"
+   },
+   {
+    "ref": "RV406",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X5BC1C28EAF5D67603036"
+   },
+   {
+    "ref": "RV407",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "X0B332CC3F3D75834394B"
+   },
+   {
+    "ref": "RV408",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X2DAE1746253A01B64F3C"
+   },
+   {
+    "ref": "RV504",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "X50598DC0C3D8C362685E",
+    "pin3": "XEA71DBF9A3F5D1DD1ED4"
+   },
+   {
+    "ref": "RV505",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "X50598DC0C3D8C362685E",
+    "pin3": "XEA71DBF9A3F5D1DD1ED4"
+   },
+   {
+    "ref": "RV506",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X35E86F1B470C2BA578A1"
+   },
+   {
+    "ref": "RV507",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XEA71DBF9A3F5D1DD1ED4"
+   },
+   {
+    "ref": "RV508",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X1DA464D505A944A51104"
+   },
+   {
+    "ref": "RV601",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XA82AFE6CDE755FEB4702"
+   },
+   {
+    "ref": "RV602",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XA82AFE6CDE755FEB4702"
+   },
+   {
+    "ref": "RV603",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X97ED0B30E9679E8FC3C2"
+   },
+   {
+    "ref": "RV604",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X81320A62027112B50CB2"
+   },
+   {
+    "ref": "RV605",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XA82AFE6CDE755FEB4702"
+   },
+   {
+    "ref": "RV606",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X47F88BF45C5E2E011545"
+   },
+   {
+    "ref": "RV701",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XC19387F5B49A211AD2BD"
+   },
+   {
+    "ref": "RV702",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XC19387F5B49A211AD2BD"
+   },
+   {
+    "ref": "RV703",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X83505917C4B7487D1CE9"
+   },
+   {
+    "ref": "RV704",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XC36004EDAFB86F42B8A0"
+   },
+   {
+    "ref": "RV705",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XC19387F5B49A211AD2BD"
+   },
+   {
+    "ref": "RV706",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XF114FCC8B218E1013F4D"
+   },
+   {
+    "ref": "RV801",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XE15497AEEB69BDAA0843"
+   },
+   {
+    "ref": "RV802",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XE15497AEEB69BDAA0843"
+   },
+   {
+    "ref": "RV803",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XABD60A45AAAC75EB8951"
+   },
+   {
+    "ref": "RV804",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X599D6F008ACD4AF9DBB6"
+   },
+   {
+    "ref": "RV805",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XE15497AEEB69BDAA0843"
+   },
+   {
+    "ref": "RV806",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XDEC65E1C2FBB68F45A66"
+   },
+   {
+    "ref": "RV807",
+    "value": "PTV09A-4020F-B504",
+    "pin3": "X77E7E88701ED796DE532",
+    "pin1": "XF0C367296DC4E1E8E437"
+   },
+   {
+    "ref": "RV808",
+    "value": "PTV09A-4020F-B504",
+    "pin1": "X8EE69A8E59E4947794DE",
+    "pin3": "XE3CCFA14F6E3DCF3F5F1"
+   },
+   {
+    "ref": "RV901",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XF195CC86A82C6BA38868"
+   },
+   {
+    "ref": "RV902",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XF98E7C4AE59913C0EB61"
+   },
+   {
+    "ref": "RV903",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "X27C28FDCAA9450E228E6"
+   },
+   {
+    "ref": "RV904",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XF7A09A49BFFF2E1410A0"
+   },
+   {
+    "ref": "RV905",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XDF62172BE5B25A600C9B"
+   },
+   {
+    "ref": "RV906",
+    "value": "PTV09A-4020F-B103",
+    "pin1": "AGND",
+    "pin3": "XD0AEDF2201C438BC951F"
+   },
+   {
+    "ref": "RV907",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "AGND",
+    "pin3": "XB26BE8615EDC7481E388"
+   },
+   {
+    "ref": "RV908",
+    "value": "PTV09A-4020F-B104",
+    "pin1": "X80E184FE788FFBE8EA58",
+    "pin3": "XB26BE8615EDC7481E388"
+   }
+  ],
+  "rail_voltages_V": {
+   "+12V": 12,
+   "-12V": -12,
+   "+5V": 5
   },
   "module_K_centroids": {
    "A01": {
@@ -15176,12 +21193,20 @@
   "bundle_thermal_survey": {
    "component-alfa-rpar-as3340d": [],
    "component-electric-druid-noise2": [],
-   "component-kingbright-apg1005sec-e-t": [],
-   "component-kingbright-aphhs1005qwf-d": [],
+   "component-kingbright-apg1005sec-e-t": [
+    "fact-kingbright-red-junction-temperature",
+    "fact-kingbright-red-operating-temperature"
+   ],
+   "component-kingbright-aphhs1005qwf-d": [
+    "fact-kingbright-white-junction-temperature",
+    "fact-kingbright-white-operating-temperature"
+   ],
    "component-nexperia-bcm847bs-115": [],
    "component-passives-family": [
     "fact-r-general-power",
-    "fact-r-precision-power"
+    "fact-r-precision-power",
+    "fact-trim-102-operating-temperature",
+    "fact-trim-103-operating-temperature"
    ],
    "component-ti-cd74hc221m96": [],
    "component-ti-lf398m-nopb": [],
