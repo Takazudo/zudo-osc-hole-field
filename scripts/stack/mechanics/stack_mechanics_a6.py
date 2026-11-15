@@ -18,12 +18,7 @@ import stack_mechanics_a5 as a5
 import stack_mechanics_geometry as geo
 
 MAP_FILE = sm.ROOT / 'design/stack/mechanics/k-compliance-map.json'
-SETS = (('ruled', 'Ruled list (18 posts, 4 sleeves)'),
-        ('ruled_plus_SLV-R1', 'Ruled list + reserve SLV-R1 at (159, 38)'),
-        ('ALT-L1-A', 'SLV-L1 at (97, 276) instead of (93, 276)'),
-        ('ALT-L1-B', 'SLV-L1 at (101, 276) instead of (93, 276)'),
-        ('ALT-L2-A', 'SLV-L2 at (261, 227) instead of (244, 230)'),
-        ('a1', 'ST-08 a1 list (the a5 record)'))
+NUMBER_WORDS = {2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six'}
 POINT_LABELS = {'lower_left_corner': 'lower left corner', 'left_edge': 'left edge', 'above_post_rows': 'above the post rows',
                 'upper_edge_middle': 'middle of the upper edge'}
 
@@ -45,12 +40,12 @@ def movement_for(outline, step, fixings, bending, cover, q, t, points, rows_y):
     kap = gr.curvatures(u)
     k = int(np.argmax(w))
     above = gr.nodes[:, 1] < rows_y[0]
-    ka = int(np.argmax(np.where(above, w, -np.inf)))
+    ka = int(np.argmax(np.where(above, w, -np.inf))) if above.any() else None
     ks = int(np.argmax(kap))
     return {
         'nodes': len(gr.nodes), 'covers': gr.covers, 'snap_mm': list(gr.snap_mm),
         'max': {'w': float(w[k]), 'at': [float(v) for v in gr.nodes[k]]},
-        'above_rows_max': {'w': float(w[ka]), 'at': [float(v) for v in gr.nodes[ka]]},
+        'above_rows_max': {'w': float(w[ka]), 'at': [float(v) for v in gr.nodes[ka]]} if ka is not None else None,
         'points': {name: float(abs(gr.w_at(u, xy))) for name, xy in points},
         'strain': {'eps': float(kap[ks]) * t / 2, 'at': [float(v) for v in gr.nodes[ks]]},
     }
@@ -82,9 +77,30 @@ class A6:
     def grillage(self, key, step=None, cover=True):
         return a5.grillage_for(self.outline, step or self.step, self.fixings_xy(key), self.bending, cover)
 
+    def post_rows(self, key):
+        reg = self.a5.g['regions']['list'] if key == 'a1' else self.g['sets'][key]['regions']
+        return tuple(reg['post_rows_y_mm'])
+
+    def comparison_sets(self):
+        """(key, label, changed sleeve id) for the ruled list, each reserve and each alternative of the fixing file, and the a1 list."""
+        ruled = self.g['sets']['ruled']['fixings']
+        kinds = [f['kind'] for f in ruled]
+        out = [('ruled', f"Ruled list ({kinds.count('post')} posts, {len(kinds) - kinds.count('post')} sleeves)", None)]
+        for r in self.g['reserve']:
+            out.append(('ruled_plus_' + r['id'], f"Ruled list + reserve {r['id']} at ({r['xy'][0]:g}, {r['xy'][1]:g})", r['id']))
+        for alt in self.g['alternatives']:
+            old = [f['xy'] for f in ruled if f['id'] == alt['replaces']][0]
+            out.append((alt['id'], f"{alt['replaces']} at ({alt['xy'][0]:g}, {alt['xy'][1]:g}) instead of ({old[0]:g}, {old[1]:g})", alt['id']))
+        out.append(('a1', 'ST-08 a1 list (the a5 record)', None))
+        return out
+
+    def corner_label(self, xy):
+        """A name per outline vertex that differs between vertices (review a6 finding 1)."""
+        return {tuple(v): n for n, v in self.corners()}[tuple(map(float, xy))]
+
     def movement(self, key, step=None, cover=True):
         points = tuple((n, tuple(xy)) for n, xy in self.p['check_points_xy'].items())
-        rows = tuple(self.g['sets']['ruled']['regions']['post_rows_y_mm'])
+        rows = self.post_rows(key)
         return movement_for(self.outline, step or self.step, self.fixings_xy(key), self.bending, cover,
                             self.a3.weight_pressure(self.hg), self.a5.t, points, rows)
 
@@ -92,16 +108,13 @@ class A6:
         return m['max']['w'] <= self.p['movement_limit_mm'] and m['strain']['eps'] < self.lim
 
     def push_at(self, key, xy, step=None):
-        """Deflection per newton at xy under a 1 N push spread bilinearly over the four nodes around xy."""
+        """Deflection per newton at xy under a 1 N push spread bilinearly over the nodes of its cell, read back with the
+        same nodes and weights (review a6 finding 7); a point outside the grid raises ValueError."""
         gr = self.grillage(key, step)
-        fi, fj = (xy[0] - gr.x0) / gr.h, (xy[1] - gr.y0) / gr.h
-        i0, j0 = int(math.floor(fi)), int(math.floor(fj))
-        tx, ty = fi - i0, fj - j0
         load = np.zeros(gr.size)
-        for (di, dj), wt in (((0, 0), (1 - tx) * (1 - ty)), ((0, 1), (1 - tx) * ty), ((1, 0), tx * (1 - ty)), ((1, 1), tx * ty)):
-            if wt > 0:
-                load[3 * gr.idx[(i0 + di, j0 + dj)]] += wt
-        return float(gr.w_at(gr.solve(load), xy))
+        for k, wt in gr.bilinear(xy):
+            load[3 * k] += wt
+        return gr.w_at(gr.solve(load), xy)
 
     def sleeve_rows(self, key):
         return self.g['sets'][key]['sleeves']
@@ -118,9 +131,20 @@ class A6:
         for i, v in enumerate(pts):
             a, b = pts[i - 1], pts[(i + 1) % n]
             cross = (v[0] - a[0]) * (b[1] - v[1]) - (v[1] - a[1]) * (b[0] - v[0])
-            name = 'notch corner' if cross * area2 < 0 else named.get(tuple(v), 'outer notch corner')
+            if cross * area2 < 0:
+                name = 'notch corner'
+            elif tuple(v) in named:
+                name = named[tuple(v)]
+            else:
+                side = 'right' if v[0] == x1 else 'left' if v[0] == x0 else 'lower' if v[1] == y1 else 'upper' if v[1] == y0 else None
+                name = f'notch corner on the {side} edge' if side else f'corner at ({v[0]:g}, {v[1]:g})'
             out.append((name, [float(v[0]), float(v[1])]))
         return out
+
+    def map_corner_names(self):
+        """Names as the retained map file carries them: the two convex notch vertices share 'outer notch corner'
+        there and are told apart by their coordinates. Kept so that a rewrite of the map stays byte-identical."""
+        return [('outer notch corner' if n.startswith(('notch corner on', 'corner at')) else n, xy) for n, xy in self.corners()]
 
     # compliance map -------------------------------------------------------------------------------------------
     def map_inputs(self):
@@ -131,7 +155,10 @@ class A6:
                 'grillage_stiffness_factor': self.a5.p['grillage_stiffness_factor']}
 
     def map_nodes(self, gr):
-        pitch = int(round(self.p['map_pitch_mm'] / gr.h))
+        ratio = self.p['map_pitch_mm'] / gr.h
+        if ratio < 1 - 1e-9 or abs(ratio - round(ratio)) > 1e-9:
+            raise ValueError(f"map pitch {self.p['map_pitch_mm']} mm is not a whole positive multiple of the {gr.h} mm grid (review a6 finding 9)")
+        pitch = int(round(ratio))
         on_outline = geo.boundary_dist_many(gr.nodes[:, 0], gr.nodes[:, 1], [list(v) for v in self.outline]) < 1e-9
         return sorted(k for (i, j), k in gr.idx.items() if (i % pitch == 0 and j % pitch == 0) or on_outline[k])
 
@@ -149,12 +176,12 @@ class A6:
                      "every outline node of the 2 mm grid. Written by `stack_mechanics.py --write-map`; nothing measured. "
                      "Not the gate file of ST-02: the connector places are not final"),
             'inputs': inputs,
-            'inputs_sha256': hashlib.sha256(json.dumps(inputs, sort_keys=True, separators=(',', ':')).encode()).hexdigest(),
+            'inputs_sha256': inputs_sha256(inputs),
             'columns': ['x_mm', 'y_mm', 'mm_per_N'],
-            'thresholds': map_regions(nodes, self.p['map_pitch_mm'],
+            'thresholds': map_regions(nodes, self.p['map_pitch_mm'], (gr.x0, gr.y0),
                                       [(self.p['compliance_hold_edge_mm_per_N'], 'DS-72: the other hand holds K\'s edge beside the connector'),
                                        (self.p['compliance_not_placed_mm_per_N'], 'DS-72: no K connector is placed')]),
-            'corners': [{'name': n, 'xy': xy, 'mm_per_N': node_value(nodes, xy)} for n, xy in self.corners()],
+            'corners': [{'name': n, 'xy': xy, 'mm_per_N': node_value(nodes, xy)} for n, xy in self.map_corner_names()],
             'nodes': nodes,
         }
         return doc
@@ -167,8 +194,14 @@ def node_value(nodes, xy):
     return None
 
 
-def map_regions(nodes, pitch, thresholds):
-    """Connected regions of map nodes above each threshold (8-neighbours at the map pitch or closer), as boxes."""
+def inputs_sha256(inputs):
+    return hashlib.sha256(json.dumps(inputs, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+
+
+def map_regions(nodes, pitch, origin, thresholds):
+    """Connected regions of map nodes above each threshold (8-neighbours at the map pitch or closer), as boxes.
+    The area counts the nodes on the map lattice through the grid origin, times pitch²."""
+    ox, oy = origin
     out = []
     for limit, rule in thresholds:
         above = [(x, y, c) for x, y, c in nodes if c > limit]
@@ -195,8 +228,8 @@ def map_regions(nodes, pitch, thresholds):
         for pts in groups.values():
             xs, ys = [p[0] for p in pts], [p[1] for p in pts]
             peak = max(pts, key=lambda p: p[2])
-            lattice = sum(1 for x, y, _ in pts if abs((x - 4) / pitch - round((x - 4) / pitch)) < 1e-9
-                          and abs((y - 8) / pitch - round((y - 8) / pitch)) < 1e-9)
+            lattice = sum(1 for x, y, _ in pts if abs((x - ox) / pitch - round((x - ox) / pitch)) < 1e-9
+                          and abs((y - oy) / pitch - round((y - oy) / pitch)) < 1e-9)
             regions.append({'box_mm': [min(xs), min(ys), max(xs), max(ys)], 'nodes': len(pts),
                             'area_mm2_approx': lattice * pitch * pitch, 'peak': {'xy': [peak[0], peak[1]], 'mm_per_N': peak[2]}})
         regions.sort(key=lambda r: (r['box_mm'][1], r['box_mm'][0]))
@@ -205,17 +238,56 @@ def map_regions(nodes, pitch, thresholds):
     return out
 
 
-def write_map(c):
+def write_map(c, path=None):
     doc = A6(c).build_map()
     nodes = doc.pop('nodes')
     doc['nodes'] = '__NODES__'
     text = json.dumps(doc, indent=1, ensure_ascii=False)
     rows = ',\n'.join('  ' + json.dumps(n, separators=(',', ':')) for n in nodes)
-    MAP_FILE.write_text(text.replace('"__NODES__"', '[\n' + rows + '\n ]') + '\n')
+    (path or MAP_FILE).write_text(text.replace('"__NODES__"', '[\n' + rows + '\n ]') + '\n')
 
 
 def load_map():
     return json.loads(MAP_FILE.read_text())
+
+
+def map_is_current(a, mp):
+    """The retained map belongs to the current model when its recorded inputs hash to the current inputs (review a6 finding 5)."""
+    current = inputs_sha256(a.map_inputs())
+    return mp.get('inputs_sha256') == current and inputs_sha256(mp.get('inputs', {})) == current
+
+
+def stale_note(a, mp):
+    return (f"### The compliance map is stale: its inputs (SHA256 {str(mp.get('inputs_sha256'))[:12]}…) differ from the current model "
+            f"({inputs_sha256(a.map_inputs())[:12]}…); no map figure is published until `stack_mechanics.py --write-map` rewrites it")
+
+
+def dropped_strips(outline, step):
+    """Strips of the outline between an off-grid axis-parallel edge and the last node line inside it."""
+    pts = [tuple(map(float, v)) for v in outline]
+    x0, y0 = min(p[0] for p in pts), min(p[1] for p in pts)
+    out = []
+    for i in range(len(pts)):
+        a, b = pts[i], pts[(i + 1) % len(pts)]
+        if a[0] == b[0]:
+            axis, other, c, orig, lo, hi = 'x', 'y', a[0], x0, min(a[1], b[1]), max(a[1], b[1])
+        elif a[1] == b[1]:
+            axis, other, c, orig, lo, hi = 'y', 'x', a[1], y0, min(a[0], b[0]), max(a[0], b[0])
+        else:
+            out.append(f'the edge ({a[0]:g}, {a[1]:g}) to ({b[0]:g}, {b[1]:g}) lies on no grid line')
+            continue
+        off = (c - orig) / step
+        if abs(off - round(off)) < 1e-9:
+            continue
+        mid = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
+        probe = (mid[0] - 1e-3, mid[1]) if axis == 'x' else (mid[0], mid[1] - 1e-3)
+        line = orig + step * (math.floor(off) if geo.inside(probe, pts) else math.ceil(off))
+        out.append(f'{axis} = {min(line, c):g} to {max(line, c):g} for {other} = {lo:g} to {hi:g}')
+    return out
+
+
+def cover_label(outline, step, covers):
+    return 'yes' if covers else 'no: drops ' + '; '.join(dropped_strips(outline, step))
 
 
 def f3(x):
@@ -230,6 +302,14 @@ def verdict(ok):
     return 'within' if ok else 'exceeds'
 
 
+def peak_cell(r):
+    return f"{f3(r['w'])} at {r['at']}" if r else 'n/a (no node above the post rows)'
+
+
+def peak_ok(r, lim):
+    return r is None or r['w'] <= lim
+
+
 # renderers -----------------------------------------------------------------------------------------------------
 def render_a6_movement(c):
     a = A6(c)
@@ -241,13 +321,14 @@ def render_a6_movement(c):
     rows = [['Largest anywhere on K', f"{f3(m['max']['w'])} at {m['max']['at']}", f"{am['max']:.2f} at the lower left corner", verdict(m['max']['w'] <= lim_w)]]
     for name in ('lower_left_corner', 'left_edge'):
         rows.append([f'At {tuple(pts[name])} ({POINT_LABELS[name]})', f3(m['points'][name]), f"{am[name]:.2f}", verdict(m['points'][name] <= lim_w)])
-    rows.append(['Largest above the post rows', f"{f3(m['above_rows_max']['w'])} at {m['above_rows_max']['at']}", f"{am['above_post_rows_max']:.2f}",
-                 verdict(m['above_rows_max']['w'] <= lim_w)])
+    rows.append(['Largest above the post rows', peak_cell(m['above_rows_max']), f"{am['above_post_rows_max']:.2f}",
+                 verdict(peak_ok(m['above_rows_max'], lim_w))])
     for name in ('above_post_rows', 'upper_edge_middle'):
         rows.append([f'At {tuple(pts[name])} ({POINT_LABELS[name]})', f3(m['points'][name]), f"{am[name]:.2f}", verdict(m['points'][name] <= lim_w)])
-    m4 = a.movement('ruled', step=4.0, cover=False)
+    s4 = a.a5.p['grillage_step_mm']
+    m4 = a.movement('ruled', step=s4, cover=False)
     four = [f"{f3(m4['max']['w'])} at {m4['max']['at']}", f3(m4['points']['lower_left_corner']), f3(m4['points']['left_edge']),
-            f"{f3(m4['above_rows_max']['w'])} at {m4['above_rows_max']['at']}", f3(m4['points']['above_post_rows']), f3(m4['points']['upper_edge_middle'])]
+            peak_cell(m4['above_rows_max']), f3(m4['points']['above_post_rows']), f3(m4['points']['upper_edge_middle'])]
     for row, cell in zip(rows, four):
         row.insert(2, cell)
     rows.append([f'Strain, largest (grillage curvature, no bound)', f"{sm.ue(m['strain']['eps'])} microstrain at {m['strain']['at']}",
@@ -257,27 +338,34 @@ def render_a6_movement(c):
     head = (f"### DS-72 is met on the ruled list: K moves at most {f2(m['max']['w'])} mm under {a.hg:g} g at {tuple(m['max']['at'])} against "
             f"{lim_w} mm, and the strain figure is {sm.ue(m['strain']['eps'])} against {a.lim * 1e6:.0f} microstrain" if ok else
             f"### DS-72 is not met on the ruled list: {f2(m['max']['w'])} mm at {tuple(m['max']['at'])}, strain {sm.ue(m['strain']['eps'])} microstrain (NEEDS_DESIGN)")
-    return head + '\n\n' + sm.table([f'Figure ({a.hg:g} g)', 'This run, 2 mm grid of record, mm', 'Same run on the 4 mm grid (does not cover K), mm',
+    covers4 = 'covers K' if m4['covers'] else 'does not cover K'
+    return head + '\n\n' + sm.table([f'Figure ({a.hg:g} g)', f'This run, {a.step:g} mm grid of record, mm', f'Same run on the {s4:g} mm grid ({covers4}), mm',
                                      "Authority's scratch figure, mm",
                                      f'Against {lim_w} mm / {a.lim * 1e6:.0f} microstrain'], rows)
 
 
 def render_a6_grids(c):
     a = A6(c)
+    lim_w = a.p['movement_limit_mm']
     rows = []
     out = {}
-    for step, cover in ((4.0, False), (a.step, True), (a.p['snap_check_step_mm'], True)):
+    s4, s1 = a.a5.p['grillage_step_mm'], a.p['snap_check_step_mm']
+    for step, cover in ((s4, False), (a.step, True), (s1, True)):
         m = a.movement('ruled', step=step, cover=cover)
         out[step] = m
-        rows.append([f'{step:g}', 'yes' if m['covers'] else 'no (drops a 2 mm strip at x = 312 to 314 and at the notch)', m['nodes'],
+        rows.append([f'{step:g}', cover_label(a.outline, step, m['covers']), m['nodes'],
                      f"{max(m['snap_mm']):.3f}", f"{f3(m['max']['w'])} at {m['max']['at']}", f3(m['points']['left_edge']),
-                     f"{f3(m['above_rows_max']['w'])} at {m['above_rows_max']['at']}", sm.ue(m['strain']['eps'])])
-    m2, m1 = out[a.step], out[a.p['snap_check_step_mm']]
-    head = (f"### The snap moves the largest movement by {f3(m1['max']['w'] - m2['max']['w'])} mm: {f3(m1['max']['w'])} mm on the 1 mm grid against "
-            f"{f3(m2['max']['w'])} mm on the 2 mm grid of record, both within {a.p['movement_limit_mm']} mm; the strain figure rises to "
+                     peak_cell(m['above_rows_max']), sm.ue(m['strain']['eps'])])
+    m2, m1 = out[a.step], out[s1]
+    within = [m['max']['w'] <= lim_w for m in (m1, m2)]
+    word = 'both within' if all(within) else 'neither within' if not any(within) else (
+        f'only the {s1:g} mm grid within' if within[0] else f'only the {a.step:g} mm grid within')
+    head = (f"### The snap moves the largest movement by {f3(m1['max']['w'] - m2['max']['w'])} mm: {f3(m1['max']['w'])} mm on the {s1:g} mm grid against "
+            f"{f3(m2['max']['w'])} mm on the {a.step:g} mm grid of record, {word} {lim_w} mm; the strain figure rises to "
             f"{sm.ue(m1['strain']['eps'])} microstrain at the pins")
     return head + '\n\n' + sm.table(['Grid step, mm', "Covers K's outline", 'Nodes', 'Largest fixing snap, mm', f'Largest movement {a.hg:g} g, mm',
-                                     'At (4, 247), mm', 'Largest above the post rows, mm', 'Strain figure, microstrain'], rows)
+                                     f"At {tuple(a.p['check_points_xy']['left_edge'])}, mm", 'Largest above the post rows, mm',
+                                     'Strain figure, microstrain'], rows)
 
 
 def render_a6_snaps(c):
@@ -286,8 +374,9 @@ def render_a6_snaps(c):
     rows = [[i, f'({xy[0]:g}, {xy[1]:g})', f'{s2:.3f}', f'{s1:.3f}'] for i, xy, s2, s1 in
             zip(a.fixing_ids('ruled'), a.fixings_xy('ruled'), m2['snap_mm'], m1['snap_mm'])]
     moved = sum(1 for s in m2['snap_mm'] if s > 1e-9)
-    head = (f"### {moved} of {len(rows)} fixings move onto the 2 mm grid, by at most {max(m2['snap_mm']):.3f} mm; no two share a node")
-    return head + '\n\n' + sm.table(['Fixing', 'Site', 'Snap on the 2 mm grid, mm', 'Snap on the 1 mm grid, mm'], rows)
+    s1 = a.p['snap_check_step_mm']
+    head = (f"### {moved} of {len(rows)} fixings move onto the {a.step:g} mm grid, by at most {max(m2['snap_mm']):.3f} mm; no two share a node")
+    return head + '\n\n' + sm.table(['Fixing', 'Site', f'Snap on the {a.step:g} mm grid, mm', f'Snap on the {s1:g} mm grid, mm'], rows)
 
 
 def render_a6_sleeves(c):
@@ -300,48 +389,43 @@ def render_a6_sleeves(c):
         e2, e5 = c.strain(err['printer'], s['span_mm']), c.strain(err['worst_case'], s['span_mm'])
         worst = max(worst, e5)
         rows.append([s['id'], f"{s['nearest_other_fixing']} {s['span_mm']:.1f}", sm.ue(e2), sm.ue(e5), auth.get(s['id'], ''), verdict(e5 <= a.lim)])
-    head = (f"### The four sleeves stay below {a.lim * 1e6:.0f} microstrain: at most {sm.ue(worst)} at the {err['worst_case']} mm worst case"
+    head = (f"### The {NUMBER_WORDS.get(len(rows), str(len(rows)))} sleeves stay below {a.lim * 1e6:.0f} microstrain: at most {sm.ue(worst)} at the {err['worst_case']} mm worst case"
             if worst <= a.lim else f"### A sleeve exceeds {a.lim * 1e6:.0f} microstrain: {sm.ue(worst)} (NEEDS_DESIGN)")
     return head + '\n\n' + sm.table(['Sleeve', 'Nearest other fixing, span mm', f"Strain at ±{err['printer']} mm, microstrain",
                                      f"Strain at {err['worst_case']} mm (worst case), microstrain", "Authority's figure at the worst case",
                                      f'Against {a.lim * 1e6:.0f}'], rows)
 
 
-def changed_sleeve(a, key):
-    if key in ('ruled', 'a1'):
-        return None
-    return [s for s in a.sleeve_rows(key) if s['id'] == (key if key.startswith('ALT') else key.replace('ruled_plus_', ''))][0]
-
-
 def render_a6_compare(c):
     a = A6(c)
     err = a.a5.p['sleeve_error_mm']['worst_case']
     rule = a.a5.p['sleeve_clamp_rule_mm']
+    pts = a.p['check_points_xy']
+    sets = a.comparison_sets()
     rows = []
-    for key, label in SETS:
+    for key, label, changed in sets:
         m = a.movement(key)
-        s = changed_sleeve(a, key)
-        if s:
-            within = [] if key == 'a1' else sorted(
-                (geo_dist(f['xy'], [v for v in a.g['sets'][key]['fixings'] if v['id'] == s['id']][0]['xy']), f['id'])
-                for f in a.g['sets'][key]['fixings'] if f['id'] != s['id'])
-            close = [f'{d:.2f}' for d, _ in within if d < rule]
+        sleeve = ''
+        if changed:
+            fx = a.g['sets'][key]['fixings']
+            s = [r for r in a.sleeve_rows(key) if r['id'] == changed][0]
+            site = [f['xy'] for f in fx if f['id'] == changed][0]
+            close = sorted(geo_dist(f['xy'], site) for f in fx if f['id'] != changed and geo_dist(f['xy'], site) < rule)
             sleeve = (f"{s['id']}: {s['nearest_other_fixing']} {s['span_mm']:.2f} mm, {sm.ue(c.strain(err, s['span_mm']))} microstrain; "
-                      + (f"inside the {rule:g} mm rule at {', '.join(close)} mm" if close else f'no fixing within {rule:g} mm'))
-        else:
-            sleeve = ''
+                      + (f"inside the {rule:g} mm rule at {', '.join(f'{d:.2f}' for d in close)} mm" if close else f'no fixing within {rule:g} mm'))
         rows.append([label, f"{f3(m['max']['w'])} at {m['max']['at']}", f3(m['points']['lower_left_corner']), f3(m['points']['left_edge']),
-                     f"{f3(m['above_rows_max']['w'])} at {m['above_rows_max']['at']}", f3(m['points']['above_post_rows']),
+                     peak_cell(m['above_rows_max']), f3(m['points']['above_post_rows']),
                      f3(m['points']['upper_edge_middle']), sm.ue(m['strain']['eps']), sleeve, verdict(a.passes(m))])
-    ok = all(a.passes(a.movement(k)) for k, _ in SETS)
-    worst = max(SETS, key=lambda kl: a.movement(kl[0])['max']['w'])
+    ok = all(a.passes(a.movement(k)) for k, _, _ in sets)
+    worst = max(sets, key=lambda kl: a.movement(kl[0])['max']['w'])
     broken = [r[0] for r in rows if 'inside the' in r[8]]
     head = (f"### {'Every comparison set meets' if ok else 'Not every comparison set meets'} DS-72 as well, at most "
             f"{f2(a.movement(worst[0])['max']['w'])} mm ({worst[1]}); none is selected"
             + (f", and {'; '.join(broken)} breaks the {rule:g} mm sleeve rule" if broken else ''))
-    return head + '\n\n' + sm.table(['Fixings (2 mm grid, 5 g)', 'Largest, mm', 'At (4, 292), mm', 'At (4, 247), mm', 'Largest above the post rows, mm',
-                                     'At (160, 70), mm', 'At (159, 8), mm', 'Strain figure, microstrain',
-                                     f'Changed sleeve: nearest fixing, strain at {err} mm, 70 mm rule', 'DS-72'], rows)
+    at = lambda name: f'At {tuple(pts[name])}, mm'
+    return head + '\n\n' + sm.table([f'Fixings ({a.step:g} mm grid, {a.hg:g} g)', 'Largest, mm', at('lower_left_corner'), at('left_edge'),
+                                     'Largest above the post rows, mm', at('above_post_rows'), at('upper_edge_middle'), 'Strain figure, microstrain',
+                                     f'Changed sleeve: nearest fixing, strain at {err} mm, {rule:g} mm rule', 'DS-72'], rows)
 
 
 def geo_dist(a, b):
@@ -351,21 +435,24 @@ def geo_dist(a, b):
 def render_a6_compliance(c):
     a = A6(c)
     mp = load_map()
+    if not map_is_current(a, mp):
+        return stale_note(a, mp)
     auth = a.p['authority_figures']['compliance_mm_per_N']
-    before = {n: a.push_at('a1', xy) for n, xy in a.corners()}
+    before = {tuple(xy): a.push_at('a1', xy) for _, xy in a.corners()}
     rows = []
     for k in mp['corners']:
+        label = a.corner_label(k['xy'])
         note = ''
-        if k['name'].startswith('upper'):
+        if label.startswith('upper'):
             note = f"{auth['upper_corners']} (before: {auth['upper_corners_before']})"
-        elif k['name'] == 'lower left corner':
-            note = f"{auth['lower_left_corner_a5']} in a5 (ST-08 a1 list, 4 mm grid)"
-        rows.append([k['name'], f"({k['xy'][0]:g}, {k['xy'][1]:g})", f3(k['mm_per_N']), f3(before[k['name']]), note])
+        elif label == 'lower left corner':
+            note = f"{auth['lower_left_corner_a5']} in a5 (ST-08 a1 list, {a.a5.p['grillage_step_mm']:g} mm grid)"
+        rows.append([label, f"({k['xy'][0]:g}, {k['xy'][1]:g})", f3(k['mm_per_N']), f3(before[tuple(map(float, k['xy']))]), note])
     pts = a.p['compliance_points_xy']
     auth_pts = {'P-K-P-L06.02': auth['P-K-P-L06.02 (15.5, 234)'], 'link centre': auth['link centre (31.5, 283)']}
     for name, xy in pts.items():
         rows.append([name, f'({xy[0]:g}, {xy[1]:g})', f3(a.push_at('ruled', xy)), f3(a.push_at('a1', xy)), f'{auth_pts[name]}'])
-    table1 = sm.table(['Place', 'Site', 'Ruled list, mm/N (2 mm grid)', 'ST-08 a1 list, mm/N (2 mm grid)', "Authority's figure, mm/N"], rows)
+    table1 = sm.table(['Place', 'Site', f'Ruled list, mm/N ({a.step:g} mm grid)', f'ST-08 a1 list, mm/N ({a.step:g} mm grid)', "Authority's figure, mm/N"], rows)
     rows2 = []
     for t in mp['thresholds']:
         boxes = '; '.join(f"x {r['box_mm'][0]:g}–{r['box_mm'][2]:g}, y {r['box_mm'][1]:g}–{r['box_mm'][3]:g} ({r['nodes']} nodes, peak {f3(r['peak']['mm_per_N'])} at "
@@ -386,11 +473,14 @@ def render_a6_head(c):
     a = A6(c)
     m = a.movement('ruled')
     mp = load_map()
-    t1 = [t for t in mp['thresholds'] if t['mm_per_N'] == a.p['compliance_not_placed_mm_per_N']][0]
+    if not map_is_current(a, mp):
+        tail = 'and the compliance map is stale'
+    else:
+        t1 = [t for t in mp['thresholds'] if t['mm_per_N'] == a.p['compliance_not_placed_mm_per_N']][0]
+        tail = f"and {len(t1['regions'])} corner regions lie above 1.0 mm/N"
     if a.passes(m):
         return (f"## Attempt a6 (DONE): on the ruled list K moves at most {f2(m['max']['w'])} mm under {a.hg:g} g against DS-72's "
-                f"{a.p['movement_limit_mm']} mm, the strain figure is {sm.ue(m['strain']['eps'])} against {a.lim * 1e6:.0f} microstrain, and "
-                f"{len(t1['regions'])} corner regions lie above 1.0 mm/N")
+                f"{a.p['movement_limit_mm']} mm, the strain figure is {sm.ue(m['strain']['eps'])} against {a.lim * 1e6:.0f} microstrain, {tail}")
     return (f"## Attempt a6 (NEEDS_DESIGN): on the ruled list K moves {f2(m['max']['w'])} mm at {tuple(m['max']['at'])} against "
             f"{a.p['movement_limit_mm']} mm, strain figure {sm.ue(m['strain']['eps'])} microstrain")
 
