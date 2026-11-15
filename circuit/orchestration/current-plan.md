@@ -1,29 +1,41 @@
 # Current orchestration mapping
 
-Policy revision: 2026-11-11. Source snapshot inspected: `d00638cbfbf204bdeaabb95bca5206f7b6dd7511` (`main`). Apply [ORCHESTRATION.md](../ORCHESTRATION.md) and the canonical [WORKFLOW.md](../WORKFLOW.md).
+Mapping updated: 2026-11-16 JST (2026-11-15 UTC). Operating policy remains [ORCHESTRATION.md](../ORCHESTRATION.md), dated 2026-11-11, and the canonical [WORKFLOW.md](../WORKFLOW.md). Engineering baseline inspected: `85b2b489d6f47b34991e3d9b0d2e09991a458a97` (`main`, merge of #361). Refresh the actual target SHA before dispatch; this baseline does not identify the later documentation commit.
 
-This is the initial task/environment/model mapping, not a dispatch receipt. No worker sessions, resource reservations, local connections or routing jobs were created by this documentation change. Existing live jobs/sessions have not been inventoried here. Do not infer that the machine or account is idle.
+The Moya startup handoff is prepared under [super-epic #362](https://github.com/Takazudo/zudo-osc-hole-field/issues/362). Read the [complete continuation brief](campaigns/osc-stack-20261114/moya-codex-resume-20261116.md) and [Moya startup prompt](campaigns/osc-stack-20261114/moya-start-20261116.md). Incoming-manager acknowledgment and actual implementation dispatch are pending. This documentation task creates no Moya or Codex Cloud session, resource reservation, local connection or routing job. The owner reports Fable automatic resumption stopped; this is not proof that every inaccessible historical child process has terminated.
 
 ## Control record
 
-| Field | Initial state / action before dispatch |
+| Field | Current state / action before dispatch |
 | --- | --- |
-| Active campaign / top-level manager | `osc-stack-20261114` (2026-11-14): the direct board-stack campaign; one Claude Code Cloud Project thread session is the sole manager, dispatcher and integrator; see [campaigns/osc-stack-20261114/plan.md](campaigns/osc-stack-20261114/plan.md). It holds K interface routing until its Gate A. The earlier `osc-cloud-20261111` has no runnable task left (T9c and T10 BLOCKED); its record stays at [campaigns/osc-cloud-20261111/plan.md](campaigns/osc-cloud-20261111/plan.md) |
-| Hard-design authority | Fable or Astra in an actually selectable/confirmed session; otherwise pending. In `osc-stack-20261114` the owner assigned hard architectural decisions to a Fable design agent at high effort (2026-11-14) |
-| Actions dispatcher | The active campaign's manager itself (no separate child). `osc-stack-20261114` admits ordinary CI only in its Phase 0, one pull request at a time. The ceiling of 4 compute jobs plus a 7-job CI reserve was the allocation of `osc-cloud-20261111`; a later compute wave needs a new numeric allocation in the campaign plan |
+| Continuing campaign / incoming top-level manager | Continue `osc-stack-20261114`; Moya is the designated incoming manager, with acknowledgment pending under [#363](https://github.com/Takazudo/zudo-osc-hole-field/issues/363). The Claude Code Cloud Project session is historical; see the [campaign checkpoint](campaigns/osc-stack-20261114/plan.md). Keep the K-joint interface-routing hold until the gate and source contract release it. The earlier `osc-cloud-20261111` remains parked with T9c/T10 BLOCKED; its [record](campaigns/osc-cloud-20261111/plan.md) is unchanged |
+| Hard-design authority | A selectable, confirmed Astra session for the incoming configuration; actual selection/session evidence pending. Historical Fable decisions stand. An opaque Moya model route is not evidence of Astra selection |
+| Dispatcher / integrator | Moya is designated to own the single dispatch and integration ledger; acknowledgment and any delegated integration session are pending. Ordinary CI only for the immediate paper-evidence wave, one integration PR at a time. No compute fan-out is admitted by this document |
 | Account concurrency / current headroom | Unknown; inspect current plan/settings, active work including other repositories, and runner-specific limits |
-| Ordinary CI / integration reserve | Must be explicitly allocated before compute fan-out; do not consume all capacity with routing |
-| Cloud implementation sessions | No new sessions admitted here; determine number from independent work and measured VM/session budgets |
+| Ordinary CI / integration reserve | Observe and reserve the current eight-check ordinary CI path before dispatch; historical seven-job and four-compute-job allocations are not a new reservation |
+| Cloud implementation sessions | Codex Cloud selected by the owner; no new sessions admitted here. Determine actual launch/model controls, access, completion signals and finite VM/session budgets before admitting work |
 | Heavy processes per unprofiled VM | At most one admitted bounded pilot, not automatic permission to start one |
-| Local machines | No connection/authorization receipt recorded here; use existing scoped permission or ask only for the missing access/scope |
+| Local machines | No new local execution selected for this continuation. Record any unavailable acceptance requirement separately; do not silently move an inseparable task outside the selected cloud scope |
 | Grok / Cursor | Excluded from default execution by owner decision |
 | Campaign/model/spend/time caps | Must be finite and recorded before work; no additional paid capacity purchased by this plan |
 
-The top-level manager updates this mapping when priorities, environment or model choices change. Per-attempt evidence belongs in the campaign's task records, not in an ever-growing conversation or this table. An allocation change is not itself a board-design decision or an authorization to revive a parked campaign.
+The incoming manager acknowledges the handoff, reconciles observable live work and records actual admission before starting a worker. Unpushed post-#361 recovery is abandoned by owner instruction: retain the recorded contract, use a distinct fresh attempt, and do not ask for an export or another restart confirmation. Preserve existing branches and evidence. Per-attempt evidence belongs in the campaign's task records. Neither documentation nor an allocation change adopts the stack or revives a parked campaign.
 
-## Proposed work lanes
+## Current continuation queue
 
-All rows are **PROPOSED; NOT DISPATCHED**. Model entries are preferences, not claims that those sessions already exist.
+All rows are **PLANNED; NOT DISPATCHED**. The issues exist; their existence is not a launch receipt. [#315](https://github.com/Takazudo/zudo-osc-hole-field/issues/315) remains the broader instrument objective, and [#288](https://github.com/Takazudo/zudo-osc-hole-field/issues/288) is historical coordination context.
+
+| Task | Tracking | Dependency / outcome |
+| --- | --- | --- |
+| Takeover | [#363](https://github.com/Takazudo/zudo-osc-hole-field/issues/363) | Moya acknowledgment, source refresh, observable-job reconciliation, actual capability/resource evidence and bounded admission |
+| Fresh coupling pass and review | [#364](https://github.com/Takazudo/zudo-osc-hole-field/issues/364) | After takeover; implement retained DS-119 to DS-126 with a reviewed kernel, unchanged geometry and new verification/review evidence |
+| Five-check evidence packet | [#365](https://github.com/Takazudo/zudo-osc-hole-field/issues/365) | After takeover; read-only preparation may overlap coupling, final packet consumes its reviewed result and lists the 26 unplaced ICs and access assumptions |
+| Trimmer/service plan | [#366](https://github.com/Takazudo/zudo-osc-hole-field/issues/366) | Refresh ST-07 and bind the geometry projection before admission; disjoint candidate files; not a formal paper-gate prerequisite |
+| Gate A-paper | [#367](https://github.com/Takazudo/zudo-osc-hole-field/issues/367) | After the reviewed packet; confirmed Astra authority records a ruling. Stack remains NOT ADOPTED until that ruling |
+
+## Historical proposed work lanes (2026-11-11)
+
+The following mapping was proposed against `d00638cbfbf204bdeaabb95bca5206f7b6dd7511`. It is retained as background, **not the current queue or dispatch authority**. Model entries were preferences, not claims of sessions. Do not start O4/O5 routing from this table while the current stack holds apply.
 
 | ID | Bounded deliverable | Manager / model | Execution environment | Dependencies / parallel boundary |
 | --- | --- | --- | --- | --- |
@@ -53,7 +65,9 @@ Do not turn these rows into six mandatory concurrent managers. O1/O3 may be comb
 
 These are a source snapshot, not a guarantee that every listed mode fits every environment. Re-read the current file and its tests before constructing a task brief. In particular, do not launch old routing workflows just because they already have a matrix.
 
-## Specific blockers to resolve before scaling
+## Historical routing blockers to revisit before any later scaling
+
+These are the 2026-11-11 mapping's observations. Re-read the current issues, source and receipts before applying them; they neither block the bounded paper-evidence startup by themselves nor authorize old routing work.
 
 1. **K time-budget mismatch.** The OSC4 README's 2026-11-08 lifecycle section records five native checks at roughly 18–19 minutes each, about 95 minutes. The inspected `budgets.json`/workflow path uses an 80-minute K budget with a 100-minute job ceiling and separate setup/finalization allowances. Merely changing the model or moving the same attempt to another VM does not fix that contradiction. O2 must establish a fitting, admitted execution/recovery plan without deleting verification passes. This document does not increase those limits.
 2. **Full native evidence is expensive and binding.** The K chain explicitly amortizes the complete-warning audit across stages. Preserve existing native refill stability, fresh-copy and complete-warning requirements; analyze proven equivalent reuse or early rejection separately.
@@ -61,12 +75,12 @@ These are a source snapshot, not a guarantee that every listed mode fits every e
 4. **No per-provider VM specification is assumed.** This session's Cursor experiment is not a Codex/Claude benchmark. The Windows/WSL preference reflects the owner's experience, not a quota guarantee. Measure the environment used by the actual job.
 5. **Cheap execution needs a strict contract.** Fix commands, permissions, limits and acceptance first; unknown failure analysis returns to the implementation/design lane rather than expanding a small executor's authority.
 
-## First admitted campaign
+## Next admission in the existing campaign
 
-The next manager should inventory live work, then create `circuit/orchestration/campaigns/<campaign-id>/plan.md` with the single manager/dispatcher, dependency graph, current capacity evidence, CI reserve and numeric allocations. Create one task brief per independently useful deliverable from [the template](../templates/orchestration-task.md). Bind an exact source revision and existing native admission before starting expensive work.
+Resume `osc-stack-20261114`; do not create another campaign merely for the manager change. Read its [continuation brief](campaigns/osc-stack-20261114/moya-codex-resume-20261116.md), acknowledge the incoming manager role and reconcile observable live work. Update its plan with the single dispatcher/integrator, actual session/model evidence, dependency graph, current capacity, CI reserve and finite allocations. Refresh one task brief per independently useful deliverable from [the template](../templates/orchestration-task.md). Bind the actual source revision and required native admission before expensive work. The old Claude VM paths, process handles and allocation are historical, not Codex launch inputs.
 
 Record actual model/environment selections and their evidence in each task. Use deterministic execution and terminal summaries first. Evaluate savings using measured model usage (or `unknown`), compute wall time, successful gated progress and restart/retry waste, not the number of agents launched.
 
 ## Validation boundary of this policy change
 
-Only operating documents and a template are changed. No circuit, PCB, pinned tool, workflow executable, budget, receipt, generated page or acceptance rule is changed. No native benchmark or routing was run. Repository-wide checks and independent review must be recorded by the implementation PR; a Markdown consistency check is not a circuit or hardware pass.
+This startup change concerns tracking and operating/source documentation only. No circuit, PCB, pinned tool, workflow executable, native budget, receipt, generated report or acceptance rule is changed. It does not dispatch implementation, run routing or decide Gate A. Record the actual documentation checks and any unavailable checks on its PR; historical green CI and a Markdown consistency check are not new circuit or hardware evidence.
