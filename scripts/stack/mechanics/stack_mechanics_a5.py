@@ -39,6 +39,25 @@ def nested_dissection(ij, ids, leaf=64):
             + list(ids[sub[:, ax] == mid]))
 
 
+INDEX_TOLERANCE = 1e-9   # cell units: a coordinate this close to a node line lies on it, on either side
+
+
+def snap_index(f):
+    """One tolerance on both sides of a node line (review a7 finding 5)."""
+    r = round(f)
+    return float(r) if abs(f - r) <= INDEX_TOLERANCE else f
+
+
+def point_w(gr, u, xy, allow_off_grid):
+    """|w| at xy; on a grid that need not cover the outline, a point in a dropped strip is None (review a7 finding 2)."""
+    try:
+        return float(abs(gr.w_at(u, xy)))
+    except ValueError:
+        if allow_off_grid:
+            return None
+        raise
+
+
 class Grillage:
     def __init__(self, outline, step, fixings_xy, bending, require_cover=True):
         self.outline, self.h = outline, step
@@ -158,12 +177,12 @@ class Grillage:
 
     def bilinear(self, xy):
         """Nodes and bilinear weights of the cell around xy; every node with a non-zero weight must exist."""
-        fi, fj = (xy[0] - self.x0) / self.h, (xy[1] - self.y0) / self.h
-        i0, j0 = int(math.floor(fi + 1e-9)), int(math.floor(fj + 1e-9))
-        tx, ty = max(0.0, fi - i0), max(0.0, fj - j0)
+        fi, fj = (snap_index((xy[0] - self.x0) / self.h), snap_index((xy[1] - self.y0) / self.h))
+        i0, j0 = int(math.floor(fi)), int(math.floor(fj))
+        tx, ty = fi - i0, fj - j0
         out = []
         for (di, dj), wt in (((0, 0), (1 - tx) * (1 - ty)), ((0, 1), (1 - tx) * ty), ((1, 0), tx * (1 - ty)), ((1, 1), tx * ty)):
-            if wt > 1e-12:
+            if wt > 0:
                 k = self.idx.get((i0 + di, j0 + dj))
                 if k is None:
                     raise ValueError(f'{tuple(xy)} is not inside a cell of the grid: node {tuple(self.nodes_xy(i0 + di, j0 + dj))} is missing')
@@ -236,7 +255,7 @@ class A5:
             out[reg] = {'w': float(abs(w[n])), 'at': [float(v) for v in gr.nodes[n]], 'eps': float(np.max(kap[mask])) * self.t / 2}
         n = int(np.argmax(np.abs(w)))
         out['max'] = {'w': float(abs(w[n])), 'at': [float(v) for v in gr.nodes[n]]}
-        out['points'] = [float(abs(gr.w_at(u, xy))) for xy in self.p['far_points_xy']]
+        out['points'] = [point_w(gr, u, xy, True) for xy in self.p['far_points_xy']]
         return out
 
     def strip_w(self, g_level, span):
@@ -333,7 +352,7 @@ def compliance_scan_for(a, key, nodes):
 
 
 def f3(x):
-    return f'{x:.3f}'
+    return 'n/a' if x is None else f'{x:.3f}'
 
 
 def render_a5_regions(c):

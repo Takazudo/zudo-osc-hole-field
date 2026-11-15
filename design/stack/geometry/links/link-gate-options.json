@@ -1,6 +1,6 @@
 {
- "schema_version": 1,
- "task": "osc-stack-20261114/ST-02 a7: the gate option of DS-67 placed on the FH12 field (DS-59 to DS-67, DS-69)",
+ "schema_version": 2,
+ "task": "osc-stack-20261114/ST-02 a7 and a8 part 1: the gate option of DS-67 on the FH12 field, on the ruled inputs of DS-72 to DS-79 and DS-84 to DS-88",
  "status": "GATE OPTION PARAMETERS; courtyard level; unvalidated drafts; nothing selected",
  "status_vocabulary": "SOURCED (file named), DERIVED (computed from SOURCED or retained figures), ASSUMED (working value, no document), UNSOURCED (no document; not used as a figure)",
  "evidence_files": {
@@ -98,10 +98,22 @@
    "O3",
    "O5"
   ],
-  "circuits": 14,
-  "report_also": 8,
-  "class_of_signals": "ANALOGUE",
-  "status": "DS-64: one link per adapter, 14 circuits; the seven signals have no retained class and are placed as ANALOGUE (scope a7 item 3); the 8-circuit check reads them as static (one ground), which holds only if ST-04 finds the lines static"
+  "circuits_a7": 14,
+  "class_of_signals": {
+   "a8": "STATIC",
+   "a7": "ANALOGUE"
+  },
+  "order": [
+   "OSC_OCT0",
+   "OSC_OCT1",
+   "OSC_OCT2",
+   "OSC_OCT3",
+   "OSC_OCT4",
+   "OSC_OCT5",
+   "AGND",
+   "OCT_SELECTED"
+  ],
+  "status": "DS-79 (a8): each adapter link has 8 circuits, connector FH12-8S-0.5SH(55) (C597995), cable C81339 at 40 mm (adapter_short_cable) with C29534 at 50 mm as the fallback, in the order OSC_OCT0 to OSC_OCT5, AGND, OCT_SELECTED; the lines are static (SOURCED from the schematic specification per DS-79) and may lie side by side on these three links only; an adapter without a place on either cable keeps its rigid pairs as the named exception of DS-64. a7 (comparison run (a) only): one 14-circuit link with the lines placed as ANALOGUE"
  },
  "ground_rule": {
   "id": "DS-62",
@@ -171,5 +183,36 @@
    },
    "rule": "for a link still without a place: among its rules-legal places (cheapest first), one that exactly one placed link blocks; that link is searched again on the 0.5 mm grid with the blocked link placed there and every other link fixed, and is moved when its new cost is at most its recorded cost plus the allowance; each blocking link is tried once per blocked link and round"
   }
+ },
+ "allocation": {
+  "id": "DS-62 with DS-77, DS-78 and DS-79 (a8)",
+  "unused_positions": "every unused position is tied to AGND on both boards and counts as a ground of the link (DS-77); the file keeps the kind 'unused' and counts grounds and unused positions apart, because part 2 gives unused positions to riders",
+  "logic_runs": "a run of two or more LOGIC lines side by side never includes position 1 or the last position and has a ground on each side; a single LOGIC line may take an outer position with a ground beside it (DS-77)",
+  "outer_positions": "where a link holds several classes, the outer signal positions go to a WIPER line first, then a single LOGIC line, then an ANALOGUE line, a PRECISION line last; no ground is required at an outer position (DS-78)",
+  "circuits_needed": "A + Q + max(u - 1, 1) + (1 if the link has a run of two or more LOGIC lines and u <= 2); static adapter lines: their count + 1",
+  "order": "units (each ANALOGUE or PRECISION line alone, the quiet block as one) ordered by the preference of DS-78: the best unit at position 1, the second best last, the rest in member order between; a ground between units; a LOGIC run at an end takes a ground outside it; a lone unit without a ground takes one after it; unused positions at the far end. The order is a choice of the study within the rule",
+  "status": "DS-77 to DS-79 (DA-03 c2 E1 to E3); the a7 rule (DS-62 alone, unused not a ground) is kept for comparison run (a)"
+ },
+ "compliance": {
+  "limit_mm_per_N": {
+   "value": 1.0,
+   "status": "DS-72, DS-87: no K connector field above this value is placed (hard screen)"
+  },
+  "list_above_mm_per_N": {
+   "value": 0.25,
+   "status": "DS-72, DS-87: the other hand holds K's edge while the lock is closed; listed"
+  },
+  "reading": "the largest mm_per_N of design/stack/mechanics/k-compliance-map.json over the nodes inside the K field grown by the map pitch (inputs.map_pitch_mm) on every side (DS-87 reading set for a8); the map is pinned by inputs_sha256 and the digest of nodes",
+  "status": "DERIVED map of ST-03 a6 (pinned grillage, an upper bound on the ASSUMED plate model)"
+ },
+ "latch_rule": {
+  "margin": "latch_access_margin_mm of link-options.json (1.0 mm, ASSUMED)",
+  "exempt": [
+   "chip R, C or L of size 0603 or smaller (footprint names R0603, C0603, R0402 ...)",
+   "SOD-123",
+   "SOT-23"
+  ],
+  "rule": "a footprint on K's rear face within the margin of a K connector field and not under it is displaced like a footprint under the field unless its package is exempt (DS-88); the package is the footprint name (lib) of the K board file",
+  "status": "DS-88; ASSUMED that the exempt packages stand lower than the 2.0 mm connector body (no footprint height is retained)"
  }
 }
