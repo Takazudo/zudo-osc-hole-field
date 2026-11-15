@@ -537,7 +537,8 @@ class TestAttemptA6(Base):
         for i, cval in zip(sample, comp):
             self.assertTrue(math.isclose(mp['nodes'][i][2], cval, abs_tol=1e-5), mp['nodes'][i])
         origin = (min(v[0] for v in mp['inputs']['k_outline']), min(v[1] for v in mp['inputs']['k_outline']))
-        regions = self.m6.map_regions(mp['nodes'], mp['inputs']['map_pitch_mm'], origin, [(t['mm_per_N'], t['rule']) for t in mp['thresholds']])
+        regions = self.m6.map_regions(mp['nodes'], mp['inputs']['map_pitch_mm'], origin, [(t['mm_per_N'], t['rule']) for t in mp['thresholds']],
+                                      mp['inputs']['grid_step_mm'])
         self.assertTrue(self.m6.map_is_current(self.a, mp))
         self.assertEqual([(k['name'], k['xy']) for k in mp['corners']], [(n, xy) for n, xy in self.a.map_corner_names()])
         self.assertEqual(json.loads(json.dumps(regions)), mp['thresholds'])
@@ -629,9 +630,9 @@ class TestAttemptA7(Base):
 
     def test_f3_lattice_area_follows_the_grid_origin(self):
         nodes = [[1.0 + 4 * i, 1.0 + 4 * j, 2.0] for i in range(3) for j in range(3)]
-        t = self.m6.map_regions(nodes, 4.0, (1.0, 1.0), [(1.0, 'test')])[0]
+        t = self.m6.map_regions(nodes, 4.0, (1.0, 1.0), [(1.0, 'test')], 4.0)[0]
         self.assertEqual(t['area_mm2_approx'], 9 * 16.0)
-        self.assertEqual(self.m6.map_regions(nodes, 4.0, (0.0, 0.0), [(1.0, 'test')])[0]['area_mm2_approx'], 0.0)
+        self.assertEqual(self.m6.map_regions(nodes, 4.0, (0.0, 0.0), [(1.0, 'test')], 1.0)[0]['area_mm2_approx'], 0.0)
 
     def test_f4_comparison_sets_come_from_the_fixing_file(self):
         sets = self.a.comparison_sets()
@@ -708,6 +709,145 @@ class TestAttemptA7(Base):
         self.assertLessEqual(self.m5.GRILLAGE_CACHE_SIZE, 8)
         with self.assertRaises(ValueError):
             self.m5.grillage_for(a.outline, 4.0, a.fixings_xy('ruled'), a.bending, True)
+
+
+
+class TestAttemptA8(Base):
+    """Corrections after the independent code review of the a7 code (DS-91); each test fails on the a7 code."""
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        import stack_mechanics_a5 as a5mod
+        import stack_mechanics_a6 as a6mod
+        cls.m5, cls.m6 = a5mod, a6mod
+        cls.a = a6mod.A6(cls.c)
+
+    def variant(self, edit):
+        data = json.loads(json.dumps(self.data))
+        edit(data)
+        return sm.Calc(data)
+
+    def param(self, name, value, block='a6'):
+        return self.variant(lambda d: d['parameters'][block][name].update(value=value))
+
+    def with_map(self, mp, fn):
+        original = self.m6.load_map
+        try:
+            self.m6.load_map = lambda: mp
+            return fn()
+        finally:
+            self.m6.load_map = original
+
+    def test_f1_thresholds_and_corners_make_the_map_current(self):
+        mp = self.m6.load_map()
+        self.assertTrue(self.m6.map_is_current(self.a, mp))
+        for name, value in (('compliance_not_placed_mm_per_N', 0.8), ('compliance_hold_edge_mm_per_N', 0.3)):
+            c = self.param(name, value)
+            self.assertFalse(self.m6.map_is_current(self.m6.A6(c), mp), name)
+            self.assertIn('stale', self.m6.render_a6_head(c))
+            self.assertIn('stale', self.m6.render_a6_compliance(c))
+
+    def test_f2_point_in_a_dropped_strip_is_na_off_cover_only(self):
+        a = self.a
+        points = tuple((n, tuple(xy)) for n, xy in a.p['check_points_xy'].items())
+        m = self.m6.movement_for(a.outline, 5.0, a.fixings_xy('ruled'), a.bending, False, a.a3.weight_pressure(a.hg), a.a5.t, points,
+                                 a.post_rows('ruled'))
+        self.assertIsNone(m['points']['lower_left_corner'])
+        self.assertIsNotNone(m['points']['left_edge'])
+        c5 = self.param('grillage_step_mm', 5.0, block='a5')
+        s = self.m5.A5(c5).uniform_summary('list', 5.0)
+        self.assertIsNone(s['points'][1])
+        self.assertIn('| n/a |', self.m5.render_a5_points(c5))
+        gr = a.grillage('ruled')
+        with self.assertRaises(ValueError):
+            self.m5.point_w(gr, np.zeros(gr.size), (262.0, 250.0), False)
+
+    def test_f3_needs_design_heading_names_a_stale_map(self):
+        c = self.variant(lambda d: (d['parameters']['a6']['movement_limit_mm'].update(value=0.5),
+                                    d['parameters']['a6']['compliance_not_placed_mm_per_N'].update(value=0.8)))
+        head = self.m6.render_a6_head(c)
+        self.assertIn('NEEDS_DESIGN', head)
+        self.assertIn('the compliance map is stale', head)
+        head = self.m6.render_a6_head(self.param('movement_limit_mm', 0.5))
+        self.assertIn('NEEDS_DESIGN', head)
+        self.assertIn('corner regions lie above 1.0 mm/N', head)
+
+    def test_f4_threshold_and_corner_word_are_computed(self):
+        c = self.param('compliance_not_placed_mm_per_N', 0.4)
+        a = self.m6.A6(c)
+        mp = self.m6.load_map()
+        mp.update(json.loads(json.dumps(a.map_sections(mp['nodes']))))
+        self.assertTrue(self.m6.map_is_current(a, mp))
+        head = self.with_map(mp, lambda: self.m6.render_a6_head(c))
+        self.assertIn('regions lie above 0.4 mm/N', head)
+        self.assertNotIn('corner regions', head)
+        self.assertIn('lie above 0.4 mm/N', self.with_map(mp, lambda: self.m6.render_a6_compliance(c)))
+        self.assertIn('corner regions lie above 1.0 mm/N', self.m6.render_a6_head(self.c))
+
+    def test_f5_one_tolerance_on_both_sides_of_a_node_line(self):
+        gr = self.a.grillage('ruled')
+        right, left = gr.bilinear((314.0 + 1e-11, 100.0)), gr.bilinear((314.0 - 1e-11, 100.0))
+        self.assertEqual(right, left)
+        self.assertEqual(right, gr.bilinear((314.0, 100.0)))
+
+    def test_f6_strain_clause_is_computed(self):
+        def m(eps, at, pinned):
+            return {'strain': {'eps': eps, 'at': at, 'pinned': pinned}}
+        self.assertEqual(self.m6.strain_clause(m(300e-6, [0, 0], True), m(250e-6, [10.0, 20.0], False)),
+                         'the strain figure falls to 250 microstrain at (10, 20)')
+        self.assertEqual(self.m6.strain_clause(m(300e-6, [0, 0], True), m(300e-6, [1.0, 2.0], True)),
+                         'the strain figure stays at 300 microstrain at the pins')
+        fine = self.a.movement('ruled', step=self.a.p['snap_check_step_mm'])
+        self.assertTrue(fine['strain']['pinned'])
+        self.assertIn('rises to 325 microstrain at the pins', self.readme)
+
+    def test_f7_repeated_corner_names_carry_coordinates(self):
+        names = [n for n, _ in self.a.corners()]
+        self.assertEqual(names, ['upper left corner', 'upper right corner', 'notch corner on the right edge', 'notch corner',
+                                 'notch corner on the lower edge', 'lower left corner'])
+        two = [[0, 0], [100, 0], [100, 40], [80, 40], [80, 60], [100, 60], [100, 100], [0, 100]]
+        a = self.m6.A6(self.variant(lambda d: d['geometry']['a6'].update(k_outline=two)))
+        names = [n for n, _ in a.corners()]
+        self.assertEqual(len(set(names)), len(names))
+        self.assertIn('notch corner at (80, 40)', names)
+        self.assertIn('notch corner on the right edge at (100, 60)', names)
+
+    def test_f8_regions_keyed_by_grid_index(self):
+        nodes = [[0.25 * i, 0.0, 2.0] for i in range(4)]
+        t = self.m6.map_regions(nodes, 0.25, (0.0, 0.0), [(1.0, 'test')], 0.25)[0]
+        self.assertEqual(len(t['regions']), 1)
+        self.assertEqual(t['regions'][0]['nodes'], 4)
+
+    def test_f9_unevaluated_figure_has_no_verdict(self):
+        self.assertEqual(self.m6.verdict(self.m6.peak_ok(None, 1.4)), 'n/a')
+        self.assertEqual(self.m6.verdict(self.m6.at_most(None, 1.4)), 'n/a')
+        self.assertEqual(self.m6.verdict(self.m6.peak_ok({'w': 0.2, 'at': [0, 0]}, 1.4)), 'within')
+
+    def test_f10_one_render_builds_each_distinct_model_once(self):
+        orig = self.m5._grillage
+        seen = set()
+
+        def spy(*args):
+            seen.add(args)
+            return orig(*args)
+        # a handling level changed in the 7th digit gives fresh figures without clearing the figures the other tests share and
+        # keeps the map current; the snap-check grid set to the grid of record skips the 1 mm model (3 s); its 7 distinct
+        # models still overrun the cache of 6
+        c = self.variant(lambda d: (d['parameters']['a3']['handling_g'].update(value=5.000001),
+                                    d['parameters']['a6']['snap_check_step_mm'].update(value=self.a.step)))
+        self.assertTrue(self.m6.map_is_current(self.m6.A6(c), self.m6.load_map()))
+        self.m5.clear_grillages()
+        before = orig.cache_info().misses
+        self.m5._grillage = spy
+        try:
+            for fn in self.m6.RENDERERS.values():
+                fn(c)
+        finally:
+            self.m5._grillage = orig
+        self.assertEqual(orig.cache_info().misses - before, len(seen))
+        self.assertGreater(len(seen), self.m5.GRILLAGE_CACHE_SIZE)
+        self.assertLessEqual(self.m5.GRILLAGE_CACHE_SIZE, 8)
 
 
 if __name__ == '__main__':

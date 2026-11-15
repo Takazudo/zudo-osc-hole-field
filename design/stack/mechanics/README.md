@@ -147,6 +147,23 @@ The review ran at 00:39 UTC (DS-89). Only the a1-list figure at (314, 246) chang
 | 9. Map pitch not checked | Must be a whole positive multiple of the grid step |
 | 10. `require_cover` in the cache key; unbounded life of the models | One model per (outline, step, fixings, bending), with the cover check applied outside. The cache holds the last six models |
 
+### Attempt a8 corrects the ten findings of the review of the a7 code; no published figure or sentence changed
+
+The review ran at 01:15 UTC (DS-91). Each finding shows only under a changed parameter, outline or fixing file, except finding 10, which cost one repeated model per render. The compliance map and `stackups.json` are byte-identical. A full rewrite of the map reproduces it, and `map_inputs()` has no new key.
+
+| Finding | Change |
+| --- | --- |
+| 1. A map counts as current while its thresholds differ from the parameters | `map_is_current` also recomputes `thresholds` and `corners` from the map's nodes at the current parameters and compares them with the file |
+| 2. A check point in a strip dropped by a non-covering grid stops the render | On such a grid the point reads "n/a"; on a covering grid the error stays |
+| 3. The NEEDS_DESIGN heading does not name a stale map | Both headings carry the map clause |
+| 4. "above 1.0 mm/N" and "corner" are literals | The threshold is printed from the parameter; "corner" appears only where the box of every region holds an outline vertex |
+| 5. Two tolerances in `bilinear` | One tolerance (`INDEX_TOLERANCE`, 1e-9 cell) on both sides of a node line |
+| 6. "rises to … at the pins" is a literal | The direction comes from the two strain figures; "at the pins" appears only where the largest strain sits on a pinned node, else its place is given |
+| 7. Corner names repeat on an outline with two notches | A repeated name gets its coordinates; the names on K's outline are unchanged |
+| 8. Map regions keyed at a fixed 0.5 mm quantum | Keyed by grid index, with the grid step passed in |
+| 9. An empty region reads "within" | A figure that was not evaluated has the verdict "n/a" |
+| 10. One render built 9 models for 8 | `movement_for` reads every figure a render needs, including the compliance pushes, while the model is in hand. One render builds each distinct model once; the cache stays at 6 |
+
 ### Parameters of attempt a6 with their status
 
 <!-- calc:a6_terms -->
