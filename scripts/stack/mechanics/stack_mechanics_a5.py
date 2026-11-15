@@ -99,8 +99,15 @@ class Grillage:
             m = c & (g >= 0)
             np.add.at(area, g[m], h * h / 4)
         self.area = area
+        for xy in fixings_xy:
+            if not geo.inside(xy, outline):
+                raise ValueError(f'fixing at {tuple(xy)} lies outside the outline (review a6 finding 6)')
         self.fixed_nodes = [self.nearest(xy) for xy in fixings_xy]
         self.snap_mm = [float(np.hypot(*(self.nodes[k] - np.array(xy, float)))) for k, xy in zip(self.fixed_nodes, fixings_xy)]
+        self.snap_bound_mm = step / math.sqrt(2)
+        for xy, snap in zip(fixings_xy, self.snap_mm):
+            if snap > self.snap_bound_mm + 1e-9:
+                raise ValueError(f'fixing at {tuple(xy)} snaps {snap:.3f} mm, more than half a cell diagonal ({self.snap_bound_mm:.3f} mm)')
         if len(set(self.fixed_nodes)) != len(self.fixed_nodes):
             raise MergedFixings('two fixings share a grid node')
         fixed = sorted(3 * k for k in self.fixed_nodes)
@@ -149,15 +156,26 @@ class Grillage:
         load[3 * node] = force
         return self.solve(load)
 
-    def w_at(self, u, xy):
+    def bilinear(self, xy):
+        """Nodes and bilinear weights of the cell around xy; every node with a non-zero weight must exist."""
         fi, fj = (xy[0] - self.x0) / self.h, (xy[1] - self.y0) / self.h
-        i0, j0 = int(math.floor(fi)), int(math.floor(fj))
-        corners = [(i0 + a, j0 + b) for a in (0, 1) for b in (0, 1)]
-        if all(c in self.idx for c in corners):
-            tx, ty = fi - i0, fj - j0
-            w = [u[3 * self.idx[c]] for c in corners]
-            return (w[0] * (1 - tx) * (1 - ty) + w[1] * (1 - tx) * ty + w[2] * tx * (1 - ty) + w[3] * tx * ty)
-        return u[3 * self.nearest(xy)]
+        i0, j0 = int(math.floor(fi + 1e-9)), int(math.floor(fj + 1e-9))
+        tx, ty = max(0.0, fi - i0), max(0.0, fj - j0)
+        out = []
+        for (di, dj), wt in (((0, 0), (1 - tx) * (1 - ty)), ((0, 1), (1 - tx) * ty), ((1, 0), tx * (1 - ty)), ((1, 1), tx * ty)):
+            if wt > 1e-12:
+                k = self.idx.get((i0 + di, j0 + dj))
+                if k is None:
+                    raise ValueError(f'{tuple(xy)} is not inside a cell of the grid: node {tuple(self.nodes_xy(i0 + di, j0 + dj))} is missing')
+                out.append((k, wt))
+        return out
+
+    def nodes_xy(self, i, j):
+        return [self.x0 + i * self.h, self.y0 + j * self.h]
+
+    def w_at(self, u, xy):
+        """Bilinear deflection at xy from the same nodes and weights that bilinear() gives a load."""
+        return float(sum(wt * u[3 * k] for k, wt in self.bilinear(xy)))
 
     def curvatures(self, u):
         """Largest end curvature of the beams at each node (numpy, one value per node)."""
@@ -279,9 +297,24 @@ def chord_length(poly, n, offset):
     return sum(params[i + 1] - params[i] for i in range(0, len(params) - 1, 2))
 
 
-@lru_cache(maxsize=16)
+GRILLAGE_CACHE_SIZE = 6   # a 2 mm factor of K holds about 9 million non-zeros; keep only the latest few models
+
+
+@lru_cache(maxsize=GRILLAGE_CACHE_SIZE)
+def _grillage(outline, step, fixings_xy, bending):
+    return Grillage([list(p) for p in outline], step, fixings_xy, bending, require_cover=False)
+
+
 def grillage_for(outline, step, fixings_xy, bending, require_cover=True):
-    return Grillage([list(p) for p in outline], step, fixings_xy, bending, require_cover)
+    """One cached model per (outline, step, fixings, bending); the cover check is applied to it, not part of its key."""
+    gr = _grillage(outline, step, tuple(tuple(map(float, p)) for p in fixings_xy), bending)
+    if require_cover and not gr.covers:
+        raise ValueError(f'a {step} mm grid does not cover the outline exactly (review finding 1)')
+    return gr
+
+
+def clear_grillages():
+    _grillage.cache_clear()
 
 
 _SCAN = {}
