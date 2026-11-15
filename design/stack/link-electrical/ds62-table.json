@@ -8,52 +8,139 @@
   "STATIC"
  ],
  "adapter_link": {
-  "flat_8": {
-   "circuits": 8,
-   "length_mm": 40,
-   "order": [
-    "OCT_SELECTED",
-    "OSC_OCT0",
-    "OSC_OCT1",
-    "OSC_OCT2",
-    "OSC_OCT3",
-    "OSC_OCT4",
-    "OSC_OCT5",
-    "AGND"
-   ],
-   "grounds": 1,
-   "peak_V": 0.100221,
-   "area_Vs": 3.36096e-10,
-   "filtered_V": 3.36096e-06,
-   "ratio_peak": 5.06737,
-   "ratio_filtered": 4.04305
-  },
-  "flat_14": {
-   "circuits": 14,
-   "length_mm": 50,
-   "order": [
-    "OCT_SELECTED",
-    "AGND",
-    "OSC_OCT0",
-    "AGND",
-    "OSC_OCT1",
-    "AGND",
-    "OSC_OCT2",
-    "AGND",
-    "OSC_OCT3",
-    "AGND",
-    "OSC_OCT4",
-    "AGND",
-    "OSC_OCT5",
-    "AGND"
-   ],
-   "grounds": 7,
-   "peak_V": 0.0136867,
-   "area_Vs": 5.77343e-11,
-   "filtered_V": 5.77343e-07,
-   "ratio_peak": 0.692027,
-   "ratio_filtered": 0.694513
-  },
+  "cases": [
+   {
+    "name": "part_1",
+    "cable": "C81339",
+    "circuits": 8,
+    "order": [
+     "OCT_SELECTED",
+     "OSC_OCT0",
+     "OSC_OCT1",
+     "OSC_OCT2",
+     "OSC_OCT3",
+     "OSC_OCT4",
+     "OSC_OCT5",
+     "AGND"
+    ],
+    "aggressor_pos": 1,
+    "length_mm": 40,
+    "grounds": 1,
+    "victim": "OSC_OCT0",
+    "victim_pos": 2,
+    "peak_V": 0.100221,
+    "area_Vs": 3.36096e-10,
+    "filtered_V": 3.36096e-06,
+    "ratio_peak": 5.06737,
+    "ratio_filtered": 4.04305
+   },
+   {
+    "name": "part_1",
+    "cable": "C29534",
+    "circuits": 8,
+    "order": [
+     "OCT_SELECTED",
+     "OSC_OCT0",
+     "OSC_OCT1",
+     "OSC_OCT2",
+     "OSC_OCT3",
+     "OSC_OCT4",
+     "OSC_OCT5",
+     "AGND"
+    ],
+    "aggressor_pos": 1,
+    "length_mm": 50,
+    "grounds": 1,
+    "victim": "OSC_OCT0",
+    "victim_pos": 2,
+    "peak_V": 0.120451,
+    "area_Vs": 4.04003e-10,
+    "filtered_V": 4.04003e-06,
+    "ratio_peak": 6.09028,
+    "ratio_filtered": 4.85994
+   },
+   {
+    "name": "ds79",
+    "cable": "C81339",
+    "circuits": 8,
+    "order": [
+     "OSC_OCT0",
+     "OSC_OCT1",
+     "OSC_OCT2",
+     "OSC_OCT3",
+     "OSC_OCT4",
+     "OSC_OCT5",
+     "AGND",
+     "OCT_SELECTED"
+    ],
+    "aggressor_pos": 8,
+    "length_mm": 40,
+    "grounds": 1,
+    "victim": "OSC_OCT0",
+    "victim_pos": 1,
+    "peak_V": 0.0252691,
+    "area_Vs": 7.39609e-11,
+    "filtered_V": 7.39609e-07,
+    "ratio_peak": 1.27766,
+    "ratio_filtered": 0.889709
+   },
+   {
+    "name": "ds79",
+    "cable": "C29534",
+    "circuits": 8,
+    "order": [
+     "OSC_OCT0",
+     "OSC_OCT1",
+     "OSC_OCT2",
+     "OSC_OCT3",
+     "OSC_OCT4",
+     "OSC_OCT5",
+     "AGND",
+     "OCT_SELECTED"
+    ],
+    "aggressor_pos": 8,
+    "length_mm": 50,
+    "grounds": 1,
+    "victim": "OSC_OCT0",
+    "victim_pos": 1,
+    "peak_V": 0.0303152,
+    "area_Vs": 8.87474e-11,
+    "filtered_V": 8.87474e-07,
+    "ratio_peak": 1.5328,
+    "ratio_filtered": 1.06758
+   },
+   {
+    "name": "alternating_14",
+    "cable": "C68390",
+    "circuits": 14,
+    "order": [
+     "OCT_SELECTED",
+     "AGND",
+     "OSC_OCT0",
+     "AGND",
+     "OSC_OCT1",
+     "AGND",
+     "OSC_OCT2",
+     "AGND",
+     "OSC_OCT3",
+     "AGND",
+     "OSC_OCT4",
+     "AGND",
+     "OSC_OCT5",
+     "AGND"
+    ],
+    "aggressor_pos": 1,
+    "length_mm": 50,
+    "grounds": 7,
+    "victim": "OSC_OCT0",
+    "victim_pos": 3,
+    "peak_V": 0.0136867,
+    "area_Vs": 5.77343e-11,
+    "filtered_V": 5.77343e-07,
+    "ratio_peak": 0.692027,
+    "ratio_filtered": 0.694513
+   }
+  ],
   "harness_quietest": {
    "harness": "K-O2-1",
    "length_mm": 66,
@@ -167,11 +254,11 @@
    "pair": "ANALOGUE>WIPER",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.204604,
+   "flat_V": 0.205666,
    "harness_min_V": 0.822913,
-   "ratio": 0.248633,
+   "ratio": 0.249925,
    "ratio_by_place": {
-    "edge": 0.248633,
+    "edge": 0.249925,
     "middle": 0.17899
    }
   },
@@ -182,11 +269,11 @@
    "pair": "LOGIC>ANALOGUE",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.0615156,
+   "flat_V": 0.0615978,
    "harness_min_V": 0.301061,
-   "ratio": 0.204329,
+   "ratio": 0.204602,
    "ratio_by_place": {
-    "edge": 0.204329,
+    "edge": 0.204602,
     "middle": 0.135268
    }
   },
@@ -197,11 +284,11 @@
    "pair": "LOGIC>LOGIC",
    "lies": "side by side",
    "where": "edge",
-   "flat_V": 0.196773,
+   "flat_V": 0.196774,
    "harness_min_V": 0.218351,
-   "ratio": 0.901175,
+   "ratio": 0.901179,
    "ratio_by_place": {
-    "edge": 0.901175,
+    "edge": 0.901179,
     "middle": 0.62785
    }
   },
@@ -212,11 +299,11 @@
    "pair": "LOGIC>PRECISION",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.0615156,
+   "flat_V": 0.0615978,
    "harness_min_V": 0.301061,
-   "ratio": 0.204329,
+   "ratio": 0.204602,
    "ratio_by_place": {
-    "edge": 0.204329,
+    "edge": 0.204602,
     "middle": 0.135268
    }
   },
@@ -272,11 +359,11 @@
    "pair": "PRECISION>WIPER",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.204604,
+   "flat_V": 0.205666,
    "harness_min_V": 0.822913,
-   "ratio": 0.248633,
+   "ratio": 0.249925,
    "ratio_by_place": {
-    "edge": 0.248633,
+    "edge": 0.249925,
     "middle": 0.17899
    }
   },
@@ -332,11 +419,11 @@
    "pair": "ANALOGUE>WIPER",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.220378,
+   "flat_V": 0.221985,
    "harness_min_V": 0.822913,
-   "ratio": 0.267803,
+   "ratio": 0.269755,
    "ratio_by_place": {
-    "edge": 0.267803,
+    "edge": 0.269755,
     "middle": 0.178318
    }
   },
@@ -347,11 +434,11 @@
    "pair": "LOGIC>ANALOGUE",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.0648673,
+   "flat_V": 0.0650042,
    "harness_min_V": 0.301061,
-   "ratio": 0.215462,
+   "ratio": 0.215917,
    "ratio_by_place": {
-    "edge": 0.215462,
+    "edge": 0.215917,
     "middle": 0.132458
    }
   },
@@ -362,11 +449,11 @@
    "pair": "LOGIC>LOGIC",
    "lies": "side by side",
    "where": "edge",
-   "flat_V": 0.216018,
+   "flat_V": 0.216021,
    "harness_min_V": 0.218351,
-   "ratio": 0.989316,
+   "ratio": 0.989329,
    "ratio_by_place": {
-    "edge": 0.989316,
+    "edge": 0.989329,
     "middle": 0.702957
    }
   },
@@ -377,11 +464,11 @@
    "pair": "LOGIC>PRECISION",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.0648673,
+   "flat_V": 0.0650042,
    "harness_min_V": 0.301061,
-   "ratio": 0.215462,
+   "ratio": 0.215917,
    "ratio_by_place": {
-    "edge": 0.215462,
+    "edge": 0.215917,
     "middle": 0.132458
    }
   },
@@ -437,11 +524,11 @@
    "pair": "PRECISION>WIPER",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.220378,
+   "flat_V": 0.221985,
    "harness_min_V": 0.822913,
-   "ratio": 0.267803,
+   "ratio": 0.269755,
    "ratio_by_place": {
-    "edge": 0.267803,
+    "edge": 0.269755,
     "middle": 0.178318
    }
   },
@@ -497,11 +584,11 @@
    "pair": "ANALOGUE>WIPER",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.229754,
+   "flat_V": 0.231469,
    "harness_min_V": 0.822913,
-   "ratio": 0.279196,
+   "ratio": 0.28128,
    "ratio_by_place": {
-    "edge": 0.279196,
+    "edge": 0.28128,
     "middle": 0.184762
    }
   },
@@ -512,11 +599,11 @@
    "pair": "LOGIC>ANALOGUE",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.0684333,
+   "flat_V": 0.068579,
    "harness_min_V": 0.301061,
-   "ratio": 0.227307,
+   "ratio": 0.227791,
    "ratio_by_place": {
-    "edge": 0.227307,
+    "edge": 0.227791,
     "middle": 0.138454
    }
   },
@@ -527,11 +614,11 @@
    "pair": "LOGIC>LOGIC",
    "lies": "side by side",
    "where": "edge",
-   "flat_V": 0.224097,
+   "flat_V": 0.224099,
    "harness_min_V": 0.218351,
-   "ratio": 1.02631,
+   "ratio": 1.02633,
    "ratio_by_place": {
-    "edge": 1.02631,
+    "edge": 1.02633,
     "middle": 0.713961
    }
   },
@@ -542,11 +629,11 @@
    "pair": "LOGIC>PRECISION",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.0684333,
+   "flat_V": 0.068579,
    "harness_min_V": 0.301061,
-   "ratio": 0.227307,
+   "ratio": 0.227791,
    "ratio_by_place": {
-    "edge": 0.227307,
+    "edge": 0.227791,
     "middle": 0.138454
    }
   },
@@ -602,11 +689,11 @@
    "pair": "PRECISION>WIPER",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.229754,
+   "flat_V": 0.231469,
    "harness_min_V": 0.822913,
-   "ratio": 0.279196,
+   "ratio": 0.28128,
    "ratio_by_place": {
-    "edge": 0.279196,
+    "edge": 0.28128,
     "middle": 0.184762
    }
   },
@@ -662,11 +749,11 @@
    "pair": "ANALOGUE>WIPER",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.244238,
+   "flat_V": 0.246105,
    "harness_min_V": 0.822913,
-   "ratio": 0.296796,
+   "ratio": 0.299065,
    "ratio_by_place": {
-    "edge": 0.296796,
+    "edge": 0.299065,
     "middle": 0.213692
    }
   },
@@ -677,11 +764,11 @@
    "pair": "LOGIC>ANALOGUE",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.0737299,
+   "flat_V": 0.0738879,
    "harness_min_V": 0.301061,
-   "ratio": 0.2449,
+   "ratio": 0.245425,
    "ratio_by_place": {
-    "edge": 0.2449,
+    "edge": 0.245425,
     "middle": 0.16205
    }
   },
@@ -692,11 +779,11 @@
    "pair": "LOGIC>LOGIC",
    "lies": "side by side",
    "where": "edge",
-   "flat_V": 0.236443,
+   "flat_V": 0.236446,
    "harness_min_V": 0.218351,
-   "ratio": 1.08286,
+   "ratio": 1.08287,
    "ratio_by_place": {
-    "edge": 1.08286,
+    "edge": 1.08287,
     "middle": 0.753796
    }
   },
@@ -707,11 +794,11 @@
    "pair": "LOGIC>PRECISION",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.0737299,
+   "flat_V": 0.0738879,
    "harness_min_V": 0.301061,
-   "ratio": 0.2449,
+   "ratio": 0.245425,
    "ratio_by_place": {
-    "edge": 0.2449,
+    "edge": 0.245425,
     "middle": 0.16205
    }
   },
@@ -767,11 +854,11 @@
    "pair": "PRECISION>WIPER",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.244238,
+   "flat_V": 0.246105,
    "harness_min_V": 0.822913,
-   "ratio": 0.296796,
+   "ratio": 0.299065,
    "ratio_by_place": {
-    "edge": 0.296796,
+    "edge": 0.299065,
     "middle": 0.213692
    }
   },
@@ -827,11 +914,11 @@
    "pair": "ANALOGUE>WIPER",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.258366,
+   "flat_V": 0.260977,
    "harness_min_V": 0.822913,
-   "ratio": 0.313966,
+   "ratio": 0.317139,
    "ratio_by_place": {
-    "edge": 0.313966,
+    "edge": 0.317139,
     "middle": 0.208061
    }
   },
@@ -842,11 +929,11 @@
    "pair": "LOGIC>ANALOGUE",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.0767105,
+   "flat_V": 0.0769505,
    "harness_min_V": 0.301061,
-   "ratio": 0.2548,
+   "ratio": 0.255597,
    "ratio_by_place": {
-    "edge": 0.2548,
+    "edge": 0.255597,
     "middle": 0.155486
    }
   },
@@ -857,11 +944,11 @@
    "pair": "LOGIC>LOGIC",
    "lies": "side by side",
    "where": "edge",
-   "flat_V": 0.25497,
+   "flat_V": 0.254977,
    "harness_min_V": 0.218351,
-   "ratio": 1.16771,
+   "ratio": 1.16774,
    "ratio_by_place": {
-    "edge": 1.16771,
+    "edge": 1.16774,
     "middle": 0.822765
    }
   },
@@ -872,11 +959,11 @@
    "pair": "LOGIC>PRECISION",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.0767105,
+   "flat_V": 0.0769505,
    "harness_min_V": 0.301061,
-   "ratio": 0.2548,
+   "ratio": 0.255597,
    "ratio_by_place": {
-    "edge": 0.2548,
+    "edge": 0.255597,
     "middle": 0.155486
    }
   },
@@ -932,11 +1019,11 @@
    "pair": "PRECISION>WIPER",
    "lies": "across one ground",
    "where": "edge",
-   "flat_V": 0.258366,
+   "flat_V": 0.260977,
    "harness_min_V": 0.822913,
-   "ratio": 0.313966,
+   "ratio": 0.317139,
    "ratio_by_place": {
-    "edge": 0.313966,
+    "edge": 0.317139,
     "middle": 0.208061
    }
   }
@@ -949,11 +1036,11 @@
    "pair": "LOGIC>LOGIC",
    "lies": "side by side",
    "where": "edge",
-   "flat_V": 0.196773,
+   "flat_V": 0.196774,
    "harness_min_V": 0.218351,
-   "ratio": 0.901175,
+   "ratio": 0.901179,
    "ratio_by_place": {
-    "edge": 0.901175,
+    "edge": 0.901179,
     "middle": 0.62785
    }
   },
@@ -964,11 +1051,11 @@
    "pair": "LOGIC>LOGIC",
    "lies": "side by side",
    "where": "edge",
-   "flat_V": 0.236443,
+   "flat_V": 0.236446,
    "harness_min_V": 0.218351,
-   "ratio": 1.08286,
+   "ratio": 1.08287,
    "ratio_by_place": {
-    "edge": 1.08286,
+    "edge": 1.08287,
     "middle": 0.753796
    }
   },
@@ -979,11 +1066,11 @@
    "pair": "LOGIC>LOGIC",
    "lies": "side by side",
    "where": "edge",
-   "flat_V": 0.25497,
+   "flat_V": 0.254977,
    "harness_min_V": 0.218351,
-   "ratio": 1.16771,
+   "ratio": 1.16774,
    "ratio_by_place": {
-    "edge": 1.16771,
+    "edge": 1.16774,
     "middle": 0.822765
    }
   }
@@ -996,11 +1083,11 @@
    "pair": "LOGIC>LOGIC",
    "lies": "side by side",
    "where": "edge",
-   "flat_V": 0.224097,
+   "flat_V": 0.224099,
    "harness_min_V": 0.218351,
-   "ratio": 1.02631,
+   "ratio": 1.02633,
    "ratio_by_place": {
-    "edge": 1.02631,
+    "edge": 1.02633,
     "middle": 0.713961
    }
   },
@@ -1011,11 +1098,11 @@
    "pair": "LOGIC>LOGIC",
    "lies": "side by side",
    "where": "edge",
-   "flat_V": 0.236443,
+   "flat_V": 0.236446,
    "harness_min_V": 0.218351,
-   "ratio": 1.08286,
+   "ratio": 1.08287,
    "ratio_by_place": {
-    "edge": 1.08286,
+    "edge": 1.08287,
     "middle": 0.753796
    }
   },
@@ -1026,11 +1113,11 @@
    "pair": "LOGIC>LOGIC",
    "lies": "side by side",
    "where": "edge",
-   "flat_V": 0.25497,
+   "flat_V": 0.254977,
    "harness_min_V": 0.218351,
-   "ratio": 1.16771,
+   "ratio": 1.16774,
    "ratio_by_place": {
-    "edge": 1.16771,
+    "edge": 1.16774,
     "middle": 0.822765
    }
   }
