@@ -5,6 +5,7 @@ import re
 import sys
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import extract_inputs as ex
@@ -105,15 +106,11 @@ class Enclosure(unittest.TestCase):
     def setUpClass(cls):
         cls.d = T.load()
 
-    def test_area_drop_reproduces_the_plan(self):
-        drop = 1 - T.outer_area_m2(self.d, 34) / T.outer_area_m2(self.d, 120)
-        self.assertAlmostEqual(drop, T.term(self.d, 'plan_area_drop'), delta=0.005)
-
-    def test_plan_method_reproduces_the_rise_ranges(self):
-        lo34, hi34 = T.plan_method(self.d, 34, 35.4)[0], T.plan_method(self.d, 34, 41.1)[1]
-        lo120, hi120 = T.plan_method(self.d, 120, 35.4)[0], T.plan_method(self.d, 120, 41.1)[1]
-        self.assertEqual((round(lo34), round(hi34)), (17, 22))
-        self.assertEqual((round(lo120), round(hi120)), (12, 15))
+    def test_plan_row_figures_are_reproduced(self):
+        plan = T.term(self.d, 'plan_heat_W')
+        self.assertEqual(plan, [34.83, 41.1])
+        self.assertAlmostEqual(T.power_map(self.d, 'normal')['input_W'], plan[0], delta=0.005)
+        self.assertAlmostEqual(T.power_map(self.d, 'contract')['input_W'], plan[1], places=9)
 
     def test_shell_balance_matches_the_network(self):
         for depth in (40, 120):
@@ -196,18 +193,11 @@ class HotParts(unittest.TestCase):
     def setUpClass(cls):
         cls.d = T.load()
 
-    def test_ten_classes_with_as3340_first_and_bleeder_densest(self):
-        top = T.top_ten(self.d, 'normal')
-        self.assertEqual(len(top), 10)
-        self.assertEqual(top[0]['symbol'], 'AS3340D')
-        densest = max(top, key=lambda c: c['density_mW_mm2'])
-        self.assertTrue(densest['symbol'].startswith('RC0603FR-072K2L'))
-
-    def test_no_ic_bundle_holds_a_thermal_resistance(self):
-        survey = self.d['inputs']['bundle_thermal_survey']
-        for sym, (_, need) in R.LIMIT_FACTS.items():
-            for bundle, ids in survey.items():
-                self.assertFalse(any(re.search(r'rth|theta|junction', i) for i in ids), bundle)
+    def test_hot_set_is_every_k_package_of_100_mW(self):
+        hot = T.hot_packages(self.d)
+        self.assertEqual(len(hot), 91)
+        self.assertAlmostEqual(sum(h['W'] for h in hot), 13.374, places=3)
+        self.assertTrue(all(h['W'] >= 0.1 - 1e-12 for h in hot))
 
     def test_bleeder_figures_come_from_its_bundle(self):
         fact = self.d['inputs']['bundle_facts']['fact-power-bleeder-application']
@@ -229,10 +219,15 @@ class HotParts(unittest.TestCase):
         self.assertAlmostEqual(s['core_W'] + s['vee_driver_W'], 12 * 0.0065 + 12 * 0.010, places=9)
         self.assertAlmostEqual(s['row_W'], 0.198, places=9)
 
-    def test_needs_design_verdict(self):
-        k_lo = 40 + T.network(self.d, 40, 'H', 'low', 'contract')['rise']['K']
-        self.assertGreater(k_lo, T.term(self.d, 'hc_logic_ambient_max_C'))
-        self.assertIn('NEEDS_DESIGN', R.README.read_text().splitlines()[0])
+    def test_done_with_the_heading_of_ds95(self):
+        head = R.README.read_text().splitlines()[0]
+        self.assertEqual(self.d['status'], 'DONE')
+        self.assertIn('is NOT SHOWN met in either case depth', head)
+        self.assertIn('#64 measures it', head)
+        self.assertNotIn('NEEDS_DESIGN', head)
+
+    def test_readme_uses_no_pass_or_fail(self):
+        self.assertIsNone(re.search(r'\b(pass|passes|passed|fail|fails|failed|failure)\b', R.README.read_text(), re.I))
 
 
 class Regions(unittest.TestCase):
@@ -244,8 +239,8 @@ class Regions(unittest.TestCase):
         rows = T.sensitive_table(self.d)
         self.assertEqual(sum(1 for r in rows if r['function'].endswith('core')), 5)
         self.assertEqual(sum(1 for r in rows if r['function'].endswith('REF5050')), 24)
-        for r in rows:
-            self.assertGreater(r['distance_mm'], 0.0)
+        self.assertEqual(sum(1 for r in rows if r['hot_near']), 34)
+        self.assertNotIn('distance_mm', rows[0])
 
     def test_k_cells_conserve_power(self):
         cells, meta = T.k_cells(self.d, 'contract')
@@ -258,6 +253,217 @@ class Regions(unittest.TestCase):
         self.assertTrue(0 < g[0] < g[1])
         self.assertEqual(sum(1 for f in self.d['inputs']['fixings_active'] if f['kind'] == 'post'), 18)
         self.assertEqual(len(self.d['inputs']['fixings_active']), 22)
+
+
+class Findings(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.d = T.load()
+
+    def copy(self):
+        return copy.deepcopy(self.d)
+
+    def test_finding_01_headings_follow_the_comparison(self):
+        d = self.copy()
+        for sym in ('SN74HC14DR', 'SN74HC74DR', 'CL10A105KB8NNNC'):
+            for r in d['inputs']['operating_ranges'][sym]:
+                r['maximum'] = 150
+        head = R.render(d).splitlines()[0]
+        self.assertIn('150 °C limit', head)
+        self.assertIn('is MET ON PAPER in both case depths', head)
+        fake = {'box_mm': (200.0, 0.0, 300.0, 50.0), 'cells': [(4, 0)], 'lateral_K': (1.0, 2.0), 'hottest': (4, 0)}
+        with mock.patch.object(T, 'warm_region', lambda d, cells: fake, create=True):
+            text = '\n'.join(R.item5(R.facts(self.d)))
+        self.assertIn('x 200 to 300, y 0 to 50, 1.0 to 2.0 K', text.splitlines()[0])
+
+    def test_finding_02_power_outside_the_network_is_an_error(self):
+        d = self.copy()
+        real = T.power_map
+
+        def extra(dd, case='normal'):
+            m = real(dd, case)
+            return dict(m, boards=dict(m['boards'], X9=1.0))
+        with mock.patch.object(T, 'power_map', extra):
+            with self.assertRaises(ValueError):
+                T._network(d, 40, 'V', 'low', 'normal', 'outside', None, 0.0, None, 0.0)
+
+    def test_finding_03_cells_follow_k_and_the_cell_term(self):
+        d = self.copy()
+        d['terms']['cell_mm']['value'] = 40.0
+        self.assertEqual(T.cell_name(d, (1, 2)), 'x 40 to 80, y 80 to 120')
+        cells, meta = T.k_cells(d, 'normal')
+        self.assertAlmostEqual(sum(c['area_mm2'] for c in cells.values()), meta['K_area_mm2'], places=6)
+        self.assertAlmostEqual(sum(c['W'] for c in cells.values()), T.power_map(d, 'normal')['boards']['K'], places=6)
+        real = T.k_power_points
+
+        def outside(dd, case='normal'):
+            pts, spread = real(dd, case)
+            return pts + [([2000.0, 2000.0], 1.0)], spread
+        with mock.patch.object(T, 'k_power_points', outside):
+            with self.assertRaises(ValueError):
+                T.k_cells(self.copy(), 'normal')
+
+    def test_finding_04_iterations_must_converge(self):
+        with mock.patch.object(T, 'NETWORK_ROUNDS', 1, create=True):
+            with self.assertRaises(RuntimeError):
+                T._network(self.copy(), 40, 'V', 'low', 'normal', 'outside', None, 0.0, None, 0.0)
+        with mock.patch.object(T, 'SURFACE_ROUNDS', 1, create=True):
+            with self.assertRaises(RuntimeError):
+                T.surface_rise(self.copy(), 40, 'V', 'low', 30.0)
+
+    def test_finding_05_both_ends_of_a_row_read_one_board(self):
+        boards = {p['board'] for p in T.class_places(self.d, 'SN74HC14DR')}
+        self.assertEqual(boards, {'K', 'P'})
+        for sym in T.limit_classes(self.d) + T.no_limit_classes(self.d):
+            for depth in T.DEPTHS:
+                c = T.class_comparison(self.d, sym, depth)
+                for o in T.ORIENTS:
+                    self.assertEqual(c['orients'][o]['worst']['board'], c['orients'][o]['best']['board'], (sym, depth, o))
+        best = T.board_at_part(self.d, T.class_places(self.d, 'SN74HC14DR'), 40, 'V', 'low', 'high', board='P')
+        self.assertEqual(best['board'], 'P')
+
+    def test_finding_06_bleeder_note_stands_on_its_own(self):
+        with mock.patch.object(T, 'top_ten', lambda d, case='contract': [], create=True):
+            text = '\n'.join(R.item4(R.facts(self.d)))
+        self.assertIn('### Bleeder note for #57', text)
+        note = T.bleeder_note(self.d, 40, 'H')
+        self.assertEqual([x['ref'] for x in note], ['R301', 'R302', 'R303'])
+        for x in note:
+            self.assertAlmostEqual(x['body_C'], x['board_C'] + 0.071942 * 400.0, places=6)
+
+    def test_finding_07_a_site_outside_the_cells_renders(self):
+        real = T.sensitive_table
+
+        def with_gap(d, *a, **k):
+            rows = [dict(x) for x in real(d, *a, **k)]
+            for x in rows:
+                if x['function'].endswith('REF5050') and not x['function'].startswith(('OCTAVE', 'H1', 'H2', 'F')):
+                    x.update(rise_40=None, rise_120=None, cell=None)
+                    break
+            return rows
+        with mock.patch.object(T, 'sensitive_table', with_gap):
+            text = '\n'.join(R.item5(R.facts(self.d)))
+        self.assertIn('## 5.', text)
+
+    def test_finding_08_ambient_is_the_term_everywhere(self):
+        d = self.copy()
+        d['terms']['ambient_C']['value'] = 30.0
+        with mock.patch.object(T, 'load', lambda path=None: d):
+            text = R.render()
+        self.assertIsNone(re.search(r'\b40 (°C|degC)', text))
+        self.assertIn('at 30 °C ambient', text.splitlines()[0])
+        k_lo = T.term(self.d, 'ambient_C') + T.network(self.d, 40, 'H', 'low', 'contract')['rise']['K']
+        self.assertGreater(k_lo, T.term(self.d, 'hc_logic_ambient_max_C'))
+
+    def test_finding_09_check_reports_a_pin_no_longer_produced(self):
+        screen = self.copy()
+        screen['provenance']['pins'].append({'id': 'retired-pin', 'path': 'x', 'row': 'x', 'sha256': '0'})
+        self.assertIn('stored pin no longer produced retired-pin', ex.check(screen))
+
+    def test_finding_10_survey_width_decides_the_thermal_figures(self):
+        survey = self.d['inputs']['bundle_thermal_survey']
+        for ids in survey.values():
+            for i in ids:
+                self.assertTrue(ex.THERMAL_WORDS.search(i), i)
+        for sym in T.no_limit_classes(self.d) + T.limit_classes(self.d):
+            self.assertEqual(T.thermal_figures(self.d, sym), [], sym)
+        d = self.copy()
+        d['inputs']['bundle_thermal_survey']['component-ti-lm393bidr'] = ['fact-comparator-power-derating']
+        self.assertEqual(T.thermal_figures(d, 'LM393BIDR'), ['fact-comparator-power-derating'])
+
+
+class AttemptA2(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.d = T.load()
+
+    def test_low_heat_load_from_bundle_typicals(self):
+        low = T.power_map(self.d, 'low')
+        self.assertAlmostEqual(low['input_W'], 28.111, places=3)
+        self.assertAlmostEqual(low['boards']['K'], 19.412, places=3)
+        self.assertLess(abs(low['residual_W']), 1e-9)
+        facts = {x['fact'] for x in T.low_heat_rows(self.d).values()}
+        self.assertEqual(facts, {'fact-op-precision-d-quiescent-current', 'fact-op-precision-quiescent-current',
+                                 'fact-op-audio-quiescent-current', 'fact-fault-switch-t-normal-supply-current'})
+        self.assertEqual(T.all_rows(self.d)[-1]['mA'], T.case_rows(self.d, 'low')[-1]['mA'])
+
+    def test_low_heat_rejects_a_row_off_its_basis(self):
+        d = copy.deepcopy(self.d)
+        row = next(r for r in d['inputs']['rows'] if r['label'] == 'OPA4196IDR')
+        row['mA'][0] += 1.0
+        with self.assertRaises(ValueError):
+            T.low_heat_rows(d)
+
+    def test_words(self):
+        self.assertEqual(T.word(85.0, 85.0, 70.0), 'MET ON PAPER')
+        self.assertEqual(T.word(85.0, 95.0, 85.1), 'EXCEEDED ON PAPER')
+        self.assertEqual(T.word(85.0, 95.0, 80.0), 'NOT SHOWN')
+        self.assertEqual(T.word(None, 50.0, 40.0), 'NOT SHOWN')
+
+    def test_comparison_of_record(self):
+        self.assertEqual(T.limit_classes(self.d), ['CL10A105KB8NNNC', 'SN74HC14DR', 'SN74HC74DR'])
+        for sym in ('SN74HC00DR', 'CD74HC221M96'):
+            self.assertIn(sym, T.no_limit_classes(self.d))
+            self.assertIsNone(T.retained_limit(self.d, sym))
+        c = T.class_comparison(self.d, 'SN74HC14DR', 40)
+        self.assertEqual(c['worse'], 'H')
+        self.assertEqual(c['orients']['H']['worst']['cell'], (0, 4))
+        self.assertAlmostEqual(c['orients']['V']['worst']['T_C'], 88.9, delta=0.05)
+        self.assertAlmostEqual(c['orients']['H']['worst']['T_C'], 94.8, delta=0.05)
+        lo, hi = T.depth_shift_K(self.d, T.limit_classes(self.d))
+        self.assertLess(hi, 5.0)
+
+    def test_capacitor_places_come_from_the_partition_report(self):
+        places = T.class_places(self.d, 'CL10A105KB8NNNC')
+        self.assertEqual([p['ref'] for p in places], ['C302', 'C304', 'C306'])
+        self.assertTrue(all(p['board'] == 'K' for p in places))
+
+    def test_plan_heat_figures_are_read_by_unit(self):
+        line = '| Heat in a closed case | 12.5 W at one load and 40 W at another, 3 K and 2 mm | src | #64 NOT RUN |'
+        self.assertEqual(ex.plan_heat_W(line), [12.5, 40.0])
+
+    def test_final_places_floorplan_alone_without_the_key(self):
+        placements = [{'ref': 'U1', 'x_mm': 1.0, 'y_mm': 2.0, 'side': 'F.Cu'},
+                      {'ref': 'U2', 'x_mm': 3.0, 'y_mm': 4.0, 'side': 'B.Cu'}]
+        places, source = ex.final_places({'links': []}, placements)
+        self.assertEqual(source, {'read': 'floorplan', 'moved': 0, 'listed': 0})
+        self.assertEqual(places['U1'], {'xy': [1.0, 2.0], 'side': 'F.Cu'})
+
+    def test_final_places_from_the_displaced_rows(self):
+        placements = [{'ref': 'U1', 'x_mm': 1.0, 'y_mm': 2.0, 'side': 'F.Cu'},
+                      {'ref': 'U2', 'x_mm': 3.0, 'y_mm': 4.0, 'side': 'B.Cu'},
+                      {'ref': 'U3', 'x_mm': 5.0, 'y_mm': 6.0, 'side': 'B.Cu'}]
+        record = {'displaced_k_ic_packages': [
+            {'ref': 'U1', 'symbol': 'X', 'old': {'xy': [1.0, 2.0], 'side': 'F.Cu'},
+             'new': {'xy': [11.0, 12.0], 'side': 'B.Cu'}, 'moved_mm': 14.1, 'step': 'radius'},
+            {'ref': 'U2', 'symbol': 'X', 'old': {'xy': [3.0, 4.0], 'side': 'B.Cu'}, 'new': None,
+             'moved_mm': None, 'step': 'none'}]}
+        places, source = ex.final_places(record, placements)
+        self.assertEqual(source, {'read': 'gate record displaced_k_ic_packages', 'moved': 1, 'listed': 2})
+        self.assertEqual(places['U1'], {'xy': [11.0, 12.0], 'side': 'B.Cu'})
+        self.assertEqual(places['U2'], {'xy': [3.0, 4.0], 'side': 'B.Cu'})
+        self.assertEqual(places['U3'], {'xy': [5.0, 6.0], 'side': 'B.Cu'})
+
+    def test_link_figures_from_a_parsed_record(self):
+        record = {'summary': {'links': 3, 'placed': 2, 'slots': 2}, 'links': [
+            {'placed': True, 'direction': '+y', 'loop_mm': 10.0, 'cable_length_mm': 40.0,
+             'geometry': {'slot': [0, 0, 8, 1.5], 'front_tail': [0, 0, 7.5, 5]}},
+            {'placed': True, 'direction': '-x', 'loop_mm': 2.0, 'cable_length_mm': 30.0,
+             'geometry': {'slot': [0, 0, 1.5, 4], 'front_tail': [0, 0, 5, 3.5]}},
+            {'placed': False, 'direction': '+y', 'loop_mm': 99.0, 'cable_length_mm': 99.0,
+             'geometry': {'slot': [0, 0, 99, 99], 'front_tail': [0, 0, 99, 99]}}]}
+        self.assertEqual(ex.link_figures(record), {'links': 3, 'placed': 2, 'slots': 2, 'slot_area_mm2': 18.0,
+                                                   'loop_plan_area_mm2': 82.0, 'cable_plan_area_mm2': 405.0})
+
+    def test_place_source_is_printed(self):
+        self.assertEqual(self.d['inputs']['place_source']['read'], 'floorplan')
+        self.assertIn('Places: the floorplan', R.README.read_text())
+
+    def test_options_are_listed_and_none_selected(self):
+        text = R.README.read_text()
+        self.assertIn('| Case on feet, lying |', text)
+        self.assertIn('none is selected', text)
+        self.assertNotIn('selected option', text)
 
 
 if __name__ == '__main__':
