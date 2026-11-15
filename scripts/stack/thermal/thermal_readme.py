@@ -11,52 +11,68 @@ import thermal as T
 
 README = T.ROOT / 'design/stack/thermal/README.md'
 LIMIT_FACTS = {
-    'AS3340D': ('none', 'AS3340D (ALFA RPAR): theta-JA, Tj max and operating range; the bundle keeps only the advice to supply VEE at -5 V against self-heating'),
-    'OPA4197IPWR': ('none', 'OPA4197IPWR (TI): theta-JA (PW) and Tj max'),
-    'OPA4197IDR': ('none', 'OPA4197IDR (TI): theta-JA (D) and Tj max'),
-    'LF398M_NOPB': ('none', 'LF398M/NOPB (TI): theta-JA (D) and Tj max'),
-    'LM13700M_NOPB': ('none', 'LM13700M/NOPB (TI): theta-JA (D) and Tj max'),
-    'NOISE2': ('none', 'NOISE2 (Electric Druid, PDIP-8): theta-JA, Tj max and operating range'),
-    'REF5050AIDR': ('none', 'REF5050AIDR (TI): theta-JA (D), Tj max and the drift curve over 25 to 85 degC'),
-    'OPA4196IDR': ('none', 'OPA4196IDR (TI): theta-JA (D) and Tj max'),
-    'TMUX7412FRRPR': ('none', 'TMUX7412FRRPR (TI): theta-JA (RRP) and Tj max; the thermal pad is tied to AGND'),
-    'LM393BIDR': ('none', 'LM393BIDR (TI): theta-JA (D) and Tj max'),
+    'AS3340D': 'AS3340D (ALFA RPAR): theta-JA, Tj max and operating range; the bundle keeps only the advice to supply VEE at -5 V against self-heating',
+    'OPA4197IPWR': 'OPA4197IPWR (TI): theta-JA (PW) and Tj max',
+    'OPA4197IDR': 'OPA4197IDR (TI): theta-JA (D) and Tj max',
+    'LF398M_NOPB': 'LF398M/NOPB (TI): theta-JA (D) and Tj max',
+    'LM13700M_NOPB': 'LM13700M/NOPB (TI): theta-JA (D) and Tj max',
+    'NOISE2': 'NOISE2 (Electric Druid, PDIP-8): theta-JA and Tj max',
+    'REF5050AIDR': 'REF5050AIDR (TI): theta-JA (D), Tj max and the drift curve over 25 to 85 °C',
+    'OPA4196IDR': 'OPA4196IDR (TI): theta-JA (D) and Tj max',
+    'TMUX7412FRRPR': 'TMUX7412FRRPR (TI): theta-JA (RRP) and Tj max; the thermal pad is tied to AGND',
+    'LM393BIDR': 'LM393BIDR (TI): theta-JA (D) and Tj max',
+    'SN74HC00DR': 'SN74HC00DR (TI): theta-JA (D) and Tj max',
+    'CD74HC221M96': 'CD74HC221M96 (TI): theta-JA (D) and Tj max',
+    'TMUX6112PWR': 'TMUX6112PWR (TI): theta-JA (PW) and Tj max',
+    'BCM847BS': 'BCM847BS,115 (Nexperia): Rth(j-a) and Tj max',
+    'SN74HC14DR': 'SN74HC14DR (TI): theta-JA (D) and Tj max',
+    'SN74HC74DR': 'SN74HC74DR (TI): theta-JA (D) and Tj max',
+    'CL10A105KB8NNNC': 'CL10A105KB8NNNC (Samsung): none beyond the range for a capacitor of this duty',
 }
+ORIENT_NAME = {'V': 'standing', 'H': 'lying panel-up'}
 
 
 def f(x, n=1):
     return '-' if x is None else f'{x:.{n}f}'
 
 
-def rng(a, b, n=1):
-    lo, hi = min(a, b), max(a, b)
-    return f'{lo:.{n}f} to {hi:.{n}f}'
+def rng(*xs, n=1):
+    return f'{min(xs):.{n}f} to {max(xs):.{n}f}'
 
 
-def facts():
-    d = T.load()
-    r = {'d': d}
-    r['normal'] = T.power_map(d, 'normal')
-    r['contract'] = T.power_map(d, 'contract')
+def srng(*xs, n=1):
+    return f'{min(xs):+.{n}f} to {max(xs):+.{n}f}'
+
+
+def deg(x, n=0):
+    return f'{x:.{n}f} °C'
+
+
+def facts(d=None):
+    d = T.load() if d is None else d
+    r = {'d': d, 'amb': T.term(d, 'ambient_C')}
+    for case in T.CASES:
+        r[case] = T.power_map(d, case)
     r['cases_W'] = T.ledger_case_W(d)
     r['outputs'] = T.output_count(d)
     r['areas'] = {k: T.outer_area_m2(d, k) for k in (40, 34, 120)}
-    r['plan_h'] = T.plan_h_range(d)
-    nets = {}
-    for depth in (40, 120):
-        for o in ('V', 'H'):
-            for lv in ('high', 'low'):
-                for case in ('normal', 'contract'):
-                    nets[(depth, o, lv, case)] = T.network(d, depth, o, lv, case)
-    r['nets'] = nets
-    surf = {}
+    nets, surf = {}, {}
     for depth in (40, 34, 120):
-        for o in ('V', 'H'):
+        for o in T.ORIENTS:
             for lv in ('high', 'low'):
-                for case in ('normal', 'contract'):
+                for case in T.CASES:
                     surf[(depth, o, lv, case)] = T.surface_rise(d, depth, o, lv, r[case]['internal_W'])
-    r['surf'] = surf
+                    if depth != 34:
+                        nets[(depth, o, lv, case)] = T.network(d, depth, o, lv, case)
+    r['nets'], r['surf'] = nets, surf
+    r['cmp'] = T.comparison(d)
+    r['limit_classes'] = T.limit_classes(d)
     return r
+
+
+def end(r, depth, o, which, key='nets'):
+    case, level = T.ENDS[which]
+    return r[key][(depth, o, level, case)]
 
 
 def air_rise(net):
@@ -65,126 +81,181 @@ def air_rise(net):
     return sum(g['air_rise'] * g['area_cm2'] for g in gaps) / area - net['rise']['shell']
 
 
+def headline(r):
+    lim = r['limit_classes']
+    cmp_ = r['cmp']
+    words = {depth: {cmp_[(s, depth)]['word'] for s in lim} for depth in T.DEPTHS}
+    if all(w == {'NOT SHOWN'} for w in words.values()):
+        state = 'is NOT SHOWN met in either case depth'
+    elif all(w == {'MET ON PAPER'} for w in words.values()):
+        state = 'is MET ON PAPER in both case depths'
+    elif all(w == {'EXCEEDED ON PAPER'} for w in words.values()):
+        state = 'is EXCEEDED ON PAPER in both case depths'
+    else:
+        state = 'reads ' + ' and '.join(f"{', '.join(sorted(words[k]))} at {k} mm" for k in T.DEPTHS)
+    spans = {}
+    for o in T.ORIENTS:
+        worst = max(cmp_[(s, 40)]['orients'][o]['worst']['T_C'] for s in lim)
+        best = max(cmp_[(s, 40)]['orients'][o]['best']['T_C'] for s in lim)
+        spans[o] = (best, worst)
+    shift = T.depth_shift_K(r['d'], lim)
+    limits = sorted({cmp_[(s, 40)]['limit']['limit_C'] for s in lim})
+    return state, spans, shift, limits
+
+
+def header(r):
+    state, spans, shift, limits = headline(r)
+    lim_text = ' and '.join(f'{x:.0f} °C' for x in limits)
+    return [f"# ST-05 thermal paper screen: at {r['amb']:g} °C ambient in a closed case the {lim_text} limit of the HC logic and "
+            f"X5R parts on K {state} (board at the part {rng(*spans['H'], n=0)} °C lying and {rng(*spans['V'], n=0)} °C standing "
+            f"at 40 mm); the 40 mm case moves K by {srng(*shift, n=0)} K against 120 mm; #64 measures it", '',
+            f"State: **{r['d']['status']}**. Generated by `python3 scripts/stack/thermal/thermal_readme.py` from `thermal-screen.json`; "
+            f"do not edit by hand. A recomputable estimate on paper for the direct board stack at the {r['amb']:g} °C ambient corner "
+            'of E19. Every board is an unvalidated draft; nothing is measured, nothing is selected, and #64 (the physical thermal '
+            'test) stays NOT RUN. The result is a recorded risk of the instrument in a closed case and no check of the gate (DS-94). '
+            'Sources are pinned by the object or row a term reads. Run `extract_inputs.py --check` to see whether a pinned source '
+            'has changed.', '']
+
+
+def same(a, b):
+    text = f'{a:g}'
+    places = len(text.split('.')[1]) if '.' in text else 0
+    return round(b, places) == a
+
+
+def plan_check(r):
+    d = r['d']
+    plan = T.term(d, 'plan_heat_W')
+    n, c = r['normal'], r['contract']
+    verdict = ['reproduced' if same(p, x['input_W']) else 'differs' for p, x in zip(plan, (n, c))]
+    head = 'the screen reproduces both' if verdict == ['reproduced', 'reproduced'] else \
+        'the screen reads ' + ' and '.join(f"{f(x['input_W'], 2)} W" for x in (n, c))
+    return [f"## The plan page's heat row reads {plan[0]:g} W and {plan[1]:g} W; {head}", '',
+            'Attempt a1 reproduced the 31 % and the two rise ranges of the earlier row by the plan\'s own method and corrected '
+            'its 35.4 W, which is the ledger\'s fault case with a shorted S&H resistor, to the normal planning load (DS-92); the '
+            'corrected row states neither, and this screen no longer reads them.', '',
+            '| Figure | Plan page | This screen | Reading |', '| --- | --- | --- | --- |',
+            f"| Normal planning load | {plan[0]:g} W | {f(n['input_W'], 3)} W input, {f(n['internal_W'], 2)} W inside | {verdict[0]} |",
+            f"| Supply contract | {plan[1]:g} W | {f(c['input_W'], 3)} W input, {f(c['internal_W'], 2)} W inside | {verdict[1]} |", '']
+
+
 def item1(r):
     d = r['d']
-    n, c = r['normal'], r['contract']
-    planes = d['inputs']['planes_40']
-    areas = T.board_areas_cm2(planes)
+    n, c, lw = r['normal'], r['contract'], r['low']
+    areas = T.board_areas_cm2(d['inputs']['planes_40'])
     k_share = n['boards']['K'] / n['internal_W']
-    lines = [f"## 1. The ledger puts {f(n['internal_W'], 2)} W inside the instrument at the normal planning load "
-             f"and {f(c['internal_W'], 2)} W at the continuous contract; K carries {f(100 * k_share, 0)} %; the residual is "
-             f"{f(abs(n['residual_W']), 6)} W", '',
+    lows = T.low_heat_rows(d)
+    by_fact = {}
+    rows = {x['id']: x for x in T.term(d, 'ledger_rows')}
+    for rid, x in lows.items():
+        w = T.row_power_W(d, rows[rid]['mA']) - T.row_power_W(d, x['mA'])
+        k = (x['symbol'], x['fact'])
+        by_fact[k] = by_fact.get(k, 0.0) + w
+    low_text = '; '.join(f"{sym} by {f(w, 2)} W (`{fact}`)" for (sym, fact), w in sorted(by_fact.items()))
+    lines = [f"## 1. The ledger puts {f(n['internal_W'], 2)} W inside the instrument at the normal planning load and "
+             f"{f(lw['internal_W'], 2)} W at the low-heat load; the contract's {f(c['internal_W'], 2)} W is an outer row; "
+             f"K carries {f(100 * k_share, 0)} %; the residual is {f(abs(n['residual_W']), 6)} W", '',
              f"Every ledger row and every one of the {len(d['inputs']['ic_packages'])} IC packages is assigned to the board "
-             f"that carries it in the partition (rules in `row_rules`; only the IC, NOISE2, REF and LOGIC rules are bound to "
+             'that carries it in the partition (rules in `row_rules`; only the IC, NOISE2, REF and LOGIC rules are bound to '
              f"packages, the rest are ASSUMED). {r['outputs']} outputs at 5 V into 10 kohm dissipate "
              f"{f(1000 * n['external_W'], 0)} mW outside. The bleeder residual of the ledger total, "
              f"{f(T.row_power_W(d, T.all_rows(d)[-1]['mA']), 3)} W, is the two inlet bleeders and sits on the ASSUMED inlet board. "
-             f"The supply is outside (Q6) and not in the map. All LEDs are on. The contract case spreads the excess over the "
-             f"planning map rail by rail (ASSUMED).", '',
-             '| Board | Normal planning, W | Contract, W | Board area, cm2 | Normal density, mW/cm2 | Contract density, mW/cm2 |',
+             'The supply is outside (Q6) and not in the map. All LEDs are on. The contract case spreads the excess over the '
+             'planning map rail by rail (ASSUMED) and enters no verdict.', '',
+             f"The low-heat load (DS-95) takes the typical quiescent current at 25 °C of each part whose bundle holds one, "
+             f"row by row, and lowers the two-feed total by the same current: {low_text}. It is "
+             f"{f(lw['input_W'], 2)} W input, a lower end and no prediction; no ledger file is changed. The AS3340D typical "
+             'table is at 20 °C and +15 V and is not taken.', '',
+             '| Board | Normal planning, W | Low-heat, W | Contract (outer row), W | Board area, cm2 | Normal density, mW/cm2 |',
              '| --- | --- | --- | --- | --- | --- |']
-    for b in ('K', 'JL', 'JR', 'P', 'EL', 'O1', 'O3', 'O5'):
-        wn, wc = n['boards'].get(b, 0.0), c['boards'].get(b, 0.0)
-        lines.append(f"| {b} | {f(wn, 3)} | {f(wc, 3)} | {f(areas[b], 1)} | {f(1000 * wn / areas[b], 2)} | {f(1000 * wc / areas[b], 2)} |")
-    lines += [f"| Outside: output loads | {f(n['external_W'], 3)} | {f(c['external_W'], 3)} | - | - | - |",
-              f"| Sum of the map | {f(n['internal_W'] + n['external_W'], 3)} | {f(c['internal_W'] + c['external_W'], 3)} | - | - | - |",
-              f"| Ledger input power (12/12/5 V) | {f(n['input_W'], 3)} | {f(c['input_W'], 3)} | - | - | - |",
-              f"| Residual | {f(n['residual_W'], 6)} | {f(c['residual_W'], 6)} | - | - | - |", '']
+    for b in sorted(n['boards'], key=lambda b: (-n['boards'][b], b)):
+        wn, wl, wc = n['boards'][b], lw['boards'].get(b, 0.0), c['boards'].get(b, 0.0)
+        lines.append(f"| {b} | {f(wn, 3)} | {f(wl, 3)} | {f(wc, 3)} | {f(areas[b], 1)} | {f(1000 * wn / areas[b], 2)} |")
+    lines += [f"| Outside: output loads | {f(n['external_W'], 3)} | {f(lw['external_W'], 3)} | {f(c['external_W'], 3)} | - | - |",
+              f"| Ledger input power (12/12/5 V) | {f(n['input_W'], 3)} | {f(lw['input_W'], 3)} | {f(c['input_W'], 3)} | - | - |",
+              f"| Residual | {f(n['residual_W'], 6)} | {f(lw['residual_W'], 6)} | {f(c['residual_W'], 6)} | - | - |", '']
     by_rule = ', '.join(f"{k} {f(v, 2)} W" for k, v in sorted(n['rules_W'].items(), key=lambda x: -x[1]))
     lines += [f"Input power by rule at the normal load: {by_rule}. The ASSUMED rules carry "
               f"{f(sum(v for k, v in n['rules_W'].items() if k not in ('IC', 'NOISE2', 'REF', 'LOGIC')), 2)} W; moving all of it "
-              f"between K and the front boards is the widest error of the map.", '',
+              'between K and the front boards is the widest error of the map.', '',
               'Not in the ledger and not added: the SUB divider and gating on +5 V (UNSOURCED until ST-11 refreshes the ledger), '
               'the lower count of octave receivers without the OSC2 and OSC4 selectors (not credited, so the map stays high), '
               f"the I2R of the 18 posts (at most {f(1000 * T.post_i2r_bound_W(d), 1)} mW with every contract rail current through "
               'one 0.5 mOhm joint), and the flat links (at most 0.049 A on a ground, DS-62; conductor resistance UNSOURCED). '
               'The ledger charges magnitude LEDs and outputs on both analogue rails at once, which is high by up to a factor of two '
               'for those rows. The ledger names OPA4197IDR where the netlist has OPA4197IPWR in '
-              f"{len({k[0][0] for k in T.symbol_mismatches(d)})} instances; same die and allowance, so the screen pools the two packages.", '']
-    return lines
-
-
-def plan_check(r):
-    d = r['d']
-    n = r['normal']
-    cases = r['cases_W']
-    a = r['areas']
-    drop34 = 1 - a[34] / a[120]
-    drop40 = 1 - a[40] / a[120]
-    hlo, hhi = r['plan_h']
-    lines = [f"## The plan page's 41.1 W is reproduced; its 35.4 W is corrected to {f(n['input_W'], 2)} W input "
-             f"({f(n['internal_W'], 2)} W inside); its 31 % and its rise ranges are reproduced by its own method", '',
-             f"35.4 W is not the normal planning load of the ledger: {f(cases['two_feed_total_mA'], 2)} W. It equals, to "
-             f"{f(abs(cases['conditional_SH_short_resistor_case_mA'] - 35.4), 2)} W, the conditional S&H short-resistor case "
-             f"({f(cases['conditional_SH_short_resistor_case_mA'], 2)} W), a fault case. 41.1 W is the contract at 12/12/5 V. "
-             f"Both are input power: {f(1000 * n['external_W'], 0)} mW leaves through the outputs. The plan's rise ranges follow "
-             f"from one uniform coefficient of {f(hlo, 2)} to {f(hhi, 2)} W/m2K over the whole outer surface (back-solved; the "
-             'plan names none). That method has no orientation, no resting face and no inside; item 2 replaces it.', '',
-             '| Figure | Plan page | This screen | Verdict |', '| --- | --- | --- | --- |',
-             f"| Normal planning load | 35.4 W | {f(n['input_W'], 2)} W input, {f(n['internal_W'], 2)} W inside | corrected: 35.4 W is the S&H short case |",
-             f"| Continuous contract | 41.1 W | {f(r['contract']['input_W'], 2)} W input, {f(r['contract']['internal_W'], 2)} W inside | reproduced |",
-             f"| Outer surface, 34 mm against 120 mm | -31 % | {f(-100 * drop34, 1)} % (40 mm: {f(-100 * drop40, 1)} %) | reproduced at a 2 mm wall |",
-             f"| Rise, 34 mm | 17 to 22 K | {rng(T.plan_method(d, 34, 35.4)[0], T.plan_method(d, 34, 41.1)[1])} K by the plan's method at 35.4 to 41.1 W | reproduced |",
-             f"| Rise, 120 mm | 12 to 15 K | {rng(T.plan_method(d, 120, 35.4)[0], T.plan_method(d, 120, 41.1)[1])} K by the plan's method at 35.4 to 41.1 W | reproduced |",
-             f"| Rise, 34 mm, this screen's surface model | - | {rng(r['surf'][(34, 'V', 'high', 'normal')], r['surf'][(34, 'H', 'low', 'contract')])} K | corrected: orientation and the resting face widen the range |",
-             f"| Rise, 120 mm, this screen's surface model | - | {rng(r['surf'][(120, 'V', 'high', 'normal')], r['surf'][(120, 'H', 'low', 'contract')])} K | corrected, as above |", '']
+              f"{len({k[0][0] for k in T.symbol_mismatches(d)})} instances; same die and allowance, so the map pools the two packages.", '']
     return lines
 
 
 def item2(r):
     d = r['d']
-    s, nets = r['surf'], r['nets']
-    a = r['areas']
-    k40 = (nets[(40, 'H', 'low', 'contract')]['rise']['K'], nets[(40, 'V', 'high', 'normal')]['rise']['K'])
-    lines = [f"## 2. At 40 degC ambient the 40 mm case's surface rises {rng(s[(40, 'V', 'high', 'normal')], s[(40, 'H', 'low', 'contract')])} K "
-             f"against {rng(s[(120, 'V', 'high', 'normal')], s[(120, 'H', 'low', 'contract')])} K for 120 mm; lying panel-up is the worst "
-             f"orientation; K's mean reaches {f(40 + min(k40), 0)} to {f(40 + max(k40), 0)} degC closed", '',
+    s, nets, a, amb = r['surf'], r['nets'], r['areas'], r['amb']
+
+    def span(depth, o, key='surf'):
+        return end(r, depth, o, 'best', key), end(r, depth, o, 'worst', key)
+    worse = max(T.ORIENTS, key=lambda o: (s[(40, o, 'low', 'normal')], o))
+    k40 = [amb + end(r, 40, o, w)['rise']['K'] for o in T.ORIENTS for w in T.ENDS]
+    lines = [f"## 2. At {amb:g} °C ambient the 40 mm case's surface rises {rng(*[x for o in T.ORIENTS for x in span(40, o)])} K "
+             f"against {rng(*[x for o in T.ORIENTS for x in span(120, o)])} K for 120 mm; {ORIENT_NAME[worse]} is the worse "
+             f"orientation; K's mean reads {rng(min(k40), max(k40), n=0)} °C closed at 40 mm", '',
              f"Outer box: the internal {d['inputs']['enclosure_internal_xy_mm']} mm plus a {T.term(d, 'wall_mm')} mm wall (ASSUMED, 1 to 3 mm) "
              f"at the sides and rear; the depth includes the {T.term(d, 'panel_thickness_mm')} mm panel. Coefficients (all ASSUMED): "
              f"vertical faces {T.term(d, 'h_conv_vertical')} W/m2K, upward faces {T.term(d, 'h_conv_up')} W/m2K, the face resting "
-             f"on a table 0, finish emissivity {T.term(d, 'eps_case')}, radiation to surroundings at ambient. Each range pairs the "
-             'high coefficients with the normal load and the low ones with the contract. Standing (V): panel vertical, base face '
-             'resting. Lying (H): panel horizontal facing up, rear wall resting. Inside: the network of item 3. The 34 mm row is '
-             f"surface only: the stack does not fit it ({f(d['inputs']['stack']['enclosure_depth_cases'][1]['rear_part_clearance_mm'], 1)} mm rear clearance).", '',
-             '| Case | Outer area, m2 | Surface rise, normal, K | Surface rise, contract, K | Internal air above surface, K | K mean rise above ambient, K | Front board hottest (JR) above ambient, K |',
+             f"on a table 0, finish emissivity {T.term(d, 'eps_case')}, radiation to surroundings at ambient. Each range runs from "
+             'the best end (low-heat load, high coefficients) to the worst end (planning load, low coefficients); the contract '
+             'column is the outer row at the low coefficients. Standing: panel vertical, base face resting. Lying: panel horizontal '
+             'facing up, rear wall resting. Inside: the network of item 3. The 34 mm row is surface only: the stack does not fit it '
+             f"({f(d['inputs']['stack']['enclosure_depth_cases'][1]['rear_part_clearance_mm'], 1)} mm rear clearance; DS-17).", '',
+             '| Case | Outer area, m2 | Surface rise, K | Surface rise, contract, K | Internal air above surface, K | K mean rise above ambient, K | JR rise above ambient, K |',
              '| --- | --- | --- | --- | --- | --- | --- |']
     for depth in (40, 34, 120):
-        for o in ('V', 'H'):
-            name = f"{depth} mm, {'standing' if o == 'V' else 'lying panel-up'}, closed, supply outside"
-            sn = rng(s[(depth, o, 'high', 'normal')], s[(depth, o, 'low', 'normal')])
-            sc = rng(s[(depth, o, 'high', 'contract')], s[(depth, o, 'low', 'contract')])
+        for o in T.ORIENTS:
+            name = f"{depth} mm, {ORIENT_NAME[o]}, closed, supply outside"
+            sc = f(s[(depth, o, 'low', 'contract')])
             if depth == 34:
-                lines.append(f"| {name} | {f(a[depth], 4)} | {sn} | {sc} | not applicable: the stack does not fit | - | - |")
+                lines.append(f"| {name} | {f(a[depth], 4)} | {rng(*span(depth, o))} | {sc} | not applicable: the stack does not fit | - | - |")
                 continue
-            hi, lo = nets[(depth, o, 'high', 'normal')], nets[(depth, o, 'low', 'contract')]
-            lines.append(f"| {name} | {f(a[depth], 4)} | {sn} | {sc} | {rng(air_rise(hi), air_rise(lo))} | "
-                         f"{rng(hi['rise']['K'], lo['rise']['K'])} | {rng(hi['rise']['JR'], lo['rise']['JR'])} |")
+            b, w = end(r, depth, o, 'best'), end(r, depth, o, 'worst')
+            lines.append(f"| {name} | {f(a[depth], 4)} | {rng(*span(depth, o))} | {sc} | {rng(air_rise(b), air_rise(w))} | "
+                         f"{rng(b['rise']['K'], w['rise']['K'])} | {rng(b['rise']['JR'], w['rise']['JR'])} |")
     for label, kw in sensitivity_rows(d):
-        hi = T.network(d, 40, 'V', 'high', 'normal', **kw['hi'])
-        lo = T.network(d, 40, 'V', 'low', 'contract', **kw['lo'])
-        lines.append(f"| {label} | {f(a[40], 4)} | {f(hi['rise']['shell'])} (high coefficients) | "
-                     f"{f(lo['rise']['shell'])} (low coefficients) | {rng(air_rise(hi), air_rise(lo))} | "
-                     f"{rng(hi['rise']['K'], lo['rise']['K'])} | {rng(hi['rise']['JR'], lo['rise']['JR'])} |")
+        b = T.network(d, 40, 'V', T.ENDS['best'][1], T.ENDS['best'][0], **kw['best'])
+        w = T.network(d, 40, 'V', T.ENDS['worst'][1], T.ENDS['worst'][0], **kw['worst'])
+        lines.append(f"| {label} | {f(a[40], 4)} | {rng(b['rise']['shell'], w['rise']['shell'])} | - | "
+                     f"{rng(air_rise(b), air_rise(w))} | {rng(b['rise']['K'], w['rise']['K'])} | {rng(b['rise']['JR'], w['rise']['JR'])} |")
     w1, w3 = T.outer_area_m2(d, 40, 1.0), T.outer_area_m2(d, 40, 3.0)
     lines += ['', f"The wall allowance moves the 40 mm area from {f(w1, 4)} to {f(w3, 4)} m2 ({f(100 * (w3 / w1 - 1), 1)} %). "
-              'A vented row is an upper bound of the benefit: the air is taken to leave at the area-mean board temperature. '
               'The supply-inside rows add the supply loss at the shell only; no pocket for a supply exists in the 40 mm stack '
-              '(2.8 mm behind K), so a supply inside needs a deeper case or a side pocket (Q6, #57).', '']
+              f"({f(rear_gap_mm(d), 1)} mm behind K's rear parts), so a supply inside needs a deeper case or a side "
+              'pocket (Q6, #57).', '']
     return lines
+
+
+def rear_gap_mm(d):
+    return T.term(d, 'depth_cases_mm')[0] + d['inputs']['stack']['K_rear_parts_z_mm']
 
 
 def sensitivity_rows(d):
     e_lo, e_hi = T.lo_hi(d, 'supply_efficiency')
-    v_lo, v_hi = T.lo_hi(d, 'vent_area_cm2')
     bare = T.term(d, 'eps_bare_metal')
     return [
         (f"40 mm standing, supply inside, efficiency {e_hi} to {e_lo}",
-         {'hi': {'supply': 'inside', 'eta': e_hi}, 'lo': {'supply': 'inside', 'eta': e_lo}}),
-        (f"40 mm standing, vented, {v_hi} to {v_lo} cm2 per vent (upper bound of the benefit)",
-         {'hi': {'vent_cm2': v_hi}, 'lo': {'vent_cm2': v_lo}}),
+         {'best': {'supply': 'inside', 'eta': e_hi}, 'worst': {'supply': 'inside', 'eta': e_lo}}),
         (f"40 mm standing, bare metal inside and out (emissivity {bare})",
-         {'hi': {'eps_override': bare}, 'lo': {'eps_override': bare}}),
+         {'best': {'eps_override': bare}, 'worst': {'eps_override': bare}}),
     ]
+
+
+def radiation_shares(d, net, pairs):
+    k_air = T.term(d, 'air')['k']
+    out = []
+    for g in net['gaps']:
+        if not any(p['upper'] == g['upper'] and p['lower'] == g['lower'] and p['gap_mm'] == g['gap_mm'] for p in pairs):
+            continue
+        conv = g['Nu'] * k_air / (g['gap_mm'] / 1000.0)
+        out.append((g['h'] - conv) / g['h'])
+    return out
 
 
 def item3(r):
@@ -192,245 +263,301 @@ def item3(r):
     pairs40 = T.facing_pairs(d, 40)
     n = r['normal']
     areas = T.board_areas_cm2(d['inputs']['planes_40'])
-    hi = r['nets'][(40, 'V', 'high', 'contract')]
-    hh = r['nets'][(40, 'H', 'high', 'contract')]
-    lo = r['nets'][(40, 'V', 'low', 'contract')]
-    rec = T.term(d, 'links_record')
-    lines = []
+    rec = T.term(d, 'link_figures')
     big = [p for p in pairs40 if p['area_mm2'] >= 1000]
-    nu_max = max(g['Nu'] for g in hi['gaps'] + hh['gaps'])
-    lines += [f"## 3. Every gap of the 40 mm stack is conduction-dominated (Nu 1.0 to {f(nu_max, 2)}); radiation carries most of the heat between facing boards, and the slots and loops change no bound", '',
-              'Gaps from `candidate.planes` and `candidate.stack`: panel rear at -2.0 mm, EL -4.4/-4.8, JL and JR -10.0/-11.6, '
-              'P -12.0/-13.6, adapters -16.0/-17.6, K -30.6/-32.2, rear wall -40. Densities are board totals at the normal load over '
-              'the board area. Nu runs from 1 (conduction only, ASSUMED lower bound) to the ASSUMED enclosed-layer correlations at the '
-              'contract temperatures; h adds the plate-to-plate radiation (emissivity 0.80 to 0.95).', '',
-              '| Facing pair (front, rear) | Gap, mm | Facing area, cm2 | Density, front member, mW/cm2 | Density, rear member, mW/cm2 | Nu standing | Nu lying | h, W/m2K |',
-              '| --- | --- | --- | --- | --- | --- | --- | --- |']
+    ends = [end(r, 40, o, w) for o in T.ORIENTS for w in T.ENDS]
+    nus = [g['Nu'] for net in ends for g in net['gaps']]
+    shares = [x for net in ends for x in radiation_shares(d, net, big)]
+    k_fr = sum(p['area_mm2'] for p in pairs40 if p['lower'] == 'K' and p['upper'] != 'shell') / 100
+    slot_pct = 100 * rec['slot_area_mm2'] / (100 * k_fr)
+    loop_pct = 100 * rec['loop_plan_area_mm2'] / (100 * k_fr)
+    lines = [f"## 3. Every gap of the 40 mm stack has Nu {f(min(nus), 2)} to {f(max(nus), 2)}; radiation carries "
+             f"{rng(100 * min(shares), 100 * max(shares), n=0)} % of the heat across the facing pairs of 10 cm2 or more; the slots cover "
+             f"{f(slot_pct, 1)} % and the cable loops at most {f(loop_pct, 1)} % of where front boards face K", '',
+             'Gaps from `candidate.planes` and `candidate.stack`: panel rear at -2.0 mm, EL -4.4/-4.8, JL and JR -10.0/-11.6, '
+             'P -12.0/-13.6, adapters -16.0/-17.6, K -30.6/-32.2, rear wall -40. Densities are board totals at the normal load over '
+             'the board area. Nu runs from 1 (conduction only, ASSUMED lower bound) to the ASSUMED enclosed-layer correlations at the '
+             'best end; h adds the plate-to-plate radiation (emissivity 0.80 to 0.95).', '',
+             '| Facing pair (front, rear) | Gap, mm | Facing area, cm2 | Density, front member, mW/cm2 | Density, rear member, mW/cm2 | Nu standing, best end | Nu lying, best end | h, W/m2K |',
+             '| --- | --- | --- | --- | --- | --- | --- | --- |']
 
     def dens(b):
         return '0 (case)' if b == 'shell' else f(1000 * n['boards'].get(b, 0.0) / areas[b], 2)
 
     def find(net, p):
         return next(g for g in net['gaps'] if g['upper'] == p['upper'] and g['lower'] == p['lower'] and g['gap_mm'] == p['gap_mm'])
+    bv, bh = end(r, 40, 'V', 'best'), end(r, 40, 'H', 'best')
+    wv = end(r, 40, 'V', 'worst')
     for p in big:
         name = f"{'panel' if p['upper'] == 'shell' else p['upper']} / {'rear wall' if p['lower'] == 'shell' else p['lower']}"
-        gv, gh, gl = find(hi, p), find(hh, p), find(lo, p)
+        gv, gh, gl = find(bv, p), find(bh, p), find(wv, p)
         lines.append(f"| {name} | {f(p['gap_mm'], 1)} | {f(p['area_mm2'] / 100, 1)} | {dens(p['upper'])} | {dens(p['lower'])} | "
                      f"{f(gv['Nu'], 2)} | {f(gh['Nu'], 2)} | {rng(gl['h'], max(gv['h'], gh['h']))} |")
     small = sum(p['area_mm2'] for p in pairs40 if p['area_mm2'] < 1000) / 100
-    k_fr = sum(p['area_mm2'] for p in pairs40 if p['lower'] == 'K' and p['upper'] != 'shell') / 100
     lines += ['', f"Pairs below 10 cm2 (adapters, P over the adapters, EL over K's edge) total {f(small, 1)} cm2 and are in the network. "
-              f"As of the record of the room study the stack has {rec['placed']} of {rec['links']} links placed, {rec['slots']} slots "
-              f"in K of {f(rec['slot_area_mm2'] / 100, 1)} cm2 in all, and cable loops of at most {f(rec['loop_plan_area_mm2'] / 100, 1)} cm2 "
-              f"in plan. The slots are {f(100 * rec['slot_area_mm2'] / (100 * k_fr), 1)} % of the {f(k_fr, 0)} cm2 where front boards face K "
-              'and are mostly filled by the cable; they add no credited air path. The loops are at most '
-              f"{f(100 * rec['loop_plan_area_mm2'] / (100 * k_fr), 1)} % of that area: as a radiation shield they lower h by at most that "
-              'fraction where they lie, and they cannot drive a gap below conduction except where cable replaces air. The screen '
-              'carries them as this bound, not in the network. No airflow is claimed: the vented rows of item 2 are a bound.', '']
+              f"The gate record of the room study holds {rec['placed']} of {rec['links']} links placed, {rec['slots']} slots in K of "
+              f"{f(rec['slot_area_mm2'] / 100, 1)} cm2 in all, cable loops of at most {f(rec['loop_plan_area_mm2'] / 100, 1)} cm2 and "
+              f"cable of {f(rec['cable_plan_area_mm2'] / 100, 1)} cm2 in plan (read by extraction, pin `link-gate-figures`). The slots "
+              f"are mostly filled by the cable and add no credited air path. The loops are at most {f(loop_pct, 1)} % of the "
+              f"{f(k_fr, 0)} cm2 where front boards face K: as a radiation shield they lower h by at most that fraction where they "
+              'lie, and they cannot drive a gap below conduction except where cable replaces air. The screen carries them as this '
+              'bound, not in the network. No airflow is claimed: the vented rows of item 6 are a bound.', '']
     return lines
 
 
-def power_curve_W(curve, t):
-    frac = (curve['T_zero_C'] - t) / (curve['T_zero_C'] - curve['T_full_C'])
-    return curve['P70_W'] * min(1.0, max(0.0, frac))
+def place_text(d, x):
+    where = x['board'] if x['cell'] is None else f"K {T.cell_name(d, x['cell'])}"
+    lat = '' if x['lateral_K'] is None else f" ({x['lateral_K'] + 0.0 if abs(x['lateral_K']) >= 0.05 else 0.0:+.1f} K lateral)"
+    return f"{x['ref']}, {where}{lat}"
+
+
+def comparison_rows(r, symbols):
+    d = r['d']
+    rows = []
+    for s in symbols:
+        for depth in T.DEPTHS:
+            c = r['cmp'][(s, depth)]
+            lim = 'NO LIMIT RETAINED' if c['limit'] is None else f"{c['limit']['limit_C']:.0f} °C (`{c['limit']['fact_id']}`)"
+            o = c['orients']
+            rows.append(f"| {s} | {c['places']} | {depth} mm | {lim} | "
+                        f"{f(o['V']['best']['T_C'])} to {f(o['V']['worst']['T_C'])} | {o['V']['word']} | "
+                        f"{f(o['H']['best']['T_C'])} to {f(o['H']['worst']['T_C'])} | {o['H']['word']} | "
+                        f"{place_text(d, o[c['worse']]['worst'])} | **{c['word']}** |")
+    return rows
+
+
+def bleeder_lines(r):
+    d = r['d']
+    rth = T.term(d, 'bleeder_rth_K_per_W')
+    mw = T.term(d, 'bleeder_mW')
+    lim = T.term(d, 'solder_joint_limit_C')
+    region = T.term(d, 'ds96_bleeder_region_mm')
+    notes = {(depth, o): T.bleeder_note(d, depth, o) for depth in T.DEPTHS for o in T.ORIENTS}
+    allb = [x for v in notes.values() for x in v]
+    worst = max(allb, key=lambda x: x['body_C'])
+    lines = [f"### Bleeder note for #57: at the worst end the bleeder body reads {rng(min(x['body_C'] for x in allb), max(x['body_C'] for x in allb), n=0)} °C, "
+             f"against the {lim:.0f} °C solder joint; the board at its places allows {rng(min(x['allowed_mW'] for x in allb), max(x['allowed_mW'] for x in allb), n=0)} mW per body against {f(mw, 1)} mW", '',
+             f"A conditional note and no verdict (DS-95, DS-96): the board at the place plus {f(mw, 1)} mW × {rth:.0f} K/W, the bundle's generic "
+             f"mounting estimate, against {lim:.0f} °C at the joint, at the planning load with the low coefficients. The places are the floorplan's "
+             f"{', '.join(x['ref'] for x in notes[(40, 'V')])} (`io-partition-exact-refs`); the part and its place are the inlet's (#57). "
+             f"DS-96: two bodies that share the current and a place outside x {region[0]:g} to {region[2]:g}, y {region[1]:g} to "
+             f"{region[3]:g} of K close this on paper; {sum(1 for x in notes[(40, 'V')] if not x['in_region'])} of "
+             f"{len(notes[(40, 'V')])} present places lie outside that box.", '',
+             '| Place | Depth, orientation | Board at the place, °C | Body, °C | Margin to the joint, K | Allowed per body, mW |',
+             '| --- | --- | --- | --- | --- | --- |']
+    for (depth, o), xs in notes.items():
+        for x in xs:
+            lines.append(f"| {x['ref']} ({x['xy'][0]:g}, {x['xy'][1]:g}) | {depth} mm, {ORIENT_NAME[o]} | {f(x['board_C'])} | "
+                         f"{f(x['body_C'])} | {x['margin_K']:+.1f} | {f(x['allowed_mW'], 0)} |")
+    return lines + ['']
 
 
 def item4(r):
     d = r['d']
-    top = T.top_ten(d, 'normal')
-    lines = []
-    rows = []
-    worst_margin = None
-    for i, c in enumerate(top, 1):
-        sym = c['symbol']
-        board = max(c['boards'], key=lambda b: (c['boards'][b], b))
-        xy_list = [p['xy'] for p in d['inputs']['ic_packages'] if p['symbol'] == sym and p['board'] == 'K']
-        if sym.startswith('RC0603FR-072K2L') or not xy_list:
-            t_low, orient, lat = max(T.local_temperature(d, b, None, 'contract') for b in c['boards'])
-            board = max(c['boards'], key=lambda b: T.local_temperature(d, b, None, 'contract')[0])
-        else:
-            best = max((T.local_temperature(d, 'K', xy, 'contract') for xy in xy_list), key=lambda x: x[0])
-            t_low, orient, lat = best
-        t_high = T.term(d, 'ambient_C') + T.network(d, 40, 'V', 'high', 'normal')['rise'].get(board, 0.0)
-        p_mw = 1000 * c['max_W']
-        if sym.startswith('RC0603FR-072K2L'):
-            rth = T.term(d, 'bleeder_rth_K_per_W')
-            tj = t_low + c['max_W'] * rth
-            curve = T.term(d, 'resistor_power_curve')
-            allowed = power_curve_W(curve, t_low)
-            margin = T.term(d, 'solder_joint_limit_C') - tj
-            worst_margin = margin if worst_margin is None else min(worst_margin, margin)
-            evid = f"400 K/W generic mounting estimate (bundle), 110 degC solder joint, power curve 0.1 W at 70 degC to 0 at 155 degC"
-            est = f"{f(tj, 0)} degC body ({f(t_high + c['max_W'] * rth, 0)} at the high coefficients)"
-            marg = f"{f(margin, 0)} K to 110 degC; power curve allows {f(1000 * allowed, 0)} mW at {f(t_low, 0)} degC against {f(p_mw, 0)} mW"
-            where = 'inlet, ASSUMED on K, position open (#57)'
-        elif sym.startswith('magnitude sense'):
-            curve = T.term(d, 'resistor_power_curve')
-            allowed = power_curve_W(curve, t_low)
-            evid = 'exact resistor UNSELECTED; series power curve only for the retained 0603 lines'
-            est = f"{f(t_low, 0)} degC local; self-rise needs theta of the exact part"
-            marg = f"power curve of the retained 0603 lines allows {f(1000 * allowed, 0)} mW against {f(p_mw, 1)} mW; exact part needed"
-            where = 'JL and JR beside each magnitude LED'
-        else:
-            evid = 'none in the bundle'
-            est = f"case >= {f(t_low, 0)} degC; Tj = case + {f(p_mw, 0)} mW x theta-JA (not retained)"
-            marg = 'missing limit: Tj max not retained'
-            where = ', '.join(f"{b} {n}" for b, n in sorted(c['boards'].items()))
-        rows.append(f"| {i} | {sym} | {where} | {f(p_mw, 1)} | {f(c['density_mW_mm2'], 2)} | {evid} | {f(t_low, 0)} ({orient}, +{f(lat, 1)} K lateral) / {f(t_high, 0)} | {est} | {marg} |")
-    k_lo = 40 + r['nets'][(40, 'H', 'low', 'contract')]['rise']['K']
-    hc = T.term(d, 'hc_logic_ambient_max_C')
-    cells, meta = T.k_cells(d, 'contract', 40, 'H', 'low')
-    hottest = max(c['rise_smooth_K'] for c in cells.values())
-    k_hot = k_lo + max(0.0, hottest)
-    k_hi = 40 + r['nets'][(40, 'V', 'high', 'normal')]['rise']['K']
-    bl_hi = T.term(d, 'solder_joint_limit_C') - (40 + r['nets'][(40, 'V', 'high', 'normal')]['rise']['K'] + T.term(d, 'bleeder_mW') / 1000 * T.term(d, 'bleeder_rth_K_per_W'))
-    verdict = f"misses its 110 degC joint by {f(-worst_margin, 0)} K at the low corner and keeps {f(bl_hi, 0)} K at the high corner" if worst_margin < 0 else f"keeps {f(worst_margin, 0)} K to its 110 degC joint"
-    lines += [f"## 4. No IC bundle holds a thermal resistance or a junction limit; the one part with a retained figure, the 2.2 kOhm bleeder, {verdict}, and K's mean at the low corner ({f(k_lo, 0)} degC) exceeds the 85 degC limit of the HC logic and X5R parts: NEEDS_DESIGN", '',
-              'The ten classes are the union of the highest dissipation per package and the highest density (per courtyard area; '
-              'body area for the 0603 parts). Dissipation is the ledger allowance per package at the normal load (full-temperature '
-              'quiescent maxima). Local temperature: 40 degC plus the board mean rise at the contract load, low coefficients, worst '
-              'orientation, plus the smoothed lateral rise of the package\'s 50 mm cell on K; the second figure is the standing '
-              'case at the normal load with high coefficients. The AS3340D figure includes its VEE driver: '
-              f"{f(1000 * T.as3340_split_W(d)['core_W'], 0)} mW in the core and {f(1000 * T.as3340_split_W(d)['vee_driver_W'], 0)} mW in the OPA4197 buffer.", '',
-              '| Rank | Part class (exact) | Where | Dissipation, mW | Density, mW/mm2 | Retained thermal figure | Local, low corner / high corner, degC | Estimated case or junction | Margin or missing limit |',
-              '| --- | --- | --- | --- | --- | --- | --- | --- | --- |'] + rows
-    lines += ['', f"Limits held by bundles for parts that dissipate little but sit on K: SN74HC14DR and SN74HC74DR recommended free-air "
-              f"{hc:.0f} degC, CL10A105KB8NNNC (X5R) {T.term(d, 'x5r_max_C'):.0f} degC, BAT54S and BAV199 500 K/W and Tj 150 degC. "
-              f"K's mean is {f(k_hi, 0)} degC at the high corner ({f(hc - k_hi, 0)} K margin) and {f(k_lo, 0)} degC at the low corner, "
-              f"{f(k_hot, 0)} degC in its hottest cell; the screen cannot show the 85 degC limits met. This is a screen result, not a "
-              'measured failure: the low corner stacks the contract load, conduction-only gaps, the lower emissivities and a resting '
-              'rear wall. The decision on a limit or an option belongs to the design authority.', '']
-    return lines
+    amb = r['amb']
+    lim = r['limit_classes']
+    nolim = T.no_limit_classes(d)
+    state, spans, shift, limits = headline(r)
+    contract = {(depth, o): amb + r['nets'][(depth, o, 'low', 'contract')]['rise']['K'] for depth in T.DEPTHS for o in T.ORIENTS}
+    split = T.as3340_split_W(d)
+    shift_all = T.depth_shift_K(d, lim + nolim)
+    big = max(((s, T.depth_shift_K(d, [s])[1]) for s in lim + nolim), key=lambda x: x[1])
+    big_board = r['cmp'][(big[0], 40)]['orients']['H']['worst']['board']
+    limits_text = ' and '.join(f'{x:.0f} °C' for x in limits)
+    lines = [f"## 4. The {limits_text} limit of {', '.join(lim[:-1])} and {lim[-1]} {state}; {len(nolim)} IC classes read NO LIMIT RETAINED "
+             f"and NOT SHOWN; on the classes with a limit the 40 mm case moves the board at the part by {srng(*shift, n=1)} K against 120 mm", '',
+             f"The comparison of DS-95: one temperature, the board at the part (K's mean plus the smoothed lateral rise of the hottest "
+             f"{T.term(d, 'cell_mm'):g} mm cell of K that holds a part of the class; the board's mean off K), against the limit of the "
+             'exact part. Worst end: planning load, low coefficients. Best end: low-heat load, high coefficients, read on the board '
+             'of the worst end. The class word takes the worse orientation (the higher worst end). MET ON PAPER: worst end at or '
+             'below the limit; EXCEEDED ON PAPER: best end above it; NOT SHOWN otherwise and wherever no limit is retained. '
+             f"No limit is borrowed from a part of the same family and no junction temperature is stated. Places: {place_source(d)}. "
+             'The CL10A105KB8NNNC places are the floorplan places of the references that the partition report gives the exact part '
+             '(`io-partition-exact-refs`). DS-94 reads the 40 mm case more than 5 K above the 120 mm case on this comparison as a '
+             f"cost of the stack: the classes with a limit read {srng(*shift, n=1)} K. Across every class the shift is "
+             f"{srng(*shift_all, n=1)} K; the largest is {big[0]} on {big_board} ({big[1]:+.1f} K), a front board and a class with no "
+             'retained limit.', '',
+             '| Exact part class | Places | Case | Limit | Standing, best to worst, °C | Standing | Lying, best to worst, °C | Lying | Hottest place, worse orientation, worst end | Word |',
+             '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |'] + comparison_rows(r, lim + nolim)
+    lines += ['', f"Outer row, no verdict: at the contract ({f(r['contract']['input_W'], 1)} W) with the low coefficients K's mean reads "
+              + ', '.join(f"{f(v)} °C {ORIENT_NAME[o]} at {depth} mm" for (depth, o), v in contract.items()) + '. '
+              f"The AS3340D row includes its VEE driver: {f(1000 * split['core_W'], 0)} mW in the core and "
+              f"{f(1000 * split['vee_driver_W'], 0)} mW in the OPA4197 buffer. The parts of the 85 °C class take at most 11 mW each, "
+              'and the gaps carry heat by conduction, so the air at the part has the temperature of the board (DS-95).', '']
+    return lines + bleeder_lines(r)
+
+
+def place_source(d):
+    ps = d['inputs']['place_source']
+    if ps['read'] == 'floorplan':
+        return 'the floorplan (the gate record holds no `displaced_k_ic_packages`; no package moved)'
+    return f"the gate record's `displaced_k_ic_packages` ({ps['moved']} of {ps['listed']} listed packages moved; the floorplan for every other)"
 
 
 def item5(r):
     d = r['d']
     rows = T.sensitive_table(d)
-    cells, meta = T.k_cells(d, 'contract', 40, 'V', 'low')
-    cells120, meta120 = T.k_cells(d, 'contract', 120, 'V', 'low')
-    n40, n120 = r['nets'][(40, 'V', 'low', 'contract')], r['nets'][(120, 'V', 'low', 'contract')]
+    cells, meta = T.k_cells_cached(d, 'normal', 40, 'V', 'low')
+    cells120, meta120 = T.k_cells_cached(d, 'normal', 120, 'V', 'low')
+    region = T.warm_region(d, cells)
+    box = region['box_mm']
+    hot = T.hot_packages(d)
+    near = T.term(d, 'hot_within_mm')
+    n40, n120 = r['nets'][(40, 'V', 'low', 'normal')], r['nets'][(120, 'V', 'low', 'normal')]
     ks40, ks120 = n40['rise']['K'] - n40['rise']['shell'], n120['rise']['K'] - n120['rise']['shell']
-    kf40, kf120 = n40['rise']['K'] - n40['rise']['JL'], n120['rise']['K'] - n120['rise']['JL']
-    spread40 = max(c['rise_smooth_K'] for c in cells.values()) - min(c['rise_smooth_K'] for c in cells.values())
-    spread120 = max(c['rise_smooth_K'] for c in cells120.values()) - min(c['rise_smooth_K'] for c in cells120.values())
+    lat40 = [c['rise_smooth_K'] for c in cells.values()]
+    lat120 = [c['rise_smooth_K'] for c in cells120.values()]
+    spread40, spread120 = max(lat40) - min(lat40), max(lat120) - min(lat120)
     cores = [x for x in rows if x['function'].endswith('core')]
-    hot_cores = sum(1 for x in cores if x['rise_40'] > 5.0)
-    lines = [f"## 5. {hot_cores} of the 5 oscillator cores and the octave reference sit in K's hottest region (x 0 to 100, y 150 to 250, 7 to 11 K above K's mean); the thin case shrinks K's rise above the case ({f(ks120, 1)} to {f(ks40, 1)} K) and its lateral spread ({f(spread120, 1)} to {f(spread40, 1)} K) but couples the front boards closer to K", '',
-             f"Regions are 50 mm cells of K in the partition frame. The lateral figure is the cell's density against K's mean over K's "
-             f"coupling to its surroundings ({f(meta['h_K'], 1)} W/m2K at 40 mm), smoothed over the ASSUMED copper spreading length of "
-             f"{f(meta['L_s_mm'], 0)} mm (the no-spreading bound is up to {f(max(c['rise_bound_K'] for c in cells.values()), 1)} K). "
-             f"Contract load, standing, low coefficients. K stands {f(kf40, 1)} K above JL at 40 mm against {f(kf120, 1)} K at 120 mm. "
-             'Pitch calibration stays at 25 degC; these are risks, not drift predictions. "Nearest hot" is the nearest of the 20 '
-             'K packages with the highest dissipation; a 25 mm move of one part can change a distance verdict when the distance '
-             'lies within 25 mm of the 50 mm cell size, and the sign of the lateral figure when a cell within 25 mm has the other sign.', '',
-             '| Function | Part | Region on K | Lateral, 40 mm, K | Lateral, 120 mm, K | Nearest hot package, distance mm | Within 50 mm | A 25 mm move can change |',
-             '| --- | --- | --- | --- | --- | --- | --- | --- |']
-    for x in rows:
-        if x['function'].endswith('REF5050') and not x['function'].startswith(('OCTAVE', 'H1', 'H2', 'F')):
-            continue
-        change = []
-        if x['move_changes_distance_verdict']:
-            change.append('distance verdict')
-        if x['move_changes_sign']:
-            change.append('lateral sign')
-        lines.append(f"| {x['function']} | {x['ref']} | {x['cell']} | {f(x['rise_40'], 1)} | {f(x['rise_120'], 1)} | "
-                     f"{x['nearest_hot']} ({x['nearest_hot_symbol']}), {f(x['distance_mm'], 0)} | {'yes' if x['within_cell'] else 'no'} | "
-                     f"{', '.join(change) or 'no'} |")
-    others = [x for x in rows if x['function'].endswith('REF5050') and not x['function'].startswith(('OCTAVE', 'H1', 'H2', 'F'))]
-    hot_refs = [x for x in others if x['rise_40'] > 2.0]
+    in_cores = sum(1 for x in cores if T.in_box(box, x['xy']))
+    octave = next(x for x in rows if x['function'].startswith('OCTAVE'))
+    oct_text = 'and the octave reference' if T.in_box(box, octave['xy']) else 'but not the octave reference'
+    with_hot = sum(1 for x in rows if x['hot_near'])
+    region_text = f"x {box[0]:g} to {box[2]:g}, y {box[1]:g} to {box[3]:g}, {rng(*region['lateral_K'])} K above K's mean"
+    lines = [f"## 5. {in_cores} of the {len(cores)} oscillator cores {oct_text} lie in K's warm region ({region_text}); "
+             f"{with_hot} of the {len(rows)} sensitive sites have a package of {1000 * T.term(d, 'hot_package_W'):.0f} mW or more within "
+             f"{near:g} mm", '',
+             f"Regions are {T.term(d, 'cell_mm'):g} mm cells of K in the partition frame, the grid taken from K's outline. The lateral "
+             f"figure is the cell's density against K's mean over K's coupling to its surroundings ({f(meta['h_K'], 1)} W/m2K at 40 mm), "
+             f"smoothed over the ASSUMED copper spreading length of {f(meta['L_s_mm'], 0)} mm (the no-spreading bound is up to "
+             f"{f(max(c['rise_bound_K'] for c in cells.values()), 1)} K). Planning load, standing, low coefficients. The warm region is "
+             f"the bounding box of the cells at {100 * T.term(d, 'hot_region_fraction'):.0f} % or more of the hottest cell "
+             f"({T.cell_name(d, region['hottest'])}; ASSUMED reporting rule). K stands {f(ks40, 1)} K above the case at 40 mm against "
+             f"{f(ks120, 1)} K at 120 mm, and its lateral spread is {f(spread40, 1)} K against {f(spread120, 1)} K. The hot set is "
+             f"every K package of {1000 * T.term(d, 'hot_package_W'):.0f} mW or more at the planning load: {len(hot)} packages with "
+             f"{f(sum(h['W'] for h in hot), 2)} W. Pitch calibration stays at 25 °C; these are risks, not drift predictions.", '',
+             f"| Function | Part | Region on K | Lateral, 40 mm, K | Lateral, 120 mm, K | Hot packages within {near:g} mm | Their power, W |",
+             '| --- | --- | --- | --- | --- | --- | --- |']
+    listed = [x for x in rows if not (x['function'].endswith('REF5050') and not x['function'].startswith(('OCTAVE', 'H1', 'H2', 'F')))]
+    for x in listed:
+        lines.append(f"| {x['function']} | {x['ref']} | {x['cell'] or 'outside the cells of K'} | {f(x['rise_40'], 1)} | "
+                     f"{f(x['rise_120'], 1)} | {x['hot_near']} | {f(x['hot_near_W'], 2)} |")
+    others = [x for x in rows if x not in listed]
+    warm_refs = [x for x in others if T.in_box(box, x['xy'])]
     lines += ['', f"The other {len(others)} local REF5050 references (E, W, A and M modules) are not listed row by row: "
-              f"{len(hot_refs)} lie in cells more than 2 K above K's mean ({', '.join(x['ref'] for x in hot_refs)}). "
-              f"{sum(1 for x in cores if x['within_cell'])} of the {len(cores)} cores stand within 50 mm of another hot package. "
-              'The thin case changes which gradients grow: K-to-case and K-lateral shrink because K couples to the near rear wall; '
-              'front-to-K shrinks too, so JL, JR and P run nearer to K and warmer against the case.', '',
-              'Conclusions that a 25 mm move of a K part could change: '
-              f"(a) the distance verdicts flagged in the table ({sum(1 for x in rows if x['move_changes_distance_verdict'])} of {len(rows)} sites); "
-              f"(b) the sign of the lateral figure at {', '.join(x['function'] for x in rows if x['move_changes_sign'] and not x['function'].endswith('REF5050'))} "
-              'and at the references flagged; (c) the hottest-cell term (up to '
-              f"{f(max(c['rise_smooth_K'] for c in cells.values()), 1)} K) that item 4 adds to the parts in that cell. "
-              'Conclusions that it cannot change: the board totals, the case rise, K\'s mean, the NEEDS_DESIGN verdict (K\'s mean alone '
-              'passes 85 degC at the low corner), and the hot region itself, which spans about 100 mm, more than twice the move.', '']
+              f"{len(warm_refs)} lie in the warm region ({', '.join(x['ref'] for x in warm_refs) or 'none'}), and "
+              f"{sum(1 for x in others if x['hot_near'])} have a hot package within {near:g} mm. A move of {T.term(d, 'move_mm'):g} mm "
+              f"shifts heat between neighbouring cells at most and cannot leave a warm region {box[2] - box[0]:g} by "
+              f"{box[3] - box[1]:g} mm (DS-98).", '']
     return lines
+
+
+def k_mean(d, depth, o, which, **kw):
+    case, level = T.ENDS[which]
+    return T.network(d, depth, o, level, case, **kw)['rise']['K']
 
 
 def item6(r):
     d = r['d']
     g_posts, area = T.post_conductance(d)
-    net = r['nets'][(40, 'V', 'low', 'contract')]
-    g_fk = sum(g['h'] * g['area_cm2'] * 1e-4 for g in net['gaps'] if g['lower'] == 'K' and g['upper'] != 'shell')
-    base = net['rise']['K']
     v_lo, v_hi = T.lo_hi(d, 'vent_area_cm2')
-    vent = T.network(d, 40, 'V', 'low', 'contract', vent_cm2=v_hi)
-    deep = r['nets'][(120, 'V', 'low', 'contract')]
-    red = T.network(d, 40, 'V', 'low', 'normal')
-    per_w = (base - red['rise']['K']) / (r['contract']['internal_W'] - r['normal']['internal_W'])
-    metal = T.network(d, 40, 'V', 'low', 'contract', eps_override=0.95)
-    lines = [f"## 6. Five options are listed and none is selected; on paper the vent bounds K's rise down by {f(base - vent['rise']['K'], 1)} K at {v_hi} cm2 per vent, one watt less load by {f(per_w, 2)} K, and the posts' brass could add up to {f(g_posts[1], 2)} W/K between K and the front boards", '',
-             f"Reference: 40 mm, standing, contract load, low coefficients: K at {f(base, 1)} K above ambient. The facing gaps couple "
-             f"the front boards to K by {f(g_fk, 2)} W/K in that case.", '',
-             '| Option | What it changes in the screen | What it conflicts with | Evidence it needs |', '| --- | --- | --- | --- |',
-             f"| Vent slots in the side or rear walls | Upper bound: K -{f(base - vent['rise']['K'], 1)} K at {v_hi} cm2 per vent standing; lying panel-up the height between vents is {f(T.term(d, 'vent_height_m')['H_fraction_of_depth'] * 40 / 1000, 3)} m and the bound shrinks | Dust and EMC on an open case; the frame; the 191 retired K service apertures are retired, not a vent path, and the 2.8 mm behind K leaves no duct | A vent and case drawing; a flow estimate with the cable loops in the gaps; then the #64 measurement |",
-             f"| Metal rear wall used as a spreader, high-emissivity inside | Holds the uniform-shell assumption the screen already makes; finish 0.95 inside and out moves K by {f(metal['rise']['K'] - base, 1)} K | K's rear parts are 2.8 mm from the wall: insulation and a shorting check are needed; supports and frame fixing; EMC grounding of the wall | Enclosure material, finish and emissivity; an insulation layer and its conductance |",
-             f"| Conduction through the 18 brass posts and the 4 sleeves | Brass body alone {rng(*g_posts, 2)} W/K from K to the front boards ({f(1e6 * area, 1)} mm2 per post, ASSUMED bore); not credited. It couples K to JL, JR and P, not to the case: it lowers K only if the front boards have a path to the panel or case. The sleeves are printed plastic and carry nothing | The posts carry the supply current and are fixed by DS-33 and DS-75; no thermal path from a front board to the panel exists; ceramic-part strain rule of DS-42 near any added clamp | Thermal contact resistance of the nickel-brass face on the land (UNSOURCED); conductivity of CW614N; a front-board-to-case path |",
-             f"| Larger case depth (120 mm row) | K {deep['rise']['K'] - base:+.1f} K at the same coefficients: the case runs {f(net['rise']['shell'] - deep['rise']['shell'], 1)} K cooler, but K's rear wall is {f(d['inputs']['enclosure_120_rear_clearance_from_K_B_face_mm'], 1)} mm away in place of {f(40 + d['inputs']['stack']['K_rear_z_mm'], 1)} mm, so depth alone does not cool K | The stack's depth target of about 40 mm (DS-13, DS-33); the inlet reservation (#57) | None beyond item 2 |",
-             f"| Reduced load | {f(per_w, 2)} K per watt removed at K (40 mm standing low corner); the normal planning load is {f(r['contract']['internal_W'] - r['normal']['internal_W'], 2)} W below the contract | Circuit changes are out of scope; the ledger charges both rails for LEDs and outputs, so a refreshed ledger (ST-11) may already lower it | A measured supply current per rail (#64) and the ST-11 ledger refresh |", '']
-    return lines
+    f_lo, f_hi = T.lo_hi(d, 'h_conv_feet')
+    base = {(o, w): k_mean(d, 40, o, w) for o in T.ORIENTS for w in T.ENDS}
+    vents = {(v, o, w): base[(o, w)] - k_mean(d, 40, o, w, vent_cm2=v) for v in (v_lo, v_hi) for o in T.ORIENTS for w in T.ENDS}
+    feet = {w: base[('H', w)] - k_mean(d, 40, 'H', w, h_resting=(f_lo if w == 'worst' else f_hi)) for w in T.ENDS}
+    net = end(r, 40, 'V', 'worst')
+    g_fk = sum(g['h'] * g['area_cm2'] * 1e-4 for g in net['gaps'] if g['lower'] == 'K' and g['upper'] != 'shell')
+    deep = k_mean(d, 120, 'V', 'worst')
+    red = (r['normal']['internal_W'] - r['low']['internal_W'])
+    per_w = (base[('V', 'worst')] - T.network(d, 40, 'V', 'low', 'low')['rise']['K']) / red
+    bare = T.term(d, 'eps_bare_metal')
+    metal = [k_mean(d, 40, 'V', w, eps_override=bare) for w in T.ENDS]
+    vent_text = '; '.join(f"{v:g} cm2 {ORIENT_NAME[o]}: {rng(vents[(v, o, 'best')], vents[(v, o, 'worst')])} K"
+                          for v in (v_lo, v_hi) for o in T.ORIENTS)
+    rows = [
+        ('Vent slots in the side or rear walls', 'listed (DS-96: enclosure, to the owner)',
+         f"Upper bound of the fall of K's mean, best to worst end: {vent_text}; the air is taken to leave at the area-mean board temperature",
+         f"Dust and EMC on an open case; the frame; the {T.term(d, 'service_apertures')} K service apertures are retired, not a vent path; the gaps must stay open along the upper and lower edges of K (DS-96, ST-12)",
+         'A vent and case drawing; a flow estimate with the cable loops in the gaps; then #64'),
+        ('Case on feet, lying', 'listed (DS-96: enclosure, to the owner)',
+         f"The resting rear wall carries {f_lo:g} to {f_hi:g} W/m2K (ASSUMED) in place of nothing: K's mean falls by "
+         f"{f(feet['worst'])} K at the worst end ({f_lo:g} W/m2K) and {f(feet['best'])} K at the best end ({f_hi:g} W/m2K)",
+         'The feet and the clearance under the case are the enclosure\'s', 'An enclosure drawing; then #64'),
+        ('Metal rear wall used as a spreader, high-emissivity inside', 'not followed (DS-96)',
+         f"A bare metal case (emissivity {bare}) reads K at {rng(*metal)} K above ambient, standing, best to worst end",
+         f"K's rear parts are {f(rear_gap_mm(d), 1)} mm from the wall: insulation and a shorting check; EMC grounding of the wall",
+         'Enclosure material, finish and emissivity; an insulation layer and its conductance'),
+        (f"Conduction through the {T.term(d, 'post_count')} brass posts and the {T.term(d, 'sleeve_count')} sleeves", 'not followed (DS-96)',
+         f"Brass body alone {rng(*g_posts, n=2)} W/K from K to the front boards ({f(1e6 * area, 1)} mm2 per post, ASSUMED bore), "
+         f"beside the {f(g_fk, 2)} W/K of the facing gaps; not credited, because the front boards have no path to the case",
+         'The posts carry the supply current and are fixed by DS-33 and DS-75; the ceramic-part strain rule of DS-42',
+         'Thermal contact resistance of the nickel-brass face on the land (UNSOURCED); a front-board-to-case path'),
+        ('Larger case depth (120 mm row)', 'not followed (DS-96)',
+         f"K's mean {deep - base[('V', 'worst')]:+.1f} K against 40 mm, standing, worst end: the case runs cooler but K's rear wall is "
+         f"{f(d['inputs']['enclosure_120_rear_clearance_from_K_B_face_mm'], 1)} mm away in place of {f(40 + d['inputs']['stack']['K_rear_z_mm'], 1)} mm",
+         'The depth target of about 40 mm (DS-13, DS-33); the inlet reservation (#57)', 'None beyond item 2'),
+        ('Less load', 'not followed (DS-96: a circuit change outside this campaign)',
+         f"{f(per_w, 2)} K per watt removed at K's mean (40 mm standing, low coefficients); the low-heat load is "
+         f"{f(red, 2)} W below the planning load",
+         'Circuit changes are out of scope; the ST-11 ledger refresh may lower the planning load', 'A measured supply current per rail (#64)'),
+    ]
+    listed = sum(1 for x in rows if x[1].startswith('listed'))
+    vmax = max(vents.values())
+    vmin = min(vents.values())
+    lines = [f"## 6. {len(rows)} options are listed and none is selected; {listed} go to the owner as enclosure items: on paper vents bound K's mean "
+             f"down by {rng(vmin, vmax)} K and feet lower it by {rng(feet['best'], feet['worst'])} K lying", '',
+             f"Reference: 40 mm, closed, K's mean at {rng(base[('V', 'best')], base[('V', 'worst')])} K above ambient standing and "
+             f"{rng(base[('H', 'best')], base[('H', 'worst')])} K lying, best to worst end. The campaign follows no thermal option on a "
+             'board (DS-96).', '',
+             '| Option | State | What it changes in the screen | What it conflicts with | Evidence it needs |',
+             '| --- | --- | --- | --- | --- |']
+    lines += [f"| {a} | {b} | {c} | {e} | {g} |" for a, b, c, e, g in rows]
+    return lines + ['']
 
 
 def item7(r):
     d = r['d']
-    hi = r['nets'][(40, 'V', 'high', 'normal')]
-    lo = r['nets'][(40, 'H', 'low', 'contract')]
-    lines = ['## 7. Proposal for #64: soak at 40 degC in both orientations at the contract state, and pass when every part class stays inside its retained limit and the case and K rises stay inside the screen\'s bounds; #64 stays NOT RUN', '',
+    amb = r['amb']
+    lim = r['limit_classes']
+    within = T.term(d, 'sensor_within_mm')
+    cmp_ = r['cmp']
+    places = ', '.join(f"{s} at {cmp_[(s, 40)]['orients'][cmp_[(s, 40)]['worse']]['worst']['ref']}" for s in lim)
+    lines = [f"## 7. Proposal for #64: soak at {amb:g} °C in both orientations at the planning state, with a sensor on the body of each part "
+             f"of a retained limit or on the board within {within:g} mm of it; #64 stays NOT RUN", '',
              'PROPOSAL only; nothing here is a test result. Limits marked "evidence first" cannot be set until the bundle holds the figure.', '',
              '| Element | Proposal |', '| --- | --- |',
-             '| Ambient | Chamber or still room at 40 degC +/-1 K, measured at two points 100 mm from the case at mid-height, shielded; a 25 degC run as the reference |',
+             f"| Ambient | Chamber or still room at {amb:g} °C +/-1 K, measured at two points 100 mm from the case at mid-height, shielded; a 25 °C run as the reference |",
              f"| Soak | {T.term(d, 'soak_proposal')} |",
-             f"| Operating state | Rails at nominal and at the upper tolerance; every LED lit; every output into 10 kOhm at 5 V; the measured rail currents recorded and compared with the ledger ({f(r['normal']['input_W'], 2)} W input) and the contract ({f(r['contract']['input_W'], 1)} W) |",
+             f"| Operating state | Rails at nominal and at the upper tolerance; every LED lit; every output into 10 kOhm at 5 V; the measured rail currents recorded and compared with the planning load ({f(r['normal']['input_W'], 2)} W input) and the low-heat load ({f(r['low']['input_W'], 2)} W) |",
              '| Orientations | Standing with the base resting, and lying panel-up with the rear wall resting on a wooden board |',
              '| Case sensors | Panel centre, rear wall centre, each side wall centre, top face |',
-             '| Internal sensors | Air in the JL/K and P/K gaps at their centres, air between K and the rear wall, K front and rear face at the five AS3340D cores, at U1601 (octave reference), at U115 and U215 (S&H) and in K\'s coolest region (upper edge) |',
-             '| Part sensors | Case of the hottest AS3340D, OPA4197IPWR, OPA4197IDR, LF398M, LM13700M, NOISE2 and REF5050AIDR on K; the bleeder resistors at the inlet; one magnitude sense resistor on JL and on JR; one SN74HC14DR and one SN74HC74DR on K |',
-             f"| Pass: screen consistency | Case rise inside {rng(hi['rise']['shell'], lo['rise']['shell'])} K and K mean rise inside {rng(hi['rise']['K'], lo['rise']['K'])} K; a reading outside invalidates the screen, not the design |",
-             '| Pass: HC logic and X5R on K | Local air at the part at most 85 degC (SN74HC14DR, SN74HC74DR, CL10A105KB8NNNC) |',
-             '| Pass: 0603 resistors | Dissipation under the series power curve at the measured local temperature; bleeder body at most 110 degC at its joint |',
-             '| Pass: ICs | Tj from the measured case and the retained theta-JC or theta-JB at most the retained Tj max less 10 K: evidence first for every IC class of item 4 |',
-             '| Pass: temperature-sensitive functions | Record each core\'s frequency, each reference and each S&H droop at 25 and 40 degC; no pass limit is proposed (calibration scope stays 25 degC) |', '']
+             f"| Part sensors | On the body of the part, or on the board within {within:g} mm of it (DS-95): the hottest place of each class of item 4 ({places}); the bleeder bodies at the inlet; the five AS3340D cores, U1601 (octave reference) and the two S&H |",
+             f"| Reading: parts with a retained limit | The board at the part against the limit of the exact part ({', '.join(lim)}: {'/'.join(f'{x:.0f}' for x in headline(r)[3])} °C) |",
+             '| Reading: 0603 resistors | Dissipation under the series power curve at the measured board temperature; bleeder body against 110 °C at its joint |',
+             '| Reading: ICs | NO LIMIT RETAINED: evidence first (operating range, then thermal resistance and junction maximum) for every IC class of item 4 |',
+             f"| Reading: screen consistency | Case rise inside {rng(end(r, 40, 'V', 'best')['rise']['shell'], end(r, 40, 'H', 'worst')['rise']['shell'])} K at 40 mm; a reading outside invalidates the screen, not the design |",
+             '| Reading: temperature-sensitive functions | Each core\'s frequency, each reference and each S&H droop at 25 °C and at the soak ambient; no limit is proposed (calibration scope stays 25 °C) |', '']
     return lines
 
 
 def evidence_needs(r):
-    lines = ['## Evidence is needed for ten exact parts before any junction temperature can be stated', '',
-             '| Exact part | Missing thermal evidence |', '| --- | --- |']
-    for sym, (_, need) in LIMIT_FACTS.items():
-        lines.append(f"| {sym} | {need.split(': ', 1)[1]} |")
-    lines += ['| APHHS1005QWF/D and APG1005SEC/E-T (Kingbright) | Current derating with temperature and Tj max are not in the bundles |',
-              '| The 5600 Ohm magnitude sense, 1200 Ohm stage and 22.1 kOhm clip resistors | Exact identity UNSELECTED; power curve and size |', '']
+    d = r['d']
+    ranges = d['inputs']['operating_ranges']
+    syms = list(LIMIT_FACTS)
+    missing = sum(1 for s in syms if not ranges.get(s))
+    lines = [f"## Evidence is needed for {len(syms)} exact parts before any junction temperature can be stated; {missing} of them have no retained operating range", '',
+             'The thermal evidence of the exact parts is a task of the component evidence workflow outside this campaign (DS-98): '
+             'the operating temperature range first, then thermal resistance and junction maximum.', '',
+             '| Exact part | Operating temperature range | Missing thermal evidence |', '| --- | --- | --- |']
+    for sym in syms:
+        rr = ranges.get(sym, [])
+        rtxt = '; '.join(f"{x['minimum']} to {x['maximum']} °C (`{x['fact_id']}`)" for x in rr) or 'not retained'
+        lines.append(f"| {sym} | {rtxt} | {LIMIT_FACTS[sym].split(': ', 1)[1]} |")
+    lines += ['| APHHS1005QWF/D and APG1005SEC/E-T (Kingbright) | not surveyed for a range | Current derating with temperature and Tj max are not in the bundles |',
+              '| The 5600 Ohm magnitude sense, 1200 Ohm stage and 22.1 kOhm clip resistors | exact identity UNSELECTED | Power curve and size |', '']
     return lines
 
 
 def terms_table(r):
     d = r['d']
-    lines = ['## 47 terms are ASSUMED or UNSOURCED; every other term is SOURCED with its pin or DERIVED', '',
-             '| Term | Value | Unit | Status | Reason or source |', '| --- | --- | --- | --- | --- |']
-    n = 0
+    body = []
     for name, t in d['terms'].items():
         if t['status'] in ('ASSUMED', 'UNSOURCED'):
-            n += 1
             v = t['value']
-            text = v if isinstance(v, str) else ('see JSON' if isinstance(v, list) and v and isinstance(v[0], list) else v)
-            lines.append(f"| {name} | {text} | {t['unit']} | {t['status']} | {t['source']} |")
-    lines[0] = f"## {n} terms are ASSUMED or UNSOURCED; every other term is SOURCED with its pin or DERIVED"
-    return lines + ['']
-
-
-def header(r):
-    return ['# ST-05 thermal paper screen: NEEDS_DESIGN, because at the low corner K exceeds the 85 degC limits of its HC logic and X5R parts in either case depth', '',
-            'Generated by `python3 scripts/stack/thermal/thermal_readme.py` from `thermal-screen.json`; do not edit by hand. '
-            'A recomputable estimate on paper for the direct board stack at the 40 degC ambient corner of E19. Every board is an '
-            'unvalidated draft; nothing is measured, nothing is selected, and #64 (the physical thermal test) stays NOT RUN. Sources are '
-            'pinned by the object or row a term reads; the room study is read as of its record. Run `extract_inputs.py --check` to see '
-            'whether a pinned source has changed.', '']
+            text = v if isinstance(v, str) else ('see JSON' if isinstance(v, list) and v and isinstance(v[0], (list, dict)) else v)
+            body.append(f"| {name} | {text} | {t['unit']} | {t['status']} | {t['source']} |")
+    return [f"## {len(body)} terms are ASSUMED or UNSOURCED; every other term is SOURCED with its pin or DERIVED", '',
+            '| Term | Value | Unit | Status | Reason or source |', '| --- | --- | --- | --- | --- |'] + body + ['']
 
 
 def checks_section():
@@ -443,8 +570,8 @@ def checks_section():
             '| `regen-all.sh`, `pnpm check`, full Python suite | NOT RUN: excluded by the brief for time (CI near its limit) |', '']
 
 
-def render():
-    r = facts()
+def render(d=None):
+    r = facts(d)
     lines = header(r) + plan_check(r) + item1(r) + item2(r) + item3(r) + item4(r) + item5(r) + item6(r) + item7(r) + \
         evidence_needs(r) + terms_table(r) + checks_section()
     return '\n'.join(lines).rstrip() + '\n'
@@ -453,9 +580,9 @@ def render():
 def main(argv):
     text = render()
     if argv == ['--check']:
-        same = README.exists() and README.read_text() == text
-        print('README matches the rendering' if same else 'README differs from the rendering')
-        return 0 if same else 1
+        ok = README.exists() and README.read_text() == text
+        print('README matches the rendering' if ok else 'README differs from the rendering')
+        return 0 if ok else 1
     README.write_text(text)
     return 0
 

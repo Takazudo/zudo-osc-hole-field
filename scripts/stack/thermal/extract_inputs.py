@@ -21,11 +21,27 @@ FLOORPLAN = 'design/partition/floorplan-candidate.json'
 STACK = 'design/stack/geometry/stack-candidate.json'
 FIXINGS = 'design/stack/fixings/fixing-sites.json'
 DECISIONS = 'circuit/orchestration/campaigns/osc-stack-20261114/decisions.md'
+LINK_GATE = 'design/stack/geometry/links/link-gate.json'
+IO_PARTITION = 'design/reports/io-partition.json'
+PLAN = 'doc/src/content/docs/decisions/osc-direct-stack-plan.mdx'
+EXACT_PARTS = ('CL10A105KB8NNNC', 'RC0603FR-072K2L')
+CLASS_BUNDLES = {
+    'AS3340D': 'component-alfa-rpar-as3340d', 'CD74HC221M96': 'component-ti-cd74hc221m96',
+    'LF398M_NOPB': 'component-ti-lf398m-nopb', 'LM13700M_NOPB': 'component-ti-lm13700m-nopb',
+    'LM393BIDR': 'component-ti-lm393bidr', 'NOISE2': 'component-electric-druid-noise2',
+    'OPA4196IDR': 'component-ti-opa4196idr', 'OPA4197IDR': 'component-ti-opa4197idr',
+    'OPA4197IPWR': 'component-ti-opa4197ipwr', 'REF5050AIDR': 'component-ti-ref5050aidr',
+    'SN74HC00DR': 'component-ti-sn74hc00dr', 'SN74HC14DR': 'component-ti-sn74hc14dr',
+    'SN74HC74DR': 'component-ti-sn74hc74dr', 'TMUX6112PWR': 'component-ti-tmux6112pwr',
+    'TMUX7412FRRPR': 'component-ti-tmux7412frrpr', 'CL10A105KB8NNNC': 'component-samsung-cl10a105kb8nnnc',
+    'RC0603FR-072K2L': 'component-yageo-rc0603fr-072k2l', 'BCM847BS': 'component-nexperia-bcm847bs-115',
+}
 RAILS = ('+12V', '-12V', '+5V')
 DECISION_ROWS = ('DS-33', 'DS-42', 'DS-59', 'DS-60', 'DS-61', 'DS-62', 'DS-63', 'DS-64', 'DS-65', 'DS-66',
-                 'DS-67', 'DS-72', 'DS-73', 'DS-74', 'DS-75', 'DS-76', 'DS-83', 'DS-88')
+                 'DS-67', 'DS-72', 'DS-73', 'DS-74', 'DS-75', 'DS-76', 'DS-83', 'DS-88', 'DS-92', 'DS-94',
+                 'DS-95', 'DS-96', 'DS-97', 'DS-98', 'DS-99')
 DOC_LINES = {
-    'plan-heat-row': ('doc/src/content/docs/decisions/osc-direct-stack-plan.mdx', '| Heat in a thinner case |'),
+    'plan-heat-row': (PLAN, '| Heat in a closed case |'),
     'plan-q6-row': ('doc/src/content/docs/decisions/osc-direct-stack-plan.mdx', '| Q6 |'),
     'plan-depth-34-supply': ('doc/src/content/docs/decisions/osc-direct-stack-plan.mdx', '- **Supply.** The external-source'),
     'ledger-bleeder-line': ('doc/src/content/docs/architecture/osc-rail-ledger.mdx', '`rail-allocation-input.json` assigns all 33'),
@@ -111,14 +127,69 @@ def bundle_facts():
     return dict(sorted(survey.items())), facts
 
 
-def extract():
+def plan_heat_W(line):
+    cells = [c.strip() for c in line.strip().strip('|').split('|')]
+    return [float(v) for v in re.findall(r'(\d+(?:\.\d+)?) W\b', cells[1])]
+
+
+def tail_width_mm(link):
+    t = link['geometry']['front_tail']
+    return t[2] - t[0] if link['direction'] in ('+y', '-y') else t[3] - t[1]
+
+
+def link_figures(record):
+    placed = [k for k in record['links'] if k['placed']]
+    return {'links': record['summary']['links'], 'placed': record['summary']['placed'],
+            'slots': record['summary']['slots'],
+            'slot_area_mm2': round(sum((s[2] - s[0]) * (s[3] - s[1]) for s in
+                                       (k['geometry']['slot'] for k in placed)), 6),
+            'loop_plan_area_mm2': round(sum(k['loop_mm'] * tail_width_mm(k) for k in placed), 6),
+            'cable_plan_area_mm2': round(sum(k['cable_length_mm'] * tail_width_mm(k) for k in placed), 6)}
+
+
+def final_places(record, placements):
+    places = {p['ref']: {'xy': [round(p['x_mm'], 3), round(p['y_mm'], 3)], 'side': p['side']} for p in placements}
+    displaced = record.get('displaced_k_ic_packages')
+    if displaced is None:
+        return places, {'read': 'floorplan', 'moved': 0, 'listed': 0}
+    moved = 0
+    for row in displaced:
+        if row['new'] is None:
+            continue
+        places[row['ref']] = {'xy': [round(row['new']['xy'][0], 3), round(row['new']['xy'][1], 3)],
+                              'side': row['new']['side']}
+        moved += 1
+    return places, {'read': 'gate record displaced_k_ic_packages', 'moved': moved, 'listed': len(displaced)}
+
+
+def exact_part_refs(io):
+    return [{'ref': p['ref'], 'mpn': p['mpn'], 'instance': p['instance']}
+            for p in io['physical_packages'] if p.get('mpn') in EXACT_PARTS]
+
+
+def operating_ranges(facts):
+    out = {}
+    for symbol, bundle in sorted(CLASS_BUNDLES.items()):
+        out[symbol] = []
+        for fact_id, (b, fact) in sorted(facts.items()):
+            v = fact.get('value')
+            if b == bundle and 'temperature' in fact_id and isinstance(v, dict) and \
+                    {'minimum', 'maximum'} <= set(v) and fact.get('unit') == 'degC':
+                out[symbol].append({'fact_id': fact_id, 'minimum': v['minimum'], 'maximum': v['maximum']})
+    return out
+
+
+def extract(gate=None):
     ledger = load(LEDGER)
     part = load(PARTITION)
     floor = load(FLOORPLAN)
     stack = load(STACK)['candidate']
     fixings = load(FIXINGS)
+    gate = load(LINK_GATE) if gate is None else gate
+    io = load(IO_PARTITION)
     assign = {c['ref']: c for c in part['assignment']['components']}
     place = {p['ref']: p for p in floor['placements']}
+    final, place_source = final_places(gate, floor['placements'])
     pins = []
 
     rows = []
@@ -150,7 +221,7 @@ def extract():
         a, p = assign[pkg['ref']], place[pkg['ref']]
         c = p['courtyard_mm']
         ic.append({'ref': pkg['ref'], 'instance': pkg['instance'], 'symbol': pkg['symbol'], 'board': a['board'],
-                   'side': p['side'], 'xy': [round(p['x_mm'], 3), round(p['y_mm'], 3)],
+                   'side': final[pkg['ref']]['side'], 'xy': final[pkg['ref']]['xy'],
                    'courtyard_mm2': round((c[2] - c[0]) * (c[3] - c[1]), 3)})
     pins.append(object_pin('ledger-ic-packages', LEDGER, 'physical_ic_packages', ledger['physical_ic_packages'],
                            'ref, instance and symbol of every IC package'))
@@ -158,6 +229,19 @@ def extract():
                            'board of every reference'))
     pins.append(object_pin('floorplan-placements', FLOORPLAN, 'placements', floor['placements'],
                            'x, y, side and courtyard of every reference'))
+
+    figures = link_figures(gate)
+    pins.append(object_pin('link-gate-figures', LINK_GATE, 'derived: link_figures(record)', figures,
+                           'links, placed and slots of the summary; slot, loop and cable areas of the placed links'))
+    pins.append(object_pin('link-gate-displaced-k-ic-packages', LINK_GATE, 'displaced_k_ic_packages',
+                           gate.get('displaced_k_ic_packages'), 'the rows of DS-97, or null while the key is absent'))
+    refs = exact_part_refs(io)
+    pins.append(object_pin('io-partition-exact-refs', IO_PARTITION, 'physical_packages[mpn in EXACT_PARTS]', refs,
+                           'ref, mpn and instance of every CL10A105KB8NNNC and RC0603FR-072K2L package'))
+    exact_places = {}
+    for r in refs:
+        exact_places.setdefault(r['mpn'], []).append({'ref': r['ref'], 'board': assign[r['ref']]['board'],
+                                                      'side': final[r['ref']]['side'], 'xy': final[r['ref']]['xy']})
 
     prefix_instance = {}
     for pkg in ledger['physical_ic_packages']:
@@ -219,8 +303,10 @@ def extract():
         pins.append({'id': 'decision-' + row, 'path': DECISIONS, 'row': row, 'sha256': sha(line[0])})
     for pin_id, (path, prefix) in DOC_LINES.items():
         pins.append({'id': pin_id, 'path': path, 'line_prefix': prefix, 'sha256': sha(find_line(path, prefix))})
+    heat = plan_heat_W(find_line(*DOC_LINES['plan-heat-row']))
 
     survey, facts = bundle_facts()
+    ranges = operating_ranges(facts)
     fact_values = {}
     for fact_id, bundle in FACTS.items():
         b, fact = facts[fact_id]
@@ -230,6 +316,12 @@ def extract():
                                 'class': fact.get('class')}
         pins.append({'id': fact_id, 'path': f'.claude/skills/{bundle}/facts.json',
                      'fact_id': fact_id, 'sha256': sha(canonical(fact))})
+    for symbol, rows_r in ranges.items():
+        for r in rows_r:
+            if r['fact_id'] not in FACTS:
+                b, fact = facts[r['fact_id']]
+                pins.append({'id': r['fact_id'], 'path': f'.claude/skills/{b}/facts.json',
+                             'fact_id': r['fact_id'], 'sha256': sha(canonical(fact))})
 
     inputs = {
         'rails_V': [abs(rails_v[r]) for r in RAILS],
@@ -238,6 +330,12 @@ def extract():
         'ledger_cases_mA': ledger_cases,
         'contract_mA': [part['power']['required_continuous_mA'][r] for r in RAILS],
         'ic_packages': ic,
+        'place_source': place_source,
+        'exact_part_places': exact_places,
+        'link_figures': figures,
+        'plan_heat_row_W': heat,
+        'operating_ranges': ranges,
+        'class_bundles': dict(sorted(CLASS_BUNDLES.items())),
         'module_K_centroids': module_k,
         'led_uid_boards': dict(sorted(leds.items())),
         'jack_split': {'left': part['jack_split']['left_instances'], 'right': part['jack_split']['right_instances']},
@@ -264,11 +362,15 @@ def check(screen=None):
     if canonical(inputs) != canonical(screen['inputs']):
         problems.append('stored inputs differ from the repository')
     stored = {p['id']: p for p in screen['provenance']['pins']}
+    produced = {p['id'] for p in pins}
     for p in pins:
         if p['id'] not in stored:
             problems.append('missing pin ' + p['id'])
         elif stored[p['id']]['sha256'] != p['sha256']:
             problems.append('stale pin ' + p['id'])
+    for pin_id in stored:
+        if pin_id not in produced:
+            problems.append('stored pin no longer produced ' + pin_id)
     return problems
 
 

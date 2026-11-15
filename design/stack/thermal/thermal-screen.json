@@ -1,7 +1,7 @@
 {
  "schema_version": 1,
- "task": "osc-stack-20261114/ST-05 a1",
- "status": "PAPER SCREEN on unvalidated drafts; nothing measured; #64 NOT RUN; nothing selected",
+ "task": "osc-stack-20261114/ST-05 a2",
+ "status": "DONE",
  "provenance": {
   "pins": [
    {
@@ -73,6 +73,27 @@
     "object": "placements",
     "sha256": "7eb10566c87a0922c27b409a698a3b52a936a41184bb882615a40ea68f4f3042",
     "reads": "x, y, side and courtyard of every reference"
+   },
+   {
+    "id": "link-gate-figures",
+    "path": "design/stack/geometry/links/link-gate.json",
+    "object": "derived: link_figures(record)",
+    "sha256": "ce8681f6bf18a5d74aa6acd33bc6c3d17283cee82a5e81a45a58fd4cc9d5ab4b",
+    "reads": "links, placed and slots of the summary; slot, loop and cable areas of the placed links"
+   },
+   {
+    "id": "link-gate-displaced-k-ic-packages",
+    "path": "design/stack/geometry/links/link-gate.json",
+    "object": "displaced_k_ic_packages",
+    "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "reads": "the rows of DS-97, or null while the key is absent"
+   },
+   {
+    "id": "io-partition-exact-refs",
+    "path": "design/reports/io-partition.json",
+    "object": "physical_packages[mpn in EXACT_PARTS]",
+    "sha256": "8c1302602a63f8010458fbeca0c6afbfcee954e3ad07410cbf0f7d366d996d0a",
+    "reads": "ref, mpn and instance of every CL10A105KB8NNNC and RC0603FR-072K2L package"
    },
    {
     "id": "board-uids-P",
@@ -316,10 +337,52 @@
     "sha256": "db17eb369a0efde7eafe9c11c70b0c6541c9255021fc9cd9161c29c77efd2e84"
    },
    {
+    "id": "decision-DS-92",
+    "path": "circuit/orchestration/campaigns/osc-stack-20261114/decisions.md",
+    "row": "DS-92",
+    "sha256": "2a2e325f1705f7e2f1e26fbc435365293fdc3a6c6959d98ba5a129db300f2740"
+   },
+   {
+    "id": "decision-DS-94",
+    "path": "circuit/orchestration/campaigns/osc-stack-20261114/decisions.md",
+    "row": "DS-94",
+    "sha256": "56df05cb0e269cb147403597cd83a5798d7f57c26d170320a826c525d0325f62"
+   },
+   {
+    "id": "decision-DS-95",
+    "path": "circuit/orchestration/campaigns/osc-stack-20261114/decisions.md",
+    "row": "DS-95",
+    "sha256": "a552dc35cbd7cd167da31f6f18e747c3b95ea90276a32a48ee7f558dc33ffcce"
+   },
+   {
+    "id": "decision-DS-96",
+    "path": "circuit/orchestration/campaigns/osc-stack-20261114/decisions.md",
+    "row": "DS-96",
+    "sha256": "725f4d9bb499988c4753dc3ba56b5723e1e8baed4e2209460ba139a3921287a2"
+   },
+   {
+    "id": "decision-DS-97",
+    "path": "circuit/orchestration/campaigns/osc-stack-20261114/decisions.md",
+    "row": "DS-97",
+    "sha256": "09643658b7fc46a1bf11de3e7d1632e9f778b72f443e342bdd611e816d9bc2cb"
+   },
+   {
+    "id": "decision-DS-98",
+    "path": "circuit/orchestration/campaigns/osc-stack-20261114/decisions.md",
+    "row": "DS-98",
+    "sha256": "ed135c7426e64389ab18bd3ad0a98dfc7f6af65474256928964cf1cc6aa7e015"
+   },
+   {
+    "id": "decision-DS-99",
+    "path": "circuit/orchestration/campaigns/osc-stack-20261114/decisions.md",
+    "row": "DS-99",
+    "sha256": "0aa2aa375781a871701fca9517065989f0c32b392cd19fb351f08c7fda15d5b4"
+   },
+   {
     "id": "plan-heat-row",
     "path": "doc/src/content/docs/decisions/osc-direct-stack-plan.mdx",
-    "line_prefix": "| Heat in a thinner case |",
-    "sha256": "3e8d733576705b6827a537cd02363a5d177226bc86d26f1d13be3ed12425ab3e"
+    "line_prefix": "| Heat in a closed case |",
+    "sha256": "b1c23961b0ab461e1f9fd4aeb25eaa49249e39f7d2aa621f215a5f3ff96997d7"
    },
    {
     "id": "plan-q6-row",
@@ -561,34 +624,10 @@
    "source": "pin partition-power-continuous"
   },
   "plan_heat_W": {
-   "value": [
-    35.4,
-    41.1
-   ],
+   "value": "inputs.plan_heat_row_W",
    "unit": "W",
    "status": "SOURCED",
-   "source": "pin plan-heat-row"
-  },
-  "plan_rise_K": {
-   "value": {
-    "34": [
-     17,
-     22
-    ],
-    "120": [
-     12,
-     15
-    ]
-   },
-   "unit": "K",
-   "status": "SOURCED",
-   "source": "pin plan-heat-row"
-  },
-  "plan_area_drop": {
-   "value": 0.31,
-   "unit": "fraction",
-   "status": "SOURCED",
-   "source": "pin plan-heat-row"
+   "source": "pin plan-heat-row: the two figures of the row read by their unit W (normal planning load, supply contract)"
   },
   "bleeder_residual": {
    "value": "ledger total minus every row",
@@ -918,18 +957,35 @@
    "status": "ASSUMED",
    "source": "non-IC K rows of a module are placed at the centroid of that module's K footprints; inlet rows are spread over K"
   },
-  "links_record": {
-   "value": {
-    "links": 71,
-    "placed": 69,
-    "slots": 69,
-    "slot_area_mm2": 1082.25,
-    "loop_plan_area_mm2": 6162.8,
-    "cable_plan_area_mm2": 32895.0
-   },
+  "link_figures": {
+   "value": "inputs.link_figures",
    "unit": "count and mm2",
+   "status": "DERIVED",
+   "source": "pin link-gate-figures: links, placed and slots from the summary of the gate record; slot area from the slot rectangles, loop and cable areas from loop_mm and cable_length_mm times the tail width of each placed link"
+  },
+  "place_source": {
+   "value": "inputs.place_source",
+   "unit": "rule",
    "status": "SOURCED",
-   "source": "as of the record of the room study (design/stack/geometry/links/link-gate.json, ST-02 a7); not pinned by Amendment 2; areas DERIVED from its slot rectangles, loop_mm and cable_length_mm"
+   "source": "pins link-gate-displaced-k-ic-packages and floorplan-placements: the new place of every package listed in displaced_k_ic_packages (DS-97, the interface of the a2 scope), the floorplan place of every other; the floorplan alone while the key is absent"
+  },
+  "hot_package_W": {
+   "value": 0.1,
+   "unit": "W",
+   "status": "ASSUMED",
+   "source": "pin decision-DS-98: the hot set is every package of 100 mW or more; the threshold is ASSUMED by the ruling"
+  },
+  "hot_within_mm": {
+   "value": 25.0,
+   "unit": "mm",
+   "status": "SOURCED",
+   "source": "pin decision-DS-98 (point 7 of the a2 scope): count and watts of hot packages within 25 mm of each sensitive site"
+  },
+  "hot_region_fraction": {
+   "value": 0.5,
+   "unit": "fraction",
+   "status": "ASSUMED",
+   "source": "the warm region of K is the bounding box of the cells whose lateral rise is at least this fraction of the hottest cell; a reporting rule, not a physical limit"
   },
   "vent_area_cm2": {
    "value": [
@@ -1082,11 +1138,114 @@
    "status": "ASSUMED",
    "source": "proposal for #64; no retained test standard"
   },
-  "plan_h_backsolved": {
-   "value": "back-solved from plan_heat_W, plan_rise_K and the outer areas at wall_mm",
+  "h_conv_feet": {
+   "value": [
+    4.0,
+    8.0
+   ],
    "unit": "W/m2K",
-   "status": "DERIVED",
-   "source": "pin plan-heat-row; the plan page names no coefficient"
+   "status": "ASSUMED",
+   "source": "pin decision-DS-96: the resting face of a case on feet carries 4 to 8 W/m2K in place of nothing; radiation from it is still dropped"
+  },
+  "amplifiers_per_package": {
+   "value": 4,
+   "unit": "count",
+   "status": "SOURCED",
+   "source": "pin ledger-worksheet-loads: quiescent_condition of the OPA4196IDR and OPA4197 rows (\"four channels per package\")"
+  },
+  "low_heat_typicals": {
+   "value": [
+    {
+     "symbol": "OPA4197IDR",
+     "fact": "fact-op-precision-d-quiescent-current",
+     "per": "amplifier",
+     "keys": {
+      "+12V": "typical_at_25C",
+      "-12V": "typical_at_25C"
+     },
+     "unit": "mA",
+     "ledger_basis_keys": {
+      "+12V": "maximum_full_temperature",
+      "-12V": "maximum_full_temperature"
+     }
+    },
+    {
+     "symbol": "OPA4197IPWR",
+     "fact": "fact-op-precision-quiescent-current",
+     "per": "amplifier",
+     "keys": {
+      "+12V": "typical_at_25C",
+      "-12V": "typical_at_25C"
+     },
+     "unit": "mA",
+     "ledger_basis_keys": {
+      "+12V": "maximum_full_temperature",
+      "-12V": "maximum_full_temperature"
+     }
+    },
+    {
+     "symbol": "OPA4196IDR",
+     "fact": "fact-op-audio-quiescent-current",
+     "per": "amplifier",
+     "keys": {
+      "+12V": "typical_at_25C",
+      "-12V": "typical_at_25C"
+     },
+     "unit": "uA",
+     "ledger_basis_keys": {
+      "+12V": "maximum_full_temperature",
+      "-12V": "maximum_full_temperature"
+     }
+    },
+    {
+     "symbol": "TMUX7412FRRPR",
+     "fact": "fact-fault-switch-t-normal-supply-current",
+     "per": "package",
+     "keys": {
+      "+12V": "IDD_typ_25C",
+      "-12V": "ISS_typ_25C"
+     },
+     "unit": "mA",
+     "ledger_basis_keys": {
+      "+12V": "IDD_max_125C",
+      "-12V": "ISS_max_125C"
+     }
+    }
+   ],
+   "unit": "rule",
+   "status": "SOURCED",
+   "source": "pins fact-op-precision-d-quiescent-current, fact-op-precision-quiescent-current, fact-op-audio-quiescent-current and fact-fault-switch-t-normal-supply-current; pin decision-DS-95: the low-heat load takes the typical quiescent current at 25 degC of each part whose bundle holds one, row by row of the ledger, where a row holds count x the bundle maximum named in ledger_basis_keys (checked), and lowers the two-feed total by the same current. Not taken: AS3340D, whose typical table is at TA = 20 degC and VCC = +15 V (pin fact-vco-positive-supply-current); every other part, whose bundle holds no typical supply current at 25 degC"
+  },
+  "verdict_rule": {
+   "value": "board at the part against the limit of the exact part",
+   "unit": "rule",
+   "status": "SOURCED",
+   "source": "pin decision-DS-95: MET ON PAPER when the worst end (planning load, low coefficients) is at or below the limit, EXCEEDED ON PAPER when the best end (low-heat load, high coefficients) is above it, NOT SHOWN otherwise and wherever no limit is retained; the headline takes the worse orientation"
+  },
+  "ds96_bleeder_region_mm": {
+   "value": [
+    0.0,
+    150.0,
+    100.0,
+    250.0
+   ],
+   "unit": "mm",
+   "status": "SOURCED",
+   "source": "pin decision-DS-96: the bleeder note names a place outside x 0 to 100, y 150 to 250 of K"
+  },
+  "sensor_within_mm": {
+   "value": 3.0,
+   "unit": "mm",
+   "status": "SOURCED",
+   "source": "pin decision-DS-95: the proposal for #64 puts a sensor on the body of the part or on the board within 3 mm of it"
+  },
+  "thermal_survey_not_figures": {
+   "value": [
+    "fact-fault-switch-t-thermal-pad"
+   ],
+   "unit": "fact ids",
+   "status": "SOURCED",
+   "source": "pin fact-fault-switch-t-thermal-pad: the TMUX7412FRRPR pad fact ties the exposed pad to a net and holds no thermal resistance, junction limit or range"
   }
  },
  "inputs": {
@@ -13395,6 +13554,141 @@
     "courtyard_mm2": 71.262
    }
   ],
+  "place_source": {
+   "read": "floorplan",
+   "moved": 0,
+   "listed": 0
+  },
+  "exact_part_places": {
+   "CL10A105KB8NNNC": [
+    {
+     "ref": "C302",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      151.21,
+      177.39
+     ]
+    },
+    {
+     "ref": "C304",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      148.46,
+      174.89
+     ]
+    },
+    {
+     "ref": "C306",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      154.64,
+      176.71
+     ]
+    }
+   ],
+   "RC0603FR-072K2L": [
+    {
+     "ref": "R301",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      82.89,
+      98.41
+     ]
+    },
+    {
+     "ref": "R302",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      153.16,
+      101.64
+     ]
+    },
+    {
+     "ref": "R303",
+     "board": "K",
+     "side": "B.Cu",
+     "xy": [
+      168.14,
+      125.16
+     ]
+    }
+   ]
+  },
+  "link_figures": {
+   "links": 71,
+   "placed": 69,
+   "slots": 69,
+   "slot_area_mm2": 1082.25,
+   "loop_plan_area_mm2": 6162.7805,
+   "cable_plan_area_mm2": 32895.0
+  },
+  "plan_heat_row_W": [
+   34.83,
+   41.1
+  ],
+  "operating_ranges": {
+   "AS3340D": [],
+   "BCM847BS": [],
+   "CD74HC221M96": [],
+   "CL10A105KB8NNNC": [
+    {
+     "fact_id": "fact-power-reservoir-temperature",
+     "minimum": -55,
+     "maximum": 85
+    }
+   ],
+   "LF398M_NOPB": [],
+   "LM13700M_NOPB": [],
+   "LM393BIDR": [],
+   "NOISE2": [],
+   "OPA4196IDR": [],
+   "OPA4197IDR": [],
+   "OPA4197IPWR": [],
+   "RC0603FR-072K2L": [],
+   "REF5050AIDR": [],
+   "SN74HC00DR": [],
+   "SN74HC14DR": [
+    {
+     "fact_id": "fact-schmitt-temperature",
+     "minimum": -40,
+     "maximum": 85
+    }
+   ],
+   "SN74HC74DR": [
+    {
+     "fact_id": "fact-flipflop-temperature",
+     "minimum": -40,
+     "maximum": 85
+    }
+   ],
+   "TMUX6112PWR": [],
+   "TMUX7412FRRPR": []
+  },
+  "class_bundles": {
+   "AS3340D": "component-alfa-rpar-as3340d",
+   "BCM847BS": "component-nexperia-bcm847bs-115",
+   "CD74HC221M96": "component-ti-cd74hc221m96",
+   "CL10A105KB8NNNC": "component-samsung-cl10a105kb8nnnc",
+   "LF398M_NOPB": "component-ti-lf398m-nopb",
+   "LM13700M_NOPB": "component-ti-lm13700m-nopb",
+   "LM393BIDR": "component-ti-lm393bidr",
+   "NOISE2": "component-electric-druid-noise2",
+   "OPA4196IDR": "component-ti-opa4196idr",
+   "OPA4197IDR": "component-ti-opa4197idr",
+   "OPA4197IPWR": "component-ti-opa4197ipwr",
+   "RC0603FR-072K2L": "component-yageo-rc0603fr-072k2l",
+   "REF5050AIDR": "component-ti-ref5050aidr",
+   "SN74HC00DR": "component-ti-sn74hc00dr",
+   "SN74HC14DR": "component-ti-sn74hc14dr",
+   "SN74HC74DR": "component-ti-sn74hc74dr",
+   "TMUX6112PWR": "component-ti-tmux6112pwr",
+   "TMUX7412FRRPR": "component-ti-tmux7412frrpr"
+  },
   "module_K_centroids": {
    "A01": {
     "refs": 29,
