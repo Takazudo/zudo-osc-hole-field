@@ -229,23 +229,45 @@ def fh12_size(n, gopts, cable=None):
             'tail_width_mm': {'value': r4(0.5 * (n + 1))}, 'cable': row['cable'], 'cable_length_mm': row['cable_length_mm']}
 
 
+class GeoMaker:
+    """The rectangles of one size, built part by part so that the search screens the slot before it builds the rest."""
+
+    def __init__(self, size, opts, hard):
+        self.L, self.D, self.W = val(size['field_length_mm']), val(size['field_depth_mm']), val(size['tail_width_mm'])
+        sl = opts['slot']
+        self.hs = val(sl['length_mm']) / 2
+        self.sw = (self.W + val(sl['width_extra_mm'])) / 2
+        self.a0 = val(opts['cable']['straight_stiffened_outside_mm']) + val(opts['cable']['bend_radius_mm'])
+        self.hard = hard
+
+    def slot(self, sx, sy, d):
+        return {'slot': oriented_rect(sx, sy, d, -self.hs, self.hs, self.sw)}
+
+    def front(self, sx, sy, d, ef):
+        af = self.a0 + ef
+        return {'front_connector': oriented_rect(sx, sy, d, -(af + self.D), -af, self.L / 2),
+                'front_tail': oriented_rect(sx, sy, d, -af, -self.hs, self.W / 2),
+                'front_tail_first': oriented_rect(sx, sy, d, -af, -(af - self.hard), self.W / 2) if self.hard > 0 else None,
+                'tail_rule_hard_mm': r4(self.hard)}
+
+    def k(self, sx, sy, d, ek):
+        ak = self.a0 + ek
+        return {'K_tail': oriented_rect(sx, sy, d, self.hs, ak, self.W / 2),
+                'K_connector': oriented_rect(sx, sy, d, ak, ak + self.D, self.L / 2)}
+
+    def full(self, sx, sy, d, ef=0.0, ek=0.0):
+        g = self.slot(sx, sy, d)
+        g.update(self.front(sx, sy, d, ef))
+        g.update(self.k(sx, sy, d, ek))
+        g.update({'a_mm': r4(self.a0 + ef), 'b_mm': r4(self.a0 + ek), 'front_extension_mm': r4(ef),
+                  'K_extension_mm': r4(ek)})
+        return {k: g[k] for k in ('slot', 'front_connector', 'front_tail', 'front_tail_first', 'K_tail', 'K_connector',
+                                  'a_mm', 'b_mm', 'front_extension_mm', 'K_extension_mm', 'tail_rule_hard_mm')}
+
+
 def gate_geometry(sx, sy, d, size, opts, ef=0.0, ek=0.0, hard=4.0):
     """The Z path with tails lengthened by ef (front) and ek (K) beyond the minimum run of the study."""
-    L, D, W = val(size['field_length_mm']), val(size['field_depth_mm']), val(size['tail_width_mm'])
-    sl = opts['slot']
-    hs = val(sl['length_mm']) / 2
-    a0 = val(opts['cable']['straight_stiffened_outside_mm']) + val(opts['cable']['bend_radius_mm'])
-    af, ak = a0 + ef, a0 + ek
-    return {
-        'slot': oriented_rect(sx, sy, d, -hs, hs, (W + val(sl['width_extra_mm'])) / 2),
-        'front_connector': oriented_rect(sx, sy, d, -(af + D), -af, L / 2),
-        'front_tail': oriented_rect(sx, sy, d, -af, -hs, W / 2),
-        'front_tail_first': oriented_rect(sx, sy, d, -af, -(af - hard), W / 2) if hard > 0 else None,
-        'K_tail': oriented_rect(sx, sy, d, hs, ak, W / 2),
-        'K_connector': oriented_rect(sx, sy, d, ak, ak + D, L / 2),
-        'a_mm': r4(af), 'b_mm': r4(ak), 'front_extension_mm': r4(ef), 'K_extension_mm': r4(ek),
-        'tail_rule_hard_mm': r4(hard),
-    }
+    return GeoMaker(size, opts, hard).full(sx, sy, d, ef, ek)
 
 
 # ---------------------------------------------------------------- obstacle model of the gate
@@ -338,13 +360,28 @@ def check_slot(model, placed, front, geo, web, own):
     return None
 
 
-def check_front(model, placed, front, geo, own):
+def panel_hit(model, key, rect):
+    """The deepest panel-hardware pad on the rear face that `rect` enters, or None."""
+    worst = None
+    for _, (kind, g, label) in model.forb[(key, 'B')].near(rect):
+        if kind == 'rect' and label.startswith('panel hardware') and sg.inter(rect, g):
+            d = sg.overlap_depth(rect, g)
+            if worst is None or d > worst[1]:
+                worst = (label, r4(d))
+    return worst
+
+
+def check_front(model, placed, front, geo, own, shrink=0.0):
+    """`shrink` > 0 screens the field against panel-hardware pads with less courtyard growth (a comparison run)."""
     fc, ft, first = geo['front_connector'], geo['front_tail'], geo['front_tail_first']
     if not sg.rect_inside_poly(fc, model.outline[front], model.margin):
         return ('front field outside the %s outline less %.2f mm' % (front, model.margin), None)
     if not sg.rect_inside_poly(ft, model.outline[front], 0.0):
         return ('front tail not under its own front board %s' % front, None)
-    h = model.forbidden(front, 'B', fc)
+    if shrink > 0:
+        h = model.forbidden(front, 'B', fc, tail=True) or panel_hit(model, front, sg.grow(fc, -shrink))
+    else:
+        h = model.forbidden(front, 'B', fc)
     if h:
         return ('front field on %s' % h[0], h[1])
     h = model.forbidden(front, 'B', first) if first else None
@@ -383,9 +420,9 @@ def check_k(model, placed, geo):
     return None
 
 
-def evaluate(model, placed, front, geo, web, own):
+def evaluate(model, placed, front, geo, web, own, shrink=0.0):
     """(reason, depth) or None for one complete candidate; the search and the checker share these screens."""
-    return check_slot(model, placed, front, geo, web, own) or check_front(model, placed, front, geo, own) or \
+    return check_slot(model, placed, front, geo, web, own) or check_front(model, placed, front, geo, own, shrink) or \
         check_k(model, placed, geo)
 
 
@@ -409,18 +446,50 @@ def add_placed(placed, front, geo, lid):
 
 # ---------------------------------------------------------------- search
 
+def grid_offsets(step, radius, bbox=None, centre=None):
+    """Slot offsets on a square grid within `radius` (None: unbounded, limited to `bbox` around `centre`),
+    nearest first, as links.search_offsets orders them."""
+    if radius is None:
+        cx, cy = centre
+        xs = range(int(math.floor((bbox[0] - cx) / step)), int(math.ceil((bbox[2] - cx) / step)) + 1)
+        ys = range(int(math.floor((bbox[1] - cy) / step)), int(math.ceil((bbox[3] - cy) / step)) + 1)
+        pts = [(i * step, j * step) for i in xs for j in ys]
+    else:
+        n = int(round(radius / step))
+        pts = [(i * step, j * step) for i in range(-n, n + 1) for j in range(-n, n + 1)
+               if math.hypot(i * step, j * step) <= radius + 1e-9]
+    return sorted(pts, key=lambda o: (round(math.hypot(*o), 6), o))
+
+
 class Ctx:
     def __init__(self, inp, model, flags):
         self.inp, self.model, self.flags = inp, model, flags
         self.opts, self.gopts, self.cand = inp['opts'], inp['gopts'], inp['cand']
         self.web = val(self.opts['slot']['web_mm'])
         self.w = val(self.opts['search']['distance_weight_per_mm'])
-        self.offsets = links.search_offsets(self.opts)
+        self.step0 = val(self.opts['search']['step_mm'])
+        self.radius = val(self.opts['search']['radius_mm']) if flags['radius'] == 'study' else flags['radius']
+        self.offsets = grid_offsets(self.step0, self.radius) if self.radius is not None else None
+        self._grids = {}
+        # the field courtyard grows 0.25 mm per side over body and land; a run may grow it less against panel pads
+        self.panel_shrink = r4(val(self.gopts['field']['growth_mm']) - flags['panel_growth'])
         self.gaps = self.cand['stack']['mated_heights_mm']
         self.k_th = round(self.cand['stack']['K_face_z_mm'] - self.cand['stack']['K_rear_z_mm'], 4)
-        self.hard = val(self.gopts['tail_rule']['hard_mm']) if flags['tail_rule'] else 0.0
+        self.hard = flags['hard'] if flags['tail_rule'] else 0.0
         self.step = val(self.gopts['tail_lengthening']['step_mm'])
         self.a0 = val(self.opts['cable']['straight_stiffened_outside_mm']) + val(self.opts['cable']['bend_radius_mm'])
+
+    def grid(self, step, front, centre, radius='default'):
+        """Offsets of one search: the run's radius, or unbounded over the link's front board."""
+        radius = self.radius if radius == 'default' else radius
+        if radius is not None:
+            key = (step, radius)
+            if key not in self._grids:
+                self._grids[key] = grid_offsets(step, radius)
+            return self._grids[key]
+        ol = self.model.outline[front]
+        bbox = [min(p[0] for p in ol), min(p[1] for p in ol), max(p[0] for p in ol), max(p[1] for p in ol)]
+        return grid_offsets(step, None, bbox, centre)
 
     def need(self, front, a, b):
         return links.cable_needed(a, b, self.gaps[front + '/K'], self.k_th, self.opts)
@@ -435,73 +504,91 @@ class Ctx:
         return [r4(i * self.step) for i in range(n + 1)]
 
 
-def search(ctx, placed, front, centre, size, own, lengthen=True):
-    """The cheapest legal candidate (cost, key, geo, disp, d, slot, dist) or None, and the rejection tally."""
-    model, opts = ctx.model, ctx.opts
+def candidate(ctx, placed, front, size, own, sx, sy, d, dist, spare, lengthen=True, gm=None):
+    """One slot centre and direction: (reason, None) when illegal, else (None, (cost, geo, disp)) with the shortest
+    legal front extension and then the shortest legal K extension."""
+    model = ctx.model
+    gm = gm or GeoMaker(size, ctx.opts, ctx.hard)
+    why = check_slot(model, placed, front, gm.slot(sx, sy, d), ctx.web, own)
+    if why:
+        return why, None
+    ef, first_why = None, None
+    for e in (ctx.extensions(spare) if lengthen else [0.0]):
+        why = check_front(model, placed, front, gm.front(sx, sy, d, e), own, ctx.panel_shrink)
+        if not why:
+            ef = e
+            break
+        first_why = first_why or why
+    if ef is None:
+        return first_why or ('cable too short for the minimum tails', None), None
+    ek, first_why = None, None
+    for e in (ctx.extensions(r4(spare - ef)) if lengthen else [0.0]):
+        why = check_k(model, placed, gm.k(sx, sy, d, e))
+        if not why:
+            ek = e
+            break
+        first_why = first_why or why
+    if ek is None:
+        return first_why or ('cable too short for the minimum tails', None), None
+    geo = gm.full(sx, sy, d, ef, ek)
+    disp = displaced(model, front, geo)
+    k_refs = set(disp['K F (slot)']) | set(disp['K B (slot)']) | set(disp['K B (field)'])
+    return None, (len(disp['front B']) + len(k_refs) + ctx.w * (dist + ef + ek), geo, disp)
+
+
+def search(ctx, placed, front, centre, size, own, lengthen=True, offsets=None, limit=None, collect=None):
+    """The cheapest legal candidate (cost, key, geo, disp, d, slot, dist) or None, and the rejection tally.
+    `limit`: a candidate costing more is not legal (the improvement pass). `collect`: return up to that many legal
+    candidates, cheapest first, instead (no early stop)."""
+    offsets = offsets or ctx.grid(ctx.step0, front, centre)
     spare = ctx.spare(front, size)
-    ext_f = ctx.extensions(spare) if lengthen else [0.0]
+    gm = GeoMaker(size, ctx.opts, ctx.hard)
     cx, cy = centre
-    best, tally = None, {}
-
-    def note(why):
-        if best is None:
-            t = tally.setdefault(why[0], [0, None])
-            t[0] += 1
-            if why[1] is not None and (t[1] is None or why[1] < t[1]):
-                t[1] = why[1]
-
-    for off in ctx.offsets:
+    best, tally, found = None, {}, []
+    for off in offsets:
         dist = math.hypot(*off)
-        if best is not None and ctx.w * dist > best[0] + 1e-9:
+        if collect is None and best is not None and ctx.w * dist > best[0] + 1e-9:
+            break
+        if limit is not None and ctx.w * dist > limit + 1e-9:
             break
         sx, sy = r4(cx + off[0]), r4(cy + off[1])
         for di, d in enumerate(DIRS):
-            geo0 = gate_geometry(sx, sy, d, size, opts, hard=ctx.hard)
-            why = check_slot(model, placed, front, geo0, ctx.web, own)
+            why, c = candidate(ctx, placed, front, size, own, sx, sy, d, dist, spare, lengthen, gm)
             if why:
-                note(why)
+                if best is None:
+                    t = tally.setdefault(why[0], [0, None])
+                    t[0] += 1
+                    if why[1] is not None and (t[1] is None or why[1] < t[1]):
+                        t[1] = why[1]
                 continue
-            ef, first_why = None, None
-            for e in ext_f:
-                g = gate_geometry(sx, sy, d, size, opts, ef=e, hard=ctx.hard) if e else geo0
-                why = check_front(model, placed, front, g, own)
-                if not why:
-                    ef = e
-                    break
-                first_why = first_why or why
-            if ef is None:
-                note(first_why)
+            cost, geo, disp = c
+            if limit is not None and cost > limit + 1e-9:
                 continue
-            ek, first_why = None, None
-            for e in (ctx.extensions(r4(spare - ef)) if lengthen else [0.0]):
-                g = gate_geometry(sx, sy, d, size, opts, ek=e, hard=ctx.hard) if e else geo0
-                why = check_k(model, placed, g)
-                if not why:
-                    ek = e
-                    break
-                first_why = first_why or why
-            if ek is None:
-                note(first_why)
-                continue
-            geo = gate_geometry(sx, sy, d, size, opts, ef=ef, ek=ek, hard=ctx.hard)
-            disp = displaced(model, front, geo)
-            k_refs = set(disp['K F (slot)']) | set(disp['K B (slot)']) | set(disp['K B (field)'])
-            cost = len(disp['front B']) + len(k_refs) + ctx.w * (dist + ef + ek)
-            key = (round(cost, 6), round(dist, 6), di, ef, ek, sx, sy)
+            key = (round(cost, 6), round(dist, 6), di, geo['front_extension_mm'], geo['K_extension_mm'], sx, sy)
+            cand = (cost, key, geo, disp, d, (sx, sy), dist)
+            if collect is not None:
+                found.append(cand)
             if best is None or key < best[1]:
-                best = (cost, key, geo, disp, d, (sx, sy), dist)
+                best = cand
+    if collect is not None:
+        return sorted(found, key=lambda c: c[1])[:collect], tally
     return best, tally
+
+
+def smallest_miss(tally):
+    v = [x[1] for k, x in tally.items() if x[1] is not None]
+    return min(v) if v else None
 
 
 def nearest_misses(ctx, placed, front, centre, size, own, k=3):
     """The candidates nearest the link centre and the screen that rejects each (for links without a place)."""
     out = []
     cx, cy = centre
-    for off in ctx.offsets:
+    for off in ctx.grid(ctx.step0, front, centre):
         sx, sy = r4(cx + off[0]), r4(cy + off[1])
         for d in DIRS:
             geo = gate_geometry(sx, sy, d, size, ctx.opts, hard=ctx.hard)
-            why = evaluate(ctx.model, placed, front, geo, ctx.web, own)
+            why = evaluate(ctx.model, placed, front, geo, ctx.web, own, ctx.panel_shrink)
             if why and 'outline' not in why[0] and 'K edge' not in why[0] and 'own front board' not in why[0]:
                 out.append({'slot_centre': [sx, sy], 'direction': DIR_NAMES[d], 'screen': why[0],
                             'penetration_mm': why[1], 'distance_mm': r4(math.hypot(*off))})
@@ -524,16 +611,20 @@ def link_record(ctx, lid, joint, front, members, site_by, size):
             'positions': pos}
 
 
-def place(ctx, placed, rec, size, centre, own):
-    best, tally = search(ctx, placed, rec['front_board'], centre, size, own)
+def place(ctx, placed, rec, size, centre, own, offsets=None, grid=None, best=None):
+    tally = {}
+    if best is None:
+        best, tally = search(ctx, placed, rec['front_board'], centre, size, own, offsets=offsets)
     if best is None:
         return False, tally
     _, _, geo, disp, d, (sx, sy), dist = best
     lengthened = geo['front_extension_mm'] > 0 or geo['K_extension_mm'] > 0
     only = False
     if lengthened:
-        b0, _ = search(ctx, placed, rec['front_board'], centre, size, own, lengthen=False)
+        b0, _ = search(ctx, placed, rec['front_board'], centre, size, own, lengthen=False, offsets=offsets)
         only = b0 is None
+    for k in ('no_place', 'sites', 'nearest_misses', 'most_frequent_blockers', 'why_no_place'):
+        rec.pop(k, None)
     front = rec['front_board']
     add_placed(placed, front, geo, rec['id'])
     need = ctx.need(front, geo['a_mm'], geo['b_mm'])
@@ -542,7 +633,8 @@ def place(ctx, placed, rec, size, centre, own):
                 'lengthened_tail': lengthened, 'placed_only_with_lengthened_tail': only,
                 'trim_leads': trim_list(ctx.model, front, geo),
                 'under_tails': links.under_tails(ctx.model, front, geo),
-                'cable_needed_mm': need, 'loop_mm': r4(size['cable_length_mm'] - need)})
+                'cable_needed_mm': need, 'loop_mm': r4(size['cable_length_mm'] - need),
+                'grid_mm': grid or ctx.step0, 'cost': r4(best[0])})
     return True, tally
 
 
@@ -581,8 +673,195 @@ def place_gate(inp, sites, flags):
             prefix = '%s-%s-L' % (joint.replace(' ', '').replace('via', '-'), front)
             for c in gate_cluster(fs, ladder[0], jr, prefix):
                 _place_ladder(ctx, placed, out, unplaced, joint, front, c, ladder, 0, site_by, jr)
+    if flags['refine']:
+        refine(ctx, placed, out)
+        placed = improve(ctx, out)
+        if flags['analyse']:
+            for r in out:
+                if not r['placed']:
+                    r['why_no_place'] = why_no_place(ctx, placed, r)
     _latch(ctx, out)
     return model, ctx, out
+
+
+def rec_size(ctx, r):
+    return fh12_size(r['circuits'], ctx.gopts, {'cable': r['cable'], 'cable_length_mm': r['cable_length_mm']})
+
+
+def rec_own(r):
+    return r['front_board'] if r['joint'] == 'O-K' else None
+
+
+def placed_index(out, skip=()):
+    placed = links.Placed()
+    for r in out:
+        if r['placed'] and r['id'] not in skip:
+            add_placed(placed, r['front_board'], r['geometry'], r['id'])
+    return placed
+
+
+def refine(ctx, placed, out):
+    """Item 1 of part 2: every link without a place on the 2.0 mm grid is searched again on 0.5 mm, and on 0.25 mm
+    where its smallest miss on 0.5 mm is below 0.5 mm; placed links fixed, rules, sizes, radius and cost unchanged."""
+    rg = ctx.gopts['refinement']
+    g1, g2 = val(rg['grids_mm'])
+    thr = val(rg['quarter_grid_below_mm'])
+    rr = ctx.flags['refine_radius']
+    for r in out:
+        if r['placed']:
+            continue
+        front, size, own, centre = r['front_board'], rec_size(ctx, r), rec_own(r), r['centre']
+        tried, miss, best = [], None, None
+        for g in (g1, g2):
+            if g == g2 and (miss is None or miss >= thr):
+                break
+            offs = ctx.grid(g, front, centre, rr)
+            best, tally = search(ctx, placed, front, centre, size, own, offsets=offs)
+            tried.append(g)
+            if best:
+                place(ctx, placed, r, size, centre, own, offsets=offs, grid=g, best=best)
+                r['refinement'] = {'found': True, 'by': 'finer grid', 'grid_mm': g, 'grids_tried_mm': tried}
+                break
+            miss = smallest_miss(tally)
+        if not best:
+            r['refinement'] = {'found': False, 'grids_tried_mm': tried, 'smallest_miss_mm': miss}
+
+
+def improve(ctx, out):
+    """The bounded improvement pass of part 2 item 1 (rule in link-gate-options.json refinement.improvement)."""
+    ip = ctx.gopts['refinement']['improvement']
+    g1 = val(ctx.gopts['refinement']['grids_mm'])[0]
+    rr = ctx.flags['refine_radius']
+    cap = val(ip['candidates_per_link'])
+    for rnd in range(1, val(ip['rounds']) + 1):
+        changed = False
+        for u in [r for r in out if not r['placed']]:
+            front, size, own, centre = u['front_board'], rec_size(ctx, u), rec_own(u), u['centre']
+            offs = ctx.grid(g1, front, centre, rr)
+            cands, _ = search(ctx, links.Placed(), front, centre, size, own, offsets=offs, collect=cap)
+            pl = [r for r in out if r['placed']]
+            tried = set()
+            for c in cands:
+                geo = c[2]
+                blockers = []
+                for b in pl:
+                    if math.hypot(b['slot_centre'][0] - c[5][0], b['slot_centre'][1] - c[5][1]) > 80:
+                        continue
+                    one = links.Placed()
+                    add_placed(one, b['front_board'], b['geometry'], b['id'])
+                    if evaluate(ctx.model, one, front, geo, ctx.web, own, ctx.panel_shrink):
+                        blockers.append(b)
+                        if len(blockers) > 1:
+                            break
+                if len(blockers) != 1 or blockers[0]['id'] in tried:
+                    continue
+                b = blockers[0]
+                tried.add(b['id'])
+                others = placed_index(out, skip={b['id']})
+                add_placed(others, front, geo, u['id'])
+                bsize = rec_size(ctx, b)
+                boffs = ctx.grid(g1, b['front_board'], b['centre'], rr)
+                limit = r4(b['cost'] + val(ip['allowance']))
+                nb, _ = search(ctx, others, b['front_board'], b['centre'], bsize, rec_own(b), offsets=boffs, limit=limit)
+                if not nb:
+                    continue
+                old = {'slot_centre': b['slot_centre'], 'direction': b['direction'], 'cost': b['cost'], 'grid_mm': b['grid_mm']}
+                place(ctx, others, b, bsize, b['centre'], rec_own(b), offsets=boffs, grid=g1, best=nb)
+                b['moved_by_improvement'] = dict(old, round=rnd, to_free_a_place_for=u['id'], new_cost=b['cost'])
+                allp = placed_index(out, skip={u['id']})
+                if evaluate(ctx.model, allp, front, geo, ctx.web, own, ctx.panel_shrink):
+                    raise AssertionError('improvement pass left %s illegal' % u['id'])
+                place(ctx, allp, u, size, centre, own, offsets=offs, grid=g1, best=c)
+                u['refinement'] = {'found': True, 'by': 'improvement pass', 'round': rnd, 'grid_mm': g1, 'moved': b['id']}
+                changed = True
+                break
+        if not changed:
+            break
+    return placed_index(out)
+
+
+def field_screen(model, placed, front, fc, own, shrink):
+    if not sg.rect_inside_poly(fc, model.outline[front], model.margin):
+        return ('outline', None)
+    h = (model.forbidden(front, 'B', fc, tail=True) or panel_hit(model, front, sg.grow(fc, -shrink))) if shrink > 0 \
+        else model.forbidden(front, 'B', fc)
+    h = h or model.between_hit_for(fc, own) or placed.hit(front, 'B', fc) or placed.hit(front, 'S', fc)
+    return h
+
+
+def corridor(model, front, rect, axis):
+    """Free span between panel-hardware pads through `rect` along `axis` (0: x, 1: y), within the band that the
+    rect covers across it; (free, needed), free None where no pad bounds a side within 30 mm."""
+    lo_i, hi_i = (0, 2) if axis == 0 else (1, 3)
+    blo, bhi = (1, 3) if axis == 0 else (0, 2)
+    c = (rect[lo_i] + rect[hi_i]) / 2
+    probe = list(rect)
+    probe[lo_i], probe[hi_i] = c - 30, c + 30
+    left, right = None, None
+    for _, (kind, g, label) in model.forb[(front, 'B')].near(probe):
+        if kind != 'rect' or not label.startswith('panel hardware'):
+            continue
+        if g[bhi] <= rect[blo] or g[blo] >= rect[bhi] or g[hi_i] < c - 30 or g[lo_i] > c + 30:
+            continue
+        if (g[lo_i] + g[hi_i]) / 2 < c:
+            left = g[hi_i] if left is None else max(left, g[hi_i])
+        else:
+            right = g[lo_i] if right is None else min(right, g[lo_i])
+    free = None if left is None or right is None else r4(right - left)
+    return free, r4(rect[hi_i] - rect[lo_i])
+
+
+def why_no_place(ctx, placed, r):
+    """Item 2 of part 2: the deepest stage any candidate reaches (field, first 4.0 mm of the tail, slot on K), the
+    smallest penetration there and the free corridor between panel pads at that candidate."""
+    model = ctx.model
+    front, size, own, centre = r['front_board'], rec_size(ctx, r), rec_own(r), r['centre']
+    g = (r.get('refinement') or {}).get('grids_tried_mm', [ctx.step0])[-1]
+    spare = ctx.spare(front, size)
+    best = {}
+    for off in ctx.grid(g, front, centre, ctx.flags['refine_radius']):
+        sx, sy = r4(centre[0] + off[0]), r4(centre[1] + off[1])
+        for d in DIRS:
+            for e in ctx.extensions(spare):
+                geo = gate_geometry(sx, sy, d, size, ctx.opts, ef=e, hard=ctx.hard)
+                fc = geo['front_connector']
+                h = field_screen(model, placed, front, fc, own, ctx.panel_shrink)
+                if h:
+                    stage, why = 0, h
+                else:
+                    first = geo['front_tail_first']
+                    h = model.forbidden(front, 'B', first) if first else None
+                    if h:
+                        stage, why = 1, h
+                    else:
+                        w2 = check_front(model, placed, front, geo, own, ctx.panel_shrink) or \
+                            check_slot(model, placed, front, geo, ctx.web, own)
+                        if w2 is None:
+                            k_ok = any(check_k(model, placed, gate_geometry(sx, sy, d, size, ctx.opts, ef=e, ek=k, hard=ctx.hard)) is None
+                                       for k in ctx.extensions(r4(spare - e)))
+                            w2 = None if k_ok else ('K side', None)
+                        stage, why = 2, w2 or ('legal', 0.0)
+                if why[1] is None:
+                    continue
+                cur = best.get(stage)
+                if cur is None or why[1] < cur[0]:
+                    best[stage] = (why[1], why[0], geo, (sx, sy), DIR_NAMES[d], e)
+    if not best:
+        return {'lacks': 'no candidate inside the board margins', 'grid_mm': g}
+    stage = max(best)
+    pen, label, geo, slot, dname, e = best[stage]
+    fc = geo['front_connector']
+    fx, fy = corridor(model, front, fc, 0), corridor(model, front, fc, 1)
+    out = {'lacks': ('the field', 'the first %.1f mm of the tail' % ctx.hard, 'the slot on K or the K side')[stage],
+           'grid_mm': g, 'smallest_penetration_mm': pen, 'blocker': label,
+           'at': {'slot_centre': list(slot), 'direction': dname, 'front_extension_mm': e},
+           'field_corridor_mm': {'x': {'free': fx[0], 'needed': fx[1]}, 'y': {'free': fy[0], 'needed': fy[1]}}}
+    if stage >= 1 and geo['front_tail_first']:
+        ax = 0 if dname in ('+x', '-x') else 1
+        first = geo['front_tail_first']
+        across, w = corridor(model, front, first, 1 - ax)
+        out['tail_corridor_mm'] = {'across': {'free': across, 'needed': w}, 'first_length_needed': ctx.hard}
+    return out
 
 
 def _place_ladder(ctx, placed, out, unplaced, joint, front, c, ladder, k, site_by, jr):
@@ -699,17 +978,19 @@ def summarise(ctx, out, post_k):
         'front_displaced_refs': fronts}
 
 
-FULL = {'ladder': True, 'tail_rule': True, 'lengthen': True, 'adapters': True, 'p_fixed': 8}
+FULL = {'ladder': True, 'tail_rule': True, 'lengthen': True, 'adapters': True, 'p_fixed': 8, 'refine': True,
+        'radius': 'study', 'hard': 4.0, 'panel_growth': 0.25, 'refine_radius': 'default', 'analyse': True}
 CAUSES = [
-    ('class rule, fixed sizes (JL/JR 40, P 8)', {'ladder': False, 'tail_rule': False, 'lengthen': False, 'adapters': False}),
-    ('+ mixed sizes on P', {'ladder': True, 'tail_rule': False, 'lengthen': False, 'adapters': False}),
-    ('+ tail rule', {'ladder': True, 'tail_rule': True, 'lengthen': False, 'adapters': False}),
-    ('+ lengthened tails', {'ladder': True, 'tail_rule': True, 'lengthen': True, 'adapters': False}),
-    ('+ adapter links (the gate option)', {'ladder': True, 'tail_rule': True, 'lengthen': True, 'adapters': True}),
+    ('class rule, fixed sizes (JL/JR 40, P 8)', {'ladder': False, 'tail_rule': False, 'lengthen': False, 'adapters': False, 'refine': False}),
+    ('+ mixed sizes on P', {'ladder': True, 'tail_rule': False, 'lengthen': False, 'adapters': False, 'refine': False}),
+    ('+ tail rule', {'ladder': True, 'tail_rule': True, 'lengthen': False, 'adapters': False, 'refine': False}),
+    ('+ lengthened tails', {'ladder': True, 'tail_rule': True, 'lengthen': True, 'adapters': False, 'refine': False}),
+    ('+ adapter links (the gate option of part 1)', {'ladder': True, 'tail_rule': True, 'lengthen': True, 'adapters': True,
+                                                     'refine': False}),
 ]
 # not a step of the chain: the trade that DS-61 names if links lose their place under the 4.0 mm rule
 TRADE = ('comparison: the gate option without the 4.0 mm rule (every lead under a front tail trimmed)',
-         {'ladder': True, 'tail_rule': False, 'lengthen': True, 'adapters': True})
+         {'ladder': True, 'tail_rule': False, 'lengthen': True, 'adapters': True, 'refine': False})
 
 
 def gate_run(inp, sites, flags, post_k):
@@ -750,16 +1031,78 @@ def study_field_runs(inp, gopts):
     return rows
 
 
-def generate(root=sg.ROOT, causes=True):
+# item 3 of part 2: one ASSUMED term per run, each a comparison and not a result
+SENSITIVITY = [
+    ('tail rule hard length 3.0 mm', {'hard': 3.0}),
+    ('tail rule hard length 2.0 mm', {'hard': 2.0}),
+    ('tail rule hard length 1.0 mm', {'hard': 1.0}),
+    ('field growth against panel pads 0.10 mm', {'panel_growth': 0.10}),
+    ('field growth against panel pads 0 mm', {'panel_growth': 0.0}),
+    ('search radius 36 mm', {'radius': 36.0}),
+    ('search radius unbounded over the front board (2.0 mm grid; refined within 36 mm)', {'radius': None, 'refine_radius': 36.0}),
+]
+
+_WORKER = {}
+
+
+def _worker_inputs(root):
+    if root not in _WORKER:
+        inp = load_inputs(root)
+        _WORKER[root] = (inp, gate_sites(inp), links.post_keepout_k(inp['root']))
+    return _WORKER[root]
+
+
+def _task(task):
+    kind, root, label, flags, extra = task
+    inp, sites, post_k = _worker_inputs(root)
+    if kind == 'field':
+        return kind, label, study_field_runs(inp, inp['gopts'])
+    _, ctx, out, s, _ = gate_run(inp, sites, dict(flags, analyse=False), post_k)
+    if kind == 'cause':
+        st = _step(label, s)
+        if extra:
+            st['trim_leads'] = s['trim_leads']
+        return kind, label, st
+    # sensitivity: how many of the links without a place on the 2.0 mm grid of the record still have none
+    site_of = {m: r for r in out for m in r['members']}
+    rows = []
+    for lid, members in extra:
+        hold = {site_of[m]['id']: site_of[m] for m in members}
+        ok = all(h['placed'] for h in hold.values())
+        rows.append({'link': lid, 'placed': ok,
+                     'slot_distance_from_centre_mm': max(h['slot_distance_from_centre_mm'] for h in hold.values()) if ok else None})
+    return kind, label, dict(_step(label, s), trim_leads=s['trim_leads'], links_of_part1=rows,
+                             remaining_of_part1=sum(1 for r in rows if not r['placed']))
+
+
+def nearest_legal(ctx, placed, r, step):
+    """Distance from the link centre of the nearest legal place, unbounded over its front board (refined grid)."""
+    front, size, own, centre = r['front_board'], rec_size(ctx, r), rec_own(r), r['centre']
+    spare = ctx.spare(front, size)
+    gm = GeoMaker(size, ctx.opts, ctx.hard)
+    for off in ctx.grid(step, front, centre, None):
+        dist = math.hypot(*off)
+        sx, sy = r4(centre[0] + off[0]), r4(centre[1] + off[1])
+        for d in DIRS:
+            why, c = candidate(ctx, placed, front, size, own, sx, sy, d, dist, spare, True, gm)
+            if not why:
+                return {'distance_mm': r4(dist), 'slot_centre': [sx, sy], 'direction': DIR_NAMES[d], 'grid_mm': step}
+    return None
+
+
+def generate(root=sg.ROOT, causes=True, processes=4):
     inp = load_inputs(root)
     sites = gate_sites(inp)
     post_k = links.post_keepout_k(inp['root'])
     model, ctx, out, s, refs = gate_run(inp, sites, {}, post_k)
+    part1 = [(r['id'], r['members']) for r in out if 'refinement' in r]
+    rg = inp['gopts']['refinement']
     doc = {'provenance': {'generator': 'scripts/stack/geometry/links_gate.py', 'regenerate': REGEN,
                           'input_sha256': input_hashes(inp)},
            'schema_version': 1,
-           'status': 'GATE OPTION of DS-67, attempt a7 (without the fixing list of ST-08, the DS-44 JR lands and the '
-                     're-placement search: attempt a8); courtyard level; unvalidated drafts; nothing selected',
+           'status': 'GATE OPTION of DS-67, attempt a7 with the refinement of part 2 (without the fixing list of ST-08, '
+                     'the DS-44 JR lands and the re-placement search: attempt a8); courtyard level; unvalidated drafts; '
+                     'nothing selected',
            'signals': {'total': len(sum((x['signals'] for x in sites), [])),
                        'by_joint': {j: sum(len(x['signals']) for x in sites if x['joint'] == j) for j in JOINTS},
                        'by_class': _by_class(sites),
@@ -771,21 +1114,41 @@ def generate(root=sg.ROOT, causes=True):
            'search': {'step_mm': val(inp['opts']['search']['step_mm']), 'radius_mm': val(inp['opts']['search']['radius_mm']),
                       'tail_step_mm': ctx.step, 'tail_rule_hard_mm': ctx.hard,
                       'spare_mm': {'%s, %s' % (f, z['cable']): ctx.spare(f, fh12_size(z['circuits'], inp['gopts']))
-                                   for f in FRONTS + ADAPTERS for z in inp['gopts']['sizes']}},
+                                   for f in FRONTS + ADAPTERS for z in inp['gopts']['sizes']},
+                      'refinement': {'grids_mm': val(rg['grids_mm']), 'quarter_grid_below_mm': val(rg['quarter_grid_below_mm']),
+                                     'rule': rg['rule'], 'improvement': {
+                                         'rounds': val(rg['improvement']['rounds']),
+                                         'allowance': val(rg['improvement']['allowance']),
+                                         'candidates_per_link': val(rg['improvement']['candidates_per_link']),
+                                         'rule': rg['improvement']['rule']},
+                                     'links_without_a_place_on_the_2_mm_grid': len(part1),
+                                     'found_on_finer_grid': {str(g): sum(1 for r in out if (r.get('refinement') or {}).get('by') == 'finer grid'
+                                                                         and r['refinement']['grid_mm'] == g) for g in val(rg['grids_mm'])},
+                                     'found_by_improvement_pass': sum(1 for r in out if (r.get('refinement') or {}).get('by') == 'improvement pass'),
+                                     'links_moved_by_improvement_pass': sum(1 for r in out if 'moved_by_improvement' in r),
+                                     'remaining': sum(1 for r in out if not r['placed'])}},
            'summary': s,
            'adapters_at_8': adapter_small_check(ctx, out, sites),
+           'nearest_legal_unbounded': {r['id']: nearest_legal(ctx, placed_index(out), r, val(rg['grids_mm'])[0])
+                                       for r in out if not r['placed']},
            'refs': refs,
            'links': out}
     if causes:
-        doc['field_change'] = study_field_runs(inp, inp['gopts'])
-        steps = []
-        for label, flags in CAUSES[:-1]:
-            *_, cs, _ = gate_run(inp, sites, flags, post_k)
-            steps.append(_step(label, cs))
-        steps.append(_step(CAUSES[-1][0], s))
-        *_, ts, _ = gate_run(inp, sites, TRADE[1], post_k)
-        steps.append(dict(_step(TRADE[0], ts), trim_leads=ts['trim_leads']))
-        doc['causes'] = steps
+        root = str(inp['root'])
+        # the longest runs first, so that the pool finishes together
+        tasks = [('sens', root, label, flags, part1) for label, flags in SENSITIVITY[::-1]]
+        tasks += [('field', root, 'field', None, None)]
+        tasks += [('cause', root, label, flags, False) for label, flags in CAUSES]
+        tasks += [('cause', root, TRADE[0], TRADE[1], True)]
+        if processes > 1:
+            import multiprocessing
+            with multiprocessing.Pool(processes) as pool:
+                res = pool.map(_task, tasks, chunksize=1)
+        else:
+            res = [_task(x) for x in tasks]
+        doc['field_change'] = next(r for k, _, r in res if k == 'field')
+        doc['causes'] = [r for k, _, r in res if k == 'cause']
+        doc['sensitivity'] = [r for k, _, r in res if k == 'sens'][::-1]
     return doc
 
 
