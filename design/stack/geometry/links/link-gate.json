@@ -13,21 +13,21 @@
    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
    "design/partition/partition.json": "7e3f5a39b001f80f38572c837a60e197fbb08ae588296e1d3bcb1339718db48f",
    "design/stack/geometry/check-report.json": "36a4fd1d819b264d7a63bee4899c6ef04ef0df8a0cafb1f60477f17de6d6c3bd",
-   "design/stack/geometry/links/link-gate-options.json": "16b1ee3b8701299c2f7300e0fac53d614c4073b110f1f0220cf14f01f2554041",
+   "design/stack/geometry/links/link-gate-options.json": "67f914245b7fcbe8f26ac5ac10a6831af25dcedd1b67026e207404d3b8feb120",
    "design/stack/geometry/links/link-options.json": "b0a60bf721b155200fc6a5b9304b20b84767638959c7f009a794f93f4e7bb4c9",
    "design/stack/geometry/parameters.json": "0a2edef523be698e3fbecda50f5576a5826de4a9346ed2102a5a10f2813d4577",
    "design/stack/geometry/stack-candidate.json": "9bd03493c0a98c36357c90ee56e86dec57eb3dd5d0793a84f49f34f1c5d25f54",
    "scripts/stack/geometry/kicad_extract.py": "23093e93bf8a5c9072310531d771f9592783673c13f9a23dd70eb9272505ecdd",
    "scripts/stack/geometry/links.py": "928814c730d87538e3eadcb03394bfd7ccc53fd45a86ea92e20c1149d0715f50",
-   "scripts/stack/geometry/links_gate.py": "dac101c00be4327466a62fdf826d7248d06c5da0dc2cdbb40a2656e0fd03e16d",
-   "scripts/stack/geometry/links_gate_readme.py": "b0fb3ef32cd97a1c7d011f53a68bffa7b4a270eed3d185a77b3e4f4e496a349d",
+   "scripts/stack/geometry/links_gate.py": "de0e096a2fab8ac34f10545829f7276dd7f2314433b43f354ddd37e3650b3538",
+   "scripts/stack/geometry/links_gate_readme.py": "9506ea83195e4d5398024515900923c9b1354f5636da3c00724dbf46a13c6d8d",
    "scripts/stack/geometry/links_readme.py": "d0f742ca4781f3fd9901c663cb53abc303b48494ec5240e38bd1819bcbd59d6f",
    "scripts/stack/geometry/stackgeom.py": "70db6b0833512a20029b743c49d9adf0fe1b69ef8bb4d0063afc3515cb07d7ab",
    "design/stack/link-electrical/inputs.json#classes": "6ac572e477047d7974032ce507f0e6e73c2ea6e1d0f7dfee10cf05f2f0cedbd2"
   }
  },
  "schema_version": 1,
- "status": "GATE OPTION of DS-67, attempt a7 (without the fixing list of ST-08, the DS-44 JR lands and the re-placement search: attempt a8); courtyard level; unvalidated drafts; nothing selected",
+ "status": "GATE OPTION of DS-67, attempt a7 with the refinement of part 2 (without the fixing list of ST-08, the DS-44 JR lands and the re-placement search: attempt a8); courtyard level; unvalidated drafts; nothing selected",
  "signals": {
   "total": 511,
   "by_joint": {
@@ -2639,19 +2639,41 @@
    "O5, C32128": 26.6602,
    "O5, C68390": 16.6602,
    "O5, C29534": 16.6602
+  },
+  "refinement": {
+   "grids_mm": [
+    0.5,
+    0.25
+   ],
+   "quarter_grid_below_mm": 0.5,
+   "rule": "links without a place on the 2.0 mm grid are searched again in their order, every placed link fixed, same rules, sizes, radius and cost; a place found is fixed before the next link; the tail-extension step stays 2.0 mm",
+   "improvement": {
+    "rounds": 2,
+    "allowance": 2.0,
+    "candidates_per_link": 400,
+    "rule": "for a link still without a place: among its rules-legal places (cheapest first), one that exactly one placed link blocks; that link is searched again on the 0.5 mm grid with the blocked link placed there and every other link fixed, and is moved when its new cost is at most its recorded cost plus the allowance; each blocking link is tried once per blocked link and round"
+   },
+   "links_without_a_place_on_the_2_mm_grid": 24,
+   "found_on_finer_grid": {
+    "0.5": 14,
+    "0.25": 4
+   },
+   "found_by_improvement_pass": 4,
+   "links_moved_by_improvement_pass": 4,
+   "remaining": 2
   }
  },
  "summary": {
   "links": 71,
-  "placed": 47,
-  "unplaced": 24,
-  "slots": 47,
-  "connectors": 94,
-  "latches": 94,
+  "placed": 69,
+  "unplaced": 2,
+  "slots": 69,
+  "connectors": 138,
+  "latches": 138,
   "signals_on_links": 511,
-  "signals_on_placed_links": 415,
-  "grounds": 300,
-  "unused_positions": 345,
+  "signals_on_placed_links": 499,
+  "grounds": 332,
+  "unused_positions": 405,
   "per_joint_and_size": {
    "O-K": {
     "FH12-N14": {
@@ -2702,8 +2724,8 @@
     },
     "FH12-N8": {
      "links": 36,
-     "placed": 15,
-     "unplaced": 21,
+     "placed": 34,
+     "unplaced": 2,
      "signals": 146,
      "grounds": 60,
      "unused": 82
@@ -2728,8 +2750,8 @@
     },
     "FH12-N8": {
      "links": 3,
-     "placed": 0,
-     "unplaced": 3,
+     "placed": 3,
+     "unplaced": 0,
      "signals": 8,
      "grounds": 5,
      "unused": 11
@@ -2737,36 +2759,36 @@
    }
   },
   "K_displaced": {
-   "F.Cu by slots": 38,
-   "B.Cu by slots": 85,
-   "B.Cu by fields": 157,
-   "total": 269,
-   "outside_post_keepouts": 268,
+   "F.Cu by slots": 53,
+   "B.Cu by slots": 109,
+   "B.Cu by fields": 181,
+   "total": 326,
+   "outside_post_keepouts": 325,
    "split": {
-    "ICs": 80,
-    "resistors": 96,
-    "capacitors": 54,
-    "other": 39
+    "ICs": 90,
+    "resistors": 122,
+    "capacitors": 71,
+    "other": 43
    }
   },
   "front_displaced": {
    "JL": 35,
    "JR": 52,
-   "P": 21,
+   "P": 24,
    "O1": 0,
    "O3": 0,
    "O5": 0
   },
   "front_displaced_split": {
-   "ICs": 32,
+   "ICs": 33,
    "resistors": 18,
-   "capacitors": 28,
+   "capacitors": 30,
    "other": 30
   },
-  "front_tails_over_panel_hardware": 36,
-  "trim_leads": 58,
-  "lengthened_tails": 24,
-  "placed_only_with_lengthened_tail": 6,
+  "front_tails_over_panel_hardware": 57,
+  "trim_leads": 99,
+  "lengthened_tails": 34,
+  "placed_only_with_lengthened_tail": 7,
   "cable_needed_mm": [
    33.3398,
    49.3398
@@ -2776,7 +2798,7 @@
    16.6602
   ],
   "links_over_cable_length": 0,
-  "latch_not_shown": 25
+  "latch_not_shown": 37
  },
  "adapters_at_8": [
   {
@@ -2893,6 +2915,26 @@
    }
   }
  ],
+ "nearest_legal_unbounded": {
+  "P-K-P-L14.01.01.01": {
+   "distance_mm": 78.1041,
+   "slot_centre": [
+    80.6667,
+    239.6667
+   ],
+   "direction": "+y",
+   "grid_mm": 0.5
+  },
+  "P-K-P-L14.02.01.01": {
+   "distance_mm": 77.785,
+   "slot_centre": [
+    233.3333,
+    199.5
+   ],
+   "direction": "+y",
+   "grid_mm": 0.5
+  }
+ },
  "refs": {
   "K_displaced_refs": {
    "F.Cu by slots": [
@@ -2900,8 +2942,10 @@
     "C1419",
     "C2226",
     "C2314",
+    "C4222",
     "C4432",
     "C4449",
+    "C5215",
     "C8440",
     "D2121",
     "D2305",
@@ -2913,19 +2957,32 @@
     "R1473",
     "R2147",
     "R2260",
+    "R2323",
+    "R2345",
+    "R4201",
     "R4272",
+    "R4273",
+    "R4284",
     "R4337",
+    "R5147",
+    "R5224",
+    "R5228",
+    "R5250",
     "R5261",
+    "R8341",
     "R8404",
     "R8420",
+    "R8431",
     "RB1112",
     "RB1322",
     "RB1413",
     "RB4332",
+    "RV2309",
     "RV4204",
     "U2212",
     "U4110",
     "U4132",
+    "U4235",
     "U4313",
     "U4341",
     "U4420",
@@ -2937,15 +2994,21 @@
    ],
    "B.Cu by slots": [
     "C1101",
+    "C1316",
     "C1413",
     "C1444",
     "C1607",
-    "C2340",
+    "C4239",
     "C4242",
     "C4247",
     "C4430",
     "C4641",
+    "C5131",
+    "C5202",
     "C5212",
+    "C5213",
+    "C5219",
+    "C5234",
     "C8106",
     "C8114",
     "C8402",
@@ -2954,6 +3017,7 @@
     "D2106",
     "D2123",
     "D4430",
+    "D5108",
     "D5112",
     "Q4606",
     "R1134",
@@ -2962,9 +3026,14 @@
     "R1335",
     "R1358",
     "R1364",
+    "R1432",
     "R1462",
     "R1474",
     "R1475",
+    "R1539",
+    "R1551",
+    "R1589",
+    "R1591",
     "R2124",
     "R2132",
     "R2148",
@@ -2974,7 +3043,12 @@
     "R2391",
     "R4474",
     "R4599",
+    "R5130",
+    "R5133",
+    "R5161",
+    "R5165",
     "R5226",
+    "R5251",
     "R5258",
     "R5260",
     "R8123",
@@ -2986,6 +3060,7 @@
     "RB1422",
     "RB1427",
     "RB1531",
+    "RB1533",
     "RB2103",
     "RB4501",
     "RV2113",
@@ -2993,18 +3068,23 @@
     "RV4103",
     "RV4507",
     "U1313",
+    "U1410",
     "U1413",
     "U1414",
     "U2209",
     "U2210",
     "U2211",
     "U2215",
+    "U2310",
     "U2312",
     "U2313",
     "U4115",
     "U4128",
     "U4129",
+    "U4207",
+    "U4214",
     "U4225",
+    "U4227",
     "U4230",
     "U4324",
     "U4326",
@@ -3018,6 +3098,7 @@
     "U4605",
     "U4626",
     "U4628",
+    "U5201",
     "U6101",
     "U8108",
     "U8409"
@@ -3034,17 +3115,27 @@
     "C1407",
     "C1409",
     "C1411",
+    "C1413",
     "C1430",
+    "C1530",
+    "C1605",
     "C2106",
     "C2231",
-    "C2339",
+    "C2333",
+    "C2334",
+    "C2336",
+    "C2338",
     "C2342",
     "C4221",
+    "C4224",
     "C4244",
     "C4450",
     "C4468",
     "C4551",
     "C4643",
+    "C5111",
+    "C5130",
+    "C5228",
     "C5230",
     "C5236",
     "C6112",
@@ -3055,6 +3146,7 @@
     "C8136",
     "C8438",
     "C8439",
+    "D2319",
     "D2323",
     "Q2103",
     "Q2303",
@@ -3064,6 +3156,9 @@
     "R1282",
     "R1318",
     "R1328",
+    "R1333",
+    "R1336",
+    "R1339",
     "R1353",
     "R1354",
     "R1356",
@@ -3089,9 +3184,9 @@
     "R1472",
     "R1493",
     "R1497",
+    "R1521",
     "R1526",
     "R1558",
-    "R1563",
     "R1608",
     "R2230",
     "R2368",
@@ -3102,10 +3197,13 @@
     "R4444",
     "R4473",
     "R4484",
+    "R5128",
     "R5148",
     "R5230",
     "R5247",
+    "R5253",
     "R5263",
+    "R5269",
     "R6106",
     "R6119",
     "R7315",
@@ -3122,13 +3220,13 @@
     "RB1328",
     "RB1332",
     "RB1414",
-    "RB1533",
+    "RB2302",
+    "RB4229",
     "RV2107",
     "RV2213",
     "RV8407",
     "RVO1308",
     "RVO1408",
-    "RVO1510",
     "U111",
     "U1113",
     "U113",
@@ -3140,6 +3238,7 @@
     "U1407",
     "U1410",
     "U1415",
+    "U1505",
     "U1601",
     "U1603",
     "U2213",
@@ -3148,13 +3247,17 @@
     "U2306",
     "U2310",
     "U2311",
-    "U2313",
+    "U2312",
     "U2314",
+    "U2315",
     "U4112",
     "U4120",
     "U4122",
     "U4128",
     "U4205",
+    "U4207",
+    "U4214",
+    "U4216",
     "U4221",
     "U4222",
     "U4225",
@@ -3173,6 +3276,8 @@
     "U4625",
     "U4626",
     "U4628",
+    "U5107",
+    "U5205",
     "U5207",
     "U5209",
     "U5210",
@@ -3276,10 +3381,12 @@
    ],
    "P": [
     "C103",
+    "C108",
     "C130",
     "C207",
     "C222",
     "C230",
+    "C3306",
     "C3407",
     "C4105",
     "C4203",
@@ -3293,6 +3400,7 @@
     "U108",
     "U202",
     "U208",
+    "U3303",
     "U3403",
     "U4111",
     "U4511"
@@ -3475,6 +3583,8 @@
    },
    "cable_needed_mm": 33.3398,
    "loop_mm": 16.6602,
+   "grid_mm": 2.0,
+   "cost": 6.0,
    "latch_reach": {
     "neighbours_within_margin": [],
     "verdict": "open"
@@ -3661,6 +3771,8 @@
    },
    "cable_needed_mm": 33.3398,
    "loop_mm": 16.6602,
+   "grid_mm": 2.0,
+   "cost": 8.0,
    "latch_reach": {
     "neighbours_within_margin": [
      "C1144",
@@ -3855,6 +3967,8 @@
    },
    "cable_needed_mm": 33.3398,
    "loop_mm": 16.6602,
+   "grid_mm": 2.0,
+   "cost": 11.5,
    "latch_reach": {
     "neighbours_within_margin": [
      "C1416",
@@ -4184,6 +4298,8 @@
    },
    "cable_needed_mm": 39.3398,
    "loop_mm": 10.6602,
+   "grid_mm": 2.0,
+   "cost": 6.0,
    "sizes_tried": [
     40
    ],
@@ -4524,6 +4640,8 @@
    },
    "cable_needed_mm": 43.3398,
    "loop_mm": 6.6602,
+   "grid_mm": 2.0,
+   "cost": 15.0,
    "sizes_tried": [
     40
    ],
@@ -4883,6 +5001,8 @@
    },
    "cable_needed_mm": 39.3398,
    "loop_mm": 10.6602,
+   "grid_mm": 2.0,
+   "cost": 20.5,
    "sizes_tried": [
     40
    ],
@@ -5193,6 +5313,8 @@
    },
    "cable_needed_mm": 49.3398,
    "loop_mm": 0.6602,
+   "grid_mm": 2.0,
+   "cost": 10.0277,
    "sizes_tried": [
     40
    ],
@@ -5504,6 +5626,8 @@
    },
    "cable_needed_mm": 39.3398,
    "loop_mm": 10.6602,
+   "grid_mm": 2.0,
+   "cost": 0.0,
    "sizes_tried": [
     40
    ],
@@ -5786,6 +5910,8 @@
    },
    "cable_needed_mm": 39.3398,
    "loop_mm": 10.6602,
+   "grid_mm": 2.0,
+   "cost": 6.6926,
    "sizes_tried": [
     40
    ],
@@ -6112,6 +6238,8 @@
    },
    "cable_needed_mm": 39.3398,
    "loop_mm": 10.6602,
+   "grid_mm": 2.0,
+   "cost": 6.5,
    "sizes_tried": [
     40
    ],
@@ -6426,6 +6554,8 @@
    },
    "cable_needed_mm": 47.3398,
    "loop_mm": 2.6602,
+   "grid_mm": 2.0,
+   "cost": 17.5,
    "sizes_tried": [
     40
    ],
@@ -6775,6 +6905,8 @@
    },
    "cable_needed_mm": 39.3398,
    "loop_mm": 10.6602,
+   "grid_mm": 2.0,
+   "cost": 17.5,
    "sizes_tried": [
     40
    ],
@@ -7099,6 +7231,8 @@
    },
    "cable_needed_mm": 39.3398,
    "loop_mm": 10.6602,
+   "grid_mm": 2.0,
+   "cost": 10.2361,
    "sizes_tried": [
     40
    ],
@@ -7431,6 +7565,8 @@
    },
    "cable_needed_mm": 43.3398,
    "loop_mm": 6.6602,
+   "grid_mm": 2.0,
+   "cost": 15.8523,
    "sizes_tried": [
     40
    ],
@@ -7771,6 +7907,8 @@
    },
    "cable_needed_mm": 45.3398,
    "loop_mm": 4.6602,
+   "grid_mm": 2.0,
+   "cost": 17.0,
    "sizes_tried": [
     40
    ],
@@ -8123,6 +8261,8 @@
    },
    "cable_needed_mm": 39.3398,
    "loop_mm": 10.6602,
+   "grid_mm": 2.0,
+   "cost": 18.8079,
    "sizes_tried": [
     40
    ],
@@ -8482,6 +8622,8 @@
    },
    "cable_needed_mm": 39.3398,
    "loop_mm": 10.6602,
+   "grid_mm": 2.0,
+   "cost": 20.3852,
    "sizes_tried": [
     40
    ],
@@ -8815,6 +8957,8 @@
    },
    "cable_needed_mm": 39.3398,
    "loop_mm": 10.6602,
+   "grid_mm": 2.0,
+   "cost": 21.5,
    "sizes_tried": [
     40
    ],
@@ -9025,6 +9169,8 @@
    },
    "cable_needed_mm": 41.3398,
    "loop_mm": 8.6602,
+   "grid_mm": 2.0,
+   "cost": 9.0311,
    "sizes_tried": [
     40,
     26,
@@ -9223,6 +9369,8 @@
    },
    "cable_needed_mm": 37.3398,
    "loop_mm": 12.6602,
+   "grid_mm": 2.0,
+   "cost": 13.6056,
    "sizes_tried": [
     40,
     26,
@@ -9426,6 +9574,8 @@
    },
    "cable_needed_mm": 39.3398,
    "loop_mm": 10.6602,
+   "grid_mm": 2.0,
+   "cost": 10.9083,
    "sizes_tried": [
     40,
     26,
@@ -9626,6 +9776,8 @@
    },
    "cable_needed_mm": 43.3398,
    "loop_mm": 6.6602,
+   "grid_mm": 2.0,
+   "cost": 13.6231,
    "sizes_tried": [
     40,
     26,
@@ -9914,6 +10066,8 @@
    },
    "cable_needed_mm": 43.3398,
    "loop_mm": 16.6602,
+   "grid_mm": 2.0,
+   "cost": 23.4244,
    "sizes_tried": [
     40,
     26
@@ -10104,6 +10258,8 @@
    },
    "cable_needed_mm": 45.3398,
    "loop_mm": 4.6602,
+   "grid_mm": 2.0,
+   "cost": 5.2361,
    "sizes_tried": [
     40,
     26,
@@ -10255,6 +10411,8 @@
    },
    "cable_needed_mm": 45.3398,
    "loop_mm": 4.6602,
+   "grid_mm": 2.0,
+   "cost": 8.5,
    "sizes_tried": [
     40,
     26,
@@ -10403,6 +10561,8 @@
    },
    "cable_needed_mm": 49.3398,
    "loop_mm": 0.6602,
+   "grid_mm": 2.0,
+   "cost": 9.0,
    "sizes_tried": [
     40,
     26,
@@ -10482,83 +10642,97 @@
     276.0
    ],
    "slot_centre": [
-    235.5,
-    256.0
+    227.0,
+    268.5
    ],
-   "direction": "+y",
-   "slot_distance_from_centre_mm": 20.0,
+   "direction": "-y",
+   "slot_distance_from_centre_mm": 11.3358,
    "geometry": {
     "slot": [
-     232.75,
-     255.25,
-     238.25,
-     256.75
+     224.25,
+     267.75,
+     229.75,
+     269.25
     ],
     "front_connector": [
-     230.7,
-     231.5,
-     240.3,
-     237.6
+     222.2,
+     274.9,
+     231.8,
+     281.0
     ],
     "front_tail": [
-     233.25,
-     237.6,
-     237.75,
-     255.25
+     224.75,
+     269.25,
+     229.25,
+     274.9
     ],
     "front_tail_first": [
-     233.25,
-     237.6,
-     237.75,
-     241.6
+     224.75,
+     270.9,
+     229.25,
+     274.9
     ],
     "K_tail": [
-     233.25,
-     256.75,
-     237.75,
-     262.4
+     224.75,
+     262.1,
+     229.25,
+     267.75
     ],
     "K_connector": [
-     230.7,
-     262.4,
-     240.3,
-     268.5
+     222.2,
+     256.0,
+     231.8,
+     262.1
     ],
-    "a_mm": 18.4,
+    "a_mm": 6.4,
     "b_mm": 6.4,
-    "front_extension_mm": 12.0,
+    "front_extension_mm": 0.0,
     "K_extension_mm": 0.0,
     "tail_rule_hard_mm": 4.0
    },
    "displaced": {
-    "front B": [
-     "C130",
-     "U108",
-     "U208"
+    "front B": [],
+    "K F (slot)": [
+     "R4284"
     ],
-    "K F (slot)": [],
     "K B (slot)": [],
     "K B (field)": []
    },
-   "lengthened_tail": true,
-   "placed_only_with_lengthened_tail": true,
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
    "trim_leads": [
-    "RV1405"
+    "RV1307",
+    "RV1407"
    ],
    "under_tails": {
     "front tail": [
-     "RV1405"
+     "RV1307",
+     "RV1407"
     ],
     "K tail": []
    },
-   "cable_needed_mm": 49.3398,
-   "loop_mm": 0.6602,
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 0.5,
+   "cost": 3.8339,
    "sizes_tried": [
     40,
     26,
     14,
     8
    ],
+   "moved_by_improvement": {
+    "slot_centre": [
+     235.5,
+     256.0
+    ],
+    "direction": "+y",
+    "cost": 11.0,
+    "grid_mm": 2.0,
+    "round": 1,
+    "to_free_a_place_for": "P-K-P-L04.02.01.01",
+    "new_cost": 3.8339
+   },
    "latch_reach": {
     "neighbours_within_margin": [],
     "verdict": "open"
@@ -10708,6 +10882,8 @@
    },
    "cable_needed_mm": 49.3398,
    "loop_mm": 0.6602,
+   "grid_mm": 2.0,
+   "cost": 6.5495,
    "sizes_tried": [
     40,
     26,
@@ -10787,47 +10963,47 @@
     248.0
    ],
    "slot_centre": [
-    251.5,
-    244.0
+    236.0,
+    243.5
    ],
    "direction": "+y",
-   "slot_distance_from_centre_mm": 16.4924,
+   "slot_distance_from_centre_mm": 4.5277,
    "geometry": {
     "slot": [
-     248.75,
-     243.25,
-     254.25,
-     244.75
+     233.25,
+     242.75,
+     238.75,
+     244.25
     ],
     "front_connector": [
-     246.7,
-     231.5,
-     256.3,
-     237.6
+     231.2,
+     231.0,
+     240.8,
+     237.1
     ],
     "front_tail": [
-     249.25,
-     237.6,
-     253.75,
-     243.25
+     233.75,
+     237.1,
+     238.25,
+     242.75
     ],
     "front_tail_first": [
-     249.25,
-     237.6,
-     253.75,
-     241.6
+     233.75,
+     237.1,
+     238.25,
+     241.1
     ],
     "K_tail": [
-     249.25,
-     244.75,
-     253.75,
-     250.4
+     233.75,
+     244.25,
+     238.25,
+     249.9
     ],
     "K_connector": [
-     246.7,
-     250.4,
-     256.3,
-     256.5
+     231.2,
+     249.9,
+     240.8,
+     256.0
     ],
     "a_mm": 6.4,
     "b_mm": 6.4,
@@ -10837,12 +11013,7 @@
    },
    "displaced": {
     "front B": [
-     "C230",
-     "C4203",
-     "C4204",
-     "R4222",
-     "R4223",
-     "R4226",
+     "C130",
      "U208"
     ],
     "K F (slot)": [],
@@ -10858,12 +11029,26 @@
    },
    "cable_needed_mm": 37.3398,
    "loop_mm": 12.6602,
+   "grid_mm": 0.5,
+   "cost": 3.1319,
    "sizes_tried": [
     40,
     26,
     14,
     8
    ],
+   "moved_by_improvement": {
+    "slot_centre": [
+     251.5,
+     244.0
+    ],
+    "direction": "+y",
+    "cost": 11.1231,
+    "grid_mm": 2.0,
+    "round": 1,
+    "to_free_a_place_for": "P-K-P-L04.02.01.02",
+    "new_cost": 3.1319
+   },
    "latch_reach": {
     "neighbours_within_margin": [],
     "verdict": "open"
@@ -10931,7 +11116,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     252.5,
     276.0
@@ -10942,80 +11127,91 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-10",
-     "xy": [
-      252.5,
-      283.0
-     ],
-     "signals": [
-      "/A04/REF5",
-      "/A04/REFN5"
-     ]
-    },
-    {
-     "site": "K-P-6",
-     "xy": [
-      252.5,
-      269.0
-     ],
-     "signals": [
-      "/A03/C38cac0_W",
-      "/A03/Cc045d2_W"
-     ]
-    }
+   "refinement": {
+    "found": true,
+    "by": "improvement pass",
+    "round": 1,
+    "grid_mm": 0.5,
+    "moved": "P-K-P-L04.01.01.02"
+   },
+   "slot_centre": [
+    244.0,
+    269.0
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      252.5,
-      276.0
-     ],
-     "direction": "+x",
-     "screen": "first 4.0 mm of the front tail on panel hardware RV1507",
-     "penetration_mm": 1.25,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      252.5,
-      276.0
-     ],
-     "direction": "-x",
-     "screen": "first 4.0 mm of the front tail on panel hardware RV1507",
-     "penetration_mm": 1.25,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      252.5,
-      276.0
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV1507",
-     "penetration_mm": 1.0,
-     "distance_mm": 0.0
-    }
+   "direction": "-y",
+   "slot_distance_from_centre_mm": 11.0114,
+   "geometry": {
+    "slot": [
+     241.25,
+     268.25,
+     246.75,
+     269.75
+    ],
+    "front_connector": [
+     239.2,
+     275.4,
+     248.8,
+     281.5
+    ],
+    "front_tail": [
+     241.75,
+     269.75,
+     246.25,
+     275.4
+    ],
+    "front_tail_first": [
+     241.75,
+     271.4,
+     246.25,
+     275.4
+    ],
+    "K_tail": [
+     241.75,
+     262.6,
+     246.25,
+     268.25
+    ],
+    "K_connector": [
+     239.2,
+     256.5,
+     248.8,
+     262.6
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [
+     "C4222"
+    ],
+    "K B (slot)": [],
+    "K B (field)": []
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV1407",
+    "RV1507"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV1407",
-     "candidates": 105,
-     "smallest_penetration_mm": 0.25
-    },
-    {
-     "blocker": "front field on panel hardware RV1507",
-     "candidates": 101,
-     "smallest_penetration_mm": 0.15
-    },
-    {
-     "blocker": "slot on K field of P-K-P-L04.01.01.02",
-     "candidates": 96,
-     "smallest_penetration_mm": 0.35
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV1407",
+     "RV1507"
+    ],
+    "K tail": []
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 0.5,
+   "cost": 3.7528,
+   "latch_reach": {
+    "neighbours_within_margin": [],
+    "verdict": "open"
+   }
   },
   {
    "id": "P-K-P-L04.02.01.02",
@@ -11079,7 +11275,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     252.5,
     248.0
@@ -11090,80 +11286,91 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-12",
-     "xy": [
-      252.5,
-      255.0
-     ],
-     "signals": [
-      "/A05/IN_REMOTE",
-      "/A05/REF5"
-     ]
-    },
-    {
-     "site": "K-P-15",
-     "xy": [
-      252.5,
-      241.0
-     ],
-     "signals": [
-      "/A06/REF5",
-      "/A06/REFN5"
-     ]
-    }
+   "refinement": {
+    "found": true,
+    "by": "improvement pass",
+    "round": 1,
+    "grid_mm": 0.5,
+    "moved": "P-K-P-L04.01.02.02"
+   },
+   "slot_centre": [
+    251.5,
+    244.0
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      252.5,
-      248.0
-     ],
-     "direction": "+x",
-     "screen": "slot on slot of P-K-P-L04.01.02.02",
-     "penetration_mm": 1.5,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      252.5,
-      248.0
-     ],
-     "direction": "-x",
-     "screen": "slot on slot of P-K-P-L04.01.02.02",
-     "penetration_mm": 1.5,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      252.5,
-      248.0
-     ],
-     "direction": "+y",
-     "screen": "slot on K tail of P-K-P-L04.01.02.02",
-     "penetration_mm": 3.15,
-     "distance_mm": 0.0
-    }
-   ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "slot on front field of P-K-P-L04.01.02.02 (front board P)",
-     "candidates": 112,
-     "smallest_penetration_mm": 0.35
-    },
-    {
-     "blocker": "slot on slot of P-K-P-L04.01.01.02",
-     "candidates": 96,
-     "smallest_penetration_mm": 0.5
-    },
-    {
-     "blocker": "slot on slot of P-K-P-L04.01.02.02",
-     "candidates": 88,
-     "smallest_penetration_mm": 0.5
-    }
-   ]
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 4.1231,
+   "geometry": {
+    "slot": [
+     248.75,
+     243.25,
+     254.25,
+     244.75
+    ],
+    "front_connector": [
+     246.7,
+     231.5,
+     256.3,
+     237.6
+    ],
+    "front_tail": [
+     249.25,
+     237.6,
+     253.75,
+     243.25
+    ],
+    "front_tail_first": [
+     249.25,
+     237.6,
+     253.75,
+     241.6
+    ],
+    "K_tail": [
+     249.25,
+     244.75,
+     253.75,
+     250.4
+    ],
+    "K_connector": [
+     246.7,
+     250.4,
+     256.3,
+     256.5
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [
+     "C230",
+     "C4203",
+     "C4204",
+     "R4222",
+     "R4223",
+     "R4226",
+     "U208"
+    ],
+    "K F (slot)": [],
+    "K B (slot)": [],
+    "K B (field)": []
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [],
+   "under_tails": {
+    "front tail": [],
+    "K tail": []
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 0.5,
+   "cost": 8.0308,
+   "latch_reach": {
+    "neighbours_within_margin": [],
+    "verdict": "open"
+   }
   },
   {
    "id": "P-K-P-L05.01.01",
@@ -11339,6 +11546,8 @@
    },
    "cable_needed_mm": 37.3398,
    "loop_mm": 12.6602,
+   "grid_mm": 2.0,
+   "cost": 18.0,
    "sizes_tried": [
     40,
     26,
@@ -11542,6 +11751,8 @@
    },
    "cable_needed_mm": 49.3398,
    "loop_mm": 0.6602,
+   "grid_mm": 2.0,
+   "cost": 12.9244,
    "sizes_tried": [
     40,
     26,
@@ -11621,7 +11832,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     31.5,
     283.0
@@ -11632,91 +11843,90 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-81",
-     "xy": [
-      14.5,
-      283.0
-     ],
-     "signals": [
-      "/O1/C1eb779_W",
-      "/O1/C42d8cd_W"
-     ]
-    },
-    {
-     "site": "K-P-88",
-     "xy": [
-      31.5,
-      283.0
-     ],
-     "signals": [
-      "/O2/C1eb779_W",
-      "/O2/C42d8cd_W"
-     ]
-    },
-    {
-     "site": "K-P-95",
-     "xy": [
-      48.5,
-      283.0
-     ],
-     "signals": [
-      "/O3/C1eb779_W",
-      "/O3/C42d8cd_W"
-     ]
-    }
+   "slot_centre": [
+    40.0,
+    275.5
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      31.5,
-      283.0
-     ],
-     "direction": "+x",
-     "screen": "front field on panel hardware RV108",
-     "penetration_mm": 2.3,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      31.5,
-      283.0
-     ],
-     "direction": "-x",
-     "screen": "front field on panel hardware RV308",
-     "penetration_mm": 2.3,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      31.5,
-      283.0
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV207",
-     "penetration_mm": 1.75,
-     "distance_mm": 0.0
-    }
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 11.3358,
+   "geometry": {
+    "slot": [
+     37.25,
+     274.75,
+     42.75,
+     276.25
+    ],
+    "front_connector": [
+     35.2,
+     257.0,
+     44.8,
+     263.1
+    ],
+    "front_tail": [
+     37.75,
+     263.1,
+     42.25,
+     274.75
+    ],
+    "front_tail_first": [
+     37.75,
+     263.1,
+     42.25,
+     267.1
+    ],
+    "K_tail": [
+     37.75,
+     276.25,
+     42.25,
+     281.9
+    ],
+    "K_connector": [
+     35.2,
+     281.9,
+     44.8,
+     288.0
+    ],
+    "a_mm": 12.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 6.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [],
+    "K B (slot)": [],
+    "K B (field)": []
+   },
+   "lengthened_tail": true,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV207",
+    "RV307"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV207",
-     "candidates": 217,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "front field on panel hardware RV307",
-     "candidates": 133,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "front field on panel hardware RV107",
-     "candidates": 119,
-     "smallest_penetration_mm": 0.3
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV207",
+     "RV307"
+    ],
+    "K tail": []
+   },
+   "cable_needed_mm": 43.3398,
+   "loop_mm": 6.6602,
+   "grid_mm": 0.5,
+   "cost": 4.3339,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.5,
+    "grids_tried_mm": [
+     0.5
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [],
+    "verdict": "open"
+   }
   },
   {
    "id": "P-K-P-L06.01.02.02",
@@ -11872,6 +12082,8 @@
    },
    "cable_needed_mm": 49.3398,
    "loop_mm": 0.6602,
+   "grid_mm": 2.0,
+   "cost": 18.0,
    "sizes_tried": [
     40,
     26,
@@ -12113,6 +12325,8 @@
    },
    "cable_needed_mm": 49.3398,
    "loop_mm": 10.6602,
+   "grid_mm": 2.0,
+   "cost": 20.6569,
    "sizes_tried": [
     40,
     26
@@ -12288,6 +12502,8 @@
    },
    "cable_needed_mm": 49.3398,
    "loop_mm": 0.6602,
+   "grid_mm": 2.0,
+   "cost": 8.0,
    "sizes_tried": [
     40,
     26,
@@ -12646,6 +12862,8 @@
    },
    "cable_needed_mm": 37.3398,
    "loop_mm": 12.6602,
+   "grid_mm": 2.0,
+   "cost": 29.5277,
    "sizes_tried": [
     40
    ],
@@ -13006,6 +13224,8 @@
    },
    "cable_needed_mm": 37.3398,
    "loop_mm": 12.6602,
+   "grid_mm": 2.0,
+   "cost": 17.5811,
    "sizes_tried": [
     40
    ],
@@ -13072,7 +13292,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     48.5,
     227.0
@@ -13083,69 +13303,98 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-72",
-     "xy": [
-      48.5,
-      227.0
-     ],
-     "signals": [
-      "/M5A/C2c2153_W",
-      "/M5A/C445167_W"
-     ]
-    }
+   "slot_centre": [
+    57.0,
+    247.0
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      48.5,
-      227.0
-     ],
-     "direction": "+x",
-     "screen": "slot on K field of P-K-P-L07",
-     "penetration_mm": 2.1875,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      48.5,
-      227.0
-     ],
-     "direction": "-x",
-     "screen": "slot on K field of P-K-P-L07",
-     "penetration_mm": 2.1875,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      48.5,
-      227.0
-     ],
-     "direction": "+y",
-     "screen": "slot on K field of P-K-P-L07",
-     "penetration_mm": 0.1875,
-     "distance_mm": 0.0
-    }
+   "direction": "-y",
+   "slot_distance_from_centre_mm": 21.7313,
+   "geometry": {
+    "slot": [
+     54.25,
+     246.25,
+     59.75,
+     247.75
+    ],
+    "front_connector": [
+     52.2,
+     261.4,
+     61.8,
+     267.5
+    ],
+    "front_tail": [
+     54.75,
+     247.75,
+     59.25,
+     261.4
+    ],
+    "front_tail_first": [
+     54.75,
+     257.4,
+     59.25,
+     261.4
+    ],
+    "K_tail": [
+     54.75,
+     240.6,
+     59.25,
+     246.25
+    ],
+    "K_connector": [
+     52.2,
+     234.5,
+     61.8,
+     240.6
+    ],
+    "a_mm": 14.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 8.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [],
+    "K B (slot)": [
+     "C1316",
+     "R1432"
+    ],
+    "K B (field)": [
+     "R1339"
+    ]
+   },
+   "lengthened_tail": true,
+   "placed_only_with_lengthened_tail": true,
+   "trim_leads": [
+    "RV306",
+    "RV406"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "slot on slot of P-K-P-L07",
-     "candidates": 296,
-     "smallest_penetration_mm": 0.375
-    },
-    {
-     "blocker": "slot on K field of P-K-P-L07",
-     "candidates": 246,
-     "smallest_penetration_mm": 0.1875
-    },
-    {
-     "blocker": "slot on slot of P-K-P-L06.01.02.02",
-     "candidates": 116,
-     "smallest_penetration_mm": 0.5
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV306",
+     "RV406"
+    ],
+    "K tail": []
+   },
+   "cable_needed_mm": 45.3398,
+   "loop_mm": 4.6602,
+   "grid_mm": 0.5,
+   "cost": 10.4328,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.5,
+    "grids_tried_mm": [
+     0.5
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "R1419",
+     "RVO1411"
+    ],
+    "verdict": "NOT SHOWN (neighbour heights not retained)"
+   }
   },
   {
    "id": "P-K-P-L10.01.01",
@@ -13328,6 +13577,8 @@
    },
    "cable_needed_mm": 39.3398,
    "loop_mm": 10.6602,
+   "grid_mm": 2.0,
+   "cost": 6.5311,
    "sizes_tried": [
     40,
     26,
@@ -13415,88 +13666,110 @@
     241.0
    ],
    "slot_centre": [
-    91.5,
-    223.0
+    91.0,
+    225.0
    ],
-   "direction": "+x",
-   "slot_distance_from_centre_mm": 19.6977,
+   "direction": "-y",
+   "slot_distance_from_centre_mm": 18.1177,
    "geometry": {
     "slot": [
-     90.75,
-     220.25,
-     92.25,
+     88.25,
+     224.25,
+     93.75,
      225.75
     ],
     "front_connector": [
-     79.0,
-     218.2,
-     85.1,
-     227.8
+     86.2,
+     233.4,
+     95.8,
+     239.5
     ],
     "front_tail": [
-     85.1,
-     220.75,
-     90.75,
-     225.25
+     88.75,
+     225.75,
+     93.25,
+     233.4
     ],
     "front_tail_first": [
-     85.1,
-     220.75,
-     89.1,
-     225.25
+     88.75,
+     229.4,
+     93.25,
+     233.4
     ],
     "K_tail": [
-     92.25,
-     220.75,
-     97.9,
-     225.25
+     88.75,
+     218.6,
+     93.25,
+     224.25
     ],
     "K_connector": [
-     97.9,
-     218.2,
-     104.0,
-     227.8
+     86.2,
+     212.5,
+     95.8,
+     218.6
     ],
-    "a_mm": 6.4,
+    "a_mm": 8.4,
     "b_mm": 6.4,
-    "front_extension_mm": 0.0,
+    "front_extension_mm": 2.0,
     "K_extension_mm": 0.0,
     "tail_rule_hard_mm": 4.0
    },
    "displaced": {
     "front B": [],
     "K F (slot)": [],
-    "K B (slot)": [],
+    "K B (slot)": [
+     "R1539"
+    ],
     "K B (field)": [
-     "R1563",
-     "RB1533",
-     "RVO1510",
+     "C1413",
+     "C1605",
      "U1410"
     ]
    },
-   "lengthened_tail": false,
+   "lengthened_tail": true,
    "placed_only_with_lengthened_tail": false,
-   "trim_leads": [],
+   "trim_leads": [
+    "RV504",
+    "RV604"
+   ],
    "under_tails": {
-    "front tail": [],
+    "front tail": [
+     "RV504",
+     "RV604"
+    ],
     "K tail": [
      "C1436",
-     "R1539",
-     "RB1533",
-     "RVO1510"
+     "U1410"
     ]
    },
-   "cable_needed_mm": 37.3398,
-   "loop_mm": 12.6602,
+   "cable_needed_mm": 39.3398,
+   "loop_mm": 10.6602,
+   "grid_mm": 0.5,
+   "cost": 9.0294,
    "sizes_tried": [
     40,
     26,
     14,
     8
    ],
+   "moved_by_improvement": {
+    "slot_centre": [
+     91.5,
+     223.0
+    ],
+    "direction": "+x",
+    "cost": 8.9244,
+    "grid_mm": 2.0,
+    "round": 1,
+    "to_free_a_place_for": "P-K-P-L12.01.01.02",
+    "new_cost": 9.0294
+   },
    "latch_reach": {
     "neighbours_within_margin": [
-     "C1436"
+     "C1412",
+     "C1437",
+     "R1469",
+     "RB1528"
     ],
     "verdict": "NOT SHOWN (neighbour heights not retained)"
    }
@@ -13636,6 +13909,8 @@
    },
    "cable_needed_mm": 39.3398,
    "loop_mm": 10.6602,
+   "grid_mm": 2.0,
+   "cost": 10.2009,
    "sizes_tried": [
     40,
     26,
@@ -13705,7 +13980,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     99.5,
     227.0
@@ -13716,69 +13991,102 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-43",
-     "xy": [
-      99.5,
-      227.0
-     ],
-     "signals": [
-      "/F1/FREQ_REMOTE",
-      "/F1/GAIN_REMOTE"
-     ]
-    }
+   "slot_centre": [
+    108.0,
+    227.0
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      99.5,
-      227.0
-     ],
-     "direction": "+x",
-     "screen": "slot on K field of P-K-P-L10.01.02.01",
-     "penetration_mm": 2.35,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      99.5,
-      227.0
-     ],
-     "direction": "-x",
-     "screen": "slot on K field of P-K-P-L10.01.02.01",
-     "penetration_mm": 2.35,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      99.5,
-      227.0
-     ],
-     "direction": "+y",
-     "screen": "slot on K field of P-K-P-L10.01.02.01",
-     "penetration_mm": 1.55,
-     "distance_mm": 0.0
-    }
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 8.5,
+   "geometry": {
+    "slot": [
+     105.25,
+     226.25,
+     110.75,
+     227.75
+    ],
+    "front_connector": [
+     103.2,
+     214.5,
+     112.8,
+     220.6
+    ],
+    "front_tail": [
+     105.75,
+     220.6,
+     110.25,
+     226.25
+    ],
+    "front_tail_first": [
+     105.75,
+     220.6,
+     110.25,
+     224.6
+    ],
+    "K_tail": [
+     105.75,
+     227.75,
+     110.25,
+     233.4
+    ],
+    "K_connector": [
+     103.2,
+     233.4,
+     112.8,
+     239.5
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [],
+    "K B (slot)": [
+     "R1551",
+     "R1589",
+     "R1591"
+    ],
+    "K B (field)": [
+     "C1530",
+     "R1521",
+     "U1505"
+    ]
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV604",
+    "RV704"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV605",
-     "candidates": 170,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "front field on panel hardware RV604",
-     "candidates": 163,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "front field on panel hardware RV704",
-     "candidates": 154,
-     "smallest_penetration_mm": 0.3
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV604",
+     "RV704"
+    ],
+    "K tail": [
+     "R1551",
+     "R1591",
+     "U1505"
+    ]
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 0.5,
+   "cost": 8.125,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.5,
+    "grids_tried_mm": [
+     0.5
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [],
+    "verdict": "open"
+   }
   },
   {
    "id": "P-K-P-L11.01.01.01",
@@ -13934,6 +14242,8 @@
    },
    "cable_needed_mm": 43.3398,
    "loop_mm": 6.6602,
+   "grid_mm": 2.0,
+   "cost": 11.5,
    "sizes_tried": [
     40,
     26,
@@ -14016,91 +14326,111 @@
     185.0
    ],
    "slot_centre": [
-    132.0,
-    189.0
+    125.0,
+    194.5
    ],
-   "direction": "+y",
-   "slot_distance_from_centre_mm": 10.7703,
+   "direction": "-y",
+   "slot_distance_from_centre_mm": 19.4743,
    "geometry": {
     "slot": [
-     129.25,
-     188.25,
-     134.75,
-     189.75
+     122.25,
+     193.75,
+     127.75,
+     195.25
     ],
     "front_connector": [
-     127.2,
-     176.5,
-     136.8,
-     182.6
+     120.2,
+     204.9,
+     129.8,
+     211.0
     ],
     "front_tail": [
-     129.75,
-     182.6,
-     134.25,
-     188.25
+     122.75,
+     195.25,
+     127.25,
+     204.9
     ],
     "front_tail_first": [
-     129.75,
-     182.6,
-     134.25,
-     186.6
+     122.75,
+     200.9,
+     127.25,
+     204.9
     ],
     "K_tail": [
-     129.75,
-     189.75,
-     134.25,
-     195.4
+     122.75,
+     188.1,
+     127.25,
+     193.75
     ],
     "K_connector": [
-     127.2,
-     195.4,
-     136.8,
-     201.5
+     120.2,
+     182.0,
+     129.8,
+     188.1
     ],
-    "a_mm": 6.4,
+    "a_mm": 10.4,
     "b_mm": 6.4,
-    "front_extension_mm": 0.0,
+    "front_extension_mm": 4.0,
     "K_extension_mm": 0.0,
     "tail_rule_hard_mm": 4.0
    },
    "displaced": {
-    "front B": [
-     "C103"
+    "front B": [],
+    "K F (slot)": [
+     "R2323",
+     "R2345"
     ],
-    "K F (slot)": [],
     "K B (slot)": [
-     "C2340",
-     "U2313"
+     "U2310"
     ],
     "K B (field)": [
-     "C2339",
-     "U2306",
-     "U2310",
-     "U2311",
-     "U2313"
+     "C2334",
+     "U2315"
     ]
    },
-   "lengthened_tail": false,
+   "lengthened_tail": true,
    "placed_only_with_lengthened_tail": false,
-   "trim_leads": [],
+   "trim_leads": [
+    "RV702",
+    "RV802"
+   ],
    "under_tails": {
-    "front tail": [],
+    "front tail": [
+     "RV702",
+     "RV802"
+    ],
     "K tail": [
-     "U2313"
+     "C2334",
+     "U2310"
     ]
    },
-   "cable_needed_mm": 37.3398,
-   "loop_mm": 12.6602,
+   "cable_needed_mm": 41.3398,
+   "loop_mm": 8.6602,
+   "grid_mm": 0.5,
+   "cost": 10.8686,
    "sizes_tried": [
     40,
     26,
     14,
     8
    ],
+   "moved_by_improvement": {
+    "slot_centre": [
+     132.0,
+     189.0
+    ],
+    "direction": "+y",
+    "cost": 9.6926,
+    "grid_mm": 2.0,
+    "round": 1,
+    "to_free_a_place_for": "P-K-P-L12.01.02.01",
+    "new_cost": 10.8686
+   },
    "latch_reach": {
     "neighbours_within_margin": [
-     "C2333"
+     "C2341",
+     "C2343",
+     "C2344"
     ],
     "verdict": "NOT SHOWN (neighbour heights not retained)"
    }
@@ -14240,6 +14570,8 @@
    },
    "cable_needed_mm": 37.3398,
    "loop_mm": 12.6602,
+   "grid_mm": 2.0,
+   "cost": 8.5,
    "sizes_tried": [
     40,
     26,
@@ -14320,7 +14652,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     122.1667,
     208.3333
@@ -14331,91 +14663,100 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-41",
-     "xy": [
-      116.5,
-      213.0
-     ],
-     "signals": [
-      "/F1/C8c344f_W",
-      "/F1/Ca72ec0_W"
-     ]
-    },
-    {
-     "site": "K-P-45",
-     "xy": [
-      116.5,
-      199.0
-     ],
-     "signals": [
-      "/F2/C14689f_W",
-      "/F2/C2b474d_W"
-     ]
-    },
-    {
-     "site": "K-P-61",
-     "xy": [
-      133.5,
-      213.0
-     ],
-     "signals": [
-      "/M4A/C38051c_W",
-      "/M4A/C75c2e7_W"
-     ]
-    }
+   "slot_centre": [
+    117.9167,
+    189.8333
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      122.1667,
-      208.3333
-     ],
-     "direction": "+x",
-     "screen": "front field on panel hardware RV702",
-     "penetration_mm": 2.9167,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      122.1667,
-      208.3333
-     ],
-     "direction": "-x",
-     "screen": "front field on panel hardware RV802",
-     "penetration_mm": 3.5833,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      122.1667,
-      208.3333
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV702",
-     "penetration_mm": 4.4333,
-     "distance_mm": 0.0
-    }
-   ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV703",
-     "candidates": 186,
-     "smallest_penetration_mm": 0.1167
-    },
-    {
-     "blocker": "front field on panel hardware RV803",
-     "candidates": 175,
-     "smallest_penetration_mm": 0.0333
-    },
-    {
-     "blocker": "front field on panel hardware RV702",
-     "candidates": 147,
-     "smallest_penetration_mm": 0.1167
-    }
-   ]
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 18.9819,
+   "geometry": {
+    "slot": [
+     115.1667,
+     189.0833,
+     120.6667,
+     190.5833
+    ],
+    "front_connector": [
+     113.1167,
+     177.3333,
+     122.7167,
+     183.4333
+    ],
+    "front_tail": [
+     115.6667,
+     183.4333,
+     120.1667,
+     189.0833
+    ],
+    "front_tail_first": [
+     115.6667,
+     183.4333,
+     120.1667,
+     187.4333
+    ],
+    "K_tail": [
+     115.6667,
+     190.5833,
+     120.1667,
+     196.2333
+    ],
+    "K_connector": [
+     113.1167,
+     196.2333,
+     122.7167,
+     202.3333
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [
+     "RV2309"
+    ],
+    "K B (slot)": [
+     "U2310"
+    ],
+    "K B (field)": [
+     "C2333",
+     "C2338",
+     "U2310",
+     "U2312"
+    ]
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [],
+   "under_tails": {
+    "front tail": [],
+    "K tail": [
+     "U2310",
+     "U2312"
+    ]
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 0.25,
+   "cost": 9.7455,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.25,
+    "grids_tried_mm": [
+     0.5,
+     0.25
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "C2335",
+     "U2316"
+    ],
+    "verdict": "NOT SHOWN (neighbour heights not retained)"
+   }
   },
   {
    "id": "P-K-P-L12.01.01.02",
@@ -14486,7 +14827,7 @@
      "site": "K-P-46"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     105.1667,
     213.0
@@ -14497,91 +14838,100 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-40",
-     "xy": [
-      99.5,
-      199.0
-     ],
-     "signals": [
-      "/F1/C14689f_W",
-      "/F1/C2b474d_W"
-     ]
-    },
-    {
-     "site": "K-P-46",
-     "xy": [
-      99.5,
-      213.0
-     ],
-     "signals": [
-      "/F2/C8c344f_W",
-      "/F2/Ca72ec0_W"
-     ]
-    },
-    {
-     "site": "K-P-48",
-     "xy": [
-      116.5,
-      227.0
-     ],
-     "signals": [
-      "/F2/FREQ_REMOTE",
-      "/F2/GAIN_REMOTE"
-     ]
-    }
+   "refinement": {
+    "found": true,
+    "by": "improvement pass",
+    "round": 1,
+    "grid_mm": 0.5,
+    "moved": "P-K-P-L10.01.02.01"
+   },
+   "slot_centre": [
+    98.1667,
+    219.0
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      105.1667,
-      213.0
-     ],
-     "direction": "+x",
-     "screen": "slot on front field of P-K-P-L11.01.01.01 (front board P)",
-     "penetration_mm": 1.25,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      105.1667,
-      213.0
-     ],
-     "direction": "-x",
-     "screen": "slot on front field of P-K-P-L11.01.01.01 (front board P)",
-     "penetration_mm": 1.25,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      105.1667,
-      213.0
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV602",
-     "penetration_mm": 1.75,
-     "distance_mm": 0.0
-    }
+   "direction": "+x",
+   "slot_distance_from_centre_mm": 9.2195,
+   "geometry": {
+    "slot": [
+     97.4167,
+     216.25,
+     98.9167,
+     221.75
+    ],
+    "front_connector": [
+     85.6667,
+     214.2,
+     91.7667,
+     223.8
+    ],
+    "front_tail": [
+     91.7667,
+     216.75,
+     97.4167,
+     221.25
+    ],
+    "front_tail_first": [
+     91.7667,
+     216.75,
+     95.7667,
+     221.25
+    ],
+    "K_tail": [
+     98.9167,
+     216.75,
+     104.5667,
+     221.25
+    ],
+    "K_connector": [
+     104.5667,
+     214.2,
+     110.6667,
+     223.8
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [],
+    "K B (slot)": [
+     "RB1533",
+     "U1410"
+    ],
+    "K B (field)": [
+     "D2319",
+     "RB2302"
+    ]
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV603"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV703",
-     "candidates": 167,
-     "smallest_penetration_mm": 0.0333
-    },
-    {
-     "blocker": "front field on panel hardware RV603",
-     "candidates": 134,
-     "smallest_penetration_mm": 0.0667
-    },
-    {
-     "blocker": "front field on panel hardware RV704",
-     "candidates": 121,
-     "smallest_penetration_mm": 0.3
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV603"
+    ],
+    "K tail": [
+     "RB1533",
+     "U1410"
+    ]
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 0.5,
+   "cost": 6.3049,
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "C2301",
+     "C2312",
+     "R2377"
+    ],
+    "verdict": "NOT SHOWN (neighbour heights not retained)"
+   }
   },
   {
    "id": "P-K-P-L12.01.02.01",
@@ -14652,7 +15002,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     139.1667,
     213.0
@@ -14663,91 +15013,99 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-50",
-     "xy": [
-      133.5,
-      199.0
-     ],
-     "signals": [
-      "/F3/C14689f_W",
-      "/F3/C2b474d_W"
-     ]
-    },
-    {
-     "site": "K-P-51",
-     "xy": [
-      150.5,
-      213.0
-     ],
-     "signals": [
-      "/F3/C8c344f_W",
-      "/F3/Ca72ec0_W"
-     ]
-    },
-    {
-     "site": "K-P-67",
-     "xy": [
-      133.5,
-      227.0
-     ],
-     "signals": [
-      "/M4B/C38051c_W",
-      "/M4B/C75c2e7_W"
-     ]
-    }
+   "refinement": {
+    "found": true,
+    "by": "improvement pass",
+    "round": 1,
+    "grid_mm": 0.5,
+    "moved": "P-K-P-L11.01.01.02"
+   },
+   "slot_centre": [
+    133.6667,
+    195.5
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      139.1667,
-      213.0
-     ],
-     "direction": "+x",
-     "screen": "front field on panel hardware RV803",
-     "penetration_mm": 3.0333,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      139.1667,
-      213.0
-     ],
-     "direction": "-x",
-     "screen": "front field on panel hardware RV903",
-     "penetration_mm": 1.1333,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      139.1667,
-      213.0
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV802",
-     "penetration_mm": 1.75,
-     "distance_mm": 0.0
-    }
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 18.3439,
+   "geometry": {
+    "slot": [
+     130.9167,
+     194.75,
+     136.4167,
+     196.25
+    ],
+    "front_connector": [
+     128.8667,
+     177.0,
+     138.4667,
+     183.1
+    ],
+    "front_tail": [
+     131.4167,
+     183.1,
+     135.9167,
+     194.75
+    ],
+    "front_tail_first": [
+     131.4167,
+     183.1,
+     135.9167,
+     187.1
+    ],
+    "K_tail": [
+     131.4167,
+     196.25,
+     135.9167,
+     201.9
+    ],
+    "K_connector": [
+     128.8667,
+     201.9,
+     138.4667,
+     208.0
+    ],
+    "a_mm": 12.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 6.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [
+     "C103"
+    ],
+    "K F (slot)": [],
+    "K B (slot)": [
+     "U2313"
+    ],
+    "K B (field)": [
+     "C2336",
+     "U2306",
+     "U2311"
+    ]
+   },
+   "lengthened_tail": true,
+   "placed_only_with_lengthened_tail": true,
+   "trim_leads": [
+    "RV801"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV803",
-     "candidates": 233,
-     "smallest_penetration_mm": 0.1167
-    },
-    {
-     "blocker": "front field on panel hardware RV903",
-     "candidates": 199,
-     "smallest_penetration_mm": 0.0333
-    },
-    {
-     "blocker": "front field on panel hardware RV804",
-     "candidates": 160,
-     "smallest_penetration_mm": 0.1167
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV801"
+    ],
+    "K tail": [
+     "C2339",
+     "U2306",
+     "U2313"
+    ]
+   },
+   "cable_needed_mm": 43.3398,
+   "loop_mm": 6.6602,
+   "grid_mm": 0.5,
+   "cost": 11.086,
+   "latch_reach": {
+    "neighbours_within_margin": [],
+    "verdict": "open"
+   }
   },
   {
    "id": "P-K-P-L12.01.02.02",
@@ -14811,7 +15169,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     137.75,
     237.5
@@ -14822,80 +15180,101 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-52",
-     "xy": [
-      133.5,
-      241.0
-     ],
-     "signals": [
-      "/F3/Cb3b460_W",
-      "/F3/Cb5b1dc_W"
-     ]
-    },
-    {
-     "site": "K-P-73",
-     "xy": [
-      142,
-      234
-     ],
-     "signals": [
-      "/M5A/Ca92eeb_W",
-      "/M5A/Cb103af_W"
-     ]
-    }
+   "slot_centre": [
+    142.0,
+    236.25
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      137.75,
-      237.5
-     ],
-     "direction": "+x",
-     "screen": "front field on panel hardware RV805",
-     "penetration_mm": 2.8,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      137.75,
-      237.5
-     ],
-     "direction": "-x",
-     "screen": "front field on panel hardware RV905",
-     "penetration_mm": 2.55,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      137.75,
-      237.5
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV804",
-     "penetration_mm": 3.5,
-     "distance_mm": 0.0
-    }
+   "direction": "-y",
+   "slot_distance_from_centre_mm": 4.43,
+   "geometry": {
+    "slot": [
+     139.25,
+     235.5,
+     144.75,
+     237.0
+    ],
+    "front_connector": [
+     137.2,
+     246.65,
+     146.8,
+     252.75
+    ],
+    "front_tail": [
+     139.75,
+     237.0,
+     144.25,
+     246.65
+    ],
+    "front_tail_first": [
+     139.75,
+     242.65,
+     144.25,
+     246.65
+    ],
+    "K_tail": [
+     139.75,
+     229.85,
+     144.25,
+     235.5
+    ],
+    "K_connector": [
+     137.2,
+     223.75,
+     146.8,
+     229.85
+    ],
+    "a_mm": 10.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 4.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [],
+    "K B (slot)": [
+     "R5165"
+    ],
+    "K B (field)": [
+     "R5269"
+    ]
+   },
+   "lengthened_tail": true,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV805",
+    "RV905"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV805",
-     "candidates": 236,
-     "smallest_penetration_mm": 0.05
-    },
-    {
-     "blocker": "front field on panel hardware RV804",
-     "candidates": 229,
-     "smallest_penetration_mm": 0.05
-    },
-    {
-     "blocker": "front field on panel hardware RV904",
-     "candidates": 185,
-     "smallest_penetration_mm": 0.45
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV805",
+     "RV905"
+    ],
+    "K tail": [
+     "R5165",
+     "R5176"
+    ]
+   },
+   "cable_needed_mm": 41.3398,
+   "loop_mm": 8.6602,
+   "grid_mm": 0.25,
+   "cost": 4.1075,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.25,
+    "grids_tried_mm": [
+     0.5,
+     0.25
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "R5176",
+     "R5270"
+    ],
+    "verdict": "NOT SHOWN (neighbour heights not retained)"
+   }
   },
   {
    "id": "P-K-P-L12.02.01.01",
@@ -14959,7 +15338,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     154.75,
     230.5
@@ -14970,80 +15349,109 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-68",
-     "xy": [
-      159,
-      234
-     ],
-     "signals": [
-      "/M4B/Ca1191c_W",
-      "/M4B/REF5"
-     ]
-    },
-    {
-     "site": "K-P-70",
-     "xy": [
-      150.5,
-      227.0
-     ],
-     "signals": [
-      "/M5A/3_REMOTE",
-      "/M5A/4_REMOTE"
-     ]
-    }
+   "slot_centre": [
+    159.0,
+    227.0
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      154.75,
-      230.5
-     ],
-     "direction": "+x",
-     "screen": "front field on panel hardware RV904",
-     "penetration_mm": 2.8,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      154.75,
-      230.5
-     ],
-     "direction": "-x",
-     "screen": "front field on panel hardware RV1004",
-     "penetration_mm": 2.55,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      154.75,
-      230.5
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV903",
-     "penetration_mm": 3.15,
-     "distance_mm": 0.0
-    }
+   "direction": "-y",
+   "slot_distance_from_centre_mm": 5.5057,
+   "geometry": {
+    "slot": [
+     156.25,
+     226.25,
+     161.75,
+     227.75
+    ],
+    "front_connector": [
+     154.2,
+     233.4,
+     163.8,
+     239.5
+    ],
+    "front_tail": [
+     156.75,
+     227.75,
+     161.25,
+     233.4
+    ],
+    "front_tail_first": [
+     156.75,
+     229.4,
+     161.25,
+     233.4
+    ],
+    "K_tail": [
+     156.75,
+     220.6,
+     161.25,
+     226.25
+    ],
+    "K_connector": [
+     154.2,
+     214.5,
+     163.8,
+     220.6
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [
+     "C5215"
+    ],
+    "K B (slot)": [
+     "C5202",
+     "C5219",
+     "U5201"
+    ],
+    "K B (field)": [
+     "C5228",
+     "U5205"
+    ]
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV1004",
+    "RV904"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV904",
-     "candidates": 238,
-     "smallest_penetration_mm": 0.05
-    },
-    {
-     "blocker": "front field on panel hardware RV1004",
-     "candidates": 193,
-     "smallest_penetration_mm": 0.45
-    },
-    {
-     "blocker": "front field on panel hardware RV905",
-     "candidates": 187,
-     "smallest_penetration_mm": 0.05
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV1004",
+     "RV904"
+    ],
+    "K tail": [
+     "C5202",
+     "C5219",
+     "U5205"
+    ]
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 0.25,
+   "cost": 7.3764,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.25,
+    "grids_tried_mm": [
+     0.5,
+     0.25
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "C5226",
+     "C5235",
+     "R5221",
+     "U5206"
+    ],
+    "verdict": "NOT SHOWN (neighbour heights not retained)"
+   }
   },
   {
    "id": "P-K-P-L12.02.01.02",
@@ -15100,7 +15508,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     150.5,
     241.0
@@ -15111,69 +15519,105 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-74",
-     "xy": [
-      150.5,
-      241.0
-     ],
-     "signals": [
-      "/M5A/Ce67982_W",
-      "/M5A/LEVEL_REMOTE"
-     ]
-    }
+   "slot_centre": [
+    159.0,
+    255.0
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      150.5,
-      241.0
-     ],
-     "direction": "+x",
-     "screen": "front field on panel hardware RV805",
-     "penetration_mm": 2.3,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      150.5,
-      241.0
-     ],
-     "direction": "-x",
-     "screen": "front field on panel hardware RV1005",
-     "penetration_mm": 2.3,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      150.5,
-      241.0
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV904",
-     "penetration_mm": 1.75,
-     "distance_mm": 0.0
-    }
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 16.3783,
+   "geometry": {
+    "slot": [
+     156.25,
+     254.25,
+     161.75,
+     255.75
+    ],
+    "front_connector": [
+     154.2,
+     242.5,
+     163.8,
+     248.6
+    ],
+    "front_tail": [
+     156.75,
+     248.6,
+     161.25,
+     254.25
+    ],
+    "front_tail_first": [
+     156.75,
+     248.6,
+     161.25,
+     252.6
+    ],
+    "K_tail": [
+     156.75,
+     255.75,
+     161.25,
+     261.4
+    ],
+    "K_connector": [
+     154.2,
+     261.4,
+     163.8,
+     267.5
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [
+     "R5147"
+    ],
+    "K B (slot)": [
+     "C5131",
+     "R5161"
+    ],
+    "K B (field)": [
+     "C5111",
+     "C5130",
+     "R5128",
+     "U5107"
+    ]
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV1006",
+    "RV906"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV905",
-     "candidates": 236,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "front field on panel hardware RV904",
-     "candidates": 215,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "front field on panel hardware RV805",
-     "candidates": 170,
-     "smallest_penetration_mm": 0.3
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV1006",
+     "RV906"
+    ],
+    "K tail": [
+     "C5131",
+     "U5107"
+    ]
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 0.5,
+   "cost": 11.0946,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.5,
+    "grids_tried_mm": [
+     0.5
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "C5105"
+    ],
+    "verdict": "NOT SHOWN (neighbour heights not retained)"
+   }
   },
   {
    "id": "P-K-P-L13.01.01.01",
@@ -15333,6 +15777,8 @@
    },
    "cable_needed_mm": 41.3398,
    "loop_mm": 8.6602,
+   "grid_mm": 2.0,
+   "cost": 9.8028,
    "sizes_tried": [
     40,
     26,
@@ -15489,6 +15935,8 @@
    },
    "cable_needed_mm": 43.3398,
    "loop_mm": 6.6602,
+   "grid_mm": 2.0,
+   "cost": 11.0,
    "sizes_tried": [
     40,
     26,
@@ -15555,7 +16003,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     167.5,
     199.0
@@ -15566,69 +16014,109 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-75",
-     "xy": [
-      167.5,
-      199.0
-     ],
-     "signals": [
-      "/M5B/1_REMOTE",
-      "/M5B/2_REMOTE"
-     ]
-    }
+   "slot_centre": [
+    159.0,
+    198.5
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      167.5,
-      199.0
-     ],
-     "direction": "+x",
-     "screen": "slot on slot of P-K-P-L13.01.01.02",
-     "penetration_mm": 1.5,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      167.5,
-      199.0
-     ],
-     "direction": "-x",
-     "screen": "slot on slot of P-K-P-L13.01.01.02",
-     "penetration_mm": 1.5,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      167.5,
-      199.0
-     ],
-     "direction": "+y",
-     "screen": "slot on K tail of P-K-P-L13.01.01.02",
-     "penetration_mm": 3.15,
-     "distance_mm": 0.0
-    }
+   "direction": "-y",
+   "slot_distance_from_centre_mm": 8.5147,
+   "geometry": {
+    "slot": [
+     156.25,
+     197.75,
+     161.75,
+     199.25
+    ],
+    "front_connector": [
+     154.2,
+     204.9,
+     163.8,
+     211.0
+    ],
+    "front_tail": [
+     156.75,
+     199.25,
+     161.25,
+     204.9
+    ],
+    "front_tail_first": [
+     156.75,
+     200.9,
+     161.25,
+     204.9
+    ],
+    "K_tail": [
+     156.75,
+     192.1,
+     161.25,
+     197.75
+    ],
+    "K_connector": [
+     154.2,
+     186.0,
+     163.8,
+     192.1
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [
+     "R5228",
+     "R5250"
+    ],
+    "K B (slot)": [
+     "C5213",
+     "C5234",
+     "R5251"
+    ],
+    "K B (field)": [
+     "R5253"
+    ]
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV1002",
+    "RV902"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV1003",
-     "candidates": 133,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "slot on slot of P-K-P-L13.01.01.01",
-     "candidates": 126,
-     "smallest_penetration_mm": 0.1667
-    },
-    {
-     "blocker": "front field on panel hardware RV1002",
-     "candidates": 115,
-     "smallest_penetration_mm": 0.3
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV1002",
+     "RV902"
+    ],
+    "K tail": [
+     "C5213",
+     "R5249",
+     "R5251",
+     "R5253"
+    ]
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 0.5,
+   "cost": 8.1287,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.5,
+    "grids_tried_mm": [
+     0.5
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "D5208",
+     "R5249",
+     "R5266",
+     "R8331"
+    ],
+    "verdict": "NOT SHOWN (neighbour heights not retained)"
+   }
   },
   {
    "id": "P-K-P-L14.01.01.01",
@@ -15794,7 +16282,46 @@
      "candidates": 190,
      "smallest_penetration_mm": 0.1167
     }
-   ]
+   ],
+   "refinement": {
+    "found": false,
+    "grids_tried_mm": [
+     0.5,
+     0.25
+    ],
+    "smallest_miss_mm": 0.0167
+   },
+   "why_no_place": {
+    "lacks": "the first 4.0 mm of the tail",
+    "grid_mm": 0.25,
+    "smallest_penetration_mm": 0.4167,
+    "blocker": "panel hardware RV805",
+    "at": {
+     "slot_centre": [
+      144.6667,
+      248.6667
+     ],
+     "direction": "+x",
+     "front_extension_mm": 12.0
+    },
+    "field_corridor_mm": {
+     "x": {
+      "free": 9.7,
+      "needed": 6.1
+     },
+     "y": {
+      "free": 11.0,
+      "needed": 9.6
+     }
+    },
+    "tail_corridor_mm": {
+     "across": {
+      "free": 4.35,
+      "needed": 4.5
+     },
+     "first_length_needed": 4.0
+    }
+   }
   },
   {
    "id": "P-K-P-L14.01.01.02",
@@ -15865,7 +16392,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     133.5,
     269.0
@@ -15876,91 +16403,104 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-11",
-     "xy": [
-      133.5,
-      255.0
-     ],
-     "signals": [
-      "/A05/C38cac0_W",
-      "/A05/Cc045d2_W"
-     ]
-    },
-    {
-     "site": "K-P-120",
-     "xy": [
-      133.5,
-      283.0
-     ],
-     "signals": [
-      "/W2/C4c1698_W",
-      "/W2/C629978_W"
-     ]
-    },
-    {
-     "site": "K-P-121",
-     "xy": [
-      133.5,
-      269.0
-     ],
-     "signals": [
-      "/W2/C75db46_W",
-      "/W2/Cb36f8a_W"
-     ]
-    }
+   "slot_centre": [
+    142.0,
+    277.0
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      133.5,
-      269.0
-     ],
-     "direction": "+x",
-     "screen": "front field on panel hardware RV807",
-     "penetration_mm": 0.4,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      133.5,
-      269.0
-     ],
-     "direction": "-x",
-     "screen": "front field on panel hardware RV907",
-     "penetration_mm": 2.3,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      133.5,
-      269.0
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV806",
-     "penetration_mm": 1.75,
-     "distance_mm": 0.0
-    }
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 11.6726,
+   "geometry": {
+    "slot": [
+     139.25,
+     276.25,
+     144.75,
+     277.75
+    ],
+    "front_connector": [
+     137.2,
+     256.5,
+     146.8,
+     262.6
+    ],
+    "front_tail": [
+     139.75,
+     262.6,
+     144.25,
+     276.25
+    ],
+    "front_tail_first": [
+     139.75,
+     262.6,
+     144.25,
+     266.6
+    ],
+    "K_tail": [
+     139.75,
+     277.75,
+     144.25,
+     283.4
+    ],
+    "K_connector": [
+     137.2,
+     283.4,
+     146.8,
+     289.5
+    ],
+    "a_mm": 14.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 8.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [
+     "C108"
+    ],
+    "K F (slot)": [],
+    "K B (slot)": [
+     "D5108",
+     "R5130",
+     "R5133"
+    ],
+    "K B (field)": []
+   },
+   "lengthened_tail": true,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV807",
+    "RV907"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV806",
-     "candidates": 192,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "front field on panel hardware RV807",
-     "candidates": 179,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "front field on panel hardware RV907",
-     "candidates": 172,
-     "smallest_penetration_mm": 0.3
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "C108",
+     "C109",
+     "RV807",
+     "RV907"
+    ],
+    "K tail": [
+     "D5108",
+     "R5133",
+     "R5134"
+    ]
+   },
+   "cable_needed_mm": 45.3398,
+   "loop_mm": 4.6602,
+   "grid_mm": 0.5,
+   "cost": 8.9182,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.5,
+    "grids_tried_mm": [
+     0.5
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "R5134"
+    ],
+    "verdict": "NOT SHOWN (neighbour heights not retained)"
+   }
   },
   {
    "id": "P-K-P-L14.01.02.01",
@@ -16101,6 +16641,8 @@
    },
    "cable_needed_mm": 47.3398,
    "loop_mm": 2.6602,
+   "grid_mm": 2.0,
+   "cost": 4.5,
    "sizes_tried": [
     40,
     26,
@@ -16167,7 +16709,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     167.5,
     269.0
@@ -16178,69 +16720,98 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-118",
-     "xy": [
-      167.5,
-      269.0
-     ],
-     "signals": [
-      "/W1/FOLD_REMOTE",
-      "/W1/LEVEL_REMOTE"
-     ]
-    }
+   "slot_centre": [
+    176.0,
+    271.0
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      167.5,
-      269.0
-     ],
-     "direction": "+x",
-     "screen": "front field on panel hardware RV907",
-     "penetration_mm": 2.3,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      167.5,
-      269.0
-     ],
-     "direction": "-x",
-     "screen": "front field on panel hardware RV1107",
-     "penetration_mm": 2.3,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      167.5,
-      269.0
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV1006",
-     "penetration_mm": 1.75,
-     "distance_mm": 0.0
-    }
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 8.7321,
+   "geometry": {
+    "slot": [
+     173.25,
+     270.25,
+     178.75,
+     271.75
+    ],
+    "front_connector": [
+     171.2,
+     256.5,
+     180.8,
+     262.6
+    ],
+    "front_tail": [
+     173.75,
+     262.6,
+     178.25,
+     270.25
+    ],
+    "front_tail_first": [
+     173.75,
+     262.6,
+     178.25,
+     266.6
+    ],
+    "K_tail": [
+     173.75,
+     271.75,
+     178.25,
+     277.4
+    ],
+    "K_connector": [
+     171.2,
+     277.4,
+     180.8,
+     283.5
+    ],
+    "a_mm": 8.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 2.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [],
+    "K B (slot)": [
+     "U4214"
+    ],
+    "K B (field)": [
+     "U4214"
+    ]
+   },
+   "lengthened_tail": true,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV1007",
+    "RV1107"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV1107",
-     "candidates": 172,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "front field on panel hardware RV1006",
-     "candidates": 159,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "front field on panel hardware RV1007",
-     "candidates": 158,
-     "smallest_penetration_mm": 0.3
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV1007",
+     "RV1107"
+    ],
+    "K tail": [
+     "U4214"
+    ]
+   },
+   "cable_needed_mm": 39.3398,
+   "loop_mm": 10.6602,
+   "grid_mm": 0.5,
+   "cost": 3.683,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.5,
+    "grids_tried_mm": [
+     0.5
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "C4231"
+    ],
+    "verdict": "NOT SHOWN (neighbour heights not retained)"
+   }
   },
   {
    "id": "P-K-P-L14.02.01.01",
@@ -16406,7 +16977,46 @@
      "candidates": 169,
      "smallest_penetration_mm": 0.3
     }
-   ]
+   ],
+   "refinement": {
+    "found": false,
+    "grids_tried_mm": [
+     0.5,
+     0.25
+    ],
+    "smallest_miss_mm": 0.0333
+   },
+   "why_no_place": {
+    "lacks": "the first 4.0 mm of the tail",
+    "grid_mm": 0.25,
+    "smallest_penetration_mm": 0.4167,
+    "blocker": "panel hardware RV1105",
+    "at": {
+     "slot_centre": [
+      179.3333,
+      248.5
+     ],
+     "direction": "-x",
+     "front_extension_mm": 6.0
+    },
+    "field_corridor_mm": {
+     "x": {
+      "free": 9.7,
+      "needed": 6.1
+     },
+     "y": {
+      "free": 11.0,
+      "needed": 9.6
+     }
+    },
+    "tail_corridor_mm": {
+     "across": {
+      "free": 4.35,
+      "needed": 4.5
+     },
+     "first_length_needed": 4.0
+    }
+   }
   },
   {
    "id": "P-K-P-L14.02.01.02",
@@ -16463,7 +17073,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     184.5,
     283.0
@@ -16474,69 +17084,92 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-119",
-     "xy": [
-      184.5,
-      283.0
-     ],
-     "signals": [
-      "/W1/REF5",
-      "/W1/REFN5"
-     ]
-    }
+   "slot_centre": [
+    193.0,
+    271.5
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      184.5,
-      283.0
-     ],
-     "direction": "+x",
-     "screen": "front field on panel hardware RV1008",
-     "penetration_mm": 2.3,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      184.5,
-      283.0
-     ],
-     "direction": "-x",
-     "screen": "front field on panel hardware RV1208",
-     "penetration_mm": 2.3,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      184.5,
-      283.0
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV1107",
-     "penetration_mm": 1.75,
-     "distance_mm": 0.0
-    }
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 14.3003,
+   "geometry": {
+    "slot": [
+     190.25,
+     270.75,
+     195.75,
+     272.25
+    ],
+    "front_connector": [
+     188.2,
+     257.0,
+     197.8,
+     263.1
+    ],
+    "front_tail": [
+     190.75,
+     263.1,
+     195.25,
+     270.75
+    ],
+    "front_tail_first": [
+     190.75,
+     263.1,
+     195.25,
+     267.1
+    ],
+    "K_tail": [
+     190.75,
+     272.25,
+     195.25,
+     277.9
+    ],
+    "K_connector": [
+     188.2,
+     277.9,
+     197.8,
+     284.0
+    ],
+    "a_mm": 8.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 2.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [
+     "U4235"
+    ],
+    "K B (slot)": [],
+    "K B (field)": []
+   },
+   "lengthened_tail": true,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV1107",
+    "RV1207"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV1107",
-     "candidates": 215,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "front field on panel hardware RV1207",
-     "candidates": 135,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "front field on panel hardware RV1007",
-     "candidates": 111,
-     "smallest_penetration_mm": 0.3
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV1107",
+     "RV1207"
+    ],
+    "K tail": []
+   },
+   "cable_needed_mm": 39.3398,
+   "loop_mm": 10.6602,
+   "grid_mm": 0.5,
+   "cost": 5.0751,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.5,
+    "grids_tried_mm": [
+     0.5
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [],
+    "verdict": "open"
+   }
   },
   {
    "id": "P-K-P-L15.01.01.01",
@@ -16607,7 +17240,7 @@
      "site": "K-P-9"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     201.5,
     264.3333
@@ -16618,91 +17251,92 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-66",
-     "xy": [
-      201.5,
-      241.0
-     ],
-     "signals": [
-      "/M4B/C1c45d6_W",
-      "/M4B/C24ce01_W"
-     ]
-    },
-    {
-     "site": "K-P-8",
-     "xy": [
-      201.5,
-      283.0
-     ],
-     "signals": [
-      "/A03/REFN5",
-      "/A04/C38cac0_W"
-     ]
-    },
-    {
-     "site": "K-P-9",
-     "xy": [
-      201.5,
-      269.0
-     ],
-     "signals": [
-      "/A04/Cc045d2_W",
-      "/A04/IN_REMOTE"
-     ]
-    }
+   "slot_centre": [
+    210.0,
+    268.3333
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      201.5,
-      264.3333
-     ],
-     "direction": "+x",
-     "screen": "front field on panel hardware RV1107",
-     "penetration_mm": 1.6333,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      201.5,
-      264.3333
-     ],
-     "direction": "-x",
-     "screen": "front field on panel hardware RV1307",
-     "penetration_mm": 1.6333,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      201.5,
-      264.3333
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV1206",
-     "penetration_mm": 1.0,
-     "distance_mm": 0.0
-    }
+   "direction": "-y",
+   "slot_distance_from_centre_mm": 9.3941,
+   "geometry": {
+    "slot": [
+     207.25,
+     267.5833,
+     212.75,
+     269.0833
+    ],
+    "front_connector": [
+     205.2,
+     274.7333,
+     214.8,
+     280.8333
+    ],
+    "front_tail": [
+     207.75,
+     269.0833,
+     212.25,
+     274.7333
+    ],
+    "front_tail_first": [
+     207.75,
+     270.7333,
+     212.25,
+     274.7333
+    ],
+    "K_tail": [
+     207.75,
+     261.9333,
+     212.25,
+     267.5833
+    ],
+    "K_connector": [
+     205.2,
+     255.8333,
+     214.8,
+     261.9333
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [
+     "R4201"
+    ],
+    "K B (slot)": [],
+    "K B (field)": []
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV1207",
+    "RV1307"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV1207",
-     "candidates": 214,
-     "smallest_penetration_mm": 0.15
-    },
-    {
-     "blocker": "front field on panel hardware RV1206",
-     "candidates": 183,
-     "smallest_penetration_mm": 0.15
-    },
-    {
-     "blocker": "front field on panel hardware RV1106",
-     "candidates": 154,
-     "smallest_penetration_mm": 0.25
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV1207",
+     "RV1307"
+    ],
+    "K tail": []
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 0.5,
+   "cost": 3.3485,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.5,
+    "grids_tried_mm": [
+     0.5
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [],
+    "verdict": "open"
+   }
   },
   {
    "id": "P-K-P-L15.01.01.02",
@@ -16766,7 +17400,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     180.25,
     237.5
@@ -16777,80 +17411,93 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-59",
-     "xy": [
-      184.5,
-      241.0
-     ],
-     "signals": [
-      "/M4A/ATTEN_REMOTE",
-      "/M4A/C154038_W"
-     ]
-    },
-    {
-     "site": "K-P-65",
-     "xy": [
-      176,
-      234
-     ],
-     "signals": [
-      "/M4B/ATTEN_REMOTE",
-      "/M4B/C154038_W"
-     ]
-    }
+   "slot_centre": [
+    193.0,
+    241.0
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      180.25,
-      237.5
-     ],
-     "direction": "+x",
-     "screen": "front field on panel hardware RV1005",
-     "penetration_mm": 2.55,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      180.25,
-      237.5
-     ],
-     "direction": "-x",
-     "screen": "front field on panel hardware RV1105",
-     "penetration_mm": 2.8,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      180.25,
-      237.5
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV1104",
-     "penetration_mm": 3.5,
-     "distance_mm": 0.0
-    }
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 13.2217,
+   "geometry": {
+    "slot": [
+     190.25,
+     240.25,
+     195.75,
+     241.75
+    ],
+    "front_connector": [
+     188.2,
+     228.5,
+     197.8,
+     234.6
+    ],
+    "front_tail": [
+     190.75,
+     234.6,
+     195.25,
+     240.25
+    ],
+    "front_tail_first": [
+     190.75,
+     234.6,
+     195.25,
+     238.6
+    ],
+    "K_tail": [
+     190.75,
+     241.75,
+     195.25,
+     247.4
+    ],
+    "K_connector": [
+     188.2,
+     247.4,
+     197.8,
+     253.5
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [
+     "R4273"
+    ],
+    "K B (slot)": [],
+    "K B (field)": []
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV1105",
+    "RV1205"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV1105",
-     "candidates": 234,
-     "smallest_penetration_mm": 0.05
-    },
-    {
-     "blocker": "front field on panel hardware RV1104",
-     "candidates": 229,
-     "smallest_penetration_mm": 0.05
-    },
-    {
-     "blocker": "front field on panel hardware RV1004",
-     "candidates": 186,
-     "smallest_penetration_mm": 0.45
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV1105",
+     "RV1205"
+    ],
+    "K tail": []
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 0.25,
+   "cost": 4.3054,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.25,
+    "grids_tried_mm": [
+     0.5,
+     0.25
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [],
+    "verdict": "open"
+   }
   },
   {
    "id": "P-K-P-L15.01.02.01",
@@ -16991,6 +17638,8 @@
    },
    "cable_needed_mm": 37.3398,
    "loop_mm": 12.6602,
+   "grid_mm": 2.0,
+   "cost": 1.0,
    "sizes_tried": [
     40,
     26,
@@ -17057,7 +17706,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     167.5,
     227.0
@@ -17068,69 +17717,101 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-76",
-     "xy": [
-      167.5,
-      227.0
-     ],
-     "signals": [
-      "/M5B/3_REMOTE",
-      "/M5B/4_REMOTE"
-     ]
-    }
+   "slot_centre": [
+    176.0,
+    231.5
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      167.5,
-      227.0
-     ],
-     "direction": "+x",
-     "screen": "front field on panel hardware RV904",
-     "penetration_mm": 2.3,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      167.5,
-      227.0
-     ],
-     "direction": "-x",
-     "screen": "front field on panel hardware RV1104",
-     "penetration_mm": 2.3,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      167.5,
-      227.0
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV1003",
-     "penetration_mm": 1.75,
-     "distance_mm": 0.0
-    }
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 9.6177,
+   "geometry": {
+    "slot": [
+     173.25,
+     230.75,
+     178.75,
+     232.25
+    ],
+    "front_connector": [
+     171.2,
+     215.0,
+     180.8,
+     221.1
+    ],
+    "front_tail": [
+     173.75,
+     221.1,
+     178.25,
+     230.75
+    ],
+    "front_tail_first": [
+     173.75,
+     221.1,
+     178.25,
+     225.1
+    ],
+    "K_tail": [
+     173.75,
+     232.25,
+     178.25,
+     237.9
+    ],
+    "K_connector": [
+     171.2,
+     237.9,
+     180.8,
+     244.0
+    ],
+    "a_mm": 10.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 4.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [],
+    "K B (slot)": [
+     "U4207"
+    ],
+    "K B (field)": [
+     "C4224",
+     "RB4229",
+     "U4207",
+     "U4216"
+    ]
+   },
+   "lengthened_tail": true,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV1004",
+    "RV1104"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV1004",
-     "candidates": 236,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "front field on panel hardware RV1003",
-     "candidates": 194,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "front field on panel hardware RV904",
-     "candidates": 170,
-     "smallest_penetration_mm": 0.3
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV1004",
+     "RV1104"
+    ],
+    "K tail": [
+     "U4207"
+    ]
+   },
+   "cable_needed_mm": 41.3398,
+   "loop_mm": 8.6602,
+   "grid_mm": 0.5,
+   "cost": 7.4044,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.5,
+    "grids_tried_mm": [
+     0.5
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "D5210"
+    ],
+    "verdict": "NOT SHOWN (neighbour heights not retained)"
+   }
   },
   {
    "id": "P-K-P-L15.02.01.01",
@@ -17201,7 +17882,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     184.5,
     213.0
@@ -17212,91 +17893,103 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "K-P-62",
-     "xy": [
-      184.5,
-      213.0
-     ],
-     "signals": [
-      "/M4A/Ca1191c_W",
-      "/M4A/REF5"
-     ]
-    },
-    {
-     "site": "K-P-78",
-     "xy": [
-      167.5,
-      213.0
-     ],
-     "signals": [
-      "/M5B/C2c2153_W",
-      "/M5B/C445167_W"
-     ]
-    },
-    {
-     "site": "K-P-79",
-     "xy": [
-      201.5,
-      213.0
-     ],
-     "signals": [
-      "/M5B/Ca92eeb_W",
-      "/M5B/Cb103af_W"
-     ]
-    }
+   "slot_centre": [
+    193.0,
+    213.0
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      184.5,
-      213.0
-     ],
-     "direction": "+x",
-     "screen": "front field on panel hardware RV1003",
-     "penetration_mm": 2.3,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      184.5,
-      213.0
-     ],
-     "direction": "-x",
-     "screen": "front field on panel hardware RV1203",
-     "penetration_mm": 2.3,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      184.5,
-      213.0
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV1102",
-     "penetration_mm": 1.75,
-     "distance_mm": 0.0
-    }
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 8.5,
+   "geometry": {
+    "slot": [
+     190.25,
+     212.25,
+     195.75,
+     213.75
+    ],
+    "front_connector": [
+     188.2,
+     200.5,
+     197.8,
+     206.6
+    ],
+    "front_tail": [
+     190.75,
+     206.6,
+     195.25,
+     212.25
+    ],
+    "front_tail_first": [
+     190.75,
+     206.6,
+     195.25,
+     210.6
+    ],
+    "K_tail": [
+     190.75,
+     213.75,
+     195.25,
+     219.4
+    ],
+    "K_connector": [
+     188.2,
+     219.4,
+     197.8,
+     225.5
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [
+     "R5224",
+     "R8341",
+     "R8431"
+    ],
+    "K B (slot)": [
+     "C4239",
+     "U4227"
+    ],
+    "K B (field)": []
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV1103",
+    "RV1203"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV1103",
-     "candidates": 140,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "front field on panel hardware RV1003",
-     "candidates": 135,
-     "smallest_penetration_mm": 0.3
-    },
-    {
-     "blocker": "slot on front field of P-K-P-L15.01.02.01 (front board P)",
-     "candidates": 126,
-     "smallest_penetration_mm": 0.05
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV1103",
+     "RV1203"
+    ],
+    "K tail": [
+     "R5223",
+     "R5265",
+     "U4227"
+    ]
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 0.5,
+   "cost": 7.125,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.5,
+    "grids_tried_mm": [
+     0.5
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "R5265"
+    ],
+    "verdict": "NOT SHOWN (neighbour heights not retained)"
+   }
   },
   {
    "id": "JL-P-K-JL-L01",
@@ -17616,6 +18309,8 @@
    },
    "cable_needed_mm": 39.3398,
    "loop_mm": 10.6602,
+   "grid_mm": 2.0,
+   "cost": 24.0,
    "sizes_tried": [
     40
    ],
@@ -17692,7 +18387,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     48.5,
     276.0
@@ -17703,80 +18398,95 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "P-K-X1",
-     "xy": [
-      40,
-      276
-     ],
-     "signals": [
-      "/H1/SLEW_BUFFERED",
-      "/H2/SLEW_BUFFERED"
-     ]
-    },
-    {
-     "site": "P-K-X2",
-     "xy": [
-      57,
-      276
-     ],
-     "signals": [
-      "/X1/A_BUFFER",
-      "/X1/B_BUFFER"
-     ]
-    }
+   "slot_centre": [
+    57.0,
+    269.0
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      48.5,
-      276.0
-     ],
-     "direction": "+x",
-     "screen": "first 4.0 mm of the front tail on panel hardware RV307",
-     "penetration_mm": 1.25,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      48.5,
-      276.0
-     ],
-     "direction": "-x",
-     "screen": "first 4.0 mm of the front tail on panel hardware RV307",
-     "penetration_mm": 1.25,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      48.5,
-      276.0
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV307",
-     "penetration_mm": 1.0,
-     "distance_mm": 0.0
-    }
+   "direction": "-y",
+   "slot_distance_from_centre_mm": 11.0114,
+   "geometry": {
+    "slot": [
+     54.25,
+     268.25,
+     59.75,
+     269.75
+    ],
+    "front_connector": [
+     52.2,
+     275.4,
+     61.8,
+     281.5
+    ],
+    "front_tail": [
+     54.75,
+     269.75,
+     59.25,
+     275.4
+    ],
+    "front_tail_first": [
+     54.75,
+     271.4,
+     59.25,
+     275.4
+    ],
+    "K_tail": [
+     54.75,
+     262.6,
+     59.25,
+     268.25
+    ],
+    "K_connector": [
+     52.2,
+     256.5,
+     61.8,
+     262.6
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [],
+    "K B (slot)": [],
+    "K B (field)": [
+     "R1333",
+     "R1336"
+    ]
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV307",
+    "RV407"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV307",
-     "candidates": 230,
-     "smallest_penetration_mm": 0.15
-    },
-    {
-     "blocker": "front field on panel hardware RV207",
-     "candidates": 162,
-     "smallest_penetration_mm": 0.25
-    },
-    {
-     "blocker": "front field on panel hardware RV407",
-     "candidates": 160,
-     "smallest_penetration_mm": 0.25
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV307",
+     "RV407"
+    ],
+    "K tail": []
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 0.5,
+   "cost": 4.7528,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.5,
+    "grids_tried_mm": [
+     0.5
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "R1317"
+    ],
+    "verdict": "NOT SHOWN (neighbour heights not retained)"
+   }
   },
   {
    "id": "JL-P-K-P-L01.01.01.02",
@@ -17833,7 +18543,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     74.0,
     276.0
@@ -17844,69 +18554,90 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "P-K-X3",
-     "xy": [
-      74,
-      276
-     ],
-     "signals": [
-      "/X1/SELECTOR_REMOTE",
-      "/X2/A_BUFFER"
-     ]
-    }
+   "slot_centre": [
+    74.0,
+    275.5
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      74.0,
-      276.0
-     ],
-     "direction": "+x",
-     "screen": "front field on panel hardware RV407",
-     "penetration_mm": 3.25,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      74.0,
-      276.0
-     ],
-     "direction": "-x",
-     "screen": "front field on panel hardware RV507",
-     "penetration_mm": 3.25,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      74.0,
-      276.0
-     ],
-     "direction": "+y",
-     "screen": "front field on panel hardware RV507",
-     "penetration_mm": 2.1,
-     "distance_mm": 0.0
-    }
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 0.5,
+   "geometry": {
+    "slot": [
+     71.25,
+     274.75,
+     76.75,
+     276.25
+    ],
+    "front_connector": [
+     69.2,
+     257.0,
+     78.8,
+     263.1
+    ],
+    "front_tail": [
+     71.75,
+     263.1,
+     76.25,
+     274.75
+    ],
+    "front_tail_first": [
+     71.75,
+     263.1,
+     76.25,
+     267.1
+    ],
+    "K_tail": [
+     71.75,
+     276.25,
+     76.25,
+     281.9
+    ],
+    "K_connector": [
+     69.2,
+     281.9,
+     78.8,
+     288.0
+    ],
+    "a_mm": 12.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 6.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [],
+    "K B (slot)": [],
+    "K B (field)": []
+   },
+   "lengthened_tail": true,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV407",
+    "RV507"
    ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "front field on panel hardware RV407",
-     "candidates": 216,
-     "smallest_penetration_mm": 0.2
-    },
-    {
-     "blocker": "slot on K field of P-K-P-L10.01.01",
-     "candidates": 164,
-     "smallest_penetration_mm": 0.05
-    },
-    {
-     "blocker": "front field on panel hardware RV507",
-     "candidates": 154,
-     "smallest_penetration_mm": 0.1
-    }
-   ]
+   "under_tails": {
+    "front tail": [
+     "RV407",
+     "RV507"
+    ],
+    "K tail": []
+   },
+   "cable_needed_mm": 43.3398,
+   "loop_mm": 6.6602,
+   "grid_mm": 0.5,
+   "cost": 1.625,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.5,
+    "grids_tried_mm": [
+     0.5
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [],
+    "verdict": "open"
+   }
   },
   {
    "id": "JL-P-K-P-L01.01.02.01",
@@ -17963,7 +18694,7 @@
      "kind": "unused"
     }
    ],
-   "placed": false,
+   "placed": true,
    "centre": [
     91.0,
     276.0
@@ -17974,69 +18705,90 @@
     14,
     8
    ],
-   "no_place": "no place as a stock link at 8 circuits",
-   "sites": [
-    {
-     "site": "P-K-X4",
-     "xy": [
-      91,
-      276
-     ],
-     "signals": [
-      "/X2/B_BUFFER",
-      "/X2/SELECTOR_REMOTE"
-     ]
-    }
+   "slot_centre": [
+    102.0,
+    286.5
    ],
-   "nearest_misses": [
-    {
-     "slot_centre": [
-      91.0,
-      276.0
-     ],
-     "direction": "+x",
-     "screen": "slot on K tail of P-K-P-L10.01.01",
-     "penetration_mm": 1.65,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      91.0,
-      276.0
-     ],
-     "direction": "-x",
-     "screen": "slot on K tail of P-K-P-L10.01.01",
-     "penetration_mm": 1.65,
-     "distance_mm": 0.0
-    },
-    {
-     "slot_centre": [
-      91.0,
-      276.0
-     ],
-     "direction": "+y",
-     "screen": "slot on K field of P-K-P-L10.01.01",
-     "penetration_mm": 1.85,
-     "distance_mm": 0.0
-    }
-   ],
-   "most_frequent_blockers": [
-    {
-     "blocker": "slot on front field of P-K-P-L10.01.01 (front board P)",
-     "candidates": 176,
-     "smallest_penetration_mm": 0.05
-    },
-    {
-     "blocker": "front field on panel hardware RV507",
-     "candidates": 157,
-     "smallest_penetration_mm": 0.2
-    },
-    {
-     "blocker": "slot on K field of P-K-P-L10.01.01",
-     "candidates": 140,
-     "smallest_penetration_mm": 0.05
-    }
-   ]
+   "direction": "+x",
+   "slot_distance_from_centre_mm": 15.2069,
+   "geometry": {
+    "slot": [
+     101.25,
+     283.75,
+     102.75,
+     289.25
+    ],
+    "front_connector": [
+     89.5,
+     281.7,
+     95.6,
+     291.3
+    ],
+    "front_tail": [
+     95.6,
+     284.25,
+     101.25,
+     288.75
+    ],
+    "front_tail_first": [
+     95.6,
+     284.25,
+     99.6,
+     288.75
+    ],
+    "K_tail": [
+     102.75,
+     284.25,
+     108.4,
+     288.75
+    ],
+    "K_connector": [
+     108.4,
+     281.7,
+     114.5,
+     291.3
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [
+     "C3306",
+     "U3303"
+    ],
+    "K F (slot)": [],
+    "K B (slot)": [],
+    "K B (field)": []
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [],
+   "under_tails": {
+    "front tail": [
+     "C3306",
+     "U3303"
+    ],
+    "K tail": []
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 0.5,
+   "cost": 5.8017,
+   "refinement": {
+    "found": true,
+    "by": "finer grid",
+    "grid_mm": 0.5,
+    "grids_tried_mm": [
+     0.5
+    ]
+   },
+   "latch_reach": {
+    "neighbours_within_margin": [],
+    "verdict": "open"
+   }
   }
  ],
  "field_change": [
@@ -18327,7 +19079,7 @@
    "tails_over_panel_hardware": 35
   },
   {
-   "step": "+ adapter links (the gate option)",
+   "step": "+ adapter links (the gate option of part 1)",
    "links": 71,
    "placed": 47,
    "unplaced": 24,
@@ -18360,6 +19112,995 @@
    "lengthened_tails": 25,
    "tails_over_panel_hardware": 46,
    "trim_leads": 85
+  }
+ ],
+ "sensitivity": [
+  {
+   "step": "tail rule hard length 3.0 mm",
+   "links": 64,
+   "placed": 64,
+   "unplaced": 0,
+   "K_displaced": 310,
+   "front_displaced": {
+    "JL": 33,
+    "JR": 44,
+    "P": 20,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 23,
+   "tails_over_panel_hardware": 52,
+   "trim_leads": 83,
+   "links_of_part1": [
+    {
+     "link": "P-K-P-L04.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.5
+    },
+    {
+     "link": "P-K-P-L04.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 21.0535
+    },
+    {
+     "link": "P-K-P-L06.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 23.4094
+    },
+    {
+     "link": "P-K-P-L09.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 21.2603
+    },
+    {
+     "link": "P-K-P-L10.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 10.198
+    },
+    {
+     "link": "P-K-P-L12.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 2.8284
+    },
+    {
+     "link": "P-K-P-L12.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 13.4164
+    },
+    {
+     "link": "P-K-P-L12.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.0139
+    },
+    {
+     "link": "P-K-P-L12.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 5.6569
+    },
+    {
+     "link": "P-K-P-L12.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 7.2111
+    },
+    {
+     "link": "P-K-P-L12.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 7.0178
+    },
+    {
+     "link": "P-K-P-L13.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5586
+    },
+    {
+     "link": "P-K-P-L14.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 6.3246
+    },
+    {
+     "link": "P-K-P-L14.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.1421
+    },
+    {
+     "link": "P-K-P-L14.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5
+    },
+    {
+     "link": "P-K-P-L14.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.2006
+    },
+    {
+     "link": "P-K-P-L14.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 15.1162
+    },
+    {
+     "link": "P-K-P-L15.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 2.0616
+    },
+    {
+     "link": "P-K-P-L15.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 5.6569
+    },
+    {
+     "link": "P-K-P-L15.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 7.5166
+    },
+    {
+     "link": "P-K-P-L15.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 6.5192
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.5
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.0
+    },
+    {
+     "link": "JL-P-K-P-L01.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 15.2069
+    }
+   ],
+   "remaining_of_part1": 0
+  },
+  {
+   "step": "tail rule hard length 2.0 mm",
+   "links": 61,
+   "placed": 61,
+   "unplaced": 0,
+   "K_displaced": 306,
+   "front_displaced": {
+    "JL": 37,
+    "JR": 44,
+    "P": 23,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 26,
+   "tails_over_panel_hardware": 53,
+   "trim_leads": 87,
+   "links_of_part1": [
+    {
+     "link": "P-K-P-L04.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 20.0
+    },
+    {
+     "link": "P-K-P-L04.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 20.0998
+    },
+    {
+     "link": "P-K-P-L06.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 23.4094
+    },
+    {
+     "link": "P-K-P-L09.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 15.6205
+    },
+    {
+     "link": "P-K-P-L10.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 10.198
+    },
+    {
+     "link": "P-K-P-L12.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 2.8284
+    },
+    {
+     "link": "P-K-P-L12.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 13.4164
+    },
+    {
+     "link": "P-K-P-L12.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.0139
+    },
+    {
+     "link": "P-K-P-L12.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 5.6569
+    },
+    {
+     "link": "P-K-P-L12.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 7.2111
+    },
+    {
+     "link": "P-K-P-L12.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 7.0
+    },
+    {
+     "link": "P-K-P-L13.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5586
+    },
+    {
+     "link": "P-K-P-L14.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 22.0907
+    },
+    {
+     "link": "P-K-P-L14.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 22.0907
+    },
+    {
+     "link": "P-K-P-L14.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5586
+    },
+    {
+     "link": "P-K-P-L14.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.2006
+    },
+    {
+     "link": "P-K-P-L14.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 6.5
+    },
+    {
+     "link": "P-K-P-L15.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 2.0
+    },
+    {
+     "link": "P-K-P-L15.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 5.6569
+    },
+    {
+     "link": "P-K-P-L15.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 7.5166
+    },
+    {
+     "link": "P-K-P-L15.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 6.5
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.0
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.0
+    },
+    {
+     "link": "JL-P-K-P-L01.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 15.2069
+    }
+   ],
+   "remaining_of_part1": 0
+  },
+  {
+   "step": "tail rule hard length 1.0 mm",
+   "links": 58,
+   "placed": 58,
+   "unplaced": 0,
+   "K_displaced": 283,
+   "front_displaced": {
+    "JL": 34,
+    "JR": 44,
+    "P": 15,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 28,
+   "tails_over_panel_hardware": 51,
+   "trim_leads": 88,
+   "links_of_part1": [
+    {
+     "link": "P-K-P-L04.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.0
+    },
+    {
+     "link": "P-K-P-L04.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 6.3246
+    },
+    {
+     "link": "P-K-P-L06.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 23.4094
+    },
+    {
+     "link": "P-K-P-L09.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 15.6205
+    },
+    {
+     "link": "P-K-P-L10.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 20.3961
+    },
+    {
+     "link": "P-K-P-L12.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 2.8284
+    },
+    {
+     "link": "P-K-P-L12.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 13.4164
+    },
+    {
+     "link": "P-K-P-L12.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.0139
+    },
+    {
+     "link": "P-K-P-L12.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 5.6569
+    },
+    {
+     "link": "P-K-P-L12.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 7.2111
+    },
+    {
+     "link": "P-K-P-L12.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.1421
+    },
+    {
+     "link": "P-K-P-L13.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.0
+    },
+    {
+     "link": "P-K-P-L14.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 22.0907
+    },
+    {
+     "link": "P-K-P-L14.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 22.0907
+    },
+    {
+     "link": "P-K-P-L14.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.1421
+    },
+    {
+     "link": "P-K-P-L14.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.2006
+    },
+    {
+     "link": "P-K-P-L14.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.1421
+    },
+    {
+     "link": "P-K-P-L15.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 12.0
+    },
+    {
+     "link": "P-K-P-L15.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 5.6569
+    },
+    {
+     "link": "P-K-P-L15.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 2.0616
+    },
+    {
+     "link": "P-K-P-L15.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 21.6333
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.0
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.1245
+    },
+    {
+     "link": "JL-P-K-P-L01.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.5
+    }
+   ],
+   "remaining_of_part1": 0
+  },
+  {
+   "step": "field growth against panel pads 0.10 mm",
+   "links": 71,
+   "placed": 71,
+   "unplaced": 0,
+   "K_displaced": 358,
+   "front_displaced": {
+    "JL": 35,
+    "JR": 49,
+    "P": 16,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 38,
+   "tails_over_panel_hardware": 59,
+   "trim_leads": 105,
+   "links_of_part1": [
+    {
+     "link": "P-K-P-L04.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 11.0114
+    },
+    {
+     "link": "P-K-P-L04.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.6208
+    },
+    {
+     "link": "P-K-P-L06.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 11.3358
+    },
+    {
+     "link": "P-K-P-L09.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 23.1193
+    },
+    {
+     "link": "P-K-P-L10.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 15.9531
+    },
+    {
+     "link": "P-K-P-L12.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.5602
+    },
+    {
+     "link": "P-K-P-L12.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 21.5407
+    },
+    {
+     "link": "P-K-P-L12.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 3.6056
+    },
+    {
+     "link": "P-K-P-L12.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 4.43
+    },
+    {
+     "link": "P-K-P-L12.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 22.2219
+    },
+    {
+     "link": "P-K-P-L12.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.3783
+    },
+    {
+     "link": "P-K-P-L13.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5147
+    },
+    {
+     "link": "P-K-P-L14.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 23.3238
+    },
+    {
+     "link": "P-K-P-L14.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 11.6726
+    },
+    {
+     "link": "P-K-P-L14.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.3783
+    },
+    {
+     "link": "P-K-P-L14.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 19.799
+    },
+    {
+     "link": "P-K-P-L14.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.3783
+    },
+    {
+     "link": "P-K-P-L15.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.3941
+    },
+    {
+     "link": "P-K-P-L15.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 21.5363
+    },
+    {
+     "link": "P-K-P-L15.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.3003
+    },
+    {
+     "link": "P-K-P-L15.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.3783
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 11.0114
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 19.6977
+    },
+    {
+     "link": "JL-P-K-P-L01.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.2003
+    }
+   ],
+   "remaining_of_part1": 0
+  },
+  {
+   "step": "field growth against panel pads 0 mm",
+   "links": 71,
+   "placed": 71,
+   "unplaced": 0,
+   "K_displaced": 355,
+   "front_displaced": {
+    "JL": 35,
+    "JR": 49,
+    "P": 16,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 33,
+   "tails_over_panel_hardware": 59,
+   "trim_leads": 104,
+   "links_of_part1": [
+    {
+     "link": "P-K-P-L04.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 11.0114
+    },
+    {
+     "link": "P-K-P-L04.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.6208
+    },
+    {
+     "link": "P-K-P-L06.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 11.3358
+    },
+    {
+     "link": "P-K-P-L09.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 23.1193
+    },
+    {
+     "link": "P-K-P-L10.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 15.9531
+    },
+    {
+     "link": "P-K-P-L12.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.5602
+    },
+    {
+     "link": "P-K-P-L12.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 21.5407
+    },
+    {
+     "link": "P-K-P-L12.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 3.0
+    },
+    {
+     "link": "P-K-P-L12.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 10.7703
+    },
+    {
+     "link": "P-K-P-L12.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 10.7703
+    },
+    {
+     "link": "P-K-P-L12.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.1177
+    },
+    {
+     "link": "P-K-P-L13.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.5607
+    },
+    {
+     "link": "P-K-P-L14.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 23.3238
+    },
+    {
+     "link": "P-K-P-L14.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5
+    },
+    {
+     "link": "P-K-P-L14.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.3783
+    },
+    {
+     "link": "P-K-P-L14.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 19.799
+    },
+    {
+     "link": "P-K-P-L14.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.3783
+    },
+    {
+     "link": "P-K-P-L15.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.3941
+    },
+    {
+     "link": "P-K-P-L15.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 5.3151
+    },
+    {
+     "link": "P-K-P-L15.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5
+    },
+    {
+     "link": "P-K-P-L15.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.3783
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 11.0114
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 19.6977
+    },
+    {
+     "link": "JL-P-K-P-L01.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.2003
+    }
+   ],
+   "remaining_of_part1": 0
+  },
+  {
+   "step": "search radius 36 mm",
+   "links": 68,
+   "placed": 66,
+   "unplaced": 2,
+   "K_displaced": 314,
+   "front_displaced": {
+    "JL": 36,
+    "JR": 52,
+    "P": 24,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 33,
+   "tails_over_panel_hardware": 53,
+   "trim_leads": 89,
+   "links_of_part1": [
+    {
+     "link": "P-K-P-L04.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 26.5801
+    },
+    {
+     "link": "P-K-P-L04.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 34.0
+    },
+    {
+     "link": "P-K-P-L06.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 36.0
+    },
+    {
+     "link": "P-K-P-L09.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 34.176
+    },
+    {
+     "link": "P-K-P-L10.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5
+    },
+    {
+     "link": "P-K-P-L12.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.9819
+    },
+    {
+     "link": "P-K-P-L12.01.01.02",
+     "placed": false,
+     "slot_distance_from_centre_mm": null
+    },
+    {
+     "link": "P-K-P-L12.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.3439
+    },
+    {
+     "link": "P-K-P-L12.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 4.43
+    },
+    {
+     "link": "P-K-P-L12.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 5.5057
+    },
+    {
+     "link": "P-K-P-L12.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 25.5
+    },
+    {
+     "link": "P-K-P-L13.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 35.4401
+    },
+    {
+     "link": "P-K-P-L14.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 34.5398
+    },
+    {
+     "link": "P-K-P-L14.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 25.5
+    },
+    {
+     "link": "P-K-P-L14.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.7321
+    },
+    {
+     "link": "P-K-P-L14.02.01.01",
+     "placed": false,
+     "slot_distance_from_centre_mm": null
+    },
+    {
+     "link": "P-K-P-L14.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.3003
+    },
+    {
+     "link": "P-K-P-L15.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.3941
+    },
+    {
+     "link": "P-K-P-L15.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 13.2217
+    },
+    {
+     "link": "P-K-P-L15.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.6177
+    },
+    {
+     "link": "P-K-P-L15.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 10.7005
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.5
+    },
+    {
+     "link": "JL-P-K-P-L01.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 26.6317
+    }
+   ],
+   "remaining_of_part1": 2
+  },
+  {
+   "step": "search radius unbounded over the front board (2.0 mm grid; refined within 36 mm)",
+   "links": 63,
+   "placed": 63,
+   "unplaced": 0,
+   "K_displaced": 309,
+   "front_displaced": {
+    "JL": 31,
+    "JR": 52,
+    "P": 30,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 24,
+   "tails_over_panel_hardware": 44,
+   "trim_leads": 74,
+   "links_of_part1": [
+    {
+     "link": "P-K-P-L04.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 242.7921
+    },
+    {
+     "link": "P-K-P-L04.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 242.7921
+    },
+    {
+     "link": "P-K-P-L06.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 58.0345
+    },
+    {
+     "link": "P-K-P-L09.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 205.9126
+    },
+    {
+     "link": "P-K-P-L10.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 172.2905
+    },
+    {
+     "link": "P-K-P-L12.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.1108
+    },
+    {
+     "link": "P-K-P-L12.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 33.2866
+    },
+    {
+     "link": "P-K-P-L12.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 67.9117
+    },
+    {
+     "link": "P-K-P-L12.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 50.0
+    },
+    {
+     "link": "P-K-P-L12.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 72.7186
+    },
+    {
+     "link": "P-K-P-L12.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 52.0
+    },
+    {
+     "link": "P-K-P-L13.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 94.8262
+    },
+    {
+     "link": "P-K-P-L14.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 156.5248
+    },
+    {
+     "link": "P-K-P-L14.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 29.2617
+    },
+    {
+     "link": "P-K-P-L14.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.7321
+    },
+    {
+     "link": "P-K-P-L14.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 81.6088
+    },
+    {
+     "link": "P-K-P-L14.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.3003
+    },
+    {
+     "link": "P-K-P-L15.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.3941
+    },
+    {
+     "link": "P-K-P-L15.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 102.6255
+    },
+    {
+     "link": "P-K-P-L15.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.6177
+    },
+    {
+     "link": "P-K-P-L15.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 10.7005
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.5
+    },
+    {
+     "link": "JL-P-K-P-L01.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.2003
+    }
+   ],
+   "remaining_of_part1": 0
   }
  ]
 }

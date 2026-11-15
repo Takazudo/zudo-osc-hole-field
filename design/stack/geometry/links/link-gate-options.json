@@ -15,6 +15,10 @@
   "source": "flex-links.json st01e.st01h item1_factory_listing (C597995, C5378715, C202113, C202114)"
  },
  "field": {
+  "growth_mm": {
+   "value": 0.25,
+   "status": "ASSUMED (courtyard growth per side over the larger of body and land, as in the option study)"
+  },
   "length": {
    "formula": "max(body 0.5 n + 4.1, land B 0.5 n + 5.1) + 2 x 0.25 = 0.5 n + 5.6",
    "body_status": "SOURCED (catalogue page 4: C = 0.5 n + 4.1)",
@@ -32,21 +36,68 @@
   }
  },
  "sizes": [
-  {"circuits": 40, "cable": "C26618", "cable_length_mm": 50.0, "connector": "FH12-40S-0.5SH(55), C202114", "status": "SOURCED (st01h item5_cables, item1_factory_listing)"},
-  {"circuits": 26, "cable": "C32128", "cable_length_mm": 60.0, "connector": "FH12-26S-0.5SH(55), C202113", "status": "SOURCED (st01h item5_cables, item1_factory_listing)"},
-  {"circuits": 14, "cable": "C68390", "cable_length_mm": 50.0, "connector": "FH12-14S-0.5SH(55), C5378715", "status": "SOURCED (st01h item5_cables, item1_factory_listing)"},
-  {"circuits": 8, "cable": "C29534", "cable_length_mm": 50.0, "connector": "FH12-8S-0.5SH(55), C597995", "status": "SOURCED (st01h item5_cables, item1_factory_listing)"}
+  {
+   "circuits": 40,
+   "cable": "C26618",
+   "cable_length_mm": 50.0,
+   "connector": "FH12-40S-0.5SH(55), C202114",
+   "status": "SOURCED (st01h item5_cables, item1_factory_listing)"
+  },
+  {
+   "circuits": 26,
+   "cable": "C32128",
+   "cable_length_mm": 60.0,
+   "connector": "FH12-26S-0.5SH(55), C202113",
+   "status": "SOURCED (st01h item5_cables, item1_factory_listing)"
+  },
+  {
+   "circuits": 14,
+   "cable": "C68390",
+   "cable_length_mm": 50.0,
+   "connector": "FH12-14S-0.5SH(55), C5378715",
+   "status": "SOURCED (st01h item5_cables, item1_factory_listing)"
+  },
+  {
+   "circuits": 8,
+   "cable": "C29534",
+   "cable_length_mm": 50.0,
+   "connector": "FH12-8S-0.5SH(55), C597995",
+   "status": "SOURCED (st01h item5_cables, item1_factory_listing)"
+  }
  ],
- "adapter_short_cable": {"circuits": 8, "cable": "C81339", "cable_length_mm": 40.0, "status": "SOURCED (st01h item6_short_cables)"},
+ "adapter_short_cable": {
+  "circuits": 8,
+  "cable": "C81339",
+  "cable_length_mm": 40.0,
+  "status": "SOURCED (st01h item6_short_cables)"
+ },
  "joints": {
-  "JL-K": [40],
-  "JR-K": [40],
-  "P-K": [40, 26, 14, 8],
-  "JL-P via K": [40, 26, 14, 8],
+  "JL-K": [
+   40
+  ],
+  "JR-K": [
+   40
+  ],
+  "P-K": [
+   40,
+   26,
+   14,
+   8
+  ],
+  "JL-P via K": [
+   40,
+   26,
+   14,
+   8
+  ],
   "status": "DS-61, DS-67: 40 circuits on JL and JR; on the P joint the largest of 40, 26, 14 and 8 that places, 8 the floor"
  },
  "adapters": {
-  "boards": ["O1", "O3", "O5"],
+  "boards": [
+   "O1",
+   "O3",
+   "O5"
+  ],
   "circuits": 14,
   "report_also": 8,
   "class_of_signals": "ANALOGUE",
@@ -78,7 +129,47 @@
   "status": "ASSUMED"
  },
  "ruling_rows": [
-  {"row": "JL/JR 0.5 mm 40 + P 0.5 mm 10, one ground per two signals", "links": 63, "K_displaced": 215, "source": "reviews/da-03.md Continuation c1, whole-instrument table"},
-  {"row": "JL/JR 0.5 mm 40 + P 0.5 mm 8, a ground between every two", "links": 88, "K_displaced": 295, "source": "reviews/da-03.md Continuation c1, whole-instrument table (a5 figures; the P share is 225 after a6)"}
- ]
+  {
+   "row": "JL/JR 0.5 mm 40 + P 0.5 mm 10, one ground per two signals",
+   "links": 63,
+   "K_displaced": 215,
+   "source": "reviews/da-03.md Continuation c1, whole-instrument table"
+  },
+  {
+   "row": "JL/JR 0.5 mm 40 + P 0.5 mm 8, a ground between every two",
+   "links": 88,
+   "K_displaced": 295,
+   "source": "reviews/da-03.md Continuation c1, whole-instrument table (a5 figures; the P share is 225 after a6)"
+  }
+ ],
+ "refinement": {
+  "grids_mm": {
+   "value": [
+    0.5,
+    0.25
+   ],
+   "status": "scope a7 part 2 item 1: 0.5 mm for every link without a place on the 2.0 mm grid, then 0.25 mm where the smallest miss on the 0.5 mm grid is below 0.5 mm"
+  },
+  "quarter_grid_below_mm": {
+   "value": 0.5,
+   "status": "scope a7 part 2 item 1"
+  },
+  "rule": "links without a place on the 2.0 mm grid are searched again in their order, every placed link fixed, same rules, sizes, radius and cost; a place found is fixed before the next link; the tail-extension step stays 2.0 mm",
+  "improvement": {
+   "rounds": {
+    "value": 2,
+    "status": "scope a7 part 2 item 1 (at most two rounds)"
+   },
+   "allowance": {
+    "value": 2.0,
+    "unit": "cost units (one unit = one displaced footprint; 0.25 per mm of slot distance or extension)",
+    "status": "ASSUMED"
+   },
+   "candidates_per_link": {
+    "value": 400,
+    "status": "ASSUMED bound: the cheapest rules-legal places of the blocked link (placed links left out) on the 0.5 mm grid"
+   },
+   "rule": "for a link still without a place: among its rules-legal places (cheapest first), one that exactly one placed link blocks; that link is searched again on the 0.5 mm grid with the blocked link placed there and every other link fixed, and is moved when its new cost is at most its recorded cost plus the allowance; each blocking link is tried once per blocked link and round"
+  }
+ }
 }

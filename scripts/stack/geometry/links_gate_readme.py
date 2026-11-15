@@ -38,7 +38,10 @@ def render(doc):
     _field_change(w, doc)
     _signals(w, doc)
     _per_joint(w, s)
+    _refinement(w, doc)
     _unplaced(w, un, sig_total, s)
+    _why(w, doc, un)
+    _sensitivity(w, doc)
     _displaced(w, s, doc)
     _tails(w, s, pl, doc)
     _cable(w, s, pl)
@@ -54,7 +57,7 @@ def render(doc):
     w('- KiCad, DRC and `scripts/checks/regen-all.sh`: not admitted (no board changes).')
     w('- Copper clearance and routing, the coupling ratio per link (ST-04), heights under the tails, of the loops and '
       'of the latch neighbours, the open lock height and opening side (UNSOURCED), tolerance and insertion force.')
-    w('- The improvement pass over the greedy placement (another order, backtracking).')
+    w('- A full reordering or backtracking search: only the bounded improvement pass of part 2 is run.')
     w('')
     return '\n'.join(L) + '\n'
 
@@ -118,12 +121,12 @@ def _unplaced(w, un, total, s):
     if not un:
         return
     sig = sum(r['signals'] for r in un)
-    w('## %d links have no place as stock links at 8 circuits and carry %d signals: the flex-circuit list of DS-59'
-      % (len(un), sig))
+    w('## %d links have no legal place under the unchanged rules and carry %d signals' % (len(un), sig))
     w('')
-    w('%d of %d signals are allocated to placed links. Each row: the link, its signals, its sites and the three '
-      'candidates nearest its centre with the screen that rejects each (slot centre, cable direction).'
-      % (s['signals_on_placed_links'], total))
+    w('%d of %d signals are allocated to placed links. Whether a link here gets a flex circuit (DS-59) is the design '
+      'authority\'s decision. Each row: the link, its signals, its sites and the three candidates nearest its centre '
+      'on the 2.0 mm grid with the screen that rejects each (slot centre, cable direction); `no_place` in '
+      '`link-gate.json` names the size.' % (s['signals_on_placed_links'], total))
     w('')
     w('| Link | Centre | Signals | Sites | Nearest misses (screen, penetration mm) |')
     w('| --- | --- | --- | --- | --- |')
@@ -142,6 +145,113 @@ def _unplaced(w, un, total, s):
         w('Most frequent blocker in the search per link without a place: %s.'
           % ', '.join('%s (%d links)' % kv for kv in sorted(blk.items(), key=lambda kv: (-kv[1], kv[0]))))
         w('')
+
+
+def _refinement(w, doc):
+    rf = doc['search'].get('refinement')
+    if not rf:
+        return
+    ls = doc['links']
+    rows = [r for r in ls if 'refinement' in r]
+    found = [r for r in rows if r['refinement']['found']]
+    fg = rf['found_on_finer_grid']
+    w('## %d of the %d links without a place on the 2.0 mm grid find one under the unchanged rules: %s, '
+      '%d by the improvement pass; %d remain'
+      % (len(found), len(rows), ' and '.join('%d on the %g mm grid' % (v, float(k)) for k, v in fg.items()),
+         rf['found_by_improvement_pass'], rf['remaining']))
+    w('')
+    w('Part 2, item 1: each link without a place on the 2.0 mm grid is searched again, in its order and with every '
+      'placed link fixed, on a %s mm grid, and on %s mm where its smallest miss there is below %s mm; rules, sizes, '
+      'radius, cost and the 2.0 mm tail-extension step are unchanged. Then at most %d rounds of the improvement pass: '
+      '%s; allowance %s cost units (ASSUMED). The refined placement is the gate option of record.'
+      % ('%g' % rf['grids_mm'][0], '%g' % rf['grids_mm'][1], '%g' % rf['quarter_grid_below_mm'],
+         rf['improvement']['rounds'], rf['improvement']['rule'], _fmt(rf['improvement']['allowance'])))
+    w('')
+    w('| Link (part 1) | Signals | Found | By | Grid mm | Slot centre | Direction | Moved link (old slot, cost old -> new) |')
+    w('| --- | --- | --- | --- | --- | --- | --- | --- |')
+    moved = {r['id']: r for r in ls if 'moved_by_improvement' in r}
+    for r in rows:
+        f = r['refinement']
+        mv = moved.get(f.get('moved'))
+        mvt = '-' if not mv else '%s (%s %s, %s -> %s)' % (mv['id'], _xy(mv['moved_by_improvement']['slot_centre']),
+                                                        mv['moved_by_improvement']['direction'],
+                                                        '%.2f' % mv['moved_by_improvement']['cost'],
+                                                        '%.2f' % mv['moved_by_improvement']['new_cost'])
+        w('| %s | %d | %s | %s | %s | %s | %s | %s |' % (
+            r['id'], r['signals'], 'yes' if f['found'] else '**no**', f.get('by', '-'),
+            ('%g' % f['grid_mm']) if f['found'] else ' / '.join('%g' % g for g in f['grids_tried_mm']),
+            '(%.2f, %.2f)' % tuple(r['slot_centre']) if r['placed'] else '-', r.get('direction', '-') if r['placed'] else '-', mvt))
+    w('')
+
+
+def _why(w, doc, un):
+    rows = [r for r in un if 'why_no_place' in r]
+    if not rows:
+        return
+    nl = doc.get('nearest_legal_unbounded', {})
+    w('## Why %d links still have no place: %s'
+      % (len(rows), '; '.join('%s lacks %s by %s mm' % (r['id'], r['why_no_place']['lacks'],
+                                                      _f2(r['why_no_place'].get('smallest_penetration_mm'))) for r in rows)))
+    w('')
+    w('Part 2, item 2, on the finest grid searched for the link: the deepest screen stage any candidate reaches (the '
+      'field, then the first %s mm of the tail, then the slot on K and the K side), the smallest penetration at that '
+      'stage, and at that candidate the free corridor between the pads of the neighbouring panel hardware through the '
+      'field in x and in y against the field\'s extent (0.5 n + 5.6 mm along the connector, 6.1 mm deep), and across '
+      'the first %s mm of the tail against the tail width. "open" means no pad bounds that side within 30 mm. Nearest '
+      'legal place: the same rules with the placed links fixed, unbounded over the front board (0.5 mm grid).'
+      % (_fmt(doc['search']['tail_rule_hard_mm']), _fmt(doc['search']['tail_rule_hard_mm'])))
+    w('')
+    w('| Link | Lacks | Short by mm | Blocker | At (slot, direction, front extension) | Field corridor x: free / needed | Field corridor y: free / needed | Tail corridor across: free / needed | Nearest legal place |')
+    w('| --- | --- | --- | --- | --- | --- | --- | --- | --- |')
+    for r in rows:
+        y = r['why_no_place']
+        c = y.get('field_corridor_mm', {})
+        tc = (y.get('tail_corridor_mm') or {}).get('across')
+        n = nl.get(r['id'])
+        w('| %s | %s | %s | %s | %s %s, %s mm | %s / %s | %s / %s | %s | %s |' % (
+            r['id'], y['lacks'], _f2(y.get('smallest_penetration_mm')), y.get('blocker', '-'),
+            _xy(y['at']['slot_centre']) if 'at' in y else '-', y.get('at', {}).get('direction', ''),
+            _fmt(y.get('at', {}).get('front_extension_mm')),
+            _f2(c.get('x', {}).get('free')) if c.get('x', {}).get('free') is not None else 'open', _f2(c.get('x', {}).get('needed')),
+            _f2(c.get('y', {}).get('free')) if c.get('y', {}).get('free') is not None else 'open', _f2(c.get('y', {}).get('needed')),
+            ('%s / %s' % ('open' if tc['free'] is None else _f2(tc['free']), _f2(tc['needed']))) if tc else '-',
+            ('%s mm at %s %s' % (_f2(n['distance_mm']), _xy(n['slot_centre']), n['direction'])) if n else 'none on the board'))
+    w('')
+
+
+def _sensitivity(w, doc):
+    rows = doc.get('sensitivity')
+    if not rows:
+        return
+    w('## Sensitivity, one ASSUMED term per run (comparisons, not results): %s'
+      % '; '.join('%s leaves %d of the part-1 links without a place' % (r['step'], r['remaining_of_part1']) for r in rows))
+    w('')
+    w('Part 2, item 3: separate full runs with the refined search of the record, each changing one term; nothing is '
+      'selected. "Of part 1" counts the links without a place on the 2.0 mm grid of the record whose sites are still on a '
+      'link without a place. The 0 mm tail rule is the comparison row of part 1 (all links placed). The unbounded run '
+      'searches the 2.0 mm grid over the whole front board and refines within 36 mm.')
+    w('')
+    w('| Run | Links | Placed | No place | Of part 1 without a place | K displaced | Leads to trim |')
+    w('| --- | --- | --- | --- | --- | --- | --- |')
+    for r in rows:
+        w('| %s | %d | %d | %d | %d of %d | %d | %d |' % (r['step'], r['links'], r['placed'], r['unplaced'],
+                                                       r['remaining_of_part1'], len(r['links_of_part1']), r['K_displaced'],
+                                                       r['trim_leads']))
+    w('')
+    rad = [r for r in rows if 'radius' in r['step']]
+    if rad:
+        ids = [x['link'] for x in rad[0]['links_of_part1']]
+        w('Slot distance from the link centre, per link of part 1, in the radius runs (mm; "-" = no place):')
+        w('')
+        w('| Link | ' + ' | '.join(r['step'] for r in rad) + ' |')
+        w('| --- | ' + ' | '.join('---' for _ in rad) + ' |')
+        for i, lid in enumerate(ids):
+            w('| %s | %s |' % (lid, ' | '.join(_f2(r['links_of_part1'][i]['slot_distance_from_centre_mm']) for r in rad)))
+        w('')
+
+
+def _f2(v):
+    return '-' if v is None else '%.2f' % v
 
 
 def _displaced(w, s, doc):
@@ -244,12 +354,14 @@ def _causes(w, doc, s):
         return
     fc = {r['run']: r for r in doc.get('field_change', []) if r['field'] == 'FH12 field'}
     row88 = fc.get('JL/JR 40 + P 8 (the 88-link row)')
-    w('## Against the ruling\'s rows (63 links with 215 K footprints; 88 with 295): the gate option has %d links, %d placed, %d K footprints'
-      % (s['links'], s['placed'], s['K_displaced']['total']))
+    last = steps[-2]
+    w('## Against the ruling\'s rows (63 links with 215 K footprints; 88 with 295), on the 2.0 mm grid of part 1: %d links, %d placed, %d K footprints'
+      % (last['links'], last['placed'], last['K_displaced']))
     w('')
-    w('One cause at a time, each row adding one change to the one above (separate full runs; greedy, not minima). The '
-      'first two rows are the option study\'s engine; from the third on, the gate engine with the FH12 field and the '
-      'class rule of DS-62.')
+    w('One cause at a time, each row adding one change to the one above (separate full runs on the 2.0 mm grid of part 1, '
+      'without the refinement of part 2; greedy, not minima). The first two rows are the option study\'s engine; from '
+      'the third on, the gate engine with the FH12 field and the class rule of DS-62. The refined gate option of record '
+      'has %d links, %d placed and %d K footprints.' % (s['links'], s['placed'], s['K_displaced']['total']))
     w('')
     w('| Step | Links | Placed | No place | K displaced | Front JL / JR / P | Lengthened tails | Tails over panel hardware |')
     w('| --- | --- | --- | --- | --- | --- | --- | --- |')
