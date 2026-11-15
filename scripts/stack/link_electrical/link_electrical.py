@@ -527,7 +527,7 @@ def readme(inp, r):
     worst_open = max(x['I_n1_A'] for x in gc if x['case'] == 'one_post_open')
     lines = []
     w = lines.append
-    w('# Flat-link electrical bounds: ST-04 attempts a2 to a4 (paper; DS-41 checks 3 and 4 without positions, harness baseline DS-54, DS-62 table)')
+    w('# Flat-link electrical bounds: ST-04 attempts a2 to a4 (paper; DS-41 checks 3 and 4 without positions, harness baseline DS-54, DS-62 table; gate checks 3 and 4 on the record of the room study)')
     w('')
     w(f'Task `{inp["task"]}`, launch commit `{inp["launch_commit"]}`. **Status: unvalidated paper bound.** Coupling, current share '
       'and resistance are NOT RUN as measurements; nothing is selected, adopted or bought. Every class, impedance, edge rate and '
@@ -713,7 +713,8 @@ def readme(inp, r):
     w('- **NOT RUN, crosstalk, current share and resistance measurements:** no cable, connector or board exists.')
     w('- **NOT RUN, field solver for the real laminate:** the permittivity of the LX cable is not on its drawing; the homogeneous model is bracketed by the ε_eff sweep.')
     w('- **NOT RUN, connector contact coupling:** no connector coupling data is retained; covered only by the ASSUMED end length.')
-    w('- **NOT RUN, ground share at the field positions:** waits for ST-02 a4 and the ruling.')
+    w('- **NOT RUN, ground share with board terms at the field positions:** the model keeps its stated terms (no board term on the link path); the record enters only through the contact count and the cable length.')
+    w('- **NOT RUN, `bash scripts/checks/regen-all.sh`, `pnpm check` and the full Python suite:** native KiCad steps run in the pull request\'s CI; the suite outside this folder is run by the manager on the integrated tree.')
     w('- **NOT RUN, KiCad, DRC and `regen-all.sh`:** no board is changed.')
     w('- **NOT RUN, harness coupling measurement and a field solver for the insulated wire bundle:** no harness is built; the wire permittivity is not on the Alpha sheet.')
     w('')
@@ -726,27 +727,32 @@ def generate():
     inp = load_inputs()
     r = results(inp)
     b = hb.build(inp, r['signals'])
+    import link_ratios
     d62 = ds62_table.build(inp)
     r['signals_all'] = d62['signals_all']
+    lr = link_ratios.build(inp, d62['baseline'])
     text = readme(inp, r)
     marker = '## Checks: calculator and tests run'
     text = text.replace(marker, '\n'.join(hb.readme_lines(inp, b, r['ground_counts'])) + '\n' +
-                        '\n'.join(ds62_table.readme_lines(inp, d62)) + '\n' + marker)
-    return results_json(inp, r), text, hb.to_json(inp, b), ds62_table.to_json(inp, d62)
+                        '\n'.join(ds62_table.readme_lines(inp, d62)) + '\n' +
+                        '\n'.join(link_ratios.readme_lines(inp, lr)) + '\n' + marker)
+    return results_json(inp, r), text, hb.to_json(inp, b), ds62_table.to_json(inp, d62), link_ratios.to_json(inp, lr)
 
 
 def main(argv):
-    rj, rm, hj, dj = generate()
+    rj, rm, hj, dj, lj = generate()
     if '--check' in argv:
         ok = (OUT / 'results.json').read_text() == rj and (OUT / 'README.md').read_text() == rm and \
-            (OUT / 'harness-baseline.json').read_text() == hj and (OUT / 'ds62-table.json').read_text() == dj
+            (OUT / 'harness-baseline.json').read_text() == hj and (OUT / 'ds62-table.json').read_text() == dj and \
+            (OUT / 'link-ratios.json').read_text() == lj
         print('current' if ok else 'stale')
         return 0 if ok else 1
     (OUT / 'results.json').write_text(rj)
     (OUT / 'README.md').write_text(rm)
     (OUT / 'harness-baseline.json').write_text(hj)
     (OUT / 'ds62-table.json').write_text(dj)
-    print('wrote results.json, harness-baseline.json, ds62-table.json and README.md in', OUT)
+    (OUT / 'link-ratios.json').write_text(lj)
+    print('wrote results.json, harness-baseline.json, ds62-table.json, link-ratios.json and README.md in', OUT)
     return 0
 
 

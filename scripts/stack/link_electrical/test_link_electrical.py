@@ -12,11 +12,12 @@ import link_electrical as le  # noqa: E402
 
 class Retained(unittest.TestCase):
     def test_retained_files_equal_a_fresh_run(self):
-        rj, rm, hj, dj = le.generate()
+        rj, rm, hj, dj, lj = le.generate()
         self.assertEqual((le.OUT / 'results.json').read_text(), rj, 'run link_electrical.py')
         self.assertEqual((le.OUT / 'README.md').read_text(), rm, 'run link_electrical.py')
         self.assertEqual((le.OUT / 'harness-baseline.json').read_text(), hj, 'run link_electrical.py')
         self.assertEqual((le.OUT / 'ds62-table.json').read_text(), dj, 'run link_electrical.py')
+        self.assertEqual((le.OUT / 'link-ratios.json').read_text(), lj, 'run link_electrical.py')
 
     def test_every_input_has_a_status(self):
         inp = le.load_inputs()
@@ -345,6 +346,104 @@ class AttemptA4(unittest.TestCase):
         for L, r in self.tab['largest_ratio_per_length'].items():
             m = max(x['ratio'] for x in self.tab['table'] if x['length_mm'] == float(L))
             self.assertEqual(r['ratio'], m)
+
+
+class AttemptA4Part2(unittest.TestCase):
+    """a4 part 2: gate checks 3 and 4 on the record of the room study."""
+
+    @classmethod
+    def setUpClass(cls):
+        import link_ratios
+        cls.lr = link_ratios
+        cls.inp = le.load_inputs()
+        cls.links = link_ratios.load_record()
+        cls.out = json.loads((le.OUT / 'link-ratios.json').read_text())
+        cls.res = json.loads((le.OUT / 'results.json').read_text())
+
+    def test_record_projection_is_the_one_read(self):
+        self.assertEqual(self.lr.projection_sha256(self.links), self.inp['link_record']['projection_sha256'],
+                         'the record changed: check the change and pin the new projection')
+
+    def test_record_projection_goes_stale_when_a_position_changes(self):
+        links = copy.deepcopy(self.links)
+        p = links[0]['positions']
+        p[0], p[-1] = dict(p[-1], pos=p[0]['pos']), dict(p[0], pos=p[-1]['pos'])
+        self.assertNotEqual(self.lr.projection_sha256(links), self.inp['link_record']['projection_sha256'])
+
+    def test_record_counts(self):
+        kinds = [p['kind'] for l in self.links for p in l['positions']]
+        self.assertEqual((len(self.links), kinds.count('signal'), kinds.count('ground'), kinds.count('unused')), (61, 511, 322, 339))
+        self.assertEqual(len(self.out['links']), 61)
+        self.assertEqual(sum(1 for r in self.out['links'] if r['host']), 20)
+        self.assertEqual(sum(len(r['riders']) for r in self.out['links']), 42)
+
+    def test_record_signals_equal_signals_all(self):
+        rec = sorted((p['site'], p['net'], p['class']) for l in self.links for p in l['positions'] if p['kind'] == 'signal')
+        mine = sorted((x['pair'], x['net'], x['class']) for x in self.res['signals_all'])
+        self.assertEqual(len(mine), 511)
+        self.assertEqual(rec, mine)
+
+    def test_every_directed_pair_is_evaluated(self):
+        self.assertEqual(self.out['missing_references'], [])
+        for l, r in zip(self.links, self.out['links']):
+            sig = [p for p in l['positions'] if p['kind'] == 'signal']
+            n_agg = sum(1 for p in sig if p['class'] in ('LOGIC', 'ANALOGUE', 'PRECISION'))
+            self.assertEqual(r['pairs_evaluated'], n_agg * (len(sig) - 1), l['id'])
+
+    def test_the_rule_holds_on_the_record(self):
+        self.assertEqual(self.out['rule_breaks'], {})
+        logic = [r for r in self.out['rules'] if r['logic_runs'] or r['single_logic']]
+        self.assertEqual(len(logic), 10)
+
+    def test_fault_injection_breaks_the_rule(self):
+        l = next(x for x in self.links if x['id'] == 'P-K-P-L13.01.01.01')
+        bad = copy.deepcopy(l)
+        p = bad['positions']
+        p[1] = dict(p[2], pos=2)  # a logic line in place of the ground beside an analogue line at position 1
+        self.assertTrue(self.lr.rule_check(bad)['breaks'])
+        ad = copy.deepcopy(next(x for x in self.links if x['joint'] == 'O-K'))
+        ad['positions'][0], ad['positions'][7] = dict(ad['positions'][7], pos=1), dict(ad['positions'][0], pos=8)
+        self.assertTrue(any('DS-79' in b for b in self.lr.rule_check(ad)['breaks']))
+
+    def test_part1_reference_for_analogue_pairs(self):
+        r = next(x for x in self.out['links'] if x['largest_pair'] and x['largest_pair']['pair'] == 'ANALOGUE>ANALOGUE')
+        self.assertAlmostEqual(r['largest_pair']['harness_min_V'] * 1000, 1.115, places=3)
+
+    def test_needs_design_links_and_remedy(self):
+        above = {r['id']: r for r in self.out['links'] if r['ratio'] and r['ratio'] > 1.0}
+        self.assertEqual(set(above), set(self.out['links_above_1']))
+        self.assertEqual(self.out['verdict'], 'NEEDS_DESIGN' if above else 'DONE')
+        for r in above.values():
+            x = r['remedy_ds77']
+            if x['grounds_moved_in']:
+                self.assertLessEqual(x['ratio_after'], 1.0)
+                self.assertEqual(len(x['order_after']), r['circuits'])
+            else:
+                self.assertIsNone(x['ratio_after'])
+
+    def test_remedy_keeps_size_and_rule(self):
+        l = next(x for x in self.links if x['id'] == 'P-K-P-L07')
+        t = self.lr.with_grounds_in_runs(l, 1)
+        self.assertEqual(len(t['positions']), l['circuits'])
+        self.assertEqual(self.lr.rule_check(t)['breaks'], [])
+        self.assertEqual(sorted(p['net'] for p in t['positions'] if p['kind'] == 'signal'),
+                         sorted(p['net'] for p in l['positions'] if p['kind'] == 'signal'))
+
+    def test_more_contacts_less_current_and_a2_covers(self):
+        d = le.pp.load()
+        a = self.lr.worst_contact_at(self.inp, 'P', 1, 2, 50.0, d)
+        b = self.lr.worst_contact_at(self.inp, 'P', 10, 2, 50.0, d)
+        self.assertLess(b, a)
+        gs = self.out['ground_share']
+        for x in gs['branches']:
+            self.assertLessEqual(x['one_contact_A']['one_post_open'], gs['a2_one_post_open_one_ground_A'] + 1e-12)
+            self.assertTrue(x['within']['0.35'])
+            self.assertGreaterEqual(x['fewest_on_a_link'], 1)
+
+    def test_adapter_ground_has_no_dc(self):
+        for x in self.out['adapter_return']:
+            self.assertEqual((x['ground_contacts'], x['dc_A']), (1, 0.0))
+            self.assertLess(x['step_into_ground_A'], x['step_all_lines_A'])
 
 
 if __name__ == '__main__':
