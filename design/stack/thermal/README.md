@@ -49,7 +49,7 @@ Outer box: the internal [-2, -2, 320, 300] mm plus a 2.0 mm wall (ASSUMED, 1 to 
 
 The wall allowance moves the 40 mm area from 0.2485 to 0.2567 m2 (3.3 %). The supply-inside rows add the supply loss at the shell only; no pocket for a supply exists in the 40 mm stack (2.8 mm behind K's rear parts), so a supply inside needs a deeper case or a side pocket (Q6, #57).
 
-## 3. Every gap of the 40 mm stack has Nu 1.00 to 3.65; radiation carries 32 to 88 % of the heat across the facing pairs of 10 cm2 or more; the slots cover 1.4 % and the cable loops at most 7.8 % of where front boards face K
+## 3. Every gap of the 40 mm stack has Nu 1.00 to 3.65; radiation carries 32 to 88 % of the heat across the facing pairs of 10 cm2 or more; the slots cover 1.4 % and the cable loops at most 7.5 % of where front boards face K
 
 Gaps from `candidate.planes` and `candidate.stack`: panel rear at -2.0 mm, EL -4.4/-4.8, JL and JR -10.0/-11.6, P -12.0/-13.6, adapters -16.0/-17.6, K -30.6/-32.2, rear wall -40. Densities are board totals at the normal load over the board area. Nu runs from 1 (conduction only, ASSUMED lower bound) to the ASSUMED enclosed-layer correlations at the best end; h adds the plate-to-plate radiation (emissivity 0.80 to 0.95).
 
@@ -68,7 +68,7 @@ Gaps from `candidate.planes` and `candidate.stack`: panel rear at -2.0 mm, EL -4
 | P / rear wall | 26.4 | 32.2 | 2.28 | 0 (case) | 1.90 | 1.00 | 6.8 to 9.2 |
 | EL / K | 25.8 | 12.5 | 1.46 | 27.72 | 3.59 | 1.60 | 7.2 to 11.5 |
 
-Pairs below 10 cm2 (adapters, P over the adapters, EL over K's edge) total 26.6 cm2 and are in the network. The gate record of the room study holds 69 of 71 links placed, 69 slots in K of 10.8 cm2 in all, cable loops of at most 61.6 cm2 and cable of 328.9 cm2 in plan (read by extraction, pin `link-gate-figures`). The slots are mostly filled by the cable and add no credited air path. The loops are at most 7.8 % of the 787 cm2 where front boards face K: as a radiation shield they lower h by at most that fraction where they lie, and they cannot drive a gap below conduction except where cable replaces air. The screen carries them as this bound, not in the network. No airflow is claimed: the vented rows of item 6 are a bound.
+Pairs below 10 cm2 (adapters, P over the adapters, EL over K's edge) total 26.6 cm2 and are in the network. The gate record of the room study holds 67 of 71 links placed, 67 slots in K of 10.7 cm2 in all, cable loops of at most 58.7 cm2 and cable of 324.4 cm2 in plan (read by extraction, pin `link-gate-figures`). The slots are mostly filled by the cable and add no credited air path. The loops are at most 7.5 % of the 787 cm2 where front boards face K: as a radiation shield they lower h by at most that fraction where they lie, and they cannot drive a gap below conduction except where cable replaces air. The screen carries them as this bound, not in the network. No airflow is claimed: the vented rows of item 6 are a bound.
 
 ## 4. The 85 °C limit of CL10A105KB8NNNC, SN74HC14DR and SN74HC74DR is NOT SHOWN met in either case depth; 13 IC classes read NO LIMIT RETAINED and NOT SHOWN; on the classes with a limit the 40 mm case moves the board at the part by -2.2 to +2.4 K against 120 mm
 
