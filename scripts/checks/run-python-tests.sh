@@ -1,6 +1,58 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# all (default): superseded study replay, then current-tree discovery.
+# frozen: only the replay. current: only the discovery. CI runs frozen and
+# current as separate 30-minute jobs (scripts/checks/CI-TIMEOUT-DIAGNOSIS.md).
+usage='Usage: bash scripts/checks/run-python-tests.sh [all|frozen|current]'
+if (($# > 1)); then
+  printf '%s\n' "$usage" >&2
+  exit 2
+fi
+mode=all
+if (($# == 1)); then
+  mode=$1
+fi
+case "$mode" in
+  all) label='Python unit tests' ;;
+  frozen) label='Superseded study replay' ;;
+  current) label='Current-tree Python unit tests' ;;
+  *)
+    printf 'Unknown mode: %s\n%s\n' "$mode" "$usage" >&2
+    exit 2
+    ;;
+esac
+
+# Superseded studies replay unchanged at their pinned commits (scripts/checks/frozen-studies.json).
+frozen_studies=scripts/checks/frozen_studies.py
+total_tests=0
+
+replay_frozen_studies() {
+  printf '%s\n' 'Replaying superseded studies at their pinned commits'
+  if output=$(python3 "$frozen_studies" replay 2>&1); then
+    printf '%s\n' "$output"
+  else
+    status=$?
+    printf '%s\n' "$output" >&2
+    exit "$status"
+  fi
+  count=$(printf '%s\n' "$output" | sed -nE 's/^Ran ([0-9]+) tests? in frozen study worktrees/\1/p' | tail -n 1)
+}
+
+if [[ "$mode" == frozen ]]; then
+  if [[ ! -f "$frozen_studies" ]]; then
+    printf 'Missing superseded study registry script: %s\n' "$frozen_studies" >&2
+    exit 1
+  fi
+  replay_frozen_studies
+  if [[ -z "$count" || "$count" -eq 0 ]]; then
+    printf '%s\n' 'Superseded study replay reported no executed tests.' >&2
+    exit 1
+  fi
+  printf '%s: %d tests ran.\n' "$label" "$count"
+  exit 0
+fi
+
 test_roots=()
 for root in scripts design; do
   if [[ -d "$root" ]]; then
@@ -9,7 +61,7 @@ for root in scripts design; do
 done
 
 if ((${#test_roots[@]} == 0)); then
-  printf '%s\n' 'Python unit tests: 0 tests ran (scripts/ and design/ are absent).'
+  printf '%s\n' "$label: 0 tests ran (scripts/ and design/ are absent)."
   exit 0
 fi
 
@@ -30,7 +82,7 @@ mapfile -d '' -t test_files < <(
 )
 
 if ((${#test_files[@]} == 0)); then
-  printf '%s\n' 'Python unit tests: 0 tests ran (no test_*.py files found).'
+  printf '%s\n' "$label: 0 tests ran (no test_*.py files found)."
   exit 0
 fi
 
@@ -42,20 +94,9 @@ for test_file in "${test_files[@]}"; do
 done
 
 mapfile -t ordered_discovery_roots < <(printf '%s\n' "${!discovery_roots[@]}" | sort)
-total_tests=0
 
-# Superseded studies replay unchanged at their pinned commits (scripts/checks/frozen-studies.json).
-frozen_studies=scripts/checks/frozen_studies.py
-if [[ -f "$frozen_studies" ]]; then
-  printf '%s\n' 'Replaying superseded studies at their pinned commits'
-  if output=$(python3 "$frozen_studies" replay 2>&1); then
-    printf '%s\n' "$output"
-  else
-    status=$?
-    printf '%s\n' "$output" >&2
-    exit "$status"
-  fi
-  count=$(printf '%s\n' "$output" | sed -nE 's/^Ran ([0-9]+) tests? in frozen study worktrees/\1/p' | tail -n 1)
+if [[ "$mode" == all && -f "$frozen_studies" ]]; then
+  replay_frozen_studies
   total_tests=$((total_tests + ${count:-0}))
 fi
 
@@ -79,6 +120,6 @@ for directory in "${ordered_discovery_roots[@]}"; do
   total_tests=$((total_tests + ${count:-0}))
 done
 
-printf 'Python unit tests: %d tests ran.\n' "$total_tests"
+printf '%s: %d tests ran.\n' "$label" "$total_tests"
 
 printf "%s\n" "NOT RUN: retained-artifact integration requires preserved local issue-38 artifacts; run bash scripts/checks/run-retained-artifact-tests.sh separately."
