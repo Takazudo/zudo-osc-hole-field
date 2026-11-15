@@ -7,11 +7,11 @@ Status: candidate for an unvalidated draft. These are geometry files for the own
 | File | Stands between | Gap | Modelled length | Needed | Spares on the plate |
 | --- | --- | --- | --- | --- | --- |
 | [stack-spacer-for-19mm-gap.stl](generated/stack-spacer-for-19mm-gap.stl) | JL and K, JR and K | 19.0 mm | 18.8 mm | 2 (JL 1, JR 1) | 8 |
-| [stack-spacer-for-17mm-gap.stl](generated/stack-spacer-for-17mm-gap.stl) | P and K | 17.0 mm | 16.8 mm | 2 (one at the lower left of P, one where EL lies in front of P) | 4 |
+| [stack-spacer-for-17mm-gap.stl](generated/stack-spacer-for-17mm-gap.stl) | P and K | 17.0 mm | 16.8 mm | 2 (P 2) | 4 |
 
 [stack-spacer-set-plate.stl](generated/stack-spacer-set-plate.stl) holds the whole set on one plate: 10 sleeves for the 19.0 mm gap in rows of 5, then 6 sleeves for the 17.0 mm gap in rows of 3. The three files are the ones handed over when the count was 8 long and 4 short. Only the number of sleeves in use changed.
 
-Each sleeve has a 7.0 mm outer diameter and a 3.4 mm bore for an M3 screw that passes through. There is no thread in the plastic and no insert. The two lengths look alike, so keep them apart after printing: a long sleeve on the control board would lift K by 2 mm.
+Each sleeve has a 7.0 mm outer diameter and a 3.4 mm bore for an M3 screw that passes through. There is no thread in the plastic and no insert. The two lengths look alike, so keep them apart after printing: a long sleeve on the control board is 1.8 mm longer than the gap there and would lift K off its posts.
 
 ## Print upright at 100 % scale and check the length
 
@@ -26,7 +26,7 @@ Places are named by the panel hardware next to them, seen from the front of the 
 
 | Sleeve | Board | Place | Panel coordinates |
 | --- | --- | --- | --- |
-| Long, 18.8 mm | Left jack board (JL) | In the top row of jacks, midway between the 1V/OCT jacks of O4 and O5, the fourth and fifth jack from the left | (74, 28) |
+| Long, 18.8 mm | Left jack board (JL) | In the top row of jacks, midway between the 1V/OCT jacks of O4 and O5, the fourth and fifth jack from the left, 1 mm nearer the top edge than the jack centres | (74, 28) |
 | Long, 18.8 mm | Right jack board (JR) | In the top row of jacks, midway between the SIG jacks of E2 and E3, the fifth and fourth jack from the right, 5 mm nearer the top edge than the jack centres, beside the SIG LED of E2 | (244, 24) |
 | Short, 16.8 mm | Control board (P) | In the square formed by the PW pot and the PWM ± pot of O5, the SAMPLE button of H1 and the A / B switch of X1, 2 mm right of its middle | (93, 276) |
 | Short, 16.8 mm | Control board (P), under the LED board (EL) | Midway between the TRIG buttons of E2 and E3, 3 mm toward the RISE pots | (244, 230) |
@@ -37,7 +37,7 @@ Each place is a plain hole for an M3 screw through the front board and through K
 
 1. Before the panel goes on, push an M3 × 25 mm screw through each of the four holes from the front of the board and hold its head down with a strip of tape. Behind the panel the head cannot be reached later, and without the tape the screw slides back when the instrument lies on its front.
 2. Slip a sleeve over each screw: a long one on the jack boards, a short one on the control board.
-3. Lower K onto the posts and fasten its 18 post screws first.
+3. Lower K onto the 18 brass posts and fasten K's screw at every post first.
 4. Put a nut on each of the four sleeve screws and turn it with the fingers until it is snug. No tool and no thread lock. Use a washer under the nut only if the screw end still comes through the nut with it.
 5. Close the lock of a flat cable connector with one fingertip or a plastic tool, and never press K with the palm. For a lock near K's lower left corner, beside the PWM ± pot of O1, hold K's edge next to the connector with the other hand.
 

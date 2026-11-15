@@ -179,7 +179,7 @@ Keys with unchanged meaning: `id`, `kind`, `xy`, `front_xy`, `front_board`, `boa
 | design/stack/geometry/stack-candidate.json candidate.sub_toggles | 6a4bc1070b774ce2b342e1e0ace16cd1aab0c416b8fe122be666a137d25302ff |
 | design/stack/geometry/stack-candidate.json candidate.tabs | 05c7f0282fafeddb9c658e463d780d229829827058ef5172951eb79cc034dd36 |
 | design/stack/power-posts/joint-design.json joints | cb58dd654f2b169336a22d2bdef50de8448c63dca9c7dfb74e3e4d3980b0b218 |
-| design/stack/spacers/spacer-set.json sleeve, length_allowance_mm, members | 3d558dc0f3faa0fd829c2e771e12a2431257cfe7e16d85ad08be267f1d93aed4 |
+| design/stack/spacers/spacer-set.json sleeve, length_allowance_mm, members | fed1446f89d2345d2692e822ac0e91b228c124d880bada37fdeb3c7f9bf4c436 |
 | boards/osc-control/osc-control-routed-draft.kicad_pcb | 111c5af77fa5fff3ebe96de988197fac36f37eb54d332c66b36477fa3b6e7f44 |
 | boards/osc-core/osc-core.kicad_pcb | 7311cd8e7aabb609c0a6d1a7f2ef42324c585d0c7b51f77c6bd3fc0338c54f22 |
 | boards/osc-jack-left/osc-jack-left.kicad_pcb | 2cd30044054fcdbf8c94de27515a5bc763e98de12c0f3df212cf5d84ded1ee19 |

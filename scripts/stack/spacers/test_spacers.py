@@ -232,23 +232,49 @@ class AgreementWithTheStack(unittest.TestCase):
 
     def test_each_length_serves_the_ruled_sleeves_of_its_own_boards(self):
         ruled = Counter((f['front_board'], f['gap_mm']) for f in self.ruled)
-        listed = Counter({(board, m['gap_mm']): count for m in self.spec['members'] for board, count in m['sites'].items()})
+        listed = Counter()
+        for m in self.spec['members']:
+            for board, count in m['sites'].items():
+                listed[(board, m['gap_mm'])] += count
         self.assertGreater(len(self.ruled), 0)
         self.assertEqual(listed, ruled)
 
-    def test_readme_places_every_ruled_sleeve_and_names_its_screw(self):
-        lengths = {m['gap_mm']: sp.fmt_mm(sp.length_mm(self.spec, m)) for m in self.spec['members']}
-        rows = [line for line in self.readme.splitlines() if line.startswith(('| Long, ', '| Short, '))]
+    def test_readme_places_every_ruled_sleeve(self):
+        gaps = sorted(m['gap_mm'] for m in self.spec['members'])
+        self.assertEqual(len(gaps), 2)
+        sleeve = {m['gap_mm']: '%s, %s mm' % ('Long' if m['gap_mm'] == gaps[1] else 'Short', sp.fmt_mm(sp.length_mm(self.spec, m)))
+                  for m in self.spec['members']}
+        board = {'JL': 'Left jack board (JL)', 'JR': 'Right jack board (JR)', 'P': 'Control board (P)'}
+        rows = [[cell.strip() for cell in line.split('|')] for line in self.readme.splitlines()
+                if line.startswith(('| Long, ', '| Short, '))]
         self.assertEqual(len(rows), len(self.ruled))
         for f in self.ruled:
-            (row,) = [line for line in rows if '| (%g, %g) |' % tuple(f['xy']) in line]
-            self.assertIn(', %s mm |' % lengths[f['gap_mm']], row, f['id'])
-            self.assertIn('(%s)' % f['front_board'], row, f['id'])
-        screw = self.fixing_list['screw']['working_figure']
-        self.assertEqual(screw['designation'], 'M3 x %g' % screw['length_mm'])
-        self.assertIn('M3 × %g mm screw' % screw['length_mm'], self.readme)
-        self.assertIn('%d post screws' % self.fixing_list['counts']['posts'], self.readme)
-        self.assertIn('%d fixings' % self.fixing_list['counts']['fixings'], self.readme)
+            self.assertIn(f['gap_mm'], sleeve, f['id'])
+            found = [cells for cells in rows if cells[4] == '(%g, %g)' % tuple(f['xy'])]
+            self.assertEqual(len(found), 1, f['id'])
+            self.assertEqual(found[0][1], sleeve[f['gap_mm']], f['id'])
+            self.assertTrue(found[0][2].startswith(board[f['front_board']]), f['id'])
+
+    def test_readme_states_the_fixing_lists_figures(self):
+        screw, counts = self.fixing_list['screw'], self.fixing_list['counts']
+        figure = screw['working_figure']
+        thread = {c['class'].split(',')[0]: sp.fmt_mm(c['thread_behind_K_rear_mm']) for c in screw['classes']}
+        (hole,) = self.fixing_list['access_holes']
+        self.assertEqual(figure['designation'], 'M3 x %g' % figure['length_mm'])
+        self.assertEqual(counts['sleeves'], len(self.ruled))
+        for token in ('push an M3 × %g mm screw through each of the %s holes' % (figure['length_mm'], 'four'),
+                      'head of at most %s mm across, not countersunk' % sp.fmt_mm(figure['head_max_mm']),
+                      '%s mm behind K at a long sleeve and %s mm at a short one' % (thread['long sleeve'], thread['short sleeve']),
+                      'the LED board gets a %s mm hole over it' % sp.fmt_mm(hole['diameter_mm']),
+                      '%d screws M3 × %g mm, %d M3 nuts and %d M3 washers' % ((counts['sleeves'], figure['length_mm']) + (counts['sleeves'],) * 2),
+                      'onto the %d brass posts' % counts['posts'],
+                      'held by %d fixings' % counts['fixings'],
+                      '%g mm or more from the nearest other fixing' % self.fixing_list['parameters']['sleeve_min_spacing_mm']['value']):
+            self.assertIn(token, self.readme)
+        self.assertEqual(len(self.ruled), 4, 'the page says "four"')
+        self.assertFalse(figure['countersunk'])
+        for f in self.ruled:
+            self.assertGreaterEqual(f['nearest_other_fixing']['distance_mm'], self.fixing_list['parameters']['sleeve_min_spacing_mm']['value'], f['id'])
 
     def test_readme_states_the_same_figures(self):
         text = self.readme

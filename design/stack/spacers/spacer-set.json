@@ -2,7 +2,7 @@
   "schema_version": 1,
   "status": "candidate for an unvalidated draft; geometry only, nothing is measured",
   "decision": "The sleeve is the one of DS-45 (design review A3, section F8), on the owner's decision DS-38. The counts and sites follow DS-75 and DS-76 (continuation c2, sections H4 and H5)",
-  "sites_source": "design/stack/fixings/fixing-sites.json: the active fixings of the kind 'sleeve added'",
+  "sites_check": "test_spacers.py compares the count per front board and gap with the active fixings of the kind 'sleeve added' in design/stack/fixings/fixing-sites.json; the generator does not read that file",
   "units": "mm",
   "sleeve": {
     "outer_diameter_mm": 7.0,
@@ -33,12 +33,11 @@
       "gap_mm": 17.0,
       "quantity": 2,
       "sites": {"P": 2},
-      "site_note": "one at the lower left of P and one where EL lies in front of P",
       "spares": 4,
       "plate_columns": 3
     }
   ],
-  "spares_reason": "The plate went to the owner under DS-45 with 10 long and 6 short sleeves, for 8 and 4 sites. DS-75 uses 2 and 2 of the same plate, so the model files stay as delivered and the other sleeves are spares",
+  "spares_reason": "The model files stay as they went to the owner under DS-45. DS-75 uses fewer sleeves of the same plate, so the others are spares",
   "plate": {
     "file": "stack-spacer-set-plate.stl",
     "pitch_mm": 12.0,
