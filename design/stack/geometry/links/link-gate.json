@@ -13,16 +13,16 @@
    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
    "design/partition/partition.json": "7e3f5a39b001f80f38572c837a60e197fbb08ae588296e1d3bcb1339718db48f",
    "design/stack/geometry/check-report.json": "36a4fd1d819b264d7a63bee4899c6ef04ef0df8a0cafb1f60477f17de6d6c3bd",
-   "design/stack/geometry/links/link-gate-options.json": "d24913ef8a6a92e44099adb70fedb66aaa43732562567aa225bfe94420c2ff63",
+   "design/stack/geometry/links/link-gate-options.json": "a2703fbcbf344b1bc9b06ecd4dde97605857a62c32eb1e3ca0a26400e6cd20bb",
    "design/stack/geometry/links/link-options.json": "b0a60bf721b155200fc6a5b9304b20b84767638959c7f009a794f93f4e7bb4c9",
    "design/stack/geometry/parameters.json": "0a2edef523be698e3fbecda50f5576a5826de4a9346ed2102a5a10f2813d4577",
    "design/stack/geometry/stack-candidate.json": "9bd03493c0a98c36357c90ee56e86dec57eb3dd5d0793a84f49f34f1c5d25f54",
    "scripts/stack/geometry/kicad_extract.py": "23093e93bf8a5c9072310531d771f9592783673c13f9a23dd70eb9272505ecdd",
    "scripts/stack/geometry/links.py": "928814c730d87538e3eadcb03394bfd7ccc53fd45a86ea92e20c1149d0715f50",
-   "scripts/stack/geometry/links_gate.py": "68c7f2c42f0981701a50312d2b2ac47a1cc1b6d4a50e82c02484908c40d80ee3",
-   "scripts/stack/geometry/links_gate_part2.py": "155bb903ab8ab907104d463281c44fcbdc9d53d60553ab05a5a800117e34cfae",
+   "scripts/stack/geometry/links_gate.py": "7fa03986dfb41373a8c5b1114ed767f6c5671370dbd9583b490858f43fb23d18",
+   "scripts/stack/geometry/links_gate_part2.py": "d3341b6ba3630aa2d69038a792e88cff4b008737415de112eda6672bdf7b5cd3",
    "scripts/stack/geometry/links_gate_readme.py": "235fd5dedd0ab928128ea4c3824398b9a6538bfcd46d7487651058e5f6df9123",
-   "scripts/stack/geometry/links_gate_readme_part2.py": "4406d80062a44d5eb4302c0167c97d99b897416910d40d0cec12c07025bf809f",
+   "scripts/stack/geometry/links_gate_readme_part2.py": "2ee4581c4338ce651fc67661f2da010decbd1b9661dc79b645062d72db01235e",
    "scripts/stack/geometry/links_readme.py": "d0f742ca4781f3fd9901c663cb53abc303b48494ec5240e38bd1819bcbd59d6f",
    "scripts/stack/geometry/stackgeom.py": "70db6b0833512a20029b743c49d9adf0fe1b69ef8bb4d0063afc3515cb07d7ab",
    "design/stack/link-electrical/inputs.json#classes": "6ac572e477047d7974032ce507f0e6e73c2ea6e1d0f7dfee10cf05f2f0cedbd2",
@@ -3563,7 +3563,12 @@
     "P-K-P-L14.01.01.01",
     "P-K-P-L14.02.01.01"
    ],
-   "orders_tried": 24,
+   "orders_tried": 1,
+   "left_out_as_unable_to_ride_alone": [
+    "P-K-P-L12.01.01.02"
+   ],
+   "max_orders": 5040,
+   "bound_cut_the_search": false,
    "links_riding": [
     "P-K-P-L12.01.02.01",
     "P-K-P-L14.01.01.01",
@@ -3571,6 +3576,7 @@
    ]
   },
   "way_3_trials": [],
+  "way_3_trial": "NOT IMPLEMENTED: the sleeve trial of DS-85 (a full new run with SLV-L1 or SLV-L2 moved, then ways 1 and 2) is not built; way 3 is tested for each link, and the run stops with SleeveTrialNotImplemented when a link has a place once a sleeve keep-out is left out",
   "per_link": {
    "P-K-P-L12.01.01.02": {
     "way": 4,
