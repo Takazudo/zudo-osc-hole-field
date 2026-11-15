@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import links  # noqa: E402
 import links_gate  # noqa: E402
 import links_gate_readme  # noqa: E402
+import links_gate_part2  # noqa: E402
 
 
 def setUpModule():
@@ -279,8 +280,11 @@ def setUpGate():
     GFRESH = links_gate.generate()
 
 
+PART2_KEYS = ('ways_out', 'consolidation', 'replacement', 'displaced_k_ic_packages')
+
+
 def gate_doc():
-    return copy.deepcopy({'links': GDOC['links'], 'flags': GDOC['flags']})
+    return copy.deepcopy(dict({'links': GDOC['links'], 'flags': GDOC['flags']}, **{k: GDOC[k] for k in PART2_KEYS}))
 
 
 def gctx(flags=None):
@@ -565,15 +569,14 @@ class Gate(unittest.TestCase):
         self.assertIn('to 0.75 mm or less', txt)
 
     def test_findings_9_16_misses_and_blockers_are_recomputed_against_the_final_set(self):
-        un = [r for r in GDOC['links'] if not r['placed'] and not r.get('oversize')]
+        # the four links without a place of part 1 keep their analysis; no live link is without a place after part 2,
+        # so the recomputation against the final set is exercised by test_review_2 of GatePart2
+        un = [dict(r, **r['part_1_analysis']) for r in GDOC['links'] if r.get('part_1_analysis')]
+        self.assertEqual(len(un), 4)
         for r in un:
+            self.assertTrue(r['nearest_misses'])
             self.assertFalse([b for b in r['most_frequent_blockers'] if 'own front board' in b['blocker']])
             self.assertFalse([m for m in r['nearest_misses'] if 'own front board' in m['screen']])
-        if un:
-            doc = gate_doc()
-            r = next(l for l in doc['links'] if l['id'] == un[0]['id'])
-            r['nearest_misses'] = r['nearest_misses'][1:]
-            self.assertTrue(any(r['id'] in x and 'nearest misses' in x for x in self.gerrs(doc)))
 
     def test_finding_11_a_K_side_failure_is_a_stage(self):
         model, ctx = gctx()
@@ -688,6 +691,344 @@ class Gate(unittest.TestCase):
         for r in GDOC['links']:
             if r['placed']:
                 self.assertIsNone(model.forbidden(r['front_board'], 'B', r['geometry']['front_tail_first']), r['id'])
+
+
+class GatePart2(unittest.TestCase):
+    """ST-02 a8 part 2: the ways out, the consolidation, the re-placement search, and the ten review findings of the
+    code of part 1. Fault tests call the part of the checker that owns the rule."""
+
+    @classmethod
+    def setUpClass(cls):
+        setUpGate()
+
+    def ctx(self):
+        return gctx()[1]
+
+    def site_by(self):
+        return {s['id']: s for s in GSITES}
+
+    # ---- point 1: ways out
+
+    def test_every_link_without_a_place_of_part_1_has_a_way(self):
+        per = GDOC['ways_out']['per_link']
+        self.assertEqual(sorted(per), sorted(GDOC['ways_out']['links_without_a_place']))
+        self.assertEqual(len(per), GDOC['part_1']['unplaced'])
+        for lid, w in per.items():
+            self.assertIn(w['way'], (1, 2, 3, 4, 5), lid)
+
+    def test_rider_beyond_its_class_distance_fails(self):
+        doc = gate_doc()
+        r = next(l for l in doc['links'] if l.get('riders_out'))
+        x = r['riders_out'][0]
+        lim = links_gate_part2.limits_of(GINP['gopts'])
+        g = dict(GINP['gopts'], ways_out=dict(GINP['gopts']['ways_out'], rider_distance_mm={
+            'value': {k: min(v, x['distance_mm'] - 1.0) for k, v in lim.items()}}))
+        ctx = self.ctx()
+        ctx.gopts = g
+        errs = links_gate_part2.check_riders(ctx, doc, self.site_by())
+        self.assertTrue(any(r['id'] in e and 'beyond the' in e for e in errs), errs)
+
+    def test_rider_on_another_joint_fails(self):
+        doc = gate_doc()
+        r = next(l for l in doc['links'] if l.get('riders_out'))
+        other = next(l for l in doc['links'] if l['placed'] and not l.get('gone') and l['joint'] != r['joint'])
+        r['riders_out'][0]['host'] = other['id']
+        errs = links_gate_part2.check_riders(self.ctx(), doc, self.site_by())
+        self.assertTrue(any('another joint' in e for e in errs), errs)
+
+    def test_rider_not_recorded_on_its_host_fails(self):
+        doc = gate_doc()
+        h = next(l for l in doc['links'] if l.get('riders_in') and not l.get('gone'))
+        h['riders_in'] = h['riders_in'][1:]
+        errs = links_gate_part2.check_riders(self.ctx(), doc, self.site_by())
+        self.assertTrue(any('is not recorded on its host' in e for e in errs), errs)
+
+    def test_host_allocation_made_illegal_fails(self):
+        doc = gate_doc()
+        h = next(l for l in doc['links'] if not l.get('gone') and any(p.get('rider_from') for p in l['positions'])
+                 and l['grounds'] >= 1 and l['unused'] == 0)
+        p = h['positions']
+        i = next(k for k, q in enumerate(p) if q['kind'] == 'ground')
+        p[i] = dict(next(q for q in p if q['kind'] == 'signal' and q.get('rider_from')), pos=i + 1)
+        errs = self.gerrs(doc)
+        self.assertTrue(any(h['id'] in e for e in errs), errs)
+
+    def gerrs(self, doc):
+        return links_gate.check(doc, GINP, GSITES)
+
+    def test_rider_signal_on_two_links_fails(self):
+        doc = gate_doc()
+        h = next(l for l in doc['links'] if not l.get('gone') and any(p.get('rider_from') for p in l['positions']))
+        b = next(l for l in doc['links'] if not l.get('gone') and l is not h and any(p['kind'] == 'unused' for p in l['positions']))
+        sig = next(q for q in h['positions'] if q.get('rider_from'))
+        u = next(i for i, q in enumerate(b['positions']) if q['kind'] == 'unused')
+        b['positions'][u] = dict(sig, pos=u + 1)
+        errs = self.gerrs(doc)
+        self.assertTrue(any(b['id'] in e and ('also on' in e or 'exactly the signals' in e) for e in errs), errs)
+
+    def test_way_5_with_a_place_fails(self):
+        doc = gate_doc()
+        lid = next(iter(doc['ways_out']['per_link']))
+        doc['ways_out']['per_link'][lid] = {'way': 5}
+        r = next(l for l in doc['links'] if l['id'] == lid)
+        r['gone'], r['placed'] = None, True
+        errs = links_gate_part2.check_ways(self.ctx(), doc, self.site_by())
+        self.assertTrue(any(lid in e and 'way 5' in e for e in errs), errs)
+
+    def test_way_4_reduces_the_field_growth_against_panel_pads_only(self):
+        idx = links.sg.RectIndex()
+        pad = [10.0, 10.0, 11.0, 11.0]
+        idx.add(pad, ('rect', pad, 'panel hardware RV1'))
+
+        class M:
+            forb = {('P', 'B'): idx}
+        # a field (grown 0.25 mm) 0.1 mm into the pad: rejected at the growth of record, clear at 0.10 mm
+        fc = [5.0, 10.2, 10.1, 10.8]
+        self.assertEqual(links_gate.panel_hit(M, 'P', fc), ('panel hardware RV1', 0.1))
+        self.assertIsNone(links_gate.panel_hit(M, 'P', sg_grow(fc, -0.15)))
+        self.assertEqual(links_gate_part2.pad_distance(M, 'P', fc, 0.15), (0.05, 'RV1'))
+        lid = next(l for l, w in GDOC['ways_out']['per_link'].items() if w['way'] == 4)
+        r = next(l for l in GDOC['links'] if l['id'] == lid)
+        self.assertEqual(r['field_growth_against_panel_pads_mm'], 0.1)
+        doc = gate_doc()
+        x = next(l for l in doc['links'] if l['id'] == lid)
+        del x['field_growth_against_panel_pads_mm']
+        errs = self.gerrs(doc)
+        self.assertTrue(any(lid in e and 'panel hardware' in e for e in errs), errs)
+
+    def test_way_3_is_only_tried_where_a_sleeve_keep_out_can_be_the_blocker(self):
+        seen = 0
+        for lid, w in GDOC['ways_out']['per_link'].items():
+            for f, v in w.get('way_3', {}).items():
+                seen += 1
+                # either out of reach, or searched without the keep-out with no place found
+                self.assertTrue(v['distance_mm'] > v['reach_mm'] or ('test' in v and v['place_without_the_keepout'] is None))
+                self.assertFalse(v['holds'])
+        self.assertTrue(seen)
+        self.assertEqual(GDOC['ways_out']['way_3_trials'], [])
+
+    # ---- point 2: consolidation
+
+    def test_consolidation_runs_only_when_every_link_has_a_place(self):
+        doc = gate_doc()
+        c = doc['consolidation']
+        self.assertEqual(c['run'], not any(not l['placed'] for l in doc['links'] if not l.get('gone')))
+        doc['consolidation'] = dict(c, run=not c['run'], why='test', pass_=[])
+        errs = links_gate_part2.check_consolidation(self.ctx(), doc)
+        self.assertTrue(errs)
+
+    def test_consolidation_out_of_order_fails(self):
+        doc = gate_doc()
+        c = doc['consolidation']
+        self.assertTrue(c['run'])
+        c['pass'] = list(reversed(c['pass']))
+        errs = links_gate_part2.check_consolidation(self.ctx(), doc)
+        self.assertTrue(any('order' in e for e in errs), errs)
+
+    def test_consolidation_verdict_differs_fails(self):
+        doc = gate_doc()
+        c = doc['consolidation']
+        x = next(p for p in c['pass'] if p['dissolved'])
+        x['dissolved'] = False
+        errs = links_gate_part2.check_consolidation(self.ctx(), doc)
+        self.assertTrue(any(x['link'] in e for e in errs), errs)
+
+    def test_dissolved_link_carries_nothing(self):
+        for r in GDOC['links']:
+            if r.get('gone'):
+                self.assertEqual((r['positions'], r['placed'], r['signals']), ([], False, 0), r['id'])
+                self.assertEqual(len(r['riders_out']), r['signals_before'])
+
+    # ---- point 3: re-placement
+
+    def rows(self, doc):
+        return doc['replacement']['footprints']
+
+    def test_replaced_footprint_on_an_obstacle_fails(self):
+        doc = gate_doc()
+        r = next(x for x in self.rows(doc) if x['step'] == 1 and 'under a field' in x['why'])
+        r['shift_mm'], r['moved_mm'] = [0.0, 0.0], 0.0
+        errs = links_gate_part2.check_replacement(self.ctx(), GINP, doc)
+        self.assertTrue(any(r['ref'] in e and 'meets' in e for e in errs), errs)
+
+    def test_replaced_footprint_on_an_earlier_replaced_one_fails(self):
+        doc = gate_doc()
+        rows = [x for x in self.rows(doc) if x['step'] != 'no position']
+        a = rows[0]
+        b = next(x for x in rows[1:] if x['board'] == a['board'] and x['new_face'] == a['new_face'] == x['face']
+                 and not x['turned'] and not a['turned'])
+        # put b's courtyard onto a's new courtyard
+        dx = a['new_courtyard'][0] - b['courtyard'][0]
+        dy = a['new_courtyard'][1] - b['courtyard'][1]
+        b['shift_mm'], b['moved_mm'], b['step'] = [dx, dy], round((dx * dx + dy * dy) ** 0.5, 4), 3
+        errs = links_gate_part2.check_replacement(self.ctx(), GINP, doc)
+        self.assertTrue(any(b['ref'] in e and ('meets' in e or 'outside step' in e) for e in errs), errs)
+
+    def test_shift_outside_its_step_fails(self):
+        doc = gate_doc()
+        r = next(x for x in self.rows(doc) if x['step'] == 3 and x['moved_mm'] > 12.0)
+        r['step'] = 1
+        errs = links_gate_part2.check_replacement(self.ctx(), GINP, doc)
+        self.assertTrue(any(r['ref'] in e and 'outside step' in e for e in errs), errs)
+
+    def test_replacement_out_of_the_ds97_order_fails(self):
+        doc = gate_doc()
+        rows = self.rows(doc)
+        rows[0], rows[-1] = rows[-1], rows[0]
+        errs = links_gate_part2.check_replacement(self.ctx(), GINP, doc)
+        self.assertTrue(any('DS-97 order' in e for e in errs), errs)
+
+    def test_sensitive_packages_come_first_and_step_3_starts_hold(self):
+        rows = self.rows(GDOC)
+        sym = {x['ref']: x['symbol'] for x in json.loads((links.sg.ROOT / links_gate_part2.RAIL_LEDGER).read_text())['physical_ic_packages']}
+        tiers = [0 if (r['board'] == 'K' and sym.get(r['ref']) in links_gate_part2.SENSITIVE_FUNCTION) or
+                 links_gate_part2.module_of_q(r['ref']) else 1 for r in rows]
+        self.assertEqual(tiers, sorted(tiers))
+        for r in rows:
+            if r['ref'] in ('U4215', 'U4226', 'U208') and r['step'] != 'no position':
+                self.assertEqual(r['step'], 3)
+
+    def test_displaced_k_ic_packages_keys_are_fixed(self):
+        lst = GDOC['displaced_k_ic_packages']
+        self.assertIsInstance(lst, list)
+        self.assertTrue(lst)
+        for x in lst:
+            self.assertEqual(sorted(x), sorted(['ref', 'symbol', 'old', 'new', 'moved_mm', 'step']))
+            self.assertEqual(sorted(x['old']), ['side', 'xy'])
+            self.assertIn(x['old']['side'], ('F.Cu', 'B.Cu'))
+            self.assertEqual(len(x['old']['xy']), 2)
+            if x['new'] is None:
+                self.assertIsNone(x['moved_mm'])
+            else:
+                self.assertEqual(sorted(x['new']), ['side', 'xy'])
+                self.assertIn(x['new']['side'], ('F.Cu', 'B.Cu'))
+        doc = gate_doc()
+        doc['displaced_k_ic_packages'][0]['moved_mm'] = -1
+        self.assertIn('displaced_k_ic_packages differs from the re-placement rows',
+                      links_gate_part2.check_replacement(self.ctx(), GINP, doc))
+
+    # ---- point 7: the ten findings of the review of part 1
+
+    def test_review_1_final_search_takes_a_freed_place(self):
+        model, ctx = gctx()
+        out = copy.deepcopy([l for l in GDOC['links'] if not l.get('gone')])
+        r = next(l for l in out if l['placed'] and l['joint'] == 'P-K' and l['circuits'] == 8 and l['grid_mm'] == 2.0)
+        ctx.freed = [links_gate.geo_bbox(r['geometry'])]
+        r.update({'placed': False, 'refinement': {'found': False, 'grids_tried_mm': []}})
+        links_gate.final_pass(ctx, out)
+        self.assertTrue(r['placed'])
+        self.assertEqual(r['refinement']['by'], 'final search against the final placed set')
+
+    def test_review_2_a_link_recorded_without_a_place_that_has_one_is_reported(self):
+        model, ctx = gctx()
+        r = next(l for l in GDOC['links'] if l['placed'] and l['joint'] == 'P-K' and l['circuits'] == 8 and l['grid_mm'] == 2.0)
+        rr = dict(r, placed=False)
+        others = links_gate.placed_index([l for l in GDOC['links'] if l['id'] != r['id'] and not l.get('gone')])
+        model.memo_for(None)
+        with self.assertRaises(links_gate.LegalPlace):
+            links_gate.misses_and_blockers(ctx, others, rr)
+        doc = gate_doc()
+        x = next(l for l in doc['links'] if l['id'] == r['id'])
+        x['placed'] = False
+        errs = self.gerrs(doc)
+        self.assertTrue(any(r['id'] in e and 'recorded without a place' in e for e in errs), errs)
+
+    def test_review_3_outside_figure_counts_against_the_active_fixings(self):
+        model, ctx = gctx()
+        keep = links_gate.fixing_keepout_k(model)
+        self.assertIn('Q4305', keep)
+        saved = links.post_keepout_k
+        links.post_keepout_k = lambda root: (_ for _ in ()).throw(AssertionError('post screen read'))
+        try:
+            s, refs = links_gate.summarise(ctx, GDOC['links'])
+        finally:
+            links.post_keepout_k = saved
+        k_all = set().union(*refs['K_displaced_refs'].values())
+        self.assertEqual(s['K_displaced']['outside_fixing_keepouts'], len(k_all - keep))
+        self.assertNotIn('outside_post_keepouts', s['K_displaced'])
+
+    def test_review_4_adapters_are_searched_again_at_every_adapter_size(self):
+        model, ctx = gctx()
+        r = next(l for l in GDOC['links'] if l['joint'] == 'O-K')
+        z = links_gate.sizes_to_try(ctx, r)
+        self.assertEqual([x['cable_length_mm'] for x in z], [x['cable_length_mm'] for x in links_gate.adapter_sizes(ctx)])
+        self.assertEqual(z[0]['cable_length_mm'], 40)
+
+    def test_review_5_centre_grid_radius_cost_and_tail_lists_are_checked(self):
+        model, ctx = gctx()
+        doc = gate_doc()
+        r = next(l for l in doc['links'] if l['placed'] and not l.get('gone'))
+        r2 = copy.deepcopy(r)
+        r['centre'] = [r['centre'][0] + 1.0, r['centre'][1]]
+        r['cost'] += 1.0
+        r['under_tails'] = {'front tail': ['X1'], 'K tail': []}
+        r['placed_only_with_lengthened_tail'] = True
+        r['geometry'] = dict(r['geometry'], front_extension_mm=0.0, K_extension_mm=0.0)
+        r['lengthened_tail'] = False
+        errs = links_gate.check_placement_terms(ctx, doc, self.site_by())
+        for want in ('not the centroid', 'recorded cost', 'under the tails', 'lengthened-tail flags'):
+            self.assertTrue(any(r['id'] in e and want in e for e in errs), (want, errs))
+        r.update(copy.deepcopy(r2))
+        r['slot_centre'] = [r['slot_centre'][0] + 0.1, r['slot_centre'][1]]
+        errs = links_gate.check_placement_terms(ctx, doc, self.site_by())
+        self.assertTrue(any(r['id'] in e and 'grid' in e for e in errs), errs)
+        r['slot_centre'] = [r['centre'][0] + 30.0, r['centre'][1]]
+        r['grid_mm'] = 2.0
+        errs = links_gate.check_placement_terms(ctx, doc, self.site_by())
+        self.assertTrue(any(r['id'] in e and 'beyond the radius' in e for e in errs), errs)
+
+    def test_review_6_no_compliance_node_fails_closed(self):
+        model, ctx = gctx()
+        cm = ctx.cmap
+        far = [-500.0, -500.0, -490.0, -495.0]
+        self.assertIsNone(cm.value(far))
+        geo = {'K_connector': far, 'K_tail': far}
+        m = links_gate.GateModel.__new__(links_gate.GateModel)
+        m.compliance = cm
+        m.margin = 0.3
+        m.inside = lambda key, rect, margin=0.0: True
+        why = links_gate.check_k(m, links.Placed(), geo)
+        self.assertEqual(why, ('K field has no node of the compliance map (DS-87 not shown)', None))
+
+    def test_review_7_remaining_excludes_oversize_links(self):
+        rf = GDOC['search']['refinement']
+        un = [l for l in GDOC['links'] if (l.get('way_out') or l.get('refinement')) and not l.get('oversize')
+              and not (l.get('refinement') or {}).get('found', True)]
+        self.assertEqual(rf['remaining'], len(un))
+        self.assertEqual(rf['oversize_not_searched_again'], sum(1 for l in GDOC['links'] if l.get('oversize')))
+
+    def test_review_8_a_site_between_two_sizes_is_tried_alone_at_the_larger(self):
+        model, ctx = gctx()
+        calls = []
+        saved = links_gate.place
+        links_gate.place = lambda ctx_, placed, rec, size, centre, own, *a, **k: (calls.append(size['circuits']) or False, {})
+        try:
+            site = next(s for s in GSITES if s['joint'] == 'P-K')
+            fake = dict(site, id='TEST-SITE', classes=['ANALOGUE'] * 10, signals=['/T/S%d' % i for i in range(10)])
+            out = []
+            c = {'id': 'T-L01', 'centre': fake['xy'], 'members': ['TEST-SITE'], 'oversize': links_gate.circuits_needed(fake['classes'])}
+            links_gate._place_ladder(ctx, links.Placed(), out, 'P-K', 'P', c, [40, 26, 14, 8], 2, {'TEST-SITE': fake}, 35.0)
+        finally:
+            links_gate.place = saved
+        self.assertEqual(calls, [26])
+        self.assertIn('alone at 26 circuits', out[0]['no_place'])
+
+    def test_review_9_allocation_refuses_a_class_it_does_not_know(self):
+        with self.assertRaises(ValueError):
+            links_gate.allocation([('/A', 'ANALOGUE', 'S'), ('/B', 'POWER', 'S')], 8)
+        with self.assertRaises(ValueError):
+            links_gate.allocation([('/A', 'ANALOGUE', 'S'), ('/B', 'STATIC', 'S')], 8)
+
+    def test_review_10_dead_code_is_gone(self):
+        import inspect
+        self.assertEqual(list(inspect.signature(links_gate.grid_offsets).parameters), ['step', 'radius'])
+        self.assertFalse(hasattr(links_gate, 'oriented_rect'))
+        self.assertFalse(hasattr(links_gate_readme, '_beside'))
+        self.assertNotIn('p_ = None', inspect.getsource(links_gate_readme))
+
+
+def sg_grow(r, m):
+    return [r[0] - m, r[1] - m, r[2] + m, r[3] + m]
 
 
 if __name__ == '__main__':
