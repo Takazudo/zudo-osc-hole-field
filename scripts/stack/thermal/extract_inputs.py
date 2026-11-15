@@ -24,7 +24,31 @@ DECISIONS = 'circuit/orchestration/campaigns/osc-stack-20261114/decisions.md'
 LINK_GATE = 'design/stack/geometry/links/link-gate.json'
 IO_PARTITION = 'design/reports/io-partition.json'
 PLAN = 'doc/src/content/docs/decisions/osc-direct-stack-plan.mdx'
-EXACT_PARTS = ('CL10A105KB8NNNC', 'RC0603FR-072K2L')
+CONTROL_NETLIST = 'schematic/boards/osc-control.net'
+PANEL_FACTS = {
+    'PTV09A-4020F-B103': ('component-bourns-ptv09a-4020f-b103', ['fact-b103-operating-temperature'],
+                          ['fact-b103-power-rating', 'fact-b103-derating', 'fact-b103-resistance']),
+    'PTV09A-4020F-B104': ('component-bourns-ptv09a-4020f-b104', ['fact-b104-operating-temperature'],
+                          ['fact-b104-power-rating', 'fact-b104-derating', 'fact-b104-resistance']),
+    'PTV09A-4020F-B504': ('component-bourns-ptv09a-4020f-b504', ['fact-b504-operating-temperature'],
+                          ['fact-b504-power-rating', 'fact-b504-derating', 'fact-b504-resistance']),
+    'B3F-1020': ('component-omron-b3f-1020', ['fact-b3f-operating-temperature'], []),
+    '2MS1T1B1M2QES-5': ('component-dailywell-2ms1t1b1m2qes-5', ['fact-2ms1-operating-temperature'], []),
+    '2MS3T1B1M2QES': ('component-dailywell-2ms3t1b1m2qes',
+                      ['fact-2ms3-operating-temperature', 'fact-2ms3-drawing-operating-temperature'], []),
+    'APHHS1005QWF/D': ('component-kingbright-aphhs1005qwf-d', ['fact-kingbright-white-operating-temperature'],
+                       ['fact-kingbright-white-junction-temperature']),
+    'APG1005SEC/E-T': ('component-kingbright-apg1005sec-e-t', ['fact-kingbright-red-operating-temperature'],
+                       ['fact-kingbright-red-junction-temperature']),
+    'TC33X-2-203E': ('component-bourns-tc33x-2-203e', ['fact-trim-203-operating-temperature'], []),
+    'TC33X-2-503E': ('component-bourns-tc33x-2-503e', ['fact-trim-503-operating-temperature'], []),
+    'TC33X-2-504E': ('component-bourns-tc33x-2-504e', ['fact-trim-504-operating-temperature'], []),
+    'TC33X-2-102E': ('component-passives-family', ['fact-trim-102-operating-temperature'], []),
+    'TC33X-2-103E': ('component-passives-family', ['fact-trim-103-operating-temperature'], []),
+    'SRBV160803': ('component-alps-alpine-srbv160803', [], ['fact-srbv-operating-temperature']),
+    'WQP518MA': ('component-qingpu-wqp518ma', [], []),
+}
+EXACT_PARTS = ('CL10A105KB8NNNC', 'RC0603FR-072K2L') + tuple(PANEL_FACTS)
 CLASS_BUNDLES = {
     'AS3340D': 'component-alfa-rpar-as3340d', 'CD74HC221M96': 'component-ti-cd74hc221m96',
     'LF398M_NOPB': 'component-ti-lf398m-nopb', 'LM13700M_NOPB': 'component-ti-lm13700m-nopb',
@@ -127,9 +151,13 @@ def bundle_facts():
     return dict(sorted(survey.items())), facts
 
 
-def plan_heat_W(line):
+def plan_heat_text(line):
     cells = [c.strip() for c in line.strip().strip('|').split('|')]
-    return [float(v) for v in re.findall(r'(\d+(?:\.\d+)?) W\b', cells[1])]
+    return re.findall(r'(\d+(?:\.\d+)?) W\b', cells[1])
+
+
+def plan_heat_W(line):
+    return [float(v) for v in plan_heat_text(line)]
 
 
 def tail_width_mm(link):
@@ -151,7 +179,7 @@ def final_places(record, placements):
     places = {p['ref']: {'xy': [round(p['x_mm'], 3), round(p['y_mm'], 3)], 'side': p['side']} for p in placements}
     displaced = record.get('displaced_k_ic_packages')
     if displaced is None:
-        return places, {'read': 'floorplan', 'moved': 0, 'listed': 0}
+        return places, {'read': 'floorplan', 'moved': 0, 'listed': 0, 'kept': 0}
     moved = 0
     for row in displaced:
         if row['new'] is None:
@@ -159,7 +187,30 @@ def final_places(record, placements):
         places[row['ref']] = {'xy': [round(row['new']['xy'][0], 3), round(row['new']['xy'][1], 3)],
                               'side': row['new']['side']}
         moved += 1
-    return places, {'read': 'gate record displaced_k_ic_packages', 'moved': moved, 'listed': len(displaced)}
+    return places, {'read': 'gate record displaced_k_ic_packages', 'moved': moved, 'listed': len(displaced),
+                    'kept': len(displaced) - moved}
+
+
+def range_row(fact_id, fact):
+    v = fact['value']
+    return {'fact_id': fact_id, 'minimum': v['minimum'], 'maximum': v['maximum'], 'class': fact.get('class'),
+            'verdict': fact.get('verdict'), 'provenance': fact.get('provenance'),
+            'printed_condition': (re.findall(r'at \d+ ?%RH max\.?', fact.get('conditions', '')) or [None])[0],
+            'third_party_copy': bool(re.search(r'third-party|MANUFACTURER_MIRROR', fact.get('conditions', '')))}
+
+
+def netlist_ends(text, prefix):
+    comps = dict(re.findall(r'\(comp\s+\(ref "([^"]+)"\)\s+\(value "([^"]+)"\)', text))
+    refs = {r for r, v in comps.items() if v.startswith(prefix)}
+    ends = {r: {'ref': r, 'value': comps[r]} for r in sorted(refs)}
+    for m in re.finditer(r'\(net\s+\(code "\d+"\)\s+\(name "([^"]*)"\)(.*?)\n\t\t\)', text, re.S):
+        for ref, pin in re.findall(r'\(ref "([^"]+)"\)\s+\(pin "([^"]+)"\)', m.group(2)):
+            if ref in refs and pin in ('1', '3'):
+                ends[ref]['pin' + pin] = m.group(1)
+    missing = [r for r, e in ends.items() if 'pin1' not in e or 'pin3' not in e]
+    if missing:
+        raise ValueError('pot end pins without a net: ' + ', '.join(missing))
+    return list(ends.values())
 
 
 def exact_part_refs(io):
@@ -175,8 +226,15 @@ def operating_ranges(facts):
             v = fact.get('value')
             if b == bundle and 'temperature' in fact_id and isinstance(v, dict) and \
                     {'minimum', 'maximum'} <= set(v) and fact.get('unit') == 'degC':
-                out[symbol].append({'fact_id': fact_id, 'minimum': v['minimum'], 'maximum': v['maximum']})
-    return out
+                out[symbol].append(range_row(fact_id, fact))
+    for symbol, (bundle, range_ids, _) in PANEL_FACTS.items():
+        out[symbol] = []
+        for fact_id in range_ids:
+            b, fact = facts[fact_id]
+            if b != bundle:
+                raise ValueError(f'{fact_id} is in {b}, not {bundle}')
+            out[symbol].append(range_row(fact_id, fact))
+    return dict(sorted(out.items()))
 
 
 def extract(gate=None):
@@ -303,7 +361,8 @@ def extract(gate=None):
         pins.append({'id': 'decision-' + row, 'path': DECISIONS, 'row': row, 'sha256': sha(line[0])})
     for pin_id, (path, prefix) in DOC_LINES.items():
         pins.append({'id': pin_id, 'path': path, 'line_prefix': prefix, 'sha256': sha(find_line(path, prefix))})
-    heat = plan_heat_W(find_line(*DOC_LINES['plan-heat-row']))
+    heat_text = plan_heat_text(find_line(*DOC_LINES['plan-heat-row']))
+    heat = [float(v) for v in heat_text]
 
     survey, facts = bundle_facts()
     ranges = operating_ranges(facts)
@@ -316,6 +375,20 @@ def extract(gate=None):
                                 'class': fact.get('class')}
         pins.append({'id': fact_id, 'path': f'.claude/skills/{bundle}/facts.json',
                      'fact_id': fact_id, 'sha256': sha(canonical(fact))})
+    panel_facts = {}
+    for symbol, (bundle, range_ids, extra_ids) in PANEL_FACTS.items():
+        for fact_id in extra_ids:
+            b, fact = facts[fact_id]
+            if b != bundle:
+                raise ValueError(f'{fact_id} is in {b}, not {bundle}')
+            panel_facts[fact_id] = {'bundle': bundle, 'symbol': symbol, 'value': fact.get('value'),
+                                    'unit': fact.get('unit'), 'class': fact.get('class'),
+                                    'verdict': fact.get('verdict')}
+            pins.append({'id': fact_id, 'path': f'.claude/skills/{bundle}/facts.json',
+                         'fact_id': fact_id, 'sha256': sha(canonical(fact))})
+    pots = netlist_ends((ROOT / CONTROL_NETLIST).read_text(), 'PTV09A-4020F')
+    pins.append(object_pin('control-netlist-pot-ends', CONTROL_NETLIST, 'derived: nets of pins 1 and 3 of every PTV09A-4020F',
+                           pots, 'the nets at the two end pins of every panel pot'))
     for symbol, rows_r in ranges.items():
         for r in rows_r:
             if r['fact_id'] not in FACTS:
@@ -334,8 +407,13 @@ def extract(gate=None):
         'exact_part_places': exact_places,
         'link_figures': figures,
         'plan_heat_row_W': heat,
+        'plan_heat_row_text': heat_text,
         'operating_ranges': ranges,
-        'class_bundles': dict(sorted(CLASS_BUNDLES.items())),
+        'class_bundles': dict(sorted({**CLASS_BUNDLES, **{k: v[0] for k, v in PANEL_FACTS.items()}}.items())),
+        'panel_facts': dict(sorted(panel_facts.items())),
+        'panel_parts': list(PANEL_FACTS),
+        'pot_ends': pots,
+        'rail_voltages_V': {r: rails_v[r] for r in RAILS},
         'module_K_centroids': module_k,
         'led_uid_boards': dict(sorted(leds.items())),
         'jack_split': {'left': part['jack_split']['left_instances'], 'right': part['jack_split']['right_instances']},
@@ -375,6 +453,9 @@ def check(screen=None):
 
 
 def main(argv):
+    if argv not in ([], ['--check']):
+        print('usage: extract_inputs.py [--check]', file=sys.stderr)
+        return 2
     screen = json.loads(SCREEN.read_text())
     if argv == ['--check']:
         problems = check(screen)

@@ -9,7 +9,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 SCREEN = ROOT / 'design/stack/thermal/thermal-screen.json'
-BOARDS_FRONT = ('EL', 'JL', 'JR', 'P', 'O1', 'O2', 'O3', 'O4', 'O5')
 
 
 def load(path=SCREEN):
@@ -102,15 +101,18 @@ def classify(d, row, pk):
     if inst == 'inlet':
         return 'INLET', {term(d, 'inlet_board'): 1.0}, 0.0
     low = label.lower()
-    if re.search(r'led|indicator|magnitude', low):
-        kind = 'stage' if 'stage' in low else 'clip' if 'clip' in low else 'mag'
-        where = d['inputs']['led_uid_boards'][inst + '.' + kind]
+    words = set(re.split(r'[^a-z0-9]+', low))
+    if words & {'led', 'leds', 'indicator', 'indicators', 'magnitude'}:
+        kind = 'stage' if 'stage' in words else 'clip' if 'clip' in words else 'mag'
+        where = d['inputs']['led_uid_boards'].get(inst + '.' + kind)
+        if where is None:
+            raise ValueError(f"LED row {row['id']} has no LED uid {inst}.{kind} on any board")
         n = sum(where.values())
         return 'LED', {b: c / n for b, c in where.items()}, 0.0
     if re.search(r'output load|jack loads|external load|output_loads', low):
         ext = row['count'] * term(d, 'external_output_V') ** 2 / term(d, 'external_output_ohm')
         return 'OUT', {jack_board(d, inst): 1.0}, ext
-    if re.search(r'pot\b|manual control tracks|track/harness drive', low) and 'signal pots' not in low:
+    if (words & {'pot', 'pots'} or re.search(r'manual control tracks|track/harness drive', low)) and 'signal pots' not in low:
         return 'POT', {'P': 1.0}, 0.0
     if 'control-contact pulls' in low:
         return 'PULL', {'P': 1.0}, 0.0
@@ -185,6 +187,25 @@ def case_total_mA(d, case):
     return total
 
 
+_STATIC = {}
+
+
+def static_cached(fn):
+    def wrapper(d, *args):
+        terms = tuple((k, id(v)) for k, v in sorted(d['terms'].items()) if k != 'ambient_C')
+        key = (fn.__name__, id(d['inputs']), terms, args)
+        hit = _STATIC.get(key)
+        if hit is not None and hit[0] is d['inputs'] and all(hit[1][k] is v for k, v in d['terms'].items() if k != 'ambient_C'):
+            return hit[2]
+        out = fn(d, *args)
+        _STATIC[key] = (d['inputs'], dict(d['terms']), out)
+        return out
+    wrapper.__name__ = fn.__name__
+    wrapper.__wrapped__ = fn
+    return wrapper
+
+
+@static_cached
 def power_map(d, case='normal'):
     pk = packages_by(d)
     boards, external, rows_out, rules = {}, 0.0, [], {}
@@ -240,6 +261,7 @@ def compressed_cells(d, planes):
     return cells
 
 
+@static_cached
 def facing_pairs(d, depth):
     planes = planes_for(d, depth)
     panel = term(d, 'panel_thickness_mm')
@@ -386,7 +408,9 @@ def _network(d, depth, orient, level, case, supply, eta, vent_cm2, eps_override,
     q['K'] = q.get('K', 0.0) + extra_W
     q_shell = 0.0
     if supply == 'inside':
-        q_shell = pm['internal_W'] * (1.0 / eta - 1.0)
+        if not eta or not 0.0 < eta <= 1.0:
+            raise ValueError(f'a supply inside needs an efficiency in (0, 1], not {eta!r}')
+        q_shell = pm['input_W'] * (1.0 / eta - 1.0)
     idx = {n: i for i, n in enumerate(nodes + ['shell'])}
     temps = {n: ta + 10.0 for n in idx}
     area_nodes = {n: sum(p['area_mm2'] for p in pairs if n in (p['upper'], p['lower'])) for n in nodes}
@@ -454,6 +478,7 @@ def surface_rise(d, depth, orient, level, q_W, eps_override=None, h_resting=None
 
 
 
+@static_cached
 def package_powers(d, case='normal'):
     pk = packages_by(d)
     per = {}
@@ -472,6 +497,7 @@ def package_powers(d, case='normal'):
     return per
 
 
+@static_cached
 def k_power_points(d, case='normal'):
     pk = packages_by(d)
     by_ref = {p['ref']: p for p in d['inputs']['ic_packages']}
@@ -574,11 +600,12 @@ def cell_of(d, xy):
 
 
 def as3340_split_W(d):
-    core = term(d, 'as3340_icc_mA') * 12.0 / 1000.0
+    vcc, vee_rail = term(d, 'rails_V')[0], term(d, 'rails_V')[1]
+    core = term(d, 'as3340_icc_mA') * vcc / 1000.0
     row = next(r for r in term(d, 'ledger_rows') if r['label'] == 'AS3340D core')
     vee = row['mA'][1] / row['count'] / 1000.0
     return {'row_W': row_power_W(d, row['mA']) / row['count'], 'core_W': core + vee * term(d, 'as3340_vee_V'),
-            'vee_driver_W': vee * (12.0 - term(d, 'as3340_vee_V'))}
+            'vee_driver_W': vee * (vee_rail - term(d, 'as3340_vee_V'))}
 
 
 ENDS = {'worst': ('normal', 'low'), 'best': ('low', 'high')}
@@ -607,6 +634,8 @@ def class_places(d, symbol):
 
 def place_reading(d, p, depth, orient, case, level, h_resting=None):
     net = network(d, depth, orient, level, case, h_resting=h_resting)
+    if p['board'] not in net['rise']:
+        return None
     out = {'ref': p['ref'], 'board': p['board'], 'cell': None, 'lateral_K': None,
            'board_mean_C': term(d, 'ambient_C') + net['rise'][p['board']]}
     out['T_C'] = out['board_mean_C']
@@ -623,17 +652,27 @@ def place_reading(d, p, depth, orient, case, level, h_resting=None):
 def board_at_part(d, places, depth, orient, case, level, board=None, h_resting=None):
     readings = [place_reading(d, p, depth, orient, case, level, h_resting) for p in places
                 if board is None or p['board'] == board]
+    readings = [x for x in readings if x is not None]
     if not readings:
-        raise ValueError('no place of the class on board ' + str(board))
+        return None
     return max(readings, key=lambda r: (r['T_C'], r['ref']))
 
 
+def of_record(r):
+    return str(r.get('verdict', '')).startswith('PASS')
+
+
 def retained_limit(d, symbol):
-    ranges = d['inputs']['operating_ranges'].get(symbol, [])
+    ranges = [r for r in d['inputs']['operating_ranges'].get(symbol, []) if of_record(r)]
     if not ranges:
         return None
     best = min(ranges, key=lambda r: r['maximum'])
-    return {'limit_C': float(best['maximum']), 'fact_id': best['fact_id'], 'minimum_C': float(best['minimum'])}
+    return {'limit_C': float(best['maximum']), 'fact_id': best['fact_id'], 'minimum_C': float(best['minimum']),
+            'class': best.get('class')}
+
+
+def information_ranges(d, symbol):
+    return [r for r in d['inputs']['operating_ranges'].get(symbol, []) if not of_record(r)]
 
 
 def thermal_figures(d, symbol):
@@ -643,8 +682,15 @@ def thermal_figures(d, symbol):
     return [f for f in d['inputs']['bundle_thermal_survey'].get(bundle, []) if f not in ranges and f not in skip]
 
 
+WORD_RANK = {'MET ON PAPER': 0, 'NOT SHOWN': 1, 'EXCEEDED ON PAPER': 2}
+
+
+def worst_word(words):
+    return max(words, key=lambda w: WORD_RANK[w])
+
+
 def word(limit, worst_C, best_C):
-    if limit is None:
+    if limit is None or worst_C is None or best_C is None:
         return 'NOT SHOWN'
     if worst_C <= limit:
         return 'MET ON PAPER'
@@ -653,28 +699,126 @@ def word(limit, worst_C, best_C):
     return 'NOT SHOWN'
 
 
-def class_comparison(d, symbol, depth):
-    places = class_places(d, symbol)
+def class_comparison(d, symbol, depth, board=None):
+    places = [p for p in class_places(d, symbol) if board is None or p['board'] == board]
     lim = retained_limit(d, symbol)
     limit = None if lim is None else lim['limit_C']
     per = {}
     for orient in ORIENTS:
         worst = board_at_part(d, places, depth, orient, *ENDS['worst'])
+        if worst is None:
+            per[orient] = None
+            continue
         best = board_at_part(d, places, depth, orient, *ENDS['best'], board=worst['board'])
         per[orient] = {'worst': worst, 'best': best, 'word': word(limit, worst['T_C'], best['T_C'])}
-    worse = max(ORIENTS, key=lambda o: (per[o]['worst']['T_C'], o))
-    return {'symbol': symbol, 'depth': depth, 'limit': lim, 'orients': per, 'worse': worse,
-            'word': per[worse]['word'], 'places': len(places)}
+    held = [o for o in ORIENTS if per[o] is not None]
+    if not held:
+        return {'symbol': symbol, 'depth': depth, 'board': board, 'limit': lim, 'orients': per, 'worse': None,
+                'word': None, 'places': len(places)}
+    worse = max(held, key=lambda o: (per[o]['worst']['T_C'], o))
+    return {'symbol': symbol, 'depth': depth, 'board': board, 'limit': lim, 'orients': per, 'worse': worse,
+            'word': worst_word([per[o]['word'] for o in held]), 'places': len(places)}
+
+
+def panel_parts(d):
+    return list(d['inputs'].get('panel_parts', []))
 
 
 def limit_classes(d):
+    panel = set(panel_parts(d))
     return sorted(s for s in d['inputs']['operating_ranges'] if retained_limit(d, s) is not None
-                  and class_places(d, s) and s != 'RC0603FR-072K2L')
+                  and class_places(d, s) and s != 'RC0603FR-072K2L' and s not in panel)
 
 
 def no_limit_classes(d):
     syms = sorted({p['symbol'] for p in d['inputs']['ic_packages']})
     return [s for s in syms if retained_limit(d, s) is None]
+
+
+def class_boards(d, symbol):
+    return sorted({p['board'] for p in class_places(d, symbol)})
+
+
+def panel_rows(d):
+    rows = []
+    for s in panel_parts(d):
+        for b in class_boards(d, s):
+            rows.append({'symbol': s, 'board': b, 'count': sum(1 for p in class_places(d, s) if p['board'] == b),
+                         'depths': {depth: class_comparison(d, s, depth, board=b) for depth in DEPTHS}})
+    return rows
+
+
+def panel_class_word(d, symbol, depth):
+    words = [r['depths'][depth]['word'] for r in panel_rows(d) if r['symbol'] == symbol and r['depths'][depth]['word']]
+    return worst_word(words) if words else None
+
+
+def board_table(d):
+    out = {}
+    for depth in DEPTHS:
+        for o in ORIENTS:
+            for e, (case, level) in ENDS.items():
+                rise = network(d, depth, o, level, case)['rise']
+                for b, r in rise.items():
+                    out.setdefault(b, {})[(depth, o, e)] = term(d, 'ambient_C') + r
+    return out
+
+
+def board_shift(table, board, o, e):
+    row = table[board]
+    if (40, o, e) not in row or (120, o, e) not in row:
+        return None
+    return row[(40, o, e)] - row[(120, o, e)]
+
+
+def derating_ratio(d, fact_id, t_C):
+    v = d['inputs']['panel_facts'][fact_id]['value']
+    full, end_t = v['full_power_up_to_ambient_C'], v['curve_end_ambient_C']
+    end_r = v['curve_end_power_ratio_percent'] / 100.0
+    if t_C <= full:
+        return v['full_power_ratio_percent'] / 100.0
+    if t_C <= end_t:
+        return 1.0 + (end_r - 1.0) * (t_C - full) / (end_t - full)
+    return None
+
+
+def pot_powers(d):
+    volts = dict(d['inputs']['rail_voltages_V'])
+    volts.update({n: 0.0 for n in term(d, 'ground_nets')})
+    tol = term(d, 'pot_resistance_tolerance')
+    out = []
+    for e in d['inputs']['pot_ends']:
+        a, b = volts.get(e['pin1']), volts.get(e['pin3'])
+        res = d['inputs']['panel_facts'][f"fact-{e['value'].split('-')[-1].lower()}-resistance"]['value']
+        w = None if a is None or b is None else (a - b) ** 2 / (res * (1.0 - tol))
+        out.append({'ref': e['ref'], 'value': e['value'], 'W': w})
+    return out
+
+
+def ambient_at(d, symbol, depth, orient, which, limit, board=None, lo=-20.0, hi=80.0, tol=0.01):
+    case, level = ENDS[which]
+
+    def temp(amb):
+        dd = dict(d, terms=dict(d['terms'], ambient_C=dict(d['terms']['ambient_C'], value=amb)))
+        places = [p for p in class_places(dd, symbol) if board is None or p['board'] == board]
+        r = board_at_part(dd, places, depth, orient, case, level)
+        return None if r is None else r['T_C']
+    x0 = term(d, 'ambient_C')
+    f0 = temp(x0)
+    if f0 is None:
+        return None
+    x1 = x0 + (limit - f0)
+    for _ in range(12):
+        x1 = min(max(x1, lo), hi)
+        f1 = temp(x1)
+        if abs(f1 - limit) < tol:
+            return x1
+        if f1 == f0:
+            break
+        x0, f0, x1 = x1, f1, x1 + (limit - f1) * (x1 - x0) / (f1 - f0)
+        if (x1 <= lo and temp(lo) > limit) or (x1 >= hi and temp(hi) < limit):
+            return None
+    raise RuntimeError(f'ambient at the limit did not converge for {symbol} at {depth} mm')
 
 
 def comparison(d):
@@ -786,13 +930,3 @@ def post_conductance(d):
 def post_i2r_bound_W(d):
     r = term(d, 'post_joint_ohm')
     return sum((i / 1000.0) ** 2 * r for i in term(d, 'contract_mA'))
-
-
-
-def results(d):
-    out = {}
-    for case in ('normal', 'contract'):
-        out['map_' + case] = power_map(d, case)
-    out['ledger_cases_W'] = ledger_case_W(d)
-    out['areas'] = {depth: outer_area_m2(d, depth) for depth in (40, 34, 120)}
-    return out

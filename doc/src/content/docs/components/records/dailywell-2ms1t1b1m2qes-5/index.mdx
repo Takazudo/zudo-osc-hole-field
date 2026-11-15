@@ -33,7 +33,7 @@ This record in the catalog: [2MS1T1B1M2QES-5](/docs/components/catalog/#rec-dail
 
 **Source state:** SOURCE UNAVAILABLE
 
-**Coverage:** 4 open of 4 published
+**Coverage:** 5 open of 5 published
 
 ## Documents and package
 
@@ -126,9 +126,43 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 - [`fact-2ms1-cad-fidelity`](#fact-2ms1-cad-fidelity)
 
+### operating\_temperature
+
+<EvidenceAnchor id="cov-2ms1-operating-temperature" />
+
+**Coverage ID:** `cov-2ms1-operating-temperature` · **Status:** OPEN
+
+**Reason:** The printed operating range is retained only from a lower-authority mirror copy; the maker-hosted file is unavailable.
+
+**Facts in this domain:**
+
+- [`fact-2ms1-operating-temperature`](#fact-2ms1-operating-temperature)
+
+**Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
+
+- [`fact-2ms1-operating-temperature`](#fact-2ms1-operating-temperature)
+
 ## Facts
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
+
+### RECOMMENDED\_OPERATION
+
+The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-2ms1-operating-temperature" />
+
+  **Fact:** `fact-2ms1-operating-temperature`
+
+  **Value:** `maximum`=85; `minimum`=-40 · **Unit:** `degC`
+
+  **Conditions:** Printed for the 2M series under SPECIFICATIONS as "OPERATING TEMPERATURE: -40°C to 85°C."; no further condition is printed. The copy is retained from a third-party host (MANUFACTURER\_MIRROR), not the maker's own byte stream, and the maker-hosted 2M Series file is SOURCE UNAVAILABLE, so the line is not promoted to primary-source confirmation. Says what the maker prints, not what the part reaches in this unvalidated draft instrument.
+
+  **Verdict:** UNSOURCED · **Provenance:** UNVERIFIED
+
+  **Evidence:** [`src-2ms1-mirror`](#src-2ms1-mirror) — Section SPECIFICATIONS, row OPERATING TEMPERATURE, physical page 0, printed p.24
+</EvidenceFact>
 
 ### PROJECT\_STATE
 
@@ -337,9 +371,10 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 
 ### Fact class
 
-| Recorded term   | What it means                                                                                                                                                      |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `PROJECT_STATE` | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| Recorded term           | What it means                                                                                                                                                      |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| `RECOMMENDED_OPERATION` | The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.                                                              |
 
 ### Coverage status
 

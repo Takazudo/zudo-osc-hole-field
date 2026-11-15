@@ -147,6 +147,7 @@ class Enclosure(unittest.TestCase):
         d = copy.deepcopy(self.d)
         d['terms']['wall_mm']['value'] = 3.0
         self.assertGreater(T.outer_area_m2(d, 40), T.outer_area_m2(self.d, 40))
+        self.assertNotEqual(R.render(d), R.render(self.d))
 
 
 class Interior(unittest.TestCase):
@@ -323,8 +324,7 @@ class Findings(unittest.TestCase):
         self.assertEqual(best['board'], 'P')
 
     def test_finding_06_bleeder_note_stands_on_its_own(self):
-        with mock.patch.object(T, 'top_ten', lambda d, case='contract': [], create=True):
-            text = '\n'.join(R.item4(R.facts(self.d)))
+        text = '\n'.join(R.item4(R.facts(self.d)))
         self.assertIn('### Bleeder note for #57', text)
         note = T.bleeder_note(self.d, 40, 'H')
         self.assertEqual([x['ref'] for x in note], ['R301', 'R302', 'R303'])
@@ -405,13 +405,15 @@ class AttemptA2(unittest.TestCase):
         for sym in ('SN74HC00DR', 'CD74HC221M96'):
             self.assertIn(sym, T.no_limit_classes(self.d))
             self.assertIsNone(T.retained_limit(self.d, sym))
-        c = T.class_comparison(self.d, 'SN74HC14DR', 40)
-        self.assertEqual(c['worse'], 'H')
-        self.assertEqual(c['orients']['H']['worst']['cell'], (0, 4))
-        self.assertAlmostEqual(c['orients']['V']['worst']['T_C'], 88.9, delta=0.05)
-        self.assertAlmostEqual(c['orients']['H']['worst']['T_C'], 94.8, delta=0.05)
-        lo, hi = T.depth_shift_K(self.d, T.limit_classes(self.d))
-        self.assertLess(hi, 5.0)
+        for sym in T.limit_classes(self.d):
+            for depth in T.DEPTHS:
+                c = T.class_comparison(self.d, sym, depth)
+                for o in T.ORIENTS:
+                    w = c['orients'][o]['worst']
+                    readings = [T.place_reading(self.d, p, depth, o, *T.ENDS['worst']) for p in T.class_places(self.d, sym)]
+                    self.assertAlmostEqual(w['T_C'], max(x['T_C'] for x in readings), places=9)
+                    if w['board'] == 'K':
+                        self.assertAlmostEqual(w['T_C'], w['board_mean_C'] + w['lateral_K'], places=9)
 
     def test_capacitor_places_come_from_the_partition_report(self):
         places = T.class_places(self.d, 'CL10A105KB8NNNC')
@@ -426,7 +428,7 @@ class AttemptA2(unittest.TestCase):
         placements = [{'ref': 'U1', 'x_mm': 1.0, 'y_mm': 2.0, 'side': 'F.Cu'},
                       {'ref': 'U2', 'x_mm': 3.0, 'y_mm': 4.0, 'side': 'B.Cu'}]
         places, source = ex.final_places({'links': []}, placements)
-        self.assertEqual(source, {'read': 'floorplan', 'moved': 0, 'listed': 0})
+        self.assertEqual(source, {'read': 'floorplan', 'moved': 0, 'listed': 0, 'kept': 0})
         self.assertEqual(places['U1'], {'xy': [1.0, 2.0], 'side': 'F.Cu'})
 
     def test_final_places_from_the_displaced_rows(self):
@@ -439,7 +441,7 @@ class AttemptA2(unittest.TestCase):
             {'ref': 'U2', 'symbol': 'X', 'old': {'xy': [3.0, 4.0], 'side': 'B.Cu'}, 'new': None,
              'moved_mm': None, 'step': 'none'}]}
         places, source = ex.final_places(record, placements)
-        self.assertEqual(source, {'read': 'gate record displaced_k_ic_packages', 'moved': 1, 'listed': 2})
+        self.assertEqual(source, {'read': 'gate record displaced_k_ic_packages', 'moved': 1, 'listed': 2, 'kept': 1})
         self.assertEqual(places['U1'], {'xy': [11.0, 12.0], 'side': 'B.Cu'})
         self.assertEqual(places['U2'], {'xy': [3.0, 4.0], 'side': 'B.Cu'})
         self.assertEqual(places['U3'], {'xy': [5.0, 6.0], 'side': 'B.Cu'})
@@ -456,14 +458,190 @@ class AttemptA2(unittest.TestCase):
                                                    'loop_plan_area_mm2': 82.0, 'cable_plan_area_mm2': 405.0})
 
     def test_place_source_is_printed(self):
-        self.assertEqual(self.d['inputs']['place_source']['read'], 'floorplan')
-        self.assertIn('Places: the floorplan', R.README.read_text())
+        ps = self.d['inputs']['place_source']
+        self.assertEqual(ps['moved'] + ps['kept'], ps['listed'])
+        self.assertIn('Places: ' + R.place_source(self.d), R.README.read_text())
 
     def test_options_are_listed_and_none_selected(self):
         text = R.README.read_text()
         self.assertIn('| Case on feet, lying |', text)
         self.assertIn('none is selected', text)
         self.assertNotIn('selected option', text)
+
+
+def reading(t_c, board='K'):
+    return {'T_C': t_c, 'board': board, 'ref': 'U1', 'lateral_K': 0.0}
+
+
+class AttemptA3(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.d = T.load()
+        cls.r = R.facts(cls.d)
+
+    def changed(self, name, value):
+        d = copy.deepcopy(self.d)
+        d['terms'][name]['value'] = value
+        return d, R.facts(d)
+
+    def test_finding_01_class_word_is_the_worst_of_both_orientations(self):
+        temps = {('V', 'low'): 90.0, ('V', 'high'): 60.0, ('H', 'low'): 89.0, ('H', 'high'): 86.0}
+        fake = lambda d, places, depth, orient, case, level, board=None, h_resting=None: reading(temps[(orient, level)])
+        with mock.patch.object(T, 'board_at_part', fake):
+            c = T.class_comparison(self.d, 'SN74HC14DR', 40)
+        self.assertEqual(c['worse'], 'V')
+        self.assertEqual(c['orients']['V']['word'], 'NOT SHOWN')
+        self.assertEqual(c['orients']['H']['word'], 'EXCEEDED ON PAPER')
+        self.assertEqual(c['word'], 'EXCEEDED ON PAPER')
+
+    def test_finding_02_classify_reads_whole_words_and_names_a_missing_led(self):
+        pk = {}
+        row = {'label': 'spotlight trim', 'instance': 'X', 'id': 'X:trim', 'count': 1}
+        self.assertNotEqual(T.classify(self.d, row, pk)[0], 'POT')
+        row = {'label': 'Indicator LEDs', 'instance': 'nowhere', 'id': 'nowhere:led', 'count': 1}
+        with self.assertRaises(ValueError):
+            T.classify(self.d, row, pk)
+        row = {'label': 'misled rows', 'instance': 'nowhere', 'id': 'nowhere:x', 'count': 1}
+        try:
+            kind = T.classify(self.d, row, pk)[0]
+        except ValueError:
+            kind = 'raised'
+        self.assertNotIn(kind, ('LED', 'raised'))
+
+    def test_finding_03_the_figures_are_terms(self):
+        cases = [('post_count', 20, R.item1, 'the 20 posts'),
+                 ('post_joint_ohm', 0.0007, R.item1, '0.7 mOhm joint'),
+                 ('link_ground_current_A', 0.061, R.item1, 'at most 0.061'),
+                 ('h_conv_resting', 0.5, R.item2, 'on a table 0.5'),
+                 ('eps_board', [0.7, 0.9], R.item3, 'board emissivity 0.70 to 0.90'),
+                 ('solder_joint_limit_C', 120.0, R.item4, '120')]
+        for name, value, item, text in cases:
+            d, r = self.changed(name, value)
+            self.assertIn(text, '\n'.join(item(r)), name)
+        self.assertNotIn('110 °C', '\n'.join(R.item4(self.changed('solder_joint_limit_C', 120.0)[1])))
+        d = copy.deepcopy(self.d)
+        d['inputs']['planes_40']['K']['face_z_mm'] -= 1.0
+        self.assertIn(f"K {d['inputs']['planes_40']['K']['face_z_mm']:g}/", R.plane_text(d))
+        d = copy.deepcopy(self.d)
+        d['inputs']['rails_V'] = [15.0] + list(d['inputs']['rails_V'][1:])
+        self.assertNotAlmostEqual(T.as3340_split_W(d)['core_W'], T.as3340_split_W(self.d)['core_W'])
+        self.assertIn(f"at most {R.f(1000 * R.max_limit_package_W(self.d), 0)} mW each", R.README.read_text())
+
+    def test_finding_04_heading_is_computed(self):
+        head = R.header(self.r)[0]
+        self.assertNotIn('HC logic', head)
+        for s in self.r['limit_classes']:
+            self.assertIn(s, head)
+        r = dict(self.r, cmp={k: dict(v, word='MET ON PAPER') for k, v in self.r['cmp'].items()})
+        self.assertIn('is MET ON PAPER in both case depths', R.header(r)[0])
+        self.assertEqual(R.depth_state({40: ['MET ON PAPER'], 120: ['EXCEEDED ON PAPER']}),
+                         'reads MET ON PAPER at 40 mm and EXCEEDED ON PAPER at 120 mm')
+        self.assertIn('the +50 °C operating range printed for the panel pots is EXCEEDED ON PAPER in both case depths', head)
+
+    def test_finding_05_precision_is_not_taken_from_the_text(self):
+        places = T.term(self.d, 'plan_compare_decimals')
+        self.assertFalse(R.same('35', 35.4, places))
+        self.assertFalse(R.same('35.0', 35.4, places))
+        self.assertTrue(R.same('35.40', 35.4, places))
+
+    def test_finding_06_largest_shift_reads_every_end_and_one_class(self):
+        s = self.r['limit_classes'][0]
+        best = R.largest_shift(self.r, [s])
+        allx = [self.r['cmp'][(s, 40)]['orients'][o][e]['T_C'] - self.r['cmp'][(s, 120)]['orients'][o][e]['T_C']
+                for o in T.ORIENTS for e in T.ENDS]
+        self.assertAlmostEqual(abs(best['shift']), max(abs(x) for x in allx))
+        d = copy.deepcopy(self.d)
+        for sym in self.r['limit_classes'][1:]:
+            d['inputs']['operating_ranges'][sym] = []
+        self.assertEqual(T.limit_classes(d), [s])
+        self.assertTrue(R.item4(R.facts(d))[0].startswith('## 4.'))
+
+    def test_finding_08_a_wrong_argument_writes_nothing(self):
+        for mod, attr in ((R, 'README'), (ex, 'SCREEN')):
+            target = mock.MagicMock()
+            with mock.patch.object(mod, attr, target):
+                self.assertEqual(mod.main(['--chek']), 2)
+                self.assertEqual(mod.main(['--check', 'x']), 2)
+            target.write_text.assert_not_called()
+
+    def test_finding_09_supply_inside_loss_is_on_the_input_power(self):
+        pm = T.power_map(self.d, 'normal')
+        out = T.network(self.d, 40, 'V', 'low', 'normal')['q_W']
+        inside = T.network(self.d, 40, 'V', 'low', 'normal', supply='inside', eta=0.8)['q_W']
+        self.assertAlmostEqual(inside - out, pm['input_W'] * (1 / 0.8 - 1), places=9)
+        for eta in (None, 0.0, 1.5):
+            with self.assertRaises(ValueError):
+                T.network(self.d, 40, 'V', 'low', 'normal', supply='inside', eta=eta)
+
+    def test_finding_10_no_dead_code_and_the_figures_are_rendered(self):
+        self.assertFalse(hasattr(T, 'results'))
+        self.assertFalse(hasattr(T, 'BOARDS_FRONT'))
+        with mock.patch.object(T, 'thermal_figures', lambda d, s: ['fact-made-up']):
+            self.assertIn('`fact-made-up`', '\n'.join(R.evidence_needs(self.r)))
+
+    def test_a_range_not_of_record_makes_no_limit(self):
+        d = copy.deepcopy(self.d)
+        sym = 'SN74HC14DR'
+        for x in d['inputs']['operating_ranges'][sym]:
+            x['verdict'] = 'UNSOURCED'
+        self.assertIsNone(T.retained_limit(d, sym))
+        self.assertEqual(T.class_comparison(d, sym, 40)['word'], 'NOT SHOWN')
+        for s in ('2MS1T1B1M2QES-5', '2MS3T1B1M2QES', 'SRBV160803', 'WQP518MA'):
+            self.assertIsNone(T.retained_limit(self.d, s), s)
+            self.assertIn('NO LIMIT RETAINED', R.limit_text(self.d, s), s)
+        self.assertIn('absolute maximum', R.limit_text(self.d, 'APHHS1005QWF/D'))
+
+    def test_every_panel_row_has_its_board_and_a_word(self):
+        boards = {b for b in self.r['boards']}
+        for row in self.r['panel']:
+            self.assertIn(row['board'], boards)
+            words = [row['depths'][dep]['word'] for dep in T.DEPTHS]
+            self.assertTrue(any(words), row['symbol'])
+            for w in words:
+                self.assertIn(w, (None, *T.WORD_RANK))
+        for s in T.panel_parts(self.d):
+            ws = [row['depths'][40]['word'] for row in self.r['panel'] if row['symbol'] == s and row['depths'][40]['word']]
+            if ws:
+                self.assertEqual(T.panel_class_word(self.d, s, 40), T.worst_word(ws))
+
+    def test_no_typed_word_in_a_heading(self):
+        for line in R.render().splitlines():
+            if line.startswith('#'):
+                for w in T.WORD_RANK:
+                    if w in line:
+                        self.assertTrue(any(x in line for x in ('in both case depths', 'in either case depth', ' at 40 mm', ' at 120 mm',
+                                                                'read EXCEEDED', 'from MET ON PAPER')), line)
+
+    def test_ambient_at_the_limit_is_found_by_the_network(self):
+        s = self.r['limit_classes'][0]
+        limit = T.retained_limit(self.d, s)['limit_C']
+        amb = T.ambient_at(self.d, s, 40, 'V', 'worst', limit)
+        d = copy.deepcopy(self.d)
+        d['terms']['ambient_C']['value'] = amb
+        c = T.class_comparison(d, s, 40)
+        self.assertAlmostEqual(c['orients']['V']['worst']['T_C'], limit, delta=0.05)
+
+    def test_derating_curve_and_pot_power(self):
+        fid = next(k for k, v in self.d['inputs']['panel_facts'].items() if 'derating' in k)
+        self.assertEqual(T.derating_ratio(self.d, fid, 40.0), 1.0)
+        self.assertAlmostEqual(T.derating_ratio(self.d, fid, 70.0), 0.33, places=6)
+        self.assertIsNone(T.derating_ratio(self.d, fid, 70.1))
+        d = copy.deepcopy(self.d)
+        e = d['inputs']['pot_ends'][0]
+        rail = next(iter(d['inputs']['rail_voltages_V']))
+        e['pin1'], e['pin3'] = rail, 'AGND'
+        res = d['inputs']['panel_facts'][f"fact-{e['value'].split('-')[-1].lower()}-resistance"]['value']
+        w = T.pot_powers(d)[0]['W']
+        self.assertAlmostEqual(w, d['inputs']['rail_voltages_V'][rail] ** 2 / (res * 0.8))
+        self.assertTrue(all(x['W'] is None for x in T.pot_powers(self.d)))
+
+    def test_proposal_names_a_pot_over_the_warm_region_a_switch_and_an_led(self):
+        x = R.panel_sensors(self.d)
+        self.assertTrue(T.in_box(x['region']['box_mm'], x['pot']['xy']))
+        self.assertEqual(x['pot']['board'], 'P')
+        self.assertTrue(x['switch']['symbol'].startswith('B3F'))
+        self.assertEqual(x['led']['board'], 'JR')
+        self.assertIn(x['pot']['ref'], R.README.read_text())
 
 
 if __name__ == '__main__':

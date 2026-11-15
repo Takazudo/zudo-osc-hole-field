@@ -214,5 +214,170 @@
   ],
   "rule": "a footprint on K's rear face within the margin of a K connector field and not under it is displaced like a footprint under the field unless its package is exempt (DS-88); the package is the footprint name (lib) of the K board file",
   "status": "DS-88; ASSUMED that the exempt packages stand lower than the 2.0 mm connector body (no footprint height is retained)"
+ },
+ "ways_out": {
+  "order": {
+   "value": [
+    "way 1",
+    "way 2",
+    "way 3",
+    "way 4",
+    "way 5"
+   ],
+   "status": "ST-02 a8 part 2 scope point 1 (DS-84, DS-85, DS-100): the first way that works, per link"
+  },
+  "rider_distance_mm": {
+   "value": {
+    "PRECISION": 40.0,
+    "ANALOGUE": 45.0,
+    "WIPER": 55.0,
+    "LOGIC": 55.0
+   },
+   "status": "ST-02 a8 part 2 scope point 1 (DS-84, DS-85, DS-100): the distance from the site to the centre of the host connector, the larger of the two boards"
+  },
+  "way_2_radius_mm": {
+   "value": 36.0,
+   "status": "ST-02 a8 part 2 scope point 1 (DS-84, DS-85, DS-100): for that link alone; each site within its class distance of the link connector centres"
+  },
+  "way_3": {
+   "value": {
+    "SLV-L1": [
+     [
+      97.0,
+      276.0
+     ],
+     [
+      101.0,
+      276.0
+     ]
+    ],
+    "SLV-L2": [
+     [
+      261.0,
+      230.0
+     ]
+    ],
+    "refused": [
+     [
+      261.0,
+      227.0
+     ],
+     [
+      278.0,
+      230.0
+     ],
+     [
+      295.0,
+      230.0
+     ]
+    ]
+   },
+   "status": "ST-02 a8 part 2 scope point 1 (DS-84, DS-85, DS-100): only for a link that has a place once the keep-out of SLV-L1 or SLV-L2 is left out; each trial a full new run followed by ways 1 and 2"
+  },
+  "way_4_field_growth_mm": {
+   "value": 0.1,
+   "status": "ST-02 a8 part 2 scope point 1 (DS-84, DS-85, DS-100): the field grows 0.10 mm in place of 0.25 mm against the pads of panel hardware, for that link alone"
+  },
+  "way_4_max_links": {
+   "value": 3,
+   "status": "ST-02 a8 part 2 scope point 1 (DS-84, DS-85, DS-100)"
+  },
+  "never": [
+   "a hard length below 4.0 mm",
+   "a field or a stiff tail section on a pad of panel hardware",
+   "a larger size for a host",
+   "a move of panel hardware"
+  ],
+  "way_1_max_orders": {
+   "value": 5040,
+   "status": "ASSUMED working bound (7! orders); scope of a8 part 3 finding 6: the links that cannot ride alone are left out first, and the record states when the bound cuts the search"
+  }
+ },
+ "consolidation": {
+  "rule": "only when every link has a place: one pass over the 8-circuit links, fewest signals first (riders a link carries count as its signals), ties by id; a link dissolves where every one of its signals rides under way 1",
+  "status": "ST-02 a8 part 2 scope point 2 (DS-84, DS-85, DS-100)"
+ },
+ "replacement": {
+  "steps": {
+   "value": [
+    {
+     "step": 1,
+     "max_mm": 12.0,
+     "faces": "own"
+    },
+    {
+     "step": 2,
+     "max_mm": 12.0,
+     "faces": "other (K only)"
+    },
+    {
+     "step": 3,
+     "max_mm": 25.0,
+     "faces": "either"
+    }
+   ],
+   "status": "ST-02 a8 part 2 scope point 3 (DS-60, DS-88, DS-97)"
+  },
+  "start_at_step_3": {
+   "value": [
+    "U4215",
+    "U4226",
+    "U208"
+   ],
+   "status": "scope point 3: and the SOIC-14 parts at a kept alternative site of SLV-L2"
+  },
+  "sensitive": {
+   "value": {
+    "K symbols": [
+     "AS3340D",
+     "LF398M_NOPB",
+     "REF5050AIDR"
+    ],
+    "Q transistors of modules": [
+     "F1",
+     "F2",
+     "F3"
+    ]
+   },
+   "status": "DS-97 via scope point 3"
+  },
+  "search_pattern": {
+   "value": {
+    "step_mm": 0.25,
+    "directions": 24
+   },
+   "status": "SOURCED: the move_search of design/stack/fixings/fixing-sites.json (the method of ST-04); the step limits replace its max_mm"
+  },
+  "courtyard_gap_mm": {
+   "value": 0.35,
+   "status": "SOURCED: own_face_courtyard_growth_mm of the obstacle model (design/stack/geometry/parameters.json), equal to courtyard_gap_mm of design/partition/floorplan-candidate.json"
+  },
+  "edge_margin_mm": {
+   "value": 0.3,
+   "status": "SOURCED: board_edge_margin_mm of link-options.json, equal to drawn_edge_margin_mm of the floorplan and the outline_margin_mm of the move search"
+  },
+  "link_keepouts": {
+   "value": {
+    "front B": [
+     "front_connector",
+     "front_tail",
+     "slot"
+    ],
+    "K B": [
+     "K_connector",
+     "K_tail",
+     "slot",
+     "K_connector grown by latch_access_margin_mm"
+    ],
+    "K F": [
+     "slot"
+    ]
+   },
+   "status": "scope point 3: the fields, slots and tails of every link; the latch margin of DS-88 stays free"
+  },
+  "face_change": {
+   "value": "surface-mount footprints only; a footprint with a through-hole pad keeps its face",
+   "status": "ASSUMED (a through-hole part on the other face is a different assembly)"
+  }
  }
 }
