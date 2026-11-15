@@ -33,7 +33,7 @@ This record in the catalog: [B3F-1020](/docs/components/catalog/#rec-omron-b3f-1
 
 **Source state:** AVAILABLE
 
-**Coverage:** 1 open of 4 published
+**Coverage:** 1 open of 5 published
 
 ## Documents and package
 
@@ -114,9 +114,39 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 - [`fact-b3f-panel-reach`](#fact-b3f-panel-reach)
 
+### operating\_temperature
+
+<EvidenceAnchor id="cov-b3f-operating-temperature" />
+
+**Coverage ID:** `cov-b3f-operating-temperature` · **Status:** COVERED
+
+**Reason:** Manufacturer datasheet prints the ambient operating temperature in its Ratings/Characteristics table.
+
+**Facts in this domain:**
+
+- [`fact-b3f-operating-temperature`](#fact-b3f-operating-temperature)
+
 ## Facts
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
+
+### RECOMMENDED\_OPERATION
+
+The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-b3f-operating-temperature" />
+
+  **Fact:** `fact-b3f-operating-temperature`
+
+  **Value:** `maximum`=70; `minimum`=-25 · **Unit:** `degC`
+
+  **Conditions:** Printed for the B3F series, which includes B3F-1020, in table Ratings/Characteristics as "Ambient operating temperature -25°C to +70°C at 60%RH max. (with no icing or condensation)"; the next row prints ambient operating humidity 35% to 85% (at +5 to +35°C). An operating condition, not an absolute maximum. Says what the maker prints, not what the part reaches in this unvalidated draft instrument.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [`src-b3f-omron-ratings`](#src-b3f-omron-ratings) — Table Ratings/Characteristics, row Ambient operating temperature, physical PDF index 2, printed p.3
+</EvidenceFact>
 
 ### PROJECT\_STATE
 
@@ -304,6 +334,26 @@ Every document cited above, with its identification, when it was retrieved, and 
 
 **Document URL:** [https://github.com/Takazudo/zudo-osc-hole-field/blob/786d5dfd14dffb0ca58f1b1014a26046b7422359/design/mechanical/facts/button.json](https://github.com/Takazudo/zudo-osc-hole-field/blob/786d5dfd14dffb0ca58f1b1014a26046b7422359/design/mechanical/facts/button.json)
 
+### Omron B3F Tactile Switch datasheet
+
+<EvidenceAnchor id="src-b3f-omron-ratings" />
+
+**Source ID:** `src-b3f-omron-ratings` · **Authority:** MANUFACTURER\_PRIMARY
+
+| Field           | Recorded value       |
+| --------------- | -------------------- |
+| Document number | B3F                  |
+| Revision        | not stated in source |
+| Document date   | not stated in source |
+| Retrieved       | 2026-09-28           |
+| Printed page    | 3                    |
+
+**Locator:** Table Ratings/Characteristics, rows Ambient operating temperature and Ambient operating humidity, physical PDF index 2, printed p.3
+
+**Availability:** AVAILABLE
+
+**Document URL:** [https://omronfs.omron.com/en\_US/ecb/products/pdf/en-b3f.pdf](https://omronfs.omron.com/en_US/ecb/products/pdf/en-b3f.pdf)
+
 ## Legend
 
 What the recorded terms on this page mean, in ordinary words. The exact terms above are the ones that count; these descriptions explain them and never replace them.
@@ -326,9 +376,10 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 
 ### Fact class
 
-| Recorded term   | What it means                                                                                                                                                      |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `PROJECT_STATE` | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| Recorded term           | What it means                                                                                                                                                      |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| `RECOMMENDED_OPERATION` | The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.                                                              |
 
 ### Coverage status
 

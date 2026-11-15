@@ -33,7 +33,7 @@ This record in the catalog: [2MS3T1B1M2QES](/docs/components/catalog/#rec-dailyw
 
 **Source state:** SOURCE UNAVAILABLE
 
-**Coverage:** 4 open of 4 published
+**Coverage:** 5 open of 5 published
 
 ## Documents and package
 
@@ -129,9 +129,59 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 - [`fact-2ms3-cad-fidelity`](#fact-2ms3-cad-fidelity)
 
+### operating\_temperature
+
+<EvidenceAnchor id="cov-2ms3-operating-temperature" />
+
+**Coverage ID:** `cov-2ms3-operating-temperature` · **Status:** OPEN
+
+**Reason:** The printed operating range is retained only from lower-authority mirror copies that disagree on the minimum (-40 °C catalogue, -30 °C -5 drawing); the maker-hosted file is unavailable.
+
+**Facts in this domain:**
+
+- [`fact-2ms3-operating-temperature`](#fact-2ms3-operating-temperature)
+- [`fact-2ms3-drawing-operating-temperature`](#fact-2ms3-drawing-operating-temperature)
+
+**Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
+
+- [`fact-2ms3-operating-temperature`](#fact-2ms3-operating-temperature)
+- [`fact-2ms3-drawing-operating-temperature`](#fact-2ms3-drawing-operating-temperature)
+
 ## Facts
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
+
+### RECOMMENDED\_OPERATION
+
+The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-2ms3-operating-temperature" />
+
+  **Fact:** `fact-2ms3-operating-temperature`
+
+  **Value:** `maximum`=85; `minimum`=-40 · **Unit:** `degC`
+
+  **Conditions:** Printed for the 2M series under SPECIFICATIONS as "OPERATING TEMPERATURE: -40°C to 85°C.". The retained -5 drawing prints -30°C to 85°C (fact-2ms3-drawing-operating-temperature): the two retained copies agree on the maximum and disagree on the minimum. The copy is retained from a third-party host (MANUFACTURER\_MIRROR), not the maker's own byte stream, and the maker-hosted 2M Series file is SOURCE UNAVAILABLE, so the line is not promoted to primary-source confirmation. Says what the maker prints, not what the part reaches in this unvalidated draft instrument.
+
+  **Verdict:** UNSOURCED · **Provenance:** UNVERIFIED
+
+  **Evidence:** [`src-2ms3-catalog-specifications`](#src-2ms3-catalog-specifications) — Section SPECIFICATIONS, row OPERATING TEMPERATURE, physical page 0, printed p.24
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-2ms3-drawing-operating-temperature" />
+
+  **Fact:** `fact-2ms3-drawing-operating-temperature`
+
+  **Value:** `maximum`=85; `minimum`=-30 · **Unit:** `degC`
+
+  **Conditions:** Printed on the drawing of the suffixed 2MS3T1B1M2QES-5 (title block REV. A, JAN-26-2010) under SPECIFICATIONS as "OPERATING TEMPERATURE: -30°C to 85°C."; the line is drawn, not in the PDF text layer. It disagrees on the minimum with the 2M catalogue (fact-2ms3-operating-temperature, -40°C to 85°C), and the -5 drawing is not established as equivalent to the unsuffixed design MPN (fact-2ms3-suffix-equivalence). The drawing is likewise a third-party-hosted copy and is not promoted to primary-source confirmation. Says what the maker prints, not what the part reaches in this unvalidated draft instrument.
+
+  **Verdict:** UNSOURCED · **Provenance:** UNVERIFIED
+
+  **Evidence:** [`src-2ms3-dw2`](#src-2ms3-dw2) — Section SPECIFICATIONS, row OPERATING TEMPERATURE, physical page 0 of drawing DW2 2MS3T1B1M2QES-5
+</EvidenceFact>
 
 ### PROJECT\_STATE
 
@@ -333,6 +383,26 @@ Every document cited above, with its identification, when it was retrieved, and 
 
 **Document URL:** [https://www.thonk.co.uk/wp-content/uploads/2017/05/DW2-SPDT-ON-OFF-ON-2MS3T1B1M2QES.pdf](https://www.thonk.co.uk/wp-content/uploads/2017/05/DW2-SPDT-ON-OFF-ON-2MS3T1B1M2QES.pdf)
 
+### Dailywell 2M Series catalog (manufacturer-authored mirror)
+
+<EvidenceAnchor id="src-2ms3-catalog-specifications" />
+
+**Source ID:** `src-2ms3-catalog-specifications` · **Authority:** MANUFACTURER\_MIRROR
+
+| Field           | Recorded value       |
+| --------------- | -------------------- |
+| Document number | 2M Series            |
+| Revision        | not stated in source |
+| Document date   | not stated in source |
+| Retrieved       | 2026-09-28           |
+| Printed page    | 24                   |
+
+**Locator:** Section SPECIFICATIONS, row OPERATING TEMPERATURE, physical page 0, printed p.24
+
+**Availability:** AVAILABLE
+
+**Document URL:** [https://static.chipdip.ru/lib/866/DOC027866893.pdf](https://static.chipdip.ru/lib/866/DOC027866893.pdf)
+
 ## Legend
 
 What the recorded terms on this page mean, in ordinary words. The exact terms above are the ones that count; these descriptions explain them and never replace them.
@@ -353,9 +423,10 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 
 ### Fact class
 
-| Recorded term   | What it means                                                                                                                                                      |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `PROJECT_STATE` | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| Recorded term           | What it means                                                                                                                                                      |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| `RECOMMENDED_OPERATION` | The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.                                                              |
 
 ### Coverage status
 
