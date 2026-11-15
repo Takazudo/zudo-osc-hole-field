@@ -34,7 +34,7 @@ This record in the catalog: [TC33X-2-203E](/docs/components/catalog/#rec-trim-20
 
 **Source state:** AVAILABLE
 
-**Coverage:** 3 open of 6 published
+**Coverage:** 3 open of 7 published
 
 ## Documents and package
 
@@ -158,9 +158,39 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 - [`fact-trim-203-assembly`](#fact-trim-203-assembly)
 
+### operating temperature
+
+<EvidenceAnchor id="cov-trim-203-operating-temperature" />
+
+**Coverage ID:** `cov-trim-203-operating-temperature` · **Status:** COVERED
+
+**Reason:** Manufacturer series datasheet prints the temperature range under Environmental Characteristics.
+
+**Facts in this domain:**
+
+- [`fact-trim-203-operating-temperature`](#fact-trim-203-operating-temperature)
+
 ## Facts
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
+
+### RECOMMENDED\_OPERATION
+
+The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-trim-203-operating-temperature" />
+
+  **Fact:** `fact-trim-203-operating-temperature`
+
+  **Value:** `maximum`=100; `minimum`=-40 · **Unit:** `degC`
+
+  **Conditions:** Printed for the TC33 series, which includes TC33X-2-203E, under Environmental Characteristics as "Temperature Range -40 °C to +100 °C"; the line does not say operating or storage and is not in a table of absolute maximum ratings. The power rating beside it is printed at 70 °C (0.15 watt, 50 VDC max.). Says what the maker prints, not what the part reaches in this unvalidated draft instrument.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [`src-trim-203-datasheet`](#src-trim-203-datasheet) — Section Environmental Characteristics, row Temperature Range, physical page 0 (no printed page label)
+</EvidenceFact>
 
 ### GUARANTEED\_ELECTRICAL
 
@@ -418,6 +448,7 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| `RECOMMENDED_OPERATION` | The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.                                                              |
 | `THERMAL_SOA`           | Thermal and safe-operating-area behaviour: how much the part may dissipate, and under what mounting and ambient conditions.                                        |
 
 ### Coverage status

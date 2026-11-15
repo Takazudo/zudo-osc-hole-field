@@ -33,7 +33,7 @@ This record in the catalog: [PTV09A-4020F-B103](/docs/components/catalog/#rec-b1
 
 **Source state:** AVAILABLE
 
-**Coverage:** 0 open of 2 published
+**Coverage:** 0 open of 4 published
 
 ## Documents and package
 
@@ -86,9 +86,52 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 - [`fact-b103-resistance`](#fact-b103-resistance)
 
+### operating\_temperature
+
+<EvidenceAnchor id="cov-b103-operating-temperature" />
+
+**Coverage ID:** `cov-b103-operating-temperature` · **Status:** COVERED
+
+**Reason:** Manufacturer series sheet prints the operating temperature range under Environmental Characteristics.
+
+**Facts in this domain:**
+
+- [`fact-b103-operating-temperature`](#fact-b103-operating-temperature)
+
+### power\_rating
+
+<EvidenceAnchor id="cov-b103-power-rating" />
+
+**Coverage ID:** `cov-b103-power-rating` · **Status:** COVERED
+
+**Reason:** Manufacturer series sheet prints the power rating and its ambient derating curve; the installed temperature is not covered.
+
+**Facts in this domain:**
+
+- [`fact-b103-power-rating`](#fact-b103-power-rating)
+- [`fact-b103-derating`](#fact-b103-derating)
+
 ## Facts
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
+
+### RECOMMENDED\_OPERATION
+
+The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-b103-operating-temperature" />
+
+  **Fact:** `fact-b103-operating-temperature`
+
+  **Value:** `maximum`=50; `minimum`=-10 · **Unit:** `degC`
+
+  **Conditions:** Printed for the PTV09 series, which includes PTV09A-4020F-B103, under Environmental Characteristics as "Operating Temperature -10 °C to +50 °C"; an operating range in a characteristics list, not a table of absolute maximum ratings; no further condition is printed. Says what the maker prints, not what the part reaches in this unvalidated draft instrument.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [`src-b103-resistance`](#src-b103-resistance) — Section Environmental Characteristics, row Operating Temperature, physical page 0 (no printed page label)
+</EvidenceFact>
 
 ### GUARANTEED\_ELECTRICAL
 
@@ -106,6 +149,38 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [`src-b103-resistance`](#src-b103-resistance) — physical PDF page 0, Standard Resistance Table row 103 and How To Order resistance-code field
+</EvidenceFact>
+
+### THERMAL\_SOA
+
+Thermal and safe-operating-area behaviour: how much the part may dissipate, and under what mounting and ambient conditions.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-b103-power-rating" />
+
+  **Fact:** `fact-b103-power-rating`
+
+  **Value:** 0.05 · **Unit:** `W`
+
+  **Conditions:** Printed under Environmental Characteristics as "Power Rating (Linear and Audio) 0.05 watt"; the line prints no temperature; the Derating Curve (fact-b103-derating) holds 100 % of the rating up to 50 °C ambient. Says what the maker prints, not what the part reaches in this unvalidated draft instrument.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [`src-b103-resistance`](#src-b103-resistance) — Section Environmental Characteristics, row Power Rating (Linear and Audio), physical page 0 (no printed page label)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-b103-derating" />
+
+  **Fact:** `fact-b103-derating`
+
+  **Value:** `curve_end_ambient_C`=70; `curve_end_power_ratio_percent`=33; `full_power_ratio_percent`=100; `full_power_up_to_ambient_C`=50 · **Unit:** `NONE`
+
+  **Conditions:** Read from the figure "Derating Curve" (Rating Power Ratio (%) over Ambient Temperature (°C)), not from a table: the solid line falls from 100 % at 50 °C to 33 % at 70 °C, where it ends; only these two end points are stated. The figure prints no point beyond 70 °C; the 33 % level is a printed axis label and is drawn as a dashed line from 0 to 70 °C. Applies to the 0.05 W rating. Says what the maker prints, not what the part reaches in this unvalidated draft instrument.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [`src-b103-derating`](#src-b103-derating) — Figure Derating Curve, physical page 3 (no printed page label)
 </EvidenceFact>
 
 ### PROJECT\_STATE
@@ -230,6 +305,26 @@ Every document cited above, with its identification, when it was retrieved, and 
 
 **Document URL:** [https://www.bourns.com/docs/product-datasheets/PTV09.pdf](https://www.bourns.com/docs/product-datasheets/PTV09.pdf)
 
+### Bourns PTV09 Series, rev. 01/25
+
+<EvidenceAnchor id="src-b103-derating" />
+
+**Source ID:** `src-b103-derating` · **Authority:** MANUFACTURER\_PRIMARY
+
+| Field           | Recorded value |
+| --------------- | -------------- |
+| Document number | PTV09          |
+| Revision        | 01/25          |
+| Document date   | 2025-01        |
+| Retrieved       | 2026-09-28     |
+| Printed page    | not printed    |
+
+**Locator:** Figure Derating Curve on physical page 3 (Rating Power Ratio (%) over Ambient Temperature (°C))
+
+**Availability:** AVAILABLE
+
+**Document URL:** [https://www.bourns.com/docs/product-datasheets/PTV09.pdf](https://www.bourns.com/docs/product-datasheets/PTV09.pdf)
+
 ## Legend
 
 What the recorded terms on this page mean, in ordinary words. The exact terms above are the ones that count; these descriptions explain them and never replace them.
@@ -252,6 +347,8 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| `RECOMMENDED_OPERATION` | The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.                                                              |
+| `THERMAL_SOA`           | Thermal and safe-operating-area behaviour: how much the part may dissipate, and under what mounting and ambient conditions.                                        |
 
 ### Coverage status
 
