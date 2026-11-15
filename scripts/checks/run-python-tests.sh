@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# all (default): superseded study replay, then current-tree discovery.
-# frozen: only the replay. current: only the discovery. CI runs frozen and
-# current as separate 30-minute jobs (scripts/checks/CI-TIMEOUT-DIAGNOSIS.md).
+# CI runs frozen and current as separate 30-minute jobs (scripts/checks/CI-TIMEOUT-DIAGNOSIS.md).
 usage='Usage: bash scripts/checks/run-python-tests.sh [all|frozen|current]'
 if (($# > 1)); then
   printf '%s\n' "$usage" >&2
