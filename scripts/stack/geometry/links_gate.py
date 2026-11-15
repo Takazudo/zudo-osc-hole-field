@@ -363,31 +363,55 @@ def fh12_size(n, gopts, cable=None):
             'tail_width_mm': {'value': r4(0.5 * (n + 1))}, 'cable': row['cable'], 'cable_length_mm': row['cable_length_mm']}
 
 
-class GeoMaker:
-    """The rectangles of one size, built part by part so that the search screens the slot before it builds the rest."""
+def orect(sx, sy, d, t0, t1, half):
+    """links.oriented_rect with the same arithmetic and rounding, without the call overhead (scope a8 item 7)."""
+    if d[0]:
+        a, b = sx + d[0] * t0, sx + d[0] * t1
+        if b < a:
+            a, b = b, a
+        return [round(a + 0.0, 4), round(sy - half + 0.0, 4), round(b + 0.0, 4), round(sy + half + 0.0, 4)]
+    a, b = sy + d[1] * t0, sy + d[1] * t1
+    if b < a:
+        a, b = b, a
+    return [round(sx - half + 0.0, 4), round(a + 0.0, 4), round(sx + half + 0.0, 4), round(b + 0.0, 4)]
 
-    def __init__(self, size, opts, hard):
+
+class GeoMaker:
+    """The rectangles of one size, built part by part so that the search screens the slot before it builds the rest.
+    `memo`: a dict to keep the front parts in (the model's memo of the current link)."""
+
+    def __init__(self, size, opts, hard, memo=None):
         self.L, self.D, self.W = val(size['field_length_mm']), val(size['field_depth_mm']), val(size['tail_width_mm'])
         sl = opts['slot']
         self.hs = val(sl['length_mm']) / 2
         self.sw = (self.W + val(sl['width_extra_mm'])) / 2
         self.a0 = val(opts['cable']['straight_stiffened_outside_mm']) + val(opts['cable']['bend_radius_mm'])
         self.hard = hard
+        self.memo = memo
 
     def slot(self, sx, sy, d):
-        return {'slot': oriented_rect(sx, sy, d, -self.hs, self.hs, self.sw)}
+        return {'slot': orect(sx, sy, d, -self.hs, self.hs, self.sw)}
 
     def front(self, sx, sy, d, ef):
+        m = self.memo
+        if m is not None:
+            mk = ('gf', self.L, self.D, self.W, self.hard, sx, sy, d, ef)
+            g = m.get(mk)
+            if g is not None:
+                return g
         af = self.a0 + ef
-        return {'front_connector': oriented_rect(sx, sy, d, -(af + self.D), -af, self.L / 2),
-                'front_tail': oriented_rect(sx, sy, d, -af, -self.hs, self.W / 2),
-                'front_tail_first': oriented_rect(sx, sy, d, -af, -(af - self.hard), self.W / 2) if self.hard > 0 else None,
-                'tail_rule_hard_mm': r4(self.hard)}
+        g = {'front_connector': orect(sx, sy, d, -(af + self.D), -af, self.L / 2),
+             'front_tail': orect(sx, sy, d, -af, -self.hs, self.W / 2),
+             'front_tail_first': orect(sx, sy, d, -af, -(af - self.hard), self.W / 2) if self.hard > 0 else None,
+             'tail_rule_hard_mm': r4(self.hard)}
+        if m is not None:
+            m[mk] = g
+        return g
 
     def k(self, sx, sy, d, ek):
         ak = self.a0 + ek
-        return {'K_tail': oriented_rect(sx, sy, d, self.hs, ak, self.W / 2),
-                'K_connector': oriented_rect(sx, sy, d, ak, ak + self.D, self.L / 2)}
+        return {'K_tail': orect(sx, sy, d, self.hs, ak, self.W / 2),
+                'K_connector': orect(sx, sy, d, ak, ak + self.D, self.L / 2)}
 
     def full(self, sx, sy, d, ef=0.0, ek=0.0):
         g = self.slot(sx, sy, d)

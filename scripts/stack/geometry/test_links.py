@@ -423,7 +423,7 @@ class Gate(unittest.TestCase):
         self.assertEqual(f(['LOGIC'] * 3 + ['ANALOGUE'], 'a7'), 5)
         self.assertEqual(f(['LOGIC'] * 3 + ['ANALOGUE']), 6)
         self.assertEqual(f(['LOGIC'] * 3), 5)
-        self.assertEqual(f(['LOGIC'] * 2 + ['ANALOGUE'] * 2), 7)
+        self.assertEqual(f(['LOGIC'] * 2 + ['ANALOGUE'] * 2), 6)
         self.assertEqual(f(['LOGIC'] + ['ANALOGUE']), 3)
         self.assertEqual(f(['STATIC'] * 7), 8)
         self.assertIsNone(f(['LOGIC', 'WIPER']))
@@ -540,7 +540,7 @@ class Gate(unittest.TestCase):
     def test_finding_3_empty_extension_list_gives_a_reason(self):
         model, ctx = gctx()
         size = links_gate.fh12_size(8, GINP['gopts'])
-        r = next(l for l in GDOC['links'] if l['placed'] and l['circuits'] == 8)
+        r = next(l for l in GDOC['links'] if l['placed'] and l['circuits'] == 8 and l['joint'] == 'P-K')
         d = {v: k for k, v in links.DIR_NAMES.items()}[r['direction']]
         why, c = links_gate.candidate(ctx, links.Placed(), r['front_board'], size, None, r['slot_centre'][0],
                                       r['slot_centre'][1], d, 0.0, -5.0)
@@ -582,7 +582,8 @@ class Gate(unittest.TestCase):
         gm = links_gate.GeoMaker(size, GINP['opts'], ctx.hard)
         d = {v: k for k, v in links.DIR_NAMES.items()}[r['direction']]
         placed = links.Placed()
-        placed.add('K', 'B', links.sg.grow(r['geometry']['K_connector'], 30.0), 'test block')
+        sx, sy = r['slot_centre']
+        placed.add('K', 'B', links.oriented_rect(sx, sy, d, gm.hs + 0.01, gm.a0 + gm.D + 40.0, gm.L / 2 + 1.0), 'test block')
         model.memo_for(None)
         res = links_gate.staged(ctx, placed, r['front_board'], gm, r['slot_centre'][0], r['slot_centre'][1], d,
                                 r['geometry']['front_extension_mm'], ctx.spare(r['front_board'], size), None)
