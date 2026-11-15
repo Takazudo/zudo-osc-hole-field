@@ -66,6 +66,8 @@ def facts(d=None):
                         nets[(depth, o, lv, case)] = T.network(d, depth, o, lv, case)
     r['nets'], r['surf'] = nets, surf
     r['cmp'] = T.comparison(d)
+    r['panel'] = T.panel_rows(d)
+    r['boards'] = T.board_table(d)
     r['limit_classes'] = T.limit_classes(d)
     return r
 
@@ -117,17 +119,18 @@ def header(r):
             'has changed.', '']
 
 
-def same(a, b):
-    text = f'{a:g}'
-    places = len(text.split('.')[1]) if '.' in text else 0
-    return round(b, places) == a
+def same(text, b, minimum_places):
+    places = max(len(text.split('.')[1]) if '.' in text else 0, minimum_places)
+    return round(b, places) == round(float(text), places)
 
 
 def plan_check(r):
     d = r['d']
     plan = T.term(d, 'plan_heat_W')
     n, c = r['normal'], r['contract']
-    verdict = ['reproduced' if same(p, x['input_W']) else 'differs' for p, x in zip(plan, (n, c))]
+    texts = d['inputs']['plan_heat_row_text']
+    places = T.term(d, 'plan_compare_decimals')
+    verdict = ['reproduced' if same(p, x['input_W'], places) else 'differs' for p, x in zip(texts, (n, c))]
     head = 'the screen reproduces both' if verdict == ['reproduced', 'reproduced'] else \
         'the screen reads ' + ' and '.join(f"{f(x['input_W'], 2)} W" for x in (n, c))
     return [f"## The plan page's heat row reads {plan[0]:g} W and {plan[1]:g} W; {head}", '',
@@ -180,8 +183,9 @@ def item1(r):
               'between K and the front boards is the widest error of the map.', '',
               'Not in the ledger and not added: the SUB divider and gating on +5 V (UNSOURCED until ST-11 refreshes the ledger), '
               'the lower count of octave receivers without the OSC2 and OSC4 selectors (not credited, so the map stays high), '
-              f"the I2R of the 18 posts (at most {f(1000 * T.post_i2r_bound_W(d), 1)} mW with every contract rail current through "
-              'one 0.5 mOhm joint), and the flat links (at most 0.049 A on a ground, DS-62; conductor resistance UNSOURCED). '
+              f"the I2R of the {T.term(d, 'post_count')} posts (at most {f(1000 * T.post_i2r_bound_W(d), 1)} mW with every contract rail current through "
+              f"one {1000 * T.term(d, 'post_joint_ohm'):g} mOhm joint), and the flat links (at most {T.term(d, 'link_ground_current_A'):g} A "
+              'on a ground, DS-62; conductor resistance UNSOURCED). '
               'The ledger charges magnitude LEDs and outputs on both analogue rails at once, which is high by up to a factor of two '
               'for those rows. The ledger names OPA4197IDR where the netlist has OPA4197IPWR in '
               f"{len({k[0][0] for k in T.symbol_mismatches(d)})} instances; same die and allowance, so the map pools the two packages.", '']
@@ -202,7 +206,7 @@ def item2(r):
              f"Outer box: the internal {d['inputs']['enclosure_internal_xy_mm']} mm plus a {T.term(d, 'wall_mm')} mm wall (ASSUMED, 1 to 3 mm) "
              f"at the sides and rear; the depth includes the {T.term(d, 'panel_thickness_mm')} mm panel. Coefficients (all ASSUMED): "
              f"vertical faces {T.term(d, 'h_conv_vertical')} W/m2K, upward faces {T.term(d, 'h_conv_up')} W/m2K, the face resting "
-             f"on a table 0, finish emissivity {T.term(d, 'eps_case')}, radiation to surroundings at ambient. Each range runs from "
+             f"on a table {T.term(d, 'h_conv_resting'):g}, finish emissivity {T.term(d, 'eps_case')}, radiation to surroundings at ambient. Each range runs from "
              'the best end (low-heat load, high coefficients) to the worst end (planning load, low coefficients); the contract '
              'column is the outer row at the low coefficients. Standing: panel vertical, base face resting. Lying: panel horizontal '
              'facing up, rear wall resting. Inside: the network of item 3. The 34 mm row is surface only: the stack does not fit it '
@@ -247,6 +251,26 @@ def sensitivity_rows(d):
     ]
 
 
+def plane_text(d):
+    groups = {}
+    for b, v in d['inputs']['planes_40'].items():
+        key = (v['face_z_mm'], v['face_z_mm'] - v['thickness_mm'])
+        groups.setdefault(key, []).append(b)
+    parts = [f"panel rear at {-T.term(d, 'panel_thickness_mm'):g} mm"]
+    for (face, rear), bs in sorted(groups.items(), key=lambda x: -x[0][0]):
+        parts.append(f"{' and '.join(sorted(bs))} {face:g}/{rear:g}")
+    return ', '.join(parts) + f", rear wall {-T.term(d, 'depth_cases_mm')[0]:g}"
+
+
+def join_names(names):
+    names = list(names)
+    if not names:
+        return 'no class'
+    if len(names) == 1:
+        return names[0]
+    return ', '.join(names[:-1]) + ' and ' + names[-1]
+
+
 def radiation_shares(d, net, pairs):
     k_air = T.term(d, 'air')['k']
     out = []
@@ -274,10 +298,9 @@ def item3(r):
     lines = [f"## 3. Every gap of the 40 mm stack has Nu {f(min(nus), 2)} to {f(max(nus), 2)}; radiation carries "
              f"{rng(100 * min(shares), 100 * max(shares), n=0)} % of the heat across the facing pairs of 10 cm2 or more; the slots cover "
              f"{f(slot_pct, 1)} % and the cable loops at most {f(loop_pct, 1)} % of where front boards face K", '',
-             'Gaps from `candidate.planes` and `candidate.stack`: panel rear at -2.0 mm, EL -4.4/-4.8, JL and JR -10.0/-11.6, '
-             'P -12.0/-13.6, adapters -16.0/-17.6, K -30.6/-32.2, rear wall -40. Densities are board totals at the normal load over '
+             f"Gaps from `candidate.planes`: {plane_text(d)}. Densities are board totals at the normal load over "
              'the board area. Nu runs from 1 (conduction only, ASSUMED lower bound) to the ASSUMED enclosed-layer correlations at the '
-             'best end; h adds the plate-to-plate radiation (emissivity 0.80 to 0.95).', '',
+             f"best end; h adds the plate-to-plate radiation (board emissivity {rng(*T.lo_hi(d, 'eps_board'), n=2)}).", '',
              '| Facing pair (front, rear) | Gap, mm | Facing area, cm2 | Density, front member, mW/cm2 | Density, rear member, mW/cm2 | Nu standing, best end | Nu lying, best end | h, W/m2K |',
              '| --- | --- | --- | --- | --- | --- | --- | --- |']
 
@@ -311,6 +334,28 @@ def place_text(d, x):
     return f"{x['ref']}, {where}{lat}"
 
 
+def class_shifts(a, b):
+    out = {}
+    for o in T.ORIENTS:
+        if a['orients'].get(o) is None or b['orients'].get(o) is None:
+            out[o] = None
+            continue
+        out[o] = {e: a['orients'][o][e]['T_C'] - b['orients'][o][e]['T_C'] for e in T.ENDS}
+    return out
+
+
+def share_text(shifts, limit):
+    parts = []
+    for o in T.ORIENTS:
+        x = shifts.get(o)
+        if x is None:
+            parts.append(f"{ORIENT_NAME[o]} -")
+            continue
+        mark = ', share of the 40 mm stack' if any(v > limit for v in x.values()) else ''
+        parts.append(f"{ORIENT_NAME[o]} {x['best']:+.1f} / {x['worst']:+.1f}{mark}")
+    return '; '.join(parts)
+
+
 def comparison_rows(r, symbols):
     d = r['d']
     rows = []
@@ -319,10 +364,11 @@ def comparison_rows(r, symbols):
             c = r['cmp'][(s, depth)]
             lim = 'NO LIMIT RETAINED' if c['limit'] is None else f"{c['limit']['limit_C']:.0f} °C (`{c['limit']['fact_id']}`)"
             o = c['orients']
+            share = share_text(class_shifts(r['cmp'][(s, 40)], r['cmp'][(s, 120)]), T.term(d, 'stack_share_K')) if depth == 40 else '-'
             rows.append(f"| {s} | {c['places']} | {depth} mm | {lim} | "
                         f"{f(o['V']['best']['T_C'])} to {f(o['V']['worst']['T_C'])} | {o['V']['word']} | "
                         f"{f(o['H']['best']['T_C'])} to {f(o['H']['worst']['T_C'])} | {o['H']['word']} | "
-                        f"{place_text(d, o[c['worse']]['worst'])} | **{c['word']}** |")
+                        f"{place_text(d, o[c['worse']]['worst'])} | **{c['word']}** | {share} |")
     return rows
 
 
@@ -361,30 +407,48 @@ def item4(r):
     contract = {(depth, o): amb + r['nets'][(depth, o, 'low', 'contract')]['rise']['K'] for depth in T.DEPTHS for o in T.ORIENTS}
     split = T.as3340_split_W(d)
     shift_all = T.depth_shift_K(d, lim + nolim)
-    big = max(((s, T.depth_shift_K(d, [s])[1]) for s in lim + nolim), key=lambda x: x[1])
-    big_board = r['cmp'][(big[0], 40)]['orients']['H']['worst']['board']
-    limits_text = ' and '.join(f'{x:.0f} °C' for x in limits)
-    lines = [f"## 4. The {limits_text} limit of {', '.join(lim[:-1])} and {lim[-1]} {state}; {len(nolim)} IC classes read NO LIMIT RETAINED "
+    big = largest_shift(r, lim + nolim)
+    limits_text = ' and '.join(f'{x:.0f} °C' for x in limits) or 'no'
+    lines = [f"## 4. The {limits_text} limit of {join_names(lim)} {state}; {len(nolim)} IC classes read NO LIMIT RETAINED "
              f"and NOT SHOWN; on the classes with a limit the 40 mm case moves the board at the part by {srng(*shift, n=1)} K against 120 mm", '',
              f"The comparison of DS-95: one temperature, the board at the part (K's mean plus the smoothed lateral rise of the hottest "
              f"{T.term(d, 'cell_mm'):g} mm cell of K that holds a part of the class; the board's mean off K), against the limit of the "
              'exact part. Worst end: planning load, low coefficients. Best end: low-heat load, high coefficients, read on the board '
-             'of the worst end. The class word takes the worse orientation (the higher worst end). MET ON PAPER: worst end at or '
+             'of the worst end. The class word is the worst word of the two orientations. MET ON PAPER: worst end at or '
              'below the limit; EXCEEDED ON PAPER: best end above it; NOT SHOWN otherwise and wherever no limit is retained. '
              f"No limit is borrowed from a part of the same family and no junction temperature is stated. Places: {place_source(d)}. "
              'The CL10A105KB8NNNC places are the floorplan places of the references that the partition report gives the exact part '
              '(`io-partition-exact-refs`). DS-94 reads the 40 mm case more than 5 K above the 120 mm case on this comparison as a '
              f"cost of the stack: the classes with a limit read {srng(*shift, n=1)} K. Across every class the shift is "
-             f"{srng(*shift_all, n=1)} K; the largest is {big[0]} on {big_board} ({big[1]:+.1f} K), a front board and a class with no "
-             'retained limit.', '',
-             '| Exact part class | Places | Case | Limit | Standing, best to worst, °C | Standing | Lying, best to worst, °C | Lying | Hottest place, worse orientation, worst end | Word |',
-             '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |'] + comparison_rows(r, lim + nolim)
+             f"{srng(*shift_all, n=1)} K; the largest in size is {big['symbol']} on {big['board']} ({big['shift']:+.1f} K, "
+             f"{ORIENT_NAME[big['orient']]}, {big['end']} end).", '',
+             '| Exact part class | Places | Case | Limit | Standing, best to worst, °C | Standing | Lying, best to worst, °C | Lying | Hottest place, worse orientation, worst end | Word | Shift 40 against 120 mm, best / worst end, K |',
+             '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |'] + comparison_rows(r, lim + nolim)
     lines += ['', f"Outer row, no verdict: at the contract ({f(r['contract']['input_W'], 1)} W) with the low coefficients K's mean reads "
               + ', '.join(f"{f(v)} °C {ORIENT_NAME[o]} at {depth} mm" for (depth, o), v in contract.items()) + '. '
               f"The AS3340D row includes its VEE driver: {f(1000 * split['core_W'], 0)} mW in the core and "
-              f"{f(1000 * split['vee_driver_W'], 0)} mW in the OPA4197 buffer. The parts of the 85 °C class take at most 11 mW each, "
+              f"{f(1000 * split['vee_driver_W'], 0)} mW in the OPA4197 buffer. The packages of the classes with a limit take at most "
+              f"{f(1000 * max_limit_package_W(d), 0)} mW each in the ledger, "
               'and the gaps carry heat by conduction, so the air at the part has the temperature of the board (DS-95).', '']
     return lines + bleeder_lines(r)
+
+
+def largest_shift(r, symbols):
+    best = None
+    for s in symbols:
+        a, b = r['cmp'][(s, 40)], r['cmp'][(s, 120)]
+        for o in T.ORIENTS:
+            for e in T.ENDS:
+                x = a['orients'][o][e]['T_C'] - b['orients'][o][e]['T_C']
+                if best is None or abs(x) > abs(best['shift']):
+                    best = {'symbol': s, 'board': a['orients'][o][e]['board'], 'orient': o, 'end': e, 'shift': x}
+    return best
+
+
+def max_limit_package_W(d):
+    syms = set(T.limit_classes(d))
+    per = T.package_powers(d)
+    return max([per[p['ref']] for p in d['inputs']['ic_packages'] if p['symbol'] in syms and p['ref'] in per] or [0.0])
 
 
 def place_source(d):
@@ -525,11 +589,235 @@ def item7(r):
              '| Case sensors | Panel centre, rear wall centre, each side wall centre, top face |',
              f"| Part sensors | On the body of the part, or on the board within {within:g} mm of it (DS-95): the hottest place of each class of item 4 ({places}); the bleeder bodies at the inlet; the five AS3340D cores, U1601 (octave reference) and the two S&H |",
              f"| Reading: parts with a retained limit | The board at the part against the limit of the exact part ({', '.join(lim)}: {'/'.join(f'{x:.0f}' for x in headline(r)[3])} °C) |",
-             '| Reading: 0603 resistors | Dissipation under the series power curve at the measured board temperature; bleeder body against 110 °C at its joint |',
+             f"| Reading: 0603 resistors | Dissipation under the series power curve at the measured board temperature; bleeder body against {T.term(d, 'solder_joint_limit_C'):g} °C at its joint |",
              '| Reading: ICs | NO LIMIT RETAINED: evidence first (operating range, then thermal resistance and junction maximum) for every IC class of item 4 |',
              f"| Reading: screen consistency | Case rise inside {rng(end(r, 40, 'V', 'best')['rise']['shell'], end(r, 40, 'H', 'worst')['rise']['shell'])} K at 40 mm; a reading outside invalidates the screen, not the design |",
              '| Reading: temperature-sensitive functions | Each core\'s frequency, each reference and each S&H droop at 25 °C and at the soak ambient; no limit is proposed (calibration scope stays 25 °C) |', '']
     return lines
+
+
+BOARD_ORDER = ('K', 'P', 'JL', 'JR', 'EL', 'O1', 'O2', 'O3', 'O4', 'O5', 'shell')
+
+
+def board_label(b):
+    return 'case (panel and walls)' if b == 'shell' else b
+
+
+def front_boards(d):
+    return sorted(b for b in d['inputs']['planes_40'] if b != 'K')
+
+
+def lying_front_shift(r):
+    xs = [T.board_shift(r['boards'], b, 'H', e) for b in front_boards(r['d']) for e in T.ENDS]
+    return [x for x in xs if x is not None]
+
+
+def item_boards(r):
+    d = r['d']
+    bt = r['boards']
+    limit = T.term(d, 'stack_share_K')
+    lying = lying_front_shift(r)
+    standing = [x for x in (T.board_shift(bt, b, 'V', e) for b in front_boards(d) for e in T.ENDS) if x is not None]
+    lines = [f"## 8. Lying flat, the 40 mm stack reads the front boards {srng(*lying)} K above the 120 mm case; standing "
+             f"{srng(*standing)} K", '',
+             f"Mean of every board and of the case (the shell node: panel and walls) at {r['amb']:g} °C ambient, closed, supply "
+             'outside; each cell is best end to worst end. The shift is the 40 mm stack less the 120 mm case on the same board, '
+             f"orientation and end; above {limit:g} K it is marked "
+             '"share of the 40 mm stack" (DS-94, DS-102). O2 and O4 are no planes of the 40 mm stack.', '',
+             '| Board | 40 mm standing, °C | 40 mm lying, °C | 120 mm standing, °C | 120 mm lying, °C | Shift standing, best / worst, K | Shift lying, best / worst, K |',
+             '| --- | --- | --- | --- | --- | --- | --- |']
+    for b in [x for x in BOARD_ORDER if x in bt] + sorted(set(bt) - set(BOARD_ORDER)):
+        row = bt[b]
+        cells = []
+        for depth in T.DEPTHS:
+            for o in T.ORIENTS:
+                cells.append(rng(row[(depth, o, 'best')], row[(depth, o, 'worst')]) if (depth, o, 'best') in row else 'no plane')
+        shifts = []
+        for o in T.ORIENTS:
+            x = [T.board_shift(bt, b, o, e) for e in T.ENDS]
+            if None in x:
+                shifts.append('-')
+                continue
+            mark = ', share of the 40 mm stack' if any(v > limit for v in x) else ''
+            shifts.append(f"{x[0]:+.1f} / {x[1]:+.1f}{mark}")
+        lines.append(f"| {board_label(b)} | {' | '.join(cells)} | {' | '.join(shifts)} |")
+    f_lo, f_hi = T.lo_hi(d, 'h_conv_feet')
+    lines += ['', f"Case on feet (option row of item 6; the resting rear wall carries {f_lo:g} W/m2K at the worst end and {f_hi:g} W/m2K "
+              'at the best end, ASSUMED), lying, the same shift of the 40 mm stack against the 120 mm case:', '',
+              '| Board | Shift lying closed, best / worst, K | Shift lying on feet, best / worst, K |', '| --- | --- | --- |']
+    for b in [x for x in BOARD_ORDER if x in bt and (40, 'H', 'best') in bt[x]]:
+        closed = [T.board_shift(bt, b, 'H', e) for e in T.ENDS]
+        feet = [feet_board(d, 40, b, e) - feet_board(d, 120, b, e) for e in T.ENDS]
+        mark = lambda x: ', share of the 40 mm stack' if any(v > limit for v in x) else ''
+        lines.append(f"| {board_label(b)} | {closed[0]:+.1f} / {closed[1]:+.1f}{mark(closed)} | {feet[0]:+.1f} / {feet[1]:+.1f}{mark(feet)} |")
+    return lines + ['']
+
+
+def feet_h(d, which):
+    f_lo, f_hi = T.lo_hi(d, 'h_conv_feet')
+    return f_lo if which == 'worst' else f_hi
+
+
+def feet_board(d, depth, board, which, **kw):
+    case, level = T.ENDS[which]
+    net = T.network(d, depth, 'H', level, case, h_resting=feet_h(d, which), **kw)
+    return T.term(d, 'ambient_C') + net['rise'][board]
+
+
+def limit_text(d, symbol):
+    lim = T.retained_limit(d, symbol)
+    info = T.information_ranges(d, symbol)
+    parts = []
+    if lim is None:
+        parts.append('NO LIMIT RETAINED')
+    else:
+        kind = 'absolute maximum' if lim['class'] == 'ABSOLUTE_MAXIMUM' else 'operating range' if lim['class'] == 'RECOMMENDED_OPERATION' else 'range'
+        cond = next((x['printed_condition'] for x in d['inputs']['operating_ranges'][symbol] if x['fact_id'] == lim['fact_id']), None)
+        parts.append(f"{lim['limit_C']:+.0f} °C, {kind} (`{lim['fact_id']}`{', ' + cond if cond else ''})")
+    for x in info:
+        src = 'third-party copy' if x['third_party_copy'] else 'source not confirmed'
+        parts.append(f"for information {x['minimum']} to {x['maximum']} °C (`{x['fact_id']}`, {x['verdict']}, {src})")
+    junction = [v for v in d['inputs']['panel_facts'].values() if v['symbol'] == symbol and 'junction' in str(v).lower()]
+    for fid, v in d['inputs']['panel_facts'].items():
+        if v['symbol'] == symbol and 'junction' in fid:
+            parts.append(f"junction maximum {v['value']} °C listed, not compared (`{fid}`)")
+    return '; '.join(parts)
+
+
+def info_word(d, symbol, c):
+    info = T.information_ranges(d, symbol)
+    if not info:
+        return None
+    limit = min(x['maximum'] for x in info)
+    words = [T.word(limit, c['orients'][o]['worst']['T_C'], c['orients'][o]['best']['T_C']) for o in T.ORIENTS if c['orients'][o]]
+    return T.worst_word(words) if words else None
+
+
+def item_panel(r):
+    d = r['d']
+    rows = r['panel']
+    limit = T.term(d, 'stack_share_K')
+    syms = T.panel_parts(d)
+    words = {(s, depth): T.panel_class_word(d, s, depth) for s in syms for depth in T.DEPTHS}
+    exceeded = [s for s in syms if all(words[(s, dep)] == 'EXCEEDED ON PAPER' for dep in T.DEPTHS)]
+    changed = [s for s in syms if any(row['symbol'] == s and row['depths'][40]['orients']['V'] and row['depths'][40]['orients']['H']
+                                      and row['depths'][40]['orients']['V']['word'] == 'MET ON PAPER'
+                                      and row['depths'][40]['orients']['H']['word'] != 'MET ON PAPER' for row in rows)]
+    lines = [f"## 9. Panel classes and trimmers: {join_names(exceeded) if exceeded else 'no class'} read EXCEEDED ON PAPER in both case depths; "
+             f"at 40 mm {join_names(changed) if changed else 'no class'} change from MET ON PAPER standing to another word lying", '',
+             'One row per class of an exact part and board, from the retained facts (DS-104, DS-111). Only a fact whose verdict '
+             'confirms its primary source makes a limit of record; an UNSOURCED range is printed for information, and its class reads NO LIMIT RETAINED and '
+             'NOT SHOWN. The temperature is the board at the part: on a front board its mean (lateral rise NOT COMPUTED: the screen '
+             'has no cell model of a front board); on K the mean plus the lateral rise of the hottest cell that holds a part of the '
+             'class. The panel beside it is the case node, printed without a word. Best end to worst end; the row word is the worst '
+             'word of the two orientations; the class word is the worst word of its rows. Counts and boards: '
+             '`io-partition-exact-refs` and the partition assignment.', '',
+             '| Exact part | Board | Count | Limit | Case | Standing, °C | Standing | Lying, °C | Lying | Panel beside it, °C | Lateral rise | Row word | Shift 40 against 120 mm, best / worst end, K |',
+             '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |']
+    for row in rows:
+        s, b = row['symbol'], row['board']
+        shifts = class_shifts(row['depths'][40], row['depths'][120])
+        for depth in T.DEPTHS:
+            c = row['depths'][depth]
+            if c['word'] is None:
+                lines.append(f"| {s} | {b} | {row['count']} | {limit_text(d, s)} | {depth} mm | no plane of the {depth} mm stack | - | - | - | - | - | - | - |")
+                continue
+            o = c['orients']
+            shell = [T.term(d, 'ambient_C') + r['nets'][(depth, x, T.ENDS[e][1], T.ENDS[e][0])]['rise']['shell'] for x in T.ORIENTS for e in T.ENDS]
+            lat = 'NOT COMPUTED' if b != 'K' else f"{o[c['worse']]['worst']['lateral_K']:+.1f} K, {o[c['worse']]['worst']['ref']}"
+            note = info_word(d, s, c)
+            wtxt = f"**{c['word']}**" + (f" (for information against the UNSOURCED range: {note})" if note else '')
+            share = share_text(shifts, limit) if depth == 40 else '-'
+            lines.append(f"| {s} | {b} | {row['count']} | {limit_text(d, s)} | {depth} mm | "
+                         f"{f(o['V']['best']['T_C'])} to {f(o['V']['worst']['T_C'])} | {o['V']['word']} | "
+                         f"{f(o['H']['best']['T_C'])} to {f(o['H']['worst']['T_C'])} | {o['H']['word']} | {rng(*shell)} | {lat} | {wtxt} | {share} |")
+    lines += ['', '| Exact part | Class word, 40 mm | Class word, 120 mm |', '| --- | --- | --- |']
+    lines += [f"| {s} | {words[(s, 40)] or '-'} | {words[(s, 120)] or '-'} |" for s in syms]
+    return lines + [''] + pot_curve_lines(r)
+
+
+def pot_symbols(d):
+    return [s for s in T.panel_parts(d) if any(v['symbol'] == s and 'derating' in fid for fid, v in d['inputs']['panel_facts'].items())]
+
+
+def curve_reading(worst, best, end_C, power_holds):
+    if best > end_C:
+        return 'beyond the curve'
+    if worst <= end_C and power_holds:
+        return 'inside the curve'
+    return 'not shown'
+
+
+def pot_curve_lines(r):
+    d = r['d']
+    syms = pot_symbols(d)
+    powers = T.pot_powers(d)
+    computed = [x for x in powers if x['W'] is not None]
+    missing = len(powers) - len(computed)
+    top = max(computed, key=lambda x: x['W']) if computed else None
+    fid = next(fid for fid, v in d['inputs']['panel_facts'].items() if v['symbol'] == syms[0] and 'derating' in fid)
+    rating_id = next(fid for fid, v in d['inputs']['panel_facts'].items() if v['symbol'] == syms[0] and 'power-rating' in fid)
+    rating = d['inputs']['panel_facts'][rating_id]['value']
+    end_C = d['inputs']['panel_facts'][fid]['value']['curve_end_ambient_C']
+    rows = [x for x in r['panel'] if x['symbol'] in syms]
+    lines = [f"### Second row of the pots: derating curve, outside the printed operating range; the power condition reads not shown, "
+             f"because {missing} of {len(powers)} pots are NOT COMPUTED", '',
+             f"No word of record (DS-103). The board at the part against {end_C:g} °C, the end of the curve (`{fid}`), with the power "
+             f"condition: the largest dissipation of a pot against {rating:g} W (`{rating_id}`) times the ratio of the curve at that "
+             'temperature (1.0 up to its full-power ambient, a straight line to its end, no figure beyond). The power of a pot is '
+             'taken from the control netlist (`control-netlist-pot-ends`): the voltage between the two end pins where both nets '
+             'carry a retained voltage (a rail of `ledger-case-envelope` or ground), squared, over the resistance less '
+             f"{100 * T.term(d, 'pot_resistance_tolerance'):.0f} %. A pot with a signal net at an end is NOT COMPUTED. "
+             + (f"Largest computed: {top['ref']} ({top['value']}), {1000 * top['W']:.2f} mW. " if top else 'Largest computed: none. ')
+             + f"{missing} NOT COMPUTED: {sum(1 for e in d['inputs']['pot_ends'] if e['pin1'] in T.term(d, 'ground_nets') or e['pin3'] in T.term(d, 'ground_nets'))} "
+             'have ground at one end and a signal net at the other, the rest a signal net at both ends; no end pin of a pot is on a rail.', '',
+             '| Pots | Case | Orientation | Board at the part, best to worst, °C | Curve ratio at the worst end | Allowed per pot at the worst end, mW | Reading |',
+             '| --- | --- | --- | --- | --- | --- | --- |']
+    holds = missing == 0 and top is not None
+    for depth in T.DEPTHS:
+        for o in T.ORIENTS:
+            temps = [(row['depths'][depth]['orients'][o]['best']['T_C'], row['depths'][depth]['orients'][o]['worst']['T_C']) for row in rows]
+            best, worst = max(t[0] for t in temps), max(t[1] for t in temps)
+            ratio = T.derating_ratio(d, fid, worst)
+            ok = holds and ratio is not None and top['W'] <= rating * ratio
+            lines.append(f"| {join_names(syms)} on P | {depth} mm | {ORIENT_NAME[o]} | {rng(best, worst)} | "
+                         f"{'no figure beyond the curve' if ratio is None else f'{ratio:.2f}'} | "
+                         f"{'-' if ratio is None else f'{1000 * rating * ratio:.1f}'} | {curve_reading(worst, best, end_C, ok)} |")
+    return lines + ['']
+
+
+def item_ambient(r):
+    d = r['d']
+    lo, hi = T.term(d, 'ambient_search_C')
+    targets = [(s, None) for s in r['limit_classes']] + [(row['symbol'], row['board']) for row in r['panel']
+                                                          if T.retained_limit(d, row['symbol']) is not None]
+    memo = {}
+    rows = []
+    for s, b in targets:
+        limit = T.retained_limit(d, s)['limit_C']
+        key_place = b if b not in (None, 'K') else s
+        cells = []
+        for depth in T.DEPTHS:
+            for o in T.ORIENTS:
+                pair = []
+                for e in ('best', 'worst'):
+                    k = (key_place, depth, o, e, limit)
+                    if k not in memo:
+                        memo[k] = T.ambient_at(d, s, depth, o, e, limit, board=b, lo=lo, hi=hi)
+                    pair.append(memo[k])
+                cells.append(' / '.join('outside the search' if x is None else f'{x:.1f}' for x in pair))
+        rows.append((s, b or 'K', limit, cells))
+    pots = [x for x in rows if x[0] in pot_symbols(d)]
+    pot_worst = min(float(c.split(' / ')[1]) for x in pots for c in x[3] if 'outside' not in c) if pots else None
+    lines = [f"## 10. Ambient at the limit: the pots read their {pots[0][2]:+.0f} °C at an ambient down to {pot_worst:.1f} °C at the worst end"
+             if pots else '## 10. Ambient at the limit per class with a limit of record', '',
+             'Per class with a limit of record, the ambient at which the best end and the worst end read the limit, found by '
+             f"running the network at each trial ambient (search {lo:g} to {hi:g} °C; DS-106 point 7), not by a linear shift. Each "
+             'cell: best end / worst end, °C.', '',
+             '| Exact part | Board | Limit, °C | 40 mm standing | 40 mm lying | 120 mm standing | 120 mm lying |',
+             '| --- | --- | --- | --- | --- | --- | --- |']
+    lines += [f"| {s} | {b} | {limit:g} | {' | '.join(cells)} |" for s, b, limit, cells in rows]
+    return lines + ['']
 
 
 def evidence_needs(r):
@@ -575,11 +863,14 @@ def checks_section():
 def render(d=None):
     r = facts(d)
     lines = header(r) + plan_check(r) + item1(r) + item2(r) + item3(r) + item4(r) + item5(r) + item6(r) + item7(r) + \
-        evidence_needs(r) + terms_table(r) + checks_section()
+        item_boards(r) + item_panel(r) + item_ambient(r) + evidence_needs(r) + terms_table(r) + checks_section()
     return '\n'.join(lines).rstrip() + '\n'
 
 
 def main(argv):
+    if argv not in ([], ['--check']):
+        print('usage: thermal_readme.py [--check]', file=sys.stderr)
+        return 2
     text = render()
     if argv == ['--check']:
         ok = README.exists() and README.read_text() == text

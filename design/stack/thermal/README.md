@@ -51,7 +51,7 @@ The wall allowance moves the 40 mm area from 0.2485 to 0.2567 m2 (3.3 %). The su
 
 ## 3. Every gap of the 40 mm stack has Nu 1.00 to 3.65; radiation carries 32 to 88 % of the heat across the facing pairs of 10 cm2 or more; the slots cover 1.3 % and the cable loops at most 7.2 % of where front boards face K
 
-Gaps from `candidate.planes` and `candidate.stack`: panel rear at -2.0 mm, EL -4.4/-4.8, JL and JR -10.0/-11.6, P -12.0/-13.6, adapters -16.0/-17.6, K -30.6/-32.2, rear wall -40. Densities are board totals at the normal load over the board area. Nu runs from 1 (conduction only, ASSUMED lower bound) to the ASSUMED enclosed-layer correlations at the best end; h adds the plate-to-plate radiation (emissivity 0.80 to 0.95).
+Gaps from `candidate.planes`: panel rear at -2 mm, EL -4.4/-4.8, JL and JR -10/-11.6, P -12/-13.6, O1 and O3 and O5 -16/-17.6, K -30.6/-32.2, rear wall -40. Densities are board totals at the normal load over the board area. Nu runs from 1 (conduction only, ASSUMED lower bound) to the ASSUMED enclosed-layer correlations at the best end; h adds the plate-to-plate radiation (board emissivity 0.80 to 0.95).
 
 | Facing pair (front, rear) | Gap, mm | Facing area, cm2 | Density, front member, mW/cm2 | Density, rear member, mW/cm2 | Nu standing, best end | Nu lying, best end | h, W/m2K |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -72,44 +72,44 @@ Pairs below 10 cm2 (adapters, P over the adapters, EL over K's edge) total 26.6 
 
 ## 4. The 85 °C limit of CL10A105KB8NNNC, SN74HC14DR and SN74HC74DR is NOT SHOWN met in either case depth; 13 IC classes read NO LIMIT RETAINED and NOT SHOWN; on the classes with a limit the 40 mm case moves the board at the part by -2.2 to +2.4 K against 120 mm
 
-The comparison of DS-95: one temperature, the board at the part (K's mean plus the smoothed lateral rise of the hottest 50 mm cell of K that holds a part of the class; the board's mean off K), against the limit of the exact part. Worst end: planning load, low coefficients. Best end: low-heat load, high coefficients, read on the board of the worst end. The class word takes the worse orientation (the higher worst end). MET ON PAPER: worst end at or below the limit; EXCEEDED ON PAPER: best end above it; NOT SHOWN otherwise and wherever no limit is retained. No limit is borrowed from a part of the same family and no junction temperature is stated. Places: the gate record's `displaced_k_ic_packages`: 85 of the 99 listed packages are read at their new place; the 14 listed packages whose `new` is null have no position and are read at their floorplan place, as is every package not listed. The CL10A105KB8NNNC places are the floorplan places of the references that the partition report gives the exact part (`io-partition-exact-refs`). DS-94 reads the 40 mm case more than 5 K above the 120 mm case on this comparison as a cost of the stack: the classes with a limit read -2.2 to +2.4 K. Across every class the shift is -2.2 to +5.4 K; the largest is TMUX7412FRRPR on JR (+5.4 K), a front board and a class with no retained limit.
+The comparison of DS-95: one temperature, the board at the part (K's mean plus the smoothed lateral rise of the hottest 50 mm cell of K that holds a part of the class; the board's mean off K), against the limit of the exact part. Worst end: planning load, low coefficients. Best end: low-heat load, high coefficients, read on the board of the worst end. The class word is the worst word of the two orientations. MET ON PAPER: worst end at or below the limit; EXCEEDED ON PAPER: best end above it; NOT SHOWN otherwise and wherever no limit is retained. No limit is borrowed from a part of the same family and no junction temperature is stated. Places: the gate record's `displaced_k_ic_packages`: 85 of the 99 listed packages are read at their new place; the 14 listed packages whose `new` is null have no position and are read at their floorplan place, as is every package not listed. The CL10A105KB8NNNC places are the floorplan places of the references that the partition report gives the exact part (`io-partition-exact-refs`). DS-94 reads the 40 mm case more than 5 K above the 120 mm case on this comparison as a cost of the stack: the classes with a limit read -2.2 to +2.4 K. Across every class the shift is -2.2 to +5.4 K; the largest in size is TMUX7412FRRPR on JR (+5.4 K, lying panel-up, worst end).
 
-| Exact part class | Places | Case | Limit | Standing, best to worst, °C | Standing | Lying, best to worst, °C | Lying | Hottest place, worse orientation, worst end | Word |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| CL10A105KB8NNNC | 3 | 40 mm | 85 °C (`fact-power-reservoir-temperature`) | 68.4 to 82.7 | MET ON PAPER | 72.6 to 88.7 | NOT SHOWN | C304, K x 100 to 150, y 150 to 200 (+2.9 K lateral) | **NOT SHOWN** |
-| CL10A105KB8NNNC | 3 | 120 mm | 85 °C (`fact-power-reservoir-temperature`) | 68.3 to 84.4 | MET ON PAPER | 70.4 to 86.3 | NOT SHOWN | C304, K x 100 to 150, y 150 to 200 (+3.5 K lateral) | **NOT SHOWN** |
-| SN74HC14DR | 21 | 40 mm | 85 °C (`fact-schmitt-temperature`) | 73.5 to 88.7 | NOT SHOWN | 77.6 to 94.6 | NOT SHOWN | U1307, K x 0 to 50, y 200 to 250 (+8.8 K lateral) | **NOT SHOWN** |
-| SN74HC14DR | 21 | 120 mm | 85 °C (`fact-schmitt-temperature`) | 73.5 to 90.9 | NOT SHOWN | 75.7 to 92.7 | NOT SHOWN | U1307, K x 0 to 50, y 200 to 250 (+9.9 K lateral) | **NOT SHOWN** |
-| SN74HC74DR | 54 | 40 mm | 85 °C (`fact-flipflop-temperature`) | 68.4 to 82.7 | MET ON PAPER | 72.6 to 88.7 | NOT SHOWN | U4530, K x 100 to 150, y 150 to 200 (+2.9 K lateral) | **NOT SHOWN** |
-| SN74HC74DR | 54 | 120 mm | 85 °C (`fact-flipflop-temperature`) | 68.3 to 84.4 | MET ON PAPER | 70.4 to 86.3 | NOT SHOWN | U4530, K x 100 to 150, y 150 to 200 (+3.5 K lateral) | **NOT SHOWN** |
-| AS3340D | 5 | 40 mm | NO LIMIT RETAINED | 73.5 to 88.7 | NOT SHOWN | 77.6 to 94.6 | NOT SHOWN | U1305, K x 0 to 50, y 200 to 250 (+8.8 K lateral) | **NOT SHOWN** |
-| AS3340D | 5 | 120 mm | NO LIMIT RETAINED | 73.5 to 90.9 | NOT SHOWN | 75.7 to 92.7 | NOT SHOWN | U1305, K x 0 to 50, y 200 to 250 (+9.9 K lateral) | **NOT SHOWN** |
-| CD74HC221M96 | 8 | 40 mm | NO LIMIT RETAINED | 68.2 to 82.6 | NOT SHOWN | 72.4 to 88.6 | NOT SHOWN | U214, K x 100 to 150, y 100 to 150 (+2.8 K lateral) | **NOT SHOWN** |
-| CD74HC221M96 | 8 | 120 mm | NO LIMIT RETAINED | 67.9 to 84.0 | NOT SHOWN | 70.0 to 85.9 | NOT SHOWN | U214, K x 100 to 150, y 100 to 150 (+3.1 K lateral) | **NOT SHOWN** |
-| LF398M_NOPB | 2 | 40 mm | NO LIMIT RETAINED | 68.1 to 82.6 | NOT SHOWN | 72.3 to 88.6 | NOT SHOWN | U215, K x 100 to 150, y 100 to 150 (+2.8 K lateral) | **NOT SHOWN** |
-| LF398M_NOPB | 2 | 120 mm | NO LIMIT RETAINED | 67.9 to 84.0 | NOT SHOWN | 69.9 to 85.9 | NOT SHOWN | U215, K x 100 to 150, y 100 to 150 (+3.1 K lateral) | **NOT SHOWN** |
-| LM13700M_NOPB | 16 | 40 mm | NO LIMIT RETAINED | 69.5 to 83.9 | NOT SHOWN | 73.7 to 89.9 | NOT SHOWN | U2307, K x 100 to 150, y 200 to 250 (+4.1 K lateral) | **NOT SHOWN** |
-| LM13700M_NOPB | 16 | 120 mm | NO LIMIT RETAINED | 69.4 to 85.6 | NOT SHOWN | 71.5 to 87.5 | NOT SHOWN | U2307, K x 100 to 150, y 200 to 250 (+4.7 K lateral) | **NOT SHOWN** |
-| LM393BIDR | 44 | 40 mm | NO LIMIT RETAINED | 72.8 to 87.7 | NOT SHOWN | 77.0 to 93.7 | NOT SHOWN | U1408, K x 50 to 100, y 200 to 250 (+7.9 K lateral) | **NOT SHOWN** |
-| LM393BIDR | 44 | 120 mm | NO LIMIT RETAINED | 72.8 to 89.8 | NOT SHOWN | 74.9 to 91.6 | NOT SHOWN | U1408, K x 50 to 100, y 200 to 250 (+8.8 K lateral) | **NOT SHOWN** |
-| NOISE2 | 1 | 40 mm | NO LIMIT RETAINED | 66.1 to 79.7 | NOT SHOWN | 70.4 to 85.8 | NOT SHOWN | U6101, K x 200 to 250, y 100 to 150 (+0.0 K lateral) | **NOT SHOWN** |
-| NOISE2 | 1 | 120 mm | NO LIMIT RETAINED | 65.8 to 80.9 | NOT SHOWN | 67.8 to 82.8 | NOT SHOWN | U6101, K x 200 to 250, y 100 to 150 (+0.0 K lateral) | **NOT SHOWN** |
-| OPA4196IDR | 174 | 40 mm | NO LIMIT RETAINED | 73.5 to 88.7 | NOT SHOWN | 77.6 to 94.6 | NOT SHOWN | U1414, K x 0 to 50, y 200 to 250 (+8.8 K lateral) | **NOT SHOWN** |
-| OPA4196IDR | 174 | 120 mm | NO LIMIT RETAINED | 73.5 to 90.9 | NOT SHOWN | 75.7 to 92.7 | NOT SHOWN | U1414, K x 0 to 50, y 200 to 250 (+9.9 K lateral) | **NOT SHOWN** |
-| OPA4197IDR | 63 | 40 mm | NO LIMIT RETAINED | 73.5 to 88.7 | NOT SHOWN | 77.6 to 94.6 | NOT SHOWN | U1604, K x 0 to 50, y 200 to 250 (+8.8 K lateral) | **NOT SHOWN** |
-| OPA4197IDR | 63 | 120 mm | NO LIMIT RETAINED | 73.5 to 90.9 | NOT SHOWN | 75.7 to 92.7 | NOT SHOWN | U1604, K x 0 to 50, y 200 to 250 (+9.9 K lateral) | **NOT SHOWN** |
-| OPA4197IPWR | 26 | 40 mm | NO LIMIT RETAINED | 68.2 to 82.3 | NOT SHOWN | 72.4 to 88.4 | NOT SHOWN | U4541, K x 150 to 200, y 150 to 200 (+2.6 K lateral) | **NOT SHOWN** |
-| OPA4197IPWR | 26 | 120 mm | NO LIMIT RETAINED | 67.9 to 83.8 | NOT SHOWN | 70.0 to 85.7 | NOT SHOWN | U4541, K x 150 to 200, y 150 to 200 (+2.9 K lateral) | **NOT SHOWN** |
-| REF5050AIDR | 24 | 40 mm | NO LIMIT RETAINED | 73.5 to 88.7 | NOT SHOWN | 77.6 to 94.6 | NOT SHOWN | U1601, K x 0 to 50, y 200 to 250 (+8.8 K lateral) | **NOT SHOWN** |
-| REF5050AIDR | 24 | 120 mm | NO LIMIT RETAINED | 73.5 to 90.9 | NOT SHOWN | 75.7 to 92.7 | NOT SHOWN | U1601, K x 0 to 50, y 200 to 250 (+9.9 K lateral) | **NOT SHOWN** |
-| SN74HC00DR | 102 | 40 mm | NO LIMIT RETAINED | 68.2 to 82.3 | NOT SHOWN | 72.4 to 88.4 | NOT SHOWN | U4529, K x 150 to 200, y 150 to 200 (+2.6 K lateral) | **NOT SHOWN** |
-| SN74HC00DR | 102 | 120 mm | NO LIMIT RETAINED | 67.9 to 83.8 | NOT SHOWN | 70.0 to 85.7 | NOT SHOWN | U4529, K x 150 to 200, y 150 to 200 (+2.9 K lateral) | **NOT SHOWN** |
-| TMUX6112PWR | 12 | 40 mm | NO LIMIT RETAINED | 68.2 to 82.3 | NOT SHOWN | 72.4 to 88.4 | NOT SHOWN | U4508, K x 150 to 200, y 150 to 200 (+2.6 K lateral) | **NOT SHOWN** |
-| TMUX6112PWR | 12 | 120 mm | NO LIMIT RETAINED | 67.9 to 83.8 | NOT SHOWN | 70.0 to 85.7 | NOT SHOWN | U4508, K x 150 to 200, y 150 to 200 (+2.9 K lateral) | **NOT SHOWN** |
-| TMUX7412FRRPR | 98 | 40 mm | NO LIMIT RETAINED | 67.4 to 81.1 | NOT SHOWN | 71.5 to 87.2 | NOT SHOWN | U8406, JR | **NOT SHOWN** |
-| TMUX7412FRRPR | 98 | 120 mm | NO LIMIT RETAINED | 66.1 to 79.8 | NOT SHOWN | 67.7 to 81.8 | NOT SHOWN | U8406, JR | **NOT SHOWN** |
+| Exact part class | Places | Case | Limit | Standing, best to worst, °C | Standing | Lying, best to worst, °C | Lying | Hottest place, worse orientation, worst end | Word | Shift 40 against 120 mm, best / worst end, K |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| CL10A105KB8NNNC | 3 | 40 mm | 85 °C (`fact-power-reservoir-temperature`) | 68.4 to 82.7 | MET ON PAPER | 72.6 to 88.7 | NOT SHOWN | C304, K x 100 to 150, y 150 to 200 (+2.9 K lateral) | **NOT SHOWN** | standing +0.2 / -1.7; lying panel-up +2.3 / +2.4 |
+| CL10A105KB8NNNC | 3 | 120 mm | 85 °C (`fact-power-reservoir-temperature`) | 68.3 to 84.4 | MET ON PAPER | 70.4 to 86.3 | NOT SHOWN | C304, K x 100 to 150, y 150 to 200 (+3.5 K lateral) | **NOT SHOWN** | - |
+| SN74HC14DR | 21 | 40 mm | 85 °C (`fact-schmitt-temperature`) | 73.5 to 88.7 | NOT SHOWN | 77.6 to 94.6 | NOT SHOWN | U1307, K x 0 to 50, y 200 to 250 (+8.8 K lateral) | **NOT SHOWN** | standing -0.0 / -2.2; lying panel-up +2.0 / +1.9 |
+| SN74HC14DR | 21 | 120 mm | 85 °C (`fact-schmitt-temperature`) | 73.5 to 90.9 | NOT SHOWN | 75.7 to 92.7 | NOT SHOWN | U1307, K x 0 to 50, y 200 to 250 (+9.9 K lateral) | **NOT SHOWN** | - |
+| SN74HC74DR | 54 | 40 mm | 85 °C (`fact-flipflop-temperature`) | 68.4 to 82.7 | MET ON PAPER | 72.6 to 88.7 | NOT SHOWN | U4530, K x 100 to 150, y 150 to 200 (+2.9 K lateral) | **NOT SHOWN** | standing +0.2 / -1.7; lying panel-up +2.3 / +2.4 |
+| SN74HC74DR | 54 | 120 mm | 85 °C (`fact-flipflop-temperature`) | 68.3 to 84.4 | MET ON PAPER | 70.4 to 86.3 | NOT SHOWN | U4530, K x 100 to 150, y 150 to 200 (+3.5 K lateral) | **NOT SHOWN** | - |
+| AS3340D | 5 | 40 mm | NO LIMIT RETAINED | 73.5 to 88.7 | NOT SHOWN | 77.6 to 94.6 | NOT SHOWN | U1305, K x 0 to 50, y 200 to 250 (+8.8 K lateral) | **NOT SHOWN** | standing -0.0 / -2.2; lying panel-up +2.0 / +1.9 |
+| AS3340D | 5 | 120 mm | NO LIMIT RETAINED | 73.5 to 90.9 | NOT SHOWN | 75.7 to 92.7 | NOT SHOWN | U1305, K x 0 to 50, y 200 to 250 (+9.9 K lateral) | **NOT SHOWN** | - |
+| CD74HC221M96 | 8 | 40 mm | NO LIMIT RETAINED | 68.2 to 82.6 | NOT SHOWN | 72.4 to 88.6 | NOT SHOWN | U214, K x 100 to 150, y 100 to 150 (+2.8 K lateral) | **NOT SHOWN** | standing +0.3 / -1.4; lying panel-up +2.4 / +2.7 |
+| CD74HC221M96 | 8 | 120 mm | NO LIMIT RETAINED | 67.9 to 84.0 | NOT SHOWN | 70.0 to 85.9 | NOT SHOWN | U214, K x 100 to 150, y 100 to 150 (+3.1 K lateral) | **NOT SHOWN** | - |
+| LF398M_NOPB | 2 | 40 mm | NO LIMIT RETAINED | 68.1 to 82.6 | NOT SHOWN | 72.3 to 88.6 | NOT SHOWN | U215, K x 100 to 150, y 100 to 150 (+2.8 K lateral) | **NOT SHOWN** | standing +0.3 / -1.4; lying panel-up +2.4 / +2.7 |
+| LF398M_NOPB | 2 | 120 mm | NO LIMIT RETAINED | 67.9 to 84.0 | NOT SHOWN | 69.9 to 85.9 | NOT SHOWN | U215, K x 100 to 150, y 100 to 150 (+3.1 K lateral) | **NOT SHOWN** | - |
+| LM13700M_NOPB | 16 | 40 mm | NO LIMIT RETAINED | 69.5 to 83.9 | NOT SHOWN | 73.7 to 89.9 | NOT SHOWN | U2307, K x 100 to 150, y 200 to 250 (+4.1 K lateral) | **NOT SHOWN** | standing +0.1 / -1.8; lying panel-up +2.2 / +2.3 |
+| LM13700M_NOPB | 16 | 120 mm | NO LIMIT RETAINED | 69.4 to 85.6 | NOT SHOWN | 71.5 to 87.5 | NOT SHOWN | U2307, K x 100 to 150, y 200 to 250 (+4.7 K lateral) | **NOT SHOWN** | - |
+| LM393BIDR | 44 | 40 mm | NO LIMIT RETAINED | 72.8 to 87.7 | NOT SHOWN | 77.0 to 93.7 | NOT SHOWN | U1408, K x 50 to 100, y 200 to 250 (+7.9 K lateral) | **NOT SHOWN** | standing +0.0 / -2.0; lying panel-up +2.1 / +2.1 |
+| LM393BIDR | 44 | 120 mm | NO LIMIT RETAINED | 72.8 to 89.8 | NOT SHOWN | 74.9 to 91.6 | NOT SHOWN | U1408, K x 50 to 100, y 200 to 250 (+8.8 K lateral) | **NOT SHOWN** | - |
+| NOISE2 | 1 | 40 mm | NO LIMIT RETAINED | 66.1 to 79.7 | NOT SHOWN | 70.4 to 85.8 | NOT SHOWN | U6101, K x 200 to 250, y 100 to 150 (+0.0 K lateral) | **NOT SHOWN** | standing +0.4 / -1.2; lying panel-up +2.6 / +3.0 |
+| NOISE2 | 1 | 120 mm | NO LIMIT RETAINED | 65.8 to 80.9 | NOT SHOWN | 67.8 to 82.8 | NOT SHOWN | U6101, K x 200 to 250, y 100 to 150 (+0.0 K lateral) | **NOT SHOWN** | - |
+| OPA4196IDR | 174 | 40 mm | NO LIMIT RETAINED | 73.5 to 88.7 | NOT SHOWN | 77.6 to 94.6 | NOT SHOWN | U1414, K x 0 to 50, y 200 to 250 (+8.8 K lateral) | **NOT SHOWN** | standing -0.0 / -2.2; lying panel-up +2.0 / +1.9 |
+| OPA4196IDR | 174 | 120 mm | NO LIMIT RETAINED | 73.5 to 90.9 | NOT SHOWN | 75.7 to 92.7 | NOT SHOWN | U1414, K x 0 to 50, y 200 to 250 (+9.9 K lateral) | **NOT SHOWN** | - |
+| OPA4197IDR | 63 | 40 mm | NO LIMIT RETAINED | 73.5 to 88.7 | NOT SHOWN | 77.6 to 94.6 | NOT SHOWN | U1604, K x 0 to 50, y 200 to 250 (+8.8 K lateral) | **NOT SHOWN** | standing -0.0 / -2.2; lying panel-up +2.0 / +1.9 |
+| OPA4197IDR | 63 | 120 mm | NO LIMIT RETAINED | 73.5 to 90.9 | NOT SHOWN | 75.7 to 92.7 | NOT SHOWN | U1604, K x 0 to 50, y 200 to 250 (+9.9 K lateral) | **NOT SHOWN** | - |
+| OPA4197IPWR | 26 | 40 mm | NO LIMIT RETAINED | 68.2 to 82.3 | NOT SHOWN | 72.4 to 88.4 | NOT SHOWN | U4541, K x 150 to 200, y 150 to 200 (+2.6 K lateral) | **NOT SHOWN** | standing +0.3 / -1.5; lying panel-up +2.4 / +2.7 |
+| OPA4197IPWR | 26 | 120 mm | NO LIMIT RETAINED | 67.9 to 83.8 | NOT SHOWN | 70.0 to 85.7 | NOT SHOWN | U4541, K x 150 to 200, y 150 to 200 (+2.9 K lateral) | **NOT SHOWN** | - |
+| REF5050AIDR | 24 | 40 mm | NO LIMIT RETAINED | 73.5 to 88.7 | NOT SHOWN | 77.6 to 94.6 | NOT SHOWN | U1601, K x 0 to 50, y 200 to 250 (+8.8 K lateral) | **NOT SHOWN** | standing -0.0 / -2.2; lying panel-up +2.0 / +1.9 |
+| REF5050AIDR | 24 | 120 mm | NO LIMIT RETAINED | 73.5 to 90.9 | NOT SHOWN | 75.7 to 92.7 | NOT SHOWN | U1601, K x 0 to 50, y 200 to 250 (+9.9 K lateral) | **NOT SHOWN** | - |
+| SN74HC00DR | 102 | 40 mm | NO LIMIT RETAINED | 68.2 to 82.3 | NOT SHOWN | 72.4 to 88.4 | NOT SHOWN | U4529, K x 150 to 200, y 150 to 200 (+2.6 K lateral) | **NOT SHOWN** | standing +0.3 / -1.5; lying panel-up +2.4 / +2.7 |
+| SN74HC00DR | 102 | 120 mm | NO LIMIT RETAINED | 67.9 to 83.8 | NOT SHOWN | 70.0 to 85.7 | NOT SHOWN | U4529, K x 150 to 200, y 150 to 200 (+2.9 K lateral) | **NOT SHOWN** | - |
+| TMUX6112PWR | 12 | 40 mm | NO LIMIT RETAINED | 68.2 to 82.3 | NOT SHOWN | 72.4 to 88.4 | NOT SHOWN | U4508, K x 150 to 200, y 150 to 200 (+2.6 K lateral) | **NOT SHOWN** | standing +0.3 / -1.5; lying panel-up +2.4 / +2.7 |
+| TMUX6112PWR | 12 | 120 mm | NO LIMIT RETAINED | 67.9 to 83.8 | NOT SHOWN | 70.0 to 85.7 | NOT SHOWN | U4508, K x 150 to 200, y 150 to 200 (+2.9 K lateral) | **NOT SHOWN** | - |
+| TMUX7412FRRPR | 98 | 40 mm | NO LIMIT RETAINED | 67.4 to 81.1 | NOT SHOWN | 71.5 to 87.2 | NOT SHOWN | U8406, JR | **NOT SHOWN** | standing +1.3 / +1.4; lying panel-up +3.8 / +5.4, share of the 40 mm stack |
+| TMUX7412FRRPR | 98 | 120 mm | NO LIMIT RETAINED | 66.1 to 79.8 | NOT SHOWN | 67.7 to 81.8 | NOT SHOWN | U8406, JR | **NOT SHOWN** | - |
 
-Outer row, no verdict: at the contract (41.1 W) with the low coefficients K's mean reads 86.0 °C standing at 40 mm, 93.0 °C lying panel-up at 40 mm, 87.2 °C standing at 120 mm, 89.4 °C lying panel-up at 120 mm. The AS3340D row includes its VEE driver: 128 mW in the core and 70 mW in the OPA4197 buffer. The parts of the 85 °C class take at most 11 mW each, and the gaps carry heat by conduction, so the air at the part has the temperature of the board (DS-95).
+Outer row, no verdict: at the contract (41.1 W) with the low coefficients K's mean reads 86.0 °C standing at 40 mm, 93.0 °C lying panel-up at 40 mm, 87.2 °C standing at 120 mm, 89.4 °C lying panel-up at 120 mm. The AS3340D row includes its VEE driver: 128 mW in the core and 70 mW in the OPA4197 buffer. The packages of the classes with a limit take at most 7 mW each in the ledger, and the gaps carry heat by conduction, so the air at the part has the temperature of the board (DS-95).
 
 ### Bleeder note for #57: at the worst end the bleeder body reads 107 to 115 °C, against the 110 °C solder joint; the board at its places allows 60 to 80 mW per body against 71.9 mW
 
@@ -187,6 +187,144 @@ PROPOSAL only; nothing here is a test result. Limits marked "evidence first" can
 | Reading: screen consistency | Case rise inside 9.7 to 23.0 K at 40 mm; a reading outside invalidates the screen, not the design |
 | Reading: temperature-sensitive functions | Each core's frequency, each reference and each S&H droop at 25 °C and at the soak ambient; no limit is proposed (calibration scope stays 25 °C) |
 
+## 8. Lying flat, the 40 mm stack reads the front boards +3.8 to +8.4 K above the 120 mm case; standing +1.3 to +4.1 K
+
+Mean of every board and of the case (the shell node: panel and walls) at 40 °C ambient, closed, supply outside; each cell is best end to worst end. The shift is the 40 mm stack less the 120 mm case on the same board, orientation and end; above 5 K it is marked "share of the 40 mm stack" (DS-94, DS-102). O2 and O4 are no planes of the 40 mm stack.
+
+| Board | 40 mm standing, °C | 40 mm lying, °C | 120 mm standing, °C | 120 mm lying, °C | Shift standing, best / worst, K | Shift lying, best / worst, K |
+| --- | --- | --- | --- | --- | --- | --- |
+| K | 66.2 to 79.7 | 70.5 to 85.8 | 65.9 to 80.9 | 67.9 to 82.8 | -1.2 / +0.3 | +3.0 / +2.6 |
+| P | 58.5 to 68.5 | 62.8 to 75.1 | 57.2 to 66.0 | 58.8 to 68.2 | +2.5 / +1.3 | +6.9 / +4.1, share of the 40 mm stack |
+| JL | 64.8 to 78.4 | 69.0 to 84.6 | 63.5 to 76.8 | 65.1 to 78.9 | +1.6 / +1.3 | +5.7 / +3.9, share of the 40 mm stack |
+| JR | 67.4 to 81.1 | 71.5 to 87.2 | 66.1 to 79.8 | 67.7 to 81.8 | +1.4 / +1.3 | +5.4 / +3.8, share of the 40 mm stack |
+| EL | 53.6 to 61.3 | 58.1 to 68.1 | 51.6 to 57.8 | 53.1 to 60.1 | +3.5 / +2.0 | +8.1 / +5.0, share of the 40 mm stack |
+| O1 | 58.4 to 68.8 | 63.0 to 75.3 | 56.9 to 65.4 | 58.4 to 67.6 | +3.4 / +1.6 | +7.7 / +4.6, share of the 40 mm stack |
+| O2 | no plane | no plane | 58.3 to 68.6 | 60.1 to 70.7 | - | - |
+| O3 | 58.4 to 68.8 | 63.0 to 75.3 | 56.4 to 64.8 | 57.9 to 66.9 | +4.1 / +2.1 | +8.4 / +5.1, share of the 40 mm stack |
+| O4 | no plane | no plane | 58.3 to 68.6 | 60.1 to 70.7 | - | - |
+| O5 | 58.4 to 68.8 | 63.0 to 75.3 | 56.9 to 65.4 | 58.4 to 67.6 | +3.4 / +1.6 | +7.7 / +4.6, share of the 40 mm stack |
+| case (panel and walls) | 49.7 to 56.0 | 54.3 to 63.0 | 47.4 to 52.2 | 48.9 to 54.6 | +3.8 / +2.3 | +8.4 / +5.4, share of the 40 mm stack |
+
+Case on feet (option row of item 6; the resting rear wall carries 4 W/m2K at the worst end and 8 W/m2K at the best end, ASSUMED), lying, the same shift of the 40 mm stack against the 120 mm case:
+
+| Board | Shift lying closed, best / worst, K | Shift lying on feet, best / worst, K |
+| --- | --- | --- |
+| K | +3.0 / +2.6 | +0.6 / +0.4 |
+| P | +6.9 / +4.1, share of the 40 mm stack | +4.5 / +1.9 |
+| JL | +5.7 / +3.9, share of the 40 mm stack | +3.4 / +1.8 |
+| JR | +5.4 / +3.8, share of the 40 mm stack | +3.1 / +1.7 |
+| EL | +8.1 / +5.0, share of the 40 mm stack | +5.5 / +2.7, share of the 40 mm stack |
+| O1 | +7.7 / +4.6, share of the 40 mm stack | +5.3 / +2.4, share of the 40 mm stack |
+| O3 | +8.4 / +5.1, share of the 40 mm stack | +6.0 / +2.9, share of the 40 mm stack |
+| O5 | +7.7 / +4.6, share of the 40 mm stack | +5.3 / +2.4, share of the 40 mm stack |
+| case (panel and walls) | +8.4 / +5.4, share of the 40 mm stack | +5.8 / +3.1, share of the 40 mm stack |
+
+## 9. Panel classes and trimmers: PTV09A-4020F-B103, PTV09A-4020F-B104 and PTV09A-4020F-B504 read EXCEEDED ON PAPER in both case depths; at 40 mm B3F-1020, APHHS1005QWF/D and APG1005SEC/E-T change from MET ON PAPER standing to another word lying
+
+One row per class of an exact part and board, from the retained facts (DS-104, DS-111). Only a fact whose verdict confirms its primary source makes a limit of record; an UNSOURCED range is printed for information, and its class reads NO LIMIT RETAINED and NOT SHOWN. The temperature is the board at the part: on a front board its mean (lateral rise NOT COMPUTED: the screen has no cell model of a front board); on K the mean plus the lateral rise of the hottest cell that holds a part of the class. The panel beside it is the case node, printed without a word. Best end to worst end; the row word is the worst word of the two orientations; the class word is the worst word of its rows. Counts and boards: `io-partition-exact-refs` and the partition assignment.
+
+| Exact part | Board | Count | Limit | Case | Standing, °C | Standing | Lying, °C | Lying | Panel beside it, °C | Lateral rise | Row word | Shift 40 against 120 mm, best / worst end, K |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| PTV09A-4020F-B103 | P | 51 | +50 °C, operating range (`fact-b103-operating-temperature`) | 40 mm | 58.5 to 68.5 | EXCEEDED ON PAPER | 62.8 to 75.1 | EXCEEDED ON PAPER | 49.7 to 63.0 | NOT COMPUTED | **EXCEEDED ON PAPER** | standing +1.3 / +2.5; lying panel-up +4.1 / +6.9, share of the 40 mm stack |
+| PTV09A-4020F-B103 | P | 51 | +50 °C, operating range (`fact-b103-operating-temperature`) | 120 mm | 57.2 to 66.0 | EXCEEDED ON PAPER | 58.8 to 68.2 | EXCEEDED ON PAPER | 47.4 to 54.6 | NOT COMPUTED | **EXCEEDED ON PAPER** | - |
+| PTV09A-4020F-B104 | P | 48 | +50 °C, operating range (`fact-b104-operating-temperature`) | 40 mm | 58.5 to 68.5 | EXCEEDED ON PAPER | 62.8 to 75.1 | EXCEEDED ON PAPER | 49.7 to 63.0 | NOT COMPUTED | **EXCEEDED ON PAPER** | standing +1.3 / +2.5; lying panel-up +4.1 / +6.9, share of the 40 mm stack |
+| PTV09A-4020F-B104 | P | 48 | +50 °C, operating range (`fact-b104-operating-temperature`) | 120 mm | 57.2 to 66.0 | EXCEEDED ON PAPER | 58.8 to 68.2 | EXCEEDED ON PAPER | 47.4 to 54.6 | NOT COMPUTED | **EXCEEDED ON PAPER** | - |
+| PTV09A-4020F-B504 | P | 2 | +50 °C, operating range (`fact-b504-operating-temperature`) | 40 mm | 58.5 to 68.5 | EXCEEDED ON PAPER | 62.8 to 75.1 | EXCEEDED ON PAPER | 49.7 to 63.0 | NOT COMPUTED | **EXCEEDED ON PAPER** | standing +1.3 / +2.5; lying panel-up +4.1 / +6.9, share of the 40 mm stack |
+| PTV09A-4020F-B504 | P | 2 | +50 °C, operating range (`fact-b504-operating-temperature`) | 120 mm | 57.2 to 66.0 | EXCEEDED ON PAPER | 58.8 to 68.2 | EXCEEDED ON PAPER | 47.4 to 54.6 | NOT COMPUTED | **EXCEEDED ON PAPER** | - |
+| B3F-1020 | P | 8 | +70 °C, operating range (`fact-b3f-operating-temperature`, at 60%RH max.) | 40 mm | 58.5 to 68.5 | MET ON PAPER | 62.8 to 75.1 | NOT SHOWN | 49.7 to 63.0 | NOT COMPUTED | **NOT SHOWN** | standing +1.3 / +2.5; lying panel-up +4.1 / +6.9, share of the 40 mm stack |
+| B3F-1020 | P | 8 | +70 °C, operating range (`fact-b3f-operating-temperature`, at 60%RH max.) | 120 mm | 57.2 to 66.0 | MET ON PAPER | 58.8 to 68.2 | MET ON PAPER | 47.4 to 54.6 | NOT COMPUTED | **MET ON PAPER** | - |
+| 2MS1T1B1M2QES-5 | P | 19 | NO LIMIT RETAINED; for information -40 to 85 °C (`fact-2ms1-operating-temperature`, UNSOURCED, third-party copy) | 40 mm | 58.5 to 68.5 | NOT SHOWN | 62.8 to 75.1 | NOT SHOWN | 49.7 to 63.0 | NOT COMPUTED | **NOT SHOWN** (for information against the UNSOURCED range: MET ON PAPER) | standing +1.3 / +2.5; lying panel-up +4.1 / +6.9, share of the 40 mm stack |
+| 2MS1T1B1M2QES-5 | P | 19 | NO LIMIT RETAINED; for information -40 to 85 °C (`fact-2ms1-operating-temperature`, UNSOURCED, third-party copy) | 120 mm | 57.2 to 66.0 | NOT SHOWN | 58.8 to 68.2 | NOT SHOWN | 47.4 to 54.6 | NOT COMPUTED | **NOT SHOWN** (for information against the UNSOURCED range: MET ON PAPER) | - |
+| 2MS3T1B1M2QES | P | 11 | NO LIMIT RETAINED; for information -40 to 85 °C (`fact-2ms3-operating-temperature`, UNSOURCED, third-party copy); for information -30 to 85 °C (`fact-2ms3-drawing-operating-temperature`, UNSOURCED, third-party copy) | 40 mm | 58.5 to 68.5 | NOT SHOWN | 62.8 to 75.1 | NOT SHOWN | 49.7 to 63.0 | NOT COMPUTED | **NOT SHOWN** (for information against the UNSOURCED range: MET ON PAPER) | standing +1.3 / +2.5; lying panel-up +4.1 / +6.9, share of the 40 mm stack |
+| 2MS3T1B1M2QES | P | 11 | NO LIMIT RETAINED; for information -40 to 85 °C (`fact-2ms3-operating-temperature`, UNSOURCED, third-party copy); for information -30 to 85 °C (`fact-2ms3-drawing-operating-temperature`, UNSOURCED, third-party copy) | 120 mm | 57.2 to 66.0 | NOT SHOWN | 58.8 to 68.2 | NOT SHOWN | 47.4 to 54.6 | NOT COMPUTED | **NOT SHOWN** (for information against the UNSOURCED range: MET ON PAPER) | - |
+| APHHS1005QWF/D | EL | 12 | +85 °C, absolute maximum (`fact-kingbright-white-operating-temperature`); junction maximum 115 °C listed, not compared (`fact-kingbright-white-junction-temperature`) | 40 mm | 53.6 to 61.3 | MET ON PAPER | 58.1 to 68.1 | MET ON PAPER | 49.7 to 63.0 | NOT COMPUTED | **MET ON PAPER** | standing +2.0 / +3.5; lying panel-up +5.0 / +8.1, share of the 40 mm stack |
+| APHHS1005QWF/D | EL | 12 | +85 °C, absolute maximum (`fact-kingbright-white-operating-temperature`); junction maximum 115 °C listed, not compared (`fact-kingbright-white-junction-temperature`) | 120 mm | 51.6 to 57.8 | MET ON PAPER | 53.1 to 60.1 | MET ON PAPER | 47.4 to 54.6 | NOT COMPUTED | **MET ON PAPER** | - |
+| APHHS1005QWF/D | JL | 41 | +85 °C, absolute maximum (`fact-kingbright-white-operating-temperature`); junction maximum 115 °C listed, not compared (`fact-kingbright-white-junction-temperature`) | 40 mm | 64.8 to 78.4 | MET ON PAPER | 69.0 to 84.6 | MET ON PAPER | 49.7 to 63.0 | NOT COMPUTED | **MET ON PAPER** | standing +1.3 / +1.6; lying panel-up +3.9 / +5.7, share of the 40 mm stack |
+| APHHS1005QWF/D | JL | 41 | +85 °C, absolute maximum (`fact-kingbright-white-operating-temperature`); junction maximum 115 °C listed, not compared (`fact-kingbright-white-junction-temperature`) | 120 mm | 63.5 to 76.8 | MET ON PAPER | 65.1 to 78.9 | MET ON PAPER | 47.4 to 54.6 | NOT COMPUTED | **MET ON PAPER** | - |
+| APHHS1005QWF/D | JR | 51 | +85 °C, absolute maximum (`fact-kingbright-white-operating-temperature`); junction maximum 115 °C listed, not compared (`fact-kingbright-white-junction-temperature`) | 40 mm | 67.4 to 81.1 | MET ON PAPER | 71.5 to 87.2 | NOT SHOWN | 49.7 to 63.0 | NOT COMPUTED | **NOT SHOWN** | standing +1.3 / +1.4; lying panel-up +3.8 / +5.4, share of the 40 mm stack |
+| APHHS1005QWF/D | JR | 51 | +85 °C, absolute maximum (`fact-kingbright-white-operating-temperature`); junction maximum 115 °C listed, not compared (`fact-kingbright-white-junction-temperature`) | 120 mm | 66.1 to 79.8 | MET ON PAPER | 67.7 to 81.8 | MET ON PAPER | 47.4 to 54.6 | NOT COMPUTED | **MET ON PAPER** | - |
+| APG1005SEC/E-T | JL | 2 | +85 °C, absolute maximum (`fact-kingbright-red-operating-temperature`); junction maximum 115 °C listed, not compared (`fact-kingbright-red-junction-temperature`) | 40 mm | 64.8 to 78.4 | MET ON PAPER | 69.0 to 84.6 | MET ON PAPER | 49.7 to 63.0 | NOT COMPUTED | **MET ON PAPER** | standing +1.3 / +1.6; lying panel-up +3.9 / +5.7, share of the 40 mm stack |
+| APG1005SEC/E-T | JL | 2 | +85 °C, absolute maximum (`fact-kingbright-red-operating-temperature`); junction maximum 115 °C listed, not compared (`fact-kingbright-red-junction-temperature`) | 120 mm | 63.5 to 76.8 | MET ON PAPER | 65.1 to 78.9 | MET ON PAPER | 47.4 to 54.6 | NOT COMPUTED | **MET ON PAPER** | - |
+| APG1005SEC/E-T | JR | 8 | +85 °C, absolute maximum (`fact-kingbright-red-operating-temperature`); junction maximum 115 °C listed, not compared (`fact-kingbright-red-junction-temperature`) | 40 mm | 67.4 to 81.1 | MET ON PAPER | 71.5 to 87.2 | NOT SHOWN | 49.7 to 63.0 | NOT COMPUTED | **NOT SHOWN** | standing +1.3 / +1.4; lying panel-up +3.8 / +5.4, share of the 40 mm stack |
+| APG1005SEC/E-T | JR | 8 | +85 °C, absolute maximum (`fact-kingbright-red-operating-temperature`); junction maximum 115 °C listed, not compared (`fact-kingbright-red-junction-temperature`) | 120 mm | 66.1 to 79.8 | MET ON PAPER | 67.7 to 81.8 | MET ON PAPER | 47.4 to 54.6 | NOT COMPUTED | **MET ON PAPER** | - |
+| TC33X-2-203E | K | 5 | +100 °C, operating range (`fact-trim-203-operating-temperature`) | 40 mm | 73.5 to 88.7 | MET ON PAPER | 77.6 to 94.6 | MET ON PAPER | 49.7 to 63.0 | +8.8 K, RVO1309 | **MET ON PAPER** | standing -0.0 / -2.2; lying panel-up +2.0 / +1.9 |
+| TC33X-2-203E | K | 5 | +100 °C, operating range (`fact-trim-203-operating-temperature`) | 120 mm | 73.5 to 90.9 | MET ON PAPER | 75.7 to 92.7 | MET ON PAPER | 47.4 to 54.6 | +9.9 K, RVO1309 | **MET ON PAPER** | - |
+| TC33X-2-503E | K | 15 | +100 °C, operating range (`fact-trim-503-operating-temperature`) | 40 mm | 68.4 to 82.7 | MET ON PAPER | 72.6 to 88.7 | MET ON PAPER | 49.7 to 63.0 | +2.9 K, RV2308 | **MET ON PAPER** | standing +0.2 / -1.7; lying panel-up +2.3 / +2.4 |
+| TC33X-2-503E | K | 15 | +100 °C, operating range (`fact-trim-503-operating-temperature`) | 120 mm | 68.3 to 84.4 | MET ON PAPER | 70.4 to 86.3 | MET ON PAPER | 47.4 to 54.6 | +3.5 K, RV2308 | **MET ON PAPER** | - |
+| TC33X-2-504E | K | 3 | +100 °C, operating range (`fact-trim-504-operating-temperature`) | 40 mm | 68.4 to 82.7 | MET ON PAPER | 72.6 to 88.7 | MET ON PAPER | 49.7 to 63.0 | +2.9 K, RV2313 | **MET ON PAPER** | standing +0.2 / -1.7; lying panel-up +2.3 / +2.4 |
+| TC33X-2-504E | K | 3 | +100 °C, operating range (`fact-trim-504-operating-temperature`) | 120 mm | 68.3 to 84.4 | MET ON PAPER | 70.4 to 86.3 | MET ON PAPER | 47.4 to 54.6 | +3.5 K, RV2313 | **MET ON PAPER** | - |
+| TC33X-2-102E | K | 21 | +100 °C, operating range (`fact-trim-102-operating-temperature`) | 40 mm | 73.5 to 88.7 | MET ON PAPER | 77.6 to 94.6 | MET ON PAPER | 49.7 to 63.0 | +8.8 K, RVO1408 | **MET ON PAPER** | standing -0.0 / -2.2; lying panel-up +2.0 / +1.9 |
+| TC33X-2-102E | K | 21 | +100 °C, operating range (`fact-trim-102-operating-temperature`) | 120 mm | 73.5 to 90.9 | MET ON PAPER | 75.7 to 92.7 | MET ON PAPER | 47.4 to 54.6 | +9.9 K, RVO1408 | **MET ON PAPER** | - |
+| TC33X-2-103E | K | 56 | +100 °C, operating range (`fact-trim-103-operating-temperature`) | 40 mm | 73.5 to 88.7 | MET ON PAPER | 77.6 to 94.6 | MET ON PAPER | 49.7 to 63.0 | +8.8 K, RVO1407 | **MET ON PAPER** | standing -0.0 / -2.2; lying panel-up +2.0 / +1.9 |
+| TC33X-2-103E | K | 56 | +100 °C, operating range (`fact-trim-103-operating-temperature`) | 120 mm | 73.5 to 90.9 | MET ON PAPER | 75.7 to 92.7 | MET ON PAPER | 47.4 to 54.6 | +9.9 K, RVO1407 | **MET ON PAPER** | - |
+| SRBV160803 | O1 | 1 | NO LIMIT RETAINED | 40 mm | 58.4 to 68.8 | NOT SHOWN | 63.0 to 75.3 | NOT SHOWN | 49.7 to 63.0 | NOT COMPUTED | **NOT SHOWN** | standing +1.6 / +3.4; lying panel-up +4.6 / +7.7, share of the 40 mm stack |
+| SRBV160803 | O1 | 1 | NO LIMIT RETAINED | 120 mm | 56.9 to 65.4 | NOT SHOWN | 58.4 to 67.6 | NOT SHOWN | 47.4 to 54.6 | NOT COMPUTED | **NOT SHOWN** | - |
+| SRBV160803 | O2 | 1 | NO LIMIT RETAINED | 40 mm | no plane of the 40 mm stack | - | - | - | - | - | - | - |
+| SRBV160803 | O2 | 1 | NO LIMIT RETAINED | 120 mm | 58.3 to 68.6 | NOT SHOWN | 60.1 to 70.7 | NOT SHOWN | 47.4 to 54.6 | NOT COMPUTED | **NOT SHOWN** | - |
+| SRBV160803 | O3 | 1 | NO LIMIT RETAINED | 40 mm | 58.4 to 68.8 | NOT SHOWN | 63.0 to 75.3 | NOT SHOWN | 49.7 to 63.0 | NOT COMPUTED | **NOT SHOWN** | standing +2.1 / +4.1; lying panel-up +5.1 / +8.4, share of the 40 mm stack |
+| SRBV160803 | O3 | 1 | NO LIMIT RETAINED | 120 mm | 56.4 to 64.8 | NOT SHOWN | 57.9 to 66.9 | NOT SHOWN | 47.4 to 54.6 | NOT COMPUTED | **NOT SHOWN** | - |
+| SRBV160803 | O4 | 1 | NO LIMIT RETAINED | 40 mm | no plane of the 40 mm stack | - | - | - | - | - | - | - |
+| SRBV160803 | O4 | 1 | NO LIMIT RETAINED | 120 mm | 58.3 to 68.6 | NOT SHOWN | 60.1 to 70.7 | NOT SHOWN | 47.4 to 54.6 | NOT COMPUTED | **NOT SHOWN** | - |
+| SRBV160803 | O5 | 1 | NO LIMIT RETAINED | 40 mm | 58.4 to 68.8 | NOT SHOWN | 63.0 to 75.3 | NOT SHOWN | 49.7 to 63.0 | NOT COMPUTED | **NOT SHOWN** | standing +1.6 / +3.4; lying panel-up +4.6 / +7.7, share of the 40 mm stack |
+| SRBV160803 | O5 | 1 | NO LIMIT RETAINED | 120 mm | 56.9 to 65.4 | NOT SHOWN | 58.4 to 67.6 | NOT SHOWN | 47.4 to 54.6 | NOT COMPUTED | **NOT SHOWN** | - |
+| WQP518MA | JL | 100 | NO LIMIT RETAINED | 40 mm | 64.8 to 78.4 | NOT SHOWN | 69.0 to 84.6 | NOT SHOWN | 49.7 to 63.0 | NOT COMPUTED | **NOT SHOWN** | standing +1.3 / +1.6; lying panel-up +3.9 / +5.7, share of the 40 mm stack |
+| WQP518MA | JL | 100 | NO LIMIT RETAINED | 120 mm | 63.5 to 76.8 | NOT SHOWN | 65.1 to 78.9 | NOT SHOWN | 47.4 to 54.6 | NOT COMPUTED | **NOT SHOWN** | - |
+| WQP518MA | JR | 80 | NO LIMIT RETAINED | 40 mm | 67.4 to 81.1 | NOT SHOWN | 71.5 to 87.2 | NOT SHOWN | 49.7 to 63.0 | NOT COMPUTED | **NOT SHOWN** | standing +1.3 / +1.4; lying panel-up +3.8 / +5.4, share of the 40 mm stack |
+| WQP518MA | JR | 80 | NO LIMIT RETAINED | 120 mm | 66.1 to 79.8 | NOT SHOWN | 67.7 to 81.8 | NOT SHOWN | 47.4 to 54.6 | NOT COMPUTED | **NOT SHOWN** | - |
+
+| Exact part | Class word, 40 mm | Class word, 120 mm |
+| --- | --- | --- |
+| PTV09A-4020F-B103 | EXCEEDED ON PAPER | EXCEEDED ON PAPER |
+| PTV09A-4020F-B104 | EXCEEDED ON PAPER | EXCEEDED ON PAPER |
+| PTV09A-4020F-B504 | EXCEEDED ON PAPER | EXCEEDED ON PAPER |
+| B3F-1020 | NOT SHOWN | MET ON PAPER |
+| 2MS1T1B1M2QES-5 | NOT SHOWN | NOT SHOWN |
+| 2MS3T1B1M2QES | NOT SHOWN | NOT SHOWN |
+| APHHS1005QWF/D | NOT SHOWN | MET ON PAPER |
+| APG1005SEC/E-T | NOT SHOWN | MET ON PAPER |
+| TC33X-2-203E | MET ON PAPER | MET ON PAPER |
+| TC33X-2-503E | MET ON PAPER | MET ON PAPER |
+| TC33X-2-504E | MET ON PAPER | MET ON PAPER |
+| TC33X-2-102E | MET ON PAPER | MET ON PAPER |
+| TC33X-2-103E | MET ON PAPER | MET ON PAPER |
+| SRBV160803 | NOT SHOWN | NOT SHOWN |
+| WQP518MA | NOT SHOWN | NOT SHOWN |
+
+### Second row of the pots: derating curve, outside the printed operating range; the power condition reads not shown, because 101 of 101 pots are NOT COMPUTED
+
+No word of record (DS-103). The board at the part against 70 °C, the end of the curve (`fact-b103-derating`), with the power condition: the largest dissipation of a pot against 0.05 W (`fact-b103-power-rating`) times the ratio of the curve at that temperature (1.0 up to its full-power ambient, a straight line to its end, no figure beyond). The power of a pot is taken from the control netlist (`control-netlist-pot-ends`): the voltage between the two end pins where both nets carry a retained voltage (a rail of `ledger-case-envelope` or ground), squared, over the resistance less 20 %. A pot with a signal net at an end is NOT COMPUTED. Largest computed: none. 101 NOT COMPUTED: 81 have ground at one end and a signal net at the other, the rest a signal net at both ends; no end pin of a pot is on a rail.
+
+| Pots | Case | Orientation | Board at the part, best to worst, °C | Curve ratio at the worst end | Allowed per pot at the worst end, mW | Reading |
+| --- | --- | --- | --- | --- | --- | --- |
+| PTV09A-4020F-B103, PTV09A-4020F-B104 and PTV09A-4020F-B504 on P | 40 mm | standing | 58.5 to 68.5 | 0.38 | 18.9 | not shown |
+| PTV09A-4020F-B103, PTV09A-4020F-B104 and PTV09A-4020F-B504 on P | 40 mm | lying panel-up | 62.8 to 75.1 | no figure beyond the curve | - | not shown |
+| PTV09A-4020F-B103, PTV09A-4020F-B104 and PTV09A-4020F-B504 on P | 120 mm | standing | 57.2 to 66.0 | 0.46 | 23.2 | not shown |
+| PTV09A-4020F-B103, PTV09A-4020F-B104 and PTV09A-4020F-B504 on P | 120 mm | lying panel-up | 58.8 to 68.2 | 0.39 | 19.6 | not shown |
+
+## 10. Ambient at the limit: the pots read their +50 °C at an ambient down to 9.0 °C at the worst end
+
+Per class with a limit of record, the ambient at which the best end and the worst end read the limit, found by running the network at each trial ambient (search -20 to 80 °C; DS-106 point 7), not by a linear shift. Each cell: best end / worst end, °C.
+
+| Exact part | Board | Limit, °C | 40 mm standing | 40 mm lying | 120 mm standing | 120 mm lying |
+| --- | --- | --- | --- | --- | --- | --- |
+| CL10A105KB8NNNC | K | 85 | 59.4 / 42.9 | 54.9 / 35.1 | 59.7 / 40.8 | 57.7 / 38.2 |
+| SN74HC14DR | K | 85 | 53.7 / 35.2 | 49.0 / 27.0 | 53.8 / 31.9 | 51.5 / 29.2 |
+| SN74HC74DR | K | 85 | 59.4 / 42.9 | 54.9 / 35.1 | 59.7 / 40.8 | 57.7 / 38.2 |
+| PTV09A-4020F-B103 | P | 50 | 30.5 / 17.9 | 25.4 / 9.0 | 32.0 / 21.2 | 30.1 / 18.4 |
+| PTV09A-4020F-B104 | P | 50 | 30.5 / 17.9 | 25.4 / 9.0 | 32.0 / 21.2 | 30.1 / 18.4 |
+| PTV09A-4020F-B504 | P | 50 | 30.5 / 17.9 | 25.4 / 9.0 | 32.0 / 21.2 | 30.1 / 18.4 |
+| B3F-1020 | P | 70 | 52.7 / 41.7 | 48.1 / 33.8 | 54.1 / 44.6 | 52.5 / 42.1 |
+| APHHS1005QWF/D | EL | 85 | 73.5 / 66.5 | 69.3 / 59.5 | 75.3 / 69.8 | 74.0 / 67.6 |
+| APHHS1005QWF/D | JL | 85 | 63.1 / 48.2 | 58.7 / 40.5 | 64.5 / 50.1 | 62.9 / 47.7 |
+| APHHS1005QWF/D | JR | 85 | 60.6 / 44.9 | 56.1 / 37.1 | 62.0 / 46.6 | 60.3 / 44.2 |
+| APG1005SEC/E-T | JL | 85 | 63.1 / 48.2 | 58.7 / 40.5 | 64.5 / 50.1 | 62.9 / 47.7 |
+| APG1005SEC/E-T | JR | 85 | 60.6 / 44.9 | 56.1 / 37.1 | 62.0 / 46.6 | 60.3 / 44.2 |
+| TC33X-2-203E | K | 100 | 71.3 / 54.6 | 67.0 / 47.2 | 71.5 / 52.3 | 69.6 / 49.9 |
+| TC33X-2-503E | K | 100 | 76.8 / 61.9 | 72.6 / 54.8 | 77.2 / 60.5 | 75.4 / 58.2 |
+| TC33X-2-504E | K | 100 | 76.8 / 61.9 | 72.6 / 54.8 | 77.2 / 60.5 | 75.4 / 58.2 |
+| TC33X-2-102E | K | 100 | 71.3 / 54.6 | 67.0 / 47.2 | 71.5 / 52.3 | 69.6 / 49.9 |
+| TC33X-2-103E | K | 100 | 71.3 / 54.6 | 67.0 / 47.2 | 71.5 / 52.3 | 69.6 / 49.9 |
+
 ## Evidence is needed for 17 exact parts before any junction temperature can be stated; 14 of them have no retained operating range
 
 The thermal evidence of the exact parts is a task of the component evidence workflow outside this campaign (DS-98): the operating temperature range first, then thermal resistance and junction maximum.
@@ -213,7 +351,7 @@ The thermal evidence of the exact parts is a task of the component evidence work
 | APHHS1005QWF/D and APG1005SEC/E-T (Kingbright) | not surveyed for a range | Current derating with temperature and Tj max are not in the bundles |
 | The 5600 Ohm magnitude sense, 1200 Ohm stage and 22.1 kOhm clip resistors | exact identity UNSELECTED | Power curve and size |
 
-## 31 terms are ASSUMED or UNSOURCED; every other term is SOURCED with its pin or DERIVED
+## 33 terms are ASSUMED or UNSOURCED; every other term is SOURCED with its pin or DERIVED
 
 | Term | Value | Unit | Status | Reason or source |
 | --- | --- | --- | --- | --- |
@@ -248,6 +386,8 @@ The thermal evidence of the exact parts is a task of the component evidence work
 | brass_k | [100.0, 120.0] | W/mK | ASSUMED | CW614N conductivity not retained |
 | soak_proposal | 2 h and until every sensor changes by less than 0.5 K in 30 min | rule | ASSUMED | proposal for #64; no retained test standard |
 | h_conv_feet | [4.0, 8.0] | W/m2K | ASSUMED | pin decision-DS-96: the resting face of a case on feet carries 4 to 8 W/m2K in place of nothing; radiation from it is still dropped |
+| plan_compare_decimals | 2 | decimals | ASSUMED | the plan figures are compared with the screen at the printed decimals of the row or at this many, whichever is finer, so that a figure printed as 35 W cannot read as reproducing 35.41 W |
+| ambient_search_C | [-20.0, 80.0] | degC | ASSUMED | search interval of the ambient at which a class reads its limit; the network is run at each trial ambient (DS-106 point 7) |
 
 ## Checks run and NOT RUN
 
