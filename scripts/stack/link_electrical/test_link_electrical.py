@@ -272,11 +272,47 @@ class AttemptA4(unittest.TestCase):
         nets = {s['net'].split('/')[-1] for s in extra}
         self.assertEqual(nets, {'OCT_SELECTED'} | {f'OSC_OCT{i}' for i in range(6)})
 
-    def test_static_adapter_link_is_8_circuits_with_one_ground(self):
-        a = self.tab['adapter_link']
-        self.assertEqual((a['flat_8']['circuits'], a['flat_8']['grounds']), (8, 1))
-        self.assertEqual((a['flat_14']['circuits'], a['flat_14']['grounds']), (14, 7))
-        self.assertLess(a['flat_14']['peak_V'], a['flat_8']['peak_V'])
+    def test_static_adapter_orders_are_8_circuits_with_one_ground(self):
+        o = self.d.ADAPTER_ORDERS
+        self.assertEqual(o['ds79']['order'], [f'OSC_OCT{i}' for i in range(6)] + ['AGND', 'OCT_SELECTED'])
+        self.assertEqual((len(o['ds79']['order']), o['ds79']['order'].count('AGND')), (8, 1))
+        self.assertEqual(o['alternating_14']['order'].count('AGND'), 7)
+
+    # review of 2026-11-14 23:18 UTC: each test fails on the code of part 1
+    def test_finding_1_adapter_step_per_cable_in_use_and_at_one_length(self):
+        ad = self.tab['adapter_link']
+        got = {(c['name'], c['cable'], c['length_mm']) for c in ad['cases']}
+        for cab in ('C81339', 'C29534'):
+            for name in ('ds79', 'part_1'):
+                self.assertTrue(any(g[:2] == (name, cab) for g in got), (name, cab))
+        c8 = self.d.adapter_case(ad, 'part_1', 'C29534')
+        c14 = self.d.adapter_case(ad, 'alternating_14', 'C68390')
+        self.assertEqual(c8['length_mm'], c14['length_mm'])
+        self.assertLess(c14['peak_V'], c8['peak_V'])
+
+    def test_finding_2_static_victim_uses_precision_terms(self):
+        par = {'Cm_F': 1e-13, 'Cv_total_F': 5e-12, 'M_eff_H': 1e-9}
+        self.assertEqual(self.d.pair_level(par, 'ANALOGUE', 'STATIC', self.inp),
+                         self.d.pair_level(par, 'ANALOGUE', 'PRECISION', self.inp))
+        with self.assertRaises(self.d.NoVictimTerms):
+            self.d.victim_terms('UNKNOWN')
+
+    def test_finding_3_placements_take_both_directions(self):
+        for how in (self.d.ONE, self.d.SIDE):
+            pl = {(w, tuple(win), a, v) for w, win, a, v in self.d.placements(14, how, 40)}
+            for w, win, a, v in pl:
+                self.assertIn((w, win, v, a), pl)
+
+    def test_finding_4_split_follows_the_list(self):
+        orig = le.classified_signals
+        try:
+            le.classified_signals = lambda inp, root=le.ROOT: orig(inp, root)[10:]
+            link, adapter = self.d.split_signals(self.inp)
+        finally:
+            le.classified_signals = orig
+        self.assertEqual(len(link), 480)
+        self.assertEqual(len(adapter), 21)
+        self.assertEqual({x['class'] for x in adapter}, {'STATIC'})
 
     def test_logic_and_wiper_never_share_a_cable(self):
         base = {k: {'aggressor_class': k.split('>')[0], 'victim': k.split('>')[1]}

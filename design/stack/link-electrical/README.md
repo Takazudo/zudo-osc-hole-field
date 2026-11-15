@@ -228,20 +228,24 @@ From the retained schematic specification (`inputs.json` → `ds62.adapter_evide
 
 Class for DS-62: STATIC for all 21 adapter signals (`inputs.json` → `classes_adapter`, beside the unchanged `classes.rules`). STATIC exerts nothing while the instrument plays, so two static lines need no ground between them; as victims they are PRECISION, because they set the pitch.
 
-| Outcome | Circuits | Order (circuit 1 first) | Grounds | Cable length, mm |
-| --- | --- | --- | --- | --- |
-| static (this result) | 8 | OCT_SELECTED, OSC_OCT0, OSC_OCT1, OSC_OCT2, OSC_OCT3, OSC_OCT4, OSC_OCT5, AGND | 1 | 40 |
-| analogue | 14 | OCT_SELECTED, AGND, OSC_OCT0, AGND, OSC_OCT1, AGND, OSC_OCT2, AGND, OSC_OCT3, AGND, OSC_OCT4, AGND, OSC_OCT5, AGND | 7 | 50 |
+| Order | Circuits | Order (circuit 1 first) | Grounds |
+| --- | --- | --- | --- |
+| part 1 order | 8 | OCT_SELECTED, OSC_OCT0, OSC_OCT1, OSC_OCT2, OSC_OCT3, OSC_OCT4, OSC_OCT5, AGND | 1 |
+| DS-79 order | 8 | OSC_OCT0, OSC_OCT1, OSC_OCT2, OSC_OCT3, OSC_OCT4, OSC_OCT5, AGND, OCT_SELECTED | 1 |
+| 14 circuits, a ground after each line | 14 | OCT_SELECTED, AGND, OSC_OCT0, AGND, OSC_OCT1, AGND, OSC_OCT2, AGND, OSC_OCT3, AGND, OSC_OCT4, AGND, OSC_OCT5, AGND | 7 |
 
-### Turning the selector by one step couples at most 100 mV for nanoseconds into a neighbouring tap on 8 circuits; behind the receiver filter that is 3.36 µV
+### One selector step couples 25.3 mV peak and 0.74 µV filtered into the worst tap on the DS-79 order at 40 mm (30.3 mV and 0.887 µV on the 50 mm fallback); it stays outside the criterion
 
-A step of 1 V on OCT_SELECTED with a 5 ns edge into the 1000 Ω receiver (terms in `inputs.json` → `ds62.selector_step`), victim the neighbouring tap at the PRECISION impedance. The filtered figure is the spike's area over the receiver's 100 µs filter (V·R·Cm + M·ΔI, DERIVED), i.e. what reaches OCT_CV of an oscillator whose selector sits on the struck tap. It happens only during a hand turn, when the pitch changes by an octave anyway, so it does not enter the DS-62 criterion, which compares coupling while the instrument plays.
+A step of 1 V on OCT_SELECTED with a 5 ns edge into the 1000 Ω receiver (terms in `inputs.json` → `ds62.selector_step`), victim every tap at the PRECISION impedance and the worst one shown, every conductor of the cable in the solve. The filtered figure is the spike's area over the receiver's 100 µs filter (V·R·Cm + M·ΔI, DERIVED), i.e. what reaches OCT_CV of an oscillator whose selector sits on the struck tap. It happens only during a hand turn, when the pitch changes by an octave anyway, so it does not enter the DS-62 criterion (DS-79). Each order is computed on every cable in use for its size, so 8 and 14 circuits compare at the same 50 mm.
 
-| Path | Length, mm | Peak, mV | Filtered, µV | Ratio to the quietest present adapter harness (peak / filtered) |
-| --- | --- | --- | --- | --- |
-| Flat 8 circuits | 40 | 100 | 3.36 | 5.07 / 4.04 |
-| Flat 14 circuits | 50 | 13.7 | 0.577 | 0.69 / 0.69 |
-| Present harness K-O2-1 (one ground between) | 66 | 19.8 | 0.831 | 1 |
+| Order | Cable | Length, mm | Worst tap (position) | Peak, mV | Filtered, µV | Ratio to the quietest present adapter harness (peak / filtered) |
+| --- | --- | --- | --- | --- | --- | --- |
+| part 1 order | C81339 | 40 | OSC_OCT0 (2) | 100 | 3.36 | 5.07 / 4.04 |
+| part 1 order | C29534 | 50 | OSC_OCT0 (2) | 120 | 4.04 | 6.09 / 4.86 |
+| DS-79 order | C81339 | 40 | OSC_OCT0 (1) | 25.3 | 0.74 | 1.28 / 0.89 |
+| DS-79 order | C29534 | 50 | OSC_OCT0 (1) | 30.3 | 0.887 | 1.53 / 1.07 |
+| 14 circuits, a ground after each line | C68390 | 50 | OSC_OCT0 (3) | 13.7 | 0.577 | 0.69 / 0.69 |
+| Present harness K-O2-1 (one ground between) | loom | 66 | | 19.8 | 0.831 | 1 |
 
 ## DS-62 at the lengths in use (NEEDS_DESIGN): the largest ratio is 0.90 at 40 mm, 1.08 at 50 mm, 1.17 at 60 mm; 3 pair-and-cable rows are above 1.0
 
@@ -254,14 +258,14 @@ Reference changes against attempt a3: ANALOGUE>ANALOGUE 0.923 → 1.12 mV.
 | ANALOGUE>ANALOGUE | across one ground | 0.77 (-2.3 dB) | 0.83 (-1.6 dB) | 0.86 (-1.3 dB) | 0.92 (-0.7 dB) | 0.98 (-0.2 dB) |
 | ANALOGUE>LOGIC | across one ground | 0.24 (-12.5 dB) | 0.26 (-11.9 dB) | 0.27 (-11.5 dB) | 0.28 (-10.9 dB) | 0.30 (-10.4 dB) |
 | ANALOGUE>PRECISION | across one ground | 0.77 (-2.3 dB) | 0.83 (-1.6 dB) | 0.86 (-1.3 dB) | 0.92 (-0.7 dB) | 0.98 (-0.2 dB) |
-| ANALOGUE>WIPER | across one ground | 0.25 (-12.1 dB) | 0.27 (-11.4 dB) | 0.28 (-11.1 dB) | 0.30 (-10.6 dB) | 0.31 (-10.1 dB) |
-| LOGIC>ANALOGUE | across one ground | 0.20 (-13.8 dB) | 0.22 (-13.3 dB) | 0.23 (-12.9 dB) | 0.24 (-12.2 dB) | 0.25 (-11.9 dB) |
+| ANALOGUE>WIPER | across one ground | 0.25 (-12.0 dB) | 0.27 (-11.4 dB) | 0.28 (-11.0 dB) | 0.30 (-10.5 dB) | 0.32 (-10.0 dB) |
+| LOGIC>ANALOGUE | across one ground | 0.20 (-13.8 dB) | 0.22 (-13.3 dB) | 0.23 (-12.8 dB) | 0.25 (-12.2 dB) | 0.26 (-11.8 dB) |
 | LOGIC>LOGIC | side by side | 0.90 (-0.9 dB) | 0.99 (-0.1 dB) | 1.03 (+0.2 dB) | 1.08 (+0.7 dB) | 1.17 (+1.3 dB) |
-| LOGIC>PRECISION | across one ground | 0.20 (-13.8 dB) | 0.22 (-13.3 dB) | 0.23 (-12.9 dB) | 0.24 (-12.2 dB) | 0.25 (-11.9 dB) |
+| LOGIC>PRECISION | across one ground | 0.20 (-13.8 dB) | 0.22 (-13.3 dB) | 0.23 (-12.8 dB) | 0.25 (-12.2 dB) | 0.26 (-11.8 dB) |
 | PRECISION>ANALOGUE | across one ground | 0.77 (-2.3 dB) | 0.83 (-1.6 dB) | 0.86 (-1.3 dB) | 0.92 (-0.7 dB) | 0.98 (-0.2 dB) |
 | PRECISION>LOGIC | across one ground | 0.24 (-12.5 dB) | 0.26 (-11.9 dB) | 0.27 (-11.5 dB) | 0.28 (-10.9 dB) | 0.30 (-10.4 dB) |
 | PRECISION>PRECISION | across one ground | 0.77 (-2.3 dB) | 0.83 (-1.6 dB) | 0.86 (-1.3 dB) | 0.92 (-0.7 dB) | 0.98 (-0.2 dB) |
-| PRECISION>WIPER | across one ground | 0.25 (-12.1 dB) | 0.27 (-11.4 dB) | 0.28 (-11.1 dB) | 0.30 (-10.6 dB) | 0.31 (-10.1 dB) |
+| PRECISION>WIPER | across one ground | 0.25 (-12.0 dB) | 0.27 (-11.4 dB) | 0.28 (-11.0 dB) | 0.30 (-10.5 dB) | 0.32 (-10.0 dB) |
 
 Rows above 1.0, with the ratio at the cable edge and in the middle of the link:
 
