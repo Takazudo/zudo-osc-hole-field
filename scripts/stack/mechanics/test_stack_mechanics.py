@@ -518,7 +518,7 @@ class TestAttemptA6(Base):
         close = sorted(round(geo.dist(site, f['xy']), 2) for f in fx if f['id'] != 'ALT-L2-A' and geo.dist(site, f['xy']) < 70)
         self.assertEqual(close, [67.0, 69.0, 69.25])
         self.assertTrue(math.isclose(self.a.movement('a1')['max']['w'], 0.641, abs_tol=0.005))
-        for key, _ in self.m6.SETS:
+        for key, _, _ in self.a.comparison_sets():
             self.assertTrue(self.a.passes(self.a.movement(key)), key)
         ruled, plus = self.ruled, self.a.movement('ruled_plus_SLV-R1')
         self.assertIn(f"from {ruled['above_rows_max']['w']:.2f} to {plus['above_rows_max']['w']:.2f} mm", self.readme)
@@ -536,7 +536,10 @@ class TestAttemptA6(Base):
         comp = gr.point_compliance([sel[i] for i in sample])
         for i, cval in zip(sample, comp):
             self.assertTrue(math.isclose(mp['nodes'][i][2], cval, abs_tol=1e-5), mp['nodes'][i])
-        regions = self.m6.map_regions(mp['nodes'], mp['inputs']['map_pitch_mm'], [(t['mm_per_N'], t['rule']) for t in mp['thresholds']])
+        origin = (min(v[0] for v in mp['inputs']['k_outline']), min(v[1] for v in mp['inputs']['k_outline']))
+        regions = self.m6.map_regions(mp['nodes'], mp['inputs']['map_pitch_mm'], origin, [(t['mm_per_N'], t['rule']) for t in mp['thresholds']])
+        self.assertTrue(self.m6.map_is_current(self.a, mp))
+        self.assertEqual([(k['name'], k['xy']) for k in mp['corners']], [(n, xy) for n, xy in self.a.map_corner_names()])
         self.assertEqual(json.loads(json.dumps(regions)), mp['thresholds'])
         names = {k['name']: k['mm_per_N'] for k in mp['corners']}
         self.assertIsNotNone(names['notch corner'])
@@ -590,6 +593,121 @@ class TestAttemptA6(Base):
         self.assertTrue(math.isclose(area, reference, abs_tol=0.1))
         square = self.m5.annulus_area(outer, inner, (0.0, 0.0), [((-d, -10.0), (-d, 10.0)), ((-10.0, -d), (10.0, -d))])
         self.assertGreater(area - square, 0.3)
+
+
+
+class TestAttemptA7(Base):
+    """Corrections after the independent code review of the a6 code (DS-89); each test fails on the a6 code."""
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        import stack_mechanics_a5 as a5mod
+        import stack_mechanics_a6 as a6mod
+        cls.m5, cls.m6 = a5mod, a6mod
+        cls.a = a6mod.A6(cls.c)
+
+    def variant(self, edit):
+        data = json.loads(json.dumps(self.data))
+        edit(data)
+        return sm.Calc(data)
+
+    def test_f1_corners_keyed_by_coordinates(self):
+        labels = [n for n, _ in self.a.corners()]
+        self.assertEqual(len(set(labels)), len(labels))
+        xy = (314.0, 246.0)
+        self.assertTrue(math.isclose(self.a.push_at('a1', xy), 1.113, abs_tol=0.001))
+        self.assertIn('| notch corner on the right edge | (314, 246) | 1.118 | 1.113 |', self.m6.render_a6_compliance(self.c))
+
+    def test_f2_grid_heading_and_labels_are_computed(self):
+        tight = self.variant(lambda d: d['parameters']['a6']['movement_limit_mm'].update(value=0.7))
+        self.assertIn('only the 2 mm grid within 0.7 mm', self.m6.render_a6_grids(tight))
+        self.assertIn('both within 1.4 mm', self.m6.render_a6_grids(self.c))
+        strips = self.m6.dropped_strips(self.a.outline, 4.0)
+        self.assertEqual(strips, ['x = 312 to 314 for y = 8 to 246', 'y = 244 to 246 for x = 258 to 314', 'x = 256 to 258 for y = 246 to 292'])
+        self.assertEqual(self.m6.dropped_strips(self.a.outline, 2.0), [])
+
+    def test_f3_lattice_area_follows_the_grid_origin(self):
+        nodes = [[1.0 + 4 * i, 1.0 + 4 * j, 2.0] for i in range(3) for j in range(3)]
+        t = self.m6.map_regions(nodes, 4.0, (1.0, 1.0), [(1.0, 'test')])[0]
+        self.assertEqual(t['area_mm2_approx'], 9 * 16.0)
+        self.assertEqual(self.m6.map_regions(nodes, 4.0, (0.0, 0.0), [(1.0, 'test')])[0]['area_mm2_approx'], 0.0)
+
+    def test_f4_comparison_sets_come_from_the_fixing_file(self):
+        sets = self.a.comparison_sets()
+        self.assertEqual([k for k, _, _ in sets], ['ruled'] + ['ruled_plus_' + r['id'] for r in self.a.g['reserve']]
+                         + [alt['id'] for alt in self.a.g['alternatives']] + ['a1'])
+        for _, label, _ in sets:
+            self.assertIn(f'| {label} |', self.readme)
+
+        def move(d):
+            alts = d['geometry']['a6']['alternatives']
+            alts[0]['xy'] = [99.0, 276.0]
+            del alts[1]
+            alts.append({'id': 'ALT-NEW', 'xy': [250.0, 230.0], 'replaces': 'SLV-L2', 'findings': [], 'decision': None})
+        labels = {k: lab for k, lab, _ in self.m6.A6(self.variant(move)).comparison_sets()}
+        self.assertEqual(labels['ALT-L1-A'], 'SLV-L1 at (99, 276) instead of (93, 276)')
+        self.assertNotIn('ALT-L1-B', labels)
+        self.assertEqual(labels['ALT-NEW'], 'SLV-L2 at (250, 230) instead of (244, 230)')
+
+    def test_f5_stale_map_is_not_published(self):
+        mp = self.m6.load_map()
+        mp['inputs_sha256'] = '0' * 64
+        original = self.m6.load_map
+        try:
+            self.m6.load_map = lambda: mp
+            text = self.m6.render_a6_compliance(self.c)
+            self.assertIn('The compliance map is stale', text)
+            self.assertNotIn('mm/N', text)
+            self.assertIn('stale', self.m6.render_a6_head(self.c))
+        finally:
+            self.m6.load_map = original
+        self.assertTrue(self.m6.map_is_current(self.a, self.m6.load_map()))
+
+    def test_f6_snap_bounded_for_every_set_and_outside_fails(self):
+        for key, _, _ in self.a.comparison_sets():
+            gr = self.a.grillage(key)
+            self.assertLessEqual(max(gr.snap_mm), gr.snap_bound_mm + 1e-9, key)
+        with self.assertRaises(ValueError):
+            self.m5.Grillage([[0, 0], [40, 0], [40, 40], [0, 40]], 2.0, [(10.0, 10.0), (41.0, 20.0)], self.a.bending)
+
+    def test_f7_push_load_and_reading_share_their_nodes(self):
+        with self.assertRaises(ValueError):
+            self.a.push_at('ruled', (262.0, 250.0))
+        gr = self.a.grillage('ruled')
+        xy = (15.0, 292.0)
+        load = np.zeros(gr.size)
+        for k, wt in gr.bilinear(xy):
+            load[3 * k] += wt
+        self.assertEqual(len(gr.bilinear(xy)), 2)
+        reference = float(load @ gr.solve(load))
+        self.assertTrue(math.isclose(self.a.push_at('ruled', xy), reference, rel_tol=1e-9))
+
+    def test_f8_empty_region_and_rows_per_set(self):
+        a = self.a
+        points = tuple((n, tuple(xy)) for n, xy in a.p['check_points_xy'].items())
+        m = self.m6.movement_for(a.outline, 2.0, a.fixings_xy('ruled'), a.bending, True, a.a3.weight_pressure(a.hg), a.a5.t, points, (0.0,))
+        self.assertIsNone(m['above_rows_max'])
+        self.assertEqual(self.m6.peak_cell(None), 'n/a (no node above the post rows)')
+        self.assertEqual(a.post_rows('a1'), tuple(a.a5.g['regions']['list']['post_rows_y_mm']))
+        self.assertEqual(a.post_rows('ALT-L2-A'), tuple(a.g['sets']['ALT-L2-A']['regions']['post_rows_y_mm']))
+
+    def test_f9_map_pitch_is_a_whole_multiple_of_the_grid(self):
+        gr = self.a.grillage('ruled')
+        for pitch in (3.0, 1.0, 0.0, -2.0):
+            bad = self.m6.A6(self.variant(lambda d: d['parameters']['a6']['map_pitch_mm'].update(value=pitch)))
+            with self.assertRaises(ValueError, msg=pitch):
+                bad.map_nodes(gr)
+
+    def test_f10_one_model_per_key_and_a_bounded_cache(self):
+        a = self.a
+        g1 = self.m5.grillage_for(a.outline, 2.0, a.fixings_xy('ruled'), a.bending, True)
+        g2 = self.m5.grillage_for(a.outline, 2.0, a.fixings_xy('ruled'), a.bending, False)
+        self.assertIs(g1, g2)
+        self.assertEqual(self.m5._grillage.cache_info().maxsize, self.m5.GRILLAGE_CACHE_SIZE)
+        self.assertLessEqual(self.m5.GRILLAGE_CACHE_SIZE, 8)
+        with self.assertRaises(ValueError):
+            self.m5.grillage_for(a.outline, 4.0, a.fixings_xy('ruled'), a.bending, True)
 
 
 if __name__ == '__main__':

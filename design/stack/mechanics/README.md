@@ -35,7 +35,7 @@ The model is the torsion-free grillage of attempt a5 with pinned fixings, now on
 
 | Grid step, mm | Covers K's outline | Nodes | Largest fixing snap, mm | Largest movement 5 g, mm | At (4, 247), mm | Largest above the post rows, mm | Strain figure, microstrain |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 4 | no (drops a 2 mm strip at x = 312 to 314 and at the notch) | 5448 | 2.500 | 0.681 at [4.0, 292.0] | 0.411 | 0.216 at [156.0, 8.0] | 263 |
+| 4 | no: drops x = 312 to 314 for y = 8 to 246; y = 244 to 246 for x = 258 to 314; x = 256 to 258 for y = 246 to 292 | 5448 | 2.500 | 0.681 at [4.0, 292.0] | 0.411 | 0.216 at [156.0, 8.0] | 263 |
 | 2 | yes | 21664 | 1.414 | 0.683 at [4.0, 292.0] | 0.409 | 0.273 at [314.0, 8.0] | 292 |
 | 1 | yes | 86059 | 0.500 | 0.714 at [4.0, 292.0] | 0.427 | 0.270 at [314.0, 8.0] | 325 |
 <!-- /calc:a6_grids -->
@@ -106,9 +106,9 @@ The map is retained in [`k-compliance-map.json`](k-compliance-map.json): 5830 no
 | --- | --- | --- | --- | --- |
 | upper left corner | (4, 8) | 1.717 | 0.112 | 1.6 (before: 0.14) |
 | upper right corner | (314, 8) | 1.727 | 0.112 | 1.6 (before: 0.14) |
-| outer notch corner | (314, 246) | 1.118 | 0.807 |  |
+| notch corner on the right edge | (314, 246) | 1.118 | 1.113 |  |
 | notch corner | (258, 246) | 0.038 | 0.038 |  |
-| outer notch corner | (258, 292) | 0.808 | 0.807 |  |
+| notch corner on the lower edge | (258, 292) | 0.808 | 0.807 |  |
 | lower left corner | (4, 292) | 2.345 | 2.338 | 2.33 in a5 (ST-08 a1 list, 4 mm grid) |
 | P-K-P-L06.02 | (15.5, 234) | 0.407 | 0.404 | 0.42 |
 | link centre | (31.5, 283) | 0.759 | 0.756 | 0.76 |
@@ -129,6 +129,23 @@ The map is retained in [`k-compliance-map.json`](k-compliance-map.json): 5830 no
 | 4. The `_SCAN` cache key is incomplete | The key is the whole grillage identity (outline, step, fixings, bending) plus the nodes |
 | 5. `farthest_in_region` returns −1.0 and the first point for an empty region | It returns `None`; `k_regions` records an empty region as `null` |
 | 6. The corner edges are assumed perpendicular | `annulus_area` clips by the half-plane of each nearest board edge at its actual angle. The fixing facts keep those edge segments |
+
+### Attempt a7 corrects the ten findings of the review of the a6 code; one published figure changed
+
+The review ran at 00:39 UTC (DS-89). Only the a1-list figure at (314, 246) changes, from 0.807 to 1.113 mm/N. The other edits are labels and failure modes. The compliance map is byte-identical (SHA256 `324c2836…`), and a full rewrite reproduces it.
+
+| Finding | Change |
+| --- | --- |
+| 1. a1-list corner figures keyed by a name that two corners share | Keyed by coordinates. The README names the corners apart ("notch corner on the right edge", "… on the lower edge"). The map keeps the names it was written with and tells the corners apart by xy |
+| 2. Grid heading and labels are literals | "both within" is computed against the limit; the grid steps and the strips a grid drops come from the outline |
+| 3. Lattice origin fixed at (4, 8) | `map_regions` takes the grid origin |
+| 4. Comparison sets and labels are literals | Derived from the reserve and the alternatives of the fixing file |
+| 5. Map figures published without checking its inputs | A map whose `inputs_sha256` differs from the current inputs is reported stale, and none of its figures is published |
+| 6. Snap unbounded, fixing outside the outline accepted | `Grillage` fails on a fixing outside the outline or a snap above half a cell diagonal; every set is tested |
+| 7. `push_at` raises a bare `KeyError`; load and reading differ on an edge | Load and reading share `Grillage.bilinear`, which raises `ValueError` for a point outside the grid |
+| 8. Empty region read as node 0; ruled post rows used for every set | An empty region is `None` ("n/a"); each set uses its own post rows |
+| 9. Map pitch not checked | Must be a whole positive multiple of the grid step |
+| 10. `require_cover` in the cache key; unbounded life of the models | One model per (outline, step, fixings, bending), with the cover check applied outside. The cache holds the last six models |
 
 ### Parameters of attempt a6 with their status
 
