@@ -71,3 +71,49 @@ commit containing the reviewed workflow split; seven original checkpoints and
 all eight historical modules remain unchanged. Updating this pin is an explicit
 context-policy review, not a new exemption. Local native regeneration is NOT RUN;
 exact-head GitHub CI supplies the fresh aggregate/native result separately.
+
+## 2026-11-14: the unit-test step outgrew the Python and native job
+
+Pull request 358 (head `fd4325e`), run 43649982591: `Python and native checks`
+was cancelled by its 30-minute limit during its last native step, and the
+required `Python unit tests` gate failed because of it. No test failed.
+
+| Part of the job | Run 43649982591 (pull request 358) | Run 43645273884 (main at `ce47261`) | Run 43643426012 (head `c594486`, the same tree as that main run) |
+| --- | ---: | ---: | ---: |
+| Setup before the tests | 60 s | 61 s | 49 s |
+| Step "Run Python unit tests" | 1582 s | 1528 s | 959 s |
+| Native steps after it | 134 s, then cancelled in the last step, which needs 42 to 64 s | 197 s | 135 s |
+| Job | cancelled at 30 min 15 s; about 30 min 40 s needed | 29 min 48 s, passed with 12 s to spare | 19 min 6 s |
+
+Inside the 1582 s test step: `frozen_studies.py replay` 774 s; discovery under
+`scripts/checks/` 359 s; `scripts/pcbgen/` 124 s; `scripts/stack/geometry/` 120 s;
+`design/spec/` 62 s; `scripts/schgen/` 33 s; `design/spec/modules/` 28 s;
+`scripts/stack/fixings/` 26 s; `scripts/stack/mechanics/` 14 s; every other folder
+below 10 s; 3748 tests.
+
+Cause: the same tree took 959 s and 1528 s on two runners, a runner factor of
+1.6. The stack studies of this campaign add 164 s; the job was already at its
+limit on a slow runner before pull request 358 added 26 s of fixing tests. The
+superseded study replay alone is about half of the step.
+
+Correction, following the 2026-11-03 precedent: no timeout increase, no skipped,
+shortened or cached check. `run-python-tests.sh` takes one optional mode. No
+argument or `all` is unchanged; `frozen` runs only `frozen_studies.py replay`
+and fails when the registry script is absent or reports no executed test;
+`current` runs only the current-tree discovery of every folder. The two counts
+add up to the `all` count, and each `NOT RUN` line appears in the mode whose work
+it bounds. A new `frozen-replay` job, "Superseded study replay", copies the
+pinned setup of `python-checks` unchanged with a 30-minute limit and runs
+`frozen`; `python-checks` runs `current` and is otherwise unchanged. The
+required `Python unit tests` gate needs all three workers and rejects anything
+except three successes. Expected slow-runner times: `python-checks` about
+60 + 808 + 200 s (18 min), the replay about 60 + 774 s (14 min). This duplicates
+checkout, setup and browser installation on a third disposable runner.
+
+`test_ci_job_split.py` compares all three workers with the immutable pre-split
+`0755535` checkpoint, runs the three runner commands on the real tree with a
+stand-in `python3` to show that `current` and `frozen` together make exactly the
+calls of the pre-split command, and executes the gate shell over all 125 triples
+of success/failure/cancelled/skipped/missing results.
+`architecture_history.py`, `frozen_studies.py` and `frozen-studies.json` are
+byte-identical, so the replay's pinned bindings are unchanged.

@@ -126,6 +126,13 @@ and the regeneration drift artifact are retained. See
 [`CI-TIMEOUT-DIAGNOSIS.md`](../checks/CI-TIMEOUT-DIAGNOSIS.md) for the original
 timeouts, resource duplication and validation boundary.
 
+On 2026-11-14 the superseded study replay below moved to a third worker,
+`Superseded study replay` (`frozen-replay`), with the same pinned setup and a
+30-minute limit. It runs `bash scripts/checks/run-python-tests.sh frozen`;
+`Python and native checks` runs the same script with `current`, which is every
+current-tree discovery. With no argument the script still runs both, unchanged.
+The required `Python unit tests` gate now needs all three workers to succeed.
+
 ## Superseded studies
 
 Some retained study tests assert that current canonical bytes still equal the

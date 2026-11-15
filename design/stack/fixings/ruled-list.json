@@ -1,0 +1,46 @@
+{
+ "schema_version": 1,
+ "status": "RULED INPUT of ST-08 attempt a2, transcribed from the decision rows named per entry; hand-authored, not generated; the generator checks it and never moves or replaces a site",
+ "frame": "panel frame of design/grid/placements.lock.json (mm, origin at the panel's top-left, y down), the same on K and on the front board",
+ "sleeves": [
+  {"id": "SLV-U1", "xy": [74, 28], "front_board": "JL", "length_class": "19.0", "decision": "DS-73, DS-76",
+   "replacement_search": []},
+  {"id": "SLV-U2", "xy": [244, 24], "front_board": "JR", "length_class": "19.0", "decision": "DS-73, DS-76",
+   "replacement_search": []},
+  {"id": "SLV-L1", "xy": [93, 276], "front_board": "P", "length_class": "17.0", "decision": "DS-74, DS-76",
+   "replacement_search": []},
+  {"id": "SLV-L2", "xy": [244, 230], "front_board": "P", "length_class": "17.0", "decision": "DS-74, DS-76",
+   "replacement_search": [{"board": "K", "ref": "U4215"}, {"board": "K", "ref": "U4226"}, {"board": "P", "ref": "U208"}],
+   "replacement_search_radius_mm": 25.0}
+ ],
+ "dropped": {"sites": "all twelve sites of DS-45 (JL-SUP-1 to -3, JR-SUP-1 to -3, K-SUP-3 to -8)", "decision": "DS-75, DS-76"},
+ "reserve": [
+  {"id": "SLV-R1", "xy": [159, 38], "front_board": "JL", "length_class": "19.0", "decision": "DS-73",
+   "use": "a third long sleeve, only if ST-03 finds more than 1.4 mm above the post rows"}
+ ],
+ "alternatives": [
+  {"id": "ALT-L1-A", "replaces": "SLV-L1", "xy": [97, 276], "front_board": "P", "decision": "DS-74"},
+  {"id": "ALT-L1-B", "replaces": "SLV-L1", "xy": [101, 276], "front_board": "P", "decision": "DS-74"},
+  {"id": "ALT-L2-A", "replaces": "SLV-L2", "xy": [261, 227], "front_board": "P", "decision": "DS-74"}
+ ],
+ "access_holes": [
+  {"id": "EL-ACCESS-SLV-L2", "board": "EL", "xy": [244, 230], "diameter_mm": 7.0, "for": "SLV-L2", "decision": "DS-76"}
+ ],
+ "screw": {"designation": "M3 x 25", "length_mm": 25.0, "head_max_mm": 5.5, "countersunk": false, "status": "ASSUMED",
+           "decision": "DS-76"},
+ "authority_scans": {
+  "source": "reviews/da-03.md, Continuation c2, first subsection (three scratch runs, not retained)",
+  "JL": {"clear": 322, "all_parts_free": 125, "columns_x": [23, 40, 57, 74, 91]},
+  "JR": {"clear": 176, "all_parts_free": 2, "all_parts_free_nodes": [[244, 24], [244, 25]]},
+  "upper_middle": {"clear": 92, "without_an_ic_lacking_a_free_position": 0},
+  "lower_right": {"clear": 20, "y_range": [226, 230], "soic14_without_free_position": [1, 4]},
+  "corners": {"sites": [[7.5, 23.5], [310.5, 23.5]], "fails": "panel-side test", "jack_courtyard_mm": 2.25}
+ },
+ "manager_coverage": {
+  "source": "decisions.md DS-80, manager checks",
+  "above_post_rows": {"farthest_mm": 95.71, "at": [160, 70], "nodes_beyond_90": 165},
+  "below_post_rows": {"farthest_mm": 93.61, "at": [4, 247], "nodes_beyond_90": 55},
+  "nearest_post_mm": {"SLV-U1": 132.0, "SLV-U2": 136.0, "SLV-L1": 101.15, "SLV-L2": 70.0}
+ },
+ "authority_parts": {"source": "reviews/da-03.md c2 H3", "movable_in_sleeve_keepouts": 12, "without_free_position": 3}
+}

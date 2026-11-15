@@ -655,6 +655,10 @@ def render_all(data=None):
     c = Calc(data or load())
     blocks = {name: fn(c) for name, fn in RENDERERS.items()}
     blocks.update({name: fn(c) for name, fn in a3.RENDERERS.items()})
+    import stack_mechanics_a5 as a5
+    blocks.update({name: fn(c) for name, fn in a5.RENDERERS.items()})
+    import stack_mechanics_a6 as a6
+    blocks.update({name: fn(c) for name, fn in a6.RENDERERS.items()})
     return blocks
 
 
@@ -672,6 +676,10 @@ def main(argv):
         from stack_mechanics_geometry import derive
         data['geometry'] = derive(data)
         DATA.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n')
+    if '--write-map' in argv:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import stack_mechanics_a6
+        stack_mechanics_a6.write_map(Calc(data))
     blocks = render_all(data)
     if '--write-readme' in argv:
         README.write_text(fill_readme(README.read_text(), blocks))
