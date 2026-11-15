@@ -151,7 +151,7 @@ def final_places(record, placements):
     places = {p['ref']: {'xy': [round(p['x_mm'], 3), round(p['y_mm'], 3)], 'side': p['side']} for p in placements}
     displaced = record.get('displaced_k_ic_packages')
     if displaced is None:
-        return places, {'read': 'floorplan', 'moved': 0, 'listed': 0}
+        return places, {'read': 'floorplan', 'moved': 0, 'listed': 0, 'kept': 0}
     moved = 0
     for row in displaced:
         if row['new'] is None:
@@ -159,7 +159,8 @@ def final_places(record, placements):
         places[row['ref']] = {'xy': [round(row['new']['xy'][0], 3), round(row['new']['xy'][1], 3)],
                               'side': row['new']['side']}
         moved += 1
-    return places, {'read': 'gate record displaced_k_ic_packages', 'moved': moved, 'listed': len(displaced)}
+    return places, {'read': 'gate record displaced_k_ic_packages', 'moved': moved, 'listed': len(displaced),
+                    'kept': len(displaced) - moved}
 
 
 def exact_part_refs(io):

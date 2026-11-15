@@ -391,7 +391,9 @@ def place_source(d):
     ps = d['inputs']['place_source']
     if ps['read'] == 'floorplan':
         return 'the floorplan (the gate record holds no `displaced_k_ic_packages`; no package moved)'
-    return f"the gate record's `displaced_k_ic_packages` ({ps['moved']} of {ps['listed']} listed packages moved; the floorplan for every other)"
+    return (f"the gate record's `displaced_k_ic_packages`: {ps['moved']} of the {ps['listed']} listed packages are read at their "
+            f"new place; the {ps['kept']} listed packages whose `new` is null have no position and are read at their floorplan place, "
+            "as is every package not listed")
 
 
 def item5(r):

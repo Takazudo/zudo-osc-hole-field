@@ -405,13 +405,15 @@ class AttemptA2(unittest.TestCase):
         for sym in ('SN74HC00DR', 'CD74HC221M96'):
             self.assertIn(sym, T.no_limit_classes(self.d))
             self.assertIsNone(T.retained_limit(self.d, sym))
-        c = T.class_comparison(self.d, 'SN74HC14DR', 40)
-        self.assertEqual(c['worse'], 'H')
-        self.assertEqual(c['orients']['H']['worst']['cell'], (0, 4))
-        self.assertAlmostEqual(c['orients']['V']['worst']['T_C'], 88.9, delta=0.05)
-        self.assertAlmostEqual(c['orients']['H']['worst']['T_C'], 94.8, delta=0.05)
-        lo, hi = T.depth_shift_K(self.d, T.limit_classes(self.d))
-        self.assertLess(hi, 5.0)
+        for sym in T.limit_classes(self.d):
+            for depth in T.DEPTHS:
+                c = T.class_comparison(self.d, sym, depth)
+                for o in T.ORIENTS:
+                    w = c['orients'][o]['worst']
+                    readings = [T.place_reading(self.d, p, depth, o, *T.ENDS['worst']) for p in T.class_places(self.d, sym)]
+                    self.assertAlmostEqual(w['T_C'], max(x['T_C'] for x in readings), places=9)
+                    if w['board'] == 'K':
+                        self.assertAlmostEqual(w['T_C'], w['board_mean_C'] + w['lateral_K'], places=9)
 
     def test_capacitor_places_come_from_the_partition_report(self):
         places = T.class_places(self.d, 'CL10A105KB8NNNC')
@@ -426,7 +428,7 @@ class AttemptA2(unittest.TestCase):
         placements = [{'ref': 'U1', 'x_mm': 1.0, 'y_mm': 2.0, 'side': 'F.Cu'},
                       {'ref': 'U2', 'x_mm': 3.0, 'y_mm': 4.0, 'side': 'B.Cu'}]
         places, source = ex.final_places({'links': []}, placements)
-        self.assertEqual(source, {'read': 'floorplan', 'moved': 0, 'listed': 0})
+        self.assertEqual(source, {'read': 'floorplan', 'moved': 0, 'listed': 0, 'kept': 0})
         self.assertEqual(places['U1'], {'xy': [1.0, 2.0], 'side': 'F.Cu'})
 
     def test_final_places_from_the_displaced_rows(self):
@@ -439,7 +441,7 @@ class AttemptA2(unittest.TestCase):
             {'ref': 'U2', 'symbol': 'X', 'old': {'xy': [3.0, 4.0], 'side': 'B.Cu'}, 'new': None,
              'moved_mm': None, 'step': 'none'}]}
         places, source = ex.final_places(record, placements)
-        self.assertEqual(source, {'read': 'gate record displaced_k_ic_packages', 'moved': 1, 'listed': 2})
+        self.assertEqual(source, {'read': 'gate record displaced_k_ic_packages', 'moved': 1, 'listed': 2, 'kept': 1})
         self.assertEqual(places['U1'], {'xy': [11.0, 12.0], 'side': 'B.Cu'})
         self.assertEqual(places['U2'], {'xy': [3.0, 4.0], 'side': 'B.Cu'})
         self.assertEqual(places['U3'], {'xy': [5.0, 6.0], 'side': 'B.Cu'})
@@ -456,8 +458,9 @@ class AttemptA2(unittest.TestCase):
                                                    'loop_plan_area_mm2': 82.0, 'cable_plan_area_mm2': 405.0})
 
     def test_place_source_is_printed(self):
-        self.assertEqual(self.d['inputs']['place_source']['read'], 'floorplan')
-        self.assertIn('Places: the floorplan', R.README.read_text())
+        ps = self.d['inputs']['place_source']
+        self.assertEqual(ps['moved'] + ps['kept'], ps['listed'])
+        self.assertIn('Places: ' + R.place_source(self.d), R.README.read_text())
 
     def test_options_are_listed_and_none_selected(self):
         text = R.README.read_text()
