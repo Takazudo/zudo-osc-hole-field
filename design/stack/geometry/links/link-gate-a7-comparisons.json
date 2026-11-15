@@ -1,0 +1,1355 @@
+{
+ "note": "Evidence of the records of ST-02 attempt a7: the comparison sections field_change, causes and sensitivity of link-gate.json at commit 5c1a06f, moved here unchanged by attempt a8 part 1 (scope item 8, closing review finding 4), with the totals of the record of part 2 of a7 for the side-by-side tables. These sections are not regenerated: the code that produced them is at commit 5c1a06f (python3 scripts/stack/geometry/links_gate.py at that commit, about 9 to 12 minutes with four processes).",
+ "commit_of_run": "5c1a06f",
+ "source": "design/stack/geometry/links/link-gate.json at 5c1a06f",
+ "record_totals": {
+  "links": 71,
+  "placed": 69,
+  "unplaced": 2,
+  "signals_on_placed_links": 499,
+  "grounds": 332,
+  "unused_positions": 405,
+  "trim_leads": 99,
+  "front_tails_over_panel_hardware": 57,
+  "lengthened_tails": 34,
+  "placed_only_with_lengthened_tail": 7,
+  "latch_not_shown": 37,
+  "cable_needed_mm": [
+   33.3398,
+   49.3398
+  ],
+  "loop_mm": [
+   0.6602,
+   16.6602
+  ],
+  "K_displaced": {
+   "F.Cu by slots": 53,
+   "B.Cu by slots": 109,
+   "B.Cu by fields": 181,
+   "total": 326,
+   "outside_post_keepouts": 325,
+   "split": {
+    "ICs": 90,
+    "resistors": 122,
+    "capacitors": 71,
+    "other": 43
+   }
+  },
+  "unplaced_links": [
+   "P-K-P-L14.01.01.01",
+   "P-K-P-L14.02.01.01"
+  ]
+ },
+ "field_change": [
+  {
+   "run": "P joint, 8 circuits",
+   "ground_rule": "G-PER-2S",
+   "field": "option study field",
+   "field_mm": [
+    8.9,
+    5.62
+   ],
+   "links": 70,
+   "placed": 70,
+   "unplaced": 0,
+   "K_displaced": 201,
+   "front_displaced": {
+    "JL": 3,
+    "JR": 0,
+    "P": 13
+   }
+  },
+  {
+   "run": "P joint, 8 circuits",
+   "ground_rule": "G-PER-2S",
+   "field": "FH12 field",
+   "field_mm": [
+    9.6,
+    6.1
+   ],
+   "links": 70,
+   "placed": 70,
+   "unplaced": 0,
+   "K_displaced": 231,
+   "front_displaced": {
+    "JL": 3,
+    "JR": 0,
+    "P": 12
+   }
+  },
+  {
+   "run": "P joint, 8 circuits",
+   "ground_rule": "G-BETWEEN",
+   "field": "option study field",
+   "field_mm": [
+    8.9,
+    5.62
+   ],
+   "links": 73,
+   "placed": 73,
+   "unplaced": 0,
+   "K_displaced": 225,
+   "front_displaced": {
+    "JL": 3,
+    "JR": 0,
+    "P": 9
+   }
+  },
+  {
+   "run": "P joint, 8 circuits",
+   "ground_rule": "G-BETWEEN",
+   "field": "FH12 field",
+   "field_mm": [
+    9.6,
+    6.1
+   ],
+   "links": 73,
+   "placed": 73,
+   "unplaced": 0,
+   "K_displaced": 253,
+   "front_displaced": {
+    "JL": 3,
+    "JR": 0,
+    "P": 13
+   }
+  },
+  {
+   "run": "JL and JR, 40 circuits",
+   "ground_rule": "G-PER-2S",
+   "field": "option study field",
+   "field_mm": [
+    24.9,
+    5.62
+   ],
+   "links": 14,
+   "placed": 14,
+   "unplaced": 0,
+   "K_displaced": 68,
+   "front_displaced": {
+    "JL": 28,
+    "JR": 35,
+    "P": 0
+   }
+  },
+  {
+   "run": "JL and JR, 40 circuits",
+   "ground_rule": "G-PER-2S",
+   "field": "FH12 field",
+   "field_mm": [
+    25.6,
+    6.1
+   ],
+   "links": 14,
+   "placed": 14,
+   "unplaced": 0,
+   "K_displaced": 70,
+   "front_displaced": {
+    "JL": 33,
+    "JR": 42,
+    "P": 0
+   }
+  },
+  {
+   "run": "JL and JR, 40 circuits",
+   "ground_rule": "G-BETWEEN",
+   "field": "option study field",
+   "field_mm": [
+    24.9,
+    5.62
+   ],
+   "links": 15,
+   "placed": 15,
+   "unplaced": 0,
+   "K_displaced": 74,
+   "front_displaced": {
+    "JL": 28,
+    "JR": 41,
+    "P": 0
+   }
+  },
+  {
+   "run": "JL and JR, 40 circuits",
+   "ground_rule": "G-BETWEEN",
+   "field": "FH12 field",
+   "field_mm": [
+    25.6,
+    6.1
+   ],
+   "links": 15,
+   "placed": 15,
+   "unplaced": 0,
+   "K_displaced": 74,
+   "front_displaced": {
+    "JL": 33,
+    "JR": 51,
+    "P": 0
+   }
+  },
+  {
+   "run": "JL/JR 40 + P 8 (the 88-link row)",
+   "ground_rule": "G-BETWEEN",
+   "field": "option study field",
+   "field_mm": [
+    8.9,
+    5.62
+   ],
+   "links": 88,
+   "placed": 88,
+   "unplaced": 0,
+   "K_displaced": 299,
+   "front_displaced": {
+    "JL": 31,
+    "JR": 41,
+    "P": 9
+   }
+  },
+  {
+   "run": "JL/JR 40 + P 8 (the 88-link row)",
+   "ground_rule": "G-BETWEEN",
+   "field": "FH12 field",
+   "field_mm": [
+    9.6,
+    6.1
+   ],
+   "links": 88,
+   "placed": 88,
+   "unplaced": 0,
+   "K_displaced": 327,
+   "front_displaced": {
+    "JL": 36,
+    "JR": 51,
+    "P": 13
+   }
+  },
+  {
+   "run": "JL/JR 40 + P 8, one ground per two signals",
+   "ground_rule": "G-PER-2S",
+   "field": "option study field",
+   "field_mm": [
+    8.9,
+    5.62
+   ],
+   "links": 84,
+   "placed": 84,
+   "unplaced": 0,
+   "K_displaced": 269,
+   "front_displaced": {
+    "JL": 31,
+    "JR": 35,
+    "P": 13
+   }
+  },
+  {
+   "run": "JL/JR 40 + P 8, one ground per two signals",
+   "ground_rule": "G-PER-2S",
+   "field": "FH12 field",
+   "field_mm": [
+    9.6,
+    6.1
+   ],
+   "links": 84,
+   "placed": 84,
+   "unplaced": 0,
+   "K_displaced": 301,
+   "front_displaced": {
+    "JL": 36,
+    "JR": 42,
+    "P": 12
+   }
+  }
+ ],
+ "causes": [
+  {
+   "step": "class rule, fixed sizes (JL/JR 40, P 8)",
+   "links": 72,
+   "placed": 72,
+   "unplaced": 0,
+   "K_displaced": 256,
+   "front_displaced": {
+    "JL": 36,
+    "JR": 51,
+    "P": 8,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 0,
+   "tails_over_panel_hardware": 64
+  },
+  {
+   "step": "+ mixed sizes on P",
+   "links": 56,
+   "placed": 55,
+   "unplaced": 1,
+   "K_displaced": 304,
+   "front_displaced": {
+    "JL": 34,
+    "JR": 51,
+    "P": 23,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 0,
+   "tails_over_panel_hardware": 48
+  },
+  {
+   "step": "+ tail rule",
+   "links": 68,
+   "placed": 44,
+   "unplaced": 24,
+   "K_displaced": 306,
+   "front_displaced": {
+    "JL": 47,
+    "JR": 53,
+    "P": 26,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 0,
+   "tails_over_panel_hardware": 26
+  },
+  {
+   "step": "+ lengthened tails",
+   "links": 68,
+   "placed": 44,
+   "unplaced": 24,
+   "K_displaced": 249,
+   "front_displaced": {
+    "JL": 35,
+    "JR": 52,
+    "P": 21,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 24,
+   "tails_over_panel_hardware": 35
+  },
+  {
+   "step": "+ adapter links (the gate option of part 1)",
+   "links": 71,
+   "placed": 47,
+   "unplaced": 24,
+   "K_displaced": 269,
+   "front_displaced": {
+    "JL": 35,
+    "JR": 52,
+    "P": 21,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 24,
+   "tails_over_panel_hardware": 36
+  },
+  {
+   "step": "comparison: the gate option without the 4.0 mm rule (every lead under a front tail trimmed)",
+   "links": 50,
+   "placed": 50,
+   "unplaced": 0,
+   "K_displaced": 263,
+   "front_displaced": {
+    "JL": 27,
+    "JR": 45,
+    "P": 34,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 25,
+   "tails_over_panel_hardware": 46,
+   "trim_leads": 85
+  }
+ ],
+ "sensitivity": [
+  {
+   "step": "tail rule hard length 3.0 mm",
+   "links": 64,
+   "placed": 64,
+   "unplaced": 0,
+   "K_displaced": 310,
+   "front_displaced": {
+    "JL": 33,
+    "JR": 44,
+    "P": 20,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 23,
+   "tails_over_panel_hardware": 52,
+   "trim_leads": 83,
+   "links_of_part1": [
+    {
+     "link": "P-K-P-L04.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.5
+    },
+    {
+     "link": "P-K-P-L04.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 21.0535
+    },
+    {
+     "link": "P-K-P-L06.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 23.4094
+    },
+    {
+     "link": "P-K-P-L09.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 21.2603
+    },
+    {
+     "link": "P-K-P-L10.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 10.198
+    },
+    {
+     "link": "P-K-P-L12.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 2.8284
+    },
+    {
+     "link": "P-K-P-L12.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 13.4164
+    },
+    {
+     "link": "P-K-P-L12.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.0139
+    },
+    {
+     "link": "P-K-P-L12.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 5.6569
+    },
+    {
+     "link": "P-K-P-L12.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 7.2111
+    },
+    {
+     "link": "P-K-P-L12.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 7.0178
+    },
+    {
+     "link": "P-K-P-L13.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5586
+    },
+    {
+     "link": "P-K-P-L14.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 6.3246
+    },
+    {
+     "link": "P-K-P-L14.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.1421
+    },
+    {
+     "link": "P-K-P-L14.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5
+    },
+    {
+     "link": "P-K-P-L14.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.2006
+    },
+    {
+     "link": "P-K-P-L14.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 15.1162
+    },
+    {
+     "link": "P-K-P-L15.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 2.0616
+    },
+    {
+     "link": "P-K-P-L15.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 5.6569
+    },
+    {
+     "link": "P-K-P-L15.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 7.5166
+    },
+    {
+     "link": "P-K-P-L15.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 6.5192
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.5
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.0
+    },
+    {
+     "link": "JL-P-K-P-L01.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 15.2069
+    }
+   ],
+   "remaining_of_part1": 0
+  },
+  {
+   "step": "tail rule hard length 2.0 mm",
+   "links": 61,
+   "placed": 61,
+   "unplaced": 0,
+   "K_displaced": 306,
+   "front_displaced": {
+    "JL": 37,
+    "JR": 44,
+    "P": 23,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 26,
+   "tails_over_panel_hardware": 53,
+   "trim_leads": 87,
+   "links_of_part1": [
+    {
+     "link": "P-K-P-L04.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 20.0
+    },
+    {
+     "link": "P-K-P-L04.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 20.0998
+    },
+    {
+     "link": "P-K-P-L06.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 23.4094
+    },
+    {
+     "link": "P-K-P-L09.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 15.6205
+    },
+    {
+     "link": "P-K-P-L10.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 10.198
+    },
+    {
+     "link": "P-K-P-L12.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 2.8284
+    },
+    {
+     "link": "P-K-P-L12.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 13.4164
+    },
+    {
+     "link": "P-K-P-L12.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.0139
+    },
+    {
+     "link": "P-K-P-L12.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 5.6569
+    },
+    {
+     "link": "P-K-P-L12.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 7.2111
+    },
+    {
+     "link": "P-K-P-L12.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 7.0
+    },
+    {
+     "link": "P-K-P-L13.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5586
+    },
+    {
+     "link": "P-K-P-L14.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 22.0907
+    },
+    {
+     "link": "P-K-P-L14.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 22.0907
+    },
+    {
+     "link": "P-K-P-L14.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5586
+    },
+    {
+     "link": "P-K-P-L14.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.2006
+    },
+    {
+     "link": "P-K-P-L14.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 6.5
+    },
+    {
+     "link": "P-K-P-L15.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 2.0
+    },
+    {
+     "link": "P-K-P-L15.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 5.6569
+    },
+    {
+     "link": "P-K-P-L15.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 7.5166
+    },
+    {
+     "link": "P-K-P-L15.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 6.5
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.0
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.0
+    },
+    {
+     "link": "JL-P-K-P-L01.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 15.2069
+    }
+   ],
+   "remaining_of_part1": 0
+  },
+  {
+   "step": "tail rule hard length 1.0 mm",
+   "links": 58,
+   "placed": 58,
+   "unplaced": 0,
+   "K_displaced": 283,
+   "front_displaced": {
+    "JL": 34,
+    "JR": 44,
+    "P": 15,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 28,
+   "tails_over_panel_hardware": 51,
+   "trim_leads": 88,
+   "links_of_part1": [
+    {
+     "link": "P-K-P-L04.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.0
+    },
+    {
+     "link": "P-K-P-L04.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 6.3246
+    },
+    {
+     "link": "P-K-P-L06.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 23.4094
+    },
+    {
+     "link": "P-K-P-L09.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 15.6205
+    },
+    {
+     "link": "P-K-P-L10.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 20.3961
+    },
+    {
+     "link": "P-K-P-L12.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 2.8284
+    },
+    {
+     "link": "P-K-P-L12.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 13.4164
+    },
+    {
+     "link": "P-K-P-L12.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.0139
+    },
+    {
+     "link": "P-K-P-L12.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 5.6569
+    },
+    {
+     "link": "P-K-P-L12.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 7.2111
+    },
+    {
+     "link": "P-K-P-L12.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.1421
+    },
+    {
+     "link": "P-K-P-L13.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.0
+    },
+    {
+     "link": "P-K-P-L14.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 22.0907
+    },
+    {
+     "link": "P-K-P-L14.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 22.0907
+    },
+    {
+     "link": "P-K-P-L14.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.1421
+    },
+    {
+     "link": "P-K-P-L14.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.2006
+    },
+    {
+     "link": "P-K-P-L14.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.1421
+    },
+    {
+     "link": "P-K-P-L15.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 12.0
+    },
+    {
+     "link": "P-K-P-L15.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 5.6569
+    },
+    {
+     "link": "P-K-P-L15.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 2.0616
+    },
+    {
+     "link": "P-K-P-L15.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 21.6333
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.0
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.1245
+    },
+    {
+     "link": "JL-P-K-P-L01.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.5
+    }
+   ],
+   "remaining_of_part1": 0
+  },
+  {
+   "step": "field growth against panel pads 0.10 mm",
+   "links": 71,
+   "placed": 71,
+   "unplaced": 0,
+   "K_displaced": 358,
+   "front_displaced": {
+    "JL": 35,
+    "JR": 49,
+    "P": 16,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 38,
+   "tails_over_panel_hardware": 59,
+   "trim_leads": 105,
+   "links_of_part1": [
+    {
+     "link": "P-K-P-L04.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 11.0114
+    },
+    {
+     "link": "P-K-P-L04.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.6208
+    },
+    {
+     "link": "P-K-P-L06.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 11.3358
+    },
+    {
+     "link": "P-K-P-L09.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 23.1193
+    },
+    {
+     "link": "P-K-P-L10.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 15.9531
+    },
+    {
+     "link": "P-K-P-L12.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.5602
+    },
+    {
+     "link": "P-K-P-L12.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 21.5407
+    },
+    {
+     "link": "P-K-P-L12.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 3.6056
+    },
+    {
+     "link": "P-K-P-L12.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 4.43
+    },
+    {
+     "link": "P-K-P-L12.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 22.2219
+    },
+    {
+     "link": "P-K-P-L12.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.3783
+    },
+    {
+     "link": "P-K-P-L13.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5147
+    },
+    {
+     "link": "P-K-P-L14.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 23.3238
+    },
+    {
+     "link": "P-K-P-L14.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 11.6726
+    },
+    {
+     "link": "P-K-P-L14.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.3783
+    },
+    {
+     "link": "P-K-P-L14.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 19.799
+    },
+    {
+     "link": "P-K-P-L14.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.3783
+    },
+    {
+     "link": "P-K-P-L15.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.3941
+    },
+    {
+     "link": "P-K-P-L15.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 21.5363
+    },
+    {
+     "link": "P-K-P-L15.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.3003
+    },
+    {
+     "link": "P-K-P-L15.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.3783
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 11.0114
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 19.6977
+    },
+    {
+     "link": "JL-P-K-P-L01.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.2003
+    }
+   ],
+   "remaining_of_part1": 0
+  },
+  {
+   "step": "field growth against panel pads 0 mm",
+   "links": 71,
+   "placed": 71,
+   "unplaced": 0,
+   "K_displaced": 355,
+   "front_displaced": {
+    "JL": 35,
+    "JR": 49,
+    "P": 16,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 33,
+   "tails_over_panel_hardware": 59,
+   "trim_leads": 104,
+   "links_of_part1": [
+    {
+     "link": "P-K-P-L04.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 11.0114
+    },
+    {
+     "link": "P-K-P-L04.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.6208
+    },
+    {
+     "link": "P-K-P-L06.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 11.3358
+    },
+    {
+     "link": "P-K-P-L09.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 23.1193
+    },
+    {
+     "link": "P-K-P-L10.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 15.9531
+    },
+    {
+     "link": "P-K-P-L12.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.5602
+    },
+    {
+     "link": "P-K-P-L12.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 21.5407
+    },
+    {
+     "link": "P-K-P-L12.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 3.0
+    },
+    {
+     "link": "P-K-P-L12.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 10.7703
+    },
+    {
+     "link": "P-K-P-L12.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 10.7703
+    },
+    {
+     "link": "P-K-P-L12.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.1177
+    },
+    {
+     "link": "P-K-P-L13.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.5607
+    },
+    {
+     "link": "P-K-P-L14.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 23.3238
+    },
+    {
+     "link": "P-K-P-L14.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5
+    },
+    {
+     "link": "P-K-P-L14.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.3783
+    },
+    {
+     "link": "P-K-P-L14.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 19.799
+    },
+    {
+     "link": "P-K-P-L14.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.3783
+    },
+    {
+     "link": "P-K-P-L15.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.3941
+    },
+    {
+     "link": "P-K-P-L15.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 5.3151
+    },
+    {
+     "link": "P-K-P-L15.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5
+    },
+    {
+     "link": "P-K-P-L15.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 16.3783
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 11.0114
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 19.6977
+    },
+    {
+     "link": "JL-P-K-P-L01.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.2003
+    }
+   ],
+   "remaining_of_part1": 0
+  },
+  {
+   "step": "search radius 36 mm",
+   "links": 68,
+   "placed": 66,
+   "unplaced": 2,
+   "K_displaced": 314,
+   "front_displaced": {
+    "JL": 36,
+    "JR": 52,
+    "P": 24,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 33,
+   "tails_over_panel_hardware": 53,
+   "trim_leads": 89,
+   "links_of_part1": [
+    {
+     "link": "P-K-P-L04.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 26.5801
+    },
+    {
+     "link": "P-K-P-L04.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 34.0
+    },
+    {
+     "link": "P-K-P-L06.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 36.0
+    },
+    {
+     "link": "P-K-P-L09.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 34.176
+    },
+    {
+     "link": "P-K-P-L10.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5
+    },
+    {
+     "link": "P-K-P-L12.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.9819
+    },
+    {
+     "link": "P-K-P-L12.01.01.02",
+     "placed": false,
+     "slot_distance_from_centre_mm": null
+    },
+    {
+     "link": "P-K-P-L12.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.3439
+    },
+    {
+     "link": "P-K-P-L12.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 4.43
+    },
+    {
+     "link": "P-K-P-L12.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 5.5057
+    },
+    {
+     "link": "P-K-P-L12.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 25.5
+    },
+    {
+     "link": "P-K-P-L13.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 35.4401
+    },
+    {
+     "link": "P-K-P-L14.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 34.5398
+    },
+    {
+     "link": "P-K-P-L14.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 25.5
+    },
+    {
+     "link": "P-K-P-L14.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.7321
+    },
+    {
+     "link": "P-K-P-L14.02.01.01",
+     "placed": false,
+     "slot_distance_from_centre_mm": null
+    },
+    {
+     "link": "P-K-P-L14.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.3003
+    },
+    {
+     "link": "P-K-P-L15.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.3941
+    },
+    {
+     "link": "P-K-P-L15.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 13.2217
+    },
+    {
+     "link": "P-K-P-L15.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.6177
+    },
+    {
+     "link": "P-K-P-L15.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 10.7005
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.5
+    },
+    {
+     "link": "JL-P-K-P-L01.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 26.6317
+    }
+   ],
+   "remaining_of_part1": 2
+  },
+  {
+   "step": "search radius unbounded over the front board (2.0 mm grid; refined within 36 mm)",
+   "links": 63,
+   "placed": 63,
+   "unplaced": 0,
+   "K_displaced": 309,
+   "front_displaced": {
+    "JL": 31,
+    "JR": 52,
+    "P": 30,
+    "O1": 0,
+    "O3": 0,
+    "O5": 0
+   },
+   "lengthened_tails": 24,
+   "tails_over_panel_hardware": 44,
+   "trim_leads": 74,
+   "links_of_part1": [
+    {
+     "link": "P-K-P-L04.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 242.7921
+    },
+    {
+     "link": "P-K-P-L04.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 242.7921
+    },
+    {
+     "link": "P-K-P-L06.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 58.0345
+    },
+    {
+     "link": "P-K-P-L09.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 205.9126
+    },
+    {
+     "link": "P-K-P-L10.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 172.2905
+    },
+    {
+     "link": "P-K-P-L12.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.1108
+    },
+    {
+     "link": "P-K-P-L12.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 33.2866
+    },
+    {
+     "link": "P-K-P-L12.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 67.9117
+    },
+    {
+     "link": "P-K-P-L12.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 50.0
+    },
+    {
+     "link": "P-K-P-L12.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 72.7186
+    },
+    {
+     "link": "P-K-P-L12.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 52.0
+    },
+    {
+     "link": "P-K-P-L13.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 94.8262
+    },
+    {
+     "link": "P-K-P-L14.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 156.5248
+    },
+    {
+     "link": "P-K-P-L14.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 29.2617
+    },
+    {
+     "link": "P-K-P-L14.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.7321
+    },
+    {
+     "link": "P-K-P-L14.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 81.6088
+    },
+    {
+     "link": "P-K-P-L14.02.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 14.3003
+    },
+    {
+     "link": "P-K-P-L15.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.3941
+    },
+    {
+     "link": "P-K-P-L15.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 102.6255
+    },
+    {
+     "link": "P-K-P-L15.01.02.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 9.6177
+    },
+    {
+     "link": "P-K-P-L15.02.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 8.5
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 10.7005
+    },
+    {
+     "link": "JL-P-K-P-L01.01.01.02",
+     "placed": true,
+     "slot_distance_from_centre_mm": 0.5
+    },
+    {
+     "link": "JL-P-K-P-L01.01.02.01",
+     "placed": true,
+     "slot_distance_from_centre_mm": 18.2003
+    }
+   ],
+   "remaining_of_part1": 0
+  }
+ ]
+}
