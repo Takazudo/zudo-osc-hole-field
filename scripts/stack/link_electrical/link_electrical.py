@@ -527,13 +527,13 @@ def readme(inp, r):
     worst_open = max(x['I_n1_A'] for x in gc if x['case'] == 'one_post_open')
     lines = []
     w = lines.append
-    w('# Flat-link electrical bounds: ST-04 attempts a2 and a3 (paper, DS-41 checks 3 and 4 without positions; harness baseline DS-54)')
+    w('# Flat-link electrical bounds: ST-04 attempts a2 to a4 (paper; DS-41 checks 3 and 4 without positions, harness baseline DS-54, DS-62 table)')
     w('')
     w(f'Task `{inp["task"]}`, launch commit `{inp["launch_commit"]}`. **Status: unvalidated paper bound.** Coupling, current share '
       'and resistance are NOT RUN as measurements; nothing is selected, adopted or bought. Every class, impedance, edge rate and '
       'limit below is ASSUMED unless a row says otherwise, and the limits are criteria for the design ruling (NEEDS_DESIGN).')
     w('')
-    w('This file, `results.json` and `harness-baseline.json` are written by `python3 scripts/stack/link_electrical/link_electrical.py` from '
+    w('This file, `results.json`, `harness-baseline.json` and `ds62-table.json` are written by `python3 scripts/stack/link_electrical/link_electrical.py` from '
       '[`inputs.json`](inputs.json); the tests fail if any differs from a fresh run. Status words: SOURCED (file and locator in '
       '`inputs.json`), DERIVED (formula below), ASSUMED (reason in `inputs.json`), NOT RUN (reason given).')
     w('')
@@ -722,26 +722,31 @@ def readme(inp, r):
 
 def generate():
     import harness_baseline as hb
+    import ds62_table
     inp = load_inputs()
     r = results(inp)
     b = hb.build(inp, r['signals'])
+    d62 = ds62_table.build(inp)
+    r['signals_all'] = d62['signals_all']
     text = readme(inp, r)
     marker = '## Checks: calculator and tests run'
-    text = text.replace(marker, '\n'.join(hb.readme_lines(inp, b, r['ground_counts'])) + '\n' + marker)
-    return results_json(inp, r), text, hb.to_json(inp, b)
+    text = text.replace(marker, '\n'.join(hb.readme_lines(inp, b, r['ground_counts'])) + '\n' +
+                        '\n'.join(ds62_table.readme_lines(inp, d62)) + '\n' + marker)
+    return results_json(inp, r), text, hb.to_json(inp, b), ds62_table.to_json(inp, d62)
 
 
 def main(argv):
-    rj, rm, hj = generate()
+    rj, rm, hj, dj = generate()
     if '--check' in argv:
         ok = (OUT / 'results.json').read_text() == rj and (OUT / 'README.md').read_text() == rm and \
-            (OUT / 'harness-baseline.json').read_text() == hj
+            (OUT / 'harness-baseline.json').read_text() == hj and (OUT / 'ds62-table.json').read_text() == dj
         print('current' if ok else 'stale')
         return 0 if ok else 1
     (OUT / 'results.json').write_text(rj)
     (OUT / 'README.md').write_text(rm)
     (OUT / 'harness-baseline.json').write_text(hj)
-    print('wrote results.json, harness-baseline.json and README.md in', OUT)
+    (OUT / 'ds62-table.json').write_text(dj)
+    print('wrote results.json, harness-baseline.json, ds62-table.json and README.md in', OUT)
     return 0
 
 

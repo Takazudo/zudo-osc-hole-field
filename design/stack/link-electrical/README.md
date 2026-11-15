@@ -1,8 +1,8 @@
-# Flat-link electrical bounds: ST-04 attempts a2 and a3 (paper, DS-41 checks 3 and 4 without positions; harness baseline DS-54)
+# Flat-link electrical bounds: ST-04 attempts a2 to a4 (paper; DS-41 checks 3 and 4 without positions, harness baseline DS-54, DS-62 table)
 
 Task `osc-stack-20261114/ST-04 attempt a2 (DS-41 checks 3 and 4 without positions; DS-48, DS-51)`, launch commit `21d1cd9`. **Status: unvalidated paper bound.** Coupling, current share and resistance are NOT RUN as measurements; nothing is selected, adopted or bought. Every class, impedance, edge rate and limit below is ASSUMED unless a row says otherwise, and the limits are criteria for the design ruling (NEEDS_DESIGN).
 
-This file, `results.json` and `harness-baseline.json` are written by `python3 scripts/stack/link_electrical/link_electrical.py` from [`inputs.json`](inputs.json); the tests fail if any differs from a fresh run. Status words: SOURCED (file and locator in `inputs.json`), DERIVED (formula below), ASSUMED (reason in `inputs.json`), NOT RUN (reason given).
+This file, `results.json`, `harness-baseline.json` and `ds62-table.json` are written by `python3 scripts/stack/link_electrical/link_electrical.py` from [`inputs.json`](inputs.json); the tests fail if any differs from a fresh run. Status words: SOURCED (file and locator in `inputs.json`), DERIVED (formula below), ASSUMED (reason in `inputs.json`), NOT RUN (reason given).
 
 ## 490 link signals in four coupling classes, the count of ST-02's room study (490)
 
@@ -216,6 +216,62 @@ Cable groups per joint under the harness rule: JL to K: ANALOGUE + PRECISION; JL
 ### What the comparison shows, and what it does not
 
 It shows that, on the same equations and ASSUMED drive and impedance terms, a 50 mm flat link with one ground conductor between two signals couples less than the 66 to 204 mm GH harnesses that carry the same class pairs today, mainly because it is shorter and its return sits closer. It does not show that either is good enough: the present harness is an unvalidated draft too, its coupling was never computed before nor measured, and the absolute limits of attempt a2 (PRECISION 1 mV, WIPER 1 mV, ANALOGUE 10 mV, LOGIC 500 mV peak) would fail many harness instances as well. Those limits stay ASSUMED criteria for the ruling; no verdict on them is given here (NEEDS_DESIGN).
+
+## The seven lines of each adapter are static: 8 circuits, seven signals side by side and one ground (attempt a4, part 1, DS-64)
+
+From the retained schematic specification (`inputs.json` → `ds62.adapter_evidence`, each with its file and object):
+
+- OSC_OCT0 to OSC_OCT5 are six buffered taps of one shared octave ladder fed from the 5 V reference; they are global references shared by all oscillators. Source: design/spec/modules/oscillator.py, octave_family() (b.cell octave_reference with REF_5V OSC_REF5 and OCT0..OCT5 -> OSC_OCT0..5) and REFS (line 16); design/spec/cells/build_doc.py octave_reference: buffered endpoints, five 10k resistors, six buffered octave taps (SOURCED).
+- each tap is driven by an OPA4197 voltage follower (U1602 to U1604); the ladder is fed by REF5050 U1601; source impedance is the closed-loop output impedance of the follower, not stated as a number (UNSOURCED); the 100 Ohm victim value of PRECISION is kept. Source: schematic/sheets/octave_reference.kicad_sch symbols U1601 REF5050AIDR, U1602..U1604 OPA4197IDR; design/architecture-278/implementation/candidate-netlist.json endpoints U1602 pins 13/14 OSC_OCT0, U1603 pins 1/2, 6/7, 8/9, 13/14 OSC_OCT1..4, U1604 pins 1/2 OSC_OCT5 (output tied to inverting input) (SOURCED (driver); UNSOURCED (impedance figure)).
+- OCT_SELECTED is the common of the hand-turned octave selector SRBV160803 (pins 1 and 10), whose positions 2 to 7 take OSC_OCT0 to OSC_OCT5; it is received through OCT_SER 1 kOhm into OCT_FILTER (100 nF and OCT_PD 10 MOhm to AGND), rebuffered by the precision amplifier OCT_RECEIVER to OCT_CV, which enters EXPO_SUM through PITCH_OCT 100 kOhm. Source: design/spec/modules/oscillator.py, family(): pins dict and b.device(SRBV160803, OCT_SELECTOR), b.r(OCT_SER), b.r(OCT_PD), b.c(OCT_FILTER), b.amp(OCT_RECEIVER, precision), PITCH_OCT 100 kOhm (lines 168 to 176) (SOURCED).
+- nothing on the seven lines is modulated, clocked or switched while the instrument plays; OCT_SELECTED steps only when the selector is turned by hand; the taps never change. Source: the same objects: no modulation, clock or switch other than the panel selector connects to OSC_OCT0..5 or OCT_SELECTED (DERIVED).
+
+Class for DS-62: STATIC for all 21 adapter signals (`inputs.json` → `classes_adapter`, beside the unchanged `classes.rules`). STATIC exerts nothing while the instrument plays, so two static lines need no ground between them; as victims they are PRECISION, because they set the pitch.
+
+| Outcome | Circuits | Order (circuit 1 first) | Grounds | Cable length, mm |
+| --- | --- | --- | --- | --- |
+| static (this result) | 8 | OCT_SELECTED, OSC_OCT0, OSC_OCT1, OSC_OCT2, OSC_OCT3, OSC_OCT4, OSC_OCT5, AGND | 1 | 40 |
+| analogue | 14 | OCT_SELECTED, AGND, OSC_OCT0, AGND, OSC_OCT1, AGND, OSC_OCT2, AGND, OSC_OCT3, AGND, OSC_OCT4, AGND, OSC_OCT5, AGND | 7 | 50 |
+
+### Turning the selector by one step couples at most 100 mV for nanoseconds into a neighbouring tap on 8 circuits; behind the receiver filter that is 3.36 µV
+
+A step of 1 V on OCT_SELECTED with a 5 ns edge into the 1000 Ω receiver (terms in `inputs.json` → `ds62.selector_step`), victim the neighbouring tap at the PRECISION impedance. The filtered figure is the spike's area over the receiver's 100 µs filter (V·R·Cm + M·ΔI, DERIVED), i.e. what reaches OCT_CV of an oscillator whose selector sits on the struck tap. It happens only during a hand turn, when the pitch changes by an octave anyway, so it does not enter the DS-62 criterion, which compares coupling while the instrument plays.
+
+| Path | Length, mm | Peak, mV | Filtered, µV | Ratio to the quietest present adapter harness (peak / filtered) |
+| --- | --- | --- | --- | --- |
+| Flat 8 circuits | 40 | 100 | 3.36 | 5.07 / 4.04 |
+| Flat 14 circuits | 50 | 13.7 | 0.577 | 0.69 / 0.69 |
+| Present harness K-O2-1 (one ground between) | 66 | 19.8 | 0.831 | 1 |
+
+## DS-62 at the lengths in use (NEEDS_DESIGN): the largest ratio is 0.90 at 40 mm, 1.08 at 50 mm, 1.17 at 60 mm; 3 pair-and-cable rows are above 1.0
+
+0.5 mm pitch, ε_eff 3.2 on both sides, each cable at its own length and size (`inputs.json` → `ds62.cables`), on the DS-62 link pattern (S G S G …, no outer ground); each bound is the worse of the pair at the cable edge and in the middle, with every conductor of the cable in the solve. Reference: the quietest present harness of the same directed pair, with the adapter lines STATIC, so the adapter harnesses no longer count as ANALOGUE/ANALOGUE.
+
+Reference changes against attempt a3: ANALOGUE>ANALOGUE 0.923 → 1.12 mV.
+
+| Aggressor > victim | Lies | C81339 (8, 40 mm) | C26618 (40, 50 mm) | C68390 (14, 50 mm) | C29534 (8, 50 mm) | C32128 (26, 60 mm) |
+| --- | --- | --- | --- | --- | --- | --- | 
+| ANALOGUE>ANALOGUE | across one ground | 0.77 (-2.3 dB) | 0.83 (-1.6 dB) | 0.86 (-1.3 dB) | 0.92 (-0.7 dB) | 0.98 (-0.2 dB) |
+| ANALOGUE>LOGIC | across one ground | 0.24 (-12.5 dB) | 0.26 (-11.9 dB) | 0.27 (-11.5 dB) | 0.28 (-10.9 dB) | 0.30 (-10.4 dB) |
+| ANALOGUE>PRECISION | across one ground | 0.77 (-2.3 dB) | 0.83 (-1.6 dB) | 0.86 (-1.3 dB) | 0.92 (-0.7 dB) | 0.98 (-0.2 dB) |
+| ANALOGUE>WIPER | across one ground | 0.25 (-12.1 dB) | 0.27 (-11.4 dB) | 0.28 (-11.1 dB) | 0.30 (-10.6 dB) | 0.31 (-10.1 dB) |
+| LOGIC>ANALOGUE | across one ground | 0.20 (-13.8 dB) | 0.22 (-13.3 dB) | 0.23 (-12.9 dB) | 0.24 (-12.2 dB) | 0.25 (-11.9 dB) |
+| LOGIC>LOGIC | side by side | 0.90 (-0.9 dB) | 0.99 (-0.1 dB) | 1.03 (+0.2 dB) | 1.08 (+0.7 dB) | 1.17 (+1.3 dB) |
+| LOGIC>PRECISION | across one ground | 0.20 (-13.8 dB) | 0.22 (-13.3 dB) | 0.23 (-12.9 dB) | 0.24 (-12.2 dB) | 0.25 (-11.9 dB) |
+| PRECISION>ANALOGUE | across one ground | 0.77 (-2.3 dB) | 0.83 (-1.6 dB) | 0.86 (-1.3 dB) | 0.92 (-0.7 dB) | 0.98 (-0.2 dB) |
+| PRECISION>LOGIC | across one ground | 0.24 (-12.5 dB) | 0.26 (-11.9 dB) | 0.27 (-11.5 dB) | 0.28 (-10.9 dB) | 0.30 (-10.4 dB) |
+| PRECISION>PRECISION | across one ground | 0.77 (-2.3 dB) | 0.83 (-1.6 dB) | 0.86 (-1.3 dB) | 0.92 (-0.7 dB) | 0.98 (-0.2 dB) |
+| PRECISION>WIPER | across one ground | 0.25 (-12.1 dB) | 0.27 (-11.4 dB) | 0.28 (-11.1 dB) | 0.30 (-10.6 dB) | 0.31 (-10.1 dB) |
+
+Rows above 1.0, with the ratio at the cable edge and in the middle of the link:
+
+| Cable | Length, mm | Aggressor > victim | Lies | Edge | Middle |
+| --- | --- | --- | --- | --- | --- |
+| C68390 | 50 | LOGIC>LOGIC | side by side | 1.03 | 0.71 |
+| C29534 | 50 | LOGIC>LOGIC | side by side | 1.08 | 0.75 |
+| C32128 | 60 | LOGIC>LOGIC | side by side | 1.17 | 0.82 |
+
+Worst row: LOGIC>LOGIC on C32128 at 60 mm, edge, 255 mV against 218 mV. WIPER>WIPER and STATIC pairs exert nothing and are left out; LOGIC/WIPER may not share a cable (DS-62). Every figure is a paper bound; the harness was never measured either.
 
 ## Checks: calculator and tests run; every measurement and native check NOT RUN
 
