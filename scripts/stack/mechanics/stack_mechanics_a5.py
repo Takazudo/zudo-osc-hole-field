@@ -24,59 +24,112 @@ REGIONS = (('y_low', 'from the post rows to the edge at y = 8'), ('band', 'betwe
            ('y_high', 'from the post rows to the edge at y = 292'))
 
 
+class MergedFixings(ValueError):
+    """Two fixings snap to the same grid node (review finding 2)."""
+
+
+def nested_dissection(ij, ids, leaf=64):
+    """Grid nested-dissection order: halves first, the separating grid line last (keeps the factor sparse)."""
+    if len(ids) <= leaf:
+        return list(ids)
+    sub = ij[ids]
+    ax = 0 if np.ptp(sub[:, 0]) >= np.ptp(sub[:, 1]) else 1
+    mid = int(np.median(sub[:, ax]))
+    return (nested_dissection(ij, ids[sub[:, ax] < mid], leaf) + nested_dissection(ij, ids[sub[:, ax] > mid], leaf)
+            + list(ids[sub[:, ax] == mid]))
+
+
 class Grillage:
-    def __init__(self, outline, step, fixings_xy, bending):
+    def __init__(self, outline, step, fixings_xy, bending, require_cover=True):
         self.outline, self.h = outline, step
+        self.fixings_xy, self.bending = tuple(tuple(map(float, p)) for p in fixings_xy), bending
         x0, y0, x1, y1 = geo.bbox(outline)
         self.x0, self.y0 = x0, y0
         nx, ny = int(round((x1 - x0) / step)), int(round((y1 - y0) / step))
-        self.idx = {}
-        for j in range(ny + 1):
-            for i in range(nx + 1):
-                if geo.inside((x0 + i * step, y0 + j * step), outline):
-                    self.idx[(i, j)] = len(self.idx)
-        n = len(self.idx)
-        self.nodes = np.array([(x0 + i * step, y0 + j * step) for (i, j) in self.idx])
-        rows, cols, vals = [], [], []
-        self.beams = []
+        self.covers = all(abs((vx - x0) / step - round((vx - x0) / step)) < 1e-9 and abs((vy - y0) / step - round((vy - y0) / step)) < 1e-9
+                          for vx, vy in outline)
+        if require_cover and not self.covers:
+            raise ValueError(f'a {step} mm grid does not cover the outline exactly (review finding 1)')
+        px, py, _ = geo.grid(outline, step)
+        ii = np.rint((px - x0) / step).astype(int)
+        jj = np.rint((py - y0) / step).astype(int)
+        order = np.lexsort((ii, jj))
+        ii, jj = ii[order], jj[order]
+        grid_idx = -np.ones((ny + 3, nx + 3), dtype=int)
+        grid_idx[jj + 1, ii + 1] = np.arange(len(ii))
+        self.grid_idx = grid_idx
+        self.idx = {(int(i), int(j)): k for k, (i, j) in enumerate(zip(ii, jj))}
+        n = len(ii)
+        self.nodes = np.column_stack((x0 + ii * step, y0 + jj * step)).astype(float)
         h = step
-
-        def has(i, j):
-            return (i, j) in self.idx
-
-        for (i, j), a in self.idx.items():
-            for di, dj, rot in ((1, 0, 1), (0, 1, 2)):
-                if not has(i + di, j + dj):
-                    continue
-                b = self.idx[(i + di, j + dj)]
-                if dj == 0:
-                    width = h / 2 * ((has(i, j + 1) and has(i + 1, j + 1)) + (has(i, j - 1) and has(i + 1, j - 1)))
-                else:
-                    width = h / 2 * ((has(i + 1, j) and has(i + 1, j + 1)) + (has(i - 1, j) and has(i - 1, j + 1)))
-                if width == 0:
-                    continue
-                ei = bending * width
-                k = ei / h ** 3 * np.array([[12, 6 * h, -12, 6 * h], [6 * h, 4 * h * h, -6 * h, 2 * h * h],
-                                             [-12, -6 * h, 12, -6 * h], [6 * h, 2 * h * h, -6 * h, 4 * h * h]])
-                dofs = [3 * a, 3 * a + rot, 3 * b, 3 * b + rot]
-                for p in range(4):
-                    for q in range(4):
-                        rows.append(dofs[p])
-                        cols.append(dofs[q])
-                        vals.append(k[p, q])
-                self.beams.append((a, b, rot))
+        ok = grid_idx >= 0
+        beams_a, beams_b, beams_rot, widths = [], [], [], []
+        for rot, (di, dj) in ((1, (1, 0)), (2, (0, 1))):
+            a = grid_idx[1:-1, 1:-1]
+            b = np.roll(np.roll(grid_idx, -dj, axis=0), -di, axis=1)[1:-1, 1:-1]
+            if rot == 1:
+                side1 = ok & np.roll(ok, -1, axis=1)
+                up = np.roll(side1, -1, axis=0)[1:-1, 1:-1]
+                down = np.roll(side1, 1, axis=0)[1:-1, 1:-1]
+            else:
+                side1 = ok & np.roll(ok, -1, axis=0)
+                up = np.roll(side1, -1, axis=1)[1:-1, 1:-1]
+                down = np.roll(side1, 1, axis=1)[1:-1, 1:-1]
+            width = h / 2 * (up.astype(float) + down.astype(float))
+            sel = (a >= 0) & (b >= 0) & (width > 0)
+            beams_a.append(a[sel]); beams_b.append(b[sel]); beams_rot.append(np.full(sel.sum(), rot)); widths.append(width[sel])
+        a = np.concatenate(beams_a); b = np.concatenate(beams_b); rot = np.concatenate(beams_rot); width = np.concatenate(widths)
+        order = np.lexsort((rot, a))
+        a, b, rot, width = a[order], b[order], rot[order], width[order]
+        self.beams = np.column_stack((a, b, rot))
+        kel = np.array([[12, 6 * h, -12, 6 * h], [6 * h, 4 * h * h, -6 * h, 2 * h * h],
+                        [-12, -6 * h, 12, -6 * h], [6 * h, 2 * h * h, -6 * h, 4 * h * h]]) / h ** 3
+        dofs = np.column_stack((3 * a, 3 * a + rot, 3 * b, 3 * b + rot))
+        rows = np.repeat(dofs, 4, axis=1).ravel()
+        cols = np.tile(dofs, (1, 4)).ravel()
+        vals = (bending * width)[:, None] * kel.ravel()[None, :]
         size = 3 * n
-        kmat = coo_matrix((vals, (rows, cols)), shape=(size, size)).tocsc()
-        kmat = kmat + coo_matrix((np.full(size, 1e-9 * bending), (range(size), range(size))), shape=(size, size)).tocsc()
-        self.area = np.zeros(n)
-        for (i, j), a in self.idx.items():
-            for ci, cj in ((0, 0), (-1, 0), (0, -1), (-1, -1)):
-                if all(has(i + ci + u, j + cj + v) for u in (0, 1) for v in (0, 1)):
-                    self.area[a] += h * h / 4
-        fixed = sorted({3 * self.nearest(xy) for xy in fixings_xy})
-        self.free = np.setdiff1d(np.arange(size), fixed)
+        kmat = coo_matrix((vals.ravel(), (rows, cols)), shape=(size, size)).tocsc()
+        kmat = kmat + coo_matrix((np.full(size, 1e-9 * bending), (np.arange(size), np.arange(size))), shape=(size, size)).tocsc()
+        cell = ok & np.roll(ok, -1, axis=0) & np.roll(ok, -1, axis=1) & np.roll(np.roll(ok, -1, axis=0), -1, axis=1)
+        area = np.zeros(n)
+        for dj, di in ((0, 0), (1, 0), (0, 1), (1, 1)):
+            c = np.roll(np.roll(cell, dj, axis=0), di, axis=1)[1:-1, 1:-1]
+            g = grid_idx[1:-1, 1:-1]
+            m = c & (g >= 0)
+            np.add.at(area, g[m], h * h / 4)
+        self.area = area
+        self.fixed_nodes = [self.nearest(xy) for xy in fixings_xy]
+        self.snap_mm = [float(np.hypot(*(self.nodes[k] - np.array(xy, float)))) for k, xy in zip(self.fixed_nodes, fixings_xy)]
+        if len(set(self.fixed_nodes)) != len(self.fixed_nodes):
+            raise MergedFixings('two fixings share a grid node')
+        fixed = sorted(3 * k for k in self.fixed_nodes)
+        free = np.setdiff1d(np.arange(size), fixed)
+        order = np.array(nested_dissection(np.column_stack((ii, jj)), np.arange(n)), dtype=int)
+        dof = (3 * order[:, None] + np.arange(3)[None, :]).ravel()
+        is_free = np.zeros(size, bool); is_free[free] = True
+        self.free = dof[is_free[dof]]
         self.size = size
-        self.lu = splu(kmat[self.free][:, self.free].tocsc())
+        self.lu = splu(kmat[self.free][:, self.free].tocsc(), permc_spec='NATURAL', diag_pivot_thresh=0.0,
+                       options=dict(SymmetricMode=True))
+
+    def point_compliance(self, nodes, chunk=100):
+        """Deflection per newton at each node under a unit push at that node (one column per node)."""
+        pos = -np.ones(self.size, dtype=int)
+        pos[self.free] = np.arange(len(self.free))
+        nodes = np.asarray(nodes, dtype=int)
+        out = np.zeros(len(nodes))
+        for s in range(0, len(nodes), chunk):
+            part = nodes[s:s + chunk]
+            rows = pos[3 * part]
+            live = np.flatnonzero(rows >= 0)
+            if not len(live):
+                continue
+            rhs = np.zeros((len(self.free), len(live)))
+            rhs[rows[live], np.arange(len(live))] = 1.0
+            x = self.lu.solve(rhs)
+            out[s + live] = x[rows[live], np.arange(len(live))]
+        return out
 
     def nearest(self, xy):
         return int(np.argmin(np.hypot(self.nodes[:, 0] - xy[0], self.nodes[:, 1] - xy[1])))
@@ -109,8 +162,7 @@ class Grillage:
     def curvatures(self, u):
         """Largest end curvature of the beams at each node (numpy, one value per node)."""
         h = self.h
-        bm = np.array(self.beams)
-        a, b, rot = bm[:, 0], bm[:, 1], bm[:, 2]
+        a, b, rot = self.beams[:, 0], self.beams[:, 1], self.beams[:, 2]
         w1, t1, w2, t2 = u[3 * a], u[3 * a + rot], u[3 * b], u[3 * b + rot]
         k1 = np.abs(-6 * w1 - 4 * h * t1 + 6 * w2 - 2 * h * t2) / h ** 2
         k2 = np.abs(6 * w1 + 2 * h * t1 - 6 * w2 + 4 * h * t2) / h ** 2
@@ -145,8 +197,10 @@ class A5:
         return pts
 
     def grillage(self, key, step=None):
-        return grillage_for(tuple(map(tuple, self.g['k_outline'])), step or self.p['grillage_step_mm'], self.fixings_xy(key),
-                            self.flex * self.p['grillage_stiffness_factor'])
+        step = step or self.p['grillage_step_mm']
+        # the a5 record ran on a 4 mm grid that drops a 2 mm strip at x 312-314 and at the notch (review finding 1)
+        return grillage_for(tuple(map(tuple, self.g['k_outline'])), step, self.fixings_xy(key),
+                            self.flex * self.p['grillage_stiffness_factor'], False)
 
     def region_of(self, y):
         rows = self.g['regions']['posts_only']['post_rows_y_mm']
@@ -199,6 +253,8 @@ class A5:
             if m > best[0]:
                 best = (m, d, length, deg)
         m, d, length, deg = best
+        if deg is None:
+            return None, None, None, None   # no straight cut leaves every fixing on one side: the bound does not apply
         return self.a3.strain_cylindrical(m), d, length, deg
 
     def a4_push_strain(self):
@@ -224,22 +280,22 @@ def chord_length(poly, n, offset):
 
 
 @lru_cache(maxsize=16)
-def grillage_for(outline, step, fixings_xy, bending):
-    return Grillage([list(p) for p in outline], step, fixings_xy, bending)
+def grillage_for(outline, step, fixings_xy, bending, require_cover=True):
+    return Grillage([list(p) for p in outline], step, fixings_xy, bending, require_cover)
 
 
 _SCAN = {}
 
 
 def compliance_scan_for(a, key, nodes):
-    cache_key = (key, nodes, a.g['fixings_array_sha256'])
+    """Largest compliance over the given nodes. Keyed by the whole grillage identity (outline, step, fixings, bending)
+    and the nodes, so that a change of any model input recomputes (review finding 4)."""
+    gr = a.grillage(key)
+    cache_key = (tuple(map(tuple, gr.outline)), gr.h, tuple(gr.fixings_xy), gr.bending, nodes)
     if cache_key not in _SCAN:
-        best = (0.0, None)
-        for n in nodes:
-            comp, xy = a.compliance(key, node=n)
-            if comp > best[0]:
-                best = (comp, xy)
-        _SCAN[cache_key] = best
+        comp = gr.point_compliance(list(nodes))
+        k = int(np.argmax(comp))
+        _SCAN[cache_key] = (float(comp[k]), [float(v) for v in gr.nodes[nodes[k]]])
     return _SCAN[cache_key]
 
 
@@ -336,25 +392,38 @@ def render_a5_push(c):
     for key, label in SETS:
         for xy in a.p['far_points_xy']:
             comp, at = a.compliance(key, node_xy=xy)
-            lb, d, length, deg = a.cut_lower_bound(key, at)
-            rows.append([label, f'push at {at}', f3(comp), sm.ue(lb), f'{lim / lb:.1f}', sm.ue(est), f'{lim / est:.1f}'])
+            lb = a.cut_lower_bound(key, at)[0]
+            rows.append([label, f'push at {at}', f3(comp)] + cut_cells(lb, lim) + [sm.ue(est), f'{lim / est:.1f}'])
         comp, at = a.compliance_scan(key)
         lb = a.cut_lower_bound(key, at)[0]
-        rows.append([label, f'largest compliance on the edge, push at {at}', f3(comp), sm.ue(lb), f'{lim / lb:.1f}', sm.ue(est), f'{lim / est:.1f}'])
+        rows.append([label, f'largest compliance on the edge, push at {at}', f3(comp)] + cut_cells(lb, lim) + [sm.ue(est), f'{lim / est:.1f}'])
     return sm.table(['Fixings', "Push on K's rear face", 'Compliance, mm/N (grillage, upper bound)',
                      'Strain per newton, lower bound (straight cut), microstrain', f'Force at {lim * 1e6:.0f} microstrain, at most, N',
                      'Strain per newton, a4 estimate (45° spread), microstrain', f'Force at {lim * 1e6:.0f} microstrain, a4 estimate, N'], rows)
 
 
-def annulus_area(outer, inner, edges, centre, n=400):
-    """Area of the sleeve annulus that lies on the board side of every edge within reach (grid integration)."""
+def cut_cells(lb, lim):
+    if lb is None:
+        return ['no straight cut (bound does not apply)', 'n/a']
+    return [sm.ue(lb), f'{lim / lb:.1f}']
+
+
+def annulus_area(outer, inner, centre, edges, shift=0.0, n=400):
+    """Area of the sleeve annulus around centre that lies on the centre's side of every edge line (grid integration).
+    edges are board-edge segments ((x1, y1), (x2, y2)) at any angle; shift moves each line that far away from the centre."""
     xs = np.linspace(-outer, outer, n)
     gx, gy = np.meshgrid(xs, xs)
     rr = np.hypot(gx, gy)
     keep = (rr <= outer) & (rr >= inner)
-    for dist_to_edge, axis in edges:
-        coord = gx if axis == 'x' else gy
-        keep &= coord >= -dist_to_edge
+    cx, cy = centre
+    for (ax, ay), (bx, by) in edges:
+        tx, ty = bx - ax, by - ay
+        length = math.hypot(tx, ty)
+        nx, ny = -ty / length, tx / length
+        side = (cx - ax) * nx + (cy - ay) * ny
+        if side < 0:
+            nx, ny, side = -nx, -ny, -side
+        keep &= gx * nx + gy * ny >= -(side + shift)
     cell = (xs[1] - xs[0]) ** 2
     return float(keep.sum() * cell)
 
@@ -367,11 +436,11 @@ def render_a5_corners(c):
     rows = []
     for sid, boards in a.g['corner_sleeves'].items():
         for board, f in boards.items():
-            near = [d for d in f['edge_distances_mm'] if d < outer]
-            edges = [(d, 'x' if i == 0 else 'y') for i, d in enumerate(near)]  # board corners are square: the two edges are perpendicular
-            area = annulus_area(outer, inner, edges, None)
-            small = annulus_area(opts['smaller_outer_diameter_mm'] / 2, inner, [(d, ax) for d, ax in edges], None)
-            moved = annulus_area(outer, inner, [(d + opts['inward_move_mm'], ax) for d, ax in edges], None)
+            site = [s['xy'] for s in a.g['sleeves'] if s['id'] == sid][0]
+            edges = [e for e, d in zip(f['nearest_edges_mm'], f['edge_distances_mm']) if d < outer]
+            area = annulus_area(outer, inner, site, edges)
+            small = annulus_area(opts['smaller_outer_diameter_mm'] / 2, inner, site, edges)
+            moved = annulus_area(outer, inner, site, edges, shift=opts['inward_move_mm'])
             parts = '; '.join(f"{p['ref']} ({p['lib']}) origin {p['origin_distance_mm']:.2f} mm"
                               + (f", drill {p['drills_mm']}" if p['drills_mm'] else '') for p in f['footprints_within_8_mm']) or 'none'
             rows.append([sid, board, ', '.join(f'{d:.2f}' for d in f['edge_distances_mm']), f'{max(0.0, outer - min(f["edge_distances_mm"])):.2f}',
