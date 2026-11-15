@@ -1,7 +1,8 @@
 {
   "schema_version": 1,
   "status": "candidate for an unvalidated draft; geometry only, nothing is measured",
-  "decision": "DS-45 (design review A3, section F8), on the owner's decision DS-38",
+  "decision": "The sleeve is the one of DS-45 (design review A3, section F8), on the owner's decision DS-38. The counts and sites follow DS-75 and DS-76 (continuation c2, sections H4 and H5)",
+  "sites_source": "design/stack/fixings/fixing-sites.json: the active fixings of the kind 'sleeve added'",
   "units": "mm",
   "sleeve": {
     "outer_diameter_mm": 7.0,
@@ -20,9 +21,9 @@
       "file": "stack-spacer-for-19mm-gap.stl",
       "between": ["JL/K", "JR/K"],
       "gap_mm": 19.0,
-      "quantity": 8,
-      "sites": {"JL": 4, "JR": 4},
-      "spares": 2,
+      "quantity": 2,
+      "sites": {"JL": 1, "JR": 1},
+      "spares": 8,
       "plate_columns": 5
     },
     {
@@ -30,14 +31,14 @@
       "file": "stack-spacer-for-17mm-gap.stl",
       "between": ["P/K"],
       "gap_mm": 17.0,
-      "quantity": 4,
-      "sites": {"P": 4},
-      "site_note": "three beside P and one where EL lies in front of P",
-      "spares": 2,
+      "quantity": 2,
+      "sites": {"P": 2},
+      "site_note": "one at the lower left of P and one where EL lies in front of P",
+      "spares": 4,
       "plate_columns": 3
     }
   ],
-  "spares_reason": "ASSUMED: DS-45 says 'plus spares' without a number",
+  "spares_reason": "The plate went to the owner under DS-45 with 10 long and 6 short sleeves, for 8 and 4 sites. DS-75 uses 2 and 2 of the same plate, so the model files stay as delivered and the other sleeves are spares",
   "plate": {
     "file": "stack-spacer-set-plate.stl",
     "pitch_mm": 12.0,
@@ -52,7 +53,8 @@
     "under a clamped screw near a hot part"
   ],
   "open": [
-    "screw lengths and the confirmed site list: ST-08",
+    "ASSUMED: the M3 x 25 mm screw of DS-76 and the tape that holds it until K is on",
+    "UNSOURCED: the height of an M3 nut and the thickness of a washer; ST-08 part 2 retains one maker sheet",
     "UNSOURCED: creep of the printed material under screw load",
     "NOT RUN: any print, any fit on a board"
   ]

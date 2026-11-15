@@ -220,6 +220,9 @@ class AgreementWithTheStack(unittest.TestCase):
     def setUp(self):
         self.spec = sp.load()
         self.candidate = json.loads((sp.ROOT / 'design/stack/geometry/stack-candidate.json').read_text())['candidate']
+        self.fixing_list = json.loads((sp.ROOT / 'design/stack/fixings/fixing-sites.json').read_text())
+        self.ruled = [f for f in self.fixing_list['fixings'] if f['active'] and f['kind'] == 'sleeve added']
+        self.readme = (sp.ROOT / 'design/stack/spacers/README.md').read_text()
 
     def test_gaps_are_the_candidates_gaps(self):
         gaps = self.candidate['stack']['stacker_height_by_gap']
@@ -227,19 +230,28 @@ class AgreementWithTheStack(unittest.TestCase):
             for pair in m['between']:
                 self.assertEqual(gaps[pair]['gap_mm'], m['gap_mm'], pair)
 
-    def test_each_length_serves_the_kept_supports_of_its_own_boards(self):
-        kept = Counter(f['front_board'] for f in self.candidate['fixings'] if f['kind'] == 'kept support')
-        served = Counter()
-        for m in self.spec['members']:
-            self.assertEqual(sorted(m['sites']), sorted(pair.split('/')[0] for pair in m['between']), m['id'])
-            self.assertEqual(sum(m['sites'].values()), m['quantity'], m['id'])
-            for board, count in m['sites'].items():
-                self.assertEqual(kept[board], count, (m['id'], board))
-                served[board] += 1
-        self.assertEqual(dict(served), {board: 1 for board in kept})
+    def test_each_length_serves_the_ruled_sleeves_of_its_own_boards(self):
+        ruled = Counter((f['front_board'], f['gap_mm']) for f in self.ruled)
+        listed = Counter({(board, m['gap_mm']): count for m in self.spec['members'] for board, count in m['sites'].items()})
+        self.assertGreater(len(self.ruled), 0)
+        self.assertEqual(listed, ruled)
+
+    def test_readme_places_every_ruled_sleeve_and_names_its_screw(self):
+        lengths = {m['gap_mm']: sp.fmt_mm(sp.length_mm(self.spec, m)) for m in self.spec['members']}
+        rows = [line for line in self.readme.splitlines() if line.startswith(('| Long, ', '| Short, '))]
+        self.assertEqual(len(rows), len(self.ruled))
+        for f in self.ruled:
+            (row,) = [line for line in rows if '| (%g, %g) |' % tuple(f['xy']) in line]
+            self.assertIn(', %s mm |' % lengths[f['gap_mm']], row, f['id'])
+            self.assertIn('(%s)' % f['front_board'], row, f['id'])
+        screw = self.fixing_list['screw']['working_figure']
+        self.assertEqual(screw['designation'], 'M3 x %g' % screw['length_mm'])
+        self.assertIn('M3 × %g mm screw' % screw['length_mm'], self.readme)
+        self.assertIn('%d post screws' % self.fixing_list['counts']['posts'], self.readme)
+        self.assertIn('%d fixings' % self.fixing_list['counts']['fixings'], self.readme)
 
     def test_readme_states_the_same_figures(self):
-        text = (sp.ROOT / 'design/stack/spacers/README.md').read_text()
+        text = self.readme
         rows = [[cell.strip() for cell in line.split('|')] for line in text.splitlines() if line.startswith('| [')]
         for m in self.spec['members']:
             (row,) = [cells for cells in rows if m['file'] in cells[1]]
