@@ -33,7 +33,9 @@ def outline_step(outline):
 
 
 @lru_cache(maxsize=32)
-def movement_for(outline, step, fixings, bending, cover, q, t, points, rows_y):
+def movement_for(outline, step, fixings, bending, cover, q, t, points, rows_y, pushes=()):
+    """Every figure a render takes from one model, read while the model is in hand and kept as plain numbers, so
+    that one render builds each distinct model once (review a7 finding 10)."""
     gr = a5.grillage_for(outline, step, fixings, bending, cover)
     u = gr.uniform(q)
     w = np.abs(u[0::3])
@@ -46,9 +48,24 @@ def movement_for(outline, step, fixings, bending, cover, q, t, points, rows_y):
         'nodes': len(gr.nodes), 'covers': gr.covers, 'snap_mm': list(gr.snap_mm),
         'max': {'w': float(w[k]), 'at': [float(v) for v in gr.nodes[k]]},
         'above_rows_max': {'w': float(w[ka]), 'at': [float(v) for v in gr.nodes[ka]]} if ka is not None else None,
-        'points': {name: float(abs(gr.w_at(u, xy))) for name, xy in points},
-        'strain': {'eps': float(kap[ks]) * t / 2, 'at': [float(v) for v in gr.nodes[ks]]},
+        'points': {name: a5.point_w(gr, u, xy, not cover) for name, xy in points},
+        'strain': {'eps': float(kap[ks]) * t / 2, 'at': [float(v) for v in gr.nodes[ks]], 'pinned': ks in set(gr.fixed_nodes)},
+        'push': {tuple(xy): push_on(gr, xy, not cover) for xy in pushes},
     }
+
+
+def push_on(gr, xy, allow_off_grid):
+    """Deflection per newton at xy under a 1 N push spread over the nodes of its cell, read with the same weights."""
+    try:
+        cell = gr.bilinear(xy)
+    except ValueError:
+        if allow_off_grid:
+            return None
+        raise
+    load = np.zeros(gr.size)
+    for k, wt in cell:
+        load[3 * k] += wt
+    return gr.w_at(gr.solve(load), xy)
 
 
 class A6:
@@ -102,7 +119,11 @@ class A6:
         points = tuple((n, tuple(xy)) for n, xy in self.p['check_points_xy'].items())
         rows = self.post_rows(key)
         return movement_for(self.outline, step or self.step, self.fixings_xy(key), self.bending, cover,
-                            self.a3.weight_pressure(self.hg), self.a5.t, points, rows)
+                            self.a3.weight_pressure(self.hg), self.a5.t, points, rows, self.push_points())
+
+    def push_points(self):
+        """Places of the compliance block: the outline vertices and the named points."""
+        return tuple(tuple(xy) for _, xy in self.corners()) + tuple(tuple(map(float, xy)) for xy in self.p['compliance_points_xy'].values())
 
     def passes(self, m):
         return m['max']['w'] <= self.p['movement_limit_mm'] and m['strain']['eps'] < self.lim
@@ -110,11 +131,7 @@ class A6:
     def push_at(self, key, xy, step=None):
         """Deflection per newton at xy under a 1 N push spread bilinearly over the nodes of its cell, read back with the
         same nodes and weights (review a6 finding 7); a point outside the grid raises ValueError."""
-        gr = self.grillage(key, step)
-        load = np.zeros(gr.size)
-        for k, wt in gr.bilinear(xy):
-            load[3 * k] += wt
-        return gr.w_at(gr.solve(load), xy)
+        return push_on(self.grillage(key, step), xy, False)
 
     def sleeve_rows(self, key):
         return self.g['sets'][key]['sleeves']
@@ -139,12 +156,25 @@ class A6:
                 side = 'right' if v[0] == x1 else 'left' if v[0] == x0 else 'lower' if v[1] == y1 else 'upper' if v[1] == y0 else None
                 name = f'notch corner on the {side} edge' if side else f'corner at ({v[0]:g}, {v[1]:g})'
             out.append((name, [float(v[0]), float(v[1])]))
-        return out
+        count = {}
+        for name, _ in out:
+            count[name] = count.get(name, 0) + 1
+        return [(f'{n} at ({xy[0]:g}, {xy[1]:g})' if count[n] > 1 else n, xy) for n, xy in out]
 
     def map_corner_names(self):
         """Names as the retained map file carries them: the two convex notch vertices share 'outer notch corner'
         there and are told apart by their coordinates. Kept so that a rewrite of the map stays byte-identical."""
         return [('outer notch corner' if n.startswith(('notch corner on', 'corner at')) else n, xy) for n, xy in self.corners()]
+
+    def threshold_rules(self):
+        return [(self.p['compliance_hold_edge_mm_per_N'], 'DS-72: the other hand holds K\'s edge beside the connector'),
+                (self.p['compliance_not_placed_mm_per_N'], 'DS-72: no K connector is placed')]
+
+    def map_sections(self, nodes):
+        """The sections of the map that derive from its nodes at the current parameters; no model is needed."""
+        origin = (min(v[0] for v in self.outline), min(v[1] for v in self.outline))
+        return {'thresholds': map_regions(nodes, self.p['map_pitch_mm'], origin, self.threshold_rules(), self.step),
+                'corners': [{'name': n, 'xy': xy, 'mm_per_N': node_value(nodes, xy)} for n, xy in self.map_corner_names()]}
 
     # compliance map -------------------------------------------------------------------------------------------
     def map_inputs(self):
@@ -178,10 +208,8 @@ class A6:
             'inputs': inputs,
             'inputs_sha256': inputs_sha256(inputs),
             'columns': ['x_mm', 'y_mm', 'mm_per_N'],
-            'thresholds': map_regions(nodes, self.p['map_pitch_mm'], (gr.x0, gr.y0),
-                                      [(self.p['compliance_hold_edge_mm_per_N'], 'DS-72: the other hand holds K\'s edge beside the connector'),
-                                       (self.p['compliance_not_placed_mm_per_N'], 'DS-72: no K connector is placed')]),
-            'corners': [{'name': n, 'xy': xy, 'mm_per_N': node_value(nodes, xy)} for n, xy in self.map_corner_names()],
+            'thresholds': self.map_sections(nodes)['thresholds'],
+            'corners': self.map_sections(nodes)['corners'],
             'nodes': nodes,
         }
         return doc
@@ -198,14 +226,15 @@ def inputs_sha256(inputs):
     return hashlib.sha256(json.dumps(inputs, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
 
 
-def map_regions(nodes, pitch, origin, thresholds):
+def map_regions(nodes, pitch, origin, thresholds, step):
     """Connected regions of map nodes above each threshold (8-neighbours at the map pitch or closer), as boxes.
     The area counts the nodes on the map lattice through the grid origin, times pitch²."""
     ox, oy = origin
+    index = lambda x, y: (int(round((x - ox) / step)), int(round((y - oy) / step)))   # grid index, any step (review a7 finding 8)
     out = []
     for limit, rule in thresholds:
         above = [(x, y, c) for x, y, c in nodes if c > limit]
-        key = {(round(x * 2), round(y * 2)): n for n, (x, y, _) in enumerate(above)}
+        key = {index(x, y): n for n, (x, y, _) in enumerate(above)}
         parent = list(range(len(above)))
 
         def find(a):
@@ -214,11 +243,13 @@ def map_regions(nodes, pitch, origin, thresholds):
                 a = parent[a]
             return a
 
-        reach = [d for d in range(-int(2 * pitch), int(2 * pitch) + 1)]
+        span = int(round(pitch / step))
+        reach = range(-span, span + 1)
         for n, (x, y, _) in enumerate(above):
+            i, j = index(x, y)
             for dx in reach:
                 for dy in reach:
-                    m = key.get((round(x * 2) + dx, round(y * 2) + dy))
+                    m = key.get((i + dx, j + dy))
                     if m is not None:
                         parent[find(m)] = find(n)
         groups = {}
@@ -254,12 +285,24 @@ def load_map():
 def map_is_current(a, mp):
     """The retained map belongs to the current model when its recorded inputs hash to the current inputs (review a6 finding 5)."""
     current = inputs_sha256(a.map_inputs())
-    return mp.get('inputs_sha256') == current and inputs_sha256(mp.get('inputs', {})) == current
+    if mp.get('inputs_sha256') != current or inputs_sha256(mp.get('inputs', {})) != current:
+        return False
+    sections = json.loads(json.dumps(a.map_sections(mp['nodes'])))   # thresholds and corners at the current parameters (review a7 finding 1)
+    return all(mp.get(k) == v for k, v in sections.items())
 
 
 def stale_note(a, mp):
+    if mp.get('inputs_sha256') == inputs_sha256(a.map_inputs()):
+        return ("### The compliance map is stale: its thresholds or corners differ from those of its nodes at the current parameters; "
+                "no map figure is published until `stack_mechanics.py --write-map` rewrites it")
     return (f"### The compliance map is stale: its inputs (SHA256 {str(mp.get('inputs_sha256'))[:12]}…) differ from the current model "
             f"({inputs_sha256(a.map_inputs())[:12]}…); no map figure is published until `stack_mechanics.py --write-map` rewrites it")
+
+
+def regions_at_vertices(regions, outline):
+    """True when the box of every region holds a vertex of the outline."""
+    return bool(regions) and all(any(r['box_mm'][0] <= v[0] <= r['box_mm'][2] and r['box_mm'][1] <= v[1] <= r['box_mm'][3] for v in outline)
+                                 for r in regions)
 
 
 def dropped_strips(outline, step):
@@ -291,7 +334,7 @@ def cover_label(outline, step, covers):
 
 
 def f3(x):
-    return f'{x:.3f}'
+    return 'n/a' if x is None else f'{x:.3f}'
 
 
 def f2(x):
@@ -299,7 +342,11 @@ def f2(x):
 
 
 def verdict(ok):
-    return 'within' if ok else 'exceeds'
+    return 'n/a' if ok is None else 'within' if ok else 'exceeds'
+
+
+def at_most(x, lim):
+    return None if x is None else x <= lim
 
 
 def peak_cell(r):
@@ -307,7 +354,7 @@ def peak_cell(r):
 
 
 def peak_ok(r, lim):
-    return r is None or r['w'] <= lim
+    return None if r is None else r['w'] <= lim
 
 
 # renderers -----------------------------------------------------------------------------------------------------
@@ -320,11 +367,11 @@ def render_a6_movement(c):
     pts = a.p['check_points_xy']
     rows = [['Largest anywhere on K', f"{f3(m['max']['w'])} at {m['max']['at']}", f"{am['max']:.2f} at the lower left corner", verdict(m['max']['w'] <= lim_w)]]
     for name in ('lower_left_corner', 'left_edge'):
-        rows.append([f'At {tuple(pts[name])} ({POINT_LABELS[name]})', f3(m['points'][name]), f"{am[name]:.2f}", verdict(m['points'][name] <= lim_w)])
+        rows.append([f'At {tuple(pts[name])} ({POINT_LABELS[name]})', f3(m['points'][name]), f"{am[name]:.2f}", verdict(at_most(m['points'][name], lim_w))])
     rows.append(['Largest above the post rows', peak_cell(m['above_rows_max']), f"{am['above_post_rows_max']:.2f}",
                  verdict(peak_ok(m['above_rows_max'], lim_w))])
     for name in ('above_post_rows', 'upper_edge_middle'):
-        rows.append([f'At {tuple(pts[name])} ({POINT_LABELS[name]})', f3(m['points'][name]), f"{am[name]:.2f}", verdict(m['points'][name] <= lim_w)])
+        rows.append([f'At {tuple(pts[name])} ({POINT_LABELS[name]})', f3(m['points'][name]), f"{am[name]:.2f}", verdict(at_most(m['points'][name], lim_w))])
     s4 = a.a5.p['grillage_step_mm']
     m4 = a.movement('ruled', step=s4, cover=False)
     four = [f"{f3(m4['max']['w'])} at {m4['max']['at']}", f3(m4['points']['lower_left_corner']), f3(m4['points']['left_edge']),
@@ -361,11 +408,17 @@ def render_a6_grids(c):
     word = 'both within' if all(within) else 'neither within' if not any(within) else (
         f'only the {s1:g} mm grid within' if within[0] else f'only the {a.step:g} mm grid within')
     head = (f"### The snap moves the largest movement by {f3(m1['max']['w'] - m2['max']['w'])} mm: {f3(m1['max']['w'])} mm on the {s1:g} mm grid against "
-            f"{f3(m2['max']['w'])} mm on the {a.step:g} mm grid of record, {word} {lim_w} mm; the strain figure rises to "
-            f"{sm.ue(m1['strain']['eps'])} microstrain at the pins")
+            f"{f3(m2['max']['w'])} mm on the {a.step:g} mm grid of record, {word} {lim_w} mm; {strain_clause(m2, m1)}")
     return head + '\n\n' + sm.table(['Grid step, mm', "Covers K's outline", 'Nodes', 'Largest fixing snap, mm', f'Largest movement {a.hg:g} g, mm',
                                      f"At {tuple(a.p['check_points_xy']['left_edge'])}, mm", 'Largest above the post rows, mm',
                                      'Strain figure, microstrain'], rows)
+
+
+def strain_clause(coarse, fine):
+    e2, e1 = int(sm.ue(coarse['strain']['eps'])), int(sm.ue(fine['strain']['eps']))
+    move = 'rises to' if e1 > e2 else 'falls to' if e1 < e2 else 'stays at'
+    where = 'at the pins' if fine['strain']['pinned'] else f"at ({fine['strain']['at'][0]:g}, {fine['strain']['at'][1]:g})"
+    return f'the strain figure {move} {e1} microstrain {where}'
 
 
 def render_a6_snaps(c):
@@ -438,7 +491,7 @@ def render_a6_compliance(c):
     if not map_is_current(a, mp):
         return stale_note(a, mp)
     auth = a.p['authority_figures']['compliance_mm_per_N']
-    before = {tuple(xy): a.push_at('a1', xy) for _, xy in a.corners()}
+    ruled, before = a.movement('ruled')['push'], a.movement('a1')['push']
     rows = []
     for k in mp['corners']:
         label = a.corner_label(k['xy'])
@@ -451,7 +504,8 @@ def render_a6_compliance(c):
     pts = a.p['compliance_points_xy']
     auth_pts = {'P-K-P-L06.02': auth['P-K-P-L06.02 (15.5, 234)'], 'link centre': auth['link centre (31.5, 283)']}
     for name, xy in pts.items():
-        rows.append([name, f'({xy[0]:g}, {xy[1]:g})', f3(a.push_at('ruled', xy)), f3(a.push_at('a1', xy)), f'{auth_pts[name]}'])
+        xy = tuple(map(float, xy))
+        rows.append([name, f'({xy[0]:g}, {xy[1]:g})', f3(ruled[xy]), f3(before[xy]), f'{auth_pts[name]}'])
     table1 = sm.table(['Place', 'Site', f'Ruled list, mm/N ({a.step:g} mm grid)', f'ST-08 a1 list, mm/N ({a.step:g} mm grid)', "Authority's figure, mm/N"], rows)
     rows2 = []
     for t in mp['thresholds']:
@@ -459,14 +513,21 @@ def render_a6_compliance(c):
                           f"({r['peak']['xy'][0]:g}, {r['peak']['xy'][1]:g}))" for r in t['regions'])
         rows2.append([f"above {t['mm_per_N']}", t['rule'], t['nodes'], f"{t['area_mm2_approx']:.0f}", len(t['regions']), boxes])
     table2 = sm.table(['Compliance, mm/N', 'Rule', 'Map nodes', 'Area, mm² (map-pitch nodes × pitch²)', 'Regions', 'Boxes'], rows2)
-    top = max(k['mm_per_N'] for k in mp['corners'])
-    t1 = [t for t in mp['thresholds'] if t['mm_per_N'] == a.p['compliance_not_placed_mm_per_N']][0]
-    head = (f"### The corners are soft: up to {f2(top)} mm/N at a corner, and {len(t1['regions'])} regions of about {t1['area_mm2_approx']:.0f} mm² "
-            f"lie above 1.0 mm/N, where DS-72 places no K connector")
+    top = max(k['mm_per_N'] for k in mp['corners'] if k['mm_per_N'] is not None)
+    limit = a.p['compliance_not_placed_mm_per_N']
+    t1 = [t for t in mp['thresholds'] if t['mm_per_N'] == limit][0]
+    soft = 'The corners are soft' if top > limit else f'No corner exceeds {limit} mm/N'
+    head = (f"### {soft}: up to {f2(top)} mm/N at a corner, and {len(t1['regions'])} regions of about {t1['area_mm2_approx']:.0f} mm² "
+            f"lie above {limit} mm/N, where DS-72 places no K connector")
     intro = (f"The map is retained in [`k-compliance-map.json`](k-compliance-map.json): {len(mp['nodes'])} nodes (x, y, mm/N) at a "
              f"{mp['inputs']['map_pitch_mm']:g} mm pitch on the {mp['inputs']['grid_step_mm']:g} mm grid, plus every outline node, with the regions and "
              f"corners below. It is an upper bound on the same model as the movement; ST-02's gate file is not pinned.")
     return head + '\n\n' + intro + '\n\n' + table1 + '\n\n' + table2
+
+
+def corner_word(t, a):
+    """'corner ' only where the box of every region holds a vertex of the outline (review a7 finding 4)."""
+    return 'corner ' if regions_at_vertices(t['regions'], a.outline) else ''
 
 
 def render_a6_head(c):
@@ -476,13 +537,14 @@ def render_a6_head(c):
     if not map_is_current(a, mp):
         tail = 'and the compliance map is stale'
     else:
-        t1 = [t for t in mp['thresholds'] if t['mm_per_N'] == a.p['compliance_not_placed_mm_per_N']][0]
-        tail = f"and {len(t1['regions'])} corner regions lie above 1.0 mm/N"
+        limit = a.p['compliance_not_placed_mm_per_N']
+        t1 = [t for t in mp['thresholds'] if t['mm_per_N'] == limit][0]
+        tail = f"and {len(t1['regions'])} {corner_word(t1, a)}regions lie above {limit} mm/N"
     if a.passes(m):
         return (f"## Attempt a6 (DONE): on the ruled list K moves at most {f2(m['max']['w'])} mm under {a.hg:g} g against DS-72's "
                 f"{a.p['movement_limit_mm']} mm, the strain figure is {sm.ue(m['strain']['eps'])} against {a.lim * 1e6:.0f} microstrain, {tail}")
     return (f"## Attempt a6 (NEEDS_DESIGN): on the ruled list K moves {f2(m['max']['w'])} mm at {tuple(m['max']['at'])} against "
-            f"{a.p['movement_limit_mm']} mm, strain figure {sm.ue(m['strain']['eps'])} microstrain")
+            f"{a.p['movement_limit_mm']} mm, strain figure {sm.ue(m['strain']['eps'])} microstrain, {tail}")
 
 
 def render_a6_terms(c):
