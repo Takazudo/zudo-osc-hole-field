@@ -10,9 +10,8 @@ import math
 import re
 
 import stackgeom as sg
-import links
 import links_gate as lg
-from links import r4, val, FRONTS
+from links import r4, val
 
 RAIL_LEDGER = 'design/power/rail-ledger.json'
 FLOORPLAN = 'design/partition/floorplan-candidate.json'
@@ -58,17 +57,28 @@ def live(out):
     return [r for r in out if not r.get('gone')]
 
 
-def ride(ctx, link, signals, hosts, state, site_by, limits):
+class SleeveTrialNotImplemented(Exception):
+    """Way 3 holds for a link (it has a place once a sleeve keep-out is left out), and the sleeve trial of DS-85 is not
+    implemented: the run stops (scope of a8 part 3, finding 5)."""
+
+
+def ride(ctx, link, signals, hosts, state, site_by, limits, why=None):
     """Way 1 for one link: each signal to the nearest host of the same joint and front board within its class distance
     whose allocation stays legal at its own size. Returns the riders [(signal, host id, distance)] and the new host
-    signal lists, or None when a signal cannot ride (then nothing moves)."""
+    signal lists, or None when a signal cannot ride (then nothing moves, and the reason, against the state given, is
+    appended to `why`). A class without a rider distance (STATIC, DS-79) rides on no other link."""
     tmp = {}
     plan = []
     for sig in signals:
+        if sig[1] not in limits:
+            if why is not None:
+                why.append('%s (%s, site %s) is a %s line, which rides on no other link (DS-79)'
+                           % (sig[0], sig[1], sig[2], sig[1].lower()))
+            return None
         site = site_by[sig[2]]
         opts = sorted((rider_distance(site, h), h['id'], h) for h in hosts
                       if h['id'] != link['id'] and h['joint'] == link['joint'] and h['front_board'] == link['front_board'])
-        host = None
+        host, full = None, []
         for d, hid, h in opts:
             if d > limits[sig[1]] + 1e-9:
                 break
@@ -77,7 +87,13 @@ def ride(ctx, link, signals, hosts, state, site_by, limits):
             if need is not None and need <= h['circuits']:
                 host = (hid, d, cur)
                 break
+            full.append((d, hid))
         if host is None:
+            if why is not None:
+                lim = limits[sig[1]]
+                why.append('%s (%s, site %s) has %s' % (sig[0], sig[1], sig[2], 'no host within %g mm' % lim if not full else
+                                                       'only full hosts within %g mm: %s' % (lim, ', '.join(
+                                                           '%s at %s mm' % (hid, d) for d, hid in full))))
             return None
         tmp[host[0]] = host[2] + [sig]
         plan.append((sig, host[0], host[1]))
@@ -110,28 +126,47 @@ def apply_ride(ctx, out, link, plan, tmp, origin, gone):
     link['signals'] = link['grounds'] = link['unused'] = 0
 
 
-def way1(ctx, out, site_by, limits, ids):
-    """Way 1 over the links `ids` in the record's order first; when a link is left without riders the other orders are
-    tried and the first order in which the most links ride is kept."""
+def way1(ctx, out, site_by, limits, ids, max_orders):
+    """Way 1 over the links `ids`. A link that cannot ride even alone (against the state before way 1) is left out
+    first; it can ride in no order, since a ride only fills hosts. The others are tried in the record's order first;
+    when a link is left without riders the other orders are tried, at most `max_orders`, and the first order in which
+    the most links ride is kept. The reason a link does not ride is taken in the state in which it was tried."""
     hosts = [r for r in live(out) if r['placed']]
     base = {h['id']: link_signals(h) for h in hosts}
     by = {r['id']: r for r in out}
+    why = {}
+    alone = []
+    for lid in ids:
+        w = []
+        if ride(ctx, by[lid], link_signals(by[lid]), hosts, dict(base), site_by, limits, w):
+            alone.append(lid)
+        else:
+            why[lid] = w[0]
     best = None
     tried = 0
-    for order in itertools.permutations(ids):
+    cut = False
+    for order in itertools.permutations(alone):
+        if tried >= max_orders:
+            cut = True
+            break
         tried += 1
         state = dict(base)
-        rides = {}
+        rides, fails = {}, {}
         for lid in order:
-            res = ride(ctx, by[lid], link_signals(by[lid]), hosts, state, site_by, limits)
+            w = []
+            res = ride(ctx, by[lid], link_signals(by[lid]), hosts, state, site_by, limits, w)
             if res:
                 rides[lid] = res
                 state.update(res[1])
+            else:
+                fails[lid] = w[0]
         if best is None or len(rides) > len(best[1]):
-            best = (list(order), rides)
-        if len(rides) == len(ids):
+            best = (list(order), rides, fails)
+        if len(rides) == len(alone):
             break
-    order, rides = best
+    order, rides, fails = best if best else ([], {}, {})
+    why.update(fails)
+    order = _merge_order(ids, alone, order)
     origin = {}
     for h in hosts:
         for p in h['positions']:
@@ -145,7 +180,14 @@ def way1(ctx, out, site_by, limits, ids):
         plan, tmp = ride(ctx, by[lid], link_signals(by[lid]), hosts, state, site_by, limits)
         apply_ride(ctx, out, by[lid], plan, tmp, origin, 'riders (way 1)')
     return {'record_order': list(ids), 'order_used': order, 'orders_tried': tried,
-            'links_riding': [x for x in order if x in rides]}
+            'left_out_as_unable_to_ride_alone': [x for x in ids if x not in alone], 'max_orders': max_orders,
+            'bound_cut_the_search': cut, 'links_riding': [x for x in order if x in rides], 'why_not': why}
+
+
+def _merge_order(ids, alone, order):
+    """The order used: the links left out keep their places of the record's order, the others follow `order`."""
+    it = iter(order)
+    return [next(it) if x in alone else x for x in ids]
 
 
 def class_accept(link, site_by, limits):
@@ -264,6 +306,11 @@ def pad_distance(model, front, fc, shrink):
     return best
 
 
+WAY_3_STATEMENT = ('NOT IMPLEMENTED: the sleeve trial of DS-85 (a full new run with SLV-L1 or SLV-L2 moved, then ways 1 '
+                   'and 2) is not built; way 3 is tested for each link, and the run stops with SleeveTrialNotImplemented '
+                   'when a link has a place once a sleeve keep-out is left out')
+
+
 def ways_out(ctx, out, site_by):
     """Point 1: ways 1 to 5 for every link without a place (oversize links are not among them in the record)."""
     gopts = ctx.gopts
@@ -275,7 +322,7 @@ def ways_out(ctx, out, site_by):
     for lid in ids:
         r = by0[lid]
         r['part_1_analysis'] = {k: r.get(k) for k in ('signals', 'nearest_misses', 'most_frequent_blockers', 'why_no_place')}
-    w1 = way1(ctx, out, site_by, limits, ids)
+    w1 = way1(ctx, out, site_by, limits, ids, val(wo['way_1_max_orders']))
     rec['way_1'] = w1
     by = {r['id']: r for r in out}
     for lid in w1['links_riding']:
@@ -284,7 +331,13 @@ def ways_out(ctx, out, site_by):
     left = [lid for lid in ids if lid not in w1['links_riding']]
     for lid in left:
         r = by[lid]
-        r['way_out'] = {'way': None, 'way_1': 'no: %s' % why_no_ride(ctx, out, r, site_by, limits)}
+        r['way_out'] = {'way': None, 'way_1': 'no: %s' % w1['why_not'][lid]}
+    # an adapter link carries static lines only: no class distance for ways 2 to 4, so it goes to way 5 (DS-79)
+    for lid in left:
+        if by[lid]['joint'] == 'O-K':
+            by[lid]['way_out'].update({'way': 5, 'why': 'an adapter link: its static lines ride on no other link and '
+                                                        'have no class distance for ways 2 to 4 (DS-79)'})
+    left = [lid for lid in left if by[lid]['joint'] != 'O-K']
     # way 2
     r2 = val(wo['way_2_radius_mm'])
     for lid in left:
@@ -303,9 +356,12 @@ def ways_out(ctx, out, site_by):
         for fid, v in h.items():
             if v['holds'] is None:
                 v.update(without_keepout(ctx, out, r, fid, r2, class_accept(r, site_by, limits)))
-        if any(v['holds'] for v in h.values()):
-            raise NotImplementedError('way 3 trial needed for %s' % lid)
+        for fid, v in h.items():
+            if v['holds']:
+                raise SleeveTrialNotImplemented('%s has a place once the keep-out of %s is left out; the sleeve trial '
+                                                'of DS-85 is not implemented, so the run stops' % (lid, fid))
     rec['way_3_trials'] = []
+    rec['way_3_trial'] = WAY_3_STATEMENT
     # way 4
     g4 = val(wo['way_4_field_growth_mm'])
     shrink = r4(val(gopts['field']['growth_mm']) - g4)
@@ -334,24 +390,8 @@ def ways_out(ctx, out, site_by):
         if not r['placed']:
             r['way_out']['way'] = 5
     rec['per_link'] = {lid: by[lid]['way_out'] for lid in ids}
+    del w1['why_not']
     return rec
-
-
-def why_no_ride(ctx, out, r, site_by, limits):
-    hosts = [h for h in live(out) if h['placed']]
-    state = {h['id']: link_signals(h) for h in hosts}
-    for sig in link_signals(r):
-        site = site_by[sig[2]]
-        near = sorted((rider_distance(site, h), h['id'], h) for h in hosts
-                      if h['joint'] == r['joint'] and h['front_board'] == r['front_board'] and h['id'] != r['id'])
-        within = [(d, hid, h) for d, hid, h in near if d <= limits[sig[1]] + 1e-9]
-        ok = [hid for d, hid, h in within
-              if (lambda n: n is not None and n <= h['circuits'])(lg.circuits_needed([s[1] for s in state[hid]] + [sig[1]], ctx.rule))]
-        if not ok:
-            return '%s (%s, site %s) has %s' % (sig[0], sig[1], sig[2], 'no host within %g mm' % limits[sig[1]] if not within else
-                                                 'only full hosts within %g mm: %s' % (limits[sig[1]], ', '.join(
-                                                     '%s at %s mm' % (hid, lg._g(d) if hasattr(lg, '_g') else d) for d, hid, _ in within)))
-    return 'the signals cannot all ride together'
 
 
 def consolidate(ctx, out, site_by):
@@ -518,6 +558,7 @@ class Field:
                 if sg.inter(g, rect):
                     return label
         other = 'B' if face == 'F' else 'F'
+        lo = self.links.get((board, other))
         for p in pads_other:
             for rect, payload in self.idx[(board, other)].near(p):
                 if payload[0] == 'circle':
@@ -526,6 +567,13 @@ class Field:
                         return payload[2]
                 elif sg.inter(p, rect):
                     return payload[2]
+            # a through-hole pad stands on the other face too: it may not meet a field, tail, slot or latch margin
+            # there (scope of a8 part 3, finding 2), at the pad growth of the obstacle model
+            if lo:
+                gp = sg.grow(p, self.pad_gap)
+                for rect, label in lo.near(gp):
+                    if sg.inter(gp, rect):
+                        return 'through-hole pad on ' + label
         return None
 
     def add(self, board, face, cy, pads_other, ref):
@@ -673,18 +721,13 @@ def replacement_totals(rows):
         e['turned'] += 1 if r['turned'] else 0
     cls = {}
     for r in rows:
-        k = cls_of(r['ref'])
+        k = next(c for c, n in lg.split([r['ref']]).items() if n)
         e = cls.setdefault(k, {'displaced': 0, 'step 1': 0, 'step 2': 0, 'step 3': 0, 'no position': 0})
         e['displaced'] += 1
         e['no position' if r['step'] == 'no position' else 'step %d' % r['step']] += 1
     return {'per_board_face': dict(sorted(per.items())), 'per_class': dict(sorted(cls.items())),
             'without_a_position': [{'board': r['board'], 'ref': r['ref'], 'package': r['package']} for r in rows
                                    if r['step'] == 'no position']}
-
-
-def cls_of(ref):
-    p = re.match(r'[A-Z]+', ref).group(0)
-    return 'ICs' if p == 'U' else 'resistors' if p == 'R' else 'capacitors' if p == 'C' else 'other'
 
 
 def run(ctx, inp, out, site_by):
@@ -764,6 +807,15 @@ def check_ways(ctx, doc, site_by):
                 errs.append('%s: way 2 place with %s' % (lid, why))
         if way == 5 and (r['placed'] or r.get('gone')):
             errs.append('%s: way 5 recorded but the link has a place or riders' % lid)
+        for fid, v in (w.get('way_3') or {}).items():
+            # finding 5 of part 3: the sleeve trial is not implemented, so a record in which way 3 holds is not a
+            # result of this code
+            if v.get('holds'):
+                errs.append('%s: way 3 holds with %s, but the sleeve trial of DS-85 is not implemented' % (lid, fid))
+            elif v.get('holds') is None:
+                errs.append('%s: way 3 for %s is undecided' % (lid, fid))
+    if doc['ways_out'].get('per_link') and doc['ways_out'].get('way_3_trial') != WAY_3_STATEMENT:
+        errs.append('the record does not state that the sleeve trial is not implemented')
     n4 = sum(1 for w in doc['ways_out'].get('per_link', {}).values() if w['way'] == 4)
     if n4 > val(ctx.gopts['ways_out']['way_4_max_links']):
         errs.append('%d links take way 4, above the limit' % n4)

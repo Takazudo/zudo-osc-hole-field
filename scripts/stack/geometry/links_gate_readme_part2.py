@@ -40,6 +40,14 @@ def _ways(w, doc):
          'the first order in which the most links ride', w1['orders_tried'], '' if w1['orders_tried'] == 1 else 's',
          ', '.join('%s %s mm' % (k, _g(v)) for k, v in wo['limits_mm'].items())))
     w('')
+    if w1.get('left_out_as_unable_to_ride_alone'):
+        w('Left out of the orders because they cannot ride even alone: %s. At most %d orders are tried%s.'
+          % (', '.join(w1['left_out_as_unable_to_ride_alone']), w1['max_orders'],
+             '; the bound cut the search' if w1['bound_cut_the_search'] else '; the bound did not cut the search'))
+        w('')
+    if wo.get('way_3_trial'):
+        w('Way 3: %s.' % wo['way_3_trial'])
+        w('')
     w('| Link | Way | Riders | Hosts |')
     w('| --- | --- | --- | --- |')
     for lid, x in per.items():
@@ -58,17 +66,27 @@ def _ways(w, doc):
                 f, 'holds' if v['holds'] else 'does not hold', _g(v['distance_mm']), _g(v['reach_mm']),
                 '; ' + v['test'] if 'test' in v else ', so the keep-out cannot be the blocker'))
         if 'way_4' in x:
-            y = x['way_4']
-            w('  Way 4 (field growth %s mm against the pads of panel hardware): %s%s.' % (
-                _g(y.get('field_growth_against_panel_pads_mm')), 'a place' if y['found'] else 'no place',
-                ', %s mm from its field to the pad obstacle of %s' % (_g(y['distance_from_field_to_pad_mm']), y['nearest_pad_of'])
-                if y.get('found') else ''))
+            w('  Way 4: %s.' % _way4(x['way_4']))
+        if x.get('why'):
+            w('  Way 5: %s.' % x['why'])
     if any(x['way'] != 1 for x in per.values()):
         w('')
     if not any(by.get(k) for k in (2, 3, 4, 5)):
         w('No link reaches way 2, 3, 4 or 5: no search radius is widened, no sleeve trial is run (no file of trials is '
           'retained), no field growth is reduced, and no link is reported under way 5.')
         w('')
+
+
+def _way4(y):
+    if 'why' in y:
+        return 'not searched, %s' % y['why']
+    head = 'field growth %s mm against the pads of panel hardware: ' % _g(y.get('field_growth_against_panel_pads_mm'))
+    if not y['found']:
+        return head + 'no place'
+    if y.get('distance_from_field_to_pad_mm') is None:
+        return head + 'a place, no pad within 5 mm of its field'
+    return head + 'a place, %s mm from its field to the pad obstacle of %s' % (_g(y['distance_from_field_to_pad_mm']),
+                                                                           y['nearest_pad_of'])
 
 
 def _riders(w, doc):
@@ -94,7 +112,7 @@ def _riders(w, doc):
 def _consolidation(w, doc):
     c = doc['consolidation']
     if not c['run']:
-        w('## Consolidation NOT RUN: %s' % c['why'])
+        w('## Consolidation %s' % c['why'])
         w('')
         return
     f = c['freed']
@@ -316,7 +334,10 @@ def _handover(w, doc):
       '`parameters.latch_margin_mm`), `geometry.K_tail` and `geometry.slot` of every link, and `fixings.keepouts`; the '
       'displaced trimmers with their new places are `ds97.trimmers`, every footprint in `replacement.footprints`.')
     w('- ST-05: `displaced_k_ic_packages` (ref, symbol, old and new place and side, moved_mm, step) and the link '
-      'figures of `summary` (links, slots, connectors, latches, signals, grounds, unused positions).')
+      'figures of `summary` (links, slots, connectors, latches, signals, grounds, unused positions). The list holds '
+      'no rotation: a 90 degree turn is held in `turned` of `replacement.footprints`. The new reference point is the '
+      'old one plus the shift, because the turn is made about the footprint origin, which is the reference point of '
+      'the floorplan for every turned package of the record.')
     w('- A link that left the record carries `gone` and `riders_out`; a dissolved link keeps its old geometry for '
       'reference only.')
     w('')
