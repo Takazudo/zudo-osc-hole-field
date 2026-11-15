@@ -8,10 +8,10 @@ Screened per slot: the front connectors, front tails and slots of every other li
 
 ## The work takes 13 steps; all 61 front ends are plugged and locked before K comes down
 
-1. Solder the parts of JL, JR, P and the three adapters. Every lead on the rear faces of JL, JR, P and the adapters is cut to 1.0 mm or less when the part is soldered (DS-88). (83 parts; P 49, JL 19, JR 14, O3 1, listed below)
+1. Solder the parts of JL, JR, P and the three adapters. Every lead on the rear faces of JL, JR, P and the adapters is cut to 1 mm or less when the part is soldered (DS-88). (83 parts; P 49, JL 19, JR 14, O3 1, listed below)
 2. Solder the panel hardware with the panel as the fixture, and fit the P unit with EL on its six rigid pairs (DS-43).
 3. Fit the brass posts on the front boards from the panel side: JL 6, JR 6, P 6 (DS-43). (18 parts)
-4. Before the panel goes on, push an M3 × 25 mm screw (head at most 5.5 mm, not countersunk) through each sleeve hole from the front of its board and hold the head down with a strip of tape: (74, 28) on JL, (244, 24) on JR, (93, 276) on P, and (244, 230) on P through the 7.0 mm access hole of EL (DS-76). (4 parts)
+4. Before the panel goes on, push an M3 × 25 mm screw (head at most 5.5 mm, not countersunk) through each sleeve hole from the front of its board and hold the head down with a strip of tape: (74, 28) on JL, (244, 24) on JR, (93, 276) on P, (244, 230) on P through the 7 mm access hole of EL (DS-76). (4 parts)
 5. Slip a printed sleeve over each screw: long (18.8 mm) on JL and JR, short (16.8 mm) on P. (4 parts)
 6. Put JL, JR and the P unit in the panel, and the three adapters on their selectors.
 7. Plug the front end of every cable into its front connector and close the lock with one fingertip or a plastic tool. Every front end is plugged and locked before K comes down. (61 locks; JL 9, JR 7, P 42, O1 1, O3 1, O5 1)
@@ -33,7 +33,7 @@ The rule for the bench is the one sentence of step 1; the list says where it mat
 
 ## K comes down over 61 ends in 9 stages, 2 mm apart at the least; the largest stage guides 17 ends at 23.63 mm
 
-Before K comes down each cable is folded upward under its slot (bend radius 2.4 mm) and stands on its front board. Its free end stands at the cable length less the 4.0 mm insertion, less the run to the slot, plus 0.88 mm from the bend. It meets K's front face when K is that height less the gap above its seat. The heights fall into stages by themselves, because the cable lengths and the tail extensions come in steps of 2 mm. The highest end comes first; the posts meet K last, at 0 mm, after the four screw ends at 6.4 mm (short sleeves) and 4.4 mm (long sleeves).
+Before K comes down each cable is folded upward under its slot (bend radius 2.4 mm) and stands on its front board. Its free end stands at the cable length less the 4 mm insertion, less the run to the slot, plus 1.0301 mm from the bend, R (2 - pi/2). It meets K's front face when K is that height less the gap above its seat. The heights fall into stages by themselves, because the cable lengths and the tail extensions come in steps of 2 mm. The highest end comes first; the posts meet K last, at 0 mm, after the four screw ends at 6.4 mm (short sleeves) and 4.4 mm (long sleeves).
 
 | Stage | K above its seat, mm | Ends | By board | Links |
 | --- | --- | --- | --- | --- |
@@ -49,7 +49,7 @@ Before K comes down each cable is folded upward under its slot (bend radius 2.4 
 
 ## A cable end clears its slot by 0.46 mm across and 0.585 mm along on each side at the least
 
-Across: slot width (tail width + 1.0 mm) less the tail width at its +0.08 mm tolerance (DS-63). Along: the 1.5 mm slot less the 0.33 mm stiffened tail (0.3 +/- 0.03 mm on the LX 0.5 mm cable drawing). The same at every slot, because the slot rule follows the tail width.
+Across: slot width (tail width + 1 mm) less the tail width at its +0.08 mm tolerance (DS-63). Along: the 1.5 mm slot less the 0.33 mm stiffened tail (0.3 +/- 0.03 mm on the LX 0.5 mm cable drawing). The same at every slot, because the slot rule follows the tail width.
 
 ## That one person guides 61 ends and that a folded cable keeps its fold: NOT RUN
 
@@ -57,7 +57,7 @@ Paper gives the heights for an end that stands straight. Whether a 40 to 60 mm s
 
 ## After K is seated, 61 ends are folded onto K's rear face, inserted and locked; 12 connectors need the holding hand
 
-Fold each end down onto K's rear face toward its K connector (the run on K is in the link table), push it in by the 4.0 mm insertion and close the lock with one fingertip or a plastic tool, never with the palm on K. At the connectors below, the other hand holds K's edge beside the connector while its lock is closed (DS-87).
+Fold each end down onto K's rear face toward its K connector (the run on K is in the link table), push it in by the 4 mm insertion and close the lock with one fingertip or a plastic tool, never with the palm on K. At the connectors below, the other hand holds K's edge beside the connector while its lock is closed (DS-87).
 
 | Link | K connector beside | Panel coordinates | mm/N |
 | --- | --- | --- | --- |
@@ -78,7 +78,7 @@ Fold each end down onto K's rear face toward its K connector (the run on K is in
 
 NOT SHOWN, because no footprint height is retained; the neighbours are exempt packages ASSUMED lower than the 2.0 mm connector body (DS-88). Nothing is claimed for them.
 
-| Link | K connector beside | Neighbours within 1.0 mm |
+| Link | K connector beside | Neighbours within 1 mm |
 | --- | --- | --- |
 | O-K-O3 | the OCT selector of O2 | C1144, C1145, R1120, R1170, R1356 |
 | O-K-O5 | the RANGE switch of O5 | C1416, C1445, R1434, RB1522 |
@@ -116,7 +116,7 @@ NOT SHOWN, because no footprint height is retained; the neighbours are exempt pa
 
 - long sleeve, JL or JR to K: grip 22.2 mm, thread 2.8 mm behind K's rear face, inside the 5 mm envelope.
 - short sleeve, P to K: grip 20.2 mm, thread 4.8 mm behind K's rear face, inside the 5 mm envelope.
-- Head at most 5.5 mm and not countersunk; it passes the 7.0 mm access hole of EL at (244, 230).
+- Head at most 5.5 mm and not countersunk; it passes the 7 mm access hole of EL at (244, 230).
 - Retained maker sheet: `keystone/4708/m60-section-8-washers-and-nuts-p132-frev1b1-11-2011-farnell-mirror.pdf` in the circuit-dev-resources (private), SHA256 `37571546d94c93793dae6cbbe894c1d28e34aee8e9ae76ab30f3897149c1a5a5`, from https://www.farnell.com/datasheets/1933945.pdf. It gives M3 steel hex nut: cat. no. 4708, hex 5.50 mm, thread M3 (nylon: 4688); it does not give nut height or metric plain washer (the page lists fibre and nylon shoulder washers in inch sizes).
 - Sources tried (two, the limit): 1. Keystone catalog page via farnell.com/datasheets/1933945.pdf: HTTP 200, readable PDF of one page; retained. Gives the M3 hex of 5.50 mm, no nut height and no metric plain washer. 2. Bossard M6M M3 hex nut page on distrelec.nl: HTTP 302 to a distributor home page; no sheet reached, nothing downloaded.
 - Washer: UNSOURCED at all four sites: the washer rule of point 9 of the spacer page stands as it is.
@@ -222,12 +222,12 @@ Front and K runs are plan lengths from the connector opening to the slot centre,
 
 - `design/stack/geometry/links/link-gate.json`: digest `2139208b7af181992f32e6d63305b450e47a65556806b1d62e0e8958d58cce6b` over the fields links (without gone): id, front_board, size, circuits, cable, cable_length_mm, cable_needed_mm, loop_mm, centre, slot_centre, direction, lengthened_tail, trim_leads, compliance_mm_per_N, geometry.slot, geometry.front_connector, geometry.front_tail, geometry.K_tail, geometry.K_connector, geometry.a_mm, geometry.b_mm, geometry.front_extension_mm, geometry.K_extension_mm, latch_reach.verdict, latch_reach.remaining; summary: links, placed, slots, connectors, latches, lengthened_tails, trim_leads, loop_mm, links_over_cable_length, latch_verdicts, latch_not_shown, compliance; parameters: insertion_mm, bend_radius_mm, trim_to_mm, latch_margin_mm, compliance; fixings: keepouts.
 - `design/stack/geometry/stack-candidate.json`: projection digest `59c3112cde417303d1ed5213d525d66b5f5bfe36cfa5a67081cf5a90c2a520db`.
-- `design/stack/geometry/links/link-options.json`, `design/stack/connectors/flex-links.json`: projection digest `3ab06a42385b4570c92a18438ca3132b80275edccf6b619fcc561cc6197abd80`.
+- `design/stack/geometry/links/link-options.json`, `design/stack/connectors/flex-links.json`, `design/stack/geometry/links/link-gate-options.json`: projection digest `b909029e2b6ee087755d47c141d709b0f3b64d6a9273e058498616addb15587b`.
 - `design/grid/placements.lock.json`: `297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8`.
 - `design/stack/fixings/fixing-sites.json`: `8402ce558d2de13512ff325a5550ef21f303d64b5e5cb86c1aa20ffe2924225b`.
 - `design/stack/fixings/ruled-list.json`: `fb18e85e1c7a9be576a5c9d5d5efd2738999a86449afeae00e8ed84d65ce234d`.
-- `scripts/stack/fixings/procedure.py`: `49c7f4005dcb5834417b9d222bd5443ee824a2ffc5fe6cecbda59b4a2530a575`.
-- `scripts/stack/fixings/procedure_page.py`: `469d8a8fa4b26e7cd8d1d064833306cf6a2dc3dfe6a382cfd5aea4f5426176b2`.
+- `scripts/stack/fixings/procedure.py`: `9566540759d8db501b06e8da7551bae111edfeba379b11760faa3a7da3f97750`.
+- `scripts/stack/fixings/procedure_page.py`: `a1ed8d41b0f4d3be358a049b72f2b7eb5ec40de73c5a3c66ecbc795eebb59cdb`.
 
 Regenerate with `python3 scripts/stack/fixings/procedure.py`; `--check` fails on a stale file or any finding.
 

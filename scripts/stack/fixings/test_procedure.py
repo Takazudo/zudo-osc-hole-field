@@ -2,6 +2,7 @@
 has one row, the counts equal the record's summary, and the checker and the verdict fail on planted faults."""
 import copy
 import json
+import re
 import sys
 import unittest
 from pathlib import Path
@@ -93,6 +94,46 @@ class Record(unittest.TestCase):
         s = DOC['screws']
         self.assertEqual((s['nut_height_mm'], s['washer_thickness_mm']), ('UNSOURCED', 'UNSOURCED'))
         self.assertLessEqual(len(s['sources_tried']), 2)
+
+
+class PageReadsData(unittest.TestCase):
+    @staticmethod
+    def bend_figure(page):
+        m = re.search(r'plus ([0-9.]+) mm from the bend', page)
+        return float(m.group(1))
+
+    def test_bend_term_of_the_page_is_the_term_of_stand_height(self):
+        R = INP['gate']['parameters']['bend_radius_mm']
+        self.assertAlmostEqual(self.bend_figure(pr.PROC_MD.read_text()), pr.bend_term(R), places=4)
+        l = INP['gate']['links'][0]
+        p = INP['gate']['parameters']
+        self.assertAlmostEqual(pr.stand_height(l, p, INP['opts']) - (l['cable_length_mm'] - p['insertion_mm']
+                                                                      - l['geometry']['a_mm']), pr.bend_term(R))
+
+    def test_changed_bend_radius_changes_sentence_and_stages_together(self):
+        inp = copy.deepcopy(INP)
+        inp['gate']['parameters']['bend_radius_mm'] = 3.0
+        doc = pr.build(inp)
+        page = procedure_page.render(doc)
+        self.assertIn('bend radius 3 mm', page)
+        self.assertAlmostEqual(self.bend_figure(page), pr.bend_term(3.0), places=4)
+        shift = pr.bend_term(3.0) - pr.bend_term(2.4)
+        old = [s['meets_K_at_mm'] for s in DOC['lowering']['stages']]
+        new = [s['meets_K_at_mm'] for s in doc['lowering']['stages']]
+        self.assertEqual(len(old), len(new))
+        for o, n in zip(old, new):
+            self.assertAlmostEqual(n - o, shift, places=2)
+
+    def test_slot_and_insertion_figures_follow_the_inputs(self):
+        inp = copy.deepcopy(INP)
+        inp['opts']['slot_length_mm'] = 1.7
+        inp['opts']['tail_step_mm'] = 3.0
+        inp['gate']['parameters']['insertion_mm'] = 3.5
+        inp['gate']['parameters']['latch_margin_mm'] = 1.2
+        page = procedure_page.render(pr.build(inp))
+        for text in ('the 1.7 mm slot', 'steps of 3 mm', 'less the 3.5 mm insertion', 'by the 3.5 mm insertion',
+                     'Neighbours within 1.2 mm', 'a 1.7 mm slot'):
+            self.assertIn(text, page)
 
 
 class Faults(unittest.TestCase):

@@ -55,6 +55,11 @@ WEB_SEARCHES = ['Keystone Electronics metric hex nut M3 datasheet pdf dimensions
 FRONT_ORDER = ('JL', 'JR', 'P', 'O1', 'O3', 'O5')
 CONTROL_KINDS = {'jack': 'jack', 'pot': 'pot', 'switch': 'switch', 'button': 'button', 'octave': 'selector'}
 SERVICE_LIMIT = 10
+GATE_OPTIONS = 'design/stack/geometry/links/link-gate-options.json'
+# DS-63: stock cable width tolerance +/-0.08 mm (LX cable drawing); no retained field in the projected inputs
+CABLE_WIDTH_TOL_MM = 0.08
+# DS-63: 20 insertions SOURCED for the FH12 connector (catalogue in the private store); no retained field here
+INSERTIONS_SOURCED = 20
 EPS = 1e-9
 
 
@@ -120,6 +125,10 @@ def project_options(opts, lands):
             'cable_tail_thickness': lx['tail_thickness']}
 
 
+def project_gate_options(gopts):
+    return {'tail_step_mm': val(gopts['tail_lengthening']['step_mm'])}
+
+
 def load_inputs(root=ROOT):
     root = Path(root)
     gate = json.loads((root / GATE).read_text())
@@ -128,7 +137,10 @@ def load_inputs(root=ROOT):
     lands = json.loads((root / FLEX_LINKS).read_text())
     lock = json.loads((root / LOCK).read_text())
     sites = json.loads((root / SITES).read_text())
-    return {'gate': project_gate(gate), 'cand': project_candidate(cand), 'opts': project_options(opts, lands),
+    gopts = json.loads((root / GATE_OPTIONS).read_text())
+    o = project_options(opts, lands)
+    o.update(project_gate_options(gopts))
+    return {'gate': project_gate(gate), 'cand': project_candidate(cand), 'opts': o,
             'lock': lock, 'sites': sites, 'root': root}
 
 
@@ -143,7 +155,7 @@ def pins(inp):
                                                              'latch_margin_mm', 'compliance'],
                                               'fixings': ['keepouts']}},
         'candidate_projection': {'file': CANDIDATE, 'digest': digest(inp['cand'])},
-        'options_projection': {'files': [LINK_OPTIONS, FLEX_LINKS], 'digest': digest(inp['opts'])},
+        'options_projection': {'files': [LINK_OPTIONS, FLEX_LINKS, GATE_OPTIONS], 'digest': digest(inp['opts'])},
         'files_sha256': {p: sha_file(root / p) for p in (LOCK, SITES, 'design/stack/fixings/ruled-list.json',
                                                           'scripts/stack/fixings/procedure.py',
                                                           'scripts/stack/fixings/procedure_page.py')},
@@ -169,12 +181,22 @@ def centre(rect):
 
 # ---------------------------------------------------------------- per link
 
+def bend_term(R):
+    """Height the quarter bend adds to an upright end: it rises R over a cable length of pi R / 2 and replaces R of
+    straight run, so the end stands R (2 - pi / 2) higher than the length less the run."""
+    return R * (2 - math.pi / 2)
+
+
+def tail_thickness_max(opts):
+    t = opts['cable_tail_thickness'].split()  # '0.3 +/- 0.03 mm'
+    return float(t[0]) + float(t[2])
+
+
 def stand_height(l, prm, opts):
     """Height of the free end above the front board's rear face when the cable is folded upward under its slot:
     cable length less the insertion, less the plan run a to the slot centre, with a quarter bend of radius R
     (a - R straight, pi R / 2 in the bend, then upright from height R). Same path as the record's length rule."""
-    R = prm['bend_radius_mm']
-    return l['cable_length_mm'] - prm['insertion_mm'] - l['geometry']['a_mm'] + R * (2 - math.pi / 2)
+    return l['cable_length_mm'] - prm['insertion_mm'] - l['geometry']['a_mm'] + bend_term(prm['bend_radius_mm'])
 
 
 def tail_width(circuits):
@@ -185,9 +207,8 @@ def slot_clearance(l, opts):
     g = l['geometry']['slot']
     dx, dy = g[2] - g[0], g[3] - g[1]
     across, along = (dx, dy) if l['direction'] in ('+y', '-y') else (dy, dx)
-    width_tol = 0.08  # DS-63: stock cable width tolerance +/-0.08 mm, taken at its upper end
-    t = opts['cable_tail_thickness']  # '0.3 +/- 0.03 mm' on the LX 0.5 mm stock cable drawing
-    thick = float(t.split()[0]) + float(t.split()[2])
+    width_tol = CABLE_WIDTH_TOL_MM
+    thick = tail_thickness_max(opts)
     return {'slot_across_mm': r3(across), 'slot_along_mm': r3(along),
             'across_per_side_mm': r3((across - tail_width(l['circuits']) - width_tol) / 2),
             'along_per_side_mm': r3((along - thick) / 2)}
@@ -313,7 +334,7 @@ def service(rows, sites):
     off = {'K-end locks opened': n, 'K ends withdrawn': n, 'nuts off': sleeves, 'post screws out (K side)': posts}
     on = {'K ends inserted': n, 'K-end locks closed': n, 'post screws in (K side)': posts, 'nuts on': sleeves}
     return {'off': off, 'on': on, 'per_opening': sum(off.values()) + sum(on.values()),
-            'limit_openings': SERVICE_LIMIT, 'insertions_sourced': 20,
+            'limit_openings': SERVICE_LIMIT, 'insertions_sourced': INSERTIONS_SOURCED,
             'K_end_insertions_after_limit': 1 + SERVICE_LIMIT, 'front_end_insertions': 1,
             'replace_link': {'cables': 1, 'locks': 2, 'needs_K_off': True,
                              'front_connector_insertions_after': 2}}
@@ -343,13 +364,18 @@ COUNT_AGAINST_SUMMARY = (('links', 'links'), ('connectors', 'connectors'), ('loc
                          ('lengthened_tails', 'lengthened_tails'), ('lead_entries_per_link', 'trim_leads'))
 
 
-def steps(rows, cnt, low, scr, sites):
+def steps(rows, cnt, low, scr, sites, prm):
+    hole = sites['access_holes'][0]
+    sl = [f for f in sites['fixings'] if f['active'] and f['kind'] != 'post']
+    where = ', '.join('(%g, %g) on %s%s' % (f['xy'][0], f['xy'][1], f['front_board'],
+                                           (' through the %g mm access hole of %s' % (hole['diameter_mm'], hole['board']))
+                                           if f['xy'] == hole['xy'] else '') for f in sl)
     lead = cnt['parts_with_leads_to_cut_per_board']
     fe = cnt['front_ends_per_board']
     wf = scr['working_figure']
     return [
         {'n': 1, 'do': 'Solder the parts of JL, JR, P and the three adapters. Every lead on the rear faces of JL, JR, P '
-                       'and the adapters is cut to 1.0 mm or less when the part is soldered (DS-88).',
+                       'and the adapters is cut to %g mm or less when the part is soldered (DS-88).' % prm['trim_to_mm'],
          'parts': cnt['parts_with_leads_to_cut'], 'where': '%s, listed below' %
          (', '.join('%s %d' % (b, lead[b]) for b in ('P', 'JL', 'JR', 'O3') if b in lead))},
         {'n': 2, 'do': 'Solder the panel hardware with the panel as the fixture, and fit the P unit with EL on its six '
@@ -357,9 +383,8 @@ def steps(rows, cnt, low, scr, sites):
         {'n': 3, 'do': 'Fit the brass posts on the front boards from the panel side: JL 6, JR 6, P 6 (DS-43).',
          'parts': 18},
         {'n': 4, 'do': 'Before the panel goes on, push an %s screw (head at most %.1f mm, not countersunk) through each '
-                       'sleeve hole from the front of its board and hold the head down with a strip of tape: (74, 28) '
-                       'on JL, (244, 24) on JR, (93, 276) on P, and (244, 230) on P through the 7.0 mm access hole '
-                       'of EL (DS-76).' % (wf['designation'].replace(' x ', ' × ') + ' mm', wf['head_max_mm']),
+                       'sleeve hole from the front of its board and hold the head down with a strip of tape: %s '
+                       '(DS-76).' % (wf['designation'].replace(' x ', ' × ') + ' mm', wf['head_max_mm'], where),
          'parts': 4},
         {'n': 5, 'do': 'Slip a printed sleeve over each screw: long (18.8 mm) on JL and JR, short (16.8 mm) on P.',
          'parts': 4},
@@ -391,8 +416,25 @@ def steps(rows, cnt, low, scr, sites):
     ]
 
 
+def page_parameters(inp, rows):
+    prm, opts, sites = inp['gate']['parameters'], inp['opts'], inp['sites']
+    hole = sites['access_holes'][0]
+    return {'bend_radius_mm': prm['bend_radius_mm'], 'bend_term_mm': round(bend_term(prm['bend_radius_mm']), 4),
+            'insertion_mm': prm['insertion_mm'], 'trim_to_mm': prm['trim_to_mm'],
+            'latch_margin_mm': prm['latch_margin_mm'], 'tail_step_mm': opts['tail_step_mm'],
+            'slot_width_extra_mm': opts['slot_width_extra_mm'], 'slot_length_mm': opts['slot_length_mm'],
+            'cable_tail_thickness': opts['cable_tail_thickness'], 'tail_thickness_max_mm': r3(tail_thickness_max(opts)),
+            'cable_width_tol_mm': CABLE_WIDTH_TOL_MM, 'insertions_sourced': INSERTIONS_SOURCED,
+            'cable_length_range_mm': [min(r['cable_length_mm'] for r in rows), max(r['cable_length_mm'] for r in rows)],
+            'access_hole': {'board': hole['board'], 'xy': hole['xy'], 'diameter_mm': hole['diameter_mm']}}
+
+
 def generate(root=ROOT):
     inp = load_inputs(root)
+    return build(inp), inp
+
+
+def build(inp):
     rows = link_rows(inp)
     low = lowering(rows, inp['sites'])
     scr = screws(inp['sites'])
@@ -401,8 +443,9 @@ def generate(root=ROOT):
         'schema_version': 1,
         'status': 'paper procedure on unvalidated drafts; no fit, no strength and no proven assembly',
         'verdict': 'NEEDS_DESIGN' if (low['blocked'] or low['short_cables']) else 'DONE',
+        'parameters': page_parameters(inp, rows),
         'links': rows,
-        'steps': steps(rows, cnt, low, scr, inp['sites']),
+        'steps': steps(rows, cnt, low, scr, inp['sites'], inp['gate']['parameters']),
         'lowering': low,
         'latch': {'counts': dict(inp['gate']['summary']['latch_verdicts']),
                   'not_shown': [{'link': r['id'], 'K_connector': r['K_connector']['name'],
@@ -417,7 +460,7 @@ def generate(root=ROOT):
         'counts': cnt,
         'provenance': {'generator': 'scripts/stack/fixings/procedure.py', 'regenerate': REGEN, 'pins': pins(inp)},
     }
-    return doc, inp
+    return doc
 
 
 # ---------------------------------------------------------------- checker

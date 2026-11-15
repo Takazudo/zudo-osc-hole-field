@@ -22,6 +22,7 @@ def render(doc):
     scr = doc['screws']
     sv = doc['service']
     lat = doc['latch']
+    pm = doc['parameters']
     out = []
     w = out.append
     ok = doc['verdict'] == 'DONE'
@@ -79,12 +80,14 @@ def render(doc):
     w('## K comes down over %d ends in %d stages, %s mm apart at the least; the largest stage guides %d ends at %s mm' %
       (c['links'], len(low['stages']), _g(low['smallest_gap_between_stages_mm']), big['ends'], _g(big['meets_K_at_mm'])))
     w('')
-    w('Before K comes down each cable is folded upward under its slot (bend radius 2.4 mm) and stands on its front '
-      'board. Its free end stands at the cable length less the 4.0 mm insertion, less the run to the slot, plus '
-      '0.88 mm from the bend. It meets K\'s front face when K is that height less the gap above its seat. The heights '
-      'fall into stages by themselves, because the cable lengths and the tail extensions come in steps of 2 mm. The '
-      'highest end comes first; the posts meet K last, at 0 mm, after the four screw ends at %s mm (short sleeves) and '
-      '%s mm (long sleeves).' % (_g(low['screw_tips'][1]['meets_K_at_mm']), _g(low['screw_tips'][0]['meets_K_at_mm'])))
+    w('Before K comes down each cable is folded upward under its slot (bend radius %s mm) and stands on its front '
+      'board. Its free end stands at the cable length less the %s mm insertion, less the run to the slot, plus '
+      '%s mm from the bend, R (2 - pi/2). It meets K\'s front face when K is that height less the gap above its seat. '
+      'The heights fall into stages by themselves, because the cable lengths and the tail extensions come in steps of '
+      '%s mm. The highest end comes first; the posts meet K last, at 0 mm, after the four screw ends at %s mm (short '
+      'sleeves) and %s mm (long sleeves).' % (_g(pm['bend_radius_mm']), _g(pm['insertion_mm']), _g(pm['bend_term_mm']),
+                                              _g(pm['tail_step_mm']), _g(low['screw_tips'][1]['meets_K_at_mm']),
+                                              _g(low['screw_tips'][0]['meets_K_at_mm'])))
     w('')
     w('| Stage | K above its seat, mm | Ends | By board | Links |')
     w('| --- | --- | --- | --- | --- |')
@@ -96,23 +99,27 @@ def render(doc):
     w('## A cable end clears its slot by %s mm across and %s mm along on each side at the least' %
       (_g(cl['across_per_side_mm']), _g(cl['along_per_side_mm'])))
     w('')
-    w('Across: slot width (tail width + 1.0 mm) less the tail width at its +0.08 mm tolerance (DS-63). Along: the '
-      '1.5 mm slot less the 0.33 mm stiffened tail (0.3 +/- 0.03 mm on the LX 0.5 mm cable drawing). The same at '
-      'every slot, because the slot rule follows the tail width.')
+    w('Across: slot width (tail width + %s mm) less the tail width at its +%s mm tolerance (DS-63). Along: the '
+      '%s mm slot less the %s mm stiffened tail (%s on the LX 0.5 mm cable drawing). The same at every slot, because '
+      'the slot rule follows the tail width.' % (_g(pm['slot_width_extra_mm']), _g(pm['cable_width_tol_mm']),
+                                                 _g(pm['slot_length_mm']), _g(pm['tail_thickness_max_mm']),
+                                                 pm['cable_tail_thickness']))
     w('')
     w('## That one person guides %d ends and that a folded cable keeps its fold: NOT RUN' % c['links'])
     w('')
-    w('Paper gives the heights for an end that stands straight. Whether a 40 to 60 mm stock cable stands, bows or '
+    w('Paper gives the heights for an end that stands straight. Whether a %s to %s mm stock cable stands, bows or '
       'falls over, whether one person can guide %d ends at one height with K in the other hand, and whether a fold '
       'stays where it was made are not shown. The cheap way to see them is the handling trial of owner item 4 of c1: '
-      'one stock 0.5 mm cable and one printed plate with a 1.5 mm slot.' % big['ends'])
+      'one stock 0.5 mm cable and one printed plate with a %s mm slot.' % (
+          _g(pm['cable_length_range_mm'][0]), _g(pm['cable_length_range_mm'][1]), big['ends'], _g(pm['slot_length_mm'])))
     w('')
     w('## After K is seated, %d ends are folded onto K\'s rear face, inserted and locked; %d connectors need the '
       'holding hand' % (c['locks_after_K'], c['holding_hand']))
     w('')
     w('Fold each end down onto K\'s rear face toward its K connector (the run on K is in the link table), push it in '
-      'by the 4.0 mm insertion and close the lock with one fingertip or a plastic tool, never with the palm on K. At '
-      'the connectors below, the other hand holds K\'s edge beside the connector while its lock is closed (DS-87).')
+      'by the %s mm insertion and close the lock with one fingertip or a plastic tool, never with the palm on K. At '
+      'the connectors below, the other hand holds K\'s edge beside the connector while its lock is closed (DS-87).' %
+      _g(pm['insertion_mm']))
     w('')
     w('| Link | K connector beside | Panel coordinates | mm/N |')
     w('| --- | --- | --- | --- |')
@@ -126,7 +133,7 @@ def render(doc):
     w('')
     w('NOT SHOWN, because %s. Nothing is claimed for them.' % lat['reason'])
     w('')
-    w('| Link | K connector beside | Neighbours within 1.0 mm |')
+    w('| Link | K connector beside | Neighbours within %s mm |' % _g(pm['latch_margin_mm']))
     w('| --- | --- | --- |')
     for n in lat['not_shown']:
         w('| %s | %s | %s |' % (n['link'], n['K_connector'], ', '.join(n['neighbours'])))
@@ -138,8 +145,9 @@ def render(doc):
     for k in scr['classes']:
         w('- %s: grip %s mm, thread %s mm behind K\'s rear face, inside the %s mm envelope.' %
           (k['class'], _g(k['grip_mm']), _g(k['thread_behind_K_rear_mm']), _g(k['rear_envelope_mm'])))
-    w('- Head at most %s mm and not countersunk; it passes the 7.0 mm access hole of EL at (244, 230).' %
-      _g(wf['head_max_mm']))
+    ah = pm['access_hole']
+    w('- Head at most %s mm and not countersunk; it passes the %s mm access hole of %s at %s.' %
+      (_g(wf['head_max_mm']), _g(ah['diameter_mm']), ah['board'], _xy(ah['xy'])))
     sh = scr['sheet']
     w('- Retained maker sheet: `%s` in the %s, SHA256 `%s`, from %s. It gives %s; it does not give %s.' %
       (sh['path'], sh['store'], sh['sha256'], sh['authoritative_url'], '; '.join('%s: %s' % kv for kv in sh['facts'].items()),
@@ -164,10 +172,10 @@ def render(doc):
       'closed and square, no cable pinched under K or at a post, 18 post screws and 4 nuts present, continuity of '
       'every link.')
     w('')
-    w('K comes off at most %d times (DS-63: 20 insertions SOURCED for the connector). The owner keeps the count '
+    w('K comes off at most %d times (DS-63: %d insertions SOURCED for the connector). The owner keeps the count '
       'without a change to a board: one line per opening in the instrument\'s log (date, reason, opening number), and '
       'a tally on a paper label inside the case. Replacing a link costs one opening of K, one stock cable and its two '
-      'locks; that front connector then stands at %d insertions.' % (sv['limit_openings'],
+      'locks; that front connector then stands at %d insertions.' % (sv['limit_openings'], sv['insertions_sourced'],
                                                                     sv['replace_link']['front_connector_insertions_after']))
     w('')
     w('## Counts in the units of the bench match the record summary')

@@ -2,6 +2,32 @@
  "schema_version": 1,
  "status": "paper procedure on unvalidated drafts; no fit, no strength and no proven assembly",
  "verdict": "DONE",
+ "parameters": {
+  "bend_radius_mm": 2.4,
+  "bend_term_mm": 1.0301,
+  "insertion_mm": 4.0,
+  "trim_to_mm": 1.0,
+  "latch_margin_mm": 1.0,
+  "tail_step_mm": 2.0,
+  "slot_width_extra_mm": 1.0,
+  "slot_length_mm": 1.5,
+  "cable_tail_thickness": "0.3 +/- 0.03 mm",
+  "tail_thickness_max_mm": 0.33,
+  "cable_width_tol_mm": 0.08,
+  "insertions_sourced": 20,
+  "cable_length_range_mm": [
+   40.0,
+   60.0
+  ],
+  "access_hole": {
+   "board": "EL",
+   "xy": [
+    244,
+    230
+   ],
+   "diameter_mm": 7.0
+  }
+ },
  "links": [
   {
    "id": "O-K-O1",
@@ -4359,7 +4385,7 @@
  "steps": [
   {
    "n": 1,
-   "do": "Solder the parts of JL, JR, P and the three adapters. Every lead on the rear faces of JL, JR, P and the adapters is cut to 1.0 mm or less when the part is soldered (DS-88).",
+   "do": "Solder the parts of JL, JR, P and the three adapters. Every lead on the rear faces of JL, JR, P and the adapters is cut to 1 mm or less when the part is soldered (DS-88).",
    "parts": 83,
    "where": "P 49, JL 19, JR 14, O3 1, listed below"
   },
@@ -4375,7 +4401,7 @@
   },
   {
    "n": 4,
-   "do": "Before the panel goes on, push an M3 × 25 mm screw (head at most 5.5 mm, not countersunk) through each sleeve hole from the front of its board and hold the head down with a strip of tape: (74, 28) on JL, (244, 24) on JR, (93, 276) on P, and (244, 230) on P through the 7.0 mm access hole of EL (DS-76).",
+   "do": "Before the panel goes on, push an M3 × 25 mm screw (head at most 5.5 mm, not countersunk) through each sleeve hole from the front of its board and hold the head down with a strip of tape: (74, 28) on JL, (244, 24) on JR, (93, 276) on P, (244, 230) on P through the 7 mm access hole of EL (DS-76).",
    "parts": 4
   },
   {
@@ -5301,16 +5327,17 @@
    "options_projection": {
     "files": [
      "design/stack/geometry/links/link-options.json",
-     "design/stack/connectors/flex-links.json"
+     "design/stack/connectors/flex-links.json",
+     "design/stack/geometry/links/link-gate-options.json"
     ],
-    "digest": "3ab06a42385b4570c92a18438ca3132b80275edccf6b619fcc561cc6197abd80"
+    "digest": "b909029e2b6ee087755d47c141d709b0f3b64d6a9273e058498616addb15587b"
    },
    "files_sha256": {
     "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
     "design/stack/fixings/fixing-sites.json": "8402ce558d2de13512ff325a5550ef21f303d64b5e5cb86c1aa20ffe2924225b",
     "design/stack/fixings/ruled-list.json": "fb18e85e1c7a9be576a5c9d5d5efd2738999a86449afeae00e8ed84d65ce234d",
-    "scripts/stack/fixings/procedure.py": "49c7f4005dcb5834417b9d222bd5443ee824a2ffc5fe6cecbda59b4a2530a575",
-    "scripts/stack/fixings/procedure_page.py": "469d8a8fa4b26e7cd8d1d064833306cf6a2dc3dfe6a382cfd5aea4f5426176b2"
+    "scripts/stack/fixings/procedure.py": "9566540759d8db501b06e8da7551bae111edfeba379b11760faa3a7da3f97750",
+    "scripts/stack/fixings/procedure_page.py": "a1ed8d41b0f4d3be358a049b72f2b7eb5ec40de73c5a3c66ecbc795eebb59cdb"
    }
   }
  }
