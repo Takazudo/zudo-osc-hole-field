@@ -50,8 +50,11 @@ circuit:check` passed with its stated manual-inventory scope. A regenerated
 link-gate JSON compared byte-for-byte with the retained record; electrical and
 c6 report `--check` returned `current`, and the trimmer checker passed. The
 worktree remained clean. These checks do **not** bind a future integration
-head. Full `regen-all.sh` on changed source, native KiCad, CI, DRC/fill, physical
-fit/service and hardware checks are **NOT RUN** here.
+head. Aggregate `bash scripts/checks/regen-all.sh --check` is **NOT RUN** here;
+that wrapper does not invoke the changed MC-01 link-gate/electrical or MC-03
+trimmer generators, so their focused checks remain a separate integration-head
+gate. Native KiCad, CI, DRC/fill, physical fit/service and hardware checks are
+also **NOT RUN** here.
 
 Before a final MC-02 packet: (1) obtain the completed extraction owner's exact
 receipt; (2) integrate and independently review MC-01 through Moya's serialized
