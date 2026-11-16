@@ -233,6 +233,8 @@ def rule_check(link):
         else:
             i += 1
     for s, e in runs:
+        if e - s + 1 > 3:
+            br.append(f'logic run at positions {s} to {e} exceeds DA-03 c6 cap of three')
         left = s - 2 >= 0 and pos[s - 2]['kind'] != 'signal'
         right = e < n and pos[e]['kind'] != 'signal'
         if e > s:
@@ -242,6 +244,10 @@ def rule_check(link):
                 br.append(f'logic run at positions {s} to {e} lacks a ground on each side (DS-77)')
         elif (s == 1 and not right) or (s == n and not left):
             br.append(f'single logic line at outer position {s} has no ground beside it (DS-77)')
+    for i, p in enumerate(pos):
+        if p['kind'] == 'signal' and p['net'].endswith('/SYNC_GATE'):
+            if i == 0 or i == n - 1 or pos[i - 1]['kind'] not in ('ground', 'unused') or pos[i + 1]['kind'] not in ('ground', 'unused'):
+                br.append(f'SYNC_GATE at position {i + 1} lacks a ground on each side (DA-03 c6)')
     if link['joint'] == 'O-K':
         order = [('AGND' if p['kind'] != 'signal' else p['net'].split('/')[-1]) for p in pos]
         if order != ADAPTER_ORDER:

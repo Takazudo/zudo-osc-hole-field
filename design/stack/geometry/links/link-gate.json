@@ -19,7 +19,8 @@
    "design/stack/geometry/stack-candidate.json": "9bd03493c0a98c36357c90ee56e86dec57eb3dd5d0793a84f49f34f1c5d25f54",
    "scripts/stack/geometry/kicad_extract.py": "23093e93bf8a5c9072310531d771f9592783673c13f9a23dd70eb9272505ecdd",
    "scripts/stack/geometry/links.py": "928814c730d87538e3eadcb03394bfd7ccc53fd45a86ea92e20c1149d0715f50",
-   "scripts/stack/geometry/links_gate.py": "7fa03986dfb41373a8c5b1114ed767f6c5671370dbd9583b490858f43fb23d18",
+   "scripts/stack/geometry/links_gate.py": "d068e43957a7ee733cbd34f347f325537d051d871d32f8553e66474f5367448e",
+   "scripts/stack/geometry/links_gate_c6.py": "e83defccc7e05e219a0d27697ad5a2b805de5be43cdab6e86b257be880f32f4b",
    "scripts/stack/geometry/links_gate_part2.py": "d3341b6ba3630aa2d69038a792e88cff4b008737415de112eda6672bdf7b5cd3",
    "scripts/stack/geometry/links_gate_readme.py": "235fd5dedd0ab928128ea4c3824398b9a6538bfcd46d7487651058e5f6df9123",
    "scripts/stack/geometry/links_gate_readme_part2.py": "2ee4581c4338ce651fc67661f2da010decbd1b9661dc79b645062d72db01235e",
@@ -3189,9 +3190,9 @@
   "latches": 122,
   "signals_on_links": 511,
   "signals_on_placed_links": 511,
-  "signals_on_riders": 42,
-  "grounds": 322,
-  "unused_positions": 339,
+  "signals_on_riders": 45,
+  "grounds": 340,
+  "unused_positions": 321,
   "per_joint_and_size": {
    "O-K": {
     "FH12-N8": {
@@ -3228,24 +3229,24 @@
      "links": 9,
      "placed": 9,
      "unplaced": 0,
-     "signals": 75,
-     "grounds": 26,
-     "unused": 25
+     "signals": 76,
+     "grounds": 31,
+     "unused": 19
     },
     "FH12-N26": {
      "links": 3,
      "placed": 3,
      "unplaced": 0,
      "signals": 22,
-     "grounds": 15,
-     "unused": 41
+     "grounds": 16,
+     "unused": 40
     },
     "FH12-N8": {
      "links": 26,
      "placed": 26,
      "unplaced": 0,
-     "signals": 137,
-     "grounds": 58,
+     "signals": 136,
+     "grounds": 59,
      "unused": 13
     },
     "FH12-N40": {
@@ -3253,8 +3254,8 @@
      "placed": 2,
      "unplaced": 0,
      "signals": 34,
-     "grounds": 16,
-     "unused": 30
+     "grounds": 27,
+     "unused": 19
     }
    },
    "JL-P via K": {
@@ -28485,8 +28486,8 @@
     "K-P-36",
     "K-P-38"
    ],
-   "signals": 12,
-   "grounds": 2,
+   "signals": 10,
+   "grounds": 4,
    "unused": 0,
    "circuits_needed": 14,
    "size": "FH12-N14",
@@ -28529,52 +28530,46 @@
     },
     {
      "pos": 6,
+     "kind": "ground"
+    },
+    {
+     "pos": 7,
      "kind": "signal",
      "net": "/E4/STAGE_FALL",
      "class": "LOGIC",
      "site": "K-P-31"
     },
     {
-     "pos": 7,
+     "pos": 8,
      "kind": "signal",
      "net": "/E4/TRIG_ACTIVE",
      "class": "LOGIC",
      "site": "K-P-31"
     },
     {
-     "pos": 8,
-     "kind": "signal",
-     "net": "/E5/ASR_RAW",
-     "class": "LOGIC",
-     "site": "K-P-32"
-    },
-    {
      "pos": 9,
      "kind": "signal",
-     "net": "/E5/CURVED",
+     "net": "/E6/LOOP_RAW",
      "class": "LOGIC",
-     "site": "K-P-32"
+     "site": "K-P-38"
     },
     {
      "pos": 10,
+     "kind": "ground"
+    },
+    {
+     "pos": 11,
      "kind": "signal",
      "net": "/E6/ASR_RAW",
      "class": "LOGIC",
      "site": "K-P-36"
     },
     {
-     "pos": 11,
+     "pos": 12,
      "kind": "signal",
      "net": "/E6/CURVED",
      "class": "LOGIC",
      "site": "K-P-36"
-    },
-    {
-     "pos": 12,
-     "kind": "signal",
-     "net": "/E6/LOOP_RAW",
-     "class": "LOGIC",
-     "site": "K-P-38"
     },
     {
      "pos": 13,
@@ -28693,7 +28688,26 @@
      "C4428"
     ],
     "verdict": "NOT SHOWN (exempt packages C0603, ASSUMED lower than the 2.0 mm connector body; no height retained)"
-   }
+   },
+   "riders_out": [
+    {
+     "net": "/E5/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-32",
+     "host": "P-K-P-L05.01.01",
+     "distance_mm": 24.1835,
+     "reason": "coupling"
+    },
+    {
+     "net": "/E5/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-32",
+     "host": "P-K-P-L05.01.01",
+     "distance_mm": 24.1835,
+     "reason": "coupling"
+    }
+   ],
+   "c6_circuits_needed": 12
   },
   {
    "id": "P-K-P-L01.01.02",
@@ -28918,8 +28932,8 @@
     "P-K-E4"
    ],
    "signals": 9,
-   "grounds": 4,
-   "unused": 1,
+   "grounds": 5,
+   "unused": 0,
    "circuits_needed": 13,
    "size": "FH12-N14",
    "circuits": 14,
@@ -28983,32 +28997,32 @@
     },
     {
      "pos": 10,
+     "kind": "ground"
+    },
+    {
+     "pos": 11,
      "kind": "signal",
      "net": "/E5/STAGE_FALL",
      "class": "LOGIC",
      "site": "K-P-35"
     },
     {
-     "pos": 11,
+     "pos": 12,
      "kind": "signal",
      "net": "/E5/TRIG_ACTIVE",
      "class": "LOGIC",
      "site": "K-P-35"
     },
     {
-     "pos": 12,
+     "pos": 13,
      "kind": "ground"
     },
     {
-     "pos": 13,
+     "pos": 14,
      "kind": "signal",
      "net": "/E4/NOT_RISE",
      "class": "ANALOGUE",
      "site": "P-K-E4"
-    },
-    {
-     "pos": 14,
-     "kind": "unused"
     }
    ],
    "placed": true,
@@ -29113,7 +29127,8 @@
     "displaced_by_latch_rule": [],
     "remaining": [],
     "verdict": "open"
-   }
+   },
+   "c6_circuits_needed": 13
   },
   {
    "id": "P-K-P-L02.01.01",
@@ -29340,8 +29355,8 @@
     "P-K-E3"
    ],
    "signals": 15,
-   "grounds": 10,
-   "unused": 1,
+   "grounds": 11,
+   "unused": 0,
    "circuits_needed": 25,
    "size": "FH12-N26",
    "circuits": 26,
@@ -29471,32 +29486,32 @@
     },
     {
      "pos": 22,
+     "kind": "ground"
+    },
+    {
+     "pos": 23,
      "kind": "signal",
      "net": "/E2/ASR_RAW",
      "class": "LOGIC",
      "site": "K-P-20"
     },
     {
-     "pos": 23,
+     "pos": 24,
      "kind": "signal",
      "net": "/E2/CURVED",
      "class": "LOGIC",
      "site": "K-P-20"
     },
     {
-     "pos": 24,
+     "pos": 25,
      "kind": "ground"
     },
     {
-     "pos": 25,
+     "pos": 26,
      "kind": "signal",
      "net": "/E1/NOT_RISE",
      "class": "ANALOGUE",
      "site": "P-K-E1"
-    },
-    {
-     "pos": 26,
-     "kind": "unused"
     }
    ],
    "placed": true,
@@ -29636,7 +29651,8 @@
      "R8476"
     ],
     "verdict": "NOT SHOWN (exempt packages C0603, R0603, ASSUMED lower than the 2.0 mm connector body; no height retained)"
-   }
+   },
+   "c6_circuits_needed": 25
   },
   {
    "id": "P-K-P-L03.02.01",
@@ -29648,9 +29664,9 @@
     "K-P-34",
     "K-P-55"
    ],
-   "signals": 8,
-   "grounds": 3,
-   "unused": 3,
+   "signals": 9,
+   "grounds": 4,
+   "unused": 1,
    "circuits_needed": 11,
    "size": "FH12-N14",
    "circuits": 14,
@@ -29703,36 +29719,40 @@
     },
     {
      "pos": 8,
+     "kind": "ground"
+    },
+    {
+     "pos": 9,
      "kind": "signal",
      "net": "/E5/LOOP_RAW",
      "class": "LOGIC",
      "site": "K-P-34"
     },
     {
-     "pos": 9,
+     "pos": 10,
      "kind": "signal",
      "net": "/H1/BUTTON_ACTIVE",
      "class": "LOGIC",
      "site": "K-P-55"
     },
     {
-     "pos": 10,
+     "pos": 11,
+     "kind": "signal",
+     "net": "/E1/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-19",
+     "rider_from": "P-K-P-L13.01.01.01"
+    },
+    {
+     "pos": 12,
      "kind": "ground"
     },
     {
-     "pos": 11,
+     "pos": 13,
      "kind": "signal",
      "net": "/E2/REF5",
      "class": "PRECISION",
      "site": "K-P-22"
-    },
-    {
-     "pos": 12,
-     "kind": "unused"
-    },
-    {
-     "pos": 13,
-     "kind": "unused"
     },
     {
      "pos": 14,
@@ -29848,7 +29868,18 @@
     ],
     "remaining": [],
     "verdict": "open after the displacement"
-   }
+   },
+   "riders_in": [
+    {
+     "net": "/E1/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-19",
+     "from": "P-K-P-L13.01.01.01",
+     "distance_mm": 50.3211,
+     "reason": "coupling"
+    }
+   ],
+   "c6_circuits_needed": 12
   },
   {
    "id": "P-K-P-L03.02.02.01",
@@ -31011,9 +31042,9 @@
    "members": [
     "K-P-23"
    ],
-   "signals": 2,
-   "grounds": 2,
-   "unused": 10,
+   "signals": 4,
+   "grounds": 3,
+   "unused": 7,
    "circuits_needed": 4,
    "size": "FH12-N14",
    "circuits": 14,
@@ -31045,15 +31076,23 @@
     },
     {
      "pos": 5,
-     "kind": "unused"
+     "kind": "signal",
+     "net": "/E5/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-32",
+     "rider_from": "P-K-P-L01.01.01"
     },
     {
      "pos": 6,
-     "kind": "unused"
+     "kind": "signal",
+     "net": "/E5/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-32",
+     "rider_from": "P-K-P-L01.01.01"
     },
     {
      "pos": 7,
-     "kind": "unused"
+     "kind": "ground"
     },
     {
      "pos": 8,
@@ -31194,7 +31233,26 @@
     "displaced_by_latch_rule": [],
     "remaining": [],
     "verdict": "open"
-   }
+   },
+   "riders_in": [
+    {
+     "net": "/E5/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-32",
+     "from": "P-K-P-L01.01.01",
+     "distance_mm": 24.1835,
+     "reason": "coupling"
+    },
+    {
+     "net": "/E5/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-32",
+     "from": "P-K-P-L01.01.01",
+     "distance_mm": 24.1835,
+     "reason": "coupling"
+    }
+   ],
+   "c6_circuits_needed": 6
   },
   {
    "id": "P-K-P-L06.01.01",
@@ -32301,8 +32359,8 @@
     "K-P-98"
    ],
    "signals": 16,
-   "grounds": 7,
-   "unused": 17,
+   "grounds": 13,
+   "unused": 11,
    "circuits_needed": 23,
    "size": "FH12-N40",
    "circuits": 40,
@@ -32385,94 +32443,94 @@
     },
     {
      "pos": 14,
+     "kind": "ground"
+    },
+    {
+     "pos": 15,
      "kind": "signal",
      "net": "/O3/SYNC_GATE",
      "class": "LOGIC",
      "site": "K-P-101"
     },
     {
-     "pos": 15,
+     "pos": 16,
+     "kind": "ground"
+    },
+    {
+     "pos": 17,
      "kind": "signal",
      "net": "/O1/HARD_DRIVE",
      "class": "LOGIC",
      "site": "K-P-84"
     },
     {
-     "pos": 16,
+     "pos": 18,
      "kind": "signal",
      "net": "/O1/SOFT_DRIVE",
      "class": "LOGIC",
      "site": "K-P-87"
     },
     {
-     "pos": 17,
+     "pos": 19,
+     "kind": "ground"
+    },
+    {
+     "pos": 20,
      "kind": "signal",
      "net": "/O1/SYNC_GATE",
      "class": "LOGIC",
      "site": "K-P-87"
     },
     {
-     "pos": 18,
+     "pos": 21,
+     "kind": "ground"
+    },
+    {
+     "pos": 22,
      "kind": "signal",
      "net": "/O2/HARD_DRIVE",
      "class": "LOGIC",
      "site": "K-P-91"
     },
     {
-     "pos": 19,
+     "pos": 23,
      "kind": "signal",
      "net": "/O2/SOFT_DRIVE",
      "class": "LOGIC",
      "site": "K-P-94"
     },
     {
-     "pos": 20,
+     "pos": 24,
+     "kind": "ground"
+    },
+    {
+     "pos": 25,
      "kind": "signal",
      "net": "/O2/SYNC_GATE",
      "class": "LOGIC",
      "site": "K-P-94"
     },
     {
-     "pos": 21,
+     "pos": 26,
+     "kind": "ground"
+    },
+    {
+     "pos": 27,
      "kind": "signal",
      "net": "/O3/HARD_DRIVE",
      "class": "LOGIC",
      "site": "K-P-98"
     },
     {
-     "pos": 22,
+     "pos": 28,
      "kind": "ground"
     },
     {
-     "pos": 23,
+     "pos": 29,
      "kind": "signal",
      "net": "/O2/PWM_REMOTE",
      "class": "ANALOGUE",
      "site": "K-P-93"
-    },
-    {
-     "pos": 24,
-     "kind": "unused"
-    },
-    {
-     "pos": 25,
-     "kind": "unused"
-    },
-    {
-     "pos": 26,
-     "kind": "unused"
-    },
-    {
-     "pos": 27,
-     "kind": "unused"
-    },
-    {
-     "pos": 28,
-     "kind": "unused"
-    },
-    {
-     "pos": 29,
-     "kind": "unused"
     },
     {
      "pos": 30,
@@ -32672,7 +32730,8 @@
      "R1614"
     ],
     "verdict": "NOT SHOWN (exempt packages C0603, R0603, ASSUMED lower than the 2.0 mm connector body; no height retained)"
-   }
+   },
+   "c6_circuits_needed": 23
   },
   {
    "id": "P-K-P-L08",
@@ -32690,8 +32749,8 @@
     "P-K-SUB-O4"
    ],
    "signals": 18,
-   "grounds": 9,
-   "unused": 13,
+   "grounds": 14,
+   "unused": 8,
    "circuits_needed": 27,
    "size": "FH12-N40",
    "circuits": 40,
@@ -32803,83 +32862,83 @@
     },
     {
      "pos": 19,
+     "kind": "ground"
+    },
+    {
+     "pos": 20,
      "kind": "signal",
      "net": "/O4/SYNC_GATE",
      "class": "LOGIC",
      "site": "K-P-108"
     },
     {
-     "pos": 20,
+     "pos": 21,
+     "kind": "ground"
+    },
+    {
+     "pos": 22,
      "kind": "signal",
      "net": "/O5/SOFT_DRIVE",
      "class": "LOGIC",
      "site": "K-P-115"
     },
     {
-     "pos": 21,
+     "pos": 23,
+     "kind": "ground"
+    },
+    {
+     "pos": 24,
      "kind": "signal",
      "net": "/O5/SYNC_GATE",
      "class": "LOGIC",
      "site": "K-P-115"
     },
     {
-     "pos": 22,
+     "pos": 25,
+     "kind": "ground"
+    },
+    {
+     "pos": 26,
      "kind": "signal",
      "net": "O2:SUB_SEL_A (planning)",
      "class": "LOGIC",
      "site": "P-K-SUB-O2"
     },
     {
-     "pos": 23,
+     "pos": 27,
      "kind": "signal",
      "net": "O2:SUB_SEL_B (planning)",
      "class": "LOGIC",
      "site": "P-K-SUB-O2"
     },
     {
-     "pos": 24,
+     "pos": 28,
+     "kind": "ground"
+    },
+    {
+     "pos": 29,
      "kind": "signal",
      "net": "O4:SUB_SEL_A (planning)",
      "class": "LOGIC",
      "site": "P-K-SUB-O4"
     },
     {
-     "pos": 25,
+     "pos": 30,
      "kind": "signal",
      "net": "O4:SUB_SEL_B (planning)",
      "class": "LOGIC",
      "site": "P-K-SUB-O4"
     },
     {
-     "pos": 26,
+     "pos": 31,
      "kind": "ground"
     },
     {
-     "pos": 27,
+     "pos": 32,
      "kind": "signal",
      "net": "/O5/PWM_REMOTE",
      "class": "ANALOGUE",
      "site": "K-P-114"
-    },
-    {
-     "pos": 28,
-     "kind": "unused"
-    },
-    {
-     "pos": 29,
-     "kind": "unused"
-    },
-    {
-     "pos": 30,
-     "kind": "unused"
-    },
-    {
-     "pos": 31,
-     "kind": "unused"
-    },
-    {
-     "pos": 32,
-     "kind": "unused"
     },
     {
      "pos": 33,
@@ -33041,7 +33100,8 @@
      "C1449"
     ],
     "verdict": "NOT SHOWN (exempt packages C0603, ASSUMED lower than the 2.0 mm connector body; no height retained)"
-   }
+   },
+   "c6_circuits_needed": 27
   },
   {
    "id": "P-K-P-L09.01.01.01",
@@ -36124,8 +36184,8 @@
     "K-P-39",
     "K-P-57"
    ],
-   "signals": 6,
-   "grounds": 2,
+   "signals": 5,
+   "grounds": 3,
    "unused": 0,
    "circuits_needed": 8,
    "size": "FH12-N8",
@@ -36148,30 +36208,27 @@
     {
      "pos": 3,
      "kind": "signal",
-     "net": "/E1/STAGE_FALL",
-     "class": "LOGIC",
-     "site": "K-P-19"
-    },
-    {
-     "pos": 4,
-     "kind": "signal",
-     "net": "/E1/TRIG_ACTIVE",
-     "class": "LOGIC",
-     "site": "K-P-19"
-    },
-    {
-     "pos": 5,
-     "kind": "signal",
      "net": "/E6/STAGE_FALL",
      "class": "LOGIC",
      "site": "K-P-39"
     },
     {
-     "pos": 6,
+     "pos": 4,
      "kind": "signal",
      "net": "/E6/TRIG_ACTIVE",
      "class": "LOGIC",
      "site": "K-P-39"
+    },
+    {
+     "pos": 5,
+     "kind": "ground"
+    },
+    {
+     "pos": 6,
+     "kind": "signal",
+     "net": "/E1/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-19"
     },
     {
      "pos": 7,
@@ -36290,7 +36347,18 @@
     "displaced_by_latch_rule": [],
     "remaining": [],
     "verdict": "open"
-   }
+   },
+   "riders_out": [
+    {
+     "net": "/E1/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-19",
+     "host": "P-K-P-L03.02.01",
+     "distance_mm": 50.3211,
+     "reason": "coupling"
+    }
+   ],
+   "c6_circuits_needed": 7
   },
   {
    "id": "P-K-P-L13.01.01.02",
@@ -39876,5 +39944,21 @@
    "signals_before": 2,
    "placed_before_consolidation": true
   }
- ]
+ ],
+ "c6": {
+  "authority": "DA-03 c6 and clarification",
+  "source_sha256": "6e3141c94d8aff6d3552916fd37caf11e710607cf9add46c315107d41aa093b1",
+  "geometry_sha256": "fb5e91e1c7fc1f581434cb6a9a28fb91d7c21c170d66156ceb6cb4e912760eb8",
+  "signal_sha256": "baa834876861bea8245c223950e3405ec7d9223f327f99f38fc3c5a59da128c4",
+  "changed_links": [
+   "P-K-P-L01.01.01",
+   "P-K-P-L01.02.01",
+   "P-K-P-L03.01",
+   "P-K-P-L03.02.01",
+   "P-K-P-L05.01.01",
+   "P-K-P-L07",
+   "P-K-P-L08",
+   "P-K-P-L13.01.01.01"
+  ]
+ }
 }

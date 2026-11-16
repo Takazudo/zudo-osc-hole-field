@@ -5,33 +5,27 @@
  "written_by": "scripts/stack/link_electrical/link_electrical.py",
  "inputs": "inputs.json",
  "record": "design/stack/geometry/links/link-gate.json",
- "record_projection_sha256": "1c807df22cefeef4641d895f2deee9a2bbcc226112ae18aa65f23b7f13e5799e",
- "verdict": "NEEDS_DESIGN",
- "links_above_1": [
-  "P-K-P-L01.01.01",
-  "P-K-P-L03.01",
-  "P-K-P-L07",
-  "P-K-P-L08",
-  "P-K-P-L13.01.01.01"
- ],
+ "record_projection_sha256": "54d9fc4e26453d951cf0dfc7a5b092789f63250e99a743b9f67fa6d7962b85f6",
+ "verdict": "DONE",
+ "links_above_1": [],
  "rule_breaks": {},
  "missing_references": [],
  "largest_ratio_per_cable": {
   "C26618": {
-   "id": "P-K-P-L07",
-   "ratio": 1.13579
+   "id": "P-K-P-L08",
+   "ratio": 0.828587
   },
   "C29534": {
-   "id": "P-K-P-L13.01.01.01",
-   "ratio": 1.04125
+   "id": "P-K-P-L10.01.01.01",
+   "ratio": 0.930862
   },
   "C32128": {
    "id": "P-K-P-L03.01",
-   "ratio": 1.1325
+   "ratio": 0.978101
   },
   "C68390": {
-   "id": "P-K-P-L01.01.01",
-   "ratio": 1.42134
+   "id": "P-K-P-L06.01.01",
+   "ratio": 0.867583
   }
  },
  "links": [
@@ -562,33 +556,27 @@
    "cable": "C68390",
    "length_mm": 50.0,
    "signals_by_class": {
-    "LOGIC": 10,
+    "LOGIC": 8,
     "PRECISION": 2
    },
-   "grounds": 2,
+   "grounds": 4,
    "unused": 0,
-   "pairs_evaluated": 132,
+   "pairs_evaluated": 90,
    "pairs_without_reference": [],
    "host": false,
    "riders": [],
-   "ratio": 1.42134,
+   "ratio": 0.838691,
    "largest_pair": {
     "pair": "LOGIC>LOGIC",
-    "aggressor": "/E4/TRIG_ACTIVE",
-    "aggressor_pos": 7,
-    "victim": "/E5/ASR_RAW",
-    "victim_pos": 8,
+    "aggressor": "/E4/ASR_RAW",
+    "aggressor_pos": 4,
+    "victim": "/E3/LOOP_RAW",
+    "victim_pos": 3,
     "lies": "side by side",
-    "bound_V": 0.310352,
+    "bound_V": 0.183129,
     "harness_min_V": 0.218351,
-    "ratio": 1.42134,
+    "ratio": 0.838691,
     "riders": {}
-   },
-   "remedy_ds77": {
-    "grounds_moved_in": null,
-    "unused_available": 0,
-    "ratio_after": null,
-    "order_after": null
    }
   },
   {
@@ -633,23 +621,23 @@
     "LOGIC": 5,
     "PRECISION": 1
    },
-   "grounds": 4,
-   "unused": 1,
+   "grounds": 5,
+   "unused": 0,
    "pairs_evaluated": 72,
    "pairs_without_reference": [],
    "host": false,
    "riders": [],
-   "ratio": 0.991631,
+   "ratio": 0.865709,
    "largest_pair": {
-    "pair": "LOGIC>LOGIC",
-    "aggressor": "/E4/LOOP_RAW",
-    "aggressor_pos": 9,
-    "victim": "/E5/STAGE_FALL",
-    "victim_pos": 10,
-    "lies": "side by side",
-    "bound_V": 0.216524,
-    "harness_min_V": 0.218351,
-    "ratio": 0.991631,
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/E4/REF5",
+    "aggressor_pos": 3,
+    "victim": "/E4/ENV_BUFFER",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000965288,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.865709,
     "riders": {}
    }
   },
@@ -697,57 +685,24 @@
     "LOGIC": 5,
     "PRECISION": 1
    },
-   "grounds": 10,
-   "unused": 1,
+   "grounds": 11,
+   "unused": 0,
    "pairs_evaluated": 210,
    "pairs_without_reference": [],
    "host": false,
    "riders": [],
-   "ratio": 1.1325,
+   "ratio": 0.978101,
    "largest_pair": {
-    "pair": "LOGIC>LOGIC",
-    "aggressor": "/E1/LOOP_RAW",
-    "aggressor_pos": 21,
-    "victim": "/E2/ASR_RAW",
-    "victim_pos": 22,
-    "lies": "side by side",
-    "bound_V": 0.247282,
-    "harness_min_V": 0.218351,
-    "ratio": 1.1325,
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/E1/REF5",
+    "aggressor_pos": 3,
+    "victim": "/E1/ENV_BUFFER",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.00109061,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.978101,
     "riders": {}
-   },
-   "remedy_ds77": {
-    "grounds_moved_in": 1,
-    "unused_available": 1,
-    "ratio_after": 0.978101,
-    "order_after": [
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "S",
-     "S",
-     "G",
-     "S",
-     "S",
-     "G",
-     "S"
-    ]
    }
   },
   {
@@ -759,28 +714,36 @@
    "length_mm": 50.0,
    "signals_by_class": {
     "ANALOGUE": 1,
-    "LOGIC": 5,
+    "LOGIC": 6,
     "PRECISION": 2
    },
-   "grounds": 3,
-   "unused": 3,
-   "pairs_evaluated": 56,
+   "grounds": 4,
+   "unused": 1,
+   "pairs_evaluated": 72,
    "pairs_without_reference": [],
-   "host": false,
-   "riders": [],
-   "ratio": 0.98868,
+   "host": true,
+   "riders": [
+    {
+     "net": "/E1/STAGE_FALL",
+     "pos": 11,
+     "from": "P-K-P-L13.01.01.01"
+    }
+   ],
+   "ratio": 0.866611,
    "largest_pair": {
-    "pair": "LOGIC>LOGIC",
-    "aggressor": "/E3/CURVED",
-    "aggressor_pos": 7,
-    "victim": "/E3/ASR_RAW",
-    "victim_pos": 6,
-    "lies": "side by side",
-    "bound_V": 0.215879,
-    "harness_min_V": 0.218351,
-    "ratio": 0.98868,
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/E5/REF5",
+    "aggressor_pos": 3,
+    "victim": "/H1/RAW_HELD",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000966294,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.866611,
     "riders": {}
-   }
+   },
+   "ratio_without_riders": 0.866312,
+   "rider_pairs_above_1": []
   },
   {
    "id": "P-K-P-L04.01.01.01",
@@ -983,15 +946,26 @@
    "cable": "C68390",
    "length_mm": 50.0,
    "signals_by_class": {
-    "LOGIC": 2
+    "LOGIC": 4
    },
-   "grounds": 2,
-   "unused": 10,
-   "pairs_evaluated": 2,
+   "grounds": 3,
+   "unused": 7,
+   "pairs_evaluated": 12,
    "pairs_without_reference": [],
-   "host": false,
-   "riders": [],
-   "ratio": 0.731638,
+   "host": true,
+   "riders": [
+    {
+     "net": "/E5/ASR_RAW",
+     "pos": 5,
+     "from": "P-K-P-L01.01.01"
+    },
+    {
+     "net": "/E5/CURVED",
+     "pos": 6,
+     "from": "P-K-P-L01.01.01"
+    }
+   ],
+   "ratio": 0.740343,
    "largest_pair": {
     "pair": "LOGIC>LOGIC",
     "aggressor": "/E2/TRIG_ACTIVE",
@@ -999,11 +973,13 @@
     "victim": "/E2/STAGE_FALL",
     "victim_pos": 2,
     "lies": "side by side",
-    "bound_V": 0.159754,
+    "bound_V": 0.161655,
     "harness_min_V": 0.218351,
-    "ratio": 0.731638,
+    "ratio": 0.740343,
     "riders": {}
-   }
+   },
+   "ratio_without_riders": 0.731638,
+   "rider_pairs_above_1": []
   },
   {
    "id": "P-K-P-L06.01.01",
@@ -1167,71 +1143,24 @@
     "LOGIC": 9,
     "PRECISION": 5
    },
-   "grounds": 7,
-   "unused": 17,
+   "grounds": 13,
+   "unused": 11,
    "pairs_evaluated": 240,
    "pairs_without_reference": [],
    "host": false,
    "riders": [],
-   "ratio": 1.13579,
+   "ratio": 0.828582,
    "largest_pair": {
-    "pair": "LOGIC>LOGIC",
-    "aggressor": "/O1/SYNC_GATE",
-    "aggressor_pos": 17,
-    "victim": "/O1/SOFT_DRIVE",
-    "victim_pos": 16,
-    "lies": "side by side",
-    "bound_V": 0.248002,
-    "harness_min_V": 0.218351,
-    "ratio": 1.13579,
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/O1/LFO_REF",
+    "aggressor_pos": 3,
+    "victim": "/O1/PWM_REMOTE",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.00092389,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828582,
     "riders": {}
-   },
-   "remedy_ds77": {
-    "grounds_moved_in": 1,
-    "unused_available": 17,
-    "ratio_after": 0.960707,
-    "order_after": [
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "S",
-     "S",
-     "S",
-     "S",
-     "G",
-     "S",
-     "S",
-     "S",
-     "S",
-     "G",
-     "S",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G"
-    ]
    }
   },
   {
@@ -1246,71 +1175,24 @@
     "LOGIC": 9,
     "PRECISION": 7
    },
-   "grounds": 9,
-   "unused": 13,
+   "grounds": 14,
+   "unused": 8,
    "pairs_evaluated": 306,
    "pairs_without_reference": [],
    "host": false,
    "riders": [],
-   "ratio": 1.1345,
+   "ratio": 0.828587,
    "largest_pair": {
-    "pair": "LOGIC>LOGIC",
-    "aggressor": "/O5/SYNC_GATE",
-    "aggressor_pos": 21,
-    "victim": "/O5/SOFT_DRIVE",
-    "victim_pos": 20,
-    "lies": "side by side",
-    "bound_V": 0.247719,
-    "harness_min_V": 0.218351,
-    "ratio": 1.1345,
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/O3/RANGE_CV",
+    "aggressor_pos": 3,
+    "victim": "/O3/PWM_REMOTE",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923896,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828587,
     "riders": {}
-   },
-   "remedy_ds77": {
-    "grounds_moved_in": 1,
-    "unused_available": 13,
-    "ratio_after": 0.959873,
-    "order_after": [
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "G",
-     "S",
-     "S",
-     "S",
-     "S",
-     "S",
-     "G",
-     "S",
-     "S",
-     "S",
-     "S",
-     "G",
-     "S",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G",
-     "G"
-    ]
    }
   },
   {
@@ -1731,32 +1613,26 @@
    "length_mm": 50.0,
    "signals_by_class": {
     "ANALOGUE": 2,
-    "LOGIC": 4
+    "LOGIC": 3
    },
-   "grounds": 2,
+   "grounds": 3,
    "unused": 0,
-   "pairs_evaluated": 30,
+   "pairs_evaluated": 20,
    "pairs_without_reference": [],
    "host": false,
    "riders": [],
-   "ratio": 1.04125,
+   "ratio": 0.753796,
    "largest_pair": {
     "pair": "LOGIC>LOGIC",
-    "aggressor": "/E6/STAGE_FALL",
-    "aggressor_pos": 5,
-    "victim": "/E1/TRIG_ACTIVE",
-    "victim_pos": 4,
+    "aggressor": "/E6/TRIG_ACTIVE",
+    "aggressor_pos": 4,
+    "victim": "/E6/STAGE_FALL",
+    "victim_pos": 3,
     "lies": "side by side",
-    "bound_V": 0.227358,
+    "bound_V": 0.164592,
     "harness_min_V": 0.218351,
-    "ratio": 1.04125,
+    "ratio": 0.753796,
     "riders": {}
-   },
-   "remedy_ds77": {
-    "grounds_moved_in": null,
-    "unused_available": 0,
-    "ratio_after": null,
-    "order_after": null
    }
   },
   {
@@ -2413,6 +2289,14 @@
    "logic_runs": [
     [
      3,
+     5
+    ],
+    [
+     7,
+     9
+    ],
+    [
+     11,
      12
     ]
    ],
@@ -2430,7 +2314,11 @@
    "logic_runs": [
     [
      7,
-     11
+     9
+    ],
+    [
+     11,
+     12
     ]
    ],
    "single_logic": [],
@@ -2447,7 +2335,11 @@
    "logic_runs": [
     [
      19,
-     23
+     21
+    ],
+    [
+     23,
+     24
     ]
    ],
    "single_logic": [],
@@ -2458,7 +2350,11 @@
    "logic_runs": [
     [
      5,
-     9
+     7
+    ],
+    [
+     9,
+     11
     ]
    ],
    "single_logic": [],
@@ -2500,6 +2396,10 @@
     [
      2,
      3
+    ],
+    [
+     5,
+     6
     ]
    ],
    "single_logic": [],
@@ -2533,11 +2433,21 @@
    "id": "P-K-P-L07",
    "logic_runs": [
     [
-     13,
-     21
+     17,
+     18
+    ],
+    [
+     22,
+     23
     ]
    ],
-   "single_logic": [],
+   "single_logic": [
+    13,
+    15,
+    20,
+    25,
+    27
+   ],
    "breaks": []
   },
   {
@@ -2545,10 +2455,22 @@
    "logic_runs": [
     [
      17,
-     25
+     18
+    ],
+    [
+     26,
+     27
+    ],
+    [
+     29,
+     30
     ]
    ],
-   "single_logic": [],
+   "single_logic": [
+    20,
+    22,
+    24
+   ],
    "breaks": []
   },
   {
@@ -2620,10 +2542,12 @@
    "logic_runs": [
     [
      3,
-     6
+     4
     ]
    ],
-   "single_logic": [],
+   "single_logic": [
+    6
+   ],
    "breaks": []
   },
   {
@@ -2763,8 +2687,8 @@
     "branch": "P",
     "links": 40,
     "contacts": 224,
-    "grounds": 115,
-    "unused": 109,
+    "grounds": 133,
+    "unused": 91,
     "fewest_on_a_link": 1,
     "shortest_cable_mm": 50.0,
     "worst_contact_A": {

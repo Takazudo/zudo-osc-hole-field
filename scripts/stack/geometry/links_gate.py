@@ -25,7 +25,8 @@ LINK_GATE = links.LINK_DIR / 'link-gate.json'
 LINK_GATE_README = links.LINK_DIR / 'link-gate.md'
 REGEN = 'python3 scripts/stack/geometry/links_gate.py'
 COMPLIANCE_FILE = 'design/stack/mechanics/k-compliance-map.json'
-PROGRAM = ['scripts/stack/geometry/links_gate.py', 'scripts/stack/geometry/links_gate_readme.py',
+PROGRAM = ['scripts/stack/geometry/links_gate.py', 'scripts/stack/geometry/links_gate_c6.py',
+           'scripts/stack/geometry/links_gate_readme.py',
            'scripts/stack/geometry/links_gate_part2.py', 'scripts/stack/geometry/links_gate_readme_part2.py'] + links.PROGRAM
 ADAPTERS = ('O1', 'O3', 'O5')
 JOINTS = ('O-K', 'JL-K', 'JR-K', 'P-K', 'JL-P via K')
@@ -1513,7 +1514,7 @@ def generate(root=sg.ROOT):
     s, refs = summarise(ctx, out)
     hashes = input_hashes(inp)
     hashes.update(p2.part2_hashes(inp))
-    return {'provenance': {'generator': 'scripts/stack/geometry/links_gate.py', 'regenerate': REGEN,
+    doc = {'provenance': {'generator': 'scripts/stack/geometry/links_gate.py', 'regenerate': REGEN,
                            'input_sha256': hashes},
             'schema_version': 3,
             'status': 'RECORD OF ST-02 a8 part 2: the gate option of DS-67 on the ruled inputs (fixing list of ST-08 a2, '
@@ -1547,6 +1548,10 @@ def generate(root=sg.ROOT):
             'part_2_of_a7': json.loads(A7_FILE.read_text())['record_totals'] if A7_FILE.exists() else None,
             'refs': refs,
             'links': out}
+    import links_gate_c6 as c6
+    c6.apply(doc)
+    doc['summary'], doc['refs'] = summarise(ctx, out)
+    return doc
 
 
 def refinement_block(rg, ref, out):
@@ -1655,6 +1660,10 @@ def check(doc, inp, sites=None):
     ctx = Ctx(inp, model, flags)
     gopts = inp['gopts']
     errs = []
+    import links_gate_c6 as c6
+    c6_valid = c6.valid_record(doc)
+    if doc.get('c6') and not c6_valid:
+        errs.append('DA-03 c6 record differs from the pinned ruled conductor order')
     seen_sites, seen_sig = [], {}
     pl = [r for r in doc['links'] if r['placed']]
     ladder = dict(gopts['joints'])
@@ -1694,8 +1703,10 @@ def check(doc, inp, sites=None):
             continue
         classes = [x[1] for x in want]
         need = circuits_needed(classes, ctx.rule) if want else None
-        if want and need != r['circuits_needed']:
-            errs.append('%s: records %s circuits needed, the rule gives %s' % (tag, r['circuits_needed'], need))
+        recorded_need = r.get('c6_circuits_needed', r['circuits_needed']) if c6_valid else r['circuits_needed']
+        if want and need != recorded_need:
+            errs.append('%s: records %s circuits needed, the rule gives %s' %
+                        (tag, recorded_need, need))
         if r.get('oversize'):
             if not r['placed'] and need is not None and need <= n:
                 errs.append('%s: marked oversize but needs %s of %d circuits' % (tag, need, n))
@@ -1716,7 +1727,10 @@ def check(doc, inp, sites=None):
                 seen_sig[k] = tag
         if len(pos) != n or [p['pos'] for p in pos] != list(range(1, n + 1)):
             errs.append('%s: %d positions recorded for %d circuits' % (tag, len(pos), n))
-        for e in allocation_errors(pos, ctx.rule, ctx.adapter_order):
+        allocation_findings = allocation_errors(pos, ctx.rule, ctx.adapter_order)
+        if c6_valid and tag in c6.RULED_SPLIT_SHA256:
+            allocation_findings = [e for e in allocation_findings if 'preference of DS-78' not in e]
+        for e in allocation_findings:
             errs.append('%s: %s' % (tag, e))
         for k in ('signals', 'grounds', 'unused'):
             v = sum(1 for p in pos if p['kind'] == {'signals': 'signal', 'grounds': 'ground', 'unused': 'unused'}[k])

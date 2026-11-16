@@ -373,10 +373,10 @@ class AttemptA4Part2(unittest.TestCase):
 
     def test_record_counts(self):
         kinds = [p['kind'] for l in self.links for p in l['positions']]
-        self.assertEqual((len(self.links), kinds.count('signal'), kinds.count('ground'), kinds.count('unused')), (61, 511, 322, 339))
+        self.assertEqual((len(self.links), kinds.count('signal'), kinds.count('ground'), kinds.count('unused')), (61, 511, 340, 321))
         self.assertEqual(len(self.out['links']), 61)
-        self.assertEqual(sum(1 for r in self.out['links'] if r['host']), 20)
-        self.assertEqual(sum(len(r['riders']) for r in self.out['links']), 42)
+        self.assertEqual(sum(1 for r in self.out['links'] if r['host']), 22)
+        self.assertEqual(sum(len(r['riders']) for r in self.out['links']), 45)
 
     def test_record_signals_equal_signals_all(self):
         rec = sorted((p['site'], p['net'], p['class']) for l in self.links for p in l['positions'] if p['kind'] == 'signal')
@@ -395,6 +395,15 @@ class AttemptA4Part2(unittest.TestCase):
         self.assertEqual(self.out['rule_breaks'], {})
         logic = [r for r in self.out['rules'] if r['logic_runs'] or r['single_logic']]
         self.assertEqual(len(logic), 10)
+
+    def test_c6_caps_logic_runs_and_flanks_sync_gate(self):
+        old = json.loads((le.ROOT / 'design/stack/geometry/links/link-gate-c6-source.json').read_text())
+        long_run = next(x for x in old['links'] if x['id'] == 'P-K-P-L07')
+        self.assertTrue(any('cap' in e for e in self.lr.rule_check(long_run)['breaks']))
+        gate_link = copy.deepcopy(next(x for x in self.links if x['id'] == 'P-K-P-L07'))
+        gate_pos = next(i for i, p in enumerate(gate_link['positions']) if p['kind'] == 'signal' and p['net'].endswith('/SYNC_GATE'))
+        gate_link['positions'][gate_pos - 1] = dict(gate_link['positions'][gate_pos - 2], pos=gate_pos)
+        self.assertTrue(any('SYNC_GATE' in e for e in self.lr.rule_check(gate_link)['breaks']))
 
     def test_fault_injection_breaks_the_rule(self):
         l = next(x for x in self.links if x['id'] == 'P-K-P-L13.01.01.01')

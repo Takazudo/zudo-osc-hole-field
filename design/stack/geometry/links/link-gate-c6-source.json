@@ -1,0 +1,2085 @@
+{
+ "source_commit": "e4b300b31fccf53acfeafc8fbba286278c32ecfb",
+ "source_sha256": "6e3141c94d8aff6d3552916fd37caf11e710607cf9add46c315107d41aa093b1",
+ "links": [
+  {
+   "id": "P-K-P-L01.01.01",
+   "joint": "P-K",
+   "front_board": "P",
+   "members": [
+    "K-P-26",
+    "K-P-28",
+    "K-P-31",
+    "K-P-32",
+    "K-P-36",
+    "K-P-38"
+   ],
+   "signals": 12,
+   "grounds": 2,
+   "unused": 0,
+   "circuits_needed": 14,
+   "size": "FH12-N14",
+   "circuits": 14,
+   "connector": "FH12-14S-0.5SH(55), C5378715",
+   "cable": "C68390",
+   "cable_length_mm": 50.0,
+   "positions": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/E3/REF5",
+     "class": "PRECISION",
+     "site": "K-P-26"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E3/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-26"
+    },
+    {
+     "pos": 4,
+     "kind": "signal",
+     "net": "/E4/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-28"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/E4/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-28"
+    },
+    {
+     "pos": 6,
+     "kind": "signal",
+     "net": "/E4/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-31"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/E4/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-31"
+    },
+    {
+     "pos": 8,
+     "kind": "signal",
+     "net": "/E5/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-32"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/E5/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-32"
+    },
+    {
+     "pos": 10,
+     "kind": "signal",
+     "net": "/E6/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-36"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/E6/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-36"
+    },
+    {
+     "pos": 12,
+     "kind": "signal",
+     "net": "/E6/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-38"
+    },
+    {
+     "pos": 13,
+     "kind": "ground"
+    },
+    {
+     "pos": 14,
+     "kind": "signal",
+     "net": "/E6/REF5",
+     "class": "PRECISION",
+     "site": "K-P-38"
+    }
+   ],
+   "placed": true,
+   "centre": [
+    289.3333,
+    201.2917
+   ],
+   "slot_centre": [
+    307.3333,
+    203.2917
+   ],
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 18.1108,
+   "geometry": {
+    "slot": [
+     303.0833,
+     202.5417,
+     311.5833,
+     204.0417
+    ],
+    "front_connector": [
+     301.0333,
+     186.7917,
+     313.6333,
+     192.8917
+    ],
+    "front_tail": [
+     303.5833,
+     192.8917,
+     311.0833,
+     202.5417
+    ],
+    "front_tail_first": [
+     303.5833,
+     192.8917,
+     311.0833,
+     196.8917
+    ],
+    "K_tail": [
+     303.5833,
+     204.0417,
+     311.0833,
+     209.6917
+    ],
+    "K_connector": [
+     301.0333,
+     209.6917,
+     313.6333,
+     215.7917
+    ],
+    "a_mm": 10.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 4.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [],
+    "K B (slot)": [
+     "U4423"
+    ],
+    "K B (field)": [
+     "C7401",
+     "R4444",
+     "U4409"
+    ],
+    "K B (latch)": []
+   },
+   "lengthened_tail": true,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "SW1802"
+   ],
+   "under_tails": {
+    "front tail": [
+     "SW1802"
+    ],
+    "K tail": [
+     "C4428",
+     "C7401",
+     "R4434",
+     "U4409"
+    ]
+   },
+   "cable_needed_mm": 41.3398,
+   "loop_mm": 8.6602,
+   "grid_mm": 2.0,
+   "cost": 9.5277,
+   "compliance_mm_per_N": 0.417,
+   "sizes_tried": [
+    40,
+    26,
+    14
+   ],
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "C4428"
+    ],
+    "packages": {
+     "C4428": "C0603"
+    },
+    "displaced_by_latch_rule": [],
+    "remaining": [
+     "C4428"
+    ],
+    "verdict": "NOT SHOWN (exempt packages C0603, ASSUMED lower than the 2.0 mm connector body; no height retained)"
+   }
+  },
+  {
+   "id": "P-K-P-L01.02.01",
+   "joint": "P-K",
+   "front_board": "P",
+   "members": [
+    "K-P-27",
+    "K-P-30",
+    "K-P-35",
+    "P-K-E4"
+   ],
+   "signals": 9,
+   "grounds": 4,
+   "unused": 1,
+   "circuits_needed": 13,
+   "size": "FH12-N14",
+   "circuits": 14,
+   "connector": "FH12-14S-0.5SH(55), C5378715",
+   "cable": "C68390",
+   "cable_length_mm": 50.0,
+   "positions": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/E4/ENV_BUFFER",
+     "class": "ANALOGUE",
+     "site": "P-K-E4"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E4/REF5",
+     "class": "PRECISION",
+     "site": "K-P-30"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/E4/NOT_FALL",
+     "class": "ANALOGUE",
+     "site": "P-K-E4"
+    },
+    {
+     "pos": 6,
+     "kind": "ground"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/E3/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-27"
+    },
+    {
+     "pos": 8,
+     "kind": "signal",
+     "net": "/E3/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-27"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/E4/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-30"
+    },
+    {
+     "pos": 10,
+     "kind": "signal",
+     "net": "/E5/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-35"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/E5/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-35"
+    },
+    {
+     "pos": 12,
+     "kind": "ground"
+    },
+    {
+     "pos": 13,
+     "kind": "signal",
+     "net": "/E4/NOT_RISE",
+     "class": "ANALOGUE",
+     "site": "P-K-E4"
+    },
+    {
+     "pos": 14,
+     "kind": "unused"
+    }
+   ],
+   "placed": true,
+   "centre": [
+    265.25,
+    197.4375
+   ],
+   "slot_centre": [
+    253.25,
+    213.4375
+   ],
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 20.0,
+   "geometry": {
+    "slot": [
+     249.0,
+     212.6875,
+     257.5,
+     214.1875
+    ],
+    "front_connector": [
+     246.95,
+     200.9375,
+     259.55,
+     207.0375
+    ],
+    "front_tail": [
+     249.5,
+     207.0375,
+     257.0,
+     212.6875
+    ],
+    "front_tail_first": [
+     249.5,
+     207.0375,
+     257.0,
+     211.0375
+    ],
+    "K_tail": [
+     249.5,
+     214.1875,
+     257.0,
+     219.8375
+    ],
+    "K_connector": [
+     246.95,
+     219.8375,
+     259.55,
+     225.9375
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [
+     "R4528"
+    ],
+    "K F (slot)": [
+     "D4426",
+     "D4428"
+    ],
+    "K B (slot)": [
+     "U4225"
+    ],
+    "K B (field)": [
+     "R4484",
+     "U4221"
+    ],
+    "K B (latch)": []
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "SW1503"
+   ],
+   "under_tails": {
+    "front tail": [
+     "R4228",
+     "SW1503"
+    ],
+    "K tail": [
+     "C4242",
+     "U4225"
+    ]
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 2.0,
+   "cost": 11.0,
+   "compliance_mm_per_N": 0.0226,
+   "sizes_tried": [
+    40,
+    26,
+    14
+   ],
+   "latch_reach": {
+    "neighbours_within_margin": [],
+    "packages": {},
+    "displaced_by_latch_rule": [],
+    "remaining": [],
+    "verdict": "open"
+   }
+  },
+  {
+   "id": "P-K-P-L03.01",
+   "joint": "P-K",
+   "front_board": "P",
+   "members": [
+    "K-P-16",
+    "K-P-18",
+    "K-P-20",
+    "P-K-E1",
+    "P-K-E2",
+    "P-K-E3"
+   ],
+   "signals": 15,
+   "grounds": 10,
+   "unused": 1,
+   "circuits_needed": 25,
+   "size": "FH12-N26",
+   "circuits": 26,
+   "connector": "FH12-26S-0.5SH(55), C202113",
+   "cable": "C32128",
+   "cable_length_mm": 60.0,
+   "positions": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/E1/ENV_BUFFER",
+     "class": "ANALOGUE",
+     "site": "P-K-E1"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E1/REF5",
+     "class": "PRECISION",
+     "site": "K-P-18"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/E1/NOT_FALL",
+     "class": "ANALOGUE",
+     "site": "P-K-E1"
+    },
+    {
+     "pos": 6,
+     "kind": "ground"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/E2/ENV_BUFFER",
+     "class": "ANALOGUE",
+     "site": "P-K-E2"
+    },
+    {
+     "pos": 8,
+     "kind": "ground"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/E2/NOT_RISE",
+     "class": "ANALOGUE",
+     "site": "P-K-E2"
+    },
+    {
+     "pos": 10,
+     "kind": "ground"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/E2/NOT_FALL",
+     "class": "ANALOGUE",
+     "site": "P-K-E2"
+    },
+    {
+     "pos": 12,
+     "kind": "ground"
+    },
+    {
+     "pos": 13,
+     "kind": "signal",
+     "net": "/E3/ENV_BUFFER",
+     "class": "ANALOGUE",
+     "site": "P-K-E3"
+    },
+    {
+     "pos": 14,
+     "kind": "ground"
+    },
+    {
+     "pos": 15,
+     "kind": "signal",
+     "net": "/E3/NOT_RISE",
+     "class": "ANALOGUE",
+     "site": "P-K-E3"
+    },
+    {
+     "pos": 16,
+     "kind": "ground"
+    },
+    {
+     "pos": 17,
+     "kind": "signal",
+     "net": "/E3/NOT_FALL",
+     "class": "ANALOGUE",
+     "site": "P-K-E3"
+    },
+    {
+     "pos": 18,
+     "kind": "ground"
+    },
+    {
+     "pos": 19,
+     "kind": "signal",
+     "net": "/E1/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-16"
+    },
+    {
+     "pos": 20,
+     "kind": "signal",
+     "net": "/E1/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-16"
+    },
+    {
+     "pos": 21,
+     "kind": "signal",
+     "net": "/E1/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-18"
+    },
+    {
+     "pos": 22,
+     "kind": "signal",
+     "net": "/E2/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-20"
+    },
+    {
+     "pos": 23,
+     "kind": "signal",
+     "net": "/E2/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-20"
+    },
+    {
+     "pos": 24,
+     "kind": "ground"
+    },
+    {
+     "pos": 25,
+     "kind": "signal",
+     "net": "/E1/NOT_RISE",
+     "class": "ANALOGUE",
+     "site": "P-K-E1"
+    },
+    {
+     "pos": 26,
+     "kind": "unused"
+    }
+   ],
+   "placed": true,
+   "centre": [
+    232.6667,
+    184.3333
+   ],
+   "slot_centre": [
+    214.6667,
+    192.3333
+   ],
+   "direction": "-y",
+   "slot_distance_from_centre_mm": 19.6977,
+   "geometry": {
+    "slot": [
+     207.4167,
+     191.5833,
+     221.9167,
+     193.0833
+    ],
+    "front_connector": [
+     205.3667,
+     204.7333,
+     223.9667,
+     210.8333
+    ],
+    "front_tail": [
+     207.9167,
+     193.0833,
+     221.4167,
+     204.7333
+    ],
+    "front_tail_first": [
+     207.9167,
+     200.7333,
+     221.4167,
+     204.7333
+    ],
+    "K_tail": [
+     207.9167,
+     185.9333,
+     221.4167,
+     191.5833
+    ],
+    "K_connector": [
+     205.3667,
+     179.8333,
+     223.9667,
+     185.9333
+    ],
+    "a_mm": 12.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 6.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [
+     "R8404",
+     "R8420"
+    ],
+    "K B (slot)": [
+     "C4247",
+     "C8402",
+     "C8405",
+     "R8468",
+     "R8477",
+     "U4230",
+     "U8409"
+    ],
+    "K B (field)": [
+     "C7205",
+     "C8438",
+     "C8439",
+     "R8444",
+     "R8472",
+     "R8478",
+     "R8479",
+     "U8411"
+    ],
+    "K B (latch)": []
+   },
+   "lengthened_tail": true,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV1202",
+    "SW1302"
+   ],
+   "under_tails": {
+    "front tail": [
+     "RV1202",
+     "SW1302"
+    ],
+    "K tail": [
+     "C4247",
+     "C8402",
+     "C8405",
+     "R8443",
+     "R8444",
+     "R8477",
+     "R8478",
+     "U8409",
+     "U8411"
+    ]
+   },
+   "cable_needed_mm": 43.3398,
+   "loop_mm": 16.6602,
+   "grid_mm": 2.0,
+   "cost": 23.4244,
+   "compliance_mm_per_N": 0.0129,
+   "sizes_tried": [
+    40,
+    26
+   ],
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "C8434",
+     "R7519",
+     "R8424",
+     "R8460",
+     "R8476"
+    ],
+    "packages": {
+     "C8434": "C0603",
+     "R7519": "R0603",
+     "R8424": "R0603",
+     "R8460": "R0603",
+     "R8476": "R0603"
+    },
+    "displaced_by_latch_rule": [],
+    "remaining": [
+     "C8434",
+     "R7519",
+     "R8424",
+     "R8460",
+     "R8476"
+    ],
+    "verdict": "NOT SHOWN (exempt packages C0603, R0603, ASSUMED lower than the 2.0 mm connector body; no height retained)"
+   }
+  },
+  {
+   "id": "P-K-P-L03.02.01",
+   "joint": "P-K",
+   "front_board": "P",
+   "members": [
+    "K-P-22",
+    "K-P-24",
+    "K-P-34",
+    "K-P-55"
+   ],
+   "signals": 8,
+   "grounds": 3,
+   "unused": 3,
+   "circuits_needed": 11,
+   "size": "FH12-N14",
+   "circuits": 14,
+   "connector": "FH12-14S-0.5SH(55), C5378715",
+   "cable": "C68390",
+   "cable_length_mm": 50.0,
+   "positions": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/H1/RAW_HELD",
+     "class": "ANALOGUE",
+     "site": "K-P-55"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E5/REF5",
+     "class": "PRECISION",
+     "site": "K-P-34"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/E2/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-22"
+    },
+    {
+     "pos": 6,
+     "kind": "signal",
+     "net": "/E3/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-24"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/E3/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-24"
+    },
+    {
+     "pos": 8,
+     "kind": "signal",
+     "net": "/E5/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-34"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/H1/BUTTON_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-55"
+    },
+    {
+     "pos": 10,
+     "kind": "ground"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/E2/REF5",
+     "class": "PRECISION",
+     "site": "K-P-22"
+    },
+    {
+     "pos": 12,
+     "kind": "unused"
+    },
+    {
+     "pos": 13,
+     "kind": "unused"
+    },
+    {
+     "pos": 14,
+     "kind": "unused"
+    }
+   ],
+   "placed": true,
+   "centre": [
+    231.25,
+    212.875
+   ],
+   "slot_centre": [
+    235.25,
+    212.875
+   ],
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 4.0,
+   "geometry": {
+    "slot": [
+     231.0,
+     212.125,
+     239.5,
+     213.625
+    ],
+    "front_connector": [
+     228.95,
+     200.375,
+     241.55,
+     206.475
+    ],
+    "front_tail": [
+     231.5,
+     206.475,
+     239.0,
+     212.125
+    ],
+    "front_tail_first": [
+     231.5,
+     206.475,
+     239.0,
+     210.475
+    ],
+    "K_tail": [
+     231.5,
+     213.625,
+     239.0,
+     219.275
+    ],
+    "K_connector": [
+     228.95,
+     219.275,
+     241.55,
+     225.375
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [
+     "R4128"
+    ],
+    "K F (slot)": [
+     "D4432",
+     "D4437",
+     "R4221",
+     "R4234"
+    ],
+    "K B (slot)": [
+     "U4205",
+     "U4228"
+    ],
+    "K B (field)": [],
+    "K B (latch)": [
+     "U4228"
+    ]
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "SW1403"
+   ],
+   "under_tails": {
+    "front tail": [
+     "SW1403"
+    ],
+    "K tail": [
+     "U4205",
+     "U4228"
+    ]
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 2.0,
+   "cost": 8.0,
+   "compliance_mm_per_N": 0.0135,
+   "sizes_tried": [
+    40,
+    26,
+    14
+   ],
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "U4228"
+    ],
+    "packages": {
+     "U4228": "SOIC-14_3.9x8.7mm_P1.27mm"
+    },
+    "displaced_by_latch_rule": [
+     "U4228"
+    ],
+    "remaining": [],
+    "verdict": "open after the displacement"
+   }
+  },
+  {
+   "id": "P-K-P-L05.01.01",
+   "joint": "P-K",
+   "front_board": "P",
+   "members": [
+    "K-P-23"
+   ],
+   "signals": 2,
+   "grounds": 2,
+   "unused": 10,
+   "circuits_needed": 4,
+   "size": "FH12-N14",
+   "circuits": 14,
+   "connector": "FH12-14S-0.5SH(55), C5378715",
+   "cable": "C68390",
+   "cable_length_mm": 50.0,
+   "positions": [
+    {
+     "pos": 1,
+     "kind": "ground"
+    },
+    {
+     "pos": 2,
+     "kind": "signal",
+     "net": "/E2/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-23"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E2/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-23"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "unused"
+    },
+    {
+     "pos": 6,
+     "kind": "unused"
+    },
+    {
+     "pos": 7,
+     "kind": "unused"
+    },
+    {
+     "pos": 8,
+     "kind": "unused"
+    },
+    {
+     "pos": 9,
+     "kind": "unused"
+    },
+    {
+     "pos": 10,
+     "kind": "unused"
+    },
+    {
+     "pos": 11,
+     "kind": "unused"
+    },
+    {
+     "pos": 12,
+     "kind": "unused"
+    },
+    {
+     "pos": 13,
+     "kind": "unused"
+    },
+    {
+     "pos": 14,
+     "kind": "unused"
+    }
+   ],
+   "placed": true,
+   "centre": [
+    252.5,
+    219.75
+   ],
+   "slot_centre": [
+    252.5,
+    199.75
+   ],
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 20.0,
+   "geometry": {
+    "slot": [
+     248.25,
+     199.0,
+     256.75,
+     200.5
+    ],
+    "front_connector": [
+     246.2,
+     187.25,
+     258.8,
+     193.35
+    ],
+    "front_tail": [
+     248.75,
+     193.35,
+     256.25,
+     199.0
+    ],
+    "front_tail_first": [
+     248.75,
+     193.35,
+     256.25,
+     197.35
+    ],
+    "K_tail": [
+     248.75,
+     200.5,
+     256.25,
+     206.15
+    ],
+    "K_connector": [
+     246.2,
+     206.15,
+     258.8,
+     212.25
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [
+     "C4105",
+     "C4506",
+     "U4111",
+     "U4511"
+    ],
+    "K F (slot)": [
+     "C4449",
+     "D4435"
+    ],
+    "K B (slot)": [
+     "D4430",
+     "U4417"
+    ],
+    "K B (field)": [
+     "C4221",
+     "R4275",
+     "R4277",
+     "U4205",
+     "U4225"
+    ],
+    "K B (latch)": []
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "SW1502"
+   ],
+   "under_tails": {
+    "front tail": [
+     "R4529",
+     "SW1502"
+    ],
+    "K tail": [
+     "D4430",
+     "R4275",
+     "U4417"
+    ]
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 2.0,
+   "cost": 18.0,
+   "compliance_mm_per_N": 0.0238,
+   "sizes_tried": [
+    40,
+    26,
+    14
+   ],
+   "latch_reach": {
+    "neighbours_within_margin": [],
+    "packages": {},
+    "displaced_by_latch_rule": [],
+    "remaining": [],
+    "verdict": "open"
+   }
+  },
+  {
+   "id": "P-K-P-L07",
+   "joint": "P-K",
+   "front_board": "P",
+   "members": [
+    "K-P-101",
+    "K-P-84",
+    "K-P-86",
+    "K-P-87",
+    "K-P-91",
+    "K-P-93",
+    "K-P-94",
+    "K-P-98"
+   ],
+   "signals": 16,
+   "grounds": 7,
+   "unused": 17,
+   "circuits_needed": 23,
+   "size": "FH12-N40",
+   "circuits": 40,
+   "connector": "FH12-40S-0.5SH(55), C202114",
+   "cable": "C26618",
+   "cable_length_mm": 50.0,
+   "positions": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/O1/PWM_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-86"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/O1/LFO_REF",
+     "class": "PRECISION",
+     "site": "K-P-84"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/O1/RANGE_CV",
+     "class": "PRECISION",
+     "site": "K-P-86"
+    },
+    {
+     "pos": 6,
+     "kind": "ground"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/O2/LFO_REF",
+     "class": "PRECISION",
+     "site": "K-P-91"
+    },
+    {
+     "pos": 8,
+     "kind": "ground"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/O2/RANGE_CV",
+     "class": "PRECISION",
+     "site": "K-P-93"
+    },
+    {
+     "pos": 10,
+     "kind": "ground"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/O3/LFO_REF",
+     "class": "PRECISION",
+     "site": "K-P-98"
+    },
+    {
+     "pos": 12,
+     "kind": "ground"
+    },
+    {
+     "pos": 13,
+     "kind": "signal",
+     "net": "/O3/SOFT_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-101"
+    },
+    {
+     "pos": 14,
+     "kind": "signal",
+     "net": "/O3/SYNC_GATE",
+     "class": "LOGIC",
+     "site": "K-P-101"
+    },
+    {
+     "pos": 15,
+     "kind": "signal",
+     "net": "/O1/HARD_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-84"
+    },
+    {
+     "pos": 16,
+     "kind": "signal",
+     "net": "/O1/SOFT_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-87"
+    },
+    {
+     "pos": 17,
+     "kind": "signal",
+     "net": "/O1/SYNC_GATE",
+     "class": "LOGIC",
+     "site": "K-P-87"
+    },
+    {
+     "pos": 18,
+     "kind": "signal",
+     "net": "/O2/HARD_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-91"
+    },
+    {
+     "pos": 19,
+     "kind": "signal",
+     "net": "/O2/SOFT_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-94"
+    },
+    {
+     "pos": 20,
+     "kind": "signal",
+     "net": "/O2/SYNC_GATE",
+     "class": "LOGIC",
+     "site": "K-P-94"
+    },
+    {
+     "pos": 21,
+     "kind": "signal",
+     "net": "/O3/HARD_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-98"
+    },
+    {
+     "pos": 22,
+     "kind": "ground"
+    },
+    {
+     "pos": 23,
+     "kind": "signal",
+     "net": "/O2/PWM_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-93"
+    },
+    {
+     "pos": 24,
+     "kind": "unused"
+    },
+    {
+     "pos": 25,
+     "kind": "unused"
+    },
+    {
+     "pos": 26,
+     "kind": "unused"
+    },
+    {
+     "pos": 27,
+     "kind": "unused"
+    },
+    {
+     "pos": 28,
+     "kind": "unused"
+    },
+    {
+     "pos": 29,
+     "kind": "unused"
+    },
+    {
+     "pos": 30,
+     "kind": "unused"
+    },
+    {
+     "pos": 31,
+     "kind": "unused"
+    },
+    {
+     "pos": 32,
+     "kind": "unused"
+    },
+    {
+     "pos": 33,
+     "kind": "unused"
+    },
+    {
+     "pos": 34,
+     "kind": "unused"
+    },
+    {
+     "pos": 35,
+     "kind": "unused"
+    },
+    {
+     "pos": 36,
+     "kind": "unused"
+    },
+    {
+     "pos": 37,
+     "kind": "unused"
+    },
+    {
+     "pos": 38,
+     "kind": "unused"
+    },
+    {
+     "pos": 39,
+     "kind": "unused"
+    },
+    {
+     "pos": 40,
+     "kind": "unused"
+    }
+   ],
+   "placed": true,
+   "centre": [
+    29.375,
+    215.9375
+   ],
+   "slot_centre": [
+    47.375,
+    213.9375
+   ],
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 18.1108,
+   "geometry": {
+    "slot": [
+     36.625,
+     213.1875,
+     58.125,
+     214.6875
+    ],
+    "front_connector": [
+     34.575,
+     201.4375,
+     60.175,
+     207.5375
+    ],
+    "front_tail": [
+     37.125,
+     207.5375,
+     57.625,
+     213.1875
+    ],
+    "front_tail_first": [
+     37.125,
+     207.5375,
+     57.625,
+     211.5375
+    ],
+    "K_tail": [
+     37.125,
+     214.6875,
+     57.625,
+     220.3375
+    ],
+    "K_connector": [
+     34.575,
+     220.3375,
+     60.175,
+     226.4375
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [
+     "C1419",
+     "R1442",
+     "R1443",
+     "RB1322"
+    ],
+    "K B (slot)": [
+     "C1607",
+     "R1364",
+     "R1462",
+     "R1474",
+     "R1475",
+     "RB1327",
+     "RB1422"
+    ],
+    "K B (field)": [
+     "C1409",
+     "R1361",
+     "R1362",
+     "R1390",
+     "R1430",
+     "R1448",
+     "R1452",
+     "R1493",
+     "R1497",
+     "RB1328",
+     "RB1332",
+     "RVO1308",
+     "RVO1408",
+     "U1415"
+    ],
+    "K B (latch)": []
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "SW303"
+   ],
+   "under_tails": {
+    "front tail": [
+     "SW303"
+    ],
+    "K tail": [
+     "C1409",
+     "R1219",
+     "R1225",
+     "R1364",
+     "R1430",
+     "R1448",
+     "R1452",
+     "R1461",
+     "R1462",
+     "R1474",
+     "R1475",
+     "RB1327",
+     "RB1332",
+     "RVO1408"
+    ]
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 2.0,
+   "cost": 29.5277,
+   "compliance_mm_per_N": 0.2052,
+   "sizes_tried": [
+    40
+   ],
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "C1449",
+     "C1608",
+     "R1219",
+     "R1225",
+     "R1352",
+     "R1461",
+     "R1614"
+    ],
+    "packages": {
+     "C1449": "C0603",
+     "C1608": "C0603",
+     "R1219": "R0603",
+     "R1225": "R0603",
+     "R1352": "R0603",
+     "R1461": "R0603",
+     "R1614": "R0603"
+    },
+    "displaced_by_latch_rule": [],
+    "remaining": [
+     "C1449",
+     "C1608",
+     "R1219",
+     "R1225",
+     "R1352",
+     "R1461",
+     "R1614"
+    ],
+    "verdict": "NOT SHOWN (exempt packages C0603, R0603, ASSUMED lower than the 2.0 mm connector body; no height retained)"
+   }
+  },
+  {
+   "id": "P-K-P-L08",
+   "joint": "P-K",
+   "front_board": "P",
+   "members": [
+    "K-P-100",
+    "K-P-105",
+    "K-P-106",
+    "K-P-108",
+    "K-P-113",
+    "K-P-114",
+    "K-P-115",
+    "P-K-SUB-O2",
+    "P-K-SUB-O4"
+   ],
+   "signals": 18,
+   "grounds": 9,
+   "unused": 13,
+   "circuits_needed": 27,
+   "size": "FH12-N40",
+   "circuits": 40,
+   "connector": "FH12-40S-0.5SH(55), C202114",
+   "cable": "C26618",
+   "cable_length_mm": 50.0,
+   "positions": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/O3/PWM_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-100"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/O3/RANGE_CV",
+     "class": "PRECISION",
+     "site": "K-P-100"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/O4/LFO_REF",
+     "class": "PRECISION",
+     "site": "K-P-105"
+    },
+    {
+     "pos": 6,
+     "kind": "ground"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/O4/LOCAL_REF5",
+     "class": "PRECISION",
+     "site": "K-P-106"
+    },
+    {
+     "pos": 8,
+     "kind": "ground"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/O4/LOCAL_REFN5",
+     "class": "PRECISION",
+     "site": "K-P-106"
+    },
+    {
+     "pos": 10,
+     "kind": "ground"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/O5/LOCAL_REF5",
+     "class": "PRECISION",
+     "site": "K-P-113"
+    },
+    {
+     "pos": 12,
+     "kind": "ground"
+    },
+    {
+     "pos": 13,
+     "kind": "signal",
+     "net": "/O5/LOCAL_REFN5",
+     "class": "PRECISION",
+     "site": "K-P-113"
+    },
+    {
+     "pos": 14,
+     "kind": "ground"
+    },
+    {
+     "pos": 15,
+     "kind": "signal",
+     "net": "/O5/RANGE_CV",
+     "class": "PRECISION",
+     "site": "K-P-114"
+    },
+    {
+     "pos": 16,
+     "kind": "ground"
+    },
+    {
+     "pos": 17,
+     "kind": "signal",
+     "net": "/O4/HARD_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-105"
+    },
+    {
+     "pos": 18,
+     "kind": "signal",
+     "net": "/O4/SOFT_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-108"
+    },
+    {
+     "pos": 19,
+     "kind": "signal",
+     "net": "/O4/SYNC_GATE",
+     "class": "LOGIC",
+     "site": "K-P-108"
+    },
+    {
+     "pos": 20,
+     "kind": "signal",
+     "net": "/O5/SOFT_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-115"
+    },
+    {
+     "pos": 21,
+     "kind": "signal",
+     "net": "/O5/SYNC_GATE",
+     "class": "LOGIC",
+     "site": "K-P-115"
+    },
+    {
+     "pos": 22,
+     "kind": "signal",
+     "net": "O2:SUB_SEL_A (planning)",
+     "class": "LOGIC",
+     "site": "P-K-SUB-O2"
+    },
+    {
+     "pos": 23,
+     "kind": "signal",
+     "net": "O2:SUB_SEL_B (planning)",
+     "class": "LOGIC",
+     "site": "P-K-SUB-O2"
+    },
+    {
+     "pos": 24,
+     "kind": "signal",
+     "net": "O4:SUB_SEL_A (planning)",
+     "class": "LOGIC",
+     "site": "P-K-SUB-O4"
+    },
+    {
+     "pos": 25,
+     "kind": "signal",
+     "net": "O4:SUB_SEL_B (planning)",
+     "class": "LOGIC",
+     "site": "P-K-SUB-O4"
+    },
+    {
+     "pos": 26,
+     "kind": "ground"
+    },
+    {
+     "pos": 27,
+     "kind": "signal",
+     "net": "/O5/PWM_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-114"
+    },
+    {
+     "pos": 28,
+     "kind": "unused"
+    },
+    {
+     "pos": 29,
+     "kind": "unused"
+    },
+    {
+     "pos": 30,
+     "kind": "unused"
+    },
+    {
+     "pos": 31,
+     "kind": "unused"
+    },
+    {
+     "pos": 32,
+     "kind": "unused"
+    },
+    {
+     "pos": 33,
+     "kind": "unused"
+    },
+    {
+     "pos": 34,
+     "kind": "unused"
+    },
+    {
+     "pos": 35,
+     "kind": "unused"
+    },
+    {
+     "pos": 36,
+     "kind": "unused"
+    },
+    {
+     "pos": 37,
+     "kind": "unused"
+    },
+    {
+     "pos": 38,
+     "kind": "unused"
+    },
+    {
+     "pos": 39,
+     "kind": "unused"
+    },
+    {
+     "pos": 40,
+     "kind": "unused"
+    }
+   ],
+   "placed": true,
+   "centre": [
+    67.3889,
+    211.6056
+   ],
+   "slot_centre": [
+    73.3889,
+    213.6056
+   ],
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 6.3246,
+   "geometry": {
+    "slot": [
+     62.6389,
+     212.8556,
+     84.1389,
+     214.3556
+    ],
+    "front_connector": [
+     60.5889,
+     201.1056,
+     86.1889,
+     207.2056
+    ],
+    "front_tail": [
+     63.1389,
+     207.2056,
+     83.6389,
+     212.8556
+    ],
+    "front_tail_first": [
+     63.1389,
+     207.2056,
+     83.6389,
+     211.2056
+    ],
+    "K_tail": [
+     63.1389,
+     214.3556,
+     83.6389,
+     220.0056
+    ],
+    "K_connector": [
+     60.5889,
+     220.0056,
+     86.1889,
+     226.1056
+    ],
+    "a_mm": 6.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [
+     "C1415",
+     "R1473",
+     "RB1413"
+    ],
+    "K B (slot)": [
+     "C1413",
+     "C1444",
+     "RB1427",
+     "U1413",
+     "U1414"
+    ],
+    "K B (field)": [
+     "C1411",
+     "C1430",
+     "R1445",
+     "R1472",
+     "R1558",
+     "RB1414",
+     "U1405",
+     "U1415"
+    ],
+    "K B (latch)": []
+   },
+   "lengthened_tail": false,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "SW403",
+    "SW503"
+   ],
+   "under_tails": {
+    "front tail": [
+     "SW403",
+     "SW503"
+    ],
+    "K tail": [
+     "C1413",
+     "C1429",
+     "C1444",
+     "C1446",
+     "C1448",
+     "R1472",
+     "RB1427",
+     "U1405",
+     "U1414",
+     "U1415"
+    ]
+   },
+   "cable_needed_mm": 37.3398,
+   "loop_mm": 12.6602,
+   "grid_mm": 2.0,
+   "cost": 17.5811,
+   "compliance_mm_per_N": 0.0774,
+   "sizes_tried": [
+    40
+   ],
+   "latch_reach": {
+    "neighbours_within_margin": [
+     "C1448",
+     "C1449"
+    ],
+    "packages": {
+     "C1448": "C0603",
+     "C1449": "C0603"
+    },
+    "displaced_by_latch_rule": [],
+    "remaining": [
+     "C1448",
+     "C1449"
+    ],
+    "verdict": "NOT SHOWN (exempt packages C0603, ASSUMED lower than the 2.0 mm connector body; no height retained)"
+   }
+  },
+  {
+   "id": "P-K-P-L13.01.01.01",
+   "joint": "P-K",
+   "front_board": "P",
+   "members": [
+    "K-P-19",
+    "K-P-39",
+    "K-P-57"
+   ],
+   "signals": 6,
+   "grounds": 2,
+   "unused": 0,
+   "circuits_needed": 8,
+   "size": "FH12-N8",
+   "circuits": 8,
+   "connector": "FH12-8S-0.5SH(55), C597995",
+   "cable": "C29534",
+   "cable_length_mm": 50.0,
+   "positions": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/M4A/1_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-57"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E1/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-19"
+    },
+    {
+     "pos": 4,
+     "kind": "signal",
+     "net": "/E1/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-19"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/E6/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-39"
+    },
+    {
+     "pos": 6,
+     "kind": "signal",
+     "net": "/E6/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-39"
+    },
+    {
+     "pos": 7,
+     "kind": "ground"
+    },
+    {
+     "pos": 8,
+     "kind": "signal",
+     "net": "/M4A/2_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-57"
+    }
+   ],
+   "placed": true,
+   "centre": [
+    190.1667,
+    189.6667
+   ],
+   "slot_centre": [
+    184.1667,
+    193.6667
+   ],
+   "direction": "+y",
+   "slot_distance_from_centre_mm": 7.2111,
+   "geometry": {
+    "slot": [
+     181.4167,
+     192.9167,
+     186.9167,
+     194.4167
+    ],
+    "front_connector": [
+     179.3667,
+     177.1667,
+     188.9667,
+     183.2667
+    ],
+    "front_tail": [
+     181.9167,
+     183.2667,
+     186.4167,
+     192.9167
+    ],
+    "front_tail_first": [
+     181.9167,
+     183.2667,
+     186.4167,
+     187.2667
+    ],
+    "K_tail": [
+     181.9167,
+     194.4167,
+     186.4167,
+     200.0667
+    ],
+    "K_connector": [
+     179.3667,
+     200.0667,
+     188.9667,
+     206.1667
+    ],
+    "a_mm": 10.4,
+    "b_mm": 6.4,
+    "front_extension_mm": 4.0,
+    "K_extension_mm": 0.0,
+    "tail_rule_hard_mm": 4.0
+   },
+   "displaced": {
+    "front B": [],
+    "K F (slot)": [
+     "C8440",
+     "R5261"
+    ],
+    "K B (slot)": [
+     "R5260"
+    ],
+    "K B (field)": [
+     "C5236",
+     "R5230",
+     "R5263",
+     "U5210"
+    ],
+    "K B (latch)": []
+   },
+   "lengthened_tail": true,
+   "placed_only_with_lengthened_tail": false,
+   "trim_leads": [
+    "RV1101"
+   ],
+   "under_tails": {
+    "front tail": [
+     "RV1101"
+    ],
+    "K tail": [
+     "C5209",
+     "R5260",
+     "R5262",
+     "RB4235",
+     "U5210"
+    ]
+   },
+   "cable_needed_mm": 41.3398,
+   "loop_mm": 8.6602,
+   "grid_mm": 2.0,
+   "cost": 9.8028,
+   "compliance_mm_per_N": 0.0262,
+   "sizes_tried": [
+    40,
+    26,
+    14,
+    8
+   ],
+   "latch_reach": {
+    "neighbours_within_margin": [],
+    "packages": {},
+    "displaced_by_latch_rule": [],
+    "remaining": [],
+    "verdict": "open"
+   }
+  }
+ ]
+}

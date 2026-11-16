@@ -1,0 +1,2070 @@
+{
+ "task": "DA-03 c6 and clarification; ST-02 conductor pass, ST-04 coupling rebind",
+ "status": "paper candidate; source/native/integration review pending; no measured harness or physical qualification",
+ "source_sha256": "6e3141c94d8aff6d3552916fd37caf11e710607cf9add46c315107d41aa093b1",
+ "candidate_sha256": "1c091c1d6d4b9c000f770a0e604cb986d5c55e44cb77ea22083249afbf5cdb0d",
+ "geometry_sha256": "fb5e91e1c7fc1f581434cb6a9a28fb91d7c21c170d66156ceb6cb4e912760eb8",
+ "signal_sha256": "baa834876861bea8245c223950e3405ec7d9223f327f99f38fc3c5a59da128c4",
+ "record_projection_sha256": "54d9fc4e26453d951cf0dfc7a5b092789f63250e99a743b9f67fa6d7962b85f6",
+ "links_in_use": 61,
+ "signals": 511,
+ "rows": [
+  {
+   "id": "P-K-P-L01.01.01",
+   "order_before": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/E3/REF5",
+     "class": "PRECISION",
+     "site": "K-P-26"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E3/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-26"
+    },
+    {
+     "pos": 4,
+     "kind": "signal",
+     "net": "/E4/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-28"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/E4/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-28"
+    },
+    {
+     "pos": 6,
+     "kind": "signal",
+     "net": "/E4/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-31"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/E4/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-31"
+    },
+    {
+     "pos": 8,
+     "kind": "signal",
+     "net": "/E5/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-32"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/E5/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-32"
+    },
+    {
+     "pos": 10,
+     "kind": "signal",
+     "net": "/E6/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-36"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/E6/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-36"
+    },
+    {
+     "pos": 12,
+     "kind": "signal",
+     "net": "/E6/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-38"
+    },
+    {
+     "pos": 13,
+     "kind": "ground"
+    },
+    {
+     "pos": 14,
+     "kind": "signal",
+     "net": "/E6/REF5",
+     "class": "PRECISION",
+     "site": "K-P-38"
+    }
+   ],
+   "order_after": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/E3/REF5",
+     "class": "PRECISION",
+     "site": "K-P-26"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E3/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-26"
+    },
+    {
+     "pos": 4,
+     "kind": "signal",
+     "net": "/E4/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-28"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/E4/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-28"
+    },
+    {
+     "pos": 6,
+     "kind": "ground"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/E4/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-31"
+    },
+    {
+     "pos": 8,
+     "kind": "signal",
+     "net": "/E4/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-31"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/E6/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-38"
+    },
+    {
+     "pos": 10,
+     "kind": "ground"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/E6/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-36"
+    },
+    {
+     "pos": 12,
+     "kind": "signal",
+     "net": "/E6/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-36"
+    },
+    {
+     "pos": 13,
+     "kind": "ground"
+    },
+    {
+     "pos": 14,
+     "kind": "signal",
+     "net": "/E6/REF5",
+     "class": "PRECISION",
+     "site": "K-P-38"
+    }
+   ],
+   "grounds_before": 2,
+   "grounds_after": 4,
+   "unused_before": 0,
+   "unused_after": 0,
+   "new_riders_in": [],
+   "new_riders_out": [
+    {
+     "net": "/E5/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-32",
+     "host": "P-K-P-L05.01.01",
+     "distance_mm": 24.1835,
+     "reason": "coupling"
+    },
+    {
+     "net": "/E5/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-32",
+     "host": "P-K-P-L05.01.01",
+     "distance_mm": 24.1835,
+     "reason": "coupling"
+    }
+   ],
+   "ratio_before": 1.42134,
+   "ratio_after": 0.838691,
+   "rule_errors_after": []
+  },
+  {
+   "id": "P-K-P-L01.02.01",
+   "order_before": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/E4/ENV_BUFFER",
+     "class": "ANALOGUE",
+     "site": "P-K-E4"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E4/REF5",
+     "class": "PRECISION",
+     "site": "K-P-30"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/E4/NOT_FALL",
+     "class": "ANALOGUE",
+     "site": "P-K-E4"
+    },
+    {
+     "pos": 6,
+     "kind": "ground"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/E3/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-27"
+    },
+    {
+     "pos": 8,
+     "kind": "signal",
+     "net": "/E3/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-27"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/E4/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-30"
+    },
+    {
+     "pos": 10,
+     "kind": "signal",
+     "net": "/E5/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-35"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/E5/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-35"
+    },
+    {
+     "pos": 12,
+     "kind": "ground"
+    },
+    {
+     "pos": 13,
+     "kind": "signal",
+     "net": "/E4/NOT_RISE",
+     "class": "ANALOGUE",
+     "site": "P-K-E4"
+    },
+    {
+     "pos": 14,
+     "kind": "unused"
+    }
+   ],
+   "order_after": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/E4/ENV_BUFFER",
+     "class": "ANALOGUE",
+     "site": "P-K-E4"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E4/REF5",
+     "class": "PRECISION",
+     "site": "K-P-30"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/E4/NOT_FALL",
+     "class": "ANALOGUE",
+     "site": "P-K-E4"
+    },
+    {
+     "pos": 6,
+     "kind": "ground"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/E3/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-27"
+    },
+    {
+     "pos": 8,
+     "kind": "signal",
+     "net": "/E3/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-27"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/E4/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-30"
+    },
+    {
+     "pos": 10,
+     "kind": "ground"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/E5/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-35"
+    },
+    {
+     "pos": 12,
+     "kind": "signal",
+     "net": "/E5/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-35"
+    },
+    {
+     "pos": 13,
+     "kind": "ground"
+    },
+    {
+     "pos": 14,
+     "kind": "signal",
+     "net": "/E4/NOT_RISE",
+     "class": "ANALOGUE",
+     "site": "P-K-E4"
+    }
+   ],
+   "grounds_before": 4,
+   "grounds_after": 5,
+   "unused_before": 1,
+   "unused_after": 0,
+   "new_riders_in": [],
+   "new_riders_out": [],
+   "ratio_before": 0.991631,
+   "ratio_after": 0.865709,
+   "rule_errors_after": []
+  },
+  {
+   "id": "P-K-P-L03.01",
+   "order_before": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/E1/ENV_BUFFER",
+     "class": "ANALOGUE",
+     "site": "P-K-E1"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E1/REF5",
+     "class": "PRECISION",
+     "site": "K-P-18"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/E1/NOT_FALL",
+     "class": "ANALOGUE",
+     "site": "P-K-E1"
+    },
+    {
+     "pos": 6,
+     "kind": "ground"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/E2/ENV_BUFFER",
+     "class": "ANALOGUE",
+     "site": "P-K-E2"
+    },
+    {
+     "pos": 8,
+     "kind": "ground"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/E2/NOT_RISE",
+     "class": "ANALOGUE",
+     "site": "P-K-E2"
+    },
+    {
+     "pos": 10,
+     "kind": "ground"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/E2/NOT_FALL",
+     "class": "ANALOGUE",
+     "site": "P-K-E2"
+    },
+    {
+     "pos": 12,
+     "kind": "ground"
+    },
+    {
+     "pos": 13,
+     "kind": "signal",
+     "net": "/E3/ENV_BUFFER",
+     "class": "ANALOGUE",
+     "site": "P-K-E3"
+    },
+    {
+     "pos": 14,
+     "kind": "ground"
+    },
+    {
+     "pos": 15,
+     "kind": "signal",
+     "net": "/E3/NOT_RISE",
+     "class": "ANALOGUE",
+     "site": "P-K-E3"
+    },
+    {
+     "pos": 16,
+     "kind": "ground"
+    },
+    {
+     "pos": 17,
+     "kind": "signal",
+     "net": "/E3/NOT_FALL",
+     "class": "ANALOGUE",
+     "site": "P-K-E3"
+    },
+    {
+     "pos": 18,
+     "kind": "ground"
+    },
+    {
+     "pos": 19,
+     "kind": "signal",
+     "net": "/E1/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-16"
+    },
+    {
+     "pos": 20,
+     "kind": "signal",
+     "net": "/E1/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-16"
+    },
+    {
+     "pos": 21,
+     "kind": "signal",
+     "net": "/E1/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-18"
+    },
+    {
+     "pos": 22,
+     "kind": "signal",
+     "net": "/E2/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-20"
+    },
+    {
+     "pos": 23,
+     "kind": "signal",
+     "net": "/E2/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-20"
+    },
+    {
+     "pos": 24,
+     "kind": "ground"
+    },
+    {
+     "pos": 25,
+     "kind": "signal",
+     "net": "/E1/NOT_RISE",
+     "class": "ANALOGUE",
+     "site": "P-K-E1"
+    },
+    {
+     "pos": 26,
+     "kind": "unused"
+    }
+   ],
+   "order_after": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/E1/ENV_BUFFER",
+     "class": "ANALOGUE",
+     "site": "P-K-E1"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E1/REF5",
+     "class": "PRECISION",
+     "site": "K-P-18"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/E1/NOT_FALL",
+     "class": "ANALOGUE",
+     "site": "P-K-E1"
+    },
+    {
+     "pos": 6,
+     "kind": "ground"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/E2/ENV_BUFFER",
+     "class": "ANALOGUE",
+     "site": "P-K-E2"
+    },
+    {
+     "pos": 8,
+     "kind": "ground"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/E2/NOT_RISE",
+     "class": "ANALOGUE",
+     "site": "P-K-E2"
+    },
+    {
+     "pos": 10,
+     "kind": "ground"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/E2/NOT_FALL",
+     "class": "ANALOGUE",
+     "site": "P-K-E2"
+    },
+    {
+     "pos": 12,
+     "kind": "ground"
+    },
+    {
+     "pos": 13,
+     "kind": "signal",
+     "net": "/E3/ENV_BUFFER",
+     "class": "ANALOGUE",
+     "site": "P-K-E3"
+    },
+    {
+     "pos": 14,
+     "kind": "ground"
+    },
+    {
+     "pos": 15,
+     "kind": "signal",
+     "net": "/E3/NOT_RISE",
+     "class": "ANALOGUE",
+     "site": "P-K-E3"
+    },
+    {
+     "pos": 16,
+     "kind": "ground"
+    },
+    {
+     "pos": 17,
+     "kind": "signal",
+     "net": "/E3/NOT_FALL",
+     "class": "ANALOGUE",
+     "site": "P-K-E3"
+    },
+    {
+     "pos": 18,
+     "kind": "ground"
+    },
+    {
+     "pos": 19,
+     "kind": "signal",
+     "net": "/E1/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-16"
+    },
+    {
+     "pos": 20,
+     "kind": "signal",
+     "net": "/E1/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-16"
+    },
+    {
+     "pos": 21,
+     "kind": "signal",
+     "net": "/E1/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-18"
+    },
+    {
+     "pos": 22,
+     "kind": "ground"
+    },
+    {
+     "pos": 23,
+     "kind": "signal",
+     "net": "/E2/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-20"
+    },
+    {
+     "pos": 24,
+     "kind": "signal",
+     "net": "/E2/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-20"
+    },
+    {
+     "pos": 25,
+     "kind": "ground"
+    },
+    {
+     "pos": 26,
+     "kind": "signal",
+     "net": "/E1/NOT_RISE",
+     "class": "ANALOGUE",
+     "site": "P-K-E1"
+    }
+   ],
+   "grounds_before": 10,
+   "grounds_after": 11,
+   "unused_before": 1,
+   "unused_after": 0,
+   "new_riders_in": [],
+   "new_riders_out": [],
+   "ratio_before": 1.1325,
+   "ratio_after": 0.978101,
+   "rule_errors_after": []
+  },
+  {
+   "id": "P-K-P-L03.02.01",
+   "order_before": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/H1/RAW_HELD",
+     "class": "ANALOGUE",
+     "site": "K-P-55"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E5/REF5",
+     "class": "PRECISION",
+     "site": "K-P-34"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/E2/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-22"
+    },
+    {
+     "pos": 6,
+     "kind": "signal",
+     "net": "/E3/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-24"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/E3/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-24"
+    },
+    {
+     "pos": 8,
+     "kind": "signal",
+     "net": "/E5/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-34"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/H1/BUTTON_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-55"
+    },
+    {
+     "pos": 10,
+     "kind": "ground"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/E2/REF5",
+     "class": "PRECISION",
+     "site": "K-P-22"
+    },
+    {
+     "pos": 12,
+     "kind": "unused"
+    },
+    {
+     "pos": 13,
+     "kind": "unused"
+    },
+    {
+     "pos": 14,
+     "kind": "unused"
+    }
+   ],
+   "order_after": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/H1/RAW_HELD",
+     "class": "ANALOGUE",
+     "site": "K-P-55"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E5/REF5",
+     "class": "PRECISION",
+     "site": "K-P-34"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/E2/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-22"
+    },
+    {
+     "pos": 6,
+     "kind": "signal",
+     "net": "/E3/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-24"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/E3/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-24"
+    },
+    {
+     "pos": 8,
+     "kind": "ground"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/E5/LOOP_RAW",
+     "class": "LOGIC",
+     "site": "K-P-34"
+    },
+    {
+     "pos": 10,
+     "kind": "signal",
+     "net": "/H1/BUTTON_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-55"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/E1/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-19"
+    },
+    {
+     "pos": 12,
+     "kind": "ground"
+    },
+    {
+     "pos": 13,
+     "kind": "signal",
+     "net": "/E2/REF5",
+     "class": "PRECISION",
+     "site": "K-P-22"
+    },
+    {
+     "pos": 14,
+     "kind": "unused"
+    }
+   ],
+   "grounds_before": 3,
+   "grounds_after": 4,
+   "unused_before": 3,
+   "unused_after": 1,
+   "new_riders_in": [
+    {
+     "net": "/E1/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-19",
+     "from": "P-K-P-L13.01.01.01",
+     "distance_mm": 50.3211,
+     "reason": "coupling"
+    }
+   ],
+   "new_riders_out": [],
+   "ratio_before": 0.98868,
+   "ratio_after": 0.866611,
+   "rule_errors_after": []
+  },
+  {
+   "id": "P-K-P-L05.01.01",
+   "order_before": [
+    {
+     "pos": 1,
+     "kind": "ground"
+    },
+    {
+     "pos": 2,
+     "kind": "signal",
+     "net": "/E2/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-23"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E2/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-23"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "unused"
+    },
+    {
+     "pos": 6,
+     "kind": "unused"
+    },
+    {
+     "pos": 7,
+     "kind": "unused"
+    },
+    {
+     "pos": 8,
+     "kind": "unused"
+    },
+    {
+     "pos": 9,
+     "kind": "unused"
+    },
+    {
+     "pos": 10,
+     "kind": "unused"
+    },
+    {
+     "pos": 11,
+     "kind": "unused"
+    },
+    {
+     "pos": 12,
+     "kind": "unused"
+    },
+    {
+     "pos": 13,
+     "kind": "unused"
+    },
+    {
+     "pos": 14,
+     "kind": "unused"
+    }
+   ],
+   "order_after": [
+    {
+     "pos": 1,
+     "kind": "ground"
+    },
+    {
+     "pos": 2,
+     "kind": "signal",
+     "net": "/E2/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-23"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E2/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-23"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/E5/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-32"
+    },
+    {
+     "pos": 6,
+     "kind": "signal",
+     "net": "/E5/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-32"
+    },
+    {
+     "pos": 7,
+     "kind": "ground"
+    },
+    {
+     "pos": 8,
+     "kind": "unused"
+    },
+    {
+     "pos": 9,
+     "kind": "unused"
+    },
+    {
+     "pos": 10,
+     "kind": "unused"
+    },
+    {
+     "pos": 11,
+     "kind": "unused"
+    },
+    {
+     "pos": 12,
+     "kind": "unused"
+    },
+    {
+     "pos": 13,
+     "kind": "unused"
+    },
+    {
+     "pos": 14,
+     "kind": "unused"
+    }
+   ],
+   "grounds_before": 2,
+   "grounds_after": 3,
+   "unused_before": 10,
+   "unused_after": 7,
+   "new_riders_in": [
+    {
+     "net": "/E5/ASR_RAW",
+     "class": "LOGIC",
+     "site": "K-P-32",
+     "from": "P-K-P-L01.01.01",
+     "distance_mm": 24.1835,
+     "reason": "coupling"
+    },
+    {
+     "net": "/E5/CURVED",
+     "class": "LOGIC",
+     "site": "K-P-32",
+     "from": "P-K-P-L01.01.01",
+     "distance_mm": 24.1835,
+     "reason": "coupling"
+    }
+   ],
+   "new_riders_out": [],
+   "ratio_before": 0.731638,
+   "ratio_after": 0.740343,
+   "rule_errors_after": []
+  },
+  {
+   "id": "P-K-P-L07",
+   "order_before": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/O1/PWM_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-86"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/O1/LFO_REF",
+     "class": "PRECISION",
+     "site": "K-P-84"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/O1/RANGE_CV",
+     "class": "PRECISION",
+     "site": "K-P-86"
+    },
+    {
+     "pos": 6,
+     "kind": "ground"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/O2/LFO_REF",
+     "class": "PRECISION",
+     "site": "K-P-91"
+    },
+    {
+     "pos": 8,
+     "kind": "ground"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/O2/RANGE_CV",
+     "class": "PRECISION",
+     "site": "K-P-93"
+    },
+    {
+     "pos": 10,
+     "kind": "ground"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/O3/LFO_REF",
+     "class": "PRECISION",
+     "site": "K-P-98"
+    },
+    {
+     "pos": 12,
+     "kind": "ground"
+    },
+    {
+     "pos": 13,
+     "kind": "signal",
+     "net": "/O3/SOFT_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-101"
+    },
+    {
+     "pos": 14,
+     "kind": "signal",
+     "net": "/O3/SYNC_GATE",
+     "class": "LOGIC",
+     "site": "K-P-101"
+    },
+    {
+     "pos": 15,
+     "kind": "signal",
+     "net": "/O1/HARD_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-84"
+    },
+    {
+     "pos": 16,
+     "kind": "signal",
+     "net": "/O1/SOFT_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-87"
+    },
+    {
+     "pos": 17,
+     "kind": "signal",
+     "net": "/O1/SYNC_GATE",
+     "class": "LOGIC",
+     "site": "K-P-87"
+    },
+    {
+     "pos": 18,
+     "kind": "signal",
+     "net": "/O2/HARD_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-91"
+    },
+    {
+     "pos": 19,
+     "kind": "signal",
+     "net": "/O2/SOFT_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-94"
+    },
+    {
+     "pos": 20,
+     "kind": "signal",
+     "net": "/O2/SYNC_GATE",
+     "class": "LOGIC",
+     "site": "K-P-94"
+    },
+    {
+     "pos": 21,
+     "kind": "signal",
+     "net": "/O3/HARD_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-98"
+    },
+    {
+     "pos": 22,
+     "kind": "ground"
+    },
+    {
+     "pos": 23,
+     "kind": "signal",
+     "net": "/O2/PWM_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-93"
+    },
+    {
+     "pos": 24,
+     "kind": "unused"
+    },
+    {
+     "pos": 25,
+     "kind": "unused"
+    },
+    {
+     "pos": 26,
+     "kind": "unused"
+    },
+    {
+     "pos": 27,
+     "kind": "unused"
+    },
+    {
+     "pos": 28,
+     "kind": "unused"
+    },
+    {
+     "pos": 29,
+     "kind": "unused"
+    },
+    {
+     "pos": 30,
+     "kind": "unused"
+    },
+    {
+     "pos": 31,
+     "kind": "unused"
+    },
+    {
+     "pos": 32,
+     "kind": "unused"
+    },
+    {
+     "pos": 33,
+     "kind": "unused"
+    },
+    {
+     "pos": 34,
+     "kind": "unused"
+    },
+    {
+     "pos": 35,
+     "kind": "unused"
+    },
+    {
+     "pos": 36,
+     "kind": "unused"
+    },
+    {
+     "pos": 37,
+     "kind": "unused"
+    },
+    {
+     "pos": 38,
+     "kind": "unused"
+    },
+    {
+     "pos": 39,
+     "kind": "unused"
+    },
+    {
+     "pos": 40,
+     "kind": "unused"
+    }
+   ],
+   "order_after": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/O1/PWM_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-86"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/O1/LFO_REF",
+     "class": "PRECISION",
+     "site": "K-P-84"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/O1/RANGE_CV",
+     "class": "PRECISION",
+     "site": "K-P-86"
+    },
+    {
+     "pos": 6,
+     "kind": "ground"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/O2/LFO_REF",
+     "class": "PRECISION",
+     "site": "K-P-91"
+    },
+    {
+     "pos": 8,
+     "kind": "ground"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/O2/RANGE_CV",
+     "class": "PRECISION",
+     "site": "K-P-93"
+    },
+    {
+     "pos": 10,
+     "kind": "ground"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/O3/LFO_REF",
+     "class": "PRECISION",
+     "site": "K-P-98"
+    },
+    {
+     "pos": 12,
+     "kind": "ground"
+    },
+    {
+     "pos": 13,
+     "kind": "signal",
+     "net": "/O3/SOFT_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-101"
+    },
+    {
+     "pos": 14,
+     "kind": "ground"
+    },
+    {
+     "pos": 15,
+     "kind": "signal",
+     "net": "/O3/SYNC_GATE",
+     "class": "LOGIC",
+     "site": "K-P-101"
+    },
+    {
+     "pos": 16,
+     "kind": "ground"
+    },
+    {
+     "pos": 17,
+     "kind": "signal",
+     "net": "/O1/HARD_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-84"
+    },
+    {
+     "pos": 18,
+     "kind": "signal",
+     "net": "/O1/SOFT_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-87"
+    },
+    {
+     "pos": 19,
+     "kind": "ground"
+    },
+    {
+     "pos": 20,
+     "kind": "signal",
+     "net": "/O1/SYNC_GATE",
+     "class": "LOGIC",
+     "site": "K-P-87"
+    },
+    {
+     "pos": 21,
+     "kind": "ground"
+    },
+    {
+     "pos": 22,
+     "kind": "signal",
+     "net": "/O2/HARD_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-91"
+    },
+    {
+     "pos": 23,
+     "kind": "signal",
+     "net": "/O2/SOFT_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-94"
+    },
+    {
+     "pos": 24,
+     "kind": "ground"
+    },
+    {
+     "pos": 25,
+     "kind": "signal",
+     "net": "/O2/SYNC_GATE",
+     "class": "LOGIC",
+     "site": "K-P-94"
+    },
+    {
+     "pos": 26,
+     "kind": "ground"
+    },
+    {
+     "pos": 27,
+     "kind": "signal",
+     "net": "/O3/HARD_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-98"
+    },
+    {
+     "pos": 28,
+     "kind": "ground"
+    },
+    {
+     "pos": 29,
+     "kind": "signal",
+     "net": "/O2/PWM_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-93"
+    },
+    {
+     "pos": 30,
+     "kind": "unused"
+    },
+    {
+     "pos": 31,
+     "kind": "unused"
+    },
+    {
+     "pos": 32,
+     "kind": "unused"
+    },
+    {
+     "pos": 33,
+     "kind": "unused"
+    },
+    {
+     "pos": 34,
+     "kind": "unused"
+    },
+    {
+     "pos": 35,
+     "kind": "unused"
+    },
+    {
+     "pos": 36,
+     "kind": "unused"
+    },
+    {
+     "pos": 37,
+     "kind": "unused"
+    },
+    {
+     "pos": 38,
+     "kind": "unused"
+    },
+    {
+     "pos": 39,
+     "kind": "unused"
+    },
+    {
+     "pos": 40,
+     "kind": "unused"
+    }
+   ],
+   "grounds_before": 7,
+   "grounds_after": 13,
+   "unused_before": 17,
+   "unused_after": 11,
+   "new_riders_in": [],
+   "new_riders_out": [],
+   "ratio_before": 1.13579,
+   "ratio_after": 0.828582,
+   "rule_errors_after": []
+  },
+  {
+   "id": "P-K-P-L08",
+   "order_before": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/O3/PWM_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-100"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/O3/RANGE_CV",
+     "class": "PRECISION",
+     "site": "K-P-100"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/O4/LFO_REF",
+     "class": "PRECISION",
+     "site": "K-P-105"
+    },
+    {
+     "pos": 6,
+     "kind": "ground"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/O4/LOCAL_REF5",
+     "class": "PRECISION",
+     "site": "K-P-106"
+    },
+    {
+     "pos": 8,
+     "kind": "ground"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/O4/LOCAL_REFN5",
+     "class": "PRECISION",
+     "site": "K-P-106"
+    },
+    {
+     "pos": 10,
+     "kind": "ground"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/O5/LOCAL_REF5",
+     "class": "PRECISION",
+     "site": "K-P-113"
+    },
+    {
+     "pos": 12,
+     "kind": "ground"
+    },
+    {
+     "pos": 13,
+     "kind": "signal",
+     "net": "/O5/LOCAL_REFN5",
+     "class": "PRECISION",
+     "site": "K-P-113"
+    },
+    {
+     "pos": 14,
+     "kind": "ground"
+    },
+    {
+     "pos": 15,
+     "kind": "signal",
+     "net": "/O5/RANGE_CV",
+     "class": "PRECISION",
+     "site": "K-P-114"
+    },
+    {
+     "pos": 16,
+     "kind": "ground"
+    },
+    {
+     "pos": 17,
+     "kind": "signal",
+     "net": "/O4/HARD_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-105"
+    },
+    {
+     "pos": 18,
+     "kind": "signal",
+     "net": "/O4/SOFT_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-108"
+    },
+    {
+     "pos": 19,
+     "kind": "signal",
+     "net": "/O4/SYNC_GATE",
+     "class": "LOGIC",
+     "site": "K-P-108"
+    },
+    {
+     "pos": 20,
+     "kind": "signal",
+     "net": "/O5/SOFT_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-115"
+    },
+    {
+     "pos": 21,
+     "kind": "signal",
+     "net": "/O5/SYNC_GATE",
+     "class": "LOGIC",
+     "site": "K-P-115"
+    },
+    {
+     "pos": 22,
+     "kind": "signal",
+     "net": "O2:SUB_SEL_A (planning)",
+     "class": "LOGIC",
+     "site": "P-K-SUB-O2"
+    },
+    {
+     "pos": 23,
+     "kind": "signal",
+     "net": "O2:SUB_SEL_B (planning)",
+     "class": "LOGIC",
+     "site": "P-K-SUB-O2"
+    },
+    {
+     "pos": 24,
+     "kind": "signal",
+     "net": "O4:SUB_SEL_A (planning)",
+     "class": "LOGIC",
+     "site": "P-K-SUB-O4"
+    },
+    {
+     "pos": 25,
+     "kind": "signal",
+     "net": "O4:SUB_SEL_B (planning)",
+     "class": "LOGIC",
+     "site": "P-K-SUB-O4"
+    },
+    {
+     "pos": 26,
+     "kind": "ground"
+    },
+    {
+     "pos": 27,
+     "kind": "signal",
+     "net": "/O5/PWM_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-114"
+    },
+    {
+     "pos": 28,
+     "kind": "unused"
+    },
+    {
+     "pos": 29,
+     "kind": "unused"
+    },
+    {
+     "pos": 30,
+     "kind": "unused"
+    },
+    {
+     "pos": 31,
+     "kind": "unused"
+    },
+    {
+     "pos": 32,
+     "kind": "unused"
+    },
+    {
+     "pos": 33,
+     "kind": "unused"
+    },
+    {
+     "pos": 34,
+     "kind": "unused"
+    },
+    {
+     "pos": 35,
+     "kind": "unused"
+    },
+    {
+     "pos": 36,
+     "kind": "unused"
+    },
+    {
+     "pos": 37,
+     "kind": "unused"
+    },
+    {
+     "pos": 38,
+     "kind": "unused"
+    },
+    {
+     "pos": 39,
+     "kind": "unused"
+    },
+    {
+     "pos": 40,
+     "kind": "unused"
+    }
+   ],
+   "order_after": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/O3/PWM_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-100"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/O3/RANGE_CV",
+     "class": "PRECISION",
+     "site": "K-P-100"
+    },
+    {
+     "pos": 4,
+     "kind": "ground"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/O4/LFO_REF",
+     "class": "PRECISION",
+     "site": "K-P-105"
+    },
+    {
+     "pos": 6,
+     "kind": "ground"
+    },
+    {
+     "pos": 7,
+     "kind": "signal",
+     "net": "/O4/LOCAL_REF5",
+     "class": "PRECISION",
+     "site": "K-P-106"
+    },
+    {
+     "pos": 8,
+     "kind": "ground"
+    },
+    {
+     "pos": 9,
+     "kind": "signal",
+     "net": "/O4/LOCAL_REFN5",
+     "class": "PRECISION",
+     "site": "K-P-106"
+    },
+    {
+     "pos": 10,
+     "kind": "ground"
+    },
+    {
+     "pos": 11,
+     "kind": "signal",
+     "net": "/O5/LOCAL_REF5",
+     "class": "PRECISION",
+     "site": "K-P-113"
+    },
+    {
+     "pos": 12,
+     "kind": "ground"
+    },
+    {
+     "pos": 13,
+     "kind": "signal",
+     "net": "/O5/LOCAL_REFN5",
+     "class": "PRECISION",
+     "site": "K-P-113"
+    },
+    {
+     "pos": 14,
+     "kind": "ground"
+    },
+    {
+     "pos": 15,
+     "kind": "signal",
+     "net": "/O5/RANGE_CV",
+     "class": "PRECISION",
+     "site": "K-P-114"
+    },
+    {
+     "pos": 16,
+     "kind": "ground"
+    },
+    {
+     "pos": 17,
+     "kind": "signal",
+     "net": "/O4/HARD_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-105"
+    },
+    {
+     "pos": 18,
+     "kind": "signal",
+     "net": "/O4/SOFT_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-108"
+    },
+    {
+     "pos": 19,
+     "kind": "ground"
+    },
+    {
+     "pos": 20,
+     "kind": "signal",
+     "net": "/O4/SYNC_GATE",
+     "class": "LOGIC",
+     "site": "K-P-108"
+    },
+    {
+     "pos": 21,
+     "kind": "ground"
+    },
+    {
+     "pos": 22,
+     "kind": "signal",
+     "net": "/O5/SOFT_DRIVE",
+     "class": "LOGIC",
+     "site": "K-P-115"
+    },
+    {
+     "pos": 23,
+     "kind": "ground"
+    },
+    {
+     "pos": 24,
+     "kind": "signal",
+     "net": "/O5/SYNC_GATE",
+     "class": "LOGIC",
+     "site": "K-P-115"
+    },
+    {
+     "pos": 25,
+     "kind": "ground"
+    },
+    {
+     "pos": 26,
+     "kind": "signal",
+     "net": "O2:SUB_SEL_A (planning)",
+     "class": "LOGIC",
+     "site": "P-K-SUB-O2"
+    },
+    {
+     "pos": 27,
+     "kind": "signal",
+     "net": "O2:SUB_SEL_B (planning)",
+     "class": "LOGIC",
+     "site": "P-K-SUB-O2"
+    },
+    {
+     "pos": 28,
+     "kind": "ground"
+    },
+    {
+     "pos": 29,
+     "kind": "signal",
+     "net": "O4:SUB_SEL_A (planning)",
+     "class": "LOGIC",
+     "site": "P-K-SUB-O4"
+    },
+    {
+     "pos": 30,
+     "kind": "signal",
+     "net": "O4:SUB_SEL_B (planning)",
+     "class": "LOGIC",
+     "site": "P-K-SUB-O4"
+    },
+    {
+     "pos": 31,
+     "kind": "ground"
+    },
+    {
+     "pos": 32,
+     "kind": "signal",
+     "net": "/O5/PWM_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-114"
+    },
+    {
+     "pos": 33,
+     "kind": "unused"
+    },
+    {
+     "pos": 34,
+     "kind": "unused"
+    },
+    {
+     "pos": 35,
+     "kind": "unused"
+    },
+    {
+     "pos": 36,
+     "kind": "unused"
+    },
+    {
+     "pos": 37,
+     "kind": "unused"
+    },
+    {
+     "pos": 38,
+     "kind": "unused"
+    },
+    {
+     "pos": 39,
+     "kind": "unused"
+    },
+    {
+     "pos": 40,
+     "kind": "unused"
+    }
+   ],
+   "grounds_before": 9,
+   "grounds_after": 14,
+   "unused_before": 13,
+   "unused_after": 8,
+   "new_riders_in": [],
+   "new_riders_out": [],
+   "ratio_before": 1.1345,
+   "ratio_after": 0.828587,
+   "rule_errors_after": []
+  },
+  {
+   "id": "P-K-P-L13.01.01.01",
+   "order_before": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/M4A/1_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-57"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E1/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-19"
+    },
+    {
+     "pos": 4,
+     "kind": "signal",
+     "net": "/E1/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-19"
+    },
+    {
+     "pos": 5,
+     "kind": "signal",
+     "net": "/E6/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-39"
+    },
+    {
+     "pos": 6,
+     "kind": "signal",
+     "net": "/E6/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-39"
+    },
+    {
+     "pos": 7,
+     "kind": "ground"
+    },
+    {
+     "pos": 8,
+     "kind": "signal",
+     "net": "/M4A/2_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-57"
+    }
+   ],
+   "order_after": [
+    {
+     "pos": 1,
+     "kind": "signal",
+     "net": "/M4A/1_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-57"
+    },
+    {
+     "pos": 2,
+     "kind": "ground"
+    },
+    {
+     "pos": 3,
+     "kind": "signal",
+     "net": "/E6/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-39"
+    },
+    {
+     "pos": 4,
+     "kind": "signal",
+     "net": "/E6/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-39"
+    },
+    {
+     "pos": 5,
+     "kind": "ground"
+    },
+    {
+     "pos": 6,
+     "kind": "signal",
+     "net": "/E1/TRIG_ACTIVE",
+     "class": "LOGIC",
+     "site": "K-P-19"
+    },
+    {
+     "pos": 7,
+     "kind": "ground"
+    },
+    {
+     "pos": 8,
+     "kind": "signal",
+     "net": "/M4A/2_REMOTE",
+     "class": "ANALOGUE",
+     "site": "K-P-57"
+    }
+   ],
+   "grounds_before": 2,
+   "grounds_after": 3,
+   "unused_before": 0,
+   "unused_after": 0,
+   "new_riders_in": [],
+   "new_riders_out": [
+    {
+     "net": "/E1/STAGE_FALL",
+     "class": "LOGIC",
+     "site": "K-P-19",
+     "host": "P-K-P-L03.02.01",
+     "distance_mm": 50.3211,
+     "reason": "coupling"
+    }
+   ],
+   "ratio_before": 1.04125,
+   "ratio_after": 0.753796,
+   "rule_errors_after": []
+  }
+ ],
+ "unsolved_links": []
+}

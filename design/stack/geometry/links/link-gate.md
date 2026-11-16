@@ -107,9 +107,9 @@ Courtyard-level counts on unvalidated drafts; no count is a minimum.
 | Connectors | 122 | 134 | 138 |
 | Latches | 122 | 134 | 138 |
 | Signals on placed links (of 511) | 511 | 487 | 499 |
-| of which on riders | 42 | 0 | - |
-| Grounds | 322 | 314 | 332 |
-| Unused positions | 339 | 419 | 405 |
+| of which on riders | 45 | 0 | - |
+| Grounds | 340 | 314 | 332 |
+| Unused positions | 321 | 419 | 405 |
 | K footprints displaced | 313 | 346 | 326 |
 | K F.Cu / K B.Cu | 54 / 259 | 58 / 288 | - |
 | K ICs / resistors / capacitors / other | 97 / 114 / 62 / 40 | 101 / 128 / 71 / 46 | 90 / 122 / 71 / 43 |
@@ -232,17 +232,17 @@ Source: design/stack/fixings/fixing-sites.json (fixings with active true; reserv
 
 Access hole EL-ACCESS-SLV-L2: 7 mm in EL at (244, 230) for SLV-L2; inside the keep-out of its sleeve on P. No link geometry lies on EL in this model.
 
-## Per joint and size: 61 links, 61 placed, 322 grounds and 339 unused positions on the placed links
+## Per joint and size: 61 links, 61 placed, 340 grounds and 321 unused positions on the placed links
 
 | Joint | Size | Links | Placed | No place | Signals | Grounds | Unused positions |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | adapters to K | FH12-N8 | 3 | 3 | 0 | 21 | 3 | 0 |
 | JL to K | FH12-N40 | 8 | 8 | 0 | 100 | 92 | 128 |
 | JR to K | FH12-N40 | 7 | 7 | 0 | 106 | 99 | 75 |
-| P to K (with SUB and EL) | FH12-N40 | 2 | 2 | 0 | 34 | 16 | 30 |
-| P to K (with SUB and EL) | FH12-N26 | 3 | 3 | 0 | 22 | 15 | 41 |
-| P to K (with SUB and EL) | FH12-N14 | 9 | 9 | 0 | 75 | 26 | 25 |
-| P to K (with SUB and EL) | FH12-N8 | 26 | 26 | 0 | 137 | 58 | 13 |
+| P to K (with SUB and EL) | FH12-N40 | 2 | 2 | 0 | 34 | 27 | 19 |
+| P to K (with SUB and EL) | FH12-N26 | 3 | 3 | 0 | 22 | 16 | 40 |
+| P to K (with SUB and EL) | FH12-N14 | 9 | 9 | 0 | 76 | 31 | 19 |
+| P to K (with SUB and EL) | FH12-N8 | 26 | 26 | 0 | 136 | 59 | 13 |
 | JL to P through K | FH12-N40 | 1 | 1 | 0 | 8 | 7 | 25 |
 | JL to P through K | FH12-N8 | 2 | 2 | 0 | 8 | 6 | 2 |
 

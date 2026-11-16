@@ -277,7 +277,7 @@ Rows above 1.0, with the ratio at the cable edge and in the middle of the link:
 
 Worst row: LOGIC>LOGIC on C32128 at 60 mm, edge, 255 mV against 218 mV. WIPER>WIPER and STATIC pairs exert nothing and are left out; LOGIC/WIPER may not share a cable (DS-62). Every figure is a paper bound; the harness was never measured either.
 
-## Gate check 4 on the record of the room study (NEEDS_DESIGN): the largest ratio of the 61 links is 1.42 on P-K-P-L01.01.01; 5 links read above 1.0 (attempt a4, part 2, DS-77)
+## Gate check 4 on the record of the room study (DONE): the largest ratio of the 61 links is 0.98 on P-K-P-L03.01; 0 links read above 1.0 (attempt a4, part 2, DS-77)
 
 Record: `design/stack/geometry/links/link-gate.json` (ST-02 a8 part 2, DS-110), read only and pinned by the hash of a projection of what is read (`inputs.json` → `link_record.projection_sha256`). Each link is solved at its actual order on its actual cable, every conductor in the 2-D solve, every ground and unused position at AGND (DS-77), every other signal held by its driver. Every directed pair whose aggressor class has an aggressor term is evaluated, not only neighbours, against the quietest present harness of the same pair of classes (the references of part 1). The ratio of a link is its largest pair.
 
@@ -285,22 +285,16 @@ Every pair of classes that shares a link has a reference.
 
 | Cable | Links | Largest ratio | Link |
 | --- | --- | --- | --- |
-| C26618 (40, 50 mm) | 18 | 1.14 | P-K-P-L07 |
-| C29534 (8, 50 mm) | 28 | 1.04 | P-K-P-L13.01.01.01 |
-| C32128 (26, 60 mm) | 3 | 1.13 | P-K-P-L03.01 |
-| C68390 (14, 50 mm) | 9 | 1.42 | P-K-P-L01.01.01 |
+| C26618 (40, 50 mm) | 18 | 0.83 | P-K-P-L08 |
+| C29534 (8, 50 mm) | 28 | 0.93 | P-K-P-L10.01.01.01 |
+| C32128 (26, 60 mm) | 3 | 0.98 | P-K-P-L03.01 |
+| C68390 (14, 50 mm) | 9 | 0.87 | P-K-P-L06.01.01 |
 
 ### Links above 0.8, with their largest pair
 
 | Link | Cable | Ratio | Largest pair | Host of riders (ratio without them) |
 | --- | --- | --- | --- | --- |
-| P-K-P-L01.01.01 | C68390 | 1.421 | LOGIC>LOGIC: /E4/TRIG_ACTIVE (pos 7) on /E5/ASR_RAW (pos 8), side by side | no |
-| P-K-P-L07 | C26618 | 1.136 | LOGIC>LOGIC: /O1/SYNC_GATE (pos 17) on /O1/SOFT_DRIVE (pos 16), side by side | no |
-| P-K-P-L08 | C26618 | 1.134 | LOGIC>LOGIC: /O5/SYNC_GATE (pos 21) on /O5/SOFT_DRIVE (pos 20), side by side | no |
-| P-K-P-L03.01 | C32128 | 1.132 | LOGIC>LOGIC: /E1/LOOP_RAW (pos 21) on /E2/ASR_RAW (pos 22), side by side | no |
-| P-K-P-L13.01.01.01 | C29534 | 1.041 | LOGIC>LOGIC: /E6/STAGE_FALL (pos 5) on /E1/TRIG_ACTIVE (pos 4), side by side | no |
-| P-K-P-L01.02.01 | C68390 | 0.992 | LOGIC>LOGIC: /E4/LOOP_RAW (pos 9) on /E5/STAGE_FALL (pos 10), side by side | no |
-| P-K-P-L03.02.01 | C68390 | 0.989 | LOGIC>LOGIC: /E3/CURVED (pos 7) on /E3/ASR_RAW (pos 6), side by side | no |
+| P-K-P-L03.01 | C32128 | 0.978 | PRECISION>ANALOGUE: /E1/REF5 (pos 3) on /E1/ENV_BUFFER (pos 1), across one ground | no |
 | P-K-P-L06.02 | C32128 | 0.978 | PRECISION>PRECISION: /O3/LOCAL_REF5 (pos 3) on /O1/LOCAL_REF5 (pos 1), across one ground | no |
 | P-K-P-L10.02 | C32128 | 0.978 | PRECISION>ANALOGUE: /F1/FREQ_REMOTE (pos 3) on /F1/GAIN_REMOTE (pos 1), across one ground | yes (0.98) |
 | P-K-P-L10.01.01.01 | C29534 | 0.931 | PRECISION>ANALOGUE: /O4/RANGE_CV (pos 6) on /O4/PWM_REMOTE (pos 8), across one ground | no |
@@ -321,8 +315,13 @@ Every pair of classes that shares a link has a reference.
 | JL-P-K-P-L01.01.01.01 | C29534 | 0.920 | ANALOGUE>ANALOGUE: /X1/A_BUFFER (pos 3) on /H1/SLEW_BUFFERED (pos 1), across one ground | no |
 | JL-P-K-P-L01.01.01.02 | C29534 | 0.920 | ANALOGUE>ANALOGUE: /X2/B_BUFFER (pos 3) on /X1/SELECTOR_REMOTE (pos 1), across one ground; /X2/B_BUFFER rides from JL-P-K-P-L01.01.02.01 | yes (0.30) |
 | P-K-P-L06.01.01 | C68390 | 0.868 | PRECISION>ANALOGUE: /O2/LOCAL_REFN5 (pos 12) on /O1/FM_REMOTE (pos 14), across one ground | no |
+| P-K-P-L03.02.01 | C68390 | 0.867 | PRECISION>ANALOGUE: /E5/REF5 (pos 3) on /H1/RAW_HELD (pos 1), across one ground | yes (0.87) |
+| P-K-P-L01.02.01 | C68390 | 0.866 | PRECISION>ANALOGUE: /E4/REF5 (pos 3) on /E4/ENV_BUFFER (pos 1), across one ground | no |
 | P-K-P-L01.01.02 | C68390 | 0.865 | ANALOGUE>ANALOGUE: /E5/NOT_FALL (pos 3) on /E5/ENV_BUFFER (pos 1), across one ground | no |
+| P-K-P-L01.01.01 | C68390 | 0.839 | LOGIC>LOGIC: /E4/ASR_RAW (pos 4) on /E3/LOOP_RAW (pos 3), side by side | no |
+| P-K-P-L08 | C26618 | 0.829 | PRECISION>ANALOGUE: /O3/RANGE_CV (pos 3) on /O3/PWM_REMOTE (pos 1), across one ground | no |
 | JR-K-JR-L06 | C26618 | 0.829 | ANALOGUE>ANALOGUE: /E5/BIP_CORE (pos 3) on /E4/SIG_BUFFER (pos 1), across one ground | no |
+| P-K-P-L07 | C26618 | 0.829 | PRECISION>ANALOGUE: /O1/LFO_REF (pos 3) on /O1/PWM_REMOTE (pos 1), across one ground | no |
 | JR-K-JR-L05 | C26618 | 0.829 | ANALOGUE>ANALOGUE: /M4A/2_BUFFER (pos 3) on /M4A/1_BUFFER (pos 1), across one ground | no |
 | JL-K-JL-L01 | C26618 | 0.829 | ANALOGUE>ANALOGUE: /F3/LP_CORE (pos 3) on /F3/HP_CORE (pos 1), across one ground | no |
 | JL-K-JL-L02 | C26618 | 0.829 | PRECISION>ANALOGUE: /O1/1V_BUFFER (pos 3) on /O1/FM_BUFFER (pos 1), across one ground | no |
@@ -339,26 +338,16 @@ Every pair of classes that shares a link has a reference.
 | JL-K-JL-L06 | C26618 | 0.828 | PRECISION>ANALOGUE: /F3/FREQ_BUFFER (pos 3) on /F3/BP_CORE (pos 1), across one ground | no |
 | JL-K-JL-L08 | C26618 | 0.828 | PRECISION>ANALOGUE: /M5B/REF5 (pos 3) on /M5B/SUM_POSTLEVEL (pos 1), across one ground | no |
 
-### Links above 1.0 and the DS-77 remedy inside their unused positions
-
-The trial moves unused positions of the link as grounds into its logic runs, evenly, at the same size; the record is not changed and nothing is allocated. A link with no unused position has no remedy on record at its size.
-
-| Link | Circuits | Ratio | Largest pair | Rider | Unused | Grounds moved in | Ratio after |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| P-K-P-L01.01.01 | 14 | 1.421 | LOGIC>LOGIC: /E4/TRIG_ACTIVE (pos 7) on /E5/ASR_RAW (pos 8), side by side | none | 0 | does not fit | — |
-| P-K-P-L07 | 40 | 1.136 | LOGIC>LOGIC: /O1/SYNC_GATE (pos 17) on /O1/SOFT_DRIVE (pos 16), side by side | none | 17 | 1 | 0.961 |
-| P-K-P-L08 | 40 | 1.134 | LOGIC>LOGIC: /O5/SYNC_GATE (pos 21) on /O5/SOFT_DRIVE (pos 20), side by side | none | 13 | 1 | 0.960 |
-| P-K-P-L03.01 | 26 | 1.132 | LOGIC>LOGIC: /E1/LOOP_RAW (pos 21) on /E2/ASR_RAW (pos 22), side by side | none | 1 | 1 | 0.978 |
-| P-K-P-L13.01.01.01 | 8 | 1.041 | LOGIC>LOGIC: /E6/STAGE_FALL (pos 5) on /E1/TRIG_ACTIVE (pos 4), side by side | none | 0 | does not fit | — |
-
-### 20 hosts carry 42 riders; none reads above 1.0
+### 22 hosts carry 45 riders; none reads above 1.0
 
 | Host | Riders (from) | Ratio | Without riders |
 | --- | --- | --- | --- |
+| P-K-P-L03.02.01 | /E1/STAGE_FALL at 11 (P-K-P-L13.01.01.01) | 0.87 | 0.87 |
 | P-K-P-L04.01.01.01 | /E4/Cd69090_W at 2 (P-K-P-L04.01.02.02) | 0.92 | 0.92 |
 | P-K-P-L04.01.01.02 | /E4/Cb80f06_W at 2 (P-K-P-L04.01.02.02) | 0.92 | 0.92 |
 | P-K-P-L04.01.02.01 | /A03/IN_REMOTE at 8 (P-K-P-L04.01.02.02) | 0.30 | — |
 | P-K-P-L04.02.01.01 | /A03/REF5 at 6 (P-K-P-L04.01.02.02) | 0.92 | 0.36 |
+| P-K-P-L05.01.01 | /E5/ASR_RAW at 5 (P-K-P-L01.01.01), /E5/CURVED at 6 (P-K-P-L01.01.01) | 0.74 | 0.73 |
 | P-K-P-L06.01.02.01 | /O3/C83f36b_W at 7 (P-K-P-L06.01.02.02) | — | — |
 | P-K-P-L06.03.01 | /O3/Ce35646_W at 4 (P-K-P-L06.01.02.02), /M5A/C2c2153_W at 5 (P-K-P-L06.01.02.02), /M5A/C445167_W at 6 (P-K-P-L06.01.02.02), /O3/Ca449b7_W at 7 (P-K-P-L10.01.01.02), /O3/FM_REMOTE at 11 (P-K-P-L06.01.02.02) | 0.58 | 0.04 |
 | P-K-P-L10.01.02 | /O5/Ce35646_W at 7 (P-K-P-L10.01.01.02), /F1/Cb3b460_W at 8 (P-K-P-L10.01.01.02), /F1/Cb5b1dc_W at 9 (P-K-P-L10.01.01.02) | 0.63 | 0.62 |
@@ -376,7 +365,7 @@ The trial moves unused positions of the link as grounds into its logic runs, eve
 | P-K-P-L15.01.02.02 | /M5B/Ce67982_W at 1 (P-K-P-L14.02.01.01), /M5B/LEVEL_REMOTE at 5 (P-K-P-L14.02.01.01) | 0.66 | 0.23 |
 | JL-P-K-P-L01.01.01.02 | /X2/B_BUFFER at 3 (JL-P-K-P-L01.01.02.01), /X2/SELECTOR_REMOTE at 5 (JL-P-K-P-L01.01.02.01) | 0.92 | 0.30 |
 
-## The rule per link holds on every link: 10 links carry logic, with 8 runs of two or more (DS-62, DS-77, DS-79)
+## The rule per link holds on every link: 10 links carry logic, with 17 runs of two or more (DS-62, DS-77, DS-79)
 
 Checked on the record: a ground or unused position between every two signals except LOGIC, WIPER or STATIC beside its own class; logic and wiper never in one cable; at least one ground or unused position; a logic run of two or more never on position 1 or the last and with a ground on each side; a single logic line at an outer position with a ground beside it; the adapter order OSC_OCT0 to OSC_OCT5, AGND, OCT_SELECTED.
 
@@ -388,7 +377,7 @@ Per branch as the calculator defines it, with every ground and unused position o
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | JL | 11 | 260 (105 + 155) | 4 | 50 | 0.0429 | 0.0461 | 0.0896 | 0.0489 |
 | JR | 7 | 174 (99 + 75) | 20 | 50 | 0.0433 | 0.0469 | 0.1163 | 0.0489 |
-| P | 40 | 224 (115 + 109) | 1 | 50 | 0.0430 | 0.0463 | 0.0998 | 0.0486 |
+| P | 40 | 224 (133 + 91) | 1 | 50 | 0.0430 | 0.0463 | 0.0998 | 0.0486 |
 
 The bound of attempt a2 (0.049 A with one post open, one ground per link at 50 mm) still covers every link: every link has at least 1 contact and no cable on JL, JR or P is shorter than 50 mm.
 
