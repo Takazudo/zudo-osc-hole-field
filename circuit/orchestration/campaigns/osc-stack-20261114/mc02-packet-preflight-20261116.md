@@ -128,9 +128,10 @@ also **NOT RUN** here.
 
 Independent review of the imported historical facts identified a c6 ratio
 wording issue, corrected above to preserve five intentional STATIC/WIPER-only
-nulls. An exact-head packet review remains a release requirement; its receipt
-is recorded separately by Moya. Historical transcription and review do not
-supply the integrated MC-01 rebind, native checks or current-head gates.
+nulls. An exact-head packet review remains a release requirement; Moya must
+record its receipt separately before release. Historical transcription and
+review do not supply the integrated MC-01 rebind, native checks or current-head
+gates.
 
 Before a final MC-02 packet: (1) integrate and independently review MC-01
 through Moya's serialized path; (2) rebind each five-check row, all 26 ICs and
