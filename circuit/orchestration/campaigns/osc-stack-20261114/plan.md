@@ -14,9 +14,9 @@ The independent route check `6afabe3f-97a8-8191-90a3-f10e5085000f` completed aft
 
 At inventory time this repository showed no visible active or queued Actions runs; account billing/headroom returned HTTP 403. The latest main push run `43737142928` passed eight jobs on `690366aa`. The current isolated checkout showed only the six previously known open PRs (#349, #293, #289, #290, #287, #286); its own worktree was clean before this documentation edit. Other repositories, inaccessible historical children and other writers remain unknown. The owner reports Fable automatic resumption stopped and has abandoned unpushed recovery (DS-130–131); this does not resolve unseen write ownership.
 
-**Conservative allocation proposal, not admission:** Moya remains the one dispatcher/integrator. Cap the first wave at three disjoint workers, one heavy/native process per freshly profiled VM and one integration PR. Cap any initial read-only review at one attempt and 30 minutes, with no automatic retry or native work. Reserve the current eight-check ordinary CI path before merging; the billing 403 prevents an account quota claim. No engineering or Gate A task is admitted until the affected task brief has exact source/input identities, dependencies, owned paths, observed writer/capacity state, model/authority, finite compute and validation budgets, stop and artifact conditions, and a reviewable admission receipt. MC-01 #364, MC-02 #365, MC-03 #366 and MC-04 #367 remain PLANNED / NOT DISPATCHED. The next safe step is to complete those prerequisites, starting with a bounded read-only brief review, while preserving all accepted owner choices and the K-joint routing hold.
+**Conservative allocation proposal, not admission:** Moya remains the one dispatcher/integrator. Cap the first wave at three disjoint workers, one heavy/native process per freshly profiled VM and one integration PR. Cap any initial read-only review at one attempt and 30 minutes, with no automatic retry or native work. Establish and reserve capacity for the current eight-check ordinary CI path before engineering dispatch; revalidate that reserve and require applicable current-head checks before merge. Account headroom remains unknown after the billing 403. No engineering or Gate A task is admitted until the affected task brief has exact source/input identities, dependencies, owned paths, observed writer/capacity state, model/authority, finite compute and validation budgets, stop and artifact conditions, and a reviewable admission receipt. MC-01 #364, MC-02 #365, MC-03 #366 and MC-04 #367 remain PLANNED / NOT DISPATCHED. The next safe step is to complete those prerequisites, starting with a bounded read-only brief review, while preserving all accepted owner choices and the K-joint routing hold.
 
-## Current continuation checkpoint — 2026-11-16 JST / 2026-11-15 UTC
+## Historical continuation preparation checkpoint — 2026-11-16 JST / 2026-11-15 UTC
 
 **Startup handoff prepared; incoming Moya acknowledgment pending. No implementation worker has been dispatched by this documentation task.** Continue this campaign, with Moya as the designated incoming sole manager and Codex Cloud as the selected implementation environment. The operating tracker is [#362](https://github.com/Takazudo/zudo-osc-hole-field/issues/362); read the [complete continuation brief](moya-codex-resume-20261116.md) and [Moya startup prompt](moya-start-20261116.md). The whole-instrument objective remains [#315](https://github.com/Takazudo/zudo-osc-hole-field/issues/315).
 
@@ -34,7 +34,7 @@ The owner reports that Fable automatic resumption is stopped and directs that re
 
 The authoritative evidence is [the link placement record](../../../../design/stack/geometry/links/link-gate.md), [the coupling report](../../../../design/stack/link-electrical/README.md), [the assembly procedure](../../../../design/stack/fixings/threading-procedure.md) and the retained decision/review records. Owner instructions and the incoming configuration are appended as DS-128–132; earlier rows are preserved.
 
-### Current continuation queue
+### Historical prepared continuation queue
 
 | Task | State | Dependency and acceptance boundary |
 | --- | --- | --- |
@@ -44,7 +44,7 @@ The authoritative evidence is [the link placement record](../../../../design/sta
 | MC-03 trimmer study — [#366](https://github.com/Takazudo/zudo-osc-hole-field/issues/366) | PLANNED; NOT DISPATCHED | Refresh ST-07 against frozen current geometry and disjoint candidate outputs, including the RVO1408 face change. It is not a prerequisite of Gate A-paper. |
 | MC-04 Gate A-paper — [#367](https://github.com/Takazudo/zudo-osc-hole-field/issues/367) | PLANNED; NOT DISPATCHED | A confirmed independent Astra design authority reads the exact final packet and rules on adoption/remedies and the routing hold. A negative gate returns alternatives to the owner. |
 
-This checkpoint governs current execution status. The following dated records preserve how the campaign reached it; their former sessions, launch instructions and outstanding owner cards are not current admissions. Retained technical rulings still apply unless a later decision explicitly supersedes them.
+The MC-00 takeover checkpoint above governs current execution status. This preparation checkpoint and the following dated records preserve how the campaign reached it; their former sessions, launch instructions and outstanding owner cards are not current admissions. Retained technical rulings still apply unless a later decision explicitly supersedes them.
 
 ## Historical owner direction and decision authority — 2026-11-14
 
