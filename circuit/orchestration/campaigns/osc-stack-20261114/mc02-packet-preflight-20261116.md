@@ -126,10 +126,15 @@ trimmer generators, so their focused checks remain a separate integration-head
 gate. Native KiCad, CI, DRC/fill, physical fit/service and hardware checks are
 also **NOT RUN** here.
 
+This expanded packet itself has **not** received independent exact-head
+review. The source-only identity checks above verify transcription against
+historical artifacts; they do not supply that review or current-head gates.
+
 Before a final MC-02 packet: (1) integrate and independently review MC-01
 through Moya's serialized path; (2) rebind each five-check row, all 26 ICs and
 31 latch links to that exact revision; (3) complete applicable focused and
 aggregate/native checks at the integration
-head; and (4) send the compact packet to independent confirmed Astra review
+head; (4) independently review this packet at its final exact head; and (5)
+send the compact packet to independent confirmed Astra review
 under #367. An offline paper ratio, an exit-zero source test, or this draft is
 not Gate A approval or canonical-board adoption.
