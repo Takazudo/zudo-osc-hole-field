@@ -61,7 +61,7 @@ The owner did not independently byte-hash those private PDFs or publish copies.
 | 1. Connector and cable identity | Historical ST-01h records 122 Hirose `FH12-{8,14,26,40}S-0.5SH(55)` bottom-contact connectors and LX same-side FFCs on 61 links. Selected cable codes: C26618 40P/50 mm ×18, C29534 8P/50 mm ×28, C32128 26P/60 mm ×3, C68390 14P/50 mm ×9, C81339 8P/40 mm ×3. Land record: 0.5 mm pitch, 0.3 × 1.3 mm pads, 2.2 mm tab length, derived 1.8 mm tab width. | The retained LX A771 drawing gives 0.30 ± 0.03 mm tail and 0.12 ± 0.03 mm body thickness for an *opposite-side* 40P cable, not these selected same-side codes. Selected-code drawings, FH12 open height/side and contact-1 end remain UNSOURCED; 5.0 mm open height is ASSUMED. Rebind exact identities. | PRELIMINARY; source/physical gaps open |
 | 2. Opening, locking and access | Historical threading record: 13 steps, K lowered in nine stages, at most 17 ends at once; 27 open, three open after displacement, 31 `NOT SHOWN` latch reaches. Twelve K locks need the other hand supporting K's edge. | Neighbour package heights absent; exempt packages being below the 2.0 mm connector is assumed. Human 17-end threading and cable folds staying put NOT RUN. M3 × 25 mm screw/tape retention assumed; nut height and washer thickness unsourced. Confirm actual assembled access. | PRELIMINARY; 31 access gaps |
 | 3. Allocation and current | Historical: 511/511 signals, 61 placed links, 322 grounds/339 unused; worst one-post-open ground contact `0.047 A` against `0.35 A` working bound. Local c6: 511 signals, 340 grounds/321 unused and modelled P all-posts-open `0.0997772 A`. These are **different revisions and operating cases**. | Recompute allocation, current and record projection together at reviewed integrated MC-01. The 26 unplaced ICs below remain gate inputs. Current is modeled, not measured. | CANDIDATE model; final rebind pending |
-| 4. Coupling | Historical `NEEDS_DESIGN`: five above 1.0, max 1.42134. Local reviewed c6 candidate: all 61 modeled links at or below 1.0, max `0.978101`. | Rebind complete class-pair table, projection, kernel and independent review to integrated MC-01; retain source/native checks and unknown measured harness behaviour. | CANDIDATE paper result only |
+| 4. Coupling | Historical `NEEDS_DESIGN`: five above 1.0, max 1.42134. Local reviewed c6 candidate: 61 link records, 56 numeric ratios with none above 1.0, and five intentional STATIC/WIPER-only null ratios; numeric max `0.978101`. | Rebind complete class-pair table, projection, kernel and independent review to integrated MC-01; retain source/native checks and unknown measured harness behaviour. | CANDIDATE paper result only |
 | 5. Cumulative rework | Historical: 438 displaced footprints, 412 courtyard positions, 26 unplaced ICs. K service opening takes 288 operations; after ten openings K ends reach 11 of the sourced 20 insertions. Accepted workload: 122 latches, lead trimming on 83 parts (92 per-tail entries), 22 fixings and 30 lengthened tails. MC-03's 104-adjustment plan is a separate candidate. | Courtyard room does not prove timing, precision, summing routes, service or assembled clearance (DS-97). Rebind counts and 26 refs to integrated record. | PRELIMINARY; actual layout unresolved |
 
 The five historical over-limit links were `P-K-P-L01.01.01` 1.42134,
@@ -126,9 +126,11 @@ trimmer generators, so their focused checks remain a separate integration-head
 gate. Native KiCad, CI, DRC/fill, physical fit/service and hardware checks are
 also **NOT RUN** here.
 
-This expanded packet itself has **not** received independent exact-head
-review. The source-only identity checks above verify transcription against
-historical artifacts; they do not supply that review or current-head gates.
+Independent review of the imported historical facts identified a c6 ratio
+wording issue, corrected above to preserve five intentional STATIC/WIPER-only
+nulls. An exact-head packet review remains a release requirement; its receipt
+is recorded separately by Moya. Historical transcription and review do not
+supply the integrated MC-01 rebind, native checks or current-head gates.
 
 Before a final MC-02 packet: (1) integrate and independently review MC-01
 through Moya's serialized path; (2) rebind each five-check row, all 26 ICs and
