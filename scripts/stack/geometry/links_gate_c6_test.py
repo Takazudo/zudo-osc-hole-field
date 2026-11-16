@@ -13,6 +13,7 @@ import links_gate_c6 as c6
 import link_ratios as lr
 import link_electrical as le
 import ds62_table as d62
+import c6_report
 
 
 class C6PassTests(unittest.TestCase):
@@ -63,6 +64,15 @@ class C6PassTests(unittest.TestCase):
         p = link['positions']
         p[23], p[24] = dict(p[24], pos=24), dict(p[23], pos=25)
         self.assertTrue(any('DS-78' in e for e in c6.order_errors(link, original[c6.L07])))
+
+    def test_historical_snapshot_cannot_relabel_changed_source(self):
+        current = json.loads((ROOT / lr.RECORD).read_text())
+        snapshot = json.loads((ROOT / 'design/stack/geometry/links/link-gate-c6-source.json').read_text())
+        self.assertEqual(c6_report.verified_source(current, snapshot)['links'][0]['id'], current['links'][0]['id'])
+        bad = copy.deepcopy(snapshot)
+        bad['links'][0]['positions'][0]['net'] = '/ALTERED'
+        with self.assertRaisesRegex(ValueError, 'historical record hash mismatch'):
+            c6_report.verified_source(current, bad)
 
 
 if __name__ == '__main__':

@@ -284,7 +284,8 @@ PART2_KEYS = ('ways_out', 'consolidation', 'replacement', 'displaced_k_ic_packag
 
 
 def gate_doc():
-    return copy.deepcopy(dict({'links': GDOC['links'], 'flags': GDOC['flags']}, **{k: GDOC[k] for k in PART2_KEYS}))
+    return copy.deepcopy(dict({'links': GDOC['links'], 'flags': GDOC['flags'], 'c6': GDOC['c6']},
+                              **{k: GDOC[k] for k in PART2_KEYS}))
 
 
 def gctx(flags=None):
@@ -930,7 +931,12 @@ class GatePart2(unittest.TestCase):
         doc = gate_doc()
         x = next(l for l in doc['links'] if l['id'] == r['id'])
         x['placed'] = False
-        errs = self.gerrs(doc)
+        # Isolate this placement fault from the separate exact-c6-record hash gate.
+        # The conductor order is untouched; the placed flag is deliberately false.
+        from unittest.mock import patch
+        import links_gate_c6
+        with patch.object(links_gate_c6, 'valid_record', return_value=True):
+            errs = self.gerrs(doc)
         self.assertTrue(any(r['id'] in e and 'recorded without a place' in e for e in errs), errs)
 
     def test_review_3_outside_figure_counts_against_the_active_fixings(self):

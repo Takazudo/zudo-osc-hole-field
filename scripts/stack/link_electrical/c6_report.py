@@ -1,6 +1,7 @@
 """Retained per-link receipt for the DA-03 c6 conductor-order pass (paper only)."""
 import json
 import hashlib
+import copy
 import sys
 from pathlib import Path
 
@@ -22,12 +23,30 @@ def order(link):
             if p['kind'] == 'signal' else {})} for p in link['positions']]
 
 
+def verified_source(current, snapshot):
+    """Rebuild and hash the complete historical record; its label alone is not evidence."""
+    if snapshot.get('source_sha256') != c6.SOURCE_SHA256:
+        raise ValueError('c6 snapshot source label differs')
+    old_links = {x['id']: x for x in snapshot['links']}
+    if set(old_links) != set(current['c6']['changed_links']):
+        raise ValueError('c6 snapshot does not cover exactly the changed links')
+    original = copy.deepcopy(current)
+    original['links'] = [old_links.get(x['id'], x) for x in original['links']]
+    original['provenance'] = snapshot['source_provenance']
+    original['summary'] = snapshot['source_summary']
+    original.pop('c6', None)
+    if c6.digest(original) != c6.SOURCE_OBJECT_SHA256:
+        raise ValueError('c6 historical record hash mismatch')
+    return original
+
+
 def build():
     old = json.loads(SOURCE.read_text())
     now = json.loads((ROOT / lr.RECORD).read_text())
-    if not c6.valid_record(now) or old['source_sha256'] != c6.SOURCE_SHA256:
+    if not c6.valid_record(now):
         raise ValueError('c6 source or candidate identity changed')
-    before = {x['id']: x for x in old['links']}
+    source_doc = verified_source(now, old)
+    before = {x['id']: x for x in source_doc['links']}
     after = {x['id']: x for x in now['links']}
     inp = le.load_inputs()
     baseline = d62.build(inp)['baseline']
