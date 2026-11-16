@@ -166,7 +166,7 @@ def build():
     return {
         'schema_version': 1,
         'status': 'CANDIDATE ONLY; NO CANONICAL BOARD MOVE OR PHYSICAL ACCESS CLAIM',
-        'source_commit': '690366aa69450b642f7daee2cb809eb5ded38d63',
+        'source_commit': 'bf6c67718f2fe157bd58966d0c3555ea8f37b596',
         'source_sha256': {p: sha(p) for p in SOURCES},
         'canonical_geometry_digest': sg.canonical_digest(sg.canonical_inputs(raw, boards)),
         'board_metadata_digest': sg.canonical_digest({ref: meta[ref] for ref in sorted(adj)}),
