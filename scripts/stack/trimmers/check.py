@@ -13,6 +13,8 @@ sg = gen.sg
 
 def validate(plan):
     errors = []
+    if plan.get('status') != 'CANDIDATE ONLY; NO CANONICAL BOARD MOVE OR PHYSICAL ACCESS CLAIM':
+        errors.append('unsupported overall status')
     raw = sg.load_raw()
     boards = sg.load_boards(raw)
     gate = json.loads((ROOT / gen.SOURCES[0]).read_text())
@@ -28,6 +30,10 @@ def validate(plan):
         errors.append('source count changed')
     transformed = gen.transformed_inventory(boards, gate)
     actual = {f['ref']: f for f in transformed['K'] if 'TC33X' in f['lib'] or f['lib'].startswith('TestPad')}
+    live_metadata = gen.board_metadata()
+    metadata_projection = {ref: live_metadata.get(ref) for ref in sorted(actual)}
+    if plan.get('board_metadata_digest') != sg.canonical_digest(metadata_projection):
+        errors.append('stale board metadata projection')
     rows = plan.get('records', [])
     refs = [r.get('ref') for r in rows]
     if len(rows) != 104 or len(set(refs)) != 104 or set(refs) != set(actual):
@@ -53,6 +59,21 @@ def validate(plan):
                                       if x['board'] == 'K' and x['ref'] == ref), None),
         }:
             errors.append(ref + ': transformed source mismatch')
+        expected_metadata = live_metadata.get(ref)
+        if expected_metadata is None or any(row.get(field) != expected_metadata[field]
+                                            for field in ('module', 'role', 'nets')):
+            errors.append(ref + ': electrical metadata mismatch')
+        if (row.get('node_sensitivity') != 'UNRESOLVED: schematic role/net alone does not bound loop or guard'
+                or row.get('loop_length_mm') is not None or row.get('added_vias') is not None
+                or row.get('guard_status') != 'UNRESOLVED'
+                or row.get('service_tool_access') != 'UNMEASURED'):
+            errors.append(ref + ': unsupported electrical/service claim')
+        expected_verdict = ('GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW' if row.get('proposal') else
+                            'NO_COURTYARD_POSITION_WITHIN_30MM_NEEDS_DESIGN' if f['side'] == 'F' else
+                            'KEEP_REAR_NEEDS_SERVICE_REVIEW')
+        expected_access = 'FRONT_BLOCKED_IN_CLOSED_STACK' if f['side'] == 'F' else 'REAR_FACE_CANDIDATE'
+        if row.get('verdict') != expected_verdict or row.get('access') != expected_access:
+            errors.append(ref + ': unsupported access verdict')
         if f['side'] == 'B' and row.get('proposal') is not None:
             errors.append(ref + ': rear item has move')
     for ref in order:
@@ -79,7 +100,11 @@ def validate(plan):
         if any(abs(a - b) > 0.0002 for a, b in zip(expect, rect)):
             errors.append(ref + ': courtyard/position mismatch')
         distance = math.hypot(dx, dy)
-        if distance > gen.SEARCH_RADIUS_MM + 1e-6 or abs(distance - p.get('distance_mm', -1)) > 0.0002:
+        recorded_distance = p.get('distance_mm')
+        if (isinstance(recorded_distance, bool) or not isinstance(recorded_distance, (float, int))
+                or not math.isfinite(recorded_distance)):
+            errors.append(ref + ': nonfinite or invalid distance')
+        elif distance > gen.SEARCH_RADIUS_MM + 1e-6 or abs(distance - recorded_distance) > 0.0002:
             errors.append(ref + ': exceeds assumed search radius or wrong distance')
         if not sg.rect_inside_poly(rect, outline, margin):
             errors.append(ref + ': outside K outline')

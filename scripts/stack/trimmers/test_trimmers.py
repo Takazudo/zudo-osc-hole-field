@@ -69,6 +69,38 @@ class CandidateChecks(unittest.TestCase):
         r['verdict'] = 'NO_COURTYARD_POSITION_WITHIN_30MM_NEEDS_DESIGN'
         self.assertTrue(any('available courtyard position omitted' in e for e in check.validate(p)))
 
+    def test_changed_live_electrical_metadata(self):
+        p, r = self.changed()
+        r['nets'] = ['FALSE_NET']
+        r['role'] = 'false:SAFE'
+        r['module'] = 'FALSE_BLOCK'
+        self.assertTrue(any('electrical metadata mismatch' in e for e in check.validate(p)))
+
+    def test_stale_metadata_projection(self):
+        p, _ = self.changed()
+        p['board_metadata_digest'] = '0' * 64
+        self.assertTrue(any('stale board metadata projection' in e for e in check.validate(p)))
+
+    def test_nonfinite_recorded_distance(self):
+        p, r = self.changed()
+        r['proposal']['distance_mm'] = float('nan')
+        self.assertTrue(any('nonfinite or invalid distance' in e for e in check.validate(p)))
+
+    def test_false_service_and_guard_claims(self):
+        p, r = self.changed()
+        r['service_tool_access'] = 'MEASURED'
+        r['guard_status'] = 'VERIFIED'
+        r['node_sensitivity'] = 'INSENSITIVE'
+        r['loop_length_mm'] = 0.0
+        r['added_vias'] = 0
+        self.assertTrue(any('unsupported electrical/service claim' in e for e in check.validate(p)))
+
+    def test_false_access_verdict(self):
+        p, r = self.changed()
+        r['verdict'] = 'SAFE_TO_BUILD'
+        r['access'] = 'FULLY_ACCESSIBLE'
+        self.assertTrue(any('unsupported access verdict' in e for e in check.validate(p)))
+
 
 if __name__ == '__main__':
     unittest.main()
