@@ -17,7 +17,11 @@ CONFIGS = (('flat side by side', 'A', 'adjacent', 0), ('flat one ground between 
 
 
 def aggressor_of(cls):
-    return {'LOGIC': 'LOGIC', 'ANALOGUE': 'ANALOGUE', 'PRECISION': 'ANALOGUE'}.get(cls)
+    terms = {'LOGIC': 'LOGIC', 'ANALOGUE': 'ANALOGUE', 'PRECISION': 'ANALOGUE',
+             'WIPER': None, 'STATIC': None}
+    if cls not in terms:
+        raise ValueError(f'unknown aggressor class {cls!r}')
+    return terms[cls]
 
 
 # ---------------------------------------------------------------- present pattern
@@ -143,13 +147,14 @@ def baseline(inp, pats=None):
             vals = []
             for t in tris:
                 p = byid[t['harness']]
-                a, v = (t['a'], t['v']) if p['classes'][t['a']] == ag_cls else (t['v'], t['a'])
-                if p['classes'][a] != ag_cls or p['classes'][v] != vic:
-                    continue
-                par = harness_pair_parameters(inp, p['classes'], a, v, p['cut_length_mm'], eps)
-                lv, sw = level(par, agg, vic, inp)
-                vals.append({'harness': p['id'], 'length_mm': p['cut_length_mm'], 'V': lv, 'swing_V': sw,
-                             'Cm_pF': par['Cm_F'] * 1e12, 'M_eff_nH': par['M_eff_H'] * 1e9})
+                orientations = ((t['a'], t['v']), (t['v'], t['a']))
+                for a, v in orientations:
+                    if p['classes'][a] != ag_cls or p['classes'][v] != vic:
+                        continue
+                    par = harness_pair_parameters(inp, p['classes'], a, v, p['cut_length_mm'], eps)
+                    lv, sw = level(par, agg, vic, inp)
+                    vals.append({'harness': p['id'], 'length_mm': p['cut_length_mm'], 'V': lv, 'swing_V': sw,
+                                 'Cm_pF': par['Cm_F'] * 1e12, 'M_eff_nH': par['M_eff_H'] * 1e9})
             vals.sort(key=lambda x: (x['length_mm'], x['harness']))
             med = vals[len(vals) // 2]
             rows[ag_cls + '>' + vic] = {'aggressor_class': ag_cls, 'aggressor': agg, 'victim': vic, 'triples': len(vals),
@@ -302,7 +307,7 @@ def readme_lines(inp, b, a2_counts):
       'for round wires (checked against π·ε/acosh(D/2r) in the tests). Every figure is a paper bound (DERIVED from '
       'ASSUMED terms); no harness coupling was ever measured.')
     w('')
-    w(f'| Aggressor > victim | Triples | Harness bound, mV: shortest / median / longest cut (mm) | Quietest harness, mV | Flat {le.PITCH_LABEL[le.PITCHES[0]]}, {L0:g} mm: side by side / one ground / two grounds, ratio (dB) | Flat {le.PITCH_LABEL[le.PITCHES[1]]}, {L0:g} mm: same |')
+    w(f'| Aggressor > victim | Directed cases | Harness bound, mV: shortest / median / longest cut (mm) | Quietest harness, mV | Flat {le.PITCH_LABEL[le.PITCHES[0]]}, {L0:g} mm: side by side / one ground / two grounds, ratio (dB) | Flat {le.PITCH_LABEL[le.PITCHES[1]]}, {L0:g} mm: same |')
     w('| --- | --- | --- | --- | --- | --- |')
     for key, bb in sorted(b['baseline'].items()):
         cells = []

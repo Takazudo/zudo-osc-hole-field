@@ -7,6 +7,7 @@ Paper bounds on ASSUMED drive, impedance and geometry terms; nothing is measured
 """
 import hashlib
 import json
+import math
 from collections import Counter
 from functools import lru_cache
 
@@ -30,8 +31,10 @@ def load_record(root=le.ROOT):
 
 def projection(links):
     """What this calculator reads from the record, per link in use (pinned by hash in inputs.json)."""
-    return [{'id': l['id'], 'circuits': l['circuits'], 'cable': l['cable'], 'cable_length_mm': l['cable_length_mm'],
-             'positions': l['positions']} for l in sorted(links, key=lambda l: l['id'])]
+    return [{'id': l['id'], 'joint': l['joint'], 'front_board': l['front_board'],
+             'circuits': l['circuits'], 'cable': l['cable'], 'cable_length_mm': l['cable_length_mm'],
+             'grounds': l['grounds'], 'unused': l['unused'], 'positions': l['positions']}
+            for l in sorted(links, key=lambda l: l['id'])]
 
 
 def projection_sha256(links):
@@ -100,12 +103,16 @@ def link_pairs(inp, link, base, without=()):
     rows, missing = [], set()
     for a in sig:
         ag = pos[a]['class']
+        if ag not in ('LOGIC', 'ANALOGUE', 'PRECISION', 'WIPER', 'STATIC'):
+            raise ValueError(f"{link['id']}: unknown signal class {ag!r}")
         if hb.aggressor_of(ag) is None:
             continue
         for v in sig:
             if v == a:
                 continue
             vic = pos[v]['class']
+            if vic not in ('LOGIC', 'ANALOGUE', 'PRECISION', 'WIPER', 'STATIC'):
+                raise ValueError(f"{link['id']}: unknown signal class {vic!r}")
             key = f'{ag}>{vic}'
             if key not in base:
                 missing.add(key)
@@ -113,9 +120,12 @@ def link_pairs(inp, link, base, without=()):
             m, _ = le.effective_mutual(L, window, a, v)
             par = {'Cm_F': float(-C[a, v]), 'Cv_total_F': float(C[v, v]), 'M_eff_H': m}
             lv = d62.pair_level(par, ag, vic, inp)
+            ref = base[key]['min_V']
+            if not math.isfinite(lv) or not math.isfinite(ref) or ref <= 0:
+                raise ValueError(f"{link['id']}: invalid pair evidence for {key}")
             rows.append({'pair': key, 'aggressor': pos[a]['net'], 'aggressor_pos': a + 1, 'victim': pos[v]['net'],
                          'victim_pos': v + 1, 'lies': lies(window, a, v), 'bound_V': lv,
-                         'harness_min_V': base[key]['min_V'], 'ratio': lv / base[key]['min_V'],
+                         'harness_min_V': ref, 'ratio': lv / ref,
                          'riders': {pos[i]['net']: pos[i]['rider_from'] for i in (a, v) if pos[i].get('rider_from')}})
     return rows, sorted(missing)
 
@@ -263,6 +273,22 @@ def worst_contact_at(inp, branch, n, posts, length_mm, d):
     return i_total if alt == float('inf') else i_total * alt / (rmin + alt)
 
 
+def worst_contact_mixed_at(inp, branch, lengths_mm, posts, d):
+    """Bound each possible contact with its own path resistance and all other paths at their maxima."""
+    if not lengths_mm:
+        raise ValueError('ground branch has no contacts')
+    paths = [ground_paths_at(inp, length) for length in lengths_mm]
+    rj = le.pp.joint_ohm(d, le.pp.branch_gap(branch, d))
+    plane = le.pp.v(d, 'return_plane_ohm')
+    total = le.pp.v(d, 'single_return_A')
+    shares = []
+    for i, (rmin, _) in enumerate(paths):
+        other_g = sum(1 / rmax for j, (_, rmax) in enumerate(paths) if i != j) + posts / rj
+        alt = plane + (1 / other_g if other_g else float('inf'))
+        shares.append(total if math.isinf(alt) else total * alt / (rmin + alt))
+    return max(shares)
+
+
 def ground_share(inp, links):
     d = le.pp.load()
     pk = inp['ds62']['pitch']
@@ -277,9 +303,12 @@ def ground_share(inp, links):
         ls = by[b]
         contacts = [sum(p['kind'] in ('ground', 'unused') for p in l['positions']) for l in ls]
         n = sum(contacts)
-        short = min(l['cable_length_mm'] for l in ls)
-        cases = {case: worst_contact_at(inp, b, n, posts, short, d) for case, posts in inp['ground_current']['posts_cases'].items()}
-        n1 = {case: worst_contact_at(inp, b, 1, posts, short, d) for case, posts in inp['ground_current']['posts_cases'].items()}
+        lengths = [l['cable_length_mm'] for l in ls for p in l['positions'] if p['kind'] in ('ground', 'unused')]
+        short = min(lengths)
+        cases = {case: worst_contact_mixed_at(inp, b, lengths, posts, d)
+                 for case, posts in inp['ground_current']['posts_cases'].items()}
+        n1 = {case: worst_contact_mixed_at(inp, b, [short], posts, d)
+              for case, posts in inp['ground_current']['posts_cases'].items()}
         rows.append({'branch': b, 'links': len(ls), 'contacts': n, 'grounds': sum(l['grounds'] for l in ls),
                      'unused': sum(l['unused'] for l in ls), 'fewest_on_a_link': min(contacts),
                      'shortest_cable_mm': short, 'worst_contact_A': cases, 'one_contact_A': n1,
@@ -322,7 +351,11 @@ def build(inp, base, root=le.ROOT):
 def verdict(b):
     above = [r for r in b['links'] if r['ratio'] is not None and r['ratio'] > 1.0]
     broken = [r for r in b['rules'] if r['breaks']]
-    return ('DONE' if not above and not broken else 'NEEDS_DESIGN'), above, broken
+    invalid = bool(b.get('missing_references')) or any(
+        r.get('pairs_without_reference') or
+        (r['ratio'] is not None and (not isinstance(r['ratio'], (int, float)) or not math.isfinite(r['ratio'])))
+        for r in b['links'])
+    return ('DONE' if not above and not broken and not invalid else 'NEEDS_DESIGN'), above, broken
 
 
 def to_json(inp, b):
@@ -431,9 +464,9 @@ def readme_lines(inp, b):
       f'{"inside" if inside else "above"} 0.35 A on every branch in all three post cases; one contact alone would carry {n1_max:.3f} A')
     w('')
     w('Per branch as the calculator defines it, with every ground and unused position of its links as a contact in parallel '
-      '(DS-77), the conductor at the shortest cable of the branch, the candidate path at its minimum and every alternative at '
-      'its maximum, no board term on the link path. The positions of the fields enter only through the number of contacts '
-      'and the cable length.')
+      '(DS-77), each possible candidate contact at its own cable length and minimum path resistance, every alternative '
+      'at its own cable length and maximum path resistance, and no board term on the link path. The positions of the fields '
+      'enter only through the number of contacts and the cable lengths.')
     w('')
     w('| Branch | Links | Contacts (grounds + unused) | Fewest on a link | Shortest cable, mm | Normal, A | One post open, A | All posts open, A | One contact, one post open, A |')
     w('| --- | --- | --- | --- | --- | --- | --- | --- | --- |')

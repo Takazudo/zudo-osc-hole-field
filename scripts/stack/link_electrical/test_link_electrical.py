@@ -4,6 +4,7 @@ import json
 import math
 import sys
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -444,6 +445,64 @@ class AttemptA4Part2(unittest.TestCase):
         for x in self.out['adapter_return']:
             self.assertEqual((x['ground_contacts'], x['dc_A']), (1, 0.0))
             self.assertLess(x['step_into_ground_A'], x['step_all_lines_A'])
+
+
+class KernelReviewRegressions(unittest.TestCase):
+    """Four independently reviewed latent kernel failures on pinned main."""
+
+    @classmethod
+    def setUpClass(cls):
+        import harness_baseline
+        import link_ratios
+        cls.hb, cls.lr = harness_baseline, link_ratios
+        cls.inp = le.load_inputs()
+
+    def test_same_class_harness_reference_includes_both_directions(self):
+        pats = [{'id': 'asymmetric', 'classes': ['LOGIC', 'G', 'LOGIC'], 'cut_length_mm': 50}]
+        with patch.object(self.hb, 'harness_pair_parameters', side_effect=lambda inp, classes, a, v, length, eps: {'a': a, 'Cm_F': 0.0, 'M_eff_H': 0.0}):
+            with patch.object(self.hb, 'level', side_effect=lambda par, agg, vic, inp: (1.0 + par['a'], 1.0)):
+                rows, _ = self.hb.baseline(self.inp, pats)
+        self.assertEqual(rows['LOGIC>LOGIC']['triples'], 2)
+        self.assertEqual(rows['LOGIC>LOGIC']['max_V'], 3.0)
+
+    def test_mixed_length_share_bounds_each_possible_contact(self):
+        d = le.pp.load()
+        lengths = [40.0, 80.0]
+        got = self.lr.worst_contact_mixed_at(self.inp, 'P', lengths, 2, d)
+        rj = le.pp.joint_ohm(d, le.pp.branch_gap('P', d))
+        expected = []
+        for i, length in enumerate(lengths):
+            rmin, _ = self.lr.ground_paths_at(self.inp, length)
+            other = self.lr.ground_paths_at(self.inp, lengths[1-i])[1]
+            alt = le.pp.v(d, 'return_plane_ohm') + 1 / (1 / other + 2 / rj)
+            expected.append(le.pp.v(d, 'single_return_A') * alt / (rmin + alt))
+        self.assertAlmostEqual(got, max(expected))
+        self.assertNotAlmostEqual(got, self.lr.worst_contact_at(self.inp, 'P', 2, 2, 40.0, d))
+
+    def test_missing_or_nonfinite_evidence_never_passes(self):
+        good = {'links': [{'id': 'x', 'ratio': None, 'pairs_without_reference': []}], 'rules': [{'id': 'x', 'breaks': []}],
+                'missing_references': []}
+        self.assertEqual(self.lr.verdict(good)[0], 'DONE')  # intentional STATIC/WIPER-only null
+        for change in ({'missing_references': ['LOGIC>UNKNOWN']},
+                       {'links': [{'id': 'x', 'ratio': float('nan'), 'pairs_without_reference': []}]},
+                       {'links': [{'id': 'x', 'ratio': float('inf'), 'pairs_without_reference': []}]}):
+            bad = dict(good, **change)
+            self.assertNotEqual(self.lr.verdict(bad)[0], 'DONE')
+
+    def test_unknown_signal_class_is_not_silently_quiet(self):
+        with self.assertRaises(ValueError):
+            self.hb.aggressor_of('UNKNOWN')
+        link = copy.deepcopy(next(x for x in self.lr.load_record() if x['joint'] == 'O-K'))
+        link['positions'][0]['class'] = 'UNKNOWN'
+        with self.assertRaises(ValueError):
+            self.lr.link_pairs(self.inp, link, {})
+
+    def test_projection_includes_branch_and_reported_totals(self):
+        link = copy.deepcopy(self.lr.load_record()[0])
+        initial = self.lr.projection_sha256([link])
+        for field, value in (('joint', 'JL-P via K'), ('front_board', 'JR'), ('grounds', 99), ('unused', 99)):
+            changed = dict(link, **{field: value})
+            self.assertNotEqual(self.lr.projection_sha256([changed]), initial, field)
 
 
 if __name__ == '__main__':

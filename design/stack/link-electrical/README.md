@@ -184,18 +184,18 @@ The manager's count (DS-54) has ANALOGUE/ANALOGUE at 147 triples in 70 harnesses
 
 Harness geometry: round conductors of 0.4826 mm (SOURCED, Alpha 6821; stranding taken as solid, ASSUMED) at 1.25 mm pitch in a flat lay (SOURCED pitch; spacing along the run ASSUMED), insulation 0.889 mm (SOURCED) with unknown permittivity (ASSUMED sweep), each harness at its own cut length from the loom candidate plus 5 mm per end, the whole length in parallel (ASSUMED upper bound). Same aggressors, victim impedances and equations as attempt a2, both at ε_eff 3.2. Capacitance by charge simulation for round wires (checked against π·ε/acosh(D/2r) in the tests). Every figure is a paper bound (DERIVED from ASSUMED terms); no harness coupling was ever measured.
 
-| Aggressor > victim | Triples | Harness bound, mV: shortest / median / longest cut (mm) | Quietest harness, mV | Flat 1.00 mm, 50 mm: side by side / one ground / two grounds, ratio (dB) | Flat 0.5 mm, 50 mm: same |
+| Aggressor > victim | Directed cases | Harness bound, mV: shortest / median / longest cut (mm) | Quietest harness, mV | Flat 1.00 mm, 50 mm: side by side / one ground / two grounds, ratio (dB) | Flat 0.5 mm, 50 mm: same |
 | --- | --- | --- | --- | --- | --- |
-| ANALOGUE>ANALOGUE | 172 | 1.37 (66) / 1.67 (85) / 8.17 (204) | 0.923 | 4.31 (+12.7) / 0.80 (-1.9) / 0.49 (-6.2) | 3.98 (+12.0) / 0.80 (-1.9) / 0.49 (-6.1) |
+| ANALOGUE>ANALOGUE | 344 | 1.37 (66) / 1.67 (85) / 8.17 (204) | 0.923 | 4.31 (+12.7) / 0.80 (-1.9) / 0.49 (-6.2) | 3.98 (+12.0) / 0.80 (-1.9) / 0.49 (-6.1) |
 | ANALOGUE>LOGIC | 2 | 1.86 (83) / 1.86 (83) / 1.86 (83) | 1.86 | 1.09 (+0.8) / 0.21 (-13.6) / 0.12 (-18.1) | 1.01 (+0.1) / 0.21 (-13.7) / 0.13 (-18.1) |
 | ANALOGUE>PRECISION | 39 | 3.55 (83) / 1.67 (85) / 1.67 (85) | 1.12 | 3.57 (+11.0) / 0.67 (-3.5) / 0.41 (-7.8) | 3.30 (+10.4) / 0.66 (-3.6) / 0.41 (-7.8) |
 | ANALOGUE>WIPER | 14 | 823 (83) / 823 (83) / 823 (83) | 823 | 1.15 (+1.3) / 0.21 (-13.5) / 0.13 (-17.6) | 1.07 (+0.6) / 0.21 (-13.5) / 0.13 (-17.5) |
 | LOGIC>ANALOGUE | 2 | 301 (83) / 301 (83) / 301 (83) | 301 | 0.89 (-1.0) / 0.20 (-14.0) / 0.10 (-20.0) | 0.85 (-1.4) / 0.20 (-14.0) / 0.10 (-19.9) |
-| LOGIC>LOGIC | 17 | 218 (83) / 218 (83) / 218 (83) | 218 | 0.79 (-2.0) / 0.19 (-14.3) / 0.09 (-21.1) | 0.76 (-2.3) / 0.20 (-14.2) / 0.09 (-21.0) |
+| LOGIC>LOGIC | 34 | 218 (83) / 218 (83) / 218 (83) | 218 | 0.79 (-2.0) / 0.19 (-14.3) / 0.09 (-21.1) | 0.76 (-2.3) / 0.20 (-14.2) / 0.09 (-21.0) |
 | LOGIC>PRECISION | 11 | 301 (83) / 301 (83) / 301 (83) | 301 | 0.89 (-1.0) / 0.20 (-14.0) / 0.10 (-20.0) | 0.85 (-1.4) / 0.20 (-14.0) / 0.10 (-19.9) |
 | PRECISION>ANALOGUE | 39 | 3.55 (83) / 1.67 (85) / 1.67 (85) | 1.12 | 3.57 (+11.0) / 0.67 (-3.5) / 0.41 (-7.8) | 3.30 (+10.4) / 0.66 (-3.6) / 0.41 (-7.8) |
 | PRECISION>LOGIC | 11 | 1.86 (83) / 1.86 (83) / 1.86 (83) | 1.86 | 1.09 (+0.8) / 0.21 (-13.6) / 0.12 (-18.1) | 1.01 (+0.1) / 0.21 (-13.7) / 0.13 (-18.1) |
-| PRECISION>PRECISION | 18 | 3.55 (83) / 3.55 (83) / 1.17 (85) | 1.12 | 3.57 (+11.0) / 0.67 (-3.5) / 0.41 (-7.8) | 3.30 (+10.4) / 0.66 (-3.6) / 0.41 (-7.8) |
+| PRECISION>PRECISION | 36 | 3.55 (83) / 3.55 (83) / 1.17 (85) | 1.12 | 3.57 (+11.0) / 0.67 (-3.5) / 0.41 (-7.8) | 3.30 (+10.4) / 0.66 (-3.6) / 0.41 (-7.8) |
 | PRECISION>WIPER | 5 | 823 (83) / 823 (83) / 823 (83) | 823 | 1.15 (+1.3) / 0.21 (-13.5) / 0.13 (-17.6) | 1.07 (+0.6) / 0.21 (-13.5) / 0.13 (-17.5) |
 
 Ratio = flat-link bound over the quietest harness instance of the same directed pair (ratio ≤ 1 keeps the flat link at or below every present harness). Rule B (grounds on every side) is in `harness-baseline.json`; it is within a few per cent of rule A here. The ratio barely depends on ε_eff because both sides use the same value, and the logic rows are dominated by the inductive term, which ε does not touch.
@@ -304,10 +304,10 @@ Every pair of classes that shares a link has a reference.
 | P-K-P-L06.02 | C32128 | 0.978 | PRECISION>PRECISION: /O3/LOCAL_REF5 (pos 3) on /O1/LOCAL_REF5 (pos 1), across one ground | no |
 | P-K-P-L10.02 | C32128 | 0.978 | PRECISION>ANALOGUE: /F1/FREQ_REMOTE (pos 3) on /F1/GAIN_REMOTE (pos 1), across one ground | yes (0.98) |
 | P-K-P-L10.01.01.01 | C29534 | 0.931 | PRECISION>ANALOGUE: /O4/RANGE_CV (pos 6) on /O4/PWM_REMOTE (pos 8), across one ground | no |
-| P-K-P-L12.01.01.02 | C29534 | 0.931 | PRECISION>ANALOGUE: /F2/FREQ_REMOTE (pos 6) on /F2/GAIN_REMOTE (pos 8), across one ground | no |
-| P-K-P-L15.01.01.01 | C29534 | 0.931 | PRECISION>ANALOGUE: /A03/REFN5 (pos 6) on /A04/IN_REMOTE (pos 8), across one ground | no |
 | P-K-P-L11.01.02.01 | C29534 | 0.931 | ANALOGUE>ANALOGUE: /M5A/1_REMOTE (pos 6) on /M5A/2_REMOTE (pos 8), across one ground | yes (0.92) |
+| P-K-P-L12.01.01.02 | C29534 | 0.931 | PRECISION>ANALOGUE: /F2/FREQ_REMOTE (pos 6) on /F2/GAIN_REMOTE (pos 8), across one ground | no |
 | P-K-P-L13.01.02.01 | C29534 | 0.931 | ANALOGUE>ANALOGUE: /M5B/1_REMOTE (pos 6) on /M5B/2_REMOTE (pos 8), across one ground | yes (0.92) |
+| P-K-P-L15.01.01.01 | C29534 | 0.931 | PRECISION>ANALOGUE: /A03/REFN5 (pos 6) on /A04/IN_REMOTE (pos 8), across one ground | no |
 | P-K-P-L15.01.01.02 | C29534 | 0.931 | ANALOGUE>ANALOGUE: /M4A/ATTEN_REMOTE (pos 6) on /M4B/ATTEN_REMOTE (pos 8), across one ground | yes (0.92) |
 | P-K-P-L04.01.01.01 | C29534 | 0.923 | PRECISION>ANALOGUE: /A01/REFN5 (pos 6) on /A01/IN_REMOTE (pos 8), across one ground | yes (0.92) |
 | P-K-P-L04.01.01.02 | C29534 | 0.923 | PRECISION>ANALOGUE: /A02/REFN5 (pos 6) on /A02/IN_REMOTE (pos 8), across one ground | yes (0.92) |
@@ -324,12 +324,12 @@ Every pair of classes that shares a link has a reference.
 | P-K-P-L01.01.02 | C68390 | 0.865 | ANALOGUE>ANALOGUE: /E5/NOT_FALL (pos 3) on /E5/ENV_BUFFER (pos 1), across one ground | no |
 | JR-K-JR-L06 | C26618 | 0.829 | ANALOGUE>ANALOGUE: /E5/BIP_CORE (pos 3) on /E4/SIG_BUFFER (pos 1), across one ground | no |
 | JR-K-JR-L05 | C26618 | 0.829 | ANALOGUE>ANALOGUE: /M4A/2_BUFFER (pos 3) on /M4A/1_BUFFER (pos 1), across one ground | no |
+| JL-K-JL-L01 | C26618 | 0.829 | ANALOGUE>ANALOGUE: /F3/LP_CORE (pos 3) on /F3/HP_CORE (pos 1), across one ground | no |
 | JL-K-JL-L02 | C26618 | 0.829 | PRECISION>ANALOGUE: /O1/1V_BUFFER (pos 3) on /O1/FM_BUFFER (pos 1), across one ground | no |
+| JL-K-JL-L03 | C26618 | 0.829 | ANALOGUE>ANALOGUE: /O4/SYNC_BUFFER (pos 3) on /O4/SAW_SCALED (pos 1), across one ground | no |
 | JL-K-JL-L05 | C26618 | 0.829 | PRECISION>ANALOGUE: /F1/FREQ_BUFFER (pos 3) on /F1/BP_CORE (pos 1), across one ground | no |
 | JL-K-JL-L07 | C26618 | 0.829 | PRECISION>ANALOGUE: /M5A/REF5 (pos 3) on /M5A/5_BUFFER (pos 1), across one ground | no |
 | JR-K-JR-L01 | C26618 | 0.829 | PRECISION>ANALOGUE: /A03/REF5 (pos 3) on /A03/SUM_NEG (pos 1), across one ground | no |
-| JL-K-JL-L01 | C26618 | 0.829 | ANALOGUE>ANALOGUE: /F3/LP_CORE (pos 3) on /F3/HP_CORE (pos 1), across one ground | no |
-| JL-K-JL-L03 | C26618 | 0.829 | ANALOGUE>ANALOGUE: /O4/SYNC_BUFFER (pos 3) on /O4/SAW_SCALED (pos 1), across one ground | no |
 | JR-K-JR-L03 | C26618 | 0.829 | ANALOGUE>ANALOGUE: /E2/SIG_BUFFER (pos 3) on /E2/FALL_BUFFER (pos 1), across one ground | no |
 | JL-K-JL-L04 | C26618 | 0.829 | PRECISION>ANALOGUE: /O3/1V_BUFFER (pos 3) on /O3/FM_BUFFER (pos 1), across one ground | no |
 | JR-K-JR-L02 | C26618 | 0.829 | PRECISION>ANALOGUE: /A01/REF5 (pos 3) on /A01/IN_BUFFER (pos 1), across one ground | no |
@@ -382,13 +382,13 @@ Checked on the record: a ground or unused position between every two signals exc
 
 ## Gate check 3 on the record: the worst link ground contact carries at most 0.047 A with one post open, inside 0.35 A on every branch in all three post cases; one contact alone would carry 0.049 A
 
-Per branch as the calculator defines it, with every ground and unused position of its links as a contact in parallel (DS-77), the conductor at the shortest cable of the branch, the candidate path at its minimum and every alternative at its maximum, no board term on the link path. The positions of the fields enter only through the number of contacts and the cable length.
+Per branch as the calculator defines it, with every ground and unused position of its links as a contact in parallel (DS-77), each possible candidate contact at its own cable length and minimum path resistance, every alternative at its own cable length and maximum path resistance, and no board term on the link path. The positions of the fields enter only through the number of contacts and the cable lengths.
 
 | Branch | Links | Contacts (grounds + unused) | Fewest on a link | Shortest cable, mm | Normal, A | One post open, A | All posts open, A | One contact, one post open, A |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | JL | 11 | 260 (105 + 155) | 4 | 50 | 0.0429 | 0.0461 | 0.0896 | 0.0489 |
 | JR | 7 | 174 (99 + 75) | 20 | 50 | 0.0433 | 0.0469 | 0.1163 | 0.0489 |
-| P | 40 | 224 (115 + 109) | 1 | 50 | 0.0429 | 0.0462 | 0.0983 | 0.0486 |
+| P | 40 | 224 (115 + 109) | 1 | 50 | 0.0430 | 0.0463 | 0.0998 | 0.0486 |
 
 The bound of attempt a2 (0.049 A with one post open, one ground per link at 50 mm) still covers every link: every link has at least 1 contact and no cable on JL, JR or P is shorter than 50 mm.
 
