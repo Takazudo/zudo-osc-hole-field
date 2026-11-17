@@ -70,8 +70,14 @@ No generic washer or nut was adopted to close the arithmetic.
 
 ## Next work and holds
 
-A deterministic five-code interval audit is being implemented to retain these
-comparisons without promoting absent bounds, generic identity or nominal values.
+The deterministic five-code interval audit is implemented at
+`7e01f63367956a44b0b7c798684a972397b2fa93` and independently reviewed:12 tests
+and30 actual comparisons pass as arithmetic checks. See
+[scripts/checks/mc02_cable_contract](../../../../scripts/checks/mc02_cable_contract/README.md).
+It rejects promotion of generic source scope and explicitly reports unbounded
+stiffener thickness as UNSOURCED. This is not a compatibility PASS.
+Source/transport/review/result archive index SHA-256:
+`ef126968bede3b63a49b1983d5679d0b8d5d8e38518ffe4668f759e5f4ee237c`.
 Actual drawings or manufacturer dispositions remain needed where requirements
 conflict or applicability is unresolved. Source work does not release DRC, fill,
 formal hardware adoption, manufacturing or the independent five-check gate.

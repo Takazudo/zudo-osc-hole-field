@@ -321,6 +321,24 @@ Wall time and model usage per attempt, from the Agent tool's completion notices 
 
 The token figure is the one the completion notice reports; what it counts across a continuation is not documented. The wall times that the children wrote into their result sections are their own estimates; the figures here are the measured ones. ST-01's result section says about 2.5 h, which is wrong.
 
-### Active bounded remedy MC04-R1
+### Completed bounded remedy MC04-R1
 
-The [independent candidate disposition](mc04-candidate-disposition-20261117.md) records NEEDS_DESIGN with source-model checks3/4 supported, and admits one isolated U4324+C4341 room-only study. Root selects an isolated study implementation with unchanged canonical geometry. Its first causal guard must establish new opportunity before any pair search. Exact obstacles, source pins, fixed hardware, existing radii and the 600-second/1CPU/1GiB/no-swap/128PID ceiling remain binding. No native job or broader routing/adoption is admitted. Collect the implementation and independent tests, execute only under verified resource controls, then return the actual result to the design reviewer.
+The [R1 receipt](mc04-r1-result-20261117.md) records the independently audited
+NO_NEW_OPPORTUNITY result on d41e3706:2401 causal candidates,0 new opportunities,
+0 group evaluations,3.145seconds,cleanup VERIFIED. DS-136's numerical consistency
+correction preserved the retained grid and exact engineering inputs. No further
+unchanged or wider search is admitted; all26 canonical ICs remain unresolved.
+
+### Continued source work after R1
+
+The [selected cable source update](mc02-selected-cable-source-update-20261117.md)
+and independently reviewed five-code audit7e01f633 retain exact manufacturer
+drawings for three selected codes, generic-only applicability for two, and
+source-backed requirement/recommendation differences.12tests and30 comparisons
+pass as arithmetic; no complete compatibility or hardware adoption is claimed.
+
+The coordinator continues a bounded source-only feasibility screen of unadopted
+FFC alternatives, at most two manufacturer series, preserving existing pitch,
+contact side, counts and nominal lengths. No BOM change, vendor contact, purchase,
+geometry/native execution or adoption is permitted by that screen. After the
+result, audit the remaining ready queue rather than stopping at this milestone.
