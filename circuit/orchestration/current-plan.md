@@ -16,12 +16,20 @@ Both requested manufacturer PDFs are now received, hash-matched and visually
 reviewed. The earlier official-URL403 remains respected; there is no PDF transfer
 wait. See the [verified handoff and follow-up](campaigns/osc-stack-20261114/mc02-manufacturer-handoff-followup-20261117.md).
 
-Active work: collect independently reviewed hand-only procedure correction and
-five explicit consumer rebindings; preserve historical packet pins. Review and
-execute one bounded E5 named-neighbor room-exchange pilot only after source,
-shared-lock, effective-cap and cleanup admission. Continue physical-coordinate
-and envelope evidence preparation; reference dimensions do not prove manual
-access. No native rerun, DRC,fill,adoption or manufacturing is released.
+The hand-only procedure and five consumers are collected and independently
+reviewed. The E5 named-neighbor B-face pilot completed with no U4517 individual
+room in its declared domain; preserve that negative result and do not repeat it.
+The envelope and land-registration audits are also complete: actual physical
+registration and containment remain unestablished, with an empty conditional
+0.25mm all-edge land-clearance interval in the current field width.
+
+Active work: update the canonical nut-dimensional evidence from the verified
+4708 drawing while retaining historical sources and all assembly unknowns; then
+explicitly rebind consumers through a distinct post-manual-method amendment.
+A source-grounded original-F-face E5 hypothesis is being specified separately,
+not automatically launched. Exact screw candidate source evidence is retained
+without part selection or a fabricated length tolerance. No native rerun,
+DRC,fill,adoption or manufacturing is released.
 
 ## Historical WSL evidence checkpoint — superseded by received sources
 

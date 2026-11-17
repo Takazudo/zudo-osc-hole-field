@@ -85,3 +85,22 @@ Existing successful native aggregate remains bound to its original inputs and
 is not rerun for these instruction/evidence changes. DRC,fill,formal adoption and
 manufacturing remain held. The independent E5 room-exchange pilot is also being
 reviewed; this received-source checkpoint is not a stopping point.
+
+
+## Conditional land registration, not an observed CAD placement
+
+Envelope audit 1d5f6833ffb193bac9420a99db9b31dcdb058389 and recommended-land registration audit ec4d6e1cdbbd3b8f9343f3349686c45e9c417108
+passed independent review and9tests each. All122virtual endpoint rectangles are
+source-bound. The nominal6.1mm field depth exceeds the verified maximum5.9mm body
+depth by0.2mm total; a centered0.1mm residual is only a counterfactual.
+Maintaining0.25mm per side at maximum would require6.4mm, not an adopted change.
+
+A separate recommended-PCB-land model derives nominal Y[-0.65,4.35] and outer
+interval[-0.7,4.6] from pad1.3±0.1,gap1.5±0.1,tab2.2±0.1. In the declared
+row-midpoint frame and centered virtual field, zero extra edge clearance permits
+row translation X[-0.2,0.2],Y[-2.35,-1.55]. At0.25mm extra per side, Y becomes
+[-2.10,-1.80] but X is empty:[+0.05,-0.05]. This is because source Gmax leaves
+only0.4mm total across the field. These are conditional robust land-only
+constraints, not measured registration, exact GD&T optimization, a complete
+body/terminal union, or proof of installed connector access. Actual and adopted
+registration remain null. No field enlargement or CAD change is made.
