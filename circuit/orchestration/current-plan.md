@@ -8,6 +8,8 @@ The purpose is to complete known WSL-required work, including KiCad processing t
 
 The historical records below remain context only where they conflict with this active mapping. Current source evidence and actual jobs are recorded in #362; use the named campaign queue rather than the historical proposed routing lanes as dispatch authority. DRC/fill/adoption/manufacturing holds, resource caps, shared exclusion and independent review remain in force.
 
+Candidate-first paper assessment is now selected by the coordinator under DS-134 and the owner's renewed autonomous-work instruction. The earlier sequencing question is withdrawn. Assess exact candidate `7c71038d7a175c43503efc3cc41831301038b7ae`, retain main/CI integration conditions before canonical adoption, and continue with individually bounded admitted remedies under all existing holds.
+
 ## Historical mapping — 2026-11-16
 
 Mapping updated: 2026-11-16 JST (2026-11-15 UTC). Operating policy remains [ORCHESTRATION.md](../ORCHESTRATION.md), dated 2026-11-11, and the canonical [WORKFLOW.md](../WORKFLOW.md). Engineering baseline inspected: `85b2b489d6f47b34991e3d9b0d2e09991a458a97` (`main`, merge of #361). Refresh the actual target SHA before dispatch; this baseline does not identify the later documentation commit.

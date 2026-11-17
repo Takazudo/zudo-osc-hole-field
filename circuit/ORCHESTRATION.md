@@ -16,6 +16,12 @@ Keep one coordinator, one writer per owned path, the machine-wide heavy lock, ef
 
 Use the host's supported continuation facilities and state observed status honestly. A queued prompt, written plan or configured Goal is not evidence of a running turn. If a continuation control cannot be resumed through the exposed interface, continue the active turn and record that limitation; do not fabricate a scheduler or start a competing manager. Actual execution/restart attempts remain bounded by section 5.
 
+### Candidate-first paper assessment — coordinator decision DS-134
+
+Under the owner's renewed delegation to decide routine sequencing and continue, the current WSL coordinator chooses candidate-first MC04 paper assessment. Its input is the exact independently reviewed candidate `7c71038d7a175c43503efc3cc41831301038b7ae`, with engineering input `2c53715d49a4a7639723595590d1fd4eeb3a3c1f` and the scoped native receipt at `fb0ed1066091f4e0c5595d699378c1184725a96f`. The previously pending sequencing question is withdrawn; routine sequencing is not an external approval wait.
+
+This is a narrow exception to the order of the #364/#365/#367 paper-source dependency: the independent paper assessment may record acceptance, rejection or bounded remedies before main integration. It does not mark MC01/MC02 integrated, close their main/CI acceptance requirements or permit canonical adoption. Main integration, applicable CI/current-input verification and independent review remain mandatory before canonical adoption. DRC, zone fill, formal hardware adoption and manufacturing remain held. No assessment alone launches routing; each next candidate task requires an explicit bounded source/command/acceptance contract consistent with those holds.
+
 ## 1. Authority and responsibilities
 
 Use one active top-level manager per campaign as assigned by the owner. The active x0x WSL assignment above applies now; historical alternatives include a Claude Code Cloud manager session or ChatGPT Dots (for example Moya). These are alternative control surfaces, not concurrent owners of the same work. Record the manager's session URL/ID and the campaign revision. A handoff requires a durable checkpoint, reconciliation of live jobs and acknowledgment by the new manager; an expired conversation alone is not proof that its jobs stopped.
