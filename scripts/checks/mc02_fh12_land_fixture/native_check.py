@@ -34,24 +34,39 @@ def expected_rows(count,face,angle,origin=(100000000,100000000)):
     return Counter(rows)
 
 
-def check_footprint(pcbnew,fp,count,face,angle):
+def _check_footprint(pcbnew,fp,count,face,angle):
+    context=f'contacts={count} face={face} angle={angle}'
+    def fail(message, **details):
+        raise ValueError(context+' '+message+' '+json.dumps(details,sort_keys=True,default=str))
     pads=list(fp.Pads());wanted=pcbnew.F_Cu if face=='F' else pcbnew.B_Cu
     forbidden=pcbnew.B_Cu if face=='F' else pcbnew.F_Cu
     if fp.GetLayer()!=wanted or round(fp.GetOrientationDegrees()%360,6)!=angle:
-        raise ValueError('native footprint face/orientation mismatch')
+        fail('native footprint face/orientation mismatch',actual_layer=fp.GetLayer(),expected_layer=wanted,actual_angle=fp.GetOrientationDegrees(),expected_angle=angle)
     rows=[]
     for pad in pads:
         at=pad.GetPosition();size=pad.GetSize()
         if pad.GetNetCode()!=0 or pad.GetNetname() or set(pad.GetLayerSet().Seq())!={wanted}:
-            raise ValueError('unexpected pad net/copper layer')
+            fail('unexpected pad net/copper layer',pad=pad.GetNumber(),actual_net_code=pad.GetNetCode(),actual_net_name=pad.GetNetname(),actual_layers=list(pad.GetLayerSet().Seq()),expected_layers=[wanted])
         if pad.GetAttribute()!=pcbnew.PAD_ATTRIB_SMD or pad.GetShape()!=pcbnew.PAD_SHAPE_RECT:
-            raise ValueError('unexpected pad attribute/shape')
+            fail('unexpected pad attribute/shape',pad=pad.GetNumber(),actual_attribute=pad.GetAttribute(),actual_shape=pad.GetShape(),expected_attribute=pcbnew.PAD_ATTRIB_SMD,expected_shape=pcbnew.PAD_SHAPE_RECT)
         rows.append((pad.GetNumber(),at.x,at.y,size.x,size.y,round(pad.GetOrientationDegrees()%180,6)))
-    if Counter(rows)!=expected_rows(count,face,angle):raise ValueError('native pad numbering/position/size mismatch')
-    if fp.GetDescription()!=g.DESCRIPTION:raise ValueError('incomplete/no-adoption description missing or changed')
-    if list(fp.GraphicalItems()):raise ValueError('unexpected body/courtyard graphics')
-    if len(fp.Models()):raise ValueError('unexpected 3D model')
+    actual=Counter(rows);expected=expected_rows(count,face,angle)
+    if actual!=expected:
+        fail('native pad numbering/position/size mismatch',actual_count=sum(actual.values()),expected_count=sum(expected.values()),unexpected=list((actual-expected).elements())[:4],missing=list((expected-actual).elements())[:4])
+    # KiCad10.0.6 footprint.h GetLibDescription is the serialized (descr) field.
+    description=fp.GetLibDescription()
+    if description!=g.DESCRIPTION:
+        fail('incomplete/no-adoption description missing or changed',actual=description[:160],expected=g.DESCRIPTION)
+    if list(fp.GraphicalItems()):fail('unexpected body/courtyard graphics',count=len(list(fp.GraphicalItems())))
+    if len(fp.Models()):fail('unexpected 3D model',count=len(fp.Models()))
     return {'contacts':count,'face':face,'angle':angle,'numbered_pads':count,'unnumbered_mounting_pads':2}
+
+
+def check_footprint(pcbnew,fp,count,face,angle):
+    try:
+        return _check_footprint(pcbnew,fp,count,face,angle)
+    except AttributeError as exc:
+        raise AttributeError(f'contacts={count} face={face} angle={angle} native API missing: {exc}') from exc
 
 
 def run(target):

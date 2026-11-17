@@ -57,7 +57,7 @@ class FixtureTests(unittest.TestCase):
                 GetNetCode=lambda:0,GetNetname=lambda:'',GetLayerSet=lambda:SimpleNamespace(Seq=lambda:[0]),
                 GetAttribute=lambda:1,GetShape=lambda:2))
         fp=SimpleNamespace(Pads=lambda:pads,GetLayer=lambda:0,GetOrientationDegrees=lambda:90,
-            GetDescription=lambda:g.DESCRIPTION,GraphicalItems=lambda:[],Models=lambda:[])
+            GetLibDescription=lambda:g.DESCRIPTION,GraphicalItems=lambda:[],Models=lambda:[])
         self.assertEqual(n.check_footprint(pcb,fp,8,'F',90)['contacts'],8)
         with mock.patch.object(pads[0],'GetOrientationDegrees',return_value=0):
             with self.assertRaisesRegex(ValueError,'mismatch'):n.check_footprint(pcb,fp,8,'F',90)
@@ -67,9 +67,17 @@ class FixtureTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'net'):n.check_footprint(pcb,fp,8,'F',90)
         wrong=SimpleNamespace(x=rows[0][1]+1000000,y=rows[0][2])
         with mock.patch.object(pads[0],'GetPosition',return_value=wrong):
-            with self.assertRaisesRegex(ValueError,'mismatch'):n.check_footprint(pcb,fp,8,'F',90)
-        with mock.patch.object(fp,'GetDescription',return_value='approved'):
-            with self.assertRaisesRegex(ValueError,'description'):n.check_footprint(pcb,fp,8,'F',90)
+            with self.assertRaisesRegex(ValueError,'contacts=8 face=F angle=90.*mismatch') as caught:n.check_footprint(pcb,fp,8,'F',90)
+            self.assertIn('unexpected',str(caught.exception))
+            self.assertIn('missing',str(caught.exception))
+            self.assertLess(len(str(caught.exception)),1500)
+        for description in ('approved', ''):
+            with mock.patch.object(fp,'GetLibDescription',return_value=description):
+                with self.assertRaisesRegex(ValueError,'contacts=8 face=F angle=90.*description'):n.check_footprint(pcb,fp,8,'F',90)
+        del fp.GetLibDescription
+        # Missing supported API fails closed; never fall back to a different field.
+        fp.GetDescription=lambda:g.DESCRIPTION
+        with self.assertRaises(AttributeError):n.check_footprint(pcb,fp,8,'F',90)
 
     def test_native_oracle_independent_of_generator_geometry(self):
         before=n.expected_rows(8,'B',90)

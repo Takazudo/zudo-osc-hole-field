@@ -74,3 +74,27 @@ four variants, asymmetric cardinal transforms and wrong pad rotation/layer/net
 scope rejection. They do not prove KiCad parser/API compatibility. Native success
 would establish only this disposable land-fixture roundtrip, never full footprint
 qualification, endpoint registration, mounted access, DRC/fill or adoption.
+
+## Pinned API correction after the first native attempt
+
+Run `00165c1fd9644eadb951bcaff8f5f8c8` failed at the first8/F/0 description
+assertion: `FOOTPRINT.GetDescription` is absent in the actual10.0.6 binding.
+The corrected checker uses `GetLibDescription` with the same exact incomplete
+scope string; missing API, empty string or altered metadata still fails closed.
+The failed receipt is preserved; this correction alone is not a native PASS.
+
+Primary API review used the official [10.0.6 footprint header](https://github.com/KiCad/kicad-source-mirror/blob/10.0.6/pcbnew/footprint.h)
+and [serializer](https://github.com/KiCad/kicad-source-mirror/blob/10.0.6/pcbnew/pcb_io/kicad_sexpr/pcb_io_kicad_sexpr.cpp):
+`GetLibDescription` reads the field serialized as `(descr ...)`.
+The same header declares Pads/GraphicalItems/Models, position/orientation and Flip;
+[SWIG footprint wrappers](https://github.com/KiCad/kicad-source-mirror/blob/10.0.6/pcbnew/python/swig/footprint.i)
+define FootprintLoad, [pad wrappers](https://github.com/KiCad/kicad-source-mirror/blob/10.0.6/pcbnew/python/swig/pad.i)
+retain no-argument GetSize/GetShape compatibility, and
+[board wrappers](https://github.com/KiCad/kicad-source-mirror/blob/10.0.6/pcbnew/python/swig/board.i)
+define GetFootprints. Official [10.0 Python API documentation](https://docs.kicad.org/doxygen-python-10.0/namespacepcbnew.html)
+confirms SaveBoard/LoadBoard/GetBuildVersion signatures. These source checks do
+not replace the pending actual F/B load/save matrix.
+
+Failures include contact count, face and angle. Geometry differences report at
+most four missing and four unexpected rows, preserving exact comparisons and all
+scope assertions. No expected geometry, generator or source dimensions changed.
