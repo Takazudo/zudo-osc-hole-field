@@ -28,12 +28,13 @@
       "record_id": "rec-flipflop",
       "domain": "electrical limits",
       "status": "OPEN",
-      "reason": "Selected source-conditioned logic rows, including D setup/hold requirements, are retained. They do not establish actual-supply/load/input-edge/skew timing closure, minimum clock-to-Q delay, physical hold slack, startup or partial-power behavior.",
+      "reason": "Selected source-conditioned logic rows, including D setup/hold requirements, are retained. They do not establish actual-supply/load/input-edge/skew timing closure, minimum clock-to-Q delay, physical hold slack, startup or partial-power behavior. The conditioned input-capacitance row is retained; it does not close actual network loading or timing.",
       "fact_ids": [
         "fact-flipflop-electrical-limits",
         "fact-flipflop-absolute-maximum",
         "fact-flipflop-data-setup45",
-        "fact-flipflop-data-hold45"
+        "fact-flipflop-data-hold45",
+        "fact-flipflop-input-capacitance"
       ],
       "blocking_fact_ids": [
         "fact-flipflop-electrical-limits"

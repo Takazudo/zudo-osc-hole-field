@@ -91,7 +91,7 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 **Coverage ID:** `cov-flipflop-electrical-limits` · **Status:** OPEN
 
-**Reason:** Selected source-conditioned logic rows, including D setup/hold requirements, are retained. They do not establish actual-supply/load/input-edge/skew timing closure, minimum clock-to-Q delay, physical hold slack, startup or partial-power behavior.
+**Reason:** Selected source-conditioned logic rows, including D setup/hold requirements, are retained. They do not establish actual-supply/load/input-edge/skew timing closure, minimum clock-to-Q delay, physical hold slack, startup or partial-power behavior. The conditioned input-capacitance row is retained; it does not close actual network loading or timing.
 
 **Facts in this domain:**
 
@@ -99,6 +99,7 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 - [`fact-flipflop-absolute-maximum`](#fact-flipflop-absolute-maximum)
 - [`fact-flipflop-data-setup45`](#fact-flipflop-data-setup45)
 - [`fact-flipflop-data-hold45`](#fact-flipflop-data-hold45)
+- [`fact-flipflop-input-capacitance`](#fact-flipflop-input-capacitance)
 
 **Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
 
@@ -232,6 +233,20 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [src-flipflop-datasheet: printed p5 section6.5 ICC row, SN74 column](#src-flipflop-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-flipflop-input-capacitance" />
+
+  **Fact:** `fact-flipflop-input-capacitance`
+
+  **Value:** 10 · **Unit:** `pF`
+
+  **Conditions:** SN74 commercial grade; input capacitance maximum at VCC=2..6V, TA=-40..85C. The separate 3pF value is typical at25C, not the maximum. Device input only; excludes routing, driver/network behavior and other tied-device capacitance. Does not establish actual project load, fanout acceptance or timing.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-flipflop-datasheet: SCLS094F printed p5 / physical index4, section6.5 Electrical Characteristics -74, Ci row, -40..85C MAX column](#src-flipflop-datasheet)
 </EvidenceFact>
 
 ### TRANSIENT

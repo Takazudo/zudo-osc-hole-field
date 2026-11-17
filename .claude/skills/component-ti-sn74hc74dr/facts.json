@@ -287,6 +287,20 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-flipflop-input-capacitance",
+      "record_id": "rec-flipflop",
+      "source_id": "src-flipflop-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 10,
+      "unit": "pF",
+      "conditions": "SN74 commercial grade; input capacitance maximum at VCC=2..6V, TA=-40..85C. The separate 3pF value is typical at25C, not the maximum. Device input only; excludes routing, driver/network behavior and other tied-device capacitance. Does not establish actual project load, fanout acceptance or timing.",
+      "locator": "src-flipflop-datasheet: SCLS094F printed p5 / physical index4, section6.5 Electrical Characteristics -74, Ci row, -40..85C MAX column",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

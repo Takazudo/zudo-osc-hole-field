@@ -91,7 +91,7 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 **Coverage ID:** `cov-nand-electrical-limits` · **Status:** OPEN
 
-**Reason:** Absolute maximum ratings and narrowly source-conditioned switching-table maxima are retained. Numeric switching-test load, minimum propagation delay and actual supply/load/input-edge/layout timing applicability remain unestablished; application-section load guidance is not promoted into a guaranteed test condition.
+**Reason:** Absolute maximum ratings and narrowly source-conditioned switching-table maxima are retained. Numeric switching-test load, minimum propagation delay and actual supply/load/input-edge/layout timing applicability remain unestablished; application-section load guidance is not promoted into a guaranteed test condition. The conditioned input-capacitance row is retained; it does not close actual network loading or timing.
 
 **Facts in this domain:**
 
@@ -99,6 +99,7 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 - [`fact-nand-absolute-maximum`](#fact-nand-absolute-maximum)
 - [`fact-nand-propagation-table-max45`](#fact-nand-propagation-table-max45)
 - [`fact-nand-output-transition-table-max45`](#fact-nand-output-transition-table-max45)
+- [`fact-nand-input-capacitance`](#fact-nand-input-capacitance)
 
 **Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
 
@@ -179,13 +180,27 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
 
   **Fact:** `fact-nand-electrical-limits`
 
-  **Value:** Absolute maximum ratings are promoted as separate facts; operating electrical characteristics and project supply suitability are not promoted. · **Unit:** `NONE`
+  **Value:** Selected source-conditioned table rows are retained; complete project supply/load/startup/partial-power applicability remains unestablished. · **Unit:** `NONE`
 
-  **Conditions:** The task has not promoted a source-backed limit for this exact shortlist record.
+  **Conditions:** A source-confirmed input-capacitance maximum does not establish actual network load, fanout acceptance or circuit qualification.
 
   **Verdict:** UNSOURCED · **Provenance:** UNVERIFIED
 
-  **Evidence:** [src-nand-datasheet: exact component electrical-characteristics table not promoted](#src-nand-datasheet)
+  **Evidence:** [src-nand-datasheet: selected table rows; project application closure remains open](#src-nand-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-nand-input-capacitance" />
+
+  **Fact:** `fact-nand-input-capacitance`
+
+  **Value:** 10 · **Unit:** `pF`
+
+  **Conditions:** SN74 commercial grade; input capacitance maximum at VCC=2..6V, TA=-40..85C. The separate 3pF value is typical at25C, not the maximum. Device input only; excludes routing, driver/network behavior and other tied-device capacitance. Does not establish actual project load, fanout acceptance or timing.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-nand-datasheet: SCLS181H printed p5 / physical index4, section6.5 Electrical Characteristics - Commercial (74xx), Ci row, -40..85C MAX column](#src-nand-datasheet)
 </EvidenceFact>
 
 ### TRANSIENT

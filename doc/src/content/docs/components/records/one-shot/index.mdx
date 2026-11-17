@@ -91,12 +91,13 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 **Coverage ID:** `cov-one-shot-electrical-limits` · **Status:** OPEN
 
-**Reason:** Absolute maximum ratings are retained as primary facts; operating electrical characteristics and project suitability remain unpromoted.
+**Reason:** Absolute maximum ratings and the narrowly conditioned input-capacitance maximum are retained. Actual supply/edge applicability, complete loading, startup, partial power and project timing remain unestablished.
 
 **Facts in this domain:**
 
 - [`fact-one-shot-electrical-limits`](#fact-one-shot-electrical-limits)
 - [`fact-one-shot-absolute-maximum`](#fact-one-shot-absolute-maximum)
+- [`fact-one-shot-input-capacitance`](#fact-one-shot-input-capacitance)
 
 **Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
 
@@ -177,13 +178,27 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
 
   **Fact:** `fact-one-shot-electrical-limits`
 
-  **Value:** Absolute maximum ratings are promoted as separate facts; operating electrical characteristics and project supply suitability are not promoted. · **Unit:** `NONE`
+  **Value:** Selected source-conditioned table rows are retained; complete project supply/load/startup/partial-power applicability remains unestablished. · **Unit:** `NONE`
 
-  **Conditions:** The task has not promoted a source-backed limit for this exact shortlist record.
+  **Conditions:** A source-confirmed input-capacitance maximum does not establish actual network load, fanout acceptance or circuit qualification.
 
   **Verdict:** UNSOURCED · **Provenance:** UNVERIFIED
 
-  **Evidence:** [src-one-shot-datasheet: exact component electrical-characteristics table not promoted](#src-one-shot-datasheet)
+  **Evidence:** [src-one-shot-datasheet: selected table rows; project application closure remains open](#src-one-shot-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-one-shot-input-capacitance" />
+
+  **Fact:** `fact-one-shot-input-capacitance`
+
+  **Value:** 10 · **Unit:** `pF`
+
+  **Conditions:** HC TYPES block, continued from printed p6; CIN maximum in the -40..85C column. The row VCC and test-condition cells both contain dashes; no numeric VCC range or typical value is inferred. Table header: Switching Specifications Input tr,tf=6ns (Continued). Do not borrow the adjacent propagation rows CL50pF or the HCT block. Device input only; actual project supply/edge applicability, total load, fanout acceptance and timing remain unestablished.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-one-shot-datasheet: SCHS166F printed p7 / physical index6, upper HC Input Capacitance CIN row, -40..85C MAX column; HC heading starts printed p6 / index5](#src-one-shot-datasheet)
 </EvidenceFact>
 
 ### PROJECT\_STATE

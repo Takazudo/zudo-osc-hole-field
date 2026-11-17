@@ -97,6 +97,7 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 - [`fact-schmitt-electrical-limits`](#fact-schmitt-electrical-limits)
 - [`fact-schmitt-absolute-maximum`](#fact-schmitt-absolute-maximum)
+- [`fact-schmitt-input-capacitance`](#fact-schmitt-input-capacitance)
 
 **Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
 
@@ -253,11 +254,11 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
 
   **Value:** 10 · **Unit:** `pF`
 
-  **Conditions:** Maximum at VCC5V; additional PCB and other tied-device capacitance is not included.
+  **Conditions:** SN74 grade; input capacitance maximum at VCC=5V, TA=-40..85C. The separate 3pF value is typical at25C, not the maximum. Device input only; additional PCB and other tied-device capacitance is excluded. Actual supply/load/edge applicability, fanout acceptance and timing remain unestablished.
 
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
-  **Evidence:** [src-schmitt-datasheet: printed p5 table5.5 CI](#src-schmitt-datasheet)
+  **Evidence:** [src-schmitt-datasheet: SCLS085L printed p5 / physical index4, section5.5 Electrical Characteristics -74, Ci row, -40..85C MAX column](#src-schmitt-datasheet)
 </EvidenceFact>
 
 <EvidenceFact>
