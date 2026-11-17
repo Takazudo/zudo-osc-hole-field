@@ -23,13 +23,16 @@ The envelope and land-registration audits are also complete: actual physical
 registration and containment remain unestablished, with an empty conditional
 0.25mm all-edge land-clearance interval in the current field width.
 
-Active work: update the canonical nut-dimensional evidence from the verified
-4708 drawing while retaining historical sources and all assembly unknowns; then
-explicitly rebind consumers through a distinct post-manual-method amendment.
-A source-grounded original-F-face E5 hypothesis is being specified separately,
-not automatically launched. Exact screw candidate source evidence is retained
-without part selection or a fabricated length tolerance. No native rerun,
-DRC,fill,adoption or manufacturing is released.
+Canonical nut evidence and the separate post-manual consumer amendment are now
+collected (6df98d63/47dfbebc);24producer and62consumer tests pass. Original-F E5
+annulus also completed with zero individual room, independently audited; no
+further search is automatically admitted. All26IC liabilities remain open.
+
+Active work: four isolated, incomplete FH12 copper-land fixtures and their
+independent native semantic checker, followed by lifecycle-reviewed pinned KiCad
+load/save/reload under DS-141. No canonical board mounts, library registration,
+DRC,fill,adoption or manufacturing. Native execution remains NOT RUN until the
+source/checker and composite WSL/Docker runtime controls both pass review.
 
 ## Historical WSL evidence checkpoint — superseded by received sources
 

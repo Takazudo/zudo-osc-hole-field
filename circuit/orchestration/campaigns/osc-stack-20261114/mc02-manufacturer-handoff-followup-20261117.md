@@ -104,3 +104,22 @@ only0.4mm total across the field. These are conditional robust land-only
 constraints, not measured registration, exact GD&T optimization, a complete
 body/terminal union, or proof of installed connector access. Actual and adopted
 registration remain null. No field enlargement or CAD change is made.
+
+
+## Canonical nut source amendment
+
+Verified DWG4708 dimensional evidence is now in canonical producer/renderer and
+focused generated procedure at6df98d6344f87a64938f919b5a35f151203b618c. Independent
+review and24focused tests pass; regeneration check reports zero drift. Exactly
+four JSON paths changed: nut-height value, distinct nut-height source, and two
+producer hashes. Historical catalog, all steps/geometry/counts/fastener classes
+remain unchanged. The remaining-work section now distinguishes verified drawing
+height from unresolved washer/finish/screw/grip/protrusion and physical tests.
+
+Five consumer updates at 47dfbebccab78387d3f81b6f7c71a6f52156fb3f pass62tests, independently rerun by the
+coordinator, and five actual offline reports. Original690/af/2c and manual5620
+pins are unchanged. The packet verifies2c-to5620 manual-method projection, then
+5620-to6df98 nut-only projection separately. Changes to grip, washer, manual
+method, counts, unknowns, finish disposition or missing producer/source pins fail
+closed. The fastener audit also compares canonical dimensions/source with its
+verified supplement. This is evidence reconciliation, not assembly acceptance.

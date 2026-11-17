@@ -87,3 +87,16 @@ the declared finite exchange domain, not all possible redesigns.
 Result SHA-256 `afaa58e04a0919c3c83c84f54a2dabd304d88415c81f17fd7604f1de53ec0542`.
 Ignored archive index `753a70984d9887d052e757f6df2ec6039686555b4650dcc0dc5a6e3a0564a25a`.
 Independent result/dependency review continues; no automatic expanded search.
+
+
+## Original-face annulus result
+
+Implementation d1fdd2f88bd34c1e88c75237c292b01fe3798bcf under DS-140 passed11fixtures,
+including explicit opposite-face/same-face SMD semantics, and independent review.
+Attempt c6d15ebdae64410282dc5631bee0aa87 completed3.153s,exit0,cleanup VERIFIED.
+Result: `NO_ORIGINAL_FACE_INDIVIDUAL_ROOM`;1248points,231displacement-filtered,
+1017blocked,zero room/pair checks,45prior resistor offsets revalidated.
+Result SHA-256 `4408df84bf38a88419512e595aec2b735dd874caa0dce15bade8696eba0218f3`.
+Archive index `53408db02cb5107c7bcdaa0094f840fd0d08b381d022ecc0109587f988f27f7f`. Independent result audit confirmed all50input pins,
+ledger/counts and cleanup. This closes only the original-F12.25..25mm hypothesis;
+no automatic new search follows. All26canonical IC liabilities remain unresolved.
