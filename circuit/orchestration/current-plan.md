@@ -28,11 +28,27 @@ collected (6df98d63/47dfbebc);24producer and62consumer tests pass. Original-F E5
 annulus also completed with zero individual room, independently audited; no
 further search is automatically admitted. All26IC liabilities remain open.
 
-Active work: four isolated, incomplete FH12 copper-land fixtures and their
-independent native semantic checker, followed by lifecycle-reviewed pinned KiCad
-load/save/reload under DS-141. No canonical board mounts, library registration,
-DRC,fill,adoption or manufacturing. Native execution remains NOT RUN until the
-source/checker and composite WSL/Docker runtime controls both pass review.
+## Current evidence checkpoint — 2026-11-18 JST
+
+The isolated FH12 fixture is complete:32native cases PASS at467d6e4e, independent
+actual-result/lifecycle audit and cleanup verified. Exact runtime sources are
+preserved as historical review artifacts, not a new portable execution entry.
+See the [native result](campaigns/osc-stack-20261114/mc02-fh12-native-result-20261118.md).
+Canonical Ci evidence and source contracts are integrated; check,335-page build
+and the separately resumed site checks passed at frozenb15e03b2. The interrupted
+transaction and its supplemental cleanup reconciliation remain intact. See the
+[source/documentation receipt](campaigns/osc-stack-20261114/mc02-capacitance-source-integration-20261118.md).
+
+Independent ready-queue audit found no additional required WSL execution after
+these results and record integration. The next concrete input is the owner's
+18November PDF handoff: its folder exists but Dropbox and WSL were still empty
+at2026-11-17T16:28:43Z. No new PDF hash, duplicate or content claim is made.
+This is an external delivery dependency, not a Moya acknowledgment or stage
+approval, and not hardware-project completion. On actual file arrival, verify
+bytes/configuration applicability, then choose the next source-bound task.
+Do not repeat completed native/build/search work or substitute generic drawings.
+No background worker or automatic resumption is claimed. All DRC/fill/adoption/
+manufacturing/main-CI holds and single-writer/resource/cleanup rules remain.
 
 ## Historical WSL evidence checkpoint — superseded by received sources
 

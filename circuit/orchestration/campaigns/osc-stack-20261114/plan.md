@@ -6,7 +6,7 @@ Every schematic and PCB stays an unvalidated draft. This campaign creates no fab
 
 ## Current WSL execution phase — 2026-11-17
 
-**WSL PHASE NOT COMPLETE; tested fb0ed106 aggregate completed, next native work depends on gate/source admission and existing holds.** The owner assigned this x0x WSL Codex session the Moya coordinator role. Thread `01a1e7fb-e191-7382-8c35-5f76d36934fa` plans, delegates, reviews and serializes local results. Direct Moya communication is not available as a workflow dependency. The current model and live jobs must be observed per dispatch; no second coordinator is admitted.
+**CURRENT READY WORK VERIFIED; NEXT SOURCE DELIVERY PENDING, NOT HARDWARE PROJECT COMPLETION.** The owner assigned this x0x WSL Codex session the Moya coordinator role. Thread `01a1e7fb-e191-7382-8c35-5f76d36934fa` plans, delegates, reviews and serializes local results. Direct Moya communication is not available as a workflow dependency. The current model and live jobs must be observed per dispatch; no second coordinator is admitted.
 
 Reason for WSL: the available Cloud container could not sustain the required KiCad-related work. The stopping criterion is completion of known WSL-required operations, not a single implementation, report or review. Continue independent authorized work when one item is blocked. A fully blocked WSL queue requires an explicit dependency report, not a completion claim. See the [operative contract](../../../ORCHESTRATION.md#active-x0x-wsl-continuation-contract--2026-11-17).
 
@@ -18,7 +18,27 @@ Reason for WSL: the available Cloud container could not sustain the required KiC
 | Gate/source readiness for subsequent native work | Candidate packet and source-only evidence are available; formal integrated-head ruling and DS-06/DS-88 disposition remain pending | Identify and finish concrete prerequisites; do not mistake MC03 tool-access uncertainty for a formal MC04 prerequisite |
 | Post-composition KiCad verification | COMPLETED at exact `fb0ed1066091f4e0c5595d699378c1184725a96f`: aggregate PASS, no drift, independent cleanup/scope audit PASS | Reuse this receipt for these unchanged inputs; any later admitted engineering change requires its own applicable checks |
 | Routing, DRC and zone fill | Existing routing holds and explicit owner DRC/fill hold remain | Do not launch held operations; record the precise owner/gate decision if this blocks all remaining WSL work |
-| WSL phase exit | Not established while known required WSL work remains pending | Before ending, reconcile jobs, receipts, recoverable source and the remaining WSL queue; distinguish blocked from complete |
+| WSL phase exit | Received-source ready work verified;18November material delivery still pending | Current independent audit and receipts are above; resume on actual source arrival, not a routine stage approval. Hardware project remains incomplete |
+
+### Current continuation boundary — 2026-11-18 JST
+
+The known received-source wave is complete: verified manufacturer PDFs,
+canonical manual/nut instructions and separate historical consumer amendments,
+relative geometry/land constraints, two bounded E5 negative hypotheses,
+32-case pinned native land fixture, canonical conditioned Ci facts and
+source-bound logic/clock checks. Local documentation check/build/site validation
+is complete through an output-bound continuation, not a falsely uninterrupted
+PASS. See [native receipt](mc02-fh12-native-result-20261118.md) and
+[source/documentation receipt](mc02-capacitance-source-integration-20261118.md).
+
+After independent queue audit, no additional justified ready WSL execution is
+identified. The user supplied a new artifact folder, but both connected Dropbox
+and configured WSL views remained empty through2026-11-17T16:28:43Z. Its contents
+and reported duplicate cannot be checked yet. [Specific required sources](mc02-next-source-inputs-20261118.md)
+remain the next inputs. Reconcile actual arrival and live writer state on
+continuation, then resume without a routine Moya/owner approval question. Do not
+claim a background job, invent missing bytes or retry unchanged completed work.
+Hardware positions, physical unknowns and all existing holds remain unchanged.
 
 ### Candidate-first disposition and bounded remedy
 
@@ -403,11 +423,11 @@ are collected, with24producer/62consumer tests. Historical source pins remain.
 Envelope1d5f6833 and land-registrationec4d6e1c audits retain conditional-only
 intervals and unknown actual registration; no CAD placement is adopted.
 
-Active: isolated FH12 land-pattern candidate39d456d3, reviewed with13offline tests,
-and composite native runner/lifecycle preparation under DS-141. Native NOT RUN
-until that independent review completes. Only disposable candidate inputs and
-outputs will be mounted, not canonical boards or the repository. Existing
-aggregate evidence remains bound to its original head and is not rerun.
+The isolated native fixture subsequently passed at467d6e4e with32cases and
+verified cleanup. Canonical Ci/source checks and local documentation validation
+are also complete; the current boundary is the actual18November source delivery
+not yet visible in either Dropbox or WSL. Refer to the current continuation
+boundary above. Existing aggregate evidence is still not rerun or rebound.
 
 The owner requires requesting missing PDFs and continuing independent work, not
 ending with “nothing more can be done.” Retain bounded retries, shared execution
