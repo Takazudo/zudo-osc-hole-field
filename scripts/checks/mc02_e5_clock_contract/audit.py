@@ -20,6 +20,18 @@ CI = {
                   'pdf': 'circuit/sources/ic-library/SN74HC14.pdf',
                   'locator': 'SCLS085L, printed p5, physical index4, section5.5 Ci (-74)',
                   'scope': 'DEVICE_INPUT_ONLY; project applicability NOT_ESTABLISHED'},
+    'SN74HC00DR': {'maximum_pF': 10, 'typical_pF': 3, 'typical_temperature_C': 25,
+                  'VCC_V': [2, 6], 'temperature_C': [-40, 85],
+                  'pdf': 'circuit/sources/ic-library/SN74HC00.pdf',
+                  'locator': 'SCLS181H, printed p5, physical index4, section6.5 Ci Commercial (74xx)',
+                  'scope': 'DEVICE_INPUT_ONLY; project applicability NOT_ESTABLISHED'},
+    'CD74HC221M96': {'maximum_pF': 10, 'typical_pF': None,
+                  'VCC_V': None, 'VCC_source_cell': '-', 'test_conditions_source_cell': '-',
+                  'temperature_C': [-40, 85], 'family_block': 'HC TYPES (continued from printed p6)',
+                  'table_header': 'Switching Specifications Input tr, tf = 6ns (Continued)',
+                  'pdf': 'circuit/sources/ic-library/CD74HC221.pdf',
+                  'locator': 'SCHS166F, printed p7, physical index6, upper HC CIN row; -40..85C MAX column',
+                  'scope': 'DEVICE_INPUT_ONLY; no numeric VCC inferred; project applicability NOT_ESTABLISHED'},
 }
 
 
@@ -88,6 +100,42 @@ def validate(report, maps, evidence):
     return contacts
 
 
+def receiver_sums(contacts, observations):
+    """Sum catalog maxima only, without claiming a shared actual operating corner."""
+    if observations != CI:
+        raise ValueError('Ci conditions/provenance drift')
+    expected = {'CLOCK': {'CLOCK_INPUT': ('SN74HC74DR', 17)},
+                'READY': {'CLEAR_INPUT': ('SN74HC74DR', 15),
+                          'NAND_INPUT': ('SN74HC00DR', 3),
+                          'ONE_SHOT_RESET_INPUT': ('CD74HC221M96', 1)}}
+    result = {}
+    for net, classes in expected.items():
+        seen = set(); groups = []; excluded = []
+        for row in contacts[net]:
+            key = (row['ref'], row['pin'])
+            if key in seen: raise ValueError('duplicate physical contact in sum')
+            seen.add(key)
+            if row['classification'] != classify(row['mpn'], row['pin'], row['ref']):
+                raise ValueError('receiver classification changed')
+            if row['classification'] not in classes:
+                excluded.append(row)
+        for classification, (mpn, count) in classes.items():
+            rows = [r for r in contacts[net] if r['classification'] == classification]
+            if len(rows) != count or any(r['mpn'] != mpn for r in rows):
+                raise ValueError('receiver membership changed')
+            groups.append({'classification': classification, 'mpn': mpn, 'receiver_count': len(rows),
+                'named_receivers': rows, 'source_observation': observations[mpn],
+                'conditional_catalog_max_sum_pF': len(rows) * observations[mpn]['maximum_pF']})
+        result[net] = {'status': 'CONDITIONAL_CATALOG_ARITHMETIC_ONLY', 'groups': groups,
+            'conditional_catalog_max_sum_pF': sum(g['conditional_catalog_max_sum_pF'] for g in groups),
+            'excluded_contacts': excluded, 'shared_project_conditions': 'NOT_ESTABLISHED',
+            'actual_receiver_load_pF': None, 'actual_total_load_pF': None,
+            'actual_load_lower_bound_pF': None, 'timing_verdict': 'NOT_ESTABLISHED',
+            'other_unknowns': ['driver/network behavior', 'routing and coupling parasitics',
+                              'actual supply/temperature/edge conditions', 'RC feedback loading']}
+    return result
+
+
 def audit(root=ROOT):
     evidence = json.loads((HERE / 'evidence.json').read_text())
     for path, sha in evidence['sha256'].items():
@@ -97,6 +145,7 @@ def audit(root=ROOT):
         'source_commit': evidence['source_commit'], 'sha256': evidence['sha256'],
         'contacts': contacts, 'counts': {n: dict(Counter(r['classification'] for r in rows)) for n, rows in contacts.items()},
         'ci_observations': CI, 'nominal_RC': evidence['nominal_RC'],
+        'receiver_only_sums': receiver_sums(contacts, CI),
         'actual_total_load_pF': None, 'guaranteed_clock_frequency_Hz': None,
         'clock_edge_bound_ns': None, 'ready_recovery_slack_ns': None,
         'physical_timing_acceptance': 'NOT_ESTABLISHED', 'native': 'NOT_RUN',

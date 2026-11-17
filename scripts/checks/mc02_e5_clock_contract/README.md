@@ -47,3 +47,26 @@ remain null. Source closure alone cannot establish them. Next work may acquire
 missing exact-part and conditioned source data, then define a separately reviewed
 model/measurement plan. No new placement, adopted RC parts, DRC, fill, formal
 adoption or manufacturing follows from this report.
+
+## Conditional receiver-only catalog sums
+
+The source extension adds HC00 SCLS181H printed p5 section6.5 Ci10 pF maximum
+at2–6 V/-40–85 C (typical3 pF at25 C), and CD74HC221 SCHS166F printed p7,
+physical index6, upper HC CIN row10 pF maximum in the -40–85 C column.
+HC221's VCC and row test-condition cells contain dashes: no numeric supply range
+is inferred. The continued table header says input tr,tf=6ns; this context and
+HC family block are retained rather than silently applying an HCT row or
+assigning the adjacent propagation row's CL50pF to CIN. All owner JSON and both
+additional retained PDFs are pinned. No owner facts are modified.
+
+The named ledger yields CLOCK17HC74 inputs ×10=170 pF; READY15HC74 inputs ×10
+plus3HC00 inputs ×10 plus1HC221 reset input ×10=190 pF. These are sums of catalog
+maxima under their individual recorded conditions. They are neither measured
+loads, guaranteed project upper bounds, nor lower bounds. A sum above a switching
+fixture's CL value does not prove actual timing failure. Shared actual operating
+conditions are unestablished; HC221's missing numeric row supply is not filled
+by the other devices' conditions. Each result carries full named receiver groups,
+source conditions and separately listed driver/passive contacts excluded from
+this arithmetic. CLOCK_RC's1nF capacitor remains behind47k and is not added.
+Driver/network response, routing/coupling and other parasitics remain unknown.
+All actual load and timing fields stay null/NOT_ESTABLISHED.

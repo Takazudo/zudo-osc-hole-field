@@ -64,6 +64,45 @@ class ContractTests(unittest.TestCase):
         self.evidence['nominal_RC']['resistor']['tolerance'] = 0.01
         with self.assertRaisesRegex(ValueError, 'nominal RC'): self.check()
 
+    def test_receiver_only_conditional_sums(self):
+        sums = a.receiver_sums(self.check(), a.CI)
+        self.assertEqual(sums['CLOCK']['conditional_catalog_max_sum_pF'], 170)
+        self.assertEqual(sums['READY']['conditional_catalog_max_sum_pF'], 190)
+        self.assertEqual([g['conditional_catalog_max_sum_pF'] for g in sums['READY']['groups']], [150, 30, 10])
+        self.assertEqual({r['ref'] for r in sums['CLOCK']['excluded_contacts']}, {'R4533', 'U4512'})
+        self.assertEqual([r['ref'] for r in sums['READY']['excluded_contacts']], ['U4530'])
+        for result in sums.values():
+            self.assertEqual(result['status'], 'CONDITIONAL_CATALOG_ARITHMETIC_ONLY')
+            self.assertEqual(result['timing_verdict'], 'NOT_ESTABLISHED')
+            for key in ('actual_receiver_load_pF', 'actual_total_load_pF', 'actual_load_lower_bound_pF'):
+                self.assertIsNone(result[key])
+
+    def test_hc221_voltage_dash_not_invented(self):
+        ci = copy.deepcopy(a.CI)
+        self.assertIsNone(ci['CD74HC221M96']['VCC_V'])
+        self.assertEqual(ci['CD74HC221M96']['VCC_source_cell'], '-')
+        ci['CD74HC221M96']['VCC_V'] = [2, 6]
+        with self.assertRaisesRegex(ValueError, 'conditions'): a.receiver_sums(self.check(), ci)
+
+    def test_hc221_header_and_grade_preserved(self):
+        ci = copy.deepcopy(a.CI)
+        ci['CD74HC221M96']['table_header'] = 'unconditional capacitance'
+        with self.assertRaisesRegex(ValueError, 'conditions'): a.receiver_sums(self.check(), ci)
+        ci = copy.deepcopy(a.CI)
+        ci['SN74HC00DR']['temperature_C'] = [-55, 125]
+        with self.assertRaisesRegex(ValueError, 'conditions'): a.receiver_sums(self.check(), ci)
+
+    def test_sum_rejects_double_count(self):
+        rows = self.check()
+        rows['CLOCK'].append(copy.deepcopy(rows['CLOCK'][2]))
+        with self.assertRaisesRegex(ValueError, 'duplicate'): a.receiver_sums(rows, a.CI)
+
+    def test_sum_rejects_driver_promotion(self):
+        rows = self.check()
+        driver = next(r for r in rows['READY'] if r['classification'] == 'Q_DRIVER')
+        driver['classification'] = 'CLEAR_INPUT'
+        with self.assertRaisesRegex(ValueError, 'classification'): a.receiver_sums(rows, a.CI)
+
     def test_source_pin_rejects_changed_bytes(self):
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaises((ValueError, FileNotFoundError)): a.audit(Path(directory))

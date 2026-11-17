@@ -1,8 +1,20 @@
 {
-  "source_commit": "13f380818cb259d8f93a48b5ee3dc2fc80346d48",
+  "source_commit": "83b33ee147dbbf125ae0ad9317fd9fb159d223f1",
   "sha256": {
+    ".claude/skills/component-ti-cd74hc221m96/coverage.json": "b40a7dc4c286c73d2c8c3963253274b22efcd672d02f5a9cf5fd31ab75803828",
+    ".claude/skills/component-ti-cd74hc221m96/facts.json": "9ed27de250b2669c6e14ce5531177ffe3ae7b1c0c1c94e8e21a2cdf6dccaca50",
+    ".claude/skills/component-ti-cd74hc221m96/interactions.json": "8f8de895536fb01d1dac99f2628be816107c75cfc0a557970a0abfac5c7872f8",
+    ".claude/skills/component-ti-cd74hc221m96/manifest.json": "2f3a597b5c7aefe806add436feda50d33485a5f2d894bb314fde1c29e2e6d305",
     ".claude/skills/component-ti-cd74hc221m96/pin-map.json": "0465f55065e41132982ac13a0d60bab416c132da5bb120f5ef6bc24713db3cff",
+    ".claude/skills/component-ti-cd74hc221m96/routing.json": "0bae8c181a22950a86d54d8eacd0e053fdfabe2a6a06f48d35c9d61735933349",
+    ".claude/skills/component-ti-cd74hc221m96/sources.json": "c6f61171db191efb6e127a92b79fb465eafe9cb3aad5f414d56427b483ec894e",
+    ".claude/skills/component-ti-sn74hc00dr/coverage.json": "1941a4635a5a0095db0c296cb13d18d670778d0a01bdeb7bf742cbd3bdfc04d7",
+    ".claude/skills/component-ti-sn74hc00dr/facts.json": "6197f91d3663172d06733df274c6618a253249b138d246ccb8a04102d43b3959",
+    ".claude/skills/component-ti-sn74hc00dr/interactions.json": "7f69480657ef97af08aa46a039eb0681af0d7d91b6609b56e64e2f71ead0f023",
+    ".claude/skills/component-ti-sn74hc00dr/manifest.json": "94bd7bf8a1539b770966e33f53c0c8c83bf041db2d263ec9d8d3a5fe54ae4f6f",
     ".claude/skills/component-ti-sn74hc00dr/pin-map.json": "2af5336cc1930328874f271b980e80a45df672f5962d9871a39f7e247c22aa3e",
+    ".claude/skills/component-ti-sn74hc00dr/routing.json": "52ca0f34fb990f4301a5e82220362d72fa4e0c0e2c05205cdd8a14fef0ec2ca2",
+    ".claude/skills/component-ti-sn74hc00dr/sources.json": "8e78fb8eda058c77f74f937d184cce05f0ba569248210f1f52cf9cb04941f73a",
     ".claude/skills/component-ti-sn74hc14dr/coverage.json": "cffb1a1435d50b8c611374f9bbb78b0b15f67125608ec222639d97d3d7bd49f6",
     ".claude/skills/component-ti-sn74hc14dr/facts.json": "c627f0accfb1a0cb3f7830362d4612755dea90a72e08f5e2420e7a908c4ebfb8",
     ".claude/skills/component-ti-sn74hc14dr/interactions.json": "e1b52b61010f73cb45b5dfad6efea9302ee3c6b784b8a869ba24dcb34fb09bbc",
@@ -17,11 +29,13 @@
     ".claude/skills/component-ti-sn74hc74dr/pin-map.json": "423e8a713c0bc57c5c88fa8f8165948099cbd2fae1e318dc8e1ade2a43d4e5b3",
     ".claude/skills/component-ti-sn74hc74dr/routing.json": "060323b3d9d8c61759b54750715ebc5e4f94fc228beef903339ea2be5af2b38c",
     ".claude/skills/component-ti-sn74hc74dr/sources.json": "957d5f671f2f53b8f46471e0adf8e3d24f1bfa3b3a3ff667392fb6bb6b1a156d",
+    "circuit/sources/ic-library/CD74HC221.pdf": "7f1f24f5229cfed79662b850f2aa6a92a1fcca9530d4c264b05af80638ad67e0",
+    "circuit/sources/ic-library/SN74HC00.pdf": "aacc4e5e60c10be7412b635c327d42413c4f68a58bf381467fec1e54bff24af0",
     "circuit/sources/ic-library/SN74HC14.pdf": "0eaa0a53e41053aec950a8be0b3989dfa608583928e46544b7922e233aa4362d",
     "circuit/sources/ic-library/SN74HC74.pdf": "d1e57133ca40b595c670688718807c367b555b6fe57144c881d629de18230351",
     "design/reports/io-partition.json": "37a773282d723d7f689d1e6cf009e4edd1947827a5ee45f0051e42cd4e907a0b",
     "design/spec/modules/envelope.py": "015b02c5d84550e19bf92b9ec838a43b255a728e02de1e562e855ba632fc2ee5",
-    "scripts/checks/mc02_e5_clock_contract/audit.py": "7900ae3848f4b0433314f47ead8bcb6a6295d6b26ab42dcc07a20c0d0845675f"
+    "scripts/checks/mc02_e5_clock_contract/audit.py": "cd2990bc708ec5815f41f5dc3b73989bedd8f8a955aead35f2fc35896ae3b6f0"
   },
   "contacts": {
     "CLOCK_RC": [
@@ -483,6 +497,38 @@
       "pdf": "circuit/sources/ic-library/SN74HC14.pdf",
       "locator": "SCLS085L, printed p5, physical index4, section5.5 Ci (-74)",
       "scope": "DEVICE_INPUT_ONLY; project applicability NOT_ESTABLISHED"
+    },
+    "SN74HC00DR": {
+      "maximum_pF": 10,
+      "typical_pF": 3,
+      "typical_temperature_C": 25,
+      "VCC_V": [
+        2,
+        6
+      ],
+      "temperature_C": [
+        -40,
+        85
+      ],
+      "pdf": "circuit/sources/ic-library/SN74HC00.pdf",
+      "locator": "SCLS181H, printed p5, physical index4, section6.5 Ci Commercial (74xx)",
+      "scope": "DEVICE_INPUT_ONLY; project applicability NOT_ESTABLISHED"
+    },
+    "CD74HC221M96": {
+      "maximum_pF": 10,
+      "typical_pF": null,
+      "VCC_V": null,
+      "VCC_source_cell": "-",
+      "test_conditions_source_cell": "-",
+      "temperature_C": [
+        -40,
+        85
+      ],
+      "family_block": "HC TYPES (continued from printed p6)",
+      "table_header": "Switching Specifications Input tr, tf = 6ns (Continued)",
+      "pdf": "circuit/sources/ic-library/CD74HC221.pdf",
+      "locator": "SCHS166F, printed p7, physical index6, upper HC CIN row; -40..85C MAX column",
+      "scope": "DEVICE_INPUT_ONLY; no numeric VCC inferred; project applicability NOT_ESTABLISHED"
     }
   },
   "nominal_RC": {
