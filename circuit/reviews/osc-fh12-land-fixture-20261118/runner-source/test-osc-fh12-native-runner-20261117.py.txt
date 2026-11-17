@@ -1,0 +1,293 @@
+import copy
+import importlib.util
+import json
+import fcntl
+import os
+import io
+import struct
+import time
+from pathlib import Path
+import tempfile
+import unittest
+from unittest import mock
+
+spec=importlib.util.spec_from_file_location('runner','/tmp/osc-fh12-native-runner-20261117.py');r=importlib.util.module_from_spec(spec);spec.loader.exec_module(r)
+
+class NativeLifecycleTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup)
+        self.cache=Path(self.tmp.name);self.run_dir=self.cache/('a'*32);self.run_dir.mkdir()
+        self.patch=mock.patch.object(r,'CACHE',self.cache);self.patch.start();self.addCleanup(self.patch.stop)
+        self.name,self.unit=r.owned(self.run_dir)
+    def commands(self,failure=None,remaining=False,worker_live=False):
+        calls=[]
+        def run(args,timeout=8):
+            calls.append(args)
+            if failure and failure in args:raise RuntimeError('injected '+failure)
+            if args[0]=='systemctl':
+                if 'show' in args:
+                    return 'ActiveState=active\nMainPID=42\nControlGroup=/live' if worker_live else 'ActiveState=inactive\nMainPID=0\nControlGroup='
+                return ''
+            if 'ps' in args:return 'ownedid' if remaining or len([c for c in calls if 'ps' in c])==1 else ''
+            if 'inspect' in args:return json.dumps([{'Name':'/'+self.name,'Config':{'Labels':{'osc.fixture.owner':self.name}}}])
+            return ''
+        return run,calls
+    def test_success_cleanup_proves_container_absence(self):
+        run,calls=self.commands();self.assertEqual(r.cleanup(self.run_dir,run),[])
+        self.assertTrue(any('rm' in c for c in calls));self.assertFalse((self.run_dir/'ADMISSION_BLOCKED.json').exists())
+    def test_start_failure_still_cleans_container(self):
+        # Failed worker startup/stop must not suppress independent Docker cleanup.
+        run,calls=self.commands(failure='stop');self.assertTrue(r.cleanup(self.run_dir,run))
+        self.assertTrue(any('rm' in c for c in calls));self.assertTrue((self.run_dir/'ADMISSION_BLOCKED.json').exists())
+    def test_container_removal_failure_never_passes(self):
+        run,calls=self.commands(failure='rm');self.assertTrue(r.cleanup(self.run_dir,run))
+    def test_container_absence_unverified_never_passes(self):
+        run,calls=self.commands(remaining=True);self.assertTrue(r.cleanup(self.run_dir,run))
+    def test_host_worker_live_never_passes(self):
+        run,calls=self.commands(worker_live=True);self.assertTrue(r.cleanup(self.run_dir,run))
+        self.assertTrue(any('rm' in c for c in calls))
+    def test_receipt_write_failure_still_attempts_daemon_cleanup(self):
+        run,calls=self.commands()
+        with mock.patch.object(r,'record',side_effect=OSError('injected disk error')):
+            self.assertTrue(r.cleanup(self.run_dir,run))
+        self.assertTrue(any('rm' in c for c in calls))
+    def test_foreign_container_not_deleted(self):
+        run,calls=self.commands()
+        def foreign(args,timeout=8):
+            if 'inspect' in args:return json.dumps([{'Name':'/foreign','Config':{'Labels':{'osc.fixture.owner':self.name}}}])
+            return run(args,timeout)
+        self.assertTrue(r.cleanup(self.run_dir,foreign));self.assertFalse(any('rm' in c for c in calls))
+    def doc(self):
+        return {'Name':'/'+self.name,'Image':'imageid','Config':{'Image':r.IMAGE,'Env':['XDG_DATA_HOME=/tmp/data'],'Labels':{'osc.fixture.owner':self.name},'Entrypoint':['/usr/bin/timeout'],'Cmd':['--signal=TERM','--kill-after=10s','230s','/usr/bin/python3','-B','/fixture-root/container.py','identity']},
+                'HostConfig':{'NanoCpus':750000000,'Memory':2147483648,'MemorySwap':2147483648,'PidsLimit':128,'NetworkMode':'none','ReadonlyRootfs':True,'CgroupnsMode':'private','Tmpfs':{'/tmp':'rw,nosuid,nodev,size=33554432,mode=1777','/fixture-root/.circuit-cache/output':'rw,nosuid,nodev,size=67108864,mode=1777'},'LogConfig':{'Type':'none'},'Privileged':False,'CapAdd':None,'CapDrop':['ALL'],'SecurityOpt':['no-new-privileges']},
+                'Mounts':[{'Type':'bind','Source':str(self.run_dir/'stage'),'Destination':'/fixture-root','RW':False}]}
+    def test_inspection_requires_cached_image_and_exact_caps(self):
+        d=self.doc();r.check_container(d,self.name,self.run_dir/'stage','imageid')
+        for kind in ('Image','MemorySwap','NetworkMode','RW'):
+            x=copy.deepcopy(d)
+            if kind=='Image':x[kind]='wrong'
+            elif kind=='RW':x['Mounts'][0][kind]=True
+            else:x['HostConfig'][kind]=0
+            with self.assertRaises(ValueError):r.check_container(x,self.name,self.run_dir/'stage','imageid')
+    def test_unbounded_storage_or_privilege_drift_refused(self):
+        for change in ('tmpfs','volume','privileged','cap','security'):
+            doc=self.doc()
+            if change=='tmpfs':doc['HostConfig']['Tmpfs']['/tmp']='rw,nosuid,nodev,size=999999999,mode=1777'
+            elif change=='volume':doc['Mounts'].append({'Type':'volume','Source':'unexpected','Destination':'/data','RW':True})
+            elif change=='privileged':doc['HostConfig']['Privileged']=True
+            elif change=='cap':doc['HostConfig']['CapAdd']=['SYS_ADMIN']
+            else:doc['HostConfig']['SecurityOpt']=[]
+            with self.assertRaises(ValueError):r.check_container(doc,self.name,self.run_dir/'stage','imageid')
+
+    def test_abrupt_controller_failure_has_independent_cleanup_under_lock(self):
+        lock=self.cache/'synthetic-shared.lock';holder=lock.open('w');fcntl.flock(holder,fcntl.LOCK_EX)
+        cleanup=r.cleanup;finalize=r.finalize_controller;removed=[]
+        def assert_locked():
+            with lock.open('a') as contender:
+                with self.assertRaises(BlockingIOError):fcntl.flock(contender,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        def fake(args,timeout=8):
+            assert_locked()
+            if args[0]=='systemd-run':return ''
+            if args[0]=='systemctl':
+                if 'show' not in args:return ''
+                if 'SubState' in args:return 'ActiveState=failed\nSubState=failed\nExecMainStatus=9\nExecMainCode=2'
+                if '--value' in args:return 'inactive'
+                return 'ActiveState=inactive\nMainPID=0\nControlGroup=\nResult=oom-kill\nExecMainStatus=9'
+            if 'ps' in args:return '' if removed else 'ownedid'
+            if 'inspect' in args:return json.dumps([{'Name':'/'+self.name,'Config':{'Labels':{'osc.fixture.owner':self.name}}}])
+            if 'rm' in args:removed.append(True)
+            return ''
+        with mock.patch.object(r,'verify_runner_sources'),mock.patch.object(r,'guard_owner',return_value=os.getpid()),mock.patch.object(r,'effective_caps',return_value={}),mock.patch.object(r.resource,'setrlimit'),mock.patch.object(r.signal,'signal'),mock.patch.object(r,'command',side_effect=fake),mock.patch.object(r,'finalize_controller',side_effect=lambda path,deadline=None:finalize(path,run=fake,deadline=deadline)),mock.patch.object(r,'cleanup',side_effect=lambda path,deadline=None:cleanup(path,run=fake,deadline=deadline)):
+            self.assertEqual(r.guardian(self.run_dir,'identity'),1)
+        self.assertTrue(removed);assert_locked()
+        receipt=json.loads((self.run_dir/'supervisor.json').read_text())
+        self.assertEqual(receipt['cleanup'],'VERIFIED');self.assertEqual(receipt['status'],'FAILED')
+        fcntl.flock(holder,fcntl.LOCK_UN);holder.close()
+
+    def test_fault_hook_targets_only_identified_owned_controller(self):
+        unit=self.name+'-controller.service';pid=os.getpid();cg='/test/'+unit
+        r.record(self.run_dir/'fault-identity.json',{'cli':'10.0.6','pcbnew':'10.0.6'})
+        calls=[];real_read=Path.read_text
+        doc=self.doc();doc['State']={'Running':True};doc['Config']['Cmd'][-1]='identity-controller-loss'
+        r.record(self.run_dir/'image.json',{'Id':'imageid'})
+        def read(path,*args,**kwargs):
+            if str(path)==f'/proc/{pid}/cgroup':return '0::'+cg+'\n'
+            return real_read(path,*args,**kwargs)
+        def command(args,timeout=8):
+            calls.append(args)
+            if args[0]==r.DOCKER:return json.dumps([doc])
+            return f'ActiveState=active\nMainPID={pid}\nControlGroup={cg}' if 'show' in args else ''
+        with mock.patch.object(Path,'read_text',read),mock.patch.object(r,'command',side_effect=command),mock.patch.object(r,'lock_receipt',return_value={'independent_flock':'DENIED'}):
+            r.inject_controller_loss(self.run_dir,unit)
+        kills=[args for args in calls if 'kill' in args]
+        self.assertEqual(kills,[['systemctl','--user','kill','--kill-whom=main','--signal=KILL',unit]])
+        self.assertTrue((self.run_dir/'fault-lock-before.json').is_file())
+        self.assertTrue((self.run_dir/'fault-lock-after-signal.json').is_file())
+    def test_fault_hook_rejects_foreign_target_without_signal(self):
+        with mock.patch.object(r,'command') as command:
+            with self.assertRaisesRegex(ValueError,'foreign fault'):r.inject_controller_loss(self.run_dir,'other.service')
+            command.assert_not_called()
+
+    def test_effective_runtime_and_termination_policy_drift(self):
+        props={'RuntimeMaxUSec':'8min 40s','KillMode':'control-group','SendSIGKILL':'yes','OOMPolicy':'kill'}
+        r.verify_service_properties(props,520)
+        for key,value in (('RuntimeMaxUSec','infinity'),('RuntimeMaxUSec','9min'),('KillMode','process'),('SendSIGKILL','no'),('OOMPolicy','continue')):
+            altered=dict(props);altered[key]=value
+            with self.assertRaises(ValueError):r.verify_service_properties(altered,520)
+    def test_effective_container_deadline_and_mode_drift(self):
+        for kind in ('entrypoint','deadline','mode'):
+            doc=self.doc()
+            if kind=='entrypoint':doc['Config']['Entrypoint']=['/bin/sh']
+            elif kind=='deadline':doc['Config']['Cmd'][2]='999s'
+            else:doc['Config']['Cmd'][-1]='fixture'
+            with self.assertRaisesRegex(ValueError,'deadline/command'):r.check_container(doc,self.name,self.run_dir/'stage','imageid')
+
+    def test_identity_failure_without_identity_retains_complete_traceback(self):
+        failure={'status':'FAILED','error':'fixture caps differ','traceback':'specific traceback evidence'}
+        def copy(name,output):
+            r.record(output/'transaction-failure.json',failure)
+            r.record(output/'raw-observations.json',{'caps':{'memory.max':'unexpected'}})
+            return ''
+        with self.assertRaisesRegex(ValueError,'identity failure retained'):
+            r.capture_identity_evidence(self.run_dir,self.name,exporter=copy)
+        self.assertEqual(json.loads((self.run_dir/'fault-output/transaction-failure.json').read_text()),failure)
+        self.assertTrue((self.run_dir/'fault-output/raw-observations.json').is_file())
+        self.assertTrue((self.run_dir/'fault-output-index.json').is_file())
+        self.assertFalse((self.run_dir/'fault-identity.json').exists())
+    def test_successful_identity_also_retains_whole_output(self):
+        def copy(name,output):
+            r.record(output/'identity.json',{'cli':'10.0.6','pcbnew':'10.0.6'})
+            r.record(output/'raw-observations.json',{'scope':'fixture'})
+            return ''
+        r.capture_identity_evidence(self.run_dir,self.name,exporter=copy)
+        self.assertTrue((self.run_dir/'fault-identity.json').is_file())
+        self.assertTrue((self.run_dir/'fault-output/raw-observations.json').is_file())
+
+    def test_container_records_observations_before_admission_failure(self):
+        module_spec=importlib.util.spec_from_file_location('container_fixture',r.CONTAINER_SCRIPT)
+        container=importlib.util.module_from_spec(module_spec);module_spec.loader.exec_module(container)
+        out=self.run_dir/'container-output';out.mkdir();(out/'HOST_COPIED').write_text('fixture ack')
+        raw={'caps':{'cpu.max':'75000 100000','memory.max':'unexpected','memory.swap.max':'0','pids.max':'128'},
+             'pressure':{},'vm_visible_memory':{'MemAvailable':'fixture'},'filesystems':{}}
+        original=Path.read_text
+        def read(path,*args,**kwargs):
+            if str(path)=='/fixture-root/admission-inputs.json':return '{"sha256":{}}'
+            return original(path,*args,**kwargs)
+        with mock.patch.object(container,'OUT',out),mock.patch.object(container,'observations',return_value=raw),mock.patch.object(container.resource,'setrlimit'),mock.patch.object(Path,'read_text',read):
+            self.assertEqual(container.main('identity'),1)
+        self.assertEqual(json.loads((out/'raw-observations.json').read_text()),raw)
+        failure=json.loads((out/'transaction-failure.json').read_text())
+        self.assertIn('effective caps differ',failure['error']);self.assertIn('Traceback',failure['traceback'])
+        self.assertFalse((out/'identity.json').exists())
+
+    def export_frame(self,entries,body=b'',total=None):
+        header={'protocol':'OSC_FIXTURE_EXPORT_1','entries':entries,'total_size':sum(e['size'] for e in entries) if total is None else total}
+        raw=json.dumps(header,separators=(',',':')).encode()
+        return b'OSC_FIXTURE_EXPORT_1\n'+struct.pack('!I',len(raw))+raw+body+b'OSC_FIXTURE_EXPORT_END\n'
+    def file_entry(self,name,data=b'data'):
+        import hashlib
+        return {'path':name,'type':'file','size':len(data),'sha256':hashlib.sha256(data).hexdigest()}
+    def test_binary_export_preserves_failure_payload(self):
+        body=b'{"status":"FAILED","traceback":"real detail"}'
+        entries=[self.file_entry('transaction-failure.json',body)]
+        output=self.run_dir/'decoded';output.mkdir()
+        r.decode_export(io.BytesIO(self.export_frame(entries,body)),output)
+        self.assertEqual((output/'transaction-failure.json').read_bytes(),body)
+    def test_export_truncation_and_bad_digest_are_refused(self):
+        entry=self.file_entry('payload');framed=self.export_frame([entry],b'data')
+        for i,blob in enumerate((framed[:-1],framed[:-25],framed.replace(b'data',b'evil'))):
+            output=self.run_dir/('bad'+str(i));output.mkdir()
+            with self.assertRaises(ValueError):r.decode_export(io.BytesIO(blob),output)
+    def test_export_rejects_unsafe_paths_and_types(self):
+        cases=[self.file_entry(n) for n in ('../escape','/absolute','a/../escape','a//b','./b','a\\b')]
+        for kind in ('symlink','hardlink','device','fifo'):
+            entry=self.file_entry('bad');entry['type']=kind;cases.append(entry)
+        for i,entry in enumerate(cases):
+            output=self.run_dir/('unsafe'+str(i));output.mkdir()
+            with self.assertRaises(ValueError):r.decode_export(io.BytesIO(self.export_frame([entry],b'data')),output)
+    def test_export_size_count_and_header_bounds(self):
+        huge=self.file_entry('huge');huge['size']=8*1024*1024+1
+        cases=[self.export_frame([huge]),self.export_frame([self.file_entry('f'+str(i)) for i in range(257)]),
+               b'OSC_FIXTURE_EXPORT_1\n'+struct.pack('!I',65537)]
+        for i,blob in enumerate(cases):
+            output=self.run_dir/('bound'+str(i));output.mkdir()
+            with self.assertRaises(ValueError):r.decode_export(io.BytesIO(blob),output)
+    def test_export_timeout_is_bounded_and_recorded(self):
+        read,write=os.pipe()
+        try:
+            with os.fdopen(read,'rb',buffering=0) as stream:
+                timed=r.DeadlinePipe(stream,time.monotonic()-1)
+                try:
+                    with self.assertRaises(TimeoutError):timed.read(1)
+                finally:timed.close()
+        finally:os.close(write)
+        def fail(name,output):raise TimeoutError('fixture timeout')
+        with self.assertRaises(TimeoutError):r.capture_output(self.run_dir,self.name,'timeout',fail)
+        self.assertEqual(json.loads((self.run_dir/'timeout-export-failure.json').read_text())['status'],'EXPORT_FAILED')
+    def test_container_export_rejects_real_links(self):
+        module_spec=importlib.util.spec_from_file_location('container_export_fixture',r.CONTAINER_SCRIPT)
+        container=importlib.util.module_from_spec(module_spec);module_spec.loader.exec_module(container)
+        for hard in (False,True):
+            out=self.run_dir/('hard' if hard else 'symbolic');out.mkdir();source=out/'file';source.write_text('data')
+            if hard:os.link(source,out/'link')
+            else:(out/'link').symlink_to(source)
+            with mock.patch.object(container,'OUT',out):
+                with self.assertRaisesRegex(ValueError,'rejects'):container.export_output()
+
+    def test_actual_offline_exporter_decoder_binary_roundtrip(self):
+        module_spec=importlib.util.spec_from_file_location('export_roundtrip',r.CONTAINER_SCRIPT)
+        container=importlib.util.module_from_spec(module_spec);module_spec.loader.exec_module(container)
+        src=self.run_dir/'source';src.mkdir();(src/'nested').mkdir();(src/'empty').write_bytes(b'')
+        body=b'binary\x00\xff\nfixture';(src/'nested/data.bin').write_bytes(body)
+        buffer=io.BytesIO()
+        with mock.patch.object(container,'OUT',src),mock.patch.object(container.sys,'stdout',type('Sink',(),{'buffer':buffer})()):container.export_output()
+        target=self.run_dir/'roundtrip';target.mkdir()
+        r.decode_export(io.BytesIO(buffer.getvalue()),target)
+        self.assertEqual((target/'nested/data.bin').read_bytes(),body)
+        self.assertEqual((target/'empty').read_bytes(),b'')
+
+    def test_application_data_path_does_not_escape_bounded_tmpfs(self):
+        doc=self.doc();r.check_container(doc,self.name,self.run_dir/'stage','imageid')
+        for env in ([],['XDG_DATA_HOME=/home/kicad/.local/share'],['XDG_DATA_HOME=/tmp/data','XDG_DATA_HOME=/elsewhere']):
+            changed=copy.deepcopy(doc);changed['Config']['Env']=env
+            with self.assertRaisesRegex(ValueError,'bounded /tmp'):r.check_container(changed,self.name,self.run_dir/'stage','imageid')
+
+    def output(self):
+        out=self.run_dir/'output';out.mkdir()
+        r.record(out/'identity.json',{'cli':'10.0.6','pcbnew':'10.0.6'})
+        r.record(out/'transaction.json',{'status':'COMPLETED','mode':'fixture'})
+        native=out/'fixture/native-results';native.mkdir(parents=True)
+        r.record(native/'result.json',{'status':'NATIVE_LAND_FIXTURE_ONLY','actual_project_registration':None,'endpoint_bindings':[],
+                 'cases':[{'contacts':n,'face':f,'angle':a} for n in (8,14,26,40) for f in ('F','B') for a in (0,90,180,270)]})
+        return out
+    def test_identity_mismatch_never_passes(self):
+        out=self.output();(out/'identity.json').write_text(json.dumps({'cli':'10.0.6','pcbnew':'9.0.0'}))
+        with self.assertRaisesRegex(ValueError,'identity'):r.validate_result(out,'fixture')
+    def test_timeout_or_failure_receipt_never_passes(self):
+        out=self.output();(out/'transaction.json').write_text(json.dumps({'status':'FAILED','mode':'fixture'}))
+        with self.assertRaisesRegex(ValueError,'transaction failed'):r.validate_result(out,'fixture')
+    def test_semantic_missing_case_never_passes(self):
+        out=self.output();p=out/'fixture/native-results/result.json';x=json.loads(p.read_text());x['cases'].pop();p.write_text(json.dumps(x))
+        with self.assertRaisesRegex(ValueError,'coverage'):r.validate_result(out,'fixture')
+    def test_complete_semantic_receipt(self):r.validate_result(self.output(),'fixture')
+    def test_missing_controller_terminal_blocks_next_admission(self):
+        with self.assertRaisesRegex(ValueError,'unfinished'):r.launch('identity',r.digest(r.SELF),r.digest(r.CONTAINER_SCRIPT))
+    def test_controller_wait_failure_creates_blocker(self):
+        self.run_dir.rmdir()
+        with mock.patch.object(r.subprocess,'run',side_effect=TimeoutError('controller died')):
+            with self.assertRaises(TimeoutError):r.launch('identity',r.digest(r.SELF),r.digest(r.CONTAINER_SCRIPT))
+        self.assertEqual(len(list(self.cache.glob('*/ADMISSION_BLOCKED.json'))),1)
+    def test_unreviewed_runner_bytes_refused_before_launch(self):
+        with self.assertRaisesRegex(ValueError,'reviewed runner'):
+            r.launch('identity','0'*64,r.digest(r.CONTAINER_SCRIPT))
+    def test_symlink_source_parent_rejected(self):
+        real=self.cache/'real';real.mkdir();(real/'source').write_text('data')
+        alias=self.cache/'alias';alias.symlink_to(real,target_is_directory=True)
+        with self.assertRaisesRegex(ValueError,'symlink'):r.source_path(self.cache,'alias/source')
+    def test_controller_return_without_receipt_is_failure(self):
+        self.run_dir.rmdir()
+        with mock.patch.object(r.subprocess,'run',return_value=type('Result',(),{'returncode':0})()):
+            self.assertEqual(r.launch('identity',r.digest(r.SELF),r.digest(r.CONTAINER_SCRIPT)),1)
+        self.assertEqual(len(list(self.cache.glob('*/ADMISSION_BLOCKED.json'))),1)
+
+if __name__=='__main__':unittest.main()

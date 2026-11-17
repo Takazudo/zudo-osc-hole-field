@@ -1,0 +1,589 @@
+"""Explicitly bounded native fixture lifecycle. Preparation only until coordinator admission.
+
+Launch in foreground with timeout --signal=TERM --kill-after=60s 540s.
+One initial systemd control-plane client is outside the workload groups; it only
+starts/waits on the independently bounded controller and cannot invoke Docker.
+Guardian+guard: .02CPU/128MiB/16PIDs; controller: .03CPU/64MiB/8PIDs.
+Worker: .20CPU/320MiB/40PIDs. Guardian survives controller/worker OOM.
+Docker: .75CPU/2GiB/128PIDs, internal230+10s deadline. All swap zero.
+"""
+import argparse
+import fcntl
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import resource
+import selectors
+import struct
+import signal
+import subprocess
+import sys
+import time
+import uuid
+
+ROOT=Path('/tmp/osc-mc02-height-audit-20261117')
+SELF=Path(__file__).resolve()
+CONTAINER_SCRIPT=Path('/tmp/osc-fh12-native-container-20261117.py')
+IMAGE='kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec'
+CACHE=ROOT/'.circuit-cache/fh12-native'
+LOCK=Path.home()/'.agent-guard/heavy/slot-0.lock'
+DOCKER='/usr/bin/docker'
+SOURCE_HEAD='467d6e4e6c6ed84a6121747b93271341db5dc707'
+PREFIX='osc-fh12-native-'
+
+
+def command(args,timeout=8):
+    r=subprocess.run(args,text=True,capture_output=True,timeout=timeout)
+    if r.returncode:raise RuntimeError(f'command exit {r.returncode}: {args}: {r.stderr.strip()}')
+    return r.stdout.strip()
+
+
+def record(path,data):
+    with path.open('x') as f:json.dump(data,f,indent=2);f.write('\n')
+
+
+def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def source_path(root,relative):
+    path=root/relative
+    if not path.resolve().is_relative_to(root.resolve()) or any(p.is_symlink() for p in [path,*path.parents] if p==root or root in p.parents):
+        raise ValueError('symlink/escaped source path')
+    return path
+
+
+def verify_runner_sources(run_dir):
+    frozen=json.loads((run_dir/'reviewed-sources.json').read_text())
+    if Path(__file__).is_symlink() or CONTAINER_SCRIPT.is_symlink():raise ValueError('runner source symlink')
+    if digest(SELF)!=frozen['runner_sha256'] or digest(CONTAINER_SCRIPT)!=frozen['container_sha256']:
+        raise ValueError('runner source changed after review')
+    return frozen
+
+
+def owned(run_dir):
+    token=run_dir.name
+    if not re.fullmatch('[0-9a-f]{32}',token) or run_dir.parent.resolve()!=CACHE.resolve() or run_dir.is_symlink():
+        raise ValueError('not an owned run directory')
+    return PREFIX+token, PREFIX+token+'-worker.service'
+
+
+def effective_caps(unit,cpu,memory,pids,runtime):
+    rel=Path('/proc/self/cgroup').read_text().strip()
+    if not rel.startswith('0::/') or not rel.endswith('/'+unit):raise ValueError('wrong host cgroup')
+    cg=Path('/sys/fs/cgroup')/rel[3:].lstrip('/')
+    caps={n:(cg/n).read_text().strip() for n in ('cpu.max','memory.max','memory.swap.max','pids.max','memory.oom.group')}
+    q,p=caps['cpu.max'].split()
+    if q=='max' or int(q)*100!=int(p)*cpu or caps['memory.max']!=str(memory) or caps['memory.swap.max']!='0' or caps['pids.max']!=str(pids) or caps['memory.oom.group']!='1':
+        raise ValueError('host effective caps differ')
+    text=command(['systemctl','--user','show',unit,'-p','RuntimeMaxUSec','-p','KillMode','-p','SendSIGKILL','-p','OOMPolicy'])
+    properties=dict(line.split('=',1) for line in text.splitlines())
+    verify_service_properties(properties,runtime)
+    return {'cgroup':str(cg),'caps':caps,'properties':properties}
+
+
+def guard_owner():
+    if os.environ.get('HEAVY_GUARD_HELD') != '1':
+        raise RuntimeError('shared guard environment absent')
+    stat = LOCK.stat()
+    ancestor = os.getppid()
+    ancestors = set()
+    owner = None
+    while ancestor > 1 and ancestor not in ancestors:
+        ancestors.add(ancestor)
+        fd = Path(f'/proc/{ancestor}/fd/200')
+        if fd.exists():
+            fd_stat = fd.stat()
+            info = Path(f'/proc/{ancestor}/fdinfo/200').read_text()
+            if (fd_stat.st_dev, fd_stat.st_ino) == (stat.st_dev, stat.st_ino) and 'FLOCK  ADVISORY  WRITE' in info:
+                owner = ancestor
+                break
+        ancestor = int(Path(f'/proc/{ancestor}/stat').read_text().rsplit(')', 1)[1].split()[1])
+    if owner is None:
+        raise RuntimeError('ancestor does not retain canonical flock on fd 200')
+    with LOCK.open('a') as probe:
+        try:
+            fcntl.flock(probe, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            return owner
+        fcntl.flock(probe, fcntl.LOCK_UN)
+    raise RuntimeError('independent canonical flock was not excluded')
+
+
+def verify_service_properties(properties,runtime):
+    text=properties.get('RuntimeMaxUSec','').replace(' ','')
+    tokens=re.findall(r'(\d+)(min|ms|us|h|s)',text)
+    if not tokens or ''.join(n+unit for n,unit in tokens)!=text:raise ValueError('unrecognized effective service runtime')
+    scale={'h':3600000000,'min':60000000,'s':1000000,'ms':1000,'us':1}
+    microseconds=sum(int(n)*scale[unit] for n,unit in tokens)
+    if microseconds!=runtime*1000000 or properties.get('KillMode')!='control-group' or properties.get('SendSIGKILL')!='yes' or properties.get('OOMPolicy')!='kill':
+        raise ValueError('effective service deadline/termination policy differs')
+
+
+def check_container(doc,name,stage,image_id,mode='identity'):
+    h,c=doc['HostConfig'],doc['Config']
+    if [item for item in c.get('Env',[]) if item.startswith('XDG_DATA_HOME=')]!=['XDG_DATA_HOME=/tmp/data']:
+        raise ValueError('application data directory must stay within bounded /tmp tmpfs')
+    if mode not in ('identity','identity-controller-loss','fixture'):raise ValueError('unknown container mode')
+    if c.get('Entrypoint')!=['/usr/bin/timeout'] or c.get('Cmd')!=['--signal=TERM','--kill-after=10s','230s','/usr/bin/python3','-B','/fixture-root/container.py',mode]:
+        raise ValueError('container effective deadline/command differs')
+    if doc['Name']!='/'+name or c['Labels'].get('osc.fixture.owner')!=name or doc['Image']!=image_id or c['Image']!=IMAGE:
+        raise ValueError('container ownership/image mismatch')
+    if (h['NanoCpus'],h['Memory'],h['MemorySwap'],h['PidsLimit'])!=(750000000,2147483648,2147483648,128):
+        raise ValueError('container requested caps differ')
+    if h['NetworkMode']!='none' or not h['ReadonlyRootfs'] or h['CgroupnsMode']!='private':raise ValueError('container isolation differs')
+    binds=[m for m in doc['Mounts'] if m['Type']=='bind']
+    if len(binds)!=1 or Path(binds[0]['Source']).resolve()!=stage.resolve() or binds[0]['Destination']!='/fixture-root' or binds[0]['RW']:
+        raise ValueError('unexpected or writable host bind')
+    expected_tmpfs={'/tmp':{'rw','nosuid','nodev','size=33554432','mode=1777'},
+                    '/fixture-root/.circuit-cache/output':{'rw','nosuid','nodev','size=67108864','mode=1777'}}
+    if set(h['Tmpfs'])!=set(expected_tmpfs) or any(set(h['Tmpfs'][path].split(','))!=opts for path,opts in expected_tmpfs.items()):
+        raise ValueError('tmpfs bounds/options differ')
+    if any(m['Type'] not in ('bind','tmpfs') or (m['Type']=='tmpfs' and (m['Destination'] not in expected_tmpfs or not m['RW'])) for m in doc['Mounts']):
+        raise ValueError('unexpected volume/non-bind mount')
+    if h.get('Privileged') is not False or h.get('CapAdd') not in (None,[]) or set(h.get('CapDrop') or [])!={'ALL'}:
+        raise ValueError('container capability/privilege drift')
+    if h.get('SecurityOpt') not in (['no-new-privileges'],['no-new-privileges=true']):
+        raise ValueError('container security option drift')
+    if h['LogConfig']['Type']!='none':raise ValueError('unbounded daemon logging')
+
+
+def stage_sources(run_dir,mode):
+    verify_runner_sources(run_dir)
+    stage=run_dir/'stage';stage.mkdir()
+    code=stage/'container.py';code.write_bytes(CONTAINER_SCRIPT.read_bytes())
+    (stage/'.circuit-cache/output').mkdir(parents=True)
+    hashes={'container.py':digest(code)}
+    if mode=='fixture':
+        sub='scripts/checks/mc02_fh12_land_fixture/'
+        source=json.loads(source_path(ROOT,sub+'source.json').read_text())
+        required={'scripts/checks/mc02_land_registration/evidence.json','design/stack/geometry/links/link-gate-options.json',
+                  '.circuit-cache/sources/manufacturer-transfer-20261117/hirose-EDC3-150229-11.pdf'}
+        if set(source['sha256'])!=required:raise ValueError('fixture source closure changed')
+        paths=sorted(required|{sub+n for n in ('generate.py','native_check.py','source.json')})
+        for name in paths:
+            path=source_path(ROOT,name)
+            if path.is_symlink() or path.stat().st_size>8*1024*1024:raise ValueError('unsafe staging source')
+            data=path.read_bytes()
+            if name in source['sha256'] and hashlib.sha256(data).hexdigest()!=source['sha256'][name]:raise ValueError('dependency source drift')
+            if not name.startswith('.circuit-cache/'):
+                committed=subprocess.check_output(['git','-C',str(ROOT),'show',SOURCE_HEAD+':'+name],timeout=8)
+                if data!=committed:raise ValueError('fixture source differs from frozen commit')
+            dest=stage/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(data);hashes[name]=digest(dest)
+    record(stage/'admission-inputs.json',{'sha256':hashes})
+    record(run_dir/'stage-inputs.json',{'implementation_commit':SOURCE_HEAD,'mode':mode,'sha256':hashes,
+        'scope':'Only six fixture/dependency files plus container script; no repository/home/board mount'})
+    return stage
+
+
+def validate_result(output,mode):
+    identity=json.loads((output/'identity.json').read_text())
+    if not all(re.match(r'^10\.0\.6(?:$|[^0-9])',identity[k]) for k in ('cli','pcbnew')):raise ValueError('identity receipt mismatch')
+    transaction=json.loads((output/'transaction.json').read_text())
+    if transaction!={'status':'COMPLETED','mode':mode}:raise ValueError('container transaction failed')
+    if mode=='fixture':
+        result=json.loads((output/'fixture/native-results/result.json').read_text())
+        if result['status']!='NATIVE_LAND_FIXTURE_ONLY' or result['actual_project_registration'] is not None or result['endpoint_bindings']:
+            raise ValueError('native semantic result missing or promoted')
+        keys={(r['contacts'],r['face'],r['angle']) for r in result['cases']}
+        expected={(n,f,a) for n in (8,14,26,40) for f in ('F','B') for a in (0,90,180,270)}
+        if len(result['cases'])!=32 or keys!=expected:raise ValueError('native semantic case coverage changed')
+    return identity
+
+
+class DeadlinePipe:
+    def __init__(self,stream,deadline):
+        self.stream=stream;self.deadline=deadline;self.selector=selectors.DefaultSelector()
+        self.selector.register(stream,selectors.EVENT_READ)
+    def read(self,count):
+        remaining=self.deadline-time.monotonic()
+        if remaining<=0 or not self.selector.select(remaining):raise TimeoutError('bounded container export timed out')
+        return os.read(self.stream.fileno(),min(count,65536))
+    def close(self):self.selector.close()
+
+
+def read_exact(stream,size):
+    pieces=[]
+    while size:
+        block=stream.read(min(size,65536))
+        if not block:raise ValueError('truncated container export')
+        pieces.append(block);size-=len(block)
+    return b''.join(pieces)
+
+
+def decode_export(stream,output):
+    if read_exact(stream,21)!=b'OSC_FIXTURE_EXPORT_1\n':raise ValueError('wrong export protocol magic')
+    header_size=struct.unpack('!I',read_exact(stream,4))[0]
+    if header_size>65536:raise ValueError('export header bound exceeded')
+    header=json.loads(read_exact(stream,header_size));entries=header['entries']
+    if header.get('protocol')!='OSC_FIXTURE_EXPORT_1' or not isinstance(entries,list) or len(entries)>256:
+        raise ValueError('export protocol/count differs')
+    seen={};total=0
+    for entry in entries:
+        name=entry['path'];kind=entry['type'];size=entry['size']
+        if not isinstance(name,str) or len(name.encode())>240 or not re.fullmatch(r'[A-Za-z0-9_./-]+',name):raise ValueError('unsafe export path')
+        parts=name.split('/')
+        if name.startswith('/') or any(p in ('','.','..') for p in parts) or len(parts)>8 or name in seen:
+            raise ValueError('duplicate/absolute/traversal export path')
+        if kind not in ('file','directory') or type(size) is not int or size<0 or size>8*1024*1024:
+            raise ValueError('export type/size differs')
+        if kind=='directory' and (size or entry['sha256'] is not None):raise ValueError('invalid directory entry')
+        if kind=='file' and not re.fullmatch('[0-9a-f]{64}',entry['sha256']):raise ValueError('missing export content digest')
+        seen[name]=kind;total+=size
+    if total>64*1024*1024 or type(header['total_size']) is not int or header['total_size']!=total:raise ValueError('export aggregate bound differs')
+    for name in seen:
+        ancestors=Path(name).parents
+        if any(str(p)!='.' and seen.get(str(p))!='directory' for p in ancestors):raise ValueError('export file/directory conflict or unlisted parent')
+    for entry in entries:
+        path=output/entry['path']
+        if entry['type']=='directory':path.mkdir(parents=True,exist_ok=True);continue
+        path.parent.mkdir(parents=True,exist_ok=True)
+        hasher=hashlib.sha256();remaining=entry['size']
+        with path.open('xb') as target:
+            while remaining:
+                block=read_exact(stream,min(65536,remaining));target.write(block);hasher.update(block);remaining-=len(block)
+        if hasher.hexdigest()!=entry['sha256']:raise ValueError('export file content digest differs')
+    if read_exact(stream,23)!=b'OSC_FIXTURE_EXPORT_END\n' or stream.read(1):raise ValueError('export terminator/trailing bytes differ')
+    return header
+
+
+def export_output(name,output):
+    # Docker documents daemon-side cp cannot read tmpfs. Execute the bounded
+    # exporter inside this owned container; no access denial is bypassed.
+    args=[DOCKER,'exec',name,'/usr/bin/python3','-B','/fixture-root/container.py','--export']
+    deadline=time.monotonic()+20
+    stderr_path=output.parent/(output.name+'-export.stderr')
+    def cap_stderr():resource.setrlimit(resource.RLIMIT_FSIZE,(1024*1024,1024*1024))
+    with stderr_path.open('xb') as stderr:
+        process=subprocess.Popen(args,stdout=subprocess.PIPE,stderr=stderr,bufsize=0,preexec_fn=cap_stderr)
+        stream=DeadlinePipe(process.stdout,deadline)
+        try:
+            header=decode_export(stream,output)
+            code=process.wait(timeout=max(.01,deadline-time.monotonic()))
+            if code:raise ValueError('in-container export process failed: '+str(code))
+            return header
+        except BaseException:
+            process.kill();process.wait(timeout=3)
+            raise
+        finally:stream.close();process.stdout.close()
+
+
+def capture_output(run_dir,name,directory,exporter=export_output):
+    output=run_dir/directory;output.mkdir(exist_ok=False)
+    try:
+        exporter(name,output)
+        files=list(output.rglob('*'))
+        if len(files)>256 or any(p.is_symlink() for p in files) or sum(p.stat().st_size for p in files if p.is_file())>64*1024*1024:
+            raise ValueError('output exceeds declared bounded artifact scope')
+        record(run_dir/(directory+'-index.json'),{str(p.relative_to(output)):digest(p) for p in files if p.is_file()})
+    except Exception as exc:
+        record(run_dir/(directory+'-export-failure.json'),{'status':'EXPORT_FAILED','error':str(exc),'partial_evidence_preserved':True})
+        raise
+    return output
+
+
+def capture_identity_evidence(run_dir,name,exporter=export_output):
+    # Preserve all bounded evidence before deciding which branch was signalled.
+    output=capture_output(run_dir,name,'fault-output',exporter)
+    failure=output/'transaction-failure.json'
+    if failure.is_file():
+        details=json.loads(failure.read_text())
+        raise ValueError('container identity failure retained in '+str(failure)+': '+str(details.get('error')))
+    source=output/'identity.json'
+    if not source.is_file():raise ValueError('identity absent; complete available output retained in '+str(output))
+    identity=json.loads(source.read_text())
+    if not all(re.match(r'^10\.0\.6(?:$|[^0-9])',identity[k]) for k in ('cli','pcbnew')):raise ValueError('fault barrier lacks verified identity')
+    with (run_dir/'fault-identity.json').open('xb') as stream:stream.write(source.read_bytes())
+    return identity
+
+
+def worker(run_dir,mode):
+    name,unit=owned(run_dir)
+    resource.setrlimit(resource.RLIMIT_FSIZE,(8*1024*1024,8*1024*1024))
+    record(run_dir/'worker-caps.json',effective_caps(unit,20,335544320,40,360))
+    stage=stage_sources(run_dir,mode)
+    image=json.loads(command([DOCKER,'image','inspect',IMAGE],timeout=10))[0]
+    if image['Architecture']!='amd64' or image['Os']!='linux' or IMAGE not in image['RepoDigests']:
+        raise ValueError('cached pinned image identity differs')
+    record(run_dir/'image.json',{k:image[k] for k in ('Id','Architecture','Os','RepoDigests')})
+    args=[DOCKER,'create','--pull=never','--name',name,'--label','osc.fixture.owner='+name,
+          '--network=none','--read-only','--cgroupns=private','--cpus=.75','--memory=2g','--memory-swap=2g','--pids-limit=128',
+          '--cap-drop=ALL','--security-opt=no-new-privileges','--log-driver=none',
+          '--mount',f'type=bind,src={stage},dst=/fixture-root,readonly',
+          '--tmpfs','/tmp:rw,nosuid,nodev,size=33554432,mode=1777',
+          '--tmpfs','/fixture-root/.circuit-cache/output:rw,nosuid,nodev,size=67108864,mode=1777',
+          '--env','XDG_DATA_HOME=/tmp/data','--env','XDG_CONFIG_HOME=/tmp/config','--env','XDG_CACHE_HOME=/tmp/cache','--env','TMPDIR=/tmp','--env','PYTHONDONTWRITEBYTECODE=1','--entrypoint','/usr/bin/timeout',IMAGE,
+          '--signal=TERM','--kill-after=10s','230s','/usr/bin/python3','-B','/fixture-root/container.py',mode]
+    record(run_dir/'container-command.json',args)
+    command(args,timeout=20)
+    doc=json.loads(command([DOCKER,'inspect',name]))[0];check_container(doc,name,stage,image['Id'],mode);record(run_dir/'container-inspect.json',doc)
+    command([DOCKER,'start',name],timeout=15)
+    if mode=='identity-controller-loss':
+        command([DOCKER,'exec',name,'/bin/sh','-c',
+            'while [ ! -f /fixture-root/.circuit-cache/output/identity.json ] && [ ! -f /fixture-root/.circuit-cache/output/transaction-failure.json ]; do sleep 1; done'],timeout=30)
+        capture_identity_evidence(run_dir,name)
+        record(run_dir/'fault-barrier.json',{'status':'IDENTITY_READY_CONTAINER_LIVE','container':name})
+        # Remain live so the independent guardian must stop this worker too.
+        time.sleep(60)
+        raise TimeoutError('guardian did not collect controller-loss barrier')
+    # The container keeps its bounded tmpfs alive until copied or PID1 expires.
+    waiting=subprocess.run([DOCKER,'exec',name,'/bin/sh','-c',
+        'while [ ! -f /fixture-root/.circuit-cache/output/transaction.json ] && [ ! -f /fixture-root/.circuit-cache/output/transaction-failure.json ]; do sleep 1; done'],
+        text=True,capture_output=True,timeout=245)
+    record(run_dir/'wait-result.json',{'returncode':waiting.returncode,'stdout':waiting.stdout,'stderr':waiting.stderr})
+    if waiting.returncode:raise ValueError('container exited before evidence handshake')
+    output=capture_output(run_dir,name,'output')
+    command([DOCKER,'exec',name,'/usr/bin/touch','/fixture-root/.circuit-cache/output/HOST_COPIED'],timeout=8)
+    exited=command([DOCKER,'wait',name],timeout=15)
+    state=json.loads(command([DOCKER,'inspect',name]))[0]['State'];record(run_dir/'container-state.json',state)
+    if state['Running']:raise ValueError('container still running after acknowledgement')
+    files=list(output.rglob('*'))
+    if len(files)>256 or any(p.is_symlink() for p in files) or sum(p.stat().st_size for p in files if p.is_file())>64*1024*1024:
+        raise ValueError('output exceeds declared bounded artifact scope')
+    if exited!='0' or state['ExitCode'] or state['OOMKilled']:raise ValueError('container command/timeout/OOM failure')
+    validate_result(output,mode)
+    record(run_dir/'worker-result.json',{'status':'COMPLETED','mode':mode,'sha256':{str(p.relative_to(output)):digest(p) for p in files if p.is_file()}})
+
+
+def cleanup(run_dir,run=command,deadline=None):
+    name,unit=owned(run_dir);errors=[];deadline=time.monotonic()+55 if deadline is None else deadline
+    def save(path,data):
+        try:record(path,data)
+        except Exception as exc:errors.append('receipt write failed: '+str(exc))
+    def call(args,timeout=8):
+        try:
+            remaining=deadline-time.monotonic()
+            if remaining<=0:raise TimeoutError('cleanup deadline exhausted')
+            return run(args,timeout=min(timeout,remaining))
+        except Exception as exc:errors.append(str(exc));return None
+    call(['systemctl','--user','stop',unit],12)
+    text=call(['systemctl','--user','show',unit,'-p','ActiveState','-p','MainPID','-p','ControlGroup'])
+    if text is not None:
+        state=dict(line.split('=',1) for line in text.splitlines());save(run_dir/'worker-cleanup-state.json',state)
+        if state.get('MainPID')!='0' or state.get('ControlGroup'):errors.append('worker processes/cgroup remain')
+        elif state.get('ActiveState')=='failed':
+            call(['systemctl','--user','reset-failed',unit])
+            active=call(['systemctl','--user','show',unit,'-p','ActiveState','--value'])
+            if active!='inactive':errors.append('failed worker not finalized')
+        elif state.get('ActiveState')!='inactive':errors.append('worker not inactive')
+    ids=call([DOCKER,'ps','-aq','--filter','label=osc.fixture.owner='+name])
+    if ids is not None:
+        names=ids.splitlines()
+        if len(names)>1:errors.append('unexpected owned container multiplicity')
+        elif names:
+            raw=call([DOCKER,'inspect',names[0]])
+            if raw is not None:
+                try:
+                    doc=json.loads(raw)[0]
+                    if doc['Name']!='/'+name or doc['Config']['Labels'].get('osc.fixture.owner')!=name:
+                        raise ValueError('cleanup ownership mismatch')
+                    save(run_dir/'container-cleanup-before.json',doc)
+                    call([DOCKER,'rm','-f',names[0]],15)
+                except Exception as exc:errors.append(str(exc))
+    remaining=call([DOCKER,'ps','-aq','--filter','label=osc.fixture.owner='+name])
+    if remaining is None or remaining:errors.append('daemon-side container absence not verified')
+    save(run_dir/'cleanup.json',{'cleanup':'UNCERTAIN' if errors else 'VERIFIED','errors':list(errors)})
+    if errors:save(run_dir/'ADMISSION_BLOCKED.json',{'reason':'Cleanup uncertainty; explicit reconciliation required before another fixture admission'})
+    return errors
+
+
+def controller(run_dir,mode):
+    name,unit=owned(run_dir);errors=[];exit_code=1
+    resource.setrlimit(resource.RLIMIT_FSIZE,(4*1024*1024,4*1024*1024))
+    verify_runner_sources(run_dir)
+    record(run_dir/'controller-caps.json',effective_caps(name+'-controller.service',3,67108864,8,400))
+    def interrupted(sig,frame):raise InterruptedError('controller interrupted '+str(sig))
+    for sig in (signal.SIGTERM,signal.SIGINT,signal.SIGHUP):signal.signal(sig,interrupted)
+    started=time.monotonic()
+    try:
+        args=['systemd-run','--user','--quiet','--unit='+unit,'--property=CPUQuota=20%','--property=MemoryMax=320M',
+              '--property=MemorySwapMax=0','--property=TasksMax=40','--property=OOMPolicy=kill','--property=RuntimeMaxSec=360',
+              '--property=TimeoutStopSec=10','--property=KillMode=control-group','--property=RemainAfterExit=yes',
+              '--property=StandardOutput=append:'+str(run_dir/'worker.log'),'--property=StandardError=append:'+str(run_dir/'worker.log'),
+              sys.executable,'-B',str(SELF),'--worker',str(run_dir),mode]
+        command(args,15)
+        deadline=started+390
+        while time.monotonic()<deadline:
+            raw=command(['systemctl','--user','show',unit,'-p','ActiveState','-p','SubState','-p','ExecMainStatus','-p','ExecMainCode'])
+            state=dict(line.split('=',1) for line in raw.splitlines())
+            if state['SubState']=='exited' or state['ActiveState'] in ('failed','inactive'):
+                record(run_dir/'worker-terminal.json',state)
+                exit_code=int(state['ExecMainStatus']) if state['ExecMainCode']=='1' else 1
+                break
+            time.sleep(1)
+        else:raise TimeoutError('worker controller deadline')
+    except Exception as exc:errors.append(str(exc))
+    finally:
+        record(run_dir/'controller-result.json',{'mode':mode,'command_exit':exit_code,'errors':errors})
+    return 0 if exit_code==0 and not errors else 1
+
+
+def finalize_controller(run_dir,run=command,deadline=None):
+    name,_=owned(run_dir);unit=name+'-controller.service';errors=[]
+    deadline=time.monotonic()+55 if deadline is None else deadline
+    original_run=run
+    def bounded(args,timeout=8):
+        remaining=deadline-time.monotonic()
+        if remaining<=0:raise TimeoutError('controller cleanup deadline exhausted')
+        return original_run(args,timeout=min(timeout,remaining))
+    run=bounded
+    try:
+        # Retain terminal failure evidence before stopping/resetting the exact unit.
+        raw=run(['systemctl','--user','show',unit,'-p','ActiveState','-p','MainPID','-p','ControlGroup','-p','Result','-p','ExecMainStatus'],timeout=8)
+        record(run_dir/'controller-terminal-before-cleanup.json',dict(line.split('=',1) for line in raw.splitlines()))
+    except Exception as exc:errors.append(str(exc))
+    try:run(['systemctl','--user','stop',unit],timeout=10)
+    except Exception as exc:errors.append(str(exc))
+    try:
+        raw=run(['systemctl','--user','show',unit,'-p','ActiveState','-p','MainPID','-p','ControlGroup'],timeout=8)
+        state=dict(line.split('=',1) for line in raw.splitlines())
+        if state.get('MainPID')!='0' or state.get('ControlGroup'):raise ValueError('orchestration controller still alive')
+        if state.get('ActiveState')=='failed':
+            run(['systemctl','--user','reset-failed',unit],timeout=8)
+            if run(['systemctl','--user','show',unit,'-p','ActiveState','--value'],timeout=8)!='inactive':raise ValueError('controller failure state persists')
+        elif state.get('ActiveState')!='inactive':raise ValueError('controller not inactive')
+        record(run_dir/'controller-cleanup.json',{'state':'INACTIVE_EMPTY','errors':errors})
+    except Exception as exc:errors.append(str(exc))
+    return errors
+
+
+def lock_receipt():
+    owner=guard_owner()  # Verifies fd200 ownership AND separate nonblocking flock denial.
+    stat=LOCK.stat();fd=Path(f'/proc/{owner}/fd/200').stat()
+    return {'guard_pid':owner,'canonical_device':stat.st_dev,'canonical_inode':stat.st_ino,
+            'holder_fd200_device':fd.st_dev,'holder_fd200_inode':fd.st_ino,'independent_flock':'DENIED'}
+
+
+def inject_controller_loss(run_dir,unit):
+    name,_=owned(run_dir)
+    if unit!=name+'-controller.service':raise ValueError('foreign fault target')
+    identity=json.loads((run_dir/'fault-identity.json').read_text())
+    if not all(re.match(r'^10\.0\.6(?:$|[^0-9])',identity[k]) for k in ('cli','pcbnew')):raise ValueError('identity unavailable before fault')
+    raw=command(['systemctl','--user','show',unit,'-p','MainPID','-p','ControlGroup','-p','ActiveState'])
+    state=dict(line.split('=',1) for line in raw.splitlines());pid=int(state['MainPID'])
+    if pid<=1 or state['ActiveState']!='active' or not state['ControlGroup'].endswith('/'+unit):raise ValueError('owned live controller not identified')
+    if Path(f'/proc/{pid}/cgroup').read_text().strip()!='0::'+state['ControlGroup']:raise ValueError('controller PID/cgroup mismatch')
+    container=json.loads(command([DOCKER,'inspect',name]))[0]
+    image=json.loads((run_dir/'image.json').read_text())
+    check_container(container,name,run_dir/'stage',image['Id'],'identity-controller-loss')
+    if not container['State']['Running']:raise ValueError('fault requires owned container still running')
+    record(run_dir/'fault-container-live.json',container)
+    record(run_dir/'fault-lock-before.json',{**lock_receipt(),'controller':state,'signal':'SIGKILL main process only'})
+    command(['systemctl','--user','kill','--kill-whom=main','--signal=KILL',unit])
+    record(run_dir/'fault-lock-after-signal.json',lock_receipt())
+
+
+def guardian(run_dir,mode):
+    name,_=owned(run_dir);unit=name+'-controller.service';errors=[];exit_code=1
+    resource.setrlimit(resource.RLIMIT_FSIZE,(4*1024*1024,4*1024*1024))
+    verify_runner_sources(run_dir)
+    owner=guard_owner()
+    record(run_dir/'guardian-caps.json',{**effective_caps(name+'-guardian.service',2,134217728,16,520),'guard_owner':owner,
+        'combined_host_budget':'.25CPU/512MiB/64PIDs across guardian/controller/worker, swap0; initial/terminal systemd client excluded',
+        'daemon_scope':'Docker workload limits exclude Docker Desktop VM/daemon baseline'})
+    def interrupted(sig,frame):raise InterruptedError('guardian interrupted '+str(sig))
+    for sig in (signal.SIGTERM,signal.SIGINT,signal.SIGHUP):signal.signal(sig,interrupted)
+    started=time.monotonic()
+    try:
+        command(['systemd-run','--user','--quiet','--unit='+unit,'--property=CPUQuota=3%','--property=MemoryMax=64M',
+                 '--property=MemorySwapMax=0','--property=TasksMax=8','--property=OOMPolicy=kill','--property=RuntimeMaxSec=400',
+                 '--property=TimeoutStopSec=10','--property=KillMode=control-group','--property=RemainAfterExit=yes',
+                 '--property=StandardOutput=append:'+str(run_dir/'controller.log'),'--property=StandardError=append:'+str(run_dir/'controller.log'),
+                 sys.executable,'-B',str(SELF),'--controller',str(run_dir),mode],15)
+        deadline=started+410
+        fault_sent=False
+        while time.monotonic()<deadline:
+            if mode=='identity-controller-loss' and not fault_sent and (run_dir/'fault-barrier.json').exists():
+                inject_controller_loss(run_dir,unit);fault_sent=True
+            raw=command(['systemctl','--user','show',unit,'-p','ActiveState','-p','SubState','-p','ExecMainStatus','-p','ExecMainCode'])
+            state=dict(line.split('=',1) for line in raw.splitlines())
+            if state['SubState']=='exited' or state['ActiveState'] in ('failed','inactive'):
+                exit_code=int(state['ExecMainStatus']) if state['ExecMainCode']=='1' else 1
+                if mode=='identity-controller-loss' and fault_sent:record(run_dir/'fault-lock-after-controller-loss.json',{**lock_receipt(),'controller_terminal':state})
+                break
+            time.sleep(1)
+        else:raise TimeoutError('guardian controller deadline')
+    except Exception as exc:errors.append(str(exc))
+    finally:
+        for sig in (signal.SIGTERM,signal.SIGINT,signal.SIGHUP):signal.signal(sig,signal.SIG_IGN)
+        # Independent of the controller's finally block: controller OOM/SIGKILL
+        # cannot kill this cgroup or its canonical guard parent.
+        cleanup_deadline=time.monotonic()+55
+        cleanup_errors=finalize_controller(run_dir,deadline=cleanup_deadline)
+        cleanup_errors.extend(cleanup(run_dir,deadline=cleanup_deadline))
+        expected_loss=mode=='identity-controller-loss' and exit_code!=0 and (run_dir/'fault-lock-after-controller-loss.json').is_file() and (run_dir/'fault-container-live.json').is_file()
+        if mode=='identity-controller-loss':
+            if not expected_loss:errors.append('expected identity/controller-loss sequence incomplete')
+        else:
+            try:
+                control_result=json.loads((run_dir/'controller-result.json').read_text())
+                if control_result['command_exit']!=0 or control_result['errors']:errors.append('orchestration controller failed')
+                if exit_code==0:
+                    work=json.loads((run_dir/'worker-result.json').read_text())
+                    if work.get('status')!='COMPLETED' or work.get('mode')!=mode:errors.append('worker semantic receipt incomplete')
+            except Exception as exc:errors.append('controller/worker terminal receipt absent: '+str(exc))
+        if expected_loss and not cleanup_errors:record(run_dir/'fault-lock-after-cleanup.json',lock_receipt())
+        result={'mode':mode,'command_exit':exit_code,'elapsed_seconds':time.monotonic()-started,
+                'status':('EXPECTED_CONTROLLER_FAILURE_CLEANUP_VERIFIED' if expected_loss else 'PASS') if (exit_code==0 or expected_loss) and not errors and not cleanup_errors else 'FAILED',
+                'cleanup':'UNCERTAIN' if cleanup_errors else 'VERIFIED','errors':errors+cleanup_errors,
+                'lock_scope':'Canonical guard is in independent guardian cgroup through controller/worker termination and daemon cleanup. Uncertain cleanup never claims continued lock ownership after bounded guardian exit.'}
+        if cleanup_errors and not (run_dir/'ADMISSION_BLOCKED.json').exists():record(run_dir/'ADMISSION_BLOCKED.json',{'reason':'Independent guardian cleanup uncertain'})
+        record(run_dir/'supervisor.json',result);print(json.dumps(result),flush=True)
+    return 0 if result['status'] in ('PASS','EXPECTED_CONTROLLER_FAILURE_CLEANUP_VERIFIED') else 1
+
+
+def launch(mode,reviewed_runner_sha,reviewed_container_sha):
+    if (Path(__file__).is_symlink() or CONTAINER_SCRIPT.is_symlink()
+            or digest(SELF)!=reviewed_runner_sha or digest(CONTAINER_SCRIPT)!=reviewed_container_sha):
+        raise ValueError('explicit reviewed runner/container digests required')
+    CACHE.mkdir(parents=True,exist_ok=True)
+    if any(p.is_dir() and ((p/'ADMISSION_BLOCKED.json').exists() or not (p/'supervisor.json').is_file()) for p in CACHE.iterdir()):
+        raise ValueError('previous unfinished/uncertain run requires explicit reconciliation')
+    token=uuid.uuid4().hex;run_dir=CACHE/token;run_dir.mkdir();name,unit=owned(run_dir)
+    record(run_dir/'reviewed-sources.json',{'runner_sha256':reviewed_runner_sha,'container_sha256':reviewed_container_sha})
+    print('run_dir='+str(run_dir),flush=True)
+    args=['systemd-run','--user','--wait','--pipe','--unit='+name+'-guardian.service',
+          '--property=CPUQuota=2%','--property=MemoryMax=128M','--property=MemorySwapMax=0','--property=TasksMax=16',
+          '--property=OOMPolicy=kill','--property=RuntimeMaxSec=520','--property=TimeoutStopSec=10','--property=KillMode=control-group',
+          '/usr/bin/env','-u','HEAVY_GUARD_HELD','-u','HEAVY_GUARD_DIR','-u','HEAVY_GUARD_SLOTS',
+          '/bin/bash',str(Path.home()/'.codex/scripts/heavy-guard.sh'),'--slots','1','--min-mem-mb','0',
+          '--max-run','500','--wait','1','--label','osc-fh12-native','--',sys.executable,'-B',str(SELF),'--guardian',str(run_dir),mode]
+    try:
+        result=subprocess.run(args,timeout=535)
+    except BaseException as exc:
+        if not (run_dir/'ADMISSION_BLOCKED.json').exists():
+            record(run_dir/'ADMISSION_BLOCKED.json',{'reason':'Initial controller wait failed; explicit reconciliation required','error':str(exc)})
+        raise
+    # No silent success if controller was killed before writing its terminal receipt.
+    if not (run_dir/'supervisor.json').exists():
+        record(run_dir/'ADMISSION_BLOCKED.json',{'reason':'Controller terminal receipt missing; worker/container state requires explicit reconciliation'})
+        return 1
+    terminal=command(['systemctl','--user','show',name+'-guardian.service','-p','MainPID','-p','ControlGroup','-p','ActiveState'])
+    state=dict(line.split('=',1) for line in terminal.splitlines())
+    record(run_dir/'guardian-terminal.json',state)
+    if state.get('MainPID')!='0' or state.get('ControlGroup') or state.get('ActiveState') not in ('inactive','failed'):
+        if not (run_dir/'ADMISSION_BLOCKED.json').exists():record(run_dir/'ADMISSION_BLOCKED.json',{'reason':'Controller terminal state not verified'})
+        return 1
+    if mode=='identity-controller-loss':
+        with LOCK.open('a') as probe:
+            try:fcntl.flock(probe,fcntl.LOCK_EX|fcntl.LOCK_NB)
+            except BlockingIOError:
+                record(run_dir/'fault-lock-after-guardian-exit.json',{'canonical_flock':'BUSY; release availability not established'})
+                return 1
+            fcntl.flock(probe,fcntl.LOCK_UN)
+        record(run_dir/'fault-lock-after-guardian-exit.json',{'canonical_flock':'AVAILABLE_AFTER_VERIFIED_CLEANUP','guardian_terminal':state})
+    return result.returncode
+
+
+if __name__=='__main__':
+    if len(sys.argv)==4 and sys.argv[1] in ('--guardian','--controller','--worker'):
+        result={'--guardian':guardian,'--controller':controller,'--worker':worker}[sys.argv[1]](Path(sys.argv[2]),sys.argv[3])
+        sys.exit(result or 0)
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--identity-only',action='store_true')
+    parser.add_argument('--identity-controller-loss',action='store_true')
+    parser.add_argument('--reviewed-runner-sha',required=True);parser.add_argument('--reviewed-container-sha',required=True)
+    args=parser.parse_args()
+    if args.identity_only and args.identity_controller_loss:parser.error('select one identity mode')
+    mode='identity-controller-loss' if args.identity_controller_loss else 'identity' if args.identity_only else 'fixture'
+    sys.exit(launch(mode,args.reviewed_runner_sha,args.reviewed_container_sha))

@@ -1,0 +1,155 @@
+"""Container-only identity and admitted isolated fixture transaction."""
+import json
+import hashlib
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+import time
+import traceback
+import resource
+import stat
+import struct
+from datetime import datetime, timezone
+
+OUT=Path('/fixture-root/.circuit-cache/output')
+
+def write(name,data):
+    with (OUT/name).open('x') as f:json.dump(data,f,indent=2);f.write('\n')
+
+def observations():
+    def read(path):
+        try:return Path(path).read_text().strip()
+        except OSError as exc:return {'read_error':str(exc)}
+    def fs(path):
+        try:
+            st=os.statvfs(path)
+            return {'total_bytes':st.f_blocks*st.f_frsize,'available_bytes':st.f_bavail*st.f_frsize,
+                    'free_bytes':st.f_bfree*st.f_frsize,'block_bytes':st.f_frsize}
+        except OSError as exc:return {'read_error':str(exc)}
+    mem=read('/proc/meminfo')
+    selected={}
+    if isinstance(mem,str):
+        selected={line.split(':',1)[0]:line.split(':',1)[1].strip() for line in mem.splitlines()
+                  if line.split(':',1)[0] in ('MemTotal','MemAvailable','MemFree','SwapTotal','SwapFree')}
+    else:selected=mem
+    return {'timestamp':datetime.now(timezone.utc).isoformat(),
+        'caps':{n:read('/sys/fs/cgroup/'+n) for n in ('cpu.max','memory.max','memory.swap.max','pids.max')},
+        'pressure':{n:read('/proc/pressure/'+n) for n in ('cpu','memory','io')},
+        'vm_visible_memory':selected,'filesystems':{path:fs(path) for path in ('/','/tmp',str(OUT))},
+        'scope':'Raw container-visible cgroup, Docker VM memory/pressure and filesystem observations before admission checks. Not Windows/WSL-wide capacity guarantees; daemon baseline remains outside workload caps.'}
+
+
+def open_export_file(relative):
+    parts=Path(relative).parts
+    directory=os.open(OUT,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
+    try:
+        for part in parts[:-1]:
+            child=os.open(part,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW,dir_fd=directory)
+            os.close(directory);directory=child
+        file=os.open(parts[-1],os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK,dir_fd=directory)
+    finally:os.close(directory)
+    return os.fdopen(file,'rb')
+
+
+def export_output():
+    """Read owned tmpfs through the container process, never daemon filesystem cp."""
+    root=OUT
+    entries=[];total=0
+    for path in sorted(root.rglob('*')):
+        relative=path.relative_to(root).as_posix()
+        if len(relative.encode())>240 or len(path.relative_to(root).parts)>8:
+            raise ValueError('export path bound exceeded')
+        info=path.lstat()
+        if stat.S_ISDIR(info.st_mode):
+            entries.append({'path':relative,'type':'directory','size':0,'sha256':None})
+        elif stat.S_ISREG(info.st_mode) and info.st_nlink==1:
+            if info.st_size>8*1024*1024:raise ValueError('export per-file size exceeded')
+            with open_export_file(relative) as stream:
+                opened=os.fstat(stream.fileno())
+                if not stat.S_ISREG(opened.st_mode) or opened.st_nlink!=1 or (opened.st_dev,opened.st_ino,opened.st_size)!=(info.st_dev,info.st_ino,info.st_size):
+                    raise ValueError('export file changed before hashing')
+                hasher=hashlib.sha256();remaining=info.st_size
+                while remaining:
+                    block=stream.read(min(65536,remaining))
+                    if not block:raise ValueError('export file truncated before hashing')
+                    hasher.update(block);remaining-=len(block)
+                if stream.read(1):raise ValueError('export file grew while hashing')
+            total+=info.st_size
+            entries.append({'path':relative,'type':'file','size':info.st_size,'sha256':hasher.hexdigest()})
+        else:raise ValueError('export rejects symlinks, hardlinks and special files')
+        if len(entries)>256 or total>64*1024*1024:raise ValueError('export aggregate bound exceeded')
+    header=json.dumps({'protocol':'OSC_FIXTURE_EXPORT_1','entries':entries,'total_size':total},separators=(',',':')).encode()
+    if len(header)>65536:raise ValueError('export header bound exceeded')
+    output=sys.stdout.buffer;output.write(b'OSC_FIXTURE_EXPORT_1\n'+struct.pack('!I',len(header))+header)
+    for entry in entries:
+        if entry['type']!='file':continue
+        with open_export_file(entry['path']) as stream:
+            info=os.fstat(stream.fileno())
+            if not stat.S_ISREG(info.st_mode) or info.st_nlink!=1 or info.st_size!=entry['size']:
+                raise ValueError('export file type/size changed')
+            hasher=hashlib.sha256();remaining=entry['size']
+            while remaining:
+                block=stream.read(min(65536,remaining))
+                if not block:raise ValueError('export file truncated')
+                remaining-=len(block);hasher.update(block);output.write(block)
+            if stream.read(1) or hasher.hexdigest()!=entry['sha256']:raise ValueError('export file changed during read')
+    output.write(b'OSC_FIXTURE_EXPORT_END\n');output.flush()
+
+
+def main(mode):
+    OUT.mkdir(parents=True,exist_ok=True)
+    resource.setrlimit(resource.RLIMIT_FSIZE,(8*1024*1024,8*1024*1024))
+    result=0
+    try:
+        observed=observations()
+        write('raw-observations.json',observed)
+        admission=json.loads(Path('/fixture-root/admission-inputs.json').read_text())
+        for name,pin in admission['sha256'].items():
+            source=Path('/fixture-root')/name
+            if source.is_symlink() or hashlib.sha256(source.read_bytes()).hexdigest()!=pin:
+                raise ValueError('staged input hash changed: '+name)
+        caps=observed['caps']
+        q,p=caps['cpu.max'].split()
+        if q=='max' or int(q)*4!=int(p)*3 or caps['memory.max']!='2147483648' or caps['memory.swap.max']!='0' or caps['pids.max']!='128':
+            raise ValueError('container effective caps differ')
+        writable={}
+        for path,maximum in (('/tmp',33554432),(str(OUT),67108864)):
+            stat=observed['filesystems'][path]
+            if stat['total_bytes']!=maximum:raise ValueError('effective writable storage cap differs')
+            writable[path]={'bytes':stat['total_bytes'],'available_bytes':stat['available_bytes']}
+        pressure=observed['pressure']
+        import pcbnew
+        api=pcbnew.GetBuildVersion()
+        cli_result=subprocess.run(['kicad-cli','version'],text=True,capture_output=True,timeout=15)
+        cli=cli_result.stdout.strip()
+        write('version-observations.json',{'pcbnew':api,'cli_stdout':cli_result.stdout,'cli_stderr':cli_result.stderr,'cli_exit':cli_result.returncode})
+        if cli_result.returncode:raise ValueError('CLI version command failed')
+        if not all(re.match(r'^10\.0\.6(?:$|[^0-9])',v) for v in (cli,api)):
+            raise ValueError('CLI/pcbnew identity mismatch')
+        write('identity.json',{'cli':cli,'pcbnew':api,'caps':caps,'writable_storage':writable,'pressure':pressure,'pressure_scope':'Docker VM/container-visible /proc pressure; not Windows host-wide guarantees'})
+        if mode=='identity-controller-loss':
+            # One approved failure fixture: hold after identity, before completion.
+            # PID1 still enforces the independent 240s hard container lifetime.
+            while True:time.sleep(.25)
+        if mode=='fixture':
+            code=Path('/fixture-root/scripts/checks/mc02_fh12_land_fixture')
+            target=OUT/'fixture'
+            with (OUT/'generate.log').open('x') as log:
+                subprocess.run([sys.executable,'-B',str(code/'generate.py'),'--output-dir',str(target)],check=True,timeout=30,stdout=log,stderr=subprocess.STDOUT)
+            with (OUT/'native.log').open('x') as log:
+                subprocess.run([sys.executable,'-B',str(code/'native_check.py'),'--fixture-dir',str(target)],check=True,timeout=180,stdout=log,stderr=subprocess.STDOUT)
+        elif mode!='identity':raise ValueError('unsupported mode')
+        write('transaction.json',{'status':'COMPLETED','mode':mode})
+    except Exception as exc:
+        write('transaction-failure.json',{'status':'FAILED','error':str(exc),'traceback':traceback.format_exc(),'mode':mode})
+        result=1
+    # Keep bounded tmpfs alive until the host has copied evidence. PID1 timeout
+    # still kills all container work at 240s if the host disappears.
+    while not (OUT/'HOST_COPIED').exists():time.sleep(.25)
+    return result
+
+if __name__=='__main__':
+    if sys.argv[1:] == ['--export']:export_output()
+    else:sys.exit(main(sys.argv[1]))
