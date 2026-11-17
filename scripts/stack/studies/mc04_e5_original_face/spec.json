@@ -1,0 +1,1002 @@
+{
+  "source_commit": "73033ad585a1b8197fa9c06e5eaa39ab6da9dd04",
+  "engineering_commit": "2c53715d49a4a7639723595590d1fd4eeb3a3c1f",
+  "sha256": {
+    "boards/osc-control/osc-control-routed-draft.kicad_pcb": "111c5af77fa5fff3ebe96de988197fac36f37eb54d332c66b36477fa3b6e7f44",
+    "boards/osc-core/osc-core.kicad_pcb": "7311cd8e7aabb609c0a6d1a7f2ef42324c585d0c7b51f77c6bd3fc0338c54f22",
+    "boards/osc-jack-left/osc-jack-left.kicad_pcb": "2cd30044054fcdbf8c94de27515a5bc763e98de12c0f3df212cf5d84ded1ee19",
+    "boards/osc-jack-right/osc-jack-right.kicad_pcb": "653b20312851fad1dcf1a90806c1fdc558edf32dfc25d6675b43bb100ff9b3c1",
+    "boards/osc-octave-1/osc-octave-1.kicad_pcb": "be549b6f8ec4a64e35b22391705284b2da6929d4efe269c58291c3ed8c4c52e5",
+    "boards/osc-octave-2/osc-octave-2.kicad_pcb": "c9155415b5ef6d9bd443e787aacd51aac70732fc6a5259f18107def5c4c09a0e",
+    "boards/osc-octave-3/osc-octave-3.kicad_pcb": "f9e8be0e5f6d352667dd4b66f529cadb84660baec6dddd47903e2cb91eb90eb2",
+    "boards/osc-octave-4/osc-octave-4.kicad_pcb": "57236f1cdff89b949d705c4ea57011bc3c885eb08770fd672c83168a88b603db",
+    "boards/osc-octave-5/osc-octave-5.kicad_pcb": "5004d00f5fb85dbe47e7fd98ceda07c9a861e728bc08269e8b750e7fc4b860e1",
+    "boards/osc-stage-optical/osc-stage-optical.kicad_pcb": "7e0d9a25c13a5108439d391815409ddd60cc837db0563d45adb5f5a137fa2d61",
+    "circuit/routing/osc-pcb-current-checkpoint.json": "8bdc9552e0e001308d8fbace51b7ba815578b862eeda8eda0aa7bea66acca23d",
+    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+    "design/mechanical/core-rear-allowance.json": "3d0f34a0fb6c5f83b31f1ed5b00f7ab300d2b2e8fb6a448ee71c93bd1662f872",
+    "design/mechanical/ic-envelope-native-report.json": "899781a862f353985123b085c30fac80bf6fb9bdf0d11de2fd0f0ff1332ccf18",
+    "design/mechanical/selector-assembly.json": "b5715d25d4d4b44bc664eac9697d83c95741b02af9a906d0c849f40da7e560bb",
+    "design/partition/floorplan-candidate.json": "ec8128f3469207c7dbd36061a99a585f60e520fddb2accb1bd72bfd99fbf9c91",
+    "design/partition/partition.json": "7e3f5a39b001f80f38572c837a60e197fbb08ae588296e1d3bcb1339718db48f",
+    "design/power/rail-ledger.json": "4a0f8fb0fc182fda637f336b34a613bb5ad578f9a3b1e9939aac0dbfda74af2b",
+    "design/reports/io-partition.json": "37a773282d723d7f689d1e6cf009e4edd1947827a5ee45f0051e42cd4e907a0b",
+    "design/stack/fixings/fixing-sites.json": "8402ce558d2de13512ff325a5550ef21f303d64b5e5cb86c1aa20ffe2924225b",
+    "design/stack/geometry/land-pattern.json": "f6594b6a9ba4e603f3275b61827c9098a646c17a5e9cba5476841a038e694f84",
+    "design/stack/geometry/links/link-gate-options.json": "a2703fbcbf344b1bc9b06ecd4dde97605857a62c32eb1e3ca0a26400e6cd20bb",
+    "design/stack/geometry/links/link-gate.json": "1c091c1d6d4b9c000f770a0e604cb986d5c55e44cb77ea22083249afbf5cdb0d",
+    "design/stack/geometry/links/link-options.json": "b0a60bf721b155200fc6a5b9304b20b84767638959c7f009a794f93f4e7bb4c9",
+    "design/stack/geometry/parameters.json": "0a2edef523be698e3fbecda50f5576a5826de4a9346ed2102a5a10f2813d4577",
+    "design/stack/geometry/stack-candidate.json": "9bd03493c0a98c36357c90ee56e86dec57eb3dd5d0793a84f49f34f1c5d25f54",
+    "design/stack/link-electrical/inputs.json": "aeb837844dd0359fa7a08348431f633f1ce5c03e9042f143d0822f2e13b25ea1",
+    "design/stack/mechanics/k-compliance-map.json": "324c2836c5944f4a6e87ba8881a41b50fa5d7c8999c39d1877ada9ddada637dc",
+    "scripts/stack/geometry/kicad_extract.py": "23093e93bf8a5c9072310531d771f9592783673c13f9a23dd70eb9272505ecdd",
+    "scripts/stack/geometry/links.py": "928814c730d87538e3eadcb03394bfd7ccc53fd45a86ea92e20c1149d0715f50",
+    "scripts/stack/geometry/links_gate.py": "d068e43957a7ee733cbd34f347f325537d051d871d32f8553e66474f5367448e",
+    "scripts/stack/geometry/links_gate_c6.py": "e83defccc7e05e219a0d27697ad5a2b805de5be43cdab6e86b257be880f32f4b",
+    "scripts/stack/geometry/links_gate_part2.py": "d3341b6ba3630aa2d69038a792e88cff4b008737415de112eda6672bdf7b5cd3",
+    "scripts/stack/geometry/links_gate_readme.py": "235fd5dedd0ab928128ea4c3824398b9a6538bfcd46d7487651058e5f6df9123",
+    "scripts/stack/geometry/links_gate_readme_part2.py": "2ee4581c4338ce651fc67661f2da010decbd1b9661dc79b645062d72db01235e",
+    "scripts/stack/geometry/links_readme.py": "d0f742ca4781f3fd9901c663cb53abc303b48494ec5240e38bd1819bcbd59d6f",
+    "scripts/stack/geometry/stackgeom.py": "70db6b0833512a20029b743c49d9adf0fe1b69ef8bb4d0063afc3515cb07d7ab",
+    "scripts/stack/studies/mc04_r1/study.py": "c8dd10f7540d19d2dbf45f4b688529ca7ed0d8292cbb21b999cf45eb603a3f79",
+    "scripts/stack/studies/mc04_r1/spec.json": "f01c8cb9c62566b745086b1d14a5faecc83ae0e180efce14c9760387452a360a",
+    "scripts/checks/mc02_logic_timing_contract/audit.py": "bda5800d1432a1884e3dab9e1e0afba8e34d9f9f3fc59bb91ffd2388e3b59c22",
+    "scripts/checks/mc02_logic_timing_contract/manifest.json": "82e8b26223c2bdcadad1c5bd5080fd17c1b837c3d0421794a0cc3f1be33e1aa1",
+    ".circuit-cache/mc02-logic/9d3a253eba4a446aaff4303d172ff3cc/result.json": "2c8763ada0aa2eec6252c86fb0e0e74a818286453fc1c8d1c86180bcce8243e5",
+    "scripts/stack/studies/mc04_e5_blockers/study.py": "e95d7bb6b5fefe5522920eb3c3431f39e4cea370ede892d91301ed9b8e0559fc",
+    "scripts/stack/studies/mc04_e5_blockers/spec.json": "58e855207c0710edfaf1b7dfe6d4fe3ffa9521872d77f7702f736b31e6599334",
+    "design/reports/board-side-map.json": "e8a297a37089b23edfe6fe2fdae8840f7770cc325a848c743835c39a20479d57",
+    "design/spec/modules/envelope.py": "015b02c5d84550e19bf92b9ec838a43b255a728e02de1e562e855ba632fc2ee5",
+    ".circuit-cache/mc04-e5-blockers/f9f21bf97ad346268762cd7a7be3c00e/result.json": "a932d3693b9b64e1527599ac111889082dde113ad164cebe717c24b31785ca46",
+    "scripts/stack/studies/mc04_e5_exchange/study.py": "bd4011c452a39febe85e6d327fd3980ea01cd002c6c058306c65bc42e9745cf8",
+    "scripts/stack/studies/mc04_e5_exchange/spec.json": "4f3ca6496eb13729099d902a544b59b841ca20a9851663a2bdc09ee21c9911e8",
+    ".circuit-cache/mc04-e5-exchange/e99dd9467b294f47a2ba53d057ffad29/result.json": "afaa58e04a0919c3c83c84f54a2dabd304d88415c81f17fd7604f1de53ec0542"
+  },
+  "prior_exchange_receipt": ".circuit-cache/mc04-e5-exchange/e99dd9467b294f47a2ba53d057ffad29/result.json",
+  "original_U4517": {
+    "ref": "U4517",
+    "lib": "SOIC-14_3.9x8.7mm_P1.27mm",
+    "value": "SN74HC00DR",
+    "side": "F",
+    "origin": [
+      185.95,
+      140.7
+    ],
+    "angle": 0.0,
+    "courtyard": [
+      182.25,
+      135.75,
+      189.65,
+      145.38
+    ],
+    "pads": [
+      {
+        "number": "1",
+        "type": "smd",
+        "shape": "roundrect",
+        "center": [
+          183.475,
+          136.89
+        ],
+        "bbox": [
+          182.5,
+          136.59,
+          184.45,
+          137.19
+        ],
+        "drill": 0.0,
+        "layers": [
+          "F.Cu",
+          "F.Mask",
+          "F.Paste"
+        ]
+      },
+      {
+        "number": "2",
+        "type": "smd",
+        "shape": "roundrect",
+        "center": [
+          183.475,
+          138.16
+        ],
+        "bbox": [
+          182.5,
+          137.86,
+          184.45,
+          138.46
+        ],
+        "drill": 0.0,
+        "layers": [
+          "F.Cu",
+          "F.Mask",
+          "F.Paste"
+        ]
+      },
+      {
+        "number": "3",
+        "type": "smd",
+        "shape": "roundrect",
+        "center": [
+          183.475,
+          139.43
+        ],
+        "bbox": [
+          182.5,
+          139.13,
+          184.45,
+          139.73
+        ],
+        "drill": 0.0,
+        "layers": [
+          "F.Cu",
+          "F.Mask",
+          "F.Paste"
+        ]
+      },
+      {
+        "number": "4",
+        "type": "smd",
+        "shape": "roundrect",
+        "center": [
+          183.475,
+          140.7
+        ],
+        "bbox": [
+          182.5,
+          140.4,
+          184.45,
+          141.0
+        ],
+        "drill": 0.0,
+        "layers": [
+          "F.Cu",
+          "F.Mask",
+          "F.Paste"
+        ]
+      },
+      {
+        "number": "5",
+        "type": "smd",
+        "shape": "roundrect",
+        "center": [
+          183.475,
+          141.97
+        ],
+        "bbox": [
+          182.5,
+          141.67,
+          184.45,
+          142.27
+        ],
+        "drill": 0.0,
+        "layers": [
+          "F.Cu",
+          "F.Mask",
+          "F.Paste"
+        ]
+      },
+      {
+        "number": "6",
+        "type": "smd",
+        "shape": "roundrect",
+        "center": [
+          183.475,
+          143.24
+        ],
+        "bbox": [
+          182.5,
+          142.94,
+          184.45,
+          143.54
+        ],
+        "drill": 0.0,
+        "layers": [
+          "F.Cu",
+          "F.Mask",
+          "F.Paste"
+        ]
+      },
+      {
+        "number": "7",
+        "type": "smd",
+        "shape": "roundrect",
+        "center": [
+          183.475,
+          144.51
+        ],
+        "bbox": [
+          182.5,
+          144.21,
+          184.45,
+          144.81
+        ],
+        "drill": 0.0,
+        "layers": [
+          "F.Cu",
+          "F.Mask",
+          "F.Paste"
+        ]
+      },
+      {
+        "number": "8",
+        "type": "smd",
+        "shape": "roundrect",
+        "center": [
+          188.425,
+          144.51
+        ],
+        "bbox": [
+          187.45,
+          144.21,
+          189.4,
+          144.81
+        ],
+        "drill": 0.0,
+        "layers": [
+          "F.Cu",
+          "F.Mask",
+          "F.Paste"
+        ]
+      },
+      {
+        "number": "9",
+        "type": "smd",
+        "shape": "roundrect",
+        "center": [
+          188.425,
+          143.24
+        ],
+        "bbox": [
+          187.45,
+          142.94,
+          189.4,
+          143.54
+        ],
+        "drill": 0.0,
+        "layers": [
+          "F.Cu",
+          "F.Mask",
+          "F.Paste"
+        ]
+      },
+      {
+        "number": "10",
+        "type": "smd",
+        "shape": "roundrect",
+        "center": [
+          188.425,
+          141.97
+        ],
+        "bbox": [
+          187.45,
+          141.67,
+          189.4,
+          142.27
+        ],
+        "drill": 0.0,
+        "layers": [
+          "F.Cu",
+          "F.Mask",
+          "F.Paste"
+        ]
+      },
+      {
+        "number": "11",
+        "type": "smd",
+        "shape": "roundrect",
+        "center": [
+          188.425,
+          140.7
+        ],
+        "bbox": [
+          187.45,
+          140.4,
+          189.4,
+          141.0
+        ],
+        "drill": 0.0,
+        "layers": [
+          "F.Cu",
+          "F.Mask",
+          "F.Paste"
+        ]
+      },
+      {
+        "number": "12",
+        "type": "smd",
+        "shape": "roundrect",
+        "center": [
+          188.425,
+          139.43
+        ],
+        "bbox": [
+          187.45,
+          139.13,
+          189.4,
+          139.73
+        ],
+        "drill": 0.0,
+        "layers": [
+          "F.Cu",
+          "F.Mask",
+          "F.Paste"
+        ]
+      },
+      {
+        "number": "13",
+        "type": "smd",
+        "shape": "roundrect",
+        "center": [
+          188.425,
+          138.16
+        ],
+        "bbox": [
+          187.45,
+          137.86,
+          189.4,
+          138.46
+        ],
+        "drill": 0.0,
+        "layers": [
+          "F.Cu",
+          "F.Mask",
+          "F.Paste"
+        ]
+      },
+      {
+        "number": "14",
+        "type": "smd",
+        "shape": "roundrect",
+        "center": [
+          188.425,
+          136.89
+        ],
+        "bbox": [
+          187.45,
+          136.59,
+          189.4,
+          137.19
+        ],
+        "drill": 0.0,
+        "layers": [
+          "F.Cu",
+          "F.Mask",
+          "F.Paste"
+        ]
+      }
+    ]
+  },
+  "retained_R4577_rows": [
+    {
+      "offset_index": 3,
+      "radius_mm": 0.25,
+      "shift_from_accepted_mm": [
+        0.2165,
+        0.125
+      ],
+      "shift_from_original_mm": [
+        5.6966,
+        5.6051
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 4,
+      "radius_mm": 0.25,
+      "shift_from_accepted_mm": [
+        0.1768,
+        0.1768
+      ],
+      "shift_from_original_mm": [
+        5.6569,
+        5.6569
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 5,
+      "radius_mm": 0.25,
+      "shift_from_accepted_mm": [
+        0.125,
+        0.2165
+      ],
+      "shift_from_original_mm": [
+        5.6051,
+        5.6966
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 6,
+      "radius_mm": 0.25,
+      "shift_from_accepted_mm": [
+        0.0647,
+        0.2415
+      ],
+      "shift_from_original_mm": [
+        5.5448,
+        5.7216
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 7,
+      "radius_mm": 0.25,
+      "shift_from_accepted_mm": [
+        0.0,
+        0.25
+      ],
+      "shift_from_original_mm": [
+        5.4801,
+        5.7301
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 8,
+      "radius_mm": 0.25,
+      "shift_from_accepted_mm": [
+        -0.0647,
+        0.2415
+      ],
+      "shift_from_original_mm": [
+        5.4154,
+        5.7216
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 9,
+      "radius_mm": 0.25,
+      "shift_from_accepted_mm": [
+        -0.125,
+        0.2165
+      ],
+      "shift_from_original_mm": [
+        5.3551,
+        5.6966
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 10,
+      "radius_mm": 0.25,
+      "shift_from_accepted_mm": [
+        -0.1768,
+        0.1768
+      ],
+      "shift_from_original_mm": [
+        5.3033,
+        5.6569
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 11,
+      "radius_mm": 0.25,
+      "shift_from_accepted_mm": [
+        -0.2165,
+        0.125
+      ],
+      "shift_from_original_mm": [
+        5.2636,
+        5.6051
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 26,
+      "radius_mm": 0.5,
+      "shift_from_accepted_mm": [
+        0.483,
+        0.1294
+      ],
+      "shift_from_original_mm": [
+        5.9631,
+        5.6095
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 27,
+      "radius_mm": 0.5,
+      "shift_from_accepted_mm": [
+        0.433,
+        0.25
+      ],
+      "shift_from_original_mm": [
+        5.9131,
+        5.7301
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 28,
+      "radius_mm": 0.5,
+      "shift_from_accepted_mm": [
+        0.3536,
+        0.3536
+      ],
+      "shift_from_original_mm": [
+        5.8337,
+        5.8337
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 29,
+      "radius_mm": 0.5,
+      "shift_from_accepted_mm": [
+        0.25,
+        0.433
+      ],
+      "shift_from_original_mm": [
+        5.7301,
+        5.9131
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 30,
+      "radius_mm": 0.5,
+      "shift_from_accepted_mm": [
+        0.1294,
+        0.483
+      ],
+      "shift_from_original_mm": [
+        5.6095,
+        5.9631
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 31,
+      "radius_mm": 0.5,
+      "shift_from_accepted_mm": [
+        0.0,
+        0.5
+      ],
+      "shift_from_original_mm": [
+        5.4801,
+        5.9801
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 32,
+      "radius_mm": 0.5,
+      "shift_from_accepted_mm": [
+        -0.1294,
+        0.483
+      ],
+      "shift_from_original_mm": [
+        5.3507,
+        5.9631
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 33,
+      "radius_mm": 0.5,
+      "shift_from_accepted_mm": [
+        -0.25,
+        0.433
+      ],
+      "shift_from_original_mm": [
+        5.2301,
+        5.9131
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 34,
+      "radius_mm": 0.5,
+      "shift_from_accepted_mm": [
+        -0.3536,
+        0.3536
+      ],
+      "shift_from_original_mm": [
+        5.1265,
+        5.8337
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 50,
+      "radius_mm": 0.75,
+      "shift_from_accepted_mm": [
+        0.7244,
+        0.1941
+      ],
+      "shift_from_original_mm": [
+        6.2045,
+        5.6742
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 51,
+      "radius_mm": 0.75,
+      "shift_from_accepted_mm": [
+        0.6495,
+        0.375
+      ],
+      "shift_from_original_mm": [
+        6.1296,
+        5.8551
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 52,
+      "radius_mm": 0.75,
+      "shift_from_accepted_mm": [
+        0.5303,
+        0.5303
+      ],
+      "shift_from_original_mm": [
+        6.0104,
+        6.0104
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 53,
+      "radius_mm": 0.75,
+      "shift_from_accepted_mm": [
+        0.375,
+        0.6495
+      ],
+      "shift_from_original_mm": [
+        5.8551,
+        6.1296
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 54,
+      "radius_mm": 0.75,
+      "shift_from_accepted_mm": [
+        0.1941,
+        0.7244
+      ],
+      "shift_from_original_mm": [
+        5.6742,
+        6.2045
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 55,
+      "radius_mm": 0.75,
+      "shift_from_accepted_mm": [
+        0.0,
+        0.75
+      ],
+      "shift_from_original_mm": [
+        5.4801,
+        6.2301
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 56,
+      "radius_mm": 0.75,
+      "shift_from_accepted_mm": [
+        -0.1941,
+        0.7244
+      ],
+      "shift_from_original_mm": [
+        5.286,
+        6.2045
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 74,
+      "radius_mm": 1.0,
+      "shift_from_accepted_mm": [
+        0.9659,
+        0.2588
+      ],
+      "shift_from_original_mm": [
+        6.446,
+        5.7389
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 75,
+      "radius_mm": 1.0,
+      "shift_from_accepted_mm": [
+        0.866,
+        0.5
+      ],
+      "shift_from_original_mm": [
+        6.3461,
+        5.9801
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 76,
+      "radius_mm": 1.0,
+      "shift_from_accepted_mm": [
+        0.7071,
+        0.7071
+      ],
+      "shift_from_original_mm": [
+        6.1872,
+        6.1872
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 77,
+      "radius_mm": 1.0,
+      "shift_from_accepted_mm": [
+        0.5,
+        0.866
+      ],
+      "shift_from_original_mm": [
+        5.9801,
+        6.3461
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 78,
+      "radius_mm": 1.0,
+      "shift_from_accepted_mm": [
+        0.2588,
+        0.9659
+      ],
+      "shift_from_original_mm": [
+        5.7389,
+        6.446
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 79,
+      "radius_mm": 1.0,
+      "shift_from_accepted_mm": [
+        0.0,
+        1.0
+      ],
+      "shift_from_original_mm": [
+        5.4801,
+        6.4801
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 80,
+      "radius_mm": 1.0,
+      "shift_from_accepted_mm": [
+        -0.2588,
+        0.9659
+      ],
+      "shift_from_original_mm": [
+        5.2213,
+        6.446
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 98,
+      "radius_mm": 1.25,
+      "shift_from_accepted_mm": [
+        1.2074,
+        0.3235
+      ],
+      "shift_from_original_mm": [
+        6.6875,
+        5.8036
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 99,
+      "radius_mm": 1.25,
+      "shift_from_accepted_mm": [
+        1.0825,
+        0.625
+      ],
+      "shift_from_original_mm": [
+        6.5626,
+        6.1051
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 100,
+      "radius_mm": 1.25,
+      "shift_from_accepted_mm": [
+        0.8839,
+        0.8839
+      ],
+      "shift_from_original_mm": [
+        6.364,
+        6.364
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 101,
+      "radius_mm": 1.25,
+      "shift_from_accepted_mm": [
+        0.625,
+        1.0825
+      ],
+      "shift_from_original_mm": [
+        6.1051,
+        6.5626
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 123,
+      "radius_mm": 1.5,
+      "shift_from_accepted_mm": [
+        1.299,
+        0.75
+      ],
+      "shift_from_original_mm": [
+        6.7791,
+        6.2301
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 124,
+      "radius_mm": 1.5,
+      "shift_from_accepted_mm": [
+        1.0607,
+        1.0607
+      ],
+      "shift_from_original_mm": [
+        6.5408,
+        6.5408
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 1675,
+      "radius_mm": 17.5,
+      "shift_from_accepted_mm": [
+        -0.0,
+        -17.5
+      ],
+      "shift_from_original_mm": [
+        5.4801,
+        -12.0199
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 1699,
+      "radius_mm": 17.75,
+      "shift_from_accepted_mm": [
+        -0.0,
+        -17.75
+      ],
+      "shift_from_original_mm": [
+        5.4801,
+        -12.2699
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 1723,
+      "radius_mm": 18.0,
+      "shift_from_accepted_mm": [
+        -0.0,
+        -18.0
+      ],
+      "shift_from_original_mm": [
+        5.4801,
+        -12.5199
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 1747,
+      "radius_mm": 18.25,
+      "shift_from_accepted_mm": [
+        -0.0,
+        -18.25
+      ],
+      "shift_from_original_mm": [
+        5.4801,
+        -12.7699
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 1771,
+      "radius_mm": 18.5,
+      "shift_from_accepted_mm": [
+        -0.0,
+        -18.5
+      ],
+      "shift_from_original_mm": [
+        5.4801,
+        -13.0199
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 1795,
+      "radius_mm": 18.75,
+      "shift_from_accepted_mm": [
+        -0.0,
+        -18.75
+      ],
+      "shift_from_original_mm": [
+        5.4801,
+        -13.2699
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    },
+    {
+      "offset_index": 1819,
+      "radius_mm": 19.0,
+      "shift_from_accepted_mm": [
+        -0.0,
+        -19.0
+      ],
+      "shift_from_original_mm": [
+        5.4801,
+        -13.5199
+      ],
+      "blockers": [],
+      "disposition": "INDIVIDUAL_ROOM_ONLY"
+    }
+  ]
+}
