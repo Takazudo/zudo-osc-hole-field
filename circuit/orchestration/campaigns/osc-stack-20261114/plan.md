@@ -381,3 +381,24 @@ hardware, not an unsupported tolerance waiver or wholesale geometry change. The
 current session retains the delegated coordinator role; a Moya acknowledgment is
 not a dependency. Reconcile #362, live work and source changes before resuming.
 Any genuinely new ready task should be dispatched without milestone approval.
+
+## Reopened manufacturer-source queue — 2026-11-17
+
+New #362 handoff6948020518 identifies exact4708height/tolerance and the distinct
+10-page Hirose engineering drawing with contact1 and reference open geometry.
+This is new evidence beyond the earlier catalog-only work; the prior no-ready
+checkpoint is historical. WSL official retrievals returned403 and an explicit
+private PDF handoff was requested. Existing files/receipts stay intact.
+
+Ready in parallel: frozen122endpoint logical/project geometry extraction without
+inventing physical pad coordinates, and four-site conditional fastener arithmetic
+without assuming washer selection or screw/grip/protrusion tolerances. Root owns
+source provenance and workflow updates; separate workers own these new tools.
+After document receipt, verify actual PDF signatures/hashes/revisions/figures and
+reconcile contact1,closed2.0±0.2,reference4.8/90°,central-manual access and the
+188µm construction context. Handoff numbers remain unverified dependencies until
+local inspection; no access/cable/fastener PASS or adoption follows automatically.
+
+The owner requires requesting missing PDFs and continuing independent work, not
+ending with “nothing more can be done.” Retain bounded retries, shared execution
+controls and all hardware/DRC/fill/manufacturing holds.
