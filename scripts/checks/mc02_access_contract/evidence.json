@@ -282,16 +282,16 @@
     }
   ],
   "handoff": {
-    "status": "UNVERIFIED_HANDOFF",
+    "status": "VERIFIED_PRIMARY_DOCUMENT",
     "comment_url": "https://github.com/Takazudo/zudo-osc-hole-field/issues/362#issuecomment-6948020518",
     "official_url": "https://www.hirose.com/en/product/p/CL0586-0744-5-55",
     "reported_document": "EDC3-150229-11",
     "expected_pdf_sha256": "c3257beed2331e5c95e176bc28441b04b804301a44c11b462e486fb5cc649d07",
-    "verified_pdf_sha256": null,
+    "verified_pdf_sha256": "c3257beed2331e5c95e176bc28441b04b804301a44c11b462e486fb5cc649d07",
     "closed_height_mm": {
       "nominal": "2.0",
       "tolerance": "0.2",
-      "kind": "reported_toleranced_dimension"
+      "kind": "toleranced_drawing_dimension"
     },
     "open_height_mm": {
       "value": "4.8",
@@ -303,8 +303,30 @@
       "reported_pages": [
         6,
         8
-      ]
-    }
+      ],
+      "operation_mode": "hand_only",
+      "tools_or_fingernails_inside_connector": "prohibited"
+    },
+    "verified_pdf_bytes": 1059562,
+    "review_date": "2026-11-17",
+    "locators": {
+      "closed_height": "printed sheets1/2, physical indices0/1, side view relative b",
+      "open_height": "printed sheets1/2, physical indices0/1, detail a and Note1: parentheses are reference",
+      "actuation": "printed sheets6/8, physical indices5/7, manual opening/closing: hand only, center; no tools inserted",
+      "variant_table": "printed sheet5, physical index4, exact8/14/26/40 SH(55) rows"
+    },
+    "printed_page_labels": [
+      "1/10",
+      "2/10",
+      "3/10",
+      "4/10",
+      "5/10",
+      "6/9",
+      "7/9",
+      "8/10",
+      "9/10",
+      "10/10"
+    ]
   },
   "case_claims": {
     "O-K-O3": {
@@ -555,5 +577,19 @@
       "guaranteed_open_envelope_mm": null,
       "manual_corridor_mm": null
     }
-  }
+  },
+  "expected_source_method_conflicts": [
+    {
+      "step": 7,
+      "text": "Plug the front end of every cable into its front connector and close the lock with one fingertip or a plastic tool. Every front end is plugged and locked before K comes down.",
+      "operations": 61,
+      "phase": "front"
+    },
+    {
+      "step": 12,
+      "text": "Fold each cable end onto K's rear face, insert it into its K connector and close the lock with one fingertip or a plastic tool; never press K with the palm (DS-66). At the 12 connectors named below, the other hand holds K's edge beside the connector while its lock is closed (DS-87).",
+      "operations": 61,
+      "phase": "K"
+    }
+  ]
 }

@@ -7,13 +7,19 @@ hand; the full retained threading sequence has 12 such operations. It performs
 no new footprint extraction, 122-endpoint contact mapping, body-height audit or
 placement search. Those existing tools keep their own scope.
 
-The separate handoff at issue362 comment6948020518 reports Hirose
-EDC3-150229-11, closed height2.0 +/-0.2mm, **reference** opening4.8mm and central
-manual actuator operation on pages6/8. The exact document bytes have not been
-verified by this task. `evidence.json` retains expected hash and source URLs,
-with `UNVERIFIED_HANDOFF` and verified hash null. Source verification and subsequent
-applicability review must update the contract explicitly; a claimed hash is not
-proof that PDF bytes were inspected.
+The transferred Hirose EDC3-150229-11 document is now byte-verified:1,059,562
+bytes, SHA-256 c3257beed2331e5c95e176bc28441b04b804301a44c11b462e486fb5cc649d07.
+All10 pages were visually reviewed. `evidence.json` retains the original handoff
+URL, actual verified hash, document locators and review date. The offline audit
+checks that reviewed transcription; it does not reopen raw PDFs unless
+`--source-pdf PATH` is supplied. A new byte verification is then performed before
+the audit. This distinguishes a durable reviewed-source receipt from a new raw
+file check in each execution.
+
+Closed height2.0 +/-0.2mm is a drawing dimension relative to its mounting
+reference. Opening4.8mm is parenthesized/reference, without a guaranteed maximum.
+Sheets6/8 require central manual actuator operation by hand only. These are now
+verified source statements; assembled access remains entirely separate.
 
 The checker rejects promotion of reference4.8mm to a guaranteed maximum, transfer
 of closed-height tolerance to open geometry, manufactured finger/tool corridors,
@@ -44,3 +50,13 @@ Pre-edit component check passed:84 manual records,445 declared placements
 unverified; pin-asset check performed. Exact source drift, missing cases and
 invalid evidence promotions are negative fixtures. An implementation/test PASS
 means the evidence contract works, not that assembled access passes.
+
+## Existing procedure conflict
+
+The pinned threading procedure steps7 and12 explicitly permit a plastic tool as
+an alternative to one fingertip. The verified manual requires central operation
+by hand only. `source_method_conflicts` retains both exact texts, step IDs and
+61 operations per step (122 endpoint operations total). This sequence-wide
+method contradiction is separate from the31 geometric NOT SHOWN cases; it does
+not assert all hand operations fail. A source-first procedure correction and
+review are required; this audit does not edit the procedure or its generator.

@@ -16,6 +16,14 @@ class AccessContractTests(unittest.TestCase):
         self.assertTrue(all(x['lowering_stage'] in range(1,10) for x in r['cases']))
         self.assertTrue(all(x['guaranteed_open_envelope_mm'] is None for x in r['cases']))
 
+    def test_global_method_conflicts_separate_from31_access_cases(self):
+        r=a.audit(self.e)
+        self.assertEqual(r['source_method_conflict_count'],2)
+        self.assertEqual([x['step'] for x in r['source_method_conflicts']],[7,12])
+        self.assertEqual([x['operations'] for x in r['source_method_conflicts']],[61,61])
+        self.e['expected_source_method_conflicts']=[]
+        with self.assertRaisesRegex(ValueError,'operation conflicts'):a.audit(self.e)
+
     def test_reference4point8_is_not_guaranteed_maximum(self):
         for key,value in [('guaranteed_maximum',True),('kind','toleranced_maximum')]:
             e=copy.deepcopy(self.e);e['handoff']['open_height_mm'][key]=value
@@ -53,9 +61,16 @@ class AccessContractTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'coverage'):a.audit(e)
 
     def test_handoff_hash_and_promotion_rejected(self):
-        for key,value in [('verified_pdf_sha256',a.HANDOFF_SHA),('expected_pdf_sha256','0'*64),('status','PRIMARY_VERIFIED')]:
+        for key,value in [('verified_pdf_sha256',None),('expected_pdf_sha256','0'*64),('status','UNVERIFIED_HANDOFF')]:
             e=copy.deepcopy(self.e);e['handoff'][key]=value
             with self.assertRaises(ValueError):a.audit(e)
+
+    def test_wrong_actual_pdf_bytes_rejected(self):
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as d:
+            p=Path(d)/'wrong.pdf';p.write_bytes(b'not the reviewed PDF')
+            with self.assertRaisesRegex(ValueError,'PDF bytes'):a.verify_pdf(p)
 
     def test_source_drift_rejected(self):
         self.e['sha256'][a.THREAD]='0'*64

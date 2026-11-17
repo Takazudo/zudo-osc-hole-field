@@ -1,4 +1,5 @@
 """Keep reference dimensions, tool reach and assembled manual access distinct."""
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -11,15 +12,16 @@ HANDOFF_SHA = 'c3257beed2331e5c95e176bc28441b04b804301a44c11b462e486fb5cc649d07'
 
 
 def validate_handoff(h):
-    if h['status'] != 'UNVERIFIED_HANDOFF' or h['verified_pdf_sha256'] is not None:
-        raise ValueError('handoff source promotion requires a separate byte/source review')
+    if h['status'] != 'VERIFIED_PRIMARY_DOCUMENT' or h['verified_pdf_sha256'] != HANDOFF_SHA or h['verified_pdf_bytes'] != 1059562:
+        raise ValueError('verified document identity/receipt changed; source review required')
     if h['reported_document'] != 'EDC3-150229-11' or h['expected_pdf_sha256'] != HANDOFF_SHA:
         raise ValueError('document identity changed')
     if h['open_height_mm'] != {'value':'4.8','kind':'reference_dimension','guaranteed_maximum':False}:
         raise ValueError('reference opening cannot become a guaranteed maximum')
-    if h['closed_height_mm'] != {'nominal':'2.0','tolerance':'0.2','kind':'reported_toleranced_dimension'}:
+    if h['closed_height_mm'] != {'nominal':'2.0','tolerance':'0.2','kind':'toleranced_drawing_dimension'}:
         raise ValueError('closed tolerance cannot be transferred to open geometry')
-    if h['actuation'] != {'method':'central manual actuator operation','reported_pages':[6,8]}:
+    if h['actuation'] != {'method':'central manual actuator operation','reported_pages':[6,8],
+                           'operation_mode':'hand_only','tools_or_fingernails_inside_connector':'prohibited'}:
         raise ValueError('central manual operation must not become tool-only operation')
 
 
@@ -48,6 +50,10 @@ def audit(evidence, root=ROOT):
             raise ValueError('source pin changed: '+path)
     validate_handoff(evidence['handoff'])
     t=json.loads((root/THREAD).read_text())
+    conflicts=[{'step':x['n'],'text':x['do'],'operations':x['parts'],
+                'phase':'front' if x['n']==7 else 'K'} for x in t['steps'] if 'plastic tool' in x['do']]
+    if conflicts!=evidence['expected_source_method_conflicts']:
+        raise ValueError('source operation conflicts changed; explicit procedure review required')
     cases=t['latch']['not_shown']
     if cases != evidence['expected_not_shown'] or len(cases) != 31 or len({x['link'] for x in cases}) != 31:
         raise ValueError('exact 31 NOT SHOWN cases changed')
@@ -75,7 +81,7 @@ def audit(evidence, root=ROOT):
                      'front_board':link['front_board'],'connector_size':link['size'],
                      'lowering_stage':stages[ident],'requires_supporting_hand':ident in hand,
                      'reported_manual_operation':evidence['handoff']['actuation'],
-                     'source_status':'UNVERIFIED_HANDOFF','access_verdict':'NOT SHOWN',
+                     'source_status':evidence['handoff']['status'],'access_verdict':'NOT SHOWN',
                      'declared_tool_reach_shown':claim['tool_reach_shown'],
                      'declared_contact1_mapping_shown':claim['contact1_mapping_shown'],
                      'guaranteed_open_envelope_mm':None,'manual_corridor_mm':None,'missing':missing})
@@ -83,10 +89,22 @@ def audit(evidence, root=ROOT):
     return {'engineering_commit':evidence['engineering_commit'],'inputs_sha256':evidence['sha256'],
             'handoff':evidence['handoff'],'existing_open_assumption':land['actuator_open_envelope'],
             'cases':rows,'case_count':31,'access_verdict':'NOT SHOWN',
+            'source_method_conflicts':conflicts,'source_method_conflict_count':len(conflicts),
+            'source_method_conflict_scope':'Procedure steps7/12 offer a plastic-tool alternative; verified manufacturer instruction is central hand-only operation. Each step covers61 links,122 endpoint operations total. This is a method conflict separate from31 geometric NOT SHOWN cases, not proof that all hand operations physically fail.',
             'scope':'Evidence-separation contract only. No contact mapping or height recalculation, hand/tool corridor construction, '
                     'native geometry, physical validation, hardware adoption or DRC/fill. Reference 4.8 mm and assumed 5 mm '
                     'do not establish guaranteed clearance; tool reach/contact mapping do not establish manual access.'}
 
 
+def verify_pdf(path):
+    raw=Path(path).read_bytes()
+    if len(raw)!=1059562 or hashlib.sha256(raw).hexdigest()!=HANDOFF_SHA:
+        raise ValueError('manufacturer PDF bytes do not match reviewed source')
+
+
 if __name__=='__main__':
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--source-pdf',type=Path,help='Optional independent verification of retained raw bytes')
+    args=parser.parse_args()
+    if args.source_pdf:verify_pdf(args.source_pdf)
     print(json.dumps(audit(json.loads(EVIDENCE.read_text())),indent=2))
