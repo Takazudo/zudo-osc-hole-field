@@ -18,8 +18,10 @@ adoption. Coordinator: Codex on x0x WSL under the user's continuous-work instruc
 | MC03 access-note sibling | `3c12df936de9754265f555d48325d313717cedf4` |
 | Offline latch-height audit | `f1521630e169822c7b7929e047649027d7633ed2` |
 
-The MC02 packet and MC03 access note are sibling documentation lines from the
-engineering input. They were not merged together or adopted into main. The
+The MC02 packet and MC03 access note originated as sibling documentation lines
+from the engineering input. They were composed locally at
+`d0d94ce5a606892a648c9bb9f2776251bb1374d9` for review, together with the
+supplemental audit. This is not main integration or hardware adoption. The
 audit descends from the MC02 packet and adds supplemental code/evidence only.
 The access note is available on review branch `wsl/osc-mc03-c6-access-20261117`;
 this is candidate publication, not integration. The packet's earlier
@@ -219,3 +221,7 @@ The DS-97 gate decides whether the unresolved list and displacement work are acc
 3. For U4324/U4417/U4524/U4526/U4527/U4623 and U4433/U4635, what must the later layout review preserve about combinational state paths, CLOCK, READY and synchronizer relationships? This is a request for a bounded layout verification contract, not a timing proof.
 4. For U1415, U5110/U5210, U5209 and U8409, which feedback/summing paths and associated passive groups must remain together in an eventual layout proposal? Source nets identify review scope; they do not establish parasitic or stability margins.
 5. For the input/output/indicator packages, what load, protection, decoupling and interaction checks apply when moving their complete functions? Indicator roles alone do not demonstrate absence of analog coupling impact.
+
+## Precision-function evidence follow-up
+
+The independently reviewed [U1518/U4341 constraint map](mc02-precision-constraints-20261117.md) answers the source-backed portions of review question 2. It retains exact topology, existing calibration/ideal-fixture scopes and source hashes. It does not allocate new routing, leakage, via or stability budgets.
