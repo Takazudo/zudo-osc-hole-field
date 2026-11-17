@@ -123,6 +123,7 @@ def main():
         report['source_commit'] = pins['source_commit']
         report['engineering_commit'] = pins['engineering_commit']
         report['procedure_amendment'] = pins['procedure_amendment']
+        report['nut_source_amendment'] = pins['nut_source_amendment']
         report['source_sha256'] = pins['sha256']
         print(json.dumps(report, indent=2))
     except (OSError, ValueError, KeyError, TypeError, IndexError) as exc:

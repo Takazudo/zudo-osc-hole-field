@@ -72,6 +72,19 @@ def audit(evidence, root=ROOT):
         raise ValueError('four active sleeve identities changed')
     screws = json.loads((root/THREAD).read_text())['screws']
     planes = json.loads((root/STACK).read_text())['candidate']['planes']
+    amendment=evidence['nut_source_amendment']
+    if (screws['nut_height_mm']!=amendment['expected_height']
+            or screws.get('nut_height_source')!=amendment['expected_source']):
+        raise ValueError('canonical nut source differs from reviewed supplement')
+    canonical=screws['nut_height_source']
+    if (canonical['verified_pdf_sha256']!=handoff['verified_pdf_sha256']
+            or canonical['verified_pdf_bytes']!=handoff['verified_pdf_bytes']
+            or canonical['drawing_date']!=handoff['reviewed_drawing']['date_iso']
+            or canonical['identity']!=handoff['identity']
+            or canonical['finish_disposition']!=handoff['finish_disposition']
+            or Decimal(str(screws['nut_height_mm']['nominal']))!=nom
+            or Decimal(str(screws['nut_height_mm']['tolerance']))!=tol):
+        raise ValueError('canonical nut and supplemental dimension identity disagree')
     working = screws['working_figure']
     if working['length_mm'] != 25 or working['status'] != 'ASSUMED' or working['countersunk']:
         raise ValueError('assumed screw contract changed')
@@ -94,7 +107,7 @@ def audit(evidence, root=ROOT):
                      'worst_case_washer_limit_mm': None,
                      'assembly_verdict': 'NOT_SHOWN', 'unknowns': list(UNKNOWN)})
     return {'engineering_commit': evidence['engineering_commit'], 'source_commit': evidence['source_commit'],
-            'procedure_amendment': evidence['procedure_amendment'], 'inputs_sha256': evidence['sha256'],
+            'procedure_amendment': evidence['procedure_amendment'], 'nut_source_amendment': evidence['nut_source_amendment'], 'inputs_sha256': evidence['sha256'],
             'nut_handoff': handoff, 'sites': rows,
             'scope': 'Conditional arithmetic with nominal screw/grip and drawing-verified nut bounds only; finish/version remains unresolved. '
                      'Zero screw/grip tolerance is a sensitivity assumption, not a sourced guarantee. '

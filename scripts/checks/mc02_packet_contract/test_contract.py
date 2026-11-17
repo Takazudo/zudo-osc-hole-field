@@ -1,5 +1,6 @@
 """Mutation tests for evidence reconciliation, with no native/model run."""
 import copy
+import json
 import unittest
 
 import contract
@@ -32,9 +33,10 @@ class PacketContractTests(unittest.TestCase):
 
     def test_procedure_amendment_has_separate_exact_source_identity(self):
         r=self.check()['cases']['candidate']
-        self.assertEqual(r['source_revision'],'5620eea27dd2e3232f4ba81a4592660c3f439a26')
+        self.assertEqual(r['source_revision'],'6df98d6344f87a64938f919b5a35f151203b618c')
         self.assertEqual(r['engineering_revision'],'2c53715d49a4a7639723595590d1fd4eeb3a3c1f')
-        self.assertEqual(r['procedure_amendment'],r['source_revision'])
+        self.assertEqual(r['procedure_amendment'],'5620eea27dd2e3232f4ba81a4592660c3f439a26')
+        self.assertEqual(r['nut_source_amendment'],r['source_revision'])
         self.assertEqual(self.manifest['candidate_pins'][contract.THREADING],
                          '22b19d117ee0f9ea946b83a5c47cc0abbbd024757d229ae129e8cae338cee3a7')
 
@@ -59,6 +61,49 @@ class PacketContractTests(unittest.TestCase):
         next(r for r in amended['steps'] if r['n']==7)['do']='Close with one fingertip or a plastic tool.'
         with self.assertRaisesRegex(ValueError,'manual method regressed'):
             contract.verify_amendment(original,amended)
+
+    def nut_baseline(self):
+        return json.loads(contract.git(contract.ROOT,'show',self.manifest['procedure_amendment']['revision']+':'+contract.THREADING))
+
+    def test_distinct_amendment_stages(self):
+        manual=self.nut_baseline()
+        baseline=json.loads(contract.git(contract.ROOT,'show',self.manifest['candidate_revision']+':'+contract.THREADING))
+        contract.verify_amendment(baseline,manual)
+        contract.verify_nut_amendment(manual,self.candidate[contract.THREADING],self.manifest['nut_source_amendment'])
+        self.assertEqual(self.manifest['nut_source_amendment']['baseline_revision'],self.manifest['procedure_amendment']['revision'])
+        self.assertEqual(manual['screws']['nut_height_mm'],'UNSOURCED')
+        self.assertNotIn('nut_height_source',manual['screws'])
+
+    def test_nut_amendment_rejects_non_nut_drift(self):
+        for kind in ('grip','washer','method','count'):
+            doc=copy.deepcopy(self.candidate[contract.THREADING])
+            if kind=='grip':doc['screws']['classes'][0]['grip_mm']+=.1
+            elif kind=='washer':doc['screws']['washer_thickness_mm']=.5
+            elif kind=='method':next(s for s in doc['steps'] if s['n']==7)['do']='Use a plastic tool'
+            else:doc['counts']['holding_hand']=0
+            with self.assertRaisesRegex(ValueError,'non-nut data'):
+                contract.verify_nut_amendment(self.nut_baseline(),doc,self.manifest['nut_source_amendment'])
+
+    def test_nut_amendment_rejects_unknown_or_finish_waiver(self):
+        for kind in ('unknowns','finish','height','source'):
+            doc=copy.deepcopy(self.candidate[contract.THREADING])
+            if kind=='unknowns':doc['screws']['nut_height_source']['remaining_unknowns']=[]
+            elif kind=='finish':doc['screws']['nut_height_source']['finish_disposition']='RESOLVED'
+            elif kind=='height':doc['screws']['nut_height_mm']['tolerance']=0
+            else:del doc['screws']['nut_height_source']
+            with self.assertRaisesRegex(ValueError,'facts/source differ'):
+                contract.verify_nut_amendment(self.nut_baseline(),doc,self.manifest['nut_source_amendment'])
+
+    def test_nut_amendment_requires_original_absence_and_both_producer_pins(self):
+        baseline=self.nut_baseline();baseline['screws']['nut_height_source']={}
+        with self.assertRaisesRegex(ValueError,'baseline must lack'):
+            contract.verify_nut_amendment(baseline,self.candidate[contract.THREADING],self.manifest['nut_source_amendment'])
+        for use_baseline in (True,False):
+            baseline=self.nut_baseline();doc=copy.deepcopy(self.candidate[contract.THREADING])
+            target=baseline if use_baseline else doc
+            del target['provenance']['pins']['files_sha256']['scripts/stack/fixings/procedure_page.py']
+            with self.assertRaisesRegex(ValueError,'missing procedure producer pin'):
+                contract.verify_nut_amendment(baseline,doc,self.manifest['nut_source_amendment'])
 
     def test_wrong_historical_revision_refused(self):
         with self.assertRaisesRegex(ValueError, 'wrong historical revision'):

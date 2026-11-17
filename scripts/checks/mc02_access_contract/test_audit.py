@@ -22,7 +22,9 @@ class AccessContractTests(unittest.TestCase):
         self.assertEqual(r['source_method_conflicts'],[])
         self.assertEqual(r['case_count'],31)
         self.assertEqual(r['access_verdict'],'NOT SHOWN')
-        self.assertEqual(r['source_commit'],'5620eea27dd2e3232f4ba81a4592660c3f439a26')
+        self.assertEqual(r['source_commit'],'6df98d6344f87a64938f919b5a35f151203b618c')
+        self.assertEqual(r['procedure_amendment']['revision'],'5620eea27dd2e3232f4ba81a4592660c3f439a26')
+        self.assertEqual(r['nut_source_amendment']['revision'],r['source_commit'])
 
     def test_returning_plastic_tool_fails_even_with_rebound_file_hash(self):
         import tempfile,hashlib

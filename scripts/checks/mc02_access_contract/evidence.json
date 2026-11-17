@@ -1,7 +1,7 @@
 {
   "engineering_commit": "2c53715d49a4a7639723595590d1fd4eeb3a3c1f",
   "sha256": {
-    "design/stack/fixings/threading-procedure.json": "755f94305498da29b28de0be4f081ee5fa45d842ed4f037aedc39e9329cfcbfd",
+    "design/stack/fixings/threading-procedure.json": "05e793d768f62d86a6178ed3d52da07ba45b8e497eda37730770f255fac6d31d",
     "design/stack/connectors/flex-land-patterns.json": "3fe9528cbfe9e6218fdefe7a4715238b9d921d97e561b9eafa8f3c1bc3caee35"
   },
   "expected_not_shown": [
@@ -579,10 +579,54 @@
     }
   },
   "expected_source_method_conflicts": [],
-  "source_commit": "5620eea27dd2e3232f4ba81a4592660c3f439a26",
+  "source_commit": "6df98d6344f87a64938f919b5a35f151203b618c",
   "procedure_amendment": {
     "revision": "5620eea27dd2e3232f4ba81a4592660c3f439a26",
     "scope": "Only steps7/12 actuation text and producer/renderer source hashes changed; geometry, counts, latch/access cases, screws and model results unchanged",
     "baseline_engineering_revision": "2c53715d49a4a7639723595590d1fd4eeb3a3c1f"
+  },
+  "nut_source_amendment": {
+    "revision": "6df98d6344f87a64938f919b5a35f151203b618c",
+    "baseline_revision": "5620eea27dd2e3232f4ba81a4592660c3f439a26",
+    "scope": "Only canonical nut height/source metadata and two producer hashes changed; manual instructions, geometry, counts, washer and other assembly unknowns unchanged",
+    "sha256": {
+      "design/stack/fixings/threading-procedure.json": "05e793d768f62d86a6178ed3d52da07ba45b8e497eda37730770f255fac6d31d",
+      "design/stack/fixings/threading-procedure.md": "07a1d112583a337b4364bbca98cde9808cda3d5e804f60ed38954eccd9ac1eca"
+    },
+    "expected_height": {
+      "nominal": 2.4,
+      "tolerance": 0.25,
+      "interval": [
+        2.15,
+        2.65
+      ],
+      "unit": "mm",
+      "status": "PRIMARY_DIMENSION_VERIFIED"
+    },
+    "expected_source": {
+      "identity": "Keystone 4708",
+      "document": "DWG 4708",
+      "drawing_date": "2011-05-26",
+      "date_printed": "5.26.11",
+      "revision": null,
+      "revision_scope": "Revision grid is blank; title-block CODE C is not a revision",
+      "verified_pdf_sha256": "b31545f168c90a3bc2d44f06b0f0a3003a6aaeef002b4366e11a44230637af44",
+      "verified_pdf_bytes": 172371,
+      "verification_date": "2026-11-17",
+      "official_url": "https://www.keyelco.com/product-pdf.cfm?p=2205",
+      "locator": "Physical page index0, unnumbered sheet: side elevation height2.40; NOTE1 all dimensions in millimeters; lower title-block decimal tolerance [MM] +/-0.25 unless otherwise specified",
+      "thread": "M3 x 0.5",
+      "drawing_material_finish": "steel / zinc plate",
+      "retained_catalog_material_finish": "steel / nickel",
+      "finish_disposition": "UNRESOLVED_VERSION_DISCREPANCY",
+      "scope": "Verified drawing height only; no current-lot finish, hardware adoption or assembly acceptance",
+      "remaining_unknowns": [
+        "washer thickness",
+        "screw length tolerance",
+        "grip tolerance",
+        "required protrusion and effective thread engagement",
+        "nut finish/version applicability"
+      ]
+    }
   }
 }

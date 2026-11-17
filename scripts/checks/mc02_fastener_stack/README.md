@@ -69,3 +69,14 @@ Pre-edit component validation passed (84 manual inventory records, 445 declared
 placements unverified, pin-asset check performed). Fixtures cover signed extrema,
 unknowns, exact boundary, malformed inputs, source drift and improper finish/version
 waivers despite verified dimensions. This independent audit does not regenerate canonical outputs.
+
+## Canonical nut-source rebind
+
+Current source is `6df98d6344f87a64938f919b5a35f151203b618c`. Engineering remains
+`2c53715d49a4a7639723595590d1fd4eeb3a3c1f`; the original manual-method amendment
+`5620eea27dd2e3232f4ba81a4592660c3f439a26` is preserved separately.
+`nut_source_amendment` records the subsequent5620eea2-to-6df98d63 metadata-only
+change. Only the consumed threading JSON pin changes here. Nut drawing height
+is verified; washer, finish/version, screw/grip tolerances and assembly remain
+unresolved. This rebind changes no geometry, parts, counts or access outcomes.
+Canonical nut height/source metadata must agree exactly with the reviewed supplemental evidence before conditional arithmetic runs.

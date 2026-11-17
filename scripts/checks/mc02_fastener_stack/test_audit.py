@@ -11,7 +11,7 @@ class FastenerTests(unittest.TestCase):
 
     def test_conditional_nominal_budgets(self):
         r = a.audit(self.e)
-        for key in ('source_commit','engineering_commit','procedure_amendment'):
+        for key in ('source_commit','engineering_commit','procedure_amendment','nut_source_amendment'):
             self.assertEqual(r[key],self.e[key])
         self.assertEqual(len(r['sites']), 4)
         for row in r['sites']:
@@ -80,6 +80,20 @@ class FastenerTests(unittest.TestCase):
             p=root/a.RULED;x=json.loads(p.read_text());x['sleeves'][0]['xy'][0]+=1;p.write_text(json.dumps(x))
             e['sha256'][a.RULED]=hashlib.sha256(p.read_bytes()).hexdigest()
             with self.assertRaisesRegex(ValueError,'fixed site'):a.audit(e,root)
+
+    def test_canonical_nut_disagrees_with_supplement_even_after_file_repin(self):
+        import hashlib
+        for kind in ('height','unknowns','finish'):
+            with tempfile.TemporaryDirectory() as directory:
+                root=Path(directory);e=copy.deepcopy(self.e)
+                for name in e['sha256']:
+                    path=root/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes((a.ROOT/name).read_bytes())
+                path=root/a.THREAD;doc=json.loads(path.read_text())
+                if kind=='height':doc['screws']['nut_height_mm']['nominal']=2.3
+                elif kind=='unknowns':doc['screws']['nut_height_source']['remaining_unknowns']=[]
+                else:doc['screws']['nut_height_source']['finish_disposition']='RESOLVED'
+                path.write_text(json.dumps(doc));e['sha256'][a.THREAD]=hashlib.sha256(path.read_bytes()).hexdigest()
+                with self.assertRaisesRegex(ValueError,'canonical nut source differs'):a.audit(e,root)
 
 
 if __name__ == '__main__': unittest.main()

@@ -91,6 +91,7 @@ def reconcile(manifest, historical_revision, historical, candidate, projection):
         cases[label] = {'source_revision': manifest['current_source_revision'] if label=='candidate' else manifest['historical_revision'],
                         'engineering_revision': manifest[label + '_revision'],
                         'procedure_amendment': manifest['procedure_amendment']['revision'] if label=='candidate' else None,
+                        'nut_source_amendment': manifest['nut_source_amendment']['revision'] if label=='candidate' else None,
                         'allocation': dict(zip(('signals', 'grounds', 'unused'), expected_allocation)),
                         'current_cases_A': currents, 'numeric_ratios': len(rated),
                         'intentional_nulls': nulls, 'maximum_stored_ratio': max(rated),
@@ -127,6 +128,34 @@ def verify_amendment(original, amended):
                     and 'or a plastic tool' not in step['do'], 'procedure manual method regressed')
 
 
+def verify_nut_amendment(original, amended, amendment):
+    """Preserve every prior manual/geometry field; amend only exact reviewed nut evidence."""
+    require(original['screws']['nut_height_mm']=='UNSOURCED' and 'nut_height_source' not in original['screws'],
+            'nut amendment baseline must lack the new dimensional source')
+    require(amendment['expected_height']=={'nominal':2.4,'tolerance':.25,'interval':[2.15,2.65],
+            'unit':'mm','status':'PRIMARY_DIMENSION_VERIFIED'}, 'reviewed nut height contract changed')
+    source=amendment['expected_source']
+    require(source['identity']=='Keystone 4708' and source['document']=='DWG 4708'
+            and source['verified_pdf_sha256']=='b31545f168c90a3bc2d44f06b0f0a3003a6aaeef002b4366e11a44230637af44'
+            and source['drawing_date']=='2011-05-26' and source['verified_pdf_bytes']==172371
+            and source['finish_disposition']=='UNRESOLVED_VERSION_DISCREPANCY'
+            and source['drawing_material_finish']=='steel / zinc plate'
+            and source['retained_catalog_material_finish']=='steel / nickel', 'reviewed nut source identity changed')
+    require(amended['screws']['nut_height_mm']==amendment['expected_height']
+            and amended['screws'].get('nut_height_source')==source, 'canonical nut facts/source differ from reviewed amendment')
+    before,after=copy.deepcopy(original),copy.deepcopy(amended)
+    after['screws']['nut_height_mm']='UNSOURCED'
+    del after['screws']['nut_height_source']
+    for doc in (before,after):
+        for name in ('scripts/stack/fixings/procedure.py','scripts/stack/fixings/procedure_page.py'):
+            require(name in doc['provenance']['pins']['files_sha256'], 'missing procedure producer pin')
+            value=doc['provenance']['pins']['files_sha256'][name]
+            require(isinstance(value,str) and len(value)==64 and all(c in '0123456789abcdef' for c in value),
+                    'invalid procedure producer pin')
+            doc['provenance']['pins']['files_sha256'][name]='<reviewed nut producer hash>'
+    require(before==after, 'nut amendment changed non-nut data')
+
+
 def load(root):
     manifest = json.loads((HERE / 'manifest.json').read_text())
     packet = git(root, 'show', manifest['packet_revision'] + ':' + manifest['packet_path'])
@@ -142,20 +171,28 @@ def load(root):
         matrix.append({'path': path, 'historical_blob': oid, 'bytes_changed': current != data})
     amendment=manifest['procedure_amendment']
     require(amendment['baseline_revision']==manifest['candidate_revision'], 'procedure baseline identity changed')
-    require(amendment['revision']==manifest['current_source_revision'], 'procedure amendment source identity changed')
+    nut=manifest['nut_source_amendment']
+    require(nut['baseline_revision']==amendment['revision'], 'nut/manual baseline identity changed')
+    require(nut['revision']==manifest['current_source_revision'], 'nut amendment source identity changed')
+    require(set(nut['sha256'])=={THREADING, 'design/stack/fixings/threading-procedure.md'}, 'nut amendment scope changed')
     require(set(amendment['sha256'])=={THREADING, 'design/stack/fixings/threading-procedure.md'}, 'procedure amendment scope changed')
     verified = {}
-    current_pins=dict(manifest['candidate_pins']) | amendment['sha256']
+    manual_pins=dict(manifest['candidate_pins']) | amendment['sha256']
+    current_pins=manual_pins | nut['sha256']
     for path, expected in current_pins.items():
         baseline_bytes=git(root, 'show', manifest['candidate_revision']+':'+path)
         require(sha(baseline_bytes)==manifest['candidate_pins'][path], f'original candidate object drift: {path}')
+        require(sha(git(root,'show',amendment['revision']+':'+path))==manual_pins[path],
+                f'manual amendment revision mismatch: {path}')
         require(sha(git(root,'show',manifest['current_source_revision']+':'+path))==expected,
                 f'current source revision mismatch: {path}')
         verified[path] = (root / path).read_bytes()
         require(sha(verified[path]) == expected, f'candidate source drift: {path}')
         if path in (GATE, THREADING, ELECTRICAL, INPUTS):
             candidate[path] = json.loads(verified[path])
-    verify_amendment(json.loads(git(root,'show',manifest['candidate_revision']+':'+THREADING)), candidate[THREADING])
+    manual=json.loads(git(root,'show',amendment['revision']+':'+THREADING))
+    verify_amendment(json.loads(git(root,'show',manifest['candidate_revision']+':'+THREADING)),manual)
+    verify_nut_amendment(manual,candidate[THREADING],nut)
     historical_kernel = git(root, 'show', manifest['historical_revision'] + ':' + KERNEL)
     require(sha(historical_kernel) == manifest['historical_kernel_sha256'], 'historical kernel drift')
     projection = {'historical': projection_function(historical_kernel),
@@ -168,8 +205,9 @@ def run(root):
     report = reconcile(manifest, manifest['historical_revision'], historical, candidate, projection)
     report['historical_blob_comparison'] = matrix
     report['candidate_baseline_source_sha256'] = manifest['candidate_pins']
-    report['candidate_source_sha256'] = dict(manifest['candidate_pins']) | manifest['procedure_amendment']['sha256']
+    report['candidate_source_sha256'] = dict(manifest['candidate_pins']) | manifest['procedure_amendment']['sha256'] | manifest['nut_source_amendment']['sha256']
     report['procedure_amendment'] = manifest['procedure_amendment']
+    report['nut_source_amendment'] = manifest['nut_source_amendment']
     report['packet_revision'] = manifest['packet_revision']
     return report
 

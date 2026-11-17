@@ -70,7 +70,7 @@ def audit(manifest, threading, packages, murata):
     require(counts == {'exact': 59, 'conditional_suffix': 2, 'unresolved_identity': 27},
             'coverage counts changed')
     return {'schema_version': 1, 'source_commit': manifest['source_commit'],
-            'engineering_commit': manifest['engineering_commit'], 'procedure_amendment': manifest['procedure_amendment'],
+            'engineering_commit': manifest['engineering_commit'], 'procedure_amendment': manifest['procedure_amendment'], 'nut_source_amendment': manifest['nut_source_amendment'],
             'scope': 'BODY DIMENSION EVIDENCE CANDIDATES ONLY; NOT MOUNTED CLEARANCE',
             'access_verdict': 'NOT SHOWN', 'counts': counts, 'references': rows,
             'source_sha256': manifest['pins'], 'murata_sha256': manifest['murata_sha256'],

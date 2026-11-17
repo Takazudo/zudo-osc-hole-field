@@ -60,4 +60,14 @@ expects zero source-method conflicts and verifies that wording on both61-operati
 steps. Reintroducing the plastic-tool alternative fails even if its file hash is
 rebound. This correction does not demonstrate any physical access: all31 NOT SHOWN
 cases,12 supporting-hand operations and the17-end lowering burden remain unchanged.
-The engineering baseline stays2c53715; current input/procedure source is5620eea2.
+The engineering baseline stays2c53715; the manual-method amendment remains5620eea2; current source is6df98d63.
+
+## Canonical nut-source rebind
+
+Current source is `6df98d6344f87a64938f919b5a35f151203b618c`. Engineering remains
+`2c53715d49a4a7639723595590d1fd4eeb3a3c1f`; the original manual-method amendment
+`5620eea27dd2e3232f4ba81a4592660c3f439a26` is preserved separately.
+`nut_source_amendment` records the subsequent5620eea2-to-6df98d63 metadata-only
+change. Only the consumed threading JSON pin changes here. Nut drawing height
+is verified; washer, finish/version, screw/grip tolerances and assembly remain
+unresolved. This rebind changes no geometry, parts, counts or access outcomes.

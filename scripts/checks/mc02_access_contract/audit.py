@@ -92,7 +92,7 @@ def audit(evidence, root=ROOT):
                      'guaranteed_open_envelope_mm':None,'manual_corridor_mm':None,'missing':missing})
     land=json.loads((root/LAND).read_text())['entries']['hirose_fh12_0_5sh']['st01h']
     return {'engineering_commit':evidence['engineering_commit'],'source_commit':evidence['source_commit'],
-            'procedure_amendment':evidence['procedure_amendment'],'inputs_sha256':evidence['sha256'],
+            'procedure_amendment':evidence['procedure_amendment'], 'nut_source_amendment': evidence['nut_source_amendment'],'inputs_sha256':evidence['sha256'],
             'handoff':evidence['handoff'],'existing_open_assumption':land['actuator_open_envelope'],
             'cases':rows,'case_count':31,'access_verdict':'NOT SHOWN',
             'source_method_conflicts':conflicts,'source_method_conflict_count':len(conflicts),

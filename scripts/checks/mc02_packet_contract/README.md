@@ -35,18 +35,24 @@ repository's Python test discovery finds this directory without native tools.
 No integrated-head verification, physical qualification, formal Gate A ruling,
 DRC, fill, routing-hold release, hardware adoption or manufacturing is supplied.
 
-## Explicit procedure-only amendment
+## Two distinct canonical source amendments
 
-The original690366aa, af027d73 and2c53715 identities and their object/hash pins
-remain unchanged. Current inputs are bound to
-`5620eea27dd2e3232f4ba81a4592660c3f439a26`: only threading-procedure JSON and Markdown
-have override pins under `procedure_amendment`. The loader verifies every original
-candidate pin against the exact2c53715 Git object, and every current pin against
-the exact5620eea2 Git object and working file. It compares the old/new procedure
-objects after excluding only steps7/12 actuation strings and two producer hashes;
-any changed geometry, cases, counts or other fields fails. The corrected strings
-must still require central manual operation and reject the plastic-tool option.
+The original690366aa, af027d73 and2c53715 identities and every original object/hash
+pin remain unchanged. The first `procedure_amendment` is still
+`5620eea27dd2e3232f4ba81a4592660c3f439a26`: only steps7/12 actuation text and two
+producer hashes differ from the original engineering procedure. Its separate
+JSON/Markdown pins are retained and its original projection check still runs.
 
-Reports distinguish current source5620eea2 from engineering baseline2c53715 and
-preserve the historical packet's own language unchanged. The procedure correction
-does not recalculate coupling or promote31 access cases or26 placement liabilities.
+Current source is `6df98d6344f87a64938f919b5a35f151203b618c`, represented by the
+separate `nut_source_amendment` whose baseline is5620eea2. Only `nut_height_mm`,
+the newly present `nut_height_source` and the same two producer hashes may differ
+in this second comparison. The loader requires absence of the new source in the
+manual-stage baseline, exact reviewed height/source metadata in the new object,
+and presence of both producer pins. It compares every other field unchanged,
+including the manual wording, washer status, grip classes, counts and geometry.
+Finish/version discrepancy and all remaining assembly uncertainties are retained.
+
+Every stage is checked against its exact Git objects. Current files are checked
+against the final pins. Reports distinguish current6df98d63, engineering2c53715,
+manual5620eea2 and nut6df98d63 provenance while preserving the historical packet.
+No solver/native model is rerun and no access/placement/assembly verdict is promoted.

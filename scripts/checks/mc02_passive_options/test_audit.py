@@ -45,7 +45,7 @@ class PassiveOptionTests(unittest.TestCase):
         with patch.object(sys,'argv',['audit.py']),contextlib.redirect_stdout(stdout):
             audit.main()
         result=json.loads(stdout.getvalue())
-        for key in ('source_commit','engineering_commit','procedure_amendment'):
+        for key in ('source_commit','engineering_commit','procedure_amendment','nut_source_amendment'):
             self.assertEqual(result[key],pins[key])
 
     def test_wrong_value_is_not_an_option(self):
