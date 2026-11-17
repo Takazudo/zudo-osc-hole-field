@@ -12,23 +12,18 @@ Candidate-first paper assessment is now selected by the coordinator under DS-134
 
 ## Reopened source work — manufacturer handoff, 2026-11-17
 
-The later #362 manufacturer handoff (comment6948020518) supersedes the earlier
-no-ready-operation checkpoint below. The owner explicitly requires continued
-work and concrete requests for missing PDFs. Direct WSL retrieval of the supplied
-Keystone4708 and Hirose EDC3-150229-11 URLs returned403; preserve the denial and
-request the already-inspected bytes through the private artifact channel. Do not
-infer that the dimensions require user measurement when a drawing was identified.
-Expected handoff hashes are not verified local source receipts.
+Both requested manufacturer PDFs are now received, hash-matched and visually
+reviewed. The earlier official-URL403 remains respected; there is no PDF transfer
+wait. See the [verified handoff and follow-up](campaigns/osc-stack-20261114/mc02-manufacturer-handoff-followup-20261117.md).
 
-Continue disjoint source-only connector mapping and four-site fastener interval
-work while awaiting the documents. Keep reference open dimensions distinct from
-maximum guarantees, central manual actuation distinct from tool reach, and a
-reference stiffener construction distinct from a universally required minimum.
-Reconcile the exact sources before changing source verdicts or model assumptions.
-A missing document is an input request plus dependency, not a project-completion
-claim. Do not repeat unchanged failed retrievals or use a protected alternate route.
+Active work: collect independently reviewed hand-only procedure correction and
+five explicit consumer rebindings; preserve historical packet pins. Review and
+execute one bounded E5 named-neighbor room-exchange pilot only after source,
+shared-lock, effective-cap and cleanup admission. Continue physical-coordinate
+and envelope evidence preparation; reference dimensions do not prove manual
+access. No native rerun, DRC,fill,adoption or manufacturing is released.
 
-## WSL evidence checkpoint — 2026-11-17
+## Historical WSL evidence checkpoint — superseded by received sources
 
 R1 and the conditional51mm length study are complete and independently audited;
 new source-only cable/height/packet tooling is collected. The current bounded WSL

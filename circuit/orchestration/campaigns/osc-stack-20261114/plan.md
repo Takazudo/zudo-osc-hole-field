@@ -384,20 +384,23 @@ Any genuinely new ready task should be dispatched without milestone approval.
 
 ## Reopened manufacturer-source queue — 2026-11-17
 
-New #362 handoff6948020518 identifies exact4708height/tolerance and the distinct
-10-page Hirose engineering drawing with contact1 and reference open geometry.
-This is new evidence beyond the earlier catalog-only work; the prior no-ready
-checkpoint is historical. WSL official retrievals returned403 and an explicit
-private PDF handoff was requested. Existing files/receipts stay intact.
+Both manufacturer PDFs identified in #362 comment6948020518 are now received,
+hash-matched and visually reviewed. The former403 retrieval and transfer wait
+are historical; no access protection was bypassed. See
+[verified source follow-up](mc02-manufacturer-handoff-followup-20261117.md).
 
-Ready in parallel: frozen122endpoint logical/project geometry extraction without
-inventing physical pad coordinates, and four-site conditional fastener arithmetic
-without assuming washer selection or screw/grip/protrusion tolerances. Root owns
-source provenance and workflow updates; separate workers own these new tools.
-After document receipt, verify actual PDF signatures/hashes/revisions/figures and
-reconcile contact1,closed2.0±0.2,reference4.8/90°,central-manual access and the
-188µm construction context. Handoff numbers remain unverified dependencies until
-local inspection; no access/cable/fastener PASS or adoption follows automatically.
+Completed:122relative endpoint projections; verified four-site conditional nut
+arithmetic; manufacturer hand-only procedure correction5620eea27dd2e3232f4ba81a4592660c3f439a26;
+five consumer amendments bb01f7f235862844e217da82d42a96fb80134b3a with57testsPASS.
+Historical690/af/2c packet pins remain intact; amendment attribution is explicit.
+All31access cases and four fastener sites remain NOT_SHOWN.
+
+Active: independently reviewed E5 blocker attribution supports one named-neighbor
+room-only exchange pilot, now in implementation review. Runner preflight verifies
+1CPU/1GiB/swap0/128PIDs,480s service runtime, shared lock and cleanup. The actual
+exchange has NOT RUN; review findings must be fixed before admission. Source-only
+connector envelope/tolerance reconciliation proceeds independently. No automatic
+native rerun follows from these source/procedure changes.
 
 The owner requires requesting missing PDFs and continuing independent work, not
 ending with “nothing more can be done.” Retain bounded retries, shared execution
