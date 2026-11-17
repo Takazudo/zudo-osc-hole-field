@@ -144,6 +144,34 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-nand-propagation-table-max45",
+      "record_id": "rec-nand",
+      "source_id": "src-nand-datasheet",
+      "class": "TRANSIENT",
+      "value": 23,
+      "unit": "ns",
+      "conditions": "SN74 commercial grade, VCC=4.5V, TA=-40..85C; source measurement generators PRR<=1MHz, ZO=50ohm, input tt<6ns, one output/input transition per measurement. A or B to Y tpd MAX column; max(tPLH,tPHL), 50% crossings. Numeric CL is not specified in the inspected switching table or measurement figure; CL includes probe/fixture capacitance. Application-section <=50pF guidance is not promoted into a guaranteed test condition. No minimum propagation delay or project 5V/layout bound is established.",
+      "locator": "src-nand-datasheet: SCLS181H printed p6 / physical index5 section6.7 Switching Characteristics - Commercial, tpd 4.5V/-40..85C MAX; p8 / index7 section7 and Figure7-2",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-nand-output-transition-table-max45",
+      "record_id": "rec-nand",
+      "source_id": "src-nand-datasheet",
+      "class": "TRANSIENT",
+      "value": 19,
+      "unit": "ns",
+      "conditions": "SN74 commercial grade, VCC=4.5V, TA=-40..85C; source measurement generators PRR<=1MHz, ZO=50ohm, input tt<6ns, one output/input transition per measurement. Output Y tt MAX column; larger of rise/fall time, 10%-90% crossings. Numeric CL remains unspecified in the switching table/measurement figure. This output maximum does not prove a downstream input meets the <6ns switching-test edge condition. No project-load or layout timing qualification.",
+      "locator": "src-nand-datasheet: SCLS181H printed p6 / physical index5 section6.7 tt 4.5V/-40..85C MAX; p8 / index7 section7 and Figure7-3",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

@@ -91,12 +91,14 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 **Coverage ID:** `cov-nand-electrical-limits` · **Status:** OPEN
 
-**Reason:** Absolute maximum ratings are retained as primary facts; operating electrical characteristics and project suitability remain unpromoted.
+**Reason:** Absolute maximum ratings and narrowly source-conditioned switching-table maxima are retained. Numeric switching-test load, minimum propagation delay and actual supply/load/input-edge/layout timing applicability remain unestablished; application-section load guidance is not promoted into a guaranteed test condition.
 
 **Facts in this domain:**
 
 - [`fact-nand-electrical-limits`](#fact-nand-electrical-limits)
 - [`fact-nand-absolute-maximum`](#fact-nand-absolute-maximum)
+- [`fact-nand-propagation-table-max45`](#fact-nand-propagation-table-max45)
+- [`fact-nand-output-transition-table-max45`](#fact-nand-output-transition-table-max45)
 
 **Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
 
@@ -184,6 +186,38 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
   **Verdict:** UNSOURCED · **Provenance:** UNVERIFIED
 
   **Evidence:** [src-nand-datasheet: exact component electrical-characteristics table not promoted](#src-nand-datasheet)
+</EvidenceFact>
+
+### TRANSIENT
+
+Behaviour during a short event — startup, a switching edge, a fault or a surge.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-nand-propagation-table-max45" />
+
+  **Fact:** `fact-nand-propagation-table-max45`
+
+  **Value:** 23 · **Unit:** `ns`
+
+  **Conditions:** SN74 commercial grade, VCC=4.5V, TA=-40..85C; source measurement generators PRR\<=1MHz, ZO=50ohm, input tt\<6ns, one output/input transition per measurement. A or B to Y tpd MAX column; max(tPLH,tPHL), 50% crossings. Numeric CL is not specified in the inspected switching table or measurement figure; CL includes probe/fixture capacitance. Application-section \<=50pF guidance is not promoted into a guaranteed test condition. No minimum propagation delay or project 5V/layout bound is established.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-nand-datasheet: SCLS181H printed p6 / physical index5 section6.7 Switching Characteristics - Commercial, tpd 4.5V/-40..85C MAX; p8 / index7 section7 and Figure7-2](#src-nand-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-nand-output-transition-table-max45" />
+
+  **Fact:** `fact-nand-output-transition-table-max45`
+
+  **Value:** 19 · **Unit:** `ns`
+
+  **Conditions:** SN74 commercial grade, VCC=4.5V, TA=-40..85C; source measurement generators PRR\<=1MHz, ZO=50ohm, input tt\<6ns, one output/input transition per measurement. Output Y tt MAX column; larger of rise/fall time, 10%-90% crossings. Numeric CL remains unspecified in the switching table/measurement figure. This output maximum does not prove a downstream input meets the \<6ns switching-test edge condition. No project-load or layout timing qualification.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-nand-datasheet: SCLS181H printed p6 / physical index5 section6.7 tt 4.5V/-40..85C MAX; p8 / index7 section7 and Figure7-3](#src-nand-datasheet)
 </EvidenceFact>
 
 ### PROJECT\_STATE
@@ -416,6 +450,7 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 | `ABSOLUTE_MAXIMUM`      | A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.                                         |
 | `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| `TRANSIENT`             | Behaviour during a short event — startup, a switching edge, a fault or a surge.                                                                                    |
 
 ### Coverage status
 

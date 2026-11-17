@@ -91,12 +91,14 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 **Coverage ID:** `cov-flipflop-electrical-limits` · **Status:** OPEN
 
-**Reason:** UNSOURCED full application closure: selected table rows do not establish all actual-supply, load, startup and partial-power behavior.
+**Reason:** Selected source-conditioned logic rows, including D setup/hold requirements, are retained. They do not establish actual-supply/load/input-edge/skew timing closure, minimum clock-to-Q delay, physical hold slack, startup or partial-power behavior.
 
 **Facts in this domain:**
 
 - [`fact-flipflop-electrical-limits`](#fact-flipflop-electrical-limits)
 - [`fact-flipflop-absolute-maximum`](#fact-flipflop-absolute-maximum)
+- [`fact-flipflop-data-setup45`](#fact-flipflop-data-setup45)
+- [`fact-flipflop-data-hold45`](#fact-flipflop-data-hold45)
 
 **Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
 
@@ -304,6 +306,34 @@ Behaviour during a short event — startup, a switching edge, a fault or a surge
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [src-flipflop-datasheet: printed p7 section6.9 and p9 section7](#src-flipflop-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-flipflop-data-setup45" />
+
+  **Fact:** `fact-flipflop-data-setup45`
+
+  **Value:** 25 · **Unit:** `ns`
+
+  **Conditions:** SN74 commercial grade, VCC=4.5V, TA=-40..85C; source measurement generators PRR\<=1MHz, ZO=50ohm, input tt\<6ns, one output/input transition per measurement. Worst listed required D setup time before CLK rising: source section6.7 prints this under MAX; require at least 25ns stable D for that table corner. Do not describe it as the source MIN-column value. Measurement Figure7-3 uses 50% crossings; section7 states CL=50pF including probe/jig. Does not establish actual 5V clock period, skew, loading, metastability or setup slack.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-flipflop-datasheet: SCLS094F printed p6 / physical index5 section6.7 Timing Requirements -74, tsu Data at4.5V/-40..85C; p9 / index8 section7 Figure7-3](#src-flipflop-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-flipflop-data-hold45" />
+
+  **Fact:** `fact-flipflop-data-hold45`
+
+  **Value:** 0 · **Unit:** `ns`
+
+  **Conditions:** SN74 commercial grade, VCC=4.5V, TA=-40..85C; source measurement generators PRR\<=1MHz, ZO=50ohm, input tt\<6ns, one output/input transition per measurement. Minimum D hold time after CLK rising at the listed corner, section6.7 MIN column. Measurement Figure7-3 uses 50% crossings; section7 states CL=50pF including probe/jig. Zero required hold does not supply a minimum CLK-to-Q/contamination delay, routed hold margin or metastability guarantee. Actual skew/load/supply applicability remains open.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-flipflop-datasheet: SCLS094F printed p6 / physical index5 section6.7 Timing Requirements -74, th Data after CLK rising at4.5V/-40..85C MIN; p9 / index8 section7 Figure7-3](#src-flipflop-datasheet)
 </EvidenceFact>
 
 ### PROJECT\_STATE

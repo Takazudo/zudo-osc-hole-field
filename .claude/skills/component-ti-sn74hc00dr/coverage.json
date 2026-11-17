@@ -28,10 +28,12 @@
       "record_id": "rec-nand",
       "domain": "electrical limits",
       "status": "OPEN",
-      "reason": "Absolute maximum ratings are retained as primary facts; operating electrical characteristics and project suitability remain unpromoted.",
+      "reason": "Absolute maximum ratings and narrowly source-conditioned switching-table maxima are retained. Numeric switching-test load, minimum propagation delay and actual supply/load/input-edge/layout timing applicability remain unestablished; application-section load guidance is not promoted into a guaranteed test condition.",
       "fact_ids": [
         "fact-nand-electrical-limits",
-        "fact-nand-absolute-maximum"
+        "fact-nand-absolute-maximum",
+        "fact-nand-propagation-table-max45",
+        "fact-nand-output-transition-table-max45"
       ],
       "blocking_fact_ids": [
         "fact-nand-electrical-limits"

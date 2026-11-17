@@ -28,10 +28,12 @@
       "record_id": "rec-flipflop",
       "domain": "electrical limits",
       "status": "OPEN",
-      "reason": "UNSOURCED full application closure: selected table rows do not establish all actual-supply, load, startup and partial-power behavior.",
+      "reason": "Selected source-conditioned logic rows, including D setup/hold requirements, are retained. They do not establish actual-supply/load/input-edge/skew timing closure, minimum clock-to-Q delay, physical hold slack, startup or partial-power behavior.",
       "fact_ids": [
         "fact-flipflop-electrical-limits",
-        "fact-flipflop-absolute-maximum"
+        "fact-flipflop-absolute-maximum",
+        "fact-flipflop-data-setup45",
+        "fact-flipflop-data-hold45"
       ],
       "blocking_fact_ids": [
         "fact-flipflop-electrical-limits"

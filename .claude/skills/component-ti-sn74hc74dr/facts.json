@@ -259,6 +259,34 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-flipflop-data-setup45",
+      "record_id": "rec-flipflop",
+      "source_id": "src-flipflop-datasheet",
+      "class": "TRANSIENT",
+      "value": 25,
+      "unit": "ns",
+      "conditions": "SN74 commercial grade, VCC=4.5V, TA=-40..85C; source measurement generators PRR<=1MHz, ZO=50ohm, input tt<6ns, one output/input transition per measurement. Worst listed required D setup time before CLK rising: source section6.7 prints this under MAX; require at least 25ns stable D for that table corner. Do not describe it as the source MIN-column value. Measurement Figure7-3 uses 50% crossings; section7 states CL=50pF including probe/jig. Does not establish actual 5V clock period, skew, loading, metastability or setup slack.",
+      "locator": "src-flipflop-datasheet: SCLS094F printed p6 / physical index5 section6.7 Timing Requirements -74, tsu Data at4.5V/-40..85C; p9 / index8 section7 Figure7-3",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-flipflop-data-hold45",
+      "record_id": "rec-flipflop",
+      "source_id": "src-flipflop-datasheet",
+      "class": "TRANSIENT",
+      "value": 0,
+      "unit": "ns",
+      "conditions": "SN74 commercial grade, VCC=4.5V, TA=-40..85C; source measurement generators PRR<=1MHz, ZO=50ohm, input tt<6ns, one output/input transition per measurement. Minimum D hold time after CLK rising at the listed corner, section6.7 MIN column. Measurement Figure7-3 uses 50% crossings; section7 states CL=50pF including probe/jig. Zero required hold does not supply a minimum CLK-to-Q/contamination delay, routed hold margin or metastability guarantee. Actual skew/load/supply applicability remains open.",
+      "locator": "src-flipflop-datasheet: SCLS094F printed p6 / physical index5 section6.7 Timing Requirements -74, th Data after CLK rising at4.5V/-40..85C MIN; p9 / index8 section7 Figure7-3",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }
