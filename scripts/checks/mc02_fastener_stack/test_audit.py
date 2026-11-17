@@ -19,7 +19,7 @@ class FastenerTests(unittest.TestCase):
             self.assertEqual(a.number(got['upper']), a.number(expected[1]))
             self.assertEqual(row['assembly_verdict'], 'NOT_SHOWN')
             self.assertIsNone(row['worst_case_washer_limit_mm'])
-            self.assertEqual(len(row['unknowns']), 6)
+            self.assertEqual(len(row['unknowns']), 5)
 
     def test_full_interval_extrema_not_nominal_subtraction(self):
         self.assertEqual(a.residual(('24.8','25.2'),('22.0','22.4'),('2.15','2.65')),
@@ -35,12 +35,30 @@ class FastenerTests(unittest.TestCase):
         for value in (('2','1'),('NaN','3'),('-1','2'),('0','Infinity'),(1,'2')):
             with self.assertRaises(ValueError): a.residual(value,('1','1'),('1','1'))
 
-    def test_unverified_handoff_cannot_promote(self):
+    def test_reviewed_source_cannot_waive_version_or_change_identity(self):
         for key,value in (('status','PRIMARY_CONFIRMED'),('verified_pdf_sha256','a'*64),
                           ('identity','Keystone 4688'),('nominal_mm','2.3'),
-                          ('finish_disposition','RESOLVED')):
+                          ('finish_disposition','RESOLVED'),('retained_catalog_finish','steel / zinc'),
+                          ('material_finish','steel / nickel')):
             e=copy.deepcopy(self.e);e['nut_handoff'][key]=value
-            with self.assertRaisesRegex(ValueError,'handoff changed'): a.audit(e)
+            with self.assertRaisesRegex(ValueError,'reviewed source contract changed'): a.audit(e)
+
+    def test_verified_dimension_removes_only_source_gap(self):
+        result=a.audit(self.e)
+        self.assertEqual(result['nut_handoff']['status'],'PRIMARY_DIMENSION_VERIFIED')
+        self.assertEqual(result['nut_handoff']['verified_pdf_sha256'],result['nut_handoff']['expected_pdf_sha256'])
+        self.assertEqual(result['nut_handoff']['reviewed_drawing']['thread'],'M3 x 0.5')
+        self.assertIsNone(result['nut_handoff']['reviewed_drawing']['revision'])
+        self.assertIsNone(result['nut_handoff']['current_product_page']['html_sha256'])
+        self.assertEqual(result['nut_handoff']['current_product_page']['finish_plating'],'Zinc & Clear Chromate')
+        self.assertEqual(result['nut_handoff']['finish_disposition'],'UNRESOLVED_VERSION_DISCREPANCY')
+        for row in result['sites']:
+            self.assertNotIn('nut dimension primary-source verification',row['unknowns'])
+            self.assertIn('nut finish/version discrepancy',row['unknowns'])
+            self.assertIn('washer exact identity and thickness tolerance',row['unknowns'])
+            self.assertEqual(row['reviewed_nut_interval_mm'],['2.15','2.65'])
+            self.assertEqual(row['assembly_verdict'],'NOT_SHOWN')
+            self.assertIsNone(row['worst_case_washer_limit_mm'])
 
     def test_changed_source_pin(self):
         e=copy.deepcopy(self.e);e['sha256'][a.THREAD]='0'*64

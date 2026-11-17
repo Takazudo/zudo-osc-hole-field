@@ -13,7 +13,7 @@ SITES = {'SLV-U1': ('JL', [74, 28]), 'SLV-U2': ('JR', [244, 24]),
          'SLV-L1': ('P', [93, 276]), 'SLV-L2': ('P', [244, 230])}
 UNKNOWN = ['screw identity and length tolerance', 'assembled grip tolerance including compression',
            'washer exact identity and thickness tolerance', 'required thread protrusion',
-           'nut dimension primary-source verification', 'nut finish/version discrepancy']
+           'nut finish/version discrepancy']
 
 
 def number(value):
@@ -52,11 +52,19 @@ def audit(evidence, root=ROOT):
         if hashlib.sha256((root/path).read_bytes()).hexdigest() != expected:
             raise ValueError('source pin changed: '+path)
     handoff = evidence['nut_handoff']
-    if (handoff['status'] != 'UNVERIFIED_HANDOFF' or handoff['verified_pdf_sha256'] is not None
+    verified_sha = 'b31545f168c90a3bc2d44f06b0f0a3003a6aaeef002b4366e11a44230637af44'
+    if (handoff['status'] != 'PRIMARY_DIMENSION_VERIFIED'
+            or handoff['verified_pdf_sha256'] != verified_sha or handoff['expected_pdf_sha256'] != verified_sha
+            or handoff['verified_pdf_bytes'] != 172371
+            or handoff['material_finish'] != 'steel / zinc plate (reviewed DWG 4708)'
+            or handoff['retained_catalog_finish'] != 'steel / nickel'
+            or handoff['reviewed_drawing']['number'] != '4708'
+            or handoff['reviewed_drawing']['thread'] != 'M3 x 0.5'
+            or handoff['reviewed_drawing']['revision'] is not None
             or handoff['identity'] != 'Keystone 4708'
             or handoff['nominal_mm'] != '2.40' or handoff['tolerance_mm'] != '0.25'
             or handoff['finish_disposition'] != 'UNRESOLVED_VERSION_DISCREPANCY'):
-        raise ValueError('handoff changed or promoted; separate source review required')
+        raise ValueError('reviewed source contract changed; separate source review required')
     nom = number(handoff['nominal_mm']); tol = number(handoff['tolerance_mm'])
     nut = (str(nom-tol), str(nom+tol))
     ruled = json.loads((root/RULED).read_text())['sleeves']
@@ -80,14 +88,14 @@ def audit(evidence, root=ROOT):
             raise ValueError('plane/class/protrusion source mismatch')
         rows.append({'site': site['id'], 'front_board': board, 'xy_mm': xy,
                      'nominal_grip_mm': str(grip), 'nominal_screw_mm': '25',
-                     'handoff_nut_interval_mm': list(nut),
+                     'reviewed_nut_interval_mm': list(nut),
                      'conditional_washer_plus_protrusion_capacity_mm': residual(('25','25'),(str(grip),str(grip)),nut),
                      'constraint': 'W + P <= L - G - N; W and required P remain unknown',
                      'worst_case_washer_limit_mm': None,
                      'assembly_verdict': 'NOT_SHOWN', 'unknowns': list(UNKNOWN)})
     return {'engineering_commit': evidence['engineering_commit'], 'inputs_sha256': evidence['sha256'],
             'nut_handoff': handoff, 'sites': rows,
-            'scope': 'Conditional arithmetic with nominal screw/grip and UNVERIFIED_HANDOFF nut bounds only. '
+            'scope': 'Conditional arithmetic with nominal screw/grip and drawing-verified nut bounds only; finish/version remains unresolved. '
                      'Zero screw/grip tolerance is a sensitivity assumption, not a sourced guarantee. '
                      'Positive residual is not washer permission, guaranteed protrusion, strength, thread engagement, '
                      'creep, rear-envelope qualification, hardware adoption or manufacturing acceptance.'}
