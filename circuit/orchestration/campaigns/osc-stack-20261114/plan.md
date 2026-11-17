@@ -20,7 +20,7 @@ Reason for WSL: the available Cloud container could not sustain the required KiC
 | Routing, DRC and zone fill | Existing routing holds and explicit owner DRC/fill hold remain | Do not launch held operations; record the precise owner/gate decision if this blocks all remaining WSL work |
 | WSL phase exit | Not established while known required WSL work remains pending | Before ending, reconcile jobs, receipts, recoverable source and the remaining WSL queue; distinguish blocked from complete |
 
-### Candidate remedy preparation and pending sequencing decision
+### Candidate-first disposition and bounded remedy
 
 The reviewed candidate assessment at `3bc9aa088bd7cf8de4d9df5715beb2053ded2be6` distinguishes preliminary assessment (allowed) from formal #367 completion. The latter retains #364/#365's integrated-source prerequisite. Under the owner's renewed delegation, the coordinator selected candidate-first paper assessment in DS-134. The prior sequencing question is withdrawn. Exact assessment source is `7c71038d7a175c43503efc3cc41831301038b7ae`; main/CI acceptance for canonical adoption remains open. DRC/fill, routing, formal adoption and manufacturing holds are unchanged.
 
@@ -320,3 +320,7 @@ Wall time and model usage per attempt, from the Agent tool's completion notices 
 | DA-03 | c6, clarification | 1 min (58 s) | 322,310 | 2 |
 
 The token figure is the one the completion notice reports; what it counts across a continuation is not documented. The wall times that the children wrote into their result sections are their own estimates; the figures here are the measured ones. ST-01's result section says about 2.5 h, which is wrong.
+
+### Active bounded remedy MC04-R1
+
+The [independent candidate disposition](mc04-candidate-disposition-20261117.md) records NEEDS_DESIGN with source-model checks3/4 supported, and admits one isolated U4324+C4341 room-only study. Root selects an isolated study implementation with unchanged canonical geometry. Its first causal guard must establish new opportunity before any pair search. Exact obstacles, source pins, fixed hardware, existing radii and the 600-second/1CPU/1GiB/no-swap/128PID ceiling remain binding. No native job or broader routing/adoption is admitted. Collect the implementation and independent tests, execute only under verified resource controls, then return the actual result to the design reviewer.
