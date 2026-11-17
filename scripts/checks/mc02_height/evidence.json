@@ -1,0 +1,591 @@
+{
+  "source_commit": "2c53715d49a4a7639723595590d1fd4eeb3a3c1f",
+  "status": "Supplemental evidence candidates; owner facts and access verdicts unchanged",
+  "pins": {
+    "design/stack/fixings/threading-procedure.json": "22b19d117ee0f9ea946b83a5c47cc0abbbd024757d229ae129e8cae338cee3a7",
+    "design/reports/io-partition.json": "37a773282d723d7f689d1e6cf009e4edd1947827a5ee45f0051e42cd4e907a0b",
+    ".claude/skills/component-murata-grm1885c1h103ja01d/facts.json": "0da2c2b9ac8070f67c0add27d6ea0f3723dc57ae19faf2d9f02b02d0487adc5c",
+    ".claude/skills/component-yageo-rc0603fr-0710ml/facts.json": "5c861be006bcff92240699a698ae4f6efe4674067c8e841557fea69ab7b81ffc",
+    "circuit/sources/ic-library/RT0603BRD.pdf": "36b214e50ce608a711494bdf1ac3b888616c36508b93222bbf42212fcde7c3a1",
+    "circuit/sources/ic-library/RC0603FR.pdf": "9bf1013b7589c3af9750dc9a8f20c15b29881222ec31d827dc9c2625ec86c098",
+    "circuit/sources/ic-library/C0603C101.pdf": "1264bf36b455e746dc831ebba8a3696c328d574b9950d1c5e02ab95971e7d8d1",
+    "circuit/sources/ic-library/BAS16GW-Q.pdf": "36b9d598de374dbdcc666f0516477d958e02471b323842704249e0e447e2be6b",
+    "circuit/sources/ic-library/BAT54S.pdf": "0baaac4f52b05b5d41932c445eb8dddc636e464b1f717d11ee41b27ba1202fe7",
+    "circuit/sources/ic-library/MMBT3906.pdf": "9589175ddb2e89e0cddef099fdd74ce6b33a2f7f9de9b4292b964f3189bf806b",
+    "circuit/sources/ic-library/BAS16GW-QX-chemical.html": "8cd1f913a81488831185205df86676af7b46f8bc6ea90cb015b3be1660eda073",
+    "circuit/sources/bypass-capacitor/acquisition-20261001.json": "6b6b112bdcb45d99607ac881e5566bce96ebcf5840d5c28c03994c75112e9896"
+  },
+  "expected_refs": {
+    "C1144": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C1145": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C1344": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C135": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C1416": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C142": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C143": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C1445": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C1448": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C1449": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C1508": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C1510": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C1515": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C1608": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C2105": {
+      "mpn": "GRM1885C1H103JA01D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C2135": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C2206": {
+      "mpn": "C0603C101J5GACTU",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C2239": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C2240": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C2241": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C2242": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C233": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C2333": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C4231": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C4321": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C4343": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C4346": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C4428": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C4433": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C4543": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C4632": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C4652": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C5107": {
+      "mpn": "C0603C101J5GACTU",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "C8434": {
+      "mpn": "GRM188R71H104KA93D",
+      "footprint": "zudo-osc-hole-field:C0603"
+    },
+    "D2105": {
+      "mpn": "BAT54S,215",
+      "footprint": "zudo-osc-hole-field:SOT-23"
+    },
+    "D2108": {
+      "mpn": "BAS16GW-QX",
+      "footprint": "zudo-osc-hole-field:SOD-123"
+    },
+    "D5208": {
+      "mpn": "BAS16GW-QX",
+      "footprint": "zudo-osc-hole-field:SOD-123"
+    },
+    "D5210": {
+      "mpn": "BAS16GW-QX",
+      "footprint": "zudo-osc-hole-field:SOD-123"
+    },
+    "Q4602": {
+      "mpn": "MMBT3906,215",
+      "footprint": "zudo-osc-hole-field:SOT-23"
+    },
+    "R109": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1120": {
+      "mpn": "RC0603FR-0710ML",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1121": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1122": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1170": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1219": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1225": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1317": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1318": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1352": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1356": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1382": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1395": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1396": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1434": {
+      "mpn": "RC0603FR-0710ML",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1461": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1521": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1528": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1536": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1542": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R1614": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R2126": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R2128": {
+      "mpn": "RC0603FR-0710ML",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R2229": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R4472": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R4546": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R4697": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R5134": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R5162": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R5176": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R5249": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R5265": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R5266": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R5270": {
+      "mpn": "RC0603FR-0710ML",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R7514": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R7519": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R8159": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R8260": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R8331": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R8424": {
+      "mpn": "RT0603BRD07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R8460": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "R8476": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "RB1227": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "RB1232": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "RB1510": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "RB1522": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "RB1526": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "RB1530": {
+      "mpn": "",
+      "footprint": "zudo-osc-hole-field:R0603"
+    },
+    "RB4434": {
+      "mpn": "RC0603FR-07100KL",
+      "footprint": "zudo-osc-hole-field:R0603"
+    }
+  },
+  "expected_links": {
+    "O-K-O3": [
+      "C1144",
+      "C1145",
+      "R1120",
+      "R1170",
+      "R1356"
+    ],
+    "O-K-O5": [
+      "C1416",
+      "C1445",
+      "R1434",
+      "RB1522"
+    ],
+    "JL-K-JL-L02": [
+      "C135",
+      "C142",
+      "C143",
+      "R109"
+    ],
+    "JL-K-JL-L03": [
+      "C233",
+      "R2229",
+      "R8260"
+    ],
+    "JL-K-JL-L08": [
+      "C2206",
+      "C2239",
+      "C2240",
+      "C2241",
+      "C2242",
+      "R8159"
+    ],
+    "JR-K-JR-L01": [
+      "C4321",
+      "C4343",
+      "C4346"
+    ],
+    "JR-K-JR-L05": [
+      "C4632",
+      "Q4602"
+    ],
+    "JR-K-JR-L06": [
+      "C4543",
+      "R4546"
+    ],
+    "JR-K-JR-L07": [
+      "C4652",
+      "R4697",
+      "R7514"
+    ],
+    "P-K-P-L01.01.01": [
+      "C4428"
+    ],
+    "P-K-P-L01.01.02": [
+      "C4433",
+      "RB4434"
+    ],
+    "P-K-P-L02.01.01": [
+      "R4472"
+    ],
+    "P-K-P-L03.01": [
+      "C8434",
+      "R7519",
+      "R8424",
+      "R8460",
+      "R8476"
+    ],
+    "P-K-P-L06.02": [
+      "C1344",
+      "R1382",
+      "R1395",
+      "R1396"
+    ],
+    "P-K-P-L07": [
+      "C1449",
+      "C1608",
+      "R1219",
+      "R1225",
+      "R1352",
+      "R1461",
+      "R1614"
+    ],
+    "P-K-P-L08": [
+      "C1448",
+      "C1449"
+    ],
+    "P-K-P-L10.01.02": [
+      "R1521",
+      "R1528"
+    ],
+    "P-K-P-L10.02": [
+      "C1508",
+      "R1536",
+      "R1542"
+    ],
+    "P-K-P-L11.01.01.01": [
+      "RB1227",
+      "RB1232",
+      "RB1526",
+      "RB1530"
+    ],
+    "P-K-P-L11.01.01.02": [
+      "C2333"
+    ],
+    "P-K-P-L12.01.01.02": [
+      "C1510"
+    ],
+    "P-K-P-L12.01.02.02": [
+      "C1515",
+      "RB1510"
+    ],
+    "P-K-P-L12.02.01.01": [
+      "R5176",
+      "R5270"
+    ],
+    "P-K-P-L12.02.01.02": [
+      "C5107",
+      "R5162"
+    ],
+    "P-K-P-L13.01.02.01": [
+      "D5208",
+      "R5249",
+      "R5266",
+      "R8331"
+    ],
+    "P-K-P-L14.01.01.02": [
+      "R5134"
+    ],
+    "P-K-P-L14.01.02.02": [
+      "C4231"
+    ],
+    "P-K-P-L15.01.02.02": [
+      "D5210"
+    ],
+    "P-K-P-L15.02.01.01": [
+      "R5265"
+    ],
+    "JL-P-K-JL-L01": [
+      "C2105",
+      "C2135",
+      "D2105",
+      "D2108",
+      "R1121",
+      "R1122",
+      "R2126",
+      "R2128"
+    ],
+    "JL-P-K-P-L01.01.01.01": [
+      "R1317",
+      "R1318"
+    ]
+  },
+  "groups": {
+    "GRM188R71H104KA93D": {
+      "body_min_mm": 0.7,
+      "body_max_mm": 0.9,
+      "identity_scope": "exact",
+      "source": "murata_api",
+      "locator": "productSearchResult[0].itemInfoList: thickness.displayName; raw max conflict retained"
+    },
+    "GRM1885C1H103JA01D": {
+      "body_min_mm": 0.7,
+      "body_max_mm": 0.9,
+      "identity_scope": "exact",
+      "source": ".claude/skills/component-murata-grm1885c1h103ja01d/facts.json",
+      "locator": "fact-dc-wiper-c-body"
+    },
+    "RC0603FR-0710ML": {
+      "body_min_mm": 0.35,
+      "body_max_mm": 0.55,
+      "identity_scope": "exact",
+      "source": ".claude/skills/component-yageo-rc0603fr-0710ml/facts.json",
+      "locator": "fact-dc-failbias-r-body"
+    },
+    "RT0603BRD07100KL": {
+      "body_min_mm": 0.35,
+      "body_max_mm": 0.55,
+      "identity_scope": "exact",
+      "source": "circuit/sources/ic-library/RT0603BRD.pdf",
+      "locator": "PDF page 1 T dimension"
+    },
+    "RC0603FR-07100KL": {
+      "body_min_mm": 0.35,
+      "body_max_mm": 0.55,
+      "identity_scope": "exact",
+      "source": "circuit/sources/ic-library/RC0603FR.pdf",
+      "locator": "PDF page 1 T dimension"
+    },
+    "C0603C101J5GACTU": {
+      "body_min_mm": 0.73,
+      "body_max_mm": 0.87,
+      "identity_scope": "exact",
+      "source": "circuit/sources/ic-library/C0603C101.pdf",
+      "locator": "PDF page 1 T dimension"
+    },
+    "BAS16GW-QX": {
+      "body_min_mm": 1,
+      "body_max_mm": 1.3,
+      "identity_scope": "exact",
+      "source": "circuit/sources/ic-library/BAS16GW-Q.pdf",
+      "locator": "PDF page 6 Figure 9; OPN HTML QX to SOD123"
+    },
+    "BAT54S,215": {
+      "body_min_mm": 0.9,
+      "body_max_mm": 1.1,
+      "identity_scope": "conditional_suffix",
+      "source": "circuit/sources/ic-library/BAT54S.pdf",
+      "locator": "PDF page 5 Figure 5; full suffix UNSOURCED"
+    },
+    "MMBT3906,215": {
+      "body_min_mm": 0.9,
+      "body_max_mm": 1.1,
+      "identity_scope": "conditional_suffix",
+      "source": "circuit/sources/ic-library/MMBT3906.pdf",
+      "locator": "PDF page 6 Figure 7; full suffix UNSOURCED"
+    }
+  },
+  "murata_sha256": "9c971f7c7dbb90c34e4fab06d0098bc9470853ccc05534db6f1e34088b120cae"
+}
