@@ -1,12 +1,24 @@
-# Cloud-first PCB development orchestration
+# PCB development orchestration
 
 Owner-directed operating policy, 2026-11-11. Read [WORKFLOW.md](WORKFLOW.md) first. This policy governs delegation, resource admission and handoff for this project; it does not replace circuit evidence, native validation, review or release gates.
 
 This is a runbook, not an installed scheduler or a provider API configuration. Session creation, model selection, notifications and local-machine access must be confirmed in the actual client. Never claim that a session, VM, reservation or background monitor exists merely because a plan mentions it. Generalization into a reusable product is deferred until this project is complete.
 
+## Active x0x WSL continuation contract — 2026-11-17
+
+The owner has assigned the current x0x WSL Codex session the top-level manager role previously assigned to Moya for `osc-stack-20261114`. This session owns dependency planning, dispatch, result collection and serialized local integration, using bounded subagents with disjoint write ownership. Direct communication with Moya is not assumed and Moya acknowledgment is not a prerequisite for routine progress. This dated contract supersedes conflicting historical cloud-first/Moya-startup wording below and in the older campaign briefs.
+
+The work moved to WSL because the available Cloud container could not sustain the required KiCad-related processing. The continuation unit is the **WSL execution phase**, not an individual task, review, report, issue comment or collection of offline checks. While a known required WSL operation remains ahead, continue its authorized implementation, preparation and verification in dependency order. Finish active useful work; do not manufacture unrelated microtasks to keep a session busy.
+
+After each result, update #362 and the campaign WSL queue, then select the next ready operation. A blocked task does not block independent work. Retain passed evidence under unchanged source/tool identities; rerun only for changed inputs, a concrete unresolved risk or a required gate. Report a WSL-phase completion only when the queue shows no known required WSL operation outstanding, all owned jobs are terminal and cleaned up, and the source/results are recoverable for subsequent work elsewhere. Overall project completion is a separate claim. If all remaining WSL work depends on a genuine external decision/input, denied access or a held operation, record the exact dependency and options; do not label the phase complete.
+
+Keep one coordinator, one writer per owned path, the machine-wide heavy lock, effective per-transaction CPU/memory/swap/time bounds and verified cleanup. Low recommended free-memory headroom alone is not a stop condition under the owner's instruction; effective resource enforcement and access boundaries remain mandatory. Do not bypass denials. DRC, zone fill, formal hardware adoption and manufacturing remain held. Inspect push/PR/CI triggers before any outward Git operation; a local candidate composition is not main integration or adoption.
+
+Use the host's supported continuation facilities and state observed status honestly. A queued prompt, written plan or configured Goal is not evidence of a running turn. If a continuation control cannot be resumed through the exposed interface, continue the active turn and record that limitation; do not fabricate a scheduler or start a competing manager. Actual execution/restart attempts remain bounded by section 5.
+
 ## 1. Authority and responsibilities
 
-Use one active top-level manager per campaign: either a Claude Code Cloud manager session or ChatGPT Dots (for example Moya). The two are alternative control surfaces, not concurrent owners of the same work. Record the manager's session URL/ID and the campaign revision. A handoff requires a durable checkpoint, reconciliation of live jobs and acknowledgment by the new manager; an expired conversation alone is not proof that its jobs stopped.
+Use one active top-level manager per campaign as assigned by the owner. The active x0x WSL assignment above applies now; historical alternatives include a Claude Code Cloud manager session or ChatGPT Dots (for example Moya). These are alternative control surfaces, not concurrent owners of the same work. Record the manager's session URL/ID and the campaign revision. A handoff requires a durable checkpoint, reconciliation of live jobs and acknowledgment by the new manager; an expired conversation alone is not proof that its jobs stopped.
 
 | Role | Responsibility | Boundary |
 | --- | --- | --- |

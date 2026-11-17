@@ -4,7 +4,25 @@ Direct board-stack campaign, started on the owner's direction of 2026-11-14. Pol
 
 Every schematic and PCB stays an unvalidated draft. This campaign creates no fabrication output and takes no outward action.
 
-## Current continuation checkpoint — 2026-11-16 JST / 2026-11-15 UTC
+## Current WSL execution phase — 2026-11-17
+
+**RUNNING; WSL PHASE NOT COMPLETE.** The owner assigned this x0x WSL Codex session the Moya coordinator role. Thread `01a1e7fb-e191-7382-8c35-5f76d36934fa` plans, delegates, reviews and serializes local results. Direct Moya communication is not available as a workflow dependency. The current model and live jobs must be observed per dispatch; no second coordinator is admitted.
+
+Reason for WSL: the available Cloud container could not sustain the required KiCad-related work. The stopping criterion is completion of known WSL-required operations, not a single implementation, report or review. Continue independent authorized work when one item is blocked. A fully blocked WSL queue requires an explicit dependency report, not a completion claim. See the [operative contract](../../../ORCHESTRATION.md#active-x0x-wsl-continuation-contract--2026-11-17).
+
+| WSL queue item | Observed state / dependency | Next action |
+| --- | --- | --- |
+| Pinned KiCad identity | Completed: CLI and pcbnew 10.0.6 in the cached pinned image | Reuse receipt unless oracle identity changes |
+| Engineering-source aggregate | Completed at `2c53715d49a4a7639723595590d1fd4eeb3a3c1f`; source checks and independent audit retained in #362 | Do not rerun unchanged; bind any later required native check to its actual inputs |
+| Local review composition | `cb64c4096d3a1e1dcb4fee2f603f396a287a8b04` includes imported MC02 packet, MC03 access note, offline height audit and reconciliation/precision notes; existing engineering entries unchanged | Collect the active passive-options and packet-contract implementations, independently review and serialize the disjoint additions |
+| Gate/source readiness for subsequent native work | Candidate packet and source-only evidence are available; formal integrated-head ruling and DS-06/DS-88 disposition remain pending | Identify and finish concrete prerequisites; do not mistake MC03 tool-access uncertainty for a formal MC04 prerequisite |
+| Later changed-source KiCad verification | Required when an admitted engineering change or unresolved native gate warrants it; no current-source result may be relabelled as a future-head pass | Schedule under the shared lock with explicit effective resource/time limits and cleanup after source admission |
+| Routing, DRC and zone fill | Existing routing holds and explicit owner DRC/fill hold remain | Do not launch held operations; record the precise owner/gate decision if this blocks all remaining WSL work |
+| WSL phase exit | Not established while known required WSL work remains pending | Before ending, reconcile jobs, receipts, recoverable source and the remaining WSL queue; distinguish blocked from complete |
+
+The original cloud startup records below are historical. Source/packet/access/tooling transfers are preserved as exact commits and refs; recovering these delivered artifacts does not revive abandoned older attempts. Current work uses isolated branches and does not edit another session's worktree. Shared heavy exclusion, effective caps and verified cleanup remain required; recommended free-memory headroom alone is not an owner-authorized stop reason. PR/main CI that invokes held DRC/fill must not be triggered inadvertently.
+
+## Historical continuation checkpoint — 2026-11-16 JST / 2026-11-15 UTC
 
 **Startup handoff prepared; incoming Moya acknowledgment pending. No implementation worker has been dispatched by this documentation task.** Continue this campaign, with Moya as the designated incoming sole manager and Codex Cloud as the selected implementation environment. The operating tracker is [#362](https://github.com/Takazudo/zudo-osc-hole-field/issues/362); read the [complete continuation brief](moya-codex-resume-20261116.md) and [Moya startup prompt](moya-start-20261116.md). The whole-instrument objective remains [#315](https://github.com/Takazudo/zudo-osc-hole-field/issues/315).
 

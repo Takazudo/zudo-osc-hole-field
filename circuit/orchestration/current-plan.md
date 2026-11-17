@@ -1,5 +1,15 @@
 # Current orchestration mapping
 
+## Active mapping — x0x WSL, 2026-11-17
+
+The current Codex coordinator in thread `01a1e7fb-e191-7382-8c35-5f76d36934fa` performs Moya's management role under the owner's instruction. See the [active WSL contract](../ORCHESTRATION.md#active-x0x-wsl-continuation-contract--2026-11-17) and [campaign WSL queue](campaigns/osc-stack-20261114/plan.md#current-wsl-execution-phase--2026-11-17). No external manager acknowledgment is needed for ordinary dispatch or local review.
+
+The purpose is to complete known WSL-required work, including KiCad processing that could not continue in the available Cloud container. A completed microtask or #362 update is not a stopping point. Reconcile dependencies after each result and proceed to the next ready WSL operation or its necessary preparation. Preserve passed unchanged evidence and distinguish local review composition from main integration and hardware adoption.
+
+The historical records below remain context only where they conflict with this active mapping. Current source evidence and actual jobs are recorded in #362; use the named campaign queue rather than the historical proposed routing lanes as dispatch authority. DRC/fill/adoption/manufacturing holds, resource caps, shared exclusion and independent review remain in force.
+
+## Historical mapping — 2026-11-16
+
 Mapping updated: 2026-11-16 JST (2026-11-15 UTC). Operating policy remains [ORCHESTRATION.md](../ORCHESTRATION.md), dated 2026-11-11, and the canonical [WORKFLOW.md](../WORKFLOW.md). Engineering baseline inspected: `85b2b489d6f47b34991e3d9b0d2e09991a458a97` (`main`, merge of #361). Refresh the actual target SHA before dispatch; this baseline does not identify the later documentation commit.
 
 The Moya startup handoff is prepared under [super-epic #362](https://github.com/Takazudo/zudo-osc-hole-field/issues/362). Read the [complete continuation brief](campaigns/osc-stack-20261114/moya-codex-resume-20261116.md) and [Moya startup prompt](campaigns/osc-stack-20261114/moya-start-20261116.md). Incoming-manager acknowledgment and actual implementation dispatch are pending. This documentation task creates no Moya or Codex Cloud session, resource reservation, local connection or routing job. The owner reports Fable automatic resumption stopped; this is not proof that every inaccessible historical child process has terminated.
