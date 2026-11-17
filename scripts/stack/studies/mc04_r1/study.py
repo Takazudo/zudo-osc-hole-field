@@ -98,6 +98,15 @@ def rectangles(fp):
     return [fp['courtyard']] + [p['bbox'] for p in fp['pads']]
 
 
+def obstacle_rect(rect, growth):
+    """Match retained Obstacles._add / Field.add four-decimal storage exactly.
+
+    This is the existing geometry grid, not an extra clearance epsilon. Keep
+    candidate-to-link screens on their unchanged retained Field predicates.
+    """
+    return [round(value, 4) for value in sg.grow(rect, growth)]
+
+
 class Scene:
     """Reuse retained outline/circle/link predicates; include every own-face pad too.
 
@@ -130,7 +139,7 @@ class Scene:
                 if fp['ref'] in self.model.dropped.get(board, ()):
                     continue
                 for p in fp['pads']:
-                    self.field.idx[(board, fp['side'])].add(sg.grow(p['bbox'], self.field.gap),
+                    self.field.idx[(board, fp['side'])].add(obstacle_rect(p['bbox'], self.field.gap),
                         ('body', (board, fp['ref']), 'own-face pad'))
 
     def violations(self, fp, dx, dy, exclude):
@@ -142,8 +151,8 @@ class Scene:
         hits = set()
         if math.hypot(dx, dy) > 25.0001:
             hits.add('displacement cap')
-        own = [rp.shift(r, dx, dy) for r in rectangles(fp)]
-        other = [rp.shift(p['bbox'], dx, dy) for p in fp['pads']
+        own = [[round(v, 4) for v in rp.shift(r, dx, dy)] for r in rectangles(fp)]
+        other = [[round(v, 4) for v in rp.shift(p['bbox'], dx, dy)] for p in fp['pads']
                  if p['type'] in ('thru_hole', 'np_thru_hole')]
         for face, rects in ((fp['side'], own), ('F' if fp['side'] == 'B' else 'B', other)):
             for rect in rects:
@@ -176,7 +185,7 @@ class Scene:
 
 def mutual_conflict(pair, gap):
     a, b = pair
-    return a['side'] == b['side'] and any(sg.inter(r, sg.grow(s, gap))
+    return a['side'] == b['side'] and any(sg.inter(r, obstacle_rect(s, gap))
         for r in rectangles(a) for s in rectangles(b))
 
 

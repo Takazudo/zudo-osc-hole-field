@@ -161,6 +161,64 @@ class StudyTests(unittest.TestCase):
             run.assert_not_called()
             self.assertEqual(output.read_text(),'preserve')
 
+    def test_retained_grid_tangent_overlap_and_clearance(self):
+        # Actual source tangent caused the false INCONSISTENT_PAIR result.
+        for face in 'FB':
+            for dx,dy in ((0,0),(17.125,-3.75),(-300.5,12.25)):
+                for delta,expected in ((0,False),(-.0001,True),(.0001,False)):
+                    left=body('C4341',0); right=body('U4324',0)
+                    left['side']=right['side']=face
+                    left['courtyard']=[round(v,4) for v in s.rp.shift([263.5,41.5,265.42,44.78],dx,dy)]
+                    right['courtyard']=[round(v,4) for v in s.rp.shift([265.77+delta,42.7,273.17+delta,52.33],dx,dy)]
+                    # Keep complete fixture pads inside their corresponding bodies.
+                    left['pads'][0]['bbox']=left['courtyard'][:]
+                    right['pads'][0]['bbox']=right['courtyard'][:]
+                    with self.subTest(face=face,translation=(dx,dy),delta=delta):
+                        self.assertEqual(s.mutual_conflict([right,left],.35),expected)
+                        self.assertEqual(s.mutual_conflict([left,right],.35),expected)
+
+    def test_own_pad_obstacle_matches_retained_rounding(self):
+        for face in 'FB':
+            fp=body('stationary',0);fp['side']=face
+            fp['courtyard']=None
+            fp['pads'][0]['bbox']=[263.5,41.5,265.42,44.78]
+            boards={b:[] for b in s.rp.SCOPE_BOARDS};boards['K']=[fp]
+            model=SimpleNamespace(dropped={},margin=0,
+                forb={(b,f):s.sg.RectIndex() for b in s.rp.SCOPE_BOARDS for f in 'FB'},
+                inside=lambda b,r,m:True)
+            om={'own_face_courtyard_growth_mm':.35,'opposite_face_through_hole_pad_growth_mm':.3,
+                'hole_growth_mm':.3}
+            inp={'ci':{'boards':boards,'parameters':{'obstacle_model':om}}}
+            built=s.Scene(SimpleNamespace(model=model,opts={'latch_access_margin_mm':0}),inp,[])
+            entries=built.field.idx['K',face].items
+            self.assertEqual(len(entries),1)
+            rectangle,_=entries[0]
+            self.assertEqual(rectangle[2],265.77)
+            for delta,expected in ((0,False),(-.0001,True),(.0001,False)):
+                query=[round(265.77+delta,4),42.7,273.17,52.33]
+                self.assertEqual(s.sg.inter(query,rectangle),expected)
+
+    def test_translated_candidate_boundary_on_own_and_opposite_face(self):
+        for face in 'FB':
+            for opposite in (False,True):
+                for base in (0,17.125,-300.5):
+                    for delta,expected in ((0,False),(.0001,True),(-.0001,False)):
+                        fp=body('U4324',0)
+                        fp['side']=face
+                        fp['courtyard']=[round(base-.9,4),0,round(base+.1,4),1]
+                        fp['pads'][0]['bbox']=fp['courtyard'][:]
+                        fp['pads'][0]['type']='thru_hole' if opposite else 'smd'
+                        target_face=('F' if face=='B' else 'B') if opposite else face
+                        built=scene([fp])
+                        built.model.inside=lambda b,r,m:True
+                        # No pair self-obstacle; only this exact tangent boundary.
+                        for f in 'FB':built.field.idx['K',f]=s.sg.RectIndex()
+                        obstacle=[round(base+.3,4),0,round(base+1.3,4),1]
+                        built.field.idx['K',target_face].add(obstacle,('body',('K','fixed'),'fixture'))
+                        with self.subTest(face=face,opposite=opposite,base=base,delta=delta):
+                            result=built.violations(fp,.2+delta,0,s.PAIR)
+                            self.assertEqual('fixture:fixed' in result,expected)
+
     def test_original_rings_deterministic_bound(self):
         offsets=s.rp.ring_offsets(.25,24,25)
         self.assertEqual(len(offsets),2401)
