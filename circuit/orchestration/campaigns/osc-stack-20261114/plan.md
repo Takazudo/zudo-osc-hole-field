@@ -20,6 +20,14 @@ Reason for WSL: the available Cloud container could not sustain the required KiC
 | Routing, DRC and zone fill | Existing routing holds and explicit owner DRC/fill hold remain | Do not launch held operations; record the precise owner/gate decision if this blocks all remaining WSL work |
 | WSL phase exit | Not established while known required WSL work remains pending | Before ending, reconcile jobs, receipts, recoverable source and the remaining WSL queue; distinguish blocked from complete |
 
+### Candidate remedy preparation and pending sequencing decision
+
+The reviewed candidate assessment at `3bc9aa088bd7cf8de4d9df5715beb2053ded2be6` distinguishes preliminary assessment (allowed) from formal #367 completion. The latter retains #364/#365's integrated-source prerequisite. A narrow candidate-before-main paper-source exception has been proposed to the owner but is **NOT EFFECTIVE** without that disposition. DRC/fill, routing, formal adoption and manufacturing holds are unchanged.
+
+Prepared function-boundary briefs now cover all 26 unplaced ICs: [U1518](mc02-u1518-remedy-brief-20261117.md), [U4341](mc02-u4341-remedy-brief-20261117.md), [eight logic ICs](mc02-logic-function-remedy-brief-20261117.md), and [sixteen analog ICs](mc02-analog-function-remedy-brief-20261117.md). Their source identities, associated components/nets and declared decouplers were independently reviewed. These are preparation deliverables, not admitted placement/routing jobs or selected relocation sets. Local collection revision: `2f2fc656ca09b96c3a30b8b7d2fdaf6df31d44c8`.
+
+The next geometry/native task must consume an actual independent gate disposition and a complete bounded command/source contract. Until then, preserve the reviewed briefs, exact source evidence and existing native receipt; do not turn absent owner disposition into an approval or repeat the unchanged native job.
+
 The original cloud startup records below are historical. Source/packet/access/tooling transfers are preserved as exact commits and refs; recovering these delivered artifacts does not revive abandoned older attempts. Current work uses isolated branches and does not edit another session's worktree. Shared heavy exclusion, effective caps and verified cleanup remain required; recommended free-memory headroom alone is not an owner-authorized stop reason. PR/main CI that invokes held DRC/fill must not be triggered inadvertently.
 
 ## Historical continuation checkpoint — 2026-11-16 JST / 2026-11-15 UTC
