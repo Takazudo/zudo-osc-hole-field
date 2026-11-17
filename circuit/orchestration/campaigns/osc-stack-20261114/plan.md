@@ -395,12 +395,19 @@ five consumer amendments bb01f7f235862844e217da82d42a96fb80134b3a with57testsPAS
 Historical690/af/2c packet pins remain intact; amendment attribution is explicit.
 All31access cases and four fastener sites remain NOT_SHOWN.
 
-Active: independently reviewed E5 blocker attribution supports one named-neighbor
-room-only exchange pilot, now in implementation review. Runner preflight verifies
-1CPU/1GiB/swap0/128PIDs,480s service runtime, shared lock and cleanup. The actual
-exchange has NOT RUN; review findings must be fixed before admission. Source-only
-connector envelope/tolerance reconciliation proceeds independently. No automatic
-native rerun follows from these source/procedure changes.
+Completed since that source checkpoint: both declared E5 exchange hypotheses
+(current B face and original-F12.25..25mm annulus) returned zero U4517 individual
+room; result audits and cleanup passed. No automatic wider search is admitted.
+The canonical nut source amendment6df98d63 and separate consumer layer47dfbebc
+are collected, with24producer/62consumer tests. Historical source pins remain.
+Envelope1d5f6833 and land-registrationec4d6e1c audits retain conditional-only
+intervals and unknown actual registration; no CAD placement is adopted.
+
+Active: isolated FH12 land-pattern candidate39d456d3, reviewed with13offline tests,
+and composite native runner/lifecycle preparation under DS-141. Native NOT RUN
+until that independent review completes. Only disposable candidate inputs and
+outputs will be mounted, not canonical boards or the repository. Existing
+aggregate evidence remains bound to its original head and is not rerun.
 
 The owner requires requesting missing PDFs and continuing independent work, not
 ending with “nothing more can be done.” Retain bounded retries, shared execution
