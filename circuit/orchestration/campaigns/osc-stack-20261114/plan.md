@@ -6,7 +6,7 @@ Every schematic and PCB stays an unvalidated draft. This campaign creates no fab
 
 ## Current WSL execution phase — 2026-11-17
 
-**RUNNING; WSL PHASE NOT COMPLETE.** The owner assigned this x0x WSL Codex session the Moya coordinator role. Thread `01a1e7fb-e191-7382-8c35-5f76d36934fa` plans, delegates, reviews and serializes local results. Direct Moya communication is not available as a workflow dependency. The current model and live jobs must be observed per dispatch; no second coordinator is admitted.
+**WSL PHASE NOT COMPLETE; tested fb0ed106 aggregate completed, next native work depends on gate/source admission and existing holds.** The owner assigned this x0x WSL Codex session the Moya coordinator role. Thread `01a1e7fb-e191-7382-8c35-5f76d36934fa` plans, delegates, reviews and serializes local results. Direct Moya communication is not available as a workflow dependency. The current model and live jobs must be observed per dispatch; no second coordinator is admitted.
 
 Reason for WSL: the available Cloud container could not sustain the required KiCad-related work. The stopping criterion is completion of known WSL-required operations, not a single implementation, report or review. Continue independent authorized work when one item is blocked. A fully blocked WSL queue requires an explicit dependency report, not a completion claim. See the [operative contract](../../../ORCHESTRATION.md#active-x0x-wsl-continuation-contract--2026-11-17).
 
@@ -14,9 +14,9 @@ Reason for WSL: the available Cloud container could not sustain the required KiC
 | --- | --- | --- |
 | Pinned KiCad identity | Completed: CLI and pcbnew 10.0.6 in the cached pinned image | Reuse receipt unless oracle identity changes |
 | Engineering-source aggregate | Completed at `2c53715d49a4a7639723595590d1fd4eeb3a3c1f`; source checks and independent audit retained in #362 | Do not rerun unchanged; bind any later required native check to its actual inputs |
-| Local review composition | `f8dbada9443c2041b2d9eaaee5b587e7302e1f7a` collects imported MC02/MC03 notes, independently reviewed height/passive-options/packet-contract tools and workflow updates | Run the required post-composition regeneration check on the frozen candidate under a separately reviewed bounded WSL execution contract; do not relabel the older engineering-source receipt |
+| Local review composition | `f8dbada9443c2041b2d9eaaee5b587e7302e1f7a` collects imported MC02/MC03 notes, independently reviewed height/passive-options/packet-contract tools and workflow updates | Post-composition regeneration passed on exact `fb0ed1066091f4e0c5595d699378c1184725a96f`; see the [native receipt](wsl-native-composition-receipt-20261117.md). Keep this local candidate separate from main adoption |
 | Gate/source readiness for subsequent native work | Candidate packet and source-only evidence are available; formal integrated-head ruling and DS-06/DS-88 disposition remain pending | Identify and finish concrete prerequisites; do not mistake MC03 tool-access uncertainty for a formal MC04 prerequisite |
-| Post-composition KiCad verification | READY FOR EXECUTION-CONTRACT REVIEW: local merges and new verification sources require the project post-merge regeneration gate; source and command are frozen before launch | Preserve the pinned oracle and exact input hashes; run aggregate regeneration only with shared lock, effective caps, deadline, retained output and verified cleanup; DRC/fill excluded |
+| Post-composition KiCad verification | COMPLETED at exact `fb0ed1066091f4e0c5595d699378c1184725a96f`: aggregate PASS, no drift, independent cleanup/scope audit PASS | Reuse this receipt for these unchanged inputs; any later admitted engineering change requires its own applicable checks |
 | Routing, DRC and zone fill | Existing routing holds and explicit owner DRC/fill hold remain | Do not launch held operations; record the precise owner/gate decision if this blocks all remaining WSL work |
 | WSL phase exit | Not established while known required WSL work remains pending | Before ending, reconcile jobs, receipts, recoverable source and the remaining WSL queue; distinguish blocked from complete |
 
