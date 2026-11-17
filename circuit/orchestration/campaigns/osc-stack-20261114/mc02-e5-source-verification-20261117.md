@@ -73,3 +73,17 @@ Correct the strict expected value to-90 without loosening checks. Preserve this
 failure; review the source-bound regression before one corrected attempt.
 Actual exchange result: NOT OBTAINED at this checkpoint. Source-only envelope
 work continues independently.
+
+
+## Corrected exchange result
+
+Strict source-angle correction d96ceb717a3fd000b6afadd4d779f04570f80ede passed
+18fixtures and independent review. Corrected attempt
+e99dd9467b294f47a2ba53d057ffad29 completed5.145s,exit0,cleanup VERIFIED:
+`NO_INDIVIDUAL_ROOM_FOR_EXCHANGE`. U4517:2,401enumerated,231displacement-filtered,
+zero individual room. R4577:2,401enumerated,279filtered,45individual room.
+There were zero pair checks because the U4517 set is empty. This rejects only
+the declared finite exchange domain, not all possible redesigns.
+Result SHA-256 `afaa58e04a0919c3c83c84f54a2dabd304d88415c81f17fd7604f1de53ec0542`.
+Ignored archive index `753a70984d9887d052e757f6df2ec6039686555b4650dcc0dc5a6e3a0564a25a`.
+Independent result/dependency review continues; no automatic expanded search.
