@@ -30,7 +30,8 @@ scene retains412 accepted transformations and26 original unresolved liabilities,
 complete pads/courtyards, opposite-face protections and all fixed link, panel,
 slot, tail, latch, fixing and outline constraints. Overlaps within this forbidden
 union never authorize omitting an obstacle. C4534 stays K/F(190.96,137.59),
-angle270; C4544 stays accepted K/B(189.2026,136.8974),angle90. C4541/C4543 and the
+angle-90 in the actual retained extractor representation (physically equivalent
+to270 degrees; strict equality is not normalized or weakened); C4544 stays accepted K/B(189.2026,136.8974),angle90. C4541/C4543 and the
 R4577 analog anchors U4541/Q4504/R4576 also remain frozen.
 
 Only the exact three moving models are excluded from candidate/final fixed-scene
@@ -85,3 +86,11 @@ receipts. Another checkout requires those exact receipts via authorized handoff.
 Pre-edit component validation passed84manual records/445unverified placements.
 Actual exchange enumeration NOT RUN by the implementation author. No native,
 DRC, fill, physical acceptance, hardware adoption or manufacturing is performed.
+
+The source-angle correction is limited to C4534's frozen spec angle270 -> -90.
+The prior failed receipt remains historical evidence of a representation mismatch;
+no source position, orientation, clearance or comparator changed. A source-only
+regression parses the pinned K board with the retained plain-Python extractor,
+applies the retained accepted transforms, and compares all seven frozen anchors
+with the exact spec representation, including accepted C4544. It does not build
+a placement scene or run the exchange search.

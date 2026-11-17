@@ -1,6 +1,7 @@
 import copy
 import contextlib
 import io
+import hashlib
 import json
 from pathlib import Path
 import tempfile
@@ -25,6 +26,30 @@ def scene(blocked=None):
 
 
 class ExchangeTests(unittest.TestCase):
+    def test_all_seven_frozen_anchors_match_actual_source_representation(self):
+        spec=json.loads(s.SPEC.read_text())
+        board_path='boards/osc-core/osc-core.kicad_pcb'
+        lock_path='design/grid/placements.lock.json'
+        for relative in (board_path,lock_path,'scripts/stack/studies/mc04_r1/spec.json'):
+            self.assertEqual(hashlib.sha256((s.ROOT/relative).read_bytes()).hexdigest(),spec['sha256'][relative])
+        translation=json.loads((s.ROOT/lock_path).read_text())['frame']['kicad_translation_mm']
+        parsed=s.sg.kicad_extract.parse_board(s.ROOT/board_path,(translation['x'],translation['y']))
+        frozen=json.loads((s.ROOT/'scripts/stack/studies/mc04_r1/spec.json').read_text())
+        rows=[r for r in frozen['replacement'] if r['board']=='K']
+        boards,accepted=s.r1.reconstruct({'K':parsed},rows,rows)
+        bodies={fp['ref']:fp for fp in boards['K']}
+        self.assertEqual(len(spec['frozen_geometry']),7)
+        for ref,expected in spec['frozen_geometry'].items():
+            actual=bodies[ref]
+            with self.subTest(ref=ref):
+                self.assertEqual((actual['origin'],actual['side'],actual['angle']),
+                                 (expected['origin'],expected['face'],expected['angle']))
+        self.assertEqual(bodies['C4534']['angle'],-90)
+        self.assertNotEqual(bodies['C4534']['angle'],270)
+        self.assertIn(('K','C4544'),accepted)
+        self.assertEqual(bodies['C4544']['origin'],[189.2026,136.8974])
+        self.assertEqual((bodies['C4544']['side'],bodies['C4544']['angle']),('B',90))
+
     def test_displacement_inclusive_and_no_tolerance_expansion(self):
         self.assertTrue(s.within25([25,0]));self.assertTrue(s.within25([15,20]))
         self.assertFalse(s.within25([25.0001,0]));self.assertFalse(s.within25([float('nan'),0]))
