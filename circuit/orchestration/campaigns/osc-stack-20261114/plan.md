@@ -342,3 +342,13 @@ FFC alternatives, at most two manufacturer series, preserving existing pitch,
 contact side, counts and nominal lengths. No BOM change, vendor contact, purchase,
 geometry/native execution or adoption is permitted by that screen. After the
 result, audit the remaining ready queue rather than stopping at this milestone.
+
+### Active conditional length sensitivity — DS-137
+
+The bounded two-series screen produced no verified drop-in replacement. An
+independent review nevertheless identified useful model work: recompute the
+28C29534 links at51mm, after reproducing the current baseline, and recompute mixed
+ground sharing over all61links. Preserve all other source/model inputs and five
+intentional nulls. This does not adopt or qualify the known Molex51mm lead.
+Implementation/tests and independent review precede the one bounded offline run
+under the same1CPU/1GiB/no-swap/128PID/600second ceiling. No native job is launched.
