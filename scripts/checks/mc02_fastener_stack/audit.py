@@ -93,7 +93,8 @@ def audit(evidence, root=ROOT):
                      'constraint': 'W + P <= L - G - N; W and required P remain unknown',
                      'worst_case_washer_limit_mm': None,
                      'assembly_verdict': 'NOT_SHOWN', 'unknowns': list(UNKNOWN)})
-    return {'engineering_commit': evidence['engineering_commit'], 'inputs_sha256': evidence['sha256'],
+    return {'engineering_commit': evidence['engineering_commit'], 'source_commit': evidence['source_commit'],
+            'procedure_amendment': evidence['procedure_amendment'], 'inputs_sha256': evidence['sha256'],
             'nut_handoff': handoff, 'sites': rows,
             'scope': 'Conditional arithmetic with nominal screw/grip and drawing-verified nut bounds only; finish/version remains unresolved. '
                      'Zero screw/grip tolerance is a sensitivity assumption, not a sourced guarantee. '

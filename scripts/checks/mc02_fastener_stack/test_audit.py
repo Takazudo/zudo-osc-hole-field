@@ -11,6 +11,8 @@ class FastenerTests(unittest.TestCase):
 
     def test_conditional_nominal_budgets(self):
         r = a.audit(self.e)
+        for key in ('source_commit','engineering_commit','procedure_amendment'):
+            self.assertEqual(r[key],self.e[key])
         self.assertEqual(len(r['sites']), 4)
         for row in r['sites']:
             expected = ('.15','.65') if row['front_board'] != 'P' else ('2.15','2.65')

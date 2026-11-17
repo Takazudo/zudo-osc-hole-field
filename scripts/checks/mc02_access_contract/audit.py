@@ -54,6 +54,11 @@ def audit(evidence, root=ROOT):
                 'phase':'front' if x['n']==7 else 'K'} for x in t['steps'] if 'plastic tool' in x['do']]
     if conflicts!=evidence['expected_source_method_conflicts']:
         raise ValueError('source operation conflicts changed; explicit procedure review required')
+    phases={x['n']:x for x in t['steps'] if x['n'] in (7,12)}
+    if set(phases)!={7,12} or any('by hand only at the center of the actuator' not in x['do']
+            or 'Do not insert tools or fingernails into the connector' not in x['do'] or x['parts']!=61
+            for x in phases.values()):
+        raise ValueError('reviewed central hand-only operation missing')
     cases=t['latch']['not_shown']
     if cases != evidence['expected_not_shown'] or len(cases) != 31 or len({x['link'] for x in cases}) != 31:
         raise ValueError('exact 31 NOT SHOWN cases changed')
@@ -86,11 +91,12 @@ def audit(evidence, root=ROOT):
                      'declared_contact1_mapping_shown':claim['contact1_mapping_shown'],
                      'guaranteed_open_envelope_mm':None,'manual_corridor_mm':None,'missing':missing})
     land=json.loads((root/LAND).read_text())['entries']['hirose_fh12_0_5sh']['st01h']
-    return {'engineering_commit':evidence['engineering_commit'],'inputs_sha256':evidence['sha256'],
+    return {'engineering_commit':evidence['engineering_commit'],'source_commit':evidence['source_commit'],
+            'procedure_amendment':evidence['procedure_amendment'],'inputs_sha256':evidence['sha256'],
             'handoff':evidence['handoff'],'existing_open_assumption':land['actuator_open_envelope'],
             'cases':rows,'case_count':31,'access_verdict':'NOT SHOWN',
             'source_method_conflicts':conflicts,'source_method_conflict_count':len(conflicts),
-            'source_method_conflict_scope':'Procedure steps7/12 offer a plastic-tool alternative; verified manufacturer instruction is central hand-only operation. Each step covers61 links,122 endpoint operations total. This is a method conflict separate from31 geometric NOT SHOWN cases, not proof that all hand operations physically fail.',
+            'source_method_conflict_scope':'Reviewed procedure amendment5620eea2 replaces the plastic-tool alternative with central hand-only operation in steps7/12 (61 operations each). Zero source-method conflicts does not establish physical access: all31 geometric NOT SHOWN cases and supporting-hand obligations remain.',
             'scope':'Evidence-separation contract only. No contact mapping or height recalculation, hand/tool corridor construction, '
                     'native geometry, physical validation, hardware adoption or DRC/fill. Reference 4.8 mm and assumed 5 mm '
                     'do not establish guaranteed clearance; tool reach/contact mapping do not establish manual access.'}

@@ -51,12 +51,13 @@ unverified; pin-asset check performed. Exact source drift, missing cases and
 invalid evidence promotions are negative fixtures. An implementation/test PASS
 means the evidence contract works, not that assembled access passes.
 
-## Existing procedure conflict
+## Reviewed procedure amendment
 
-The pinned threading procedure steps7 and12 explicitly permit a plastic tool as
-an alternative to one fingertip. The verified manual requires central operation
-by hand only. `source_method_conflicts` retains both exact texts, step IDs and
-61 operations per step (122 endpoint operations total). This sequence-wide
-method contradiction is separate from the31 geometric NOT SHOWN cases; it does
-not assert all hand operations fail. A source-first procedure correction and
-review are required; this audit does not edit the procedure or its generator.
+The original2c53715 procedure allowed a plastic-tool alternative in steps7/12.
+Source-first amendment `5620eea27dd2e3232f4ba81a4592660c3f439a26` requires central
+hand-only actuation and prohibits inserting tools or fingernails. The checker now
+expects zero source-method conflicts and verifies that wording on both61-operation
+steps. Reintroducing the plastic-tool alternative fails even if its file hash is
+rebound. This correction does not demonstrate any physical access: all31 NOT SHOWN
+cases,12 supporting-hand operations and the17-end lowering burden remain unchanged.
+The engineering baseline stays2c53715; current input/procedure source is5620eea2.

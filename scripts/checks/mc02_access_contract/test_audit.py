@@ -16,13 +16,25 @@ class AccessContractTests(unittest.TestCase):
         self.assertTrue(all(x['lowering_stage'] in range(1,10) for x in r['cases']))
         self.assertTrue(all(x['guaranteed_open_envelope_mm'] is None for x in r['cases']))
 
-    def test_global_method_conflicts_separate_from31_access_cases(self):
+    def test_corrected_method_does_not_promote_access(self):
         r=a.audit(self.e)
-        self.assertEqual(r['source_method_conflict_count'],2)
-        self.assertEqual([x['step'] for x in r['source_method_conflicts']],[7,12])
-        self.assertEqual([x['operations'] for x in r['source_method_conflicts']],[61,61])
-        self.e['expected_source_method_conflicts']=[]
-        with self.assertRaisesRegex(ValueError,'operation conflicts'):a.audit(self.e)
+        self.assertEqual(r['source_method_conflict_count'],0)
+        self.assertEqual(r['source_method_conflicts'],[])
+        self.assertEqual(r['case_count'],31)
+        self.assertEqual(r['access_verdict'],'NOT SHOWN')
+        self.assertEqual(r['source_commit'],'5620eea27dd2e3232f4ba81a4592660c3f439a26')
+
+    def test_returning_plastic_tool_fails_even_with_rebound_file_hash(self):
+        import tempfile,hashlib
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);e=copy.deepcopy(self.e)
+            for name in e['sha256']:
+                path=root/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes((a.ROOT/name).read_bytes())
+            path=root/a.THREAD;doc=json.loads(path.read_text())
+            next(x for x in doc['steps'] if x['n']==7)['do']='Close with one fingertip or a plastic tool.'
+            path.write_text(json.dumps(doc));e['sha256'][a.THREAD]=hashlib.sha256(path.read_bytes()).hexdigest()
+            with self.assertRaisesRegex(ValueError,'operation conflicts'):a.audit(e,root)
 
     def test_reference4point8_is_not_guaranteed_maximum(self):
         for key,value in [('guaranteed_maximum',True),('kind','toleranced_maximum')]:

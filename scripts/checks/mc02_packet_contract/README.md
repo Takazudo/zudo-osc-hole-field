@@ -34,3 +34,19 @@ repository's Python test discovery finds this directory without native tools.
 
 No integrated-head verification, physical qualification, formal Gate A ruling,
 DRC, fill, routing-hold release, hardware adoption or manufacturing is supplied.
+
+## Explicit procedure-only amendment
+
+The original690366aa, af027d73 and2c53715 identities and their object/hash pins
+remain unchanged. Current inputs are bound to
+`5620eea27dd2e3232f4ba81a4592660c3f439a26`: only threading-procedure JSON and Markdown
+have override pins under `procedure_amendment`. The loader verifies every original
+candidate pin against the exact2c53715 Git object, and every current pin against
+the exact5620eea2 Git object and working file. It compares the old/new procedure
+objects after excluding only steps7/12 actuation strings and two producer hashes;
+any changed geometry, cases, counts or other fields fails. The corrected strings
+must still require central manual operation and reject the plastic-tool option.
+
+Reports distinguish current source5620eea2 from engineering baseline2c53715 and
+preserve the historical packet's own language unchanged. The procedure correction
+does not recalculate coupling or promote31 access cases or26 placement liabilities.

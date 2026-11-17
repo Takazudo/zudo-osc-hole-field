@@ -1,7 +1,7 @@
 {
   "engineering_commit": "2c53715d49a4a7639723595590d1fd4eeb3a3c1f",
   "sha256": {
-    "design/stack/fixings/threading-procedure.json": "22b19d117ee0f9ea946b83a5c47cc0abbbd024757d229ae129e8cae338cee3a7",
+    "design/stack/fixings/threading-procedure.json": "755f94305498da29b28de0be4f081ee5fa45d842ed4f037aedc39e9329cfcbfd",
     "design/stack/connectors/flex-land-patterns.json": "3fe9528cbfe9e6218fdefe7a4715238b9d921d97e561b9eafa8f3c1bc3caee35"
   },
   "expected_not_shown": [
@@ -578,18 +578,11 @@
       "manual_corridor_mm": null
     }
   },
-  "expected_source_method_conflicts": [
-    {
-      "step": 7,
-      "text": "Plug the front end of every cable into its front connector and close the lock with one fingertip or a plastic tool. Every front end is plugged and locked before K comes down.",
-      "operations": 61,
-      "phase": "front"
-    },
-    {
-      "step": 12,
-      "text": "Fold each cable end onto K's rear face, insert it into its K connector and close the lock with one fingertip or a plastic tool; never press K with the palm (DS-66). At the 12 connectors named below, the other hand holds K's edge beside the connector while its lock is closed (DS-87).",
-      "operations": 61,
-      "phase": "K"
-    }
-  ]
+  "expected_source_method_conflicts": [],
+  "source_commit": "5620eea27dd2e3232f4ba81a4592660c3f439a26",
+  "procedure_amendment": {
+    "revision": "5620eea27dd2e3232f4ba81a4592660c3f439a26",
+    "scope": "Only steps7/12 actuation text and producer/renderer source hashes changed; geometry, counts, latch/access cases, screws and model results unchanged",
+    "baseline_engineering_revision": "2c53715d49a4a7639723595590d1fd4eeb3a3c1f"
+  }
 }

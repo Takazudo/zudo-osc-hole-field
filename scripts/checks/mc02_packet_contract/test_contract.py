@@ -30,6 +30,36 @@ class PacketContractTests(unittest.TestCase):
         self.assertNotEqual(r['cases']['historical']['current_cases_A']['P'],
                             r['cases']['candidate']['current_cases_A']['P'])
 
+    def test_procedure_amendment_has_separate_exact_source_identity(self):
+        r=self.check()['cases']['candidate']
+        self.assertEqual(r['source_revision'],'5620eea27dd2e3232f4ba81a4592660c3f439a26')
+        self.assertEqual(r['engineering_revision'],'2c53715d49a4a7639723595590d1fd4eeb3a3c1f')
+        self.assertEqual(r['procedure_amendment'],r['source_revision'])
+        self.assertEqual(self.manifest['candidate_pins'][contract.THREADING],
+                         '22b19d117ee0f9ea946b83a5c47cc0abbbd024757d229ae129e8cae338cee3a7')
+
+    def test_amendment_cannot_change_geometry_or_cases(self):
+        original=self.candidate[contract.THREADING]
+        for section in ('links','latch','counts'):
+            amended=copy.deepcopy(original)
+            if section=='links':amended['links'][0]['id']='changed'
+            elif section=='latch':amended['latch']['not_shown'].pop()
+            else:amended['counts']['holding_hand']=0
+            with self.assertRaisesRegex(ValueError,'non-method data'):
+                contract.verify_amendment(original,amended)
+
+    def test_amendment_does_not_hide_deleted_producer_pin(self):
+        original=self.candidate[contract.THREADING];amended=copy.deepcopy(original)
+        del amended['provenance']['pins']['files_sha256']['scripts/stack/fixings/procedure.py']
+        with self.assertRaisesRegex(ValueError,'missing procedure producer pin'):
+            contract.verify_amendment(original,amended)
+
+    def test_amendment_cannot_restore_tool_alternative(self):
+        original=self.candidate[contract.THREADING];amended=copy.deepcopy(original)
+        next(r for r in amended['steps'] if r['n']==7)['do']='Close with one fingertip or a plastic tool.'
+        with self.assertRaisesRegex(ValueError,'manual method regressed'):
+            contract.verify_amendment(original,amended)
+
     def test_wrong_historical_revision_refused(self):
         with self.assertRaisesRegex(ValueError, 'wrong historical revision'):
             self.check(self.manifest['candidate_revision'])

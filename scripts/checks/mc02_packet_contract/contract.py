@@ -2,6 +2,7 @@
 """Offline MC02 source reconciliation, never a gate or model validation."""
 import argparse
 import ast
+import copy
 from collections import Counter
 import hashlib
 import json
@@ -87,7 +88,9 @@ def reconcile(manifest, historical_revision, historical, candidate, projection):
         require(sum(x > 1 for x in rated) == (5 if label == 'historical' else 0), f'{label}: exceedance changed')
         if label == 'candidate':
             require(max(rated) == 0.978101, 'candidate: stored maximum changed')
-        cases[label] = {'source_revision': manifest[label + '_revision'],
+        cases[label] = {'source_revision': manifest['current_source_revision'] if label=='candidate' else manifest['historical_revision'],
+                        'engineering_revision': manifest[label + '_revision'],
+                        'procedure_amendment': manifest['procedure_amendment']['revision'] if label=='candidate' else None,
                         'allocation': dict(zip(('signals', 'grounds', 'unused'), expected_allocation)),
                         'current_cases_A': currents, 'numeric_ratios': len(rated),
                         'intentional_nulls': nulls, 'maximum_stored_ratio': max(rated),
@@ -96,6 +99,32 @@ def reconcile(manifest, historical_revision, historical, candidate, projection):
             'model_recalculated': False, 'native_run': False, 'projection_recomputed': True,
             'cases': cases, 'unplaced': manifest['unplaced'], 'not_shown_latches': manifest['latches'],
             'formal_gate_status': 'NOT ASSESSED'}
+
+
+def procedure_projection(doc):
+    """Exclude only the reviewed two method strings and their producer hashes."""
+    value=copy.deepcopy(doc)
+    found=set()
+    for step in value['steps']:
+        if step['n'] in (7,12):
+            require(step['n'] not in found,'duplicate procedure phase')
+            require('do' in step,'missing procedure method field')
+            found.add(step['n']);step['do']='<reviewed actuation-only amendment>'
+    require(found=={7,12},'missing procedure phase')
+    for name in ('scripts/stack/fixings/procedure.py','scripts/stack/fixings/procedure_page.py'):
+        require(name in value['provenance']['pins']['files_sha256'], 'missing procedure producer pin')
+        value['provenance']['pins']['files_sha256'][name]='<reviewed producer hash>'
+    return value
+
+
+def verify_amendment(original, amended):
+    require(procedure_projection(original)==procedure_projection(amended),
+            'procedure amendment changed non-method data')
+    for step in amended['steps']:
+        if step['n'] in (7,12):
+            require('by hand only at the center of the actuator' in step['do']
+                    and 'Do not insert tools or fingernails into the connector' in step['do']
+                    and 'or a plastic tool' not in step['do'], 'procedure manual method regressed')
 
 
 def load(root):
@@ -111,12 +140,22 @@ def load(root):
             historical[path] = json.loads(data)
         current = (root / path).read_bytes()
         matrix.append({'path': path, 'historical_blob': oid, 'bytes_changed': current != data})
+    amendment=manifest['procedure_amendment']
+    require(amendment['baseline_revision']==manifest['candidate_revision'], 'procedure baseline identity changed')
+    require(amendment['revision']==manifest['current_source_revision'], 'procedure amendment source identity changed')
+    require(set(amendment['sha256'])=={THREADING, 'design/stack/fixings/threading-procedure.md'}, 'procedure amendment scope changed')
     verified = {}
-    for path, expected in manifest['candidate_pins'].items():
+    current_pins=dict(manifest['candidate_pins']) | amendment['sha256']
+    for path, expected in current_pins.items():
+        baseline_bytes=git(root, 'show', manifest['candidate_revision']+':'+path)
+        require(sha(baseline_bytes)==manifest['candidate_pins'][path], f'original candidate object drift: {path}')
+        require(sha(git(root,'show',manifest['current_source_revision']+':'+path))==expected,
+                f'current source revision mismatch: {path}')
         verified[path] = (root / path).read_bytes()
         require(sha(verified[path]) == expected, f'candidate source drift: {path}')
         if path in (GATE, THREADING, ELECTRICAL, INPUTS):
             candidate[path] = json.loads(verified[path])
+    verify_amendment(json.loads(git(root,'show',manifest['candidate_revision']+':'+THREADING)), candidate[THREADING])
     historical_kernel = git(root, 'show', manifest['historical_revision'] + ':' + KERNEL)
     require(sha(historical_kernel) == manifest['historical_kernel_sha256'], 'historical kernel drift')
     projection = {'historical': projection_function(historical_kernel),
@@ -128,7 +167,9 @@ def run(root):
     manifest, historical, candidate, projection, matrix = load(root)
     report = reconcile(manifest, manifest['historical_revision'], historical, candidate, projection)
     report['historical_blob_comparison'] = matrix
-    report['candidate_source_sha256'] = manifest['candidate_pins']
+    report['candidate_baseline_source_sha256'] = manifest['candidate_pins']
+    report['candidate_source_sha256'] = dict(manifest['candidate_pins']) | manifest['procedure_amendment']['sha256']
+    report['procedure_amendment'] = manifest['procedure_amendment']
     report['packet_revision'] = manifest['packet_revision']
     return report
 

@@ -24,6 +24,8 @@ class HeightAuditTests(unittest.TestCase):
 
     def test_coverage_never_accepts_access(self):
         report = self.report()
+        for key in ('source_commit','engineering_commit','procedure_amendment'):
+            self.assertEqual(report[key], self.manifest[key])
         self.assertEqual(report['counts'], {'exact': 59, 'conditional_suffix': 2, 'unresolved_identity': 27})
         self.assertEqual(len(report['references']), 88)
         self.assertEqual(len(report['links']), 31)

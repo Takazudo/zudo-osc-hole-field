@@ -39,6 +39,15 @@ class PassiveOptionTests(unittest.TestCase):
         missing=[r['requirement']['ref'] for r in result['rows'] if not r['options']]
         self.assertEqual(missing,['RB1227'])
 
+    def test_cli_reports_exact_current_and_engineering_provenance(self):
+        pins=json.loads((audit.HERE/'source-pins.json').read_text())
+        stdout=io.StringIO()
+        with patch.object(sys,'argv',['audit.py']),contextlib.redirect_stdout(stdout):
+            audit.main()
+        result=json.loads(stdout.getvalue())
+        for key in ('source_commit','engineering_commit','procedure_amendment'):
+            self.assertEqual(result[key],pins[key])
+
     def test_wrong_value_is_not_an_option(self):
         c=copy.deepcopy(self.candidates['value_only_candidates'][0])
         req={'series':c['series'],'family':c['family'],'value_si':c['value']*2}
