@@ -63,3 +63,14 @@ Pre/post component checks pass (84 manual records; 445 declared placements
 unverified). Tiny fixture tests use independent Boolean references and verify
 that even the four new conditioned timing facts cannot populate physical slack
 or layout budgets.
+
+
+## Canonical Ci source rebind
+
+Source `2f3f7c8999f3dccecfe41597f23739483272afad` replaces exactly three consumed
+owner facts.json hashes (HC00, HC74, HC14). The other11 source pins and engineering
+2c53715 remain unchanged. Prior actual receipts retain their historical source
+SHAs. New conditioned Ci facts appear only as owner observations with project
+applicability NOT_ESTABLISHED; truth expressions, gate graph and physical timing
+nulls are unchanged. A fresh actual128-assignment run awaits separate bounded
+admission; fixture tests are not that execution.

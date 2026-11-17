@@ -136,13 +136,34 @@ def receiver_sums(contacts, observations):
     return result
 
 
+def canonical_ci(root, evidence):
+    links = evidence['canonical_ci']
+    if set(links) != set(CI): raise ValueError('canonical Ci identity set changed')
+    for mpn, link in links.items():
+        owner = root / link['owner']; expected = link['fact']
+        facts = json.loads((owner / 'facts.json').read_text())['facts']
+        matches = [f for f in facts if f['fact_id'] == expected['fact_id']]
+        if matches != [expected]: raise ValueError('canonical Ci fact drift')
+        if expected['value'] != CI[mpn]['maximum_pF'] or expected['unit'] != 'pF':
+            raise ValueError('canonical Ci numeric mismatch')
+        coverage = [c for c in json.loads((owner / 'coverage.json').read_text())['coverage']
+                    if c['domain'] == 'electrical limits']
+        if coverage != [link['electrical_coverage']] or coverage[0]['status'] != 'OPEN' or not coverage[0]['blocking_fact_ids']:
+            raise ValueError('canonical Ci coverage unknowns changed')
+        if expected['fact_id'] not in coverage[0]['fact_ids']:
+            raise ValueError('canonical Ci coverage linkage absent')
+    return links
+
+
 def audit(root=ROOT):
     evidence = json.loads((HERE / 'evidence.json').read_text())
     for path, sha in evidence['sha256'].items():
         if digest(root / path) != sha: raise ValueError('source pin changed: ' + path)
     contacts = validate(json.loads((root / REPORT).read_text()), pin_maps(root), evidence)
+    canonical = canonical_ci(root, evidence)
     return {'status': 'SOURCE_CONTRACT_MATCH; PHYSICAL_APPLICABILITY_NOT_ESTABLISHED',
-        'source_commit': evidence['source_commit'], 'sha256': evidence['sha256'],
+        'source_commit': evidence['source_commit'], 'engineering_commit': evidence['engineering_commit'],
+        'source_history': evidence['source_history'], 'canonical_ci': canonical, 'sha256': evidence['sha256'],
         'contacts': contacts, 'counts': {n: dict(Counter(r['classification'] for r in rows)) for n, rows in contacts.items()},
         'ci_observations': CI, 'nominal_RC': evidence['nominal_RC'],
         'receiver_only_sums': receiver_sums(contacts, CI),

@@ -27,8 +27,8 @@ calculated from these nominal proposals.
 Retained TI PDFs were visually inspected at printed p5 (physical index4):
 SCLS094F section6.5 gives HC74 Ci maximum10 pF at VCC2–6 V, TA-40–85 C;
 SCLS085L section5.5 gives HC14 Ci maximum10 pF at VCC5 V, TA-40–85 C.
-Both give typical3 pF only at25 C. The supplemental HC74 observation here does
-not publish a new owner fact. HC74 values are not borrowed for HC00 or HC221.
+Both give typical3 pF only at25 C. The original supplemental observation has since been linked to its canonical
+owner fact as described below. HC74 values are not borrowed for HC00 or HC221.
 These device-input rows exclude routed capacitance, coupling and driver/network
 behavior. The 50 pF switching-test fixture condition is not a project-load bound.
 
@@ -57,7 +57,7 @@ HC221's VCC and row test-condition cells contain dashes: no numeric supply range
 is inferred. The continued table header says input tr,tf=6ns; this context and
 HC family block are retained rather than silently applying an HCT row or
 assigning the adjacent propagation row's CL50pF to CIN. All owner JSON and both
-additional retained PDFs are pinned. No owner facts are modified.
+additional retained PDFs are pinned. This checker does not modify owner facts.
 
 The named ledger yields CLOCK17HC74 inputs ×10=170 pF; READY15HC74 inputs ×10
 plus3HC00 inputs ×10 plus1HC221 reset input ×10=190 pF. These are sums of catalog
@@ -70,3 +70,17 @@ source conditions and separately listed driver/passive contacts excluded from
 this arithmetic. CLOCK_RC's1nF capacitor remains behind47k and is not added.
 Driver/network response, routing/coupling and other parasitics remain unknown.
 All actual load and timing fields stay null/NOT_ESTABLISHED.
+
+
+## Canonical Ci amendment
+
+Source `2f3f7c8999f3dccecfe41597f23739483272afad` adds conditioned HC00/HC74/HC221
+Ci facts and clarifies the existing HC14 fact. Engineering remains2c53715;
+prior source commits/receipts are historical, not relabeled. Exactly11 consumed
+owner fact/manifest/coverage hashes change; all other existing input pins remain
+unchanged except this checker's own implementation hash. The report includes each
+canonical fact ID, value, exact conditions/locator and OPEN electrical coverage.
+The checker compares the supplemental maximum to that fact and rejects changed
+conditions or cleared coverage blockers. Typical/dashed-cell observations retain
+their PDF provenance. Conditional170/190pF arithmetic is not a canonical guaranteed
+load fact; physical acceptance remains unestablished.

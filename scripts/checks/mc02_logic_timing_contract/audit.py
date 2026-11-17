@@ -167,7 +167,8 @@ def run(root=ROOT):
     expressions = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(expressions)
     counts = compare(ordered, expressions)
-    result = {'source_commit': manifest['source_commit'], 'inputs_sha256': manifest['sha256'],
+    result = {'source_commit': manifest['source_commit'], 'engineering_commit': manifest['engineering_commit'],
+              'source_history': manifest['source_history'], 'inputs_sha256': manifest['sha256'],
               'packages': list(REFS), 'gate_units': gates, 'boundary_inputs': list(INPUTS),
               'external_contacts': external, 'maximum_gate_counts_from_boundary': depths,
               'boolean_assignments': 128, 'checked_output_counts': counts,

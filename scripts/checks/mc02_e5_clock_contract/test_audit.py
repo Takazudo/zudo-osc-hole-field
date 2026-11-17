@@ -103,6 +103,31 @@ class ContractTests(unittest.TestCase):
         driver['classification'] = 'CLEAR_INPUT'
         with self.assertRaisesRegex(ValueError, 'classification'): a.receiver_sums(rows, a.CI)
 
+    def canonical_fixture(self, root):
+        for link in self.evidence['canonical_ci'].values():
+            directory = root / link['owner']; directory.mkdir(parents=True)
+            (directory / 'facts.json').write_text(json.dumps({'facts': [link['fact']]}))
+            (directory / 'coverage.json').write_text(json.dumps({'coverage': [link['electrical_coverage']]}))
+
+    def test_canonical_fact_condition_drift_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); self.canonical_fixture(root)
+            a.canonical_ci(root, self.evidence)
+            link = self.evidence['canonical_ci']['CD74HC221M96']
+            path = root / link['owner'] / 'facts.json'; data = json.loads(path.read_text())
+            data['facts'][0]['conditions'] = 'Unconditional VCC2..6V'
+            path.write_text(json.dumps(data))
+            with self.assertRaisesRegex(ValueError, 'fact drift'): a.canonical_ci(root, self.evidence)
+
+    def test_canonical_coverage_unknowns_not_waived(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); self.canonical_fixture(root)
+            link = self.evidence['canonical_ci']['SN74HC00DR']
+            path = root / link['owner'] / 'coverage.json'; data = json.loads(path.read_text())
+            data['coverage'][0]['status'] = 'COVERED'; data['coverage'][0]['blocking_fact_ids'] = []
+            path.write_text(json.dumps(data))
+            with self.assertRaisesRegex(ValueError, 'coverage unknowns'): a.canonical_ci(root, self.evidence)
+
     def test_source_pin_rejects_changed_bytes(self):
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaises((ValueError, FileNotFoundError)): a.audit(Path(directory))
