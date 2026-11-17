@@ -233,3 +233,11 @@ packet-matching catalog bytes and exact standard-variant/closed-height locators.
 Contact-1 mapping, numeric open envelope, placed access and selected same-side
 LX cable tolerances remain unresolved. This narrows source provenance; it does
 not promote the packet or any hardware gate.
+
+## Exact cable drawings obtained — 2026-11-17
+
+The [selected cable source update](mc02-selected-cable-source-update-20261117.md)
+now supplies exact manufacturer drawings for C81339,C68390,C29534. These expose
+interval and contact-finish mismatches; they do not establish compatibility.
+C26618 and C32128 link the same generic drawing without exact applicability. Earlier
+blanket missing-drawing statements are historical, not the current disposition.
