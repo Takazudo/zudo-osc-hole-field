@@ -10,6 +10,18 @@ The historical records below remain context only where they conflict with this a
 
 Candidate-first paper assessment is now selected by the coordinator under DS-134 and the owner's renewed autonomous-work instruction. The earlier sequencing question is withdrawn. Assess exact candidate `7c71038d7a175c43503efc3cc41831301038b7ae`, retain main/CI integration conditions before canonical adoption, and continue with individually bounded admitted remedies under all existing holds.
 
+## WSL evidence checkpoint — 2026-11-17
+
+R1 and the conditional51mm length study are complete and independently audited;
+new source-only cable/height/packet tooling is collected. The current bounded WSL
+queue has no identified ready execution after the source and alternative screens.
+This is not full project completion: exact interface evidence, physical access,
+26unplaced IC remedies and held main/CI integration remain open. See the
+[campaign queue disposition](campaigns/osc-stack-20261114/plan.md#current-wsl-queue-disposition--2026-11-17)
+for concrete inputs that reopen work. No Moya approval or routine sequencing
+confirmation is pending. Do not restart passed unchanged jobs or claim an idle
+coordinator is actively running a background worker.
+
 ## Historical mapping — 2026-11-16
 
 Mapping updated: 2026-11-16 JST (2026-11-15 UTC). Operating policy remains [ORCHESTRATION.md](../ORCHESTRATION.md), dated 2026-11-11, and the canonical [WORKFLOW.md](../WORKFLOW.md). Engineering baseline inspected: `85b2b489d6f47b34991e3d9b0d2e09991a458a97` (`main`, merge of #361). Refresh the actual target SHA before dispatch; this baseline does not identify the later documentation commit.

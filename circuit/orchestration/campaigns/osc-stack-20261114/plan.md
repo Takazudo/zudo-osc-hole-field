@@ -343,7 +343,7 @@ contact side, counts and nominal lengths. No BOM change, vendor contact, purchas
 geometry/native execution or adoption is permitted by that screen. After the
 result, audit the remaining ready queue rather than stopping at this milestone.
 
-### Active conditional length sensitivity — DS-137
+### Completed conditional length sensitivity — DS-137
 
 The bounded two-series screen produced no verified drop-in replacement. An
 independent review nevertheless identified useful model work: recompute the
@@ -352,3 +352,32 @@ ground sharing over all61links. Preserve all other source/model inputs and five
 intentional nulls. This does not adopt or qualify the known Molex51mm lead.
 Implementation/tests and independent review precede the one bounded offline run
 under the same1CPU/1GiB/no-swap/128PID/600second ceiling. No native job is launched.
+
+## Current WSL queue disposition — 2026-11-17
+
+The [DS-137 result](mc02-length-sensitivity-result-20261117.md) is independently
+audited:baselineMATCH,28length changes,changed-link maximum0.930862→0.946376,
+globalmaximum0.978101,56numeric/5null,all61mixedground recalculated,cleanupVERIFIED.
+The known51mm length-only question is resolved within the unchanged model. This
+is not product qualification. No unchanged native or numerical run remains due.
+
+After R1, exact-source retrieval, the five-code audit, the two-series alternative
+screen and DS-137, the coordinator and independent reviewer found no further
+identified ready operation in the bounded WSL queue. This is an evidence-blocked
+checkpoint, not project completion or hardware acceptance. No background worker
+or automatic retry is needed while the following inputs remain absent:
+
+| Remaining item | Why code/native repetition cannot close it | Concrete resume input |
+| --- | --- | --- |
+| Selected cable conformity | Exact3code drawings expose interval/finish differences;2codes have generic-only sheets | Exact manufacturer configuration/finish/tolerance evidence and disposition of the stated differences, or a fully specified candidate alternative |
+| Known Molex51mm lead | Conditional existing-model margin is known; actual product end/material applicability is not | Complete exact manufacturer drawing and evidence binding electrical parameters to that product |
+| Contact1/open latch/31access cases | Retained drawings do not supply needed opening dimensions or placed mapping | Exact SH contact-number/open-envelope evidence or physical measurement, followed by a bound mounted-access model |
+| Nut/plain washer | Retained4708catalog lacks height; no exact plain-washer dimensions selected | Exact fastener dimensional evidence; no generic substitute assumption |
+|26unplaced ICs | Function preparation is complete; R1 adds no opportunity in frozen geometry | A concrete new function/geometry remedy with a causal reason and bounded independent admission; no arbitrary repeated25mm search |
+| Main/CI integration | PR/main trigger held PCB DRC with zone refill | An authorized integration route preserving holds, or an explicit later change to those holds; no CI/security bypass |
+
+Recommended next input is exact interface/source evidence while preserving fixed
+hardware, not an unsupported tolerance waiver or wholesale geometry change. The
+current session retains the delegated coordinator role; a Moya acknowledgment is
+not a dependency. Reconcile #362, live work and source changes before resuming.
+Any genuinely new ready task should be dispatched without milestone approval.
