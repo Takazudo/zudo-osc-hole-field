@@ -28,7 +28,9 @@ production library registration, fabrication or hardware adoption.
 
 ## Composite limits and reviewed failure path
 
-DockerDesktop runs in a separate VM; a WSL cgroup is not a Docker workload cap.
+DockerDesktop manages the container outside the explicitly allocated WSL user
+services; those service caps are not accepted as proof of container limits.
+Underlying VM sharing/separation is not inferred from the daemon name.
 The admitted total workload ceiling is1CPU,2.5GiB,192PIDs,swap0. Host setup,
 control and supervisor children must be included in the following WSL split:
 
