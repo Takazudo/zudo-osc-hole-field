@@ -14,12 +14,12 @@ Screened per slot: the front connectors, front tails and slots of every other li
 4. Before the panel goes on, push an M3 × 25 mm screw (head at most 5.5 mm, not countersunk) through each sleeve hole from the front of its board and hold the head down with a strip of tape: (74, 28) on JL, (244, 24) on JR, (93, 276) on P, (244, 230) on P through the 7 mm access hole of EL (DS-76). (4 parts)
 5. Slip a printed sleeve over each screw: long (18.8 mm) on JL and JR, short (16.8 mm) on P. (4 parts)
 6. Put JL, JR and the P unit in the panel, and the three adapters on their selectors.
-7. Plug the front end of every cable into its front connector and close the lock with one fingertip or a plastic tool. Every front end is plugged and locked before K comes down. (61 locks; JL 9, JR 7, P 42, O1 1, O3 1, O5 1)
+7. Plug the front end of every cable into its front connector and close the lock by hand only at the center of the actuator. Do not insert tools or fingernails into the connector. Every front end is plugged and locked before K comes down. (61 locks; JL 9, JR 7, P 42, O1 1, O3 1, O5 1)
 8. Fold each cable upward under its slot so that its free end stands up from the board. (61 cables)
 9. Lower K over the 18 posts in 9 stages, highest end first, guiding the cable ends through their slots stage by stage (largest stage: 17 ends at 23.63 mm), then the four screw ends through K at 6.4 and 4.4 mm. (65 ends)
 10. Fasten K's screw at every post first. (18 parts)
 11. Put a nut on each of the four sleeve screws and turn it with the fingers until it is snug. No tool and no thread lock. A washer only where the screw end still comes through the nut with it. (4 parts)
-12. Fold each cable end onto K's rear face, insert it into its K connector and close the lock with one fingertip or a plastic tool; never press K with the palm (DS-66). At the 12 connectors named below, the other hand holds K's edge beside the connector while its lock is closed (DS-87). (61 locks)
+12. Fold each cable end onto K's rear face, insert it into its K connector and close the lock by hand only at the center of the actuator; never press K with the palm (DS-66). Do not insert tools or fingernails into the connector. At the 12 connectors named below, the other hand holds K's edge beside the connector while its lock is closed (DS-87). (61 locks)
 13. Before power: look at every one of the 122 locks, closed and square, and check the continuity of every link (DS-43). (122 locks)
 
 ## Leads are cut at 83 parts: P 49, JL 19, JR 14, O3 1
@@ -57,7 +57,7 @@ Paper gives the heights for an end that stands straight. Whether a 40 to 60 mm s
 
 ## After K is seated, 61 ends are folded onto K's rear face, inserted and locked; 12 connectors need the holding hand
 
-Fold each end down onto K's rear face toward its K connector (the run on K is in the link table), push it in by the 4 mm insertion and close the lock with one fingertip or a plastic tool, never with the palm on K. At the connectors below, the other hand holds K's edge beside the connector while its lock is closed (DS-87).
+Fold each end down onto K's rear face toward its K connector (the run on K is in the link table), push it in by the 4 mm insertion and close the lock by hand only at the center of the actuator, never with the palm on K. Do not insert tools or fingernails into the connector. At the connectors below, the other hand holds K's edge beside the connector while its lock is closed (DS-87).
 
 | Link | K connector beside | Panel coordinates | mm/N |
 | --- | --- | --- | --- |
@@ -226,8 +226,8 @@ Front and K runs are plan lengths from the connector opening to the slot centre,
 - `design/grid/placements.lock.json`: `297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8`.
 - `design/stack/fixings/fixing-sites.json`: `8402ce558d2de13512ff325a5550ef21f303d64b5e5cb86c1aa20ffe2924225b`.
 - `design/stack/fixings/ruled-list.json`: `fb18e85e1c7a9be576a5c9d5d5efd2738999a86449afeae00e8ed84d65ce234d`.
-- `scripts/stack/fixings/procedure.py`: `9566540759d8db501b06e8da7551bae111edfeba379b11760faa3a7da3f97750`.
-- `scripts/stack/fixings/procedure_page.py`: `a1ed8d41b0f4d3be358a049b72f2b7eb5ec40de73c5a3c66ecbc795eebb59cdb`.
+- `scripts/stack/fixings/procedure.py`: `c142c673382872e7e3bfb7d8787a2e3e93759ed4544217dfe9849c9f3b28861d`.
+- `scripts/stack/fixings/procedure_page.py`: `ece3f32eb9e2473fa4fe16261d1a185c5d53933b24764cf5c9d358a64793eae4`.
 
 Regenerate with `python3 scripts/stack/fixings/procedure.py`; `--check` fails on a stale file or any finding.
 

@@ -117,7 +117,8 @@ def render(doc):
       'holding hand' % (c['locks_after_K'], c['holding_hand']))
     w('')
     w('Fold each end down onto K\'s rear face toward its K connector (the run on K is in the link table), push it in '
-      'by the %s mm insertion and close the lock with one fingertip or a plastic tool, never with the palm on K. At '
+      'by the %s mm insertion and close the lock by hand only at the center of the actuator, never with the palm on K. '
+      'Do not insert tools or fingernails into the connector. At '
       'the connectors below, the other hand holds K\'s edge beside the connector while its lock is closed (DS-87).' %
       _g(pm['insertion_mm']))
     w('')

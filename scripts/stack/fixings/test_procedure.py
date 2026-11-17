@@ -181,5 +181,32 @@ class Faults(unittest.TestCase):
         self.assertIn('## NEEDS_DESIGN', procedure_page.render(doc))
 
 
+class PrimaryActuationMethod(unittest.TestCase):
+    def test_both_phases_require_central_hand_only_operation(self):
+        steps = {step['n']: step for step in DOC['steps']}
+        for number in (7, 12):
+            text = steps[number]['do']
+            self.assertIn('by hand only at the center of the actuator', text)
+            self.assertIn('Do not insert tools or fingernails into the connector', text)
+            self.assertNotIn('or a plastic tool', text)
+            self.assertEqual(steps[number]['parts'], 61)
+        self.assertIn('before K comes down', steps[7]['do'])
+        self.assertIn('never press K with the palm (DS-66)', steps[12]['do'])
+        self.assertIn('At the 12 connectors', steps[12]['do'])
+        self.assertIn('other hand holds K', steps[12]['do'])
+        page = procedure_page.render(DOC)
+        self.assertNotIn('or a plastic tool', page)
+        # Two assembly table rows and the separate K-side instruction paragraph.
+        self.assertEqual(page.count('by hand only at the center of the actuator'), 3)
+
+    def test_method_correction_is_not_access_acceptance(self):
+        self.assertEqual(DOC['counts']['latch']['NOT SHOWN'], 31)
+        self.assertEqual(DOC['counts']['holding_hand'], 12)
+        self.assertEqual(DOC['lowering']['largest_ends'], 17)
+        self.assertEqual(len(DOC['lowering']['stages']), 9)
+        self.assertEqual(DOC['counts']['links'], 61)
+        self.assertEqual(DOC['counts']['connectors'], 122)
+
+
 if __name__ == '__main__':
     unittest.main()

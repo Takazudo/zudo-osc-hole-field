@@ -390,8 +390,12 @@ def steps(rows, cnt, low, scr, sites, prm):
          'parts': 4},
         {'n': 6, 'do': 'Put JL, JR and the P unit in the panel, and the three adapters on their selectors.',
          'parts': None},
-        {'n': 7, 'do': 'Plug the front end of every cable into its front connector and close the lock with one '
-                       'fingertip or a plastic tool. Every front end is plugged and locked before K comes down.',
+        # Verified Hirose EDC3-150229-11 sheets6/8 (physical5/7), hand-only central actuation.
+        # PDF SHA256 c3257beed2331e5c95e176bc28441b04b804301a44c11b462e486fb5cc649d07.
+        # This corrects the method, not the still-unproven installed manual access.
+        {'n': 7, 'do': 'Plug the front end of every cable into its front connector and close the lock by '
+                       'hand only at the center of the actuator. Do not insert tools or fingernails into the connector. '
+                       'Every front end is plugged and locked before K comes down.',
          'parts': cnt['locks_before_K'], 'where': ', '.join('%s %d' % (b, fe[b]) for b in fe)},
         {'n': 8, 'do': 'Fold each cable upward under its slot so that its free end stands up from the board.',
          'parts': cnt['links']},
@@ -408,7 +412,8 @@ def steps(rows, cnt, low, scr, sites, prm):
                         'No tool and no thread lock. A washer only where the screw end still comes through the nut '
                         'with it.', 'parts': 4},
         {'n': 12, 'do': 'Fold each cable end onto K\'s rear face, insert it into its K connector and close the lock '
-                        'with one fingertip or a plastic tool; never press K with the palm (DS-66). At the %d '
+                        'by hand only at the center of the actuator; never press K with the palm (DS-66). '
+                        'Do not insert tools or fingernails into the connector. At the %d '
                         'connectors named below, the other hand holds K\'s edge beside the connector while its lock '
                         'is closed (DS-87).' % cnt['holding_hand'], 'parts': cnt['locks_after_K']},
         {'n': 13, 'do': 'Before power: look at every one of the %d locks, closed and square, and check the continuity '
