@@ -1,0 +1,60 @@
+{
+  "source_commit": "eb7351b082b3dddd8a5cdbe592d7c0f7d7a85d09",
+  "engineering_commit": "2c53715d49a4a7639723595590d1fd4eeb3a3c1f",
+  "sha256": {
+    ".circuit-cache/sources/manufacturer-transfer-20261117/hirose-EDC3-150229-11.pdf": "c3257beed2331e5c95e176bc28441b04b804301a44c11b462e486fb5cc649d07",
+    "design/stack/geometry/links/link-gate.json": "1c091c1d6d4b9c000f770a0e604cb986d5c55e44cb77ea22083249afbf5cdb0d",
+    "design/stack/geometry/links/link-gate-options.json": "a2703fbcbf344b1bc9b06ecd4dde97605857a62c32eb1e3ca0a26400e6cd20bb",
+    "scripts/stack/geometry/links_gate.py": "d068e43957a7ee733cbd34f347f325537d051d871d32f8553e66474f5367448e",
+    "design/stack/connectors/flex-land-patterns.json": "3fe9528cbfe9e6218fdefe7a4715238b9d921d97e561b9eafa8f3c1bc3caee35"
+  },
+  "drawing": {
+    "document": "EDC3-150229-11",
+    "sha256": "c3257beed2331e5c95e176bc28441b04b804301a44c11b462e486fb5cc649d07",
+    "review_date": "2026-11-17",
+    "locators": {
+      "land_chain": "printed sheets1/2 physical indices0/1, upper-right RECOMMENDED PCB MOUNTING PATTERN (not stencil): pad1.3+/-0.1, lower pad edge to near tab1.5+/-0.1, tab length2.2+/-0.1",
+      "G": "same pattern G +/-0.1 outer tab span; printed sheet5 physical index4 exact8/14/26/40 SH(55) rows G=9.1/12.1/18.1/25.1"
+    }
+  },
+  "coordinate_convention": {
+    "frame": "REVIEWER_DEFINED_COUNTERFACTUAL; not a manufacturer/project placement transform",
+    "origin": "midpoint of the signal-pad row",
+    "positive_y": "toward mounting tabs/body/entry (downward on depicted PCB land pattern)",
+    "positive_x": "along row; shared lateral symmetry assumed only for conditional G bounds",
+    "delta": "Translation of this land-frame origin relative to a hypothetical virtual field centered at zero"
+  },
+  "dimensions": {
+    "signal_pad_length": {
+      "unit": "mm",
+      "nominal": "1.3",
+      "tolerance": "0.1"
+    },
+    "pad_to_tab_gap": {
+      "unit": "mm",
+      "nominal": "1.5",
+      "tolerance": "0.1"
+    },
+    "tab_length": {
+      "unit": "mm",
+      "nominal": "2.2",
+      "tolerance": "0.1"
+    }
+  },
+  "land_G_mm": {
+    "8": "9.1",
+    "14": "12.1",
+    "26": "18.1",
+    "40": "25.1"
+  },
+  "land_G_tolerance_mm": "0.1",
+  "actual_registration": null,
+  "full_body_terminal_union_established": false,
+  "signal_pad_x_bound": {
+    "pad_width_nominal_mm": "0.3",
+    "pad_width_tolerance_mm": "0.03",
+    "conservative_per_axis_position_mm": "0.05",
+    "scope": "Conservative per-axis allowance from the PCB pattern position box0.05 relative to X, not an exact minimum or connector A tolerance",
+    "locator": "EDC printed sheets1/2 upper-right PCB mounting pattern: width0.3+/-0.03 and position box0.05 X"
+  }
+}
