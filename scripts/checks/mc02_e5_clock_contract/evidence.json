@@ -1,0 +1,506 @@
+{
+  "source_commit": "13f380818cb259d8f93a48b5ee3dc2fc80346d48",
+  "sha256": {
+    ".claude/skills/component-ti-cd74hc221m96/pin-map.json": "0465f55065e41132982ac13a0d60bab416c132da5bb120f5ef6bc24713db3cff",
+    ".claude/skills/component-ti-sn74hc00dr/pin-map.json": "2af5336cc1930328874f271b980e80a45df672f5962d9871a39f7e247c22aa3e",
+    ".claude/skills/component-ti-sn74hc14dr/coverage.json": "cffb1a1435d50b8c611374f9bbb78b0b15f67125608ec222639d97d3d7bd49f6",
+    ".claude/skills/component-ti-sn74hc14dr/facts.json": "c627f0accfb1a0cb3f7830362d4612755dea90a72e08f5e2420e7a908c4ebfb8",
+    ".claude/skills/component-ti-sn74hc14dr/interactions.json": "e1b52b61010f73cb45b5dfad6efea9302ee3c6b784b8a869ba24dcb34fb09bbc",
+    ".claude/skills/component-ti-sn74hc14dr/manifest.json": "b55946a6c63c0cfdbccdf6d4dda0bc54397206314737dda6edcbd62e7a35cf53",
+    ".claude/skills/component-ti-sn74hc14dr/pin-map.json": "7ee2097a207fb80b18a68a45b20d91c5af4fa430fb024bec0a24de5bf4a2ad38",
+    ".claude/skills/component-ti-sn74hc14dr/routing.json": "a0337462e58721937dc0a43952252784ae2571676e1faceb460d82ae7fa8a7ae",
+    ".claude/skills/component-ti-sn74hc14dr/sources.json": "118e61bceb7128c89820a56efe9cc89d60628f4ddf2560cdc88f008b6f175ba8",
+    ".claude/skills/component-ti-sn74hc74dr/coverage.json": "aeeb3f651b0b233c0ba760f03f816abd5af2532cd75238b80a16aa47a26ac0e8",
+    ".claude/skills/component-ti-sn74hc74dr/facts.json": "4d6e708bc2ab08a2ae0fe0249a4c5af75eff015ef82304b2760c66ba00937f88",
+    ".claude/skills/component-ti-sn74hc74dr/interactions.json": "649a7fa3d06a85efeff873c5384477f268dd33c84863091c6ec9cdefa2c42cdf",
+    ".claude/skills/component-ti-sn74hc74dr/manifest.json": "08ce6e0c3625413502cabb8c89cb85b4136baeabad936ac283ad0e30ffac7f69",
+    ".claude/skills/component-ti-sn74hc74dr/pin-map.json": "423e8a713c0bc57c5c88fa8f8165948099cbd2fae1e318dc8e1ade2a43d4e5b3",
+    ".claude/skills/component-ti-sn74hc74dr/routing.json": "060323b3d9d8c61759b54750715ebc5e4f94fc228beef903339ea2be5af2b38c",
+    ".claude/skills/component-ti-sn74hc74dr/sources.json": "957d5f671f2f53b8f46471e0adf8e3d24f1bfa3b3a3ff667392fb6bb6b1a156d",
+    "circuit/sources/ic-library/SN74HC14.pdf": "0eaa0a53e41053aec950a8be0b3989dfa608583928e46544b7922e233aa4362d",
+    "circuit/sources/ic-library/SN74HC74.pdf": "d1e57133ca40b595c670688718807c367b555b6fe57144c881d629de18230351",
+    "design/reports/io-partition.json": "37a773282d723d7f689d1e6cf009e4edd1947827a5ee45f0051e42cd4e907a0b",
+    "design/spec/modules/envelope.py": "015b02c5d84550e19bf92b9ec838a43b255a728e02de1e562e855ba632fc2ee5",
+    "scripts/checks/mc02_e5_clock_contract/audit.py": "7900ae3848f4b0433314f47ead8bcb6a6295d6b26ab42dcc07a20c0d0845675f"
+  },
+  "contacts": {
+    "CLOCK_RC": [
+      {
+        "ref": "C4509",
+        "unit": 0,
+        "pin": "1",
+        "role": "envelope:C_CLOCK",
+        "mpn": "",
+        "symbol_template": "C0603C101J5GACTU",
+        "pin_function": "PASSIVE_TERMINAL; EXACT_MPN_UNBOUND",
+        "classification": "RC_CAPACITOR_TERMINAL"
+      },
+      {
+        "ref": "R4533",
+        "unit": 0,
+        "pin": "2",
+        "role": "envelope:R_CLOCK",
+        "mpn": "",
+        "symbol_template": "RT0603BRD07100KL",
+        "pin_function": "PASSIVE_TERMINAL; EXACT_MPN_UNBOUND",
+        "classification": "FEEDBACK_RESISTOR_TERMINAL"
+      },
+      {
+        "ref": "U4512",
+        "unit": 4,
+        "pin": "9",
+        "role": "envelope:CLOCK_OSC",
+        "mpn": "SN74HC14DR",
+        "symbol_template": "SN74HC14DR",
+        "pin_function": "4A input",
+        "classification": "SCHMITT_INPUT"
+      }
+    ],
+    "CLOCK": [
+      {
+        "ref": "R4533",
+        "unit": 0,
+        "pin": "1",
+        "role": "envelope:R_CLOCK",
+        "mpn": "",
+        "symbol_template": "RT0603BRD07100KL",
+        "pin_function": "PASSIVE_TERMINAL; EXACT_MPN_UNBOUND",
+        "classification": "FEEDBACK_RESISTOR_TERMINAL"
+      },
+      {
+        "ref": "U4512",
+        "unit": 4,
+        "pin": "8",
+        "role": "envelope:CLOCK_OSC",
+        "mpn": "SN74HC14DR",
+        "symbol_template": "SN74HC14DR",
+        "pin_function": "4Y output",
+        "classification": "SCHMITT_DRIVER"
+      },
+      {
+        "ref": "U4530",
+        "unit": 1,
+        "pin": "3",
+        "role": "envelope:RESET_SYNC1",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      },
+      {
+        "ref": "U4530",
+        "unit": 2,
+        "pin": "11",
+        "role": "envelope:RESET_SYNC2",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "2CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      },
+      {
+        "ref": "U4531",
+        "unit": 1,
+        "pin": "3",
+        "role": "envelope:GATE_SYNC1",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      },
+      {
+        "ref": "U4531",
+        "unit": 2,
+        "pin": "11",
+        "role": "envelope:GATE_SYNC2",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "2CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      },
+      {
+        "ref": "U4532",
+        "unit": 1,
+        "pin": "3",
+        "role": "envelope:ASR_SYNC1",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      },
+      {
+        "ref": "U4532",
+        "unit": 2,
+        "pin": "11",
+        "role": "envelope:ASR_SYNC2",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "2CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      },
+      {
+        "ref": "U4533",
+        "unit": 1,
+        "pin": "3",
+        "role": "envelope:LOOP_SYNC1",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      },
+      {
+        "ref": "U4533",
+        "unit": 2,
+        "pin": "11",
+        "role": "envelope:LOOP_SYNC2",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "2CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      },
+      {
+        "ref": "U4534",
+        "unit": 1,
+        "pin": "3",
+        "role": "envelope:GATE_PREVIOUS",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      },
+      {
+        "ref": "U4534",
+        "unit": 2,
+        "pin": "11",
+        "role": "envelope:TOP_SYNC1",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "2CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      },
+      {
+        "ref": "U4535",
+        "unit": 1,
+        "pin": "3",
+        "role": "envelope:TOP_SYNC2",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      },
+      {
+        "ref": "U4535",
+        "unit": 2,
+        "pin": "11",
+        "role": "envelope:BOTTOM_SYNC1",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "2CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      },
+      {
+        "ref": "U4536",
+        "unit": 1,
+        "pin": "3",
+        "role": "envelope:BOTTOM_SYNC2",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      },
+      {
+        "ref": "U4536",
+        "unit": 2,
+        "pin": "11",
+        "role": "envelope:STATE_RISE",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "2CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      },
+      {
+        "ref": "U4537",
+        "unit": 1,
+        "pin": "3",
+        "role": "envelope:STATE_HOLD",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      },
+      {
+        "ref": "U4537",
+        "unit": 2,
+        "pin": "11",
+        "role": "envelope:STATE_FALL",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "2CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      },
+      {
+        "ref": "U4538",
+        "unit": 1,
+        "pin": "3",
+        "role": "envelope:END_EVENT",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLK rising edge",
+        "classification": "CLOCK_INPUT"
+      }
+    ],
+    "READY": [
+      {
+        "ref": "U4505",
+        "unit": 1,
+        "pin": "3",
+        "role": "envelope:EOC_TIMER",
+        "mpn": "CD74HC221M96",
+        "symbol_template": "CD74HC221M96",
+        "pin_function": "1R active-low reset",
+        "classification": "ONE_SHOT_RESET_INPUT"
+      },
+      {
+        "ref": "U4522",
+        "unit": 3,
+        "pin": "9",
+        "role": "envelope:NAND49",
+        "mpn": "SN74HC00DR",
+        "symbol_template": "SN74HC00DR",
+        "pin_function": "3A input",
+        "classification": "NAND_INPUT"
+      },
+      {
+        "ref": "U4525",
+        "unit": 2,
+        "pin": "4",
+        "role": "envelope:NAND63",
+        "mpn": "SN74HC00DR",
+        "symbol_template": "SN74HC00DR",
+        "pin_function": "2A input",
+        "classification": "NAND_INPUT"
+      },
+      {
+        "ref": "U4526",
+        "unit": 4,
+        "pin": "12",
+        "role": "envelope:NAND70",
+        "mpn": "SN74HC00DR",
+        "symbol_template": "SN74HC00DR",
+        "pin_function": "4A input",
+        "classification": "NAND_INPUT"
+      },
+      {
+        "ref": "U4530",
+        "unit": 2,
+        "pin": "9",
+        "role": "envelope:RESET_SYNC2",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "2Q",
+        "classification": "Q_DRIVER"
+      },
+      {
+        "ref": "U4531",
+        "unit": 1,
+        "pin": "1",
+        "role": "envelope:GATE_SYNC1",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLR active low",
+        "classification": "CLEAR_INPUT"
+      },
+      {
+        "ref": "U4531",
+        "unit": 2,
+        "pin": "13",
+        "role": "envelope:GATE_SYNC2",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "2CLR active low",
+        "classification": "CLEAR_INPUT"
+      },
+      {
+        "ref": "U4532",
+        "unit": 1,
+        "pin": "1",
+        "role": "envelope:ASR_SYNC1",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLR active low",
+        "classification": "CLEAR_INPUT"
+      },
+      {
+        "ref": "U4532",
+        "unit": 2,
+        "pin": "13",
+        "role": "envelope:ASR_SYNC2",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "2CLR active low",
+        "classification": "CLEAR_INPUT"
+      },
+      {
+        "ref": "U4533",
+        "unit": 1,
+        "pin": "1",
+        "role": "envelope:LOOP_SYNC1",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLR active low",
+        "classification": "CLEAR_INPUT"
+      },
+      {
+        "ref": "U4533",
+        "unit": 2,
+        "pin": "13",
+        "role": "envelope:LOOP_SYNC2",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "2CLR active low",
+        "classification": "CLEAR_INPUT"
+      },
+      {
+        "ref": "U4534",
+        "unit": 1,
+        "pin": "1",
+        "role": "envelope:GATE_PREVIOUS",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLR active low",
+        "classification": "CLEAR_INPUT"
+      },
+      {
+        "ref": "U4534",
+        "unit": 2,
+        "pin": "13",
+        "role": "envelope:TOP_SYNC1",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "2CLR active low",
+        "classification": "CLEAR_INPUT"
+      },
+      {
+        "ref": "U4535",
+        "unit": 1,
+        "pin": "1",
+        "role": "envelope:TOP_SYNC2",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLR active low",
+        "classification": "CLEAR_INPUT"
+      },
+      {
+        "ref": "U4535",
+        "unit": 2,
+        "pin": "13",
+        "role": "envelope:BOTTOM_SYNC1",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "2CLR active low",
+        "classification": "CLEAR_INPUT"
+      },
+      {
+        "ref": "U4536",
+        "unit": 1,
+        "pin": "1",
+        "role": "envelope:BOTTOM_SYNC2",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLR active low",
+        "classification": "CLEAR_INPUT"
+      },
+      {
+        "ref": "U4536",
+        "unit": 2,
+        "pin": "13",
+        "role": "envelope:STATE_RISE",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "2CLR active low",
+        "classification": "CLEAR_INPUT"
+      },
+      {
+        "ref": "U4537",
+        "unit": 1,
+        "pin": "1",
+        "role": "envelope:STATE_HOLD",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLR active low",
+        "classification": "CLEAR_INPUT"
+      },
+      {
+        "ref": "U4537",
+        "unit": 2,
+        "pin": "13",
+        "role": "envelope:STATE_FALL",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "2CLR active low",
+        "classification": "CLEAR_INPUT"
+      },
+      {
+        "ref": "U4538",
+        "unit": 1,
+        "pin": "1",
+        "role": "envelope:END_EVENT",
+        "mpn": "SN74HC74DR",
+        "symbol_template": "SN74HC74DR",
+        "pin_function": "1CLR active low",
+        "classification": "CLEAR_INPUT"
+      }
+    ]
+  },
+  "ci_observations": {
+    "SN74HC74DR": {
+      "maximum_pF": 10,
+      "typical_pF": 3,
+      "typical_temperature_C": 25,
+      "VCC_V": [
+        2,
+        6
+      ],
+      "temperature_C": [
+        -40,
+        85
+      ],
+      "pdf": "circuit/sources/ic-library/SN74HC74.pdf",
+      "locator": "SCLS094F, printed p5, physical index4, section6.5 Ci (-74)",
+      "scope": "DEVICE_INPUT_ONLY; project applicability NOT_ESTABLISHED"
+    },
+    "SN74HC14DR": {
+      "maximum_pF": 10,
+      "typical_pF": 3,
+      "typical_temperature_C": 25,
+      "VCC_V": [
+        5,
+        5
+      ],
+      "temperature_C": [
+        -40,
+        85
+      ],
+      "pdf": "circuit/sources/ic-library/SN74HC14.pdf",
+      "locator": "SCLS085L, printed p5, physical index4, section5.5 Ci (-74)",
+      "scope": "DEVICE_INPUT_ONLY; project applicability NOT_ESTABLISHED"
+    }
+  },
+  "nominal_RC": {
+    "resistor": {
+      "ref": "R4533",
+      "ohm": 47000,
+      "mpn": "",
+      "tolerance": null
+    },
+    "capacitor": {
+      "ref": "C4509",
+      "farad": 1e-09,
+      "dielectric_source_label": "C0G",
+      "mpn": "",
+      "tolerance": null
+    },
+    "locator": "design/spec/modules/envelope.py build(): CLOCK definitions",
+    "topology": "CLOCK -- R4533 -- CLOCK_RC; C4509 CLOCK_RC to AGND; U4512 unit4 inverts CLOCK_RC to CLOCK",
+    "status": "NOMINAL_SOURCE_PROPOSAL; NOT_EXACT_PART_BOUND"
+  }
+}

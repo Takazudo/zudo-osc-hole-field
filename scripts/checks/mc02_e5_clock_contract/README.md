@@ -1,0 +1,49 @@
+# E5 clock and READY source contract
+
+This bounded source-only audit enumerates every generated contact on E5 CLOCK_RC,
+CLOCK and READY, retaining physical reference, unit, pin, source role, exact MPN
+(or blank), template symbol and owner pin function. It does not repeat the prior
+128-assignment truth audit or any native/placement study.
+
+Run from the repository root:
+
+```sh
+python3 -B scripts/checks/mc02_e5_clock_contract/audit.py
+python3 -B -m unittest discover -s scripts/checks/mc02_e5_clock_contract -p 'test_*.py'
+```
+
+The frozen report has 3 CLOCK_RC contacts, 19 CLOCK contacts and 20 READY contacts.
+CLOCK includes one HC14 output, a feedback-resistor terminal and 17 HC74 clock
+inputs. READY has one HC74 Q driver, 15 HC74 clear inputs, 3 HC00 inputs and one
+HC221 active-low reset input. Contact counts are not electrical fanout acceptance.
+All contacts are source netlist bindings, not manufactured board verification.
+
+The source declares R4533 47 kohm and C4509 1 nF C0G. Their exact MPNs are blank;
+the 100 kohm/100 pF-looking generic symbol identifiers cannot supply exact values,
+tolerances or qualified parts. C4509 is separated from CLOCK by R4533; it must not
+be treated as a directly connected CLOCK output capacitance. No frequency is
+calculated from these nominal proposals.
+
+Retained TI PDFs were visually inspected at printed p5 (physical index4):
+SCLS094F section6.5 gives HC74 Ci maximum10 pF at VCC2–6 V, TA-40–85 C;
+SCLS085L section5.5 gives HC14 Ci maximum10 pF at VCC5 V, TA-40–85 C.
+Both give typical3 pF only at25 C. The supplemental HC74 observation here does
+not publish a new owner fact. HC74 values are not borrowed for HC00 or HC221.
+These device-input rows exclude routed capacitance, coupling and driver/network
+behavior. The 50 pF switching-test fixture condition is not a project-load bound.
+
+The evidence freezes source bytes and semantic contacts. `source_commit` identifies
+the pre-implementation source snapshot; the local audit is separately SHA-pinned
+and becomes part of a later implementation commit. The audit writes only stdout.
+Any retained result must be stored under ignored cache by its caller.
+
+Still required: exact RC part identities and tolerance/temperature/voltage bounds;
+actual supply and operating range; complete routed clock/reset network and load
+model (including other device inputs and parasitics); driver transition/load
+applicability; measured/supported period, duty cycle, edge time and skew at each
+receiver; asynchronous reset recovery/removal and startup/partial-power analysis.
+Physical load, guaranteed clock frequency, edge bounds and READY timing slack
+remain null. Source closure alone cannot establish them. Next work may acquire
+missing exact-part and conditioned source data, then define a separately reviewed
+model/measurement plan. No new placement, adopted RC parts, DRC, fill, formal
+adoption or manufacturing follows from this report.
