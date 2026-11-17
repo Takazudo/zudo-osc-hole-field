@@ -83,6 +83,22 @@ class TimingContractTests(unittest.TestCase):
         self.assertEqual(r['retained_owner_observations'][0]['project_applicability'],'NOT_ESTABLISHED')
         for k in ('physical_propagation_delay_ns','setup_slack_ns','hold_slack_ns','permitted_incremental_trace_mm','permitted_incremental_capacitance_pF'):self.assertIsNone(r[k])
 
+    def test_all_new_table_facts_keep_physical_budgets_unknown(self):
+        definitions=[('fact-nand-propagation-table-max45',23,'4.5V/-40..85C; input tt<6ns; numeric CL unspecified'),
+                     ('fact-nand-output-transition-table-max45',19,'4.5V/-40..85C; 19ns output does not prove <6ns next input'),
+                     ('fact-flipflop-data-setup45',25,'4.5V/-40..85C; MAX required setup; CL50pF; input tt<6ns'),
+                     ('fact-flipflop-data-hold45',0,'4.5V/-40..85C; MIN required hold; no minimum CLK-to-Q')]
+        facts=[{'fact_id':name,'source_id':'conditioned-source','class':'TRANSIENT','value':value,'unit':'ns',
+                'conditions':conditions,'verdict':'PASS - primary-source confirmed'} for name,value,conditions in definitions]
+        report=a.timing_coverage({'fixture':{'facts':{'facts':facts},'sources':{'sources':[{'source_id':'conditioned-source','availability':'AVAILABLE'}]}}})
+        self.assertEqual([o['fact'] for o in report['retained_owner_observations']],facts)
+        self.assertTrue(all(o['project_applicability']=='NOT_ESTABLISHED' for o in report['retained_owner_observations']))
+        for key in ('physical_propagation_delay_ns','setup_slack_ns','hold_slack_ns','permitted_incremental_trace_mm','permitted_incremental_capacitance_pF'):
+            self.assertIsNone(report[key])
+        missing=' '.join(report['missing_project_acceptance'])
+        self.assertIn('minimum CLK-to-Q',missing);self.assertIn('numeric CL remains unspecified',missing)
+        self.assertIn('Cascaded HC00',missing)
+
     def test_existing_and_symlink_outputs_do_not_run(self):
         with tempfile.TemporaryDirectory() as d:
             root=Path(d); cache=root/'.circuit-cache';cache.mkdir()

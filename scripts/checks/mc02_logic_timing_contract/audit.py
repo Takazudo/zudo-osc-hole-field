@@ -143,8 +143,10 @@ def timing_coverage(owners):
             observations.append({'device': name, 'fact': fact, 'source_record': source,
                                  'project_applicability': 'NOT_ESTABLISHED'})
     return {'retained_owner_observations': observations,
-            'missing_project_acceptance': ['HC00 propagation and input-transition limits with applicable corners',
-                'HC74 D setup/hold and minimum-delay evidence', 'actual clock/reset corners and jitter/skew',
+            'missing_project_acceptance': ['Applicability of HC00 propagation/output-transition table rows to actual load and corners; switching-test numeric CL remains unspecified',
+                'Cascaded HC00 input edges below the source switching-test 6ns condition are not established by its 19ns output-transition maximum',
+                'Applicability of HC74 D setup/hold table requirements; minimum CLK-to-Q and contamination-delay evidence remain missing',
+                'actual clock/reset corners and jitter/skew',
                 'actual output load, input slew and operating voltage/temperature',
                 'receiver-specific allowable glitches and asynchronous raw-input behavior',
                 'trace/via parasitics, decoupling and return constraints'],
