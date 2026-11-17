@@ -4,6 +4,15 @@
 native fixture. The received Hirose/Keystone PDFs are already consumed; do not
 request them again or rerun unchanged aggregate/length studies.
 
+## Update after actual delivery
+
+Both supplied18November PDFs are now received and fully reviewed. The Molex
+original request is resolved; its exact150200075 table binding is verified.
+The second PDF is the same retained generic LX source. Do not request either
+file again. See [source follow-up and remaining applicability conditions](mc02-molex-source-followup-20261118.md).
+The requests below describe their original scope; only missing exact
+configuration/material/physical evidence remains open.
+
 ## Exact selected cable configurations
 
 C26618 is40contacts/50mm and C32128 is26contacts/60mm,0.5mm pitch/same-side.
@@ -25,9 +34,9 @@ and the other three exact-code interval findings stay unchanged.
 [Exact product150200075](https://www.molex.com/en-us/products/part-detail/150200075)
 and the known [sales drawing SD-15020-001](https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/salesdrawingpdf/150/15020/150200175_sd.pdf)
 are the existing official pointers. The PDF filename150200175 is not evidence
-that it binds150200075. Obtain the complete original with its configuration table
-and inspect exact order-code applicability, end geometry/tolerances, finish,
-conductor/insulation construction and any applicable electrical specifications.
+that it binds150200075. The complete original has now been received and inspected. Exact order-code
+applicability, end geometry and nominal construction are bound; the drawing does
+not supply the remaining material/tolerance/electrical applicability inputs.
 The earlier ordinary retrieval timeout is retained; no unchanged retry or
 protection bypass was performed in this source audit.
 

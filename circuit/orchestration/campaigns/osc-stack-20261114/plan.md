@@ -6,7 +6,7 @@ Every schematic and PCB stays an unvalidated draft. This campaign creates no fab
 
 ## Current WSL execution phase — 2026-11-17
 
-**CURRENT READY WORK VERIFIED; NEXT SOURCE DELIVERY PENDING, NOT HARDWARE PROJECT COMPLETION.** The owner assigned this x0x WSL Codex session the Moya coordinator role. Thread `01a1e7fb-e191-7382-8c35-5f76d36934fa` plans, delegates, reviews and serializes local results. Direct Moya communication is not available as a workflow dependency. The current model and live jobs must be observed per dispatch; no second coordinator is admitted.
+**RECEIVED SOURCE WORK VERIFIED; PRODUCT APPLICABILITY REMAINS OPEN, NOT HARDWARE PROJECT COMPLETION.** The owner assigned this x0x WSL Codex session the Moya coordinator role. Thread `01a1e7fb-e191-7382-8c35-5f76d36934fa` plans, delegates, reviews and serializes local results. Direct Moya communication is not available as a workflow dependency. The current model and live jobs must be observed per dispatch; no second coordinator is admitted.
 
 Reason for WSL: the available Cloud container could not sustain the required KiCad-related work. The stopping criterion is completion of known WSL-required operations, not a single implementation, report or review. Continue independent authorized work when one item is blocked. A fully blocked WSL queue requires an explicit dependency report, not a completion claim. See the [operative contract](../../../ORCHESTRATION.md#active-x0x-wsl-continuation-contract--2026-11-17).
 
@@ -18,7 +18,7 @@ Reason for WSL: the available Cloud container could not sustain the required KiC
 | Gate/source readiness for subsequent native work | Candidate packet and source-only evidence are available; formal integrated-head ruling and DS-06/DS-88 disposition remain pending | Identify and finish concrete prerequisites; do not mistake MC03 tool-access uncertainty for a formal MC04 prerequisite |
 | Post-composition KiCad verification | COMPLETED at exact `fb0ed1066091f4e0c5595d699378c1184725a96f`: aggregate PASS, no drift, independent cleanup/scope audit PASS | Reuse this receipt for these unchanged inputs; any later admitted engineering change requires its own applicable checks |
 | Routing, DRC and zone fill | Existing routing holds and explicit owner DRC/fill hold remain | Do not launch held operations; record the precise owner/gate decision if this blocks all remaining WSL work |
-| WSL phase exit | Received-source ready work verified;18November material delivery still pending | Current independent audit and receipts are above; resume on actual source arrival, not a routine stage approval. Hardware project remains incomplete |
+| WSL phase exit | Received-source ready work verified;18November PDFs consumed, product applicability open | Current independent audit and receipts are above; resume on new applicable source/physical evidence, not a routine stage approval. Hardware project remains incomplete |
 
 ### Current continuation boundary — 2026-11-18 JST
 
@@ -31,14 +31,19 @@ is complete through an output-bound continuation, not a falsely uninterrupted
 PASS. See [native receipt](mc02-fh12-native-result-20261118.md) and
 [source/documentation receipt](mc02-capacitance-source-integration-20261118.md).
 
-After independent queue audit, no additional justified ready WSL execution is
-identified. The user supplied a new artifact folder, but both connected Dropbox
-and configured WSL views remained empty through2026-11-17T16:28:43Z. Its contents
-and reported duplicate cannot be checked yet. [Specific required sources](mc02-next-source-inputs-20261118.md)
-remain the next inputs. Reconcile actual arrival and live writer state on
-continuation, then resume without a routine Moya/owner approval question. Do not
-claim a background job, invent missing bytes or retry unchanged completed work.
-Hardware positions, physical unknowns and all existing holds remain unchanged.
+The subsequent18November handoff is now fully received and reviewed. Exact
+Molex150200075 table binding and dimensions support two new source-only audits;
+both pass11fixtures and independent review. The LX PDF is unchanged generic
+source, not a new exact C26618/C32128 configuration. See the
+[received-source follow-up](mc02-molex-source-followup-20261118.md).
+
+After collection and independent queue review, no further numerical/native
+execution is justified without a dimensional/conformity disposition and missing
+material/contact/physical applicability evidence. A length-only endpoint run or
+blind conductor-thickness substitution would not close those gaps. No routine
+Moya/owner stage approval is pending, no background worker is claimed, and no
+received PDF should be requested again. Resume on actual new source or physical
+evidence while preserving positions and all existing holds.
 
 ### Candidate-first disposition and bounded remedy
 
@@ -425,8 +430,8 @@ intervals and unknown actual registration; no CAD placement is adopted.
 
 The isolated native fixture subsequently passed at467d6e4e with32cases and
 verified cleanup. Canonical Ci/source checks and local documentation validation
-are also complete; the current boundary is the actual18November source delivery
-not yet visible in either Dropbox or WSL. Refer to the current continuation
+are also complete; the18November source delivery has since been consumed in the exact candidate
+and model-applicability audits. Refer to the current continuation
 boundary above. Existing aggregate evidence is still not rerun or rebound.
 
 The owner requires requesting missing PDFs and continuing independent work, not

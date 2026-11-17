@@ -39,15 +39,26 @@ and the separately resumed site checks passed at frozenb15e03b2. The interrupted
 transaction and its supplemental cleanup reconciliation remain intact. See the
 [source/documentation receipt](campaigns/osc-stack-20261114/mc02-capacitance-source-integration-20261118.md).
 
-Independent ready-queue audit found no additional required WSL execution after
-these results and record integration. The next concrete input is the owner's
-18November PDF handoff: its folder exists but Dropbox and WSL were still empty
-at2026-11-17T16:28:43Z. No new PDF hash, duplicate or content claim is made.
-This is an external delivery dependency, not a Moya acknowledgment or stage
-approval, and not hardware-project completion. On actual file arrival, verify
-bytes/configuration applicability, then choose the next source-bound task.
-Do not repeat completed native/build/search work or substitute generic drawings.
-No background worker or automatic resumption is claimed. All DRC/fill/adoption/
+## Additional PDF handoff consumed — 2026-11-18 JST
+
+The owner completed the pending transfer. Both PDFs are now settled, hash-checked
+and fully reviewed; the earlier empty-folder state is historical. Molex
+SD-15020-001 revF explicitly binds150200075 (8P/typeA/51±2mm). The other PDF is
+byte-identical to the retained generic LX sheet and adds no exact customer-code
+binding. See the [received-source result](campaigns/osc-stack-20261114/mc02-molex-source-followup-20261118.md).
+
+Exact candidate and source-to-model audits are implemented, independently
+reviewed and each pass11fixtures. They preserve recommendation differences,
+nominal-only material data and unknown physical/model applicability. Independent
+review found no justified additional numerical/native run from these inputs:
+49/53 samples cannot certify the nonlinear model, and a thickness edit would
+leave legacy LX DC resistance bounds unchanged. No unreviewed parameter patch,
+BOM substitution or tolerance waiver is admitted.
+
+Next input is a concrete configuration/conformity/material or physical-datum
+disposition, not another copy of these received PDFs or Moya acknowledgment.
+Continue on genuinely new evidence; do not repeat passed unchanged work. No
+background worker or automatic resumption is claimed. All DRC/fill/adoption/
 manufacturing/main-CI holds and single-writer/resource/cleanup rules remain.
 
 ## Historical WSL evidence checkpoint — superseded by received sources
