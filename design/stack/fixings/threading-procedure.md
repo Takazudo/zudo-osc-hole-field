@@ -112,13 +112,15 @@ NOT SHOWN, because no footprint height is retained; the neighbours are exempt pa
 | JL-P-K-JL-L01 | the 1 jack of B1 | C2105, C2135, D2105, D2108, R1121, R1122, R2126, R2128 |
 | JL-P-K-P-L01.01.01.01 | the FM ± pot of O3 | R1317, R1318 |
 
-## The screw stays M3 × 25 mm (ASSUMED); nut height and washer thickness stay UNSOURCED, so the washer rule of point 9 stands
+## The screw stays M3 × 25 mm (ASSUMED); nut drawing height is verified, washer thickness stays UNSOURCED, and the washer rule of point 9 stands
 
 - long sleeve, JL or JR to K: grip 22.2 mm, thread 2.8 mm behind K's rear face, inside the 5 mm envelope.
 - short sleeve, P to K: grip 20.2 mm, thread 4.8 mm behind K's rear face, inside the 5 mm envelope.
 - Head at most 5.5 mm and not countersunk; it passes the 7 mm access hole of EL at (244, 230).
 - Retained maker sheet: `keystone/4708/m60-section-8-washers-and-nuts-p132-frev1b1-11-2011-farnell-mirror.pdf` in the circuit-dev-resources (private), SHA256 `37571546d94c93793dae6cbbe894c1d28e34aee8e9ae76ab30f3897149c1a5a5`, from https://www.farnell.com/datasheets/1933945.pdf. It gives M3 steel hex nut: cat. no. 4708, hex 5.50 mm, thread M3 (nylon: 4688); it does not give nut height or metric plain washer (the page lists fibre and nylon shoulder washers in inch sizes).
-- Sources tried (two, the limit): 1. Keystone catalog page via farnell.com/datasheets/1933945.pdf: HTTP 200, readable PDF of one page; retained. Gives the M3 hex of 5.50 mm, no nut height and no metric plain washer. 2. Bossard M6M M3 hex nut page on distrelec.nl: HTTP 302 to a distributor home page; no sheet reached, nothing downloaded.
+- Additional verified dimensional source: Keystone 4708, DWG 4708 dated 2011-05-26, reviewed 2026-11-17; PDF 172371 bytes, SHA256 `b31545f168c90a3bc2d44f06b0f0a3003a6aaeef002b4366e11a44230637af44`, official source https://www.keyelco.com/product-pdf.cfm?p=2205. Height 2.4 +/- 0.25 mm (interval 2.15 to 2.65 mm), PRIMARY_DIMENSION_VERIFIED. Locator: Physical page index0, unnumbered sheet: side elevation height2.40; NOTE1 all dimensions in millimeters; lower title-block decimal tolerance [MM] +/-0.25 unless otherwise specified.
+- The drawing declares steel / zinc plate; the retained catalog description is steel / nickel. Finish/version: UNRESOLVED_VERSION_DISCREPANCY. Revision grid is blank; title-block CODE C is not a revision. Verified drawing height only; no current-lot finish, hardware adoption or assembly acceptance. Still unresolved: washer thickness; screw length tolerance; grip tolerance; required protrusion and effective thread engagement; nut finish/version applicability.
+- Historical source attempts (two at that stage; retained unchanged): 1. Keystone catalog page via farnell.com/datasheets/1933945.pdf: HTTP 200, readable PDF of one page; retained. Gives the M3 hex of 5.50 mm, no nut height and no metric plain washer. 2. Bossard M6M M3 hex nut page on distrelec.nl: HTTP 302 to a distributor home page; no sheet reached, nothing downloaded.
 - Washer: UNSOURCED at all four sites: the washer rule of point 9 of the spacer page stands as it is.
 
 ## Tape holds the four screws; no retained part class does
@@ -226,8 +228,8 @@ Front and K runs are plan lengths from the connector opening to the slot centre,
 - `design/grid/placements.lock.json`: `297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8`.
 - `design/stack/fixings/fixing-sites.json`: `8402ce558d2de13512ff325a5550ef21f303d64b5e5cb86c1aa20ffe2924225b`.
 - `design/stack/fixings/ruled-list.json`: `fb18e85e1c7a9be576a5c9d5d5efd2738999a86449afeae00e8ed84d65ce234d`.
-- `scripts/stack/fixings/procedure.py`: `c142c673382872e7e3bfb7d8787a2e3e93759ed4544217dfe9849c9f3b28861d`.
-- `scripts/stack/fixings/procedure_page.py`: `ece3f32eb9e2473fa4fe16261d1a185c5d53933b24764cf5c9d358a64793eae4`.
+- `scripts/stack/fixings/procedure.py`: `b271089cf0ac18f5e260fd9a841a4c656ed37c1283d9ccd5787cb9a75a439214`.
+- `scripts/stack/fixings/procedure_page.py`: `700d27b0f38eb6b6eb90e4f1bcb07bcc58f7183c3051393e83e4a3d030c5e92a`.
 
 Regenerate with `python3 scripts/stack/fixings/procedure.py`; `--check` fails on a stale file or any finding.
 
@@ -236,5 +238,5 @@ Regenerate with `python3 scripts/stack/fixings/procedure.py`; `--check` fails on
 - The handling trial (owner item 4 of c1): standing, guiding and fold of the cables; wear of a tail on cut leads.
 - The closing force of the lock and the open lock height: UNSOURCED (DS-63, DS-87).
 - Heights of the latch neighbours and of the loops: no footprint height is retained.
-- Nut height and washer thickness: UNSOURCED; any print, fit, torque or creep test.
+- Nut drawing height: PRIMARY_DIMENSION_VERIFIED; washer thickness: UNSOURCED. Nut finish/version, screw/grip tolerances and required protrusion remain unresolved; print, fit, torque and creep tests are not performed.
 - KiCad, DRC and `scripts/checks/regen-all.sh`: no board changes here; the pull request's CI runs it.

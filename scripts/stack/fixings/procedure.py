@@ -42,6 +42,28 @@ STORE_SHEET = {
     'facts': {'M3 steel hex nut': 'cat. no. 4708, hex 5.50 mm, thread M3 (nylon: 4688)'},
     'missing': ['nut height', 'metric plain washer (the page lists fibre and nylon shoulder washers in inch sizes)'],
 }
+# Source amendment: reviewed dimensional evidence, not a nut selection or assembly release.
+NUT_HEIGHT_SOURCE = {
+    'identity': 'Keystone 4708',
+    'document': 'DWG 4708',
+    'drawing_date': '2011-05-26',
+    'date_printed': '5.26.11',
+    'revision': None,
+    'revision_scope': 'Revision grid is blank; title-block CODE C is not a revision',
+    'verified_pdf_sha256': 'b31545f168c90a3bc2d44f06b0f0a3003a6aaeef002b4366e11a44230637af44',
+    'verified_pdf_bytes': 172371,
+    'verification_date': '2026-11-17',
+    'official_url': 'https://www.keyelco.com/product-pdf.cfm?p=2205',
+    'locator': 'Physical page index0, unnumbered sheet: side elevation height2.40; NOTE1 all dimensions in '
+               'millimeters; lower title-block decimal tolerance [MM] +/-0.25 unless otherwise specified',
+    'thread': 'M3 x 0.5',
+    'drawing_material_finish': 'steel / zinc plate',
+    'retained_catalog_material_finish': 'steel / nickel',
+    'finish_disposition': 'UNRESOLVED_VERSION_DISCREPANCY',
+    'scope': 'Verified drawing height only; no current-lot finish, hardware adoption or assembly acceptance',
+    'remaining_unknowns': ['washer thickness', 'screw length tolerance', 'grip tolerance',
+                           'required protrusion and effective thread engagement', 'nut finish/version applicability'],
+}
 SOURCES_TRIED = [
     {'source': 'Keystone catalog page via farnell.com/datasheets/1933945.pdf', 'result':
      'HTTP 200, readable PDF of one page; retained. Gives the M3 hex of 5.50 mm, no nut height and no metric plain '
@@ -320,7 +342,9 @@ def screws(sites):
     s = sites['screw']
     return {'working_figure': s['working_figure'], 'classes': s['classes'],
             'sheet': STORE_SHEET, 'sources_tried': SOURCES_TRIED, 'web_searches': WEB_SEARCHES,
-            'nut_height_mm': 'UNSOURCED', 'washer_thickness_mm': 'UNSOURCED',
+            'nut_height_mm': {'nominal': 2.4, 'tolerance': 0.25, 'interval': [2.15, 2.65],
+                              'unit': 'mm', 'status': 'PRIMARY_DIMENSION_VERIFIED'},
+            'nut_height_source': NUT_HEIGHT_SOURCE, 'washer_thickness_mm': 'UNSOURCED',
             'washer_verdict': 'UNSOURCED at all four sites: the washer rule of point 9 of the spacer page stands as it is',
             'holding': {'way': 'a strip of tape over each head (point 7 of the spacer page; ASSUMED to hold)',
                         'not_retained': ['threaded insert', 'soldered nut on the front board'],

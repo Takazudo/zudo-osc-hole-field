@@ -140,8 +140,8 @@ def render(doc):
         w('| %s | %s | %s |' % (n['link'], n['K_connector'], ', '.join(n['neighbours'])))
     w('')
     wf = scr['working_figure']
-    w('## The screw stays %s mm (ASSUMED); nut height and washer thickness stay UNSOURCED, so the washer rule of '
-      'point 9 stands' % wf['designation'].replace(' x ', ' × '))
+    w('## The screw stays %s mm (ASSUMED); nut drawing height is verified, washer thickness stays UNSOURCED, '
+      'and the washer rule of point 9 stands' % wf['designation'].replace(' x ', ' × '))
     w('')
     for k in scr['classes']:
         w('- %s: grip %s mm, thread %s mm behind K\'s rear face, inside the %s mm envelope.' %
@@ -153,7 +153,17 @@ def render(doc):
     w('- Retained maker sheet: `%s` in the %s, SHA256 `%s`, from %s. It gives %s; it does not give %s.' %
       (sh['path'], sh['store'], sh['sha256'], sh['authoritative_url'], '; '.join('%s: %s' % kv for kv in sh['facts'].items()),
        ' or '.join(sh['missing'])))
-    w('- Sources tried (two, the limit): ' + ' '.join('%d. %s: %s.' % (i + 1, t['source'], t['result'])
+    nh, ns = scr['nut_height_mm'], scr['nut_height_source']
+    w('- Additional verified dimensional source: %s, %s dated %s, reviewed %s; PDF %d bytes, SHA256 `%s`, '
+      'official source %s. Height %s +/- %s mm (interval %s to %s mm), %s. Locator: %s.' %
+      (ns['identity'], ns['document'], ns['drawing_date'], ns['verification_date'], ns['verified_pdf_bytes'],
+       ns['verified_pdf_sha256'], ns['official_url'], _g(nh['nominal']), _g(nh['tolerance']),
+       _g(nh['interval'][0]), _g(nh['interval'][1]), nh['status'], ns['locator']))
+    w('- The drawing declares %s; the retained catalog description is %s. Finish/version: %s. %s. '
+      '%s. Still unresolved: %s.' %
+      (ns['drawing_material_finish'], ns['retained_catalog_material_finish'], ns['finish_disposition'],
+       ns['revision_scope'], ns['scope'], '; '.join(ns['remaining_unknowns'])))
+    w('- Historical source attempts (two at that stage; retained unchanged): ' + ' '.join('%d. %s: %s.' % (i + 1, t['source'], t['result'])
                                                        for i, t in enumerate(scr['sources_tried'])))
     w('- Washer: ' + scr['washer_verdict'] + '.')
     w('')
@@ -234,7 +244,8 @@ def render(doc):
     w('- The handling trial (owner item 4 of c1): standing, guiding and fold of the cables; wear of a tail on cut leads.')
     w('- The closing force of the lock and the open lock height: UNSOURCED (DS-63, DS-87).')
     w('- Heights of the latch neighbours and of the loops: no footprint height is retained.')
-    w('- Nut height and washer thickness: UNSOURCED; any print, fit, torque or creep test.')
+    w('- Nut drawing height: PRIMARY_DIMENSION_VERIFIED; washer thickness: UNSOURCED. Nut finish/version, '
+      'screw/grip tolerances and required protrusion remain unresolved; print, fit, torque and creep tests are not performed.')
     w('- KiCad, DRC and `scripts/checks/regen-all.sh`: no board changes here; the pull request\'s CI runs it.')
     w('')
     return '\n'.join(out)

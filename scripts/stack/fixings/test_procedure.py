@@ -90,10 +90,32 @@ class Record(unittest.TestCase):
         self.assertEqual(sv['per_opening'], 2 * (61 + 61 + 18 + 4))
         self.assertLessEqual(sv['K_end_insertions_after_limit'], sv['insertions_sourced'])
 
-    def test_nut_and_washer_stay_unsourced_with_two_sources(self):
+    def test_verified_nut_height_does_not_resolve_washer_or_erase_history(self):
         s = DOC['screws']
-        self.assertEqual((s['nut_height_mm'], s['washer_thickness_mm']), ('UNSOURCED', 'UNSOURCED'))
+        self.assertEqual(s['nut_height_mm'], {'nominal':2.4,'tolerance':.25,'interval':[2.15,2.65],
+                                             'unit':'mm','status':'PRIMARY_DIMENSION_VERIFIED'})
+        self.assertEqual(s['washer_thickness_mm'],'UNSOURCED')
+        self.assertIn('nut height',s['sheet']['missing'])
+        self.assertEqual(s['sheet'],pr.STORE_SHEET)
         self.assertLessEqual(len(s['sources_tried']), 2)
+
+    def test_nut_source_identity_and_remaining_assembly_gaps(self):
+        source=DOC['screws']['nut_height_source']
+        self.assertEqual(source['verified_pdf_sha256'],'b31545f168c90a3bc2d44f06b0f0a3003a6aaeef002b4366e11a44230637af44')
+        self.assertEqual(source['verified_pdf_bytes'],172371)
+        self.assertEqual(source['drawing_date'],'2011-05-26')
+        self.assertIsNone(source['revision'])
+        self.assertEqual(source['finish_disposition'],'UNRESOLVED_VERSION_DISCREPANCY')
+        self.assertIn('screw length tolerance',source['remaining_unknowns'])
+        self.assertIn('grip tolerance',source['remaining_unknowns'])
+        self.assertEqual(DOC['screws']['working_figure']['status'],'ASSUMED')
+        self.assertEqual(DOC['counts']['latch']['NOT SHOWN'],31)
+        page=procedure_page.render(DOC)
+        self.assertIn('2.4 +/- 0.25 mm (interval 2.15 to 2.65 mm)',page)
+        self.assertIn('washer thickness stays UNSOURCED',page)
+        self.assertNotIn('Nut height and washer thickness: UNSOURCED',page)
+        self.assertIn('Nut drawing height: PRIMARY_DIMENSION_VERIFIED; washer thickness: UNSOURCED',page)
+        self.assertIn('no current-lot finish, hardware adoption or assembly acceptance',page)
 
 
 class PageReadsData(unittest.TestCase):

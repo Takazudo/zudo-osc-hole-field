@@ -5182,7 +5182,41 @@
    "keyelco.com 4708 hex nut M3 pdf",
    "M3 hex nut DIN 934 and M3 flat washer DIN 125 datasheet pdf manufacturer thickness 2.4 mm 0.5 mm"
   ],
-  "nut_height_mm": "UNSOURCED",
+  "nut_height_mm": {
+   "nominal": 2.4,
+   "tolerance": 0.25,
+   "interval": [
+    2.15,
+    2.65
+   ],
+   "unit": "mm",
+   "status": "PRIMARY_DIMENSION_VERIFIED"
+  },
+  "nut_height_source": {
+   "identity": "Keystone 4708",
+   "document": "DWG 4708",
+   "drawing_date": "2011-05-26",
+   "date_printed": "5.26.11",
+   "revision": null,
+   "revision_scope": "Revision grid is blank; title-block CODE C is not a revision",
+   "verified_pdf_sha256": "b31545f168c90a3bc2d44f06b0f0a3003a6aaeef002b4366e11a44230637af44",
+   "verified_pdf_bytes": 172371,
+   "verification_date": "2026-11-17",
+   "official_url": "https://www.keyelco.com/product-pdf.cfm?p=2205",
+   "locator": "Physical page index0, unnumbered sheet: side elevation height2.40; NOTE1 all dimensions in millimeters; lower title-block decimal tolerance [MM] +/-0.25 unless otherwise specified",
+   "thread": "M3 x 0.5",
+   "drawing_material_finish": "steel / zinc plate",
+   "retained_catalog_material_finish": "steel / nickel",
+   "finish_disposition": "UNRESOLVED_VERSION_DISCREPANCY",
+   "scope": "Verified drawing height only; no current-lot finish, hardware adoption or assembly acceptance",
+   "remaining_unknowns": [
+    "washer thickness",
+    "screw length tolerance",
+    "grip tolerance",
+    "required protrusion and effective thread engagement",
+    "nut finish/version applicability"
+   ]
+  },
   "washer_thickness_mm": "UNSOURCED",
   "washer_verdict": "UNSOURCED at all four sites: the washer rule of point 9 of the spacer page stands as it is",
   "holding": {
@@ -5336,8 +5370,8 @@
     "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
     "design/stack/fixings/fixing-sites.json": "8402ce558d2de13512ff325a5550ef21f303d64b5e5cb86c1aa20ffe2924225b",
     "design/stack/fixings/ruled-list.json": "fb18e85e1c7a9be576a5c9d5d5efd2738999a86449afeae00e8ed84d65ce234d",
-    "scripts/stack/fixings/procedure.py": "c142c673382872e7e3bfb7d8787a2e3e93759ed4544217dfe9849c9f3b28861d",
-    "scripts/stack/fixings/procedure_page.py": "ece3f32eb9e2473fa4fe16261d1a185c5d53933b24764cf5c9d358a64793eae4"
+    "scripts/stack/fixings/procedure.py": "b271089cf0ac18f5e260fd9a841a4c656ed37c1283d9ccd5787cb9a75a439214",
+    "scripts/stack/fixings/procedure_page.py": "700d27b0f38eb6b6eb90e4f1bcb07bcc58f7183c3051393e83e4a3d030c5e92a"
    }
   }
  }
