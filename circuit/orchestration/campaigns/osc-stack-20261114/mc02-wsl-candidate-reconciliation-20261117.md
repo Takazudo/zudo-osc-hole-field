@@ -225,3 +225,11 @@ The DS-97 gate decides whether the unresolved list and displacement work are acc
 ## Precision-function evidence follow-up
 
 The independently reviewed [U1518/U4341 constraint map](mc02-precision-constraints-20261117.md) answers the source-backed portions of review question 2. It retains exact topology, existing calibration/ideal-fixture scopes and source hashes. It does not allocate new routing, leakage, via or stability budgets.
+
+## Retained catalog follow-up — 2026-11-17
+
+The [retained FH12 review](mc02-retained-fh12-review-20261117.md) confirms the
+packet-matching catalog bytes and exact standard-variant/closed-height locators.
+Contact-1 mapping, numeric open envelope, placed access and selected same-side
+LX cable tolerances remain unresolved. This narrows source provenance; it does
+not promote the packet or any hardware gate.
