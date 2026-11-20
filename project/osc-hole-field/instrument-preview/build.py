@@ -2,10 +2,9 @@
 
     python3 project/osc-hole-field/instrument-preview/build.py [--check]
 
-Writes index.html here and the byte-identical published copy
-doc/public/assets/osc-hole-field/instrument-3d.html. ``--check`` writes nothing and
+Writes the single committed page doc/public/assets/osc-hole-field/instrument-3d.html. ``--check`` writes nothing and
 fails when any recorded input hash differs from the current file (stale view data)
-or when either HTML file differs from a fresh build. Never touches board sources.
+or when the page differs from a fresh build. Never touches board sources.
 """
 from __future__ import annotations
 
@@ -20,7 +19,6 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
 VENDOR = ROOT / 'project/osc-hole-field/workbench/vendor'
 MODELS = ROOT / 'project/osc-hole-field/workbench/component-preview/models'
-OUT = HERE / 'index.html'
 PUBLISHED = ROOT / 'doc/public/assets/osc-hole-field/instrument-3d.html'
 LIMIT = 12_000_000
 
@@ -81,15 +79,14 @@ def main():
     html = build()
     data = html.encode()
     if '--check' in sys.argv:
-        bad = [str(p.relative_to(ROOT)) for p in (OUT, PUBLISHED) if not p.exists() or p.read_bytes() != data]
+        bad = [str(p.relative_to(ROOT)) for p in (PUBLISHED,) if not p.exists() or p.read_bytes() != data]
         if bad:
             raise SystemExit('FAIL stale preview page: ' + ', '.join(bad) + ' (run build.py)')
         print(f'PASS instrument preview is current ({len(data)} bytes; inputs match recorded hashes)')
         return
-    OUT.write_bytes(data)
     PUBLISHED.parent.mkdir(parents=True, exist_ok=True)
     PUBLISHED.write_bytes(data)
-    print(f'wrote {OUT.relative_to(ROOT)} and {PUBLISHED.relative_to(ROOT)} ({len(data)} bytes)')
+    print(f'wrote {PUBLISHED.relative_to(ROOT)} ({len(data)} bytes)')
 
 
 if __name__ == '__main__':

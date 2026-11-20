@@ -1,6 +1,6 @@
 # OSC instrument preview
 
-`index.html` is a self-contained, offline 3D preview of the current OSC instrument: the panel and all ten native board drafts at their true depths. It is published unchanged as `doc/public/assets/osc-hole-field/instrument-3d.html`. It makes no network request; Three.js r180 and OrbitControls are inlined from `../workbench/vendor/` (MIT, `THREE-LICENSE.txt`).
+`doc/public/assets/osc-hole-field/instrument-3d.html` is a self-contained, offline 3D preview of the OSC instrument: the panel and all ten native board drafts at their true depths. It is a **dated snapshot**: its banner shows the extraction date and the source commit, and it does not follow later board changes until it is rebuilt (see Reproduce). It is the only committed copy of the page. It makes no network request; Three.js r180 and OrbitControls are inlined from `../workbench/vendor/` (MIT, `THREE-LICENSE.txt`).
 
 **Status.** Every board is an unvalidated draft. Routing is incomplete on K, JL and JR. Component body heights are illustrative display values. This is **not a native KiCad render: KiCad render NOT RUN**, because the pinned KiCad 10.0.6 oracle needs Docker, which is unavailable in the cloud container where this preview was built. Nothing in the page is fit, clearance, electrical or manufacturing evidence. No board, grid, partition, schematic, symbol or footprint file is written by these scripts.
 
@@ -49,17 +49,19 @@ Assembled, Exploded (continuous slider), X-ray and Focus modes; per-board layer 
 
 ## Reproduce
 
+To take a new snapshot of the current boards in one step, run `bash project/osc-hole-field/instrument-preview/rebuild.sh [source-commit]`. It extracts, builds, runs the unit and browser tests and refreshes the four screenshots. Commit the changed `view-data.json`, `data/*.png`, the page and the screenshots together. The individual steps are:
+
 From the repository root (Python 3 with Pillow; Node 22+ with Playwright for the browser test):
 
 ```
 python3 project/osc-hole-field/instrument-preview/extract.py          # about 2.5 min; writes view-data.json and data/*.png
-python3 project/osc-hole-field/instrument-preview/build.py            # writes index.html and the published copy
+python3 project/osc-hole-field/instrument-preview/build.py            # writes doc/public/assets/osc-hole-field/instrument-3d.html
 python3 project/osc-hole-field/instrument-preview/extract.py --check  # fails if the view data is stale
-python3 project/osc-hole-field/instrument-preview/build.py --check    # fails if inputs or either HTML file are stale
+python3 project/osc-hole-field/instrument-preview/build.py --check    # fails if inputs or the page are stale
 python3 -m unittest project/osc-hole-field/instrument-preview/test_extract.py
 node project/osc-hole-field/instrument-preview/test_browser.mjs [--publish]
 ```
 
-`extract.py --base-commit <sha>` sets the commit shown in the status banner (default: `git rev-parse HEAD`). The browser test loads `index.html` from disk, requires zero console errors and no request other than the file itself (in-memory `blob:` and `data:` URLs excepted), drives every mode, checks picking, and saves screenshots to the system temp directory; `--publish` copies the four documentation screenshots to `doc/public/assets/osc-hole-field/instrument-3d-*.png`. Run it through the machine's heavy-run guard where one exists.
+`extract.py --base-commit <sha>` sets the commit shown in the status banner (default: `git rev-parse HEAD`). The browser test loads the built page from disk, requires zero console errors and no request other than the file itself (in-memory `blob:` and `data:` URLs excepted), drives every mode, checks picking, and saves screenshots to the system temp directory; `--publish` copies the four documentation screenshots to `doc/public/assets/osc-hole-field/instrument-3d-*.png`. Run it through the machine's heavy-run guard where one exists.
 
 The page budget is 12,000,000 bytes; `build.py` fails above it.

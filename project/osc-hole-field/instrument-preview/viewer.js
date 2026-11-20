@@ -509,14 +509,14 @@ $('railToggle').onclick = () => $('rail').classList.toggle('open');
 // ---------- status banner and sources ----------
 const extractedRaw = D.extracted_utc;
 $('bannerText').textContent = D.status;
-$('bannerMeta').textContent = `base ${D.base_commit} · data ${extractedRaw}`;
+$('bannerMeta').textContent = `snapshot ${extractedRaw} · source ${D.base_commit}`;
 $('subtitle').textContent = `${D.boards.length} native board drafts behind one panel · ${fmt(D.totals.footprints)} footprints · ${fmt(D.totals.segments)} track segments · true depth scale`;
 {
   const rows = Object.entries(D.inputs).map(([p, v]) => `<tr><td>${esc(p)}</td><td>${v.sha256.slice(0, 12)}</td><td>${(v.bytes / 1e6).toFixed(2)} MB</td></tr>`).join('');
   const ex = Object.entries(D.excluded).map(([p, why]) => `<tr><td>${esc(p)}</td><td colspan="2" style="color:var(--dim)">${esc(why)}</td></tr>`).join('');
   $('sources').innerHTML = `<button class="close btn" style="float:right" id="srcClose">Close</button><h4 style="margin-top:0">Inputs (SHA-256 prefix)</h4><table>${rows}</table>
   <h4>Excluded board files</h4><table>${ex}</table>
-  <h4>Method</h4><p style="color:var(--dim);margin:0">Boards are parsed from native .kicad_pcb text in pure Python. KiCad coordinates map to the panel frame by the per-board offset recorded in each footprint's FootprintOriginMm property (${D.boards.map(b => b.key + ' ' + b.kicad_to_panel_offset_mm.join(',')).slice(0, 1)} for every board); world X = x − 159, Y = 149 − y. F.Cu faces the panel and the viewer, so no board is mirrored. KiCad render: NOT RUN (the pinned oracle needs Docker, unavailable in the build container). Base commit ${esc(D.base_commit)}; data extracted ${esc(extractedRaw)}.</p>
+  <h4>Method</h4><p style="color:var(--dim);margin:0">Boards are parsed from native .kicad_pcb text in pure Python. KiCad coordinates map to the panel frame by the per-board offset recorded in each footprint's FootprintOriginMm property (${D.boards.map(b => b.key + ' ' + b.kicad_to_panel_offset_mm.join(',')).slice(0, 1)} for every board); world X = x − 159, Y = 149 − y. F.Cu faces the panel and the viewer, so no board is mirrored. KiCad render: NOT RUN (the pinned oracle needs Docker, unavailable in the build container). This page is a dated snapshot: boards extracted ${esc(extractedRaw)} from source commit ${esc(D.base_commit)}. Later board changes are not shown until the snapshot is rebuilt.</p>
   <h4>Licences and model attribution</h4><pre>${esc($('licenses').textContent)}</pre>`;
   $('sourcesBtn').onclick = () => $('sources').classList.toggle('show');
   $('srcClose').onclick = () => $('sources').classList.remove('show');

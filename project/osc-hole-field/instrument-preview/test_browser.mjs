@@ -1,6 +1,6 @@
 // Browser smoke test for the instrument preview (Node + globally installed Playwright).
 //   node project/osc-hole-field/instrument-preview/test_browser.mjs [--out DIR] [--publish]
-// Loads index.html from disk, requires zero console errors / page errors and no request
+// Loads the built page from disk, requires zero console errors / page errors and no request
 // other than the file itself (blob: and data: URLs are in-memory, not network), drives every
 // mode through window.__preview and saves screenshots. --publish also writes the four
 // screenshots referenced by the docs into doc/public/assets/osc-hole-field/.
@@ -23,7 +23,7 @@ const args = process.argv.slice(2);
 const outDir = args.includes('--out') ? path.resolve(args[args.indexOf('--out') + 1]) : path.join(os.tmpdir(), 'osc-instrument-preview-shots');
 const publish = args.includes('--publish');
 fs.mkdirSync(outDir, {recursive: true});
-const page_url = pathToFileURL(path.join(here, 'index.html')).href;
+const page_url = pathToFileURL(path.join(repo, 'doc/public/assets/osc-hole-field/instrument-3d.html')).href;
 
 const failures = [];
 const check = (ok, msg) => { console.log((ok ? 'PASS ' : 'FAIL ') + msg); if (!ok) failures.push(msg); };
