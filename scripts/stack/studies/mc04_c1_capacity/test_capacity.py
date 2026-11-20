@@ -9,7 +9,7 @@ c = importlib.util.module_from_spec(spec); spec.loader.exec_module(c)
 
 class Tests(unittest.TestCase):
     def test_fits_respects_blocked_cells(self):
-        m = np.zeros((20, 20), bool); m[:, 10] = True
+        m = np.zeros((20, 20), bool); m[10, :] = True  # first axis is x
         box = [0.0, 0.0, 1.0, 1.0]  # 5 cells wide at 0.25 mm
         pts = c.fits(m, (0.0, 0.0), box)
         self.assertTrue(pts)
