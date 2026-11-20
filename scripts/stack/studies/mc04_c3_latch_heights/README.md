@@ -1,4 +1,4 @@
-# Task C step 3a: 18 of the 31 NOT SHOWN latches now have sourced neighbour heights
+# Task C step 3a: 5 of the 31 NOT SHOWN latches have registered sourced neighbour heights, 13 more rest on an unregistered Murata excerpt
 
 ```sh
 python3 -B heights.py [--output new-file.json]
@@ -11,19 +11,20 @@ This study reads each remaining neighbour's MPN from the K schematic sheets. It 
 manufacturer maximum body height from `evidence.json`, which records the path, hash and locator of
 each source, and compares it with the FH12 closed-height minimum of 1.8 mm (EDC3-150229-11, 2.0 ± 0.2).
 
-Result (`result.json`, SHA-256 `f558e2686104560df4ffa22fa9636d7fe52e58aef9a59d478372705b7353a728`):
+Result (`result.json`, SHA-256 `014c074ffa247d7c24faa22c0e2f7d66b3b5e742cbadb5d61545faa754936f1c`):
 
 | Verdict | Latches | Basis |
 | --- | --- | --- |
-| LOWER THAN BODY (sourced) | 18 | Every neighbour has an exact sourced maximum. The tallest is 1.3 mm (BAS16GW SOD123), at least 0.5 mm below the closed body. |
+| LOWER THAN BODY (sourced) | 5 | Every neighbour has a registered sourced maximum. The tallest is 1.3 mm (BAS16GW SOD123), at least 0.5 mm below the closed body. |
+| LOWER THAN BODY (excerpt) | 13 | Same, except a GRM188R71H104KA93D neighbour whose 0.9 mm comes from the retained Murata catalogue excerpt `circuit/sources/bypass-capacitor/acquisition-20261001.json`. That excerpt is not registered in the owner bundle, which still marks the datasheet SOURCE UNAVAILABLE, and the full response bytes are not retained. Retaining a Murata primary source for this part closes these 13. |
 | NOT SHOWN | 13 | 27 neighbours (25 R0603, 2 C0603) have no MPN on their symbol, so no exact height can be bound. |
 
 Heights used: Yageo RC0603FR and RT0603BRD 0.55 mm, KEMET C0603C101J5GACTU 0.87 mm,
-Murata GRM1885C1H103JA01D 0.9 mm, Murata GRM188R71H104KA93D 0.9 mm (the retained catalogue
-response, where width and thickness are both 0.8 ± 0.1), BAT54S and MMBT3906 SOT23 1.1 mm,
+Murata GRM1885C1H103JA01D 0.9 mm, Murata GRM188R71H104KA93D 0.9 mm (unregistered catalogue
+excerpt, where width and thickness are both 0.8 ± 0.1), BAT54S and MMBT3906 SOT23 1.1 mm,
 BAS16GW SOD123 1.3 mm.
 
-A LOWER THAN BODY latch stands on the same footing as the 27 retained open latches; it is not a
+Fact-based heights are pinned to their fact values, so a changed fact fails the run. A LOWER THAN BODY latch stands on the same footing as the 27 retained open latches; it is not a
 physical access proof. The following stay open for all 61 links:
 
 - The open-actuator sweep. The reference figure is 4.8 mm at 90°, which is not a maximum.

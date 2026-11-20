@@ -36,8 +36,9 @@ def verify_sources(ev):
             raise ValueError('source changed for %s' % mpn)
         if 'fact_id' in h:
             facts = json.loads((ROOT / h['path']).read_text())['facts']
-            if not any(x['fact_id'] == h['fact_id'] for x in facts):
-                raise ValueError('fact missing for %s' % mpn)
+            fact = next((x for x in facts if x['fact_id'] == h['fact_id']), None)
+            if fact is None or any(fact['value'].get(k) != v for k, v in h['fact_value'].items()):
+                raise ValueError('fact missing or changed for %s' % mpn)
 
 
 def run():
@@ -51,21 +52,23 @@ def run():
     limit = ev['connector']['closed_height_min_mm']
     rows, tally = [], {}
     for lid, lr in cases:
-        nb, gaps = [], []
+        nb, gaps, weak = [], [], []
         for r in lr['remaining']:
             p = parts[r]
             h = ev['heights'].get(p['mpn'])
             nb.append({'ref': r, **p, 'max_mm': h and h['max_mm']})
             if h is None:
                 gaps.append('%s identity unbound' % r if not p['mpn'] else '%s %s height unsourced' % (r, p['mpn']))
-            elif h['max_mm'] >= limit:
+            elif h.get('registered') is False:
+                weak.append('%s %s height from an unregistered catalogue excerpt' % (r, p['mpn']))
+            if h is not None and h['max_mm'] >= limit:
                 gaps.append('%s %.2f mm not below the closed body' % (r, h['max_mm']))
         tallest = max((n['max_mm'] for n in nb if n['max_mm'] is not None), default=None)
-        verdict = 'LOWER THAN BODY (sourced)' if not gaps else 'NOT SHOWN'
+        verdict = 'NOT SHOWN' if gaps else 'LOWER THAN BODY (excerpt)' if weak else 'LOWER THAN BODY (sourced)'
         tally[verdict] = tally.get(verdict, 0) + 1
         rows.append({'link': lid, 'verdict': verdict, 'tallest_sourced_mm': tallest,
                      'margin_mm': round(limit - tallest, 3) if tallest is not None and not gaps else None,
-                     'open_items': gaps, 'neighbours': nb})
+                     'open_items': gaps + weak, 'neighbours': nb})
     if len(rows) != gate['summary']['latch_not_shown']:
         raise ValueError('latch case count changed')
     return {'status': 'TASK_C_STEP_3A_NEIGHBOUR_HEIGHTS', 'gate_sha256': sha(GATE),

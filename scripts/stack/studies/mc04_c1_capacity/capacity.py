@@ -2,7 +2,7 @@
 
 Reconstructs the retained cumulative scene (412 accepted moves, 25 other unresolved bodies frozen,
 links/slots/fields/fixings/outline) exactly as MC04-R1 does, rasterises it per board face, and asks, for
-each unresolved IC with its declared decouplers held to the same face, where on its own board (either
+each unresolved IC on its own (decouplers are not moved), where on its own board (either
 face, 0/90/180/270 degrees) its complete courtyard fits with no displacement limit. Every raster hit is
 confirmed with the retained exact predicate. Room-only: no routing, electrical or adoption claim.
 """
@@ -111,6 +111,41 @@ def nearest_exact(scene, board, fp, face, mask, origin, limit=200):
     return None
 
 
+def joint_first_fit(scene, unresolved, gap=0.35):
+    """Greedy lower bound on joint capacity: all of a board's unresolved bodies vacated, each IC placed at the
+    first raster fit (own face first, then the other; rotations 0-3) and its grown box blocked. Raster only."""
+    out = {}
+    for board in sorted({r['board'] for r in unresolved}):
+        refs = [r['ref'] for r in unresolved if r['board'] == board]
+        vac = {(board, r) for r in refs}
+        masks = {f: blocked_mask(scene, board, f, vac) for f in 'FB'}
+        masks = {f: (m.copy(), org) for f, (m, org) in masks.items()}
+        placed, unplaced = [], []
+        for ref in refs:
+            fp = scene.bodies[(board, ref)]
+            own = fp['side']
+            hit = None
+            for face in (own, 'B' if own == 'F' else 'F'):
+                m, org = masks[face]
+                for t in range(4):
+                    box = footprint_box(fp, t)
+                    pts = fits(m, org, box)
+                    if pts:
+                        hit = (face, t, box, pts[0]); break
+                if hit:
+                    break
+            if not hit:
+                unplaced.append(ref); continue
+            face, t, box, (x, y) = hit
+            m, org = masks[face]
+            i0 = max(0, int((x + box[0] - gap - org[0]) / STEP)); i1 = int(math.ceil((x + box[2] + gap - org[0]) / STEP))
+            j0 = max(0, int((y + box[1] - gap - org[1]) / STEP)); j1 = int(math.ceil((y + box[3] + gap - org[1]) / STEP))
+            m[i0:i1 + 1, j0:j1 + 1] = True
+            placed.append({'ref': ref, 'face': face, 'turn': t, 'xy': [round(x, 2), round(y, 2)]})
+        out[board] = {'placed': placed, 'unplaced': unplaced}
+    return out
+
+
 def run():
     scene, unresolved, accepted = scene_and_rows()
     if accepted != 412 or len(unresolved) != 26:
@@ -134,8 +169,9 @@ def run():
                      'within_retained_25mm': bool(near) and min(near) <= 25.0})
     free = {f'{b}.{f}': round(float((~m).sum()) * STEP * STEP, 1) for (b, f), (m, _) in masks.items()}
     return {'status': 'CAPACITY_CENSUS', 'step_mm': STEP, 'free_area_mm2_conservative': free, 'ics': rows,
-            'room_on_own_board': sum(1 for r in rows if r['nearest_mm'] is not None),
+            'room_on_own_board_each_alone': sum(1 for r in rows if r['nearest_mm'] is not None),
             'within_retained_25mm': [r['ref'] for r in rows if r['within_retained_25mm']],
+            'joint_first_fit': joint_first_fit(scene, unresolved),
             'scope': 'Room-only. Conservative raster of the retained scene (all other unresolved bodies frozen as '
                      'obstacles, the IC\'s own frozen body still blocking); every reported nearest position is '
                      'confirmed by the retained exact predicate except the displacement cap; decouplers and '

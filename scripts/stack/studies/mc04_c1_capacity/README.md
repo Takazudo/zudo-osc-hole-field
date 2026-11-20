@@ -14,3 +14,20 @@ python3 -B scripts/stack/studies/mc04_c1_capacity/test_capacity.py
 
 `result.json` is the retained run. It is room-only: no decoupler or neighbour moves with the IC, no
 routing, timing or electrical acceptance, and no change to canonical geometry.
+
+## Correction after independent review: room exists for each IC alone, but JR lacks joint room for 3 of its 6
+
+`room_on_own_board_each_alone` (26) tests each IC alone against a frozen scene. The six JR ICs all
+find their nearest room in one pocket near (260, 147). `joint_first_fit` vacates every unresolved
+body of a board and places the ICs one by one at the first raster fit (own face first, then the
+other face; four rotations), blocking each placed box grown 0.35 mm. Results:
+
+- **JL:** all 6 placed.
+- **K:** all 14 placed.
+- **JR:** 3 placed. U8314, U8318 and U8417 find no room (JR.F has no raster position).
+
+First-fit is greedy and raster-only, so it is a lower bound, not proof that JR cannot hold all six.
+Even so, JR is the board where capacity, not only locality, is in doubt. Own-face `nearest_mm`
+values are upper bounds, because the IC's own frozen body still blocks its face in that search.
+
+Retained result SHA-256: `efe67c836939643450e66750918c0864ba880bef6e8ef92c462fb529c656ffd3`.

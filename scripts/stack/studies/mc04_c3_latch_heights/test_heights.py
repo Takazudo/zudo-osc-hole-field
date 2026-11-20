@@ -22,7 +22,8 @@ class Heights(unittest.TestCase):
         lim = self.out['closed_height_min_mm']
         for c in self.out['cases']:
             if c['verdict'].startswith('LOWER'):
-                self.assertFalse(c['open_items'])
+                if c['verdict'].endswith('(sourced)'):
+                    self.assertFalse(c['open_items'])
                 self.assertTrue(all(n['max_mm'] is not None and n['max_mm'] < lim for n in c['neighbours']))
 
     def test_missing_height_stays_not_shown(self):
