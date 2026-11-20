@@ -24,6 +24,7 @@ CASES = (('JR', 'K', ('U4346', 'U4347', 'U4348', 'U8314', 'U8318', 'U8417')),
          ('K', 'K', ('U1415', 'U4324', 'U4341', 'U4417', 'U4433', 'U4524', 'U4526', 'U4527', 'U4623', 'U4635',
                      'U5110', 'U5209', 'U5210', 'U8409')))
 POWER = {'+12V', '-12V', '+5V', 'AGND'}  # the only global rails in io-partition.json
+KEEP_FRONT = ()  # net-name fragments: a one-hop neighbour on any matching net stays on the source board (variant study)
 
 
 def run():
@@ -36,8 +37,11 @@ def run():
     shared = {}
     together = [case(scene, 'K', 'K', CASES[3][2], shared), case(scene, 'JR', 'K', CASES[0][2], shared),
                 case(scene, 'JL', 'K', CASES[1][2], shared)]
-    return {'status': 'TASK_C_STEP_4_BLOCK_RELOCATION', 'cases': cases, 'all_on_K_together': together,
-            'all_on_K_together_packed': all(c['all_blocks_packed'] for c in together)}
+    out = {'status': 'TASK_C_STEP_4_BLOCK_RELOCATION', 'cases': cases, 'all_on_K_together': together,
+           'all_on_K_together_packed': all(c['all_blocks_packed'] for c in together)}
+    if KEEP_FRONT:
+        out['keep_front_net_fragments'] = list(KEEP_FRONT)
+    return out
 
 
 def case(scene, src, tgt, ICS, shared=None):
@@ -57,6 +61,8 @@ def case(scene, src, tgt, ICS, shared=None):
         g = {ic} | {x['ref'] for x in part['physical_packages'] if x.get('decouples_ref') == ic}
         for n in ref_nets[ic]:
             for r in net_refs[n]:
+                if any(k in m for m in ref_nets[r] for k in KEEP_FRONT):
+                    continue  # a part touching a kept net stays on the source board
                 if r != ic and r in pp and r[0] in 'RCD' and not r.startswith('RV') and not pp[r]['courtyard'].get('through_hole'):
                     g.add(r)
         return sorted(r for r in g if board_of.get(r) == {src})
@@ -170,7 +176,10 @@ def case(scene, src, tgt, ICS, shared=None):
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('--output', type=Path)
+    ap.add_argument('--keep-front', nargs='*', default=[],
+                    help='net-name fragments: one-hop neighbours on a matching net stay on the source board')
     a = ap.parse_args()
+    KEEP_FRONT = tuple(a.keep_front)
     text = json.dumps(run(), indent=1) + '\n'
     if a.output:
         with a.output.open('x') as f:

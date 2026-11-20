@@ -31,8 +31,8 @@ def kind_of(net):
     return 'other'
 
 
-def run():
-    step = json.loads(SRC.read_text())
+def run(src=SRC):
+    step = json.loads(src.read_text())
     part = json.loads((ROOT / 'design/reports/io-partition.json').read_text())
     rules = json.loads((ROOT / 'design/stack/link-electrical/inputs.json').read_text())['classes']['rules']
     sensitive = {x['net'] for x in part['local_raw_sensitive_nets']}
@@ -54,7 +54,7 @@ def run():
                         'kind': kind_of(n), 'raw_sensitive': n in sensitive, 'forbidden': n in forbidden,
                         'retained_class_without_kind': lg.classify(n, {}, rules)})
     tally = collections.Counter((r['from'], r['kind']) for r in out)
-    return {'status': 'TASK_C_STEP_5A_CROSSING_NETS', 'source_sha256': hashlib.sha256(SRC.read_bytes()).hexdigest(),
+    return {'status': 'TASK_C_STEP_5A_CROSSING_NETS', 'source_sha256': hashlib.sha256(src.read_bytes()).hexdigest(),
             'nets': out, 'tally': {'%s %s' % k: v for k, v in sorted(tally.items())},
             'raw_sensitive_or_forbidden': [r['net'] for r in out if r['raw_sensitive'] or r['forbidden']],
             'classes': dict(collections.Counter(r['retained_class_without_kind'] for r in out)),
@@ -64,8 +64,9 @@ def run():
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('--output', type=Path)
+    ap.add_argument('--source', type=Path, default=SRC, help='a step 4 blocks result (default: the retained one)')
     a = ap.parse_args()
-    text = json.dumps(run(), indent=1) + '\n'
+    text = json.dumps(run(a.source), indent=1) + '\n'
     if a.output:
         with a.output.open('x') as f:
             f.write(text)
