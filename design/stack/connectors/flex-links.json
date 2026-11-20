@@ -1,0 +1,5911 @@
+{
+  "schema_version": 1,
+  "task": "osc-stack-20261114/ST-01d (gate check 1 of DS-41, identity)",
+  "date": "2026-11-14",
+  "status": "NEEDS_DESIGN; evidence draft on unvalidated boards; nothing selected",
+  "source_store": "circuit-dev-resources branch claude/project-thread-zao1qg, commit 19d052d",
+  "status_vocabulary": {
+    "SOURCED": "read in a retained document; carries store path, sha256 and page or section",
+    "DERIVED": "computed from SOURCED figures",
+    "ASSUMED": "working value with no document",
+    "UNSOURCED": "no retained document; not used as a figure",
+    "UNAVAILABLE": "a fetch was attempted and failed; reason given"
+  },
+  "sources": {
+    "m52271_22": {
+      "path": "molex/52271/522712279-product-page-rs-a700000015951438-rs-mirror.pdf",
+      "sha256": "61ea1867079b7fea7388c0c1aab07d5432172d6b56774e1a5fb3861e5111be9c",
+      "kind": "Molex product page printout, RS-hosted copy (not a sales drawing or product specification)"
+    },
+    "m52271_21": {
+      "path": "molex/52271/522712179-product-page-rs-a700000015446737-rs-mirror.pdf",
+      "sha256": "6ad8750f1aa3301f8a397fde429e9e9a3d3afd750466de048729c5d825ae2e97",
+      "kind": "Molex product page printout, RS-hosted copy"
+    },
+    "m52271_16": {
+      "path": "molex/52271/0522711669-product-page-2018-10-17-farnell-mirror.pdf",
+      "sha256": "ba342d0063edbe9cdc1fb59534ef56bde9e315e2023b0a594acfaf697cd3fc2d",
+      "kind": "Molex product page printout dated 2018-10-17, Farnell-hosted copy"
+    },
+    "m52610_10": {
+      "path": "molex/52610/526101071-product-page-rs-a700000015453744-rs-mirror.pdf",
+      "sha256": "a1477951c03052f8e68ba5d48d2f94f091d5c710c67a6ec5fa6010d49d03cb3a",
+      "kind": "Molex product page printout, RS-hosted copy"
+    },
+    "m52610_24": {
+      "path": "molex/52610/526102472-product-page-rs-a700000015100000-rs-mirror.pdf",
+      "sha256": "825939b72e3761b1aa28c53fdb4b57778ed852f620342247d07872af996f9e34",
+      "kind": "Molex product page printout, RS-hosted copy"
+    },
+    "m52806_22": {
+      "path": "molex/52806/528062210-product-page-rs-a700000015673131-rs-mirror.pdf",
+      "sha256": "08607032a2f6aa2224eef8f4e758086bf51e6e0a71dfb0d02babba358c937538",
+      "kind": "Molex product page printout, RS-hosted copy"
+    },
+    "premo_152670273": {
+      "path": "molex/premo-flex/152670273-product-page-rs-a700000015616398-rs-mirror.pdf",
+      "sha256": "020628a56e8e7fa263cc2b89218d851ef9af43bf954f102f474cbaef73768845",
+      "kind": "Molex product page printout, RS-hosted copy"
+    },
+    "premo_sheet": {
+      "path": "molex/premo-flex/premo-flex-jumper-sheet-987650-6631-rev-1-hackaday-mirror.pdf",
+      "sha256": "c78eab0b0a717d23957615ecdcf543e6c4cbdb0f47ca4bd6513496aea1811826",
+      "kind": "Molex sheet 987650-6631 Rev. 1, third-party-hosted copy"
+    },
+    "hdgc_drawing": {
+      "path": "hdgc/1-0-b-npwb/1-0-b-npwb-drawing-a0-2016-03-12-lcsc-mirror.pdf",
+      "sha256": "f46910657efe347390c5e4996186dd48d194e198bc18bcd99df5afd04fb33ab5",
+      "kind": "HDGC (Shenzhen Huade co-create) drawing 1.0-B-nPWB rev A0, LCSC-hosted copy; read from the rendered page, values in outlined text"
+    },
+    "lx_ffc_drawing": {
+      "path": "lx/ffc-1-0mm/lx-ffc-20p-1-0mm-100mm-drawing-20180531-12-lcsc-mirror.pdf",
+      "sha256": "a73bcbd5255322cb3f639f44dde602d7ca1c8a2f320d348c376acd0b045323ae",
+      "kind": "LX customer drawing 20180531-12 for C63014 (20P, 1.0 mm, 100 mm, same side), LCSC-hosted copy"
+    },
+    "jst_flz": {
+      "path": "jst/flz/flz-catalog-eflz-pdf-2025-06-20.pdf",
+      "sha256": "bcaa7b681cceff1630512b1f55f2f3ea6dbbfb02554ffd545f7ffc91f7c16b22",
+      "kind": "JST FLZ catalog, maker host"
+    },
+    "jst_fmn": {
+      "path": "jst/fmn/fmn-catalog-efmn-pdf-2026-01-08.pdf",
+      "sha256": "f4b651d099c55f0b4e0aedccc0be0cf6185c95fa1a40e9925285469d51212de8",
+      "kind": "JST FMN catalog, maker host; text glyphs are outlined and did not render, no figure read"
+    },
+    "jlc_flex_caps": {
+      "path": "distributor-captures/jlcpcb-web/zudo-osc-hole-field-da-03-20261114/jlcpcb-flex-pcb-capabilities.html",
+      "sha256": "2c17dacb380bee84a75ef77868a0a9d0ec0f1cb4fa22f09ae6443a30ec01c747",
+      "kind": "factory capability page capture"
+    },
+    "jlc_design_tips": {
+      "path": "distributor-captures/jlcpcb-web/zudo-osc-hole-field-da-03-20261114/jlcpcb-blog-flex-pcb-design-tips.html",
+      "sha256": "892389718260fe00e7543ea65c4131fe3e4b19c8da4b05c7c196ac65e90d54d3",
+      "kind": "factory blog capture"
+    },
+    "jlc_parts_sums": {
+      "path": "distributor-captures/jlcpcb-lcsc/zudo-osc-hole-field-st-01d-20261114/SHA256SUMS",
+      "sha256": "4d70ee6d3cce68a1ca28b36495a801fe7c82c80aa73870494348d3b5c98a4aa9",
+      "kind": "hash list of the JLCPCB parts-search JSON captures, 2026-11-14"
+    }
+  },
+  "sources_unavailable": [
+    {
+      "what": "Molex sales drawings and product specifications (522712279_sd.pdf, PS-52271-053-001, PS-52271-054-001, AS-52271-001-001, 52610 and Premo-Flex drawings)",
+      "status": "UNAVAILABLE",
+      "reason": "www.molex.com closed the stream (HTTP/2 INTERNAL_ERROR), one retry over HTTP/1.1 returned an empty reply; DA-03 saw the same cut-offs on dev4 and supplychain.molex.com"
+    },
+    {
+      "what": "Hirose FH12 catalog (0.5 mm)",
+      "status": "UNAVAILABLE",
+      "reason": "hirose.com document endpoint returned HTTP 403; not retried; JST FLZ used as the 0.5 mm family instead"
+    },
+    {
+      "what": "Amphenol SFW (SFW22R-2STE1LF) document",
+      "status": "UNSOURCED",
+      "reason": "no fetch attempted within the time allowance; JLCPCB lists it as Plugin, extended, stock 50"
+    }
+  ],
+  "connector_candidates": {
+    "molex_52271_right_angle": {
+      "role": "K rear face (envelope 5.0 mm) and front boards",
+      "codes_by_circuits": {
+        "16": "0522711679 / 0522711669 (Au)",
+        "21": "0522712179",
+        "22": "0522712279"
+      },
+      "circuit_counts_exist": {
+        "value": [
+          16,
+          21,
+          22
+        ],
+        "status": "SOURCED for these three only; the full range is UNSOURCED (series drawing unavailable)",
+        "source": "m52271_16, m52271_21, m52271_22, page 1"
+      },
+      "current_per_contact": {
+        "value": 0.5,
+        "unit": "A",
+        "status": "SOURCED",
+        "source": "m52271_22",
+        "sha256": "61ea1867079b7fea7388c0c1aab07d5432172d6b56774e1a5fb3861e5111be9c",
+        "page": "1, Electrical"
+      },
+      "voltage": {
+        "value": 50,
+        "unit": "V AC RMS / DC",
+        "status": "SOURCED",
+        "source": "m52271_16",
+        "sha256": "ba342d0063edbe9cdc1fb59534ef56bde9e315e2023b0a594acfaf697cd3fc2d",
+        "page": "1, Electrical"
+      },
+      "mating_cycles_max": {
+        "value": 30,
+        "unit": "cycles",
+        "status": "SOURCED",
+        "source": "m52271_22",
+        "sha256": "61ea1867079b7fea7388c0c1aab07d5432172d6b56774e1a5fb3861e5111be9c",
+        "page": "1, Physical"
+      },
+      "mated_height": {
+        "value": 3.0,
+        "unit": "mm",
+        "status": "SOURCED",
+        "source": "m52271_16",
+        "sha256": "ba342d0063edbe9cdc1fb59534ef56bde9e315e2023b0a594acfaf697cd3fc2d",
+        "page": "1, Physical; also in the 522712279 description"
+      },
+      "contact_side": {
+        "value": "bottom",
+        "status": "SOURCED",
+        "source": "m52271_22",
+        "sha256": "61ea1867079b7fea7388c0c1aab07d5432172d6b56774e1a5fb3861e5111be9c",
+        "page": "1, Contact Position"
+      },
+      "actuator": {
+        "value": "slider (ZIF)",
+        "status": "SOURCED",
+        "source": "m52271_16",
+        "sha256": "ba342d0063edbe9cdc1fb59534ef56bde9e315e2023b0a594acfaf697cd3fc2d",
+        "page": "1"
+      },
+      "temperature_range": {
+        "value": "-40 to +85",
+        "unit": "degC",
+        "status": "SOURCED",
+        "source": "m52271_16",
+        "sha256": "ba342d0063edbe9cdc1fb59534ef56bde9e315e2023b0a594acfaf697cd3fc2d",
+        "page": "1"
+      },
+      "pcb_retention": {
+        "value": "yes; polarized to PCB; no locator",
+        "status": "SOURCED",
+        "source": "m52271_16",
+        "sha256": "ba342d0063edbe9cdc1fb59534ef56bde9e315e2023b0a594acfaf697cd3fc2d",
+        "page": "1"
+      },
+      "land_pattern": {
+        "status": "UNSOURCED",
+        "reason": "sales drawing SD-52271 UNAVAILABLE"
+      },
+      "body_outline": {
+        "status": "UNSOURCED"
+      },
+      "actuator_open_envelope": {
+        "status": "UNSOURCED"
+      },
+      "tail_accepted": {
+        "status": "UNSOURCED",
+        "note": "product page says it mates with Premo-Flex FFC (m52271_16 page 1); tail thickness, width tolerance, insertion depth and stiffener are on PS/AS-52271, UNAVAILABLE"
+      },
+      "factory_channel": [
+        {
+          "lcsc": "C588187",
+          "mpn": "522712279",
+          "class": "extended",
+          "stock": 10
+        },
+        {
+          "lcsc": "C5468328",
+          "mpn": "0522712279",
+          "class": "extended",
+          "stock": 0
+        },
+        {
+          "lcsc": "C588184",
+          "mpn": "522711679",
+          "class": "extended",
+          "stock": 1488
+        },
+        {
+          "lcsc": "C3170026",
+          "mpn": "0522711679",
+          "class": "extended",
+          "stock": 0
+        },
+        {
+          "lcsc": "C293625",
+          "mpn": "522711079",
+          "class": "extended",
+          "stock": 2115,
+          "note": "10 circuits per JLCPCB part number; not in a retained Molex page"
+        },
+        {
+          "status": "SOURCED",
+          "source": "jlc_parts_sums",
+          "files": [
+            "0522712279.json",
+            "0522711679.json",
+            "0522711079.json"
+          ],
+          "captured": "2026-11-14"
+        }
+      ],
+      "fits_k_rear_5mm": {
+        "value": true,
+        "status": "DERIVED",
+        "basis": "3.00 mm mated height <= 5.0 mm"
+      },
+      "above_0_5_A": {
+        "value": false,
+        "status": "SOURCED"
+      }
+    },
+    "molex_52610_vertical": {
+      "role": "front boards only (17.0 / 19.0 mm gap); exceeds K's 5.0 mm envelope",
+      "codes_by_circuits": {
+        "10": "526101071",
+        "24": "526102472",
+        "22": "0526102272 (JLCPCB listing only)",
+        "16": "0526101672 (JLCPCB listing only)"
+      },
+      "current_per_contact": {
+        "value": 1.0,
+        "unit": "A",
+        "status": "SOURCED",
+        "source": "m52610_10",
+        "sha256": "a1477951c03052f8e68ba5d48d2f94f091d5c710c67a6ec5fa6010d49d03cb3a",
+        "page": "1, Electrical"
+      },
+      "mated_height": {
+        "value": 5.75,
+        "unit": "mm",
+        "status": "SOURCED",
+        "source": "m52610_10",
+        "sha256": "a1477951c03052f8e68ba5d48d2f94f091d5c710c67a6ec5fa6010d49d03cb3a",
+        "page": "1"
+      },
+      "mating_cycles_max": {
+        "value": 30,
+        "unit": "cycles",
+        "status": "SOURCED",
+        "source": "m52610_10",
+        "sha256": "a1477951c03052f8e68ba5d48d2f94f091d5c710c67a6ec5fa6010d49d03cb3a",
+        "page": "1"
+      },
+      "contact_side": {
+        "value": "N/A (vertical)",
+        "status": "SOURCED",
+        "source": "m52610_10",
+        "sha256": "a1477951c03052f8e68ba5d48d2f94f091d5c710c67a6ec5fa6010d49d03cb3a",
+        "page": "1"
+      },
+      "land_pattern": {
+        "status": "UNSOURCED"
+      },
+      "tail_accepted": {
+        "status": "UNSOURCED"
+      },
+      "factory_channel": [
+        {
+          "lcsc": "C5465258",
+          "mpn": "0526102272",
+          "class": "extended",
+          "stock": 9
+        },
+        {
+          "lcsc": "C5465252",
+          "mpn": "0526101672",
+          "class": "extended",
+          "stock": 0
+        },
+        {
+          "status": "SOURCED",
+          "source": "jlc_parts_sums",
+          "files": [
+            "0526102272.json",
+            "0526101672.json"
+          ]
+        }
+      ]
+    },
+    "hdgc_1_0_b_npwb_right_angle": {
+      "role": "second candidate with its own maker drawing (LCSC-hosted); non-ZIF, dual contact",
+      "codes_by_circuits": {
+        "22": "1.0-B-22PWB (C2915499)"
+      },
+      "circuit_counts_exist": {
+        "value": "4 to 35",
+        "status": "SOURCED",
+        "source": "hdgc_drawing",
+        "sha256": "f46910657efe347390c5e4996186dd48d194e198bc18bcd99df5afd04fb33ab5",
+        "page": "1, dimension table"
+      },
+      "current_per_contact": {
+        "value": 0.5,
+        "unit": "A",
+        "status": "SOURCED",
+        "source": "hdgc_drawing",
+        "sha256": "f46910657efe347390c5e4996186dd48d194e198bc18bcd99df5afd04fb33ab5",
+        "page": "1, performance notes"
+      },
+      "voltage": {
+        "value": 50,
+        "unit": "V",
+        "status": "SOURCED",
+        "source": "hdgc_drawing",
+        "sha256": "f46910657efe347390c5e4996186dd48d194e198bc18bcd99df5afd04fb33ab5",
+        "page": "1"
+      },
+      "temperature_range": {
+        "value": "-20 to +85",
+        "unit": "degC",
+        "status": "SOURCED",
+        "source": "hdgc_drawing",
+        "sha256": "f46910657efe347390c5e4996186dd48d194e198bc18bcd99df5afd04fb33ab5",
+        "page": "1"
+      },
+      "body_height": {
+        "value": 4.49,
+        "unit": "mm",
+        "status": "SOURCED",
+        "source": "hdgc_drawing",
+        "sha256": "f46910657efe347390c5e4996186dd48d194e198bc18bcd99df5afd04fb33ab5",
+        "page": "1, side view"
+      },
+      "contact_side": {
+        "value": "dual (both sides)",
+        "status": "SOURCED",
+        "source": "hdgc_drawing",
+        "sha256": "f46910657efe347390c5e4996186dd48d194e198bc18bcd99df5afd04fb33ab5",
+        "page": "1, title"
+      },
+      "actuator": {
+        "value": "none (non-ZIF; no open envelope)",
+        "status": "DERIVED",
+        "basis": "no actuator drawn on the drawing"
+      },
+      "mating_cycles_max": {
+        "status": "UNSOURCED"
+      },
+      "factory_channel": [
+        {
+          "lcsc": "C2915499",
+          "mpn": "1.0-B-22PWB",
+          "class": "extended",
+          "stock": 851,
+          "status": "SOURCED",
+          "source": "jlc_parts_sums",
+          "file": "1mm_FPC_22P.json"
+        }
+      ],
+      "fits_k_rear_5mm": {
+        "value": true,
+        "status": "DERIVED",
+        "basis": "4.49 mm <= 5.0 mm, 0.51 mm margin"
+      },
+      "above_0_5_A": {
+        "value": false,
+        "status": "SOURCED"
+      }
+    },
+    "jst_fmn_1_0mm": {
+      "role": "maker catalog retained; figures not readable (outlined glyphs)",
+      "status": "UNSOURCED"
+    },
+    "jst_flz_0_5mm": {
+      "role": "0.5 mm pitch comparison family (item 4)",
+      "codes_by_circuits": {
+        "pattern": "nnFLZ-SM2-TB (upper contact) / nnFLZ-RSM2-TB (bottom contact)"
+      },
+      "circuit_counts_exist": {
+        "value": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          18,
+          20,
+          21,
+          22,
+          24,
+          26,
+          27,
+          28,
+          30,
+          33
+        ],
+        "note": "33 upper contact only",
+        "status": "SOURCED",
+        "source": "jst_flz",
+        "sha256": "bcaa7b681cceff1630512b1f55f2f3ea6dbbfb02554ffd545f7ffc91f7c16b22",
+        "page": "2, part table"
+      },
+      "current_per_contact": {
+        "value": 0.5,
+        "unit": "A",
+        "status": "SOURCED",
+        "source": "jst_flz",
+        "sha256": "bcaa7b681cceff1630512b1f55f2f3ea6dbbfb02554ffd545f7ffc91f7c16b22",
+        "page": "1, Specifications"
+      },
+      "voltage": {
+        "value": 50,
+        "unit": "V",
+        "status": "SOURCED",
+        "source": "jst_flz",
+        "sha256": "bcaa7b681cceff1630512b1f55f2f3ea6dbbfb02554ffd545f7ffc91f7c16b22",
+        "page": "1"
+      },
+      "mounting_height": {
+        "value": 2.0,
+        "unit": "mm",
+        "status": "SOURCED",
+        "source": "jst_flz",
+        "sha256": "bcaa7b681cceff1630512b1f55f2f3ea6dbbfb02554ffd545f7ffc91f7c16b22",
+        "page": "1"
+      },
+      "temperature_range": {
+        "value": "-25 to +85",
+        "unit": "degC",
+        "status": "SOURCED",
+        "source": "jst_flz",
+        "sha256": "bcaa7b681cceff1630512b1f55f2f3ea6dbbfb02554ffd545f7ffc91f7c16b22",
+        "page": "1"
+      },
+      "tail_accepted": {
+        "value": {
+          "conductor_pitch": "0.5 +/- 0.03 mm",
+          "conductor_width": "0.35 +/- 0.04 mm",
+          "lead_thickness": "0.3 +/- 0.03 mm"
+        },
+        "status": "SOURCED",
+        "source": "jst_flz",
+        "sha256": "bcaa7b681cceff1630512b1f55f2f3ea6dbbfb02554ffd545f7ffc91f7c16b22",
+        "page": "1, Applicable FFC/FPC"
+      },
+      "contact_side": {
+        "value": "upper (SM2) or bottom (RSM2)",
+        "status": "SOURCED",
+        "source": "jst_flz",
+        "sha256": "bcaa7b681cceff1630512b1f55f2f3ea6dbbfb02554ffd545f7ffc91f7c16b22",
+        "page": "1-2"
+      },
+      "mating_cycles_max": {
+        "status": "UNSOURCED"
+      },
+      "factory_channel": {
+        "status": "UNSOURCED",
+        "reason": "not queried within the time allowance"
+      },
+      "note": "the same 0.5 A per contact at half the pitch; a 22-position link at 0.5 mm is about 12 mm wide instead of 23 mm"
+    }
+  },
+  "link_candidates": {
+    "premo_flex_1_00mm_catalogue": {
+      "series": {
+        "15167": "0.12 mm cable, 2.5M flex cycles, 6 to 60 circuits",
+        "98267": "0.22 mm, 100K, 4 to 50",
+        "15267": "0.27 mm (tin), 10K, 4 to 50",
+        "15039": "gold, 4 to 50"
+      },
+      "status": "SOURCED",
+      "source": "premo_sheet",
+      "sha256": "c78eab0b0a717d23957615ecdcf543e6c4cbdb0f47ca4bd6513496aea1811826",
+      "page": "2, series table",
+      "current_per_conductor": {
+        "value": 1.2,
+        "unit": "A",
+        "status": "SOURCED",
+        "source": "premo_152670273",
+        "sha256": "020628a56e8e7fa263cc2b89218d851ef9af43bf954f102f474cbaef73768845",
+        "page": "1"
+      },
+      "lengths": {
+        "value": "standard lengths from 30 mm up to 305 mm; custom over 305 mm",
+        "status": "SOURCED",
+        "source": "premo_sheet",
+        "sha256": "c78eab0b0a717d23957615ecdcf543e6c4cbdb0f47ca4bd6513496aea1811826",
+        "page": "2"
+      },
+      "exact_standard_lengths_30_to_80": {
+        "status": "UNSOURCED",
+        "reason": "length table is on the Molex drawings, UNAVAILABLE"
+      },
+      "contact_types": {
+        "value": "A (same side) or D (opposite side)",
+        "status": "SOURCED",
+        "source": "premo_sheet",
+        "sha256": "c78eab0b0a717d23957615ecdcf543e6c4cbdb0f47ca4bd6513496aea1811826",
+        "page": "2"
+      },
+      "bend_test": {
+        "value": "180 deg over 4.00 mm radius, min. 20 cycles (test condition, not a minimum bend radius)",
+        "status": "SOURCED",
+        "source": "premo_sheet",
+        "sha256": "c78eab0b0a717d23957615ecdcf543e6c4cbdb0f47ca4bd6513496aea1811826",
+        "page": "2, Mechanical"
+      },
+      "termination_thickness": {
+        "status": "UNSOURCED"
+      },
+      "exact_part_numbers_existing": {
+        "value": [
+          "152670273 (12 ckt, 102 mm, type A)"
+        ],
+        "status": "SOURCED",
+        "source": "premo_152670273"
+      },
+      "factory_channel": {
+        "value": "0151660219 listed, stock 0; no 1.00 mm Premo-Flex at 22 circuits found",
+        "status": "SOURCED",
+        "source": "jlc_parts_sums",
+        "file": "0151660219.json"
+      }
+    },
+    "lx_ffc_1_0mm_catalogue": {
+      "listed": [
+        {
+          "lcsc": "C18797",
+          "circuits": 20,
+          "length_mm": 50,
+          "type": "same side",
+          "class": "extended",
+          "stock": 1014
+        },
+        {
+          "lcsc": "C63014",
+          "circuits": 20,
+          "length_mm": 100,
+          "type": "same side",
+          "class": "extended",
+          "stock": 985
+        },
+        {
+          "lcsc": "C12159",
+          "circuits": 20,
+          "length_mm": 200,
+          "type": "inverting (opposite side)",
+          "class": "extended",
+          "stock": 608
+        },
+        {
+          "lcsc": "C38897",
+          "circuits": 22,
+          "length_mm": 150,
+          "type": "same side",
+          "class": "extended",
+          "stock": 101
+        }
+      ],
+      "status": "SOURCED",
+      "source": "jlc_parts_sums",
+      "files": [
+        "FFC_1_0mm_20P.json",
+        "FFCCable_20P.json",
+        "FFC_1_0mm_22P.json"
+      ],
+      "gap": "no 22-circuit item at 30 to 80 mm and no opposite-side item at 30 to 80 mm in the listing (DERIVED from the captures)",
+      "tail": {
+        "value": {
+          "insertion_thickness": "0.303 +/- 0.05 mm",
+          "body_thickness": "0.121 +/- 0.05 mm",
+          "total_width_20P": "21 +/- 0.15 mm",
+          "exposed_length": "4 +/- 1 mm",
+          "stiffener_length": "8 +/- 2 mm",
+          "stiffener": "0.225 mm"
+        },
+        "status": "SOURCED",
+        "source": "lx_ffc_drawing",
+        "sha256": "a73bcbd5255322cb3f639f44dde602d7ca1c8a2f320d348c376acd0b045323ae",
+        "page": "1, specification table"
+      },
+      "rating": {
+        "value": "AWM 20624 80 degC 60 V (print)",
+        "status": "SOURCED",
+        "source": "lx_ffc_drawing",
+        "sha256": "a73bcbd5255322cb3f639f44dde602d7ca1c8a2f320d348c376acd0b045323ae",
+        "page": "1"
+      },
+      "current": {
+        "status": "UNSOURCED"
+      }
+    },
+    "custom_flex_factory": {
+      "layers": {
+        "value": "1, 2 or 4; rigid-flex not supported",
+        "status": "SOURCED",
+        "source": "jlc_flex_caps",
+        "sha256": "2c17dacb380bee84a75ef77868a0a9d0ec0f1cb4fa22f09ae6443a30ec01c747",
+        "section": "Layer Count"
+      },
+      "finished_thickness": {
+        "value": "1-layer 0.07 / 0.11 mm (25 um), 0.12 mm (50 um); 2-layer 0.11 / 0.12 / 0.2 mm (25 um), 0.19 mm (50 um)",
+        "status": "SOURCED",
+        "source": "jlc_flex_caps",
+        "sha256": "2c17dacb380bee84a75ef77868a0a9d0ec0f1cb4fa22f09ae6443a30ec01c747",
+        "section": "FPC Finished Thickness"
+      },
+      "finger_area_thickness_tolerance": {
+        "value": 0.03,
+        "unit": "mm (+/-)",
+        "status": "SOURCED",
+        "source": "jlc_flex_caps",
+        "sha256": "2c17dacb380bee84a75ef77868a0a9d0ec0f1cb4fa22f09ae6443a30ec01c747",
+        "section": "FPC Thickness Tolerance item 4"
+      },
+      "outline_tolerance": {
+        "value": "+/-0.1 mm (+/-0.05 mm upon request)",
+        "status": "SOURCED",
+        "source": "jlc_flex_caps",
+        "sha256": "2c17dacb380bee84a75ef77868a0a9d0ec0f1cb4fa22f09ae6443a30ec01c747",
+        "section": "FPC Outline"
+      },
+      "finger_to_edge": {
+        "value": 0.2,
+        "unit": "mm",
+        "status": "SOURCED",
+        "source": "jlc_flex_caps",
+        "sha256": "2c17dacb380bee84a75ef77868a0a9d0ec0f1cb4fa22f09ae6443a30ec01c747",
+        "section": "Gold Finger Pad to Board Edge Clearance"
+      },
+      "stiffener": {
+        "value": "PI 0.1 to 0.25 mm, FR-4 0.1 to 1.6 mm, stainless steel; thickness = FPC + stiffener",
+        "status": "SOURCED",
+        "source": "jlc_flex_caps",
+        "sha256": "2c17dacb380bee84a75ef77868a0a9d0ec0f1cb4fa22f09ae6443a30ec01c747",
+        "section": "Stiffener"
+      },
+      "min_bend_radius": {
+        "value": "single layer >= 6 x total thickness; multi-layer >= 10 x (design tips page: 12 x for double-sided)",
+        "status": "SOURCED",
+        "source": "jlc_flex_caps / jlc_design_tips",
+        "sha256": "2c17dacb380bee84a75ef77868a0a9d0ec0f1cb4fa22f09ae6443a30ec01c747 / 892389718260fe00e7543ea65c4131fe3e4b19c8da4b05c7c196ac65e90d54d3",
+        "section": "Bend Radius"
+      },
+      "against_tails": {
+        "molex_52271": {
+          "verdict": "UNSOURCED",
+          "reason": "52271 tail specification UNAVAILABLE"
+        },
+        "lx_style_0_30_pm_0_05": {
+          "verdict": "meets",
+          "status": "DERIVED",
+          "basis": "0.11 mm flex + PI stiffener to 0.30 mm with +/-0.03 mm finger tolerance inside +/-0.05; outline +/-0.1 mm inside +/-0.15 mm width"
+        },
+        "hdgc_0_30_pm_0_01_width_pm_0_05": {
+          "verdict": "does not meet as standard",
+          "status": "DERIVED",
+          "basis": "finger thickness +/-0.03 mm exceeds +/-0.01 mm; outline +/-0.1 mm exceeds +/-0.05 mm unless the +/-0.05 mm option is requested"
+        },
+        "jst_flz_0_3_pm_0_03": {
+          "verdict": "meets thickness at the limit; conductor width +/-0.04 mm vs factory trace tolerance UNSOURCED",
+          "status": "DERIVED"
+        }
+      },
+      "one_layer_link": {
+        "bend_radius_min_mm": {
+          "value": "0.66 (0.11 mm x 6)",
+          "status": "DERIVED"
+        },
+        "ground_layer": false
+      },
+      "two_layer_link_with_ground": {
+        "bend_radius_min_mm": {
+          "value": "2.4 (0.2 mm x 12) or 1.32 (0.11 mm x 12)",
+          "status": "DERIVED"
+        },
+        "ground_layer": true,
+        "note": "stiffener must bring 0.11 to 0.2 mm flex to the connector's tail thickness; contact side then fixes which layer carries the fingers"
+      },
+      "price_and_lead_time": {
+        "status": "UNSOURCED"
+      }
+    }
+  },
+  "ground_contact_check": {
+    "worst_ground_contact": {
+      "value": "0.54 to 0.57",
+      "unit": "A",
+      "status": "DERIVED (ST-04, model ASSUMED)"
+    },
+    "low_part_above_0_5_A": {
+      "value": "none found",
+      "status": "UNSOURCED",
+      "basis": "52271 0.5 A, HDGC 0.5 A, FLZ 0.5 A; the only 1.0 A part (52610) is 5.75 mm high; Molex and Amphenol series drawings UNAVAILABLE / not fetched"
+    }
+  },
+  "recommended_working_codes": {
+    "connector_pair": {
+      "k_rear": "Molex 0522712279 (52271, 22 circuits, right angle, bottom contact, 3.00 mm)",
+      "front_boards": "Molex 0522712279 as well (same tail on both ends)",
+      "alternative_front": "Molex 0526102272 (52610 vertical, 1.0 A) where a front field needs it"
+    },
+    "link": "custom 2-layer factory flex with a ground layer and PI stiffeners at both tails",
+    "reason": "52271 is the only right-angle low part with Molex-generated figures, listed by the factory (extended), 22 circuits matches the DA-03 clustering; a 2-layer flex gives the ground layer that a catalogue jumper lacks, and no catalogue item exists at 22 circuits and 30 to 80 mm in the factory listing",
+    "status": "working codes only; NOT SELECTED; NEEDS_DESIGN (current per ground contact, and the 52271 tail drawing is UNAVAILABLE)"
+  },
+  "st01e": {
+    "task": "osc-stack-20261114/ST-01e (DS-48, DS-50)",
+    "status": "PARTIAL; evidence only; nothing selected",
+    "source_store_commit": "648b140",
+    "matching_set": {
+      "basis": "JLCPCB parts-search captures of 2026-11-14 (keywords: Spacing1.0mm, Spacing0.5mm, FFC Cable p1-2, FFC 1.0mm, 1mm FPC p1-11, 0.5mm FPC p1-10)",
+      "status": "SOURCED",
+      "capture": {
+        "path": "distributor-captures/jlcpcb-lcsc/zudo-osc-hole-field-st-01e-20261114/SHA256SUMS",
+        "sha256": "4640f12e1e653dc2c1c66be30aeb2bf053cc0ea26c40e740ec9b84a4961f71a5"
+      },
+      "coverage": "search-based; the 0.5 mm connector search returned 2518 rows of which 1000 were captured; a cable or connector outside these searches may exist (UNSOURCED)",
+      "rule": "cables 30 to 80 mm; connectors right angle (not vertical) with a slider or flip lock, contact side from the listing's Chinese description; both_with_stock_ge_100 = at least one cable and one connector each with stock >= 100",
+      "rows": [
+        {
+          "pitch_mm": 1.0,
+          "circuits": 4,
+          "cables_30_80mm": [
+            {
+              "code": "C58499",
+              "maker": "LX",
+              "length_mm": 70.0,
+              "contacts": "opposite",
+              "stock": 536,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            },
+            {
+              "code": "C107663",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "same",
+              "stock": 58,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            },
+            {
+              "code": "C69196",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "opposite",
+              "stock": 5,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C49166830",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-4P-FH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 9444,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C19269405",
+              "maker": "Megastar",
+              "mpn": "ZX-1.0FPC-2H-HFJ4P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 5664,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C42407896",
+              "maker": "HMTCONN",
+              "mpn": "FPC1.0-WSX11-4P211-H25",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 3805,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C3446104",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AX-4PWBH25",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 2613,
+              "cls": "expand",
+              "capture": "1mm_FPC_p1.json"
+            },
+            {
+              "code": "C46598238",
+              "maker": "Hanbo Electronic",
+              "mpn": "HB-FPC-10FGXJ-H154P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2231,
+              "cls": "expand",
+              "capture": "1mm_FPC_p5.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 29,
+          "both_with_stock_ge_100": true
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 5,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19269920",
+              "maker": "XYECONN",
+              "mpn": "FPC09-Q1.0-5AH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3947,
+              "cls": "expand",
+              "capture": "1mm_FPC_p1.json"
+            },
+            {
+              "code": "C19191196",
+              "maker": "Megastar",
+              "mpn": "ZX-1.0FPC-2H-QFX5P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2831,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C55172977",
+              "maker": "LAILAN",
+              "mpn": "LAIL-FPC-CX01-5P1.0-W",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1739,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C49166859",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-5P-CSH25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1455,
+              "cls": "expand",
+              "capture": "1mm_FPC_p5.json"
+            },
+            {
+              "code": "C49166831",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-5P-FH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1069,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 15,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 6,
+          "cables_30_80mm": [
+            {
+              "code": "C90533",
+              "maker": "LX",
+              "length_mm": 70.0,
+              "contacts": "opposite",
+              "stock": 998,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C55614634",
+              "maker": "LAILAN",
+              "mpn": "LAIL-FPC-CDX01-6P1.0-W",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4470,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C49166832",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-6P-FH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3471,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C3446095",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0FX-6PWBH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2019,
+              "cls": "expand",
+              "capture": "1mm_FPC_p1.json"
+            },
+            {
+              "code": "C19269871",
+              "maker": "XYECONN",
+              "mpn": "FPC10-S1.0-6AH2.5",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1809,
+              "cls": "expand",
+              "capture": "1mm_FPC_p1.json"
+            },
+            {
+              "code": "C55172973",
+              "maker": "LAILAN",
+              "mpn": "LAIL-FPC-CX01-6P1.0-W",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1615,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 27,
+          "both_with_stock_ge_100": true
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 7,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19269350",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0FX-7PWCR-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2584,
+              "cls": "expand",
+              "capture": "1mm_FPC_p4.json"
+            },
+            {
+              "code": "C19191198",
+              "maker": "Megastar",
+              "mpn": "ZX-1.0FPC-2H-QFX7P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1851,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C49166861",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-7P-CSH25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1830,
+              "cls": "expand",
+              "capture": "1mm_FPC_p5.json"
+            },
+            {
+              "code": "C49166833",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-7P-FH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1570,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C49166843",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-7P-CXH25",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1080,
+              "cls": "expand",
+              "capture": "1mm_FPC_p5.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 10,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 8,
+          "cables_30_80mm": [
+            {
+              "code": "C26140",
+              "maker": "LX",
+              "length_mm": 70.0,
+              "contacts": "opposite",
+              "stock": 1093,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            },
+            {
+              "code": "C88604",
+              "maker": "LX",
+              "length_mm": 70.0,
+              "contacts": "same",
+              "stock": 970,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            },
+            {
+              "code": "C48274",
+              "maker": "LX",
+              "length_mm": 40.0,
+              "contacts": "same",
+              "stock": 0,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C46598240",
+              "maker": "Hanbo Electronic",
+              "mpn": "HB-FPC-10FGXJ-H158P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3660,
+              "cls": "expand",
+              "capture": "1mm_FPC_p5.json"
+            },
+            {
+              "code": "C49166834",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-8P-FH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3590,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C132510",
+              "maker": "Ckmtw(Shenzhen Cankemeng)",
+              "mpn": "F-FPC1M08P-A310",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 3146,
+              "cls": "expand",
+              "capture": "1mm_FPC_p1.json"
+            },
+            {
+              "code": "C19269351",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0FX-8PWCR-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2002,
+              "cls": "expand",
+              "capture": "1mm_FPC_p4.json"
+            },
+            {
+              "code": "C53207878",
+              "maker": "BXCONN",
+              "mpn": "FPC-010-S08-FCA",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1990,
+              "cls": "expand",
+              "capture": "1mm_FPC_p1.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 29,
+          "both_with_stock_ge_100": true
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 9,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19626465",
+              "maker": "Yuandi",
+              "mpn": "FPC-1.0LS-09PH25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 2998,
+              "cls": "expand",
+              "capture": "1mm_FPC_p1.json"
+            },
+            {
+              "code": "C19269352",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0FX-9PWCR-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1562,
+              "cls": "expand",
+              "capture": "1mm_FPC_p5.json"
+            },
+            {
+              "code": "C49166863",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-9P-CSH25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1417,
+              "cls": "expand",
+              "capture": "1mm_FPC_p5.json"
+            },
+            {
+              "code": "C19191200",
+              "maker": "Megastar",
+              "mpn": "ZX-1.0FPC-2H-QFX9P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1137,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C3446120",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AS-9PWBH25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 612,
+              "cls": "expand",
+              "capture": "1mm_FPC_p1.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 13,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 10,
+          "cables_30_80mm": [
+            {
+              "code": "C68134",
+              "maker": "LX",
+              "length_mm": 55.0,
+              "contacts": "opposite",
+              "stock": 914,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            },
+            {
+              "code": "C68391",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "opposite",
+              "stock": 895,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            },
+            {
+              "code": "C65783",
+              "maker": "LX",
+              "length_mm": 60.0,
+              "contacts": "opposite",
+              "stock": 368,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            },
+            {
+              "code": "C59996",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "same",
+              "stock": 0,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C18077668",
+              "maker": "Bossie",
+              "mpn": "BX-FPC1.0-2H10PX",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 10200,
+              "cls": "expand",
+              "capture": "1mm_FPC_p1.json"
+            },
+            {
+              "code": "C55614633",
+              "maker": "LAILAN",
+              "mpn": "LAIL-FPC-CDX01-10P1.0-W",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4217,
+              "cls": "expand",
+              "capture": "1mm_FPC_p10.json"
+            },
+            {
+              "code": "C132509",
+              "maker": "Ckmtw(Shenzhen Cankemeng)",
+              "mpn": "F-FPC1M10P-C310",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2907,
+              "cls": "expand",
+              "capture": "1mm_FPC_p1.json"
+            },
+            {
+              "code": "C49166835",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-10P-FH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2459,
+              "cls": "expand",
+              "capture": "1mm_FPC_p5.json"
+            },
+            {
+              "code": "C54442409",
+              "maker": "SHETIME",
+              "mpn": "FPC10-T1T1-2002-Z",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2207,
+              "cls": "expand",
+              "capture": "1mm_FPC_p1.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 26,
+          "both_with_stock_ge_100": true
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 11,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19269875",
+              "maker": "XYECONN",
+              "mpn": "FPC10-S1.0-11AH2.5",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 2110,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C19191202",
+              "maker": "Megastar",
+              "mpn": "ZX-1.0FPC-2H-QFX11P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1779,
+              "cls": "expand",
+              "capture": "1mm_FPC_p4.json"
+            },
+            {
+              "code": "C19269354",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0FX-11PWCR-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1764,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C49166865",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-11P-CSH25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1244,
+              "cls": "expand",
+              "capture": "1mm_FPC_p7.json"
+            },
+            {
+              "code": "C19269926",
+              "maker": "XYECONN",
+              "mpn": "FPC09-Q1.0-11AH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 735,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 12,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 12,
+          "cables_30_80mm": [
+            {
+              "code": "C38477",
+              "maker": "LX",
+              "length_mm": 60.0,
+              "contacts": "same",
+              "stock": 1000,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            },
+            {
+              "code": "C106872",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "opposite",
+              "stock": 0,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C2895039",
+              "maker": "Ckmtw(Shenzhen Cankemeng)",
+              "mpn": "F-FPC1M12P-B310",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 37696,
+              "cls": "expand",
+              "capture": "1mm_FPC_p1.json"
+            },
+            {
+              "code": "C3446098",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0FX-12PWBH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 5377,
+              "cls": "expand",
+              "capture": "1mm_FPC_p2.json"
+            },
+            {
+              "code": "C19269355",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0FX-12PWCR-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 5238,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C49166836",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-12P-FH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3169,
+              "cls": "expand",
+              "capture": "1mm_FPC_p5.json"
+            },
+            {
+              "code": "C42407900",
+              "maker": "HMTCONN",
+              "mpn": "FPC1.0-WSX11-12P211-H25",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 2683,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 28,
+          "both_with_stock_ge_100": true
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 13,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19269356",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0FX-13PWCR-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2062,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C19191204",
+              "maker": "Megastar",
+              "mpn": "ZX-1.0FPC-2H-QFX13P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1040,
+              "cls": "expand",
+              "capture": "1mm_FPC_p4.json"
+            },
+            {
+              "code": "C19269928",
+              "maker": "XYECONN",
+              "mpn": "FPC09-Q1.0-13AH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 800,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C19269877",
+              "maker": "XYECONN",
+              "mpn": "FPC10-S1.0-13AH2.5",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 730,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C19269305",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AS-13PWCR-H25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 695,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 9,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 14,
+          "cables_30_80mm": [
+            {
+              "code": "C128003",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "opposite",
+              "stock": 35,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C55614615",
+              "maker": "LAILAN",
+              "mpn": "LAIL-FPC-BX01-14P1.0-W",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 3526,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C19269357",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0FX-14PWCR-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2876,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C19269902",
+              "maker": "XYECONN",
+              "mpn": "FPC11-X1.0-14AH2.5",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 2490,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C54442412",
+              "maker": "SHETIME",
+              "mpn": "FPC14-T1T1-2002-Z",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2185,
+              "cls": "expand",
+              "capture": "1mm_FPC_p2.json"
+            },
+            {
+              "code": "C19269330",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AX-14PWCR-H25",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 2171,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 23,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 15,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19269358",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0FX-15PWCR-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4063,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C19191206",
+              "maker": "Megastar",
+              "mpn": "ZX-1.0FPC-2H-QFX15P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2222,
+              "cls": "expand",
+              "capture": "1mm_FPC_p4.json"
+            },
+            {
+              "code": "C19269369",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0HF-15PWAR-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2139,
+              "cls": "expand",
+              "capture": "1mm_FPC_p7.json"
+            },
+            {
+              "code": "C55614616",
+              "maker": "LAILAN",
+              "mpn": "LAIL-FPC-BX01-15P1.0-W",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1965,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C55614624",
+              "maker": "LAILAN",
+              "mpn": "LAIL-FPC-CX01-15P1.0-W",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1760,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 20,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 16,
+          "cables_30_80mm": [
+            {
+              "code": "C77181",
+              "maker": "LX",
+              "length_mm": 40.0,
+              "contacts": "opposite",
+              "stock": 498,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            },
+            {
+              "code": "C60066",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "opposite",
+              "stock": 359,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C55614612",
+              "maker": "LAILAN",
+              "mpn": "LAIL-FPC-BS01-16P1.0-W",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 5970,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C19269359",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0FX-16PWCR-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4980,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C19269308",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AS-16PWCR-H25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 3364,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C55629744",
+              "maker": "SHOU HAN",
+              "mpn": "SH-FPC-10FB-16P-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1490,
+              "cls": "expand",
+              "capture": "1mm_FPC_p5.json"
+            },
+            {
+              "code": "C55079537",
+              "maker": "BXCONN",
+              "mpn": "BX-FPC1.0-16PH25AX",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1430,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 24,
+          "both_with_stock_ge_100": true
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 17,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19191208",
+              "maker": "Megastar",
+              "mpn": "ZX-1.0FPC-2H-QFX17P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3198,
+              "cls": "expand",
+              "capture": "1mm_FPC_p4.json"
+            },
+            {
+              "code": "C49166870",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-17P-CSH25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1085,
+              "cls": "expand",
+              "capture": "1mm_FPC_p7.json"
+            },
+            {
+              "code": "C19269932",
+              "maker": "XYECONN",
+              "mpn": "FPC09-Q1.0-17AH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1000,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C19269360",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0FX-17PWCR-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 835,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C54824532",
+              "maker": "SHETIME",
+              "mpn": "FPC17-T1T1-2004-A",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 500,
+              "cls": "expand",
+              "capture": "1mm_FPC_p2.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 8,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 18,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19269881",
+              "maker": "XYECONN",
+              "mpn": "FPC10-S1.0-18AH2.5",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 5865,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C49166852",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-18P-CXH25",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 2943,
+              "cls": "expand",
+              "capture": "1mm_FPC_p7.json"
+            },
+            {
+              "code": "C55614614",
+              "maker": "LAILAN",
+              "mpn": "LAIL-FPC-BX01-18P1.0-W",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1995,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C3446124",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AS-18PWBH25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1603,
+              "cls": "expand",
+              "capture": "1mm_FPC_p2.json"
+            },
+            {
+              "code": "C22751615",
+              "maker": "Hanbo Electronic",
+              "mpn": "HB-FPC-10WSSJ-K-H2518P",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1519,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 18,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 19,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19269882",
+              "maker": "XYECONN",
+              "mpn": "FPC10-S1.0-19AH2.5",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 750,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C19269907",
+              "maker": "XYECONN",
+              "mpn": "FPC11-X1.0-19AH2.5",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 750,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C19269310",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AS-19PWCR-H25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 660,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C19269335",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AX-19PWCR-H25",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 650,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 4,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 20,
+          "cables_30_80mm": [
+            {
+              "code": "C18797",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "same",
+              "stock": 1014,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C42407913",
+              "maker": "HMTCONN",
+              "mpn": "FPC1.0-WFX11-20P211-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3112,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C132515",
+              "maker": "Ckmtw(Shenzhen Cankemeng)",
+              "mpn": "F-FPC1M20P-B310",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 2563,
+              "cls": "expand",
+              "capture": "1mm_FPC_p1.json"
+            },
+            {
+              "code": "C19269400",
+              "maker": "Megastar",
+              "mpn": "ZX-1.0FPC-2H-HFJ20P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2014,
+              "cls": "expand",
+              "capture": "1mm_FPC_p5.json"
+            },
+            {
+              "code": "C55614611",
+              "maker": "LAILAN",
+              "mpn": "LAIL-FPC-BS01-20P1.0-W",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1985,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C55614613",
+              "maker": "LAILAN",
+              "mpn": "LAIL-FPC-BX01-20P1.0-W",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1975,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 25,
+          "both_with_stock_ge_100": true
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 21,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19269337",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AX-21PWCR-H25",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 640,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C19269909",
+              "maker": "XYECONN",
+              "mpn": "FPC11-X1.0-21AH2.5",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 495,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 2,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 22,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19191212",
+              "maker": "Megastar",
+              "mpn": "ZX-1.0FPC-2H-QFX22P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3137,
+              "cls": "expand",
+              "capture": "1mm_FPC_p4.json"
+            },
+            {
+              "code": "C49166838",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-22P-FH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1853,
+              "cls": "expand",
+              "capture": "1mm_FPC_p5.json"
+            },
+            {
+              "code": "C55629747",
+              "maker": "SHOU HAN",
+              "mpn": "SH-FPC-10FB-22P-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1460,
+              "cls": "expand",
+              "capture": "1mm_FPC_p5.json"
+            },
+            {
+              "code": "C49166854",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-22P-CXH25",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1410,
+              "cls": "expand",
+              "capture": "1mm_FPC_p7.json"
+            },
+            {
+              "code": "C19269935",
+              "maker": "XYECONN",
+              "mpn": "FPC09-Q1.0-22AH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 980,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 15,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 24,
+          "cables_30_80mm": [
+            {
+              "code": "C50299",
+              "maker": "LX",
+              "length_mm": 80.0,
+              "contacts": "opposite",
+              "stock": 83,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            },
+            {
+              "code": "C34595",
+              "maker": "LX",
+              "length_mm": 80.0,
+              "contacts": "same",
+              "stock": 4,
+              "cls": "expand",
+              "capture": "Spacing1_0mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C5123103",
+              "maker": "Shenzhen Kinghelm Elec",
+              "mpn": "KH-FPC1.0-H2.0SMT-24P-QCHF",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3288,
+              "cls": "expand",
+              "capture": "1mm_FPC_p10.json"
+            },
+            {
+              "code": "C22751618",
+              "maker": "Hanbo Electronic",
+              "mpn": "HB-FPC-10WSSJ-K-H2524P",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 3165,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C19191213",
+              "maker": "Megastar",
+              "mpn": "ZX-1.0FPC-2H-QFX24P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2040,
+              "cls": "expand",
+              "capture": "1mm_FPC_p4.json"
+            },
+            {
+              "code": "C19269936",
+              "maker": "XYECONN",
+              "mpn": "FPC09-Q1.0-24AH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1855,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C3446127",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AS-24PWBH25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1481,
+              "cls": "expand",
+              "capture": "1mm_FPC_p2.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 15,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 25,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19269912",
+              "maker": "XYECONN",
+              "mpn": "FPC11-X1.0-25AH2.5",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 739,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C19269340",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AX-25PWCR-H25",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 613,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 2,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 26,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19191215",
+              "maker": "Megastar",
+              "mpn": "ZX-1.0FPC-2H-QFX26P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2657,
+              "cls": "expand",
+              "capture": "1mm_FPC_p4.json"
+            },
+            {
+              "code": "C3446102",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0FX-26PWBH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1716,
+              "cls": "expand",
+              "capture": "1mm_FPC_p2.json"
+            },
+            {
+              "code": "C3446115",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AX-26PWBH25",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1663,
+              "cls": "expand",
+              "capture": "1mm_FPC_p2.json"
+            },
+            {
+              "code": "C22751619",
+              "maker": "Hanbo Electronic",
+              "mpn": "HB-FPC-10WSSJ-K-H2526P",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1621,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C3446128",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AS-26PWBH25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1586,
+              "cls": "expand",
+              "capture": "1mm_FPC_p2.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 18,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 27,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19191216",
+              "maker": "Megastar",
+              "mpn": "ZX-1.0FPC-2H-QFX27P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3827,
+              "cls": "expand",
+              "capture": "1mm_FPC_p4.json"
+            },
+            {
+              "code": "C19269938",
+              "maker": "XYECONN",
+              "mpn": "FPC09-Q1.0-27AH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 980,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C19269366",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0FX-27PWCR-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 925,
+              "cls": "expand",
+              "capture": "1mm_FPC_p7.json"
+            },
+            {
+              "code": "C19269887",
+              "maker": "XYECONN",
+              "mpn": "FPC10-S1.0-27AH2.5",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 745,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C19269315",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AS-27PWCR-H25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 690,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 6,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 28,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C46598243",
+              "maker": "Hanbo Electronic",
+              "mpn": "HB-FPC-10FGXJ-H1528P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1813,
+              "cls": "expand",
+              "capture": "1mm_FPC_p7.json"
+            },
+            {
+              "code": "C55629750",
+              "maker": "SHOU HAN",
+              "mpn": "SH-FPC-10FB-28P-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1500,
+              "cls": "expand",
+              "capture": "1mm_FPC_p5.json"
+            },
+            {
+              "code": "C19269316",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AS-28PWCR-H25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1083,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C19269888",
+              "maker": "XYECONN",
+              "mpn": "FPC10-S1.0-28AH2.5",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 638,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C19269915",
+              "maker": "XYECONN",
+              "mpn": "FPC11-X1.0-28AH2.5",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 550,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 9,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 30,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C3446103",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0FX-30PWBH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2256,
+              "cls": "expand",
+              "capture": "1mm_FPC_p2.json"
+            },
+            {
+              "code": "C19269367",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0FX-30PWCR-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1994,
+              "cls": "expand",
+              "capture": "1mm_FPC_p7.json"
+            },
+            {
+              "code": "C19191217",
+              "maker": "Megastar",
+              "mpn": "ZX-1.0FPC-2H-QFX30P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1688,
+              "cls": "expand",
+              "capture": "1mm_FPC_p4.json"
+            },
+            {
+              "code": "C42407905",
+              "maker": "HMTCONN",
+              "mpn": "FPC1.0-WSX11-30P211-H25",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1500,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C55629751",
+              "maker": "SHOU HAN",
+              "mpn": "SH-FPC-10FB-30P-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1479,
+              "cls": "expand",
+              "capture": "1mm_FPC_p5.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 17,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 32,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19626510",
+              "maker": "Yuandi",
+              "mpn": "FPC-1.0LX-32PH25",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1411,
+              "cls": "expand",
+              "capture": "1mm_FPC_p1.json"
+            },
+            {
+              "code": "C19626483",
+              "maker": "Yuandi",
+              "mpn": "FPC-1.0LS-32PH25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1223,
+              "cls": "expand",
+              "capture": "1mm_FPC_p1.json"
+            },
+            {
+              "code": "C19269890",
+              "maker": "XYECONN",
+              "mpn": "FPC10-S1.0-32AH2.5",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 739,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C49166877",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-1.0-32P-CSH25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 724,
+              "cls": "expand",
+              "capture": "1mm_FPC_p7.json"
+            },
+            {
+              "code": "C22751641",
+              "maker": "Hanbo Electronic",
+              "mpn": "HB-FPC-10WSXJ-K-H2532P",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 660,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 9,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 33,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C22751623",
+              "maker": "Hanbo Electronic",
+              "mpn": "HB-FPC-10WSSJ-K-H2533P",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1500,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C22751642",
+              "maker": "Hanbo Electronic",
+              "mpn": "HB-FPC-10WSXJ-K-H2533P",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1495,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 2,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 34,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C22751624",
+              "maker": "Hanbo Electronic",
+              "mpn": "HB-FPC-10WSSJ-K-H2534P",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 872,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C22751643",
+              "maker": "Hanbo Electronic",
+              "mpn": "HB-FPC-10WSXJ-K-H2534P",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 692,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C19269891",
+              "maker": "XYECONN",
+              "mpn": "FPC10-S1.0-34AH2.5",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 673,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C19269319",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AS-34PWCR-H25",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 578,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 4,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 36,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C22751625",
+              "maker": "Hanbo Electronic",
+              "mpn": "HB-FPC-10WSSJ-K-H2536P",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1700,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C22751644",
+              "maker": "Hanbo Electronic",
+              "mpn": "HB-FPC-10WSXJ-K-H2536P",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1112,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C19269918",
+              "maker": "XYECONN",
+              "mpn": "FPC11-X1.0-36AH2.5",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 703,
+              "cls": "expand",
+              "capture": "1mm_FPC_p3.json"
+            },
+            {
+              "code": "C19269346",
+              "maker": "XUNPU",
+              "mpn": "FPC-1.0AX-36PWCR-H25",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 55,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 3,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 1.0,
+          "circuits": 40,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C22751645",
+              "maker": "Hanbo Electronic",
+              "mpn": "HB-FPC-10WSXJ-K-H2540P",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 820,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            },
+            {
+              "code": "C22751626",
+              "maker": "Hanbo Electronic",
+              "mpn": "HB-FPC-10WSSJ-K-H2540P",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 810,
+              "cls": "expand",
+              "capture": "1mm_FPC_p9.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 2,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 4,
+          "cables_30_80mm": [
+            {
+              "code": "C59150",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "same",
+              "stock": 0,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C5213746",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-09-4RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 65585,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C5213727",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-10-4RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 42761,
+              "cls": "expand",
+              "capture": "1mm_FPC_p5.json"
+            },
+            {
+              "code": "C5343272",
+              "maker": "XUNPU",
+              "mpn": "FPC-0.5HF-4PWBH10",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 6736,
+              "cls": "expand",
+              "capture": "1mm_FPC_p2.json"
+            },
+            {
+              "code": "C53055543",
+              "maker": "LXWCONN",
+              "mpn": "FPC0510-4RL-TAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4613,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p4.json"
+            },
+            {
+              "code": "C19267971",
+              "maker": "XYECONN",
+              "mpn": "FPC06-Q0.5-4AH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4125,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p7.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 41,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 5,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C5213747",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-09-5RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 49126,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C5213728",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-10-5RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 43951,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C53055556",
+              "maker": "LXWCONN",
+              "mpn": "FPC0509-5RL-TAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3934,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p4.json"
+            },
+            {
+              "code": "C52750877",
+              "maker": "Minlenda",
+              "mpn": "MLD-FPC-05-5P-H10",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3830,
+              "cls": "expand",
+              "capture": "1mm_FPC_p2.json"
+            },
+            {
+              "code": "C55213927",
+              "maker": "SHOU HAN",
+              "mpn": "SH-FPC-05FB-5P-H10",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3660,
+              "cls": "expand",
+              "capture": "1mm_FPC_p4.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 30,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 6,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C2856796",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-6PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 124513,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C5213748",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-09-6RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 53877,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C2856827",
+              "maker": "XUNPU",
+              "mpn": "FPC-05FB-6PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 39752,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C5213729",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-10-6RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 33451,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C6364657",
+              "maker": "SHOU HAN",
+              "mpn": "FPC 0.5-6P HYH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 20050,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p7.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 60,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 7,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C52995059",
+              "maker": "SHETIME",
+              "mpn": "FPC07-T1T1-2020-A",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1980,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p8.json"
+            },
+            {
+              "code": "C19724834",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LX-07PH20",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1972,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C22360329",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTG-7P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1875,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p2.json"
+            },
+            {
+              "code": "C19724801",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LS-07PH20",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1850,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C19191096",
+              "maker": "Megastar",
+              "mpn": "ZX-0.5FPC-2H-QFX7P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1545,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p10.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 20,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 8,
+          "cables_30_80mm": [
+            {
+              "code": "C81339",
+              "maker": "LX",
+              "length_mm": 40.0,
+              "contacts": "same",
+              "stock": 933,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            },
+            {
+              "code": "C29534",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "same",
+              "stock": 772,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            },
+            {
+              "code": "C51068",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "opposite",
+              "stock": 107,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C5213730",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-10-8RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 51575,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C2856815",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-8PH15",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 22651,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C2856797",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-8PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 21651,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C5213749",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-09-8RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 20569,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C6364658",
+              "maker": "SHOU HAN",
+              "mpn": "FPC 0.5-8P HYH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 16011,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p7.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 53,
+          "both_with_stock_ge_100": true
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 9,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C49361831",
+              "maker": "Ckmtw(Shenzhen Cankemeng)",
+              "mpn": "F-FPC0M09P-B310",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 2000,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p4.json"
+            },
+            {
+              "code": "C19724803",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LS-09PH20",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1975,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C19191098",
+              "maker": "Megastar",
+              "mpn": "ZX-0.5FPC-2H-QFX9P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1835,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p10.json"
+            },
+            {
+              "code": "C19724836",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LX-09PH20",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1745,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C22360331",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTG-9P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1740,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p2.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 18,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 10,
+          "cables_30_80mm": [
+            {
+              "code": "C14048",
+              "maker": "LX",
+              "length_mm": 60.0,
+              "contacts": "opposite",
+              "stock": 511,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            },
+            {
+              "code": "C14435",
+              "maker": "LX",
+              "length_mm": 65.0,
+              "contacts": "opposite",
+              "stock": 137,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            },
+            {
+              "code": "C54646",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "same",
+              "stock": 78,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C5213750",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-09-10RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 31396,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C2856816",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-10PH15",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 22820,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C5213731",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-10-10RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 18030,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C6364659",
+              "maker": "SHOU HAN",
+              "mpn": "FPC 0.5-10P HYH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 8523,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p10.json"
+            },
+            {
+              "code": "C53055538",
+              "maker": "LXWCONN",
+              "mpn": "FPC0510-10RL-TAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 5025,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 46,
+          "both_with_stock_ge_100": true
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 11,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C22360333",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTG-11P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1955,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C19724838",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LX-11PH20",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1827,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C19077705",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-11PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1380,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C19267935",
+              "maker": "XYECONN",
+              "mpn": "FPC03-X0.5-11AH2.0",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 935,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p10.json"
+            },
+            {
+              "code": "C22360370",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTX-11P",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 655,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 9,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 12,
+          "cables_30_80mm": [
+            {
+              "code": "C74676",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "opposite",
+              "stock": 146,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C2856799",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-12PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 50267,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C5213751",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-09-12RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 31820,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C5213732",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-10-12RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 13499,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C2856829",
+              "maker": "XUNPU",
+              "mpn": "FPC-05FB-12PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 10854,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C6364660",
+              "maker": "SHOU HAN",
+              "mpn": "FPC 0.5-12P HYH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 7182,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p10.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 54,
+          "both_with_stock_ge_100": true
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 13,
+          "cables_30_80mm": [
+            {
+              "code": "C72268",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "opposite",
+              "stock": 536,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            },
+            {
+              "code": "C127065",
+              "maker": "LX",
+              "length_mm": 75.0,
+              "contacts": "same",
+              "stock": 88,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C52740862",
+              "maker": "SHETIME",
+              "mpn": "FPC13-T1T1-2021-A",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3913,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p7.json"
+            },
+            {
+              "code": "C22360372",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTX-13P",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1965,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C22360335",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTG-13P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1825,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C19724806",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LS-13PH20",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1605,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C19267911",
+              "maker": "XYECONN",
+              "mpn": "FPC02-S0.5-13AH2.0",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1134,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p10.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 9,
+          "both_with_stock_ge_100": true
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 14,
+          "cables_30_80mm": [
+            {
+              "code": "C68390",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "same",
+              "stock": 1004,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            },
+            {
+              "code": "C41300",
+              "maker": "LX",
+              "length_mm": 30.0,
+              "contacts": "opposite",
+              "stock": 0,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C2856818",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-14PH15",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 22784,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C5213752",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-09-14RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 18265,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C52750882",
+              "maker": "Minlenda",
+              "mpn": "MLD-FPC-05-14P-H10",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 8915,
+              "cls": "expand",
+              "capture": "1mm_FPC_p4.json"
+            },
+            {
+              "code": "C5213733",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-10-14RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 6146,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C2856800",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-14PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 5660,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 33,
+          "both_with_stock_ge_100": true
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 15,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C49166979",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-0.5-15P-FHH10",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3503,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C5213734",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-10-15RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2757,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C19267913",
+              "maker": "XYECONN",
+              "mpn": "FPC02-S0.5-15AH2.0",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1995,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p10.json"
+            },
+            {
+              "code": "C19724841",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LX-15PH20",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1950,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C22360374",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTX-15P",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1938,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 19,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 16,
+          "cables_30_80mm": [
+            {
+              "code": "C50697",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "same",
+              "stock": 8,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C2856801",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-16PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 16093,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C52750883",
+              "maker": "Minlenda",
+              "mpn": "MLD-FPC-05-16P-H10",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 11079,
+              "cls": "expand",
+              "capture": "1mm_FPC_p4.json"
+            },
+            {
+              "code": "C5213753",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-09-16RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 10649,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C55213933",
+              "maker": "SHOU HAN",
+              "mpn": "SH-FPC-05FB-16P-H10",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 5816,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C52740846",
+              "maker": "SHETIME",
+              "mpn": "FPC16-T1T1-2020-A",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4960,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p7.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 37,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 17,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C22360339",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTG-17P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1985,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C22360376",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTX-17P",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1675,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C19077711",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-17PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1180,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C54934644",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-17PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 730,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p2.json"
+            },
+            {
+              "code": "C54442402",
+              "maker": "SHETIME",
+              "mpn": "FPC17-T1T1-2000-A",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 500,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p9.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 7,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 18,
+          "cables_30_80mm": [
+            {
+              "code": "C26405",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "same",
+              "stock": 11,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C6364663",
+              "maker": "SHOU HAN",
+              "mpn": "FPC 0.5-18P HYH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 34562,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p10.json"
+            },
+            {
+              "code": "C2856802",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-18PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 27101,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C5213754",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-09-18RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 12591,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C5213736",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-10-18RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4390,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C53055550",
+              "maker": "LXWCONN",
+              "mpn": "FPC0509-18RL-TAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3990,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 41,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 19,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19077713",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-19PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1335,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C19267916",
+              "maker": "XYECONN",
+              "mpn": "FPC02-S0.5-19AH2.0",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 900,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p10.json"
+            },
+            {
+              "code": "C54934646",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-19PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 789,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p2.json"
+            },
+            {
+              "code": "C55522199",
+              "maker": "JXTCONN",
+              "mpn": "AFPC0502-19PH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 300,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            },
+            {
+              "code": "C22360341",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTG-19P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 100,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 6,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 20,
+          "cables_30_80mm": [
+            {
+              "code": "C89381",
+              "maker": "LX",
+              "length_mm": 80.0,
+              "contacts": "opposite",
+              "stock": 988,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            },
+            {
+              "code": "C122342",
+              "maker": "LX",
+              "length_mm": 80.0,
+              "contacts": "same",
+              "stock": 52,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C2856803",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-20PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 114102,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C2856830",
+              "maker": "XUNPU",
+              "mpn": "FPC-05FB-20PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 13632,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C55213935",
+              "maker": "SHOU HAN",
+              "mpn": "SH-FPC-05FB-20P-H10",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3665,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C52750885",
+              "maker": "Minlenda",
+              "mpn": "MLD-FPC-05-20P-H10",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3650,
+              "cls": "expand",
+              "capture": "1mm_FPC_p4.json"
+            },
+            {
+              "code": "C2856820",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-20PH15",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3371,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 47,
+          "both_with_stock_ge_100": true
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 21,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C22360380",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTX-21P",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1985,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C22360343",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTG-21P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1890,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C19077715",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-21PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1630,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C19267918",
+              "maker": "XYECONN",
+              "mpn": "FPC02-S0.5-21AH2.0",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1000,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p10.json"
+            },
+            {
+              "code": "C54934648",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-21PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 780,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p2.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 6,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 22,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C2856804",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-22PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 21830,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C6364665",
+              "maker": "SHOU HAN",
+              "mpn": "FPC 0.5-22P HYH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 8180,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p10.json"
+            },
+            {
+              "code": "C5213756",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-09-22RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4992,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C55213936",
+              "maker": "SHOU HAN",
+              "mpn": "SH-FPC-05FB-22P-H10",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3904,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C5213738",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-10-22RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3130,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 31,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 23,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19077717",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-23PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1305,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C55522203",
+              "maker": "JXTCONN",
+              "mpn": "AFPC0502-23PH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 300,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            },
+            {
+              "code": "C22360345",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTG-23P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 100,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 3,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 24,
+          "cables_30_80mm": [
+            {
+              "code": "C28599",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "same",
+              "stock": 8,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C2856805",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-24PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 82011,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C5213757",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-09-24RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 43755,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C2856831",
+              "maker": "XUNPU",
+              "mpn": "FPC-05FB-24PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 34245,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C6364666",
+              "maker": "SHOU HAN",
+              "mpn": "FPC 0.5-24P HYH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 15838,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p10.json"
+            },
+            {
+              "code": "C52740834",
+              "maker": "SHETIME",
+              "mpn": "FPC24-T1S1-2030-A",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 6197,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p7.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 47,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 25,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C22360347",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTG-25P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1960,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C19724815",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LS-25PH20",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1673,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C19077719",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-25PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1608,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C19267921",
+              "maker": "XYECONN",
+              "mpn": "FPC02-S0.5-25AH2.0",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 995,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p10.json"
+            },
+            {
+              "code": "C54934652",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-25PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 750,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p2.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 7,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 26,
+          "cables_30_80mm": [
+            {
+              "code": "C32128",
+              "maker": "LX",
+              "length_mm": 60.0,
+              "contacts": "same",
+              "stock": 697,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            },
+            {
+              "code": "C63129",
+              "maker": "LX",
+              "length_mm": 60.0,
+              "contacts": "opposite",
+              "stock": 493,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C52740866",
+              "maker": "SHETIME",
+              "mpn": "FPC26-T1T1-2021-A",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4606,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p7.json"
+            },
+            {
+              "code": "C5213758",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-09-26RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4258,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C55213938",
+              "maker": "SHOU HAN",
+              "mpn": "SH-FPC-05FB-26P-H10",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3985,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C2856806",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-26PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2612,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C3250122",
+              "maker": "Shenzhen Kinghelm Elec",
+              "mpn": "KH-FPC0.5-H1.0SMT-26P-QCHF",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2520,
+              "cls": "expand",
+              "capture": "1mm_FPC_p10.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 35,
+          "both_with_stock_ge_100": true
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 27,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19077721",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-27PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1755,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C54934654",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-27PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 790,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p2.json"
+            },
+            {
+              "code": "C55522207",
+              "maker": "JXTCONN",
+              "mpn": "AFPC0502-27PH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 300,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            },
+            {
+              "code": "C22360349",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTG-27P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 100,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 4,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 28,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C5213741",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-10-28RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4703,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C55213939",
+              "maker": "SHOU HAN",
+              "mpn": "SH-FPC-05FB-28P-H10",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3980,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            },
+            {
+              "code": "C5213759",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-09-28RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3742,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C19077722",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-28PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1990,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C19724817",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LS-28PH20",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1910,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 24,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 29,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C54934656",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-29PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 790,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p2.json"
+            },
+            {
+              "code": "C55522209",
+              "maker": "JXTCONN",
+              "mpn": "AFPC0502-29PH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 300,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            },
+            {
+              "code": "C22360351",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTG-29P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 95,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 2,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 30,
+          "cables_30_80mm": [
+            {
+              "code": "C72269",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "opposite",
+              "stock": 994,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            },
+            {
+              "code": "C73383",
+              "maker": "LX",
+              "length_mm": 70.0,
+              "contacts": "opposite",
+              "stock": 703,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C2856808",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-30PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 39324,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C2856833",
+              "maker": "XUNPU",
+              "mpn": "FPC-05FB-30PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 30621,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C6364668",
+              "maker": "SHOU HAN",
+              "mpn": "FPC 0.5-30P HYH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 8896,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p10.json"
+            },
+            {
+              "code": "C7419870",
+              "maker": "Megastar",
+              "mpn": "ZX-FPC-FWX0.5PH230",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 5545,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p10.json"
+            },
+            {
+              "code": "C5343286",
+              "maker": "XUNPU",
+              "mpn": "FPC-0.5HF-30PWBH10",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 5376,
+              "cls": "expand",
+              "capture": "1mm_FPC_p4.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 44,
+          "both_with_stock_ge_100": true
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 31,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19724819",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LS-31PH20",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1235,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C19077725",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-31PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1140,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C54934658",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-31PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 740,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p2.json"
+            },
+            {
+              "code": "C55522211",
+              "maker": "JXTCONN",
+              "mpn": "AFPC0502-31PH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 300,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            },
+            {
+              "code": "C22360353",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTG-31P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 100,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 6,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 32,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C2856809",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-32PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 9297,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C5213743",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-10-32RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 8004,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C5213761",
+              "maker": "HCTL",
+              "mpn": "HC-FPC-05-09-32RLTAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4270,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C53055554",
+              "maker": "LXWCONN",
+              "mpn": "FPC0509-32RL-TAG",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4030,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            },
+            {
+              "code": "C55213941",
+              "maker": "SHOU HAN",
+              "mpn": "SH-FPC-05FB-32P-H10",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3975,
+              "cls": "expand",
+              "capture": "1mm_FPC_p6.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 28,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 33,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19077727",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-33PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1589,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C22360355",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTG-33P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1375,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C54934660",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-33PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 750,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p2.json"
+            },
+            {
+              "code": "C55522213",
+              "maker": "JXTCONN",
+              "mpn": "AFPC0502-33PH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 300,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            },
+            {
+              "code": "C22360392",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTX-33P",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 80,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p4.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 4,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 34,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C55213942",
+              "maker": "SHOU HAN",
+              "mpn": "SH-FPC-05FB-34P-H10 FPC",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 3990,
+              "cls": "expand",
+              "capture": "1mm_FPC_p10.json"
+            },
+            {
+              "code": "C19724852",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LX-34PH20",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1975,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            },
+            {
+              "code": "C22360393",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTX-34P",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1860,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p4.json"
+            },
+            {
+              "code": "C19724821",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LS-34PH20",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1690,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C19077728",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-34PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 930,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 12,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 35,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C49361842",
+              "maker": "Ckmtw(Shenzhen Cankemeng)",
+              "mpn": "F-FPC0M35P-C310",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2000,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p4.json"
+            },
+            {
+              "code": "C19077729",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-35PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1902,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C19724822",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LS-35PH20",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1535,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C54934662",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-35PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 625,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C54442401",
+              "maker": "SHETIME",
+              "mpn": "FPC35-T1T1-2010-A",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 465,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p9.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 9,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 36,
+          "cables_30_80mm": [
+            {
+              "code": "C32170",
+              "maker": "LX",
+              "length_mm": 60.0,
+              "contacts": "same",
+              "stock": 0,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C2856811",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-36PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4276,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C2856836",
+              "maker": "XUNPU",
+              "mpn": "FPC-05FB-36PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4257,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C52740855",
+              "maker": "SHETIME",
+              "mpn": "FPC36-T1T1-2020-A",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2096,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p7.json"
+            },
+            {
+              "code": "C19724823",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LS-36PH20",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1970,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C18078348",
+              "maker": "Bossie",
+              "mpn": "BX-FPC05-2H36PSX",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1680,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 16,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 37,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19077731",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-37PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2003,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C54934664",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-37PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 480,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C55522217",
+              "maker": "JXTCONN",
+              "mpn": "AFPC0502-37PH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 300,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            },
+            {
+              "code": "C22360359",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTG-37P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 90,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 3,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 38,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19077732",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-38PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1480,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C22360360",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTG-38P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 100,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C22360397",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTX-38P",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 75,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p4.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 2,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 39,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19077733",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-39PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1915,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C22360361",
+              "maker": "Korean Hroparts Elec",
+              "mpn": "FPC0.5B-WTG-39P",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 96,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 1,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 40,
+          "cables_30_80mm": [
+            {
+              "code": "C26618",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "same",
+              "stock": 990,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            },
+            {
+              "code": "C31030",
+              "maker": "LX",
+              "length_mm": 50.0,
+              "contacts": "opposite",
+              "stock": 136,
+              "cls": "expand",
+              "capture": "Spacing0_5mm_p1.json"
+            }
+          ],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C2856837",
+              "maker": "XUNPU",
+              "mpn": "FPC-05FB-40PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 69364,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C2856812",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-40PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 19644,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C49166986",
+              "maker": "Hong Cheng",
+              "mpn": "HC-FPC-0.5-40P-FHH10",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 8133,
+              "cls": "expand",
+              "capture": "1mm_FPC_p8.json"
+            },
+            {
+              "code": "C18077651",
+              "maker": "Bossie",
+              "mpn": "BX-FPC05-2H40PX",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 7567,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C54563269",
+              "maker": "SHOU HAN",
+              "mpn": "FPC-0.5-40P-H20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 7447,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p4.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 44,
+          "both_with_stock_ge_100": true
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 41,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19077735",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-41PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1298,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C54934666",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-41PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 790,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C55522219",
+              "maker": "JXTCONN",
+              "mpn": "AFPC0502-41PH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 300,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 3,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 42,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19077736",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-42PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 813,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C54934667",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-42PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 800,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C19724826",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LS-42PH20",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 799,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C55522220",
+              "maker": "JXTCONN",
+              "mpn": "AFPC0502-42PH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 300,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 4,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 44,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19077737",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-44PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 60,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 0,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 45,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19724857",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LX-45PH20",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1935,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            },
+            {
+              "code": "C52740856",
+              "maker": "SHETIME",
+              "mpn": "FPC45-T1T1-2020-A",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1925,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p7.json"
+            },
+            {
+              "code": "C19077738",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-45PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1469,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C54934668",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-45PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 785,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C19724827",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LS-45PH20",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 683,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 10,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 49,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19077739",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-49PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1985,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C54934669",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-49PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 800,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C55522222",
+              "maker": "JXTCONN",
+              "mpn": "AFPC0502-49PH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 300,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 3,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 50,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C2856838",
+              "maker": "XUNPU",
+              "mpn": "FPC-05FB-50PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 30992,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C2856813",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-50PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 10964,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C52740869",
+              "maker": "SHETIME",
+              "mpn": "FPC50-T1T1-2021-A",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 4807,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p7.json"
+            },
+            {
+              "code": "C2856826",
+              "maker": "XUNPU",
+              "mpn": "FPC-05F-50PH15",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2149,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p1.json"
+            },
+            {
+              "code": "C18077652",
+              "maker": "Bossie",
+              "mpn": "BX-FPC05-2H50PX",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2045,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 27,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 51,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19077741",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-51PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1267,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C54934671",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-51PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 800,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C55522224",
+              "maker": "JXTCONN",
+              "mpn": "AFPC0502-51PH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 300,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 3,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 53,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19077742",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-53PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1980,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C54934672",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-53PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 800,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C55522225",
+              "maker": "JXTCONN",
+              "mpn": "AFPC0502-53PH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 300,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 3,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 54,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C49361838",
+              "maker": "Ckmtw(Shenzhen Cankemeng)",
+              "mpn": "F-FPC0M54P-B310",
+              "lock": "slider",
+              "contact": "bottom",
+              "stock": 1986,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p4.json"
+            },
+            {
+              "code": "C49361827",
+              "maker": "Ckmtw(Shenzhen Cankemeng)",
+              "mpn": "F-FPC0M54P-C310",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1975,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p4.json"
+            },
+            {
+              "code": "C49361841",
+              "maker": "Ckmtw(Shenzhen Cankemeng)",
+              "mpn": "F-FPC0M54P-A310",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1910,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p4.json"
+            },
+            {
+              "code": "C19724829",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LS-54PH20",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 1388,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C54934673",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-54PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 471,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 8,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 56,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19077745",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-56PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 769,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 1,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 57,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C19077746",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-57PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1908,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C54934674",
+              "maker": "XUNPU",
+              "mpn": "FPC0521-57PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 800,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C55522227",
+              "maker": "JXTCONN",
+              "mpn": "AFPC0502-57PH2.0",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 300,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p6.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 3,
+          "both_with_stock_ge_100": false
+        },
+        {
+          "pitch_mm": 0.5,
+          "circuits": 60,
+          "cables_30_80mm": [],
+          "connectors_latching_right_angle_top5": [
+            {
+              "code": "C2856839",
+              "maker": "XUNPU",
+              "mpn": "FPC-05FB-60PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 2172,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p3.json"
+            },
+            {
+              "code": "C19724830",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5LS-60PH20",
+              "lock": "slider",
+              "contact": "top",
+              "stock": 2080,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C49361828",
+              "maker": "Ckmtw(Shenzhen Cankemeng)",
+              "mpn": "F-FPC0M60P-C310",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1990,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p4.json"
+            },
+            {
+              "code": "C18078349",
+              "maker": "Bossie",
+              "mpn": "BX-FPC05-2H60PSX",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1802,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            },
+            {
+              "code": "C19077747",
+              "maker": "Yuandi",
+              "mpn": "FPC-0.5FX-60PH20",
+              "lock": "flip",
+              "contact": "bottom",
+              "stock": 1711,
+              "cls": "expand",
+              "capture": "0_5mm_FPC_p5.json"
+            }
+          ],
+          "connectors_with_stock_ge_100": 17,
+          "both_with_stock_ge_100": false
+        }
+      ]
+    },
+    "matching_summary": {
+      "1.0mm_both_ge_100": {
+        "value": [
+          4,
+          6,
+          8,
+          10,
+          12,
+          16,
+          20
+        ],
+        "status": "DERIVED"
+      },
+      "1.0mm_same_side_cable_ge_100": {
+        "value": {
+          "8": "C88604 70 mm 970",
+          "12": "C38477 60 mm 1000",
+          "20": "C18797 50 mm 1014"
+        },
+        "status": "SOURCED"
+      },
+      "1.0mm_opposite_side_cable_ge_100": {
+        "value": {
+          "4": "C58499 70 mm 536",
+          "6": "C90533 70 mm 998",
+          "8": "C26140 70 mm 1093",
+          "10": "C68134 55 mm 914 / C68391 50 mm 895 / C65783 60 mm 368",
+          "16": "C77181 40 mm 498 / C60066 50 mm 359"
+        },
+        "status": "SOURCED"
+      },
+      "1.0mm_no_cable_30_80": {
+        "value": "14 (35 stock only), 18, 22 (150 mm only), 24 (80 mm, stock 83 and 4), 26 to 40 none",
+        "status": "SOURCED"
+      },
+      "0.5mm_both_ge_100": {
+        "value": [
+          8,
+          10,
+          12,
+          13,
+          14,
+          20,
+          26,
+          30,
+          40
+        ],
+        "status": "DERIVED"
+      },
+      "0.5mm_largest_both": {
+        "value": "40 circuits: C26618 50 mm same side (990), C31030 50 mm opposite (136); connectors XUNPU FPC-05FB-40PH20 C2856837 (69364), FPC-05F-40PH20 C2856812 (19644)",
+        "status": "SOURCED"
+      },
+      "library_class": {
+        "value": "every cable and connector listed is extended; no basic part was seen",
+        "status": "SOURCED"
+      },
+      "cable_maker": {
+        "value": "LX for every 30 to 80 mm cable in the captures",
+        "status": "SOURCED"
+      }
+    },
+    "cable_drawings": {
+      "lx_1_0mm": {
+        "source": {
+          "status": "SOURCED",
+          "path": "lx/ffc-1-0mm/lx-ffc-20p-1-0mm-100mm-drawing-20180531-12-lcsc-mirror.pdf",
+          "sha256": "a73bcbd5255322cb3f639f44dde602d7ca1c8a2f320d348c376acd0b045323ae",
+          "page": "1"
+        },
+        "tail_thickness": "0.303 +/- 0.05 mm",
+        "body_thickness": "0.121 +/- 0.05 mm",
+        "stiffener": "0.225 mm thick, 8 +/- 2 mm long",
+        "exposed_contact_length": "4 +/- 1 mm",
+        "conductor": "0.035 x 0.65 mm (description 1.0*20*100*B (0.035*0.65))",
+        "total_width": "21 +/- 0.15 mm at 20P, i.e. n + 1 (DERIVED from one count)",
+        "rating": "AWM 20624 80 degC 60 V",
+        "current_per_conductor": "UNSOURCED",
+        "bend_radius": "UNSOURCED",
+        "contact_side_naming": "listing names 'Same Side' and 'Inverting'; drawing marks the printed face (印字面) on both ends; type letter B in the description, meaning UNSOURCED"
+      },
+      "lx_0_5mm": {
+        "source": {
+          "status": "SOURCED",
+          "path": "lx/ffc-0-5mm/lx-ffc-40p-0-5mm-50mm-drawing-a771-rev-a0-lcsc-mirror.pdf",
+          "sha256": "3f3f19b4952cf5ed4cb84f115948df889d02d0463ab7277a766f81645e136220",
+          "page": 1
+        },
+        "part": "C31030, 40P, 50 mm, type 'B' (stiffeners on opposite faces; listed as Inverting)",
+        "tail_thickness": "0.3 +/- 0.03 mm",
+        "surface_thickness": "0.12 +/- 0.03 mm",
+        "stiffener": "225 um, 8.0 +/- 2.0 mm long each end",
+        "exposed_length": "4.0 +/- 1.0 mm each end",
+        "conductor": "0.035 +/- 0.005 x 0.3 +/- 0.03 mm, tin 1 um min",
+        "pitch": "0.5 +/- 0.05",
+        "span": "19.5 +/- 0.05 at 40P = 0.5 (n - 1)",
+        "width": "20.5 +/- 0.08 at 40P = 0.5 (n + 1) (DERIVED from one count)",
+        "margin": "0.5 +/- 0.07",
+        "rating": "UL AWM 20624, 80 degC, 60 V",
+        "current": "UNSOURCED",
+        "contact_side_naming": "marking face (印字面) and no-marking face (无字面); B type puts the two stiffeners on opposite faces"
+      }
+    },
+    "connector_candidates_1_0mm": {
+      "hmtconn_fpc1_0_wfx11_np211_h20": {
+        "lock": "flip (rear flip)",
+        "contact": "bottom (title 下接)",
+        "counts": "2 to 32",
+        "example": "C42407913 20P stock 3112 extended",
+        "source": {
+          "status": "SOURCED",
+          "path": "hmtconn/fpc1-0-wfx11/fpc1-0-wfx11-np211-h20-drawing-unrevised-lcsc-mirror.pdf",
+          "sha256": "cb75a3362d79dc1a59e209cf294017f4b420973441c63e98eea2e9d613762e09",
+          "page": "1"
+        },
+        "height": "2.00 +/- 0.15 mm closed; 3.58 mm with the actuator open at 90 deg",
+        "current": "UNSOURCED (not in the drawing notes)",
+        "voltage": "50 V AC/DC",
+        "temperature": "-25 to +85 degC",
+        "contact_resistance": "<= 0.03 ohm",
+        "mating_cycles": "UNSOURCED",
+        "accepted_cable": "0.30 +/- 0.03 mm thick; width (B - 0.1) +/- 0.05 = n + 1.00; conductor 0.50 mm at 1.00 +/- 0.05; exposed >= 3.50 mm; stiffener >= 4.00 mm"
+      },
+      "ckmtw_f_fpc1m_np_b310": {
+        "lock": "slider (抽拉式)",
+        "contact": "bottom (title 下接)",
+        "example": "C132515 20P stock 2563; C2895039 12P stock 37696",
+        "source": {
+          "status": "SOURCED",
+          "path": "ckmtw/f-fpc1m-b310/f-fpc1m-np-b310-drawing-ckmtw-fpc-0057-rev-a-lcsc-mirror.pdf",
+          "sha256": "5770979ad9a500b9ce0b643a202ba3cc78b2137eb775e5714c6a72815d95f232",
+          "page": "1"
+        },
+        "height": "2.5 mm",
+        "current": "0.4 A",
+        "voltage": "50 V",
+        "withstand": "200 V AC 1 min",
+        "temperature": "-20 to +80 degC",
+        "mating_cycles": "UNSOURCED",
+        "accepted_cable": "0.30 mm thick; width 1.0 x (n + 1) +/- 0.05; conductors 0.70 at edge; stiffener 6.00 mm; exposed 3.00 mm"
+      },
+      "megastar_zx_1_0fpc_2h_hfj": {
+        "lock": "flip, rear actuator (后压, pressed down behind the cable entry); opens upward at the rear",
+        "contact": "dual (both faces), per the listing; the drawing section shows contacts above and below the slot",
+        "example": "C19269400 20P stock 2014",
+        "source": {
+          "status": "SOURCED",
+          "path": "megastar/zx-1-0fpc-2h-hfj/zx-1-0fpc-2h-hfj20p-drawing-unrevised-lcsc-mirror.pdf",
+          "sha256": "f3e928a00839c743df654b6117d6bc66df6aa0f073bda97b59484338f6d0c645",
+          "page": 1
+        },
+        "height": "2.00 +/- 0.15 mm closed; 3.1 mm with the actuator open (side view)",
+        "voltage": "50 V AC/DC",
+        "temperature": "-25 to +85 degC",
+        "current": "UNSOURCED (not in the drawing notes)",
+        "mating_cycles": "UNSOURCED (not stated)",
+        "geometry": "read from a 200 dpi render",
+        "drawing_revision": "rev 1, 2021-09-19 (rev 0 2015-07-28)",
+        "counts": "4 to 30",
+        "body": "DIMC = n + 4.04 (+/-0.15) long; depth 5.30 +/- 0.15 mm (section 5.9 ref)",
+        "contact_resistance": "<= 0.03 ohm",
+        "accepted_cable": "0.30 +/- 0.03 mm; width (DIMB - 0.1) +/- 0.05 = n + 0.92; conductor 0.5 at 1.00 +/- 0.05; exposed >= 3.5 mm; stiffener >= 4.5 mm"
+      },
+      "vertical_le_5mm": {
+        "status": "UNSOURCED",
+        "note": "listings mark 116 1.0 mm vertical parts; none was opened"
+      },
+      "above_0_5A": {
+        "value": "none found; Ckmtw states 0.4 A, HMTCONN and Megastar state no current",
+        "status": "SOURCED / UNSOURCED"
+      }
+    },
+    "connector_candidates_0_5mm": {
+      "xunpu_fpc_05f_40ph20": {
+        "lock": "flip",
+        "contact": "bottom",
+        "stock": "C2856812 19644",
+        "source": {
+          "status": "SOURCED",
+          "path": "xunpu/fpc-05f/fpc-05f-40ph20-drawing-unrevised-lcsc-mirror.pdf",
+          "sha256": "dba4834530f67a121b37c7a094c2bb967bfe57593c6d916cabd86ca3a89cebf8",
+          "page": "1"
+        },
+        "rows": "UNSOURCED: the retained PDF is malformed (poppler: circular xref, no trailer; pypdf: invalid /Pages); a plain re-fetch of the 05F file returned identical bytes (same SHA-256), so the vendor file itself cannot be rendered"
+      },
+      "xunpu_fpc_05fb_40ph20": {
+        "lock": "flip",
+        "contact": "dual",
+        "stock": "C2856837 69364",
+        "source": {
+          "status": "SOURCED",
+          "path": "xunpu/fpc-05fb/fpc-05fb-40ph20-drawing-unrevised-lcsc-mirror.pdf",
+          "sha256": "b3e1a9b068f95e2567732a2a554fc2675ccc89c9849ebd966e9df170d2ee6384",
+          "page": "1"
+        },
+        "rows": "UNSOURCED: the retained PDF is malformed (poppler: circular xref, no trailer; pypdf: invalid /Pages); a plain re-fetch of the 05F file returned identical bytes (same SHA-256), so the vendor file itself cannot be rendered"
+      },
+      "bossie_bx_fpc05_2h40px": {
+        "listing": "C18077651, flip, bottom contact, stock 7567, extended (ST-01e capture)",
+        "source": {
+          "status": "SOURCED",
+          "path": "bossie/bx-fpc05-2h/bx-fpc05-2hnpx-drawing-rev-a-lcsc-mirror.pdf",
+          "sha256": "7fc4ae44b862c47e4386c4bb0ec3549c2283671dad1c854a7d67483f2885f066",
+          "page": 1
+        },
+        "lock": "flip (listing); the side on which it opens is UNSOURCED (title characters not legible at the rendered resolution)",
+        "contact": "bottom (listing 下接)",
+        "counts": "6 to 36 in steps of 2, then 40 and 50",
+        "height": "2.00 mm closed; open UNSOURCED (not drawn)",
+        "body": "A = 0.5 n + 4.4 (24.4 at 40) +/-0.20 long; depth 5.12 mm",
+        "land_pattern": "pads 0.30 wide x 1.25 mm at 0.50 pitch; two tabs 2.00 x 2.50 mm, 2.69 mm from the outer pad, 0.70 mm offset; pad span F +/-0.03",
+        "row_40_inconsistency": "the printed 40-pin row gives B, E and F as 18.5, which breaks the series pattern 0.5 (n - 1) = 19.5; B, E and F at 40 pins are UNSOURCED",
+        "accepted_cable": "0.30 mm thick; width D = 0.5 n + 0.5 (20.5 at 40) +/-0.03; conductor 0.30 +/- 0.03; exposed >= 3.00 mm; stiffener 6.00 mm",
+        "current": "0.5 A",
+        "voltage": "50 V",
+        "withstand": "500 V AC 1 min",
+        "contact_resistance": "<= 40 mohm",
+        "temperature": "-25 to +85 degC",
+        "mating_cycles": "UNSOURCED (not stated)"
+      },
+      "hirose_fh12_40s_0_5sh": {
+        "listing": {
+          "lcsc": "C202114",
+          "mpn": "FH12-40S-0.5SH(55)",
+          "class": "extended",
+          "stock": 11278,
+          "status": "SOURCED",
+          "capture": {
+            "path": "distributor-captures/jlcpcb-lcsc/zudo-osc-hole-field-st-01g-20261114/SHA256SUMS",
+            "sha256": "084a0987416a12e050fb8f4f7eb1ce23a69044d8d7305c522f905c33dbfc86c1"
+          },
+          "file": "FH12_40S_0_5SH_55_.json"
+        },
+        "source": {
+          "status": "SOURCED",
+          "path": "hirose/fh12/fh12-catalog-pdf-2016-11-19-lcsc-mirror.pdf",
+          "sha256": "9f056f58ff000739633cc3cb7697ba185967083dcf1429b7ab10783b3f55bac5",
+          "page": "specifications page; FH12-*S-0.5SH table (page 4); recommended FPC/land (pages 11-12)"
+        },
+        "lock": "flip-lock (FH12S has a strengthened flip-lock); the side on which it opens is UNSOURCED (drawing text not extracted)",
+        "contact": "bottom contact (FH12-*S-0.5SH; FH12A is the top-contact type)",
+        "counts": "6 to 50 in the 0.5 mm table (40 is CL586-0527-7)",
+        "height": "2.0 mm (FH12S: 2.4 mm); open UNSOURCED",
+        "body": "at 40: A 19.5, B 23.1, C 24.1, D 20.57 mm (catalog table; A = 0.5 (n - 1), C = 0.5 n + 4.1)",
+        "land_pattern": "contact pads 0.3 +/- 0.03 wide at 0.5 +/- 0.05; pad length 1.3 +/- 0.1; tab land 2.2 +/- 0.1 x 1.5 +/- 0.1 (dimension labels from the text layer; assignment of each label to a feature to be confirmed on a render); metal mask 0.25 +/- 0.03, thickness 0.15",
+        "accepted_cable": "0.3 +/- 0.05 mm at the end (FH12F: 0.18 +/- 0.05); FFC conductor 0.3 +/- 0.03, FPC 0.35 +/- 0.03; width B +/- 0.07 = 0.5 (n + 1) (13.0 at 25); exposed 3.5 min, stiffener 4.5 min; stiffener 0.188 mm min",
+        "current": "0.5 A DC; 70 % of the rating when all contacts carry current (note 1)",
+        "voltage": "50 V AC",
+        "withstand": "150 V AC 1 min",
+        "contact_resistance": "50 mohm max",
+        "temperature": "-40 to +85 degC",
+        "mating_cycles": "20 (durability, insertion/withdrawal)"
+      }
+    },
+    "contact_sides": {
+      "value": "Bottom- and top-contact parts fix which cable face must touch; a same-side (type A, 'Same Side') cable presents its contacts on one face at both ends, an opposite-side ('Inverting', type D) cable on opposite faces. Whether a Z or a U path needs A or D depends on the orientation of the two connectors and is a geometry ruling. Dual-contact parts (Megastar ZX-...-HFJ, XUNPU FPC-05FB, HDGC 1.0-B) accept either face, so with a dual part at one end either cable type works",
+      "status": "DERIVED from SOURCED contact-side words"
+    },
+    "molex_52271_drawing": {
+      "status": "UNAVAILABLE",
+      "routes": [
+        "https://www.lcsc.com/datasheet/C588187.pdf returned an HTML page, no PDF",
+        "Mouser datasheet path for 0522712279 returned a script page, no PDF"
+      ],
+      "note": "stopped after two routes as instructed"
+    },
+    "conductor_resistance_50mm": {
+      "status": "DERIVED",
+      "resistivity": "1.724e-8 ohm m (annealed copper, 20 degC, IACS); tin plating and temperature rise ignored",
+      "1.0mm": {
+        "section": "0.035 x 0.65 mm = 0.02275 mm2 (from the LX 1.0 mm description '0.035*0.65'; width tolerance UNSOURCED)",
+        "value_mohm": 37.9,
+        "range_mohm": "33.2 to 44.2 over thickness +/-0.005 only"
+      },
+      "0.5mm": {
+        "section": "0.035 x 0.3 mm = 0.0105 mm2 (LX A771 table)",
+        "value_mohm": 82.1,
+        "range_mohm": "65.3 to 106.4 over thickness +/-0.005 and width +/-0.03"
+      },
+      "note": "connector contact resistance adds up to 0.03 ohm per end where stated (HMTCONN, Megastar)"
+    },
+    "st01h": {
+      "task": "osc-stack-20261114/ST-01h (DS-61, DS-63); worktree base 36f7ca6; store 86da75d",
+      "status": "evidence only; nothing selected",
+      "item1_factory_listing": {
+        "status": "SOURCED",
+        "capture": {
+          "path": "distributor-captures/jlcpcb-lcsc/zudo-osc-hole-field-st-01h-20261114/SHA256SUMS",
+          "sha256": "82f93edf9caec5f67af5f5bc4b76e2ef564fda64c8edf436b4973b03a57d8bff"
+        },
+        "captured": "2026-11-14",
+        "rows": [
+          {
+            "mpn": "FH12-8S-0.5SH(55)",
+            "lcsc": "C597995",
+            "class": "extended",
+            "stock": 5850
+          },
+          {
+            "mpn": "FH12-14S-0.5SH(55)",
+            "lcsc": "C5378715",
+            "class": "extended",
+            "stock": 3919
+          },
+          {
+            "mpn": "FH12-26S-0.5SH(55)",
+            "lcsc": "C202113",
+            "class": "extended",
+            "stock": 2291
+          },
+          {
+            "mpn": "FH12-40S-0.5SH(55)",
+            "lcsc": "C202114",
+            "class": "extended",
+            "stock": 11278,
+            "note": "ST-01g capture"
+          }
+        ],
+        "alternative_bossie": [
+          {
+            "mpn": "BX-FPC05-2H8PX",
+            "lcsc": "C18078358",
+            "stock": 218
+          },
+          {
+            "mpn": "BX-FPC05-2H14PX",
+            "lcsc": "C18078360",
+            "stock": 1415
+          },
+          {
+            "mpn": "BX-FPC05-2H26PX",
+            "lcsc": "C18078363",
+            "stock": 2100
+          }
+        ],
+        "note": "every count has stock >= 100, so no alternative is needed; the Bossie rows are recorded for completeness (all extended)"
+      },
+      "item2_lock_open": {
+        "source": {
+          "path": "hirose/fh12/fh12-catalog-pdf-2016-11-19-lcsc-mirror.pdf",
+          "sha256": "9f056f58ff000739633cc3cb7697ba185967083dcf1429b7ab10783b3f55bac5",
+          "page": "17, Connector Operating Instructions, bottom contact type"
+        },
+        "stated": "'Lift up the actuator. Use thumb or index finger.' then 'Fully insert the FPC/FFC parallel to mounting surface, with the exposed conductive traces facing down.'",
+        "open_height": {
+          "status": "UNSOURCED",
+          "reason": "not dimensioned on pages 4 or 17; the figures show the actuator lifted but carry no dimension"
+        },
+        "opening_side": {
+          "status": "UNSOURCED",
+          "reason": "the figures are not dimensioned and the hinge side cannot be read with certainty at the rendered scale"
+        },
+        "working_value": {
+          "value": 5.0,
+          "unit": "mm",
+          "status": "ASSUMED (DS-63)"
+        },
+        "contact_face": {
+          "value": "cable conductors face down, toward the board (bottom contact)",
+          "status": "SOURCED",
+          "page": 17
+        }
+      },
+      "item3_pad_labels": {
+        "source": {
+          "path": "hirose/fh12/fh12-catalog-pdf-2016-11-19-lcsc-mirror.pdf",
+          "sha256": "9f056f58ff000739633cc3cb7697ba185967083dcf1429b7ab10783b3f55bac5",
+          "page": "4 (top view) and 11 (land)"
+        },
+        "stated": "the 0.5SH top view marks a 'polarizing mark indicator' at one end and a 'Number of Contacts indicator' at the other; the horizontal land drawing on page 11 carries no 'No.1 contact' label (only the vertical type does)",
+        "contact_1_end": {
+          "status": "UNSOURCED",
+          "reason": "no figure assigns contact 1 to an end for the SH type; reading the polarizing mark as contact 1 would be ASSUMED"
+        },
+        "land_labels": {
+          "value": "vertical chain on the land: tab 2.2 +/- 0.1, then 1.5 +/- 0.1 from tab to pad row, then pad length 1.3 +/- 0.1; pads 0.3 +/- 0.03 wide at 0.5 +/- 0.05; B +/- 0.1 across the tabs' outer edges, C +/- 0.1 across their inner edges; tab width (B - C) / 2 = 1.8 mm (DERIVED)",
+          "status": "SOURCED (render, 130 dpi)"
+        },
+        "per_count": {
+          "8": {
+            "land_A": 3.5,
+            "land_B": 9.1,
+            "land_C": 5.5,
+            "fpc_A": 3.5,
+            "fpc_B": 4.5
+          },
+          "14": {
+            "land_A": 6.5,
+            "land_B": 12.1,
+            "land_C": 8.5,
+            "fpc_A": 6.5,
+            "fpc_B": 7.5
+          },
+          "26": {
+            "land_A": 12.5,
+            "land_B": 18.1,
+            "land_C": 14.5,
+            "fpc_A": 12.5,
+            "fpc_B": 13.5
+          },
+          "40": {
+            "land_A": 19.5,
+            "land_B": 25.1,
+            "land_C": 21.5,
+            "fpc_A": 19.5,
+            "fpc_B": 20.5
+          },
+          "status": "SOURCED",
+          "page": 11
+        }
+      },
+      "item4_room_envelope": {
+        "source": {
+          "path": "hirose/fh12/fh12-catalog-pdf-2016-11-19-lcsc-mirror.pdf",
+          "sha256": "9f056f58ff000739633cc3cb7697ba185967083dcf1429b7ab10783b3f55bac5",
+          "page": 4
+        },
+        "depth": {
+          "value": "5.6 mm overall in the side view (4.6 mm inner dimension); height 2 mm",
+          "status": "SOURCED",
+          "note": "that 5.6 mm reaches the lead tips is read from the side view"
+        },
+        "depth_vs_room_5_12": {
+          "value": "+0.48 mm (FH12 deeper)",
+          "status": "DERIVED"
+        },
+        "length_C_vs_0_5n_4_4": {
+          "value": {
+            "8": {
+              "fh12_C": 8.1,
+              "room": 8.4,
+              "difference": -0.3
+            },
+            "14": {
+              "fh12_C": 11.1,
+              "room": 11.4,
+              "difference": -0.3
+            },
+            "26": {
+              "fh12_C": 17.1,
+              "room": 17.4,
+              "difference": -0.3
+            },
+            "40": {
+              "fh12_C": 24.1,
+              "room": 24.4,
+              "difference": -0.3
+            }
+          },
+          "status": "DERIVED",
+          "note": "C = 0.5 n + 4.1; 0.3 mm shorter at every count"
+        }
+      },
+      "item5_cables": {
+        "status": "SOURCED",
+        "capture": {
+          "path": "distributor-captures/jlcpcb-lcsc/zudo-osc-hole-field-st-01e-20261114/SHA256SUMS",
+          "sha256": "4640f12e1e653dc2c1c66be30aeb2bf053cc0ea26c40e740ec9b84a4961f71a5"
+        },
+        "rows": [
+          {
+            "lcsc": "C26618",
+            "circuits": 40,
+            "maker": "LX",
+            "length_mm": 50,
+            "contacts": "same side",
+            "stock": 990,
+            "class": "extended"
+          },
+          {
+            "lcsc": "C32128",
+            "circuits": 26,
+            "maker": "LX",
+            "length_mm": 60,
+            "contacts": "same side",
+            "stock": 697,
+            "class": "extended"
+          },
+          {
+            "lcsc": "C68390",
+            "circuits": 14,
+            "maker": "LX",
+            "length_mm": 50,
+            "contacts": "same side",
+            "stock": 1004,
+            "class": "extended"
+          },
+          {
+            "lcsc": "C29534",
+            "circuits": 8,
+            "maker": "LX",
+            "length_mm": 50,
+            "contacts": "same side",
+            "stock": 772,
+            "class": "extended"
+          }
+        ],
+        "a771_coverage": {
+          "value": "A771 covers one part only: C31030, 40 circuits, 50 mm, B type (opposite-side stiffeners); it does not cover 8, 14 or 26 circuits nor the same-side C26618",
+          "status": "SOURCED",
+          "note": "the drawings of C26618, C32128, C68390 and C29534 are UNSOURCED"
+        }
+      },
+      "item6_short_cables": {
+        "status": "SOURCED",
+        "capture": {
+          "path": "distributor-captures/jlcpcb-lcsc/zudo-osc-hole-field-st-01h-20261114/SHA256SUMS",
+          "sha256": "82f93edf9caec5f67af5f5bc4b76e2ef564fda64c8edf436b4973b03a57d8bff"
+        },
+        "8_circuits": {
+          "value": "C81339, LX, 40 mm, same side, stock 933, extended"
+        },
+        "14_circuits": {
+          "value": "none shorter than 50 mm with stock >= 100; shortest same side is C68390 at 50 mm (1004); C41300 30 mm and C41299 25 mm are opposite-side with stock 0"
+        }
+      },
+      "item7_retained": [
+        {
+          "path": "hirose/fx20/fx20-series-catalog-rs-0900766b814db927-rs-mirror.pdf",
+          "sha256": "fbae5691665c60b56584d84df16bada50808b7ea23a90323a4e870840f7b162e",
+          "url": "https://docs.rs-online.com/9ecf/0900766b814db927.pdf"
+        },
+        {
+          "path": "harwin/flecto/flecto-series-sheet-rs-a700000012600594-rs-mirror.pdf",
+          "sha256": "9eca71162589b2eb924b8fd2236cf426f203e11f784f5080e82c0e86d1568514",
+          "url": "https://docs.rs-online.com/023d/A700000012600594.pdf"
+        }
+      ]
+    }
+  }
+}

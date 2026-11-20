@@ -1,0 +1,497 @@
+{
+ "schema_version": 1,
+ "task": "osc-stack-20261114/ST-04 attempt a2 (DS-41 checks 3 and 4 without positions; DS-48, DS-51)",
+ "status": "PROPOSAL paper bound; unvalidated; coupling, current share and resistance NOT RUN as measurements; nothing selected",
+ "launch_commit": "21d1cd9",
+ "sources": {
+  "S-PART": {
+   "path": "design/partition/partition.json",
+   "locator": "harnesses[].signals[] (net, kind, driver_board, receiver_board)"
+  },
+  "S-GEOM": {
+   "path": "design/stack/geometry/stack-candidate.json",
+   "locator": "candidate.pairs[] (family, boards, pin_map)"
+  },
+  "S-FLEX": {
+   "path": "design/stack/connectors/flex-links.json",
+   "locator": "st01e.cable_drawings, st01e.connector_candidates_1_0mm, st01e.conductor_resistance_50mm"
+  },
+  "S-FLEX-WAVE": {
+   "path": "design/stack/connectors/flex-links.json",
+   "commit": "a3b25d0",
+   "sha256": "6ed22c46a2f5a1ece9758818aa8019d73e43c013aa095dd50c2f3b0c935c3c62",
+   "locator": "st01e.connector_candidates_0_5mm.bossie_bx_fpc05_2h40px and hirose_fh12_40s_0_5sh (read with git show at the integration commit; not merged into this branch)"
+  },
+  "S-POSTS": {
+   "path": "design/stack/power-posts/joint-design.json",
+   "locator": "terms single_return_A, return_plane_ohm; joint resistance from scripts/stack/power_posts/power_posts.py"
+  },
+  "S-DA03": {
+   "path": "circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-03.md",
+   "locator": "F4 (52271 right angle 0.5 A per contact, SOURCED there); F1 checks 3 and 4"
+  },
+  "T-GROVER": {
+   "reference": "F. W. Grover, Inductance Calculations (1946), parallel filaments; A. E. Ruehli, IBM J. Res. Dev. 16 (1972) 470, partial self inductance of a rectangular bar",
+   "validity": "conductor length much larger than spacing and width (l/d >= 25 here); quasi-static; skin and proximity effect ignored"
+  },
+  "T-MOM": {
+   "reference": "2-D quasi-static method of moments for zero-thickness coplanar strips in a homogeneous medium of relative permittivity eps_eff, charge neutrality imposed (open boundary)",
+   "validity": "conductor thickness 0.035 mm ignored against widths 0.3 and 0.65 mm; real cable is an inhomogeneous PET/adhesive laminate, bracketed by the eps_eff sweep; checked against the conformal-map formula for two coplanar strips (test)"
+  },
+  "S-LOOM": {
+   "path": "design/partition/loom-candidate.json",
+   "locator": "routes[].wire_mpn, routes[].cut_length_max_mm (flat lay, conductor order preserved)"
+  },
+  "S-ALPHA-6821": {
+   "path": "design/partition/sources/alpha-6821.pdf",
+   "sha256": "efd1d9ca96295017e43bec8534016f8d5d30c11a1a28fc8d37b6cf35b892a80a",
+   "locator": "Construction: conductor 26 (7/34) AWG, diameter 0.019 in; insulation 0.008 in wall MPPE-TPE, diameter 0.035 +/- 0.002 in"
+  },
+  "S-GH": {
+   "path": "design/connectors/jst-gh.json",
+   "locator": "pitch_mm 1.25; insulation_outer_diameter_mm [0.76, 1.0]"
+  }
+ },
+ "cable": {
+  "pitch_1_0": {
+   "pitch_mm": 1.0,
+   "conductor_width_mm": 0.65,
+   "conductor_thickness_mm": 0.035,
+   "status": "SOURCED",
+   "source": "S-FLEX st01e.cable_drawings.lx_1_0mm.conductor (0.035 x 0.65 mm)"
+  },
+  "pitch_0_5": {
+   "pitch_mm": 0.5,
+   "conductor_width_mm": 0.3,
+   "conductor_thickness_mm": 0.035,
+   "status": "SOURCED",
+   "source": "S-FLEX st01e.cable_drawings.lx_0_5mm.conductor (0.035 x 0.3 mm)"
+  },
+  "lengths_mm": {
+   "value": [
+    50,
+    80
+   ],
+   "status": "SOURCED for 50 mm (stock 20P C18797 and 40P C26618, S-FLEX st01e.matching_summary); 80 mm is the brief's long case"
+  },
+  "end_equivalent_mm": {
+   "value": 5.0,
+   "status": "ASSUMED",
+   "reason": "connector contact plus pad and fan-in run in parallel at the same pitch at each end; no connector coupling data retained; added to both ends"
+  },
+  "eps_eff": {
+   "value": [
+    1.0,
+    2.1,
+    3.2
+   ],
+   "nominal_index": 2,
+   "status": "ASSUMED",
+   "reason": "air (1.0), mean of air and PET (2.1), and PET bulk 3.2 as the upper bound; the cable's dielectric constant is not on the LX drawings; the coupling verdict uses the upper bound"
+  }
+ },
+ "conductor_resistance_mohm": {
+  "pitch_1_0": {
+   "nominal": 37.9,
+   "min": 33.2,
+   "max": 44.2,
+   "status": "DERIVED",
+   "source": "S-FLEX st01e.conductor_resistance_50mm.1.0mm (rho 1.724e-8 ohm m, thickness +/-0.005 only)"
+  },
+  "pitch_0_5": {
+   "nominal": 82.1,
+   "min": 65.3,
+   "max": 106.4,
+   "status": "DERIVED",
+   "source": "S-FLEX st01e.conductor_resistance_50mm.0.5mm"
+  }
+ },
+ "contact": {
+  "pitch_1_0": {
+   "resistance_max_ohm": {
+    "value": 0.03,
+    "status": "SOURCED",
+    "source": "S-FLEX st01e.connector_candidates_1_0mm hmtconn_fpc1_0_wfx11_np211_h20 and megastar_zx_1_0fpc_2h_hfj (contact_resistance <= 0.03 ohm)"
+   },
+   "ratings_A": [
+    {
+     "value": 0.4,
+     "status": "SOURCED",
+     "source": "S-FLEX st01e.connector_candidates_1_0mm.ckmtw_f_fpc1m_np_b310.current"
+    },
+    {
+     "value": 0.5,
+     "status": "SOURCED",
+     "source": "S-DA03 F4: Molex 52271 right angle, 0.5 A per contact (distributor copy)"
+    }
+   ]
+  },
+  "pitch_0_5": {
+   "resistance_max_ohm": {
+    "value": 0.05,
+    "status": "SOURCED",
+    "source": "S-FLEX-WAVE hirose_fh12_40s_0_5sh.contact_resistance (50 mohm max); bossie_bx_fpc05_2h40px states <= 40 mohm"
+   },
+   "ratings_A": [
+    {
+     "value": 0.3,
+     "status": "ASSUMED",
+     "reason": "parameter sweep of the brief"
+    },
+    {
+     "value": 0.35,
+     "status": "DERIVED",
+     "source": "S-FLEX-WAVE hirose_fh12_40s_0_5sh.current: 0.5 A DC, 70 % when all contacts carry current"
+    },
+    {
+     "value": 0.4,
+     "status": "ASSUMED",
+     "reason": "parameter sweep of the brief"
+    },
+    {
+     "value": 0.5,
+     "status": "SOURCED",
+     "source": "S-FLEX-WAVE bossie_bx_fpc05_2h40px.current and hirose_fh12_40s_0_5sh.current (0.5 A)"
+    }
+   ]
+  },
+  "resistance_min_ohm": {
+   "value": 0.0,
+   "status": "ASSUMED",
+   "reason": "no minimum is stated; zero bounds the share from above"
+  }
+ },
+ "aggressors": {
+  "LOGIC": {
+   "swing_V": 5.0,
+   "edge_s": [
+    2e-09,
+    5e-09,
+    1.5e-08
+   ],
+   "nominal_index": 1,
+   "load_F": 1.5e-11,
+   "status": "ASSUMED",
+   "reason": "74HC-class output at 5 V; no output transition time is in the retained 74HC facts (only the 31 ns propagation maximum of SN74HC14 at CL 50 pF); 2 ns bounds a fast edge into a light load; load = receiver input plus cable and connector"
+  },
+  "ANALOGUE": {
+   "swing_V": 20.0,
+   "slew_V_per_s": [
+    10000000.0,
+    20000000.0,
+    40000000.0
+   ],
+   "nominal_index": 1,
+   "load_ohm": 10000.0,
+   "load_F": 1e-10,
+   "sine_Hz": 20000.0,
+   "sine_peak_V": 10.0,
+   "status": "ASSUMED",
+   "reason": "op-amp-buffered audio, CV and op-amp gate outputs over +/-10 V; slew of the OPA197 family class (not in the retained facts); 20 kHz full-scale sine for steady bleed"
+  },
+  "STATIC": {
+   "status": "ASSUMED",
+   "reason": "pot wipers move by hand and references are DC: no aggressor term; bounded by the ANALOGUE row if a wiper is ever driven"
+  }
+ },
+ "victims": {
+  "PRECISION": {
+   "source_ohm": [
+    10.0,
+    100.0,
+    1000.0
+   ],
+   "nominal_index": 1,
+   "input_F": 5e-12,
+   "limit_V": 0.001,
+   "status": "ASSUMED",
+   "reason": "op-amp-buffered pitch CV and references; impedance at the edge frequencies is the op-amp's open-loop output impedance plus any isolation resistor, not retained; 1 mV is about 1.2 cent at 1 V/oct if it were sustained (criterion, NEEDS_DESIGN)"
+  },
+  "ANALOGUE": {
+   "source_ohm": [
+    10.0,
+    100.0,
+    1000.0
+   ],
+   "nominal_index": 1,
+   "input_F": 5e-12,
+   "limit_V": 0.01,
+   "status": "ASSUMED",
+   "reason": "op-amp-buffered audio and CV; 10 mV is -60 dB of 10 V (criterion, NEEDS_DESIGN)"
+  },
+  "WIPER": {
+   "source_ohm": [
+    2500.0,
+    25000.0,
+    125000.0
+   ],
+   "nominal_index": 1,
+   "input_F": 5e-12,
+   "limit_V": 0.001,
+   "status": "ASSUMED",
+   "reason": "pot wiper into a high-impedance receiver: largest source impedance R/4 of 10k, 100k and 500k pots (B103/B104/B504 parts in the component inventory); no receiver filter capacitor credited; wipers set CVs, so the precision criterion applies (criterion, NEEDS_DESIGN)"
+  },
+  "LOGIC": {
+   "source_ohm": [
+    25.0,
+    50.0,
+    100.0
+   ],
+   "nominal_index": 1,
+   "input_F": 5e-12,
+   "limit_V": 0.5,
+   "status": "ASSUMED",
+   "reason": "74HC output impedance class; 0.5 V stays inside the 74HC noise margin at 5 V (criterion)"
+  }
+ },
+ "classes": {
+  "status": "ASSUMED",
+  "reason": "mapping of the partition's signal kinds and net names to coupling classes; no retained source states impedance or edge rate per net",
+  "rules": [
+   {
+    "class": "LOGIC",
+    "kind": "conditioned logic"
+   },
+   {
+    "class": "LOGIC",
+    "net_regex": "(SOFT_DRIVE|HARD_DRIVE)$"
+   },
+   {
+    "class": "LOGIC",
+    "net_regex": "SUB_SEL_[AB]"
+   },
+   {
+    "class": "WIPER",
+    "kind": "wiper to high impedance receiver"
+   },
+   {
+    "class": "PRECISION",
+    "net_regex": "(FREQ_[A-Z]+|1V_BUFFER|REF5|REFN5|RANGE_CV|LFO_REF)$"
+   },
+   {
+    "class": "NC",
+    "net_regex": "^NC$"
+   },
+   {
+    "class": "ANALOGUE",
+    "kind": "*"
+   }
+  ]
+ },
+ "ground_rules": {
+  "A": {
+   "label": "one ground position per two signals (as at today's sites)",
+   "window": [
+    "G",
+    "S",
+    "S",
+    "G",
+    "S",
+    "S",
+    "G"
+   ],
+   "pairs": {
+    "adjacent": [
+     1,
+     2
+    ],
+    "across_ground": [
+     2,
+     4
+    ]
+   }
+  },
+  "B": {
+   "label": "a ground conductor between every two signals",
+   "window": [
+    "G",
+    "S",
+    "G",
+    "S",
+    "G"
+   ],
+   "pairs": {
+    "across_ground": [
+     1,
+     3
+    ]
+   }
+  },
+  "status": "SOURCED as options (DS-51); return split ASSUMED: the aggressor's return divides among the window's grounds by least inductance (the posts are a much larger loop and carry no edge current)",
+  "C": {
+   "label": "two ground conductors between two signals (attempt a3 comparison)",
+   "window": [
+    "G",
+    "S",
+    "G",
+    "G",
+    "S",
+    "G"
+   ],
+   "pairs": {
+    "across_two_grounds": [
+     1,
+     4
+    ]
+   }
+  }
+ },
+ "ground_current": {
+  "branches": [
+   "JL",
+   "JR",
+   "P"
+  ],
+  "posts_cases": {
+   "normal": 3,
+   "one_post_open": 2,
+   "all_posts_open": 0
+  },
+  "status": "DERIVED with the partition35 / ST-04 bound: the candidate link ground path at its minimum resistance with no PCB term; every alternative at its maximum with the whole common neck"
+ },
+ "link_options": {
+  "pitch_1_0": [
+   20,
+   22
+  ],
+  "pitch_0_5": [
+   30,
+   40
+  ],
+  "status": "SOURCED as options (DS-51; ST-02 a4 scope item 2)"
+ },
+ "harness": {
+  "pitch_mm": {
+   "value": 1.25,
+   "status": "SOURCED",
+   "source": "S-GH pitch_mm (GH header); the loom keeps the header order in a flat lay (S-LOOM route text); wire-to-wire spacing along the run equal to the pitch is ASSUMED (ribbon channel 10.19 mm for 8 wires in S-LOOM, 1.27 mm per wire)"
+  },
+  "conductor_diameter_mm": {
+   "value": 0.4826,
+   "status": "SOURCED",
+   "source": "S-ALPHA-6821 conductor diameter 0.019 in (stranded 7/34 taken as a solid round conductor of that diameter, ASSUMED)"
+  },
+  "insulation_diameter_mm": {
+   "value": 0.889,
+   "tolerance_mm": 0.051,
+   "status": "SOURCED",
+   "source": "S-ALPHA-6821 insulation diameter 0.035 +/- 0.002 in; inside the GH range 0.76 to 1.0 mm (S-GH)"
+  },
+  "eps_eff": {
+   "status": "ASSUMED",
+   "reason": "MPPE-TPE permittivity is not on the Alpha sheet; the same sweep as the flat cable is used and the comparison is made at the same upper value 3.2 for both, so the ratio of capacitive terms is nearly independent of it"
+  },
+  "length": {
+   "status": "SOURCED",
+   "source": "S-LOOM routes[].cut_length_max_mm per harness (the whole cut length taken as parallel run, ASSUMED upper bound) plus the same ASSUMED 5 mm per end as the flat link"
+  }
+ },
+ "classes_adapter": {
+  "status": "DERIVED from SOURCED schematic specification (see ds62.adapter_evidence); added in attempt a4 part 1 beside classes.rules, which stays unchanged",
+  "scope": "the 21 signals of the adapter pairs K-O1-1 to K-O5-2 of the retained candidate (families K/O first and K/O second)",
+  "rules": [
+   {
+    "class": "STATIC",
+    "net_regex": "^(/O[0-9]+/)?OCT_SELECTED$"
+   },
+   {
+    "class": "STATIC",
+    "net_regex": "^OSC_OCT[0-5]$"
+   }
+  ],
+  "STATIC": {
+   "aggressor": "none while the instrument plays; a step only when the selector is turned by hand",
+   "victim": "PRECISION (the lines set the pitch)"
+  }
+ },
+ "ds62": {
+  "pitch": "pitch_0_5",
+  "cables": [
+   {
+    "code": "C81339",
+    "circuits": 8,
+    "length_mm": 40,
+    "status": "SOURCED",
+    "source": "DS-61 / ST-01h (cables in use); the coordinator brief names C81339 as the short 8-circuit cable"
+   },
+   {
+    "code": "C26618",
+    "circuits": 40,
+    "length_mm": 50,
+    "status": "SOURCED",
+    "source": "S-FLEX st01e.matching_summary 0.5mm_largest_both; DS-61"
+   },
+   {
+    "code": "C68390",
+    "circuits": 14,
+    "length_mm": 50,
+    "status": "SOURCED",
+    "source": "DS-61"
+   },
+   {
+    "code": "C29534",
+    "circuits": 8,
+    "length_mm": 50,
+    "status": "SOURCED",
+    "source": "DS-61"
+   },
+   {
+    "code": "C32128",
+    "circuits": 26,
+    "length_mm": 60,
+    "status": "SOURCED",
+    "source": "DS-61"
+   }
+  ],
+  "link_pattern": {
+   "value": "signals and grounds alternate starting with a signal (S G S G ...); no outer ground; logic beside logic and wiper beside wiper may lie side by side",
+   "status": "SOURCED (DS-62 rule per link)"
+  },
+  "window_half_width": {
+   "value": 40,
+   "status": "DERIVED",
+   "reason": "at least the largest cable size (40 circuits), so every conductor of every cable is in the 2-D solve and nothing is left out; a narrower window overstates coupling (fewer grounds share the return) and is kept only as a test"
+  },
+  "other_signals": {
+   "status": "ASSUMED",
+   "reason": "every other signal conductor is held at AC ground by its driver, as in attempts a2 and a3"
+  },
+  "selector_step": {
+   "swing_V": 1.0,
+   "edge_s": 5e-09,
+   "load_ohm": 1000.0,
+   "load_F": 1e-11,
+   "receiver_filter_s": 0.0001,
+   "status": "swing ASSUMED (five equal 10 kOhm ladder steps, DERIVED; the 1 V size from the 1 V/oct convention, ASSUMED); edge ASSUMED (a switch contact closing, no retained figure); load 1 kOhm SOURCED (R_OCT_SER) with 10 pF of line ASSUMED; receiver filter 1 kOhm x 100 nF = 100 us SOURCED (OCT_SER, OCT_FILTER)"
+  },
+  "adapter_evidence": [
+   {
+    "statement": "OSC_OCT0 to OSC_OCT5 are six buffered taps of one shared octave ladder fed from the 5 V reference; they are global references shared by all oscillators",
+    "source": "design/spec/modules/oscillator.py, octave_family() (b.cell octave_reference with REF_5V OSC_REF5 and OCT0..OCT5 -> OSC_OCT0..5) and REFS (line 16); design/spec/cells/build_doc.py octave_reference: buffered endpoints, five 10k resistors, six buffered octave taps",
+    "status": "SOURCED"
+   },
+   {
+    "statement": "each tap is driven by an OPA4197 voltage follower (U1602 to U1604); the ladder is fed by REF5050 U1601; source impedance is the closed-loop output impedance of the follower, not stated as a number (UNSOURCED); the 100 Ohm victim value of PRECISION is kept",
+    "source": "schematic/sheets/octave_reference.kicad_sch symbols U1601 REF5050AIDR, U1602..U1604 OPA4197IDR; design/architecture-278/implementation/candidate-netlist.json endpoints U1602 pins 13/14 OSC_OCT0, U1603 pins 1/2, 6/7, 8/9, 13/14 OSC_OCT1..4, U1604 pins 1/2 OSC_OCT5 (output tied to inverting input)",
+    "status": "SOURCED (driver); UNSOURCED (impedance figure)"
+   },
+   {
+    "statement": "OCT_SELECTED is the common of the hand-turned octave selector SRBV160803 (pins 1 and 10), whose positions 2 to 7 take OSC_OCT0 to OSC_OCT5; it is received through OCT_SER 1 kOhm into OCT_FILTER (100 nF and OCT_PD 10 MOhm to AGND), rebuffered by the precision amplifier OCT_RECEIVER to OCT_CV, which enters EXPO_SUM through PITCH_OCT 100 kOhm",
+    "source": "design/spec/modules/oscillator.py, family(): pins dict and b.device(SRBV160803, OCT_SELECTOR), b.r(OCT_SER), b.r(OCT_PD), b.c(OCT_FILTER), b.amp(OCT_RECEIVER, precision), PITCH_OCT 100 kOhm (lines 168 to 176)",
+    "status": "SOURCED"
+   },
+   {
+    "statement": "nothing on the seven lines is modulated, clocked or switched while the instrument plays; OCT_SELECTED steps only when the selector is turned by hand; the taps never change",
+    "source": "the same objects: no modulation, clock or switch other than the panel selector connects to OSC_OCT0..5 or OCT_SELECTED",
+    "status": "DERIVED"
+   }
+  ]
+ },
+ "link_record": {
+  "path": "design/stack/geometry/links/link-gate.json",
+  "projection": "per link in use (no gone): id, circuits, cable, cable_length_mm, positions; sorted by id; sha256 of the sort_keys JSON",
+  "projection_sha256": "6584f7ddf44ef7143848cf362eada29a6faf6fd91eb6c4f9eccf9cb955bda8ad",
+  "status": "SOURCED",
+  "source": "ST-02 a8 part 2 record (DS-110), read only; a test goes stale when a position changes"
+ }
+}

@@ -1,0 +1,2827 @@
+{
+ "schema_version": 1,
+ "task": "osc-stack-20261114/ST-04 attempt a4, part 2 (gate checks 3 and 4; DS-77 to DS-79, DS-84, DS-110)",
+ "status": "PROPOSAL paper bound; unvalidated; coupling, current share and resistance NOT RUN as measurements; nothing selected",
+ "written_by": "scripts/stack/link_electrical/link_electrical.py",
+ "inputs": "inputs.json",
+ "record": "design/stack/geometry/links/link-gate.json",
+ "record_projection_sha256": "6584f7ddf44ef7143848cf362eada29a6faf6fd91eb6c4f9eccf9cb955bda8ad",
+ "verdict": "NEEDS_DESIGN",
+ "links_above_1": [
+  "P-K-P-L01.01.01",
+  "P-K-P-L03.01",
+  "P-K-P-L07",
+  "P-K-P-L08",
+  "P-K-P-L13.01.01.01"
+ ],
+ "rule_breaks": {},
+ "missing_references": [],
+ "largest_ratio_per_cable": {
+  "C26618": {
+   "id": "P-K-P-L07",
+   "ratio": 1.13579
+  },
+  "C29534": {
+   "id": "P-K-P-L13.01.01.01",
+   "ratio": 1.04125
+  },
+  "C32128": {
+   "id": "P-K-P-L03.01",
+   "ratio": 1.1325
+  },
+  "C68390": {
+   "id": "P-K-P-L01.01.01",
+   "ratio": 1.42134
+  }
+ },
+ "links": [
+  {
+   "id": "O-K-O1",
+   "joint": "O-K",
+   "branch": "adapter O1",
+   "circuits": 8,
+   "cable": "C81339",
+   "length_mm": 40.0,
+   "signals_by_class": {
+    "STATIC": 7
+   },
+   "grounds": 1,
+   "unused": 0,
+   "pairs_evaluated": 0,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": null,
+   "largest_pair": null
+  },
+  {
+   "id": "O-K-O3",
+   "joint": "O-K",
+   "branch": "adapter O3",
+   "circuits": 8,
+   "cable": "C81339",
+   "length_mm": 40.0,
+   "signals_by_class": {
+    "STATIC": 7
+   },
+   "grounds": 1,
+   "unused": 0,
+   "pairs_evaluated": 0,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": null,
+   "largest_pair": null
+  },
+  {
+   "id": "O-K-O5",
+   "joint": "O-K",
+   "branch": "adapter O5",
+   "circuits": 8,
+   "cable": "C81339",
+   "length_mm": 40.0,
+   "signals_by_class": {
+    "STATIC": 7
+   },
+   "grounds": 1,
+   "unused": 0,
+   "pairs_evaluated": 0,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": null,
+   "largest_pair": null
+  },
+  {
+   "id": "JL-K-JL-L01",
+   "joint": "JL-K",
+   "branch": "JL",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 16
+   },
+   "grounds": 15,
+   "unused": 9,
+   "pairs_evaluated": 240,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828571,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/F3/LP_CORE",
+    "aggressor_pos": 3,
+    "victim": "/F3/HP_CORE",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923878,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828571,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JL-K-JL-L02",
+   "joint": "JL-K",
+   "branch": "JL",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 14,
+    "PRECISION": 2
+   },
+   "grounds": 15,
+   "unused": 9,
+   "pairs_evaluated": 240,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828571,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/O1/1V_BUFFER",
+    "aggressor_pos": 3,
+    "victim": "/O1/FM_BUFFER",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923878,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828571,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JL-K-JL-L03",
+   "joint": "JL-K",
+   "branch": "JL",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 15,
+    "PRECISION": 1
+   },
+   "grounds": 15,
+   "unused": 9,
+   "pairs_evaluated": 240,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828571,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/O4/SYNC_BUFFER",
+    "aggressor_pos": 3,
+    "victim": "/O4/SAW_SCALED",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923878,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828571,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JL-K-JL-L04",
+   "joint": "JL-K",
+   "branch": "JL",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 10,
+    "PRECISION": 2
+   },
+   "grounds": 11,
+   "unused": 17,
+   "pairs_evaluated": 132,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828562,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/O3/1V_BUFFER",
+    "aggressor_pos": 3,
+    "victim": "/O3/FM_BUFFER",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923869,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828562,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JL-K-JL-L05",
+   "joint": "JL-K",
+   "branch": "JL",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 14,
+    "PRECISION": 2
+   },
+   "grounds": 15,
+   "unused": 9,
+   "pairs_evaluated": 240,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828571,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/F1/FREQ_BUFFER",
+    "aggressor_pos": 3,
+    "victim": "/F1/BP_CORE",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923878,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828571,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JL-K-JL-L06",
+   "joint": "JL-K",
+   "branch": "JL",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 3,
+    "PRECISION": 1
+   },
+   "grounds": 3,
+   "unused": 33,
+   "pairs_evaluated": 12,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828462,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/F3/FREQ_BUFFER",
+    "aggressor_pos": 3,
+    "victim": "/F3/BP_CORE",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923757,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828462,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JL-K-JL-L07",
+   "joint": "JL-K",
+   "branch": "JL",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 14,
+    "PRECISION": 2
+   },
+   "grounds": 15,
+   "unused": 9,
+   "pairs_evaluated": 240,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828571,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/M5A/REF5",
+    "aggressor_pos": 3,
+    "victim": "/M5A/5_BUFFER",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923878,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828571,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JL-K-JL-L08",
+   "joint": "JL-K",
+   "branch": "JL",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 2,
+    "PRECISION": 2
+   },
+   "grounds": 3,
+   "unused": 33,
+   "pairs_evaluated": 12,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828462,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/M5B/REF5",
+    "aggressor_pos": 3,
+    "victim": "/M5B/SUM_POSTLEVEL",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923757,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828462,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JR-K-JR-L01",
+   "joint": "JR-K",
+   "branch": "JR",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 9,
+    "PRECISION": 7
+   },
+   "grounds": 15,
+   "unused": 9,
+   "pairs_evaluated": 240,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828571,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/A03/REF5",
+    "aggressor_pos": 3,
+    "victim": "/A03/SUM_NEG",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923878,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828571,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JR-K-JR-L02",
+   "joint": "JR-K",
+   "branch": "JR",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 8,
+    "PRECISION": 4
+   },
+   "grounds": 11,
+   "unused": 17,
+   "pairs_evaluated": 132,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828562,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/A01/REF5",
+    "aggressor_pos": 3,
+    "victim": "/A01/IN_BUFFER",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923869,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828562,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JR-K-JR-L03",
+   "joint": "JR-K",
+   "branch": "JR",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 16
+   },
+   "grounds": 15,
+   "unused": 9,
+   "pairs_evaluated": 240,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828571,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/E2/SIG_BUFFER",
+    "aggressor_pos": 3,
+    "victim": "/E2/FALL_BUFFER",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923878,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828571,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JR-K-JR-L04",
+   "joint": "JR-K",
+   "branch": "JR",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 11,
+    "PRECISION": 1
+   },
+   "grounds": 11,
+   "unused": 17,
+   "pairs_evaluated": 132,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828562,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/E2/ENV_BUFFER",
+    "aggressor_pos": 3,
+    "victim": "/E1/STAGE_HIGH",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923869,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828562,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JR-K-JR-L05",
+   "joint": "JR-K",
+   "branch": "JR",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 16,
+    "PRECISION": 2
+   },
+   "grounds": 17,
+   "unused": 5,
+   "pairs_evaluated": 306,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828575,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/M4A/2_BUFFER",
+    "aggressor_pos": 3,
+    "victim": "/M4A/1_BUFFER",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923883,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828575,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JR-K-JR-L06",
+   "joint": "JR-K",
+   "branch": "JR",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 20
+   },
+   "grounds": 19,
+   "unused": 1,
+   "pairs_evaluated": 380,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828584,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/E5/BIP_CORE",
+    "aggressor_pos": 3,
+    "victim": "/E4/SIG_BUFFER",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923893,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828584,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JR-K-JR-L07",
+   "joint": "JR-K",
+   "branch": "JR",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 10,
+    "PRECISION": 2
+   },
+   "grounds": 11,
+   "unused": 17,
+   "pairs_evaluated": 132,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828562,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/E6/SIG_BUFFER",
+    "aggressor_pos": 3,
+    "victim": "/E6/FALL_BUFFER",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923869,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828562,
+    "riders": {}
+   }
+  },
+  {
+   "id": "P-K-P-L01.01.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 14,
+   "cable": "C68390",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "LOGIC": 10,
+    "PRECISION": 2
+   },
+   "grounds": 2,
+   "unused": 0,
+   "pairs_evaluated": 132,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 1.42134,
+   "largest_pair": {
+    "pair": "LOGIC>LOGIC",
+    "aggressor": "/E4/TRIG_ACTIVE",
+    "aggressor_pos": 7,
+    "victim": "/E5/ASR_RAW",
+    "victim_pos": 8,
+    "lies": "side by side",
+    "bound_V": 0.310352,
+    "harness_min_V": 0.218351,
+    "ratio": 1.42134,
+    "riders": {}
+   },
+   "remedy_ds77": {
+    "grounds_moved_in": null,
+    "unused_available": 0,
+    "ratio_after": null,
+    "order_after": null
+   }
+  },
+  {
+   "id": "P-K-P-L01.01.02",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 14,
+   "cable": "C68390",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 6
+   },
+   "grounds": 5,
+   "unused": 3,
+   "pairs_evaluated": 30,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.864674,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/E5/NOT_FALL",
+    "aggressor_pos": 3,
+    "victim": "/E5/ENV_BUFFER",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000964134,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.864674,
+    "riders": {}
+   }
+  },
+  {
+   "id": "P-K-P-L01.02.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 14,
+   "cable": "C68390",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 3,
+    "LOGIC": 5,
+    "PRECISION": 1
+   },
+   "grounds": 4,
+   "unused": 1,
+   "pairs_evaluated": 72,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.991631,
+   "largest_pair": {
+    "pair": "LOGIC>LOGIC",
+    "aggressor": "/E4/LOOP_RAW",
+    "aggressor_pos": 9,
+    "victim": "/E5/STAGE_FALL",
+    "victim_pos": 10,
+    "lies": "side by side",
+    "bound_V": 0.216524,
+    "harness_min_V": 0.218351,
+    "ratio": 0.991631,
+    "riders": {}
+   }
+  },
+  {
+   "id": "P-K-P-L02.01.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 14,
+   "cable": "C68390",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 1,
+    "PRECISION": 1,
+    "WIPER": 6
+   },
+   "grounds": 2,
+   "unused": 4,
+   "pairs_evaluated": 14,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.571829,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/A05/REFN5",
+    "aggressor_pos": 8,
+    "victim": "/A06/IN_REMOTE",
+    "victim_pos": 10,
+    "lies": "across one ground",
+    "bound_V": 0.000637605,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.571829,
+    "riders": {}
+   }
+  },
+  {
+   "id": "P-K-P-L03.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 26,
+   "cable": "C32128",
+   "length_mm": 60.0,
+   "signals_by_class": {
+    "ANALOGUE": 9,
+    "LOGIC": 5,
+    "PRECISION": 1
+   },
+   "grounds": 10,
+   "unused": 1,
+   "pairs_evaluated": 210,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 1.1325,
+   "largest_pair": {
+    "pair": "LOGIC>LOGIC",
+    "aggressor": "/E1/LOOP_RAW",
+    "aggressor_pos": 21,
+    "victim": "/E2/ASR_RAW",
+    "victim_pos": 22,
+    "lies": "side by side",
+    "bound_V": 0.247282,
+    "harness_min_V": 0.218351,
+    "ratio": 1.1325,
+    "riders": {}
+   },
+   "remedy_ds77": {
+    "grounds_moved_in": 1,
+    "unused_available": 1,
+    "ratio_after": 0.978101,
+    "order_after": [
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "S",
+     "S",
+     "G",
+     "S",
+     "S",
+     "G",
+     "S"
+    ]
+   }
+  },
+  {
+   "id": "P-K-P-L03.02.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 14,
+   "cable": "C68390",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 1,
+    "LOGIC": 5,
+    "PRECISION": 2
+   },
+   "grounds": 3,
+   "unused": 3,
+   "pairs_evaluated": 56,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.98868,
+   "largest_pair": {
+    "pair": "LOGIC>LOGIC",
+    "aggressor": "/E3/CURVED",
+    "aggressor_pos": 7,
+    "victim": "/E3/ASR_RAW",
+    "victim_pos": 6,
+    "lies": "side by side",
+    "bound_V": 0.215879,
+    "harness_min_V": 0.218351,
+    "ratio": 0.98868,
+    "riders": {}
+   }
+  },
+  {
+   "id": "P-K-P-L04.01.01.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 1,
+    "PRECISION": 2,
+    "WIPER": 2
+   },
+   "grounds": 3,
+   "unused": 0,
+   "pairs_evaluated": 12,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/E4/Cd69090_W",
+     "pos": 2,
+     "from": "P-K-P-L04.01.02.02"
+    }
+   ],
+   "ratio": 0.923126,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/A01/REFN5",
+    "aggressor_pos": 6,
+    "victim": "/A01/IN_REMOTE",
+    "victim_pos": 8,
+    "lies": "across one ground",
+    "bound_V": 0.00102931,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.923126,
+    "riders": {}
+   },
+   "ratio_without_riders": 0.921086,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L04.01.01.02",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 1,
+    "PRECISION": 2,
+    "WIPER": 2
+   },
+   "grounds": 3,
+   "unused": 0,
+   "pairs_evaluated": 12,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/E4/Cb80f06_W",
+     "pos": 2,
+     "from": "P-K-P-L04.01.02.02"
+    }
+   ],
+   "ratio": 0.923126,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/A02/REFN5",
+    "aggressor_pos": 6,
+    "victim": "/A02/IN_REMOTE",
+    "victim_pos": 8,
+    "lies": "across one ground",
+    "bound_V": 0.00102931,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.923126,
+    "riders": {}
+   },
+   "ratio_without_riders": 0.921086,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L04.01.02.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 1,
+    "WIPER": 6
+   },
+   "grounds": 1,
+   "unused": 0,
+   "pairs_evaluated": 6,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/A03/IN_REMOTE",
+     "pos": 8,
+     "from": "P-K-P-L04.01.02.02"
+    }
+   ],
+   "ratio": 0.296898,
+   "largest_pair": {
+    "pair": "ANALOGUE>WIPER",
+    "aggressor": "/A03/IN_REMOTE",
+    "aggressor_pos": 8,
+    "victim": "/E3/Cd69090_W",
+    "victim_pos": 6,
+    "lies": "across one ground",
+    "bound_V": 0.244321,
+    "harness_min_V": 0.822913,
+    "ratio": 0.296898,
+    "riders": {
+     "/A03/IN_REMOTE": "P-K-P-L04.01.02.02"
+    }
+   },
+   "ratio_without_riders": null,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L04.02.01.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "PRECISION": 3,
+    "WIPER": 2
+   },
+   "grounds": 3,
+   "unused": 0,
+   "pairs_evaluated": 12,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/A03/REF5",
+     "pos": 6,
+     "from": "P-K-P-L04.01.02.02"
+    }
+   ],
+   "ratio": 0.923126,
+   "largest_pair": {
+    "pair": "PRECISION>PRECISION",
+    "aggressor": "/A03/REF5",
+    "aggressor_pos": 6,
+    "victim": "/A04/REFN5",
+    "victim_pos": 8,
+    "lies": "across one ground",
+    "bound_V": 0.00102931,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.923126,
+    "riders": {
+     "/A03/REF5": "P-K-P-L04.01.02.02"
+    }
+   },
+   "ratio_without_riders": 0.363687,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L04.02.01.02",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 1,
+    "PRECISION": 3
+   },
+   "grounds": 3,
+   "unused": 1,
+   "pairs_evaluated": 12,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.920335,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/A06/REF5",
+    "aggressor_pos": 3,
+    "victim": "/A05/IN_REMOTE",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.0010262,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.920335,
+    "riders": {}
+   }
+  },
+  {
+   "id": "P-K-P-L05.01.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 14,
+   "cable": "C68390",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "LOGIC": 2
+   },
+   "grounds": 2,
+   "unused": 10,
+   "pairs_evaluated": 2,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.731638,
+   "largest_pair": {
+    "pair": "LOGIC>LOGIC",
+    "aggressor": "/E2/TRIG_ACTIVE",
+    "aggressor_pos": 3,
+    "victim": "/E2/STAGE_FALL",
+    "victim_pos": 2,
+    "lies": "side by side",
+    "bound_V": 0.159754,
+    "harness_min_V": 0.218351,
+    "ratio": 0.731638,
+    "riders": {}
+   }
+  },
+  {
+   "id": "P-K-P-L06.01.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 14,
+   "cable": "C68390",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 2,
+    "PRECISION": 2,
+    "WIPER": 6
+   },
+   "grounds": 4,
+   "unused": 0,
+   "pairs_evaluated": 36,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.867583,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/O2/LOCAL_REFN5",
+    "aggressor_pos": 12,
+    "victim": "/O1/FM_REMOTE",
+    "victim_pos": 14,
+    "lies": "across one ground",
+    "bound_V": 0.000967378,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.867583,
+    "riders": {}
+   }
+  },
+  {
+   "id": "P-K-P-L06.01.02.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "WIPER": 7
+   },
+   "grounds": 1,
+   "unused": 0,
+   "pairs_evaluated": 0,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/O3/C83f36b_W",
+     "pos": 7,
+     "from": "P-K-P-L06.01.02.02"
+    }
+   ],
+   "ratio": null,
+   "largest_pair": null,
+   "ratio_without_riders": null,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L06.02",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 26,
+   "cable": "C32128",
+   "length_mm": 60.0,
+   "signals_by_class": {
+    "PRECISION": 4
+   },
+   "grounds": 3,
+   "unused": 19,
+   "pairs_evaluated": 12,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.977783,
+   "largest_pair": {
+    "pair": "PRECISION>PRECISION",
+    "aggressor": "/O3/LOCAL_REF5",
+    "aggressor_pos": 3,
+    "victim": "/O1/LOCAL_REF5",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.00109025,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.977783,
+    "riders": {}
+   }
+  },
+  {
+   "id": "P-K-P-L06.03.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 14,
+   "cable": "C68390",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 2,
+    "WIPER": 7
+   },
+   "grounds": 2,
+   "unused": 3,
+   "pairs_evaluated": 16,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/O3/Ce35646_W",
+     "pos": 4,
+     "from": "P-K-P-L06.01.02.02"
+    },
+    {
+     "net": "/M5A/C2c2153_W",
+     "pos": 5,
+     "from": "P-K-P-L06.01.02.02"
+    },
+    {
+     "net": "/M5A/C445167_W",
+     "pos": 6,
+     "from": "P-K-P-L06.01.02.02"
+    },
+    {
+     "net": "/O3/Ca449b7_W",
+     "pos": 7,
+     "from": "P-K-P-L10.01.01.02"
+    },
+    {
+     "net": "/O3/FM_REMOTE",
+     "pos": 11,
+     "from": "P-K-P-L06.01.02.02"
+    }
+   ],
+   "ratio": 0.577649,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/O4/FM_REMOTE",
+    "aggressor_pos": 9,
+    "victim": "/O3/FM_REMOTE",
+    "victim_pos": 11,
+    "lies": "across one ground",
+    "bound_V": 0.000644094,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.577649,
+    "riders": {
+     "/O3/FM_REMOTE": "P-K-P-L06.01.02.02"
+    }
+   },
+   "ratio_without_riders": 0.0422207,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L07",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 2,
+    "LOGIC": 9,
+    "PRECISION": 5
+   },
+   "grounds": 7,
+   "unused": 17,
+   "pairs_evaluated": 240,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 1.13579,
+   "largest_pair": {
+    "pair": "LOGIC>LOGIC",
+    "aggressor": "/O1/SYNC_GATE",
+    "aggressor_pos": 17,
+    "victim": "/O1/SOFT_DRIVE",
+    "victim_pos": 16,
+    "lies": "side by side",
+    "bound_V": 0.248002,
+    "harness_min_V": 0.218351,
+    "ratio": 1.13579,
+    "riders": {}
+   },
+   "remedy_ds77": {
+    "grounds_moved_in": 1,
+    "unused_available": 17,
+    "ratio_after": 0.960707,
+    "order_after": [
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "S",
+     "S",
+     "S",
+     "S",
+     "G",
+     "S",
+     "S",
+     "S",
+     "S",
+     "G",
+     "S",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G"
+    ]
+   }
+  },
+  {
+   "id": "P-K-P-L08",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 2,
+    "LOGIC": 9,
+    "PRECISION": 7
+   },
+   "grounds": 9,
+   "unused": 13,
+   "pairs_evaluated": 306,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 1.1345,
+   "largest_pair": {
+    "pair": "LOGIC>LOGIC",
+    "aggressor": "/O5/SYNC_GATE",
+    "aggressor_pos": 21,
+    "victim": "/O5/SOFT_DRIVE",
+    "victim_pos": 20,
+    "lies": "side by side",
+    "bound_V": 0.247719,
+    "harness_min_V": 0.218351,
+    "ratio": 1.1345,
+    "riders": {}
+   },
+   "remedy_ds77": {
+    "grounds_moved_in": 1,
+    "unused_available": 13,
+    "ratio_after": 0.959873,
+    "order_after": [
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "G",
+     "S",
+     "S",
+     "S",
+     "S",
+     "S",
+     "G",
+     "S",
+     "S",
+     "S",
+     "S",
+     "G",
+     "S",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G",
+     "G"
+    ]
+   }
+  },
+  {
+   "id": "P-K-P-L10.01.01.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 1,
+    "PRECISION": 1,
+    "WIPER": 4
+   },
+   "grounds": 2,
+   "unused": 0,
+   "pairs_evaluated": 10,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.930862,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/O4/RANGE_CV",
+    "aggressor_pos": 6,
+    "victim": "/O4/PWM_REMOTE",
+    "victim_pos": 8,
+    "lies": "across one ground",
+    "bound_V": 0.00103794,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.930862,
+    "riders": {}
+   }
+  },
+  {
+   "id": "P-K-P-L10.01.02",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 14,
+   "cable": "C68390",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 1,
+    "PRECISION": 1,
+    "WIPER": 9
+   },
+   "grounds": 2,
+   "unused": 1,
+   "pairs_evaluated": 20,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/O5/Ce35646_W",
+     "pos": 7,
+     "from": "P-K-P-L10.01.01.02"
+    },
+    {
+     "net": "/F1/Cb3b460_W",
+     "pos": 8,
+     "from": "P-K-P-L10.01.01.02"
+    },
+    {
+     "net": "/F1/Cb5b1dc_W",
+     "pos": 9,
+     "from": "P-K-P-L10.01.01.02"
+    }
+   ],
+   "ratio": 0.627562,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/F3/FREQ_REMOTE",
+    "aggressor_pos": 11,
+    "victim": "/F3/GAIN_REMOTE",
+    "victim_pos": 13,
+    "lies": "across one ground",
+    "bound_V": 0.000699748,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.627562,
+    "riders": {}
+   },
+   "ratio_without_riders": 0.624003,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L10.02",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 26,
+   "cable": "C32128",
+   "length_mm": 60.0,
+   "signals_by_class": {
+    "ANALOGUE": 2,
+    "PRECISION": 1
+   },
+   "grounds": 2,
+   "unused": 21,
+   "pairs_evaluated": 6,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/O5/FM_REMOTE",
+     "pos": 5,
+     "from": "P-K-P-L10.01.01.02"
+    }
+   ],
+   "ratio": 0.977623,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/F1/FREQ_REMOTE",
+    "aggressor_pos": 3,
+    "victim": "/F1/GAIN_REMOTE",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.00109008,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.977623,
+    "riders": {}
+   },
+   "ratio_without_riders": 0.976866,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L11.01.01.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 1,
+    "LOGIC": 1,
+    "PRECISION": 2
+   },
+   "grounds": 3,
+   "unused": 1,
+   "pairs_evaluated": 12,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.657244,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/F1/REF5",
+    "aggressor_pos": 5,
+    "victim": "/F1/RES_REMOTE",
+    "victim_pos": 7,
+    "lies": "across one ground",
+    "bound_V": 0.000732845,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.657244,
+    "riders": {}
+   }
+  },
+  {
+   "id": "P-K-P-L11.01.01.02",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 2,
+    "LOGIC": 1,
+    "PRECISION": 1
+   },
+   "grounds": 3,
+   "unused": 1,
+   "pairs_evaluated": 12,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.657244,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/H2/RAW_HELD",
+    "aggressor_pos": 5,
+    "victim": "/F2/RES_REMOTE",
+    "victim_pos": 7,
+    "lies": "across one ground",
+    "bound_V": 0.000732845,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.657244,
+    "riders": {}
+   }
+  },
+  {
+   "id": "P-K-P-L11.01.02.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 2,
+    "WIPER": 4
+   },
+   "grounds": 2,
+   "unused": 0,
+   "pairs_evaluated": 10,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/F3/C2b474d_W",
+     "pos": 1,
+     "from": "P-K-P-L12.01.02.01"
+    },
+    {
+     "net": "/F1/C8c344f_W",
+     "pos": 2,
+     "from": "P-K-P-L12.01.01.01"
+    },
+    {
+     "net": "/F1/Ca72ec0_W",
+     "pos": 3,
+     "from": "P-K-P-L12.01.01.01"
+    },
+    {
+     "net": "/F2/C14689f_W",
+     "pos": 4,
+     "from": "P-K-P-L12.01.01.01"
+    }
+   ],
+   "ratio": 0.930862,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/M5A/1_REMOTE",
+    "aggressor_pos": 6,
+    "victim": "/M5A/2_REMOTE",
+    "victim_pos": 8,
+    "lies": "across one ground",
+    "bound_V": 0.00103794,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.930862,
+    "riders": {}
+   },
+   "ratio_without_riders": 0.918855,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L12.01.01.02",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 1,
+    "PRECISION": 1,
+    "WIPER": 4
+   },
+   "grounds": 2,
+   "unused": 0,
+   "pairs_evaluated": 10,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.930862,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/F2/FREQ_REMOTE",
+    "aggressor_pos": 6,
+    "victim": "/F2/GAIN_REMOTE",
+    "victim_pos": 8,
+    "lies": "across one ground",
+    "bound_V": 0.00103794,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.930862,
+    "riders": {}
+   }
+  },
+  {
+   "id": "P-K-P-L12.01.02.02",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 1,
+    "WIPER": 5
+   },
+   "grounds": 1,
+   "unused": 1,
+   "pairs_evaluated": 5,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/M5A/C0f3556_W",
+     "pos": 5,
+     "from": "P-K-P-L14.01.01.01"
+    },
+    {
+     "net": "/M5A/5_REMOTE",
+     "pos": 7,
+     "from": "P-K-P-L14.01.01.01"
+    }
+   ],
+   "ratio": 0.213609,
+   "largest_pair": {
+    "pair": "ANALOGUE>WIPER",
+    "aggressor": "/M5A/5_REMOTE",
+    "aggressor_pos": 7,
+    "victim": "/M5A/C0f3556_W",
+    "victim_pos": 5,
+    "lies": "across one ground",
+    "bound_V": 0.175782,
+    "harness_min_V": 0.822913,
+    "ratio": 0.213609,
+    "riders": {
+     "/M5A/5_REMOTE": "P-K-P-L14.01.01.01",
+     "/M5A/C0f3556_W": "P-K-P-L14.01.01.01"
+    }
+   },
+   "ratio_without_riders": null,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L12.02.01.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 2,
+    "PRECISION": 1,
+    "WIPER": 2
+   },
+   "grounds": 3,
+   "unused": 0,
+   "pairs_evaluated": 12,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/M4B/C38051c_W",
+     "pos": 2,
+     "from": "P-K-P-L12.01.02.01"
+    }
+   ],
+   "ratio": 0.923126,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/M5A/3_REMOTE",
+    "aggressor_pos": 6,
+    "victim": "/M5A/4_REMOTE",
+    "victim_pos": 8,
+    "lies": "across one ground",
+    "bound_V": 0.00102931,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.923126,
+    "riders": {}
+   },
+   "ratio_without_riders": 0.921086,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L12.02.01.02",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 1,
+    "WIPER": 4
+   },
+   "grounds": 1,
+   "unused": 2,
+   "pairs_evaluated": 4,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/M4B/C75c2e7_W",
+     "pos": 2,
+     "from": "P-K-P-L12.01.02.01"
+    },
+    {
+     "net": "/M4A/C75c2e7_W",
+     "pos": 3,
+     "from": "P-K-P-L12.01.01.01"
+    },
+    {
+     "net": "/F3/C14689f_W",
+     "pos": 4,
+     "from": "P-K-P-L12.01.01.01"
+    }
+   ],
+   "ratio": 0.202693,
+   "largest_pair": {
+    "pair": "ANALOGUE>WIPER",
+    "aggressor": "/M5A/LEVEL_REMOTE",
+    "aggressor_pos": 6,
+    "victim": "/F3/C14689f_W",
+    "victim_pos": 4,
+    "lies": "across one ground",
+    "bound_V": 0.166799,
+    "harness_min_V": 0.822913,
+    "ratio": 0.202693,
+    "riders": {
+     "/F3/C14689f_W": "P-K-P-L12.01.01.01"
+    }
+   },
+   "ratio_without_riders": 0.0976633,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L13.01.01.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 2,
+    "LOGIC": 4
+   },
+   "grounds": 2,
+   "unused": 0,
+   "pairs_evaluated": 30,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 1.04125,
+   "largest_pair": {
+    "pair": "LOGIC>LOGIC",
+    "aggressor": "/E6/STAGE_FALL",
+    "aggressor_pos": 5,
+    "victim": "/E1/TRIG_ACTIVE",
+    "victim_pos": 4,
+    "lies": "side by side",
+    "bound_V": 0.227358,
+    "harness_min_V": 0.218351,
+    "ratio": 1.04125,
+    "riders": {}
+   },
+   "remedy_ds77": {
+    "grounds_moved_in": null,
+    "unused_available": 0,
+    "ratio_after": null,
+    "order_after": null
+   }
+  },
+  {
+   "id": "P-K-P-L13.01.01.02",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 3,
+    "PRECISION": 1
+   },
+   "grounds": 3,
+   "unused": 1,
+   "pairs_evaluated": 12,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/M4B/2_REMOTE",
+     "pos": 5,
+     "from": "P-K-P-L03.02.02.01"
+    },
+    {
+     "net": "/M4B/1_REMOTE",
+     "pos": 7,
+     "from": "P-K-P-L03.02.02.01"
+    }
+   ],
+   "ratio": 0.920335,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/F3/REF5",
+    "aggressor_pos": 3,
+    "victim": "/F3/RES_REMOTE",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.0010262,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.920335,
+    "riders": {}
+   },
+   "ratio_without_riders": 0.918855,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L13.01.02.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 2,
+    "WIPER": 4
+   },
+   "grounds": 2,
+   "unused": 0,
+   "pairs_evaluated": 10,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/F3/C8c344f_W",
+     "pos": 1,
+     "from": "P-K-P-L12.01.02.01"
+    },
+    {
+     "net": "/F3/Ca72ec0_W",
+     "pos": 2,
+     "from": "P-K-P-L12.01.02.01"
+    },
+    {
+     "net": "/F2/C2b474d_W",
+     "pos": 3,
+     "from": "P-K-P-L12.01.01.01"
+    },
+    {
+     "net": "/M4A/C38051c_W",
+     "pos": 4,
+     "from": "P-K-P-L12.01.01.01"
+    }
+   ],
+   "ratio": 0.930862,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/M5B/1_REMOTE",
+    "aggressor_pos": 6,
+    "victim": "/M5B/2_REMOTE",
+    "victim_pos": 8,
+    "lies": "across one ground",
+    "bound_V": 0.00103794,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.930862,
+    "riders": {}
+   },
+   "ratio_without_riders": 0.918855,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L14.01.01.02",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "WIPER": 7
+   },
+   "grounds": 1,
+   "unused": 0,
+   "pairs_evaluated": 0,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/W1/C4c1698_W",
+     "pos": 7,
+     "from": "P-K-P-L14.01.01.01"
+    }
+   ],
+   "ratio": null,
+   "largest_pair": null,
+   "ratio_without_riders": null,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L14.01.02.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 2,
+    "PRECISION": 2
+   },
+   "grounds": 3,
+   "unused": 1,
+   "pairs_evaluated": 12,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.920335,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/W2/REF5",
+    "aggressor_pos": 3,
+    "victim": "/W2/FOLD_REMOTE",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.0010262,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.920335,
+    "riders": {}
+   }
+  },
+  {
+   "id": "P-K-P-L14.01.02.02",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 3,
+    "WIPER": 2
+   },
+   "grounds": 3,
+   "unused": 0,
+   "pairs_evaluated": 12,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/W1/C629978_W",
+     "pos": 1,
+     "from": "P-K-P-L14.01.01.01"
+    },
+    {
+     "net": "/M5B/C0f3556_W",
+     "pos": 2,
+     "from": "P-K-P-L14.01.01.01"
+    },
+    {
+     "net": "/M5B/5_REMOTE",
+     "pos": 6,
+     "from": "P-K-P-L14.01.01.01"
+    }
+   ],
+   "ratio": 0.923126,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/M5B/5_REMOTE",
+    "aggressor_pos": 6,
+    "victim": "/W1/FOLD_REMOTE",
+    "victim_pos": 8,
+    "lies": "across one ground",
+    "bound_V": 0.00102931,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.923126,
+    "riders": {
+     "/M5B/5_REMOTE": "P-K-P-L14.01.01.01"
+    }
+   },
+   "ratio_without_riders": 0.359293,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L14.02.01.02",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "PRECISION": 2,
+    "WIPER": 2
+   },
+   "grounds": 2,
+   "unused": 2,
+   "pairs_evaluated": 6,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/W1/C75db46_W",
+     "pos": 1,
+     "from": "P-K-P-L14.02.01.01"
+    },
+    {
+     "net": "/W1/Cb36f8a_W",
+     "pos": 2,
+     "from": "P-K-P-L14.02.01.01"
+    }
+   ],
+   "ratio": 0.624783,
+   "largest_pair": {
+    "pair": "PRECISION>PRECISION",
+    "aggressor": "/W1/REFN5",
+    "aggressor_pos": 4,
+    "victim": "/W1/REF5",
+    "victim_pos": 6,
+    "lies": "across one ground",
+    "bound_V": 0.000696649,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.624783,
+    "riders": {}
+   },
+   "ratio_without_riders": 0.622435,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L15.01.01.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 1,
+    "PRECISION": 1,
+    "WIPER": 4
+   },
+   "grounds": 2,
+   "unused": 0,
+   "pairs_evaluated": 10,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.930862,
+   "largest_pair": {
+    "pair": "PRECISION>ANALOGUE",
+    "aggressor": "/A03/REFN5",
+    "aggressor_pos": 6,
+    "victim": "/A04/IN_REMOTE",
+    "victim_pos": 8,
+    "lies": "across one ground",
+    "bound_V": 0.00103794,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.930862,
+    "riders": {}
+   }
+  },
+  {
+   "id": "P-K-P-L15.01.01.02",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 2,
+    "WIPER": 4
+   },
+   "grounds": 2,
+   "unused": 0,
+   "pairs_evaluated": 10,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/M4A/C1c45d6_W",
+     "pos": 3,
+     "from": "P-K-P-L14.02.01.01"
+    },
+    {
+     "net": "/M4A/C24ce01_W",
+     "pos": 4,
+     "from": "P-K-P-L14.02.01.01"
+    }
+   ],
+   "ratio": 0.930862,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/M4A/ATTEN_REMOTE",
+    "aggressor_pos": 6,
+    "victim": "/M4B/ATTEN_REMOTE",
+    "victim_pos": 8,
+    "lies": "across one ground",
+    "bound_V": 0.00103794,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.930862,
+    "riders": {}
+   },
+   "ratio_without_riders": 0.921486,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L15.01.02.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 4
+   },
+   "grounds": 3,
+   "unused": 1,
+   "pairs_evaluated": 12,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.920335,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/M4B/3_REMOTE",
+    "aggressor_pos": 3,
+    "victim": "/M4A/3_REMOTE",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.0010262,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.920335,
+    "riders": {}
+   }
+  },
+  {
+   "id": "P-K-P-L15.01.02.02",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 3,
+    "WIPER": 1
+   },
+   "grounds": 3,
+   "unused": 1,
+   "pairs_evaluated": 9,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/M5B/Ce67982_W",
+     "pos": 1,
+     "from": "P-K-P-L14.02.01.01"
+    },
+    {
+     "net": "/M5B/LEVEL_REMOTE",
+     "pos": 5,
+     "from": "P-K-P-L14.02.01.01"
+    }
+   ],
+   "ratio": 0.657244,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/M5B/LEVEL_REMOTE",
+    "aggressor_pos": 5,
+    "victim": "/M5B/3_REMOTE",
+    "victim_pos": 7,
+    "lies": "across one ground",
+    "bound_V": 0.000732845,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.657244,
+    "riders": {
+     "/M5B/LEVEL_REMOTE": "P-K-P-L14.02.01.01"
+    }
+   },
+   "ratio_without_riders": 0.229422,
+   "rider_pairs_above_1": []
+  },
+  {
+   "id": "P-K-P-L15.02.01.01",
+   "joint": "P-K",
+   "branch": "P",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "PRECISION": 1,
+    "WIPER": 5
+   },
+   "grounds": 1,
+   "unused": 1,
+   "pairs_evaluated": 5,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.213609,
+   "largest_pair": {
+    "pair": "PRECISION>WIPER",
+    "aggressor": "/M4A/REF5",
+    "aggressor_pos": 7,
+    "victim": "/M5B/Cb103af_W",
+    "victim_pos": 5,
+    "lies": "across one ground",
+    "bound_V": 0.175782,
+    "harness_min_V": 0.822913,
+    "ratio": 0.213609,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JL-P-K-JL-L01",
+   "joint": "JL-P via K",
+   "branch": "JL",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 8
+   },
+   "grounds": 7,
+   "unused": 25,
+   "pairs_evaluated": 56,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828547,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/X1/A_BUFFER",
+    "aggressor_pos": 3,
+    "victim": "/H1/SLEW_BUFFERED",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923852,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828547,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JL-P-K-P-L01.01.01.01",
+   "joint": "JL-P via K",
+   "branch": "JL",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 4
+   },
+   "grounds": 3,
+   "unused": 1,
+   "pairs_evaluated": 12,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.920335,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/X1/A_BUFFER",
+    "aggressor_pos": 3,
+    "victim": "/H1/SLEW_BUFFERED",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.0010262,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.920335,
+    "riders": {}
+   }
+  },
+  {
+   "id": "JL-P-K-P-L01.01.01.02",
+   "joint": "JL-P via K",
+   "branch": "JL",
+   "circuits": 8,
+   "cable": "C29534",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 4
+   },
+   "grounds": 3,
+   "unused": 1,
+   "pairs_evaluated": 12,
+   "pairs_without_reference": [],
+   "host": true,
+   "riders": [
+    {
+     "net": "/X2/B_BUFFER",
+     "pos": 3,
+     "from": "JL-P-K-P-L01.01.02.01"
+    },
+    {
+     "net": "/X2/SELECTOR_REMOTE",
+     "pos": 5,
+     "from": "JL-P-K-P-L01.01.02.01"
+    }
+   ],
+   "ratio": 0.920335,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/X2/B_BUFFER",
+    "aggressor_pos": 3,
+    "victim": "/X1/SELECTOR_REMOTE",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.0010262,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.920335,
+    "riders": {
+     "/X2/B_BUFFER": "JL-P-K-P-L01.01.02.01"
+    }
+   },
+   "ratio_without_riders": 0.299557,
+   "rider_pairs_above_1": []
+  }
+ ],
+ "rules": [
+  {
+   "id": "O-K-O1",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "O-K-O3",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "O-K-O5",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JL-K-JL-L01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JL-K-JL-L02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JL-K-JL-L03",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JL-K-JL-L04",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JL-K-JL-L05",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JL-K-JL-L06",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JL-K-JL-L07",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JL-K-JL-L08",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JR-K-JR-L01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JR-K-JR-L02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JR-K-JR-L03",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JR-K-JR-L04",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JR-K-JR-L05",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JR-K-JR-L06",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JR-K-JR-L07",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L01.01.01",
+   "logic_runs": [
+    [
+     3,
+     12
+    ]
+   ],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L01.01.02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L01.02.01",
+   "logic_runs": [
+    [
+     7,
+     11
+    ]
+   ],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L02.01.01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L03.01",
+   "logic_runs": [
+    [
+     19,
+     23
+    ]
+   ],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L03.02.01",
+   "logic_runs": [
+    [
+     5,
+     9
+    ]
+   ],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L04.01.01.01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L04.01.01.02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L04.01.02.01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L04.02.01.01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L04.02.01.02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L05.01.01",
+   "logic_runs": [
+    [
+     2,
+     3
+    ]
+   ],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L06.01.01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L06.01.02.01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L06.02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L06.03.01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L07",
+   "logic_runs": [
+    [
+     13,
+     21
+    ]
+   ],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L08",
+   "logic_runs": [
+    [
+     17,
+     25
+    ]
+   ],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L10.01.01.01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L10.01.02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L10.02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L11.01.01.01",
+   "logic_runs": [],
+   "single_logic": [
+    1
+   ],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L11.01.01.02",
+   "logic_runs": [],
+   "single_logic": [
+    1
+   ],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L11.01.02.01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L12.01.01.02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L12.01.02.02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L12.02.01.01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L12.02.01.02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L13.01.01.01",
+   "logic_runs": [
+    [
+     3,
+     6
+    ]
+   ],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L13.01.01.02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L13.01.02.01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L14.01.01.02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L14.01.02.01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L14.01.02.02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L14.02.01.02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L15.01.01.01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L15.01.01.02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L15.01.02.01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L15.01.02.02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "P-K-P-L15.02.01.01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JL-P-K-JL-L01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JL-P-K-P-L01.01.01.01",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
+   "id": "JL-P-K-P-L01.01.01.02",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  }
+ ],
+ "ground_share": {
+  "branches": [
+   {
+    "branch": "JL",
+    "links": 11,
+    "contacts": 260,
+    "grounds": 105,
+    "unused": 155,
+    "fewest_on_a_link": 4,
+    "shortest_cable_mm": 50.0,
+    "worst_contact_A": {
+     "normal": 0.0429406,
+     "one_post_open": 0.0461177,
+     "all_posts_open": 0.0895806
+    },
+    "one_contact_A": {
+     "normal": 0.0442889,
+     "one_post_open": 0.0489419,
+     "all_posts_open": 4.6
+    },
+    "within": {
+     "0.35": true,
+     "0.5": true
+    }
+   },
+   {
+    "branch": "JR",
+    "links": 7,
+    "contacts": 174,
+    "grounds": 99,
+    "unused": 75,
+    "fewest_on_a_link": 20,
+    "shortest_cable_mm": 50.0,
+    "worst_contact_A": {
+     "normal": 0.0433429,
+     "one_post_open": 0.0469199,
+     "all_posts_open": 0.116252
+    },
+    "one_contact_A": {
+     "normal": 0.0442889,
+     "one_post_open": 0.0489419,
+     "all_posts_open": 4.6
+    },
+    "within": {
+     "0.35": true,
+     "0.5": true
+    }
+   },
+   {
+    "branch": "P",
+    "links": 40,
+    "contacts": 224,
+    "grounds": 115,
+    "unused": 109,
+    "fewest_on_a_link": 1,
+    "shortest_cable_mm": 50.0,
+    "worst_contact_A": {
+     "normal": 0.042941,
+     "one_post_open": 0.0462236,
+     "all_posts_open": 0.0982769
+    },
+    "one_contact_A": {
+     "normal": 0.0440754,
+     "one_post_open": 0.0486222,
+     "all_posts_open": 4.6
+    },
+    "within": {
+     "0.35": true,
+     "0.5": true
+    }
+   }
+  ],
+  "ratings_A": [
+   0.35,
+   0.5
+  ],
+  "a2_one_post_open_one_ground_A": 0.0489419
+ },
+ "adapter_return": [
+  {
+   "id": "O-K-O1",
+   "branch": "adapter O1",
+   "ground_contacts": 1,
+   "dc_A": 0.0,
+   "step_into_ground_A": 0.000340887,
+   "step_all_lines_A": 0.000598475,
+   "C_sel_to_ground_F": 1.70444e-12,
+   "C_sel_total_F": 2.99237e-12,
+   "step_duration_s": 5e-09
+  },
+  {
+   "id": "O-K-O3",
+   "branch": "adapter O3",
+   "ground_contacts": 1,
+   "dc_A": 0.0,
+   "step_into_ground_A": 0.000340887,
+   "step_all_lines_A": 0.000598475,
+   "C_sel_to_ground_F": 1.70444e-12,
+   "C_sel_total_F": 2.99237e-12,
+   "step_duration_s": 5e-09
+  },
+  {
+   "id": "O-K-O5",
+   "branch": "adapter O5",
+   "ground_contacts": 1,
+   "dc_A": 0.0,
+   "step_into_ground_A": 0.000340887,
+   "step_all_lines_A": 0.000598475,
+   "C_sel_to_ground_F": 1.70444e-12,
+   "C_sel_total_F": 2.99237e-12,
+   "step_duration_s": 5e-09
+  }
+ ]
+}

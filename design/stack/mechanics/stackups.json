@@ -1,0 +1,7396 @@
+{
+  "schema_version": 1,
+  "task": "osc-stack-20261114/ST-03@b4daa754",
+  "attempt": "a5 (K on the fixing list of ST-08: DS-66, DS-67, DS-70)",
+  "base_commit": "0c337f3",
+  "status": "NEEDS_DESIGN: unvalidated paper study; toggle window, adapter capture and selector misfit contradict decisions; every physical check NOT RUN",
+  "status_vocabulary": {
+    "SOURCED": "Read from a named file or retrieved page whose SHA256 is recorded in sources.",
+    "DERIVED": "Computed by the formula given; the calculator recomputes it and the tests compare.",
+    "ASSUMED": "A planning value with the reason and what would source it. Never presented as sourced.",
+    "UNSOURCED": "No retained or fetched document states it; the row names what would source it. Never used as a number."
+  },
+  "sources": {
+    "S-PLAN": {
+      "path": "doc/src/content/docs/decisions/osc-direct-stack-plan.mdx",
+      "sha256": "18eb6e60d81c45df0a594f464e5fb6fb6faac900e589934086af7947cc968ff4"
+    },
+    "S-PART": {
+      "path": "design/partition/partition.json",
+      "sha256": "7e3f5a39b001f80f38572c837a60e197fbb08ae588296e1d3bcb1339718db48f"
+    },
+    "S-MECH": {
+      "path": "design/partition/mechanical-candidate.json",
+      "sha256": "1688080a0dbf2fadd5a8f6b0628d868850ba982aaef453086fa3a5ba8fe63349"
+    },
+    "S-LOCK": {
+      "path": "design/grid/placements.lock.json",
+      "sha256": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8"
+    },
+    "S-OPT": {
+      "path": "design/partition/stage-optical-candidate.json",
+      "sha256": "b5c930b9bdb861c99fe02cb798678942c3fb5213948c272060b69b8bdde9d3f6"
+    },
+    "S-SEL": {
+      "path": "design/mechanical/selector-assembly.json",
+      "sha256": "b5715d25d4d4b44bc664eac9697d83c95741b02af9a906d0c849f40da7e560bb"
+    },
+    "S-REAR": {
+      "path": "design/mechanical/core-rear-allowance.json",
+      "sha256": "3d0f34a0fb6c5f83b31f1ed5b00f7ab300d2b2e8fb6a448ee71c93bd1662f872"
+    },
+    "S-JACK": {
+      "path": "design/mechanical/facts/jack.json",
+      "sha256": "d858de77f8333182e806b02d693200802de40b6892bd21e5b069844c9e115bf2",
+      "bundle": ".claude/skills/component-qingpu-wqp518ma/facts.json",
+      "bundle_sha256": "81d574c8814f6ffa06a5a343884949125250ec355714e78a11dd63da11d9a258"
+    },
+    "S-POT": {
+      "path": "design/mechanical/facts/pot.json",
+      "sha256": "927b517d782a5831a4e3e573eed8df8ada015944f92b92a71494a71425db9aa5",
+      "bundle": ".claude/skills/component-bourns-ptv09a-4020f-b103/facts.json",
+      "bundle_sha256": "a1f22ca8fbb945fbe577b5eca0cfc841c22148418d5add86c87adcca675a0ee2"
+    },
+    "S-TOG": {
+      "path": "design/mechanical/facts/toggle.json",
+      "sha256": "e97c5a47e18d395a04754a363cac7f7ccff97a2489475a2d2633f1b7d181465e",
+      "bundle": ".claude/skills/component-dailywell-2ms3t1b1m2qes/facts.json",
+      "bundle_sha256": "234ee9c8bb8266d86372e071b4287659fa5326a99ec853b985651e5ec61c7328"
+    },
+    "S-BTN": {
+      "path": "design/mechanical/facts/button.json",
+      "sha256": "8699642a06486323e735b04635ab244da941d06a637fccffb60949b078b151eb",
+      "bundle": ".claude/skills/component-omron-b3f-1020/facts.json",
+      "bundle_sha256": "d438e19feb920ceeb275dfdb89ab0bdc5830746f770e24867acfe9bb2226707e"
+    },
+    "S-OCT": {
+      "path": "design/mechanical/facts/octave-selector.json",
+      "sha256": "5b76391698d8be69ab315657258c6a62d0db55c77b18c55bcb8f4e49c90bb3f8",
+      "bundle": ".claude/skills/component-alps-alpine-srbv160803/facts.json",
+      "bundle_sha256": "08a750da99ebc2d006da3589b69432165f29d123035eebea0245ec70d777fc2e"
+    },
+    "S-JLC-PCB": {
+      "url": "https://jlcpcb.com/capabilities/PCB-capabilities",
+      "sha256": "b8cd5de9d33e1083e8108a4fad9255933b2ff5d4a5362469cf26cfaae22a18a8",
+      "retrieved_utc": "2026-11-14",
+      "class": "public manufacturer capability page (HTML bytes as served; a dynamic page may re-hash on a later fetch)",
+      "retention": "Not stored in circuit-dev-resources: this task may not write to GitHub. Hash recorded for a later retention task."
+    },
+    "S-JLC-WARP": {
+      "url": "https://jlcpcb.com/blog/pcb-warpage-control",
+      "sha256": "eb46a41788f2ace3f5bc3715adb8d7afa5fe7e1ff56264c59bbb23e6a91c632d",
+      "retrieved_utc": "2026-11-14",
+      "class": "manufacturer article; attributes 0.75% to 'IPC standard' without naming the document; not a capability guarantee"
+    },
+    "S-JLC-PCBA": {
+      "url": "https://jlcpcb.com/capabilities/pcb-assembly-capabilities",
+      "sha256": "01f8cc341bc03a88659c03410cd810dc90c0fe05d8444aca1856c5fcbdc48c3d",
+      "retrieved_utc": "2026-11-14",
+      "class": "public manufacturer capability page; retrieved to look for a placement-accuracy figure and none is stated (negative finding)"
+    },
+    "S-MURATA-GRM18": {
+      "url": "https://search.murata.co.jp/Ceramy/image/img/A01X/G101/ENG/GRM1885C1H103JA01-01A.pdf",
+      "sha256": "3f5a339eb51502df7716dfd2d4c4e6d33e837abc0df5cb8e4fc1e6e275d09790",
+      "retrieved_utc": "2026-11-14",
+      "class": "manufacturer specification of an inventory part; byte-identical to source src-dc-wiper-c-datasheet of .claude/skills/component-murata-grm1885c1h103ja01d",
+      "locator": "printed page 2 item 11 'Substrate Bending test' (flexure 1 mm, 5 s, no defects, capacitance within 5%); printed page 6 Fig.2 (1.6 mm FR4, supports 45 mm + 45 mm, R5 pressing tool)"
+    },
+    "S-DA01": {
+      "path": "circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-01.md",
+      "sha256": "32d20a5c50a4aea3d7bc2c497e1d185b3f59677878f93ec2e599881c134f7dbf",
+      "note": "Design review A1 and decisions D1 to D6; its section 'Vendor documents fetched for this review' holds the manufacturer documents cited below. Those documents are not in this worktree; they are cited by name, revision and SHA256 as the review gives them."
+    },
+    "V-MMS-SPEC": {
+      "document": "Product Specification, 2.00 mm Classic Socket & Terminal Strip (MMS, TW-TH, TW-SM, TMM), revision A, 2022-08-15",
+      "file": "mms-tmm.pdf",
+      "sha256": "f7cc75253302d6b4d6a48469f1841f095a4ff2f4e2b9c9a12f9dd0796024ee10",
+      "cited_via": "S-DA01"
+    },
+    "V-MMS-PRINT": {
+      "document": "Print MMS-1XX-02-XXX-XX-XX-XX-X-XX, revision CZ",
+      "file": "mms-1xx-02-xxx-xx-xx-xx-x-xx-mkt.pdf",
+      "sha256": "d19c85659d2712ed67ad31b5d9f251b4d0556da84de3ad9e1dfd7ff8c67e2130",
+      "cited_via": "S-DA01"
+    },
+    "V-TWSM-PRINT": {
+      "document": "Print TW-XX-XX-XXX-X-XXX-SM-XXX-XX-X-XX sheet 1, revision CW (table 1, figure 1, notes 1 and 5)",
+      "file": "tw-xx-xx-xxx-x-xxx-sm-xxx-xx-x-xx-mkt1.pdf",
+      "sha256": "7eab7b79b8025486771214a79014a619487402916a0da61f143341faefde9e17",
+      "cited_via": "S-DA01"
+    },
+    "V-QUAL-154341": {
+      "document": "Design Qualification Test Report MMS/TMM, tracking code 154341 revision 2",
+      "file": "154341_report_rev_2_qua.pdf",
+      "sha256": "02fd7a450b4eebd3b7666cc1751a57e48238d5c6f25d3c90047afe59dd740690",
+      "cited_via": "S-DA01"
+    },
+    "V-CLT-PAGE": {
+      "document": "Retained TLE/CLT catalogue page, revision 22DEC25 (CLT socket 2.29 mm, insertion minimum 1.40 mm)",
+      "cited_via": "S-DA01 D3 evidence status",
+      "sha256": "not given in DA-01; ST-01b retains it"
+    },
+    "S-GEOM": {
+      "path": "design/stack/geometry/stack-candidate.json",
+      "sha256": "9bd03493c0a98c36357c90ee56e86dec57eb3dd5d0793a84f49f34f1c5d25f54",
+      "note": "XY only. The candidate still holds the plan-page heights; the mechanics take heights from parameters.da01."
+    },
+    "S-DS": {
+      "path": "circuit/orchestration/campaigns/osc-stack-20261114/decisions.md",
+      "rows": [
+        "DS-27",
+        "DS-31",
+        "DS-33",
+        "DS-35",
+        "DS-39",
+        "DS-40",
+        "DS-41",
+        "DS-42",
+        "DS-43",
+        "DS-44",
+        "DS-45",
+        "DS-46",
+        "DS-66",
+        "DS-67",
+        "DS-70",
+        "DS-72",
+        "DS-73",
+        "DS-74",
+        "DS-75",
+        "DS-76",
+        "DS-81"
+      ],
+      "rows_sha256": "702b42935bc5e49c20d5d2b329cb3315a8a228144adad2f8c96891e055479d5e",
+      "note": "Decision rows DS-27, DS-31, DS-33, DS-35, DS-39 to DS-46, DS-66, DS-67, DS-70, DS-72 to DS-76 and DS-81. The pin covers these rows only (SHA256 of the row lines joined by a newline), so that a later decision row does not make the mechanics stale"
+    },
+    "S-DA02": {
+      "path": "circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-02.md",
+      "sha256": "6701145c500663397ea008a93ed8d868c189c9da1ae1a9ed3b00ce7b115f99ad",
+      "note": "Design review A2: E4 toggle chain, E10 catalogue posts and matching"
+    },
+    "S-DA03": {
+      "path": "circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-03.md",
+      "sha256": "a2e4ff157533bb63f88b31f26f50a4ef772ca5da24fcc1d9e28246c5ed89966e",
+      "note": "Design review A3: F2 measures, F3 30 fixings, F8 printed sleeves"
+    },
+    "S-SPACER": {
+      "path": "design/stack/spacers/spacer-set.json",
+      "sha256": "83b82e3d3ebd2ca5efc5948c81f0c40d2dfb111b1c1a0f4c3c8e24ff9ffc773d",
+      "note": "Printed sleeve set (DS-45; counts of DS-75 and DS-76). The mechanics read the sleeve and the length allowance only"
+    },
+    "S-FIX": {
+      "path": "design/stack/fixings/fixing-sites.json",
+      "json_key": "fixings",
+      "key_sha256": "8ed2b59d2d1fe81afac5e23c3846dce39256903dd6a612e80d461b1049f51293",
+      "note": "Fixing list ruled in DA-03 c2 and regenerated by ST-08 a2 (DS-73 to DS-76, DS-81); attempt a6 reads its active entries, its reserve and its alternatives. The pin covers the `fixings` array only (SHA256 of its canonical JSON), because the provenance block changes with every decision row"
+    }
+  },
+  "parameters": {
+    "meaning": "Heights, gaps, windows, misalignment limits and forces decided or sourced in DA-01. They replace the a/f/t grids of attempt a1.",
+    "da01": {
+      "K_face_z_mm": {
+        "value": -30.4,
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D1 item 2; D3 'K F.Cu z = -17.6 - 12.8 = -30.4 mm'"
+      },
+      "gap_mm": {
+        "value": {
+          "O": 12.8,
+          "P": 17.0,
+          "JL": 18.8,
+          "JR": 18.8,
+          "EL": 7.2
+        },
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D3 joint table; EL 'The gap stays 7.2 mm'"
+      },
+      "stacker_tip_mm": {
+        "value": {
+          "O": 11.86,
+          "P": 15.37,
+          "JL": 17.35,
+          "JR": 17.35,
+          "EL": 7.85
+        },
+        "status": "SOURCED",
+        "source": "V-TWSM-PRINT",
+        "locator": "table 1 maximum 'A' per lead style -03, -06, -07; EL -02 (DA-01 D3)"
+      },
+      "stacker_A_in": {
+        "value": {
+          "O": 0.295,
+          "P": 0.46,
+          "JL": 0.53,
+          "JR": 0.53,
+          "EL": 0.17
+        },
+        "status": "DERIVED",
+        "formula": "O, P, JL, JR: the D3 rule 'A <= gap - 4.50 - 0.80 mm, rounded down to 0.005 in', which gives the working codes TW-xx-03-L-S-295-SM, -06-L-S-460-SM and -07-L-S-530-SM. EL: read from the D3 code TW-04-02-L-D-170-SM-P-TR; it is not set by the 0.80 mm rule (body clearance 0.59 mm against the 2.29 mm CLT socket, shown in the heights table)"
+      },
+      "socket_height_mm": {
+        "value": {
+          "single": 4.5,
+          "EL": 2.29
+        },
+        "status": "SOURCED",
+        "source": "V-MMS-PRINT",
+        "locator": "MMS seated height 4.496 +0.102/-0.051 (sheet 1); CLT 2.29 mm from V-CLT-PAGE"
+      },
+      "insertion_window_mm": {
+        "value": {
+          "single": [
+            2.13,
+            4.32
+          ],
+          "EL_min": 1.4
+        },
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D3 evidence table (retained MMS catalogue page); EL: CLT top-entry insertion 1.40 mm minimum, pins pass through EL relief holes"
+      },
+      "body_clearance_rule_mm": {
+        "value": 0.8,
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D3 rule for the stacker height"
+      },
+      "t_mm": {
+        "value": 0.2,
+        "status": "ASSUMED",
+        "reason": "Pin-length and tip-height tolerance beyond the print's general +/-0.13 mm and 0.25 mm pin-to-pin limit (DA-01 D3)",
+        "to_source": "Coupon C-5; a manufacturer statement if the owner asks (owner item 4)"
+      },
+      "misalignment_mm": {
+        "value": {
+          "initial": {
+            "along": 0.39,
+            "across_single": 0.57,
+            "across_double_MMS": 0.37
+          },
+          "final": {
+            "along": 0.07,
+            "across_single": 0.16,
+            "across_double_MMS": 0.07
+          }
+        },
+        "status": "SOURCED",
+        "source": "V-MMS-SPEC",
+        "locator": "page 4, section 5.1.1 (X-axis figure, table 1) and 5.1.2 (X-axis figure, table 5); applying them to the TW-SM stacker is ASSUMED (DA-01 D1)"
+      },
+      "el_misalignment": {
+        "value": null,
+        "status": "UNSOURCED",
+        "reason": "The EL joint uses the CLT socket. DA-01 states double-row figures only for the MMS socket; no CLT misalignment figure is cited. The MMS double-row values are shown for reference only.",
+        "to_source": "CLT product specification (ST-01b)"
+      },
+      "mating_force_N": {
+        "value": [
+          0.84,
+          0.97,
+          1.33
+        ],
+        "status": "SOURCED",
+        "source": "V-QUAL-154341",
+        "locator": "printed pages 15-16 via DA-01 M9: 0.84 N (largest connector, new), 0.97 N (new, highest sample), 1.33 N (after 100 cycles); applying the double-row report to the single-row pair is ASSUMED"
+      },
+      "unmating_force_N": {
+        "value": [
+          0.47,
+          0.98
+        ],
+        "status": "SOURCED",
+        "source": "V-QUAL-154341",
+        "locator": "DA-01 M9"
+      },
+      "el_positions_per_pair": {
+        "value": 8,
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D3: six 2x4 pairs, 48 positions"
+      },
+      "positions_per_side_total": {
+        "value": 825,
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D6 plan-page figures: 825 positions per side in total"
+      },
+      "fixing_distance_rule_mm": {
+        "value": 40.0,
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D4 'Every pair lies within 40 mm of a post or tie post'"
+      },
+      "pin_sway_max_deg": {
+        "value": 2.0,
+        "status": "SOURCED",
+        "source": "V-TWSM-PRINT",
+        "locator": "note 1: 2 degrees maximum either direction"
+      },
+      "toggle_takeup_window_mm": {
+        "value": [
+          0.3,
+          2.1
+        ],
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D4 Z take-up row: washer stack works over 0.3 to 2.1 mm"
+      },
+      "k_vs_panel_selector_mm": {
+        "value": 0.1,
+        "status": "ASSUMED",
+        "reason": "DA-01 D4's term 'K against the panel 0.1' in the selector chain",
+        "to_source": "ST-12 with measured terms"
+      },
+      "selector_budget_mm": {
+        "value": 0.2,
+        "status": "SOURCED",
+        "source": "S-SEL",
+        "locator": "shaft_clearance_budget: (6.9 - 6.1)/2 - 0.2 wobble; kept as the budget by DA-01 D4"
+      }
+    },
+    "a3": {
+      "K_face_z_mm": {
+        "value": -30.6,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-33: K front face at z = -30.6 mm"
+      },
+      "K_rear_z_mm": {
+        "value": -32.2,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-33: rear face at -32.2 mm"
+      },
+      "gap_mm": {
+        "value": {
+          "O": 13.0,
+          "P": 17.0,
+          "JL": 19.0,
+          "JR": 19.0,
+          "EL": 7.2
+        },
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-33: gaps 19.0 mm (JL, JR), 17.0 mm (P), 13.0 mm (adapters); EL 7.2 mm unchanged (DS-14, DS-28)"
+      },
+      "stacker_A_in": {
+        "value": {
+          "O": 0.3,
+          "P": 0.46,
+          "JL": 0.535,
+          "JR": 0.535,
+          "EL": 0.17
+        },
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-33: stacker heights by the unchanged rule .535, .460 and .300 in; EL .170 in unchanged (DA-01 D3)"
+      },
+      "P_front_face_z_mm": {
+        "value": -12.0,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-33: P's F.Cu sits at -12.0 mm"
+      },
+      "post_length_tol_mm": {
+        "value": 0.15,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-33: catalogue brass spacers at 19.00 and 17.00 mm +/-0.15 mm (DA-02 E10: retained drawings)"
+      },
+      "post_match_mm": {
+        "value": 0.05,
+        "status": "SOURCED",
+        "source": "S-DA02",
+        "locator": "E10: the spacers of one unit are measured and matched within 0.05 mm of each other; the lot mean keeps +/-0.15 mm"
+      },
+      "toggle_window_mm": {
+        "value": [
+          0.4,
+          2.3
+        ],
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-27: the washer window is 0.4 to 2.3 mm"
+      },
+      "k_post_hole_radial_play_mm": {
+        "value": 0.25,
+        "status": "ASSUMED",
+        "reason": "DS-42 / DA-03 F2: K sits within about +/-0.25 mm on its post screws, from an ASSUMED hole size (oversize by at least 0.5 mm on diameter)",
+        "to_source": "ST-12 hole and screw drawing"
+      },
+      "carrier_to_panel_mm": {
+        "value": 0.2,
+        "status": "ASSUMED",
+        "reason": "DS-31: how the selector carrier is anchored is UNSOURCED; taken equal to the selector seat term",
+        "to_source": "ST-12 carrier drawing; #55 selector coupon"
+      },
+      "selector_aperture_grown_mm": {
+        "value": 7.3,
+        "status": "SOURCED",
+        "source": "S-DA01",
+        "locator": "D4 selector row: the three selector apertures grow from 7.0 to 7.3 mm if ST-12 cannot show 0.2 mm (owner item 2)"
+      },
+      "sleeve_length_allowance_mm": {
+        "value": -0.2,
+        "status": "SOURCED",
+        "source": "S-SPACER",
+        "locator": "length_allowance_mm (DS-45: printed 0.2 mm short)"
+      },
+      "sleeve_print_tol_mm": {
+        "value": 0.2,
+        "status": "ASSUMED",
+        "reason": "DS-45: a home printer is ASSUMED to hold +/-0.2 mm on length; no document supports a figure",
+        "to_source": "Measured lengths of the printed set"
+      },
+      "m3_pitch_mm": {
+        "value": 0.5,
+        "status": "DERIVED",
+        "formula": "ISO metric coarse pitch implied by the M3 designation (DS-45)"
+      },
+      "caliper_error_mm": {
+        "value": 0.02,
+        "status": "ASSUMED",
+        "reason": "Reading error of a hobby digital caliper on a 17 to 19 mm length",
+        "to_source": "The owner's caliper specification"
+      },
+      "sleeve_sort_window_mm": {
+        "value": [
+          0.05,
+          0.3
+        ],
+        "status": "ASSUMED",
+        "reason": "Proposed owner rule of this attempt: keep a sleeve only if it is 0.05 to 0.30 mm shorter than the measured posts of its unit",
+        "to_source": "Design authority acceptance of the rule"
+      },
+      "fr4_density_g_cm3": {
+        "value": 1.85,
+        "status": "ASSUMED",
+        "reason": "Typical glass-epoxy laminate density",
+        "to_source": "Fabricator laminate datasheet"
+      },
+      "parts_mass_factor": {
+        "value": 2.0,
+        "status": "ASSUMED",
+        "reason": "K's mass with its parts taken as twice the bare board",
+        "to_source": "ST-07 parts list with masses"
+      },
+      "handling_g": {
+        "value": 5.0,
+        "status": "ASSUMED",
+        "reason": "A drop or knock of K alone on a bench taken as 5 g on its weight",
+        "to_source": "None practical; first-article handling"
+      },
+      "latch_force_N": {
+        "value": [
+          5,
+          20
+        ],
+        "status": "ASSUMED",
+        "reason": "No latch or cable push force is sourced; the brief gives 5 to 20 N per latch, one latch at a time",
+        "to_source": "ST-01e connector latch figures"
+      },
+      "latch_patch_radius_mm": {
+        "value": 3.0,
+        "status": "ASSUMED",
+        "reason": "Radius of the area a thumb or latch presses on K",
+        "to_source": "ST-01e connector body size"
+      },
+      "owner_acceptance": {
+        "value": "DS-35: the final misalignment of rigid pairs (at least 0.27 mm computed against 0.07 mm) is an accepted risk; hand adjustment of hand-soldered stackers is the remedy",
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-35"
+      },
+      "edge_spread_width_factor": {
+        "value": 2.0,
+        "status": "ASSUMED",
+        "reason": "A push at a free edge spreads at 45 degrees each side toward the supporting fixings, so the root moment acts over a width of 2 x span (slab practice)",
+        "to_source": "Plate finite-element model in ST-12"
+      }
+    },
+    "a5": {
+      "rear_clearance_mm": {
+        "value": 2.8,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-33: the depth stays about 40 mm, with 2.8 mm of rear clearance"
+      },
+      "fixing_distance_rule_mm": {
+        "value": 90.0,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-66: no point of K farther than 90 mm from a fixing"
+      },
+      "sleeve_clamp_rule_mm": {
+        "value": 70.0,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-66: a printed sleeve is clamped only where no other fixing of K lies within 70 mm"
+      },
+      "far_points_xy": {
+        "value": [
+          [
+            4,
+            247
+          ],
+          [
+            4,
+            292
+          ]
+        ],
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-70: farthest point (4, 247) at 93.6 mm; lower left corner (4, 292) at 90.4 mm"
+      },
+      "hypothetical_fixing_xy": {
+        "value": [
+          6.5,
+          243
+        ],
+        "status": "ASSUMED",
+        "reason": "Scope item 6 of attempt a5: one hypothetical fixing at the left edge to size the effect; it stands on a locked pot and is not a site",
+        "to_source": "Not a site; for comparison only"
+      },
+      "sleeve_error_mm": {
+        "value": {
+          "printer": 0.2,
+          "worst_case": 0.55,
+          "too_long": 0.15
+        },
+        "status": "DERIVED",
+        "formula": "printer: a3.sleeve_print_tol_mm; worst case: -sleeve_length_allowance + post_length_tol + print tol (0.2 + 0.15 + 0.2); too long: print tol - allowance - post (0.2 - 0.2 + 0.15)"
+      },
+      "grillage_step_mm": {
+        "value": 4.0,
+        "status": "ASSUMED",
+        "reason": "Node spacing of the torsion-free grillage; the 2 mm mesh is reported as a convergence check",
+        "to_source": "Plate finite-element model in ST-12"
+      },
+      "grillage_stiffness_factor": {
+        "value": 0.85,
+        "status": "DERIVED",
+        "formula": "1 - poisson_fr4: beams of D (1 - nu) per unit width and no torsion make a structure softer than the plate for every displacement field, so its compliance is an upper bound"
+      },
+      "corner_sleeve_options": {
+        "value": {
+          "smaller_outer_diameter_mm": 5.0,
+          "inward_move_mm": 1.0
+        },
+        "status": "ASSUMED",
+        "reason": "Illustrations for item 5: a sleeve whose radius equals the 2.5 mm edge distance, and a move that ends the 1.0 mm overhang",
+        "to_source": "Design authority choice"
+      },
+      "st08_a1_sleeves": {
+        "value": [
+          {
+            "id": "JL-SUP-1",
+            "kind": "sleeve kept",
+            "xy": [
+              6.5,
+              22.5
+            ],
+            "boards": [
+              "K",
+              "JL"
+            ],
+            "gap_mm": 19.0
+          },
+          {
+            "id": "JR-SUP-1",
+            "kind": "sleeve kept",
+            "xy": [
+              311.5,
+              22.5
+            ],
+            "boards": [
+              "K",
+              "JR"
+            ],
+            "gap_mm": 19.0
+          },
+          {
+            "id": "SLV-U1",
+            "kind": "sleeve added",
+            "xy": [
+              159.0,
+              38.0
+            ],
+            "boards": [
+              "K",
+              "JL"
+            ],
+            "gap_mm": 19.0
+          },
+          {
+            "id": "SLV-L2",
+            "kind": "sleeve added",
+            "xy": [
+              244.0,
+              230.0
+            ],
+            "boards": [
+              "K",
+              "P",
+              "EL"
+            ],
+            "gap_mm": 17.0
+          },
+          {
+            "id": "SLV-L1",
+            "kind": "sleeve added",
+            "xy": [
+              93.0,
+              276.0
+            ],
+            "boards": [
+              "K",
+              "P"
+            ],
+            "gap_mm": 17.0
+          }
+        ],
+        "status": "SOURCED",
+        "source": "S-FIX",
+        "locator": "fixing-sites.json at commit 4f1d6d5f (ST-08 a1 part 1, DS-70), entries of kind 'sleeve kept' and 'sleeve added' (fixings array SHA256 fb175afbc0c4e52f2257f4e8b51c80f9f44546decfa918ed477ac2845b35bf3b); the 18 posts are unchanged in the current array. Kept so that the a5 record stays the figure of that list"
+      }
+    },
+    "a6": {
+      "movement_limit_mm": {
+        "value": 1.4,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-72: K moves at most 1.4 mm under 5 g anywhere, by the grillage of ST-03 (half the 2.8 mm rear clearance of DS-33)"
+      },
+      "compliance_hold_edge_mm_per_N": {
+        "value": 0.25,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-72: at a K connector above 0.25 mm/N the other hand holds K's edge beside the connector while the lock is closed"
+      },
+      "compliance_not_placed_mm_per_N": {
+        "value": 1.0,
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-72: a K connector above 1.0 mm/N is not placed"
+      },
+      "check_points_xy": {
+        "value": {
+          "lower_left_corner": [
+            4,
+            292
+          ],
+          "left_edge": [
+            4,
+            247
+          ],
+          "above_post_rows": [
+            160,
+            70
+          ],
+          "upper_edge_middle": [
+            159,
+            8
+          ]
+        },
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-72: (4, 247) and the lower left corner; DS-73: (160, 70); the middle of K's upper edge y = 8 between x = 4 and 314 (DA-03 c2 H2)"
+      },
+      "authority_figures": {
+        "value": {
+          "movement_mm": {
+            "max": 0.68,
+            "lower_left_corner": 0.68,
+            "left_edge": 0.41,
+            "above_post_rows": 0.18,
+            "upper_edge_middle": 0.22,
+            "above_post_rows_max": 0.27
+          },
+          "strain_microstrain_4mm_grid": 263,
+          "sleeve_strain_microstrain_worst_case": {
+            "SLV-U1": 151,
+            "SLV-U2": 143,
+            "SLV-L1": 258,
+            "SLV-L2": 539
+          },
+          "st08_a1_max_mm": 0.641,
+          "alt_l2_worst_case_microstrain": 588,
+          "compliance_mm_per_N": {
+            "upper_corners": 1.6,
+            "upper_corners_before": 0.14,
+            "lower_left_corner_a5": 2.33,
+            "P-K-P-L06.02 (15.5, 234)": 0.42,
+            "link centre (31.5, 283)": 0.76
+          }
+        },
+        "status": "SOURCED",
+        "source": "S-DA03",
+        "locator": "da-03.md Continuation c2, H1 and H2 (scratch runs of the retained calculator, neither retained nor reviewed); DS-72 to DS-74 restate them"
+      },
+      "compliance_points_xy": {
+        "value": {
+          "P-K-P-L06.02": [
+            15.5,
+            234
+          ],
+          "link centre": [
+            31.5,
+            283
+          ]
+        },
+        "status": "SOURCED",
+        "source": "S-DS",
+        "locator": "DS-72: the softest placed K connector is P-K-P-L06.02 at (15.5, 234); da-03.md c2 H1: the softest centre of a link without a place is (31.5, 283)"
+      },
+      "grid_step_mm": {
+        "value": 2.0,
+        "status": "DERIVED",
+        "formula": "largest step that puts every vertex of K's outline on a node: gcd of the vertex offsets from (4, 8) = 2 mm (review finding 1)"
+      },
+      "snap_check_step_mm": {
+        "value": 1.0,
+        "status": "ASSUMED",
+        "reason": "Review finding 2: a run on a 1 mm grid shows what the snap of fixings to the 2 mm nodes does to the figures",
+        "to_source": "Plate finite-element model in ST-12"
+      },
+      "map_pitch_mm": {
+        "value": 4.0,
+        "status": "ASSUMED",
+        "reason": "Scope item 5 of attempt a6: a pitch of 4 mm or finer; every node of K's outline on the 2 mm grid is added so that the corners and the notch corner are on the map",
+        "to_source": "Room study (ST-02 a8) asks for a finer pitch if it needs one"
+      }
+    }
+  },
+  "terms": {
+    "panel_thickness": {
+      "value": 2.0,
+      "tol": 0.2,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-PART",
+      "locator": "panel.thickness_mm; tolerance from S-JLC-PCB 'Thickness Tolerance (Thickness>=1.0mm) +/-10%' (the panel is a fabricated PCB)"
+    },
+    "board_thickness_1p6": {
+      "value": 1.6,
+      "tol": 0.16,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-PART",
+      "locator": "boards[].thickness_mm for JL, JR, P, K, O*; tolerance S-JLC-PCB +/-10%"
+    },
+    "el_thickness": {
+      "value": 0.4,
+      "tol": 0.1,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-PART",
+      "locator": "osc-stage-optical thickness_mm; tolerance S-JLC-PCB 'Thickness < 1.0 mm +/-0.1mm'"
+    },
+    "jack_shoulder_to_board": {
+      "value": 8.0,
+      "tol": 0.2,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "source": "S-PART",
+      "locator": "mechanical_datum_table WQP518MA required_board_to_panel_rear_shoulder_mm",
+      "reason": "8.0 is the required value, not a part dimension; facts/jack.json shoulder_height_above_board_mm is UNSOURCED. +/-0.2 covers seating on solder and part variation as a planning allocation.",
+      "to_source": "Manufacturer drawing with a PCB seating-plane datum, or coupon measurement of seated shoulder height (#65)"
+    },
+    "toggle_body_height": {
+      "value": 8.64,
+      "tol": 0.2,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "source": "S-PART",
+      "locator": "mechanical_datum_table Dailywell body_height_candidate_mm",
+      "reason": "Candidate value; facts/toggle.json seated_height_board_to_shoulder_mm is UNSOURCED and the 2MS3 suffix gate is OPEN.",
+      "to_source": "Exact 2MS3 drawing with seating plane, or coupon measurement"
+    },
+    "toggle_nut_thickness": {
+      "value": 1.19,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-TOG",
+      "locator": "facts.nut_thickness_mm (MNU-2M01)"
+    },
+    "toggle_washer_thickness": {
+      "value": 0.46,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-TOG",
+      "locator": "facts.washer_thickness_mm (MNU-2M03)"
+    },
+    "p_front_face_z": {
+      "value": -11.8,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-PART",
+      "locator": "boards osc-control face_z_mm"
+    },
+    "post_length_tol": {
+      "value": 0.05,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "No post is selected; a turned standoff class value used for planning.",
+      "to_source": "ST-04 post drawing length tolerance"
+    },
+    "post_seat_tol": {
+      "value": 0.02,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Land plating and flatness under one post face; per face.",
+      "to_source": "ST-04 land design plus coupon C-6 gap measurement"
+    },
+    "connector_standoff_tol": {
+      "value": 0.05,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Solder-joint height and coplanarity of one SMT connector half above its board.",
+      "to_source": "ST-01 coplanarity specification; coupon C-3 height measurement"
+    },
+    "selector_seat_tol": {
+      "value": 0.2,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "facts/octave-selector.json seated_height is UNSOURCED; the adapter plane follows the carrier through the selector body.",
+      "to_source": "#55 selector coupon"
+    },
+    "bow_twist_ratio": {
+      "value": 0.0075,
+      "unit": "1",
+      "status": "SOURCED",
+      "source": "S-JLC-WARP",
+      "locator": "FAQ Q1: 'IPC standard is 0.75%'",
+      "note": "Secondary attribution; the fabricator states <=0.5% as routine, not as a guarantee."
+    },
+    "bow_model": {
+      "value": "kappa = 8 b / L; out-of-plane at distance d from the nearest fixing = kappa d^2 / 2 = 4 b d^2 / L",
+      "unit": "1",
+      "status": "ASSUMED",
+      "reason": "Uniform-curvature reading of a bow ratio b over the board's longest side L; fixings pull the board flat locally.",
+      "to_source": "Measured flatness of the received boards (first article)"
+    },
+    "murata_flexure": {
+      "value": 1.0,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-MURATA-GRM18",
+      "locator": "item 11 Substrate Bending test, Flexure 1mm"
+    },
+    "murata_span": {
+      "value": 90.0,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-MURATA-GRM18",
+      "locator": "Fig.2, supports 45 mm + 45 mm"
+    },
+    "murata_board": {
+      "value": 1.6,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-MURATA-GRM18",
+      "locator": "Substrate Bending test substrate thickness 1.6mm"
+    },
+    "strain_test_level": {
+      "value": 0.0011852,
+      "unit": "1",
+      "status": "DERIVED",
+      "formula": "6 t delta / L^2 (three-point bend surface strain at mid-span) = 6 x 1.6 x 1.0 / 90^2"
+    },
+    "strain_safety_factor": {
+      "value": 2.0,
+      "unit": "1",
+      "status": "ASSUMED",
+      "reason": "The test level is a pass condition, not a damage threshold; half of it is used as the design limit. The X5R/X7R parts on K have their own bending figures, not retrieved here.",
+      "to_source": "Design authority choice; bending specification of every ceramic part family fitted near the post rows"
+    },
+    "strain_design_limit": {
+      "value": 0.0005926,
+      "unit": "1",
+      "status": "DERIVED",
+      "formula": "strain_test_level / strain_safety_factor"
+    },
+    "k_strain_model": {
+      "value": "fixed-guided beam: eps = 3 t Delta / s^2",
+      "unit": "1",
+      "status": "ASSUMED",
+      "reason": "K is held flat by posts and fasteners on each side of the span s; a relative offset Delta between the two clamped rows bends the strip between them.",
+      "to_source": "Plate FE model in ST-12 or strain-gauge coupon C-6"
+    },
+    "smt_float_front": {
+      "value": 0.1,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Placement plus reflow float of a pegless SMT connector half, radial. S-JLC-PCBA states no placement accuracy.",
+      "to_source": "ST-01 footprint guidance; coupon C-2 measurement"
+    },
+    "smt_float_k": {
+      "value": 0.1,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "As smt_float_front, for the K half.",
+      "to_source": "ST-01; coupon C-2"
+    },
+    "pin_lean_deg": {
+      "value": 0.5,
+      "unit": "deg",
+      "status": "ASSUMED",
+      "reason": "Planning value for lean after reflow; the print allows 2 degrees sway (pin_sway_max_deg, SOURCED), shown as a sensitivity row",
+      "to_source": "ST-01 true-position or tip-coplanarity specification; coupon C-3 lean measurement"
+    },
+    "hole_position_tol_axis": {
+      "value": 0.075,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-JLC-PCB",
+      "locator": "'Hole Position Tolerance +/-0.075 mm'",
+      "note": "Read as per axis relative to the board's copper image."
+    },
+    "hole_position_radial": {
+      "value": 0.1061,
+      "unit": "mm",
+      "status": "DERIVED",
+      "formula": "sqrt(2) x hole_position_tol_axis"
+    },
+    "pth_hole_tol_plus": {
+      "value": 0.13,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-JLC-PCB",
+      "locator": "'Through-holes: +0.13 / -0.08 mm'; also 'Slot Hole size Tolerance Plated: +0.13 / -0.08 mm'"
+    },
+    "pth_hole_tol_minus": {
+      "value": 0.08,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-JLC-PCB",
+      "locator": "as pth_hole_tol_plus"
+    },
+    "routed_hole_position_tol_axis": {
+      "value": 0.1,
+      "unit": "mm",
+      "status": "SOURCED",
+      "source": "S-JLC-PCB",
+      "locator": "'+/-0.1mm(Precision) and +/-0.2mm(Regular) for CNC routing'",
+      "note": "Applied to the routed 7.0 mm selector aperture (above the 6.3 mm drill threshold in facts/jack.json); needs the precision option."
+    },
+    "routed_hole_position_radial": {
+      "value": 0.1414,
+      "unit": "mm",
+      "status": "DERIVED",
+      "formula": "sqrt(2) x routed_hole_position_tol_axis"
+    },
+    "loc_pin_diameter": {
+      "value": 2.0,
+      "plus": 0.0,
+      "minus": 0.006,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Ground dowel pin class chosen for planning; within the 0.55-2.0 mm press-fit hole range.",
+      "to_source": "Purchased pin drawing (ST-12)"
+    },
+    "loc_hole_clearance_standard": {
+      "value": 0.1,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Design choice: collar-post round hole = post + 0.10 in the ordinary through-hole class",
+      "to_source": "ST-12 collar drawing"
+    },
+    "loc_slot_clearance": {
+      "value": 0.1,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Design choice: plated secondary slot width = pin + 0.10, so the minimum width clearance is +0.02 under the -0.08 slot tolerance.",
+      "to_source": "Design authority"
+    },
+    "r_loc_standard": {
+      "value": 0.118,
+      "unit": "mm",
+      "status": "DERIVED",
+      "formula": "(loc_hole_clearance_standard + pth_hole_tol_plus + loc_pin_diameter.minus) / 2"
+    },
+    "r_slot": {
+      "value": 0.118,
+      "unit": "mm",
+      "status": "DERIVED",
+      "formula": "(loc_slot_clearance + pth_hole_tol_plus + loc_pin_diameter.minus) / 2"
+    },
+    "th_lead_float": {
+      "value": 0.1,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Radial float of a through-hole jack, pot or toggle body in its drilled pattern before soldering; lead sizes are not retained.",
+      "to_source": "Lead dimensions from the drawings versus finished drill sizes; first-article axis measurement"
+    },
+    "smd_led_float": {
+      "value": 0.1,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "0402 emitter placement and reflow float behind its window.",
+      "to_source": "Assembly provider placement data; #64 optical coupon"
+    },
+    "button_guide_float": {
+      "value": 0.15,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Custom plunger axis in its guide on the P body carrier, carrier on P.",
+      "to_source": "Carrier and plunger drawing (ST-12)"
+    },
+    "selector_leg_float": {
+      "value": 0.1,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Selector legs in their 2.0 mm PTH mounting holes on the adapter.",
+      "to_source": "#55 coupon"
+    },
+    "fr4_modulus": {
+      "value": 20000.0,
+      "unit": "N/mm^2",
+      "status": "ASSUMED",
+      "reason": "Typical in-plane flexural modulus of glass-epoxy laminate; no laminate datasheet is retained.",
+      "to_source": "Laminate datasheet of the fabricator's FR4 for the 0.4 mm EL"
+    },
+    "screw_axial_capacity": {
+      "value": 1000.0,
+      "unit": "N",
+      "status": "ASSUMED",
+      "reason": "Planning floor for one M2.5 post screw and its thread in the post.",
+      "to_source": "ST-04 post and screw drawings with thread engagement"
+    },
+    "m25_pitch": {
+      "value": 0.45,
+      "unit": "mm",
+      "status": "DERIVED",
+      "formula": "ISO metric coarse pitch implied by the M2.5 designation"
+    },
+    "el_locator_ratio": {
+      "value": 1.0,
+      "unit": "1",
+      "status": "ASSUMED",
+      "reason": "EL's two close-collar posts sit near opposite ends of EL, so the farthest EL pair lies about one post spacing from the primary",
+      "to_source": "ST-12 choice of the two collar posts"
+    },
+    "poisson_fr4": {
+      "value": 0.15,
+      "unit": "1",
+      "status": "ASSUMED",
+      "reason": "Typical in-plane Poisson ratio of glass-epoxy laminate",
+      "to_source": "Laminate datasheet"
+    },
+    "jack_shoulder_local": {
+      "value": 0.2,
+      "unit": "mm",
+      "status": "ASSUMED",
+      "reason": "Local seat variation of the jacks next to a J pair relative to those next to its fixing; J's plane is the panel's through the shoulders (DA-01 M7)",
+      "to_source": "#65 seated-height measurement"
+    }
+  },
+  "apertures": {
+    "jack": {
+      "board": [
+        "JL",
+        "JR"
+      ],
+      "hole": 6.2,
+      "hole_plus": 0.13,
+      "hole_minus": 0.08,
+      "hole_status": "SOURCED (S-LOCK hole_d_mm 6.2, PROPOSAL; tolerance S-JACK fabrication_boundary)",
+      "part_max": 6.0,
+      "part_min": 5.9,
+      "part_status": "ASSUMED: bushing 6.0 is a DRAWING nominal (S-JACK) taken as maximum; 5.9 minimum assumed; thread UNSOURCED",
+      "hw_float_term": "th_lead_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    },
+    "pot": {
+      "board": [
+        "P"
+      ],
+      "hole": 6.3,
+      "hole_plus": 0.13,
+      "hole_minus": 0.08,
+      "hole_status": "SOURCED (S-LOCK 6.3 PROPOSAL; drilled class tolerance)",
+      "part_max": 6.0,
+      "part_min": 5.9,
+      "part_status": "SOURCED: shaft 6.0 +0/-0.1 (S-POT)",
+      "hw_float_term": "th_lead_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    },
+    "toggle": {
+      "board": [
+        "P"
+      ],
+      "hole": 5.2,
+      "hole_plus": 0.13,
+      "hole_minus": 0.08,
+      "hole_status": "SOURCED (S-LOCK 5.2 PROPOSAL; manufacturer recommends 4.95 with a 4.55 flat, S-TOG)",
+      "part_max": 4.826,
+      "part_min": 4.7,
+      "part_status": "DERIVED maximum: 10-48 UNS nominal major 0.190 in (S-TOG thread designation); minimum ASSUMED",
+      "hw_float_term": "th_lead_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    },
+    "sub_toggle": {
+      "board": [
+        "P"
+      ],
+      "hole": 5.2,
+      "hole_plus": 0.13,
+      "hole_minus": 0.08,
+      "hole_status": "SOURCED (S-PLAN: proposed 5.2 for the fitted toggles at C:O2.OCT and C:O4.OCT)",
+      "part_max": 4.826,
+      "part_min": 4.7,
+      "part_status": "as toggle",
+      "hw_float_term": "th_lead_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    },
+    "button": {
+      "board": [
+        "P"
+      ],
+      "hole": 5.0,
+      "hole_plus": 0.13,
+      "hole_minus": 0.08,
+      "hole_status": "SOURCED (S-LOCK 5.0 PROPOSAL)",
+      "part_max": 4.55,
+      "part_min": 4.45,
+      "part_status": "ASSUMED: custom plunger 4.5 (S-PART datum table) +/-0.05",
+      "hw_float_term": "button_guide_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    },
+    "selector": {
+      "board": [
+        "O1",
+        "O3",
+        "O5"
+      ],
+      "hole": 7.0,
+      "hole_plus": 0.1,
+      "hole_minus": 0.1,
+      "hole_status": "SOURCED (S-SEL panel 7.0 +/-0.1, project choice)",
+      "part_max": 6.1,
+      "part_min": 5.9,
+      "part_status": "SOURCED allocation: maximum 6.1 and radial wobble 0.2 (S-SEL shaft_clearance_budget); minimum ASSUMED",
+      "hw_float_term": "selector_leg_float",
+      "panel_pos_term": "routed_hole_position_radial",
+      "wobble": 0.2
+    },
+    "el_passage_pot": {
+      "board": [
+        "EL"
+      ],
+      "carrier": "P",
+      "hole": 6.3,
+      "hole_plus": 0.13,
+      "hole_minus": 0.08,
+      "hole_status": "SOURCED (S-OPT passage 6.3)",
+      "part_max": 6.0,
+      "part_min": 5.9,
+      "part_status": "SOURCED (S-POT)",
+      "hw_float_term": "th_lead_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    },
+    "el_passage_switch": {
+      "board": [
+        "EL"
+      ],
+      "carrier": "P",
+      "hole": 11.0,
+      "hole_plus": 0.13,
+      "hole_minus": 0.08,
+      "hole_status": "SOURCED (S-OPT passage 11)",
+      "part_max": 9.5873,
+      "part_min": 9.5873,
+      "part_status": "DERIVED: diagonal of the 8.13 x 5.08 toggle body (S-TOG); no body tolerance given",
+      "hw_float_term": "th_lead_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    },
+    "el_passage_button": {
+      "board": [
+        "EL"
+      ],
+      "carrier": "P",
+      "hole": 9.5,
+      "hole_plus": 0.13,
+      "hole_minus": 0.08,
+      "hole_status": "SOURCED (S-OPT passage 9.5)",
+      "part_max": 8.7681,
+      "part_min": 8.2024,
+      "part_status": "DERIVED: diagonal of the 6.0 +/-0.2 square body (S-BTN)",
+      "hw_float_term": "th_lead_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    },
+    "indicator": {
+      "board": [
+        "JL",
+        "JR",
+        "EL"
+      ],
+      "hole": null,
+      "hole_status": "SOURCED: bare-FR4 window 1.6 mm, no drill (S-PART panel.indicator_window); no mechanical interference",
+      "part_status": "No acceptance limit for emitter-to-window offset exists (#64)",
+      "hw_float_term": "smd_led_float",
+      "panel_pos_term": "hole_position_radial",
+      "wobble": 0.0
+    }
+  },
+  "geometry": {
+    "status": "DERIVED",
+    "formula": "scripts/stack/mechanics/stack_mechanics_geometry.py derive()",
+    "sources": {
+      "stack_candidate": {
+        "path": "design/stack/geometry/stack-candidate.json",
+        "sha256": "9bd03493c0a98c36357c90ee56e86dec57eb3dd5d0793a84f49f34f1c5d25f54"
+      },
+      "partition": {
+        "path": "design/partition/partition.json",
+        "sha256": "7e3f5a39b001f80f38572c837a60e197fbb08ae588296e1d3bcb1339718db48f"
+      },
+      "placements_lock": {
+        "path": "design/grid/placements.lock.json",
+        "sha256": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8"
+      }
+    },
+    "candidate_heights_mm": {
+      "JL/K": 19.0,
+      "JR/K": 19.0,
+      "P/K": 17.0,
+      "O1/K": 13.0,
+      "O3/K": 13.0,
+      "O5/K": 13.0,
+      "EL/P": 7.2
+    },
+    "candidate_K_face_z_mm": -30.6,
+    "panel_size_mm": [
+      318,
+      298
+    ],
+    "outlines": {
+      "EL": {
+        "bbox_mm": [
+          210.0,
+          164.0,
+          317.0,
+          277.0
+        ],
+        "longest_side_mm": 113.0
+      },
+      "JL": {
+        "bbox_mm": [
+          4.0,
+          20.0,
+          176.5,
+          164.0
+        ],
+        "longest_side_mm": 172.5
+      },
+      "JR": {
+        "bbox_mm": [
+          177.5,
+          20.0,
+          314.0,
+          164.0
+        ],
+        "longest_side_mm": 144.0
+      },
+      "K": {
+        "bbox_mm": [
+          4.0,
+          8.0,
+          314.0,
+          292.0
+        ],
+        "longest_side_mm": 310.0
+      },
+      "O1": {
+        "bbox_mm": [
+          4.6,
+          171.0,
+          24.4,
+          195.5
+        ],
+        "longest_side_mm": 24.5
+      },
+      "O3": {
+        "bbox_mm": [
+          38.6,
+          171.0,
+          58.4,
+          195.5
+        ],
+        "longest_side_mm": 24.5
+      },
+      "O5": {
+        "bbox_mm": [
+          72.6,
+          171.0,
+          92.4,
+          195.5
+        ],
+        "longest_side_mm": 24.5
+      },
+      "P": {
+        "bbox_mm": [
+          1.0,
+          176.0,
+          317.0,
+          292.0
+        ],
+        "longest_side_mm": 316.0
+      }
+    },
+    "fixings": {
+      "posts": [
+        {
+          "id": "POWER-JL-+12V",
+          "board": "JL",
+          "xy": [
+            40,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JL--12V",
+          "board": "JL",
+          "xy": [
+            57,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JL-+5V",
+          "board": "JL",
+          "xy": [
+            74,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JL-AGND1",
+          "board": "JL",
+          "xy": [
+            91,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JL-AGND2",
+          "board": "JL",
+          "xy": [
+            108,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JL-AGND3",
+          "board": "JL",
+          "xy": [
+            125,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR-+12V",
+          "board": "JR",
+          "xy": [
+            193,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR--12V",
+          "board": "JR",
+          "xy": [
+            210,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR-+5V",
+          "board": "JR",
+          "xy": [
+            227,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR-AGND1",
+          "board": "JR",
+          "xy": [
+            244,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR-AGND2",
+          "board": "JR",
+          "xy": [
+            261,
+            160
+          ]
+        },
+        {
+          "id": "POWER-JR-AGND3",
+          "board": "JR",
+          "xy": [
+            278,
+            160
+          ]
+        },
+        {
+          "id": "POWER-P-+12V",
+          "board": "P",
+          "xy": [
+            142,
+            175
+          ]
+        },
+        {
+          "id": "POWER-P--12V",
+          "board": "P",
+          "xy": [
+            159,
+            175
+          ]
+        },
+        {
+          "id": "POWER-P-+5V",
+          "board": "P",
+          "xy": [
+            176,
+            175
+          ]
+        },
+        {
+          "id": "POWER-P-AGND1",
+          "board": "P",
+          "xy": [
+            193,
+            175
+          ]
+        },
+        {
+          "id": "POWER-P-AGND2",
+          "board": "P",
+          "xy": [
+            210,
+            179
+          ]
+        },
+        {
+          "id": "POWER-P-AGND3",
+          "board": "P",
+          "xy": [
+            227,
+            179
+          ]
+        }
+      ],
+      "kept_supports": [
+        {
+          "id": "JL-SUP-1",
+          "board": "JL",
+          "xy": [
+            6.5,
+            22.5
+          ]
+        },
+        {
+          "id": "JL-SUP-2",
+          "board": "JL",
+          "xy": [
+            6.5,
+            80
+          ]
+        },
+        {
+          "id": "JL-SUP-3",
+          "board": "JL",
+          "xy": [
+            6.5,
+            138
+          ]
+        },
+        {
+          "id": "K-SUP-3",
+          "board": "JL",
+          "xy": [
+            6.5,
+            160
+          ]
+        },
+        {
+          "id": "JR-SUP-1",
+          "board": "JR",
+          "xy": [
+            311.5,
+            22.5
+          ]
+        },
+        {
+          "id": "JR-SUP-2",
+          "board": "JR",
+          "xy": [
+            311.5,
+            80
+          ]
+        },
+        {
+          "id": "JR-SUP-3",
+          "board": "JR",
+          "xy": [
+            311.5,
+            138
+          ]
+        },
+        {
+          "id": "K-SUP-4",
+          "board": "JR",
+          "xy": [
+            311.5,
+            160
+          ]
+        },
+        {
+          "id": "K-SUP-5",
+          "board": "P",
+          "xy": [
+            6.5,
+            243
+          ]
+        },
+        {
+          "id": "K-SUP-6",
+          "board": "P",
+          "xy": [
+            311.5,
+            243
+          ]
+        },
+        {
+          "id": "K-SUP-7",
+          "board": "P",
+          "xy": [
+            6.5,
+            289.5
+          ]
+        },
+        {
+          "id": "K-SUP-8",
+          "board": "P",
+          "xy": [
+            255.5,
+            289.5
+          ]
+        }
+      ],
+      "provisional": [
+        {
+          "id": "TIE-PROV-1",
+          "board": "P",
+          "xy": [
+            202,
+            255
+          ]
+        },
+        {
+          "id": "TIE-PROV-2",
+          "board": "P",
+          "xy": [
+            252,
+            241
+          ]
+        },
+        {
+          "id": "TIE-PROV-3",
+          "board": "JR",
+          "xy": [
+            227,
+            80
+          ]
+        },
+        {
+          "id": "TIE-PROV-4",
+          "board": "JR",
+          "xy": [
+            227,
+            38
+          ]
+        },
+        {
+          "id": "TIE-PROV-5",
+          "board": "JL",
+          "xy": [
+            108,
+            80
+          ]
+        }
+      ]
+    },
+    "pairs": [
+      {
+        "id": "EL-P-E1",
+        "family": "EL/P",
+        "board": "EL",
+        "joint": "EL",
+        "xy": [
+          218.5,
+          172
+        ],
+        "positions_candidate": 8
+      },
+      {
+        "id": "EL-P-E2",
+        "family": "EL/P",
+        "board": "EL",
+        "joint": "EL",
+        "xy": [
+          235.5,
+          172
+        ],
+        "positions_candidate": 8
+      },
+      {
+        "id": "EL-P-E3",
+        "family": "EL/P",
+        "board": "EL",
+        "joint": "EL",
+        "xy": [
+          252.5,
+          172
+        ],
+        "positions_candidate": 8
+      },
+      {
+        "id": "EL-P-E4",
+        "family": "EL/P",
+        "board": "EL",
+        "joint": "EL",
+        "xy": [
+          269.5,
+          172
+        ],
+        "positions_candidate": 8
+      },
+      {
+        "id": "EL-P-E5",
+        "family": "EL/P",
+        "board": "EL",
+        "joint": "EL",
+        "xy": [
+          286.5,
+          172
+        ],
+        "positions_candidate": 8
+      },
+      {
+        "id": "EL-P-E6",
+        "family": "EL/P",
+        "board": "EL",
+        "joint": "EL",
+        "xy": [
+          303.5,
+          172
+        ],
+        "positions_candidate": 8
+      },
+      {
+        "id": "JL-K-1",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          23,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 22.6385,
+        "d_K_base": 22.6385,
+        "d_front_plus": 22.6385,
+        "d_K_plus": 22.6385
+      },
+      {
+        "id": "JL-K-10",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          23,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 16.5,
+        "d_K_base": 16.5,
+        "d_front_plus": 16.5,
+        "d_K_plus": 16.5
+      },
+      {
+        "id": "JL-K-11",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          40,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 33.5,
+        "d_K_base": 33.5,
+        "d_front_plus": 33.5,
+        "d_K_plus": 33.5
+      },
+      {
+        "id": "JL-K-12",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          57,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 50.5,
+        "d_K_base": 50.5,
+        "d_front_plus": 50.5,
+        "d_K_plus": 50.5
+      },
+      {
+        "id": "JL-K-13",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          74,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 67.5,
+        "d_K_base": 67.5,
+        "d_front_plus": 34.0,
+        "d_K_plus": 34.0
+      },
+      {
+        "id": "JL-K-14",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          91,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 80.0,
+        "d_K_base": 80.0,
+        "d_front_plus": 17.0,
+        "d_K_plus": 17.0
+      },
+      {
+        "id": "JL-K-15",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          108,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 80.0,
+        "d_K_base": 80.0,
+        "d_front_plus": 0.0,
+        "d_K_plus": 0.0
+      },
+      {
+        "id": "JL-K-16",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          125,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 80.0,
+        "d_K_base": 80.0,
+        "d_front_plus": 17.0,
+        "d_K_plus": 17.0
+      },
+      {
+        "id": "JL-K-17",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          142,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 81.7863,
+        "d_K_base": 81.7863,
+        "d_front_plus": 34.0,
+        "d_K_plus": 34.0
+      },
+      {
+        "id": "JL-K-18",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          159,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 86.9253,
+        "d_K_base": 86.9253,
+        "d_front_plus": 51.0,
+        "d_K_plus": 51.0
+      },
+      {
+        "id": "JL-K-19",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          23,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 22.9837,
+        "d_K_base": 22.9837,
+        "d_front_plus": 22.9837,
+        "d_K_plus": 22.9837
+      },
+      {
+        "id": "JL-K-2",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          40,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 36.9121,
+        "d_K_base": 36.9121,
+        "d_front_plus": 36.9121,
+        "d_K_plus": 36.9121
+      },
+      {
+        "id": "JL-K-20",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          40,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 37.1248,
+        "d_K_base": 37.1248,
+        "d_front_plus": 37.1248,
+        "d_K_plus": 37.1248
+      },
+      {
+        "id": "JL-K-21",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          57,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JL-K-22",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          74,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JL-K-23",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          91,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JL-K-24",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          108,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JL-K-25",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          125,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JL-K-3",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          57,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 52.8252,
+        "d_K_base": 52.8252,
+        "d_front_plus": 52.8252,
+        "d_K_plus": 52.8252
+      },
+      {
+        "id": "JL-K-4",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          74,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 69.2568,
+        "d_K_base": 69.2568,
+        "d_front_plus": 54.037,
+        "d_K_plus": 54.037
+      },
+      {
+        "id": "JL-K-5",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          91,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 85.9098,
+        "d_K_base": 85.9098,
+        "d_front_plus": 45.31,
+        "d_K_plus": 45.31
+      },
+      {
+        "id": "JL-K-6",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          108,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 102.6767,
+        "d_K_base": 102.6767,
+        "d_front_plus": 42.0,
+        "d_K_plus": 42.0
+      },
+      {
+        "id": "JL-K-7",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          125,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 119.5094,
+        "d_K_base": 119.5094,
+        "d_front_plus": 45.31,
+        "d_K_plus": 45.31
+      },
+      {
+        "id": "JL-K-8",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          142,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 123.1787,
+        "d_K_base": 123.1787,
+        "d_front_plus": 54.037,
+        "d_K_plus": 54.037
+      },
+      {
+        "id": "JL-K-9",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          159,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 126.6491,
+        "d_K_base": 126.6491,
+        "d_front_plus": 66.0681,
+        "d_K_plus": 66.0681
+      },
+      {
+        "id": "JL-K-X1",
+        "family": "JL/P pass-through",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          40,
+          150
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JL-K-X2",
+        "family": "JL/P pass-through",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          57,
+          150
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JL-K-X3",
+        "family": "JL/P pass-through",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          74,
+          150
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JL-K-X4",
+        "family": "JL/P pass-through",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          91,
+          150
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JR-K-1",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          193,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 119.5094,
+        "d_K_base": 119.5094,
+        "d_front_plus": 34.0,
+        "d_K_plus": 34.0
+      },
+      {
+        "id": "JR-K-10",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          227,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 80.0,
+        "d_K_base": 80.0,
+        "d_front_plus": 0.0,
+        "d_K_plus": 0.0
+      },
+      {
+        "id": "JR-K-11",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          244,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 67.5,
+        "d_K_base": 67.5,
+        "d_front_plus": 17.0,
+        "d_K_plus": 17.0
+      },
+      {
+        "id": "JR-K-12",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          261,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 50.5,
+        "d_K_base": 50.5,
+        "d_front_plus": 34.0,
+        "d_K_plus": 34.0
+      },
+      {
+        "id": "JR-K-13",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          278,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 33.5,
+        "d_K_base": 33.5,
+        "d_front_plus": 33.5,
+        "d_K_plus": 33.5
+      },
+      {
+        "id": "JR-K-14",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          295,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 16.5,
+        "d_K_base": 16.5,
+        "d_front_plus": 16.5,
+        "d_K_plus": 16.5
+      },
+      {
+        "id": "JR-K-15",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          193,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JR-K-16",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          210,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JR-K-17",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          227,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JR-K-18",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          244,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JR-K-19",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          261,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 38.0,
+        "d_K_base": 38.0,
+        "d_front_plus": 38.0,
+        "d_K_plus": 38.0
+      },
+      {
+        "id": "JR-K-2",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          210,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 102.6767,
+        "d_K_base": 102.6767,
+        "d_front_plus": 17.0,
+        "d_K_plus": 17.0
+      },
+      {
+        "id": "JR-K-20",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          278,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 37.1248,
+        "d_K_base": 37.1248,
+        "d_front_plus": 37.1248,
+        "d_K_plus": 37.1248
+      },
+      {
+        "id": "JR-K-21",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          295,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 22.9837,
+        "d_K_base": 22.9837,
+        "d_front_plus": 22.9837,
+        "d_K_plus": 22.9837
+      },
+      {
+        "id": "JR-K-22",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          193,
+          150
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JR-K-23",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          210,
+          150
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JR-K-24",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          227,
+          150
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JR-K-25",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          244,
+          150
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JR-K-26",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          261,
+          150
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JR-K-27",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          278,
+          150
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 10.0,
+        "d_K_base": 10.0,
+        "d_front_plus": 10.0,
+        "d_K_plus": 10.0
+      },
+      {
+        "id": "JR-K-3",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          227,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 85.9098,
+        "d_K_base": 85.9098,
+        "d_front_plus": 0.0,
+        "d_K_plus": 0.0
+      },
+      {
+        "id": "JR-K-4",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          244,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 69.2568,
+        "d_K_base": 69.2568,
+        "d_front_plus": 17.0,
+        "d_K_plus": 17.0
+      },
+      {
+        "id": "JR-K-5",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          261,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 52.8252,
+        "d_K_base": 52.8252,
+        "d_front_plus": 34.0,
+        "d_K_plus": 34.0
+      },
+      {
+        "id": "JR-K-6",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          278,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 36.9121,
+        "d_K_base": 36.9121,
+        "d_front_plus": 36.9121,
+        "d_K_plus": 36.9121
+      },
+      {
+        "id": "JR-K-7",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          295,
+          38
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 22.6385,
+        "d_K_base": 22.6385,
+        "d_front_plus": 22.6385,
+        "d_K_plus": 22.6385
+      },
+      {
+        "id": "JR-K-8",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          193,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 80.0,
+        "d_K_base": 80.0,
+        "d_front_plus": 34.0,
+        "d_K_plus": 34.0
+      },
+      {
+        "id": "JR-K-9",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          210,
+          80
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 80.0,
+        "d_K_base": 80.0,
+        "d_front_plus": 17.0,
+        "d_K_plus": 17.0
+      },
+      {
+        "id": "K-O1-1",
+        "family": "K/O first",
+        "board": "O1",
+        "joint": "O",
+        "xy": [
+          14.5,
+          181.5
+        ],
+        "positions_candidate": 5
+      },
+      {
+        "id": "K-O1-2",
+        "family": "K/O second",
+        "board": "O1",
+        "joint": "O",
+        "xy": [
+          14.5,
+          188.5
+        ],
+        "positions_candidate": 5
+      },
+      {
+        "id": "K-O3-1",
+        "family": "K/O first",
+        "board": "O3",
+        "joint": "O",
+        "xy": [
+          48.5,
+          181.5
+        ],
+        "positions_candidate": 5
+      },
+      {
+        "id": "K-O3-2",
+        "family": "K/O second",
+        "board": "O3",
+        "joint": "O",
+        "xy": [
+          48.5,
+          188.5
+        ],
+        "positions_candidate": 5
+      },
+      {
+        "id": "K-O5-1",
+        "family": "K/O first",
+        "board": "O5",
+        "joint": "O",
+        "xy": [
+          82.5,
+          181.5
+        ],
+        "positions_candidate": 5
+      },
+      {
+        "id": "K-O5-2",
+        "family": "K/O second",
+        "board": "O5",
+        "joint": "O",
+        "xy": [
+          82.5,
+          188.5
+        ],
+        "positions_candidate": 5
+      },
+      {
+        "id": "K-P-1",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          116.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 83.9658,
+        "d_K_base": 83.9658,
+        "d_front_plus": 83.9658,
+        "d_K_plus": 83.9658
+      },
+      {
+        "id": "K-P-10",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          252.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 7.1589,
+        "d_K_base": 7.1589,
+        "d_front_plus": 7.1589,
+        "d_K_plus": 7.1589
+      },
+      {
+        "id": "K-P-100",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          65.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 61.131,
+        "d_K_base": 61.131,
+        "d_front_plus": 61.131,
+        "d_K_plus": 61.131
+      },
+      {
+        "id": "K-P-101",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          48.5,
+          218.5
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 48.6236,
+        "d_K_base": 48.6236,
+        "d_front_plus": 48.6236,
+        "d_K_plus": 48.6236
+      },
+      {
+        "id": "K-P-102",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          65.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 59.357,
+        "d_K_base": 59.357,
+        "d_front_plus": 59.357,
+        "d_K_plus": 59.357
+      },
+      {
+        "id": "K-P-103",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          65.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 62.46,
+        "d_K_base": 62.46,
+        "d_front_plus": 62.46,
+        "d_K_plus": 62.46
+      },
+      {
+        "id": "K-P-104",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          65.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 60.208,
+        "d_K_base": 60.208,
+        "d_front_plus": 60.208,
+        "d_K_plus": 60.208
+      },
+      {
+        "id": "K-P-105",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          65.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 69.6419,
+        "d_K_base": 46.7787,
+        "d_front_plus": 69.6419,
+        "d_K_plus": 46.7787
+      },
+      {
+        "id": "K-P-106",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          65.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 59.0339,
+        "d_K_base": 59.0339,
+        "d_front_plus": 59.0339,
+        "d_K_plus": 59.0339
+      },
+      {
+        "id": "K-P-107",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          82.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 78.7163,
+        "d_K_base": 78.7163,
+        "d_front_plus": 78.7163,
+        "d_K_plus": 78.7163
+      },
+      {
+        "id": "K-P-108",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          65.5,
+          218.5
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 63.8847,
+        "d_K_base": 59.1143,
+        "d_front_plus": 63.8847,
+        "d_K_plus": 59.1143
+      },
+      {
+        "id": "K-P-109",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          82.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 76.2775,
+        "d_K_base": 76.2775,
+        "d_front_plus": 76.2775,
+        "d_K_plus": 76.2775
+      },
+      {
+        "id": "K-P-11",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          133.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 80.4503,
+        "d_K_base": 80.4503,
+        "d_front_plus": 68.5,
+        "d_K_plus": 68.5
+      },
+      {
+        "id": "K-P-110",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          82.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 76.0263,
+        "d_K_base": 76.0263,
+        "d_front_plus": 76.0263,
+        "d_K_plus": 76.0263
+      },
+      {
+        "id": "K-P-111",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          82.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 76.9415,
+        "d_K_base": 76.9415,
+        "d_front_plus": 76.9415,
+        "d_K_plus": 76.9415
+      },
+      {
+        "id": "K-P-112",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          99.5,
+          185.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 43.6606,
+        "d_K_base": 26.4055,
+        "d_front_plus": 43.6606,
+        "d_K_plus": 26.4055
+      },
+      {
+        "id": "K-P-113",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          82.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 77.666,
+        "d_K_base": 67.537,
+        "d_front_plus": 77.666,
+        "d_K_plus": 67.537
+      },
+      {
+        "id": "K-P-114",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          82.5,
+          218.5
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 73.7055,
+        "d_K_base": 59.1143,
+        "d_front_plus": 73.7055,
+        "d_K_plus": 59.1143
+      },
+      {
+        "id": "K-P-115",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          82.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 67.0914,
+        "d_K_base": 46.7787,
+        "d_front_plus": 67.0914,
+        "d_K_plus": 46.7787
+      },
+      {
+        "id": "K-P-116",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          150.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 94.3835,
+        "d_K_base": 94.3835,
+        "d_front_plus": 53.369,
+        "d_K_plus": 53.369
+      },
+      {
+        "id": "K-P-117",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          184.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 73.9003,
+        "d_K_base": 73.9003,
+        "d_front_plus": 22.4109,
+        "d_K_plus": 22.4109
+      },
+      {
+        "id": "K-P-118",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          167.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 90.3562,
+        "d_K_base": 90.3562,
+        "d_front_plus": 37.2324,
+        "d_K_plus": 37.2324
+      },
+      {
+        "id": "K-P-119",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          184.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 71.2969,
+        "d_K_base": 71.2969,
+        "d_front_plus": 33.0189,
+        "d_K_plus": 33.0189
+      },
+      {
+        "id": "K-P-12",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          252.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 34.6302,
+        "d_K_base": 34.6302,
+        "d_front_plus": 14.0089,
+        "d_K_plus": 14.0089
+      },
+      {
+        "id": "K-P-120",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          133.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 108.334,
+        "d_K_base": 108.334,
+        "d_front_plus": 74.0017,
+        "d_K_plus": 74.0017
+      },
+      {
+        "id": "K-P-121",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          133.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 94.3835,
+        "d_K_base": 94.3835,
+        "d_front_plus": 69.916,
+        "d_K_plus": 69.916
+      },
+      {
+        "id": "K-P-122",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          167.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 88.2397,
+        "d_K_base": 88.2397,
+        "d_front_plus": 44.4325,
+        "d_K_plus": 44.4325
+      },
+      {
+        "id": "K-P-123",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          150.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 105.201,
+        "d_K_base": 105.201,
+        "d_front_plus": 58.6195,
+        "d_K_plus": 58.6195
+      },
+      {
+        "id": "K-P-13",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          303.5,
+          219.75
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 24.5879,
+        "d_K_base": 24.5879,
+        "d_front_plus": 24.5879,
+        "d_K_plus": 24.5879
+      },
+      {
+        "id": "K-P-14",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          269.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 42.0476,
+        "d_K_base": 42.0476,
+        "d_front_plus": 17.5,
+        "d_K_plus": 17.5
+      },
+      {
+        "id": "K-P-15",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          252.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 48.5927,
+        "d_K_base": 48.5927,
+        "d_front_plus": 0.5,
+        "d_K_plus": 0.5
+      },
+      {
+        "id": "K-P-16",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          235.5,
+          192
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 15.5322,
+        "d_K_base": 15.5322,
+        "d_front_plus": 15.5322,
+        "d_K_plus": 15.5322
+      },
+      {
+        "id": "K-P-17",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          201.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 64.08,
+        "d_K_base": 64.08,
+        "d_front_plus": 0.5,
+        "d_K_plus": 0.5
+      },
+      {
+        "id": "K-P-18",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          218.5,
+          192
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 15.5322,
+        "d_K_base": 15.5322,
+        "d_front_plus": 15.5322,
+        "d_K_plus": 15.5322
+      },
+      {
+        "id": "K-P-19",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          201.5,
+          185.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 10.4043,
+        "d_K_base": 10.4043,
+        "d_front_plus": 10.4043,
+        "d_K_plus": 10.4043
+      },
+      {
+        "id": "K-P-2",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          218.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 42.2995,
+        "d_K_base": 42.2995,
+        "d_front_plus": 21.6391,
+        "d_K_plus": 21.6391
+      },
+      {
+        "id": "K-P-20",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          235.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 28.3064,
+        "d_K_base": 28.3064,
+        "d_front_plus": 28.3064,
+        "d_K_plus": 28.3064
+      },
+      {
+        "id": "K-P-21",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          218.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 50.589,
+        "d_K_base": 50.589,
+        "d_front_plus": 16.5,
+        "d_K_plus": 16.5
+      },
+      {
+        "id": "K-P-22",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          235.5,
+          219.75
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 41.6271,
+        "d_K_base": 41.6271,
+        "d_front_plus": 26.9038,
+        "d_K_plus": 26.9038
+      },
+      {
+        "id": "K-P-23",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          252.5,
+          219.75
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 48.0709,
+        "d_K_base": 48.0709,
+        "d_front_plus": 21.2559,
+        "d_K_plus": 21.2559
+      },
+      {
+        "id": "K-P-24",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          218.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 28.3064,
+        "d_K_base": 28.3064,
+        "d_front_plus": 28.3064,
+        "d_K_plus": 28.3064
+      },
+      {
+        "id": "K-P-25",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          218.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 61.002,
+        "d_K_base": 61.002,
+        "d_front_plus": 21.6391,
+        "d_K_plus": 21.6391
+      },
+      {
+        "id": "K-P-26",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          303.5,
+          192
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 51.6236,
+        "d_K_base": 32.9848,
+        "d_front_plus": 51.6236,
+        "d_K_plus": 32.9848
+      },
+      {
+        "id": "K-P-27",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          269.5,
+          219.75
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 48.0059,
+        "d_K_base": 48.0059,
+        "d_front_plus": 27.5284,
+        "d_K_plus": 27.5284
+      },
+      {
+        "id": "K-P-28",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          286.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 44.6542,
+        "d_K_base": 44.6542,
+        "d_front_plus": 44.6542,
+        "d_K_plus": 44.6542
+      },
+      {
+        "id": "K-P-29",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          235.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 52.4619,
+        "d_K_base": 52.4619,
+        "d_front_plus": 16.5,
+        "d_K_plus": 16.5
+      },
+      {
+        "id": "K-P-3",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          218.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 37.5666,
+        "d_K_base": 37.5666,
+        "d_front_plus": 32.5,
+        "d_K_plus": 32.5
+      },
+      {
+        "id": "K-P-30",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          269.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 50.3513,
+        "d_K_base": 46.7787,
+        "d_front_plus": 39.1312,
+        "d_K_plus": 39.1312
+      },
+      {
+        "id": "K-P-31",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          286.5,
+          219.75
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 34.1403,
+        "d_K_base": 34.1403,
+        "d_front_plus": 34.1403,
+        "d_K_plus": 34.1403
+      },
+      {
+        "id": "K-P-32",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          269.5,
+          192
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 44.4438,
+        "d_K_base": 33.1097,
+        "d_front_plus": 44.4438,
+        "d_K_plus": 33.1097
+      },
+      {
+        "id": "K-P-33",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          286.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 25.0799,
+        "d_K_base": 25.0799,
+        "d_front_plus": 25.0799,
+        "d_K_plus": 25.0799
+      },
+      {
+        "id": "K-P-34",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          252.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 37.1383,
+        "d_K_base": 37.1383,
+        "d_front_plus": 35.0036,
+        "d_K_plus": 35.0036
+      },
+      {
+        "id": "K-P-35",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          252.5,
+          192
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 28.6225,
+        "d_K_base": 28.6225,
+        "d_front_plus": 28.6225,
+        "d_K_plus": 28.6225
+      },
+      {
+        "id": "K-P-36",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          286.5,
+          192
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 56.7979,
+        "d_K_base": 33.1097,
+        "d_front_plus": 56.7979,
+        "d_K_plus": 33.1097
+      },
+      {
+        "id": "K-P-37",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          303.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 8.2462,
+        "d_K_base": 8.2462,
+        "d_front_plus": 8.2462,
+        "d_K_plus": 8.2462
+      },
+      {
+        "id": "K-P-38",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          303.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 37.855,
+        "d_K_base": 37.855,
+        "d_front_plus": 37.855,
+        "d_K_plus": 37.855
+      },
+      {
+        "id": "K-P-39",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          184.5,
+          185.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 13.1244,
+        "d_K_base": 13.1244,
+        "d_front_plus": 13.1244,
+        "d_K_plus": 13.1244
+      },
+      {
+        "id": "K-P-4",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          235.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 28.64,
+        "d_K_base": 28.64,
+        "d_front_plus": 28.64,
+        "d_K_plus": 28.64
+      },
+      {
+        "id": "K-P-40",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          99.5,
+          199.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 48.8083,
+        "d_K_base": 39.9155,
+        "d_front_plus": 48.8083,
+        "d_K_plus": 39.9155
+      },
+      {
+        "id": "K-P-41",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          116.5,
+          213.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 45.763,
+        "d_K_base": 45.763,
+        "d_front_plus": 45.763,
+        "d_K_plus": 45.763
+      },
+      {
+        "id": "K-P-42",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          99.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 90.5884,
+        "d_K_base": 90.5884,
+        "d_front_plus": 90.5884,
+        "d_K_plus": 90.5884
+      },
+      {
+        "id": "K-P-43",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          99.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 67.1584,
+        "d_K_base": 67.1584,
+        "d_front_plus": 67.1584,
+        "d_K_plus": 67.1584
+      },
+      {
+        "id": "K-P-44",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          116.5,
+          185.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 27.3907,
+        "d_K_base": 26.4055,
+        "d_front_plus": 27.3907,
+        "d_K_plus": 26.4055
+      },
+      {
+        "id": "K-P-45",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          116.5,
+          199.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 35.0179,
+        "d_K_base": 35.0179,
+        "d_front_plus": 35.0179,
+        "d_K_plus": 35.0179
+      },
+      {
+        "id": "K-P-46",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          99.5,
+          213.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 57.011,
+        "d_K_base": 53.6773,
+        "d_front_plus": 57.011,
+        "d_K_plus": 53.6773
+      },
+      {
+        "id": "K-P-47",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          116.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 70.7549,
+        "d_K_base": 70.7549,
+        "d_front_plus": 70.7549,
+        "d_K_plus": 70.7549
+      },
+      {
+        "id": "K-P-48",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          116.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 57.9159,
+        "d_K_base": 57.9159,
+        "d_front_plus": 57.9159,
+        "d_K_plus": 57.9159
+      },
+      {
+        "id": "K-P-49",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          133.5,
+          185.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 13.1244,
+        "d_K_base": 13.1244,
+        "d_front_plus": 13.1244,
+        "d_K_plus": 13.1244
+      },
+      {
+        "id": "K-P-5",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          235.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 21.0297,
+        "d_K_base": 21.0297,
+        "d_front_plus": 21.0297,
+        "d_K_plus": 21.0297
+      },
+      {
+        "id": "K-P-50",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          133.5,
+          199.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 25.4608,
+        "d_K_base": 25.4608,
+        "d_front_plus": 25.4608,
+        "d_K_plus": 25.4608
+      },
+      {
+        "id": "K-P-51",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          150.5,
+          213.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 38.9391,
+        "d_K_base": 38.9391,
+        "d_front_plus": 38.9391,
+        "d_K_plus": 38.9391
+      },
+      {
+        "id": "K-P-52",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          133.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 66.5451,
+        "d_K_base": 66.5451,
+        "d_front_plus": 66.5451,
+        "d_K_plus": 66.5451
+      },
+      {
+        "id": "K-P-53",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          99.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 78.5,
+        "d_K_base": 78.5,
+        "d_front_plus": 78.5,
+        "d_K_plus": 78.5
+      },
+      {
+        "id": "K-P-54",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          167.5,
+          185.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 13.1244,
+        "d_K_base": 13.1244,
+        "d_front_plus": 13.1244,
+        "d_K_plus": 13.1244
+      },
+      {
+        "id": "K-P-55",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          218.5,
+          219.75
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 41.6271,
+        "d_K_base": 41.6271,
+        "d_front_plus": 38.9206,
+        "d_K_plus": 38.9206
+      },
+      {
+        "id": "K-P-56",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          150.5,
+          185.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 13.1244,
+        "d_K_base": 13.1244,
+        "d_front_plus": 13.1244,
+        "d_K_plus": 13.1244
+      },
+      {
+        "id": "K-P-57",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          184.5,
+          199.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 25.4608,
+        "d_K_base": 25.4608,
+        "d_front_plus": 25.4608,
+        "d_K_plus": 25.4608
+      },
+      {
+        "id": "K-P-58",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          184.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 52.6901,
+        "d_K_base": 52.6901,
+        "d_front_plus": 33.0189,
+        "d_K_plus": 33.0189
+      },
+      {
+        "id": "K-P-59",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          184.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 66.5451,
+        "d_K_base": 66.5451,
+        "d_front_plus": 22.4109,
+        "d_K_plus": 22.4109
+      },
+      {
+        "id": "K-P-6",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          252.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 20.7183,
+        "d_K_base": 20.7183,
+        "d_front_plus": 20.7183,
+        "d_K_plus": 20.7183
+      },
+      {
+        "id": "K-P-60",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          184.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 78.9383,
+        "d_K_base": 78.9383,
+        "d_front_plus": 17.5,
+        "d_K_plus": 17.5
+      },
+      {
+        "id": "K-P-61",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          133.5,
+          213.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 38.9391,
+        "d_K_base": 38.9391,
+        "d_front_plus": 38.9391,
+        "d_K_plus": 38.9391
+      },
+      {
+        "id": "K-P-62",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          184.5,
+          213.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 38.9391,
+        "d_K_base": 38.9391,
+        "d_front_plus": 38.9391,
+        "d_K_plus": 38.9391
+      },
+      {
+        "id": "K-P-63",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          201.5,
+          199.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 21.7313,
+        "d_K_base": 21.7313,
+        "d_front_plus": 21.7313,
+        "d_K_plus": 21.7313
+      },
+      {
+        "id": "K-P-64",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          201.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 48.7468,
+        "d_K_base": 48.7468,
+        "d_front_plus": 28.0045,
+        "d_K_plus": 28.0045
+      },
+      {
+        "id": "K-P-65",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          176,
+          234
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 59.0,
+        "d_K_base": 59.0,
+        "d_front_plus": 33.4215,
+        "d_K_plus": 33.4215
+      },
+      {
+        "id": "K-P-66",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          201.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 62.5799,
+        "d_K_base": 62.5799,
+        "d_front_plus": 14.0089,
+        "d_K_plus": 14.0089
+      },
+      {
+        "id": "K-P-67",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          133.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 52.6901,
+        "d_K_base": 52.6901,
+        "d_front_plus": 52.6901,
+        "d_K_plus": 52.6901
+      },
+      {
+        "id": "K-P-68",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          159,
+          234
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 59.0,
+        "d_K_base": 59.0,
+        "d_front_plus": 47.8539,
+        "d_K_plus": 47.8539
+      },
+      {
+        "id": "K-P-69",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          150.5,
+          199.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 25.4608,
+        "d_K_base": 25.4608,
+        "d_front_plus": 25.4608,
+        "d_K_plus": 25.4608
+      },
+      {
+        "id": "K-P-7",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          235.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 39.8779,
+        "d_K_base": 39.8779,
+        "d_front_plus": 21.6391,
+        "d_K_plus": 21.6391
+      },
+      {
+        "id": "K-P-70",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          150.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 52.6901,
+        "d_K_base": 52.6901,
+        "d_front_plus": 52.6901,
+        "d_K_plus": 52.6901
+      },
+      {
+        "id": "K-P-71",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          150.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 80.4503,
+        "d_K_base": 80.4503,
+        "d_front_plus": 51.5,
+        "d_K_plus": 51.5
+      },
+      {
+        "id": "K-P-72",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          48.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 44.9444,
+        "d_K_base": 44.9444,
+        "d_front_plus": 44.9444,
+        "d_K_plus": 44.9444
+      },
+      {
+        "id": "K-P-73",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          142,
+          234
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 59.0,
+        "d_K_base": 59.0,
+        "d_front_plus": 59.0,
+        "d_K_plus": 59.0
+      },
+      {
+        "id": "K-P-74",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          150.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 66.5451,
+        "d_K_base": 66.5451,
+        "d_front_plus": 53.369,
+        "d_K_plus": 53.369
+      },
+      {
+        "id": "K-P-75",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          167.5,
+          199.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 25.4608,
+        "d_K_base": 25.4608,
+        "d_front_plus": 25.4608,
+        "d_K_plus": 25.4608
+      },
+      {
+        "id": "K-P-76",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          167.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 52.6901,
+        "d_K_base": 52.6901,
+        "d_front_plus": 44.4325,
+        "d_K_plus": 44.4325
+      },
+      {
+        "id": "K-P-77",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          167.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 80.4503,
+        "d_K_base": 80.4503,
+        "d_front_plus": 34.5,
+        "d_K_plus": 34.5
+      },
+      {
+        "id": "K-P-78",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          167.5,
+          213.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 38.9391,
+        "d_K_base": 38.9391,
+        "d_front_plus": 38.9391,
+        "d_K_plus": 38.9391
+      },
+      {
+        "id": "K-P-79",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          201.5,
+          213.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 35.0464,
+        "d_K_base": 35.0464,
+        "d_front_plus": 35.0464,
+        "d_K_plus": 35.0464
+      },
+      {
+        "id": "K-P-8",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          201.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 54.3898,
+        "d_K_base": 54.3898,
+        "d_front_plus": 28.0045,
+        "d_K_plus": 28.0045
+      },
+      {
+        "id": "K-P-80",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          167.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 66.5451,
+        "d_K_base": 66.5451,
+        "d_front_plus": 37.2324,
+        "d_K_plus": 37.2324
+      },
+      {
+        "id": "K-P-81",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          14.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 10.3078,
+        "d_K_base": 10.3078,
+        "d_front_plus": 10.3078,
+        "d_K_plus": 10.3078
+      },
+      {
+        "id": "K-P-82",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          14.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 22.0057,
+        "d_K_base": 22.0057,
+        "d_front_plus": 22.0057,
+        "d_K_plus": 22.0057
+      },
+      {
+        "id": "K-P-83",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          14.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 14.4222,
+        "d_K_base": 14.4222,
+        "d_front_plus": 14.4222,
+        "d_K_plus": 14.4222
+      },
+      {
+        "id": "K-P-84",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          14.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 37.855,
+        "d_K_base": 37.855,
+        "d_front_plus": 37.855,
+        "d_K_plus": 37.855
+      },
+      {
+        "id": "K-P-85",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          14.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 8.2462,
+        "d_K_base": 8.2462,
+        "d_front_plus": 8.2462,
+        "d_K_plus": 8.2462
+      },
+      {
+        "id": "K-P-86",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          31.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 29.6816,
+        "d_K_base": 29.6816,
+        "d_front_plus": 29.6816,
+        "d_K_plus": 29.6816
+      },
+      {
+        "id": "K-P-87",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          14.5,
+          218.5
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 25.773,
+        "d_K_base": 25.773,
+        "d_front_plus": 25.773,
+        "d_K_plus": 25.773
+      },
+      {
+        "id": "K-P-88",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          31.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 25.8312,
+        "d_K_base": 25.8312,
+        "d_front_plus": 25.8312,
+        "d_K_plus": 25.8312
+      },
+      {
+        "id": "K-P-89",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          31.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 32.3303,
+        "d_K_base": 32.3303,
+        "d_front_plus": 32.3303,
+        "d_K_plus": 32.3303
+      },
+      {
+        "id": "K-P-9",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          201.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 57.7603,
+        "d_K_base": 57.7603,
+        "d_front_plus": 14.0089,
+        "d_K_plus": 14.0089
+      },
+      {
+        "id": "K-P-90",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          31.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 27.7308,
+        "d_K_base": 27.7308,
+        "d_front_plus": 27.7308,
+        "d_K_plus": 27.7308
+      },
+      {
+        "id": "K-P-91",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          31.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 44.6542,
+        "d_K_base": 44.6542,
+        "d_front_plus": 44.6542,
+        "d_K_plus": 44.6542
+      },
+      {
+        "id": "K-P-92",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          31.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 25.0799,
+        "d_K_base": 25.0799,
+        "d_front_plus": 25.0799,
+        "d_K_plus": 25.0799
+      },
+      {
+        "id": "K-P-93",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          14.5,
+          227.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 17.8885,
+        "d_K_base": 17.8885,
+        "d_front_plus": 17.8885,
+        "d_K_plus": 17.8885
+      },
+      {
+        "id": "K-P-94",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          31.5,
+          218.5
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 35.0036,
+        "d_K_base": 35.0036,
+        "d_front_plus": 35.0036,
+        "d_K_plus": 35.0036
+      },
+      {
+        "id": "K-P-95",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          48.5,
+          283.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 42.5,
+        "d_K_base": 42.5,
+        "d_front_plus": 42.5,
+        "d_K_plus": 42.5
+      },
+      {
+        "id": "K-P-96",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          48.5,
+          269.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 46.736,
+        "d_K_base": 46.736,
+        "d_front_plus": 46.736,
+        "d_K_plus": 46.736
+      },
+      {
+        "id": "K-P-97",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          48.5,
+          255.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 43.6807,
+        "d_K_base": 43.6807,
+        "d_front_plus": 43.6807,
+        "d_K_plus": 43.6807
+      },
+      {
+        "id": "K-P-98",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          48.5,
+          206
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 55.9732,
+        "d_K_base": 46.7787,
+        "d_front_plus": 55.9732,
+        "d_K_plus": 46.7787
+      },
+      {
+        "id": "K-P-99",
+        "family": "K/P",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          48.5,
+          241.0
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 42.0476,
+        "d_K_base": 42.0476,
+        "d_front_plus": 42.0476,
+        "d_K_plus": 42.0476
+      },
+      {
+        "id": "P-K-E1",
+        "family": "P/K for EL",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          218.5,
+          172
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 11.0114,
+        "d_K_base": 11.0114,
+        "d_front_plus": 11.0114,
+        "d_K_plus": 11.0114
+      },
+      {
+        "id": "P-K-E2",
+        "family": "P/K for EL",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          235.5,
+          172
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 11.0114,
+        "d_K_base": 11.0114,
+        "d_front_plus": 11.0114,
+        "d_K_plus": 11.0114
+      },
+      {
+        "id": "P-K-E3",
+        "family": "P/K for EL",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          252.5,
+          172
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 26.4433,
+        "d_K_base": 14.7054,
+        "d_front_plus": 26.4433,
+        "d_K_plus": 14.7054
+      },
+      {
+        "id": "P-K-E4",
+        "family": "P/K for EL",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          269.5,
+          172
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 43.0726,
+        "d_K_base": 14.7054,
+        "d_front_plus": 43.0726,
+        "d_K_plus": 14.7054
+      },
+      {
+        "id": "P-K-E5",
+        "family": "P/K for EL",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          286.5,
+          172
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 59.9103,
+        "d_K_base": 14.7054,
+        "d_front_plus": 59.9103,
+        "d_K_plus": 14.7054
+      },
+      {
+        "id": "P-K-E6",
+        "family": "P/K for EL",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          303.5,
+          172
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 71.4493,
+        "d_K_base": 14.4222,
+        "d_front_plus": 71.4493,
+        "d_K_plus": 14.4222
+      },
+      {
+        "id": "P-K-SUB-O2",
+        "family": "SUB",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          31.5,
+          180.5
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 67.3146,
+        "d_K_base": 22.1923,
+        "d_front_plus": 67.3146,
+        "d_K_plus": 22.1923
+      },
+      {
+        "id": "P-K-SUB-O4",
+        "family": "SUB",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          65.5,
+          179.95
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 76.66,
+        "d_K_base": 21.6853,
+        "d_front_plus": 76.66,
+        "d_K_plus": 21.6853
+      },
+      {
+        "id": "P-K-X1",
+        "family": "JL/P pass-through",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          40,
+          276
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 36.1179,
+        "d_K_base": 36.1179,
+        "d_front_plus": 36.1179,
+        "d_K_plus": 36.1179
+      },
+      {
+        "id": "P-K-X2",
+        "family": "JL/P pass-through",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          57,
+          276
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 52.2733,
+        "d_K_base": 52.2733,
+        "d_front_plus": 52.2733,
+        "d_K_plus": 52.2733
+      },
+      {
+        "id": "P-K-X3",
+        "family": "JL/P pass-through",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          74,
+          276
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 68.8368,
+        "d_K_base": 68.8368,
+        "d_front_plus": 68.8368,
+        "d_K_plus": 68.8368
+      },
+      {
+        "id": "P-K-X4",
+        "family": "JL/P pass-through",
+        "board": "P",
+        "joint": "P",
+        "xy": [
+          91,
+          276
+        ],
+        "positions_candidate": 3,
+        "d_front_base": 85.5716,
+        "d_K_base": 85.5716,
+        "d_front_plus": 85.5716,
+        "d_K_plus": 85.5716
+      }
+    ],
+    "largest_bay": {
+      "base": {
+        "centre_pair": "JL-K-9",
+        "centre_xy": [
+          159,
+          38
+        ],
+        "radius_mm": 126.6491,
+        "pairs_inside": [
+          "JL-K-11",
+          "JL-K-12",
+          "JL-K-13",
+          "JL-K-14",
+          "JL-K-15",
+          "JL-K-16",
+          "JL-K-17",
+          "JL-K-18",
+          "JL-K-2",
+          "JL-K-22",
+          "JL-K-23",
+          "JL-K-24",
+          "JL-K-25",
+          "JL-K-3",
+          "JL-K-4",
+          "JL-K-5",
+          "JL-K-6",
+          "JL-K-7",
+          "JL-K-8",
+          "JL-K-9",
+          "JR-K-1",
+          "JR-K-10",
+          "JR-K-11",
+          "JR-K-12",
+          "JR-K-13",
+          "JR-K-15",
+          "JR-K-16",
+          "JR-K-17",
+          "JR-K-18",
+          "JR-K-2",
+          "JR-K-22",
+          "JR-K-23",
+          "JR-K-3",
+          "JR-K-4",
+          "JR-K-5",
+          "JR-K-6",
+          "JR-K-8",
+          "JR-K-9"
+        ]
+      },
+      "plus": {
+        "centre_pair": "K-P-42",
+        "centre_xy": [
+          99.5,
+          255.0
+        ],
+        "radius_mm": 90.5884,
+        "pairs_inside": [
+          "K-O3-1",
+          "K-O3-2",
+          "K-O5-1",
+          "K-O5-2",
+          "K-P-1",
+          "K-P-100",
+          "K-P-101",
+          "K-P-102",
+          "K-P-103",
+          "K-P-104",
+          "K-P-105",
+          "K-P-106",
+          "K-P-107",
+          "K-P-108",
+          "K-P-109",
+          "K-P-11",
+          "K-P-110",
+          "K-P-111",
+          "K-P-112",
+          "K-P-113",
+          "K-P-114",
+          "K-P-115",
+          "K-P-116",
+          "K-P-117",
+          "K-P-118",
+          "K-P-119",
+          "K-P-120",
+          "K-P-121",
+          "K-P-122",
+          "K-P-123",
+          "K-P-40",
+          "K-P-41",
+          "K-P-42",
+          "K-P-43",
+          "K-P-44",
+          "K-P-45",
+          "K-P-46",
+          "K-P-47",
+          "K-P-48",
+          "K-P-49",
+          "K-P-50",
+          "K-P-51",
+          "K-P-52",
+          "K-P-53",
+          "K-P-56",
+          "K-P-58",
+          "K-P-59",
+          "K-P-60",
+          "K-P-61",
+          "K-P-65",
+          "K-P-67",
+          "K-P-68",
+          "K-P-69",
+          "K-P-70",
+          "K-P-71",
+          "K-P-72",
+          "K-P-73",
+          "K-P-74",
+          "K-P-75",
+          "K-P-76",
+          "K-P-77",
+          "K-P-78",
+          "K-P-80",
+          "K-P-81",
+          "K-P-82",
+          "K-P-83",
+          "K-P-85",
+          "K-P-86",
+          "K-P-88",
+          "K-P-89",
+          "K-P-90",
+          "K-P-91",
+          "K-P-92",
+          "K-P-93",
+          "K-P-94",
+          "K-P-95",
+          "K-P-96",
+          "K-P-97",
+          "K-P-98",
+          "K-P-99",
+          "P-K-SUB-O4",
+          "P-K-X1",
+          "P-K-X2",
+          "P-K-X3",
+          "P-K-X4"
+        ]
+      }
+    },
+    "el_tab_post_pitch_mm": 17.0,
+    "el_outer_site_overhang_mm": 8.5,
+    "j_post_rows_y_mm": [
+      160
+    ],
+    "p_post_rows_y_mm": [
+      175,
+      179
+    ],
+    "j_to_p_post_row_spacing_mm": [
+      15.0,
+      19.0
+    ],
+    "jl_jr_inner_post_span_mm": 68.0,
+    "hardware_kind_counts": {
+      "octave": 5,
+      "switch": 30,
+      "pot": 101,
+      "button": 8,
+      "led": 114,
+      "jack": 180
+    },
+    "a3": {
+      "fixing_counts": {
+        "kept support JL": 4,
+        "kept support JR": 4,
+        "kept support P": 4,
+        "post JL": 6,
+        "post JR": 6,
+        "post P": 6
+      },
+      "k_regions": {
+        "posts_and_sleeves": {
+          "interior_bay": {
+            "radius_mm": 79.6241,
+            "centre_xy": [
+              159.0,
+              88.0
+            ]
+          },
+          "edge_region_low_y": {
+            "span_mm": 153.1878,
+            "point_xy": [
+              159.0,
+              8.0
+            ]
+          },
+          "edge_region_high_y": {
+            "span_mm": 118.0889,
+            "point_xy": [
+              126.0,
+              292.0
+            ]
+          },
+          "post_rows_y_mm": [
+            160.0,
+            175.0
+          ]
+        },
+        "posts_only": {
+          "interior_bay": {
+            "radius_mm": 79.6241,
+            "centre_xy": [
+              159.0,
+              88.0
+            ]
+          },
+          "edge_region_low_y": {
+            "span_mm": 156.205,
+            "point_xy": [
+              4.0,
+              8.0
+            ]
+          },
+          "edge_region_high_y": {
+            "span_mm": 136.8211,
+            "point_xy": [
+              4.0,
+              292.0
+            ]
+          },
+          "post_rows_y_mm": [
+            160.0,
+            175.0
+          ]
+        }
+      },
+      "sleeves": [
+        {
+          "id": "JL-SUP-1",
+          "board": "JL",
+          "xy": [
+            6.5,
+            22.5
+          ],
+          "nearest_fixing": "JL-SUP-2",
+          "d_fixing_mm": 57.5
+        },
+        {
+          "id": "JL-SUP-2",
+          "board": "JL",
+          "xy": [
+            6.5,
+            80.0
+          ],
+          "nearest_fixing": "JL-SUP-1",
+          "d_fixing_mm": 57.5
+        },
+        {
+          "id": "JL-SUP-3",
+          "board": "JL",
+          "xy": [
+            6.5,
+            138.0
+          ],
+          "nearest_fixing": "K-SUP-3",
+          "d_fixing_mm": 22.0
+        },
+        {
+          "id": "JR-SUP-1",
+          "board": "JR",
+          "xy": [
+            311.5,
+            22.5
+          ],
+          "nearest_fixing": "JR-SUP-2",
+          "d_fixing_mm": 57.5
+        },
+        {
+          "id": "JR-SUP-2",
+          "board": "JR",
+          "xy": [
+            311.5,
+            80.0
+          ],
+          "nearest_fixing": "JR-SUP-1",
+          "d_fixing_mm": 57.5
+        },
+        {
+          "id": "JR-SUP-3",
+          "board": "JR",
+          "xy": [
+            311.5,
+            138.0
+          ],
+          "nearest_fixing": "K-SUP-4",
+          "d_fixing_mm": 22.0
+        },
+        {
+          "id": "K-SUP-3",
+          "board": "JL",
+          "xy": [
+            6.5,
+            160.0
+          ],
+          "nearest_fixing": "JL-SUP-3",
+          "d_fixing_mm": 22.0
+        },
+        {
+          "id": "K-SUP-4",
+          "board": "JR",
+          "xy": [
+            311.5,
+            160.0
+          ],
+          "nearest_fixing": "JR-SUP-3",
+          "d_fixing_mm": 22.0
+        },
+        {
+          "id": "K-SUP-5",
+          "board": "P",
+          "xy": [
+            6.5,
+            243.0
+          ],
+          "nearest_fixing": "K-SUP-7",
+          "d_fixing_mm": 46.5
+        },
+        {
+          "id": "K-SUP-6",
+          "board": "P",
+          "xy": [
+            311.5,
+            243.0
+          ],
+          "nearest_fixing": "K-SUP-8",
+          "d_fixing_mm": 72.7891
+        },
+        {
+          "id": "K-SUP-7",
+          "board": "P",
+          "xy": [
+            6.5,
+            289.5
+          ],
+          "nearest_fixing": "K-SUP-5",
+          "d_fixing_mm": 46.5
+        },
+        {
+          "id": "K-SUP-8",
+          "board": "P",
+          "xy": [
+            255.5,
+            289.5
+          ],
+          "nearest_fixing": "K-SUP-6",
+          "d_fixing_mm": 72.7891
+        }
+      ],
+      "adapter_pairs": [
+        {
+          "id": "K-O1-1",
+          "board": "O1",
+          "xy": [
+            14.5,
+            181.5
+          ],
+          "positions": 5,
+          "nearest_fixing": "K-SUP-3",
+          "d_fixing_mm": 22.9401,
+          "nearest_post": "POWER-JL-+12V",
+          "d_post_mm": 33.3542
+        },
+        {
+          "id": "K-O1-2",
+          "board": "O1",
+          "xy": [
+            14.5,
+            188.5
+          ],
+          "positions": 5,
+          "nearest_fixing": "K-SUP-3",
+          "d_fixing_mm": 29.6015,
+          "nearest_post": "POWER-JL-+12V",
+          "d_post_mm": 38.2426
+        },
+        {
+          "id": "K-O3-1",
+          "board": "O3",
+          "xy": [
+            48.5,
+            181.5
+          ],
+          "positions": 5,
+          "nearest_fixing": "POWER-JL-+12V",
+          "d_fixing_mm": 23.1193,
+          "nearest_post": "POWER-JL-+12V",
+          "d_post_mm": 23.1193
+        },
+        {
+          "id": "K-O3-2",
+          "board": "O3",
+          "xy": [
+            48.5,
+            188.5
+          ],
+          "positions": 5,
+          "nearest_fixing": "POWER-JL-+12V",
+          "d_fixing_mm": 29.7405,
+          "nearest_post": "POWER-JL-+12V",
+          "d_post_mm": 29.7405
+        },
+        {
+          "id": "K-O5-1",
+          "board": "O5",
+          "xy": [
+            82.5,
+            181.5
+          ],
+          "positions": 5,
+          "nearest_fixing": "POWER-P-AGND2",
+          "d_fixing_mm": 17.2699,
+          "nearest_post": "POWER-P-AGND2",
+          "d_post_mm": 17.2699
+        },
+        {
+          "id": "K-O5-2",
+          "board": "O5",
+          "xy": [
+            82.5,
+            188.5
+          ],
+          "positions": 5,
+          "nearest_fixing": "POWER-P-AGND2",
+          "d_fixing_mm": 20.9344,
+          "nearest_post": "POWER-P-AGND2",
+          "d_post_mm": 20.9344
+        }
+      ]
+    },
+    "a5": {
+      "fixing_list": "ST-08 a1 (parameters.a5.st08_a1_sleeves and the posts of the fixing file)",
+      "fixings": [
+        {
+          "id": "POWER-JL-+12V",
+          "kind": "post",
+          "xy": [
+            40.0,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JL--12V",
+          "kind": "post",
+          "xy": [
+            57.0,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JL-+5V",
+          "kind": "post",
+          "xy": [
+            74.0,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JL-AGND1",
+          "kind": "post",
+          "xy": [
+            91.0,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JL-AGND2",
+          "kind": "post",
+          "xy": [
+            108.0,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JL-AGND3",
+          "kind": "post",
+          "xy": [
+            125.0,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JR-+12V",
+          "kind": "post",
+          "xy": [
+            193.0,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JR--12V",
+          "kind": "post",
+          "xy": [
+            210.0,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JR-+5V",
+          "kind": "post",
+          "xy": [
+            227.5,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JR-AGND1",
+          "kind": "post",
+          "xy": [
+            244.5,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JR-AGND2",
+          "kind": "post",
+          "xy": [
+            261.5,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-JR-AGND3",
+          "kind": "post",
+          "xy": [
+            278.5,
+            160.0
+          ]
+        },
+        {
+          "id": "POWER-P-+12V",
+          "kind": "post",
+          "xy": [
+            142.0,
+            175.0
+          ]
+        },
+        {
+          "id": "POWER-P--12V",
+          "kind": "post",
+          "xy": [
+            159.0,
+            175.0
+          ]
+        },
+        {
+          "id": "POWER-P-+5V",
+          "kind": "post",
+          "xy": [
+            176.0,
+            175.0
+          ]
+        },
+        {
+          "id": "POWER-P-AGND1",
+          "kind": "post",
+          "xy": [
+            193.0,
+            175.0
+          ]
+        },
+        {
+          "id": "POWER-P-AGND2",
+          "kind": "post",
+          "xy": [
+            98.5,
+            175.0
+          ]
+        },
+        {
+          "id": "POWER-P-AGND3",
+          "kind": "post",
+          "xy": [
+            110.0,
+            174.5
+          ]
+        },
+        {
+          "id": "JL-SUP-1",
+          "kind": "sleeve kept",
+          "xy": [
+            6.5,
+            22.5
+          ]
+        },
+        {
+          "id": "JR-SUP-1",
+          "kind": "sleeve kept",
+          "xy": [
+            311.5,
+            22.5
+          ]
+        },
+        {
+          "id": "SLV-U1",
+          "kind": "sleeve added",
+          "xy": [
+            159.0,
+            38.0
+          ]
+        },
+        {
+          "id": "SLV-L2",
+          "kind": "sleeve added",
+          "xy": [
+            244.0,
+            230.0
+          ]
+        },
+        {
+          "id": "SLV-L1",
+          "kind": "sleeve added",
+          "xy": [
+            93.0,
+            276.0
+          ]
+        }
+      ],
+      "k_outline": [
+        [
+          4,
+          8
+        ],
+        [
+          314,
+          8
+        ],
+        [
+          314,
+          246
+        ],
+        [
+          258,
+          246
+        ],
+        [
+          258,
+          292
+        ],
+        [
+          4,
+          292
+        ]
+      ],
+      "regions": {
+        "posts_only": {
+          "interior_bay": {
+            "radius_mm": 79.6241,
+            "centre_xy": [
+              159.0,
+              88.0
+            ]
+          },
+          "edge_region_low_y": {
+            "span_mm": 156.205,
+            "point_xy": [
+              4.0,
+              8.0
+            ]
+          },
+          "edge_region_high_y": {
+            "span_mm": 136.8211,
+            "point_xy": [
+              4.0,
+              292.0
+            ]
+          },
+          "post_rows_y_mm": [
+            160.0,
+            174.5,
+            175.0
+          ],
+          "farthest": {
+            "span_mm": 156.205,
+            "point_xy": [
+              4.0,
+              8.0
+            ]
+          }
+        },
+        "list": {
+          "interior_bay": {
+            "radius_mm": 76.0,
+            "centre_xy": [
+              80.0,
+              84.0
+            ]
+          },
+          "edge_region_low_y": {
+            "span_mm": 87.1737,
+            "point_xy": [
+              239.0,
+              73.0
+            ]
+          },
+          "edge_region_high_y": {
+            "span_mm": 93.6056,
+            "point_xy": [
+              4.0,
+              247.0
+            ]
+          },
+          "post_rows_y_mm": [
+            160.0,
+            174.5,
+            175.0
+          ],
+          "farthest": {
+            "span_mm": 93.6056,
+            "point_xy": [
+              4.0,
+              247.0
+            ]
+          }
+        },
+        "list_plus_one": {
+          "interior_bay": {
+            "radius_mm": 76.0,
+            "centre_xy": [
+              80.0,
+              84.0
+            ]
+          },
+          "edge_region_low_y": {
+            "span_mm": 87.1737,
+            "point_xy": [
+              239.0,
+              73.0
+            ]
+          },
+          "edge_region_high_y": {
+            "span_mm": 88.459,
+            "point_xy": [
+              180.0,
+              292.0
+            ]
+          },
+          "post_rows_y_mm": [
+            160.0,
+            174.5,
+            175.0
+          ],
+          "farthest": {
+            "span_mm": 88.459,
+            "point_xy": [
+              180.0,
+              292.0
+            ]
+          }
+        }
+      },
+      "sleeves": [
+        {
+          "id": "JL-SUP-1",
+          "kind": "sleeve kept",
+          "xy": [
+            6.5,
+            22.5
+          ],
+          "gap_mm": 19.0,
+          "nearest_other_fixing": "POWER-JL-+12V",
+          "span_mm": 141.522
+        },
+        {
+          "id": "JR-SUP-1",
+          "kind": "sleeve kept",
+          "xy": [
+            311.5,
+            22.5
+          ],
+          "gap_mm": 19.0,
+          "nearest_other_fixing": "POWER-JR-AGND3",
+          "span_mm": 141.405
+        },
+        {
+          "id": "SLV-U1",
+          "kind": "sleeve added",
+          "xy": [
+            159.0,
+            38.0
+          ],
+          "gap_mm": 19.0,
+          "nearest_other_fixing": "POWER-JL-AGND3",
+          "span_mm": 126.649
+        },
+        {
+          "id": "SLV-L2",
+          "kind": "sleeve added",
+          "xy": [
+            244.0,
+            230.0
+          ],
+          "gap_mm": 17.0,
+          "nearest_other_fixing": "POWER-JR-AGND1",
+          "span_mm": 70.002
+        },
+        {
+          "id": "SLV-L1",
+          "kind": "sleeve added",
+          "xy": [
+            93.0,
+            276.0
+          ],
+          "gap_mm": 17.0,
+          "nearest_other_fixing": "POWER-P-AGND2",
+          "span_mm": 101.15
+        }
+      ],
+      "corner_sleeves": {
+        "JL-SUP-1": {
+          "K": {
+            "edge_distances_mm": [
+              2.5,
+              14.5
+            ],
+            "nearest_edges_mm": [
+              [
+                [
+                  4.0,
+                  292.0
+                ],
+                [
+                  4.0,
+                  8.0
+                ]
+              ],
+              [
+                [
+                  4.0,
+                  8.0
+                ],
+                [
+                  314.0,
+                  8.0
+                ]
+              ]
+            ],
+            "footprints_within_8_mm": [],
+            "board_file": "boards/osc-core/osc-core.kicad_pcb",
+            "board_sha256": "7311cd8e7aabb609c0a6d1a7f2ef42324c585d0c7b51f77c6bd3fc0338c54f22"
+          },
+          "JL": {
+            "edge_distances_mm": [
+              2.5,
+              2.5
+            ],
+            "nearest_edges_mm": [
+              [
+                [
+                  4.0,
+                  20.0
+                ],
+                [
+                  176.5,
+                  20.0
+                ]
+              ],
+              [
+                [
+                  4.0,
+                  164.0
+                ],
+                [
+                  4.0,
+                  20.0
+                ]
+              ]
+            ],
+            "footprints_within_8_mm": [],
+            "board_file": "boards/osc-jack-left/osc-jack-left.kicad_pcb",
+            "board_sha256": "2cd30044054fcdbf8c94de27515a5bc763e98de12c0f3df212cf5d84ded1ee19"
+          }
+        },
+        "JR-SUP-1": {
+          "K": {
+            "edge_distances_mm": [
+              2.5,
+              14.5
+            ],
+            "nearest_edges_mm": [
+              [
+                [
+                  314.0,
+                  8.0
+                ],
+                [
+                  314.0,
+                  246.0
+                ]
+              ],
+              [
+                [
+                  4.0,
+                  8.0
+                ],
+                [
+                  314.0,
+                  8.0
+                ]
+              ]
+            ],
+            "footprints_within_8_mm": [],
+            "board_file": "boards/osc-core/osc-core.kicad_pcb",
+            "board_sha256": "7311cd8e7aabb609c0a6d1a7f2ef42324c585d0c7b51f77c6bd3fc0338c54f22"
+          },
+          "JR": {
+            "edge_distances_mm": [
+              2.5,
+              2.5
+            ],
+            "nearest_edges_mm": [
+              [
+                [
+                  177.5,
+                  20.0
+                ],
+                [
+                  314.0,
+                  20.0
+                ]
+              ],
+              [
+                [
+                  314.0,
+                  20.0
+                ],
+                [
+                  314.0,
+                  164.0
+                ]
+              ]
+            ],
+            "footprints_within_8_mm": [
+              {
+                "ref": "R4615",
+                "lib": "R0603",
+                "origin_xy": [
+                  310.94,
+                  26.11
+                ],
+                "origin_distance_mm": 3.6532,
+                "drills_mm": []
+              },
+              {
+                "ref": "R4616",
+                "lib": "R0603",
+                "origin_xy": [
+                  306.54,
+                  22.51
+                ],
+                "origin_distance_mm": 4.96,
+                "drills_mm": []
+              },
+              {
+                "ref": "RB4607",
+                "lib": "R_1210_3225Metric",
+                "origin_xy": [
+                  307.3,
+                  26.07
+                ],
+                "origin_distance_mm": 5.5122,
+                "drills_mm": []
+              },
+              {
+                "ref": "R4608",
+                "lib": "R0603",
+                "origin_xy": [
+                  312.01,
+                  29.04
+                ],
+                "origin_distance_mm": 6.5599,
+                "drills_mm": []
+              },
+              {
+                "ref": "D1801",
+                "lib": "LED0402-Kingbright-White",
+                "origin_xy": [
+                  309.65,
+                  29.0
+                ],
+                "origin_distance_mm": 6.7581,
+                "drills_mm": []
+              },
+              {
+                "ref": "RB4605",
+                "lib": "R_1210_3225Metric",
+                "origin_xy": [
+                  310.9,
+                  29.67
+                ],
+                "origin_distance_mm": 7.1951,
+                "drills_mm": []
+              }
+            ],
+            "board_file": "boards/osc-jack-right/osc-jack-right.kicad_pcb",
+            "board_sha256": "653b20312851fad1dcf1a90806c1fdc558edf32dfc25d6675b43bb100ff9b3c1"
+          }
+        }
+      }
+    },
+    "a6": {
+      "fixing_file": "design/stack/fixings/fixing-sites.json",
+      "fixings_array_sha256": "8ed2b59d2d1fe81afac5e23c3846dce39256903dd6a612e80d461b1049f51293",
+      "k_outline": [
+        [
+          4,
+          8
+        ],
+        [
+          314,
+          8
+        ],
+        [
+          314,
+          246
+        ],
+        [
+          258,
+          246
+        ],
+        [
+          258,
+          292
+        ],
+        [
+          4,
+          292
+        ]
+      ],
+      "reserve": [
+        {
+          "id": "SLV-R1",
+          "xy": [
+            159.0,
+            38.0
+          ],
+          "decision": "DS-73"
+        }
+      ],
+      "alternatives": [
+        {
+          "id": "ALT-L1-A",
+          "xy": [
+            97.0,
+            276.0
+          ],
+          "replaces": "SLV-L1",
+          "findings": [],
+          "decision": "DS-74"
+        },
+        {
+          "id": "ALT-L1-B",
+          "xy": [
+            101.0,
+            276.0
+          ],
+          "replaces": "SLV-L1",
+          "findings": [],
+          "decision": "DS-74"
+        },
+        {
+          "id": "ALT-L2-A",
+          "xy": [
+            261.0,
+            227.0
+          ],
+          "replaces": "SLV-L2",
+          "findings": [
+            "POWER-JR-AGND1 within 70 mm (69.00 mm)",
+            "POWER-JR-AGND2 within 70 mm (67.00 mm)",
+            "POWER-JR-AGND3 within 70 mm (69.25 mm)"
+          ],
+          "decision": "DS-74"
+        }
+      ],
+      "sets": {
+        "ruled": {
+          "fixings": [
+            {
+              "id": "POWER-JL-+12V",
+              "kind": "post",
+              "xy": [
+                40.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL--12V",
+              "kind": "post",
+              "xy": [
+                57.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-+5V",
+              "kind": "post",
+              "xy": [
+                74.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-AGND1",
+              "kind": "post",
+              "xy": [
+                91.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-AGND2",
+              "kind": "post",
+              "xy": [
+                108.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-AGND3",
+              "kind": "post",
+              "xy": [
+                125.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-+12V",
+              "kind": "post",
+              "xy": [
+                193.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR--12V",
+              "kind": "post",
+              "xy": [
+                210.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-+5V",
+              "kind": "post",
+              "xy": [
+                227.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-AGND1",
+              "kind": "post",
+              "xy": [
+                244.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-AGND2",
+              "kind": "post",
+              "xy": [
+                261.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-AGND3",
+              "kind": "post",
+              "xy": [
+                278.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-P-+12V",
+              "kind": "post",
+              "xy": [
+                142.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P--12V",
+              "kind": "post",
+              "xy": [
+                159.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-+5V",
+              "kind": "post",
+              "xy": [
+                176.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-AGND1",
+              "kind": "post",
+              "xy": [
+                193.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-AGND2",
+              "kind": "post",
+              "xy": [
+                98.5,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-AGND3",
+              "kind": "post",
+              "xy": [
+                110.0,
+                174.5
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "SLV-U1",
+              "kind": "sleeve added",
+              "xy": [
+                74.0,
+                28.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "SLV-U2",
+              "kind": "sleeve added",
+              "xy": [
+                244.0,
+                24.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "SLV-L1",
+              "kind": "sleeve added",
+              "xy": [
+                93.0,
+                276.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "SLV-L2",
+              "kind": "sleeve added",
+              "xy": [
+                244.0,
+                230.0
+              ],
+              "gap_mm": 17.0
+            }
+          ],
+          "regions": {
+            "interior_bay": {
+              "radius_mm": 79.6241,
+              "centre_xy": [
+                159.0,
+                88.0
+              ]
+            },
+            "edge_region_low_y": {
+              "span_mm": 95.7079,
+              "point_xy": [
+                160.0,
+                70.0
+              ]
+            },
+            "edge_region_high_y": {
+              "span_mm": 93.6056,
+              "point_xy": [
+                4.0,
+                247.0
+              ]
+            },
+            "post_rows_y_mm": [
+              160.0,
+              174.5,
+              175.0
+            ],
+            "farthest": {
+              "span_mm": 95.7079,
+              "point_xy": [
+                160.0,
+                70.0
+              ]
+            }
+          },
+          "sleeves": [
+            {
+              "id": "SLV-U1",
+              "nearest_other_fixing": "POWER-JL-+5V",
+              "span_mm": 132.0
+            },
+            {
+              "id": "SLV-U2",
+              "nearest_other_fixing": "POWER-JR-AGND1",
+              "span_mm": 136.001
+            },
+            {
+              "id": "SLV-L1",
+              "nearest_other_fixing": "POWER-P-AGND2",
+              "span_mm": 101.15
+            },
+            {
+              "id": "SLV-L2",
+              "nearest_other_fixing": "POWER-JR-AGND1",
+              "span_mm": 70.002
+            }
+          ]
+        },
+        "ruled_plus_SLV-R1": {
+          "fixings": [
+            {
+              "id": "POWER-JL-+12V",
+              "kind": "post",
+              "xy": [
+                40.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL--12V",
+              "kind": "post",
+              "xy": [
+                57.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-+5V",
+              "kind": "post",
+              "xy": [
+                74.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-AGND1",
+              "kind": "post",
+              "xy": [
+                91.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-AGND2",
+              "kind": "post",
+              "xy": [
+                108.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-AGND3",
+              "kind": "post",
+              "xy": [
+                125.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-+12V",
+              "kind": "post",
+              "xy": [
+                193.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR--12V",
+              "kind": "post",
+              "xy": [
+                210.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-+5V",
+              "kind": "post",
+              "xy": [
+                227.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-AGND1",
+              "kind": "post",
+              "xy": [
+                244.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-AGND2",
+              "kind": "post",
+              "xy": [
+                261.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-AGND3",
+              "kind": "post",
+              "xy": [
+                278.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-P-+12V",
+              "kind": "post",
+              "xy": [
+                142.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P--12V",
+              "kind": "post",
+              "xy": [
+                159.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-+5V",
+              "kind": "post",
+              "xy": [
+                176.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-AGND1",
+              "kind": "post",
+              "xy": [
+                193.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-AGND2",
+              "kind": "post",
+              "xy": [
+                98.5,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-AGND3",
+              "kind": "post",
+              "xy": [
+                110.0,
+                174.5
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "SLV-U1",
+              "kind": "sleeve added",
+              "xy": [
+                74.0,
+                28.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "SLV-U2",
+              "kind": "sleeve added",
+              "xy": [
+                244.0,
+                24.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "SLV-L1",
+              "kind": "sleeve added",
+              "xy": [
+                93.0,
+                276.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "SLV-L2",
+              "kind": "sleeve added",
+              "xy": [
+                244.0,
+                230.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "SLV-R1",
+              "kind": "reserve",
+              "xy": [
+                159.0,
+                38.0
+              ],
+              "gap_mm": 19.0
+            }
+          ],
+          "regions": {
+            "interior_bay": {
+              "radius_mm": 72.0069,
+              "centre_xy": [
+                211.0,
+                88.0
+              ]
+            },
+            "edge_region_low_y": {
+              "span_mm": 88.4378,
+              "point_xy": [
+                314.0,
+                79.0
+              ]
+            },
+            "edge_region_high_y": {
+              "span_mm": 93.6056,
+              "point_xy": [
+                4.0,
+                247.0
+              ]
+            },
+            "post_rows_y_mm": [
+              160.0,
+              174.5,
+              175.0
+            ],
+            "farthest": {
+              "span_mm": 93.6056,
+              "point_xy": [
+                4.0,
+                247.0
+              ]
+            }
+          },
+          "sleeves": [
+            {
+              "id": "SLV-U1",
+              "nearest_other_fixing": "SLV-R1",
+              "span_mm": 85.586
+            },
+            {
+              "id": "SLV-U2",
+              "nearest_other_fixing": "SLV-R1",
+              "span_mm": 86.145
+            },
+            {
+              "id": "SLV-L1",
+              "nearest_other_fixing": "POWER-P-AGND2",
+              "span_mm": 101.15
+            },
+            {
+              "id": "SLV-L2",
+              "nearest_other_fixing": "POWER-JR-AGND1",
+              "span_mm": 70.002
+            },
+            {
+              "id": "SLV-R1",
+              "nearest_other_fixing": "SLV-U1",
+              "span_mm": 85.586
+            }
+          ]
+        },
+        "ALT-L1-A": {
+          "fixings": [
+            {
+              "id": "POWER-JL-+12V",
+              "kind": "post",
+              "xy": [
+                40.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL--12V",
+              "kind": "post",
+              "xy": [
+                57.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-+5V",
+              "kind": "post",
+              "xy": [
+                74.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-AGND1",
+              "kind": "post",
+              "xy": [
+                91.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-AGND2",
+              "kind": "post",
+              "xy": [
+                108.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-AGND3",
+              "kind": "post",
+              "xy": [
+                125.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-+12V",
+              "kind": "post",
+              "xy": [
+                193.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR--12V",
+              "kind": "post",
+              "xy": [
+                210.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-+5V",
+              "kind": "post",
+              "xy": [
+                227.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-AGND1",
+              "kind": "post",
+              "xy": [
+                244.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-AGND2",
+              "kind": "post",
+              "xy": [
+                261.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-AGND3",
+              "kind": "post",
+              "xy": [
+                278.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-P-+12V",
+              "kind": "post",
+              "xy": [
+                142.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P--12V",
+              "kind": "post",
+              "xy": [
+                159.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-+5V",
+              "kind": "post",
+              "xy": [
+                176.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-AGND1",
+              "kind": "post",
+              "xy": [
+                193.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-AGND2",
+              "kind": "post",
+              "xy": [
+                98.5,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-AGND3",
+              "kind": "post",
+              "xy": [
+                110.0,
+                174.5
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "SLV-U1",
+              "kind": "sleeve added",
+              "xy": [
+                74.0,
+                28.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "SLV-U2",
+              "kind": "sleeve added",
+              "xy": [
+                244.0,
+                24.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "SLV-L2",
+              "kind": "sleeve added",
+              "xy": [
+                244.0,
+                230.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "ALT-L1-A",
+              "kind": "alternative",
+              "xy": [
+                97.0,
+                276.0
+              ],
+              "gap_mm": 17.0
+            }
+          ],
+          "regions": {
+            "interior_bay": {
+              "radius_mm": 79.6241,
+              "centre_xy": [
+                159.0,
+                88.0
+              ]
+            },
+            "edge_region_low_y": {
+              "span_mm": 95.7079,
+              "point_xy": [
+                160.0,
+                70.0
+              ]
+            },
+            "edge_region_high_y": {
+              "span_mm": 96.566,
+              "point_xy": [
+                4.0,
+                250.0
+              ]
+            },
+            "post_rows_y_mm": [
+              160.0,
+              174.5,
+              175.0
+            ],
+            "farthest": {
+              "span_mm": 96.566,
+              "point_xy": [
+                4.0,
+                250.0
+              ]
+            }
+          },
+          "sleeves": [
+            {
+              "id": "SLV-U1",
+              "nearest_other_fixing": "POWER-JL-+5V",
+              "span_mm": 132.0
+            },
+            {
+              "id": "SLV-U2",
+              "nearest_other_fixing": "POWER-JR-AGND1",
+              "span_mm": 136.001
+            },
+            {
+              "id": "SLV-L2",
+              "nearest_other_fixing": "POWER-JR-AGND1",
+              "span_mm": 70.002
+            },
+            {
+              "id": "ALT-L1-A",
+              "nearest_other_fixing": "POWER-P-AGND2",
+              "span_mm": 101.011
+            }
+          ]
+        },
+        "ALT-L1-B": {
+          "fixings": [
+            {
+              "id": "POWER-JL-+12V",
+              "kind": "post",
+              "xy": [
+                40.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL--12V",
+              "kind": "post",
+              "xy": [
+                57.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-+5V",
+              "kind": "post",
+              "xy": [
+                74.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-AGND1",
+              "kind": "post",
+              "xy": [
+                91.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-AGND2",
+              "kind": "post",
+              "xy": [
+                108.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-AGND3",
+              "kind": "post",
+              "xy": [
+                125.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-+12V",
+              "kind": "post",
+              "xy": [
+                193.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR--12V",
+              "kind": "post",
+              "xy": [
+                210.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-+5V",
+              "kind": "post",
+              "xy": [
+                227.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-AGND1",
+              "kind": "post",
+              "xy": [
+                244.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-AGND2",
+              "kind": "post",
+              "xy": [
+                261.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-AGND3",
+              "kind": "post",
+              "xy": [
+                278.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-P-+12V",
+              "kind": "post",
+              "xy": [
+                142.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P--12V",
+              "kind": "post",
+              "xy": [
+                159.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-+5V",
+              "kind": "post",
+              "xy": [
+                176.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-AGND1",
+              "kind": "post",
+              "xy": [
+                193.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-AGND2",
+              "kind": "post",
+              "xy": [
+                98.5,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-AGND3",
+              "kind": "post",
+              "xy": [
+                110.0,
+                174.5
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "SLV-U1",
+              "kind": "sleeve added",
+              "xy": [
+                74.0,
+                28.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "SLV-U2",
+              "kind": "sleeve added",
+              "xy": [
+                244.0,
+                24.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "SLV-L2",
+              "kind": "sleeve added",
+              "xy": [
+                244.0,
+                230.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "ALT-L1-B",
+              "kind": "alternative",
+              "xy": [
+                101.0,
+                276.0
+              ],
+              "gap_mm": 17.0
+            }
+          ],
+          "regions": {
+            "interior_bay": {
+              "radius_mm": 79.6241,
+              "centre_xy": [
+                159.0,
+                88.0
+              ]
+            },
+            "edge_region_low_y": {
+              "span_mm": 95.7079,
+              "point_xy": [
+                160.0,
+                70.0
+              ]
+            },
+            "edge_region_high_y": {
+              "span_mm": 99.6895,
+              "point_xy": [
+                4.0,
+                253.0
+              ]
+            },
+            "post_rows_y_mm": [
+              160.0,
+              174.5,
+              175.0
+            ],
+            "farthest": {
+              "span_mm": 99.6895,
+              "point_xy": [
+                4.0,
+                253.0
+              ]
+            }
+          },
+          "sleeves": [
+            {
+              "id": "SLV-U1",
+              "nearest_other_fixing": "POWER-JL-+5V",
+              "span_mm": 132.0
+            },
+            {
+              "id": "SLV-U2",
+              "nearest_other_fixing": "POWER-JR-AGND1",
+              "span_mm": 136.001
+            },
+            {
+              "id": "SLV-L2",
+              "nearest_other_fixing": "POWER-JR-AGND1",
+              "span_mm": 70.002
+            },
+            {
+              "id": "ALT-L1-B",
+              "nearest_other_fixing": "POWER-P-AGND2",
+              "span_mm": 101.031
+            }
+          ]
+        },
+        "ALT-L2-A": {
+          "fixings": [
+            {
+              "id": "POWER-JL-+12V",
+              "kind": "post",
+              "xy": [
+                40.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL--12V",
+              "kind": "post",
+              "xy": [
+                57.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-+5V",
+              "kind": "post",
+              "xy": [
+                74.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-AGND1",
+              "kind": "post",
+              "xy": [
+                91.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-AGND2",
+              "kind": "post",
+              "xy": [
+                108.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JL-AGND3",
+              "kind": "post",
+              "xy": [
+                125.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-+12V",
+              "kind": "post",
+              "xy": [
+                193.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR--12V",
+              "kind": "post",
+              "xy": [
+                210.0,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-+5V",
+              "kind": "post",
+              "xy": [
+                227.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-AGND1",
+              "kind": "post",
+              "xy": [
+                244.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-AGND2",
+              "kind": "post",
+              "xy": [
+                261.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-JR-AGND3",
+              "kind": "post",
+              "xy": [
+                278.5,
+                160.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "POWER-P-+12V",
+              "kind": "post",
+              "xy": [
+                142.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P--12V",
+              "kind": "post",
+              "xy": [
+                159.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-+5V",
+              "kind": "post",
+              "xy": [
+                176.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-AGND1",
+              "kind": "post",
+              "xy": [
+                193.0,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-AGND2",
+              "kind": "post",
+              "xy": [
+                98.5,
+                175.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "POWER-P-AGND3",
+              "kind": "post",
+              "xy": [
+                110.0,
+                174.5
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "SLV-U1",
+              "kind": "sleeve added",
+              "xy": [
+                74.0,
+                28.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "SLV-U2",
+              "kind": "sleeve added",
+              "xy": [
+                244.0,
+                24.0
+              ],
+              "gap_mm": 19.0
+            },
+            {
+              "id": "SLV-L1",
+              "kind": "sleeve added",
+              "xy": [
+                93.0,
+                276.0
+              ],
+              "gap_mm": 17.0
+            },
+            {
+              "id": "ALT-L2-A",
+              "kind": "alternative",
+              "xy": [
+                261.0,
+                227.0
+              ],
+              "gap_mm": 17.0
+            }
+          ],
+          "regions": {
+            "interior_bay": {
+              "radius_mm": 79.6241,
+              "centre_xy": [
+                159.0,
+                88.0
+              ]
+            },
+            "edge_region_low_y": {
+              "span_mm": 95.7079,
+              "point_xy": [
+                160.0,
+                70.0
+              ]
+            },
+            "edge_region_high_y": {
+              "span_mm": 97.0,
+              "point_xy": [
+                189.0,
+                292.0
+              ]
+            },
+            "post_rows_y_mm": [
+              160.0,
+              174.5,
+              175.0
+            ],
+            "farthest": {
+              "span_mm": 97.0,
+              "point_xy": [
+                189.0,
+                292.0
+              ]
+            }
+          },
+          "sleeves": [
+            {
+              "id": "SLV-U1",
+              "nearest_other_fixing": "POWER-JL-+5V",
+              "span_mm": 132.0
+            },
+            {
+              "id": "SLV-U2",
+              "nearest_other_fixing": "POWER-JR-AGND1",
+              "span_mm": 136.001
+            },
+            {
+              "id": "SLV-L1",
+              "nearest_other_fixing": "POWER-P-AGND2",
+              "span_mm": 101.15
+            },
+            {
+              "id": "ALT-L2-A",
+              "nearest_other_fixing": "POWER-JR-AGND2",
+              "span_mm": 67.002
+            }
+          ]
+        }
+      }
+    }
+  },
+  "supports_disposition": [
+    {
+      "items": "JL-SUP-1..3, JR-SUP-1..3",
+      "ids": [
+        "JL-SUP-1",
+        "JL-SUP-2",
+        "JL-SUP-3",
+        "JR-SUP-1",
+        "JR-SUP-2",
+        "JR-SUP-3"
+      ],
+      "count": 6,
+      "counts_toward_87": true,
+      "disposition": "STAY at the same XY, change role: J-to-K tie posts (18.8 mm, DA-01 D3), no enclosure joint",
+      "reason": "Removes the second load loop through the side carrier; adds edge support to K's flatness along x = 6.5 and 311.5, where no power post exists"
+    },
+    {
+      "items": "JL-SUP-4, JR-SUP-4",
+      "ids": [
+        "JL-SUP-4",
+        "JR-SUP-4"
+      ],
+      "count": 2,
+      "counts_toward_87": true,
+      "disposition": "GO, merged with K-SUP-3/4",
+      "reason": "(6.5, 161.5) and (311.5, 161.5) lie 1.5 mm from K-SUP-3/4 at y = 160; one J-to-K tie post at (6.5, 160) and (311.5, 160) serves both, inside JL and JR (outline y <= 164)"
+    },
+    {
+      "items": "K-SUP-3, K-SUP-4",
+      "ids": [
+        "K-SUP-3",
+        "K-SUP-4"
+      ],
+      "count": 2,
+      "counts_toward_87": true,
+      "disposition": "STAY at the same XY, change role: the merged J-to-K tie posts",
+      "reason": "As above"
+    },
+    {
+      "items": "K-SUP-5..8",
+      "ids": [
+        "K-SUP-5",
+        "K-SUP-6",
+        "K-SUP-7",
+        "K-SUP-8"
+      ],
+      "count": 4,
+      "counts_toward_87": true,
+      "disposition": "STAY at the same XY, change role: P-to-K tie posts (17.0 mm, DA-01 D3), no frame joint",
+      "reason": "All four lie inside P's outline; fastening K to the frame as well as to the front boards closes a second load loop through the panel and enclosure"
+    },
+    {
+      "items": "K-SUP-1, K-SUP-2",
+      "ids": [
+        "K-SUP-1",
+        "K-SUP-2"
+      ],
+      "count": 2,
+      "counts_toward_87": true,
+      "disposition": "GO as clamped supports; optional Z-compliant bumper to the rear cover",
+      "reason": "At y = 10.5 no front board lies in front of them (J starts at y = 20), so a clamp there can only reach the frame"
+    },
+    {
+      "items": "P-SUP-1..5",
+      "ids": [
+        "P-SUP-1",
+        "P-SUP-2",
+        "P-SUP-3",
+        "P-SUP-4",
+        "P-SUP-5"
+      ],
+      "count": 5,
+      "counts_toward_87": true,
+      "disposition": "GO; replaced by P-to-K tie posts at interior candidates",
+      "reason": "Their 3.2 mm collars overlap K's outline edge by 1.1 mm at x = 3.5 and 314.5; moving them inward by >= 1.6 mm would clear K but still tie P to the frame"
+    },
+    {
+      "items": "P-SUP-6",
+      "ids": [
+        "P-SUP-6"
+      ],
+      "count": 1,
+      "counts_toward_87": true,
+      "disposition": "STAY only as a Z-compliant guide (no axial clamp)",
+      "reason": "(314.5, 289.5) lies in K's notch (x > 258, y > 246) where no K post can reach; a clamp would fix P's plane against K's"
+    },
+    {
+      "items": "P-OPT-* (30 clearance holes)",
+      "ids": "P-OPT-*",
+      "count": 30,
+      "counts_toward_87": true,
+      "disposition": "STAY",
+      "reason": "Clearance in P for the EL posts"
+    },
+    {
+      "items": "EL-OPT-1..35",
+      "ids": "EL-OPT-*",
+      "count": 35,
+      "counts_toward_87": true,
+      "disposition": "STAY, change role: EL-to-P collar posts that set the 7.2 mm gap and back EL during mating; two become locators with precision collars",
+      "reason": "EL takes plane and position from P; the five at y = 172 pass through the P tab (plan page)"
+    },
+    {
+      "items": "Seam rear cradle [172, 20, 182, 164], z -13.6..-11.6",
+      "ids": "jack_seam_carrier.rear_rect_mm",
+      "count": 1,
+      "counts_toward_87": false,
+      "disposition": "GO",
+      "reason": "Lies inside the J-to-K gap; K now holds both J boards through tie posts, so the seam needs no separate carrier. J-to-K tie posts within the seam reserves (x 172..182) replace it"
+    },
+    {
+      "items": "Seam front lips [175.2, 20, 178.8, 164]",
+      "ids": "jack_seam_carrier.front_lip_rect_mm",
+      "count": 2,
+      "counts_toward_87": false,
+      "disposition": "GO with the cradle",
+      "reason": "Attached to the cradle"
+    },
+    {
+      "items": "Cross-members y 17..19 and y 165..167, x -2..320",
+      "ids": "jack_seam_carrier.cross_members",
+      "count": 2,
+      "counts_toward_87": false,
+      "disposition": "GO",
+      "reason": "Same z range as the J-to-K gap and P's plane; they reach the enclosure frame and would close the second load loop; the y 165..167 member sits 1.5 mm from the EL tab"
+    },
+    {
+      "items": "Interior fastener candidates (planning screen): JL 37, P 26, JR 3",
+      "ids": "plan page 'Interior fastener sites'",
+      "count": 66,
+      "counts_toward_87": false,
+      "disposition": "USE as front-board-to-K tie posts where ST-08 needs them to put every pair within 40 mm of a fixing (DA-01 D4)",
+      "reason": "Posts and kept supports alone leave pairs up to 127 mm from the nearest fixing (coverage table). The 66 site coordinates are not retained, so this calculator cannot test them; DA-01 D4 adds five PROVISIONAL sites and ST-08 fixes the set"
+    }
+  ],
+  "coupon": {
+    "status": "REQUIREMENTS FRAME ONLY (DA-01 D5). ST-09 writes the retained specification. Building it is an order only the owner can place (Q7). Nothing here is an order file, a fabrication output or a request for a price.",
+    "boards": [
+      {
+        "id": "CK",
+        "role": "K-side board",
+        "outline_mm": "set by ST-09",
+        "thickness_mm": 1.6,
+        "contents": "TW-SM single-row stackers for the three gaps 12.8, 17.0 and 18.8 mm (lead styles -03, -06, -07), each gap at two stacker heights: 'A' by the D3 rule and 'A' = 4.32 mm (D5 change 2); at least 20 pairs per board per variant (change 4); posts of the ST-04 class setting each gap (change 1); one tie-post bay of 80 x 80 mm with pairs at its centre, closed by jack screws (change 6); strain-gauge pads at 0603 MLCC sites near the posts; daisy-chain copper through every contact; fiducials"
+      },
+      {
+        "id": "CF",
+        "role": "front-board board",
+        "outline_mm": "set by ST-09",
+        "thickness_mm": 1.6,
+        "contents": "MMS -02 -SV single-row sockets matching CK (change 1), carrying their polyimide pads through the through-hole soldering of jacks and pots on the same face (change 7); variants CF-along-X and CF-across-X impose an offset X = 0, 0.1, 0.2, 0.3 and 0.4 mm along the row and, separately, across it (change 3)"
+      },
+      {
+        "id": "CE",
+        "role": "0.4 mm EL-class board with a P-tab partner",
+        "outline_mm": "set by ST-09",
+        "thickness_mm": 0.4,
+        "contents": "CLT 2x4 sockets with double-row TW-SM stackers at 7.2 mm, with the eight relief holes per site (change 5); seated and removed with and without the backing platen"
+      }
+    ],
+    "measurements": [
+      {
+        "id": "C-1",
+        "what": "Mating and unmating force per position, single-row pair, force-displacement over 10 cycles",
+        "pass": "Mating at most 1.35 N per position; unmating within the jack-screw plan of ST-08 (A-physical condition 2)"
+      },
+      {
+        "id": "C-2",
+        "what": "Surface-mount float of each half after reflow",
+        "pass": "At most 0.1 mm per half (condition 3)"
+      },
+      {
+        "id": "C-3",
+        "what": "Pin tip position and lean after reflow, at both stacker heights",
+        "pass": "Tip within 0.2 mm of nominal (condition 3)"
+      },
+      {
+        "id": "C-4",
+        "what": "Alignment tolerance of the real pair under imposed offsets along and across the row",
+        "pass": "At 0.25 mm along and, separately, across: every pair mates on the first pass, every chain continuous, no contact damaged after 10 cycles, at each of the three gaps (condition 1). If it passes only at 0.1 mm or less, the K joints of JL, JR and P are not adopted"
+      },
+      {
+        "id": "C-5",
+        "what": "Usable engagement: continuity while the post gap is shimmed around nominal",
+        "pass": "Every chain continuous over +/-0.6 mm around the nominal gap (condition 4)"
+      },
+      {
+        "id": "C-6",
+        "what": "K strain at MLCC sites under imposed post-row mismatch",
+        "pass": "Replaces the beam model; the 593 microstrain design limit stands until then (D4)"
+      },
+      {
+        "id": "C-7",
+        "what": "Sockets after through-hole soldering with pads on: flux or solder in the contacts",
+        "pass": "No contamination (no number set by DA-01)"
+      },
+      {
+        "id": "C-8",
+        "what": "EL seating on CE with and without the platen: deflection, strain, insertion",
+        "pass": "No number set by DA-01"
+      },
+      {
+        "id": "C-9",
+        "what": "Dish of the 80 x 80 mm bay under the mating force, closed by jack screws",
+        "pass": "No number set by DA-01; compared with the plate estimate in this README"
+      }
+    ]
+  },
+  "fixings": {
+    "kept_supports": {
+      "JL-SUP-1": "JL",
+      "JL-SUP-2": "JL",
+      "JL-SUP-3": "JL",
+      "K-SUP-3": "JL",
+      "JR-SUP-1": "JR",
+      "JR-SUP-2": "JR",
+      "JR-SUP-3": "JR",
+      "K-SUP-4": "JR",
+      "K-SUP-5": "P",
+      "K-SUP-6": "P",
+      "K-SUP-7": "P",
+      "K-SUP-8": "P"
+    },
+    "kept_supports_basis": "Attempt a1 support disposition (12 tie posts), board by the front board each ties to K",
+    "provisional_tie_sites": [
+      {
+        "id": "TIE-PROV-1",
+        "xy": [
+          202,
+          255
+        ]
+      },
+      {
+        "id": "TIE-PROV-2",
+        "xy": [
+          252,
+          241
+        ]
+      },
+      {
+        "id": "TIE-PROV-3",
+        "xy": [
+          227,
+          80
+        ]
+      },
+      {
+        "id": "TIE-PROV-4",
+        "xy": [
+          227,
+          38
+        ]
+      },
+      {
+        "id": "TIE-PROV-5",
+        "xy": [
+          108,
+          80
+        ]
+      }
+    ],
+    "provisional_status": "PROVISIONAL: DA-01 D4 positions 'near' these points, chosen by a greedy cover and not checked for clearance; ST-08 fixes them",
+    "adapter_standoffs": "Two per adapter (DA-01 D2); positions not placed (ST-08). Adapter pairs are treated as within one adapter outline of a fixing (ASSUMED)."
+  },
+  "open_figures": [
+    {
+      "figure": "Final misalignment the real pair tolerates",
+      "exact_need": "Coupon C-4 at 0.25 mm imposed offset along and across the row at each gap (A-physical condition 1); the paper budget cannot close it"
+    },
+    {
+      "figure": "t",
+      "exact_need": "Pin-length and tip-height tolerance of the TW-SM stacker per lead style (ASSUMED 0.2 mm); coupon C-5 or a manufacturer statement"
+    },
+    {
+      "figure": "SMT float and lean",
+      "exact_need": "Measured float per half and pin tip position after reflow (coupon C-2, C-3; A-physical condition 3)"
+    },
+    {
+      "figure": "Single-row force",
+      "exact_need": "Mating and unmating force of the single-row MMS with TW-SM (coupon C-1); the sourced figures are for the double-row MMS with TMM"
+    },
+    {
+      "figure": "CLT misalignment and pass-through",
+      "exact_need": "CLT product specification and print: allowed misalignment of the double-row CLT and whether pins may pass through (ST-01b)"
+    },
+    {
+      "figure": "Socket land pattern",
+      "exact_need": "MMS -02 -SV recommended land pattern (ST-01b)"
+    },
+    {
+      "figure": "Placement",
+      "exact_need": "Whether the assembler places pad-less 1x3 stackers and lead style -07 from tubes (owner item 3)"
+    }
+  ],
+  "closing_order": [
+    {
+      "step": 1,
+      "action": "Build the P unit: seat EL on P against the backing platen",
+      "XY": {
+        "EL": "two close-collar posts on P"
+      },
+      "Z": {
+        "EL": "P, through the collar posts (7.2 mm)"
+      },
+      "joint_chain": "EL to P: collar-post locator chain plus per-pair terms"
+    },
+    {
+      "step": 2,
+      "action": "Mate the three adapters onto K; tighten their standoff screws",
+      "XY": {
+        "O1, O3, O5": "their own two pairs on K (no other constraint yet)"
+      },
+      "Z": {
+        "O1, O3, O5": "K, through two standoffs each (12.8 mm)"
+      },
+      "joint_chain": "Adapter to K: per-pair terms only (N = 2 per adapter)"
+    },
+    {
+      "step": 3,
+      "action": "Panel face down; fit JL, JR and the P unit; every jack and toggle nut finger-loose",
+      "XY": {
+        "JL, JR": "jacks in apertures, free within the clearance",
+        "P": "pots, toggles, buttons in apertures, free within the clearance"
+      },
+      "Z": {
+        "JL, JR": "resting on jack shoulders",
+        "P": "resting, not yet set"
+      },
+      "joint_chain": "None mated"
+    },
+    {
+      "step": 4,
+      "action": "Lower K onto the tapered pilot pins; start every post and tie-post jack screw by hand",
+      "XY": {
+        "K": "coarse, by pilot pins (not locators)"
+      },
+      "Z": {
+        "K": "held on the jack screws"
+      },
+      "joint_chain": "Capture: board rest offset in its clearance + hardware-on-board + aperture position + per-pair terms, against the initial limits"
+    },
+    {
+      "step": 5,
+      "action": "Draw K down in quarter turns until the posts seat; tighten post and tie-post screws",
+      "XY": {
+        "JL, JR, P": "each board moves within its aperture clearance to the pairs' lead-in; K floats to the common fit"
+      },
+      "Z": {
+        "K": "J posts and J tie posts (18.8 mm)",
+        "P": "K, through P posts and tie posts (17.0 mm)"
+      },
+      "joint_chain": "Final: residual board offset beyond its minimum clearance + per-pair terms, against the final limits"
+    },
+    {
+      "step": 6,
+      "action": "Tighten the jack nuts, then the toggle nuts on their compliant take-up, then the selector bushing nuts",
+      "XY": {
+        "all": "frozen"
+      },
+      "Z": {
+        "JL, JR": "jack shoulders on the panel rear",
+        "P": "unchanged: compliant take-up, P free in Z"
+      },
+      "joint_chain": "Selector row: K against panel + two SMT floats + leg float + hole and aperture positions, against 0.2 mm"
+    }
+  ]
+}

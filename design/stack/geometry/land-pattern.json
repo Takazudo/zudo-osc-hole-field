@@ -1,0 +1,51 @@
+{
+ "schema_version": 3,
+ "status": "SOURCED-COPPER ENVELOPES per connector half and row count (ST-01c); courtyard level, not copper lands; NOT SELECTED. Every entry carries its own status and source; the candidate records which entry each pair used",
+ "frame": "width_mm is across the contact rows, length_mm along them. A rule gives length = pitch_mm x (positions per row - 1) + length_at_one_position_mm. An explicit entry keyed '<rows>x<positions per row>' overrides the rule of its half",
+ "halves": {
+  "K": {
+   "role": "Stacker half (TW-SM): on K for every joint to K; on the P tab F.Cu for the EL-to-P pair",
+   "rules": {
+    "1": {
+     "status": "DERIVED from SOURCED copper",
+     "width_mm": 6.04,
+     "pitch_mm": 2.0,
+     "length_at_one_position_mm": 2.75,
+     "derivation": "courtyard 6.04 x (2n + 0.75): pad span 5.54 + 2 x 0.25; length max(n x 2.00 + 0.25 body tolerance, copper) + 2 x 0.25",
+     "source": "design/stack/connectors/land-patterns.json entries tw-sm-s-1x3, tw-sm-s-1x5, tw-sm-s-1x6 courtyard_envelope_mm (TW-SM layout revision C)"
+    },
+    "2": {
+     "status": "DERIVED from SOURCED copper",
+     "width_mm": 8.07,
+     "pitch_mm": 2.0,
+     "length_at_one_position_mm": 2.75,
+     "derivation": "courtyard 8.07 x 8.75 at 2x4: pad span 7.57 + 2 x 0.25; length 8.00 + 0.25 + 2 x 0.25",
+     "source": "design/stack/connectors/land-patterns.json entry tw-sm-d-2x4 courtyard_envelope_mm (TW-SM layout revision C, fig 2)"
+    }
+   },
+   "explicit": {}
+  },
+  "front": {
+   "role": "Socket half: MMS -02 -SV on JL, JR, P and the adapters; bottom-entry CLT-104-02-L-D-BE-K-TR on EL B.Cu for the EL-to-P pair (reviews/da-02.md E5)",
+   "rules": {
+    "1": {
+     "status": "DERIVED from SOURCED copper",
+     "width_mm": 5.94,
+     "pitch_mm": 2.0,
+     "length_at_one_position_mm": 3.19,
+     "derivation": "courtyard 5.94 x (2n + 1.19): pad span 5.44 + 2 x 0.25; length body n x 2.000 + 0.56 + 0.13 + 2 x 0.25",
+     "source": "design/stack/connectors/land-patterns.json entries mms-sv-1x3, mms-sv-1x5, mms-sv-1x6 courtyard_envelope_mm (MMS -SV layout revision C)"
+    },
+    "2": {
+     "status": "DERIVED from SOURCED copper",
+     "width_mm": 6.42,
+     "pitch_mm": 2.0,
+     "length_at_one_position_mm": 2.7,
+     "derivation": "courtyard 6.42 x 8.70 at 2x4: pad span 5.92 + 2 x 0.25; length body 8.00 + 0.20 + 2 x 0.25",
+     "source": "design/stack/connectors/land-patterns.json entry clt-d-2x4 courtyard_envelope_mm (CLT layout revision J). Taken for the bottom-entry -BE code of E5: its fig 5 is \"same as fig 1, different as shown\" (holes under the contacts, pads shortened to 1.40 mm); a separate -BE body outline is not retained"
+    }
+   },
+   "explicit": {}
+  }
+ }
+}

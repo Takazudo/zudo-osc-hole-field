@@ -1,0 +1,1046 @@
+{
+ "schema_version": 1,
+ "task": "osc-stack-20261114/ST-04 a1, continuation c1, attempt a2",
+ "status": "PROPOSAL paper design; unvalidated draft; nothing selected, measured or qualified",
+ "launch_commit": "4a00e72d9d8325909b5d8a318805c8098b71d842",
+ "heights_note": "XY, counts and nets from S-GEOM (first planning heights); heights and planes from DA-02 E10 (K F.Cu z = -30.6 mm; JL/JR to K 19.0 mm; P to K 17.0 mm). Joint positions carry DS-44 (DA-03 F7: JR +0.5 mm, changing the +1.0 mm of DA-02) and the DA-02 re-site of P AGND2/AGND3; S-GEOM still holds the old positions.",
+ "sources": {
+  "S-PART": {
+   "path": "design/partition/partition.json",
+   "sha256": "7e3f5a39b001f80f38572c837a60e197fbb08ae588296e1d3bcb1339718db48f"
+  },
+  "S-P35": {
+   "path": "scripts/checks/partition35.py",
+   "sha256": "0e3014d283177cf1d9a94b0e36f397950f6a59ff84081cb01ec6d9187686f938",
+   "locator": "build(), lines 236 and 241-249"
+  },
+  "S-SUPPLY": {
+   "path": "design/power/supply-architecture.json",
+   "sha256": "11de349b0c5ab2762dad8ac4d841a0705c70c7c0816dc110175bd55c739989ff"
+  },
+  "S-SUPPLY-PAGE": {
+   "path": "doc/src/content/docs/decisions/osc-supply-architecture.mdx",
+   "sha256": "8f43883f16aee29c98f48e8f9e411614029bee8c701cd1812f363dcc929b48b9"
+  },
+  "S-PLAN": {
+   "path": "doc/src/content/docs/decisions/osc-direct-stack-plan.mdx",
+   "sha256": "18eb6e60d81c45df0a594f464e5fb6fb6faac900e589934086af7947cc968ff4"
+  },
+  "S-CU": {
+   "path": "design/partition/ground-material-evidence.json",
+   "sha256": "85e81625d8b3e629336df098c831dd97b7d01e6703dfcedf50f9ebe368be394b",
+   "origin": "NBS Handbook 100 (1966), PDF sha256 3128aaa9fac5688c4e2c4ea9e1b0bb9e20aead7c71039772790859c7fa571af0"
+  },
+  "S-CONN": {
+   "path": "design/stack/connectors/candidates.json",
+   "sha256": "cf39f7e0a9fb4c5f403d3b097a74af6782429e6ede6dde7d3ac4601ed61f7029"
+  },
+  "S-GEOM": {
+   "path": "design/stack/geometry/stack-candidate.json",
+   "sha256": "9bd03493c0a98c36357c90ee56e86dec57eb3dd5d0793a84f49f34f1c5d25f54",
+   "note": "first planning heights; XY, counts and nets only; re-pinned in attempt a2 (ST-02 a3 changed the file; the power-post XY here are this record's own)"
+  },
+  "S-MECH": {
+   "path": "design/stack/mechanics/stackups.json",
+   "locator": "geometry.fixings",
+   "locator_sha256": "3cdf38d06c7dda8ef1b1d78ef031a2fad202e1ecec6dfa002107bd85daf317eb",
+   "method": "SHA256 of the cited object as JSON with sorted keys and no spaces; the rest of the file is not pinned, because it carries pins of its own that change with every refresh"
+  },
+  "S-DA01": {
+   "path": "circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-01.md",
+   "sha256": "32d20a5c50a4aea3d7bc2c497e1d185b3f59677878f93ec2e599881c134f7dbf"
+  },
+  "S-DEC": {
+   "path": "circuit/orchestration/campaigns/osc-stack-20261114/decisions.md",
+   "rows": [
+    "DS-32",
+    "DS-39",
+    "DS-41",
+    "DS-44",
+    "DS-51",
+    "DS-53"
+   ],
+   "rows_sha256": "d7dd7d70046a754fc1a121ecf24ba578408fdaea73318bd28a93a2a6446e2780",
+   "method": "SHA256 of the cited row lines, each with its newline, concatenated in the listed order; the rest of the log is not pinned"
+  },
+  "V-QUAL": {
+   "path": "circuit-dev-resources:samtec/test-reports/mms-tmm-design-qualification-154341-rev-2.pdf",
+   "sha256": "02fd7a450b4eebd3b7666cc1751a57e48238d5c6f25d3c90047afe59dd740690"
+  },
+  "V-HARWIN-101": {
+   "path": "circuit-dev-resources:harwin/r30/r30-101xx02-m3-female-female-spacer-drg-01995-issue-7.pdf",
+   "sha256": "3aaf7eaab650a65965a2b8baf20cfa591ee4d0f7260a56933eeace80da01c236"
+  },
+  "V-HARWIN-300": {
+   "path": "circuit-dev-resources:harwin/r30/r30-300xx02-m3-male-female-spacer-drg-01997-issue-22.pdf",
+   "sha256": "ea476817a3dbc3d27a8d30f14360c075d1e03c48f702f5aaf17c397abb574ed3"
+  },
+  "V-SO": {
+   "path": "circuit-dev-resources:samtec/so/so-print-rev-az.pdf",
+   "sha256": "e2b2dbce5baaac8618e8e05a9036d22370760496bf5e5aac139d475ce3861682"
+  },
+  "V-JSO": {
+   "path": "circuit-dev-resources:samtec/jso/jso-print-rev-t.pdf",
+   "sha256": "69035482287b2be080c950a2a0816f7c8a3c71ddf116c7264c00ba3e45bed5b1"
+  },
+  "V-TW": {
+   "path": "circuit-dev-resources:samtec/tw-sm/tw-sm-print-sheet-1-rev-cw.pdf",
+   "sha256": "7eab7b79b8025486771214a79014a619487402916a0da61f143341faefde9e17"
+  },
+  "V-MMS-SPEC": {
+   "path": "circuit-dev-resources:samtec/mms/mms-tmm-product-specification-rev-a-2022-08-15.pdf",
+   "sha256": "f7cc75253302d6b4d6a48469f1841f095a4ff2f4e2b9c9a12f9dd0796024ee10"
+  },
+  "S-DA02": {
+   "path": "circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-02.md",
+   "sha256": "6701145c500663397ea008a93ed8d868c189c9da1ae1a9ed3b00ce7b115f99ad",
+   "locator": "E10; E2; E3; Rulings on the ST-04 proposal"
+  },
+  "S-DA03": {
+   "path": "circuit/orchestration/campaigns/osc-stack-20261114/reviews/da-03.md",
+   "sha256": "a2e4ff157533bb63f88b31f26f50a4ef772ca5da24fcc1d9e28246c5ed89966e",
+   "locator": "F7; F4; F1"
+  },
+  "V-HARWIN-STORE-M25": {
+   "path": "circuit-dev-resources:harwin/",
+   "status": "UNSOURCED",
+   "note": "attempt a2 searched the store at 2aaef4c: harwin/ holds r30 (M3) and m22 only; no M2.5 post of 19.00 mm, so M3 stays at the JR lands (DS-44)"
+  }
+ },
+ "terms": {
+  "wire_hot_ohm_per_m": {
+   "value": 0.013,
+   "tolerance": null,
+   "unit": "ohm/m",
+   "status": "SOURCED",
+   "source": "S-PART power.load_distribution.hot_resistance_requirement_ohm_per_m (an acceptance requirement there)"
+  },
+  "wire_length_mm": {
+   "value": 110,
+   "tolerance": null,
+   "unit": "mm",
+   "status": "SOURCED",
+   "source": "S-PART power.load_distribution.max_wire_length_mm"
+  },
+  "wire_termination_ohm": {
+   "value": 0.0002,
+   "tolerance": null,
+   "unit": "ohm",
+   "status": "SOURCED",
+   "source": "S-PART power.load_distribution.combined_termination_resistance_ohm"
+  },
+  "rail_plane_ohm": {
+   "value": 0.001,
+   "tolerance": null,
+   "unit": "ohm",
+   "status": "SOURCED",
+   "source": "S-PART power.load_distribution.rail_plane_resistance_ceiling_ohm; limit unchanged (S-PLAN rules table)"
+  },
+  "return_plane_ohm": {
+   "value": 0.0005,
+   "tolerance": null,
+   "unit": "ohm",
+   "status": "SOURCED",
+   "source": "S-PART power.load_distribution.return_plane_resistance_ceiling_ohm (common branch-plus-K AGND incl. vias and shared necks); limit unchanged"
+  },
+  "single_return_A": {
+   "value": 4.6,
+   "tolerance": null,
+   "unit": "A",
+   "status": "SOURCED",
+   "source": "S-PART power.load_distribution.single_return_max_A; S-SUPPLY worst_single_return_contact_A"
+  },
+  "rail_max_A": {
+   "value": {
+    "+12V": 2.1,
+    "-12V": 2.0,
+    "+5V": 0.5
+   },
+   "tolerance": null,
+   "unit": "A",
+   "status": "SOURCED",
+   "source": "S-PART power.load_distribution.rail_max_A (whole delivered-domain ceiling per branch)"
+  },
+  "distribution_limit_V": {
+   "value": 0.02,
+   "tolerance": null,
+   "unit": "V",
+   "status": "SOURCED",
+   "source": "S-SUPPLY max_distribution_drop_V; S-P35 line 237 error threshold 20 mV"
+  },
+  "present_drop_mV": {
+   "value": {
+    "+12V": 15.321,
+    "-12V": 15.058,
+    "+5V": 11.113
+   },
+   "tolerance": null,
+   "unit": "mV",
+   "status": "SOURCED",
+   "source": "S-PART power.worst_load_distribution_drop_mV (reproduction target)"
+  },
+  "present_gh_bounds": {
+   "value": {
+    "JL": {
+     "return_contact_count": 100,
+     "minimum_single_path_ohm": 0.007433189,
+     "maximum_other_path_ohm": 0.11445000000000001,
+     "dedicated_ground_wire_count": 3,
+     "dedicated_ground_wire_max_ohm": 0.00163,
+     "worst_single_contact_A": 0.4817939293140001
+    },
+    "JR": {
+     "return_contact_count": 106,
+     "minimum_single_path_ohm": 0.007433189,
+     "maximum_other_path_ohm": 0.11445000000000001,
+     "dedicated_ground_wire_count": 3,
+     "dedicated_ground_wire_max_ohm": 0.00163,
+     "worst_single_contact_A": 0.4783060843904125
+    },
+    "P": {
+     "return_contact_count": 123,
+     "minimum_single_path_ohm": 0.007254504000000001,
+     "maximum_other_path_ohm": 0.11411,
+     "dedicated_ground_wire_count": 3,
+     "dedicated_ground_wire_max_ohm": 0.00163,
+     "worst_single_contact_A": 0.4792372910507259
+    }
+   },
+   "tolerance": null,
+   "unit": "mixed",
+   "status": "SOURCED",
+   "source": "S-PART power.GH_normal_return_bounds (reproduction target)"
+  },
+  "gh_contact_limit_A": {
+   "value": 0.5,
+   "tolerance": null,
+   "unit": "A",
+   "status": "SOURCED",
+   "source": "S-P35 line 248 (GH return derating 0.5 A); S-PLAN rules table: must be re-derived for header contacts"
+  },
+  "budget_limit_V": {
+   "value": 0.2,
+   "tolerance": null,
+   "unit": "V",
+   "status": "SOURCED",
+   "source": "S-SUPPLY-PAGE \"may lose at most 0.20 V\""
+  },
+  "conductor_path_ohm": {
+   "value": 0.02,
+   "tolerance": null,
+   "unit": "ohm",
+   "status": "SOURCED",
+   "source": "S-SUPPLY max_conductor_path_ohm"
+  },
+  "protection_drop_V": {
+   "value": 0.04,
+   "tolerance": null,
+   "unit": "V",
+   "status": "SOURCED",
+   "source": "S-SUPPLY harness.max_protection_drop_V"
+  },
+  "present_budget_V": {
+   "value": {
+    "+12V": 0.194,
+    "-12V": 0.192,
+    "+5V": 0.162
+   },
+   "tolerance": null,
+   "unit": "V",
+   "status": "SOURCED",
+   "source": "S-SUPPLY worst_rail_plus_return_loss_V (reproduction target)"
+  },
+  "e23_i2t_A2s": {
+   "value": 0.1,
+   "tolerance": null,
+   "unit": "A^2 s",
+   "status": "SOURCED",
+   "source": "S-PLAN \"E21 to E23 stay as written\": E23 0.25 ms, 130 A, 0.1 A^2 s"
+  },
+  "cu_rho_20C_ohm_mm": {
+   "value": 1.7241e-05,
+   "tolerance": null,
+   "unit": "ohm mm",
+   "status": "SOURCED",
+   "source": "S-CU retained_reference_values"
+  },
+  "cu_alpha_per_C": {
+   "value": 0.003947,
+   "tolerance": null,
+   "unit": "1/C",
+   "status": "SOURCED",
+   "source": "S-CU volume_temperature_coefficient_per_C"
+  },
+  "hot_C": {
+   "value": 70,
+   "tolerance": null,
+   "unit": "C",
+   "status": "SOURCED",
+   "source": "S-PART load_distribution.temperature_max_C"
+  },
+  "barrel_cu_mm": {
+   "value": 0.025,
+   "tolerance": null,
+   "unit": "mm",
+   "status": "SOURCED",
+   "source": "S-PART jack_terminal_transfer.minimum_finished_via_barrel_copper_mm (a proposal requirement, not a fab guarantee)"
+  },
+  "board_mm": {
+   "value": 1.6,
+   "tolerance": null,
+   "unit": "mm",
+   "status": "SOURCED",
+   "source": "S-MECH board_thickness_1p6"
+  },
+  "post_af_min_mm": {
+   "value": 5.3,
+   "tolerance": null,
+   "unit": "mm",
+   "status": "SOURCED",
+   "source": "V-HARWIN-101 end view, A/F 5.30 to 5.50 (via S-CONN posts)"
+  },
+  "post_thread_major_mm": {
+   "value": 3.0,
+   "tolerance": null,
+   "unit": "mm",
+   "status": "SOURCED",
+   "source": "V-HARWIN-101 M3 x 0.5-6H through tapped"
+  },
+  "brass_rho_hot_ohm_mm": {
+   "value": 8e-05,
+   "tolerance": null,
+   "unit": "ohm mm",
+   "status": "ASSUMED",
+   "source": "no retained document states the resistivity of CW614N; upper planning value at 70 C. Evidence need: CW614N (CuZn39Pb3, BS EN 12164) conductivity from a retained material standard or the Harwin R30-10117xx02 maker; closed by hot Kelvin #65"
+  },
+  "face_ohm": {
+   "value": 0.0001,
+   "tolerance": null,
+   "unit": "ohm",
+   "status": "ASSUMED",
+   "source": "no maker states the contact resistance of a bolted face. Evidence need: Harwin R30-1011702 / made-to-drawing post, nickel face on ENIG land, at the ST-08 clamp torque; hot Kelvin under #65 or coupon"
+  },
+  "post_length_tol_mm": {
+   "value": 0.15,
+   "tolerance": null,
+   "unit": "mm",
+   "status": "SOURCED",
+   "source": "V-HARWIN-101 L1 +/-0.15 over 12 mm; accepted in the Z chain for the lot mean by S-DA02 E10 (ST-03 a3 carries it)"
+  },
+  "washer_od_mm": {
+   "value": 7.0,
+   "tolerance": null,
+   "unit": "mm",
+   "status": "ASSUMED",
+   "source": "M3 flat washer envelope (no washer drawing retained). Evidence need: exact washer part drawing"
+  },
+  "llcr_min_ohm": {
+   "value": 0.00436,
+   "tolerance": null,
+   "unit": "ohm",
+   "status": "SOURCED",
+   "source": "V-QUAL printed page 32, LLCR durability 500 cycles, initial Min 4.36 mOhm (MMS-140-02-S-DV-A/TMM-140-01-S-D-SM-A; lowest of the six initial summaries, pages 30-35)"
+  },
+  "llcr_initial_max_ohm": {
+   "value": 0.00935,
+   "tolerance": null,
+   "unit": "ohm",
+   "status": "SOURCED",
+   "source": "V-QUAL printed page 33, thermal aging initial Max 9.35 mOhm (highest of pages 30-35)"
+  },
+  "llcr_change_max_ohm": {
+   "value": 0.015,
+   "tolerance": null,
+   "unit": "ohm",
+   "status": "SOURCED",
+   "source": "V-MMS-SPEC page 2 section 3.5, change 15 mOhm maximum (observed deltas at most 3.50 mOhm, V-QUAL page 31)"
+  },
+  "tw_pin_section_mm2": {
+   "value": 0.2601,
+   "tolerance": null,
+   "unit": "mm^2",
+   "status": "DERIVED",
+   "source": "0.51 x 0.51; pin .020 [0.51] SQ REF (V-TW via S-CONN)"
+  },
+  "tw_pin_rho_ohm_mm": {
+   "value": 0.00013,
+   "tolerance": null,
+   "unit": "ohm mm",
+   "status": "ASSUMED",
+   "source": "TW-SM pin alloy and resistivity not in a retained document; upper planning value for a copper-alloy pin. Evidence need: TW-SM print material block or Samtec material sheet"
+  },
+  "tw_pin_length_mm": {
+   "value": {
+    "JL": 17.35,
+    "JR": 17.35,
+    "P": 15.37,
+    "EL": 7.85
+   },
+   "tolerance": null,
+   "unit": "mm",
+   "status": "SOURCED",
+   "source": "S-CONN TW-SM pin tip by lead style (-07, -06, -02); full tip height used as the path length (conservative for the maximum path)"
+  },
+  "header_contact_limit_A": {
+   "value": 1.6,
+   "tolerance": null,
+   "unit": "A",
+   "status": "SOURCED",
+   "source": "V-QUAL printed page 14: CCC at 20% de-rating, 30 C rise, 1.6 A per contact with all adjacent contacts powered (MMS/TMM double row); applying it to the TW-SM pair is ASSUMED (kept as the ST-04 proposal; S-DA02 rulings: transfer to the stacker pin ASSUMED, A-paper sets the final limit)"
+  },
+  "header_agnd_positions": {
+   "value": {
+    "JL": 54,
+    "JR": 54,
+    "P": 147,
+    "O1": 3,
+    "O3": 3,
+    "O5": 3
+   },
+   "tolerance": null,
+   "unit": "count",
+   "status": "SOURCED",
+   "source": "S-GEOM pairs[].pin_map, AGND positions per K pair family (264 on K)"
+  },
+  "el_agnd_positions": {
+   "value": 12,
+   "tolerance": null,
+   "unit": "count",
+   "status": "DERIVED",
+   "source": "DS-14: six 2x4 sites x 2 AGND (the candidate still holds six 1x6 sites with 6 AGND)"
+  },
+  "el_rail_positions_per_rail": {
+   "value": 6,
+   "tolerance": null,
+   "unit": "count",
+   "status": "DERIVED",
+   "source": "DS-14: 18 rail positions over three rails"
+  },
+  "el_current_mA": {
+   "value": {
+    "+12V": 50,
+    "-12V": 50,
+    "+5V": 70
+   },
+   "tolerance": null,
+   "unit": "mA",
+   "status": "SOURCED",
+   "source": "S-PART power.EL_rail_current_contract_mA"
+  },
+  "el_return_mA": {
+   "value": 170,
+   "tolerance": null,
+   "unit": "mA",
+   "status": "SOURCED",
+   "source": "S-PART power.EL_return_sum_bound_mA"
+  },
+  "brass_density_g_mm3": {
+   "value": 0.0085,
+   "tolerance": null,
+   "unit": "g/mm^3",
+   "status": "ASSUMED",
+   "source": "for the E23 heating screen only"
+  },
+  "brass_c_J_gK": {
+   "value": 0.38,
+   "tolerance": null,
+   "unit": "J/(g K)",
+   "status": "ASSUMED",
+   "source": "for the E23 heating screen only"
+  },
+  "post_length_mm": {
+   "value": {
+    "JL": 19.0,
+    "JR": 19.0,
+    "P": 17.0
+   },
+   "tolerance": 0.15,
+   "unit": "mm",
+   "status": "SOURCED",
+   "source": "S-DA02 E10; V-HARWIN-101 table R30-10119XX = 19.00, R30-10117XX = 17.00; +/-0.15 over 12 mm"
+  },
+  "post_codes": {
+   "value": {
+    "JL": "R30-1011902",
+    "JR": "R30-1011902",
+    "P": "R30-1011702"
+   },
+   "tolerance": null,
+   "unit": "code",
+   "status": "SOURCED",
+   "source": "V-HARWIN-101 (Harwin R30 F/F hex M3, brass CW614N, nickel finish; via S-CONN posts.by_gap). Working codes only: NOT SELECTED, not bought; current rating and contact resistance UNSOURCED for the maker"
+  },
+  "post_match_mm": {
+   "value": 0.05,
+   "tolerance": null,
+   "unit": "mm",
+   "status": "SOURCED",
+   "source": "S-DA02 E10: spacers of one unit matched within 0.05 mm (per-unit measurement; lot spread UNSOURCED)"
+  },
+  "header_contact_working_limit_A": {
+   "value": 1.0,
+   "tolerance": null,
+   "unit": "A",
+   "status": "SOURCED",
+   "source": "S-DA02 rulings: working limit 1.0 A per header contact until Gate A-paper"
+  },
+  "agnd_plane_cu_mm": {
+   "value": 0.07,
+   "tolerance": null,
+   "unit": "mm",
+   "status": "SOURCED",
+   "source": "S-PART jack_terminal_transfer.plane_copper_thickness_mm; boards K and P copper_oz 2 with one In1/inner AGND layer (S-PART boards[].layer_reason)"
+  },
+  "spread_model": {
+   "value": "two-point resistance of an infinite uniform sheet, R = Rs/pi x ln(d/a), one AGND layer per board, paths in parallel treated as independent",
+   "tolerance": null,
+   "unit": "model",
+   "status": "ASSUMED",
+   "source": "closes by extraction of the routed AGND planes (#38/#39) and hot Kelvin #65; ignores voids, cut-outs and overlap of parallel paths, which raise R"
+  },
+  "spread_land_radius_mm": {
+   "value": 3.8,
+   "tolerance": null,
+   "unit": "mm",
+   "status": "DERIVED",
+   "source": "K land radius (land_pattern.K copper 7.6 mm)"
+  },
+  "spread_P_source_xy": {
+   "value": [
+    [
+     210,
+     182
+    ],
+    [
+     250,
+     185
+    ],
+    [
+     290,
+     185
+    ]
+   ],
+   "tolerance": null,
+   "unit": "mm",
+   "status": "DERIVED",
+   "source": "P pair region named in S-DA02 rulings (x 210 to 290, y 172 to 192); three sample load points"
+  },
+  "spread_K_sink_xy": {
+   "value": [
+    258,
+    246
+   ],
+   "tolerance": null,
+   "unit": "mm",
+   "status": "ASSUMED",
+   "source": "K AGND star taken at the inner corner of K's notch, next to the inlet reservation x 260-308, y 248-293 (S-SUPPLY-PAGE); the inlet itself is open under #57"
+  }
+ },
+ "land_pattern": {
+  "K": {
+   "copper_diameter_mm": 7.6,
+   "hole_finished_mm": 3.8,
+   "hole_plated": true,
+   "oversize_over_M3_clearance_mm": 0.6,
+   "via_ring": {
+    "count": 16,
+    "radius_mm": 2.9,
+    "drill_mm": 0.3,
+    "pad_mm": 0.6,
+    "filled": true,
+    "capped": true
+   },
+   "contact_annulus_post_mm": [
+    3.8,
+    5.3
+   ],
+   "contact_annulus_washer_mm": [
+    3.8,
+    7.0
+   ],
+   "mask_opening_mm": 7.6,
+   "keepout_radius_mm": 4.05,
+   "faces": "F.Cu post face, B.Cu washer and screw head; all layers of the net solid to the hole, no thermal relief",
+   "status": "PROPOSAL",
+   "note": "vias filled and capped because the washer (r 3.5) and the hex corners (r 3.175) cover the ring; drill web to the hole 0.85 mm; an outer unfilled ring (land 9.5 mm, r 4.0) was screened first and costs 120 B.Cu and 89 F.Cu footprints on K"
+  },
+  "front": {
+   "copper_diameter_mm": 7.0,
+   "hole_finished_mm": 3.2,
+   "hole_plated": true,
+   "via_ring": {
+    "count": 12,
+    "radius_mm": 2.2,
+    "drill_mm": 0.3,
+    "pad_mm": 0.6,
+    "filled": true,
+    "capped": true
+   },
+   "contact_annulus_post_mm": [
+    3.2,
+    5.3
+   ],
+   "contact_annulus_washer_mm": [
+    3.2,
+    7.0
+   ],
+   "mask_opening_mm": 7.0,
+   "keepout_radius_mm": 3.75,
+   "faces": "B.Cu post face toward K; F.Cu panel-side washer and screw head (J and P tab) or captive nut (P stays, see item 6)",
+   "status": "PROPOSAL",
+   "limit": "radius 3.5 mm keeps 0.5 mm to the JL/JR edge at y = 164 from y = 160"
+  }
+ },
+ "joints": [
+  {
+   "id": "POWER-JL-+12V",
+   "net": "+12V",
+   "front_board": "JL",
+   "front_ref": "TP990001",
+   "K_ref": "TP990002",
+   "front_xy": [
+    40,
+    160
+   ],
+   "present_front_xy": [
+    40,
+    160
+   ],
+   "K_xy": [
+    40,
+    160
+   ],
+   "gap_mm": 19.0,
+   "carried_by": null,
+   "panel_side": "washer and screw head",
+   "post_code": "R30-1011902"
+  },
+  {
+   "id": "POWER-JL--12V",
+   "net": "-12V",
+   "front_board": "JL",
+   "front_ref": "TP990003",
+   "K_ref": "TP990004",
+   "front_xy": [
+    57,
+    160
+   ],
+   "present_front_xy": [
+    57,
+    160
+   ],
+   "K_xy": [
+    57,
+    160
+   ],
+   "gap_mm": 19.0,
+   "carried_by": null,
+   "panel_side": "washer and screw head",
+   "post_code": "R30-1011902"
+  },
+  {
+   "id": "POWER-JL-+5V",
+   "net": "+5V",
+   "front_board": "JL",
+   "front_ref": "TP990005",
+   "K_ref": "TP990006",
+   "front_xy": [
+    74,
+    160
+   ],
+   "present_front_xy": [
+    74,
+    160
+   ],
+   "K_xy": [
+    74,
+    160
+   ],
+   "gap_mm": 19.0,
+   "carried_by": null,
+   "panel_side": "washer and screw head",
+   "post_code": "R30-1011902"
+  },
+  {
+   "id": "POWER-JL-AGND1",
+   "net": "AGND",
+   "front_board": "JL",
+   "front_ref": "TP990007",
+   "K_ref": "TP990008",
+   "front_xy": [
+    91,
+    160
+   ],
+   "present_front_xy": [
+    91,
+    160
+   ],
+   "K_xy": [
+    91,
+    160
+   ],
+   "gap_mm": 19.0,
+   "carried_by": null,
+   "panel_side": "washer and screw head",
+   "post_code": "R30-1011902"
+  },
+  {
+   "id": "POWER-JL-AGND2",
+   "net": "AGND",
+   "front_board": "JL",
+   "front_ref": "TP990009",
+   "K_ref": "TP990010",
+   "front_xy": [
+    108,
+    160
+   ],
+   "present_front_xy": [
+    108,
+    160
+   ],
+   "K_xy": [
+    108,
+    160
+   ],
+   "gap_mm": 19.0,
+   "carried_by": null,
+   "panel_side": "washer and screw head",
+   "post_code": "R30-1011902"
+  },
+  {
+   "id": "POWER-JL-AGND3",
+   "net": "AGND",
+   "front_board": "JL",
+   "front_ref": "TP990011",
+   "K_ref": "TP990012",
+   "front_xy": [
+    125,
+    160
+   ],
+   "present_front_xy": [
+    125,
+    160
+   ],
+   "K_xy": [
+    125,
+    160
+   ],
+   "gap_mm": 19.0,
+   "carried_by": null,
+   "panel_side": "washer and screw head",
+   "post_code": "R30-1011902"
+  },
+  {
+   "id": "POWER-JR-+12V",
+   "net": "+12V",
+   "front_board": "JR",
+   "front_ref": "TP990013",
+   "K_ref": "TP990014",
+   "front_xy": [
+    193,
+    160
+   ],
+   "present_front_xy": [
+    193,
+    160
+   ],
+   "K_xy": [
+    193,
+    160
+   ],
+   "gap_mm": 19.0,
+   "carried_by": null,
+   "panel_side": "washer and screw head",
+   "post_code": "R30-1011902"
+  },
+  {
+   "id": "POWER-JR--12V",
+   "net": "-12V",
+   "front_board": "JR",
+   "front_ref": "TP990015",
+   "K_ref": "TP990016",
+   "front_xy": [
+    210,
+    160
+   ],
+   "present_front_xy": [
+    210,
+    160
+   ],
+   "K_xy": [
+    210,
+    160
+   ],
+   "gap_mm": 19.0,
+   "carried_by": null,
+   "panel_side": "washer and screw head",
+   "post_code": "R30-1011902"
+  },
+  {
+   "id": "POWER-JR-+5V",
+   "net": "+5V",
+   "front_board": "JR",
+   "front_ref": "TP990017",
+   "K_ref": "TP990018",
+   "front_xy": [
+    227.5,
+    160
+   ],
+   "present_front_xy": [
+    227,
+    160
+   ],
+   "K_xy": [
+    227.5,
+    160
+   ],
+   "gap_mm": 19.0,
+   "carried_by": "DA-03 ruling DS-44: +0.5 mm in x on JR and K",
+   "panel_side": "screw head 5.5 mm, no washer (clip LED clearance)",
+   "post_code": "R30-1011902",
+   "panel_side_keepout_radius_mm": 3.0
+  },
+  {
+   "id": "POWER-JR-AGND1",
+   "net": "AGND",
+   "front_board": "JR",
+   "front_ref": "TP990019",
+   "K_ref": "TP990020",
+   "front_xy": [
+    244.5,
+    160
+   ],
+   "present_front_xy": [
+    244,
+    160
+   ],
+   "K_xy": [
+    244.5,
+    160
+   ],
+   "gap_mm": 19.0,
+   "carried_by": "DA-03 ruling DS-44: +0.5 mm in x on JR and K",
+   "panel_side": "screw head 5.5 mm, no washer (clip LED clearance)",
+   "post_code": "R30-1011902",
+   "panel_side_keepout_radius_mm": 3.0
+  },
+  {
+   "id": "POWER-JR-AGND2",
+   "net": "AGND",
+   "front_board": "JR",
+   "front_ref": "TP990021",
+   "K_ref": "TP990022",
+   "front_xy": [
+    261.5,
+    160
+   ],
+   "present_front_xy": [
+    261,
+    160
+   ],
+   "K_xy": [
+    261.5,
+    160
+   ],
+   "gap_mm": 19.0,
+   "carried_by": "DA-03 ruling DS-44: +0.5 mm in x on JR and K",
+   "panel_side": "screw head 5.5 mm, no washer (clip LED clearance)",
+   "post_code": "R30-1011902",
+   "panel_side_keepout_radius_mm": 3.0
+  },
+  {
+   "id": "POWER-JR-AGND3",
+   "net": "AGND",
+   "front_board": "JR",
+   "front_ref": "TP990023",
+   "K_ref": "TP990024",
+   "front_xy": [
+    278.5,
+    160
+   ],
+   "present_front_xy": [
+    278,
+    160
+   ],
+   "K_xy": [
+    278.5,
+    160
+   ],
+   "gap_mm": 19.0,
+   "carried_by": "DA-03 ruling DS-44: +0.5 mm in x on JR and K",
+   "panel_side": "screw head 5.5 mm, no washer (clip LED clearance)",
+   "post_code": "R30-1011902",
+   "panel_side_keepout_radius_mm": 3.0
+  },
+  {
+   "id": "POWER-P-+12V",
+   "net": "+12V",
+   "front_board": "P",
+   "front_ref": "TP990025",
+   "K_ref": "TP990026",
+   "front_xy": [
+    142,
+    175
+   ],
+   "present_front_xy": [
+    142,
+    179
+   ],
+   "K_xy": [
+    142,
+    175
+   ],
+   "gap_mm": 17.0,
+   "carried_by": "TAB-POWER",
+   "panel_side": "washer and screw head",
+   "post_code": "R30-1011702"
+  },
+  {
+   "id": "POWER-P--12V",
+   "net": "-12V",
+   "front_board": "P",
+   "front_ref": "TP990027",
+   "K_ref": "TP990028",
+   "front_xy": [
+    159,
+    175
+   ],
+   "present_front_xy": [
+    159,
+    179
+   ],
+   "K_xy": [
+    159,
+    175
+   ],
+   "gap_mm": 17.0,
+   "carried_by": "TAB-POWER",
+   "panel_side": "washer and screw head",
+   "post_code": "R30-1011702"
+  },
+  {
+   "id": "POWER-P-+5V",
+   "net": "+5V",
+   "front_board": "P",
+   "front_ref": "TP990029",
+   "K_ref": "TP990030",
+   "front_xy": [
+    176,
+    175
+   ],
+   "present_front_xy": [
+    176,
+    179
+   ],
+   "K_xy": [
+    176,
+    175
+   ],
+   "gap_mm": 17.0,
+   "carried_by": "TAB-POWER",
+   "panel_side": "washer and screw head",
+   "post_code": "R30-1011702"
+  },
+  {
+   "id": "POWER-P-AGND1",
+   "net": "AGND",
+   "front_board": "P",
+   "front_ref": "TP990031",
+   "K_ref": "TP990032",
+   "front_xy": [
+    193,
+    175
+   ],
+   "present_front_xy": [
+    193,
+    179
+   ],
+   "K_xy": [
+    193,
+    175
+   ],
+   "gap_mm": 17.0,
+   "carried_by": "TAB-POWER",
+   "panel_side": "washer and screw head",
+   "post_code": "R30-1011702"
+  },
+  {
+   "id": "POWER-P-AGND2",
+   "net": "AGND",
+   "front_board": "P",
+   "front_ref": "TP990033",
+   "K_ref": "TP990034",
+   "front_xy": [
+    98.5,
+    175.0
+   ],
+   "present_front_xy": [
+    210,
+    179
+   ],
+   "K_xy": [
+    98.5,
+    175.0
+   ],
+   "gap_mm": 17.0,
+   "carried_by": "TAB-POWER-2 (DA-02 ruling, first position)",
+   "panel_side": "washer and screw head",
+   "post_code": "R30-1011702"
+  },
+  {
+   "id": "POWER-P-AGND3",
+   "net": "AGND",
+   "front_board": "P",
+   "front_ref": "TP990035",
+   "K_ref": "TP990036",
+   "front_xy": [
+    110.0,
+    174.5
+   ],
+   "present_front_xy": [
+    227,
+    179
+   ],
+   "K_xy": [
+    110.0,
+    174.5
+   ],
+   "gap_mm": 17.0,
+   "carried_by": "TAB-POWER-2 (ST-04 screen: P clear, 7 K footprints)",
+   "panel_side": "washer and screw head",
+   "post_code": "R30-1011702"
+  }
+ ],
+ "launch_commit_c1": "a2831f7",
+ "tabs": {
+  "TAB-POWER": {
+   "rect": [
+    139.0,
+    171.0,
+    196.0,
+    176.0
+   ],
+   "status": "accepted by S-DA02 rulings; p_tabs re-run is ST-02 a3"
+  },
+  "TAB-POWER-2": {
+   "rect": [
+    95.0,
+    171.0,
+    139.0,
+    176.0
+   ],
+   "status": "accepted by S-DA02 rulings as the working position; clearance to O5 (x <= 92.4) 2.6 mm; P supports, frame and p_tabs NOT RUN"
+  }
+ },
+ "old_P_agnd_xy": {
+  "POWER-P-AGND2": [
+   210,
+   179
+  ],
+  "POWER-P-AGND3": [
+   227,
+   179
+  ]
+ },
+ "launch_commit_a2": "21d1cd9"
+}

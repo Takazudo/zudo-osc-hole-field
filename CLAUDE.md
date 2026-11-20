@@ -18,3 +18,11 @@ Follow these eight rules across project work:
 6. **Take no outward actions.** Do not buy, request quotes, contact suppliers, order fabrication, deploy the site, or read or write Cloudflare credentials.
 7. **Use the circuit evidence workflow.** Follow `circuit/WORKFLOW.md` for exact identities, retained evidence, integration rules, publication, and generated ownership. [scripts/schgen/README.md](scripts/schgen/README.md) documents schematic source and generation.
 8. **Write project materials in English.** This includes docs, labels, comments, and commit messages.
+
+## Vendor development resources
+
+Vendor datasheets, SPICE macro-models and IBIS files that the owner downloads go to the private repository
+[Takazudo/circuit-dev-resources](https://github.com/Takazudo/circuit-dev-resources). Its README holds the layout,
+naming and SHA256 inventory. Store new resources there unmodified, with the vendor revision in the file name.
+Look there before reporting a source as unavailable. Retaining evidence in this repository still follows
+`circuit/WORKFLOW.md`, citing the file's path and hash.

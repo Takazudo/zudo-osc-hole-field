@@ -1,0 +1,1125 @@
+{
+ "schema_version": 1,
+ "task": "osc-stack-20261114/ST-04 attempt a4, part 1 (DS-62, DS-64, DS-67, DS-70)",
+ "status": "PROPOSAL paper bound; unvalidated; coupling, current share and resistance NOT RUN as measurements; nothing selected",
+ "written_by": "scripts/stack/link_electrical/link_electrical.py",
+ "inputs": "inputs.json",
+ "adapter_classes": [
+  "STATIC"
+ ],
+ "adapter_link": {
+  "cases": [
+   {
+    "name": "part_1",
+    "cable": "C81339",
+    "circuits": 8,
+    "order": [
+     "OCT_SELECTED",
+     "OSC_OCT0",
+     "OSC_OCT1",
+     "OSC_OCT2",
+     "OSC_OCT3",
+     "OSC_OCT4",
+     "OSC_OCT5",
+     "AGND"
+    ],
+    "aggressor_pos": 1,
+    "length_mm": 40,
+    "grounds": 1,
+    "victim": "OSC_OCT0",
+    "victim_pos": 2,
+    "peak_V": 0.100221,
+    "area_Vs": 3.36096e-10,
+    "filtered_V": 3.36096e-06,
+    "ratio_peak": 5.06737,
+    "ratio_filtered": 4.04305
+   },
+   {
+    "name": "part_1",
+    "cable": "C29534",
+    "circuits": 8,
+    "order": [
+     "OCT_SELECTED",
+     "OSC_OCT0",
+     "OSC_OCT1",
+     "OSC_OCT2",
+     "OSC_OCT3",
+     "OSC_OCT4",
+     "OSC_OCT5",
+     "AGND"
+    ],
+    "aggressor_pos": 1,
+    "length_mm": 50,
+    "grounds": 1,
+    "victim": "OSC_OCT0",
+    "victim_pos": 2,
+    "peak_V": 0.120451,
+    "area_Vs": 4.04003e-10,
+    "filtered_V": 4.04003e-06,
+    "ratio_peak": 6.09028,
+    "ratio_filtered": 4.85994
+   },
+   {
+    "name": "ds79",
+    "cable": "C81339",
+    "circuits": 8,
+    "order": [
+     "OSC_OCT0",
+     "OSC_OCT1",
+     "OSC_OCT2",
+     "OSC_OCT3",
+     "OSC_OCT4",
+     "OSC_OCT5",
+     "AGND",
+     "OCT_SELECTED"
+    ],
+    "aggressor_pos": 8,
+    "length_mm": 40,
+    "grounds": 1,
+    "victim": "OSC_OCT0",
+    "victim_pos": 1,
+    "peak_V": 0.0252691,
+    "area_Vs": 7.39609e-11,
+    "filtered_V": 7.39609e-07,
+    "ratio_peak": 1.27766,
+    "ratio_filtered": 0.889709
+   },
+   {
+    "name": "ds79",
+    "cable": "C29534",
+    "circuits": 8,
+    "order": [
+     "OSC_OCT0",
+     "OSC_OCT1",
+     "OSC_OCT2",
+     "OSC_OCT3",
+     "OSC_OCT4",
+     "OSC_OCT5",
+     "AGND",
+     "OCT_SELECTED"
+    ],
+    "aggressor_pos": 8,
+    "length_mm": 50,
+    "grounds": 1,
+    "victim": "OSC_OCT0",
+    "victim_pos": 1,
+    "peak_V": 0.0303152,
+    "area_Vs": 8.87474e-11,
+    "filtered_V": 8.87474e-07,
+    "ratio_peak": 1.5328,
+    "ratio_filtered": 1.06758
+   },
+   {
+    "name": "alternating_14",
+    "cable": "C68390",
+    "circuits": 14,
+    "order": [
+     "OCT_SELECTED",
+     "AGND",
+     "OSC_OCT0",
+     "AGND",
+     "OSC_OCT1",
+     "AGND",
+     "OSC_OCT2",
+     "AGND",
+     "OSC_OCT3",
+     "AGND",
+     "OSC_OCT4",
+     "AGND",
+     "OSC_OCT5",
+     "AGND"
+    ],
+    "aggressor_pos": 1,
+    "length_mm": 50,
+    "grounds": 7,
+    "victim": "OSC_OCT0",
+    "victim_pos": 3,
+    "peak_V": 0.0136867,
+    "area_Vs": 5.77343e-11,
+    "filtered_V": 5.77343e-07,
+    "ratio_peak": 0.692027,
+    "ratio_filtered": 0.694513
+   }
+  ],
+  "harness_quietest": {
+   "harness": "K-O2-1",
+   "length_mm": 66,
+   "peak_V": 0.0197776,
+   "area_Vs": 8.31293e-11,
+   "filtered_V": 8.31293e-07
+  }
+ },
+ "baseline_with_adapter_rule": {
+  "ANALOGUE>ANALOGUE": {
+   "min_V": 0.00111503,
+   "triples": 147
+  },
+  "ANALOGUE>PRECISION": {
+   "min_V": 0.00111503,
+   "triples": 39
+  },
+  "PRECISION>ANALOGUE": {
+   "min_V": 0.00111503,
+   "triples": 39
+  },
+  "PRECISION>PRECISION": {
+   "min_V": 0.00111503,
+   "triples": 18
+  },
+  "PRECISION>WIPER": {
+   "min_V": 0.822913,
+   "triples": 5
+  },
+  "ANALOGUE>WIPER": {
+   "min_V": 0.822913,
+   "triples": 14
+  },
+  "LOGIC>LOGIC": {
+   "min_V": 0.218351,
+   "triples": 17
+  },
+  "LOGIC>PRECISION": {
+   "min_V": 0.301061,
+   "triples": 11
+  },
+  "PRECISION>LOGIC": {
+   "min_V": 0.00186395,
+   "triples": 11
+  },
+  "ANALOGUE>LOGIC": {
+   "min_V": 0.00186395,
+   "triples": 2
+  },
+  "LOGIC>ANALOGUE": {
+   "min_V": 0.301061,
+   "triples": 2
+  }
+ },
+ "baseline_change": {
+  "ANALOGUE>ANALOGUE": {
+   "a3_min_V": 0.000923344,
+   "a4_min_V": 0.00111503
+  }
+ },
+ "table": [
+  {
+   "cable": "C81339",
+   "circuits": 8,
+   "length_mm": 40,
+   "pair": "ANALOGUE>ANALOGUE",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.00085514,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.766923,
+   "ratio_by_place": {
+    "edge": 0.766923,
+    "middle": 0.547708
+   }
+  },
+  {
+   "cable": "C81339",
+   "circuits": 8,
+   "length_mm": 40,
+   "pair": "ANALOGUE>LOGIC",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.000441084,
+   "harness_min_V": 0.00186395,
+   "ratio": 0.236639,
+   "ratio_by_place": {
+    "edge": 0.236639,
+    "middle": 0.167769
+   }
+  },
+  {
+   "cable": "C81339",
+   "circuits": 8,
+   "length_mm": 40,
+   "pair": "ANALOGUE>PRECISION",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.00085514,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.766923,
+   "ratio_by_place": {
+    "edge": 0.766923,
+    "middle": 0.547708
+   }
+  },
+  {
+   "cable": "C81339",
+   "circuits": 8,
+   "length_mm": 40,
+   "pair": "ANALOGUE>WIPER",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.205666,
+   "harness_min_V": 0.822913,
+   "ratio": 0.249925,
+   "ratio_by_place": {
+    "edge": 0.249925,
+    "middle": 0.17899
+   }
+  },
+  {
+   "cable": "C81339",
+   "circuits": 8,
+   "length_mm": 40,
+   "pair": "LOGIC>ANALOGUE",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.0615978,
+   "harness_min_V": 0.301061,
+   "ratio": 0.204602,
+   "ratio_by_place": {
+    "edge": 0.204602,
+    "middle": 0.135268
+   }
+  },
+  {
+   "cable": "C81339",
+   "circuits": 8,
+   "length_mm": 40,
+   "pair": "LOGIC>LOGIC",
+   "lies": "side by side",
+   "where": "edge",
+   "flat_V": 0.196774,
+   "harness_min_V": 0.218351,
+   "ratio": 0.901179,
+   "ratio_by_place": {
+    "edge": 0.901179,
+    "middle": 0.62785
+   }
+  },
+  {
+   "cable": "C81339",
+   "circuits": 8,
+   "length_mm": 40,
+   "pair": "LOGIC>PRECISION",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.0615978,
+   "harness_min_V": 0.301061,
+   "ratio": 0.204602,
+   "ratio_by_place": {
+    "edge": 0.204602,
+    "middle": 0.135268
+   }
+  },
+  {
+   "cable": "C81339",
+   "circuits": 8,
+   "length_mm": 40,
+   "pair": "PRECISION>ANALOGUE",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.00085514,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.766923,
+   "ratio_by_place": {
+    "edge": 0.766923,
+    "middle": 0.547708
+   }
+  },
+  {
+   "cable": "C81339",
+   "circuits": 8,
+   "length_mm": 40,
+   "pair": "PRECISION>LOGIC",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.000441084,
+   "harness_min_V": 0.00186395,
+   "ratio": 0.236639,
+   "ratio_by_place": {
+    "edge": 0.236639,
+    "middle": 0.167769
+   }
+  },
+  {
+   "cable": "C81339",
+   "circuits": 8,
+   "length_mm": 40,
+   "pair": "PRECISION>PRECISION",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.00085514,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.766923,
+   "ratio_by_place": {
+    "edge": 0.766923,
+    "middle": 0.547708
+   }
+  },
+  {
+   "cable": "C81339",
+   "circuits": 8,
+   "length_mm": 40,
+   "pair": "PRECISION>WIPER",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.205666,
+   "harness_min_V": 0.822913,
+   "ratio": 0.249925,
+   "ratio_by_place": {
+    "edge": 0.249925,
+    "middle": 0.17899
+   }
+  },
+  {
+   "cable": "C26618",
+   "circuits": 40,
+   "length_mm": 50,
+   "pair": "ANALOGUE>ANALOGUE",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.000923893,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.828584,
+   "ratio_by_place": {
+    "edge": 0.828584,
+    "middle": 0.54787
+   }
+  },
+  {
+   "cable": "C26618",
+   "circuits": 40,
+   "length_mm": 50,
+   "pair": "ANALOGUE>LOGIC",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.000475484,
+   "harness_min_V": 0.00186395,
+   "ratio": 0.255095,
+   "ratio_by_place": {
+    "edge": 0.255095,
+    "middle": 0.167519
+   }
+  },
+  {
+   "cable": "C26618",
+   "circuits": 40,
+   "length_mm": 50,
+   "pair": "ANALOGUE>PRECISION",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.000923893,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.828584,
+   "ratio_by_place": {
+    "edge": 0.828584,
+    "middle": 0.54787
+   }
+  },
+  {
+   "cable": "C26618",
+   "circuits": 40,
+   "length_mm": 50,
+   "pair": "ANALOGUE>WIPER",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.221985,
+   "harness_min_V": 0.822913,
+   "ratio": 0.269755,
+   "ratio_by_place": {
+    "edge": 0.269755,
+    "middle": 0.178318
+   }
+  },
+  {
+   "cable": "C26618",
+   "circuits": 40,
+   "length_mm": 50,
+   "pair": "LOGIC>ANALOGUE",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.0650042,
+   "harness_min_V": 0.301061,
+   "ratio": 0.215917,
+   "ratio_by_place": {
+    "edge": 0.215917,
+    "middle": 0.132458
+   }
+  },
+  {
+   "cable": "C26618",
+   "circuits": 40,
+   "length_mm": 50,
+   "pair": "LOGIC>LOGIC",
+   "lies": "side by side",
+   "where": "edge",
+   "flat_V": 0.216021,
+   "harness_min_V": 0.218351,
+   "ratio": 0.989329,
+   "ratio_by_place": {
+    "edge": 0.989329,
+    "middle": 0.702957
+   }
+  },
+  {
+   "cable": "C26618",
+   "circuits": 40,
+   "length_mm": 50,
+   "pair": "LOGIC>PRECISION",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.0650042,
+   "harness_min_V": 0.301061,
+   "ratio": 0.215917,
+   "ratio_by_place": {
+    "edge": 0.215917,
+    "middle": 0.132458
+   }
+  },
+  {
+   "cable": "C26618",
+   "circuits": 40,
+   "length_mm": 50,
+   "pair": "PRECISION>ANALOGUE",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.000923893,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.828584,
+   "ratio_by_place": {
+    "edge": 0.828584,
+    "middle": 0.54787
+   }
+  },
+  {
+   "cable": "C26618",
+   "circuits": 40,
+   "length_mm": 50,
+   "pair": "PRECISION>LOGIC",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.000475484,
+   "harness_min_V": 0.00186395,
+   "ratio": 0.255095,
+   "ratio_by_place": {
+    "edge": 0.255095,
+    "middle": 0.167519
+   }
+  },
+  {
+   "cable": "C26618",
+   "circuits": 40,
+   "length_mm": 50,
+   "pair": "PRECISION>PRECISION",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.000923893,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.828584,
+   "ratio_by_place": {
+    "edge": 0.828584,
+    "middle": 0.54787
+   }
+  },
+  {
+   "cable": "C26618",
+   "circuits": 40,
+   "length_mm": 50,
+   "pair": "PRECISION>WIPER",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.221985,
+   "harness_min_V": 0.822913,
+   "ratio": 0.269755,
+   "ratio_by_place": {
+    "edge": 0.269755,
+    "middle": 0.178318
+   }
+  },
+  {
+   "cable": "C68390",
+   "circuits": 14,
+   "length_mm": 50,
+   "pair": "ANALOGUE>ANALOGUE",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.000964216,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.864748,
+   "ratio_by_place": {
+    "edge": 0.864748,
+    "middle": 0.568058
+   }
+  },
+  {
+   "cable": "C68390",
+   "circuits": 14,
+   "length_mm": 50,
+   "pair": "ANALOGUE>LOGIC",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.00049676,
+   "harness_min_V": 0.00186395,
+   "ratio": 0.266509,
+   "ratio_by_place": {
+    "edge": 0.266509,
+    "middle": 0.173819
+   }
+  },
+  {
+   "cable": "C68390",
+   "circuits": 14,
+   "length_mm": 50,
+   "pair": "ANALOGUE>PRECISION",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.000964216,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.864748,
+   "ratio_by_place": {
+    "edge": 0.864748,
+    "middle": 0.568058
+   }
+  },
+  {
+   "cable": "C68390",
+   "circuits": 14,
+   "length_mm": 50,
+   "pair": "ANALOGUE>WIPER",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.231469,
+   "harness_min_V": 0.822913,
+   "ratio": 0.28128,
+   "ratio_by_place": {
+    "edge": 0.28128,
+    "middle": 0.184762
+   }
+  },
+  {
+   "cable": "C68390",
+   "circuits": 14,
+   "length_mm": 50,
+   "pair": "LOGIC>ANALOGUE",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.068579,
+   "harness_min_V": 0.301061,
+   "ratio": 0.227791,
+   "ratio_by_place": {
+    "edge": 0.227791,
+    "middle": 0.138454
+   }
+  },
+  {
+   "cable": "C68390",
+   "circuits": 14,
+   "length_mm": 50,
+   "pair": "LOGIC>LOGIC",
+   "lies": "side by side",
+   "where": "edge",
+   "flat_V": 0.224099,
+   "harness_min_V": 0.218351,
+   "ratio": 1.02633,
+   "ratio_by_place": {
+    "edge": 1.02633,
+    "middle": 0.713961
+   }
+  },
+  {
+   "cable": "C68390",
+   "circuits": 14,
+   "length_mm": 50,
+   "pair": "LOGIC>PRECISION",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.068579,
+   "harness_min_V": 0.301061,
+   "ratio": 0.227791,
+   "ratio_by_place": {
+    "edge": 0.227791,
+    "middle": 0.138454
+   }
+  },
+  {
+   "cable": "C68390",
+   "circuits": 14,
+   "length_mm": 50,
+   "pair": "PRECISION>ANALOGUE",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.000964216,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.864748,
+   "ratio_by_place": {
+    "edge": 0.864748,
+    "middle": 0.568058
+   }
+  },
+  {
+   "cable": "C68390",
+   "circuits": 14,
+   "length_mm": 50,
+   "pair": "PRECISION>LOGIC",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.00049676,
+   "harness_min_V": 0.00186395,
+   "ratio": 0.266509,
+   "ratio_by_place": {
+    "edge": 0.266509,
+    "middle": 0.173819
+   }
+  },
+  {
+   "cable": "C68390",
+   "circuits": 14,
+   "length_mm": 50,
+   "pair": "PRECISION>PRECISION",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.000964216,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.864748,
+   "ratio_by_place": {
+    "edge": 0.864748,
+    "middle": 0.568058
+   }
+  },
+  {
+   "cable": "C68390",
+   "circuits": 14,
+   "length_mm": 50,
+   "pair": "PRECISION>WIPER",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.231469,
+   "harness_min_V": 0.822913,
+   "ratio": 0.28128,
+   "ratio_by_place": {
+    "edge": 0.28128,
+    "middle": 0.184762
+   }
+  },
+  {
+   "cable": "C29534",
+   "circuits": 8,
+   "length_mm": 50,
+   "pair": "ANALOGUE>ANALOGUE",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.0010262,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.920335,
+   "ratio_by_place": {
+    "edge": 0.920335,
+    "middle": 0.657244
+   }
+  },
+  {
+   "cable": "C29534",
+   "circuits": 8,
+   "length_mm": 50,
+   "pair": "ANALOGUE>LOGIC",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.000529331,
+   "harness_min_V": 0.00186395,
+   "ratio": 0.283984,
+   "ratio_by_place": {
+    "edge": 0.283984,
+    "middle": 0.201319
+   }
+  },
+  {
+   "cable": "C29534",
+   "circuits": 8,
+   "length_mm": 50,
+   "pair": "ANALOGUE>PRECISION",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.0010262,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.920335,
+   "ratio_by_place": {
+    "edge": 0.920335,
+    "middle": 0.657244
+   }
+  },
+  {
+   "cable": "C29534",
+   "circuits": 8,
+   "length_mm": 50,
+   "pair": "ANALOGUE>WIPER",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.246105,
+   "harness_min_V": 0.822913,
+   "ratio": 0.299065,
+   "ratio_by_place": {
+    "edge": 0.299065,
+    "middle": 0.213692
+   }
+  },
+  {
+   "cable": "C29534",
+   "circuits": 8,
+   "length_mm": 50,
+   "pair": "LOGIC>ANALOGUE",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.0738879,
+   "harness_min_V": 0.301061,
+   "ratio": 0.245425,
+   "ratio_by_place": {
+    "edge": 0.245425,
+    "middle": 0.16205
+   }
+  },
+  {
+   "cable": "C29534",
+   "circuits": 8,
+   "length_mm": 50,
+   "pair": "LOGIC>LOGIC",
+   "lies": "side by side",
+   "where": "edge",
+   "flat_V": 0.236446,
+   "harness_min_V": 0.218351,
+   "ratio": 1.08287,
+   "ratio_by_place": {
+    "edge": 1.08287,
+    "middle": 0.753796
+   }
+  },
+  {
+   "cable": "C29534",
+   "circuits": 8,
+   "length_mm": 50,
+   "pair": "LOGIC>PRECISION",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.0738879,
+   "harness_min_V": 0.301061,
+   "ratio": 0.245425,
+   "ratio_by_place": {
+    "edge": 0.245425,
+    "middle": 0.16205
+   }
+  },
+  {
+   "cable": "C29534",
+   "circuits": 8,
+   "length_mm": 50,
+   "pair": "PRECISION>ANALOGUE",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.0010262,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.920335,
+   "ratio_by_place": {
+    "edge": 0.920335,
+    "middle": 0.657244
+   }
+  },
+  {
+   "cable": "C29534",
+   "circuits": 8,
+   "length_mm": 50,
+   "pair": "PRECISION>LOGIC",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.000529331,
+   "harness_min_V": 0.00186395,
+   "ratio": 0.283984,
+   "ratio_by_place": {
+    "edge": 0.283984,
+    "middle": 0.201319
+   }
+  },
+  {
+   "cable": "C29534",
+   "circuits": 8,
+   "length_mm": 50,
+   "pair": "PRECISION>PRECISION",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.0010262,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.920335,
+   "ratio_by_place": {
+    "edge": 0.920335,
+    "middle": 0.657244
+   }
+  },
+  {
+   "cable": "C29534",
+   "circuits": 8,
+   "length_mm": 50,
+   "pair": "PRECISION>WIPER",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.246105,
+   "harness_min_V": 0.822913,
+   "ratio": 0.299065,
+   "ratio_by_place": {
+    "edge": 0.299065,
+    "middle": 0.213692
+   }
+  },
+  {
+   "cable": "C32128",
+   "circuits": 26,
+   "length_mm": 60,
+   "pair": "ANALOGUE>ANALOGUE",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.00109045,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.977958,
+   "ratio_by_place": {
+    "edge": 0.977958,
+    "middle": 0.643449
+   }
+  },
+  {
+   "cable": "C32128",
+   "circuits": 26,
+   "length_mm": 60,
+   "pair": "ANALOGUE>LOGIC",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.000561418,
+   "harness_min_V": 0.00186395,
+   "ratio": 0.301198,
+   "ratio_by_place": {
+    "edge": 0.301198,
+    "middle": 0.196774
+   }
+  },
+  {
+   "cable": "C32128",
+   "circuits": 26,
+   "length_mm": 60,
+   "pair": "ANALOGUE>PRECISION",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.00109045,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.977958,
+   "ratio_by_place": {
+    "edge": 0.977958,
+    "middle": 0.643449
+   }
+  },
+  {
+   "cable": "C32128",
+   "circuits": 26,
+   "length_mm": 60,
+   "pair": "ANALOGUE>WIPER",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.260977,
+   "harness_min_V": 0.822913,
+   "ratio": 0.317139,
+   "ratio_by_place": {
+    "edge": 0.317139,
+    "middle": 0.208061
+   }
+  },
+  {
+   "cable": "C32128",
+   "circuits": 26,
+   "length_mm": 60,
+   "pair": "LOGIC>ANALOGUE",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.0769505,
+   "harness_min_V": 0.301061,
+   "ratio": 0.255597,
+   "ratio_by_place": {
+    "edge": 0.255597,
+    "middle": 0.155486
+   }
+  },
+  {
+   "cable": "C32128",
+   "circuits": 26,
+   "length_mm": 60,
+   "pair": "LOGIC>LOGIC",
+   "lies": "side by side",
+   "where": "edge",
+   "flat_V": 0.254977,
+   "harness_min_V": 0.218351,
+   "ratio": 1.16774,
+   "ratio_by_place": {
+    "edge": 1.16774,
+    "middle": 0.822765
+   }
+  },
+  {
+   "cable": "C32128",
+   "circuits": 26,
+   "length_mm": 60,
+   "pair": "LOGIC>PRECISION",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.0769505,
+   "harness_min_V": 0.301061,
+   "ratio": 0.255597,
+   "ratio_by_place": {
+    "edge": 0.255597,
+    "middle": 0.155486
+   }
+  },
+  {
+   "cable": "C32128",
+   "circuits": 26,
+   "length_mm": 60,
+   "pair": "PRECISION>ANALOGUE",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.00109045,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.977958,
+   "ratio_by_place": {
+    "edge": 0.977958,
+    "middle": 0.643449
+   }
+  },
+  {
+   "cable": "C32128",
+   "circuits": 26,
+   "length_mm": 60,
+   "pair": "PRECISION>LOGIC",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.000561418,
+   "harness_min_V": 0.00186395,
+   "ratio": 0.301198,
+   "ratio_by_place": {
+    "edge": 0.301198,
+    "middle": 0.196774
+   }
+  },
+  {
+   "cable": "C32128",
+   "circuits": 26,
+   "length_mm": 60,
+   "pair": "PRECISION>PRECISION",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.00109045,
+   "harness_min_V": 0.00111503,
+   "ratio": 0.977958,
+   "ratio_by_place": {
+    "edge": 0.977958,
+    "middle": 0.643449
+   }
+  },
+  {
+   "cable": "C32128",
+   "circuits": 26,
+   "length_mm": 60,
+   "pair": "PRECISION>WIPER",
+   "lies": "across one ground",
+   "where": "edge",
+   "flat_V": 0.260977,
+   "harness_min_V": 0.822913,
+   "ratio": 0.317139,
+   "ratio_by_place": {
+    "edge": 0.317139,
+    "middle": 0.208061
+   }
+  }
+ ],
+ "largest_ratio_per_length": {
+  "40": {
+   "cable": "C81339",
+   "circuits": 8,
+   "length_mm": 40,
+   "pair": "LOGIC>LOGIC",
+   "lies": "side by side",
+   "where": "edge",
+   "flat_V": 0.196774,
+   "harness_min_V": 0.218351,
+   "ratio": 0.901179,
+   "ratio_by_place": {
+    "edge": 0.901179,
+    "middle": 0.62785
+   }
+  },
+  "50": {
+   "cable": "C29534",
+   "circuits": 8,
+   "length_mm": 50,
+   "pair": "LOGIC>LOGIC",
+   "lies": "side by side",
+   "where": "edge",
+   "flat_V": 0.236446,
+   "harness_min_V": 0.218351,
+   "ratio": 1.08287,
+   "ratio_by_place": {
+    "edge": 1.08287,
+    "middle": 0.753796
+   }
+  },
+  "60": {
+   "cable": "C32128",
+   "circuits": 26,
+   "length_mm": 60,
+   "pair": "LOGIC>LOGIC",
+   "lies": "side by side",
+   "where": "edge",
+   "flat_V": 0.254977,
+   "harness_min_V": 0.218351,
+   "ratio": 1.16774,
+   "ratio_by_place": {
+    "edge": 1.16774,
+    "middle": 0.822765
+   }
+  }
+ },
+ "above_1": [
+  {
+   "cable": "C68390",
+   "circuits": 14,
+   "length_mm": 50,
+   "pair": "LOGIC>LOGIC",
+   "lies": "side by side",
+   "where": "edge",
+   "flat_V": 0.224099,
+   "harness_min_V": 0.218351,
+   "ratio": 1.02633,
+   "ratio_by_place": {
+    "edge": 1.02633,
+    "middle": 0.713961
+   }
+  },
+  {
+   "cable": "C29534",
+   "circuits": 8,
+   "length_mm": 50,
+   "pair": "LOGIC>LOGIC",
+   "lies": "side by side",
+   "where": "edge",
+   "flat_V": 0.236446,
+   "harness_min_V": 0.218351,
+   "ratio": 1.08287,
+   "ratio_by_place": {
+    "edge": 1.08287,
+    "middle": 0.753796
+   }
+  },
+  {
+   "cable": "C32128",
+   "circuits": 26,
+   "length_mm": 60,
+   "pair": "LOGIC>LOGIC",
+   "lies": "side by side",
+   "where": "edge",
+   "flat_V": 0.254977,
+   "harness_min_V": 0.218351,
+   "ratio": 1.16774,
+   "ratio_by_place": {
+    "edge": 1.16774,
+    "middle": 0.822765
+   }
+  }
+ ]
+}
