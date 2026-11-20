@@ -19,13 +19,15 @@ canonical write.
 | 2b | `scripts/stack/studies/mc04_c2b_link_shift_replace/` | Moving links inside the retained rules, with retained re-placement, frees **3 ICs cleanly (26 → 23)** via P-L02.01.01, P-L12.02.01.02 and P-L13.01.01.02. More moves reach 20 only by stranding other parts. No link move helps JL. |
 | 2c | `scripts/stack/studies/mc04_c2c_moved_link_checks/` | The moved links pass cable, compliance, member and rider class-distance checks. The c6 contract must be re-run, because it pins the geometry digest. |
 | 4 | `scripts/stack/studies/mc04_c4_blocks/` | On room, all 26 pack onto K as functional blocks (IC + decouplers + one-hop passives and diodes); every position passes the exact predicate. JR → K adds a net 16 cable nets (31 new, 15 removed) and JL → K a net 8 (24 new, 16 removed), against 75 and 128 spare positions. The new nets include 15 `*_PROTECTED` input nets and 14 `ISO_MID` splits. Thirteen ICs move beyond the 25 mm rule. |
+| 5a | `scripts/stack/studies/mc04_c5_crossing_nets/` | All 55 new crossing nets classify ANALOGUE; none is raw-sensitive or forbidden, and none has an allowed-crossing kind yet. 26 are LED drives, 15 protected input nodes and 14 isolation midpoints. |
+| 5b | `scripts/stack/studies/mc04_c5b_keep_front_pairs/` | Keeping the protection and isolation parts on the front board crosses the same 31 + 24 nets: the crossing moves to the clamped IC input (`*_SENSE`) or IC output (`*_DRIVE`). Also keeping the LED resistors makes 13 raw-sensitive nets cross, so that variant is ruled out. |
 
 ## Options
 
 | Option | What changes | Remaining unplaced | Main risks |
 | --- | --- | --- | --- |
 | A. Clean link moves only | 3 link moves plus re-placement, within the retained rules | 23 | Does not solve the problem; JR stays short of room. |
-| B. Partition change: JR and JL blocks to K | 12 blocks move to K. Panel hardware stays on the front boards. | K's own 14 still need room (option C or D) | 15 protected input nodes and 14 isolation midpoints would cross the cable; +24 net crossing nets need allocation and coupling review; module tests (envelope ENV_STORAGE isolation, mix4 protected inputs, filter core isolation) must still pass. A variant that keeps the protection and isolation parts on the front board would change these counts and was not studied. |
+| B. Partition change: JR and JL blocks to K | 12 blocks move to K. Panel hardware stays on the front boards. | K's own 14 still need room (option C or D) | 15 protected input nodes and 14 isolation midpoints would cross the cable; +24 net crossing nets (55 new, all ANALOGUE) need allocation and coupling review; module tests (envelope ENV_STORAGE isolation, mix4 protected inputs, filter core isolation) must still pass. Keeping the protection and isolation parts on the front board (step 5b) does not reduce the count; it makes the clamped IC input or output node cross instead. |
 | C. K blocks relocated within K beyond 25 mm | DS-88 radius rule relaxed for whole blocks | — | A rule change; longer runs for wavefolder, VCO and mixer cores; needs an electrical budget that does not yet exist. |
 | D. A + B + C together | All of the above | 0 on room (13 moves beyond 25 mm) | Every risk above, plus re-running the links_gate and c6 records and the independent review. |
 
