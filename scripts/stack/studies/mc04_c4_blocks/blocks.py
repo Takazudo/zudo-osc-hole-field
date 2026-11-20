@@ -18,12 +18,26 @@ ROOT = HERE.parents[3]
 sys.path.insert(0, str(ROOT / 'scripts/stack/studies/mc04_c1_capacity'))
 import capacity as cap  # noqa: E402
 
-ICS = ('U4346', 'U4347', 'U4348', 'U8314', 'U8318', 'U8417')
+CASES = (('JR', 'K', ('U4346', 'U4347', 'U4348', 'U8314', 'U8318', 'U8417')),
+         ('JL', 'K', ('U1216', 'U1416', 'U1417', 'U1518', 'U2119', 'U2218')),
+         ('JL', 'JL', ('U1216', 'U1416', 'U1417', 'U1518', 'U2119', 'U2218')),
+         ('K', 'K', ('U1415', 'U4324', 'U4341', 'U4417', 'U4433', 'U4524', 'U4526', 'U4527', 'U4623', 'U4635',
+                     'U5110', 'U5209', 'U5210', 'U8409')))
 POWER = {'+12V', '-12V', '+5V', 'AGND', 'GND', 'DGND'}
 
 
 def run():
     scene, unresolved, _ = cap.scene_and_rows()
+    cases = [case(scene, *c) for c in CASES]
+    # All blocks onto K together: K's own blocks first (vacated), then JR's, then JL's, on one shared raster.
+    shared = {}
+    together = [case(scene, 'K', 'K', CASES[3][2], shared), case(scene, 'JR', 'K', CASES[0][2], shared),
+                case(scene, 'JL', 'K', CASES[1][2], shared)]
+    return {'status': 'TASK_C_STEP_4_BLOCK_RELOCATION', 'cases': cases, 'all_on_K_together': together,
+            'all_on_K_together_packed': all(c['all_blocks_packed'] for c in together)}
+
+
+def case(scene, src, tgt, ICS, shared=None):
     part = json.loads((ROOT / 'design/reports/io-partition.json').read_text())
     pp = {x['ref']: x for x in part['physical_packages']}
     net_refs, ref_nets = collections.defaultdict(set), collections.defaultdict(set)
@@ -42,7 +56,7 @@ def run():
             for r in net_refs[n]:
                 if r != ic and r in pp and r[0] in 'RCD' and not pp[r]['courtyard'].get('through_hole'):
                     g.add(r)
-        return sorted(r for r in g if board_of.get(r) == {'JR'})
+        return sorted(r for r in g if board_of.get(r) == {src})
 
     def crossing(moved):
         n_cross = 0
@@ -50,13 +64,19 @@ def run():
             boards = set()
             for r in refs:
                 for b in board_of.get(r, ()):
-                    boards.add('K' if (b == 'JR' and r in moved) else b)
-            n_cross += {'JR', 'K'} <= boards
+                    boards.add(tgt if (b == src and r in moved) else b)
+            n_cross += src != tgt and {src, tgt} <= boards
         return n_cross
 
     base = crossing(set())
-    masks = {f: cap.blocked_mask(scene, 'K', f, set()) for f in 'FB'}
-    masks = {f: (m.copy(), o) for f, (m, o) in masks.items()}
+    vacate = {(src, r) for ic in ICS for r in block(ic)} if src == tgt else set()
+    if shared:
+        masks = shared
+    else:
+        masks = {f: cap.blocked_mask(scene, tgt, f, vacate) for f in 'FB'}
+        masks = {f: (m.copy(), o) for f, (m, o) in masks.items()}
+        if shared is not None:
+            shared.update(masks)
     def put(m, o, box, target):
         pts = cap.fits(m, o, box)
         if not pts:
@@ -70,9 +90,9 @@ def run():
     rows, moved_all = [], set()
     for ic in ICS:
         members = block(ic)
-        fp = scene.bodies[('JR', ic)]
+        fp = scene.bodies[(src, ic)]
         ox, oy = fp['origin']
-        orig_span = max(math.hypot(scene.bodies[('JR', r)]['origin'][0] - ox, scene.bodies[('JR', r)]['origin'][1] - oy)
+        orig_span = max(math.hypot(scene.bodies[(src, r)]['origin'][0] - ox, scene.bodies[(src, r)]['origin'][1] - oy)
                         for r in members)
         row = {'ic': ic, 'members': members, 'crossing_change_alone': crossing(set(members)) - base,
                'original_max_member_distance_mm': round(orig_span, 2)}
@@ -94,7 +114,7 @@ def run():
         for r in members:
             if r == ic:
                 continue
-            q = put(m, o, cap.footprint_box(scene.bodies[('JR', r)], 0), (x, y))
+            q = put(m, o, cap.footprint_box(scene.bodies[(src, r)], 0), (x, y))
             if q is None:
                 missing.append(r)
             else:
@@ -105,11 +125,11 @@ def run():
         if not missing:
             moved_all |= set(members)
         rows.append(row)
-    jr_links = [l for l in json.loads((ROOT / 'design/stack/geometry/links/link-gate.json').read_text())['links']
-                if not l.get('gone') and l['front_board'] == 'JR']
-    return {'status': 'TASK_C_STEP_4_JR_BLOCKS_TO_K', 'blocks': rows,
+    links = [l for l in json.loads((ROOT / 'design/stack/geometry/links/link-gate.json').read_text())['links']
+             if not l.get('gone') and l['front_board'] == src]
+    return {'from': src, 'to': tgt, 'blocks': rows, 'all_blocks_packed': all(r.get('k_face') and not r['members_without_room'] for r in rows),
             'crossing_nets_before': base, 'crossing_change_all_placed_blocks': crossing(moved_all) - base,
-            'jr_link_unused_positions': sum(l['unused'] for l in jr_links),
+            'src_link_unused_positions': sum(l['unused'] for l in links),
             'scope': ('Greedy raster packing on K (0.25 mm, obstacles as the capacity census, 0.35 mm between placed '
                       'parts, no rotation, not exact-confirmed): the IC nearest its original x/y on the better face, then each '
                       'member nearest the IC on the same face; one-hop block boundary from the remedy brief, not a '
