@@ -23,11 +23,14 @@ CASES = (('JR', 'K', ('U4346', 'U4347', 'U4348', 'U8314', 'U8318', 'U8417')),
          ('JL', 'JL', ('U1216', 'U1416', 'U1417', 'U1518', 'U2119', 'U2218')),
          ('K', 'K', ('U1415', 'U4324', 'U4341', 'U4417', 'U4433', 'U4524', 'U4526', 'U4527', 'U4623', 'U4635',
                      'U5110', 'U5209', 'U5210', 'U8409')))
-POWER = {'+12V', '-12V', '+5V', 'AGND', 'GND', 'DGND'}
+POWER = {'+12V', '-12V', '+5V', 'AGND'}  # the only global rails in io-partition.json
 
 
 def run():
-    scene, unresolved, _ = cap.scene_and_rows()
+    scene, unresolved, accepted = cap.scene_and_rows()
+    want = {(c[0], ic) for c in CASES if c[0] != 'JL' or c[1] == 'K' for ic in c[2]}
+    if accepted != 412 or {(r['board'], r['ref']) for r in unresolved} != want:
+        raise ValueError('cumulative scene or unresolved set changed')
     cases = [case(scene, *c) for c in CASES]
     # All blocks onto K together: K's own blocks first (vacated), then JR's, then JL's, on one shared raster.
     shared = {}
@@ -54,9 +57,20 @@ def case(scene, src, tgt, ICS, shared=None):
         g = {ic} | {x['ref'] for x in part['physical_packages'] if x.get('decouples_ref') == ic}
         for n in ref_nets[ic]:
             for r in net_refs[n]:
-                if r != ic and r in pp and r[0] in 'RCD' and not pp[r]['courtyard'].get('through_hole'):
+                if r != ic and r in pp and r[0] in 'RCD' and not r.startswith('RV') and not pp[r]['courtyard'].get('through_hole'):
                     g.add(r)
         return sorted(r for r in g if board_of.get(r) == {src})
+
+    def crossing_set(moved):
+        out = set()
+        for n, refs in net_refs.items():
+            boards = set()
+            for r in refs:
+                for b in board_of.get(r, ()):
+                    boards.add(tgt if (b == src and r in moved) else b)
+            if src != tgt and {src, tgt} <= boards:
+                out.add(n)
+        return out
 
     def crossing(moved):
         n_cross = 0
@@ -70,7 +84,10 @@ def case(scene, src, tgt, ICS, shared=None):
 
     base = crossing(set())
     vacate = {(src, r) for ic in ICS for r in block(ic)} if src == tgt else set()
-    if shared:
+    taken = shared.setdefault('_taken', set()) if shared is not None else set()
+    gone = shared.setdefault('_vacated', set()) if shared is not None else set()
+    gone |= vacate
+    if shared and 'F' in shared:
         masks = shared
     else:
         masks = {f: cap.blocked_mask(scene, tgt, f, vacate) for f in 'FB'}
@@ -110,29 +127,42 @@ def case(scene, src, tgt, ICS, shared=None):
         f = best[1]
         m, o = masks[f]
         x, y = put(m, o, cap.footprint_box(fp, 0), (ox, oy))
-        dist, missing = [], []
+        dist, missing, where, exact = [], [], {ic: [round(x, 3), round(y, 3)]}, []
+        taken.add((src, ic))
         for r in members:
-            if r == ic:
+            if r == ic or (src, r) in taken:
                 continue
             q = put(m, o, cap.footprint_box(scene.bodies[(src, r)], 0), (x, y))
             if q is None:
                 missing.append(r)
             else:
+                taken.add((src, r))
+                where[r] = [round(q[0], 3), round(q[1], 3)]
                 dist.append(math.hypot(q[0] - x, q[1] - y))
+        for r, (px, py) in where.items():
+            bfp = scene.bodies[(src, r)]
+            hits = [h for h in scene._violations(tgt, dict(bfp, side=f), px - bfp['origin'][0], py - bfp['origin'][1],
+                                                 gone | vacate | {(src, r)}) if h != 'displacement cap']
+            if hits:
+                exact.append({'ref': r, 'violations': hits})
         row.update(k_face=f, ic_k_origin=[round(x, 2), round(y, 2)], ic_shift_mm=round(best[0], 2),
+                   positions=where, exact_predicate_violations=exact,
                    members_without_room=missing, max_member_distance_mm=round(max(dist), 2) if dist else 0.0,
                    mean_member_distance_mm=round(sum(dist) / len(dist), 2) if dist else 0.0)
         if not missing:
             moved_all |= set(members)
         rows.append(row)
     links = [l for l in json.loads((ROOT / 'design/stack/geometry/links/link-gate.json').read_text())['links']
-             if not l.get('gone') and l['front_board'] == src]
+             if not l.get('gone') and l['id'].startswith(src + '-K-')]
+    after = crossing_set(moved_all)
+    before = crossing_set(set())
     return {'from': src, 'to': tgt, 'blocks': rows, 'all_blocks_packed': all(r.get('k_face') and not r['members_without_room'] for r in rows),
             'crossing_nets_before': base, 'crossing_change_all_placed_blocks': crossing(moved_all) - base,
             'src_link_unused_positions': sum(l['unused'] for l in links),
+            'nets_newly_crossing': sorted(after - before), 'nets_no_longer_crossing': sorted(before - after),
             'scope': ('Greedy raster packing on K (0.25 mm, obstacles as the capacity census, 0.35 mm between placed '
-                      'parts, no rotation, not exact-confirmed): the IC nearest its original x/y on the better face, then each '
-                      'member nearest the IC on the same face; one-hop block boundary from the remedy brief, not a '
+                      'parts, no rotation; every position re-checked with the scene exact predicate except the displacement cap): the IC nearest its original x/y on the better face, then each '
+                      'member nearest the IC on the same face; one-hop block boundary from the remedy brief (trimmers stay with the trimmer plan; a part shared by two blocks is placed once), not a '
                       'stability model; crossing-net count is not an allocation (class and ground rules not applied). '
                       'Room and count only.')}
 

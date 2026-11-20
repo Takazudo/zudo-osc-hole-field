@@ -1,0 +1,52 @@
+# MC04 remedy decision packet for the 26 unplaced ICs (Gate A check 5)
+
+2026-11-20 JST. Prepared by the Claude Project lead (thread "Resume OSC instrument order-readiness
+campaign"), branch `claude/project-thread-iw3gai`. **DRAFT FOR THE DESIGN AUTHORITY. Nothing here
+is adopted.** Check 5 stays NEEDS_DESIGN until a ruling is recorded.
+
+## The question for the design authority: which remedy to develop for the 26 unplaced ICs
+
+The cumulative record has 438 displaced footprints. 412 have courtyard-level replacements and 26
+fourteen-pin ICs (JL 6, JR 6, K 14) have none. The studies below were each independently reviewed
+and corrected. They are room and count studies only: no electrical review, routing, allocation or
+canonical write.
+
+## Evidence
+
+| Step | Study | Reviewed result |
+| --- | --- | --- |
+| 1 | `scripts/stack/studies/mc04_c1_capacity/` | Each IC alone has room on its own board. Joint first-fit: JL 6/6, K 14/14, **JR 3/6**. JR is short of room, not just congested. |
+| 2b | `scripts/stack/studies/mc04_c2b_link_shift_replace/` | Moving links inside the retained rules, with retained re-placement, frees **3 ICs cleanly (26 → 23)** via P-L02.01.01, P-L12.02.01.02 and P-L13.01.01.02. More moves reach 20 only by stranding other parts. No link move helps JL. |
+| 2c | `scripts/stack/studies/mc04_c2c_moved_link_checks/` | The moved links pass cable, compliance, member and rider class-distance checks. The c6 contract must be re-run, because it pins the geometry digest. |
+| 4 | `scripts/stack/studies/mc04_c4_blocks/` | On room, all 26 pack onto K as functional blocks (IC + decouplers + one-hop passives and diodes); every position passes the exact predicate. JR → K adds a net 16 cable nets (31 new, 15 removed) and JL → K a net 8 (24 new, 16 removed), against 75 and 128 spare positions. The new nets include 15 `*_PROTECTED` input nets and 14 `ISO_MID` splits. Thirteen ICs move beyond the 25 mm rule. |
+
+## Options
+
+| Option | What changes | Remaining unplaced | Main risks |
+| --- | --- | --- | --- |
+| A. Clean link moves only | 3 link moves plus re-placement, within the retained rules | 23 | Does not solve the problem; JR stays short of room. |
+| B. Partition change: JR and JL blocks to K | 12 blocks move to K. Panel hardware stays on the front boards. | K's own 14 still need room (option C or D) | 15 protected input nodes and 14 isolation midpoints would cross the cable; +24 net crossing nets need allocation and coupling review; module tests (envelope ENV_STORAGE isolation, mix4 protected inputs, filter core isolation) must still pass. A variant that keeps the protection and isolation parts on the front board would change these counts and was not studied. |
+| C. K blocks relocated within K beyond 25 mm | DS-88 radius rule relaxed for whole blocks | — | A rule change; longer runs for wavefolder, VCO and mixer cores; needs an electrical budget that does not yet exist. |
+| D. A + B + C together | All of the above | 0 on room (13 moves beyond 25 mm) | Every risk above, plus re-running the links_gate and c6 records and the independent review. |
+
+## Recommendation: develop option D, in stages, as an engineering change with the generator
+
+Option A alone leaves 23 ICs unplaced and cannot fix JR. Options B and C are the only routes
+that show room for all 26. The cost of D is a partition change and a rule change, and that cost is
+an electrical question, not a room question. So the next work should be:
+
+1. **Electrical budgets.** The analog remedy brief lists the missing physical budgets per function:
+   allowed added length, R/L/C, phase margin, noise and the stationary endpoints. Without them no
+   relocation can be accepted.
+2. **Crossing-net classes.** Classify the 24 new crossing nets and run the retained allocation and
+   coupling kernel on the affected links.
+3. **Generator change.** Implement the accepted subset through `scripts/stack/geometry/links_gate.py`
+   (with the pending place() accept and A7 input-hash fixes), regenerate, and get an independent review.
+4. **Native verification.** Only then hand the native KiCad phase to WSL.
+
+## What this packet does not establish
+
+- Room is raster-only and greedy. It is neither exact-confirmed nor a minimum.
+- No electrical or stability acceptance. No routing, DRC, fill or manufacturing step.
+- The 16-IC analog brief covers only OPA4196 packages. The logic and precision packages (U1518,
+  U4341 and others) have their own briefs, which a ruling must also read.
