@@ -23,9 +23,20 @@ class Tests(unittest.TestCase):
 
     def test_combined_uses_only_improving_links(self):
         c = R['combined_improving_moves']
-        want = sorted(k for k, v in R['results'].items() if v['best'] and v['best']['net_unresolved_change'] < 0)
+        want = sorted(k for k, v in R['results'].items() if v['best'] and v['best']['net_ic_change'] < 0)
         self.assertEqual(c['links'], want)
         self.assertEqual(c['link_clashes'], [])
+
+    def test_clean_set_strands_nothing(self):
+        c = R['combined_without_stranded_parts']
+        self.assertEqual(c['left_without_place'], [])
+        self.assertEqual(c['unplaced_ics_after'], 26 - len(c['freed_unresolved']))
+
+    def test_steps_follow_retained_order(self):
+        fp = {'side': 'B', 'pads': [{'type': 'smd', 'bbox': [0, 0, 1, 1]}]}
+        self.assertEqual(s.steps(('K', 'U1'), fp), [('B', 12.0), ('F', 12.0), ('B', 25.0), ('F', 25.0)])
+        self.assertEqual(s.steps(('JL', 'U1'), fp), [('B', 12.0), ('B', 25.0), ('F', 25.0)])
+        self.assertEqual(s.steps(('K', 'U4215'), fp), [('B', 25.0), ('F', 25.0)])
 
 
 if __name__ == '__main__':

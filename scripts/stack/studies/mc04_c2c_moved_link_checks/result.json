@@ -1,34 +1,57 @@
 {
  "status": "TASK_C_STEP_2C_MOVED_LINK_FIGURES",
- "source_sha256": "535f76706098ca023859bab5e4d2fb690733ec3b7c9208bb8b2196a49914b187",
+ "source_sha256": "75ca3997b563600e90e940e3ae42c8d172ece79a760a384f1146d49b126f0b1d",
  "compliance_limit_mm_per_N": 1.0,
  "holding_hand_above_mm_per_N": 0.25,
  "links": {
-  "JL-K-JL-L08": {
+  "JR-K-JR-L02": {
    "recorded": {
-    "cable_needed_mm": 47.3398,
-    "loop_mm": 2.6602,
-    "compliance_mm_per_N": 0.0654,
+    "cable_needed_mm": 39.3398,
+    "loop_mm": 10.6602,
+    "compliance_mm_per_N": 0.0548,
     "trim_leads": [
-     "J504",
-     "J505"
+     "J1301",
+     "J1302",
+     "J1303"
     ]
    },
    "moved": {
-    "cable_needed_mm": 43.3398,
-    "loop_mm": 6.6602,
-    "compliance_mm_per_N": 0.0829,
-    "trim_leads": [
-     "J604",
-     "J605"
-    ],
-    "front_extension_mm": 4.0,
+    "cable_needed_mm": 39.3398,
+    "loop_mm": 10.6602,
+    "compliance_mm_per_N": 0.2431,
+    "trim_leads": [],
+    "front_extension_mm": 0.0,
     "K_extension_mm": 0.0
    },
    "cable_fits": true,
    "compliance_within_limit": true,
    "holding_hand": false,
-   "class_accept": "ACCEPT"
+   "class_accept": "ACCEPT",
+   "riders": []
+  },
+  "JR-K-JR-L04": {
+   "recorded": {
+    "cable_needed_mm": 45.3398,
+    "loop_mm": 4.6602,
+    "compliance_mm_per_N": 0.0733,
+    "trim_leads": [
+     "J1204",
+     "J1205"
+    ]
+   },
+   "moved": {
+    "cable_needed_mm": 39.3398,
+    "loop_mm": 10.6602,
+    "compliance_mm_per_N": 0.0842,
+    "trim_leads": [],
+    "front_extension_mm": 0.0,
+    "K_extension_mm": 0.0
+   },
+   "cable_fits": true,
+   "compliance_within_limit": true,
+   "holding_hand": false,
+   "class_accept": "ACCEPT",
+   "riders": []
   },
   "JR-K-JR-L06": {
    "recorded": {
@@ -52,7 +75,8 @@
    "cable_fits": true,
    "compliance_within_limit": true,
    "holding_hand": false,
-   "class_accept": "ACCEPT"
+   "class_accept": "ACCEPT",
+   "riders": []
   },
   "P-K-P-L02.01.01": {
    "recorded": {
@@ -77,7 +101,8 @@
    "cable_fits": true,
    "compliance_within_limit": true,
    "holding_hand": true,
-   "class_accept": "ACCEPT"
+   "class_accept": "ACCEPT",
+   "riders": []
   },
   "P-K-P-L12.02.01.02": {
    "recorded": {
@@ -92,10 +117,10 @@
    "moved": {
     "cable_needed_mm": 37.3398,
     "loop_mm": 12.6602,
-    "compliance_mm_per_N": 0.1712,
+    "compliance_mm_per_N": 0.0888,
     "trim_leads": [
-     "RV1006",
-     "RV906"
+     "RV1004",
+     "RV904"
     ],
     "front_extension_mm": 0.0,
     "K_extension_mm": 0.0
@@ -103,7 +128,30 @@
    "cable_fits": true,
    "compliance_within_limit": true,
    "holding_hand": false,
-   "class_accept": "ACCEPT"
+   "class_accept": "ACCEPT",
+   "riders": [
+    {
+     "net": "/M4B/C75c2e7_W",
+     "class": "WIPER",
+     "recorded_mm": 32.0711,
+     "moved_mm": 27.3725,
+     "limit_mm": 55.0
+    },
+    {
+     "net": "/M4A/C75c2e7_W",
+     "class": "WIPER",
+     "recorded_mm": 42.0613,
+     "moved_mm": 34.9836,
+     "limit_mm": 55.0
+    },
+    {
+     "net": "/F3/C14689f_W",
+     "class": "WIPER",
+     "recorded_mm": 53.8679,
+     "moved_mm": 45.7215,
+     "limit_mm": 55.0
+    }
+   ]
   },
   "P-K-P-L13.01.01.02": {
    "recorded": {
@@ -125,9 +173,25 @@
    "cable_fits": true,
    "compliance_within_limit": true,
    "holding_hand": false,
-   "class_accept": "ACCEPT"
+   "class_accept": "ACCEPT",
+   "riders": [
+    {
+     "net": "/M4B/1_REMOTE",
+     "class": "ANALOGUE",
+     "recorded_mm": 39.1702,
+     "moved_mm": 39.1702,
+     "limit_mm": 45.0
+    },
+    {
+     "net": "/M4B/2_REMOTE",
+     "class": "ANALOGUE",
+     "recorded_mm": 39.1702,
+     "moved_mm": 39.1702,
+     "limit_mm": 45.0
+    }
+   ]
   }
  },
- "coupling": "unchanged: placement does not enter the retained ratio (stock length and order unchanged)",
+ "coupling": "the bare link ratio uses only stock length and conductor order, which do not change; the c6 contract pins the geometry digest, so its verdicts must be re-run for any adopted move",
  "scope": "Paper figures with the retained functions; no electrical review of re-placed parts; no canonical write."
 }

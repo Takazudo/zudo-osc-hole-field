@@ -2,8 +2,7 @@
 
 For each moved link, recomputes with the retained links_gate functions the cable needed and loop, the K-field
 compliance (DS-87 limit and holding-hand list), the leads to trim under the front tail, and the class-distance
-accept, and compares them with the recorded link. The coupling ratio does not depend on placement: the stock
-cable length and conductor order are unchanged, so the retained ratio carries over. Room/paper only."""
+accept and the hosted riders' distances, and compares them with the recorded link. Room/paper only."""
 import argparse
 import hashlib
 import json
@@ -46,11 +45,16 @@ def run():
             'compliance_within_limit': comp is not None and comp <= cm.limit + 1e-12,
             'holding_hand': comp is None or comp > cm.list_above,
             'class_accept': p2.class_accept(r, site_by, limits)(geo) or 'ACCEPT',
+            'riders': [{'net': y['net'], 'class': y['class'],
+                        'recorded_mm': p2.rider_distance(site_by[y['site']], r),
+                        'moved_mm': p2.rider_distance(site_by[y['site']], {'geometry': geo}),
+                        'limit_mm': limits[y['class']]} for y in r.get('riders_in', [])],
         }
     return {'status': 'TASK_C_STEP_2C_MOVED_LINK_FIGURES',
             'source_sha256': hashlib.sha256(SRC.read_bytes()).hexdigest(),
             'compliance_limit_mm_per_N': cm.limit, 'holding_hand_above_mm_per_N': cm.list_above, 'links': rows,
-            'coupling': 'unchanged: placement does not enter the retained ratio (stock length and order unchanged)',
+            'coupling': ('the bare link ratio uses only stock length and conductor order, which do not change; '
+                         'the c6 contract pins the geometry digest, so its verdicts must be re-run for any adopted move'),
             'scope': 'Paper figures with the retained functions; no electrical review of re-placed parts; no canonical write.'}
 
 
