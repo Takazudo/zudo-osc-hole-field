@@ -24,7 +24,7 @@ python3 -B scripts/stack/studies/mc04_c5c_function_boundaries/boundaries.py --ou
 | JR | U4346 (E3), U8314 (M4A) | **26.7, 30.5** | 4, 4 |
 
 K's fourteen add no cable net, but ten of them move beyond 25 mm: U1415, U4324, U4417, U4433, U4524,
-U4526, U4527, U4623, U4635, U8409. Seven of those ten are SN74HC00/HC74 logic packages (up to 49.4 mm).
+U4526, U4527, U4623, U4635, U8409. Eight of those ten are SN74HC00/HC74 logic packages (up to 49.4 mm); U1415 and U8409 are OPA4196 blocks.
 
 ## Every budget is UNRESOLVED
 
