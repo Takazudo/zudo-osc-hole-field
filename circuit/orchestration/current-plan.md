@@ -1,6 +1,18 @@
 # Current orchestration mapping
 
-## Active mapping — x0x WSL, 2026-11-17
+## Active mapping — Claude Project lead, 2026-11-20
+
+The owner's 2026-11-20 instruction replaces the Moya/Codex mapping below. The Claude Code
+Cloud Project thread "Resume OSC instrument order-readiness campaign" is the overall
+manager, queue owner, independent-review owner and final readiness assessor. Native CAD
+phases go to Claude Code CLI on WSL (owner's Windows machine) as one complete phase
+handoff; Project-side writes to that phase's paths freeze until its consolidated
+handback. Issues #315/#362 and exact commits are the durable boundary. Current writer:
+the Project thread on `claude/project-thread-iw3gai`, based on candidate `6e517886`.
+See the [resumption and Molex contract record](campaigns/osc-stack-20261114/mc02-molex-family-spec-20261120.md).
+All DRC/fill/adoption/manufacturing/main-CI holds remain.
+
+## Historical mapping — x0x WSL, 2026-11-17
 
 The current Codex coordinator in thread `01a1e7fb-e191-7382-8c35-5f76d36934fa` performs Moya's management role under the owner's instruction. See the [active WSL contract](../ORCHESTRATION.md#active-x0x-wsl-continuation-contract--2026-11-17) and [campaign WSL queue](campaigns/osc-stack-20261114/plan.md#current-wsl-execution-phase--2026-11-17). No external manager acknowledgment is needed for ordinary dispatch or local review.
 

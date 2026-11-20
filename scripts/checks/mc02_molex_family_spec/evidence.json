@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "candidate": {
+    "manufacturer": "Molex",
+    "mpn": "150200075",
+    "contacts": 8,
+    "type": "A",
+    "length_mm": "51",
+    "link_scope": "the 28 C29534 candidate links listed in scripts/checks/mc02_molex_candidate/evidence.json"
+  },
+  "sources": {
+    "PS": {
+      "document": "PS-15020-001",
+      "revision": "F",
+      "status": "RELEASED",
+      "date": "2023-12-06",
+      "scope": "15020-XXXX family; dimensions per drawing 150200001",
+      "authoritative_url": "https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/productspecificationpdf/150/15020/PS-15020-001-001.pdf",
+      "store_path": "molex/150200075/15020-series-product-specification-ps-15020-001-rev-f.pdf",
+      "bytes": 184426,
+      "sha256": "eb952ac2a7353fdb257be5c336288a7cfe9e9f6f2e83c2b64869248e6d046e4b"
+    },
+    "SD": {
+      "document": "SD-15020-001",
+      "doc_type": "PSD",
+      "doc_part": "001",
+      "revision": "F",
+      "approved": "2026-02-16",
+      "scope": "material number 150200001 sales drawing; sheet 1 table N8 / 51+/-2 mm / type A = 150200075",
+      "authoritative_url": "https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/salesdrawingpdf/150/15020/150200075_sd.pdf",
+      "store_path": "molex/150200075/150200075-sales-drawing-sd-15020-001-rev-f-owner-download.pdf",
+      "bytes": 445146,
+      "sha256": "4c311098a1a05e163fc33c19d2c35f01a51ad18b0ff14edb32429e347bef2419",
+      "web_copy": {
+        "store_path": "molex/150200075/150200075-sales-drawing-sd-15020-001-rev-f-web-2026-11-20.pdf",
+        "sha256": "2826830f786eb0383f2575d2932f5607d33ff58bb9c773e8cd4c1aecbf71cda3",
+        "relation": "same 445146 bytes and identical extracted text; 66 differing bytes are pdftk ModDate/CreationDate stamps"
+      },
+      "scope_note": "Sheet 1 binds L, strip 4.00+/-0.80, Tc 0.30+/-0.05 and stiffener 6.00+/-2.00 for N8; sheet 2 (cross-section, end-tail, 0.155 mm stiffener) applies to odd circuit counts only (sheet 1 note 2)."
+    },
+    "LISTING": {
+      "url": "https://www.molex.com/en-us/products/part-detail/150200075",
+      "read": "2026-11-20 UTC",
+      "facts": "Active; 8 circuits; type A; 51.00 mm; gold; Current - Maximum per Contact 0.5A; 60V AC; -40 to +105 C; links 150200075_sd.pdf and PS-15020-001-001.pdf"
+    }
+  },
+  "facts": {
+    "pitch_mm": [
+      "0.50",
+      "0.05",
+      "PS 2.2 P"
+    ],
+    "total_width_8p_mm": [
+      "4.50",
+      "0.10",
+      "PS 2.2 W = 0.50(N+1) (SD sheet 2 is odd-count only)"
+    ],
+    "conductor_width_mm": [
+      "0.30",
+      "0.03",
+      "PS 2.2 CW (SD sheet 2 is odd-count only)"
+    ],
+    "margin_mm": [
+      "0.50",
+      "0.10",
+      "PS 2.2 M"
+    ],
+    "strip_length_mm": [
+      "4.00",
+      "0.80",
+      "PS 2.2 S; SD contact area"
+    ],
+    "end_thickness_mm": [
+      "0.30",
+      "0.05",
+      "PS 2.2 Tc; SD side view"
+    ],
+    "insulated_thickness_mm": [
+      "0.27",
+      "0.05",
+      "PS 2.2 Ti"
+    ],
+    "length_mm": [
+      "51",
+      "2",
+      "PS 2.2 L 20..60 +/-2.00; SD table 51+/-2"
+    ],
+    "end_squareness_max_mm": "0.30",
+    "copper_nominal_mm": "0.10",
+    "insulation_nominal_mm": "0.086",
+    "reinforcement_nominal_mm": {
+      "PS": "0.15",
+      "SD_sheet2_odd_count_only": "0.155"
+    },
+    "conductor_resistance_max_ohm_per_km": "730",
+    "conductor_resistance_method": "ASTM B 193",
+    "conductor_resistance_min": null,
+    "current_test": {
+      "amps": "0.55",
+      "condition": "all conductors under load at 23 C",
+      "requirement": "maximum 40 C heat rise"
+    },
+    "current_listing_per_contact_A": "0.5",
+    "capacitance": {
+      "value_pF_per_m": "62",
+      "qualifier": null,
+      "method": "cond/cond balanced method",
+      "condition": "FFC at 1 kHz"
+    },
+    "impedance": {
+      "value_ohm": "130",
+      "qualifier": "TYP",
+      "condition": "FFC at 1 MHz, cond/cond balanced"
+    },
+    "voltage_max_VAC": "60",
+    "operating_C": [
+      "-40",
+      "105"
+    ],
+    "folding": "manual 180 degree fold; continuity after 20 times",
+    "flex_life": "50,000 cycles minimum at R 10 mm, +/-20 mm stroke, 23 C",
+    "span_8p_mm": [
+      "3.50",
+      "0.10",
+      "PS 2.2 E = 0.50(N-1)"
+    ],
+    "copper_qualifier": "0.10mm nominal (Standard); other thicknesses may exist (PS 2.3)",
+    "plating_min_um": {
+      "Ni": "0.3",
+      "Au": "0.05",
+      "locator": "PS 2.3"
+    },
+    "cross_section_mm2": "0.03 (PS 2.4)"
+  },
+  "conflicts": {
+    "reinforcement_length_mm": {
+      "PS": [
+        "6.00",
+        "1.00"
+      ],
+      "SD": [
+        "6.00",
+        "2.00"
+      ]
+    },
+    "current_A": {
+      "PS_rating": "0.55",
+      "listing": "0.5"
+    }
+  },
+  "model_bindings": {
+    "inputs": "design/stack/link-electrical/inputs.json",
+    "kernel": "scripts/stack/link_electrical/link_electrical.py",
+    "ratios": "scripts/stack/link_electrical/link_ratios.py",
+    "ds62": "scripts/stack/link_electrical/ds62_table.py",
+    "record": "design/stack/link-electrical/link-ratios.json"
+  },
+  "finite_thickness_study": {
+    "script": "scripts/checks/mc02_molex_family_spec/finite_thickness_study.py",
+    "result": "scripts/checks/mc02_molex_family_spec/finite-thickness-result.json",
+    "reproduce": "cd scripts/checks/mc02_molex_family_spec && python3 -B finite_thickness_study.py --output new-result.json  # numpy+scipy, about 10 min",
+    "inputs_sha256": {
+      "scripts/checks/mc02_molex_family_spec/finite_thickness_fd.py": "c08b3fd0e5e441bb6deea6416bc5a2830d912505d9c53707e52f7f421f59256c",
+      "scripts/checks/mc02_molex_family_spec/finite_thickness_study.py": "d7d69c717668f8bcf6ddabec3d5abb1a757f8f6dcf2fdb4c41f16e9d99ed674c",
+      "design/stack/link-electrical/inputs.json": "aeb837844dd0359fa7a08348431f633f1ce5c03e9042f143d0822f2e13b25ea1",
+      "scripts/stack/link_electrical/link_ratios.py": "5902c93d2ffd5aa4ba4635840f5daca63d89427eb99800f580fd6434a1c0e111",
+      "scripts/stack/link_electrical/link_electrical.py": "2e57aebb3de71512eba2f8fac7b4a8d0b57551bceca011c5a8a3a56906e46fc5",
+      "scripts/stack/link_electrical/ds62_table.py": "8b5458655866f953c5333d08bd116c43356ef1806d393eff928c998bd445e42f",
+      "scripts/stack/link_electrical/harness_baseline.py": "af5edcfc75a414e506e1654d266213b3a7e820de704c8318f6c7df15ebc9751a",
+      "scripts/checks/mc02_molex_candidate/evidence.json": "f520e5597f9c45843cfda0e018ad0e2ba59fcbe4a9341b0fcc598467ce9b2a43"
+    },
+    "sha256": "c0dca818425ce07e1fb3148ea7877f895b8289a6adc7a0b2a130dc539bfe8842"
+  }
+}

@@ -1,0 +1,759 @@
+{
+  "status": "SOURCE_CONTRACT_WITH_OPEN_ITEMS",
+  "sources": {
+    "PS": "VERIFIED",
+    "SD": "VERIFIED"
+  },
+  "dimensional": {
+    "binding": "PS-15020-001 Rev F covers 15020-XXXX and points to drawing 150200001; SD-15020-001 Rev F (material 150200001) sheet 1 binds 150200075 = N8 / 51+/-2 mm / type A. Both apply.",
+    "precedence": "Neither document states precedence. The drawing (approved 2026-02-16) is newer than the specification (2023-12-06), but recency is not a stated precedence rule.",
+    "reinforcement_length_mm": {
+      "PS": [
+        "5.00",
+        "7.00"
+      ],
+      "SD": [
+        "4.00",
+        "8.00"
+      ],
+      "governing_envelope": [
+        "4.00",
+        "8.00"
+      ],
+      "disposition": "UNRESOLVED_CONFLICT; checks use the SD envelope that contains the PS one. The narrower PS interval relaxes nothing. FH12 4.5 mm minimum support recommendation remains 0.5 mm short at the 4.0 mm envelope end."
+    },
+    "reinforcement_thickness_nominal_mm": {
+      "PS": "0.15",
+      "disposition": "PS 0.15 mm nominal, no tolerance, below the FH12 0.188 mm recommendation. The SD 0.155 mm figure is on sheet 2, which applies to odd circuit counts only (sheet 1 note 2)."
+    },
+    "sd_sheet_scope": "Sheet 1 binds L, strip 4.00+/-0.80, Tc 0.30+/-0.05 and stiffener 6.00+/-2.00 for N8; sheet 2 (cross-section, end-tail, 0.155 mm stiffener) applies to odd circuit counts only (sheet 1 note 2).",
+    "agreeing_intervals_mm": {
+      "total_width_8p_mm": [
+        "4.40",
+        "4.60"
+      ],
+      "span_8p_mm": [
+        "3.40",
+        "3.60"
+      ],
+      "conductor_width_mm": [
+        "0.27",
+        "0.33"
+      ],
+      "strip_length_mm": [
+        "3.20",
+        "4.80"
+      ],
+      "end_thickness_mm": [
+        "0.25",
+        "0.35"
+      ],
+      "length_mm": [
+        "49",
+        "53"
+      ]
+    },
+    "unchanged_from_prior_audit": "width +/-0.10 vs FH12 +/-0.07, exposure 3.2 mm vs 3.5 mm min, datum mapping NOT_ASSESSED"
+  },
+  "current": {
+    "listing_per_contact_A": "0.5",
+    "ps_test": {
+      "amps": "0.55",
+      "condition": "all conductors under load at 23 C",
+      "requirement": "maximum 40 C heat rise"
+    },
+    "disposition": "Two Molex statements differ: PS item 6 rates 0.55 A per conductor with all conductors loaded (<=40 C rise at 23 C); the listing gives 0.5 A per contact. The lower one is used. The FH12 all-contacts derating is lower than both and governs the mated link.",
+    "model_ratings_A": [
+      0.3,
+      0.35,
+      0.4,
+      0.5
+    ],
+    "binding_A": 0.35,
+    "allocation_effect": "NONE: ground-share verdicts are evaluated at 0.35 and 0.5 A; neither exceeds the cable listing."
+  },
+  "ground_share": {
+    "legacy_min_mohm_per_50mm": 65.3,
+    "legacy_applicable_to_150200075": false,
+    "why": "Legacy 65.3 mohm/50 mm is an LX 0.035 mm-copper minimum. Every conforming 150200075 conductor is below it (source maximum 730 ohm/km = 36.5 mohm/50 mm), so the retained share PASS does not transfer.",
+    "source_max_mohm_per_50mm": 36.5,
+    "source_min": null,
+    "required_min_mohm_per_50mm": {
+      "0.35": 8.701,
+      "0.5": 5.876
+    },
+    "conditional_estimates_20C_mohm_per_50mm": {
+      "nominal_copper_0.10_width_max": 26.123,
+      "full_end_stack_thickness_0.35_not_a_copper_bound": 7.464,
+      "basis": "annealed-copper reference resistivity at 20 C, no temperature correction (colder is lower); thickness is nominal or the whole end stack, not a copper tolerance"
+    },
+    "evaluated_at_length_mm": 49.0,
+    "worst_one_ground_contact_A": {
+      "at_nominal_estimate": 0.1228,
+      "at_end_thickness_envelope": 0.4029
+    },
+    "status": "OPEN",
+    "needs": "A source minimum for conductor resistance (or copper thickness/section tolerance) at the coldest applicable temperature, at least the required minimum above. The end-thickness envelope alone does not close it."
+  },
+  "capacitance": {
+    "source": {
+      "value_pF_per_m": "62",
+      "qualifier": null,
+      "method": "cond/cond balanced method",
+      "condition": "FFC at 1 kHz"
+    },
+    "model_eps_upper": 3.2,
+    "model_pF_per_m_at_eps_upper": {
+      "adjacent_pair_others_floating": 50.04,
+      "adjacent_pair_others_grounded": 54.79,
+      "one_interior_conductor_vs_all_others": 80.56,
+      "one_edge_conductor_vs_all_others": 59.85
+    },
+    "reading_contradicts_model_upper_bound": {
+      "adjacent_pair_others_floating": true,
+      "adjacent_pair_others_grounded": true,
+      "one_interior_conductor_vs_all_others": false,
+      "one_edge_conductor_vs_all_others": true
+    },
+    "method_defined_by_source": false,
+    "pair_floating_calibration": {
+      "eps_scale": 1.239,
+      "eps_calibrated": 3.9648,
+      "copper_mm": "0.10",
+      "baseline": "harness references from the unchanged retained inputs (eps 3.2)",
+      "by_length_mm": {
+        "49.0": {
+          "max_ratio": 1.1173,
+          "links_above_1": 17,
+          "above": [
+            [
+              "JL-P-K-P-L01.01.01.01",
+              1.109
+            ],
+            [
+              "JL-P-K-P-L01.01.01.02",
+              1.109
+            ],
+            [
+              "P-K-P-L04.01.01.01",
+              1.1112
+            ],
+            [
+              "P-K-P-L04.01.01.02",
+              1.1112
+            ],
+            [
+              "P-K-P-L04.02.01.01",
+              1.1112
+            ],
+            [
+              "P-K-P-L04.02.01.02",
+              1.109
+            ],
+            [
+              "P-K-P-L10.01.01.01",
+              1.1173
+            ],
+            [
+              "P-K-P-L11.01.02.01",
+              1.1173
+            ],
+            [
+              "P-K-P-L12.01.01.02",
+              1.1173
+            ],
+            [
+              "P-K-P-L12.02.01.01",
+              1.1112
+            ],
+            [
+              "P-K-P-L13.01.01.02",
+              1.109
+            ],
+            [
+              "P-K-P-L13.01.02.01",
+              1.1173
+            ],
+            [
+              "P-K-P-L14.01.02.01",
+              1.109
+            ],
+            [
+              "P-K-P-L14.01.02.02",
+              1.1112
+            ],
+            [
+              "P-K-P-L15.01.01.01",
+              1.1173
+            ],
+            [
+              "P-K-P-L15.01.01.02",
+              1.1173
+            ],
+            [
+              "P-K-P-L15.01.02.01",
+              1.109
+            ]
+          ],
+          "ds77_remedy_found": []
+        },
+        "51.0": {
+          "max_ratio": 1.1552,
+          "links_above_1": 17,
+          "above": [
+            [
+              "JL-P-K-P-L01.01.01.01",
+              1.1466
+            ],
+            [
+              "JL-P-K-P-L01.01.01.02",
+              1.1466
+            ],
+            [
+              "P-K-P-L04.01.01.01",
+              1.1489
+            ],
+            [
+              "P-K-P-L04.01.01.02",
+              1.1489
+            ],
+            [
+              "P-K-P-L04.02.01.01",
+              1.1489
+            ],
+            [
+              "P-K-P-L04.02.01.02",
+              1.1466
+            ],
+            [
+              "P-K-P-L10.01.01.01",
+              1.1552
+            ],
+            [
+              "P-K-P-L11.01.02.01",
+              1.1552
+            ],
+            [
+              "P-K-P-L12.01.01.02",
+              1.1552
+            ],
+            [
+              "P-K-P-L12.02.01.01",
+              1.1489
+            ],
+            [
+              "P-K-P-L13.01.01.02",
+              1.1466
+            ],
+            [
+              "P-K-P-L13.01.02.01",
+              1.1552
+            ],
+            [
+              "P-K-P-L14.01.02.01",
+              1.1466
+            ],
+            [
+              "P-K-P-L14.01.02.02",
+              1.1489
+            ],
+            [
+              "P-K-P-L15.01.01.01",
+              1.1552
+            ],
+            [
+              "P-K-P-L15.01.01.02",
+              1.1552
+            ],
+            [
+              "P-K-P-L15.01.02.01",
+              1.1466
+            ]
+          ],
+          "ds77_remedy_found": []
+        },
+        "53.0": {
+          "max_ratio": 1.1931,
+          "links_above_1": 17,
+          "above": [
+            [
+              "JL-P-K-P-L01.01.01.01",
+              1.1842
+            ],
+            [
+              "JL-P-K-P-L01.01.01.02",
+              1.1842
+            ],
+            [
+              "P-K-P-L04.01.01.01",
+              1.1866
+            ],
+            [
+              "P-K-P-L04.01.01.02",
+              1.1866
+            ],
+            [
+              "P-K-P-L04.02.01.01",
+              1.1866
+            ],
+            [
+              "P-K-P-L04.02.01.02",
+              1.1842
+            ],
+            [
+              "P-K-P-L10.01.01.01",
+              1.1931
+            ],
+            [
+              "P-K-P-L11.01.02.01",
+              1.1931
+            ],
+            [
+              "P-K-P-L12.01.01.02",
+              1.1931
+            ],
+            [
+              "P-K-P-L12.02.01.01",
+              1.1866
+            ],
+            [
+              "P-K-P-L13.01.01.02",
+              1.1842
+            ],
+            [
+              "P-K-P-L13.01.02.01",
+              1.1931
+            ],
+            [
+              "P-K-P-L14.01.02.01",
+              1.1842
+            ],
+            [
+              "P-K-P-L14.01.02.02",
+              1.1866
+            ],
+            [
+              "P-K-P-L15.01.01.01",
+              1.1931
+            ],
+            [
+              "P-K-P-L15.01.01.02",
+              1.1931
+            ],
+            [
+              "P-K-P-L15.01.02.01",
+              1.1842
+            ]
+          ],
+          "ds77_remedy_found": []
+        }
+      },
+      "cause": "Uniform eps scaling multiplies every link level; with the harness rebuilt at the same eps no link exceeds 1.0. The exceedance is only the cable-versus-harness eps asymmetry.",
+      "superseded_by": "finite-thickness study (physical cross-section); this proxy is retained as a rejected method",
+      "scope": "Conditional sensitivity on the literal adjacent-pair reading; endpoint samples, not an extremum proof."
+    },
+    "finite_thickness": {
+      "grid": {
+        "ladder_h_mm": [
+          0.0125,
+          0.00625,
+          0.003125
+        ],
+        "ladder_box_mm": [
+          7.0,
+          5.0
+        ],
+        "box_correction": {
+          "h_mm": 0.0125,
+          "large_box_mm": [
+            20.0,
+            14.0
+          ]
+        }
+      },
+      "harness_eps_retained": 3.2,
+      "cases": {
+        "2.5": {
+          "convergence": {
+            "step_ratio": 1.979,
+            "max_rel_extrapolation_offdiag": 0.0178,
+            "readings_finest_h_pF_per_m": {
+              "pair_floating": 40.09,
+              "pair_grounded": 48.6,
+              "interior_vs_all": 67.4,
+              "edge_vs_all": 43.45,
+              "mutual_adj": 29.8
+            }
+          },
+          "readings_best_pF_per_m": {
+            "pair_floating": 40.3,
+            "pair_grounded": 49.4,
+            "interior_vs_all": 68.43,
+            "edge_vs_all": 42.62,
+            "mutual_adj": 30.37
+          },
+          "best_harness_same_eps_L49": {
+            "max_ratio": 0.8055,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_same_eps_L51": {
+            "max_ratio": 0.8329,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_same_eps_L53": {
+            "max_ratio": 0.8603,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_retained_eps_L49": {
+            "max_ratio": 0.7375,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_retained_eps_L51": {
+            "max_ratio": 0.7626,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_retained_eps_L53": {
+            "max_ratio": 0.7877,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_same_eps_L49": {
+            "max_ratio": 0.8135,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_same_eps_L51": {
+            "max_ratio": 0.8411,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_same_eps_L53": {
+            "max_ratio": 0.8688,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_retained_eps_L49": {
+            "max_ratio": 0.7449,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_retained_eps_L51": {
+            "max_ratio": 0.7702,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_retained_eps_L53": {
+            "max_ratio": 0.7955,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          }
+        },
+        "3.2": {
+          "convergence": {
+            "step_ratio": 1.986,
+            "max_rel_extrapolation_offdiag": 0.0175,
+            "readings_finest_h_pF_per_m": {
+              "pair_floating": 48.13,
+              "pair_grounded": 59.51,
+              "interior_vs_all": 81.98,
+              "edge_vs_all": 51.19,
+              "mutual_adj": 37.04
+            }
+          },
+          "readings_best_pF_per_m": {
+            "pair_floating": 48.34,
+            "pair_grounded": 60.49,
+            "interior_vs_all": 83.24,
+            "edge_vs_all": 50.35,
+            "mutual_adj": 37.74
+          },
+          "best_harness_same_eps_L49": {
+            "max_ratio": 0.8371,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_same_eps_L51": {
+            "max_ratio": 0.8655,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_same_eps_L53": {
+            "max_ratio": 0.8939,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_retained_eps_L49": {
+            "max_ratio": 0.8371,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_retained_eps_L51": {
+            "max_ratio": 0.8655,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_retained_eps_L53": {
+            "max_ratio": 0.8939,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_same_eps_L49": {
+            "max_ratio": 0.846,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_same_eps_L51": {
+            "max_ratio": 0.8747,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_same_eps_L53": {
+            "max_ratio": 0.9035,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_retained_eps_L49": {
+            "max_ratio": 0.846,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_retained_eps_L51": {
+            "max_ratio": 0.8747,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_retained_eps_L53": {
+            "max_ratio": 0.9035,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          }
+        },
+        "4.0": {
+          "convergence": {
+            "step_ratio": 1.995,
+            "max_rel_extrapolation_offdiag": 0.0172,
+            "readings_finest_h_pF_per_m": {
+              "pair_floating": 57.07,
+              "pair_grounded": 71.84,
+              "interior_vs_all": 98.44,
+              "edge_vs_all": 59.81,
+              "mutual_adj": 45.24
+            }
+          },
+          "readings_best_pF_per_m": {
+            "pair_floating": 57.29,
+            "pair_grounded": 73.02,
+            "interior_vs_all": 99.96,
+            "edge_vs_all": 58.98,
+            "mutual_adj": 46.08
+          },
+          "best_harness_same_eps_L49": {
+            "max_ratio": 0.8661,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_same_eps_L51": {
+            "max_ratio": 0.8955,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_same_eps_L53": {
+            "max_ratio": 0.9249,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_retained_eps_L49": {
+            "max_ratio": 0.9496,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_retained_eps_L51": {
+            "max_ratio": 0.9818,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_retained_eps_L53": {
+            "max_ratio": 1.0141,
+            "links_above_1": 1,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_same_eps_L49": {
+            "max_ratio": 0.8759,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_same_eps_L51": {
+            "max_ratio": 0.9056,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_same_eps_L53": {
+            "max_ratio": 0.9354,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_retained_eps_L49": {
+            "max_ratio": 0.9603,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_retained_eps_L51": {
+            "max_ratio": 0.9929,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_retained_eps_L53": {
+            "max_ratio": 1.0255,
+            "links_above_1": 1,
+            "links_with_pairs": 26
+          }
+        },
+        "4.7": {
+          "convergence": {
+            "step_ratio": 2.003,
+            "max_rel_extrapolation_offdiag": 0.017,
+            "readings_finest_h_pF_per_m": {
+              "pair_floating": 64.76,
+              "pair_grounded": 82.55,
+              "interior_vs_all": 112.73,
+              "edge_vs_all": 67.22,
+              "mutual_adj": 52.37
+            }
+          },
+          "readings_best_pF_per_m": {
+            "pair_floating": 64.99,
+            "pair_grounded": 83.9,
+            "interior_vs_all": 114.48,
+            "edge_vs_all": 66.42,
+            "mutual_adj": 53.32
+          },
+          "best_harness_same_eps_L49": {
+            "max_ratio": 0.8872,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_same_eps_L51": {
+            "max_ratio": 0.9173,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_same_eps_L53": {
+            "max_ratio": 0.9474,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "best_harness_retained_eps_L49": {
+            "max_ratio": 1.0474,
+            "links_above_1": 1,
+            "links_with_pairs": 26
+          },
+          "best_harness_retained_eps_L51": {
+            "max_ratio": 1.0829,
+            "links_above_1": 1,
+            "links_with_pairs": 26
+          },
+          "best_harness_retained_eps_L53": {
+            "max_ratio": 1.1185,
+            "links_above_1": 1,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_same_eps_L49": {
+            "max_ratio": 0.8975,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_same_eps_L51": {
+            "max_ratio": 0.928,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_same_eps_L53": {
+            "max_ratio": 0.9584,
+            "links_above_1": 0,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_retained_eps_L49": {
+            "max_ratio": 1.0596,
+            "links_above_1": 1,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_retained_eps_L51": {
+            "max_ratio": 1.0956,
+            "links_above_1": 1,
+            "links_with_pairs": 26
+          },
+          "conservative_harness_retained_eps_L53": {
+            "max_ratio": 1.1315,
+            "links_above_1": 1,
+            "links_with_pairs": 26
+          }
+        }
+      },
+      "scope": "Conditional on the stated cross-section and the swept dielectric constant; endpoint lengths, not an extremum proof; end regions keep the retained 5 mm equivalent; no measurement. The conservative matrix adds the last extrapolation step again as a discretisation allowance."
+    },
+    "finite_thickness_summary": {
+      "equal_eps_all_pass_to_eps": 4.7,
+      "retained_harness_failing_cases": [
+        "4.0:best_harness_retained_eps_L53",
+        "4.0:conservative_harness_retained_eps_L53",
+        "4.7:best_harness_retained_eps_L49",
+        "4.7:best_harness_retained_eps_L51",
+        "4.7:best_harness_retained_eps_L53",
+        "4.7:conservative_harness_retained_eps_L49",
+        "4.7:conservative_harness_retained_eps_L51",
+        "4.7:conservative_harness_retained_eps_L53"
+      ],
+      "eps_reproducing_62pF_per_m": {
+        "pair_floating": "about 4.4",
+        "pair_grounded": "about 3.3",
+        "interior_vs_all": "below 2.5"
+      },
+      "retained_harness_crossing_eps": "about 3.8 (conservative matrix, 53 mm)"
+    },
+    "z_c_consistency": "130 ohm and 62 pF/m together imply eps_eff about 5.8 for one balanced configuration, implausible for polyester; the two figures likely include fixture/end effects or differ in setup.",
+    "status": "OPEN",
+    "disposition": "Converged finite-thickness cross-section, open boundary, conservative discretisation allowance: with cable and harness at the same eps every evaluated link stays below 1.0 up to eps 4.7. With the harness held at 3.2, one link exceeds 1.0 once the cable eps passes about 3.8. The 62 pF/m figure implies eps about 3.3 under the adjacent-pair-grounded reading (pass) and about 4.4 under the adjacent-pair-floating reading (one link fails). Its fixture is not stated, so coupling stays OPEN, narrowed to the cable dielectric constant relative to the harness."
+  },
+  "other_facts_for_task_c": {
+    "folding": "manual 180 degree fold; continuity after 20 times",
+    "flex_life": "50,000 cycles minimum at R 10 mm, +/-20 mm stroke, 23 C",
+    "operating_C": [
+      "-40",
+      "105"
+    ],
+    "insulated_thickness_mm": [
+      "0.27",
+      "0.05",
+      "PS 2.2 Ti"
+    ]
+  },
+  "remaining_unknowns": [
+    "minimum conductor resistance / copper thickness tolerance",
+    "capacitance fixture definition (or a measured value); dielectric constant",
+    "end-region coupling (retained 5 mm equivalent)",
+    "reinforcement precedence (6+/-1 vs 6+/-2)",
+    "reinforcement thickness tolerance",
+    "positional/datum conformity to FH12",
+    "assembled contact resistance"
+  ],
+  "product_qualified": false,
+  "bom_change": null,
+  "holds": [
+    "DRC",
+    "zone fill",
+    "formal adoption",
+    "manufacturing"
+  ],
+  "model_sha256": {
+    "inputs": "aeb837844dd0359fa7a08348431f633f1ce5c03e9042f143d0822f2e13b25ea1",
+    "kernel": "2e57aebb3de71512eba2f8fac7b4a8d0b57551bceca011c5a8a3a56906e46fc5",
+    "ratios": "5902c93d2ffd5aa4ba4635840f5daca63d89427eb99800f580fd6434a1c0e111",
+    "ds62": "8b5458655866f953c5333d08bd116c43356ef1806d393eff928c998bd445e42f",
+    "record": "9c35ee28dce48376836577ec46748c7420dc596ced6f6803f7aace1686d4f3c3"
+  }
+}
