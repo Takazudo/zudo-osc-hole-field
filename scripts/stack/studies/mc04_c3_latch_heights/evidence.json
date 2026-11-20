@@ -1,0 +1,80 @@
+{
+  "purpose": "Exact maximum body heights for the K-rear latch neighbours that the DS-88 rule exempted without a retained height",
+  "connector": {
+    "part": "Hirose FH12-nS-0.5SH(55)",
+    "closed_height_min_mm": 1.8,
+    "basis": "Hirose EDC3-150229-11 closed height 2.0 +/- 0.2 mm, reviewed 2026-11-17 (SHA-256 c3257beed2331e5c95e176bc28441b04b804301a44c11b462e486fb5cc649d07, mc02-manufacturer-handoff-followup-20261117.md); catalog page 4 nominal 2.0 mm (circuit-dev-resources hirose/fh12/fh12-catalog-pdf-2016-11-19-lcsc-mirror.pdf, 9f056f58ff000739633cc3cb7697ba185967083dcf1429b7ab10783b3f55bac5)",
+    "gap": "The EDC3 drawing is not yet in circuit-dev-resources; only its reviewed hash is recorded."
+  },
+  "heights": {
+    "RC0603FR-07100KL": {
+      "max_mm": 0.55,
+      "basis": "T 0.45 +/- 0.1 mm",
+      "path": "circuit/sources/ic-library/RC0603FR.pdf",
+      "sha256": "9bf1013b7589c3af9750dc9a8f20c15b29881222ec31d827dc9c2625ec86c098",
+      "locator": "page 1, dimensions table"
+    },
+    "RC0603FR-0710ML": {
+      "max_mm": 0.55,
+      "basis": "height 0.45, each dimension +/- 0.1 mm",
+      "path": ".claude/skills/component-yageo-rc0603fr-0710ml/facts.json",
+      "fact_id": "fact-dc-failbias-r-body",
+      "source_sha256": "7106c1df16995420e6f9caf30cd2993a0c58b6cec789edad14424866faa96c62",
+      "locator": "owner bundle fact, PDF page 0 specification table"
+    },
+    "RT0603BRD07100KL": {
+      "max_mm": 0.55,
+      "basis": "T 0.45 +/- 0.1 mm",
+      "path": "circuit/sources/ic-library/RT0603BRD.pdf",
+      "sha256": "36b214e50ce608a711494bdf1ac3b888616c36508b93222bbf42212fcde7c3a1",
+      "locator": "page 1, dimensions table"
+    },
+    "C0603C101J5GACTU": {
+      "max_mm": 0.87,
+      "basis": "T 0.8 +/- 0.07 mm",
+      "path": "circuit/sources/ic-library/C0603C101.pdf",
+      "sha256": "1264bf36b455e746dc831ebba8a3696c328d574b9950d1c5e02ab95971e7d8d1",
+      "locator": "page 1, dimensions table"
+    },
+    "GRM1885C1H103JA01D": {
+      "max_mm": 0.9,
+      "basis": "T 0.8 +/- 0.1 mm",
+      "path": ".claude/skills/component-murata-grm1885c1h103ja01d/facts.json",
+      "fact_id": "fact-dc-wiper-c-body",
+      "source_sha256": "3f5a339eb51502df7716dfd2d4c4e6d33e837abc0df5cb8e4fc1e6e275d09790",
+      "locator": "owner bundle fact, rated values/dimensions"
+    },
+    "BAS16GW-QX": {
+      "max_mm": 1.3,
+      "basis": "SOD123 outline, side view 1.3 / 1.0",
+      "path": "circuit/sources/ic-library/BAS16GW-Q.pdf",
+      "sha256": "36b9d598de374dbdcc666f0516477d958e02471b323842704249e0e447e2be6b",
+      "locator": "page 6, Fig. 9 package outline SOD123 (visually read)"
+    },
+    "BAT54S,215": {
+      "max_mm": 1.1,
+      "basis": "SOT23 A max 1.1",
+      "path": "circuit/sources/ic-library/BAT54S.pdf",
+      "sha256": "0baaac4f52b05b5d41932c445eb8dddc636e464b1f717d11ee41b27ba1202fe7",
+      "locator": "package outline dimension table, column A"
+    },
+    "MMBT3906,215": {
+      "max_mm": 1.1,
+      "basis": "SOT23 outline, side view 1.1 / 0.9",
+      "path": "circuit/sources/ic-library/MMBT3906.pdf",
+      "sha256": "9589175ddb2e89e0cddef099fdd74ce6b33a2f7f9de9b4292b964f3189bf806b",
+      "locator": "page 6, Fig. 7 package outline SOT23 (visually read)"
+    },
+    "GRM188R71H104KA93D": {
+      "max_mm": 0.9,
+      "basis": "Murata catalogue searchDescription '1.6mm +/-0.1mm, 0.8mm +/-0.1mm, 0.8mm +/-0.1mm' (width and thickness both 0.8 +/- 0.1, so the maximum holds for either reading)",
+      "path": "circuit/sources/bypass-capacitor/acquisition-20261001.json",
+      "sha256": "6b6b112bdcb45d99607ac881e5566bce96ebcf5840d5c28c03994c75112e9896",
+      "source_sha256": "9c971f7c7dbb90c34e4fab06d0098bc9470853ccc05534db6f1e34088b120cae",
+      "locator": "retained_fields.searchDescription of the retained Murata PIM response excerpt (full response bytes not in the store)"
+    }
+  },
+  "unsourced": {
+    "": "schematic symbol carries no MPN; identity unbound, so no exact height"
+  }
+}
