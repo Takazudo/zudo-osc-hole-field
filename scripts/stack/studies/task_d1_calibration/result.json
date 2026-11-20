@@ -1,0 +1,3413 @@
+{
+ "status": "TASK_D_STEP_1_CALIBRATION_INVENTORY",
+ "plan_sha256": "56ce0dac92688e2a1d7a2844a8a56b1c122c04e92bd03a3db4463600d20075dd",
+ "standard_calibration": {
+  "assembly": "Factory-only soldering and socket population; factory adjustment through accessible test points.",
+  "warmup_minutes": 20,
+  "precision_output_load_error_V": 0.001,
+  "static_precision_error_V": 0.002,
+  "octave_step_error_V": 0.002,
+  "pitch_tracking_target_cents": 5,
+  "pitch_tracking_scope": "0..5 V at 25 C after factory calibration; target only, not guaranteed by resistor tolerance. #29 defines sweep and temperature characterization.",
+  "sample_hold": "No long-hold pitch accuracy promise; characterize droop separately from output load error.",
+  "pitch_voltage_error_caveat": "5 cents at 1 V/oct equals 4.166667 mV; oscillator exponential/core error and temperature must share this total budget. A 2 mV octave-step target alone does not prove five-octave tracking."
+ },
+ "records": [
+  {
+   "ref": "RV4104",
+   "module": "E1",
+   "role": "envelope:RISE_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/E1/REFN5",
+    "2": "/E1/RISE_OFFSET_TRIM",
+    "3": "/E1/REF5"
+   },
+   "one_hop": {
+    "/E1/RISE_OFFSET_TRIM": [
+     "R4164.1 R_RISE_OFFSET_FEED"
+    ],
+    "/E1/REFN5": [
+     "R4102.1 R_FB",
+     "R4158.1 R_RISE_EXPO_OFFSET",
+     "R4175.1 R_FALL_EXPO_OFFSET",
+     "RV4108.1 FALL_OFFSET",
+     "U4139.7 package supply"
+    ],
+    "/E1/REF5": [
+     "R4101.1 R_INV",
+     "R4103.1 R_GTOP",
+     "R4118.1 R_SHIFT_REF",
+     "R4139.1 R_REF1_TOP",
+     "R4141.1 R_FLOOR_TOP",
+     "RV1305.3 RV",
+     "D4105.2 RISE_CONTROL_CLAMP",
+     "R4161.1 R_RISE_REF_FIXED",
+     "RV1306.3 RV",
+     "D4106.2 FALL_CONTROL_CLAMP",
+     "R4178.1 R_FALL_REF_FIXED",
+     "RV4108.3 FALL_OFFSET",
+     "RB4102.1 R_BIP_REF",
+     "U4110.6 logic supply",
+     "U4139.1 package supply",
+     "U4139.2 package supply",
+     "U4139.12 package supply",
+     "U4140.3 package supply"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "envelope",
+   "order": 1,
+   "proposed_procedure": "Null the rise exponential-converter offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 13.04 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4108",
+   "module": "E1",
+   "role": "envelope:FALL_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/E1/REFN5",
+    "2": "/E1/FALL_OFFSET_TRIM",
+    "3": "/E1/REF5"
+   },
+   "one_hop": {
+    "/E1/REF5": [
+     "R4101.1 R_INV",
+     "R4103.1 R_GTOP",
+     "R4118.1 R_SHIFT_REF",
+     "R4139.1 R_REF1_TOP",
+     "R4141.1 R_FLOOR_TOP",
+     "RV1305.3 RV",
+     "D4105.2 RISE_CONTROL_CLAMP",
+     "R4161.1 R_RISE_REF_FIXED",
+     "RV4104.3 RISE_OFFSET",
+     "RV1306.3 RV",
+     "D4106.2 FALL_CONTROL_CLAMP",
+     "R4178.1 R_FALL_REF_FIXED",
+     "RB4102.1 R_BIP_REF",
+     "U4110.6 logic supply",
+     "U4139.1 package supply",
+     "U4139.2 package supply",
+     "U4139.12 package supply",
+     "U4140.3 package supply"
+    ],
+    "/E1/FALL_OFFSET_TRIM": [
+     "R4181.1 R_FALL_OFFSET_FEED"
+    ],
+    "/E1/REFN5": [
+     "R4102.1 R_FB",
+     "R4158.1 R_RISE_EXPO_OFFSET",
+     "RV4104.1 RISE_OFFSET",
+     "R4175.1 R_FALL_EXPO_OFFSET",
+     "U4139.7 package supply"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "envelope",
+   "order": 1,
+   "proposed_procedure": "Null the fall exponential-converter offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4103",
+   "module": "E1",
+   "role": "envelope:RISE_BASE",
+   "mpn": "TC33X-2-503E",
+   "pins": {
+    "1": "/E1/RISE_REF_TRIM",
+    "2": "/E1/RISE_EXPO_REF",
+    "3": "/E1/RISE_EXPO_REF"
+   },
+   "one_hop": {
+    "/E1/RISE_REF_TRIM": [
+     "R4161.2 R_RISE_REF_FIXED"
+    ],
+    "/E1/RISE_EXPO_REF": [
+     "Q4101.6 RISE_PAIR",
+     "U4140.13 package supply"
+    ]
+   },
+   "topology": "exponential-pair reference node",
+   "group": "envelope",
+   "order": 2,
+   "proposed_procedure": "Set the rise time reference at a fixed control setting.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4107",
+   "module": "E1",
+   "role": "envelope:FALL_BASE",
+   "mpn": "TC33X-2-503E",
+   "pins": {
+    "1": "/E1/FALL_REF_TRIM",
+    "2": "/E1/FALL_EXPO_REF",
+    "3": "/E1/FALL_EXPO_REF"
+   },
+   "one_hop": {
+    "/E1/FALL_REF_TRIM": [
+     "R4178.2 R_FALL_REF_FIXED"
+    ],
+    "/E1/FALL_EXPO_REF": [
+     "Q4104.6 FALL_PAIR",
+     "U4141.6 package supply"
+    ]
+   },
+   "topology": "exponential-pair reference node",
+   "group": "envelope",
+   "order": 2,
+   "proposed_procedure": "Set the fall time reference at a fixed control setting.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4102",
+   "module": "E1",
+   "role": "envelope:RISE_SCALE",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/E1/RISE_SCALE_TRIM",
+    "2": "/E1/RISE_EXPO_SUM",
+    "3": "/E1/RISE_EXPO_SUM"
+   },
+   "one_hop": {
+    "/E1/RISE_EXPO_SUM": [
+     "R4157.2 R_RISE_EXPO_IN",
+     "R4158.2 R_RISE_EXPO_OFFSET",
+     "U4140.9 package supply"
+    ],
+    "/E1/RISE_SCALE_TRIM": [
+     "R4159.2 R_RISE_EXPO_SCALE"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "envelope",
+   "order": 3,
+   "proposed_procedure": "Set the rise time-per-volt scale across two control settings.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 8.00 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4106",
+   "module": "E1",
+   "role": "envelope:FALL_SCALE",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/E1/FALL_SCALE_TRIM",
+    "2": "/E1/FALL_EXPO_SUM",
+    "3": "/E1/FALL_EXPO_SUM"
+   },
+   "one_hop": {
+    "/E1/FALL_EXPO_SUM": [
+     "R4174.2 R_FALL_EXPO_IN",
+     "R4175.2 R_FALL_EXPO_OFFSET",
+     "U4141.2 package supply"
+    ],
+    "/E1/FALL_SCALE_TRIM": [
+     "R4176.2 R_FALL_EXPO_SCALE"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "envelope",
+   "order": 3,
+   "proposed_procedure": "Set the fall time-per-volt scale across two control settings.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 3.54 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4204",
+   "module": "E2",
+   "role": "envelope:RISE_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/E2/REFN5",
+    "2": "/E2/RISE_OFFSET_TRIM",
+    "3": "/E2/REF5"
+   },
+   "one_hop": {
+    "/E2/RISE_OFFSET_TRIM": [
+     "R4264.1 R_RISE_OFFSET_FEED"
+    ],
+    "/E2/REF5": [
+     "R4201.1 R_INV",
+     "R4203.1 R_GTOP",
+     "R4218.1 R_SHIFT_REF",
+     "R4239.1 R_REF1_TOP",
+     "R4241.1 R_FLOOR_TOP",
+     "RV1405.3 RV",
+     "D4205.2 RISE_CONTROL_CLAMP",
+     "R4261.1 R_RISE_REF_FIXED",
+     "RV1406.3 RV",
+     "D4206.2 FALL_CONTROL_CLAMP",
+     "R4278.1 R_FALL_REF_FIXED",
+     "RV4208.3 FALL_OFFSET",
+     "RB4202.1 R_BIP_REF",
+     "U4210.6 logic supply",
+     "U4239.1 package supply",
+     "U4239.2 package supply",
+     "U4239.12 package supply",
+     "U4240.3 package supply"
+    ],
+    "/E2/REFN5": [
+     "R4202.1 R_FB",
+     "R4258.1 R_RISE_EXPO_OFFSET",
+     "R4275.1 R_FALL_EXPO_OFFSET",
+     "RV4208.1 FALL_OFFSET",
+     "U4239.7 package supply"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "envelope",
+   "order": 1,
+   "proposed_procedure": "Null the rise exponential-converter offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 0.00 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4208",
+   "module": "E2",
+   "role": "envelope:FALL_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/E2/REFN5",
+    "2": "/E2/FALL_OFFSET_TRIM",
+    "3": "/E2/REF5"
+   },
+   "one_hop": {
+    "/E2/FALL_OFFSET_TRIM": [
+     "R4281.1 R_FALL_OFFSET_FEED"
+    ],
+    "/E2/REF5": [
+     "R4201.1 R_INV",
+     "R4203.1 R_GTOP",
+     "R4218.1 R_SHIFT_REF",
+     "R4239.1 R_REF1_TOP",
+     "R4241.1 R_FLOOR_TOP",
+     "RV1405.3 RV",
+     "D4205.2 RISE_CONTROL_CLAMP",
+     "R4261.1 R_RISE_REF_FIXED",
+     "RV4204.3 RISE_OFFSET",
+     "RV1406.3 RV",
+     "D4206.2 FALL_CONTROL_CLAMP",
+     "R4278.1 R_FALL_REF_FIXED",
+     "RB4202.1 R_BIP_REF",
+     "U4210.6 logic supply",
+     "U4239.1 package supply",
+     "U4239.2 package supply",
+     "U4239.12 package supply",
+     "U4240.3 package supply"
+    ],
+    "/E2/REFN5": [
+     "R4202.1 R_FB",
+     "R4258.1 R_RISE_EXPO_OFFSET",
+     "RV4204.1 RISE_OFFSET",
+     "R4275.1 R_FALL_EXPO_OFFSET",
+     "U4239.7 package supply"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "envelope",
+   "order": 1,
+   "proposed_procedure": "Null the fall exponential-converter offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 2.00 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4203",
+   "module": "E2",
+   "role": "envelope:RISE_BASE",
+   "mpn": "TC33X-2-503E",
+   "pins": {
+    "1": "/E2/RISE_REF_TRIM",
+    "2": "/E2/RISE_EXPO_REF",
+    "3": "/E2/RISE_EXPO_REF"
+   },
+   "one_hop": {
+    "/E2/RISE_EXPO_REF": [
+     "Q4201.6 RISE_PAIR",
+     "U4240.13 package supply"
+    ],
+    "/E2/RISE_REF_TRIM": [
+     "R4261.2 R_RISE_REF_FIXED"
+    ]
+   },
+   "topology": "exponential-pair reference node",
+   "group": "envelope",
+   "order": 2,
+   "proposed_procedure": "Set the rise time reference at a fixed control setting.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 0.00 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4207",
+   "module": "E2",
+   "role": "envelope:FALL_BASE",
+   "mpn": "TC33X-2-503E",
+   "pins": {
+    "1": "/E2/FALL_REF_TRIM",
+    "2": "/E2/FALL_EXPO_REF",
+    "3": "/E2/FALL_EXPO_REF"
+   },
+   "one_hop": {
+    "/E2/FALL_EXPO_REF": [
+     "Q4204.6 FALL_PAIR",
+     "U4241.6 package supply"
+    ],
+    "/E2/FALL_REF_TRIM": [
+     "R4278.2 R_FALL_REF_FIXED"
+    ]
+   },
+   "topology": "exponential-pair reference node",
+   "group": "envelope",
+   "order": 2,
+   "proposed_procedure": "Set the fall time reference at a fixed control setting.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 15.00 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4202",
+   "module": "E2",
+   "role": "envelope:RISE_SCALE",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/E2/RISE_SCALE_TRIM",
+    "2": "/E2/RISE_EXPO_SUM",
+    "3": "/E2/RISE_EXPO_SUM"
+   },
+   "one_hop": {
+    "/E2/RISE_EXPO_SUM": [
+     "R4257.2 R_RISE_EXPO_IN",
+     "R4258.2 R_RISE_EXPO_OFFSET",
+     "U4240.9 package supply"
+    ],
+    "/E2/RISE_SCALE_TRIM": [
+     "R4259.2 R_RISE_EXPO_SCALE"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "envelope",
+   "order": 3,
+   "proposed_procedure": "Set the rise time-per-volt scale across two control settings.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 8.73 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4206",
+   "module": "E2",
+   "role": "envelope:FALL_SCALE",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/E2/FALL_SCALE_TRIM",
+    "2": "/E2/FALL_EXPO_SUM",
+    "3": "/E2/FALL_EXPO_SUM"
+   },
+   "one_hop": {
+    "/E2/FALL_EXPO_SUM": [
+     "R4274.2 R_FALL_EXPO_IN",
+     "R4275.2 R_FALL_EXPO_OFFSET",
+     "U4241.2 package supply"
+    ],
+    "/E2/FALL_SCALE_TRIM": [
+     "R4276.2 R_FALL_EXPO_SCALE"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "envelope",
+   "order": 3,
+   "proposed_procedure": "Set the fall time-per-volt scale across two control settings.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4304",
+   "module": "E3",
+   "role": "envelope:RISE_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/E3/REFN5",
+    "2": "/E3/RISE_OFFSET_TRIM",
+    "3": "/E3/REF5"
+   },
+   "one_hop": {
+    "/E3/RISE_OFFSET_TRIM": [
+     "R4364.1 R_RISE_OFFSET_FEED"
+    ],
+    "/E3/REF5": [
+     "R4301.1 R_INV",
+     "R4303.1 R_GTOP",
+     "R4318.1 R_SHIFT_REF",
+     "R4339.1 R_REF1_TOP",
+     "R4341.1 R_FLOOR_TOP",
+     "RV1505.3 RV",
+     "D4305.2 RISE_CONTROL_CLAMP",
+     "R4361.1 R_RISE_REF_FIXED",
+     "RV1506.3 RV",
+     "D4306.2 FALL_CONTROL_CLAMP",
+     "R4378.1 R_FALL_REF_FIXED",
+     "RV4308.3 FALL_OFFSET",
+     "RB4302.1 R_BIP_REF",
+     "U4310.6 logic supply",
+     "U4339.1 package supply",
+     "U4339.2 package supply",
+     "U4339.12 package supply",
+     "U4340.3 package supply"
+    ],
+    "/E3/REFN5": [
+     "R4302.1 R_FB",
+     "R4358.1 R_RISE_EXPO_OFFSET",
+     "R4375.1 R_FALL_EXPO_OFFSET",
+     "RV4308.1 FALL_OFFSET",
+     "U4339.7 package supply"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "envelope",
+   "order": 1,
+   "proposed_procedure": "Null the rise exponential-converter offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 9.18 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4308",
+   "module": "E3",
+   "role": "envelope:FALL_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/E3/REFN5",
+    "2": "/E3/FALL_OFFSET_TRIM",
+    "3": "/E3/REF5"
+   },
+   "one_hop": {
+    "/E3/REF5": [
+     "R4301.1 R_INV",
+     "R4303.1 R_GTOP",
+     "R4318.1 R_SHIFT_REF",
+     "R4339.1 R_REF1_TOP",
+     "R4341.1 R_FLOOR_TOP",
+     "RV1505.3 RV",
+     "D4305.2 RISE_CONTROL_CLAMP",
+     "R4361.1 R_RISE_REF_FIXED",
+     "RV4304.3 RISE_OFFSET",
+     "RV1506.3 RV",
+     "D4306.2 FALL_CONTROL_CLAMP",
+     "R4378.1 R_FALL_REF_FIXED",
+     "RB4302.1 R_BIP_REF",
+     "U4310.6 logic supply",
+     "U4339.1 package supply",
+     "U4339.2 package supply",
+     "U4339.12 package supply",
+     "U4340.3 package supply"
+    ],
+    "/E3/FALL_OFFSET_TRIM": [
+     "R4381.1 R_FALL_OFFSET_FEED"
+    ],
+    "/E3/REFN5": [
+     "R4302.1 R_FB",
+     "R4358.1 R_RISE_EXPO_OFFSET",
+     "RV4304.1 RISE_OFFSET",
+     "R4375.1 R_FALL_EXPO_OFFSET",
+     "U4339.7 package supply"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "envelope",
+   "order": 1,
+   "proposed_procedure": "Null the fall exponential-converter offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4303",
+   "module": "E3",
+   "role": "envelope:RISE_BASE",
+   "mpn": "TC33X-2-503E",
+   "pins": {
+    "1": "/E3/RISE_REF_TRIM",
+    "2": "/E3/RISE_EXPO_REF",
+    "3": "/E3/RISE_EXPO_REF"
+   },
+   "one_hop": {
+    "/E3/RISE_REF_TRIM": [
+     "R4361.2 R_RISE_REF_FIXED"
+    ],
+    "/E3/RISE_EXPO_REF": [
+     "Q4301.6 RISE_PAIR",
+     "U4340.13 package supply"
+    ]
+   },
+   "topology": "exponential-pair reference node",
+   "group": "envelope",
+   "order": 2,
+   "proposed_procedure": "Set the rise time reference at a fixed control setting.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 7.21 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4307",
+   "module": "E3",
+   "role": "envelope:FALL_BASE",
+   "mpn": "TC33X-2-503E",
+   "pins": {
+    "1": "/E3/FALL_REF_TRIM",
+    "2": "/E3/FALL_EXPO_REF",
+    "3": "/E3/FALL_EXPO_REF"
+   },
+   "one_hop": {
+    "/E3/FALL_EXPO_REF": [
+     "Q4304.6 FALL_PAIR",
+     "U4341.6 package supply"
+    ],
+    "/E3/FALL_REF_TRIM": [
+     "R4378.2 R_FALL_REF_FIXED"
+    ]
+   },
+   "topology": "exponential-pair reference node",
+   "group": "envelope",
+   "order": 2,
+   "proposed_procedure": "Set the fall time reference at a fixed control setting.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 5.83 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4302",
+   "module": "E3",
+   "role": "envelope:RISE_SCALE",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/E3/RISE_SCALE_TRIM",
+    "2": "/E3/RISE_EXPO_SUM",
+    "3": "/E3/RISE_EXPO_SUM"
+   },
+   "one_hop": {
+    "/E3/RISE_EXPO_SUM": [
+     "R4357.2 R_RISE_EXPO_IN",
+     "R4358.2 R_RISE_EXPO_OFFSET",
+     "U4340.9 package supply"
+    ],
+    "/E3/RISE_SCALE_TRIM": [
+     "R4359.2 R_RISE_EXPO_SCALE"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "envelope",
+   "order": 3,
+   "proposed_procedure": "Set the rise time-per-volt scale across two control settings.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4306",
+   "module": "E3",
+   "role": "envelope:FALL_SCALE",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/E3/FALL_SCALE_TRIM",
+    "2": "/E3/FALL_EXPO_SUM",
+    "3": "/E3/FALL_EXPO_SUM"
+   },
+   "one_hop": {
+    "/E3/FALL_SCALE_TRIM": [
+     "R4376.2 R_FALL_EXPO_SCALE"
+    ],
+    "/E3/FALL_EXPO_SUM": [
+     "R4374.2 R_FALL_EXPO_IN",
+     "R4375.2 R_FALL_EXPO_OFFSET",
+     "U4341.2 package supply"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "envelope",
+   "order": 3,
+   "proposed_procedure": "Set the fall time-per-volt scale across two control settings.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4404",
+   "module": "E4",
+   "role": "envelope:RISE_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/E4/REFN5",
+    "2": "/E4/RISE_OFFSET_TRIM",
+    "3": "/E4/REF5"
+   },
+   "one_hop": {
+    "/E4/REFN5": [
+     "R4402.1 R_FB",
+     "R4458.1 R_RISE_EXPO_OFFSET",
+     "R4475.1 R_FALL_EXPO_OFFSET",
+     "RV4408.1 FALL_OFFSET",
+     "U4439.7 package supply"
+    ],
+    "/E4/RISE_OFFSET_TRIM": [
+     "R4464.1 R_RISE_OFFSET_FEED"
+    ],
+    "/E4/REF5": [
+     "R4401.1 R_INV",
+     "R4403.1 R_GTOP",
+     "R4418.1 R_SHIFT_REF",
+     "R4439.1 R_REF1_TOP",
+     "R4441.1 R_FLOOR_TOP",
+     "RV1605.3 RV",
+     "D4405.2 RISE_CONTROL_CLAMP",
+     "R4461.1 R_RISE_REF_FIXED",
+     "RV1606.3 RV",
+     "D4406.2 FALL_CONTROL_CLAMP",
+     "R4478.1 R_FALL_REF_FIXED",
+     "RV4408.3 FALL_OFFSET",
+     "RB4402.1 R_BIP_REF",
+     "U4410.6 logic supply",
+     "U4439.1 package supply",
+     "U4439.2 package supply",
+     "U4439.12 package supply",
+     "U4440.3 package supply"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "envelope",
+   "order": 1,
+   "proposed_procedure": "Null the rise exponential-converter offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 13.45 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4408",
+   "module": "E4",
+   "role": "envelope:FALL_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/E4/REFN5",
+    "2": "/E4/FALL_OFFSET_TRIM",
+    "3": "/E4/REF5"
+   },
+   "one_hop": {
+    "/E4/REFN5": [
+     "R4402.1 R_FB",
+     "R4458.1 R_RISE_EXPO_OFFSET",
+     "RV4404.1 RISE_OFFSET",
+     "R4475.1 R_FALL_EXPO_OFFSET",
+     "U4439.7 package supply"
+    ],
+    "/E4/REF5": [
+     "R4401.1 R_INV",
+     "R4403.1 R_GTOP",
+     "R4418.1 R_SHIFT_REF",
+     "R4439.1 R_REF1_TOP",
+     "R4441.1 R_FLOOR_TOP",
+     "RV1605.3 RV",
+     "D4405.2 RISE_CONTROL_CLAMP",
+     "R4461.1 R_RISE_REF_FIXED",
+     "RV4404.3 RISE_OFFSET",
+     "RV1606.3 RV",
+     "D4406.2 FALL_CONTROL_CLAMP",
+     "R4478.1 R_FALL_REF_FIXED",
+     "RB4402.1 R_BIP_REF",
+     "U4410.6 logic supply",
+     "U4439.1 package supply",
+     "U4439.2 package supply",
+     "U4439.12 package supply",
+     "U4440.3 package supply"
+    ],
+    "/E4/FALL_OFFSET_TRIM": [
+     "R4481.1 R_FALL_OFFSET_FEED"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "envelope",
+   "order": 1,
+   "proposed_procedure": "Null the fall exponential-converter offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 26.80 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4403",
+   "module": "E4",
+   "role": "envelope:RISE_BASE",
+   "mpn": "TC33X-2-503E",
+   "pins": {
+    "1": "/E4/RISE_REF_TRIM",
+    "2": "/E4/RISE_EXPO_REF",
+    "3": "/E4/RISE_EXPO_REF"
+   },
+   "one_hop": {
+    "/E4/RISE_EXPO_REF": [
+     "Q4401.6 RISE_PAIR",
+     "U4440.13 package supply"
+    ],
+    "/E4/RISE_REF_TRIM": [
+     "R4461.2 R_RISE_REF_FIXED"
+    ]
+   },
+   "topology": "exponential-pair reference node",
+   "group": "envelope",
+   "order": 2,
+   "proposed_procedure": "Set the rise time reference at a fixed control setting.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4407",
+   "module": "E4",
+   "role": "envelope:FALL_BASE",
+   "mpn": "TC33X-2-503E",
+   "pins": {
+    "1": "/E4/FALL_REF_TRIM",
+    "2": "/E4/FALL_EXPO_REF",
+    "3": "/E4/FALL_EXPO_REF"
+   },
+   "one_hop": {
+    "/E4/FALL_EXPO_REF": [
+     "Q4404.6 FALL_PAIR",
+     "U4441.6 package supply"
+    ],
+    "/E4/FALL_REF_TRIM": [
+     "R4478.2 R_FALL_REF_FIXED"
+    ]
+   },
+   "topology": "exponential-pair reference node",
+   "group": "envelope",
+   "order": 2,
+   "proposed_procedure": "Set the fall time reference at a fixed control setting.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4402",
+   "module": "E4",
+   "role": "envelope:RISE_SCALE",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/E4/RISE_SCALE_TRIM",
+    "2": "/E4/RISE_EXPO_SUM",
+    "3": "/E4/RISE_EXPO_SUM"
+   },
+   "one_hop": {
+    "/E4/RISE_EXPO_SUM": [
+     "R4457.2 R_RISE_EXPO_IN",
+     "R4458.2 R_RISE_EXPO_OFFSET",
+     "U4440.9 package supply"
+    ],
+    "/E4/RISE_SCALE_TRIM": [
+     "R4459.2 R_RISE_EXPO_SCALE"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "envelope",
+   "order": 3,
+   "proposed_procedure": "Set the rise time-per-volt scale across two control settings.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 21.02 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4406",
+   "module": "E4",
+   "role": "envelope:FALL_SCALE",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/E4/FALL_SCALE_TRIM",
+    "2": "/E4/FALL_EXPO_SUM",
+    "3": "/E4/FALL_EXPO_SUM"
+   },
+   "one_hop": {
+    "/E4/FALL_SCALE_TRIM": [
+     "R4476.2 R_FALL_EXPO_SCALE"
+    ],
+    "/E4/FALL_EXPO_SUM": [
+     "R4474.2 R_FALL_EXPO_IN",
+     "R4475.2 R_FALL_EXPO_OFFSET",
+     "U4441.2 package supply"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "envelope",
+   "order": 3,
+   "proposed_procedure": "Set the fall time-per-volt scale across two control settings.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4504",
+   "module": "E5",
+   "role": "envelope:RISE_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/E5/REFN5",
+    "2": "/E5/RISE_OFFSET_TRIM",
+    "3": "/E5/REF5"
+   },
+   "one_hop": {
+    "/E5/RISE_OFFSET_TRIM": [
+     "R4564.1 R_RISE_OFFSET_FEED"
+    ],
+    "/E5/REF5": [
+     "R4501.1 R_INV",
+     "R4503.1 R_GTOP",
+     "R4518.1 R_SHIFT_REF",
+     "R4539.1 R_REF1_TOP",
+     "R4541.1 R_FLOOR_TOP",
+     "RV1705.3 RV",
+     "D4505.2 RISE_CONTROL_CLAMP",
+     "R4561.1 R_RISE_REF_FIXED",
+     "RV1706.3 RV",
+     "D4506.2 FALL_CONTROL_CLAMP",
+     "R4578.1 R_FALL_REF_FIXED",
+     "RV4508.3 FALL_OFFSET",
+     "RB4502.1 R_BIP_REF",
+     "U4510.6 logic supply",
+     "U4539.1 package supply",
+     "U4539.2 package supply",
+     "U4539.12 package supply",
+     "U4540.3 package supply"
+    ],
+    "/E5/REFN5": [
+     "R4502.1 R_FB",
+     "R4558.1 R_RISE_EXPO_OFFSET",
+     "R4575.1 R_FALL_EXPO_OFFSET",
+     "RV4508.1 FALL_OFFSET",
+     "U4539.7 package supply"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "envelope",
+   "order": 1,
+   "proposed_procedure": "Null the rise exponential-converter offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4508",
+   "module": "E5",
+   "role": "envelope:FALL_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/E5/REFN5",
+    "2": "/E5/FALL_OFFSET_TRIM",
+    "3": "/E5/REF5"
+   },
+   "one_hop": {
+    "/E5/REF5": [
+     "R4501.1 R_INV",
+     "R4503.1 R_GTOP",
+     "R4518.1 R_SHIFT_REF",
+     "R4539.1 R_REF1_TOP",
+     "R4541.1 R_FLOOR_TOP",
+     "RV1705.3 RV",
+     "D4505.2 RISE_CONTROL_CLAMP",
+     "R4561.1 R_RISE_REF_FIXED",
+     "RV4504.3 RISE_OFFSET",
+     "RV1706.3 RV",
+     "D4506.2 FALL_CONTROL_CLAMP",
+     "R4578.1 R_FALL_REF_FIXED",
+     "RB4502.1 R_BIP_REF",
+     "U4510.6 logic supply",
+     "U4539.1 package supply",
+     "U4539.2 package supply",
+     "U4539.12 package supply",
+     "U4540.3 package supply"
+    ],
+    "/E5/FALL_OFFSET_TRIM": [
+     "R4581.1 R_FALL_OFFSET_FEED"
+    ],
+    "/E5/REFN5": [
+     "R4502.1 R_FB",
+     "R4558.1 R_RISE_EXPO_OFFSET",
+     "RV4504.1 RISE_OFFSET",
+     "R4575.1 R_FALL_EXPO_OFFSET",
+     "U4539.7 package supply"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "envelope",
+   "order": 1,
+   "proposed_procedure": "Null the fall exponential-converter offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "front, blocked in the closed stack, no candidate",
+   "plan_verdict": "NO_COURTYARD_POSITION_WITHIN_30MM_NEEDS_DESIGN"
+  },
+  {
+   "ref": "RV4503",
+   "module": "E5",
+   "role": "envelope:RISE_BASE",
+   "mpn": "TC33X-2-503E",
+   "pins": {
+    "1": "/E5/RISE_REF_TRIM",
+    "2": "/E5/RISE_EXPO_REF",
+    "3": "/E5/RISE_EXPO_REF"
+   },
+   "one_hop": {
+    "/E5/RISE_EXPO_REF": [
+     "Q4501.6 RISE_PAIR",
+     "U4540.13 package supply"
+    ],
+    "/E5/RISE_REF_TRIM": [
+     "R4561.2 R_RISE_REF_FIXED"
+    ]
+   },
+   "topology": "exponential-pair reference node",
+   "group": "envelope",
+   "order": 2,
+   "proposed_procedure": "Set the rise time reference at a fixed control setting.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4507",
+   "module": "E5",
+   "role": "envelope:FALL_BASE",
+   "mpn": "TC33X-2-503E",
+   "pins": {
+    "1": "/E5/FALL_REF_TRIM",
+    "2": "/E5/FALL_EXPO_REF",
+    "3": "/E5/FALL_EXPO_REF"
+   },
+   "one_hop": {
+    "/E5/FALL_REF_TRIM": [
+     "R4578.2 R_FALL_REF_FIXED"
+    ],
+    "/E5/FALL_EXPO_REF": [
+     "Q4504.6 FALL_PAIR",
+     "U4541.6 package supply"
+    ]
+   },
+   "topology": "exponential-pair reference node",
+   "group": "envelope",
+   "order": 2,
+   "proposed_procedure": "Set the fall time reference at a fixed control setting.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4502",
+   "module": "E5",
+   "role": "envelope:RISE_SCALE",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/E5/RISE_SCALE_TRIM",
+    "2": "/E5/RISE_EXPO_SUM",
+    "3": "/E5/RISE_EXPO_SUM"
+   },
+   "one_hop": {
+    "/E5/RISE_SCALE_TRIM": [
+     "R4559.2 R_RISE_EXPO_SCALE"
+    ],
+    "/E5/RISE_EXPO_SUM": [
+     "R4557.2 R_RISE_EXPO_IN",
+     "R4558.2 R_RISE_EXPO_OFFSET",
+     "U4540.9 package supply"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "envelope",
+   "order": 3,
+   "proposed_procedure": "Set the rise time-per-volt scale across two control settings.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 25.74 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4506",
+   "module": "E5",
+   "role": "envelope:FALL_SCALE",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/E5/FALL_SCALE_TRIM",
+    "2": "/E5/FALL_EXPO_SUM",
+    "3": "/E5/FALL_EXPO_SUM"
+   },
+   "one_hop": {
+    "/E5/FALL_SCALE_TRIM": [
+     "R4576.2 R_FALL_EXPO_SCALE"
+    ],
+    "/E5/FALL_EXPO_SUM": [
+     "R4574.2 R_FALL_EXPO_IN",
+     "R4575.2 R_FALL_EXPO_OFFSET",
+     "U4541.2 package supply"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "envelope",
+   "order": 3,
+   "proposed_procedure": "Set the fall time-per-volt scale across two control settings.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4604",
+   "module": "E6",
+   "role": "envelope:RISE_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/E6/REFN5",
+    "2": "/E6/RISE_OFFSET_TRIM",
+    "3": "/E6/REF5"
+   },
+   "one_hop": {
+    "/E6/REF5": [
+     "R4601.1 R_INV",
+     "R4603.1 R_GTOP",
+     "R4618.1 R_SHIFT_REF",
+     "R4639.1 R_REF1_TOP",
+     "R4641.1 R_FLOOR_TOP",
+     "RV1805.3 RV",
+     "D4605.2 RISE_CONTROL_CLAMP",
+     "R4661.1 R_RISE_REF_FIXED",
+     "RV1806.3 RV",
+     "D4606.2 FALL_CONTROL_CLAMP",
+     "R4678.1 R_FALL_REF_FIXED",
+     "RV4608.3 FALL_OFFSET",
+     "RB4602.1 R_BIP_REF",
+     "U4610.6 logic supply",
+     "U4639.1 package supply",
+     "U4639.2 package supply",
+     "U4639.12 package supply",
+     "U4640.3 package supply"
+    ],
+    "/E6/RISE_OFFSET_TRIM": [
+     "R4664.1 R_RISE_OFFSET_FEED"
+    ],
+    "/E6/REFN5": [
+     "R4602.1 R_FB",
+     "R4658.1 R_RISE_EXPO_OFFSET",
+     "R4675.1 R_FALL_EXPO_OFFSET",
+     "RV4608.1 FALL_OFFSET",
+     "U4639.7 package supply"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "envelope",
+   "order": 1,
+   "proposed_procedure": "Null the rise exponential-converter offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 15.01 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4608",
+   "module": "E6",
+   "role": "envelope:FALL_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/E6/REFN5",
+    "2": "/E6/FALL_OFFSET_TRIM",
+    "3": "/E6/REF5"
+   },
+   "one_hop": {
+    "/E6/REF5": [
+     "R4601.1 R_INV",
+     "R4603.1 R_GTOP",
+     "R4618.1 R_SHIFT_REF",
+     "R4639.1 R_REF1_TOP",
+     "R4641.1 R_FLOOR_TOP",
+     "RV1805.3 RV",
+     "D4605.2 RISE_CONTROL_CLAMP",
+     "R4661.1 R_RISE_REF_FIXED",
+     "RV4604.3 RISE_OFFSET",
+     "RV1806.3 RV",
+     "D4606.2 FALL_CONTROL_CLAMP",
+     "R4678.1 R_FALL_REF_FIXED",
+     "RB4602.1 R_BIP_REF",
+     "U4610.6 logic supply",
+     "U4639.1 package supply",
+     "U4639.2 package supply",
+     "U4639.12 package supply",
+     "U4640.3 package supply"
+    ],
+    "/E6/FALL_OFFSET_TRIM": [
+     "R4681.1 R_FALL_OFFSET_FEED"
+    ],
+    "/E6/REFN5": [
+     "R4602.1 R_FB",
+     "R4658.1 R_RISE_EXPO_OFFSET",
+     "RV4604.1 RISE_OFFSET",
+     "R4675.1 R_FALL_EXPO_OFFSET",
+     "U4639.7 package supply"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "envelope",
+   "order": 1,
+   "proposed_procedure": "Null the fall exponential-converter offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4603",
+   "module": "E6",
+   "role": "envelope:RISE_BASE",
+   "mpn": "TC33X-2-503E",
+   "pins": {
+    "1": "/E6/RISE_REF_TRIM",
+    "2": "/E6/RISE_EXPO_REF",
+    "3": "/E6/RISE_EXPO_REF"
+   },
+   "one_hop": {
+    "/E6/RISE_EXPO_REF": [
+     "Q4601.6 RISE_PAIR",
+     "U4640.13 package supply"
+    ],
+    "/E6/RISE_REF_TRIM": [
+     "R4661.2 R_RISE_REF_FIXED"
+    ]
+   },
+   "topology": "exponential-pair reference node",
+   "group": "envelope",
+   "order": 2,
+   "proposed_procedure": "Set the rise time reference at a fixed control setting.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4607",
+   "module": "E6",
+   "role": "envelope:FALL_BASE",
+   "mpn": "TC33X-2-503E",
+   "pins": {
+    "1": "/E6/FALL_REF_TRIM",
+    "2": "/E6/FALL_EXPO_REF",
+    "3": "/E6/FALL_EXPO_REF"
+   },
+   "one_hop": {
+    "/E6/FALL_REF_TRIM": [
+     "R4678.2 R_FALL_REF_FIXED"
+    ],
+    "/E6/FALL_EXPO_REF": [
+     "Q4604.6 FALL_PAIR",
+     "U4641.6 package supply"
+    ]
+   },
+   "topology": "exponential-pair reference node",
+   "group": "envelope",
+   "order": 2,
+   "proposed_procedure": "Set the fall time reference at a fixed control setting.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4602",
+   "module": "E6",
+   "role": "envelope:RISE_SCALE",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/E6/RISE_SCALE_TRIM",
+    "2": "/E6/RISE_EXPO_SUM",
+    "3": "/E6/RISE_EXPO_SUM"
+   },
+   "one_hop": {
+    "/E6/RISE_EXPO_SUM": [
+     "R4657.2 R_RISE_EXPO_IN",
+     "R4658.2 R_RISE_EXPO_OFFSET",
+     "U4640.9 package supply"
+    ],
+    "/E6/RISE_SCALE_TRIM": [
+     "R4659.2 R_RISE_EXPO_SCALE"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "envelope",
+   "order": 3,
+   "proposed_procedure": "Set the rise time-per-volt scale across two control settings.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV4606",
+   "module": "E6",
+   "role": "envelope:FALL_SCALE",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/E6/FALL_SCALE_TRIM",
+    "2": "/E6/FALL_EXPO_SUM",
+    "3": "/E6/FALL_EXPO_SUM"
+   },
+   "one_hop": {
+    "/E6/FALL_EXPO_SUM": [
+     "R4674.2 R_FALL_EXPO_IN",
+     "R4675.2 R_FALL_EXPO_OFFSET",
+     "U4641.2 package supply"
+    ],
+    "/E6/FALL_SCALE_TRIM": [
+     "R4676.2 R_FALL_EXPO_SCALE"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "envelope",
+   "order": 3,
+   "proposed_procedure": "Set the fall time-per-volt scale across two control settings.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 9.19 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2108",
+   "module": "F1",
+   "role": "filter:EXPO_BASE_TRIM",
+   "mpn": "TC33X-2-503E",
+   "pins": {
+    "1": "/F1/EXPO_REF_TRIM",
+    "2": "/F1/EXPO_REFERENCE",
+    "3": "/F1/EXPO_REFERENCE"
+   },
+   "one_hop": {
+    "/F1/EXPO_REFERENCE": [
+     "Q2101.6 EXPO_PAIR",
+     "U2109.2 package supply"
+    ],
+    "/F1/EXPO_REF_TRIM": [
+     "R2152.2 R_EXPO_REF_FIXED"
+    ]
+   },
+   "topology": "exponential-pair reference node",
+   "group": "filter",
+   "order": 1,
+   "proposed_procedure": "At 0 V frequency CV, set the cutoff reference.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2107",
+   "module": "F1",
+   "role": "filter:EXPO_SCALE_TRIM",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/F1/EXPO_SCALE_TRIM",
+    "2": "/F1/EXPO_SCALE_SUM",
+    "3": "/F1/EXPO_SCALE_SUM"
+   },
+   "one_hop": {
+    "/F1/EXPO_SCALE_TRIM": [
+     "R2150.2 R_EXPO_SCALE_FIXED"
+    ],
+    "/F1/EXPO_SCALE_SUM": [
+     "R2149.2 R_EXPO_SCALE_IN",
+     "U2108.13 package supply"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "filter",
+   "order": 2,
+   "proposed_procedure": "Step frequency CV; set the exponential scale (self-oscillation or a swept response).",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2109",
+   "module": "F1",
+   "role": "filter:BP_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/F1/REFN5",
+    "2": "/F1/BP_OFFSET_TRIM",
+    "3": "/F1/REF5"
+   },
+   "one_hop": {
+    "/F1/REF5": [
+     "R2101.1 R_INV",
+     "R2103.1 R_GTOP",
+     "RV601.3 RV",
+     "RV602.3 RV",
+     "RV605.3 RV",
+     "R2152.1 R_EXPO_REF_FIXED",
+     "RV2110.3 LP_OFFSET",
+     "RV2111.3 RES_OFFSET",
+     "RV2112.3 DRY_OFFSET",
+     "R2178.1 R_REF25_TOP",
+     "D2105.2 RES_CONTROL_CLAMP",
+     "R2188.1 R_RES_SENSE",
+     "D2107.2 DRY_CONTROL_CLAMP",
+     "R2199.1 R_DRY_SENSE",
+     "U2108.1 package supply",
+     "U2108.2 package supply"
+    ],
+    "/F1/REFN5": [
+     "R2102.1 R_FB",
+     "R2147.1 R_FREQ_OFFSET",
+     "RV2110.1 LP_OFFSET",
+     "RV2111.1 RES_OFFSET",
+     "RV2112.1 DRY_OFFSET",
+     "U2108.7 package supply"
+    ],
+    "/F1/BP_OFFSET_TRIM": [
+     "R2164.1 R_BP_OFFSET_FEED"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "filter",
+   "order": 3,
+   "proposed_procedure": "No input; null the BP output DC offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 15.81 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2110",
+   "module": "F1",
+   "role": "filter:LP_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/F1/REFN5",
+    "2": "/F1/LP_OFFSET_TRIM",
+    "3": "/F1/REF5"
+   },
+   "one_hop": {
+    "/F1/REF5": [
+     "R2101.1 R_INV",
+     "R2103.1 R_GTOP",
+     "RV601.3 RV",
+     "RV602.3 RV",
+     "RV605.3 RV",
+     "R2152.1 R_EXPO_REF_FIXED",
+     "RV2109.3 BP_OFFSET",
+     "RV2111.3 RES_OFFSET",
+     "RV2112.3 DRY_OFFSET",
+     "R2178.1 R_REF25_TOP",
+     "D2105.2 RES_CONTROL_CLAMP",
+     "R2188.1 R_RES_SENSE",
+     "D2107.2 DRY_CONTROL_CLAMP",
+     "R2199.1 R_DRY_SENSE",
+     "U2108.1 package supply",
+     "U2108.2 package supply"
+    ],
+    "/F1/REFN5": [
+     "R2102.1 R_FB",
+     "R2147.1 R_FREQ_OFFSET",
+     "RV2109.1 BP_OFFSET",
+     "RV2111.1 RES_OFFSET",
+     "RV2112.1 DRY_OFFSET",
+     "U2108.7 package supply"
+    ],
+    "/F1/LP_OFFSET_TRIM": [
+     "R2168.1 R_LP_OFFSET_FEED"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "filter",
+   "order": 3,
+   "proposed_procedure": "No input; null the LP output DC offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2111",
+   "module": "F1",
+   "role": "filter:RES_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/F1/REFN5",
+    "2": "/F1/RES_OFFSET_TRIM",
+    "3": "/F1/REF5"
+   },
+   "one_hop": {
+    "/F1/REF5": [
+     "R2101.1 R_INV",
+     "R2103.1 R_GTOP",
+     "RV601.3 RV",
+     "RV602.3 RV",
+     "RV605.3 RV",
+     "R2152.1 R_EXPO_REF_FIXED",
+     "RV2109.3 BP_OFFSET",
+     "RV2110.3 LP_OFFSET",
+     "RV2112.3 DRY_OFFSET",
+     "R2178.1 R_REF25_TOP",
+     "D2105.2 RES_CONTROL_CLAMP",
+     "R2188.1 R_RES_SENSE",
+     "D2107.2 DRY_CONTROL_CLAMP",
+     "R2199.1 R_DRY_SENSE",
+     "U2108.1 package supply",
+     "U2108.2 package supply"
+    ],
+    "/F1/REFN5": [
+     "R2102.1 R_FB",
+     "R2147.1 R_FREQ_OFFSET",
+     "RV2109.1 BP_OFFSET",
+     "RV2110.1 LP_OFFSET",
+     "RV2112.1 DRY_OFFSET",
+     "U2108.7 package supply"
+    ],
+    "/F1/RES_OFFSET_TRIM": [
+     "R2172.1 R_RES_OFFSET_FEED"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "filter",
+   "order": 3,
+   "proposed_procedure": "No input; null the resonance path offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2112",
+   "module": "F1",
+   "role": "filter:DRY_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/F1/REFN5",
+    "2": "/F1/DRY_OFFSET_TRIM",
+    "3": "/F1/REF5"
+   },
+   "one_hop": {
+    "/F1/DRY_OFFSET_TRIM": [
+     "R2176.1 R_DRY_OFFSET_FEED"
+    ],
+    "/F1/REFN5": [
+     "R2102.1 R_FB",
+     "R2147.1 R_FREQ_OFFSET",
+     "RV2109.1 BP_OFFSET",
+     "RV2110.1 LP_OFFSET",
+     "RV2111.1 RES_OFFSET",
+     "U2108.7 package supply"
+    ],
+    "/F1/REF5": [
+     "R2101.1 R_INV",
+     "R2103.1 R_GTOP",
+     "RV601.3 RV",
+     "RV602.3 RV",
+     "RV605.3 RV",
+     "R2152.1 R_EXPO_REF_FIXED",
+     "RV2109.3 BP_OFFSET",
+     "RV2110.3 LP_OFFSET",
+     "RV2111.3 RES_OFFSET",
+     "R2178.1 R_REF25_TOP",
+     "D2105.2 RES_CONTROL_CLAMP",
+     "R2188.1 R_RES_SENSE",
+     "D2107.2 DRY_CONTROL_CLAMP",
+     "R2199.1 R_DRY_SENSE",
+     "U2108.1 package supply",
+     "U2108.2 package supply"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "filter",
+   "order": 3,
+   "proposed_procedure": "No input; null the dry VCA path offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2113",
+   "module": "F1",
+   "role": "filter:RESONANCE_MAX",
+   "mpn": "TC33X-2-504E",
+   "pins": {
+    "1": "/F1/RESONANCE_TRIM",
+    "2": "/F1/RES_INT",
+    "3": "/F1/RES_INT"
+   },
+   "one_hop": {
+    "/F1/RES_INT": [
+     "U2107.5 OTA_GAIN_RESONANCE",
+     "D2116.1 RES_LIMIT_POS7",
+     "D2124.2 RES_LIMIT_NEG7",
+     "U2115.13 package supply"
+    ],
+    "/F1/RESONANCE_TRIM": [
+     "RB2103.2 R_RESONANCE_FIXED"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "filter",
+   "order": 4,
+   "proposed_procedure": "At full resonance, set the onset of self-oscillation.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2208",
+   "module": "F2",
+   "role": "filter:EXPO_BASE_TRIM",
+   "mpn": "TC33X-2-503E",
+   "pins": {
+    "1": "/F2/EXPO_REF_TRIM",
+    "2": "/F2/EXPO_REFERENCE",
+    "3": "/F2/EXPO_REFERENCE"
+   },
+   "one_hop": {
+    "/F2/EXPO_REF_TRIM": [
+     "R2252.2 R_EXPO_REF_FIXED"
+    ],
+    "/F2/EXPO_REFERENCE": [
+     "Q2201.6 EXPO_PAIR",
+     "U2209.2 package supply"
+    ]
+   },
+   "topology": "exponential-pair reference node",
+   "group": "filter",
+   "order": 1,
+   "proposed_procedure": "At 0 V frequency CV, set the cutoff reference.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2207",
+   "module": "F2",
+   "role": "filter:EXPO_SCALE_TRIM",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/F2/EXPO_SCALE_TRIM",
+    "2": "/F2/EXPO_SCALE_SUM",
+    "3": "/F2/EXPO_SCALE_SUM"
+   },
+   "one_hop": {
+    "/F2/EXPO_SCALE_TRIM": [
+     "R2250.2 R_EXPO_SCALE_FIXED"
+    ],
+    "/F2/EXPO_SCALE_SUM": [
+     "R2249.2 R_EXPO_SCALE_IN",
+     "U2208.13 package supply"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "filter",
+   "order": 2,
+   "proposed_procedure": "Step frequency CV; set the exponential scale (self-oscillation or a swept response).",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 8.14 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2209",
+   "module": "F2",
+   "role": "filter:BP_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/F2/REFN5",
+    "2": "/F2/BP_OFFSET_TRIM",
+    "3": "/F2/REF5"
+   },
+   "one_hop": {
+    "/F2/REF5": [
+     "R2201.1 R_INV",
+     "R2203.1 R_GTOP",
+     "RV701.3 RV",
+     "RV702.3 RV",
+     "RV705.3 RV",
+     "R2252.1 R_EXPO_REF_FIXED",
+     "RV2210.3 LP_OFFSET",
+     "RV2211.3 RES_OFFSET",
+     "RV2212.3 DRY_OFFSET",
+     "R2278.1 R_REF25_TOP",
+     "D2205.2 RES_CONTROL_CLAMP",
+     "R2288.1 R_RES_SENSE",
+     "D2207.2 DRY_CONTROL_CLAMP",
+     "R2299.1 R_DRY_SENSE",
+     "U2208.1 package supply",
+     "U2208.2 package supply"
+    ],
+    "/F2/REFN5": [
+     "R2202.1 R_FB",
+     "R2247.1 R_FREQ_OFFSET",
+     "RV2210.1 LP_OFFSET",
+     "RV2211.1 RES_OFFSET",
+     "RV2212.1 DRY_OFFSET",
+     "U2208.7 package supply"
+    ],
+    "/F2/BP_OFFSET_TRIM": [
+     "R2264.1 R_BP_OFFSET_FEED"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "filter",
+   "order": 3,
+   "proposed_procedure": "No input; null the BP output DC offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 5.85 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2210",
+   "module": "F2",
+   "role": "filter:LP_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/F2/REFN5",
+    "2": "/F2/LP_OFFSET_TRIM",
+    "3": "/F2/REF5"
+   },
+   "one_hop": {
+    "/F2/REF5": [
+     "R2201.1 R_INV",
+     "R2203.1 R_GTOP",
+     "RV701.3 RV",
+     "RV702.3 RV",
+     "RV705.3 RV",
+     "R2252.1 R_EXPO_REF_FIXED",
+     "RV2209.3 BP_OFFSET",
+     "RV2211.3 RES_OFFSET",
+     "RV2212.3 DRY_OFFSET",
+     "R2278.1 R_REF25_TOP",
+     "D2205.2 RES_CONTROL_CLAMP",
+     "R2288.1 R_RES_SENSE",
+     "D2207.2 DRY_CONTROL_CLAMP",
+     "R2299.1 R_DRY_SENSE",
+     "U2208.1 package supply",
+     "U2208.2 package supply"
+    ],
+    "/F2/REFN5": [
+     "R2202.1 R_FB",
+     "R2247.1 R_FREQ_OFFSET",
+     "RV2209.1 BP_OFFSET",
+     "RV2211.1 RES_OFFSET",
+     "RV2212.1 DRY_OFFSET",
+     "U2208.7 package supply"
+    ],
+    "/F2/LP_OFFSET_TRIM": [
+     "R2268.1 R_LP_OFFSET_FEED"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "filter",
+   "order": 3,
+   "proposed_procedure": "No input; null the LP output DC offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2211",
+   "module": "F2",
+   "role": "filter:RES_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/F2/REFN5",
+    "2": "/F2/RES_OFFSET_TRIM",
+    "3": "/F2/REF5"
+   },
+   "one_hop": {
+    "/F2/RES_OFFSET_TRIM": [
+     "R2272.1 R_RES_OFFSET_FEED"
+    ],
+    "/F2/REFN5": [
+     "R2202.1 R_FB",
+     "R2247.1 R_FREQ_OFFSET",
+     "RV2209.1 BP_OFFSET",
+     "RV2210.1 LP_OFFSET",
+     "RV2212.1 DRY_OFFSET",
+     "U2208.7 package supply"
+    ],
+    "/F2/REF5": [
+     "R2201.1 R_INV",
+     "R2203.1 R_GTOP",
+     "RV701.3 RV",
+     "RV702.3 RV",
+     "RV705.3 RV",
+     "R2252.1 R_EXPO_REF_FIXED",
+     "RV2209.3 BP_OFFSET",
+     "RV2210.3 LP_OFFSET",
+     "RV2212.3 DRY_OFFSET",
+     "R2278.1 R_REF25_TOP",
+     "D2205.2 RES_CONTROL_CLAMP",
+     "R2288.1 R_RES_SENSE",
+     "D2207.2 DRY_CONTROL_CLAMP",
+     "R2299.1 R_DRY_SENSE",
+     "U2208.1 package supply",
+     "U2208.2 package supply"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "filter",
+   "order": 3,
+   "proposed_procedure": "No input; null the resonance path offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2212",
+   "module": "F2",
+   "role": "filter:DRY_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/F2/REFN5",
+    "2": "/F2/DRY_OFFSET_TRIM",
+    "3": "/F2/REF5"
+   },
+   "one_hop": {
+    "/F2/REF5": [
+     "R2201.1 R_INV",
+     "R2203.1 R_GTOP",
+     "RV701.3 RV",
+     "RV702.3 RV",
+     "RV705.3 RV",
+     "R2252.1 R_EXPO_REF_FIXED",
+     "RV2209.3 BP_OFFSET",
+     "RV2210.3 LP_OFFSET",
+     "RV2211.3 RES_OFFSET",
+     "R2278.1 R_REF25_TOP",
+     "D2205.2 RES_CONTROL_CLAMP",
+     "R2288.1 R_RES_SENSE",
+     "D2207.2 DRY_CONTROL_CLAMP",
+     "R2299.1 R_DRY_SENSE",
+     "U2208.1 package supply",
+     "U2208.2 package supply"
+    ],
+    "/F2/REFN5": [
+     "R2202.1 R_FB",
+     "R2247.1 R_FREQ_OFFSET",
+     "RV2209.1 BP_OFFSET",
+     "RV2210.1 LP_OFFSET",
+     "RV2211.1 RES_OFFSET",
+     "U2208.7 package supply"
+    ],
+    "/F2/DRY_OFFSET_TRIM": [
+     "R2276.1 R_DRY_OFFSET_FEED"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "filter",
+   "order": 3,
+   "proposed_procedure": "No input; null the dry VCA path offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2213",
+   "module": "F2",
+   "role": "filter:RESONANCE_MAX",
+   "mpn": "TC33X-2-504E",
+   "pins": {
+    "1": "/F2/RESONANCE_TRIM",
+    "2": "/F2/RES_INT",
+    "3": "/F2/RES_INT"
+   },
+   "one_hop": {
+    "/F2/RES_INT": [
+     "U2207.5 OTA_GAIN_RESONANCE",
+     "D2216.1 RES_LIMIT_POS7",
+     "D2224.2 RES_LIMIT_NEG7",
+     "U2215.13 package supply"
+    ],
+    "/F2/RESONANCE_TRIM": [
+     "RB2203.2 R_RESONANCE_FIXED"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "filter",
+   "order": 4,
+   "proposed_procedure": "At full resonance, set the onset of self-oscillation.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2308",
+   "module": "F3",
+   "role": "filter:EXPO_BASE_TRIM",
+   "mpn": "TC33X-2-503E",
+   "pins": {
+    "1": "/F3/EXPO_REF_TRIM",
+    "2": "/F3/EXPO_REFERENCE",
+    "3": "/F3/EXPO_REFERENCE"
+   },
+   "one_hop": {
+    "/F3/EXPO_REF_TRIM": [
+     "R2352.2 R_EXPO_REF_FIXED"
+    ],
+    "/F3/EXPO_REFERENCE": [
+     "Q2301.6 EXPO_PAIR",
+     "U2309.2 package supply"
+    ]
+   },
+   "topology": "exponential-pair reference node",
+   "group": "filter",
+   "order": 1,
+   "proposed_procedure": "At 0 V frequency CV, set the cutoff reference.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 10.61 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2307",
+   "module": "F3",
+   "role": "filter:EXPO_SCALE_TRIM",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/F3/EXPO_SCALE_TRIM",
+    "2": "/F3/EXPO_SCALE_SUM",
+    "3": "/F3/EXPO_SCALE_SUM"
+   },
+   "one_hop": {
+    "/F3/EXPO_SCALE_TRIM": [
+     "R2350.2 R_EXPO_SCALE_FIXED"
+    ],
+    "/F3/EXPO_SCALE_SUM": [
+     "R2349.2 R_EXPO_SCALE_IN",
+     "U2308.13 package supply"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "filter",
+   "order": 2,
+   "proposed_procedure": "Step frequency CV; set the exponential scale (self-oscillation or a swept response).",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 6.50 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2309",
+   "module": "F3",
+   "role": "filter:BP_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/F3/REFN5",
+    "2": "/F3/BP_OFFSET_TRIM",
+    "3": "/F3/REF5"
+   },
+   "one_hop": {
+    "/F3/BP_OFFSET_TRIM": [
+     "R2364.1 R_BP_OFFSET_FEED"
+    ],
+    "/F3/REFN5": [
+     "R2302.1 R_FB",
+     "R2347.1 R_FREQ_OFFSET",
+     "RV2310.1 LP_OFFSET",
+     "RV2311.1 RES_OFFSET",
+     "RV2312.1 DRY_OFFSET",
+     "U2308.7 package supply"
+    ],
+    "/F3/REF5": [
+     "R2301.1 R_INV",
+     "R2303.1 R_GTOP",
+     "RV801.3 RV",
+     "RV802.3 RV",
+     "RV805.3 RV",
+     "R2352.1 R_EXPO_REF_FIXED",
+     "RV2310.3 LP_OFFSET",
+     "RV2311.3 RES_OFFSET",
+     "RV2312.3 DRY_OFFSET",
+     "R2378.1 R_REF25_TOP",
+     "D2305.2 RES_CONTROL_CLAMP",
+     "R2388.1 R_RES_SENSE",
+     "D2307.2 DRY_CONTROL_CLAMP",
+     "R2399.1 R_DRY_SENSE",
+     "U2308.1 package supply",
+     "U2308.2 package supply"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "filter",
+   "order": 3,
+   "proposed_procedure": "No input; null the BP output DC offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 5.83 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2310",
+   "module": "F3",
+   "role": "filter:LP_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/F3/REFN5",
+    "2": "/F3/LP_OFFSET_TRIM",
+    "3": "/F3/REF5"
+   },
+   "one_hop": {
+    "/F3/REFN5": [
+     "R2302.1 R_FB",
+     "R2347.1 R_FREQ_OFFSET",
+     "RV2309.1 BP_OFFSET",
+     "RV2311.1 RES_OFFSET",
+     "RV2312.1 DRY_OFFSET",
+     "U2308.7 package supply"
+    ],
+    "/F3/REF5": [
+     "R2301.1 R_INV",
+     "R2303.1 R_GTOP",
+     "RV801.3 RV",
+     "RV802.3 RV",
+     "RV805.3 RV",
+     "R2352.1 R_EXPO_REF_FIXED",
+     "RV2309.3 BP_OFFSET",
+     "RV2311.3 RES_OFFSET",
+     "RV2312.3 DRY_OFFSET",
+     "R2378.1 R_REF25_TOP",
+     "D2305.2 RES_CONTROL_CLAMP",
+     "R2388.1 R_RES_SENSE",
+     "D2307.2 DRY_CONTROL_CLAMP",
+     "R2399.1 R_DRY_SENSE",
+     "U2308.1 package supply",
+     "U2308.2 package supply"
+    ],
+    "/F3/LP_OFFSET_TRIM": [
+     "R2368.1 R_LP_OFFSET_FEED"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "filter",
+   "order": 3,
+   "proposed_procedure": "No input; null the LP output DC offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2311",
+   "module": "F3",
+   "role": "filter:RES_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/F3/REFN5",
+    "2": "/F3/RES_OFFSET_TRIM",
+    "3": "/F3/REF5"
+   },
+   "one_hop": {
+    "/F3/REFN5": [
+     "R2302.1 R_FB",
+     "R2347.1 R_FREQ_OFFSET",
+     "RV2309.1 BP_OFFSET",
+     "RV2310.1 LP_OFFSET",
+     "RV2312.1 DRY_OFFSET",
+     "U2308.7 package supply"
+    ],
+    "/F3/REF5": [
+     "R2301.1 R_INV",
+     "R2303.1 R_GTOP",
+     "RV801.3 RV",
+     "RV802.3 RV",
+     "RV805.3 RV",
+     "R2352.1 R_EXPO_REF_FIXED",
+     "RV2309.3 BP_OFFSET",
+     "RV2310.3 LP_OFFSET",
+     "RV2312.3 DRY_OFFSET",
+     "R2378.1 R_REF25_TOP",
+     "D2305.2 RES_CONTROL_CLAMP",
+     "R2388.1 R_RES_SENSE",
+     "D2307.2 DRY_CONTROL_CLAMP",
+     "R2399.1 R_DRY_SENSE",
+     "U2308.1 package supply",
+     "U2308.2 package supply"
+    ],
+    "/F3/RES_OFFSET_TRIM": [
+     "R2372.1 R_RES_OFFSET_FEED"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "filter",
+   "order": 3,
+   "proposed_procedure": "No input; null the resonance path offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 11.50 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2312",
+   "module": "F3",
+   "role": "filter:DRY_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/F3/REFN5",
+    "2": "/F3/DRY_OFFSET_TRIM",
+    "3": "/F3/REF5"
+   },
+   "one_hop": {
+    "/F3/REFN5": [
+     "R2302.1 R_FB",
+     "R2347.1 R_FREQ_OFFSET",
+     "RV2309.1 BP_OFFSET",
+     "RV2310.1 LP_OFFSET",
+     "RV2311.1 RES_OFFSET",
+     "U2308.7 package supply"
+    ],
+    "/F3/REF5": [
+     "R2301.1 R_INV",
+     "R2303.1 R_GTOP",
+     "RV801.3 RV",
+     "RV802.3 RV",
+     "RV805.3 RV",
+     "R2352.1 R_EXPO_REF_FIXED",
+     "RV2309.3 BP_OFFSET",
+     "RV2310.3 LP_OFFSET",
+     "RV2311.3 RES_OFFSET",
+     "R2378.1 R_REF25_TOP",
+     "D2305.2 RES_CONTROL_CLAMP",
+     "R2388.1 R_RES_SENSE",
+     "D2307.2 DRY_CONTROL_CLAMP",
+     "R2399.1 R_DRY_SENSE",
+     "U2308.1 package supply",
+     "U2308.2 package supply"
+    ],
+    "/F3/DRY_OFFSET_TRIM": [
+     "R2376.1 R_DRY_OFFSET_FEED"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "filter",
+   "order": 3,
+   "proposed_procedure": "No input; null the dry VCA path offset.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 9.62 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV2313",
+   "module": "F3",
+   "role": "filter:RESONANCE_MAX",
+   "mpn": "TC33X-2-504E",
+   "pins": {
+    "1": "/F3/RESONANCE_TRIM",
+    "2": "/F3/RES_INT",
+    "3": "/F3/RES_INT"
+   },
+   "one_hop": {
+    "/F3/RESONANCE_TRIM": [
+     "RB2303.2 R_RESONANCE_FIXED"
+    ],
+    "/F3/RES_INT": [
+     "U2307.5 OTA_GAIN_RESONANCE",
+     "D2316.1 RES_LIMIT_POS7",
+     "D2324.2 RES_LIMIT_NEG7",
+     "U2315.13 package supply"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "filter",
+   "order": 4,
+   "proposed_procedure": "At full resonance, set the onset of self-oscillation.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV8307",
+   "module": "M4A",
+   "role": "mix4_vca:FEEDTHROUGH",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/M4A/REFN5",
+    "2": "/M4A/OFFSET_W",
+    "3": "/M4A/REF5"
+   },
+   "one_hop": {
+    "/M4A/REFN5": [
+     "R8302.1 R_FB",
+     "U8308.7 package supply",
+     "U8316.2 UN"
+    ],
+    "/M4A/REF5": [
+     "RV1106.3 RV",
+     "R8301.1 R_INV",
+     "R8303.1 R_GTOP",
+     "D8313.2 COMMAND_CLAMP",
+     "R8368.1 R_REF25_TOP",
+     "R8372.1 R_CURRENT_SENSE",
+     "U8308.1 package supply",
+     "U8308.2 package supply",
+     "U8315.3 UP"
+    ],
+    "/M4A/OFFSET_W": [
+     "R8377.1 R_OFFSET_FEED"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "mix4 VCA",
+   "order": 1,
+   "proposed_procedure": "No input, command swept; null control feedthrough at the mix output.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV8308",
+   "module": "M4A",
+   "role": "mix4_vca:TIA_CAL",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/M4A/TIA_TRIM",
+    "2": "/M4A/OTA_CURRENT",
+    "3": "/M4A/OTA_CURRENT"
+   },
+   "one_hop": {
+    "/M4A/TIA_TRIM": [
+     "R8380.2 R_TIA_FIXED"
+    ],
+    "/M4A/OTA_CURRENT": [
+     "U8307.5 VCA_OTA",
+     "U8313.6 package supply"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "mix4 VCA",
+   "order": 2,
+   "proposed_procedure": "With a known input and full command, set the VCA gain at the mix output.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "front, blocked in the closed stack, no candidate",
+   "plan_verdict": "NO_COURTYARD_POSITION_WITHIN_30MM_NEEDS_DESIGN"
+  },
+  {
+   "ref": "RV8407",
+   "module": "M4B",
+   "role": "mix4_vca:FEEDTHROUGH",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/M4B/REFN5",
+    "2": "/M4B/OFFSET_W",
+    "3": "/M4B/REF5"
+   },
+   "one_hop": {
+    "/M4B/REF5": [
+     "RV1206.3 RV",
+     "R8401.1 R_INV",
+     "R8403.1 R_GTOP",
+     "D8413.2 COMMAND_CLAMP",
+     "R8468.1 R_REF25_TOP",
+     "R8472.1 R_CURRENT_SENSE",
+     "U8408.1 package supply",
+     "U8408.2 package supply",
+     "U8415.3 UP"
+    ],
+    "/M4B/REFN5": [
+     "R8402.1 R_FB",
+     "U8408.7 package supply",
+     "U8416.2 UN"
+    ],
+    "/M4B/OFFSET_W": [
+     "R8477.1 R_OFFSET_FEED"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "mix4 VCA",
+   "order": 1,
+   "proposed_procedure": "No input, command swept; null control feedthrough at the mix output.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV8408",
+   "module": "M4B",
+   "role": "mix4_vca:TIA_CAL",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/M4B/TIA_TRIM",
+    "2": "/M4B/OTA_CURRENT",
+    "3": "/M4B/OTA_CURRENT"
+   },
+   "one_hop": {
+    "/M4B/TIA_TRIM": [
+     "R8480.2 R_TIA_FIXED"
+    ],
+    "/M4B/OTA_CURRENT": [
+     "U8407.5 VCA_OTA",
+     "U8413.6 package supply"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "mix4 VCA",
+   "order": 2,
+   "proposed_procedure": "With a known input and full command, set the VCA gain at the mix output.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "front, blocked in the closed stack, no candidate",
+   "plan_verdict": "NO_COURTYARD_POSITION_WITHIN_30MM_NEEDS_DESIGN"
+  },
+  {
+   "ref": "RV6101",
+   "module": "N1",
+   "role": "noise:WHITE_LEVEL_TRIM",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/N1/WHITE_TRIM",
+    "2": "/N1/WHITE_LEVEL_SUM",
+    "3": "/N1/WHITE_LEVEL_SUM"
+   },
+   "one_hop": {
+    "/N1/WHITE_TRIM": [
+     "R6111.2 R_WHITE_LEVEL_FIXED"
+    ],
+    "/N1/WHITE_LEVEL_SUM": [
+     "R6110.2 R_WHITE_LEVEL_IN",
+     "U6103.6 package supply"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "noise",
+   "order": 1,
+   "proposed_procedure": "Set white noise output level (RMS meter).",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV6102",
+   "module": "N1",
+   "role": "noise:PINK_LEVEL_TRIM",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/N1/PINK_TRIM",
+    "2": "/N1/PINK_LEVEL_SUM",
+    "3": "/N1/PINK_LEVEL_SUM"
+   },
+   "one_hop": {
+    "/N1/PINK_LEVEL_SUM": [
+     "R6114.2 R_PINK_LEVEL_IN",
+     "U6103.9 package supply"
+    ],
+    "/N1/PINK_TRIM": [
+     "R6115.2 R_PINK_LEVEL_FIXED"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "noise",
+   "order": 1,
+   "proposed_procedure": "Set pink noise output level (RMS meter).",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 8.63 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV6103",
+   "module": "N1",
+   "role": "noise:BLUE_LEVEL_TRIM",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/N1/BLUE_TRIM",
+    "2": "/N1/BLUE_LEVEL_SUM",
+    "3": "/N1/BLUE_LEVEL_SUM"
+   },
+   "one_hop": {
+    "/N1/BLUE_LEVEL_SUM": [
+     "R6118.2 R_BLUE_LEVEL_IN",
+     "U6103.13 package supply"
+    ],
+    "/N1/BLUE_TRIM": [
+     "R6119.2 R_BLUE_LEVEL_FIXED"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "noise",
+   "order": 1,
+   "proposed_procedure": "Set blue noise output level (RMS meter).",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV6104",
+   "module": "N1",
+   "role": "noise:BROWN_LEVEL_TRIM",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/N1/BROWN_TRIM",
+    "2": "/N1/BROWN_LEVEL_SUM",
+    "3": "/N1/BROWN_LEVEL_SUM"
+   },
+   "one_hop": {
+    "/N1/BROWN_LEVEL_SUM": [
+     "R6122.2 R_BROWN_LEVEL_IN",
+     "U6104.2 package supply"
+    ],
+    "/N1/BROWN_TRIM": [
+     "R6123.2 R_BROWN_LEVEL_FIXED"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "noise",
+   "order": 1,
+   "proposed_procedure": "Set brown noise output level (RMS meter).",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV1601",
+   "module": "OCTAVE_REF",
+   "role": "octave_reference:RV_GAIN",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/OCTAVE_REF/C5c0054_GAIN_TRIM",
+    "2": "/OCTAVE_REF/OCT_TOP",
+    "3": "/OCTAVE_REF/OCT_TOP"
+   },
+   "one_hop": {
+    "/OCTAVE_REF/C5c0054_GAIN_TRIM": [
+     "R1611.2 R_FIXED"
+    ],
+    "/OCTAVE_REF/OCT_TOP": [
+     "R1609.2 R5",
+     "U1604.3 package supply",
+     "U1604.7 package supply"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "octave reference",
+   "order": 1,
+   "proposed_procedure": "Measure the octave reference steps with the instrument warm; set the ladder gain.",
+   "sourced_target": "electrical-standard calibration.octave_step_error_V = 0.002",
+   "access_after_projection": "rear candidate 6.50 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1109",
+   "module": "O1",
+   "role": "oscillator:HF_TRIM",
+   "mpn": "TC33X-2-203E",
+   "pins": {
+    "1": "/O1/HF_PIN",
+    "2": "/O1/LINEAR_REF",
+    "3": "AGND"
+   },
+   "one_hop": {
+    "/O1/LINEAR_REF": [
+     "U1105.13 CORE",
+     "R1154.1 R_LINEAR_FILTER",
+     "RB1128.2 R_LINEAR_REFERENCE_SER1"
+    ],
+    "/O1/HF_PIN": [
+     "U1105.7 CORE"
+    ]
+   },
+   "topology": "oscillator core pin",
+   "group": "oscillator",
+   "order": 1,
+   "proposed_procedure": "Drive high pitch CV; set high-frequency tracking against a counter at the oscillator output.",
+   "sourced_target": "electrical-standard calibration.pitch_tracking_target_cents = 5 over 0..5 V at 25 C after 20 min warm-up",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1108",
+   "module": "O1",
+   "role": "oscillator:SCALE_TRIM",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/O1/SCALE_ADJ",
+    "2": "AGND",
+    "3": "AGND"
+   },
+   "one_hop": {
+    "/O1/SCALE_ADJ": [
+     "R1152.2 R_RS_FIXED"
+    ]
+   },
+   "topology": "rheostat to ground through a fixed resistor",
+   "group": "oscillator",
+   "order": 2,
+   "proposed_procedure": "Step pitch CV 0 V to 5 V in 1 V steps; set the octave ratio at the oscillator output.",
+   "sourced_target": "electrical-standard calibration.pitch_tracking_target_cents = 5 over 0..5 V at 25 C after 20 min warm-up",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1107",
+   "module": "O1",
+   "role": "oscillator:RZ_TRIM",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O1/RZ_TRIM",
+    "2": "AGND",
+    "3": "AGND"
+   },
+   "one_hop": {
+    "/O1/RZ_TRIM": [
+     "R1150.2 R_RZ_FIXED"
+    ]
+   },
+   "topology": "rheostat to ground through a fixed resistor",
+   "group": "oscillator",
+   "order": 3,
+   "proposed_procedure": "Repeat the octave steps; set the scale-pin resistance element (RZ) as the circuit designer specifies.",
+   "sourced_target": "electrical-standard calibration.pitch_tracking_target_cents = 5 over 0..5 V at 25 C after 20 min warm-up",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1106",
+   "module": "O1",
+   "role": "oscillator:BASE_TRIM",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O1/BASE_REFN5",
+    "2": "/O1/BASE_ADJ",
+    "3": "/O1/BASE_REF5"
+   },
+   "one_hop": {
+    "/O1/BASE_ADJ": [
+     "R1147.1 R_BASE_FEED"
+    ],
+    "/O1/BASE_REF5": [
+     "RB1114.2 R_BASE_REF5_ISO",
+     "RB1115.1 R_BASE_REF5_FB"
+    ],
+    "/O1/BASE_REFN5": [
+     "RB1116.2 R_BASE_REFN5_ISO",
+     "RB1117.1 R_BASE_REFN5_FB"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "oscillator",
+   "order": 4,
+   "proposed_procedure": "At 0 V pitch CV, set the base frequency at the oscillator output.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 15.18 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1110",
+   "module": "O1",
+   "role": "oscillator:SINE_SYMMETRY",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O1/SINE_REFN5",
+    "2": "/O1/SINE_OFFSET",
+    "3": "/O1/SINE_REF5"
+   },
+   "one_hop": {
+    "/O1/SINE_OFFSET": [
+     "R1191.1 R_SINE_OFFSET"
+    ],
+    "/O1/SINE_REFN5": [
+     "RB1120.2 R_SINE_REFN5_ISO",
+     "RB1121.1 R_SINE_REFN5_FB"
+    ],
+    "/O1/SINE_REF5": [
+     "RB1118.2 R_SINE_REF5_ISO",
+     "RB1119.1 R_SINE_REF5_FB"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "oscillator",
+   "order": 5,
+   "proposed_procedure": "At a mid frequency, null sine asymmetry at the sine output.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1111",
+   "module": "O1",
+   "role": "oscillator:SINE_LEVEL",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O1/SINE_GAIN_TRIM",
+    "2": "/O1/SINE_GAIN_SUM",
+    "3": "/O1/SINE_GAIN_SUM"
+   },
+   "one_hop": {
+    "/O1/SINE_GAIN_SUM": [
+     "R1199.2 R_SINE_GAIN_IN",
+     "U1115.6 package supply"
+    ],
+    "/O1/SINE_GAIN_TRIM": [
+     "RB1101.2 R_SINE_GAIN_FIXED"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "oscillator",
+   "order": 6,
+   "proposed_procedure": "Set the sine output peak level.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 22.02 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1209",
+   "module": "O2",
+   "role": "oscillator:HF_TRIM",
+   "mpn": "TC33X-2-203E",
+   "pins": {
+    "1": "/O2/HF_PIN",
+    "2": "/O2/LINEAR_REF",
+    "3": "AGND"
+   },
+   "one_hop": {
+    "/O2/HF_PIN": [
+     "U1205.7 CORE"
+    ],
+    "/O2/LINEAR_REF": [
+     "U1205.13 CORE",
+     "R1254.1 R_LINEAR_FILTER",
+     "RB1228.2 R_LINEAR_REFERENCE_SER1"
+    ]
+   },
+   "topology": "oscillator core pin",
+   "group": "oscillator",
+   "order": 1,
+   "proposed_procedure": "Drive high pitch CV; set high-frequency tracking against a counter at the oscillator output.",
+   "sourced_target": "electrical-standard calibration.pitch_tracking_target_cents = 5 over 0..5 V at 25 C after 20 min warm-up",
+   "access_after_projection": "rear candidate 9.34 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1208",
+   "module": "O2",
+   "role": "oscillator:SCALE_TRIM",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/O2/SCALE_ADJ",
+    "2": "AGND",
+    "3": "AGND"
+   },
+   "one_hop": {
+    "/O2/SCALE_ADJ": [
+     "R1252.2 R_RS_FIXED"
+    ]
+   },
+   "topology": "rheostat to ground through a fixed resistor",
+   "group": "oscillator",
+   "order": 2,
+   "proposed_procedure": "Step pitch CV 0 V to 5 V in 1 V steps; set the octave ratio at the oscillator output.",
+   "sourced_target": "electrical-standard calibration.pitch_tracking_target_cents = 5 over 0..5 V at 25 C after 20 min warm-up",
+   "access_after_projection": "rear candidate 8.51 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1207",
+   "module": "O2",
+   "role": "oscillator:RZ_TRIM",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O2/RZ_TRIM",
+    "2": "AGND",
+    "3": "AGND"
+   },
+   "one_hop": {
+    "/O2/RZ_TRIM": [
+     "R1250.2 R_RZ_FIXED"
+    ]
+   },
+   "topology": "rheostat to ground through a fixed resistor",
+   "group": "oscillator",
+   "order": 3,
+   "proposed_procedure": "Repeat the octave steps; set the scale-pin resistance element (RZ) as the circuit designer specifies.",
+   "sourced_target": "electrical-standard calibration.pitch_tracking_target_cents = 5 over 0..5 V at 25 C after 20 min warm-up",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1206",
+   "module": "O2",
+   "role": "oscillator:BASE_TRIM",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O2/BASE_REFN5",
+    "2": "/O2/BASE_ADJ",
+    "3": "/O2/BASE_REF5"
+   },
+   "one_hop": {
+    "/O2/BASE_ADJ": [
+     "R1247.1 R_BASE_FEED"
+    ],
+    "/O2/BASE_REFN5": [
+     "RB1216.2 R_BASE_REFN5_ISO",
+     "RB1217.1 R_BASE_REFN5_FB"
+    ],
+    "/O2/BASE_REF5": [
+     "RB1214.2 R_BASE_REF5_ISO",
+     "RB1215.1 R_BASE_REF5_FB"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "oscillator",
+   "order": 4,
+   "proposed_procedure": "At 0 V pitch CV, set the base frequency at the oscillator output.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1210",
+   "module": "O2",
+   "role": "oscillator:SINE_SYMMETRY",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O2/SINE_REFN5",
+    "2": "/O2/SINE_OFFSET",
+    "3": "/O2/SINE_REF5"
+   },
+   "one_hop": {
+    "/O2/SINE_REFN5": [
+     "RB1220.2 R_SINE_REFN5_ISO",
+     "RB1221.1 R_SINE_REFN5_FB"
+    ],
+    "/O2/SINE_REF5": [
+     "RB1218.2 R_SINE_REF5_ISO",
+     "RB1219.1 R_SINE_REF5_FB"
+    ],
+    "/O2/SINE_OFFSET": [
+     "R1291.1 R_SINE_OFFSET"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "oscillator",
+   "order": 5,
+   "proposed_procedure": "At a mid frequency, null sine asymmetry at the sine output.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1211",
+   "module": "O2",
+   "role": "oscillator:SINE_LEVEL",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O2/SINE_GAIN_TRIM",
+    "2": "/O2/SINE_GAIN_SUM",
+    "3": "/O2/SINE_GAIN_SUM"
+   },
+   "one_hop": {
+    "/O2/SINE_GAIN_TRIM": [
+     "RB1201.2 R_SINE_GAIN_FIXED"
+    ],
+    "/O2/SINE_GAIN_SUM": [
+     "R1299.2 R_SINE_GAIN_IN",
+     "U1215.6 package supply"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "oscillator",
+   "order": 6,
+   "proposed_procedure": "Set the sine output peak level.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 7.81 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1309",
+   "module": "O3",
+   "role": "oscillator:HF_TRIM",
+   "mpn": "TC33X-2-203E",
+   "pins": {
+    "1": "/O3/HF_PIN",
+    "2": "/O3/LINEAR_REF",
+    "3": "AGND"
+   },
+   "one_hop": {
+    "/O3/LINEAR_REF": [
+     "U1305.13 CORE",
+     "R1354.1 R_LINEAR_FILTER",
+     "RB1328.2 R_LINEAR_REFERENCE_SER1"
+    ],
+    "/O3/HF_PIN": [
+     "U1305.7 CORE"
+    ]
+   },
+   "topology": "oscillator core pin",
+   "group": "oscillator",
+   "order": 1,
+   "proposed_procedure": "Drive high pitch CV; set high-frequency tracking against a counter at the oscillator output.",
+   "sourced_target": "electrical-standard calibration.pitch_tracking_target_cents = 5 over 0..5 V at 25 C after 20 min warm-up",
+   "access_after_projection": "rear candidate 14.15 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1308",
+   "module": "O3",
+   "role": "oscillator:SCALE_TRIM",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/O3/SCALE_ADJ",
+    "2": "AGND",
+    "3": "AGND"
+   },
+   "one_hop": {
+    "/O3/SCALE_ADJ": [
+     "R1352.2 R_RS_FIXED"
+    ]
+   },
+   "topology": "rheostat to ground through a fixed resistor",
+   "group": "oscillator",
+   "order": 2,
+   "proposed_procedure": "Step pitch CV 0 V to 5 V in 1 V steps; set the octave ratio at the oscillator output.",
+   "sourced_target": "electrical-standard calibration.pitch_tracking_target_cents = 5 over 0..5 V at 25 C after 20 min warm-up",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1307",
+   "module": "O3",
+   "role": "oscillator:RZ_TRIM",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O3/RZ_TRIM",
+    "2": "AGND",
+    "3": "AGND"
+   },
+   "one_hop": {
+    "/O3/RZ_TRIM": [
+     "R1350.2 R_RZ_FIXED"
+    ]
+   },
+   "topology": "rheostat to ground through a fixed resistor",
+   "group": "oscillator",
+   "order": 3,
+   "proposed_procedure": "Repeat the octave steps; set the scale-pin resistance element (RZ) as the circuit designer specifies.",
+   "sourced_target": "electrical-standard calibration.pitch_tracking_target_cents = 5 over 0..5 V at 25 C after 20 min warm-up",
+   "access_after_projection": "rear candidate 9.22 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1306",
+   "module": "O3",
+   "role": "oscillator:BASE_TRIM",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O3/BASE_REFN5",
+    "2": "/O3/BASE_ADJ",
+    "3": "/O3/BASE_REF5"
+   },
+   "one_hop": {
+    "/O3/BASE_REFN5": [
+     "RB1316.2 R_BASE_REFN5_ISO",
+     "RB1317.1 R_BASE_REFN5_FB"
+    ],
+    "/O3/BASE_ADJ": [
+     "R1347.1 R_BASE_FEED"
+    ],
+    "/O3/BASE_REF5": [
+     "RB1314.2 R_BASE_REF5_ISO",
+     "RB1315.1 R_BASE_REF5_FB"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "oscillator",
+   "order": 4,
+   "proposed_procedure": "At 0 V pitch CV, set the base frequency at the oscillator output.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1310",
+   "module": "O3",
+   "role": "oscillator:SINE_SYMMETRY",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O3/SINE_REFN5",
+    "2": "/O3/SINE_OFFSET",
+    "3": "/O3/SINE_REF5"
+   },
+   "one_hop": {
+    "/O3/SINE_REF5": [
+     "RB1318.2 R_SINE_REF5_ISO",
+     "RB1319.1 R_SINE_REF5_FB"
+    ],
+    "/O3/SINE_REFN5": [
+     "RB1320.2 R_SINE_REFN5_ISO",
+     "RB1321.1 R_SINE_REFN5_FB"
+    ],
+    "/O3/SINE_OFFSET": [
+     "R1391.1 R_SINE_OFFSET"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "oscillator",
+   "order": 5,
+   "proposed_procedure": "At a mid frequency, null sine asymmetry at the sine output.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1311",
+   "module": "O3",
+   "role": "oscillator:SINE_LEVEL",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O3/SINE_GAIN_TRIM",
+    "2": "/O3/SINE_GAIN_SUM",
+    "3": "/O3/SINE_GAIN_SUM"
+   },
+   "one_hop": {
+    "/O3/SINE_GAIN_SUM": [
+     "R1399.2 R_SINE_GAIN_IN",
+     "U1315.6 package supply"
+    ],
+    "/O3/SINE_GAIN_TRIM": [
+     "RB1301.2 R_SINE_GAIN_FIXED"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "oscillator",
+   "order": 6,
+   "proposed_procedure": "Set the sine output peak level.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1409",
+   "module": "O4",
+   "role": "oscillator:HF_TRIM",
+   "mpn": "TC33X-2-203E",
+   "pins": {
+    "1": "/O4/HF_PIN",
+    "2": "/O4/LINEAR_REF",
+    "3": "AGND"
+   },
+   "one_hop": {
+    "/O4/LINEAR_REF": [
+     "U1405.13 CORE",
+     "R1454.1 R_LINEAR_FILTER",
+     "RB1428.2 R_LINEAR_REFERENCE_SER1"
+    ],
+    "/O4/HF_PIN": [
+     "U1405.7 CORE"
+    ]
+   },
+   "topology": "oscillator core pin",
+   "group": "oscillator",
+   "order": 1,
+   "proposed_procedure": "Drive high pitch CV; set high-frequency tracking against a counter at the oscillator output.",
+   "sourced_target": "electrical-standard calibration.pitch_tracking_target_cents = 5 over 0..5 V at 25 C after 20 min warm-up",
+   "access_after_projection": "rear candidate 26.25 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1408",
+   "module": "O4",
+   "role": "oscillator:SCALE_TRIM",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/O4/SCALE_ADJ",
+    "2": "AGND",
+    "3": "AGND"
+   },
+   "one_hop": {
+    "/O4/SCALE_ADJ": [
+     "R1452.2 R_RS_FIXED"
+    ]
+   },
+   "topology": "rheostat to ground through a fixed resistor",
+   "group": "oscillator",
+   "order": 2,
+   "proposed_procedure": "Step pitch CV 0 V to 5 V in 1 V steps; set the octave ratio at the oscillator output.",
+   "sourced_target": "electrical-standard calibration.pitch_tracking_target_cents = 5 over 0..5 V at 25 C after 20 min warm-up",
+   "access_after_projection": "rear candidate 29.36 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1407",
+   "module": "O4",
+   "role": "oscillator:RZ_TRIM",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O4/RZ_TRIM",
+    "2": "AGND",
+    "3": "AGND"
+   },
+   "one_hop": {
+    "/O4/RZ_TRIM": [
+     "R1450.2 R_RZ_FIXED"
+    ]
+   },
+   "topology": "rheostat to ground through a fixed resistor",
+   "group": "oscillator",
+   "order": 3,
+   "proposed_procedure": "Repeat the octave steps; set the scale-pin resistance element (RZ) as the circuit designer specifies.",
+   "sourced_target": "electrical-standard calibration.pitch_tracking_target_cents = 5 over 0..5 V at 25 C after 20 min warm-up",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1406",
+   "module": "O4",
+   "role": "oscillator:BASE_TRIM",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O4/BASE_REFN5",
+    "2": "/O4/BASE_ADJ",
+    "3": "/O4/BASE_REF5"
+   },
+   "one_hop": {
+    "/O4/BASE_REFN5": [
+     "RB1416.2 R_BASE_REFN5_ISO",
+     "RB1417.1 R_BASE_REFN5_FB"
+    ],
+    "/O4/BASE_ADJ": [
+     "R1447.1 R_BASE_FEED"
+    ],
+    "/O4/BASE_REF5": [
+     "RB1414.2 R_BASE_REF5_ISO",
+     "RB1415.1 R_BASE_REF5_FB"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "oscillator",
+   "order": 4,
+   "proposed_procedure": "At 0 V pitch CV, set the base frequency at the oscillator output.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 6.02 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1410",
+   "module": "O4",
+   "role": "oscillator:SINE_SYMMETRY",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O4/SINE_REFN5",
+    "2": "/O4/SINE_OFFSET",
+    "3": "/O4/SINE_REF5"
+   },
+   "one_hop": {
+    "/O4/SINE_REFN5": [
+     "RB1420.2 R_SINE_REFN5_ISO",
+     "RB1421.1 R_SINE_REFN5_FB"
+    ],
+    "/O4/SINE_REF5": [
+     "RB1418.2 R_SINE_REF5_ISO",
+     "RB1419.1 R_SINE_REF5_FB"
+    ],
+    "/O4/SINE_OFFSET": [
+     "R1491.1 R_SINE_OFFSET"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "oscillator",
+   "order": 5,
+   "proposed_procedure": "At a mid frequency, null sine asymmetry at the sine output.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1411",
+   "module": "O4",
+   "role": "oscillator:SINE_LEVEL",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O4/SINE_GAIN_TRIM",
+    "2": "/O4/SINE_GAIN_SUM",
+    "3": "/O4/SINE_GAIN_SUM"
+   },
+   "one_hop": {
+    "/O4/SINE_GAIN_TRIM": [
+     "RB1401.2 R_SINE_GAIN_FIXED"
+    ],
+    "/O4/SINE_GAIN_SUM": [
+     "R1499.2 R_SINE_GAIN_IN",
+     "U1415.6 package supply"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "oscillator",
+   "order": 6,
+   "proposed_procedure": "Set the sine output peak level.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1509",
+   "module": "O5",
+   "role": "oscillator:HF_TRIM",
+   "mpn": "TC33X-2-203E",
+   "pins": {
+    "1": "/O5/HF_PIN",
+    "2": "/O5/LINEAR_REF",
+    "3": "AGND"
+   },
+   "one_hop": {
+    "/O5/LINEAR_REF": [
+     "U1505.13 CORE",
+     "R1554.1 R_LINEAR_FILTER",
+     "RB1528.2 R_LINEAR_REFERENCE_SER1"
+    ],
+    "/O5/HF_PIN": [
+     "U1505.7 CORE"
+    ]
+   },
+   "topology": "oscillator core pin",
+   "group": "oscillator",
+   "order": 1,
+   "proposed_procedure": "Drive high pitch CV; set high-frequency tracking against a counter at the oscillator output.",
+   "sourced_target": "electrical-standard calibration.pitch_tracking_target_cents = 5 over 0..5 V at 25 C after 20 min warm-up",
+   "access_after_projection": "rear candidate 10.79 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1508",
+   "module": "O5",
+   "role": "oscillator:SCALE_TRIM",
+   "mpn": "TC33X-2-102E",
+   "pins": {
+    "1": "/O5/SCALE_ADJ",
+    "2": "AGND",
+    "3": "AGND"
+   },
+   "one_hop": {
+    "/O5/SCALE_ADJ": [
+     "R1552.2 R_RS_FIXED"
+    ]
+   },
+   "topology": "rheostat to ground through a fixed resistor",
+   "group": "oscillator",
+   "order": 2,
+   "proposed_procedure": "Step pitch CV 0 V to 5 V in 1 V steps; set the octave ratio at the oscillator output.",
+   "sourced_target": "electrical-standard calibration.pitch_tracking_target_cents = 5 over 0..5 V at 25 C after 20 min warm-up",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1507",
+   "module": "O5",
+   "role": "oscillator:RZ_TRIM",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O5/RZ_TRIM",
+    "2": "AGND",
+    "3": "AGND"
+   },
+   "one_hop": {
+    "/O5/RZ_TRIM": [
+     "R1550.2 R_RZ_FIXED"
+    ]
+   },
+   "topology": "rheostat to ground through a fixed resistor",
+   "group": "oscillator",
+   "order": 3,
+   "proposed_procedure": "Repeat the octave steps; set the scale-pin resistance element (RZ) as the circuit designer specifies.",
+   "sourced_target": "electrical-standard calibration.pitch_tracking_target_cents = 5 over 0..5 V at 25 C after 20 min warm-up",
+   "access_after_projection": "rear candidate 20.80 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1506",
+   "module": "O5",
+   "role": "oscillator:BASE_TRIM",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O5/BASE_REFN5",
+    "2": "/O5/BASE_ADJ",
+    "3": "/O5/BASE_REF5"
+   },
+   "one_hop": {
+    "/O5/BASE_ADJ": [
+     "R1547.1 R_BASE_FEED"
+    ],
+    "/O5/BASE_REFN5": [
+     "RB1516.2 R_BASE_REFN5_ISO",
+     "RB1517.1 R_BASE_REFN5_FB"
+    ],
+    "/O5/BASE_REF5": [
+     "RB1514.2 R_BASE_REF5_ISO",
+     "RB1515.1 R_BASE_REF5_FB"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "oscillator",
+   "order": 4,
+   "proposed_procedure": "At 0 V pitch CV, set the base frequency at the oscillator output.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 6.96 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1510",
+   "module": "O5",
+   "role": "oscillator:SINE_SYMMETRY",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O5/SINE_REFN5",
+    "2": "/O5/SINE_OFFSET",
+    "3": "/O5/SINE_REF5"
+   },
+   "one_hop": {
+    "/O5/SINE_OFFSET": [
+     "R1591.1 R_SINE_OFFSET"
+    ],
+    "/O5/SINE_REFN5": [
+     "RB1520.2 R_SINE_REFN5_ISO",
+     "RB1521.1 R_SINE_REFN5_FB"
+    ],
+    "/O5/SINE_REF5": [
+     "RB1518.2 R_SINE_REF5_ISO",
+     "RB1519.1 R_SINE_REF5_FB"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "oscillator",
+   "order": 5,
+   "proposed_procedure": "At a mid frequency, null sine asymmetry at the sine output.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RVO1511",
+   "module": "O5",
+   "role": "oscillator:SINE_LEVEL",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/O5/SINE_GAIN_TRIM",
+    "2": "/O5/SINE_GAIN_SUM",
+    "3": "/O5/SINE_GAIN_SUM"
+   },
+   "one_hop": {
+    "/O5/SINE_GAIN_SUM": [
+     "R1599.2 R_SINE_GAIN_IN",
+     "U1515.6 package supply"
+    ],
+    "/O5/SINE_GAIN_TRIM": [
+     "RB1501.2 R_SINE_GAIN_FIXED"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "oscillator",
+   "order": 6,
+   "proposed_procedure": "Set the sine output peak level.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "TP301",
+   "module": "POWER",
+   "role": "power:Bare copper rail probe pad",
+   "mpn": "TEST_PAD_D1.5MM",
+   "pins": {
+    "1": "+12V"
+   },
+   "one_hop": {},
+   "topology": "rail probe",
+   "group": "power",
+   "order": 0,
+   "proposed_procedure": "Probe the rail with the instrument powered, before any trim.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 8.94 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "TP302",
+   "module": "POWER",
+   "role": "power:Bare copper rail probe pad",
+   "mpn": "TEST_PAD_D1.5MM",
+   "pins": {
+    "1": "-12V"
+   },
+   "one_hop": {},
+   "topology": "rail probe",
+   "group": "power",
+   "order": 0,
+   "proposed_procedure": "Probe the rail with the instrument powered, before any trim.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 6.95 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "TP303",
+   "module": "POWER",
+   "role": "power:Bare copper rail probe pad",
+   "mpn": "TEST_PAD_D1.5MM",
+   "pins": {
+    "1": "+5V"
+   },
+   "one_hop": {},
+   "topology": "rail probe",
+   "group": "power",
+   "order": 0,
+   "proposed_procedure": "Probe the rail with the instrument powered, before any trim.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "TP304",
+   "module": "POWER",
+   "role": "power:Bare copper rail probe pad",
+   "mpn": "TEST_PAD_D1.5MM",
+   "pins": {
+    "1": "AGND"
+   },
+   "one_hop": {},
+   "topology": "rail probe",
+   "group": "power",
+   "order": 0,
+   "proposed_procedure": "Probe the rail with the instrument powered, before any trim.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV5204",
+   "module": "W1",
+   "role": "wavefolder:OTA_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/W1/REFN5",
+    "2": "/W1/OFFSET_TRIM",
+    "3": "/W1/REF5"
+   },
+   "one_hop": {
+    "/W1/REFN5": [
+     "R5202.1 R_FB",
+     "RV1108.1 RV",
+     "U5206.7 package supply"
+    ],
+    "/W1/REF5": [
+     "R5201.1 R_INV",
+     "R5203.1 R_GTOP",
+     "RV1107.3 RV",
+     "RV1108.3 RV",
+     "D5204.2 CONTROL_CLAMP",
+     "R5233.1 R_REF25_TOP",
+     "R5237.1 R_BIAS_SENSE",
+     "U5206.1 package supply",
+     "U5206.2 package supply"
+    ],
+    "/W1/OFFSET_TRIM": [
+     "R5242.1 R_OFFSET_FEED"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "wavefolder",
+   "order": 1,
+   "proposed_procedure": "No input; null OTA control feedthrough at the output.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 16.98 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV5205",
+   "module": "W1",
+   "role": "wavefolder:PRE_GAIN_MAX",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/W1/PRE_GAIN_TRIM",
+    "2": "/W1/PRE_GAIN_SUM",
+    "3": "/W1/PRE_GAIN_SUM"
+   },
+   "one_hop": {
+    "/W1/PRE_GAIN_TRIM": [
+     "R5245.2 R_PRE_GAIN_FIXED"
+    ],
+    "/W1/PRE_GAIN_SUM": [
+     "U5205.5 OTA",
+     "U5209.6 package supply"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "wavefolder",
+   "order": 2,
+   "proposed_procedure": "At full drive, set the maximum pre-gain.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV5104",
+   "module": "W2",
+   "role": "wavefolder:OTA_OFFSET",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/W2/REFN5",
+    "2": "/W2/OFFSET_TRIM",
+    "3": "/W2/REF5"
+   },
+   "one_hop": {
+    "/W2/REF5": [
+     "R5101.1 R_INV",
+     "R5103.1 R_GTOP",
+     "RV907.3 RV",
+     "RV908.3 RV",
+     "D5104.2 CONTROL_CLAMP",
+     "R5133.1 R_REF25_TOP",
+     "R5137.1 R_BIAS_SENSE",
+     "U5106.1 package supply",
+     "U5106.2 package supply"
+    ],
+    "/W2/REFN5": [
+     "R5102.1 R_FB",
+     "RV908.1 RV",
+     "U5106.7 package supply"
+    ],
+    "/W2/OFFSET_TRIM": [
+     "R5142.1 R_OFFSET_FEED"
+    ]
+   },
+   "topology": "reference divider; wiper isolated by a feed resistor",
+   "group": "wavefolder",
+   "order": 1,
+   "proposed_procedure": "No input; null OTA control feedthrough at the output.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear, kept (tool access unmeasured)",
+   "plan_verdict": "KEEP_REAR_NEEDS_SERVICE_REVIEW"
+  },
+  {
+   "ref": "RV5105",
+   "module": "W2",
+   "role": "wavefolder:PRE_GAIN_MAX",
+   "mpn": "TC33X-2-103E",
+   "pins": {
+    "1": "/W2/PRE_GAIN_TRIM",
+    "2": "/W2/PRE_GAIN_SUM",
+    "3": "/W2/PRE_GAIN_SUM"
+   },
+   "one_hop": {
+    "/W2/PRE_GAIN_SUM": [
+     "U5105.5 OTA",
+     "U5109.6 package supply"
+    ],
+    "/W2/PRE_GAIN_TRIM": [
+     "R5145.2 R_PRE_GAIN_FIXED"
+    ]
+   },
+   "topology": "rheostat at an amplifier input or feedback node",
+   "group": "wavefolder",
+   "order": 2,
+   "proposed_procedure": "At full drive, set the maximum pre-gain.",
+   "sourced_target": "UNRESOLVED",
+   "access_after_projection": "rear candidate 7.83 mm from projected position (unreviewed)",
+   "plan_verdict": "GEOMETRY_CANDIDATE_NEEDS_CIRCUIT_AND_SERVICE_REVIEW"
+  }
+ ],
+ "count": 104,
+ "by_topology": {
+  "reference divider; wiper isolated by a feed resistor": 38,
+  "exponential-pair reference node": 15,
+  "rheostat at an amplifier input or feedback node": 32,
+  "oscillator core pin": 5,
+  "rheostat to ground through a fixed resistor": 10,
+  "rail probe": 4
+ },
+ "by_access": {
+  "rear candidate": 44,
+  "rear, kept": 57,
+  "front, blocked in the closed stack, no candidate": 3
+ },
+ "with_sourced_target": 16,
+ "scope": "Source connectivity and the electrical standard only. Procedure text and order are proposals for the design reviewer; access is the unreviewed ST-07 courtyard screen; no tool access, loop, guard, measurement or acceptance claim."
+}
