@@ -144,3 +144,32 @@ Then continue with Part A steps 3–6 for this block set and stop at the Part A 
 - JR: U4347 (keep-front), U4348 and U8318 (indicators);
 - K: its 14 ICs;
 - local: U1318, U8314 and D2243, plus U114/U115 with their decouplers.
+
+## Revision 3: manager ruling on the indicator crossings (2026-11-21)
+
+The stop at step 3 is accepted (`f466a885`, `93197a3e`, report `mc04-s7-r2-report-20261122.md`). Ruling: option
+(i), but narrow, and every piece of it reviewed before any board is touched.
+
+1. **New crossing kind `indicator_led_bridge_one_span`** in `scripts/checks/io_partition60.crossing_kind`. A net
+   qualifies only if every one of these holds, and each is checked from the partition, not from the net's name:
+   - it is the `LED_A` or `LED_K` node of a `magnitude_indicator` unit;
+   - the unit's op-amp, all four bridge diodes and its R_SENSE are in the same region, and only the panel LED is in
+     the other region;
+   - the op-amp is OPA4196IDR, the part MC04-S4 case 5 simulated at 7.2 pF (53.8°; 48.1° at 15 pF). An
+     OPA4197 indicator does not qualify: the per-MPN paper screen now fails U8417's OPA4197 units at 30.9°, which
+     needs its own simulation first;
+   - the net crosses exactly one board boundary.
+
+   Cite the evidence in a code comment: S4 report sha256 and case, the stage 1b result, and this ruling. Add tests
+   for each failing condition (wrong MPN, a diode left on the other board, a second span, a non-indicator net).
+2. **FILTER_LEDS island.** The panel LEDs D601–D604 keep `F1/FILTER_LEDS`. The moved indicator parts (U2119, its
+   bridge diodes and RB2114–RB2117) take a new K-side island. Do this instance-scoped, through the same
+   per-instance clone mechanism as the TSSOP retention, so F2 and F3 are unchanged. Update `test_filter.py` so it
+   asserts the F1 split and the unchanged F2/F3.
+3. **Instance-scoped relocation** for every moved block, as the report recommends.
+4. **Recorded, no action:** U8417 units 3/4 screen at 30.9° only in the hypothetical cable case. U8417 stays on JR,
+   where MC04-S5 simulated 61.2° at 0 pF.
+
+Then finish Part A steps 3–6 and stop at the Part A checkpoint. The checkpoint report must show the io-partition
+checker output, listing every allowed crossing by kind (the new kind's 22 nets by name) and zero forbidden
+crossings.
