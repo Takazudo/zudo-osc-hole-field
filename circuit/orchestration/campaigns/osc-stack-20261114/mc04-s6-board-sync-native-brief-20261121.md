@@ -143,3 +143,24 @@ are open:
 3. **The JL/JR re-route stays OPEN**, deferred to the routing pass after stage 7, as already ruled.
 
 Report in the same format as before, with DRC counts by type before S6, after rev 1 and after rev 2.
+
+## Revision 3: ruling after the stopped revision 2 (2026-11-21)
+
+Finding accepted: the source already matches the floorplan. The routed JL/JR drafts had drifted from it before S6
+(37 JL and 12 JR parts off-floorplan by up to 50.9 mm), and their copper was routed around the stale poses. That
+copper has no validated status, and stage 7 re-routes these boards. Placement correctness comes first:
+
+1. Move every off-floorplan part on JL and JR to its full floorplan pose (position, side and angle), as in the trial.
+2. Then remove only the copper that DRC reports in a short, clearance, hole-clearance or mask conflict with a moved
+   part. Follow each conflicting track segment to the nearest via, pad or T-junction, as the stub tool does, and do
+   not remove zones, unowned items or any copper that is not in conflict. Re-run DRC and repeat until no new
+   short, clearance, hole, courtyard or mask error remains relative to the pre-S6 boards.
+3. Record every removed item in `mc04-s6-stripped-conflicts-20261122.json` (board, UUID, net, layer, endpoints,
+   width, the DRC item it cleared). Report the removed track length as a share of each board's routed track length.
+   **Stop and report before saving if either board would lose more than 25 % of its routed track length.** At that
+   scale a fresh route is the better path, and the choice goes back to the manager.
+4. Pass condition as in revision 2: no new non-unconnected DRC errors against pre-S6, parity clean, readiness 0
+   mismatches. List the new unconnected items by net.
+5. Then do revision 2 item 2 (the c6 rebind, identical output only) and push.
+
+The re-route stays OPEN and moves to the routing pass after stage 7.
