@@ -5,6 +5,24 @@
   "gbw_Hz": 2500000.0,
   "capacitive_load_guidance": "Directly drives up to 1 nF of pure capacitive load in unity gain; some ringing can occur even with capacitive loads below 100 pF in unity-gain configurations with no or very light dc loads, where an RC snubber (619 ohm, 320 pF shown) or a 10-20 ohm series RISO is recommended; overshoot versus capacitive load is given only as typical curves (Figures 20 and 21)."
  },
+ "facts_by_mpn": {
+  "OPA4196IDR": {
+   "input_cm_pF": 6.4,
+   "gbw_Hz": 2500000.0,
+   "fact_ids": [
+    "component-ti-opa4196idr: fact-op-audio-gbw",
+    "component-ti-opa4196idr: fact-op-audio-input-impedance"
+   ]
+  },
+  "OPA4197IPWR": {
+   "input_cm_pF": 6.4,
+   "gbw_Hz": 10000000.0,
+   "fact_ids": [
+    "component-ti-opa4197ipwr: fact-op-precision-gbw",
+    "component-ti-opa4197ipwr: fact-op-precision-input-impedance"
+   ]
+  }
+ },
  "fact_ids": [
   "fact-op-audio-gbw",
   "fact-op-audio-input-impedance",
@@ -2914,17 +2932,14 @@
       "R1504": 10000.0
      },
      "added_C_pF": 7.22,
-     "node_own_input_C_pF": 0.0,
-     "input_C_not_retained_for": [
-      "U1518.3"
-     ],
+     "node_own_input_C_pF": 6.4,
      "node": "non-inverting input",
      "victim_class": "PRECISION",
      "limit_mV": 1.0,
      "cases": {
       "series-resistor lower bound": {
        "source_R_ohm": 10000.0,
-       "corner_Hz": 2204965,
+       "corner_Hz": 1168708,
        "crosstalk_side_by_side_mV": 535.93,
        "crosstalk_20kHz_mV": 33.669,
        "crosstalk_shielded_mV": {

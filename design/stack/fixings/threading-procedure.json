@@ -319,68 +319,68 @@
    "front_board": "JL",
    "size": "FH12-N40",
    "front_connector": {
-    "name": "the GAIN CV jack of F2",
+    "name": "the LP jack of F2",
     "control_xy": [
      116.5,
-     71.0
+     85.0
     ],
-    "distance_mm": 7.616,
+    "distance_mm": 9.818,
     "xy": [
-     124.05,
-     70.0
+     108.05,
+     80.0
     ]
    },
    "slot": {
-    "name": "the GAIN CV jack of F3",
+    "name": "the LP jack of F2",
     "control_xy": [
-     133.5,
-     71.0
+     116.5,
+     85.0
     ],
-    "distance_mm": 1.0,
+    "distance_mm": 7.071,
     "xy": [
-     133.5,
-     70.0
+     121.5,
+     80.0
     ]
    },
    "K_connector": {
-    "name": "the 4 jack of M5A",
+    "name": "the LP jack of F3",
     "control_xy": [
-     150.5,
-     71.0
+     133.5,
+     85.0
     ],
-    "distance_mm": 7.616,
+    "distance_mm": 5.613,
     "xy": [
-     142.95,
-     70.0
+     130.95,
+     80.0
     ]
    },
    "direction": "+x",
    "cable": "C26618",
    "cable_length_mm": 50.0,
-   "on_front_board_mm": 6.4,
+   "on_front_board_mm": 10.4,
    "on_K_rear_mm": 6.4,
-   "front_extension_mm": 0.0,
-   "lengthened_tail": false,
-   "cable_needed_mm": 39.3398,
-   "slack_mm": 10.6602,
+   "front_extension_mm": 4.0,
+   "lengthened_tail": true,
+   "cable_needed_mm": 43.3398,
+   "slack_mm": 6.6602,
    "leads_to_cut": [
-    "J803",
-    "J804",
-    "J805"
+    "J704",
+    "J705"
    ],
-   "compliance_mm_per_N": 0.1361,
+   "compliance_mm_per_N": 0.1087,
    "holding_hand": false,
    "latch": "NOT SHOWN",
    "latch_detail": "NOT SHOWN (exempt packages C0603, R0603, ASSUMED lower than the 2.0 mm connector body; no height retained)",
    "latch_neighbours_remaining": [
-    "C140",
-    "R111",
-    "R112"
+    "C135",
+    "C142",
+    "C143",
+    "R109"
    ],
    "gap_mm": 19.0,
-   "stand_height_mm": 40.63,
-   "meets_K_at_mm": 21.63,
-   "through_K_when_seated_mm": 20.03,
+   "stand_height_mm": 36.63,
+   "meets_K_at_mm": 17.63,
+   "through_K_when_seated_mm": 16.03,
    "slot_clearance": {
     "slot_across_mm": 21.5,
     "slot_along_mm": 1.5,
@@ -4505,10 +4505,9 @@
    },
    {
     "meets_K_at_mm": 21.63,
-    "ends": 13,
+    "ends": 12,
     "links": [
      "JL-K-JL-L01",
-     "JL-K-JL-L02",
      "JL-K-JL-L03",
      "JL-K-JL-L05",
      "JL-K-JL-L06",
@@ -4522,7 +4521,7 @@
      "P-K-P-L14.02.01.02"
     ],
     "per_board": {
-     "JL": 7,
+     "JL": 6,
      "JR": 4,
      "P": 2
     },
@@ -4550,8 +4549,9 @@
    },
    {
     "meets_K_at_mm": 17.63,
-    "ends": 7,
+    "ends": 8,
     "links": [
+     "JL-K-JL-L02",
      "JL-P-K-P-L01.01.01.02",
      "O-K-O1",
      "O-K-O3",
@@ -4561,6 +4561,7 @@
      "P-K-P-L13.01.01.02"
     ],
     "per_board": {
+     "JL": 1,
      "P": 4,
      "O1": 1,
      "O3": 1,
@@ -4674,11 +4675,12 @@
    },
    {
     "link": "JL-K-JL-L02",
-    "K_connector": "the 4 jack of M5A",
+    "K_connector": "the LP jack of F3",
     "neighbours": [
-     "C140",
-     "R111",
-     "R112"
+     "C135",
+     "C142",
+     "C143",
+     "R109"
     ]
    },
    {
@@ -5287,8 +5289,8 @@
    "P": 49,
    "O3": 1
   },
-  "lead_entries_per_link": 90,
-  "lengthened_tails": 29,
+  "lead_entries_per_link": 89,
+  "lengthened_tails": 30,
   "holding_hand": 12,
   "latch": {
    "NOT SHOWN": 32,
@@ -5302,7 +5304,7 @@
   "pins": {
    "gate_record_projection": {
     "file": "design/stack/geometry/links/link-gate.json",
-    "digest": "ada78d5fa02ff522f4d6aa08cb936fd69550a9cacab8366eb99ba63cf1eb71c4",
+    "digest": "8816d75564d03c097379bbad3ff5d5d63adf68f0e0a84228a47a297e9387c2ba",
     "fields": {
      "links (without gone)": [
       "id",

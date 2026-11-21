@@ -1,0 +1,568 @@
+{
+ "status": "STAGE_1A_DRAFT_LIMITS",
+ "facts": {
+  "input_cm_F": 6.4e-12,
+  "gbw_Hz": 2500000.0,
+  "capacitive_load_guidance": "Directly drives up to 1 nF of pure capacitive load in unity gain; some ringing can occur even with capacitive loads below 100 pF in unity-gain configurations with no or very light dc loads, where an RC snubber (619 ohm, 320 pF shown) or a 10-20 ohm series RISO is recommended; overshoot versus capacitive load is given only as typical curves (Figures 20 and 21)."
+ },
+ "facts_by_mpn": {
+  "OPA4196IDR": {
+   "input_cm_pF": 6.4,
+   "gbw_Hz": 2500000.0,
+   "fact_ids": [
+    "component-ti-opa4196idr: fact-op-audio-gbw",
+    "component-ti-opa4196idr: fact-op-audio-input-impedance"
+   ]
+  },
+  "OPA4197IPWR": {
+   "input_cm_pF": 6.4,
+   "gbw_Hz": 10000000.0,
+   "fact_ids": [
+    "component-ti-opa4197ipwr: fact-op-precision-gbw",
+    "component-ti-opa4197ipwr: fact-op-precision-input-impedance"
+   ]
+  }
+ },
+ "fact_ids": [
+  "fact-op-audio-gbw",
+  "fact-op-audio-input-impedance",
+  "fact-op-audio-capacitive-load-guidance",
+  "component-ti-tmux7412frrpr: fact-fault-switch-t-ron-12v-single"
+ ],
+ "assumed": {
+  "jack_source_ohm": 1000.0,
+  "r_on_ohm": 15.0,
+  "output_total_C_F": 1e-10,
+  "input_corner_Hz": 200000.0,
+  "aggressor": "retained ANALOGUE aggressor, 20 V at 20 V/us (OPA4196 slews 7.5/5.5 V/us typ)"
+ },
+ "cable_case": {
+  "pitch": "pitch_0_5",
+  "length_mm": 80,
+  "eps_eff": 3.2,
+  "ground_rule": "A",
+  "victim_C_total_pF": 7.22
+ },
+ "sources": {
+  "revision_2": {
+   "path": "scripts/stack/studies/mc04_s7_r2/nets.json",
+   "sha256": "ef046859d091c2650f4dbcafd15f5d60e88483f1b5f1cae2f2c37f7f8db32999"
+  }
+ },
+ "cases": {
+  "revision_2": {
+   "per_ic": {
+    "U1417": {
+     "pass": 3
+    },
+    "U2119": {
+     "undetermined": 8
+    },
+    "U2218": {
+     "pass": 4
+    },
+    "U4347": {
+     "pass": 3,
+     "undetermined": 2
+    },
+    "U4348": {
+     "undetermined": 4
+    },
+    "U8318": {
+     "undetermined": 8
+    }
+   },
+   "block_verdict": {
+    "U1417": "can move",
+    "U2119": "conditional: undetermined nets",
+    "U2218": "can move",
+    "U4347": "conditional: undetermined nets",
+    "U4348": "conditional: undetermined nets",
+    "U8318": "conditional: undetermined nets"
+   },
+   "tally": {
+    "indicator LED bridge net inside an op-amp feedback loop undetermined": 22,
+    "op-amp output (unity-gain follower) pass": 10
+   },
+   "nets": [
+    {
+     "net": "/F2/C29cc99_DRIVE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U2218.7",
+      "U2218.6"
+     ],
+     "switch_pins": [],
+     "resistors_ohm": {
+      "RB2208": 499.0
+     },
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 6.4,
+     "node": "op-amp output (unity-gain follower)",
+     "node_total_C_pF": 13.62,
+     "criterion": "node total C <= 100 pF (ASSUMED)",
+     "pass": true
+    },
+    {
+     "net": "/F2/C2b02f4_DRIVE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U2218.8",
+      "U2218.9"
+     ],
+     "switch_pins": [],
+     "resistors_ohm": {
+      "RB2210": 499.0
+     },
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 6.4,
+     "node": "op-amp output (unity-gain follower)",
+     "node_total_C_pF": 13.62,
+     "criterion": "node total C <= 100 pF (ASSUMED)",
+     "pass": true
+    },
+    {
+     "net": "/F2/C56c9d6_DRIVE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U2218.14",
+      "U2218.13"
+     ],
+     "switch_pins": [],
+     "resistors_ohm": {
+      "RB2212": 499.0
+     },
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 6.4,
+     "node": "op-amp output (unity-gain follower)",
+     "node_total_C_pF": 13.62,
+     "criterion": "node total C <= 100 pF (ASSUMED)",
+     "pass": true
+    },
+    {
+     "net": "/F2/C5d31c8_DRIVE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U2218.1",
+      "U2218.2"
+     ],
+     "switch_pins": [],
+     "resistors_ohm": {
+      "RB2206": 499.0
+     },
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 6.4,
+     "node": "op-amp output (unity-gain follower)",
+     "node_total_C_pF": 13.62,
+     "criterion": "node total C <= 100 pF (ASSUMED)",
+     "pass": true
+    },
+    {
+     "net": "/O4/C7b4ed2_DRIVE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U1417.7",
+      "U1417.6"
+     ],
+     "switch_pins": [],
+     "resistors_ohm": {
+      "RB1406": 499.0
+     },
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 6.4,
+     "node": "op-amp output (unity-gain follower)",
+     "node_total_C_pF": 13.62,
+     "criterion": "node total C <= 100 pF (ASSUMED)",
+     "pass": true
+    },
+    {
+     "net": "/O4/Cc66d82_DRIVE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U1417.1",
+      "U1417.2"
+     ],
+     "switch_pins": [],
+     "resistors_ohm": {
+      "RB1404": 499.0
+     },
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 6.4,
+     "node": "op-amp output (unity-gain follower)",
+     "node_total_C_pF": 13.62,
+     "criterion": "node total C <= 100 pF (ASSUMED)",
+     "pass": true
+    },
+    {
+     "net": "/O4/Cec1eaa_DRIVE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U1417.8",
+      "U1417.9"
+     ],
+     "switch_pins": [],
+     "resistors_ohm": {
+      "RB1408": 499.0
+     },
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 6.4,
+     "node": "op-amp output (unity-gain follower)",
+     "node_total_C_pF": 13.62,
+     "criterion": "node total C <= 100 pF (ASSUMED)",
+     "pass": true
+    },
+    {
+     "net": "/F1/C9fcdd2_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/F1/C9fcdd2_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cb3d4a2_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cb3d4a2_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cb6d8fd_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cb6d8fd_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cfc4b03_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cfc4b03_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/E3/C5dbedd_DRIVE",
+     "kind": "other",
+     "from": "JR",
+     "opa_pins": [
+      "U4347.1",
+      "U4347.2"
+     ],
+     "switch_pins": [],
+     "resistors_ohm": {
+      "RB4307": 499.0
+     },
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 6.4,
+     "node": "op-amp output (unity-gain follower)",
+     "node_total_C_pF": 13.62,
+     "criterion": "node total C <= 100 pF (ASSUMED)",
+     "pass": true
+    },
+    {
+     "net": "/E3/Cae74f8_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/E3/Cae74f8_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/E3/Caf802b_DRIVE",
+     "kind": "other",
+     "from": "JR",
+     "opa_pins": [
+      "U4347.7",
+      "U4347.6"
+     ],
+     "switch_pins": [],
+     "resistors_ohm": {
+      "RB4309": 499.0
+     },
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 6.4,
+     "node": "op-amp output (unity-gain follower)",
+     "node_total_C_pF": 13.62,
+     "criterion": "node total C <= 100 pF (ASSUMED)",
+     "pass": true
+    },
+    {
+     "net": "/E3/Ce82060_DRIVE",
+     "kind": "other",
+     "from": "JR",
+     "opa_pins": [
+      "U4347.8",
+      "U4347.9"
+     ],
+     "switch_pins": [],
+     "resistors_ohm": {
+      "RB4311": 499.0
+     },
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 6.4,
+     "node": "op-amp output (unity-gain follower)",
+     "node_total_C_pF": 13.62,
+     "criterion": "node total C <= 100 pF (ASSUMED)",
+     "pass": true
+    },
+    {
+     "net": "/E3/C8c002f_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/E3/C8c002f_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/E3/C9f1934_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/E3/C9f1934_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/M4A/C2169e5_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/M4A/C2169e5_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/M4A/C320656_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/M4A/C320656_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/M4A/Cd59875_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/M4A/Cd59875_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/M4A/Cf876de_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    },
+    {
+     "net": "/M4A/Cf876de_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "switch_pins": [],
+     "resistors_ohm": {},
+     "added_C_pF": 7.22,
+     "node_own_input_C_pF": 0.0,
+     "node": "indicator LED bridge net inside an op-amp feedback loop",
+     "criterion": "loop-stability criterion and aggressor class: not drafted",
+     "pass": null
+    }
+   ]
+  }
+ },
+ "scope": "DRAFT criteria for independent review; first-order RC and the retained quasi-static cable model; no inverting (feedback) node is among the crossings; no loop-gain simulation, no measured cable data; not an acceptance."
+}

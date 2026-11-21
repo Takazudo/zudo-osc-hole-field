@@ -914,13 +914,13 @@
     {
      "ic": "U8417",
      "unit": 3,
-     "mpn": "OPA4196IDR",
+     "mpn": "OPA4197IPWR",
      "crossing": [
       "LED_A",
       "LED_K"
      ],
      "r_sense_ohm": 5600.0,
-     "gbw_Hz": 2500000.0,
+     "gbw_Hz": 10000000.0,
      "levels": [
       {
        "bridge_current_A": 1e-06,
@@ -928,12 +928,12 @@
        "diode_r_ohm": 51700.0,
        "led_r_ohm": 51700.0,
        "baseline": {
-        "crossover_Hz": 87103,
-        "phase_margin_deg": 88.9
+        "crossover_Hz": 347486,
+        "phase_margin_deg": 85.7
        },
        "moved": {
-        "crossover_Hz": 85035,
-        "phase_margin_deg": 73.2
+        "crossover_Hz": 279190,
+        "phase_margin_deg": 39.5
        }
       },
       {
@@ -942,12 +942,12 @@
        "diode_r_ohm": 5170.0,
        "led_r_ohm": 5170.0,
        "baseline": {
-        "crossover_Hz": 659282,
-        "phase_margin_deg": 83.8
+        "crossover_Hz": 2457417,
+        "phase_margin_deg": 67.9
        },
        "moved": {
-        "crossover_Hz": 640012,
-        "phase_margin_deg": 69.0
+        "crossover_Hz": 1999145,
+        "phase_margin_deg": 30.9
        }
       },
       {
@@ -956,12 +956,12 @@
        "diode_r_ohm": 517.0,
        "led_r_ohm": 517.0,
        "baseline": {
-        "crossover_Hz": 1948958,
-        "phase_margin_deg": 84.6
+        "crossover_Hz": 7368421,
+        "phase_margin_deg": 70.2
        },
        "moved": {
-        "crossover_Hz": 1928345,
-        "phase_margin_deg": 77.9
+        "crossover_Hz": 6683177,
+        "phase_margin_deg": 51.0
        }
       },
       {
@@ -970,29 +970,29 @@
        "diode_r_ohm": 51.7,
        "led_r_ohm": 51.7,
        "baseline": {
-        "crossover_Hz": 2432360,
-        "phase_margin_deg": 89.2
+        "crossover_Hz": 9713636,
+        "phase_margin_deg": 86.6
        },
        "moved": {
-        "crossover_Hz": 2431761,
-        "phase_margin_deg": 88.2
+        "crossover_Hz": 9676193,
+        "phase_margin_deg": 82.8
        }
       }
      ],
-     "worst_moved_pm_deg": 68.8,
-     "worst_baseline_pm_deg": 82.1,
-     "pass": true
+     "worst_moved_pm_deg": 30.9,
+     "worst_baseline_pm_deg": 63.4,
+     "pass": false
     },
     {
      "ic": "U8417",
      "unit": 4,
-     "mpn": "OPA4196IDR",
+     "mpn": "OPA4197IPWR",
      "crossing": [
       "LED_A",
       "LED_K"
      ],
      "r_sense_ohm": 5600.0,
-     "gbw_Hz": 2500000.0,
+     "gbw_Hz": 10000000.0,
      "levels": [
       {
        "bridge_current_A": 1e-06,
@@ -1000,12 +1000,12 @@
        "diode_r_ohm": 51700.0,
        "led_r_ohm": 51700.0,
        "baseline": {
-        "crossover_Hz": 87103,
-        "phase_margin_deg": 88.9
+        "crossover_Hz": 347486,
+        "phase_margin_deg": 85.7
        },
        "moved": {
-        "crossover_Hz": 85035,
-        "phase_margin_deg": 73.2
+        "crossover_Hz": 279190,
+        "phase_margin_deg": 39.5
        }
       },
       {
@@ -1014,12 +1014,12 @@
        "diode_r_ohm": 5170.0,
        "led_r_ohm": 5170.0,
        "baseline": {
-        "crossover_Hz": 659282,
-        "phase_margin_deg": 83.8
+        "crossover_Hz": 2457417,
+        "phase_margin_deg": 67.9
        },
        "moved": {
-        "crossover_Hz": 640012,
-        "phase_margin_deg": 69.0
+        "crossover_Hz": 1999145,
+        "phase_margin_deg": 30.9
        }
       },
       {
@@ -1028,12 +1028,12 @@
        "diode_r_ohm": 517.0,
        "led_r_ohm": 517.0,
        "baseline": {
-        "crossover_Hz": 1948958,
-        "phase_margin_deg": 84.6
+        "crossover_Hz": 7368421,
+        "phase_margin_deg": 70.2
        },
        "moved": {
-        "crossover_Hz": 1928345,
-        "phase_margin_deg": 77.9
+        "crossover_Hz": 6683177,
+        "phase_margin_deg": 51.0
        }
       },
       {
@@ -1042,18 +1042,18 @@
        "diode_r_ohm": 51.7,
        "led_r_ohm": 51.7,
        "baseline": {
-        "crossover_Hz": 2432360,
-        "phase_margin_deg": 89.2
+        "crossover_Hz": 9713636,
+        "phase_margin_deg": 86.6
        },
        "moved": {
-        "crossover_Hz": 2431761,
-        "phase_margin_deg": 88.2
+        "crossover_Hz": 9676193,
+        "phase_margin_deg": 82.8
        }
       }
      ],
-     "worst_moved_pm_deg": 68.8,
-     "worst_baseline_pm_deg": 82.1,
-     "pass": true
+     "worst_moved_pm_deg": 30.9,
+     "worst_baseline_pm_deg": 63.4,
+     "pass": false
     }
    ],
    "per_ic": {
@@ -1061,7 +1061,7 @@
     "U4347": "screen passes",
     "U4348": "screen passes",
     "U8318": "screen passes",
-    "U8417": "screen passes"
+    "U8417": "screen fails: simulate"
    }
   },
   "keep_protection_and_isolation_front": {
@@ -1861,13 +1861,13 @@
     {
      "ic": "U8417",
      "unit": 3,
-     "mpn": "OPA4196IDR",
+     "mpn": "OPA4197IPWR",
      "crossing": [
       "LED_A",
       "LED_K"
      ],
      "r_sense_ohm": 5600.0,
-     "gbw_Hz": 2500000.0,
+     "gbw_Hz": 10000000.0,
      "levels": [
       {
        "bridge_current_A": 1e-06,
@@ -1875,12 +1875,12 @@
        "diode_r_ohm": 51700.0,
        "led_r_ohm": 51700.0,
        "baseline": {
-        "crossover_Hz": 87103,
-        "phase_margin_deg": 88.9
+        "crossover_Hz": 347486,
+        "phase_margin_deg": 85.7
        },
        "moved": {
-        "crossover_Hz": 85035,
-        "phase_margin_deg": 73.2
+        "crossover_Hz": 279190,
+        "phase_margin_deg": 39.5
        }
       },
       {
@@ -1889,12 +1889,12 @@
        "diode_r_ohm": 5170.0,
        "led_r_ohm": 5170.0,
        "baseline": {
-        "crossover_Hz": 659282,
-        "phase_margin_deg": 83.8
+        "crossover_Hz": 2457417,
+        "phase_margin_deg": 67.9
        },
        "moved": {
-        "crossover_Hz": 640012,
-        "phase_margin_deg": 69.0
+        "crossover_Hz": 1999145,
+        "phase_margin_deg": 30.9
        }
       },
       {
@@ -1903,12 +1903,12 @@
        "diode_r_ohm": 517.0,
        "led_r_ohm": 517.0,
        "baseline": {
-        "crossover_Hz": 1948958,
-        "phase_margin_deg": 84.6
+        "crossover_Hz": 7368421,
+        "phase_margin_deg": 70.2
        },
        "moved": {
-        "crossover_Hz": 1928345,
-        "phase_margin_deg": 77.9
+        "crossover_Hz": 6683177,
+        "phase_margin_deg": 51.0
        }
       },
       {
@@ -1917,29 +1917,29 @@
        "diode_r_ohm": 51.7,
        "led_r_ohm": 51.7,
        "baseline": {
-        "crossover_Hz": 2432360,
-        "phase_margin_deg": 89.2
+        "crossover_Hz": 9713636,
+        "phase_margin_deg": 86.6
        },
        "moved": {
-        "crossover_Hz": 2431761,
-        "phase_margin_deg": 88.2
+        "crossover_Hz": 9676193,
+        "phase_margin_deg": 82.8
        }
       }
      ],
-     "worst_moved_pm_deg": 68.8,
-     "worst_baseline_pm_deg": 82.1,
-     "pass": true
+     "worst_moved_pm_deg": 30.9,
+     "worst_baseline_pm_deg": 63.4,
+     "pass": false
     },
     {
      "ic": "U8417",
      "unit": 4,
-     "mpn": "OPA4196IDR",
+     "mpn": "OPA4197IPWR",
      "crossing": [
       "LED_A",
       "LED_K"
      ],
      "r_sense_ohm": 5600.0,
-     "gbw_Hz": 2500000.0,
+     "gbw_Hz": 10000000.0,
      "levels": [
       {
        "bridge_current_A": 1e-06,
@@ -1947,12 +1947,12 @@
        "diode_r_ohm": 51700.0,
        "led_r_ohm": 51700.0,
        "baseline": {
-        "crossover_Hz": 87103,
-        "phase_margin_deg": 88.9
+        "crossover_Hz": 347486,
+        "phase_margin_deg": 85.7
        },
        "moved": {
-        "crossover_Hz": 85035,
-        "phase_margin_deg": 73.2
+        "crossover_Hz": 279190,
+        "phase_margin_deg": 39.5
        }
       },
       {
@@ -1961,12 +1961,12 @@
        "diode_r_ohm": 5170.0,
        "led_r_ohm": 5170.0,
        "baseline": {
-        "crossover_Hz": 659282,
-        "phase_margin_deg": 83.8
+        "crossover_Hz": 2457417,
+        "phase_margin_deg": 67.9
        },
        "moved": {
-        "crossover_Hz": 640012,
-        "phase_margin_deg": 69.0
+        "crossover_Hz": 1999145,
+        "phase_margin_deg": 30.9
        }
       },
       {
@@ -1975,12 +1975,12 @@
        "diode_r_ohm": 517.0,
        "led_r_ohm": 517.0,
        "baseline": {
-        "crossover_Hz": 1948958,
-        "phase_margin_deg": 84.6
+        "crossover_Hz": 7368421,
+        "phase_margin_deg": 70.2
        },
        "moved": {
-        "crossover_Hz": 1928345,
-        "phase_margin_deg": 77.9
+        "crossover_Hz": 6683177,
+        "phase_margin_deg": 51.0
        }
       },
       {
@@ -1989,18 +1989,18 @@
        "diode_r_ohm": 51.7,
        "led_r_ohm": 51.7,
        "baseline": {
-        "crossover_Hz": 2432360,
-        "phase_margin_deg": 89.2
+        "crossover_Hz": 9713636,
+        "phase_margin_deg": 86.6
        },
        "moved": {
-        "crossover_Hz": 2431761,
-        "phase_margin_deg": 88.2
+        "crossover_Hz": 9676193,
+        "phase_margin_deg": 82.8
        }
       }
      ],
-     "worst_moved_pm_deg": 68.8,
-     "worst_baseline_pm_deg": 82.1,
-     "pass": true
+     "worst_moved_pm_deg": 30.9,
+     "worst_baseline_pm_deg": 63.4,
+     "pass": false
     }
    ],
    "per_ic": {
@@ -2008,7 +2008,7 @@
     "U4347": "screen passes",
     "U4348": "screen passes",
     "U8318": "screen passes",
-    "U8417": "screen passes"
+    "U8417": "screen fails: simulate"
    }
   }
  }
