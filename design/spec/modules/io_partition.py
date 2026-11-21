@@ -214,9 +214,112 @@ TSSOP_RETENTION, TSSOP_INSTANCE_RETENTION = _tssop_retention()
 TSSOP_SPLIT_SUFFIX = '_tssop'
 
 
+KMOVE_SPLIT_SUFFIX = '_kmove'
+
+
 def base_family(name):
-    """Source family of a TSSOP instance split (see split_tssop_instances)."""
-    return name.split(TSSOP_SPLIT_SUFFIX, 1)[0] if TSSOP_SPLIT_SUFFIX in name else name
+    """Source family of a TSSOP instance split (see split_tssop_instances) or a K block relocation clone
+    (see relocate_instances)."""
+    for suffix in (TSSOP_SPLIT_SUFFIX, KMOVE_SPLIT_SUFFIX):
+        if suffix in name:
+            name = name.split(suffix, 1)[0]
+    return name
+
+
+def _k_relocation():
+    import json
+    from pathlib import Path
+    path = Path(__file__).resolve().parents[3] / 'design/partition/k-block-relocation.json'
+    if not path.exists():
+        return []
+    data = json.loads(path.read_text())
+    validate_relocation(data['blocks'])
+    return data['blocks']
+
+
+def validate_relocation(blocks):
+    seen = set()
+    for b in blocks:
+        missing = {'instance', 'family', 'ic', 'package_key', 'members'} - set(b)
+        if missing:
+            raise ValueError(f"K relocation {b.get('ic')}: missing {sorted(missing)}")
+        if b['ic'] not in b['members']:
+            raise ValueError(f"K relocation {b['ic']}: the IC is not among its members")
+        for ref in b['members']:
+            if (b['instance'], ref) in seen:
+                raise ValueError(f"K relocation: {b['instance']} {ref} named twice")
+            seen.add((b['instance'], ref))
+
+
+K_RELOCATION = _k_relocation()
+
+
+def relocated_part(part):
+    """One moved part: core region; FILTER_LEDS parts take the K-side FILTER_LEDS_K island, others IO_CORE."""
+    island = part.attributes.get('Island', '')
+    island = 'FILTER_LEDS_K:${SHEETNAME}' if island.startswith('FILTER_LEDS:') else 'IO_CORE:${SHEETNAME}'
+    return replace(part, attributes={**part.attributes, 'BoardRegion': 'core', 'Island': island})
+
+
+def relocate_instances(families, instances, blocks=None):
+    """MC04-S7: move the function blocks of design/partition/k-block-relocation.json to the core region (board K)
+    for their instance only. A family used by one instance is changed in place; a shared family is cloned for the
+    instance (name + _kmove_<instance>), as the TSSOP retention does. Every named key must exist and render to the
+    named reference, and the block must be exactly its named members, or the build fails."""
+    from scripts.schgen.core import designator
+    blocks = K_RELOCATION if blocks is None else blocks
+    if not blocks:
+        return tuple(families), tuple(instances)
+    by_inst = defaultdict(list)
+    for b in blocks:
+        by_inst[b['instance']].append(b)
+    known = {i.name for i in instances}
+    if set(by_inst) - known:
+        raise ValueError(f'K relocation: unknown instances {sorted(set(by_inst) - known)}')
+    byname = {f.name: f for f in families}
+    users = defaultdict(list)
+    for i in instances:
+        users[i.family].append(i.name)
+    replaced, added, out_instances = {}, defaultdict(list), []
+    for inst in instances:
+        entries = by_inst.get(inst.name)
+        if not entries:
+            out_instances.append(inst)
+            continue
+        fam = byname[inst.family]
+        keys = set()
+        for b in entries:
+            if base_family(fam.name) != b['family']:
+                raise ValueError(f"K relocation {b['ic']}: {inst.name} renders {fam.name}, not {b['family']}")
+            want = {k for ks in b['members'].values() for k in ks}
+            parts = [p for p in fam.parts if p.key in want]
+            if {p.key for p in parts} != want:
+                raise ValueError(f"K relocation {b['ic']}: keys not in {fam.name}: {sorted(want - {p.key for p in parts})}")
+            for ref, ks in b['members'].items():
+                got = {designator(p, inst) for p in parts if p.key in ks}
+                if got != {ref}:
+                    raise ValueError(f"K relocation {b['ic']}: {ks} render {sorted(got)} in {inst.name}, not {ref}")
+            stem = b['package_key']
+            package = {p.key for p in fam.parts if p.key.rsplit('.', 1)[0] == stem}
+            if not package or not package <= want:
+                raise ValueError(f"K relocation {b['ic']}: package {stem} is not wholly among the members")
+            bypass = {p.key for p in fam.parts if p.attributes.get('Decouples') == stem}
+            if not bypass <= want:
+                raise ValueError(f"K relocation {b['ic']}: bypass {sorted(bypass - want)} left behind")
+            keys |= want
+        parts = tuple(relocated_part(p) if p.key in keys else p for p in fam.parts)
+        if len(users[fam.name]) == 1:
+            replaced[fam.name] = replace(fam, parts=parts)
+            out_instances.append(inst)
+        else:
+            name = f'{fam.name}{KMOVE_SPLIT_SUFFIX}_{inst.name.lower()}'
+            added[fam.name].append(replace(fam, name=name, parts=parts))
+            out_instances.append(replace(inst, family=name))
+    out_families = []
+    for f in families:
+        out_families.append(replaced.get(f.name, f))
+        out_families.extend(added.get(f.name, ()))
+    return tuple(out_families), tuple(out_instances)
 
 
 def tssop_groups(family_name):

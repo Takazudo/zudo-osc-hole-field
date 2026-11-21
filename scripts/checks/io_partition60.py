@@ -164,7 +164,63 @@ def assignment_errors(packages, assignments):
     return errors
 
 
-def crossing_kind(name, members, sensitive, nets=None):
+# MC04-S7 Revision 3 (circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md):
+# a magnitude-indicator LED bridge net may cross one board boundary when the unit's op-amp, all four bridge diodes and
+# its R_SENSE share one region and only the panel LED is in the other, and the op-amp is OPA4196IDR. Evidence:
+# MC04-S4 case 5, design/reports/spice/input-buffer-vendor.json (sha256
+# 12a0de40445d5156ccab2d583b45baa14f8b0420935ae57ca7a2f3d391654c9b): OPA4196 indicator loop 53.8 deg at 7.2 pF and
+# 48.1 deg at 15 pF added; stage 1b screen scripts/stack/studies/mc04_s1b_indicator_loops/result.json (sha256
+# 4058446308c49e1b044cf933eb788706c43782492fa7968ac12c6ed06574840c), which fails OPA4197 indicator units (30.9 deg),
+# so they do not qualify. Every condition is read from the partition, not from the net name.
+INDICATOR_BRIDGE_KIND = 'indicator_led_bridge_one_span'
+INDICATOR_BRIDGE_MPN = 'OPA4196IDR'
+
+
+def _ref_pins(nets):
+    out = defaultdict(dict)
+    for net, rows in nets.items():
+        for m in rows:
+            out[m['ref']][m['pin']] = net
+    return out
+
+
+def indicator_bridge_one_span(name, members, nets, regions, mpn):
+    """None when `name` is a qualifying one-span OPA4196 indicator LED bridge net, else the failed condition."""
+    led = [m for m in members if m['role'] == 'magnitude_indicator:LED']
+    diodes = [m for m in members if m['role'].startswith('magnitude_indicator:D')]
+    if len({m['ref'] for m in led}) != 1 or not diodes or len(led) + len(diodes) != len(members):
+        return 'not the LED_A/LED_K node of a magnitude_indicator unit'
+    pins = _ref_pins(nets)
+    # the bridge diodes on this node lead to the unit's DRIVE (op-amp output) and SENSE (op-amp input) nets
+    far = {n for d in diodes for pin, n in pins[d['ref']].items() if n != name}
+    amps = {(m['ref'], m['unit']) for n in far for m in nets.get(n, ()) if m['role'] == 'magnitude_indicator:A'}
+    if len(amps) != 1:
+        return 'not the LED_A/LED_K node of a magnitude_indicator unit'
+    amp_ref, amp_unit = next(iter(amps))
+    unit_nets = {n for n in far if any(m['ref'] == amp_ref and m['unit'] == amp_unit for m in nets.get(n, ()))}
+    if len(unit_nets) != 2:
+        return 'not the LED_A/LED_K node of a magnitude_indicator unit'
+    led_ref = led[0]['ref']
+    led_nets = set(pins[led_ref].values())
+    bridge = {m['ref'] for n in unit_nets for m in nets[n] if m['role'].startswith('magnitude_indicator:D')
+              and set(pins[m['ref']].values()) - unit_nets <= led_nets}
+    sense = {m['ref'] for n in unit_nets for m in nets[n] if m['role'] == 'magnitude_indicator:R_SENSE'}
+    if len(bridge) != 4 or len(sense) != 1:
+        return 'not a complete four-diode bridge with one R_SENSE'
+    if mpn.get(amp_ref) != INDICATOR_BRIDGE_MPN:
+        return f'indicator op-amp {amp_ref} is {mpn.get(amp_ref)}, not {INDICATOR_BRIDGE_MPN}'
+    side = {regions.get(r) for r in bridge | sense | {amp_ref}}
+    if len(side) != 1:
+        return 'the op-amp, bridge diodes and R_SENSE are not in one region'
+    if regions.get(led_ref) in side:
+        return 'the panel LED is not in the other region'
+    # front boards meet only at K, so one span means one end on K (core) and the other on a front region
+    if len({m['region'] for m in members}) != 2 or 'core' not in side | {regions.get(led_ref)}:
+        return 'the net crosses more than one board boundary'
+    return None
+
+
+def crossing_kind(name, members, sensitive, nets=None, regions=None, mpn=None):
     if name in sensitive:return None,'sensitive storage, summing or feedback node'
     if name.endswith('_TIP'):return None,'raw/exposed jack TIP'
     if name in RAILS:return 'power/return',None
@@ -197,6 +253,11 @@ def crossing_kind(name, members, sensitive, nets=None):
         sources=[(n,ms) for n,ms in nets.items() if any(m['ref']==member['ref'] and m['pin'] in source_pins for m in ms)]
         if sources and all(n=='AGND' or any(m['type']=='output' and m['ref'].startswith('U') for m in ms) for n,ms in sources):
             return 'selected buffered reference/conditioned logic',None
+    if nets is not None and regions is not None and mpn is not None and any(m['role'] == 'magnitude_indicator:LED' for m in members):
+        why = indicator_bridge_one_span(name, members, nets, regions, mpn)
+        if why is None:
+            return INDICATOR_BRIDGE_KIND, None
+        return None, 'magnitude-indicator LED bridge net: ' + why
     return None,'no supported buffered/conditioned crossing source'
 
 
@@ -223,7 +284,7 @@ def build(families=None, instances=None, assignments=None, capacities=None, *, s
         if len(boards)<2:
             if name in sensitive or name.endswith('_TIP'):local.append({'net':name,'region':boards[0],'refs':sorted({m['ref'] for m in members})})
             continue
-        kind,reason=crossing_kind(name,members,sensitive,nets)
+        kind,reason=crossing_kind(name,members,sensitive,nets,regions,{r:p['mpn'] for r,p in packages.items()})
         row={'net':name,'regions':boards,'kind':kind,'members':members}
         if reason:
             row['reason']=reason;forbidden.append(row)
@@ -233,6 +294,9 @@ def build(families=None, instances=None, assignments=None, capacities=None, *, s
                 driver_members=[m for m in members if (m['role']=='remote_buffer:R_ISO' or m['role']=='internal_selector_buffer:R_ISO_B' or m['role'] in ('oscillator:R_LOCAL_REF5_ISO','oscillator:R_LOCAL_REFN5_ISO')) and m['pin']=='2'
                                 or m['uid'].startswith('C:') and (m['pin']=='2' or m['role']=='oscillator:OCT_SELECTOR' and m['pin'] in ('1','10')
                                 or m['role']=='oscillator:SYNC_SELECT' and m['pin'] in ('1','3'))]
+            if not driver_members and kind==INDICATOR_BRIDGE_KIND:
+                # the bridge end (op-amp, diodes, R_SENSE) sources the LED current; its diodes are the source nodes
+                driver_members=[m for m in members if m['role'].startswith('magnitude_indicator:D')]
             drivers=sorted({m['region'] for m in driver_members})
             row.update(direction={'drivers':drivers, 'receivers':sorted(set(boards)-set(drivers)),
                                   'source_nodes':[{'ref':m['ref'],'pin':m['pin']} for m in driver_members]},

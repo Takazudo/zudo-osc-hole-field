@@ -8,6 +8,7 @@ from design.spec.instrument import specification
 from design.spec.modules.io_partition import refine, channel_signatures
 from design.spec.modules.envelope import family as envelope
 from scripts.checks.io_partition60 import build, source_data, assignment_errors, crossing_kind, power_requirements, ROOT
+from scripts.checks.io_partition60 import indicator_bridge_one_span, INDICATOR_BRIDGE_KIND
 
 
 class PowerRequirementTests(unittest.TestCase):
@@ -232,5 +233,99 @@ class TssopFromMpnTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'instance-scoped'):
             validate_retention([{**base, 'from_mpn': 'OPA4196IDR'}])
         validate_retention([{**base, 'instances': ['O1'], 'from_mpn': 'OPA4196IDR'}, {**base, 'instances': ['O1']}])
+
+
+class IndicatorBridgeOneSpan(unittest.TestCase):
+    """MC04-S7 Revision 3: the one-span OPA4196 indicator LED bridge crossing and each way it fails."""
+    NET = '/F1/Cb3d4a2_LED_A'
+
+    @classmethod
+    def setUpClass(cls):
+        cls.families, cls.instances = specification()
+        cls.packages, cls.nets, cls.sensitive, _ = source_data(cls.families, cls.instances)
+        cls.regions = {r: p['regions'][0] for r, p in cls.packages.items()}
+        cls.mpn = {r: p['mpn'] for r, p in cls.packages.items()}
+
+    def members(self, regions, name=None):
+        name = name or self.NET
+        return [{**m, 'region': regions[m['ref']]} for m in self.nets[name]]
+
+    def kind(self, regions=None, mpn=None, name=None):
+        regions = regions or self.regions
+        name = name or self.NET
+        return crossing_kind(name, self.members(regions, name), self.sensitive, self.nets, regions, mpn or self.mpn)
+
+    def test_the_moved_f1_unit_qualifies(self):
+        self.assertEqual((self.regions['U2119'], self.regions['D601']), ('core', 'jack'))
+        self.assertEqual(self.kind(), (INDICATOR_BRIDGE_KIND, None))
+        self.assertEqual(self.kind(name='/F1/Cb3d4a2_LED_K'), (INDICATOR_BRIDGE_KIND, None))
+
+    def test_opa4197_indicator_does_not_qualify(self):
+        kind, why = self.kind(mpn={**self.mpn, 'U2119': 'OPA4197IPWR'})
+        self.assertIsNone(kind)
+        self.assertIn('not OPA4196IDR', why)
+
+    def test_a_bridge_diode_left_on_the_front_does_not_qualify(self):
+        kind, why = self.kind(regions={**self.regions, 'D2127': 'jack'})  # D3 of this unit, on DRIVE and LED_K
+        self.assertIsNone(kind)
+        self.assertIn('not in one region', why)
+        kind, why = self.kind(regions={**self.regions, 'RB2114': 'jack'})  # its R_SENSE
+        self.assertIn('not in one region', why)
+
+    def test_a_second_span_does_not_qualify(self):
+        two = {**self.regions, **{r: 'control' for r in ('U2119', 'D2125', 'D2126', 'D2127', 'D2128', 'RB2114')}}
+        kind, why = self.kind(regions=two)
+        self.assertIsNone(kind)
+        self.assertIn('more than one board boundary', why)
+
+    def test_a_non_indicator_net_does_not_qualify(self):
+        name = '/F1/Cb3d4a2_DRIVE'
+        self.assertIn('not the LED_A/LED_K node', indicator_bridge_one_span(
+            name, self.members(self.regions, name), self.nets, self.regions, self.mpn))
+        rows = self.members(self.regions, self.NET)
+        self.assertIn('not the LED_A/LED_K node', indicator_bridge_one_span(
+            self.NET, rows + [{**rows[0], 'ref': 'R9999', 'role': 'magnitude_indicator:R_SENSE'}],
+            self.nets, self.regions, self.mpn))
+
+    def test_report_has_no_forbidden_crossing_and_names_the_bridge_nets(self):
+        report = build(self.families, self.instances)
+        self.assertEqual(report['forbidden_crossings'], [])
+        bridge = sorted(x['net'] for x in report['allowed_crossings'] if x['kind'] == INDICATOR_BRIDGE_KIND)
+        self.assertEqual(len(bridge), 22)
+        self.assertTrue(all(n.endswith(('_LED_A', '_LED_K')) for n in bridge))
+
+
+class KRelocation(unittest.TestCase):
+    """MC04-S7: the instance-scoped K block relocation."""
+
+    @classmethod
+    def setUpClass(cls):
+        from design.spec.modules.io_partition import K_RELOCATION
+        cls.blocks = K_RELOCATION
+        cls.families, cls.instances = specification()
+        cls.packages, _, _, _ = source_data(cls.families, cls.instances)
+
+    def test_every_member_is_core_and_nothing_else_moved_off_its_instance(self):
+        moved = {r for b in self.blocks for r in b['members']}
+        self.assertEqual(len(moved), sum(len(b['members']) for b in self.blocks))
+        for ref in moved:
+            self.assertEqual(self.packages[ref]['regions'], ['core'], ref)
+        # F3 renders the shared filter family unchanged; F1 and F2 render their own clones
+        fam = {i.name: i.family for i in self.instances}
+        self.assertEqual((fam['F1'], fam['F2'], fam['F3']), ('filter_kmove_f1', 'filter_kmove_f2', 'filter'))
+        self.assertEqual(self.packages['U2319']['regions'], ['jack'])  # F3's indicator stays on its jack board
+
+    def test_unmatched_or_stale_entries_fail(self):
+        from design.spec.modules import io_partition
+        from design.spec.modules.filter import specification as filt
+        families, instances = io_partition.split_tssop_instances(*filt())
+        entry = next(b for b in self.blocks if b['ic'] == 'U2218')
+        with self.assertRaisesRegex(ValueError, 'keys not in'):
+            io_partition.relocate_instances(families, instances, [{**entry, 'members': {**entry['members'], 'C9999': ['NO_SUCH_KEY']}}])
+        stale = {**entry, 'members': {('U2219' if r == 'U2218' else r): k for r, k in entry['members'].items()}, 'ic': 'U2219'}
+        with self.assertRaisesRegex(ValueError, 'render'):
+            io_partition.relocate_instances(families, instances, [stale])
+        with self.assertRaisesRegex(ValueError, 'unknown instances'):
+            io_partition.relocate_instances(families, instances, [{**entry, 'instance': 'F9'}])
 
 if __name__=='__main__':unittest.main()

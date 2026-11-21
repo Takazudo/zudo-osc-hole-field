@@ -1,0 +1,330 @@
+{
+ "schema_version": 1,
+ "status": "SOURCE INPUT; MC04-S7 Revision 2/3 K block move (reviewed rulings in circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md)",
+ "rule": "Each entry moves one front-board function block to the core region (board K), for its instance only: the IC package (every unit), its decoupling capacitors and its one-hop passives and diodes as scripts/stack/studies/mc04_c4_blocks/blocks.py defines them, with the keep-front net fragments left on the front board. A key that is missing from the family, or that renders to another reference, fails the source build. Moved parts take the island IO_CORE, except moved FILTER_LEDS parts, which take FILTER_LEDS_K; the panel LEDs keep FILTER_LEDS.",
+ "evidence": [
+  "scripts/stack/studies/mc04_s7_r2/blocks.json (members, held JL-L02 scene)",
+  "scripts/stack/studies/mc04_s7_r2/budgets.json and loops.json (draft limits and loop screen)",
+  "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-r2-report-20261122.md"
+ ],
+ "blocks": [
+  {
+   "instance": "O4",
+   "family": "oscillator",
+   "ic": "U1417",
+   "package_key": "PACK_OPA4196IDR_5",
+   "from_board": "JL",
+   "function": "general output",
+   "keep_front_net_fragments": [
+    "_PROTECTED",
+    "ISO_MID"
+   ],
+   "members": {
+    "C1452": [
+     "C_DEC_IO_EXTRA_52"
+    ],
+    "C1453": [
+     "C_DEC_IO_EXTRA_53"
+    ],
+    "U1417": [
+     "PACK_OPA4196IDR_5.1",
+     "PACK_OPA4196IDR_5.2",
+     "PACK_OPA4196IDR_5.3",
+     "PACK_OPA4196IDR_5.4",
+     "PACK_OPA4196IDR_5.5"
+    ]
+   }
+  },
+  {
+   "instance": "F2",
+   "family": "filter",
+   "ic": "U2218",
+   "package_key": "CORE_PACK_OPA4196IDR_8",
+   "from_board": "JL",
+   "function": "general output",
+   "keep_front_net_fragments": [
+    "_PROTECTED",
+    "ISO_MID"
+   ],
+   "members": {
+    "C2249": [
+     "CORE_C_DEC_PACK_OPA4196IDR_8_0.0"
+    ],
+    "C2250": [
+     "CORE_C_DEC_PACK_OPA4196IDR_8_1.0"
+    ],
+    "U2218": [
+     "CORE_PACK_OPA4196IDR_8.1",
+     "CORE_PACK_OPA4196IDR_8.2",
+     "CORE_PACK_OPA4196IDR_8.3",
+     "CORE_PACK_OPA4196IDR_8.4",
+     "CORE_PACK_OPA4196IDR_8.5"
+    ]
+   }
+  },
+  {
+   "instance": "F1",
+   "family": "filter",
+   "ic": "U2119",
+   "package_key": "LED_PACK_OPA4196IDR_0",
+   "from_board": "JL",
+   "function": "magnitude indicator",
+   "keep_front_net_fragments": [],
+   "members": {
+    "C2151": [
+     "LED_C_DEC_PACK_OPA4196IDR_0_0.0"
+    ],
+    "C2152": [
+     "LED_C_DEC_PACK_OPA4196IDR_0_1.0"
+    ],
+    "D2125": [
+     "LED_magnitude_indicator_L_F1_IN_mag_IN__D1.1"
+    ],
+    "D2126": [
+     "LED_magnitude_indicator_L_F1_IN_mag_IN__D2.1"
+    ],
+    "D2127": [
+     "LED_magnitude_indicator_L_F1_IN_mag_IN__D3.1"
+    ],
+    "D2128": [
+     "LED_magnitude_indicator_L_F1_IN_mag_IN__D4.1"
+    ],
+    "D2130": [
+     "LED_magnitude_indicator_L_F1_FREQ_mag_FREQ__D1.1"
+    ],
+    "D2131": [
+     "LED_magnitude_indicator_L_F1_FREQ_mag_FREQ__D2.1"
+    ],
+    "D2132": [
+     "LED_magnitude_indicator_L_F1_FREQ_mag_FREQ__D3.1"
+    ],
+    "D2133": [
+     "LED_magnitude_indicator_L_F1_FREQ_mag_FREQ__D4.1"
+    ],
+    "D2135": [
+     "LED_magnitude_indicator_L_F1_RES_mag_RES__D1.1"
+    ],
+    "D2136": [
+     "LED_magnitude_indicator_L_F1_RES_mag_RES__D2.1"
+    ],
+    "D2137": [
+     "LED_magnitude_indicator_L_F1_RES_mag_RES__D3.1"
+    ],
+    "D2138": [
+     "LED_magnitude_indicator_L_F1_RES_mag_RES__D4.1"
+    ],
+    "D2140": [
+     "LED_magnitude_indicator_L_F1_GAIN_mag_GAIN__D1.1"
+    ],
+    "D2141": [
+     "LED_magnitude_indicator_L_F1_GAIN_mag_GAIN__D2.1"
+    ],
+    "D2142": [
+     "LED_magnitude_indicator_L_F1_GAIN_mag_GAIN__D3.1"
+    ],
+    "D2143": [
+     "LED_magnitude_indicator_L_F1_GAIN_mag_GAIN__D4.1"
+    ],
+    "RB2114": [
+     "LED_magnitude_indicator_L_F1_IN_mag_IN__R_SENSE.0"
+    ],
+    "RB2115": [
+     "LED_magnitude_indicator_L_F1_FREQ_mag_FREQ__R_SENSE.0"
+    ],
+    "RB2116": [
+     "LED_magnitude_indicator_L_F1_RES_mag_RES__R_SENSE.0"
+    ],
+    "RB2117": [
+     "LED_magnitude_indicator_L_F1_GAIN_mag_GAIN__R_SENSE.0"
+    ],
+    "U2119": [
+     "LED_PACK_OPA4196IDR_0.1",
+     "LED_PACK_OPA4196IDR_0.2",
+     "LED_PACK_OPA4196IDR_0.3",
+     "LED_PACK_OPA4196IDR_0.4",
+     "LED_PACK_OPA4196IDR_0.5"
+    ]
+   }
+  },
+  {
+   "instance": "E3",
+   "family": "envelope",
+   "ic": "U4347",
+   "package_key": "LED_PACK_OPA4196IDR_0",
+   "from_board": "JR",
+   "function": "general output and one indicator unit",
+   "keep_front_net_fragments": [
+    "_PROTECTED",
+    "ISO_MID"
+   ],
+   "members": {
+    "C4374": [
+     "C_DEC_LED_PACK_OPA4196IDR_0_0.0"
+    ],
+    "C4375": [
+     "C_DEC_LED_PACK_OPA4196IDR_0_1.0"
+    ],
+    "D4307": [
+     "LED_magnitude_indicator_L_E1_SIG_mag_SIG__D1.1"
+    ],
+    "D4308": [
+     "LED_magnitude_indicator_L_E1_SIG_mag_SIG__D2.1"
+    ],
+    "D4309": [
+     "LED_magnitude_indicator_L_E1_SIG_mag_SIG__D3.1"
+    ],
+    "D4310": [
+     "LED_magnitude_indicator_L_E1_SIG_mag_SIG__D4.1"
+    ],
+    "RB4313": [
+     "LED_magnitude_indicator_L_E1_SIG_mag_SIG__R_SENSE.0"
+    ],
+    "U4347": [
+     "LED_PACK_OPA4196IDR_0.1",
+     "LED_PACK_OPA4196IDR_0.2",
+     "LED_PACK_OPA4196IDR_0.3",
+     "LED_PACK_OPA4196IDR_0.4",
+     "LED_PACK_OPA4196IDR_0.5"
+    ]
+   }
+  },
+  {
+   "instance": "E3",
+   "family": "envelope",
+   "ic": "U4348",
+   "package_key": "LED_PACK_OPA4196IDR_1",
+   "from_board": "JR",
+   "function": "magnitude indicator",
+   "keep_front_net_fragments": [],
+   "members": {
+    "C4376": [
+     "C_DEC_LED_PACK_OPA4196IDR_1_0.0"
+    ],
+    "C4377": [
+     "C_DEC_LED_PACK_OPA4196IDR_1_1.0"
+    ],
+    "D4312": [
+     "LED_magnitude_indicator_L_E1_RISE_mag_RISE__D1.1"
+    ],
+    "D4313": [
+     "LED_magnitude_indicator_L_E1_RISE_mag_RISE__D2.1"
+    ],
+    "D4314": [
+     "LED_magnitude_indicator_L_E1_RISE_mag_RISE__D3.1"
+    ],
+    "D4315": [
+     "LED_magnitude_indicator_L_E1_RISE_mag_RISE__D4.1"
+    ],
+    "D4317": [
+     "LED_magnitude_indicator_L_E1_FALL_mag_FALL__D1.1"
+    ],
+    "D4318": [
+     "LED_magnitude_indicator_L_E1_FALL_mag_FALL__D2.1"
+    ],
+    "D4319": [
+     "LED_magnitude_indicator_L_E1_FALL_mag_FALL__D3.1"
+    ],
+    "D4320": [
+     "LED_magnitude_indicator_L_E1_FALL_mag_FALL__D4.1"
+    ],
+    "RB4314": [
+     "LED_magnitude_indicator_L_E1_RISE_mag_RISE__R_SENSE.0"
+    ],
+    "RB4315": [
+     "LED_magnitude_indicator_L_E1_FALL_mag_FALL__R_SENSE.0"
+    ],
+    "U4348": [
+     "LED_PACK_OPA4196IDR_1.1",
+     "LED_PACK_OPA4196IDR_1.2",
+     "LED_PACK_OPA4196IDR_1.3",
+     "LED_PACK_OPA4196IDR_1.4",
+     "LED_PACK_OPA4196IDR_1.5"
+    ]
+   }
+  },
+  {
+   "instance": "M4A",
+   "family": "mix4_vca",
+   "ic": "U8318",
+   "package_key": "G2_PACK_OPA4196IDR_1",
+   "from_board": "JR",
+   "function": "magnitude indicator",
+   "keep_front_net_fragments": [],
+   "members": {
+    "C8348": [
+     "G2_C_DEC_PACK_OPA4196IDR_1_0.0"
+    ],
+    "C8349": [
+     "G2_C_DEC_PACK_OPA4196IDR_1_1.0"
+    ],
+    "D8323": [
+     "G2_magnitude_indicator_L_M4A_3_mag_3__D1.1"
+    ],
+    "D8324": [
+     "G2_magnitude_indicator_L_M4A_3_mag_3__D2.1"
+    ],
+    "D8325": [
+     "G2_magnitude_indicator_L_M4A_3_mag_3__D3.1"
+    ],
+    "D8326": [
+     "G2_magnitude_indicator_L_M4A_3_mag_3__D4.1"
+    ],
+    "D8327": [
+     "G2_magnitude_indicator_L_M4A_4_mag_4__D1.1"
+    ],
+    "D8328": [
+     "G2_magnitude_indicator_L_M4A_4_mag_4__D2.1"
+    ],
+    "D8329": [
+     "G2_magnitude_indicator_L_M4A_4_mag_4__D3.1"
+    ],
+    "D8330": [
+     "G2_magnitude_indicator_L_M4A_4_mag_4__D4.1"
+    ],
+    "D8331": [
+     "G2_magnitude_indicator_L_M4A_ATTEN_mag_ATTEN__D1.1"
+    ],
+    "D8332": [
+     "G2_magnitude_indicator_L_M4A_ATTEN_mag_ATTEN__D2.1"
+    ],
+    "D8333": [
+     "G2_magnitude_indicator_L_M4A_ATTEN_mag_ATTEN__D3.1"
+    ],
+    "D8334": [
+     "G2_magnitude_indicator_L_M4A_ATTEN_mag_ATTEN__D4.1"
+    ],
+    "D8335": [
+     "G2_magnitude_indicator_L_M4A_SUM_mag_SUM__D1.1"
+    ],
+    "D8336": [
+     "G2_magnitude_indicator_L_M4A_SUM_mag_SUM__D2.1"
+    ],
+    "D8337": [
+     "G2_magnitude_indicator_L_M4A_SUM_mag_SUM__D3.1"
+    ],
+    "D8338": [
+     "G2_magnitude_indicator_L_M4A_SUM_mag_SUM__D4.1"
+    ],
+    "R8385": [
+     "G2_magnitude_indicator_L_M4A_3_mag_3__R_SENSE.0"
+    ],
+    "R8386": [
+     "G2_magnitude_indicator_L_M4A_4_mag_4__R_SENSE.0"
+    ],
+    "R8387": [
+     "G2_magnitude_indicator_L_M4A_ATTEN_mag_ATTEN__R_SENSE.0"
+    ],
+    "R8388": [
+     "G2_magnitude_indicator_L_M4A_SUM_mag_SUM__R_SENSE.0"
+    ],
+    "U8318": [
+     "G2_PACK_OPA4196IDR_1.1",
+     "G2_PACK_OPA4196IDR_1.2",
+     "G2_PACK_OPA4196IDR_1.3",
+     "G2_PACK_OPA4196IDR_1.4",
+     "G2_PACK_OPA4196IDR_1.5"
+    ]
+   }
+  }
+ ]
+}

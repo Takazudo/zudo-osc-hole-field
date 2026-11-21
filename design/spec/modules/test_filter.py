@@ -81,4 +81,29 @@ class FilterContract(unittest.TestCase):
         self.assertEqual(hashlib.sha256((ROOT/receipt['retained_file']).read_bytes()).hexdigest(),receipt['sha256'])
         self.assertEqual(receipt['authority'],'MANUFACTURER_PRIMARY')
 
+
+class FilterLedsSplit(unittest.TestCase):
+    """MC04-S7 Revision 3: F1's moved indicator parts take FILTER_LEDS_K on K; its panel LEDs and F2/F3 keep FILTER_LEDS."""
+
+    def test_f1_split_and_f2_f3_unchanged(self):
+        from design.spec.instrument import specification as instrument
+        families, instances = instrument()
+        by = {f.name: f for f in families}
+        for inst in (i for i in instances if i.name in ('F1', 'F2', 'F3')):
+            parts = by[inst.family].parts
+            leds = [p for p in parts if p.panel_refs and p.attributes['PanelUid'].startswith('L:')]
+            self.assertEqual(len(leds), 4)
+            self.assertTrue(all(p.attributes['Island'] == 'FILTER_LEDS:${SHEETNAME}' for p in leds), inst.name)
+            self.assertTrue(all(p.attributes['BoardRegion'] == 'jack' for p in leds), inst.name)
+            bridge = [p for p in parts if p.attributes.get('Island', '').startswith('FILTER_LEDS') and p not in leds]
+            refs = {designator(p, inst) for p in bridge}
+            if inst.name == 'F1':
+                self.assertIn('U2119', refs)
+                self.assertTrue(all(p.attributes['Island'] == 'FILTER_LEDS_K:${SHEETNAME}' for p in bridge))
+                self.assertTrue(all(p.attributes['BoardRegion'] == 'core' for p in bridge))
+            else:
+                self.assertTrue(bridge)
+                self.assertTrue(all(p.attributes['Island'] == 'FILTER_LEDS:${SHEETNAME}' for p in bridge), inst.name)
+                self.assertTrue(all(p.attributes['BoardRegion'] == 'jack' for p in bridge), inst.name)
+
 if __name__=='__main__':unittest.main()
