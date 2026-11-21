@@ -36,7 +36,7 @@ class LedgerTests(unittest.TestCase):
         self.assertFalse(cont['nominal_15V_3A']['any_architecture'])
         self.assertTrue(all(v['any_architecture'] for v in p['transient_requirement_20ms']['infeasible_at_100_percent'].values()))
         need = p['normal_planning']['positive_converter_efficiency_needed_with_pd_u4_model']
-        self.assertAlmostEqual(need['nominal_15V_3A'], 0.939151, places=6)
+        self.assertAlmostEqual(need['nominal_15V_3A'], 0.972531, places=6)  # after the MC04-S5 swap
         self.assertGreater(need['source_minus_5_percent'], 1)
         self.assertGreater(need['board_b_input_screen_14V_3A'], 1)
         self.assertAlmostEqual(p['continuous_requirement']['osc_inlet_W_at_source_band'][1], 41.96, places=6)
@@ -58,7 +58,7 @@ class LedgerTests(unittest.TestCase):
     def test_low_power_screen_changes_no_requirement(self):
         lp = self.data['low_power_supply_screen']['cases']
         self.assertTrue(all(c['planning_reduction_needed_mA']['+12V'] > 0 for name, c in lp.items() if name != 'pd002_A1_15V_ideal_high'))
-        self.assertEqual(lp['pd002_A1_15V_ideal_high']['planning_reduction_needed_mA'], {'+12V': 0, '-12V': 34.985387})
+        self.assertEqual(lp['pd002_A1_15V_ideal_high']['planning_reduction_needed_mA'], {'+12V': 21.349711, '-12V': 59.985387})  # after the MC04-S5 swap
         self.assertEqual(self.data['states']['continuous_requirement']['mA'], {'+12V': 1700, '-12V': 1600, '+5V': 300})
 
     def test_floors_are_pd_screened_minima(self):

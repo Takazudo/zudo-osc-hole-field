@@ -20,9 +20,13 @@ INPUTS = {
 # OSC/PD contract fixed by owner decision (PWR-D3/D5 review; PD side unchanged).
 # The canonical requirement may fall below it, as after the S2b adoption (0bf32f59).
 # Owner decision 2026-11-04 03:07Z (option 1): keep +12 V at 1700 mA as margin; the rule is canonical <= contract.
+# Owner decision 2026-11-21 12:55Z: accept the MC04-S5 OPA4197IPWR swap's 1700 mA +12 V canonical result (0 mA
+# contract margin); the margin is tracked in issue #34.
 CONTRACT_DECISION = ('ADOPTED owner decision 2026-11-04T03:07Z (option 1): the contract stays at 1700 / 1600 / 300 mA '
                      'continuous and 2000 / 1900 / 400 mA transient; +12 V keeps 1700 mA as margin above the post-S2b canonical '
-                     'rule result, and the check is canonical <= contract. No contract number changed.')
+                     'rule result, and the check is canonical <= contract. No contract number changed. ADOPTED owner decision '
+                     '2026-11-21T12:55Z: the MC04-S5 OPA4197IPWR input-buffer swap raises the +12 V canonical rule result to '
+                     '1700 mA, equal to the contract (0 mA margin), tracked in #34.')
 CONTRACT_CONTINUOUS_mA = {'+12V': 1700, '-12V': 1600, '+5V': 300}
 CONTRACT_TRANSIENT_mA = {'+12V': 2000, '-12V': 1900, '+5V': 400}
 # Stage54 accounting was derived from this supply-architecture revision (pre-S2b).

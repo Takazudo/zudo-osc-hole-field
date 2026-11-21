@@ -28,8 +28,9 @@ class DecompositionTests(unittest.TestCase):
         lv = self.data['levels']
         self.assertEqual(lv['continuous_requirement']['mA'], {'+12V': 1700, '-12V': 1600, '+5V': 300})
         self.assertEqual(lv['transient_requirement_20ms']['mA'], {'+12V': 2000, '-12V': 1900, '+5V': 400})
+        # Owner decision 2026-11-21: the MC04-S5 swap's +12 V rule result equals the 1700 mA contract (0 mA margin, #34).
         self.assertEqual(lv['canonical_planning_all_upper_terms']['continuous_rule_result_mA'],
-                         {'+12V': 1600, '-12V': 1600, '+5V': 300})
+                         {'+12V': 1700, '-12V': 1600, '+5V': 300})
 
     def test_no_blanket_halving_of_analog_rails(self):
         lv = self.data['levels']

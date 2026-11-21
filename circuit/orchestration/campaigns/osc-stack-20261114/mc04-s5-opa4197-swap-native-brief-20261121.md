@@ -82,8 +82,8 @@ The run (`d25dd9f`, `b610521`, `bd76809`, `102d9c1`) made the spec swap correctl
 packages changed MPN, refs unchanged, rail deltas exactly +17.2 mA typical / +25.0 mA maximum per analog rail,
 panel hardware unchanged. The manager regenerated the power-contract decomposition and ledger (`decompose.py`,
 `ledger.py`; the canonical +12 V requirement is now 1700 mA, equal to the contract, so the +12 V contract margin is
-0 mA). That goes to the owner; the four `test_decompose.py`/`test_ledger.py` tripwires stay failing until the
-owner rules. Do not edit them. Fix these and push:
+0 mA). The owner accepted that on 2026-11-21 12:55Z (tracked in #34); the manager updated `ledger.py` and the four
+pinned tests. Do not edit them. Fix these and push:
 
 1. **Simulation seeding.** The seed gate at `design/spec/cells/sweep_input_buffer_vendor.py:254` changed the
    reviewed OPA4196 S4 rows (0 pF / 1 µA 110.4° → 107.3°; 0 pF / 10 µA 92.72° → 85.9°), and the OPA4197

@@ -51,6 +51,12 @@ The added analog-rail current (+17.2 mA typical, +25.0 mA maximum per rail) is c
 −12 V overshoot. The 25 mm rule for the buffers placed 26–32 mm away is still an open review item for the
 generator stage.
 
+Owner decision, 2026-11-21 12:55Z: "Accept 0 mA, track in #34". The swap raises the canonical +12 V continuous
+rule result to 1700 mA, equal to the PD contract, so the +12 V contract margin kept on 2026-11-04 is now 0 mA.
+Consequences recorded by the regenerated power-contract ledger: the positive-converter efficiency needed at
+15 V / 3 A rises from 0.939 to 0.973, and the ideal-high low-power case now needs a 21.3 mA +12 V reduction
+(previously 0). Both are #34's to resolve.
+
 ## The question for the design authority: which remedy to develop for the 26 unplaced ICs
 
 The cumulative record has 438 displaced footprints. 412 have courtyard-level replacements and 26
