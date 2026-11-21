@@ -6,8 +6,7 @@ from design.spec.modules.envelope import ROOT,family,INSTANCES
 RAILS=('+12V','-12V','+5V')
 LOADS={r['id']:r for r in json.loads((ROOT/'design/standard/rail-budget-preliminary.json').read_text())['loads']}
 
-def build():
- f=family();counts=Counter({p.key.rsplit('.',1)[0]:p.symbol.split(':')[-1] for p in f.parts if p.prefix=='U'}.values())
+def worksheet(counts):
  rows=[];typ=dict.fromkeys(RAILS,0.);upper=typ.copy()
  def add(name,count,a,b,basis):
   a=dict(zip(RAILS,a));b=dict(zip(RAILS,b))
@@ -26,7 +25,16 @@ def build():
  add('Comparator pullups',3,(0,0,.5),(0,0,5/4.7),'Three 4.7k pullups; unused comparator output is unconnected.')
  add('Five control-contact pulls',5,(0,0,.25),(0,0,.5),'10k pulls, conservative five simultaneous contacts; includes button/toggle RC charging allowance only at nominal voltage.')
  add('Input isolation enables',1,(0,0,.15),(0,0,.25),'Three approximately5V/101k input isolator enables and input-current reserve.')
- return {'schema_version':1,'module':'envelope','authority':'PROPOSAL (planning, owner-delegated)','status':'Captured package planning worksheet; not measured current or guaranteed maximum','IC_packages_per_instance':dict(sorted(counts.items())),'breakdown':rows,'instances':[{'instance':i,'fitted_package_count':instance_package_counts(f,i),'planning_typical_mA':{r:round(typ[r],6) for r in RAILS},'planning_upper_mA':{r:round(upper[r],6) for r in RAILS},'guaranteed_maximum_mA':dict.fromkeys(RAILS,None)} for i in INSTANCES],'planning_upper_total_mA':{r:round(len(INSTANCES)*upper[r],6) for r in RAILS},'guaranteed_maximum_status':'NOT ESTABLISHED - actual bias, timing, temperature, output loading, startup and faults unqualified','decoupling_nF_per_instance':100*len([p for p in f.parts if p.key.startswith('C_DEC_')]),'note':'Expanded physical logic and buffering replace the rough two-logic-IC handoff estimate. No module bulk allocation; #33/#34 must reconcile actual captured package counts and bench currents.'}
+ return rows,typ,upper
+
+def build():
+ # Package counts and rail planning are per instance: an instance-scoped TSSOP retention may change a
+ # package's identity and current (MC04-S5: E3 U4346 OPA4196IDR -> OPA4197IPWR).
+ f=family();counts=Counter({p.key.rsplit('.',1)[0]:p.symbol.split(':')[-1] for p in f.parts if p.prefix=='U'}.values())
+ rows,_,_=worksheet(counts)
+ per={i:instance_package_counts(f,i) for i in INSTANCES}
+ sheets={i:worksheet(Counter(per[i])) for i in INSTANCES}
+ return {'schema_version':1,'module':'envelope','authority':'PROPOSAL (planning, owner-delegated)','status':'Captured package planning worksheet; not measured current or guaranteed maximum','IC_packages_per_instance':dict(sorted(counts.items())),'breakdown':rows,'instances':[{'instance':i,'fitted_package_count':per[i],'breakdown':sheets[i][0],'planning_typical_mA':{r:round(sheets[i][1][r],6) for r in RAILS},'planning_upper_mA':{r:round(sheets[i][2][r],6) for r in RAILS},'guaranteed_maximum_mA':dict.fromkeys(RAILS,None)} for i in INSTANCES],'planning_upper_total_mA':{r:round(sum(sheets[i][2][r] for i in INSTANCES),6) for r in RAILS},'guaranteed_maximum_status':'NOT ESTABLISHED - actual bias, timing, temperature, output loading, startup and faults unqualified','decoupling_nF_per_instance':100*len([p for p in f.parts if p.key.startswith('C_DEC_')]),'note':'Expanded physical logic and buffering replace the rough two-logic-IC handoff estimate. No module bulk allocation; #33/#34 must reconcile actual captured package counts and bench currents.'}
 
 def main(check=False):
  p=ROOT/'design/reports/current/envelope.json';s=json.dumps(build(),indent=2)+'\n'

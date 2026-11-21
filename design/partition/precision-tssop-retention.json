@@ -150,7 +150,78 @@
     "U7405"
    ],
    "reason": "SOIC-14 cluster found no legal pose within 24 mm of its pre-adoption slot (phase 32 floorplan)"
+  },
+  {
+   "family": "oscillator",
+   "package_key": "IO_EXTRA_18",
+   "board_region": "jack",
+   "board": "JL",
+   "instances": [
+    "O5"
+   ],
+   "refs": [
+    "U1518"
+   ],
+   "reason": "MC04 stage 5: owner decision 2026-11-21 10:18Z 'Accept, fix the rail in #34' (circuit/orchestration/campaigns/osc-stack-20261114/mc04-remedy-decision-packet-20261120.md): the front-board input-buffer package moves to OPA4197IPWR (TSSOP-14) and stays on its front board; MC04-S4 model evidence design/reports/spice/input-buffer-vendor.json (same die; package only)"
+  },
+  {
+   "family": "oscillator",
+   "package_key": "PACK_OPA4196IDR_4",
+   "board_region": "jack",
+   "board": "JL",
+   "instances": [
+    "O2",
+    "O4"
+   ],
+   "refs": [
+    "U1216",
+    "U1416"
+   ],
+   "from_mpn": "OPA4196IDR",
+   "reason": "MC04 stage 5: owner decision 2026-11-21 10:18Z 'Accept, fix the rail in #34' (circuit/orchestration/campaigns/osc-stack-20261114/mc04-remedy-decision-packet-20261120.md): the front-board input-buffer package moves to OPA4197IPWR (TSSOP-14) and stays on its front board; MC04-S4 model evidence design/reports/spice/input-buffer-vendor.json; unit 4 general_output changes with it"
+  },
+  {
+   "family": "envelope",
+   "package_key": "CORE_PACK_OPA4196IDR_4",
+   "board_region": "jack",
+   "board": "JR",
+   "instances": [
+    "E3"
+   ],
+   "refs": [
+    "U4346"
+   ],
+   "from_mpn": "OPA4196IDR",
+   "reason": "MC04 stage 5: owner decision 2026-11-21 10:18Z 'Accept, fix the rail in #34' (circuit/orchestration/campaigns/osc-stack-20261114/mc04-remedy-decision-packet-20261120.md): the front-board input-buffer package moves to OPA4197IPWR (TSSOP-14) and stays on its front board; MC04-S4 model evidence design/reports/spice/input-buffer-vendor.json; unit 4 general_output changes with it"
+  },
+  {
+   "family": "mix4_vca",
+   "package_key": "G1_PACK_OPA4196IDR_5",
+   "board_region": "jack",
+   "board": "JR",
+   "instances": [
+    "M4A"
+   ],
+   "refs": [
+    "U8314"
+   ],
+   "from_mpn": "OPA4196IDR",
+   "reason": "MC04 stage 5: owner decision 2026-11-21 10:18Z 'Accept, fix the rail in #34' (circuit/orchestration/campaigns/osc-stack-20261114/mc04-remedy-decision-packet-20261120.md): the front-board input-buffer package moves to OPA4197IPWR (TSSOP-14) and stays on its front board; MC04-S4 model evidence design/reports/spice/input-buffer-vendor.json"
+  },
+  {
+   "family": "mix4_vca",
+   "package_key": "G2_PACK_OPA4196IDR_0",
+   "board_region": "jack",
+   "board": "JR",
+   "instances": [
+    "M4B"
+   ],
+   "refs": [
+    "U8417"
+   ],
+   "from_mpn": "OPA4196IDR",
+   "reason": "MC04 stage 5: owner decision 2026-11-21 10:18Z 'Accept, fix the rail in #34' (circuit/orchestration/campaigns/osc-stack-20261114/mc04-remedy-decision-packet-20261120.md): the front-board input-buffer package moves to OPA4197IPWR (TSSOP-14) and stays on its front board; MC04-S4 model evidence design/reports/spice/input-buffer-vendor.json; unit 2 general_output and units 3-4 magnitude_indicator change with it (OPA4197 indicator loop simulated in the same report before this entry)"
   }
  ],
- "instance_scope": "An entry with 'instances' applies only to those instances. Instances that retain the same packages share one cloned master sheet, '<family>_tssop' when the family has one such group, else '<family>_tssop_<instances>'; a shared hierarchical sheet carries one footprint per symbol."
+ "instance_scope": "An entry with 'instances' applies only to those instances. Instances that retain the same packages share one cloned master sheet, '<family>_tssop' when the family has one such group, else '<family>_tssop_<instances>'; a shared hierarchical sheet carries one footprint per symbol. An instance-scoped entry may name from_mpn 'OPA4196IDR' (MC04-S5) to map that OPA4196IDR package to OPA4197IPWR; without from_mpn the entry maps OPA4197IDR."
 }

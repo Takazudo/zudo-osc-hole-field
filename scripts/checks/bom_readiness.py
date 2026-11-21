@@ -32,6 +32,8 @@ def build():
     value_only = collections.Counter()
     placements = 0
     for family in families:
+        if not family_instances[family.name]:
+            continue  # every instance renders a TSSOP retention clone (MC04-S5: mix4_vca)
         packages = {}
         for part in family.parts:
             # Physical reference, not symbol prefix: dual Q packages also have units.

@@ -28,11 +28,11 @@ class SupplyArchitectureTests(unittest.TestCase):
     def test_requirements_are_not_capacity(self):
         r=self.build()
         self.assertEqual(r['minimum_arithmetic_independent_sources'],3)
-        self.assertEqual(r['selected_requirement']['minimum_continuous_mA'],{'+12V':1600,'-12V':1600,'+5V':300})
+        self.assertEqual(r['selected_requirement']['minimum_continuous_mA'],{'+12V':1700,'-12V':1600,'+5V':300})  # MC04-S5
         self.assertTrue(all(v is None for v in r['measured_source_capacity_mA'].values()))
 
     def test_declared_continuous_requirement_cannot_override_ledger(self):
-        self.reject(lambda c: c['source_requirement']['minimum_continuous_current_mA'].update({'+12V':1700}),
+        self.reject(lambda c: c['source_requirement']['minimum_continuous_current_mA'].update({'+12V':1800}),
                     'declared continuous-current contract')
         self.reject(lambda c: c['source_requirement'].pop('minimum_continuous_current_mA'),
                     'declared continuous-current contract')
@@ -60,8 +60,9 @@ class SupplyArchitectureTests(unittest.TestCase):
     def test_historical_candidate_overload_is_reported_without_raising_limits(self):
         r=self.build();a=r['three_source_evaluation']['A']
         self.assertEqual(a['status'],'REJECTED - pinned current ceiling exceeded')
-        self.assertAlmostEqual(a['margin_to_pinned_ceiling_mA']['-12V'],-8.344091)
-        self.assertEqual(r['selected_requirement']['minimum_transient_mA'],{'+12V':1900,'-12V':1900,'+5V':400})
+        # MC04-S5: two OPA4197IPWR swaps in domain A (O2, O4) add 10 mA on each analog rail; +12 V continuous 1700 mA.
+        self.assertAlmostEqual(a['margin_to_pinned_ceiling_mA']['-12V'],-18.344091)
+        self.assertEqual(r['selected_requirement']['minimum_transient_mA'],{'+12V':2000,'-12V':1900,'+5V':400})
 
     def test_missing_module(self):
         self.reject(lambda c:c['domains']['EXT']['module_instances'].pop(), 'module allocation')

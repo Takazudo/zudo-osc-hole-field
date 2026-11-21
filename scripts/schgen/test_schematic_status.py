@@ -15,13 +15,13 @@ class SchematicStatus(unittest.TestCase):
         report = json.loads(OSCILLATOR_REPORT.read_text())
         body = oscillator_current(report)
         self.assertIn('4 `OPA4197IDR`', body)
-        self.assertIn('325.500 / 331.000 / 30.000', body)
+        self.assertIn('335.500 / 341.000 / 30.000', body)
         self.assertIn('NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED', body)
         report['sheets'][0]['fitted_IC_packages_per_instance']['OPA4197IDR'] += 1
         report['planning_upper_total_mA']['+12V'] += 6
         body = oscillator_current(report)
         self.assertIn('5 `OPA4197IDR`', body)
-        self.assertIn('331.500 / 331.000 / 30.000', body)
+        self.assertIn('341.500 / 341.000 / 30.000', body)
 
     def test_oscillator_population_cannot_omit_or_duplicate_a_sheet(self):
         report = json.loads(OSCILLATOR_REPORT.read_text())
@@ -35,7 +35,7 @@ class SchematicStatus(unittest.TestCase):
     def test_current_mixer_totals_and_partial_scope(self):
         body = sections(self.report)['schematic-family-current']
         self.assertIn('`mix5` | M5A, M5B | 72.200 / 71.200 / 1.000', body)
-        self.assertIn('`mix4_vca` | M4A, M4B | 86.200 / 85.200 / 1.000', body)
+        self.assertIn('`mix4_vca` | M4A, M4B | 96.200 / 95.200 / 1.000', body)
         sh = next(line for line in body.splitlines() if '`sample_hold`' in line)
         self.assertIn('106.900 / 104.500 / 0.000', sh)
         self.assertIn('Partial known subtotal', sh)

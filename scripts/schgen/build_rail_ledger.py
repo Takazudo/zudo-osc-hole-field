@@ -98,7 +98,10 @@ def worksheet_loads(report):
         if sheet is None:
             raise ValueError(f"missing worksheet sheet {row['instance']}")
         subtotal = {r: 0.0 for r in RAILS}
-        for index, item in enumerate(sheet['breakdown']):
+        # A worksheet may carry a per-instance breakdown (instance-scoped package retention changes
+        # an instance's package identities and current); otherwise the sheet breakdown applies.
+        own = next((r for r in source.get('instances', []) if isinstance(r, dict) and r.get('instance') == row['instance']), {})
+        for index, item in enumerate(own.get('breakdown', sheet['breakdown'])):
             count = item.get('whole_packages', item.get('count', item.get('quantity', 1)))
             unit = item.get('planning_unit_mA', item.get('planning_maximum_unit_mA'))
             typical = item.get('typical_unit_mA')

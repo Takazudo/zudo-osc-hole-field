@@ -254,14 +254,14 @@
     "O2:3": {
       "domain": "EXT",
       "rails": [
-        "+12V"
+        "+12V",
+        "-12V"
       ]
     },
     "O2:4": {
       "domain": "EXT",
       "rails": [
-        "+12V",
-        "-12V"
+        "+12V"
       ]
     },
     "O2:5": {
@@ -279,6 +279,13 @@
       ]
     },
     "O2:7": {
+      "domain": "EXT",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O2:8": {
       "domain": "EXT",
       "rails": [
         "+5V"
@@ -423,14 +430,14 @@
     "O5:3": {
       "domain": "EXT",
       "rails": [
-        "+12V"
+        "+12V",
+        "-12V"
       ]
     },
     "O5:4": {
       "domain": "EXT",
       "rails": [
-        "+12V",
-        "-12V"
+        "+12V"
       ]
     },
     "O5:5": {
@@ -448,6 +455,13 @@
       ]
     },
     "O5:7": {
+      "domain": "EXT",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O5:8": {
       "domain": "EXT",
       "rails": [
         "+5V"
@@ -800,13 +814,14 @@
     "E2:5": {
       "domain": "EXT",
       "rails": [
-        "+12V"
+        "+12V",
+        "-12V"
       ]
     },
     "E2:6": {
       "domain": "EXT",
       "rails": [
-        "+5V"
+        "+12V"
       ]
     },
     "E2:7": {
@@ -830,21 +845,20 @@
     "E2:10": {
       "domain": "EXT",
       "rails": [
-        "+12V",
-        "-12V"
+        "+5V"
       ]
     },
     "E2:11": {
       "domain": "EXT",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "E2:12": {
       "domain": "EXT",
       "rails": [
-        "+12V",
-        "-12V"
+        "+5V"
       ]
     },
     "E2:13": {
@@ -857,7 +871,8 @@
     "E2:14": {
       "domain": "EXT",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "E2:15": {
@@ -867,6 +882,12 @@
       ]
     },
     "E2:16": {
+      "domain": "EXT",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E2:17": {
       "domain": "EXT",
       "rails": [
         "+5V"
@@ -910,13 +931,14 @@
     "E3:5": {
       "domain": "EXT",
       "rails": [
-        "+12V"
+        "+12V",
+        "-12V"
       ]
     },
     "E3:6": {
       "domain": "EXT",
       "rails": [
-        "+5V"
+        "+12V"
       ]
     },
     "E3:7": {
@@ -940,21 +962,20 @@
     "E3:10": {
       "domain": "EXT",
       "rails": [
-        "+12V",
-        "-12V"
+        "+5V"
       ]
     },
     "E3:11": {
       "domain": "EXT",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "E3:12": {
       "domain": "EXT",
       "rails": [
-        "+12V",
-        "-12V"
+        "+5V"
       ]
     },
     "E3:13": {
@@ -967,7 +988,8 @@
     "E3:14": {
       "domain": "EXT",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "E3:15": {
@@ -977,6 +999,12 @@
       ]
     },
     "E3:16": {
+      "domain": "EXT",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E3:17": {
       "domain": "EXT",
       "rails": [
         "+5V"
@@ -1680,10 +1708,17 @@
     "M4A:9": {
       "domain": "EXT",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "M4A:10": {
+      "domain": "EXT",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "M4A:11": {
       "domain": "EXT",
       "rails": [
         "+5V"
@@ -1755,10 +1790,17 @@
     "M4B:9": {
       "domain": "EXT",
       "rails": [
-        "+5V"
+        "+12V",
+        "-12V"
       ]
     },
     "M4B:10": {
+      "domain": "EXT",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "M4B:11": {
       "domain": "EXT",
       "rails": [
         "+5V"
@@ -2754,7 +2796,7 @@
     },
     "current_limit_contract": "Selected source or inlet must deliver minimum transient requirements with a positive planning window to maximum_delivered_current_mA, then bound each rail including tolerance to that maximum and coordinate all-rail shutdown. The 100 mA windows are proposals, not proven realizable limiter tolerances. Maximums are interface limits, not device ratings. Unbounded overshoot/fault energy cannot be admitted by the contact/cable checker; actual limiter dynamics require #52 circuit evidence and #57 tests.",
     "minimum_continuous_current_mA": {
-      "+12V": 1600,
+      "+12V": 1700,
       "-12V": 1600,
       "+5V": 300
     }

@@ -9,8 +9,8 @@
  },
  "generated_by": "scripts/checks/build_adopted_placement_pins.py",
  "counts": {
-  "JL": 855,
-  "JR": 849,
+  "JL": 854,
+  "JR": 846,
   "K": 3329
  },
  "free_swapped": [
@@ -36,6 +36,7 @@
   "U1209",
   "U1210",
   "U1211",
+  "U1216",
   "U1218",
   "U1301",
   "U1302",
@@ -52,6 +53,7 @@
   "U1409",
   "U1410",
   "U1411",
+  "U1416",
   "U1501",
   "U1502",
   "U1503",
@@ -59,7 +61,6 @@
   "U1509",
   "U1510",
   "U1511",
-  "U1518",
   "U1602",
   "U1603",
   "U1604",
@@ -110,6 +111,7 @@
   "U4304",
   "U4339",
   "U4340",
+  "U4346",
   "U4402",
   "U4403",
   "U4404",
@@ -169,12 +171,14 @@
   "U8305",
   "U8306",
   "U8308",
+  "U8314",
   "U8402",
   "U8403",
   "U8404",
   "U8405",
   "U8406",
-  "U8408"
+  "U8408",
+  "U8417"
  ],
  "swapped_slots": [
   {
@@ -552,6 +556,23 @@
    "bypass_cluster": "U1211"
   },
   {
+   "old_footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
+   "ref": "U1216",
+   "board": "JL",
+   "fixed": false,
+   "x_mm": 36.73,
+   "y_mm": 71.55,
+   "rotation_deg": 0,
+   "side": "B.Cu",
+   "courtyard_mm": [
+    33.029999999999994,
+    66.6,
+    40.43,
+    76.22999999999999
+   ],
+   "bypass_cluster": "U1216"
+  },
+  {
    "old_footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
    "ref": "U1218",
    "board": "JL",
@@ -824,6 +845,23 @@
    "bypass_cluster": "U1411"
   },
   {
+   "old_footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
+   "ref": "U1416",
+   "board": "JL",
+   "fixed": false,
+   "x_mm": 70.73,
+   "y_mm": 71.55,
+   "rotation_deg": 0,
+   "side": "B.Cu",
+   "courtyard_mm": [
+    67.03,
+    66.6,
+    74.43,
+    76.22999999999999
+   ],
+   "bypass_cluster": "U1416"
+  },
+  {
    "old_footprint": "zudo-osc-hole-field:TSSOP-16_4.4x5mm_P0.65mm",
    "ref": "U1501",
    "board": "JL",
@@ -941,23 +979,6 @@
     251.47
    ],
    "bypass_cluster": "U1511"
-  },
-  {
-   "old_footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
-   "ref": "U1518",
-   "board": "JL",
-   "fixed": false,
-   "x_mm": 90.46,
-   "y_mm": 78.02000000000001,
-   "rotation_deg": 90,
-   "side": "F.Cu",
-   "courtyard_mm": [
-    87.6,
-    74.17000000000002,
-    93.58999999999999,
-    81.87
-   ],
-   "bypass_cluster": "U1518"
   },
   {
    "old_footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
@@ -1805,6 +1826,23 @@
     40.74
    ],
    "bypass_cluster": "U4340"
+  },
+  {
+   "old_footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
+   "ref": "U4346",
+   "board": "JR",
+   "fixed": false,
+   "x_mm": 259.97,
+   "y_mm": 51.550000000000004,
+   "rotation_deg": 0,
+   "side": "B.Cu",
+   "courtyard_mm": [
+    256.27000000000004,
+    46.6,
+    263.67,
+    56.230000000000004
+   ],
+   "bypass_cluster": "U4346"
   },
   {
    "old_footprint": "zudo-osc-hole-field:TSSOP-16_4.4x5mm_P0.65mm",
@@ -2810,6 +2848,23 @@
    "bypass_cluster": "U8308"
   },
   {
+   "old_footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
+   "ref": "U8314",
+   "board": "JR",
+   "fixed": false,
+   "x_mm": 191.97,
+   "y_mm": 88.08000000000001,
+   "rotation_deg": 180,
+   "side": "B.Cu",
+   "courtyard_mm": [
+    188.27,
+    83.4,
+    195.67,
+    93.03000000000002
+   ],
+   "bypass_cluster": "U8314"
+  },
+  {
    "old_footprint": "zudo-osc-hole-field:TSSOP-16_4.4x5mm_P0.65mm",
    "ref": "U8402",
    "board": "JR",
@@ -2910,6 +2965,23 @@
     203.47
    ],
    "bypass_cluster": "U8408"
+  },
+  {
+   "old_footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
+   "ref": "U8417",
+   "board": "JR",
+   "fixed": false,
+   "x_mm": 208.97,
+   "y_mm": 55.85,
+   "rotation_deg": 0,
+   "side": "B.Cu",
+   "courtyard_mm": [
+    205.27,
+    50.9,
+    212.67,
+    60.53
+   ],
+   "bypass_cluster": "U8417"
   }
  ],
  "reservations": [
@@ -77425,23 +77497,6 @@
   },
   {
    "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
-   "ref": "U1216",
-   "board": "JL",
-   "fixed": false,
-   "x_mm": 36.73,
-   "y_mm": 71.55,
-   "rotation_deg": 0,
-   "side": "B.Cu",
-   "courtyard_mm": [
-    33.029999999999994,
-    66.6,
-    40.43,
-    76.22999999999999
-   ],
-   "bypass_cluster": "U1216"
-  },
-  {
-   "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
    "ref": "U1217",
    "board": "JL",
    "fixed": false,
@@ -77765,23 +77820,6 @@
   },
   {
    "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
-   "ref": "U1416",
-   "board": "JL",
-   "fixed": false,
-   "x_mm": 70.73,
-   "y_mm": 71.55,
-   "rotation_deg": 0,
-   "side": "B.Cu",
-   "courtyard_mm": [
-    67.03,
-    66.6,
-    74.43,
-    76.22999999999999
-   ],
-   "bypass_cluster": "U1416"
-  },
-  {
-   "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
    "ref": "U1417",
    "board": "JL",
    "fixed": false,
@@ -77983,6 +78021,23 @@
     93.03000000000002
    ],
    "bypass_cluster": "U1517"
+  },
+  {
+   "footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+   "ref": "U1518",
+   "board": "JL",
+   "fixed": false,
+   "x_mm": 90.46,
+   "y_mm": 78.02000000000001,
+   "rotation_deg": 90,
+   "side": "F.Cu",
+   "courtyard_mm": [
+    87.6,
+    74.17000000000002,
+    93.58999999999999,
+    81.87
+   ],
+   "bypass_cluster": "U1518"
   },
   {
    "footprint": "zudo-osc-hole-field:SOIC-8_3.9x4.9mm_P1.27mm",
@@ -80991,23 +81046,6 @@
     53.92
    ],
    "bypass_cluster": "U4345"
-  },
-  {
-   "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
-   "ref": "U4346",
-   "board": "JR",
-   "fixed": false,
-   "x_mm": 259.97,
-   "y_mm": 51.550000000000004,
-   "rotation_deg": 0,
-   "side": "B.Cu",
-   "courtyard_mm": [
-    256.27000000000004,
-    46.6,
-    263.67,
-    56.230000000000004
-   ],
-   "bypass_cluster": "U4346"
   },
   {
    "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
@@ -84631,23 +84669,6 @@
    "bypass_cluster": "U8313"
   },
   {
-   "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
-   "ref": "U8314",
-   "board": "JR",
-   "fixed": false,
-   "x_mm": 191.97,
-   "y_mm": 88.08000000000001,
-   "rotation_deg": 180,
-   "side": "B.Cu",
-   "courtyard_mm": [
-    188.27,
-    83.4,
-    195.67,
-    93.03000000000002
-   ],
-   "bypass_cluster": "U8314"
-  },
-  {
    "footprint": "zudo-osc-hole-field:SOIC-8_3.9x4.9mm_P1.27mm",
    "ref": "U8315",
    "board": "JR",
@@ -84901,23 +84922,6 @@
     82.93
    ],
    "bypass_cluster": "U8416"
-  },
-  {
-   "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
-   "ref": "U8417",
-   "board": "JR",
-   "fixed": false,
-   "x_mm": 208.97,
-   "y_mm": 55.85,
-   "rotation_deg": 0,
-   "side": "B.Cu",
-   "courtyard_mm": [
-    205.27,
-    50.9,
-    212.67,
-    60.53
-   ],
-   "bypass_cluster": "U8417"
   },
   {
    "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",

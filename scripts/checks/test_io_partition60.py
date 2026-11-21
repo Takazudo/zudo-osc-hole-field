@@ -18,7 +18,8 @@ class PowerRequirementTests(unittest.TestCase):
     def test_return_limit_is_not_sum_of_transient_minima(self):
         rows = power_requirements(self.contract, self.supply)
         self.assertEqual(rows['AGND']['current_mA']['whole_domain_maximum_return_magnitude'], 4600)
-        self.assertEqual(rows['AGND']['current_mA']['sum_of_rail_transient_minima'], 4200)
+        # MC04-S5: +12 V continuous requirement 1600 -> 1700 mA raises the transient sum by 100 mA.
+        self.assertEqual(rows['AGND']['current_mA']['sum_of_rail_transient_minima'], 4300)
         self.assertNotIn('whole_domain_transient_requirement', rows['AGND']['current_mA'])
 
     def test_stale_report_after_authored_source_change_is_rejected(self):
@@ -35,7 +36,8 @@ class PowerRequirementTests(unittest.TestCase):
         rows = {r['net']: r for r in report['allowed_crossings']}
         self.assertEqual(rows['AGND']['current_mA']['whole_domain_maximum_return_magnitude'], 4625)
         self.assertEqual(rows['+5V']['current_mA']['whole_domain_maximum_delivered_current'], 525)
-        self.assertEqual(rows['AGND']['current_mA']['sum_of_rail_transient_minima'], 4200)
+        # MC04-S5: +12 V continuous requirement 1600 -> 1700 mA raises the transient sum by 100 mA.
+        self.assertEqual(rows['AGND']['current_mA']['sum_of_rail_transient_minima'], 4300)
 
     def test_stale_return_or_continuous_derivation_is_rejected(self):
         for key, value in [('worst_single_return_contact_A', 4.4),
@@ -170,5 +172,65 @@ class BoundaryTests(unittest.TestCase):
         bypasses = [p for p in stage if p['decouples_ref']==amp['ref']]
         self.assertEqual(len(bypasses), 2)
         self.assertEqual({p['mpn'] for p in bypasses}, {'GRM188R71H104KA93D'})
+
+
+class TssopFromMpnTests(unittest.TestCase):
+    """MC04-S5: instance-scoped retention entries may map OPA4196IDR packages to OPA4197IPWR."""
+
+    @classmethod
+    def setUpClass(cls):
+        from scripts.schgen.core import designator
+        families, instances = specification()
+        by_name = {f.name: f for f in families}
+        cls.packages = {}
+        for inst in instances:
+            for p in by_name[inst.family].parts:
+                if p.prefix == 'U' and not p.dnp:
+                    cls.packages.setdefault(designator(p, inst), (inst, p))
+
+    def test_named_input_buffer_packages_become_opa4197ipwr(self):
+        from design.spec.modules.io_partition import TSSOP_INSTANCE_RETENTION
+        swapped = {r for e in TSSOP_INSTANCE_RETENTION if e.get('from_mpn') == 'OPA4196IDR' for r in e['refs']}
+        self.assertTrue(swapped)
+        for ref in swapped:
+            inst, part = self.packages[ref]
+            self.assertEqual((part.value, part.attributes['MPN']), ('OPA4197IPWR', 'OPA4197IPWR'), ref)
+            self.assertIn('TSSOP-14', part.footprint, ref)
+            self.assertEqual(part.attributes.get('BoardRegion'), 'jack', ref)
+
+    def test_other_opa4196_packages_are_unchanged(self):
+        from design.spec.modules.io_partition import TSSOP_INSTANCE_RETENTION
+        swapped = {(i, e['family'], e['package_key']) for e in TSSOP_INSTANCE_RETENTION
+                   if e.get('from_mpn') == 'OPA4196IDR' for i in e['instances']}
+        from design.spec.modules.io_partition import base_family
+        kept = [(ref, part) for ref, (inst, part) in self.packages.items()
+                if (inst.name, base_family(inst.family), part.key.rsplit('.', 1)[0]) not in swapped
+                and part.key.rsplit('.', 1)[0].find('OPA4196IDR') >= 0]
+        self.assertTrue(kept)
+        for ref, part in kept:
+            self.assertEqual(part.value, 'OPA4196IDR', ref)
+
+    def test_unmatched_entry_raises(self):
+        from design.spec.modules import io_partition
+        from design.spec.modules.oscillator import specification as osc
+        families, instances = osc()
+        entry = {'family': 'oscillator', 'package_key': 'NO_SUCH_PACKAGE', 'board_region': 'jack',
+                 'instances': ['O1'], 'from_mpn': 'OPA4196IDR'}
+        saved = list(io_partition.TSSOP_INSTANCE_RETENTION)
+        try:
+            io_partition.TSSOP_INSTANCE_RETENTION[:] = saved + [entry]
+            with self.assertRaisesRegex(ValueError, 'no OPA4196IDR NO_SUCH_PACKAGE in jack'):
+                io_partition.split_tssop_instances(families, instances)
+        finally:
+            io_partition.TSSOP_INSTANCE_RETENTION[:] = saved
+
+    def test_from_mpn_rules(self):
+        from design.spec.modules.io_partition import validate_retention
+        base = {'family': 'oscillator', 'package_key': 'K', 'board_region': 'jack'}
+        with self.assertRaisesRegex(ValueError, 'unsupported from_mpn'):
+            validate_retention([{**base, 'instances': ['O1'], 'from_mpn': 'TL074'}])
+        with self.assertRaisesRegex(ValueError, 'instance-scoped'):
+            validate_retention([{**base, 'from_mpn': 'OPA4196IDR'}])
+        validate_retention([{**base, 'instances': ['O1'], 'from_mpn': 'OPA4196IDR'}, {**base, 'instances': ['O1']}])
 
 if __name__=='__main__':unittest.main()
