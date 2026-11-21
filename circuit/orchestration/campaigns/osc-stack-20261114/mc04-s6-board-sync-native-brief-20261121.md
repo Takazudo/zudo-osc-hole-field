@@ -71,3 +71,30 @@ Push to `claude/project-thread-iw3gai`, then report:
 - Use the machine-wide heavy guard; one native job at a time.
 
 Native result: **NOT RUN** at this brief. Every schematic and PCB remains an unvalidated draft.
+
+## Revision 1: manager ruling on the stopped board sync (2026-11-21)
+
+The run (`285086b1`, `065df168`, `354beaf8`) stopped correctly before saving: syncing the six TSSOP-14
+footprints would orphan 92 routed copper ends on 48 nets (JL 44 on 22, JR 48 on 26, including ±12 V), recorded in
+`mc04-s6-sync-stop-20261122.json`. The link-gate fixes, the D4309 cap and the regeneration are accepted for
+review separately. D4309 stays a reported fit conflict at 21.27 mm.
+
+Ruling: these boards are unvalidated drafts, and stage 7 moves six blocks off JL/JR, which changes the routing on
+those boards again. So do not re-route now. Proceed as follows:
+
+1. Write a small, tested script (for example `scripts/pcbgen/strip_swapped_stubs.py`, run through
+   `scripts/kicad/run.sh`) that removes only the copper attached to the swapped packages' pads. For each copper
+   end on a pad of U1216, U1416, U1518, U4346, U8314 or U8417, follow the connected track segments to the first via,
+   pad of another part, or T-junction, and remove that chain. Do not remove the via, any zone, any other track or any
+   unowned item.
+2. Write every removed item to a retained record
+   (`circuit/orchestration/campaigns/osc-stack-20261114/mc04-s6-stripped-stubs-20261122.json`): board, UUID,
+   net, layer, endpoints, width. Fail if a chain reaches more than 20 mm or touches a zone; report it instead.
+3. Run `sync.py` and `place.py` on the stripped boards and save. Then run KiCad 10.0.6 DRC with schematic parity on
+   JL and JR. Report counts by type against the committed boards. New unconnected items on the 48 nets are
+   expected and must be listed. Any other new violation (clearance, shorts, courtyard) is a failure to report, not
+   to suppress.
+4. Confirm `python3 scripts/checks/instrument_readiness.py --check` reaches 0 mismatches, then run
+   `regen-all.sh --check`, `pnpm circuit:check` and the stack geometry checks.
+
+The re-route of JL and JR is deferred to the routing pass after stage 7 and is recorded as open; it is not a pass.
