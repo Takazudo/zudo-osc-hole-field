@@ -66,6 +66,10 @@ def input_hashes(inp):
     out[FIXING_FILE + '#access_holes'] = pinned_object(inp['fixing_list']['access_holes'])
     out[COMPLIANCE_FILE + '#inputs_sha256'] = inp['compliance']['inputs_sha256']
     out[COMPLIANCE_FILE + '#nodes'] = pinned_object(inp['compliance']['nodes'])
+    # generate() embeds the record totals of the a7 comparison file, so it is a provenance input too.
+    a7 = links.LINK_DIR / 'link-gate-a7-comparisons.json'
+    if a7.exists():
+        out[a7.resolve().relative_to(Path(root).resolve()).as_posix()] = sg.sha256_file(a7)
     return out
 
 
@@ -904,18 +908,21 @@ def link_record(ctx, lid, joint, front, members, site_by, size):
             'cable_length_mm': size['cable_length_mm'], 'positions': pos}
 
 
-def place(ctx, placed, rec, size, centre, own, offsets=None, grid=None, best=None):
+def place(ctx, placed, rec, size, centre, own, offsets=None, grid=None, best=None, accept=None):
+    """`accept`: the caller's site filter (as for search()); the lengthened-tail check uses it too, so a link
+    never takes a site that the filter rejects."""
     tally = {}
     ctx.model.memo_for(rec['id'])
     if best is None:
-        best, tally = search(ctx, placed, rec['front_board'], centre, size, own, offsets=offsets)
+        best, tally = search(ctx, placed, rec['front_board'], centre, size, own, offsets=offsets, accept=accept)
     if best is None:
         return False, tally
     _, _, geo, disp, d, (sx, sy), dist = best
     lengthened = geo['front_extension_mm'] > 0 or geo['K_extension_mm'] > 0
     only = False
     if lengthened:
-        b0, _ = search(ctx, placed, rec['front_board'], centre, size, own, lengthen=False, offsets=offsets)
+        b0, _ = search(ctx, placed, rec['front_board'], centre, size, own, lengthen=False, offsets=offsets,
+                       accept=accept)
         only = b0 is None
     for k in ('no_place', 'sites', 'nearest_misses', 'most_frequent_blockers', 'why_no_place'):
         rec.pop(k, None)

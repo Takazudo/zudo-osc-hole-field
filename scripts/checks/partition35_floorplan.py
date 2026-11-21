@@ -44,6 +44,22 @@ PROTECTION_DIODES=('BAV199,215','BAT54S,215')
 # evict D4309, D8333 and R8325, so JR also re-places evicted passives near their own slot (the
 # locality placer had moved D4309, an E3 input diode, 44.8 mm and to the other face).
 EVICTED_LOCAL_BOARDS=('K','JR')
+# MC04-S6: an evicted diode on a jack board is re-placed nearest-legal-first within CLUSTER_RADIUS_MM of
+# its slot (the 24 mm locality of design/partition/precision-tssop-retention.json), not by net-growth
+# cost, which had put D4309 21.5 mm away although legal poses exist 4-7 mm away. K keeps its placement.
+NEAREST_FIRST_EVICTED_BOARDS=('JL','JR')
+
+
+def nearest_first(ref,board):
+    """Evicted parts re-placed nearest-legal-first (distance from the slot) instead of by growth cost."""
+    return board in NEAREST_FIRST_EVICTED_BOARDS and ref.startswith('D')
+
+
+def ranked_offsets(offsets,cost,nearest=False):
+    """Candidate offsets (each within CLUSTER_RADIUS_MM) with their ranking key: distance from the slot
+    when nearest, else cost(dx,dy). Sorted ascending, ties by offset."""
+    key=(lambda dx,dy:math.hypot(dx,dy)) if nearest else cost
+    return sorted(((key(dx,dy),dx,dy) for dx,dy in offsets if math.hypot(dx,dy)<=CLUSTER_RADIUS_MM+1e-9))
 BUCKET_MM=5.0
 BYPASS_LIMIT_MM=json.loads((ROOT/'design/partition/bypass-placement-evidence.json').read_text())['proposal']['maximum_supply_pad_to_capacitor_rail_pad_mm']
 SCALE=4
@@ -246,10 +262,10 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
             g=max((hp(cx,cy)-base for hp,base in groups),default=0.0)
             return max(g,0.0)+GROWTH_DISTANCE_WEIGHT*math.hypot(cx-slot['x_mm'],cy-slot['y_mm'])
         return cost
-    def local_pose(part,slot,baseline=True,evict=True):
+    def local_pose(part,slot,baseline=True,evict=True,nearest=False):
         best=None;thetas=(slot['rotation_deg'],*(t for t in (0,90,180,270) if t!=slot['rotation_deg']))
         score=growth_cost(part,slot,baseline)
-        ranked=sorted(((score(slot['x_mm']+dx,slot['y_mm']+dy),dx,dy) for dx,dy in offsets))
+        ranked=ranked_offsets(offsets,lambda dx,dy:score(slot['x_mm']+dx,slot['y_mm']+dy),nearest)
         for side in (slot['side'],'B.Cu' if slot['side']=='F.Cu' else 'F.Cu'):
             penalty=0.0 if side==slot['side'] else FACE_PENALTY_MM
             shapes_side=[local for _,_,local in poses(part,side,thetas)]
@@ -265,6 +281,8 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
                     cost=d+EVICT_COST_MM*len(hit)
                     if best is None or cost<best[0]:best=(cost,side,placed,hit)
         return best
+    def pose_distance(best,ref,slot):
+        return next(math.hypot(px-slot['x_mm'],py-slot['y_mm']) for cpart,px,py,_,_ in best[2] if cpart['ref']==ref)
     def wide_pose(part,slot,evict=True):
         # Board-wide nearest fit on a grid holding hardware, placed clusters and every non-evictable pin.
         best=None
@@ -388,14 +406,21 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
                 placed_at[cpart['ref']]=(px,py,side)
             nudges.append({k:v for k,v in nudge.items() if k!='placed'})
     clusters.update(boots)
-    relocated={};far=[]
+    relocated={};far=[];capped_out=[]
     if board in EVICTED_LOCAL_BOARDS:
         # An evicted passive is re-placed near its own slot (least growth on its nets) without evicting
         # anything, instead of joining the board-wide locality placer.
         for ref in sorted(evicted):
             part=by_ref[ref];row=rows[ref];members[ref]=[]
             slot={'x_mm':row['x_mm'],'y_mm':row['y_mm'],'rotation_deg':row['rotation_deg'],'side':row['side']}
-            best=local_pose(part,slot,evict=False) or wide_pose(part,slot,evict=False)
+            if nearest_first(ref,board):
+                # Nearest legal pose: the 0.5 mm local search and the fine board-wide search, whichever
+                # lands closer to the slot; a pose beyond the cap is kept and reported.
+                found=[b for b in (local_pose(part,slot,evict=False,nearest=True),wide_pose(part,slot,evict=False)) if b]
+                best=min(found,key=lambda b:pose_distance(b,ref,slot),default=None)
+                if best is not None and pose_distance(best,ref,slot)>CLUSTER_RADIUS_MM+1e-9:capped_out.append(ref)
+            else:
+                best=local_pose(part,slot,evict=False) or wide_pose(part,slot,evict=False)
             if best is None:
                 far.append(ref);continue
             _,side,placed,_=best
@@ -421,7 +446,8 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
                    'cluster_move_mm':{'max':round(max(moves,default=0),3),'median':round(statistics.median(moves),3) if moves else 0},
                    'evicted':sorted(evicted),'protection_diodes_placed':len(boots),'protection_diodes_beyond_radius':boot_far,
                    **({'protection_diode_nudges':nudges} if nudges else {}),
-                   'evicted_replaced_near_slot':len(relocated),'evicted_to_locality':far}
+                   'evicted_replaced_near_slot':len(relocated),'evicted_to_locality':far,
+                   **({'evicted_diodes_beyond_cap':capped_out} if capped_out else {})}
     taken=set(pinned)|set(clusters)
     return [p for p in free if p['ref'] not in taken],out
 

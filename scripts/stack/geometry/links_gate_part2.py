@@ -219,7 +219,7 @@ def search_grids(ctx, placed, r, radius, accept=None):
         best, tally = lg.search(ctx, placed, front, centre, size, own, offsets=offs, accept=accept)
         tried.append(g)
         if best:
-            lg.place(ctx, placed, r, size, centre, own, offsets=offs, grid=g, best=best)
+            lg.place(ctx, placed, r, size, centre, own, offsets=offs, grid=g, best=best, accept=accept)
             return True, tried
         miss = lg.smallest_miss(tally)
     ctx.model.drop_memo(r['id'])
