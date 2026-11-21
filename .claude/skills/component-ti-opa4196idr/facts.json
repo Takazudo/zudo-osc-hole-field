@@ -294,6 +294,55 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-datasheet-20261031",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": "",
+      "fact_id": "fact-op-audio-gbw",
+      "class": "TYPICAL_CURVE",
+      "value": {
+        "typical": 2.5
+      },
+      "unit": "MHz",
+      "conditions": "Unity gain bandwidth; VS = +/-4 V to +/-18 V; TA = 25 C; VCM = VOUT = VS/2; RL = 10 kohm to VS/2. Typical only; no minimum stated.",
+      "locator": "src-op-audio-datasheet-20261031: PDF page index 7, printed page 8, Section 6.7 (continued), FREQUENCY RESPONSE, GBW row"
+    },
+    {
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-datasheet-20261031",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": "",
+      "fact_id": "fact-op-audio-input-impedance",
+      "class": "TYPICAL_CURVE",
+      "value": {
+        "differential_ohm": 100000000.0,
+        "differential_pF": 1.6,
+        "common_mode_ohm": 10000000000000.0,
+        "common_mode_pF": 6.4
+      },
+      "unit": "ohm and pF as named in each key",
+      "conditions": "Input impedance ZID (printed 100 || 1.6 MΩ || pF) and ZIC (printed 1 || 6.4, unit 10^13 Ω || pF); VS = +/-4 V to +/-18 V; TA = 25 C. Typical only.",
+      "locator": "src-op-audio-datasheet-20261031: PDF page index 6, printed page 7, Section 6.7, INPUT IMPEDANCE, ZID and ZIC rows"
+    },
+    {
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-datasheet-20261031",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": "",
+      "fact_id": "fact-op-audio-capacitive-load-guidance",
+      "class": "TYPICAL_CURVE",
+      "value": "Directly drives up to 1 nF of pure capacitive load in unity gain; some ringing can occur even with capacitive loads below 100 pF in unity-gain configurations with no or very light dc loads, where an RC snubber (619 ohm, 320 pF shown) or a 10-20 ohm series RISO is recommended; overshoot versus capacitive load is given only as typical curves (Figures 20 and 21).",
+      "unit": "NONE",
+      "conditions": "Application guidance, typical behaviour; no guaranteed capacitive-load limit or safe threshold is stated.",
+      "locator": "src-op-audio-datasheet-20261031: PDF page index 21-22, printed pages 22-23, Section 7.3.5 Capacitive Load and Stability, Figures 40-42"
     }
   ]
 }
