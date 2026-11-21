@@ -31,7 +31,8 @@ import budgets  # noqa: E402
 VT = 0.02585                  # thermal voltage at 300 K
 N_DIODE = 2.0                 # ASSUMED ideality; no retained BAS16GW fact
 N_LED = 2.0                   # ASSUMED ideality; no retained APHHS1005QWF/D fact
-CURRENTS_A = (1e-6, 1e-5, 1e-4, 1e-3)
+CURRENTS_A = (1e-6, 1e-5, 1e-4, 1e-3)   # reported points
+GRID_A = [10 ** (e / 8) for e in range(-56, -23)]  # 1e-7 to 1e-3 A, eighth-decade; pass/fail and worst cases
 PM_LIMIT_DEG = 45.0           # ASSUMED draft criterion
 FACT_SKILL = {'OPA4196IDR': ('component-ti-opa4196idr', 'fact-op-audio-gbw', 'fact-op-audio-input-impedance'),
               'OPA4197IPWR': ('component-ti-opa4197ipwr', 'fact-op-precision-gbw',
@@ -67,6 +68,23 @@ def margin(gbw, args):
     return lo, 90.0 + sum(math.degrees(cmath.phase(x)) for x in beta(lo, *args))
 
 
+def led_nets(part, mpn, by_net, drive, sense):
+    """LED_A/LED_K from the bridge topology: the BAS16GW diodes (pin 1 K, pin 2 A) on DRIVE and SENSE and the LED."""
+    pins = {}
+    for u in part['package_units']:
+        pins.setdefault(u['ref'], {}).update(u.get('pins') or {})
+    diodes = {r for n in (drive, sense) for r, _ in by_net[n] if mpn.get(r) == 'BAS16GW-QX'}
+    cath = {pins[r]['1'] for r in diodes if pins[r]['2'] in (drive, sense)}
+    anode = {pins[r]['2'] for r in diodes if pins[r]['1'] in (drive, sense)}
+    if len(diodes) != 4 or len(cath) != 1 or len(anode) != 1:
+        raise ValueError('unexpected bridge on %s/%s: %s' % (drive, sense, sorted(diodes)))
+    a, k = cath.pop(), anode.pop()
+    leds = [r for r, p in by_net[a] if mpn.get(r) == 'APHHS1005QWF/D' and p == '2' and pins[r].get('1') == k]
+    if len(leds) != 1:
+        raise ValueError('LED not found between %s and %s' % (a, k))
+    return a, k
+
+
 def r_of(val, ref):
     x = budgets.ohms(val.get(ref))
     if not x:
@@ -93,13 +111,13 @@ def run():
         if out_pin is None:
             continue
         drive, sense = u['pins'][out_pin], u['pins'][OUT_PINS[out_pin]]
-        stem = drive.rsplit('_DRIVE', 1)[0]
+        led_a, led_k = led_nets(part, mpn, by_net, drive, sense)
         rs_ref = [r for r, _ in by_net[sense] if r.startswith('R') and 'AGND' in
                   {n for x in part['package_units'] if x['ref'] == r for n in x['pins'].values()}]
         if len(rs_ref) != 1:
             raise ValueError('R_SENSE not unique for %s: %s' % (sense, rs_ref))
         units.append({'ic': u['ref'], 'unit': u['unit'], 'mpn': mpn[u['ref']], 'nets': {
-            'DRIVE': drive, 'SENSE': sense, 'LED_A': stem + '_LED_A', 'LED_K': stem + '_LED_K'},
+            'DRIVE': drive, 'SENSE': sense, 'LED_A': led_a, 'LED_K': led_k},
             'r_sense_ref': rs_ref[0], 'r_sense_ohm': r_of(val, rs_ref[0])})
     cases = {}
     for case, (p, h) in budgets.NETS.items():
@@ -115,6 +133,12 @@ def run():
             gbw, cin = amp_facts(u['mpn'])
             add = {k: (c_cable if k in on else 0.0) for k in u['nets']}
             levels = []
+            fine = []
+            for i in GRID_A:
+                rd, rl = N_DIODE * VT / i, N_LED * VT / i
+                fine.append((margin(gbw, (rd, 0.0, rl, 0.0, rd, u['r_sense_ohm'], cin))[1],
+                             margin(gbw, (rd, add['LED_A'], rl, add['LED_K'], rd, u['r_sense_ohm'],
+                                          cin + add['SENSE']))[1]))
             for i in CURRENTS_A:
                 rd, rl = N_DIODE * VT / i, N_LED * VT / i
                 base = (rd, 0.0, rl, 0.0, rd, u['r_sense_ohm'], cin)
@@ -125,12 +149,12 @@ def run():
                                'diode_r_ohm': round(rd, 1), 'led_r_ohm': round(rl, 1),
                                'baseline': {'crossover_Hz': round(fb), 'phase_margin_deg': round(pb, 1)},
                                'moved': {'crossover_Hz': round(fm), 'phase_margin_deg': round(pm, 1)},
-                               'pass': pm >= PM_LIMIT_DEG})
+                               })
             rows.append({'ic': u['ic'], 'unit': u['unit'], 'mpn': u['mpn'], 'crossing': on,
                          'r_sense_ohm': u['r_sense_ohm'], 'gbw_Hz': gbw, 'levels': levels,
-                         'worst_moved_pm_deg': min(x['moved']['phase_margin_deg'] for x in levels),
-                         'worst_baseline_pm_deg': min(x['baseline']['phase_margin_deg'] for x in levels),
-                         'pass': all(x['pass'] for x in levels)})
+                         'worst_moved_pm_deg': round(min(m for _, m in fine), 1),
+                         'worst_baseline_pm_deg': round(min(b for b, _ in fine), 1),
+                         'pass': min(m for _, m in fine) >= PM_LIMIT_DEG})
         per_ic = collections.defaultdict(list)
         for r in rows:
             per_ic[r['ic']].append(r['pass'])
@@ -138,20 +162,26 @@ def run():
                                                  for k, v in sorted(per_ic.items())}}
     gbw, cin = amp_facts('OPA4196IDR')
     sens = []
-    for n in (1.0, 2.0, 3.0):
+    for n in (1.0, 2.0, 3.0):  # LED ideality n and 2n
         for k in (1, 2, 4):
             pms = []
-            for i in [10 ** (e / 4) for e in range(-28, -11)]:
-                rd = n * VT / i
-                pms.append(margin(gbw, (rd, k * c_cable, rd, k * c_cable, rd, 5600.0, cin))[1])
-            sens.append({'ideality': n, 'cable_C_multiple': k, 'worst_pm_deg': round(min(pms), 1)})
+            for nl in (n, 2 * n):
+                for i in GRID_A:
+                    rd = n * VT / i
+                    pms.append(margin(gbw, (rd, k * c_cable, nl * VT / i, k * c_cable, rd, 5600.0, cin))[1])
+            sens.append({'diode_ideality': n, 'led_ideality': [n, 2 * n], 'cable_C_multiple': k,
+                         'worst_pm_deg': round(min(pms), 1)})
     return {'status': 'DRAFT paper screen; not a stability result',
-            'sensitivity_R_SENSE_5600_OPA4196': {'currents_A': '1e-7 to 1e-3, quarter-decade steps',
+            'sensitivity_R_SENSE_5600_OPA4196': {'currents_A': '1e-7 to 1e-3, eighth-decade steps',
                                                  'crossing': ['LED_A', 'LED_K'], 'rows': sens},
             'cable_C_pF': round(c_cable * 1e12, 2),
             'assumed': {'diode_ideality': N_DIODE, 'led_ideality': N_LED, 'amplifier': 'single pole at GBW, ideal output',
                         'phase_margin_limit_deg': PM_LIMIT_DEG,
-                        'not_modelled': ['off-path diode junction capacitance', 'PCB parasitics',
+                        'not_modelled': ['off-path diode junction capacitance',
+                                         'on-path diode and LED junction and diffusion capacitance',
+                                         'cable mutual capacitance between LED_A and LED_K and injection from '
+                                         'neighbouring nets (Cv_total is applied as a grounded C)',
+                                         'PCB parasitics',
                                          'amplifier output resistance and second poles', 'bridge dead band',
                                          'large-signal slewing']},
             'sources': {k: {'path': str(p.relative_to(ROOT)), 'sha256': h} for k, (p, h) in budgets.NETS.items()},

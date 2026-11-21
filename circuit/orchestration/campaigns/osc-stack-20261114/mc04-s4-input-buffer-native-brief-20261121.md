@@ -46,11 +46,15 @@ For each amplifier model, at ±12 V:
 4. Overdrive to ±12 V at the jack through the clamp: recovery time and phase reversal check.
 5. Magnitude-indicator loop (OPA4196 only; the units stay OPA4196): one unit as drawn in the netlist (BAS16GW bridge,
    APHHS1005QWF/D LED, R_SENSE 5.6 kΩ), with 0, 7.2, 15 and 30 pF added to each of `*_LED_A` and `*_LED_K`.
-   Drive the input with a 20 kHz sine and with steps at 10 mV, 100 mV, 1 V and 5 V amplitude: report any sustained
-   oscillation, ringing at the bridge turn-on and turn-off edges, and the LED current waveform. The paper screen in
-   `scripts/stack/studies/mc04_s1b_indicator_loops/` predicts about 69° small-signal margin at 7.2 pF and 40° at
-   29 pF; it cannot see the dead band or slewing, which this case must. Use generic diode models labelled ASSUMED
-   where no vendor model is retained.
+   a. AC: break the loop at IN− (Middlebrook or Tian method) and report loop crossover and phase margin at DC
+      bridge bias currents of 1 µA, 10 µA, 100 µA and 1 mA. The paper screen in
+      `scripts/stack/studies/mc04_s1b_indicator_loops/` predicts a worst margin of about 82° without cable, 69° at
+      7.2 pF and 40° at 29 pF; report the difference from it.
+   b. Transient: 20 kHz sines of 10 mV, 100 mV, 1 V and 5 V peak, and steps of the same amplitudes. Report any
+      sustained oscillation, ringing at the bridge turn-on and turn-off edges, and the LED current waveform. This
+      covers the dead band and slewing that the screen cannot see.
+   Where no vendor model is retained, use generic diode and LED models labelled ASSUMED, with a stated nonzero
+   junction capacitance (CJO) and transit time for each; CJO = 0 would hide the capacitance the screen omits.
 
 Report per case and model: overshoot %, settling time, any sustained oscillation, and the difference
 OPA4197 − OPA4196. Acceptance targets are not set by this brief; reuse the retained 10 % overshoot / 1 mV
