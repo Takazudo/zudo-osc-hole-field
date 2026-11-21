@@ -189,3 +189,32 @@ cost only. The pins exist to stop silent change, not to freeze geometry after an
 3. Re-run the stack geometry tests. `Gate setUpClass` and `GatePart2.test_review_2` must pass, or be reported
    with the exact assertion.
 4. Push and hand back. An independent review of the two slot moves follows before stage 7.
+
+## Revision 5 after independent review of revisions 3 and 4 (2026-11-21)
+
+Accepted: the revision 3 stripping and poses. The record matches the boards. All 1069 JL and 1031 JR footprints sit
+exactly at their floorplan poses. No locked footprint moved. `links_gate.py --stdout` reproduces `link-gate.json`.
+Fix these, then push:
+
+1. **Red test that the hand-back missed.** `scripts/stack/geometry/links_gate_c6_test.py:71`
+   (`test_historical_snapshot_cannot_relabel_changed_source`) fails from `354beaf8` on, with "c6 historical record
+   hash mismatch" (`scripts/stack/link_electrical/c6_report.py:39`). The reason is that `verified_source` rebuilds
+   the pre-c6 object from the current links. Ruling: do not rebind `SOURCE_OBJECT_SHA256`. Rebuild the historical
+   object from the snapshot's own retained links, so the historical record stays verifiable and cannot be
+   relabelled. Then run every stack test file, including `links_gate_c6_test.py`, and report the true total.
+2. **U115 (LF398M sample-and-hold) is newly displaced by the JL-L02 move.** It goes to F.Cu, 14.25 mm away; ds97
+   LF398M 0 → 1; K displaced 313 → 317; JR front displaced 43 → 47. First test whether the retained JL-L02 slot
+   ([121.5, 80], 12.0 mm) is still legal in the synced scene. If it is, explain why the gate now prefers the new
+   slot, and report both costs. If it is not, give the blocking item with dimensions. Either way, report U115's
+   distance to its hold capacitor and its cluster at the new pose. Do not change the gate's selection rule in this
+   stage; the manager decides on the evidence.
+3. Add `displaced` (before/after) for both moved links to the rebind table.
+4. Regenerate `design/stack/fixings/threading-procedure.json` (it still has the old JL-L02 and JR-L02 slots) with
+   its generator, and run `procedure.py --check`.
+5. Enforce `--max-share` in `scripts/pcbgen/strip_drc_conflicts.py:61`: refuse to save above it, with a test.
+6. NITs: update the rebind-record sha256 cited at `links_gate_c6.py:19`. Replace the always-true assertion at
+   `test_c6_rebind.py:36` with a comparison to the pinned digest. In the stripped-conflicts record, separate the
+   already-posed swapped packages from the moved parts.
+
+Recorded, no action: JR-L02's K-edge compliance is 0.2431 mm/N. That is within the 1.0 mm/N limit, but only
+0.007 mm/N under the 0.25 mm/N listing threshold. Treat it as marginal at the physical assembly review.
