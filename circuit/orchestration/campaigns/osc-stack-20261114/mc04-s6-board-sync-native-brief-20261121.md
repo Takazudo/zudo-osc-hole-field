@@ -115,3 +115,31 @@ scan that ignored those obstacles. Also do these in the same push:
    against `design/partition/partition.json`, and `GatePart3.test_finding_9` (71.96 vs 73.46) follows from that.
    Regenerate those two candidates with their own generators so that stage 7 starts from a consistent stack, and
    report the test results.
+
+## Revision 2: manager rulings after the synced boards (2026-11-21)
+
+Accepted from `3057f3fc`–`583140de`: the six TSSOP-14 packages are on JL/JR, 217 stub items were stripped and
+recorded, readiness reconciles with 0 mismatches, and the stack and link candidates are regenerated. Three items
+are open:
+
+1. **The 25 reposed parts (JL 23, JR 2) are a regression and must be fixed now.** `sync.py` re-applied the
+   netlisted side and angle to parts that the floorplan had reposed, which added shorts, clearance, hole, courtyard
+   and mask errors (JL 86 / 40 / 27 / 39 / 96, JR 12 / 5 / 8 / 7 / 13). The floorplan is the generated source of
+   poses, so the board must match it. Do not exclude parts from sync. Find why the schematic attributes
+   (`BoardSide` / angle, or `FootprintOriginMm`) for these 25 disagree with `design/partition/floorplan-candidate.json`.
+   Fix it at the source (the generator that writes those attributes from the floorplan), regenerate the netlists,
+   re-sync and re-place, and save. Pass condition: DRC with parity on JL and JR shows no new shorts, clearance,
+   hole, courtyard or mask errors relative to the pre-S6 committed boards (`2cd30044…` for JL and the JR
+   equivalent); new unconnected items only on the 48 stripped nets. If a part cannot reach its floorplan pose,
+   report it with dimensions; do not move panel hardware.
+2. **Rebind the DA-03 c6 pass as a new attempt; do not hand-edit its pins.** `scripts/stack/geometry/links_gate_c6.py`
+   refuses the regenerated source record because the displaced-footprint evidence changed. Run the pre-c6 gate on
+   the synced scene. Then show whether c6's own output (positions and the three coupling riders) is identical to the
+   retained `OUTPUT_LINKS_SHA256` output, apart from the displaced-footprint fields:
+   - If it is identical, update the source pins with a comment naming this rebind and the source commit. Add a test
+     that the output-link digest, excluding the displaced fields, is unchanged. Then regenerate
+     `link-gate.json`/`link-gate.md` and re-run the three failing stack tests.
+   - If any position, rider or link differs, stop and report the difference.
+3. **The JL/JR re-route stays OPEN**, deferred to the routing pass after stage 7, as already ruled.
+
+Report in the same format as before, with DRC counts by type before S6, after rev 1 and after rev 2.
