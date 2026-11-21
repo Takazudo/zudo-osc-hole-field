@@ -1,0 +1,329 @@
+{
+ "schema_version": 1,
+ "task": "osc-stack-20261114 / MC04-S6-BOARD-SYNC / 20261121-1, step 3",
+ "status": "STOPPED BEFORE SAVING: scripts/pcbgen/sync.py would orphan routed copper on JL and JR",
+ "method": "bash scripts/kicad/run.sh python3 scripts/pcbgen/sync.py <board> --output <copy> on the committed boards and netlists; each copper end (track end or via) that lay on a pad of a swapped package in the committed board was looked up by UUID in the synced copy and counted as orphaned when it no longer lands on a pad of the same net (SOIC-14 1.27 mm pads replaced by TSSOP-14 0.65 mm pads at the same origin). Committed boards were not changed.",
+ "kicad": "pinned image via scripts/kicad/run.sh (KiCad 10.0.6)",
+ "boards": {
+  "osc-jack-left": {
+   "committed_board_sha256": "2cd30044054fcdbf8c94de27515a5bc763e98de12c0f3df212cf5d84ded1ee19",
+   "refs": {
+    "U1216": {
+     "original_footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
+     "synced_footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+     "original_xy_mm": [
+      136.73,
+      121.55
+     ],
+     "synced_xy_mm": [
+      137.23,
+      121.55
+     ],
+     "copper_ends_on_package_pads": 14,
+     "still_on_a_pad_after_sync": 0,
+     "orphaned_or_invalidated": 14,
+     "orphaned_by_pad": [
+      "10:X69E004876F483CCD44FD",
+      "11:-12V",
+      "13:XB9FC49C9EB7C1BB63869",
+      "14:XB9FC49C9EB7C1BB63869",
+      "1:X4070539D709C19A0AF65",
+      "2:X4070539D709C19A0AF65",
+      "3:X9BF9A1B315F9599879D6",
+      "4:+12V",
+      "5:X4EAC083C0DD9E8FE8E1B",
+      "6:X2FE4AF262FF60AFC8887",
+      "7:X2FE4AF262FF60AFC8887",
+      "8:X931E79E5D5D06724201E",
+      "9:X931E79E5D5D06724201E"
+     ],
+     "nets": [
+      "+12V",
+      "-12V",
+      "X2FE4AF262FF60AFC8887",
+      "X4070539D709C19A0AF65",
+      "X4EAC083C0DD9E8FE8E1B",
+      "X69E004876F483CCD44FD",
+      "X931E79E5D5D06724201E",
+      "X9BF9A1B315F9599879D6",
+      "XB9FC49C9EB7C1BB63869"
+     ]
+    },
+    "U1416": {
+     "original_footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
+     "synced_footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+     "original_xy_mm": [
+      170.73,
+      121.55
+     ],
+     "synced_xy_mm": [
+      171.23,
+      122.05
+     ],
+     "copper_ends_on_package_pads": 18,
+     "still_on_a_pad_after_sync": 0,
+     "orphaned_or_invalidated": 18,
+     "orphaned_by_pad": [
+      "10:X1EDE2EA9CAC17B06FEAB",
+      "11:-12V",
+      "12:X5929B9536D17079BD5A9",
+      "13:X204513A3E8CDBFF86546",
+      "14:X204513A3E8CDBFF86546",
+      "1:X80AB923B405609CBD8D4",
+      "2:X80AB923B405609CBD8D4",
+      "3:X1BDC2FF0034B2244AC4D",
+      "4:+12V",
+      "5:X811BC36431AE687AE092",
+      "6:XDD3424A56BA0C1838507",
+      "7:XDD3424A56BA0C1838507",
+      "8:X5BE49425103F808B4B93",
+      "9:X5BE49425103F808B4B93"
+     ],
+     "nets": [
+      "+12V",
+      "-12V",
+      "X1BDC2FF0034B2244AC4D",
+      "X1EDE2EA9CAC17B06FEAB",
+      "X204513A3E8CDBFF86546",
+      "X5929B9536D17079BD5A9",
+      "X5BE49425103F808B4B93",
+      "X80AB923B405609CBD8D4",
+      "X811BC36431AE687AE092",
+      "XDD3424A56BA0C1838507"
+     ]
+    },
+    "U1518": {
+     "original_footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
+     "synced_footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+     "original_xy_mm": [
+      205.959999,
+      139.52
+     ],
+     "synced_xy_mm": [
+      190.459999,
+      128.02
+     ],
+     "copper_ends_on_package_pads": 12,
+     "still_on_a_pad_after_sync": 0,
+     "orphaned_or_invalidated": 12,
+     "orphaned_by_pad": [
+      "11:-12V",
+      "13:X9B11072677FF4A0AA2E1",
+      "14:X9B11072677FF4A0AA2E1",
+      "1:X7CC5966245686CF4EF46",
+      "2:X7CC5966245686CF4EF46",
+      "3:X9E01F09638F79A0A2C94",
+      "4:+12V",
+      "6:X7A63493C72556FA32B2B",
+      "7:X7A63493C72556FA32B2B",
+      "8:XC926A01D426C31CC85AC",
+      "9:XC926A01D426C31CC85AC"
+     ],
+     "nets": [
+      "+12V",
+      "-12V",
+      "X7A63493C72556FA32B2B",
+      "X7CC5966245686CF4EF46",
+      "X9B11072677FF4A0AA2E1",
+      "X9E01F09638F79A0A2C94",
+      "XC926A01D426C31CC85AC"
+     ]
+    }
+   },
+   "totals": {
+    "orphaned_or_invalidated": 44,
+    "nets": [
+     "+12V",
+     "-12V",
+     "X1BDC2FF0034B2244AC4D",
+     "X1EDE2EA9CAC17B06FEAB",
+     "X204513A3E8CDBFF86546",
+     "X2FE4AF262FF60AFC8887",
+     "X4070539D709C19A0AF65",
+     "X4EAC083C0DD9E8FE8E1B",
+     "X5929B9536D17079BD5A9",
+     "X5BE49425103F808B4B93",
+     "X69E004876F483CCD44FD",
+     "X7A63493C72556FA32B2B",
+     "X7CC5966245686CF4EF46",
+     "X80AB923B405609CBD8D4",
+     "X811BC36431AE687AE092",
+     "X931E79E5D5D06724201E",
+     "X9B11072677FF4A0AA2E1",
+     "X9BF9A1B315F9599879D6",
+     "X9E01F09638F79A0A2C94",
+     "XB9FC49C9EB7C1BB63869",
+     "XC926A01D426C31CC85AC",
+     "XDD3424A56BA0C1838507"
+    ]
+   }
+  },
+  "osc-jack-right": {
+   "committed_board_sha256": "653b20312851fad1dcf1a90806c1fdc558edf32dfc25d6675b43bb100ff9b3c1",
+   "refs": {
+    "U4346": {
+     "original_footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
+     "synced_footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+     "original_xy_mm": [
+      359.97,
+      101.55
+     ],
+     "synced_xy_mm": [
+      360.47,
+      101.55
+     ],
+     "copper_ends_on_package_pads": 17,
+     "still_on_a_pad_after_sync": 0,
+     "orphaned_or_invalidated": 17,
+     "orphaned_by_pad": [
+      "10:X0AF4B6DFF9B2FB8891D9",
+      "11:-12V",
+      "13:XB890CF12B3417893A29A",
+      "14:XB890CF12B3417893A29A",
+      "1:XA92686FC9F41649DE2A6",
+      "2:XA92686FC9F41649DE2A6",
+      "3:XD7A13A9A1EB2558C62A0",
+      "4:+12V",
+      "5:XCD8991ED02385833E992",
+      "6:X6012073DA8F01B869B3F",
+      "7:X6012073DA8F01B869B3F",
+      "8:XBED713F0F20C2BEF6433",
+      "9:XBED713F0F20C2BEF6433"
+     ],
+     "nets": [
+      "+12V",
+      "-12V",
+      "X0AF4B6DFF9B2FB8891D9",
+      "X6012073DA8F01B869B3F",
+      "XA92686FC9F41649DE2A6",
+      "XB890CF12B3417893A29A",
+      "XBED713F0F20C2BEF6433",
+      "XCD8991ED02385833E992",
+      "XD7A13A9A1EB2558C62A0"
+     ]
+    },
+    "U8314": {
+     "original_footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
+     "synced_footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+     "original_xy_mm": [
+      291.97,
+      138.08
+     ],
+     "synced_xy_mm": [
+      292.47,
+      139.58
+     ],
+     "copper_ends_on_package_pads": 16,
+     "still_on_a_pad_after_sync": 0,
+     "orphaned_or_invalidated": 16,
+     "orphaned_by_pad": [
+      "10:X31C0C9AFC4A94317FFF8",
+      "11:-12V",
+      "12:X2179014A918EDEA84D0B",
+      "13:X53912B1E6E7E640E4157",
+      "14:X53912B1E6E7E640E4157",
+      "1:X3C092ED557D16F7678FC",
+      "2:X3C092ED557D16F7678FC",
+      "3:X6EA77A73C015875EACFB",
+      "4:+12V",
+      "5:X42D1CD4265A522D2E178",
+      "6:X3DC759138DE26EC48593",
+      "7:X3DC759138DE26EC48593",
+      "8:XD61AA59B6F4656314313",
+      "9:XD61AA59B6F4656314313"
+     ],
+     "nets": [
+      "+12V",
+      "-12V",
+      "X2179014A918EDEA84D0B",
+      "X31C0C9AFC4A94317FFF8",
+      "X3C092ED557D16F7678FC",
+      "X3DC759138DE26EC48593",
+      "X42D1CD4265A522D2E178",
+      "X53912B1E6E7E640E4157",
+      "X6EA77A73C015875EACFB",
+      "XD61AA59B6F4656314313"
+     ]
+    },
+    "U8417": {
+     "original_footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
+     "synced_footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+     "original_xy_mm": [
+      308.97,
+      105.85
+     ],
+     "synced_xy_mm": [
+      309.47,
+      105.85
+     ],
+     "copper_ends_on_package_pads": 15,
+     "still_on_a_pad_after_sync": 0,
+     "orphaned_or_invalidated": 15,
+     "orphaned_by_pad": [
+      "10:X010BBC55D32CBEB7B85A",
+      "11:-12V",
+      "12:X2BA1EDE6C92351885A00",
+      "13:X0FA7E60F86C2C96AD686",
+      "14:XADC6FB2E431DEB5C2F15",
+      "1:XE31A80290D2BC578861C",
+      "2:XE31A80290D2BC578861C",
+      "3:XCAC4B4296175F52A9D9E",
+      "4:+12V",
+      "5:XF12351C36A39088567FF",
+      "6:X0D91859D96F823A8AC49",
+      "7:X0D91859D96F823A8AC49",
+      "8:XA0D49C5876E2BF0946C5"
+     ],
+     "nets": [
+      "+12V",
+      "-12V",
+      "X010BBC55D32CBEB7B85A",
+      "X0D91859D96F823A8AC49",
+      "X0FA7E60F86C2C96AD686",
+      "X2BA1EDE6C92351885A00",
+      "XA0D49C5876E2BF0946C5",
+      "XADC6FB2E431DEB5C2F15",
+      "XCAC4B4296175F52A9D9E",
+      "XE31A80290D2BC578861C",
+      "XF12351C36A39088567FF"
+     ]
+    }
+   },
+   "totals": {
+    "orphaned_or_invalidated": 48,
+    "nets": [
+     "+12V",
+     "-12V",
+     "X010BBC55D32CBEB7B85A",
+     "X0AF4B6DFF9B2FB8891D9",
+     "X0D91859D96F823A8AC49",
+     "X0FA7E60F86C2C96AD686",
+     "X2179014A918EDEA84D0B",
+     "X2BA1EDE6C92351885A00",
+     "X31C0C9AFC4A94317FFF8",
+     "X3C092ED557D16F7678FC",
+     "X3DC759138DE26EC48593",
+     "X42D1CD4265A522D2E178",
+     "X53912B1E6E7E640E4157",
+     "X6012073DA8F01B869B3F",
+     "X6EA77A73C015875EACFB",
+     "XA0D49C5876E2BF0946C5",
+     "XA92686FC9F41649DE2A6",
+     "XADC6FB2E431DEB5C2F15",
+     "XB890CF12B3417893A29A",
+     "XBED713F0F20C2BEF6433",
+     "XCAC4B4296175F52A9D9E",
+     "XCD8991ED02385833E992",
+     "XD61AA59B6F4656314313",
+     "XD7A13A9A1EB2558C62A0",
+     "XE31A80290D2BC578861C",
+     "XF12351C36A39088567FF"
+    ]
+   }
+  }
+ },
+ "totals": {
+  "orphaned_copper_ends": 92,
+  "nets": 48
+ }
+}
