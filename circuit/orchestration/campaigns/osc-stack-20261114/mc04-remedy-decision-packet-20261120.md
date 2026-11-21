@@ -18,6 +18,13 @@ U1518, U4346, U8314, U8417) cannot move as drawn. Two output blocks (U1417, U221
 both sides of each isolation midpoint, or plainly on the keep-front boundary. Four blocks (U2119, U4347,
 U4348, U8318) depend on LED bridge nets inside op-amp feedback loops, which need a loop-stability criterion.
 
+Stage 1b (`scripts/stack/studies/mc04_s1b_indicator_loops/`, paper screen, not yet independently reviewed)
+finds that only `*_LED_A`/`*_LED_K` cross for all 13 indicator units in both boundaries. With a single-pole
+OPA4196 model and ASSUMED diode ideality, the worst small-signal phase margin falls from 84° to 69° with the
+7.22 pF cable, and to 40° at four times that capacitance. The screen passes the ASSUMED 45° criterion, so the
+four blocks stay conditional on case 5 of the stage 4 WSL simulation, which covers the bridge dead band and
+slewing that the screen cannot see.
+
 ## The question for the design authority: which remedy to develop for the 26 unplaced ICs
 
 The cumulative record has 438 displaced footprints. 412 have courtyard-level replacements and 26
