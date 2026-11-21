@@ -1,0 +1,2060 @@
+{
+ "status": "STAGE_1A_DRAFT_LIMITS",
+ "sourced": {
+  "datasheet": "TI SBOS869 (July 2017, addendum 15-Oct-2026), sha256 c68223d51715ef65baa6a8f549278f2f451365ccc3b95864c0d815c8797d5fde",
+  "gbw_Hz": 2500000.0,
+  "input_cm_F": 6.4e-12,
+  "ringing_note_F": 1e-10
+ },
+ "cable_case": {
+  "pitch": "pitch_0_5",
+  "length_mm": 80,
+  "eps_eff": 3.2,
+  "ground_rule": "A",
+  "victim_C_total_pF": 7.22
+ },
+ "draft_criteria": {
+  "output_added_C_F": 1e-10,
+  "feedback_pole_Hz": 2500000.0,
+  "input_corner_Hz": 200000.0,
+  "crosstalk_V": 0.01
+ },
+ "cases": {
+  "default_one_hop": {
+   "per_ic": {
+    "U1216": {
+     "meets with rule A ground between": 1,
+     "FAIL": 3
+    },
+    "U1416": {
+     "meets with rule A ground between": 1,
+     "FAIL": 3
+    },
+    "U1417": {
+     "meets with rule A ground between": 3
+    },
+    "U1518": {
+     "FAIL": 1
+    },
+    "U2119": {
+     "undetermined": 8
+    },
+    "U2218": {
+     "meets with rule A ground between": 4
+    },
+    "U4346": {
+     "meets with rule A ground between": 1,
+     "FAIL": 3
+    },
+    "U4347": {
+     "meets with rule A ground between": 3,
+     "undetermined": 2
+    },
+    "U4348": {
+     "undetermined": 4
+    },
+    "U8314": {
+     "FAIL": 4
+    },
+    "U8318": {
+     "undetermined": 8
+    },
+    "U8417": {
+     "FAIL": 1,
+     "undetermined": 4,
+     "meets with rule A ground between": 1
+    }
+   },
+   "nets": [
+    {
+     "net": "/E3/C5dbedd_ISO_MID",
+     "kind": "isolation midpoint",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [
+      499.0,
+      499.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 499.0,
+     "corner_Hz": 44187681,
+     "crosstalk_edge_mV": 26.9,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 5.32,
+      "B": 6.36,
+      "C": 3.34
+     },
+     "crosstalk_20kHz_mV": 1.68,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/E3/C8c002f_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/E3/C8c002f_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/E3/C9f1934_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/E3/C9f1934_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/E3/Cae74f8_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/E3/Cae74f8_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/E3/Caf802b_ISO_MID",
+     "kind": "isolation midpoint",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [
+      499.0,
+      499.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 499.0,
+     "corner_Hz": 44187681,
+     "crosstalk_edge_mV": 26.9,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 5.32,
+      "B": 6.36,
+      "C": 3.34
+     },
+     "crosstalk_20kHz_mV": 1.68,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/E3/Cc9f2ea_ISO_MID",
+     "kind": "isolation midpoint",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [
+      499.0,
+      499.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 499.0,
+     "corner_Hz": 44187681,
+     "crosstalk_edge_mV": 26.9,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 5.32,
+      "B": 6.36,
+      "C": 3.34
+     },
+     "crosstalk_20kHz_mV": 1.68,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/E3/Ce82060_ISO_MID",
+     "kind": "isolation midpoint",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [
+      499.0,
+      499.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 499.0,
+     "corner_Hz": 44187681,
+     "crosstalk_edge_mV": 26.9,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 5.32,
+      "B": 6.36,
+      "C": 3.34
+     },
+     "crosstalk_20kHz_mV": 1.68,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/E3/FALL_PROTECTED",
+     "kind": "protected input node",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [
+      10000.0,
+      100000.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 2204965,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/E3/RISE_PROTECTED",
+     "kind": "protected input node",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [
+      10000.0,
+      100000.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 2204965,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/E3/SIG_PROTECTED",
+     "kind": "protected input node",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [
+      10000.0,
+      100000.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 2204965,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/M4A/1_PROTECTED",
+     "kind": "protected input node",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [
+      10000.0,
+      100000.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 2204965,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/M4A/2_PROTECTED",
+     "kind": "protected input node",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [
+      10000.0,
+      100000.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 2204965,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/M4A/3_PROTECTED",
+     "kind": "protected input node",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [
+      10000.0,
+      100000.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 2204965,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/M4A/4_PROTECTED",
+     "kind": "protected input node",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [
+      10000.0,
+      100000.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 2204965,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/M4A/C2169e5_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4A/C2169e5_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4A/C320656_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4A/C320656_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4A/Cd59875_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4A/Cd59875_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4A/Cf876de_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4A/Cf876de_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4B/ATTEN_PROTECTED",
+     "kind": "protected input node",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [
+      10000.0,
+      100000.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 2204965,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/M4B/C412fd1_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4B/C412fd1_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4B/C93bba0_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4B/C93bba0_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4B/Cea264a_ISO_MID",
+     "kind": "isolation midpoint",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [
+      499.0,
+      499.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 499.0,
+     "corner_Hz": 44187681,
+     "crosstalk_edge_mV": 26.9,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 5.32,
+      "B": 6.36,
+      "C": 3.34
+     },
+     "crosstalk_20kHz_mV": 1.68,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/F1/C9fcdd2_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/F1/C9fcdd2_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cb3d4a2_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cb3d4a2_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cb6d8fd_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cb6d8fd_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cfc4b03_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cfc4b03_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/F2/C29cc99_ISO_MID",
+     "kind": "isolation midpoint",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [
+      499.0,
+      499.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 499.0,
+     "corner_Hz": 44187681,
+     "crosstalk_edge_mV": 26.9,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 5.32,
+      "B": 6.36,
+      "C": 3.34
+     },
+     "crosstalk_20kHz_mV": 1.68,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/F2/C2b02f4_ISO_MID",
+     "kind": "isolation midpoint",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [
+      499.0,
+      499.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 499.0,
+     "corner_Hz": 44187681,
+     "crosstalk_edge_mV": 26.9,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 5.32,
+      "B": 6.36,
+      "C": 3.34
+     },
+     "crosstalk_20kHz_mV": 1.68,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/F2/C56c9d6_ISO_MID",
+     "kind": "isolation midpoint",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [
+      499.0,
+      499.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 499.0,
+     "corner_Hz": 44187681,
+     "crosstalk_edge_mV": 26.9,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 5.32,
+      "B": 6.36,
+      "C": 3.34
+     },
+     "crosstalk_20kHz_mV": 1.68,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/F2/C5d31c8_ISO_MID",
+     "kind": "isolation midpoint",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [
+      499.0,
+      499.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 499.0,
+     "corner_Hz": 44187681,
+     "crosstalk_edge_mV": 26.9,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 5.32,
+      "B": 6.36,
+      "C": 3.34
+     },
+     "crosstalk_20kHz_mV": 1.68,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O2/C70dbdb_ISO_MID",
+     "kind": "isolation midpoint",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [
+      499.0,
+      499.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 499.0,
+     "corner_Hz": 44187681,
+     "crosstalk_edge_mV": 26.9,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 5.32,
+      "B": 6.36,
+      "C": 3.34
+     },
+     "crosstalk_20kHz_mV": 1.68,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O2/FM_PROTECTED",
+     "kind": "protected input node",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [
+      10000.0,
+      100000.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 2204965,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O2/PWM_PROTECTED",
+     "kind": "protected input node",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [
+      10000.0,
+      100000.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 2204965,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O2/SYNC_PROTECTED",
+     "kind": "protected input node",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [
+      10000.0,
+      100000.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 2204965,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O4/C70dbdb_ISO_MID",
+     "kind": "isolation midpoint",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [
+      499.0,
+      499.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 499.0,
+     "corner_Hz": 44187681,
+     "crosstalk_edge_mV": 26.9,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 5.32,
+      "B": 6.36,
+      "C": 3.34
+     },
+     "crosstalk_20kHz_mV": 1.68,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O4/C7b4ed2_ISO_MID",
+     "kind": "isolation midpoint",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [
+      499.0,
+      499.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 499.0,
+     "corner_Hz": 44187681,
+     "crosstalk_edge_mV": 26.9,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 5.32,
+      "B": 6.36,
+      "C": 3.34
+     },
+     "crosstalk_20kHz_mV": 1.68,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O4/Cc66d82_ISO_MID",
+     "kind": "isolation midpoint",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [
+      499.0,
+      499.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 499.0,
+     "corner_Hz": 44187681,
+     "crosstalk_edge_mV": 26.9,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 5.32,
+      "B": 6.36,
+      "C": 3.34
+     },
+     "crosstalk_20kHz_mV": 1.68,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O4/Cec1eaa_ISO_MID",
+     "kind": "isolation midpoint",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [
+      499.0,
+      499.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 499.0,
+     "corner_Hz": 44187681,
+     "crosstalk_edge_mV": 26.9,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 5.32,
+      "B": 6.36,
+      "C": 3.34
+     },
+     "crosstalk_20kHz_mV": 1.68,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O4/FM_PROTECTED",
+     "kind": "protected input node",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [
+      10000.0,
+      100000.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 2204965,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O4/PWM_PROTECTED",
+     "kind": "protected input node",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [
+      10000.0,
+      100000.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 2204965,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O4/SYNC_PROTECTED",
+     "kind": "protected input node",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [
+      10000.0,
+      100000.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 2204965,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O5/1V_PROTECTED",
+     "kind": "protected input node",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [
+      10000.0,
+      100000.0
+     ],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 2204965,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    }
+   ],
+   "first_ground_rule_meeting_10mV": {
+    "A": 14,
+    "none": 15
+   },
+   "tally": {
+    "passive-only node FAIL": 29,
+    "passive-only node undetermined": 26
+   },
+   "fail": [
+    "/E3/C5dbedd_ISO_MID",
+    "/E3/Caf802b_ISO_MID",
+    "/E3/Cc9f2ea_ISO_MID",
+    "/E3/Ce82060_ISO_MID",
+    "/E3/FALL_PROTECTED",
+    "/E3/RISE_PROTECTED",
+    "/E3/SIG_PROTECTED",
+    "/F2/C29cc99_ISO_MID",
+    "/F2/C2b02f4_ISO_MID",
+    "/F2/C56c9d6_ISO_MID",
+    "/F2/C5d31c8_ISO_MID",
+    "/M4A/1_PROTECTED",
+    "/M4A/2_PROTECTED",
+    "/M4A/3_PROTECTED",
+    "/M4A/4_PROTECTED",
+    "/M4B/ATTEN_PROTECTED",
+    "/M4B/Cea264a_ISO_MID",
+    "/O2/C70dbdb_ISO_MID",
+    "/O2/FM_PROTECTED",
+    "/O2/PWM_PROTECTED",
+    "/O2/SYNC_PROTECTED",
+    "/O4/C70dbdb_ISO_MID",
+    "/O4/C7b4ed2_ISO_MID",
+    "/O4/Cc66d82_ISO_MID",
+    "/O4/Cec1eaa_ISO_MID",
+    "/O4/FM_PROTECTED",
+    "/O4/PWM_PROTECTED",
+    "/O4/SYNC_PROTECTED",
+    "/O5/1V_PROTECTED"
+   ]
+  },
+  "keep_protection_and_isolation_front": {
+   "per_ic": {
+    "U1216": {
+     "FAIL": 3,
+     "pass": 1
+    },
+    "U1416": {
+     "FAIL": 3,
+     "pass": 1
+    },
+    "U1417": {
+     "pass": 3
+    },
+    "U1518": {
+     "FAIL": 1
+    },
+    "U2119": {
+     "undetermined": 8
+    },
+    "U2218": {
+     "pass": 4
+    },
+    "U4346": {
+     "FAIL": 3,
+     "pass": 1
+    },
+    "U4347": {
+     "pass": 3,
+     "undetermined": 2
+    },
+    "U4348": {
+     "undetermined": 4
+    },
+    "U8314": {
+     "FAIL": 4
+    },
+    "U8318": {
+     "undetermined": 8
+    },
+    "U8417": {
+     "undetermined": 4,
+     "FAIL": 1,
+     "pass": 1
+    }
+   },
+   "nets": [
+    {
+     "net": "/E3/C2882f4_SENSE",
+     "kind": "other",
+     "from": "JR",
+     "opa_pins": [
+      "U4346.5"
+     ],
+     "resistors_ohm": [
+      10000.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "non-inverting input",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 1168708,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/E3/C33e306_SENSE",
+     "kind": "other",
+     "from": "JR",
+     "opa_pins": [
+      "U4346.3"
+     ],
+     "resistors_ohm": [
+      10000.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "non-inverting input",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 1168708,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/E3/C5dbedd_DRIVE",
+     "kind": "other",
+     "from": "JR",
+     "opa_pins": [
+      "U4347.1",
+      "U4347.2"
+     ],
+     "resistors_ohm": [
+      499.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "op-amp output",
+     "criterion": "added C <= 100 pF",
+     "pass": true
+    },
+    {
+     "net": "/E3/C7b4897_SENSE",
+     "kind": "other",
+     "from": "JR",
+     "opa_pins": [
+      "U4346.10"
+     ],
+     "resistors_ohm": [
+      10000.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "non-inverting input",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 1168708,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/E3/C8c002f_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/E3/C8c002f_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/E3/C9f1934_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/E3/C9f1934_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/E3/Cae74f8_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/E3/Cae74f8_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/E3/Caf802b_DRIVE",
+     "kind": "other",
+     "from": "JR",
+     "opa_pins": [
+      "U4347.7",
+      "U4347.6"
+     ],
+     "resistors_ohm": [
+      499.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "op-amp output",
+     "criterion": "added C <= 100 pF",
+     "pass": true
+    },
+    {
+     "net": "/E3/Cc9f2ea_DRIVE",
+     "kind": "other",
+     "from": "JR",
+     "opa_pins": [
+      "U4346.14",
+      "U4346.13"
+     ],
+     "resistors_ohm": [
+      499.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "op-amp output",
+     "criterion": "added C <= 100 pF",
+     "pass": true
+    },
+    {
+     "net": "/E3/Ce82060_DRIVE",
+     "kind": "other",
+     "from": "JR",
+     "opa_pins": [
+      "U4347.8",
+      "U4347.9"
+     ],
+     "resistors_ohm": [
+      499.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "op-amp output",
+     "criterion": "added C <= 100 pF",
+     "pass": true
+    },
+    {
+     "net": "/M4A/C2169e5_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4A/C2169e5_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4A/C2be340_SENSE",
+     "kind": "other",
+     "from": "JR",
+     "opa_pins": [
+      "U8314.12"
+     ],
+     "resistors_ohm": [
+      10000.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "non-inverting input",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 1168708,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/M4A/C320656_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4A/C320656_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4A/C5eb398_SENSE",
+     "kind": "other",
+     "from": "JR",
+     "opa_pins": [
+      "U8314.5"
+     ],
+     "resistors_ohm": [
+      10000.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "non-inverting input",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 1168708,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/M4A/C7750d4_SENSE",
+     "kind": "other",
+     "from": "JR",
+     "opa_pins": [
+      "U8314.10"
+     ],
+     "resistors_ohm": [
+      10000.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "non-inverting input",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 1168708,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/M4A/Caeced9_SENSE",
+     "kind": "other",
+     "from": "JR",
+     "opa_pins": [
+      "U8314.3"
+     ],
+     "resistors_ohm": [
+      10000.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "non-inverting input",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 1168708,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/M4A/Cd59875_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4A/Cd59875_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4A/Cf876de_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4A/Cf876de_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4B/C412fd1_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4B/C412fd1_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4B/C93bba0_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4B/C93bba0_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JR",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/M4B/Cb5ae41_SENSE",
+     "kind": "other",
+     "from": "JR",
+     "opa_pins": [
+      "U8417.3"
+     ],
+     "resistors_ohm": [
+      10000.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "non-inverting input",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 1168708,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/M4B/Cea264a_DRIVE",
+     "kind": "other",
+     "from": "JR",
+     "opa_pins": [
+      "U8417.7",
+      "U8417.6"
+     ],
+     "resistors_ohm": [
+      499.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "op-amp output",
+     "criterion": "added C <= 100 pF",
+     "pass": true
+    },
+    {
+     "net": "/F1/C9fcdd2_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/F1/C9fcdd2_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cb3d4a2_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cb3d4a2_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cb6d8fd_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cb6d8fd_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cfc4b03_LED_A",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/F1/Cfc4b03_LED_K",
+     "kind": "indicator LED drive",
+     "from": "JL",
+     "opa_pins": [],
+     "resistors_ohm": [],
+     "added_C_pF": 7.22,
+     "node": "passive-only node",
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "note": "no resistor on node",
+     "pass": null
+    },
+    {
+     "net": "/F2/C29cc99_DRIVE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U2218.7",
+      "U2218.6"
+     ],
+     "resistors_ohm": [
+      499.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "op-amp output",
+     "criterion": "added C <= 100 pF",
+     "pass": true
+    },
+    {
+     "net": "/F2/C2b02f4_DRIVE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U2218.8",
+      "U2218.9"
+     ],
+     "resistors_ohm": [
+      499.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "op-amp output",
+     "criterion": "added C <= 100 pF",
+     "pass": true
+    },
+    {
+     "net": "/F2/C56c9d6_DRIVE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U2218.14",
+      "U2218.13"
+     ],
+     "resistors_ohm": [
+      499.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "op-amp output",
+     "criterion": "added C <= 100 pF",
+     "pass": true
+    },
+    {
+     "net": "/F2/C5d31c8_DRIVE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U2218.1",
+      "U2218.2"
+     ],
+     "resistors_ohm": [
+      499.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "op-amp output",
+     "criterion": "added C <= 100 pF",
+     "pass": true
+    },
+    {
+     "net": "/O2/C1b3f1d_SENSE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U1216.5"
+     ],
+     "resistors_ohm": [
+      10000.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "non-inverting input",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 1168708,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O2/C3f1879_SENSE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U1216.3"
+     ],
+     "resistors_ohm": [
+      10000.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "non-inverting input",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 1168708,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O2/C70dbdb_DRIVE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U1216.14",
+      "U1216.13"
+     ],
+     "resistors_ohm": [
+      499.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "op-amp output",
+     "criterion": "added C <= 100 pF",
+     "pass": true
+    },
+    {
+     "net": "/O2/Cc44f2e_SENSE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U1216.10"
+     ],
+     "resistors_ohm": [
+      10000.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "non-inverting input",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 1168708,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O4/C1b3f1d_SENSE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U1416.5"
+     ],
+     "resistors_ohm": [
+      10000.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "non-inverting input",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 1168708,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O4/C3f1879_SENSE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U1416.3"
+     ],
+     "resistors_ohm": [
+      10000.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "non-inverting input",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 1168708,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O4/C70dbdb_DRIVE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U1416.14",
+      "U1416.13"
+     ],
+     "resistors_ohm": [
+      499.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "op-amp output",
+     "criterion": "added C <= 100 pF",
+     "pass": true
+    },
+    {
+     "net": "/O4/C7b4ed2_DRIVE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U1417.7",
+      "U1417.6"
+     ],
+     "resistors_ohm": [
+      499.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "op-amp output",
+     "criterion": "added C <= 100 pF",
+     "pass": true
+    },
+    {
+     "net": "/O4/Cc44f2e_SENSE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U1416.10"
+     ],
+     "resistors_ohm": [
+      10000.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "non-inverting input",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 1168708,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    },
+    {
+     "net": "/O4/Cc66d82_DRIVE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U1417.1",
+      "U1417.2"
+     ],
+     "resistors_ohm": [
+      499.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "op-amp output",
+     "criterion": "added C <= 100 pF",
+     "pass": true
+    },
+    {
+     "net": "/O4/Cec1eaa_DRIVE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U1417.8",
+      "U1417.9"
+     ],
+     "resistors_ohm": [
+      499.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "op-amp output",
+     "criterion": "added C <= 100 pF",
+     "pass": true
+    },
+    {
+     "net": "/O5/C1e2eb4_SENSE",
+     "kind": "other",
+     "from": "JL",
+     "opa_pins": [
+      "U1518.3"
+     ],
+     "resistors_ohm": [
+      10000.0
+     ],
+     "added_C_pF": 13.62,
+     "node": "non-inverting input",
+     "source_R_ohm": 10000.0,
+     "corner_Hz": 1168708,
+     "crosstalk_edge_mV": 535.93,
+     "crosstalk_edge_mV_with_grounds": {
+      "A": 105.66,
+      "B": 126.89,
+      "C": 66.56
+     },
+     "crosstalk_20kHz_mV": 33.669,
+     "criterion": "corner >= 200 kHz and crosstalk <= 10 mV",
+     "pass": false
+    }
+   ],
+   "first_ground_rule_meeting_10mV": {
+    "none": 15
+   },
+   "tally": {
+    "non-inverting input FAIL": 15,
+    "op-amp output pass": 14,
+    "passive-only node undetermined": 26
+   },
+   "fail": [
+    "/E3/C2882f4_SENSE",
+    "/E3/C33e306_SENSE",
+    "/E3/C7b4897_SENSE",
+    "/M4A/C2be340_SENSE",
+    "/M4A/C5eb398_SENSE",
+    "/M4A/C7750d4_SENSE",
+    "/M4A/Caeced9_SENSE",
+    "/M4B/Cb5ae41_SENSE",
+    "/O2/C1b3f1d_SENSE",
+    "/O2/C3f1879_SENSE",
+    "/O2/Cc44f2e_SENSE",
+    "/O4/C1b3f1d_SENSE",
+    "/O4/C3f1879_SENSE",
+    "/O4/Cc44f2e_SENSE",
+    "/O5/C1e2eb4_SENSE"
+   ]
+  }
+ },
+ "scope": "DRAFT criteria for independent review; first-order RC and the retained quasi-static cable model only; no loop-gain simulation, no measured cable data; not an acceptance."
+}
