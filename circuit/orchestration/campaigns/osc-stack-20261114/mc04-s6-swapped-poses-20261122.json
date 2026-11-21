@@ -1,0 +1,143 @@
+{
+ "schema_version": 1,
+ "tool": "bash scripts/kicad/run.sh python3 scripts/pcbgen/pose_swapped.py <board-id> --refs ...",
+ "why": "sync.py keeps a free footprint at its old origin when its library footprint changes, and place.py refuses both boards (routed parts differ from their source origins, also on the committed boards), so the six TSSOP-14 bodies were moved to their netlisted floorplan pose by this tool",
+ "boards": {
+  "osc-jack-left": {
+   "board": "osc-jack-left",
+   "moves": [
+    {
+     "ref": "U1216",
+     "footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+     "source_origin_mm": [
+      37.23,
+      71.55
+     ],
+     "before_kicad": {
+      "x_mm": 136.73,
+      "y_mm": 121.55,
+      "side": "B.Cu",
+      "rotation_deg": 180.0
+     },
+     "after_kicad": {
+      "x_mm": 137.23,
+      "y_mm": 121.55,
+      "side": "B.Cu",
+      "rotation_deg": 180.0
+     },
+     "moved_mm": 0.5
+    },
+    {
+     "ref": "U1416",
+     "footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+     "source_origin_mm": [
+      71.23,
+      72.05
+     ],
+     "before_kicad": {
+      "x_mm": 170.73,
+      "y_mm": 121.55,
+      "side": "B.Cu",
+      "rotation_deg": 180.0
+     },
+     "after_kicad": {
+      "x_mm": 171.23,
+      "y_mm": 122.05,
+      "side": "B.Cu",
+      "rotation_deg": 180.0
+     },
+     "moved_mm": 0.7071
+    },
+    {
+     "ref": "U1518",
+     "footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+     "source_origin_mm": [
+      90.46,
+      78.02000000000001
+     ],
+     "before_kicad": {
+      "x_mm": 205.959999,
+      "y_mm": 139.52,
+      "side": "F.Cu",
+      "rotation_deg": -90.0
+     },
+     "after_kicad": {
+      "x_mm": 190.459999,
+      "y_mm": 128.02,
+      "side": "F.Cu",
+      "rotation_deg": -90.0
+     },
+     "moved_mm": 19.3003
+    }
+   ]
+  },
+  "osc-jack-right": {
+   "board": "osc-jack-right",
+   "moves": [
+    {
+     "ref": "U4346",
+     "footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+     "source_origin_mm": [
+      260.47,
+      51.550000000000004
+     ],
+     "before_kicad": {
+      "x_mm": 359.97,
+      "y_mm": 101.55,
+      "side": "B.Cu",
+      "rotation_deg": 180.0
+     },
+     "after_kicad": {
+      "x_mm": 360.47,
+      "y_mm": 101.55,
+      "side": "B.Cu",
+      "rotation_deg": 180.0
+     },
+     "moved_mm": 0.5
+    },
+    {
+     "ref": "U8314",
+     "footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+     "source_origin_mm": [
+      192.47,
+      89.58000000000001
+     ],
+     "before_kicad": {
+      "x_mm": 291.97,
+      "y_mm": 138.08,
+      "side": "B.Cu",
+      "rotation_deg": 0.0
+     },
+     "after_kicad": {
+      "x_mm": 292.47,
+      "y_mm": 139.58,
+      "side": "B.Cu",
+      "rotation_deg": 0.0
+     },
+     "moved_mm": 1.5811
+    },
+    {
+     "ref": "U8417",
+     "footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+     "source_origin_mm": [
+      209.47,
+      55.85
+     ],
+     "before_kicad": {
+      "x_mm": 308.97,
+      "y_mm": 105.85,
+      "side": "B.Cu",
+      "rotation_deg": 180.0
+     },
+     "after_kicad": {
+      "x_mm": 309.47,
+      "y_mm": 105.85,
+      "side": "B.Cu",
+      "rotation_deg": 180.0
+     },
+     "moved_mm": 0.5
+    }
+   ]
+  }
+ }
+}
