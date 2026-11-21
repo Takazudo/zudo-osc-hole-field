@@ -4,6 +4,18 @@
 campaign"), branch `claude/project-thread-iw3gai`. **DRAFT FOR THE DESIGN AUTHORITY. Nothing here
 is adopted.** Check 5 stays NEEDS_DESIGN until a ruling is recorded.
 
+## Owner decision, 2026-11-21: develop option D in stages
+
+The owner chose "Yes, develop it in stages" on the decision card. That authorizes the staged work below; it
+accepts no move. Each stage still needs independent review, and check 5 stays NEEDS_DESIGN until the
+generator change passes it.
+
+Stage 1a (`scripts/stack/studies/mc04_s1_budgets/`) drafts electrical limits from the OPA4196 datasheet and
+the retained cable model. Under those draft limits, the 15 protected 10 kΩ input nodes fail the 10 mV
+crosstalk limit even with two grounds between signals, so six input-buffer blocks (U1216, U1416, U1518,
+U4346, U8314, U8417) cannot move as drawn. Three output blocks (U1417, U2218, U4347) can, with a ground
+between signals. The three LED-indicator blocks need an indicator criterion.
+
 ## The question for the design authority: which remedy to develop for the 26 unplaced ICs
 
 The cumulative record has 438 displaced footprints. 412 have courtyard-level replacements and 26
