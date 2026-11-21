@@ -259,14 +259,14 @@
       "O2:3": {
         "domain": "EXT",
         "rails": [
-          "+12V"
+          "+12V",
+          "-12V"
         ]
       },
       "O2:4": {
         "domain": "EXT",
         "rails": [
-          "+12V",
-          "-12V"
+          "+12V"
         ]
       },
       "O2:5": {
@@ -284,6 +284,13 @@
         ]
       },
       "O2:7": {
+        "domain": "EXT",
+        "rails": [
+          "+12V",
+          "-12V"
+        ]
+      },
+      "O2:8": {
         "domain": "EXT",
         "rails": [
           "+5V"
@@ -428,14 +435,14 @@
       "O5:3": {
         "domain": "EXT",
         "rails": [
-          "+12V"
+          "+12V",
+          "-12V"
         ]
       },
       "O5:4": {
         "domain": "EXT",
         "rails": [
-          "+12V",
-          "-12V"
+          "+12V"
         ]
       },
       "O5:5": {
@@ -453,6 +460,13 @@
         ]
       },
       "O5:7": {
+        "domain": "EXT",
+        "rails": [
+          "+12V",
+          "-12V"
+        ]
+      },
+      "O5:8": {
         "domain": "EXT",
         "rails": [
           "+5V"
@@ -805,13 +819,14 @@
       "E2:5": {
         "domain": "EXT",
         "rails": [
-          "+12V"
+          "+12V",
+          "-12V"
         ]
       },
       "E2:6": {
         "domain": "EXT",
         "rails": [
-          "+5V"
+          "+12V"
         ]
       },
       "E2:7": {
@@ -835,21 +850,20 @@
       "E2:10": {
         "domain": "EXT",
         "rails": [
-          "+12V",
-          "-12V"
+          "+5V"
         ]
       },
       "E2:11": {
         "domain": "EXT",
         "rails": [
-          "+5V"
+          "+12V",
+          "-12V"
         ]
       },
       "E2:12": {
         "domain": "EXT",
         "rails": [
-          "+12V",
-          "-12V"
+          "+5V"
         ]
       },
       "E2:13": {
@@ -862,7 +876,8 @@
       "E2:14": {
         "domain": "EXT",
         "rails": [
-          "+5V"
+          "+12V",
+          "-12V"
         ]
       },
       "E2:15": {
@@ -872,6 +887,12 @@
         ]
       },
       "E2:16": {
+        "domain": "EXT",
+        "rails": [
+          "+5V"
+        ]
+      },
+      "E2:17": {
         "domain": "EXT",
         "rails": [
           "+5V"
@@ -915,13 +936,14 @@
       "E3:5": {
         "domain": "EXT",
         "rails": [
-          "+12V"
+          "+12V",
+          "-12V"
         ]
       },
       "E3:6": {
         "domain": "EXT",
         "rails": [
-          "+5V"
+          "+12V"
         ]
       },
       "E3:7": {
@@ -945,21 +967,20 @@
       "E3:10": {
         "domain": "EXT",
         "rails": [
-          "+12V",
-          "-12V"
+          "+5V"
         ]
       },
       "E3:11": {
         "domain": "EXT",
         "rails": [
-          "+5V"
+          "+12V",
+          "-12V"
         ]
       },
       "E3:12": {
         "domain": "EXT",
         "rails": [
-          "+12V",
-          "-12V"
+          "+5V"
         ]
       },
       "E3:13": {
@@ -972,7 +993,8 @@
       "E3:14": {
         "domain": "EXT",
         "rails": [
-          "+5V"
+          "+12V",
+          "-12V"
         ]
       },
       "E3:15": {
@@ -982,6 +1004,12 @@
         ]
       },
       "E3:16": {
+        "domain": "EXT",
+        "rails": [
+          "+5V"
+        ]
+      },
+      "E3:17": {
         "domain": "EXT",
         "rails": [
           "+5V"
@@ -1685,10 +1713,17 @@
       "M4A:9": {
         "domain": "EXT",
         "rails": [
-          "+5V"
+          "+12V",
+          "-12V"
         ]
       },
       "M4A:10": {
+        "domain": "EXT",
+        "rails": [
+          "+5V"
+        ]
+      },
+      "M4A:11": {
         "domain": "EXT",
         "rails": [
           "+5V"
@@ -1760,10 +1795,17 @@
       "M4B:9": {
         "domain": "EXT",
         "rails": [
-          "+5V"
+          "+12V",
+          "-12V"
         ]
       },
       "M4B:10": {
+        "domain": "EXT",
+        "rails": [
+          "+5V"
+        ]
+      },
+      "M4B:11": {
         "domain": "EXT",
         "rails": [
           "+5V"
@@ -2759,7 +2801,7 @@
       },
       "current_limit_contract": "Selected source or inlet must deliver minimum transient requirements with a positive planning window to maximum_delivered_current_mA, then bound each rail including tolerance to that maximum and coordinate all-rail shutdown. The 100 mA windows are proposals, not proven realizable limiter tolerances. Maximums are interface limits, not device ratings. Unbounded overshoot/fault energy cannot be admitted by the contact/cable checker; actual limiter dynamics require #52 circuit evidence and #57 tests.",
       "minimum_continuous_current_mA": {
-        "+12V": 1600,
+        "+12V": 1700,
         "-12V": 1600,
         "+5V": 300
       }
@@ -2883,9 +2925,9 @@
       "+12V": {
         "historical_part": "TECHFUSE mSMD110-33V",
         "hold_A_at_25C": 1.1,
-        "required_continuous_A": 1.6,
+        "required_continuous_A": 1.7,
         "r1max_ohm": 0.25,
-        "drop_at_required_continuous_V_using_r1max": 0.4,
+        "drop_at_required_continuous_V_using_r1max": 0.425,
         "passes_required_current_and_protection_loss": false
       },
       "-12V": {
@@ -2964,7 +3006,7 @@
   "allocation_counts": {
     "signal_modules": 33,
     "shared_references": 1,
-    "worksheet_loads": 362,
+    "worksheet_loads": 368,
     "physical_IC_packages": 650,
     "fixed_panel_centres": 438
   },
@@ -3923,7 +3965,7 @@
     {
       "ref": "U1216",
       "instance": "O2",
-      "symbol": "OPA4196IDR",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -4585,7 +4627,7 @@
     {
       "ref": "U1416",
       "instance": "O4",
-      "symbol": "OPA4196IDR",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -4952,7 +4994,7 @@
     {
       "ref": "U1518",
       "instance": "O5",
-      "symbol": "OPA4197IDR",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -9203,7 +9245,7 @@
     {
       "ref": "U4346",
       "instance": "E3",
-      "symbol": "OPA4196IDR",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -14213,7 +14255,7 @@
     {
       "ref": "U8314",
       "instance": "M4A",
-      "symbol": "OPA4196IDR",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -14618,7 +14660,7 @@
     {
       "ref": "U8417",
       "instance": "M4B",
-      "symbol": "OPA4196IDR",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -14672,8 +14714,8 @@
   ],
   "original_single_source": {
     "planning_mA": {
-      "+12V": 1421.895166,
-      "-12V": 1386.71266,
+      "+12V": 1446.895166,
+      "-12V": 1411.71266,
       "+5V": 177.286445
     },
     "ceilings_mA": {
@@ -14682,14 +14724,14 @@
       "+5V": 400
     },
     "excess_mA": {
-      "+12V": 461.895166,
-      "-12V": 746.71266,
+      "+12V": 486.895166,
+      "-12V": 771.71266,
       "+5V": 0
     }
   },
   "rejected_two_source_excess_mA": {
     "+12V": 0,
-    "-12V": 112.592182,
+    "-12V": 137.592182,
     "+5V": 0
   },
   "minimum_arithmetic_independent_sources": 3,
@@ -14697,62 +14739,62 @@
     "A": {
       "status": "REJECTED - pinned current ceiling exceeded",
       "normal_with_allowances_mA": {
-        "+12V": 554.124597,
-        "-12V": 549.124091,
+        "+12V": 564.124597,
+        "-12V": 559.124091,
         "+5V": 82.662511
       },
       "conditional_10ms_start_and_one_fault_mA": {
-        "+12V": 654.004597,
-        "-12V": 648.344091,
+        "+12V": 664.004597,
+        "-12V": 658.344091,
         "+5V": 103.462511
       },
       "margin_to_pinned_ceiling_mA": {
-        "+12V": 305.995403,
-        "-12V": -8.344091,
+        "+12V": 295.995403,
+        "-12V": -18.344091,
         "+5V": 296.537489
       }
     },
     "B": {
       "status": "PASS - arithmetic only",
       "normal_with_allowances_mA": {
-        "+12V": 476.047028,
-        "-12V": 455.652522,
+        "+12V": 486.047028,
+        "-12V": 465.652522,
         "+5V": 76.970489
       },
       "conditional_10ms_start_and_one_fault_mA": {
-        "+12V": 575.927028,
-        "-12V": 554.872522,
+        "+12V": 585.927028,
+        "-12V": 564.872522,
         "+5V": 97.770489
       },
       "margin_to_pinned_ceiling_mA": {
-        "+12V": 384.072972,
-        "-12V": 85.127478,
+        "+12V": 374.072972,
+        "-12V": 75.127478,
         "+5V": 302.229511
       }
     },
     "C": {
       "status": "PASS - arithmetic only",
       "normal_with_allowances_mA": {
-        "+12V": 474.183597,
-        "-12V": 456.295091,
+        "+12V": 479.183597,
+        "-12V": 461.295091,
         "+5V": 111.428467
       },
       "conditional_10ms_start_and_one_fault_mA": {
-        "+12V": 574.063597,
-        "-12V": 555.515091,
+        "+12V": 579.063597,
+        "-12V": 560.515091,
         "+5V": 132.228467
       },
       "margin_to_pinned_ceiling_mA": {
-        "+12V": 385.936403,
-        "-12V": 84.484909,
+        "+12V": 380.936403,
+        "-12V": 79.484909,
         "+5V": 267.771533
       }
     }
   },
   "selected_requirement": {
     "worksheet_mA": {
-      "+12V": 1416.165138,
-      "-12V": 1381.033138,
+      "+12V": 1441.165138,
+      "-12V": 1406.033138,
       "+5V": 174.898934
     },
     "allowances": {
@@ -14820,12 +14862,12 @@
       ]
     },
     "normal_with_allowances_mA": {
-      "+12V": 1450.895166,
-      "-12V": 1407.71266,
+      "+12V": 1475.895166,
+      "-12V": 1432.71266,
       "+5V": 224.286445
     },
     "minimum_continuous_mA": {
-      "+12V": 1600,
+      "+12V": 1700,
       "-12V": 1600,
       "+5V": 300
     },
@@ -14835,7 +14877,7 @@
       "+5V": 62.4
     },
     "minimum_transient_mA": {
-      "+12V": 1900,
+      "+12V": 2000,
       "-12V": 1900,
       "+5V": 400
     },
@@ -14852,9 +14894,9 @@
       "-12V": 12.292,
       "+5V": 5.192
     },
-    "required_continuous_output_power_W": 40.73,
+    "required_continuous_output_power_W": 41.96,
     "protection_dissipation_allocation_W_per_rail": {
-      "+12V": 0.064,
+      "+12V": 0.068,
       "-12V": 0.064,
       "+5V": 0.012
     },

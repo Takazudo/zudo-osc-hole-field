@@ -150,6 +150,150 @@
   "instances": [
     {
       "instance": "M5A",
+      "fitted_package_count": {
+        "LM393BIDR": 2,
+        "OPA4196IDR": 8,
+        "OPA4197IDR": 1,
+        "REF5050AIDR": 1,
+        "TMUX7412FRRPR": 5
+      },
+      "breakdown": [
+        {
+          "load": "OPA4196IDR",
+          "count": 8,
+          "typical_unit_mA": {
+            "+12V": 0.56,
+            "-12V": 0.56,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 1.0,
+            "-12V": 1.0,
+            "+5V": 0
+          },
+          "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+        },
+        {
+          "load": "OPA4197IDR",
+          "count": 1,
+          "typical_unit_mA": {
+            "+12V": 4,
+            "-12V": 4,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+        },
+        {
+          "load": "TMUX7412FRRPR",
+          "count": 5,
+          "typical_unit_mA": {
+            "+12V": 0.32,
+            "-12V": 0.26,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 0.6,
+            "-12V": 0.5,
+            "+5V": 0
+          },
+          "basis": "UNADOPTED S2b candidate: TMUX7412F SCDS404B Section 7.6 (index 7) +/-16.5 V IDD/ISS, 25 C typical and -40..125 C maximum; not guaranteed at project +/-12 V."
+        },
+        {
+          "load": "LM393BIDR",
+          "count": 2,
+          "typical_unit_mA": {
+            "+12V": 0.6,
+            "-12V": 0.1,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 1,
+            "-12V": 1,
+            "+5V": 0
+          },
+          "basis": "26 dual packages from planning table. Conservatively reserve 1 mA on both rails even though single-supply gate comparators draw no -12 V current. Exact LM393B current and final count await #15/#33."
+        },
+        {
+          "load": "magnitude indicators",
+          "count": 6,
+          "typical_unit_mA": {
+            "+12V": 0.25,
+            "-12V": 0.25,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 1.25,
+            "-12V": 1.25,
+            "+5V": 0
+          },
+          "basis": "Typical 25% brightness; budget 1.25 mA per channel per analog rail, allowing >5 V saturation/headroom spread. Per-rail extremes need not occur simultaneously."
+        },
+        {
+          "load": "pre-level clip LED",
+          "count": 1,
+          "typical_unit_mA": {
+            "+12V": 0.25,
+            "-12V": 0.25,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 1.1,
+            "-12V": 1.1,
+            "+5V": 0
+          },
+          "basis": "Analog window outputs sink to -12 V from +12 V, hence both rails, at 24 V across 22.1 kohm plus LED."
+        },
+        {
+          "load": "SUM external load",
+          "count": 1,
+          "typical_unit_mA": {
+            "+12V": 0.05,
+            "-12V": 0.05,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 0.5,
+            "-12V": 0.5,
+            "+5V": 0
+          },
+          "basis": "All 82 jacks at \u00b15 V into 10 kohm, per-rail envelope; conservative includes gate outputs on analog buffers. Short-circuit demand handled separately."
+        },
+        {
+          "load": "reference, signal pots, summer feedback, servo and trims",
+          "count": 1,
+          "typical_unit_mA": {
+            "+12V": 3,
+            "-12V": 3,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 8,
+            "-12V": 8,
+            "+5V": 0
+          },
+          "basis": "Engineering allowance for REF5050 supply/load and resistor networks; no complete source-backed worst-case network bound. Includes OTA servo for MIX4."
+        },
+        {
+          "load": "fault-switch enable feeds",
+          "count": 5,
+          "typical_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0.05
+          },
+          "planning_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0.1
+          },
+          "basis": "Each +5 V / ~101 k\u03a9 enable feed is ~0.05 mA. Planning reserve includes input current and tolerance; no guaranteed maximum."
+        }
+      ],
       "planning_typical_mA": {
         "+12V": 16.08,
         "-12V": 14.78,
@@ -168,6 +312,150 @@
     },
     {
       "instance": "M5B",
+      "fitted_package_count": {
+        "LM393BIDR": 2,
+        "OPA4196IDR": 8,
+        "OPA4197IDR": 1,
+        "REF5050AIDR": 1,
+        "TMUX7412FRRPR": 5
+      },
+      "breakdown": [
+        {
+          "load": "OPA4196IDR",
+          "count": 8,
+          "typical_unit_mA": {
+            "+12V": 0.56,
+            "-12V": 0.56,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 1.0,
+            "-12V": 1.0,
+            "+5V": 0
+          },
+          "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+        },
+        {
+          "load": "OPA4197IDR",
+          "count": 1,
+          "typical_unit_mA": {
+            "+12V": 4,
+            "-12V": 4,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+        },
+        {
+          "load": "TMUX7412FRRPR",
+          "count": 5,
+          "typical_unit_mA": {
+            "+12V": 0.32,
+            "-12V": 0.26,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 0.6,
+            "-12V": 0.5,
+            "+5V": 0
+          },
+          "basis": "UNADOPTED S2b candidate: TMUX7412F SCDS404B Section 7.6 (index 7) +/-16.5 V IDD/ISS, 25 C typical and -40..125 C maximum; not guaranteed at project +/-12 V."
+        },
+        {
+          "load": "LM393BIDR",
+          "count": 2,
+          "typical_unit_mA": {
+            "+12V": 0.6,
+            "-12V": 0.1,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 1,
+            "-12V": 1,
+            "+5V": 0
+          },
+          "basis": "26 dual packages from planning table. Conservatively reserve 1 mA on both rails even though single-supply gate comparators draw no -12 V current. Exact LM393B current and final count await #15/#33."
+        },
+        {
+          "load": "magnitude indicators",
+          "count": 6,
+          "typical_unit_mA": {
+            "+12V": 0.25,
+            "-12V": 0.25,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 1.25,
+            "-12V": 1.25,
+            "+5V": 0
+          },
+          "basis": "Typical 25% brightness; budget 1.25 mA per channel per analog rail, allowing >5 V saturation/headroom spread. Per-rail extremes need not occur simultaneously."
+        },
+        {
+          "load": "pre-level clip LED",
+          "count": 1,
+          "typical_unit_mA": {
+            "+12V": 0.25,
+            "-12V": 0.25,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 1.1,
+            "-12V": 1.1,
+            "+5V": 0
+          },
+          "basis": "Analog window outputs sink to -12 V from +12 V, hence both rails, at 24 V across 22.1 kohm plus LED."
+        },
+        {
+          "load": "SUM external load",
+          "count": 1,
+          "typical_unit_mA": {
+            "+12V": 0.05,
+            "-12V": 0.05,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 0.5,
+            "-12V": 0.5,
+            "+5V": 0
+          },
+          "basis": "All 82 jacks at \u00b15 V into 10 kohm, per-rail envelope; conservative includes gate outputs on analog buffers. Short-circuit demand handled separately."
+        },
+        {
+          "load": "reference, signal pots, summer feedback, servo and trims",
+          "count": 1,
+          "typical_unit_mA": {
+            "+12V": 3,
+            "-12V": 3,
+            "+5V": 0
+          },
+          "planning_unit_mA": {
+            "+12V": 8,
+            "-12V": 8,
+            "+5V": 0
+          },
+          "basis": "Engineering allowance for REF5050 supply/load and resistor networks; no complete source-backed worst-case network bound. Includes OTA servo for MIX4."
+        },
+        {
+          "load": "fault-switch enable feeds",
+          "count": 5,
+          "typical_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0.05
+          },
+          "planning_unit_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0.1
+          },
+          "basis": "Each +5 V / ~101 k\u03a9 enable feed is ~0.05 mA. Planning reserve includes input current and tolerance; no guaranteed maximum."
+        }
+      ],
       "planning_typical_mA": {
         "+12V": 16.08,
         "-12V": 14.78,
