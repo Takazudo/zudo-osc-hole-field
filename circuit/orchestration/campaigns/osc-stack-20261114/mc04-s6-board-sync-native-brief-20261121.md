@@ -168,3 +168,24 @@ The re-route stays OPEN and moves to the routing pass after stage 7.
 Note on the five JL AGND stubs the stripper refused because they touch a zone: remove the track segments
 themselves, if they conflict, but never the zone. Refill the zone, record the segments, and confirm with DRC
 that AGND connectivity through the zone holds.
+
+## Revision 4: c6 rebind ruling (2026-11-21)
+
+Revision 3 is accepted for review: JL and JR match the floorplan, with 0 new non-unconnected DRC errors and
+clean parity. The conflict stripping removed 0.80 % (JL) and 0.37 % (JR) of the routed track length since pre-S6.
+
+The c6 rebind check (`mc04-s6-c6-rebind-check-20261122.json`) shows that c6's own work is unchanged. Signals,
+positions and riders are identical; the signal and positions pins match. Only the pre-c6 geometry pin changes,
+because the scene changed: JL-K-JL-L02 and JR-K-JR-L02 find different slots, and JL-L07, JL-L08 and JR-L04 change
+cost only. The pins exist to stop silent change, not to freeze geometry after an explained scene change. Rebind:
+
+1. Update only the geometry and output pins in `scripts/stack/geometry/links_gate_c6.py`, with a comment naming
+   MC04-S6 revision 4, this brief and the rebind-check record's sha256. Keep the signal and positions pins as
+   they are, and add a test that they still match.
+2. Regenerate `link-gate.json` and `link-gate.md`. Write a per-link before/after table for JL-L02 and JR-L02 into
+   the rebind-check record: slot centre, direction, slot distance, cable needed against the cable length, loop,
+   lengthened tail, latch reach, compliance and trim leads. Confirm that each one still passes the gate's cable,
+   tail, latch and compliance rules, and the class-distance checks.
+3. Re-run the stack geometry tests. `Gate setUpClass` and `GatePart2.test_review_2` must pass, or be reported
+   with the exact assertion.
+4. Push and hand back. An independent review of the two slot moves follows before stage 7.
