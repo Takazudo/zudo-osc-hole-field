@@ -3,8 +3,13 @@
  "status": "COURTYARD-AND-PAD-LEVEL PLANNING SCREEN; not a copper clearance, tolerance result or physical fit; unvalidated draft",
  "verdict": "FAIL",
  "candidate_sha256": "9bd03493c0a98c36357c90ee56e86dec57eb3dd5d0793a84f49f34f1c5d25f54",
- "canonical_input_digest": "394df9775248e5384e3122886a88b88751cfb4f503b8a13521e1f29f5824d643",
+ "canonical_input_digest": "10e927360e874e3ef031618ece025cdd356a6381c3b50ec0cd07e5caa8107dad",
  "errors": [
+  "courtyard_blockers_declared: pair JL-K-11 front site on JL B.Cu has undeclared blocker R1213 (courtyard)",
+  "courtyard_blockers_declared: pair JL-K-11 front site on JL B.Cu has undeclared blocker RB1306 (courtyard)",
+  "courtyard_blockers_declared: pair JL-K-12 front site on JL B.Cu has undeclared blocker RB1302 (courtyard)",
+  "courtyard_blockers_declared: pair JL-K-14 front site on JL B.Cu has undeclared blocker C2124 (courtyard)",
+  "courtyard_blockers_declared: pair JL-K-14 front site on JL B.Cu has undeclared blocker U2105 (courtyard)",
   "fixing_reach: pair JL-K-9 at [159, 38] misses the 40 mm reach on the K and front side (K side [126.649, 'POWER-JL-AGND3'], front side [126.649, 'POWER-JL-AGND3'])",
   "fixing_reach: pair JL-K-8 at [142, 38] misses the 40 mm reach on the K and front side (K side [123.179, 'POWER-JL-AGND3'], front side [123.179, 'POWER-JL-AGND3'])",
   "fixing_reach: pair JL-K-7 at [125, 38] misses the 40 mm reach on the K and front side (K side [119.509, 'JL-SUP-1'], front side [119.509, 'JL-SUP-1'])",
@@ -112,7 +117,8 @@
   "fixing_reach: pair K-P-2 at [218.5, 269.0] misses the 40 mm reach on the K and front side (K side [42.3, 'K-SUP-8'], front side [42.3, 'K-SUP-8'])",
   "fixing_reach: pair K-P-14 at [269.5, 241.0] misses the 40 mm reach on the K and front side (K side [42.048, 'K-SUP-6'], front side [42.048, 'K-SUP-6'])",
   "fixing_reach: pair K-P-99 at [48.5, 241.0] misses the 40 mm reach on the K and front side (K side [42.048, 'K-SUP-5'], front side [42.048, 'K-SUP-5'])",
-  "fixing_reach: pair K-P-24 at [218.5, 206] misses the 40 mm reach on the K and front side (K side [40.14, 'POWER-P-AGND1'], front side [40.14, 'POWER-P-AGND1'])"
+  "fixing_reach: pair K-P-24 at [218.5, 206] misses the 40 mm reach on the K and front side (K side [40.14, 'POWER-P-AGND1'], front side [40.14, 'POWER-P-AGND1'])",
+  "staleness: candidate digest 394df9775248e538 differs from the sources 10e927360e874e3e; regenerate with: python3 scripts/stack/geometry/generate.py && python3 scripts/stack/geometry/check.py"
  ],
  "checks": {
   "planes_and_gaps": {
@@ -288,8 +294,14 @@
    }
   },
   "courtyard_blockers_declared": {
-   "status": "PASS",
-   "errors": [],
+   "status": "FAIL",
+   "errors": [
+    "pair JL-K-11 front site on JL B.Cu has undeclared blocker R1213 (courtyard)",
+    "pair JL-K-11 front site on JL B.Cu has undeclared blocker RB1306 (courtyard)",
+    "pair JL-K-12 front site on JL B.Cu has undeclared blocker RB1302 (courtyard)",
+    "pair JL-K-14 front site on JL B.Cu has undeclared blocker C2124 (courtyard)",
+    "pair JL-K-14 front site on JL B.Cu has undeclared blocker U2105 (courtyard)"
+   ],
    "detail": {
     "declared_conflicts": [
      {
@@ -747,10 +759,10 @@
     "gaps": {
      "JL/K": {
       "gap_mm": 19.0,
-      "overlapping_pairs_with_known_heights": 68,
-      "overlapping_pairs_with_an_unretained_height": 694,
-      "front_items": 724,
-      "front_items_with_height": 214,
+      "overlapping_pairs_with_known_heights": 66,
+      "overlapping_pairs_with_an_unretained_height": 690,
+      "front_items": 725,
+      "front_items_with_height": 213,
       "back_items": 339,
       "back_items_with_height": 61,
       "tallest_front_mm": 5,
@@ -807,7 +819,7 @@
        "kind": "body",
        "members_on_face": 22
       },
-      "front_items_without_height": 510,
+      "front_items_without_height": 512,
       "back_items_without_height": 278,
       "stacker": {
        "gap_mm": 19.0,
@@ -819,7 +831,7 @@
      },
      "JR/K": {
       "gap_mm": 19.0,
-      "overlapping_pairs_with_known_heights": 162,
+      "overlapping_pairs_with_known_heights": 159,
       "overlapping_pairs_with_an_unretained_height": 900,
       "front_items": 649,
       "front_items_with_height": 216,
@@ -1113,7 +1125,7 @@
       "collisions": []
      }
     },
-    "facing_pairs_without_a_retained_height": 2312,
+    "facing_pairs_without_a_retained_height": 2308,
     "height_source": "design/mechanical/ic-envelope-native-report.json native display-model z bounds (not seated heights), selector-assembly.json tails, partition bulk reserves; every other part height is unretained and counted as unknown"
    }
   },
@@ -5731,11 +5743,11 @@
    }
   },
   "staleness": {
-   "status": "PASS",
-   "errors": [],
-   "detail": {
-    "digest": "394df9775248e5384e3122886a88b88751cfb4f503b8a13521e1f29f5824d643"
-   }
+   "status": "FAIL",
+   "errors": [
+    "candidate digest 394df9775248e538 differs from the sources 10e927360e874e3e; regenerate with: python3 scripts/stack/geometry/generate.py && python3 scripts/stack/geometry/check.py"
+   ],
+   "detail": {}
   }
  },
  "not_run": [
@@ -5877,8 +5889,12 @@
      ]
     },
     "sites": 58,
-    "fit_in_place_both_boards": 58,
-    "fails": []
+    "fit_in_place_both_boards": 55,
+    "fails": [
+     "JL-K-11",
+     "JL-K-12",
+     "JL-K-14"
+    ]
    }
   },
   "envelope_sweep": [
@@ -5949,7 +5965,7 @@
     ],
     "fail_of_sites": {
      "EL/K": "0 of 6",
-     "JL/K": "0 of 25",
+     "JL/K": "3 of 25",
      "JR/K": "0 of 27"
     }
    },
@@ -5960,7 +5976,7 @@
     ],
     "fail_of_sites": {
      "EL/K": "0 of 6",
-     "JL/K": "0 of 25",
+     "JL/K": "3 of 25",
      "JR/K": "0 of 27"
     }
    },
@@ -5971,7 +5987,7 @@
     ],
     "fail_of_sites": {
      "EL/K": "0 of 6",
-     "JL/K": "0 of 25",
+     "JL/K": "3 of 25",
      "JR/K": "0 of 27"
     }
    },
@@ -5982,7 +5998,7 @@
     ],
     "fail_of_sites": {
      "EL/K": "1 of 6",
-     "JL/K": "19 of 25",
+     "JL/K": "18 of 25",
      "JR/K": "22 of 27"
     }
    },
@@ -5993,7 +6009,7 @@
     ],
     "fail_of_sites": {
      "EL/K": "1 of 6",
-     "JL/K": "19 of 25",
+     "JL/K": "18 of 25",
      "JR/K": "22 of 27"
     }
    },

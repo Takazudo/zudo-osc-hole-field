@@ -1,7 +1,7 @@
 {
   "reconciliation": {
-    "status": "DISCREPANCIES",
-    "discrepancy_count": 24,
+    "status": "MATCHED DECLARED FIELDS",
+    "discrepancy_count": 0,
     "unverified": "Net connectivity, pin/pad correspondence, placements/orientation, electrical behavior and external assembly are not checked by this coverage command"
   },
   "schema_version": 1,
@@ -338,7 +338,7 @@
     "boards/osc-core/sheets/wavefolder_W1_K.kicad_sch": "d92da9302c4ac91cf805ea6ab579b482932947e0f6dbd62d50991f10e65bd1e1",
     "boards/osc-core/sheets/wavefolder_W2_K.kicad_sch": "ed8e4e252610690f031e0a3a57b90b59ecb1b31f46370bdd042c547a9dc10662",
     "boards/osc-jack-left/osc-jack-left.kicad_dru": "4f8f95210209c4024c0bde764a6758293e2d294565d9a2d2b6e62ec09910073d",
-    "boards/osc-jack-left/osc-jack-left.kicad_pcb": "2cd30044054fcdbf8c94de27515a5bc763e98de12c0f3df212cf5d84ded1ee19",
+    "boards/osc-jack-left/osc-jack-left.kicad_pcb": "1bd91b493e3286b99b82a27fdafa3e6c17ae6cb6097bce35803d05b46466f89f",
     "boards/osc-jack-left/osc-jack-left.kicad_pro": "dc632022614d7d985ca97b60ad2546cbc6ddc908c303834ab60abe675191b20b",
     "boards/osc-jack-left/osc-jack-left.kicad_sch": "2f6607daf2167115f00d97a6fbe353d3290ec2c367f12dab754fdc81b51a4218",
     "boards/osc-jack-left/reports/grid-routing/rrr-01.json": "8537b77da1c17debaa8d5f404a26272bb29b89aad104f19070ab7c8a288a54c4",
@@ -365,7 +365,7 @@
     "boards/osc-jack-left/sheets/sample_hold_H2_JL.kicad_sch": "e80e6111c420ff37687face25bc7a6df111f106556a1b9a198d46a3238774381",
     "boards/osc-jack-left/sheets/wavefolder_W2_JL.kicad_sch": "e3e78bf38c059ee669e312fc99a8058446d09e2f99b69c62807211fc5a7443bf",
     "boards/osc-jack-right/osc-jack-right.kicad_dru": "f1ae5a9b8f9f11006ae1a7c7f69921a992f104010e181018ae6d9368c0f1836b",
-    "boards/osc-jack-right/osc-jack-right.kicad_pcb": "653b20312851fad1dcf1a90806c1fdc558edf32dfc25d6675b43bb100ff9b3c1",
+    "boards/osc-jack-right/osc-jack-right.kicad_pcb": "d03c703d19b6f4a45cad4d9c73e4ff8b79aeccd70592c57c0dcd6f6d8457bfeb",
     "boards/osc-jack-right/osc-jack-right.kicad_pro": "791c33499a051c67c0a8f64f02bcf24af19ac5e1678f96d7619cd2f59fc86b87",
     "boards/osc-jack-right/osc-jack-right.kicad_sch": "eb5d78b8783d9479d47596a4c5534df4f5c2a20ee388590e14b31a2134f83c73",
     "boards/osc-jack-right/reports/grid-routing/rrr-01.json": "7a111ee7177758499904c80722bdc7feb7a452b75634eeb95c8ce43f4e99d708",
@@ -1169,7 +1169,7 @@
         59,
         65
       ],
-      "board_sha256": "2cd30044054fcdbf8c94de27515a5bc763e98de12c0f3df212cf5d84ded1ee19",
+      "board_sha256": "1bd91b493e3286b99b82a27fdafa3e6c17ae6cb6097bce35803d05b46466f89f",
       "definition": "design/boards/osc-jack-left.json",
       "netlist": "schematic/boards/osc-jack-left.net",
       "counts": {
@@ -1191,85 +1191,12 @@
         "MH_JL-SUP-3",
         "MH_JL-SUP-4"
       ],
-      "field_discrepancies": [
-        {
-          "ref": "U1216",
-          "field": "footprint",
-          "netlist": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
-          "pcb": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm"
-        },
-        {
-          "ref": "U1216",
-          "field": "MPN",
-          "netlist": "OPA4197IPWR",
-          "pcb": "OPA4196IDR"
-        },
-        {
-          "ref": "U1216",
-          "field": "Value",
-          "netlist": "OPA4197IPWR",
-          "pcb": "OPA4196IDR"
-        },
-        {
-          "ref": "U1216",
-          "field": "LCSC",
-          "netlist": "C2057327",
-          "pcb": "C2057385"
-        },
-        {
-          "ref": "U1416",
-          "field": "footprint",
-          "netlist": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
-          "pcb": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm"
-        },
-        {
-          "ref": "U1416",
-          "field": "MPN",
-          "netlist": "OPA4197IPWR",
-          "pcb": "OPA4196IDR"
-        },
-        {
-          "ref": "U1416",
-          "field": "Value",
-          "netlist": "OPA4197IPWR",
-          "pcb": "OPA4196IDR"
-        },
-        {
-          "ref": "U1416",
-          "field": "LCSC",
-          "netlist": "C2057327",
-          "pcb": "C2057385"
-        },
-        {
-          "ref": "U1518",
-          "field": "footprint",
-          "netlist": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
-          "pcb": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm"
-        },
-        {
-          "ref": "U1518",
-          "field": "MPN",
-          "netlist": "OPA4197IPWR",
-          "pcb": "OPA4197IDR"
-        },
-        {
-          "ref": "U1518",
-          "field": "Value",
-          "netlist": "OPA4197IPWR",
-          "pcb": "OPA4197IDR"
-        },
-        {
-          "ref": "U1518",
-          "field": "LCSC",
-          "netlist": "C2057327",
-          "pcb": "C2058532"
-        }
-      ],
+      "field_discrepancies": [],
       "retained_connectivity": {
         "path": "boards/osc-jack-left/reports/routing.json",
         "sha256": "fd0539ef917c2618cf9efaf60beaaa786662a055107b6cc97894e77d20aa5ef5",
         "recorded_board_sha256": "2cd30044054fcdbf8c94de27515a5bc763e98de12c0f3df212cf5d84ded1ee19",
-        "status": "MATCHED BOARD BYTES",
+        "status": "STALE OR UNBOUND",
         "complete_native_open_edges": 184,
         "scope": "Board-byte binding only; other report input dependencies are not revalidated here. No new native execution or electrical qualification"
       },
@@ -2655,7 +2582,7 @@
         59,
         65
       ],
-      "board_sha256": "653b20312851fad1dcf1a90806c1fdc558edf32dfc25d6675b43bb100ff9b3c1",
+      "board_sha256": "d03c703d19b6f4a45cad4d9c73e4ff8b79aeccd70592c57c0dcd6f6d8457bfeb",
       "definition": "design/boards/osc-jack-right.json",
       "netlist": "schematic/boards/osc-jack-right.net",
       "counts": {
@@ -2677,85 +2604,12 @@
         "MH_JR-SUP-3",
         "MH_JR-SUP-4"
       ],
-      "field_discrepancies": [
-        {
-          "ref": "U4346",
-          "field": "footprint",
-          "netlist": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
-          "pcb": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm"
-        },
-        {
-          "ref": "U4346",
-          "field": "MPN",
-          "netlist": "OPA4197IPWR",
-          "pcb": "OPA4196IDR"
-        },
-        {
-          "ref": "U4346",
-          "field": "Value",
-          "netlist": "OPA4197IPWR",
-          "pcb": "OPA4196IDR"
-        },
-        {
-          "ref": "U4346",
-          "field": "LCSC",
-          "netlist": "C2057327",
-          "pcb": "C2057385"
-        },
-        {
-          "ref": "U8314",
-          "field": "footprint",
-          "netlist": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
-          "pcb": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm"
-        },
-        {
-          "ref": "U8314",
-          "field": "MPN",
-          "netlist": "OPA4197IPWR",
-          "pcb": "OPA4196IDR"
-        },
-        {
-          "ref": "U8314",
-          "field": "Value",
-          "netlist": "OPA4197IPWR",
-          "pcb": "OPA4196IDR"
-        },
-        {
-          "ref": "U8314",
-          "field": "LCSC",
-          "netlist": "C2057327",
-          "pcb": "C2057385"
-        },
-        {
-          "ref": "U8417",
-          "field": "footprint",
-          "netlist": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
-          "pcb": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm"
-        },
-        {
-          "ref": "U8417",
-          "field": "MPN",
-          "netlist": "OPA4197IPWR",
-          "pcb": "OPA4196IDR"
-        },
-        {
-          "ref": "U8417",
-          "field": "Value",
-          "netlist": "OPA4197IPWR",
-          "pcb": "OPA4196IDR"
-        },
-        {
-          "ref": "U8417",
-          "field": "LCSC",
-          "netlist": "C2057327",
-          "pcb": "C2057385"
-        }
-      ],
+      "field_discrepancies": [],
       "retained_connectivity": {
         "path": "boards/osc-jack-right/reports/routing.json",
         "sha256": "0684c5c6eed3f22cae48e981cd9e6178028b8df4242ff31f43f22436ccd67b39",
         "recorded_board_sha256": "653b20312851fad1dcf1a90806c1fdc558edf32dfc25d6675b43bb100ff9b3c1",
-        "status": "MATCHED BOARD BYTES",
+        "status": "STALE OR UNBOUND",
         "complete_native_open_edges": 192,
         "scope": "Board-byte binding only; other report input dependencies are not revalidated here. No new native execution or electrical qualification"
       },
