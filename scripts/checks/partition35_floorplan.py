@@ -40,8 +40,10 @@ NUDGE_TRIALS=40
 # added one is placed within CLUSTER_RADIUS_MM of the pinned parts on its own input nets.
 PROTECTION_DIODES=('BAV199,215','BAT54S,215')
 # Phase 33: boards whose evicted passives are re-placed near their own slot. JL keeps the accepted
-# d867e53e placement (locality placer for evicted parts); JR evicts nothing.
-EVICTED_LOCAL_BOARDS=('K',)
+# d867e53e placement (locality placer for evicted parts). MC04-S5: the OPA4197IPWR swap clusters on JR
+# evict D4309, D8333 and R8325, so JR also re-places evicted passives near their own slot (the
+# locality placer had moved D4309, an E3 input diode, 44.8 mm and to the other face).
+EVICTED_LOCAL_BOARDS=('K','JR')
 BUCKET_MM=5.0
 BYPASS_LIMIT_MM=json.loads((ROOT/'design/partition/bypass-placement-evidence.json').read_text())['proposal']['maximum_supply_pad_to_capacitor_rail_pad_mm']
 SCALE=4
