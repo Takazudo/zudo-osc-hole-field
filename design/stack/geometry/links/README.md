@@ -34,20 +34,20 @@ The compact table for the ruling. Links per joint in the order JL to K / JR to K
 
 | Option | Signals per link | Links | Per joint | Lower bound | Slots (share of K) | K by slots / fields only | K F.Cu / B.Cu | K total / criterion | Front JL / JR / P | No legal place | Cable needed, mm | Served by 50 mm (of placed) | Latch reach not shown |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| P100-N20 G-PER-2S | 13 | 45 | 9 / 11 / 23 / 2 | 40 | 28 (1.08 %) | 129 / 153 | 49 / 234 | **282** / 129 | 55 / 91 / 12 | 17 | 37.3 to 39.3 | 28 of 28 | 22 |
-| P100-N20 G-BETWEEN | 10 | 57 | 14 / 14 / 27 / 2 | 50 | 37 (1.43 %) | 164 / 203 | 55 / 313 | **367** / 129 | 85 / 109 / 25 | 20 | 37.3 to 39.3 | 37 of 37 | 29 |
-| P100-N22 G-PER-2S | 14 | 41 | 9 / 10 / 20 / 2 | 38 | 26 (1.10 %) | 129 / 143 | 56 / 217 | **272** / 129 | 64 / 92 / 17 | 15 | 37.3 to 39.3 | 26 of 26 | 22 |
-| P100-N22 G-BETWEEN | 11 | 57 | 14 / 14 / 27 / 2 | 47 | 36 (1.52 %) | 174 / 194 | 67 / 302 | **368** / 129 | 88 / 122 / 32 | 21 | 37.3 to 39.3 | 36 of 36 | 25 |
-| P050-N30 G-PER-2S | 20 | 33 | 8 / 7 / 16 / 2 | 27 | 25 (0.72 %) | 82 / 66 | 27 / 122 | **148** / 129 | 19 / 33 / 10 | 8 | 37.3 to 39.3 | 25 of 25 | 19 |
-| P050-N30 G-BETWEEN | 15 | 41 | 9 / 10 / 20 / 2 | 35 | 31 (0.90 %) | 109 / 104 | 34 / 180 | **213** / 129 | 23 / 46 / 9 | 10 | 37.3 to 39.3 | 31 of 31 | 24 |
-| P050-N40 G-PER-2S | 26 | 29 | 8 / 6 / 13 / 2 | 22 | 20 (0.75 %) | 80 / 71 | 30 / 121 | **151** / 129 | 29 / 35 / 4 | 9 | 37.3 to 39.3 | 20 of 20 | 10 |
-| P050-N40 G-BETWEEN | 20 | 33 | 8 / 7 / 16 / 2 | 27 | 25 (0.94 %) | 107 / 94 | 41 / 161 | **201** / 129 | 29 / 41 / 12 | 8 | 37.3 to 39.3 | 25 of 25 | 15 |
-| P100-N20-NL G-PER-2S | 13 | 45 | 9 / 11 / 23 / 2 | 40 | 27 (1.04 %) | 124 / 123 | 46 / 201 | **247** / 129 | 44 / 71 / 8 | 18 | 37.3 to 39.3 | 27 of 27 | 18 |
-| P100-N20-NL G-BETWEEN | 10 | 57 | 14 / 14 / 27 / 2 | 50 | 38 (1.47 %) | 153 / 168 | 56 / 266 | **321** / 129 | 73 / 83 / 17 | 19 | 37.3 to 39.3 | 38 of 38 | 23 |
-| P100-N22-NL G-PER-2S | 14 | 41 | 9 / 10 / 20 / 2 | 38 | 25 (1.05 %) | 129 / 105 | 47 / 187 | **234** / 129 | 45 / 75 / 2 | 16 | 37.3 to 39.3 | 25 of 25 | 18 |
-| P100-N22-NL G-BETWEEN | 11 | 57 | 14 / 14 / 27 / 2 | 47 | 36 (1.52 %) | 166 / 162 | 58 / 271 | **328** / 129 | 69 / 105 / 19 | 21 | 37.3 to 39.3 | 36 of 36 | 22 |
+| P100-N20 G-PER-2S | 13 | 45 | 9 / 11 / 23 / 2 | 40 | 28 (1.08 %) | 129 / 153 | 49 / 234 | **282** / 129 | 53 / 91 / 12 | 17 | 37.3 to 39.3 | 28 of 28 | 22 |
+| P100-N20 G-BETWEEN | 10 | 57 | 14 / 14 / 27 / 2 | 50 | 37 (1.43 %) | 166 / 201 | 55 / 313 | **367** / 129 | 83 / 108 / 25 | 20 | 37.3 to 39.3 | 37 of 37 | 29 |
+| P100-N22 G-PER-2S | 14 | 41 | 9 / 10 / 20 / 2 | 38 | 26 (1.10 %) | 128 / 143 | 56 / 216 | **271** / 129 | 62 / 93 / 17 | 15 | 37.3 to 39.3 | 26 of 26 | 21 |
+| P100-N22 G-BETWEEN | 11 | 57 | 14 / 14 / 27 / 2 | 47 | 36 (1.52 %) | 178 / 193 | 68 / 304 | **371** / 129 | 82 / 121 / 32 | 21 | 37.3 to 39.3 | 36 of 36 | 26 |
+| P050-N30 G-PER-2S | 20 | 33 | 8 / 7 / 16 / 2 | 27 | 25 (0.72 %) | 81 / 72 | 26 / 128 | **153** / 129 | 14 / 32 / 10 | 8 | 37.3 to 39.3 | 25 of 25 | 20 |
+| P050-N30 G-BETWEEN | 15 | 41 | 9 / 10 / 20 / 2 | 35 | 31 (0.90 %) | 112 / 105 | 37 / 181 | **217** / 129 | 18 / 46 / 9 | 10 | 37.3 to 39.3 | 31 of 31 | 24 |
+| P050-N40 G-PER-2S | 26 | 29 | 8 / 6 / 13 / 2 | 22 | 20 (0.75 %) | 83 / 75 | 32 / 126 | **158** / 129 | 25 / 35 / 4 | 9 | 37.3 to 39.3 | 20 of 20 | 10 |
+| P050-N40 G-BETWEEN | 20 | 33 | 8 / 7 / 16 / 2 | 27 | 25 (0.94 %) | 110 / 98 | 43 / 166 | **208** / 129 | 25 / 41 / 12 | 8 | 37.3 to 39.3 | 25 of 25 | 15 |
+| P100-N20-NL G-PER-2S | 13 | 45 | 9 / 11 / 23 / 2 | 40 | 27 (1.04 %) | 122 / 132 | 44 / 210 | **254** / 129 | 36 / 70 / 8 | 18 | 37.3 to 39.3 | 27 of 27 | 17 |
+| P100-N20-NL G-BETWEEN | 10 | 57 | 14 / 14 / 27 / 2 | 50 | 38 (1.47 %) | 153 / 168 | 56 / 266 | **321** / 129 | 67 / 83 / 17 | 19 | 37.3 to 39.3 | 38 of 38 | 23 |
+| P100-N22-NL G-PER-2S | 14 | 41 | 9 / 10 / 20 / 2 | 38 | 25 (1.05 %) | 129 / 105 | 47 / 187 | **234** / 129 | 43 / 76 / 2 | 16 | 37.3 to 39.3 | 25 of 25 | 18 |
+| P100-N22-NL G-BETWEEN | 11 | 57 | 14 / 14 / 27 / 2 | 47 | 36 (1.52 %) | 163 / 163 | 57 / 270 | **326** / 129 | 66 / 105 / 19 | 21 | 37.3 to 39.3 | 36 of 36 | 23 |
 
-Counts cover the placed links only: an option with links that have no legal place would displace more. The post keep-outs stay in both designs; K footprints that the links displace outside them: P100-N20 G-PER-2S 280, P100-N20 G-BETWEEN 364, P100-N22 G-PER-2S 270, P100-N22 G-BETWEEN 368, P050-N30 G-PER-2S 148, P050-N30 G-BETWEEN 211, P050-N40 G-PER-2S 150, P050-N40 G-BETWEEN 201, P100-N20-NL G-PER-2S 244, P100-N20-NL G-BETWEEN 317, P100-N22-NL G-PER-2S 233, P100-N22-NL G-BETWEEN 327.
+Counts cover the placed links only: an option with links that have no legal place would displace more. The post keep-outs stay in both designs; K footprints that the links displace outside them: P100-N20 G-PER-2S 280, P100-N20 G-BETWEEN 364, P100-N22 G-PER-2S 269, P100-N22 G-BETWEEN 371, P050-N30 G-PER-2S 153, P050-N30 G-BETWEEN 215, P050-N40 G-PER-2S 157, P050-N40 G-BETWEEN 208, P100-N20-NL G-PER-2S 251, P100-N20-NL G-BETWEEN 317, P100-N22-NL G-PER-2S 233, P100-N22-NL G-BETWEEN 325.
 
 ## P-K holds the most links without a legal place: 7 to 19 per option, of 8 to 21 unplaced in all
 
@@ -91,14 +91,14 @@ Addition of attempt a5 (item 5), in `link-candidate-p-small.json`. Only the P jo
 
 A stock cable longer than the needed length leaves the difference as a slack loop in the gap; where it rests is NOT RUN. Whether the Z path takes same-side or opposite-side contacts depends on the connector orientations (ST-01e `contact_sides`), so an opposite-side-only row needs a dual-contact part at one end or another path.
 
-## With the best P option, all joints together: JL/JR P050-N40 + P P050-N10 G-PER-2S places 63 of 63 links and displaces 215 K footprints against 129; JL/JR P100-N20 + P P050-N10 G-PER-2S places 69 of 69 links and displaces 303 K footprints against 129
+## With the best P option, all joints together: JL/JR P050-N40 + P P050-N10 G-PER-2S places 63 of 63 links and displaces 222 K footprints against 129; JL/JR P100-N20 + P P050-N10 G-PER-2S places 69 of 69 links and displaces 303 K footprints against 129
 
 Each joint keeps its own size in these rows, so the size and signals per link are given per joint (`size_per_joint` in the candidate), in the order JL to K / JR to K / P to K / JL to P through K.
 
 | Option | Size per joint (signals per link) | Links JL / JR / P / JL-P | No legal place per joint | Slots (share of K) | K slots / fields only | K total / criterion | Front JL / JR / P |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| JL/JR P050-N40 + P P050-N10 G-PER-2S | P050-N40 (26) / P050-N40 (26) / P050-N10 (6) / P050-N10 (6) | 8 / 6 / 45 / 4 | 0 / 0 / 0 / 0 | 63 (1.09 %) | 119 / 96 | **215** / 129 | 29 / 35 / 4 |
-| JL/JR P100-N20 + P P050-N10 G-PER-2S | P100-N20 (13) / P100-N20 (13) / P050-N10 (6) / P050-N10 (6) | 9 / 11 / 45 / 4 | 0 / 0 / 0 / 0 | 69 (1.33 %) | 160 / 143 | **303** / 129 | 46 / 91 / 4 |
+| JL/JR P050-N40 + P P050-N10 G-PER-2S | P050-N40 (26) / P050-N40 (26) / P050-N10 (6) / P050-N10 (6) | 8 / 6 / 45 / 4 | 0 / 0 / 0 / 0 | 63 (1.09 %) | 122 / 100 | **222** / 129 | 24 / 35 / 4 |
+| JL/JR P100-N20 + P P050-N10 G-PER-2S | P100-N20 (13) / P100-N20 (13) / P050-N10 (6) / P050-N10 (6) | 9 / 11 / 45 / 4 | 0 / 0 / 0 / 0 | 69 (1.33 %) | 160 / 143 | **303** / 129 | 44 / 91 / 4 |
 
 ## 17 P-joint links of P100-N20 G-PER-2S have no legal place; shorter fields place 17 of them but 0 carry their own signals (57 of 192 signals)
 
@@ -156,8 +156,8 @@ Envelope: P100-N20 (latching, enclosing): field n + 7.5 by 6.54 mm, tail n + 1. 
 | JL-K-JL-L04 | (28.0, 130.0) | -x | R2125, R2198, U2115 | RB2103, RV2113 | 2 | 39.3 | NOT SHOWN: R2183 |
 | JL-K-JL-L05 | (64.0, 120.0) | +x | C2126, D2121, D2124, R2132, R2147, R2149, R2168, U2116 | C2106, D2122, Q2103, R2129, R2130, RV2107, RV2108 | 2 | 39.3 | NOT SHOWN: R1255, R2152 |
 | JL-K-JL-L06 | (46.0, 38.0) | +x | - | - | 0 | 39.3 | open |
-| JL-K-JL-L07 | (44.0, 78.0) | -x | - | - | 5 | 39.3 | open |
-| JL-K-JL-L08 | (99.0, 76.0) | -x | R2282, RV2209, U2207, U2213, U2214, U2215 | U2210, U2211, U2215, U2216 | 11 | 39.3 | NOT SHOWN: C2233, C2234, C2235, C2236, C2244 |
+| JL-K-JL-L07 | (44.0, 78.0) | -x | - | - | 6 | 39.3 | open |
+| JL-K-JL-L08 | (99.0, 76.0) | -x | R2282, RV2209, U2207, U2213, U2214, U2215 | U2210, U2211, U2215, U2216 | 8 | 39.3 | NOT SHOWN: C2233, C2234, C2235, C2236, C2244 |
 | JL-K-JL-L09 | (69.0, 36.0) | +x | - | C2232, U2209 | 2 | 39.3 | open |
 | JR-K-JR-L01 | (288.0, 40.0) | -x | R4339, R4340, R4378, U4305, U4310, U4320 | C4321, U4305, U4321, U4329 | 8 | 39.3 | NOT SHOWN: C4346, U4333 |
 | JR-K-JR-L02 | (218.0, 42.0) | +x | RV4103 | - | 8 | 39.3 | open |
@@ -214,12 +214,12 @@ Envelope: P100-N20 (latching, enclosing): field n + 7.5 by 6.54 mm, tail n + 1. 
 | JL-K-JL-L04 | (27.5, 130.0) | -x | D2116, R2125, R2141, R2198, U2115 | RV2113 | 2 | 39.3 | NOT SHOWN: R2183, RB2103 |
 | JL-K-JL-L05 | (29.5, 78.0) | +x | - | R2162 | 5 | 39.3 | open |
 | JL-K-JL-L06 | (69.5, 122.0) | +x | D2122, Q2103, R1253, R2129, R2130, R2154 | C1204, C8112, C8133, C8134, R1228, R1255, R8153, R8154, U8109 | 2 | 39.3 | NOT SHOWN: R1227, RV2107, RV2108 |
-| JL-K-JL-L07 | (114.5, 126.0) | -x | C247, C8210 | C8106, C8111, C8135, C8136, C8137, C8138, R2356, R8110, U8110, U8111 | 9 | 39.3 | NOT SHOWN: R2230 |
-| JL-K-JL-L08 | (87.0, 128.0) | +x | C8107, R1247, R2235, R8112, R8142, R8143, R8233, R8234, RVO1206, U8109 | C8131, C8132, C8137, C8138, R2221, U8108, U8111 | 6 | 39.3 | NOT SHOWN: C8208, R2222, R2243, R8224, U8101 |
-| JL-K-JL-L09 | (61.5, 78.0) | -x | - | Q2104 | 6 | 39.3 | NOT SHOWN: C2102, Q2101 |
+| JL-K-JL-L07 | (114.5, 100.0) | +x | C233, U218 | C220, C234, C240, R209, U111, U214, U218 | 8 | 39.3 | NOT SHOWN: U215 |
+| JL-K-JL-L08 | (87.0, 128.0) | +x | C8107, R1247, R2235, R8112, R8142, R8143, R8233, R8234, RVO1206, U8109 | C8131, C8132, C8137, C8138, R2221, U8108, U8111 | 6 | 39.3 | NOT SHOWN: C8106, C8208, R2222, R2243, R8224, U8101, U8110 |
+| JL-K-JL-L09 | (63.5, 78.0) | -x | Q2204, R2225 | - | 4 | 39.3 | NOT SHOWN: C2102, Q2101, Q2104 |
 | JL-K-JL-L10 | (63.5, 36.0) | +x | - | - | 1 | 39.3 | NOT SHOWN: C2232 |
-| JL-K-JL-L11 | (117.5, 80.0) | +x | - | C133, C142, R109, U111, U113, U118 | 8 | 39.3 | open |
-| JL-K-JL-L12 | (133.0, 84.0) | +x | DH111, U107, U111, U113 | C119, C146, R111, R112, U114, U115 | 8 | 39.3 | NOT SHOWN: C140 |
+| JL-K-JL-L11 | (117.5, 70.0) | +x | - | C133, C134, C142, R109, U113, U118 | 8 | 39.3 | open |
+| JL-K-JL-L12 | (133.0, 68.0) | +x | DH111, R110, U113, U118 | C104, C119, C125, U114, U115 | 9 | 39.3 | NOT SHOWN: C140 |
 | JL-K-JL-L13 | (97.5, 38.0) | +x | - | - | 9 | 39.3 | NOT SHOWN: RV2208 |
 | JL-K-JL-L14 | (129.0, 38.0) | -x | - | - | 10 | 39.3 | open |
 | JR-K-JR-L01 | (286.5, 42.0) | -x | R4339, U4305, U4310, U4320 | C4321, U4305, U4321, U4329, U4333 | 8 | 39.3 | NOT SHOWN: U4332 |
@@ -227,7 +227,7 @@ Envelope: P100-N20 (latching, enclosing): field n + 7.5 by 6.54 mm, tail n + 1. 
 | JR-K-JR-L03 | (254.5, 40.0) | +x | C4332, R4386, U4315, U4328, U4343, U4345 | C4341, U4307, U4315, U4324, U4326, U4333, U4345 | 13 | 39.3 | NOT SHOWN: C4350, C4370, C4371 |
 | JR-K-JR-L04 | (203.0, 38.0) | +x | C4114, C4161 | C4166, R4157, R4159, RV4103 | 13 | 39.3 | NOT SHOWN: U4143 |
 | JR-K-JR-L05 | (284.5, 84.0) | -x | C4369, R4602, R4675, R4691, R4696, U4344, U4640 | C4351, C4368, D4332, R4657, R4659, R4671, R4672, RV4602, U4306, U4334, U4344, U4607 | 7 | 39.3 | NOT SHOWN: C4323, C4624, C4625 |
-| JR-K-JR-L06 | (201.5, 78.0) | +x | C4146, U4113, U4124, U4126, U4145 | U4112, U4115, U4128, U4129 | 7 | 39.3 | NOT SHOWN: C4132, RV4108 |
+| JR-K-JR-L06 | (199.5, 88.0) | +x | U4117, U4118, U4124, U4126, U4145 | C4171, U4117, U4128, U4129, U4136 | 6 | 39.3 | NOT SHOWN: C4146 |
 | JR-K-JR-L07 | (281.7, 133.3) | -x | D4626, D4627, U4606, U4615, U4623, U4627 | C4622, C4635, C4641, C4670, C4671, R4687, U4618, U4624, U4645 | 4 | 39.3 | NOT SHOWN: U4608, U4626 |
 | JR-K-JR-L08 | (250.5, 84.0) | -x | C4312, D4334, R4318 | RV4306 | 7 | 39.3 | open |
 | JR-K-JR-L09 | (233.0, 78.0) | -x | C4110, R4182 | C4113, C4137, C4157, D4105, R4117, R4118, R4152, R4153, R4154, R4155, R4177, U4112, U4120, U4122 | 8 | 39.3 | NOT SHOWN: R4120, R4181, RV4108 |
@@ -251,17 +251,17 @@ Envelope: P100-N20 (latching, enclosing): field n + 7.5 by 6.54 mm, tail n + 1. 
 | Option | Nets re-routed JL / JR / P / K | Site to front field, mean / largest mm: JL-K / JR-K / P-K / JL-P via K |
 | --- | --- | --- |
 | P100-N20 G-PER-2S | 108 / 106 / 276 / 490 | 18.2 / 48.7; 16.1 / 36.7; 21.2 / 43.2; 21.1 / 38.0 |
-| P100-N20 G-BETWEEN | 108 / 106 / 276 / 490 | 11.8 / 32.5; 13.4 / 33.7; 19.7 / 42.1; 29.0 / 49.2 |
-| P100-N22 G-PER-2S | 108 / 106 / 276 / 490 | 15.8 / 35.2; 16.4 / 36.7; 21.9 / 50.4; 21.2 / 35.3 |
-| P100-N22 G-BETWEEN | 108 / 106 / 276 / 490 | 11.3 / 20.6; 14.7 / 33.7; 18.6 / 42.1; - / - |
-| P050-N30 G-PER-2S | 108 / 106 / 276 / 490 | 18.0 / 36.9; 20.0 / 38.8; 27.8 / 61.4; 29.7 / 41.1 |
-| P050-N30 G-BETWEEN | 108 / 106 / 276 / 490 | 17.0 / 36.7; 16.3 / 35.1; 26.0 / 50.5; 28.1 / 52.9 |
-| P050-N40 G-PER-2S | 108 / 106 / 276 / 490 | 18.5 / 36.8; 20.4 / 37.2; 31.1 / 64.1; 29.6 / 53.3 |
-| P050-N40 G-BETWEEN | 108 / 106 / 276 / 490 | 18.5 / 36.8; 19.7 / 37.2; 27.6 / 61.4; 29.6 / 53.3 |
-| P100-N20-NL G-PER-2S | 108 / 106 / 276 / 490 | 17.6 / 35.8; 17.5 / 37.8; 24.5 / 55.3; 19.0 / 34.1 |
+| P100-N20 G-BETWEEN | 108 / 106 / 276 / 490 | 13.9 / 32.5; 13.8 / 33.7; 19.7 / 42.1; 29.0 / 49.2 |
+| P100-N22 G-PER-2S | 108 / 106 / 276 / 490 | 15.8 / 35.2; 16.3 / 36.7; 21.9 / 50.4; 21.2 / 35.3 |
+| P100-N22 G-BETWEEN | 108 / 106 / 276 / 490 | 11.4 / 20.6; 14.7 / 33.7; 18.6 / 42.1; - / - |
+| P050-N30 G-PER-2S | 108 / 106 / 276 / 490 | 19.0 / 46.9; 20.0 / 38.8; 27.8 / 61.4; 29.7 / 41.1 |
+| P050-N30 G-BETWEEN | 108 / 106 / 276 / 490 | 17.6 / 36.7; 16.2 / 35.1; 26.0 / 50.5; 28.1 / 52.9 |
+| P050-N40 G-PER-2S | 108 / 106 / 276 / 490 | 18.2 / 34.8; 20.0 / 37.2; 31.1 / 64.1; 29.6 / 53.3 |
+| P050-N40 G-BETWEEN | 108 / 106 / 276 / 490 | 18.2 / 34.8; 19.3 / 37.2; 27.6 / 61.4; 29.6 / 53.3 |
+| P100-N20-NL G-PER-2S | 108 / 106 / 276 / 490 | 19.7 / 49.1; 17.5 / 37.8; 24.5 / 55.3; 19.0 / 34.1 |
 | P100-N20-NL G-BETWEEN | 108 / 106 / 276 / 490 | 12.9 / 32.0; 14.3 / 31.9; 20.8 / 42.3; 20.2 / 37.9 |
-| P100-N22-NL G-PER-2S | 108 / 106 / 276 / 490 | 17.9 / 37.1; 17.8 / 36.9; 26.0 / 47.9; 20.0 / 34.5 |
-| P100-N22-NL G-BETWEEN | 108 / 106 / 276 / 490 | 12.4 / 21.0; 14.1 / 27.2; 19.9 / 42.3; - / - |
+| P100-N22-NL G-PER-2S | 108 / 106 / 276 / 490 | 17.9 / 37.1; 17.5 / 37.0; 26.0 / 47.9; 20.0 / 34.5 |
+| P100-N22-NL G-BETWEEN | 108 / 106 / 276 / 490 | 12.6 / 21.0; 14.1 / 27.2; 19.9 / 42.3; - / - |
 
 Counts include the signals of links without a legal place; distances cover placed links only.
 
