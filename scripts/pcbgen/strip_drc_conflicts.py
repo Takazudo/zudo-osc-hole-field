@@ -50,6 +50,11 @@ def conflicts(violations, moved):
     return out
 
 
+def share_after(baseline_mm, current_mm, removed_mm):
+    """Routed-length loss since the baseline board, as a fraction, once this pass's removal is applied."""
+    return (baseline_mm - (current_mm - removed_mm)) / baseline_mm
+
+
 def main():
     import pcbnew
     ap = argparse.ArgumentParser()
@@ -120,8 +125,15 @@ def main():
     rec = {'board': a.board_id or a.board, 'conflict_pairs': len(pairs), 'removed_items': len(rows),
            'removed_length_mm': round(removed_len, 4), 'board_routed_length_mm': round(total, 4),
            'baseline_routed_length_mm': round(base, 4), 'removed': rows}
+    share = share_after(base, total, removed_len)
+    rec['loss_share_after_pass'] = round(share, 6)
+    rec['max_share'] = a.max_share
     Path(a.record).write_text(json.dumps(rec, indent=1) + '\n')
-    print(f"{rec['board']}: {len(pairs)} conflict pairs, {len(rows)} items, {removed_len:.2f} mm removed this pass")
+    print(f"{rec['board']}: {len(pairs)} conflict pairs, {len(rows)} items, {removed_len:.2f} mm removed this pass, "
+          f"loss since baseline {100 * share:.2f} %")
+    if share > a.max_share + 1e-12:
+        print(f'REFUSED: loss {100 * share:.2f} % exceeds --max-share {100 * a.max_share:.2f} %; board not saved')
+        return 2
     if a.dry_run or not rows:
         return 0
     for s in remove:

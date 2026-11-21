@@ -33,7 +33,7 @@ class C6Rebind(unittest.TestCase):
         doc = json.loads(lg.LINK_GATE.read_text())
         self.assertTrue(c6.valid_record(doc))
         self.assertEqual(doc['c6']['signal_sha256'], c6.SOURCE_SIGNAL_SHA256)
-        self.assertEqual(c6.digest([x['positions'] for x in doc['links']]) != '', True)
+        self.assertEqual(c6.digest(doc['links']), c6.OUTPUT_LINKS_SHA256)
 
 
 if __name__ == '__main__':

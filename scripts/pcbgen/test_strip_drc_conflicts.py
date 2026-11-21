@@ -1,7 +1,7 @@
 """Pure tests of the DRC conflict selection (no KiCad)."""
 import unittest
 
-from scripts.pcbgen.strip_drc_conflicts import conflicts
+from scripts.pcbgen.strip_drc_conflicts import conflicts, share_after
 
 
 def v(kind, *descs, uuids=None):
@@ -27,6 +27,14 @@ class ConflictSelection(unittest.TestCase):
                          v('silk_overlap', 'Track [N] on F.Cu, length 1 mm', 'Pad 1 [N] of RB1504 on F.Cu'),
                          v('clearance', 'Zone [AGND] on B.Cu', 'Pad 1 [N] of RB1504 on B.Cu')], ['RB1504'])
         self.assertEqual(got, [])
+
+
+class MaxShare(unittest.TestCase):
+    def test_share_counts_earlier_losses_and_this_pass(self):
+        self.assertAlmostEqual(share_after(1000.0, 900.0, 0.0), 0.10)
+        self.assertAlmostEqual(share_after(1000.0, 900.0, 160.0), 0.26)
+        self.assertGreater(share_after(1000.0, 900.0, 160.0), 0.25)
+        self.assertLessEqual(share_after(1000.0, 1000.0, 250.0), 0.25)
 
 
 if __name__ == '__main__':

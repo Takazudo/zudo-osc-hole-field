@@ -16,7 +16,7 @@ SOURCE_OBJECT_SHA256 = 'a555e65e9a61617ebe9e7c10656722ac0f25f80f7abef0a3d193bc7b
 # mc04-s6-board-sync-native-brief-20261121.md, Revision 4): after JL/JR were brought to the floorplan (source
 # commit 9d3d5a96), the pre-c6 geometry changed (JL-K-JL-L02 and JR-K-JR-L02 take new slots; JL-L07, JL-L08 and
 # JR-L04 change cost only). c6's own output - positions, signals and the three riders - is unchanged; see
-# mc04-s6-c6-rebind-check-20261122.json (sha256 0b89c65561297dc46a7ef183e16b7d2b8dcb94e0699500cda68051268240838b).
+# mc04-s6-c6-rebind-check-20261122.json (sha256 577464968eb8e7644a50b283192817891070361fe946389fd8fb44e86e77b87d, as of MC04-S6 revision 5).
 # Only the geometry and output pins are rebound; the signal and positions pins are unchanged.
 # Previous geometry pin: fb5e91e1c7fc1f581434cb6a9a28fb91d7c21c170d66156ceb6cb4e912760eb8
 SOURCE_GEOMETRY_SHA256 = '3b58378a048d21c0f2eb273dda07759f789d1151629c43df90028eaafa4db7b8'
