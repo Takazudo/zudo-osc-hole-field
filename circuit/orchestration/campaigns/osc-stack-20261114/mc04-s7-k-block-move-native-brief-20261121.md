@@ -173,3 +173,27 @@ The stop at step 3 is accepted (`f466a885`, `93197a3e`, report `mc04-s7-r2-repor
 Then finish Part A steps 3–6 and stop at the Part A checkpoint. The checkpoint report must show the io-partition
 checker output, listing every allowed crossing by kind (the new kind's 22 nets by name) and zero forbidden
 crossings.
+
+## Revision 4: GH header sites (2026-11-21)
+
+The stop is accepted (`651badb1`, `15876ae9`, report `mc04-s7-r3-report-20261122.md`). The io-partition checker
+shows 0 errors, 0 forbidden crossings and 493 allowed crossings, 22 of them of the new kind.
+
+Ruling: option (a). The GH board-to-board headers are the routed drafts' interim interconnect. DS-06 holds them
+until Gate A, where the stack's FFC links replace them. Superseding them now (c) would be the Gate A integration
+step, which this stage is not. Changing the 4-signals-per-header rule (b) would change a cable rule. So add sites
+without changing any rule:
+
+1. Add the two JL grid points (142, 122) and (159, 122) by extending that list's slice from 25 to 27 at its
+   source. Make it a named, reviewed constant with this ruling, not a bare edit to the slice.
+2. Add three JR sites, chosen by the same generator rules as the existing ones (same row or rule-consistent
+   rows, same pitch and orientation). Check each new site against panel hardware pads, fixed footprints, outline,
+   the stack link fields and slots in the current link gate, and every courtyard.
+3. Report every new site with its coordinates, its nearest obstacle and clearance, and whether the link gate
+   now displaces it or it displaces anything the gate placed.
+4. Add a test that the packer fails clearly, not with an IndexError, when sites run short.
+5. Then finish Part A steps 3–6 (floorplan, netlists, rail and power reports, pose tables, the acceptance note)
+   and stop at the Part A checkpoint.
+
+If no rule-consistent JR site exists for all three, stop and report the shortfall with dimensions. Do not
+change the signals-per-header rule.
