@@ -82,7 +82,7 @@ The run (`d25dd9f`, `b610521`, `bd76809`, `102d9c1`) made the spec swap correctl
 packages changed MPN, refs unchanged, rail deltas exactly +17.2 mA typical / +25.0 mA maximum per analog rail,
 panel hardware unchanged. The manager regenerated the power-contract decomposition and ledger (`decompose.py`,
 `ledger.py`; the canonical +12 V requirement is now 1700 mA, equal to the contract, so the +12 V contract margin is
-0 mA). The owner accepted that on 2026-11-21 12:55Z (tracked in #34); the manager updated `ledger.py` and the four
+0 mA). The owner accepted that on 2026-11-21 12:55Z (an open rail follow-up; issue #34 is closed); the manager updated `ledger.py` and the four
 pinned tests. Do not edit them. Fix these and push:
 
 1. **Simulation seeding.** The seed gate at `design/spec/cells/sweep_input_buffer_vendor.py:254` changed the
