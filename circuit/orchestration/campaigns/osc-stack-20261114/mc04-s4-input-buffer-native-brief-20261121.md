@@ -123,4 +123,4 @@ correctly. The review found these items to fix in the harness, then rerun and re
    below the ASSUMED 45° criterion.
 
 Finish with `bash scripts/checks/regen-all.sh` after committing the harness, so that the readiness digest matches the
-committed file (the first run recorded a digest of an uncommitted harness; `0b…` cloud commit refreshed it).
+committed file (the first run recorded a digest of an uncommitted harness; `363566e` refreshed it).
