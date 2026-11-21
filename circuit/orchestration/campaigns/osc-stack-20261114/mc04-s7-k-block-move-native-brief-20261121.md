@@ -113,3 +113,34 @@ Do not swap U2217 to OPA4197IPWR. That would add about +3.4 mA typical and +5 mA
 the +12 V contract margin is already 0 mA, so it is an owner decision. If a buffer has no legal local pose in case
 (a), say so with dimensions. Push the tooling, tests and the A0 report, hand back, and wait for the manager's
 choice between (a) and (b) before Part A step 3.
+
+## Revision 2: manager choices after Part A0 (2026-11-21)
+
+Part A0 (`7e11ad70`, `afca53ca`, report `mc04-s7-a0-report-20261122.md`) is accepted. Choices:
+
+1. **Case (b): hold JL-L02 at its retained slot (121.5, 80).** It costs 2.5 more than the current slot, but it
+   leaves U2217 and U2219 where they are, which avoids U2217's 60.25 mm move. U2119, an F1 indicator, moves to K
+   as a function block instead of U2219. D2243 is re-placed locally. Record the hold as a retained, reviewed gate
+   input with a reason and a test; do not change the gate's general selection rule. Also report the four K parts
+   the slot's field displaces (C133, U111, U113, U118) and where they land.
+2. **U4347 takes the keep-front boundary**, the same rule as U1417 and U2218. Its ISO_MID nets stay on JR, and no
+   shielding is needed.
+3. **U1318 and U8314 are accepted beyond 24 mm** (27.65 mm and 32.25 mm, on their own board and face). The 24 mm
+   rule is a locality rule. The electrical question it stands for is the added node capacitance, and MC04-S4
+   case 2 covers that: 0–50 pF on `*_SENSE` and `*_BUFFER`, no oscillation, settling and overshoot recorded, for
+   both OPA4196 and OPA4197, including the precision follower. Conditions, to be carried into the re-route:
+   - keep the input passives (R_LIMIT, clamp) of each buffer at the IC end or the jack end as their
+     cell defines, and report which;
+   - route the lengthened run as a ground-flanked trace;
+   - keep the added run capacitance under 50 pF.
+   Record this acceptance in the floorplan report.
+4. **Budgets table:** make `scripts/stack/studies/mc04_s1_budgets/budgets.py` read the input-capacitance and GBW
+   facts per MPN. OPA4197IPWR has `fact-op-precision-input-impedance` (6.4 pF common mode) and
+   `fact-op-precision-gbw` in `.claude/skills/component-ti-opa4197ipwr/`. Regenerate the retained 1a/1b results,
+   and report any verdict that changes.
+
+Then continue with Part A steps 3–6 for this block set and stop at the Part A checkpoint:
+- JL: U1417 and U2218 (keep-front), U2119 (indicator);
+- JR: U4347 (keep-front), U4348 and U8318 (indicators);
+- K: its 14 ICs;
+- local: U1318, U8314 and D2243, plus U114/U115 with their decouplers.
