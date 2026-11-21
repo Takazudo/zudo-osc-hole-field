@@ -77,3 +77,39 @@ tests, all stack tests, `scripts/stack/geometry/check.py`.
 - Use the machine-wide heavy guard; one native job at a time.
 
 Native result: **NOT RUN** at this brief. Every schematic and PCB remains an unvalidated draft.
+
+## Revision 1: manager rulings on the stopped Part A (2026-11-21)
+
+The stop is accepted. The current gate (`16ef5ab8`) leaves 23 unresolved ICs, not 20.
+
+**Ruling 1: tooling.** Leave the pinned MC04-R1 scene and the retained study results untouched as history. Add a
+current-scene mode to `blocks.py` and the capacity census. It takes the unresolved list from the current
+`design/stack/geometry/links/link-gate.json` displacement record and the current boards, records the input
+sha256 of every file it reads, and fails on a stale input. It must not hard-code an IC set. Add tests. Re-run the
+stage 1a and 1b budget scripts against the current-scene output the same way.
+
+**Ruling 2: block set, by function.** Stage 1a found that an input buffer cannot move across the cable, because
+its protected node fails crosstalk. So:
+
+| IC | Function | Treatment |
+| --- | --- | --- |
+| U1417, U2218 | general output | move to K (keep-front boundary) |
+| U4347, U4348, U8318, U2219 | magnitude indicator | move to K; each LED net one cable span only |
+| U2119 | magnitude indicator | no longer displaced; leave it |
+| U1318 (O3, OPA4197IDR), U2217 (F2, OPA4196IDR), U8314 (M4A, OPA4197IPWR) | high-impedance input buffer | stay on their own front board; re-place locally |
+| K's 14 | — | place on K |
+
+**Ruling 3: evidence before any source change (Part A0).** The new displacements come from the link moves after
+stage 6 (JL-L02's new slot covers U2217 and U2219, JL-L08 covers U1318, JR-L04 covers U8314). Before changing any
+source, report two cases from the current-scene census:
+
+- (a) the current gate selection, with U1318, U2217 and U8314 re-placed locally on their own board and face. Give
+  the nearest legal pose for each in its current package, with distance from its slot and whether it is within
+  24 mm;
+- (b) the retained JL-L02 slot ([121.5, 80]; cost 19.0, 11 parts covered). List those 11 parts by function and
+  the unresolved-IC set that results.
+
+Do not swap U2217 to OPA4197IPWR. That would add about +3.4 mA typical and +5 mA maximum on each analog rail, and
+the +12 V contract margin is already 0 mA, so it is an owner decision. If a buffer has no legal local pose in case
+(a), say so with dimensions. Push the tooling, tests and the A0 report, hand back, and wait for the manager's
+choice between (a) and (b) before Part A step 3.
