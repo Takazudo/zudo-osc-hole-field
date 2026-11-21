@@ -321,6 +321,55 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": "",
+      "fact_id": "fact-op-precision-gbw",
+      "class": "TYPICAL_CURVE",
+      "value": {
+        "typical": 10
+      },
+      "unit": "MHz",
+      "conditions": "Unity gain bandwidth; VS = +/-4 V to +/-18 V; TA = 25 C; RL = 10 kohm to VS/2. Typical only; no minimum stated.",
+      "locator": "src-op-precision-datasheet: PDF page index 7, Section 6 Electrical Characteristics VS = +/-4 V to +/-18 V (continued), FREQUENCY RESPONSE, GBW row"
+    },
+    {
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": "",
+      "fact_id": "fact-op-precision-input-impedance",
+      "class": "TYPICAL_CURVE",
+      "value": {
+        "differential_ohm": 100000000.0,
+        "differential_pF": 1.6,
+        "common_mode_ohm": 10000000000000.0,
+        "common_mode_pF": 6.4
+      },
+      "unit": "ohm and pF as named in each key",
+      "conditions": "Input impedance ZID (printed 100 || 1.6 MΩ || pF) and ZIC (printed 1 || 6.4, 10^13 Ω || pF); VS = +/-4 V to +/-18 V; TA = 25 C. Typical only.",
+      "locator": "src-op-precision-datasheet: PDF page index 6, Section 6 Electrical Characteristics VS = +/-4 V to +/-18 V, INPUT IMPEDANCE, ZID and ZIC rows"
+    },
+    {
+      "record_id": "rec-op-precision",
+      "source_id": "src-op-precision-datasheet",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": "",
+      "fact_id": "fact-op-precision-capacitive-load-guidance",
+      "class": "TYPICAL_CURVE",
+      "value": "Directly drives up to 1 nF of pure capacitive load in unity gain; increasing gain improves capacitive drive; overshoot versus capacitive load with RISO = 0, 25 and 50 ohm is given only as typical curves (Figures 47 and 48).",
+      "unit": "NONE",
+      "conditions": "Application guidance, typical behaviour; no guaranteed capacitive-load limit or safe threshold is stated.",
+      "locator": "src-op-precision-datasheet: PDF page index 21-22, printed pages 22-23, Section 7.3.5 Capacitive Load and Stability, Figures 47-48"
     }
   ]
 }

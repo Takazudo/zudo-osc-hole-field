@@ -106,6 +106,9 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 - [`fact-op-precision-output-swing`](#fact-op-precision-output-swing)
 - [`fact-op-precision-input-common-mode-range`](#fact-op-precision-input-common-mode-range)
 - [`fact-op-precision-input-stage-transition`](#fact-op-precision-input-stage-transition)
+- [`fact-op-precision-gbw`](#fact-op-precision-gbw)
+- [`fact-op-precision-input-impedance`](#fact-op-precision-input-impedance)
+- [`fact-op-precision-capacitive-load-guidance`](#fact-op-precision-capacitive-load-guidance)
 
 ### manufacturer product description
 
@@ -321,6 +324,52 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [src-op-precision-datasheet: PDF page index 6, printed page 7, Section 6.7 Electrical Characteristics VS = +/-4 V to +/-18 V, INPUT VOLTAGE, CMRR rows; OFFSET VOLTAGE VOS rows](#src-op-precision-datasheet)
+</EvidenceFact>
+
+### TYPICAL\_CURVE
+
+A representative figure read from a characteristic curve. Typical values are not guaranteed and vary part to part.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-op-precision-gbw" />
+
+  **Fact:** `fact-op-precision-gbw`
+
+  **Value:** `typical`=10 · **Unit:** `MHz`
+
+  **Conditions:** Unity gain bandwidth; VS = +/-4 V to +/-18 V; TA = 25 C; RL = 10 kohm to VS/2. Typical only; no minimum stated.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-op-precision-datasheet: PDF page index 7, Section 6 Electrical Characteristics VS = +/-4 V to +/-18 V (continued), FREQUENCY RESPONSE, GBW row](#src-op-precision-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-op-precision-input-impedance" />
+
+  **Fact:** `fact-op-precision-input-impedance`
+
+  **Value:** `common_mode_ohm`=10000000000000; `common_mode_pF`=6.4; `differential_ohm`=100000000; `differential_pF`=1.6 · **Unit:** `ohm and pF as named in each key`
+
+  **Conditions:** Input impedance ZID (printed 100 || 1.6 MΩ || pF) and ZIC (printed 1 || 6.4, 10^13 Ω || pF); VS = +/-4 V to +/-18 V; TA = 25 C. Typical only.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-op-precision-datasheet: PDF page index 6, Section 6 Electrical Characteristics VS = +/-4 V to +/-18 V, INPUT IMPEDANCE, ZID and ZIC rows](#src-op-precision-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-op-precision-capacitive-load-guidance" />
+
+  **Fact:** `fact-op-precision-capacitive-load-guidance`
+
+  **Value:** Directly drives up to 1 nF of pure capacitive load in unity gain; increasing gain improves capacitive drive; overshoot versus capacitive load with RISO = 0, 25 and 50 ohm is given only as typical curves (Figures 47 and 48). · **Unit:** `NONE`
+
+  **Conditions:** Application guidance, typical behaviour; no guaranteed capacitive-load limit or safe threshold is stated.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-op-precision-datasheet: PDF page index 21-22, printed pages 22-23, Section 7.3.5 Capacitive Load and Stability, Figures 47-48](#src-op-precision-datasheet)
 </EvidenceFact>
 
 ### PROJECT\_STATE
@@ -641,6 +690,7 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 | `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
 | `RECOMMENDED_OPERATION` | The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.                                                              |
+| `TYPICAL_CURVE`         | A representative figure read from a characteristic curve. Typical values are not guaranteed and vary part to part.                                                 |
 
 ### Coverage status
 

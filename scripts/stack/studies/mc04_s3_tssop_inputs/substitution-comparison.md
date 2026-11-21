@@ -14,9 +14,9 @@ swap of the same die. **Nothing is substituted.**
 | Output swing from rail at 10 kΩ, max | 110 mV | 125 mV |
 | Supply, absolute max / recommended max | ±20 / ±18 V | ±20 / ±18 V |
 | Input voltage, absolute | rails ±0.5 V, 10 mA | rails ±0.5 V, 10 mA |
-| GBW | 2.5 MHz typ (`fact-op-audio-gbw`) | not retained |
-| Input capacitance | 6.4 pF common-mode typ | not retained |
-| Capacitive-load guidance | no safe threshold stated | not retained; vendor-model output-stability pass 12/12 in its precision role (`fact-op-precision-output-stability`), not this one |
+| GBW | 2.5 MHz typ (`fact-op-audio-gbw`) | 10 MHz typ (`fact-op-precision-gbw`) |
+| Input capacitance | 6.4 pF common-mode typ | 6.4 pF common-mode typ (`fact-op-precision-input-impedance`) |
+| Capacitive-load guidance | no safe threshold stated | 1 nF unity-gain drive, no safe threshold stated (`fact-op-precision-capacitive-load-guidance`); vendor-model output-stability pass 12/12 in its precision role, not this one |
 
 ## The supply current is the decisive cost
 
@@ -32,9 +32,9 @@ overshoot that #34 owns. It does not create the problem, but it makes it worse.
 ## What a decision still needs
 
 1. A ruling on the rail cost above, against #34's rail closure.
-2. OPA4197 GBW, input capacitance and capacitive-load facts from SBOS737C
-   (`texas-instruments/opa197/opa197-datasheet-sbos737c.pdf` in circuit-dev-resources), retained in the
-   owner bundle before any electrical review of these input stages.
+2. OPA4197 GBW, input capacitance and capacitive-load guidance are now retained from SBOS737C in
+   `component-ti-opa4197ipwr`. The fourfold GBW (10 versus 2.5 MHz) changes loop dynamics in each
+   follower and must be part of the electrical review.
 3. An electrical review of the input stages with the new part. The protection path (TMUX7412, 10 kΩ,
    clamps) is unchanged, and the module tests (`test_envelope.py`, `test_mixers.py`, `test_oscillator.py`)
    must still pass.
