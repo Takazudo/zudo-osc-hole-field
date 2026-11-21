@@ -164,3 +164,7 @@ copper has no validated status, and stage 7 re-routes these boards. Placement co
 5. Then do revision 2 item 2 (the c6 rebind, identical output only) and push.
 
 The re-route stays OPEN and moves to the routing pass after stage 7.
+
+Note on the five JL AGND stubs the stripper refused because they touch a zone: remove the track segments
+themselves, if they conflict, but never the zone. Refill the zone, record the segments, and confirm with DRC
+that AGND connectivity through the zone holds.
