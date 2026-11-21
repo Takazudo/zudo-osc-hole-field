@@ -1800,10 +1800,7 @@
       "cell": "magnitude_indicator",
       "variant": "0/1uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "39d81a772e69e34036b7e6e3b0f47e9098af7e53eef9cadca27acb08169ac7dd",
-        "i": "7689c3ff7b20f0e8e006d6d97e52e2960fa015bc832327bbbcdcd846f88c7bf0"
-      },
+      "deck_sha256": "c2b2d7ed63e92cea96f3576f2a54d6aab5c4f4506943916e5008c3085cbc052b",
       "metrics": {
         "crossover_Hz": 145000.0,
         "phase_margin_deg": 107.3,
@@ -1815,9 +1812,24 @@
           "dc_loop_gain_dB": 79.26
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "none",
-          "i": "none"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 2.911791,
+            "v(s1)": 0.005620987,
+            "v(a1)": 2.640477,
+            "v(k1)": 0.2769352,
+            "v(km1)": 0.2769352,
+            "i(Vled1)": 9.987055e-07
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         },
         "paper_screen": {
           "paper_pm_deg": 88.9,
@@ -1832,10 +1844,7 @@
       "cell": "magnitude_indicator",
       "variant": "0/10uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "7adc4ba8dbd03115cd9dadd9682d29612853797184b82d95204cc06e8fb6f3a9",
-        "i": "95c30878f41132cf0ec140549a63d9627144b15cbdacc8eab72780187ecedb95"
-      },
+      "deck_sha256": "585cfb602cefde64e6c62eae3e4e736a5ccf9684a3be929414274c2311daef13",
       "metrics": {
         "crossover_Hz": 874600.0,
         "phase_margin_deg": 85.9,
@@ -1847,9 +1856,24 @@
           "dc_loop_gain_dB": 96.55
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "none",
-          "i": "none"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 3.34943,
+            "v(s1)": 0.05602096,
+            "v(a1)": 2.973921,
+            "v(k1)": 0.4315301,
+            "v(km1)": 0.4315301,
+            "i(Vled1)": 9.9987e-06
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         },
         "paper_screen": {
           "paper_pm_deg": 83.8,
@@ -1864,29 +1888,41 @@
       "cell": "magnitude_indicator",
       "variant": "0/100uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "2b468ace6d70962a7f99a79d5c6335c858a58f18405c22e95d8d613cc880e90c",
-        "i": "2828e84f304d04a5185f6fa496325e66d8927a22f8a62a4fa9d1d004d7defe22"
-      },
+      "deck_sha256": "ec8682413844900c46aff1eb267d2f1eda1650917404117ff486048dddd8efa4",
       "metrics": {
-        "crossover_Hz": 2071000.0,
-        "phase_margin_deg": 60.14,
-        "dc_loop_gain_dB": 105.8,
-        "zs_over_zl_at_crossover": 0.1185,
+        "crossover_Hz": 1951000.0,
+        "phase_margin_deg": 61.69,
+        "dc_loop_gain_dB": 105.2,
+        "zs_over_zl_at_crossover": 0.1542,
         "voltage_injection_only": {
-          "crossover_Hz": 1930000.0,
-          "phase_margin_deg": 66.91,
-          "dc_loop_gain_dB": 105.8
+          "crossover_Hz": 1794000.0,
+          "phase_margin_deg": 70.8,
+          "dc_loop_gain_dB": 105.2
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "nodeset",
-          "i": "nodeset"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 4.241764,
+            "v(s1)": 0.5600209,
+            "v(a1)": 3.761877,
+            "v(k1)": 1.039908,
+            "v(km1)": 1.039908,
+            "i(Vled1)": 9.999869e-05
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         },
         "paper_screen": {
           "paper_pm_deg": 84.6,
           "basis": "paper no-cable point at this current",
-          "run_minus_paper_deg": -24.46
+          "run_minus_paper_deg": -22.91
         }
       }
     },
@@ -1896,29 +1932,56 @@
       "cell": "magnitude_indicator",
       "variant": "0/1mA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "7a8a0da0235e71ffd365cfb9ff7c7aa47fa4f8891f93749c93caba45254c1d21",
-        "i": "78981fac94f682bdbfeaf7db4724e19f097d71555cd8fc55c1465dddde080c81"
-      },
+      "deck_sha256": "64555f850d318a73a3f3b795ab29b39782ec516c63637af68845323a004b8cb4",
       "metrics": {
-        "crossover_Hz": 2380000.0,
-        "phase_margin_deg": 58.52,
+        "crossover_Hz": 2383000.0,
+        "phase_margin_deg": 58.34,
         "dc_loop_gain_dB": 106.9,
-        "zs_over_zl_at_crossover": 0.06506,
+        "zs_over_zl_at_crossover": 0.06825,
         "voltage_injection_only": {
-          "crossover_Hz": 2296000.0,
-          "phase_margin_deg": 62.32,
+          "crossover_Hz": 2295000.0,
+          "phase_margin_deg": 62.33,
           "dc_loop_gain_dB": 106.9
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "nodeset",
-          "i": "nodeset"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-5",
+          "seed": "nodeset",
+          "values": {
+            "v(d1)": 9.679137,
+            "v(s1)": 5.60002,
+            "v(a1)": 9.094397,
+            "v(k1)": 6.18476,
+            "v(km1)": 6.18476,
+            "i(Vled1)": 0.0009999993
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "DC solve failed"
+            },
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "nodeset",
+              "result": "DC solve failed"
+            },
+            {
+              "tolerance": "reltol=1e-5",
+              "seed": "none",
+              "result": "DC solve failed"
+            },
+            {
+              "tolerance": "reltol=1e-5",
+              "seed": "nodeset",
+              "result": "usable"
+            }
+          ]
         },
         "paper_screen": {
           "paper_pm_deg": 89.2,
           "basis": "paper no-cable point at this current",
-          "run_minus_paper_deg": -30.68
+          "run_minus_paper_deg": -30.86
         }
       }
     },
@@ -1928,10 +1991,7 @@
       "cell": "magnitude_indicator",
       "variant": "7.2p/1uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "a74773c71ee9c3b016f0a23106f08c8189365f0b751ac9092542a812bd1425d5",
-        "i": "f1223f218463b7814e7dec5c307a0e4681a2ae444ad8d19305e931ffdf71e39e"
-      },
+      "deck_sha256": "e77d6e170e61da9ce1913c2732e0028d4c27a797b2a47e42f1247cb9e981d71d",
       "metrics": {
         "crossover_Hz": 123200.0,
         "phase_margin_deg": 90.99,
@@ -1943,9 +2003,24 @@
           "dc_loop_gain_dB": 79.26
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "none",
-          "i": "none"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 2.911791,
+            "v(s1)": 0.005620987,
+            "v(a1)": 2.640477,
+            "v(k1)": 0.2769352,
+            "v(km1)": 0.2769352,
+            "i(Vled1)": 9.987055e-07
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         },
         "paper_screen": {
           "paper_pm_deg": 73.2,
@@ -1960,10 +2035,7 @@
       "cell": "magnitude_indicator",
       "variant": "7.2p/10uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "86588f471d45b469071701fb7a1342be38da1d63be39e5e6c8a60b06db57a524",
-        "i": "9f99712fef29639547e75cef683442990743f790420b4c493c62eade94fd53c2"
-      },
+      "deck_sha256": "c9f2bbb4533f619eaf3d075f4bad1762cca4e013c92762c870716f451bbf5676",
       "metrics": {
         "crossover_Hz": 762700.0,
         "phase_margin_deg": 72.98,
@@ -1975,9 +2047,24 @@
           "dc_loop_gain_dB": 96.55
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "none",
-          "i": "none"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 3.34943,
+            "v(s1)": 0.05602096,
+            "v(a1)": 2.973921,
+            "v(k1)": 0.4315301,
+            "v(km1)": 0.4315301,
+            "i(Vled1)": 9.9987e-06
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         },
         "paper_screen": {
           "paper_pm_deg": 69.0,
@@ -1992,29 +2079,41 @@
       "cell": "magnitude_indicator",
       "variant": "7.2p/100uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "10e4b12e94639c445f7dc0cc8484f21509a394d3cea72856e1da50431174e3c7",
-        "i": "aa583947b276c5c4633e5b981eb78aeb20006715845eaaa2c7da0aa504dd4e9d"
-      },
+      "deck_sha256": "569ec397ac96ca0209b7dcbe58e6305d1b8f20d85372ee08da79d76aa9990ac6",
       "metrics": {
-        "crossover_Hz": 2009000.0,
-        "phase_margin_deg": 52.52,
-        "dc_loop_gain_dB": 105.9,
-        "zs_over_zl_at_crossover": 0.1141,
+        "crossover_Hz": 1842000.0,
+        "phase_margin_deg": 54.21,
+        "dc_loop_gain_dB": 105.2,
+        "zs_over_zl_at_crossover": 0.1396,
         "voltage_injection_only": {
-          "crossover_Hz": 1897000.0,
-          "phase_margin_deg": 58.76,
-          "dc_loop_gain_dB": 105.9
+          "crossover_Hz": 1725000.0,
+          "phase_margin_deg": 62.1,
+          "dc_loop_gain_dB": 105.2
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "nodeset",
-          "i": "nodeset"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 4.241764,
+            "v(s1)": 0.5600209,
+            "v(a1)": 3.761877,
+            "v(k1)": 1.039908,
+            "v(km1)": 1.039908,
+            "i(Vled1)": 9.999869e-05
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         },
         "paper_screen": {
           "paper_pm_deg": 77.9,
           "basis": "paper 7.22 pF point at this current",
-          "run_minus_paper_deg": -25.38
+          "run_minus_paper_deg": -23.69
         }
       }
     },
@@ -2024,29 +2123,66 @@
       "cell": "magnitude_indicator",
       "variant": "7.2p/1mA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "aa8715e15ec2bf5e433c8419763ed86bf1699879365796656aa550cccfbd91eb",
-        "i": "3fc1c58be8ea9b8e29c7383bb7956186a2f4c3260c97d329dd726e698dc2596a"
-      },
+      "deck_sha256": "40bdeadd3657014154333f252e785ee7d0121eabbdcb79a99bbe7c2992260345",
       "metrics": {
-        "crossover_Hz": 2373000.0,
-        "phase_margin_deg": 53.49,
-        "dc_loop_gain_dB": 107.1,
-        "zs_over_zl_at_crossover": 0.06853,
+        "crossover_Hz": 2306000.0,
+        "phase_margin_deg": 53.82,
+        "dc_loop_gain_dB": 106.9,
+        "zs_over_zl_at_crossover": 0.06571,
         "voltage_injection_only": {
-          "crossover_Hz": 2296000.0,
-          "phase_margin_deg": 57.4,
-          "dc_loop_gain_dB": 107.1
+          "crossover_Hz": 2233000.0,
+          "phase_margin_deg": 57.55,
+          "dc_loop_gain_dB": 106.9
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "nodeset",
-          "i": "nodeset"
+        "dc_operating_point": {
+          "tolerance": "ngspice default",
+          "seed": "nodeset",
+          "values": {
+            "v(d1)": 9.679361,
+            "v(s1)": 5.600258,
+            "v(a1)": 9.094689,
+            "v(k1)": 6.185001,
+            "v(km1)": 6.185001,
+            "i(Vled1)": 0.001003997
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "DC solve failed"
+            },
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "nodeset",
+              "result": "DC solve failed"
+            },
+            {
+              "tolerance": "reltol=1e-5",
+              "seed": "none",
+              "result": "DC solve failed"
+            },
+            {
+              "tolerance": "reltol=1e-5",
+              "seed": "nodeset",
+              "result": "DC solve failed"
+            },
+            {
+              "tolerance": "ngspice default",
+              "seed": "none",
+              "result": "DC solve failed"
+            },
+            {
+              "tolerance": "ngspice default",
+              "seed": "nodeset",
+              "result": "usable"
+            }
+          ]
         },
         "paper_screen": {
           "paper_pm_deg": 88.2,
           "basis": "paper 7.22 pF point at this current",
-          "run_minus_paper_deg": -34.71
+          "run_minus_paper_deg": -34.38
         }
       }
     },
@@ -2056,10 +2192,7 @@
       "cell": "magnitude_indicator",
       "variant": "15p/1uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "8f5bc9c5271db060c8ef2083b5c0387da4154f488b987e5a1895ccc3a7c65c81",
-        "i": "ee37f8f6936c840ea2644091dd2f9cfa056ec9f10a8d08153195e0b988b30ea9"
-      },
+      "deck_sha256": "324858e01621dd29f5245851294ff794491671e688b90821f77deb7b64e510b1",
       "metrics": {
         "crossover_Hz": 103900.0,
         "phase_margin_deg": 79.09,
@@ -2071,9 +2204,24 @@
           "dc_loop_gain_dB": 79.26
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "none",
-          "i": "none"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 2.911791,
+            "v(s1)": 0.005620987,
+            "v(a1)": 2.640477,
+            "v(k1)": 0.2769352,
+            "v(km1)": 0.2769352,
+            "i(Vled1)": 9.987055e-07
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         },
         "paper_screen": {
           "paper_pm_deg": 57.0,
@@ -2088,10 +2236,7 @@
       "cell": "magnitude_indicator",
       "variant": "15p/10uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "154de3fb8e226fda5b462dbced58c1aeef5ae028ea11e934cf1c3e4a70c02072",
-        "i": "dc925ec85bb04002b9f331d78f7d10bfc5e63931d7bfe1d033e4aba1ba2a28ee"
-      },
+      "deck_sha256": "b5a1f2cc2f00a7a054856d07a5372241a4054e95edf674dc8100d2336249ab89",
       "metrics": {
         "crossover_Hz": 660600.0,
         "phase_margin_deg": 63.31,
@@ -2103,9 +2248,24 @@
           "dc_loop_gain_dB": 96.55
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "none",
-          "i": "none"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 3.34943,
+            "v(s1)": 0.05602096,
+            "v(a1)": 2.973921,
+            "v(k1)": 0.4315301,
+            "v(km1)": 0.4315301,
+            "i(Vled1)": 9.9987e-06
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         },
         "paper_screen": {
           "paper_pm_deg": 57.0,
@@ -2120,29 +2280,41 @@
       "cell": "magnitude_indicator",
       "variant": "15p/100uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "2efa11f10313bb5f7f5f88cbb43510b796f8363ae79afade20f48d9039afbeca",
-        "i": "8405b1ef600ada59dd0ad124b375d0caddd1aff9f9e4bd8ae6cde84ae16a3743"
-      },
+      "deck_sha256": "3ae20ac297ad15fbd02dcce366592add8563489efba100c513664210f0b8a170",
       "metrics": {
-        "crossover_Hz": 1861000.0,
-        "phase_margin_deg": 46.58,
-        "dc_loop_gain_dB": 105.8,
-        "zs_over_zl_at_crossover": 0.1127,
+        "crossover_Hz": 1722000.0,
+        "phase_margin_deg": 48.1,
+        "dc_loop_gain_dB": 105.2,
+        "zs_over_zl_at_crossover": 0.1247,
         "voltage_injection_only": {
-          "crossover_Hz": 1774000.0,
-          "phase_margin_deg": 52.45,
-          "dc_loop_gain_dB": 105.8
+          "crossover_Hz": 1638000.0,
+          "phase_margin_deg": 54.64,
+          "dc_loop_gain_dB": 105.2
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "nodeset",
-          "i": "nodeset"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 4.241764,
+            "v(s1)": 0.5600209,
+            "v(a1)": 3.761877,
+            "v(k1)": 1.039908,
+            "v(km1)": 1.039908,
+            "i(Vled1)": 9.999869e-05
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         },
         "paper_screen": {
           "paper_pm_deg": 57.0,
           "basis": "paper worst over currents at 14.4 pF (no per-point value published)",
-          "run_minus_paper_deg": -10.42
+          "run_minus_paper_deg": -8.9
         }
       }
     },
@@ -2152,29 +2324,56 @@
       "cell": "magnitude_indicator",
       "variant": "15p/1mA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "97ec26e91f74417a49eed3c4109fbc19c54602ead8b445821a8e01b9a4a311cb",
-        "i": "b1706c8768b84b54b77c3f0b8a2a13d73e958e4289ef8337cb618f1d87293433"
-      },
+      "deck_sha256": "746fcd2c9b47b01cd4023ffefd49c36d4c9b85ab74b12b7537762bff0935f568",
       "metrics": {
-        "crossover_Hz": 2211000.0,
-        "phase_margin_deg": 50.21,
+        "crossover_Hz": 2216000.0,
+        "phase_margin_deg": 49.9,
         "dc_loop_gain_dB": 106.9,
-        "zs_over_zl_at_crossover": 0.05481,
+        "zs_over_zl_at_crossover": 0.0604,
         "voltage_injection_only": {
           "crossover_Hz": 2160000.0,
           "phase_margin_deg": 53.25,
           "dc_loop_gain_dB": 106.9
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "nodeset",
-          "i": "nodeset"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-5",
+          "seed": "nodeset",
+          "values": {
+            "v(d1)": 9.679137,
+            "v(s1)": 5.60002,
+            "v(a1)": 9.094397,
+            "v(k1)": 6.18476,
+            "v(km1)": 6.18476,
+            "i(Vled1)": 0.0009999991
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "DC solve failed"
+            },
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "nodeset",
+              "result": "DC solve failed"
+            },
+            {
+              "tolerance": "reltol=1e-5",
+              "seed": "none",
+              "result": "DC solve failed"
+            },
+            {
+              "tolerance": "reltol=1e-5",
+              "seed": "nodeset",
+              "result": "usable"
+            }
+          ]
         },
         "paper_screen": {
           "paper_pm_deg": 57.0,
           "basis": "paper worst over currents at 14.4 pF (no per-point value published)",
-          "run_minus_paper_deg": -6.79
+          "run_minus_paper_deg": -7.1
         }
       }
     },
@@ -2184,10 +2383,7 @@
       "cell": "magnitude_indicator",
       "variant": "30p/1uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "40504881d061589a1d4f593ab2da7a83981a8acebc8bc521e04f9b70e33c95dd",
-        "i": "c6ac36ecf979ae72fd346238281c356efc1862a7f53f6a9a3ff2ccda95930319"
-      },
+      "deck_sha256": "c45f1b1e83ecf1fa497e1e18bcb70b1c9fd5e21cd19d9fb37d37857363e89706",
       "metrics": {
         "crossover_Hz": 80660.0,
         "phase_margin_deg": 64.02,
@@ -2199,9 +2395,24 @@
           "dc_loop_gain_dB": 79.26
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "none",
-          "i": "none"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 2.911791,
+            "v(s1)": 0.005620987,
+            "v(a1)": 2.640477,
+            "v(k1)": 0.2769352,
+            "v(km1)": 0.2769352,
+            "i(Vled1)": 9.987055e-07
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         },
         "paper_screen": {
           "paper_pm_deg": 40.3,
@@ -2216,10 +2427,7 @@
       "cell": "magnitude_indicator",
       "variant": "30p/10uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "d0d9b255058a40f46a14497c5e29ffd6deba11a7d28114724e2a80e3143793ea",
-        "i": "28dd96e8d2f794b10f7a832bc67d3f8a8c67d69200f03f7991752ca07420a2b1"
-      },
+      "deck_sha256": "53890414295622da7801c66a0aec279cb7fd9e82243f8472a468dd3fc46db035",
       "metrics": {
         "crossover_Hz": 530400.0,
         "phase_margin_deg": 50.72,
@@ -2231,9 +2439,24 @@
           "dc_loop_gain_dB": 96.55
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "none",
-          "i": "none"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 3.34943,
+            "v(s1)": 0.05602096,
+            "v(a1)": 2.973921,
+            "v(k1)": 0.4315301,
+            "v(km1)": 0.4315301,
+            "i(Vled1)": 9.9987e-06
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         },
         "paper_screen": {
           "paper_pm_deg": 40.3,
@@ -2248,29 +2471,41 @@
       "cell": "magnitude_indicator",
       "variant": "30p/100uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "7438ccf36e8bbc558a7e9f7911efb6952554714b0fdbec9dd0883e05d92f4e24",
-        "i": "adac4c8d530a6aa739d924e1fa0d63100397245882a67c5f2a55e4afef7f36c9"
-      },
+      "deck_sha256": "e1acc5344c30f0ad5648845f22be0f5618df5e8f35d15ec96382d72fb2b12caa",
       "metrics": {
-        "crossover_Hz": 1872000.0,
-        "phase_margin_deg": 40.08,
-        "dc_loop_gain_dB": 106.4,
-        "zs_over_zl_at_crossover": 0.1009,
+        "crossover_Hz": 1518000.0,
+        "phase_margin_deg": 40.24,
+        "dc_loop_gain_dB": 105.2,
+        "zs_over_zl_at_crossover": 0.1016,
         "voltage_injection_only": {
-          "crossover_Hz": 1813000.0,
-          "phase_margin_deg": 44.8,
-          "dc_loop_gain_dB": 106.4
+          "crossover_Hz": 1471000.0,
+          "phase_margin_deg": 44.76,
+          "dc_loop_gain_dB": 105.2
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "nodeset",
-          "i": "nodeset"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 4.241764,
+            "v(s1)": 0.5600209,
+            "v(a1)": 3.761877,
+            "v(k1)": 1.039908,
+            "v(km1)": 1.039908,
+            "i(Vled1)": 9.999869e-05
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         },
         "paper_screen": {
           "paper_pm_deg": 40.3,
           "basis": "paper worst over currents at 28.9 pF (no per-point value published)",
-          "run_minus_paper_deg": -0.22
+          "run_minus_paper_deg": -0.06
         }
       }
     },
@@ -2280,29 +2515,41 @@
       "cell": "magnitude_indicator",
       "variant": "30p/1mA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "36d1d7442d198787e6cdd7734ca198204d9c2369f431e20d75ad62c931d754a2",
-        "i": "8122a91a45c1f58e3cb3aecd1831eb184a95f39900114188a26e6d92cb430ca5"
-      },
+      "deck_sha256": "19bd83bea15154df578b2fcae91eaf5dbf0b567143ef960aa634827f64f33c47",
       "metrics": {
-        "crossover_Hz": 2045000.0,
-        "phase_margin_deg": 44.83,
-        "dc_loop_gain_dB": 106.9,
-        "zs_over_zl_at_crossover": 0.05124,
+        "crossover_Hz": 2065000.0,
+        "phase_margin_deg": 45.22,
+        "dc_loop_gain_dB": 107.0,
+        "zs_over_zl_at_crossover": 0.04815,
         "voltage_injection_only": {
-          "crossover_Hz": 2010000.0,
-          "phase_margin_deg": 47.45,
-          "dc_loop_gain_dB": 106.9
+          "crossover_Hz": 2032000.0,
+          "phase_margin_deg": 47.72,
+          "dc_loop_gain_dB": 107.0
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "nodeset",
-          "i": "nodeset"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 9.679137,
+            "v(s1)": 5.60002,
+            "v(a1)": 9.094397,
+            "v(k1)": 6.18476,
+            "v(km1)": 6.18476,
+            "i(Vled1)": 0.0009999986
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         },
         "paper_screen": {
           "paper_pm_deg": 40.3,
           "basis": "paper worst over currents at 28.9 pF (no per-point value published)",
-          "run_minus_paper_deg": 4.53
+          "run_minus_paper_deg": 4.92
         }
       }
     },
@@ -2312,10 +2559,7 @@
       "cell": "magnitude_indicator",
       "variant": "0/1uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "4076dd75ef9814c580437e4b1c9120a9b8f3c9bce1565abbe875f07200ab366e",
-        "i": "495c201541d2c980e670a1b8db7ce84e5c538e9d6f5670c37f5060c601200ab8"
-      },
+      "deck_sha256": "04faa531388281452dff3a1e22601e8cf1ca51cef25da8eaf67398feac45c650",
       "metrics": {
         "crossover_Hz": 666600.0,
         "phase_margin_deg": 108.2,
@@ -2327,9 +2571,24 @@
           "dc_loop_gain_dB": 90.34
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "none",
-          "i": "none"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 2.91182,
+            "v(s1)": 0.005621935,
+            "v(a1)": 2.640498,
+            "v(k1)": 0.2769438,
+            "v(km1)": 0.2769438,
+            "i(Vled1)": 9.988747e-07
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         }
       }
     },
@@ -2339,10 +2598,7 @@
       "cell": "magnitude_indicator",
       "variant": "0/10uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "328fa865b9c601f1efb0da4f8d9aee1cc27aac2b765dea89571c25d2a581aeaa",
-        "i": "09e83d5dfa9db2dfe4233d93ffcbe5b030e8c7d3cdcc3b293b3a3435b3546b5d"
-      },
+      "deck_sha256": "66e56c9e2dbf041b22db18bba081475766282d69017756929d459b3c850f7d8b",
       "metrics": {
         "crossover_Hz": 3274000.0,
         "phase_margin_deg": 71.54,
@@ -2354,9 +2610,24 @@
           "dc_loop_gain_dB": 107.9
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "none",
-          "i": "none"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 3.349434,
+            "v(s1)": 0.05602187,
+            "v(a1)": 2.973924,
+            "v(k1)": 0.4315318,
+            "v(km1)": 0.4315318,
+            "i(Vled1)": 9.998863e-06
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         }
       }
     },
@@ -2366,24 +2637,36 @@
       "cell": "magnitude_indicator",
       "variant": "0/100uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "a9b22fb3450ae51cc3a197553f064a4138d2db4ac1c74504e58976eb746261a3",
-        "i": "47fb55d0e01f6ef53f6b6044aadf85f9f6b674c852b06b7b6d1bfc5abadc442d"
-      },
+      "deck_sha256": "9bfc267916778e2d81e570c344faf23d65327a4784ec1a4e0441e371454cd8e0",
       "metrics": {
-        "crossover_Hz": 7136000.0,
+        "crossover_Hz": 7135000.0,
         "phase_margin_deg": 61.22,
         "dc_loop_gain_dB": 117.3,
-        "zs_over_zl_at_crossover": 0.3744,
+        "zs_over_zl_at_crossover": 0.3746,
         "voltage_injection_only": {
-          "crossover_Hz": 6495000.0,
-          "phase_margin_deg": 83.75,
+          "crossover_Hz": 6494000.0,
+          "phase_margin_deg": 83.76,
           "dc_loop_gain_dB": 117.3
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "nodeset",
-          "i": "nodeset"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 4.241765,
+            "v(s1)": 0.5600217,
+            "v(a1)": 3.761878,
+            "v(k1)": 1.039909,
+            "v(km1)": 1.039909,
+            "i(Vled1)": 9.999884e-05
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         }
       }
     },
@@ -2393,24 +2676,36 @@
       "cell": "magnitude_indicator",
       "variant": "0/1mA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "f8beb468a0e15fd6574fd56baad17ef79806081fe21963576e789467b0ac2ae1",
-        "i": "5fc4add99dec5e94cdf56524b91524810665825e2b4c4b36ac4953c4e892f3eb"
-      },
+      "deck_sha256": "47c39bc78e3e01392e3908340cba6ab9df5dccb0e202e39d8ce24415e594e0ba",
       "metrics": {
-        "crossover_Hz": 9457000.0,
+        "crossover_Hz": 9456000.0,
         "phase_margin_deg": 62.85,
         "dc_loop_gain_dB": 119.2,
-        "zs_over_zl_at_crossover": 0.08952,
+        "zs_over_zl_at_crossover": 0.08953,
         "voltage_injection_only": {
           "crossover_Hz": 9231000.0,
           "phase_margin_deg": 68.55,
           "dc_loop_gain_dB": 119.2
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "nodeset",
-          "i": "nodeset"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 9.679138,
+            "v(s1)": 5.600021,
+            "v(a1)": 9.094398,
+            "v(k1)": 6.184761,
+            "v(km1)": 6.184761,
+            "i(Vled1)": 0.0009999987
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         }
       }
     },
@@ -2420,10 +2715,7 @@
       "cell": "magnitude_indicator",
       "variant": "7.2p/1uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "a77aa0c0d38292cbc0af34b40c1c184c3fd1dc03ebe9deeeb16d12cf1aeae9de",
-        "i": "54165c44c1a69f5d99d2895a682f014a17728826195076b6ad4e5052fb4ac70a"
-      },
+      "deck_sha256": "6045d330acb9c664b9567d43058b5a7f78cd094cc06d5efb35d15591cc51bd9a",
       "metrics": {
         "crossover_Hz": 388900.0,
         "phase_margin_deg": 74.37,
@@ -2435,9 +2727,24 @@
           "dc_loop_gain_dB": 90.34
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "none",
-          "i": "none"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 2.91182,
+            "v(s1)": 0.005621935,
+            "v(a1)": 2.640498,
+            "v(k1)": 0.2769438,
+            "v(km1)": 0.2769438,
+            "i(Vled1)": 9.988747e-07
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         }
       }
     },
@@ -2447,10 +2754,7 @@
       "cell": "magnitude_indicator",
       "variant": "7.2p/10uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "ff2f2f7f8c3f7e479dccf32d2db484d632252681fb8962fd42bca16b2dc50bfa",
-        "i": "0c3c23aa875ad4d38fabe80c4a928790d4ccb02e0871afcdd31ef31a15168017"
-      },
+      "deck_sha256": "487902c88afe9d7b12ef6f49d897da79b801a6e4e0f8903ae2836501f14e5e48",
       "metrics": {
         "crossover_Hz": 2330000.0,
         "phase_margin_deg": 51.77,
@@ -2462,9 +2766,24 @@
           "dc_loop_gain_dB": 107.9
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "none",
-          "i": "none"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 3.349434,
+            "v(s1)": 0.05602187,
+            "v(a1)": 2.973924,
+            "v(k1)": 0.4315318,
+            "v(km1)": 0.4315318,
+            "i(Vled1)": 9.998863e-06
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         }
       }
     },
@@ -2474,24 +2793,36 @@
       "cell": "magnitude_indicator",
       "variant": "7.2p/100uA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "0bf6cd78819b618c8e9b87296a5a0b7a9871bc77e372acd8c17d126a08bf55d8",
-        "i": "aa730f35f35f27ed6e58d9c8433316f0706a794e7cfd802b49f99385c53df510"
-      },
+      "deck_sha256": "ab3b7d66ea8730e8f68d2bb5499d33fb3185c5c0ae12f12e1ea673c245048e20",
       "metrics": {
-        "crossover_Hz": 6246000.0,
-        "phase_margin_deg": 56.44,
+        "crossover_Hz": 6058000.0,
+        "phase_margin_deg": 52.54,
         "dc_loop_gain_dB": 117.3,
-        "zs_over_zl_at_crossover": 0.2354,
+        "zs_over_zl_at_crossover": 0.2976,
         "voltage_injection_only": {
-          "crossover_Hz": 5656000.0,
+          "crossover_Hz": 5655000.0,
           "phase_margin_deg": 68.39,
           "dc_loop_gain_dB": 117.3
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "nodeset",
-          "i": "nodeset"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 4.241765,
+            "v(s1)": 0.5600217,
+            "v(a1)": 3.761878,
+            "v(k1)": 1.039909,
+            "v(km1)": 1.039909,
+            "i(Vled1)": 9.999884e-05
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         }
       }
     },
@@ -2501,24 +2832,36 @@
       "cell": "magnitude_indicator",
       "variant": "7.2p/1mA",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "7f3e4f0980307b0907dd913d15afb8d207abb8172a17e2a068b479493224b6ce",
-        "i": "4e6cb7a92b45ec9311f94a9cf9a9ced4c26c941adb42a10e94ddbc240e7cb909"
-      },
+      "deck_sha256": "a6adb2268562d74bbdce02349729b4489b1d8a2acc26d96ebd902c28bd8e2313",
       "metrics": {
-        "crossover_Hz": 8868000.0,
-        "phase_margin_deg": 62.16,
+        "crossover_Hz": 8877000.0,
+        "phase_margin_deg": 61.09,
         "dc_loop_gain_dB": 119.2,
-        "zs_over_zl_at_crossover": 0.06313,
+        "zs_over_zl_at_crossover": 0.08131,
         "voltage_injection_only": {
           "crossover_Hz": 8696000.0,
           "phase_margin_deg": 66.15,
           "dc_loop_gain_dB": 119.2
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "nodeset",
-          "i": "none (seeded DC solve failed; retried without nodeset)"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(d1)": 9.679138,
+            "v(s1)": 5.600021,
+            "v(a1)": 9.094398,
+            "v(k1)": 6.184761,
+            "v(km1)": 6.184761,
+            "i(Vled1)": 0.0009999987
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         }
       }
     },
@@ -2528,10 +2871,7 @@
       "cell": "plain_follower",
       "variant": "no_load",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "42b8f93e01795ad72e72420dec56ade512f1011a7291e67f2baced57befef3d9",
-        "i": "dc62886db9b875883010cfdbca2e3db7b1fce0ffbb9cd99620c45efef30795d6"
-      },
+      "deck_sha256": "b9933bd2af8c2d3d854bb642b72ce0b9b2fb6d53bd7b5006fab55514bf95d2d7",
       "metrics": {
         "crossover_Hz": 2597000.0,
         "phase_margin_deg": 54.82,
@@ -2543,9 +2883,19 @@
           "dc_loop_gain_dB": 109.2
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "none",
-          "i": "none"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(o1)": 2.120533e-05
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         }
       }
     },
@@ -2555,10 +2905,7 @@
       "cell": "plain_follower",
       "variant": "no_load",
       "integration": "ac (small signal)",
-      "deck_sha256": {
-        "v": "7e911dbb329df5f00ebb6d4cd03248a6ccb25167d48a7ebe7e1139e9546ec3fd",
-        "i": "48f009100916446348dbccd8681024b49a69edabaae677627c9bf5610508ad3c"
-      },
+      "deck_sha256": "8bc2685f1541c3e234e6f2af19f743aad2e3a5aac1a3c9c696d7b06cd7e08b4a",
       "metrics": {
         "crossover_Hz": 9986000.0,
         "phase_margin_deg": 63.95,
@@ -2570,9 +2917,19 @@
           "dc_loop_gain_dB": 120.2
         },
         "sustained_oscillation": "NOT EVALUATED",
-        "dc_seed": {
-          "v": "none",
-          "i": "none"
+        "dc_operating_point": {
+          "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+          "seed": "none",
+          "values": {
+            "v(o1)": 2.23729e-05
+          },
+          "attempts": [
+            {
+              "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15",
+              "seed": "none",
+              "result": "usable"
+            }
+          ]
         }
       }
     },
@@ -5641,7 +5998,16 @@
           "phase_margin_deg": 10.0,
           "dc_loop_gain_dB": 11.08
         },
-        "dc_seed": {}
+        "dc_operating_point": {
+          "values": {
+            "v(d1)": 2.9e-05,
+            "v(s1)": 9.48e-07,
+            "v(a1)": 2.1e-05,
+            "v(k1)": 8.6e-06,
+            "v(km1)": 8.6e-06,
+            "i(Vled1)": 1.692e-10
+          }
+        }
       }
     },
     {
@@ -5658,7 +6024,16 @@
           "phase_margin_deg": 10.22,
           "dc_loop_gain_dB": 11.35
         },
-        "dc_seed": {}
+        "dc_operating_point": {
+          "values": {
+            "v(d1)": 4e-06,
+            "v(s1)": 9.1e-07,
+            "v(a1)": 3e-06,
+            "v(k1)": 1.7e-06,
+            "v(km1)": 1.7e-06,
+            "i(Vled1)": 1.63e-10
+          }
+        }
       }
     },
     {
@@ -5666,16 +6041,25 @@
       "cell": "magnitude_indicator",
       "variant": "0/100uA",
       "OPA4197_minus_OPA4196": {
-        "crossover_Hz": 5065000.0,
-        "phase_margin_deg": 1.08,
-        "dc_loop_gain_dB": 11.5,
-        "zs_over_zl_at_crossover": 0.2559,
+        "crossover_Hz": 5184000.0,
+        "phase_margin_deg": -0.47,
+        "dc_loop_gain_dB": 12.1,
+        "zs_over_zl_at_crossover": 0.2204,
         "voltage_injection_only": {
-          "crossover_Hz": 4565000.0,
-          "phase_margin_deg": 16.84,
-          "dc_loop_gain_dB": 11.5
+          "crossover_Hz": 4700000.0,
+          "phase_margin_deg": 12.96,
+          "dc_loop_gain_dB": 12.1
         },
-        "dc_seed": {}
+        "dc_operating_point": {
+          "values": {
+            "v(d1)": 1e-06,
+            "v(s1)": 8e-07,
+            "v(a1)": 1e-06,
+            "v(k1)": 1e-06,
+            "v(km1)": 1e-06,
+            "i(Vled1)": 1.5e-10
+          }
+        }
       }
     },
     {
@@ -5683,16 +6067,25 @@
       "cell": "magnitude_indicator",
       "variant": "0/1mA",
       "OPA4197_minus_OPA4196": {
-        "crossover_Hz": 7077000.0,
-        "phase_margin_deg": 4.33,
+        "crossover_Hz": 7073000.0,
+        "phase_margin_deg": 4.51,
         "dc_loop_gain_dB": 12.3,
-        "zs_over_zl_at_crossover": 0.02446,
+        "zs_over_zl_at_crossover": 0.02128,
         "voltage_injection_only": {
-          "crossover_Hz": 6935000.0,
-          "phase_margin_deg": 6.23,
+          "crossover_Hz": 6936000.0,
+          "phase_margin_deg": 6.22,
           "dc_loop_gain_dB": 12.3
         },
-        "dc_seed": {}
+        "dc_operating_point": {
+          "values": {
+            "v(d1)": 1e-06,
+            "v(s1)": 1e-06,
+            "v(a1)": 1e-06,
+            "v(k1)": 1e-06,
+            "v(km1)": 1e-06,
+            "i(Vled1)": -6e-10
+          }
+        }
       }
     },
     {
@@ -5709,7 +6102,16 @@
           "phase_margin_deg": -13.74,
           "dc_loop_gain_dB": 11.08
         },
-        "dc_seed": {}
+        "dc_operating_point": {
+          "values": {
+            "v(d1)": 2.9e-05,
+            "v(s1)": 9.48e-07,
+            "v(a1)": 2.1e-05,
+            "v(k1)": 8.6e-06,
+            "v(km1)": 8.6e-06,
+            "i(Vled1)": 1.692e-10
+          }
+        }
       }
     },
     {
@@ -5726,7 +6128,16 @@
           "phase_margin_deg": -11.71,
           "dc_loop_gain_dB": 11.35
         },
-        "dc_seed": {}
+        "dc_operating_point": {
+          "values": {
+            "v(d1)": 4e-06,
+            "v(s1)": 9.1e-07,
+            "v(a1)": 3e-06,
+            "v(k1)": 1.7e-06,
+            "v(km1)": 1.7e-06,
+            "i(Vled1)": 1.63e-10
+          }
+        }
       }
     },
     {
@@ -5734,16 +6145,25 @@
       "cell": "magnitude_indicator",
       "variant": "7.2p/100uA",
       "OPA4197_minus_OPA4196": {
-        "crossover_Hz": 4237000.0,
-        "phase_margin_deg": 3.92,
-        "dc_loop_gain_dB": 11.4,
-        "zs_over_zl_at_crossover": 0.1213,
+        "crossover_Hz": 4216000.0,
+        "phase_margin_deg": -1.67,
+        "dc_loop_gain_dB": 12.1,
+        "zs_over_zl_at_crossover": 0.158,
         "voltage_injection_only": {
-          "crossover_Hz": 3759000.0,
-          "phase_margin_deg": 9.63,
-          "dc_loop_gain_dB": 11.4
+          "crossover_Hz": 3930000.0,
+          "phase_margin_deg": 6.29,
+          "dc_loop_gain_dB": 12.1
         },
-        "dc_seed": {}
+        "dc_operating_point": {
+          "values": {
+            "v(d1)": 1e-06,
+            "v(s1)": 8e-07,
+            "v(a1)": 1e-06,
+            "v(k1)": 1e-06,
+            "v(km1)": 1e-06,
+            "i(Vled1)": 1.5e-10
+          }
+        }
       }
     },
     {
@@ -5751,16 +6171,25 @@
       "cell": "magnitude_indicator",
       "variant": "7.2p/1mA",
       "OPA4197_minus_OPA4196": {
-        "crossover_Hz": 6495000.0,
-        "phase_margin_deg": 8.67,
-        "dc_loop_gain_dB": 12.1,
-        "zs_over_zl_at_crossover": -0.0054,
+        "crossover_Hz": 6571000.0,
+        "phase_margin_deg": 7.27,
+        "dc_loop_gain_dB": 12.3,
+        "zs_over_zl_at_crossover": 0.0156,
         "voltage_injection_only": {
-          "crossover_Hz": 6400000.0,
-          "phase_margin_deg": 8.75,
-          "dc_loop_gain_dB": 12.1
+          "crossover_Hz": 6463000.0,
+          "phase_margin_deg": 8.6,
+          "dc_loop_gain_dB": 12.3
         },
-        "dc_seed": {}
+        "dc_operating_point": {
+          "values": {
+            "v(d1)": -0.000223,
+            "v(s1)": -0.000237,
+            "v(a1)": -0.000291,
+            "v(k1)": -0.00024,
+            "v(km1)": -0.00024,
+            "i(Vled1)": -3.998e-06
+          }
+        }
       }
     },
     {
@@ -5777,7 +6206,11 @@
           "phase_margin_deg": 6.86,
           "dc_loop_gain_dB": 11.0
         },
-        "dc_seed": {}
+        "dc_operating_point": {
+          "values": {
+            "v(o1)": 1.168e-06
+          }
+        }
       }
     },
     {

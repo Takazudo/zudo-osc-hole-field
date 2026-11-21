@@ -174,10 +174,14 @@ def header(title, model):
     return out
 
 
-def control(analysis, vectors, data):
+def control(analysis, vectors, data, op_data=None, op_vectors=None):
     rel = data.relative_to(ROOT).as_posix()
-    return [".control", "set noinit", "set wr_singlescale", "set wr_vecnames", "option numdgt=8",
-            analysis, f"wrdata {rel} " + " ".join(vectors), "quit", ".endc", ".end", ""]
+    pre = []
+    if op_vectors:
+        # Record the DC operating point the AC analysis linearises about.
+        pre = ["op", f"wrdata {op_data.relative_to(ROOT).as_posix()} " + " ".join(op_vectors)]
+    return ([".control", "set noinit", "set wr_singlescale", "set wr_vecnames", "option numdgt=8"] + pre +
+            [analysis, f"wrdata {rel} " + " ".join(vectors), "quit", ".endc", ".end", ""])
 
 
 # ----------------------------------------------------------------------------------------------
@@ -220,16 +224,15 @@ def forward(model, current):
     return p["N"] * 0.025852 * math.log(current / p["IS"] + 1) + current * p["RS"]
 
 
-def loop_break(t, x, y, mode):
-    """Break the loop between return node y (source side) and IN- node x (load side).
+def loop_probe(t, x, y):
+    """Break the loop between return node y (source side) and IN- node x (load side) with one fixed
+    topology for both Middlebrook runs: y -[Vmy 0 V]- n -[Vinj]- x, and Iinj into n.
 
-    mode "v": series AC voltage injection, V(x) - V(y) = 1.  mode "i": AC current injected into a
-    split node n, with zero-volt probes n->y (I_y) and n->x (I_x). Middlebrook's double injection
-    combines both runs (see middlebrook())."""
-    if mode == "v":
-        return [f"Vinj{t} {x} {y} DC 0 AC 1"], [f"v({y})", f"v({x})"]
-    return ([f"Vmy{t} n{t} {y} 0", f"Vmx{t} n{t} {x} 0", f"Iinj{t} 0 n{t} DC 0 AC 1"],
-            [f"i(Vmy{t})", f"i(Vmx{t})"])
+    Run 1 (Vinj AC 1, Iinj AC 0): V(x) - V(n) = 1 and V(y) = V(n), so Tv = -V(n)/V(x).
+    Run 2 (Vinj AC 0, Iinj AC 1): I(n->y) = i(Vmy) and I(n->x) = -i(Vinj), so Ti = I(n->y)/I(n->x).
+    Both runs are AC analyses of the same deck, after one recorded operating point."""
+    return ([f"Vmy{t} n{t} {y} 0", f"Vinj{t} {x} n{t} DC 0 AC 1", f"Iinj{t} 0 n{t} DC 0 AC 0"],
+            [f"v(n{t})", f"v({x})"], [f"i(Vmy{t})", f"i(Vinj{t})"])
 
 
 # Indicator models and added LED-net capacitances. OPA4196 is the S4 sweep; OPA4197 at 0 pF (as built,
@@ -244,26 +247,28 @@ def indicator_cases():
         for cap_key in caps:
             cap = IND_CAPS[cap_key]
             for bias_key, current in IND_BIAS.items():
-                def frag(t, mode, cap=cap, current=current, sub=sub):
+                def frag(t, seed, cap=cap, current=current, sub=sub):
                     lines, nodes = indicator(t, sub, f"DC {current * R_SENSE:.6g}", cap)
-                    inj, vecs = loop_break(t, f"inm{t}", nodes["sense"], mode)
+                    inj, vv, vi = loop_probe(t, f"inm{t}", nodes["sense"])
                     lines += inj + [f"X{t} {nodes['mon']} inm{t} vp vn {nodes['drive']} {sub}"]
-                    # The DC solve fails at 1 mA without a starting point, and fails for OPA4197 at 1 and
-                    # 10 uA with one; nodeset only seeds the solve, so it is given from 100 uA up.
+                    # Optional DC seed from the forward-voltage estimate; run_all() picks the seed and
+                    # asserts both injection runs share one correct operating point.
                     vs, vb, vl = current * R_SENSE, forward("DBAS", current), forward("DLED", current)
-                    if current >= 1e-4:
-                        lines.append(f".nodeset v({nodes['drive']})={vs + 2 * vb + vl:.4f} v(a{t})={vs + vb + vl:.4f} "
-                                 f"v(k{t})={vs - vb:.4f} v(km{t})={vs - vb:.4f} v(inm{t})={vs:.4f} v({nodes['sense']})={vs:.4f}")
-                    return lines, vecs
+                    d, s = nodes["drive"], nodes["sense"]
+                    if seed:
+                        lines.append(f".nodeset v({d})={vs + 2 * vb + vl:.4f} v(a{t})={vs + vb + vl:.4f} "
+                                     f"v(k{t})={vs - vb:.4f} v(km{t})={vs - vb:.4f} v(inm{t})={vs:.4f} v({s})={vs:.4f} v(n{t})={vs:.4f}")
+                    op = [f"v({d})", f"v({s})", f"v(a{t})", f"v(k{t})", f"v(km{t})", nodes["led_i"]]
+                    return lines, vv, vi, op
                 out.append({"model": model, "case": "case5a", "cell": "magnitude_indicator",
                             "variant": f"{cap_key}/{bias_key}", "kind": "loop", "analysis": "ac dec 100 10 1g",
-                            "frag": frag, "cap": cap_key, "bias": bias_key})
+                            "frag": frag, "cap": cap_key, "bias": bias_key, "target_A": current})
     for model, m in MODELS.items():
-        def frag(t, mode, sub=m["subckt"]):
+        def frag(t, seed, sub=m["subckt"]):
             # Control: a plain unity follower (IN+ at 0 V, no load) broken the same way, to show the
-            # vendor core's own phase lag apart from the bridge.
-            inj, vecs = loop_break(t, f"inm{t}", f"o{t}", mode)
-            return [f"X{t} 0 inm{t} vp vn o{t} {sub}"] + inj, vecs
+            # vendor core's own phase lag apart from the bridge. It needs no DC seed.
+            inj, vv, vi = loop_probe(t, f"inm{t}", f"o{t}")
+            return [f"X{t} 0 inm{t} vp vn o{t} {sub}"] + inj, vv, vi, [f"v(o{t})"]
         out.append({"model": model, "case": "case5a_control", "cell": "plain_follower", "variant": "no_load",
                     "kind": "loop", "analysis": "ac dec 100 10 1g", "frag": frag})
     for model, caps in IND_MODEL_CAPS.items():
@@ -290,10 +295,11 @@ def all_cases():
 # Oracle and waveform readers
 
 
-def oracle(name, body_lines, analysis, vectors):
+def oracle(name, body_lines, analysis, vectors, op_vectors=None):
     data = WORK / f"{name}.dat"
     deck = WORK / f"{name}.cir"
-    body = "\n".join(body_lines + control(analysis, vectors, data))
+    op_data = WORK / f"{name}.op.dat"
+    body = "\n".join(body_lines + control(analysis, vectors, data, op_data, op_vectors))
     deck.write_text(body)
     data.unlink(missing_ok=True)
     proc = subprocess.run(["bash", "scripts/kicad/run.sh", "ngspice", "-b", deck.relative_to(ROOT).as_posix()],
@@ -311,7 +317,57 @@ def oracle(name, body_lines, analysis, vectors):
     cols = {nm: [r[i] for r in table] for i, nm in enumerate(names)}
     data.unlink()
     deck.unlink()
+    if op_vectors:
+        rows = op_data.read_text().split("\n")
+        values = [float(x) for x in rows[1].split()]
+        op = dict(zip(rows[0].split(), values))
+        op_data.unlink()
+        if not all(math.isfinite(v) for v in op.values()):
+            raise RuntimeError(f"{name}: nonfinite operating point")
+        return digest(body.encode()), cols, op
     return digest(body.encode()), cols
+
+
+def read_table(path):
+    rows = path.read_text().split("\n")
+    names = []
+    for nm in rows[0].split():  # a complex vector is written as two same-named columns: real, imaginary
+        names.append(nm + "#imag" if nm in names else nm)
+    table = [[float(x) for x in r.split()] for r in rows[1:] if r.strip()]
+    if not table or not all(math.isfinite(x) for r in table for x in r):
+        raise RuntimeError(f"{path.name}: empty or nonfinite data")
+    return {nm: [r[i] for r in table] for i, nm in enumerate(names)}
+
+
+def loop_oracle(name, body_lines, analysis, t, vv, vi, op_vectors):
+    """One deck: operating point, AC with voltage injection, AC with current injection, operating point.
+
+    Returns the deck digest, both AC tables and the operating point recorded before and after."""
+    files = {k: WORK / f"{name}.{k}.dat" for k in ("op1", "v", "i", "op2")}
+    rel = {k: p.relative_to(ROOT).as_posix() for k, p in files.items()}
+    deck = WORK / f"{name}.cir"
+    body = "\n".join(body_lines + [
+        ".control", "set noinit", "set wr_singlescale", "set wr_vecnames", "option numdgt=8",
+        "op", f"wrdata {rel['op1']} " + " ".join(op_vectors),
+        analysis, f"wrdata {rel['v']} " + " ".join(vv),
+        f"alter @vinj{t}[acmag]=0", f"alter @iinj{t}[acmag]=1",
+        analysis, f"wrdata {rel['i']} " + " ".join(vi),
+        "op", f"wrdata {rel['op2']} " + " ".join(op_vectors),
+        "quit", ".endc", ".end", ""])
+    deck.write_text(body)
+    for p in files.values():
+        p.unlink(missing_ok=True)
+    proc = subprocess.run(["bash", "scripts/kicad/run.sh", "ngspice", "-b", deck.relative_to(ROOT).as_posix()],
+                          cwd=ROOT, capture_output=True, text=True, timeout=600)
+    if deck.read_text() != body:
+        raise RuntimeError(f"{name} deck changed during execution")
+    check_oracle_result(proc, files["i"])
+    out = {k: read_table(p) for k, p in files.items()}
+    for p in files.values():
+        p.unlink()
+    deck.unlink()
+    ops = {k: {n: v[0] for n, v in out[k].items() if n in op_vectors} for k in ("op1", "op2")}  # drop the scale column
+    return digest(body.encode()), out["v"], out["i"], ops
 
 
 class Wave:
@@ -572,7 +628,7 @@ def loop_rows(cv, vv, ci, vi):
         raise RuntimeError("loop runs use different frequency grids")
     f = cv["frequency"]
     vy, vx = complex_col(cv, vv[0]), complex_col(cv, vv[1])
-    iy, ix = complex_col(ci, vi[0]), complex_col(ci, vi[1])
+    iy, ix = complex_col(ci, vi[0]), [-x for x in complex_col(ci, vi[1])]  # I(n->x) = -i(Vinj)
     tv = [-a / b for a, b in zip(vy, vx)]
     ti = [a / b for a, b in zip(iy, ix)]  # Ti = I(n->y) / I(n->x): source-side over load-side current
     pairs = [middlebrook(a, b) for a, b in zip(tv, ti)]
@@ -582,6 +638,29 @@ def loop_rows(cv, vv, ci, vi):
     clean = lambda m: {k: r(v, 4) for k, v in m.items() if k != "index"}  # noqa: E731
     return {**clean(full), "zs_over_zl_at_crossover": r(zr, 4), "voltage_injection_only": clean(volt),
             "sustained_oscillation": NOT_EVALUATED}
+
+
+# Loop decks: solver tolerances tried tightest first. ngspice's default reltol=1e-3 leaves the bridge
+# operating point at 1 mA loose by 0.5-0.8 % (it moves between the two AC runs); the tight settings put
+# it at the intended current.
+LOOP_TOLERANCES = (("reltol=1e-6 vntol=1e-9 abstol=1e-15", ".options reltol=1e-6 vntol=1e-9 abstol=1e-15"),
+                   ("reltol=1e-5", ".options reltol=1e-5"), ("ngspice default", None))
+
+
+def dc_check(ops, target):
+    """The operating point recorded before and after the two AC runs must agree (0.1 mV, 0.01 %), and an
+    indicator row must carry its intended bridge current through the LED (1 %). None when usable."""
+    v, i = ops["op1"], ops["op2"]
+    if set(v) != set(i):
+        return "operating-point vectors differ"
+    for k in v:
+        if abs(v[k] - i[k]) > (1e-12 + 1e-4 * abs(v[k]) if k.startswith("i(") else 1e-4):
+            return f"operating point moved between the AC runs on {k}: {v[k]:.6g} vs {i[k]:.6g}"
+    if target is not None:
+        led = next(val for k, val in v.items() if k.startswith("i("))
+        if abs(led - target) > 0.01 * target:
+            return f"LED current {led:.6g} A is not the intended {target:.6g} A"
+    return None
 
 
 def vectors(nodes, kind):
@@ -626,25 +705,37 @@ def run_all():
             title = f"MC04-S4 {c['model']} {c['case']} {c['cell']} {c['variant']}"
             name = "-".join((c["model"], c["case"], c["cell"], c["variant"])).replace("/", "_").replace("+", "p")
             if c["kind"] == "loop":
-                runs, shas, seeds = {}, {}, {}
-                for mode in ("v", "i"):
-                    lines, vecs = c["frag"]("1", mode)
-                    deck = header(f"{title} {mode}-injection", c["model"]) + lines
-                    seeded = any(x.startswith(".nodeset") for x in lines)
-                    seeds[mode] = "nodeset" if seeded else "none"
-                    try:
-                        shas[mode], cols = oracle(f"{name}-{mode}", deck, c["analysis"], vecs)
-                    except RuntimeError as error:
-                        # One retry for a failed DC solve: drop the nodeset seed (it only seeds the solve;
-                        # OPA4197 at 7.2 pF / 1 mA converges without it in the current-injection run).
-                        if not seeded or "Timestep too small" not in str(error):
-                            raise
-                        seeds[mode] = "none (seeded DC solve failed; retried without nodeset)"
-                        shas[mode], cols = oracle(f"{name}-{mode}", [x for x in deck if not x.startswith(".nodeset")],
-                                                  c["analysis"], vecs)
-                    runs[mode] = (cols, vecs)
-                metrics = loop_rows(runs["v"][0], runs["v"][1], runs["i"][0], runs["i"][1])
-                metrics["dc_seed"] = seeds
+                # One deck holds both injections around one recorded operating point. Solver tolerance
+                # (tightest first) and DC seed (none, then nodeset) are tried in a fixed order; the first
+                # attempt that converges, keeps its operating point across both AC runs and carries the
+                # intended LED current is used, and every attempt is recorded.
+                attempts, chosen = [], None
+                for tol_name, tol in LOOP_TOLERANCES:
+                    for seed in (False, True):
+                        lines, vv, vi, opv = c["frag"]("1", seed)
+                        deck = header(f"{title} double injection", c["model"]) + lines + ([tol] if tol else [])
+                        try:
+                            sha, cv, ci, ops = loop_oracle(name, deck, c["analysis"], "1", vv, vi, opv)
+                            why = dc_check(ops, c.get("target_A"))
+                        except RuntimeError as error:
+                            if "Timestep too small" not in str(error):
+                                raise
+                            sha, cv, ci, ops, why = None, None, None, None, "DC solve failed"
+                        attempts.append({"tolerance": tol_name, "seed": "nodeset" if seed else "none",
+                                         "result": why or "usable"})
+                        if why is None:
+                            chosen = {"sha": sha, "cv": cv, "ci": ci, "vv": vv, "vi": vi, "ops": ops,
+                                      "tolerance": tol_name, "seed": "nodeset" if seed else "none"}
+                            break
+                    if chosen:
+                        break
+                if chosen is None:
+                    raise RuntimeError(f"{title}: no usable DC operating point: {attempts}")
+                shas = chosen["sha"]
+                metrics = loop_rows(chosen["cv"], chosen["vv"], chosen["ci"], chosen["vi"])
+                metrics["dc_operating_point"] = {
+                    "tolerance": chosen["tolerance"], "seed": chosen["seed"],
+                    "values": {k: r(v, 7) for k, v in chosen["ops"]["op1"].items()}, "attempts": attempts}
                 if c["case"] == "case5a" and c["model"] == "OPA4196":  # the paper screen models OPA4196 only
                     metrics["paper_screen"] = paper_point(c["cap"], c["bias"], metrics["phase_margin_deg"])
                 results.append({"model": c["model"], "case": c["case"], "cell": c["cell"], "variant": c["variant"],
@@ -699,13 +790,10 @@ def validate_loop_break():
         base = ["MC04-S4 loop-break validation, linear two-pole loop", "E1 o1 0 0 x 1000", "Rp o1 o2 1k",
                 "Cp o2 0 1.5915n", "E2 o3 0 o2 0 1", "Rq o3 o4 1k", "Cq o4 0 159.15p", "E3 o5 0 o4 0 1",
                 "Ro o5 y 1k", "Rg y 0 2k", f"Rl x 0 {rl:g}"]
-        runs = {}
-        for mode in ("v", "i"):
-            inj, vecs = loop_break("1", "x", "y", mode)
-            _, cols = oracle(f"loop-validation-{mode}", base + inj, "ac dec 100 10 100meg", vecs)
-            runs[mode] = (cols, vecs)
-        got = loop_rows(runs["v"][0], runs["v"][1], runs["i"][0], runs["i"][1])
-        f = runs["v"][0]["frequency"]
+        inj, vv, vi = loop_probe("1", "x", "y")
+        _, cv, ci, _ = loop_oracle("loop-validation", base + inj, "ac dec 100 10 100meg", "1", vv, vi, ["v(x)"])
+        got = loop_rows(cv, vv, ci, vi)
+        f = cv["frequency"]
         z = 2e3 * rl / (2e3 + rl)
         true = loop_metrics(f, [1000 * z / (1e3 + z) / ((1 + 1j * x / 1e5) * (1 + 1j * x / 1e6)) for x in f])
         rows.append({"R_load_ohm": rl, "expected_zs_over_zl": r(z and (1e3 * 2e3 / 3e3) / rl, 4),
