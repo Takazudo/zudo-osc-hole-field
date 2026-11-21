@@ -6,7 +6,8 @@ U8314 and U8417, in the pinned KiCad 10 ngspice oracle. Both TI libraries stay i
 local cache and are pinned by digest; a changed remote file fails closed.
 
 Cases follow circuit/orchestration/campaigns/osc-stack-20261114/
-mc04-s4-input-buffer-native-brief-20261121.md (commit 4b0ccee). The 10 % overshoot and 1 mV
+mc04-s4-input-buffer-native-brief-20261121.md, with Revision 1 after the
+independent review (commit c86e6fe). The 10 % overshoot and 1 mV
 settling numbers of sweep_precision.py are DIAGNOSTIC labels only; this report sets no acceptance.
 """
 from __future__ import annotations
@@ -73,11 +74,21 @@ IND_CAPS = {"0": None, "7.2p": "7.2p", "15p": "15p", "30p": "30p"}
 IND_BIAS = {"1uA": 1e-6, "10uA": 1e-5, "100uA": 1e-4, "1mA": 1e-3}
 IND_AMPS = {"10mV": 0.01, "100mV": 0.1, "1V": 1.0, "5V": 5.0}
 R_SENSE = 5600
-PAPER = {"no_cable_worst_deg": 82, "7.2p_worst_deg": 69, "29p_worst_deg": 40}
+# Stage 1b paper screen, read per point (U8417 units 3-4, default boundary). The paper evaluates
+# 7.22 pF per LED net and 2x / 4x that (14.4 / 28.9 pF) for worst values only; this run uses
+# 7.2 / 15 / 30 pF, so the 15 pF and 30 pF comparisons are against 14.4 pF and 28.9 pF.
+PAPER_RESULT = ROOT / "scripts/stack/studies/mc04_s1b_indicator_loops/result.json"
+PAPER_SHA256 = "5cdac8e9d4e482bd390b6dd6549c2cfe244e1f154cddb46c11ff102b412857fa"
+OSC_LIMIT = 1e-3  # absolute 1 mV threshold for every sustained-oscillation test
+NOT_EVALUATED = "NOT EVALUATED"
 
 STEP = "PULSE(-5 5 0 1u 1u 500u 1m)"
 SINE = "SIN(0 10 20k)"
-OVER = "PWL(0 0 10u 0 11u 12 211u 12 212u 0 511u 0 512u -12 712u -12 713u 0 1.1m 0)"
+OVERDRIVES = {"12V": 12, "15V": 15}
+
+
+def over_wave(v):
+    return f"PWL(0 0 10u 0 11u {v} 211u {v} 212u 0 511u 0 512u {-v} 712u {-v} 713u 0 1.1m 0)"
 
 
 def digest(data: bytes) -> str:
@@ -189,7 +200,10 @@ def follower_cases(model):
         for c in C_RUN:
             add("case2", cell, f"SENSE+{c}", "step", st, lambda t, c=c, v=v: follower(t, sub, STEP, variant=v, c_sense=c))
             add("case2", cell, f"BUFFER+{c}", "step", st, lambda t, c=c, v=v: follower(t, sub, STEP, variant=v, c_buffer=c))
-        add("case4", cell, "overdrive_12V", "over", ov, lambda t, v=v: follower(t, sub, OVER, variant=v))
+        for name, volts in OVERDRIVES.items():
+            add("case4", cell, f"overdrive_{name}", "over", ov,
+                lambda t, v=v, volts=volts: follower(t, sub, over_wave(volts), variant=v))
+            out[-1]["volts"] = volts
     for load, lv in OUT_LOADS.items():
         for cable, cv in OUT_CABLES.items():
             add("case3", "general_output", f"{load}/{cable}", "output", st,
@@ -205,24 +219,43 @@ def forward(model, current):
     return p["N"] * 0.025852 * math.log(current / p["IS"] + 1) + current * p["RS"]
 
 
+def loop_break(t, x, y, mode):
+    """Break the loop between return node y (source side) and IN- node x (load side).
+
+    mode "v": series AC voltage injection, V(x) - V(y) = 1.  mode "i": AC current injected into a
+    split node n, with zero-volt probes n->y (I_y) and n->x (I_x). Middlebrook's double injection
+    combines both runs (see middlebrook())."""
+    if mode == "v":
+        return [f"Vinj{t} {x} {y} DC 0 AC 1"], [f"v({y})", f"v({x})"]
+    return ([f"Vmy{t} n{t} {y} 0", f"Vmx{t} n{t} {x} 0", f"Iinj{t} 0 n{t} DC 0 AC 1"],
+            [f"i(Vmy{t})", f"i(Vmx{t})"])
+
+
 def indicator_cases():
     sub = MODELS["OPA4196"]["subckt"]
     out = []
     for cap_key, cap in IND_CAPS.items():
         for bias_key, current in IND_BIAS.items():
-            def frag(t, cap=cap, current=current):
+            def frag(t, mode, cap=cap, current=current):
                 lines, nodes = indicator(t, sub, f"DC {current * R_SENSE:.6g}", cap)
-                # Loop broken at IN-: injection between SENSE (low impedance) and IN- (high impedance).
-                lines += [f"Vinj{t} inm{t} {nodes['sense']} DC 0 AC 1",
-                          f"X{t} {nodes['mon']} inm{t} vp vn {nodes['drive']} {sub}"]
-                nodes["inm"] = f"inm{t}"
+                inj, vecs = loop_break(t, f"inm{t}", nodes["sense"], mode)
+                lines += inj + [f"X{t} {nodes['mon']} inm{t} vp vn {nodes['drive']} {sub}"]
                 # The DC solve fails at 1 mA without a starting point; nodeset only seeds it.
                 vs, vb, vl = current * R_SENSE, forward("DBAS", current), forward("DLED", current)
                 lines.append(f".nodeset v({nodes['drive']})={vs + 2 * vb + vl:.4f} v(a{t})={vs + vb + vl:.4f} "
                              f"v(k{t})={vs - vb:.4f} v(km{t})={vs - vb:.4f} v(inm{t})={vs:.4f} v({nodes['sense']})={vs:.4f}")
-                return lines, nodes
+                return lines, vecs
             out.append({"model": "OPA4196", "case": "case5a", "cell": "magnitude_indicator",
-                        "variant": f"{cap_key}/{bias_key}", "kind": "loop", "analysis": "ac dec 100 10 1g", "frag": frag})
+                        "variant": f"{cap_key}/{bias_key}", "kind": "loop", "analysis": "ac dec 100 10 1g",
+                        "frag": frag, "cap": cap_key, "bias": bias_key})
+    for model, m in MODELS.items():
+        def frag(t, mode, sub=m["subckt"]):
+            # Control: a plain unity follower (IN+ at 0 V, no load) broken the same way, to show the
+            # vendor core's own phase lag apart from the bridge.
+            inj, vecs = loop_break(t, f"inm{t}", f"o{t}", mode)
+            return [f"X{t} 0 inm{t} vp vn o{t} {sub}"] + inj, vecs
+        out.append({"model": model, "case": "case5a_control", "cell": "plain_follower", "variant": "no_load",
+                    "kind": "loop", "analysis": "ac dec 100 10 1g", "frag": frag})
     for kind in ("sine", "step"):
         for amp_key, a in IND_AMPS.items():
             wave = f"SIN(0 {a:g} 20k)" if kind == "sine" else f"PULSE({-a:g} {a:g} 0 100n 100n 100u 200u)"
@@ -313,6 +346,19 @@ def settle_time(w, edge, end, final, band):
     return last - edge
 
 
+def hf_residual(f, start, end, *, dt=20e-9, half=25):
+    """Peak-to-peak of f minus its centred moving average (2*half+1 points at dt, 1 us by default).
+
+    A smooth error signal leaves almost nothing; a sustained oscillation above about 1 MHz stays."""
+    n = int(round((end - start) / dt))
+    grid = [f(start + k * dt) for k in range(n + 1)]
+    prefix = [0.0]
+    for v in grid:
+        prefix.append(prefix[-1] + v)
+    res = [grid[k] - (prefix[k + half + 1] - prefix[k - half]) / (2 * half + 1) for k in range(half, n - half)]
+    return max(res) - min(res)
+
+
 def step_metrics(w, ref=None, *, period=1e-3, half=500e-6, rise=1e-3, tail=100e-6):
     """Second cycle of the +/-5 V pulse: rise at 1 ms, fall at 1.501 ms."""
     fall = rise + half + 1e-6
@@ -338,7 +384,7 @@ def step_metrics(w, ref=None, *, period=1e-3, half=500e-6, rise=1e-3, tail=100e-
     s = [x for x in (m["settle_1mV_rise_us"], m["settle_1mV_fall_us"])]
     m["diag_overshoot_le_10pct"] = "PASS" if over <= 10 else "FAIL"
     m["diag_settle_1mV_within_half_period"] = "PASS" if None not in s else "FAIL"
-    m["sustained_oscillation"] = ripple > 1e-3
+    m["sustained_oscillation"] = ripple > OSC_LIMIT
     return m
 
 
@@ -346,11 +392,12 @@ def quiet_metrics(w):
     t0 = 100e-6
     _, y = w.window(t0, w.t[-1])
     return {"dc_output_mV": r(sum(y) / len(y) * 1e3, 4), "pp_after_100us_mV": r((max(y) - min(y)) * 1e3, 4),
-            "sustained_oscillation": (max(y) - min(y)) > 1e-3}
+            "sustained_oscillation": (max(y) - min(y)) > OSC_LIMIT}
 
 
-def sine_metrics(w, ref):
+def sine_metrics(w, ref, sense):
     a, b = 150e-6, 200e-6
+    resid = hf_residual(lambda x: w.at(x) - sense.at(x), a, b)
     _, yo = w.window(a, b)
     _, yr = ref.window(a, b)
     tt, _ = w.window(a, b)
@@ -358,18 +405,32 @@ def sine_metrics(w, ref):
     amp_o, amp_r = (max(yo) - min(yo)) / 2, (max(yr) - min(yr)) / 2
     return {"output_peak_V": r(max(yo), 5), "output_trough_V": r(min(yo), 5),
             "gain_vs_protected": r(amp_o / amp_r, 6), "max_tracking_error_vs_protected_mV": r(err * 1e3, 4),
+            "follower_error_hf_residual_pp_mV": r(resid * 1e3, 4),
+            "sustained_oscillation": resid > OSC_LIMIT,
             "note": "10 V peak exceeds the TMUX7412F usable signal range above +9 V; the fixed 15 ohm R_ON (ASSUMED) does not model that compression"}
 
 
-def over_metrics(w, sense):
+def over_metrics(w, sense, volts):
+    """PWL 0 -> +V (11-211 us) -> 0 -> -V (512-712 us) -> 0. Phase reversal: in the positive hold the
+    output falls more than 0.5 V below SENSE (in the negative hold, rises above it), per the revised brief."""
     pos_on, pos_off, neg_on, neg_off = 11e-6, 212e-6, 512e-6, 713e-6
-    _, yp = w.window(pos_on + 20e-6, pos_off - 1e-6)
-    _, yn = w.window(neg_on + 20e-6, neg_off - 1e-6)
+    tp, yp = w.window(pos_on + 20e-6, pos_off - 1e-6)
+    tn, yn = w.window(neg_on + 20e-6, neg_off - 1e-6)
+    gap_p = min(y - sense.at(x) for x, y in zip(tp, yp))
+    gap_n = max(y - sense.at(x) for x, y in zip(tn, yn))
     final_p, final_n = w.mean(500e-6, 510e-6), w.mean(1.09e-3, 1.1e-3)
-    out = {"output_min_during_plus12_V": r(min(yp), 5), "output_max_during_minus12_V": r(max(yn), 5),
+    holds = ((pos_off - 51e-6, pos_off - 1e-6), (neg_on - 51e-6, neg_on - 1e-6),
+             (neg_off - 51e-6, neg_off - 1e-6), (1.1e-3 - 51e-6, 1.1e-3 - 1e-6))
+    ripple = max(w.pp(a, b) for a, b in holds)
+    out = {"jack_overdrive_V": volts,
+           "output_min_during_plus_hold_V": r(min(yp), 5), "output_max_during_minus_hold_V": r(max(yn), 5),
            "sense_max_V": r(max(sense.y), 5), "sense_min_V": r(min(sense.y), 5),
-           "phase_reversal": min(yp) <= 0 or max(yn) >= 0}
-    for label, edge, end, final in (("from_plus12", pos_off, neg_on - 1e-6, final_p), ("from_minus12", neg_off, 1.1e-3 - 1e-6, final_n)):
+           "clamp_conducts": max(sense.y) > 12.0 or min(sense.y) < -12.0,
+           "min_output_minus_sense_plus_hold_V": r(gap_p, 4), "max_output_minus_sense_minus_hold_V": r(gap_n, 4),
+           "phase_reversal": gap_p < -0.5 or gap_n > 0.5,
+           "hold_ripple_pp_mV": r(ripple * 1e3, 4), "sustained_oscillation": ripple > OSC_LIMIT}
+    for label, edge, end, final in (("from_plus", pos_off, neg_on - 1e-6, final_p),
+                                    ("from_minus", neg_off, 1.1e-3 - 1e-6, final_n)):
         for band, name in ((1e-3, "1mV"), (10e-3, "10mV")):
             s = settle_time(w, edge, end, final, band)
             out[f"recovery_{name}_{label}_us"] = r(s * 1e6, 4) if s is not None else None
@@ -401,9 +462,10 @@ def ind_sine_metrics(drive, sense, led, amp):
     td, yd = drive.window(a, b)
     samples = [r(led.at(150e-6 + k * period / 40) * 1e6, 4) for k in range(40)]
     # Sustained oscillation would persist through conduction after the handover ring has decayed.
-    # Handover ends at the last time, within 21 us of a MONITOR zero crossing, that SENSE is more than
-    # 10 % of the amplitude away from MONITOR; the residual is SENSE minus its 2 us centred moving
-    # average from 1 us after that until 22 us after the crossing (at least 4 us, else not conducting).
+    # Handover ends at the last time, within 22 us of a MONITOR zero crossing, that SENSE is more than
+    # 10 % of the amplitude away from MONITOR. From 1 us after that to 22 us after the crossing (at
+    # least 4 us, else the bridge is not conducting and the row is NOT EVALUATED), the follower error
+    # SENSE - MONITOR minus its 1 us moving average is tested against the absolute 1 mV limit.
     mon = lambda x: amp * math.sin(2 * math.pi * 20e3 * x)  # noqa: E731
     residual, handovers = None, []
     for z in (100e-6, 125e-6, 150e-6, 175e-6):
@@ -412,15 +474,10 @@ def ind_sine_metrics(drive, sense, led, amp):
         end = (off[-1] - z) if off else 0.0
         handovers.append(end)
         start = z + end + 1e-6
-        n = int(round((z + 22e-6 - start) / 20e-9))
-        if n < 200:
+        if z + 22e-6 - start < 4e-6:
             continue
-        grid = [sense.at(start + k * 20e-9) for k in range(n + 1)]
-        prefix = [0.0]
-        for v in grid:
-            prefix.append(prefix[-1] + v)
-        res = [grid[k] - (prefix[k + 51] - prefix[k - 50]) / 101 for k in range(50, n - 50)]
-        residual = max(residual or 0.0, max(res) - min(res))
+        res = hf_residual(lambda x: sense.at(x) - mon(x), start, z + 22e-6)
+        residual = max(residual or 0.0, res)
     return {"led_peak_uA": r(max(i) * 1e6, 4), "ideal_peak_uA": r(ideal_pk * 1e6, 4),
             "led_mean_over_ideal_mean": r(mean_i / mean_ideal, 4),
             "fraction_of_period_below_5pct_of_ideal_peak": r(dead, 4),
@@ -429,8 +486,8 @@ def ind_sine_metrics(drive, sense, led, amp):
             "drive_swing_V": [r(min(yd), 4), r(max(yd), 4)],
             "led_current_uA_one_period_40pts": samples,
             "handover_end_after_zero_crossing_us": [r(x * 1e6, 4) for x in handovers],
-            "sense_hf_residual_pp_mV": r(residual * 1e3, 4) if residual is not None else "NOT CONDUCTING (handover lasts the whole window)",
-            "sustained_oscillation": residual is not None and residual > max(1e-3, 0.01 * amp)}
+            "sense_error_hf_residual_pp_mV": r(residual * 1e3, 4) if residual is not None else "NOT CONDUCTING (handover lasts the whole window)",
+            "sustained_oscillation": NOT_EVALUATED if residual is None else residual > OSC_LIMIT}
 
 
 def ind_step_metrics(drive, sense, led, amp):
@@ -455,19 +512,20 @@ def ind_step_metrics(drive, sense, led, amp):
                       "late_sense_pp_mV": r(sense.pp(end - 10e-6, end) * 1e3, 4),
                       "late_drive_pp_mV": r(drive.pp(end - 10e-6, end) * 1e3, 4),
                       "drive_extrema_after_edge": r(extrema_per_period(td, yd, end - edge), 3)}
-    out["sustained_oscillation"] = any(out[k]["late_sense_pp_mV"] > max(1.0, 0.01 * amp * 1e3) for k in ("to_plus", "to_minus"))
+    out["sustained_oscillation"] = any(out[k]["late_sense_pp_mV"] > OSC_LIMIT * 1e3 for k in ("to_plus", "to_minus"))
     return out
 
 
-def loop_metrics(cols, nodes):
-    f = cols["frequency"]
-    s = [complex(a, b) for a, b in zip(cols[f"v({nodes['sense']})"], cols[f"v({nodes['sense']})#imag"])] if f"v({nodes['sense']})#imag" in cols else None
-    if s is None:
-        raise RuntimeError("complex AC columns missing")
-    m = [complex(a, b) for a, b in zip(cols[f"v({nodes['inm']})"], cols[f"v({nodes['inm']})#imag"])]
-    loop = [-x / y for x, y in zip(s, m)]
+def middlebrook(tv, ti):
+    """Middlebrook double injection: T = (Tv*Ti - 1) / (Tv + Ti + 2), with Tv from the voltage run and
+    Ti from the current run at the same break; Zs/Zl = (Tv - T) / (1 + T)."""
+    t = (tv * ti - 1) / (tv + ti + 2)
+    return t, (tv - t) / (1 + t)
+
+
+def unwrap_deg(values):
     phase, prev = [], None
-    for x in loop:
+    for x in values:
         p = math.degrees(cmath.phase(x))
         if prev is not None:
             while p - prev > 180:
@@ -476,25 +534,45 @@ def loop_metrics(cols, nodes):
                 p += 360
         phase.append(p)
         prev = p
-    mag = [abs(x) for x in loop]
-    cross = None
+    return phase
+
+
+def loop_metrics(freq, loop):
+    """Unity crossover (log-interpolated) and phase margin 180 + phase(T) of a complex loop gain T."""
+    phase, mag = unwrap_deg(loop), [abs(x) for x in loop]
     for k in range(1, len(mag)):
         if mag[k - 1] >= 1 > mag[k]:
             fr = math.log(mag[k - 1]) / (math.log(mag[k - 1]) - math.log(mag[k]))
-            cross = (f[k - 1] * (f[k] / f[k - 1]) ** fr, phase[k - 1] + (phase[k] - phase[k - 1]) * fr)
-            break
-    if cross is None:
-        return {"crossover_Hz": None, "phase_margin_deg": None, "dc_loop_gain_dB": r(20 * math.log10(mag[0]), 4)}
-    return {"crossover_Hz": r(cross[0], 4), "phase_margin_deg": r(180 + cross[1], 4),
-            "dc_loop_gain_dB": r(20 * math.log10(mag[0]), 4)}
+            return {"crossover_Hz": freq[k - 1] * (freq[k] / freq[k - 1]) ** fr,
+                    "phase_margin_deg": 180 + phase[k - 1] + (phase[k] - phase[k - 1]) * fr,
+                    "dc_loop_gain_dB": 20 * math.log10(mag[0]), "index": k}
+    return {"crossover_Hz": None, "phase_margin_deg": None, "dc_loop_gain_dB": 20 * math.log10(mag[0]), "index": None}
 
 
-# ----------------------------------------------------------------------------------------------
+def complex_col(cols, name):
+    return [complex(a, b) for a, b in zip(cols[name], cols[name + "#imag"])]
+
+
+def loop_rows(cv, vv, ci, vi):
+    """Combine the voltage-injection run (vectors [v(y), v(x)]) and the current-injection run
+    (vectors [i(n->y), i(n->x)]) into voltage-only and Middlebrook double-injection results."""
+    if cv["frequency"] != ci["frequency"]:
+        raise RuntimeError("loop runs use different frequency grids")
+    f = cv["frequency"]
+    vy, vx = complex_col(cv, vv[0]), complex_col(cv, vv[1])
+    iy, ix = complex_col(ci, vi[0]), complex_col(ci, vi[1])
+    tv = [-a / b for a, b in zip(vy, vx)]
+    ti = [a / b for a, b in zip(iy, ix)]  # Ti = I(n->y) / I(n->x): source-side over load-side current
+    pairs = [middlebrook(a, b) for a, b in zip(tv, ti)]
+    full = loop_metrics(f, [p[0] for p in pairs])
+    volt = loop_metrics(f, tv)
+    zr = abs(pairs[full["index"]][1]) if full["index"] is not None else None
+    clean = lambda m: {k: r(v, 4) for k, v in m.items() if k != "index"}  # noqa: E731
+    return {**clean(full), "zs_over_zl_at_crossover": r(zr, 4), "voltage_injection_only": clean(volt),
+            "sustained_oscillation": NOT_EVALUATED}
 
 
 def vectors(nodes, kind):
-    if kind == "loop":
-        return [f"v({nodes['sense']})", f"v({nodes['inm']})"]
     vecs = [f"v({nodes[k]})" for k in ("out", "protected", "sense", "drive", "jack") if nodes.get(k)]
     if nodes.get("led_i"):
         vecs.append(nodes["led_i"])
@@ -503,8 +581,6 @@ def vectors(nodes, kind):
 
 def evaluate(c, cols, nodes):
     kind = c["kind"]
-    if kind == "loop":
-        return loop_metrics(cols, nodes)
     t = cols["time"]
 
     def w(node):
@@ -514,11 +590,13 @@ def evaluate(c, cols, nodes):
     if kind == "quiet":
         return quiet_metrics(w("out"))
     if kind == "sine":
-        return sine_metrics(w("out"), w("protected"))
+        return sine_metrics(w("out"), w("protected"), w("sense"))
     if kind == "over":
-        return over_metrics(w("out"), w("sense"))
+        return over_metrics(w("out"), w("sense"), c["volts"])
     if kind == "output":
-        return {"jack": step_metrics(w("jack")), "drive": step_metrics(w("drive"))}
+        jack, drive = step_metrics(w("jack")), step_metrics(w("drive"))
+        return {"jack": jack, "drive": drive,
+                "sustained_oscillation": jack["sustained_oscillation"] or drive["sustained_oscillation"]}
     led = Wave(t, cols[nodes["led_i"]])
     fn = ind_sine_metrics if kind == "ind_sine" else ind_step_metrics
     return fn(w("drive"), w("sense"), led, c["amp"])
@@ -533,9 +611,23 @@ def run_all():
     results = []
     try:
         for c in all_cases():
-            lines, nodes = c["frag"]("1")
             title = f"MC04-S4 {c['model']} {c['case']} {c['cell']} {c['variant']}"
             name = "-".join((c["model"], c["case"], c["cell"], c["variant"])).replace("/", "_").replace("+", "p")
+            if c["kind"] == "loop":
+                runs, shas = {}, {}
+                for mode in ("v", "i"):
+                    lines, vecs = c["frag"]("1", mode)
+                    shas[mode], cols = oracle(f"{name}-{mode}", header(f"{title} {mode}-injection", c["model"]) + lines,
+                                              c["analysis"], vecs)
+                    runs[mode] = (cols, vecs)
+                metrics = loop_rows(runs["v"][0], runs["v"][1], runs["i"][0], runs["i"][1])
+                if c["case"] == "case5a":
+                    metrics["paper_screen"] = paper_point(c["cap"], c["bias"], metrics["phase_margin_deg"])
+                results.append({"model": c["model"], "case": c["case"], "cell": c["cell"], "variant": c["variant"],
+                                "integration": "ac (small signal)", "deck_sha256": shas, "metrics": metrics})
+                print(f"{title}: done", flush=True)
+                continue
+            lines, nodes = c["frag"]("1")
             deck = header(title, c["model"]) + lines
             method = "trap (ngspice default)"
             try:
@@ -575,12 +667,95 @@ def diff(a, b):
     return None
 
 
-def report(results):
+def validate_loop_break():
+    """Run the same break on a linear two-pole loop whose true T is known in closed form, for three
+    load impedances (Zs/Zl = 0.67, 67 and ~0), and report Middlebrook vs voltage-only vs analytic."""
+    rows = []
+    for rl in (1e3, 10.0, 1e9):
+        base = ["MC04-S4 loop-break validation, linear two-pole loop", "E1 o1 0 0 x 1000", "Rp o1 o2 1k",
+                "Cp o2 0 1.5915n", "E2 o3 0 o2 0 1", "Rq o3 o4 1k", "Cq o4 0 159.15p", "E3 o5 0 o4 0 1",
+                "Ro o5 y 1k", "Rg y 0 2k", f"Rl x 0 {rl:g}"]
+        runs = {}
+        for mode in ("v", "i"):
+            inj, vecs = loop_break("1", "x", "y", mode)
+            _, cols = oracle(f"loop-validation-{mode}", base + inj, "ac dec 100 10 100meg", vecs)
+            runs[mode] = (cols, vecs)
+        got = loop_rows(runs["v"][0], runs["v"][1], runs["i"][0], runs["i"][1])
+        f = runs["v"][0]["frequency"]
+        z = 2e3 * rl / (2e3 + rl)
+        true = loop_metrics(f, [1000 * z / (1e3 + z) / ((1 + 1j * x / 1e5) * (1 + 1j * x / 1e6)) for x in f])
+        rows.append({"R_load_ohm": rl, "expected_zs_over_zl": r(z and (1e3 * 2e3 / 3e3) / rl, 4),
+                     "middlebrook": {k: got[k] for k in ("crossover_Hz", "phase_margin_deg", "zs_over_zl_at_crossover")},
+                     "voltage_injection_only": got["voltage_injection_only"],
+                     "analytic": {"crossover_Hz": r(true["crossover_Hz"], 4), "phase_margin_deg": r(true["phase_margin_deg"], 4)}})
+    return rows
+
+
+def paper_points():
+    """Per-point phase margins of the stage 1b paper screen for U8417 unit 3 (sha256-pinned)."""
+    data = PAPER_RESULT.read_bytes()
+    if digest(data) != PAPER_SHA256:
+        raise RuntimeError("stage 1b paper-screen result changed; review before updating the pin")
+    paper = json.loads(data)
+    unit = next(u for u in paper["cases"]["default_one_hop"]["units"] if u["ic"] == "U8417" and u["unit"] == 3)
+    levels = {lv["bridge_current_A"]: lv for lv in unit["levels"]}
+    worst = {row["cable_C_multiple"]: row["worst_pm_deg"] for row in paper["sensitivity_R_SENSE_5600_OPA4196"]["rows"]
+             if row["diode_ideality"] == 2.0}
+    return paper["cable_C_pF"], levels, worst
+
+
+def paper_point(cap_key, bias_key, pm):
+    cable, levels, worst = paper_points()
+    lv = levels[IND_BIAS[bias_key]]
+    if cap_key == "0":
+        ref, basis = lv["baseline"]["phase_margin_deg"], "paper no-cable point at this current"
+    elif cap_key == "7.2p":
+        ref, basis = lv["moved"]["phase_margin_deg"], f"paper {cable} pF point at this current"
+    else:
+        mult = {"15p": 2, "30p": 4}[cap_key]
+        ref, basis = worst[mult], f"paper worst over currents at {round(mult * cable, 1)} pF (no per-point value published)"
+    return {"paper_pm_deg": ref, "basis": basis, "run_minus_paper_deg": r(pm - ref, 4) if pm is not None else None}
+
+
+def oscillation_summary(results):
+    flags = [x["metrics"].get("sustained_oscillation") for x in results]
+    evaluated = [f for f in flags if isinstance(f, bool)]
+    n = len(evaluated)
+    return {"evaluated_rows": n, "flagged": sum(evaluated),
+            "not_evaluated_rows": sum(1 for f in flags if f == NOT_EVALUATED),
+            "statement": (f"no sustained oscillation in the {n} evaluated rows" if not any(evaluated)
+                          else f"sustained oscillation flagged in {sum(evaluated)} of {n} evaluated rows"),
+            "limit": "absolute 1 mV: late-window peak-to-peak for steps and holds, residual after a 1 us moving average for sines",
+            "not_evaluated": "AC loop rows (small-signal, no transient) and 10 mV indicator sines where the bridge never leaves its dead band"}
+
+
+def settle_comparison(results):
+    """Where OPA4197 settles slower than OPA4196, by how much (1 mV settle, rise and fall)."""
+    idx = {(x["case"], x["cell"], x["variant"], x["model"]): x["metrics"] for x in results}
+    slower, worst = [], 0.0
+    for (case, cell, variant, model), m6 in idx.items():
+        if model != "OPA4196" or (case, cell, variant, "OPA4197") not in idx:
+            continue
+        m7 = idx[(case, cell, variant, "OPA4197")]
+        for where in ("jack", "drive", None):
+            a, b = (m6.get(where), m7.get(where)) if where else (m6, m7)
+            if not isinstance(a, dict):
+                continue
+            for k in ("settle_1mV_rise_us", "settle_1mV_fall_us"):
+                if isinstance(a.get(k), (int, float)) and isinstance(b.get(k), (int, float)) and b[k] > a[k]:
+                    d = b[k] - a[k]
+                    worst = max(worst, d)
+                    slower.append({"case": case, "cell": cell, "variant": variant, "node": where or "out",
+                                   "metric": k, "OPA4196_us": a[k], "OPA4197_us": b[k], "slower_by_us": r(d, 4)})
+    return {"OPA4197_slower_rows": slower, "max_slower_by_us": r(worst, 4)}
+
+
+def report(results, validation):
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "status": "MODEL EVIDENCE ONLY - NO ACCEPTANCE SET; NOT HARDWARE QUALIFICATION",
-        "brief": BRIEF,
-        "task": "osc-stack-20261114 / MC04-S4-INPUT-BUFFER-SPICE / 20261121-1",
+        "brief": BRIEF, "brief_revision": "Revision 1 after independent review (2026-11-21)",
+        "task": "osc-stack-20261114 / MC04-S4-INPUT-BUFFER-SPICE / 20261121-2",
         "instances": INSTANCES, "cell_users": CELL_USERS,
         "models": {
             "OPA4196": {"model": "TI OPAx196 Final 1.5 (29AUG2022), generic core for the OPAx196 family",
@@ -591,40 +766,47 @@ def report(results):
         },
         "oracle": "pinned KiCad 10 image via scripts/kicad/run.sh, ngspice -b, set ngbehavior=ps",
         "assumed": {
-            "switch": f"TMUX7412F modelled as its {R_ON} ohm R_ON bound (fact-fault-switch-t-ron-12v-single), a fixed resistor; no switch capacitance, no R_ON rise within 3 V of VDD, no overvoltage turn-off",
+            "switch": f"TMUX7412F modelled as its {R_ON} ohm R_ON bound (fact-fault-switch-t-ron-12v-single), a fixed resistor; no switch capacitance, no R_ON rise within 3 V of VDD, no overvoltage turn-off (the real switch would open at +/-15 V, so case 4 at 15 V bounds clamp stress, it is not the real fault path)",
             "diodes": {name: {"stands_for": who, "spice": params} for name, (who, params) in DIODES.items()},
+            "step_edges": "case 1-3 steps have 1 us rise and fall (PULSE tr = tf = 1 us); overshoot and settling hold for that edge, not a faster one. Case 5b steps use 100 ns edges",
             "board_run_capacitance": "case 2 adds 10/30/50 pF to SENSE or BUFFER (50 pF bounds a long run)",
+            "harness_load": "the off-board GH harness load on *_BUFFER (cable capacitance and the far-board input) is NOT bounded by case 2 and is not modelled",
             "unpatched": "read as no source on the jack (100 kOhm R_PD only); quiescent output and oscillation check",
             "package": "Neither TI model has package parasitics; SOIC-14 vs TSSOP-14 is not distinguished by any case",
         },
-        "diagnostic_targets": "overshoot <= 10 % and settle within 1 mV (sweep_precision.py) are diagnostic labels only, not acceptance",
+        "diagnostic_targets": "overshoot <= 10 % and settle within 1 mV (sweep_precision.py) are diagnostic labels only, not acceptance; the 45 degree phase-margin criterion is ASSUMED (stage 1b)",
         "conditions": {
             "rails": "+/-12 V ideal", "temperature_C": 27,
-            "case1": "PULSE -5..+5 V, 1 ms period, second cycle measured; 10 V-peak 20 kHz sine; source 1 kOhm or unpatched",
+            "case1": "PULSE -5..+5 V, 1 us edges, 1 ms period, second cycle measured; 10 V-peak 20 kHz sine; source 1 kOhm or unpatched",
             "case2": "case-1 step, patched, with 10/30/50 pF on SENSE or on BUFFER",
-            "case3": "follower driven by an ideal +/-5 V step, 499+499 ohm to jack; open/100k/10k loads; 0/100p/1n cable; metrics at jack and DRIVE",
-            "case4": "jack PWL 0 -> +12 V (200 us) -> 0 -> -12 V (200 us) -> 0, source 1 kOhm",
-            "case5a": "OPA4196 only; loop broken at IN- by AC voltage injection between SENSE and IN- (Middlebrook voltage loop); T = -V(SENSE)/V(IN-); DC bias MONITOR = I x 5.6 kOhm",
-            "case5b": "OPA4196 only; 20 kHz sines and +/-A steps (100 us halves), A = 10 mV/100 mV/1 V/5 V; 0/7.2/15/30 pF on each of LED_A and LED_K",
+            "case3": "follower driven by an ideal +/-5 V step (1 us edges), 499+499 ohm to jack; open/100k/10k loads; 0/100p/1n cable; metrics at jack and DRIVE",
+            "case4": "jack PWL 0 -> +V (200 us) -> 0 -> -V (200 us) -> 0 for V = 12 and 15, source 1 kOhm; phase reversal = output more than 0.5 V beyond SENSE against the drive direction",
+            "case5a": "OPA4196 only; loop broken between SENSE (source side) and IN- (load side); Middlebrook double injection (voltage run and current run, T = (Tv Ti - 1)/(Tv + Ti + 2)) with Zs/Zl at crossover, plus the voltage-only result; DC bias MONITOR = I x 5.6 kOhm; margins are per bias point, and the worst is the worst of four bias points",
+            "case5a_control": "plain unity follower (IN+ 0 V, no load) of each model, broken the same way",
+            "case5b": "OPA4196 only; 20 kHz sines and +/-A steps (100 ns edges, 100 us halves), A = 10 mV/100 mV/1 V/5 V; 0/7.2/15/30 pF on each of LED_A and LED_K",
         },
-        "paper_screen_case5a": PAPER,
+        "paper_screen": {"path": PAPER_RESULT.relative_to(ROOT).as_posix(), "sha256": PAPER_SHA256,
+                         "note": "the paper evaluated 7.22 pF and 2x/4x (14.4 / 28.9 pF); this run uses 7.2 / 15 / 30 pF, so the 30 pF rows compare against 28.9 pF"},
+        "loop_break_validation": validation,
+        "oscillation": oscillation_summary(results),
+        "settling_OPA4197_vs_OPA4196": settle_comparison(results),
         "results": results,
         "deltas": deltas(results),
-        "model_limit": "TI macro-models predict modeled behavior only; package parasitics, layout, tolerance, temperature, the real switch and diodes, and bench stability remain NOT RUN.",
+        "model_limit": "TI macro-models predict modeled behavior only; package parasitics, layout, tolerance, temperature, the real switch and diodes, the off-board harness, and bench stability remain NOT RUN.",
     }
 
 
 def run(*, check: bool = False, offline: bool = False) -> None:
     models(offline=offline)
     results = run_all()
-    body = json.dumps(report(results), indent=2) + "\n"
+    validation = validate_loop_break()
+    body = json.dumps(report(results, validation), indent=2) + "\n"
     if check:
         if not OUT.exists() or OUT.read_text() != body:
             raise RuntimeError("input-buffer vendor report drift")
     else:
         OUT.write_text(body)
-    osc = [x for x in results if x["metrics"].get("sustained_oscillation")]
-    print(f"Input-buffer TI-model run: {len(results)} rows; {len(osc)} with sustained oscillation flagged")
+    print(f"Input-buffer TI-model run: {len(results)} rows; {oscillation_summary(results)['statement']}")
 
 
 if __name__ == "__main__":

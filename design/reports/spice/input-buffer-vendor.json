@@ -1,8 +1,9 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "status": "MODEL EVIDENCE ONLY - NO ACCEPTANCE SET; NOT HARDWARE QUALIFICATION",
   "brief": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s4-input-buffer-native-brief-20261121.md",
-  "task": "osc-stack-20261114 / MC04-S4-INPUT-BUFFER-SPICE / 20261121-1",
+  "brief_revision": "Revision 1 after independent review (2026-11-21)",
+  "task": "osc-stack-20261114 / MC04-S4-INPUT-BUFFER-SPICE / 20261121-2",
   "instances": {
     "U1216": {
       "board": "JL",
@@ -73,7 +74,7 @@
   },
   "oracle": "pinned KiCad 10 image via scripts/kicad/run.sh, ngspice -b, set ngbehavior=ps",
   "assumed": {
-    "switch": "TMUX7412F modelled as its 15 ohm R_ON bound (fact-fault-switch-t-ron-12v-single), a fixed resistor; no switch capacitance, no R_ON rise within 3 V of VDD, no overvoltage turn-off",
+    "switch": "TMUX7412F modelled as its 15 ohm R_ON bound (fact-fault-switch-t-ron-12v-single), a fixed resistor; no switch capacitance, no R_ON rise within 3 V of VDD, no overvoltage turn-off (the real switch would open at +/-15 V, so case 4 at 15 V bounds clamp stress, it is not the real fault path)",
     "diodes": {
       "DSCH": {
         "stands_for": "BAT54S,215 clamp / D_BOOT",
@@ -92,25 +93,167 @@
         "spice": "IS=5.9e-20 N=3 RS=10 CJO=20p VJ=2.5 M=0.3 TT=10n BV=5 IBV=1e-5"
       }
     },
+    "step_edges": "case 1-3 steps have 1 us rise and fall (PULSE tr = tf = 1 us); overshoot and settling hold for that edge, not a faster one. Case 5b steps use 100 ns edges",
     "board_run_capacitance": "case 2 adds 10/30/50 pF to SENSE or BUFFER (50 pF bounds a long run)",
+    "harness_load": "the off-board GH harness load on *_BUFFER (cable capacitance and the far-board input) is NOT bounded by case 2 and is not modelled",
     "unpatched": "read as no source on the jack (100 kOhm R_PD only); quiescent output and oscillation check",
     "package": "Neither TI model has package parasitics; SOIC-14 vs TSSOP-14 is not distinguished by any case"
   },
-  "diagnostic_targets": "overshoot <= 10 % and settle within 1 mV (sweep_precision.py) are diagnostic labels only, not acceptance",
+  "diagnostic_targets": "overshoot <= 10 % and settle within 1 mV (sweep_precision.py) are diagnostic labels only, not acceptance; the 45 degree phase-margin criterion is ASSUMED (stage 1b)",
   "conditions": {
     "rails": "+/-12 V ideal",
     "temperature_C": 27,
-    "case1": "PULSE -5..+5 V, 1 ms period, second cycle measured; 10 V-peak 20 kHz sine; source 1 kOhm or unpatched",
+    "case1": "PULSE -5..+5 V, 1 us edges, 1 ms period, second cycle measured; 10 V-peak 20 kHz sine; source 1 kOhm or unpatched",
     "case2": "case-1 step, patched, with 10/30/50 pF on SENSE or on BUFFER",
-    "case3": "follower driven by an ideal +/-5 V step, 499+499 ohm to jack; open/100k/10k loads; 0/100p/1n cable; metrics at jack and DRIVE",
-    "case4": "jack PWL 0 -> +12 V (200 us) -> 0 -> -12 V (200 us) -> 0, source 1 kOhm",
-    "case5a": "OPA4196 only; loop broken at IN- by AC voltage injection between SENSE and IN- (Middlebrook voltage loop); T = -V(SENSE)/V(IN-); DC bias MONITOR = I x 5.6 kOhm",
-    "case5b": "OPA4196 only; 20 kHz sines and +/-A steps (100 us halves), A = 10 mV/100 mV/1 V/5 V; 0/7.2/15/30 pF on each of LED_A and LED_K"
+    "case3": "follower driven by an ideal +/-5 V step (1 us edges), 499+499 ohm to jack; open/100k/10k loads; 0/100p/1n cable; metrics at jack and DRIVE",
+    "case4": "jack PWL 0 -> +V (200 us) -> 0 -> -V (200 us) -> 0 for V = 12 and 15, source 1 kOhm; phase reversal = output more than 0.5 V beyond SENSE against the drive direction",
+    "case5a": "OPA4196 only; loop broken between SENSE (source side) and IN- (load side); Middlebrook double injection (voltage run and current run, T = (Tv Ti - 1)/(Tv + Ti + 2)) with Zs/Zl at crossover, plus the voltage-only result; DC bias MONITOR = I x 5.6 kOhm; margins are per bias point, and the worst is the worst of four bias points",
+    "case5a_control": "plain unity follower (IN+ 0 V, no load) of each model, broken the same way",
+    "case5b": "OPA4196 only; 20 kHz sines and +/-A steps (100 ns edges, 100 us halves), A = 10 mV/100 mV/1 V/5 V; 0/7.2/15/30 pF on each of LED_A and LED_K"
   },
-  "paper_screen_case5a": {
-    "no_cable_worst_deg": 82,
-    "7.2p_worst_deg": 69,
-    "29p_worst_deg": 40
+  "paper_screen": {
+    "path": "scripts/stack/studies/mc04_s1b_indicator_loops/result.json",
+    "sha256": "5cdac8e9d4e482bd390b6dd6549c2cfe244e1f154cddb46c11ff102b412857fa",
+    "note": "the paper evaluated 7.22 pF and 2x/4x (14.4 / 28.9 pF); this run uses 7.2 / 15 / 30 pF, so the 30 pF rows compare against 28.9 pF"
+  },
+  "loop_break_validation": [
+    {
+      "R_load_ohm": 1000.0,
+      "expected_zs_over_zl": 0.6667,
+      "middlebrook": {
+        "crossover_Hz": 6285000.0,
+        "phase_margin_deg": 9.953,
+        "zs_over_zl_at_crossover": 0.6667
+      },
+      "voltage_injection_only": {
+        "crossover_Hz": 6317000.0,
+        "phase_margin_deg": 16.49,
+        "dc_loop_gain_dB": 56.49
+      },
+      "analytic": {
+        "crossover_Hz": 6285000.0,
+        "phase_margin_deg": 9.953
+      }
+    },
+    {
+      "R_load_ohm": 10.0,
+      "expected_zs_over_zl": 66.67,
+      "middlebrook": {
+        "crossover_Hz": 773000.0,
+        "phase_margin_deg": 59.67,
+        "zs_over_zl_at_crossover": 66.67
+      },
+      "voltage_injection_only": {
+        "crossover_Hz": null,
+        "phase_margin_deg": null,
+        "dc_loop_gain_dB": 57.31
+      },
+      "analytic": {
+        "crossover_Hz": 773000.0,
+        "phase_margin_deg": 59.67
+      }
+    },
+    {
+      "R_load_ohm": 1000000000.0,
+      "expected_zs_over_zl": 6.667e-07,
+      "middlebrook": {
+        "crossover_Hz": 8134000.0,
+        "phase_margin_deg": 7.713,
+        "zs_over_zl_at_crossover": 6.667e-07
+      },
+      "voltage_injection_only": {
+        "crossover_Hz": 8134000.0,
+        "phase_margin_deg": 7.713,
+        "dc_loop_gain_dB": 56.48
+      },
+      "analytic": {
+        "crossover_Hz": 8134000.0,
+        "phase_margin_deg": 7.713
+      }
+    }
+  ],
+  "oscillation": {
+    "evaluated_rows": 90,
+    "flagged": 0,
+    "not_evaluated_rows": 22,
+    "statement": "no sustained oscillation in the 90 evaluated rows",
+    "limit": "absolute 1 mV: late-window peak-to-peak for steps and holds, residual after a 1 us moving average for sines",
+    "not_evaluated": "AC loop rows (small-signal, no transient) and 10 mV indicator sines where the bridge never leaves its dead band"
+  },
+  "settling_OPA4197_vs_OPA4196": {
+    "OPA4197_slower_rows": [
+      {
+        "case": "case2",
+        "cell": "follower_base",
+        "variant": "SENSE+30p",
+        "node": "out",
+        "metric": "settle_1mV_rise_us",
+        "OPA4196_us": 4.77,
+        "OPA4197_us": 4.91,
+        "slower_by_us": 0.14
+      },
+      {
+        "case": "case2",
+        "cell": "follower_base",
+        "variant": "SENSE+30p",
+        "node": "out",
+        "metric": "settle_1mV_fall_us",
+        "OPA4196_us": 4.761,
+        "OPA4197_us": 4.91,
+        "slower_by_us": 0.149
+      },
+      {
+        "case": "case2",
+        "cell": "follower_base",
+        "variant": "SENSE+50p",
+        "node": "out",
+        "metric": "settle_1mV_rise_us",
+        "OPA4196_us": 6.87,
+        "OPA4197_us": 6.91,
+        "slower_by_us": 0.04
+      },
+      {
+        "case": "case2",
+        "cell": "follower_base",
+        "variant": "SENSE+50p",
+        "node": "out",
+        "metric": "settle_1mV_fall_us",
+        "OPA4196_us": 6.869,
+        "OPA4197_us": 6.91,
+        "slower_by_us": 0.041
+      },
+      {
+        "case": "case3",
+        "cell": "general_output",
+        "variant": "open/1n",
+        "node": "jack",
+        "metric": "settle_1mV_rise_us",
+        "OPA4196_us": 9.286,
+        "OPA4197_us": 9.69,
+        "slower_by_us": 0.404
+      },
+      {
+        "case": "case3",
+        "cell": "general_output",
+        "variant": "100k/1n",
+        "node": "jack",
+        "metric": "settle_1mV_rise_us",
+        "OPA4196_us": 9.186,
+        "OPA4197_us": 9.586,
+        "slower_by_us": 0.4
+      },
+      {
+        "case": "case3",
+        "cell": "general_output",
+        "variant": "10k/1n",
+        "node": "jack",
+        "metric": "settle_1mV_rise_us",
+        "OPA4196_us": 8.431,
+        "OPA4197_us": 8.785,
+        "slower_by_us": 0.354
+      }
+    ],
+    "max_slower_by_us": 0.404
   },
   "results": [
     {
@@ -159,6 +302,8 @@
         "output_trough_V": -9.9,
         "gain_vs_protected": 1.00008,
         "max_tracking_error_vs_protected_mV": 179.4,
+        "follower_error_hf_residual_pp_mV": 0.03161,
+        "sustained_oscillation": false,
         "note": "10 V peak exceeds the TMUX7412F usable signal range above +9 V; the fixed 15 ohm R_ON (ASSUMED) does not model that compression"
       }
     },
@@ -296,15 +441,46 @@
       "integration": "trap (ngspice default)",
       "deck_sha256": "56e2dc88c22ba33aa5a1b60c15dd37527ff6acef76833ccc280e17ee34df8e1d",
       "metrics": {
-        "output_min_during_plus12_V": 11.879,
-        "output_max_during_minus12_V": -11.879,
+        "jack_overdrive_V": 12,
+        "output_min_during_plus_hold_V": 11.879,
+        "output_max_during_minus_hold_V": -11.879,
         "sense_max_V": 11.896,
         "sense_min_V": -11.973,
+        "clamp_conducts": false,
+        "min_output_minus_sense_plus_hold_V": 2.13e-05,
+        "max_output_minus_sense_minus_hold_V": 2.12e-05,
         "phase_reversal": false,
-        "recovery_1mV_from_plus12_us": 2.337,
-        "recovery_10mV_from_plus12_us": 1.561,
-        "recovery_1mV_from_minus12_us": 2.464,
-        "recovery_10mV_from_minus12_us": 1.564
+        "hold_ripple_pp_mV": 1e-10,
+        "sustained_oscillation": false,
+        "recovery_1mV_from_plus_us": 2.337,
+        "recovery_10mV_from_plus_us": 1.561,
+        "recovery_1mV_from_minus_us": 2.464,
+        "recovery_10mV_from_minus_us": 1.564
+      }
+    },
+    {
+      "model": "OPA4196",
+      "case": "case4",
+      "cell": "follower_base",
+      "variant": "overdrive_15V",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "4f166075fd6e88412c69b932dea39976729e21684c003615bf22ca83eb83ec23",
+      "metrics": {
+        "jack_overdrive_V": 15,
+        "output_min_during_plus_hold_V": 11.982,
+        "output_max_during_minus_hold_V": -11.974,
+        "sense_max_V": 12.193,
+        "sense_min_V": -12.192,
+        "clamp_conducts": true,
+        "min_output_minus_sense_plus_hold_V": -0.2093,
+        "max_output_minus_sense_minus_hold_V": 0.217,
+        "phase_reversal": false,
+        "hold_ripple_pp_mV": 0.0004,
+        "sustained_oscillation": false,
+        "recovery_1mV_from_plus_us": 3.538,
+        "recovery_10mV_from_plus_us": 2.681,
+        "recovery_1mV_from_minus_us": 2.094,
+        "recovery_10mV_from_minus_us": 1.695
       }
     },
     {
@@ -353,6 +529,8 @@
         "output_trough_V": -9.9022,
         "gain_vs_protected": 1.00028,
         "max_tracking_error_vs_protected_mV": 125.6,
+        "follower_error_hf_residual_pp_mV": 0.03161,
+        "sustained_oscillation": false,
         "note": "10 V peak exceeds the TMUX7412F usable signal range above +9 V; the fixed 15 ohm R_ON (ASSUMED) does not model that compression"
       }
     },
@@ -490,15 +668,46 @@
       "integration": "trap (ngspice default)",
       "deck_sha256": "0d8f0bc9ec812c33337857a1cc492c39c9153c41bde40a1427b471f9569dbae1",
       "metrics": {
-        "output_min_during_plus12_V": 11.879,
-        "output_max_during_minus12_V": -11.879,
+        "jack_overdrive_V": 12,
+        "output_min_during_plus_hold_V": 11.879,
+        "output_max_during_minus_hold_V": -11.879,
         "sense_max_V": 11.94,
         "sense_min_V": -11.946,
+        "clamp_conducts": false,
+        "min_output_minus_sense_plus_hold_V": 2.07e-05,
+        "max_output_minus_sense_minus_hold_V": 2.17e-05,
         "phase_reversal": false,
-        "recovery_1mV_from_plus12_us": 3.43,
-        "recovery_10mV_from_plus12_us": 2.57,
-        "recovery_1mV_from_minus12_us": 3.27,
-        "recovery_10mV_from_minus12_us": 2.43
+        "hold_ripple_pp_mV": 0.0002,
+        "sustained_oscillation": false,
+        "recovery_1mV_from_plus_us": 3.43,
+        "recovery_10mV_from_plus_us": 2.57,
+        "recovery_1mV_from_minus_us": 3.27,
+        "recovery_10mV_from_minus_us": 2.43
+      }
+    },
+    {
+      "model": "OPA4196",
+      "case": "case4",
+      "cell": "follower_precision",
+      "variant": "overdrive_15V",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "b247fed56b0524d51ba4abb7cd8975f13786ebf2f93a6a3eef91cb11bbdb6d6e",
+      "metrics": {
+        "jack_overdrive_V": 15,
+        "output_min_during_plus_hold_V": 11.986,
+        "output_max_during_minus_hold_V": -11.979,
+        "sense_max_V": 12.178,
+        "sense_min_V": -12.17,
+        "clamp_conducts": true,
+        "min_output_minus_sense_plus_hold_V": -0.1914,
+        "max_output_minus_sense_minus_hold_V": 0.1915,
+        "phase_reversal": false,
+        "hold_ripple_pp_mV": 1.015e-06,
+        "sustained_oscillation": false,
+        "recovery_1mV_from_plus_us": 5.229,
+        "recovery_10mV_from_plus_us": 4.349,
+        "recovery_1mV_from_minus_us": 4.264,
+        "recovery_10mV_from_minus_us": 3.404
       }
     },
     {
@@ -532,7 +741,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -566,7 +776,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -600,7 +811,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -634,7 +846,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -668,7 +881,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -702,7 +916,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -736,7 +951,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -770,7 +986,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -804,7 +1021,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -853,6 +1071,8 @@
         "output_trough_V": -9.8976,
         "gain_vs_protected": 0.999844,
         "max_tracking_error_vs_protected_mV": 175.5,
+        "follower_error_hf_residual_pp_mV": 0.02611,
+        "sustained_oscillation": false,
         "note": "10 V peak exceeds the TMUX7412F usable signal range above +9 V; the fixed 15 ohm R_ON (ASSUMED) does not model that compression"
       }
     },
@@ -990,15 +1210,46 @@
       "integration": "trap (ngspice default)",
       "deck_sha256": "9cca5fe72664bbc89418edd24d112cfc189b08a3310204a922e9c6591755ff50",
       "metrics": {
-        "output_min_during_plus12_V": 11.879,
-        "output_max_during_minus12_V": -11.879,
+        "jack_overdrive_V": 12,
+        "output_min_during_plus_hold_V": 11.879,
+        "output_max_during_minus_hold_V": -11.879,
         "sense_max_V": 11.879,
         "sense_min_V": -11.879,
+        "clamp_conducts": false,
+        "min_output_minus_sense_plus_hold_V": 2.16e-05,
+        "max_output_minus_sense_minus_hold_V": 2.31e-05,
         "phase_reversal": false,
-        "recovery_1mV_from_plus12_us": 1.013,
-        "recovery_10mV_from_plus12_us": 0.6927,
-        "recovery_1mV_from_minus12_us": 1.013,
-        "recovery_10mV_from_minus12_us": 0.6927
+        "hold_ripple_pp_mV": 0.0001,
+        "sustained_oscillation": false,
+        "recovery_1mV_from_plus_us": 1.013,
+        "recovery_10mV_from_plus_us": 0.6927,
+        "recovery_1mV_from_minus_us": 1.013,
+        "recovery_10mV_from_minus_us": 0.6927
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case4",
+      "cell": "follower_base",
+      "variant": "overdrive_15V",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "864fb6b39e5733520e0c097bfeb310280ebd221208054299edacd2bf0c6b4f3d",
+      "metrics": {
+        "jack_overdrive_V": 15,
+        "output_min_during_plus_hold_V": 11.979,
+        "output_max_during_minus_hold_V": -11.97,
+        "sense_max_V": 12.191,
+        "sense_min_V": -12.191,
+        "clamp_conducts": true,
+        "min_output_minus_sense_plus_hold_V": -0.2118,
+        "max_output_minus_sense_minus_hold_V": 0.2214,
+        "phase_reversal": false,
+        "hold_ripple_pp_mV": 0.0005,
+        "sustained_oscillation": false,
+        "recovery_1mV_from_plus_us": 1.047,
+        "recovery_10mV_from_plus_us": 0.7269,
+        "recovery_1mV_from_minus_us": 1.047,
+        "recovery_10mV_from_minus_us": 0.7272
       }
     },
     {
@@ -1047,6 +1298,8 @@
         "output_trough_V": -9.8994,
         "gain_vs_protected": 0.999994,
         "max_tracking_error_vs_protected_mV": 121.0,
+        "follower_error_hf_residual_pp_mV": 0.02612,
+        "sustained_oscillation": false,
         "note": "10 V peak exceeds the TMUX7412F usable signal range above +9 V; the fixed 15 ohm R_ON (ASSUMED) does not model that compression"
       }
     },
@@ -1184,15 +1437,46 @@
       "integration": "trap (ngspice default)",
       "deck_sha256": "d52e3127bc7ce8af6868dec54b90e3a335fab2b94b28b6fc6de77fd826feeac5",
       "metrics": {
-        "output_min_during_plus12_V": 11.879,
-        "output_max_during_minus12_V": -11.879,
+        "jack_overdrive_V": 12,
+        "output_min_during_plus_hold_V": 11.879,
+        "output_max_during_minus_hold_V": -11.879,
         "sense_max_V": 11.893,
         "sense_min_V": -11.893,
+        "clamp_conducts": false,
+        "min_output_minus_sense_plus_hold_V": 2.17e-05,
+        "max_output_minus_sense_minus_hold_V": 2.31e-05,
         "phase_reversal": false,
-        "recovery_1mV_from_plus12_us": 0.7644,
-        "recovery_10mV_from_plus12_us": 0.5518,
-        "recovery_1mV_from_minus12_us": 0.7666,
-        "recovery_10mV_from_minus12_us": 0.5408
+        "hold_ripple_pp_mV": 3e-10,
+        "sustained_oscillation": false,
+        "recovery_1mV_from_plus_us": 0.7644,
+        "recovery_10mV_from_plus_us": 0.5518,
+        "recovery_1mV_from_minus_us": 0.7666,
+        "recovery_10mV_from_minus_us": 0.5408
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case4",
+      "cell": "follower_precision",
+      "variant": "overdrive_15V",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "20a2e6a3e86a121057a175ec464817ee06346221abb45733e4dceec6e41606b4",
+      "metrics": {
+        "jack_overdrive_V": 15,
+        "output_min_during_plus_hold_V": 11.984,
+        "output_max_during_minus_hold_V": -11.975,
+        "sense_max_V": 12.176,
+        "sense_min_V": -12.166,
+        "clamp_conducts": true,
+        "min_output_minus_sense_plus_hold_V": -0.1914,
+        "max_output_minus_sense_minus_hold_V": 0.1915,
+        "phase_reversal": false,
+        "hold_ripple_pp_mV": 0.0002,
+        "sustained_oscillation": false,
+        "recovery_1mV_from_plus_us": 1.128,
+        "recovery_10mV_from_plus_us": 0.913,
+        "recovery_1mV_from_minus_us": 1.129,
+        "recovery_10mV_from_minus_us": 0.9125
       }
     },
     {
@@ -1226,7 +1510,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -1260,7 +1545,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -1294,7 +1580,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -1328,7 +1615,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -1362,7 +1650,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -1396,7 +1685,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -1430,7 +1720,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -1464,7 +1755,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -1498,7 +1790,8 @@
           "diag_overshoot_le_10pct": "PASS",
           "diag_settle_1mV_within_half_period": "PASS",
           "sustained_oscillation": false
-        }
+        },
+        "sustained_oscillation": false
       }
     },
     {
@@ -1506,12 +1799,27 @@
       "case": "case5a",
       "cell": "magnitude_indicator",
       "variant": "0/1uA",
-      "integration": "trap (ngspice default)",
-      "deck_sha256": "8f47a8ab8741c245697ad0cec538228ee881647f97d95512956a48d8f4df822f",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "a476e75c697bde57fa4a803dffc732d7cb5b36bac6a0df4fdcfbc4b6c46b62fc",
+        "i": "9c85ca59a0c183bb974b3a0671e728adcb9d12624b17e3d7943d78167704a3ba"
+      },
       "metrics": {
-        "crossover_Hz": 138900.0,
+        "crossover_Hz": 139300.0,
         "phase_margin_deg": 110.4,
-        "dc_loop_gain_dB": 79.26
+        "dc_loop_gain_dB": 79.26,
+        "zs_over_zl_at_crossover": 0.001318,
+        "voltage_injection_only": {
+          "crossover_Hz": 138900.0,
+          "phase_margin_deg": 110.4,
+          "dc_loop_gain_dB": 79.26
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "paper_screen": {
+          "paper_pm_deg": 88.9,
+          "basis": "paper no-cable point at this current",
+          "run_minus_paper_deg": 21.5
+        }
       }
     },
     {
@@ -1519,12 +1827,27 @@
       "case": "case5a",
       "cell": "magnitude_indicator",
       "variant": "0/10uA",
-      "integration": "trap (ngspice default)",
-      "deck_sha256": "aece801003b2a30b16fa6ae1660d7b99b6e7c1e97d850d8d12e67fbdb240efba",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "117745ea172a854fb8548846f683813806f3678e756a4cd0725d27044e3b4f6b",
+        "i": "d41fb670b42f2bcf51be183f695aa20bc82b6533081f03fa6252a2f6e91dc430"
+      },
       "metrics": {
-        "crossover_Hz": 766300.0,
-        "phase_margin_deg": 98.88,
-        "dc_loop_gain_dB": 96.55
+        "crossover_Hz": 886400.0,
+        "phase_margin_deg": 92.72,
+        "dc_loop_gain_dB": 96.55,
+        "zs_over_zl_at_crossover": 0.1167,
+        "voltage_injection_only": {
+          "crossover_Hz": 766300.0,
+          "phase_margin_deg": 98.88,
+          "dc_loop_gain_dB": 96.55
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "paper_screen": {
+          "paper_pm_deg": 83.8,
+          "basis": "paper no-cable point at this current",
+          "run_minus_paper_deg": 8.92
+        }
       }
     },
     {
@@ -1532,12 +1855,27 @@
       "case": "case5a",
       "cell": "magnitude_indicator",
       "variant": "0/100uA",
-      "integration": "trap (ngspice default)",
-      "deck_sha256": "f7d5e26b94f680a5be702beadadf8953b22d8a588ea45abe045f136d85e0e0a9",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "2b468ace6d70962a7f99a79d5c6335c858a58f18405c22e95d8d613cc880e90c",
+        "i": "2828e84f304d04a5185f6fa496325e66d8927a22f8a62a4fa9d1d004d7defe22"
+      },
       "metrics": {
-        "crossover_Hz": 1930000.0,
-        "phase_margin_deg": 66.91,
-        "dc_loop_gain_dB": 105.8
+        "crossover_Hz": 2071000.0,
+        "phase_margin_deg": 60.14,
+        "dc_loop_gain_dB": 105.8,
+        "zs_over_zl_at_crossover": 0.1185,
+        "voltage_injection_only": {
+          "crossover_Hz": 1930000.0,
+          "phase_margin_deg": 66.91,
+          "dc_loop_gain_dB": 105.8
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "paper_screen": {
+          "paper_pm_deg": 84.6,
+          "basis": "paper no-cable point at this current",
+          "run_minus_paper_deg": -24.46
+        }
       }
     },
     {
@@ -1545,12 +1883,27 @@
       "case": "case5a",
       "cell": "magnitude_indicator",
       "variant": "0/1mA",
-      "integration": "trap (ngspice default)",
-      "deck_sha256": "587e846f720cc9cef9a79e0f89fe6d2da7278877d08edccc9f2fa43748293774",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "7a8a0da0235e71ffd365cfb9ff7c7aa47fa4f8891f93749c93caba45254c1d21",
+        "i": "78981fac94f682bdbfeaf7db4724e19f097d71555cd8fc55c1465dddde080c81"
+      },
       "metrics": {
-        "crossover_Hz": 2296000.0,
-        "phase_margin_deg": 62.32,
-        "dc_loop_gain_dB": 106.9
+        "crossover_Hz": 2380000.0,
+        "phase_margin_deg": 58.52,
+        "dc_loop_gain_dB": 106.9,
+        "zs_over_zl_at_crossover": 0.06506,
+        "voltage_injection_only": {
+          "crossover_Hz": 2296000.0,
+          "phase_margin_deg": 62.32,
+          "dc_loop_gain_dB": 106.9
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "paper_screen": {
+          "paper_pm_deg": 89.2,
+          "basis": "paper no-cable point at this current",
+          "run_minus_paper_deg": -30.68
+        }
       }
     },
     {
@@ -1558,12 +1911,27 @@
       "case": "case5a",
       "cell": "magnitude_indicator",
       "variant": "7.2p/1uA",
-      "integration": "trap (ngspice default)",
-      "deck_sha256": "d89d82dd5303ab37fcb7c5c24834587526ba51c4094e0e5fe2e78f22640659bf",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "d3ee1f9e0a6893a11faa6ff5b97945eee29b1b41b0ea3f1ce5aa039f0b9b6d3a",
+        "i": "15c4c94580e755d1127410132bd30144d2df042b1d6484e5d4ff739a851a5a78"
+      },
       "metrics": {
-        "crossover_Hz": 119200.0,
-        "phase_margin_deg": 93.48,
-        "dc_loop_gain_dB": 79.26
+        "crossover_Hz": 123200.0,
+        "phase_margin_deg": 90.99,
+        "dc_loop_gain_dB": 79.26,
+        "zs_over_zl_at_crossover": 0.03365,
+        "voltage_injection_only": {
+          "crossover_Hz": 119200.0,
+          "phase_margin_deg": 93.48,
+          "dc_loop_gain_dB": 79.26
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "paper_screen": {
+          "paper_pm_deg": 73.2,
+          "basis": "paper 7.22 pF point at this current",
+          "run_minus_paper_deg": 17.79
+        }
       }
     },
     {
@@ -1571,12 +1939,27 @@
       "case": "case5a",
       "cell": "magnitude_indicator",
       "variant": "7.2p/10uA",
-      "integration": "trap (ngspice default)",
-      "deck_sha256": "41c5804e24bd00a956fd942a59932064ca501c42b7e8649cbb4658156c2fb2e9",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "94edb91456d1b2b9e89e91a81b91d60970f6a1846a32161b1dfb8b061e929118",
+        "i": "234d897b387f4df64646930f02eb760332cbc3b7214ee6ffb3c4df458813fad3"
+      },
       "metrics": {
-        "crossover_Hz": 690600.0,
-        "phase_margin_deg": 83.33,
-        "dc_loop_gain_dB": 96.55
+        "crossover_Hz": 762700.0,
+        "phase_margin_deg": 72.98,
+        "dc_loop_gain_dB": 96.55,
+        "zs_over_zl_at_crossover": 0.1509,
+        "voltage_injection_only": {
+          "crossover_Hz": 690600.0,
+          "phase_margin_deg": 83.33,
+          "dc_loop_gain_dB": 96.55
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "paper_screen": {
+          "paper_pm_deg": 69.0,
+          "basis": "paper 7.22 pF point at this current",
+          "run_minus_paper_deg": 3.98
+        }
       }
     },
     {
@@ -1584,12 +1967,27 @@
       "case": "case5a",
       "cell": "magnitude_indicator",
       "variant": "7.2p/100uA",
-      "integration": "trap (ngspice default)",
-      "deck_sha256": "dc082f082f2674896aa0912b00b7258ac81eda004adbe4afc9e94614bc8d1a31",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "10e4b12e94639c445f7dc0cc8484f21509a394d3cea72856e1da50431174e3c7",
+        "i": "aa583947b276c5c4633e5b981eb78aeb20006715845eaaa2c7da0aa504dd4e9d"
+      },
       "metrics": {
-        "crossover_Hz": 1897000.0,
-        "phase_margin_deg": 58.76,
-        "dc_loop_gain_dB": 105.9
+        "crossover_Hz": 2009000.0,
+        "phase_margin_deg": 52.52,
+        "dc_loop_gain_dB": 105.9,
+        "zs_over_zl_at_crossover": 0.1141,
+        "voltage_injection_only": {
+          "crossover_Hz": 1897000.0,
+          "phase_margin_deg": 58.76,
+          "dc_loop_gain_dB": 105.9
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "paper_screen": {
+          "paper_pm_deg": 77.9,
+          "basis": "paper 7.22 pF point at this current",
+          "run_minus_paper_deg": -25.38
+        }
       }
     },
     {
@@ -1597,12 +1995,27 @@
       "case": "case5a",
       "cell": "magnitude_indicator",
       "variant": "7.2p/1mA",
-      "integration": "trap (ngspice default)",
-      "deck_sha256": "4404ef034858f6daaa13b2677c7e84a1bbe1e6be988f912f95d70de5475c7bd1",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "aa8715e15ec2bf5e433c8419763ed86bf1699879365796656aa550cccfbd91eb",
+        "i": "3fc1c58be8ea9b8e29c7383bb7956186a2f4c3260c97d329dd726e698dc2596a"
+      },
       "metrics": {
-        "crossover_Hz": 2296000.0,
-        "phase_margin_deg": 57.4,
-        "dc_loop_gain_dB": 107.1
+        "crossover_Hz": 2373000.0,
+        "phase_margin_deg": 53.49,
+        "dc_loop_gain_dB": 107.1,
+        "zs_over_zl_at_crossover": 0.06853,
+        "voltage_injection_only": {
+          "crossover_Hz": 2296000.0,
+          "phase_margin_deg": 57.4,
+          "dc_loop_gain_dB": 107.1
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "paper_screen": {
+          "paper_pm_deg": 88.2,
+          "basis": "paper 7.22 pF point at this current",
+          "run_minus_paper_deg": -34.71
+        }
       }
     },
     {
@@ -1610,12 +2023,27 @@
       "case": "case5a",
       "cell": "magnitude_indicator",
       "variant": "15p/1uA",
-      "integration": "trap (ngspice default)",
-      "deck_sha256": "c7cdcc8e027c02d42100bd616c8610cea32f94e8aa7f4d1601283d6cdb8ffac6",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "ee512e3225e3865ca23c4ffbbb7d8d241c6c686b52433f0be690724164426f3f",
+        "i": "383297f2b2171fb6ee35d5cbc5e081f0c7f0dc4cbff0e000a19aba0da0aabd26"
+      },
       "metrics": {
-        "crossover_Hz": 101400.0,
-        "phase_margin_deg": 80.92,
-        "dc_loop_gain_dB": 79.26
+        "crossover_Hz": 103900.0,
+        "phase_margin_deg": 79.09,
+        "dc_loop_gain_dB": 79.26,
+        "zs_over_zl_at_crossover": 0.02785,
+        "voltage_injection_only": {
+          "crossover_Hz": 101400.0,
+          "phase_margin_deg": 80.92,
+          "dc_loop_gain_dB": 79.26
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "paper_screen": {
+          "paper_pm_deg": 57.0,
+          "basis": "paper worst over currents at 14.4 pF (no per-point value published)",
+          "run_minus_paper_deg": 22.09
+        }
       }
     },
     {
@@ -1623,12 +2051,27 @@
       "case": "case5a",
       "cell": "magnitude_indicator",
       "variant": "15p/10uA",
-      "integration": "trap (ngspice default)",
-      "deck_sha256": "76f4394cc4b623eac9fdf707b37af3143316eda19b9b609e737a58d0267bd286",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "30bc43ccd4bcb630790f0449f276acbc7b8e93121719fce35413e657bd530343",
+        "i": "1134add3843e0648ca9a0a2952582230b5656d6649328e7e5154c42bcab5fd66"
+      },
       "metrics": {
-        "crossover_Hz": 614800.0,
-        "phase_margin_deg": 71.02,
-        "dc_loop_gain_dB": 96.55
+        "crossover_Hz": 660600.0,
+        "phase_margin_deg": 63.31,
+        "dc_loop_gain_dB": 96.55,
+        "zs_over_zl_at_crossover": 0.125,
+        "voltage_injection_only": {
+          "crossover_Hz": 614800.0,
+          "phase_margin_deg": 71.02,
+          "dc_loop_gain_dB": 96.55
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "paper_screen": {
+          "paper_pm_deg": 57.0,
+          "basis": "paper worst over currents at 14.4 pF (no per-point value published)",
+          "run_minus_paper_deg": 6.31
+        }
       }
     },
     {
@@ -1636,12 +2079,27 @@
       "case": "case5a",
       "cell": "magnitude_indicator",
       "variant": "15p/100uA",
-      "integration": "trap (ngspice default)",
-      "deck_sha256": "e06d6013b68f1802a7da85fe10e7cbc5d4a67bbdc50ec1c4994cea27d764a109",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "2efa11f10313bb5f7f5f88cbb43510b796f8363ae79afade20f48d9039afbeca",
+        "i": "8405b1ef600ada59dd0ad124b375d0caddd1aff9f9e4bd8ae6cde84ae16a3743"
+      },
       "metrics": {
-        "crossover_Hz": 1774000.0,
-        "phase_margin_deg": 52.45,
-        "dc_loop_gain_dB": 105.8
+        "crossover_Hz": 1861000.0,
+        "phase_margin_deg": 46.58,
+        "dc_loop_gain_dB": 105.8,
+        "zs_over_zl_at_crossover": 0.1127,
+        "voltage_injection_only": {
+          "crossover_Hz": 1774000.0,
+          "phase_margin_deg": 52.45,
+          "dc_loop_gain_dB": 105.8
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "paper_screen": {
+          "paper_pm_deg": 57.0,
+          "basis": "paper worst over currents at 14.4 pF (no per-point value published)",
+          "run_minus_paper_deg": -10.42
+        }
       }
     },
     {
@@ -1649,12 +2107,27 @@
       "case": "case5a",
       "cell": "magnitude_indicator",
       "variant": "15p/1mA",
-      "integration": "trap (ngspice default)",
-      "deck_sha256": "34328694694a2223987cc8c61de0a49f1632527ad46ed6c15b82a2fc2fa2a0bd",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "97ec26e91f74417a49eed3c4109fbc19c54602ead8b445821a8e01b9a4a311cb",
+        "i": "b1706c8768b84b54b77c3f0b8a2a13d73e958e4289ef8337cb618f1d87293433"
+      },
       "metrics": {
-        "crossover_Hz": 2160000.0,
-        "phase_margin_deg": 53.25,
-        "dc_loop_gain_dB": 106.9
+        "crossover_Hz": 2211000.0,
+        "phase_margin_deg": 50.21,
+        "dc_loop_gain_dB": 106.9,
+        "zs_over_zl_at_crossover": 0.05481,
+        "voltage_injection_only": {
+          "crossover_Hz": 2160000.0,
+          "phase_margin_deg": 53.25,
+          "dc_loop_gain_dB": 106.9
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "paper_screen": {
+          "paper_pm_deg": 57.0,
+          "basis": "paper worst over currents at 14.4 pF (no per-point value published)",
+          "run_minus_paper_deg": -6.79
+        }
       }
     },
     {
@@ -1662,12 +2135,27 @@
       "case": "case5a",
       "cell": "magnitude_indicator",
       "variant": "30p/1uA",
-      "integration": "trap (ngspice default)",
-      "deck_sha256": "2147a5d0807a5e8378675b8e12c26253d6c0916936634a9bf9d84a631c4800d4",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "61a8e32d982cb198c94150f7b42a16eba22b5f6d1b9803efd37857b49bc45afa",
+        "i": "c791d049fa6c36b2d147c88ddc4a5cf5d81339fd2b2c50146335494e34fec5d4"
+      },
       "metrics": {
-        "crossover_Hz": 79530.0,
-        "phase_margin_deg": 65.08,
-        "dc_loop_gain_dB": 79.26
+        "crossover_Hz": 80660.0,
+        "phase_margin_deg": 64.02,
+        "dc_loop_gain_dB": 79.26,
+        "zs_over_zl_at_crossover": 0.02144,
+        "voltage_injection_only": {
+          "crossover_Hz": 79530.0,
+          "phase_margin_deg": 65.08,
+          "dc_loop_gain_dB": 79.26
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "paper_screen": {
+          "paper_pm_deg": 40.3,
+          "basis": "paper worst over currents at 28.9 pF (no per-point value published)",
+          "run_minus_paper_deg": 23.72
+        }
       }
     },
     {
@@ -1675,12 +2163,27 @@
       "case": "case5a",
       "cell": "magnitude_indicator",
       "variant": "30p/10uA",
-      "integration": "trap (ngspice default)",
-      "deck_sha256": "389e84db09271ae6013952f1871338e7452b8fb570bdc002508876ae98643d73",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "0a1c13c4919e327c379904808efa61ed76219774745fc1c573ade89c4c02fd5e",
+        "i": "66f9202a4578b5147c062d49a7872eb5d53f58292fda9106da6ba4df2e688557"
+      },
       "metrics": {
-        "crossover_Hz": 508300.0,
-        "phase_margin_deg": 55.27,
-        "dc_loop_gain_dB": 96.55
+        "crossover_Hz": 530400.0,
+        "phase_margin_deg": 50.72,
+        "dc_loop_gain_dB": 96.55,
+        "zs_over_zl_at_crossover": 0.09649,
+        "voltage_injection_only": {
+          "crossover_Hz": 508300.0,
+          "phase_margin_deg": 55.27,
+          "dc_loop_gain_dB": 96.55
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "paper_screen": {
+          "paper_pm_deg": 40.3,
+          "basis": "paper worst over currents at 28.9 pF (no per-point value published)",
+          "run_minus_paper_deg": 10.42
+        }
       }
     },
     {
@@ -1688,12 +2191,27 @@
       "case": "case5a",
       "cell": "magnitude_indicator",
       "variant": "30p/100uA",
-      "integration": "trap (ngspice default)",
-      "deck_sha256": "e8144955fd630591035f1c455497316d58aa1bdaeb8a0236aa0df349c61a8cec",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "7438ccf36e8bbc558a7e9f7911efb6952554714b0fdbec9dd0883e05d92f4e24",
+        "i": "adac4c8d530a6aa739d924e1fa0d63100397245882a67c5f2a55e4afef7f36c9"
+      },
       "metrics": {
-        "crossover_Hz": 1813000.0,
-        "phase_margin_deg": 44.8,
-        "dc_loop_gain_dB": 106.4
+        "crossover_Hz": 1872000.0,
+        "phase_margin_deg": 40.08,
+        "dc_loop_gain_dB": 106.4,
+        "zs_over_zl_at_crossover": 0.1009,
+        "voltage_injection_only": {
+          "crossover_Hz": 1813000.0,
+          "phase_margin_deg": 44.8,
+          "dc_loop_gain_dB": 106.4
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "paper_screen": {
+          "paper_pm_deg": 40.3,
+          "basis": "paper worst over currents at 28.9 pF (no per-point value published)",
+          "run_minus_paper_deg": -0.22
+        }
       }
     },
     {
@@ -1701,12 +2219,73 @@
       "case": "case5a",
       "cell": "magnitude_indicator",
       "variant": "30p/1mA",
-      "integration": "trap (ngspice default)",
-      "deck_sha256": "09d68967930586298668eaf7371416e5d241edb2085dbc57690af2f324f793ef",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "36d1d7442d198787e6cdd7734ca198204d9c2369f431e20d75ad62c931d754a2",
+        "i": "8122a91a45c1f58e3cb3aecd1831eb184a95f39900114188a26e6d92cb430ca5"
+      },
       "metrics": {
-        "crossover_Hz": 2010000.0,
-        "phase_margin_deg": 47.45,
-        "dc_loop_gain_dB": 106.9
+        "crossover_Hz": 2045000.0,
+        "phase_margin_deg": 44.83,
+        "dc_loop_gain_dB": 106.9,
+        "zs_over_zl_at_crossover": 0.05124,
+        "voltage_injection_only": {
+          "crossover_Hz": 2010000.0,
+          "phase_margin_deg": 47.45,
+          "dc_loop_gain_dB": 106.9
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "paper_screen": {
+          "paper_pm_deg": 40.3,
+          "basis": "paper worst over currents at 28.9 pF (no per-point value published)",
+          "run_minus_paper_deg": 4.53
+        }
+      }
+    },
+    {
+      "model": "OPA4196",
+      "case": "case5a_control",
+      "cell": "plain_follower",
+      "variant": "no_load",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "42b8f93e01795ad72e72420dec56ade512f1011a7291e67f2baced57befef3d9",
+        "i": "dc62886db9b875883010cfdbca2e3db7b1fce0ffbb9cd99620c45efef30795d6"
+      },
+      "metrics": {
+        "crossover_Hz": 2597000.0,
+        "phase_margin_deg": 54.82,
+        "dc_loop_gain_dB": 109.2,
+        "zs_over_zl_at_crossover": 0.06296,
+        "voltage_injection_only": {
+          "crossover_Hz": 2516000.0,
+          "phase_margin_deg": 58.25,
+          "dc_loop_gain_dB": 109.2
+        },
+        "sustained_oscillation": "NOT EVALUATED"
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5a_control",
+      "cell": "plain_follower",
+      "variant": "no_load",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "7e911dbb329df5f00ebb6d4cd03248a6ccb25167d48a7ebe7e1139e9546ec3fd",
+        "i": "48f009100916446348dbccd8681024b49a69edabaae677627c9bf5610508ad3c"
+      },
+      "metrics": {
+        "crossover_Hz": 9986000.0,
+        "phase_margin_deg": 63.95,
+        "dc_loop_gain_dB": 120.2,
+        "zs_over_zl_at_crossover": 0.02707,
+        "voltage_injection_only": {
+          "crossover_Hz": 10110000.0,
+          "phase_margin_deg": 65.11,
+          "dc_loop_gain_dB": 120.2
+        },
+        "sustained_oscillation": "NOT EVALUATED"
       }
     },
     {
@@ -1775,8 +2354,8 @@
           22.0,
           22.0
         ],
-        "sense_hf_residual_pp_mV": "NOT CONDUCTING (handover lasts the whole window)",
-        "sustained_oscillation": false
+        "sense_error_hf_residual_pp_mV": "NOT CONDUCTING (handover lasts the whole window)",
+        "sustained_oscillation": "NOT EVALUATED"
       }
     },
     {
@@ -1845,8 +2424,8 @@
           22.0,
           22.0
         ],
-        "sense_hf_residual_pp_mV": "NOT CONDUCTING (handover lasts the whole window)",
-        "sustained_oscillation": false
+        "sense_error_hf_residual_pp_mV": "NOT CONDUCTING (handover lasts the whole window)",
+        "sustained_oscillation": "NOT EVALUATED"
       }
     },
     {
@@ -1915,8 +2494,8 @@
           22.0,
           22.0
         ],
-        "sense_hf_residual_pp_mV": "NOT CONDUCTING (handover lasts the whole window)",
-        "sustained_oscillation": false
+        "sense_error_hf_residual_pp_mV": "NOT CONDUCTING (handover lasts the whole window)",
+        "sustained_oscillation": "NOT EVALUATED"
       }
     },
     {
@@ -1985,8 +2564,8 @@
           22.0,
           22.0
         ],
-        "sense_hf_residual_pp_mV": "NOT CONDUCTING (handover lasts the whole window)",
-        "sustained_oscillation": false
+        "sense_error_hf_residual_pp_mV": "NOT CONDUCTING (handover lasts the whole window)",
+        "sustained_oscillation": "NOT EVALUATED"
       }
     },
     {
@@ -2055,7 +2634,7 @@
           8.96,
           8.96
         ],
-        "sense_hf_residual_pp_mV": 0.2034,
+        "sense_error_hf_residual_pp_mV": 0.047,
         "sustained_oscillation": false
       }
     },
@@ -2125,7 +2704,7 @@
           8.28,
           8.28
         ],
-        "sense_hf_residual_pp_mV": 0.1682,
+        "sense_error_hf_residual_pp_mV": 0.01802,
         "sustained_oscillation": false
       }
     },
@@ -2195,7 +2774,7 @@
           8.58,
           8.58
         ],
-        "sense_hf_residual_pp_mV": 0.1702,
+        "sense_error_hf_residual_pp_mV": 0.01202,
         "sustained_oscillation": false
       }
     },
@@ -2265,7 +2844,7 @@
           8.68,
           8.68
         ],
-        "sense_hf_residual_pp_mV": 0.2552,
+        "sense_error_hf_residual_pp_mV": 0.5756,
         "sustained_oscillation": false
       }
     },
@@ -2335,7 +2914,7 @@
           2.6,
           2.6
         ],
-        "sense_hf_residual_pp_mV": 1.419,
+        "sense_error_hf_residual_pp_mV": 0.1346,
         "sustained_oscillation": false
       }
     },
@@ -2405,7 +2984,7 @@
           2.62,
           2.62
         ],
-        "sense_hf_residual_pp_mV": 1.421,
+        "sense_error_hf_residual_pp_mV": 0.05056,
         "sustained_oscillation": false
       }
     },
@@ -2475,7 +3054,7 @@
           2.6,
           2.6
         ],
-        "sense_hf_residual_pp_mV": 1.424,
+        "sense_error_hf_residual_pp_mV": 0.04365,
         "sustained_oscillation": false
       }
     },
@@ -2545,7 +3124,7 @@
           2.78,
           2.78
         ],
-        "sense_hf_residual_pp_mV": 1.429,
+        "sense_error_hf_residual_pp_mV": 0.4791,
         "sustained_oscillation": false
       }
     },
@@ -2615,7 +3194,7 @@
           1.22,
           1.46
         ],
-        "sense_hf_residual_pp_mV": 7.797,
+        "sense_error_hf_residual_pp_mV": 0.248,
         "sustained_oscillation": false
       }
     },
@@ -2685,7 +3264,7 @@
           1.22,
           1.44
         ],
-        "sense_hf_residual_pp_mV": 7.971,
+        "sense_error_hf_residual_pp_mV": 0.1279,
         "sustained_oscillation": false
       }
     },
@@ -2755,7 +3334,7 @@
           1.22,
           1.42
         ],
-        "sense_hf_residual_pp_mV": 8.131,
+        "sense_error_hf_residual_pp_mV": 0.02499,
         "sustained_oscillation": false
       }
     },
@@ -2825,7 +3404,7 @@
           1.18,
           1.38
         ],
-        "sense_hf_residual_pp_mV": 8.537,
+        "sense_error_hf_residual_pp_mV": 0.2377,
         "sustained_oscillation": false
       }
     },
@@ -3407,7 +3986,8 @@
         "output_peak_V": -0.0023,
         "output_trough_V": 0.0024,
         "gain_vs_protected": -0.000236,
-        "max_tracking_error_vs_protected_mV": -3.9
+        "max_tracking_error_vs_protected_mV": -3.9,
+        "follower_error_hf_residual_pp_mV": -0.0055
       }
     },
     {
@@ -3505,14 +4085,37 @@
       "cell": "follower_base",
       "variant": "overdrive_12V",
       "OPA4197_minus_OPA4196": {
-        "output_min_during_plus12_V": 0.0,
-        "output_max_during_minus12_V": 0.0,
+        "jack_overdrive_V": 0,
+        "output_min_during_plus_hold_V": 0.0,
+        "output_max_during_minus_hold_V": 0.0,
         "sense_max_V": -0.017,
         "sense_min_V": 0.094,
-        "recovery_1mV_from_plus12_us": -1.324,
-        "recovery_10mV_from_plus12_us": -0.8683,
-        "recovery_1mV_from_minus12_us": -1.451,
-        "recovery_10mV_from_minus12_us": -0.8713
+        "min_output_minus_sense_plus_hold_V": 3e-07,
+        "max_output_minus_sense_minus_hold_V": 1.9e-06,
+        "hold_ripple_pp_mV": 0.0001,
+        "recovery_1mV_from_plus_us": -1.324,
+        "recovery_10mV_from_plus_us": -0.8683,
+        "recovery_1mV_from_minus_us": -1.451,
+        "recovery_10mV_from_minus_us": -0.8713
+      }
+    },
+    {
+      "case": "case4",
+      "cell": "follower_base",
+      "variant": "overdrive_15V",
+      "OPA4197_minus_OPA4196": {
+        "jack_overdrive_V": 0,
+        "output_min_during_plus_hold_V": -0.003,
+        "output_max_during_minus_hold_V": 0.004,
+        "sense_max_V": -0.002,
+        "sense_min_V": 0.001,
+        "min_output_minus_sense_plus_hold_V": -0.0025,
+        "max_output_minus_sense_minus_hold_V": 0.0044,
+        "hold_ripple_pp_mV": 0.0001,
+        "recovery_1mV_from_plus_us": -2.491,
+        "recovery_10mV_from_plus_us": -1.954,
+        "recovery_1mV_from_minus_us": -1.047,
+        "recovery_10mV_from_minus_us": -0.9678
       }
     },
     {
@@ -3547,7 +4150,8 @@
         "output_peak_V": -0.0029,
         "output_trough_V": 0.0028,
         "gain_vs_protected": -0.000286,
-        "max_tracking_error_vs_protected_mV": -4.6
+        "max_tracking_error_vs_protected_mV": -4.6,
+        "follower_error_hf_residual_pp_mV": -0.00549
       }
     },
     {
@@ -3645,14 +4249,37 @@
       "cell": "follower_precision",
       "variant": "overdrive_12V",
       "OPA4197_minus_OPA4196": {
-        "output_min_during_plus12_V": 0.0,
-        "output_max_during_minus12_V": 0.0,
+        "jack_overdrive_V": 0,
+        "output_min_during_plus_hold_V": 0.0,
+        "output_max_during_minus_hold_V": 0.0,
         "sense_max_V": -0.047,
         "sense_min_V": 0.053,
-        "recovery_1mV_from_plus12_us": -2.666,
-        "recovery_10mV_from_plus12_us": -2.018,
-        "recovery_1mV_from_minus12_us": -2.503,
-        "recovery_10mV_from_minus12_us": -1.889
+        "min_output_minus_sense_plus_hold_V": 1e-06,
+        "max_output_minus_sense_minus_hold_V": 1.4e-06,
+        "hold_ripple_pp_mV": -0.0002,
+        "recovery_1mV_from_plus_us": -2.666,
+        "recovery_10mV_from_plus_us": -2.018,
+        "recovery_1mV_from_minus_us": -2.503,
+        "recovery_10mV_from_minus_us": -1.889
+      }
+    },
+    {
+      "case": "case4",
+      "cell": "follower_precision",
+      "variant": "overdrive_15V",
+      "OPA4197_minus_OPA4196": {
+        "jack_overdrive_V": 0,
+        "output_min_during_plus_hold_V": -0.002,
+        "output_max_during_minus_hold_V": 0.004,
+        "sense_max_V": -0.002,
+        "sense_min_V": 0.004,
+        "min_output_minus_sense_plus_hold_V": 0.0,
+        "max_output_minus_sense_minus_hold_V": 0.0,
+        "hold_ripple_pp_mV": 0.000199,
+        "recovery_1mV_from_plus_us": -4.101,
+        "recovery_10mV_from_plus_us": -3.436,
+        "recovery_1mV_from_minus_us": -3.135,
+        "recovery_10mV_from_minus_us": -2.491
       }
     },
     {
@@ -3879,7 +4506,23 @@
           "error_vs_5V_source_mV": 0.00167
         }
       }
+    },
+    {
+      "case": "case5a_control",
+      "cell": "plain_follower",
+      "variant": "no_load",
+      "OPA4197_minus_OPA4196": {
+        "crossover_Hz": 7389000.0,
+        "phase_margin_deg": 9.13,
+        "dc_loop_gain_dB": 11.0,
+        "zs_over_zl_at_crossover": -0.03589,
+        "voltage_injection_only": {
+          "crossover_Hz": 7594000.0,
+          "phase_margin_deg": 6.86,
+          "dc_loop_gain_dB": 11.0
+        }
+      }
     }
   ],
-  "model_limit": "TI macro-models predict modeled behavior only; package parasitics, layout, tolerance, temperature, the real switch and diodes, and bench stability remain NOT RUN."
+  "model_limit": "TI macro-models predict modeled behavior only; package parasitics, layout, tolerance, temperature, the real switch and diodes, the off-board harness, and bench stability remain NOT RUN."
 }
