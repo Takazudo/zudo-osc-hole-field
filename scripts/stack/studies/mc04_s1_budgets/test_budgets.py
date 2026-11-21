@@ -36,5 +36,16 @@ class Sources(unittest.TestCase):
             b.NETS.clear(); b.NETS.update(real)
 
 
+
+class Facts(unittest.TestCase):
+    def test_each_mpn_reads_its_own_skill(self):
+        f = b.mpn_facts()
+        self.assertEqual(set(f), {'OPA4196IDR', 'OPA4197IPWR'})
+        self.assertAlmostEqual(f['OPA4197IPWR']['input_cm_F'], 6.4e-12)
+        self.assertEqual(f['OPA4197IPWR']['gbw_Hz'], 10e6)
+        self.assertEqual(f['OPA4196IDR']['gbw_Hz'], 2.5e6)
+        self.assertIn('component-ti-opa4197ipwr: fact-op-precision-input-impedance', f['OPA4197IPWR']['fact_ids'])
+
+
 if __name__ == '__main__':
     unittest.main()

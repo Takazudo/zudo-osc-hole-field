@@ -849,10 +849,52 @@ def candidate(ctx, placed, front, size, own, sx, sy, d, dist, spare, lengthen=Tr
     return None, (len(disp['front B']) + len(k_refs) + ctx.w * (dist + ef + ek), geo, disp)
 
 
+def slot_holds(gopts):
+    """The reviewed slot holds of link-gate-options.json (MC04-S7 Revision 2): each names one link by id, front board
+    and search centre, and the one slot and direction its every search may take. The general selection rule is
+    unchanged for every other link."""
+    holds = (gopts.get('slot_holds') or {}).get('value', [])
+    for h in holds:
+        missing = {'link', 'front_board', 'centre', 'slot_centre', 'direction', 'reason', 'ruling'} - set(h)
+        if missing:
+            raise ValueError('slot hold %s lacks %s' % (h.get('link'), sorted(missing)))
+        if h['direction'] not in set(DIR_NAMES.values()):
+            raise ValueError('slot hold %s: unknown direction %s' % (h['link'], h['direction']))
+    return holds
+
+
+def held_slot(ctx, front, centre):
+    for h in slot_holds(ctx.gopts):
+        if h['front_board'] == front and abs(h['centre'][0] - centre[0]) < 1e-6 and abs(h['centre'][1] - centre[1]) < 1e-6:
+            return h
+    return None
+
+
+def hold_errors(gopts, links_out):
+    """A hold whose link is missing, unplaced, at another centre or at another slot is stale or unmatched."""
+    by = {x['id']: x for x in links_out}
+    errs = []
+    for h in slot_holds(gopts):
+        r = by.get(h['link'])
+        if r is None:
+            errs.append('slot hold %s: no such link' % h['link'])
+        elif not r.get('placed') or r.get('gone'):
+            errs.append('slot hold %s: link not placed' % h['link'])
+        elif r['front_board'] != h['front_board'] or [round(v, 4) for v in r['centre']] != [round(v, 4) for v in h['centre']]:
+            errs.append('slot hold %s: the link search centre changed (%s %s); the hold is stale'
+                        % (h['link'], r['front_board'], r['centre']))
+        elif r['slot_centre'] != h['slot_centre'] or r['direction'] != h['direction']:
+            errs.append('slot hold %s: placed at %s %s, not the held slot' % (h['link'], r['slot_centre'], r['direction']))
+    return errs
+
+
 def search(ctx, placed, front, centre, size, own, lengthen=True, offsets=None, limit=None, collect=None, accept=None):
     """The cheapest legal candidate (cost, key, geo, disp, d, slot, dist) or None, and the rejection tally.
     `limit`: a candidate costing more is not legal (the improvement pass). `collect`: return up to that many legal
-    candidates, cheapest first, instead (no early stop)."""
+    candidates, cheapest first, instead (no early stop). A held link (slot_holds) evaluates its held slot only."""
+    hold = held_slot(ctx, front, centre)
+    if hold:
+        offsets = [(r4(hold['slot_centre'][0] - centre[0]), r4(hold['slot_centre'][1] - centre[1]))]
     offsets = offsets or ctx.grid(ctx.step0)
     spare = ctx.spare(front, size)
     gm = GeoMaker(size, ctx.opts, ctx.hard)
@@ -866,6 +908,8 @@ def search(ctx, placed, front, centre, size, own, lengthen=True, offsets=None, l
             break
         sx, sy = r4(cx + off[0]), r4(cy + off[1])
         for di, d in enumerate(DIRS):
+            if hold and DIR_NAMES[d] != hold['direction']:
+                continue
             why, c = candidate(ctx, placed, front, size, own, sx, sy, d, dist, spare, lengthen, gm)
             if why:
                 if best is None:
@@ -1562,6 +1606,9 @@ def generate(root=sg.ROOT):
             'part_2_of_a7': json.loads(A7_FILE.read_text())['record_totals'] if A7_FILE.exists() else None,
             'refs': refs,
             'links': out}
+    errs = hold_errors(inp['gopts'], out)
+    if errs:
+        raise ValueError('; '.join(errs))
     import links_gate_c6 as c6
     c6.apply(doc)
     doc['summary'], doc['refs'] = summarise(ctx, out)

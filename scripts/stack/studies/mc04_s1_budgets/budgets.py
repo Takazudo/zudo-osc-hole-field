@@ -45,6 +45,11 @@ SWITCH_PREFIX = ('TMUX', 'ADG')
 RAILS = {'+12V', '-12V', '+5V', 'AGND'}
 OUT_PINS, INV_PINS, NONINV_PINS = {'1', '7', '8', '14'}, {'2', '6', '9', '13'}, {'3', '5', '10', '12'}
 FACTS = ROOT / '.claude/skills/component-ti-opa4196idr/facts.json'
+# Per-MPN input-capacitance and GBW facts (MC04-S7 Revision 2): an MPN missing here has no retained fact and its
+# input pins are listed under input_C_not_retained_for.
+FACT_SKILL = {'OPA4196IDR': ('component-ti-opa4196idr', 'fact-op-audio-gbw', 'fact-op-audio-input-impedance'),
+              'OPA4197IPWR': ('component-ti-opa4197ipwr', 'fact-op-precision-gbw',
+                              'fact-op-precision-input-impedance')}
 JACK_SOURCE_OHM = 1000.0   # ASSUMED patched source impedance; no retained source states one
 R_ON_OHM = 15.0            # fact-fault-switch-t-ron-12v-single bound (12 V single supply; extrapolated to +/-12 V)
 LIMIT_OUT_F = 100e-12      # ASSUMED
@@ -58,6 +63,16 @@ def facts():
     return {'input_cm_F': f['fact-op-audio-input-impedance']['value']['common_mode_pF'] * 1e-12,
             'gbw_Hz': f['fact-op-audio-gbw']['value']['typical'] * 1e6,
             'capacitive_load_guidance': f['fact-op-audio-capacitive-load-guidance']['value']}
+
+
+def mpn_facts():
+    """{mpn: {'input_cm_F', 'gbw_Hz', 'fact_ids'}} from each MPN's own component skill."""
+    out = {}
+    for mpn, (skill, gbw, zin) in FACT_SKILL.items():
+        f = {x['fact_id']: x for x in json.loads((ROOT / '.claude/skills' / skill / 'facts.json').read_text())['facts']}
+        out[mpn] = {'input_cm_F': f[zin]['value']['common_mode_pF'] * 1e-12, 'gbw_Hz': f[gbw]['value']['typical'] * 1e6,
+                    'fact_ids': [skill + ': ' + gbw, skill + ': ' + zin]}
+    return out
 
 
 def ohms(v):
@@ -113,6 +128,7 @@ def run(sources=None):
     srcs = nets_sources(sources)
     nets = {k: v[2] for k, v in srcs.items()}
     fx = facts()
+    per_mpn = mpn_facts()
     inp = le.load_inputs()
     kinds = le.partition_kinds()
     rules = inp['classes']['rules']
@@ -168,8 +184,9 @@ def run(sources=None):
             ic = [(ref, p) for ref, p in on if mpn.get(ref) in OPA]
             sw = [(ref, p) for ref, p in on if mpn.get(ref, '').startswith(SWITCH_PREFIX)]
             rs = [(ref, r_of(ref)) for ref, _ in on if ref[0] == 'R' and not ref.startswith('RV')]
-            own_c = sum(fx['input_cm_F'] for ref, p in ic if p in INV_PINS | NONINV_PINS and mpn[ref] == OPA4196)
-            no_c = [('%s.%s' % x) for x in ic if x[1] in INV_PINS | NONINV_PINS and mpn[x[0]] != OPA4196]
+            own_c = sum(per_mpn[mpn[ref]]['input_cm_F'] for ref, p in ic
+                        if p in INV_PINS | NONINV_PINS and mpn[ref] in per_mpn)
+            no_c = [('%s.%s' % x) for x in ic if x[1] in INV_PINS | NONINV_PINS and mpn[x[0]] not in per_mpn]
             row = {'net': n, 'kind': r['kind'], 'from': r['from'], 'opa_pins': ['%s.%s' % x for x in ic],
                    'switch_pins': ['%s.%s' % x for x in sw], 'resistors_ohm': {a: b for a, b in rs},
                    'added_C_pF': round(c_cable * 1e12, 2), 'node_own_input_C_pF': round(own_c * 1e12, 2)}
@@ -244,6 +261,8 @@ def run(sources=None):
                      'block_verdict': dict(sorted(verdict.items())),
                      'tally': {'%s %s' % k: v for k, v in sorted(tally.items())}, 'nets': res}
     return {'status': 'STAGE_1A_DRAFT_LIMITS', 'facts': {k: v for k, v in fx.items()},
+            'facts_by_mpn': {m: {'input_cm_pF': round(v['input_cm_F'] * 1e12, 3), 'gbw_Hz': v['gbw_Hz'],
+                                 'fact_ids': v['fact_ids']} for m, v in per_mpn.items()},
             'fact_ids': ['fact-op-audio-gbw', 'fact-op-audio-input-impedance', 'fact-op-audio-capacitive-load-guidance',
                          'component-ti-tmux7412frrpr: fact-fault-switch-t-ron-12v-single'],
             'assumed': {'jack_source_ohm': JACK_SOURCE_OHM, 'r_on_ohm': R_ON_OHM, 'output_total_C_F': LIMIT_OUT_F,

@@ -19,11 +19,15 @@ SOURCE_OBJECT_SHA256 = 'a555e65e9a61617ebe9e7c10656722ac0f25f80f7abef0a3d193bc7b
 # mc04-s6-c6-rebind-check-20261122.json (sha256 577464968eb8e7644a50b283192817891070361fe946389fd8fb44e86e77b87d, as of MC04-S6 revision 5).
 # Only the geometry and output pins are rebound; the signal and positions pins are unchanged.
 # Previous geometry pin: fb5e91e1c7fc1f581434cb6a9a28fb91d7c21c170d66156ceb6cb4e912760eb8
-SOURCE_GEOMETRY_SHA256 = '3b58378a048d21c0f2eb273dda07759f789d1151629c43df90028eaafa4db7b8'
+# MC04-S7 Revision 2 rebind (JL-K-JL-L02 held at its retained slot; signals, positions and riders unchanged;
+# circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-c6-rebind-check-20261122.json, sha256
+# 844a68b6caea1458376f4266a70b13506be9dc561d088c4b9c0ee42d64df1c4e). Previous geometry pin: 3b58378a048d21c0f2eb273dda07759f789d1151629c43df90028eaafa4db7b8
+SOURCE_GEOMETRY_SHA256 = '35ce915f31bab14a881690030ed18e67250331d6eee00d40d42c8c93268fe627'
 SOURCE_SIGNAL_SHA256 = 'baa834876861bea8245c223950e3405ec7d9223f327f99f38fc3c5a59da128c4'
 SOURCE_POSITIONS_SHA256 = 'c95a3dfbd397cfe3785e6e8f90037105a86ee01a9460fd98d7fab0b932f57ebd'
 # Previous output pin: 81400a28b258fc0002bbe05f451e9237aeb9ab5ad9b2719cbaa2e4416522e94a (MC04-S6 revision 4 rebind)
-OUTPUT_LINKS_SHA256 = '078cd8eeb0c86b7551867e82a6e6c0ab7bf64068f84e1a030400509cd5142443'
+# Previous output pin: 078cd8eeb0c86b7551867e82a6e6c0ab7bf64068f84e1a030400509cd5142443 (MC04-S6 revision 4 rebind)
+OUTPUT_LINKS_SHA256 = '7f7fb47c58b32d7267008c6cc610174d03749b7389599d7e77eeff0714b4f907'
 L01 = 'P-K-P-L01.01.01'
 L01B = 'P-K-P-L01.02.01'
 L03 = 'P-K-P-L03.01'

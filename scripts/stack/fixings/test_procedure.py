@@ -58,7 +58,7 @@ class Record(unittest.TestCase):
                                                 'C68390 50 mm': 9, 'C81339 40 mm': 3})
         self.assertEqual(c['parts_with_leads_to_cut_per_board'], {'JL': 19, 'JR': 11, 'P': 49, 'O3': 1})  # after the MC04-S6 rev 4 JR-L02 rebind
         self.assertEqual((c['connectors'], c['locks_before_K'], c['locks_after_K']), (122, 61, 61))
-        self.assertEqual((c['lengthened_tails'], c['holding_hand'], c['fastener_operations']), (29, 12, 44))  # JL-L02 no longer lengthened (MC04-S6 rev 4)
+        self.assertEqual((c['lengthened_tails'], c['holding_hand'], c['fastener_operations']), (30, 12, 44))  # JL-L02 held at its retained, lengthened slot (MC04-S7 rev 2)
 
     def test_smallest_slack_and_stages(self):
         self.assertAlmostEqual(min(r['slack_mm'] for r in DOC['links']), 0.6602)

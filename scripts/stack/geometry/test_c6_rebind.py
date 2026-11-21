@@ -1,4 +1,5 @@
-"""MC04-S6 revision 4: the c6 rebind changed only the geometry and output pins (no KiCad, no network)."""
+"""MC04-S6 revision 4 and MC04-S7 revision 2: each c6 rebind changed only the geometry and output pins (no KiCad, no
+network)."""
 import json
 import sys
 import unittest
@@ -10,7 +11,7 @@ import links_gate as lg  # noqa: E402
 import links_gate_c6 as c6  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[3]
-RECORD = ROOT / 'circuit/orchestration/campaigns/osc-stack-20261114/mc04-s6-c6-rebind-check-20261122.json'
+RECORD = ROOT / 'circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-c6-rebind-check-20261122.json'
 
 
 class C6Rebind(unittest.TestCase):
