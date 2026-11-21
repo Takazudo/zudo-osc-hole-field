@@ -12,10 +12,18 @@ import links_gate as gate
 
 SOURCE_SHA256 = '6e3141c94d8aff6d3552916fd37caf11e710607cf9add46c315107d41aa093b1'
 SOURCE_OBJECT_SHA256 = 'a555e65e9a61617ebe9e7c10656722ac0f25f80f7abef0a3d193bc7b7d389ef8'
-SOURCE_GEOMETRY_SHA256 = 'fb5e91e1c7fc1f581434cb6a9a28fb91d7c21c170d66156ceb6cb4e912760eb8'
+# MC04-S6 revision 4 rebind (circuit/orchestration/campaigns/osc-stack-20261114/
+# mc04-s6-board-sync-native-brief-20261121.md, Revision 4): after JL/JR were brought to the floorplan (source
+# commit 9d3d5a96), the pre-c6 geometry changed (JL-K-JL-L02 and JR-K-JR-L02 take new slots; JL-L07, JL-L08 and
+# JR-L04 change cost only). c6's own output - positions, signals and the three riders - is unchanged; see
+# mc04-s6-c6-rebind-check-20261122.json (sha256 0b89c65561297dc46a7ef183e16b7d2b8dcb94e0699500cda68051268240838b).
+# Only the geometry and output pins are rebound; the signal and positions pins are unchanged.
+# Previous geometry pin: fb5e91e1c7fc1f581434cb6a9a28fb91d7c21c170d66156ceb6cb4e912760eb8
+SOURCE_GEOMETRY_SHA256 = '3b58378a048d21c0f2eb273dda07759f789d1151629c43df90028eaafa4db7b8'
 SOURCE_SIGNAL_SHA256 = 'baa834876861bea8245c223950e3405ec7d9223f327f99f38fc3c5a59da128c4'
 SOURCE_POSITIONS_SHA256 = 'c95a3dfbd397cfe3785e6e8f90037105a86ee01a9460fd98d7fab0b932f57ebd'
-OUTPUT_LINKS_SHA256 = '81400a28b258fc0002bbe05f451e9237aeb9ab5ad9b2719cbaa2e4416522e94a'
+# Previous output pin: 81400a28b258fc0002bbe05f451e9237aeb9ab5ad9b2719cbaa2e4416522e94a (MC04-S6 revision 4 rebind)
+OUTPUT_LINKS_SHA256 = '078cd8eeb0c86b7551867e82a6e6c0ab7bf64068f84e1a030400509cd5142443'
 L01 = 'P-K-P-L01.01.01'
 L01B = 'P-K-P-L01.02.01'
 L03 = 'P-K-P-L03.01'
