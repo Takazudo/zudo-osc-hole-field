@@ -30,11 +30,15 @@ def verified_source(current, snapshot):
     old_links = {x['id']: x for x in snapshot['links']}
     if set(old_links) != set(current['c6']['changed_links']):
         raise ValueError('c6 snapshot does not cover exactly the changed links')
-    original = copy.deepcopy(current)
-    original['links'] = [old_links.get(x['id'], x) for x in original['links']]
+    # MC04-S6 revision 5: rebuild the historical object from the snapshot's own retained record, not from the
+    # current links, so a later scene change cannot break the check and the current record cannot relabel it.
+    retained = {x['id']: x for x in snapshot['source_unchanged_links']}
+    if set(retained) & set(old_links) or set(retained) | set(old_links) != set(snapshot['source_link_order']):
+        raise ValueError('c6 snapshot link set is incomplete')
+    original = copy.deepcopy(snapshot['source_fields'])
+    original['links'] = [copy.deepcopy(old_links.get(i) or retained[i]) for i in snapshot['source_link_order']]
     original['provenance'] = snapshot['source_provenance']
     original['summary'] = snapshot['source_summary']
-    original.pop('c6', None)
     if c6.digest(original) != c6.SOURCE_OBJECT_SHA256:
         raise ValueError('c6 historical record hash mismatch')
     return original
