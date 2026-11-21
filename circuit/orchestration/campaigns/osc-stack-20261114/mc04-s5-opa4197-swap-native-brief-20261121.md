@@ -75,3 +75,31 @@ Push to `claude/project-thread-iw3gai`, then report:
 - Use the machine-wide heavy guard for regeneration and simulation; one native job at a time.
 
 Native result: **NOT RUN** at this brief. Every schematic and PCB remains an unvalidated draft.
+
+## Revision 1 after independent review (2026-11-21)
+
+The run (`d25dd9f`, `b610521`, `bd76809`, `102d9c1`) made the spec swap correctly and minimally: exactly the six
+packages changed MPN, refs unchanged, rail deltas exactly +17.2 mA typical / +25.0 mA maximum per analog rail,
+panel hardware unchanged. The manager regenerated the power-contract decomposition and ledger (`decompose.py`,
+`ledger.py`; the canonical +12 V requirement is now 1700 mA, equal to the contract, so the +12 V contract margin is
+0 mA). That goes to the owner; the four `test_decompose.py`/`test_ledger.py` tripwires stay failing until the
+owner rules. Do not edit them. Fix these and push:
+
+1. **Simulation seeding.** The seed gate at `design/spec/cells/sweep_input_buffer_vendor.py:254` changed the
+   reviewed OPA4196 S4 rows (0 pF / 1 µA 110.4° → 107.3°; 0 pF / 10 µA 92.72° → 85.9°), and the OPA4197
+   7.2 pF / 1 mA point mixes a seeded voltage-injection run with an unseeded current-injection run. Record and
+   assert the same DC operating point in both injection runs, apply it to both models, rerun, and report the
+   change from the reviewed S4 values.
+2. **Wavefolder plots.** `test_wavefolder` fails because `design/spec/modules/wavefolder-plots.json` pins a stale
+   report hash after the io_partition digest changed. Regenerate the oracle traces and run
+   `design/spec/modules/plot_wavefolder.py` with matplotlib 3.9.2 in a disposable venv.
+3. **Placement record.** The hand-back misread D2232 (it moved back onto its slot). Report the real new
+   displacements from pinned slots: D4309 44.8 mm (JR, face B→F; an E3 input diode now 37 mm from U4346),
+   RB2116 30.9 mm (F1), RB1405 20.3, RB1504 15.8, D8333 10.9, R8325 10.9 mm, and C1341 25.7 → 30.7 mm. Correct
+   the comment at `design/partition/partition35_floorplan.py:42-43` ("JR evicts nothing"). If the floorplan
+   generator can keep D4309 within the protection-diode locality of U4346 without moving panel hardware, do
+   that and report; otherwise report it as a fit conflict with dimensions.
+4. **Commit hygiene.** Keep regenerated SVG deletions in the regeneration commit, not the simulation commit.
+5. **Hand-back.** List as open, not passed: `test_rail_options` (count tripwire, deferred to #34),
+   `test_instrument_readiness` (24 PCB mismatches until the layout stage), and any environment-only failure with
+   its reason.
