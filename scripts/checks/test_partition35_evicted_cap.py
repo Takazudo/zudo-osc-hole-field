@@ -32,5 +32,20 @@ class EvictedDiodeCap(unittest.TestCase):
         self.assertEqual([(dx, dy) for _, dx, dy in ranked], [(0.0, 20.0), (5.0, 0.0)])
 
 
+class EmittedD4309(unittest.TestCase):
+    def test_d4309_is_within_the_cap_or_reported(self):
+        import json
+        from scripts.checks.partition35_floorplan import ROOT
+        plan = json.loads((ROOT / 'design/partition/floorplan-candidate.json').read_text())
+        pins = {p['ref']: p for p in json.loads((ROOT / 'design/partition/adopted-placement-pins.json').read_text())['pins']}
+        row = next(p for p in plan['placements'] if p['ref'] == 'D4309')
+        slot = pins['D4309']
+        distance = math.hypot(row['x_mm'] - slot['x_mm'], row['y_mm'] - slot['y_mm'])
+        jr = plan['adopted_placement_pins']['boards']['JR']
+        self.assertIn('D4309', jr['evicted'])
+        self.assertTrue(distance <= fp.CLUSTER_RADIUS_MM + 1e-9 or 'D4309' in jr.get('evicted_diodes_beyond_cap', []),
+                        f'D4309 at {distance:.2f} mm is beyond the cap and not reported')
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -46,7 +46,8 @@ PROTECTION_DIODES=('BAV199,215','BAT54S,215')
 EVICTED_LOCAL_BOARDS=('K','JR')
 # MC04-S6: an evicted diode on a jack board is re-placed nearest-legal-first within CLUSTER_RADIUS_MM of
 # its slot (the 24 mm locality of design/partition/precision-tssop-retention.json), not by net-growth
-# cost, which had put D4309 21.5 mm away although legal poses exist 4-7 mm away. K keeps its placement.
+# cost. D4309 has no legal pose within 21.27 mm under the floorplan's courtyard, hardware and gap model
+# (it lands at 21.27 mm, 26.2 mm from U4346). K keeps its placement.
 NEAREST_FIRST_EVICTED_BOARDS=('JL','JR')
 
 

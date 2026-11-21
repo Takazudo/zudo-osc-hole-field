@@ -66,11 +66,18 @@ def input_hashes(inp):
     out[FIXING_FILE + '#access_holes'] = pinned_object(inp['fixing_list']['access_holes'])
     out[COMPLIANCE_FILE + '#inputs_sha256'] = inp['compliance']['inputs_sha256']
     out[COMPLIANCE_FILE + '#nodes'] = pinned_object(inp['compliance']['nodes'])
-    # generate() embeds the record totals of the a7 comparison file, so it is a provenance input too.
-    a7 = links.LINK_DIR / 'link-gate-a7-comparisons.json'
-    if a7.exists():
-        out[a7.resolve().relative_to(Path(root).resolve()).as_posix()] = sg.sha256_file(a7)
+    out.update(a7_input(root))
     return out
+
+
+A7_INPUT = 'design/stack/geometry/links/link-gate-a7-comparisons.json'
+
+
+def a7_input(root):
+    """generate() embeds the record totals of the a7 comparison file, so it is a provenance input too; the path
+    is built from the caller's root, so a non-default root hashes its own copy."""
+    path = Path(root) / A7_INPUT
+    return {A7_INPUT: sg.sha256_file(path)} if path.exists() else {}
 
 
 FIXING_FILE = 'design/stack/fixings/fixing-sites.json'

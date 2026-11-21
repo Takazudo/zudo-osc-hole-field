@@ -63,7 +63,17 @@ class ProvenanceHashesA7(unittest.TestCase):
                'compliance': {'inputs_sha256': '', 'nodes': []}}
         hashes = lg.input_hashes(inp)
         key = a7.resolve().relative_to(ROOT.resolve()).as_posix()
+        self.assertEqual(key, lg.A7_INPUT)
         self.assertEqual(hashes.get(key), hashlib.sha256(a7.read_bytes()).hexdigest())
+
+    def test_a7_path_is_built_from_the_given_root(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertEqual(lg.a7_input(tmp), {})
+            copy = Path(tmp) / lg.A7_INPUT
+            copy.parent.mkdir(parents=True)
+            copy.write_bytes(b'{"record_totals": {}}')
+            self.assertEqual(lg.a7_input(tmp), {lg.A7_INPUT: hashlib.sha256(copy.read_bytes()).hexdigest()})
 
 
 if __name__ == '__main__':
