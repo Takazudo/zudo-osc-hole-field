@@ -25,6 +25,26 @@ with the 7.22 pF cable, and to 40° at four times that capacitance. The screen p
 four blocks stay conditional on case 5 of the stage 4 WSL simulation, which covers the bridge dead band and
 slewing that the screen cannot see.
 
+Stage 4 (WSL vendor-model simulation, `design/spec/cells/sweep_input_buffer_vendor.py`, report
+`design/reports/spice/input-buffer-vendor.json` sha256 `445df865…c2ae` at `fb88d9f`, revision 1 independently
+reviewed, all six revision items closed). Model evidence only, not hardware qualification:
+
+- No sustained oscillation in the 90 evaluated of 112 rows (22 are AC or non-conducting rows, NOT EVALUATED). In
+  the sine rows the 1 mV residual threshold is frequency weighted by a 1 µs moving average: about 15 mV at
+  200 kHz, so slow oscillation in the sine rows is weakly screened (review SHOULD, disclosed here; step and hold
+  rows use unfiltered peak-to-peak).
+- OPA4197 settles as fast as OPA4196 or faster, except five RC-limited cases where it is up to 0.40 µs slower.
+  At ±15 V overdrive the clamps conduct, with no phase reversal; recovery is 1.0–1.1 µs against 2.1–5.2 µs.
+- Plain followers, Middlebrook double injection: OPA4196 54.8° at 2.6 MHz, OPA4197 64.0° at 10 MHz.
+- Indicator loops (OPA4196): worst margin of four bias points 58.5° / 52.5° / 46.6° / 40.1° with 0 / 7.2 / 15 /
+  30 pF on each LED net. The one-cable case (7.2 pF) passes the ASSUMED 45° criterion; about twice that is the
+  draft ceiling, so an indicator LED net must not cross more than one cable span (DRAFT limit, needs ruling).
+
+Consequence: on model evidence, OPA4197IPWR is an electrically acceptable replacement for the six input-buffer
+packages, and the four indicator blocks may move if each LED net stays within about 15 pF. Still open before a
+generator change: the rail ruling (#34; the swap adds +17.2 mA typical and +25.0 mA maximum on each analog rail,
+on a −12 V rail already over its ceiling), and the 25 mm rule for the four buffers placed 26–32 mm away.
+
 ## The question for the design authority: which remedy to develop for the 26 unplaced ICs
 
 The cumulative record has 438 displaced footprints. 412 have courtyard-level replacements and 26
