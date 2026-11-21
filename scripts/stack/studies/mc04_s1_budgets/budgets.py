@@ -16,7 +16,10 @@ evaluates DRAFT criteria built from retained OPA4196 facts and the retained coup
 Input-side source impedance: a node driven by a protection switch drain (TMUX7412) is evaluated patched (an
 ASSUMED 1 kΩ jack source plus the 15 Ω R_ON bound of fact-fault-switch-t-ron-12v-single) and unpatched (its
 resistors to AGND), and the worse case is used; other nodes use the smallest resistor on the node, a lower bound.
-The criteria are proposals for the independent reviewer, not accepted budgets. Paper only."""
+The criteria are proposals for the independent reviewer, not accepted budgets. Paper only.
+
+--source NAME=PATH (repeatable, MC04-S7 Revision 1) evaluates other crossing-net classifications instead of the two
+pinned ones; each is recorded by its sha256 in the result. With no --source the pins are enforced as before."""
 import argparse
 import collections
 import hashlib
@@ -73,13 +76,42 @@ def values():
     return out
 
 
-def run():
-    nets = {}
-    for k, (p, h) in NETS.items():
-        b = p.read_bytes()
-        if hashlib.sha256(b).hexdigest() != h:
-            raise ValueError('%s changed' % p)
-        nets[k] = json.loads(b)['nets']
+def nets_sources(sources=None):
+    """{case: (path, sha256, nets)}: the pinned classifications (hash enforced), or the given {case: path}."""
+    out = {}
+    if sources is None:
+        for k, (p, h) in NETS.items():
+            b = p.read_bytes()
+            if hashlib.sha256(b).hexdigest() != h:
+                raise ValueError('%s changed' % p)
+            out[k] = (p, h, json.loads(b)['nets'])
+    else:
+        for k, p in sources.items():
+            b = Path(p).read_bytes()
+            out[k] = (Path(p), hashlib.sha256(b).hexdigest(), json.loads(b)['nets'])
+    return out
+
+
+def parse_sources(specs):
+    if not specs:
+        return None
+    out = {}
+    for x in specs:
+        k, sep, p = x.partition('=')
+        if not sep or not k or not p or k in out:
+            raise ValueError('bad --source: ' + x)
+        out[k] = Path(p)
+    return out
+
+
+def display(p):
+    p = Path(p).resolve()
+    return str(p.relative_to(ROOT)) if p.is_relative_to(ROOT) else str(p)
+
+
+def run(sources=None):
+    srcs = nets_sources(sources)
+    nets = {k: v[2] for k, v in srcs.items()}
     fx = facts()
     inp = le.load_inputs()
     kinds = le.partition_kinds()
@@ -219,6 +251,8 @@ def run():
                         'aggressor': 'retained ANALOGUE aggressor, 20 V at 20 V/us (OPA4196 slews 7.5/5.5 V/us typ)'},
             'cable_case': {'pitch': pk, 'length_mm': length, 'eps_eff': eps, 'ground_rule': rule,
                            'victim_C_total_pF': round(c_cable * 1e12, 2)},
+            **({'sources': {k: {'path': display(v[0]), 'sha256': v[1]} for k, v in srcs.items()}}
+               if sources is not None else {}),
             'cases': out,
             'scope': 'DRAFT criteria for independent review; first-order RC and the retained quasi-static cable model; '
                      'no inverting (feedback) node is among the crossings; no loop-gain simulation, no measured cable data; '
@@ -228,8 +262,9 @@ def run():
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('--output', type=Path)
+    ap.add_argument('--source', action='append', default=[], help='NAME=PATH of a crossing-net classification')
     a = ap.parse_args()
-    text = json.dumps(run(), indent=1) + '\n'
+    text = json.dumps(run(parse_sources(a.source)), indent=1) + '\n'
     if a.output:
         with a.output.open('x') as f:
             f.write(text)

@@ -5,6 +5,11 @@ links/slots/fields/fixings/outline) exactly as MC04-R1 does, rasterises it per b
 each unresolved IC on its own (decouplers are not moved), where on its own board (either
 face, 0/90/180/270 degrees) its complete courtyard fits with no displacement limit. Every raster hit is
 confirmed with the retained exact predicate. Room-only: no routing, electrical or adoption claim.
+
+Current-scene mode (MC04-S7 Revision 1): --current rebuilds the scene from the committed link gate instead of
+the pinned MC04-R1 spec. The unresolved list is every displacement row with no new position; nothing is
+hard-coded. The run refuses to start when any gate input has changed since the gate was generated, and it
+records the sha256 of every file it reads. The pinned R1 path (no flag) is unchanged.
 """
 import json
 import math
@@ -29,6 +34,42 @@ def scene_and_rows():
     scene = r1.Scene(ctx, inp, doc['links'])
     unresolved = [row for row in spec['replacement'] if row['new'] is None]
     return scene, unresolved, len(accepted)
+
+
+GATE = 'design/stack/geometry/links/link-gate.json'
+PARTITION_REPORT = 'design/reports/io-partition.json'
+STUDY_PROGRAM = ('scripts/stack/studies/mc04_r1/study.py', 'scripts/stack/studies/mc04_c1_capacity/capacity.py',
+                 'scripts/stack/studies/mc04_c4_blocks/blocks.py')
+
+
+def stale_inputs(expected, actual):
+    """Names whose hash differs or is present on one side only."""
+    return sorted(k for k in set(expected) | set(actual) if expected.get(k) != actual.get(k))
+
+
+def current_scene(root=ROOT):
+    """The scene of the committed gate: its own displacement record applied to the current boards.
+
+    Returns (scene, unresolved rows, accepted count, input sha256 record). Raises AdmissionError on a stale input:
+    any gate input whose current hash differs from the gate's provenance record."""
+    root = Path(root)
+    doc = json.loads((root / GATE).read_text())
+    inp = r1.lg.load_inputs(root)
+    actual = r1.lg.input_hashes(inp)
+    actual.update(r1.rp.part2_hashes(inp))
+    stale = stale_inputs(doc['provenance']['input_sha256'], actual)
+    if stale:
+        raise r1.AdmissionError('stale input (regenerate the link gate first): ' + ', '.join(stale))
+    rows = doc['replacement']['footprints']
+    inp['ci']['boards'], accepted = r1.reconstruct(inp['ci']['boards'], rows, rows)
+    model = r1.lg.GateModel(inp, r1.lg.gate_sites(inp))
+    ctx = r1.SimpleNamespace(model=model, opts=inp['opts'])
+    scene = r1.Scene(ctx, inp, doc['links'])
+    unresolved = [row for row in rows if row['new'] is None]
+    hashes = dict(actual)
+    for name in (GATE, PARTITION_REPORT) + STUDY_PROGRAM:
+        hashes[name] = r1.sg.sha256_file(root / name)
+    return scene, unresolved, len(accepted), dict(sorted(hashes.items()))
 
 
 def blocked_mask(scene, board, face, exclude):
@@ -146,10 +187,13 @@ def joint_first_fit(scene, unresolved, gap=0.35):
     return out
 
 
-def run():
-    scene, unresolved, accepted = scene_and_rows()
-    if accepted != 412 or len(unresolved) != 26:
-        raise r1.AdmissionError('accepted/unresolved count changed')
+def run(current=False):
+    if current:
+        scene, unresolved, accepted, hashes = current_scene()
+    else:
+        scene, unresolved, accepted = scene_and_rows()
+        if accepted != 412 or len(unresolved) != 26:
+            raise r1.AdmissionError('accepted/unresolved count changed')
     masks, rows = {}, []
     for row in unresolved:
         board, ref = row['board'], row['ref']
@@ -168,7 +212,11 @@ def run():
                      'nearest_mm': min(near) if near else None,
                      'within_retained_25mm': bool(near) and min(near) <= 25.0})
     free = {f'{b}.{f}': round(float((~m).sum()) * STEP * STEP, 1) for (b, f), (m, _) in masks.items()}
-    return {'status': 'CAPACITY_CENSUS', 'step_mm': STEP, 'free_area_mm2_conservative': free, 'ics': rows,
+    head = {}
+    if current:
+        head = {'scene': 'current committed link gate', 'accepted_moves': accepted,
+                'unresolved': [r['board'] + ':' + r['ref'] for r in unresolved], 'inputs_sha256': hashes}
+    return {'status': 'CAPACITY_CENSUS', **head, 'step_mm': STEP, 'free_area_mm2_conservative': free, 'ics': rows,
             'room_on_own_board_each_alone': sum(1 for r in rows if r['nearest_mm'] is not None),
             'within_retained_25mm': [r['ref'] for r in rows if r['within_retained_25mm']],
             'joint_first_fit': joint_first_fit(scene, unresolved),
@@ -182,8 +230,9 @@ if __name__ == '__main__':
     import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument('--output', type=Path)
+    ap.add_argument('--current', action='store_true', help='the committed gate scene instead of the pinned MC04-R1 one')
     args = ap.parse_args()
-    text = json.dumps(run(), indent=1) + '\n'
+    text = json.dumps(run(args.current), indent=1) + '\n'
     if args.output:
         with args.output.open('x') as f:
             f.write(text)

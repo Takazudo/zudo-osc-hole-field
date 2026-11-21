@@ -12,7 +12,10 @@ the feedback ladder beta(f) = V(SENSE)/V(OUT) at several bridge currents. With a
 A = GBW/(j f) (ASSUMED model; retained GBW fact), it reports the loop crossover and the phase margin, against the
 same unit with no added capacitance. Diode and LED ideality, the ideal amplifier output, and the 45 degree margin
 criterion are ASSUMED. Off-path diode junction capacitance and PCB parasitics are not modelled. Paper only: it
-screens for a reason to simulate; it does not establish stability."""
+screens for a reason to simulate; it does not establish stability.
+
+--source NAME=PATH (repeatable, MC04-S7 Revision 1) screens other crossing-net classifications instead of the ones
+pinned by stage 1a, recorded by sha256."""
 import argparse
 import cmath
 import collections
@@ -92,7 +95,8 @@ def r_of(val, ref):
     return x
 
 
-def run():
+def run(sources=None):
+    src = budgets.nets_sources(sources)
     inp = le.load_inputs()
     pk, length, rule, pair = budgets.CABLE
     c_cable = le.pair_parameters(inp, pk, length, max(inp['cable']['eps_eff']['value']), rule, pair)['Cv_total_F']
@@ -120,11 +124,8 @@ def run():
             'DRIVE': drive, 'SENSE': sense, 'LED_A': led_a, 'LED_K': led_k},
             'r_sense_ref': rs_ref[0], 'r_sense_ohm': r_of(val, rs_ref[0])})
     cases = {}
-    for case, (p, h) in budgets.NETS.items():
-        b = p.read_bytes()
-        if hashlib.sha256(b).hexdigest() != h:
-            raise ValueError('%s changed' % p)
-        crossing = {x['net'] for x in json.loads(b)['nets']}
+    for case, (_, _, nets) in src.items():
+        crossing = {x['net'] for x in nets}
         rows = []
         for u in units:
             on = sorted(k for k, n in u['nets'].items() if n in crossing)
@@ -184,15 +185,16 @@ def run():
                                          'PCB parasitics',
                                          'amplifier output resistance and second poles', 'bridge dead band',
                                          'large-signal slewing']},
-            'sources': {k: {'path': str(p.relative_to(ROOT)), 'sha256': h} for k, (p, h) in budgets.NETS.items()},
+            'sources': {k: {'path': budgets.display(p), 'sha256': h} for k, (p, h, _) in src.items()},
             'cases': cases}
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument('--out', default=str(Path(__file__).with_name('result.json')))
+    ap.add_argument('--source', action='append', default=[], help='NAME=PATH of a crossing-net classification')
     a = ap.parse_args()
-    text = json.dumps(run(), indent=1) + '\n'
+    text = json.dumps(run(budgets.parse_sources(a.source)), indent=1) + '\n'
     Path(a.out).write_text(text)
     print(a.out, hashlib.sha256(text.encode()).hexdigest())
 
