@@ -57,6 +57,21 @@ Consequences recorded by the regenerated power-contract ledger: the positive-con
 15 V / 3 A rises from 0.939 to 0.973, and the ideal-high low-power case now needs a 21.3 mA +12 V reduction
 (previously 0). Both are an open rail follow-up; issue #34 is closed, so this packet is the live record until a new rail issue is opened.
 
+Stage 5 result (WSL, `b610521` spec, revision 1 at `af1a35e9`, `c1c9043c`, `cfaf745f`; independently reviewed,
+accepted). The six packages are OPA4197IPWR on their front boards: five within 0.5–1.6 mm of their old slots,
+U1518 back on its original TSSOP slot. Panel hardware and `placements.lock.json` are unchanged. Revised indicator
+margins (shared DC point): OPA4196 58.3 / 53.8 / 48.1 / 40.2° at 0 / 7.2 / 15 / 30 pF; OPA4197 (U8417) 61.2 / 51.8°
+at 0 / 7.2 pF. Open:
+
+- **D4309 fit conflict (E3 input diode, JR B.Cu).** Its old slot (courtyard x 264.1–266.6, y 43.8–48.76 mm)
+  overlaps the U4346 TSSOP courtyard by about 0.22 × 0.34 mm plus the 0.35 mm clearance. The floorplan's
+  net-cost ranking chose a pose 21.5 mm from the slot, 26.4 mm from U4346 and 37.5 mm from U4347; free B.Cu poses
+  exist about 4–7 mm from the slot (for example 261.85, 39.95). No coded rule is broken (the locality rule covers
+  only BAV199/BAT54S). The next generator stage adds a distance cap for evicted input-protection diodes.
+- `test_rail_options` count tripwire (rail follow-up) and `test_instrument_readiness` (24 PCB footprint
+  mismatches until the layout stage). `regen-all.sh --check` and the simulation `--check` are NOT RUN in the cloud
+  (no oracle); WSL ran them.
+
 ## The question for the design authority: which remedy to develop for the 26 unplaced ICs
 
 The cumulative record has 438 displaced footprints. 412 have courtyard-level replacements and 26
