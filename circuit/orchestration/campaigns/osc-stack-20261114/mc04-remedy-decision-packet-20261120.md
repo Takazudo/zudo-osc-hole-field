@@ -45,6 +45,12 @@ packages, and the four indicator blocks may move if each LED net stays within ab
 generator change: the rail ruling (#34; the swap adds +17.2 mA typical and +25.0 mA maximum on each analog rail,
 on a −12 V rail already over its ceiling), and the 25 mm rule for the four buffers placed 26–32 mm away.
 
+Owner decision, 2026-11-21 10:18Z: "Accept, fix the rail in #34". The six input-buffer packages (U1216, U1416,
+U1518, U4346, U8314, U8417) change from OPA4196 SOIC-14 to OPA4197IPWR TSSOP-14 and stay on their front boards.
+The added analog-rail current (+17.2 mA typical, +25.0 mA maximum per rail) is carried to #34, which owns the
+−12 V overshoot. The 25 mm rule for the buffers placed 26–32 mm away is still an open review item for the
+generator stage.
+
 ## The question for the design authority: which remedy to develop for the 26 unplaced ICs
 
 The cumulative record has 438 displaced footprints. 412 have courtyard-level replacements and 26
