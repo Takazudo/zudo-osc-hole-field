@@ -66,7 +66,8 @@ at 0 / 7.2 pF. Open:
 - **D4309 fit conflict (E3 input diode, JR B.Cu).** Its old slot (courtyard x 264.1–266.6, y 43.8–48.76 mm)
   overlaps the U4346 TSSOP courtyard by about 0.22 × 0.34 mm plus the 0.35 mm clearance. The floorplan's
   net-cost ranking chose a pose 21.5 mm from the slot, 26.4 mm from U4346 and 37.5 mm from U4347; free B.Cu poses
-  exist about 4–7 mm from the slot (for example 261.85, 39.95). No coded rule is broken (the locality rule covers
+  looked free about 4–7 mm from the slot in a raster scan, but stage 6 review showed they fail the floorplan's
+  hardware, outline and gap model; the nearest legal pose is 21.27 mm (stage 6 cap). No coded rule is broken (the locality rule covers
   only BAV199/BAT54S). The next generator stage adds a distance cap for evicted input-protection diodes.
 - `test_rail_options` count tripwire (rail follow-up) and `test_instrument_readiness` (24 PCB footprint
   mismatches until the layout stage). `regen-all.sh --check` and the simulation `--check` are NOT RUN in the cloud

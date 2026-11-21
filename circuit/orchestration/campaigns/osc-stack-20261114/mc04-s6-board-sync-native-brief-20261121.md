@@ -98,3 +98,20 @@ those boards again. So do not re-route now. Proceed as follows:
    `regen-all.sh --check`, `pnpm circuit:check` and the stack geometry checks.
 
 The re-route of JL and JR is deferred to the routing pass after stage 7 and is recorded as open; it is not a pass.
+
+### Revision 1 addendum from the independent review of `285086b1` and `354beaf8`
+
+Both commits are accepted: the link-gate fixes are correct, and `links_gate.py --stdout` reproduces `link-gate.json`
+byte for byte in the cloud. D4309 is a real fit conflict. Under the floorplan's own courtyard, panel-hardware,
+outline and 0.35 mm gap model, no legal B.Cu pose lies closer than 21.27 mm. The "4–7 mm" poses came from a raster
+scan that ignored those obstacles. Also do these in the same push:
+
+5. Reword the comment at `scripts/checks/partition35_floorplan.py:47-49` (and this brief's step 2 premise stays as
+   history) to "no legal pose within 21.27 mm under the floorplan's courtyard, hardware and gap model".
+6. `scripts/stack/geometry/links_gate.py:70-72` builds the a7 path from `links.LINK_DIR`, not from `inp['root']`;
+   with a non-default root `relative_to` raises. Build it from the root, with a test.
+7. Add a test that the emitted D4309 distance is either within 24 mm or listed in `evicted_diodes_beyond_cap`.
+8. Three stack-geometry tests already failed at `89ddd104`: `stack-candidate.json` and `link-candidate.json` are stale
+   against `design/partition/partition.json`, and `GatePart3.test_finding_9` (71.96 vs 73.46) follows from that.
+   Regenerate those two candidates with their own generators so that stage 7 starts from a consistent stack, and
+   report the test results.
