@@ -99,3 +99,28 @@ models, every check run with PASS / FAIL / NOT RUN and the reason, and any model
 unavailable. The independent review follows before any substitution is proposed.
 
 Native simulation result: **NOT RUN** at this brief.
+
+## Revision 1 after independent review (2026-11-21)
+
+The first run (`24ab6ff`, report sha256 `8087405c…479f`) reproduced the netlist topology and pinned both models
+correctly. The review found these items to fix in the harness, then rerun and regenerate the report:
+
+1. **Oscillation coverage.** Aggregate the case 3 flags nested under jack/drive. Add an oscillation flag to the
+   follower sine and overdrive rows. Report AC rows and non-conducting 10 mV indicator sines as `NOT EVALUATED`,
+   not `False`. Replace the 1 %-of-amplitude sine residual threshold with an absolute (1 mV) or spectral threshold.
+   State the claim as "none in the N evaluated".
+2. **Loop break (5a).** Voltage-only injection at IN− is not the full Middlebrook method. Add a Tian run, or the
+   current-injection pair, and report Zs/Zl per point. Add a control AC run of a plain unity follower with the same
+   injection, to show the extra vendor-model poles that explain 62° against the paper's 82°. Write the per-point
+   difference from the paper screen into the report, and note that the paper used 29 pF against the run's 30 pF.
+3. **Real overdrive (case 4).** At ±12 V into ±12 V rails the clamps never conduct. Add ±15 V at the jack (or rails
+   at 11.4 V), and test phase reversal as the output against SENSE − 0.5 V, not `min <= 0`.
+4. **Disclosures.** State the 1 µs step edge in `assumed` (or add a 10 ns small-signal step), and state that the
+   off-board GH harness load on `*_BUFFER` is not bounded by case 2.
+5. **Tests.** Add an offline unit test for `loop_metrics` and `settle_time`, like `test_sweep_precision_vendor.py`.
+6. **Summary wording.** OPA4197 is better or equal within 0.4 µs. It settles slower in the RC-limited cases (SENSE
+   +30/+50 pF and all three 1 nF jack cases). Margins are "worst of four bias points", and 44.8° at 30 pF falls
+   below the ASSUMED 45° criterion.
+
+Finish with `bash scripts/checks/regen-all.sh` after committing the harness, so that the readiness digest matches the
+committed file (the first run recorded a digest of an uncommitted harness; `0b…` cloud commit refreshed it).
