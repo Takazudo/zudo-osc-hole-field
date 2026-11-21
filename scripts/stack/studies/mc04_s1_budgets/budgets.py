@@ -106,8 +106,8 @@ def run():
 
     def r_of(ref):
         x = ohms(val.get(ref))
-        if x is None:
-            raise ValueError('unparsed resistor value %s %r' % (ref, val.get(ref)))
+        if not x:
+            raise ValueError('unparsed or zero-ohm resistor value %s %r' % (ref, val.get(ref)))
         return x
 
     def victim_class(n):
@@ -125,7 +125,7 @@ def run():
         vic = {cls: dict(inp['victims'][cls], source_ohm=[src], nominal_index=0)}
         i2 = dict(inp, victims=vic)
         side = le.victim_peak(par, 'ANALOGUE', cls, i2)
-        return side, {g: le.victim_peak(shield_par[g], 'ANALOGUE', cls, i2)['edge_V'] for g, _, _ in SHIELDS}
+        return side, {g: le.victim_peak(shield_par[g], 'ANALOGUE', cls, i2) for g, _, _ in SHIELDS}
 
     out = {}
     for case, rows in nets.items():
@@ -164,7 +164,8 @@ def run():
                         row.update(node='input-side node', criterion='source impedance unknown', **{'pass': None})
                         res.append(row)
                         continue
-                    cases = {'series-resistor lower bound': min(x for _, x in rs)}
+                    label = 'isolation-resistor source' if r['kind'] == 'isolation midpoint' else 'series-resistor lower bound'
+                    cases = {label: min(x for _, x in rs)}
                     row['node'] = 'non-inverting input' if ic else 'passive-only node'
                 evals = {}
                 for name, src in cases.items():
@@ -173,13 +174,15 @@ def run():
                     evals[name] = {'source_R_ohm': round(src, 1), 'corner_Hz': round(corner),
                                    'crosstalk_side_by_side_mV': round(side['edge_V'] * 1e3, 2),
                                    'crosstalk_20kHz_mV': round(side['sine_V'] * 1e3, 3),
-                                   'crosstalk_shielded_mV': {g: round(v * 1e3, 2) for g, v in sh.items()}}
+                                   'crosstalk_shielded_mV': {g: round(v['edge_V'] * 1e3, 2) for g, v in sh.items()},
+                                   'crosstalk_20kHz_shielded_mV': {g: round(v['sine_V'] * 1e3, 3) for g, v in sh.items()}}
                 worst = max(evals, key=lambda k: evals[k]['crosstalk_side_by_side_mV'])
                 lim = inp['victims'][cls]['limit_V'] * 1e3
                 w = evals[worst]
                 ok_bw = w['corner_Hz'] >= LIMIT_CORNER_HZ
                 need = 'none' if w['crosstalk_side_by_side_mV'] <= lim and w['crosstalk_20kHz_mV'] <= lim else next(
-                    (label for g, _, label in SHIELDS if w['crosstalk_shielded_mV'][g] <= lim), 'not met by any retained rule')
+                    (label for g, _, label in SHIELDS if w['crosstalk_shielded_mV'][g] <= lim and w['crosstalk_20kHz_shielded_mV'][g] <= lim),
+                    'not met by any retained rule')
                 row.update(victim_class=cls, limit_mV=lim, cases=evals, worst_case=worst, shielding_needed=need,
                            criterion='corner >= 200 kHz (ASSUMED) and edge crosstalk <= class limit',
                            **{'pass': ok_bw and need == 'none'})
@@ -194,10 +197,17 @@ def run():
                 per_ic[ic][label] += 1
         verdict = {}
         for ic, c in per_ic.items():
+            shield = any(k.startswith('needs') for k in c)
             verdict[ic] = ('cannot move' if c.get('FAIL') else
-                           'conditional: undetermined nets' if c.get('undetermined') else
+                           'conditional: undetermined nets' + (', and shielding' if shield else '') if c.get('undetermined') else
                            'can move with shielding' if any(k.startswith('needs') for k in c) else 'can move')
-        tally = collections.Counter((x['node'], {True: 'pass', False: 'FAIL', None: 'undetermined'}[x.get('pass')]) for x in res)
+        def outcome(x):
+            if x.get('pass') is None:
+                return 'undetermined'
+            if x['pass']:
+                return 'pass'
+            return 'needs ' + x['shielding_needed'] if x.get('shielding_needed', '').startswith(('ground', 'two')) else 'FAIL'
+        tally = collections.Counter((x['node'], outcome(x)) for x in res)
         out[case] = {'per_ic': {k: dict(v) for k, v in sorted(per_ic.items())},
                      'block_verdict': dict(sorted(verdict.items())),
                      'tally': {'%s %s' % k: v for k, v in sorted(tally.items())}, 'nets': res}

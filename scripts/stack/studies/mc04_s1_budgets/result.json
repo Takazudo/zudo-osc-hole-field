@@ -79,7 +79,7 @@
     "U2119": "conditional: undetermined nets",
     "U2218": "can move with shielding",
     "U4346": "cannot move",
-    "U4347": "conditional: undetermined nets",
+    "U4347": "conditional: undetermined nets, and shielding",
     "U4348": "conditional: undetermined nets",
     "U8314": "cannot move",
     "U8318": "conditional: undetermined nets",
@@ -87,7 +87,7 @@
    },
    "tally": {
     "indicator LED bridge net inside an op-amp feedback loop undetermined": 26,
-    "passive-only node FAIL": 14,
+    "passive-only node needs ground on both sides": 14,
     "protection-switch drain (input node) FAIL": 15
    },
    "nets": [
@@ -107,7 +107,7 @@
      "victim_class": "ANALOGUE",
      "limit_mV": 10.0,
      "cases": {
-      "series-resistor lower bound": {
+      "isolation-resistor source": {
        "source_R_ohm": 499.0,
        "corner_Hz": 44187681,
        "crosstalk_side_by_side_mV": 26.9,
@@ -115,10 +115,14 @@
        "crosstalk_shielded_mV": {
         "B": 6.36,
         "C": 3.34
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.398,
+        "C": 0.209
        }
       }
      },
-     "worst_case": "series-resistor lower bound",
+     "worst_case": "isolation-resistor source",
      "shielding_needed": "ground on both sides",
      "criterion": "corner >= 200 kHz (ASSUMED) and edge crosstalk <= class limit",
      "pass": false
@@ -217,7 +221,7 @@
      "victim_class": "ANALOGUE",
      "limit_mV": 10.0,
      "cases": {
-      "series-resistor lower bound": {
+      "isolation-resistor source": {
        "source_R_ohm": 499.0,
        "corner_Hz": 44187681,
        "crosstalk_side_by_side_mV": 26.9,
@@ -225,10 +229,14 @@
        "crosstalk_shielded_mV": {
         "B": 6.36,
         "C": 3.34
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.398,
+        "C": 0.209
        }
       }
      },
-     "worst_case": "series-resistor lower bound",
+     "worst_case": "isolation-resistor source",
      "shielding_needed": "ground on both sides",
      "criterion": "corner >= 200 kHz (ASSUMED) and edge crosstalk <= class limit",
      "pass": false
@@ -249,7 +257,7 @@
      "victim_class": "ANALOGUE",
      "limit_mV": 10.0,
      "cases": {
-      "series-resistor lower bound": {
+      "isolation-resistor source": {
        "source_R_ohm": 499.0,
        "corner_Hz": 44187681,
        "crosstalk_side_by_side_mV": 26.9,
@@ -257,10 +265,14 @@
        "crosstalk_shielded_mV": {
         "B": 6.36,
         "C": 3.34
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.398,
+        "C": 0.209
        }
       }
      },
-     "worst_case": "series-resistor lower bound",
+     "worst_case": "isolation-resistor source",
      "shielding_needed": "ground on both sides",
      "criterion": "corner >= 200 kHz (ASSUMED) and edge crosstalk <= class limit",
      "pass": false
@@ -281,7 +293,7 @@
      "victim_class": "ANALOGUE",
      "limit_mV": 10.0,
      "cases": {
-      "series-resistor lower bound": {
+      "isolation-resistor source": {
        "source_R_ohm": 499.0,
        "corner_Hz": 44187681,
        "crosstalk_side_by_side_mV": 26.9,
@@ -289,10 +301,14 @@
        "crosstalk_shielded_mV": {
         "B": 6.36,
         "C": 3.34
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.398,
+        "C": 0.209
        }
       }
      },
-     "worst_case": "series-resistor lower bound",
+     "worst_case": "isolation-resistor source",
      "shielding_needed": "ground on both sides",
      "criterion": "corner >= 200 kHz (ASSUMED) and edge crosstalk <= class limit",
      "pass": false
@@ -323,6 +339,10 @@
        "crosstalk_shielded_mV": {
         "B": 12.91,
         "C": 6.77
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.809,
+        "C": 0.424
        }
       },
       "unpatched": {
@@ -333,6 +353,10 @@
        "crosstalk_shielded_mV": {
         "B": 714.5,
         "C": 374.19
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 78.826,
+        "C": 41.344
        }
       }
      },
@@ -367,6 +391,10 @@
        "crosstalk_shielded_mV": {
         "B": 12.91,
         "C": 6.77
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.809,
+        "C": 0.424
        }
       },
       "unpatched": {
@@ -377,6 +405,10 @@
        "crosstalk_shielded_mV": {
         "B": 714.5,
         "C": 374.19
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 78.826,
+        "C": 41.344
        }
       }
      },
@@ -411,6 +443,10 @@
        "crosstalk_shielded_mV": {
         "B": 12.91,
         "C": 6.77
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.809,
+        "C": 0.424
        }
       },
       "unpatched": {
@@ -421,6 +457,10 @@
        "crosstalk_shielded_mV": {
         "B": 714.5,
         "C": 374.19
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 78.826,
+        "C": 41.344
        }
       }
      },
@@ -455,6 +495,10 @@
        "crosstalk_shielded_mV": {
         "B": 12.91,
         "C": 6.77
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.809,
+        "C": 0.424
        }
       },
       "unpatched": {
@@ -465,6 +509,10 @@
        "crosstalk_shielded_mV": {
         "B": 714.5,
         "C": 374.19
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 78.826,
+        "C": 41.344
        }
       }
      },
@@ -499,6 +547,10 @@
        "crosstalk_shielded_mV": {
         "B": 12.91,
         "C": 6.77
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.809,
+        "C": 0.424
        }
       },
       "unpatched": {
@@ -509,6 +561,10 @@
        "crosstalk_shielded_mV": {
         "B": 714.5,
         "C": 374.19
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 78.826,
+        "C": 41.344
        }
       }
      },
@@ -543,6 +599,10 @@
        "crosstalk_shielded_mV": {
         "B": 12.91,
         "C": 6.77
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.809,
+        "C": 0.424
        }
       },
       "unpatched": {
@@ -553,6 +613,10 @@
        "crosstalk_shielded_mV": {
         "B": 714.5,
         "C": 374.19
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 78.826,
+        "C": 41.344
        }
       }
      },
@@ -587,6 +651,10 @@
        "crosstalk_shielded_mV": {
         "B": 12.91,
         "C": 6.77
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.809,
+        "C": 0.424
        }
       },
       "unpatched": {
@@ -597,6 +665,10 @@
        "crosstalk_shielded_mV": {
         "B": 714.5,
         "C": 374.19
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 78.826,
+        "C": 41.344
        }
       }
      },
@@ -735,6 +807,10 @@
        "crosstalk_shielded_mV": {
         "B": 12.91,
         "C": 6.77
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.809,
+        "C": 0.424
        }
       },
       "unpatched": {
@@ -745,6 +821,10 @@
        "crosstalk_shielded_mV": {
         "B": 714.5,
         "C": 374.19
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 78.826,
+        "C": 41.344
        }
       }
      },
@@ -821,7 +901,7 @@
      "victim_class": "ANALOGUE",
      "limit_mV": 10.0,
      "cases": {
-      "series-resistor lower bound": {
+      "isolation-resistor source": {
        "source_R_ohm": 499.0,
        "corner_Hz": 44187681,
        "crosstalk_side_by_side_mV": 26.9,
@@ -829,10 +909,14 @@
        "crosstalk_shielded_mV": {
         "B": 6.36,
         "C": 3.34
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.398,
+        "C": 0.209
        }
       }
      },
-     "worst_case": "series-resistor lower bound",
+     "worst_case": "isolation-resistor source",
      "shielding_needed": "ground on both sides",
      "criterion": "corner >= 200 kHz (ASSUMED) and edge crosstalk <= class limit",
      "pass": false
@@ -957,7 +1041,7 @@
      "victim_class": "ANALOGUE",
      "limit_mV": 10.0,
      "cases": {
-      "series-resistor lower bound": {
+      "isolation-resistor source": {
        "source_R_ohm": 499.0,
        "corner_Hz": 44187681,
        "crosstalk_side_by_side_mV": 26.9,
@@ -965,10 +1049,14 @@
        "crosstalk_shielded_mV": {
         "B": 6.36,
         "C": 3.34
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.398,
+        "C": 0.209
        }
       }
      },
-     "worst_case": "series-resistor lower bound",
+     "worst_case": "isolation-resistor source",
      "shielding_needed": "ground on both sides",
      "criterion": "corner >= 200 kHz (ASSUMED) and edge crosstalk <= class limit",
      "pass": false
@@ -989,7 +1077,7 @@
      "victim_class": "ANALOGUE",
      "limit_mV": 10.0,
      "cases": {
-      "series-resistor lower bound": {
+      "isolation-resistor source": {
        "source_R_ohm": 499.0,
        "corner_Hz": 44187681,
        "crosstalk_side_by_side_mV": 26.9,
@@ -997,10 +1085,14 @@
        "crosstalk_shielded_mV": {
         "B": 6.36,
         "C": 3.34
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.398,
+        "C": 0.209
        }
       }
      },
-     "worst_case": "series-resistor lower bound",
+     "worst_case": "isolation-resistor source",
      "shielding_needed": "ground on both sides",
      "criterion": "corner >= 200 kHz (ASSUMED) and edge crosstalk <= class limit",
      "pass": false
@@ -1021,7 +1113,7 @@
      "victim_class": "ANALOGUE",
      "limit_mV": 10.0,
      "cases": {
-      "series-resistor lower bound": {
+      "isolation-resistor source": {
        "source_R_ohm": 499.0,
        "corner_Hz": 44187681,
        "crosstalk_side_by_side_mV": 26.9,
@@ -1029,10 +1121,14 @@
        "crosstalk_shielded_mV": {
         "B": 6.36,
         "C": 3.34
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.398,
+        "C": 0.209
        }
       }
      },
-     "worst_case": "series-resistor lower bound",
+     "worst_case": "isolation-resistor source",
      "shielding_needed": "ground on both sides",
      "criterion": "corner >= 200 kHz (ASSUMED) and edge crosstalk <= class limit",
      "pass": false
@@ -1053,7 +1149,7 @@
      "victim_class": "ANALOGUE",
      "limit_mV": 10.0,
      "cases": {
-      "series-resistor lower bound": {
+      "isolation-resistor source": {
        "source_R_ohm": 499.0,
        "corner_Hz": 44187681,
        "crosstalk_side_by_side_mV": 26.9,
@@ -1061,10 +1157,14 @@
        "crosstalk_shielded_mV": {
         "B": 6.36,
         "C": 3.34
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.398,
+        "C": 0.209
        }
       }
      },
-     "worst_case": "series-resistor lower bound",
+     "worst_case": "isolation-resistor source",
      "shielding_needed": "ground on both sides",
      "criterion": "corner >= 200 kHz (ASSUMED) and edge crosstalk <= class limit",
      "pass": false
@@ -1085,7 +1185,7 @@
      "victim_class": "ANALOGUE",
      "limit_mV": 10.0,
      "cases": {
-      "series-resistor lower bound": {
+      "isolation-resistor source": {
        "source_R_ohm": 499.0,
        "corner_Hz": 44187681,
        "crosstalk_side_by_side_mV": 26.9,
@@ -1093,10 +1193,14 @@
        "crosstalk_shielded_mV": {
         "B": 6.36,
         "C": 3.34
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.398,
+        "C": 0.209
        }
       }
      },
-     "worst_case": "series-resistor lower bound",
+     "worst_case": "isolation-resistor source",
      "shielding_needed": "ground on both sides",
      "criterion": "corner >= 200 kHz (ASSUMED) and edge crosstalk <= class limit",
      "pass": false
@@ -1127,6 +1231,10 @@
        "crosstalk_shielded_mV": {
         "B": 12.91,
         "C": 6.77
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.809,
+        "C": 0.424
        }
       },
       "unpatched": {
@@ -1137,6 +1245,10 @@
        "crosstalk_shielded_mV": {
         "B": 714.5,
         "C": 374.19
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 78.826,
+        "C": 41.344
        }
       }
      },
@@ -1171,6 +1283,10 @@
        "crosstalk_shielded_mV": {
         "B": 12.91,
         "C": 6.77
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.809,
+        "C": 0.424
        }
       },
       "unpatched": {
@@ -1181,6 +1297,10 @@
        "crosstalk_shielded_mV": {
         "B": 714.5,
         "C": 374.19
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 78.826,
+        "C": 41.344
        }
       }
      },
@@ -1215,6 +1335,10 @@
        "crosstalk_shielded_mV": {
         "B": 12.91,
         "C": 6.77
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.809,
+        "C": 0.424
        }
       },
       "unpatched": {
@@ -1225,6 +1349,10 @@
        "crosstalk_shielded_mV": {
         "B": 714.5,
         "C": 374.19
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 78.826,
+        "C": 41.344
        }
       }
      },
@@ -1249,7 +1377,7 @@
      "victim_class": "ANALOGUE",
      "limit_mV": 10.0,
      "cases": {
-      "series-resistor lower bound": {
+      "isolation-resistor source": {
        "source_R_ohm": 499.0,
        "corner_Hz": 44187681,
        "crosstalk_side_by_side_mV": 26.9,
@@ -1257,10 +1385,14 @@
        "crosstalk_shielded_mV": {
         "B": 6.36,
         "C": 3.34
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.398,
+        "C": 0.209
        }
       }
      },
-     "worst_case": "series-resistor lower bound",
+     "worst_case": "isolation-resistor source",
      "shielding_needed": "ground on both sides",
      "criterion": "corner >= 200 kHz (ASSUMED) and edge crosstalk <= class limit",
      "pass": false
@@ -1281,7 +1413,7 @@
      "victim_class": "ANALOGUE",
      "limit_mV": 10.0,
      "cases": {
-      "series-resistor lower bound": {
+      "isolation-resistor source": {
        "source_R_ohm": 499.0,
        "corner_Hz": 44187681,
        "crosstalk_side_by_side_mV": 26.9,
@@ -1289,10 +1421,14 @@
        "crosstalk_shielded_mV": {
         "B": 6.36,
         "C": 3.34
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.398,
+        "C": 0.209
        }
       }
      },
-     "worst_case": "series-resistor lower bound",
+     "worst_case": "isolation-resistor source",
      "shielding_needed": "ground on both sides",
      "criterion": "corner >= 200 kHz (ASSUMED) and edge crosstalk <= class limit",
      "pass": false
@@ -1313,7 +1449,7 @@
      "victim_class": "ANALOGUE",
      "limit_mV": 10.0,
      "cases": {
-      "series-resistor lower bound": {
+      "isolation-resistor source": {
        "source_R_ohm": 499.0,
        "corner_Hz": 44187681,
        "crosstalk_side_by_side_mV": 26.9,
@@ -1321,10 +1457,14 @@
        "crosstalk_shielded_mV": {
         "B": 6.36,
         "C": 3.34
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.398,
+        "C": 0.209
        }
       }
      },
-     "worst_case": "series-resistor lower bound",
+     "worst_case": "isolation-resistor source",
      "shielding_needed": "ground on both sides",
      "criterion": "corner >= 200 kHz (ASSUMED) and edge crosstalk <= class limit",
      "pass": false
@@ -1345,7 +1485,7 @@
      "victim_class": "ANALOGUE",
      "limit_mV": 10.0,
      "cases": {
-      "series-resistor lower bound": {
+      "isolation-resistor source": {
        "source_R_ohm": 499.0,
        "corner_Hz": 44187681,
        "crosstalk_side_by_side_mV": 26.9,
@@ -1353,10 +1493,14 @@
        "crosstalk_shielded_mV": {
         "B": 6.36,
         "C": 3.34
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.398,
+        "C": 0.209
        }
       }
      },
-     "worst_case": "series-resistor lower bound",
+     "worst_case": "isolation-resistor source",
      "shielding_needed": "ground on both sides",
      "criterion": "corner >= 200 kHz (ASSUMED) and edge crosstalk <= class limit",
      "pass": false
@@ -1387,6 +1531,10 @@
        "crosstalk_shielded_mV": {
         "B": 12.91,
         "C": 6.77
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.809,
+        "C": 0.424
        }
       },
       "unpatched": {
@@ -1397,6 +1545,10 @@
        "crosstalk_shielded_mV": {
         "B": 714.5,
         "C": 374.19
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 78.826,
+        "C": 41.344
        }
       }
      },
@@ -1431,6 +1583,10 @@
        "crosstalk_shielded_mV": {
         "B": 12.91,
         "C": 6.77
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.809,
+        "C": 0.424
        }
       },
       "unpatched": {
@@ -1441,6 +1597,10 @@
        "crosstalk_shielded_mV": {
         "B": 714.5,
         "C": 374.19
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 78.826,
+        "C": 41.344
        }
       }
      },
@@ -1475,6 +1635,10 @@
        "crosstalk_shielded_mV": {
         "B": 12.91,
         "C": 6.77
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.809,
+        "C": 0.424
        }
       },
       "unpatched": {
@@ -1485,6 +1649,10 @@
        "crosstalk_shielded_mV": {
         "B": 714.5,
         "C": 374.19
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 78.826,
+        "C": 41.344
        }
       }
      },
@@ -1519,6 +1687,10 @@
        "crosstalk_shielded_mV": {
         "B": 12.91,
         "C": 6.77
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 0.809,
+        "C": 0.424
        }
       },
       "unpatched": {
@@ -1529,6 +1701,10 @@
        "crosstalk_shielded_mV": {
         "B": 714.5,
         "C": 374.19
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 78.826,
+        "C": 41.344
        }
       }
      },
@@ -1629,6 +1805,10 @@
        "crosstalk_shielded_mV": {
         "B": 126.89,
         "C": 66.56
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 7.972,
+        "C": 4.182
        }
       }
      },
@@ -1662,6 +1842,10 @@
        "crosstalk_shielded_mV": {
         "B": 126.89,
         "C": 66.56
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 7.972,
+        "C": 4.182
        }
       }
      },
@@ -1714,6 +1898,10 @@
        "crosstalk_shielded_mV": {
         "B": 126.89,
         "C": 66.56
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 7.972,
+        "C": 4.182
        }
       }
      },
@@ -1908,6 +2096,10 @@
        "crosstalk_shielded_mV": {
         "B": 126.89,
         "C": 66.56
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 7.972,
+        "C": 4.182
        }
       }
      },
@@ -1967,6 +2159,10 @@
        "crosstalk_shielded_mV": {
         "B": 126.89,
         "C": 66.56
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 7.972,
+        "C": 4.182
        }
       }
      },
@@ -2000,6 +2196,10 @@
        "crosstalk_shielded_mV": {
         "B": 126.89,
         "C": 66.56
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 7.972,
+        "C": 4.182
        }
       }
      },
@@ -2033,6 +2233,10 @@
        "crosstalk_shielded_mV": {
         "B": 126.89,
         "C": 66.56
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 7.972,
+        "C": 4.182
        }
       }
      },
@@ -2170,6 +2374,10 @@
        "crosstalk_shielded_mV": {
         "B": 126.89,
         "C": 66.56
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 7.972,
+        "C": 4.182
        }
       }
      },
@@ -2402,6 +2610,10 @@
        "crosstalk_shielded_mV": {
         "B": 126.89,
         "C": 66.56
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 7.972,
+        "C": 4.182
        }
       }
      },
@@ -2435,6 +2647,10 @@
        "crosstalk_shielded_mV": {
         "B": 126.89,
         "C": 66.56
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 7.972,
+        "C": 4.182
        }
       }
      },
@@ -2487,6 +2703,10 @@
        "crosstalk_shielded_mV": {
         "B": 126.89,
         "C": 66.56
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 7.972,
+        "C": 4.182
        }
       }
      },
@@ -2520,6 +2740,10 @@
        "crosstalk_shielded_mV": {
         "B": 126.89,
         "C": 66.56
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 7.972,
+        "C": 4.182
        }
       }
      },
@@ -2553,6 +2777,10 @@
        "crosstalk_shielded_mV": {
         "B": 126.89,
         "C": 66.56
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 7.972,
+        "C": 4.182
        }
       }
      },
@@ -2624,6 +2852,10 @@
        "crosstalk_shielded_mV": {
         "B": 126.89,
         "C": 66.56
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 7.972,
+        "C": 4.182
        }
       }
      },
@@ -2698,6 +2930,10 @@
        "crosstalk_shielded_mV": {
         "B": 126.89,
         "C": 66.56
+       },
+       "crosstalk_20kHz_shielded_mV": {
+        "B": 7.972,
+        "C": 4.182
        }
       }
      },

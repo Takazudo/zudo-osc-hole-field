@@ -2,13 +2,13 @@
 
 Stage 1a of the remedy the owner accepted on 2026-11-21 (option D, developed in stages). **These are DRAFT
 criteria for independent review, not accepted budgets.** Revised after the first independent review
-(findings B1, B2, S1 to S6 and N1 to N5 applied).
+(findings B1, B2, S1 to S6 and N1 to N5 applied), then re-reviewed: all fixed, six nits applied.
 
 ```sh
 python3 -B scripts/stack/studies/mc04_s1_budgets/budgets.py --output scripts/stack/studies/mc04_s1_budgets/result.json
 ```
 
-`result.json` sha256 `22304bca637eab86d4a23111e68c1006f7ebe1b69d299be55732bfdd90961dfd`.
+`result.json` sha256 `c8fdda04b08637091775b7a717b52ee73bff755fd2d52f8461e4a9b665aa902a`.
 
 ## Inputs
 
@@ -37,7 +37,7 @@ python3 -B scripts/stack/studies/mc04_s1_budgets/budgets.py --output scripts/sta
 Source impedance: a protection-switch drain (TMUX7412) is evaluated patched (an ASSUMED 1 kΩ jack source
 plus 15 Ω) and unpatched (its 100 kΩ pull-down), and the worse case decides. Other input-side nodes use the
 smallest resistor on the node, a lower bound. The aggressor is the retained ANALOGUE one (20 V at
-20 V/µs); OPA4196 itself slews 7.5/5.5 V/µs typical, which would lower edge crosstalk about 2.7 times.
+20 V/µs); OPA4196 itself slews 7.5/5.5 V/µs typical, which would lower edge crosstalk 2.7 to 3.6 times.
 No inverting (feedback) node is among the crossings, so no feedback-pole criterion is applied.
 
 ## Input nodes fail by a wide margin; isolation midpoints need a ground on both sides
@@ -47,9 +47,12 @@ No inverting (feedback) node is among the crossings, so no feedback-pole criteri
 | 14 `*_PROTECTED` switch drains, default boundary | 100 kΩ unpatched | 220 kHz | 2995 / 715 / 374 mV | 333 mV | 10 mV |
 | `/O5/1V_PROTECTED` (pitch CV, PRECISION) | 100 kΩ unpatched | 220 kHz | 2995 / 715 / 374 mV | 333 mV | 1 mV |
 | Same nodes, patched case | 1.015 kΩ | 21.7 MHz | 54.6 / 12.9 / 6.8 mV | 3.4 mV | as above |
-| 15 `*_SENSE` inputs, keep-front boundary | ≥ 10 kΩ | 1.2–2.2 MHz | 536 / 127 / 67 mV | 33.7 mV | 10 mV (1 mV for O5) |
+| 15 `*_SENSE` inputs, keep-front boundary | ≥ 10 kΩ | 1.2–2.2 MHz¹ | 536 / 127 / 67 mV | 33.7 mV | 10 mV (1 mV for O5) |
 | 14 `ISO_MID`, default boundary | 499 Ω | 44 MHz | 26.9 / **6.4** / 3.3 mV | 1.7 mV | 10 mV |
 | 14 `*_DRIVE` outputs, keep-front boundary | — | — | node total 13.6 pF ≤ 100 pF | — | — |
+
+¹ The 2.2 MHz upper value is U1518's net, which leaves out the unretained OPA4197 input capacitance, so it is optimistic.
+Shielded options must also meet the 20 kHz bleed limit; every shielded verdict here does.
 
 ## Per block
 
@@ -58,10 +61,10 @@ No inverting (feedback) node is among the crossings, so no feedback-pole criteri
 | Can move | — | U1417 (O4), U2218 (F2) |
 | Can move with a ground on both sides of each signal | U1417, U2218 | — |
 | Cannot move: an input node would cross | U1216 (O2), U1416 (O4), U1518 (O5), U4346 (E3), U8314 (M4A), U8417 (M4B) | same six |
-| Conditional: indicator LED nets undetermined | U2119 (F1), U4347 (E3), U4348 (E3), U8318 (M4A) | same four |
+| Conditional: indicator LED nets undetermined | U2119 (F1), U4347 (E3, which also needs a ground on both sides), U4348 (E3), U8318 (M4A) | U2119, U4347, U4348, U8318 |
 
 Three of the six blocked ones are JR's (U4346, U8314, U8417). The capacity census
-(`../mc04_c1_capacity/`) found JR short of room for three ICs; `../mc04_s2_jr_inputs/` checks whether
+(`../mc04_c1_capacity/`) found JR short of room for three ICs (greedy first fit, a lower bound, not proof); `../mc04_s2_jr_inputs/` checks whether
 these three fit on JR if JR's other blocks go to K.
 
 ## Scope
