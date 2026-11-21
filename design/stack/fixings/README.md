@@ -58,7 +58,7 @@ Method of ST-04: courtyard box against the keep-out circle (r 4.05 mm on K, r 3.
 
 **Access hole in EL at (244, 230), 7.0 mm (DS-76):** inside the 3.75 mm keep-out already applied to EL at SLV-L2 (centre offset 0.00 mm), so it displaces nothing further.
 
-## Region scans: 12 of 16 compared figures equal the authority's scratch runs; the differences are listed
+## Region scans: 11 of 16 compared figures equal the authority's scratch runs; the differences are listed
 
 Integer nodes of a 1 mm grid; a node is clear when it faces the named board, passes the edge, tab, adapter, selector and sub-toggle screens and has no locked hardware or fixed hole in its keep-out. Free positions are searched with the posts and the node as the only fixings. The node lists are in `region_scans`. A row named "y 22 to 69" or "y 176 to 291" counts the region without its last row, for comparison only.
 
@@ -66,7 +66,7 @@ Integer nodes of a 1 mm grid; a node is clear when it faces the named board, pas
 | --- | --- | --- | --- |
 | JL clear nodes (y 22 to 70) | 327 | 322 | differs |
 | JL clear nodes, y 22 to 69 | 322 | 322 | same |
-| JL nodes with a free position for every part | 125 | 125 | same |
+| JL nodes with a free position for every part | 127 | 125 | differs |
 | JL columns of those nodes | [23.0, 40.0, 57.0, 74.0, 91.0] | [23.0, 40.0, 57.0, 74.0, 91.0] | same |
 | JR clear nodes | 176 | 176 | same |
 | JR nodes with a free position for every part | 2 | 2 | same |
@@ -182,11 +182,11 @@ Keys with unchanged meaning: `id`, `kind`, `xy`, `front_xy`, `front_board`, `boa
 | design/stack/spacers/spacer-set.json sleeve, length_allowance_mm, members | fed1446f89d2345d2692e822ac0e91b228c124d880bada37fdeb3c7f9bf4c436 |
 | boards/osc-control/osc-control-routed-draft.kicad_pcb | 111c5af77fa5fff3ebe96de988197fac36f37eb54d332c66b36477fa3b6e7f44 |
 | boards/osc-core/osc-core.kicad_pcb | 7311cd8e7aabb609c0a6d1a7f2ef42324c585d0c7b51f77c6bd3fc0338c54f22 |
-| boards/osc-jack-left/osc-jack-left.kicad_pcb | 2cd30044054fcdbf8c94de27515a5bc763e98de12c0f3df212cf5d84ded1ee19 |
-| boards/osc-jack-right/osc-jack-right.kicad_pcb | 653b20312851fad1dcf1a90806c1fdc558edf32dfc25d6675b43bb100ff9b3c1 |
+| boards/osc-jack-left/osc-jack-left.kicad_pcb | 5900338a0aecafc6e4370f4f2ce812fc7b80ffdb730ea4bce3d8e1db55a2a779 |
+| boards/osc-jack-right/osc-jack-right.kicad_pcb | 3ffaa03739983dd326345ac1884b0cb56432a65c558abde42c2e151bd4c75e56 |
 | boards/osc-stage-optical/osc-stage-optical.kicad_pcb | 7e0d9a25c13a5108439d391815409ddd60cc837db0563d45adb5f5a137fa2d61 |
 | design/grid/placements.lock.json | 297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8 |
-| design/partition/partition.json | 7e3f5a39b001f80f38572c837a60e197fbb08ae588296e1d3bcb1339718db48f |
+| design/partition/partition.json | aa84af4cc17672276f1512e5404a41a7139a676aa5326c3260b0530d3f7ff339 |
 | design/stack/fixings/ruled-list.json | fb18e85e1c7a9be576a5c9d5d5efd2738999a86449afeae00e8ed84d65ce234d |
 | scripts/stack/fixings/fixings.py | d1b1dbe6eaab479aa1b890c1c7fd446d03411bab3259498b750862d41eb0f48c |
 | scripts/stack/fixings/fixings_check.py | 02d565882c7211f2eebc1d36ef33d66922a04952382e30dac91d9616e46e76e7 |
