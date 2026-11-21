@@ -25,19 +25,42 @@ def main():
     import pcbnew
     ap = argparse.ArgumentParser()
     ap.add_argument('board_id')
-    ap.add_argument('--refs', nargs='+', required=True)
+    ap.add_argument('--refs', nargs='+', default=[])
+    ap.add_argument('--all-offset', action='store_true',
+                    help='every free footprint whose position, side or angle differs from its netlisted floorplan pose')
+    ap.add_argument('--board', type=Path, help='board path (default boards/<id>/<id>.kicad_pcb)')
+    ap.add_argument('--list', help='write the selected references, one per line, and do not move anything')
     ap.add_argument('--record', required=True)
     ap.add_argument('--dry-run', action='store_true')
     a = ap.parse_args()
     definition = load_definition(ROOT / 'design/boards' / f'{a.board_id}.json')
-    board_path = ROOT / 'boards' / a.board_id / f'{a.board_id}.kicad_pcb'
+    board_path = a.board or ROOT / 'boards' / a.board_id / f'{a.board_id}.kicad_pcb'
     components, _ = read_netlist(ROOT / definition.netlist)
     by_ref = {c.ref: c for c in components}
     board = pcbnew.LoadBoard(str(board_path))
     fps = {fp.GetReference(): fp for fp in board.GetFootprints()}
     mm = pcbnew.ToMM
+    refs = list(a.refs)
+    if a.all_offset:
+        for ref, fp in sorted(fps.items()):
+            fields = dict(by_ref[ref].fields) if ref in by_ref else {}
+            origin = fields.get('FootprintOriginMm')
+            if not origin or fp.IsLocked() or ref in refs:
+                continue
+            x, y = (float(v) for v in origin.split(','))
+            tx, ty = to_kicad(x, y)
+            pose = source_pose(fields)
+            off = (abs(mm(fp.GetPosition().x) - tx) > 1e-4 or abs(mm(fp.GetPosition().y) - ty) > 1e-4 or
+                   (pose.side is not None and board.GetLayerName(fp.GetLayer()) != pose.side) or
+                   (pose.orientation is not None and abs(((fp.GetOrientationDegrees() - pose.orientation) + 180) % 360 - 180) > 1e-6))
+            if off:
+                refs.append(ref)
+    if a.list:
+        Path(a.list).write_text('\n'.join(refs) + '\n')
+        print(len(refs), 'selected')
+        return 0
     rows = []
-    for ref in a.refs:
+    for ref in refs:
         fields = dict(by_ref[ref].fields)
         x, y = (float(v) for v in fields['FootprintOriginMm'].split(','))
         pose = source_pose(fields)
