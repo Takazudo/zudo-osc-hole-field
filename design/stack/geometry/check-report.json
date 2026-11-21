@@ -2,8 +2,8 @@
  "schema_version": 1,
  "status": "COURTYARD-AND-PAD-LEVEL PLANNING SCREEN; not a copper clearance, tolerance result or physical fit; unvalidated draft",
  "verdict": "FAIL",
- "candidate_sha256": "fbc3da5e44baf7b4e9766e7349d7bd32555c46d15788dedaa48a00089b4db3e9",
- "canonical_input_digest": "10e927360e874e3ef031618ece025cdd356a6381c3b50ec0cd07e5caa8107dad",
+ "candidate_sha256": "e64276548479b46bcf49301466368cfea0f02d5a433a45b70d59e99eb79dca43",
+ "canonical_input_digest": "0996430cb74f0234c205ea77a7e907347a4aab3d772c059198f4e8ec0f861926",
  "errors": [
   "fixing_reach: pair JL-K-9 at [159, 38] misses the 40 mm reach on the K and front side (K side [126.649, 'POWER-JL-AGND3'], front side [126.649, 'POWER-JL-AGND3'])",
   "fixing_reach: pair JL-K-8 at [142, 38] misses the 40 mm reach on the K and front side (K side [123.179, 'POWER-JL-AGND3'], front side [123.179, 'POWER-JL-AGND3'])",
@@ -292,32 +292,6 @@
    "errors": [],
    "detail": {
     "declared_conflicts": [
-     {
-      "pair": "JL-K-11",
-      "half": "front",
-      "board": "JL",
-      "blockers": [
-       "R1213",
-       "RB1306"
-      ]
-     },
-     {
-      "pair": "JL-K-12",
-      "half": "front",
-      "board": "JL",
-      "blockers": [
-       "RB1302"
-      ]
-     },
-     {
-      "pair": "JL-K-14",
-      "half": "front",
-      "board": "JL",
-      "blockers": [
-       "C2124",
-       "U2105"
-      ]
-     },
      {
       "pair": "JL-K-X3",
       "half": "back",
@@ -773,8 +747,8 @@
     "gaps": {
      "JL/K": {
       "gap_mm": 19.0,
-      "overlapping_pairs_with_known_heights": 66,
-      "overlapping_pairs_with_an_unretained_height": 690,
+      "overlapping_pairs_with_known_heights": 67,
+      "overlapping_pairs_with_an_unretained_height": 694,
       "front_items": 725,
       "front_items_with_height": 213,
       "back_items": 339,
@@ -845,8 +819,8 @@
      },
      "JR/K": {
       "gap_mm": 19.0,
-      "overlapping_pairs_with_known_heights": 159,
-      "overlapping_pairs_with_an_unretained_height": 900,
+      "overlapping_pairs_with_known_heights": 161,
+      "overlapping_pairs_with_an_unretained_height": 898,
       "front_items": 649,
       "front_items_with_height": 216,
       "back_items": 374,
@@ -1139,7 +1113,7 @@
       "collisions": []
      }
     },
-    "facing_pairs_without_a_retained_height": 2308,
+    "facing_pairs_without_a_retained_height": 2310,
     "height_source": "design/mechanical/ic-envelope-native-report.json native display-model z bounds (not seated heights), selector-assembly.json tails, partition bulk reserves; every other part height is unretained and counted as unknown"
    }
   },
@@ -5760,7 +5734,7 @@
    "status": "PASS",
    "errors": [],
    "detail": {
-    "digest": "10e927360e874e3ef031618ece025cdd356a6381c3b50ec0cd07e5caa8107dad"
+    "digest": "0996430cb74f0234c205ea77a7e907347a4aab3d772c059198f4e8ec0f861926"
    }
   }
  },
@@ -5903,12 +5877,8 @@
      ]
     },
     "sites": 58,
-    "fit_in_place_both_boards": 55,
-    "fails": [
-     "JL-K-11",
-     "JL-K-12",
-     "JL-K-14"
-    ]
+    "fit_in_place_both_boards": 58,
+    "fails": []
    }
   },
   "envelope_sweep": [
@@ -5979,7 +5949,7 @@
     ],
     "fail_of_sites": {
      "EL/K": "0 of 6",
-     "JL/K": "3 of 25",
+     "JL/K": "0 of 25",
      "JR/K": "0 of 27"
     }
    },
@@ -5990,7 +5960,7 @@
     ],
     "fail_of_sites": {
      "EL/K": "0 of 6",
-     "JL/K": "3 of 25",
+     "JL/K": "0 of 25",
      "JR/K": "0 of 27"
     }
    },
@@ -6001,7 +5971,7 @@
     ],
     "fail_of_sites": {
      "EL/K": "0 of 6",
-     "JL/K": "3 of 25",
+     "JL/K": "0 of 25",
      "JR/K": "0 of 27"
     }
    },
@@ -6088,7 +6058,7 @@
     ],
     "no_position_within_shift": {
      "EL/K": "5 of 6",
-     "JL/K": "22 of 25",
+     "JL/K": "21 of 25",
      "JR/K": "27 of 27"
     }
    },
@@ -6471,7 +6441,7 @@
   },
   "interior_fastener_sites": {
    "sites_8mm_apart": {
-    "JL": 37,
+    "JL": 38,
     "JR": 3,
     "P": 26
    },
