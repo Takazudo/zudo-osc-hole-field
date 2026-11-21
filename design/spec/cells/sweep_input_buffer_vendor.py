@@ -7,7 +7,8 @@ local cache and are pinned by digest; a changed remote file fails closed.
 
 Cases follow circuit/orchestration/campaigns/osc-stack-20261114/
 mc04-s4-input-buffer-native-brief-20261121.md, with Revision 1 after the
-independent review (commit c86e6fe). The 10 % overshoot and 1 mV
+independent review (commit c86e6fe), and the MC04-S5 OPA4197 indicator rows
+(mc04-s5-opa4197-swap-native-brief-20261121.md, 8394f84). The 10 % overshoot and 1 mV
 settling numbers of sweep_precision.py are DIAGNOSTIC labels only; this report sets no acceptance.
 """
 from __future__ import annotations
@@ -231,23 +232,32 @@ def loop_break(t, x, y, mode):
             [f"i(Vmy{t})", f"i(Vmx{t})"])
 
 
+# Indicator models and added LED-net capacitances. OPA4196 is the S4 sweep; OPA4197 at 0 pF (as built,
+# U8417 stays on its front board) and 7.2 pF is the MC04-S5 gate before U8417 units 3-4 swap.
+IND_MODEL_CAPS = {"OPA4196": tuple(IND_CAPS), "OPA4197": ("0", "7.2p")}
+
+
 def indicator_cases():
-    sub = MODELS["OPA4196"]["subckt"]
     out = []
-    for cap_key, cap in IND_CAPS.items():
-        for bias_key, current in IND_BIAS.items():
-            def frag(t, mode, cap=cap, current=current):
-                lines, nodes = indicator(t, sub, f"DC {current * R_SENSE:.6g}", cap)
-                inj, vecs = loop_break(t, f"inm{t}", nodes["sense"], mode)
-                lines += inj + [f"X{t} {nodes['mon']} inm{t} vp vn {nodes['drive']} {sub}"]
-                # The DC solve fails at 1 mA without a starting point; nodeset only seeds it.
-                vs, vb, vl = current * R_SENSE, forward("DBAS", current), forward("DLED", current)
-                lines.append(f".nodeset v({nodes['drive']})={vs + 2 * vb + vl:.4f} v(a{t})={vs + vb + vl:.4f} "
-                             f"v(k{t})={vs - vb:.4f} v(km{t})={vs - vb:.4f} v(inm{t})={vs:.4f} v({nodes['sense']})={vs:.4f}")
-                return lines, vecs
-            out.append({"model": "OPA4196", "case": "case5a", "cell": "magnitude_indicator",
-                        "variant": f"{cap_key}/{bias_key}", "kind": "loop", "analysis": "ac dec 100 10 1g",
-                        "frag": frag, "cap": cap_key, "bias": bias_key})
+    for model, caps in IND_MODEL_CAPS.items():
+        sub = MODELS[model]["subckt"]
+        for cap_key in caps:
+            cap = IND_CAPS[cap_key]
+            for bias_key, current in IND_BIAS.items():
+                def frag(t, mode, cap=cap, current=current, sub=sub):
+                    lines, nodes = indicator(t, sub, f"DC {current * R_SENSE:.6g}", cap)
+                    inj, vecs = loop_break(t, f"inm{t}", nodes["sense"], mode)
+                    lines += inj + [f"X{t} {nodes['mon']} inm{t} vp vn {nodes['drive']} {sub}"]
+                    # The DC solve fails at 1 mA without a starting point, and fails for OPA4197 at 1 and
+                    # 10 uA with one; nodeset only seeds the solve, so it is given from 100 uA up.
+                    vs, vb, vl = current * R_SENSE, forward("DBAS", current), forward("DLED", current)
+                    if current >= 1e-4:
+                        lines.append(f".nodeset v({nodes['drive']})={vs + 2 * vb + vl:.4f} v(a{t})={vs + vb + vl:.4f} "
+                                 f"v(k{t})={vs - vb:.4f} v(km{t})={vs - vb:.4f} v(inm{t})={vs:.4f} v({nodes['sense']})={vs:.4f}")
+                    return lines, vecs
+                out.append({"model": model, "case": "case5a", "cell": "magnitude_indicator",
+                            "variant": f"{cap_key}/{bias_key}", "kind": "loop", "analysis": "ac dec 100 10 1g",
+                            "frag": frag, "cap": cap_key, "bias": bias_key})
     for model, m in MODELS.items():
         def frag(t, mode, sub=m["subckt"]):
             # Control: a plain unity follower (IN+ at 0 V, no load) broken the same way, to show the
@@ -256,17 +266,19 @@ def indicator_cases():
             return [f"X{t} 0 inm{t} vp vn o{t} {sub}"] + inj, vecs
         out.append({"model": model, "case": "case5a_control", "cell": "plain_follower", "variant": "no_load",
                     "kind": "loop", "analysis": "ac dec 100 10 1g", "frag": frag})
-    for kind in ("sine", "step"):
-        for amp_key, a in IND_AMPS.items():
-            wave = f"SIN(0 {a:g} 20k)" if kind == "sine" else f"PULSE({-a:g} {a:g} 0 100n 100n 100u 200u)"
-            for cap_key, cap in IND_CAPS.items():
-                def frag(t, wave=wave, cap=cap):
-                    lines, nodes = indicator(t, sub, wave, cap)
-                    lines.append(f"X{t} {nodes['mon']} {nodes['sense']} vp vn {nodes['drive']} {sub}")
-                    return lines, nodes
-                out.append({"model": "OPA4196", "case": "case5b", "cell": "magnitude_indicator",
-                            "variant": f"{kind}/{amp_key}/{cap_key}", "kind": f"ind_{kind}", "amp": a,
-                            "analysis": f"tran 5n {'200u' if kind == 'sine' else '400u'} 0 5n", "frag": frag})
+    for model, caps in IND_MODEL_CAPS.items():
+        sub = MODELS[model]["subckt"]
+        for kind in ("sine", "step"):
+            for amp_key, a in IND_AMPS.items():
+                wave = f"SIN(0 {a:g} 20k)" if kind == "sine" else f"PULSE({-a:g} {a:g} 0 100n 100n 100u 200u)"
+                for cap_key in caps:
+                    def frag(t, wave=wave, cap=IND_CAPS[cap_key], sub=sub):
+                        lines, nodes = indicator(t, sub, wave, cap)
+                        lines.append(f"X{t} {nodes['mon']} {nodes['sense']} vp vn {nodes['drive']} {sub}")
+                        return lines, nodes
+                    out.append({"model": model, "case": "case5b", "cell": "magnitude_indicator",
+                                "variant": f"{kind}/{amp_key}/{cap_key}", "kind": f"ind_{kind}", "amp": a,
+                                "analysis": f"tran 5n {'200u' if kind == 'sine' else '400u'} 0 5n", "frag": frag})
     return out
 
 
@@ -614,14 +626,26 @@ def run_all():
             title = f"MC04-S4 {c['model']} {c['case']} {c['cell']} {c['variant']}"
             name = "-".join((c["model"], c["case"], c["cell"], c["variant"])).replace("/", "_").replace("+", "p")
             if c["kind"] == "loop":
-                runs, shas = {}, {}
+                runs, shas, seeds = {}, {}, {}
                 for mode in ("v", "i"):
                     lines, vecs = c["frag"]("1", mode)
-                    shas[mode], cols = oracle(f"{name}-{mode}", header(f"{title} {mode}-injection", c["model"]) + lines,
-                                              c["analysis"], vecs)
+                    deck = header(f"{title} {mode}-injection", c["model"]) + lines
+                    seeded = any(x.startswith(".nodeset") for x in lines)
+                    seeds[mode] = "nodeset" if seeded else "none"
+                    try:
+                        shas[mode], cols = oracle(f"{name}-{mode}", deck, c["analysis"], vecs)
+                    except RuntimeError as error:
+                        # One retry for a failed DC solve: drop the nodeset seed (it only seeds the solve;
+                        # OPA4197 at 7.2 pF / 1 mA converges without it in the current-injection run).
+                        if not seeded or "Timestep too small" not in str(error):
+                            raise
+                        seeds[mode] = "none (seeded DC solve failed; retried without nodeset)"
+                        shas[mode], cols = oracle(f"{name}-{mode}", [x for x in deck if not x.startswith(".nodeset")],
+                                                  c["analysis"], vecs)
                     runs[mode] = (cols, vecs)
                 metrics = loop_rows(runs["v"][0], runs["v"][1], runs["i"][0], runs["i"][1])
-                if c["case"] == "case5a":
+                metrics["dc_seed"] = seeds
+                if c["case"] == "case5a" and c["model"] == "OPA4196":  # the paper screen models OPA4196 only
                     metrics["paper_screen"] = paper_point(c["cap"], c["bias"], metrics["phase_margin_deg"])
                 results.append({"model": c["model"], "case": c["case"], "cell": c["cell"], "variant": c["variant"],
                                 "integration": "ac (small signal)", "deck_sha256": shas, "metrics": metrics})
@@ -755,7 +779,7 @@ def report(results, validation):
         "schema_version": 2,
         "status": "MODEL EVIDENCE ONLY - NO ACCEPTANCE SET; NOT HARDWARE QUALIFICATION",
         "brief": BRIEF, "brief_revision": "Revision 1 after independent review (2026-11-21)",
-        "task": "osc-stack-20261114 / MC04-S4-INPUT-BUFFER-SPICE / 20261121-2",
+        "task": "osc-stack-20261114 / MC04-S4-INPUT-BUFFER-SPICE / 20261121-2, extended by MC04-S5-OPA4197-SWAP / 20261121-1",
         "instances": INSTANCES, "cell_users": CELL_USERS,
         "models": {
             "OPA4196": {"model": "TI OPAx196 Final 1.5 (29AUG2022), generic core for the OPAx196 family",
@@ -781,9 +805,9 @@ def report(results, validation):
             "case2": "case-1 step, patched, with 10/30/50 pF on SENSE or on BUFFER",
             "case3": "follower driven by an ideal +/-5 V step (1 us edges), 499+499 ohm to jack; open/100k/10k loads; 0/100p/1n cable; metrics at jack and DRIVE",
             "case4": "jack PWL 0 -> +V (200 us) -> 0 -> -V (200 us) -> 0 for V = 12 and 15, source 1 kOhm; phase reversal = output more than 0.5 V beyond SENSE against the drive direction",
-            "case5a": "OPA4196 only; loop broken between SENSE (source side) and IN- (load side); Middlebrook double injection (voltage run and current run, T = (Tv Ti - 1)/(Tv + Ti + 2)) with Zs/Zl at crossover, plus the voltage-only result; DC bias MONITOR = I x 5.6 kOhm; margins are per bias point, and the worst is the worst of four bias points",
+            "case5a": "OPA4196 at 0/7.2/15/30 pF and, for MC04-S5, OPA4197 at 0/7.2 pF; loop broken between SENSE (source side) and IN- (load side); Middlebrook double injection (voltage run and current run, T = (Tv Ti - 1)/(Tv + Ti + 2)) with Zs/Zl at crossover, plus the voltage-only result; DC bias MONITOR = I x 5.6 kOhm; margins are per bias point, and the worst is the worst of four bias points",
             "case5a_control": "plain unity follower (IN+ 0 V, no load) of each model, broken the same way",
-            "case5b": "OPA4196 only; 20 kHz sines and +/-A steps (100 ns edges, 100 us halves), A = 10 mV/100 mV/1 V/5 V; 0/7.2/15/30 pF on each of LED_A and LED_K",
+            "case5b": "OPA4196 at 0/7.2/15/30 pF and, for MC04-S5, OPA4197 at 0/7.2 pF; 20 kHz sines and +/-A steps (100 ns edges, 100 us halves), A = 10 mV/100 mV/1 V/5 V; 0/7.2/15/30 pF on each of LED_A and LED_K",
         },
         "paper_screen": {"path": PAPER_RESULT.relative_to(ROOT).as_posix(), "sha256": PAPER_SHA256,
                          "note": "the paper evaluated 7.22 pF and 2x/4x (14.4 / 28.9 pF); this run uses 7.2 / 15 / 30 pF, so the 30 pF rows compare against 28.9 pF"},

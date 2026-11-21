@@ -3,7 +3,7 @@
   "status": "MODEL EVIDENCE ONLY - NO ACCEPTANCE SET; NOT HARDWARE QUALIFICATION",
   "brief": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s4-input-buffer-native-brief-20261121.md",
   "brief_revision": "Revision 1 after independent review (2026-11-21)",
-  "task": "osc-stack-20261114 / MC04-S4-INPUT-BUFFER-SPICE / 20261121-2",
+  "task": "osc-stack-20261114 / MC04-S4-INPUT-BUFFER-SPICE / 20261121-2, extended by MC04-S5-OPA4197-SWAP / 20261121-1",
   "instances": {
     "U1216": {
       "board": "JL",
@@ -107,9 +107,9 @@
     "case2": "case-1 step, patched, with 10/30/50 pF on SENSE or on BUFFER",
     "case3": "follower driven by an ideal +/-5 V step (1 us edges), 499+499 ohm to jack; open/100k/10k loads; 0/100p/1n cable; metrics at jack and DRIVE",
     "case4": "jack PWL 0 -> +V (200 us) -> 0 -> -V (200 us) -> 0 for V = 12 and 15, source 1 kOhm; phase reversal = output more than 0.5 V beyond SENSE against the drive direction",
-    "case5a": "OPA4196 only; loop broken between SENSE (source side) and IN- (load side); Middlebrook double injection (voltage run and current run, T = (Tv Ti - 1)/(Tv + Ti + 2)) with Zs/Zl at crossover, plus the voltage-only result; DC bias MONITOR = I x 5.6 kOhm; margins are per bias point, and the worst is the worst of four bias points",
+    "case5a": "OPA4196 at 0/7.2/15/30 pF and, for MC04-S5, OPA4197 at 0/7.2 pF; loop broken between SENSE (source side) and IN- (load side); Middlebrook double injection (voltage run and current run, T = (Tv Ti - 1)/(Tv + Ti + 2)) with Zs/Zl at crossover, plus the voltage-only result; DC bias MONITOR = I x 5.6 kOhm; margins are per bias point, and the worst is the worst of four bias points",
     "case5a_control": "plain unity follower (IN+ 0 V, no load) of each model, broken the same way",
-    "case5b": "OPA4196 only; 20 kHz sines and +/-A steps (100 ns edges, 100 us halves), A = 10 mV/100 mV/1 V/5 V; 0/7.2/15/30 pF on each of LED_A and LED_K"
+    "case5b": "OPA4196 at 0/7.2/15/30 pF and, for MC04-S5, OPA4197 at 0/7.2 pF; 20 kHz sines and +/-A steps (100 ns edges, 100 us halves), A = 10 mV/100 mV/1 V/5 V; 0/7.2/15/30 pF on each of LED_A and LED_K"
   },
   "paper_screen": {
     "path": "scripts/stack/studies/mc04_s1b_indicator_loops/result.json",
@@ -173,10 +173,10 @@
     }
   ],
   "oscillation": {
-    "evaluated_rows": 90,
+    "evaluated_rows": 105,
     "flagged": 0,
-    "not_evaluated_rows": 22,
-    "statement": "no sustained oscillation in the 90 evaluated rows",
+    "not_evaluated_rows": 31,
+    "statement": "no sustained oscillation in the 105 evaluated rows",
     "limit": "absolute 1 mV: late-window peak-to-peak for steps and holds, residual after a 1 us moving average for sines",
     "not_evaluated": "AC loop rows (small-signal, no transient) and 10 mV indicator sines where the bridge never leaves its dead band"
   },
@@ -1801,24 +1801,28 @@
       "variant": "0/1uA",
       "integration": "ac (small signal)",
       "deck_sha256": {
-        "v": "a476e75c697bde57fa4a803dffc732d7cb5b36bac6a0df4fdcfbc4b6c46b62fc",
-        "i": "9c85ca59a0c183bb974b3a0671e728adcb9d12624b17e3d7943d78167704a3ba"
+        "v": "39d81a772e69e34036b7e6e3b0f47e9098af7e53eef9cadca27acb08169ac7dd",
+        "i": "7689c3ff7b20f0e8e006d6d97e52e2960fa015bc832327bbbcdcd846f88c7bf0"
       },
       "metrics": {
-        "crossover_Hz": 139300.0,
-        "phase_margin_deg": 110.4,
+        "crossover_Hz": 145000.0,
+        "phase_margin_deg": 107.3,
         "dc_loop_gain_dB": 79.26,
-        "zs_over_zl_at_crossover": 0.001318,
+        "zs_over_zl_at_crossover": 0.03967,
         "voltage_injection_only": {
           "crossover_Hz": 138900.0,
           "phase_margin_deg": 110.4,
           "dc_loop_gain_dB": 79.26
         },
         "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "none",
+          "i": "none"
+        },
         "paper_screen": {
           "paper_pm_deg": 88.9,
           "basis": "paper no-cable point at this current",
-          "run_minus_paper_deg": 21.5
+          "run_minus_paper_deg": 18.4
         }
       }
     },
@@ -1829,24 +1833,28 @@
       "variant": "0/10uA",
       "integration": "ac (small signal)",
       "deck_sha256": {
-        "v": "117745ea172a854fb8548846f683813806f3678e756a4cd0725d27044e3b4f6b",
-        "i": "d41fb670b42f2bcf51be183f695aa20bc82b6533081f03fa6252a2f6e91dc430"
+        "v": "7adc4ba8dbd03115cd9dadd9682d29612853797184b82d95204cc06e8fb6f3a9",
+        "i": "95c30878f41132cf0ec140549a63d9627144b15cbdacc8eab72780187ecedb95"
       },
       "metrics": {
-        "crossover_Hz": 886400.0,
-        "phase_margin_deg": 92.72,
+        "crossover_Hz": 874600.0,
+        "phase_margin_deg": 85.9,
         "dc_loop_gain_dB": 96.55,
-        "zs_over_zl_at_crossover": 0.1167,
+        "zs_over_zl_at_crossover": 0.1769,
         "voltage_injection_only": {
           "crossover_Hz": 766300.0,
           "phase_margin_deg": 98.88,
           "dc_loop_gain_dB": 96.55
         },
         "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "none",
+          "i": "none"
+        },
         "paper_screen": {
           "paper_pm_deg": 83.8,
           "basis": "paper no-cable point at this current",
-          "run_minus_paper_deg": 8.92
+          "run_minus_paper_deg": 2.1
         }
       }
     },
@@ -1871,6 +1879,10 @@
           "dc_loop_gain_dB": 105.8
         },
         "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "nodeset",
+          "i": "nodeset"
+        },
         "paper_screen": {
           "paper_pm_deg": 84.6,
           "basis": "paper no-cable point at this current",
@@ -1899,6 +1911,10 @@
           "dc_loop_gain_dB": 106.9
         },
         "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "nodeset",
+          "i": "nodeset"
+        },
         "paper_screen": {
           "paper_pm_deg": 89.2,
           "basis": "paper no-cable point at this current",
@@ -1913,8 +1929,8 @@
       "variant": "7.2p/1uA",
       "integration": "ac (small signal)",
       "deck_sha256": {
-        "v": "d3ee1f9e0a6893a11faa6ff5b97945eee29b1b41b0ea3f1ce5aa039f0b9b6d3a",
-        "i": "15c4c94580e755d1127410132bd30144d2df042b1d6484e5d4ff739a851a5a78"
+        "v": "a74773c71ee9c3b016f0a23106f08c8189365f0b751ac9092542a812bd1425d5",
+        "i": "f1223f218463b7814e7dec5c307a0e4681a2ae444ad8d19305e931ffdf71e39e"
       },
       "metrics": {
         "crossover_Hz": 123200.0,
@@ -1927,6 +1943,10 @@
           "dc_loop_gain_dB": 79.26
         },
         "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "none",
+          "i": "none"
+        },
         "paper_screen": {
           "paper_pm_deg": 73.2,
           "basis": "paper 7.22 pF point at this current",
@@ -1941,8 +1961,8 @@
       "variant": "7.2p/10uA",
       "integration": "ac (small signal)",
       "deck_sha256": {
-        "v": "94edb91456d1b2b9e89e91a81b91d60970f6a1846a32161b1dfb8b061e929118",
-        "i": "234d897b387f4df64646930f02eb760332cbc3b7214ee6ffb3c4df458813fad3"
+        "v": "86588f471d45b469071701fb7a1342be38da1d63be39e5e6c8a60b06db57a524",
+        "i": "9f99712fef29639547e75cef683442990743f790420b4c493c62eade94fd53c2"
       },
       "metrics": {
         "crossover_Hz": 762700.0,
@@ -1955,6 +1975,10 @@
           "dc_loop_gain_dB": 96.55
         },
         "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "none",
+          "i": "none"
+        },
         "paper_screen": {
           "paper_pm_deg": 69.0,
           "basis": "paper 7.22 pF point at this current",
@@ -1983,6 +2007,10 @@
           "dc_loop_gain_dB": 105.9
         },
         "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "nodeset",
+          "i": "nodeset"
+        },
         "paper_screen": {
           "paper_pm_deg": 77.9,
           "basis": "paper 7.22 pF point at this current",
@@ -2011,6 +2039,10 @@
           "dc_loop_gain_dB": 107.1
         },
         "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "nodeset",
+          "i": "nodeset"
+        },
         "paper_screen": {
           "paper_pm_deg": 88.2,
           "basis": "paper 7.22 pF point at this current",
@@ -2025,8 +2057,8 @@
       "variant": "15p/1uA",
       "integration": "ac (small signal)",
       "deck_sha256": {
-        "v": "ee512e3225e3865ca23c4ffbbb7d8d241c6c686b52433f0be690724164426f3f",
-        "i": "383297f2b2171fb6ee35d5cbc5e081f0c7f0dc4cbff0e000a19aba0da0aabd26"
+        "v": "8f5bc9c5271db060c8ef2083b5c0387da4154f488b987e5a1895ccc3a7c65c81",
+        "i": "ee37f8f6936c840ea2644091dd2f9cfa056ec9f10a8d08153195e0b988b30ea9"
       },
       "metrics": {
         "crossover_Hz": 103900.0,
@@ -2039,6 +2071,10 @@
           "dc_loop_gain_dB": 79.26
         },
         "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "none",
+          "i": "none"
+        },
         "paper_screen": {
           "paper_pm_deg": 57.0,
           "basis": "paper worst over currents at 14.4 pF (no per-point value published)",
@@ -2053,8 +2089,8 @@
       "variant": "15p/10uA",
       "integration": "ac (small signal)",
       "deck_sha256": {
-        "v": "30bc43ccd4bcb630790f0449f276acbc7b8e93121719fce35413e657bd530343",
-        "i": "1134add3843e0648ca9a0a2952582230b5656d6649328e7e5154c42bcab5fd66"
+        "v": "154de3fb8e226fda5b462dbced58c1aeef5ae028ea11e934cf1c3e4a70c02072",
+        "i": "dc925ec85bb04002b9f331d78f7d10bfc5e63931d7bfe1d033e4aba1ba2a28ee"
       },
       "metrics": {
         "crossover_Hz": 660600.0,
@@ -2067,6 +2103,10 @@
           "dc_loop_gain_dB": 96.55
         },
         "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "none",
+          "i": "none"
+        },
         "paper_screen": {
           "paper_pm_deg": 57.0,
           "basis": "paper worst over currents at 14.4 pF (no per-point value published)",
@@ -2095,6 +2135,10 @@
           "dc_loop_gain_dB": 105.8
         },
         "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "nodeset",
+          "i": "nodeset"
+        },
         "paper_screen": {
           "paper_pm_deg": 57.0,
           "basis": "paper worst over currents at 14.4 pF (no per-point value published)",
@@ -2123,6 +2167,10 @@
           "dc_loop_gain_dB": 106.9
         },
         "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "nodeset",
+          "i": "nodeset"
+        },
         "paper_screen": {
           "paper_pm_deg": 57.0,
           "basis": "paper worst over currents at 14.4 pF (no per-point value published)",
@@ -2137,8 +2185,8 @@
       "variant": "30p/1uA",
       "integration": "ac (small signal)",
       "deck_sha256": {
-        "v": "61a8e32d982cb198c94150f7b42a16eba22b5f6d1b9803efd37857b49bc45afa",
-        "i": "c791d049fa6c36b2d147c88ddc4a5cf5d81339fd2b2c50146335494e34fec5d4"
+        "v": "40504881d061589a1d4f593ab2da7a83981a8acebc8bc521e04f9b70e33c95dd",
+        "i": "c6ac36ecf979ae72fd346238281c356efc1862a7f53f6a9a3ff2ccda95930319"
       },
       "metrics": {
         "crossover_Hz": 80660.0,
@@ -2151,6 +2199,10 @@
           "dc_loop_gain_dB": 79.26
         },
         "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "none",
+          "i": "none"
+        },
         "paper_screen": {
           "paper_pm_deg": 40.3,
           "basis": "paper worst over currents at 28.9 pF (no per-point value published)",
@@ -2165,8 +2217,8 @@
       "variant": "30p/10uA",
       "integration": "ac (small signal)",
       "deck_sha256": {
-        "v": "0a1c13c4919e327c379904808efa61ed76219774745fc1c573ade89c4c02fd5e",
-        "i": "66f9202a4578b5147c062d49a7872eb5d53f58292fda9106da6ba4df2e688557"
+        "v": "d0d9b255058a40f46a14497c5e29ffd6deba11a7d28114724e2a80e3143793ea",
+        "i": "28dd96e8d2f794b10f7a832bc67d3f8a8c67d69200f03f7991752ca07420a2b1"
       },
       "metrics": {
         "crossover_Hz": 530400.0,
@@ -2179,6 +2231,10 @@
           "dc_loop_gain_dB": 96.55
         },
         "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "none",
+          "i": "none"
+        },
         "paper_screen": {
           "paper_pm_deg": 40.3,
           "basis": "paper worst over currents at 28.9 pF (no per-point value published)",
@@ -2207,6 +2263,10 @@
           "dc_loop_gain_dB": 106.4
         },
         "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "nodeset",
+          "i": "nodeset"
+        },
         "paper_screen": {
           "paper_pm_deg": 40.3,
           "basis": "paper worst over currents at 28.9 pF (no per-point value published)",
@@ -2235,10 +2295,230 @@
           "dc_loop_gain_dB": 106.9
         },
         "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "nodeset",
+          "i": "nodeset"
+        },
         "paper_screen": {
           "paper_pm_deg": 40.3,
           "basis": "paper worst over currents at 28.9 pF (no per-point value published)",
           "run_minus_paper_deg": 4.53
+        }
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "variant": "0/1uA",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "4076dd75ef9814c580437e4b1c9120a9b8f3c9bce1565abbe875f07200ab366e",
+        "i": "495c201541d2c980e670a1b8db7ce84e5c538e9d6f5670c37f5060c601200ab8"
+      },
+      "metrics": {
+        "crossover_Hz": 666600.0,
+        "phase_margin_deg": 108.2,
+        "dc_loop_gain_dB": 90.34,
+        "zs_over_zl_at_crossover": 0.1796,
+        "voltage_injection_only": {
+          "crossover_Hz": 584400.0,
+          "phase_margin_deg": 120.4,
+          "dc_loop_gain_dB": 90.34
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "none",
+          "i": "none"
+        }
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "variant": "0/10uA",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "328fa865b9c601f1efb0da4f8d9aee1cc27aac2b765dea89571c25d2a581aeaa",
+        "i": "09e83d5dfa9db2dfe4233d93ffcbe5b030e8c7d3cdcc3b293b3a3435b3546b5d"
+      },
+      "metrics": {
+        "crossover_Hz": 3274000.0,
+        "phase_margin_deg": 71.54,
+        "dc_loop_gain_dB": 107.9,
+        "zs_over_zl_at_crossover": 0.591,
+        "voltage_injection_only": {
+          "crossover_Hz": 2764000.0,
+          "phase_margin_deg": 109.1,
+          "dc_loop_gain_dB": 107.9
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "none",
+          "i": "none"
+        }
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "variant": "0/100uA",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "a9b22fb3450ae51cc3a197553f064a4138d2db4ac1c74504e58976eb746261a3",
+        "i": "47fb55d0e01f6ef53f6b6044aadf85f9f6b674c852b06b7b6d1bfc5abadc442d"
+      },
+      "metrics": {
+        "crossover_Hz": 7136000.0,
+        "phase_margin_deg": 61.22,
+        "dc_loop_gain_dB": 117.3,
+        "zs_over_zl_at_crossover": 0.3744,
+        "voltage_injection_only": {
+          "crossover_Hz": 6495000.0,
+          "phase_margin_deg": 83.75,
+          "dc_loop_gain_dB": 117.3
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "nodeset",
+          "i": "nodeset"
+        }
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "variant": "0/1mA",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "f8beb468a0e15fd6574fd56baad17ef79806081fe21963576e789467b0ac2ae1",
+        "i": "5fc4add99dec5e94cdf56524b91524810665825e2b4c4b36ac4953c4e892f3eb"
+      },
+      "metrics": {
+        "crossover_Hz": 9457000.0,
+        "phase_margin_deg": 62.85,
+        "dc_loop_gain_dB": 119.2,
+        "zs_over_zl_at_crossover": 0.08952,
+        "voltage_injection_only": {
+          "crossover_Hz": 9231000.0,
+          "phase_margin_deg": 68.55,
+          "dc_loop_gain_dB": 119.2
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "nodeset",
+          "i": "nodeset"
+        }
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "variant": "7.2p/1uA",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "a77aa0c0d38292cbc0af34b40c1c184c3fd1dc03ebe9deeeb16d12cf1aeae9de",
+        "i": "54165c44c1a69f5d99d2895a682f014a17728826195076b6ad4e5052fb4ac70a"
+      },
+      "metrics": {
+        "crossover_Hz": 388900.0,
+        "phase_margin_deg": 74.37,
+        "dc_loop_gain_dB": 90.34,
+        "zs_over_zl_at_crossover": 0.1016,
+        "voltage_injection_only": {
+          "crossover_Hz": 365900.0,
+          "phase_margin_deg": 79.74,
+          "dc_loop_gain_dB": 90.34
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "none",
+          "i": "none"
+        }
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "variant": "7.2p/10uA",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "ff2f2f7f8c3f7e479dccf32d2db484d632252681fb8962fd42bca16b2dc50bfa",
+        "i": "0c3c23aa875ad4d38fabe80c4a928790d4ccb02e0871afcdd31ef31a15168017"
+      },
+      "metrics": {
+        "crossover_Hz": 2330000.0,
+        "phase_margin_deg": 51.77,
+        "dc_loop_gain_dB": 107.9,
+        "zs_over_zl_at_crossover": 0.3866,
+        "voltage_injection_only": {
+          "crossover_Hz": 2078000.0,
+          "phase_margin_deg": 71.62,
+          "dc_loop_gain_dB": 107.9
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "none",
+          "i": "none"
+        }
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "variant": "7.2p/100uA",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "0bf6cd78819b618c8e9b87296a5a0b7a9871bc77e372acd8c17d126a08bf55d8",
+        "i": "aa730f35f35f27ed6e58d9c8433316f0706a794e7cfd802b49f99385c53df510"
+      },
+      "metrics": {
+        "crossover_Hz": 6246000.0,
+        "phase_margin_deg": 56.44,
+        "dc_loop_gain_dB": 117.3,
+        "zs_over_zl_at_crossover": 0.2354,
+        "voltage_injection_only": {
+          "crossover_Hz": 5656000.0,
+          "phase_margin_deg": 68.39,
+          "dc_loop_gain_dB": 117.3
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "nodeset",
+          "i": "nodeset"
+        }
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "variant": "7.2p/1mA",
+      "integration": "ac (small signal)",
+      "deck_sha256": {
+        "v": "7f3e4f0980307b0907dd913d15afb8d207abb8172a17e2a068b479493224b6ce",
+        "i": "4e6cb7a92b45ec9311f94a9cf9a9ced4c26c941adb42a10e94ddbc240e7cb909"
+      },
+      "metrics": {
+        "crossover_Hz": 8868000.0,
+        "phase_margin_deg": 62.16,
+        "dc_loop_gain_dB": 119.2,
+        "zs_over_zl_at_crossover": 0.06313,
+        "voltage_injection_only": {
+          "crossover_Hz": 8696000.0,
+          "phase_margin_deg": 66.15,
+          "dc_loop_gain_dB": 119.2
+        },
+        "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "nodeset",
+          "i": "none (seeded DC solve failed; retried without nodeset)"
         }
       }
     },
@@ -2262,7 +2542,11 @@
           "phase_margin_deg": 58.25,
           "dc_loop_gain_dB": 109.2
         },
-        "sustained_oscillation": "NOT EVALUATED"
+        "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "none",
+          "i": "none"
+        }
       }
     },
     {
@@ -2285,7 +2569,11 @@
           "phase_margin_deg": 65.11,
           "dc_loop_gain_dB": 120.2
         },
-        "sustained_oscillation": "NOT EVALUATED"
+        "sustained_oscillation": "NOT EVALUATED",
+        "dc_seed": {
+          "v": "none",
+          "i": "none"
+        }
       }
     },
     {
@@ -3951,6 +4239,838 @@
         },
         "sustained_oscillation": false
       }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "sine/10mV/0",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "aed575f84973c3449f8792a1e634a53432cea0609add7db8ea1377855b1d37f3",
+      "metrics": {
+        "led_peak_uA": 1.305,
+        "ideal_peak_uA": 1.786,
+        "led_mean_over_ideal_mean": 0.293,
+        "fraction_of_period_below_5pct_of_ideal_peak": 0.5253,
+        "drive_extrema_per_period": 2.0,
+        "drive_extrema_note": "2 = clean; each further pair per period is one damped ring at a bridge handover (turn-on edge)",
+        "drive_swing_V": [
+          -2.858,
+          2.862
+        ],
+        "led_current_uA_one_period_40pts": [
+          0.2234,
+          0.07088,
+          -0.01592,
+          -0.04765,
+          -0.0551,
+          -0.05216,
+          -0.04185,
+          -0.02558,
+          -0.004572,
+          0.0202,
+          0.04804,
+          0.07865,
+          0.1138,
+          0.4531,
+          1.29,
+          1.171,
+          1.015,
+          0.8339,
+          0.6336,
+          0.4254,
+          0.2296,
+          0.07495,
+          -0.01408,
+          -0.04706,
+          -0.05495,
+          -0.05229,
+          -0.04222,
+          -0.0262,
+          -0.005447,
+          0.01902,
+          0.04648,
+          0.07656,
+          0.1105,
+          0.3718,
+          1.275,
+          1.163,
+          1.006,
+          0.8249,
+          0.6251,
+          0.4178
+        ],
+        "handover_end_after_zero_crossing_us": [
+          16.86,
+          17.12,
+          17.02,
+          17.12
+        ],
+        "sense_error_hf_residual_pp_mV": 0.0005676,
+        "sustained_oscillation": false
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "sine/10mV/7.2p",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "0fe75a9aa874192bebb55f3829d059c5d3aac15047366440da0bc3310ca36c1f",
+      "metrics": {
+        "led_peak_uA": 2.916,
+        "ideal_peak_uA": 1.786,
+        "led_mean_over_ideal_mean": 0.9857,
+        "fraction_of_period_below_5pct_of_ideal_peak": 0.2681,
+        "drive_extrema_per_period": 2.0,
+        "drive_extrema_note": "2 = clean; each further pair per period is one damped ring at a bridge handover (turn-on edge)",
+        "drive_swing_V": [
+          -3.053,
+          3.055
+        ],
+        "led_current_uA_one_period_40pts": [
+          0.2166,
+          0.1087,
+          0.04989,
+          0.01914,
+          0.01116,
+          0.02313,
+          0.05511,
+          0.1187,
+          2.255,
+          2.521,
+          2.765,
+          2.906,
+          2.882,
+          2.716,
+          1.698,
+          1.31,
+          1.096,
+          0.8643,
+          0.6269,
+          0.4011,
+          0.2207,
+          0.1109,
+          0.05114,
+          0.01971,
+          0.0111,
+          0.02246,
+          0.0536,
+          0.1151,
+          2.233,
+          2.502,
+          2.744,
+          2.887,
+          2.867,
+          2.705,
+          1.773,
+          1.302,
+          1.089,
+          0.8571,
+          0.6199,
+          0.3952
+        ],
+        "handover_end_after_zero_crossing_us": [
+          17.7,
+          17.76,
+          17.7,
+          17.76
+        ],
+        "sense_error_hf_residual_pp_mV": "NOT CONDUCTING (handover lasts the whole window)",
+        "sustained_oscillation": "NOT EVALUATED"
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "sine/100mV/0",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "d7b9b7fd930158c3ce554da0f8693e419f7d5e8b2476a442cc0de3667d5e31d3",
+      "metrics": {
+        "led_peak_uA": 17.86,
+        "ideal_peak_uA": 17.86,
+        "led_mean_over_ideal_mean": 0.9235,
+        "fraction_of_period_below_5pct_of_ideal_peak": 0.1797,
+        "drive_extrema_per_period": 2.0,
+        "drive_extrema_note": "2 = clean; each further pair per period is one damped ring at a bridge handover (turn-on edge)",
+        "drive_swing_V": [
+          -3.491,
+          3.491
+        ],
+        "led_current_uA_one_period_40pts": [
+          0.7686,
+          -0.1658,
+          -0.1348,
+          0.2455,
+          9.409,
+          12.52,
+          14.41,
+          15.88,
+          16.97,
+          17.63,
+          17.86,
+          17.64,
+          17.0,
+          15.93,
+          14.48,
+          12.68,
+          10.57,
+          8.219,
+          5.697,
+          3.113,
+          0.774,
+          -0.1653,
+          -0.1353,
+          0.2436,
+          9.398,
+          12.51,
+          14.4,
+          15.88,
+          16.96,
+          17.62,
+          17.85,
+          17.63,
+          16.99,
+          15.92,
+          14.47,
+          12.67,
+          10.56,
+          8.211,
+          5.689,
+          3.106
+        ],
+        "handover_end_after_zero_crossing_us": [
+          4.66,
+          4.66,
+          4.66,
+          4.66
+        ],
+        "sense_error_hf_residual_pp_mV": 0.1498,
+        "sustained_oscillation": false
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "sine/100mV/7.2p",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "e27def2c46bf9e06756a8b686844f49c51189adaaa0faec83aea7fc3101e7446",
+      "metrics": {
+        "led_peak_uA": 17.9,
+        "ideal_peak_uA": 17.86,
+        "led_mean_over_ideal_mean": 0.9987,
+        "fraction_of_period_below_5pct_of_ideal_peak": 0.1222,
+        "drive_extrema_per_period": 6.0,
+        "drive_extrema_note": "2 = clean; each further pair per period is one damped ring at a bridge handover (turn-on edge)",
+        "drive_swing_V": [
+          -3.491,
+          3.491
+        ],
+        "led_current_uA_one_period_40pts": [
+          0.6758,
+          0.04408,
+          0.2623,
+          12.54,
+          10.61,
+          12.68,
+          14.49,
+          15.95,
+          17.01,
+          17.65,
+          17.86,
+          17.62,
+          16.96,
+          15.87,
+          14.4,
+          12.57,
+          10.45,
+          8.068,
+          5.51,
+          2.878,
+          0.6797,
+          0.04457,
+          0.2601,
+          12.52,
+          10.58,
+          12.67,
+          14.48,
+          15.94,
+          17.0,
+          17.64,
+          17.85,
+          17.61,
+          16.95,
+          15.86,
+          14.39,
+          12.57,
+          10.44,
+          8.06,
+          5.502,
+          2.87
+        ],
+        "handover_end_after_zero_crossing_us": [
+          4.68,
+          4.68,
+          4.68,
+          4.68
+        ],
+        "sense_error_hf_residual_pp_mV": 0.006648,
+        "sustained_oscillation": false
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "sine/1V/0",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "61f9c6dea18fdbd061a9c62ad0302efc43ec8df2b6f92c28944be30a571bc913",
+      "metrics": {
+        "led_peak_uA": 178.6,
+        "ideal_peak_uA": 178.6,
+        "led_mean_over_ideal_mean": 0.9918,
+        "fraction_of_period_below_5pct_of_ideal_peak": 0.07305,
+        "drive_extrema_per_period": 2.0,
+        "drive_extrema_note": "2 = clean; each further pair per period is one damped ring at a bridge handover (turn-on edge)",
+        "drive_swing_V": [
+          -4.78,
+          4.78
+        ],
+        "led_current_uA_one_period_40pts": [
+          2.278,
+          1.069,
+          55.33,
+          81.29,
+          105.2,
+          126.5,
+          144.7,
+          159.3,
+          169.9,
+          176.4,
+          178.6,
+          176.3,
+          169.7,
+          159.0,
+          144.3,
+          126.0,
+          104.7,
+          80.85,
+          55.02,
+          28.0,
+          2.284,
+          1.067,
+          55.32,
+          81.28,
+          105.2,
+          126.5,
+          144.7,
+          159.3,
+          169.9,
+          176.4,
+          178.6,
+          176.3,
+          169.7,
+          158.9,
+          144.3,
+          126.0,
+          104.7,
+          80.84,
+          55.01,
+          28.0
+        ],
+        "handover_end_after_zero_crossing_us": [
+          1.48,
+          1.48,
+          1.48,
+          1.48
+        ],
+        "sense_error_hf_residual_pp_mV": 0.01217,
+        "sustained_oscillation": false
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "sine/1V/7.2p",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "7dd176976e02e4eef28e0ac1b76f57b51ac2f313b6f055120ea1516773e8647b",
+      "metrics": {
+        "led_peak_uA": 178.6,
+        "ideal_peak_uA": 178.6,
+        "led_mean_over_ideal_mean": 1.0,
+        "fraction_of_period_below_5pct_of_ideal_peak": 0.05485,
+        "drive_extrema_per_period": 6.0,
+        "drive_extrema_note": "2 = clean; each further pair per period is one damped ring at a bridge handover (turn-on edge)",
+        "drive_swing_V": [
+          -4.78,
+          4.78
+        ],
+        "led_current_uA_one_period_40pts": [
+          1.982,
+          45.22,
+          56.33,
+          82.18,
+          106.0,
+          127.2,
+          145.2,
+          159.7,
+          170.2,
+          176.6,
+          178.6,
+          176.2,
+          169.4,
+          158.5,
+          143.7,
+          125.4,
+          103.9,
+          79.96,
+          54.05,
+          26.9,
+          1.986,
+          45.2,
+          56.32,
+          82.18,
+          106.0,
+          127.2,
+          145.2,
+          159.7,
+          170.2,
+          176.6,
+          178.6,
+          176.2,
+          169.4,
+          158.5,
+          143.7,
+          125.4,
+          103.9,
+          79.96,
+          54.04,
+          26.89
+        ],
+        "handover_end_after_zero_crossing_us": [
+          0.96,
+          0.96,
+          0.96,
+          0.96
+        ],
+        "sense_error_hf_residual_pp_mV": 0.01503,
+        "sustained_oscillation": false
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "sine/5V/0",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "6aaae0fadc1d081b826ceea752d11b2dc97ea5627d0b23412fd438fbe9ba70dc",
+      "metrics": {
+        "led_peak_uA": 892.9,
+        "ideal_peak_uA": 892.9,
+        "led_mean_over_ideal_mean": 0.9983,
+        "fraction_of_period_below_5pct_of_ideal_peak": 0.04325,
+        "drive_extrema_per_period": 2.0,
+        "drive_extrema_note": "2 = clean; each further pair per period is one damped ring at a bridge handover (turn-on edge)",
+        "drive_swing_V": [
+          -9.059,
+          9.059
+        ],
+        "led_current_uA_one_period_40pts": [
+          4.459,
+          141.3,
+          277.7,
+          407.1,
+          526.5,
+          632.8,
+          723.6,
+          796.5,
+          849.8,
+          882.2,
+          892.9,
+          881.5,
+          848.5,
+          794.6,
+          721.1,
+          629.9,
+          523.2,
+          403.6,
+          274.1,
+          138.1,
+          4.464,
+          141.3,
+          277.7,
+          407.1,
+          526.5,
+          632.8,
+          723.6,
+          796.5,
+          849.8,
+          882.2,
+          892.9,
+          881.5,
+          848.5,
+          794.6,
+          721.1,
+          629.9,
+          523.2,
+          403.6,
+          274.1,
+          138.0
+        ],
+        "handover_end_after_zero_crossing_us": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "sense_error_hf_residual_pp_mV": 0.1161,
+        "sustained_oscillation": false
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "sine/5V/7.2p",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "a7ad917736fe768e979f95120f959a3697f67bd74fe422b907ab84bccb6d7290",
+      "metrics": {
+        "led_peak_uA": 892.9,
+        "ideal_peak_uA": 892.9,
+        "led_mean_over_ideal_mean": 0.9997,
+        "fraction_of_period_below_5pct_of_ideal_peak": 0.03543,
+        "drive_extrema_per_period": 6.0,
+        "drive_extrema_note": "2 = clean; each further pair per period is one damped ring at a bridge handover (turn-on edge)",
+        "drive_swing_V": [
+          -9.059,
+          9.059
+        ],
+        "led_current_uA_one_period_40pts": [
+          4.175,
+          146.1,
+          282.2,
+          411.3,
+          530.2,
+          636.1,
+          726.3,
+          798.6,
+          851.2,
+          882.9,
+          892.9,
+          880.8,
+          847.1,
+          792.5,
+          718.4,
+          626.7,
+          519.5,
+          399.5,
+          269.7,
+          133.4,
+          4.177,
+          146.1,
+          282.2,
+          411.2,
+          530.2,
+          636.1,
+          726.3,
+          798.6,
+          851.2,
+          882.9,
+          892.9,
+          880.8,
+          847.1,
+          792.5,
+          718.4,
+          626.7,
+          519.4,
+          399.5,
+          269.7,
+          133.4
+        ],
+        "handover_end_after_zero_crossing_us": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "sense_error_hf_residual_pp_mV": 0.04064,
+        "sustained_oscillation": false
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "step/10mV/0",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "19bbd8efa0af3ac42c67b0d2e1cb92f632fd95995e1de4a8b3b2c9ba4964264f",
+      "metrics": {
+        "ideal_led_uA": 1.786,
+        "to_plus": {
+          "final_led_uA": 1.7846,
+          "led_dip_min_uA": -0.0954,
+          "led_dip_at_us": 1.186,
+          "led_overshoot_percent": 0.5298,
+          "led_turn_on_50pct_us": 12.56,
+          "led_settle_1pct_us": 19.73,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 0.0
+        },
+        "to_minus": {
+          "final_led_uA": 1.7766,
+          "led_dip_min_uA": -0.09479,
+          "led_dip_at_us": 1.195,
+          "led_overshoot_percent": 1.433,
+          "led_turn_on_50pct_us": 12.62,
+          "led_settle_1pct_us": 19.81,
+          "late_sense_pp_mV": 3e-08,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 0.0
+        },
+        "sustained_oscillation": false
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "step/10mV/7.2p",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "ad1f19bac510b2f102f09f5335c791ed272da774cb7914e9c9cf188f001f4a5a",
+      "metrics": {
+        "ideal_led_uA": 1.786,
+        "to_plus": {
+          "final_led_uA": 1.7846,
+          "led_dip_min_uA": 0.07232,
+          "led_dip_at_us": 2.172,
+          "led_overshoot_percent": 69.78,
+          "led_turn_on_50pct_us": 5.406,
+          "led_settle_1pct_us": 15.46,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 1.0
+        },
+        "to_minus": {
+          "final_led_uA": 1.7766,
+          "led_dip_min_uA": 0.07255,
+          "led_dip_at_us": 2.178,
+          "led_overshoot_percent": 69.78,
+          "led_turn_on_50pct_us": 5.426,
+          "led_settle_1pct_us": 15.53,
+          "late_sense_pp_mV": 1e-08,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 1.0
+        },
+        "sustained_oscillation": false
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "step/100mV/0",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "f0b3259ec746ee7630946742106fcb526a01fd40985ccd7c4603340b706d7f76",
+      "metrics": {
+        "ideal_led_uA": 17.86,
+        "to_plus": {
+          "final_led_uA": 17.856,
+          "led_dip_min_uA": -1.42,
+          "led_dip_at_us": 0.1234,
+          "led_overshoot_percent": 2.605,
+          "led_turn_on_50pct_us": 1.461,
+          "led_settle_1pct_us": 2.166,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 0.0
+        },
+        "to_minus": {
+          "final_led_uA": 17.848,
+          "led_dip_min_uA": -1.421,
+          "led_dip_at_us": 0.1202,
+          "led_overshoot_percent": 2.709,
+          "led_turn_on_50pct_us": 1.463,
+          "led_settle_1pct_us": 2.168,
+          "late_sense_pp_mV": 1e-07,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 0.0
+        },
+        "sustained_oscillation": false
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "step/100mV/7.2p",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "65172532f8937d76eae3730a314fe66d42deb425287547986650e5eb577f0f89",
+      "metrics": {
+        "ideal_led_uA": 17.86,
+        "to_plus": {
+          "final_led_uA": 17.856,
+          "led_dip_min_uA": 0.7522,
+          "led_dip_at_us": 0.2798,
+          "led_overshoot_percent": 98.65,
+          "led_turn_on_50pct_us": 0.6298,
+          "led_settle_1pct_us": 1.849,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 1.0
+        },
+        "to_minus": {
+          "final_led_uA": 17.848,
+          "led_dip_min_uA": 0.7526,
+          "led_dip_at_us": 0.2798,
+          "led_overshoot_percent": 98.59,
+          "led_turn_on_50pct_us": 0.6298,
+          "led_settle_1pct_us": 1.848,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 1.0
+        },
+        "sustained_oscillation": false
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "step/1V/0",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "46417e053aed51ed18320ba85c617c6e605e801542e3657bf4ee522e058a05e7",
+      "metrics": {
+        "ideal_led_uA": 178.6,
+        "to_plus": {
+          "final_led_uA": 178.57,
+          "led_dip_min_uA": -5.418,
+          "led_dip_at_us": 0.103,
+          "led_overshoot_percent": 40.45,
+          "led_turn_on_50pct_us": 0.4248,
+          "led_settle_1pct_us": 0.5366,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 1.0
+        },
+        "to_minus": {
+          "final_led_uA": 178.56,
+          "led_dip_min_uA": -5.42,
+          "led_dip_at_us": 0.1031,
+          "led_overshoot_percent": 40.66,
+          "led_turn_on_50pct_us": 0.4253,
+          "led_settle_1pct_us": 0.5371,
+          "late_sense_pp_mV": 1e-06,
+          "late_drive_pp_mV": 1e-05,
+          "drive_extrema_after_edge": 1.0
+        },
+        "sustained_oscillation": false
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "step/1V/7.2p",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "d2559f9aa6b2b3fc934625f54e031fb263fb725c492df6bb1f90848426ab197e",
+      "metrics": {
+        "ideal_led_uA": 178.6,
+        "to_plus": {
+          "final_led_uA": 178.57,
+          "led_dip_min_uA": 8.119,
+          "led_dip_at_us": 0.2135,
+          "led_overshoot_percent": 126.8,
+          "led_turn_on_50pct_us": 0.2584,
+          "led_settle_1pct_us": 0.5978,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 1.0
+        },
+        "to_minus": {
+          "final_led_uA": 178.56,
+          "led_dip_min_uA": 8.12,
+          "led_dip_at_us": 0.2135,
+          "led_overshoot_percent": 126.8,
+          "led_turn_on_50pct_us": 0.2584,
+          "led_settle_1pct_us": 0.5978,
+          "late_sense_pp_mV": 1e-06,
+          "late_drive_pp_mV": 1e-05,
+          "drive_extrema_after_edge": 1.0
+        },
+        "sustained_oscillation": false
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "step/5V/0",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "0451d27f7f5fc398f937349f31c37d1c01f8b6505a78c30b4dcb160a1adeab67",
+      "metrics": {
+        "ideal_led_uA": 892.9,
+        "to_plus": {
+          "final_led_uA": 892.86,
+          "led_dip_min_uA": -4.247,
+          "led_dip_at_us": 0.3082,
+          "led_overshoot_percent": 13.49,
+          "led_turn_on_50pct_us": 0.7279,
+          "led_settle_1pct_us": 0.9117,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 1.0
+        },
+        "to_minus": {
+          "final_led_uA": 892.85,
+          "led_dip_min_uA": -4.248,
+          "led_dip_at_us": 0.309,
+          "led_overshoot_percent": 13.48,
+          "led_turn_on_50pct_us": 0.7287,
+          "led_settle_1pct_us": 0.9118,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 1.0
+        },
+        "sustained_oscillation": false
+      }
+    },
+    {
+      "model": "OPA4197",
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "step/5V/7.2p",
+      "integration": "trap (ngspice default)",
+      "deck_sha256": "ac6ee8b9fb2dc1260f0a187518996404419c096817d69ec8c922c94d89ee4036",
+      "metrics": {
+        "ideal_led_uA": 892.9,
+        "to_plus": {
+          "final_led_uA": 892.86,
+          "led_dip_min_uA": 13.51,
+          "led_dip_at_us": 0.4333,
+          "led_overshoot_percent": 27.04,
+          "led_turn_on_50pct_us": 0.6956,
+          "led_settle_1pct_us": 0.9487,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 1.0
+        },
+        "to_minus": {
+          "final_led_uA": 892.85,
+          "led_dip_min_uA": 13.51,
+          "led_dip_at_us": 0.4332,
+          "led_overshoot_percent": 27.01,
+          "led_turn_on_50pct_us": 0.6955,
+          "led_settle_1pct_us": 0.9484,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 1.0
+        },
+        "sustained_oscillation": false
+      }
     }
   ],
   "deltas": [
@@ -4508,6 +5628,142 @@
       }
     },
     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "variant": "0/1uA",
+      "OPA4197_minus_OPA4196": {
+        "crossover_Hz": 521600.0,
+        "phase_margin_deg": 0.9,
+        "dc_loop_gain_dB": 11.08,
+        "zs_over_zl_at_crossover": 0.1399,
+        "voltage_injection_only": {
+          "crossover_Hz": 445500.0,
+          "phase_margin_deg": 10.0,
+          "dc_loop_gain_dB": 11.08
+        },
+        "dc_seed": {}
+      }
+    },
+    {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "variant": "0/10uA",
+      "OPA4197_minus_OPA4196": {
+        "crossover_Hz": 2399000.0,
+        "phase_margin_deg": -14.36,
+        "dc_loop_gain_dB": 11.35,
+        "zs_over_zl_at_crossover": 0.4141,
+        "voltage_injection_only": {
+          "crossover_Hz": 1998000.0,
+          "phase_margin_deg": 10.22,
+          "dc_loop_gain_dB": 11.35
+        },
+        "dc_seed": {}
+      }
+    },
+    {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "variant": "0/100uA",
+      "OPA4197_minus_OPA4196": {
+        "crossover_Hz": 5065000.0,
+        "phase_margin_deg": 1.08,
+        "dc_loop_gain_dB": 11.5,
+        "zs_over_zl_at_crossover": 0.2559,
+        "voltage_injection_only": {
+          "crossover_Hz": 4565000.0,
+          "phase_margin_deg": 16.84,
+          "dc_loop_gain_dB": 11.5
+        },
+        "dc_seed": {}
+      }
+    },
+    {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "variant": "0/1mA",
+      "OPA4197_minus_OPA4196": {
+        "crossover_Hz": 7077000.0,
+        "phase_margin_deg": 4.33,
+        "dc_loop_gain_dB": 12.3,
+        "zs_over_zl_at_crossover": 0.02446,
+        "voltage_injection_only": {
+          "crossover_Hz": 6935000.0,
+          "phase_margin_deg": 6.23,
+          "dc_loop_gain_dB": 12.3
+        },
+        "dc_seed": {}
+      }
+    },
+    {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "variant": "7.2p/1uA",
+      "OPA4197_minus_OPA4196": {
+        "crossover_Hz": 265700.0,
+        "phase_margin_deg": -16.62,
+        "dc_loop_gain_dB": 11.08,
+        "zs_over_zl_at_crossover": 0.06795,
+        "voltage_injection_only": {
+          "crossover_Hz": 246700.0,
+          "phase_margin_deg": -13.74,
+          "dc_loop_gain_dB": 11.08
+        },
+        "dc_seed": {}
+      }
+    },
+    {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "variant": "7.2p/10uA",
+      "OPA4197_minus_OPA4196": {
+        "crossover_Hz": 1567000.0,
+        "phase_margin_deg": -21.21,
+        "dc_loop_gain_dB": 11.35,
+        "zs_over_zl_at_crossover": 0.2357,
+        "voltage_injection_only": {
+          "crossover_Hz": 1387000.0,
+          "phase_margin_deg": -11.71,
+          "dc_loop_gain_dB": 11.35
+        },
+        "dc_seed": {}
+      }
+    },
+    {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "variant": "7.2p/100uA",
+      "OPA4197_minus_OPA4196": {
+        "crossover_Hz": 4237000.0,
+        "phase_margin_deg": 3.92,
+        "dc_loop_gain_dB": 11.4,
+        "zs_over_zl_at_crossover": 0.1213,
+        "voltage_injection_only": {
+          "crossover_Hz": 3759000.0,
+          "phase_margin_deg": 9.63,
+          "dc_loop_gain_dB": 11.4
+        },
+        "dc_seed": {}
+      }
+    },
+    {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "variant": "7.2p/1mA",
+      "OPA4197_minus_OPA4196": {
+        "crossover_Hz": 6495000.0,
+        "phase_margin_deg": 8.67,
+        "dc_loop_gain_dB": 12.1,
+        "zs_over_zl_at_crossover": -0.0054,
+        "voltage_injection_only": {
+          "crossover_Hz": 6400000.0,
+          "phase_margin_deg": 8.75,
+          "dc_loop_gain_dB": 12.1
+        },
+        "dc_seed": {}
+      }
+    },
+    {
       "case": "case5a_control",
       "cell": "plain_follower",
       "variant": "no_load",
@@ -4520,6 +5776,349 @@
           "crossover_Hz": 7594000.0,
           "phase_margin_deg": 6.86,
           "dc_loop_gain_dB": 11.0
+        },
+        "dc_seed": {}
+      }
+    },
+    {
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "sine/10mV/0",
+      "OPA4197_minus_OPA4196": {
+        "led_peak_uA": 1.196,
+        "ideal_peak_uA": 0.0,
+        "led_mean_over_ideal_mean": 0.2709,
+        "fraction_of_period_below_5pct_of_ideal_peak": -0.4435,
+        "drive_extrema_per_period": 0.5
+      }
+    },
+    {
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "sine/10mV/7.2p",
+      "OPA4197_minus_OPA4196": {
+        "led_peak_uA": 2.301,
+        "ideal_peak_uA": 0.0,
+        "led_mean_over_ideal_mean": 0.8942,
+        "fraction_of_period_below_5pct_of_ideal_peak": -0.4437,
+        "drive_extrema_per_period": 0.5
+      }
+    },
+    {
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "sine/100mV/0",
+      "OPA4197_minus_OPA4196": {
+        "led_peak_uA": 0.0,
+        "ideal_peak_uA": 0.0,
+        "led_mean_over_ideal_mean": 0.1492,
+        "fraction_of_period_below_5pct_of_ideal_peak": -0.1153,
+        "drive_extrema_per_period": 0.0,
+        "sense_error_hf_residual_pp_mV": 0.1028
+      }
+    },
+    {
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "sine/100mV/7.2p",
+      "OPA4197_minus_OPA4196": {
+        "led_peak_uA": 0.04,
+        "ideal_peak_uA": 0.0,
+        "led_mean_over_ideal_mean": 0.1471,
+        "fraction_of_period_below_5pct_of_ideal_peak": -0.0841,
+        "drive_extrema_per_period": 4.0,
+        "sense_error_hf_residual_pp_mV": -0.01137
+      }
+    },
+    {
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "sine/1V/0",
+      "OPA4197_minus_OPA4196": {
+        "led_peak_uA": 0.0,
+        "ideal_peak_uA": 0.0,
+        "led_mean_over_ideal_mean": 0.0157,
+        "fraction_of_period_below_5pct_of_ideal_peak": -0.03665,
+        "drive_extrema_per_period": 0.0,
+        "sense_error_hf_residual_pp_mV": -0.1224
+      }
+    },
+    {
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "sine/1V/7.2p",
+      "OPA4197_minus_OPA4196": {
+        "led_peak_uA": 0.0,
+        "ideal_peak_uA": 0.0,
+        "led_mean_over_ideal_mean": 0.0155,
+        "fraction_of_period_below_5pct_of_ideal_peak": -0.0294,
+        "drive_extrema_per_period": 0.0,
+        "sense_error_hf_residual_pp_mV": -0.03553
+      }
+    },
+    {
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "sine/5V/0",
+      "OPA4197_minus_OPA4196": {
+        "led_peak_uA": -0.1,
+        "ideal_peak_uA": 0.0,
+        "led_mean_over_ideal_mean": 0.0049,
+        "fraction_of_period_below_5pct_of_ideal_peak": -0.0231,
+        "drive_extrema_per_period": 0.0,
+        "sense_error_hf_residual_pp_mV": -0.1319
+      }
+    },
+    {
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "sine/5V/7.2p",
+      "OPA4197_minus_OPA4196": {
+        "led_peak_uA": -0.2,
+        "ideal_peak_uA": 0.0,
+        "led_mean_over_ideal_mean": 0.0043,
+        "fraction_of_period_below_5pct_of_ideal_peak": -0.01832,
+        "drive_extrema_per_period": 4.0,
+        "sense_error_hf_residual_pp_mV": -0.08726
+      }
+    },
+    {
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "step/10mV/0",
+      "OPA4197_minus_OPA4196": {
+        "ideal_led_uA": 0.0,
+        "to_plus": {
+          "final_led_uA": 0.0002,
+          "led_dip_min_uA": -0.06618,
+          "led_dip_at_us": -3.517,
+          "led_overshoot_percent": -0.078,
+          "led_turn_on_50pct_us": -22.82,
+          "led_settle_1pct_us": -28.14,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 0.0
+        },
+        "to_minus": {
+          "final_led_uA": -0.0002,
+          "led_dip_min_uA": -0.06571,
+          "led_dip_at_us": -3.526,
+          "led_overshoot_percent": -0.03,
+          "led_turn_on_50pct_us": -22.9,
+          "led_settle_1pct_us": -28.26,
+          "late_sense_pp_mV": -2.3e-07,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 0.0
+        }
+      }
+    },
+    {
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "step/10mV/7.2p",
+      "OPA4197_minus_OPA4196": {
+        "ideal_led_uA": 0.0,
+        "to_plus": {
+          "final_led_uA": 0.0002,
+          "led_dip_min_uA": 0.04086,
+          "led_dip_at_us": -8.178,
+          "led_overshoot_percent": 69.35,
+          "led_turn_on_50pct_us": -13.7,
+          "led_settle_1pct_us": -24.53,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 1.0
+        },
+        "to_minus": {
+          "final_led_uA": -0.0002,
+          "led_dip_min_uA": 0.04118,
+          "led_dip_at_us": -8.202,
+          "led_overshoot_percent": 68.49,
+          "led_turn_on_50pct_us": -13.76,
+          "led_settle_1pct_us": -24.63,
+          "late_sense_pp_mV": 1e-08,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 1.0
+        }
+      }
+    },
+    {
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "step/100mV/0",
+      "OPA4197_minus_OPA4196": {
+        "ideal_led_uA": 0.0,
+        "to_plus": {
+          "final_led_uA": 0.0,
+          "led_dip_min_uA": -1.071,
+          "led_dip_at_us": -0.3277,
+          "led_overshoot_percent": -1.443,
+          "led_turn_on_50pct_us": -2.574,
+          "led_settle_1pct_us": -3.229,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 0.0
+        },
+        "to_minus": {
+          "final_led_uA": 0.0,
+          "led_dip_min_uA": -1.072,
+          "led_dip_at_us": -0.3277,
+          "led_overshoot_percent": -1.417,
+          "led_turn_on_50pct_us": -2.57,
+          "led_settle_1pct_us": -3.23,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 0.0
+        }
+      }
+    },
+    {
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "step/100mV/7.2p",
+      "OPA4197_minus_OPA4196": {
+        "ideal_led_uA": 0.0,
+        "to_plus": {
+          "final_led_uA": 0.0,
+          "led_dip_min_uA": 0.4016,
+          "led_dip_at_us": -0.8782,
+          "led_overshoot_percent": 81.36,
+          "led_turn_on_50pct_us": -1.493,
+          "led_settle_1pct_us": -2.758,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 0.0
+        },
+        "to_minus": {
+          "final_led_uA": 0.0,
+          "led_dip_min_uA": 0.4021,
+          "led_dip_at_us": -0.8782,
+          "led_overshoot_percent": 81.3,
+          "led_turn_on_50pct_us": -1.496,
+          "led_settle_1pct_us": -2.763,
+          "late_sense_pp_mV": -1e-07,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": 0.0
+        }
+      }
+    },
+    {
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "step/1V/0",
+      "OPA4197_minus_OPA4196": {
+        "ideal_led_uA": 0.0,
+        "to_plus": {
+          "final_led_uA": 0.0,
+          "led_dip_min_uA": -3.477,
+          "led_dip_at_us": -0.1917,
+          "led_overshoot_percent": 30.2,
+          "led_turn_on_50pct_us": -0.6622,
+          "led_settle_1pct_us": -0.9904,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": -1.0
+        },
+        "to_minus": {
+          "final_led_uA": 0.0,
+          "led_dip_min_uA": -3.981,
+          "led_dip_at_us": -0.2805,
+          "led_overshoot_percent": 30.42,
+          "led_turn_on_50pct_us": -1.044,
+          "led_settle_1pct_us": -1.402,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 1e-05,
+          "drive_extrema_after_edge": -1.0
+        }
+      }
+    },
+    {
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "step/1V/7.2p",
+      "OPA4197_minus_OPA4196": {
+        "ideal_led_uA": 0.0,
+        "to_plus": {
+          "final_led_uA": 0.0,
+          "led_dip_min_uA": 5.992,
+          "led_dip_at_us": -0.3122,
+          "led_overshoot_percent": 94.93,
+          "led_turn_on_50pct_us": -0.8326,
+          "led_settle_1pct_us": -0.9132,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": -1.0
+        },
+        "to_minus": {
+          "final_led_uA": 0.0,
+          "led_dip_min_uA": 6.776,
+          "led_dip_at_us": -0.4556,
+          "led_overshoot_percent": 104.1,
+          "led_turn_on_50pct_us": -1.201,
+          "led_settle_1pct_us": -1.321,
+          "late_sense_pp_mV": 1e-06,
+          "late_drive_pp_mV": 1e-05,
+          "drive_extrema_after_edge": -1.0
+        }
+      }
+    },
+    {
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "step/5V/0",
+      "OPA4197_minus_OPA4196": {
+        "ideal_led_uA": 0.0,
+        "to_plus": {
+          "final_led_uA": 0.0,
+          "led_dip_min_uA": -2.412,
+          "led_dip_at_us": -0.5801,
+          "led_overshoot_percent": -0.32,
+          "led_turn_on_50pct_us": -1.285,
+          "led_settle_1pct_us": -1.696,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": -1.0
+        },
+        "to_minus": {
+          "final_led_uA": 0.0,
+          "led_dip_min_uA": -2.874,
+          "led_dip_at_us": -0.895,
+          "led_overshoot_percent": -0.66,
+          "led_turn_on_50pct_us": -1.995,
+          "led_settle_1pct_us": -2.312,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": -1.0
+        }
+      }
+    },
+    {
+      "case": "case5b",
+      "cell": "magnitude_indicator",
+      "variant": "step/5V/7.2p",
+      "OPA4197_minus_OPA4196": {
+        "ideal_led_uA": 0.0,
+        "to_plus": {
+          "final_led_uA": 0.0,
+          "led_dip_min_uA": 11.5,
+          "led_dip_at_us": -0.6967,
+          "led_overshoot_percent": 15.94,
+          "led_turn_on_50pct_us": -1.294,
+          "led_settle_1pct_us": -1.696,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": -1.0
+        },
+        "to_minus": {
+          "final_led_uA": 0.0,
+          "led_dip_min_uA": 12.25,
+          "led_dip_at_us": -1.062,
+          "led_overshoot_percent": 15.4,
+          "led_turn_on_50pct_us": -2.01,
+          "led_settle_1pct_us": -2.522,
+          "late_sense_pp_mV": 0.0,
+          "late_drive_pp_mV": 0.0,
+          "drive_extrema_after_edge": -1.0
         }
       }
     }
