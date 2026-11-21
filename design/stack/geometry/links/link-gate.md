@@ -152,7 +152,7 @@ Every footprint with board, face, package, old and new place, shift, step and tu
 | VCO core (AS3340D) | U1405 (77.56, 220.97) B -> (73.7424, 235.2174) F (14.75 mm, step 3) |
 | voltage reference (REF5050AIDR) | U1601 (19.2, 201.05) B -> (24.45, 201.05) B (5.25 mm, step 1); U4501 (185.95, 131.06) F -> (189.45, 124.9978) F (7 mm, step 1) |
 
-Displaced packages: AS3340D 1, OPA4197IDR 5, OPA4197IPWR 3, LF398M_NOPB 0, LM13700M_NOPB 3.
+Displaced packages: AS3340D 1, OPA4197IDR 4, OPA4197IPWR 9, LF398M_NOPB 0, LM13700M_NOPB 3.
 
 Trimmers: RV2113 (21.1, 118.2) B -> (28.8782, 125.9782) B (11 mm, step 1); RV2213 (102.35, 88.45) B -> (113.4581, 91.4264) B (11.5 mm, step 1); RV2310 (148.85, 190.45) B -> (138.85, 190.45) B (10 mm, step 1); RV4103 (218.2, 53.3) B -> (213.95, 45.9388) B (8.5 mm, step 1); RV4204 (211.85, 239.8) F -> (216.85, 239.8) F (5 mm, step 1); RVO1308 (48.85, 228.7) B -> (56.805, 236.655) B (11.25 mm, step 1); RVO1408 (41.6, 218.7) B -> (35.1048, 222.45) F (7.5 mm, step 2); RVO1508 (76.85, 256.45) B -> (71.0043, 259.825) B (6.75 mm, step 1); RVO1511 (77.35, 242.45) B -> (77.35, 236.95) B (5.5 mm, step 1).
 
