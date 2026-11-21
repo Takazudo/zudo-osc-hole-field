@@ -73,6 +73,23 @@ at 0 / 7.2 pF. Open:
   mismatches until the layout stage). `regen-all.sh --check` and the simulation `--check` are NOT RUN in the cloud
   (no oracle); WSL ran them.
 
+Stage 6 result (WSL, through `7ac88534`, revisions 1–5; independently reviewed). JL and JR carry the six TSSOP-14
+packages, and all 1069 JL and 1031 JR footprints sit exactly at their floorplan poses. No locked footprint moved.
+Readiness reconciles with 0 mismatches. Stripping removed 0.80 % (JL) and 0.37 % (JR) of the routed track length,
+and every removed item is recorded. 323 JL and 245 JR unconnected items are left for the JL/JR re-route, which is
+OPEN and comes after stage 7. The link gate was re-pinned for geometry only. The signal and position pins are
+unchanged, and the c6 history is verified from its own snapshot. Two links moved slots: JL-L02 (cost 15.0 → 16.5;
+its old slot is still legal but now costs 19.0) and JR-L02 (K-edge compliance 0.2431 mm/N, marginal against the
+0.25 mm/N listing threshold). The fixings and threading-procedure count pins were updated to the regenerated record
+by the manager.
+
+Ruling carried into stage 7: the JL-L02 move displaces U115 (LF398M) to F.Cu 14.25 mm away and U114 to F.Cu
+28.3 mm away. U115's hold capacitors are 7.7 and 12.0 mm away; its bypass capacitors stay on B.Cu at 11.3 and
+19.6 mm (previously 5.4 mm, same face). Stage 7's re-placement must move each displaced IC with its decouplers as
+one block, as stage 4 already does. Keep the bypass on the IC's face and within the pre-move distance (5.4 mm for
+U115), and keep the hold capacitors no farther than now. If that cannot be met, compare it with retaining the old
+JL-L02 slot (cost 19.0, 11 parts covered).
+
 ## The question for the design authority: which remedy to develop for the 26 unplaced ICs
 
 The cumulative record has 438 displaced footprints. 412 have courtyard-level replacements and 26

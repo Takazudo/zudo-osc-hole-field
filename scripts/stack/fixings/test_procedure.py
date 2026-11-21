@@ -56,9 +56,9 @@ class Record(unittest.TestCase):
         c = DOC['counts']
         self.assertEqual(c['cables_per_code'], {'C26618 50 mm': 18, 'C29534 50 mm': 28, 'C32128 60 mm': 3,
                                                 'C68390 50 mm': 9, 'C81339 40 mm': 3})
-        self.assertEqual(c['parts_with_leads_to_cut_per_board'], {'JL': 19, 'JR': 14, 'P': 49, 'O3': 1})
+        self.assertEqual(c['parts_with_leads_to_cut_per_board'], {'JL': 19, 'JR': 11, 'P': 49, 'O3': 1})  # after the MC04-S6 rev 4 JR-L02 rebind
         self.assertEqual((c['connectors'], c['locks_before_K'], c['locks_after_K']), (122, 61, 61))
-        self.assertEqual((c['lengthened_tails'], c['holding_hand'], c['fastener_operations']), (30, 12, 44))
+        self.assertEqual((c['lengthened_tails'], c['holding_hand'], c['fastener_operations']), (29, 12, 44))  # JL-L02 no longer lengthened (MC04-S6 rev 4)
 
     def test_smallest_slack_and_stages(self):
         self.assertAlmostEqual(min(r['slack_mm'] for r in DOC['links']), 0.6602)
@@ -81,8 +81,8 @@ class Record(unittest.TestCase):
         self.assertTrue(all(h['K_connector']['name'].startswith('the ') for h in DOC['holding_hand']))
 
     def test_latch_counts_and_the_31(self):
-        self.assertEqual(DOC['latch']['counts'], {'NOT SHOWN': 31, 'open': 27, 'open after the displacement': 3})
-        self.assertEqual(len(DOC['latch']['not_shown']), 31)
+        self.assertEqual(DOC['latch']['counts'], {'NOT SHOWN': 32, 'open': 26, 'open after the displacement': 3})  # MC04-S6 rev 4
+        self.assertEqual(len(DOC['latch']['not_shown']), 32)
         self.assertTrue(all(n['neighbours'] for n in DOC['latch']['not_shown']))
 
     def test_service_counts(self):
@@ -109,7 +109,7 @@ class Record(unittest.TestCase):
         self.assertIn('screw length tolerance',source['remaining_unknowns'])
         self.assertIn('grip tolerance',source['remaining_unknowns'])
         self.assertEqual(DOC['screws']['working_figure']['status'],'ASSUMED')
-        self.assertEqual(DOC['counts']['latch']['NOT SHOWN'],31)
+        self.assertEqual(DOC['counts']['latch']['NOT SHOWN'],32)
         page=procedure_page.render(DOC)
         self.assertIn('2.4 +/- 0.25 mm (interval 2.15 to 2.65 mm)',page)
         self.assertIn('washer thickness stays UNSOURCED',page)
@@ -222,7 +222,7 @@ class PrimaryActuationMethod(unittest.TestCase):
         self.assertEqual(page.count('by hand only at the center of the actuator'), 3)
 
     def test_method_correction_is_not_access_acceptance(self):
-        self.assertEqual(DOC['counts']['latch']['NOT SHOWN'], 31)
+        self.assertEqual(DOC['counts']['latch']['NOT SHOWN'], 32)
         self.assertEqual(DOC['counts']['holding_hand'], 12)
         self.assertEqual(DOC['lowering']['largest_ends'], 17)
         self.assertEqual(len(DOC['lowering']['stages']), 9)
