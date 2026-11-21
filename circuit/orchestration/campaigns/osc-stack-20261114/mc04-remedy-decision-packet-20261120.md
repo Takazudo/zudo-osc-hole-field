@@ -10,11 +10,13 @@ The owner chose "Yes, develop it in stages" on the decision card. That authorize
 accepts no move. Each stage still needs independent review, and check 5 stays NEEDS_DESIGN until the
 generator change passes it.
 
-Stage 1a (`scripts/stack/studies/mc04_s1_budgets/`) drafts electrical limits from the OPA4196 datasheet and
-the retained cable model. Under those draft limits, the 15 protected 10 kΩ input nodes fail the 10 mV
-crosstalk limit even with two grounds between signals, so six input-buffer blocks (U1216, U1416, U1518,
-U4346, U8314, U8417) cannot move as drawn. Three output blocks (U1417, U2218, U4347) can, with a ground
-between signals. The three LED-indicator blocks need an indicator criterion.
+Stage 1a (`scripts/stack/studies/mc04_s1_budgets/`, revised after independent review) drafts electrical
+limits from retained OPA4196 and TMUX7412 facts and the retained cable model. Under those draft limits the
+protected input nodes fail the crosstalk limit by a wide margin (unpatched 100 kΩ: 374 mV even with two
+grounds on both sides, against 10 mV, or 1 mV for the pitch CV), so six input-buffer blocks (U1216, U1416,
+U1518, U4346, U8314, U8417) cannot move as drawn. Two output blocks (U1417, U2218) can, with a ground on
+both sides of each isolation midpoint, or plainly on the keep-front boundary. Four blocks (U2119, U4347,
+U4348, U8318) depend on LED bridge nets inside op-amp feedback loops, which need a loop-stability criterion.
 
 ## The question for the design authority: which remedy to develop for the 26 unplaced ICs
 
