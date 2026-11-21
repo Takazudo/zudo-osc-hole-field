@@ -10,8 +10,8 @@
         "-12V": 52.25
       },
       "oscillator": {
-        "+12V": 59.9,
-        "-12V": 61.0
+        "+12V": 61.9,
+        "-12V": 63.0
       },
       "octave_reference": {
         "+12V": 26.0,
@@ -26,8 +26,8 @@
         "-12V": 6.0
       },
       "envelope": {
-        "+12V": 53.796,
-        "-12V": 51.474
+        "+12V": 54.629333,
+        "-12V": 52.307333
       },
       "mult": {
         "+12V": 10.35,
@@ -42,8 +42,8 @@
         "-12V": 35.6
       },
       "mix4_vca": {
-        "+12V": 43.1,
-        "-12V": 42.6
+        "+12V": 48.1,
+        "-12V": 47.6
       },
       "wavefolder": {
         "+12V": 42.119069,
@@ -61,11 +61,11 @@
           "-12V": 1320
         },
         "planning_reduction_needed_mA": {
-          "+12V": 178.167893,
-          "-12V": 207.71266
+          "+12V": 203.167893,
+          "-12V": 232.71266
         },
-        "equivalent_oscillators": 3.405126,
-        "equivalent_envelopes": 4.035293
+        "equivalent_oscillators": 3.693852,
+        "equivalent_envelopes": 4.448949
       },
       "pd002_A1_15V_floor_high": {
         "continuous_capability_mA": {
@@ -73,11 +73,11 @@
           "-12V": 1400
         },
         "planning_reduction_needed_mA": {
-          "+12V": 96.349711,
-          "-12V": 134.985387
+          "+12V": 121.349711,
+          "-12V": 159.985387
         },
-        "equivalent_oscillators": 2.212875,
-        "equivalent_envelopes": 2.622399
+        "equivalent_oscillators": 2.539451,
+        "equivalent_envelopes": 3.058565
       },
       "pd002_A1_15V_ideal_high": {
         "continuous_capability_mA": {
@@ -85,11 +85,11 @@
           "-12V": 1510
         },
         "planning_reduction_needed_mA": {
-          "+12V": 0,
-          "-12V": 34.985387
+          "+12V": 21.349711,
+          "-12V": 59.985387
         },
-        "equivalent_oscillators": 0.573531,
-        "equivalent_envelopes": 0.679671
+        "equivalent_oscillators": 0.952149,
+        "equivalent_envelopes": 1.146787
       }
     }
   },
@@ -106,15 +106,15 @@
   "inputs_sha256": {
     "rail_budget": {
       "path": "design/power/rail-budget.json",
-      "sha256": "25f03de66cb40b02735e4c044b89905119206a20d1a81eda6a60a5b44db561e6"
+      "sha256": "db25f9dd37918705032f8b5bea5e9a05325e4760ded06fdf37d2ddfe13254b63"
     },
     "supply_architecture": {
       "path": "design/power/supply-architecture.json",
-      "sha256": "11de349b0c5ab2762dad8ac4d841a0705c70c7c0816dc110175bd55c739989ff"
+      "sha256": "db3aa8a6b91aca6eb107d42c0bc5f0fbfa83c28373c4d17488a3c6a204b8f8e9"
     },
     "supply_architecture_input": {
       "path": "design/power/supply-architecture-input.json",
-      "sha256": "92d9099f26cc5eda3408aa2aa6e134019f9914a64ec05e5df744d4cd179c0c1d"
+      "sha256": "86f47662de0fe90cfa3ed8ff6ef6e9746d775afbc01c07a8ca67a72e3b00a8ed"
     },
     "stage54_accounting": {
       "path": "design/architecture-278/implementation/stage54/power-cleanup/accounting.json",
@@ -154,13 +154,13 @@
       ],
       "partial": false,
       "reported_typical_mA": {
-        "+12V": 185.2,
-        "-12V": 193.0,
+        "+12V": 192.08,
+        "-12V": 199.88,
         "+5V": 15.0
       },
       "planning_upper_mA": {
-        "+12V": 299.5,
-        "-12V": 305.0,
+        "+12V": 309.5,
+        "-12V": 315.0,
         "+5V": 30.0
       }
     },
@@ -225,13 +225,13 @@
       ],
       "partial": false,
       "reported_typical_mA": {
-        "+12V": 175.104,
-        "-12V": 166.716,
+        "+12V": 178.544,
+        "-12V": 170.156,
         "+5V": 55.2
       },
       "planning_upper_mA": {
-        "+12V": 322.776,
-        "-12V": 308.844,
+        "+12V": 327.776,
+        "-12V": 313.844,
         "+5V": 129.248934
       }
     },
@@ -293,13 +293,13 @@
       ],
       "partial": false,
       "reported_typical_mA": {
-        "+12V": 41.28,
-        "-12V": 38.68,
+        "+12V": 48.16,
+        "-12V": 45.56,
         "+5V": 0.5
       },
       "planning_upper_mA": {
-        "+12V": 86.2,
-        "-12V": 85.2,
+        "+12V": 96.2,
+        "-12V": 95.2,
         "+5V": 1.0
       }
     },
@@ -410,8 +410,8 @@
     "reported_typical_subtotal": {
       "classification": "REPORTED/ASSUMED TYPICAL, PARTIAL (complete typical unknown)",
       "mA": {
-        "+12V": 789.761813,
-        "-12V": 761.273813,
+        "+12V": 806.961813,
+        "-12V": 778.473813,
         "+5V": 80.272727
       },
       "basis": "design/power/rail-budget.json; excludes items listed in incomplete_sources"
@@ -419,8 +419,8 @@
     "normal_planning": {
       "classification": "PLANNING ALLOCATION (canonical, not a maximum or measurement)",
       "mA": {
-        "+12V": 1450.895166,
-        "-12V": 1407.71266,
+        "+12V": 1475.895166,
+        "-12V": 1432.71266,
         "+5V": 224.286445
       },
       "basis": "supply-architecture.json selected_requirement.normal_with_allowances_mA"
@@ -442,8 +442,8 @@
     "startup_envelope_10ms": {
       "classification": "CONSERVATIVE ENVELOPE (normal planning plus full-capacitance ramp; not a simultaneous operating point)",
       "mA": {
-        "+12V": 1675.535166,
-        "-12V": 1630.37266,
+        "+12V": 1700.535166,
+        "-12V": 1655.37266,
         "+5V": 286.686445
       },
       "basis": "ramp increment at 10 ms soft start and capacitance ceiling +20 %; load current during the ramp is lower than at full voltage"
@@ -451,8 +451,8 @@
     "normal_plus_one_fault": {
       "classification": "PLANNING ALLOCATION plus one bounded external-forcing fault",
       "mA": {
-        "+12V": 1475.895166,
-        "-12V": 1432.71266,
+        "+12V": 1500.895166,
+        "-12V": 1457.71266,
         "+5V": 224.286445
       },
       "basis": "One output externally forced to opposite 12 V across 998 ohm: 24.0481 mA, rounded to 25 mA per analog rail. Does not establish all-output-short or opamp rail current maxima."
@@ -465,7 +465,7 @@
         "+5V": 300
       },
       "canonical_rule_result_mA": {
-        "+12V": 1600,
+        "+12V": 1700,
         "-12V": 1600,
         "+5V": 300
       },
@@ -480,7 +480,7 @@
         "+5V": 400
       },
       "canonical_requirement_mA": {
-        "+12V": 1900,
+        "+12V": 2000,
         "-12V": 1900,
         "+5V": 400
       },
@@ -500,31 +500,31 @@
   "power": {
     "reported_typical_subtotal": {
       "osc_inlet_W_at_source_band": [
-        19.017805,
-        19.411002
+        19.430605,
+        19.832402
       ],
       "current_pd_chain_pre_rail_W_lower_bound": {
-        "nominal_setpoints": 21.905915,
-        "screened_minimum_setpoints": 21.191232
+        "nominal_setpoints": 22.380377,
+        "screened_minimum_setpoints": 21.65053
       },
       "efficiency_needed": {
         "nominal_15V_3A": {
-          "any_architecture_end_to_end": 0.422618,
-          "current_pd_chain_converters": 0.470916
+          "any_architecture_end_to_end": 0.431791,
+          "current_pd_chain_converters": 0.481123
         },
         "source_minus_5_percent": {
-          "any_architecture_end_to_end": 0.444861,
-          "current_pd_chain_converters": 0.495701
+          "any_architecture_end_to_end": 0.454517,
+          "current_pd_chain_converters": 0.506445
         },
         "board_b_input_screen_14V_3A": {
-          "any_architecture_end_to_end": 0.452805,
-          "current_pd_chain_converters": 0.504553
+          "any_architecture_end_to_end": 0.462633,
+          "current_pd_chain_converters": 0.515489
         }
       },
       "positive_converter_efficiency_needed_with_pd_u4_model": {
-        "nominal_15V_3A": 0.336292,
-        "source_minus_5_percent": 0.361313,
-        "board_b_input_screen_14V_3A": 0.370502
+        "nominal_15V_3A": 0.346303,
+        "source_minus_5_percent": 0.372311,
+        "board_b_input_screen_14V_3A": 0.381871
       },
       "infeasible_at_100_percent": {
         "nominal_15V_3A": {
@@ -543,31 +543,31 @@
     },
     "normal_planning": {
       "osc_inlet_W_at_source_band": [
-        35.43594,
-        36.163966
+        36.03594,
+        36.776466
       ],
       "current_pd_chain_pre_rail_W_lower_bound": {
-        "nominal_setpoints": 40.87425,
-        "screened_minimum_setpoints": 39.51959
+        "nominal_setpoints": 41.563875,
+        "screened_minimum_setpoints": 40.187174
       },
       "efficiency_needed": {
         "nominal_15V_3A": {
-          "any_architecture_end_to_end": 0.787465,
-          "current_pd_chain_converters": 0.878213
+          "any_architecture_end_to_end": 0.800799,
+          "current_pd_chain_converters": 0.893048
         },
         "source_minus_5_percent": {
-          "any_architecture_end_to_end": 0.828911,
-          "current_pd_chain_converters": 0.924435
+          "any_architecture_end_to_end": 0.842946,
+          "current_pd_chain_converters": 0.940051
         },
         "board_b_input_screen_14V_3A": {
-          "any_architecture_end_to_end": 0.843713,
-          "current_pd_chain_converters": 0.940943
+          "any_architecture_end_to_end": 0.857999,
+          "current_pd_chain_converters": 0.956837
         }
       },
       "positive_converter_efficiency_needed_with_pd_u4_model": {
-        "nominal_15V_3A": 0.939151,
-        "source_minus_5_percent": 1.046856,
-        "board_b_input_screen_14V_3A": 1.088465
+        "nominal_15V_3A": 0.972531,
+        "source_minus_5_percent": 1.086449,
+        "board_b_input_screen_14V_3A": 1.130593
       },
       "infeasible_at_100_percent": {
         "nominal_15V_3A": {
@@ -629,31 +629,31 @@
     },
     "startup_envelope_10ms": {
       "osc_inlet_W_at_source_band": [
-        41.11866,
-        41.96173
+        41.71866,
+        42.57423
       ],
       "current_pd_chain_pre_rail_W_lower_bound": {
-        "nominal_setpoints": 47.449723,
-        "screened_minimum_setpoints": 45.86937
+        "nominal_setpoints": 48.139348,
+        "screened_minimum_setpoints": 46.536954
       },
       "efficiency_needed": {
         "nominal_15V_3A": {
-          "any_architecture_end_to_end": 0.913748,
-          "current_pd_chain_converters": 1.019319
+          "any_architecture_end_to_end": 0.927081,
+          "current_pd_chain_converters": 1.034155
         },
         "source_minus_5_percent": {
-          "any_architecture_end_to_end": 0.96184,
-          "current_pd_chain_converters": 1.072968
+          "any_architecture_end_to_end": 0.975875,
+          "current_pd_chain_converters": 1.088584
         },
         "board_b_input_screen_14V_3A": {
-          "any_architecture_end_to_end": 0.979016,
-          "current_pd_chain_converters": 1.092128
+          "any_architecture_end_to_end": 0.993301,
+          "current_pd_chain_converters": 1.108023
         }
       },
       "positive_converter_efficiency_needed_with_pd_u4_model": {
-        "nominal_15V_3A": 1.311653,
-        "source_minus_5_percent": 1.496559,
-        "board_b_input_screen_14V_3A": 1.57035
+        "nominal_15V_3A": 1.360491,
+        "source_minus_5_percent": 1.557347,
+        "board_b_input_screen_14V_3A": 1.636267
       },
       "infeasible_at_100_percent": {
         "nominal_15V_3A": {
@@ -672,31 +672,31 @@
     },
     "normal_plus_one_fault": {
       "osc_inlet_W_at_source_band": [
-        36.03594,
-        36.776466
+        36.63594,
+        37.388966
       ],
       "current_pd_chain_pre_rail_W_lower_bound": {
-        "nominal_setpoints": 41.563875,
-        "screened_minimum_setpoints": 40.187174
+        "nominal_setpoints": 42.2535,
+        "screened_minimum_setpoints": 40.854758
       },
       "efficiency_needed": {
         "nominal_15V_3A": {
-          "any_architecture_end_to_end": 0.800799,
-          "current_pd_chain_converters": 0.893048
+          "any_architecture_end_to_end": 0.814132,
+          "current_pd_chain_converters": 0.907884
         },
         "source_minus_5_percent": {
-          "any_architecture_end_to_end": 0.842946,
-          "current_pd_chain_converters": 0.940051
+          "any_architecture_end_to_end": 0.856981,
+          "current_pd_chain_converters": 0.955667
         },
         "board_b_input_screen_14V_3A": {
-          "any_architecture_end_to_end": 0.857999,
-          "current_pd_chain_converters": 0.956837
+          "any_architecture_end_to_end": 0.872284,
+          "current_pd_chain_converters": 0.972732
         }
       },
       "positive_converter_efficiency_needed_with_pd_u4_model": {
-        "nominal_15V_3A": 0.972531,
-        "source_minus_5_percent": 1.086449,
-        "board_b_input_screen_14V_3A": 1.130593
+        "nominal_15V_3A": 1.007214,
+        "source_minus_5_percent": 1.127773,
+        "board_b_input_screen_14V_3A": 1.174639
       },
       "infeasible_at_100_percent": {
         "nominal_15V_3A": {
@@ -803,14 +803,14 @@
   "per_rail_vs_pd_design_target": {
     "reported_typical_subtotal": {
       "+12V": {
-        "demand_mA": 789.761813,
+        "demand_mA": 806.961813,
         "pd_design_target_mA": 1200,
-        "excess_over_target_mA": -410.238187
+        "excess_over_target_mA": -393.038187
       },
       "-12V": {
-        "demand_mA": 761.273813,
+        "demand_mA": 778.473813,
         "pd_design_target_mA": 800,
-        "excess_over_target_mA": -38.726187
+        "excess_over_target_mA": -21.526187
       },
       "+5V": {
         "demand_mA": 80.272727,
@@ -820,14 +820,14 @@
     },
     "normal_planning": {
       "+12V": {
-        "demand_mA": 1450.895166,
+        "demand_mA": 1475.895166,
         "pd_design_target_mA": 1200,
-        "excess_over_target_mA": 250.895166
+        "excess_over_target_mA": 275.895166
       },
       "-12V": {
-        "demand_mA": 1407.71266,
+        "demand_mA": 1432.71266,
         "pd_design_target_mA": 800,
-        "excess_over_target_mA": 607.71266
+        "excess_over_target_mA": 632.71266
       },
       "+5V": {
         "demand_mA": 224.286445,
@@ -854,14 +854,14 @@
     },
     "startup_envelope_10ms": {
       "+12V": {
-        "demand_mA": 1675.535166,
+        "demand_mA": 1700.535166,
         "pd_design_target_mA": 1200,
-        "excess_over_target_mA": 475.535166
+        "excess_over_target_mA": 500.535166
       },
       "-12V": {
-        "demand_mA": 1630.37266,
+        "demand_mA": 1655.37266,
         "pd_design_target_mA": 800,
-        "excess_over_target_mA": 830.37266
+        "excess_over_target_mA": 855.37266
       },
       "+5V": {
         "demand_mA": 286.686445,
@@ -871,14 +871,14 @@
     },
     "normal_plus_one_fault": {
       "+12V": {
-        "demand_mA": 1475.895166,
+        "demand_mA": 1500.895166,
         "pd_design_target_mA": 1200,
-        "excess_over_target_mA": 275.895166
+        "excess_over_target_mA": 300.895166
       },
       "-12V": {
-        "demand_mA": 1432.71266,
+        "demand_mA": 1457.71266,
         "pd_design_target_mA": 800,
-        "excess_over_target_mA": 632.71266
+        "excess_over_target_mA": 657.71266
       },
       "+5V": {
         "demand_mA": 224.286445,
@@ -1065,14 +1065,14 @@
         "15V": 0.8864350500543617
       },
       "ledger_canonical_efficiency_needed": {
-        "14V": 0.940943,
-        "15V": 0.878213
+        "14V": 0.956837,
+        "15V": 0.893048
       },
       "ledger_stage54_efficiency_needed": {
         "14V": 0.949598,
         "15V": 0.886291
       },
-      "cause": "The brief quoted the unadopted Stage54 conditional loads (1.493 / 1.394 / 0.224 A) as planning normal; PD probed those. Canonical planning normal is 1.451 / 1.408 / 0.224 A. Residual difference between the PD probe and this ledger's Stage54 row is small and comes from PD including indicator/feedback current and its own floor terms.",
+      "cause": "The brief quoted the unadopted Stage54 conditional loads (1.493 / 1.394 / 0.224 A) as planning normal; PD probed those. Canonical planning normal is 1.476 / 1.433 / 0.224 A. Residual difference between the PD probe and this ledger's Stage54 row is small and comes from PD including indicator/feedback current and its own floor terms.",
       "resolution": "Canonical rows govern requirements; the Stage54 row stays conditional. Not averaged."
     },
     "plus12_exceeds_ptc1_hold_25C": {
