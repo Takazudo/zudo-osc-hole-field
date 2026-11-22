@@ -107,7 +107,7 @@ def build():
                             'model': era['model'], 'record': LINK_ERA})
             elif k in era_open:
                 row.update({'status': era_open[k]['status'], 'proof': era_open[k]['proof'], 'cheapest_option': era_open[k]['cheapest_option'],
-                            **{x: era_open[k][x] for x in ('not_accepted', 'gate_a_paper') if x in era_open[k]},
+                            **{x: era_open[k][x] for x in ('not_accepted', 'gate_a_paper', 'far_option_overlaps', 'far_option_note') if x in era_open[k]},
                             'model': era['model'], 'record': LINK_ERA})
             else:
                 row['status'] = 'OPEN'

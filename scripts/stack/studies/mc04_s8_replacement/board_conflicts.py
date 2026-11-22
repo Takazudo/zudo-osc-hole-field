@@ -33,7 +33,9 @@ def build():
     s = r7.R7()
     s.prepare()
     col = Collector()
+    s.load_done()
     s.apply_confirmed(col)
+    s.apply_done(col)
     placed = col.placed
     moved = {(b, ref) for b, ref, _, _ in placed}
     dropped = {b: set(v) for b, v in s.ctx.model.dropped.items()}

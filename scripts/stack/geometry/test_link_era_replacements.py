@@ -28,7 +28,8 @@ class LinkEraRecord(unittest.TestCase):
     def test_placed_and_open(self):
         placed = {r['ic'] for r in REC['placed']}
         opened = {r['ic'] for r in REC['open']}
-        self.assertEqual(len(placed) + len(opened), 15)
+        self.assertEqual((len(placed), len(opened)), (9, 6))  # Revision 8: U4526 accepted, U4433 open (clock input)
+        self.assertEqual(opened, {'U1415', 'U4433', 'U5110', 'U5209', 'U5210', 'U8409'})
         self.assertFalse(placed & opened)
         self.assertIn('U8409', opened)
         for r in REC['placed']:
@@ -45,6 +46,8 @@ class LinkEraRecord(unittest.TestCase):
             self.assertIn('cheapest_option', o)
             if o['ic'] != 'U8409':
                 self.assertIn('withdrawn_pose', o)
+        far = {o['ic']: o.get('far_option_overlaps', []) for o in REC['open']}
+        self.assertIn('U8409', far['U5110'] + far['U5210'])
 
     def test_gate_record_carries_it(self):
         gate = json.loads(lg.LINK_GATE.read_text())

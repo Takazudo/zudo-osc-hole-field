@@ -20,8 +20,19 @@ class R7Record(unittest.TestCase):
         self.assertEqual(DOC['model'], rp.MODEL)
         self.assertEqual(len(DOC['confirmed_first']), 5)
 
+    def test_withdrawn_lists_come_from_the_check(self):
+        s = r7.R7()
+        r7.a3.A3.prepare(s)
+        mixed, overlap = s.withdrawn_checks()
+        self.assertEqual(DOC['withdrawn_mixed_face'], mixed)
+        self.assertEqual(DOC['withdrawn_for_passive_overlap'], overlap)
+        self.assertEqual(sorted(mixed), ['U1415', 'U5110'])
+        # U1415 and U5110 fail both checks: mixed-face members, and passives re-placed onto the block
+        self.assertEqual(sorted(overlap), ['U1415', 'U4433', 'U4526', 'U4527', 'U4623', 'U4635', 'U5110'])
+
     def test_outcomes(self):
-        self.assertEqual([r['ic'] for r in DOC['research']], list(r7.RESEARCH_A) + ['U5209'])
+        bad = set(DOC['withdrawn_mixed_face']) | set(DOC['withdrawn_for_passive_overlap'])
+        self.assertEqual({r['ic'] for r in DOC['research']}, bad | {'U5209'})
         for r in DOC['research']:
             if r['result'] == 'lands':
                 self.assertLessEqual(r['pose']['moved_mm'], rp.LIMIT_MM)

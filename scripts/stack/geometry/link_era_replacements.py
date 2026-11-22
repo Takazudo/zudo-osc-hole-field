@@ -21,8 +21,6 @@ MODEL = ('link-era model (links_gate_part2.Field, GH headers dropped, gate-displ
          'not checked against the interim boards')
 SOURCES = ('result.json', 'result-a2.json', 'result-a3.json', 'result-a4.json', 'result-a5.json', 'result-r7.json',
            'board-conflicts.json', 'member-faces.json')
-CONFIRMED_A = ('U4129',)
-PASSIVE_OVERLAP = ('U4433', 'U4526', 'U4527', 'U4623', 'U4635')
 ACCEPTED_R8 = ('U4433', 'U4526')  # Revision 8 item 1: accepted unless a clock or RC timing node is found
 ANALOG_R8 = ('U1415', 'U5110', 'U5209', 'U5210', 'U8409')
 REMEDIES = ['a slot move', 'a package split', 'a partition change', 'the far pose with an electrical budget']
@@ -44,6 +42,9 @@ def status_of(ic):
 
 def build():
     a, a2, a3, a4, a5, r7 = (read(n) for n in SOURCES[:6])
+    PASSIVE_OVERLAP = tuple(r7['withdrawn_for_passive_overlap'])  # derived by the check in replacement_r7.py
+    CONFIRMED_A = tuple(ic for ic in r7['confirmed_first'] if ic in {x['ic'] for x in a['ics']} and ic not in
+                        set(r7['withdrawn_mixed_face']) | set(PASSIVE_OVERLAP) and ic not in ('U4524', 'U1318', 'U4417') and ' ' not in ic)
     A = {r['ic']: r for r in a['ics']}
     A2 = {r['ic']: r for r in a2['ics']}
     A3 = {r['ic']: r for r in a3['targets']}
@@ -65,18 +66,16 @@ def build():
                  'blocks_moved': [dict(pose(b), ic=b['ic'], members=b['members']) for b in r['blocks_moved']],
                  'passives_moved': r['passives_moved'], 'source': 'result-a3.json (Part A3)', 'ruling': BRIEF + ', Revision 3 item 1',
                  'acceptance': 'design/partition/locality-acceptances.json'})
-    faces = {(x['board'], x['ic']): x for x in read('member-faces.json')['blocks']}
-    for row in rows:
-        mf = faces[(row['board'], row['ic'])]
-        row['member_face_check'] = {'other_face_members': len(mf['other_face_members']), 'all_clear': mf['all_clear'],
-                                    'blocked': [x for x in mf['other_face_members'] if x['blocked_by']]}
     # Revision 7: the face-aware re-search; any block that does not land goes back to OPEN
-    previous = {ic: ('result.json (Part A)', A[ic]['chosen']) for ic in ('U1415', 'U5110') + PASSIVE_OVERLAP}
+    previous = {ic: ('result.json (Part A)', A[ic]['chosen']) for ic in tuple(r7['withdrawn_mixed_face']) + PASSIVE_OVERLAP}
     previous.update({
                 'U5209': ('result-a4.json (Part A4)', A4['U5209']['pose']),
                 'U5210': ('result-a5.json (Part A5)', next(x for x in A5['runs'] if x['found'] and x['targets'] == ['U5210'])['poses']['U5210'])})
-    why = {ic: 'Part A moved its displaced passives before placing the block, so they landed on the block (member check, Revision 7)'
-           for ic in PASSIVE_OVERLAP}
+    reasons = {'mixed': 'other-face block members collide at that pose (member-faces check, Revision 6)',
+               'overlap': 'Part A moved its displaced passives before placing the block, so they landed on the block (member check, Revision 7)'}
+    why = {ic: '; '.join(([reasons['mixed']] if ic in r7['withdrawn_mixed_face'] else []) +
+                         ([reasons['overlap']] if ic in PASSIVE_OVERLAP else []))
+           for ic in set(r7['withdrawn_mixed_face']) | set(PASSIVE_OVERLAP)}
     open_rows = []
     for r in r7['research']:
         prev = previous[r['ic']]
@@ -90,7 +89,7 @@ def build():
                              'replaces': {'source': prev[0], 'pose': pose(prev[1]),
                                           'why': 'Part A moved its displaced passives before placing the block, so they landed on the block (member check, Revision 7)'},
                              'ruling': BRIEF + ', Revision 8 item 1',
-                             'member_face_check': {'other_face_members': None, 'all_clear': True, 'note': 'searched face-aware'}})
+    })
                 continue
             r = dict(r, not_accepted='timing node on %s (Revision 8 item 1: left OPEN)' % ', '.join(timing))
         if r['result'] == 'lands':
@@ -99,8 +98,7 @@ def build():
                          'passives_moved': r.get('passives_moved', []), 'source': 'result-r7.json (Revision 7)', 'reason': r['reason'],
                          'replaces': {'source': prev[0], 'pose': pose(prev[1]),
                                       'why': why.get(r['ic'], 'other-face block members collide at that pose (member-faces check, Revision 6)')},
-                         'ruling': BRIEF + ', Revision 7',
-                         'member_face_check': {'other_face_members': None, 'all_clear': True, 'note': 'searched face-aware'}})
+                         'ruling': BRIEF + ', Revision 7'})
             continue
         open_rows.append({'board': r['board'], 'ic': r['ic'], 'status': status_of(r['ic']), 'rules': r['rules'],
                           **({'not_accepted': r['not_accepted']} if r.get('not_accepted') else {}),
@@ -126,6 +124,18 @@ def build():
             row['withdrawn_pose'] = {'source': previous['U5210'][0], 'pose': pose(previous['U5210'][1]),
                                      'why': 'other-face block members collide at that pose (member-faces check, Revision 6)'}
         open_rows.append(row)
+    mfd = read('member-faces.json')
+    faces = {(x['board'], x['ic']): x for x in mfd['blocks']}
+    for row in rows:
+        mf = faces[(row['board'], row['ic'])]
+        row['member_face_check'] = {'other_face_members': len(mf['other_face_members']), 'all_clear': mf['all_clear'],
+                                    'blocked': mf['blocked_members'] + [p for p in mf['passives'] if p['blocked_by']],
+                                    'source': 'member-faces.json (computed)'}
+    for o in open_rows:
+        o['far_option_overlaps'] = [p['b'] if p['a'] == o['ic'] else p['a'] for p in mfd['far_option_overlaps'] if o['ic'] in (p['a'], p['b'])]
+        if o['far_option_overlaps']:
+            o['far_option_note'] = ('this far option overlaps the far options of %s: the options are alternatives, not one joint solution'
+                                    % ', '.join(o['far_option_overlaps']))
     for row in rows:
         for m in row['passives_moved']:
             if m['ref'] == 'C5210':

@@ -29,10 +29,14 @@ import replacement_a5 as a5  # noqa: E402
 from replacement import p2, r2  # noqa: E402
 
 OUT = Path(__file__).with_name('result-r7.json')
-CONFIRMED_A = ('U4129',)
 CONFIRMED_A2 = ('U4524', 'U1318', 'U4417')
-RESEARCH_A = ('U1415', 'U4433', 'U4526', 'U4527', 'U4623', 'U4635', 'U5110')
+ACCEPTED_R8 = ('U4433', 'U4526')  # Revision 8 item 1: accepted beyond 24 mm unless a clock or RC timing node is found
 REASON = 'face-aware re-search, Revision 7'
+
+
+def timing_nodes(row):
+    """Nets of a re-search row's cheapest option that are clock or RC timing nodes."""
+    return sorted({e['net'] for e in (row.get('cheapest_option') or {}).get('electrical', []) for k in e['kind'] if 'timing node' in k})
 
 
 class R7(a5.A5):
@@ -40,6 +44,10 @@ class R7(a5.A5):
 
     def prepare(self):
         a3.A3.prepare(self)  # blocks, members, owners, buffers (A3); the lifted set is rebuilt below
+        self.mixed, self.overlap = self.withdrawn_checks()
+        bad = set(self.mixed) | set(self.overlap)
+        self.confirmed_a = tuple(ic for ic in a2.RULED if ic not in bad)
+        self.research_order = tuple(r['ic'] for r in self.a['ics'] if r['ic'] in bad)
         self.a3 = {r['ic']: r for r in json.loads(a3.OUT.read_text())['targets']}
         self.a4 = {r['ic']: r for r in json.loads(a5.a4.OUT.read_text())['targets']}
         base = json.loads(__import__('subprocess').run(['git', '-C', str(rp.ROOT), 'show', '6093081c:design/partition/floorplan-candidate.json'],
@@ -49,7 +57,7 @@ class R7(a5.A5):
         u = self.a3['U4647']
         self.u4502 = u['blocks_moved'][0]
         passives = set()
-        for ic in CONFIRMED_A:
+        for ic in self.confirmed_a:
             passives |= {(self.arow[ic]['board'], m['ref']) for m in self.arow[ic].get('displaced_moves', [])}
         for ic in CONFIRMED_A2:
             passives |= {(self.a2[ic]['board'], m['ref']) for m in self.a2[ic]['chosen'].get('displaced_moves', [])}
@@ -62,13 +70,13 @@ class R7(a5.A5):
     def build_field(self, extra=frozenset(), skip=frozenset()):
         f = self.field(self.base_extra | set(extra))
         self.apply_confirmed(f, skip)
-        self.apply_done(f, extra)
+        self.apply_done(f, extra, skip)
         return f
 
     def confirmed_blocks(self):
         """(board, ic, members, IC face, pose) of the ten confirmed blocks and the U4502 block, in placing order."""
         out = [(self.arow[ic]['board'], ic, self.members[(self.arow[ic]['board'], ic)], self.arow[ic]['face'],
-                dict(self.arow[ic]['chosen'], turn_deg=0)) for ic in CONFIRMED_A]
+                dict(self.arow[ic]['chosen'], turn_deg=0)) for ic in self.confirmed_a]
         out += [(self.a2[ic]['board'], ic, self.members[(self.a2[ic]['board'], ic)], self.a2[ic]['face'], self.a2[ic]['chosen'])
                 for ic in CONFIRMED_A2]
         out.append(('JR', 'U4647', self.members[('JR', 'U4647')], self.a2['U4647']['face'], self.a3['U4647']['pose']))
@@ -80,7 +88,7 @@ class R7(a5.A5):
         for board, ic, members, face0, pose in self.confirmed_blocks():
             if (board, ic) not in skip:
                 self.place(f, board, ic, members, face0, pose)
-        for ic in CONFIRMED_A:
+        for ic in self.confirmed_a:
             for m in self.arow[ic].get('displaced_moves', []):
                 self.add_part(f, self.arow[ic]['board'], m)
         for ic in CONFIRMED_A2:
@@ -89,8 +97,10 @@ class R7(a5.A5):
         for m in self.a3['U4647']['passives_moved']:
             self.add_part(f, 'JR', m)
 
-    def apply_done(self, f, extra=frozenset()):
+    def apply_done(self, f, extra=frozenset(), skip=frozenset()):
         for board, ic, members, face0, pose, passives, blocks in self.done:
+            if (board, ic) in skip:
+                continue
             if (board, ic) not in extra:
                 self.place(f, board, ic, members, face0, pose)
             for b in blocks:
@@ -99,6 +109,46 @@ class R7(a5.A5):
             for m in passives:
                 if (board, m['ref']) not in extra:
                     self.add_part(f, board, m)
+
+    def withdrawn_checks(self):
+        """The Part A class (iii) poses that fail the face-aware check: blocks with members on the other face than their
+        IC (mixed), and blocks whose displaced passives were re-placed onto the block itself (Part A moved them before
+        placing the block). Both lists follow the Part A order."""
+        mixed, overlap = [], []
+        for r in self.a['ics']:
+            ic, b = r['ic'], r['board']
+            if ic not in a2.RULED or r['class'] != '(iii)':
+                continue
+            ms = self.members[(b, ic)]
+            if any(self.fps[(b, m)]['side'] != self.fps[(b, ic)]['side'] for m in ms):
+                mixed.append(ic)
+            pose = dict(r['chosen'], turn_deg=0)
+            rects = dict(((fc, k), rr) for fc, k, rr in self.orients(b, ic, ms, r['face']))[(pose['face'], 0)]
+            block = [(self.mf(b, ref, pose['face']), p2.shift(c, *pose['shift_mm'])) for ref, c in rects]
+            for m in r.get('displaced_moves', []):
+                fp = self.fps[(b, m['ref'])]
+                cy = fp['courtyard'] or p2.fp_bbox(fp)
+                if m['face'] != fp['side']:
+                    cy = rp.mirror(cy, fp['origin'][0])
+                mr = p2.shift(cy, m['origin'][0] - fp['origin'][0], m['origin'][1] - fp['origin'][1])
+                if any(face == m['face'] and a5.sg.inter(rect, mr) for face, rect in block):
+                    overlap.append(ic)
+                    break
+        return mixed, overlap
+
+    def load_done(self):
+        """The Revision 7 poses that landed and the Revision 8 acceptances, from result-r7.json (for the checks)."""
+        doc = json.loads(OUT.read_text())
+        self.done = []
+        for r in doc['research']:
+            if r['result'] == 'lands':
+                self.done.append((r['board'], r['ic'], self.members[(r['board'], r['ic'])], self.fps[(r['board'], r['ic'])]['side'],
+                                  r['pose'], r.get('passives_moved', []), r.get('blocks_moved', [])))
+        for r in doc['research']:
+            if r['ic'] in ACCEPTED_R8 and r['result'] != 'lands' and not timing_nodes(r):
+                self.done.append((r['board'], r['ic'], self.members[(r['board'], r['ic'])], self.fps[(r['board'], r['ic'])]['side'],
+                                  r['cheapest_option']['pose'], [], []))
+        return doc
 
     def evictable2(self, board, ref):
         # C5210 (Revision 3) is displaceable only in the U5210/U8409 joint search; R8263 only for U5209 (A4 mode)
@@ -158,7 +208,7 @@ class R7(a5.A5):
 
     def run(self):
         self.prepare()
-        rows = [self.research_a('K', ic) for ic in RESEARCH_A]
+        rows = [self.research_a('K', ic) for ic in self.research_order]
         rows.append(self.research_u5209())
         runs, placed, options, far = self.joint_section()
         return rows, runs, placed, options, far
@@ -216,8 +266,8 @@ def build():
     return {'schema_version': 1, 'model': rp.MODEL, 'face_aware': True,
             'status': 'STUDY (MC04-S8 Revision 7): face-aware re-search; link-era record; no board changed',
             'generator': 'scripts/stack/studies/mc04_s8_replacement/replacement_r7.py',
-            'confirmed_first': list(CONFIRMED_A) + list(CONFIRMED_A2) + ['U4647 (with U4502 and R4516)'],
-            'withdrawn_for_passive_overlap': ['U4433', 'U4526', 'U4527', 'U4623', 'U4635'],
+            'confirmed_first': list(s.confirmed_a) + list(CONFIRMED_A2) + ['U4647 (with U4502 and R4516)'],
+            'withdrawn_mixed_face': s.mixed, 'withdrawn_for_passive_overlap': s.overlap,
             'research': rows, 'joint': {'placed': placed, 'runs': runs, 'options_for_unplaced': options, 'far_poses': far}}
 
 
