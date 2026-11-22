@@ -139,3 +139,26 @@ a jack, slot, sleeve or locked part to move, so no owner decision is needed yet.
    - run `regen-all.sh --check` and every stack test;
    - split any newly failing test against `f0d02f88` into new and pre-existing.
    Push and give the full hand-back for the independent review.
+
+## Revision 4: one joint search for the U8412 neighbourhood, then Part B either way (2026-11-22)
+
+Part A4 (`61de180b`, report `mc04-s8-a4-report-20261122.md`) is accepted as a study. U5209 lands (F 90°, 10.2 mm, R8263
+6.56 mm from its `6093081c` position) and joins Part B. U5210 and U8409 fail in the same neighbourhood: both contend for
+the space U8412 and U5208 need, and both blockers fit easily on their own. That points at the one-at-a-time search
+order, not at the rules, so no rule is relaxed further.
+
+1. **Part A5: joint search (study).** Search U5210, U8409, U8412, U5208 and U8408 (and any other block within 24 mm of
+   them that the census names) together as one set, instead of target-first. The rules stay the same: every block is
+   rigid, within 24 mm of its own position, under its own block rules, with any turn and face; displaced passives follow
+   the A2 rule, C5210 follows the Revision 3 rule; and no input buffer other than the target U8409 moves. Jacks, slots,
+   sleeves and locked parts stay where they are. Use an exhaustive or branch-and-bound search over the candidate
+   poses of the set, so a failure is a proof for this set, not a greedy miss. Add a test that the search is complete
+   for a small synthetic case.
+2. **Then run Part B (Revision 3 item 4) without stopping:**
+   - if A5 places both, apply all 15;
+   - if it places one, apply 14;
+   - if it places neither, apply the 13 ruled ICs and leave U5210 and U8409 open in `gate-a-open-items.json`, with the
+     A5 proof and the cheapest option for each (U8412 or U5208 beyond 24 mm, the A2 far pose, or a fourth block) and its
+     distance and electrical cost.
+3. Write `mc04-s8-a5-report-20261122.md` and the Part B hand-back. Push and give the full hand-back for the independent
+   review.
