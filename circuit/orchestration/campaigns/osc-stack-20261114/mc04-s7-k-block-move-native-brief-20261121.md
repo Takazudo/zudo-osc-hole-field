@@ -258,3 +258,22 @@ clusters) and item 2 (reflow pins, 280 → 151 changed parts) are accepted.
      headers, to be revisited when Gate A replaces GH with the stack links. Record them in
      `locality-acceptances.json` with this ruling.
 5. Re-run the Part A step 4 reporting and stop at the checkpoint.
+
+## Revision 7: Part A accepted, with two small items; then Part B (2026-11-22)
+
+Revision 6 (`20e93027`, `ecfee728`, report `mc04-s7-r6-report-20261122.md`) is accepted: 154 changed parts, every
+K move under 19 mm, the decouplers at 2.52–2.54 mm, and a test that fails on any unrecorded far move.
+
+1. **The far input buffers get the U1318/U8314 conditions.** U5112 and U4646 (and U5113 if it is also a buffer;
+   state its function) are high-impedance input buffers, not general analog. Keep their exception, but reclassify
+   them in `locality-acceptances.json` under the Revision 2 conditions: input passives at the end their cell
+   defines, a ground-flanked run, and added run capacitance under 50 pF, which MC04-S4 case 2 covers. Give each
+   buffer's estimated on-board run length and capacitance. If any exceeds 50 pF, stop and report.
+2. **The pre-existing JL-P utility header 4 at (91, 276) sits on the ruled sleeve SLV-L1 (93, 276).** Keep the ruled
+   sleeve (DS-74/76) and move the header. Take the nearest rule-consistent site on its row that clears every
+   fixing keep-out, every pad and every courtyard. Remove the entry from `KNOWN_FIXING_CONFLICTS`, so the fixing
+   check has no exceptions. If no such site exists, keep the pin and report the options with dimensions. Do not
+   take ALT-L1-A or ALT-L1-B; changing a ruled sleeve is a mechanical decision.
+3. **Then run Part B (steps 7–9) without another checkpoint**, as long as items 1 and 2 pass. The pass and stop
+   conditions in steps 7 and 8 still apply, and so does the `--max-share 25` stop for copper stripping. Part B
+   ends with a full hand-back and an independent review before anything else.
