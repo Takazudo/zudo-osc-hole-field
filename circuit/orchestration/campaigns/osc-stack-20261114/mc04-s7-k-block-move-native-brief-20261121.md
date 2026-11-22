@@ -197,3 +197,40 @@ without changing any rule:
 
 If no rule-consistent JR site exists for all three, stop and report the shortfall with dimensions. Do not
 change the signals-per-header rule.
+
+## Revision 5: Part A checkpoint review and rulings (2026-11-22)
+
+Independent review of `651badb1`–`1c786a17` confirmed the following:
+- Exactly the ruled 73 packages change region, instance-scoped, with F3 unchanged.
+- The crossing count balances: 473 − 12 + 32 = 493.
+- Exactly the 22 intended LED nets qualify for the new kind, with 0 forbidden crossings.
+- The GH sites are legal and the bulk-capacitor reservation claim is correct.
+- The acceptance records hold, and the rail and ledger are correctly unchanged.
+
+One blocker and some follow-ups remain before Part B:
+
+1. **Blocker: re-place header-released parts near their slots.** `header_conflicts`
+   (`design/partition/partition35_floorplan.py` around 493–508, called around 689) puts released pins into `extra`,
+   and `released = set(extra) | in_cluster` (around 220) sends them to the locality placer. That placer put U5112
+   117.6 mm, U4523 108.1 mm and U4646 69.6 mm away. Fix:
+   - keep the header-released parts as their own set;
+   - re-place each displaced IC with its bypass capacitors as a rigid cluster from its pinned slot, as the swapped
+     cluster loop does: `local_pose(nearest=True)` first, then `wide_pose`;
+   - send passives through the near-slot loop on all three boards, adding JL to `EVICTED_LOCAL_BOARDS`.
+   Add tests. Report every part still beyond 24 mm, with the blocking item and its dimensions.
+2. **K reflow: minimal movement.** Unpinned K parts that the block moves or new headers do not displace keep their
+   current poses: pin them from the 6093081c floorplan. Only displaced or relocated parts move. Report the
+   resulting count and the largest moves per board, against 6093081c. The target is no part beyond 24 mm, except
+   the ruled block moves and the accepted U1318/U8314.
+3. **JR y=24 header row edge clearance.** It is 0.95 mm from the JR top outline (y=20). Every other jack header
+   is at least 8.53 mm from an edge. Check it against the stack and enclosure edge features: card guides, the
+   enclosure wall, K's outline in the stack projection, fixing sites and spacers. If any conflict exists, or the
+   clearance is below the enclosure's stated edge keep-out, stop and report. Otherwise record the clearance in
+   the report.
+4. **Stale `k_poses`.** RB4313, D4319 and D8336 are evicted on K. Part B must use the floorplan poses, so make
+   `k_block_poses.py` model the evictions or drop its pose output for evicted members.
+5. NITs: make `sites.py` and `tables.py` use the repository root, not a home path. Require the indicator crossing's
+   LED to carry a `panel_uid`, with a test. Note that the packer does not check reserves; the existing JR y=150
+   row overlaps the `future-output-protection` reserve, which is recorded, not fixed here.
+
+Then re-run Part A step 4 reporting and stop at the checkpoint again.
