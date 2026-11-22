@@ -3,12 +3,28 @@
  "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards (poses); checked here against the interim boards",
  "status": "PREMISE CHECK (MC04-S8 Revision 4): no board changed",
  "generator": "scripts/stack/studies/mc04_s8_replacement/board_conflicts.py",
- "placed_footprints": 84,
+ "placed_footprints": 111,
  "counts": {
-  "GH header (dropped by the link model)": 49,
+  "GH header (dropped by the link model)": 59,
+  "footprint": 1,
   "gate-displaced part at its board position": 3,
   "through-hole part (other face)": 11
  },
+ "ics_overlapping_gh_headers": [
+  "U1318",
+  "U1415",
+  "U4129",
+  "U4433",
+  "U4502",
+  "U4524",
+  "U4527",
+  "U4635",
+  "U4647",
+  "U5110",
+  "U5208",
+  "U5209",
+  "U8412"
+ ],
  "overlaps": [
   {
    "board": "K",
@@ -511,6 +527,94 @@
    "moved": "R5238",
    "face": "F",
    "overlaps": "J900233",
+   "overlapped_face": "F",
+   "kind": "GH header (dropped by the link model)"
+  },
+  {
+   "board": "K",
+   "moved": "U5208",
+   "face": "F",
+   "overlaps": "J900245",
+   "overlapped_face": "F",
+   "kind": "GH header (dropped by the link model)"
+  },
+  {
+   "board": "K",
+   "moved": "R5256",
+   "face": "F",
+   "overlaps": "J900255",
+   "overlapped_face": "F",
+   "kind": "GH header (dropped by the link model)"
+  },
+  {
+   "board": "K",
+   "moved": "R5257",
+   "face": "F",
+   "overlaps": "J900255",
+   "overlapped_face": "F",
+   "kind": "GH header (dropped by the link model)"
+  },
+  {
+   "board": "K",
+   "moved": "R5259",
+   "face": "F",
+   "overlaps": "J900255",
+   "overlapped_face": "F",
+   "kind": "GH header (dropped by the link model)"
+  },
+  {
+   "board": "K",
+   "moved": "U8412",
+   "face": "F",
+   "overlaps": "J900169",
+   "overlapped_face": "F",
+   "kind": "GH header (dropped by the link model)"
+  },
+  {
+   "board": "K",
+   "moved": "U8412",
+   "face": "F",
+   "overlaps": "R8413",
+   "overlapped_face": "F",
+   "kind": "footprint"
+  },
+  {
+   "board": "K",
+   "moved": "C8440",
+   "face": "F",
+   "overlaps": "J900169",
+   "overlapped_face": "F",
+   "kind": "GH header (dropped by the link model)"
+  },
+  {
+   "board": "K",
+   "moved": "C4511",
+   "face": "F",
+   "overlaps": "J900169",
+   "overlapped_face": "F",
+   "kind": "GH header (dropped by the link model)"
+  },
+  {
+   "board": "K",
+   "moved": "C4512",
+   "face": "F",
+   "overlaps": "J900209",
+   "overlapped_face": "F",
+   "kind": "GH header (dropped by the link model)"
+  },
+  {
+   "board": "K",
+   "moved": "R4564",
+   "face": "F",
+   "overlaps": "J900209",
+   "overlapped_face": "F",
+   "kind": "GH header (dropped by the link model)"
+  },
+  {
+   "board": "K",
+   "moved": "R8455",
+   "face": "F",
+   "overlaps": "J900169",
    "overlapped_face": "F",
    "kind": "GH header (dropped by the link model)"
   }

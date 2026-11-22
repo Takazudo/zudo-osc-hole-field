@@ -13,8 +13,8 @@
   "slot drift": 3
  },
  "re_placement_status": {
-  "GATE A CANDIDATE, NOT APPLIED (MC04-S7 Revision 11)": 1,
-  "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)": 14,
+  "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)": 10,
+  "NEEDS RE-SEARCH (link era): other-face block members meet obstacles at the recorded pose": 4,
   "OPEN (link era)": 1
  },
  "items": [
@@ -23,7 +23,7 @@
    "kind": "protection-locality",
    "board": "JR",
    "ref": "D4101",
-   "distance_from_slot_mm": 33.9,
+   "move_distance_mm": 33.9,
    "protected_pin": "U4146 pin 3 (OPA4196IDR, +IN of the SIG buffer)",
    "diode_to_protected_pin_mm": 38.15,
    "source": "design/partition/locality-acceptances.json",
@@ -34,7 +34,7 @@
    "kind": "protection-locality",
    "board": "JR",
    "ref": "D4102",
-   "distance_from_slot_mm": 33.6,
+   "move_distance_mm": 33.6,
    "protected_pin": "U4146 pin 5 (OPA4196IDR, +IN of the RISE buffer)",
    "diode_to_protected_pin_mm": 42.8,
    "source": "design/partition/locality-acceptances.json",
@@ -51,7 +51,8 @@
     "distance_before_mm": 26.82,
     "distance_after_mm": 48.19
    },
-   "distance_from_slot_mm": 22.55,
+   "move_distance_mm": 22.55,
+   "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "source": "design/partition/locality-acceptances.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s8-open-replacement-native-brief-20261122.md, Revision 3 item 1"
   },
@@ -60,7 +61,7 @@
    "kind": "interim-GH locality exception",
    "board": "JL",
    "ref": "U5113",
-   "distance_from_slot_mm": 65.97,
+   "move_distance_mm": 65.97,
    "cause": "JL-K-27-JL",
    "source": "design/partition/locality-acceptances.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 6 item 4"
@@ -70,7 +71,7 @@
    "kind": "interim-GH locality exception",
    "board": "JR",
    "ref": "R8381",
-   "distance_from_slot_mm": 33.97,
+   "move_distance_mm": 33.97,
    "cause": "JR-K-28-JR",
    "source": "design/partition/locality-acceptances.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 6 item 4"
@@ -80,7 +81,7 @@
    "kind": "interim-GH locality exception",
    "board": "JR",
    "ref": "R8382",
-   "distance_from_slot_mm": 36.49,
+   "move_distance_mm": 36.49,
    "cause": "JR-K-28-JR",
    "source": "design/partition/locality-acceptances.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 6 item 4"
@@ -90,7 +91,7 @@
    "kind": "interim-GH locality exception",
    "board": "JL",
    "ref": "RB2309",
-   "distance_from_slot_mm": 26.83,
+   "move_distance_mm": 26.83,
    "cause": "evicted by the re-placed U5112/U5113 groups (JL-K-27-JL)",
    "source": "design/partition/locality-acceptances.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 6 item 4"
@@ -100,7 +101,7 @@
    "kind": "interim-GH locality exception",
    "board": "JL",
    "ref": "RB2313",
-   "distance_from_slot_mm": 28.22,
+   "move_distance_mm": 28.22,
    "cause": "evicted by the re-placed U5112/U5113 groups (JL-K-27-JL)",
    "source": "design/partition/locality-acceptances.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 6 item 4"
@@ -110,8 +111,9 @@
    "kind": "interim-GH locality exception",
    "board": "K",
    "ref": "U4417",
-   "distance_from_slot_mm": 48.84,
+   "move_distance_mm": 48.84,
    "cause": "no position after stage 7 (open re-placement, under the slot of P-K-P-L05.01.01)",
+   "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "source": "design/partition/locality-acceptances.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s8-open-replacement-native-brief-20261122.md, Revision 2 item 3"
   },
@@ -259,7 +261,7 @@
    ],
    "source": "design/stack/geometry/links/link-gate.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14",
-   "status": "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)",
+   "status": "NEEDS RE-SEARCH (link era): other-face block members meet obstacles at the recorded pose",
    "link_era_pose": {
     "face": "F",
     "origin": [
@@ -268,6 +270,24 @@
     ],
     "moved_mm": 1.5,
     "turn_deg": 0
+   },
+   "member_face_check": {
+    "other_face_members": 2,
+    "all_clear": false,
+    "blocked": [
+     {
+      "ref": "R1498",
+      "recorded_face": "F",
+      "true_face": "B",
+      "blocked_by": "K field of P-K-P-L08"
+     },
+     {
+      "ref": "R1499",
+      "recorded_face": "F",
+      "true_face": "B",
+      "blocked_by": "K field of P-K-P-L08"
+     }
+    ]
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
@@ -714,7 +734,7 @@
    ],
    "source": "design/stack/geometry/links/link-gate.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14",
-   "status": "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)",
+   "status": "NEEDS RE-SEARCH (link era): other-face block members meet obstacles at the recorded pose",
    "link_era_pose": {
     "face": "F",
     "origin": [
@@ -723,6 +743,48 @@
     ],
     "moved_mm": 23.05,
     "turn_deg": 0
+   },
+   "member_face_check": {
+    "other_face_members": 6,
+    "all_clear": false,
+    "blocked": [
+     {
+      "ref": "R5156",
+      "recorded_face": "F",
+      "true_face": "B",
+      "blocked_by": "courtyard C5139"
+     },
+     {
+      "ref": "R5157",
+      "recorded_face": "F",
+      "true_face": "B",
+      "blocked_by": "courtyard U5111"
+     },
+     {
+      "ref": "R5158",
+      "recorded_face": "F",
+      "true_face": "B",
+      "blocked_by": "courtyard C5139"
+     },
+     {
+      "ref": "R5159",
+      "recorded_face": "F",
+      "true_face": "B",
+      "blocked_by": "courtyard Q5101"
+     },
+     {
+      "ref": "R5160",
+      "recorded_face": "F",
+      "true_face": "B",
+      "blocked_by": "courtyard R5138"
+     },
+     {
+      "ref": "R5163",
+      "recorded_face": "F",
+      "true_face": "B",
+      "blocked_by": "courtyard R2331"
+     }
+    ]
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
@@ -750,7 +812,7 @@
    ],
    "source": "design/stack/geometry/links/link-gate.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14",
-   "status": "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)",
+   "status": "NEEDS RE-SEARCH (link era): other-face block members meet obstacles at the recorded pose",
    "link_era_pose": {
     "face": "F",
     "turn_deg": 90,
@@ -759,6 +821,24 @@
      208.58
     ],
     "moved_mm": 10.2
+   },
+   "member_face_check": {
+    "other_face_members": 2,
+    "all_clear": false,
+    "blocked": [
+     {
+      "ref": "R5246",
+      "recorded_face": "F",
+      "true_face": "B",
+      "blocked_by": "courtyard D5207"
+     },
+     {
+      "ref": "R5250",
+      "recorded_face": "F",
+      "true_face": "B",
+      "blocked_by": "re-placed R2368"
+     }
+    ]
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
@@ -797,7 +877,7 @@
    ],
    "source": "design/stack/geometry/links/link-gate.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14",
-   "status": "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)",
+   "status": "NEEDS RE-SEARCH (link era): other-face block members meet obstacles at the recorded pose",
    "link_era_pose": {
     "face": "F",
     "turn_deg": 90,
@@ -806,6 +886,24 @@
      207.7
     ],
     "moved_mm": 5.83
+   },
+   "member_face_check": {
+    "other_face_members": 2,
+    "all_clear": false,
+    "blocked": [
+     {
+      "ref": "R5256",
+      "recorded_face": "F",
+      "true_face": "B",
+      "blocked_by": "courtyard U4223"
+     },
+     {
+      "ref": "R5261",
+      "recorded_face": "F",
+      "true_face": "B",
+      "blocked_by": "K field of P-K-P-L13.01.01.01"
+     }
+    ]
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
@@ -849,6 +947,7 @@
    "status": "OPEN (link era)",
    "proof": {
     "run": "joint search of U5210, U8409, U8412, U5208, U8408 within 24 mm",
+    "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered",
     "found": false,
     "nodes": 36384,
     "domain_sizes": {
@@ -940,6 +1039,309 @@
       "moved_mm": 25.81
      }
     },
+    "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered",
+    "first_found": "the scanned limits 25, 26, 27 and 28 mm are proved infeasible on the grid; the 30 mm assignment is the first one found, so the true minimum farthest neighbour move on this grid lies in (28, 28.04] mm",
+    "supersedes": {
+     "U5210": {
+      "recorded": {
+       "face": "F",
+       "turn_deg": 90,
+       "origin": [
+        175.97,
+        207.7
+       ],
+       "moved_mm": 5.83
+      },
+      "option": {
+       "face": "B",
+       "turn_deg": 0,
+       "origin": [
+        195.47,
+        196.2
+       ],
+       "moved_mm": 16.81
+      }
+     }
+    },
+    "neighbour_electrical": {
+     "U5208": [
+      {
+       "net": "/W1/COMMAND",
+       "kind": [
+        "follower output"
+       ],
+       "parts_on_board": [
+        "R5235",
+        "U5208"
+       ],
+       "hpwl_before_mm": 7.27,
+       "hpwl_after_mm": 7.27,
+       "added_run_estimate_mm": 0.0,
+       "run_after_estimate_mm": 10.9,
+       "capacitance_after_estimate_pF": 2.18,
+       "added_capacitance_estimate_pF": 0.0
+      },
+      {
+       "net": "/W1/CONTROL_CLAMP",
+       "kind": [
+        "non-inverting input"
+       ],
+       "parts_on_board": [
+        "D5204",
+        "R5232",
+        "U5208"
+       ],
+       "hpwl_before_mm": 32.04,
+       "hpwl_after_mm": 46.0,
+       "added_run_estimate_mm": 20.94,
+       "run_after_estimate_mm": 69.0,
+       "capacitance_after_estimate_pF": 13.8,
+       "added_capacitance_estimate_pF": 4.19
+      },
+      {
+       "net": "/W1/CONTROL_INV",
+       "kind": [
+        "feedback/summing node"
+       ],
+       "parts_on_board": [
+        "R5230",
+        "R5231",
+        "U5208"
+       ],
+       "hpwl_before_mm": 17.83,
+       "hpwl_after_mm": 16.67,
+       "added_run_estimate_mm": -1.74,
+       "run_after_estimate_mm": 25.01,
+       "capacitance_after_estimate_pF": 5.0,
+       "added_capacitance_estimate_pF": -0.35
+      },
+      {
+       "net": "/W1/CONTROL_NEG",
+       "kind": [
+        "output"
+       ],
+       "parts_on_board": [
+        "R5229",
+        "R5230",
+        "U5208"
+       ],
+       "hpwl_before_mm": 17.64,
+       "hpwl_after_mm": 16.23,
+       "added_run_estimate_mm": -2.11,
+       "run_after_estimate_mm": 24.35,
+       "capacitance_after_estimate_pF": 4.87,
+       "added_capacitance_estimate_pF": -0.42
+      },
+      {
+       "net": "/W1/CONTROL_RAW",
+       "kind": [
+        "output"
+       ],
+       "parts_on_board": [
+        "R5231",
+        "R5232",
+        "U5208"
+       ],
+       "hpwl_before_mm": 19.04,
+       "hpwl_after_mm": 18.4,
+       "added_run_estimate_mm": -0.96,
+       "run_after_estimate_mm": 27.6,
+       "capacitance_after_estimate_pF": 5.52,
+       "added_capacitance_estimate_pF": -0.19
+      },
+      {
+       "net": "/W1/CONTROL_SUM",
+       "kind": [
+        "feedback/summing node"
+       ],
+       "parts_on_board": [
+        "R5227",
+        "R5228",
+        "R5229",
+        "U5208"
+       ],
+       "hpwl_before_mm": 34.56,
+       "hpwl_after_mm": 46.98,
+       "added_run_estimate_mm": 18.63,
+       "run_after_estimate_mm": 70.47,
+       "capacitance_after_estimate_pF": 14.09,
+       "added_capacitance_estimate_pF": 3.73
+      },
+      {
+       "net": "/W1/REF25",
+       "kind": [
+        "non-inverting input"
+       ],
+       "parts_on_board": [
+        "R5233",
+        "R5234",
+        "U5208"
+       ],
+       "hpwl_before_mm": 25.27,
+       "hpwl_after_mm": 48.36,
+       "added_run_estimate_mm": 34.64,
+       "run_after_estimate_mm": 72.54,
+       "capacitance_after_estimate_pF": 14.51,
+       "added_capacitance_estimate_pF": 6.93
+      },
+      {
+       "net": "/W1/TARGET",
+       "kind": [
+        "output"
+       ],
+       "parts_on_board": [
+        "R5236",
+        "U5208",
+        "U5209"
+       ],
+       "hpwl_before_mm": 18.07,
+       "hpwl_after_mm": 47.57,
+       "added_run_estimate_mm": 44.25,
+       "run_after_estimate_mm": 71.36,
+       "capacitance_after_estimate_pF": 14.27,
+       "added_capacitance_estimate_pF": 8.85
+      },
+      {
+       "net": "/W1/TARGET_SUM",
+       "kind": [
+        "feedback/summing node"
+       ],
+       "parts_on_board": [
+        "R5235",
+        "R5236",
+        "U5208"
+       ],
+       "hpwl_before_mm": 23.69,
+       "hpwl_after_mm": 47.11,
+       "added_run_estimate_mm": 35.13,
+       "run_after_estimate_mm": 70.67,
+       "capacitance_after_estimate_pF": 14.13,
+       "added_capacitance_estimate_pF": 7.03
+      }
+     ],
+     "U8408": [
+      {
+       "net": "/M4B/Cd90fa0_GATE_RAW",
+       "kind": [
+        "non-inverting input"
+       ],
+       "parts_on_board": [
+        "R8403",
+        "R8404",
+        "U8408"
+       ],
+       "hpwl_before_mm": 22.76,
+       "hpwl_after_mm": 16.95,
+       "added_run_estimate_mm": -8.71,
+       "run_after_estimate_mm": 25.43,
+       "capacitance_after_estimate_pF": 5.09,
+       "added_capacitance_estimate_pF": -1.74
+      },
+      {
+       "net": "/M4B/Cd90fa0_GATE_REF",
+       "kind": [
+        "follower output"
+       ],
+       "parts_on_board": [
+        "U8408"
+       ],
+       "hpwl_before_mm": 0.0,
+       "hpwl_after_mm": 0.0,
+       "added_run_estimate_mm": 0.0,
+       "run_after_estimate_mm": 0.0,
+       "capacitance_after_estimate_pF": 0.0,
+       "added_capacitance_estimate_pF": 0.0
+      },
+      {
+       "net": "/M4B/Cd90fa0_INV",
+       "kind": [
+        "feedback/summing node"
+       ],
+       "parts_on_board": [
+        "R8401",
+        "R8402",
+        "U8408"
+       ],
+       "hpwl_before_mm": 25.8,
+       "hpwl_after_mm": 17.7,
+       "added_run_estimate_mm": -12.15,
+       "run_after_estimate_mm": 26.55,
+       "capacitance_after_estimate_pF": 5.31,
+       "added_capacitance_estimate_pF": -2.43
+      },
+      {
+       "net": "/M4B/Cd90fa0_RAW_5V",
+       "kind": [
+        "non-inverting input"
+       ],
+       "parts_on_board": [
+        "C8402",
+        "U8401",
+        "U8408"
+       ],
+       "hpwl_before_mm": 36.16,
+       "hpwl_after_mm": 30.16,
+       "added_run_estimate_mm": -9.0,
+       "run_after_estimate_mm": 45.24,
+       "capacitance_after_estimate_pF": 9.05,
+       "added_capacitance_estimate_pF": -1.8
+      },
+      {
+       "net": "/M4B/G1_PACK_OPA4197IPWR_0_IO_UNUSED4",
+       "kind": [
+        "follower output"
+       ],
+       "parts_on_board": [
+        "U8408"
+       ],
+       "hpwl_before_mm": 0.0,
+       "hpwl_after_mm": 0.0,
+       "added_run_estimate_mm": 0.0,
+       "run_after_estimate_mm": 0.0,
+       "capacitance_after_estimate_pF": 0.0,
+       "added_capacitance_estimate_pF": 0.0
+      },
+      {
+       "net": "/M4B/REF5",
+       "kind": [
+        "follower output"
+       ],
+       "parts_on_board": [
+        "D8413",
+        "R8401",
+        "R8403",
+        "R8468",
+        "R8472",
+        "RV8407",
+        "U8408"
+       ],
+       "hpwl_before_mm": 53.55,
+       "hpwl_after_mm": 44.0,
+       "added_run_estimate_mm": -14.32,
+       "run_after_estimate_mm": 66.0,
+       "capacitance_after_estimate_pF": 13.2,
+       "added_capacitance_estimate_pF": -2.86
+      },
+      {
+       "net": "/M4B/REFN5",
+       "kind": [
+        "output"
+       ],
+       "parts_on_board": [
+        "R8402",
+        "RV8407",
+        "U8408"
+       ],
+       "hpwl_before_mm": 26.11,
+       "hpwl_after_mm": 19.26,
+       "added_run_estimate_mm": -10.27,
+       "run_after_estimate_mm": 28.89,
+       "capacitance_after_estimate_pF": 5.78,
+       "added_capacitance_estimate_pF": -2.05
+      }
+     ]
+    },
+    "fourth_block_alternative": "not evaluated",
     "alternative_far_pose": {
      "face": "B",
      "turn_deg": 90,

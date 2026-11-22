@@ -18,7 +18,7 @@
     "distance_mm": 27.65
    },
    "locality_limit_mm": 24.0,
-   "state": "ACCEPTED",
+   "state": "SUPERSEDED",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 2 item 3",
    "evidence": "design/reports/spice/input-buffer-vendor.json (MC04-S4 case 2: 0-50 pF on *_SENSE and *_BUFFER, no oscillation, OPA4196 and OPA4197 including the precision follower)",
    "conditions": [
@@ -26,7 +26,8 @@
     "route the lengthened run as a ground-flanked trace",
     "keep the added run capacitance under 50 pF"
    ],
-   "applies_in": "Part B board placement (the stack link gate displaces the current pose); the floorplan keeps the adopted pin"
+   "applies_in": "Part B board placement (the stack link gate displaces the current pose); the floorplan keeps the adopted pin",
+   "superseded_by": "the MC04-S8 link-era entry for U1318 (input_buffer_beyond_locality, B 90 deg, 29.09 mm), mc04-s8-open-replacement-native-brief-20261122.md Revision 2 item 2"
   },
   {
    "ref": "U8314",
