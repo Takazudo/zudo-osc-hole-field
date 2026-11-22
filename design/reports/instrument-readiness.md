@@ -4,14 +4,14 @@ ENGINEERING COVERAGE ONLY; NOT ORDER READY; NOT A MANUFACTURING BOM
 
 Offline source and retained-file reconciliation. No new native, physical, availability or assembly acceptance.
 
-Reconciliation: DISCREPANCIES; discrepancies: 249.
+Reconciliation: MATCHED DECLARED FIELDS; discrepancies: 0.
 
 | Unit | Disposition | Retained complete native open edges | Identity-declared fitted rows | Incomplete fitted identity rows |
 | --- | --- | ---: | ---: | ---: |
 | EL | canonical unvalidated draft | 0 | 96 | 48 |
 | JL | canonical unvalidated draft | STALE/UNBOUND | 977 | 94 |
 | JR | canonical unvalidated draft | STALE/UNBOUND | 922 | 95 |
-| K | canonical unvalidated draft | 2226 | 2695 | 1140 |
+| K | canonical unvalidated draft | STALE/UNBOUND | 2695 | 1140 |
 | O1 | canonical unvalidated draft | 0 | 3 | 0 |
 | O2 | canonical unvalidated draft | 0 | 3 | 0 |
 | O3 | canonical unvalidated draft | 0 | 3 | 0 |
