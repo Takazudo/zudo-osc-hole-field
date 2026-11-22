@@ -403,3 +403,28 @@ readiness all check out, and no guard was weakened. Fold these fixes into the Re
    (AGND), per Revision 9 item 2. Add a test; the current data does not exercise it.
 6. **Replayability.** Store the full baseline SHA (`6093081cc6d1…`) in the record, and commit the `--renetted-uuids`
    input list with its source DRC file hash.
+
+## Revision 12: eviction avoids sleeve keep-outs; redo JR step 7 only (2026-11-22)
+
+Revision 11 and its addendum (`9c87d534`, `60495931`, `26256e9a`, `55a879af`, report `mc04-s7-r11-report-20261122.md`)
+are accepted up to the fixings stop: the reach pin, the stable clusters (JL-L02 hold unedited), the fresh c6 with
+pre-c6 positions matching the snapshot, the regenerated chain and the review fixes. Option (a) is ruled, because the
+fault is in the generator: near-slot eviction ignored active sleeve keep-outs. Option (b) would hand-place parts
+around a generator bug.
+
+1. **Generator fix.** Near-slot eviction in `scripts/checks/partition35_floorplan.py` treats every active sleeve
+   keep-out (the ruled DS-74/76 sleeves, from the same source `fixings_check` uses) as occupied, on the board and
+   side the keep-out applies to. Add a unit test where the nearest free position lies inside a sleeve keep-out and
+   eviction must take the next one.
+2. **Scope.** Re-run the floorplan. Only parts whose position changes because of item 1 may move; list them with
+   the old and new positions and slot distances. If any part other than D4101, D4102, R8425 and R8426 moves, or any
+   move exceeds the 24 mm far-move threshold, stop and report.
+3. **Redo step 7 for JR only** (and for any other board item 2 shows changed): sync, place, strip with the
+   `--max-share 25` stop, DRC with no new error-severity items, parity 0 and readiness 0. Then regenerate the gate,
+   c6 check, fixings and procedure. `fixings_check` and every test in `test_fixings` must pass.
+4. **K:U4129 under the JR-L04 slot.** List it with the other 13 unresolved re-placements, with its overlap
+   dimensions, as an open item for the re-route. Do not move it in this stage unless item 1 moves it.
+5. **Stale-test split.** Use `uv run --with pytest` (or a venv) to run `test_osc_pcb_checkpoint.py`,
+   `test_copper_identity.py` and `uuid305/test_run_protocol.py` at `8ecc25fe` and at the new head. Report which
+   failures are new against `8ecc25fe` and which are pre-existing, so the STALE list is exact.
+6. Push and give the full hand-back. That closes Part B for the independent review.
