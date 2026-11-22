@@ -53,8 +53,10 @@ def board_for(part):
     return {'control':'P','core':'K','stage_optical':'EL'}.get(part['regions'][0],part['instance'])
 
 
-# Pre-existing conflict found by the Revision 6 check, reported for a ruling and not changed here: the JL-P utility
-# header 4 at (91, 276) on P lies on the ruled sleeve SLV-L1 at (93, 276) (DS-74, DS-76). Any other conflict fails.
+# Pre-existing conflict found by the Revision 6 check: the JL-P utility header 4 at (91, 276) on P lies on the ruled
+# sleeve SLV-L1 at (93, 276) (DS-74, DS-76). MC04-S7 Revision 8 defers it, OPEN for the Gate A mechanical review (GH
+# headers are the interim interconnect Gate A replaces); the candidate sites are in mc04-s7-r7-report-20261122.md.
+# Neither the header nor the sleeve moves in stage 7. Any other conflict fails.
 KNOWN_FIXING_CONFLICTS={('JL-P-4-P','SLV-L1')}
 
 
