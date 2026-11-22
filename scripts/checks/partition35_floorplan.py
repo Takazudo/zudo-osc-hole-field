@@ -594,10 +594,12 @@ def locality_acceptances(placements,errors):
     """MC04-S7 Revision 2 item 3: packages accepted beyond the 24 mm locality rule, repeated in the floorplan report;
     an entry whose package is not on its named board is an error."""
     if not ACCEPTANCES.exists():return {'source':None,'acceptances':[]}
-    rows=json.loads(ACCEPTANCES.read_text())['acceptances'];board={p['ref']:p['board'] for p in placements}
+    allrows=json.loads(ACCEPTANCES.read_text())['acceptances'];board={p['ref']:p['board'] for p in placements}
+    # MC04-S8 Revision 6: a superseded entry stays in the source for the record, not as an active acceptance
+    rows=[r for r in allrows if r.get('state')!='SUPERSEDED'];old=[r['ref'] for r in allrows if r.get('state')=='SUPERSEDED']
     for r in rows:
         if board.get(r['ref'])!=r['board']:errors.append(f"locality acceptance {r['ref']}: not on {r['board']}")
-    return {'source':'design/partition/locality-acceptances.json','acceptances':rows}
+    return {'source':'design/partition/locality-acceptances.json','acceptances':rows,'superseded':old}
 
 
 def header_conflicts(board,pin_rows,headers,parts=(),blocks=True,apertures=()):

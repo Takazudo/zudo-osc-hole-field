@@ -20,7 +20,8 @@ OUT = ROOT / 'design/stack/geometry/links/link-era-replacements.json'
 BRIEF = 'circuit/orchestration/campaigns/osc-stack-20261114/mc04-s8-open-replacement-native-brief-20261122.md'
 MODEL = ('link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); '
          'not checked against the interim boards')
-SOURCES = ('result.json', 'result-a2.json', 'result-a3.json', 'result-a4.json', 'result-a5.json', 'board-conflicts.json')
+SOURCES = ('result.json', 'result-a2.json', 'result-a3.json', 'result-a4.json', 'result-a5.json', 'board-conflicts.json',
+           'member-faces.json')
 RULED_A = ('U4129', 'U1415', 'U4433', 'U4526', 'U4527', 'U4623', 'U4635', 'U5110')
 
 
@@ -64,6 +65,16 @@ def build():
         rows.append({'board': 'K', 'ic': ic, 'class': 'joint search', 'pose': pose(c), 'block': None,
                      'blocks_moved': [dict(pose(v), ic=k) for k, v in sorted(run['poses'].items()) if k not in a5['placed'] and v['moved_mm'] > 0],
                      'passives_moved': run['passives_moved'], 'source': 'result-a5.json (Part A5)', 'ruling': BRIEF + ', Revisions 4 and 5'})
+    faces = {(x['board'], x['ic']): x for x in read('member-faces.json')['blocks']}
+    for row in rows:
+        mf = faces.get((row['board'], row['ic']))
+        row['member_face_check'] = {'other_face_members': 0, 'all_clear': True} if mf is None else {
+            'other_face_members': len(mf['other_face_members']), 'all_clear': mf['all_clear'],
+            'blocked': [x for x in mf['other_face_members'] if x['blocked_by']]}
+    for row in rows:
+        for m in row['passives_moved']:
+            if m['ref'] == 'C5210':
+                m['note'] = 'F to B flip adds a via on /W1/AC_NODE, which the HPWL run metric does not count'
     blocks = {r['ic']: r['block'] for r in a['ics']}
     for row in rows:
         if row['block'] is None:
@@ -76,6 +87,7 @@ def build():
         opt = next((o for o in a5['options_for_unplaced'] if o['for'] == r['ic']), None)
         open_rows.append({'board': r['board'], 'ic': r['ic'], 'status': 'OPEN (link era)',
                           'proof': {'run': 'joint search of %s within %g mm' % (', '.join(a5['runs'][0]['set']), a5['rules']['limit_mm']),
+                                    'grid_caveat': a5['rules']['grid_caveat'],
                                     'found': a5['runs'][0]['found'], 'nodes': a5['runs'][0]['nodes'],
                                     'domain_sizes': a5['runs'][0]['domain_sizes'], 'source': 'result-a5.json'},
                           'cheapest_option': None if opt is None else {
@@ -83,6 +95,9 @@ def build():
                                                          if v['moved_mm'] > a5['rules']['limit_mm']},
                               'smallest_scanned_limit_mm': opt['limit_others_mm'], 'limits_scanned': opt['limits_scanned'],
                               'poses': {k: pose(v) for k, v in opt.get('poses', {}).items()},
+                              'grid_caveat': opt['grid_caveat'], 'first_found': opt['first_found'],
+                              'supersedes': opt.get('supersedes'), 'neighbour_electrical': opt.get('neighbour_electrical'),
+                              'fourth_block_alternative': opt.get('fourth_block_alternative'),
                               'alternative_far_pose': opt['a2_far_pose'], 'swap': opt.get('swap')}})
     return {'schema_version': 1, 'model': MODEL,
             'status': 'LINK-ERA RE-PLACEMENT RECORD (MC04-S8 Revision 5): resolved for the link era, pending application when the '

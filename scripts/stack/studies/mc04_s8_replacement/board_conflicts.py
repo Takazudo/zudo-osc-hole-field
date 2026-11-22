@@ -46,6 +46,15 @@ def build():
     for m in u['passives_moved']: add_part('JR', m)
     r = A4['U5209']; add_block('K', 'U5209', s.members[('K', 'U5209')], A2['U5209']['face'], r['pose'])
     for m in r['passives_moved']: add_part('K', m)
+    import replacement_a5 as a5
+    A5 = json.loads(a5.OUT.read_text())
+    run = next(x for x in A5['runs'] if x['found'] and x['targets'] == A5['placed'])
+    for ic, c in sorted(run['poses'].items()):
+        if c['moved_mm'] > 0 or ic in A5['placed']:
+            members = s.members[('K', ic)] if ('K', ic) in s.members else s.ic_members[('K', ic)]
+            add_block('K', ic, members, s.fps[('K', ic)]['side'], c)
+    for m in run['passives_moved']:
+        add_part('K', m)
     moved = {(b, ref) for b, ref, _, _ in placed}
     hits = []
     for b, ref, face, rect in placed:
@@ -66,7 +75,9 @@ def build():
     return {'schema_version': 1, 'model': rp.MODEL + ' (poses); checked here against the interim boards',
             'status': 'PREMISE CHECK (MC04-S8 Revision 4): no board changed',
             'generator': 'scripts/stack/studies/mc04_s8_replacement/board_conflicts.py',
-            'placed_footprints': len(placed), 'counts': dict(sorted(counts.items())), 'overlaps': hits}
+            'placed_footprints': len(placed), 'counts': dict(sorted(counts.items())),
+            'ics_overlapping_gh_headers': sorted({h['moved'] for h in hits if h['kind'].startswith('GH') and h['moved'].startswith('U')}),
+            'overlaps': hits}
 
 
 def main():

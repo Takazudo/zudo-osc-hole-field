@@ -31,6 +31,8 @@ OUT = Path(__file__).with_name('result-a5.json')
 TARGETS = ('U5210', 'U8409')
 NEIGHBOURS = ('U8412', 'U5208', 'U8408')
 OPTION_MM = 40.0
+GRID_CAVEAT = ('proof over a 0.5 mm shift grid about each block\'s original origin, with 4 turns and both faces; '
+               'continuous poses are not covered')
 OPTION_LIMITS = (25.0, 26.0, 27.0, 28.0, 30.0, 32.0, 36.0, 40.0)
 MODEL = rp.MODEL
 
@@ -185,8 +187,9 @@ class A5(a4.A4):
         for t in TARGETS:
             if t in placed:
                 continue
-            # cheapest option with the placed target kept: both targets jointly, with the smallest neighbour limit
-            # (scanned in OPTION_LIMITS) at which the complete search finds an assignment
+            # cheapest option: both targets searched jointly again with the smallest neighbour limit (scanned in
+            # OPTION_LIMITS) at which the complete search finds an assignment. The placed target's pose is searched
+            # again too, so the option supersedes its recorded pose (reported as 'supersedes').
             tried = []
             for lim in OPTION_LIMITS:
                 r = self.joint(TARGETS, limit_others=lim)
@@ -194,10 +197,27 @@ class A5(a4.A4):
                 if r['found']:
                     break
             r['for'] = t
+            if r['found']:
+                r['farthest_neighbour_mm'] = max(c['moved_mm'] for ic, c in r['poses'].items() if ic not in TARGETS)
             r['limits_scanned'] = tried
             r['option'] = 'both targets placed, neighbour blocks allowed up to the smallest scanned limit that works'
             if r['found']:
-                r['farthest_neighbour_mm'] = max(c['moved_mm'] for ic, c in r['poses'].items() if ic not in TARGETS)
+                first = next(x for x in runs if x['found'] and x['targets'] == placed)
+                r['supersedes'] = {ic: {'recorded': {k: first['poses'][ic][k] for k in ('face', 'turn_deg', 'origin', 'moved_mm')},
+                                        'option': {k: r['poses'][ic][k] for k in ('face', 'turn_deg', 'origin', 'moved_mm')}}
+                                   for ic in placed}
+                r['neighbour_electrical'] = {}
+                for ic, c in sorted(r['poses'].items()):
+                    if ic in TARGETS or c['moved_mm'] <= rp.LIMIT_MM:
+                        continue
+                    self.members[('K', ic)] = self.set_members(ic)
+                    r['neighbour_electrical'][ic] = self.facts('K', ic, c)
+                    del self.members[('K', ic)]
+                r['fourth_block_alternative'] = 'not evaluated'
+            r['grid_caveat'] = GRID_CAVEAT
+            r['first_found'] = ('the scanned limits 25, 26, 27 and 28 mm are proved infeasible on the grid; the 30 mm assignment is '
+                                'the first one found, so the true minimum farthest neighbour move on this grid lies in (28, %s] mm'
+                                % (r.get('farthest_neighbour_mm') if r['found'] else '?'))
             r['a2_far_pose'] = {k: self.a2[t]['chosen'][k] for k in ('face', 'turn_deg', 'origin', 'moved_mm')}
             r['a2_far_pose_electrical'] = self.a2[t].get('electrical')
             swap = next((x for x in runs if x['targets'] == [t]), None)
@@ -215,7 +235,7 @@ def build():
             'generator': 'scripts/stack/studies/mc04_s8_replacement/replacement_a5.py',
             'rules': {'set': list(TARGETS) + list(NEIGHBOURS), 'limit_mm': rp.LIMIT_MM, 'grid_mm': rp.NEAR_STEP, 'turns_deg': list(a2.TURNS),
                       'search': 'complete depth-first search with forward checking over the candidate poses (solve); '
-                                'a failure is a proof over this grid for this set',
+                                'a failure is a proof over this grid for this set', 'grid_caveat': GRID_CAVEAT,
                       'passives': 'A2 rule; C5210 under the Revision 3 rule; re-placed nearest-first after an assignment'},
             'placed': placed, 'runs': runs, 'options_for_unplaced': options}
 

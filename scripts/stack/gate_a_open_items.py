@@ -69,16 +69,17 @@ def build():
     for a in acc:
         if a.get('kind') == 'interim_gh_protection_locality':
             items.append({'id': 'GA-PROT-' + a['ref'], 'kind': 'protection-locality', 'board': a['board'], 'ref': a['ref'],
-                          'distance_from_slot_mm': a['distance_mm'], 'protected_pin': a['protected_pin'],
+                          'move_distance_mm': a['distance_mm'], 'protected_pin': a['protected_pin'],
                           'diode_to_protected_pin_mm': a['diode_to_protected_pin_mm']['pose'], 'source': ACCEPT, 'ruling': a['ruling']})
     for a in acc:
         if a.get('kind') == 'interim_gh_led_drive_distance':
             items.append({'id': 'GA-LED-' + a['ref'], 'kind': 'interim-GH LED-drive distance', 'board': a['board'], 'ref': a['ref'],
-                          'led': a['led'], 'distance_from_slot_mm': a['distance_mm'], 'source': ACCEPT, 'ruling': a['ruling']})
+                          'led': a['led'], 'move_distance_mm': a['distance_mm'], 'model': a.get('model'), 'source': ACCEPT, 'ruling': a['ruling']})
     for a in acc:
         if a.get('kind') == 'interim_gh_locality_exception':
             items.append({'id': 'GA-LOC-' + a['ref'], 'kind': 'interim-GH locality exception', 'board': a['board'], 'ref': a['ref'],
-                          'distance_from_slot_mm': a['distance_mm'], 'cause': a['cause'], 'source': ACCEPT, 'ruling': a['ruling']})
+                          'move_distance_mm': a['distance_mm'], 'cause': a['cause'],
+                          **({'model': a['model']} if a.get('model') else {}), 'source': ACCEPT, 'ruling': a['ruling']})
     for r in reach['interim_gh_exceptions']:
         items.append({'id': 'GA-REACH-' + r['pair'], 'kind': 'interim-GH reach exception', 'pair': r['pair'], 'worst_mm': r['worst_mm'],
                       'nearest_fixing': r['K_side_nearest'][1], 'source': REACH, 'ruling': RULINGS + ', Revision 11'})
@@ -97,9 +98,13 @@ def build():
                    'ref': r['ref'], 'package': r['package'], 'face': r['face'], 'old': r['old'], 'why': r['why'],
                    'overlaps': overlaps(r, gate['links']), 'source': GATE, 'ruling': RULINGS + ', Revisions 12 to 14'}
             k = (r['board'], r['ref'])
-            if k in era_placed:
+            if k in era_placed and era_placed[k]['member_face_check']['all_clear']:
                 row.update({'status': 'RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)',
                             'link_era_pose': era_placed[k]['pose'], 'model': era['model'], 'record': LINK_ERA})
+            elif k in era_placed:
+                row.update({'status': 'NEEDS RE-SEARCH (link era): other-face block members meet obstacles at the recorded pose',
+                            'link_era_pose': era_placed[k]['pose'], 'member_face_check': era_placed[k]['member_face_check'],
+                            'model': era['model'], 'record': LINK_ERA})
             elif k in era_open:
                 row.update({'status': 'OPEN (link era)', 'proof': era_open[k]['proof'], 'cheapest_option': era_open[k]['cheapest_option'],
                             'model': era['model'], 'record': LINK_ERA})
@@ -122,7 +127,7 @@ def build():
         kinds[i['kind']] = kinds.get(i['kind'], 0) + 1
     status = {}
     for i in items:
-        if 'status' in i:
+        if i['kind'] == 'open re-placement (re-route)':
             status[i['status']] = status.get(i['status'], 0) + 1
     return {'schema_version': 1, 'status': 'OPEN LIST for the Gate A review (MC04-S7); items stay open until Gate A rules them',
             'generator': 'scripts/stack/gate_a_open_items.py', 'counts': kinds, 're_placement_status': status, 'items': items}
