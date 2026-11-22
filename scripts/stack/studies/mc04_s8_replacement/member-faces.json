@@ -2,14 +2,16 @@
  "schema_version": 1,
  "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
  "face_aware": true,
- "status": "CHECK (MC04-S8 Revisions 6 and 7): every member of each confirmed block on its own face at the recorded pose",
+ "status": "CHECK (MC04-S8 Revisions 6 to 8): every placed link-era pose face-aware; far options of open blocks pairwise",
  "generator": "scripts/stack/studies/mc04_s8_replacement/member_faces.py",
  "blocks": [
   {
    "board": "K",
    "ic": "U4129",
+   "kind": "confirmed",
    "pose": {
     "face": "F",
+    "turn_deg": 0,
     "origin": [
      232.33,
      79.95
@@ -18,13 +20,16 @@
    },
    "other_face_members": [],
    "blocked_members": [],
+   "passives": [],
    "all_clear": true
   },
   {
    "board": "K",
    "ic": "U4524",
+   "kind": "confirmed",
    "pose": {
     "face": "F",
+    "turn_deg": 90,
     "origin": [
      193.97,
      149.65
@@ -33,13 +38,16 @@
    },
    "other_face_members": [],
    "blocked_members": [],
+   "passives": [],
    "all_clear": true
   },
   {
    "board": "JL",
    "ic": "U1318",
+   "kind": "confirmed",
    "pose": {
     "face": "B",
+    "turn_deg": 90,
     "origin": [
      57.96,
      37.02
@@ -48,13 +56,16 @@
    },
    "other_face_members": [],
    "blocked_members": [],
+   "passives": [],
    "all_clear": true
   },
   {
    "board": "K",
    "ic": "U4417",
+   "kind": "confirmed",
    "pose": {
     "face": "B",
+    "turn_deg": 90,
     "origin": [
      241.83,
      247.95
@@ -63,13 +74,16 @@
    },
    "other_face_members": [],
    "blocked_members": [],
+   "passives": [],
    "all_clear": true
   },
   {
    "board": "JR",
    "ic": "U4647",
+   "kind": "confirmed",
    "pose": {
     "face": "B",
+    "turn_deg": 180,
     "origin": [
      295.18,
      74.97
@@ -78,13 +92,16 @@
    },
    "other_face_members": [],
    "blocked_members": [],
+   "passives": [],
    "all_clear": true
   },
   {
    "board": "JR",
    "ic": "U4502",
+   "kind": "confirmed",
    "pose": {
     "face": "B",
+    "turn_deg": 180,
     "origin": [
      280.38,
      79.38
@@ -93,7 +110,252 @@
    },
    "other_face_members": [],
    "blocked_members": [],
+   "passives": [],
    "all_clear": true
+  },
+  {
+   "board": "K",
+   "ic": "U4527",
+   "kind": "Revision 7 re-search",
+   "pose": {
+    "face": "F",
+    "turn_deg": 90,
+    "origin": [
+     211.97,
+     149.65
+    ],
+    "moved_mm": 22.36
+   },
+   "other_face_members": [],
+   "blocked_members": [],
+   "passives": [
+    {
+     "ref": "C7203",
+     "face": "F",
+     "blocked_by": null
+    },
+    {
+     "ref": "R8376",
+     "face": "F",
+     "blocked_by": null
+    }
+   ],
+   "all_clear": true
+  },
+  {
+   "board": "K",
+   "ic": "U4623",
+   "kind": "Revision 7 re-search",
+   "pose": {
+    "face": "F",
+    "turn_deg": 270,
+    "origin": [
+     292.18,
+     145.45
+    ],
+    "moved_mm": 9.18
+   },
+   "other_face_members": [],
+   "blocked_members": [],
+   "passives": [
+    {
+     "ref": "C4608",
+     "face": "F",
+     "blocked_by": null
+    },
+    {
+     "ref": "R4452",
+     "face": "F",
+     "blocked_by": null
+    },
+    {
+     "ref": "R4694",
+     "face": "F",
+     "blocked_by": null
+    }
+   ],
+   "all_clear": true
+  },
+  {
+   "board": "K",
+   "ic": "U4635",
+   "kind": "Revision 7 re-search",
+   "pose": {
+    "face": "F",
+    "turn_deg": 270,
+    "origin": [
+     238.43,
+     150.95
+    ],
+    "moved_mm": 20.43
+   },
+   "other_face_members": [],
+   "blocked_members": [],
+   "passives": [
+    {
+     "ref": "R4217",
+     "face": "F",
+     "blocked_by": null
+    }
+   ],
+   "all_clear": true
+  },
+  {
+   "board": "K",
+   "ic": "U4526",
+   "kind": "Revision 8 acceptance",
+   "pose": {
+    "face": "F",
+    "turn_deg": 0,
+    "origin": [
+     161.43,
+     121.58
+    ],
+    "moved_mm": 26.71
+   },
+   "other_face_members": [],
+   "blocked_members": [],
+   "passives": [],
+   "all_clear": true
+  }
+ ],
+ "far_options": {
+  "U1415": {
+   "face": "F",
+   "turn_deg": 90,
+   "origin": [
+    66.95,
+    261.47
+   ],
+   "moved_mm": 38.71
+  },
+  "U4433": {
+   "face": "F",
+   "turn_deg": 270,
+   "origin": [
+    306.18,
+    225.95
+   ],
+   "moved_mm": 25.5
+  },
+  "U5110": {
+   "face": "F",
+   "turn_deg": 90,
+   "origin": [
+    125.93,
+    272.72
+   ],
+   "moved_mm": 40.61
+  },
+  "U5209": {
+   "face": "F",
+   "turn_deg": 180,
+   "origin": [
+    141.95,
+    159.58
+   ],
+   "moved_mm": 49.65
+  },
+  "U5210": {
+   "face": "F",
+   "turn_deg": 180,
+   "origin": [
+    123.97,
+    261.7
+   ],
+   "moved_mm": 80.61
+  },
+  "U8409": {
+   "face": "F",
+   "turn_deg": 90,
+   "origin": [
+    126.2,
+    275.47
+   ],
+   "moved_mm": 113.22
+  }
+ },
+ "far_option_overlaps": [
+  {
+   "a": "U5110",
+   "b": "U5210",
+   "overlapping_members": [
+    [
+     "C5136",
+     "R5259"
+    ],
+    [
+     "R5161",
+     "R5257"
+    ],
+    [
+     "U5110",
+     "R5259"
+    ],
+    [
+     "U5110",
+     "R5260"
+    ],
+    [
+     "U5110",
+     "R5262"
+    ]
+   ],
+   "count": 5
+  },
+  {
+   "a": "U5110",
+   "b": "U8409",
+   "overlapping_members": [
+    [
+     "C5137",
+     "U8409"
+    ],
+    [
+     "R5159",
+     "R8412"
+    ],
+    [
+     "R5160",
+     "R8412"
+    ],
+    [
+     "R5162",
+     "C8405"
+    ],
+    [
+     "U5110",
+     "C8405"
+    ],
+    [
+     "U5110",
+     "C8435"
+    ]
+   ],
+   "count": 7
+  },
+  {
+   "a": "U5210",
+   "b": "U8409",
+   "overlapping_members": [
+    [
+     "R5256",
+     "R8414"
+    ],
+    [
+     "R5259",
+     "U8409"
+    ],
+    [
+     "R5260",
+     "U8409"
+    ],
+    [
+     "R5262",
+     "C8405"
+    ]
+   ],
+   "count": 4
   }
  ]
 }
