@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""MC04-S8 Revisions 5 to 7: the link-era re-placement record.
+"""MC04-S8 Revisions 5 to 8 and DS-144: the link-era re-placement record.
 
 Writes design/stack/geometry/links/link-era-replacements.json from the S8 studies under
 scripts/stack/studies/mc04_s8_replacement: the ten confirmed poses (Parts A, A2 and A3) and, from the face-aware
@@ -23,6 +23,11 @@ SOURCES = ('result.json', 'result-a2.json', 'result-a3.json', 'result-a4.json', 
            'board-conflicts.json', 'member-faces.json')
 ACCEPTED_R8 = ('U4433', 'U4526')  # Revision 8 item 1: accepted unless a clock or RC timing node is found
 ANALOG_R8 = ('U1415', 'U5110', 'U5209', 'U5210', 'U8409')
+ACCEPTED_DS144 = ('U4433',)  # its own interim exception, recorded only when its member-face and board-conflict checks pass
+DS144 = 'circuit/orchestration/campaigns/osc-stack-20261114/decisions.md, DS-144'
+DS144_CONDITIONS = ['the /E4/CLOCK edge is checked against fact-flipflop-input-transition45 (component-ti-sn74hc74dr) at re-route',
+                    'no E4 clock-load budget exists',
+                    '25.5 mm exceeds the DS-88 25 mm radius, so it is an interim Gate A item (GA-LOC-U4433)']
 REMEDIES = ['a slot move', 'a package split', 'a partition change', 'the far pose with an electrical budget']
 
 
@@ -38,6 +43,18 @@ def pose(c):
 
 def status_of(ic):
     return 'OPEN (link era): NEEDS_DESIGN for Gate A-paper' if ic in ANALOG_R8 else 'OPEN (link era)'
+
+
+def ds144_checks(ic, members):
+    """DS-144 condition 1: the member-face check (member-faces.json) and the board-conflict check (board-conflicts.json)
+    of the accepted pose. The board check passes when the block meets only GH headers the link model drops."""
+    mf = next((x for x in read('member-faces.json')['blocks'] if x['ic'] == ic), None)
+    hits = [h for h in read('board-conflicts.json')['overlaps'] if h['board'] == 'K' and h['moved'] in members]
+    other = [h for h in hits if not h['kind'].startswith('GH header')]
+    return {'member_faces': {'checked': mf is not None, 'all_clear': bool(mf and mf['all_clear']), 'source': 'member-faces.json (computed)'},
+            'board_conflicts': {'gh_headers_met': sorted({h['overlaps'] for h in hits if h['kind'].startswith('GH header')}),
+                                'other_conflicts': other, 'pass': not other, 'source': 'board-conflicts.json'},
+            'pass': bool(mf and mf['all_clear']) and not other}
 
 
 def build():
@@ -91,7 +108,21 @@ def build():
                              'ruling': BRIEF + ', Revision 8 item 1',
     })
                 continue
-            r = dict(r, not_accepted='timing node on %s (Revision 8 item 1: left OPEN)' % ', '.join(timing))
+            checks = ds144_checks(r['ic'], A[r['ic']]['block']['members']) if r['ic'] in ACCEPTED_DS144 else None
+            if checks and checks['pass']:
+                rows.append({'board': r['board'], 'ic': r['ic'], 'class': 'link-era logic exception (DS-144, its own exception)',
+                             'pose': pose(r['cheapest_option']['pose']), 'block': A[r['ic']]['block']['members'], 'blocks_moved': [],
+                             'passives_moved': [], 'source': 'result-r7.json (Revision 7 cheapest option)',
+                             'reason': 'accepted beyond 24 mm as its own interim exception (DS-144), not on the U4417 terms',
+                             'timing_check': 'timing nodes %s: clock input accepted by DS-144 with conditions' % ', '.join(timing),
+                             'conditions': DS144_CONDITIONS, 'ds144_checks': checks,
+                             'acceptance': 'design/partition/locality-acceptances.json',
+                             'replaces': {'source': prev[0], 'pose': pose(prev[1]),
+                                          'why': 'Part A moved its displaced passives before placing the block, so they landed on the block (member check, Revision 7)'},
+                             'ruling': DS144})
+                continue
+            r = dict(r, not_accepted='timing node on %s (Revision 8 item 1: left OPEN%s)' % (
+                ', '.join(timing), '; DS-144 checks did not pass' if checks else ''))
         if r['result'] == 'lands':
             rows.append({'board': r['board'], 'ic': r['ic'], 'class': r.get('class') or 'block-on-block', 'pose': pose(r['pose']),
                          'block': A[r['ic']]['block']['members'], 'blocks_moved': r.get('blocks_moved', []),

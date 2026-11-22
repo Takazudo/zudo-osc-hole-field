@@ -33,8 +33,8 @@
    "design/stack/mechanics/k-compliance-map.json#nodes": "9fc94a4c2fdedf6d813807685a119ac1e238e05fd297c53151a53b4a77f65968",
    "design/stack/geometry/links/link-gate-a7-comparisons.json": "4e94a32101d4f160574e38852969e9a54e4a55736993da4b105375a3c490e967",
    "design/power/rail-ledger.json": "c91c1a9990e817fb5f4e422b59d72d4195fc7641991863e2ecf90cf53c222b24",
-   "design/partition/floorplan-candidate.json": "45b9c52e13d6a636862914e7e1dc08081a9560f3015c5a39f8d826b067d031ae",
-   "design/stack/geometry/links/link-era-replacements.json": "5777ed88a70c3373dabf7d50cbe833b4deeb02ae93decced1f0aebd8218a62ea"
+   "design/partition/floorplan-candidate.json": "12083ea177cad1492f07fa96ad6dbfea8e5f8d2d347199bb555475c5b9e75a38",
+   "design/stack/geometry/links/link-era-replacements.json": "a9af0e8ca4162822dc0608943c8c0813f347b9e5f8ca2b7b612a522ecd25f4d0"
   }
  },
  "schema_version": 3,
@@ -22833,8 +22833,8 @@
    "scripts/stack/studies/mc04_s8_replacement/result-a4.json": "d3898a22e4e8675f8e751b7369a9f8b7df881bb20fe6f77944e504743dc1cec2",
    "scripts/stack/studies/mc04_s8_replacement/result-a5.json": "6c777cba66382966d5bd71fb55a51bc448891421368fc28ff45ad9a5f79b1c04",
    "scripts/stack/studies/mc04_s8_replacement/result-r7.json": "eadb3502fa14b63300671fd3c02c6265db5fac4f2dee7ddc9609530d89d8c318",
-   "scripts/stack/studies/mc04_s8_replacement/board-conflicts.json": "9ca7687a0b4f5eca0a3cdbf96fca9d7bf4a7401f1c3c9f7739581d7eae7d1c60",
-   "scripts/stack/studies/mc04_s8_replacement/member-faces.json": "f8acfe5437da714e4cc33144129f918dc866c2944f043fb1a6bdeb0e8d4c27d9"
+   "scripts/stack/studies/mc04_s8_replacement/board-conflicts.json": "1d0095e0c3cc93b25425a3f4666172db0c5e227d991cf45662a209c56ac23fad",
+   "scripts/stack/studies/mc04_s8_replacement/member-faces.json": "65a11e97b3534b8aa1058c11f2a3bf082349ccd8b38285644991ae8dd61f83df"
   },
   "evidence_interim_boards": "scripts/stack/studies/mc04_s8_replacement/board_conflicts.py (--check): the poses overlap GH headers that exist on the interim boards",
   "placed": [
@@ -23055,6 +23055,79 @@
     "source": "result-a3.json (Part A3)",
     "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s8-open-replacement-native-brief-20261122.md, Revision 3 item 1",
     "acceptance": "design/partition/locality-acceptances.json",
+    "member_face_check": {
+     "other_face_members": 0,
+     "all_clear": true,
+     "blocked": [],
+     "source": "member-faces.json (computed)"
+    }
+   },
+   {
+    "board": "K",
+    "ic": "U4433",
+    "class": "link-era logic exception (DS-144, its own exception)",
+    "pose": {
+     "face": "F",
+     "turn_deg": 270,
+     "origin": [
+      306.18,
+      225.95
+     ],
+     "moved_mm": 25.5,
+     "shift_mm": [
+      25.0,
+      5.0
+     ]
+    },
+    "block": [
+     "U4433",
+     "C4450"
+    ],
+    "blocks_moved": [],
+    "passives_moved": [],
+    "source": "result-r7.json (Revision 7 cheapest option)",
+    "reason": "accepted beyond 24 mm as its own interim exception (DS-144), not on the U4417 terms",
+    "timing_check": "timing nodes /E4/CLOCK, /E4/LOOP_SYNC: clock input accepted by DS-144 with conditions",
+    "conditions": [
+     "the /E4/CLOCK edge is checked against fact-flipflop-input-transition45 (component-ti-sn74hc74dr) at re-route",
+     "no E4 clock-load budget exists",
+     "25.5 mm exceeds the DS-88 25 mm radius, so it is an interim Gate A item (GA-LOC-U4433)"
+    ],
+    "ds144_checks": {
+     "member_faces": {
+      "checked": true,
+      "all_clear": true,
+      "source": "member-faces.json (computed)"
+     },
+     "board_conflicts": {
+      "gh_headers_met": [
+       "J900157"
+      ],
+      "other_conflicts": [],
+      "pass": true,
+      "source": "board-conflicts.json"
+     },
+     "pass": true
+    },
+    "acceptance": "design/partition/locality-acceptances.json",
+    "replaces": {
+     "source": "result.json (Part A)",
+     "pose": {
+      "face": "F",
+      "origin": [
+       270.68,
+       235.45
+      ],
+      "moved_mm": 17.9,
+      "shift_mm": [
+       -10.5,
+       14.5
+      ],
+      "turn_deg": 0
+     },
+     "why": "Part A moved its displaced passives before placing the block, so they landed on the block (member check, Revision 7)"
+    },
+    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/decisions.md, DS-144",
     "member_face_check": {
      "other_face_members": 0,
      "all_clear": true,
@@ -23489,158 +23562,6 @@
        "run_after_estimate_mm": 69.93,
        "capacitance_after_estimate_pF": 13.99,
        "added_capacitance_estimate_pF": 12.75
-      }
-     ]
-    },
-    "source": "result-r7.json (Revision 7)",
-    "far_option_overlaps": []
-   },
-   {
-    "board": "K",
-    "ic": "U4433",
-    "status": "OPEN (link era)",
-    "rules": "Revision 1 class (iii) with the A2 turns and displacement",
-    "not_accepted": "timing node on /E4/CLOCK, /E4/LOOP_SYNC (Revision 8 item 1: left OPEN)",
-    "withdrawn_pose": {
-     "source": "result.json (Part A)",
-     "pose": {
-      "face": "F",
-      "origin": [
-       270.68,
-       235.45
-      ],
-      "moved_mm": 17.9,
-      "shift_mm": [
-       -10.5,
-       14.5
-      ],
-      "turn_deg": 0
-     },
-     "why": "Part A moved its displaced passives before placing the block, so they landed on the block (member check, Revision 7)"
-    },
-    "proof": {
-     "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered",
-     "nearest_legal_mm": 25.5,
-     "displacement_options_tried": 0,
-     "note": "no pose within 24 mm with the A2 displacement rule on this grid (the displacement options are tried fewest-displaced first up to 60)"
-    },
-    "smallest_obstacle_set": null,
-    "cheapest_option": {
-     "pose": {
-      "face": "F",
-      "turn_deg": 270,
-      "origin": [
-       306.18,
-       225.95
-      ],
-      "moved_mm": 25.5,
-      "shift_mm": [
-       25.0,
-       5.0
-      ]
-     },
-     "electrical": [
-      {
-       "net": "/E4/CLOCK",
-       "kind": [
-        "logic input",
-        "timing node (clock input)",
-        "timing node (clock/sync)"
-       ],
-       "parts_on_board": [
-        "R4433",
-        "U4412",
-        "U4430",
-        "U4431",
-        "U4432",
-        "U4433",
-        "U4434",
-        "U4435",
-        "U4436",
-        "U4437",
-        "U4438"
-       ],
-       "hpwl_before_mm": 97.12,
-       "hpwl_after_mm": 100.1,
-       "added_run_estimate_mm": 4.47,
-       "run_after_estimate_mm": 150.15,
-       "capacitance_after_estimate_pF": 30.03,
-       "added_capacitance_estimate_pF": 0.89
-      },
-      {
-       "net": "/E4/LOOP",
-       "kind": [
-        "logic output"
-       ],
-       "parts_on_board": [
-        "U4415",
-        "U4433"
-       ],
-       "hpwl_before_mm": 40.23,
-       "hpwl_after_mm": 70.23,
-       "added_run_estimate_mm": 45.0,
-       "run_after_estimate_mm": 105.35,
-       "capacitance_after_estimate_pF": 21.07,
-       "added_capacitance_estimate_pF": 9.0
-      },
-      {
-       "net": "/E4/LOOP_RAW",
-       "kind": [
-        "logic input"
-       ],
-       "parts_on_board": [
-        "U4433"
-       ],
-       "hpwl_before_mm": 0.0,
-       "hpwl_after_mm": 0.0,
-       "added_run_estimate_mm": 0.0,
-       "run_after_estimate_mm": 0.0,
-       "capacitance_after_estimate_pF": 0.0,
-       "added_capacitance_estimate_pF": 0.0
-      },
-      {
-       "net": "/E4/LOOP_SYNC",
-       "kind": [
-        "logic input",
-        "logic output",
-        "timing node (clock/sync)"
-       ],
-       "parts_on_board": [
-        "U4433"
-       ],
-       "hpwl_before_mm": 0.0,
-       "hpwl_after_mm": 0.0,
-       "added_run_estimate_mm": 0.0,
-       "run_after_estimate_mm": 0.0,
-       "capacitance_after_estimate_pF": 0.0,
-       "added_capacitance_estimate_pF": 0.0
-      },
-      {
-       "net": "/E4/READY",
-       "kind": [
-        "logic input"
-       ],
-       "parts_on_board": [
-        "U4405",
-        "U4422",
-        "U4425",
-        "U4426",
-        "U4430",
-        "U4431",
-        "U4432",
-        "U4433",
-        "U4434",
-        "U4435",
-        "U4436",
-        "U4437",
-        "U4438"
-       ],
-       "hpwl_before_mm": 115.1,
-       "hpwl_after_mm": 118.08,
-       "added_run_estimate_mm": 4.47,
-       "run_after_estimate_mm": 177.12,
-       "capacitance_after_estimate_pF": 35.42,
-       "added_capacitance_estimate_pF": 0.89
       }
      ]
     },

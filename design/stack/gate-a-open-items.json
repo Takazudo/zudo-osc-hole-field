@@ -5,7 +5,7 @@
  "counts": {
   "protection-locality": 2,
   "interim-GH LED-drive distance": 1,
-  "interim-GH locality exception": 7,
+  "interim-GH locality exception": 8,
   "interim-GH reach exception": 4,
   "fixing reach candidate": 1,
   "header/fixing conflict": 1,
@@ -13,9 +13,8 @@
   "slot drift": 3
  },
  "re_placement_status": {
-  "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)": 9,
-  "OPEN (link era): NEEDS_DESIGN for Gate A-paper": 5,
-  "OPEN (link era)": 1
+  "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)": 10,
+  "OPEN (link era): NEEDS_DESIGN for Gate A-paper": 5
  },
  "items": [
   {
@@ -127,6 +126,17 @@
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "source": "design/partition/locality-acceptances.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s8-open-replacement-native-brief-20261122.md, Revision 8 item 1"
+  },
+  {
+   "id": "GA-LOC-U4433",
+   "kind": "interim-GH locality exception",
+   "board": "K",
+   "ref": "U4433",
+   "move_distance_mm": 25.5,
+   "cause": "no position after stage 7 (open re-placement); face-aware re-search, Revision 7; 25.5 mm exceeds the DS-88 25 mm radius (interim Gate A item)",
+   "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
+   "source": "design/partition/locality-acceptances.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/decisions.md, DS-144; circuit/orchestration/campaigns/osc-stack-20261114/mc04-s9-a-slot-move-study-brief-20261122.md"
   },
   {
    "id": "GA-REACH-JL-K-26",
@@ -563,134 +573,20 @@
    ],
    "source": "design/stack/geometry/links/link-gate.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14",
-   "status": "OPEN (link era)",
-   "proof": {
-    "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered",
-    "nearest_legal_mm": 25.5,
-    "displacement_options_tried": 0,
-    "note": "no pose within 24 mm with the A2 displacement rule on this grid (the displacement options are tried fewest-displaced first up to 60)"
-   },
-   "cheapest_option": {
-    "pose": {
-     "face": "F",
-     "turn_deg": 270,
-     "origin": [
-      306.18,
-      225.95
-     ],
-     "moved_mm": 25.5,
-     "shift_mm": [
-      25.0,
-      5.0
-     ]
-    },
-    "electrical": [
-     {
-      "net": "/E4/CLOCK",
-      "kind": [
-       "logic input",
-       "timing node (clock input)",
-       "timing node (clock/sync)"
-      ],
-      "parts_on_board": [
-       "R4433",
-       "U4412",
-       "U4430",
-       "U4431",
-       "U4432",
-       "U4433",
-       "U4434",
-       "U4435",
-       "U4436",
-       "U4437",
-       "U4438"
-      ],
-      "hpwl_before_mm": 97.12,
-      "hpwl_after_mm": 100.1,
-      "added_run_estimate_mm": 4.47,
-      "run_after_estimate_mm": 150.15,
-      "capacitance_after_estimate_pF": 30.03,
-      "added_capacitance_estimate_pF": 0.89
-     },
-     {
-      "net": "/E4/LOOP",
-      "kind": [
-       "logic output"
-      ],
-      "parts_on_board": [
-       "U4415",
-       "U4433"
-      ],
-      "hpwl_before_mm": 40.23,
-      "hpwl_after_mm": 70.23,
-      "added_run_estimate_mm": 45.0,
-      "run_after_estimate_mm": 105.35,
-      "capacitance_after_estimate_pF": 21.07,
-      "added_capacitance_estimate_pF": 9.0
-     },
-     {
-      "net": "/E4/LOOP_RAW",
-      "kind": [
-       "logic input"
-      ],
-      "parts_on_board": [
-       "U4433"
-      ],
-      "hpwl_before_mm": 0.0,
-      "hpwl_after_mm": 0.0,
-      "added_run_estimate_mm": 0.0,
-      "run_after_estimate_mm": 0.0,
-      "capacitance_after_estimate_pF": 0.0,
-      "added_capacitance_estimate_pF": 0.0
-     },
-     {
-      "net": "/E4/LOOP_SYNC",
-      "kind": [
-       "logic input",
-       "logic output",
-       "timing node (clock/sync)"
-      ],
-      "parts_on_board": [
-       "U4433"
-      ],
-      "hpwl_before_mm": 0.0,
-      "hpwl_after_mm": 0.0,
-      "added_run_estimate_mm": 0.0,
-      "run_after_estimate_mm": 0.0,
-      "capacitance_after_estimate_pF": 0.0,
-      "added_capacitance_estimate_pF": 0.0
-     },
-     {
-      "net": "/E4/READY",
-      "kind": [
-       "logic input"
-      ],
-      "parts_on_board": [
-       "U4405",
-       "U4422",
-       "U4425",
-       "U4426",
-       "U4430",
-       "U4431",
-       "U4432",
-       "U4433",
-       "U4434",
-       "U4435",
-       "U4436",
-       "U4437",
-       "U4438"
-      ],
-      "hpwl_before_mm": 115.1,
-      "hpwl_after_mm": 118.08,
-      "added_run_estimate_mm": 4.47,
-      "run_after_estimate_mm": 177.12,
-      "capacitance_after_estimate_pF": 35.42,
-      "added_capacitance_estimate_pF": 0.89
-     }
+   "status": "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)",
+   "link_era_pose": {
+    "face": "F",
+    "turn_deg": 270,
+    "origin": [
+     306.18,
+     225.95
+    ],
+    "moved_mm": 25.5,
+    "shift_mm": [
+     25.0,
+     5.0
     ]
    },
-   "not_accepted": "timing node on /E4/CLOCK, /E4/LOOP_SYNC (Revision 8 item 1: left OPEN)",
-   "far_option_overlaps": [],
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
   },

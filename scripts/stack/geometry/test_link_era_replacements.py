@@ -28,8 +28,8 @@ class LinkEraRecord(unittest.TestCase):
     def test_placed_and_open(self):
         placed = {r['ic'] for r in REC['placed']}
         opened = {r['ic'] for r in REC['open']}
-        self.assertEqual((len(placed), len(opened)), (9, 6))  # Revision 8: U4526 accepted, U4433 open (clock input)
-        self.assertEqual(opened, {'U1415', 'U4433', 'U5110', 'U5209', 'U5210', 'U8409'})
+        self.assertEqual((len(placed), len(opened)), (10, 5))  # Revision 8: U4526 accepted; DS-144: U4433 its own exception
+        self.assertEqual(opened, {'U1415', 'U5110', 'U5209', 'U5210', 'U8409'})
         self.assertFalse(placed & opened)
         self.assertIn('U8409', opened)
         for r in REC['placed']:
@@ -48,6 +48,20 @@ class LinkEraRecord(unittest.TestCase):
                 self.assertIn('withdrawn_pose', o)
         far = {o['ic']: o.get('far_option_overlaps', []) for o in REC['open']}
         self.assertIn('U8409', far['U5110'] + far['U5210'])
+
+    def test_u4433_is_its_own_exception(self):
+        r = next(x for x in REC['placed'] if x['ic'] == 'U4433')
+        self.assertIn('DS-144', r['ruling'])
+        self.assertNotIn('U4417', r['class'])
+        self.assertEqual((r['pose']['face'], r['pose']['turn_deg'], r['pose']['moved_mm']), ('F', 270, 25.5))
+        self.assertTrue(r['ds144_checks']['pass'])
+        self.assertTrue(r['ds144_checks']['member_faces']['all_clear'])
+        self.assertEqual(r['ds144_checks']['board_conflicts']['other_conflicts'], [])
+        self.assertEqual(len(r['conditions']), 3)
+        self.assertTrue(any('fact-flipflop-input-transition45' in c for c in r['conditions']))
+        self.assertTrue(any('DS-88' in c for c in r['conditions']))
+        doc = json.loads(ga.OUT.read_text())
+        self.assertIn('GA-LOC-U4433', {i['id'] for i in doc['items']})
 
     def test_gate_record_carries_it(self):
         gate = json.loads(lg.LINK_GATE.read_text())

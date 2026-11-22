@@ -31,12 +31,18 @@ from replacement import p2, r2  # noqa: E402
 OUT = Path(__file__).with_name('result-r7.json')
 CONFIRMED_A2 = ('U4524', 'U1318', 'U4417')
 ACCEPTED_R8 = ('U4433', 'U4526')  # Revision 8 item 1: accepted beyond 24 mm unless a clock or RC timing node is found
+ACCEPTED_DS144 = ('U4433',)  # DS-144: its own interim exception (clock input accepted, with conditions)
 REASON = 'face-aware re-search, Revision 7'
 
 
 def timing_nodes(row):
     """Nets of a re-search row's cheapest option that are clock or RC timing nodes."""
     return sorted({e['net'] for e in (row.get('cheapest_option') or {}).get('electrical', []) for k in e['kind'] if 'timing node' in k})
+
+
+def accepted(row):
+    """A re-search row left OPEN whose cheapest option is accepted: Revision 8 (no timing node) or DS-144 (U4433)."""
+    return row['result'] != 'lands' and (row['ic'] in ACCEPTED_DS144 or (row['ic'] in ACCEPTED_R8 and not timing_nodes(row)))
 
 
 class R7(a5.A5):
@@ -137,7 +143,8 @@ class R7(a5.A5):
         return mixed, overlap
 
     def load_done(self):
-        """The Revision 7 poses that landed and the Revision 8 acceptances, from result-r7.json (for the checks)."""
+        """The Revision 7 poses that landed, the Revision 8 acceptance and the DS-144 acceptance, from result-r7.json
+        (for the checks)."""
         doc = json.loads(OUT.read_text())
         self.done = []
         for r in doc['research']:
@@ -145,7 +152,7 @@ class R7(a5.A5):
                 self.done.append((r['board'], r['ic'], self.members[(r['board'], r['ic'])], self.fps[(r['board'], r['ic'])]['side'],
                                   r['pose'], r.get('passives_moved', []), r.get('blocks_moved', [])))
         for r in doc['research']:
-            if r['ic'] in ACCEPTED_R8 and r['result'] != 'lands' and not timing_nodes(r):
+            if accepted(r):
                 self.done.append((r['board'], r['ic'], self.members[(r['board'], r['ic'])], self.fps[(r['board'], r['ic'])]['side'],
                                   r['cheapest_option']['pose'], [], []))
         return doc

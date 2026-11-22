@@ -716,6 +716,74 @@
     "route_factor": 1.5,
     "source": "scripts/stack/studies/mc04_s8_replacement/result-r7.json"
    }
+  },
+  {
+   "ref": "U4433",
+   "board": "K",
+   "kind": "interim_gh_locality_exception",
+   "exception": "own exception (DS-144), not on the U4417 terms",
+   "class": "logic",
+   "function": "logic (E4 loop/clock synchroniser, SN74HC74)",
+   "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
+   "pre_move_pose": [
+    281.18,
+    220.95,
+    "B.Cu"
+   ],
+   "pose": [
+    306.18,
+    225.95,
+    "F.Cu"
+   ],
+   "turn_deg": 270,
+   "distance_mm": 25.5,
+   "locality_limit_mm": 24.0,
+   "ds88_radius_mm": 25.0,
+   "cause": "no position after stage 7 (open re-placement); face-aware re-search, Revision 7; 25.5 mm exceeds the DS-88 25 mm radius (interim Gate A item)",
+   "timing_check": "clock input /E4/CLOCK (+4.47 mm, +0.89 pF estimated) and /E4/LOOP_SYNC: accepted by DS-144 with conditions",
+   "conditions": [
+    "member-face and board-conflict checks of this pose pass first (link-era-replacements.json ds144_checks)",
+    "the /E4/CLOCK edge is checked against fact-flipflop-input-transition45 (component-ti-sn74hc74dr) at re-route",
+    "no E4 clock-load budget exists",
+    "25.5 mm exceeds the DS-88 25 mm radius, so it is an interim Gate A item"
+   ],
+   "state": "ACCEPTED (interim) for the link era (DS-144; applied when the links replace the GH headers)",
+   "revisit": "Gate A, when the stack links replace the GH headers; a later ruling on the U4433 pose",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/decisions.md, DS-144; circuit/orchestration/campaigns/osc-stack-20261114/mc04-s9-a-slot-move-study-brief-20261122.md",
+   "grown_nets": [
+    {
+     "net": "/E4/CLOCK",
+     "kind": [
+      "logic input",
+      "timing node (clock input)",
+      "timing node (clock/sync)"
+     ],
+     "added_run_estimate_mm": 4.47,
+     "capacitance_estimate_pF": 30.03
+    },
+    {
+     "net": "/E4/LOOP",
+     "kind": [
+      "logic output"
+     ],
+     "added_run_estimate_mm": 45.0,
+     "capacitance_estimate_pF": 21.07
+    },
+    {
+     "net": "/E4/READY",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 4.47,
+     "capacitance_estimate_pF": 35.42
+    }
+   ],
+   "routing_note": "HC logic drives the load; the re-route keeps /E4/CLOCK away from analog high-impedance nodes",
+   "run_estimate_basis": {
+    "pF_per_mm": 0.2,
+    "route_factor": 1.5,
+    "source": "scripts/stack/studies/mc04_s8_replacement/result-r7.json"
+   }
   }
  ]
 }
