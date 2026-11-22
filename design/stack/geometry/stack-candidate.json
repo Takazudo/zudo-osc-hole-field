@@ -4,9 +4,9 @@
   "regenerate": "python3 scripts/stack/geometry/generate.py && python3 scripts/stack/geometry/check.py",
   "input_sha256": {
    "boards/osc-control/osc-control-routed-draft.kicad_pcb": "111c5af77fa5fff3ebe96de988197fac36f37eb54d332c66b36477fa3b6e7f44",
-   "boards/osc-core/osc-core.kicad_pcb": "7311cd8e7aabb609c0a6d1a7f2ef42324c585d0c7b51f77c6bd3fc0338c54f22",
-   "boards/osc-jack-left/osc-jack-left.kicad_pcb": "5900338a0aecafc6e4370f4f2ce812fc7b80ffdb730ea4bce3d8e1db55a2a779",
-   "boards/osc-jack-right/osc-jack-right.kicad_pcb": "3ffaa03739983dd326345ac1884b0cb56432a65c558abde42c2e151bd4c75e56",
+   "boards/osc-core/osc-core.kicad_pcb": "2c7535d13e88a0d4b9a438d51919829708c7c5825753dad7bb3e50a660c871b3",
+   "boards/osc-jack-left/osc-jack-left.kicad_pcb": "35a4b3430dabbd93d83b00e200757c66e878f47f067142d12fdae2d9c5403a10",
+   "boards/osc-jack-right/osc-jack-right.kicad_pcb": "6986eaba1ec6788ed2295a8f4ae0e17bc5dd0c6c71e644090faf4def6b73c103",
    "boards/osc-octave-1/osc-octave-1.kicad_pcb": "be549b6f8ec4a64e35b22391705284b2da6929d4efe269c58291c3ed8c4c52e5",
    "boards/osc-octave-2/osc-octave-2.kicad_pcb": "c9155415b5ef6d9bd443e787aacd51aac70732fc6a5259f18107def5c4c09a0e",
    "boards/osc-octave-3/osc-octave-3.kicad_pcb": "f9e8be0e5f6d352667dd4b66f529cadb84660baec6dddd47903e2cb91eb90eb2",
@@ -18,7 +18,7 @@
    "design/mechanical/core-rear-allowance.json": "3d0f34a0fb6c5f83b31f1ed5b00f7ab300d2b2e8fb6a448ee71c93bd1662f872",
    "design/mechanical/ic-envelope-native-report.json": "899781a862f353985123b085c30fac80bf6fb9bdf0d11de2fd0f0ff1332ccf18",
    "design/mechanical/selector-assembly.json": "b5715d25d4d4b44bc664eac9697d83c95741b02af9a906d0c849f40da7e560bb",
-   "design/partition/partition.json": "aa84af4cc17672276f1512e5404a41a7139a676aa5326c3260b0530d3f7ff339",
+   "design/partition/partition.json": "5948460a6271473bd41e812b185671b54756855054829582c01b790bb8f94d60",
    "design/stack/geometry/land-pattern.json": "f6594b6a9ba4e603f3275b61827c9098a646c17a5e9cba5476841a038e694f84",
    "design/stack/geometry/parameters.json": "0a2edef523be698e3fbecda50f5576a5826de4a9346ed2102a5a10f2813d4577",
    "scripts/stack/geometry/generate.py": "dce02e2fca9d88f02047d1b351032d886cb484333c0f25df57348236577f7fcf",
@@ -26,7 +26,7 @@
    "scripts/stack/geometry/stackgeom.py": "70db6b0833512a20029b743c49d9adf0fe1b69ef8bb4d0063afc3515cb07d7ab"
   },
   "board_checkpoint_match": {
-   "boards/osc-core/osc-core.kicad_pcb": "checkpoint metadata successor",
+   "boards/osc-core/osc-core.kicad_pcb": "DIFFERS from checkpoint",
    "boards/osc-jack-left/osc-jack-left.kicad_pcb": "DIFFERS from checkpoint",
    "boards/osc-jack-right/osc-jack-right.kicad_pcb": "DIFFERS from checkpoint",
    "boards/osc-control/osc-control-routed-draft.kicad_pcb": "not covered by the checkpoint",
@@ -38,7 +38,7 @@
    "boards/osc-octave-5/osc-octave-5.kicad_pcb": "not covered by the checkpoint"
   }
  },
- "canonical_input_digest": "0996430cb74f0234c205ea77a7e907347a4aab3d772c059198f4e8ec0f861926",
+ "canonical_input_digest": "42ddf6ade5803b44c4153158ab9be317506a9c30596cd40a3d746a2abdbdbd21",
  "canonical_input_scope": "footprint reference, library, side, origin, angle, courtyard box and pad geometry of every board; the partition, lock, mechanical and parameter fields listed in stackgeom.canonical_inputs. Tracks, vias, zones and nets are excluded",
  "candidate": {
   "schema_version": 1,
@@ -2112,7 +2112,7 @@
      "/O4/1V_BUFFER",
      "AGND",
      "/O4/FM_BUFFER",
-     "/O4/PUL_SCALED",
+     "/O4/C7b4ed2_DRIVE",
      "AGND",
      "/O4/PWM_BUFFER"
     ],
@@ -2180,12 +2180,12 @@
     "positions": 6,
     "rows": 1,
     "pin_map": [
-     "/O4/SAW_SCALED",
+     "/O4/Cc66d82_DRIVE",
      "AGND",
      "/O4/SIN_SCALED",
      "/O4/SYNC_BUFFER",
      "AGND",
-     "/O4/TRI_SCALED"
+     "/O4/Cec1eaa_DRIVE"
     ],
     "mated_height_mm": 19.0,
     "source_harness": "JL-K-22",
@@ -2455,6 +2455,148 @@
     "note": ""
    },
    {
+    "id": "JL-K-26",
+    "family": "JL/K",
+    "boards": [
+     "JL",
+     "K"
+    ],
+    "positions": 6,
+    "rows": 1,
+    "pin_map": [
+     "/F1/C9fcdd2_LED_A",
+     "AGND",
+     "/F1/C9fcdd2_LED_K",
+     "/F1/Cb3d4a2_LED_A",
+     "AGND",
+     "/F1/Cb3d4a2_LED_K"
+    ],
+    "mated_height_mm": 19.0,
+    "source_harness": "JL-K-26",
+    "sites": {
+     "front": {
+      "board": "JL",
+      "side": "B.Cu",
+      "center": [
+       142,
+       122
+      ],
+      "replaces": "J900391",
+      "replaced_gh_courtyard": [
+       135.03,
+       118.95,
+       148.97,
+       125.05
+      ],
+      "long_axis_x": true,
+      "envelope": [
+       135.405,
+       119.03,
+       148.595,
+       124.97
+      ],
+      "envelope_entry": "front 1x6 DERIVED from SOURCED copper",
+      "blockers": []
+     },
+     "back": {
+      "board": "K",
+      "side": "F.Cu",
+      "center": [
+       142,
+       122
+      ],
+      "replaces": "J900399",
+      "replaced_gh_courtyard": [
+       135.03,
+       118.95,
+       148.97,
+       125.05
+      ],
+      "long_axis_x": true,
+      "envelope": [
+       135.625,
+       118.98,
+       148.375,
+       125.02
+      ],
+      "envelope_entry": "K 1x6 DERIVED from SOURCED copper",
+      "blockers": []
+     }
+    },
+    "note": ""
+   },
+   {
+    "id": "JL-K-27",
+    "family": "JL/K",
+    "boards": [
+     "JL",
+     "K"
+    ],
+    "positions": 6,
+    "rows": 1,
+    "pin_map": [
+     "/F1/Cb6d8fd_LED_A",
+     "AGND",
+     "/F1/Cb6d8fd_LED_K",
+     "/F1/Cfc4b03_LED_A",
+     "AGND",
+     "/F1/Cfc4b03_LED_K"
+    ],
+    "mated_height_mm": 19.0,
+    "source_harness": "JL-K-27",
+    "sites": {
+     "front": {
+      "board": "JL",
+      "side": "B.Cu",
+      "center": [
+       159,
+       122
+      ],
+      "replaces": "J900392",
+      "replaced_gh_courtyard": [
+       152.03,
+       118.95,
+       165.97,
+       125.05
+      ],
+      "long_axis_x": true,
+      "envelope": [
+       152.405,
+       119.03,
+       165.595,
+       124.97
+      ],
+      "envelope_entry": "front 1x6 DERIVED from SOURCED copper",
+      "blockers": []
+     },
+     "back": {
+      "board": "K",
+      "side": "F.Cu",
+      "center": [
+       159,
+       122
+      ],
+      "replaces": "J900400",
+      "replaced_gh_courtyard": [
+       152.03,
+       118.95,
+       165.97,
+       125.05
+      ],
+      "long_axis_x": true,
+      "envelope": [
+       152.625,
+       118.98,
+       165.375,
+       125.02
+      ],
+      "envelope_entry": "K 1x6 DERIVED from SOURCED copper",
+      "blockers": []
+     }
+    },
+    "note": ""
+   },
+   {
     "id": "JL-K-3",
     "family": "JL/K",
     "boards": [
@@ -2464,9 +2606,9 @@
     "positions": 6,
     "rows": 1,
     "pin_map": [
-     "/F2/BP_CORE",
+     "/F2/C29cc99_DRIVE",
      "AGND",
-     "/F2/DRY_CORE",
+     "/F2/C2b02f4_DRIVE",
      "/F2/FREQ_BUFFER",
      "AGND",
      "/F2/GAIN_BUFFER"
@@ -2535,10 +2677,10 @@
     "positions": 6,
     "rows": 1,
     "pin_map": [
-     "/F2/HP_CORE",
+     "/F2/C56c9d6_DRIVE",
      "AGND",
      "/F2/IN_BUFFER",
-     "/F2/LP_CORE",
+     "/F2/C5d31c8_DRIVE",
      "AGND",
      "/F2/RES_BUFFER"
     ],
@@ -3480,10 +3622,10 @@
     "positions": 6,
     "rows": 1,
     "pin_map": [
-     "/E3/BIP_CORE",
+     "/M4A/C320656_LED_K",
      "AGND",
      "/E3/ENV_BUFFER",
-     "/E3/EOC",
+     "/M4A/Cd59875_LED_A",
      "AGND",
      "/E3/FALL_BUFFER"
     ],
@@ -3554,7 +3696,7 @@
      "/E3/RISE_BUFFER",
      "AGND",
      "/E3/SIG_BUFFER",
-     "/E3/STAGE_HIGH",
+     "/M4A/Cd59875_LED_K",
      "AGND",
      "/E4/BIP_CORE"
     ],
@@ -4121,10 +4263,10 @@
     "pin_map": [
      "/M4A/3_BUFFER",
      "AGND",
-     "/M4A/3_GAIN",
+     "/M4A/Cf876de_LED_A",
      "/M4A/4_BUFFER",
      "AGND",
-     "/M4A/4_GAIN"
+     "/M4A/Cf876de_LED_K"
     ],
     "mated_height_mm": 19.0,
     "source_harness": "JR-K-20",
@@ -4678,6 +4820,148 @@
     "note": ""
    },
    {
+    "id": "JR-K-28",
+    "family": "JR/K",
+    "boards": [
+     "JR",
+     "K"
+    ],
+    "positions": 6,
+    "rows": 1,
+    "pin_map": [
+     "/E3/C5dbedd_DRIVE",
+     "AGND",
+     "/E3/C8c002f_LED_A",
+     "/E3/C8c002f_LED_K",
+     "AGND",
+     "/E3/C9f1934_LED_A"
+    ],
+    "mated_height_mm": 19.0,
+    "source_harness": "JR-K-28",
+    "sites": {
+     "front": {
+      "board": "JR",
+      "side": "B.Cu",
+      "center": [
+       193,
+       24
+      ],
+      "replaces": "J900393",
+      "replaced_gh_courtyard": [
+       186.03,
+       20.95,
+       199.97,
+       27.05
+      ],
+      "long_axis_x": true,
+      "envelope": [
+       186.405,
+       21.03,
+       199.595,
+       26.97
+      ],
+      "envelope_entry": "front 1x6 DERIVED from SOURCED copper",
+      "blockers": []
+     },
+     "back": {
+      "board": "K",
+      "side": "F.Cu",
+      "center": [
+       193,
+       24
+      ],
+      "replaces": "J900396",
+      "replaced_gh_courtyard": [
+       186.03,
+       20.95,
+       199.97,
+       27.05
+      ],
+      "long_axis_x": true,
+      "envelope": [
+       186.625,
+       20.98,
+       199.375,
+       27.02
+      ],
+      "envelope_entry": "K 1x6 DERIVED from SOURCED copper",
+      "blockers": []
+     }
+    },
+    "note": ""
+   },
+   {
+    "id": "JR-K-29",
+    "family": "JR/K",
+    "boards": [
+     "JR",
+     "K"
+    ],
+    "positions": 6,
+    "rows": 1,
+    "pin_map": [
+     "/E3/C9f1934_LED_K",
+     "AGND",
+     "/E3/Cae74f8_LED_A",
+     "/E3/Cae74f8_LED_K",
+     "AGND",
+     "/E3/Caf802b_DRIVE"
+    ],
+    "mated_height_mm": 19.0,
+    "source_harness": "JR-K-29",
+    "sites": {
+     "front": {
+      "board": "JR",
+      "side": "B.Cu",
+      "center": [
+       227,
+       24
+      ],
+      "replaces": "J900394",
+      "replaced_gh_courtyard": [
+       220.03,
+       20.95,
+       233.97,
+       27.05
+      ],
+      "long_axis_x": true,
+      "envelope": [
+       220.405,
+       21.03,
+       233.595,
+       26.97
+      ],
+      "envelope_entry": "front 1x6 DERIVED from SOURCED copper",
+      "blockers": []
+     },
+     "back": {
+      "board": "K",
+      "side": "F.Cu",
+      "center": [
+       227,
+       24
+      ],
+      "replaces": "J900397",
+      "replaced_gh_courtyard": [
+       220.03,
+       20.95,
+       233.97,
+       27.05
+      ],
+      "long_axis_x": true,
+      "envelope": [
+       220.625,
+       20.98,
+       233.375,
+       27.02
+      ],
+      "envelope_entry": "K 1x6 DERIVED from SOURCED copper",
+      "blockers": []
+     }
+    },
+    "note": ""
+   },
+   {
     "id": "JR-K-3",
     "family": "JR/K",
     "boards": [
@@ -4741,6 +5025,77 @@
        34.98,
        233.375,
        41.02
+      ],
+      "envelope_entry": "K 1x6 DERIVED from SOURCED copper",
+      "blockers": []
+     }
+    },
+    "note": ""
+   },
+   {
+    "id": "JR-K-30",
+    "family": "JR/K",
+    "boards": [
+     "JR",
+     "K"
+    ],
+    "positions": 6,
+    "rows": 1,
+    "pin_map": [
+     "/E3/Ce82060_DRIVE",
+     "AGND",
+     "/M4A/C2169e5_LED_A",
+     "/M4A/C2169e5_LED_K",
+     "AGND",
+     "/M4A/C320656_LED_A"
+    ],
+    "mated_height_mm": 19.0,
+    "source_harness": "JR-K-30",
+    "sites": {
+     "front": {
+      "board": "JR",
+      "side": "B.Cu",
+      "center": [
+       295,
+       24
+      ],
+      "replaces": "J900395",
+      "replaced_gh_courtyard": [
+       288.03,
+       20.95,
+       301.97,
+       27.05
+      ],
+      "long_axis_x": true,
+      "envelope": [
+       288.405,
+       21.03,
+       301.595,
+       26.97
+      ],
+      "envelope_entry": "front 1x6 DERIVED from SOURCED copper",
+      "blockers": []
+     },
+     "back": {
+      "board": "K",
+      "side": "F.Cu",
+      "center": [
+       295,
+       24
+      ],
+      "replaces": "J900398",
+      "replaced_gh_courtyard": [
+       288.03,
+       20.95,
+       301.97,
+       27.05
+      ],
+      "long_axis_x": true,
+      "envelope": [
+       288.625,
+       20.98,
+       301.375,
+       27.02
       ],
       "envelope_entry": "K 1x6 DERIVED from SOURCED copper",
       "blockers": []
@@ -15571,7 +15926,7 @@
     "K-O4-1",
     "K-O4-2"
    ],
-   "K_service_apertures": 191,
+   "K_service_apertures": 196,
    "K_service_aperture_footprints": [
     "MH_K-SERVICE-1",
     "MH_K-SERVICE-10",
@@ -15676,6 +16031,11 @@
     "MH_K-SERVICE-19",
     "MH_K-SERVICE-190",
     "MH_K-SERVICE-191",
+    "MH_K-SERVICE-192",
+    "MH_K-SERVICE-193",
+    "MH_K-SERVICE-194",
+    "MH_K-SERVICE-195",
+    "MH_K-SERVICE-196",
     "MH_K-SERVICE-2",
     "MH_K-SERVICE-20",
     "MH_K-SERVICE-21",
@@ -16376,14 +16736,6 @@
      [
       180.5,
       23.0
-     ],
-     [
-      180.5,
-      31.0
-     ],
-     [
-      180.5,
-      50.0
      ]
     ],
     "P": [
