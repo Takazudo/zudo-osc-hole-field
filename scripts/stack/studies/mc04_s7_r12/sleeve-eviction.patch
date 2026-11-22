@@ -1,0 +1,49 @@
+diff --git a/scripts/checks/partition35_floorplan.py b/scripts/checks/partition35_floorplan.py
+index 095ed335..0d93b0e8 100644
+--- a/scripts/checks/partition35_floorplan.py
++++ b/scripts/checks/partition35_floorplan.py
+@@ -26,6 +26,7 @@ RELOCATION=ROOT/'design/partition/k-block-relocation.json'
+ EXCEPTIONS=ROOT/'design/partition/protection-locality-exceptions.json'
+ ACCEPTANCES=ROOT/'design/partition/locality-acceptances.json'
+ REFLOW_PINS=ROOT/'design/partition/reflow-pins.json'
++FIXING_SITES=ROOT/'design/stack/fixings/fixing-sites.json'
+ RELEASE_ROUNDS=400
+ RELEASE_STEP_MM=1.5
+ WHOLE_MODULE_AFTER=4
+@@ -181,6 +182,26 @@ def check_bypasses(parts,placements,pin_nets):
+ 
+ 
+ 
++def sleeve_keepouts(board,path=None):
++    """MC04-S7 Revision 12: the keep-out circles ((x, y), r) on `board` of every active sleeve fixing (the ruled DS-74/76
++    sleeves), read from the fixing list that fixings_check uses. A sleeve covers both faces of the boards it joins."""
++    doc=json.loads((path or FIXING_SITES).read_text())
++    return [(tuple(f['xy']),f['keepout_radius_mm'][board]) for f in doc['fixings']
++            if f.get('active') and f['kind'].startswith('sleeve') and board in f['keepout_radius_mm']]
++
++
++def occupy_keepout(grid,centre,r):
++    """Mark every grid cell that a courtyard box would need to enter the open keep-out disk as occupied: a box with a
++    free cell set then lies at distance >= r from the centre (fixings_check's in-keep-out rule is distance < r)."""
++    cx,cy=centre;s=grid.scale
++    for y in range(max(0,math.floor((cy-r)*s)),min(grid.height,math.ceil((cy+r)*s))):
++        y0,y1=y/s,(y+1)/s
++        dy=0.0 if y0<=cy<=y1 else min(abs(y0-cy),abs(y1-cy))
++        if dy>=r:continue
++        w=math.sqrt(r*r-dy*dy)
++        grid.fill([cx-w,y0,cx+w,y1],0)
++
++
+ def grid_free(grid,b,gap=.35):
+     x0,y0,x1,y1=b;s=grid.scale
+     x0=math.floor((x0-gap)*s);x1=math.ceil((x1+gap)*s);y0=math.floor((y0-gap)*s);y1=math.ceil((y1+gap)*s)
+@@ -467,6 +488,9 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
+     if board in EVICTED_LOCAL_BOARDS:
+         # An evicted passive is re-placed near its own slot (least growth on its nets) without evicting
+         # anything, instead of joining the board-wide locality placer.
++        # MC04-S7 Revision 12: an active sleeve keep-out is occupied for this loop, on both faces of its boards.
++        for centre,r in sleeve_keepouts(board):
++            for side in ('F.Cu','B.Cu'):occupy_keepout(occ[side],centre,r)
+         for ref in sorted(evicted):
+             part=by_ref[ref];row=rows[ref];members[ref]=[]
+             slot={'x_mm':row['x_mm'],'y_mm':row['y_mm'],'rotation_deg':row['rotation_deg'],'side':row['side']}
