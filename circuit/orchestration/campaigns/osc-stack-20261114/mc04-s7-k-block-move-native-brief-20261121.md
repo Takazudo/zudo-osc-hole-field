@@ -326,3 +326,27 @@ ruled. Option (b), re-routing all 82 headers, is not.
    the historical object still verified from its snapshot); regenerate fixings and the threading procedure; and
    run every stack test. The JL-P header 4 / SLV-L1 conflict stays OPEN for Gate A as ruled in Revision 8.
    Push and give the full hand-back, followed by an independent review.
+
+## Revision 10: stable link clusters, then the rest of step 8 and step 9 (2026-11-22)
+
+Step 7 of Revision 9 (`9601f0d5`, `65c8dd88`, `f0268f73`, report `mc04-s7-r9-report-20261122.md`) passes, subject to
+the independent review now running. The step 8 stop is correct. Option (a) is ruled, for the same reason as the
+Revision 9 header ruling: the link gate must not renumber links whose members did not change. Option (b) is not.
+
+1. **Existing links are stable.** Retain the baseline gate's link membership and IDs as a recorded input (source
+   commit and SHA256), as was done for the GH headers. Every baseline link whose member pairs all still exist keeps
+   its members, ID and slot. A link that lost members keeps its ID with the remaining members. The greedy clustering
+   runs only over pairs that no baseline link holds.
+2. **New pairs.** A new pair joins an existing link with a spare position when it lies within that link's existing
+   cluster radius; otherwise it forms a new link with the next unused ID. The order is deterministic.
+3. **The JL-L02 hold stays valid.** The stale-hold rule must pass unchanged. Do not edit the hold to fit.
+4. **The 4 new `fixing_reach` misses.** With stable clusters, re-check JL-K-26, JL-K-27, JR-K-28 and JR-K-29. If a
+   pair now joins a link within the 40 mm reach, it passes. Any pair still beyond 40 mm is allowed only as an
+   interim-GH exception: list it in the stage report with its distance and nearest declared fixing, and add a test
+   pinning check.py at 108 plus exactly those listed misses. Do not change the reach limit, the fixing list or the
+   declared flags. If any miss exceeds the exception reach in `fixings.exception_reach_mm`, stop and report.
+5. **Tests.** Add tests that fail if a baseline link changes ID or members while its pairs exist, or if two runs
+   give different clusters.
+6. **Then finish step 8 and step 9.** Regenerate the link gate, attempt DA-03 c6 fresh (the historical object still
+   verified from its snapshot), regenerate fixings and the threading procedure, and run every stack test. The
+   staleness tests must pass. JL-P-4/SLV-L1 stays OPEN for Gate A. Push and give the full hand-back.
