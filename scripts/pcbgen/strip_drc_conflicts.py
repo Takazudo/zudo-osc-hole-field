@@ -50,6 +50,23 @@ def conflicts(violations, moved):
     return out
 
 
+def renetted(violations, renetted_uuids):
+    """MC04-S7 Revision 9: [(copper uuid, copper kind, 'renetted', violation type, description pair)] for DRC
+    violations of the same types whose copper item changed net in the sync (its chain hung on a pad that moved or
+    whose pin net was reassigned), listed by uuid in renetted_uuids. Copper that kept its net is never selected."""
+    renetted_uuids = set(renetted_uuids)
+    out = []
+    for v in violations:
+        if v.get('type') not in CONFLICT_TYPES:
+            continue
+        items = v.get('items', [])
+        for i in items:
+            m = COPPER.match(i.get('description', ''))
+            if m and i.get('uuid') in renetted_uuids:
+                out.append((i['uuid'], m.group(1), 'renetted', v['type'], [x.get('description', '') for x in items]))
+    return out
+
+
 def share_after(baseline_mm, current_mm, removed_mm):
     """Routed-length loss since the baseline board, as a fraction, once this pass's removal is applied."""
     return (baseline_mm - (current_mm - removed_mm)) / baseline_mm
@@ -66,11 +83,14 @@ def main():
     ap.add_argument('--max-share', type=float, default=0.25)
     ap.add_argument('--baseline-length-mm', type=float, help='routed track length of the pre-S6 board')
     ap.add_argument('--dry-run', action='store_true')
+    ap.add_argument('--renetted-uuids', type=Path, help='copper uuids whose net changed since the committed board (MC04-S7)')
     a = ap.parse_args()
     board = pcbnew.LoadBoard(a.board)
     mm = pcbnew.ToMM
     drc = json.loads(Path(a.drc).read_text())
     pairs = conflicts(drc.get('violations', []), a.moved)
+    if a.renetted_uuids:
+        pairs += renetted(drc.get('violations', []), a.renetted_uuids.read_text().split())
     tracks = {t.m_Uuid.AsString(): t for t in board.GetTracks()}
     segs = {}
     for uid, t in tracks.items():

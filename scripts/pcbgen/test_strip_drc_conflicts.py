@@ -1,7 +1,7 @@
 """Pure tests of the DRC conflict selection (no KiCad)."""
 import unittest
 
-from scripts.pcbgen.strip_drc_conflicts import conflicts, share_after
+from scripts.pcbgen.strip_drc_conflicts import conflicts, share_after, renetted
 
 
 def v(kind, *descs, uuids=None):
@@ -35,6 +35,18 @@ class MaxShare(unittest.TestCase):
         self.assertAlmostEqual(share_after(1000.0, 900.0, 160.0), 0.26)
         self.assertGreater(share_after(1000.0, 900.0, 160.0), 0.25)
         self.assertLessEqual(share_after(1000.0, 1000.0, 250.0), 0.25)
+
+
+
+class Renetted(unittest.TestCase):
+    V = [{'type': 'clearance', 'items': [{'description': 'Via [AGND] on F.Cu - B.Cu', 'uuid': 'v1'},
+                                         {'description': 'Via [+12V] on F.Cu - B.Cu', 'uuid': 'v2'}]},
+         {'type': 'track_dangling', 'items': [{'description': 'Track [AGND] on In2.Cu', 'uuid': 't9'}]}]
+
+    def test_only_renetted_copper_in_conflict_types(self):
+        out = renetted(self.V, ['v1', 't9'])
+        self.assertEqual([(o[0], o[1], o[2], o[3]) for o in out], [('v1', 'Via', 'renetted', 'clearance')])
+        self.assertEqual(renetted(self.V, []), [])
 
 
 if __name__ == '__main__':

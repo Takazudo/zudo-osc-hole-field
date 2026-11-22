@@ -549,12 +549,14 @@ def locality_acceptances(placements,errors):
     return {'source':'design/partition/locality-acceptances.json','acceptances':rows}
 
 
-def header_conflicts(board,pin_rows,headers,parts=(),blocks=True):
+def header_conflicts(board,pin_rows,headers,parts=(),blocks=True,apertures=()):
     """Pinned packages on `board` whose pinned courtyard overlaps a GH header land on the same face (a through-hole
     package on either face), with the IC of a covered bypass capacitor and the pinned bypass capacitors of every
     released IC, so that an IC and its bypass move together. Overlap, not the placer gap: a pin keeps its original spacing to an existing header."""
     gap=0.0;out=set()
     lands=[(h['side'],h['land_courtyard_mm']) for h in headers if h['board']==board]
+    # MC04-S7 Revision 9: a K service aperture is a hole through K, so it displaces pins on both faces
+    lands+=[('both',a['box_mm']) for a in apertures] if board=='K' else []
     if blocks:
         # MC04-S7 Revision 5: a K block pin displaces the pins it overlaps the same way
         lands+=[(r['side'],r['courtyard_mm']) for r in pin_rows.get(board,{}).values() if r.get('k_block_move')]
@@ -562,7 +564,7 @@ def header_conflicts(board,pin_rows,headers,parts=(),blocks=True):
         if row.get('k_block_move'):continue
         c=row['courtyard_mm'];tht=through_hole(row['footprint'])
         for side,b in lands:
-            if (tht or side==row['side']) and c[0]<b[2]+gap and b[0]<c[2]+gap and c[1]<b[3]+gap and b[1]<c[3]+gap:
+            if (tht or side in (row['side'],'both')) and c[0]<b[2]+gap and b[0]<c[2]+gap and c[1]<b[3]+gap and b[1]<c[3]+gap:
                 out.add(ref);break
     owner={p['ref']:p['decouples_ref'] for p in parts if p.get('decouples_ref')}
     pinned=pin_rows.get(board,{})
@@ -758,7 +760,7 @@ def build():
             base={side:list(grids[board,side].rows) for side in ('F.Cu','B.Cu')};failures=Counter()
             # MC04-S7 Revision 4: a pinned package whose courtyard a GH header land covers (same face, or any face
             # for a through-hole part) is released to the locality placer, like an evicted package.
-            extra=set();displaced=header_conflicts(board,pin_rows,connector['headers'],parts)
+            extra=set();displaced=header_conflicts(board,pin_rows,connector['headers'],parts,apertures=connector['K_service_apertures'])
             for _ in range(RELEASE_ROUNDS):
                 for side in ('F.Cu','B.Cu'):grids[board,side].rows=list(base[side])
                 try:
@@ -770,7 +772,7 @@ def build():
             else:raise ValueError('adopted placement release rounds exhausted '+board)
             adopted_report[board]['release_rounds']=sum(failures.values());adopted_report[board]['window_released']=sorted(extra)
             if released_by_move.get(board):adopted_report[board]['released_by_k_block_move']=sorted(released_by_move[board])
-            under_headers=header_conflicts(board,pin_rows,connector['headers'],parts,blocks=False)
+            under_headers=header_conflicts(board,pin_rows,connector['headers'],parts,blocks=False,apertures=connector['K_service_apertures'])
             if under_headers:adopted_report[board]['displaced_by_gh_headers']=sorted(under_headers)
             if displaced-under_headers:adopted_report[board]['displaced_by_k_block_pins']=sorted(displaced-under_headers)
             placements.extend(rows);free=[]

@@ -148,8 +148,19 @@ def build():
     actual={s['net'] for h in ports['harnesses'] for s in h['signals']}
     if expected!=actual:errors.append('connector signal net coverage differs from source cut')
     pairrefs={p['net']:p for p in io['allowed_crossings']};connector=[];family={p['positions']:p for p in gh['sizes']}
+    # MC04-S7 Revision 9: site-stable reference designators. A baseline header keeps its 6093081c reference; a new
+    # header takes the next unused number in site order (board, then centre); a number is never reused for another site.
+    gh_base=ROOT/'design/partition/gh-baseline-6093081c.json'
+    base_refs=json.loads(gh_base.read_text())['header_refdes'] if gh_base.exists() else {}
+    used={int(r[1:]) for r in base_refs.values()};refs={};next_ref=max(used,default=900000)+1
     for port_index,port in enumerate(ports['headers']):
-        row={**port,'pcb_reference':'J'+str(900001+port_index),'kicad_orientation_deg':port['kicad_orientation_deg'],'mechanical_pads':['MP1','MP2'],'mechanical_pad_nets':'unassigned; mechanical only','rotation_deg':port['rotation_deg'],'mated_height_mm':{'value':7.3,'status':'SOURCED reference, no tolerance'},'exact_source':'design/connectors/jst-gh.json','supply_domain':'EXT','pins':[]}
+        if base_refs:
+            if port['id'] in base_refs:refs[port['id']]=base_refs[port['id']]
+        else:refs[port['id']]='J'+str(900001+port_index)
+    for port in sorted((p for p in ports['headers'] if p['id'] not in refs),key=lambda p:(p['board'],p['center_mm'][1],p['center_mm'][0],p['id'])):
+        refs[port['id']]='J'+str(next_ref);next_ref+=1
+    for port_index,port in enumerate(ports['headers']):
+        row={**port,'pcb_reference':refs[port['id']],'kicad_orientation_deg':port['kicad_orientation_deg'],'mechanical_pads':['MP1','MP2'],'mechanical_pad_nets':'unassigned; mechanical only','rotation_deg':port['rotation_deg'],'mated_height_mm':{'value':7.3,'status':'SOURCED reference, no tolerance'},'exact_source':'design/connectors/jst-gh.json','supply_domain':'EXT','pins':[]}
         row['field_status']={'header_mpn':'SOURCED','housing_mpn':'SOURCED','contact_mpn':'SOURCED','pin_map':'DERIVED','land_courtyard_mm':'DERIVED','center_mm':'PROPOSAL','rotation_deg':'PROPOSAL'}
         for pin,net in port['pin_map'].items():
             if net=='NC':direction='unwired';v=[0,0];current=0;basis='no crimp/wire fitted'

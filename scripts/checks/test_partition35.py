@@ -104,8 +104,8 @@ class PartitionTests(unittest.TestCase):
         protection=next(r for r in receipts if r['reserve_id']=='future-output-protection' and r['side']=='B.Cu')
         self.assertEqual(protection['original_area_mm2'],2385)
         self.assertEqual(protection['remaining_area_mm2'],494.28)
-        # MC04-S7 Revision 4: three more JR-K headers renumber the y = 150 row (J900105..J900115)
-        self.assertTrue({'J900105','J900107','J900109','J900111','J900113','J900115'} <= {s['ref'] for s in protection['subtractions']})
+        # MC04-S7 Revision 9: site-stable refdes, so the y = 150 row keeps its baseline references
+        self.assertTrue({'J900101','J900103','J900105','J900107','J900109','J900111'} <= {s['ref'] for s in protection['subtractions']})
         self.assertEqual(len([r for r in definitions['osc-jack-right']['keepouts'] if r['id'].startswith('UNSELECTED-BULK-')]),3)
         for board_id in ('osc-jack-left','osc-jack-right'):
             for keepout in definitions[board_id]['keepouts']:

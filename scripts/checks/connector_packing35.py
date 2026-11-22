@@ -16,6 +16,39 @@ from scripts.pcbgen.netlist import TOKEN, parse, many, one
 from scripts.checks.partition35_diagnostic import footprint_geometry
 OUT=ROOT/'design/partition/connector-packing-candidate.json'
 FIXINGS=ROOT/'design/stack/fixings/fixing-sites.json'
+GH_BASELINE=ROOT/'design/partition/gh-baseline-6093081c.json'
+
+
+def baseline_slots():
+    """{pair: [signal slots of each baseline harness, in index order]} from the retained 6093081c baseline."""
+    if not GH_BASELINE.exists():return {}
+    out=defaultdict(list)
+    for h in json.loads(GH_BASELINE.read_text())['harnesses']:out[tuple(h['boards'])].append((h['index'],h['signal_slots']))
+    return {pair:[s for _,s in sorted(rows)] for pair,rows in out.items()}
+
+
+def stable_chunks(base,current,new_headers,count):
+    """MC04-S7 Revision 9: every baseline header keeps each still-crossing net on its own signal slot; a slot whose net
+    no longer crosses is freed. New nets (sorted by name) fill the new headers first, then the freed slots, then the
+    baseline's unwired slots. Returns (chunks, baseline_wired): chunks are lists of nets or None per signal slot, the
+    baseline harnesses first in index order, then the new ones; baseline_wired marks slots that carried a net (their
+    return contact stays AGND)."""
+    chunks=[[net if net in current else None for net in slots] for slots in base]
+    wired=[[net is not None for net in slots] for slots in base]
+    placed={net for c in chunks for net in c if net}
+    new=sorted(set(current)-placed)
+    for _ in range(new_headers):
+        chunks.append([None]*count);wired.append([False]*count)
+    order=[(i,j) for i in range(len(base),len(chunks)) for j in range(count)]
+    order+=[(i,j) for i in range(len(base)) for j in range(len(chunks[i])) if chunks[i][j] is None and wired[i][j]]
+    order+=[(i,j) for i in range(len(base)) for j in range(len(chunks[i])) if chunks[i][j] is None and not wired[i][j]]
+    order+=[(i,len(chunks[i])+k) for i in range(len(base)) for k in range(count-len(chunks[i]))]
+    for net in new:
+        if not order:raise ValueError('GH header slots run short for '+net)
+        i,j=order.pop(0)
+        while len(chunks[i])<=j:chunks[i].append(None);wired[i].append(False)
+        chunks[i][j]=net
+    return chunks,wired
 # GH jack-to-K header sites (8 contacts, 4 signals each; the signals-per-header rule is unchanged).
 # MC04-S7 Revision 4 (circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md):
 # the K block move needs 27 JL-K and 30 JR-K headers. JL takes the two remaining points of its own grid,
@@ -132,19 +165,30 @@ def candidate():
                         'contacts':n,'pin_map':{str(i+1):v for i,v in enumerate(pins)},
                         'land_courtyard_mm':[x-w/2,y-h/2,x+w/2,y+h/2],
                         'status':'DERIVED from exact #63 generated footprint; location PROPOSAL'})
+    baselines=baseline_slots()
     for pair,ns in sorted(pairs.items()):
         if pair==('EL','K'):continue
         n=3 if 'P' in pair else 7 if any(b.startswith('O') for b in pair) else 8
-        nets=sorted(ns);chunks=[]
-        if n==7:
+        nets=sorted(ns);chunks=[];wired=None
+        base=baselines.get(tuple(sorted(pair)))
+        if base is not None:
+            # MC04-S7 Revision 9: stable against the 6093081c baseline (headers, refdes and still-crossing pins kept)
+            jb=pair[0] if pair[1]=='K' and pair[0] in JACK_BOARDS else None
+            extra=len(JACK_SITES[jb])-len(base) if jb else 0
+            chunks,wired=stable_chunks(base,set(ns),extra,(n+1)//2)
+        elif n==7:
             chunks=[nets[:4],nets[4:]]
         else:
             count=(n+1)//2;chunks=[nets[i:i+count] for i in range(0,len(nets),count)]
         for index,chunk in enumerate(chunks):
             pins=[]
-            for net in chunk:pins.extend([net,'AGND'])
+            if wired is not None:
+                for j,net in enumerate(chunk):pins.extend([net or 'NC','AGND' if net or wired[index][j] else 'NC'])
+            else:
+                for net in chunk:pins.extend([net,'AGND'])
             pins=pins[:n]+['NC']*max(0,n-len(pins))
-            if n==7 and len(chunk)==3:pins[-1]='AGND'
+            if n==7 and len([x for x in chunk if x])==3 and (wired is None or not wired[index][3:4] or not wired[index][3]):pins[-1]='AGND'
+            chunk=[x for x in chunk if x]
             name='-'.join(pair)+'-'+str(index+1)
             if pair==('K','P'):
                 if pi>=len(ps):raise ValueError('control header site overflow')
