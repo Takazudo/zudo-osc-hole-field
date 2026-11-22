@@ -71,6 +71,10 @@ def build():
                           'distance_from_slot_mm': a['distance_mm'], 'protected_pin': a['protected_pin'],
                           'diode_to_protected_pin_mm': a['diode_to_protected_pin_mm']['pose'], 'source': ACCEPT, 'ruling': a['ruling']})
     for a in acc:
+        if a.get('kind') == 'interim_gh_led_drive_distance':
+            items.append({'id': 'GA-LED-' + a['ref'], 'kind': 'interim-GH LED-drive distance', 'board': a['board'], 'ref': a['ref'],
+                          'led': a['led'], 'distance_from_slot_mm': a['distance_mm'], 'source': ACCEPT, 'ruling': a['ruling']})
+    for a in acc:
         if a.get('kind') == 'interim_gh_locality_exception':
             items.append({'id': 'GA-LOC-' + a['ref'], 'kind': 'interim-GH locality exception', 'board': a['board'], 'ref': a['ref'],
                           'distance_from_slot_mm': a['distance_mm'], 'cause': a['cause'], 'source': ACCEPT, 'ruling': a['ruling']})

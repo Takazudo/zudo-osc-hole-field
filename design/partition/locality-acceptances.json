@@ -1,7 +1,7 @@
 {
  "schema_version": 1,
  "status": "REVIEWED SOURCE INPUT (MC04-S7 Revision 2 item 3 and Revision 6 item 4)",
- "rule": "Each entry names a package placed beyond the 24 mm locality limit, the ruling and its evidence or cause. Input buffers accepted by Revision 2 item 3 carry their routing conditions; input_buffer_beyond_locality entries (Revision 7 item 1) carry the same conditions and their run estimates; interim_gh_locality_exception entries (Revision 6 item 4) are general analog parts displaced by the interim GH header sites, to be revisited at Gate A. Decouplers move with their IC and stay within the bypass limit. The floorplan report repeats every entry and fails if the package is not on the named board. interim_gh_protection_locality entries (Revision 13 item 2) are protection diodes displaced by an interim GH header and placed after the other evicted parts because of a sleeve keep-out; each carries the net it protects, the protected pin and the distances from the diode to that pin and to the GH header contact of the buffered path it guards, and is on the Gate A open list.",
+ "rule": "Each entry names a package placed beyond the 24 mm locality limit, the ruling and its evidence or cause. Input buffers accepted by Revision 2 item 3 carry their routing conditions; input_buffer_beyond_locality entries (Revision 7 item 1) carry the same conditions and their run estimates; interim_gh_locality_exception entries (Revision 6 item 4) are general analog parts displaced by the interim GH header sites, to be revisited at Gate A. Decouplers move with their IC and stay within the bypass limit. The floorplan report repeats every entry and fails if the package is not on the named board. interim_gh_protection_locality entries (Revision 13 item 2) are protection diodes displaced by an interim GH header and placed after the other evicted parts because of a sleeve keep-out; each carries the net it protects, the protected pin and the distances from the diode to that pin and to the GH header contact of the buffered path it guards, and is on the Gate A open list. interim_gh_led_drive_distance entries (MC04-S8 Revision 3 item 1) record an LED driver whose LED is farther from it than before; the drive is a low-impedance output; listed for Gate A.",
  "acceptances": [
   {
    "ref": "U1318",
@@ -557,6 +557,63 @@
     "route_factor": 1.5,
     "source": "scripts/stack/studies/mc04_s8_replacement/result-a2.json"
    }
+  },
+  {
+   "ref": "U4647",
+   "board": "JR",
+   "kind": "interim_gh_led_drive_distance",
+   "class": "LED drive (low-impedance output)",
+   "function": "output stages and indicator driver (E6 general outputs 1-3 through 499 ohm isolation pairs; unit 4 the magnitude indicator driving LED D1801 from SIG_BUFFER)",
+   "moves_with": [
+    "C4674",
+    "C4675"
+   ],
+   "pre_move_pose": [
+    296.68,
+    52.47,
+    "B.Cu"
+   ],
+   "pose": [
+    295.18,
+    74.97,
+    "B.Cu"
+   ],
+   "turn_deg": 180,
+   "distance_mm": 22.55,
+   "locality_limit_mm": 24.0,
+   "led": {
+    "ref": "D1801",
+    "driver_unit": 4,
+    "distance_before_mm": 26.82,
+    "distance_after_mm": 48.19
+   },
+   "also_moves": {
+    "block": "U4502",
+    "members": [
+     "U4502",
+     "C4515",
+     "C4516"
+    ],
+    "moved_mm": 13.73,
+    "face": "B.Cu",
+    "turn_deg": 180,
+    "condition": "U4502 input-fault path stays on its own face; C4515/C4516 move rigidly with it (no farther than before)",
+    "passives": [
+     {
+      "ref": "R4516",
+      "face": "B",
+      "origin": [
+       297.61,
+       80.79
+      ],
+      "moved_mm": 6.25
+     }
+    ]
+   },
+   "state": "ACCEPTED (interim) for MC04-S8 Part B (pose not yet applied)",
+   "revisit": "Gate A, when the stack links replace the GH headers",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s8-open-replacement-native-brief-20261122.md, Revision 3 item 1",
+   "source": "scripts/stack/studies/mc04_s8_replacement/result-a3.json"
   }
  ]
 }

@@ -179,7 +179,7 @@ class A3(a2.A2):
             if tried >= MAX_TRIALS:
                 break
             tried += 1
-            extra = {(board, m) for b in blocks for m in self.ic_members[(board, b)]}
+            extra = self.trial_extra(board, blocks, small)
             f = self.build_field(extra)
             pose = {'face': face, 'turn_deg': k, 'origin': [r2(fp['origin'][0] + dx), r2(fp['origin'][1] + dy)],
                     'moved_mm': r2(d), 'shift_mm': [dx, dy]}
@@ -236,6 +236,10 @@ class A3(a2.A2):
                     'count': len(fixed) + len(hard) + len(extra_blocks),
                     'by_type': dict(sorted(Counter([t for t, _ in fixed] + ['non-evictable footprint'] * len(hard)
                                                    + ['IC block'] * len(extra_blocks)).items()))}}
+
+    def trial_extra(self, board, blocks, small):
+        """Parts lifted from the obstacles for one trial: the members of the displaced blocks."""
+        return {(board, m) for b in blocks for m in self.ic_members[(board, b)]}
 
     def legal_except(self, f, board, face, rects, dx, dy, allowed):
         fixed, fps = self.obstacles(f, board, face, rects, dx, dy)

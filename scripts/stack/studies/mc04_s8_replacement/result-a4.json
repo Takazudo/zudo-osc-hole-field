@@ -1,0 +1,335 @@
+{
+ "schema_version": 1,
+ "status": "STUDY (MC04-S8 Part A4): courtyard level on unvalidated drafts; no board changed; nothing adopted",
+ "generator": "scripts/stack/studies/mc04_s8_replacement/replacement_a4.py",
+ "rules": {
+  "ruled_first": [
+   "U4129",
+   "U1415",
+   "U4433",
+   "U4526",
+   "U4527",
+   "U4623",
+   "U4635",
+   "U5110",
+   "U4524",
+   "U1318",
+   "U4417",
+   "U4647 (with U4502 and R4516)"
+  ],
+  "relaxations": {
+   "U5209": "R8263 may move again: within 24 mm of its 6093081c position, no farther from U8211 than before the gate moved it",
+   "U5210": "C5210 may be displaced within 24 mm; added run on /W1/AC_NODE under 10 mm",
+   "U8409": "a chain of up to three IC blocks (target, U8412, one more), each within 24 mm, none an input buffer"
+  }
+ },
+ "all_within_rules": false,
+ "targets": [
+  {
+   "board": "K",
+   "ic": "U5209",
+   "function": {
+    "mpn": "OPA4196IDR",
+    "instance": "W1",
+    "family": "wavefolder_tssop",
+    "role": "signal stage (W1 pre-gain, drive and folder sum)",
+    "input_buffer": false,
+    "nets": [
+     "/W1/BASE_DRIVE",
+     "/W1/DRIVE_INV_SUM",
+     "/W1/EMITTER",
+     "/W1/FOLDER_DRIVE",
+     "/W1/FOLDER_NEG",
+     "/W1/FOLDER_SUM",
+     "/W1/PRE_GAIN",
+     "/W1/PRE_GAIN_SUM",
+     "/W1/TARGET"
+    ]
+   },
+   "block": {
+    "decouplers": [
+     "C5234",
+     "C5235"
+    ],
+    "cell_local": [
+     "C5207",
+     "R5246",
+     "R5250",
+     "R5251"
+    ],
+    "members": [
+     "U5209",
+     "C5234",
+     "C5235",
+     "C5207",
+     "R5246",
+     "R5250",
+     "R5251"
+    ],
+    "courtyard_area_mm2": 108.06
+   },
+   "result": "fits within 24 mm",
+   "pose": {
+    "face": "F",
+    "turn_deg": 90,
+    "origin": [
+     147.95,
+     208.58
+    ],
+    "moved_mm": 10.2,
+    "shift_mm": [
+     -10.0,
+     2.0
+    ]
+   },
+   "blocks_moved": [],
+   "passives_moved": [
+    {
+     "ref": "R2381",
+     "face": "B",
+     "origin": [
+      138.64,
+      208.66
+     ],
+     "moved_mm": 0.0
+    },
+    {
+     "ref": "R5220",
+     "face": "B",
+     "origin": [
+      151.91,
+      205.64
+     ],
+     "moved_mm": 1.25
+    },
+    {
+     "ref": "R5236",
+     "face": "B",
+     "origin": [
+      158.41,
+      210.14
+     ],
+     "moved_mm": 2.75
+    },
+    {
+     "ref": "R5238",
+     "face": "F",
+     "origin": [
+      152.91,
+      211.64
+     ],
+     "moved_mm": 3.54
+    },
+    {
+     "ref": "R8263",
+     "face": "F",
+     "origin": [
+      157.16,
+      195.64
+     ],
+     "moved_mm": 6.56,
+     "relaxation": {
+      "from_6093081c_mm": 6.56,
+      "to_U8211_before_mm": 51.67,
+      "to_U8211_after_mm": 50.14
+     }
+    }
+   ],
+   "candidates": 151,
+   "trials": 1
+  },
+  {
+   "board": "K",
+   "ic": "U5210",
+   "function": {
+    "mpn": "OPA4196IDR",
+    "instance": "W1",
+    "family": "wavefolder_tssop",
+    "role": "signal stage (W1 fold cells F1-F4)",
+    "input_buffer": false,
+    "nets": [
+     "/W1/F1_CLIP",
+     "/W1/F1_OUT",
+     "/W1/F1_SUM",
+     "/W1/F2_CLIP",
+     "/W1/F2_OUT",
+     "/W1/F2_SUM",
+     "/W1/F3_CLIP",
+     "/W1/F3_OUT",
+     "/W1/F3_SUM",
+     "/W1/F4_CLIP",
+     "/W1/F4_OUT",
+     "/W1/F4_SUM"
+    ]
+   },
+   "block": {
+    "decouplers": [
+     "C5236",
+     "C5237"
+    ],
+    "cell_local": [
+     "R5256",
+     "R5257",
+     "R5259",
+     "R5260",
+     "R5261",
+     "R5262",
+     "R5263"
+    ],
+    "members": [
+     "U5210",
+     "C5236",
+     "C5237",
+     "R5256",
+     "R5257",
+     "R5259",
+     "R5260",
+     "R5261",
+     "R5262",
+     "R5263"
+    ],
+    "courtyard_area_mm2": 125.64
+   },
+   "result": "no pose within 24 mm under the rule",
+   "candidates": 31,
+   "trials": 31,
+   "trial_failures": {
+    "block U8412 has no legal pose within 24 mm": 29,
+    "block U5208 has no legal pose within 24 mm": 1,
+    "block U8408 has no legal pose within 24 mm": 1
+   },
+   "smallest_obstacle_set": {
+    "pose": {
+     "face": "F",
+     "turn_deg": 90,
+     "origin": [
+      175.97,
+      207.7
+     ],
+     "moved_mm": 5.83
+    },
+    "fixed_by_type": {},
+    "fixed": [],
+    "non_evictable_footprints": [],
+    "input_buffer_blocks": [],
+    "ic_blocks_the_rule_cannot_move": [
+     "U5208"
+    ],
+    "ic_blocks_met": [
+     "U5208"
+    ],
+    "small_passives_met": [
+     "C5210",
+     "R5229"
+    ],
+    "count": 1,
+    "by_type": {
+     "IC block": 1
+    }
+   }
+  },
+  {
+   "board": "K",
+   "ic": "U8409",
+   "function": {
+    "mpn": "OPA4196IDR",
+    "instance": "M4B",
+    "family": "mix4_vca_tssop_m4b",
+    "role": "input buffer and VCA drive (M4B channel 1/2 input buffers, wiper sense, drive and feedback)",
+    "input_buffer": true,
+    "nets": [
+     "/M4B/1_BUFFER",
+     "/M4B/1_GAIN",
+     "/M4B/2_BUFFER",
+     "/M4B/2_GAIN",
+     "/M4B/C75c2e7_SUM",
+     "/M4B/C75c2e7_W_SENSE",
+     "/M4B/C797803_DRIVE",
+     "/M4B/C797803_FB",
+     "/M4B/Ca1191c_SUM",
+     "/M4B/Ca1191c_W_SENSE",
+     "/M4B/Cfaa69a_DRIVE",
+     "/M4B/Cfaa69a_FB"
+    ]
+   },
+   "block": {
+    "decouplers": [
+     "C8434",
+     "C8435"
+    ],
+    "cell_local": [
+     "C8403",
+     "C8404",
+     "C8405",
+     "C8406",
+     "R8412",
+     "R8413",
+     "R8414",
+     "R8423",
+     "R8424"
+    ],
+    "members": [
+     "U8409",
+     "C8434",
+     "C8435",
+     "C8403",
+     "C8404",
+     "C8405",
+     "C8406",
+     "R8412",
+     "R8413",
+     "R8414",
+     "R8423",
+     "R8424"
+    ],
+    "courtyard_area_mm2": 138.9
+   },
+   "result": "no pose within 24 mm under the rule",
+   "candidates": 3,
+   "trials": 3,
+   "trial_failures": {
+    "block U8412 has no legal pose within 24 mm": 3
+   },
+   "smallest_obstacle_set": {
+    "pose": {
+     "face": "F",
+     "turn_deg": 0,
+     "origin": [
+      196.2,
+      197.47
+     ],
+     "moved_mm": 8.6
+    },
+    "fixed_by_type": {},
+    "fixed": [],
+    "non_evictable_footprints": [],
+    "input_buffer_blocks": [],
+    "ic_blocks_the_rule_cannot_move": [
+     "U8412"
+    ],
+    "ic_blocks_met": [
+     "U8412"
+    ],
+    "small_passives_met": [
+     "C8409",
+     "R5231",
+     "R8421",
+     "R8422",
+     "R8439",
+     "R8440"
+    ],
+    "count": 1,
+    "by_type": {
+     "IC block": 1
+    }
+   },
+   "chain_search": {
+    "candidates": 3,
+    "trials": 3,
+    "failures": {
+     "U8412 has no pose within 24 mm even with one more block displaced": 3
+    }
+   }
+  }
+ ]
+}
