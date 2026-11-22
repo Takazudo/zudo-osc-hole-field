@@ -1,0 +1,1180 @@
+{
+ "schema_version": 1,
+ "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
+ "status": "STUDY (MC04-S8 Part A5): link-era re-placement; no board changed; nothing applied",
+ "generator": "scripts/stack/studies/mc04_s8_replacement/replacement_a5.py",
+ "rules": {
+  "set": [
+   "U5210",
+   "U8409",
+   "U8412",
+   "U5208",
+   "U8408"
+  ],
+  "limit_mm": 24.0,
+  "grid_mm": 0.5,
+  "turns_deg": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "search": "complete depth-first search with forward checking over the candidate poses (solve); a failure is a proof over this grid for this set",
+  "passives": "A2 rule; C5210 under the Revision 3 rule; re-placed nearest-first after an assignment"
+ },
+ "placed": [
+  "U5210"
+ ],
+ "runs": [
+  {
+   "set": [
+    "U5210",
+    "U8409",
+    "U8412",
+    "U5208",
+    "U8408"
+   ],
+   "targets": [
+    "U5210",
+    "U8409"
+   ],
+   "limit_others_mm": 24.0,
+   "domain_sizes": {
+    "U5210": 42,
+    "U8409": 39,
+    "U8412": 831,
+    "U5208": 453,
+    "U8408": 2133
+   },
+   "nodes": 36384,
+   "rejected_for_passives": 0,
+   "found": false
+  },
+  {
+   "set": [
+    "U5210",
+    "U8412",
+    "U5208",
+    "U8408"
+   ],
+   "targets": [
+    "U5210"
+   ],
+   "limit_others_mm": 24.0,
+   "domain_sizes": {
+    "U5210": 41,
+    "U8412": 831,
+    "U5208": 414,
+    "U8408": 1950
+   },
+   "nodes": 4,
+   "rejected_for_passives": 0,
+   "found": true,
+   "poses": {
+    "U5210": {
+     "ic": "U5210",
+     "members": [
+      "U5210",
+      "C5236",
+      "C5237",
+      "R5256",
+      "R5257",
+      "R5259",
+      "R5260",
+      "R5261",
+      "R5262",
+      "R5263"
+     ],
+     "face": "F",
+     "turn_deg": 90,
+     "moved_mm": 5.83,
+     "shift_mm": [
+      -5.0,
+      3.0
+     ],
+     "origin": [
+      175.97,
+      207.7
+     ],
+     "small": [
+      "C5210",
+      "R5229"
+     ]
+    },
+    "U5208": {
+     "ic": "U5208",
+     "members": [
+      "U5208",
+      "C5232",
+      "C5233",
+      "R5235"
+     ],
+     "face": "F",
+     "turn_deg": 270,
+     "moved_mm": 21.51,
+     "shift_mm": [
+      17.5,
+      -12.5
+     ],
+     "origin": [
+      192.33,
+      193.7
+     ],
+     "small": []
+    },
+    "U8412": {
+     "ic": "U8412",
+     "members": [
+      "U8412",
+      "C8440",
+      "C8441",
+      "R8464",
+      "R8467"
+     ],
+     "face": "F",
+     "turn_deg": 270,
+     "moved_mm": 10.98,
+     "shift_mm": [
+      5.5,
+      -9.5
+     ],
+     "origin": [
+      199.08,
+      182.7
+     ],
+     "small": [
+      "C4511",
+      "C4512",
+      "R4564",
+      "R4567",
+      "R8454",
+      "R8455"
+     ]
+    },
+    "U8408": {
+     "ic": "U8408",
+     "members": [
+      "U8408",
+      "C8432",
+      "C8433"
+     ],
+     "face": "B",
+     "turn_deg": 0,
+     "moved_mm": 0.0,
+     "shift_mm": [
+      0.0,
+      0.0
+     ],
+     "origin": [
+      192.38,
+      190.62
+     ],
+     "small": []
+    }
+   },
+   "passives_moved": [
+    {
+     "ref": "C4511",
+     "face": "F",
+     "origin": [
+      205.21,
+      179.64
+     ],
+     "moved_mm": 9.09
+    },
+    {
+     "ref": "C4512",
+     "face": "F",
+     "origin": [
+      186.46,
+      181.39
+     ],
+     "moved_mm": 7.11
+    },
+    {
+     "ref": "C5210",
+     "face": "B",
+     "origin": [
+      185.06,
+      209.09
+     ],
+     "moved_mm": 2.61,
+     "relaxation": {
+      "hiz_net": "/W1/AC_NODE",
+      "added_run_estimate_mm": -1.12
+     }
+    },
+    {
+     "ref": "R4564",
+     "face": "F",
+     "origin": [
+      186.14,
+      184.41
+     ],
+     "moved_mm": 4.72
+    },
+    {
+     "ref": "R4567",
+     "face": "B",
+     "origin": [
+      198.39,
+      179.91
+     ],
+     "moved_mm": 4.14
+    },
+    {
+     "ref": "R5229",
+     "face": "F",
+     "origin": [
+      189.91,
+      202.64
+     ],
+     "moved_mm": 1.0
+    },
+    {
+     "ref": "R8454",
+     "face": "F",
+     "origin": [
+      209.64,
+      175.41
+     ],
+     "moved_mm": 6.66
+    },
+    {
+     "ref": "R8455",
+     "face": "F",
+     "origin": [
+      202.14,
+      187.66
+     ],
+     "moved_mm": 8.73
+    }
+   ]
+  },
+  {
+   "set": [
+    "U8409",
+    "U8412",
+    "U5208",
+    "U8408"
+   ],
+   "targets": [
+    "U8409"
+   ],
+   "limit_others_mm": 24.0,
+   "domain_sizes": {
+    "U8409": 39,
+    "U8412": 831,
+    "U5208": 453,
+    "U8408": 2132
+   },
+   "nodes": 4,
+   "rejected_for_passives": 0,
+   "found": true,
+   "poses": {
+    "U8409": {
+     "ic": "U8409",
+     "members": [
+      "U8409",
+      "C8434",
+      "C8435",
+      "C8403",
+      "C8404",
+      "C8405",
+      "C8406",
+      "R8412",
+      "R8413",
+      "R8414",
+      "R8423",
+      "R8424"
+     ],
+     "face": "F",
+     "turn_deg": 0,
+     "moved_mm": 7.52,
+     "shift_mm": [
+      -7.5,
+      0.5
+     ],
+     "origin": [
+      195.7,
+      192.97
+     ],
+     "small": [
+      "C4511",
+      "C4512",
+      "R5229"
+     ]
+    },
+    "U8412": {
+     "ic": "U8412",
+     "members": [
+      "U8412",
+      "C8440",
+      "C8441",
+      "R8464",
+      "R8467"
+     ],
+     "face": "F",
+     "turn_deg": 0,
+     "moved_mm": 16.8,
+     "shift_mm": [
+      -10.0,
+      13.5
+     ],
+     "origin": [
+      183.58,
+      205.7
+     ],
+     "small": [
+      "C5210",
+      "R5231"
+     ]
+    },
+    "U5208": {
+     "ic": "U5208",
+     "members": [
+      "U5208",
+      "C5232",
+      "C5233",
+      "R5235"
+     ],
+     "face": "B",
+     "turn_deg": 270,
+     "moved_mm": 21.51,
+     "shift_mm": [
+      17.5,
+      -12.5
+     ],
+     "origin": [
+      192.33,
+      193.7
+     ],
+     "small": [
+      "R8311",
+      "RB4235"
+     ]
+    },
+    "U8408": {
+     "ic": "U8408",
+     "members": [
+      "U8408",
+      "C8432",
+      "C8433"
+     ],
+     "face": "F",
+     "turn_deg": 270,
+     "moved_mm": 21.92,
+     "shift_mm": [
+      15.5,
+      15.5
+     ],
+     "origin": [
+      207.88,
+      206.12
+     ],
+     "small": [
+      "C4212",
+      "C8408",
+      "R7219",
+      "R8360",
+      "R8401",
+      "R8422",
+      "R8439",
+      "R8440",
+      "R8471"
+     ]
+    }
+   },
+   "passives_moved": [
+    {
+     "ref": "C4212",
+     "face": "B",
+     "origin": [
+      203.71,
+      212.64
+     ],
+     "moved_mm": 5.52
+    },
+    {
+     "ref": "C4511",
+     "face": "B",
+     "origin": [
+      196.71,
+      180.89
+     ],
+     "moved_mm": 0.5
+    },
+    {
+     "ref": "C4512",
+     "face": "F",
+     "origin": [
+      196.96,
+      179.39
+     ],
+     "moved_mm": 3.58
+    },
+    {
+     "ref": "C5210",
+     "face": "F",
+     "origin": [
+      179.56,
+      212.09
+     ],
+     "moved_mm": 8.33,
+     "relaxation": {
+      "hiz_net": "/W1/AC_NODE",
+      "added_run_estimate_mm": -9.38
+     }
+    },
+    {
+     "ref": "C8408",
+     "face": "F",
+     "origin": [
+      215.89,
+      207.46
+     ],
+     "moved_mm": 3.25
+    },
+    {
+     "ref": "R5229",
+     "face": "F",
+     "origin": [
+      191.91,
+      200.89
+     ],
+     "moved_mm": 3.47
+    },
+    {
+     "ref": "R5231",
+     "face": "F",
+     "origin": [
+      186.66,
+      212.39
+     ],
+     "moved_mm": 6.73
+    },
+    {
+     "ref": "R7219",
+     "face": "F",
+     "origin": [
+      215.89,
+      205.16
+     ],
+     "moved_mm": 5.96
+    },
+    {
+     "ref": "R8311",
+     "face": "B",
+     "origin": [
+      194.66,
+      199.39
+     ],
+     "moved_mm": 3.04
+    },
+    {
+     "ref": "R8360",
+     "face": "F",
+     "origin": [
+      212.91,
+      203.14
+     ],
+     "moved_mm": 5.2
+    },
+    {
+     "ref": "R8401",
+     "face": "B",
+     "origin": [
+      203.91,
+      198.39
+     ],
+     "moved_mm": 4.65
+    },
+    {
+     "ref": "R8422",
+     "face": "F",
+     "origin": [
+      200.41,
+      201.14
+     ],
+     "moved_mm": 3.82
+    },
+    {
+     "ref": "R8439",
+     "face": "B",
+     "origin": [
+      201.41,
+      199.64
+     ],
+     "moved_mm": 5.71
+    },
+    {
+     "ref": "R8440",
+     "face": "F",
+     "origin": [
+      202.91,
+      210.64
+     ],
+     "moved_mm": 5.55
+    },
+    {
+     "ref": "R8471",
+     "face": "F",
+     "origin": [
+      218.91,
+      203.39
+     ],
+     "moved_mm": 7.25
+    },
+    {
+     "ref": "RB4235",
+     "face": "F",
+     "origin": [
+      188.39,
+      195.91
+     ],
+     "moved_mm": 0.0
+    }
+   ]
+  }
+ ],
+ "options_for_unplaced": [
+  {
+   "set": [
+    "U5210",
+    "U8409",
+    "U8412",
+    "U5208",
+    "U8408"
+   ],
+   "targets": [
+    "U5210",
+    "U8409"
+   ],
+   "limit_others_mm": 30.0,
+   "domain_sizes": {
+    "U5210": 42,
+    "U8409": 39,
+    "U8412": 831,
+    "U5208": 1208,
+    "U8408": 2181
+   },
+   "nodes": 36714,
+   "rejected_for_passives": 0,
+   "found": true,
+   "poses": {
+    "U8409": {
+     "ic": "U8409",
+     "members": [
+      "U8409",
+      "C8434",
+      "C8435",
+      "C8403",
+      "C8404",
+      "C8405",
+      "C8406",
+      "R8412",
+      "R8413",
+      "R8414",
+      "R8423",
+      "R8424"
+     ],
+     "face": "F",
+     "turn_deg": 0,
+     "moved_mm": 11.05,
+     "shift_mm": [
+      -11.0,
+      -1.0
+     ],
+     "origin": [
+      192.2,
+      191.47
+     ],
+     "small": [
+      "C4511",
+      "C4512",
+      "R4504",
+      "R4564",
+      "R4593"
+     ]
+    },
+    "U5210": {
+     "ic": "U5210",
+     "members": [
+      "U5210",
+      "C5236",
+      "C5237",
+      "R5256",
+      "R5257",
+      "R5259",
+      "R5260",
+      "R5261",
+      "R5262",
+      "R5263"
+     ],
+     "face": "B",
+     "turn_deg": 0,
+     "moved_mm": 16.81,
+     "shift_mm": [
+      14.5,
+      -8.5
+     ],
+     "origin": [
+      195.47,
+      196.2
+     ],
+     "small": [
+      "R8311",
+      "R8409",
+      "RB4235"
+     ]
+    },
+    "U8412": {
+     "ic": "U8412",
+     "members": [
+      "U8412",
+      "C8440",
+      "C8441",
+      "R8464",
+      "R8467"
+     ],
+     "face": "F",
+     "turn_deg": 180,
+     "moved_mm": 18.45,
+     "shift_mm": [
+      -10.0,
+      15.5
+     ],
+     "origin": [
+      183.58,
+      207.7
+     ],
+     "small": [
+      "C5210",
+      "R5231",
+      "R5232"
+     ]
+    },
+    "U5208": {
+     "ic": "U5208",
+     "members": [
+      "U5208",
+      "C5232",
+      "C5233",
+      "R5235"
+     ],
+     "face": "F",
+     "turn_deg": 90,
+     "moved_mm": 28.04,
+     "shift_mm": [
+      28.0,
+      -1.5
+     ],
+     "origin": [
+      202.83,
+      204.7
+     ],
+     "small": [
+      "C8409",
+      "R8360",
+      "R8401",
+      "R8421",
+      "R8422",
+      "R8432",
+      "R8439",
+      "R8440"
+     ]
+    },
+    "U8408": {
+     "ic": "U8408",
+     "members": [
+      "U8408",
+      "C8432",
+      "C8433"
+     ],
+     "face": "F",
+     "turn_deg": 0,
+     "moved_mm": 25.81,
+     "shift_mm": [
+      21.0,
+      15.0
+     ],
+     "origin": [
+      213.38,
+      205.62
+     ],
+     "small": [
+      "C8408",
+      "R7215",
+      "R7219",
+      "R8360",
+      "R8471"
+     ]
+    }
+   },
+   "passives_moved": [
+    {
+     "ref": "C4511",
+     "face": "B",
+     "origin": [
+      196.71,
+      180.89
+     ],
+     "moved_mm": 0.5
+    },
+    {
+     "ref": "C4512",
+     "face": "F",
+     "origin": [
+      189.21,
+      180.14
+     ],
+     "moved_mm": 4.25
+    },
+    {
+     "ref": "C5210",
+     "face": "B",
+     "origin": [
+      185.06,
+      209.09
+     ],
+     "moved_mm": 2.61,
+     "relaxation": {
+      "hiz_net": "/W1/AC_NODE",
+      "added_run_estimate_mm": -1.12
+     }
+    },
+    {
+     "ref": "C8408",
+     "face": "F",
+     "origin": [
+      206.14,
+      209.71
+     ],
+     "moved_mm": 6.88
+    },
+    {
+     "ref": "C8409",
+     "face": "F",
+     "origin": [
+      195.96,
+      201.39
+     ],
+     "moved_mm": 2.25
+    },
+    {
+     "ref": "R4504",
+     "face": "F",
+     "origin": [
+      186.14,
+      180.66
+     ],
+     "moved_mm": 3.72
+    },
+    {
+     "ref": "R4564",
+     "face": "F",
+     "origin": [
+      192.39,
+      183.16
+     ],
+     "moved_mm": 2.57
+    },
+    {
+     "ref": "R4593",
+     "face": "F",
+     "origin": [
+      183.91,
+      191.64
+     ],
+     "moved_mm": 1.25
+    },
+    {
+     "ref": "R5231",
+     "face": "F",
+     "origin": [
+      191.66,
+      200.89
+     ],
+     "moved_mm": 5.94
+    },
+    {
+     "ref": "R5232",
+     "face": "F",
+     "origin": [
+      189.64,
+      210.16
+     ],
+     "moved_mm": 0.25
+    },
+    {
+     "ref": "R7215",
+     "face": "F",
+     "origin": [
+      219.91,
+      201.89
+     ],
+     "moved_mm": 6.96
+    },
+    {
+     "ref": "R7219",
+     "face": "F",
+     "origin": [
+      216.39,
+      216.16
+     ],
+     "moved_mm": 7.08
+    },
+    {
+     "ref": "R8311",
+     "face": "F",
+     "origin": [
+      195.91,
+      197.64
+     ],
+     "moved_mm": 4.43
+    },
+    {
+     "ref": "R8360",
+     "face": "B",
+     "origin": [
+      203.91,
+      212.64
+     ],
+     "moved_mm": 8.05
+    },
+    {
+     "ref": "R8401",
+     "face": "B",
+     "origin": [
+      203.91,
+      198.39
+     ],
+     "moved_mm": 4.65
+    },
+    {
+     "ref": "R8409",
+     "face": "F",
+     "origin": [
+      199.14,
+      194.91
+     ],
+     "moved_mm": 4.81
+    },
+    {
+     "ref": "R8421",
+     "face": "B",
+     "origin": [
+      199.41,
+      211.14
+     ],
+     "moved_mm": 6.29
+    },
+    {
+     "ref": "R8422",
+     "face": "B",
+     "origin": [
+      201.66,
+      212.64
+     ],
+     "moved_mm": 7.77
+    },
+    {
+     "ref": "R8432",
+     "face": "F",
+     "origin": [
+      199.41,
+      214.14
+     ],
+     "moved_mm": 7.27
+    },
+    {
+     "ref": "R8439",
+     "face": "F",
+     "origin": [
+      203.66,
+      214.14
+     ],
+     "moved_mm": 9.25
+    },
+    {
+     "ref": "R8440",
+     "face": "B",
+     "origin": [
+      205.16,
+      216.39
+     ],
+     "moved_mm": 10.3
+    },
+    {
+     "ref": "R8471",
+     "face": "F",
+     "origin": [
+      219.41,
+      205.64
+     ],
+     "moved_mm": 8.07
+    },
+    {
+     "ref": "RB4235",
+     "face": "F",
+     "origin": [
+      188.39,
+      196.66
+     ],
+     "moved_mm": 0.75
+    }
+   ],
+   "for": "U8409",
+   "limits_scanned": [
+    {
+     "limit_others_mm": 25.0,
+     "found": false,
+     "nodes": 38430
+    },
+    {
+     "limit_others_mm": 26.0,
+     "found": false,
+     "nodes": 38740
+    },
+    {
+     "limit_others_mm": 27.0,
+     "found": false,
+     "nodes": 38740
+    },
+    {
+     "limit_others_mm": 28.0,
+     "found": false,
+     "nodes": 38740
+    },
+    {
+     "limit_others_mm": 30.0,
+     "found": true,
+     "nodes": 36714
+    }
+   ],
+   "option": "both targets placed, neighbour blocks allowed up to the smallest scanned limit that works",
+   "farthest_neighbour_mm": 28.04,
+   "a2_far_pose": {
+    "face": "B",
+    "turn_deg": 90,
+    "origin": [
+     216.2,
+     279.47
+    ],
+    "moved_mm": 87.97
+   },
+   "a2_far_pose_electrical": [
+    {
+     "net": "/M4B/1_BUFFER",
+     "kind": [
+      "non-inverting input"
+     ],
+     "parts_on_board": [
+      "R8413",
+      "U8409"
+     ],
+     "hpwl_before_mm": 14.37,
+     "hpwl_after_mm": 14.37,
+     "added_run_estimate_mm": 0.0,
+     "run_after_estimate_mm": 21.56,
+     "capacitance_after_estimate_pF": 4.31,
+     "added_capacitance_estimate_pF": 0.0
+    },
+    {
+     "net": "/M4B/1_GAIN",
+     "kind": [
+      "output"
+     ],
+     "parts_on_board": [
+      "C8404",
+      "R8414",
+      "R8445",
+      "U8409"
+     ],
+     "hpwl_before_mm": 42.93,
+     "hpwl_after_mm": 122.58,
+     "added_run_estimate_mm": 119.48,
+     "run_after_estimate_mm": 183.87,
+     "capacitance_after_estimate_pF": 36.77,
+     "added_capacitance_estimate_pF": 23.9
+    },
+    {
+     "net": "/M4B/2_BUFFER",
+     "kind": [
+      "non-inverting input"
+     ],
+     "parts_on_board": [
+      "R8423",
+      "U8409"
+     ],
+     "hpwl_before_mm": 10.62,
+     "hpwl_after_mm": 10.62,
+     "added_run_estimate_mm": 0.0,
+     "run_after_estimate_mm": 15.93,
+     "capacitance_after_estimate_pF": 3.19,
+     "added_capacitance_estimate_pF": 0.0
+    },
+    {
+     "net": "/M4B/2_GAIN",
+     "kind": [
+      "output"
+     ],
+     "parts_on_board": [
+      "C8406",
+      "R8424",
+      "R8446",
+      "U8409"
+     ],
+     "hpwl_before_mm": 59.06,
+     "hpwl_after_mm": 129.0,
+     "added_run_estimate_mm": 104.91,
+     "run_after_estimate_mm": 193.5,
+     "capacitance_after_estimate_pF": 38.7,
+     "added_capacitance_estimate_pF": 20.98
+    },
+    {
+     "net": "/M4B/C75c2e7_SUM",
+     "kind": [
+      "feedback/summing node"
+     ],
+     "parts_on_board": [
+      "C8404",
+      "R8413",
+      "R8414",
+      "U8409"
+     ],
+     "hpwl_before_mm": 31.2,
+     "hpwl_after_mm": 31.2,
+     "added_run_estimate_mm": 0.0,
+     "run_after_estimate_mm": 46.8,
+     "capacitance_after_estimate_pF": 9.36,
+     "added_capacitance_estimate_pF": 0.0
+    },
+    {
+     "net": "/M4B/C75c2e7_W_SENSE",
+     "kind": [
+      "non-inverting input"
+     ],
+     "parts_on_board": [
+      "R8411",
+      "R8412",
+      "U8409"
+     ],
+     "hpwl_before_mm": 11.0,
+     "hpwl_after_mm": 89.45,
+     "added_run_estimate_mm": 117.68,
+     "run_after_estimate_mm": 134.18,
+     "capacitance_after_estimate_pF": 26.84,
+     "added_capacitance_estimate_pF": 23.54
+    },
+    {
+     "net": "/M4B/C797803_DRIVE",
+     "kind": [
+      "output"
+     ],
+     "parts_on_board": [
+      "C8403",
+      "R8409",
+      "U8409"
+     ],
+     "hpwl_before_mm": 14.18,
+     "hpwl_after_mm": 97.62,
+     "added_run_estimate_mm": 125.16,
+     "run_after_estimate_mm": 146.43,
+     "capacitance_after_estimate_pF": 29.29,
+     "added_capacitance_estimate_pF": 25.03
+    },
+    {
+     "net": "/M4B/C797803_FB",
+     "kind": [
+      "feedback/summing node"
+     ],
+     "parts_on_board": [
+      "C8403",
+      "R8410",
+      "U8409"
+     ],
+     "hpwl_before_mm": 19.62,
+     "hpwl_after_mm": 87.62,
+     "added_run_estimate_mm": 102.0,
+     "run_after_estimate_mm": 131.43,
+     "capacitance_after_estimate_pF": 26.29,
+     "added_capacitance_estimate_pF": 20.4
+    },
+    {
+     "net": "/M4B/Ca1191c_SUM",
+     "kind": [
+      "feedback/summing node"
+     ],
+     "parts_on_board": [
+      "C8406",
+      "R8423",
+      "R8424",
+      "U8409"
+     ],
+     "hpwl_before_mm": 14.62,
+     "hpwl_after_mm": 14.62,
+     "added_run_estimate_mm": 0.0,
+     "run_after_estimate_mm": 21.93,
+     "capacitance_after_estimate_pF": 4.39,
+     "added_capacitance_estimate_pF": 0.0
+    },
+    {
+     "net": "/M4B/Ca1191c_W_SENSE",
+     "kind": [
+      "non-inverting input"
+     ],
+     "parts_on_board": [
+      "R8421",
+      "R8422",
+      "U8409"
+     ],
+     "hpwl_before_mm": 16.96,
+     "hpwl_after_mm": 92.12,
+     "added_run_estimate_mm": 112.74,
+     "run_after_estimate_mm": 138.18,
+     "capacitance_after_estimate_pF": 27.64,
+     "added_capacitance_estimate_pF": 22.55
+    },
+    {
+     "net": "/M4B/Cfaa69a_DRIVE",
+     "kind": [
+      "output"
+     ],
+     "parts_on_board": [
+      "C8405",
+      "R8419",
+      "U8409"
+     ],
+     "hpwl_before_mm": 10.09,
+     "hpwl_after_mm": 109.21,
+     "added_run_estimate_mm": 148.68,
+     "run_after_estimate_mm": 163.82,
+     "capacitance_after_estimate_pF": 32.76,
+     "added_capacitance_estimate_pF": 29.74
+    },
+    {
+     "net": "/M4B/Cfaa69a_FB",
+     "kind": [
+      "feedback/summing node"
+     ],
+     "parts_on_board": [
+      "C8405",
+      "R8420",
+      "U8409"
+     ],
+     "hpwl_before_mm": 11.01,
+     "hpwl_after_mm": 103.71,
+     "added_run_estimate_mm": 139.05,
+     "run_after_estimate_mm": 155.57,
+     "capacitance_after_estimate_pF": 31.11,
+     "added_capacitance_estimate_pF": 27.81
+    }
+   ],
+   "swap": {
+    "note": "place U8409 instead of U5210",
+    "found": true
+   }
+  }
+ ]
+}
