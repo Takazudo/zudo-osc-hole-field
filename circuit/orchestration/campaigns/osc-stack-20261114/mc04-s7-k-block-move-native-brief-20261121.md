@@ -234,3 +234,27 @@ One blocker and some follow-ups remain before Part B:
    row overlaps the `future-output-protection` reserve, which is recorded, not fixed here.
 
 Then re-run Part A step 4 reporting and stop at the checkpoint again.
+
+## Revision 6: rulings after the Revision 5 stop (2026-11-22)
+
+The stop is accepted (`006ba3af`, `6da69765`, report `mc04-s7-r5-report-20261122.md`). Item 1 (near-slot rigid
+clusters) and item 2 (reflow pins, 280 → 151 changed parts) are accepted.
+
+1. **Replace JR-K-29 with (227, 24)**, option (a). It covers 8 small JR B-side parts and nothing on K. Option (b)
+   would displace U4318 and U4343 on K. Re-place the 8 parts through the near-slot loop, and treat D4101 and
+   D4102 as input-protection diodes under the existing diode locality rule.
+2. **Check every GH site against fixings.** Add a generator check that every GH site, old and new, clears all
+   active fixing and sleeve keep-outs on both mated boards, with a test, so this cannot recur. Revision 4's
+   collision list missed fixings.
+3. **The y=24 edge clearance is accepted**: 0.95 mm to the JR outline against the 0.30 mm rule, K mate 12.95 mm,
+   enclosure wall 22.95 mm. Record that no card-guide or spacer geometry exists in the repository, so that
+   interface is unchecked and stays open for the mechanical review.
+4. **The 14 parts beyond 24 mm.** Classify each by function in a table: input protection, precision or 1V/oct
+   path, decoupler, timing, general analog, logic. Then:
+   - any decoupler beyond 3 mm from its IC supply pin, or any input-protection, precision or timing part beyond
+     24 mm, is not accepted. For those, test the other rule-consistent GH site options on the same rows to see if
+     any frees them, and report the cost (parts displaced) of each option;
+   - general analog or logic parts beyond 24 mm may be recorded as locality exceptions caused by the interim GH
+     headers, to be revisited when Gate A replaces GH with the stack links. Record them in
+     `locality-acceptances.json` with this ruling.
+5. Re-run the Part A step 4 reporting and stop at the checkpoint.
