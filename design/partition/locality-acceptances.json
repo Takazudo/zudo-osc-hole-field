@@ -405,6 +405,158 @@
    "state": "ACCEPTED (interim)",
    "revisit": "Gate A protection-locality item (design/stack/gate-a-open-items.json)",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 13 item 2"
+  },
+  {
+   "ref": "U1318",
+   "board": "JL",
+   "kind": "input_buffer_beyond_locality",
+   "class": "high-impedance input buffer",
+   "function": "input buffer (precision OPA4197: O3 1V/oct sense buffer)",
+   "moves_with": [
+    "C1340",
+    "C1341"
+   ],
+   "pre_move_pose": [
+    71.96000000000001,
+    62.52000000000001,
+    "B.Cu"
+   ],
+   "pose": [
+    57.96,
+    37.02,
+    "B.Cu"
+   ],
+   "turn_deg": 90,
+   "distance_mm": 29.09,
+   "locality_limit_mm": 24.0,
+   "cause": "no position after stage 7 (open re-placement, under a field of JL-K-JL-L08)",
+   "state": "ACCEPTED for MC04-S8 Part B (pose not yet applied)",
+   "revisit": "Gate A, when the stack links replace the GH headers",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s8-open-replacement-native-brief-20261122.md, Revision 2 item 2 (with the Revision 2 item 3 conditions of MC04-S7)",
+   "conditions": [
+    "keep the input passives at the cell end",
+    "route the lengthened run as a ground-flanked trace",
+    "keep the added run capacitance under 50 pF"
+   ],
+   "input_runs": [
+    {
+     "unit": 1,
+     "net": "/O3/C1e2eb4_SENSE",
+     "routed_estimate_mm": 66.79,
+     "capacitance_estimate_pF": 13.36,
+     "added_run_estimate_mm": 12.43
+    }
+   ],
+   "output_run": {
+    "net": "/O3/1V_BUFFER",
+    "added_run_estimate_mm": 41.25
+   },
+   "run_estimate_basis": {
+    "pF_per_mm": 0.2,
+    "route_factor": 1.5,
+    "limit_pF": 50.0,
+    "source": "scripts/stack/studies/mc04_s8_replacement/result-a2.json"
+   }
+  },
+  {
+   "ref": "U4417",
+   "board": "K",
+   "kind": "interim_gh_locality_exception",
+   "class": "logic",
+   "function": "logic (E4 gate logic, SN74HC00)",
+   "moves_with": [
+    "C4434"
+   ],
+   "pre_move_pose": [
+    250.83,
+    199.95,
+    "B.Cu"
+   ],
+   "pose": [
+    241.83,
+    247.95,
+    "B.Cu"
+   ],
+   "turn_deg": 90,
+   "distance_mm": 48.84,
+   "locality_limit_mm": 24.0,
+   "cause": "no position after stage 7 (open re-placement, under the slot of P-K-P-L05.01.01)",
+   "state": "ACCEPTED (interim) for MC04-S8 Part B (pose not yet applied)",
+   "revisit": "Gate A, when the stack links replace the GH headers",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s8-open-replacement-native-brief-20261122.md, Revision 2 item 3",
+   "grown_nets": [
+    {
+     "net": "/E4/D_RISE",
+     "kind": [
+      "logic output"
+     ],
+     "added_run_estimate_mm": 85.5,
+     "capacitance_estimate_pF": 30.34
+    },
+    {
+     "net": "/E4/L016",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 85.5,
+     "capacitance_estimate_pF": 34.62
+    },
+    {
+     "net": "/E4/L018",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 85.5,
+     "capacitance_estimate_pF": 34.11
+    },
+    {
+     "net": "/E4/L021",
+     "kind": [
+      "logic input",
+      "logic output"
+     ],
+     "added_run_estimate_mm": 78.75,
+     "capacitance_estimate_pF": 38.13
+    },
+    {
+     "net": "/E4/L023",
+     "kind": [
+      "logic output"
+     ],
+     "added_run_estimate_mm": 85.5,
+     "capacitance_estimate_pF": 23.1
+    },
+    {
+     "net": "/E4/RISE",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 85.5,
+     "capacitance_estimate_pF": 35.07
+    },
+    {
+     "net": "/E4/START",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 85.5,
+     "capacitance_estimate_pF": 34.11
+    },
+    {
+     "net": "/E4/TOP",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 85.5,
+     "capacitance_estimate_pF": 37.69
+    }
+   ],
+   "routing_note": "HC logic drives the load; the re-route keeps these edges away from analog high-impedance nodes",
+   "run_estimate_basis": {
+    "pF_per_mm": 0.2,
+    "route_factor": 1.5,
+    "source": "scripts/stack/studies/mc04_s8_replacement/result-a2.json"
+   }
   }
  ]
 }
