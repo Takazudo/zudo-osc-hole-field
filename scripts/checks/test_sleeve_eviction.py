@@ -1,4 +1,5 @@
-"""MC04-S7 Revision 12: near-slot eviction treats every active sleeve keep-out as occupied."""
+"""MC04-S7 Revisions 12 and 13: near-slot eviction treats every active sleeve keep-out as occupied, and the parts a
+keep-out displaces are placed after every other evicted part."""
 import json
 import math
 import tempfile
@@ -67,6 +68,54 @@ class SleeveEviction(unittest.TestCase):
 
     def test_committed_list_has_the_ruled_sleeves(self):
         self.assertIn(((244.0, 24.0), 3.75), [(tuple(map(float, c)), r) for c, r in fp.sleeve_keepouts('JR')])
+
+
+class KeepoutLast(unittest.TestCase):
+    """Revision 13: a keep-out-displaced part never takes a position another evicted part would have taken."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.outline = source()['boards']['JR']['outline']
+
+    def place_all(self, order, slots, keepout=True):
+        g = fp.Grid('JR', 'F.Cu', self.outline)
+        if keepout:
+            fp.occupy_keepout(g, SLV, RADIUS)
+        out = {}
+        for ref in order:
+            envelope, masks = masks_for([R0603], g.scale, 0, fp.oriented_box)
+            slot = slots[ref]
+            _, x, y = nearest(g, masks, (round((slot[0] + envelope[0]) * g.scale), round((slot[1] + envelope[1]) * g.scale)))
+            ox, oy = x / g.scale - envelope[0], y / g.scale - envelope[1]
+            b = [R0603[0] + ox, R0603[1] + oy, R0603[2] + ox, R0603[3] + oy]
+            g.fill([b[0], b[1], b[2] + .35, b[3] + .35], 0)
+            out[ref] = (ox, oy)
+        return out
+
+    def test_order_puts_keepout_parts_last(self):
+        self.assertEqual(fp.evicted_order({'R9', 'D1', 'C5', 'R2'}, ['D1', 'R2']), ['C5', 'R9', 'D1', 'R2'])
+        self.assertEqual(fp.evicted_order({'R9', 'D1'}, []), ['D1', 'R9'])
+
+    def test_a_keepout_part_does_not_take_another_parts_pose(self):
+        # D1 sat in the keep-out; R9's slot is D1's next free pose outside it
+        d1 = (243.0, 24.0)
+        slots = {'D1': d1, 'R9': self.place_all(['D1'], {'D1': d1})['D1']}
+        alone = self.place_all(['R9'], slots)
+        first = self.place_all(['D1', 'R9'], slots)  # reference order: D1 first takes R9's place
+        self.assertNotEqual(first['R9'], alone['R9'])
+        last = self.place_all(fp.evicted_order(set(slots), ['D1']), slots)
+        self.assertEqual(last['R9'], alone['R9'])
+        x, y = last['D1']
+        self.assertGreaterEqual(box_dist([R0603[0] + x, R0603[1] + y, R0603[2] + x, R0603[3] + y], SLV), RADIUS - 1e-9)
+
+    def test_committed_floorplan_keeps_evicted_parts_out_of_sleeve_keepouts(self):
+        rep = json.loads(fp.OUT.read_text())
+        self.assertEqual(rep['adopted_placement_pins']['boards']['JR'].get('placed_after_sleeve_keepouts'),
+                         ['D4101', 'D4102', 'R8425', 'R8426'])
+        for p in rep['placements']:
+            if p.get('evicted_near_slot'):
+                for c, r in fp.sleeve_keepouts(p['board']):
+                    self.assertFalse(fp.keepout_entered(p['courtyard_mm'], c, r), p['ref'])
 
 
 if __name__ == '__main__':

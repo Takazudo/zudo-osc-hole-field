@@ -1,0 +1,38 @@
+{
+ "schema_version": 1,
+ "status": "OPEN LIST for the Gate A review (MC04-S7); items stay open until Gate A rules them",
+ "items": [
+  {
+   "id": "GA-PROT-D4101",
+   "kind": "protection-locality",
+   "ref": "D4101",
+   "board": "JR",
+   "summary": "E1 input clamp 33.9 mm from its slot, 38.15 mm from U4146 pin 3; interim GH acceptance",
+   "source": "design/partition/locality-acceptances.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 13 item 2"
+  },
+  {
+   "id": "GA-PROT-D4102",
+   "kind": "protection-locality",
+   "ref": "D4102",
+   "board": "JR",
+   "summary": "E1 input clamp 33.6 mm from its slot, 42.8 mm from U4146 pin 5; interim GH acceptance",
+   "source": "design/partition/locality-acceptances.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 13 item 2"
+  },
+  {
+   "id": "GA-FIX-JLP4-SLVL1",
+   "kind": "fixing conflict",
+   "summary": "JL-P utility header 4 at (91, 276) on the ruled sleeve SLV-L1",
+   "source": "scripts/checks/connector_packing35.py KNOWN_FIXING_CONFLICTS",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 8"
+  },
+  {
+   "id": "GA-REACH-SLEEVES",
+   "kind": "fixing reach candidate",
+   "summary": "declare the ruled sleeves as fixings for the reach check (option (b)); not applied",
+   "source": "design/stack/geometry/fixing-reach-exceptions.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 11"
+  }
+ ]
+}

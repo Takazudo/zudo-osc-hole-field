@@ -26,6 +26,7 @@ RELOCATION=ROOT/'design/partition/k-block-relocation.json'
 EXCEPTIONS=ROOT/'design/partition/protection-locality-exceptions.json'
 ACCEPTANCES=ROOT/'design/partition/locality-acceptances.json'
 REFLOW_PINS=ROOT/'design/partition/reflow-pins.json'
+FIXING_SITES=ROOT/'design/stack/fixings/fixing-sites.json'
 RELEASE_ROUNDS=400
 RELEASE_STEP_MM=1.5
 WHOLE_MODULE_AFTER=4
@@ -179,6 +180,38 @@ def check_bypasses(parts,placements,pin_nets):
         bypass.append({'capacitor':p['ref'],'IC':p['decouples_ref'],'rail':rail,'capacitor_pad':cpin,'IC_supply_pad':supply,'board':c['board'],'same_face':c['side']==u['side'],'supply_pad_centre_distance_mm':distance})
     return bypass,errors
 
+
+
+def sleeve_keepouts(board,path=None):
+    """MC04-S7 Revision 12: the keep-out circles ((x, y), r) on `board` of every active sleeve fixing (the ruled DS-74/76
+    sleeves), read from the fixing list that fixings_check uses. A sleeve covers both faces of the boards it joins."""
+    doc=json.loads((path or FIXING_SITES).read_text())
+    return [(tuple(f['xy']),f['keepout_radius_mm'][board]) for f in doc['fixings']
+            if f.get('active') and f['kind'].startswith('sleeve') and board in f['keepout_radius_mm']]
+
+
+def occupy_keepout(grid,centre,r):
+    """Mark every grid cell that a courtyard box would need to enter the open keep-out disk as occupied: a box with a
+    free cell set then lies at distance >= r from the centre (fixings_check's in-keep-out rule is distance < r)."""
+    cx,cy=centre;s=grid.scale
+    for y in range(max(0,math.floor((cy-r)*s)),min(grid.height,math.ceil((cy+r)*s))):
+        y0,y1=y/s,(y+1)/s
+        dy=0.0 if y0<=cy<=y1 else min(abs(y0-cy),abs(y1-cy))
+        if dy>=r:continue
+        w=math.sqrt(r*r-dy*dy)
+        grid.fill([cx-w,y0,cx+w,y1],0)
+
+
+def keepout_entered(box,centre,r):
+    """fixings_check's rule: a courtyard box at distance < r from the keep-out centre is inside the keep-out."""
+    dx=max(box[0]-centre[0],0,centre[0]-box[2]);dy=max(box[1]-centre[1],0,centre[1]-box[3])
+    return math.hypot(dx,dy)<r
+
+
+def evicted_order(evicted,keepout_last):
+    """MC04-S7 Revision 13: evicted parts in reference order, the parts displaced by a sleeve keep-out after all others."""
+    last=set(keepout_last)
+    return sorted(evicted,key=lambda ref:(ref in last,ref))
 
 
 def grid_free(grid,b,gap=.35):
@@ -463,11 +496,9 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
                 placed_at[cpart['ref']]=(px,py,side)
             nudges.append({k:v for k,v in nudge.items() if k!='placed'})
     clusters.update(boots)
-    relocated={};far=[];capped_out=[]
-    if board in EVICTED_LOCAL_BOARDS:
-        # An evicted passive is re-placed near its own slot (least growth on its nets) without evicting
-        # anything, instead of joining the board-wide locality placer.
-        for ref in sorted(evicted):
+    relocated={};far=[];capped_out=[];keepout_last=[]
+    def evict_pass(order,relocated,far,capped_out):
+        for ref in order:
             part=by_ref[ref];row=rows[ref];members[ref]=[]
             slot={'x_mm':row['x_mm'],'y_mm':row['y_mm'],'rotation_deg':row['rotation_deg'],'side':row['side']}
             kept=(kept_clusters or {}).get('_evicted_'+ref)
@@ -495,6 +526,25 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
                 relocated[cpart['ref']]={'ref':cpart['ref'],'board':board,'fixed':False,'x_mm':px,'y_mm':py,'rotation_deg':rotation,
                                          'side':side,'courtyard_mm':b,'evicted_near_slot':True}
                 placed_at[cpart['ref']]=(px,py,side)
+    if board in EVICTED_LOCAL_BOARDS:
+        # An evicted passive is re-placed near its own slot (least growth on its nets) without evicting
+        # anything, instead of joining the board-wide locality placer.
+        # MC04-S7 Revisions 12 and 13: an active sleeve keep-out is occupied for this loop, on both faces of its
+        # boards, and the parts it displaces are placed after every other evicted part, so that they never take a
+        # pose another evicted part would have taken. A trial pass without the keep-outs finds those parts: the
+        # ones whose pose there enters a keep-out disk.
+        keepouts=sleeve_keepouts(board)
+        order=sorted(evicted)
+        if keepouts:
+            saved={side:list(occ[side].rows) for side in occ};saved_at=dict(placed_at);saved_kept=list(kept_used)
+            trial={};evict_pass(order,trial,[],[])
+            keepout_last=sorted(ref for ref,t in trial.items() if ref in evicted and any(keepout_entered(t['courtyard_mm'],c,r) for c,r in keepouts))
+            for side in occ:occ[side].rows=saved[side]
+            placed_at.clear();placed_at.update(saved_at);kept_used[:]=saved_kept
+            for centre,r in keepouts:
+                for side in ('F.Cu','B.Cu'):occupy_keepout(occ[side],centre,r)
+            order=evicted_order(evicted,keepout_last)
+        evict_pass(order,relocated,far,capped_out)
     clusters.update(relocated)
     pinned={}
     for ref,row in rows.items():
@@ -515,7 +565,8 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
                    'evicted_replaced_near_slot':len(relocated),'evicted_to_locality':far,
                    **({'displaced_cluster_move_mm':displaced_moves} if displaced_moves else {}),
                    **({'swapped_clusters_kept':len(kept_used)} if kept_used else {}),
-                   **({'evicted_diodes_beyond_cap':capped_out} if capped_out else {})}
+                   **({'evicted_diodes_beyond_cap':capped_out} if capped_out else {}),
+                   **({'placed_after_sleeve_keepouts':keepout_last} if keepout_last else {})}
     taken=set(pinned)|set(clusters)
     return [p for p in free if p['ref'] not in taken],out
 
