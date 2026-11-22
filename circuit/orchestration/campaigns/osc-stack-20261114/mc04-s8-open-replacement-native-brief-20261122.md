@@ -258,3 +258,25 @@ second defect (Part A placed displaced passives on the block's own pose) was fou
    electrical budget. Do not evaluate those remedies in this stage.
 3. Regenerate the record, the gate, the Gate A list and the reports. Every `--check` and all stack tests must pass.
    Push and give a short hand-back. That closes stage 8.
+
+## Revision 8 addendum: targeted review of Revision 7 (2026-11-22)
+
+The targeted review of `eacc7814` and `8fbcd06c` confirms Revision 7. Face-awareness holds at every check and placement
+site, and the `mf` mutation fails the tests. The three new poses are legal under an independent checker, the five
+clean poses are clean, historical A–A5 reproduce byte for byte, and the 8/7 outcome stands. Fold these fixes into the
+Revision 8 hand-back:
+
+1. **Real member checks.** Run `member_faces.py` on the three Revision 7 poses (U4527, U4623, U4635), and on the
+   U4433/U4526 acceptances. Store the computed result instead of the hard-coded `all_clear: True` in
+   `link_era_replacements.py`, and test the computed value.
+2. **Interim-board evidence.** Run `board_conflicts.py` on every placed link-era pose. The independent check finds U4527
+   on J900104 (with C7203/R8376 on J900106), and U4635 and C4652 on J900108 (with R4217 on J900106). Correct the count
+   in the report from 5 to 7, plus any further overlaps from U4433 and U4526.
+3. **Far options are not jointly feasible.** The cheapest options for U5110 (40.61 mm), U5210 (80.61 mm) and U8409
+   (113.22 mm) overlap one another; for example, U5110 sits on U8409/C8405. State this in the record and the Gate A
+   items, so the packet does not add them up as one solution.
+4. **Tests.**
+   - Restore a data-driven "every mixed-face block in the record is checked" test in place of `len == 6`.
+   - Pin the exact placed/open counts.
+   - Derive the five withdrawn Part A poses from a check rather than a literal.
+   - Add unit coverage for face-aware `blockers` and A3 `obstacles`.
