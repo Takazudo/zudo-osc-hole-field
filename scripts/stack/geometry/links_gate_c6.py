@@ -22,12 +22,21 @@ SOURCE_OBJECT_SHA256 = 'a555e65e9a61617ebe9e7c10656722ac0f25f80f7abef0a3d193bc7b
 # MC04-S7 Revision 2 rebind (JL-K-JL-L02 held at its retained slot; signals, positions and riders unchanged;
 # circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-c6-rebind-check-20261122.json, sha256
 # 844a68b6caea1458376f4266a70b13506be9dc561d088c4b9c0ee42d64df1c4e). Previous geometry pin: 3b58378a048d21c0f2eb273dda07759f789d1151629c43df90028eaafa4db7b8
-SOURCE_GEOMETRY_SHA256 = '35ce915f31bab14a881690030ed18e67250331d6eee00d40d42c8c93268fe627'
-SOURCE_SIGNAL_SHA256 = 'baa834876861bea8245c223950e3405ec7d9223f327f99f38fc3c5a59da128c4'
-SOURCE_POSITIONS_SHA256 = 'c95a3dfbd397cfe3785e6e8f90037105a86ee01a9460fd98d7fab0b932f57ebd'
+# MC04-S7 Revision 11 fresh attempt (stage 7 K block move with stable GH headers and stable link clusters): the JL
+# and JR links carry the stage 7 nets and the new pairs (JL-K-JL-L09; JR-K-28/29 join JR-K-JR-L02, JR-K-30 joins
+# JR-K-JR-L01), so the geometry, signal and positions pins change. The eight links c6 acts on have the same pre-c6
+# positions as the retained source snapshot, and c6 gives them the same positions and riders as before; see
+# circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-r11-c6-check-20261122.json.
+# Previous pins: geometry 35ce915f31bab14a881690030ed18e67250331d6eee00d40d42c8c93268fe627,
+# signal baa834876861bea8245c223950e3405ec7d9223f327f99f38fc3c5a59da128c4,
+# positions c95a3dfbd397cfe3785e6e8f90037105a86ee01a9460fd98d7fab0b932f57ebd
+SOURCE_GEOMETRY_SHA256 = 'a1549b308d2d6b26a2bd504abfa037e1b90331922d8b6cda3c521a8f7dd6033a'
+SOURCE_SIGNAL_SHA256 = '70335b6d45781946dddabeb3fbdb86dcf0924c2dd79355dd4e7f08443f5c584b'
+SOURCE_POSITIONS_SHA256 = 'f1d03b6ab6aadfc2530d6e22b0596598d51a468bdcaff978152f5ec85acd94a6'
 # Previous output pin: 81400a28b258fc0002bbe05f451e9237aeb9ab5ad9b2719cbaa2e4416522e94a (MC04-S6 revision 4 rebind)
 # Previous output pin: 078cd8eeb0c86b7551867e82a6e6c0ab7bf64068f84e1a030400509cd5142443 (MC04-S6 revision 4 rebind)
-OUTPUT_LINKS_SHA256 = '7f7fb47c58b32d7267008c6cc610174d03749b7389599d7e77eeff0714b4f907'
+# Previous output pin: 7f7fb47c58b32d7267008c6cc610174d03749b7389599d7e77eeff0714b4f907 (MC04-S7 Revision 2 rebind)
+OUTPUT_LINKS_SHA256 = '5c4a7e27f13b2697e26f852d563693a9c609e198734f5d36b3b0b7b8a1e9fbd1'
 L01 = 'P-K-P-L01.01.01'
 L01B = 'P-K-P-L01.02.01'
 L03 = 'P-K-P-L03.01'

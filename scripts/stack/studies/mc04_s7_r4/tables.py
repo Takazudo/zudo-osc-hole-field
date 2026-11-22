@@ -49,9 +49,34 @@ out['moved_parts'] = sorted(moved, key=lambda m: -(m.get('moved_mm') or 0))
 out['adopted'] = {b: {k: v for k, v in r.items() if k in ('released_by_k_block_move', 'displaced_by_gh_headers', 'displaced_by_k_block_pins', 'displaced_cluster_move_mm', 'evicted', 'evicted_diodes_beyond_cap', 'evicted_to_locality', 'clusters_to_locality')}
                   for b, r in new['adopted_placement_pins']['boards'].items()}
 pc = json.loads((R / 'design/partition/connector-packing-candidate.json').read_text())
-sites = {(142, 122), (159, 122), (193, 24), (244, 24), (295, 24)}
+sites = {(142, 122), (159, 122), (193, 24), (227, 24), (295, 24)}  # (244, 24) is the sleeve SLV-U2, never a header site
 out['new_headers'] = [{'id': h['id'], 'board': h['board'], 'center': h['center_mm'], 'side': h['side'], 'land': h['land_courtyard_mm']}
                       for h in pc['headers'] if tuple(h['center_mm']) in sites]
+# Revision 9 item 3 (Revision 11 addendum item 3): every net new to the GH headers since the 6093081c baseline, with
+# its header, its signal pin and the distance from the header centre to its driving part on the driver's board.
+gb = json.loads((R / 'design/partition/gh-baseline-6093081c.json').read_text())
+base_nets = {n for h in gb['harnesses'] for n in h['signal_slots'] if n}
+crossing = {r['net']: r for r in io['allowed_crossings'] if r['kind'] != 'power/return'}
+heads = {h['id']: h for h in pc['headers']}
+rows = []
+for hn in pc['harnesses']:
+    if 'EL' in hn['boards']:
+        continue
+    first = heads[hn['header_ids'][0]]
+    for pin, net in sorted(first['pin_map'].items(), key=lambda kv: int(kv[0])):
+        if net in ('NC', 'AGND') or net in base_nets:
+            continue
+        drivers = [m['ref'] for m in crossing[net]['direction']['source_nodes']]
+        dist = []
+        for ref in drivers:
+            pl = P1[ref]
+            hid = hn['id'] + '-' + pl['board']
+            if hid in heads:
+                c = heads[hid]['center_mm']
+                dist.append({'driver': ref, 'board': pl['board'], 'distance_mm': round(math.hypot(pl['x_mm'] - c[0], pl['y_mm'] - c[1]), 2)})
+        rows.append({'net': net, 'harness': hn['id'], 'pin': int(pin), 'new_header': hn['id'] in
+                     {h['id'].rsplit('-', 1)[0] for h in out['new_headers']}, 'drivers': dist})
+out['new_nets'] = rows
 out['headers'] = {'by_board': pc['headers_by_board'], 'jack_sites_used': pc['jack_sites_used'], 'status': pc['status']}
 Path(__file__).with_name('tables.json').write_text(json.dumps(out, indent=1))
 print(json.dumps(out['blocks'], indent=0))
@@ -60,3 +85,5 @@ print('moved parts', len(moved), [m['ref'] for m in out['moved_parts'][:60]])
 print(json.dumps(out['adopted']))
 print(json.dumps(out['new_headers']))
 print(out['headers'])
+print('new nets', len(rows))
+for r in rows: print(r)

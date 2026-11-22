@@ -63,8 +63,8 @@ class CommittedCandidate(unittest.TestCase):
     def test_plan_totals(self):
         res = check.run_checks(DOC, CTX)
         t = res.checks['pin_budget']['detail']['totals']
-        self.assertEqual((t['pairs'], t['positions'], t['K_pairs'], t['K_positions']), (203, 825, 197, 777))
-        self.assertEqual((t['signal_positions'], t['AGND'], t['rail'], t['unused']), (531, 276, 18, 2))
+        self.assertEqual((t['pairs'], t['positions'], t['K_pairs'], t['K_positions']), (208, 855, 202, 807))  # +5 GH pairs (MC04-S7)
+        self.assertEqual((t['signal_positions'], t['AGND'], t['rail'], t['unused']), (551, 286, 18, 2))  # +20 signals, +10 AGND (MC04-S7 rev 11)
 
 
 class Staleness(unittest.TestCase):

@@ -67,9 +67,10 @@ class RetainedFiles(unittest.TestCase):
 class Counts(unittest.TestCase):
     def test_item_1_counts(self):
         c = DOC['site_counts']
-        self.assertEqual((c['pairs'], c['positions']), (191, 747))
+        # MC04-S7 Revision 11: the stage 7 K block move adds 5 GH pairs (JL-K-26/27, JR-K-28/29/30) and 20 link signals
+        self.assertEqual((c['pairs'], c['positions']), (196, 777))
         fam = {k: (v['pairs'], v['positions'], v['signals']) for k, v in c['by_family'].items()}
-        self.assertEqual(fam, {'K/P': (123, 369, 246), 'JR/K': (27, 162, 106), 'JL/K': (25, 150, 100),
+        self.assertEqual(fam, {'K/P': (123, 369, 246), 'JR/K': (30, 180, 118), 'JL/K': (27, 162, 108),
                                'JL/P pass-through': (8, 24, 16), 'P/K for EL': (6, 36, 18), 'SUB': (2, 6, 4)})
 
     def test_capacity_rules(self):
@@ -355,15 +356,16 @@ class Gate(unittest.TestCase):
     def test_classes_equal_the_link_electrical_list(self):
         res = json.loads((links.sg.ROOT / 'design/stack/link-electrical/results.json').read_text())['signals']
         mine = {(s['id'], n): c for s in GSITES if s['joint'] != 'O-K' for n, c in zip(s['signals'], s['classes'])}
-        self.assertEqual(len(res), 490)
+        self.assertEqual(len(res), 510)  # 490 before the stage 7 move (MC04-S7 Revision 11)
         self.assertEqual(mine, {(r['pair'], r['net']): r['class'] for r in res})
 
     def test_511_signals_each_on_one_link(self):
-        self.assertEqual(GDOC['signals']['total'], 511)
+        # MC04-S7 Revision 11: the stage 7 K block move adds 5 GH pairs (JL-K-26/27, JR-K-28/29/30) and 20 link signals
+        self.assertEqual(GDOC['signals']['total'], 531)
         seen = [(p['site'], p['net']) for r in GDOC['links'] for p in r['positions'] if p['kind'] == 'signal']
         seen += [(x['site'], n) for r in GDOC['links'] if r.get('oversize') for x in r['sites'] for n in x['signals']]
-        self.assertEqual(len(seen), 511)
-        self.assertEqual(len(set(seen)), 511)
+        self.assertEqual(len(seen), 531)
+        self.assertEqual(len(set(seen)), 531)
 
     # ---- item 1: fixings from the fixing list
 

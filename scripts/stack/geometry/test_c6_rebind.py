@@ -1,5 +1,6 @@
-"""MC04-S6 revision 4 and MC04-S7 revision 2: each c6 rebind changed only the geometry and output pins (no KiCad, no
-network)."""
+"""MC04-S6 revision 4 and MC04-S7 revision 2: each c6 rebind changed only the geometry and output pins. MC04-S7
+revision 11: a fresh c6 attempt on the stage 7 gate re-pins the signal and positions too, and c6's own eight links keep
+their output and riders (no KiCad, no network)."""
 import json
 import sys
 import unittest
@@ -12,23 +13,38 @@ import links_gate_c6 as c6  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[3]
 RECORD = ROOT / 'circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-c6-rebind-check-20261122.json'
+R11 = ROOT / 'circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-r11-c6-check-20261122.json'
 
 
 class C6Rebind(unittest.TestCase):
-    def test_signal_and_positions_pins_are_the_retained_ones(self):
-        self.assertEqual(c6.SOURCE_SIGNAL_SHA256, 'baa834876861bea8245c223950e3405ec7d9223f327f99f38fc3c5a59da128c4')
-        self.assertEqual(c6.SOURCE_POSITIONS_SHA256, 'c95a3dfbd397cfe3785e6e8f90037105a86ee01a9460fd98d7fab0b932f57ebd')
+    def test_revision_2_rebind_kept_the_signal_and_positions_pins(self):
         rec = json.loads(RECORD.read_text())
-        self.assertEqual(rec['old_source_pins']['signal'], c6.SOURCE_SIGNAL_SHA256)
-        self.assertEqual(rec['old_source_pins']['positions'], c6.SOURCE_POSITIONS_SHA256)
-        self.assertEqual(rec['new_source_pins']['signal'], c6.SOURCE_SIGNAL_SHA256)
-        self.assertEqual(rec['new_source_pins']['positions'], c6.SOURCE_POSITIONS_SHA256)
-
-    def test_rebound_pins_are_the_recorded_rebind(self):
-        rec = json.loads(RECORD.read_text())
-        self.assertEqual(c6.SOURCE_GEOMETRY_SHA256, rec['new_source_pins']['geometry'])
-        self.assertEqual(c6.OUTPUT_LINKS_SHA256, rec['new_output_links_sha256'])
+        self.assertEqual(rec['old_source_pins']['signal'], rec['new_source_pins']['signal'])
+        self.assertEqual(rec['old_source_pins']['positions'], rec['new_source_pins']['positions'])
         self.assertTrue(rec['riders_identical'])
+
+    def test_revision_11_attempt_follows_revision_2(self):
+        r2, r11 = json.loads(RECORD.read_text()), json.loads(R11.read_text())
+        self.assertEqual(r11['old_source_pins'], r2['new_source_pins'])
+        self.assertEqual(r11['old_output_links_sha256'], r2['new_output_links_sha256'])
+
+    def test_pins_are_the_revision_11_attempt(self):
+        rec = json.loads(R11.read_text())
+        self.assertEqual(rec['new_source_pins'], {'geometry': c6.SOURCE_GEOMETRY_SHA256,
+                                                  'signal': c6.SOURCE_SIGNAL_SHA256,
+                                                  'positions': c6.SOURCE_POSITIONS_SHA256})
+        self.assertEqual(c6.OUTPUT_LINKS_SHA256, rec['new_output_links_sha256'])
+        self.assertEqual(rec['historical_source'], {'source_sha256': c6.SOURCE_SHA256,
+                                                    'source_object_sha256': c6.SOURCE_OBJECT_SHA256})
+
+    def test_revision_11_c6_links_keep_their_output_and_riders(self):
+        rec = json.loads(R11.read_text())
+        self.assertEqual(len(rec['c6_links']), 8)
+        for name, row in rec['c6_links'].items():
+            self.assertEqual(row, {'pre_c6_positions_equal_retained_source': True,
+                                   'output_positions_equal_previous': True, 'riders_equal_previous': True}, name)
+        self.assertTrue(rec['riders_identical'])
+        self.assertEqual(rec['hold_errors'], [])
 
     def test_committed_gate_record_is_the_c6_output(self):
         doc = json.loads(lg.LINK_GATE.read_text())

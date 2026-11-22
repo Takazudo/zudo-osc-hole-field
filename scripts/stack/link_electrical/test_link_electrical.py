@@ -59,11 +59,11 @@ class Signals(unittest.TestCase):
     def test_counts_match_da03(self):
         inp = le.load_inputs()
         sig = le.classified_signals(inp)
-        self.assertEqual(len(sig), 490)
+        self.assertEqual(len(sig), 510)  # 490 before MC04-S7 Revision 11
         joints = {}
         for s in sig:
             joints[s['family']] = joints.get(s['family'], 0) + 1
-        self.assertEqual(joints, {'K/P': 246, 'JR/K': 106, 'JL/K': 100, 'P/K for EL': 18, 'JL/P pass-through': 16, 'SUB': 4})
+        self.assertEqual(joints, {'K/P': 246, 'JR/K': 118, 'JL/K': 108, 'P/K for EL': 18, 'JL/P pass-through': 16, 'SUB': 4})
         self.assertFalse(any(s['class'] == 'NC' for s in sig))
 
     def test_counts_equal_room_study(self):
@@ -197,11 +197,11 @@ class HarnessBaseline(unittest.TestCase):
         cls.counts = hb.pattern_counts(cls.pats)
 
     def test_pattern_sizes_and_ground_between(self):
-        self.assertEqual(self.counts['sizes'], {3: 127, 7: 10, 8: 58})
+        self.assertEqual(self.counts['sizes'], {3: 127, 7: 10, 8: 63})  # 58 before MC04-S7 Revision 11
         self.assertEqual(self.counts['adjacent_signals'], [])
         self.assertEqual(len(self.counts['signal_beside_rail']), 6)
         self.assertEqual(sum(p['classes'][0] == 'G' for p in self.pats), 0)
-        self.assertEqual(sum(c.count('G') for c in (p['classes'] for p in self.pats)), 380)
+        self.assertEqual(sum(c.count('G') for c in (p['classes'] for p in self.pats)), 400)  # +20 AGND of the five new GH headers (MC04-S7)
 
     def test_manager_count_reproduced(self):
         tri = {k: len(v) for k, v in self.counts['triples'].items()}
@@ -211,11 +211,12 @@ class HarnessBaseline(unittest.TestCase):
                     'PRECISION/WIPER': (5, 5), 'WIPER/WIPER': (40, 40)}
         for k, (t, h) in expected.items():
             self.assertEqual((tri[k], hs[k]), (t, h), k)
-        self.assertEqual((tri['ANALOGUE/ANALOGUE'], hs['ANALOGUE/ANALOGUE']), (172, 80))
+        # MC04-S7 Revision 11: the five new 8-contact GH harnesses add 15 ANALOGUE/ANALOGUE triples on 5 harnesses
+        self.assertEqual((tri['ANALOGUE/ANALOGUE'], hs['ANALOGUE/ANALOGUE']), (187, 85))
         ko = [t for t in self.counts['triples']['ANALOGUE/ANALOGUE'] if t['harness'].startswith('K-O')]
         self.assertEqual(len(ko), 25)
         self.assertEqual(len({t['harness'] for t in ko}), 10)
-        self.assertEqual((172 - 25, 80 - 10), (147, 70))
+        self.assertEqual((187 - 25, 85 - 10), (162, 75))
 
     def test_round_wire_capacitance_matches_formula(self):
         for d in (1.25e-3, 2.5e-3):
@@ -263,12 +264,13 @@ class AttemptA4(unittest.TestCase):
         self.assertEqual(h, '9929223c963d93faf8b5a8948589ae19fbc87b72f85e9187c796b2788a799d76')
 
     def test_signals_all_extends_the_490_unchanged(self):
-        self.assertEqual(len(self.res['signals']), 490)
-        self.assertEqual(len(self.res['signals_all']), 511)
-        self.assertEqual(self.res['signals_all'][:490], self.res['signals'])
+        # MC04-S7 Revision 11: the stage 7 K block move adds 5 GH pairs (JL-K-26/27, JR-K-28/29/30) and 20 link signals
+        self.assertEqual(len(self.res['signals']), 510)
+        self.assertEqual(len(self.res['signals_all']), 531)
+        self.assertEqual(self.res['signals_all'][:510], self.res['signals'])
 
     def test_adapter_signals_are_21_static_lines(self):
-        extra = self.d.all_signals(self.inp)[490:]
+        extra = self.d.all_signals(self.inp)[510:]  # 490 link signals before MC04-S7 Revision 11
         self.assertEqual(len(extra), 21)
         self.assertEqual({s['class'] for s in extra}, {'STATIC'})
         nets = {s['net'].split('/')[-1] for s in extra}
@@ -312,7 +314,7 @@ class AttemptA4(unittest.TestCase):
             link, adapter = self.d.split_signals(self.inp)
         finally:
             le.classified_signals = orig
-        self.assertEqual(len(link), 480)
+        self.assertEqual(len(link), 500)
         self.assertEqual(len(adapter), 21)
         self.assertEqual({x['class'] for x in adapter}, {'STATIC'})
 
@@ -373,15 +375,15 @@ class AttemptA4Part2(unittest.TestCase):
 
     def test_record_counts(self):
         kinds = [p['kind'] for l in self.links for p in l['positions']]
-        self.assertEqual((len(self.links), kinds.count('signal'), kinds.count('ground'), kinds.count('unused')), (61, 511, 340, 321))
-        self.assertEqual(len(self.out['links']), 61)
+        self.assertEqual((len(self.links), kinds.count('signal'), kinds.count('ground'), kinds.count('unused')), (62, 531, 359, 322))  # + JL-K-JL-L09 (MC04-S7 Revision 11)
+        self.assertEqual(len(self.out['links']), 62)
         self.assertEqual(sum(1 for r in self.out['links'] if r['host']), 22)
         self.assertEqual(sum(len(r['riders']) for r in self.out['links']), 45)
 
     def test_record_signals_equal_signals_all(self):
         rec = sorted((p['site'], p['net'], p['class']) for l in self.links for p in l['positions'] if p['kind'] == 'signal')
         mine = sorted((x['pair'], x['net'], x['class']) for x in self.res['signals_all'])
-        self.assertEqual(len(mine), 511)
+        self.assertEqual(len(mine), 531)
         self.assertEqual(rec, mine)
 
     def test_every_directed_pair_is_evaluated(self):

@@ -41,9 +41,11 @@ def build():
                           'contacts': n, 'signal_slots': slots,
                           'sites': {heads[i]['board']: heads[i]['center_mm'] for i in h['header_ids']}})
     refdes = {c['id']: c['pcb_reference'] for c in part['connectors']}
+    full = subprocess.run(['git', '-C', str(ROOT), 'rev-parse', SOURCE_COMMIT + '^{commit}'], capture_output=True,
+                          check=True, text=True).stdout.strip()
     return {'schema_version': 1,
             'status': 'RETAINED SOURCE INPUT (MC04-S7 Revision 9): GH header baseline before the stage 7 move',
-            'source': {'commit': SOURCE_COMMIT,
+            'source': {'commit': full,
                        'sha256': {p: hashlib.sha256(b).hexdigest() for p, b in raw.items()}},
             'generator': 'scripts/partition/gh_baseline.py',
             'harnesses': harnesses, 'header_refdes': dict(sorted(refdes.items()))}

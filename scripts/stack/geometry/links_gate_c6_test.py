@@ -33,7 +33,8 @@ class C6PassTests(unittest.TestCase):
         revised = c6.apply(copy.deepcopy(self.original), self.inputs)
         self.assertEqual(c6.geometry_digest(self.original), c6.geometry_digest(revised))
         self.assertEqual(c6.signal_digest(self.original), c6.signal_digest(revised))
-        self.assertEqual(len([x for x in revised['links'] if not x.get('gone')]), 61)
+        # 62 since MC04-S7 Revision 11: the stage 7 pairs JL-K-26 and JL-K-27 form JL-K-JL-L09
+        self.assertEqual(len([x for x in revised['links'] if not x.get('gone')]), 62)
 
     def test_all_link_ratios_and_ruled_orders(self):
         revised = c6.apply(copy.deepcopy(self.original), self.inputs)

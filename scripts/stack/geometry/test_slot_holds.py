@@ -65,8 +65,11 @@ class Holds(unittest.TestCase):
         doc = json.loads(lg.LINK_GATE.read_text())
         self.assertEqual(lg.hold_errors(GOPTS, doc['links']), [])
         unresolved = {r['board'] + ':' + r['ref'] for r in doc['replacement']['footprints'] if r['new'] is None}
-        self.assertTrue({'JL:U2119', 'JL:D2243'} <= unresolved)
-        self.assertFalse({'JL:U2217', 'JL:U2219'} & unresolved)
+        # Revision 2 recorded U2119 and D2243 on JL as unresolved under the held link's field. The stage 7 K block
+        # move (MC04-S7) took U2119 to K, and D2243 now has a place (step 3); the hold itself is unchanged.
+        moved = json.loads((lg.sg.ROOT / 'design/partition/k-block-relocation.json').read_text())
+        self.assertIn('U2119', json.dumps(moved))
+        self.assertFalse({'JL:U2119', 'JL:D2243', 'JL:U2217', 'JL:U2219'} & unresolved)
 
     def test_search_takes_only_the_held_slot(self):
         seen = []

@@ -18,7 +18,7 @@ class JackSites(unittest.TestCase):
         cp.JACK_SITES['JR'] = saved[:-1]
         try:
             # with the stable assignment one site fewer leaves new nets without a slot (Revision 9)
-            with self.assertRaisesRegex(ValueError, 'run short'):
+            with self.assertRaisesRegex(ValueError, r'^GH header slots run short for /'):
                 cp.candidate()
         finally:
             cp.JACK_SITES['JR'] = saved

@@ -49,6 +49,21 @@ def stable_chunks(base,current,new_headers,count):
         while len(chunks[i])<=j:chunks[i].append(None);wired[i].append(False)
         chunks[i][j]=net
     return chunks,wired
+def header_pins(chunk,wired,n):
+    """Pin map of one header: each signal slot is its net and then its return contact. With the stable assignment
+    (wired given), a freed slot is NC and keeps its AGND return; an unwired slot is NC NC. A 7-contact octave header
+    has no return after its fourth slot: when that slot (pin 7) is empty and the header carries three nets, pin 7 is
+    AGND, the fresh-header rule (MC04-S7 Revision 9 item 2 and the Revision 11 addendum item 5), freed or not."""
+    pins=[]
+    if wired is not None:
+        for j,net in enumerate(chunk):pins.extend([net or 'NC','AGND' if net or wired[j] else 'NC'])
+    else:
+        for net in chunk:pins.extend([net,'AGND'])
+    pins=pins[:n]+['NC']*max(0,n-len(pins))
+    if n==7 and len([x for x in chunk if x])==3 and not (chunk[3:4] and chunk[3]):pins[-1]='AGND'
+    return pins
+
+
 # GH jack-to-K header sites (8 contacts, 4 signals each; the signals-per-header rule is unchanged).
 # MC04-S7 Revision 4 (circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md):
 # the K block move needs 27 JL-K and 30 JR-K headers. JL takes the two remaining points of its own grid,
@@ -181,13 +196,7 @@ def candidate():
         else:
             count=(n+1)//2;chunks=[nets[i:i+count] for i in range(0,len(nets),count)]
         for index,chunk in enumerate(chunks):
-            pins=[]
-            if wired is not None:
-                for j,net in enumerate(chunk):pins.extend([net or 'NC','AGND' if net or wired[index][j] else 'NC'])
-            else:
-                for net in chunk:pins.extend([net,'AGND'])
-            pins=pins[:n]+['NC']*max(0,n-len(pins))
-            if n==7 and len([x for x in chunk if x])==3 and (wired is None or not wired[index][3:4] or not wired[index][3]):pins[-1]='AGND'
+            pins=header_pins(chunk,None if wired is None else wired[index],n)
             chunk=[x for x in chunk if x]
             name='-'.join(pair)+'-'+str(index+1)
             if pair==('K','P'):
