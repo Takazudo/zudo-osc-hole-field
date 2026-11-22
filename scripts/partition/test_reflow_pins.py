@@ -27,6 +27,31 @@ class ReflowPins(unittest.TestCase):
             self.assertEqual((p['board'], p['x_mm'], p['y_mm'], p['side']), (r['board'], r['x_mm'], r['y_mm'], r['side']), r['ref'])
 
 
+class BeyondLocality(unittest.TestCase):
+    """Revision 6 item 4: every same-board move beyond 24 mm since 6093081c is a recorded exception or a decoupler
+    within the 3 mm bypass limit of its IC supply pin."""
+
+    def test_far_moves_are_recorded(self):
+        import math
+        import subprocess
+        base = json.loads(subprocess.run(['git', '-C', str(rp.ROOT), 'show', '6093081c:design/partition/floorplan-candidate.json'],
+                                         capture_output=True, text=True, check=True).stdout)
+        old = {p['ref']: p for p in base['placements']}
+        floor = json.loads(fp.OUT.read_text())
+        acc = json.loads(fp.ACCEPTANCES.read_text())['acceptances']
+        listed = {a['ref'] for a in acc} | {c for a in acc for c in a.get('moves_with', [])}
+        far = [p['ref'] for p in floor['placements'] if p['ref'] in old and old[p['ref']]['board'] == p['board']
+               and math.hypot(p['x_mm'] - old[p['ref']]['x_mm'], p['y_mm'] - old[p['ref']]['y_mm']) > 24.0]
+        self.assertTrue(far)
+        bypass = {x['capacitor']: x['supply_pad_centre_distance_mm'] for x in floor['bypass_proximity']['pairs']}
+        for ref in far:
+            if ref.startswith('C') and ref in bypass:
+                # a decoupler is judged by its supply pin, not its slot (Revision 6 item 4)
+                self.assertLessEqual(bypass[ref], 3.0, ref)
+            else:
+                self.assertIn(ref, listed, ref)
+
+
 class Displaced(unittest.TestCase):
     ROWS = {'K': {
         'U1': {'footprint': 'zudo-osc-hole-field:C0603', 'side': 'F.Cu', 'courtyard_mm': [0, 0, 4, 4]},

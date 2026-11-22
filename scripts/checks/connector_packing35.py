@@ -15,17 +15,19 @@ from scripts.partition.model import jack_board, JACK_BOARDS, source
 from scripts.pcbgen.netlist import TOKEN, parse, many, one
 from scripts.checks.partition35_diagnostic import footprint_geometry
 OUT=ROOT/'design/partition/connector-packing-candidate.json'
+FIXINGS=ROOT/'design/stack/fixings/fixing-sites.json'
 # GH jack-to-K header sites (8 contacts, 4 signals each; the signals-per-header rule is unchanged).
 # MC04-S7 Revision 4 (circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md):
 # the K block move needs 27 JL-K and 30 JR-K headers. JL takes the two remaining points of its own grid,
 # (142, 122) and (159, 122); JR takes three sites on its 17 mm column pitch, same orientation, in a new top row at
-# y = 24 (columns 193, 244 and 295; the y = 150 row's seventh point, (295, 150), overlaps JR's bulk reservation).
+# y = 24 (columns 193, 227 and 295; the y = 150 row's seventh point, (295, 150), overlaps JR's bulk reservation,
+# and (244, 24) is the active sleeve fixing SLV-U2, MC04-S7 Revision 6).
 # Each new site is clear of panel pads, the outline, bulk reservations and the link fields; the floorplan releases
 # the pinned packages a header covers (report mc04-s7-r4-report-20261122.md).
 # The packer checks panel pads, other headers and the outline, not the source reserves: the existing JR y = 150 row
 # overlaps the future-output-protection reserve (recorded in MC04-S7 Revision 5, not changed here).
 JL_GRID_SITES = 27  # was 25 before MC04-S7 Revision 4
-JR_REVISION4_SITES = ((193, 24), (244, 24), (295, 24))
+JR_REVISION4_SITES = ((193, 24), (227, 24), (295, 24))  # (244, 24) is the sleeve fixing SLV-U2 (Revision 6)
 JACK_SITES = {'JL': [(x, y) for y in (38, 80, 122) for x in range(23, 160, 17)][:JL_GRID_SITES],
               'JR': [(x, y) for y in (38, 80, 122) for x in range(193, 296, 17)]
                     + [(x, 150) for x in (193, 210, 227, 244, 261, 278)] + list(JR_REVISION4_SITES)}
@@ -49,6 +51,27 @@ def core_service_depths(spec):
 def board_for(part):
     if part['regions'][0]=='jack':return jack_board(part['instance'])
     return {'control':'P','core':'K','stage_optical':'EL'}.get(part['regions'][0],part['instance'])
+
+
+# Pre-existing conflict found by the Revision 6 check, reported for a ruling and not changed here: the JL-P utility
+# header 4 at (91, 276) on P lies on the ruled sleeve SLV-L1 at (93, 276) (DS-74, DS-76). Any other conflict fails.
+KNOWN_FIXING_CONFLICTS={('JL-P-4-P','SLV-L1')}
+
+
+def fixing_errors(headers,fixings,known=None):
+    """MC04-S7 Revision 6: every GH header land clears the keep-out circle of every active fixing (posts and added
+    sleeves) on each board the fixing joins, except a listed pre-existing conflict awaiting a ruling."""
+    known=KNOWN_FIXING_CONFLICTS if known is None else known
+    errors=[]
+    for f in fixings:
+        if not f.get('active'):continue
+        x,y=f['xy']
+        for h in headers:
+            r=f['keepout_radius_mm'].get(h['board'])
+            if r is None:continue
+            b=h['land_courtyard_mm'];dx=max(b[0]-x,0,x-b[2]);dy=max(b[1]-y,0,y-b[3])
+            if math.hypot(dx,dy)<r and (h['id'],f['id']) not in known:errors.append(f"header/fixing overlap {h['id']} {f['id']} ({math.hypot(dx,dy):.2f} mm < {r} mm)")
+    return errors
 
 
 def rect_collision(a,b,gap=.25):
@@ -153,7 +176,7 @@ def candidate():
                           'signal_count':3,'return_contacts':2,'rail_contacts':3,'unused_contacts':0})
     for header in headers:
         b=header['land_courtyard_mm'];header['native_cached_courtyard_envelope_mm']=[b[0]-.05,b[1]-.05,b[2]+.05,b[3]+.05]
-    errors=[];byboard=defaultdict(list)
+    errors=fixing_errors(headers,json.loads(FIXINGS.read_text())['fixings']);byboard=defaultdict(list)
     for h in headers:byboard[h['board']].append(h)
     for board,items in byboard.items():
         pads_here=[entry for p in parts.values() if boards[p['ref']]==board and p['panel_uid'] for entry in pads(p,lock)]

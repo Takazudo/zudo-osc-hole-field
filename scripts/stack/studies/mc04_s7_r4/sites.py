@@ -19,7 +19,7 @@ gate = json.loads((R / 'design/stack/geometry/links/link-gate.json').read_text()
 lock = {p['uid']: p for p in json.loads((R / 'design/grid/placements.lock.json').read_text())['placements']}
 parts = {p['ref']: p for p in io['physical_packages']}
 spec = cp.source()
-SITES = [(142, 122), (159, 122), (193, 24), (244, 24), (295, 24)]
+SITES = [(142, 122), (159, 122), (193, 24), (227, 24), (295, 24)]
 
 
 def gapd(a, b):
@@ -62,7 +62,7 @@ for h in pc['headers']:
                  'overlaps': [lab for d, lab in cands if d < 0],
                  'link_fields_within_0_25_mm': link_hits,
                  'gate_replaced_footprints_under_it': gate_moved})
-released = {b: r.get('released_under_gh_headers', []) for b, r in fp['adopted_placement_pins']['boards'].items()}
+released = {b: r.get('displaced_by_gh_headers', []) for b, r in fp['adopted_placement_pins']['boards'].items()}
 out = {'sites': rows, 'released_under_gh_headers': released}
 Path(__file__).with_name('sites.json').write_text(json.dumps(out, indent=1))
 for r in rows:
