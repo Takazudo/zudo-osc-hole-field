@@ -368,3 +368,38 @@ pairs was stricter than the state it is measured against. Option (c) is ruled.
 3. **Then run Revision 10 items 1–3, 5 and 6 as written:** stable link clusters, deterministic new links, the
    JL-L02 hold unchanged, the cluster tests, the gate and DA-03 c6 regeneration, fixings and procedure regeneration,
    and every stack test passing. Push and give the full hand-back.
+
+## Revision 11 addendum: step 7 review findings to fold into the Part B hand-back (2026-11-22)
+
+The independent review of `9601f0d5`, `65c8dd88` and `f0268f73` accepts step 7 with fixes. The baseline record, the
+stable packer, the `--renetted-uuids` pass (all 49 removed items had changed net in the sync), the R4547 move and
+readiness all check out, and no guard was weakened. Fold these fixes into the Revision 11 work and hand-back:
+
+1. **Stale checkpoint tests.** Six tests that passed at `8ecc25fe` now fail because the K board bytes changed:
+   four in `scripts/checks/test_osc_pcb_checkpoint.py`, `test_copper_identity.py::…six_known_legacy_groups` and
+   `uuid305/test_run_protocol.py::…bound_exactly`. Do not refresh the K checkpoint now; the boards are re-routed next
+   and the checkpoint is refreshed from that accepted evidence. List all six in the report as STALE (expected,
+   pending re-route), together with the JL/JR checkpoint tests that were already stale at the base.
+2. **Correct the report.**
+   - K loss is 0.32 % (186.19 of 58546.66 mm), not 0.45 %.
+   - The refilled headers are JR-K-12/13/20 and JL-K-3/4/21/22 (12 slots).
+   - The missing commit `cf16f3a8` should be `f0268f73`.
+   - The DRC summaries cap several types at 199 items, so "new" dangling or silk counts are not provable from them.
+     Either commit the raw per-item DRC JSON for before and after and compute the deltas from it, or state the cap and
+     claim only what the summaries show: no error-severity items before or after, parity 0, and unconnected items JL
+     323→484, JR 245→358, K 499→499.
+   - Also report the K H2 B.Cu region growth (y 132.61→138.22), R210's 13.0 mm move, and R4547's 23.58 mm distance
+     from its `6093081c` position (0.42 mm under the far-move threshold).
+3. **Deliver Revision 9 item 3:** a committed table of every new net with its header, pin and distance to its driving
+   part. Refresh `scripts/stack/studies/mc04_s7_r4/tables.json` so `new_headers` includes JR-K-29.
+4. **Tests.**
+   - Run the `test_gh_stable` checks (i)–(iii) against a fresh `cp.candidate()` as well as the committed JSON. A packer
+     reverted to consecutive chunking must fail them.
+   - Make check (iv) run in two processes with different `PYTHONHASHSEED` values.
+   - Remove the dead assertion at `test_gh_stable.py:62`, and add a pin-level test of freed-slot filling and NC/AGND.
+   - Add a unit test for the `apertures=` path in `header_conflicts`.
+   - Pin the site-overflow message again in `test_connector_packing35.py` with its new wording.
+5. **Freed pin 7.** On a 7-pin octave header with a freed, unrefilled slot 3, pin 7 follows the fresh-header rule
+   (AGND), per Revision 9 item 2. Add a test; the current data does not exercise it.
+6. **Replayability.** Store the full baseline SHA (`6093081cc6d1…`) in the record, and commit the `--renetted-uuids`
+   input list with its source DRC file hash.
