@@ -32,12 +32,15 @@ class LinkEraRecord(unittest.TestCase):
         self.assertFalse(placed & opened)
         self.assertIn('U8409', opened)
         for r in REC['placed']:
-            self.assertLessEqual(r['pose']['moved_mm'], 50.0 if r['ic'] in ('U1318', 'U4417') else 24.0, r['ic'])
+            self.assertLessEqual(r['pose']['moved_mm'], 50.0 if r['ic'] in ('U1318', 'U4417', 'U4433', 'U4526') else 24.0, r['ic'])
             self.assertTrue(r['member_face_check']['all_clear'], r['ic'])
             for b in r['blocks_moved']:
                 self.assertLessEqual(b['moved_mm'], 24.0)
         for o in REC['open']:
-            self.assertEqual(o['status'], 'OPEN (link era)')
+            self.assertTrue(o['status'].startswith('OPEN (link era)'))
+            if o['ic'] in ('U1415', 'U5110', 'U5209', 'U5210', 'U8409'):
+                self.assertEqual(o['status'], 'OPEN (link era): NEEDS_DESIGN for Gate A-paper')
+                self.assertFalse(o['gate_a_paper']['evaluated'])
             self.assertIn('0.5 mm', json.dumps(o['proof']))
             self.assertIn('cheapest_option', o)
             if o['ic'] != 'U8409':
@@ -54,7 +57,7 @@ class LinkEraRecord(unittest.TestCase):
         self.assertEqual(sum(doc['re_placement_status'].values()), 15)
         resolved = {i['ref'] for i in rows if i['status'].startswith('RESOLVED FOR THE LINK ERA')}
         self.assertEqual(resolved, {r['ic'] for r in REC['placed']})
-        opened = {i['ref'] for i in rows if i['status'] == 'OPEN (link era)'}
+        opened = {i['ref'] for i in rows if i['status'].startswith('OPEN (link era)')}
         self.assertEqual(opened, {r['ic'] for r in REC['open']})
         self.assertTrue(all(i['model'] == REC['model'] for i in rows))
         for i in doc['items']:
@@ -62,7 +65,7 @@ class LinkEraRecord(unittest.TestCase):
             if i['id'] in ('GA-LOC-U4417', 'GA-LED-U4647'):
                 self.assertIn('link-era model', i['model'])
         for i in rows:
-            if i['status'] == 'OPEN (link era)':
+            if i['status'].startswith('OPEN (link era)'):
                 self.assertIn('cheapest_option', i)
 
 if __name__ == '__main__':

@@ -106,7 +106,8 @@ def build():
                             'link_era_pose': era_placed[k]['pose'], 'member_face_check': era_placed[k]['member_face_check'],
                             'model': era['model'], 'record': LINK_ERA})
             elif k in era_open:
-                row.update({'status': 'OPEN (link era)', 'proof': era_open[k]['proof'], 'cheapest_option': era_open[k]['cheapest_option'],
+                row.update({'status': era_open[k]['status'], 'proof': era_open[k]['proof'], 'cheapest_option': era_open[k]['cheapest_option'],
+                            **{x: era_open[k][x] for x in ('not_accepted', 'gate_a_paper') if x in era_open[k]},
                             'model': era['model'], 'record': LINK_ERA})
             else:
                 row['status'] = 'OPEN'

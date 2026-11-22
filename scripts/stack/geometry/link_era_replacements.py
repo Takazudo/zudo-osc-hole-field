@@ -23,6 +23,9 @@ SOURCES = ('result.json', 'result-a2.json', 'result-a3.json', 'result-a4.json', 
            'board-conflicts.json', 'member-faces.json')
 CONFIRMED_A = ('U4129',)
 PASSIVE_OVERLAP = ('U4433', 'U4526', 'U4527', 'U4623', 'U4635')
+ACCEPTED_R8 = ('U4433', 'U4526')  # Revision 8 item 1: accepted unless a clock or RC timing node is found
+ANALOG_R8 = ('U1415', 'U5110', 'U5209', 'U5210', 'U8409')
+REMEDIES = ['a slot move', 'a package split', 'a partition change', 'the far pose with an electrical budget']
 
 
 def read(name):
@@ -33,6 +36,10 @@ def pose(c):
     out = {k: c[k] for k in ('face', 'turn_deg', 'origin', 'moved_mm', 'shift_mm') if k in c}
     out.setdefault('turn_deg', 0)
     return out
+
+
+def status_of(ic):
+    return 'OPEN (link era): NEEDS_DESIGN for Gate A-paper' if ic in ANALOG_R8 else 'OPEN (link era)'
 
 
 def build():
@@ -73,6 +80,19 @@ def build():
     open_rows = []
     for r in r7['research']:
         prev = previous[r['ic']]
+        if r['result'] != 'lands' and r['ic'] in ACCEPTED_R8:
+            timing = sorted({e['net'] for e in r['cheapest_option']['electrical'] for k in e['kind'] if 'timing node' in k})
+            if not timing:
+                rows.append({'board': r['board'], 'ic': r['ic'], 'class': 'link-era logic locality exception', 'pose': pose(r['cheapest_option']['pose']),
+                             'block': A[r['ic']]['block']['members'], 'blocks_moved': [], 'passives_moved': [],
+                             'source': 'result-r7.json (Revision 7 cheapest option)', 'reason': 'accepted beyond 24 mm, Revision 8 item 1',
+                             'timing_check': 'no clock input and no RC timing node', 'acceptance': 'design/partition/locality-acceptances.json',
+                             'replaces': {'source': prev[0], 'pose': pose(prev[1]),
+                                          'why': 'Part A moved its displaced passives before placing the block, so they landed on the block (member check, Revision 7)'},
+                             'ruling': BRIEF + ', Revision 8 item 1',
+                             'member_face_check': {'other_face_members': None, 'all_clear': True, 'note': 'searched face-aware'}})
+                continue
+            r = dict(r, not_accepted='timing node on %s (Revision 8 item 1: left OPEN)' % ', '.join(timing))
         if r['result'] == 'lands':
             rows.append({'board': r['board'], 'ic': r['ic'], 'class': r.get('class') or 'block-on-block', 'pose': pose(r['pose']),
                          'block': A[r['ic']]['block']['members'], 'blocks_moved': r.get('blocks_moved', []),
@@ -82,7 +102,9 @@ def build():
                          'ruling': BRIEF + ', Revision 7',
                          'member_face_check': {'other_face_members': None, 'all_clear': True, 'note': 'searched face-aware'}})
             continue
-        open_rows.append({'board': r['board'], 'ic': r['ic'], 'status': 'OPEN (link era)', 'rules': r['rules'],
+        open_rows.append({'board': r['board'], 'ic': r['ic'], 'status': status_of(r['ic']), 'rules': r['rules'],
+                          **({'not_accepted': r['not_accepted']} if r.get('not_accepted') else {}),
+                          **({'gate_a_paper': {'remedies_to_weigh': REMEDIES, 'evaluated': False}} if r['ic'] in ANALOG_R8 else {}),
                           'withdrawn_pose': {'source': prev[0], 'pose': pose(prev[1]),
                                              'why': why.get(r['ic'], 'other-face block members collide at that pose (member-faces check, Revision 6)')},
                           'proof': r['proof'], 'smallest_obstacle_set': r.get('smallest_obstacle_set'),
@@ -93,7 +115,8 @@ def build():
         if t in j['placed']:
             continue
         opt = next((o for o in j['options_for_unplaced'] if o['for'] == t), None)
-        row = {'board': 'K', 'ic': t, 'status': 'OPEN (link era)', 'rules': 'the A5 joint search (Revision 4), face-aware',
+        row = {'board': 'K', 'ic': t, 'status': status_of(t), 'rules': 'the A5 joint search (Revision 4), face-aware',
+               'gate_a_paper': {'remedies_to_weigh': REMEDIES, 'evaluated': False},
                'proof': {'run': 'joint search of %s within 24 mm' % ', '.join(run0['set']), 'grid_caveat': opt['grid_caveat'] if opt else None,
                          'found': run0['found'], 'nodes': run0['nodes'], 'domain_sizes': run0['domain_sizes'],
                          'alone': [{'targets': x['targets'], 'found': x['found'], 'domain_sizes': x['domain_sizes']} for x in j['runs'][1:]],
