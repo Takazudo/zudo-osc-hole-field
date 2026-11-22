@@ -14,6 +14,7 @@ import links_gate_c6 as c6  # noqa: E402
 ROOT = Path(__file__).resolve().parents[3]
 RECORD = ROOT / 'circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-c6-rebind-check-20261122.json'
 R11 = ROOT / 'circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-r11-c6-check-20261122.json'
+R13 = ROOT / 'circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-r13-c6-rebind-check-20261122.json'
 
 
 class C6Rebind(unittest.TestCase):
@@ -28,14 +29,23 @@ class C6Rebind(unittest.TestCase):
         self.assertEqual(r11['old_source_pins'], r2['new_source_pins'])
         self.assertEqual(r11['old_output_links_sha256'], r2['new_output_links_sha256'])
 
-    def test_pins_are_the_revision_11_attempt(self):
-        rec = json.loads(R11.read_text())
-        self.assertEqual(rec['new_source_pins'], {'geometry': c6.SOURCE_GEOMETRY_SHA256,
+    def test_pins_are_the_revision_13_rebind(self):
+        r11, r13 = json.loads(R11.read_text()), json.loads(R13.read_text())
+        # Revision 13 (JR step 7 redo) rebinds the geometry and output pins only
+        self.assertEqual(r13['old_source_pins'], r11['new_source_pins'])
+        self.assertEqual(r13['old_output_links_sha256'], r11['new_output_links_sha256'])
+        self.assertEqual(r13['new_source_pins']['signal'], r11['new_source_pins']['signal'])
+        self.assertEqual(r13['new_source_pins']['positions'], r11['new_source_pins']['positions'])
+        self.assertEqual(r13['new_source_pins'], {'geometry': c6.SOURCE_GEOMETRY_SHA256,
                                                   'signal': c6.SOURCE_SIGNAL_SHA256,
                                                   'positions': c6.SOURCE_POSITIONS_SHA256})
-        self.assertEqual(c6.OUTPUT_LINKS_SHA256, rec['new_output_links_sha256'])
-        self.assertEqual(rec['historical_source'], {'source_sha256': c6.SOURCE_SHA256,
-                                                    'source_object_sha256': c6.SOURCE_OBJECT_SHA256})
+        self.assertEqual(c6.OUTPUT_LINKS_SHA256, r13['new_output_links_sha256'])
+        for rec in (r11, r13):
+            self.assertEqual(rec['historical_source'], {'source_sha256': c6.SOURCE_SHA256,
+                                                        'source_object_sha256': c6.SOURCE_OBJECT_SHA256})
+        for name, row in r13['c6_links'].items():
+            self.assertTrue(all(row.values()), name)
+        self.assertEqual(r13['hold_errors'], [])
 
     def test_revision_11_c6_links_keep_their_output_and_riders(self):
         rec = json.loads(R11.read_text())

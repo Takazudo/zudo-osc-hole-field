@@ -56,9 +56,9 @@ class Record(unittest.TestCase):
         c = DOC['counts']
         self.assertEqual(c['cables_per_code'], {'C26618 50 mm': 19, 'C29534 50 mm': 28, 'C32128 60 mm': 3,
                                                 'C68390 50 mm': 9, 'C81339 40 mm': 3})
-        self.assertEqual(c['parts_with_leads_to_cut_per_board'], {'JL': 19, 'JR': 11, 'P': 49, 'O3': 1})  # after the MC04-S6 rev 4 JR-L02 rebind
+        self.assertEqual(c['parts_with_leads_to_cut_per_board'], {'JL': 19, 'JR': 12, 'P': 49, 'O3': 1})  # MC04-S7 rev 13: JR-K-JR-L01's new slot
         self.assertEqual((c['connectors'], c['locks_before_K'], c['locks_after_K']), (124, 62, 62))
-        self.assertEqual((c['lengthened_tails'], c['holding_hand'], c['fastener_operations']), (31, 12, 44))  # JL-L02 held at its retained, lengthened slot (MC04-S7 rev 2)
+        self.assertEqual((c['lengthened_tails'], c['holding_hand'], c['fastener_operations']), (31, 11, 44))  # JL-L02 held at its retained, lengthened slot (MC04-S7 rev 2)
 
     def test_smallest_slack_and_stages(self):
         self.assertAlmostEqual(min(r['slack_mm'] for r in DOC['links']), 0.6602)
@@ -214,7 +214,7 @@ class PrimaryActuationMethod(unittest.TestCase):
             self.assertEqual(steps[number]['parts'], 62)  # MC04-S7 Revision 11: + JL-K-JL-L09 (one more link, connector pair, latch and lengthened tail)
         self.assertIn('before K comes down', steps[7]['do'])
         self.assertIn('never press K with the palm (DS-66)', steps[12]['do'])
-        self.assertIn('At the 12 connectors', steps[12]['do'])
+        self.assertIn('At the 11 connectors', steps[12]['do'])  # MC04-S7 rev 13: JR-K-JR-L01 takes another slot after the JR redo
         self.assertIn('other hand holds K', steps[12]['do'])
         page = procedure_page.render(DOC)
         self.assertNotIn('or a plastic tool', page)
@@ -223,7 +223,7 @@ class PrimaryActuationMethod(unittest.TestCase):
 
     def test_method_correction_is_not_access_acceptance(self):
         self.assertEqual(DOC['counts']['latch']['NOT SHOWN'], 33)  # MC04-S7 Revision 11: + JL-K-JL-L09 (one more link, connector pair, latch and lengthened tail)
-        self.assertEqual(DOC['counts']['holding_hand'], 12)
+        self.assertEqual(DOC['counts']['holding_hand'], 11)  # MC04-S7 rev 13: JR-K-JR-L01 takes another slot after the JR redo
         self.assertEqual(DOC['lowering']['largest_ends'], 17)
         self.assertEqual(len(DOC['lowering']['stages']), 9)
         self.assertEqual(DOC['counts']['links'], 62)
