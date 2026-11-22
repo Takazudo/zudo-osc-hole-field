@@ -82,3 +82,52 @@ alternatives. The candidate remedies, none of them evaluated yet:
 - No routing, DRC, fill or electrical acceptance of any re-placement.
 - No assembled or measured state.
 - The stage 8 poses are not checked against the interim GH boards, by design (`board_conflicts.py` is the evidence).
+
+## Design authority ruling, 2026-11-22 (DS-145)
+
+An in-session Fable design authority at high effort ruled read-only at `5c8e23b9`. Its rulings:
+
+1. **All five are OPA4196IDR quads** (C2057385, SOIC-14, K, B.Cu):
+   - U1415 (O4): SINE_DIFF, SINE_GAIN and two unused grounded followers;
+   - U5110 (W2): fold cells F1–F4;
+   - U5209 (W1): CURRENT_SERVO, PRE_GAIN, DRIVE_SUM and DRIVE_INVERT;
+   - U5210 (W1): fold cells F1–F4;
+   - U8409 (M4B): two remote buffers and two bipolar attenuverters.
+2. **R1 (local P-K slot moves) is the lead remedy for all five**, because the analog cell does not move and the cost
+   lands on cable and mechanics, which have checkable rules. The order:
+   - U5209: R1 only;
+   - U5110: R1 only;
+   - U8409: R1, then R2;
+   - U5210: R1, then R2;
+   - U1415: R1, then R2, then R5.
+
+   R2 means an OPA4196-family TSSOP-14, not OPA4197IPWR. The +12 V margin is 0 mA, and the stage 4 simulation does not
+   cover these cells. R3 is rejected for the four full quads. For U1415, a single dual goes to the owner as an
+   alternative. R4 is developed for none, because the per-node budgets do not exist and are not to be invented.
+3. **Stop conditions:**
+   - one study, with no automatic widening;
+   - a clean R1 result goes to a generator task;
+   - an R2-only result waits for component evidence and an owner decision (a new BOM line);
+   - an IC with neither result goes to the owner by itself;
+   - workload changes are shown to the owner at Gate A.
+4. **Next task:** `mc04-s9-a-slot-move-study-brief-20261122.md`.
+5. **U4433:** the acceptance is sound in substance, but it is its own exception (DS-144), not "on the U4417 terms".
+   Conditions are in the brief.
+6. **Packet corrections:**
+   - U8409's second link, P-K-P-L03.02.02.01, is dissolved, and `gate_a_open_items.py` must filter `gone` links;
+   - the TSSOP saving is 3.64 mm in length and −0.3 mm in width (courtyards 7.4 × 9.63 against 7.7 × 5.99 mm), not
+     2.7 × 2.4 mm;
+   - R1 was partly evaluated before (steps 2b and 2c, before stage 7);
+   - the overlap sizes run from 0.07 mm (U5209) to 8.68 mm (U5110);
+   - U1415 has two unused units;
+   - the decision log lacked the 2026-11-21 owner decisions (now DS-142 and DS-143);
+   - checks 3 and 4 are rebound once, after the S9 link moves.
+
+The R2 evidence task (before any spec change) needs:
+- the exact TSSOP-14 MPN, from the retained datasheet's package addendum;
+- a new owner bundle, with located facts for the PW drawing, land pattern, pinout, thermal resistance, electrical
+  tables, quiescent current and MSL;
+- the vendor file stored unmodified in circuit-dev-resources, with a matching SHA256;
+- the supplier code, or an explicit open gap;
+- the footprint checked against the drawing;
+- `pnpm circuit:check` before and after, then `circuit:generate`.
