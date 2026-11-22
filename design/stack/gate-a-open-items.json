@@ -1,38 +1,721 @@
 {
  "schema_version": 1,
  "status": "OPEN LIST for the Gate A review (MC04-S7); items stay open until Gate A rules them",
+ "generator": "scripts/stack/gate_a_open_items.py",
+ "counts": {
+  "protection-locality": 2,
+  "interim-GH locality exception": 5,
+  "interim-GH reach exception": 4,
+  "fixing reach candidate": 1,
+  "header/fixing conflict": 1,
+  "open re-placement (re-route)": 15,
+  "slot drift": 3
+ },
  "items": [
   {
    "id": "GA-PROT-D4101",
    "kind": "protection-locality",
-   "ref": "D4101",
    "board": "JR",
-   "summary": "E1 input clamp 33.9 mm from its slot, 38.15 mm from U4146 pin 3; interim GH acceptance",
+   "ref": "D4101",
+   "distance_from_slot_mm": 33.9,
+   "protected_pin": "U4146 pin 3 (OPA4196IDR, +IN of the SIG buffer)",
+   "diode_to_protected_pin_mm": 38.15,
    "source": "design/partition/locality-acceptances.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 13 item 2"
   },
   {
    "id": "GA-PROT-D4102",
    "kind": "protection-locality",
-   "ref": "D4102",
    "board": "JR",
-   "summary": "E1 input clamp 33.6 mm from its slot, 42.8 mm from U4146 pin 5; interim GH acceptance",
+   "ref": "D4102",
+   "distance_from_slot_mm": 33.6,
+   "protected_pin": "U4146 pin 5 (OPA4196IDR, +IN of the RISE buffer)",
+   "diode_to_protected_pin_mm": 42.8,
    "source": "design/partition/locality-acceptances.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 13 item 2"
   },
   {
-   "id": "GA-FIX-JLP4-SLVL1",
-   "kind": "fixing conflict",
-   "summary": "JL-P utility header 4 at (91, 276) on the ruled sleeve SLV-L1",
-   "source": "scripts/checks/connector_packing35.py KNOWN_FIXING_CONFLICTS",
-   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 8"
+   "id": "GA-LOC-U5113",
+   "kind": "interim-GH locality exception",
+   "board": "JL",
+   "ref": "U5113",
+   "distance_from_slot_mm": 65.97,
+   "cause": "JL-K-27-JL",
+   "source": "design/partition/locality-acceptances.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 6 item 4"
+  },
+  {
+   "id": "GA-LOC-R8381",
+   "kind": "interim-GH locality exception",
+   "board": "JR",
+   "ref": "R8381",
+   "distance_from_slot_mm": 33.97,
+   "cause": "JR-K-28-JR",
+   "source": "design/partition/locality-acceptances.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 6 item 4"
+  },
+  {
+   "id": "GA-LOC-R8382",
+   "kind": "interim-GH locality exception",
+   "board": "JR",
+   "ref": "R8382",
+   "distance_from_slot_mm": 36.49,
+   "cause": "JR-K-28-JR",
+   "source": "design/partition/locality-acceptances.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 6 item 4"
+  },
+  {
+   "id": "GA-LOC-RB2309",
+   "kind": "interim-GH locality exception",
+   "board": "JL",
+   "ref": "RB2309",
+   "distance_from_slot_mm": 26.83,
+   "cause": "evicted by the re-placed U5112/U5113 groups (JL-K-27-JL)",
+   "source": "design/partition/locality-acceptances.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 6 item 4"
+  },
+  {
+   "id": "GA-LOC-RB2313",
+   "kind": "interim-GH locality exception",
+   "board": "JL",
+   "ref": "RB2313",
+   "distance_from_slot_mm": 28.22,
+   "cause": "evicted by the re-placed U5112/U5113 groups (JL-K-27-JL)",
+   "source": "design/partition/locality-acceptances.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 6 item 4"
+  },
+  {
+   "id": "GA-REACH-JL-K-26",
+   "kind": "interim-GH reach exception",
+   "pair": "JL-K-26",
+   "worst_mm": 41.629,
+   "nearest_fixing": "POWER-JL-AGND3",
+   "source": "design/stack/geometry/fixing-reach-exceptions.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 11"
+  },
+  {
+   "id": "GA-REACH-JL-K-27",
+   "kind": "interim-GH reach exception",
+   "pair": "JL-K-27",
+   "worst_mm": 50.99,
+   "nearest_fixing": "POWER-JL-AGND3",
+   "source": "design/stack/geometry/fixing-reach-exceptions.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 11"
+  },
+  {
+   "id": "GA-REACH-JR-K-28",
+   "kind": "interim-GH reach exception",
+   "pair": "JR-K-28",
+   "worst_mm": 118.509,
+   "nearest_fixing": "JR-SUP-1",
+   "source": "design/stack/geometry/fixing-reach-exceptions.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 11"
+  },
+  {
+   "id": "GA-REACH-JR-K-29",
+   "kind": "interim-GH reach exception",
+   "pair": "JR-K-29",
+   "worst_mm": 84.513,
+   "nearest_fixing": "JR-SUP-1",
+   "source": "design/stack/geometry/fixing-reach-exceptions.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 11"
   },
   {
    "id": "GA-REACH-SLEEVES",
    "kind": "fixing reach candidate",
-   "summary": "declare the ruled sleeves as fixings for the reach check (option (b)); not applied",
+   "summary": "declare the ruled stack sleeves (design/stack/fixings/ruled-list.json) as fixings for the reach check",
+   "status": "GATE A CANDIDATE, NOT APPLIED (MC04-S7 Revision 11)",
+   "figure": {
+    "sleeve": "SLV-U2",
+    "xy": [
+     244,
+     24
+    ],
+    "distances_mm": {
+     "JR-K-28": 51.0,
+     "JR-K-29": 17.0
+    }
+   },
    "source": "design/stack/geometry/fixing-reach-exceptions.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 11"
+  },
+  {
+   "id": "GA-FIX-JL-P-4-P-SLV-L1",
+   "kind": "header/fixing conflict",
+   "header": "JL-P-4-P",
+   "fixing": "SLV-L1",
+   "source": "scripts/checks/connector_packing35.py KNOWN_FIXING_CONFLICTS",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 8"
+  },
+  {
+   "id": "GA-REPLACE-JL-U1318",
+   "kind": "open re-placement (re-route)",
+   "board": "JL",
+   "ref": "U1318",
+   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "face": "B",
+   "old": [
+    71.96,
+    62.52
+   ],
+   "why": [
+    "under a field"
+   ],
+   "overlaps": [
+    {
+     "link": "JL-K-JL-L08",
+     "keepout": "front_connector",
+     "overlap_mm": [
+      6.1,
+      1.02
+     ]
+    }
+   ],
+   "source": "design/stack/geometry/links/link-gate.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14"
+  },
+  {
+   "id": "GA-REPLACE-K-U1415",
+   "kind": "open re-placement (re-route)",
+   "board": "K",
+   "ref": "U1415",
+   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "face": "B",
+   "old": [
+    62.95,
+    222.97
+   ],
+   "why": [
+    "under a field"
+   ],
+   "overlaps": [
+    {
+     "link": "P-K-P-L07",
+     "keepout": "K_connector",
+     "overlap_mm": [
+      2.17,
+      6.1
+     ]
+    },
+    {
+     "link": "P-K-P-L08",
+     "keepout": "K_connector",
+     "overlap_mm": [
+      7.04,
+      6.1
+     ]
+    },
+    {
+     "link": "P-K-P-L08",
+     "keepout": "K_tail",
+     "overlap_mm": [
+      4.49,
+      0.74
+     ]
+    }
+   ],
+   "source": "design/stack/geometry/links/link-gate.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14"
+  },
+  {
+   "id": "GA-REPLACE-K-U4129",
+   "kind": "open re-placement (re-route)",
+   "board": "K",
+   "ref": "U4129",
+   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "face": "B",
+   "old": [
+    209.33,
+    77.45
+   ],
+   "why": [
+    "under a slot"
+   ],
+   "overlaps": [
+    {
+     "link": "JR-K-JR-L04",
+     "keepout": "K_tail",
+     "overlap_mm": [
+      4.28,
+      9.63
+     ]
+    },
+    {
+     "link": "JR-K-JR-L04",
+     "keepout": "slot",
+     "overlap_mm": [
+      1.5,
+      9.63
+     ]
+    }
+   ],
+   "source": "design/stack/geometry/links/link-gate.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14"
+  },
+  {
+   "id": "GA-REPLACE-K-U4417",
+   "kind": "open re-placement (re-route)",
+   "board": "K",
+   "ref": "U4417",
+   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "face": "B",
+   "old": [
+    250.83,
+    199.95
+   ],
+   "why": [
+    "under a slot"
+   ],
+   "overlaps": [
+    {
+     "link": "P-K-P-L05.01.01",
+     "keepout": "K_tail",
+     "overlap_mm": [
+      5.78,
+      4.13
+     ]
+    },
+    {
+     "link": "P-K-P-L05.01.01",
+     "keepout": "slot",
+     "overlap_mm": [
+      6.28,
+      1.5
+     ]
+    }
+   ],
+   "source": "design/stack/geometry/links/link-gate.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14"
+  },
+  {
+   "id": "GA-REPLACE-K-U4433",
+   "kind": "open re-placement (re-route)",
+   "board": "K",
+   "ref": "U4433",
+   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "face": "B",
+   "old": [
+    281.18,
+    220.95
+   ],
+   "why": [
+    "under a slot"
+   ],
+   "overlaps": [
+    {
+     "link": "P-K-P-L02.01.01",
+     "keepout": "K_tail",
+     "overlap_mm": [
+      3.13,
+      4.21
+     ]
+    },
+    {
+     "link": "P-K-P-L02.01.01",
+     "keepout": "slot",
+     "overlap_mm": [
+      3.63,
+      1.5
+     ]
+    }
+   ],
+   "source": "design/stack/geometry/links/link-gate.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14"
+  },
+  {
+   "id": "GA-REPLACE-K-U4524",
+   "kind": "open re-placement (re-route)",
+   "board": "K",
+   "ref": "U4524",
+   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "face": "B",
+   "old": [
+    175.97,
+    153.15
+   ],
+   "why": [
+    "under a field"
+   ],
+   "overlaps": [
+    {
+     "link": "JR-K-JR-L06",
+     "keepout": "K_connector",
+     "overlap_mm": [
+      5.57,
+      3.8
+     ]
+    }
+   ],
+   "source": "design/stack/geometry/links/link-gate.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14"
+  },
+  {
+   "id": "GA-REPLACE-K-U4526",
+   "kind": "open re-placement (re-route)",
+   "board": "K",
+   "ref": "U4526",
+   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "face": "B",
+   "old": [
+    177.93,
+    142.58
+   ],
+   "why": [
+    "under a field"
+   ],
+   "overlaps": [
+    {
+     "link": "JR-K-JR-L06",
+     "keepout": "K_connector",
+     "overlap_mm": [
+      6.1,
+      7.4
+     ]
+    },
+    {
+     "link": "JR-K-JR-L06",
+     "keepout": "K_tail",
+     "overlap_mm": [
+      2.68,
+      7.4
+     ]
+    }
+   ],
+   "source": "design/stack/geometry/links/link-gate.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14"
+  },
+  {
+   "id": "GA-REPLACE-K-U4527",
+   "kind": "open re-placement (re-route)",
+   "board": "K",
+   "ref": "U4527",
+   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "face": "B",
+   "old": [
+    189.97,
+    145.65
+   ],
+   "why": [
+    "under a slot"
+   ],
+   "overlaps": [
+    {
+     "link": "JR-K-JR-L06",
+     "keepout": "slot",
+     "overlap_mm": [
+      1.08,
+      9.25
+     ]
+    }
+   ],
+   "source": "design/stack/geometry/links/link-gate.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14"
+  },
+  {
+   "id": "GA-REPLACE-K-U4623",
+   "kind": "open re-placement (re-route)",
+   "board": "K",
+   "ref": "U4623",
+   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "face": "F",
+   "old": [
+    284.18,
+    140.95
+   ],
+   "why": [
+    "under a slot"
+   ],
+   "overlaps": [
+    {
+     "link": "JR-K-JR-L05",
+     "keepout": "K_tail",
+     "overlap_mm": [
+      1.78,
+      6.2
+     ]
+    },
+    {
+     "link": "JR-K-JR-L05",
+     "keepout": "slot",
+     "overlap_mm": [
+      1.5,
+      6.7
+     ]
+    }
+   ],
+   "source": "design/stack/geometry/links/link-gate.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14"
+  },
+  {
+   "id": "GA-REPLACE-K-U4635",
+   "kind": "open re-placement (re-route)",
+   "board": "K",
+   "ref": "U4635",
+   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "face": "B",
+   "old": [
+    257.43,
+    143.45
+   ],
+   "why": [
+    "under a field",
+    "under a slot"
+   ],
+   "overlaps": [
+    {
+     "link": "JR-K-JR-L07",
+     "keepout": "K_connector",
+     "overlap_mm": [
+      1.65,
+      7.4
+     ]
+    },
+    {
+     "link": "JR-K-JR-L07",
+     "keepout": "K_tail",
+     "overlap_mm": [
+      5.65,
+      7.4
+     ]
+    },
+    {
+     "link": "JR-K-JR-L07",
+     "keepout": "slot",
+     "overlap_mm": [
+      1.5,
+      7.4
+     ]
+    }
+   ],
+   "source": "design/stack/geometry/links/link-gate.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14"
+  },
+  {
+   "id": "GA-REPLACE-JR-U4647",
+   "kind": "open re-placement (re-route)",
+   "board": "JR",
+   "ref": "U4647",
+   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "face": "B",
+   "old": [
+    296.68,
+    52.47
+   ],
+   "why": [
+    "under a field"
+   ],
+   "overlaps": [
+    {
+     "link": "JR-K-JR-L01",
+     "keepout": "front_connector",
+     "overlap_mm": [
+      6.1,
+      3.23
+     ]
+    },
+    {
+     "link": "JR-K-JR-L01",
+     "keepout": "front_tail",
+     "overlap_mm": [
+      1.0,
+      0.68
+     ]
+    }
+   ],
+   "source": "design/stack/geometry/links/link-gate.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14"
+  },
+  {
+   "id": "GA-REPLACE-K-U5110",
+   "kind": "open re-placement (re-route)",
+   "board": "K",
+   "ref": "U5110",
+   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "face": "B",
+   "old": [
+    157.93,
+    247.72
+   ],
+   "why": [
+    "under a field"
+   ],
+   "overlaps": [
+    {
+     "link": "P-K-P-L12.02.01.02",
+     "keepout": "K_connector",
+     "overlap_mm": [
+      8.68,
+      5.48
+     ]
+    }
+   ],
+   "source": "design/stack/geometry/links/link-gate.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14"
+  },
+  {
+   "id": "GA-REPLACE-K-U5209",
+   "kind": "open re-placement (re-route)",
+   "board": "K",
+   "ref": "U5209",
+   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "face": "B",
+   "old": [
+    157.95,
+    206.58
+   ],
+   "why": [
+    "under a field"
+   ],
+   "overlaps": [
+    {
+     "link": "P-K-P-L13.01.01.02",
+     "keepout": "K_connector",
+     "within_courtyard_growth_mm": 0.07
+    }
+   ],
+   "source": "design/stack/geometry/links/link-gate.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14"
+  },
+  {
+   "id": "GA-REPLACE-K-U5210",
+   "kind": "open re-placement (re-route)",
+   "board": "K",
+   "ref": "U5210",
+   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "face": "B",
+   "old": [
+    180.97,
+    204.7
+   ],
+   "why": [
+    "under a field"
+   ],
+   "overlaps": [
+    {
+     "link": "P-K-P-L13.01.01.01",
+     "keepout": "K_connector",
+     "overlap_mm": [
+      5.3,
+      6.1
+     ]
+    },
+    {
+     "link": "P-K-P-L13.01.01.01",
+     "keepout": "K_tail",
+     "overlap_mm": [
+      2.75,
+      0.32
+     ]
+    }
+   ],
+   "source": "design/stack/geometry/links/link-gate.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14"
+  },
+  {
+   "id": "GA-REPLACE-K-U8409",
+   "kind": "open re-placement (re-route)",
+   "board": "K",
+   "ref": "U8409",
+   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "face": "B",
+   "old": [
+    203.2,
+    192.47
+   ],
+   "why": [
+    "under a slot"
+   ],
+   "overlaps": [
+    {
+     "link": "P-K-P-L03.01",
+     "keepout": "K_tail",
+     "within_courtyard_growth_mm": 0.04
+    },
+    {
+     "link": "P-K-P-L03.01",
+     "keepout": "slot",
+     "overlap_mm": [
+      0.46,
+      1.5
+     ]
+    },
+    {
+     "link": "P-K-P-L03.02.02.01",
+     "keepout": "slot",
+     "within_courtyard_growth_mm": 0.08
+    }
+   ],
+   "source": "design/stack/geometry/links/link-gate.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14"
+  },
+  {
+   "id": "GA-SLOT-JR-K-JR-L01",
+   "kind": "slot drift",
+   "link": "JR-K-JR-L01",
+   "baseline": {
+    "slot_centre": [
+     269.5,
+     48.0
+    ],
+    "direction": "+x"
+   },
+   "current": {
+    "slot_centre": [
+     278.6,
+     39.2
+    ],
+    "direction": "-x"
+   },
+   "members_unchanged": false,
+   "note": "stable_clusters keeps IDs and members, not slots; new pairs join within the 35 mm gate radius",
+   "source": "design/stack/geometry/links/link-gate.json against 93197a3e",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 14 item 6"
+  },
+  {
+   "id": "GA-SLOT-JR-K-JR-L02",
+   "kind": "slot drift",
+   "link": "JR-K-JR-L02",
+   "baseline": {
+    "slot_centre": [
+     204.0,
+     34.0
+    ],
+    "direction": "-x"
+   },
+   "current": {
+    "slot_centre": [
+     206.0,
+     34.4
+    ],
+    "direction": "+x"
+   },
+   "members_unchanged": false,
+   "note": "stable_clusters keeps IDs and members, not slots; new pairs join within the 35 mm gate radius",
+   "source": "design/stack/geometry/links/link-gate.json against 93197a3e",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 14 item 6"
+  },
+  {
+   "id": "GA-SLOT-JR-K-JR-L03",
+   "kind": "slot drift",
+   "link": "JR-K-JR-L03",
+   "baseline": {
+    "slot_centre": [
+     249.5,
+     88.0
+    ],
+    "direction": "-x"
+   },
+   "current": {
+    "slot_centre": [
+     253.5,
+     80.0
+    ],
+    "direction": "-x"
+   },
+   "members_unchanged": true,
+   "note": "stable_clusters keeps IDs and members, not slots; new pairs join within the 35 mm gate radius",
+   "source": "design/stack/geometry/links/link-gate.json against 93197a3e",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 14 item 6"
   }
  ]
 }
