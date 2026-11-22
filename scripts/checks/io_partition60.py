@@ -190,6 +190,8 @@ def indicator_bridge_one_span(name, members, nets, regions, mpn):
     diodes = [m for m in members if m['role'].startswith('magnitude_indicator:D')]
     if len({m['ref'] for m in led}) != 1 or not diodes or len(led) + len(diodes) != len(members):
         return 'not the LED_A/LED_K node of a magnitude_indicator unit'
+    if not all(m.get('uid') for m in led):
+        return 'the LED is not a panel part (no panel UID)'
     pins = _ref_pins(nets)
     # the bridge diodes on this node lead to the unit's DRIVE (op-amp output) and SENSE (op-amp input) nets
     far = {n for d in diodes for pin, n in pins[d['ref']].items() if n != name}

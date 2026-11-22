@@ -4,7 +4,8 @@ import math
 import subprocess
 import sys
 from pathlib import Path
-R = Path.home() / 'repos/circuits/zudo-osc-hole-field'
+R = Path(__file__).resolve().parents[4]
+BASE = '6093081c'  # the floorplan before the stage 7 move (Revision 5)
 sys.path.insert(0, str(R))
 
 
@@ -13,7 +14,7 @@ def head(path):
 
 
 new = json.loads((R / 'design/partition/floorplan-candidate.json').read_text())
-old = head('design/partition/floorplan-candidate.json')
+old = json.loads(subprocess.run(['git', '-C', str(R), 'show', BASE + ':design/partition/floorplan-candidate.json'], capture_output=True, text=True, check=True).stdout)
 P1 = {p['ref']: p for p in new['placements']}
 P0 = {p['ref']: p for p in old['placements']}
 reloc = json.loads((R / 'design/partition/k-block-relocation.json').read_text())
@@ -45,7 +46,7 @@ for r, p in P1.items():
         moved.append({'ref': r, 'from': [q['board'], q['x_mm'], q['y_mm'], q['side']], 'to': [p['board'], p['x_mm'], p['y_mm'], p['side']],
                       'moved_mm': d(p, q) if p['board'] == q['board'] or {p['board'], q['board']} <= {'JL', 'JR', 'K'} else None})
 out['moved_parts'] = sorted(moved, key=lambda m: -(m.get('moved_mm') or 0))
-out['adopted'] = {b: {k: v for k, v in r.items() if k in ('released_by_k_block_move', 'released_under_gh_headers', 'release_rounds', 'window_released')}
+out['adopted'] = {b: {k: v for k, v in r.items() if k in ('released_by_k_block_move', 'displaced_by_gh_headers', 'displaced_by_k_block_pins', 'displaced_cluster_move_mm', 'evicted', 'evicted_diodes_beyond_cap', 'evicted_to_locality', 'clusters_to_locality')}
                   for b, r in new['adopted_placement_pins']['boards'].items()}
 pc = json.loads((R / 'design/partition/connector-packing-candidate.json').read_text())
 sites = {(142, 122), (159, 122), (193, 24), (244, 24), (295, 24)}

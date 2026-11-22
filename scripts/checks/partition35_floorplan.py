@@ -25,6 +25,7 @@ PINS=ROOT/'design/partition/adopted-placement-pins.json'
 RELOCATION=ROOT/'design/partition/k-block-relocation.json'
 EXCEPTIONS=ROOT/'design/partition/protection-locality-exceptions.json'
 ACCEPTANCES=ROOT/'design/partition/locality-acceptances.json'
+REFLOW_PINS=ROOT/'design/partition/reflow-pins.json'
 RELEASE_ROUNDS=400
 RELEASE_STEP_MM=1.5
 WHOLE_MODULE_AFTER=4
@@ -45,7 +46,8 @@ PROTECTION_DIODES=('BAV199,215','BAT54S,215')
 # d867e53e placement (locality placer for evicted parts). MC04-S5: the OPA4197IPWR swap clusters on JR
 # evict D4309, D8333 and R8325, so JR also re-places evicted passives near their own slot (the
 # locality placer had moved D4309, an E3 input diode, 44.8 mm and to the other face).
-EVICTED_LOCAL_BOARDS=('K','JR')
+# MC04-S7 Revision 5: JL too, so passives displaced by the stage 7 headers and blocks stay near their slots.
+EVICTED_LOCAL_BOARDS=('K','JR','JL')
 # MC04-S6: an evicted diode on a jack board is re-placed nearest-legal-first within CLUSTER_RADIUS_MM of
 # its slot (the 24 mm locality of design/partition/precision-tssop-retention.json), not by net-growth
 # cost. D4309 has no legal pose within 21.27 mm under the floorplan's courtyard, hardware and gap model
@@ -193,11 +195,15 @@ def pad_point(footprint,pin,side,rotation,x,y):
     return (px+x,py+y)
 
 
-def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped_slots,reservations,extra,report):
+def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped_slots,reservations,extra,report,displaced=frozenset(),kept_clusters=None):
     """Decision E15 minimal-move reflow: pin unchanged packages on their pre-adoption slots. Each swapped IC
     moves as one rigid cluster with its bypass capacitors to the cheapest legal pose near its old slot,
     evicting the fewest small pinned passives; when nothing near fits, the nearest board-wide pose that only
-    evicts small passives is used. Evicted packages join the added ones in the locality placer."""
+    evicts small passives is used. Evicted packages join the added ones in the locality placer.
+
+    MC04-S7 Revision 5: `displaced` pins (under a new GH header land or a K block pin) are re-placed from their own
+    slots: an IC with its bypass capacitors as one rigid cluster, nearest legal pose first (local, then board-wide),
+    and every other displaced package through the near-slot loop of the evicted passives."""
     rows=pin_rows.get(board,{})
     if not rows and not any(r['board']==board for r in swapped_slots.values()):return free,[]
     by_ref={p['ref']:p for p in free}
@@ -205,6 +211,10 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
     swapped=sorted(r for r,s in swapped_slots.items() if s['board']==board)
     members={ic:sorted((p for p in free if p['decouples_ref']==ic),key=lambda p:p['ref']) for ic in swapped}
     in_cluster={c['ref'] for cs in members.values() for c in cs}
+    displaced=set(displaced)&set(rows)-in_cluster  # a swapped cluster capacitor moves with its swapped IC
+    displaced_ics=sorted(r for r in displaced if r[:1]=='U')
+    for ic in displaced_ics:members[ic]=sorted((p for p in free if p['decouples_ref']==ic and p['ref'] in displaced),key=lambda p:p['ref'])
+    displaced_caps={c['ref'] for ic in displaced_ics for c in members[ic]}
     net_refs=defaultdict(set)
     for ref,nets in pin_nets.items():
         for n in nets.values():
@@ -217,7 +227,7 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
         boxes[ref]=[min(c[0],c[0]+dx),min(c[1],c[1]+dy),max(c[2],c[2]+dx),max(c[3],c[3]+dy)]
     tht={ref:through_hole(rows[ref]['footprint']) for ref in rows}
     faces=lambda ref:('F.Cu','B.Cu') if tht[ref] else (rows[ref]['side'],)
-    released=set(extra)|in_cluster
+    released=set(extra)|in_cluster|displaced
     # Same spacing convention as the locality placer's occupancy masks: the courtyard gap on the
     # right/bottom edge only, so pins keep their original spacing instead of doubling it.
     def occupy_box(g,b):g.fill([b[0],b[1],b[2]+gap,b[3]+gap],0)
@@ -225,6 +235,7 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
     def evictable(ref):
         # A capacitor of a pinned IC stays with that IC so its bypass loop is not broken.
         if ref in reservations or tht[ref] or ref[:1] in ('U','J'):return False
+        if rows[ref].get('k_block_move'):return False  # MC04-S7: a K block pin is final (k_block_poses.py)
         if by_ref[ref]['mpn'] in PROTECTION_DIODES:return False
         if by_ref[ref]['decouples_ref'] in rows and by_ref[ref]['decouples_ref'] not in released:return False
         b=shapes[rows[ref]['footprint']]
@@ -355,11 +366,21 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
                                                           'supply_gap_mm':[round(before,3),round(after,3)],'placed':cplaced}
                     released.discard(cap);members.pop(cap,None)
         return None,None
-    clusters={};evicted=set();moves=[];wide=[];unplaced=[];nudges=[]
+    clusters={};evicted=set();moves=[];wide=[];unplaced=[];nudges=[];kept_used=[]
     for ic in swapped:
         part=by_ref.get(ic)
         if part is None:raise ValueError('swapped slot without a free package '+ic)
-        slot=swapped_slots[ic];best=local_pose(part,slot)
+        slot=swapped_slots[ic];best=None
+        # MC04-S7 Revision 5: the cluster's pre-move pose (reflow-pins.json) when every cell is still free and it
+        # evicts only evictable passives, as at that commit; otherwise the search from the swapped slot as before.
+        kept=(kept_clusters or {}).get(ic)
+        if kept and {r['ref'] for r in kept}=={ic}|{c['ref'] for c in members[ic]}:
+            placed=[(by_ref[r['ref']],r['x_mm'],r['y_mm'],r['rotation_deg'],r['courtyard_mm']) for r in kept]
+            side=kept[0]['side']
+            hit=set().union(*(hits(side,b) for *_,b in placed))
+            if all(r['side']==side for r in kept) and all(box_free(occ[side],b) for *_,b in placed) and all(evictable(r) for r in hit):
+                best=(0.0,side,placed,hit);kept_used.append(ic)
+        if best is None:best=local_pose(part,slot)
         if best is None:
             best=wide_pose(part,slot)
             if best is not None:wide.append(ic)
@@ -373,6 +394,23 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
                                     'side':side,'courtyard_mm':b,'bypass_cluster':ic}
             placed_at[cpart['ref']]=(x,y,side)
         moves.append(math.dist((placed[0][1],placed[0][2]),(slot['x_mm'],slot['y_mm'])))
+    displaced_moves={}
+    for ic in displaced_ics:
+        part=by_ref[ic];row=rows[ic]
+        slot={'x_mm':row['x_mm'],'y_mm':row['y_mm'],'rotation_deg':row['rotation_deg'],'side':row['side']}
+        found=[b for b in (local_pose(part,slot,nearest=True),wide_pose(part,slot)) if b]
+        best=min(found,key=lambda b:pose_distance(b,ic,slot),default=None)
+        if best is None:
+            unplaced.append(ic);continue
+        cost,side,placed,hit=best
+        released|=hit;evicted|=hit
+        for cpart,x,y,rotation,b in placed:
+            for face in (('F.Cu','B.Cu') if through_hole(cpart['footprint']) else (side,)):occupy_box(occ[face],b)
+            clusters[cpart['ref']]={'ref':cpart['ref'],'board':board,'fixed':False,'x_mm':x,'y_mm':y,'rotation_deg':rotation,
+                                    'side':side,'courtyard_mm':b,'bypass_cluster':ic,'displaced_near_slot':True}
+            placed_at[cpart['ref']]=(x,y,side)
+        displaced_moves[ic]=round(pose_distance(best,ic,slot),3)
+    evicted|=displaced-set(displaced_ics)-displaced_caps
     boots={};boot_far=[];far_bindings=report.setdefault('_protection_far',{})[board]={}  # reset on every release round
     added=sorted((p for p in free if p['ref'] not in rows and p['ref'] not in clusters and p['ref'] not in in_cluster
                   and p['mpn'] in PROTECTION_DIODES),key=lambda p:p['ref'])
@@ -393,7 +431,17 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
         side=Counter(placed_at[r][2] for r in diodes).most_common(1)[0][0]
         members[part['ref']]=[]
         slot={'x_mm':x,'y_mm':y,'rotation_deg':0,'side':side}
-        best=local_pose(part,slot,baseline=False);nudge=None
+        best=None;nudge=None
+        kept=(kept_clusters or {}).get('_protection_'+part['ref'])
+        if kept:
+            # MC04-S7 Revision 5: its pre-move pose when still free and evicting only evictable passives, as at that
+            # commit (still bound when beyond the radius)
+            k=kept[0];b=k['courtyard_mm'];hit=hits(k['side'],b)
+            if box_free(occ[k['side']],b) and all(evictable(r) for r in hit):
+                best=(0.0,k['side'],[(part,k['x_mm'],k['y_mm'],k['rotation_deg'],b)],hit);kept_used.append(part['ref'])
+                if math.hypot(k['x_mm']-x,k['y_mm']-y)>CLUSTER_RADIUS_MM+1e-9:
+                    boot_far.append(part['ref']);far_bindings[part['ref']]={'mpn':part['mpn'],'nets':sorted(nets),'anchor_refs':sorted(diodes)}
+        if best is None:best=local_pose(part,slot,baseline=False)
         if best is None:best,nudge=nudged_pose(part,slot)
         if best is None:
             # Nothing legal within the radius: the nearest free board-wide pose, still recorded as beyond it.
@@ -422,6 +470,15 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
         for ref in sorted(evicted):
             part=by_ref[ref];row=rows[ref];members[ref]=[]
             slot={'x_mm':row['x_mm'],'y_mm':row['y_mm'],'rotation_deg':row['rotation_deg'],'side':row['side']}
+            kept=(kept_clusters or {}).get('_evicted_'+ref)
+            if kept:
+                # MC04-S7 Revision 5: its pre-move re-placed pose when that pose is still free and evicts nothing
+                k=kept[0];b=k['courtyard_mm']
+                if box_free(occ[k['side']],b) and not hits(k['side'],b):
+                    occupy_box(occ[k['side']],b)
+                    relocated[ref]={'ref':ref,'board':board,'fixed':False,'x_mm':k['x_mm'],'y_mm':k['y_mm'],'rotation_deg':k['rotation_deg'],
+                                    'side':k['side'],'courtyard_mm':b,'evicted_near_slot':True}
+                    placed_at[ref]=(k['x_mm'],k['y_mm'],k['side']);kept_used.append(ref);continue
             if nearest_first(ref,board):
                 # Nearest legal pose: the 0.5 mm local search and the fine board-wide search, whichever
                 # lands closer to the slot; a pose beyond the cap is kept and reported.
@@ -456,6 +513,8 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
                    'evicted':sorted(evicted),'protection_diodes_placed':len(boots),'protection_diodes_beyond_radius':boot_far,
                    **({'protection_diode_nudges':nudges} if nudges else {}),
                    'evicted_replaced_near_slot':len(relocated),'evicted_to_locality':far,
+                   **({'displaced_cluster_move_mm':displaced_moves} if displaced_moves else {}),
+                   **({'swapped_clusters_kept':len(kept_used)} if kept_used else {}),
                    **({'evicted_diodes_beyond_cap':capped_out} if capped_out else {})}
     taken=set(pinned)|set(clusters)
     return [p for p in free if p['ref'] not in taken],out
@@ -490,13 +549,17 @@ def locality_acceptances(placements,errors):
     return {'source':'design/partition/locality-acceptances.json','acceptances':rows}
 
 
-def header_conflicts(board,pin_rows,headers,parts=()):
+def header_conflicts(board,pin_rows,headers,parts=(),blocks=True):
     """Pinned packages on `board` whose pinned courtyard overlaps a GH header land on the same face (a through-hole
     package on either face), with the IC of a covered bypass capacitor and the pinned bypass capacitors of every
     released IC, so that an IC and its bypass move together. Overlap, not the placer gap: a pin keeps its original spacing to an existing header."""
     gap=0.0;out=set()
     lands=[(h['side'],h['land_courtyard_mm']) for h in headers if h['board']==board]
+    if blocks:
+        # MC04-S7 Revision 5: a K block pin displaces the pins it overlaps the same way
+        lands+=[(r['side'],r['courtyard_mm']) for r in pin_rows.get(board,{}).values() if r.get('k_block_move')]
     for ref,row in pin_rows.get(board,{}).items():
+        if row.get('k_block_move'):continue
         c=row['courtyard_mm'];tht=through_hole(row['footprint'])
         for side,b in lands:
             if (tht or side==row['side']) and c[0]<b[2]+gap and b[0]<c[2]+gap and c[1]<b[3]+gap and b[1]<c[3]+gap:
@@ -606,6 +669,15 @@ def build():
                     'courtyard_mm':[round(box[0]+pose['x_mm'],4),round(box[1]+pose['y_mm'],4),round(box[2]+pose['x_mm'],4),round(box[3]+pose['y_mm'],4)]}
             continue
         pin_rows[row['board']][row['ref']]=row
+    # MC04-S7 Revision 5 item 2: minimal reflow, the previously unpinned packages at their pre-move poses
+    reflow_clusters=defaultdict(lambda:defaultdict(list))
+    if REFLOW_PINS.exists():
+        for row in json.loads(REFLOW_PINS.read_text())['pins']:
+            if (row['board'],row['ref']) in moved:continue
+            if row.get('swapped_cluster'):reflow_clusters[row['board']][row['swapped_cluster']].append(row);continue
+            if row.get('evicted_pose'):reflow_clusters[row['board']]['_evicted_'+row['ref']].append(row);continue
+            if row.get('protection_pose'):reflow_clusters[row['board']]['_protection_'+row['ref']].append(row);continue
+            if row['ref'] not in pin_rows[row['board']]:pin_rows[row['board']][row['ref']]=row
     unmatched=sorted('%s:%s'%k for k in moved if k[1] not in released_by_move[k[0]])
     if unmatched:raise ValueError('K block relocation names parts with no adopted pin on their front board: '+' '.join(unmatched))
     errors.extend(k_block_pin_errors(pin_rows['K'],connector,source['boards']['K']))
@@ -648,7 +720,7 @@ def build():
                     if h['board']==board:
                         for net in h['pin_map'].values():
                             if net not in (None,'NC'):anchors[net].append(tuple(h['center_mm']))
-                free,rows=apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped_slots,reservations,extra,adopted_report)
+                free,rows=apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped_slots,reservations,extra,adopted_report,displaced,reflow_clusters[board])
                 homes=defaultdict(list)
                 for p in parts:
                     if board_for(p)==board and p['panel_uid']:homes[p['instance']].append((lock[p['panel_uid']]['x_mm'],lock[p['panel_uid']]['y_mm']))
@@ -668,7 +740,7 @@ def build():
                         anchors[net].append(tuple(h['center_mm']))
                         if net not in ('AGND','+12V','-12V','+5V'):
                             for instance in net_instances[net]:homes[instance].append(h['center_mm'])
-                free,rows=apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped_slots,reservations,extra,adopted_report)
+                free,rows=apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped_slots,reservations,extra,adopted_report,displaced,reflow_clusters[board])
                 homes={k:v for k,v in homes.items() if k in {p['instance'] for p in free}}
                 instance_anchor={k:(stable_sum(x for x,_ in v)/len(v),stable_sum(y for _,y in v)/len(v)) for k,v in homes.items()}
                 # Header homes crowd ~1300 packages into one corner; spread the module homes so each
@@ -686,7 +758,7 @@ def build():
             base={side:list(grids[board,side].rows) for side in ('F.Cu','B.Cu')};failures=Counter()
             # MC04-S7 Revision 4: a pinned package whose courtyard a GH header land covers (same face, or any face
             # for a through-hole part) is released to the locality placer, like an evicted package.
-            extra=header_conflicts(board,pin_rows,connector['headers'],parts)
+            extra=set();displaced=header_conflicts(board,pin_rows,connector['headers'],parts)
             for _ in range(RELEASE_ROUNDS):
                 for side in ('F.Cu','B.Cu'):grids[board,side].rows=list(base[side])
                 try:
@@ -698,8 +770,9 @@ def build():
             else:raise ValueError('adopted placement release rounds exhausted '+board)
             adopted_report[board]['release_rounds']=sum(failures.values());adopted_report[board]['window_released']=sorted(extra)
             if released_by_move.get(board):adopted_report[board]['released_by_k_block_move']=sorted(released_by_move[board])
-            covered=header_conflicts(board,pin_rows,connector['headers'],parts)
-            if covered:adopted_report[board]['released_under_gh_headers']=sorted(covered)
+            under_headers=header_conflicts(board,pin_rows,connector['headers'],parts,blocks=False)
+            if under_headers:adopted_report[board]['displaced_by_gh_headers']=sorted(under_headers)
+            if displaced-under_headers:adopted_report[board]['displaced_by_k_block_pins']=sorted(displaced-under_headers)
             placements.extend(rows);free=[]
         for p in free:
             location=grids[board,'B.Cu'].place(shapes[p['footprint']])

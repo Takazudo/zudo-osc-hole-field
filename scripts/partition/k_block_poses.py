@@ -3,7 +3,8 @@
 own occupancy model (scripts/checks/partition35_floorplan.Grid, jack_locality.nearest).
 
 Obstacles on K: the outline, the source reserves, the supports, the GH header lands and K service apertures, and the
-adopted K pins, except the pins a GH header covers, which the floorplan re-places. Each block in turn: the IC goes to
+adopted K pins and every pre-move K pose of reflow-pins.json, except the pins a GH header covers, which the
+floorplan re-places. Each block in turn: the IC goes to
 the free pose nearest its front-board pin, on the face (F first, then B) where it lands nearer; each member then
 goes with its bypass capacitors as the floorplan's own rigid bypass cluster (bypass_cells, each capacitor's rail pad on
 its supply pad's row), turned to the IC's front rotation; the other members go to the free pose nearest the IC on the
@@ -73,12 +74,20 @@ def poses():
     for u in io['package_units']:
         nets.setdefault(u['ref'], {}).update(u['pins'])
     k_rows = {r['ref']: r for r in pins if r['board'] == 'K'}
+    moved = {r for b in reloc['blocks'] for r in b['members']}
+    reflow = ROOT / 'design/partition/reflow-pins.json'
+    if reflow.exists():
+        # MC04-S7 Revision 5: every pre-move K pose of reflow-pins.json is an obstacle (the reflow pins, the swapped
+        # clusters, the evicted pins' re-placed poses and the protection diodes), in place of an evicted pin's slot
+        for r in json.loads(reflow.read_text())['pins']:
+            if r['board'] == 'K' and r['ref'] not in moved:
+                k_rows[r['ref']] = r
     covered = header_conflicts('K', {'K': k_rows}, pc['headers'], io['physical_packages'])
     grids = {s: Grid('K', s, spec['outline']) for s in ('F.Cu', 'B.Cu')}
     for ref, r in k_rows.items():
         if ref not in covered:
             for s in (('F.Cu', 'B.Cu') if through_hole(r['footprint']) else (r['side'],)):
-                grids[s].fill(r['courtyard_mm'], 0)
+                grids[s].fill(r['courtyard_mm'], gap)  # the floorplan's hits() keeps the gap on every side
     for h in pc['headers']:
         if h['board'] == 'K':
             grids[h['side']].fill(h['land_courtyard_mm'], gap)

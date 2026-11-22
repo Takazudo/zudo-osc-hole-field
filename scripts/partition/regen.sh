@@ -12,6 +12,7 @@ for script in stage_optical35 connector_packing35; do
   python3 "scripts/checks/$script.py" "${args[@]}"
 done
 # MC04-S7: K poses of the moved function blocks (design/partition/k-block-relocation.json), in the floorplan model.
+python3 scripts/partition/reflow_pins.py "${args[@]}"
 python3 scripts/partition/k_block_poses.py "${args[@]}"
 for script in partition35_floorplan partition35_loom partition35_mechanical partition35 partition35_drawing; do
   python3 "scripts/checks/$script.py" "${args[@]}"

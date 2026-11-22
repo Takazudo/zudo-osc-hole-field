@@ -22,6 +22,8 @@ OUT=ROOT/'design/partition/connector-packing-candidate.json'
 # y = 24 (columns 193, 244 and 295; the y = 150 row's seventh point, (295, 150), overlaps JR's bulk reservation).
 # Each new site is clear of panel pads, the outline, bulk reservations and the link fields; the floorplan releases
 # the pinned packages a header covers (report mc04-s7-r4-report-20261122.md).
+# The packer checks panel pads, other headers and the outline, not the source reserves: the existing JR y = 150 row
+# overlaps the future-output-protection reserve (recorded in MC04-S7 Revision 5, not changed here).
 JL_GRID_SITES = 27  # was 25 before MC04-S7 Revision 4
 JR_REVISION4_SITES = ((193, 24), (244, 24), (295, 24))
 JACK_SITES = {'JL': [(x, y) for y in (38, 80, 122) for x in range(23, 160, 17)][:JL_GRID_SITES],

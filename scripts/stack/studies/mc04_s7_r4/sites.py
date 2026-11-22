@@ -4,7 +4,7 @@ import json
 import math
 import sys
 from pathlib import Path
-R = Path.home() / 'repos/circuits/zudo-osc-hole-field'
+R = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(R))
 sys.path.insert(0, str(R / 'scripts/stack/studies/mc04_c1_capacity'))
 import capacity as cap  # noqa: E402

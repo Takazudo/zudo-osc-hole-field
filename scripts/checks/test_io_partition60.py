@@ -287,6 +287,10 @@ class IndicatorBridgeOneSpan(unittest.TestCase):
             self.NET, rows + [{**rows[0], 'ref': 'R9999', 'role': 'magnitude_indicator:R_SENSE'}],
             self.nets, self.regions, self.mpn))
 
+    def test_an_led_without_a_panel_uid_does_not_qualify(self):
+        rows = [{**m, 'uid': ''} if m['role'] == 'magnitude_indicator:LED' else m for m in self.members(self.regions)]
+        self.assertIn('no panel UID', indicator_bridge_one_span(self.NET, rows, self.nets, self.regions, self.mpn))
+
     def test_report_has_no_forbidden_crossing_and_names_the_bridge_nets(self):
         report = build(self.families, self.instances)
         self.assertEqual(report['forbidden_crossings'], [])
