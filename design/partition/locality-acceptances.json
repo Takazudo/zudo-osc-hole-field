@@ -1,7 +1,7 @@
 {
  "schema_version": 1,
  "status": "REVIEWED SOURCE INPUT (MC04-S7 Revision 2 item 3 and Revision 6 item 4)",
- "rule": "Each entry names a package placed beyond the 24 mm locality limit, the ruling and its evidence or cause. Input buffers accepted by Revision 2 item 3 carry their routing conditions; interim_gh_locality_exception entries (Revision 6 item 4) are general analog parts displaced by the interim GH header sites, to be revisited at Gate A. Decouplers move with their IC and stay within the bypass limit. The floorplan report repeats every entry and fails if the package is not on the named board.",
+ "rule": "Each entry names a package placed beyond the 24 mm locality limit, the ruling and its evidence or cause. Input buffers accepted by Revision 2 item 3 carry their routing conditions; input_buffer_beyond_locality entries (Revision 7 item 1) carry the same conditions and their run estimates; interim_gh_locality_exception entries (Revision 6 item 4) are general analog parts displaced by the interim GH header sites, to be revisited at Gate A. Decouplers move with their IC and stay within the bypass limit. The floorplan report repeats every entry and fails if the package is not on the named board.",
  "acceptances": [
   {
    "ref": "U1318",
@@ -56,8 +56,8 @@
   {
    "ref": "U5112",
    "board": "JL",
-   "kind": "interim_gh_locality_exception",
-   "class": "general analog",
+   "kind": "input_buffer_beyond_locality",
+   "class": "high-impedance input buffer",
    "function": "W2 input buffers IN/FOLD/BIAS (high_impedance_input, OPA4196IDR) and LEVEL_OUT output buffer",
    "moves_with": [
     "C5140",
@@ -78,14 +78,61 @@
    "cause": "JL-K-27-JL",
    "state": "ACCEPTED (interim)",
    "revisit": "Gate A, when the stack links replace the GH headers",
-   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 6 item 4"
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 7 item 1 (with the Revision 2 item 3 conditions; Revision 6 item 4 exception kept)",
+   "evidence": "design/reports/spice/input-buffer-vendor.json (MC04-S4 case 2: 0-50 pF on *_SENSE and *_BUFFER, no oscillation, OPA4196 and OPA4197)",
+   "conditions": [
+    "keep the input passives (R_LIMIT, clamp) at the IC end or the jack end as the cell defines, and report which",
+    "route the lengthened run as a ground-flanked trace",
+    "keep the added run capacitance under 50 pF"
+   ],
+   "input_runs": [
+    {
+     "unit": 1,
+     "net": "/W2/C8df94f_SENSE",
+     "routed_estimate_mm": 106.2,
+     "capacitance_estimate_pF": 21.2,
+     "pre_move_capacitance_estimate_pF": 19.2,
+     "input_passives_to_buffer_mm": {
+      "R5108": 53.0,
+      "D5101": 16.1
+     }
+    },
+    {
+     "unit": 2,
+     "net": "/W2/C74d1de_SENSE",
+     "routed_estimate_mm": 85.0,
+     "capacitance_estimate_pF": 17.0,
+     "pre_move_capacitance_estimate_pF": 16.2,
+     "input_passives_to_buffer_mm": {
+      "R5112": 44.7,
+      "D5102": 12.9
+     }
+    },
+    {
+     "unit": 3,
+     "net": "/W2/C554ad0_SENSE",
+     "routed_estimate_mm": 107.5,
+     "capacitance_estimate_pF": 21.5,
+     "pre_move_capacitance_estimate_pF": 18.6,
+     "input_passives_to_buffer_mm": {
+      "R5116": 59.3,
+      "D5103": 13.3
+     }
+    }
+   ],
+   "input_passive_end": "jack end: R_LIMIT and the clamp diode stay at their pins near the protection switch; the lengthened part is the *_SENSE run to the buffer input",
+   "run_estimate_basis": {
+    "pF_per_mm": 0.2,
+    "route_factor": 1.5,
+    "limit_pF": 50.0
+   }
   },
   {
    "ref": "U5113",
    "board": "JL",
    "kind": "interim_gh_locality_exception",
    "class": "general analog",
-   "function": "W2 magnitude indicator (OPA4196IDR)",
+   "function": "W2 magnitude indicator (OPA4196IDR): its inputs are the U5112 buffer outputs IN/FOLD/BIAS_BUFFER, not a high-impedance input buffer",
    "moves_with": [
     "C5142",
     "C5143"
@@ -110,8 +157,8 @@
   {
    "ref": "U4646",
    "board": "JR",
-   "kind": "interim_gh_locality_exception",
-   "class": "general analog",
+   "kind": "input_buffer_beyond_locality",
+   "class": "high-impedance input buffer",
    "function": "E6 input buffers SIG/RISE/FALL (high_impedance_input, OPA4196IDR) and ENV_BUFFER output buffer",
    "moves_with": [
     "C4672",
@@ -132,7 +179,54 @@
    "cause": "JR-K-30-JR",
    "state": "ACCEPTED (interim)",
    "revisit": "Gate A, when the stack links replace the GH headers",
-   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 6 item 4"
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 7 item 1 (with the Revision 2 item 3 conditions; Revision 6 item 4 exception kept)",
+   "evidence": "design/reports/spice/input-buffer-vendor.json (MC04-S4 case 2: 0-50 pF on *_SENSE and *_BUFFER, no oscillation, OPA4196 and OPA4197)",
+   "conditions": [
+    "keep the input passives (R_LIMIT, clamp) at the IC end or the jack end as the cell defines, and report which",
+    "route the lengthened run as a ground-flanked trace",
+    "keep the added run capacitance under 50 pF"
+   ],
+   "input_runs": [
+    {
+     "unit": 1,
+     "net": "/E6/C33e306_SENSE",
+     "routed_estimate_mm": 119.1,
+     "capacitance_estimate_pF": 23.8,
+     "pre_move_capacitance_estimate_pF": 6.2,
+     "input_passives_to_buffer_mm": {
+      "R4608": 57.8,
+      "D4601": 47.1
+     }
+    },
+    {
+     "unit": 2,
+     "net": "/E6/C2882f4_SENSE",
+     "routed_estimate_mm": 101.9,
+     "capacitance_estimate_pF": 20.4,
+     "pre_move_capacitance_estimate_pF": 7.8,
+     "input_passives_to_buffer_mm": {
+      "R4612": 35.3,
+      "D4602": 48.1
+     }
+    },
+    {
+     "unit": 3,
+     "net": "/E6/C7b4897_SENSE",
+     "routed_estimate_mm": 125.3,
+     "capacitance_estimate_pF": 25.1,
+     "pre_move_capacitance_estimate_pF": 7.3,
+     "input_passives_to_buffer_mm": {
+      "R4616": 58.2,
+      "D4603": 44.5
+     }
+    }
+   ],
+   "input_passive_end": "jack end: R_LIMIT and the clamp diode stay at their pins near the protection switch; the lengthened part is the *_SENSE run to the buffer input",
+   "run_estimate_basis": {
+    "pF_per_mm": 0.2,
+    "route_factor": 1.5,
+    "limit_pF": 50.0
+   }
   },
   {
    "ref": "R8381",
