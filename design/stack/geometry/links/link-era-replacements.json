@@ -236,6 +236,57 @@
   },
   {
    "board": "K",
+   "ic": "U4526",
+   "class": "link-era logic locality exception",
+   "pose": {
+    "face": "F",
+    "turn_deg": 0,
+    "origin": [
+     161.43,
+     121.58
+    ],
+    "moved_mm": 26.71,
+    "shift_mm": [
+     -16.5,
+     -21.0
+    ]
+   },
+   "block": [
+    "U4526",
+    "C4543"
+   ],
+   "blocks_moved": [],
+   "passives_moved": [],
+   "source": "result-r7.json (Revision 7 cheapest option)",
+   "reason": "accepted beyond 24 mm, Revision 8 item 1",
+   "timing_check": "no clock input and no RC timing node",
+   "acceptance": "design/partition/locality-acceptances.json",
+   "replaces": {
+    "source": "result.json (Part A)",
+    "pose": {
+     "face": "B",
+     "origin": [
+      177.93,
+      121.08
+     ],
+     "moved_mm": 21.5,
+     "shift_mm": [
+      0.0,
+      -21.5
+     ],
+     "turn_deg": 0
+    },
+    "why": "Part A moved its displaced passives before placing the block, so they landed on the block (member check, Revision 7)"
+   },
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s8-open-replacement-native-brief-20261122.md, Revision 8 item 1",
+   "member_face_check": {
+    "other_face_members": null,
+    "all_clear": true,
+    "note": "searched face-aware"
+   }
+  },
+  {
+   "board": "K",
    "ic": "U4527",
    "class": "(iii)",
    "pose": {
@@ -443,8 +494,17 @@
   {
    "board": "K",
    "ic": "U1415",
-   "status": "OPEN (link era)",
+   "status": "OPEN (link era): NEEDS_DESIGN for Gate A-paper",
    "rules": "Revision 1 class (iii) with the A2 turns and displacement",
+   "gate_a_paper": {
+    "remedies_to_weigh": [
+     "a slot move",
+     "a package split",
+     "a partition change",
+     "the far pose with an electrical budget"
+    ],
+    "evaluated": false
+   },
    "withdrawn_pose": {
     "source": "result.json (Part A)",
     "pose": {
@@ -607,6 +667,7 @@
    "ic": "U4433",
    "status": "OPEN (link era)",
    "rules": "Revision 1 class (iii) with the A2 turns and displacement",
+   "not_accepted": "timing node on /E4/CLOCK, /E4/LOOP_SYNC (Revision 8 item 1: left OPEN)",
    "withdrawn_pose": {
     "source": "result.json (Part A)",
     "pose": {
@@ -754,222 +815,18 @@
   },
   {
    "board": "K",
-   "ic": "U4526",
-   "status": "OPEN (link era)",
-   "rules": "Revision 1 class (iii) with the A2 turns and displacement",
-   "withdrawn_pose": {
-    "source": "result.json (Part A)",
-    "pose": {
-     "face": "B",
-     "origin": [
-      177.93,
-      121.08
-     ],
-     "moved_mm": 21.5,
-     "shift_mm": [
-      0.0,
-      -21.5
-     ],
-     "turn_deg": 0
-    },
-    "why": "Part A moved its displaced passives before placing the block, so they landed on the block (member check, Revision 7)"
-   },
-   "proof": {
-    "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered",
-    "nearest_legal_mm": 26.71,
-    "displacement_options_tried": 0,
-    "note": "no pose within 24 mm with the A2 displacement rule on this grid (the displacement options are tried fewest-displaced first up to 60)"
-   },
-   "smallest_obstacle_set": null,
-   "cheapest_option": {
-    "pose": {
-     "face": "F",
-     "turn_deg": 0,
-     "origin": [
-      161.43,
-      121.58
-     ],
-     "moved_mm": 26.71,
-     "shift_mm": [
-      -16.5,
-      -21.0
-     ]
-    },
-    "electrical": [
-     {
-      "net": "/E5/CURVED",
-      "kind": [
-       "logic input"
-      ],
-      "parts_on_board": [
-       "U4526",
-       "U4527",
-       "U4528"
-      ],
-      "hpwl_before_mm": 28.07,
-      "hpwl_after_mm": 52.61,
-      "added_run_estimate_mm": 36.81,
-      "run_after_estimate_mm": 78.91,
-      "capacitance_after_estimate_pF": 15.78,
-      "added_capacitance_estimate_pF": 7.36
-     },
-     {
-      "net": "/E5/HOLD_ENABLE",
-      "kind": [
-       "logic output"
-      ],
-      "parts_on_board": [
-       "D4535",
-       "U4526"
-      ],
-      "hpwl_before_mm": 39.59,
-      "hpwl_after_mm": 77.09,
-      "added_run_estimate_mm": 56.25,
-      "run_after_estimate_mm": 115.63,
-      "capacitance_after_estimate_pF": 23.13,
-      "added_capacitance_estimate_pF": 11.25
-     },
-     {
-      "net": "/E5/HOLD_N",
-      "kind": [
-       "logic input"
-      ],
-      "parts_on_board": [
-       "U4513",
-       "U4518",
-       "U4526",
-       "U4537"
-      ],
-      "hpwl_before_mm": 56.83,
-      "hpwl_after_mm": 83.37,
-      "added_run_estimate_mm": 39.81,
-      "run_after_estimate_mm": 125.05,
-      "capacitance_after_estimate_pF": 25.01,
-      "added_capacitance_estimate_pF": 7.96
-     },
-     {
-      "net": "/E5/L066",
-      "kind": [
-       "logic input",
-       "logic output"
-      ],
-      "parts_on_board": [
-       "U4526"
-      ],
-      "hpwl_before_mm": 0.0,
-      "hpwl_after_mm": 0.0,
-      "added_run_estimate_mm": 0.0,
-      "run_after_estimate_mm": 0.0,
-      "capacitance_after_estimate_pF": 0.0,
-      "added_capacitance_estimate_pF": 0.0
-     },
-     {
-      "net": "/E5/L069",
-      "kind": [
-       "logic output"
-      ],
-      "parts_on_board": [
-       "U4526",
-       "U4527",
-       "U4528"
-      ],
-      "hpwl_before_mm": 28.07,
-      "hpwl_after_mm": 52.61,
-      "added_run_estimate_mm": 36.81,
-      "run_after_estimate_mm": 78.91,
-      "capacitance_after_estimate_pF": 15.78,
-      "added_capacitance_estimate_pF": 7.36
-     },
-     {
-      "net": "/E5/L070",
-      "kind": [
-       "logic output"
-      ],
-      "parts_on_board": [
-       "U4526",
-       "U4527"
-      ],
-      "hpwl_before_mm": 15.11,
-      "hpwl_after_mm": 52.61,
-      "added_run_estimate_mm": 56.25,
-      "run_after_estimate_mm": 78.91,
-      "capacitance_after_estimate_pF": 15.78,
-      "added_capacitance_estimate_pF": 11.25
-     },
-     {
-      "net": "/E5/READY",
-      "kind": [
-       "logic input"
-      ],
-      "parts_on_board": [
-       "U4505",
-       "U4522",
-       "U4525",
-       "U4526",
-       "U4530",
-       "U4531",
-       "U4532",
-       "U4533",
-       "U4534",
-       "U4535",
-       "U4536",
-       "U4537",
-       "U4538"
-      ],
-      "hpwl_before_mm": 106.35,
-      "hpwl_after_mm": 109.1,
-      "added_run_estimate_mm": 4.12,
-      "run_after_estimate_mm": 163.65,
-      "capacitance_after_estimate_pF": 32.73,
-      "added_capacitance_estimate_pF": 0.82
-     },
-     {
-      "net": "/E5/RISE",
-      "kind": [
-       "logic input"
-      ],
-      "parts_on_board": [
-       "U4516",
-       "U4517",
-       "U4520",
-       "U4524",
-       "U4526",
-       "U4529",
-       "U4536"
-      ],
-      "hpwl_before_mm": 73.5,
-      "hpwl_after_mm": 90.89,
-      "added_run_estimate_mm": 26.08,
-      "run_after_estimate_mm": 136.33,
-      "capacitance_after_estimate_pF": 27.27,
-      "added_capacitance_estimate_pF": 5.22
-     },
-     {
-      "net": "/E5/TOP_RAW",
-      "kind": [
-       "logic input"
-      ],
-      "parts_on_board": [
-       "U4512",
-       "U4526",
-       "U4534"
-      ],
-      "hpwl_before_mm": 53.06,
-      "hpwl_after_mm": 57.37,
-      "added_run_estimate_mm": 6.46,
-      "run_after_estimate_mm": 86.05,
-      "capacitance_after_estimate_pF": 17.21,
-      "added_capacitance_estimate_pF": 1.29
-     }
-    ]
-   },
-   "source": "result-r7.json (Revision 7)"
-  },
-  {
-   "board": "K",
    "ic": "U5110",
-   "status": "OPEN (link era)",
+   "status": "OPEN (link era): NEEDS_DESIGN for Gate A-paper",
    "rules": "Revision 1 class (iii) with the A2 turns and displacement",
+   "gate_a_paper": {
+    "remedies_to_weigh": [
+     "a slot move",
+     "a package split",
+     "a partition change",
+     "the far pose with an electrical budget"
+    ],
+    "evaluated": false
+   },
    "withdrawn_pose": {
     "source": "result.json (Part A)",
     "pose": {
@@ -1227,8 +1084,17 @@
   {
    "board": "K",
    "ic": "U5209",
-   "status": "OPEN (link era)",
+   "status": "OPEN (link era): NEEDS_DESIGN for Gate A-paper",
    "rules": "A3 block-on-block rules with the Revision 3 R8263 relaxation",
+   "gate_a_paper": {
+    "remedies_to_weigh": [
+     "a slot move",
+     "a package split",
+     "a partition change",
+     "the far pose with an electrical budget"
+    ],
+    "evaluated": false
+   },
    "withdrawn_pose": {
     "source": "result-a4.json (Part A4)",
     "pose": {
@@ -1470,8 +1336,17 @@
   {
    "board": "K",
    "ic": "U5210",
-   "status": "OPEN (link era)",
+   "status": "OPEN (link era): NEEDS_DESIGN for Gate A-paper",
    "rules": "the A5 joint search (Revision 4), face-aware",
+   "gate_a_paper": {
+    "remedies_to_weigh": [
+     "a slot move",
+     "a package split",
+     "a partition change",
+     "the far pose with an electrical budget"
+    ],
+    "evaluated": false
+   },
    "proof": {
     "run": "joint search of U5210, U8409, U8412, U5208, U8408 within 24 mm",
     "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered",
@@ -1805,8 +1680,17 @@
   {
    "board": "K",
    "ic": "U8409",
-   "status": "OPEN (link era)",
+   "status": "OPEN (link era): NEEDS_DESIGN for Gate A-paper",
    "rules": "the A5 joint search (Revision 4), face-aware",
+   "gate_a_paper": {
+    "remedies_to_weigh": [
+     "a slot move",
+     "a package split",
+     "a partition change",
+     "the far pose with an electrical budget"
+    ],
+    "evaluated": false
+   },
    "proof": {
     "run": "joint search of U5210, U8409, U8412, U5208, U8408 within 24 mm",
     "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered",

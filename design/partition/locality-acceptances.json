@@ -618,6 +618,104 @@
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s8-open-replacement-native-brief-20261122.md, Revision 3 item 1",
    "source": "scripts/stack/studies/mc04_s8_replacement/result-a3.json",
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards"
+  },
+  {
+   "ref": "U4526",
+   "board": "K",
+   "kind": "interim_gh_locality_exception",
+   "class": "logic",
+   "function": "logic (E5 hold/ready logic, SN74HC00)",
+   "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
+   "pre_move_pose": [
+    177.93,
+    142.58,
+    "B.Cu"
+   ],
+   "pose": [
+    161.43,
+    121.58,
+    "F.Cu"
+   ],
+   "turn_deg": 0,
+   "distance_mm": 26.71,
+   "locality_limit_mm": 24.0,
+   "cause": "no position after stage 7 (open re-placement); face-aware re-search, Revision 7",
+   "timing_check": "no clock input and no RC timing node on its nets (SN74HC00 gates only)",
+   "state": "ACCEPTED (interim) for the link era (MC04-S8 Revision 8; applied when the links replace the GH headers)",
+   "revisit": "Gate A, when the stack links replace the GH headers",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s8-open-replacement-native-brief-20261122.md, Revision 8 item 1",
+   "grown_nets": [
+    {
+     "net": "/E5/CURVED",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 36.81,
+     "capacitance_estimate_pF": 15.78
+    },
+    {
+     "net": "/E5/HOLD_ENABLE",
+     "kind": [
+      "logic output"
+     ],
+     "added_run_estimate_mm": 56.25,
+     "capacitance_estimate_pF": 23.13
+    },
+    {
+     "net": "/E5/HOLD_N",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 39.81,
+     "capacitance_estimate_pF": 25.01
+    },
+    {
+     "net": "/E5/L069",
+     "kind": [
+      "logic output"
+     ],
+     "added_run_estimate_mm": 36.81,
+     "capacitance_estimate_pF": 15.78
+    },
+    {
+     "net": "/E5/L070",
+     "kind": [
+      "logic output"
+     ],
+     "added_run_estimate_mm": 56.25,
+     "capacitance_estimate_pF": 15.78
+    },
+    {
+     "net": "/E5/READY",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 4.12,
+     "capacitance_estimate_pF": 32.73
+    },
+    {
+     "net": "/E5/RISE",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 26.08,
+     "capacitance_estimate_pF": 27.27
+    },
+    {
+     "net": "/E5/TOP_RAW",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 6.46,
+     "capacitance_estimate_pF": 17.21
+    }
+   ],
+   "routing_note": "HC logic drives the load; the re-route keeps these edges away from analog high-impedance nodes",
+   "run_estimate_basis": {
+    "pF_per_mm": 0.2,
+    "route_factor": 1.5,
+    "source": "scripts/stack/studies/mc04_s8_replacement/result-r7.json"
+   }
   }
  ]
 }
