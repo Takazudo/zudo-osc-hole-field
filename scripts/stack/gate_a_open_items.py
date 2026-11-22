@@ -33,10 +33,13 @@ def read(path):
 
 
 def overlaps(rec, links):
-    """Overlap (dx, dy) of a displaced courtyard with each keep-out rectangle of a link on its board."""
+    """Overlap (dx, dy) of a displaced courtyard with each keep-out rectangle of a link on its board. A dissolved link
+    (`gone`) holds no keep-out and is not cited (MC04-S9 DS-145 item 6)."""
     c = rec['courtyard']
     out = []
     for l in links:
+        if l.get('gone'):
+            continue
         g = l.get('geometry') or {}
         if rec['board'] == 'K':
             keys = [k for k in g if k.startswith('K_') or k == 'slot']

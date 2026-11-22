@@ -34,5 +34,21 @@ class GateAOpenItems(unittest.TestCase):
         self.assertIn('GA-FIX-JL-P-4-P-SLV-L1', self.ids)
 
 
+    def test_dissolved_links_are_not_cited(self):
+        gone = {l['id'] for l in json.loads((ROOT / ga.GATE).read_text())['links'] if l.get('gone')}
+        self.assertIn('P-K-P-L03.02.02.01', gone)
+        for i in self.doc['items']:
+            for o in i.get('overlaps', []):
+                self.assertNotIn(o['link'], gone, i['id'])
+        u8409 = next(i for i in self.doc['items'] if i['id'] == 'GA-REPLACE-K-U8409')
+        self.assertEqual({o['link'] for o in u8409['overlaps']}, {'P-K-P-L03.01'})
+
+    def test_overlaps_skips_a_gone_link(self):
+        rec = {'board': 'K', 'courtyard': [0.0, 0.0, 2.0, 2.0]}
+        geo = {'K_connector': [1.0, 1.0, 3.0, 3.0]}
+        live = {'id': 'A', 'front_board': 'P', 'geometry': geo}
+        self.assertEqual([o['link'] for o in ga.overlaps(rec, [live, dict(live, id='B', gone=True)])], ['A'])
+
+
 if __name__ == '__main__':
     unittest.main()
