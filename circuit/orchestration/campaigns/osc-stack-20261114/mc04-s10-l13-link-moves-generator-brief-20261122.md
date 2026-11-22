@@ -100,3 +100,66 @@ Stop, report and change nothing further on any of these:
 
 No second attempt without a ruling, no supplier contact, and no order files. Push and give the full hand-back with the
 report `mc04-s10-report-20261122.md`.
+
+## Revision 1: four holds, the gate rows canonical, and the overlay rules (DS-148, 2026-11-22)
+
+The S10 stop (`f4b61ed2`, report `mc04-s10-report-20261122.md`) was correct. Replaying the gate with the three holds
+let the not-yet-dissolved P-K-P-L03.02.02.01 take L15.02.01.01's slot. The design authority ruled as follows.
+
+### Holds (replaces "Allowed changes" item 1)
+
+- P-K-P-L13.01.01.01: slot (201.17, 197.42) +y.
+- P-K-P-L13.01.01.02: slot (176.0, 196.25) −y. This is pair 8, which keeps R5257 at 7.93 mm on B.
+- P-K-P-L13.01.02.01: slot (159.0, 193.0) −y.
+- P-K-P-L15.02.01.01: slot (193.0, 213.0) +y, which is its recorded pose.
+- Up to three further holds at a live link's recorded pose, when the replay moves that link. Each is listed with its
+  cause; no new ruling is needed. A hold at any other pose needs a ruling.
+
+Take the exact values from `result-a2.json` (pair 8, U5210 candidate 0) and from the record. P-K-P-L03.02.02.01 must
+still end dissolved, with `/M4B/1_REMOTE` and `/M4B/2_REMOTE` riding on P-K-P-L13.01.01.02 inside the 45 mm limit.
+
+### The reviewed input is a set of overlay rules (replaces "Allowed changes" item 2)
+
+- **Gate rows** (`link-gate.json` `replacement`) are canonical for every displaced footprint, including the new and
+  knock-on rows. They are the DS-88/DS-97 proof of room that check 5 reads.
+- **The link-era record is an overlay.** It holds a block pose only in three cases:
+  1. an IC the gate leaves without a position;
+  2. an IC whose gate pose breaks the block rule (a decoupler on the other face, or farther from its IC than before);
+  3. a part under a ruled condition (R5257, R5259, RV4503, RV8407).
+
+  Where an overlay entry exists, it wins for that IC and its block members, and the record shows both poses. The
+  generator derives which ICs need an entry and writes the reason for each.
+- **Agreement:** the overlay plus the gate rows it does not replace have no courtyard conflict (`member_faces.py` over
+  every overlay block), and every overlay pose is legal in the Field built from the new gate record.
+- **U4222, U4223 and U4537** take their gate poses unless the block rule fails. In that case, search a block pose under
+  the S8 rules and add it to the overlay. The S9-A2 poses are evidence of room, not the record.
+- **RV4503, RV8407 and RV2310:** the gate rows stand if they are on the rear face. Otherwise, overlay them on the rear
+  face.
+- **Knock-on rows** are accepted as generated. Report each with its distance from its own origin and its step, and
+  recompute every figure in `locality-acceptances.json`. R5259 is searched on face B first.
+
+### Added acceptance
+
+- Every unheld live link is byte-equal to `8243acdf` in centre, slot and direction. L03.02.02.01 ends dissolved, with
+  the same riders and hosts.
+- U5209 and U5210 are not displaced. The ICs without a position are exactly U1415, U5110 and U8409, plus any the overlay
+  resolves.
+- A table of the row changes (the stop showed 20 removed, 22 new and 15 shifted), regenerated, with face, distance and
+  step.
+- For each newly displaced IC: decoupler face and distance before and after, and whether it has a "gate pose" or an
+  "overlay pose", with the reason.
+- The ten existing overlay poses are re-checked in the new Field. A pose made illegal only by a knock-on row may be
+  searched again once under its own ruled rules, with its acceptance figures recomputed.
+- All trimmers in changed rows are on the rear face.
+
+### Added stop conditions
+
+Stop on any of these:
+- a fourth recorded-pose hold beyond the three allowed is needed, or a hold at a non-recorded pose;
+- the ways-out or consolidation result changes for any link other than through the holds;
+- an overlay search finds no pose within 24 mm, or a re-searched pose worsens its recorded acceptance figure;
+- a worse figure in `locality-acceptances.json`;
+- a newly displaced part is an input-buffer IC or a part on a `*_FB`, `*_SUM` or `*_SENSE` node.
+
+Everything else in the brief stands: the regeneration order, c6 and checks 3 and 4 reported as computed, the workload
+table against DS-128, `NOT RUN` for oracle steps, the independent review, and no second attempt without a ruling.
