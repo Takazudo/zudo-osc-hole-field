@@ -118,5 +118,24 @@ class KeepoutLast(unittest.TestCase):
                     self.assertFalse(fp.keepout_entered(p['courtyard_mm'], c, r), p['ref'])
 
 
+class GeneratorOrder(unittest.TestCase):
+    """Revision 14 item 3: the order rule at generator level. A fresh floorplan build equals the committed one, and the
+    same build in plain reference order (the rule removed) moves parts outside the four keep-out-displaced ones."""
+
+    def test_fresh_build_equals_the_committed_floorplan(self):
+        self.assertEqual(fp.dumps(fp.build()) + chr(10), fp.OUT.read_text())
+
+    def test_reference_order_moves_other_evicted_parts(self):
+        committed = {p['ref']: p for p in json.loads(fp.OUT.read_text())['placements']}
+        saved = fp.evicted_order
+        fp.evicted_order = lambda evicted, keepout_last: sorted(evicted)
+        try:
+            rebuilt = {p['ref']: p for p in fp.build()['placements']}
+        finally:
+            fp.evicted_order = saved
+        moved = sorted(r for r, p in rebuilt.items() if (p['x_mm'], p['y_mm'], p['side']) != (committed[r]['x_mm'], committed[r]['y_mm'], committed[r]['side']))
+        self.assertTrue(set(moved) - {'D4101', 'D4102', 'R8425', 'R8426'}, moved)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,6 +1,7 @@
 """MC04-S7 Revision 11: check.py's fixing_reach misses are exactly the 108 baseline pairs plus the four ruled
 interim-GH exceptions, with the reach limits, the fixing list and the declared flags unchanged (no KiCad, no network)."""
 import json
+import subprocess
 import sys
 import unittest
 from pathlib import Path
@@ -53,7 +54,12 @@ class FixingReachPin(unittest.TestCase):
         self.assertEqual((DETAIL['reach_mm'], DETAIL['exception_reach_mm']), (40, 50))
         self.assertEqual(DOC['candidate']['fixings'], CTX.reference['fixings'])
         declared = sorted(f['id'] for f in DOC['candidate']['fixings'] if f['declared'])
-        self.assertEqual(len(declared), REC['limits']['declared_fixings'])
+        # Revision 14 item 8: the declared fixings of the candidate at the Revision 11 ruling (69461dff), not the report
+        src = json.loads(subprocess.run(['git', '-C', str(fre.ROOT), 'show', '69461dff:design/stack/geometry/stack-candidate.json'],
+                                        capture_output=True, check=True, text=True).stdout)
+        self.assertEqual(declared, sorted(f['id'] for f in src['candidate']['fixings'] if f['declared']))
+        self.assertEqual(len(declared), 30)
+        self.assertEqual(REC['limits']['declared_fixings'], 30)
         self.assertFalse([d for d in declared if d.startswith('SLV-')], 'option (b) is not applied')
 
     def test_option_b_is_recorded_not_applied(self):

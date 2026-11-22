@@ -78,7 +78,14 @@ for hn in pc['harnesses']:
                      {h['id'].rsplit('-', 1)[0] for h in out['new_headers']}, 'drivers': dist})
 out['new_nets'] = rows
 out['headers'] = {'by_board': pc['headers_by_board'], 'jack_sites_used': pc['jack_sites_used'], 'status': pc['status']}
-Path(__file__).with_name('tables.json').write_text(json.dumps(out, indent=1))
+TABLES = Path(__file__).with_name('tables.json')
+if '--check' in sys.argv[1:]:
+    # MC04-S7 Revision 14 item 4: the committed tables equal a fresh build
+    if not TABLES.exists() or TABLES.read_text() != json.dumps(out, indent=1):
+        raise SystemExit('tables.json is stale; regenerate with: python3 scripts/stack/studies/mc04_s7_r4/tables.py')
+    print('tables.json current')
+    raise SystemExit(0)
+TABLES.write_text(json.dumps(out, indent=1))
 print(json.dumps(out['blocks'], indent=0))
 print(json.dumps(out['k_ics']))
 print('moved parts', len(moved), [m['ref'] for m in out['moved_parts'][:60]])
