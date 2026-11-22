@@ -76,3 +76,30 @@ too. The finding that the regions are 40–68 % full and fail on fragmentation, 
    - for U4647, which LED drivers share the package and how far each LED is from the new pose.
 4. Add tests for the rotation search and the widened displacement rule. Commit with `--check`, push, and stop at the
    checkpoint with `mc04-s8-a2-report-20261122.md`.
+
+## Revision 2: rule three more ICs; search block-on-block moves for the last four (2026-11-22)
+
+Part A2 (`95bdafd5`, report `mc04-s8-a2-report-20261122.md`) is accepted as a study.
+
+1. **U4524** joins the Part B set: F, 90°, 18.34 mm, displacing R4545, R4586 and R4589 as studied.
+2. **JL:U1318** is accepted under the Revision 2 input-buffer conditions at B 90°, 29.09 mm. Its SENSE run is an estimated
+   13.4 pF (66.8 mm), the input passives stay at the cell end, and the run must be ground-flanked. Record it in
+   `locality-acceptances.json` with these figures.
+3. **K:U4417** (logic, no clock or RC timing node) is accepted as an interim-GH locality exception at B 90°, 48.84 mm,
+   with its 8 grown nets and their 23–38 pF estimates recorded, and listed for Gate A. HC logic drives that load; the
+   cost is edge rate and crosstalk, which the re-route must keep away from analog high-impedance nodes.
+4. **The far poses of U5209, U5210, U8409 and U4647 are not accepted.** They add about 37–144 mm to summing,
+   feedback, rectifier-feedback and high-impedance sense nodes (up to 36.5 pF), and U4647 would put D1801 119 mm from
+   its driver. Those nodes are where length causes instability, noise pickup and offset, so an interim exception is not
+   enough.
+5. **Part A3 study (no board change): block-on-block moves for these four.** Apply every pose ruled so far (items 1–3
+   and Revision 1) first. Then allow a target IC to displace up to two other IC blocks, provided:
+   - each displaced block moves rigidly within 24 mm of its own position, keeps its own block rules (bypass on face and
+     no farther than before, cell passives no farther than before), and is not an input buffer that would leave the
+     Revision 2 conditions;
+   - the panel hardware, through-hole jacks, locked parts, link slots, sleeves and keep-outs stay where they are;
+   - rotations 0/90/180/270° and both faces are allowed for every moving block.
+   Report each target's best result with every block moved and the target's distance. For any target still beyond
+   24 mm, give the smallest set of obstacles that would have to move, by type (jack, slot, sleeve, locked part), so the
+   remaining options (a slot move, a package split, or a partition change) can go to the owner with numbers.
+6. Add tests for the block-on-block rule. Commit with `--check`, push, and stop with `mc04-s8-a3-report-20261122.md`.
