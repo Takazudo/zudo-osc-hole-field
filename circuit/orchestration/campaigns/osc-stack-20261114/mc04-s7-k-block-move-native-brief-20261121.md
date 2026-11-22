@@ -277,3 +277,20 @@ K move under 19 mm, the decouplers at 2.52–2.54 mm, and a test that fails on a
 3. **Then run Part B (steps 7–9) without another checkpoint**, as long as items 1 and 2 pass. The pass and stop
    conditions in steps 7 and 8 still apply, and so does the `--max-share 25` stop for copper stripping. Part B
    ends with a full hand-back and an independent review before anything else.
+
+## Revision 8: defer the pre-existing JL-P header conflict and run Part B (2026-11-22)
+
+Item 1 of Revision 7 (`8471eedf`, report `mc04-s7-r7-report-20261122.md`) is accepted:
+- U5112 and U4646 are under the input-buffer conditions, at 17–25 pF estimated (ASSUMED 0.20 pF/mm, 1.5 × HPWL);
+- the input passives stay at the jack end;
+- U5113 is the W2 indicator and stays an interim-GH exception.
+
+Item 2: deferred, none of (a)–(c). The JL-P utility header 4 conflict with sleeve SLV-L1 predates this stage, and
+every relocation trades it for a new displacement or a loom re-route. GH headers are the interim interconnect that
+Gate A replaces with the stack links. Keep the `KNOWN_FIXING_CONFLICTS` pin, so the fixing check stays exact, with
+its reason pointing to this ruling. Record the conflict in the stage report as **OPEN for the Gate A mechanical
+review**, with the five candidate sites and their costs from the Revision 7 report. Do not move the header or the
+sleeve in this stage.
+
+Now run Part B (steps 7–9) with their pass and stop conditions, and the `--max-share 25` stripping stop. Then
+push and give the full hand-back.
