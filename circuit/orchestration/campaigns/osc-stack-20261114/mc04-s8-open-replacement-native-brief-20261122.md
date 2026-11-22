@@ -217,3 +217,28 @@ Fix the following, then give a short hand-back. This closes stage 8.
    field instead of `distance_from_slot_mm`. Count only re-placement rows in `re_placement_status`.
 8. **board_conflicts.** Correct the A5 report: 10 of the 13 ruled ICs overlap a GH header (plus U4502), and U4417,
    U4526 and U4623 do not. Add U5210's A5 pose to `board_conflicts.py` so its evidence covers all 14.
+
+## Revision 7: face-aware re-search of the four mixed-face blocks and the U5210/U8409 neighbourhood (2026-11-22)
+
+Revision 6 (`1fbb22ea`, `e2d40451`, report `mc04-s8-r6-report-20261122.md`) is accepted; all eight fixes are done. The
+new mixed-face finding is a real defect in the S8 search, and finding it was right. Revision 1–4 rulings accepted poses
+"as studied". Those poses were never valid for U1415, U5110, U5209 and U5210, because the search put their
+other-face passives on the block's face.
+
+1. **Face-aware search.** Each block member keeps its own face relative to the block's IC. When the block flips face,
+   every member flips with it. Members on either face are checked against the obstacles on their own face. Add a test
+   with a mixed-face block, where an obstacle that only the other-face member hits must reject the pose.
+2. **Re-search under the same rules.** Re-run U1415, U5110, U5209 and U5210 with the face-aware search under the rules
+   each one was ruled with:
+   - U1415 and U5110: the Revision 1 class (iii) rules, plus the A2 rotation and displacement;
+   - U5209: the Revision 3 R8263 relaxation;
+   - U5210, U8409 and the neighbourhood: the A5 joint search.
+   Apply the 10 confirmed poses first. Also re-check those 10 with `member_faces.py`, and treat any that now fails the
+   same way.
+3. **What I accept without another ruling.** A new pose that lands within the same rules replaces the old one in the
+   record, with the reason "face-aware re-search, Revision 7". Any block that no longer lands goes back to OPEN (link
+   era), with its proof on the stated grid and its cheapest option: distance, which blocks move beyond 24 mm, and run
+   estimates.
+4. **U8409 option.** Re-run the 30 mm option search face-aware, and update the cheapest option and its run estimates.
+5. Regenerate the record, the gate, the Gate A list and the reports. Every `--check` and all stack tests must pass.
+   Push and give a short hand-back. Stage 8 then closes after a targeted review.
