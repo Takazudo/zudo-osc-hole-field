@@ -448,3 +448,43 @@ computed result. Run 2 confines the change to the four parts the sleeve keep-out
 3. **Then run Revision 12 items 3–6 as written:** the JR-only step 7 redo, the gate, c6, fixings and procedure
    regeneration with `fixings_check` and `test_fixings` passing, K:U4129 on the open re-placement list, and the
    stale-test split against `8ecc25fe`. Push and give the full hand-back.
+
+## Revision 14: Part B accepted with fixes (2026-11-22)
+
+The independent review of `9c87d534` through `063aa6d6` accepts Part B with fixes. Confirmed:
+- the link-cluster baseline (rebuilt from `93197a3e`) and the 32 stable clusters, with the JL-L02 hold unedited;
+- the reach pin, exactly 108 + 4 by pair ID, with the limits and the 30 declared fixings unchanged;
+- c6 rebinding only geometry and output, with all 8 c6 link records byte-identical;
+- the floorplan moving only D4101, D4102, R8425 and R8426;
+- the netlist distances in the acceptances;
+- the JR redo (segments, vias and zones identical);
+- the addendum items;
+- the stale-test split.
+No test was weakened or skipped. Fix the following, then give a short hand-back. This closes stage 7.
+
+1. **Open re-placements are 15, not 14.** The r13 JR-K-JR-L01 slot move displaces JR:U4647 (SOIC-14, B, old position
+   (296.68, 52.47)), which has no position. Add it to the open list for the re-route with its overlap dimensions,
+   and report the other effects of the same move: front B also displaces C4675, D4402, D4514, D4515, D4517, D4601
+   and R4612; K C4321 is newly displaced; U4324 and U4329 turn to F; and the totals shift (K B 270→269, K F 65→64,
+   turned 7→9, ICs with no position 14→15).
+2. **Stale drawing.** Regenerate `design/partition/board-stack-candidate.svg` so `partition35_drawing.py --check`
+   passes, and run `scripts/partition/regen.sh --check` and `scripts/checks/regen-all.sh --check` to confirm
+   nothing else is stale.
+3. **The order rule needs a generator-level test.** Today, swapping `evicted_order(...)` for `sorted(evicted)` at
+   `partition35_floorplan.py:546` still passes all 7 sleeve tests. Add a test that drives `apply_adopted_pins` (or
+   compares a fresh floorplan build against the committed one) and fails under that mutation.
+4. **Stale study table.** Regenerate `scripts/stack/studies/mc04_s7_r4/tables.json` for the four moved parts, and
+   give `tables.py` a `--check` mode.
+5. **Redo record.** Correct R8425 and R8426 `before_kicad` to F.Cu, −90, as on the `55a879af` board. Either commit
+   the raw per-item DRC JSON behind the "132/129 re-keyed silk items" note, or reduce the note to what the summaries
+   show.
+6. **Report the slot drift.** `stable_clusters` keeps IDs and members, not slots, and new pairs join within the 35 mm
+   gate radius. Both are accepted as built. State them in the stage report, and list JR-L03 (moved in r11) and
+   JR-L01 (moved in r13) as slot drift for the Gate A review.
+7. **Pre-existing failures.** List `test_partition35_evicted_cap.py::test_d4309_is_within_the_cap_or_reported` and
+   the 13 failures in `scripts/stack/{mechanics,power_posts,sub_toggle,thermal,trimmers}` as PRE-EXISTING (failing
+   since at least `8ecc25fe` or `69461dff`), and narrow the report's "tests pass" claim to match.
+8. **Gate A open list.** Give `design/stack/gate-a-open-items.json` a small generator with `--check`, or a test that
+   checks it against its sources. Add the four interim-GH reach exceptions by ID, the 15 open re-placements, the
+   interim-GH locality exceptions and the slot drift from item 6. Rebuild the declared-count assertion in
+   `test_fixing_reach_exceptions` from the `69461dff` source, not from the current report.
