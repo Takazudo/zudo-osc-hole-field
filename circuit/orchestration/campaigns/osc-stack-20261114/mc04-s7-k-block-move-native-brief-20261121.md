@@ -294,3 +294,35 @@ sleeve in this stage.
 
 Now run Part B (steps 7–9) with their pass and stop conditions, and the `--max-share 25` stripping stop. Then
 push and give the full hand-back.
+
+## Revision 9: stable GH header assignment, then finish Part B (2026-11-22)
+
+The Revision 8 stop (`bb88acdc`, report `mc04-s7-r8-report-20261122.md`) is accepted as a correct stop: the
+consecutive 4-net chunking in `connector_packing35` re-chunks every header after the first changed net, so 82
+unchanged sites would carry different pin nets (322 moved signals) and the refdes would shift. Option (a) is
+ruled. Option (b), re-routing all 82 headers, is not.
+
+1. **Existing headers are stable.** Against the `6093081c` baseline, every header whose site still exists keeps
+   its site, its refdes and every pin net whose net still crosses. Add the baseline assignment as a retained
+   input (a JSON record with its source commit and SHA256), not as a value recomputed from the current netlist.
+2. **Freed pins follow the existing rules.** A pin whose net no longer crosses becomes NC, unless the existing
+   return/ground rule for that header class requires AGND at that position; then it becomes AGND. State which rule
+   applied to each freed pin in the report.
+3. **New nets fill the 5 new headers first, then freed pins.** Respect the existing signal-class grouping and the
+   ground/return contact rule. Assignment order is deterministic (sorted by net name within class). Report every
+   new net with its header, pin and the header's distance to the net's driving part.
+4. **Refdes are site-stable.** Existing headers keep their refdes; new headers take the next unused numbers in a
+   deterministic site order. A refdes is never reused for a different site.
+5. **Tests.** Add tests that fail if (i) any baseline header changes site or refdes, (ii) any still-crossing net
+   changes header or pin, (iii) a freed pin violates the NC/AGND rule, or (iv) two runs give different
+   assignments. Keep `place.py`'s "board differs from source footprint origin" check as it is; the stable
+   assignment must satisfy it, not bypass it.
+6. **K region E5 overflow (R4547).** Resolve it by placing R4547 near its cell partner inside E5, or by a stated
+   E5 region change with dimensions, under the near-slot rules of Revision 6. If neither fits, stop and report
+   the overflow with dimensions and the candidates.
+7. **Then re-run Part B steps 7–9** with the same pass and stop conditions: sync and place JL, JR and K; strip
+   conflicting copper with the `--max-share 25` stop; DRC with no new non-unconnected errors; readiness 0;
+   regenerate the link gate and attempt DA-03 c6 again (signals change, so a fresh c6 result is required, with
+   the historical object still verified from its snapshot); regenerate fixings and the threading procedure; and
+   run every stack test. The JL-P header 4 / SLV-L1 conflict stays OPEN for Gate A as ruled in Revision 8.
+   Push and give the full hand-back, followed by an independent review.
