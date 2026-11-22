@@ -1,12 +1,12 @@
-# Threading procedure on the record of the room study: DONE on paper, 61 links in 13 steps, K lowered in 9 stages with at most 17 ends at one height
+# Threading procedure on the record of the room study: DONE on paper, 62 links in 13 steps, K lowered in 9 stages with at most 17 ends at one height
 
 Status: paper procedure on unvalidated drafts; no fit, no strength and no proven assembly. ST-08 part 2 (DS-115), read from the record of ST-02 a8 part 2 (DS-110). Places are named by the nearest panel control of the placement lock, seen from the front of the panel, with the panel coordinates (x from the left edge, y from the top edge, mm) beside them; seen from behind, left and right are swapped. Every figure is a paper result: the page claims no fit, no strength and no proven assembly.
 
-## Every one of 61 links has a row; no slot is covered, no end is blocked and no cable is shorter than its path
+## Every one of 62 links has a row; no slot is covered, no end is blocked and no cable is shorter than its path
 
 Screened per slot: the front connectors, front tails and slots of every other link, the 22 fixing keep-outs, the adapters, the tabs, the kept selectors and sub toggles, and the own front board under the fold. The smallest slack is 0.6602 mm.
 
-## The work takes 13 steps; all 61 front ends are plugged and locked before K comes down
+## The work takes 13 steps; all 62 front ends are plugged and locked before K comes down
 
 1. Solder the parts of JL, JR, P and the three adapters. Every lead on the rear faces of JL, JR, P and the adapters is cut to 1 mm or less when the part is soldered (DS-88). (80 parts; P 49, JL 19, JR 11, O3 1, listed below)
 2. Solder the panel hardware with the panel as the fixture, and fit the P unit with EL on its six rigid pairs (DS-43).
@@ -14,24 +14,24 @@ Screened per slot: the front connectors, front tails and slots of every other li
 4. Before the panel goes on, push an M3 × 25 mm screw (head at most 5.5 mm, not countersunk) through each sleeve hole from the front of its board and hold the head down with a strip of tape: (74, 28) on JL, (244, 24) on JR, (93, 276) on P, (244, 230) on P through the 7 mm access hole of EL (DS-76). (4 parts)
 5. Slip a printed sleeve over each screw: long (18.8 mm) on JL and JR, short (16.8 mm) on P. (4 parts)
 6. Put JL, JR and the P unit in the panel, and the three adapters on their selectors.
-7. Plug the front end of every cable into its front connector and close the lock by hand only at the center of the actuator. Do not insert tools or fingernails into the connector. Every front end is plugged and locked before K comes down. (61 locks; JL 9, JR 7, P 42, O1 1, O3 1, O5 1)
-8. Fold each cable upward under its slot so that its free end stands up from the board. (61 cables)
-9. Lower K over the 18 posts in 9 stages, highest end first, guiding the cable ends through their slots stage by stage (largest stage: 17 ends at 23.63 mm), then the four screw ends through K at 6.4 and 4.4 mm. (65 ends)
+7. Plug the front end of every cable into its front connector and close the lock by hand only at the center of the actuator. Do not insert tools or fingernails into the connector. Every front end is plugged and locked before K comes down. (62 locks; JL 10, JR 7, P 42, O1 1, O3 1, O5 1)
+8. Fold each cable upward under its slot so that its free end stands up from the board. (62 cables)
+9. Lower K over the 18 posts in 9 stages, highest end first, guiding the cable ends through their slots stage by stage (largest stage: 17 ends at 23.63 mm), then the four screw ends through K at 6.4 and 4.4 mm. (66 ends)
 10. Fasten K's screw at every post first. (18 parts)
 11. Put a nut on each of the four sleeve screws and turn it with the fingers until it is snug. No tool and no thread lock. A washer only where the screw end still comes through the nut with it. (4 parts)
-12. Fold each cable end onto K's rear face, insert it into its K connector and close the lock by hand only at the center of the actuator; never press K with the palm (DS-66). Do not insert tools or fingernails into the connector. At the 12 connectors named below, the other hand holds K's edge beside the connector while its lock is closed (DS-87). (61 locks)
-13. Before power: look at every one of the 122 locks, closed and square, and check the continuity of every link (DS-43). (122 locks)
+12. Fold each cable end onto K's rear face, insert it into its K connector and close the lock by hand only at the center of the actuator; never press K with the palm (DS-66). Do not insert tools or fingernails into the connector. At the 12 connectors named below, the other hand holds K's edge beside the connector while its lock is closed (DS-87). (62 locks)
+13. Before power: look at every one of the 124 locks, closed and square, and check the continuity of every link (DS-43). (124 locks)
 
 ## Leads are cut at 80 parts: P 49, JL 19, JR 11, O3 1
 
 - P: RV1001, RV1002, RV1004, RV1007, RV104, RV1101, RV1103, RV1104, RV1105, RV1107, RV1202, RV1203, RV1204, RV1205, RV1207, RV1305, RV1307, RV1405, RV1407, RV1505, RV1507, RV204, RV207, RV307, RV404, RV407, RV504, RV505, RV507, RV602, RV703, RV706, RV803, RV805, RV807, RV902, RV904, RV905, RV907, SW1302, SW1403, SW1502, SW1503, SW1701, SW1703, SW1802, SW303, SW403, SW503.
 - JL: J207, J208, J301, J302, J304, J305, J308, J309, J310, J504, J505, J606, J607, J608, J704, J705, J801, J802, J803.
-- JR: J1204, J1205, J1505, J1506, J1508, J1509, J1510, J1602, J1603, J1708, J1709.
+- JR: J1201, J1202, J1204, J1205, J1508, J1509, J1510, J1601, J1602, J1708, J1709.
 - O3: SW301.
 
 The rule for the bench is the one sentence of step 1; the list says where it matters. 89 entries over the links count a part once per tail that crosses it (80 parts).
 
-## K comes down over 61 ends in 9 stages, 2 mm apart at the least; the largest stage guides 17 ends at 23.63 mm
+## K comes down over 62 ends in 9 stages, 2 mm apart at the least; the largest stage guides 17 ends at 23.63 mm
 
 Before K comes down each cable is folded upward under its slot (bend radius 2.4 mm) and stands on its front board. Its free end stands at the cable length less the 4 mm insertion, less the run to the slot, plus 1.0301 mm from the bend, R (2 - pi/2). It meets K's front face when K is that height less the gap above its seat. The heights fall into stages by themselves, because the cable lengths and the tail extensions come in steps of 2 mm. The highest end comes first; the posts meet K last, at 0 mm, after the four screw ends at 6.4 mm (short sleeves) and 4.4 mm (long sleeves).
 
@@ -40,10 +40,10 @@ Before K comes down each cable is folded upward under its slot (bend radius 2.4 
 | 1 | 33.63 | 1 | P 1 | P-K-P-L06.02 |
 | 2 | 27.63 | 1 | P 1 | P-K-P-L03.01 |
 | 3 | 23.63 | 17 | P 17 | JL-P-K-P-L01.01.01.01, P-K-P-L01.01.02, P-K-P-L01.02.01, P-K-P-L03.02.01, P-K-P-L04.02.01.02, P-K-P-L05.01.01, P-K-P-L07, P-K-P-L08, P-K-P-L10.01.01.01, P-K-P-L11.01.01.01, P-K-P-L11.01.01.02, P-K-P-L11.01.02.01, P-K-P-L13.01.02.01, P-K-P-L15.01.01.01, P-K-P-L15.01.01.02, P-K-P-L15.01.02.01, P-K-P-L15.02.01.01 |
-| 4 | 21.63 | 12 | JL 6, JR 4, P 2 | JL-K-JL-L01, JL-K-JL-L03, JL-K-JL-L05, JL-K-JL-L06, JL-K-JL-L07, JL-P-K-JL-L01, JR-K-JR-L01, JR-K-JR-L02, JR-K-JR-L05, JR-K-JR-L06, P-K-P-L14.01.02.02, P-K-P-L14.02.01.02 |
-| 5 | 19.63 | 7 | JR 2, P 5 | JR-K-JR-L03, JR-K-JR-L07, P-K-P-L01.01.01, P-K-P-L10.02, P-K-P-L12.02.01.01, P-K-P-L13.01.01.01, P-K-P-L15.01.02.02 |
-| 6 | 17.63 | 8 | JL 1, P 4, O1 1, O3 1, O5 1 | JL-K-JL-L02, JL-P-K-P-L01.01.01.02, O-K-O1, O-K-O3, O-K-O5, P-K-P-L02.01.01, P-K-P-L06.01.02.01, P-K-P-L13.01.01.02 |
-| 7 | 15.63 | 3 | JR 1, P 2 | JR-K-JR-L04, P-K-P-L12.01.01.02, P-K-P-L14.01.01.02 |
+| 4 | 21.63 | 12 | JL 7, JR 3, P 2 | JL-K-JL-L01, JL-K-JL-L03, JL-K-JL-L05, JL-K-JL-L06, JL-K-JL-L07, JL-K-JL-L09, JL-P-K-JL-L01, JR-K-JR-L03, JR-K-JR-L05, JR-K-JR-L06, P-K-P-L14.01.02.02, P-K-P-L14.02.01.02 |
+| 5 | 19.63 | 6 | JR 1, P 5 | JR-K-JR-L07, P-K-P-L01.01.01, P-K-P-L10.02, P-K-P-L12.02.01.01, P-K-P-L13.01.01.01, P-K-P-L15.01.02.02 |
+| 6 | 17.63 | 9 | JL 1, JR 1, P 4, O1 1, O3 1, O5 1 | JL-K-JL-L02, JL-P-K-P-L01.01.01.02, JR-K-JR-L02, O-K-O1, O-K-O3, O-K-O5, P-K-P-L02.01.01, P-K-P-L06.01.02.01, P-K-P-L13.01.01.02 |
+| 7 | 15.63 | 4 | JR 2, P 2 | JR-K-JR-L01, JR-K-JR-L04, P-K-P-L12.01.01.02, P-K-P-L14.01.01.02 |
 | 8 | 13.63 | 4 | JL 1, P 3 | JL-K-JL-L08, P-K-P-L10.01.02, P-K-P-L12.02.01.02, P-K-P-L14.01.02.01 |
 | 9 | 11.63 | 8 | JL 1, P 7 | JL-K-JL-L04, P-K-P-L04.01.01.01, P-K-P-L04.01.01.02, P-K-P-L04.01.02.01, P-K-P-L04.02.01.01, P-K-P-L06.01.01, P-K-P-L06.03.01, P-K-P-L12.01.02.02 |
 
@@ -51,18 +51,18 @@ Before K comes down each cable is folded upward under its slot (bend radius 2.4 
 
 Across: slot width (tail width + 1 mm) less the tail width at its +0.08 mm tolerance (DS-63). Along: the 1.5 mm slot less the 0.33 mm stiffened tail (0.3 +/- 0.03 mm on the LX 0.5 mm cable drawing). The same at every slot, because the slot rule follows the tail width.
 
-## That one person guides 61 ends and that a folded cable keeps its fold: NOT RUN
+## That one person guides 62 ends and that a folded cable keeps its fold: NOT RUN
 
 Paper gives the heights for an end that stands straight. Whether a 40 to 60 mm stock cable stands, bows or falls over, whether one person can guide 17 ends at one height with K in the other hand, and whether a fold stays where it was made are not shown. The cheap way to see them is the handling trial of owner item 4 of c1: one stock 0.5 mm cable and one printed plate with a 1.5 mm slot.
 
-## After K is seated, 61 ends are folded onto K's rear face, inserted and locked; 12 connectors need the holding hand
+## After K is seated, 62 ends are folded onto K's rear face, inserted and locked; 12 connectors need the holding hand
 
 Fold each end down onto K's rear face toward its K connector (the run on K is in the link table), push it in by the 4 mm insertion and close the lock by hand only at the center of the actuator, never with the palm on K. Do not insert tools or fingernails into the connector. At the connectors below, the other hand holds K's edge beside the connector while its lock is closed (DS-87).
 
 | Link | K connector beside | Panel coordinates | mm/N |
 | --- | --- | --- | --- |
 | O-K-O1 | the RANGE switch of O1 | (14.5, 202.45) | 0.2587 |
-| JR-K-JR-L01 | the RISE jack of E5 | (278.95, 48) | 0.271 |
+| JR-K-JR-L01 | the SIG jack of E5 | (284.05, 35.2) | 0.4287 |
 | P-K-P-L01.01.01 | the STAGE switch of E6 | (307.333, 212.742) | 0.417 |
 | P-K-P-L02.01.01 | the TRIG button of E5 | (286.75, 229.137) | 0.3528 |
 | P-K-P-L04.02.01.01 | the ATTEN ± pot of A03 | (252.5, 265.45) | 0.2668 |
@@ -74,7 +74,7 @@ Fold each end down onto K's rear face toward its K connector (the run on K is in
 | P-K-P-L14.01.02.02 | the BIAS pot of W1 | (176, 280.45) | 0.289 |
 | P-K-P-L14.02.01.02 | the BIAS pot of W1 | (193, 280.95) | 0.3267 |
 
-## Latch reach: 26 open, 3 open after the displacement, 32 NOT SHOWN
+## Latch reach: 26 open, 3 open after the displacement, 33 NOT SHOWN
 
 NOT SHOWN, because no footprint height is retained; the neighbours are exempt packages ASSUMED lower than the 2.0 mm connector body (DS-88). Nothing is claimed for them.
 
@@ -85,8 +85,9 @@ NOT SHOWN, because no footprint height is retained; the neighbours are exempt pa
 | JL-K-JL-L02 | the LP jack of F3 | C135, C142, C143, R109 |
 | JL-K-JL-L03 | the HP jack of F2 | C233, R2229, R8260 |
 | JL-K-JL-L08 | the GAIN CV jack of F1 | C2206, C2239, C2240, C2241, C2242, R8159 |
-| JR-K-JR-L01 | the RISE jack of E5 | C4321, C4343, C4346 |
-| JR-K-JR-L02 | the 1 jack of M4B | R4194 |
+| JL-K-JL-L09 | the BIAS CV jack of W2 | C232, C242, C243, D4504 |
+| JR-K-JR-L01 | the SIG jack of E5 | C4321, C4338, R4382 |
+| JR-K-JR-L03 | the BIP jack of E3 | C4312, R4317 |
 | JR-K-JR-L05 | the IN jack of A06 | C4632, Q4602 |
 | JR-K-JR-L06 | the WHITE jack of N1 | C4543, R4546 |
 | JR-K-JR-L07 | the OFFSET jack of A04 | C4652, R4697, R7514 |
@@ -128,11 +129,11 @@ NOT SHOWN, because no footprint height is retained; the neighbours are exempt pa
 
 A strip of tape over each head (point 7 of the spacer page; ASSUMED to hold). A threaded insert and a soldered nut on the front board are on no record and are not retained.
 
-## Taking K off and putting it back is 288 operations; after 10 openings the K ends stand at 11 of 20 insertions
+## Taking K off and putting it back is 292 operations; after 10 openings the K ends stand at 11 of 20 insertions
 
-Off: K-end locks opened 61, K ends withdrawn 61, nuts off 4, post screws out (K side) 18. Lift K straight up over the 61 cable ends and the four screw ends in the stages above, last stage first; the front ends stay plugged and locked at one insertion.
+Off: K-end locks opened 62, K ends withdrawn 62, nuts off 4, post screws out (K side) 18. Lift K straight up over the 62 cable ends and the four screw ends in the stages above, last stage first; the front ends stay plugged and locked at one insertion.
 
-On: steps 9 to 13 again: K ends inserted 61, K-end locks closed 61, post screws in (K side) 18, nuts on 4. Before power: every lock closed and square, no cable pinched under K or at a post, 18 post screws and 4 nuts present, continuity of every link.
+On: steps 9 to 13 again: K ends inserted 62, K-end locks closed 62, post screws in (K side) 18, nuts on 4. Before power: every lock closed and square, no cable pinched under K or at a post, 18 post screws and 4 nuts present, continuity of every link.
 
 K comes off at most 10 times (DS-63: 20 insertions SOURCED for the connector). The owner keeps the count without a change to a board: one line per opening in the instrument's log (date, reason, opening number), and a tally on a paper label inside the case. Replacing a link costs one opening of K, one stock cable and its two locks; that front connector then stands at 2 insertions.
 
@@ -140,20 +141,20 @@ K comes off at most 10 times (DS-63: 20 insertions SOURCED for the connector). T
 
 | Figure | Value |
 | --- | --- |
-| Cables | 61 (C26618 50 mm 18, C29534 50 mm 28, C32128 60 mm 3, C68390 50 mm 9, C81339 40 mm 3) |
-| Connectors | 122 |
-| Front ends per board | JL 9, JR 7, P 42, O1 1, O3 1, O5 1 |
-| Locks closed before K comes down | 61 |
-| Locks closed after K is seated | 61 |
+| Cables | 62 (C26618 50 mm 19, C29534 50 mm 28, C32128 60 mm 3, C68390 50 mm 9, C81339 40 mm 3) |
+| Connectors | 124 |
+| Front ends per board | JL 10, JR 7, P 42, O1 1, O3 1, O5 1 |
+| Locks closed before K comes down | 62 |
+| Locks closed after K is seated | 62 |
 | Fixings | 22 (18 posts, 4 sleeves) |
 | Fastener operations | 44 (36 post screws, 4 sleeve screws, 4 nuts) |
 | Parts with leads to cut | 80 |
-| Lengthened tails | 30 |
+| Lengthened tails | 31 |
 | Connectors with the holding hand | 12 |
 
 Checked against the record by `procedure.check`: links, connectors, locks, lengthened tails, lead entries, latch verdicts and the holding-hand count. A link without a row, a count that differs and a stale projection are findings.
 
-## Per link: 61 rows
+## Per link: 62 rows
 
 Front and K runs are plan lengths from the connector opening to the slot centre, extension included. Slack is the cable length less the needed length.
 
@@ -170,9 +171,10 @@ Front and K runs are plan lengths from the connector opening to the slot centre,
 | JL-K-JL-L06 | the 1V/OCT jack of O5 (87.55, 36) | the FREQ CV jack of F1 (97, 36) | +x | C26618 50 mm | 6.4 / 6.4 | 10.6602 | no | - | 0.1563 | open |
 | JL-K-JL-L07 | the SIN jack of O2 (39.05, 78) | the SIN jack of O3 (48.5, 78) | +x | C26618 50 mm | 6.4 / 6.4 | 10.6602 | no | J304, J305 | 0.0834 | open |
 | JL-K-JL-L08 | the SIN jack of O4 (73.55, 78) | the GAIN CV jack of F1 (91, 78) | +x | C26618 50 mm | 14.4 / 6.4 | 2.6602 | +8 mm | J504, J505 | 0.0654 | NOT SHOWN |
-| JR-K-JR-L01 | the RISE jack of E3 (260.05, 48) | the RISE jack of E4 (269.5, 48) | +x | C26618 50 mm | 6.4 / 6.4 | 10.6602 | no | J1602, J1603 | 0.271 (hold) | NOT SHOWN |
-| JR-K-JR-L02 | the SIG jack of E1 (213.45, 34) | the 1 jack of M4B (204, 34) | -x | C26618 50 mm | 6.4 / 6.4 | 10.6602 | no | - | 0.2431 | NOT SHOWN |
-| JR-K-JR-L03 | the BIP jack of E3 (260.95, 88) | the BIP jack of E3 (249.5, 88) | -x | C26618 50 mm | 8.4 / 6.4 | 8.6602 | +2 mm | J1505, J1506 | 0.0612 | open |
+| JL-K-JL-L09 | the OUT jack of W2 (161.95, 126) | the BIAS CV jack of W2 (152.5, 126) | -x | C26618 50 mm | 6.4 / 6.4 | 10.6602 | no | - | 0.0459 | NOT SHOWN |
+| JR-K-JR-L01 | the SIG jack of E3 (259.15, 35.2) | the SIG jack of E4 (274.6, 35.2) | +x | C26618 50 mm | 12.4 / 6.4 | 4.6602 | +6 mm | J1601, J1602 | 0.4287 (hold) | NOT SHOWN |
+| JR-K-JR-L02 | the 1 jack of M4A (192.55, 34.4) | the 1 jack of M4B (206, 34.4) | +x | C26618 50 mm | 10.4 / 6.4 | 6.6602 | +4 mm | J1201, J1202 | 0.1213 | open |
+| JR-K-JR-L03 | the BIP jack of E4 (262.95, 80) | the BIP jack of E3 (253.5, 80) | -x | C26618 50 mm | 6.4 / 6.4 | 10.6602 | no | - | 0.0632 | NOT SHOWN |
 | JR-K-JR-L04 | the ATTEN jack of M4A (192.55, 80) | the ATTEN jack of M4B (208, 80) | +x | C26618 50 mm | 12.4 / 6.4 | 4.6602 | +6 mm | J1204, J1205 | 0.0733 | open after the displacement |
 | JR-K-JR-L05 | the IN jack of A04 (277.15, 133.2) | the IN jack of A05 (286.6, 133.2) | +x | C26618 50 mm | 6.4 / 6.4 | 10.6602 | no | J1708, J1709 | 0.1161 | NOT SHOWN |
 | JR-K-JR-L06 | the PINK jack of N1 (196.05, 139.2) | the WHITE jack of N1 (186.6, 139.2) | -x | C26618 50 mm | 6.4 / 6.4 | 10.6602 | no | - | 0.032 | NOT SHOWN |
@@ -223,11 +225,11 @@ Front and K runs are plan lengths from the connector opening to the slot centre,
 
 ## The record is pinned by a projection of what this page reads
 
-- `design/stack/geometry/links/link-gate.json`: digest `8816d75564d03c097379bbad3ff5d5d63adf68f0e0a84228a47a297e9387c2ba` over the fields links (without gone): id, front_board, size, circuits, cable, cable_length_mm, cable_needed_mm, loop_mm, centre, slot_centre, direction, lengthened_tail, trim_leads, compliance_mm_per_N, geometry.slot, geometry.front_connector, geometry.front_tail, geometry.K_tail, geometry.K_connector, geometry.a_mm, geometry.b_mm, geometry.front_extension_mm, geometry.K_extension_mm, latch_reach.verdict, latch_reach.remaining; summary: links, placed, slots, connectors, latches, lengthened_tails, trim_leads, loop_mm, links_over_cable_length, latch_verdicts, latch_not_shown, compliance; parameters: insertion_mm, bend_radius_mm, trim_to_mm, latch_margin_mm, compliance; fixings: keepouts.
+- `design/stack/geometry/links/link-gate.json`: digest `d4b6b316c29fb821b0de4b12c3832e8719245e08e6cfc7fcd3ff409c5769a078` over the fields links (without gone): id, front_board, size, circuits, cable, cable_length_mm, cable_needed_mm, loop_mm, centre, slot_centre, direction, lengthened_tail, trim_leads, compliance_mm_per_N, geometry.slot, geometry.front_connector, geometry.front_tail, geometry.K_tail, geometry.K_connector, geometry.a_mm, geometry.b_mm, geometry.front_extension_mm, geometry.K_extension_mm, latch_reach.verdict, latch_reach.remaining; summary: links, placed, slots, connectors, latches, lengthened_tails, trim_leads, loop_mm, links_over_cable_length, latch_verdicts, latch_not_shown, compliance; parameters: insertion_mm, bend_radius_mm, trim_to_mm, latch_margin_mm, compliance; fixings: keepouts.
 - `design/stack/geometry/stack-candidate.json`: projection digest `59c3112cde417303d1ed5213d525d66b5f5bfe36cfa5a67081cf5a90c2a520db`.
 - `design/stack/geometry/links/link-options.json`, `design/stack/connectors/flex-links.json`, `design/stack/geometry/links/link-gate-options.json`: projection digest `b909029e2b6ee087755d47c141d709b0f3b64d6a9273e058498616addb15587b`.
 - `design/grid/placements.lock.json`: `297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8`.
-- `design/stack/fixings/fixing-sites.json`: `5111c8feeedb29e8f888ac49d4702cad6c8138f1d75e6d2cd181286860d81091`.
+- `design/stack/fixings/fixing-sites.json`: `1d470cc01e5e37d061173e140e200d9a530de35446448c5cce8f256804a7cf17`.
 - `design/stack/fixings/ruled-list.json`: `fb18e85e1c7a9be576a5c9d5d5efd2738999a86449afeae00e8ed84d65ce234d`.
 - `scripts/stack/fixings/procedure.py`: `b271089cf0ac18f5e260fd9a841a4c656ed37c1283d9ccd5787cb9a75a439214`.
 - `scripts/stack/fixings/procedure_page.py`: `700d27b0f38eb6b6eb90e4f1bcb07bcc58f7183c3051393e83e4a3d030c5e92a`.

@@ -6,12 +6,12 @@
  "inputs": "inputs.json",
  "pattern_counts": {
   "sizes": {
-   "8": 58,
+   "8": 63,
    "3": 127,
    "7": 10
   },
   "triples": {
-   "ANALOGUE/ANALOGUE": 172,
+   "ANALOGUE/ANALOGUE": 187,
    "ANALOGUE/PRECISION": 39,
    "PRECISION/PRECISION": 18,
    "WIPER/WIPER": 40,
@@ -22,7 +22,7 @@
    "ANALOGUE/LOGIC": 2
   },
   "harnesses": {
-   "ANALOGUE/ANALOGUE": 80,
+   "ANALOGUE/ANALOGUE": 85,
    "ANALOGUE/PRECISION": 34,
    "PRECISION/PRECISION": 18,
    "WIPER/WIPER": 40,
@@ -59,7 +59,7 @@
     "ANALOGUE"
    ]
   ],
-  "harnesses_ending_on_ground": 56,
+  "harnesses_ending_on_ground": 61,
   "harnesses_starting_on_ground": 0
  },
  "patterns": [
@@ -401,6 +401,34 @@
   },
   {
    "id": "JL-K-25",
+   "classes": [
+    "ANALOGUE",
+    "G",
+    "ANALOGUE",
+    "G",
+    "ANALOGUE",
+    "G",
+    "ANALOGUE",
+    "G"
+   ],
+   "cut_length_mm": 85
+  },
+  {
+   "id": "JL-K-26",
+   "classes": [
+    "ANALOGUE",
+    "G",
+    "ANALOGUE",
+    "G",
+    "ANALOGUE",
+    "G",
+    "ANALOGUE",
+    "G"
+   ],
+   "cut_length_mm": 85
+  },
+  {
+   "id": "JL-K-27",
    "classes": [
     "ANALOGUE",
     "G",
@@ -824,6 +852,48 @@
     "NC",
     "NC",
     "NC"
+   ],
+   "cut_length_mm": 85
+  },
+  {
+   "id": "JR-K-28",
+   "classes": [
+    "ANALOGUE",
+    "G",
+    "ANALOGUE",
+    "G",
+    "ANALOGUE",
+    "G",
+    "ANALOGUE",
+    "G"
+   ],
+   "cut_length_mm": 85
+  },
+  {
+   "id": "JR-K-29",
+   "classes": [
+    "ANALOGUE",
+    "G",
+    "ANALOGUE",
+    "G",
+    "ANALOGUE",
+    "G",
+    "ANALOGUE",
+    "G"
+   ],
+   "cut_length_mm": 85
+  },
+  {
+   "id": "JR-K-30",
+   "classes": [
+    "ANALOGUE",
+    "G",
+    "ANALOGUE",
+    "G",
+    "ANALOGUE",
+    "G",
+    "ANALOGUE",
+    "G"
    ],
    "cut_length_mm": 85
   },
@@ -2154,7 +2224,7 @@
    "aggressor_class": "ANALOGUE",
    "aggressor": "ANALOGUE",
    "victim": "ANALOGUE",
-   "triples": 344,
+   "triples": 374,
    "shortest": {
     "harness": "K-O2-1",
     "length_mm": 66,
@@ -2166,10 +2236,10 @@
    "median": {
     "harness": "JL-K-7",
     "length_mm": 85,
-    "V": 0.00167199,
+    "V": 0.00111503,
     "swing_V": 20.0,
-    "Cm_pF": 0.810567,
-    "M_eff_nH": 6.35696
+    "Cm_pF": 0.543668,
+    "M_eff_nH": 3.46139
    },
    "longest": {
     "harness": "JL-P-4",
@@ -2519,7 +2589,7 @@
    "pair": "ANALOGUE>ANALOGUE",
    "pitch": "pitch_1_0",
    "harness_min_V": 0.000923344,
-   "harness_median_V": 0.00167199,
+   "harness_median_V": 0.00111503,
    "flat_V": {
     "flat side by side": 0.00397727,
     "flat one ground between (rule A)": 0.000742287,
@@ -2533,17 +2603,17 @@
     "flat two grounds between": 0.490432
    },
    "ratio_to_median": {
-    "flat side by side": 2.37877,
-    "flat one ground between (rule A)": 0.443955,
-    "flat ground on every side (rule B)": 0.519383,
-    "flat two grounds between": 0.270838
+    "flat side by side": 3.56698,
+    "flat one ground between (rule A)": 0.665713,
+    "flat ground on every side (rule B)": 0.778818,
+    "flat two grounds between": 0.406123
    }
   },
   {
    "pair": "ANALOGUE>ANALOGUE",
    "pitch": "pitch_0_5",
    "harness_min_V": 0.000923344,
-   "harness_median_V": 0.00167199,
+   "harness_median_V": 0.00111503,
    "flat_V": {
     "flat side by side": 0.00367595,
     "flat one ground between (rule A)": 0.000737702,
@@ -2557,10 +2627,10 @@
     "flat two grounds between": 0.492773
    },
    "ratio_to_median": {
-    "flat side by side": 2.19855,
-    "flat one ground between (rule A)": 0.441212,
-    "flat ground on every side (rule B)": 0.518147,
-    "flat two grounds between": 0.27213
+    "flat side by side": 3.29674,
+    "flat one ground between (rule A)": 0.661601,
+    "flat ground on every side (rule B)": 0.776964,
+    "flat two grounds between": 0.408061
    }
   },
   {
@@ -3086,12 +3156,12 @@
   "pitch_1_0": {
    "20": {
     "JL to K": {
-     "signals": 100,
+     "signals": 108,
      "cables": [
       "ANALOGUE + PRECISION"
      ],
-     "grounds": 110,
-     "links": 11
+     "grounds": 119,
+     "links": 12
     },
     "JL to P through K": {
      "signals": 16,
@@ -3102,12 +3172,12 @@
      "links": 2
     },
     "JR to K": {
-     "signals": 106,
+     "signals": 118,
      "cables": [
       "ANALOGUE + PRECISION"
      ],
-     "grounds": 117,
-     "links": 12
+     "grounds": 130,
+     "links": 13
     },
     "P to K (with SUB and EL pass-through)": {
      "signals": 268,
@@ -3121,12 +3191,12 @@
    },
    "22": {
     "JL to K": {
-     "signals": 100,
+     "signals": 108,
      "cables": [
       "ANALOGUE + PRECISION"
      ],
-     "grounds": 109,
-     "links": 10
+     "grounds": 118,
+     "links": 11
     },
     "JL to P through K": {
      "signals": 16,
@@ -3137,12 +3207,12 @@
      "links": 2
     },
     "JR to K": {
-     "signals": 106,
+     "signals": 118,
      "cables": [
       "ANALOGUE + PRECISION"
      ],
-     "grounds": 116,
-     "links": 11
+     "grounds": 129,
+     "links": 12
     },
     "P to K (with SUB and EL pass-through)": {
      "signals": 268,
@@ -3158,12 +3228,12 @@
   "pitch_0_5": {
    "30": {
     "JL to K": {
-     "signals": 100,
+     "signals": 108,
      "cables": [
       "ANALOGUE + PRECISION"
      ],
-     "grounds": 106,
-     "links": 7
+     "grounds": 115,
+     "links": 8
     },
     "JL to P through K": {
      "signals": 16,
@@ -3174,12 +3244,12 @@
      "links": 2
     },
     "JR to K": {
-     "signals": 106,
+     "signals": 118,
      "cables": [
       "ANALOGUE + PRECISION"
      ],
-     "grounds": 113,
-     "links": 8
+     "grounds": 126,
+     "links": 9
     },
     "P to K (with SUB and EL pass-through)": {
      "signals": 268,
@@ -3193,11 +3263,11 @@
    },
    "40": {
     "JL to K": {
-     "signals": 100,
+     "signals": 108,
      "cables": [
       "ANALOGUE + PRECISION"
      ],
-     "grounds": 105,
+     "grounds": 113,
      "links": 6
     },
     "JL to P through K": {
@@ -3209,12 +3279,12 @@
      "links": 1
     },
     "JR to K": {
-     "signals": 106,
+     "signals": 118,
      "cables": [
       "ANALOGUE + PRECISION"
      ],
-     "grounds": 111,
-     "links": 6
+     "grounds": 124,
+     "links": 7
     },
     "P to K (with SUB and EL pass-through)": {
      "signals": 268,

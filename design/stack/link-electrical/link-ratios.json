@@ -5,7 +5,7 @@
  "written_by": "scripts/stack/link_electrical/link_electrical.py",
  "inputs": "inputs.json",
  "record": "design/stack/geometry/links/link-gate.json",
- "record_projection_sha256": "54d9fc4e26453d951cf0dfc7a5b092789f63250e99a743b9f67fa6d7962b85f6",
+ "record_projection_sha256": "14d3248c96d4613fb3dd7b0ad2740d5348eb2321229708d2dc1609597793023e",
  "verdict": "DONE",
  "links_above_1": [],
  "rule_breaks": {},
@@ -169,7 +169,7 @@
     "pair": "ANALOGUE>ANALOGUE",
     "aggressor": "/O4/SYNC_BUFFER",
     "aggressor_pos": 3,
-    "victim": "/O4/SAW_SCALED",
+    "victim": "/O4/Cc66d82_DRIVE",
     "victim_pos": 1,
     "lies": "across one ground",
     "bound_V": 0.000923878,
@@ -334,6 +334,36 @@
    }
   },
   {
+   "id": "JL-K-JL-L09",
+   "joint": "JL-K",
+   "branch": "JL",
+   "circuits": 40,
+   "cable": "C26618",
+   "length_mm": 50.0,
+   "signals_by_class": {
+    "ANALOGUE": 8
+   },
+   "grounds": 7,
+   "unused": 25,
+   "pairs_evaluated": 56,
+   "pairs_without_reference": [],
+   "host": false,
+   "riders": [],
+   "ratio": 0.828547,
+   "largest_pair": {
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/F1/Cb3d4a2_LED_A",
+    "aggressor_pos": 3,
+    "victim": "/F1/C9fcdd2_LED_A",
+    "victim_pos": 1,
+    "lies": "across one ground",
+    "bound_V": 0.000923852,
+    "harness_min_V": 0.00111503,
+    "ratio": 0.828547,
+    "riders": {}
+   }
+  },
+  {
    "id": "JR-K-JR-L01",
    "joint": "JR-K",
    "branch": "JR",
@@ -341,26 +371,26 @@
    "cable": "C26618",
    "length_mm": 50.0,
    "signals_by_class": {
-    "ANALOGUE": 9,
+    "ANALOGUE": 13,
     "PRECISION": 7
    },
-   "grounds": 15,
-   "unused": 9,
-   "pairs_evaluated": 240,
+   "grounds": 19,
+   "unused": 1,
+   "pairs_evaluated": 380,
    "pairs_without_reference": [],
    "host": false,
    "riders": [],
-   "ratio": 0.828571,
+   "ratio": 0.828584,
    "largest_pair": {
-    "pair": "PRECISION>ANALOGUE",
-    "aggressor": "/A03/REF5",
+    "pair": "ANALOGUE>ANALOGUE",
+    "aggressor": "/M4A/C2169e5_LED_K",
     "aggressor_pos": 3,
-    "victim": "/A03/SUM_NEG",
+    "victim": "/E3/Ce82060_DRIVE",
     "victim_pos": 1,
     "lies": "across one ground",
-    "bound_V": 0.000923878,
+    "bound_V": 0.000923893,
     "harness_min_V": 0.00111503,
-    "ratio": 0.828571,
+    "ratio": 0.828584,
     "riders": {}
    }
   },
@@ -372,16 +402,16 @@
    "cable": "C26618",
    "length_mm": 50.0,
    "signals_by_class": {
-    "ANALOGUE": 8,
+    "ANALOGUE": 16,
     "PRECISION": 4
    },
-   "grounds": 11,
-   "unused": 17,
-   "pairs_evaluated": 132,
+   "grounds": 19,
+   "unused": 1,
+   "pairs_evaluated": 380,
    "pairs_without_reference": [],
    "host": false,
    "riders": [],
-   "ratio": 0.828562,
+   "ratio": 0.828584,
    "largest_pair": {
     "pair": "PRECISION>ANALOGUE",
     "aggressor": "/A01/REF5",
@@ -389,9 +419,9 @@
     "victim": "/A01/IN_BUFFER",
     "victim_pos": 1,
     "lies": "across one ground",
-    "bound_V": 0.000923869,
+    "bound_V": 0.000923893,
     "harness_min_V": 0.00111503,
-    "ratio": 0.828562,
+    "ratio": 0.828584,
     "riders": {}
    }
   },
@@ -2243,6 +2273,12 @@
    "breaks": []
   },
   {
+   "id": "JL-K-JL-L09",
+   "logic_runs": [],
+   "single_logic": [],
+   "breaks": []
+  },
+  {
    "id": "JR-K-JR-L01",
    "logic_runs": [],
    "single_logic": [],
@@ -2639,16 +2675,16 @@
   "branches": [
    {
     "branch": "JL",
-    "links": 11,
-    "contacts": 260,
-    "grounds": 105,
-    "unused": 155,
+    "links": 12,
+    "contacts": 292,
+    "grounds": 112,
+    "unused": 180,
     "fewest_on_a_link": 4,
     "shortest_cable_mm": 50.0,
     "worst_contact_A": {
-     "normal": 0.0429406,
-     "one_post_open": 0.0461177,
-     "all_posts_open": 0.0895806
+     "normal": 0.0428006,
+     "one_post_open": 0.0458459,
+     "all_posts_open": 0.0836377
     },
     "one_contact_A": {
      "normal": 0.0442889,
@@ -2663,15 +2699,15 @@
    {
     "branch": "JR",
     "links": 7,
-    "contacts": 174,
-    "grounds": 99,
-    "unused": 75,
+    "contacts": 162,
+    "grounds": 111,
+    "unused": 51,
     "fewest_on_a_link": 20,
     "shortest_cable_mm": 50.0,
     "worst_contact_A": {
-     "normal": 0.0433429,
-     "one_post_open": 0.0469199,
-     "all_posts_open": 0.116252
+     "normal": 0.0434023,
+     "one_post_open": 0.0470411,
+     "all_posts_open": 0.122196
     },
     "one_contact_A": {
      "normal": 0.0442889,

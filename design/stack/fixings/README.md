@@ -36,14 +36,18 @@ Reserve and alternatives, screened the same way against the list (an alternative
 
 Dropped: JL-SUP-1 (SLV-U1 within 70 mm (67.72 mm)), JL-SUP-2 (no site conflict), JL-SUP-3 (POWER-JL-+12V within 70 mm (40.08 mm); POWER-JL--12V within 70 mm (55.08 mm)), JR-SUP-1 (SLV-U2 within 70 mm (67.52 mm)), JR-SUP-2 (no site conflict), JR-SUP-3 (POWER-JR-AGND2 within 70 mm (54.63 mm); POWER-JR-AGND3 within 70 mm (39.66 mm); panel hardware (led) D1809 on JR (courtyard 2.39 mm)), K-SUP-3 (POWER-JL-+12V within 70 mm (33.50 mm); POWER-JL-+5V within 70 mm (67.50 mm); POWER-JL--12V within 70 mm (50.50 mm); hole MH_JL-SUP-4 on JL (courtyard 0.40 mm)), K-SUP-4 (POWER-JR-AGND1 within 70 mm (67.00 mm); POWER-JR-AGND2 within 70 mm (50.00 mm); POWER-JR-AGND3 within 70 mm (33.00 mm); hole MH_JR-SUP-4 on JR (courtyard 0.40 mm); panel hardware (led) D18101 on JR (courtyard 2.58 mm)), K-SUP-5 (panel hardware (pot) RV105 on P (courtyard 1.25 mm, rear pad 1.70 mm)), K-SUP-6 (SLV-L2 within 70 mm (68.74 mm); panel hardware (led) D11805 on EL (courtyard 1.83 mm); panel hardware (pot) RV1805 on P (courtyard 1.25 mm, rear pad 1.70 mm)), K-SUP-7 (hole MH_P-SUP-3 on P (courtyard 1.90 mm); panel hardware (pot) RV108 on P (courtyard 1.25 mm, rear pad 4.65 mm)), K-SUP-8 (SLV-L2 within 70 mm (60.60 mm); panel hardware (pot) RV1508 on P (courtyard 0.00 mm, rear pad 0.00 mm)).
 
-## Parts in the sleeve keep-outs: 12 movable footprints, 3 without a free position within 12 mm, 0 of them not assigned by a decision (authority: 12 and 3)
+## Parts in the sleeve keep-outs: 16 movable footprints, 5 without a free position within 12 mm, 2 of them not assigned by a decision (authority: 12 and 3)
 
 Method of ST-04: courtyard box against the keep-out circle (r 4.05 mm on K, r 3.75 mm on a front board and on EL, both faces); the nearest free position is the smallest shift (0.25 mm steps, 24 directions, up to 12 mm) that clears every active fixing, every other footprint on its faces and the outline by 0.3 mm, tested at the rounded position that is retained.
 
 | Fixing | Board | Reference | Footprint | Courtyard from centre, mm | Origin | Nearest free origin | Shift, mm | Ceramic 0805+ within 5 mm |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | POWER-P-+5V | K | C4513 | C1206 | 4.13 | (169.06, 176.34) | (168.31, 177.639) | 1.50 | yes |
+| SLV-U2 | JR | D4101 | SOT-23 | 3.38 | (238.81, 22.43) | (228.81, 22.43) | 10.00 | no |
+| SLV-U2 | JR | D4102 | SOT-23 | 0.00 | (242.81, 22.43) | - | none within 12 mm | no |
 | SLV-U2 | JR | D4203 | SOT-23 | 3.00 | (243.23, 28.81) | (243.23, 36.06) | 7.25 | no |
+| SLV-U2 | JR | R8425 | R0603 | 1.38 | (241.71, 25.54) | - | none within 12 mm | no |
+| SLV-U2 | JR | R8426 | R0603 | 2.47 | (244.14, 28.11) | (246.089, 29.235) | 2.25 | no |
 | SLV-U2 | JR | R8436 | R0603 | 0.80 | (242.34, 25.71) | (242.34, 35.21) | 9.50 | no |
 | SLV-U2 | K | Q4305 | SOT-23 | 0.75 | (243.81, 26.68) | (238.497, 28.104) | 5.50 | no |
 | SLV-U2 | K | Q4306 | SOT-23 | 2.37 | (248.06, 26.68) | (248.06, 18.68) | 8.00 | no |
@@ -58,7 +62,7 @@ Method of ST-04: courtyard box against the keep-out circle (r 4.05 mm on K, r 3.
 
 **Access hole in EL at (244, 230), 7.0 mm (DS-76):** inside the 3.75 mm keep-out already applied to EL at SLV-L2 (centre offset 0.00 mm), so it displaces nothing further.
 
-## Region scans: 11 of 16 compared figures equal the authority's scratch runs; the differences are listed
+## Region scans: 9 of 16 compared figures equal the authority's scratch runs; the differences are listed
 
 Integer nodes of a 1 mm grid; a node is clear when it faces the named board, passes the edge, tab, adapter, selector and sub-toggle screens and has no locked hardware or fixed hole in its keep-out. Free positions are searched with the posts and the node as the only fixings. The node lists are in `region_scans`. A row named "y 22 to 69" or "y 176 to 291" counts the region without its last row, for comparison only.
 
@@ -66,11 +70,11 @@ Integer nodes of a 1 mm grid; a node is clear when it faces the named board, pas
 | --- | --- | --- | --- |
 | JL clear nodes (y 22 to 70) | 327 | 322 | differs |
 | JL clear nodes, y 22 to 69 | 322 | 322 | same |
-| JL nodes with a free position for every part | 127 | 125 | differs |
+| JL nodes with a free position for every part | 138 | 125 | differs |
 | JL columns of those nodes | [23.0, 40.0, 57.0, 74.0, 91.0] | [23.0, 40.0, 57.0, 74.0, 91.0] | same |
 | JR clear nodes | 176 | 176 | same |
-| JR nodes with a free position for every part | 2 | 2 | same |
-| JR those nodes | [[244.0, 24.0], [244.0, 25.0]] | [[244.0, 24.0], [244.0, 25.0]] | same |
+| JR nodes with a free position for every part | 0 | 2 | differs |
+| JR those nodes | [] | [[244.0, 24.0], [244.0, 25.0]] | differs |
 | Upper middle clear nodes (x 120 to 200) | 92 | 92 | same |
 | Upper middle nodes with no integrated circuit lacking a free position | 8 | 0 | differs |
 | Upper middle nodes with a free position for every part | 0 | 0 | same |
@@ -171,7 +175,7 @@ Keys with unchanged meaning: `id`, `kind`, `xy`, `front_xy`, `front_board`, `boa
 | da-03 c2: scratch runs and H1 to H5 | c3cd4bea7a86ac24591197fef5a5c7a0dd0edbfcaac2094c290dfe9fafcb98c4 |
 | design/stack/geometry/links/link-options.json fixing_keepout_radius_mm, board_edge_margin_mm | e0e744f7e8e9844fe473c8da173cc8e8d2dc22e1fecf958cfb9eba2d8dafae3f |
 | design/stack/geometry/stack-candidate.json candidate.fixings (kept supports) | a795d3555182f7c54c4d7cb4eab5252839341a4a1a4d14b1b47ca6911779eeba |
-| design/stack/geometry/stack-candidate.json candidate.pairs[].sites.*.replaces | a868c38e57296f8cd9ffd2799fb4fff83716500267e1bfa531ee66a9f7fb014e |
+| design/stack/geometry/stack-candidate.json candidate.pairs[].sites.*.replaces | 6c9018884dea7778293c5ae90a0366c31805b7e07ea541b3a6e0a58afeffae79 |
 | design/stack/geometry/stack-candidate.json candidate.planes | 1fe42572782266ce81af20248470f6a9ba1479d0f25545ea99b2b877365e213c |
 | design/stack/geometry/stack-candidate.json candidate.retired (K_headers, front_headers) | 9e1f2758fa7fe73aca0b1925b8d9446386aa69ffb465750c1f3382c06e8ac898 |
 | design/stack/geometry/stack-candidate.json candidate.selectors_kept | 8b06d74ed309428d9ccd16570c6bb198c24b2fa540aa57f418e1d5d3995340b0 |
@@ -181,12 +185,12 @@ Keys with unchanged meaning: `id`, `kind`, `xy`, `front_xy`, `front_board`, `boa
 | design/stack/power-posts/joint-design.json joints | cb58dd654f2b169336a22d2bdef50de8448c63dca9c7dfb74e3e4d3980b0b218 |
 | design/stack/spacers/spacer-set.json sleeve, length_allowance_mm, members | fed1446f89d2345d2692e822ac0e91b228c124d880bada37fdeb3c7f9bf4c436 |
 | boards/osc-control/osc-control-routed-draft.kicad_pcb | 111c5af77fa5fff3ebe96de988197fac36f37eb54d332c66b36477fa3b6e7f44 |
-| boards/osc-core/osc-core.kicad_pcb | 7311cd8e7aabb609c0a6d1a7f2ef42324c585d0c7b51f77c6bd3fc0338c54f22 |
-| boards/osc-jack-left/osc-jack-left.kicad_pcb | 5900338a0aecafc6e4370f4f2ce812fc7b80ffdb730ea4bce3d8e1db55a2a779 |
-| boards/osc-jack-right/osc-jack-right.kicad_pcb | 3ffaa03739983dd326345ac1884b0cb56432a65c558abde42c2e151bd4c75e56 |
+| boards/osc-core/osc-core.kicad_pcb | 2c7535d13e88a0d4b9a438d51919829708c7c5825753dad7bb3e50a660c871b3 |
+| boards/osc-jack-left/osc-jack-left.kicad_pcb | 35a4b3430dabbd93d83b00e200757c66e878f47f067142d12fdae2d9c5403a10 |
+| boards/osc-jack-right/osc-jack-right.kicad_pcb | 6986eaba1ec6788ed2295a8f4ae0e17bc5dd0c6c71e644090faf4def6b73c103 |
 | boards/osc-stage-optical/osc-stage-optical.kicad_pcb | 7e0d9a25c13a5108439d391815409ddd60cc837db0563d45adb5f5a137fa2d61 |
 | design/grid/placements.lock.json | 297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8 |
-| design/partition/partition.json | aa84af4cc17672276f1512e5404a41a7139a676aa5326c3260b0530d3f7ff339 |
+| design/partition/partition.json | 5948460a6271473bd41e812b185671b54756855054829582c01b790bb8f94d60 |
 | design/stack/fixings/ruled-list.json | fb18e85e1c7a9be576a5c9d5d5efd2738999a86449afeae00e8ed84d65ce234d |
 | scripts/stack/fixings/fixings.py | d1b1dbe6eaab479aa1b890c1c7fd446d03411bab3259498b750862d41eb0f48c |
 | scripts/stack/fixings/fixings_check.py | 02d565882c7211f2eebc1d36ef33d66922a04952382e30dac91d9616e46e76e7 |
