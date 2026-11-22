@@ -10,10 +10,10 @@
     "boards/osc-control/osc-control-routed-draft.kicad_pcb": "111c5af77fa5fff3ebe96de988197fac36f37eb54d332c66b36477fa3b6e7f44",
     "boards/osc-core/osc-core.kicad_pcb": "2c7535d13e88a0d4b9a438d51919829708c7c5825753dad7bb3e50a660c871b3",
     "boards/osc-jack-left/osc-jack-left.kicad_pcb": "35a4b3430dabbd93d83b00e200757c66e878f47f067142d12fdae2d9c5403a10",
-    "boards/osc-jack-right/osc-jack-right.kicad_pcb": "6986eaba1ec6788ed2295a8f4ae0e17bc5dd0c6c71e644090faf4def6b73c103",
+    "boards/osc-jack-right/osc-jack-right.kicad_pcb": "c235cf4f6aa7c13bf1a12e839e0b3cd049b63f1453a6a06981a2a14e4f3cfad7",
     "boards/osc-stage-optical/osc-stage-optical.kicad_pcb": "7e0d9a25c13a5108439d391815409ddd60cc837db0563d45adb5f5a137fa2d61",
     "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
-    "design/partition/partition.json": "5948460a6271473bd41e812b185671b54756855054829582c01b790bb8f94d60",
+    "design/partition/partition.json": "09a5ae28137297458a9c36a306673b457abd4e80e4952f32914323513dc732d4",
     "design/stack/fixings/ruled-list.json": "fb18e85e1c7a9be576a5c9d5d5efd2738999a86449afeae00e8ed84d65ce234d",
     "scripts/stack/fixings/fixings.py": "d1b1dbe6eaab479aa1b890c1c7fd446d03411bab3259498b750862d41eb0f48c",
     "scripts/stack/fixings/fixings_check.py": "02d565882c7211f2eebc1d36ef33d66922a04952382e30dac91d9616e46e76e7",
@@ -973,47 +973,6 @@
    "part_moves": [
     {
      "board": "JR",
-     "ref": "D4101",
-     "lib": "SOT-23",
-     "value": "BAT54S,215",
-     "class": "movable",
-     "faces": [
-      "B"
-     ],
-     "distance_mm": 3.38,
-     "in_keepout": true,
-     "ceramic_0805_or_larger_within_5mm": false,
-     "origin": [
-      238.81,
-      22.43
-     ],
-     "nearest_free_shift_mm": 10.0,
-     "nearest_free_origin": [
-      228.81,
-      22.43
-     ]
-    },
-    {
-     "board": "JR",
-     "ref": "D4102",
-     "lib": "SOT-23",
-     "value": "BAT54S,215",
-     "class": "movable",
-     "faces": [
-      "B"
-     ],
-     "distance_mm": 0.0,
-     "in_keepout": true,
-     "ceramic_0805_or_larger_within_5mm": false,
-     "origin": [
-      242.81,
-      22.43
-     ],
-     "nearest_free_shift_mm": null,
-     "nearest_free_origin": null
-    },
-    {
-     "board": "JR",
      "ref": "D4203",
      "lib": "SOT-23",
      "value": "BAT54S,215",
@@ -1032,47 +991,6 @@
      "nearest_free_origin": [
       243.23,
       36.06
-     ]
-    },
-    {
-     "board": "JR",
-     "ref": "R8425",
-     "lib": "R0603",
-     "value": "100000 Ω",
-     "class": "movable",
-     "faces": [
-      "F"
-     ],
-     "distance_mm": 1.38,
-     "in_keepout": true,
-     "ceramic_0805_or_larger_within_5mm": false,
-     "origin": [
-      241.71,
-      25.54
-     ],
-     "nearest_free_shift_mm": null,
-     "nearest_free_origin": null
-    },
-    {
-     "board": "JR",
-     "ref": "R8426",
-     "lib": "R0603",
-     "value": "1000 Ω",
-     "class": "movable",
-     "faces": [
-      "F"
-     ],
-     "distance_mm": 2.47,
-     "in_keepout": true,
-     "ceramic_0805_or_larger_within_5mm": false,
-     "origin": [
-      244.14,
-      28.11
-     ],
-     "nearest_free_shift_mm": 2.25,
-     "nearest_free_origin": [
-      246.089,
-      29.235
      ]
     },
     {
@@ -2437,9 +2355,9 @@
   "plate_covers": true
  },
  "parts": {
-  "movable_in_sleeve_keepouts": 16,
-  "without_free_position": 5,
-  "without_free_position_not_decided": 2
+  "movable_in_sleeve_keepouts": 12,
+  "without_free_position": 3,
+  "without_free_position_not_decided": 0
  },
  "coverage": {
   "screen_mm": 90.0,
@@ -4186,10 +4104,21 @@
   },
   "JR": {
    "clear": 176,
-   "all_parts_free": 0,
+   "all_parts_free": 2,
    "clear_outside_70_mm_of_every_post": 176,
-   "columns_x_of_all_parts_free": [],
-   "all_parts_free_nodes": [],
+   "columns_x_of_all_parts_free": [
+    244.0
+   ],
+   "all_parts_free_nodes": [
+    [
+     244.0,
+     24.0
+    ],
+    [
+     244.0,
+     25.0
+    ]
+   ],
    "y_range": [
     24.0,
     70.0
@@ -4216,7 +4145,7 @@
     [
      244.0,
      24.0,
-     2
+     0
     ],
     [
      261.0,
@@ -4251,7 +4180,7 @@
     [
      244.0,
      25.0,
-     2
+     0
     ],
     [
      261.0,
@@ -4286,7 +4215,7 @@
     [
      244.0,
      33.0,
-     2
+     1
     ],
     [
      261.0,
@@ -4321,7 +4250,7 @@
     [
      244.0,
      34.0,
-     3
+     1
     ],
     [
      261.0,
@@ -4356,12 +4285,12 @@
     [
      244.0,
      35.0,
-     5
+     1
     ],
     [
      261.0,
      35.0,
-     1
+     3
     ],
     [
      278.0,
@@ -4391,12 +4320,12 @@
     [
      244.0,
      36.0,
-     5
+     1
     ],
     [
      261.0,
      36.0,
-     1
+     3
     ],
     [
      278.0,
@@ -4426,12 +4355,12 @@
     [
      244.0,
      37.0,
-     4
+     1
     ],
     [
      261.0,
      37.0,
-     1
+     3
     ],
     [
      278.0,
@@ -4461,7 +4390,7 @@
     [
      244.0,
      38.0,
-     2
+     1
     ],
     [
      261.0,
@@ -4496,7 +4425,7 @@
     [
      244.0,
      39.0,
-     5
+     4
     ],
     [
      261.0,

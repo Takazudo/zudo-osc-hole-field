@@ -895,67 +895,67 @@
    "front_board": "JR",
    "size": "FH12-N40",
    "front_connector": {
-    "name": "the SIG jack of E3",
+    "name": "the RISE jack of E6",
     "control_xy": [
-     252.5,
-     29.0
+     303.5,
+     43.0
     ],
-    "distance_mm": 9.092,
+    "distance_mm": 8.363,
     "xy": [
-     259.15,
-     35.2
+     296.05,
+     39.2
     ]
    },
    "slot": {
-    "name": "the SIG jack of E4",
+    "name": "the RISE jack of E5",
     "control_xy": [
-     269.5,
-     29.0
+     286.5,
+     43.0
     ],
-    "distance_mm": 8.028,
+    "distance_mm": 8.766,
     "xy": [
-     274.6,
-     35.2
+     278.6,
+     39.2
     ]
    },
    "K_connector": {
-    "name": "the SIG jack of E5",
+    "name": "the RISE jack of E4",
     "control_xy": [
-     286.5,
-     29.0
+     269.5,
+     43.0
     ],
-    "distance_mm": 6.667,
+    "distance_mm": 3.816,
     "xy": [
-     284.05,
-     35.2
+     269.15,
+     39.2
     ]
    },
-   "direction": "+x",
+   "direction": "-x",
    "cable": "C26618",
    "cable_length_mm": 50.0,
-   "on_front_board_mm": 12.4,
+   "on_front_board_mm": 14.4,
    "on_K_rear_mm": 6.4,
-   "front_extension_mm": 6.0,
+   "front_extension_mm": 8.0,
    "lengthened_tail": true,
-   "cable_needed_mm": 45.3398,
-   "slack_mm": 4.6602,
+   "cable_needed_mm": 47.3398,
+   "slack_mm": 2.6602,
    "leads_to_cut": [
-    "J1601",
-    "J1602"
+    "J1701",
+    "J1702",
+    "J1703"
    ],
-   "compliance_mm_per_N": 0.4287,
-   "holding_hand": true,
+   "compliance_mm_per_N": 0.1973,
+   "holding_hand": false,
    "latch": "NOT SHOWN",
-   "latch_detail": "NOT SHOWN (exempt packages C0603, R0603, ASSUMED lower than the 2.0 mm connector body; no height retained)",
+   "latch_detail": "NOT SHOWN (exempt packages C0603, ASSUMED lower than the 2.0 mm connector body; no height retained)",
    "latch_neighbours_remaining": [
-    "C4321",
-    "C4338",
-    "R4382"
+    "C4341",
+    "C4350"
    ],
    "gap_mm": 19.0,
-   "stand_height_mm": 34.63,
-   "meets_K_at_mm": 15.63,
-   "through_K_when_seated_mm": 14.03,
+   "stand_height_mm": 32.63,
+   "meets_K_at_mm": 13.63,
+   "through_K_when_seated_mm": 12.03,
    "slot_clearance": {
     "slot_across_mm": 21.5,
     "slot_along_mm": 1.5,
@@ -4457,8 +4457,8 @@
   {
    "n": 1,
    "do": "Solder the parts of JL, JR, P and the three adapters. Every lead on the rear faces of JL, JR, P and the adapters is cut to 1 mm or less when the part is soldered (DS-88).",
-   "parts": 80,
-   "where": "P 49, JL 19, JR 11, O3 1, listed below"
+   "parts": 81,
+   "where": "P 49, JL 19, JR 12, O3 1, listed below"
   },
   {
    "n": 2,
@@ -4513,7 +4513,7 @@
   },
   {
    "n": 12,
-   "do": "Fold each cable end onto K's rear face, insert it into its K connector and close the lock by hand only at the center of the actuator; never press K with the palm (DS-66). Do not insert tools or fingernails into the connector. At the 12 connectors named below, the other hand holds K's edge beside the connector while its lock is closed (DS-87).",
+   "do": "Fold each cable end onto K's rear face, insert it into its K connector and close the lock by hand only at the center of the actuator; never press K with the palm (DS-66). Do not insert tools or fingernails into the connector. At the 11 connectors named below, the other hand holds K's edge beside the connector while its lock is closed (DS-87).",
    "parts": 62
   },
   {
@@ -4646,15 +4646,14 @@
    },
    {
     "meets_K_at_mm": 15.63,
-    "ends": 4,
+    "ends": 3,
     "links": [
-     "JR-K-JR-L01",
      "JR-K-JR-L04",
      "P-K-P-L12.01.01.02",
      "P-K-P-L14.01.01.02"
     ],
     "per_board": {
-     "JR": 2,
+     "JR": 1,
      "P": 2
     },
     "stage": 7,
@@ -4662,15 +4661,17 @@
    },
    {
     "meets_K_at_mm": 13.63,
-    "ends": 4,
+    "ends": 5,
     "links": [
      "JL-K-JL-L08",
+     "JR-K-JR-L01",
      "P-K-P-L10.01.02",
      "P-K-P-L12.02.01.02",
      "P-K-P-L14.01.02.01"
     ],
     "per_board": {
      "JL": 1,
+     "JR": 1,
      "P": 3
     },
     "stage": 8,
@@ -4791,11 +4792,10 @@
    },
    {
     "link": "JR-K-JR-L01",
-    "K_connector": "the SIG jack of E5",
+    "K_connector": "the RISE jack of E4",
     "neighbours": [
-     "C4321",
-     "C4338",
-     "R4382"
+     "C4341",
+     "C4350"
     ]
    },
    {
@@ -5039,22 +5039,6 @@
     ]
    },
    "compliance_mm_per_N": 0.2587
-  },
-  {
-   "link": "JR-K-JR-L01",
-   "K_connector": {
-    "name": "the SIG jack of E5",
-    "control_xy": [
-     286.5,
-     29.0
-    ],
-    "distance_mm": 6.667,
-    "xy": [
-     284.05,
-     35.2
-    ]
-   },
-   "compliance_mm_per_N": 0.4287
   },
   {
    "link": "P-K-P-L01.01.01",
@@ -5368,16 +5352,16 @@
   "locks": 124,
   "fixings": 22,
   "fastener_operations": 44,
-  "parts_with_leads_to_cut": 80,
+  "parts_with_leads_to_cut": 81,
   "parts_with_leads_to_cut_per_board": {
    "JL": 19,
-   "JR": 11,
+   "JR": 12,
    "P": 49,
    "O3": 1
   },
-  "lead_entries_per_link": 89,
+  "lead_entries_per_link": 90,
   "lengthened_tails": 31,
-  "holding_hand": 12,
+  "holding_hand": 11,
   "latch": {
    "NOT SHOWN": 33,
    "open": 26,
@@ -5390,7 +5374,7 @@
   "pins": {
    "gate_record_projection": {
     "file": "design/stack/geometry/links/link-gate.json",
-    "digest": "d4b6b316c29fb821b0de4b12c3832e8719245e08e6cfc7fcd3ff409c5769a078",
+    "digest": "5f74eb47b42b6085c26bdf58197c73876938c156478a9a2a1147a918f1c3d097",
     "fields": {
      "links (without gone)": [
       "id",
@@ -5459,7 +5443,7 @@
    },
    "files_sha256": {
     "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
-    "design/stack/fixings/fixing-sites.json": "1d470cc01e5e37d061173e140e200d9a530de35446448c5cce8f256804a7cf17",
+    "design/stack/fixings/fixing-sites.json": "da13bede1a49ac047540c2236e88659a93f17f74567225dad9d9490f087d92a5",
     "design/stack/fixings/ruled-list.json": "fb18e85e1c7a9be576a5c9d5d5efd2738999a86449afeae00e8ed84d65ce234d",
     "scripts/stack/fixings/procedure.py": "b271089cf0ac18f5e260fd9a841a4c656ed37c1283d9ccd5787cb9a75a439214",
     "scripts/stack/fixings/procedure_page.py": "700d27b0f38eb6b6eb90e4f1bcb07bcc58f7183c3051393e83e4a3d030c5e92a"

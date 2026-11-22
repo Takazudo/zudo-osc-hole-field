@@ -1,0 +1,154 @@
+{
+ "record": "MC04-S7 Revision 13: JR step 7 redo (sleeve-aware eviction)",
+ "drc": "KiCad 10.0.6 pinned image, kicad-cli pcb drc --schematic-parity --refill-zones --severity-all",
+ "steps": [
+  "partition35 (sides of R8425/R8426)",
+  "schgen project_boards (JR sheets only)",
+  "JR netlist export",
+  "sync.py osc-jack-right",
+  "pose_swapped.py --all-offset",
+  "place.py",
+  "strip_drc_conflicts.py --max-share 0.25",
+  "DRC"
+ ],
+ "moved": [
+  {
+   "ref": "D4101",
+   "footprint": "zudo-osc-hole-field:SOT-23",
+   "source_origin_mm": [
+    255.81,
+    24.63
+   ],
+   "before_kicad": {
+    "x_mm": 338.81,
+    "y_mm": 72.43,
+    "side": "B.Cu",
+    "rotation_deg": 90.0
+   },
+   "after_kicad": {
+    "x_mm": 355.81,
+    "y_mm": 74.63,
+    "side": "B.Cu",
+    "rotation_deg": 90.0
+   },
+   "moved_mm": 17.1418
+  },
+  {
+   "ref": "D4102",
+   "footprint": "zudo-osc-hole-field:SOT-23",
+   "source_origin_mm": [
+    259.81,
+    24.63
+   ],
+   "before_kicad": {
+    "x_mm": 342.81,
+    "y_mm": 72.43,
+    "side": "B.Cu",
+    "rotation_deg": 90.0
+   },
+   "after_kicad": {
+    "x_mm": 359.81,
+    "y_mm": 74.63,
+    "side": "B.Cu",
+    "rotation_deg": 90.0
+   },
+   "moved_mm": 17.1418
+  },
+  {
+   "ref": "R8425",
+   "footprint": "zudo-osc-hole-field:R0603",
+   "source_origin_mm": [
+    238.21,
+    22.54
+   ],
+   "before_kicad": {
+    "x_mm": 341.71,
+    "y_mm": 75.539999,
+    "side": "B.Cu",
+    "rotation_deg": 90.0
+   },
+   "after_kicad": {
+    "x_mm": 338.21,
+    "y_mm": 72.539999,
+    "side": "B.Cu",
+    "rotation_deg": 90.0
+   },
+   "moved_mm": 4.6098
+  },
+  {
+   "ref": "R8426",
+   "footprint": "zudo-osc-hole-field:R0603",
+   "source_origin_mm": [
+    249.14,
+    25.11
+   ],
+   "before_kicad": {
+    "x_mm": 344.14,
+    "y_mm": 78.11,
+    "side": "B.Cu",
+    "rotation_deg": 90.0
+   },
+   "after_kicad": {
+    "x_mm": 349.14,
+    "y_mm": 75.11,
+    "side": "B.Cu",
+    "rotation_deg": 90.0
+   },
+   "moved_mm": 5.831
+  }
+ ],
+ "footprints_changed": [
+  "D4101",
+  "D4102",
+  "R8425",
+  "R8426"
+ ],
+ "strip": {
+  "conflict_pairs": 0,
+  "removed_items": 0,
+  "removed_length_mm": 0,
+  "board_routed_length_mm": 19874.2547,
+  "baseline_routed_length_mm": 20014.573
+ },
+ "loss_of_baseline_routed_length_percent": 0.701,
+ "drc_before_stage_7": {
+  "violations_by_severity_type": {
+   "warning/hole_to_hole": 5,
+   "warning/silk_edge_clearance": 13,
+   "warning/silk_over_copper": 199,
+   "warning/silk_overlap": 199,
+   "warning/text_height": 59,
+   "warning/track_dangling": 26,
+   "warning/via_dangling": 7
+  },
+  "unconnected_items": 245,
+  "schematic_parity": 200
+ },
+ "drc_before_redo": {
+  "violations_by_severity_type": {
+   "warning/hole_to_hole": 5,
+   "warning/silk_edge_clearance": 13,
+   "warning/silk_over_copper": 199,
+   "warning/silk_overlap": 199,
+   "warning/text_height": 59,
+   "warning/track_dangling": 196,
+   "warning/via_dangling": 16
+  },
+  "unconnected_items": 358,
+  "schematic_parity": 4
+ },
+ "drc_after_redo": {
+  "violations_by_severity_type": {
+   "warning/hole_to_hole": 5,
+   "warning/silk_edge_clearance": 13,
+   "warning/silk_over_copper": 199,
+   "warning/silk_overlap": 199,
+   "warning/text_height": 59,
+   "warning/track_dangling": 196,
+   "warning/via_dangling": 16
+  },
+  "unconnected_items": 358,
+  "schematic_parity": 0
+ },
+ "note": "KiCad caps several types at 199 items in this JSON, so counts at 199 are not totals. Against the board before the redo, item-level comparison shows 132 silk_over_copper and 129 silk_overlap warnings whose keys changed with the four moved parts, as many gone as new; no other item differs, and no error-severity item exists before or after."
+}
