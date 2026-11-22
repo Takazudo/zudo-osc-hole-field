@@ -51,3 +51,28 @@ parity 0, readiness 0, regenerate the link gate (holds unchanged), c6, fixings a
 ## Part C (later): JL, JR and K re-route
 
 Out of scope here. It will be briefed separately once every IC has a position.
+
+## Revision 1: accept classes (i) and (iii); widen the search for the seven class (ii) ICs (2026-11-22)
+
+Part A (`463e6821`, report `mc04-s8-a-report-20261122.md`) is accepted as a study; `replacement.py --check` passes here
+too. The finding that the regions are 40–68 % full and fail on fragmentation, not area, sets the next step.
+
+1. **Accepted for Part B, not yet applied:** K:U4129 (class i, F, 23.14 mm) and the seven class (iii) ICs (U1415,
+   U4433, U4526, U4527, U4623, U4635, U5110) with their displaced passives, as studied. Do not apply them alone; Part B
+   applies every ruled pose in one pass.
+2. **Widen the search for the seven class (ii) ICs** (JL:U1318, U4417, U4524, U5209, U5210, U8409, JR:U4647), as Part A2,
+   still with no board change:
+   - try block rotations of 90°, 180° and 270° as well as 0°, on both faces;
+   - allow class (iii) displacement of any unlocked SMD R/C/D part up to 12 mm², provided each displaced part
+     lands within 24 mm of its own pre-move position and keeps its own block rules;
+   - apply the poses ruled in item 1 first, so A2 searches the board as Part B would leave it;
+   - keep the block definition (decouplers plus cell-local R/C within 12 mm). Do not shrink blocks.
+3. **For any IC still beyond 24 mm after A2,** give the electrical facts I need to rule:
+   - for an input buffer (U1318, U8409, U4647, and any other), the estimated added SENSE/BUFFER run length and
+     capacitance (0.20 pF/mm, 1.5 × HPWL, as in stage 7), and whether the Revision 2 conditions (input passives at the
+     cell end, ground-flanked run, under 50 pF) can hold;
+   - for other functions, the added length on each signal net and whether any net is a high-impedance node, a
+     feedback node or a timing node;
+   - for U4647, which LED drivers share the package and how far each LED is from the new pose.
+4. Add tests for the rotation search and the widened displacement rule. Commit with `--check`, push, and stop at the
+   checkpoint with `mc04-s8-a2-report-20261122.md`.
