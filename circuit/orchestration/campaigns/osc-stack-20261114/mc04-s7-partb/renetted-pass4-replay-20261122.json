@@ -1,0 +1,27 @@
+{
+ "record": "MC04-S7 Part B step 7, JL strip pass 4 (--renetted-uuids): replay inputs (Revision 11 addendum item 6)",
+ "board": "osc-jack-left",
+ "command": "bash scripts/kicad/run.sh python3 scripts/pcbgen/strip_drc_conflicts.py boards/osc-jack-left/osc-jack-left.kicad_pcb <drc_input> --moved $(cat <moved>) --record <record> --board-id osc-jack-left --max-share 0.25 --baseline-length-mm 19937.528 --renetted-uuids <renetted_uuids>, on the JL board after pass 3",
+ "renetted_uuids": {
+  "path": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-partb/renetted-uuids-osc-jack-left.txt",
+  "sha256": "f17b8601dba9a36814fb00dd23f17127d57f4c0f944bd306966f003e3f06ad04",
+  "count": 447,
+  "derivation": "copper (segment, arc, via) uuids whose net differs between the committed JL board and the synced board"
+ },
+ "drc_input": {
+  "path": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-partb/drc-pass4-input-osc-jack-left.json",
+  "sha256": "12a7c3ec1f082d0924db49e6ac03e6a447ae1e3700b7980268c8b078e416de3d",
+  "what": "kicad-cli pcb drc JSON of JL after strip pass 3, the input of pass 4"
+ },
+ "result": {
+  "removed_items": 49,
+  "removed_length_mm": 24.1684,
+  "removed_uuids_sha256": "051aef10cbbbff233548410ce2bd991143d04fd4c9fd08ff2cc9abaf067417cc"
+ },
+ "moved": {
+  "path": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-partb/moved-pass3-osc-jack-left.txt",
+  "sha256": "960ecf255e908e08d243e221c09777c3e909ee13fb865c4340058f3efcc22fa4",
+  "count": 48,
+  "note": "the pass 3 moved list; it selects no conflict pair at the pass 4 DRC input, so every removed item cleared a renetted pair"
+ }
+}
