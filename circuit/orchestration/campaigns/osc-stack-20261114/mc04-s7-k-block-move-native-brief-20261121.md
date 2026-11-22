@@ -350,3 +350,21 @@ Revision 9 header ruling: the link gate must not renumber links whose members di
 6. **Then finish step 8 and step 9.** Regenerate the link gate, attempt DA-03 c6 fresh (the historical object still
    verified from its snapshot), regenerate fixings and the threading procedure, and run every stack test. The
    staleness tests must pass. JL-P-4/SLV-L1 stays OPEN for Gate A. Push and give the full hand-back.
+
+## Revision 11: the four new reach misses are interim-GH exceptions; finish step 8 and step 9 (2026-11-22)
+
+The Revision 10 stop (`946e94b4`, report `mc04-s7-r10-report-20261122.md`) is accepted. My item 4 rested on a wrong
+premise: `fixing_reach` measures each pair site against the declared fixings, so the link clusters cannot change
+it, and the baseline already carries 108 misses, 91 of them beyond 50 mm (JR-K-1 at 119.5 mm). A 50 mm stop for new
+pairs was stricter than the state it is measured against. Option (c) is ruled.
+
+1. **Interim-GH exceptions.** JL-K-26 (41.6 mm), JL-K-27 (51.0 mm), JR-K-28 (118.5 mm) and JR-K-29 (84.5 mm) are
+   recorded as interim-GH reach exceptions, with distance and nearest declared fixing, under the same Gate A revisit
+   as the other interim-GH items. JR-K-30 (16.6 mm) passes. Add a test that pins check.py `fixing_reach` at the 108
+   baseline missed pairs plus exactly these four, by pair ID; any other change fails it. Do not change the reach
+   limits, the fixing list or the declared flags.
+2. **Not ruled here.** Declaring the stack sleeves as fixings (option b) is a mechanical fixing-list decision for
+   the Gate A review. Record it there as a candidate with the SLV-U2 figure (JR-K-29 to 17 mm), and do not apply it.
+3. **Then run Revision 10 items 1–3, 5 and 6 as written:** stable link clusters, deterministic new links, the
+   JL-L02 hold unchanged, the cluster tests, the gate and DA-03 c6 regeneration, fixings and procedure regeneration,
+   and every stack test passing. Push and give the full hand-back.
