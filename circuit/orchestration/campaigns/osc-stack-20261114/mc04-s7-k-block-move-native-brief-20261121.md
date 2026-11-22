@@ -428,3 +428,23 @@ around a generator bug.
    `test_copper_identity.py` and `uuid305/test_run_protocol.py` at `8ecc25fe` and at the new head. Report which
    failures are new against `8ecc25fe` and which are pre-existing, so the STALE list is exact.
 6. Push and give the full hand-back. That closes Part B for the independent review.
+
+## Revision 13: keep-out-displaced parts go last; D4101/D4102 as interim-GH acceptances (2026-11-22)
+
+The Revision 12 stop (`bf161c00`, report `mc04-s7-r12-report-20261122.md`) is accepted. Option (a) is ruled. Run 1
+cascades through three unrelated parts (D8311 moves 24.07 mm), and option (c) would move more parts with no
+computed result. Run 2 confines the change to the four parts the sleeve keep-out displaced.
+
+1. **Apply the patch with a placement-order rule.** Apply `scripts/stack/studies/mc04_s7_r12/sleeve-eviction.patch`
+   to the generator, with the rule that parts displaced by a sleeve keep-out are placed after every other evicted
+   part. Move the 4 study tests next to the generator's tests, and add one that pins the order: a keep-out-displaced
+   part never takes a position another evicted part would have taken. Re-run the floorplan. It must reproduce run 2:
+   only D4101, D4102, R8425 and R8426 move. If any other part moves, stop.
+2. **D4101 and D4102** (BAT54S protection diodes, about 34 mm from their slots) go in `locality-acceptances.json` as
+   interim-GH locality acceptances under this ruling, revisited at Gate A. Protection diodes are more sensitive to
+   distance than pull resistors, so record for each: the net it protects, the protected pin, and the distance from
+   the diode to that pin and to the GH header contact it guards. Add both to the Gate A open list as
+   protection-locality items.
+3. **Then run Revision 12 items 3–6 as written:** the JR-only step 7 redo, the gate, c6, fixings and procedure
+   regeneration with `fixings_check` and `test_fixings` passing, K:U4129 on the open re-placement list, and the
+   stale-test split against `8ecc25fe`. Push and give the full hand-back.
