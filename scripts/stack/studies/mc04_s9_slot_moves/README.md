@@ -81,3 +81,25 @@ U8409 outcome, because C8438 lies on U8409's recorded area for every candidate.
 
 c6, coupling (check 4), current (check 3), latch access (check 2), threading, routing, DRC and any electrical
 acceptance. None of these oracle checks was run (see `oracle_checks`).
+
+## MC04-S9-A2 joint re-run (DS-146)
+
+```sh
+python3 slot_moves_a2.py           # writes result-a2.json (about 19 minutes)
+python3 slot_moves_a2.py --check
+python3 -m unittest test_slot_moves_a2
+```
+
+This is the same study under the four DS-146 rule changes:
+- input-buffer parts are judged by kind;
+- covered block members are re-placed;
+- trimmers keep their face;
+- no candidate may cover any of the five ICs.
+
+Every accepted candidate is evaluated (cap 200 per link and grid), then one joint scene is built.
+
+Result:
+- U5209 (variant B, P-K-P-L13.01.01.02 and L13.01.02.01 moved) and U5210 (P-K-P-L13.01.01.01 moved) are clean together.
+- U5110 and U8409 are not clean.
+
+Report: `mc04-s9-a2-report-20261122.md`.
