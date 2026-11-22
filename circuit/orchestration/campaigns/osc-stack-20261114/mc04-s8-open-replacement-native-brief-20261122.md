@@ -242,3 +242,19 @@ other-face passives on the block's face.
 4. **U8409 option.** Re-run the 30 mm option search face-aware, and update the cheapest option and its run estimates.
 5. Regenerate the record, the gate, the Gate A list and the reports. Every `--check` and all stack tests must pass.
    Push and give a short hand-back. Stage 8 then closes after a targeted review.
+
+## Revision 8: two logic acceptances; the five analog blocks go to Gate A-paper (2026-11-22)
+
+Revision 7 (`eacc7814`, `8fbcd06c`, report `mc04-s8-r7-report-20261122.md`) is accepted, pending a targeted review. The
+second defect (Part A placed displaced passives on the block's own pose) was found and handled correctly.
+
+1. **U4433 (25.5 mm) and U4526 (26.71 mm)** are logic blocks just past 24 mm. They are accepted as link-era locality
+   exceptions on the U4417 terms. Record the poses and their per-net run estimates in `locality-acceptances.json` with
+   the link-era model statement. Mark them RESOLVED FOR THE LINK ERA in the record and the Gate A list, and confirm
+   they have no clock or RC timing node. If either has one, leave it OPEN and say so.
+2. **U1415, U5110, U5209, U5210 and U8409 stay OPEN (link era).** Each would put a feedback, summing or high-impedance
+   node 45–113 mm away, so no interim acceptance applies. They go to the Gate A-paper packet as NEEDS_DESIGN, with
+   the remedies the packet must weigh: a slot move, a package split, a partition change, or the far pose with an
+   electrical budget. Do not evaluate those remedies in this stage.
+3. Regenerate the record, the gate, the Gate A list and the reports. Every `--check` and all stack tests must pass.
+   Push and give a short hand-back. That closes stage 8.
