@@ -185,3 +185,35 @@ Option (a) is ruled. Option (b) would move parts that have no reason to move on 
    decides which layout is routed.
 5. Add tests for the record and the open-items status. Commit with `--check`, push, and give the hand-back. Stage 8
    then closes for the independent review.
+
+## Revision 6: stage 8 accepted with fixes (2026-11-22)
+
+The independent review of `463e6821` through `b37aa49c` accepts stage 8 with fixes, and finds nothing of high severity.
+It confirmed that:
+- the block rules and relaxations match the rulings;
+- the electrical figures recompute (U1318 13.36 pF, U4417 23.1–38.13 pF, D1801 48.19 mm, R8263, C5210);
+- `solve()` is complete over its grid, tested against an independent brute force;
+- the record is deterministic, and `link-gate.json` changed only by the added section;
+- no board, schematic or floorplan placement changed, and no test was weakened.
+
+Fix the following, then give a short hand-back. This closes stage 8.
+
+1. **Grid caveat.** The A5 proof and the 25–28 mm infeasibility hold on a 0.5 mm shift grid about each block's
+   original origin, with 4 turns. Continuous poses are not covered. State this in the `proof` and `cheapest_option`
+   fields of `link-era-replacements.json` and in the Gate A item. State that the 30 mm option is first-found, and
+   that the true minimum farthest move lies in (28, 28.04] mm on that grid.
+2. **The U8409 option supersedes U5210's pose.** The cheapest U8409 option re-places U5210 at B 0°, 16.81 mm, not at
+   the recorded F 90°, 5.83 mm. Flag this in the record and the Gate A item, and correct the comment at
+   `replacement_a5.py:188`.
+3. **Electrical cost of the option.** Give run estimates (1.5 × HPWL, 0.20 pF/mm) for U5208 at 28.04 mm and U8408 at
+   25.81 mm, per signal net, marking high-impedance, feedback and timing nodes, as Revision 4 required. Also state
+   that the fourth-block alternative was not evaluated.
+4. **Domain construction test.** Add a test of A5 domain construction: a synthetic case where a feasible pose must
+   survive the filters. Make the infeasible-case test assert infeasibility, not `nodes >= 0`.
+5. **C5210.** Record that its F→B flip adds a via on AC_NODE, which the HPWL metric does not count.
+6. **U1318.** Mark the stage 7 U1318 acceptance (27.65 mm) superseded by the stage 8 link-era entry, and keep only the
+   current one active in the floorplan report.
+7. **Gate A items.** Add the link-era model statement to GA-LOC-U4417 and GA-LED-U4647, and use a move-distance
+   field instead of `distance_from_slot_mm`. Count only re-placement rows in `re_placement_status`.
+8. **board_conflicts.** Correct the A5 report: 10 of the 13 ruled ICs overlap a GH header (plus U4502), and U4417,
+   U4526 and U4623 do not. Add U5210's A5 pose to `board_conflicts.py` so its evidence covers all 14.
