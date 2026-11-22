@@ -103,3 +103,39 @@ Part A2 (`95bdafd5`, report `mc04-s8-a2-report-20261122.md`) is accepted as a st
    24 mm, give the smallest set of obstacles that would have to move, by type (jack, slot, sleeve, locked part), so the
    remaining options (a slot move, a package split, or a partition change) can go to the owner with numbers.
 6. Add tests for the block-on-block rule. Commit with `--check`, push, and stop with `mc04-s8-a3-report-20261122.md`.
+
+## Revision 3: rule U4647 and the three narrow relaxations; then Part B (2026-11-22)
+
+Part A3 (`117da5f7`, report `mc04-s8-a3-report-20261122.md`) is accepted as a study. None of the remaining targets needs
+a jack, slot, sleeve or locked part to move, so no owner decision is needed yet.
+
+1. **JR:U4647** joins Part B at B 180°, (295.18, 74.97), 22.55 mm, with the U4502 block (TMUX7412, C4515, C4516) moved
+   13.73 mm at B 180° and R4516 moved 6.25 mm. D1801 goes from 26.82 to 48.19 mm from its driver (unit 4). The LED
+   drive is a low-impedance output, so this is accepted; record it in `locality-acceptances.json` as an interim-GH
+   LED-drive distance and list it for Gate A. U4502's input-fault path must stay on its own face, with C4515/C4516 no
+   farther than before.
+2. **Three narrow relaxations, for Part A4 only:**
+   - **U5209:** R8263 may move again, provided its final position is within 24 mm of its `6093081c` position and no
+     farther from its cell partner than before the gate moved it.
+   - **U5210:** C5210 (1206 AC-coupling cap) may be displaced as a passive, within 24 mm, provided the added length on
+     its high-impedance side is reported and kept under 10 mm.
+   - **U8409:** a chain of up to three IC blocks is allowed (the target, U8412 and one more). Each block keeps its own
+     rules and the 24 mm limit, and none is an input buffer. U8412 beyond 24 mm is not allowed.
+3. **Part A4 (study).** Apply every ruled pose first, then rerun the three targets with these relaxations only. Add a
+   test for each relaxation. If all three land within the rules, go straight to Part B without another checkpoint.
+   If any fails, stop with `mc04-s8-a4-report-20261122.md` and the obstacle set.
+4. **Part B: apply, sync and check.** Apply every ruled pose:
+   - U4129 and the seven class (iii) ICs (Revision 1);
+   - U4524, U1318 and U4417 (Revision 2);
+   - U4647 with U4502 (item 1);
+   - the Part A4 results.
+   Apply them through the generator, with their displaced passives and blocks, in one pass. Then follow the stage 7
+   Part B pattern:
+   - sync and place the affected boards;
+   - strip conflicting copper with the `--max-share 25` stop;
+   - run DRC with no new error-severity items, and require parity 0 and readiness 0;
+   - regenerate the link gate (holds unchanged), c6, fixings, procedure and `gate-a-open-items.json`, which must show
+     0 open re-placements;
+   - run `regen-all.sh --check` and every stack test;
+   - split any newly failing test against `f0d02f88` into new and pre-existing.
+   Push and give the full hand-back for the independent review.
