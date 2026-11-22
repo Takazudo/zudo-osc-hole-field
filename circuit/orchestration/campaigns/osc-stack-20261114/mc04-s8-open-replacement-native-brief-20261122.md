@@ -162,3 +162,26 @@ order, not at the rules, so no rule is relaxed further.
      distance and electrical cost.
 3. Write `mc04-s8-a5-report-20261122.md` and the Part B hand-back. Push and give the full hand-back for the independent
    review.
+
+## Revision 5: stage 8 is the link-era re-placement record; the interim re-route waits for Gate A-paper (2026-11-22)
+
+The Revision 4 stop (`d870ff95`, report `mc04-s8-a5-report-20261122.md`) is accepted. The finding is correct: the 15 ICs
+are open only in the link-era model, where they sit under link keep-outs that do not exist on the interim GH boards.
+Option (a) is ruled. Option (b) would move parts that have no reason to move on the interim boards.
+
+1. **Record, don't apply.** Stage 8 becomes the link-era re-placement record. Record the 13 ruled poses, with their
+   displaced passives and blocks and their acceptances, in the gate record (as a link-era re-placement set with its
+   source commit and the model it was searched in). In `gate-a-open-items.json`, mark them resolved for the link era,
+   pending application when the links replace the GH headers. The interim boards do not change.
+2. **Run Part A5 under (a)**, as Revision 4 item 1 defines it, in the same link-era model. Record the result the same
+   way. Leave any IC that A5 cannot place open, with the proof and the cheapest option, its distance and its electrical
+   cost.
+3. **State the model in every record.** Each S8 record and acceptance says "link-era model (`links_gate_part2.Field`,
+   GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards". Keep
+   `board_conflicts.py --check` as the evidence that the poses do not fit the interim boards.
+4. **Part B is withdrawn, and Part C (the interim re-route) is on hold.** The stack is NOT ADOPTED until Gate A-paper
+   (MC-04, #367). If it is adopted, the boards convert to links and are routed then, so an interim re-route now would
+   be thrown away. If it is not adopted, the interim boards stay canonical and get routed. The Gate A-paper ruling
+   decides which layout is routed.
+5. Add tests for the record and the open-items status. Commit with `--check`, push, and give the hand-back. Stage 8
+   then closes for the independent review.
