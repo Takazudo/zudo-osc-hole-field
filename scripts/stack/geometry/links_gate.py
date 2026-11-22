@@ -370,6 +370,66 @@ def gate_cluster(sites, n, join_radius, prefix, rule='a8'):
     return out
 
 
+CLUSTER_BASELINE = links.LINK_DIR / 'link-cluster-baseline.json'
+
+
+def cluster_baseline():
+    """{(joint, front board): [baseline clusters in ID order]} from the retained link-cluster baseline (MC04-S7)."""
+    if not CLUSTER_BASELINE.exists():
+        return None
+    out = {}
+    for c in json.loads(CLUSTER_BASELINE.read_text())['clusters']:
+        out.setdefault((c['joint'], c['front_board']), []).append(c)
+    return {k: sorted(v, key=lambda c: c['id']) for k, v in out.items()}
+
+
+def _finish_cluster(cid, members):
+    mx, my = links._centroid(members)
+    return {'id': cid, 'centre': [r4(mx), r4(my)], 'members': sorted(s['id'] for s in members),
+            'site_distances_mm': sorted(r4(math.hypot(s['xy'][0] - mx, s['xy'][1] - my)) for s in members)}
+
+
+def stable_clusters(sites, base, n, join_radius, prefix, rule='a8'):
+    """MC04-S7 Revision 10: every baseline cluster keeps its ID and its member pairs that still exist (a cluster with
+    none left is retired and its ID never reused). A pair that no baseline cluster holds, taken in ID order, joins the
+    nearest kept cluster whose running centroid lies within the join radius and whose circuits still fit; the others
+    are clustered by gate_cluster and numbered after the highest baseline ID. Kept clusters come first, in ID order."""
+    by = {s['id']: s for s in sites}
+    held = {m for c in base for m in c['members']}
+    kept = [(c['id'], [by[m] for m in c['members'] if m in by]) for c in base]
+    kept = [(cid, ms) for cid, ms in kept if ms]
+    for s in sorted((s for s in sites if s['id'] not in held), key=lambda s: s['id']):
+        best = None
+        for i, (cid, ms) in enumerate(kept):
+            cx, cy = links._centroid(ms)
+            d = round(math.hypot(s['xy'][0] - cx, s['xy'][1] - cy), 6)
+            if d > join_radius:
+                continue
+            need = circuits_needed([k for m in ms for k in m['classes']] + list(s['classes']), rule)
+            if need is None or need > n:
+                continue
+            if best is None or (d, cid) < best[0]:
+                best = ((d, cid), i)
+        if best is not None:
+            kept[best[1]][1].append(s)
+            held.add(s['id'])
+    out = []
+    for cid, ms in kept:
+        c = _finish_cluster(cid, ms)
+        need = circuits_needed([k for m in ms for k in m['classes']], rule)
+        if need is None or need > n:
+            if len(ms) > 1:
+                raise ValueError('baseline link %s no longer fits %d circuits' % (cid, n))
+            c['oversize'] = need
+        out.append(c)
+    rest = [s for s in sites if s['id'] not in held]
+    top = max((int(c['id'][len(prefix):]) for c in base), default=0)
+    for k, c in enumerate(gate_cluster(rest, n, join_radius, prefix + '~', rule), 1):
+        c = dict(c, id='%s%02d' % (prefix, top + k))
+        out.append(c)
+    return out
+
+
 # ---------------------------------------------------------------- sizes and geometry
 
 def fh12_size(n, gopts, cable=None):
@@ -1010,6 +1070,7 @@ def place_gate(inp, sites, flags):
     placed = links.Placed()
     out = []
     joint_sizes = {j: list(gopts['joints'][j]) for j in ('JL-K', 'JR-K', 'P-K', 'JL-P via K')}
+    baseline = cluster_baseline()
     for key in gopts['adapters']['boards']:
         mem = sorted(s['id'] for s in sites if s['joint'] == 'O-K' and s['front_board'] == key)
         centre = [r4(c) for c in links._centroid([site_by[m] for m in mem])]
@@ -1031,7 +1092,11 @@ def place_gate(inp, sites, flags):
         for front in sorted({s['front_board'] for s in js}):
             fs = [s for s in js if s['front_board'] == front]
             prefix = '%s-%s-L' % (joint.replace(' ', '').replace('via', '-'), front)
-            for c in gate_cluster(fs, ladder[0], jr, prefix, ctx.rule):
+            if baseline is not None:
+                clusters = stable_clusters(fs, baseline.get((joint, front), []), ladder[0], jr, prefix, ctx.rule)
+            else:
+                clusters = gate_cluster(fs, ladder[0], jr, prefix, ctx.rule)
+            for c in clusters:
                 _place_ladder(ctx, placed, out, joint, front, c, ladder, 0, site_by, jr)
     refine(ctx, placed, out)
     placed = improve(ctx, out)

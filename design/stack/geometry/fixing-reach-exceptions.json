@@ -1,0 +1,215 @@
+{
+ "schema_version": 1,
+ "status": "RULED (MC04-S7 Revision 11, option (c)): interim-GH reach exceptions; GH headers are the interim interconnect that Gate A replaces",
+ "generator": "scripts/stack/geometry/fixing_reach_exceptions.py",
+ "limits": {
+  "reach_mm": 40,
+  "exception_reach_mm": 50,
+  "declared_fixings": 30
+ },
+ "baseline": {
+  "commit": "f0268f73",
+  "path": "design/stack/geometry/check-report.json",
+  "sha256": "cbc60f358f9d72750212c93151f8eafc5ddf9b55531902507d6b3eaaa609a8bf",
+  "misses": 108,
+  "pairs": [
+   "JL-K-12",
+   "JL-K-13",
+   "JL-K-14",
+   "JL-K-15",
+   "JL-K-16",
+   "JL-K-17",
+   "JL-K-18",
+   "JL-K-3",
+   "JL-K-4",
+   "JL-K-5",
+   "JL-K-6",
+   "JL-K-7",
+   "JL-K-8",
+   "JL-K-9",
+   "JR-K-1",
+   "JR-K-10",
+   "JR-K-11",
+   "JR-K-12",
+   "JR-K-2",
+   "JR-K-3",
+   "JR-K-4",
+   "JR-K-5",
+   "JR-K-8",
+   "JR-K-9",
+   "K-P-1",
+   "K-P-100",
+   "K-P-101",
+   "K-P-102",
+   "K-P-103",
+   "K-P-104",
+   "K-P-105",
+   "K-P-106",
+   "K-P-107",
+   "K-P-108",
+   "K-P-109",
+   "K-P-11",
+   "K-P-110",
+   "K-P-111",
+   "K-P-113",
+   "K-P-114",
+   "K-P-116",
+   "K-P-117",
+   "K-P-118",
+   "K-P-119",
+   "K-P-120",
+   "K-P-121",
+   "K-P-122",
+   "K-P-123",
+   "K-P-14",
+   "K-P-15",
+   "K-P-16",
+   "K-P-17",
+   "K-P-2",
+   "K-P-20",
+   "K-P-21",
+   "K-P-22",
+   "K-P-23",
+   "K-P-24",
+   "K-P-25",
+   "K-P-26",
+   "K-P-27",
+   "K-P-28",
+   "K-P-29",
+   "K-P-30",
+   "K-P-32",
+   "K-P-34",
+   "K-P-35",
+   "K-P-36",
+   "K-P-42",
+   "K-P-43",
+   "K-P-47",
+   "K-P-48",
+   "K-P-52",
+   "K-P-53",
+   "K-P-55",
+   "K-P-58",
+   "K-P-59",
+   "K-P-60",
+   "K-P-64",
+   "K-P-65",
+   "K-P-66",
+   "K-P-67",
+   "K-P-68",
+   "K-P-70",
+   "K-P-71",
+   "K-P-72",
+   "K-P-73",
+   "K-P-74",
+   "K-P-76",
+   "K-P-77",
+   "K-P-8",
+   "K-P-80",
+   "K-P-9",
+   "K-P-91",
+   "K-P-95",
+   "K-P-96",
+   "K-P-97",
+   "K-P-98",
+   "K-P-99",
+   "P-K-E2",
+   "P-K-E3",
+   "P-K-E4",
+   "P-K-E5",
+   "P-K-E6",
+   "P-K-SUB-O2",
+   "P-K-X2",
+   "P-K-X3",
+   "P-K-X4"
+  ]
+ },
+ "interim_gh_exceptions": [
+  {
+   "pair": "JL-K-26",
+   "xy": [
+    142,
+    122
+   ],
+   "worst_mm": 41.629,
+   "K_side_nearest": [
+    41.629,
+    "POWER-JL-AGND3"
+   ],
+   "front_side_nearest": [
+    41.629,
+    "POWER-JL-AGND3"
+   ],
+   "band": "between reach and exception reach"
+  },
+  {
+   "pair": "JL-K-27",
+   "xy": [
+    159,
+    122
+   ],
+   "worst_mm": 50.99,
+   "K_side_nearest": [
+    50.99,
+    "POWER-JL-AGND3"
+   ],
+   "front_side_nearest": [
+    50.99,
+    "POWER-JL-AGND3"
+   ],
+   "band": "beyond the exception reach"
+  },
+  {
+   "pair": "JR-K-28",
+   "xy": [
+    193,
+    24
+   ],
+   "worst_mm": 118.509,
+   "K_side_nearest": [
+    118.509,
+    "JR-SUP-1"
+   ],
+   "front_side_nearest": [
+    118.509,
+    "JR-SUP-1"
+   ],
+   "band": "beyond the exception reach"
+  },
+  {
+   "pair": "JR-K-29",
+   "xy": [
+    227,
+    24
+   ],
+   "worst_mm": 84.513,
+   "K_side_nearest": [
+    84.513,
+    "JR-SUP-1"
+   ],
+   "front_side_nearest": [
+    84.513,
+    "JR-SUP-1"
+   ],
+   "band": "beyond the exception reach"
+  }
+ ],
+ "passes": {
+  "JR-K-30": "within the 40 mm reach of JR-SUP-1"
+ },
+ "option_b_gate_a_candidate": {
+  "status": "GATE A CANDIDATE, NOT APPLIED (MC04-S7 Revision 11)",
+  "proposal": "declare the ruled stack sleeves (design/stack/fixings/ruled-list.json) as fixings for the reach check",
+  "figure": {
+   "sleeve": "SLV-U2",
+   "xy": [
+    244,
+    24
+   ],
+   "distances_mm": {
+    "JR-K-28": 51.0,
+    "JR-K-29": 17.0
+   }
+  },
+  "note": "JR-K-29 would pass the 40 mm reach; JR-K-28 would stay beyond the 50 mm exception reach"
+ }
+}
