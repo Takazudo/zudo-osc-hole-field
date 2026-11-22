@@ -323,7 +323,7 @@ def build():
     counts = defaultdict(int)
     for r in res:
         counts[r['class']] += 1
-    return {'schema_version': 1,
+    return {'schema_version': 1, 'model': rp.MODEL,
             'status': 'STUDY (MC04-S8 Part A2): courtyard level on unvalidated drafts; no board changed; nothing adopted',
             'generator': 'scripts/stack/studies/mc04_s8_replacement/replacement_a2.py',
             'rules': {'ruled_first': list(RULED), 'turns_deg': list(TURNS), 'limit_mm': rp.LIMIT_MM,

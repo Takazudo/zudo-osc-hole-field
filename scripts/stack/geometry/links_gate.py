@@ -371,6 +371,7 @@ def gate_cluster(sites, n, join_radius, prefix, rule='a8'):
 
 
 CLUSTER_BASELINE = links.LINK_DIR / 'link-cluster-baseline.json'
+LINK_ERA = links.LINK_DIR / 'link-era-replacements.json'  # MC04-S8 Revision 5
 
 
 def cluster_baseline():
@@ -1637,6 +1638,8 @@ def generate(root=sg.ROOT):
     s, refs = summarise(ctx, out)
     hashes = input_hashes(inp)
     hashes.update(p2.part2_hashes(inp))
+    if LINK_ERA.exists():
+        hashes[str(LINK_ERA.relative_to(sg.ROOT))] = sg.sha256_file(LINK_ERA)
     doc = {'provenance': {'generator': 'scripts/stack/geometry/links_gate.py', 'regenerate': REGEN,
                            'input_sha256': hashes},
             'schema_version': 3,
@@ -1667,6 +1670,7 @@ def generate(root=sg.ROOT):
             'replacement': {'parameters': inp['gopts']['replacement'], 'totals': p2.replacement_totals(part2['replacement']),
                             'footprints': part2['replacement']},
             'displaced_k_ic_packages': p2.displaced_k_ic_packages(inp, part2['replacement']),
+            'link_era_replacements': json.loads(LINK_ERA.read_text()) if LINK_ERA.exists() else None,
             'ds97': p2.ds97_summary(inp, part2['replacement']),
             'part_2_of_a7': json.loads(A7_FILE.read_text())['record_totals'] if A7_FILE.exists() else None,
             'refs': refs,

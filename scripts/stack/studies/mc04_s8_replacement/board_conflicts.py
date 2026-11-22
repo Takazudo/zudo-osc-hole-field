@@ -63,7 +63,8 @@ def build():
     counts = {}
     for h in hits:
         counts[h['kind']] = counts.get(h['kind'], 0) + 1
-    return {'schema_version': 1, 'status': 'PREMISE CHECK (MC04-S8 Revision 4): no board changed',
+    return {'schema_version': 1, 'model': rp.MODEL + ' (poses); checked here against the interim boards',
+            'status': 'PREMISE CHECK (MC04-S8 Revision 4): no board changed',
             'generator': 'scripts/stack/studies/mc04_s8_replacement/board_conflicts.py',
             'placed_footprints': len(placed), 'counts': dict(sorted(counts.items())), 'overlaps': hits}
 

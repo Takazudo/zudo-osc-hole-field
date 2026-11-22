@@ -22,6 +22,7 @@ OUT = ROOT / 'design/stack/gate-a-open-items.json'
 ACCEPT = 'design/partition/locality-acceptances.json'
 REACH = 'design/stack/geometry/fixing-reach-exceptions.json'
 GATE = 'design/stack/geometry/links/link-gate.json'
+LINK_ERA = 'design/stack/geometry/links/link-era-replacements.json'
 BASELINE_GATE = '93197a3e'  # the link gate before the stage 7 move (link-cluster-baseline.json)
 GROWTH = json.loads((ROOT / 'design/stack/geometry/parameters.json').read_text())['obstacle_model']['own_face_courtyard_growth_mm']
 RULINGS = 'circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md'
@@ -87,11 +88,24 @@ def build():
     for header, fixing in sorted(KNOWN_FIXING_CONFLICTS):
         items.append({'id': 'GA-FIX-%s-%s' % (header, fixing), 'kind': 'header/fixing conflict', 'header': header, 'fixing': fixing,
                       'source': 'scripts/checks/connector_packing35.py KNOWN_FIXING_CONFLICTS', 'ruling': RULINGS + ', Revision 8'})
+    era = read(LINK_ERA) if (ROOT / LINK_ERA).exists() else {'placed': [], 'open': [], 'model': None}
+    era_placed = {(x['board'], x['ic']): x for x in era['placed']}
+    era_open = {(x['board'], x['ic']): x for x in era['open']}
     for r in gate['replacement']['footprints']:
         if r['new'] is None:
-            items.append({'id': 'GA-REPLACE-%s-%s' % (r['board'], r['ref']), 'kind': 'open re-placement (re-route)', 'board': r['board'],
-                          'ref': r['ref'], 'package': r['package'], 'face': r['face'], 'old': r['old'], 'why': r['why'],
-                          'overlaps': overlaps(r, gate['links']), 'source': GATE, 'ruling': RULINGS + ', Revisions 12 to 14'})
+            row = {'id': 'GA-REPLACE-%s-%s' % (r['board'], r['ref']), 'kind': 'open re-placement (re-route)', 'board': r['board'],
+                   'ref': r['ref'], 'package': r['package'], 'face': r['face'], 'old': r['old'], 'why': r['why'],
+                   'overlaps': overlaps(r, gate['links']), 'source': GATE, 'ruling': RULINGS + ', Revisions 12 to 14'}
+            k = (r['board'], r['ref'])
+            if k in era_placed:
+                row.update({'status': 'RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)',
+                            'link_era_pose': era_placed[k]['pose'], 'model': era['model'], 'record': LINK_ERA})
+            elif k in era_open:
+                row.update({'status': 'OPEN (link era)', 'proof': era_open[k]['proof'], 'cheapest_option': era_open[k]['cheapest_option'],
+                            'model': era['model'], 'record': LINK_ERA})
+            else:
+                row['status'] = 'OPEN'
+            items.append(row)
     bl = {x['id']: x for x in base['links']}
     for l in gate['links']:
         o = bl.get(l['id'])
@@ -106,8 +120,12 @@ def build():
     kinds = {}
     for i in items:
         kinds[i['kind']] = kinds.get(i['kind'], 0) + 1
+    status = {}
+    for i in items:
+        if 'status' in i:
+            status[i['status']] = status.get(i['status'], 0) + 1
     return {'schema_version': 1, 'status': 'OPEN LIST for the Gate A review (MC04-S7); items stay open until Gate A rules them',
-            'generator': 'scripts/stack/gate_a_open_items.py', 'counts': kinds, 'items': items}
+            'generator': 'scripts/stack/gate_a_open_items.py', 'counts': kinds, 're_placement_status': status, 'items': items}
 
 
 def main():

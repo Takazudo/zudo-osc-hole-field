@@ -236,7 +236,7 @@ class A4(a3.A3):
 def build():
     s = A4()
     res = s.run()
-    return {'schema_version': 1,
+    return {'schema_version': 1, 'model': rp.MODEL,
             'status': 'STUDY (MC04-S8 Part A4): courtyard level on unvalidated drafts; no board changed; nothing adopted',
             'generator': 'scripts/stack/studies/mc04_s8_replacement/replacement_a4.py',
             'rules': {'ruled_first': list(a2.RULED) + list(a3.RULED_A2) + ['U4647 (with U4502 and R4516)'],

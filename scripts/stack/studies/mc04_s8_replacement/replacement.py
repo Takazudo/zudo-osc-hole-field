@@ -29,6 +29,8 @@ import links_gate_part2 as p2  # noqa: E402
 import stackgeom as sg  # noqa: E402
 
 OUT = Path(__file__).with_name('result.json')
+MODEL = ('link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); '
+         'not checked against the interim boards')
 LIMIT_MM = 24.0
 BLOCK_RADIUS_MM = 12.0
 NEAR_STEP, NEAR_MM = 0.5, 40.0
@@ -318,7 +320,7 @@ def build():
     counts = defaultdict(int)
     for r in res:
         counts[r['class']] += 1
-    return {'schema_version': 1,
+    return {'schema_version': 1, 'model': MODEL,
             'status': 'STUDY (MC04-S8 Part A): courtyard level on unvalidated drafts; no board changed; nothing adopted',
             'generator': 'scripts/stack/studies/mc04_s8_replacement/replacement.py',
             'rules': {'limit_mm': LIMIT_MM, 'block': 'IC + decouplers + cell-local R/C (signal nets all on the IC) within %g mm' % BLOCK_RADIUS_MM,

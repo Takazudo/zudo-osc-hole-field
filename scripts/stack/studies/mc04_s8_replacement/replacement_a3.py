@@ -259,7 +259,7 @@ class A3(a2.A2):
 def build():
     s = A3()
     res = s.run()
-    return {'schema_version': 1,
+    return {'schema_version': 1, 'model': rp.MODEL,
             'status': 'STUDY (MC04-S8 Part A3): courtyard level on unvalidated drafts; no board changed; nothing adopted',
             'generator': 'scripts/stack/studies/mc04_s8_replacement/replacement_a3.py',
             'rules': {'ruled_first': list(a2.RULED) + list(RULED_A2), 'max_ic_blocks_displaced': MAX_BLOCKS,
