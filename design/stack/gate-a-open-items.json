@@ -13,9 +13,8 @@
   "slot drift": 3
  },
  "re_placement_status": {
-  "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)": 10,
-  "NEEDS RE-SEARCH (link era): other-face block members meet obstacles at the recorded pose": 4,
-  "OPEN (link era)": 1
+  "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)": 8,
+  "OPEN (link era)": 7
  },
  "items": [
   {
@@ -214,7 +213,11 @@
      57.96,
      37.02
     ],
-    "moved_mm": 29.09
+    "moved_mm": 29.09,
+    "shift_mm": [
+     -14.0,
+     -25.5
+    ]
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
@@ -261,31 +264,141 @@
    ],
    "source": "design/stack/geometry/links/link-gate.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14",
-   "status": "NEEDS RE-SEARCH (link era): other-face block members meet obstacles at the recorded pose",
-   "link_era_pose": {
-    "face": "F",
-    "origin": [
-     61.45,
-     222.97
-    ],
-    "moved_mm": 1.5,
-    "turn_deg": 0
+   "status": "OPEN (link era)",
+   "proof": {
+    "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered",
+    "nearest_legal_mm": 38.71,
+    "displacement_options_tried": 0,
+    "note": "no pose within 24 mm with the A2 displacement rule on this grid (the displacement options are tried fewest-displaced first up to 60)"
    },
-   "member_face_check": {
-    "other_face_members": 2,
-    "all_clear": false,
-    "blocked": [
+   "cheapest_option": {
+    "pose": {
+     "face": "F",
+     "turn_deg": 90,
+     "origin": [
+      66.95,
+      261.47
+     ],
+     "moved_mm": 38.71,
+     "shift_mm": [
+      4.0,
+      38.5
+     ]
+    },
+    "electrical": [
      {
-      "ref": "R1498",
-      "recorded_face": "F",
-      "true_face": "B",
-      "blocked_by": "K field of P-K-P-L08"
+      "net": "/O4/PACK_OPA4196IDR_3_IO_UNUSED3",
+      "kind": [
+       "follower output"
+      ],
+      "parts_on_board": [
+       "U1415"
+      ],
+      "hpwl_before_mm": 0.0,
+      "hpwl_after_mm": 0.0,
+      "added_run_estimate_mm": 0.0,
+      "run_after_estimate_mm": 0.0,
+      "capacitance_after_estimate_pF": 0.0,
+      "added_capacitance_estimate_pF": 0.0
      },
      {
-      "ref": "R1499",
-      "recorded_face": "F",
-      "true_face": "B",
-      "blocked_by": "K field of P-K-P-L08"
+      "net": "/O4/PACK_OPA4196IDR_3_IO_UNUSED4",
+      "kind": [
+       "follower output"
+      ],
+      "parts_on_board": [
+       "U1415"
+      ],
+      "hpwl_before_mm": 0.0,
+      "hpwl_after_mm": 0.0,
+      "added_run_estimate_mm": 0.0,
+      "run_after_estimate_mm": 0.0,
+      "capacitance_after_estimate_pF": 0.0,
+      "added_capacitance_estimate_pF": 0.0
+     },
+     {
+      "net": "/O4/SINE_DIFF",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "R1498",
+       "R1499",
+       "U1415"
+      ],
+      "hpwl_before_mm": 8.23,
+      "hpwl_after_mm": 8.23,
+      "added_run_estimate_mm": -0.0,
+      "run_after_estimate_mm": 12.34,
+      "capacitance_after_estimate_pF": 2.47,
+      "added_capacitance_estimate_pF": -0.0
+     },
+     {
+      "net": "/O4/SINE_GAIN_SUM",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "R1499",
+       "RVO1411",
+       "U1415"
+      ],
+      "hpwl_before_mm": 17.08,
+      "hpwl_after_mm": 46.93,
+      "added_run_estimate_mm": 44.77,
+      "run_after_estimate_mm": 70.39,
+      "capacitance_after_estimate_pF": 14.08,
+      "added_capacitance_estimate_pF": 8.95
+     },
+     {
+      "net": "/O4/SINE_MINUS",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "R1497",
+       "R1498",
+       "U1415"
+      ],
+      "hpwl_before_mm": 8.46,
+      "hpwl_after_mm": 54.66,
+      "added_run_estimate_mm": 69.3,
+      "run_after_estimate_mm": 81.99,
+      "capacitance_after_estimate_pF": 16.4,
+      "added_capacitance_estimate_pF": 13.86
+     },
+     {
+      "net": "/O4/SINE_PLUS",
+      "kind": [
+       "non-inverting input"
+      ],
+      "parts_on_board": [
+       "R1495",
+       "R1496",
+       "U1415"
+      ],
+      "hpwl_before_mm": 10.75,
+      "hpwl_after_mm": 46.43,
+      "added_run_estimate_mm": 53.52,
+      "run_after_estimate_mm": 69.64,
+      "capacitance_after_estimate_pF": 13.93,
+      "added_capacitance_estimate_pF": 10.7
+     },
+     {
+      "net": "/O4/SIN_SCALED",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "RB1401",
+       "U1415"
+      ],
+      "hpwl_before_mm": 4.12,
+      "hpwl_after_mm": 46.62,
+      "added_run_estimate_mm": 63.75,
+      "run_after_estimate_mm": 69.93,
+      "capacitance_after_estimate_pF": 13.99,
+      "added_capacitance_estimate_pF": 12.75
      }
     ]
    },
@@ -334,6 +447,10 @@
      79.95
     ],
     "moved_mm": 23.14,
+    "shift_mm": [
+     23.0,
+     2.5
+    ],
     "turn_deg": 0
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
@@ -381,7 +498,11 @@
      241.83,
      247.95
     ],
-    "moved_mm": 48.84
+    "moved_mm": 48.84,
+    "shift_mm": [
+     -9.0,
+     48.0
+    ]
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
@@ -420,15 +541,131 @@
    ],
    "source": "design/stack/geometry/links/link-gate.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14",
-   "status": "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)",
-   "link_era_pose": {
-    "face": "F",
-    "origin": [
-     270.68,
-     235.45
-    ],
-    "moved_mm": 17.9,
-    "turn_deg": 0
+   "status": "OPEN (link era)",
+   "proof": {
+    "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered",
+    "nearest_legal_mm": 25.5,
+    "displacement_options_tried": 0,
+    "note": "no pose within 24 mm with the A2 displacement rule on this grid (the displacement options are tried fewest-displaced first up to 60)"
+   },
+   "cheapest_option": {
+    "pose": {
+     "face": "F",
+     "turn_deg": 270,
+     "origin": [
+      306.18,
+      225.95
+     ],
+     "moved_mm": 25.5,
+     "shift_mm": [
+      25.0,
+      5.0
+     ]
+    },
+    "electrical": [
+     {
+      "net": "/E4/CLOCK",
+      "kind": [
+       "logic input",
+       "timing node (clock input)",
+       "timing node (clock/sync)"
+      ],
+      "parts_on_board": [
+       "R4433",
+       "U4412",
+       "U4430",
+       "U4431",
+       "U4432",
+       "U4433",
+       "U4434",
+       "U4435",
+       "U4436",
+       "U4437",
+       "U4438"
+      ],
+      "hpwl_before_mm": 97.12,
+      "hpwl_after_mm": 100.1,
+      "added_run_estimate_mm": 4.47,
+      "run_after_estimate_mm": 150.15,
+      "capacitance_after_estimate_pF": 30.03,
+      "added_capacitance_estimate_pF": 0.89
+     },
+     {
+      "net": "/E4/LOOP",
+      "kind": [
+       "logic output"
+      ],
+      "parts_on_board": [
+       "U4415",
+       "U4433"
+      ],
+      "hpwl_before_mm": 40.23,
+      "hpwl_after_mm": 70.23,
+      "added_run_estimate_mm": 45.0,
+      "run_after_estimate_mm": 105.35,
+      "capacitance_after_estimate_pF": 21.07,
+      "added_capacitance_estimate_pF": 9.0
+     },
+     {
+      "net": "/E4/LOOP_RAW",
+      "kind": [
+       "logic input"
+      ],
+      "parts_on_board": [
+       "U4433"
+      ],
+      "hpwl_before_mm": 0.0,
+      "hpwl_after_mm": 0.0,
+      "added_run_estimate_mm": 0.0,
+      "run_after_estimate_mm": 0.0,
+      "capacitance_after_estimate_pF": 0.0,
+      "added_capacitance_estimate_pF": 0.0
+     },
+     {
+      "net": "/E4/LOOP_SYNC",
+      "kind": [
+       "logic input",
+       "logic output",
+       "timing node (clock/sync)"
+      ],
+      "parts_on_board": [
+       "U4433"
+      ],
+      "hpwl_before_mm": 0.0,
+      "hpwl_after_mm": 0.0,
+      "added_run_estimate_mm": 0.0,
+      "run_after_estimate_mm": 0.0,
+      "capacitance_after_estimate_pF": 0.0,
+      "added_capacitance_estimate_pF": 0.0
+     },
+     {
+      "net": "/E4/READY",
+      "kind": [
+       "logic input"
+      ],
+      "parts_on_board": [
+       "U4405",
+       "U4422",
+       "U4425",
+       "U4426",
+       "U4430",
+       "U4431",
+       "U4432",
+       "U4433",
+       "U4434",
+       "U4435",
+       "U4436",
+       "U4437",
+       "U4438"
+      ],
+      "hpwl_before_mm": 115.1,
+      "hpwl_after_mm": 118.08,
+      "added_run_estimate_mm": 4.47,
+      "run_after_estimate_mm": 177.12,
+      "capacitance_after_estimate_pF": 35.42,
+      "added_capacitance_estimate_pF": 0.89
+     }
+    ]
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
@@ -467,7 +704,11 @@
      193.97,
      149.65
     ],
-    "moved_mm": 18.34
+    "moved_mm": 18.34,
+    "shift_mm": [
+     18.0,
+     -3.5
+    ]
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
@@ -506,15 +747,194 @@
    ],
    "source": "design/stack/geometry/links/link-gate.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14",
-   "status": "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)",
-   "link_era_pose": {
-    "face": "B",
-    "origin": [
-     177.93,
-     121.08
-    ],
-    "moved_mm": 21.5,
-    "turn_deg": 0
+   "status": "OPEN (link era)",
+   "proof": {
+    "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered",
+    "nearest_legal_mm": 26.71,
+    "displacement_options_tried": 0,
+    "note": "no pose within 24 mm with the A2 displacement rule on this grid (the displacement options are tried fewest-displaced first up to 60)"
+   },
+   "cheapest_option": {
+    "pose": {
+     "face": "F",
+     "turn_deg": 0,
+     "origin": [
+      161.43,
+      121.58
+     ],
+     "moved_mm": 26.71,
+     "shift_mm": [
+      -16.5,
+      -21.0
+     ]
+    },
+    "electrical": [
+     {
+      "net": "/E5/CURVED",
+      "kind": [
+       "logic input"
+      ],
+      "parts_on_board": [
+       "U4526",
+       "U4527",
+       "U4528"
+      ],
+      "hpwl_before_mm": 28.07,
+      "hpwl_after_mm": 52.61,
+      "added_run_estimate_mm": 36.81,
+      "run_after_estimate_mm": 78.91,
+      "capacitance_after_estimate_pF": 15.78,
+      "added_capacitance_estimate_pF": 7.36
+     },
+     {
+      "net": "/E5/HOLD_ENABLE",
+      "kind": [
+       "logic output"
+      ],
+      "parts_on_board": [
+       "D4535",
+       "U4526"
+      ],
+      "hpwl_before_mm": 39.59,
+      "hpwl_after_mm": 77.09,
+      "added_run_estimate_mm": 56.25,
+      "run_after_estimate_mm": 115.63,
+      "capacitance_after_estimate_pF": 23.13,
+      "added_capacitance_estimate_pF": 11.25
+     },
+     {
+      "net": "/E5/HOLD_N",
+      "kind": [
+       "logic input"
+      ],
+      "parts_on_board": [
+       "U4513",
+       "U4518",
+       "U4526",
+       "U4537"
+      ],
+      "hpwl_before_mm": 56.83,
+      "hpwl_after_mm": 83.37,
+      "added_run_estimate_mm": 39.81,
+      "run_after_estimate_mm": 125.05,
+      "capacitance_after_estimate_pF": 25.01,
+      "added_capacitance_estimate_pF": 7.96
+     },
+     {
+      "net": "/E5/L066",
+      "kind": [
+       "logic input",
+       "logic output"
+      ],
+      "parts_on_board": [
+       "U4526"
+      ],
+      "hpwl_before_mm": 0.0,
+      "hpwl_after_mm": 0.0,
+      "added_run_estimate_mm": 0.0,
+      "run_after_estimate_mm": 0.0,
+      "capacitance_after_estimate_pF": 0.0,
+      "added_capacitance_estimate_pF": 0.0
+     },
+     {
+      "net": "/E5/L069",
+      "kind": [
+       "logic output"
+      ],
+      "parts_on_board": [
+       "U4526",
+       "U4527",
+       "U4528"
+      ],
+      "hpwl_before_mm": 28.07,
+      "hpwl_after_mm": 52.61,
+      "added_run_estimate_mm": 36.81,
+      "run_after_estimate_mm": 78.91,
+      "capacitance_after_estimate_pF": 15.78,
+      "added_capacitance_estimate_pF": 7.36
+     },
+     {
+      "net": "/E5/L070",
+      "kind": [
+       "logic output"
+      ],
+      "parts_on_board": [
+       "U4526",
+       "U4527"
+      ],
+      "hpwl_before_mm": 15.11,
+      "hpwl_after_mm": 52.61,
+      "added_run_estimate_mm": 56.25,
+      "run_after_estimate_mm": 78.91,
+      "capacitance_after_estimate_pF": 15.78,
+      "added_capacitance_estimate_pF": 11.25
+     },
+     {
+      "net": "/E5/READY",
+      "kind": [
+       "logic input"
+      ],
+      "parts_on_board": [
+       "U4505",
+       "U4522",
+       "U4525",
+       "U4526",
+       "U4530",
+       "U4531",
+       "U4532",
+       "U4533",
+       "U4534",
+       "U4535",
+       "U4536",
+       "U4537",
+       "U4538"
+      ],
+      "hpwl_before_mm": 106.35,
+      "hpwl_after_mm": 109.1,
+      "added_run_estimate_mm": 4.12,
+      "run_after_estimate_mm": 163.65,
+      "capacitance_after_estimate_pF": 32.73,
+      "added_capacitance_estimate_pF": 0.82
+     },
+     {
+      "net": "/E5/RISE",
+      "kind": [
+       "logic input"
+      ],
+      "parts_on_board": [
+       "U4516",
+       "U4517",
+       "U4520",
+       "U4524",
+       "U4526",
+       "U4529",
+       "U4536"
+      ],
+      "hpwl_before_mm": 73.5,
+      "hpwl_after_mm": 90.89,
+      "added_run_estimate_mm": 26.08,
+      "run_after_estimate_mm": 136.33,
+      "capacitance_after_estimate_pF": 27.27,
+      "added_capacitance_estimate_pF": 5.22
+     },
+     {
+      "net": "/E5/TOP_RAW",
+      "kind": [
+       "logic input"
+      ],
+      "parts_on_board": [
+       "U4512",
+       "U4526",
+       "U4534"
+      ],
+      "hpwl_before_mm": 53.06,
+      "hpwl_after_mm": 57.37,
+      "added_run_estimate_mm": 6.46,
+      "run_after_estimate_mm": 86.05,
+      "capacitance_after_estimate_pF": 17.21,
+      "added_capacitance_estimate_pF": 1.29
+     }
+    ]
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
@@ -548,12 +968,16 @@
    "status": "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)",
    "link_era_pose": {
     "face": "F",
+    "turn_deg": 90,
     "origin": [
-     200.97,
-     127.65
+     211.97,
+     149.65
     ],
-    "moved_mm": 21.09,
-    "turn_deg": 0
+    "moved_mm": 22.36,
+    "shift_mm": [
+     22.0,
+     4.0
+    ]
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
@@ -595,12 +1019,16 @@
    "status": "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)",
    "link_era_pose": {
     "face": "F",
+    "turn_deg": 270,
     "origin": [
-     293.18,
-     146.95
+     292.18,
+     145.45
     ],
-    "moved_mm": 10.82,
-    "turn_deg": 0
+    "moved_mm": 9.18,
+    "shift_mm": [
+     8.0,
+     4.5
+    ]
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
@@ -651,12 +1079,16 @@
    "status": "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)",
    "link_era_pose": {
     "face": "F",
+    "turn_deg": 270,
     "origin": [
-     237.43,
-     149.95
+     238.43,
+     150.95
     ],
-    "moved_mm": 21.03,
-    "turn_deg": 0
+    "moved_mm": 20.43,
+    "shift_mm": [
+     -19.0,
+     7.5
+    ]
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
@@ -703,7 +1135,11 @@
      295.18,
      74.97
     ],
-    "moved_mm": 22.55
+    "moved_mm": 22.55,
+    "shift_mm": [
+     -1.5,
+     22.5
+    ]
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
@@ -734,55 +1170,238 @@
    ],
    "source": "design/stack/geometry/links/link-gate.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14",
-   "status": "NEEDS RE-SEARCH (link era): other-face block members meet obstacles at the recorded pose",
-   "link_era_pose": {
-    "face": "F",
-    "origin": [
-     134.93,
-     249.22
-    ],
-    "moved_mm": 23.05,
-    "turn_deg": 0
+   "status": "OPEN (link era)",
+   "proof": {
+    "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered",
+    "nearest_legal_mm": 40.61,
+    "displacement_options_tried": 0,
+    "note": "no pose within 24 mm with the A2 displacement rule on this grid (the displacement options are tried fewest-displaced first up to 60)"
    },
-   "member_face_check": {
-    "other_face_members": 6,
-    "all_clear": false,
-    "blocked": [
+   "cheapest_option": {
+    "pose": {
+     "face": "F",
+     "turn_deg": 90,
+     "origin": [
+      125.93,
+      272.72
+     ],
+     "moved_mm": 40.61,
+     "shift_mm": [
+      -32.0,
+      25.0
+     ]
+    },
+    "electrical": [
      {
-      "ref": "R5156",
-      "recorded_face": "F",
-      "true_face": "B",
-      "blocked_by": "courtyard C5139"
+      "net": "/W2/F1_CLIP",
+      "kind": [
+       "non-inverting input"
+      ],
+      "parts_on_board": [
+       "D5106",
+       "D5107",
+       "R5152",
+       "U5110"
+      ],
+      "hpwl_before_mm": 15.23,
+      "hpwl_after_mm": 70.55,
+      "added_run_estimate_mm": 82.98,
+      "run_after_estimate_mm": 105.83,
+      "capacitance_after_estimate_pF": 21.17,
+      "added_capacitance_estimate_pF": 16.6
      },
      {
-      "ref": "R5157",
-      "recorded_face": "F",
-      "true_face": "B",
-      "blocked_by": "courtyard U5111"
+      "net": "/W2/F1_OUT",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "R5154",
+       "R5155",
+       "R5156",
+       "U5110"
+      ],
+      "hpwl_before_mm": 25.27,
+      "hpwl_after_mm": 61.5,
+      "added_run_estimate_mm": 54.34,
+      "run_after_estimate_mm": 92.25,
+      "capacitance_after_estimate_pF": 18.45,
+      "added_capacitance_estimate_pF": 10.87
      },
      {
-      "ref": "R5158",
-      "recorded_face": "F",
-      "true_face": "B",
-      "blocked_by": "courtyard C5139"
+      "net": "/W2/F1_SUM",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "R5153",
+       "R5154",
+       "U5110"
+      ],
+      "hpwl_before_mm": 21.35,
+      "hpwl_after_mm": 51.77,
+      "added_run_estimate_mm": 45.63,
+      "run_after_estimate_mm": 77.66,
+      "capacitance_after_estimate_pF": 15.53,
+      "added_capacitance_estimate_pF": 9.13
      },
      {
-      "ref": "R5159",
-      "recorded_face": "F",
-      "true_face": "B",
-      "blocked_by": "courtyard Q5101"
+      "net": "/W2/F2_CLIP",
+      "kind": [
+       "non-inverting input"
+      ],
+      "parts_on_board": [
+       "D5108",
+       "D5109",
+       "R5155",
+       "U5110"
+      ],
+      "hpwl_before_mm": 50.88,
+      "hpwl_after_mm": 52.93,
+      "added_run_estimate_mm": 3.07,
+      "run_after_estimate_mm": 79.4,
+      "capacitance_after_estimate_pF": 15.88,
+      "added_capacitance_estimate_pF": 0.61
      },
      {
-      "ref": "R5160",
-      "recorded_face": "F",
-      "true_face": "B",
-      "blocked_by": "courtyard R5138"
+      "net": "/W2/F2_OUT",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "R5157",
+       "R5158",
+       "R5159",
+       "U5110"
+      ],
+      "hpwl_before_mm": 10.29,
+      "hpwl_after_mm": 10.29,
+      "added_run_estimate_mm": -0.0,
+      "run_after_estimate_mm": 15.43,
+      "capacitance_after_estimate_pF": 3.09,
+      "added_capacitance_estimate_pF": -0.0
      },
      {
-      "ref": "R5163",
-      "recorded_face": "F",
-      "true_face": "B",
-      "blocked_by": "courtyard R2331"
+      "net": "/W2/F2_SUM",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "R5156",
+       "R5157",
+       "U5110"
+      ],
+      "hpwl_before_mm": 13.29,
+      "hpwl_after_mm": 13.29,
+      "added_run_estimate_mm": -0.0,
+      "run_after_estimate_mm": 19.93,
+      "capacitance_after_estimate_pF": 3.99,
+      "added_capacitance_estimate_pF": -0.0
+     },
+     {
+      "net": "/W2/F3_CLIP",
+      "kind": [
+       "non-inverting input"
+      ],
+      "parts_on_board": [
+       "D5110",
+       "D5111",
+       "R5158",
+       "U5110"
+      ],
+      "hpwl_before_mm": 53.96,
+      "hpwl_after_mm": 42.78,
+      "added_run_estimate_mm": -16.77,
+      "run_after_estimate_mm": 64.17,
+      "capacitance_after_estimate_pF": 12.83,
+      "added_capacitance_estimate_pF": -3.35
+     },
+     {
+      "net": "/W2/F3_OUT",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "R5160",
+       "R5161",
+       "R5162",
+       "U5110"
+      ],
+      "hpwl_before_mm": 22.5,
+      "hpwl_after_mm": 22.5,
+      "added_run_estimate_mm": 0.0,
+      "run_after_estimate_mm": 33.75,
+      "capacitance_after_estimate_pF": 6.75,
+      "added_capacitance_estimate_pF": 0.0
+     },
+     {
+      "net": "/W2/F3_SUM",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "R5159",
+       "R5160",
+       "U5110"
+      ],
+      "hpwl_before_mm": 6.29,
+      "hpwl_after_mm": 6.29,
+      "added_run_estimate_mm": -0.0,
+      "run_after_estimate_mm": 9.43,
+      "capacitance_after_estimate_pF": 1.89,
+      "added_capacitance_estimate_pF": -0.0
+     },
+     {
+      "net": "/W2/F4_CLIP",
+      "kind": [
+       "non-inverting input"
+      ],
+      "parts_on_board": [
+       "D5112",
+       "D5113",
+       "R5161",
+       "U5110"
+      ],
+      "hpwl_before_mm": 37.56,
+      "hpwl_after_mm": 50.85,
+      "added_run_estimate_mm": 19.94,
+      "run_after_estimate_mm": 76.27,
+      "capacitance_after_estimate_pF": 15.25,
+      "added_capacitance_estimate_pF": 3.99
+     },
+     {
+      "net": "/W2/F4_OUT",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "R5163",
+       "U5110",
+       "U5111"
+      ],
+      "hpwl_before_mm": 17.69,
+      "hpwl_after_mm": 46.52,
+      "added_run_estimate_mm": 43.25,
+      "run_after_estimate_mm": 69.78,
+      "capacitance_after_estimate_pF": 13.96,
+      "added_capacitance_estimate_pF": 8.65
+     },
+     {
+      "net": "/W2/F4_SUM",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "R5162",
+       "R5163",
+       "U5110"
+      ],
+      "hpwl_before_mm": 10.52,
+      "hpwl_after_mm": 10.52,
+      "added_run_estimate_mm": 0.0,
+      "run_after_estimate_mm": 15.78,
+      "capacitance_after_estimate_pF": 3.16,
+      "added_capacitance_estimate_pF": 0.0
      }
     ]
    },
@@ -812,33 +1431,188 @@
    ],
    "source": "design/stack/geometry/links/link-gate.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14",
-   "status": "NEEDS RE-SEARCH (link era): other-face block members meet obstacles at the recorded pose",
-   "link_era_pose": {
-    "face": "F",
-    "turn_deg": 90,
-    "origin": [
-     147.95,
-     208.58
-    ],
-    "moved_mm": 10.2
+   "status": "OPEN (link era)",
+   "proof": {
+    "candidates": 0,
+    "trials": 0,
+    "trial_failures": {},
+    "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered"
    },
-   "member_face_check": {
-    "other_face_members": 2,
-    "all_clear": false,
-    "blocked": [
+   "cheapest_option": {
+    "pose": {
+     "face": "F",
+     "turn_deg": 180,
+     "origin": [
+      141.95,
+      159.58
+     ],
+     "moved_mm": 49.65,
+     "shift_mm": [
+      -16.0,
+      -47.0
+     ]
+    },
+    "electrical": [
      {
-      "ref": "R5246",
-      "recorded_face": "F",
-      "true_face": "B",
-      "blocked_by": "courtyard D5207"
+      "net": "/W1/BASE_DRIVE",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "C5207",
+       "R5238",
+       "U5209"
+      ],
+      "hpwl_before_mm": 10.99,
+      "hpwl_after_mm": 70.26,
+      "added_run_estimate_mm": 88.9,
+      "run_after_estimate_mm": 105.39,
+      "capacitance_after_estimate_pF": 21.08,
+      "added_capacitance_estimate_pF": 17.78
      },
      {
-      "ref": "R5250",
-      "recorded_face": "F",
-      "true_face": "B",
-      "blocked_by": "re-placed R2368"
+      "net": "/W1/DRIVE_INV_SUM",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "R5250",
+       "R5251",
+       "U5209"
+      ],
+      "hpwl_before_mm": 10.65,
+      "hpwl_after_mm": 10.65,
+      "added_run_estimate_mm": 0.0,
+      "run_after_estimate_mm": 15.98,
+      "capacitance_after_estimate_pF": 3.2,
+      "added_capacitance_estimate_pF": 0.0
+     },
+     {
+      "net": "/W1/EMITTER",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "C5207",
+       "D5205",
+       "Q5201",
+       "R5237",
+       "U5209"
+      ],
+      "hpwl_before_mm": 24.72,
+      "hpwl_after_mm": 86.53,
+      "added_run_estimate_mm": 92.71,
+      "run_after_estimate_mm": 129.79,
+      "capacitance_after_estimate_pF": 25.96,
+      "added_capacitance_estimate_pF": 18.54
+     },
+     {
+      "net": "/W1/FOLDER_DRIVE",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "R5251",
+       "R5252",
+       "R5253",
+       "U5209"
+      ],
+      "hpwl_before_mm": 16.65,
+      "hpwl_after_mm": 63.77,
+      "added_run_estimate_mm": 70.68,
+      "run_after_estimate_mm": 95.65,
+      "capacitance_after_estimate_pF": 19.13,
+      "added_capacitance_estimate_pF": 14.14
+     },
+     {
+      "net": "/W1/FOLDER_NEG",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "R5249",
+       "R5250",
+       "U5209"
+      ],
+      "hpwl_before_mm": 13.61,
+      "hpwl_after_mm": 50.77,
+      "added_run_estimate_mm": 55.74,
+      "run_after_estimate_mm": 76.15,
+      "capacitance_after_estimate_pF": 15.23,
+      "added_capacitance_estimate_pF": 11.15
+     },
+     {
+      "net": "/W1/FOLDER_SUM",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "R5246",
+       "R5247",
+       "R5248",
+       "R5249",
+       "U5209"
+      ],
+      "hpwl_before_mm": 82.65,
+      "hpwl_after_mm": 107.06,
+      "added_run_estimate_mm": 36.61,
+      "run_after_estimate_mm": 160.59,
+      "capacitance_after_estimate_pF": 32.12,
+      "added_capacitance_estimate_pF": 7.32
+     },
+     {
+      "net": "/W1/PRE_GAIN",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "R5245",
+       "R5246",
+       "U5209"
+      ],
+      "hpwl_before_mm": 12.73,
+      "hpwl_after_mm": 52.31,
+      "added_run_estimate_mm": 59.37,
+      "run_after_estimate_mm": 78.46,
+      "capacitance_after_estimate_pF": 15.69,
+      "added_capacitance_estimate_pF": 11.87
+     },
+     {
+      "net": "/W1/PRE_GAIN_SUM",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "RV5205",
+       "U5205",
+       "U5209"
+      ],
+      "hpwl_before_mm": 24.85,
+      "hpwl_after_mm": 71.61,
+      "added_run_estimate_mm": 70.14,
+      "run_after_estimate_mm": 107.42,
+      "capacitance_after_estimate_pF": 21.48,
+      "added_capacitance_estimate_pF": 14.03
+     },
+     {
+      "net": "/W1/TARGET",
+      "kind": [
+       "non-inverting input"
+      ],
+      "parts_on_board": [
+       "R5236",
+       "U5208",
+       "U5209"
+      ],
+      "hpwl_before_mm": 18.07,
+      "hpwl_after_mm": 80.69,
+      "added_run_estimate_mm": 93.93,
+      "run_after_estimate_mm": 121.03,
+      "capacitance_after_estimate_pF": 24.21,
+      "added_capacitance_estimate_pF": 18.79
      }
-    ]
+    ],
+    "note": "nearest legal pose with nothing displaced; beyond the 24 mm limit"
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
@@ -877,33 +1651,317 @@
    ],
    "source": "design/stack/geometry/links/link-gate.json",
    "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14",
-   "status": "NEEDS RE-SEARCH (link era): other-face block members meet obstacles at the recorded pose",
-   "link_era_pose": {
-    "face": "F",
-    "turn_deg": 90,
-    "origin": [
-     175.97,
-     207.7
-    ],
-    "moved_mm": 5.83
-   },
-   "member_face_check": {
-    "other_face_members": 2,
-    "all_clear": false,
-    "blocked": [
+   "status": "OPEN (link era)",
+   "proof": {
+    "run": "joint search of U5210, U8409, U8412, U5208, U8408 within 24 mm",
+    "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered",
+    "found": false,
+    "nodes": 0,
+    "domain_sizes": {
+     "U5210": 7,
+     "U8409": 0,
+     "U8412": 831,
+     "U5208": 453,
+     "U8408": 2133
+    },
+    "alone": [
      {
-      "ref": "R5256",
-      "recorded_face": "F",
-      "true_face": "B",
-      "blocked_by": "courtyard U4223"
+      "targets": [
+       "U5210"
+      ],
+      "found": false,
+      "domain_sizes": {
+       "U5210": 0,
+       "U8412": 193,
+       "U5208": 353,
+       "U8408": 572
+      }
      },
      {
-      "ref": "R5261",
-      "recorded_face": "F",
-      "true_face": "B",
-      "blocked_by": "K field of P-K-P-L13.01.01.01"
+      "targets": [
+       "U8409"
+      ],
+      "found": false,
+      "domain_sizes": {
+       "U8409": 0,
+       "U8412": 817,
+       "U5208": 452,
+       "U8408": 2132
+      }
      }
-    ]
+    ],
+    "neighbour_limits_scanned": [
+     {
+      "limit_others_mm": 25.0,
+      "found": false,
+      "nodes": 0
+     },
+     {
+      "limit_others_mm": 26.0,
+      "found": false,
+      "nodes": 0
+     },
+     {
+      "limit_others_mm": 27.0,
+      "found": false,
+      "nodes": 0
+     },
+     {
+      "limit_others_mm": 28.0,
+      "found": false,
+      "nodes": 0
+     },
+     {
+      "limit_others_mm": 30.0,
+      "found": false,
+      "nodes": 0
+     },
+     {
+      "limit_others_mm": 32.0,
+      "found": false,
+      "nodes": 0
+     },
+     {
+      "limit_others_mm": 36.0,
+      "found": false,
+      "nodes": 0
+     },
+     {
+      "limit_others_mm": 40.0,
+      "found": false,
+      "nodes": 0
+     }
+    ],
+    "source": "result-r7.json"
+   },
+   "cheapest_option": {
+    "pose": {
+     "face": "F",
+     "turn_deg": 180,
+     "origin": [
+      123.97,
+      261.7
+     ],
+     "moved_mm": 80.61,
+     "shift_mm": [
+      -57.0,
+      57.0
+     ]
+    },
+    "electrical": [
+     {
+      "net": "/W1/F1_CLIP",
+      "kind": [
+       "non-inverting input"
+      ],
+      "parts_on_board": [
+       "D5206",
+       "D5207",
+       "R5252",
+       "U5210"
+      ],
+      "hpwl_before_mm": 59.18,
+      "hpwl_after_mm": 92.75,
+      "added_run_estimate_mm": 50.35,
+      "run_after_estimate_mm": 139.12,
+      "capacitance_after_estimate_pF": 27.83,
+      "added_capacitance_estimate_pF": 10.07
+     },
+     {
+      "net": "/W1/F1_OUT",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "R5254",
+       "R5255",
+       "R5256",
+       "U5210"
+      ],
+      "hpwl_before_mm": 20.12,
+      "hpwl_after_mm": 134.83,
+      "added_run_estimate_mm": 172.06,
+      "run_after_estimate_mm": 202.25,
+      "capacitance_after_estimate_pF": 40.45,
+      "added_capacitance_estimate_pF": 34.41
+     },
+     {
+      "net": "/W1/F1_SUM",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "R5253",
+       "R5254",
+       "U5210"
+      ],
+      "hpwl_before_mm": 30.1,
+      "hpwl_after_mm": 119.46,
+      "added_run_estimate_mm": 134.04,
+      "run_after_estimate_mm": 179.19,
+      "capacitance_after_estimate_pF": 35.84,
+      "added_capacitance_estimate_pF": 26.81
+     },
+     {
+      "net": "/W1/F2_CLIP",
+      "kind": [
+       "non-inverting input"
+      ],
+      "parts_on_board": [
+       "D5208",
+       "D5209",
+       "R5255",
+       "U5210"
+      ],
+      "hpwl_before_mm": 30.7,
+      "hpwl_after_mm": 129.23,
+      "added_run_estimate_mm": 147.8,
+      "run_after_estimate_mm": 193.84,
+      "capacitance_after_estimate_pF": 38.77,
+      "added_capacitance_estimate_pF": 29.56
+     },
+     {
+      "net": "/W1/F2_OUT",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "R5257",
+       "R5258",
+       "R5259",
+       "U5210"
+      ],
+      "hpwl_before_mm": 23.1,
+      "hpwl_after_mm": 127.6,
+      "added_run_estimate_mm": 156.75,
+      "run_after_estimate_mm": 191.4,
+      "capacitance_after_estimate_pF": 38.28,
+      "added_capacitance_estimate_pF": 31.35
+     },
+     {
+      "net": "/W1/F2_SUM",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "R5256",
+       "R5257",
+       "U5210"
+      ],
+      "hpwl_before_mm": 14.85,
+      "hpwl_after_mm": 14.85,
+      "added_run_estimate_mm": 0.0,
+      "run_after_estimate_mm": 22.28,
+      "capacitance_after_estimate_pF": 4.46,
+      "added_capacitance_estimate_pF": 0.0
+     },
+     {
+      "net": "/W1/F3_CLIP",
+      "kind": [
+       "non-inverting input"
+      ],
+      "parts_on_board": [
+       "D5210",
+       "D5211",
+       "R5258",
+       "U5210"
+      ],
+      "hpwl_before_mm": 66.98,
+      "hpwl_after_mm": 111.7,
+      "added_run_estimate_mm": 67.08,
+      "run_after_estimate_mm": 167.55,
+      "capacitance_after_estimate_pF": 33.51,
+      "added_capacitance_estimate_pF": 13.42
+     },
+     {
+      "net": "/W1/F3_OUT",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "R5260",
+       "R5261",
+       "R5262",
+       "U5210"
+      ],
+      "hpwl_before_mm": 14.71,
+      "hpwl_after_mm": 14.71,
+      "added_run_estimate_mm": 0.0,
+      "run_after_estimate_mm": 22.07,
+      "capacitance_after_estimate_pF": 4.41,
+      "added_capacitance_estimate_pF": 0.0
+     },
+     {
+      "net": "/W1/F3_SUM",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "R5259",
+       "R5260",
+       "U5210"
+      ],
+      "hpwl_before_mm": 14.54,
+      "hpwl_after_mm": 14.54,
+      "added_run_estimate_mm": 0.0,
+      "run_after_estimate_mm": 21.81,
+      "capacitance_after_estimate_pF": 4.36,
+      "added_capacitance_estimate_pF": 0.0
+     },
+     {
+      "net": "/W1/F4_CLIP",
+      "kind": [
+       "non-inverting input"
+      ],
+      "parts_on_board": [
+       "D5212",
+       "D5213",
+       "R5261",
+       "U5210"
+      ],
+      "hpwl_before_mm": 26.45,
+      "hpwl_after_mm": 147.66,
+      "added_run_estimate_mm": 181.81,
+      "run_after_estimate_mm": 221.49,
+      "capacitance_after_estimate_pF": 44.3,
+      "added_capacitance_estimate_pF": 36.36
+     },
+     {
+      "net": "/W1/F4_OUT",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "R5263",
+       "U5210",
+       "U5211"
+      ],
+      "hpwl_before_mm": 26.56,
+      "hpwl_after_mm": 93.38,
+      "added_run_estimate_mm": 100.23,
+      "run_after_estimate_mm": 140.07,
+      "capacitance_after_estimate_pF": 28.01,
+      "added_capacitance_estimate_pF": 20.05
+     },
+     {
+      "net": "/W1/F4_SUM",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "R5262",
+       "R5263",
+       "U5210"
+      ],
+      "hpwl_before_mm": 16.42,
+      "hpwl_after_mm": 16.42,
+      "added_run_estimate_mm": 0.0,
+      "run_after_estimate_mm": 24.63,
+      "capacitance_after_estimate_pF": 4.93,
+      "added_capacitance_estimate_pF": 0.0
+     }
+    ],
+    "note": "nearest legal pose with nothing displaced; beyond the 24 mm limit"
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
@@ -949,412 +2007,307 @@
     "run": "joint search of U5210, U8409, U8412, U5208, U8408 within 24 mm",
     "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered",
     "found": false,
-    "nodes": 36384,
+    "nodes": 0,
     "domain_sizes": {
-     "U5210": 42,
-     "U8409": 39,
+     "U5210": 7,
+     "U8409": 0,
      "U8412": 831,
      "U5208": 453,
      "U8408": 2133
     },
-    "source": "result-a5.json"
-   },
-   "cheapest_option": {
-    "neighbours_beyond_24mm": {
-     "U5208": 28.04,
-     "U8408": 25.81
-    },
-    "smallest_scanned_limit_mm": 30.0,
-    "limits_scanned": [
+    "alone": [
+     {
+      "targets": [
+       "U5210"
+      ],
+      "found": false,
+      "domain_sizes": {
+       "U5210": 0,
+       "U8412": 193,
+       "U5208": 353,
+       "U8408": 572
+      }
+     },
+     {
+      "targets": [
+       "U8409"
+      ],
+      "found": false,
+      "domain_sizes": {
+       "U8409": 0,
+       "U8412": 817,
+       "U5208": 452,
+       "U8408": 2132
+      }
+     }
+    ],
+    "neighbour_limits_scanned": [
      {
       "limit_others_mm": 25.0,
       "found": false,
-      "nodes": 38430
+      "nodes": 0
      },
      {
       "limit_others_mm": 26.0,
       "found": false,
-      "nodes": 38740
+      "nodes": 0
      },
      {
       "limit_others_mm": 27.0,
       "found": false,
-      "nodes": 38740
+      "nodes": 0
      },
      {
       "limit_others_mm": 28.0,
       "found": false,
-      "nodes": 38740
+      "nodes": 0
      },
      {
       "limit_others_mm": 30.0,
-      "found": true,
-      "nodes": 36714
+      "found": false,
+      "nodes": 0
+     },
+     {
+      "limit_others_mm": 32.0,
+      "found": false,
+      "nodes": 0
+     },
+     {
+      "limit_others_mm": 36.0,
+      "found": false,
+      "nodes": 0
+     },
+     {
+      "limit_others_mm": 40.0,
+      "found": false,
+      "nodes": 0
      }
     ],
-    "poses": {
-     "U8409": {
-      "face": "F",
-      "turn_deg": 0,
-      "origin": [
-       192.2,
-       191.47
-      ],
-      "moved_mm": 11.05
-     },
-     "U5210": {
-      "face": "B",
-      "turn_deg": 0,
-      "origin": [
-       195.47,
-       196.2
-      ],
-      "moved_mm": 16.81
-     },
-     "U8412": {
-      "face": "F",
-      "turn_deg": 180,
-      "origin": [
-       183.58,
-       207.7
-      ],
-      "moved_mm": 18.45
-     },
-     "U5208": {
-      "face": "F",
-      "turn_deg": 90,
-      "origin": [
-       202.83,
-       204.7
-      ],
-      "moved_mm": 28.04
-     },
-     "U8408": {
-      "face": "F",
-      "turn_deg": 0,
-      "origin": [
-       213.38,
-       205.62
-      ],
-      "moved_mm": 25.81
-     }
-    },
-    "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered",
-    "first_found": "the scanned limits 25, 26, 27 and 28 mm are proved infeasible on the grid; the 30 mm assignment is the first one found, so the true minimum farthest neighbour move on this grid lies in (28, 28.04] mm",
-    "supersedes": {
-     "U5210": {
-      "recorded": {
-       "face": "F",
-       "turn_deg": 90,
-       "origin": [
-        175.97,
-        207.7
-       ],
-       "moved_mm": 5.83
-      },
-      "option": {
-       "face": "B",
-       "turn_deg": 0,
-       "origin": [
-        195.47,
-        196.2
-       ],
-       "moved_mm": 16.81
-      }
-     }
-    },
-    "neighbour_electrical": {
-     "U5208": [
-      {
-       "net": "/W1/COMMAND",
-       "kind": [
-        "follower output"
-       ],
-       "parts_on_board": [
-        "R5235",
-        "U5208"
-       ],
-       "hpwl_before_mm": 7.27,
-       "hpwl_after_mm": 7.27,
-       "added_run_estimate_mm": 0.0,
-       "run_after_estimate_mm": 10.9,
-       "capacitance_after_estimate_pF": 2.18,
-       "added_capacitance_estimate_pF": 0.0
-      },
-      {
-       "net": "/W1/CONTROL_CLAMP",
-       "kind": [
-        "non-inverting input"
-       ],
-       "parts_on_board": [
-        "D5204",
-        "R5232",
-        "U5208"
-       ],
-       "hpwl_before_mm": 32.04,
-       "hpwl_after_mm": 46.0,
-       "added_run_estimate_mm": 20.94,
-       "run_after_estimate_mm": 69.0,
-       "capacitance_after_estimate_pF": 13.8,
-       "added_capacitance_estimate_pF": 4.19
-      },
-      {
-       "net": "/W1/CONTROL_INV",
-       "kind": [
-        "feedback/summing node"
-       ],
-       "parts_on_board": [
-        "R5230",
-        "R5231",
-        "U5208"
-       ],
-       "hpwl_before_mm": 17.83,
-       "hpwl_after_mm": 16.67,
-       "added_run_estimate_mm": -1.74,
-       "run_after_estimate_mm": 25.01,
-       "capacitance_after_estimate_pF": 5.0,
-       "added_capacitance_estimate_pF": -0.35
-      },
-      {
-       "net": "/W1/CONTROL_NEG",
-       "kind": [
-        "output"
-       ],
-       "parts_on_board": [
-        "R5229",
-        "R5230",
-        "U5208"
-       ],
-       "hpwl_before_mm": 17.64,
-       "hpwl_after_mm": 16.23,
-       "added_run_estimate_mm": -2.11,
-       "run_after_estimate_mm": 24.35,
-       "capacitance_after_estimate_pF": 4.87,
-       "added_capacitance_estimate_pF": -0.42
-      },
-      {
-       "net": "/W1/CONTROL_RAW",
-       "kind": [
-        "output"
-       ],
-       "parts_on_board": [
-        "R5231",
-        "R5232",
-        "U5208"
-       ],
-       "hpwl_before_mm": 19.04,
-       "hpwl_after_mm": 18.4,
-       "added_run_estimate_mm": -0.96,
-       "run_after_estimate_mm": 27.6,
-       "capacitance_after_estimate_pF": 5.52,
-       "added_capacitance_estimate_pF": -0.19
-      },
-      {
-       "net": "/W1/CONTROL_SUM",
-       "kind": [
-        "feedback/summing node"
-       ],
-       "parts_on_board": [
-        "R5227",
-        "R5228",
-        "R5229",
-        "U5208"
-       ],
-       "hpwl_before_mm": 34.56,
-       "hpwl_after_mm": 46.98,
-       "added_run_estimate_mm": 18.63,
-       "run_after_estimate_mm": 70.47,
-       "capacitance_after_estimate_pF": 14.09,
-       "added_capacitance_estimate_pF": 3.73
-      },
-      {
-       "net": "/W1/REF25",
-       "kind": [
-        "non-inverting input"
-       ],
-       "parts_on_board": [
-        "R5233",
-        "R5234",
-        "U5208"
-       ],
-       "hpwl_before_mm": 25.27,
-       "hpwl_after_mm": 48.36,
-       "added_run_estimate_mm": 34.64,
-       "run_after_estimate_mm": 72.54,
-       "capacitance_after_estimate_pF": 14.51,
-       "added_capacitance_estimate_pF": 6.93
-      },
-      {
-       "net": "/W1/TARGET",
-       "kind": [
-        "output"
-       ],
-       "parts_on_board": [
-        "R5236",
-        "U5208",
-        "U5209"
-       ],
-       "hpwl_before_mm": 18.07,
-       "hpwl_after_mm": 47.57,
-       "added_run_estimate_mm": 44.25,
-       "run_after_estimate_mm": 71.36,
-       "capacitance_after_estimate_pF": 14.27,
-       "added_capacitance_estimate_pF": 8.85
-      },
-      {
-       "net": "/W1/TARGET_SUM",
-       "kind": [
-        "feedback/summing node"
-       ],
-       "parts_on_board": [
-        "R5235",
-        "R5236",
-        "U5208"
-       ],
-       "hpwl_before_mm": 23.69,
-       "hpwl_after_mm": 47.11,
-       "added_run_estimate_mm": 35.13,
-       "run_after_estimate_mm": 70.67,
-       "capacitance_after_estimate_pF": 14.13,
-       "added_capacitance_estimate_pF": 7.03
-      }
-     ],
-     "U8408": [
-      {
-       "net": "/M4B/Cd90fa0_GATE_RAW",
-       "kind": [
-        "non-inverting input"
-       ],
-       "parts_on_board": [
-        "R8403",
-        "R8404",
-        "U8408"
-       ],
-       "hpwl_before_mm": 22.76,
-       "hpwl_after_mm": 16.95,
-       "added_run_estimate_mm": -8.71,
-       "run_after_estimate_mm": 25.43,
-       "capacitance_after_estimate_pF": 5.09,
-       "added_capacitance_estimate_pF": -1.74
-      },
-      {
-       "net": "/M4B/Cd90fa0_GATE_REF",
-       "kind": [
-        "follower output"
-       ],
-       "parts_on_board": [
-        "U8408"
-       ],
-       "hpwl_before_mm": 0.0,
-       "hpwl_after_mm": 0.0,
-       "added_run_estimate_mm": 0.0,
-       "run_after_estimate_mm": 0.0,
-       "capacitance_after_estimate_pF": 0.0,
-       "added_capacitance_estimate_pF": 0.0
-      },
-      {
-       "net": "/M4B/Cd90fa0_INV",
-       "kind": [
-        "feedback/summing node"
-       ],
-       "parts_on_board": [
-        "R8401",
-        "R8402",
-        "U8408"
-       ],
-       "hpwl_before_mm": 25.8,
-       "hpwl_after_mm": 17.7,
-       "added_run_estimate_mm": -12.15,
-       "run_after_estimate_mm": 26.55,
-       "capacitance_after_estimate_pF": 5.31,
-       "added_capacitance_estimate_pF": -2.43
-      },
-      {
-       "net": "/M4B/Cd90fa0_RAW_5V",
-       "kind": [
-        "non-inverting input"
-       ],
-       "parts_on_board": [
-        "C8402",
-        "U8401",
-        "U8408"
-       ],
-       "hpwl_before_mm": 36.16,
-       "hpwl_after_mm": 30.16,
-       "added_run_estimate_mm": -9.0,
-       "run_after_estimate_mm": 45.24,
-       "capacitance_after_estimate_pF": 9.05,
-       "added_capacitance_estimate_pF": -1.8
-      },
-      {
-       "net": "/M4B/G1_PACK_OPA4197IPWR_0_IO_UNUSED4",
-       "kind": [
-        "follower output"
-       ],
-       "parts_on_board": [
-        "U8408"
-       ],
-       "hpwl_before_mm": 0.0,
-       "hpwl_after_mm": 0.0,
-       "added_run_estimate_mm": 0.0,
-       "run_after_estimate_mm": 0.0,
-       "capacitance_after_estimate_pF": 0.0,
-       "added_capacitance_estimate_pF": 0.0
-      },
-      {
-       "net": "/M4B/REF5",
-       "kind": [
-        "follower output"
-       ],
-       "parts_on_board": [
-        "D8413",
-        "R8401",
-        "R8403",
-        "R8468",
-        "R8472",
-        "RV8407",
-        "U8408"
-       ],
-       "hpwl_before_mm": 53.55,
-       "hpwl_after_mm": 44.0,
-       "added_run_estimate_mm": -14.32,
-       "run_after_estimate_mm": 66.0,
-       "capacitance_after_estimate_pF": 13.2,
-       "added_capacitance_estimate_pF": -2.86
-      },
-      {
-       "net": "/M4B/REFN5",
-       "kind": [
-        "output"
-       ],
-       "parts_on_board": [
-        "R8402",
-        "RV8407",
-        "U8408"
-       ],
-       "hpwl_before_mm": 26.11,
-       "hpwl_after_mm": 19.26,
-       "added_run_estimate_mm": -10.27,
-       "run_after_estimate_mm": 28.89,
-       "capacitance_after_estimate_pF": 5.78,
-       "added_capacitance_estimate_pF": -2.05
-      }
-     ]
-    },
-    "fourth_block_alternative": "not evaluated",
-    "alternative_far_pose": {
-     "face": "B",
+    "source": "result-r7.json"
+   },
+   "cheapest_option": {
+    "pose": {
+     "face": "F",
      "turn_deg": 90,
      "origin": [
-      216.2,
-      279.47
+      126.2,
+      275.47
      ],
-     "moved_mm": 87.97
+     "moved_mm": 113.22,
+     "shift_mm": [
+      -77.0,
+      83.0
+     ]
     },
-    "swap": {
-     "note": "place U8409 instead of U5210",
-     "found": true
-    }
+    "electrical": [
+     {
+      "net": "/M4B/1_BUFFER",
+      "kind": [
+       "non-inverting input"
+      ],
+      "parts_on_board": [
+       "R8413",
+       "U8409"
+      ],
+      "hpwl_before_mm": 14.37,
+      "hpwl_after_mm": 14.37,
+      "added_run_estimate_mm": -0.0,
+      "run_after_estimate_mm": 21.55,
+      "capacitance_after_estimate_pF": 4.31,
+      "added_capacitance_estimate_pF": -0.0
+     },
+     {
+      "net": "/M4B/1_GAIN",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "C8404",
+       "R8414",
+       "R8445",
+       "U8409"
+      ],
+      "hpwl_before_mm": 42.93,
+      "hpwl_after_mm": 199.66,
+      "added_run_estimate_mm": 235.09,
+      "run_after_estimate_mm": 299.49,
+      "capacitance_after_estimate_pF": 59.9,
+      "added_capacitance_estimate_pF": 47.02
+     },
+     {
+      "net": "/M4B/2_BUFFER",
+      "kind": [
+       "non-inverting input"
+      ],
+      "parts_on_board": [
+       "R8423",
+       "U8409"
+      ],
+      "hpwl_before_mm": 10.62,
+      "hpwl_after_mm": 10.62,
+      "added_run_estimate_mm": -0.0,
+      "run_after_estimate_mm": 15.93,
+      "capacitance_after_estimate_pF": 3.19,
+      "added_capacitance_estimate_pF": -0.0
+     },
+     {
+      "net": "/M4B/2_GAIN",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "C8406",
+       "R8424",
+       "R8446",
+       "U8409"
+      ],
+      "hpwl_before_mm": 59.06,
+      "hpwl_after_mm": 219.06,
+      "added_run_estimate_mm": 240.0,
+      "run_after_estimate_mm": 328.59,
+      "capacitance_after_estimate_pF": 65.72,
+      "added_capacitance_estimate_pF": 48.0
+     },
+     {
+      "net": "/M4B/C75c2e7_SUM",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "C8404",
+       "R8413",
+       "R8414",
+       "U8409"
+      ],
+      "hpwl_before_mm": 31.2,
+      "hpwl_after_mm": 31.2,
+      "added_run_estimate_mm": 0.0,
+      "run_after_estimate_mm": 46.8,
+      "capacitance_after_estimate_pF": 9.36,
+      "added_capacitance_estimate_pF": 0.0
+     },
+     {
+      "net": "/M4B/C75c2e7_W_SENSE",
+      "kind": [
+       "non-inverting input"
+      ],
+      "parts_on_board": [
+       "R8411",
+       "R8412",
+       "U8409"
+      ],
+      "hpwl_before_mm": 11.0,
+      "hpwl_after_mm": 160.58,
+      "added_run_estimate_mm": 224.37,
+      "run_after_estimate_mm": 240.87,
+      "capacitance_after_estimate_pF": 48.17,
+      "added_capacitance_estimate_pF": 44.87
+     },
+     {
+      "net": "/M4B/C797803_DRIVE",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "C8403",
+       "R8409",
+       "U8409"
+      ],
+      "hpwl_before_mm": 14.18,
+      "hpwl_after_mm": 162.16,
+      "added_run_estimate_mm": 221.97,
+      "run_after_estimate_mm": 243.24,
+      "capacitance_after_estimate_pF": 48.65,
+      "added_capacitance_estimate_pF": 44.39
+     },
+     {
+      "net": "/M4B/C797803_FB",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "C8403",
+       "R8410",
+       "U8409"
+      ],
+      "hpwl_before_mm": 19.62,
+      "hpwl_after_mm": 172.7,
+      "added_run_estimate_mm": 229.62,
+      "run_after_estimate_mm": 259.05,
+      "capacitance_after_estimate_pF": 51.81,
+      "added_capacitance_estimate_pF": 45.92
+     },
+     {
+      "net": "/M4B/Ca1191c_SUM",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "C8406",
+       "R8423",
+       "R8424",
+       "U8409"
+      ],
+      "hpwl_before_mm": 14.62,
+      "hpwl_after_mm": 14.62,
+      "added_run_estimate_mm": -0.0,
+      "run_after_estimate_mm": 21.93,
+      "capacitance_after_estimate_pF": 4.39,
+      "added_capacitance_estimate_pF": -0.0
+     },
+     {
+      "net": "/M4B/Ca1191c_W_SENSE",
+      "kind": [
+       "non-inverting input"
+      ],
+      "parts_on_board": [
+       "R8421",
+       "R8422",
+       "U8409"
+      ],
+      "hpwl_before_mm": 16.96,
+      "hpwl_after_mm": 145.54,
+      "added_run_estimate_mm": 192.87,
+      "run_after_estimate_mm": 218.31,
+      "capacitance_after_estimate_pF": 43.66,
+      "added_capacitance_estimate_pF": 38.57
+     },
+     {
+      "net": "/M4B/Cfaa69a_DRIVE",
+      "kind": [
+       "output"
+      ],
+      "parts_on_board": [
+       "C8405",
+       "R8419",
+       "U8409"
+      ],
+      "hpwl_before_mm": 10.09,
+      "hpwl_after_mm": 163.54,
+      "added_run_estimate_mm": 230.18,
+      "run_after_estimate_mm": 245.31,
+      "capacitance_after_estimate_pF": 49.06,
+      "added_capacitance_estimate_pF": 46.04
+     },
+     {
+      "net": "/M4B/Cfaa69a_FB",
+      "kind": [
+       "feedback/summing node"
+      ],
+      "parts_on_board": [
+       "C8405",
+       "R8420",
+       "U8409"
+      ],
+      "hpwl_before_mm": 11.01,
+      "hpwl_after_mm": 164.54,
+      "added_run_estimate_mm": 230.3,
+      "run_after_estimate_mm": 246.81,
+      "capacitance_after_estimate_pF": 49.36,
+      "added_capacitance_estimate_pF": 46.06
+     }
+    ],
+    "note": "nearest legal pose with nothing displaced; beyond the 24 mm limit"
    },
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
