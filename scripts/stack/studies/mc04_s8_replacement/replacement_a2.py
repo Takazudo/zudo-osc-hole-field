@@ -64,7 +64,7 @@ class A2(rp.Study):
             sh = self.shapes(board, self.members[(board, ic)], row['face'], ic)
             dx, dy = c['shift_mm']
             for ref, rect in sh[c['face']]:
-                f.add(board, c['face'], [round(v, 4) for v in p2.shift(rect, dx, dy)], [], ref)
+                f.add(board, self.mf(board, ref, c['face']), [round(v, 4) for v in p2.shift(rect, dx, dy)], [], ref)
             for m in row.get('displaced_moves', []):
                 fp = self.fps[(board, m['ref'])]
                 cy = fp['courtyard'] or p2.fp_bbox(fp)
@@ -131,7 +131,7 @@ class A2(rp.Study):
             trial = copy.deepcopy(field)
             rects = next(r for f, kk, r in orients if (f, kk) == (face, k))
             for ref, c in rects:
-                trial.add(board, face, [round(v, 4) for v in p2.shift(c, dx, dy)], [], ref)
+                trial.add(board, self.mf(board, ref, face), [round(v, 4) for v in p2.shift(c, dx, dy)], [], ref)
             moves = []
             for ref in h:
                 m, cy = self.move_within(trial, board, ref)
@@ -152,8 +152,8 @@ class A2(rp.Study):
         for d, dx, dy in [o for o in near if o[0] <= rp.LIMIT_MM + 1e-9]:
             for face, k, rects in orients:
                 why = None
-                for _, c in rects:
-                    why = field.blocked(board, face, [round(v, 4) for v in p2.shift(c, dx, dy)], [])
+                for ref, c in rects:
+                    why = field.blocked(board, self.mf(board, ref, face), [round(v, 4) for v in p2.shift(c, dx, dy)], [])
                     if why:
                         break
                 if why is None:
@@ -300,7 +300,7 @@ class A2(rp.Study):
                 sh = dict(((f, k), r) for f, k, r in self.orientations(board, ic, row0['face']))[(chosen['face'], chosen['turn_deg'])]
                 dx, dy = chosen['shift_mm']
                 for ref, c in sh:
-                    field.add(board, chosen['face'], [round(v, 4) for v in p2.shift(c, dx, dy)], [], ref)
+                    field.add(board, self.mf(board, ref, chosen['face']), [round(v, 4) for v in p2.shift(c, dx, dy)], [], ref)
             if chosen and chosen['moved_mm'] > rp.LIMIT_MM:
                 row['electrical'] = self.facts(board, ic, chosen)
                 if row0['function']['input_buffer'] or any(x['net'].endswith('_SENSE') for x in row['electrical']):

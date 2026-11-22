@@ -119,7 +119,7 @@ class A5(a4.A4):
                 blocks, small, hard = self.classify_fps('K', fps)
                 if hard or blocks - set(sset):
                     continue
-                placed = tuple((face, tuple(round(v, 4) for v in p2.shift(c, dx, dy))) for _, c in rects)
+                placed = tuple((self.mf('K', r, face), tuple(round(v, 4) for v in p2.shift(c, dx, dy))) for r, c in rects)
                 out.append({'ic': ic, 'members': ms, 'face': face, 'turn_deg': k, 'moved_mm': r2(d), 'shift_mm': [dx, dy],
                             'origin': [r2(fp['origin'][0] + dx), r2(fp['origin'][1] + dy)], 'rects': placed,
                             'small': tuple(sorted(small))})
@@ -134,7 +134,7 @@ class A5(a4.A4):
             for t in others:
                 fp = self.fps[('K', t)]
                 for ref, c in self.shapes('K', self.set_members(t), fp['side'], t)[fp['side']]:
-                    field.add('K', fp['side'], [round(v, 4) for v in c], [], ref)
+                    field.add('K', self.mf('K', ref, fp['side']), [round(v, 4) for v in c], [], ref)
         doms = {ic: self.domain(field, ic, rp.LIMIT_MM if ic in targets else limit_others, sset, ic in targets) for ic in sset}
         gap = field.gap
         stats = {'nodes': 0, 'rejected_for_passives': 0}
@@ -148,7 +148,7 @@ class A5(a4.A4):
             for t in others:
                 fp = self.fps[('K', t)]
                 for ref, c in self.shapes('K', self.set_members(t), fp['side'], t)[fp['side']]:
-                    f.add('K', fp['side'], [round(v, 4) for v in c], [], ref)
+                    f.add('K', self.mf('K', ref, fp['side']), [round(v, 4) for v in c], [], ref)
             for c in assign.values():
                 for face, r in c['rects']:
                     f.add('K', face, list(r), [], c['ic'])

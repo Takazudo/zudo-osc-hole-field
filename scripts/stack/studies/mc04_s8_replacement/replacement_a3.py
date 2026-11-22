@@ -60,7 +60,7 @@ class A3(a2.A2):
         sh = dict(((fc, k), r) for fc, k, r in self.orients(board, ic, members, face0))[(pose['face'], pose['turn_deg'])]
         dx, dy = pose['shift_mm']
         for ref, c in sh:
-            f.add(board, pose['face'], [round(v, 4) for v in p2.shift(c, dx, dy)], [], ref)
+            f.add(board, self.mf(board, ref, pose['face']), [round(v, 4) for v in p2.shift(c, dx, dy)], [], ref)
 
     def orients(self, board, ic, members, face0):
         o = self.fps[(board, ic)]['origin']
@@ -97,7 +97,9 @@ class A3(a2.A2):
         """(fixed obstacles by type, footprints met). Fixed: outline, link keep-out, sleeve or fixing keep-out, panel
         hardware or hole, locked part, jack, ruled pose."""
         fixed, fps = set(), set()
-        for _, c in rects:
+        block_face = face
+        for ref0, c in rects:
+            face = self.mf(board, ref0, block_face)
             cy = [round(v, 4) for v in p2.shift(c, dx, dy)]
             if not field.model.inside(board, cy, field.margin):
                 fixed.add(('outline', 'board outline'))
@@ -153,7 +155,7 @@ class A3(a2.A2):
                     pose = {'face': face, 'turn_deg': k, 'origin': [r2(fp['origin'][0] + dx), r2(fp['origin'][1] + dy)],
                             'moved_mm': r2(d), 'shift_mm': [dx, dy]}
                     for ref, c in rects:
-                        f.add(board, face, [round(v, 4) for v in p2.shift(c, dx, dy)], [], ref)
+                        f.add(board, self.mf(board, ref, face), [round(v, 4) for v in p2.shift(c, dx, dy)], [], ref)
                     return pose
         return None
 
@@ -188,7 +190,7 @@ class A3(a2.A2):
                 fails['target pose not free once the blocks are lifted'] += 1
                 continue
             for ref, c in rects:
-                f.add(board, face, [round(v, 4) for v in p2.shift(c, dx, dy)], [], ref)
+                f.add(board, self.mf(board, ref, face), [round(v, 4) for v in p2.shift(c, dx, dy)], [], ref)
             moved = []
             for b in blocks:
                 bp = self.move_block(f, board, b)

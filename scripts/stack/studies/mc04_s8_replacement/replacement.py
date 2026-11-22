@@ -131,22 +131,38 @@ class Study:
                 f.add(b, r['new_face'], r['new_courtyard'], [], ref)
         return f
 
+    face_aware = False  # MC04-S8 Revision 7: True keeps each member on its own face relative to the IC
+
+    def mf(self, board, ref, face):
+        """The face of block member `ref` when its block lies on `face`: a member on the IC's face follows the block, a
+        member on the other face takes the other face (face-aware mode only; otherwise every member takes `face`)."""
+        if self.face_aware and getattr(self, 'rel', {}).get((board, ref)):
+            return 'B' if face == 'F' else 'F'
+        return face
+
     def shapes(self, board, refs, face0, ic):
-        """Member courtyards about the IC origin on the IC's own face, and mirrored for the other face."""
+        """Member courtyards about the IC origin on the IC's own face, and mirrored for the other face. Records, per
+        member, whether it sits on the other face than the IC (used by mf)."""
         o = self.fps[(board, ic)]['origin']
+        if not hasattr(self, 'rel'):
+            self.rel = {}
+        for r in refs:
+            self.rel[(board, r)] = self.fps[(board, r)]['side'] != self.fps[(board, ic)]['side']
         own = [(r, self.fps[(board, r)]['courtyard'] or p2.fp_bbox(self.fps[(board, r)])) for r in refs]
         return {face0: own, ('B' if face0 == 'F' else 'F'): [(r, mirror(c, o[0])) for r, c in own]}
 
     def legal(self, field, board, face, rects, dx, dy):
-        for _, c in rects:
-            if field.blocked(board, face, [round(v, 4) for v in p2.shift(c, dx, dy)], []):
+        for ref, c in rects:
+            if field.blocked(board, self.mf(board, ref, face), [round(v, 4) for v in p2.shift(c, dx, dy)], []):
                 return False
         return True
 
     def blockers(self, field, board, face, rects, dx, dy):
         """Every obstacle a pose meets: ('fp', ref) entries are footprints, anything else is fixed."""
         hits = set()
-        for _, c in rects:
+        block_face = face
+        for ref, c in rects:
+            face = self.mf(board, ref, block_face)
             cy = [round(v, 4) for v in p2.shift(c, dx, dy)]
             if not field.model.inside(board, cy, field.margin):
                 return None
@@ -256,7 +272,7 @@ class Study:
                         field_moves = row.setdefault('displaced_moves', [])
                         field_moves.append(self.single_move(field, board, r))
                 for ref, c in sh[chosen['face']]:
-                    field.add(board, chosen['face'], [round(v, 4) for v in p2.shift(c, dx, dy)], [], ref)
+                    field.add(board, self.mf(board, ref, chosen['face']), [round(v, 4) for v in p2.shift(c, dx, dy)], [], ref)
             results.append(row)
         return results
 

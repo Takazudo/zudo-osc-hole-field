@@ -167,7 +167,7 @@ class A4(a3.A3):
                 fails['target pose not free once U8412 is lifted'] += 1
                 continue
             for ref, c in rects:
-                f.add(board, face, [round(v, 4) for v in p2.shift(c, dx, dy)], [], ref)
+                f.add(board, self.mf(board, ref, face), [round(v, 4) for v in p2.shift(c, dx, dy)], [], ref)
             u12 = self.ic_members[(board, 'U8412')]
             f12 = self.fps[(board, 'U8412')]
             done = None
@@ -188,12 +188,12 @@ class A4(a3.A3):
             g = self.build_field({(board, m) for m in self.ic_members[(board, 'U8412')]} |
                                  {(board, m) for b in blocks for m in self.ic_members[(board, b)]})
             for ref, c in rects:
-                g.add(board, face, [round(v, 4) for v in p2.shift(c, dx, dy)], [], ref)
+                g.add(board, self.mf(board, ref, face), [round(v, 4) for v in p2.shift(c, dx, dy)], [], ref)
             if not self.legal_except(g, board, face2, rects2, dx2, dy2, set(small2) | set(small)):
                 fails['U8412 pose not free once the third block is lifted'] += 1
                 continue
             for ref, c in rects2:
-                g.add(board, face2, [round(v, 4) for v in p2.shift(c, dx2, dy2)], [], ref)
+                g.add(board, self.mf(board, ref, face2), [round(v, 4) for v in p2.shift(c, dx2, dy2)], [], ref)
             moved = [{'ic': 'U8412', 'face': face2, 'turn_deg': k2, 'origin': [r2(f12['origin'][0] + dx2), r2(f12['origin'][1] + dy2)],
                       'moved_mm': r2(d2), 'shift_mm': [dx2, dy2], 'members': u12}]
             ok = True
