@@ -2007,8 +2007,8 @@
     "mpn": "OPA4196IDR",
     "instance": "E6",
     "family": "envelope",
-    "role": "input buffer and indicator driver (E6 SIG sense buffer and LED drivers)",
-    "input_buffer": true,
+    "role": "output stages and indicator driver (E6 general outputs 1-3 through 499 ohm isolation pairs; unit 4 the magnitude indicator driving LED D1801 from SIG_BUFFER)",
+    "input_buffer": false,
     "nets": [
      "/E6/BIP_CORE",
      "/E6/C5dbedd_DRIVE",
@@ -2095,7 +2095,7 @@
     }
    ],
    "class": "(ii)",
-   "locality_condition": "input-buffer conditions of Revision 2 item 3 (input passives at the cell end, ground-flanked run, added run capacitance under 50 pF)",
+   "locality_condition": "an interim-GH locality acceptance beyond 24 mm (Revision 6 item 4 pattern)",
    "chosen": {
     "face": "B",
     "origin": [

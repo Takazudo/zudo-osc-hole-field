@@ -105,7 +105,8 @@ class Study:
         'U4433': 'logic (E4 loop/clock synchroniser, SN74HC74)', 'U4524': 'logic (E5 gate logic, SN74HC00)',
         'U4526': 'logic (E5 hold/ready logic, SN74HC00)', 'U4527': 'logic (E5 curve/rise logic, SN74HC00)',
         'U4623': 'logic (E6 gate logic, SN74HC00)', 'U4635': 'logic (E6 top/bottom synchroniser, SN74HC74)',
-        'U4647': 'input buffer and indicator driver (E6 SIG sense buffer and LED drivers)',
+        'U4647': 'output stages and indicator driver (E6 general outputs 1-3 through 499 ohm isolation pairs; unit 4 the '
+                 'magnitude indicator driving LED D1801 from SIG_BUFFER)',
         'U5110': 'signal stage (W2 fold cells F1-F4)', 'U5209': 'signal stage (W1 pre-gain, drive and folder sum)',
         'U5210': 'signal stage (W1 fold cells F1-F4)',
         'U8409': 'input buffer and VCA drive (M4B channel 1/2 input buffers, wiper sense, drive and feedback)'}
