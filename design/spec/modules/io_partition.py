@@ -245,6 +245,8 @@ def validate_relocation(blocks):
             raise ValueError(f"K relocation {b.get('ic')}: missing {sorted(missing)}")
         if b['ic'] not in b['members']:
             raise ValueError(f"K relocation {b['ic']}: the IC is not among its members")
+        if 'k_poses' in b and set(b['k_poses']) != set(b['members']):
+            raise ValueError(f"K relocation {b['ic']}: k_poses do not name exactly the members")
         for ref in b['members']:
             if (b['instance'], ref) in seen:
                 raise ValueError(f"K relocation: {b['instance']} {ref} named twice")

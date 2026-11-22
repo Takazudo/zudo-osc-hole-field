@@ -15,6 +15,18 @@ from scripts.partition.model import jack_board, JACK_BOARDS, source
 from scripts.pcbgen.netlist import TOKEN, parse, many, one
 from scripts.checks.partition35_diagnostic import footprint_geometry
 OUT=ROOT/'design/partition/connector-packing-candidate.json'
+# GH jack-to-K header sites (8 contacts, 4 signals each; the signals-per-header rule is unchanged).
+# MC04-S7 Revision 4 (circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md):
+# the K block move needs 27 JL-K and 30 JR-K headers. JL takes the two remaining points of its own grid,
+# (142, 122) and (159, 122); JR takes three sites on its 17 mm column pitch, same orientation, in a new top row at
+# y = 24 (columns 193, 244 and 295; the y = 150 row's seventh point, (295, 150), overlaps JR's bulk reservation).
+# Each new site is clear of panel pads, the outline, bulk reservations and the link fields; the floorplan releases
+# the pinned packages a header covers (report mc04-s7-r4-report-20261122.md).
+JL_GRID_SITES = 27  # was 25 before MC04-S7 Revision 4
+JR_REVISION4_SITES = ((193, 24), (244, 24), (295, 24))
+JACK_SITES = {'JL': [(x, y) for y in (38, 80, 122) for x in range(23, 160, 17)][:JL_GRID_SITES],
+              'JR': [(x, y) for y in (38, 80, 122) for x in range(193, 296, 17)]
+                    + [(x, 150) for x in (193, 210, 227, 244, 261, 278)] + list(JR_REVISION4_SITES)}
 
 
 def partition_source_digest(spec):
@@ -73,8 +85,7 @@ def candidate():
     # free connectors, never the controls whose traces reach these sites.
     ps=[s for s in ps if not(s[0]>254 and s[1]>242)]
     ps +=[(142+17*i,y) for y in (234,248) for i in range(4)]+[(142,262)]
-    js={'JL':[(x,y) for y in (38,80,122) for x in range(23,160,17)][:25],
-        'JR':[(x,y) for y in (38,80,122) for x in range(193,296,17)]+[(x,150) for x in (193,210,227,244,261,278)]}
+    js=JACK_SITES
     families={3:{'header':'BM03B-GHS-TBT(LF)(SN)','housing':'GHR-03V-S','bbox':[7.5,6.1]},
               7:{'header':'BM07B-GHS-TBT(LF)(SN)','housing':'GHR-07V-S','bbox':[12.5,6.1]},
               8:{'header':'BM08B-GHS-TBT(LF)(SN)','housing':'GHR-08V-S','bbox':[13.75,6.1]}}
@@ -118,7 +129,10 @@ def candidate():
                 if index>=len(utility):raise ValueError('utility header site overflow')
                 locations={'P':utility[index],'JL':(utility[index][0],150)}
             elif pair[1]=='K' and pair[0] in JACK_BOARDS:
-                jb=pair[0];site=js[jb][ji[jb]];ji[jb]+=1
+                jb=pair[0]
+                if ji[jb]>=len(js[jb]):
+                    raise ValueError(f'{jb}-K header sites run short: header {ji[jb]+1} needs a site but {jb} has {len(js[jb])}')
+                site=js[jb][ji[jb]];ji[jb]+=1
                 locations={jb:site,'K':site}
             else:
                 selector=next(b for b in pair if b.startswith('O'))

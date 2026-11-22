@@ -25,9 +25,11 @@ class PartitionTests(unittest.TestCase):
         report=partition35.read('design/partition/partition.json')
         counts={b['board_key']:b['physical_package_count'] for b in report['boards']}
         # E13/E14 S2b adoption (2026-11-01): the 9 precision-variant D_BOOT clamps raise JL from 1060 to 1069
-        self.assertEqual((counts['JL'],counts['JR']),(1069,1031))
+        # MC04-S7: the K block move takes 29 JL and 44 JR packages to K (design/partition/k-block-relocation.json)
+        self.assertEqual((counts['JL'],counts['JR']),(1040,987))
         self.assertEqual((report['counts']['boards'],report['counts']['factory_load_side_wires'],report['counts']['load_side_copper_terminals']),(10,18,36))
         floor=partition35.read('design/partition/floorplan-candidate.json')
+        # MC04-S7: the 12 bypass pairs of the moved K blocks stay in the check (k_moved_ics)
         self.assertEqual(len(floor['bypass_proximity']['pairs']),414)
         self.assertLessEqual(floor['bypass_proximity']['maximum_supply_pad_distance_mm'],3)
         self.assertTrue(all(r['same_face'] for r in floor['bypass_proximity']['pairs']))
@@ -102,7 +104,8 @@ class PartitionTests(unittest.TestCase):
         protection=next(r for r in receipts if r['reserve_id']=='future-output-protection' and r['side']=='B.Cu')
         self.assertEqual(protection['original_area_mm2'],2385)
         self.assertEqual(protection['remaining_area_mm2'],494.28)
-        self.assertTrue({'J900101','J900103','J900105','J900107','J900109','J900111'} <= {s['ref'] for s in protection['subtractions']})
+        # MC04-S7 Revision 4: three more JR-K headers renumber the y = 150 row (J900105..J900115)
+        self.assertTrue({'J900105','J900107','J900109','J900111','J900113','J900115'} <= {s['ref'] for s in protection['subtractions']})
         self.assertEqual(len([r for r in definitions['osc-jack-right']['keepouts'] if r['id'].startswith('UNSELECTED-BULK-')]),3)
         for board_id in ('osc-jack-left','osc-jack-right'):
             for keepout in definitions[board_id]['keepouts']:

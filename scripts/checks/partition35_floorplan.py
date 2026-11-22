@@ -22,7 +22,9 @@ from scripts.checks.jack_locality import place_jack_locality,stable_sum,FACE_PEN
 from scripts.checks.core_locality import spread_module_homes
 OUT=ROOT/'design/partition/floorplan-candidate.json'
 PINS=ROOT/'design/partition/adopted-placement-pins.json'
+RELOCATION=ROOT/'design/partition/k-block-relocation.json'
 EXCEPTIONS=ROOT/'design/partition/protection-locality-exceptions.json'
+ACCEPTANCES=ROOT/'design/partition/locality-acceptances.json'
 RELEASE_ROUNDS=400
 RELEASE_STEP_MM=1.5
 WHOLE_MODULE_AFTER=4
@@ -151,12 +153,18 @@ def bypass_cells(parent,caps,side,shapes,pin_nets,horizontal=False):
     return cells
 
 
+def k_moved_ics():
+    """ICs of the K block relocation (design/partition/k-block-relocation.json)."""
+    return {b['ic'] for b in json.loads(RELOCATION.read_text())['blocks']} if RELOCATION.exists() else set()
+
+
 def check_bypasses(parts,placements,pin_nets):
     errors=[]
     limit=json.loads((ROOT/'design/partition/bypass-placement-evidence.json').read_text())['proposal']['maximum_supply_pad_to_capacitor_rail_pad_mm']
     byref={p['ref']:p for p in placements};part_byref={p['ref']:p for p in parts};bypass=[]
     for p in parts:
-        if not p['decouples_ref'] or board_for(p) not in JACK_BOARDS:continue
+        # MC04-S7: the bypass capacitors of the moved K blocks are held to the same limit on K
+        if not p['decouples_ref'] or (board_for(p) not in JACK_BOARDS and p['decouples_ref'] not in k_moved_ics()):continue
         if p['ref'] not in byref or p['decouples_ref'] not in byref:continue
         c=byref[p['ref']];u=byref[p['decouples_ref']]
         cpin,rail,supply=source_bypass_binding(ROOT,part_byref[p['decouples_ref']],p,pin_nets)
@@ -453,6 +461,53 @@ def apply_adopted_pins(board,free,grids,shapes,pin_nets,anchors,pin_rows,swapped
     return [p for p in free if p['ref'] not in taken],out
 
 
+def k_block_pin_errors(rows,connector,spec):
+    """A K block pin (k_block_move) must overlap no other K pin, header land, service aperture or support on its face."""
+    errors=[]
+    tht=lambda r:through_hole(r['footprint'])
+    def meet(a,b):return a[0]<b[2] and b[0]<a[2] and a[1]<b[3] and b[1]<a[3]
+    blocked=[(h['side'],h['land_courtyard_mm'],h['id']) for h in connector['headers'] if h['board']=='K']
+    blocked+=[(s,a['box_mm'],'service '+a['header_id']) for a in connector['K_service_apertures'] for s in ('F.Cu','B.Cu')]
+    blocked+=[(s,[x-1.6,y-1.6,x+1.6,y+1.6],'support') for x,y in spec['supports_mm'] for s in ('F.Cu','B.Cu')]
+    for ref,row in sorted(rows.items()):
+        if not row.get('k_block_move'):continue
+        c=row['courtyard_mm'];faces={'F.Cu','B.Cu'} if tht(row) else {row['side']}
+        for other,o in rows.items():
+            if other!=ref and (faces&({'F.Cu','B.Cu'} if tht(o) else {o['side']})) and meet(c,o['courtyard_mm']) and (other<ref or not o.get('k_block_move')):
+                errors.append(f'K block pin {ref} overlaps {other}')
+        for side,b,label in blocked:
+            if side in faces and meet(c,b):errors.append(f'K block pin {ref} overlaps {label}')
+    return errors
+
+
+def locality_acceptances(placements,errors):
+    """MC04-S7 Revision 2 item 3: packages accepted beyond the 24 mm locality rule, repeated in the floorplan report;
+    an entry whose package is not on its named board is an error."""
+    if not ACCEPTANCES.exists():return {'source':None,'acceptances':[]}
+    rows=json.loads(ACCEPTANCES.read_text())['acceptances'];board={p['ref']:p['board'] for p in placements}
+    for r in rows:
+        if board.get(r['ref'])!=r['board']:errors.append(f"locality acceptance {r['ref']}: not on {r['board']}")
+    return {'source':'design/partition/locality-acceptances.json','acceptances':rows}
+
+
+def header_conflicts(board,pin_rows,headers,parts=()):
+    """Pinned packages on `board` whose pinned courtyard overlaps a GH header land on the same face (a through-hole
+    package on either face), with the IC of a covered bypass capacitor and the pinned bypass capacitors of every
+    released IC, so that an IC and its bypass move together. Overlap, not the placer gap: a pin keeps its original spacing to an existing header."""
+    gap=0.0;out=set()
+    lands=[(h['side'],h['land_courtyard_mm']) for h in headers if h['board']==board]
+    for ref,row in pin_rows.get(board,{}).items():
+        c=row['courtyard_mm'];tht=through_hole(row['footprint'])
+        for side,b in lands:
+            if (tht or side==row['side']) and c[0]<b[2]+gap and b[0]<c[2]+gap and c[1]<b[3]+gap and b[1]<c[3]+gap:
+                out.add(ref);break
+    owner={p['ref']:p['decouples_ref'] for p in parts if p.get('decouples_ref')}
+    pinned=pin_rows.get(board,{})
+    out|={owner[ref] for ref in out if owner.get(ref) in pinned}  # a covered bypass capacitor takes its IC along
+    out|={ref for ref in pinned if owner.get(ref) in out}
+    return out
+
+
 def release_window(board,unit,count,pin_rows,swapped_slots,pin_nets,extra,instance_of):
     """Unpin packages around one that found no legal slot: a growing window first, then its whole module,
     then the whole board (the full locality reflow, which is known to fit)."""
@@ -533,7 +588,27 @@ def build():
     placements=[];errors=[];grids={};available={}
     adopted=json.loads(PINS.read_text()) if PINS.exists() else {'pins':[],'swapped_slots':[],'reservations':[]}
     pin_rows=defaultdict(dict)
-    for row in adopted['pins']:pin_rows[row['board']][row['ref']]=row
+    # MC04-S7: a part the K block relocation moves off its front board drops its old front-board pin; on K it is
+    # placed like an added package (design/partition/k-block-relocation.json).
+    relocation=json.loads(RELOCATION.read_text()) if RELOCATION.exists() else {'blocks':[]}
+    moved={(b['from_board'],ref) for b in relocation['blocks'] for ref in b['members']}
+    released_by_move=defaultdict(list)
+    k_poses={ref:pose for b in relocation['blocks'] for ref,pose in b.get('k_poses',{}).items()}
+    for row in adopted['pins']:
+        if (row['board'],row['ref']) in moved:
+            released_by_move[row['board']].append(row['ref'])
+            pose=k_poses.get(row['ref'])
+            if pose:
+                rot=pose.get('rotation_deg',row['rotation_deg'])
+                box=oriented_box(shapes[row['footprint']],pose['side'],rot)
+                pin_rows['K'][row['ref']]={**{k:v for k,v in row.items() if k!='bypass_cluster'},'board':'K','x_mm':pose['x_mm'],'rotation_deg':rot,
+                    'y_mm':pose['y_mm'],'side':pose['side'],'k_block_move':True,
+                    'courtyard_mm':[round(box[0]+pose['x_mm'],4),round(box[1]+pose['y_mm'],4),round(box[2]+pose['x_mm'],4),round(box[3]+pose['y_mm'],4)]}
+            continue
+        pin_rows[row['board']][row['ref']]=row
+    unmatched=sorted('%s:%s'%k for k in moved if k[1] not in released_by_move[k[0]])
+    if unmatched:raise ValueError('K block relocation names parts with no adopted pin on their front board: '+' '.join(unmatched))
+    errors.extend(k_block_pin_errors(pin_rows['K'],connector,source['boards']['K']))
     swapped_slots={row['ref']:row for row in adopted['swapped_slots']}
     reservations={row['ref']:row['delta_mm'] for row in adopted['reservations']}
     adopted_report={}
@@ -608,7 +683,10 @@ def build():
                     lambda part:through_hole(part['footprint']),module_order=True))
 
         if board in JACK_BOARDS or board=='K':
-            base={side:list(grids[board,side].rows) for side in ('F.Cu','B.Cu')};extra=set();failures=Counter()
+            base={side:list(grids[board,side].rows) for side in ('F.Cu','B.Cu')};failures=Counter()
+            # MC04-S7 Revision 4: a pinned package whose courtyard a GH header land covers (same face, or any face
+            # for a through-hole part) is released to the locality placer, like an evicted package.
+            extra=header_conflicts(board,pin_rows,connector['headers'],parts)
             for _ in range(RELEASE_ROUNDS):
                 for side in ('F.Cu','B.Cu'):grids[board,side].rows=list(base[side])
                 try:
@@ -619,6 +697,9 @@ def build():
                     extra|=release_window(board,unit,failures[unit],pin_rows,swapped_slots,pin_nets,extra,{p['ref']:p['instance'] for p in parts})
             else:raise ValueError('adopted placement release rounds exhausted '+board)
             adopted_report[board]['release_rounds']=sum(failures.values());adopted_report[board]['window_released']=sorted(extra)
+            if released_by_move.get(board):adopted_report[board]['released_by_k_block_move']=sorted(released_by_move[board])
+            covered=header_conflicts(board,pin_rows,connector['headers'],parts)
+            if covered:adopted_report[board]['released_under_gh_headers']=sorted(covered)
             placements.extend(rows);free=[]
         for p in free:
             location=grids[board,'B.Cu'].place(shapes[p['footprint']])
@@ -653,12 +734,14 @@ def build():
         if sorted(r.get('protection_diodes_beyond_radius',[]))!=sorted(far.get(board,{})):errors.append('protection diode binding bookkeeping mismatch '+board)
     errors.extend(protection_exception_errors(json.loads(EXCEPTIONS.read_text())['exceptions'],far,
                                               {p['ref']:p for p in placements},{p['ref']:p for p in parts}))
+    acceptances=locality_acceptances(placements,errors)
     return {'schema_version':1,'status':'FAIL' if errors else 'PASS - conservative courtyard capacity proposal only',
             'errors':errors,'control_slew_locality':{'source':'design/partition/control-locality.json','status':'SOURCE GEOMETRY ONLY; native/routed/physical checks required','groups':locality},'grid_mm_by_board':{b:(.1 if b in JACK_BOARDS else .25) for b in source['boards']},'courtyard_gap_mm':.35,'drawn_edge_margin_mm':.30,'native_cached_inflation_ceiling_mm':.05,'native_free_clearance_lower_bound_mm':.25,'placements':placements,
             'control_bypass_locality':{'source':'design/partition/control-bypass-locality.json',**control_bypasses},
             'control_debounce_locality':{'source':'design/partition/control-debounce-locality.json',**control_debounce},
             'bypass_proximity':{'status':'DERIVED geometry only; routed loop #38 NOT RUN','evidence':'design/partition/bypass-placement-evidence.json','project_pad_distance_limit_mm':json.loads((ROOT/'design/partition/bypass-placement-evidence.json').read_text())['proposal']['maximum_supply_pad_to_capacitor_rail_pad_mm'],'pairs':bypass,'maximum_supply_pad_distance_mm':max((r['supply_pad_centre_distance_mm'] for r in bypass),default=0)},
             'adopted_placement_pins':{'source':'design/partition/adopted-placement-pins.json','status':'Decision E15 minimal-move reflow; source geometry only','boards':adopted_report},
+            'locality_acceptances':acceptances,
             'usable_grid_area_after_exclusions_mm2':available,
             'counts':{b:dict(Counter(p['side'] for p in placements if p['board']==b)) for b in source['boards']},
             'limits':['No PCB generated, routed, soldered or physically fitted.','First-fit failure is not an infeasibility proof; every reported successful footprint has its full courtyard.',

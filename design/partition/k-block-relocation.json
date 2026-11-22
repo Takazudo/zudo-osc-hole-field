@@ -1,7 +1,7 @@
 {
  "schema_version": 1,
  "status": "SOURCE INPUT; MC04-S7 Revision 2/3 K block move (reviewed rulings in circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md)",
- "rule": "Each entry moves one front-board function block to the core region (board K), for its instance only: the IC package (every unit), its decoupling capacitors and its one-hop passives and diodes as scripts/stack/studies/mc04_c4_blocks/blocks.py defines them, with the keep-front net fragments left on the front board. A key that is missing from the family, or that renders to another reference, fails the source build. Moved parts take the island IO_CORE, except moved FILTER_LEDS parts, which take FILTER_LEDS_K; the panel LEDs keep FILTER_LEDS.",
+ "rule": "Each entry moves one front-board function block to the core region (board K), for its instance only: the IC package (every unit), its decoupling capacitors and its one-hop passives and diodes as scripts/stack/studies/mc04_c4_blocks/blocks.py defines them, with the keep-front net fragments left on the front board. A key that is missing from the family, or that renders to another reference, fails the source build. Moved parts take the island IO_CORE, except moved FILTER_LEDS parts, which take FILTER_LEDS_K; the panel LEDs keep FILTER_LEDS. Each member takes its k_poses entry on K (origin and face; rotation kept from its front-board pin), computed by scripts/partition/k_block_poses.py in the floorplan occupancy model, so each block stays together.",
  "evidence": [
   "scripts/stack/studies/mc04_s7_r2/blocks.json (members, held JL-L02 scene)",
   "scripts/stack/studies/mc04_s7_r2/budgets.json and loops.json (draft limits and loop screen)",
@@ -33,6 +33,25 @@
      "PACK_OPA4196IDR_5.4",
      "PACK_OPA4196IDR_5.5"
     ]
+   },
+   "k_poses": {
+    "C1452": {
+     "x_mm": 73.27,
+     "y_mm": 93.43,
+     "side": "F.Cu",
+     "rotation_deg": 0
+    },
+    "C1453": {
+     "x_mm": 61.89,
+     "y_mm": 93.43,
+     "side": "F.Cu",
+     "rotation_deg": 180
+    },
+    "U1417": {
+     "x_mm": 67.58,
+     "y_mm": 93.43,
+     "side": "F.Cu"
+    }
    }
   },
   {
@@ -60,6 +79,23 @@
      "CORE_PACK_OPA4196IDR_8.4",
      "CORE_PACK_OPA4196IDR_8.5"
     ]
+   },
+   "k_poses": {
+    "C2249": {
+     "x_mm": 118.96,
+     "y_mm": 51.15,
+     "side": "F.Cu"
+    },
+    "C2250": {
+     "x_mm": 128.98,
+     "y_mm": 51.15,
+     "side": "F.Cu"
+    },
+    "U2218": {
+     "x_mm": 123.97,
+     "y_mm": 50.45,
+     "side": "F.Cu"
+    }
    }
   },
   {
@@ -144,6 +180,123 @@
      "LED_PACK_OPA4196IDR_0.4",
      "LED_PACK_OPA4196IDR_0.5"
     ]
+   },
+   "k_poses": {
+    "C2151": {
+     "x_mm": 117.73,
+     "y_mm": 64.48,
+     "side": "F.Cu"
+    },
+    "C2152": {
+     "x_mm": 107.71,
+     "y_mm": 64.48,
+     "side": "F.Cu"
+    },
+    "D2125": {
+     "x_mm": 112.61,
+     "y_mm": 58.5,
+     "side": "F.Cu"
+    },
+    "D2126": {
+     "x_mm": 113.11,
+     "y_mm": 72.0,
+     "side": "F.Cu"
+    },
+    "D2127": {
+     "x_mm": 118.5,
+     "y_mm": 69.36,
+     "side": "F.Cu"
+    },
+    "D2128": {
+     "x_mm": 118.5,
+     "y_mm": 59.61,
+     "side": "F.Cu"
+    },
+    "D2130": {
+     "x_mm": 106.86,
+     "y_mm": 58.5,
+     "side": "F.Cu"
+    },
+    "D2131": {
+     "x_mm": 122.11,
+     "y_mm": 64.75,
+     "side": "F.Cu"
+    },
+    "D2132": {
+     "x_mm": 112.61,
+     "y_mm": 55.25,
+     "side": "F.Cu"
+    },
+    "D2133": {
+     "x_mm": 118.86,
+     "y_mm": 73.75,
+     "side": "F.Cu"
+    },
+    "D2135": {
+     "x_mm": 121.75,
+     "y_mm": 69.36,
+     "side": "F.Cu"
+    },
+    "D2136": {
+     "x_mm": 123.11,
+     "y_mm": 61.5,
+     "side": "F.Cu"
+    },
+    "D2137": {
+     "x_mm": 108.0,
+     "y_mm": 54.11,
+     "side": "F.Cu"
+    },
+    "D2138": {
+     "x_mm": 123.11,
+     "y_mm": 58.25,
+     "side": "F.Cu"
+    },
+    "D2140": {
+     "x_mm": 102.25,
+     "y_mm": 58.11,
+     "side": "F.Cu"
+    },
+    "D2141": {
+     "x_mm": 112.61,
+     "y_mm": 52.0,
+     "side": "F.Cu"
+    },
+    "D2142": {
+     "x_mm": 125.0,
+     "y_mm": 69.36,
+     "side": "F.Cu"
+    },
+    "D2143": {
+     "x_mm": 127.5,
+     "y_mm": 63.61,
+     "side": "F.Cu"
+    },
+    "RB2114": {
+     "x_mm": 117.39,
+     "y_mm": 55.41,
+     "side": "F.Cu"
+    },
+    "RB2115": {
+     "x_mm": 123.64,
+     "y_mm": 73.41,
+     "side": "F.Cu"
+    },
+    "RB2116": {
+     "x_mm": 105.16,
+     "y_mm": 54.89,
+     "side": "F.Cu"
+    },
+    "RB2117": {
+     "x_mm": 127.91,
+     "y_mm": 68.39,
+     "side": "F.Cu"
+    },
+    "U2119": {
+     "x_mm": 112.72,
+     "y_mm": 65.18,
+     "side": "F.Cu"
+    }
    }
   },
   {
@@ -186,6 +339,48 @@
      "LED_PACK_OPA4196IDR_0.4",
      "LED_PACK_OPA4196IDR_0.5"
     ]
+   },
+   "k_poses": {
+    "C4374": {
+     "x_mm": 240.48,
+     "y_mm": 60.71,
+     "side": "F.Cu"
+    },
+    "C4375": {
+     "x_mm": 240.48,
+     "y_mm": 70.73,
+     "side": "F.Cu"
+    },
+    "D4307": {
+     "x_mm": 234.5,
+     "y_mm": 65.61,
+     "side": "F.Cu"
+    },
+    "D4308": {
+     "x_mm": 244.0,
+     "y_mm": 72.86,
+     "side": "F.Cu"
+    },
+    "D4309": {
+     "x_mm": 236.75,
+     "y_mm": 58.86,
+     "side": "F.Cu"
+    },
+    "D4310": {
+     "x_mm": 235.61,
+     "y_mm": 71.5,
+     "side": "F.Cu"
+    },
+    "RB4313": {
+     "x_mm": 240.89,
+     "y_mm": 58.16,
+     "side": "F.Cu"
+    },
+    "U4347": {
+     "x_mm": 241.18,
+     "y_mm": 65.72,
+     "side": "F.Cu"
+    }
    }
   },
   {
@@ -240,6 +435,75 @@
      "LED_PACK_OPA4196IDR_1.4",
      "LED_PACK_OPA4196IDR_1.5"
     ]
+   },
+   "k_poses": {
+    "C4376": {
+     "x_mm": 260.52,
+     "y_mm": 88.43,
+     "side": "F.Cu",
+     "rotation_deg": 0
+    },
+    "C4377": {
+     "x_mm": 249.14,
+     "y_mm": 88.43,
+     "side": "F.Cu",
+     "rotation_deg": 180
+    },
+    "D4312": {
+     "x_mm": 254.86,
+     "y_mm": 95.25,
+     "side": "F.Cu"
+    },
+    "D4313": {
+     "x_mm": 261.86,
+     "y_mm": 91.25,
+     "side": "F.Cu"
+    },
+    "D4314": {
+     "x_mm": 247.86,
+     "y_mm": 91.25,
+     "side": "F.Cu"
+    },
+    "D4315": {
+     "x_mm": 250.25,
+     "y_mm": 96.61,
+     "side": "F.Cu"
+    },
+    "D4317": {
+     "x_mm": 254.86,
+     "y_mm": 98.5,
+     "side": "F.Cu"
+    },
+    "D4318": {
+     "x_mm": 244.36,
+     "y_mm": 88.0,
+     "side": "F.Cu"
+    },
+    "D4319": {
+     "x_mm": 265.61,
+     "y_mm": 88.0,
+     "side": "F.Cu"
+    },
+    "D4320": {
+     "x_mm": 245.86,
+     "y_mm": 94.5,
+     "side": "F.Cu"
+    },
+    "RB4314": {
+     "x_mm": 248.64,
+     "y_mm": 85.16,
+     "side": "F.Cu"
+    },
+    "RB4315": {
+     "x_mm": 259.64,
+     "y_mm": 94.91,
+     "side": "F.Cu"
+    },
+    "U4348": {
+     "x_mm": 254.83,
+     "y_mm": 88.43,
+     "side": "F.Cu"
+    }
    }
   },
   {
@@ -324,6 +588,123 @@
      "G2_PACK_OPA4196IDR_1.4",
      "G2_PACK_OPA4196IDR_1.5"
     ]
+   },
+   "k_poses": {
+    "C8348": {
+     "x_mm": 179.73,
+     "y_mm": 46.96,
+     "side": "F.Cu"
+    },
+    "C8349": {
+     "x_mm": 179.73,
+     "y_mm": 56.98,
+     "side": "F.Cu"
+    },
+    "D8323": {
+     "x_mm": 173.75,
+     "y_mm": 51.86,
+     "side": "F.Cu"
+    },
+    "D8324": {
+     "x_mm": 187.25,
+     "y_mm": 51.11,
+     "side": "F.Cu"
+    },
+    "D8325": {
+     "x_mm": 183.25,
+     "y_mm": 45.11,
+     "side": "F.Cu"
+    },
+    "D8326": {
+     "x_mm": 174.86,
+     "y_mm": 46.25,
+     "side": "F.Cu"
+    },
+    "D8327": {
+     "x_mm": 174.86,
+     "y_mm": 57.75,
+     "side": "F.Cu"
+    },
+    "D8328": {
+     "x_mm": 178.86,
+     "y_mm": 43.0,
+     "side": "F.Cu"
+    },
+    "D8329": {
+     "x_mm": 187.86,
+     "y_mm": 46.25,
+     "side": "F.Cu"
+    },
+    "D8330": {
+     "x_mm": 175.11,
+     "y_mm": 61.0,
+     "side": "F.Cu"
+    },
+    "D8331": {
+     "x_mm": 169.36,
+     "y_mm": 52.0,
+     "side": "F.Cu"
+    },
+    "D8332": {
+     "x_mm": 170.25,
+     "y_mm": 47.61,
+     "side": "F.Cu"
+    },
+    "D8333": {
+     "x_mm": 170.25,
+     "y_mm": 56.61,
+     "side": "F.Cu"
+    },
+    "D8334": {
+     "x_mm": 173.11,
+     "y_mm": 43.0,
+     "side": "F.Cu"
+    },
+    "D8335": {
+     "x_mm": 187.86,
+     "y_mm": 43.0,
+     "side": "F.Cu"
+    },
+    "D8336": {
+     "x_mm": 192.25,
+     "y_mm": 47.86,
+     "side": "F.Cu"
+    },
+    "D8337": {
+     "x_mm": 179.36,
+     "y_mm": 39.75,
+     "side": "F.Cu"
+    },
+    "D8338": {
+     "x_mm": 173.61,
+     "y_mm": 39.75,
+     "side": "F.Cu"
+    },
+    "R8385": {
+     "x_mm": 175.89,
+     "y_mm": 63.91,
+     "side": "F.Cu"
+    },
+    "R8386": {
+     "x_mm": 170.14,
+     "y_mm": 60.66,
+     "side": "F.Cu"
+    },
+    "R8387": {
+     "x_mm": 166.64,
+     "y_mm": 49.16,
+     "side": "F.Cu"
+    },
+    "R8388": {
+     "x_mm": 166.64,
+     "y_mm": 54.91,
+     "side": "F.Cu"
+    },
+    "U8318": {
+     "x_mm": 180.43,
+     "y_mm": 51.97,
+     "side": "F.Cu"
+    }
    }
   }
  ]

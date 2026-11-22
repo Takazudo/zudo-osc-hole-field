@@ -1,0 +1,57 @@
+{
+ "schema_version": 1,
+ "status": "REVIEWED SOURCE INPUT (MC04-S7 Revision 2 item 3): input buffers accepted beyond the 24 mm locality rule",
+ "rule": "Each entry names a package whose re-placement may exceed the 24 mm locality limit, the ruling, the evidence and the routing conditions carried into the re-route. The floorplan report repeats every entry and fails if the package is not on the named board.",
+ "acceptances": [
+  {
+   "ref": "U1318",
+   "board": "JL",
+   "instance": "O3",
+   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "face": "B",
+   "study_pose": {
+    "origin_mm": [
+     59.0,
+     38.1
+    ],
+    "turn_deg": 180,
+    "distance_mm": 27.65
+   },
+   "locality_limit_mm": 24.0,
+   "state": "ACCEPTED",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 2 item 3",
+   "evidence": "design/reports/spice/input-buffer-vendor.json (MC04-S4 case 2: 0-50 pF on *_SENSE and *_BUFFER, no oscillation, OPA4196 and OPA4197 including the precision follower)",
+   "conditions": [
+    "keep the input passives (R_LIMIT, clamp) at the IC end or the jack end as the cell defines, and report which",
+    "route the lengthened run as a ground-flanked trace",
+    "keep the added run capacitance under 50 pF"
+   ],
+   "applies_in": "Part B board placement (the stack link gate displaces the current pose); the floorplan keeps the adopted pin"
+  },
+  {
+   "ref": "U8314",
+   "board": "JR",
+   "instance": "M4A",
+   "package": "TSSOP-14_4.4x5mm_P0.65mm",
+   "face": "B",
+   "study_pose": {
+    "origin_mm": [
+     222.903,
+     78.9
+    ],
+    "turn_deg": 270,
+    "distance_mm": 32.25
+   },
+   "locality_limit_mm": 24.0,
+   "state": "ACCEPTED",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 2 item 3",
+   "evidence": "design/reports/spice/input-buffer-vendor.json (MC04-S4 case 2: 0-50 pF on *_SENSE and *_BUFFER, no oscillation, OPA4196 and OPA4197 including the precision follower)",
+   "conditions": [
+    "keep the input passives (R_LIMIT, clamp) at the IC end or the jack end as the cell defines, and report which",
+    "route the lengthened run as a ground-flanked trace",
+    "keep the added run capacitance under 50 pF"
+   ],
+   "applies_in": "Part B board placement (the stack link gate displaces the current pose); the floorplan keeps the adopted pin"
+  }
+ ]
+}

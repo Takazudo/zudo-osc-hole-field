@@ -5,6 +5,7 @@ from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import json
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -73,6 +74,44 @@ def inspect(board):
             'warnings': warnings}
 
 
+HEADER_REF=re.compile(r'^J9\d{5}$')
+
+
+def item_ref(item):
+    return item.split()[1]
+
+
+def projected_identities(projected,baseline,board_of,identity):
+    """Multisets of warning identities, projected and master. A master warning whose two pins now sit on different
+    boards (a net that crosses, such as a moved indicator bridge, MC04-S7) is projected on the board of each pin
+    with a GH header pin as the other item; both sides compare with the off-board item replaced by one marker.
+    Same-board warnings keep their exact identity."""
+    marker='Symbol <GH header pin on the cross-board net>'
+    def norm(w,keep):
+        return identity({**w,'items':sorted(i if i==keep else marker for i in w['items'])})
+    actual=Counter();expected=Counter();split=0
+    for w in projected:
+        heads=[i for i in w['items'] if HEADER_REF.match(item_ref(i))]
+        others=[i for i in w['items'] if i not in heads]
+        actual[norm(w,others[0]) if len(heads)==1 and len(others)==1 else identity(w)]+=1
+    for w in baseline:
+        boards={board_of.get(item_ref(i)) for i in w['items']}
+        if len(w['items'])==2 and len(boards)==2:
+            split+=1
+            expected['split:'+identity(w)]+=1
+        else:
+            expected[identity(w)]+=1
+    # resolve split master warnings against the projected ones: each must match one of its two projections
+    for key in [k for k in expected if k.startswith('split:')]:
+        w=json.loads(key[len('split:'):]);n=expected.pop(key)
+        options=[norm(w,keep) for keep in w['items']]
+        for _ in range(n):
+            hit=next((o for o in options if actual[o]-expected[o]>0),options[0])
+            expected[hit]+=1
+    expected=+expected
+    return actual,expected,split
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--check', action='store_true')
@@ -83,13 +122,16 @@ def main():
     errors = sum(len(r['errors']) for r in rows)
     baseline=json.loads((ROOT/'design/reports/master-erc-warning-baseline.json').read_text())
     identity=lambda w:json.dumps({k:w[k] for k in ('type','description','items')},sort_keys=True)
-    actual=Counter(identity(w) for r in rows for w in r['warnings'] if w['type']=='pin_to_pin')
-    expected=Counter(identity(w) for w in baseline['warnings'])
+    board_of={c['ref']:c['board'] for c in manifest['assignment']['components']}
+    actual,expected,split=projected_identities([w for r in rows for w in r['warnings'] if w['type']=='pin_to_pin'],
+                                               baseline['warnings'],board_of,identity)
     if actual!=expected:raise SystemExit('projected pin-to-pin warnings differ from master baseline identities')
 
     report = {'schema_version': 1, 'status': 'FAIL' if errors else 'PASS - native ERC errors zero; warnings retained; unvalidated drafts',
               'oracle': 'Pinned KiCad 10.0.6 via scripts/kicad/run.sh', 'boards': rows,
-              'pin_to_pin_master_identity_parity':'PASS;228 original warning identities preserved, sheet paths projected',
+              'pin_to_pin_master_identity_parity':'PASS;%d original warning identities preserved, sheet paths projected; '
+                                                  '%d of them split across boards, where the off-board pin is a GH header pin'
+                                                  %(sum(expected.values()),split),
               'errors': errors, 'warnings': sum(r['warning_count'] for r in rows),
               'scope': 'Active manifest schematics only. No routed PCB or physical qualification.'}
     target = ROOT/'design/reports/board-erc.json'
