@@ -9,12 +9,15 @@
   "interim-GH reach exception": 4,
   "fixing reach candidate": 1,
   "header/fixing conflict": 1,
-  "open re-placement (re-route)": 15,
-  "slot drift": 3
+  "open re-placement (re-route)": 13,
+  "S10 overlay block": 3,
+  "S10 face change": 8,
+  "S10 knock-on block rule": 1,
+  "slot drift": 7
  },
  "re_placement_status": {
   "RESOLVED FOR THE LINK ERA (pending application when the links replace the GH headers)": 10,
-  "OPEN (link era): NEEDS_DESIGN for Gate A-paper": 5
+  "OPEN (link era): NEEDS_DESIGN for Gate A-paper": 3
  },
  "items": [
   {
@@ -1160,592 +1163,9 @@
     "evaluated": false
    },
    "far_option_overlaps": [
-    "U5210",
     "U8409"
    ],
-   "far_option_note": "this far option overlaps the far options of U5210, U8409: the options are alternatives, not one joint solution",
-   "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
-   "record": "design/stack/geometry/links/link-era-replacements.json"
-  },
-  {
-   "id": "GA-REPLACE-K-U5209",
-   "kind": "open re-placement (re-route)",
-   "board": "K",
-   "ref": "U5209",
-   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
-   "face": "B",
-   "old": [
-    157.95,
-    206.58
-   ],
-   "why": [
-    "under a field"
-   ],
-   "overlaps": [
-    {
-     "link": "P-K-P-L13.01.01.02",
-     "keepout": "K_connector",
-     "within_courtyard_growth_mm": 0.07
-    }
-   ],
-   "source": "design/stack/geometry/links/link-gate.json",
-   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14",
-   "status": "OPEN (link era): NEEDS_DESIGN for Gate A-paper",
-   "proof": {
-    "candidates": 0,
-    "trials": 0,
-    "trial_failures": {},
-    "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered"
-   },
-   "cheapest_option": {
-    "pose": {
-     "face": "F",
-     "turn_deg": 180,
-     "origin": [
-      141.95,
-      159.58
-     ],
-     "moved_mm": 49.65,
-     "shift_mm": [
-      -16.0,
-      -47.0
-     ]
-    },
-    "electrical": [
-     {
-      "net": "/W1/BASE_DRIVE",
-      "kind": [
-       "output"
-      ],
-      "parts_on_board": [
-       "C5207",
-       "R5238",
-       "U5209"
-      ],
-      "hpwl_before_mm": 10.99,
-      "hpwl_after_mm": 70.26,
-      "added_run_estimate_mm": 88.9,
-      "run_after_estimate_mm": 105.39,
-      "capacitance_after_estimate_pF": 21.08,
-      "added_capacitance_estimate_pF": 17.78
-     },
-     {
-      "net": "/W1/DRIVE_INV_SUM",
-      "kind": [
-       "feedback/summing node"
-      ],
-      "parts_on_board": [
-       "R5250",
-       "R5251",
-       "U5209"
-      ],
-      "hpwl_before_mm": 10.65,
-      "hpwl_after_mm": 10.65,
-      "added_run_estimate_mm": 0.0,
-      "run_after_estimate_mm": 15.98,
-      "capacitance_after_estimate_pF": 3.2,
-      "added_capacitance_estimate_pF": 0.0
-     },
-     {
-      "net": "/W1/EMITTER",
-      "kind": [
-       "feedback/summing node"
-      ],
-      "parts_on_board": [
-       "C5207",
-       "D5205",
-       "Q5201",
-       "R5237",
-       "U5209"
-      ],
-      "hpwl_before_mm": 24.72,
-      "hpwl_after_mm": 86.53,
-      "added_run_estimate_mm": 92.71,
-      "run_after_estimate_mm": 129.79,
-      "capacitance_after_estimate_pF": 25.96,
-      "added_capacitance_estimate_pF": 18.54
-     },
-     {
-      "net": "/W1/FOLDER_DRIVE",
-      "kind": [
-       "output"
-      ],
-      "parts_on_board": [
-       "R5251",
-       "R5252",
-       "R5253",
-       "U5209"
-      ],
-      "hpwl_before_mm": 16.65,
-      "hpwl_after_mm": 63.77,
-      "added_run_estimate_mm": 70.68,
-      "run_after_estimate_mm": 95.65,
-      "capacitance_after_estimate_pF": 19.13,
-      "added_capacitance_estimate_pF": 14.14
-     },
-     {
-      "net": "/W1/FOLDER_NEG",
-      "kind": [
-       "output"
-      ],
-      "parts_on_board": [
-       "R5249",
-       "R5250",
-       "U5209"
-      ],
-      "hpwl_before_mm": 13.61,
-      "hpwl_after_mm": 50.77,
-      "added_run_estimate_mm": 55.74,
-      "run_after_estimate_mm": 76.15,
-      "capacitance_after_estimate_pF": 15.23,
-      "added_capacitance_estimate_pF": 11.15
-     },
-     {
-      "net": "/W1/FOLDER_SUM",
-      "kind": [
-       "feedback/summing node"
-      ],
-      "parts_on_board": [
-       "R5246",
-       "R5247",
-       "R5248",
-       "R5249",
-       "U5209"
-      ],
-      "hpwl_before_mm": 82.65,
-      "hpwl_after_mm": 107.06,
-      "added_run_estimate_mm": 36.61,
-      "run_after_estimate_mm": 160.59,
-      "capacitance_after_estimate_pF": 32.12,
-      "added_capacitance_estimate_pF": 7.32
-     },
-     {
-      "net": "/W1/PRE_GAIN",
-      "kind": [
-       "output"
-      ],
-      "parts_on_board": [
-       "R5245",
-       "R5246",
-       "U5209"
-      ],
-      "hpwl_before_mm": 12.73,
-      "hpwl_after_mm": 52.31,
-      "added_run_estimate_mm": 59.37,
-      "run_after_estimate_mm": 78.46,
-      "capacitance_after_estimate_pF": 15.69,
-      "added_capacitance_estimate_pF": 11.87
-     },
-     {
-      "net": "/W1/PRE_GAIN_SUM",
-      "kind": [
-       "feedback/summing node"
-      ],
-      "parts_on_board": [
-       "RV5205",
-       "U5205",
-       "U5209"
-      ],
-      "hpwl_before_mm": 24.85,
-      "hpwl_after_mm": 71.61,
-      "added_run_estimate_mm": 70.14,
-      "run_after_estimate_mm": 107.42,
-      "capacitance_after_estimate_pF": 21.48,
-      "added_capacitance_estimate_pF": 14.03
-     },
-     {
-      "net": "/W1/TARGET",
-      "kind": [
-       "non-inverting input"
-      ],
-      "parts_on_board": [
-       "R5236",
-       "U5208",
-       "U5209"
-      ],
-      "hpwl_before_mm": 18.07,
-      "hpwl_after_mm": 80.69,
-      "added_run_estimate_mm": 93.93,
-      "run_after_estimate_mm": 121.03,
-      "capacitance_after_estimate_pF": 24.21,
-      "added_capacitance_estimate_pF": 18.79
-     }
-    ],
-    "note": "nearest legal pose with nothing displaced; beyond the 24 mm limit"
-   },
-   "gate_a_paper": {
-    "remedies_to_weigh": [
-     "a slot move",
-     "a package split",
-     "a partition change",
-     "the far pose with an electrical budget"
-    ],
-    "evaluated": false
-   },
-   "far_option_overlaps": [],
-   "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
-   "record": "design/stack/geometry/links/link-era-replacements.json"
-  },
-  {
-   "id": "GA-REPLACE-K-U5210",
-   "kind": "open re-placement (re-route)",
-   "board": "K",
-   "ref": "U5210",
-   "package": "SOIC-14_3.9x8.7mm_P1.27mm",
-   "face": "B",
-   "old": [
-    180.97,
-    204.7
-   ],
-   "why": [
-    "under a field"
-   ],
-   "overlaps": [
-    {
-     "link": "P-K-P-L13.01.01.01",
-     "keepout": "K_connector",
-     "overlap_mm": [
-      5.3,
-      6.1
-     ]
-    },
-    {
-     "link": "P-K-P-L13.01.01.01",
-     "keepout": "K_tail",
-     "overlap_mm": [
-      2.75,
-      0.32
-     ]
-    }
-   ],
-   "source": "design/stack/geometry/links/link-gate.json",
-   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revisions 12 to 14",
-   "status": "OPEN (link era): NEEDS_DESIGN for Gate A-paper",
-   "proof": {
-    "run": "joint search of U5210, U8409, U8412, U5208, U8408 within 24 mm",
-    "grid_caveat": "proof over a 0.5 mm shift grid about each block's original origin, with 4 turns and both faces; continuous poses are not covered",
-    "found": false,
-    "nodes": 0,
-    "domain_sizes": {
-     "U5210": 7,
-     "U8409": 0,
-     "U8412": 831,
-     "U5208": 453,
-     "U8408": 2133
-    },
-    "alone": [
-     {
-      "targets": [
-       "U5210"
-      ],
-      "found": false,
-      "domain_sizes": {
-       "U5210": 0,
-       "U8412": 193,
-       "U5208": 353,
-       "U8408": 572
-      }
-     },
-     {
-      "targets": [
-       "U8409"
-      ],
-      "found": false,
-      "domain_sizes": {
-       "U8409": 0,
-       "U8412": 817,
-       "U5208": 452,
-       "U8408": 2132
-      }
-     }
-    ],
-    "neighbour_limits_scanned": [
-     {
-      "limit_others_mm": 25.0,
-      "found": false,
-      "nodes": 0
-     },
-     {
-      "limit_others_mm": 26.0,
-      "found": false,
-      "nodes": 0
-     },
-     {
-      "limit_others_mm": 27.0,
-      "found": false,
-      "nodes": 0
-     },
-     {
-      "limit_others_mm": 28.0,
-      "found": false,
-      "nodes": 0
-     },
-     {
-      "limit_others_mm": 30.0,
-      "found": false,
-      "nodes": 0
-     },
-     {
-      "limit_others_mm": 32.0,
-      "found": false,
-      "nodes": 0
-     },
-     {
-      "limit_others_mm": 36.0,
-      "found": false,
-      "nodes": 0
-     },
-     {
-      "limit_others_mm": 40.0,
-      "found": false,
-      "nodes": 0
-     }
-    ],
-    "source": "result-r7.json"
-   },
-   "cheapest_option": {
-    "pose": {
-     "face": "F",
-     "turn_deg": 180,
-     "origin": [
-      123.97,
-      261.7
-     ],
-     "moved_mm": 80.61,
-     "shift_mm": [
-      -57.0,
-      57.0
-     ]
-    },
-    "electrical": [
-     {
-      "net": "/W1/F1_CLIP",
-      "kind": [
-       "non-inverting input"
-      ],
-      "parts_on_board": [
-       "D5206",
-       "D5207",
-       "R5252",
-       "U5210"
-      ],
-      "hpwl_before_mm": 59.18,
-      "hpwl_after_mm": 92.75,
-      "added_run_estimate_mm": 50.35,
-      "run_after_estimate_mm": 139.12,
-      "capacitance_after_estimate_pF": 27.83,
-      "added_capacitance_estimate_pF": 10.07
-     },
-     {
-      "net": "/W1/F1_OUT",
-      "kind": [
-       "output"
-      ],
-      "parts_on_board": [
-       "R5254",
-       "R5255",
-       "R5256",
-       "U5210"
-      ],
-      "hpwl_before_mm": 20.12,
-      "hpwl_after_mm": 134.83,
-      "added_run_estimate_mm": 172.06,
-      "run_after_estimate_mm": 202.25,
-      "capacitance_after_estimate_pF": 40.45,
-      "added_capacitance_estimate_pF": 34.41
-     },
-     {
-      "net": "/W1/F1_SUM",
-      "kind": [
-       "feedback/summing node"
-      ],
-      "parts_on_board": [
-       "R5253",
-       "R5254",
-       "U5210"
-      ],
-      "hpwl_before_mm": 30.1,
-      "hpwl_after_mm": 119.46,
-      "added_run_estimate_mm": 134.04,
-      "run_after_estimate_mm": 179.19,
-      "capacitance_after_estimate_pF": 35.84,
-      "added_capacitance_estimate_pF": 26.81
-     },
-     {
-      "net": "/W1/F2_CLIP",
-      "kind": [
-       "non-inverting input"
-      ],
-      "parts_on_board": [
-       "D5208",
-       "D5209",
-       "R5255",
-       "U5210"
-      ],
-      "hpwl_before_mm": 30.7,
-      "hpwl_after_mm": 129.23,
-      "added_run_estimate_mm": 147.8,
-      "run_after_estimate_mm": 193.84,
-      "capacitance_after_estimate_pF": 38.77,
-      "added_capacitance_estimate_pF": 29.56
-     },
-     {
-      "net": "/W1/F2_OUT",
-      "kind": [
-       "output"
-      ],
-      "parts_on_board": [
-       "R5257",
-       "R5258",
-       "R5259",
-       "U5210"
-      ],
-      "hpwl_before_mm": 23.1,
-      "hpwl_after_mm": 127.6,
-      "added_run_estimate_mm": 156.75,
-      "run_after_estimate_mm": 191.4,
-      "capacitance_after_estimate_pF": 38.28,
-      "added_capacitance_estimate_pF": 31.35
-     },
-     {
-      "net": "/W1/F2_SUM",
-      "kind": [
-       "feedback/summing node"
-      ],
-      "parts_on_board": [
-       "R5256",
-       "R5257",
-       "U5210"
-      ],
-      "hpwl_before_mm": 14.85,
-      "hpwl_after_mm": 14.85,
-      "added_run_estimate_mm": 0.0,
-      "run_after_estimate_mm": 22.28,
-      "capacitance_after_estimate_pF": 4.46,
-      "added_capacitance_estimate_pF": 0.0
-     },
-     {
-      "net": "/W1/F3_CLIP",
-      "kind": [
-       "non-inverting input"
-      ],
-      "parts_on_board": [
-       "D5210",
-       "D5211",
-       "R5258",
-       "U5210"
-      ],
-      "hpwl_before_mm": 66.98,
-      "hpwl_after_mm": 111.7,
-      "added_run_estimate_mm": 67.08,
-      "run_after_estimate_mm": 167.55,
-      "capacitance_after_estimate_pF": 33.51,
-      "added_capacitance_estimate_pF": 13.42
-     },
-     {
-      "net": "/W1/F3_OUT",
-      "kind": [
-       "output"
-      ],
-      "parts_on_board": [
-       "R5260",
-       "R5261",
-       "R5262",
-       "U5210"
-      ],
-      "hpwl_before_mm": 14.71,
-      "hpwl_after_mm": 14.71,
-      "added_run_estimate_mm": 0.0,
-      "run_after_estimate_mm": 22.07,
-      "capacitance_after_estimate_pF": 4.41,
-      "added_capacitance_estimate_pF": 0.0
-     },
-     {
-      "net": "/W1/F3_SUM",
-      "kind": [
-       "feedback/summing node"
-      ],
-      "parts_on_board": [
-       "R5259",
-       "R5260",
-       "U5210"
-      ],
-      "hpwl_before_mm": 14.54,
-      "hpwl_after_mm": 14.54,
-      "added_run_estimate_mm": 0.0,
-      "run_after_estimate_mm": 21.81,
-      "capacitance_after_estimate_pF": 4.36,
-      "added_capacitance_estimate_pF": 0.0
-     },
-     {
-      "net": "/W1/F4_CLIP",
-      "kind": [
-       "non-inverting input"
-      ],
-      "parts_on_board": [
-       "D5212",
-       "D5213",
-       "R5261",
-       "U5210"
-      ],
-      "hpwl_before_mm": 26.45,
-      "hpwl_after_mm": 147.66,
-      "added_run_estimate_mm": 181.81,
-      "run_after_estimate_mm": 221.49,
-      "capacitance_after_estimate_pF": 44.3,
-      "added_capacitance_estimate_pF": 36.36
-     },
-     {
-      "net": "/W1/F4_OUT",
-      "kind": [
-       "output"
-      ],
-      "parts_on_board": [
-       "R5263",
-       "U5210",
-       "U5211"
-      ],
-      "hpwl_before_mm": 26.56,
-      "hpwl_after_mm": 93.38,
-      "added_run_estimate_mm": 100.23,
-      "run_after_estimate_mm": 140.07,
-      "capacitance_after_estimate_pF": 28.01,
-      "added_capacitance_estimate_pF": 20.05
-     },
-     {
-      "net": "/W1/F4_SUM",
-      "kind": [
-       "feedback/summing node"
-      ],
-      "parts_on_board": [
-       "R5262",
-       "R5263",
-       "U5210"
-      ],
-      "hpwl_before_mm": 16.42,
-      "hpwl_after_mm": 16.42,
-      "added_run_estimate_mm": 0.0,
-      "run_after_estimate_mm": 24.63,
-      "capacitance_after_estimate_pF": 4.93,
-      "added_capacitance_estimate_pF": 0.0
-     }
-    ],
-    "note": "nearest legal pose with nothing displaced; beyond the 24 mm limit"
-   },
-   "gate_a_paper": {
-    "remedies_to_weigh": [
-     "a slot move",
-     "a package split",
-     "a partition change",
-     "the far pose with an electrical budget"
-    ],
-    "evaluated": false
-   },
-   "far_option_overlaps": [
-    "U5110",
-    "U8409"
-   ],
-   "far_option_note": "this far option overlaps the far options of U5110, U8409: the options are alternatives, not one joint solution",
+   "far_option_note": "this far option overlaps the far options of U8409: the options are alternatives, not one joint solution",
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
   },
@@ -2097,12 +1517,463 @@
     "evaluated": false
    },
    "far_option_overlaps": [
-    "U5110",
-    "U5210"
+    "U5110"
    ],
-   "far_option_note": "this far option overlaps the far options of U5110, U5210: the options are alternatives, not one joint solution",
+   "far_option_note": "this far option overlaps the far options of U5110: the options are alternatives, not one joint solution",
    "model": "link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); not checked against the interim boards",
    "record": "design/stack/geometry/links/link-era-replacements.json"
+  },
+  {
+   "id": "GA-S10-OVERLAY-K-U4222",
+   "kind": "S10 overlay block",
+   "board": "K",
+   "ref": "U4222",
+   "gate_pose": {
+    "face": "B",
+    "origin": [
+     213.2009,
+     222.9509
+    ],
+    "moved_mm": 24.75,
+    "step": 3
+   },
+   "overlay_pose": {
+    "face": "B",
+    "turn_deg": 0,
+    "origin": [
+     204.2,
+     220.45
+    ],
+    "moved_mm": 17.24,
+    "shift_mm": [
+     8.5,
+     15.0
+    ]
+   },
+   "reason": "the gate pose breaks the block rule: C4239 7.66 mm -> 24.87 mm, face B",
+   "timing_nodes": [],
+   "grown_nets": [
+    {
+     "net": "/E2/D_FALL",
+     "kind": [
+      "logic output"
+     ],
+     "added_run_estimate_mm": -9.75,
+     "capacitance_after_estimate_pF": 15.37
+    },
+    {
+     "net": "/E2/FALL",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 0.0,
+     "capacitance_after_estimate_pF": 35.94
+    },
+    {
+     "net": "/E2/L021",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 0.0,
+     "capacitance_after_estimate_pF": 28.29
+    },
+    {
+     "net": "/E2/L046",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": -35.25,
+     "capacitance_after_estimate_pF": 18.22
+    },
+    {
+     "net": "/E2/L047",
+     "kind": [
+      "logic input",
+      "logic output"
+     ],
+     "added_run_estimate_mm": 0.0,
+     "capacitance_after_estimate_pF": 0.0
+    },
+    {
+     "net": "/E2/L049",
+     "kind": [
+      "logic input",
+      "logic output"
+     ],
+     "added_run_estimate_mm": 0.0,
+     "capacitance_after_estimate_pF": 0.0
+    },
+    {
+     "net": "/E2/L050",
+     "kind": [
+      "logic output"
+     ],
+     "added_run_estimate_mm": -5.07,
+     "capacitance_after_estimate_pF": 16.24
+    },
+    {
+     "net": "/E2/READY",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 0.0,
+     "capacitance_after_estimate_pF": 47.04
+    }
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s10-l13-link-moves-generator-brief-20261122.md, Revision 1 (DS-148)"
+  },
+  {
+   "id": "GA-S10-OVERLAY-K-U4227",
+   "kind": "S10 overlay block",
+   "board": "K",
+   "ref": "U4227",
+   "gate_pose": {
+    "face": "B",
+    "origin": [
+     203.8564,
+     233.8985
+    ],
+    "moved_mm": 20.0,
+    "step": 3
+   },
+   "overlay_pose": {
+    "face": "B",
+    "turn_deg": 180,
+    "origin": [
+     204.18,
+     232.58
+    ],
+    "moved_mm": 18.82,
+    "shift_mm": [
+     5.5,
+     18.0
+    ]
+   },
+   "reason": "the gate pose breaks the block rule: C4244 17.67 mm -> 20.9 mm, face B",
+   "timing_nodes": [],
+   "grown_nets": [
+    {
+     "net": "/E2/CURVED",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": -7.3,
+     "capacitance_after_estimate_pF": 15.6
+    },
+    {
+     "net": "/E2/L069",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": -7.3,
+     "capacitance_after_estimate_pF": 15.6
+    },
+    {
+     "net": "/E2/L070",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": -33.36,
+     "capacitance_after_estimate_pF": 10.39
+    },
+    {
+     "net": "/E2/L071",
+     "kind": [
+      "logic input",
+      "logic output"
+     ],
+     "added_run_estimate_mm": 0.0,
+     "capacitance_after_estimate_pF": 0.0
+    },
+    {
+     "net": "/E2/L072",
+     "kind": [
+      "logic input",
+      "logic output"
+     ],
+     "added_run_estimate_mm": 0.0,
+     "capacitance_after_estimate_pF": 0.0
+    },
+    {
+     "net": "/E2/L074",
+     "kind": [
+      "logic output"
+     ],
+     "added_run_estimate_mm": 18.75,
+     "capacitance_after_estimate_pF": 13.12
+    },
+    {
+     "net": "/E2/RISE_LINEAR",
+     "kind": [
+      "logic output"
+     ],
+     "added_run_estimate_mm": -35.25,
+     "capacitance_after_estimate_pF": 14.04
+    }
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s10-l13-link-moves-generator-brief-20261122.md, Revision 1 (DS-148)"
+  },
+  {
+   "id": "GA-S10-OVERLAY-K-U4537",
+   "kind": "S10 overlay block",
+   "board": "K",
+   "ref": "U4537",
+   "gate_pose": {
+    "face": "F",
+    "origin": [
+     165.0936,
+     184.183
+    ],
+    "moved_mm": 7.25,
+    "step": 2
+   },
+   "overlay_pose": {
+    "face": "F",
+    "turn_deg": 180,
+    "origin": [
+     149.97,
+     182.68
+    ],
+    "moved_mm": 17.87,
+    "shift_mm": [
+     -17.0,
+     5.5
+    ]
+   },
+   "reason": "the gate pose breaks the block rule: C4554 5.06 mm -> 7.04 mm, face B",
+   "timing_nodes": [
+    "/E5/CLOCK"
+   ],
+   "grown_nets": [
+    {
+     "net": "/E5/CLOCK",
+     "kind": [
+      "logic input",
+      "timing node (clock input)",
+      "timing node (clock/sync)"
+     ],
+     "added_run_estimate_mm": 8.25,
+     "capacitance_after_estimate_pF": 33.55
+    },
+    {
+     "net": "/E5/D_FALL",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 33.75,
+     "capacitance_after_estimate_pF": 22.9
+    },
+    {
+     "net": "/E5/D_HOLD",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 33.75,
+     "capacitance_after_estimate_pF": 26.19
+    },
+    {
+     "net": "/E5/FALL",
+     "kind": [
+      "logic output"
+     ],
+     "added_run_estimate_mm": 15.72,
+     "capacitance_after_estimate_pF": 26.87
+    },
+    {
+     "net": "/E5/FALL_N",
+     "kind": [
+      "logic output"
+     ],
+     "added_run_estimate_mm": 23.13,
+     "capacitance_after_estimate_pF": 18.62
+    },
+    {
+     "net": "/E5/HOLD",
+     "kind": [
+      "logic output"
+     ],
+     "added_run_estimate_mm": -5.25,
+     "capacitance_after_estimate_pF": 12.46
+    },
+    {
+     "net": "/E5/HOLD_N",
+     "kind": [
+      "logic output"
+     ],
+     "added_run_estimate_mm": 33.75,
+     "capacitance_after_estimate_pF": 23.8
+    },
+    {
+     "net": "/E5/READY",
+     "kind": [
+      "logic input"
+     ],
+     "added_run_estimate_mm": 8.25,
+     "capacitance_after_estimate_pF": 33.55
+    }
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s10-l13-link-moves-generator-brief-20261122.md, Revision 1 (DS-148)"
+  },
+  {
+   "id": "GA-S10-FACE-C5209",
+   "kind": "S10 face change",
+   "board": "K",
+   "ref": "C5209",
+   "from": "B",
+   "to": "F",
+   "row": "new",
+   "nets": [
+    "/W1/AC_NODE",
+    "/W1/PRE_AC"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-147, DS-148"
+  },
+  {
+   "id": "GA-S10-FACE-Q4503",
+   "kind": "S10 face change",
+   "board": "K",
+   "ref": "Q4503",
+   "from": "B",
+   "to": "F",
+   "row": "new",
+   "nets": [
+    "+12V",
+    "/E5/RISE_BIAS_SOURCE",
+    "/E5/RISE_MIRROR_BASE"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-147, DS-148"
+  },
+  {
+   "id": "GA-S10-FACE-R4540",
+   "kind": "S10 face change",
+   "board": "K",
+   "ref": "R4540",
+   "from": "B",
+   "to": "F",
+   "row": "new",
+   "nets": [
+    "/E5/REF1_RAW",
+    "AGND"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-147, DS-148"
+  },
+  {
+   "id": "GA-S10-FACE-R5249",
+   "kind": "S10 face change",
+   "board": "K",
+   "ref": "R5249",
+   "from": "B",
+   "to": "F",
+   "row": "new",
+   "nets": [
+    "/W1/FOLDER_NEG",
+    "/W1/FOLDER_SUM"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-147, DS-148"
+  },
+  {
+   "id": "GA-S10-FACE-R5266",
+   "kind": "S10 face change",
+   "board": "K",
+   "ref": "R5266",
+   "from": "B",
+   "to": "F",
+   "row": "new",
+   "nets": [
+    "/W1/AC_NODE",
+    "AGND"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-147, DS-148"
+  },
+  {
+   "id": "GA-S10-FACE-U4537",
+   "kind": "S10 face change",
+   "board": "K",
+   "ref": "U4537",
+   "from": "B",
+   "to": "F",
+   "row": "new",
+   "nets": [
+    "+5V",
+    "/E5/CLOCK",
+    "/E5/D_FALL",
+    "/E5/D_HOLD",
+    "/E5/FALL",
+    "/E5/FALL_N",
+    "/E5/HOLD",
+    "/E5/HOLD_N",
+    "/E5/READY",
+    "AGND"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-147, DS-148"
+  },
+  {
+   "id": "GA-S10-FACE-C5212",
+   "kind": "S10 face change",
+   "board": "K",
+   "ref": "C5212",
+   "from": "B",
+   "to": "F",
+   "row": "shifted",
+   "nets": [
+    "/W1/AC_NODE",
+    "/W1/PRE_AC"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-147, DS-148"
+  },
+  {
+   "id": "GA-S10-FACE-C8438",
+   "kind": "S10 face change",
+   "board": "K",
+   "ref": "C8438",
+   "from": "B",
+   "to": "F",
+   "row": "shifted",
+   "nets": [
+    "+12V",
+    "AGND"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-147, DS-148"
+  },
+  {
+   "id": "GA-S10-KNOCKON-U2313",
+   "kind": "S10 knock-on block rule",
+   "board": "K",
+   "ref": "U2313",
+   "decouplers": [
+    {
+     "ref": "C2339",
+     "face_before": "B",
+     "face_after": "B",
+     "distance_before_mm": 10.64,
+     "distance_after_mm": 12.14,
+     "other_face_after": true,
+     "farther": true
+    },
+    {
+     "ref": "C2340",
+     "face_before": "B",
+     "face_after": "B",
+     "distance_before_mm": 23.28,
+     "distance_after_mm": 15.89,
+     "other_face_after": true,
+     "farther": false
+    }
+   ],
+   "note": "knock-on decoupler row, accepted as generated (DS-148)",
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-148"
   },
   {
    "id": "GA-SLOT-JR-K-JR-L01",
@@ -2167,6 +2038,98 @@
      80.0
     ],
     "direction": "-x"
+   },
+   "members_unchanged": true,
+   "note": "stable_clusters keeps IDs and members, not slots; new pairs join within the 35 mm gate radius",
+   "source": "design/stack/geometry/links/link-gate.json against 93197a3e",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 14 item 6"
+  },
+  {
+   "id": "GA-SLOT-P-K-P-L03.02.02.01",
+   "kind": "slot drift",
+   "link": "P-K-P-L03.02.02.01",
+   "baseline": {
+    "slot_centre": [
+     201.5,
+     197.0
+    ],
+    "direction": "+y"
+   },
+   "current": {
+    "slot_centre": [
+     184.5,
+     201.0
+    ],
+    "direction": "+y"
+   },
+   "members_unchanged": true,
+   "note": "stable_clusters keeps IDs and members, not slots; new pairs join within the 35 mm gate radius",
+   "source": "design/stack/geometry/links/link-gate.json against 93197a3e",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 14 item 6"
+  },
+  {
+   "id": "GA-SLOT-P-K-P-L13.01.01.01",
+   "kind": "slot drift",
+   "link": "P-K-P-L13.01.01.01",
+   "baseline": {
+    "slot_centre": [
+     184.1667,
+     193.6667
+    ],
+    "direction": "+y"
+   },
+   "current": {
+    "slot_centre": [
+     201.1667,
+     197.4167
+    ],
+    "direction": "+y"
+   },
+   "members_unchanged": true,
+   "note": "stable_clusters keeps IDs and members, not slots; new pairs join within the 35 mm gate radius",
+   "source": "design/stack/geometry/links/link-gate.json against 93197a3e",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 14 item 6"
+  },
+  {
+   "id": "GA-SLOT-P-K-P-L13.01.01.02",
+   "kind": "slot drift",
+   "link": "P-K-P-L13.01.01.02",
+   "baseline": {
+    "slot_centre": [
+     167.5,
+     195.0
+    ],
+    "direction": "+y"
+   },
+   "current": {
+    "slot_centre": [
+     176.0,
+     196.25
+    ],
+    "direction": "-y"
+   },
+   "members_unchanged": true,
+   "note": "stable_clusters keeps IDs and members, not slots; new pairs join within the 35 mm gate radius",
+   "source": "design/stack/geometry/links/link-gate.json against 93197a3e",
+   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 14 item 6"
+  },
+  {
+   "id": "GA-SLOT-P-K-P-L13.01.02.01",
+   "kind": "slot drift",
+   "link": "P-K-P-L13.01.02.01",
+   "baseline": {
+    "slot_centre": [
+     159.0,
+     198.5
+    ],
+    "direction": "-y"
+   },
+   "current": {
+    "slot_centre": [
+     159.0,
+     193.0
+    ],
+    "direction": "-y"
    },
    "members_unchanged": true,
    "note": "stable_clusters keeps IDs and members, not slots; new pairs join within the 35 mm gate radius",

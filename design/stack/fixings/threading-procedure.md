@@ -1,4 +1,4 @@
-# Threading procedure on the record of the room study: DONE on paper, 62 links in 13 steps, K lowered in 9 stages with at most 17 ends at one height
+# Threading procedure on the record of the room study: DONE on paper, 62 links in 13 steps, K lowered in 9 stages with at most 16 ends at one height
 
 Status: paper procedure on unvalidated drafts; no fit, no strength and no proven assembly. ST-08 part 2 (DS-115), read from the record of ST-02 a8 part 2 (DS-110). Places are named by the nearest panel control of the placement lock, seen from the front of the panel, with the panel coordinates (x from the left edge, y from the top edge, mm) beside them; seen from behind, left and right are swapped. Every figure is a paper result: the page claims no fit, no strength and no proven assembly.
 
@@ -16,7 +16,7 @@ Screened per slot: the front connectors, front tails and slots of every other li
 6. Put JL, JR and the P unit in the panel, and the three adapters on their selectors.
 7. Plug the front end of every cable into its front connector and close the lock by hand only at the center of the actuator. Do not insert tools or fingernails into the connector. Every front end is plugged and locked before K comes down. (62 locks; JL 10, JR 7, P 42, O1 1, O3 1, O5 1)
 8. Fold each cable upward under its slot so that its free end stands up from the board. (62 cables)
-9. Lower K over the 18 posts in 9 stages, highest end first, guiding the cable ends through their slots stage by stage (largest stage: 17 ends at 23.63 mm), then the four screw ends through K at 6.4 and 4.4 mm. (66 ends)
+9. Lower K over the 18 posts in 9 stages, highest end first, guiding the cable ends through their slots stage by stage (largest stage: 16 ends at 23.63 mm), then the four screw ends through K at 6.4 and 4.4 mm. (66 ends)
 10. Fasten K's screw at every post first. (18 parts)
 11. Put a nut on each of the four sleeve screws and turn it with the fingers until it is snug. No tool and no thread lock. A washer only where the screw end still comes through the nut with it. (4 parts)
 12. Fold each cable end onto K's rear face, insert it into its K connector and close the lock by hand only at the center of the actuator; never press K with the palm (DS-66). Do not insert tools or fingernails into the connector. At the 11 connectors named below, the other hand holds K's edge beside the connector while its lock is closed (DS-87). (62 locks)
@@ -24,14 +24,14 @@ Screened per slot: the front connectors, front tails and slots of every other li
 
 ## Leads are cut at 81 parts: P 49, JL 19, JR 12, O3 1
 
-- P: RV1001, RV1002, RV1004, RV1007, RV104, RV1101, RV1103, RV1104, RV1105, RV1107, RV1202, RV1203, RV1204, RV1205, RV1207, RV1305, RV1307, RV1405, RV1407, RV1505, RV1507, RV204, RV207, RV307, RV404, RV407, RV504, RV505, RV507, RV602, RV703, RV706, RV803, RV805, RV807, RV902, RV904, RV905, RV907, SW1302, SW1403, SW1502, SW1503, SW1701, SW1703, SW1802, SW303, SW403, SW503.
+- P: RV1002, RV1004, RV1007, RV104, RV1102, RV1103, RV1104, RV1105, RV1107, RV1201, RV1202, RV1203, RV1204, RV1205, RV1207, RV1305, RV1307, RV1405, RV1407, RV1505, RV1507, RV204, RV207, RV307, RV404, RV407, RV504, RV505, RV507, RV602, RV703, RV706, RV803, RV805, RV807, RV902, RV904, RV905, RV907, SW1302, SW1403, SW1502, SW1503, SW1701, SW1703, SW1802, SW303, SW403, SW503.
 - JL: J207, J208, J301, J302, J304, J305, J308, J309, J310, J504, J505, J606, J607, J608, J704, J705, J801, J802, J803.
 - JR: J1201, J1202, J1204, J1205, J1508, J1509, J1510, J1701, J1702, J1703, J1708, J1709.
 - O3: SW301.
 
-The rule for the bench is the one sentence of step 1; the list says where it matters. 90 entries over the links count a part once per tail that crosses it (81 parts).
+The rule for the bench is the one sentence of step 1; the list says where it matters. 91 entries over the links count a part once per tail that crosses it (81 parts).
 
-## K comes down over 62 ends in 9 stages, 2 mm apart at the least; the largest stage guides 17 ends at 23.63 mm
+## K comes down over 62 ends in 9 stages, 2 mm apart at the least; the largest stage guides 16 ends at 23.63 mm
 
 Before K comes down each cable is folded upward under its slot (bend radius 2.4 mm) and stands on its front board. Its free end stands at the cable length less the 4 mm insertion, less the run to the slot, plus 1.0301 mm from the bend, R (2 - pi/2). It meets K's front face when K is that height less the gap above its seat. The heights fall into stages by themselves, because the cable lengths and the tail extensions come in steps of 2 mm. The highest end comes first; the posts meet K last, at 0 mm, after the four screw ends at 6.4 mm (short sleeves) and 4.4 mm (long sleeves).
 
@@ -39,11 +39,11 @@ Before K comes down each cable is folded upward under its slot (bend radius 2.4 
 | --- | --- | --- | --- | --- |
 | 1 | 33.63 | 1 | P 1 | P-K-P-L06.02 |
 | 2 | 27.63 | 1 | P 1 | P-K-P-L03.01 |
-| 3 | 23.63 | 17 | P 17 | JL-P-K-P-L01.01.01.01, P-K-P-L01.01.02, P-K-P-L01.02.01, P-K-P-L03.02.01, P-K-P-L04.02.01.02, P-K-P-L05.01.01, P-K-P-L07, P-K-P-L08, P-K-P-L10.01.01.01, P-K-P-L11.01.01.01, P-K-P-L11.01.01.02, P-K-P-L11.01.02.01, P-K-P-L13.01.02.01, P-K-P-L15.01.01.01, P-K-P-L15.01.01.02, P-K-P-L15.01.02.01, P-K-P-L15.02.01.01 |
-| 4 | 21.63 | 12 | JL 7, JR 3, P 2 | JL-K-JL-L01, JL-K-JL-L03, JL-K-JL-L05, JL-K-JL-L06, JL-K-JL-L07, JL-K-JL-L09, JL-P-K-JL-L01, JR-K-JR-L03, JR-K-JR-L05, JR-K-JR-L06, P-K-P-L14.01.02.02, P-K-P-L14.02.01.02 |
-| 5 | 19.63 | 6 | JR 1, P 5 | JR-K-JR-L07, P-K-P-L01.01.01, P-K-P-L10.02, P-K-P-L12.02.01.01, P-K-P-L13.01.01.01, P-K-P-L15.01.02.02 |
-| 6 | 17.63 | 9 | JL 1, JR 1, P 4, O1 1, O3 1, O5 1 | JL-K-JL-L02, JL-P-K-P-L01.01.01.02, JR-K-JR-L02, O-K-O1, O-K-O3, O-K-O5, P-K-P-L02.01.01, P-K-P-L06.01.02.01, P-K-P-L13.01.01.02 |
-| 7 | 15.63 | 3 | JR 1, P 2 | JR-K-JR-L04, P-K-P-L12.01.01.02, P-K-P-L14.01.01.02 |
+| 3 | 23.63 | 16 | P 16 | JL-P-K-P-L01.01.01.01, P-K-P-L01.01.02, P-K-P-L01.02.01, P-K-P-L03.02.01, P-K-P-L04.02.01.02, P-K-P-L05.01.01, P-K-P-L07, P-K-P-L08, P-K-P-L10.01.01.01, P-K-P-L11.01.01.01, P-K-P-L11.01.01.02, P-K-P-L11.01.02.01, P-K-P-L15.01.01.01, P-K-P-L15.01.01.02, P-K-P-L15.01.02.01, P-K-P-L15.02.01.01 |
+| 4 | 21.63 | 13 | JL 7, JR 3, P 3 | JL-K-JL-L01, JL-K-JL-L03, JL-K-JL-L05, JL-K-JL-L06, JL-K-JL-L07, JL-K-JL-L09, JL-P-K-JL-L01, JR-K-JR-L03, JR-K-JR-L05, JR-K-JR-L06, P-K-P-L13.01.01.02, P-K-P-L14.01.02.02, P-K-P-L14.02.01.02 |
+| 5 | 19.63 | 5 | JR 1, P 4 | JR-K-JR-L07, P-K-P-L01.01.01, P-K-P-L10.02, P-K-P-L12.02.01.01, P-K-P-L15.01.02.02 |
+| 6 | 17.63 | 9 | JL 1, JR 1, P 4, O1 1, O3 1, O5 1 | JL-K-JL-L02, JL-P-K-P-L01.01.01.02, JR-K-JR-L02, O-K-O1, O-K-O3, O-K-O5, P-K-P-L02.01.01, P-K-P-L06.01.02.01, P-K-P-L13.01.02.01 |
+| 7 | 15.63 | 4 | JR 1, P 3 | JR-K-JR-L04, P-K-P-L12.01.01.02, P-K-P-L13.01.01.01, P-K-P-L14.01.01.02 |
 | 8 | 13.63 | 5 | JL 1, JR 1, P 3 | JL-K-JL-L08, JR-K-JR-L01, P-K-P-L10.01.02, P-K-P-L12.02.01.02, P-K-P-L14.01.02.01 |
 | 9 | 11.63 | 8 | JL 1, P 7 | JL-K-JL-L04, P-K-P-L04.01.01.01, P-K-P-L04.01.01.02, P-K-P-L04.01.02.01, P-K-P-L04.02.01.01, P-K-P-L06.01.01, P-K-P-L06.03.01, P-K-P-L12.01.02.02 |
 
@@ -53,7 +53,7 @@ Across: slot width (tail width + 1 mm) less the tail width at its +0.08 mm toler
 
 ## That one person guides 62 ends and that a folded cable keeps its fold: NOT RUN
 
-Paper gives the heights for an end that stands straight. Whether a 40 to 60 mm stock cable stands, bows or falls over, whether one person can guide 17 ends at one height with K in the other hand, and whether a fold stays where it was made are not shown. The cheap way to see them is the handling trial of owner item 4 of c1: one stock 0.5 mm cable and one printed plate with a 1.5 mm slot.
+Paper gives the heights for an end that stands straight. Whether a 40 to 60 mm stock cable stands, bows or falls over, whether one person can guide 16 ends at one height with K in the other hand, and whether a fold stays where it was made are not shown. The cheap way to see them is the handling trial of owner item 4 of c1: one stock 0.5 mm cable and one printed plate with a 1.5 mm slot.
 
 ## After K is seated, 62 ends are folded onto K's rear face, inserted and locked; 11 connectors need the holding hand
 
@@ -73,7 +73,7 @@ Fold each end down onto K's rear face toward its K connector (the run on K is in
 | P-K-P-L14.01.02.02 | the BIAS pot of W1 | (176, 280.45) | 0.289 |
 | P-K-P-L14.02.01.02 | the BIAS pot of W1 | (193, 280.95) | 0.3267 |
 
-## Latch reach: 26 open, 3 open after the displacement, 33 NOT SHOWN
+## Latch reach: 24 open, 4 open after the displacement, 34 NOT SHOWN
 
 NOT SHOWN, because no footprint height is retained; the neighbours are exempt packages ASSUMED lower than the 2.0 mm connector body (DS-88). Nothing is claimed for them.
 
@@ -105,7 +105,8 @@ NOT SHOWN, because no footprint height is retained; the neighbours are exempt pa
 | P-K-P-L12.01.02.02 | the GAIN pot of F2 | C1515, RB1510 |
 | P-K-P-L12.02.01.01 | the RES± pot of F3 | R5176, R5270 |
 | P-K-P-L12.02.01.02 | the 5 ± pot of M5A | C5107, R5162 |
-| P-K-P-L13.01.02.01 | the 1 ± pot of M5A | D5208, R5249, R5266, R8331 |
+| P-K-P-L13.01.01.02 | the 1 ± pot of M4A | C7201, D4537, R4561 |
+| P-K-P-L13.01.02.01 | the 1 ± pot of M5A | C4554, R5241 |
 | P-K-P-L14.01.01.02 | the SLEW pot of H2 | R5134 |
 | P-K-P-L14.01.02.02 | the BIAS pot of W1 | C4231 |
 | P-K-P-L15.01.02.02 | the CV ± pot of M4A | D5210 |
@@ -148,7 +149,7 @@ K comes off at most 10 times (DS-63: 20 insertions SOURCED for the connector). T
 | Fixings | 22 (18 posts, 4 sleeves) |
 | Fastener operations | 44 (36 post screws, 4 sleeve screws, 4 nuts) |
 | Parts with leads to cut | 81 |
-| Lengthened tails | 31 |
+| Lengthened tails | 32 |
 | Connectors with the holding hand | 11 |
 
 Checked against the record by `procedure.check`: links, connectors, locks, lengthened tails, lead entries, latch verdicts and the holding-hand count. A link without a row, a count that differs and a stale projection are findings.
@@ -206,9 +207,9 @@ Front and K runs are plan lengths from the connector opening to the slot centre,
 | P-K-P-L12.01.02.02 | the A / B switch of X2 (123.75, 276.95) | the GAIN± pot of F2 (123.75, 255.5) | -y | C29534 50 mm | 18.4 / 6.4 | 0.6602 | +12 mm | RV706 | 0.0705 | NOT SHOWN |
 | P-K-P-L12.02.01.01 | the GAIN± pot of F3 (142, 249.7) | the GAIN pot of F3 (142, 236.25) | -y | C29534 50 mm | 10.4 / 6.4 | 8.6602 | +4 mm | RV805, RV905 | 0.0578 | NOT SHOWN |
 | P-K-P-L12.02.01.02 | the 3 ± pot of M5A (159, 217.55) | the 5 ± pot of M5A (159, 237) | +y | C29534 50 mm | 16.4 / 6.4 | 2.6602 | +10 mm | RV1004, RV904 | 0.1103 | NOT SHOWN |
-| P-K-P-L13.01.01.01 | the 1 ± pot of M4A (184.167, 180.217) | the 2 ± pot of M4A (184.167, 193.667) | +y | C29534 50 mm | 10.4 / 6.4 | 8.6602 | +4 mm | RV1101 | 0.0262 | open |
-| P-K-P-L13.01.01.02 | the 1 ± pot of M5B (167.5, 179.55) | the 2 ± pot of M5B (167.5, 195) | +y | C29534 50 mm | 12.4 / 6.4 | 6.6602 | +6 mm | RV1001 | 0.0269 | open |
-| P-K-P-L13.01.02.01 | the 3 ± pot of M5A (159, 207.95) | the 2 ± pot of M5A (159, 198.5) | -y | C29534 50 mm | 6.4 / 6.4 | 12.6602 | no | RV1002, RV902 | 0.0138 | NOT SHOWN |
+| P-K-P-L13.01.01.01 | the 1 ± pot of M4B (201.167, 179.967) | the 2 ± pot of M4B (201.167, 197.417) | +y | C29534 50 mm | 14.4 / 6.4 | 4.6602 | +8 mm | RV1201 | 0.0277 | open after the displacement |
+| P-K-P-L13.01.01.02 | the 3 ± pot of M4A (176, 207.7) | the 2 ± pot of M4A (176, 196.25) | -y | C29534 50 mm | 8.4 / 6.4 | 10.6602 | +2 mm | RV1002, RV1102 | 0.0099 | NOT SHOWN |
+| P-K-P-L13.01.02.01 | the 3 ± pot of M5A (159, 208.45) | the 2 ± pot of M5A (159, 193) | -y | C29534 50 mm | 12.4 / 6.4 | 6.6602 | +6 mm | RV1002, RV902 | 0.0069 | NOT SHOWN |
 | P-K-P-L14.01.01.02 | the GAIN± pot of F3 (142, 259.55) | the SLEW pot of H2 (142, 277) | +y | C29534 50 mm | 14.4 / 6.4 | 4.6602 | +8 mm | RV807, RV907 | 0.3085 (hold) | NOT SHOWN |
 | P-K-P-L14.01.02.01 | the LEVEL pot of M5A (159, 259.55) | the BIAS pot of W2 (159, 279) | +y | C29534 50 mm | 16.4 / 6.4 | 2.6602 | +10 mm | RV1007, RV907 | 0.3591 (hold) | open |
 | P-K-P-L14.01.02.02 | the SUM GAIN pot of M4A (176, 259.55) | the FOLD pot of W1 (176, 271) | +y | C29534 50 mm | 8.4 / 6.4 | 10.6602 | +2 mm | RV1007, RV1107 | 0.289 (hold) | NOT SHOWN |
@@ -224,7 +225,7 @@ Front and K runs are plan lengths from the connector opening to the slot centre,
 
 ## The record is pinned by a projection of what this page reads
 
-- `design/stack/geometry/links/link-gate.json`: digest `5f74eb47b42b6085c26bdf58197c73876938c156478a9a2a1147a918f1c3d097` over the fields links (without gone): id, front_board, size, circuits, cable, cable_length_mm, cable_needed_mm, loop_mm, centre, slot_centre, direction, lengthened_tail, trim_leads, compliance_mm_per_N, geometry.slot, geometry.front_connector, geometry.front_tail, geometry.K_tail, geometry.K_connector, geometry.a_mm, geometry.b_mm, geometry.front_extension_mm, geometry.K_extension_mm, latch_reach.verdict, latch_reach.remaining; summary: links, placed, slots, connectors, latches, lengthened_tails, trim_leads, loop_mm, links_over_cable_length, latch_verdicts, latch_not_shown, compliance; parameters: insertion_mm, bend_radius_mm, trim_to_mm, latch_margin_mm, compliance; fixings: keepouts.
+- `design/stack/geometry/links/link-gate.json`: digest `bfee6d99acefaf644b7fda114ce312f7d1454686d65a3801e55730f9e3d96ad4` over the fields links (without gone): id, front_board, size, circuits, cable, cable_length_mm, cable_needed_mm, loop_mm, centre, slot_centre, direction, lengthened_tail, trim_leads, compliance_mm_per_N, geometry.slot, geometry.front_connector, geometry.front_tail, geometry.K_tail, geometry.K_connector, geometry.a_mm, geometry.b_mm, geometry.front_extension_mm, geometry.K_extension_mm, latch_reach.verdict, latch_reach.remaining; summary: links, placed, slots, connectors, latches, lengthened_tails, trim_leads, loop_mm, links_over_cable_length, latch_verdicts, latch_not_shown, compliance; parameters: insertion_mm, bend_radius_mm, trim_to_mm, latch_margin_mm, compliance; fixings: keepouts.
 - `design/stack/geometry/stack-candidate.json`: projection digest `59c3112cde417303d1ed5213d525d66b5f5bfe36cfa5a67081cf5a90c2a520db`.
 - `design/stack/geometry/links/link-options.json`, `design/stack/connectors/flex-links.json`, `design/stack/geometry/links/link-gate-options.json`: projection digest `b909029e2b6ee087755d47c141d709b0f3b64d6a9273e058498616addb15587b`.
 - `design/grid/placements.lock.json`: `297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8`.
