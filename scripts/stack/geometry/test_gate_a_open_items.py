@@ -22,9 +22,10 @@ class GateAOpenItems(unittest.TestCase):
     def test_reach_exceptions_by_id(self):
         self.assertTrue({'GA-REACH-JL-K-26', 'GA-REACH-JL-K-27', 'GA-REACH-JR-K-28', 'GA-REACH-JR-K-29', 'GA-REACH-SLEEVES'} <= self.ids)
 
-    def test_fifteen_open_replacements_with_u4647_and_u4129(self):
+    def test_thirteen_open_replacements_with_u4647_and_u4129(self):
         rows = [i for i in self.doc['items'] if i['kind'] == 'open re-placement (re-route)']
-        self.assertEqual(len(rows), 15)
+        self.assertEqual(len(rows), 13)  # MC04-S10: U5209 and U5210 are no longer displaced
+        self.assertFalse({'GA-REPLACE-K-U5209', 'GA-REPLACE-K-U5210'} & self.ids)
         self.assertTrue({'GA-REPLACE-JR-U4647', 'GA-REPLACE-K-U4129'} <= self.ids)
         self.assertTrue(all(r['overlaps'] for r in rows))
 
@@ -48,6 +49,17 @@ class GateAOpenItems(unittest.TestCase):
         geo = {'K_connector': [1.0, 1.0, 3.0, 3.0]}
         live = {'id': 'A', 'front_board': 'P', 'geometry': geo}
         self.assertEqual([o['link'] for o in ga.overlaps(rec, [live, dict(live, id='B', gone=True)])], ['A'])
+
+    def test_s10_items(self):
+        kinds = {}
+        for i in self.doc['items']:
+            kinds.setdefault(i['kind'], []).append(i)
+        self.assertEqual({i['ref'] for i in kinds['S10 overlay block']}, {'U4222', 'U4227', 'U4537'})
+        u4537 = next(i for i in kinds['S10 overlay block'] if i['ref'] == 'U4537')
+        self.assertIn('/E5/CLOCK', u4537['timing_nodes'])
+        self.assertTrue(all(g['added_run_estimate_mm'] is not None for g in u4537['grown_nets']))
+        self.assertTrue(kinds['S10 face change'])
+        self.assertTrue(all(i['nets'] and i['from'] != i['to'] for i in kinds['S10 face change']))
 
 
 if __name__ == '__main__':

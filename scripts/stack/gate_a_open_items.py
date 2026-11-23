@@ -115,6 +115,21 @@ def build():
             else:
                 row['status'] = 'OPEN'
             items.append(row)
+    # MC04-S10 Revision 1 (DS-148): the overlay blocks, the face changes and the knock-on block-rule rows
+    s10 = era.get('s10') or {}
+    for p in era['placed']:
+        if p.get('class') == 'S10 block-rule overlay':
+            items.append({'id': 'GA-S10-OVERLAY-%s-%s' % (p['board'], p['ic']), 'kind': 'S10 overlay block', 'board': p['board'], 'ref': p['ic'],
+                          'gate_pose': p['gate_pose'], 'overlay_pose': p['pose'], 'reason': p['reason'], 'timing_nodes': p['timing_nodes'],
+                          'grown_nets': [{'net': e['net'], 'kind': e['kind'], 'added_run_estimate_mm': e['added_run_estimate_mm'],
+                                          'capacitance_after_estimate_pF': e['capacitance_after_estimate_pF']} for e in p['electrical']],
+                          'source': LINK_ERA, 'ruling': p['ruling']})
+    for x in s10.get('face_changes', []):
+        items.append({'id': 'GA-S10-FACE-%s' % x['ref'], 'kind': 'S10 face change', 'board': 'K', 'ref': x['ref'], 'from': x['from'],
+                      'to': x['to'], 'row': x['change'], 'nets': x['nets'], 'source': LINK_ERA, 'ruling': 'DS-147, DS-148'})
+    for r in s10.get('knock_on_block_rule', []):
+        items.append({'id': 'GA-S10-KNOCKON-%s' % r['ic'], 'kind': 'S10 knock-on block rule', 'board': r['board'], 'ref': r['ic'],
+                      'decouplers': r['decouplers'], 'note': r['pose'], 'source': LINK_ERA, 'ruling': 'DS-148'})
     bl = {x['id']: x for x in base['links']}
     for l in gate['links']:
         o = bl.get(l['id'])

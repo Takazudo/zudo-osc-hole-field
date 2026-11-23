@@ -397,6 +397,70 @@
     "reason": "Retained slot of the link before the MC04-S6 board sync. It costs 19.0 against 16.5 for the slot the unchanged rule now picks (133.5, 70), but it leaves the F2 input buffer U2217 and the F2 indicator U2219 in place, which avoids U2217's 60.25 mm local move; U2119 (F1 indicator) moves to K as a function block instead and D2243 is re-placed locally.",
     "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-k-block-move-native-brief-20261121.md, Revision 2 item 1 (case (b) of mc04-s7-a0-report-20261122.md)",
     "evidence": "scripts/stack/studies/mc04_s7_a0/case-b-held-l02.json"
+   },
+   {
+    "link": "P-K-P-L13.01.01.01",
+    "front_board": "P",
+    "centre": [
+     190.1667,
+     189.6667
+    ],
+    "slot_centre": [
+     201.1667,
+     197.4167
+    ],
+    "direction": "+y",
+    "reason": "MC04-S10: S9-A2 joint scene, U5210 clean candidate 0: frees U5210 at its recorded position; recorded slot [184.1667, 193.6667] +y",
+    "ruling": "DS-147 / S10, DS-148 / S10 Revision 1 (circuit/orchestration/campaigns/osc-stack-20261114/mc04-s10-l13-link-moves-generator-brief-20261122.md)",
+    "evidence": "scripts/stack/studies/mc04_s9_slot_moves/result-a2.json"
+   },
+   {
+    "link": "P-K-P-L13.01.01.02",
+    "front_board": "P",
+    "centre": [
+     167.5,
+     185.0
+    ],
+    "slot_centre": [
+     176.0,
+     196.25
+    ],
+    "direction": "-y",
+    "reason": "MC04-S10: S9-A2 joint scene, U5209 variant B pair 8 (keeps R5257 at 7.93 mm on B): frees U5209; recorded slot [167.5, 195.0] +y",
+    "ruling": "DS-147 / S10, DS-148 / S10 Revision 1 (circuit/orchestration/campaigns/osc-stack-20261114/mc04-s10-l13-link-moves-generator-brief-20261122.md)",
+    "evidence": "scripts/stack/studies/mc04_s9_slot_moves/result-a2.json"
+   },
+   {
+    "link": "P-K-P-L13.01.02.01",
+    "front_board": "P",
+    "centre": [
+     167.5,
+     199.0
+    ],
+    "slot_centre": [
+     159.0,
+     193.0
+    ],
+    "direction": "-y",
+    "reason": "MC04-S10: S9-A2 joint scene, U5209 variant B pair 8: frees U5209; recorded slot [159.0, 198.5] -y",
+    "ruling": "DS-147 / S10, DS-148 / S10 Revision 1 (circuit/orchestration/campaigns/osc-stack-20261114/mc04-s10-l13-link-moves-generator-brief-20261122.md)",
+    "evidence": "scripts/stack/studies/mc04_s9_slot_moves/result-a2.json"
+   },
+   {
+    "link": "P-K-P-L15.02.01.01",
+    "front_board": "P",
+    "centre": [
+     184.5,
+     213.0
+    ],
+    "slot_centre": [
+     193.0,
+     213.0
+    ],
+    "direction": "+y",
+    "reason": "MC04-S10 Revision 1: held at its recorded pose; with the L13 holds, part 1 let the later-dissolved P-K-P-L03.02.02.01 take this slot and pushed the link onto U5210 (mc04-s10-report-20261122.md)",
+    "ruling": "DS-147 / S10, DS-148 / S10 Revision 1 (circuit/orchestration/campaigns/osc-stack-20261114/mc04-s10-l13-link-moves-generator-brief-20261122.md)",
+    "evidence": "design/stack/geometry/links/link-gate.json at 8243acdf"
    }
   ],
   "status": "REVIEWED GATE INPUT (MC04-S7 Revision 2): a held link searches its held slot only; a hold whose link, front or search centre no longer matches fails the gate; every other link keeps the general rule"

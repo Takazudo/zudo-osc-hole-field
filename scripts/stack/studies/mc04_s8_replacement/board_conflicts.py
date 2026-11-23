@@ -29,8 +29,12 @@ class Collector:
         self.placed.append((board, ref, face, rect))
 
 
+class Live(r7.R7):
+    snapshot = None  # MC04-S10: the current gate record
+
+
 def build():
-    s = r7.R7()
+    s = Live()
     s.prepare()
     col = Collector()
     s.load_done()

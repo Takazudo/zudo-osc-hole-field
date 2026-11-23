@@ -79,15 +79,22 @@ def git_show(rev, path):
     return subprocess.run(['git', '-C', str(ROOT), 'show', f'{rev}:{path}'], capture_output=True, check=True).stdout
 
 
+def blob(path):
+    """A file as of the study's snapshot (MC04-S10: this study is a record of the model before the S10 link moves)."""
+    return git_show(rp.SNAPSHOT, path)
+
+
 def input_pins():
-    """SHA-256 of every input, and the comparison of the two record files against the ruled commit."""
-    pins = {p: sha(ROOT / p) for p in INPUT_FILES}
+    """SHA-256 of every input (as of the snapshot), and the comparison of the two record files against the ruled commit."""
+    pins = {p: hashlib.sha256(blob(p)).hexdigest() for p in INPUT_FILES}
     for d in INPUT_DIRS:
-        for f in sorted((ROOT / d).iterdir()):
-            if f.is_file() and f.suffix in ('.py', '.json', '.md'):
-                pins[str(f.relative_to(ROOT))] = sha(f)
-    gate_now, gate_base = json.loads((ROOT / GATE).read_text()), json.loads(git_show(BASE, GATE))
-    era_now, era_base = json.loads((ROOT / ERA).read_text()), json.loads(git_show(BASE, ERA))
+        names = subprocess.run(['git', '-C', str(ROOT), 'ls-tree', '--name-only', rp.SNAPSHOT, d + '/'],
+                               capture_output=True, check=True, text=True).stdout.split()
+        for f in sorted(names):
+            if Path(f).suffix in ('.py', '.json', '.md'):
+                pins[f] = hashlib.sha256(blob(f)).hexdigest()
+    gate_now, gate_base = json.loads(blob(GATE)), json.loads(git_show(BASE, GATE))
+    era_now, era_base = json.loads(blob(ERA)), json.loads(git_show(BASE, ERA))
     same_links = gate_now['links'] == gate_base['links'] and gate_now['replacement'] == gate_base['replacement']
     strip = lambda rows: [r for r in rows if r['ic'] != 'U4433']  # noqa: E731
     plain = lambda rows: [{k: v for k, v in r.items() if k != 'member_face_check'} for r in rows]  # noqa: E731

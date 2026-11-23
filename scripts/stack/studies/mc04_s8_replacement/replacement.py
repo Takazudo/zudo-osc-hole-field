@@ -16,10 +16,14 @@ Writes result.json beside this file; --check verifies it. Courtyard level on unv
 from __future__ import annotations
 import argparse
 from collections import defaultdict
+import io
 import json
 import math
 from pathlib import Path
+import subprocess
 import sys
+import tarfile
+import tempfile
 
 ROOT = Path(__file__).resolve().parents[4]
 GEOM = ROOT / 'scripts/stack/geometry'
@@ -38,6 +42,26 @@ FAR_STEP, FAR_MM = 1.0, 160.0
 RAILS = {'AGND', '+12V', '-12V', '+5V', 'GND', None}
 BOARD_FILE = {'K': 'osc-core', 'JL': 'osc-jack-left', 'JR': 'osc-jack-right'}
 EVICTABLE_MAX_AREA_MM2 = 12.0
+# MC04-S10 Revision 1: the S8 and S9 studies are records of the link-era model before the S10 link moves. They read
+# the gate, the Gate A list and every link-gate input as of this commit (the last before S10 changed them), so their
+# --check stays reproducible; the checks of the current record (member_faces.py, board_conflicts.py, the S10 overlay)
+# set `snapshot = None` and read the current files.
+SNAPSHOT = '8243acdf'
+SNAPSHOT_PATHS = ('design/partition', 'design/grid', 'design/mechanical', 'design/stack', 'design/power', 'design/reports',
+                  'circuit/routing/osc-pcb-current-checkpoint.json') + tuple(sg.BOARD_FILES.values())
+
+
+def snapshot_root(rev=SNAPSHOT):
+    """A read-only copy of the inputs at `rev` (git archive), made once per machine and commit."""
+    d = Path(tempfile.gettempdir()) / f'zudo-osc-hole-field-snapshot-{rev}'
+    if not (d / '.complete').exists():
+        d.mkdir(parents=True, exist_ok=True)
+        tar = subprocess.run(['git', '-C', str(ROOT), 'archive', '--format=tar', rev, '--', *SNAPSHOT_PATHS],
+                             capture_output=True, check=True).stdout
+        with tarfile.open(fileobj=io.BytesIO(tar)) as t:
+            t.extractall(d)
+        (d / '.complete').write_text(rev + '\n')
+    return d
 
 
 def r2(v):
@@ -60,15 +84,18 @@ def mirror(rect, ox):
 
 
 class Study:
+    snapshot = SNAPSHOT  # None: the current files (the checks of the current record)
+
     def __init__(self):
-        self.inp = inp = lg.load_inputs()
+        self.root = root = snapshot_root(self.snapshot) if self.snapshot else ROOT
+        self.inp = inp = lg.load_inputs(root)
         p2.load_part2_inputs(inp)
         sites = lg.gate_sites(inp, lg.RECORD['allocation'])
         model = lg.GateModel(inp, sites, fixings=lg.RECORD['fixings'], compliance=lg.RECORD['compliance'])
         self.ctx = lg.Ctx(inp, model, dict(lg.RECORD))
-        self.gate = json.loads(lg.LINK_GATE.read_text())
+        self.gate = json.loads((root / 'design/stack/geometry/links/link-gate.json').read_text())
         self.out = self.gate['links']
-        io = json.loads((ROOT / 'design/reports/io-partition.json').read_text())
+        io = json.loads((root / 'design/reports/io-partition.json').read_text())
         self.pk = {p['ref']: p for p in io['physical_packages']}
         self.pins = defaultdict(dict)
         for u in io['package_units']:
@@ -78,7 +105,7 @@ class Study:
             for n in ps.values():
                 self.net_refs[n].add(r)
         self.fps = {(b, f['ref']): f for b in p2.SCOPE_BOARDS for f in inp['ci']['boards'][b]}
-        self.items = [i for i in json.loads((ROOT / 'design/stack/gate-a-open-items.json').read_text())['items']
+        self.items = [i for i in json.loads((root / 'design/stack/gate-a-open-items.json').read_text())['items']
                       if i['kind'] == 'open re-placement (re-route)']
         self.rows = {(r['board'], r['ref']): r for r in self.gate['replacement']['footprints']}
 

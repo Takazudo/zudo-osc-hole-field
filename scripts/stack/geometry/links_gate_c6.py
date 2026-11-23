@@ -34,14 +34,19 @@ SOURCE_OBJECT_SHA256 = 'a555e65e9a61617ebe9e7c10656722ac0f25f80f7abef0a3d193bc7b
 # takes another slot): signal, positions, riders and c6's eight links unchanged; see
 # circuit/orchestration/campaigns/osc-stack-20261114/mc04-s7-r13-c6-rebind-check-20261122.json.
 # Previous geometry pin: a1549b308d2d6b26a2bd504abfa037e1b90331922d8b6cda3c521a8f7dd6033a (Revision 11)
-SOURCE_GEOMETRY_SHA256 = '466a9e4ccb00339db0e1ec87ab3d3b8e398a482b232d05816327b93273887aed'
+# MC04-S10 Revision 1 rebind (DS-148: the four S10 slot holds move P-K-P-L13.01.01.01, L13.01.01.02 and L13.01.02.01 and
+# hold L15.02.01.01 at its record): signal, positions, c6's eight links and their riders unchanged; see
+# circuit/orchestration/campaigns/osc-stack-20261114/mc04-s10-c6-rebind-check-20261122.json
+# (scripts/stack/studies/mc04_s10_l13/c6_rebind.py). Previous geometry pin: 466a9e4ccb00339db0e1ec87ab3d3b8e398a482b232d05816327b93273887aed
+SOURCE_GEOMETRY_SHA256 = 'c9da0a3ddda1e426737e67974e4f9b8a321602c6efc5bd1258075cecd7581709'
 SOURCE_SIGNAL_SHA256 = '70335b6d45781946dddabeb3fbdb86dcf0924c2dd79355dd4e7f08443f5c584b'
 SOURCE_POSITIONS_SHA256 = 'f1d03b6ab6aadfc2530d6e22b0596598d51a468bdcaff978152f5ec85acd94a6'
 # Previous output pin: 81400a28b258fc0002bbe05f451e9237aeb9ab5ad9b2719cbaa2e4416522e94a (MC04-S6 revision 4 rebind)
 # Previous output pin: 078cd8eeb0c86b7551867e82a6e6c0ab7bf64068f84e1a030400509cd5142443 (MC04-S6 revision 4 rebind)
 # Previous output pin: 7f7fb47c58b32d7267008c6cc610174d03749b7389599d7e77eeff0714b4f907 (MC04-S7 Revision 2 rebind)
 # Previous output pin: 5c4a7e27f13b2697e26f852d563693a9c609e198734f5d36b3b0b7b8a1e9fbd1 (MC04-S7 Revision 11 fresh attempt)
-OUTPUT_LINKS_SHA256 = '44cff1e4c0b377d435c46cbb7533bb58041f733d01679287f86593bdb82b2dbb'
+# Previous output pin: 44cff1e4c0b377d435c46cbb7533bb58041f733d01679287f86593bdb82b2dbb (MC04-S7 Revision 13 rebind)
+OUTPUT_LINKS_SHA256 = '07c2932a96d94941bc9be25b9e9c26dfdc47406075eb2cc6e487fb447cdf6bd6'
 L01 = 'P-K-P-L01.01.01'
 L01B = 'P-K-P-L01.02.01'
 L03 = 'P-K-P-L03.01'

@@ -39,7 +39,7 @@ class Pinned(unittest.TestCase):
 
     def test_inputs_have_not_drifted(self):
         pins, base = sm.input_pins()
-        pins[a2.TRIMMER_PLAN] = sm.sha(sm.ROOT / a2.TRIMMER_PLAN)
+        pins[a2.TRIMMER_PLAN] = a2.hashlib.sha256(sm.blob(a2.TRIMMER_PLAN)).hexdigest()
         self.assertEqual(pins, DOC['inputs'])
 
     def test_every_clean_move_keeps_its_limits(self):

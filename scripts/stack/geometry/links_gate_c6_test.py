@@ -23,7 +23,17 @@ class C6PassTests(unittest.TestCase):
         snapshot = json.loads((ROOT / 'design/stack/geometry/links/link-gate-c6-source.json').read_text())
         cls.assert_source = snapshot['source_sha256']
         saved = {x['id']: x for x in snapshot['links']}
-        cls.original['links'] = [saved.get(x['id'], x) for x in cls.original['links']]
+        # MC04-S10 Revision 1: P-K-P-L13.01.01.01 (a c6 link) moved under its hold, so each c6 link takes its pre-c6
+        # conductor order from the snapshot and its geometry from the current record (c6 changes only these fields)
+        fields = ('positions', 'signals', 'grounds', 'unused', 'riders_in', 'riders_out', 'c6_circuits_needed')
+
+        def pre_c6(x):
+            if x['id'] not in saved:
+                return x
+            y = {k: v for k, v in x.items() if k not in fields}
+            y.update({k: saved[x['id']][k] for k in fields if k in saved[x['id']]})
+            return y
+        cls.original['links'] = [pre_c6(x) for x in cls.original['links']]
         cls.original.pop('c6', None)
         cls.inputs = le.load_inputs(ROOT / 'design/stack/link-electrical/inputs.json')
         cls.baseline = d62.build(cls.inputs)['baseline']

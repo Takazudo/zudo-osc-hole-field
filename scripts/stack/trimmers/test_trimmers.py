@@ -20,6 +20,14 @@ class CandidateChecks(unittest.TestCase):
     def test_recorded_candidate(self):
         self.assertEqual(check.validate(self.plan), [])
 
+    def test_counts_follow_the_gate(self):
+        # MC04-S10 Revision 1 (DS-148): 62 links and 455 gate rows after the four S10 holds
+        gate = json.loads((check.ROOT / check.gen.SOURCES[0]).read_text())
+        self.assertEqual(self.plan['source_counts'], {'replacement_footprints': len(gate['replacement']['footprints']),
+                                                      'link_count': len([x for x in gate['links'] if x['placed']]),
+                                                      'fixing_keepouts': len(gate['fixings']['keepouts'])})
+        self.assertEqual(self.plan['source_counts'], {'replacement_footprints': 455, 'link_count': 62, 'fixing_keepouts': 22})
+
     def test_missing_adjustment(self):
         p, r = self.changed()
         p['records'].remove(r)

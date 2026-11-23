@@ -58,7 +58,7 @@ class Record(unittest.TestCase):
                                                 'C68390 50 mm': 9, 'C81339 40 mm': 3})
         self.assertEqual(c['parts_with_leads_to_cut_per_board'], {'JL': 19, 'JR': 12, 'P': 49, 'O3': 1})  # MC04-S7 rev 13: JR-K-JR-L01's new slot
         self.assertEqual((c['connectors'], c['locks_before_K'], c['locks_after_K']), (124, 62, 62))
-        self.assertEqual((c['lengthened_tails'], c['holding_hand'], c['fastener_operations']), (31, 11, 44))  # JL-L02 held at its retained, lengthened slot (MC04-S7 rev 2)
+        self.assertEqual((c['lengthened_tails'], c['holding_hand'], c['fastener_operations']), (32, 11, 44))  # JL-L02 held at its retained, lengthened slot (MC04-S7 rev 2); MC04-S10: P-K-P-L13.01.02.01 now lengthened
 
     def test_smallest_slack_and_stages(self):
         self.assertAlmostEqual(min(r['slack_mm'] for r in DOC['links']), 0.6602)
@@ -81,8 +81,8 @@ class Record(unittest.TestCase):
         self.assertTrue(all(h['K_connector']['name'].startswith('the ') for h in DOC['holding_hand']))
 
     def test_latch_counts_and_the_31(self):
-        self.assertEqual(DOC['latch']['counts'], {'NOT SHOWN': 33, 'open': 26, 'open after the displacement': 3})  # MC04-S7 rev 11 (+ JL-K-JL-L09)
-        self.assertEqual(len(DOC['latch']['not_shown']), 33)
+        self.assertEqual(DOC['latch']['counts'], {'NOT SHOWN': 34, 'open': 24, 'open after the displacement': 4})  # MC04-S7 rev 11 (+ JL-K-JL-L09); MC04-S10: L13.01.01.02 NOT SHOWN, L13.01.01.01 open after the displacement
+        self.assertEqual(len(DOC['latch']['not_shown']), 34)
         self.assertTrue(all(n['neighbours'] for n in DOC['latch']['not_shown']))
 
     def test_service_counts(self):
@@ -109,7 +109,7 @@ class Record(unittest.TestCase):
         self.assertIn('screw length tolerance',source['remaining_unknowns'])
         self.assertIn('grip tolerance',source['remaining_unknowns'])
         self.assertEqual(DOC['screws']['working_figure']['status'],'ASSUMED')
-        self.assertEqual(DOC['counts']['latch']['NOT SHOWN'],33)
+        self.assertEqual(DOC['counts']['latch']['NOT SHOWN'],34)
         page=procedure_page.render(DOC)
         self.assertIn('2.4 +/- 0.25 mm (interval 2.15 to 2.65 mm)',page)
         self.assertIn('washer thickness stays UNSOURCED',page)
@@ -222,9 +222,9 @@ class PrimaryActuationMethod(unittest.TestCase):
         self.assertEqual(page.count('by hand only at the center of the actuator'), 3)
 
     def test_method_correction_is_not_access_acceptance(self):
-        self.assertEqual(DOC['counts']['latch']['NOT SHOWN'], 33)  # MC04-S7 Revision 11: + JL-K-JL-L09 (one more link, connector pair, latch and lengthened tail)
+        self.assertEqual(DOC['counts']['latch']['NOT SHOWN'], 34)  # MC04-S7 Revision 11: + JL-K-JL-L09 (one more link, connector pair, latch and lengthened tail); MC04-S10: + P-K-P-L13.01.01.02
         self.assertEqual(DOC['counts']['holding_hand'], 11)  # MC04-S7 rev 13: JR-K-JR-L01 takes another slot after the JR redo
-        self.assertEqual(DOC['lowering']['largest_ends'], 17)
+        self.assertEqual(DOC['lowering']['largest_ends'], 16)  # MC04-S10: the largest lowering stage goes from 17 to 16 ends
         self.assertEqual(len(DOC['lowering']['stages']), 9)
         self.assertEqual(DOC['counts']['links'], 62)
         self.assertEqual(DOC['counts']['connectors'], 124)

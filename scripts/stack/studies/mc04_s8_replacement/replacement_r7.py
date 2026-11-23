@@ -29,6 +29,7 @@ import replacement_a5 as a5  # noqa: E402
 from replacement import p2, r2  # noqa: E402
 
 OUT = Path(__file__).with_name('result-r7.json')
+OVERLAY = rp.ROOT / 'scripts/stack/studies/mc04_s10_l13/overlay.json'  # MC04-S10 Revision 1: block-rule overlay poses
 CONFIRMED_A2 = ('U4524', 'U1318', 'U4417')
 ACCEPTED_R8 = ('U4433', 'U4526')  # Revision 8 item 1: accepted beyond 24 mm unless a clock or RC timing node is found
 ACCEPTED_DS144 = ('U4433',)  # DS-144: its own interim exception (clock input accepted, with conditions)
@@ -155,7 +156,20 @@ class R7(a5.A5):
             if accepted(r):
                 self.done.append((r['board'], r['ic'], self.members[(r['board'], r['ic'])], self.fps[(r['board'], r['ic'])]['side'],
                                   r['cheapest_option']['pose'], [], []))
+        self.overlay_ics = set()
+        if self.snapshot is None and getattr(self, 'with_overlay', True) and OVERLAY.exists():
+            self.load_overlay(json.loads(OVERLAY.read_text()))
         return doc
+
+    def load_overlay(self, ov):
+        """MC04-S10 Revision 1 (DS-148): the overlay block poses of ICs whose gate pose breaks the block rule. Each block
+        and its displaced passives replace their gate rows (lifted from the field) and are placed like the done blocks."""
+        for e in ov['blocks']:
+            b, ic = e['board'], e['ic']
+            self.members[(b, ic)] = e['members']
+            self.base_extra |= {(b, m) for m in e['members']} | {(b, m['ref']) for m in e.get('passives_moved', [])}
+            self.done.append((b, ic, e['members'], self.fps[(b, ic)]['side'], e['pose'], e.get('passives_moved', []), []))
+            self.overlay_ics.add(ic)
 
     def evictable2(self, board, ref):
         # C5210 (Revision 3) is displaceable only in the U5210/U8409 joint search; R8263 only for U5209 (A4 mode)

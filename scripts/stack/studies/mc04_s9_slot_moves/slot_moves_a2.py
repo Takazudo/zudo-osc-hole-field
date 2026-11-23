@@ -55,7 +55,7 @@ def dist(a, b):
 class S9A2(sm.S9):
     def setup9(self):
         super().setup9()
-        self.trimmer_plan = {r['ref']: r for r in json.loads((sm.ROOT / TRIMMER_PLAN).read_text())['records'] if r.get('ref')}
+        self.trimmer_plan = {r['ref']: r for r in json.loads(sm.blob(TRIMMER_PLAN))['records'] if r.get('ref')}
 
     def evictable2(self, board, ref):
         # rule 1 in the S8 displacement: a part of an input-buffer cell is displaceable only if it is a decoupler (never
@@ -480,10 +480,10 @@ def strip(c):
 def build():
     t0 = time.time()
     pins, base = sm.input_pins()
-    pins[TRIMMER_PLAN] = sm.sha(sm.ROOT / TRIMMER_PLAN)
+    pins[TRIMMER_PLAN] = hashlib.sha256(sm.blob(TRIMMER_PLAN)).hexdigest()
     prior = {p: hashlib.sha256(sm.git_show(BASE_A, p)).hexdigest() for p in
              ('scripts/stack/studies/mc04_s9_slot_moves/slot_moves.py', 'scripts/stack/studies/mc04_s9_slot_moves/result.json')}
-    same_prior = all(prior[p] == sm.sha(sm.ROOT / p) for p in prior)
+    same_prior = all(prior[p] == hashlib.sha256(sm.blob(p)).hexdigest() for p in prior)
     s = S9A2()
     s.setup9()
     a1 = Arm1A2(s, t0)

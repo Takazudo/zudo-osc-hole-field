@@ -28,8 +28,20 @@ class LinkEraRecord(unittest.TestCase):
     def test_placed_and_open(self):
         placed = {r['ic'] for r in REC['placed']}
         opened = {r['ic'] for r in REC['open']}
-        self.assertEqual((len(placed), len(opened)), (10, 5))  # Revision 8: U4526 accepted; DS-144: U4433 its own exception
-        self.assertEqual(opened, {'U1415', 'U5110', 'U5209', 'U5210', 'U8409'})
+        # MC04-S10 (DS-148): U5209 and U5210 are no longer displaced; U4222, U4227 and U4537 take overlay block poses
+        self.assertEqual((len(placed), len(opened)), (13, 3))
+        self.assertEqual(opened, {'U1415', 'U5110', 'U8409'})
+        self.assertEqual({r['ic'] for r in REC['not_displaced_after_s10']}, {'U5209', 'U5210'})
+        overlay = {r['ic']: r for r in REC['placed'] if r['class'] == 'S10 block-rule overlay'}
+        self.assertEqual(set(overlay), {'U4222', 'U4227', 'U4537'})
+        for r in overlay.values():
+            self.assertNotEqual(r['pose']['origin'], r['gate_pose']['origin'])  # both poses shown
+            for d in r['decouplers_after']:
+                self.assertEqual(d['face'], r['pose']['face'])
+        ruled = REC['s10']['ruled_parts']
+        self.assertTrue(ruled['R5257']['meets'] and ruled['R5257']['distance_to_ic_mm'] <= 7.93 and ruled['R5257']['face'] == 'B')
+        self.assertEqual(ruled['R5259']['face'], 'B')
+        self.assertTrue(all(ruled[t]['rear'] for t in ('RV4503', 'RV8407', 'RV2310')))
         self.assertFalse(placed & opened)
         self.assertIn('U8409', opened)
         for r in REC['placed']:
@@ -47,7 +59,7 @@ class LinkEraRecord(unittest.TestCase):
             if o['ic'] != 'U8409':
                 self.assertIn('withdrawn_pose', o)
         far = {o['ic']: o.get('far_option_overlaps', []) for o in REC['open']}
-        self.assertIn('U8409', far['U5110'] + far['U5210'])
+        self.assertIn('U8409', far['U5110'])
 
     def test_u4433_is_its_own_exception(self):
         r = next(x for x in REC['placed'] if x['ic'] == 'U4433')
@@ -70,10 +82,10 @@ class LinkEraRecord(unittest.TestCase):
     def test_gate_a_status(self):
         doc = json.loads(ga.OUT.read_text())
         rows = [i for i in doc['items'] if i['kind'] == 'open re-placement (re-route)']
-        self.assertEqual(len(rows), 15)
-        self.assertEqual(sum(doc['re_placement_status'].values()), 15)
+        self.assertEqual(len(rows), 13)
+        self.assertEqual(sum(doc['re_placement_status'].values()), 13)
         resolved = {i['ref'] for i in rows if i['status'].startswith('RESOLVED FOR THE LINK ERA')}
-        self.assertEqual(resolved, {r['ic'] for r in REC['placed']})
+        self.assertEqual(resolved, {r['ic'] for r in REC['placed'] if r['class'] != 'S10 block-rule overlay'})
         opened = {i['ref'] for i in rows if i['status'].startswith('OPEN (link era)')}
         self.assertEqual(opened, {r['ic'] for r in REC['open']})
         self.assertTrue(all(i['model'] == REC['model'] for i in rows))

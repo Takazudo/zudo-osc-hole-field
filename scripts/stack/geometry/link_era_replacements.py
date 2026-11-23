@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
-"""MC04-S8 Revisions 5 to 8 and DS-144: the link-era re-placement record.
+"""MC04-S8 Revisions 5 to 8, DS-144 and MC04-S10 (DS-148): the link-era re-placement record.
 
 Writes design/stack/geometry/links/link-era-replacements.json from the S8 studies under
 scripts/stack/studies/mc04_s8_replacement: the ten confirmed poses (Parts A, A2 and A3) and, from the face-aware
 re-search of Revision 7 (result-r7.json), the blocks that went back to OPEN (link era) with their proof and cheapest
 option. These poses are a link-era record: searched in the link gate's model, applied only when the stack links
 replace the GH headers (Gate A); the interim GH boards do not change (board_conflicts.py). links_gate.py copies this
-record into link-gate.json. --check verifies it."""
+record into link-gate.json. --check verifies it.
+
+MC04-S10 Revision 1 (DS-148): the gate replacement rows are canonical; this record is an overlay. It keeps a block pose
+only for an IC the gate leaves without a position, an IC whose gate pose breaks the block rule (the overlay poses of
+scripts/stack/studies/mc04_s10_l13/overlay.json, with both poses shown), and the ruled parts. An IC the gate no longer
+displaces leaves the record."""
 from __future__ import annotations
 import argparse
 import hashlib
@@ -15,6 +20,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 STUDY = ROOT / 'scripts/stack/studies/mc04_s8_replacement'
+OVERLAY = ROOT / 'scripts/stack/studies/mc04_s10_l13/overlay.json'
+GATE = ROOT / 'design/stack/geometry/links/link-gate.json'
+DS148 = 'circuit/orchestration/campaigns/osc-stack-20261114/mc04-s10-l13-link-moves-generator-brief-20261122.md, Revision 1 (DS-148)'
 OUT = ROOT / 'design/stack/geometry/links/link-era-replacements.json'
 BRIEF = 'circuit/orchestration/campaigns/osc-stack-20261114/mc04-s8-open-replacement-native-brief-20261122.md'
 MODEL = ('link-era model (links_gate_part2.Field, GH headers dropped, gate-displaced parts at paper positions); '
@@ -155,6 +163,21 @@ def build():
             row['withdrawn_pose'] = {'source': previous['U5210'][0], 'pose': pose(previous['U5210'][1]),
                                      'why': 'other-face block members collide at that pose (member-faces check, Revision 6)'}
         open_rows.append(row)
+    ov = json.loads(OVERLAY.read_text())
+    gate_rows = {(r['board'], r['ref']): r for r in json.loads(GATE.read_text())['replacement']['footprints']}
+    open_now = {k for k, r in gate_rows.items() if r['new'] is None}
+    resolved = [{'board': o['board'], 'ic': o['ic'], 'status': 'NOT DISPLACED (MC04-S10): the held L13 link moves free it at its paper position',
+                 'ruling': DS148} for o in open_rows if (o['board'], o['ic']) not in open_now]
+    open_rows = [o for o in open_rows if (o['board'], o['ic']) in open_now]
+    rows = [r for r in rows if (r['board'], r['ic']) in open_now]
+    for e in ov['blocks']:
+        rows.append({'board': e['board'], 'ic': e['ic'], 'class': 'S10 block-rule overlay', 'pose': pose(e['pose']), 'block': e['members'],
+                     'blocks_moved': [], 'passives_moved': e['passives_moved'], 'gate_pose': e['gate_pose'],
+                     'reason': 'the gate pose breaks the block rule: %s' % '; '.join(
+                         '%s %s mm -> %s mm, face %s' % (d['ref'], d['distance_before_mm'], d['distance_after_mm'], d['face_after'])
+                         for d in e['reason'] if d['other_face_after'] or d['farther']),
+                     'decouplers_after': e['decouplers_after'], 'timing_nodes': e['timing_nodes'], 'electrical': e['electrical'],
+                     'source': 'scripts/stack/studies/mc04_s10_l13/overlay.json', 'ruling': DS148})
     mfd = read('member-faces.json')
     faces = {(x['board'], x['ic']): x for x in mfd['blocks']}
     for row in rows:
@@ -172,13 +195,17 @@ def build():
             if m['ref'] == 'C5210':
                 m['note'] = 'F to B flip adds a via on /W1/AC_NODE, which the HPWL run metric does not count'
     return {'schema_version': 1, 'model': MODEL,
-            'status': 'LINK-ERA RE-PLACEMENT RECORD (MC04-S8 Revisions 5 to 7): placed poses are resolved for the link era, pending '
-                      'application when the stack links replace the GH headers; the interim boards do not change',
+            'status': 'LINK-ERA RE-PLACEMENT RECORD (MC04-S8 Revisions 5 to 8, MC04-S10 overlay): placed poses are resolved for the link '
+                      'era, pending application when the stack links replace the GH headers; the interim boards do not change',
             'generator': 'scripts/stack/geometry/link_era_replacements.py',
             'sources': {('scripts/stack/studies/mc04_s8_replacement/' + n): hashlib.sha256((STUDY / n).read_bytes()).hexdigest() for n in SOURCES},
             'evidence_interim_boards': 'scripts/stack/studies/mc04_s8_replacement/board_conflicts.py (--check): the poses overlap GH headers '
                                        'that exist on the interim boards',
-            'placed': rows, 'open': open_rows}
+            'overlay_source': {'scripts/stack/studies/mc04_s10_l13/overlay.json': hashlib.sha256(OVERLAY.read_bytes()).hexdigest()},
+            'placed': rows, 'open': open_rows, 'not_displaced_after_s10': resolved,
+            's10': {'row_changes': ov['row_changes']['counts'], 'face_changes': ov['face_changes'], 'ruled_parts': ov['ruled_parts'],
+                    'knock_on_block_rule': [r for r in ov['block_rule'] if r['pose'].startswith('knock-on')],
+                    'gate_rows_canonical': 'every displaced footprint not in an overlay block takes its gate row (link-gate.json replacement)'}}
 
 
 def main():

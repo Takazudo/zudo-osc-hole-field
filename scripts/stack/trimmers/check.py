@@ -25,7 +25,7 @@ def validate(plan):
             errors.append('stale source: ' + path)
     if plan.get('canonical_geometry_digest') != sg.canonical_digest(sg.canonical_inputs(raw, boards)):
         errors.append('stale canonical geometry')
-    if plan.get('source_counts') != {'replacement_footprints': 438, 'link_count': 61,
+    if plan.get('source_counts') != {'replacement_footprints': 455, 'link_count': 62,  # MC04-S10 Revision 1 (DS-148)
                                       'fixing_keepouts': 22}:
         errors.append('source count changed')
     transformed = gen.transformed_inventory(boards, gate)

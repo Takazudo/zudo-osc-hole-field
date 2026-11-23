@@ -30,12 +30,27 @@ def link(**kw):
 class Holds(unittest.TestCase):
     def test_the_retained_hold_is_the_ruled_one(self):
         holds = lg.slot_holds(GOPTS)
-        self.assertEqual(len(holds), 1)
+        self.assertEqual(len(holds), 5)  # MC04-S7 Revision 2 and the four MC04-S10 holds (DS-147, DS-148)
         h = holds[0]
         self.assertEqual((h['link'], h['front_board'], h['centre'], h['slot_centre'], h['direction']),
                          ('JL-K-JL-L02', 'JL', [133.5, 80.0], [121.5, 80.0], '+x'))
         self.assertIn('Revision 2', h['ruling'])
         self.assertTrue(h['reason'])
+
+    def test_the_s10_holds_are_the_ruled_poses(self):
+        held = {h['link']: (h['slot_centre'], h['direction']) for h in lg.slot_holds(GOPTS)[1:]}
+        self.assertEqual(held, {'P-K-P-L13.01.01.01': ([201.1667, 197.4167], '+y'),
+                                'P-K-P-L13.01.01.02': ([176.0, 196.25], '-y'),
+                                'P-K-P-L13.01.02.01': ([159.0, 193.0], '-y'),
+                                'P-K-P-L15.02.01.01': ([193.0, 213.0], '+y')})  # L15.02.01.01 at its recorded pose
+        for h in lg.slot_holds(GOPTS)[1:]:
+            self.assertIn('DS-148', h['ruling'])
+            self.assertTrue(h['reason'] and h['evidence'])
+        gate = json.loads(lg.LINK_GATE.read_text())
+        by = {x['id']: x for x in gate['links']}
+        for lid, (slot, d) in held.items():
+            self.assertEqual((by[lid]['slot_centre'], by[lid]['direction']), (slot, d), lid)
+        self.assertEqual(lg.hold_errors(GOPTS, gate['links']), [])
 
     def test_a_hold_needs_its_reason_and_ruling(self):
         for key in ('reason', 'ruling', 'slot_centre'):

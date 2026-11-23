@@ -15,7 +15,8 @@ class Study(unittest.TestCase):
         self.assertEqual(json.dumps(rp.build(), indent=1) + '\n', rp.OUT.read_text())
 
     def test_covers_the_fifteen_open_replacements(self):
-        items = [i for i in json.loads((rp.ROOT / 'design/stack/gate-a-open-items.json').read_text())['items']
+        # the Gate A list of the study's snapshot (MC04-S10: the current list no longer holds U5209 and U5210)
+        items = [i for i in json.loads((rp.snapshot_root() / 'design/stack/gate-a-open-items.json').read_text())['items']
                  if i['kind'] == 'open re-placement (re-route)']
         self.assertEqual([(r['board'], r['ic']) for r in DOC['ics']], [(i['board'], i['ref']) for i in items])
         self.assertEqual(len(DOC['ics']), 15)

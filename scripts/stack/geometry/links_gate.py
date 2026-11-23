@@ -925,10 +925,20 @@ def slot_holds(gopts):
 
 
 def held_slot(ctx, front, centre):
-    for h in slot_holds(ctx.gopts):
+    for h in slot_holds(getattr(ctx, 'gopts', None) or {}):
         if h['front_board'] == front and abs(h['centre'][0] - centre[0]) < 1e-6 and abs(h['centre'][1] - centre[1]) < 1e-6:
             return h
     return None
+
+
+def held_grid(ctx, centre, hold):
+    """The coarsest retained search grid (2.0 mm, then the refinement grids) that holds a held slot's offset from the
+    link's search centre (MC04-S10 Revision 1: the S10 holds come from studies on the 0.5 and 0.25 mm grids)."""
+    off = [hold['slot_centre'][i] - centre[i] for i in (0, 1)]
+    for g in [ctx.step0] + list(val(ctx.gopts['refinement']['grids_mm'])):
+        if all(abs(o / g - round(o / g)) <= 1e-3 for o in off):
+            return g
+    raise ValueError('slot hold %s lies on none of the retained search grids' % hold['link'])
 
 
 def hold_errors(gopts, links_out):
@@ -1030,6 +1040,9 @@ def place(ctx, placed, rec, size, centre, own, offsets=None, grid=None, best=Non
     if best is None:
         return False, tally
     _, _, geo, disp, d, (sx, sy), dist = best
+    hold = held_slot(ctx, rec['front_board'], centre)
+    if hold:
+        grid = held_grid(ctx, centre, hold)  # MC04-S10 Revision 1: a held link records the grid its held slot lies on
     lengthened = geo['front_extension_mm'] > 0 or geo['K_extension_mm'] > 0
     only = False
     if lengthened:
