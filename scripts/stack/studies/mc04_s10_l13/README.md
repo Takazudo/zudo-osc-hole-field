@@ -37,7 +37,7 @@ The pins in `links_gate_c6.py` (geometry, output) are rebound to those values.
 
 ## The overlay
 
-The gate replacement rows are canonical. `overlay.py` derives where the link-era record overlays a block pose, and
+For diagnostic replay, `overlay.py` compares the frozen effective scene with the gate and proposed block poses. It
 writes `overlay.json`:
 1. ICs the gate leaves without a position. These are the ten link-era poses, re-checked in the new Field by
    `../mc04_s8_replacement/member_faces.py`, and U1415, U5110 and U8409, which stay open.
@@ -49,11 +49,13 @@ writes `overlay.json`:
 `overlay.json` also holds:
 - the row-change table (18 removed, 21 new, 15 shifted), with face, distance and step;
 - the face changes, with their nets;
-- the recomputed figures of `locality-acceptances.json`;
+- the comparison of retained locality evidence with independent geometry;
 - the sensitive-net and ruled-part stops.
 
-`replacement_r7.R7.load_overlay` places the overlay blocks in the current-record checks (`member_faces.py`,
-`board_conflicts.py`). `link_era_replacements.py` writes them into the record with both poses.
+The diagnostic lists all 16 effective face changes. R4238 remains on B but its overlay-only
+movement triggers the /E2/REF9_FB stop. The three S10 block poses are withheld from the
+placement record. Gate A retains the disposition. A successful diagnostic replay reproduces
+the returned candidate and its reasons.
 
 ## The S8 and S9 studies
 
