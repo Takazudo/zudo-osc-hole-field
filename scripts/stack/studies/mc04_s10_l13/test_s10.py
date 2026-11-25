@@ -1,4 +1,5 @@
 """MC04-S10 Revision 1 (DS-148): the four holds, the c6 rebind check, the overlay rules and the rejected candidate diagnostic (no KiCad)."""
+import copy
 import json
 import subprocess
 import sys
@@ -117,6 +118,39 @@ class Overlay(unittest.TestCase):
         for field in ('pre_move_pose', 'pose'):
             record[field][0] += 1.0
         self.assertFalse(ov.locality(record, source, effective)['matches_sources'])
+
+    def test_nested_metrics_distinguish_inherited_and_candidate_geometry(self):
+        rows = {r['ref']: r for r in OV['acceptance_figures']}
+        hold = rows['U4526']['ancillary_geometry']['/E5/HOLD_N.capacitance_estimate_pF']
+        self.assertEqual((hold['recorded'], hold['pre_s10_effective'], hold['recomputed']), (25.01, 25.01, 30.1))
+        w2 = rows['U5112']['ancillary_geometry']['/W2/C8df94f_SENSE.routed_estimate_mm']
+        self.assertEqual((w2['recorded'], w2['pre_s10_effective'], w2['recomputed']), (106.2, 118.3, 118.3))
+        diode = rows['D4101']['ancillary_geometry']
+        self.assertTrue(diode['diode_to_gh_contact_mm.pose (interim board)']['matches'])
+        self.assertAlmostEqual(diode['diode_to_protected_pin_mm.pose']['recomputed'], 38.15)
+
+    def test_locality_inventory_and_ancillary_values_are_frozen(self):
+        accepted = ov.pinned(ov.BASE, 'design/partition/locality-acceptances.json')
+        for mutation in ('deleted', 'duplicate', 'changed distance', 'missing condition'):
+            with self.subTest(mutation=mutation):
+                doc = copy.deepcopy(accepted)
+                records = doc['acceptances']
+                if mutation == 'deleted':
+                    records.pop()
+                elif mutation == 'duplicate':
+                    records.append(records[0])
+                elif mutation == 'changed distance':
+                    row = next(x for x in records if 'led' in x)
+                    row['led']['distance_after_mm'] += 0.1
+                else:
+                    next(x for x in records if 'conditions' in x)['conditions'].pop()
+                with self.assertRaisesRegex(ValueError, 'complete accepted record'):
+                    ov.verify_locality_inventory(doc, accepted)
+
+    def test_diagnostic_courtyards_use_the_combined_candidate(self):
+        self.assertEqual(len(OV['blocks']), 3)
+        for block in OV['blocks']:
+            self.assertTrue(block['candidate_courtyard_check']['clear'], block)
 
     def test_protected_nodes_are_independent_of_owner(self):
         s = ov.OV.__new__(ov.OV)  # the stop rule itself, on a fixed example

@@ -24,25 +24,19 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 S8 = ROOT / 'scripts/stack/studies/mc04_s8_replacement'
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(S8))
 import replacement as rp  # noqa: E402
 import replacement_r7 as r7  # noqa: E402
-from replacement import p2, r2  # noqa: E402
 
 OUT = HERE / 'overlay.json'
-GATE = 'design/stack/geometry/links/link-gate.json'
 RULED = {'R5257': ('U5210', 7.93), 'R5259': ('U5210', None)}
 REAR = ('RV4503', 'RV8407', 'RV2310')
 STOP_SUFFIX = ('_FB', '_SUM', '_SENSE')
 
 
 class OV(r7.R7):
-    snapshot = None       # the current gate record
-    with_overlay = False  # this generator writes the overlay
-
-
-def rows_of(gate):
-    return {(r['board'], r['ref']): r for r in gate['replacement']['footprints']}
+    snapshot = None  # current gate
 
 
 def where(s, rows, key):
@@ -123,13 +117,158 @@ def locality(record, original, scene):
     actual = [*pos, face + '.Cu'] if pos is not None else None
     measured = dist(initial, pos) if pos is not None else None
     def matches(a, b):
-        # Gate records serialize XY to 0.01 mm. Ignore floating-point representation noise only.
+        # Ignore only floating-point representation noise when comparing coordinates.
         return a is not None and b is not None and a[2] == b[2] and math.dist(a[:2], b[:2]) < 1e-9
     valid = (matches(initial, record.get('pre_move_pose')) and matches(actual, record.get('pose'))
              and measured == record.get('distance_mm'))
     return {'baseline_pose': initial, 'effective_pose': actual, 'effective_source': source,
             'distance_mm_recorded': record.get('distance_mm'), 'distance_mm_recomputed': measured,
             'matches_sources': valid}
+
+
+def verify_locality_inventory(current, accepted):
+    """The frozen contract covers every row, its identity, figures and applicability conditions."""
+    if current != accepted:
+        raise ValueError(f'locality-acceptances.json differs from the complete accepted record at {BASE}')
+
+
+def candidate_clearance(s, blocks, stop):
+    from member_faces import block_rects, part_rect
+    lifted = {(e['board'], ref) for e in blocks for ref in e['members']}
+    lifted.update((e['board'], m['ref']) for e in blocks for m in e['passives_moved'])
+    field = s.build_field(extra=lifted)
+    for e in blocks:
+        if not e['pose']:
+            continue
+        b, ic = e['board'], e['ic']
+        blocked = []
+        rects = block_rects(s, b, ic, e['members'], s.fps[b, ic]['side'], e['pose'])
+        # A rigid block's own members form one unit. Check it against the field
+        # before adding any member. Subsequent blocks and passives see it.
+        for ref, face, rect in rects:
+            why = field.blocked(b, face, rect, [])
+            if why:
+                blocked.append({'ref': ref, 'by': why})
+        for ref, face, rect in rects:
+            field.add(b, face, rect, [], ref)
+        for m in e['passives_moved']:
+            rect = part_rect(s, b, m)
+            why = field.blocked(b, m['face'], rect, [])
+            if why:
+                blocked.append({'ref': m['ref'], 'by': why})
+            field.add(b, m['face'], rect, [], m['ref'])
+        e['candidate_courtyard_check'] = {'clear': not blocked, 'conflicts': blocked}
+        if blocked:
+            stop.append(f'candidate courtyard conflict in block {ic}')
+
+
+def effective_turns(rows, placements):
+    rotations = {k: 90 for k, r in rows.items() if r['turned']}
+    for e in placements:
+        if e['pose']:
+            rotations.update({(e['board'], ref): e['pose']['turn_deg'] for ref in e.get('members') or e['block']})
+        for nested in e.get('blocks_moved', []):
+            rotations.update({(e['board'], ref): nested['turn_deg'] for ref in nested['members']})
+        for passive in e['passives_moved']:
+            rotations[e['board'], passive['ref']] = 0
+    return rotations
+
+
+def ancillary_geometry(s, record, scene, original, rotations, paper_fps):
+    """Estimate lengths in the same units and precision as the accepted source."""
+    from replacement_a2 import rot_pt
+    from scripts.stack.studies.mc04_s7_r4.buffer_runs import pin_xy, ROUTE_FACTOR, PF_PER_MM
+    b, ic = record['board'], record['ref']
+    key = b, ic
+    results = {}
+    unavailable = {}
+    original_by_ref = {ref: p for (_, ref), p in original.items()}
+    lock = {p['uid']: p for p in s.inp['raw']['lock']['placements']}
+
+    def check(label, expected, observed):
+        results[label] = {'recorded': expected, 'recomputed': observed, 'matches': expected == observed}
+
+    def current_pad(ref, pin):
+        fp = s.fps[b, ref]
+        pos, face, _ = scene[b, ref]
+        if pos is None:
+            return None
+        xy = next(p['center'] for p in fp['pads'] if p['number'] == pin)
+        dx, dy = xy[0] - fp['origin'][0], xy[1] - fp['origin'][1]
+        if face != fp['side']:
+            dx = -dx
+        dx, dy = rot_pt((dx, dy), (0, 0), rotations.get((b, ref), 0))
+        return pos[0] + dx, pos[1] + dy
+
+    for run in record.get('input_runs', []):
+        n = run['net']
+        if 'input_passives_to_buffer_mm' not in run:
+            continue
+        pins = sorted((ref, pin) for ref in s.net_refs[n] for pin, net in s.pins[ref].items() if net == n)
+        old = [pin_xy(ref, pin, original_by_ref, s.pk, lock) for ref, pin in pins]
+        now = {(ref, pin): current_pad(ref, pin) for ref, pin in pins}
+        if None in now.values() or None in old:
+            unavailable[n] = 'required net pin has no effective or reference pose'
+            continue
+        old_run, new_run = ROUTE_FACTOR * s.hpwl(old), ROUTE_FACTOR * s.hpwl(list(now.values()))
+        check(n + '.routed_estimate_mm', run['routed_estimate_mm'], round(new_run, 1))
+        check(n + '.capacitance_estimate_pF', run['capacitance_estimate_pF'], round(new_run * PF_PER_MM, 1))
+        check(n + '.pre_move_capacitance_estimate_pF', run['pre_move_capacitance_estimate_pF'], round(old_run * PF_PER_MM, 1))
+        input_pin = next(xy for (ref, _), xy in now.items() if ref == ic)
+        distances = {ref: round(math.dist(input_pin, xy), 1) for (ref, _), xy in now.items() if ref != ic}
+        check(n + '.input_passives_to_buffer_mm', run['input_passives_to_buffer_mm'], distances)
+
+    # The S8 study used footprint origins on each net, not pin centres.
+    runs = list(record.get('grown_nets', [])) + [r for r in record.get('input_runs', []) if 'added_run_estimate_mm' in r]
+    if 'output_run' in record:
+        runs.append(record['output_run'])
+    for run in runs:
+        n = run['net']
+        refs = sorted(r for r in s.net_refs[n] if (b, r) in scene)
+        pts = [scene[b, r][0] for r in refs]
+        if None in pts:
+            unavailable[n] = 'net includes footprint without a candidate position'
+            continue
+        old_hp = s.hpwl([paper_fps[b, r]['origin'] for r in refs])
+        length = ROUTE_FACTOR * s.hpwl(pts)
+        check(n + '.added_run_estimate_mm', run['added_run_estimate_mm'], round(length - ROUTE_FACTOR * old_hp, 2))
+        if 'routed_estimate_mm' in run:
+            check(n + '.routed_estimate_mm', run['routed_estimate_mm'], round(length, 2))
+        if 'capacitance_estimate_pF' in run:
+            check(n + '.capacitance_estimate_pF', run['capacitance_estimate_pF'], round(length * PF_PER_MM, 2))
+    if 'led' in record:
+        led = record['led']
+        actual = next(x for x in s.leds(b, ic, {'origin': scene[key][0]}) if x['led'] == led['ref'])
+        for field in ('distance_before_mm', 'distance_after_mm'):
+            check('led.' + field, led[field], actual[field])
+    if 'also_moves' in record:
+        nested = record['also_moves']
+        for ref, expected in [(nested['block'], nested), *((m['ref'], m) for m in nested['passives'])]:
+            pos, face, _ = scene[b, ref]
+            check(ref + '.moved_mm', expected['moved_mm'], dist(paper_fps[b, ref]['origin'], pos))
+            check(ref + '.face', expected['face'].split('.')[0], face)
+            if 'origin' in expected:
+                check(ref + '.origin', expected['origin'], pos)
+            if 'turn_deg' in expected:
+                check(ref + '.turn_deg', expected['turn_deg'], rotations.get((b, ref), 0))
+    if 'diode_to_protected_pin_mm' in record:
+        ref, _, pin = record['protected_pin'].split()[:3]
+        pin = pin.rstrip(',')
+        old_diode = pin_xy(ic, '3', original_by_ref, s.pk, lock)
+        old_buffer = pin_xy(ref, pin, original_by_ref, s.pk, lock)
+        check('diode_to_protected_pin_mm.slot', record['diode_to_protected_pin_mm']['slot'], dist(old_diode, old_buffer))
+        check('diode_to_protected_pin_mm.pose', record['diode_to_protected_pin_mm']['pose'], dist(current_pad(ic, '3'), current_pad(ref, pin)))
+        name, _, pin = record['guarded_gh_contact']['contact'].split()
+        connector = next(c for c in s.inp['ci']['partition']['connectors'] if c['id'] == name)
+        header = paper_fps[b, connector['pcb_reference']]
+        gh = next(p['center'] for p in header['pads'] if p['number'] == pin)
+        check('diode_to_gh_contact_mm.slot (interim board)', record['diode_to_gh_contact_mm']['slot'], dist(old_diode, gh))
+        board_diode = next(p['center'] for p in paper_fps[key]['pads'] if p['number'] == '3')
+        check('diode_to_gh_contact_mm.pose (interim board)', record['diode_to_gh_contact_mm']['pose'], dist(board_diode, gh))
+
+    if 'turn_deg' in record:
+        check('turn_deg', record['turn_deg'], rotations.get(key, 0))
+    return results, unavailable
 
 
 class Frozen(OV):
@@ -141,6 +280,7 @@ def build():
     s.prepare()
     s.load_done()
     frozen = Frozen()
+    frozen.prepare()
     ra, rb = frozen.rows, s.rows
     retained = pinned(BASE, 'design/stack/geometry/links/link-era-replacements.json')['placed']
     before = effective_scene(frozen, ra, retained)
@@ -230,6 +370,9 @@ def build():
     # S10 keeps the ten accepted S8 poses. Only unresolved gate rows may inherit them.
     current_retained = [e for e in retained if (e['board'], e['ic']) in rb and rb[e['board'], e['ic']]['new'] is None]
     after = effective_scene(s, rb, current_retained + blocks)
+    candidate_clearance(s, blocks, stop)
+    rotations = effective_turns(rb, current_retained + blocks)
+    baseline_turns = effective_turns(ra, retained)
     changes = movement(s, before, after)
     overlay_refs = {(e['board'], m) for e in blocks for m in e['members']}
     overlay_refs.update((e['board'], m['ref']) for e in blocks for m in e['passives_moved'])
@@ -261,7 +404,10 @@ def build():
     studies = {r['ic']: r for r in pinned(BASE, 'scripts/stack/studies/mc04_s7_a0/blocks-function.json')['local_replacement']}
     changed = {(r['board'], r['ref']) for r in changes}
     figures = []
-    for x in json.loads((ROOT / 'design/partition/locality-acceptances.json').read_text())['acceptances']:
+    acceptance_path = 'design/partition/locality-acceptances.json'
+    current = json.loads((ROOT / acceptance_path).read_text())
+    verify_locality_inventory(current, pinned(BASE, acceptance_path))
+    for x in current['acceptances']:
         if 'ref' not in x:
             continue
         b = x.get('board', 'K')
@@ -280,6 +426,18 @@ def build():
             row['pre_s10_effective_pose'] = locality(x, original, before)['effective_pose']
         if not row['matches_sources']:
             stop.append(f"locality evidence for {x['ref']} differs from independent geometry")
+        figures_checked, unavailable = ancillary_geometry(s, x, after, original, rotations, frozen.fps)
+        baseline_figures, _ = ancillary_geometry(frozen, x, before, original, baseline_turns, frozen.fps)
+        for label, value in figures_checked.items():
+            value['pre_s10_effective'] = baseline_figures[label]['recomputed'] if label in baseline_figures else None
+        row['ancillary_geometry'] = figures_checked
+        row['not_run'] = unavailable
+        if 'diode_to_gh_contact_mm' in x:
+            row['scope_note'] = 'GH distances recomputed only for the interim board. The link scene omits the GH header.'
+        if any(not v['matches'] for v in figures_checked.values()):
+            stop.append(f"ancillary locality figures for {x['ref']} differ from effective geometry")
+        if unavailable:
+            stop.append(f"ancillary locality verification incomplete for {x['ref']}")
         if hit:
             stop.append('acceptance %s names parts in changed rows: %s' % (x['ref'], ', '.join(hit)))
         figures.append(row)
