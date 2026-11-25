@@ -1643,7 +1643,6 @@ def generate(root=sg.ROOT):
     re-placement search (links_gate_part2); the tests regenerate all of it."""
     import links_gate_part2 as p2
     import link_era_replacements as ler
-    era = ler.checked_record(LINK_ERA) if LINK_ERA.exists() else None
     inp = load_inputs(root)
     sites, model, ctx, out, s1, _ = gate_run(inp, {})
     rg = inp['gopts']['refinement']
@@ -1653,8 +1652,8 @@ def generate(root=sg.ROOT):
     s, refs = summarise(ctx, out)
     hashes = input_hashes(inp)
     hashes.update(p2.part2_hashes(inp))
-    if LINK_ERA.exists():
-        hashes[str(LINK_ERA.relative_to(sg.ROOT))] = sg.sha256_file(LINK_ERA)
+    era = ler.checked_record(LINK_ERA, part2['replacement'])
+    hashes[str(LINK_ERA.relative_to(sg.ROOT))] = sg.sha256_file(LINK_ERA)
     doc = {'provenance': {'generator': 'scripts/stack/geometry/links_gate.py', 'regenerate': REGEN,
                            'input_sha256': hashes},
             'schema_version': 3,

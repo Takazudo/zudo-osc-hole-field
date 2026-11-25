@@ -93,7 +93,7 @@ def build():
         items.append({'id': 'GA-FIX-%s-%s' % (header, fixing), 'kind': 'header/fixing conflict', 'header': header, 'fixing': fixing,
                       'source': 'scripts/checks/connector_packing35.py KNOWN_FIXING_CONFLICTS', 'ruling': RULINGS + ', Revision 8'})
     from scripts.stack.geometry.link_era_replacements import checked_record
-    era = checked_record(ROOT / LINK_ERA) if (ROOT / LINK_ERA).exists() else {'placed': [], 'open': [], 'model': None}
+    era = checked_record(ROOT / LINK_ERA, gate['replacement']['footprints'])
     era_placed = {(x['board'], x['ic']): x for x in era['placed']}
     era_open = {(x['board'], x['ic']): x for x in era['open']}
     for r in gate['replacement']['footprints']:

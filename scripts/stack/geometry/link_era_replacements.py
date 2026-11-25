@@ -63,7 +63,7 @@ def ds144_checks(ic, members):
             'pass': bool(mf and mf['all_clear']) and not other}
 
 
-def build():
+def build(footprints=None):
     a, a2, a3, a4, a5, r7 = (read(n) for n in SOURCES[:6])
     PASSIVE_OVERLAP = tuple(r7['withdrawn_for_passive_overlap'])  # derived by the check in replacement_r7.py
     CONFIRMED_A = tuple(ic for ic in r7['confirmed_first'] if ic in {x['ic'] for x in a['ics']} and ic not in
@@ -164,7 +164,9 @@ def build():
     ov = json.loads(OVERLAY.read_text())
     if ov.get('disposition') != ('STOP' if ov['stop'] else 'REVIEW_REQUIRED'):
         raise ValueError('S10 diagnostic has an unknown or inconsistent disposition')
-    gate_rows = {(r['board'], r['ref']): r for r in json.loads(GATE.read_text())['replacement']['footprints']}
+    if footprints is None:
+        footprints = json.loads(GATE.read_text())['replacement']['footprints']
+    gate_rows = {(r['board'], r['ref']): r for r in footprints}
     open_now = {k for k, r in gate_rows.items() if r['new'] is None}
     resolved = [{'board': o['board'], 'ic': o['ic'], 'status': 'At paper position in the S10 candidate gate',
                  'ruling': DS148} for o in open_rows if (o['board'], o['ic']) not in open_now]
@@ -186,6 +188,9 @@ def build():
         for m in row['passives_moved']:
             if m['ref'] == 'C5210':
                 m['note'] = 'F to B flip adds a via on /W1/AC_NODE, which the HPWL run metric does not count'
+    recorded = {(r['board'], r['ic']) for r in rows + open_rows}
+    if recorded != open_now:
+        raise ValueError(f'Unaccounted open gate rows: {sorted(open_now ^ recorded)}')
     return {'schema_version': 1, 'model': MODEL,
             'status': 'S8 link-era placements checked against the S10 candidate gate. S10 overlay poses are withheld pending independent acceptance.',
             'generator': 'scripts/stack/geometry/link_era_replacements.py',
@@ -200,10 +205,10 @@ def build():
                     'knock_on_block_rule': [r for r in ov['block_rule'] if r['pose'].startswith('knock-on')]}}
 
 
-def checked_record(path):
+def checked_record(path, footprints):
     """Validate before embedding placements in the gate or resolving a Gate A item from them."""
     record = json.loads(path.read_text())
-    if record != build():
+    if record != build(footprints):
         raise ValueError('Stale or unapproved placement in link-era-replacements.json')
     return record
 

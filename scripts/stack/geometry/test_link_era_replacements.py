@@ -82,7 +82,15 @@ class LinkEraRecord(unittest.TestCase):
             path = Path(tmp) / 'link-era-replacements.json'
             path.write_text(json.dumps(record))
             with self.assertRaisesRegex(ValueError, 'unapproved placement'):
-                ler.checked_record(path)
+                ler.checked_record(path, json.loads(lg.LINK_GATE.read_text())['replacement']['footprints'])
+
+    def test_missing_era_and_changed_gate_scene_fail_closed(self):
+        rows = json.loads(lg.LINK_GATE.read_text())['replacement']['footprints']
+        with tempfile.TemporaryDirectory() as tmp, self.assertRaises(FileNotFoundError):
+            ler.checked_record(Path(tmp) / 'missing.json', rows)
+        new_open = dict(rows[0], ref='U_NEW', new=None)
+        with self.assertRaisesRegex(ValueError, 'Unaccounted open gate rows'):
+            ler.checked_record(ler.OUT, rows + [new_open])
 
     def test_gate_record_carries_it(self):
         gate = json.loads(lg.LINK_GATE.read_text())
