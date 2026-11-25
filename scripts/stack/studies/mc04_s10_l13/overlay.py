@@ -63,20 +63,87 @@ def buffer_stop(s, key):
     ref = key[1]
     if ref.startswith('U') and ref in s.buffer_ics:
         return 'input-buffer IC'
-    if s.owner.get(key) in s.buffer_ics or ref in s.buffer_ics:
-        nets = [n for n in s.pins.get(ref, {}).values() if n and n.endswith(STOP_SUFFIX)]
-        if nets:
-            return 'input-buffer part on %s' % ', '.join(sorted(nets))
+    nets = sorted({n for n in s.pins.get(ref, {}).values() if n and n.endswith(STOP_SUFFIX)})
+    if nets:
+        return 'part on %s' % ', '.join(nets)
     return None
+
+
+BASE = '6e5716e7fc011e2f028982f645d18b8d802acb29'
+PAPER = '6093081cc6d1fcbfc4e134e4dfa1861a3de39836'
+
+
+def pinned(rev, path):
+    return json.loads(subprocess.check_output(['git', '-C', str(ROOT), 'show', f'{rev}:{path}']))
+
+
+def effective_scene(s, rows, placements):
+    """Resolve paper, gate, and retained block/passive placements in precedence order."""
+    scene = {k: (fp['origin'], fp['side'], 'paper') for k, fp in s.fps.items()}
+    for k, row in rows.items():
+        scene[k] = (row['new'], row['new_face'], 'gate row')
+
+    def place(b, ic, members, pose):
+        if not pose:
+            return
+        for ref in members:
+            same = s.fps[(b, ref)]['side'] == s.fps[(b, ic)]['side']
+            face = pose['face'] if same else {'F': 'B', 'B': 'F'}[pose['face']]
+            scene[b, ref] = (list(s.new_origin(b, ic, ref, pose)), face, f'{ic} block')
+
+    for e in placements:
+        b = e['board']
+        place(b, e['ic'], e.get('members') or e['block'], e['pose'])
+        for block in e.get('blocks_moved', []):
+            place(b, block['ic'], block['members'], block)
+        for m in e['passives_moved']:
+            scene[b, m['ref']] = (m['origin'], m['face'], f"{e['ic']} displaced passive")
+    return scene
+
+
+def movement(s, before, after):
+    ledger = []
+    for (board, ref), (new, face, source) in sorted(after.items()):
+        old, old_face, old_source = before[board, ref]
+        if old == new and face == old_face:
+            continue
+        ledger.append({'board': board, 'ref': ref, 'before': old, 'after': new,
+                       'from': old_face, 'to': face, 'before_source': old_source, 'after_source': source,
+                       'distance_mm': dist(old, new) if old is not None and new is not None else None,
+                       'nets': sorted({n for n in s.pins.get(ref, {}).values() if n})})
+    return ledger
+
+
+def locality(record, original, scene):
+    ref = record['ref']
+    b = record['board']
+    start = original[b, ref]
+    pos, face, source = scene[b, ref]
+    initial = [start['x_mm'], start['y_mm'], start['side']]
+    actual = [*pos, face + '.Cu'] if pos is not None else None
+    measured = dist(initial, pos) if pos is not None else None
+    def matches(a, b):
+        # Gate records serialize XY to 0.01 mm. Ignore floating-point representation noise only.
+        return a is not None and b is not None and a[2] == b[2] and math.dist(a[:2], b[:2]) < 1e-9
+    valid = (matches(initial, record.get('pre_move_pose')) and matches(actual, record.get('pose'))
+             and measured == record.get('distance_mm'))
+    return {'baseline_pose': initial, 'effective_pose': actual, 'effective_source': source,
+            'distance_mm_recorded': record.get('distance_mm'), 'distance_mm_recomputed': measured,
+            'matches_sources': valid}
+
+
+class Frozen(OV):
+    snapshot = BASE
 
 
 def build():
     s = OV()
     s.prepare()
     s.load_done()
-    base = json.loads(subprocess.run(['git', '-C', str(ROOT), 'show', '%s:%s' % (rp.SNAPSHOT, GATE)],
-                                     capture_output=True, check=True, text=True).stdout)
-    ra, rb = rows_of(base), s.rows
+    frozen = Frozen()
+    ra, rb = frozen.rows, s.rows
+    retained = pinned(BASE, 'design/stack/geometry/links/link-era-replacements.json')['placed']
+    before = effective_scene(frozen, ra, retained)
     removed, new = sorted(set(ra) - set(rb)), sorted(set(rb) - set(ra))
     shifted = sorted(k for k in set(ra) & set(rb) if (ra[k]['new'], ra[k]['new_face']) != (rb[k]['new'], rb[k]['new_face']))
     stop = []
@@ -88,13 +155,9 @@ def build():
             out['before'] = {'face': ra[k]['new_face'], 'origin': ra[k]['new'], 'moved_mm': ra[k]['moved_mm'], 'step': ra[k]['step']}
         if k in rb:
             out['after'] = {'face': rb[k]['new_face'], 'origin': rb[k]['new'], 'moved_mm': rb[k]['moved_mm'], 'step': rb[k]['step']}
-            out['face_change'] = rb[k]['new_face'] is not None and rb[k]['new_face'] != s.fps[k]['side']
         return out
     table = [row(k, 'removed') for k in removed] + [row(k, 'new') for k in new] + [row(k, 'shifted') for k in shifted]
     for k in new:
-        why = buffer_stop(s, k)
-        if why:
-            stop.append('newly displaced %s %s is an %s' % (k[0], k[1], why))
         if rb[k]['new'] is None:
             stop.append('newly displaced %s %s has no gate position' % k)
     # the block rule for every IC with a new or shifted row, and every IC whose decoupler has one
@@ -163,32 +226,40 @@ def build():
                                      for d in members[key] if d in dec_of.get(ic, [])]
             e['electrical'] = s.facts(b, ic, e['pose'])
             e['timing_nodes'] = sorted({x['net'] for x in e['electrical'] for k in x['kind'] if 'timing node' in k})
-            for m in e['passives_moved']:
-                why = buffer_stop(s, (b, m['ref']))
-                if why:
-                    stop.append('the overlay of %s displaces %s, an %s' % (ic, m['ref'], why))
         blocks.append(e)
+    # S10 keeps the ten accepted S8 poses. Only unresolved gate rows may inherit them.
+    current_retained = [e for e in retained if (e['board'], e['ic']) in rb and rb[e['board'], e['ic']]['new'] is None]
+    after = effective_scene(s, rb, current_retained + blocks)
+    changes = movement(s, before, after)
+    overlay_refs = {(e['board'], m) for e in blocks for m in e['members']}
+    overlay_refs.update((e['board'], m['ref']) for e in blocks for m in e['passives_moved'])
+    displaced = set(new) | {(r['board'], r['ref']) for r in changes if (r['board'], r['ref']) in overlay_refs}
+    for k in sorted(displaced):
+        why = buffer_stop(s, k)
+        if why:
+            stop.append(f'newly displaced {k[0]} {k[1]}: {why}')
     # the ruled parts and the rear trimmers
     ruled = {}
     for ref, (ic, lim) in RULED.items():
-        o, f, how = where(s, rb, ('K', ref))
-        io, ifc, _ = where(s, rb, ('K', ic))
-        ruled[ref] = {'position': o, 'face': f, 'how': how, 'ic': ic, 'ic_face': ifc, 'distance_to_ic_mm': dist(o, io),
+        o, f, how = after['K', ref]
+        io, ifc, _ = after['K', ic]
+        ruled[ref] = {'position': o, 'face': f, 'how': how, 'ic': ic, 'ic_face': ifc, 'distance_to_ic_mm': math.dist(o, io),
+                      'paper_distance_mm': math.dist(frozen.fps['K', ref]['origin'], frozen.fps['K', ic]['origin']),
                       'on_ic_face': f == ifc, 'limit_mm': lim,
-                      'meets': f == ifc and (lim is None or dist(o, io) <= lim + 1e-6)}
+                      'meets': f == ifc and (lim is None or math.dist(o, io) <= lim)}
         if not ruled[ref]['meets']:
             stop.append('%s does not meet its DS-147 condition' % ref)
     for ref in REAR:
-        o, f, how = where(s, rb, ('K', ref))
+        o, f, how = after['K', ref]
         ruled[ref] = {'position': o, 'face': f, 'how': how, 'rear': f == 'B'}
         if f != 'B':
             stop.append('%s is not on the rear face' % ref)
     trimmers = [{'ref': x['ref'], 'face_after': (x.get('after') or {}).get('face'), 'rear': (x.get('after') or {}).get('face') in (None, 'B')}
                 for x in table if x['ref'].startswith('RV')]
-    open_now = sorted(k[1] for k, r in rb.items() if r['new'] is None)
-    # every figure in locality-acceptances.json, recomputed: no part an acceptance names may sit in a changed row, and each
-    # recorded move distance must equal the distance between its recorded poses
-    changed = set(removed) | set(new) | set(shifted)
+    open_now = sorted(ref for (_, ref), (pos, _, _) in after.items() if pos is None)
+    original = {(p['board'], p['ref']): p for p in pinned(PAPER, 'design/partition/floorplan-candidate.json')['placements']}
+    studies = {r['ic']: r for r in pinned(BASE, 'scripts/stack/studies/mc04_s7_a0/blocks-function.json')['local_replacement']}
+    changed = {(r['board'], r['ref']) for r in changes}
     figures = []
     for x in json.loads((ROOT / 'design/partition/locality-acceptances.json').read_text())['acceptances']:
         if 'ref' not in x:
@@ -198,22 +269,27 @@ def build():
             {p['ref'] for p in (x.get('also_moves') or {}).get('passives', [])}
         hit = sorted(r for r in refs if (b, r) in changed)
         row = {'ref': x['ref'], 'kind': x.get('kind'), 'parts_in_changed_rows': hit}
-        if x.get('pose') and x.get('pre_move_pose') and x.get('distance_mm') is not None:
-            d = round(math.hypot(x['pose'][0] - x['pre_move_pose'][0], x['pose'][1] - x['pre_move_pose'][1]), 2)
-            row.update({'distance_mm_recorded': x['distance_mm'], 'distance_mm_recomputed': d,
-                        'worse': d > x['distance_mm'] + 0.005})
-            if row['worse']:
-                stop.append('acceptance figure of %s is worse (%s > %s mm)' % (x['ref'], d, x['distance_mm']))
+        if 'study_pose' in x:
+            source = studies[x['ref']]
+            row['scope'] = 'historical S7 study pose'
+            row['matches_sources'] = (x['study_pose'] == {'origin_mm': source['legal_pose'],
+                                    'turn_deg': source['turn_deg'], 'distance_mm': dist(source['current_origin'], source['legal_pose'])}
+                                    and x['face'] == source['face'])
+        else:
+            row.update(locality(x, original, after))
+            row['pre_s10_effective_pose'] = locality(x, original, before)['effective_pose']
+        if not row['matches_sources']:
+            stop.append(f"locality evidence for {x['ref']} differs from independent geometry")
         if hit:
             stop.append('acceptance %s names parts in changed rows: %s' % (x['ref'], ', '.join(hit)))
         figures.append(row)
     return {'schema_version': 1, 'model': rp.MODEL + ' (current gate record)',
-            'status': 'OVERLAY RULES (MC04-S10 Revision 1, DS-148): gate rows canonical; the link-era record overlays only the cases below',
-            'generator': 'scripts/stack/studies/mc04_s10_l13/overlay.py', 'base_commit': rp.SNAPSHOT,
+            'status': 'MC04-S10 Revision 1 candidate diagnostic (DS-148)',
+            'generator': 'scripts/stack/studies/mc04_s10_l13/overlay.py', 'base_commit': BASE, 'locality_baseline_commit': PAPER,
             'row_changes': {'counts': {'removed': len(removed), 'new': len(new), 'shifted': len(shifted)}, 'rows': table},
-            'face_changes': [{'ref': x['ref'], 'from': x['paper_face'], 'to': x['after']['face'], 'change': x['change'],
-                              'nets': sorted({n for n in s.pins.get(x['ref'], {}).values() if n})}
-                             for x in table if x.get('face_change')],
+            'effective_movements': changes,
+            'face_changes': [r for r in changes if r['from'] and r['to'] and r['from'] != r['to']],
+            'disposition': 'STOP' if stop else 'REVIEW_REQUIRED',
             'block_rule': rule, 'blocks': blocks, 'ruled_parts': ruled, 'trimmers_in_changed_rows': trimmers,
             'without_a_position': open_now, 'acceptance_figures': figures, 'stop': stop}
 

@@ -1,4 +1,4 @@
-"""MC04-S10 Revision 1 (DS-148): the four holds, the c6 rebind check, the overlay rules and their acceptance (no KiCad)."""
+"""MC04-S10 Revision 1 (DS-148): the four holds, the c6 rebind check, the overlay rules and the rejected candidate diagnostic (no KiCad)."""
 import json
 import subprocess
 import sys
@@ -53,12 +53,14 @@ class Links(unittest.TestCase):
 
 class Overlay(unittest.TestCase):
     def test_positions(self):
-        self.assertEqual(OV['without_a_position'], [r for r in OV['without_a_position']])
-        self.assertTrue({'U1415', 'U5110', 'U8409'} <= set(OV['without_a_position']))
-        self.assertFalse({'U5209', 'U5210'} & set(OV['without_a_position']))
+        self.assertEqual(OV['without_a_position'], ['U1415', 'U5110', 'U8409'])
         rows = {(r['board'], r['ref']) for r in GATE['replacement']['footprints']}
         self.assertFalse({('K', 'U5209'), ('K', 'U5210')} & rows)
-        self.assertEqual(OV['stop'], [])
+        self.assertEqual(OV['disposition'], 'STOP')
+        for ref, net in [('R5249', '/W1/FOLDER_SUM'), ('R5256', '/W1/F2_SUM'),
+                         ('R8221', '/M5B/Ca92eeb_W_SENSE'), ('R8331', '/M4A/C38051c_W_SENSE'),
+                         ('R8356', '/M4A/C24ce01_W_SENSE'), ('R4238', '/E2/REF9_FB')]:
+            self.assertIn(f'newly displaced K {ref}: part on {net}', OV['stop'])
 
     def test_every_new_row_has_a_pose(self):
         for r in OV['row_changes']['rows']:
@@ -81,30 +83,52 @@ class Overlay(unittest.TestCase):
     def test_ruled_parts_and_trimmers(self):
         r = OV['ruled_parts']
         self.assertEqual(r['R5257']['face'], 'B')
-        self.assertLessEqual(r['R5257']['distance_to_ic_mm'], 7.93)
+        resistor = r['R5257']
+        self.assertEqual(resistor['distance_to_ic_mm'], resistor['paper_distance_mm'])
+        self.assertEqual(round(resistor['distance_to_ic_mm'], 2), resistor['limit_mm'])
+        self.assertGreater(resistor['distance_to_ic_mm'], resistor['limit_mm'])
+        self.assertFalse(resistor['meets'])
         self.assertEqual(r['R5259']['face'], 'B')
         for t in ('RV4503', 'RV8407', 'RV2310'):
             self.assertEqual(r[t]['face'], 'B', t)
         self.assertTrue(all(t['rear'] for t in OV['trimmers_in_changed_rows']))
 
-    def test_acceptance_figures_are_unchanged(self):
-        for x in OV['acceptance_figures']:
-            self.assertEqual(x['parts_in_changed_rows'], [], x['ref'])
-            if 'worse' in x:
-                self.assertFalse(x['worse'], x['ref'])
+    def test_effective_changes(self):
+        changed = {x['ref']: x for x in OV['effective_movements']}
+        self.assertEqual((changed['R4238']['distance_mm'], changed['R4238']['from'], changed['R4238']['to']),
+                         (3.55, 'B', 'B'))
+        faces = {x['ref']: (x['from'], x['to']) for x in OV['face_changes']}
+        self.assertEqual(faces['C4554'], ('B', 'F'))
+        self.assertNotIn('C5212', faces)
 
-    def test_member_faces_clear_for_every_overlay_block(self):
-        mf = json.loads((ROOT / 'scripts/stack/studies/mc04_s8_replacement/member-faces.json').read_text())
-        kinds = {b['ic']: b for b in mf['blocks']}
-        for ic in ('U4222', 'U4227', 'U4537'):
-            self.assertEqual(kinds[ic]['kind'], 'S10 block-rule overlay')
-        self.assertTrue(all(b['all_clear'] for b in mf['blocks']))
+    def test_locality_discrepancy_predates_s10(self):
+        mismatches = [x for x in OV['acceptance_figures'] if not x['matches_sources']]
+        self.assertEqual([x['ref'] for x in mismatches], ['U5113'])
+        row = mismatches[0]
+        self.assertEqual(row['effective_pose'], row['pre_s10_effective_pose'])
+        self.assertEqual((row['distance_mm_recorded'], row['distance_mm_recomputed']), (65.97, 84.77))
 
-    def test_no_new_row_is_an_input_buffer_stop(self):
+    def test_mutated_locality_poses_with_unchanged_distance_are_rejected(self):
+        source = {('K', 'U1'): {'x_mm': 1.0, 'y_mm': 2.0, 'side': 'B.Cu'}}
+        effective = {('K', 'U1'): ([4.0, 6.0], 'B', 'gate row')}
+        record = {'board': 'K', 'ref': 'U1', 'pre_move_pose': [1.0, 2.0, 'B.Cu'],
+                  'pose': [4.0, 6.0, 'B.Cu'], 'distance_mm': 5.0}
+        self.assertTrue(ov.locality(record, source, effective)['matches_sources'])
+        for field in ('pre_move_pose', 'pose'):
+            record[field][0] += 1.0
+        self.assertFalse(ov.locality(record, source, effective)['matches_sources'])
+
+    def test_protected_nodes_are_independent_of_owner(self):
         s = ov.OV.__new__(ov.OV)  # the stop rule itself, on a fixed example
         s.buffer_ics, s.owner, s.pins = {'U9'}, {('K', 'R9'): 'U9'}, {'R9': {'1': '/X/A_FB', '2': '/X/B'}, 'U9': {}}
         self.assertEqual(ov.buffer_stop(s, ('K', 'U9')), 'input-buffer IC')
         self.assertIn('_FB', ov.buffer_stop(s, ('K', 'R9')))
+        for owner in (None, 'U8', 'U9'):
+            for suffix in ('_FB', '_SENSE', '_SUM'):
+                for ref in ('R9', 'R10'):
+                    s.owner['K', ref] = owner
+                    s.pins[ref] = {'1': '/X/A' + suffix}
+                    self.assertIn('/X/A' + suffix, ov.buffer_stop(s, ('K', ref)))
         s.pins['R9'] = {'1': '/X/A_DRIVE', '2': '/X/B_REMOTE'}
         self.assertIsNone(ov.buffer_stop(s, ('K', 'R9')))
 
