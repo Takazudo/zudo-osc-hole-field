@@ -9,6 +9,8 @@ python3 -m unittest test_s10
 Brief: `circuit/orchestration/campaigns/osc-stack-20261114/mc04-s10-l13-link-moves-generator-brief-20261122.md`,
 Revision 1. Report: `mc04-s10-report-20261122.md` in the same folder.
 
+**Revision 1 disposition: STOP / returned for revision at `32580f77`.** Reproduction of this geometry is diagnostic. S11 awaits independent acceptance of a later S10 candidate.
+
 ## The holds
 
 `design/stack/geometry/links/link-gate-options.json` gains four slot holds:
@@ -16,7 +18,7 @@ Revision 1. Report: `mc04-s10-report-20261122.md` in the same folder.
 | Link | Held pose | Source |
 | --- | --- | --- |
 | P-K-P-L13.01.01.01 | (201.17, 197.42) +y | S9-A2, U5210 clean candidate 0 |
-| P-K-P-L13.01.01.02 | (176.0, 196.25) −y | S9-A2, U5209 variant B pair 8 (keeps R5257 at 7.93 mm on B) |
+| P-K-P-L13.01.01.02 | (176.0, 196.25) −y | S9-A2, U5209 variant B pair 8 (R5257 on B exceeds the 7.93 mm limit before rounding) |
 | P-K-P-L13.01.02.01 | (159.0, 193.0) −y | S9-A2, U5209 variant B pair 8 |
 | P-K-P-L15.02.01.01 | (193.0, 213.0) +y | its recorded pose |
 
@@ -48,7 +50,7 @@ writes `overlay.json`:
 - the row-change table (18 removed, 21 new, 15 shifted), with face, distance and step;
 - the face changes, with their nets;
 - the recomputed figures of `locality-acceptances.json`;
-- the stop conditions (none).
+- the sensitive-net and ruled-part stops.
 
 `replacement_r7.R7.load_overlay` places the overlay blocks in the current-record checks (`member_faces.py`,
 `board_conflicts.py`). `link_era_replacements.py` writes them into the record with both poses.
