@@ -1,6 +1,7 @@
 """MC04-S8 Revision 5: the link-era re-placement record and its status in the Gate A open list (no KiCad)."""
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -28,18 +29,17 @@ class LinkEraRecord(unittest.TestCase):
     def test_placed_and_open(self):
         placed = {r['ic'] for r in REC['placed']}
         opened = {r['ic'] for r in REC['open']}
-        # MC04-S10 (DS-148): U5209 and U5210 are no longer displaced; U4222, U4227 and U4537 take overlay block poses
-        self.assertEqual((len(placed), len(opened)), (13, 3))
+        self.assertEqual((len(placed), len(opened)), (10, 3))
         self.assertEqual(opened, {'U1415', 'U5110', 'U8409'})
         self.assertEqual({r['ic'] for r in REC['not_displaced_after_s10']}, {'U5209', 'U5210'})
-        overlay = {r['ic']: r for r in REC['placed'] if r['class'] == 'S10 block-rule overlay'}
-        self.assertEqual(set(overlay), {'U4222', 'U4227', 'U4537'})
-        for r in overlay.values():
-            self.assertNotEqual(r['pose']['origin'], r['gate_pose']['origin'])  # both poses shown
-            for d in r['decouplers_after']:
-                self.assertEqual(d['face'], r['pose']['face'])
+        self.assertEqual(REC['s10']['disposition'], 'STOP')
+        withheld = {'U4222', 'U4227', 'U4537'}
+        self.assertEqual(set(REC['s10']['withheld_overlay_ics']), withheld)
+        self.assertFalse(withheld & placed)
+        self.assertTrue(REC['s10']['stop'])
         ruled = REC['s10']['ruled_parts']
-        self.assertTrue(ruled['R5257']['meets'] and ruled['R5257']['distance_to_ic_mm'] <= 7.93 and ruled['R5257']['face'] == 'B')
+        self.assertFalse(ruled['R5257']['meets'])
+        self.assertGreater(ruled['R5257']['distance_to_ic_mm'], ruled['R5257']['limit_mm'])
         self.assertEqual(ruled['R5259']['face'], 'B')
         self.assertTrue(all(ruled[t]['rear'] for t in ('RV4503', 'RV8407', 'RV2310')))
         self.assertFalse(placed & opened)
@@ -75,12 +75,25 @@ class LinkEraRecord(unittest.TestCase):
         doc = json.loads(ga.OUT.read_text())
         self.assertIn('GA-LOC-U4433', {i['id'] for i in doc['items']})
 
+    def test_stale_or_injected_candidate_placement_is_rejected(self):
+        record = ler.build()
+        record['placed'].append({'board': 'K', 'ic': 'U4222', 'class': 'S10 block-rule overlay'})
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'link-era-replacements.json'
+            path.write_text(json.dumps(record))
+            with self.assertRaisesRegex(ValueError, 'unapproved placement'):
+                ler.checked_record(path)
+
     def test_gate_record_carries_it(self):
         gate = json.loads(lg.LINK_GATE.read_text())
         self.assertEqual(gate['link_era_replacements'], REC)
 
     def test_gate_a_status(self):
         doc = json.loads(ga.OUT.read_text())
+        disposition = next(x for x in doc['items'] if x['id'] == 'GA-S10-DISPOSITION')
+        self.assertEqual(disposition['status'], 'STOP')
+        self.assertEqual(disposition['reasons'], REC['s10']['stop'])
+        self.assertFalse(any(x['kind'] == 'S10 overlay block' for x in doc['items']))
         rows = [i for i in doc['items'] if i['kind'] == 'open re-placement (re-route)']
         self.assertEqual(len(rows), 13)
         self.assertEqual(sum(doc['re_placement_status'].values()), 13)

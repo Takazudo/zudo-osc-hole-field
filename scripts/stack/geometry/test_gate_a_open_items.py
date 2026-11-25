@@ -54,12 +54,15 @@ class GateAOpenItems(unittest.TestCase):
         kinds = {}
         for i in self.doc['items']:
             kinds.setdefault(i['kind'], []).append(i)
-        self.assertEqual({i['ref'] for i in kinds['S10 overlay block']}, {'U4222', 'U4227', 'U4537'})
-        u4537 = next(i for i in kinds['S10 overlay block'] if i['ref'] == 'U4537')
-        self.assertIn('/E5/CLOCK', u4537['timing_nodes'])
-        self.assertTrue(all(g['added_run_estimate_mm'] is not None for g in u4537['grown_nets']))
-        self.assertTrue(kinds['S10 face change'])
-        self.assertTrue(all(i['nets'] and i['from'] != i['to'] for i in kinds['S10 face change']))
+        review, = kinds['S10 candidate review']
+        self.assertEqual(review['status'], 'STOP')
+        self.assertEqual(set(review['withheld_overlay_ics']), {'U4222', 'U4227', 'U4537'})
+        self.assertNotIn('S10 overlay block', kinds)
+        changes = kinds['S10 candidate face change']
+        self.assertTrue(all(i['nets'] and i['from'] != i['to'] for i in changes))
+        faces = {i['ref']: (i['from'], i['to']) for i in changes}
+        self.assertEqual(faces['C4554'], ('B', 'F'))
+        self.assertNotIn('C5212', faces)
 
 
 if __name__ == '__main__':

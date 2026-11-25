@@ -1642,6 +1642,8 @@ def generate(root=sg.ROOT):
     """The record of part 2: the placement of part 1 (run (e)), then the ways out, the consolidation and the
     re-placement search (links_gate_part2); the tests regenerate all of it."""
     import links_gate_part2 as p2
+    import link_era_replacements as ler
+    era = ler.checked_record(LINK_ERA) if LINK_ERA.exists() else None
     inp = load_inputs(root)
     sites, model, ctx, out, s1, _ = gate_run(inp, {})
     rg = inp['gopts']['refinement']
@@ -1683,7 +1685,7 @@ def generate(root=sg.ROOT):
             'replacement': {'parameters': inp['gopts']['replacement'], 'totals': p2.replacement_totals(part2['replacement']),
                             'footprints': part2['replacement']},
             'displaced_k_ic_packages': p2.displaced_k_ic_packages(inp, part2['replacement']),
-            'link_era_replacements': json.loads(LINK_ERA.read_text()) if LINK_ERA.exists() else None,
+            'link_era_replacements': era,
             'ds97': p2.ds97_summary(inp, part2['replacement']),
             'part_2_of_a7': json.loads(A7_FILE.read_text())['record_totals'] if A7_FILE.exists() else None,
             'refs': refs,

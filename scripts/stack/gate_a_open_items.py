@@ -92,7 +92,8 @@ def build():
     for header, fixing in sorted(KNOWN_FIXING_CONFLICTS):
         items.append({'id': 'GA-FIX-%s-%s' % (header, fixing), 'kind': 'header/fixing conflict', 'header': header, 'fixing': fixing,
                       'source': 'scripts/checks/connector_packing35.py KNOWN_FIXING_CONFLICTS', 'ruling': RULINGS + ', Revision 8'})
-    era = read(LINK_ERA) if (ROOT / LINK_ERA).exists() else {'placed': [], 'open': [], 'model': None}
+    from scripts.stack.geometry.link_era_replacements import checked_record
+    era = checked_record(ROOT / LINK_ERA) if (ROOT / LINK_ERA).exists() else {'placed': [], 'open': [], 'model': None}
     era_placed = {(x['board'], x['ic']): x for x in era['placed']}
     era_open = {(x['board'], x['ic']): x for x in era['open']}
     for r in gate['replacement']['footprints']:
@@ -117,16 +118,12 @@ def build():
             items.append(row)
     # MC04-S10 Revision 1 (DS-148): the overlay blocks, the face changes and the knock-on block-rule rows
     s10 = era.get('s10') or {}
-    for p in era['placed']:
-        if p.get('class') == 'S10 block-rule overlay':
-            items.append({'id': 'GA-S10-OVERLAY-%s-%s' % (p['board'], p['ic']), 'kind': 'S10 overlay block', 'board': p['board'], 'ref': p['ic'],
-                          'gate_pose': p['gate_pose'], 'overlay_pose': p['pose'], 'reason': p['reason'], 'timing_nodes': p['timing_nodes'],
-                          'grown_nets': [{'net': e['net'], 'kind': e['kind'], 'added_run_estimate_mm': e['added_run_estimate_mm'],
-                                          'capacitance_after_estimate_pF': e['capacitance_after_estimate_pF']} for e in p['electrical']],
-                          'source': LINK_ERA, 'ruling': p['ruling']})
+    if s10:
+        items.append({'id': 'GA-S10-DISPOSITION', 'kind': 'S10 candidate review', 'status': s10['disposition'],
+                      'reasons': s10['stop'], 'withheld_overlay_ics': s10['withheld_overlay_ics'], 'source': LINK_ERA})
     for x in s10.get('face_changes', []):
-        items.append({'id': 'GA-S10-FACE-%s' % x['ref'], 'kind': 'S10 face change', 'board': 'K', 'ref': x['ref'], 'from': x['from'],
-                      'to': x['to'], 'row': x['change'], 'nets': x['nets'], 'source': LINK_ERA, 'ruling': 'DS-147, DS-148'})
+        items.append({'id': 'GA-S10-FACE-%s' % x['ref'], 'kind': 'S10 candidate face change', 'board': x.get('board', 'K'), 'ref': x['ref'], 'from': x['from'],
+                      'to': x['to'], 'before_source': x['before_source'], 'after_source': x['after_source'], 'nets': x['nets'], 'source': LINK_ERA, 'ruling': 'DS-147, DS-148'})
     for r in s10.get('knock_on_block_rule', []):
         items.append({'id': 'GA-S10-KNOCKON-%s' % r['ic'], 'kind': 'S10 knock-on block rule', 'board': r['board'], 'ref': r['ic'],
                       'decouplers': r['decouplers'], 'note': r['pose'], 'source': LINK_ERA, 'ruling': 'DS-148'})

@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """MC04-S8 Revisions 6 to 8: a face-aware check of every placed link-era pose, and of the far options left open.
 
-Every placed block (the confirmed poses, the Revision 7 poses that landed, the Revision 8 acceptance, DS-144 and the
-MC04-S10 block-rule overlay), in the current gate record, is placed
+Every placed block (the confirmed poses, the Revision 7 poses that landed, the Revision 8 acceptance and DS-144), in the current gate record, is placed
 face-aware: each member keeps its face relative to its IC and flips with the block. For each block in turn, its
 members are checked at the recorded pose against every other placed pose (the block itself lifted), and its displaced
 passives against every placed pose including the block. The far options of the blocks left open are checked pairwise
@@ -47,8 +46,7 @@ def build():
     blocks = [(b, ic, ms, f0, pose, [], 'confirmed') for b, ic, ms, f0, pose in s.confirmed_blocks()]
     landed = {r['ic'] for r in doc['research'] if r['result'] == 'lands'}
     blocks += [(b, ic, ms, f0, pose, passives, 'Revision 7 re-search' if ic in landed else
-                                                       'DS-144 acceptance' if ic in r7.ACCEPTED_DS144 else
-                                                       'S10 block-rule overlay' if ic in s.overlay_ics else 'Revision 8 acceptance')
+                                                       'DS-144 acceptance' if ic in r7.ACCEPTED_DS144 else 'Revision 8 acceptance')
                for b, ic, ms, f0, pose, passives, _ in s.done]
     rows = []
     for board, ic, members, face0, pose, passives, kind in blocks:

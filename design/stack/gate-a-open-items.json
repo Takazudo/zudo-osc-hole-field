@@ -10,8 +10,8 @@
   "fixing reach candidate": 1,
   "header/fixing conflict": 1,
   "open re-placement (re-route)": 13,
-  "S10 overlay block": 3,
-  "S10 face change": 8,
+  "S10 candidate review": 1,
+  "S10 candidate face change": 16,
   "S10 knock-on block rule": 1,
   "slot drift": 7
  },
@@ -1524,307 +1524,51 @@
    "record": "design/stack/geometry/links/link-era-replacements.json"
   },
   {
-   "id": "GA-S10-OVERLAY-K-U4222",
-   "kind": "S10 overlay block",
-   "board": "K",
-   "ref": "U4222",
-   "gate_pose": {
-    "face": "B",
-    "origin": [
-     213.2009,
-     222.9509
-    ],
-    "moved_mm": 24.75,
-    "step": 3
-   },
-   "overlay_pose": {
-    "face": "B",
-    "turn_deg": 0,
-    "origin": [
-     204.2,
-     220.45
-    ],
-    "moved_mm": 17.24,
-    "shift_mm": [
-     8.5,
-     15.0
-    ]
-   },
-   "reason": "the gate pose breaks the block rule: C4239 7.66 mm -> 24.87 mm, face B",
-   "timing_nodes": [],
-   "grown_nets": [
-    {
-     "net": "/E2/D_FALL",
-     "kind": [
-      "logic output"
-     ],
-     "added_run_estimate_mm": -9.75,
-     "capacitance_after_estimate_pF": 15.37
-    },
-    {
-     "net": "/E2/FALL",
-     "kind": [
-      "logic input"
-     ],
-     "added_run_estimate_mm": 0.0,
-     "capacitance_after_estimate_pF": 35.94
-    },
-    {
-     "net": "/E2/L021",
-     "kind": [
-      "logic input"
-     ],
-     "added_run_estimate_mm": 0.0,
-     "capacitance_after_estimate_pF": 28.29
-    },
-    {
-     "net": "/E2/L046",
-     "kind": [
-      "logic input"
-     ],
-     "added_run_estimate_mm": -35.25,
-     "capacitance_after_estimate_pF": 18.22
-    },
-    {
-     "net": "/E2/L047",
-     "kind": [
-      "logic input",
-      "logic output"
-     ],
-     "added_run_estimate_mm": 0.0,
-     "capacitance_after_estimate_pF": 0.0
-    },
-    {
-     "net": "/E2/L049",
-     "kind": [
-      "logic input",
-      "logic output"
-     ],
-     "added_run_estimate_mm": 0.0,
-     "capacitance_after_estimate_pF": 0.0
-    },
-    {
-     "net": "/E2/L050",
-     "kind": [
-      "logic output"
-     ],
-     "added_run_estimate_mm": -5.07,
-     "capacitance_after_estimate_pF": 16.24
-    },
-    {
-     "net": "/E2/READY",
-     "kind": [
-      "logic input"
-     ],
-     "added_run_estimate_mm": 0.0,
-     "capacitance_after_estimate_pF": 47.04
-    }
+   "id": "GA-S10-DISPOSITION",
+   "kind": "S10 candidate review",
+   "status": "STOP",
+   "reasons": [
+    "newly displaced K R4238: part on /E2/REF9_FB",
+    "newly displaced K R5249: part on /W1/FOLDER_SUM",
+    "newly displaced K R5256: part on /W1/F2_SUM",
+    "newly displaced K R8221: part on /M5B/Ca92eeb_W_SENSE",
+    "newly displaced K R8331: part on /M4A/C38051c_W_SENSE",
+    "newly displaced K R8356: part on /M4A/C24ce01_W_SENSE",
+    "R5257 does not meet its DS-147 condition",
+    "locality evidence for U5113 differs from independent geometry"
    ],
-   "source": "design/stack/geometry/links/link-era-replacements.json",
-   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s10-l13-link-moves-generator-brief-20261122.md, Revision 1 (DS-148)"
+   "withheld_overlay_ics": [
+    "U4222",
+    "U4227",
+    "U4537"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json"
   },
   {
-   "id": "GA-S10-OVERLAY-K-U4227",
-   "kind": "S10 overlay block",
+   "id": "GA-S10-FACE-C4554",
+   "kind": "S10 candidate face change",
    "board": "K",
-   "ref": "U4227",
-   "gate_pose": {
-    "face": "B",
-    "origin": [
-     203.8564,
-     233.8985
-    ],
-    "moved_mm": 20.0,
-    "step": 3
-   },
-   "overlay_pose": {
-    "face": "B",
-    "turn_deg": 180,
-    "origin": [
-     204.18,
-     232.58
-    ],
-    "moved_mm": 18.82,
-    "shift_mm": [
-     5.5,
-     18.0
-    ]
-   },
-   "reason": "the gate pose breaks the block rule: C4244 17.67 mm -> 20.9 mm, face B",
-   "timing_nodes": [],
-   "grown_nets": [
-    {
-     "net": "/E2/CURVED",
-     "kind": [
-      "logic input"
-     ],
-     "added_run_estimate_mm": -7.3,
-     "capacitance_after_estimate_pF": 15.6
-    },
-    {
-     "net": "/E2/L069",
-     "kind": [
-      "logic input"
-     ],
-     "added_run_estimate_mm": -7.3,
-     "capacitance_after_estimate_pF": 15.6
-    },
-    {
-     "net": "/E2/L070",
-     "kind": [
-      "logic input"
-     ],
-     "added_run_estimate_mm": -33.36,
-     "capacitance_after_estimate_pF": 10.39
-    },
-    {
-     "net": "/E2/L071",
-     "kind": [
-      "logic input",
-      "logic output"
-     ],
-     "added_run_estimate_mm": 0.0,
-     "capacitance_after_estimate_pF": 0.0
-    },
-    {
-     "net": "/E2/L072",
-     "kind": [
-      "logic input",
-      "logic output"
-     ],
-     "added_run_estimate_mm": 0.0,
-     "capacitance_after_estimate_pF": 0.0
-    },
-    {
-     "net": "/E2/L074",
-     "kind": [
-      "logic output"
-     ],
-     "added_run_estimate_mm": 18.75,
-     "capacitance_after_estimate_pF": 13.12
-    },
-    {
-     "net": "/E2/RISE_LINEAR",
-     "kind": [
-      "logic output"
-     ],
-     "added_run_estimate_mm": -35.25,
-     "capacitance_after_estimate_pF": 14.04
-    }
+   "ref": "C4554",
+   "from": "B",
+   "to": "F",
+   "before_source": "paper",
+   "after_source": "U4537 block",
+   "nets": [
+    "+5V",
+    "AGND"
    ],
    "source": "design/stack/geometry/links/link-era-replacements.json",
-   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s10-l13-link-moves-generator-brief-20261122.md, Revision 1 (DS-148)"
-  },
-  {
-   "id": "GA-S10-OVERLAY-K-U4537",
-   "kind": "S10 overlay block",
-   "board": "K",
-   "ref": "U4537",
-   "gate_pose": {
-    "face": "F",
-    "origin": [
-     165.0936,
-     184.183
-    ],
-    "moved_mm": 7.25,
-    "step": 2
-   },
-   "overlay_pose": {
-    "face": "F",
-    "turn_deg": 180,
-    "origin": [
-     149.97,
-     182.68
-    ],
-    "moved_mm": 17.87,
-    "shift_mm": [
-     -17.0,
-     5.5
-    ]
-   },
-   "reason": "the gate pose breaks the block rule: C4554 5.06 mm -> 7.04 mm, face B",
-   "timing_nodes": [
-    "/E5/CLOCK"
-   ],
-   "grown_nets": [
-    {
-     "net": "/E5/CLOCK",
-     "kind": [
-      "logic input",
-      "timing node (clock input)",
-      "timing node (clock/sync)"
-     ],
-     "added_run_estimate_mm": 8.25,
-     "capacitance_after_estimate_pF": 33.55
-    },
-    {
-     "net": "/E5/D_FALL",
-     "kind": [
-      "logic input"
-     ],
-     "added_run_estimate_mm": 33.75,
-     "capacitance_after_estimate_pF": 22.9
-    },
-    {
-     "net": "/E5/D_HOLD",
-     "kind": [
-      "logic input"
-     ],
-     "added_run_estimate_mm": 33.75,
-     "capacitance_after_estimate_pF": 26.19
-    },
-    {
-     "net": "/E5/FALL",
-     "kind": [
-      "logic output"
-     ],
-     "added_run_estimate_mm": 15.72,
-     "capacitance_after_estimate_pF": 26.87
-    },
-    {
-     "net": "/E5/FALL_N",
-     "kind": [
-      "logic output"
-     ],
-     "added_run_estimate_mm": 23.13,
-     "capacitance_after_estimate_pF": 18.62
-    },
-    {
-     "net": "/E5/HOLD",
-     "kind": [
-      "logic output"
-     ],
-     "added_run_estimate_mm": -5.25,
-     "capacitance_after_estimate_pF": 12.46
-    },
-    {
-     "net": "/E5/HOLD_N",
-     "kind": [
-      "logic output"
-     ],
-     "added_run_estimate_mm": 33.75,
-     "capacitance_after_estimate_pF": 23.8
-    },
-    {
-     "net": "/E5/READY",
-     "kind": [
-      "logic input"
-     ],
-     "added_run_estimate_mm": 8.25,
-     "capacitance_after_estimate_pF": 33.55
-    }
-   ],
-   "source": "design/stack/geometry/links/link-era-replacements.json",
-   "ruling": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s10-l13-link-moves-generator-brief-20261122.md, Revision 1 (DS-148)"
+   "ruling": "DS-147, DS-148"
   },
   {
    "id": "GA-S10-FACE-C5209",
-   "kind": "S10 face change",
+   "kind": "S10 candidate face change",
    "board": "K",
    "ref": "C5209",
    "from": "B",
    "to": "F",
-   "row": "new",
+   "before_source": "paper",
+   "after_source": "gate row",
    "nets": [
     "/W1/AC_NODE",
     "/W1/PRE_AC"
@@ -1833,13 +1577,46 @@
    "ruling": "DS-147, DS-148"
   },
   {
+   "id": "GA-S10-FACE-C5236",
+   "kind": "S10 candidate face change",
+   "board": "K",
+   "ref": "C5236",
+   "from": "F",
+   "to": "B",
+   "before_source": "gate row",
+   "after_source": "paper",
+   "nets": [
+    "+12V",
+    "AGND"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-147, DS-148"
+  },
+  {
+   "id": "GA-S10-FACE-C8438",
+   "kind": "S10 candidate face change",
+   "board": "K",
+   "ref": "C8438",
+   "from": "B",
+   "to": "F",
+   "before_source": "gate row",
+   "after_source": "gate row",
+   "nets": [
+    "+12V",
+    "AGND"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-147, DS-148"
+  },
+  {
    "id": "GA-S10-FACE-Q4503",
-   "kind": "S10 face change",
+   "kind": "S10 candidate face change",
    "board": "K",
    "ref": "Q4503",
    "from": "B",
    "to": "F",
-   "row": "new",
+   "before_source": "paper",
+   "after_source": "gate row",
    "nets": [
     "+12V",
     "/E5/RISE_BIAS_SOURCE",
@@ -1850,12 +1627,13 @@
   },
   {
    "id": "GA-S10-FACE-R4540",
-   "kind": "S10 face change",
+   "kind": "S10 candidate face change",
    "board": "K",
    "ref": "R4540",
    "from": "B",
    "to": "F",
-   "row": "new",
+   "before_source": "paper",
+   "after_source": "gate row",
    "nets": [
     "/E5/REF1_RAW",
     "AGND"
@@ -1864,13 +1642,30 @@
    "ruling": "DS-147, DS-148"
   },
   {
+   "id": "GA-S10-FACE-R5148",
+   "kind": "S10 candidate face change",
+   "board": "K",
+   "ref": "R5148",
+   "from": "F",
+   "to": "B",
+   "before_source": "gate row",
+   "after_source": "gate row",
+   "nets": [
+    "/W2/BIAS_BUFFER",
+    "/W2/FOLDER_SUM"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-147, DS-148"
+  },
+  {
    "id": "GA-S10-FACE-R5249",
-   "kind": "S10 face change",
+   "kind": "S10 candidate face change",
    "board": "K",
    "ref": "R5249",
    "from": "B",
    "to": "F",
-   "row": "new",
+   "before_source": "paper",
+   "after_source": "gate row",
    "nets": [
     "/W1/FOLDER_NEG",
     "/W1/FOLDER_SUM"
@@ -1879,13 +1674,94 @@
    "ruling": "DS-147, DS-148"
   },
   {
+   "id": "GA-S10-FACE-R5251",
+   "kind": "S10 candidate face change",
+   "board": "K",
+   "ref": "R5251",
+   "from": "F",
+   "to": "B",
+   "before_source": "gate row",
+   "after_source": "paper",
+   "nets": [
+    "/W1/DRIVE_INV_SUM",
+    "/W1/FOLDER_DRIVE"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-147, DS-148"
+  },
+  {
+   "id": "GA-S10-FACE-R5253",
+   "kind": "S10 candidate face change",
+   "board": "K",
+   "ref": "R5253",
+   "from": "F",
+   "to": "B",
+   "before_source": "gate row",
+   "after_source": "gate row",
+   "nets": [
+    "/W1/F1_SUM",
+    "/W1/FOLDER_DRIVE"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-147, DS-148"
+  },
+  {
+   "id": "GA-S10-FACE-R5258",
+   "kind": "S10 candidate face change",
+   "board": "K",
+   "ref": "R5258",
+   "from": "F",
+   "to": "B",
+   "before_source": "gate row",
+   "after_source": "paper",
+   "nets": [
+    "/W1/F2_OUT",
+    "/W1/F3_CLIP"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-147, DS-148"
+  },
+  {
+   "id": "GA-S10-FACE-R5260",
+   "kind": "S10 candidate face change",
+   "board": "K",
+   "ref": "R5260",
+   "from": "F",
+   "to": "B",
+   "before_source": "gate row",
+   "after_source": "paper",
+   "nets": [
+    "/W1/F3_OUT",
+    "/W1/F3_SUM"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-147, DS-148"
+  },
+  {
+   "id": "GA-S10-FACE-R5263",
+   "kind": "S10 candidate face change",
+   "board": "K",
+   "ref": "R5263",
+   "from": "F",
+   "to": "B",
+   "before_source": "gate row",
+   "after_source": "paper",
+   "nets": [
+    "/W1/F4_OUT",
+    "/W1/F4_SUM"
+   ],
+   "source": "design/stack/geometry/links/link-era-replacements.json",
+   "ruling": "DS-147, DS-148"
+  },
+  {
    "id": "GA-S10-FACE-R5266",
-   "kind": "S10 face change",
+   "kind": "S10 candidate face change",
    "board": "K",
    "ref": "R5266",
    "from": "B",
    "to": "F",
-   "row": "new",
+   "before_source": "paper",
+   "after_source": "gate row",
    "nets": [
     "/W1/AC_NODE",
     "AGND"
@@ -1895,12 +1771,13 @@
   },
   {
    "id": "GA-S10-FACE-U4537",
-   "kind": "S10 face change",
+   "kind": "S10 candidate face change",
    "board": "K",
    "ref": "U4537",
    "from": "B",
    "to": "F",
-   "row": "new",
+   "before_source": "paper",
+   "after_source": "U4537 block",
    "nets": [
     "+5V",
     "/E5/CLOCK",
@@ -1917,31 +1794,27 @@
    "ruling": "DS-147, DS-148"
   },
   {
-   "id": "GA-S10-FACE-C5212",
-   "kind": "S10 face change",
+   "id": "GA-S10-FACE-U5207",
+   "kind": "S10 candidate face change",
    "board": "K",
-   "ref": "C5212",
-   "from": "B",
-   "to": "F",
-   "row": "shifted",
-   "nets": [
-    "/W1/AC_NODE",
-    "/W1/PRE_AC"
-   ],
-   "source": "design/stack/geometry/links/link-era-replacements.json",
-   "ruling": "DS-147, DS-148"
-  },
-  {
-   "id": "GA-S10-FACE-C8438",
-   "kind": "S10 face change",
-   "board": "K",
-   "ref": "C8438",
-   "from": "B",
-   "to": "F",
-   "row": "shifted",
+   "ref": "U5207",
+   "from": "F",
+   "to": "B",
+   "before_source": "gate row",
+   "after_source": "paper",
    "nets": [
     "+12V",
-    "AGND"
+    "-12V",
+    "/W1/BIAS_MANUAL",
+    "/W1/C4c1698_W_SENSE",
+    "/W1/C75db46_W_SENSE",
+    "/W1/C9cfd7a_DRIVE",
+    "/W1/C9cfd7a_FB",
+    "/W1/Cb36f8a_SUM",
+    "/W1/Cb36f8a_W_SENSE",
+    "/W1/FOLD_BUFFER",
+    "/W1/FOLD_DEPTH",
+    "/W1/FOLD_MANUAL"
    ],
    "source": "design/stack/geometry/links/link-era-replacements.json",
    "ruling": "DS-147, DS-148"
