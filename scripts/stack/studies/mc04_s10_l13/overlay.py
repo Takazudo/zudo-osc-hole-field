@@ -95,17 +95,33 @@ def effective_scene(s, rows, placements):
     return scene
 
 
-def movement(s, before, after):
+def movement(s, before, after, before_turns, after_turns):
     ledger = []
     for (board, ref), (new, face, source) in sorted(after.items()):
         old, old_face, old_source = before[board, ref]
-        if old == new and face == old_face:
+        key = board, ref
+        rotation_only = old == new and face == old_face
+        if rotation_only and before_turns.get(key, 0) == after_turns.get(key, 0):
             continue
         ledger.append({'board': board, 'ref': ref, 'before': old, 'after': new,
                        'from': old_face, 'to': face, 'before_source': old_source, 'after_source': source,
                        'distance_mm': dist(old, new) if old is not None and new is not None else None,
                        'nets': sorted({n for n in s.pins.get(ref, {}).values() if n})})
+        if rotation_only:
+            ledger[-1].update(before_turn_deg=before_turns.get(key, 0), after_turn_deg=after_turns.get(key, 0))
     return ledger
+
+
+def displaced_stops(s, new, changes, blocks):
+    overlay_refs = {(e['board'], m) for e in blocks for m in e['members']}
+    overlay_refs.update((e['board'], m['ref']) for e in blocks for m in e['passives_moved'])
+    displaced = set(new) | {(r['board'], r['ref']) for r in changes if (r['board'], r['ref']) in overlay_refs}
+    stops = []
+    for k in sorted(displaced):
+        why = buffer_stop(s, k)
+        if why:
+            stops.append(f'newly displaced {k[0]} {k[1]}: {why}')
+    return stops
 
 
 def locality(record, original, scene):
@@ -285,7 +301,7 @@ def build():
     retained = pinned(BASE, 'design/stack/geometry/links/link-era-replacements.json')['placed']
     before = effective_scene(frozen, ra, retained)
     removed, new = sorted(set(ra) - set(rb)), sorted(set(rb) - set(ra))
-    shifted = sorted(k for k in set(ra) & set(rb) if (ra[k]['new'], ra[k]['new_face']) != (rb[k]['new'], rb[k]['new_face']))
+    shifted = sorted(k for k in set(ra) & set(rb) if any(ra[k][field] != rb[k][field] for field in ('new', 'new_face', 'turned')))
     stop = []
 
     def row(k, kind):
@@ -373,14 +389,8 @@ def build():
     candidate_clearance(s, blocks, stop)
     rotations = effective_turns(rb, current_retained + blocks)
     baseline_turns = effective_turns(ra, retained)
-    changes = movement(s, before, after)
-    overlay_refs = {(e['board'], m) for e in blocks for m in e['members']}
-    overlay_refs.update((e['board'], m['ref']) for e in blocks for m in e['passives_moved'])
-    displaced = set(new) | {(r['board'], r['ref']) for r in changes if (r['board'], r['ref']) in overlay_refs}
-    for k in sorted(displaced):
-        why = buffer_stop(s, k)
-        if why:
-            stop.append(f'newly displaced {k[0]} {k[1]}: {why}')
+    changes = movement(s, before, after, baseline_turns, rotations)
+    stop.extend(displaced_stops(s, new, changes, blocks))
     # the ruled parts and the rear trimmers
     ruled = {}
     for ref, (ic, lim) in RULED.items():

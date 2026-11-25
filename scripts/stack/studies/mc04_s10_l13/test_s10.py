@@ -94,6 +94,21 @@ class Overlay(unittest.TestCase):
             self.assertEqual(r[t]['face'], 'B', t)
         self.assertTrue(all(t['rear'] for t in OV['trimmers_in_changed_rows']))
 
+    def test_rotation_only_overlay_member_on_feedback_net_stops(self):
+        study = ov.OV.__new__(ov.OV)
+        study.buffer_ics = set()
+        study.pins = {'R1': {'1': '/X/A_FB', '2': '/X/B'}}
+        key = ('K', 'R1')
+        before = {key: ([1.0, 0.0], 'B', 'paper')}
+        after = {key: ([1.0, 0.0], 'B', 'U1 block')}
+        changes = ov.movement(study, before, after, {}, {key: 180})
+        self.assertEqual(len(changes), 1)
+        self.assertEqual((changes[0]['distance_mm'], changes[0]['before_turn_deg'], changes[0]['after_turn_deg']),
+                         (0.0, 0, 180))
+        blocks = [{'board': 'K', 'members': ['U1', 'R1'], 'passives_moved': []}]
+        self.assertEqual(ov.displaced_stops(study, [], changes, blocks), ['newly displaced K R1: part on /X/A_FB'])
+        self.assertEqual(ov.movement(study, before, after, {key: 180}, {key: 180}), [])
+
     def test_effective_changes(self):
         changed = {x['ref']: x for x in OV['effective_movements']}
         self.assertEqual((changed['R4238']['distance_mm'], changed['R4238']['from'], changed['R4238']['to']),
