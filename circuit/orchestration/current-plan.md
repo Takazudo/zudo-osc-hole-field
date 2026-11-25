@@ -1,6 +1,12 @@
 # Current orchestration mapping
 
-## Active mapping — Claude Project lead, 2026-11-20
+## WSL S10/S11 continuation, 2026-11-25
+
+The owner assigned this batch to the local WSL Codex parent and authorized eligible main integration after independent review, verification and CI admission. The continuation branch is `wsl/s10-review-continuation`, based on `32580f77`. Preserve the original engineering branch.
+
+S10 Revision 1 was returned. The corrected diagnostic and its consumers preserve the rejection. The fixed-endpoint feasibility check rules out a compliant slot search under the unchanged DS-147 and DS-148 conditions. S11 awaits independent S10 acceptance. The three open IC decisions, canonical board adoption, DRC/refill admission and physical qualification remain separate obligations. See the [feasibility decision](campaigns/osc-stack-20261114/mc04-s10-revision-2-feasibility.md), [integration audit](campaigns/osc-stack-20261114/wsl-s10-main-integration-audit-20261125.md) and [campaign tracker](https://github.com/Takazudo/zudo-osc-hole-field/issues/362).
+
+## Historical mapping — Claude Project lead, 2026-11-20
 
 The owner's 2026-11-20 instruction replaces the Moya/Codex mapping below. The Claude Code
 Cloud Project thread "Resume OSC instrument order-readiness campaign" is the overall
