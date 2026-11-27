@@ -218,6 +218,7 @@ class Configuration(unittest.TestCase):
     def test_rejects_selection_without_a_package(self):
         c = self.conf()
         c['selected_for_order'] = True
+        c['role'] = 'selected'
         self.rejects(c, 'selected for order without a package manifest')
 
     def test_rejects_a_missing_package_manifest(self):
@@ -229,6 +230,53 @@ class Configuration(unittest.TestCase):
         c = self.conf()
         c['package_manifest'] = {'path': str(HERE / 'configuration.json'), 'sha256': '0' * 64}
         self.rejects(c, 'repository-relative')
+
+    def test_rejects_a_parent_relative_manifest_path(self):
+        c = self.conf()
+        c['package_manifest'] = {'path': '../outside.json', 'sha256': '0' * 64}
+        self.rejects(c, 'repository-relative')
+
+    def test_rejects_a_symlinked_manifest_outside_the_repository(self):
+        import tempfile
+        outside = Path(tempfile.mkdtemp()) / 'm.json'
+        outside.write_text(json.dumps({'board_sha256': self.conf()['board_sha256']}))
+        link = HERE / '_test_link_manifest.json'
+        link.symlink_to(outside)
+        self.addCleanup(link.unlink)
+        c = self.conf()
+        c['package_manifest'] = {'path': str(link.relative_to(ROOT)), 'sha256': sha256(outside)}
+        self.rejects(c, 'repository-relative')
+
+    def test_rejects_a_malformed_manifest(self):
+        for bad in ('manufacturing/x.json', {'path': 123, 'sha256': '0' * 64}, {'path': 'x.json'}):
+            c = self.conf()
+            c['package_manifest'] = bad
+            self.rejects(c, 'must be null or')
+
+    def test_rejects_free_text_owner_confirmation(self):
+        c = self.conf()
+        c['owner_confirmation'] = 'looks fine'
+        self.rejects(c, 'must be PENDING or CONFIRMED')
+
+    def test_rejects_confirmation_of_an_unselected_configuration(self):
+        c = self.conf()
+        c['owner_confirmation'] = 'CONFIRMED'
+        self.rejects(c, 'not selected for order')
+
+    def test_rejects_selection_of_a_baseline_role(self):
+        c = self.with_manifest({'board_sha256': self.conf()['board_sha256']})
+        c['selected_for_order'] = True
+        self.rejects(c, 'disagrees with selected_for_order')
+
+    def test_rejects_a_short_source_commit(self):
+        c = self.conf()
+        c['source_commit'] = 'deadbeef'
+        self.rejects(c, 'full commit id')
+
+    def test_rejects_a_missing_hold_label(self):
+        c = self.conf()
+        c.pop('package_status_short')
+        self.rejects(c, 'package_status_short')
 
     def test_rejects_a_changed_manifest(self):
         c = self.with_manifest({'board_sha256': self.conf()['board_sha256']})

@@ -509,7 +509,7 @@ $('railToggle').onclick = () => $('rail').classList.toggle('open');
 // ---------- status banner and sources ----------
 const extractedRaw = D.extracted_utc;
 const CONF = D.configuration;
-$('bannerMeta').textContent = `${CONF.id} · snapshot ${extractedRaw} · source ${D.base_commit} · package: ${CONF.package_manifest ? CONF.package_manifest.path : 'none (#318 HOLD)'} · owner confirmation ${CONF.owner_confirmation}`;
+$('bannerMeta').textContent = `${CONF.id} · snapshot ${extractedRaw} · source ${D.base_commit} · package: ${CONF.package_manifest ? CONF.package_manifest.path : 'none (' + CONF.package_status_short + ')'} · owner confirmation ${CONF.owner_confirmation}`;
 $('bannerText').textContent = `${CONF.selected_for_order ? 'Selected order configuration.' : 'Baseline view, not the selected prototype configuration.'} ${D.status}`;
 $('subtitle').textContent = `${D.boards.length} native board drafts behind one panel · ${fmt(D.totals.footprints)} footprints · ${fmt(D.totals.segments)} track segments · true depth scale`;
 {

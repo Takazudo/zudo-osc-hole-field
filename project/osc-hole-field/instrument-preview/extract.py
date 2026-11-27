@@ -265,12 +265,26 @@ def load_configuration(inputs, path=None):
     stale = sorted(p for p in boards if conf['board_sha256'][p] != inputs[p]['sha256'])
     if stale:
         raise SystemExit(f'FAIL configuration {conf["id"]} does not match the checked-out boards: {stale}')
+    if not conf.get('package_manifest') and not (isinstance(conf.get('package_status_short'), str) and conf['package_status_short']):
+        raise SystemExit(f'FAIL configuration {conf["id"]} without a package manifest needs package_status_short')
+    if conf.get('owner_confirmation') not in ('PENDING', 'CONFIRMED'):
+        raise SystemExit(f'FAIL configuration {conf["id"]} owner_confirmation must be PENDING or CONFIRMED')
+    if not re.fullmatch(r'[0-9a-f]{40}', str(conf.get('source_commit', ''))):
+        raise SystemExit(f'FAIL configuration {conf["id"]} source_commit must be a full commit id')
+    if bool(conf.get('selected_for_order')) != (conf.get('role') == 'selected'):
+        raise SystemExit(f'FAIL configuration {conf["id"]} role {conf.get("role")!r} disagrees with selected_for_order')
+    if conf.get('owner_confirmation') == 'CONFIRMED' and not conf.get('selected_for_order'):
+        raise SystemExit(f'FAIL configuration {conf["id"]} records owner confirmation for a configuration not selected for order')
     if conf.get('selected_for_order') and not conf.get('package_manifest'):
         raise SystemExit(f'FAIL configuration {conf["id"]} is marked selected for order without a package manifest')
     manifest = conf.get('package_manifest')
+    if manifest is not None and not (isinstance(manifest, dict) and isinstance(manifest.get('path'), str)
+                                     and isinstance(manifest.get('sha256'), str)):
+        raise SystemExit(f'FAIL configuration {conf["id"]} package_manifest must be null or {{path, sha256}}')
     if manifest:
         path = manifest['path']
-        if Path(path).is_absolute() or '..' in Path(path).parts:
+        if (Path(path).is_absolute() or '..' in Path(path).parts
+                or not (ROOT / path).resolve().is_relative_to(ROOT.resolve())):
             raise SystemExit(f'FAIL package manifest {path} must be a repository-relative path')
         if not (ROOT / path).is_file():
             raise SystemExit(f'FAIL package manifest {path} is missing')
