@@ -1,0 +1,890 @@
+{
+ "controls": {
+  "P1": {
+   "pass": true,
+   "detail": {
+    "pins": {
+     "inputs": {
+      "design/stack/geometry/links/link-gate.json": "bcbee2ca955ae06f0d42031899cb3d74501916545893f9454eaa18c89ccbecc3",
+      "design/stack/geometry/links/link-gate-options.json": "441c998f7801136ebb68e124ae4ac0c1c948533676c815560f716fc7afac2aad",
+      "design/stack/geometry/links/link-era-replacements.json": "a9af0e8ca4162822dc0608943c8c0813f347b9e5f8ca2b7b612a522ecd25f4d0",
+      "design/stack/geometry/links/link-options.json": "b0a60bf721b155200fc6a5b9304b20b84767638959c7f009a794f93f4e7bb4c9",
+      "design/stack/geometry/stack-candidate.json": "22e817eae2af189119ff0a751a8f08099edd735b690954f7c3fbe6e66ff4004d",
+      "design/stack/fixings/fixing-sites.json": "da13bede1a49ac047540c2236e88659a93f17f74567225dad9d9490f087d92a5",
+      "design/stack/gate-a-open-items.json": "235619a3c916db1bf9f3eb7a49c79d2df21f0b51a9f877dafe4bf567b9ca9a63",
+      "design/stack/trimmers/relocation-plan.json": "56ce0dac92688e2a1d7a2844a8a56b1c122c04e92bd03a3db4463600d20075dd",
+      "design/stack/connectors/flex-links.json": "68700f7190c3e0d86ec942b4811aee470ce3a71b7a15a1599500c9a732094339",
+      "design/partition/locality-acceptances.json": "54f2c5a5fd64314a4cfee812fe7e781013c3a11bef176d1c31408bed7da45dc7",
+      "design/partition/floorplan-candidate.json": "12083ea177cad1492f07fa96ad6dbfea8e5f8d2d347199bb555475c5b9e75a38",
+      "design/partition/adopted-placement-pins.json": "9e827879ebcccea57d247e433a496db71ee1213c87af27b90c81fada2d1218b2",
+      "design/reports/io-partition.json": "235277959121d8599cbe1b6c6ae65ed4cd3fd3813cf2a8db05d2951ce5b633ce",
+      "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8"
+     },
+     "trees": {
+      "design/partition": "c4fb824f46fb1ed366cace9b70b40e5393c169bf",
+      "design/grid": "a07b51413ec3c5ee0660ffb387c1e7a4e84c3a94",
+      "design/mechanical": "673070f1a837c50bd7c286f81ea430ed56a4dc09",
+      "design/stack": "80917ba47dd1f6527a99ab2451074c7d69a857eb",
+      "design/power": "6c384211105569d267fde070345b12c10cd0fdc7",
+      "design/reports": "97a4c5ad13f2e9d729c86f3c4a2353abf6169e88",
+      "boards": "f97cf1a3ded5f5a93d5d49bb92546fbe135acc1d"
+     },
+     "code": {
+      "scripts/stack/geometry/links_gate.py": "f4960081d667cc3852cdadb431ba280e11bfae5d0a96cbc3da788514327edf44",
+      "scripts/stack/geometry/links_gate_part2.py": "e0d584c55f823ceb4743e5cd51ad181b505ac751b7bd71641652ab9397de12ca",
+      "scripts/stack/geometry/links.py": "928814c730d87538e3eadcb03394bfd7ccc53fd45a86ea92e20c1149d0715f50",
+      "scripts/stack/geometry/stackgeom.py": "70db6b0833512a20029b743c49d9adf0fe1b69ef8bb4d0063afc3515cb07d7ab",
+      "scripts/stack/studies/mc04_s8_replacement/replacement.py": "543b02b7baf9d0a1ed531985c4b584fb1a254cc0507903e1c08b95e0ab07916e",
+      "scripts/stack/studies/mc04_s8_replacement/replacement_r7.py": "81398e90be87f58640f67252dfa5057a9747f4ecae6f7154ffa3a8a5c4091d94",
+      "scripts/stack/studies/mc04_s8_replacement/member_faces.py": "90f094da93fdeb8c177104d28648c42d1b6b1b16b11cdf01dc788c92df196e81",
+      "scripts/stack/studies/mc04_s9_slot_moves/slot_moves.py": "7fcbcd8fa5e0d19e8ecd309d6e15a1f94caad6eee237fb635b1ca908b1b16898",
+      "scripts/stack/studies/mc04_s9_slot_moves/slot_moves_a2.py": "26874e1f7d1e71923ccc88d977f6097bbf1a0c226cd9c9f54c8f00a5c58708d1",
+      "scripts/stack/studies/mc04_s10_l13/overlay.py": "8acf3bb86873612fed99daf798435fff8301bdd6302a83df2d67ec3b731f3519"
+     }
+    },
+    "tables": {
+     "links": {
+      "P-K-P-L07": {
+       "centre": [
+        29.375,
+        215.9375
+       ],
+       "slot_centre": [
+        47.375,
+        213.9375
+       ],
+       "direction": "+y",
+       "size": "FH12-N40",
+       "cable": "C26618",
+       "cable_length_mm": 50.0,
+       "circuits_needed": 23,
+       "circuits": 40,
+       "members": [
+        "K-P-101",
+        "K-P-84",
+        "K-P-86",
+        "K-P-87",
+        "K-P-91",
+        "K-P-93",
+        "K-P-94",
+        "K-P-98"
+       ],
+       "riders": []
+      },
+      "P-K-P-L08": {
+       "centre": [
+        67.3889,
+        211.6056
+       ],
+       "slot_centre": [
+        73.3889,
+        213.6056
+       ],
+       "direction": "+y",
+       "size": "FH12-N40",
+       "cable": "C26618",
+       "cable_length_mm": 50.0,
+       "circuits_needed": 27,
+       "circuits": 40,
+       "members": [
+        "K-P-100",
+        "K-P-105",
+        "K-P-106",
+        "K-P-108",
+        "K-P-113",
+        "K-P-114",
+        "K-P-115",
+        "P-K-SUB-O2",
+        "P-K-SUB-O4"
+       ],
+       "riders": []
+      },
+      "P-K-P-L12.02.01.02": {
+       "centre": [
+        150.5,
+        241.0
+       ],
+       "slot_centre": [
+        159.0,
+        237.0
+       ],
+       "direction": "+y",
+       "size": "FH12-N8",
+       "cable": "C29534",
+       "cable_length_mm": 50.0,
+       "circuits_needed": 6,
+       "circuits": 8,
+       "members": [
+        "K-P-74"
+       ],
+       "riders": [
+        [
+         "/M4B/C75c2e7_W",
+         "WIPER"
+        ],
+        [
+         "/M4A/C75c2e7_W",
+         "WIPER"
+        ],
+        [
+         "/F3/C14689f_W",
+         "WIPER"
+        ]
+       ]
+      },
+      "P-K-P-L03.01": {
+       "centre": [
+        232.6667,
+        184.3333
+       ],
+       "slot_centre": [
+        214.6667,
+        192.3333
+       ],
+       "direction": "-y",
+       "size": "FH12-N26",
+       "cable": "C32128",
+       "cable_length_mm": 60.0,
+       "circuits_needed": 25,
+       "circuits": 26,
+       "members": [
+        "K-P-16",
+        "K-P-18",
+        "K-P-20",
+        "P-K-E1",
+        "P-K-E2",
+        "P-K-E3"
+       ],
+       "riders": []
+      },
+      "P-K-P-L13.01.01.01": {
+       "centre": [
+        190.1667,
+        189.6667
+       ],
+       "slot_centre": [
+        184.1667,
+        193.6667
+       ],
+       "direction": "+y",
+       "size": "FH12-N8",
+       "cable": "C29534",
+       "cable_length_mm": 50.0,
+       "circuits_needed": 8,
+       "circuits": 8,
+       "members": [
+        "K-P-19",
+        "K-P-39",
+        "K-P-57"
+       ],
+       "riders": []
+      },
+      "P-K-P-L13.01.01.02": {
+       "centre": [
+        167.5,
+        185.0
+       ],
+       "slot_centre": [
+        167.5,
+        195.0
+       ],
+       "direction": "+y",
+       "size": "FH12-N8",
+       "cable": "C29534",
+       "cable_length_mm": 50.0,
+       "circuits_needed": 7,
+       "circuits": 8,
+       "members": [
+        "K-P-54"
+       ],
+       "riders": [
+        [
+         "/M4B/1_REMOTE",
+         "ANALOGUE"
+        ],
+        [
+         "/M4B/2_REMOTE",
+         "ANALOGUE"
+        ]
+       ]
+      },
+      "P-K-P-L13.01.02.01": {
+       "centre": [
+        167.5,
+        199.0
+       ],
+       "slot_centre": [
+        159.0,
+        198.5
+       ],
+       "direction": "-y",
+       "size": "FH12-N8",
+       "cable": "C29534",
+       "cable_length_mm": 50.0,
+       "circuits_needed": 8,
+       "circuits": 8,
+       "members": [
+        "K-P-75"
+       ],
+       "riders": [
+        [
+         "/F3/C8c344f_W",
+         "WIPER"
+        ],
+        [
+         "/F3/Ca72ec0_W",
+         "WIPER"
+        ],
+        [
+         "/F2/C2b474d_W",
+         "WIPER"
+        ],
+        [
+         "/M4A/C38051c_W",
+         "WIPER"
+        ]
+       ]
+      },
+      "P-K-P-L15.02.01.01": {
+       "centre": [
+        184.5,
+        213.0
+       ],
+       "slot_centre": [
+        193.0,
+        213.0
+       ],
+       "direction": "+y",
+       "size": "FH12-N8",
+       "cable": "C29534",
+       "cable_length_mm": 50.0,
+       "circuits_needed": 7,
+       "circuits": 8,
+       "members": [
+        "K-P-62",
+        "K-P-78",
+        "K-P-79"
+       ],
+       "riders": []
+      }
+     },
+     "ics": {
+      "U1415": {
+       "paper": [
+        62.95,
+        222.97
+       ],
+       "face": "B",
+       "courtyard": [
+        58.0,
+        219.27,
+        67.63,
+        226.67
+       ],
+       "links_on_it": {
+        "P-K-P-L07": [
+         "K field",
+         "latch margin"
+        ],
+        "P-K-P-L08": [
+         "K field",
+         "K tail",
+         "latch margin"
+        ]
+       }
+      },
+      "U5110": {
+       "paper": [
+        157.93,
+        247.72
+       ],
+       "face": "B",
+       "courtyard": [
+        153.25,
+        244.02,
+        162.88,
+        251.42
+       ],
+       "links_on_it": {
+        "P-K-P-L12.02.01.02": [
+         "K field",
+         "latch margin"
+        ]
+       }
+      },
+      "U8409": {
+       "paper": [
+        203.2,
+        192.47
+       ],
+       "face": "B",
+       "courtyard": [
+        198.25,
+        188.77,
+        207.88,
+        196.17
+       ],
+       "links_on_it": {
+        "P-K-P-L03.01": [
+         "K tail",
+         "slot"
+        ]
+       }
+      },
+      "U5209": {
+       "paper": [
+        157.95,
+        206.58
+       ],
+       "face": "B",
+       "courtyard": [
+        153.0,
+        202.88,
+        162.63,
+        210.28
+       ],
+       "links_on_it": {
+        "P-K-P-L13.01.01.02": [
+         "K field",
+         "latch margin"
+        ]
+       }
+      },
+      "U5210": {
+       "paper": [
+        180.97,
+        204.7
+       ],
+       "face": "B",
+       "courtyard": [
+        177.27,
+        199.75,
+        184.67,
+        209.38
+       ],
+       "links_on_it": {
+        "P-K-P-L13.01.01.01": [
+         "K field",
+         "K tail",
+         "latch margin"
+        ]
+       }
+      }
+     },
+     "counts": {
+      "records": 72,
+      "live": 62,
+      "dissolved": 10,
+      "holds": [
+       "JL-K-JL-L02"
+      ],
+      "L03.02.02.01 dissolved": true
+     }
+    },
+    "differences": []
+   }
+  },
+  "P2": {
+   "pass": true,
+   "detail": {
+    "returncode": 0,
+    "stdout_tail": "result-a2.json current\nU5209 R1 clean (joint) 16 96 {'input-buffer part (may not move)': 30, 'no place': 21}\nU5110 R1 not clean 0 14 {'input-buffer part (may not move)': 2, 'no place': 12}\nU8409 R1 not clean 0 183 {'input-buffer part (may not move)': 183}\nU5210 R1 clean (joint) 81 104 {}\njoint (['P-K-P-L13.01.01.01', 'P-K-P-L13.01.01.02', 'P-K-P-L13.01.02.01'], True)\ncaps []\n",
+    "stderr_tail": "3\nP-K-P-L13.01.02.01 0.5 3 144\nP-K-P-L13.01.02.01 0.25 7 154\nP-K-P-L13.01.02.01 2.0 1 170\nP-K-P-L13.01.02.01 0.5 3 171\nP-K-P-L13.01.02.01 0.25 7 182\nP-K-P-L12.02.01.02 2.0 0 199\nP-K-P-L12.02.01.02 0.5 5 201\nP-K-P-L12.02.01.02 0.25 9 245\nP-K-P-L03.01 2.0 4 335\nP-K-P-L03.01 0.5 48 337\nP-K-P-L03.01 0.25 131 351\nP-K-P-L13.01.01.01 2.0 3 369\nP-K-P-L13.01.01.01 0.5 20 392\nP-K-P-L13.01.01.01 0.25 81 530\n",
+    "result_a2_sha256": "9d524988de302e6d0052ab26b503bf24c71ce5f2c693f30b111e66955cc348d2",
+    "wall_s": 1294.9
+   }
+  },
+  "P3": {
+   "pass": true,
+   "detail": {
+    "rows": 452,
+    "byte_equal": true,
+    "wall_s": 4.8
+   }
+  },
+  "P4": {
+   "pass": true,
+   "detail": {
+    "displaced_equal": {
+     "P-K-P-L13.01.01.01": true,
+     "P-K-P-L13.01.01.02": true,
+     "P-K-P-L13.01.02.01": true
+    },
+    "rows_byte_equal": true,
+    "wall_s": 4.8
+   }
+  },
+  "P5": {
+   "pass": true,
+   "detail": {
+    "class_N": [
+     "R5249",
+     "R5256",
+     "R8221",
+     "R8331",
+     "R8356"
+    ],
+    "class_S": [
+     "R5253"
+    ],
+    "class_S_matches": true
+   }
+  },
+  "P6": {
+   "pass": true,
+   "detail": {
+    "new_protected_rows": [
+     "R5249",
+     "R5256",
+     "R8221",
+     "R8331",
+     "R8356"
+    ],
+    "shifted_protected_rows": [
+     "C8405",
+     "R5148",
+     "R5253",
+     "R8431"
+    ],
+    "removed_protected_rows": [
+     "R5226",
+     "R5228",
+     "R5247",
+     "R5250",
+     "R5251",
+     "R5260",
+     "R5263",
+     "U5207",
+     "U5209",
+     "U5210"
+    ],
+    "removed_classes": {
+     "R5226": "return to paper",
+     "R5228": "return to paper",
+     "R5247": "return to paper",
+     "R5250": "return to paper",
+     "R5251": "return to paper",
+     "R5260": "return to paper",
+     "R5263": "return to paper",
+     "U5207": "return to paper",
+     "U5209": "open IC placed",
+     "U5210": "open IC placed"
+    },
+    "removed_with_face_change": [
+     "R5251",
+     "R5260",
+     "R5263",
+     "U5207"
+    ],
+    "overlay_moved_protected": [
+     "R4238"
+    ],
+    "effective_movements": 56,
+    "face_changes": 16
+   }
+  },
+  "P7": {
+   "pass": true,
+   "detail": {
+    "inherited_excess_entries": [
+     "U4417",
+     "U4526",
+     "U4646",
+     "U5112",
+     "U5113"
+    ],
+    "base_U5113": [
+     [
+      "JL U5113 #3",
+      "distance_mm",
+      84.77,
+      "within"
+     ]
+    ],
+    "base_E5": [
+     [
+      "K U4526 #14",
+      "/E5/CURVED.added_run_estimate_mm",
+      75.81,
+      "within"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/HOLD_ENABLE.added_run_estimate_mm",
+      56.25,
+      "within"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/HOLD_N.added_run_estimate_mm",
+      39.81,
+      "within"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/L069.added_run_estimate_mm",
+      75.81,
+      "within"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/L070.added_run_estimate_mm",
+      95.25,
+      "within"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/READY.added_run_estimate_mm",
+      22.39,
+      "within"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/RISE.added_run_estimate_mm",
+      27.03,
+      "within"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/TOP_RAW.added_run_estimate_mm",
+      19.21,
+      "within"
+     ]
+    ],
+    "base_inherited_excess": [
+     [
+      "JL U5112 #2",
+      "/W2/C8df94f_SENSE.capacitance_estimate_pF"
+     ],
+     [
+      "JL U5112 #2",
+      "/W2/C8df94f_SENSE.input_passives_to_buffer_mm.R5108"
+     ],
+     [
+      "JL U5112 #2",
+      "/W2/C8df94f_SENSE.routed_estimate_mm"
+     ],
+     [
+      "JL U5113 #3",
+      "distance_mm"
+     ],
+     [
+      "JR U4646 #4",
+      "/E6/C2882f4_SENSE.capacitance_estimate_pF"
+     ],
+     [
+      "JR U4646 #4",
+      "/E6/C2882f4_SENSE.routed_estimate_mm"
+     ],
+     [
+      "JR U4646 #4",
+      "/E6/C33e306_SENSE.input_passives_to_buffer_mm.D4601"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/L016.added_run_estimate_mm"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/L016.capacitance_estimate_pF"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/L018.added_run_estimate_mm"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/L018.capacitance_estimate_pF"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/RISE.added_run_estimate_mm"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/RISE.capacitance_estimate_pF"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/START.added_run_estimate_mm"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/START.capacitance_estimate_pF"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/TOP.added_run_estimate_mm"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/TOP.capacitance_estimate_pF"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/CURVED.added_run_estimate_mm"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/CURVED.capacitance_estimate_pF"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/L069.added_run_estimate_mm"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/L069.capacitance_estimate_pF"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/L070.added_run_estimate_mm"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/L070.capacitance_estimate_pF"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/READY.added_run_estimate_mm"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/READY.capacitance_estimate_pF"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/RISE.added_run_estimate_mm"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/RISE.capacitance_estimate_pF"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/TOP_RAW.added_run_estimate_mm"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/TOP_RAW.capacitance_estimate_pF"
+     ]
+    ],
+    "base_above_limit": [],
+    "returned_above_limit": [
+     [
+      "/E5/HOLD_N.added_run_estimate_mm",
+      65.25
+     ],
+     [
+      "/E5/HOLD_N.capacitance_estimate_pF",
+      30.1
+     ],
+     [
+      "/E5/READY.added_run_estimate_mm",
+      30.64
+     ],
+     [
+      "/E5/READY.capacitance_estimate_pF",
+      38.03
+     ]
+    ]
+   }
+  },
+  "P10": {
+   "pass": true,
+   "detail": {
+    "total": 1734,
+    "by_board": {
+     "JL": 287,
+     "JR": 265,
+     "K": 1182
+    },
+    "with_base_row": 131,
+    "with_base_row_by_board": {
+     "JL": 16,
+     "JR": 12,
+     "K": 103
+    },
+    "positionless_base_rows": [
+     "U1318",
+     "U1415",
+     "U4647",
+     "U5110",
+     "U5209",
+     "U5210",
+     "U8409"
+    ]
+   }
+  },
+  "P11": {
+   "pass": true,
+   "detail": {
+    "fails": {},
+    "claimed": [],
+    "row_changes": {
+     "removed": 0,
+     "new": 0,
+     "shifted": 0
+    },
+    "locality_above_limit": [],
+    "inherited_excess": [
+     [
+      "JL U5112 #2",
+      "/W2/C8df94f_SENSE.capacitance_estimate_pF"
+     ],
+     [
+      "JL U5112 #2",
+      "/W2/C8df94f_SENSE.input_passives_to_buffer_mm.R5108"
+     ],
+     [
+      "JL U5112 #2",
+      "/W2/C8df94f_SENSE.routed_estimate_mm"
+     ],
+     [
+      "JL U5113 #3",
+      "distance_mm"
+     ],
+     [
+      "JR U4646 #4",
+      "/E6/C2882f4_SENSE.capacitance_estimate_pF"
+     ],
+     [
+      "JR U4646 #4",
+      "/E6/C2882f4_SENSE.routed_estimate_mm"
+     ],
+     [
+      "JR U4646 #4",
+      "/E6/C33e306_SENSE.input_passives_to_buffer_mm.D4601"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/L016.added_run_estimate_mm"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/L016.capacitance_estimate_pF"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/L018.added_run_estimate_mm"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/L018.capacitance_estimate_pF"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/RISE.added_run_estimate_mm"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/RISE.capacitance_estimate_pF"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/START.added_run_estimate_mm"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/START.capacitance_estimate_pF"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/TOP.added_run_estimate_mm"
+     ],
+     [
+      "K U4417 #12",
+      "/E4/TOP.capacitance_estimate_pF"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/CURVED.added_run_estimate_mm"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/CURVED.capacitance_estimate_pF"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/L069.added_run_estimate_mm"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/L069.capacitance_estimate_pF"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/L070.added_run_estimate_mm"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/L070.capacitance_estimate_pF"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/READY.added_run_estimate_mm"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/READY.capacitance_estimate_pF"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/RISE.added_run_estimate_mm"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/RISE.capacitance_estimate_pF"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/TOP_RAW.added_run_estimate_mm"
+     ],
+     [
+      "K U4526 #14",
+      "/E5/TOP_RAW.capacitance_estimate_pF"
+     ]
+    ],
+    "wall_s": 1.5
+   }
+  },
+  "P8": {
+   "pass": true,
+   "detail": {
+    "link_differences": [],
+    "rows_equal": true,
+    "ways_out_equal": true,
+    "consolidation_equal": true,
+    "hold_errors": [],
+    "working_tree_reads": [
+     "design/stack/geometry/links/link-cluster-baseline.json"
+    ],
+    "wall_s": 186.8,
+    "child_maxrss_mib": 1915.8
+   }
+  },
+  "P9": {
+   "pass": true,
+   "detail": {
+    "held_slots_reached": {
+     "P-K-P-L13.01.01.01": true,
+     "P-K-P-L13.01.01.02": true,
+     "P-K-P-L13.01.02.01": true
+    },
+    "rows_equal_32580f77": true,
+    "link_differences_vs_32580f77": [],
+    "hold_errors": [],
+    "working_tree_reads": [
+     "design/stack/geometry/links/link-cluster-baseline.json"
+    ],
+    "wall_s": 192.4,
+    "child_maxrss_mib": 1887.3
+   },
+   "note": null
+  }
+ },
+ "stop": [],
+ "wall_s": 1690.1,
+ "setup_s": 2.3,
+ "maxrss_mib": 304.0
+}

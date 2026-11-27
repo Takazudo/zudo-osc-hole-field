@@ -1,0 +1,1634 @@
+{
+ "schema_version": 1,
+ "study": "MC04-S12 (DS-151), study only",
+ "status": "STUDY ONLY, NOTHING ADOPTED, UNVALIDATED DRAFTS",
+ "brief": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s12-five-ic-joint-search-brief-20261127.md",
+ "brief_sha256": "1ecf7da618924bf1a21b825ad1ce682ffa057b66cc950b0285f110e9e2069a2a",
+ "snapshot": "6e5716e7fc011e2f028982f645d18b8d802acb29",
+ "generator": "scripts/stack/studies/mc04_s12_five_ic_joint/joint_search.py",
+ "fingerprint": {
+  "os": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+  "arch": "x86_64",
+  "nproc": 4,
+  "cpu_affinity": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "cgroup": {
+   "memory.max": "not present (no cgroup v2 file)",
+   "memory.current": "not present (no cgroup v2 file)",
+   "cpu.max": "not present (no cgroup v2 file)"
+  },
+  "meminfo": {
+   "MemTotal": "16473316 kB",
+   "MemAvailable": "15746864 kB",
+   "SwapTotal": "0 kB",
+   "SwapFree": "0 kB"
+  },
+  "disk": [
+   "/dev/vda        252G   19G   51G  28% /"
+  ],
+  "interpreter": "/home/user/venv312/bin/python",
+  "python": "3.12.3",
+  "packages": {
+   "numpy": "2.2.6",
+   "scipy": "1.15.3",
+   "shapely": "2.1.2"
+  },
+  "kicad_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "kicad_image_present": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec 18693567392b",
+  "kicad_cli_version": "10.0.6",
+  "docker_daemon": "server 29.9.3, driver overlayfs, containers 0 (running 0)",
+  "processes": [
+   "PID   RSS     ELAPSED COMMAND",
+   "  122 434328      52:21 claude",
+   " 8754 95316       25:53 dockerd",
+   " 8763 50456       25:53 containerd",
+   "  114 41536       52:21 environment-man",
+   "27617 41456       00:00 python",
+   "   94 29084       52:22 rclone-filestor",
+   "27610 11968       00:00 python",
+   "    1  5964       52:22 process_api",
+   "27755  4420       00:00 ps",
+   "27123  3488       04:25 bash",
+   "27608  3436       00:00 bash",
+   "   93  3024       52:22 8",
+   "  109  2164       52:21 sh",
+   "27126  2072       04:25 grep"
+  ],
+  "commit": "cc63e3d960b674bb9651608cd32fd46ec22de62e",
+  "tree_clean_at_start": false,
+  "brief_sha256": "1ecf7da618924bf1a21b825ad1ce682ffa057b66cc950b0285f110e9e2069a2a"
+ },
+ "stages": {
+  "arm0": {
+   "returncode": 0,
+   "wall_s": 1690.3
+  },
+  "pilot": {
+   "returncode": 0,
+   "wall_s": 6.9
+  },
+  "stage1": {
+   "returncode": 0,
+   "wall_s": 176.6
+  },
+  "stage2": {
+   "returncode": 0,
+   "wall_s": 60.9
+  },
+  "stage3": {
+   "returncode": 0,
+   "wall_s": 2.7
+  },
+  "stage4": {
+   "returncode": 0,
+   "wall_s": 2.6
+  }
+ },
+ "stop": null,
+ "resumes": [
+  {
+   "at": "2026-11-27T08:15:58Z",
+   "finished_stages_kept": [
+    "arm0",
+    "pilot"
+   ],
+   "reason": "the first driver invocation was stopped at 08:13:45Z during stage 1 by the session tool background time limit (30 min), an external interruption, not a cap, ceiling or failure of the study; resumed once from the finished arm 0 and pilot stages",
+   "input_pins_unchanged": true,
+   "fingerprint": {
+    "os": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+    "arch": "x86_64",
+    "nproc": 4,
+    "cpu_affinity": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "cgroup": {
+     "memory.max": "not present (no cgroup v2 file)",
+     "memory.current": "not present (no cgroup v2 file)",
+     "cpu.max": "not present (no cgroup v2 file)"
+    },
+    "meminfo": {
+     "MemTotal": "16473316 kB",
+     "MemAvailable": "15710328 kB",
+     "SwapTotal": "0 kB",
+     "SwapFree": "0 kB"
+    },
+    "disk": [
+     "/dev/vda        252G   19G   50G  28% /"
+    ],
+    "interpreter": "/home/user/venv312/bin/python",
+    "python": "3.12.3",
+    "packages": {
+     "numpy": "2.2.6",
+     "scipy": "1.15.3",
+     "shapely": "2.1.2"
+    },
+    "kicad_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "kicad_image_present": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec 18693567392b",
+    "kicad_cli_version": "10.0.6",
+    "docker_daemon": "server 29.9.3, driver overlayfs, containers 0 (running 0)",
+    "processes": [
+     "PID   RSS     ELAPSED COMMAND",
+     "  122 417004   01:24:27 claude",
+     " 8754 95132       57:59 dockerd",
+     " 8763 49500       57:59 containerd",
+     "30198 41860       00:00 python",
+     "  114 41704    01:24:27 environment-man",
+     "   94 29092    01:24:28 rclone-filestor",
+     "30191 11992       00:00 python",
+     "    1  5964    01:24:28 process_api",
+     "30363  4476       00:00 ps",
+     "28447  3500       21:36 bash",
+     "29316  3492       10:21 bash",
+     "28489  3476       21:31 bash",
+     "30189  3460       00:00 bash",
+     "   93  3024    01:24:28 8"
+    ],
+    "commit": "cc63e3d960b674bb9651608cd32fd46ec22de62e",
+    "tree_clean_at_start": false,
+    "brief_sha256": "1ecf7da618924bf1a21b825ad1ce682ffa057b66cc950b0285f110e9e2069a2a"
+   }
+  }
+ ],
+ "run_bounds": {
+  "memory_measure": "guard.py: RSS of the whole process tree sampled every 5 s against the 8 GiB budget, plus an abort when system MemAvailable drops below 7 GiB (15 GiB - 8 GiB), because an oracle container runs under dockerd outside the tree; docker stats sampled every 30 s for the container peak. No cgroup v2 memory files exist in this container, so no cgroup scope was used",
+  "guarded_steps": {
+   "driver-resume-guard": {
+    "command": [
+     "/home/user/venv312/bin/python",
+     "joint_search.py",
+     "--resume"
+    ],
+    "returncode": 0,
+    "wall_s": 250.3,
+    "peak_tree_rss_mib": 338.1,
+    "min_mem_available_mib": 15096.6,
+    "peak_docker_container_mem_mib": 0.0,
+    "watchdog_fired": null
+   },
+   "end-check": {
+    "command": [
+     "/home/user/venv312/bin/python",
+     "joint_search.py",
+     "--check"
+    ],
+    "returncode": 0,
+    "wall_s": 20.0,
+    "peak_tree_rss_mib": 297.3,
+    "min_mem_available_mib": 15111.7,
+    "peak_docker_container_mem_mib": 0.0,
+    "watchdog_fired": null
+   },
+   "end-circuit": {
+    "command": [
+     "pnpm",
+     "circuit:check"
+    ],
+    "returncode": 0,
+    "wall_s": 5.0,
+    "peak_tree_rss_mib": 0.1,
+    "min_mem_available_mib": 15378.0,
+    "peak_docker_container_mem_mib": 0.0,
+    "watchdog_fired": null
+   },
+   "end-regen": {
+    "command": [
+     "bash",
+     "scripts/checks/regen-all.sh",
+     "--check"
+    ],
+    "returncode": 0,
+    "wall_s": 355.1,
+    "peak_tree_rss_mib": 371.6,
+    "min_mem_available_mib": 14082.8,
+    "peak_docker_container_mem_mib": 766.8,
+    "watchdog_fired": null
+   },
+   "end-test": {
+    "command": [
+     "/home/user/venv312/bin/python",
+     "-m",
+     "unittest",
+     "test_s12"
+    ],
+    "returncode": 0,
+    "wall_s": 10.0,
+    "peak_tree_rss_mib": 170.6,
+    "min_mem_available_mib": 15256.3,
+    "peak_docker_container_mem_mib": 0.0,
+    "watchdog_fired": null
+   },
+   "start-circuit": {
+    "command": [
+     "pnpm",
+     "circuit:check"
+    ],
+    "returncode": 0,
+    "wall_s": 5.0,
+    "peak_tree_rss_mib": 1.8,
+    "min_mem_available_mib": 15400.7,
+    "peak_docker_container_mem_mib": 0.0,
+    "watchdog_fired": null
+   },
+   "start-regen": {
+    "command": [
+     "bash",
+     "scripts/checks/regen-all.sh"
+    ],
+    "returncode": 0,
+    "wall_s": 371.9,
+    "peak_tree_rss_mib": 370.8,
+    "min_mem_available_mib": 14456.0,
+    "peak_docker_container_mem_mib": 968.2,
+    "watchdog_fired": null
+   }
+  }
+ },
+ "checkpoint_sha256": {
+  "checkpoints/arm0.json": "64bb5bfb6f4a943a4cac919532c265b8fa58515e06a3abfddf57fddc84cbd398",
+  "checkpoints/pilot.json": "08a53467e72bfe5d2fc5c6a433a8dcccb73ac6d126bbe7989448bdaaeb2bee6c",
+  "checkpoints/stage2.json": "03e6bab1a4b4024ad2cafbaa385b29066e3f7f9abb364ad0a9bc476b2a380be6",
+  "checkpoints/stage3.json": "d75689d9410648ade37a6ee8f1d131befd75b8fa675afd846632ebddc472117e",
+  "checkpoints/stage4.json": "923bdb5fd2e1fe2feea1bd78d2c25a6f9139a3767246f1b3e407fbbfa035099e",
+  "census.json": "92f6fdede21948d10ed49236889f1853b77c1e803445a945a15a92e7dbda095e"
+ },
+ "arm0": {
+  "P1": true,
+  "P2": true,
+  "P3": true,
+  "P4": true,
+  "P5": true,
+  "P6": true,
+  "P7": true,
+  "P10": true,
+  "P11": true,
+  "P8": true,
+  "P9": true
+ },
+ "census": {
+  "P-K-P-L07": {
+   "2": {
+    "legal_rule1": {
+     "≤ 24 mm": 10,
+     "24–35 mm": 13
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 6,
+      "24–35 mm": 0
+     },
+     "3": {
+      "≤ 24 mm": 6,
+      "24–35 mm": 0
+     },
+     "4": {
+      "≤ 24 mm": 4,
+      "24–35 mm": 0
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 0,
+    "t1_by_class": {
+     "N": 4,
+     "S": 4
+    }
+   },
+   "0.5": {
+    "legal_rule1": {
+     "≤ 24 mm": 201,
+     "24–35 mm": 174
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 143,
+      "24–35 mm": 0
+     },
+     "3": {
+      "≤ 24 mm": 143,
+      "24–35 mm": 0
+     },
+     "4": {
+      "≤ 24 mm": 122,
+      "24–35 mm": 0
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 0,
+    "t1_by_class": {
+     "N": 122,
+     "S": 50
+    }
+   },
+   "0.25": {
+    "legal_rule1": {
+     "≤ 24 mm": 807,
+     "24–35 mm": 724
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 579,
+      "24–35 mm": 0
+     },
+     "3": {
+      "≤ 24 mm": 579,
+      "24–35 mm": 0
+     },
+     "4": {
+      "≤ 24 mm": 494,
+      "24–35 mm": 0
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 0,
+    "t1_by_class": {
+     "N": 494,
+     "S": 228
+    }
+   },
+   "totals": {
+    "legal_rule1": 1929,
+    "after_rule_6": 0
+   }
+  },
+  "P-K-P-L08": {
+   "2": {
+    "legal_rule1": {
+     "≤ 24 mm": 21,
+     "24–35 mm": 6
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 14,
+      "24–35 mm": 0
+     },
+     "3": {
+      "≤ 24 mm": 14,
+      "24–35 mm": 0
+     },
+     "4": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 0,
+    "t1_by_class": {
+     "N": 0,
+     "S": 0
+    }
+   },
+   "0.5": {
+    "legal_rule1": {
+     "≤ 24 mm": 388,
+     "24–35 mm": 60
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 157,
+      "24–35 mm": 0
+     },
+     "3": {
+      "≤ 24 mm": 157,
+      "24–35 mm": 0
+     },
+     "4": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 0,
+    "t1_by_class": {
+     "N": 0,
+     "S": 0
+    }
+   },
+   "0.25": {
+    "legal_rule1": {
+     "≤ 24 mm": 1474,
+     "24–35 mm": 240
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 616,
+      "24–35 mm": 0
+     },
+     "3": {
+      "≤ 24 mm": 616,
+      "24–35 mm": 0
+     },
+     "4": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 0,
+    "t1_by_class": {
+     "N": 0,
+     "S": 0
+    }
+   },
+   "totals": {
+    "legal_rule1": 2189,
+    "after_rule_6": 0
+   }
+  },
+  "P-K-P-L12.02.01.02": {
+   "2": {
+    "legal_rule1": {
+     "≤ 24 mm": 0,
+     "24–35 mm": 0
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "3": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "4": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 0,
+    "t1_by_class": {
+     "N": 0,
+     "S": 0
+    }
+   },
+   "0.5": {
+    "legal_rule1": {
+     "≤ 24 mm": 61,
+     "24–35 mm": 34
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 29,
+      "24–35 mm": 11
+     },
+     "3": {
+      "≤ 24 mm": 29,
+      "24–35 mm": 11
+     },
+     "4": {
+      "≤ 24 mm": 16,
+      "24–35 mm": 6
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 0,
+    "t1_by_class": {
+     "N": 22,
+     "S": 0
+    }
+   },
+   "0.25": {
+    "legal_rule1": {
+     "≤ 24 mm": 122,
+     "24–35 mm": 70
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 58,
+      "24–35 mm": 22
+     },
+     "3": {
+      "≤ 24 mm": 58,
+      "24–35 mm": 22
+     },
+     "4": {
+      "≤ 24 mm": 32,
+      "24–35 mm": 12
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 0,
+    "t1_by_class": {
+     "N": 44,
+     "S": 0
+    }
+   },
+   "totals": {
+    "legal_rule1": 287,
+    "after_rule_6": 0
+   }
+  },
+  "P-K-P-L03.01": {
+   "2": {
+    "legal_rule1": {
+     "≤ 24 mm": 11,
+     "24–35 mm": 0
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 4,
+      "24–35 mm": 0
+     },
+     "3": {
+      "≤ 24 mm": 4,
+      "24–35 mm": 0
+     },
+     "4": {
+      "≤ 24 mm": 4,
+      "24–35 mm": 0
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 0,
+    "t1_by_class": {
+     "N": 4,
+     "S": 4
+    }
+   },
+   "0.5": {
+    "legal_rule1": {
+     "≤ 24 mm": 134,
+     "24–35 mm": 55
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 48,
+      "24–35 mm": 0
+     },
+     "3": {
+      "≤ 24 mm": 48,
+      "24–35 mm": 0
+     },
+     "4": {
+      "≤ 24 mm": 48,
+      "24–35 mm": 0
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 0,
+    "t1_by_class": {
+     "N": 48,
+     "S": 48
+    }
+   },
+   "0.25": {
+    "legal_rule1": {
+     "≤ 24 mm": 387,
+     "24–35 mm": 226
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 131,
+      "24–35 mm": 0
+     },
+     "3": {
+      "≤ 24 mm": 131,
+      "24–35 mm": 0
+     },
+     "4": {
+      "≤ 24 mm": 131,
+      "24–35 mm": 0
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 0,
+    "t1_by_class": {
+     "N": 131,
+     "S": 131
+    }
+   },
+   "totals": {
+    "legal_rule1": 813,
+    "after_rule_6": 0
+   }
+  },
+  "P-K-P-L13.01.01.01": {
+   "2": {
+    "legal_rule1": {
+     "≤ 24 mm": 49,
+     "24–35 mm": 51
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 49,
+      "24–35 mm": 47
+     },
+     "3": {
+      "≤ 24 mm": 49,
+      "24–35 mm": 47
+     },
+     "4": {
+      "≤ 24 mm": 23,
+      "24–35 mm": 47
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 1,
+    "t1_by_class": {
+     "N": 69,
+     "S": 17
+    }
+   },
+   "0.5": {
+    "legal_rule1": {
+     "≤ 24 mm": 727,
+     "24–35 mm": 1165
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 723,
+      "24–35 mm": 1054
+     },
+     "3": {
+      "≤ 24 mm": 723,
+      "24–35 mm": 1054
+     },
+     "4": {
+      "≤ 24 mm": 365,
+      "24–35 mm": 1029
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 4
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 4
+     }
+    },
+    "rejected_for_class_S_alone": 90,
+    "t1_by_class": {
+     "N": 1300,
+     "S": 754
+    }
+   },
+   "0.25": {
+    "legal_rule1": {
+     "≤ 24 mm": 2862,
+     "24–35 mm": 4610
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 2845,
+      "24–35 mm": 4123
+     },
+     "3": {
+      "≤ 24 mm": 2845,
+      "24–35 mm": 4123
+     },
+     "4": {
+      "≤ 24 mm": 1416,
+      "24–35 mm": 4023
+     },
+     "5": {
+      "≤ 24 mm": 5,
+      "24–35 mm": 18
+     },
+     "6": {
+      "≤ 24 mm": 5,
+      "24–35 mm": 18
+     }
+    },
+    "rejected_for_class_S_alone": 374,
+    "t1_by_class": {
+     "N": 5042,
+     "S": 2926
+    }
+   },
+   "totals": {
+    "legal_rule1": 9464,
+    "after_rule_6": 27
+   }
+  },
+  "P-K-P-L13.01.01.02": {
+   "2": {
+    "legal_rule1": {
+     "≤ 24 mm": 7,
+     "24–35 mm": 20
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 7,
+      "24–35 mm": 3
+     },
+     "3": {
+      "≤ 24 mm": 7,
+      "24–35 mm": 3
+     },
+     "4": {
+      "≤ 24 mm": 1,
+      "24–35 mm": 0
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 0,
+    "t1_by_class": {
+     "N": 1,
+     "S": 1
+    }
+   },
+   "0.5": {
+    "legal_rule1": {
+     "≤ 24 mm": 97,
+     "24–35 mm": 243
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 84,
+      "24–35 mm": 34
+     },
+     "3": {
+      "≤ 24 mm": 84,
+      "24–35 mm": 34
+     },
+     "4": {
+      "≤ 24 mm": 14,
+      "24–35 mm": 14
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 1,
+    "t1_by_class": {
+     "N": 27,
+     "S": 8
+    }
+   },
+   "0.25": {
+    "legal_rule1": {
+     "≤ 24 mm": 305,
+     "24–35 mm": 779
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 279,
+      "24–35 mm": 90
+     },
+     "3": {
+      "≤ 24 mm": 279,
+      "24–35 mm": 90
+     },
+     "4": {
+      "≤ 24 mm": 29,
+      "24–35 mm": 28
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 2,
+    "t1_by_class": {
+     "N": 55,
+     "S": 17
+    }
+   },
+   "totals": {
+    "legal_rule1": 1451,
+    "after_rule_6": 0
+   }
+  },
+  "P-K-P-L13.01.02.01": {
+   "2": {
+    "legal_rule1": {
+     "≤ 24 mm": 7,
+     "24–35 mm": 30
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 7,
+      "24–35 mm": 0
+     },
+     "3": {
+      "≤ 24 mm": 7,
+      "24–35 mm": 0
+     },
+     "4": {
+      "≤ 24 mm": 1,
+      "24–35 mm": 0
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 0,
+    "t1_by_class": {
+     "N": 1,
+     "S": 1
+    }
+   },
+   "0.5": {
+    "legal_rule1": {
+     "≤ 24 mm": 133,
+     "24–35 mm": 330
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 73,
+      "24–35 mm": 38
+     },
+     "3": {
+      "≤ 24 mm": 73,
+      "24–35 mm": 38
+     },
+     "4": {
+      "≤ 24 mm": 21,
+      "24–35 mm": 38
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 1,
+    "t1_by_class": {
+     "N": 58,
+     "S": 11
+    }
+   },
+   "0.25": {
+    "legal_rule1": {
+     "≤ 24 mm": 378,
+     "24–35 mm": 1084
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 202,
+      "24–35 mm": 76
+     },
+     "3": {
+      "≤ 24 mm": 202,
+      "24–35 mm": 76
+     },
+     "4": {
+      "≤ 24 mm": 43,
+      "24–35 mm": 76
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 2,
+    "t1_by_class": {
+     "N": 117,
+     "S": 23
+    }
+   },
+   "totals": {
+    "legal_rule1": 1962,
+    "after_rule_6": 0
+   }
+  },
+  "P-K-P-L15.02.01.01": {
+   "2": {
+    "legal_rule1": {
+     "≤ 24 mm": 29,
+     "24–35 mm": 89
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 29,
+      "24–35 mm": 74
+     },
+     "3": {
+      "≤ 24 mm": 29,
+      "24–35 mm": 74
+     },
+     "4": {
+      "≤ 24 mm": 14,
+      "24–35 mm": 51
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 3
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 3
+     }
+    },
+    "rejected_for_class_S_alone": 0,
+    "t1_by_class": {
+     "N": 62,
+     "S": 9
+    }
+   },
+   "0.5": {
+    "legal_rule1": {
+     "≤ 24 mm": 332,
+     "24–35 mm": 1002
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 332,
+      "24–35 mm": 831
+     },
+     "3": {
+      "≤ 24 mm": 332,
+      "24–35 mm": 831
+     },
+     "4": {
+      "≤ 24 mm": 190,
+      "24–35 mm": 543
+     },
+     "5": {
+      "≤ 24 mm": 3,
+      "24–35 mm": 13
+     },
+     "6": {
+      "≤ 24 mm": 3,
+      "24–35 mm": 13
+     }
+    },
+    "rejected_for_class_S_alone": 10,
+    "t1_by_class": {
+     "N": 707,
+     "S": 116
+    }
+   },
+   "0.25": {
+    "legal_rule1": {
+     "≤ 24 mm": 1152,
+     "24–35 mm": 3674
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 1152,
+      "24–35 mm": 3022
+     },
+     "3": {
+      "≤ 24 mm": 1152,
+      "24–35 mm": 3022
+     },
+     "4": {
+      "≤ 24 mm": 651,
+      "24–35 mm": 2020
+     },
+     "5": {
+      "≤ 24 mm": 12,
+      "24–35 mm": 42
+     },
+     "6": {
+      "≤ 24 mm": 12,
+      "24–35 mm": 42
+     }
+    },
+    "rejected_for_class_S_alone": 32,
+    "t1_by_class": {
+     "N": 2585,
+     "S": 414
+    }
+   },
+   "totals": {
+    "legal_rule1": 6278,
+    "after_rule_6": 73
+   }
+  },
+  "P-K-P-L07@26": {
+   "2": {
+    "legal_rule1": {
+     "≤ 24 mm": 36,
+     "24–35 mm": 28
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 10,
+      "24–35 mm": 0
+     },
+     "3": {
+      "≤ 24 mm": 10,
+      "24–35 mm": 0
+     },
+     "4": {
+      "≤ 24 mm": 7,
+      "24–35 mm": 0
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 1,
+    "t1_by_class": {
+     "N": 6,
+     "S": 7
+    }
+   },
+   "0.5": {
+    "legal_rule1": {
+     "≤ 24 mm": 544,
+     "24–35 mm": 386
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 181,
+      "24–35 mm": 0
+     },
+     "3": {
+      "≤ 24 mm": 181,
+      "24–35 mm": 0
+     },
+     "4": {
+      "≤ 24 mm": 178,
+      "24–35 mm": 0
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 7,
+    "t1_by_class": {
+     "N": 171,
+     "S": 75
+    }
+   },
+   "0.25": {
+    "legal_rule1": {
+     "≤ 24 mm": 2069,
+     "24–35 mm": 1538
+    },
+    "after_rule": {
+     "2": {
+      "≤ 24 mm": 731,
+      "24–35 mm": 0
+     },
+     "3": {
+      "≤ 24 mm": 731,
+      "24–35 mm": 0
+     },
+     "4": {
+      "≤ 24 mm": 719,
+      "24–35 mm": 0
+     },
+     "5": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     },
+     "6": {
+      "≤ 24 mm": 0,
+      "24–35 mm": 0
+     }
+    },
+    "rejected_for_class_S_alone": 51,
+    "t1_by_class": {
+     "N": 668,
+     "S": 325
+    }
+   },
+   "totals": {
+    "legal_rule1": 4601,
+    "after_rule_6": 0
+   }
+  }
+ },
+ "census_zero_links": [
+  "P-K-P-L03.01",
+  "P-K-P-L07",
+  "P-K-P-L07@26",
+  "P-K-P-L08",
+  "P-K-P-L12.02.01.02",
+  "P-K-P-L13.01.01.02",
+  "P-K-P-L13.01.02.01"
+ ],
+ "pool_caps": [],
+ "stage3": {
+  "West": {
+   "40-way": {
+    "clean_scenes": 0,
+    "log": {
+     "targets": [
+      "U1415"
+     ],
+     "must_move": [
+      "P-K-P-L07",
+      "P-K-P-L08"
+     ],
+     "pool_sizes": {
+      "P-K-P-L07": 0,
+      "P-K-P-L08": 0
+     },
+     "replays": 0,
+     "legality_calls": 0,
+     "complete_scenes": 0,
+     "bound": "none: no pool entry for P-K-P-L07, P-K-P-L08 (census zero after rules 1 to 6)",
+     "illegal": {},
+     "exhausted": true
+    },
+    "wall_s": 0.0
+   },
+   "26-way": {
+    "clean_scenes": 0,
+    "log": {
+     "targets": [
+      "U1415"
+     ],
+     "must_move": [
+      "P-K-P-L07",
+      "P-K-P-L08"
+     ],
+     "pool_sizes": {
+      "P-K-P-L07": 0,
+      "P-K-P-L08": 0
+     },
+     "replays": 0,
+     "legality_calls": 0,
+     "complete_scenes": 0,
+     "bound": "none: no pool entry for P-K-P-L07, P-K-P-L08 (census zero after rules 1 to 6)",
+     "illegal": {},
+     "exhausted": true
+    },
+    "wall_s": null
+   }
+  },
+  "South": {
+   "clean_scenes": 0,
+   "log": {
+    "targets": [
+     "U5110"
+    ],
+    "must_move": [
+     "P-K-P-L12.02.01.02"
+    ],
+    "pool_sizes": {
+     "P-K-P-L12.02.01.02": 0
+    },
+    "replays": 0,
+    "legality_calls": 0,
+    "complete_scenes": 0,
+    "bound": "none: no pool entry for P-K-P-L12.02.01.02 (census zero after rules 1 to 6)",
+    "illegal": {},
+    "exhausted": true
+   },
+   "wall_s": 0.0
+  },
+  "East": [
+   {
+    "clean_scenes": 0,
+    "log": {
+     "targets": [
+      "U8409",
+      "U5210",
+      "U5209"
+     ],
+     "must_move": [
+      "P-K-P-L03.01",
+      "P-K-P-L13.01.01.01",
+      "P-K-P-L13.01.01.02"
+     ],
+     "pool_sizes": {
+      "P-K-P-L03.01": 0,
+      "P-K-P-L15.02.01.01": 8,
+      "P-K-P-L13.01.01.01": 4,
+      "P-K-P-L13.01.02.01": 1,
+      "P-K-P-L13.01.01.02": 0
+     },
+     "replays": 0,
+     "legality_calls": 0,
+     "complete_scenes": 0,
+     "bound": "none: no pool entry for P-K-P-L03.01, P-K-P-L13.01.01.02 (census zero after rules 1 to 6)",
+     "illegal": {},
+     "exhausted": true
+    },
+    "wall_s": 0.0,
+    "targets": [
+     "U8409",
+     "U5210",
+     "U5209"
+    ]
+   },
+   {
+    "clean_scenes": 0,
+    "log": {
+     "targets": [
+      "U5209",
+      "U5210"
+     ],
+     "must_move": [
+      "P-K-P-L13.01.01.01",
+      "P-K-P-L13.01.01.02"
+     ],
+     "pool_sizes": {
+      "P-K-P-L03.01": 1,
+      "P-K-P-L15.02.01.01": 8,
+      "P-K-P-L13.01.01.01": 4,
+      "P-K-P-L13.01.02.01": 1,
+      "P-K-P-L13.01.01.02": 0
+     },
+     "replays": 0,
+     "legality_calls": 0,
+     "complete_scenes": 0,
+     "bound": "none: no pool entry for P-K-P-L13.01.01.02 (census zero after rules 1 to 6)",
+     "illegal": {},
+     "exhausted": true
+    },
+    "wall_s": 0.0,
+    "targets": [
+     "U5209",
+     "U5210"
+    ]
+   },
+   {
+    "clean_scenes": 0,
+    "log": {
+     "targets": [
+      "U8409",
+      "U5210"
+     ],
+     "must_move": [
+      "P-K-P-L03.01",
+      "P-K-P-L13.01.01.01"
+     ],
+     "pool_sizes": {
+      "P-K-P-L03.01": 0,
+      "P-K-P-L15.02.01.01": 8,
+      "P-K-P-L13.01.01.01": 4,
+      "P-K-P-L13.01.02.01": 1,
+      "P-K-P-L13.01.01.02": 1
+     },
+     "replays": 0,
+     "legality_calls": 0,
+     "complete_scenes": 0,
+     "bound": "none: no pool entry for P-K-P-L03.01 (census zero after rules 1 to 6)",
+     "illegal": {},
+     "exhausted": true
+    },
+    "wall_s": 0.0,
+    "targets": [
+     "U8409",
+     "U5210"
+    ]
+   },
+   {
+    "clean_scenes": 0,
+    "log": {
+     "targets": [
+      "U8409",
+      "U5209"
+     ],
+     "must_move": [
+      "P-K-P-L03.01",
+      "P-K-P-L13.01.01.02"
+     ],
+     "pool_sizes": {
+      "P-K-P-L03.01": 0,
+      "P-K-P-L15.02.01.01": 8,
+      "P-K-P-L13.01.01.01": 5,
+      "P-K-P-L13.01.02.01": 1,
+      "P-K-P-L13.01.01.02": 0
+     },
+     "replays": 0,
+     "legality_calls": 0,
+     "complete_scenes": 0,
+     "bound": "none: no pool entry for P-K-P-L03.01, P-K-P-L13.01.01.02 (census zero after rules 1 to 6)",
+     "illegal": {},
+     "exhausted": true
+    },
+    "wall_s": 0.0,
+    "targets": [
+     "U8409",
+     "U5209"
+    ]
+   },
+   {
+    "clean_scenes": 0,
+    "log": {
+     "targets": [
+      "U8409"
+     ],
+     "must_move": [
+      "P-K-P-L03.01"
+     ],
+     "pool_sizes": {
+      "P-K-P-L03.01": 0,
+      "P-K-P-L15.02.01.01": 8,
+      "P-K-P-L13.01.01.01": 5,
+      "P-K-P-L13.01.02.01": 1,
+      "P-K-P-L13.01.01.02": 1
+     },
+     "replays": 0,
+     "legality_calls": 0,
+     "complete_scenes": 0,
+     "bound": "none: no pool entry for P-K-P-L03.01 (census zero after rules 1 to 6)",
+     "illegal": {},
+     "exhausted": true
+    },
+    "wall_s": 0.0,
+    "targets": [
+     "U8409"
+    ]
+   },
+   {
+    "clean_scenes": 0,
+    "log": {
+     "targets": [
+      "U5210"
+     ],
+     "must_move": [
+      "P-K-P-L13.01.01.01"
+     ],
+     "pool_sizes": {
+      "P-K-P-L03.01": 1,
+      "P-K-P-L15.02.01.01": 8,
+      "P-K-P-L13.01.01.01": 4,
+      "P-K-P-L13.01.02.01": 1,
+      "P-K-P-L13.01.01.02": 1
+     },
+     "replays": 0,
+     "legality_calls": 13,
+     "complete_scenes": 0,
+     "bound": null,
+     "illegal": {
+      "P-K-P-L15.02.01.01: first 4.0 mm of the front tail on panel hardware SW1303": 1,
+      "P-K-P-L15.02.01.01: front field on panel hardware SW1303": 3,
+      "P-K-P-L15.02.01.01: front field on front field of P-K-P-L03.01": 2,
+      "P-K-P-L15.02.01.01: slot on front field of P-K-P-L03.01 (front board P)": 1,
+      "P-K-P-L13.01.01.01: front field on front field of P-K-P-L03.01": 2,
+      "P-K-P-L13.01.01.01: slot on front field of P-K-P-L03.01 (front board P)": 2
+     },
+     "exhausted": true
+    },
+    "wall_s": 0.0,
+    "targets": [
+     "U5210"
+    ]
+   },
+   {
+    "clean_scenes": 0,
+    "log": {
+     "targets": [
+      "U5209"
+     ],
+     "must_move": [
+      "P-K-P-L13.01.01.02"
+     ],
+     "pool_sizes": {
+      "P-K-P-L03.01": 1,
+      "P-K-P-L15.02.01.01": 8,
+      "P-K-P-L13.01.01.01": 5,
+      "P-K-P-L13.01.02.01": 1,
+      "P-K-P-L13.01.01.02": 0
+     },
+     "replays": 0,
+     "legality_calls": 0,
+     "complete_scenes": 0,
+     "bound": "none: no pool entry for P-K-P-L13.01.01.02 (census zero after rules 1 to 6)",
+     "illegal": {},
+     "exhausted": true
+    },
+    "wall_s": 0.0,
+    "targets": [
+     "U5209"
+    ]
+   }
+  ]
+ },
+ "stage4": {
+  "combinations": 0,
+  "combination_cap_reached": false,
+  "kept": [],
+  "rejected": [],
+  "full_replays": 0
+ },
+ "diagnostic_single_move_legality": {
+  "U1415": {
+   "P-K-P-L07": {
+    "census_candidates": 0,
+    "legal_with_all_others_at_record": 0,
+    "reasons": {}
+   },
+   "P-K-P-L08": {
+    "census_candidates": 0,
+    "legal_with_all_others_at_record": 0,
+    "reasons": {}
+   }
+  },
+  "U5110": {
+   "P-K-P-L12.02.01.02": {
+    "census_candidates": 0,
+    "legal_with_all_others_at_record": 0,
+    "reasons": {}
+   }
+  },
+  "U8409": {
+   "P-K-P-L03.01": {
+    "census_candidates": 0,
+    "legal_with_all_others_at_record": 0,
+    "reasons": {}
+   }
+  },
+  "U5209": {
+   "P-K-P-L13.01.01.02": {
+    "census_candidates": 0,
+    "legal_with_all_others_at_record": 0,
+    "reasons": {}
+   }
+  },
+  "U5210": {
+   "P-K-P-L13.01.01.01": {
+    "census_candidates": 27,
+    "legal_with_all_others_at_record": 0,
+    "reasons": {
+     "slot on front field of P-K-P-L03.01 (front board P)": 22,
+     "front field on front field of P-K-P-L03.01": 5
+    }
+   }
+  }
+ },
+ "rows_clean_not_candidates": [],
+ "candidates": [],
+ "verdicts": {
+  "U1415": {
+   "verdict": "NO CANDIDATE ON THIS DOMAIN (EXHAUSTIVE)",
+   "reason": "census zero after rules 1 to 6 on the 2.0, 0.5 and 0.25 mm grids within 35 mm for P-K-P-L07, P-K-P-L08",
+   "links_needed": [
+    "P-K-P-L07",
+    "P-K-P-L08"
+   ]
+  },
+  "U5110": {
+   "verdict": "NO CANDIDATE ON THIS DOMAIN (EXHAUSTIVE)",
+   "reason": "census zero after rules 1 to 6 on the 2.0, 0.5 and 0.25 mm grids within 35 mm for P-K-P-L12.02.01.02",
+   "links_needed": [
+    "P-K-P-L12.02.01.02"
+   ]
+  },
+  "U8409": {
+   "verdict": "NO CANDIDATE ON THIS DOMAIN (EXHAUSTIVE)",
+   "reason": "census zero after rules 1 to 6 on the 2.0, 0.5 and 0.25 mm grids within 35 mm for P-K-P-L03.01",
+   "links_needed": [
+    "P-K-P-L03.01"
+   ]
+  },
+  "U5209": {
+   "verdict": "NO CANDIDATE ON THIS DOMAIN (EXHAUSTIVE)",
+   "reason": "census zero after rules 1 to 6 on the 2.0, 0.5 and 0.25 mm grids within 35 mm for P-K-P-L13.01.01.02",
+   "links_needed": [
+    "P-K-P-L13.01.01.02"
+   ]
+  },
+  "U5210": {
+   "verdict": "NO SCENE FOUND (BOUNDED BY THE POOL REDUCTION)",
+   "links_needed": [
+    "P-K-P-L13.01.01.01"
+   ]
+  }
+ },
+ "l07_26_way": {
+  "signals": 16,
+  "circuits_needed": 23,
+  "fits_26": true,
+  "allocation_errors": [],
+  "size_entry": [
+   {
+    "circuits": 26,
+    "cable": "C32128",
+    "cable_length_mm": 60.0,
+    "connector": "FH12-26S-0.5SH(55), C202113",
+    "status": "SOURCED (st01h item5_cables, item1_factory_listing)"
+   }
+  ],
+  "connector": "FH12-26S-0.5SH(55), C202113",
+  "cable": "C32128",
+  "cable_length_mm": 60.0,
+  "flex_links_cites_C202113_and_C32128": true,
+  "also_used_by": "P-K-P-L03.01 (FH12-N26, C32128 60 mm)",
+  "gate_a_check_1": "the 26-way variant closes nothing in Gate A check 1"
+ }
+}
