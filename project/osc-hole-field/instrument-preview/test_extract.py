@@ -140,5 +140,83 @@ class Rasters(unittest.TestCase):
                     self.assertTrue(0 < c['coverage'] < 1)
 
 
+class Configuration(unittest.TestCase):
+    """The snapshot names one configuration and refuses boards or a package manifest that do not match it."""
+
+    @classmethod
+    def setUpClass(cls):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('preview_extract', HERE / 'extract.py')
+        cls.ex = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.ex)
+        cls.conf_text = (ROOT / cls.ex.CONFIGURATION).read_text()
+
+    def inputs(self):
+        return {p: {'sha256': sha256(ROOT / p)} for p in self.conf()['board_sha256']}
+
+    def conf(self):
+        return json.loads(self.conf_text)
+
+    def run_with(self, conf):
+        path = ROOT / self.ex.CONFIGURATION
+        try:
+            path.write_text(json.dumps(conf))
+            return self.ex.load_configuration(self.inputs())
+        finally:
+            path.write_text(self.conf_text)
+
+    def test_view_carries_the_current_configuration(self):
+        self.assertEqual(VIEW['configuration'], self.conf())
+        self.assertEqual(VIEW['inputs'][self.ex.CONFIGURATION]['sha256'], sha256(ROOT / self.ex.CONFIGURATION))
+        self.assertEqual(VIEW['configuration']['owner_confirmation'], 'PENDING')
+
+    def test_baseline_is_not_selected_and_has_no_package(self):
+        c = self.conf()
+        self.assertFalse(c['selected_for_order'])
+        self.assertIsNone(c['package_manifest'])
+        self.assertIn('HOLD', c['package_status'])
+
+    def test_declared_board_hashes_match_the_snapshot(self):
+        for p, h in self.conf()['board_sha256'].items():
+            self.assertEqual(VIEW['inputs'][p]['sha256'], h, p)
+
+    def test_rejects_a_stale_board_hash(self):
+        c = self.conf()
+        c['board_sha256']['boards/osc-core/osc-core.kicad_pcb'] = '0' * 64
+        with self.assertRaises(SystemExit):
+            self.run_with(c)
+
+    def test_rejects_a_missing_or_extra_board(self):
+        c = self.conf()
+        c['board_sha256'].pop('boards/panel/panel.kicad_pcb')
+        with self.assertRaises(SystemExit):
+            self.run_with(c)
+
+    def test_rejects_selection_without_a_package(self):
+        c = self.conf()
+        c['selected_for_order'] = True
+        with self.assertRaises(SystemExit):
+            self.run_with(c)
+
+    def test_rejects_a_missing_package_manifest(self):
+        c = self.conf()
+        c['package_manifest'] = {'path': 'manufacturing/does-not-exist.json', 'sha256': '0' * 64}
+        with self.assertRaises(SystemExit):
+            self.run_with(c)
+
+    def test_rejects_a_manifest_bound_to_other_boards(self):
+        import tempfile
+        c = self.conf()
+        with tempfile.NamedTemporaryFile('w', suffix='.json', dir=HERE, delete=False) as f:
+            json.dump({'board_sha256': {**c['board_sha256'], 'boards/osc-core/osc-core.kicad_pcb': '1' * 64}}, f)
+        rel = str(Path(f.name).relative_to(ROOT))
+        try:
+            c['package_manifest'] = {'path': rel, 'sha256': sha256(f.name)}
+            with self.assertRaises(SystemExit):
+                self.run_with(c)
+        finally:
+            Path(f.name).unlink()
+
+
 if __name__ == '__main__':
     unittest.main()

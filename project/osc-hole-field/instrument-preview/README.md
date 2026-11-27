@@ -24,6 +24,12 @@
 
 Excluded: `boards/osc-jack/` (historical single jack board), `boards/fixture-jacks/` (fixture) and the P layout file.
 
+## Configuration
+
+`configuration.json` names the one configuration a snapshot shows: its id, role, source commit, the SHA-256 of all eleven board files, the package manifest it corresponds to, and the owner-confirmation state. `extract.py` refuses to extract when a checked-out board differs from the declared hash, when the board set differs, when a configuration is marked `selected_for_order` without a package manifest, or when a declared manifest is missing, has another hash or binds other boards. The banner and the Sources drawer show the configuration, the package linkage and the confirmation state.
+
+The committed snapshot is the **canonical baseline** (`canonical-baseline-690366aa`): main's board drafts in the cable-partition stack, K F.Cu at z = −100 mm. It is **not** the selected E20 prototype configuration, it has no manufacturing package (#318 HOLD), and owner confirmation is PENDING (#369). The proposed FFC link candidate (K rear z = −32.2 mm) is a different configuration and face datum; it is not shown until it is source-bound as its own configuration. Returned S10 overlays are never part of an accepted view.
+
 ## Coordinates
 
 Every footprint in the ten boards carries `FootprintOriginMm`. The difference between the footprint position and this property is the same for every footprint on every board: **(100, 50) mm**. The panel board has no such property; its Edge.Cuts origin is at (100, 50) as well.

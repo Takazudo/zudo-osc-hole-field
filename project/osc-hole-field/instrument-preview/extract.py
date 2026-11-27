@@ -28,6 +28,7 @@ from kicad_pcb import outline_loops, polygon_area, read_board, rot  # noqa: E402
 
 DATA_DIR = HERE / 'data'
 VIEW = HERE / 'view-data.json'
+CONFIGURATION = 'project/osc-hole-field/instrument-preview/configuration.json'
 
 # Current boards. P is the routed draft: design/reports/instrument-readiness.json binds
 # it as the P unit and lists osc-control-layout.kicad_pcb under excluded_board_files.
@@ -253,6 +254,34 @@ def git(*args):
         return ''
 
 
+def load_configuration(inputs):
+    """The named configuration this snapshot shows. Refuse a snapshot whose boards differ from the configuration's
+    declared board hashes, or whose declared package manifest is missing or binds other boards."""
+    conf = json.loads((ROOT / CONFIGURATION).read_text())
+    boards = {path for _, path, _ in BOARDS} | {PANEL_PCB}
+    if set(conf['board_sha256']) != boards:
+        raise SystemExit(f'FAIL configuration {conf["id"]} names boards {sorted(set(conf["board_sha256"]) ^ boards)} '
+                         'that differ from the preview board set')
+    stale = sorted(p for p in boards if conf['board_sha256'][p] != inputs[p]['sha256'])
+    if stale:
+        raise SystemExit(f'FAIL configuration {conf["id"]} does not match the checked-out boards: {stale}')
+    if conf.get('selected_for_order') and not conf.get('package_manifest'):
+        raise SystemExit(f'FAIL configuration {conf["id"]} is marked selected for order without a package manifest')
+    manifest = conf.get('package_manifest')
+    if manifest:
+        path = manifest['path']
+        if not (ROOT / path).is_file():
+            raise SystemExit(f'FAIL package manifest {path} is missing')
+        inputs[path] = {'sha256': sha256(ROOT / path), 'bytes': (ROOT / path).stat().st_size}
+        if inputs[path]['sha256'] != manifest['sha256']:
+            raise SystemExit(f'FAIL package manifest {path} hash differs from the configuration')
+        bound = json.loads((ROOT / path).read_text()).get('board_sha256', {})
+        wrong = sorted(p for p in boards if bound.get(p) != conf['board_sha256'][p])
+        if wrong:
+            raise SystemExit(f'FAIL package manifest {path} binds other boards: {wrong}')
+    return conf
+
+
 def extract(base_commit: str | None):
     inputs = {}
 
@@ -266,6 +295,8 @@ def extract(base_commit: str | None):
     use(PANEL_PCB)
     for path in OTHER_INPUTS.values():
         use(path)
+    use(CONFIGURATION)
+    configuration = load_configuration(inputs)
     partition = json.loads((ROOT / OTHER_INPUTS['partition']).read_text())
     lock = json.loads((ROOT / OTHER_INPUTS['lock']).read_text())
     checkpoint = json.loads((ROOT / OTHER_INPUTS['checkpoint']).read_text())
@@ -399,6 +430,7 @@ def extract(base_commit: str | None):
         'base_commit': base_commit or git('rev-parse', '--short=10', 'HEAD'),
         'extracted_utc': dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%d'),
         'inputs': inputs,
+        'configuration': configuration,
         'excluded': EXCLUDED,
         'families': [{'key': k, 'label': l, 'height_mm': h, 'color': c} for k, l, _, h, c in FAMILIES],
         'part_columns': ['ref', 'value', 'mpn', 'manufacturer', 'footprint', 'x', 'y', 'rot', 'cx', 'cy', 'w', 'h',
