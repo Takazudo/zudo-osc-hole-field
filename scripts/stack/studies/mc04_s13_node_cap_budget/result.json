@@ -1,0 +1,197 @@
+{
+ "arm0": {
+  "P1": {
+   "detail": "all 21 pinned input hashes and the LM13700 model hash match",
+   "result": "PASS"
+  },
+  "P2": {
+   "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+   "kicad_cli_version": "10.0.6",
+   "ngspice_banner": "ngspice-44.2",
+   "result": "PASS"
+  },
+  "P3": {
+   "detail": "OPAx196 ZIP read-only from circuit-dev-resources 54c00fc8 (gh api), ZIP 9c264813... and OPAx196.LIB 31142f5d... match; OPAx197 ZIP and LIB match",
+   "result": "PASS"
+  },
+  "P4a": {
+   "detail": "sweep_precision_vendor --check --offline: 12/12, precision-output-vendor.json byte-equal",
+   "result": "PASS",
+   "wall_s": 10.2
+  },
+  "P4b": {
+   "cause": "sweep_input_buffer_vendor.py pins scripts/stack/studies/mc04_s1b_indicator_loops/result.json at PAPER_SHA256 5cdac8e9... (the file as committed in 4b0ccee5, 2026-11-21). Commit 93197a3e (2026-11-22, an ancestor of HEAD) regenerated that file; at HEAD it is 4058446308c49e1b044cf933eb788706c43782492fa7968ac12c6ed06574840c. The retained receipt check therefore cannot pass at HEAD independent of this study.",
+   "decks_completed_before_error": "62 of the 136 cases printed done; the run raised at the first OPA4196 case5a row, before the byte comparison",
+   "error": "RuntimeError: stage 1b paper-screen result changed; review before updating the pin (sweep_input_buffer_vendor.py paper_points(), line 810)",
+   "receipt_after": "design/reports/spice/input-buffer-vendor.json unchanged (12a0de40...), working tree clean except the study directory",
+   "result": "FAIL (STOP 2)",
+   "rows_compared": 0,
+   "wall_s": 1233.6
+  },
+  "P5": "NOT RUN (stopped at P4b)",
+  "P6": {
+   "detail": "107 footprints, 64 nets, classes 11/23/10/1/9/5/1/3/1, binding rows found (offline derivation, census.json)",
+   "result": "PASS"
+  },
+  "P7": "NOT RUN (stopped at P4b)",
+  "P8": "NOT RUN (stopped at P4b)",
+  "P9": "NOT RUN (stopped at P4b)"
+ },
+ "brief_sha256": "a8d915f694af63c5b04dc5849066fc3d56ac33960003e661eef51d7a478e94c2",
+ "commit": "26a17a46",
+ "deck_source_modules": {
+  "design/spec/cells/_builder.py": "38974710ca3b0fd23d4608cea04251cf5110d91141e6a1e89385f46211ad2a56",
+  "design/spec/instrument.py": "a499b1822f31ac1fd343d5e94e976e64f0a22e3d4bd44d82488b5316d221894f",
+  "design/spec/modules/filter.py": "a558a91236dc020e72e2b3731556bf76585cd51208d0cbe95ddc9221e2ddc62f",
+  "design/spec/modules/io_partition.py": "a4d0190b3391446b563e38cd4ec6d9cecfdfd227f38c2ed1d845f308fcbb02c0",
+  "design/spec/modules/mix5.py": "037e1a79aa57f5f00044bfd5e004c0df870d72f9326f3436f22c0971544e1cc1",
+  "design/spec/modules/mixer_common.py": "f5d8a92b4e138a174a274e445c2de9b49f443f1803ebb2cc2dcc5a361031de0e",
+  "design/spec/modules/offset.py": "f25f3430ae1263dad830d255b653707afc8b2d502e1e7070cf3a977e51d1b642",
+  "scripts/schgen/core.py": "674670237a9c41dc17f71989d0da0ef12dfe6d27186498225cdc892498fe6083"
+ },
+ "end_checks": {
+  "budget_check": "NOT RUN (no results)",
+  "circuit_check": "PASS",
+  "regen_all_check": "NOT RUN (stopped; tracked tree verified clean by git status)",
+  "unit_tests": "16 run, 15 pass, 1 skip (M3 needs the control run)"
+ },
+ "fingerprint": {
+  "/sys/fs/cgroup/cpu.max": "absent",
+  "/sys/fs/cgroup/memory.current": "absent",
+  "/sys/fs/cgroup/memory.max": "absent",
+  "MemAvailable": "15791628 kB",
+  "SwapTotal": "0 kB",
+  "affinity": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "commit": "26a17a46c980e7a3b59280e9654b77f4b94adfcf",
+  "disk_free_GiB": 50.7,
+  "docker": "29.9.3",
+  "image": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "interpreter": "/home/user/venv312/bin/python",
+  "machine": "x86_64",
+  "nproc": 4,
+  "os": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+  "processes_top_rss": [
+   "RSS COMMAND",
+   "378420 claude",
+   "101140 dockerd",
+   "58200 containerd",
+   "41848 environment-man",
+   "28080 rclone-filestor",
+   "20408 python",
+   " 5788 process_api"
+  ],
+  "python": "3.12.3"
+ },
+ "guards": {
+  "guard-p4a.json": {
+   "budget_bytes": 4294967296,
+   "command": [
+    "/home/user/venv312/bin/python",
+    "-m",
+    "design.spec.cells.sweep_precision_vendor",
+    "--check",
+    "--offline"
+   ],
+   "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
+   "mem_available_floor_bytes": 8589934592,
+   "min_mem_available_mib": 15366.9,
+   "peak_docker_container_mem_mib": 0.0,
+   "peak_tree_plus_container_mib": 58.7,
+   "peak_tree_rss_bytes": 61521920,
+   "peak_tree_rss_mib": 58.7,
+   "pinned_containers_after": [],
+   "returncode": 0,
+   "samples": 2,
+   "wall_s": 10.2,
+   "watchdog_fired": null
+  },
+  "guard-p4b.json": {
+   "budget_bytes": 4294967296,
+   "command": [
+    "/home/user/venv312/bin/python",
+    "-m",
+    "design.spec.cells.sweep_input_buffer_vendor",
+    "--check",
+    "--offline"
+   ],
+   "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
+   "mem_available_floor_bytes": 8589934592,
+   "min_mem_available_mib": 15098.3,
+   "peak_docker_container_mem_mib": 218.5,
+   "peak_tree_plus_container_mib": 334.9,
+   "peak_tree_rss_bytes": 178655232,
+   "peak_tree_rss_mib": 170.4,
+   "pinned_containers_after": [],
+   "returncode": 1,
+   "samples": 207,
+   "wall_s": 1233.6,
+   "watchdog_fired": null
+  },
+  "guard-start-circuit-check.json": {
+   "budget_bytes": 4294967296,
+   "command": [
+    "pnpm",
+    "circuit:check"
+   ],
+   "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
+   "mem_available_floor_bytes": 8589934592,
+   "min_mem_available_mib": 15394.1,
+   "peak_docker_container_mem_mib": 0.0,
+   "peak_tree_plus_container_mib": 0.3,
+   "peak_tree_rss_bytes": 270336,
+   "peak_tree_rss_mib": 0.3,
+   "pinned_containers_after": [],
+   "returncode": 0,
+   "samples": 1,
+   "wall_s": 5.1,
+   "watchdog_fired": null
+  },
+  "guard-start-regen-all.json": {
+   "budget_bytes": 4294967296,
+   "command": [
+    "bash",
+    "scripts/checks/regen-all.sh"
+   ],
+   "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
+   "mem_available_floor_bytes": 8589934592,
+   "min_mem_available_mib": 14504.5,
+   "peak_docker_container_mem_mib": 926.7,
+   "peak_tree_plus_container_mib": 968.0,
+   "peak_tree_rss_bytes": 409841664,
+   "peak_tree_rss_mib": 390.9,
+   "pinned_containers_after": [],
+   "returncode": 0,
+   "samples": 81,
+   "wall_s": 447.3,
+   "watchdog_fired": null
+  }
+ },
+ "invocations_sweep": 0,
+ "outcome": "STOPPED at Arm 0 P4b (brief STOP 2). No sweep deck, no P5/P7/P8/P9 control and no budget row was run; budget.json and results.jsonl are not written.",
+ "start_checks": {
+  "circuit_check": "PASS",
+  "regen_all": {
+   "result": "PASS, no tracked change",
+   "wall_s": 447.3
+  }
+ },
+ "status": "MODEL EVIDENCE ONLY, STUDY, NOT ADOPTED, UNVALIDATED DRAFT",
+ "study_files": {
+  "budget.py": "e7039fd2a778b6e2ed44ddd5e2d402b4c9a0ebdadd90066ed9885af4bb7005da",
+  "cells.py": "17c0137523cfe9f4a922d5fbd88bacf2827ce58d9090ffab5e0624112979f29d",
+  "guard.py": "5d066228ed1efca4f4f072efa52b5e5c4432f34ca0ec77e90da5d4baa4c51651",
+  "runner.py": "805d9f142d9341a04e9ead081478f62f83798bd656676b64140a1a284dfa7349",
+  "test_s13.py": "7af7f72445e5411aa8709b888119580fc542bdf313f6031cafda1c8ff7c2ca30"
+ },
+ "sweep_plan_prepared_not_run": {
+  "main_decks": 1408,
+  "main_points": 704,
+  "note": "what-if, Ruling 6 output pairs and the class F diagnostic follow from results",
+  "topologies": 17
+ }
+}
