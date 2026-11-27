@@ -254,10 +254,10 @@ def git(*args):
         return ''
 
 
-def load_configuration(inputs):
+def load_configuration(inputs, path=None):
     """The named configuration this snapshot shows. Refuse a snapshot whose boards differ from the configuration's
     declared board hashes, or whose declared package manifest is missing or binds other boards."""
-    conf = json.loads((ROOT / CONFIGURATION).read_text())
+    conf = json.loads((path or ROOT / CONFIGURATION).read_text())
     boards = {path for _, path, _ in BOARDS} | {PANEL_PCB}
     if set(conf['board_sha256']) != boards:
         raise SystemExit(f'FAIL configuration {conf["id"]} names boards {sorted(set(conf["board_sha256"]) ^ boards)} '
@@ -270,12 +270,15 @@ def load_configuration(inputs):
     manifest = conf.get('package_manifest')
     if manifest:
         path = manifest['path']
+        if Path(path).is_absolute() or '..' in Path(path).parts:
+            raise SystemExit(f'FAIL package manifest {path} must be a repository-relative path')
         if not (ROOT / path).is_file():
             raise SystemExit(f'FAIL package manifest {path} is missing')
         inputs[path] = {'sha256': sha256(ROOT / path), 'bytes': (ROOT / path).stat().st_size}
         if inputs[path]['sha256'] != manifest['sha256']:
             raise SystemExit(f'FAIL package manifest {path} hash differs from the configuration')
-        bound = json.loads((ROOT / path).read_text()).get('board_sha256', {})
+        bound = json.loads((ROOT / path).read_text())
+        bound = bound.get('board_sha256', {}) if isinstance(bound, dict) else {}
         wrong = sorted(p for p in boards if bound.get(p) != conf['board_sha256'][p])
         if wrong:
             raise SystemExit(f'FAIL package manifest {path} binds other boards: {wrong}')

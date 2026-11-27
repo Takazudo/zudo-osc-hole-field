@@ -141,7 +141,8 @@ class Rasters(unittest.TestCase):
 
 
 class Configuration(unittest.TestCase):
-    """The snapshot names one configuration and refuses boards or a package manifest that do not match it."""
+    """The snapshot names one configuration and refuses boards or a package manifest that do not match it.
+    Mutation cases use temporary copies; the tracked configuration.json is never rewritten."""
 
     @classmethod
     def setUpClass(cls):
@@ -151,19 +152,35 @@ class Configuration(unittest.TestCase):
         spec.loader.exec_module(cls.ex)
         cls.conf_text = (ROOT / cls.ex.CONFIGURATION).read_text()
 
-    def inputs(self):
-        return {p: {'sha256': sha256(ROOT / p)} for p in self.conf()['board_sha256']}
-
     def conf(self):
         return json.loads(self.conf_text)
 
+    def inputs(self):
+        return {p: {'sha256': sha256(ROOT / p)} for p in self.conf()['board_sha256']}
+
     def run_with(self, conf):
-        path = ROOT / self.ex.CONFIGURATION
-        try:
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / 'configuration.json'
             path.write_text(json.dumps(conf))
-            return self.ex.load_configuration(self.inputs())
-        finally:
-            path.write_text(self.conf_text)
+            return self.ex.load_configuration(self.inputs(), path)
+
+    def rejects(self, conf, words):
+        with self.assertRaises(SystemExit) as cm:
+            self.run_with(conf)
+        self.assertIn(words, str(cm.exception))
+
+    def with_manifest(self, body, raw=None):
+        """A temporary repository-relative manifest (removed afterwards) and a configuration naming it."""
+        import tempfile
+        fd, name = tempfile.mkstemp(suffix='.json', prefix='.tmp-manifest-', dir=HERE)
+        import os
+        os.close(fd)
+        Path(name).write_text(raw if raw is not None else json.dumps(body))
+        self.addCleanup(Path(name).unlink)
+        c = self.conf()
+        c['package_manifest'] = {'path': str(Path(name).relative_to(ROOT)), 'sha256': sha256(name)}
+        return c
 
     def test_view_carries_the_current_configuration(self):
         self.assertEqual(VIEW['configuration'], self.conf())
@@ -180,42 +197,54 @@ class Configuration(unittest.TestCase):
         for p, h in self.conf()['board_sha256'].items():
             self.assertEqual(VIEW['inputs'][p]['sha256'], h, p)
 
+    def test_current_configuration_is_accepted(self):
+        self.assertEqual(self.run_with(self.conf())['id'], self.conf()['id'])
+
     def test_rejects_a_stale_board_hash(self):
         c = self.conf()
         c['board_sha256']['boards/osc-core/osc-core.kicad_pcb'] = '0' * 64
-        with self.assertRaises(SystemExit):
-            self.run_with(c)
+        self.rejects(c, 'does not match the checked-out boards')
 
-    def test_rejects_a_missing_or_extra_board(self):
+    def test_rejects_a_missing_board(self):
         c = self.conf()
         c['board_sha256'].pop('boards/panel/panel.kicad_pcb')
-        with self.assertRaises(SystemExit):
-            self.run_with(c)
+        self.rejects(c, 'differ from the preview board set')
+
+    def test_rejects_an_extra_board(self):
+        c = self.conf()
+        c['board_sha256']['boards/osc-jack/osc-jack.kicad_pcb'] = '0' * 64
+        self.rejects(c, 'differ from the preview board set')
 
     def test_rejects_selection_without_a_package(self):
         c = self.conf()
         c['selected_for_order'] = True
-        with self.assertRaises(SystemExit):
-            self.run_with(c)
+        self.rejects(c, 'selected for order without a package manifest')
 
     def test_rejects_a_missing_package_manifest(self):
         c = self.conf()
         c['package_manifest'] = {'path': 'manufacturing/does-not-exist.json', 'sha256': '0' * 64}
-        with self.assertRaises(SystemExit):
-            self.run_with(c)
+        self.rejects(c, 'is missing')
+
+    def test_rejects_an_absolute_manifest_path(self):
+        c = self.conf()
+        c['package_manifest'] = {'path': str(HERE / 'configuration.json'), 'sha256': '0' * 64}
+        self.rejects(c, 'repository-relative')
+
+    def test_rejects_a_changed_manifest(self):
+        c = self.with_manifest({'board_sha256': self.conf()['board_sha256']})
+        c['package_manifest']['sha256'] = '0' * 64
+        self.rejects(c, 'hash differs from the configuration')
 
     def test_rejects_a_manifest_bound_to_other_boards(self):
-        import tempfile
-        c = self.conf()
-        with tempfile.NamedTemporaryFile('w', suffix='.json', dir=HERE, delete=False) as f:
-            json.dump({'board_sha256': {**c['board_sha256'], 'boards/osc-core/osc-core.kicad_pcb': '1' * 64}}, f)
-        rel = str(Path(f.name).relative_to(ROOT))
-        try:
-            c['package_manifest'] = {'path': rel, 'sha256': sha256(f.name)}
-            with self.assertRaises(SystemExit):
-                self.run_with(c)
-        finally:
-            Path(f.name).unlink()
+        boards = {**self.conf()['board_sha256'], 'boards/osc-core/osc-core.kicad_pcb': '1' * 64}
+        self.rejects(self.with_manifest({'board_sha256': boards}), 'binds other boards')
+
+    def test_rejects_a_manifest_that_is_not_an_object(self):
+        self.rejects(self.with_manifest(None, raw='[]'), 'binds other boards')
+
+    def test_accepts_a_matching_manifest(self):
+        c = self.with_manifest({'board_sha256': self.conf()['board_sha256']})
+        self.assertEqual(self.run_with(c)['package_manifest'], c['package_manifest'])
 
 
 if __name__ == '__main__':
