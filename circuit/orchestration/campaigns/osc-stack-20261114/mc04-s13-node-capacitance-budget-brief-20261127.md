@@ -1,4 +1,4 @@
-# MC04-S13 brief: vendor-model simulation that sets a stray-capacitance budget per protected node (DS-161), Revision 4
+# MC04-S13 brief: vendor-model simulation that sets a stray-capacitance budget per protected node (DS-161), Revision 6
 
 2026-11-27. Issue #367 (MC-04 paper gate). The owner's choice DS-161 (option 1 of
 `mc04-s12-disposition-20261127.md`), briefed by the design authority under DS-03 (Fable design agent at high effort,
@@ -16,8 +16,14 @@ it is not a stability proof, not a hardware qualification and not an acceptance 
 `7757906d2db2d9da73978ac4ca16c6b3e53a30034b20d99d7dbfc2560aedb68e`) applied all twelve and its delta re-review
 returned ACCEPT WITH CORRECTIONS (one required, two wording). Revision 3 (SHA-256
 `a8d915f694af63c5b04dc5849066fc3d56ac33960003e661eef51d7a478e94c2`) applied those three, was admitted and stopped at
-Arm 0 P4b (STOP 2, commit `e3b747b7`, `mc04-s13-report-20261127.md`). **This Revision 4 adds Addendum A, which
-redefines P4b**; nothing else changes. It needs a delta check and a new admission before a re-run. (Revision history
+Arm 0 P4b (STOP 2, commit `e3b747b7`, `mc04-s13-report-20261127.md`). Revision 4 (SHA-256
+`a0381b6a6c6f5a65414951c96d4eaf611c9aa7a38ff9d33eea2281eb7cfc5806`) added Addendum A, which redefines P4b; its run
+passed P1 to P6, P8 and the new P4b and stopped at Arm 0 P7 (STOP 2, commit `44424d42`). **This Revision 5 adds
+Addendum B, which rules how an operating point is obtained and checked, adds control P6b and settles how P7 treats
+a control that is not evaluated**. Revision 5 (SHA-256
+`d0a8f2769163c2e92517f2c332f4612c9123d3869faa2c39d23a58ebd9a4bf9f`) was delta-reviewed ACCEPT WITH CORRECTIONS (4);
+**this Revision 6 applies those four** and changes nothing else. The manager confirms it by inspection; the re-run
+needs a new admission. (Revision history
 at the end). The reviewer asks for no further round if R1 is applied as worded; the manager confirms it by
 inspection. The manager admits the run after the admission checks in "Run
 bounds".
@@ -348,7 +354,9 @@ The study follows the retained receipts and does not invent a second route.
 - The loop deck repeats the sequence of `loop_oracle()`: operating point, AC with voltage injection, AC with current
   injection, operating point again, with the same combination `T = (Tv·Ti − 1)/(Tv + Ti + 2)`, the same check that
   the operating point did not move, and the tolerance ladder `reltol=1e-6 vntol=1e-9 abstol=1e-15`, then
-  `reltol=1e-5`, then default. P5 and P8 prove the study's runner against the retained figures.
+  `reltol=1e-5`, then default. P5 and P8 prove the study's runner against the retained figures. Since Revision 5
+  every loop deck and every closed-loop deck starts from a seeded operating point and passes the acceptance test
+  of Addendum B (B2); P5 and P8 are measured with that seeded runner.
 - The closed-loop deck holds the AC, noise, small-step, large-step and sine analyses of one point. If the vendor
   cores do not converge together in one deck, the runner may split that point into one deck per analysis; each
   split deck counts against the cap.
@@ -369,7 +377,8 @@ The study follows the retained receipts and does not invent a second route.
 | P4b | reproduce the vendor-simulated content of a retained receipt (OPAx196 and OPAx197) | **as redefined in Addendum A**: `python scripts/stack/studies/mc04_s13_node_cap_budget/p4b.py --run` (then `--resume` per slice) reports all 136 rows, `loop_break_validation` and every derived block of `input-buffer-vendor.json` equal to the retained receipt, with only the 16 `metrics.paper_screen` objects excluded. The plain `--check --offline` of the retained script is no longer the control: it cannot pass at HEAD |
 | P5 | loop-break method | the study's own loop measurement reproduces the three `loop_break_validation` rows (analytic phase margin 9.953°, 59.67°, 7.713°) within 0.1° |
 | P6 | census | the study derives 107 footprints and 64 nets, with the class counts 11, 23, 10, 1, 9, 5, 1, 3, 1, and the four binding rows above |
-| P7 | positive control: an excessive load must fail | `/W1/DRIVE_INV_SUM` with 1 nF on the node fails K1 and K4; `/E2/REF9_FB` with 1 nF fails K1. If either passes, the method cannot discriminate: stop |
+| P6b | operating point of H-REF9 at zero stray (Addendum B, B3) | for each of the three H-REF9 seed decks (output capacitance 0 and 100 pF, and the Ruling 6 bracket variant if the sweep uses one), at `C_stray` = 0: `V(out)` = 9.000 V ± 10 mV, the inverting input within 1 mV of the non-inverting input at 5.000 V, and the seeded loop deck and seeded closed-loop deck at 0 pF return the seed reference (full-precision operating point of the seed deck, not the `wrnodev` text) within 50 µV at some step of the tolerance ladder, tightest first; the step that passes is recorded. Any miss: stop |
+| P7 | positive control: an excessive load must fail | `/W1/DRIVE_INV_SUM` with 1 nF on the node fails K1 and K4; `/E2/REF9_FB` with 1 nF fails K1. Both are measured on a seeded and accepted operating point (Addendum B, B2). If either passes, the method cannot discriminate: stop. If either is `NOT EVALUATED`, that is neither the required failure nor a pass: stop (Addendum B, B4) |
 | P8 | negative control | the plain unity follower, no load, gives 54.82° at 2.597 MHz (OPAx196) and 63.95° at 9.986 MHz (OPAx197), within 0.1° and 0.5 %, as the retained `case5a_control` rows |
 | P9 | cross-check, not pass or fail | the class E result at 0, 10 and 20 pF is reported beside the first-order figures of `f2_loop_estimate.py` (31°, 21°, 17°), with the difference |
 
@@ -399,6 +408,9 @@ small step, large step, sine in one `.control` block).
   A cap that is reached is reported as a cap. If closed-loop decks must be split per analysis for more than a few
   points, the cap will be reached before the sweep ends: the driver then stops and reports which classes are
   complete. It does not thin the sweep, and a higher cap is a new admission.
+- Since Addendum B the count is about 1 800 decks, plus up to 240 for the class B single-path drives (R1), plus up
+  to 180 seed decks: up to 2 220 before any split deck or retry. That leaves little room under the 2 400 cap; the
+  cap is unchanged and reaching it is reported as above.
 - Order of the sweep, so that a cap or ceiling costs the least: classes B, C and A first (U8409, U5210), then D, H,
   E, G, the what-if rows, the Ruling 6 pairs and last the class F diagnostic.
 - Conditions: rails ±12 V ideal, 27 °C, model typical. No temperature or tolerance corner is run; the factor of two
@@ -423,6 +435,11 @@ small step, large step, sine in one `.control` block).
 | M9 | one vendor metric changed in an in-memory copy of the retained receipt (a `phase_margin_deg`, a `crossover_Hz`, a `deck_sha256`) | fail P4b |
 | M10 | a `metrics.paper_screen` object changed or removed in that copy | not fail P4b; the same change to any other key of the same row must fail |
 | M11 | a 17th row given a `paper_screen` key, or one of the 16 losing it, in that copy | fail P4b (the exclusion set is exactly the 16 rows) |
+| M12 | the seed include removed from the `/E2/REF9_FB` 1 nF loop deck | be rejected by the operating-point acceptance test (the row is `NOT EVALUATED`, never a K1 figure) |
+| M13 | one seed value of an external node changed by 1 mV in an in-memory copy of the recorded seed | fail the 50 µV comparison |
+| M14 | a P7 result set to `NOT EVALUATED` in an in-memory copy of the controls record | make P7 fail, not pass |
+| M15 | a seed whose output is 11.97 V, and separately a seed whose amplifier inputs are 2 mV apart (in-memory copies) | each fail the seed validity test of B2.3 |
+| M16 | the `/W1/DRIVE_INV_SUM` control record with its K4 result removed (in-memory copy) | fail P7; this requires the fix of `budget.py` line 871, `res.get("K4_fails", True)` |
 
 ## Run bounds (ORCHESTRATION.md section 3)
 
@@ -474,8 +491,9 @@ each criterion, the per-value criterion results,
 The file carries the status line "MODEL EVIDENCE ONLY, STUDY, NOT ADOPTED, UNVALIDATED DRAFT" and a `method_limits`
 block that every row inherits: generic single-channel TI family cores; no package parasitics, channel coupling or
 supply impedance; ideal ±12 V rails; typical-only; 27 °C; capacitance lumped to AGND; 0.20 pF/mm, the 1.5 route
-factor, 0.5 pF per via and 0.3 pF per pad all ASSUMED; Ruling 4 pending its re-review in the placement brief. The
-report repeats the
+factor, 0.5 pF per via and 0.3 pF per pad all ASSUMED; Ruling 4 pending its re-review in the placement brief; and
+(Addendum B) the seed selects the zero-stray operating point, so no other DC state, such as a latched output or a
+start-up state, is examined. The report repeats the
 table, the binding rows per IC, every what-if row, the class F diagnostic, the controls, the bounds, and what is not
 established.
 
@@ -493,7 +511,8 @@ and tolerance corners (not admitted by this brief).
 Stop, write what was found, and change nothing further on any of these:
 
 1. input drift: a pin or a model hash differs;
-2. any Arm 0 control fails, P4a drift or a P4b difference outside the Addendum A exclusion included;
+2. any Arm 0 control fails, P4a drift or a P4b difference outside the Addendum A exclusion included; a P6b miss
+   and a P7 control that is `NOT EVALUATED` after the Addendum B seed are such failures;
 3. the pinned image is missing or does not report KiCad 10.0.6, the admission check fails, the guard fires, a
    container of the pinned image survives `docker kill`, P4b is killed by a limit, or a ceiling is reached;
 4. the pilot projects the sweep beyond 5 h;
@@ -720,6 +739,156 @@ to refresh anything.
 Decided by: design authority (DS-03, Fable agent at high effort), owner notified. Reverse by: a design-authority
 ruling, or the MC04-RM1 result.
 
+## Addendum B (Revision 5): the operating point is seeded from the zero-stray solution and checked; P6b is added; a control that is not evaluated stops the run
+
+Design-authority ruling under DS-03 (Fable design agent at high effort, model `claude-fable-5-2`), 2026-11-27; owner
+notified. Cause: the second S13 run stopped at P7 under STOP 2 (`44424d42`). The stop was correct and stays on
+record. This addendum changes how the study obtains an operating point. It changes no criterion, no scope, no cap
+and no retained file.
+
+### Diagnosis: the H-REF9 deck is built correctly; the operating point was a non-equilibrium snapshot
+
+The diagnosis was read-only: single decks through `bash scripts/kicad/run.sh ngspice -b`, one at a time, in the
+ignored directory `.circuit-cache/sources/mc04-s13-diag/`, with no container of the pinned image left afterwards.
+The figures below are the design authority's diagnostic evidence, not study results; the study measures its own.
+
+- **Topology: correct.** The deck printed by the study for `/E2/REF9_FB` has REF5 (5 V) on IN+, 50 kΩ from the
+  inverting node to AGND, 40 kΩ from the output to the inverting node, rails ±12 V and the pin order of
+  `.SUBCKT OPAx197 IN+ IN- VCC VEE OUT`. That is the specification (`envelope.py`: `amp(…, 'REF5', key+'_FB', key)`,
+  RF 40 kΩ output to FB, RG 50 kΩ FB to AGND; gain 1.8). No deck-construction fix is needed.
+- **The cell is linear when it is solved.** The same deck at zero stray gives `V(out)` = 9.000040 V and the
+  inverting input at 5.000021 V. A DC sweep of the reference from 0 to 5 V gives exactly 1.8 × the reference at
+  every step and converges by ordinary gmin stepping.
+- **Cause.** At the 5 V bias the OPAx197 macro-model does not reach its operating point by Newton, gmin stepping or
+  source stepping; ngspice falls back to "Transient op". That fallback integrates the circuit with its capacitors
+  until it settles. With 1 nF on the inverting node the loop is unstable on purpose, so the fallback returns a
+  moment of a growing oscillation: 11.971 V at the rail with the inverting input at 2.343 V. This is not a DC
+  solution (it would need about 190 µA into the amplifier input) and a capacitor cannot change a DC solution. The
+  two operating points of one deck differed by 7.7 mV, which the existing "did not move" check caught.
+- **The tight tolerances fail for the same reason.** Without a full seed the tight step timed out (100 s diagnostic
+  limit) at 0 pF as well, and aborted with "timestep too small" with a seed on the five external nodes only. A
+  seed on external nodes alone does not help at default tolerances either (still 11.971 V).
+- **A full seed solves it.** `wrnodev` after the zero-stray operating point writes all 123 node voltages, internal
+  model nodes included. Used as `.nodeset` in the 1 nF deck, the operating point is 9.000040 V and 5.000021 V with
+  no fallback, at default and at the tight tolerances, in about 1 s. A seed taken from the last point of the DC
+  sweep gives the same. The seeded 1 nF loop deck then gives a phase margin of about 1° near 204 kHz (hand
+  combination, indicative), so the control is expected to fail K1 as required.
+- **Consequence for the executor's question.** Unseeded, the zero-stray H-REF9 rows would evaluate but every
+  non-zero row near or above the limit could end `NOT EVALUATED` or, worse, be measured at a wrong operating point
+  that happens to repeat. Seeded, the class evaluates. The risk is not specific to REF9: any cell with a non-zero
+  bias can meet it, so the rule below applies to every deck.
+
+### B1. Ruling: no topology change; the fix is in how the operating point is obtained
+
+The study's cells are not changed. The executor changes only the deck generation and the runner in the study
+directory (an allowed write), as B2 states. A retained precedent exists: `sweep_input_buffer_vendor.py` already
+tries "tolerance, then DC seed (none, then nodeset)".
+
+### B2. The seeded operating point, exactly
+
+1. **Seed deck.** For every DC-distinct deck (cell variant, corner, deck kind: loop or closed-loop) the runner first
+   runs the same deck with `C_stray` = 0 and nothing else changed, at default ngspice tolerances, with `op` and
+   `wrnodev`. It also writes the operating point of every external node of the cell at full precision (`wrdata`
+   with `set numdgt=15`, or an equivalent full-precision print); this record is the **seed reference**. A seed deck
+   yields no metric.
+2. **Second method, only if the first fails its validity test.** A `dc` sweep of the cell's DC bias source from 0 to
+   its nominal value in at least 20 steps, then `wrnodev` of the last point. No other seed method is allowed, and
+   no hand-written node value.
+3. **Seed validity.** The seed is valid when, for each amplifier in negative feedback, the two inputs are within
+   1 mV, the output is at least 1 V inside each rail, and every node with a DC value stated by the specification is
+   within 10 mV of it (the executor records the expected value and its derivation per cell; for REF9, 9.000 V and
+   5.000 V). An OTA cell (class G) uses only the last two tests. An invalid seed by both methods makes every row of
+   that deck `NOT EVALUATED: no valid operating point`.
+4. **Use.** Every `.ic` line of the seed becomes a `.nodeset` line, included unchanged in every loop deck and
+   closed-loop deck of that variant and corner, at every `C_stray` value and every step of the tolerance ladder.
+   The `.nodeset` lines may keep the six-digit `wrnodev` text: they are only a starting guess. The seed's SHA-256
+   is recorded in the row and is part of the deck key.
+5. **Acceptance of an evaluation deck.** Every operating point in the deck (both in a loop deck, the initial one in
+   a closed-loop deck) must equal the seed reference (the full-precision record of item 1, never the six-digit
+   `wrnodev` text) within 50 µV on every external node of the cell, the evaluation deck's values being read at
+   full precision too. With the second seed method the reference is the full-precision last point of the ramp. The existing check
+   that the two operating points of a loop deck agree within 0.1 mV stays. A deck that misses either test yields no
+   metric at that tolerance step; the ladder continues; if no step passes, the row is `NOT EVALUATED` with the
+   three attempts recorded. A "Transient op" line in the log is recorded per deck; it does not by itself reject a
+   deck, the 50 µV comparison does.
+6. **No figure from a rejected operating point is written to any output**, not as a metric and not as a note.
+7. **Cost.** One seed per DC-distinct deck: at most 180 seed decks. They count against the unchanged cap of 2 400
+   ngspice invocations and the unchanged 600 s timeout.
+
+### B3. New control P6b (Arm 0 table)
+
+P6b runs after P6 and before P7. It is the zero-stray operating-point check of H-REF9: 9.000 V ± 10 mV at the output,
+the inverting input within 1 mV of 5.000 V, for output capacitance 0 and 100 pF and for the Ruling 6 bracket
+variant if one is in the sweep, and the seeded loop and closed-loop decks at 0 pF must reproduce the seed
+reference (full precision, B2.1) within 50 µV at some step of the tolerance ladder, tried tightest first; the step that passes is recorded, and no step
+passing is a miss. Any miss is a stop under STOP 2. P6b proves the seed route on the one class known to need it, before any sweep deck runs.
+
+### B4. How P7 treats a positive control that does not evaluate
+
+- A positive control passes only when it is **evaluated on an accepted operating point (B2) and fails the stated
+  criteria**: `/W1/DRIVE_INV_SUM` at 1 nF fails K1 and K4; `/E2/REF9_FB` at 1 nF fails K1.
+- `NOT EVALUATED` is **not** counted as the required failure. A method that cannot measure an excessive load has
+  not shown that it can discriminate.
+- `NOT EVALUATED` is **not** a pass either. It is a P7 failure and a stop under STOP 2.
+- The one remedy the executor may apply is the seed of B2, which is now part of every deck. No further seed, no
+  looser tolerance than the ladder, no changed value and no changed deck is allowed to make a control evaluate.
+- The study's P7 code must require an evaluated K1 failure explicitly; a missing K4 key may not default to
+  "fails" where K4 is required. `budget.py` line 871 (`res.get("K4_fails", True)`, as committed in `44424d42`)
+  does that today and must be fixed; M16 proves the fix.
+
+### B5. The same rule in the sweep
+
+A sweep row that is `NOT EVALUATED` at a value at or below `2g` cannot support a limit above the last value that
+was evaluated and passed below it: the limit rule of Ruling 3 treats `NOT EVALUATED` as not passed, as before.
+The row states the reason. This is unchanged from Revision 3 and is restated because Addendum B adds one more
+reason for it.
+
+### B6. Re-run, tests and review
+
+- The re-run needs a delta check of this addendum and a new admission. It starts again at the start checks and
+  P1 to P4a. P1 gains this brief at its Revision 5 hash.
+- P4b may be taken from the finished checkpoint of the second run only if all of the following hold, after P1
+  and P3 have passed in the new run; the comparison is written to the report, and otherwise P4b runs again:
+  - `checkpoints/p4b.jsonl` is `8cafa833a15bf2bc36ef97c4a93e57552f8b4d0966955e4d6d4d4612ecdae2c7` and `p4b.py` is
+    `80637cda77bb4df3c7a0269e862d28c355f1e2a13f3d6ea990f70511e319b130`, both as committed in `44424d42`;
+  - the pinned sweep script, the retained receipt and the stage 1b result have the hashes in the `pins` object of
+    the checkpoint's `start` line;
+  - both model libraries and both archives have the hashes of the second run, read from `models.json` and from
+    the P3 entry of `checkpoints/arm0-p1-p3.json` as committed in `44424d42`, and equal to "Pinned inputs";
+  - the oracle is the same: the image digest, KiCad 10.0.6 and ngspice 44.2 of the new run's P2 equal those the
+    second run recorded in the P2 entry of `checkpoints/arm0-p1-p3.json`.
+
+  P4b does not use the changed runner. Allowed study edits may not touch `p4b.py` if the checkpoint is reused.
+- P5, P6, P6b, P7, P8 and P9 run again with the seeded runner. No loop or closed-loop result of the second run is
+  reused.
+- Mutations M12 to M16 are added (table above).
+- New reviewer checks: (20) for the H-REF9 seed and two other seeds of its own choice, the seed deck differs from
+  the evaluation deck only in `C_stray`, and the seed passes B2.3 by own arithmetic; (21) no row carries a metric
+  whose recorded operating point differs from its seed by more than 50 µV, and no output contains a figure from a
+  rejected operating point; (22) P7 shows an evaluated K1 failure for both nets and P6b records the
+  tolerance step that passed; (23) the seed decks are in the deck count.
+- Allowed writes are unchanged: the study directory, and the ignored `.circuit-cache/sources/mc04-s13/` for decks,
+  seeds and data. Scope, criteria, rulings 1 to 7, sweep, caps, bounds, STOP conditions other than the wording of
+  STOP 2, and the forbidden list stand as in Revision 4.
+
+### Not established by this addendum
+
+The seed selects the zero-stray operating point; no other DC state (latch-up, start-up) is examined, and
+`method_limits` says so. The seed fixes how the simulator finds the DC point. It does not make the macro-model more accurate: the model
+limits of Ruling 5 stand. The phase margin of about 1° is one diagnostic deck by hand, not a study result. Whether
+other classes need the second seed method is not known before the run.
+
+### Decision rows proposed for the manager (Addendum B)
+
+| Row | Text |
+| --- | --- |
+| S13 second stop | MC04-S13 stopped at Arm 0 P7 under STOP 2 (`44424d42`): `/E2/REF9_FB` at 1 nF was `NOT EVALUATED`. The H-REF9 deck matches the specification; ngspice's transient-op fallback returned a non-equilibrium point of the deliberately unstable loop. No budget exists. The stop stands |
+| Addendum B | Every loop and closed-loop deck takes its operating point from a `.nodeset` of all nodes of the same deck solved at zero stray (or, failing that, from a DC ramp of the bias source), and yields a metric only if its operating point equals that seed within 50 µV. Control P6b checks H-REF9 at zero stray (9.000 V, 5.000 V) before P7 |
+| P7 rule | A positive control passes only as an evaluated failure of its criteria. `NOT EVALUATED` is neither that failure nor a pass: it stops the run |
+
+Decided by: design authority (DS-03, Fable agent at high effort), owner notified. Reverse by: a design-authority
+ruling.
+
 ## Revision history
 
 Revision 1: SHA-256 `e31a537eb3934c6773e1b2863b705d53766abfdbe65ddbb89c942994eb05ea12`, reviewed ACCEPT WITH
@@ -759,3 +928,25 @@ Revision 3: SHA-256 `a8d915f694af63c5b04dc5849066fc3d56ac33960003e661eef51d7a478
 | Tests and review | mutations M9 to M11; reviewer check 11 wording and checks 16 to 19 (in A5) |
 | Outputs | `p4b.py` and `checkpoints/p4b.jsonl` added to the allowed writes |
 | Header | title and state paragraph |
+
+Revision 4: SHA-256 `a0381b6a6c6f5a65414951c96d4eaf611c9aa7a38ff9d33eea2281eb7cfc5806`, admitted, passed P1 to P6, P8
+and P4b, stopped at Arm 0 P7 (STOP 2, `44424d42`). Revision 5 adds Addendum B and changes nothing else.
+
+| Item | Changed in Revision 5 |
+| --- | --- |
+| Operating point | new section "Addendum B" (diagnosis, B1 no topology change, B2 seeded operating point and its acceptance test, B5 sweep rule restated); "How the oracle is invoked", loop-deck bullet |
+| P6b added | Arm 0 table, new row P6b; Addendum B, B3 |
+| P7 rule | Arm 0 table, P7 row; Addendum B, B4; STOP 2 wording |
+| Tests and review | mutations M12 to M14; reviewer checks 20 to 23 (in B6); re-run rule (B6) |
+| Header | title and state paragraph |
+
+Revision 5: SHA-256 `d0a8f2769163c2e92517f2c332f4612c9123d3869faa2c39d23a58ebd9a4bf9f`, delta review ACCEPT WITH
+CORRECTIONS (4), newest section of `reviews/mc04-s13-brief-review-20261127.md`. Revision 6 applies all four.
+
+| # | Correction | Changed in Revision 6 |
+| --- | --- | --- |
+| 1 | Compare against a full-precision operating point of the seed deck, not the six-digit `wrnodev` text | Addendum B, B2 items 1, 4 and 5, and B3; Arm 0 table, P6b row |
+| 2 | Pin the P4b reuse | Addendum B, B6: hashes of `checkpoints/p4b.jsonl` and `p4b.py`, the checkpoint's `pins`, the source of the second run's model hashes, same image digest, KiCad 10.0.6 and ngspice 44.2, P1 and P3 first |
+| 3 | M15 and M16; fix of `budget.py` line 871 | "Tests and mutations"; Addendum B, B4 and B6 |
+| 4 | Seed limit in `method_limits`; deck count against the cap | "Outputs" (`method_limits`); "Sweep design" (new bullet); Addendum B, "Not established" |
+| Header | title and state paragraph | |

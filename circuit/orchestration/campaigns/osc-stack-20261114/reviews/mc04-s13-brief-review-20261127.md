@@ -333,3 +333,86 @@ does not exist yet, so this reviews the definition, not an implementation.
 
 **ACCEPT.** P4b as redefined tests everything S13 leans on and excludes only what cannot be reproduced at HEAD. The
 implementation of `p4b.py` is for the result review to check (reviewer checks 16 to 19).
+
+## Delta review of Revision 5 (Addendum B, seeded operating point): ACCEPT WITH CORRECTIONS (4, none needs another round)
+
+2026-11-27. Same reviewer session and model (Fable 5.2, `claude-fable-5-2`), read-only. Subject: Revision 5 of the
+brief, SHA-256 `d0a8f2769163c2e92517f2c332f4612c9123d3869faa2c39d23a58ebd9a4bf9f` (matches the expected value),
+uncommitted on top of `44424d42`. The sections above are unchanged. I re-ran two of the design authority's
+diagnostic decks, `h1.cir` and `k2.cir`, one at a time through `scripts/kicad/run.sh`, with a temporary `.spiceinit`
+that I removed. No container and no `.spiceinit` remain, and the diagnostic data files are byte-equal to what I
+found. No study code was run.
+
+### Seeding does not mask an instability and does not bias a limit
+
+- **A capacitor cannot move a DC solution.** `C_stray` carries no DC current, so the operating point at 1 nF is the
+  operating point at 0 pF. The seed therefore gives the solver the answer the deck already has.
+- **A `.nodeset` guides, it does not force.** The brief uses `.nodeset`, not `.ic` with `uic`. The solver releases
+  the seed and must still converge on the circuit equations.
+- **The instability stays visible.** The loop gain is linearised about that DC point, which is the correct point for
+  it. The transient-op fallback of the unseeded deck was the wrong one: a snapshot of the oscillation at 11.97 V.
+- **Own check, two independent seeds, same result.** `h1.cir` takes its seed from the zero-stray operating point
+  (`g1.nodeset`), `k2.cir` from the DC ramp of the 1 nF deck (`k1.nodeset`). The two seed files differ on internal
+  model nodes (for example `xu.clamp` 9.197 V against 10.93 V). Both decks solve to `V(out)` = 9.000040 V and
+  `V(inm)` = 5.000021 V at the tight tolerances with no transient-op fallback, in about 1 s. Their two AC data files
+  are byte-identical (`e42f1c09…6d64`, `57f50aeb…e783`). The result does not depend on where the seed came from.
+- **The positive control fails as it should.** From that data, with the retained combination
+  `T = (Tv·Ti − 1)/(Tv + Ti + 2)`, I get a phase margin of 1.1° to 1.2° at about 204 kHz. This agrees with the
+  addendum's indicative figure and is an evaluated K1 failure, not an artefact of the seed.
+- **A second operating point.** The seed selects the linear-region solution found at zero stray. If a cell also had
+  a latched state, it would exist at every `C_stray` value alike, so it is not a capacitance effect and cannot make
+  a limit optimistic. It is still outside what this study examines (correction 4).
+
+### The validity tests and the 50 µV rule are sound, with one precision gap
+
+- The three seed tests (inputs within 1 mV, output 1 V inside each rail, specified DC values within 10 mV) reject
+  the 11.97 V snapshot on all three counts. The model's own offset is 21 µV here, well inside 1 mV.
+- A seed deck may itself fall back to transient op: `g1.log` shows it at zero stray. For a cell that is stable at
+  zero stray that fallback settles to the equilibrium, and the evaluation deck then has to reproduce it by its own
+  solve within 50 µV. A snapshot that is not an equilibrium cannot pass both tests.
+- Gap: `wrnodev` writes six significant digits (`9.00004`, `10.9295`). Below 10 V that is 10 µV resolution, but a
+  node between 10 V and the 11 V rail margin is rounded by up to 50 µV, the size of the tolerance. The error can
+  only produce a false `NOT EVALUATED`, never a false pass (correction 1).
+
+### M12 to M14 are adequate for what they cover; two cases are missing
+
+M12 proves the acceptance test rejects an unseeded deck, M13 that the 50 µV comparison bites, M14 that
+`NOT EVALUATED` fails P7. No mutation covers the seed validity test of B2.3 or the rule of B4 on a missing K4 key.
+`budget.py` line 871 still reads `res.get("K4_fails", True)` (correction 3).
+
+### Conditional P4b reuse is safe once the checkpoint itself is pinned
+
+P4b uses only the retained script, the receipt, the two model libraries and the oracle; none of them is touched by
+Addendum B, and P1, P2 and P3 run again before any reuse. The run-2 verdict line records `PASS`, 136 rows, the 16
+excluded indices and no difference. But B6 refers to hashes "recorded with that checkpoint", and
+`checkpoints/p4b.jsonl` records only three pins: the sweep script, the receipt and the stage 1b file. The `p4b.py`
+hash and the model hashes are in the run-2 `result.json`, and nothing pins the checkpoint file (correction 2).
+
+### Corrections
+
+1. **Compare against a full-precision seed.** The 50 µV test of B2.5 and P6b must use the seed deck's operating
+   point printed at full precision (as the study's decks already do with `numdgt`), not the six-digit `wrnodev`
+   text. The `.nodeset` lines may stay as `wrnodev` writes them.
+2. **Pin the P4b reuse.** Name the files: `checkpoints/p4b.jsonl` at SHA-256
+   `8cafa833a15bf2bc36ef97c4a93e57552f8b4d0966955e4d6d4d4612ecdae2c7` and `p4b.py` at
+   `80637cda77bb4df3c7a0269e862d28c355f1e2a13f3d6ea990f70511e319b130`, both as committed in `44424d42`. Reuse also
+   requires the same image digest, KiCad 10.0.6 and ngspice 44.2 as that run recorded, and that P1 and P3 pass
+   first. Say where the model hashes of run 2 are read from (`result.json` or `arm0-p1-p3.json`).
+3. **Two more mutations.** M15: a seed with the output at 11.97 V, or the inputs 2 mV apart, in an in-memory copy
+   must fail B2.3. M16: the `/W1/DRIVE_INV_SUM` control record with its K4 result removed must fail P7.
+4. **State two limits.** In `method_limits`: the seed selects the operating point found at zero stray, and no other
+   DC state (latch-up, start-up) is examined. In "Sweep design": about 1 800 decks, up to 240 from R1 and up to 180
+   seeds leave little room under the 2 400 cap, and the sweep order already protects classes B, C and A.
+
+### Nothing else is broken
+
+The diff against committed Revision 4 touches the oracle paragraph, the P6b and P7 rows, mutations M12 to M14,
+STOP 2, the state paragraph and the addendum. Scope, criteria, rulings, caps and the forbidden list are unchanged.
+B1 is right that no topology changes: the deck matches `envelope.py` (REF5 on IN+, 50 kΩ to AGND, 40 kΩ feedback,
+gain 1.8). B4 is right that `NOT EVALUATED` is neither the required failure nor a pass.
+
+### Verdict on Revision 5
+
+**ACCEPT WITH CORRECTIONS.** The four corrections are confined and can be confirmed by the manager by inspection; I
+do not ask for another round if they are applied as worded. Whether other classes need the second seed method is
+not known before the run, as the addendum says.
