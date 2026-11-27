@@ -1,4 +1,4 @@
-"""MC04-S13 tests and mutations M1 to M8 (offline; M3 reads the recorded control run)."""
+"""MC04-S13 tests and mutations M1 to M11 (offline; M3 reads the recorded control run; M9 to M11 use in-memory copies)."""
 import copy
 import json
 import sys
@@ -9,6 +9,7 @@ STUDY = Path(__file__).resolve().parent
 sys.path[:0] = [str(STUDY), str(STUDY.parents[3])]
 
 import budget  # noqa: E402
+import p4b  # noqa: E402
 import cells  # noqa: E402
 import runner  # noqa: E402
 
@@ -163,6 +164,63 @@ class Models(unittest.TestCase):
             self.skipTest("controls not run yet")
         c = json.loads(path.read_text())
         self.assertTrue(all(x["fails_P5"] for x in c["M3"]))
+
+
+class P4bComparison(unittest.TestCase):
+    """Addendum A: M9 to M11 on in-memory copies of the retained receipt; no deck runs."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.receipt = json.loads((cells.ROOT / p4b.RECEIPT).read_text())
+
+    def copy(self):
+        return copy.deepcopy(self.receipt)
+
+    def test_identity_passes_and_exclusion_is_rows_62_to_77(self):
+        self.assertEqual(p4b.carriers(self.receipt), list(range(62, 78)))
+        self.assertEqual(p4b.compare(self.copy(), self.receipt), [])
+
+    def test_m9_vendor_metric_changed_fails(self):
+        for i, key in ((62, "phase_margin_deg"), (70, "crossover_Hz"), (5, None)):
+            c = self.copy()
+            if key is None:
+                c["results"][i]["deck_sha256"] = "0" * 64
+            else:
+                c["results"][i]["metrics"][key] = c["results"][i]["metrics"][key] + 1e-4
+            self.assertTrue(p4b.compare(c, self.receipt), (i, key))
+        c = self.copy()
+        c["loop_break_validation"][0]["middlebrook"]["phase_margin_deg"] += 1e-3
+        self.assertTrue(p4b.compare(c, self.receipt))
+
+    def test_m10_paper_screen_changed_does_not_fail_but_other_key_does(self):
+        c = self.copy()
+        c["results"][62]["metrics"]["paper_screen"] = dict(p4b.STUB)
+        c["results"][77]["metrics"]["paper_screen"] = {}
+        self.assertEqual(p4b.compare(c, self.receipt), [])
+        c = self.copy()
+        m = c["results"][62]["metrics"]
+        other = next(k for k in m if k != "paper_screen")
+        m[other] = {"changed": True}
+        self.assertTrue(p4b.compare(c, self.receipt))
+        c = self.copy()
+        del c["results"][62]["metrics"][other]
+        self.assertTrue(p4b.compare(c, self.receipt))
+
+    def test_m11_exclusion_set_is_exactly_16_rows(self):
+        c = self.copy()
+        c["results"][61]["metrics"]["paper_screen"] = dict(p4b.STUB)
+        self.assertTrue(p4b.compare(c, self.receipt))
+        c = self.copy()
+        del c["results"][70]["metrics"]["paper_screen"]
+        self.assertTrue(p4b.compare(c, self.receipt))
+        self.assertTrue(p4b.compare(self.receipt, c))
+
+    def test_batches_cover_136_cases_with_a_last_batch_of_one(self):
+        b = p4b.batches()
+        self.assertEqual(len(b), 28)
+        self.assertEqual(b[-1], (135, 135))
+        flat = [i for first, last in b for i in range(first, last + 1)]
+        self.assertEqual(flat, list(range(136)))
 
 
 if __name__ == "__main__":

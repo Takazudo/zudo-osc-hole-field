@@ -1,0 +1,103 @@
+{
+ "P5": [
+  {
+   "R_load_ohm": 1000.0,
+   "pm_deg": 9.9528,
+   "retained_deg": 9.953,
+   "pass": true,
+   "deck": "27936066dfa467ce7dc6f7e143e646579530b644852761ef74a13a432a1ef628"
+  },
+  {
+   "R_load_ohm": 10.0,
+   "pm_deg": 59.6661,
+   "retained_deg": 59.67,
+   "pass": true,
+   "deck": "14ced563ad837295423ad7989f67e7bb108ed59fbce7e4399f6d12a8016904c2"
+  },
+  {
+   "R_load_ohm": 1000000000.0,
+   "pm_deg": 7.7132,
+   "retained_deg": 7.713,
+   "pass": true,
+   "deck": "ea081da8399fb607693b641a321177c7fb5ed34298e93be8db88b2dcacf21998"
+  }
+ ],
+ "P8": [
+  {
+   "model": "OPAx196",
+   "pm_deg": 54.821,
+   "crossover_Hz": 2597385.5,
+   "retained": [
+    54.82,
+    2597000.0
+   ],
+   "pass": true,
+   "deck": "3bc65972fbc9ae3a7ddb8cf44f06efaca0ff5a52bceb8539f1a77f6a3a724c79"
+  },
+  {
+   "model": "OPAx197",
+   "pm_deg": 63.955,
+   "crossover_Hz": 9986120.9,
+   "retained": [
+    63.95,
+    9986000.0
+   ],
+   "pass": true,
+   "deck": "6a8873de30880fac35a01ea33c923a4505d968d84b7b7db0ad8d2b98c0e4d302"
+  }
+ ],
+ "P7": {
+  "/W1/DRIVE_INV_SUM": {
+   "loop": {
+    "status": "OK",
+    "pm_deg": 3.00404
+   },
+   "K1_fails": true,
+   "closed": {
+    "status": "OK",
+    "max_overshoot_percent": 290.71
+   },
+   "K4_fails": true,
+   "pass": true,
+   "corner": {
+    "bracket": "agnd"
+   },
+   "c_stray": "1 nF"
+  },
+  "/E2/REF9_FB": {
+   "loop": {
+    "status": "NOT EVALUATED",
+    "pm_deg": null
+   },
+   "K1_fails": false,
+   "pass": false,
+   "corner": {
+    "tmux_c": 0.0,
+    "bracket": "agnd"
+   },
+   "c_stray": "1 nF"
+  }
+ },
+ "M3": [
+  {
+   "R_load_ohm": 1000.0,
+   "pm_deg": -162.567,
+   "fails_P5": true,
+   "deck": "b9d9c3da2478ae56700d35925a8e3879ce00d7da777eb028176c795143270ff2"
+  },
+  {
+   "R_load_ohm": 10.0,
+   "pm_deg": null,
+   "fails_P5": true,
+   "deck": "34f07bc362162c785c6bf668ce61fb52153d1008d6b166fa929be5cff5065086"
+  },
+  {
+   "R_load_ohm": 1000000000.0,
+   "pm_deg": -166.5524,
+   "fails_P5": true,
+   "deck": "858b67042dd82bce4c632831b24fb034618bd6f5208f9e4972614bdcc25c953b"
+  }
+ ],
+ "invocations": 13,
+ "pass": false
+}

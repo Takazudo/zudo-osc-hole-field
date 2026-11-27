@@ -1,44 +1,663 @@
 {
  "arm0": {
-  "P1": {
-   "detail": "all 21 pinned input hashes and the LM13700 model hash match",
-   "result": "PASS"
-  },
-  "P2": {
-   "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
-   "kicad_cli_version": "10.0.6",
-   "ngspice_banner": "ngspice-44.2",
-   "result": "PASS"
-  },
-  "P3": {
-   "detail": "OPAx196 ZIP read-only from circuit-dev-resources 54c00fc8 (gh api), ZIP 9c264813... and OPAx196.LIB 31142f5d... match; OPAx197 ZIP and LIB match",
-   "result": "PASS"
+  "P1_P3": {
+   "P1": {
+    "count": 23,
+    "pins": {
+     ".claude/skills/component-spec-audit/references/inventory.json": "dd31420dc068ef2953ada299f3a2a873c5da1ee86f645ce4dc95f12476256eba",
+     "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s12-disposition-20261127.md": "6c21cb39354f12f091472c1dd33c56ec53b4ea0bf1196489737f7bc1e8516f0b",
+     "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s12-report-20261127.md": "d3b9a33026089d24aa4d8e4c591b1cb16545fb617e01800d3993e38a23470a19",
+     "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s13-node-capacitance-budget-brief-20261127.md": "a0381b6a6c6f5a65414951c96d4eaf611c9aa7a38ff9d33eea2281eb7cfc5806",
+     "circuit/orchestration/campaigns/osc-stack-20261114/reviews/mc04-s12-result-review-20261127.md": "77f8039f95d1afce36e52fe056717dc0c77e0219283bc7f5cca5662dbd58f2d9",
+     "design/partition/floorplan-candidate.json": "12083ea177cad1492f07fa96ad6dbfea8e5f8d2d347199bb555475c5b9e75a38",
+     "design/reports/io-partition.json": "235277959121d8599cbe1b6c6ae65ed4cd3fd3813cf2a8db05d2951ce5b633ce",
+     "design/reports/spice/input-buffer-vendor.json": "12a0de40445d5156ccab2d583b45baa14f8b0420935ae57ca7a2f3d391654c9b",
+     "design/reports/spice/precision-output-vendor.json": "9a974de1aa3ade8d7c189dd2238e90b96d7f41a8f134210ed3c99fac3d684e9b",
+     "design/spec/cells/sweep_input_buffer_vendor.py": "13c470004de92aeae8dbf31dc54216214b86060758884e9e2ed40e42b9cee23d",
+     "design/spec/cells/sweep_precision_vendor.py": "31c77c207c3b3da770cbc3800c3d2c75cd96492a5a3e3c6cd246d27239d87eae",
+     "design/spec/modules/envelope.py": "015b02c5d84550e19bf92b9ec838a43b255a728e02de1e562e855ba632fc2ee5",
+     "design/spec/modules/mix4_vca.py": "46d1efae983c32e763da7d3934d7fa01a7e0473c5b0c0bd586b28c9c85cf80e2",
+     "design/spec/modules/spice_trace.py": "3234148d53ec6241468e172e28340a2f0aee1acd299b68c4eea8a6cc7927f964",
+     "design/spec/modules/wavefolder.py": "e3a850e841a0f597571d6550e372d337c404fe4155ede3af7372be03ace37a93",
+     "design/standard/electrical-standard.json": "0cdef30d4848414c794b7561c07bef6c5cf63a19f7f79a0fd21866412e0e40fe",
+     "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+     "scripts/kicad/run.sh": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
+     "scripts/stack/studies/mc04_s10_r2_packet/f2_loop_estimate.py": "667c027b4ce3a861ab2ad86deb50cb702dba60e728b01daf4ba22cbaf812856d",
+     "scripts/stack/studies/mc04_s12_five_ic_joint/census.json": "92f6fdede21948d10ed49236889f1853b77c1e803445a945a15a92e7dbda095e",
+     "scripts/stack/studies/mc04_s12_five_ic_joint/result.json": "32532262d6a98dbdef8e73fee4951487f417c8361cc2f008ea801be099da02ed",
+     "scripts/stack/studies/mc04_s1b_indicator_loops/result.json": "4058446308c49e1b044cf933eb788706c43782492fa7968ac12c6ed06574840c",
+     "scripts/stack/studies/mc04_s7_r4/buffer_runs.py": "df656dc333dff510757b668278ba53ed2a078860d47dcff38c86070a1aaac9b1"
+    },
+    "result": "PASS"
+   },
+   "P2": {
+    "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "image_id": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "kicad_cli_version": "10.0.6",
+    "ngspice_banner": "** ngspice-44.2 : Circuit level simulation program",
+    "result": "PASS"
+   },
+   "P3": {
+    "cache_equals_fetch": true,
+    "fetched_sha256": "9c264813a36536f743c166b6a101904b76ed08f049f2eeb127a438cc6e8ccdf5",
+    "model_pins": {
+     ".circuit-cache/sources/opa196-model/OPAx196.LIB": "31142f5dbd71b758d887ee8a411692fc4c1309c8f47100af4ba5bed7e173c430",
+     ".circuit-cache/sources/opa196-model/SBOMAF9E.ZIP": "9c264813a36536f743c166b6a101904b76ed08f049f2eeb127a438cc6e8ccdf5",
+     ".circuit-cache/sources/opa197-model/OPAx197.LIB": "fc5b020e63346e511bd808bf41c856b0150b000bcf8a41fe00eeececb1f422a5",
+     ".circuit-cache/sources/opa197-model/SBOMA34D.ZIP": "9e55fcaa23d54cee025dda3fa9872b11c41c531f82e0802c2b93d51e943666e5",
+     "design/spec/modules/spice/filter-model/LM13700.MOD": "666df501773da5e65f7fd3b3c806b2c1ae7770784685dd8191a9df33b382f390"
+    },
+    "result": "PASS",
+    "source": "Takazudo/circuit-dev-resources 54c00fc8 texas-instruments/opa4196/opa4196-pspice-model-sbomaf9e.zip (gh api, read-only)"
+   }
   },
   "P4a": {
-   "detail": "sweep_precision_vendor --check --offline: 12/12, precision-output-vendor.json byte-equal",
-   "result": "PASS",
-   "wall_s": 10.2
-  },
-  "P4b": {
-   "cause": "sweep_input_buffer_vendor.py pins scripts/stack/studies/mc04_s1b_indicator_loops/result.json at PAPER_SHA256 5cdac8e9... (the file as committed in 4b0ccee5, 2026-11-21). Commit 93197a3e (2026-11-22, an ancestor of HEAD) regenerated that file; at HEAD it is 4058446308c49e1b044cf933eb788706c43782492fa7968ac12c6ed06574840c. The retained receipt check therefore cannot pass at HEAD independent of this study.",
-   "decks_completed_before_error": "62 of the 136 cases printed done; the run raised at the first OPA4196 case5a row, before the byte comparison",
-   "error": "RuntimeError: stage 1b paper-screen result changed; review before updating the pin (sweep_input_buffer_vendor.py paper_points(), line 810)",
-   "receipt_after": "design/reports/spice/input-buffer-vendor.json unchanged (12a0de40...), working tree clean except the study directory",
-   "result": "FAIL (STOP 2)",
-   "rows_compared": 0,
-   "wall_s": 1233.6
-  },
-  "P5": "NOT RUN (stopped at P4b)",
-  "P6": {
-   "detail": "107 footprints, 64 nets, classes 11/23/10/1/9/5/1/3/1, binding rows found (offline derivation, census.json)",
+   "detail": "sweep_precision_vendor --check --offline: 12/12 pass, precision-output-vendor.json byte-equal",
+   "guard": "guard-p4a.json",
    "result": "PASS"
   },
-  "P7": "NOT RUN (stopped at P4b)",
-  "P8": "NOT RUN (stopped at P4b)",
-  "P9": "NOT RUN (stopped at P4b)"
+  "P4b": {
+   "batches": 28,
+   "compute_s": 1719.1,
+   "differences": [],
+   "excluded": "metrics.paper_screen on results[62..77] (Addendum A); inherited receipt defect MC04-RM1, not established by S13",
+   "journal": "checkpoints/p4b.jsonl",
+   "named_figures": {
+    "case5a_and_controls": [
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 145000.0,
+       "retained": 145000.0
+      },
+      "index": 62,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 107.3,
+       "retained": 107.3
+      },
+      "variant": "0/1uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 874600.0,
+       "retained": 874600.0
+      },
+      "index": 63,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 85.9,
+       "retained": 85.9
+      },
+      "variant": "0/10uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 1951000.0,
+       "retained": 1951000.0
+      },
+      "index": 64,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 61.69,
+       "retained": 61.69
+      },
+      "variant": "0/100uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 2383000.0,
+       "retained": 2383000.0
+      },
+      "index": 65,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 58.34,
+       "retained": 58.34
+      },
+      "variant": "0/1mA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 123200.0,
+       "retained": 123200.0
+      },
+      "index": 66,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 90.99,
+       "retained": 90.99
+      },
+      "variant": "7.2p/1uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 762700.0,
+       "retained": 762700.0
+      },
+      "index": 67,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 72.98,
+       "retained": 72.98
+      },
+      "variant": "7.2p/10uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 1842000.0,
+       "retained": 1842000.0
+      },
+      "index": 68,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 54.21,
+       "retained": 54.21
+      },
+      "variant": "7.2p/100uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 2306000.0,
+       "retained": 2306000.0
+      },
+      "index": 69,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 53.82,
+       "retained": 53.82
+      },
+      "variant": "7.2p/1mA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 103900.0,
+       "retained": 103900.0
+      },
+      "index": 70,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 79.09,
+       "retained": 79.09
+      },
+      "variant": "15p/1uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 660600.0,
+       "retained": 660600.0
+      },
+      "index": 71,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 63.31,
+       "retained": 63.31
+      },
+      "variant": "15p/10uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 1722000.0,
+       "retained": 1722000.0
+      },
+      "index": 72,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 48.1,
+       "retained": 48.1
+      },
+      "variant": "15p/100uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 2216000.0,
+       "retained": 2216000.0
+      },
+      "index": 73,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 49.9,
+       "retained": 49.9
+      },
+      "variant": "15p/1mA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 80660.0,
+       "retained": 80660.0
+      },
+      "index": 74,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 64.02,
+       "retained": 64.02
+      },
+      "variant": "30p/1uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 530400.0,
+       "retained": 530400.0
+      },
+      "index": 75,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 50.72,
+       "retained": 50.72
+      },
+      "variant": "30p/10uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 1518000.0,
+       "retained": 1518000.0
+      },
+      "index": 76,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 40.24,
+       "retained": 40.24
+      },
+      "variant": "30p/100uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 2065000.0,
+       "retained": 2065000.0
+      },
+      "index": 77,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 45.22,
+       "retained": 45.22
+      },
+      "variant": "30p/1mA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 666600.0,
+       "retained": 666600.0
+      },
+      "index": 78,
+      "model": "OPA4197",
+      "phase_margin_deg": {
+       "reproduced": 108.2,
+       "retained": 108.2
+      },
+      "variant": "0/1uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 3274000.0,
+       "retained": 3274000.0
+      },
+      "index": 79,
+      "model": "OPA4197",
+      "phase_margin_deg": {
+       "reproduced": 71.54,
+       "retained": 71.54
+      },
+      "variant": "0/10uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 7135000.0,
+       "retained": 7135000.0
+      },
+      "index": 80,
+      "model": "OPA4197",
+      "phase_margin_deg": {
+       "reproduced": 61.22,
+       "retained": 61.22
+      },
+      "variant": "0/100uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 9456000.0,
+       "retained": 9456000.0
+      },
+      "index": 81,
+      "model": "OPA4197",
+      "phase_margin_deg": {
+       "reproduced": 62.85,
+       "retained": 62.85
+      },
+      "variant": "0/1mA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 388900.0,
+       "retained": 388900.0
+      },
+      "index": 82,
+      "model": "OPA4197",
+      "phase_margin_deg": {
+       "reproduced": 74.37,
+       "retained": 74.37
+      },
+      "variant": "7.2p/1uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 2330000.0,
+       "retained": 2330000.0
+      },
+      "index": 83,
+      "model": "OPA4197",
+      "phase_margin_deg": {
+       "reproduced": 51.77,
+       "retained": 51.77
+      },
+      "variant": "7.2p/10uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 6058000.0,
+       "retained": 6058000.0
+      },
+      "index": 84,
+      "model": "OPA4197",
+      "phase_margin_deg": {
+       "reproduced": 52.54,
+       "retained": 52.54
+      },
+      "variant": "7.2p/100uA"
+     },
+     {
+      "case": "case5a",
+      "cell": "magnitude_indicator",
+      "crossover_Hz": {
+       "reproduced": 8877000.0,
+       "retained": 8877000.0
+      },
+      "index": 85,
+      "model": "OPA4197",
+      "phase_margin_deg": {
+       "reproduced": 61.09,
+       "retained": 61.09
+      },
+      "variant": "7.2p/1mA"
+     },
+     {
+      "case": "case5a_control",
+      "cell": "plain_follower",
+      "crossover_Hz": {
+       "reproduced": 2597000.0,
+       "retained": 2597000.0
+      },
+      "index": 86,
+      "model": "OPA4196",
+      "phase_margin_deg": {
+       "reproduced": 54.82,
+       "retained": 54.82
+      },
+      "variant": "no_load"
+     },
+     {
+      "case": "case5a_control",
+      "cell": "plain_follower",
+      "crossover_Hz": {
+       "reproduced": 9986000.0,
+       "retained": 9986000.0
+      },
+      "index": 87,
+      "model": "OPA4197",
+      "phase_margin_deg": {
+       "reproduced": 63.95,
+       "retained": 63.95
+      },
+      "variant": "no_load"
+     }
+    ],
+    "loop_break_validation": [
+     {
+      "reproduced": {
+       "R_load_ohm": 1000.0,
+       "analytic_pm_deg": 9.953,
+       "middlebrook_crossover_Hz": 6285000.0,
+       "middlebrook_pm_deg": 9.953
+      },
+      "retained": {
+       "R_load_ohm": 1000.0,
+       "analytic_pm_deg": 9.953,
+       "middlebrook_crossover_Hz": 6285000.0,
+       "middlebrook_pm_deg": 9.953
+      }
+     },
+     {
+      "reproduced": {
+       "R_load_ohm": 10.0,
+       "analytic_pm_deg": 59.67,
+       "middlebrook_crossover_Hz": 773000.0,
+       "middlebrook_pm_deg": 59.67
+      },
+      "retained": {
+       "R_load_ohm": 10.0,
+       "analytic_pm_deg": 59.67,
+       "middlebrook_crossover_Hz": 773000.0,
+       "middlebrook_pm_deg": 59.67
+      }
+     },
+     {
+      "reproduced": {
+       "R_load_ohm": 1000000000.0,
+       "analytic_pm_deg": 7.713,
+       "middlebrook_crossover_Hz": 8134000.0,
+       "middlebrook_pm_deg": 7.713
+      },
+      "retained": {
+       "R_load_ohm": 1000000000.0,
+       "analytic_pm_deg": 7.713,
+       "middlebrook_crossover_Hz": 8134000.0,
+       "middlebrook_pm_deg": 7.713
+      }
+     }
+    ]
+   },
+   "pins_after": {
+    "design/reports/spice/input-buffer-vendor.json": "12a0de40445d5156ccab2d583b45baa14f8b0420935ae57ca7a2f3d391654c9b",
+    "design/spec/cells/sweep_input_buffer_vendor.py": "13c470004de92aeae8dbf31dc54216214b86060758884e9e2ed40e42b9cee23d",
+    "scripts/stack/studies/mc04_s1b_indicator_loops/result.json": "4058446308c49e1b044cf933eb788706c43782492fa7968ac12c6ed06574840c"
+   },
+   "result": "PASS",
+   "rows": 136,
+   "slices": 2
+  },
+  "P5": "PASS (controls.json)",
+  "P6": "PASS (census.json)",
+  "P7": {
+   "/E2/REF9_FB": {
+    "c_stray": "1 nF",
+    "corner": {
+     "bracket": "agnd",
+     "tmux_c": 0.0
+    },
+    "ladder": [
+     {
+      "deck": "1e2ac878e46cc0b29d42",
+      "result": "timeout at the 600 s deck limit; container killed, none survived",
+      "tolerance": "reltol=1e-6 vntol=1e-9 abstol=1e-15"
+     },
+     {
+      "deck": "c2d82d70b7ff17bddbd9",
+      "result": "no convergence: gmin and source stepping failed, transient op 'timestep too small', first op aborted",
+      "tolerance": "reltol=1e-5"
+     },
+     {
+      "deck": "075911d7c67610bbf0f8",
+      "observation": "the op reached by transient op is not the linear point: v(out) 11.97 V at the +12 V rail, IN- 2.34 V against IN+ 5 V; the intended output is 9 V (gain 1.8 on 5 V)",
+      "op1": [
+       " vp              v(out)          v(n1)           v(xinm)        ",
+       " 1.20000000e+01  1.19710979e+01  2.34345169e+00  2.34345169e+00 "
+      ],
+      "op2": [
+       " vp              v(out)          v(n1)           v(xinm)        ",
+       " 1.20000000e+01  1.19710928e+01  2.33571595e+00  2.33571595e+00 "
+      ],
+      "result": "operating point moved between the AC runs on v(n1): 2.34345 V vs 2.33572 V (limit 0.1 mV)",
+      "tolerance": "ngspice default"
+     }
+    ],
+    "result": "NOT EVALUATED, so K1 failure not shown"
+   },
+   "/W1/DRIVE_INV_SUM": "PASS: 1 nF gives PM 3.004 deg (fails K1) and 290.7 % overshoot (fails K4)",
+   "result": "FAIL (STOP 2)"
+  },
+  "P8": "PASS (controls.json)",
+  "P9": "NOT RUN (stopped at P7)",
+  "controls_first_attempt": "the first --controls call raised IndexError in the study's loop_run() on the M3 swapped-probe deck (no falling unity crossing); loop_run now returns no margin, which counts as a P5 failure for M3 and P5/P8 alike; the whole --controls was rerun from the start"
  },
- "brief_sha256": "a8d915f694af63c5b04dc5849066fc3d56ac33960003e661eef51d7a478e94c2",
- "commit": "26a17a46",
+ "brief_sha256": "a0381b6a6c6f5a65414951c96d4eaf611c9aa7a38ff9d33eea2281eb7cfc5806",
+ "commit": "4cbdc90efb8c22e2f491e4cb192d3e4b1cc78932",
+ "controls": {
+  "M3": [
+   {
+    "R_load_ohm": 1000.0,
+    "deck": "b9d9c3da2478ae56700d35925a8e3879ce00d7da777eb028176c795143270ff2",
+    "fails_P5": true,
+    "pm_deg": -162.567
+   },
+   {
+    "R_load_ohm": 10.0,
+    "deck": "34f07bc362162c785c6bf668ce61fb52153d1008d6b166fa929be5cff5065086",
+    "fails_P5": true,
+    "pm_deg": null
+   },
+   {
+    "R_load_ohm": 1000000000.0,
+    "deck": "858b67042dd82bce4c632831b24fb034618bd6f5208f9e4972614bdcc25c953b",
+    "fails_P5": true,
+    "pm_deg": -166.5524
+   }
+  ],
+  "P5": [
+   {
+    "R_load_ohm": 1000.0,
+    "deck": "27936066dfa467ce7dc6f7e143e646579530b644852761ef74a13a432a1ef628",
+    "pass": true,
+    "pm_deg": 9.9528,
+    "retained_deg": 9.953
+   },
+   {
+    "R_load_ohm": 10.0,
+    "deck": "14ced563ad837295423ad7989f67e7bb108ed59fbce7e4399f6d12a8016904c2",
+    "pass": true,
+    "pm_deg": 59.6661,
+    "retained_deg": 59.67
+   },
+   {
+    "R_load_ohm": 1000000000.0,
+    "deck": "ea081da8399fb607693b641a321177c7fb5ed34298e93be8db88b2dcacf21998",
+    "pass": true,
+    "pm_deg": 7.7132,
+    "retained_deg": 7.713
+   }
+  ],
+  "P7": {
+   "/E2/REF9_FB": {
+    "K1_fails": false,
+    "c_stray": "1 nF",
+    "corner": {
+     "bracket": "agnd",
+     "tmux_c": 0.0
+    },
+    "loop": {
+     "pm_deg": null,
+     "status": "NOT EVALUATED"
+    },
+    "pass": false
+   },
+   "/W1/DRIVE_INV_SUM": {
+    "K1_fails": true,
+    "K4_fails": true,
+    "c_stray": "1 nF",
+    "closed": {
+     "max_overshoot_percent": 290.71,
+     "status": "OK"
+    },
+    "corner": {
+     "bracket": "agnd"
+    },
+    "loop": {
+     "pm_deg": 3.00404,
+     "status": "OK"
+    },
+    "pass": true
+   }
+  },
+  "P8": [
+   {
+    "crossover_Hz": 2597385.5,
+    "deck": "3bc65972fbc9ae3a7ddb8cf44f06efaca0ff5a52bceb8539f1a77f6a3a724c79",
+    "model": "OPAx196",
+    "pass": true,
+    "pm_deg": 54.821,
+    "retained": [
+     54.82,
+     2597000.0
+    ]
+   },
+   {
+    "crossover_Hz": 9986120.9,
+    "deck": "6a8873de30880fac35a01ea33c923a4505d968d84b7b7db0ad8d2b98c0e4d302",
+    "model": "OPAx197",
+    "pass": true,
+    "pm_deg": 63.955,
+    "retained": [
+     63.95,
+     9986000.0
+    ]
+   }
+  ],
+  "invocations": 13,
+  "pass": false
+ },
  "deck_source_modules": {
   "design/spec/cells/_builder.py": "38974710ca3b0fd23d4608cea04251cf5110d91141e6a1e89385f46211ad2a56",
   "design/spec/instrument.py": "a499b1822f31ac1fd343d5e94e976e64f0a22e3d4bd44d82488b5316d221894f",
@@ -50,16 +669,16 @@
   "scripts/schgen/core.py": "674670237a9c41dc17f71989d0da0ef12dfe6d27186498225cdc892498fe6083"
  },
  "end_checks": {
-  "budget_check": "NOT RUN (no results)",
+  "budget_check": "NOT RUN (no sweep results)",
   "circuit_check": "PASS",
-  "regen_all_check": "NOT RUN (stopped; tracked tree verified clean by git status)",
-  "unit_tests": "16 run, 15 pass, 1 skip (M3 needs the control run)"
+  "regen_all_check": "NOT RUN (stopped; git status shows the tracked tree clean)",
+  "unit_tests": "21 run, 21 pass"
  },
  "fingerprint": {
   "/sys/fs/cgroup/cpu.max": "absent",
   "/sys/fs/cgroup/memory.current": "absent",
   "/sys/fs/cgroup/memory.max": "absent",
-  "MemAvailable": "15791628 kB",
+  "MemAvailable": "15764440 kB",
   "SwapTotal": "0 kB",
   "affinity": [
    0,
@@ -67,7 +686,7 @@
    2,
    3
   ],
-  "commit": "26a17a46c980e7a3b59280e9654b77f4b94adfcf",
+  "commit": "4cbdc90efb8c22e2f491e4cb192d3e4b1cc78932",
   "disk_free_GiB": 50.7,
   "docker": "29.9.3",
   "image": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
@@ -77,17 +696,58 @@
   "os": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
   "processes_top_rss": [
    "RSS COMMAND",
-   "378420 claude",
-   "101140 dockerd",
-   "58200 containerd",
-   "41848 environment-man",
-   "28080 rclone-filestor",
-   "20408 python",
+   "406968 claude",
+   "101488 dockerd",
+   "58784 containerd",
+   "42300 environment-man",
+   "28092 rclone-filestor",
+   "18152 python",
    " 5788 process_api"
   ],
   "python": "3.12.3"
  },
  "guards": {
+  "guard-controls.json": {
+   "budget_bytes": 4294967296,
+   "command": [
+    "/home/user/venv312/bin/python",
+    "scripts/stack/studies/mc04_s13_node_cap_budget/budget.py",
+    "--controls"
+   ],
+   "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
+   "mem_available_floor_bytes": 8589934592,
+   "min_mem_available_mib": 15267.0,
+   "peak_docker_container_mem_mib": 3.5,
+   "peak_tree_plus_container_mib": 110.0,
+   "peak_tree_rss_bytes": 111669248,
+   "peak_tree_rss_mib": 106.5,
+   "pinned_containers_after": [],
+   "returncode": 1,
+   "samples": 103,
+   "wall_s": 621.8,
+   "watchdog_fired": null
+  },
+  "guard-p1-p3.json": {
+   "budget_bytes": 4294967296,
+   "command": [
+    "/home/user/venv312/bin/python",
+    "scripts/stack/studies/mc04_s13_node_cap_budget/budget.py",
+    "--pins",
+    "/tmp/claude-0/-home-user/d9b3f0a2-debf-5f4d-ae59-e66cdda61638/scratchpad/p3/sbomaf9e.zip"
+   ],
+   "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
+   "mem_available_floor_bytes": 8589934592,
+   "min_mem_available_mib": 15390.3,
+   "peak_docker_container_mem_mib": 0.0,
+   "peak_tree_plus_container_mib": 4.5,
+   "peak_tree_rss_bytes": 4714496,
+   "peak_tree_rss_mib": 4.5,
+   "pinned_containers_after": [],
+   "returncode": 0,
+   "samples": 1,
+   "wall_s": 5.1,
+   "watchdog_fired": null
+  },
   "guard-p4a.json": {
    "budget_bytes": 4294967296,
    "command": [
@@ -99,37 +759,55 @@
    ],
    "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
    "mem_available_floor_bytes": 8589934592,
-   "min_mem_available_mib": 15366.9,
+   "min_mem_available_mib": 15341.1,
    "peak_docker_container_mem_mib": 0.0,
-   "peak_tree_plus_container_mib": 58.7,
-   "peak_tree_rss_bytes": 61521920,
-   "peak_tree_rss_mib": 58.7,
+   "peak_tree_plus_container_mib": 58.5,
+   "peak_tree_rss_bytes": 61386752,
+   "peak_tree_rss_mib": 58.5,
    "pinned_containers_after": [],
    "returncode": 0,
    "samples": 2,
-   "wall_s": 10.2,
+   "wall_s": 10.1,
    "watchdog_fired": null
   },
-  "guard-p4b.json": {
+  "guard-p4b-slice-01.json": {
    "budget_bytes": 4294967296,
    "command": [
     "/home/user/venv312/bin/python",
-    "-m",
-    "design.spec.cells.sweep_input_buffer_vendor",
-    "--check",
-    "--offline"
+    "scripts/stack/studies/mc04_s13_node_cap_budget/p4b.py",
+    "--run"
    ],
    "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
    "mem_available_floor_bytes": 8589934592,
-   "min_mem_available_mib": 15098.3,
-   "peak_docker_container_mem_mib": 218.5,
-   "peak_tree_plus_container_mib": 334.9,
-   "peak_tree_rss_bytes": 178655232,
-   "peak_tree_rss_mib": 170.4,
+   "min_mem_available_mib": 15127.9,
+   "peak_docker_container_mem_mib": 219.5,
+   "peak_tree_plus_container_mib": 330.9,
+   "peak_tree_rss_bytes": 173367296,
+   "peak_tree_rss_mib": 165.3,
    "pinned_containers_after": [],
-   "returncode": 1,
-   "samples": 207,
-   "wall_s": 1233.6,
+   "returncode": 0,
+   "samples": 203,
+   "wall_s": 1219.4,
+   "watchdog_fired": null
+  },
+  "guard-p4b-slice-02.json": {
+   "budget_bytes": 4294967296,
+   "command": [
+    "/home/user/venv312/bin/python",
+    "scripts/stack/studies/mc04_s13_node_cap_budget/p4b.py",
+    "--resume"
+   ],
+   "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
+   "mem_available_floor_bytes": 8589934592,
+   "min_mem_available_mib": 15184.7,
+   "peak_docker_container_mem_mib": 127.5,
+   "peak_tree_plus_container_mib": 250.1,
+   "peak_tree_rss_bytes": 128978944,
+   "peak_tree_rss_mib": 123.0,
+   "pinned_containers_after": [],
+   "returncode": 0,
+   "samples": 86,
+   "wall_s": 507.9,
    "watchdog_fired": null
   },
   "guard-start-circuit-check.json": {
@@ -140,11 +818,11 @@
    ],
    "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
    "mem_available_floor_bytes": 8589934592,
-   "min_mem_available_mib": 15394.1,
+   "min_mem_available_mib": 15398.4,
    "peak_docker_container_mem_mib": 0.0,
-   "peak_tree_plus_container_mib": 0.3,
-   "peak_tree_rss_bytes": 270336,
-   "peak_tree_rss_mib": 0.3,
+   "peak_tree_plus_container_mib": 2.8,
+   "peak_tree_rss_bytes": 2899968,
+   "peak_tree_rss_mib": 2.8,
    "pinned_containers_after": [],
    "returncode": 0,
    "samples": 1,
@@ -159,39 +837,71 @@
    ],
    "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
    "mem_available_floor_bytes": 8589934592,
-   "min_mem_available_mib": 14504.5,
-   "peak_docker_container_mem_mib": 926.7,
-   "peak_tree_plus_container_mib": 968.0,
-   "peak_tree_rss_bytes": 409841664,
-   "peak_tree_rss_mib": 390.9,
+   "min_mem_available_mib": 14518.2,
+   "peak_docker_container_mem_mib": 843.6,
+   "peak_tree_plus_container_mib": 885.0,
+   "peak_tree_rss_bytes": 386850816,
+   "peak_tree_rss_mib": 368.9,
    "pinned_containers_after": [],
    "returncode": 0,
-   "samples": 81,
-   "wall_s": 447.3,
+   "samples": 76,
+   "wall_s": 415.4,
    "watchdog_fired": null
   }
  },
- "invocations_sweep": 0,
- "outcome": "STOPPED at Arm 0 P4b (brief STOP 2). No sweep deck, no P5/P7/P8/P9 control and no budget row was run; budget.json and results.jsonl are not written.",
+ "models": {
+  ".circuit-cache/sources/opa196-model/OPAx196.LIB": "31142f5dbd71b758d887ee8a411692fc4c1309c8f47100af4ba5bed7e173c430",
+  ".circuit-cache/sources/opa196-model/SBOMAF9E.ZIP": "9c264813a36536f743c166b6a101904b76ed08f049f2eeb127a438cc6e8ccdf5",
+  ".circuit-cache/sources/opa197-model/OPAx197.LIB": "fc5b020e63346e511bd808bf41c856b0150b000bcf8a41fe00eeececb1f422a5",
+  ".circuit-cache/sources/opa197-model/SBOMA34D.ZIP": "9e55fcaa23d54cee025dda3fa9872b11c41c531f82e0802c2b93d51e943666e5",
+  "design/spec/modules/spice/filter-model/LM13700.MOD": "666df501773da5e65f7fd3b3c806b2c1ae7770784685dd8191a9df33b382f390"
+ },
+ "outcome": "STOPPED at Arm 0 P7 (STOP 2): /E2/REF9_FB with 1 nF is NOT EVALUATED, not a K1 failure, so the positive control on class H-REF9 is not shown",
+ "pinned_inputs": {
+  ".claude/skills/component-spec-audit/references/inventory.json": "dd31420dc068ef2953ada299f3a2a873c5da1ee86f645ce4dc95f12476256eba",
+  "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s12-disposition-20261127.md": "6c21cb39354f12f091472c1dd33c56ec53b4ea0bf1196489737f7bc1e8516f0b",
+  "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s12-report-20261127.md": "d3b9a33026089d24aa4d8e4c591b1cb16545fb617e01800d3993e38a23470a19",
+  "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s13-node-capacitance-budget-brief-20261127.md": "a0381b6a6c6f5a65414951c96d4eaf611c9aa7a38ff9d33eea2281eb7cfc5806",
+  "circuit/orchestration/campaigns/osc-stack-20261114/reviews/mc04-s12-result-review-20261127.md": "77f8039f95d1afce36e52fe056717dc0c77e0219283bc7f5cca5662dbd58f2d9",
+  "design/partition/floorplan-candidate.json": "12083ea177cad1492f07fa96ad6dbfea8e5f8d2d347199bb555475c5b9e75a38",
+  "design/reports/io-partition.json": "235277959121d8599cbe1b6c6ae65ed4cd3fd3813cf2a8db05d2951ce5b633ce",
+  "design/reports/spice/input-buffer-vendor.json": "12a0de40445d5156ccab2d583b45baa14f8b0420935ae57ca7a2f3d391654c9b",
+  "design/reports/spice/precision-output-vendor.json": "9a974de1aa3ade8d7c189dd2238e90b96d7f41a8f134210ed3c99fac3d684e9b",
+  "design/spec/cells/sweep_input_buffer_vendor.py": "13c470004de92aeae8dbf31dc54216214b86060758884e9e2ed40e42b9cee23d",
+  "design/spec/cells/sweep_precision_vendor.py": "31c77c207c3b3da770cbc3800c3d2c75cd96492a5a3e3c6cd246d27239d87eae",
+  "design/spec/modules/envelope.py": "015b02c5d84550e19bf92b9ec838a43b255a728e02de1e562e855ba632fc2ee5",
+  "design/spec/modules/mix4_vca.py": "46d1efae983c32e763da7d3934d7fa01a7e0473c5b0c0bd586b28c9c85cf80e2",
+  "design/spec/modules/spice_trace.py": "3234148d53ec6241468e172e28340a2f0aee1acd299b68c4eea8a6cc7927f964",
+  "design/spec/modules/wavefolder.py": "e3a850e841a0f597571d6550e372d337c404fe4155ede3af7372be03ace37a93",
+  "design/standard/electrical-standard.json": "0cdef30d4848414c794b7561c07bef6c5cf63a19f7f79a0fd21866412e0e40fe",
+  "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+  "scripts/kicad/run.sh": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
+  "scripts/stack/studies/mc04_s10_r2_packet/f2_loop_estimate.py": "667c027b4ce3a861ab2ad86deb50cb702dba60e728b01daf4ba22cbaf812856d",
+  "scripts/stack/studies/mc04_s12_five_ic_joint/census.json": "92f6fdede21948d10ed49236889f1853b77c1e803445a945a15a92e7dbda095e",
+  "scripts/stack/studies/mc04_s12_five_ic_joint/result.json": "32532262d6a98dbdef8e73fee4951487f417c8361cc2f008ea801be099da02ed",
+  "scripts/stack/studies/mc04_s1b_indicator_loops/result.json": "4058446308c49e1b044cf933eb788706c43782492fa7968ac12c6ed06574840c",
+  "scripts/stack/studies/mc04_s7_r4/buffer_runs.py": "df656dc333dff510757b668278ba53ed2a078860d47dcff38c86070a1aaac9b1"
+ },
+ "run": "second run under brief Revision 4 (Addendum A, DS-170 to DS-172); nothing from the stopped first run (e3b747b7) reused",
  "start_checks": {
-  "circuit_check": "PASS",
+  "circuit_check": {
+   "guard": "guard-start-circuit-check.json",
+   "result": "PASS"
+  },
   "regen_all": {
-   "result": "PASS, no tracked change",
-   "wall_s": 447.3
+   "guard": "guard-start-regen-all.json",
+   "result": "PASS",
+   "tracked_change": "none"
   }
  },
  "status": "MODEL EVIDENCE ONLY, STUDY, NOT ADOPTED, UNVALIDATED DRAFT",
  "study_files": {
-  "budget.py": "e7039fd2a778b6e2ed44ddd5e2d402b4c9a0ebdadd90066ed9885af4bb7005da",
+  "budget.py": "526ec3ac209f28e347d751c1fc5397a5039a8dfb2e9e6446554d528c95ebbaea",
   "cells.py": "17c0137523cfe9f4a922d5fbd88bacf2827ce58d9090ffab5e0624112979f29d",
   "guard.py": "5d066228ed1efca4f4f072efa52b5e5c4432f34ca0ec77e90da5d4baa4c51651",
+  "p4b.py": "80637cda77bb4df3c7a0269e862d28c355f1e2a13f3d6ea990f70511e319b130",
   "runner.py": "805d9f142d9341a04e9ead081478f62f83798bd656676b64140a1a284dfa7349",
-  "test_s13.py": "7af7f72445e5411aa8709b888119580fc542bdf313f6031cafda1c8ff7c2ca30"
+  "test_s13.py": "2246d6502dafbe5de777d583702df668677833a0ef4df5a60e9ec9773ff2f966"
  },
- "sweep_plan_prepared_not_run": {
-  "main_decks": 1408,
-  "main_points": 704,
-  "note": "what-if, Ruling 6 output pairs and the class F diagnostic follow from results",
-  "topologies": 17
- }
+ "sweep": "NOT RUN (stopped at P7): pilot, 704 main points / 1408 main decks, dependent phases, what-if, F diagnostic"
 }

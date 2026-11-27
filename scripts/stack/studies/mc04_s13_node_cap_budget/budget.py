@@ -1,6 +1,7 @@
-"""MC04-S13 driver: node capacitance budgets from vendor-model ngspice decks (brief Revision 3, DS-161 to DS-169).
+"""MC04-S13 driver: node capacitance budgets from vendor-model ngspice decks (brief Revision 4, DS-161 to DS-172).
 
-    budget.py --controls          Arm 0 P5, P7, P8 with the study's own runner (P1 to P4 are run outside)
+    budget.py --pins              Arm 0 P1, P2 and P3 (the P3 read-only fetch is compared by --fetched)
+    budget.py --controls          Arm 0 P5, P7, P8 with the study's own runner (P4a and P4b are run outside)
     budget.py --run [--slice-min 25]    start the sweep (refuses if results.jsonl exists)
     budget.py --resume [--slice-min 25] continue from results.jsonl after P1/P3 re-check and docker kill
     budget.py --evaluate          build budget.json from results.jsonl (no simulation)
@@ -66,6 +67,9 @@ PINNED = {  # brief "Pinned inputs" (P1) and the model table (P3)
     "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s12-disposition-20261127.md": "6c21cb39354f12f091472c1dd33c56ec53b4ea0bf1196489737f7bc1e8516f0b",
     "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s12-report-20261127.md": "d3b9a33026089d24aa4d8e4c591b1cb16545fb617e01800d3993e38a23470a19",
     "circuit/orchestration/campaigns/osc-stack-20261114/reviews/mc04-s12-result-review-20261127.md": "77f8039f95d1afce36e52fe056717dc0c77e0219283bc7f5cca5662dbd58f2d9",
+    # Addendum A5: this brief at Revision 4, and, for the record only, the regenerated stage 1b paper result
+    "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s13-node-capacitance-budget-brief-20261127.md": "a0381b6a6c6f5a65414951c96d4eaf611c9aa7a38ff9d33eea2281eb7cfc5806",
+    "scripts/stack/studies/mc04_s1b_indicator_loops/result.json": "4058446308c49e1b044cf933eb788706c43782492fa7968ac12c6ed06574840c",
 }
 MODEL_PINS = {
     ".circuit-cache/sources/opa196-model/SBOMAF9E.ZIP": "9c264813a36536f743c166b6a101904b76ed08f049f2eeb127a438cc6e8ccdf5",
@@ -818,8 +822,10 @@ def loop_run(lines, x, y, opv):
     key, tab, wall = runner.run(text, ["op1", "v", "i", "op2"])
     f, T, _ = runner.loop_gain(tab["v"], tab["i"], vv, vi)
     m = runner.margins(f, T)
-    u = [q for q in m["unity"] if q["falling"]][0]
-    return key, u["pm_deg"], u["f_Hz"]
+    u = [q for q in m["unity"] if q["falling"]]
+    if not u:  # no falling unity crossing: no phase margin to report (a P5 failure, M3's expected outcome)
+        return key, None, None
+    return key, u[0]["pm_deg"], u[0]["f_Hz"]
 
 
 def controls():
@@ -835,18 +841,20 @@ def controls():
                     "Cp o2 0 1.5915n", "E2 o3 0 o2 0 1", "Rq o3 o4 1k", "Cq o4 0 159.15p", "E3 o5 0 o4 0 1",
                     "Ro o5 y 1k", "Rg y 0 2k", f"Rl x 0 {rl:g}"]
             key, pm, f = loop_run(base, "x", "y", ["v(x)"])
-            out["P5"].append({"R_load_ohm": rl, "pm_deg": round(pm, 4), "retained_deg": want,
-                              "pass": abs(pm - want) <= 0.1, "deck": key})
+            out["P5"].append({"R_load_ohm": rl, "pm_deg": None if pm is None else round(pm, 4), "retained_deg": want,
+                              "pass": pm is not None and abs(pm - want) <= 0.1, "deck": key})
             key, pm2, f2 = loop_run(base, "y", "x", ["v(x)"])  # M3: probe polarity swapped
-            out["M3"].append({"R_load_ohm": rl, "pm_deg": round(pm2, 4), "fails_P5": abs(pm2 - want) > 0.1,
-                              "deck": key})
+            out["M3"].append({"R_load_ohm": rl, "pm_deg": None if pm2 is None else round(pm2, 4),
+                              "fails_P5": pm2 is None or abs(pm2 - want) > 0.1, "deck": key})
         for sub, lib in (("OPAx196", cells.MODEL_LIBS["OPAx196"]), ("OPAx197", cells.MODEL_LIBS["OPAx197"])):
             lines = [f"MC04-S13 P8 plain follower {sub}", ".param TEMP=27", f".include {lib}", "Vplus vp 0 12",
                      "Vminus vn 0 -12", f"XU 0 xinm vp vn out {sub}"]
             key, pm, f = loop_run(lines, "xinm", "out", ["v(out)"])
             want_pm, want_f = FOLLOWER[sub]
-            out["P8"].append({"model": sub, "pm_deg": round(pm, 3), "crossover_Hz": round(f, 1), "retained": FOLLOWER[sub],
-                              "pass": abs(pm - want_pm) <= 0.1 and abs(f / want_f - 1) <= 0.005, "deck": key})
+            out["P8"].append({"model": sub, "pm_deg": None if pm is None else round(pm, 3),
+                              "crossover_Hz": None if f is None else round(f, 1), "retained": FOLLOWER[sub],
+                              "pass": pm is not None and abs(pm - want_pm) <= 0.1 and abs(f / want_f - 1) <= 0.005,
+                              "deck": key})
         cen, topo, rows = topologies()
         for net, decks in (("/W1/DRIVE_INV_SUM", ("loop", "closed")), ("/E2/REF9_FB", ("loop",))):
             t = topo[rows[net]["topology"]]
@@ -914,6 +922,13 @@ def write_result(b):
     guards = {p.name: json.loads(p.read_text()) for p in sorted(ck.glob("guard-*.json"))}
     state = json.loads((ck / "sweep-state.json").read_text()) if (ck / "sweep-state.json").exists() else None
     controls = json.loads((ck / "controls.json").read_text()) if (ck / "controls.json").exists() else None
+    arm0 = {"P1_P3": json.loads((ck / "arm0-p1-p3.json").read_text()) if (ck / "arm0-p1-p3.json").exists() else None}
+    if (ck / "p4b.jsonl").exists():
+        lines = [json.loads(x) for x in (ck / "p4b.jsonl").read_text().splitlines() if x.strip()]
+        arm0["P4b"] = {"slices": [{k: v for k, v in e.items() if k != "substitutions"} for e in lines
+                                  if e["kind"] in ("start", "resume", "slice_end", "stop")],
+                       "batches": len([e for e in lines if e["kind"] == "batch"]),
+                       "verdict": next((e for e in lines if e["kind"] == "verdict"), None)}
     walls = [r["wall_s"] for r in results.values()]
     labels = {}
     for r in b["rows"]:
@@ -923,8 +938,8 @@ def write_result(b):
         "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s13-node-capacitance-budget-brief-20261127.md"),
         "pinned_inputs": PINNED, "models": MODEL_PINS, "deck_source_modules": {m: sha_file(m) for m in DECK_MODULES},
         "study_files": {f: sha_file(f"scripts/stack/studies/mc04_s13_node_cap_budget/{f}")
-                        for f in ("cells.py", "runner.py", "budget.py", "guard.py", "test_s13.py")},
-        "fingerprint": fingerprint(), "controls": controls, "sweep_state": state, "guards": guards,
+                        for f in ("cells.py", "runner.py", "budget.py", "guard.py", "p4b.py", "test_s13.py")},
+        "fingerprint": fingerprint(), "arm0": arm0, "controls": controls, "sweep_state": state, "guards": guards,
         "deck_records": len(results), "invocations": invocations(results), "deck_cap": DECK_CAP,
         "deck_wall_s": {"sum": round(sum(walls), 1), "mean": round(sum(walls) / len(walls), 2) if walls else None,
                         "max": max(walls) if walls else None},
@@ -933,11 +948,43 @@ def write_result(b):
     RESULT.write_text(json.dumps(out, indent=1, sort_keys=True) + "\n")
 
 
+def pins(fetched):
+    """Arm 0 P1, P2 and P3. `fetched` is the OPAx196 ZIP read read-only from circuit-dev-resources 54c00fc8."""
+    import subprocess
+    from guard import IMAGE
+    check_pins(PINNED)
+    out = {"P1": {"result": "PASS", "count": len(PINNED), "pins": PINNED}}
+    run = lambda *a: subprocess.run(list(a), capture_output=True, text=True, cwd=ROOT, timeout=300)  # noqa: E731
+    image_id = run("docker", "image", "inspect", IMAGE, "--format", "{{.Id}}").stdout.strip()
+    ver = run("bash", "scripts/kicad/run.sh", "kicad-cli", "version").stdout.strip()
+    banner = run("bash", "scripts/kicad/run.sh", "ngspice", "-v").stdout
+    ng = next((x.strip() for x in banner.splitlines() if "ngspice-" in x), banner.strip()[:120])
+    p2 = image_id == "sha256:" + IMAGE.split("sha256:")[1] and ver == "10.0.6" and "ngspice-44.2" in ng
+    out["P2"] = {"result": "PASS" if p2 else "FAIL", "image": IMAGE, "image_id": image_id,
+                 "kicad_cli_version": ver, "ngspice_banner": ng}
+    if kill_pinned_containers():
+        raise SystemExit("STOP 3: container survived docker kill")
+    zip_pin = MODEL_PINS[".circuit-cache/sources/opa196-model/SBOMAF9E.ZIP"]
+    f_sha = hashlib.sha256(Path(fetched).read_bytes()).hexdigest()
+    cached = ROOT / ".circuit-cache/sources/opa196-model/SBOMAF9E.ZIP"
+    same = cached.exists() and cached.read_bytes() == Path(fetched).read_bytes()
+    check_models()
+    p3 = f_sha == zip_pin and same
+    out["P3"] = {"result": "PASS" if p3 else "FAIL", "fetched_sha256": f_sha, "cache_equals_fetch": same,
+                 "source": "Takazudo/circuit-dev-resources 54c00fc8 texas-instruments/opa4196/"
+                           "opa4196-pspice-model-sbomaf9e.zip (gh api, read-only)", "model_pins": MODEL_PINS}
+    (STUDY / "checkpoints/arm0-p1-p3.json").write_text(json.dumps(out, indent=1) + "\n")
+    print(json.dumps({k: v["result"] for k, v in out.items()}))
+    if not (p2 and p3):
+        raise SystemExit("STOP 2/3: P2 or P3 failed")
+
+
 def main():
     ap = argparse.ArgumentParser()
     g = ap.add_mutually_exclusive_group(required=True)
     for a in ("--run", "--resume", "--evaluate", "--check", "--controls", "--census"):
         g.add_argument(a, action="store_true")
+    g.add_argument("--pins", metavar="FETCHED_ZIP")
     ap.add_argument("--slice-min", type=float, default=25.0)
     ap.add_argument("--max-decks", type=int, default=None)
     a = ap.parse_args()
@@ -968,7 +1015,9 @@ def main():
                         "LM393BIDR": "bracketed behind 100 kOhm on the REF9 output (Ruling 6; interpretation)"}},
             indent=1) + "\n")
         sys.exit(1 if errs else 0)
-    if a.controls:
+    if a.pins:
+        pins(a.pins)
+    elif a.controls:
         controls()
     elif a.run or a.resume:
         drive(a.slice_min, resume=a.resume, max_decks=a.max_decks)
