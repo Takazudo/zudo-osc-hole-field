@@ -85,7 +85,7 @@ class TestReadmeIsRecomputed(Base):
         self.assertTrue(math.isclose(c.delta_allow(c.dv('strain_design_limit'), 19.0), 0.045, abs_tol=0.001))
         self.assertTrue(math.isclose(c.toggle_gap(), 1.16, abs_tol=0.005))
         k = c.k_positions()
-        self.assertEqual(k, 777)
+        self.assertEqual(k, 807)  # 2026-11-27 geometry refresh; was 777
         self.assertIn(f"{k * min(c.p['mating_force_N']):.0f} to {k * max(c.p['mating_force_N']):,.0f} N", self.readme)
 
 
@@ -120,7 +120,10 @@ class TestReviewFindings(Base):
         self.assertEqual(p['mating_force_N']['value'], [0.84, 0.97, 1.33])
         self.assertEqual(p['unmating_force_N']['value'], [0.47, 0.98])
         n = self.c.k_positions() + sum(self.c.positions(x) for x in self.c.pairs('EL'))
-        self.assertEqual(n, p['positions_per_side_total']['value'])
+        # DA-01 D6 counted 825 before MC04-S7 rev 13 added JL-K-26/27 and JR-K-28..30 (30 positions); the force
+        # table keeps 825 as DA-01's own row and the K row carries the current count.
+        self.assertEqual(p['positions_per_side_total']['value'], 825)
+        self.assertEqual(n, 855)
 
     def test_provisional_sites_are_provisional(self):
         sites = self.data['fixings']['provisional_tie_sites']
@@ -194,7 +197,7 @@ class TestGeometry(Base):
     def test_counts(self):
         g = self.data['geometry']
         k_pairs = [p for p in g['pairs'] if p['joint'] != 'EL']
-        self.assertEqual(len(k_pairs), 197)
+        self.assertEqual(len(k_pairs), 202)  # 2026-11-27 geometry refresh; was 197
         self.assertEqual(len([p for p in k_pairs if p['joint'] == 'P']), 135)
         self.assertEqual(len(g['fixings']['posts']), 18)
         self.assertEqual(len(g['fixings']['kept_supports']), 12)

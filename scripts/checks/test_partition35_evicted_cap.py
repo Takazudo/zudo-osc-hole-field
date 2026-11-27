@@ -42,6 +42,17 @@ class EmittedD4309(unittest.TestCase):
         slot = pins['D4309']
         distance = math.hypot(row['x_mm'] - slot['x_mm'], row['y_mm'] - slot['y_mm'])
         jr = plan['adopted_placement_pins']['boards']['JR']
+        # MC04-S7 relocates the whole E3 U4347 block (D4309 included) to K, which supersedes the S6 JR eviction path.
+        relocation = json.loads((ROOT / 'design/partition/k-block-relocation.json').read_text())['blocks']
+        block = next((b for b in relocation if 'D4309' in b['members']), None)
+        if block is not None:
+            ic = next(p for p in plan['placements'] if p['ref'] == block['ic'])
+            self.assertIn('D4309', jr.get('released_by_k_block_move', []))
+            self.assertNotIn('D4309', jr['evicted'])
+            self.assertTrue(row.get('k_block_move'))
+            self.assertEqual((row['board'], row['side']), (ic['board'], ic['side']))
+            self.assertTrue(ic.get('k_block_move'))
+            return
         self.assertIn('D4309', jr['evicted'])
         self.assertTrue(distance <= fp.CLUSTER_RADIUS_MM + 1e-9 or 'D4309' in jr.get('evicted_diodes_beyond_cap', []),
                         f'D4309 at {distance:.2f} mm is beyond the cap and not reported')

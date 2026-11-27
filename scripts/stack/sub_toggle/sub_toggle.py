@@ -46,6 +46,11 @@ INPUTS = (
     'footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod',
     'footprints/kicad/zudo-osc-hole-field.pretty/Toggle_Dailywell_2MS_T1B1M2.kicad_mod',
 )
+# Inputs read at a later revision than LAUNCH_COMMIT. The Dailywell facts were read after EV-01 added the
+# printed operating ranges (59d7e03b); the 21793ba3 refresh recorded that revision's bytes.
+INPUT_REVISIONS = {
+    '.claude/skills/component-dailywell-2ms3t1b1m2qes/facts.json': '59d7e03b40800bc2776b3f4865a4894772d8e726',
+}
 # ST-02 output read from the wave-1 worktree (not on this branch).
 EXTERNAL_INPUTS = {
     'wave-1:design/stack/geometry/stack-candidate.json':
@@ -489,6 +494,17 @@ def sha(path):
     return hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
 
 
+def sha_at(path, commit):
+    import subprocess
+    blob = subprocess.run(['git', '-C', str(ROOT), 'show', f'{commit}:{path}'],
+                          capture_output=True, check=True).stdout
+    return hashlib.sha256(blob).hexdigest()
+
+
+def launch_input_hashes():
+    return {p: sha_at(p, INPUT_REVISIONS.get(p, LAUNCH_COMMIT)) for p in INPUTS}
+
+
 def pinmap(pins):
     return {k: pins[k] for k in sorted(pins, key=lambda p: (len(p), p))}
 
@@ -500,7 +516,7 @@ def build():
         'task': 'osc-stack-20261114/ST-06@' + LAUNCH_COMMIT,
         'status': 'PROPOSAL - unvalidated draft specification; no schematic, board or lock is changed',
         'provenance': {'launch_commit': LAUNCH_COMMIT,
-                       'inputs_sha256_at_launch': {p: sha(p) for p in INPUTS},
+                       'inputs_sha256_at_launch': launch_input_hashes(),
                        'external_inputs': EXTERNAL_INPUTS,
                        'generator': 'scripts/stack/sub_toggle/sub_toggle.py'},
         'scope': {'instances': list(INSTANCES), 'board_core': 'K, OSC2 and OSC4 cores',

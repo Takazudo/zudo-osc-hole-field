@@ -91,7 +91,7 @@ class StackScreens(unittest.TestCase):
         self.assertEqual(by['POWER-P-AGND2']['K_xy'], [98.5, 175.0])
         self.assertEqual(by["POWER-JR-AGND3"]["K_xy"], [278.5, 160])
         counts = self.d['terms']['header_agnd_positions']['value']
-        self.assertEqual(sum(counts.values()), 264)
+        self.assertEqual(sum(counts.values()), 274)  # 2026-11-27 refresh: MC04-S7 rev 13 adds JL-K-26/27 and JR-K-28..30
 
 
 class Continuation(unittest.TestCase):

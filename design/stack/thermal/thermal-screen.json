@@ -8,7 +8,7 @@
     "id": "ledger-worksheet-loads",
     "path": "design/power/rail-ledger.json",
     "object": "worksheet_loads",
-    "sha256": "5933a75445fc44fdae3ee078d6180bc24451a559e4f326d3b409591c4bf9ac71",
+    "sha256": "9b36bfdb57d90ed85ee90cb47ca01c6c271667fdeb553bad5622833ad1a1af5c",
     "reads": "planning_allowance_mA, count, label and instance of every row"
    },
    {
@@ -22,28 +22,28 @@
     "id": "ledger-two_feed_total_mA",
     "path": "design/power/rail-ledger.json",
     "object": "two_feed_total_mA",
-    "sha256": "c2b8c36c6adf04f7f3eadf625868717a077edd3afe4c559e0c033439c75a4d12",
+    "sha256": "bf23ed35a533a36eb5051771c6d215540fc3d8d01338002fc8db63e019539c42",
     "reads": "rail currents of the case"
    },
    {
     "id": "ledger-conditional_SH_short_resistor_case_mA",
     "path": "design/power/rail-ledger.json",
     "object": "conditional_SH_short_resistor_case_mA",
-    "sha256": "c238b99605890bdf9049b498b6f7a6e8432cf7721e152958b887170412362a9a",
+    "sha256": "71920727ebda34e4ed43ba0c324137da6a4a05d40cee06e38b2a5a6116cb4c8c",
     "reads": "rail currents of the case"
    },
    {
     "id": "ledger-sensitivity_case_mA",
     "path": "design/power/rail-ledger.json",
     "object": "sensitivity_case_mA",
-    "sha256": "66416a515767491c4f3317231c0cde343fa6f2780fe6d15c268bb557afdcbd44",
+    "sha256": "f14728ba8da365163e0aaf40d66b6dc25aa7fac33b23f96349eed9abaaaf9360",
     "reads": "rail currents of the case"
    },
    {
     "id": "ledger-conditional_startup_1ms_mA",
     "path": "design/power/rail-ledger.json",
     "object": "conditional_startup_1ms_mA",
-    "sha256": "42a510a1bd4bac5cee20a72fe8c6bff56b164a1f4a7091620691524837afdf09",
+    "sha256": "cd7fc0110aa1df0b9995a8e739f5c95e631d341f8669d23d4bfd439b4204e841",
     "reads": "rail currents of the case"
    },
    {
@@ -57,35 +57,35 @@
     "id": "ledger-ic-packages",
     "path": "design/power/rail-ledger.json",
     "object": "physical_ic_packages",
-    "sha256": "5898f9afdc18749ce4b3119abfae72a431211db8095c090764eac3a1956cd194",
+    "sha256": "7b5339bc18c78267db48d1a3c82cb6744ea00005473a386c9fa33c8d8ebcda00",
     "reads": "ref, instance and symbol of every IC package"
    },
    {
     "id": "partition-assignment",
     "path": "design/partition/partition.json",
     "object": "assignment",
-    "sha256": "1884c94402fe05542618a25d9e44d9fe3aab28fb8ed55ebba1819018be14ef50",
+    "sha256": "b9fadbef70fb0ebe6ec0d011442cc3673bb1f351d03878b256b1801e6a0b9d43",
     "reads": "board of every reference"
    },
    {
     "id": "floorplan-placements",
     "path": "design/partition/floorplan-candidate.json",
     "object": "placements",
-    "sha256": "7eb10566c87a0922c27b409a698a3b52a936a41184bb882615a40ea68f4f3042",
+    "sha256": "20b7b7282927c37c7ecea8d173bbe9fd3812beefe88d044ab15a49de3bebaf23",
     "reads": "x, y, side and courtyard of every reference"
    },
    {
     "id": "link-gate-figures",
     "path": "design/stack/geometry/links/link-gate.json",
     "object": "derived: link_figures(record)",
-    "sha256": "86e4d78a48f87f8d1c988e39f1f726d4f33eddaad1df8bc45ead2575f9d580f5",
+    "sha256": "354415dae9ea6887ef5be9e5a97d174a1fc7fa20670841cb9d4f26c8df5a25bb",
     "reads": "links, placed and slots of the summary; slot, loop and cable areas of the placed links"
    },
    {
     "id": "link-gate-displaced-k-ic-packages",
     "path": "design/stack/geometry/links/link-gate.json",
     "object": "displaced_k_ic_packages",
-    "sha256": "eee433209d077f0d48a1cf11e91f7719d6ef15a7acb1a2149b26cb01765dc872",
+    "sha256": "89fcb77b1b749ee4ecca4d848f3de4dab39b024ccf72bc5ee89691b756784eec",
     "reads": "the rows of DS-97, or null while the key is absent"
    },
    {
@@ -169,7 +169,7 @@
     "id": "partition-boards",
     "path": "design/partition/partition.json",
     "object": "boards",
-    "sha256": "fd525e264ba2dfde62c76f7b395db4461fda436943b6369a48ad270af373be66",
+    "sha256": "7005df7cec959043c18c5f518ad3bac6d8754d99211ac9665d8c94d11fdfcbeb",
     "reads": "outline, face_z_mm and thickness of every board in the cable design"
    },
    {
@@ -382,7 +382,7 @@
     "id": "plan-heat-row",
     "path": "doc/src/content/docs/decisions/osc-direct-stack-plan.mdx",
     "line_prefix": "| Heat in a closed case |",
-    "sha256": "d6caaba2fda54043c576aba2fdf569098031f5b960e2cd5beae261e66edc2208"
+    "sha256": "e78c67505d4206ccddde82742f0734ffb4914791239802cfb25264b0c9d2bc2a"
    },
    {
     "id": "plan-q6-row",
@@ -1751,7 +1751,19 @@
     "id": "O2:0",
     "instance": "O2",
     "label": "OPA4196IDR",
-    "count": 6,
+    "count": 5,
+    "unit": "whole package",
+    "mA": [
+     5.0,
+     5.0,
+     0
+    ]
+   },
+   {
+    "id": "O2:1",
+    "instance": "O2",
+    "label": "OPA4197IPWR",
+    "count": 1,
     "unit": "whole package",
     "mA": [
      6.0,
@@ -1760,7 +1772,7 @@
     ]
    },
    {
-    "id": "O2:1",
+    "id": "O2:2",
     "instance": "O2",
     "label": "OPA4197IDR",
     "count": 4,
@@ -1772,7 +1784,7 @@
     ]
    },
    {
-    "id": "O2:2",
+    "id": "O2:3",
     "instance": "O2",
     "label": "TMUX7412FRRPR",
     "count": 4,
@@ -1784,7 +1796,7 @@
     ]
    },
    {
-    "id": "O2:3",
+    "id": "O2:4",
     "instance": "O2",
     "label": "LM393BIDR",
     "count": 2,
@@ -1796,7 +1808,7 @@
     ]
    },
    {
-    "id": "O2:4",
+    "id": "O2:5",
     "instance": "O2",
     "label": "AS3340D core",
     "count": 1,
@@ -1808,7 +1820,7 @@
     ]
    },
    {
-    "id": "O2:5",
+    "id": "O2:6",
     "instance": "O2",
     "label": "Four 10 kohm jack loads",
     "count": 4,
@@ -1820,7 +1832,7 @@
     ]
    },
    {
-    "id": "O2:6",
+    "id": "O2:7",
     "instance": "O2",
     "label": "Internal resistive/reference/shaper load reserve",
     "count": 1,
@@ -1832,7 +1844,7 @@
     ]
    },
    {
-    "id": "O2:7",
+    "id": "O2:8",
     "instance": "O2",
     "label": "5 V conditioning reserve",
     "count": 1,
@@ -1943,11 +1955,11 @@
     "id": "O4:0",
     "instance": "O4",
     "label": "OPA4196IDR",
-    "count": 6,
+    "count": 5,
     "unit": "whole package",
     "mA": [
-     6.0,
-     6.0,
+     5.0,
+     5.0,
      0
     ]
    },
@@ -1955,11 +1967,11 @@
     "id": "O4:1",
     "instance": "O4",
     "label": "OPA4197IPWR",
-    "count": 1,
+    "count": 2,
     "unit": "whole package",
     "mA": [
-     6.0,
-     6.0,
+     12.0,
+     12.0,
      0
     ]
    },
@@ -2062,17 +2074,29 @@
    {
     "id": "O5:1",
     "instance": "O5",
-    "label": "OPA4197IDR",
-    "count": 4,
+    "label": "OPA4197IPWR",
+    "count": 1,
     "unit": "whole package",
     "mA": [
-     24.0,
-     24.0,
+     6.0,
+     6.0,
      0
     ]
    },
    {
     "id": "O5:2",
+    "instance": "O5",
+    "label": "OPA4197IDR",
+    "count": 3,
+    "unit": "whole package",
+    "mA": [
+     18.0,
+     18.0,
+     0
+    ]
+   },
+   {
+    "id": "O5:3",
     "instance": "O5",
     "label": "TMUX7412FRRPR",
     "count": 4,
@@ -2084,7 +2108,7 @@
     ]
    },
    {
-    "id": "O5:3",
+    "id": "O5:4",
     "instance": "O5",
     "label": "LM393BIDR",
     "count": 2,
@@ -2096,7 +2120,7 @@
     ]
    },
    {
-    "id": "O5:4",
+    "id": "O5:5",
     "instance": "O5",
     "label": "AS3340D core",
     "count": 1,
@@ -2108,7 +2132,7 @@
     ]
    },
    {
-    "id": "O5:5",
+    "id": "O5:6",
     "instance": "O5",
     "label": "Four 10 kohm jack loads",
     "count": 4,
@@ -2120,7 +2144,7 @@
     ]
    },
    {
-    "id": "O5:6",
+    "id": "O5:7",
     "instance": "O5",
     "label": "Internal resistive/reference/shaper load reserve",
     "count": 1,
@@ -2132,7 +2156,7 @@
     ]
    },
    {
-    "id": "O5:7",
+    "id": "O5:8",
     "instance": "O5",
     "label": "5 V conditioning reserve",
     "count": 1,
@@ -2710,17 +2734,29 @@
    {
     "id": "E2:1",
     "instance": "E2",
-    "label": "OPA4197IDR",
-    "count": 3,
-    "unit": "worksheet unit",
+    "label": "OPA4197IPWR",
+    "count": 2,
+    "unit": "whole package",
     "mA": [
-     18.0,
-     18.0,
+     12.0,
+     12.0,
      0
     ]
    },
    {
     "id": "E2:2",
+    "instance": "E2",
+    "label": "OPA4197IDR",
+    "count": 1,
+    "unit": "worksheet unit",
+    "mA": [
+     6.0,
+     6.0,
+     0
+    ]
+   },
+   {
+    "id": "E2:3",
     "instance": "E2",
     "label": "TMUX7412FRRPR",
     "count": 3,
@@ -2732,7 +2768,7 @@
     ]
    },
    {
-    "id": "E2:3",
+    "id": "E2:4",
     "instance": "E2",
     "label": "TMUX6112PWR",
     "count": 2,
@@ -2744,7 +2780,7 @@
     ]
    },
    {
-    "id": "E2:4",
+    "id": "E2:5",
     "instance": "E2",
     "label": "LM13700M_NOPB",
     "count": 1,
@@ -2756,7 +2792,7 @@
     ]
    },
    {
-    "id": "E2:5",
+    "id": "E2:6",
     "instance": "E2",
     "label": "LM393BIDR",
     "count": 2,
@@ -2768,7 +2804,7 @@
     ]
    },
    {
-    "id": "E2:6",
+    "id": "E2:7",
     "instance": "E2",
     "label": "SN74HC00DR",
     "count": 17,
@@ -2780,7 +2816,7 @@
     ]
    },
    {
-    "id": "E2:7",
+    "id": "E2:8",
     "instance": "E2",
     "label": "SN74HC74DR",
     "count": 9,
@@ -2792,7 +2828,7 @@
     ]
    },
    {
-    "id": "E2:8",
+    "id": "E2:9",
     "instance": "E2",
     "label": "SN74HC14DR",
     "count": 2,
@@ -2804,7 +2840,7 @@
     ]
    },
    {
-    "id": "E2:9",
+    "id": "E2:10",
     "instance": "E2",
     "label": "CD74HC221M96",
     "count": 1,
@@ -2816,7 +2852,7 @@
     ]
    },
    {
-    "id": "E2:10",
+    "id": "E2:11",
     "instance": "E2",
     "label": "Three magnitude LEDs",
     "count": 3,
@@ -2828,7 +2864,7 @@
     ]
    },
    {
-    "id": "E2:11",
+    "id": "E2:12",
     "instance": "E2",
     "label": "Two stage LEDs",
     "count": 2,
@@ -2840,7 +2876,7 @@
     ]
    },
    {
-    "id": "E2:12",
+    "id": "E2:13",
     "instance": "E2",
     "label": "Four external output loads",
     "count": 4,
@@ -2852,7 +2888,7 @@
     ]
    },
    {
-    "id": "E2:13",
+    "id": "E2:14",
     "instance": "E2",
     "label": "Reference, rates, clamp and control reserve",
     "count": 1,
@@ -2864,7 +2900,7 @@
     ]
    },
    {
-    "id": "E2:14",
+    "id": "E2:15",
     "instance": "E2",
     "label": "Comparator pullups",
     "count": 3,
@@ -2876,7 +2912,7 @@
     ]
    },
    {
-    "id": "E2:15",
+    "id": "E2:16",
     "instance": "E2",
     "label": "Five control-contact pulls",
     "count": 5,
@@ -2888,7 +2924,7 @@
     ]
    },
    {
-    "id": "E2:16",
+    "id": "E2:17",
     "instance": "E2",
     "label": "Input isolation enables",
     "count": 1,
@@ -2903,28 +2939,40 @@
     "id": "E3:0",
     "instance": "E3",
     "label": "OPA4196IDR",
-    "count": 7,
+    "count": 6,
     "unit": "whole package",
     "mA": [
-     7.0,
-     7.0,
+     6.0,
+     6.0,
      0
     ]
    },
    {
     "id": "E3:1",
     "instance": "E3",
-    "label": "OPA4197IDR",
-    "count": 3,
-    "unit": "worksheet unit",
+    "label": "OPA4197IPWR",
+    "count": 2,
+    "unit": "whole package",
     "mA": [
-     18.0,
-     18.0,
+     12.0,
+     12.0,
      0
     ]
    },
    {
     "id": "E3:2",
+    "instance": "E3",
+    "label": "OPA4197IDR",
+    "count": 2,
+    "unit": "worksheet unit",
+    "mA": [
+     12.0,
+     12.0,
+     0
+    ]
+   },
+   {
+    "id": "E3:3",
     "instance": "E3",
     "label": "TMUX7412FRRPR",
     "count": 3,
@@ -2936,7 +2984,7 @@
     ]
    },
    {
-    "id": "E3:3",
+    "id": "E3:4",
     "instance": "E3",
     "label": "TMUX6112PWR",
     "count": 2,
@@ -2948,7 +2996,7 @@
     ]
    },
    {
-    "id": "E3:4",
+    "id": "E3:5",
     "instance": "E3",
     "label": "LM13700M_NOPB",
     "count": 1,
@@ -2960,7 +3008,7 @@
     ]
    },
    {
-    "id": "E3:5",
+    "id": "E3:6",
     "instance": "E3",
     "label": "LM393BIDR",
     "count": 2,
@@ -2972,7 +3020,7 @@
     ]
    },
    {
-    "id": "E3:6",
+    "id": "E3:7",
     "instance": "E3",
     "label": "SN74HC00DR",
     "count": 17,
@@ -2984,7 +3032,7 @@
     ]
    },
    {
-    "id": "E3:7",
+    "id": "E3:8",
     "instance": "E3",
     "label": "SN74HC74DR",
     "count": 9,
@@ -2996,7 +3044,7 @@
     ]
    },
    {
-    "id": "E3:8",
+    "id": "E3:9",
     "instance": "E3",
     "label": "SN74HC14DR",
     "count": 2,
@@ -3008,7 +3056,7 @@
     ]
    },
    {
-    "id": "E3:9",
+    "id": "E3:10",
     "instance": "E3",
     "label": "CD74HC221M96",
     "count": 1,
@@ -3020,7 +3068,7 @@
     ]
    },
    {
-    "id": "E3:10",
+    "id": "E3:11",
     "instance": "E3",
     "label": "Three magnitude LEDs",
     "count": 3,
@@ -3032,7 +3080,7 @@
     ]
    },
    {
-    "id": "E3:11",
+    "id": "E3:12",
     "instance": "E3",
     "label": "Two stage LEDs",
     "count": 2,
@@ -3044,7 +3092,7 @@
     ]
    },
    {
-    "id": "E3:12",
+    "id": "E3:13",
     "instance": "E3",
     "label": "Four external output loads",
     "count": 4,
@@ -3056,7 +3104,7 @@
     ]
    },
    {
-    "id": "E3:13",
+    "id": "E3:14",
     "instance": "E3",
     "label": "Reference, rates, clamp and control reserve",
     "count": 1,
@@ -3068,7 +3116,7 @@
     ]
    },
    {
-    "id": "E3:14",
+    "id": "E3:15",
     "instance": "E3",
     "label": "Comparator pullups",
     "count": 3,
@@ -3080,7 +3128,7 @@
     ]
    },
    {
-    "id": "E3:15",
+    "id": "E3:16",
     "instance": "E3",
     "label": "Five control-contact pulls",
     "count": 5,
@@ -3092,7 +3140,7 @@
     ]
    },
    {
-    "id": "E3:16",
+    "id": "E3:17",
     "instance": "E3",
     "label": "Input isolation enables",
     "count": 1,
@@ -3118,9 +3166,9 @@
    {
     "id": "E4:1",
     "instance": "E4",
-    "label": "OPA4197IDR",
+    "label": "OPA4197IPWR",
     "count": 3,
-    "unit": "worksheet unit",
+    "unit": "whole package",
     "mA": [
      18.0,
      18.0,
@@ -3322,9 +3370,9 @@
    {
     "id": "E5:1",
     "instance": "E5",
-    "label": "OPA4197IDR",
+    "label": "OPA4197IPWR",
     "count": 3,
-    "unit": "worksheet unit",
+    "unit": "whole package",
     "mA": [
      18.0,
      18.0,
@@ -4247,16 +4295,28 @@
     "id": "M4A:0",
     "instance": "M4A",
     "label": "OPA4196IDR",
-    "count": 9,
+    "count": 8,
     "unit": "whole package",
     "mA": [
-     9.0,
-     9.0,
+     8.0,
+     8.0,
      0
     ]
    },
    {
     "id": "M4A:1",
+    "instance": "M4A",
+    "label": "OPA4197IPWR",
+    "count": 1,
+    "unit": "whole package",
+    "mA": [
+     6.0,
+     6.0,
+     0
+    ]
+   },
+   {
+    "id": "M4A:2",
     "instance": "M4A",
     "label": "OPA4197IDR",
     "count": 1,
@@ -4268,7 +4328,7 @@
     ]
    },
    {
-    "id": "M4A:2",
+    "id": "M4A:3",
     "instance": "M4A",
     "label": "TMUX7412FRRPR",
     "count": 5,
@@ -4280,7 +4340,7 @@
     ]
    },
    {
-    "id": "M4A:3",
+    "id": "M4A:4",
     "instance": "M4A",
     "label": "LM393BIDR",
     "count": 2,
@@ -4292,7 +4352,7 @@
     ]
    },
    {
-    "id": "M4A:4",
+    "id": "M4A:5",
     "instance": "M4A",
     "label": "LM13700M_NOPB",
     "count": 1,
@@ -4304,7 +4364,7 @@
     ]
    },
    {
-    "id": "M4A:5",
+    "id": "M4A:6",
     "instance": "M4A",
     "label": "magnitude indicators",
     "count": 6,
@@ -4316,7 +4376,7 @@
     ]
    },
    {
-    "id": "M4A:6",
+    "id": "M4A:7",
     "instance": "M4A",
     "label": "pre-level clip LED",
     "count": 1,
@@ -4328,7 +4388,7 @@
     ]
    },
    {
-    "id": "M4A:7",
+    "id": "M4A:8",
     "instance": "M4A",
     "label": "SUM external load",
     "count": 1,
@@ -4340,7 +4400,7 @@
     ]
    },
    {
-    "id": "M4A:8",
+    "id": "M4A:9",
     "instance": "M4A",
     "label": "reference, signal pots, summer feedback, servo and trims",
     "count": 1,
@@ -4352,7 +4412,7 @@
     ]
    },
    {
-    "id": "M4A:9",
+    "id": "M4A:10",
     "instance": "M4A",
     "label": "fault-switch enable feeds",
     "count": 4,
@@ -4364,7 +4424,7 @@
     ]
    },
    {
-    "id": "M4A:10",
+    "id": "M4A:11",
     "instance": "M4A",
     "label": "ATTEN fault-switch enable feed",
     "count": 1,
@@ -4379,16 +4439,28 @@
     "id": "M4B:0",
     "instance": "M4B",
     "label": "OPA4196IDR",
-    "count": 9,
+    "count": 8,
     "unit": "whole package",
     "mA": [
-     9.0,
-     9.0,
+     8.0,
+     8.0,
      0
     ]
    },
    {
     "id": "M4B:1",
+    "instance": "M4B",
+    "label": "OPA4197IPWR",
+    "count": 1,
+    "unit": "whole package",
+    "mA": [
+     6.0,
+     6.0,
+     0
+    ]
+   },
+   {
+    "id": "M4B:2",
     "instance": "M4B",
     "label": "OPA4197IDR",
     "count": 1,
@@ -4400,7 +4472,7 @@
     ]
    },
    {
-    "id": "M4B:2",
+    "id": "M4B:3",
     "instance": "M4B",
     "label": "TMUX7412FRRPR",
     "count": 5,
@@ -4412,7 +4484,7 @@
     ]
    },
    {
-    "id": "M4B:3",
+    "id": "M4B:4",
     "instance": "M4B",
     "label": "LM393BIDR",
     "count": 2,
@@ -4424,7 +4496,7 @@
     ]
    },
    {
-    "id": "M4B:4",
+    "id": "M4B:5",
     "instance": "M4B",
     "label": "LM13700M_NOPB",
     "count": 1,
@@ -4436,7 +4508,7 @@
     ]
    },
    {
-    "id": "M4B:5",
+    "id": "M4B:6",
     "instance": "M4B",
     "label": "magnitude indicators",
     "count": 6,
@@ -4448,7 +4520,7 @@
     ]
    },
    {
-    "id": "M4B:6",
+    "id": "M4B:7",
     "instance": "M4B",
     "label": "pre-level clip LED",
     "count": 1,
@@ -4460,7 +4532,7 @@
     ]
    },
    {
-    "id": "M4B:7",
+    "id": "M4B:8",
     "instance": "M4B",
     "label": "SUM external load",
     "count": 1,
@@ -4472,7 +4544,7 @@
     ]
    },
    {
-    "id": "M4B:8",
+    "id": "M4B:9",
     "instance": "M4B",
     "label": "reference, signal pots, summer feedback, servo and trims",
     "count": 1,
@@ -4484,7 +4556,7 @@
     ]
    },
    {
-    "id": "M4B:9",
+    "id": "M4B:10",
     "instance": "M4B",
     "label": "fault-switch enable feeds",
     "count": 4,
@@ -4496,7 +4568,7 @@
     ]
    },
    {
-    "id": "M4B:10",
+    "id": "M4B:11",
     "instance": "M4B",
     "label": "ATTEN fault-switch enable feed",
     "count": 1,
@@ -5926,23 +5998,23 @@
   ],
   "ledger_cases_mA": {
    "two_feed_total_mA": [
-    1431.825194,
-    1392.592182,
+    1456.825194,
+    1417.592182,
     187.873956
    ],
    "conditional_SH_short_resistor_case_mA": [
-    1455.87329,
-    1416.640278,
+    1480.87329,
+    1441.640278,
     187.873956
    ],
    "sensitivity_case_mA": [
-    1437.625194,
-    1394.392182,
+    1462.625194,
+    1419.392182,
     207.673956
    ],
    "conditional_startup_1ms_mA": [
-    1463.505194,
-    1424.272182,
+    1488.505194,
+    1449.272182,
     201.073956
    ]
   },
@@ -6187,8 +6259,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     138.927,
-     94.93
+     116.7,
+     90.18
     ],
     "courtyard_mm2": 71.262
    },
@@ -6317,10 +6389,10 @@
     "instance": "H1",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "F.Cu",
+    "side": "B.Cu",
     "xy": [
-     116.47,
-     78.93
+     121.97,
+     63.775
     ],
     "courtyard_mm2": 71.262
    },
@@ -6379,8 +6451,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     122.851,
-     61.745
+     126.348,
+     54.986
     ],
     "courtyard_mm2": 71.262
    },
@@ -6579,14 +6651,14 @@
    {
     "ref": "U1216",
     "instance": "O2",
-    "symbol": "OPA4196IDR",
+    "symbol": "OPA4197IPWR",
     "board": "JL",
     "side": "B.Cu",
     "xy": [
-     36.73,
+     37.23,
      71.55
     ],
-    "courtyard_mm2": 71.262
+    "courtyard_mm2": 46.123
    },
    {
     "ref": "U1217",
@@ -6823,8 +6895,8 @@
     "board": "JL",
     "side": "B.Cu",
     "xy": [
-     73.46,
-     61.52
+     71.96,
+     62.52
     ],
     "courtyard_mm2": 71.262
    },
@@ -7011,24 +7083,24 @@
    {
     "ref": "U1416",
     "instance": "O4",
-    "symbol": "OPA4196IDR",
+    "symbol": "OPA4197IPWR",
     "board": "JL",
     "side": "B.Cu",
     "xy": [
-     70.73,
-     71.55
+     71.23,
+     72.05
     ],
-    "courtyard_mm2": 71.262
+    "courtyard_mm2": 46.123
    },
    {
     "ref": "U1417",
     "instance": "O4",
     "symbol": "OPA4196IDR",
-    "board": "JL",
-    "side": "B.Cu",
+    "board": "K",
+    "side": "F.Cu",
     "xy": [
-     72.97,
-     88.08
+     64.47,
+     89.93
     ],
     "courtyard_mm2": 71.262
    },
@@ -7251,14 +7323,14 @@
    {
     "ref": "U1518",
     "instance": "O5",
-    "symbol": "OPA4197IDR",
+    "symbol": "OPA4197IPWR",
     "board": "JL",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     105.96,
-     89.52
+     90.46,
+     78.02
     ],
-    "courtyard_mm2": 71.262
+    "courtyard_mm2": 46.123
    },
    {
     "ref": "U1601",
@@ -7313,10 +7385,10 @@
     "instance": "H2",
     "symbol": "REF5050AIDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     142.56,
-     126.2
+     142.685,
+     132.167
     ],
     "courtyard_mm2": 43.364
    },
@@ -7481,10 +7553,10 @@
     "instance": "F1",
     "symbol": "TMUX7412FRRPR",
     "board": "JL",
-    "side": "F.Cu",
+    "side": "B.Cu",
     "xy": [
-     90.88,
-     76.88
+     104.88,
+     86.38
     ],
     "courtyard_mm2": 24.01
    },
@@ -7543,8 +7615,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     143.45,
-     114.45
+     141.2,
+     104.7
     ],
     "courtyard_mm2": 71.262
    },
@@ -7660,11 +7732,11 @@
     "ref": "U2119",
     "instance": "F1",
     "symbol": "OPA4196IDR",
-    "board": "JL",
-    "side": "B.Cu",
+    "board": "K",
+    "side": "F.Cu",
     "xy": [
-     104.77,
-     70.08
+     113.47,
+     64.43
     ],
     "courtyard_mm2": 71.262
    },
@@ -7685,10 +7757,10 @@
     "instance": "H2",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     143.22,
-     115.93
+     147.22,
+     122.858
     ],
     "courtyard_mm2": 71.262
    },
@@ -7735,8 +7807,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     132.37,
-     128.36
+     132.87,
+     127.36
     ],
     "courtyard_mm2": 71.262
    },
@@ -7879,8 +7951,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     65.796,
-     83.476
+     84.89,
+     79.7
     ],
     "courtyard_mm2": 71.262
    },
@@ -7903,8 +7975,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     99.345,
-     53.163
+     73.664,
+     55.144
     ],
     "courtyard_mm2": 71.262
    },
@@ -7915,8 +7987,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     112.241,
-     91.951
+     105.785,
+     100.697
     ],
     "courtyard_mm2": 71.262
    },
@@ -7925,10 +7997,10 @@
     "instance": "F2",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "F.Cu",
+    "side": "B.Cu",
     "xy": [
-     109.236,
-     59.664
+     114.009,
+     54.891
     ],
     "courtyard_mm2": 71.262
    },
@@ -7939,8 +8011,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     105.39,
-     101.54
+     80.465,
+     104.545
     ],
     "courtyard_mm2": 71.262
    },
@@ -7972,11 +8044,11 @@
     "ref": "U2218",
     "instance": "F2",
     "symbol": "OPA4196IDR",
-    "board": "JL",
-    "side": "B.Cu",
+    "board": "K",
+    "side": "F.Cu",
     "xy": [
      123.97,
-     50.35
+     50.45
     ],
     "courtyard_mm2": 71.262
    },
@@ -8359,8 +8431,8 @@
     "board": "JL",
     "side": "B.Cu",
     "xy": [
-     142.51,
-     116.88
+     144.01,
+     115.38
     ],
     "courtyard_mm2": 24.01
    },
@@ -8395,8 +8467,8 @@
     "board": "JL",
     "side": "B.Cu",
     "xy": [
-     142.67,
-     125.25
+     121.97,
+     113.28
     ],
     "courtyard_mm2": 71.262
    },
@@ -8647,8 +8719,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     227.685,
-     60.445
+     222.694,
+     55.89
     ],
     "courtyard_mm2": 71.262
    },
@@ -8753,9 +8825,9 @@
     "instance": "E1",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "F.Cu",
+    "side": "B.Cu",
     "xy": [
-     232.08,
+     209.33,
      77.45
     ],
     "courtyard_mm2": 71.262
@@ -8789,10 +8861,10 @@
     "instance": "E1",
     "symbol": "SN74HC74DR",
     "board": "K",
-    "side": "F.Cu",
+    "side": "B.Cu",
     "xy": [
-     223.18,
-     50.252
+     231.715,
+     59.47
     ],
     "courtyard_mm2": 71.262
    },
@@ -9247,8 +9319,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     195.7,
-     205.45
+     213.201,
+     222.951
     ],
     "courtyard_mm2": 71.262
    },
@@ -9307,8 +9379,8 @@
     "board": "K",
     "side": "B.Cu",
     "xy": [
-     213.186,
-     222.955
+     203.856,
+     233.899
     ],
     "courtyard_mm2": 71.262
    },
@@ -9617,10 +9689,10 @@
     "instance": "E3",
     "symbol": "CD74HC221M96",
     "board": "K",
-    "side": "F.Cu",
+    "side": "B.Cu",
     "xy": [
-     297.484,
-     34.097
+     283.72,
+     37.785
     ],
     "courtyard_mm2": 80.66
    },
@@ -9653,10 +9725,10 @@
     "instance": "E3",
     "symbol": "TMUX6112PWR",
     "board": "K",
-    "side": "F.Cu",
+    "side": "B.Cu",
     "xy": [
-     257.46,
-     70.23
+     259.192,
+     71.23
     ],
     "courtyard_mm2": 49.408
    },
@@ -9715,8 +9787,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     280.18,
-     37.331
+     269.43,
+     55.95
     ],
     "courtyard_mm2": 71.262
    },
@@ -9809,10 +9881,10 @@
     "instance": "E3",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     280.93,
-     25.97
+     284.359,
+     13.171
     ],
     "courtyard_mm2": 71.262
    },
@@ -9845,10 +9917,10 @@
     "instance": "E3",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
      269.47,
-     47.65
+     37.4
     ],
     "courtyard_mm2": 71.262
    },
@@ -9869,10 +9941,10 @@
     "instance": "E3",
     "symbol": "SN74HC00DR",
     "board": "K",
-    "side": "F.Cu",
+    "side": "B.Cu",
     "xy": [
-     258.075,
-     78.382
+     269.45,
+     58.68
     ],
     "courtyard_mm2": 71.262
    },
@@ -9907,8 +9979,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     258.348,
-     37.68
+     284.95,
+     38.605
     ],
     "courtyard_mm2": 71.262
    },
@@ -9941,10 +10013,10 @@
     "instance": "E3",
     "symbol": "SN74HC74DR",
     "board": "K",
-    "side": "F.Cu",
+    "side": "B.Cu",
     "xy": [
-     285.765,
-     76.629
+     281.43,
+     60.45
     ],
     "courtyard_mm2": 71.262
    },
@@ -9953,10 +10025,10 @@
     "instance": "E3",
     "symbol": "SN74HC74DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     269.95,
-     29.22
+     256.338,
+     15.608
     ],
     "courtyard_mm2": 71.262
    },
@@ -9977,10 +10049,10 @@
     "instance": "E3",
     "symbol": "SN74HC74DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     257.43,
-     72.2
+     259.306,
+     79.203
     ],
     "courtyard_mm2": 71.262
    },
@@ -10003,8 +10075,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     280.43,
-     29.47
+     294.919,
+     25.588
     ],
     "courtyard_mm2": 71.262
    },
@@ -10107,24 +10179,24 @@
    {
     "ref": "U4346",
     "instance": "E3",
-    "symbol": "OPA4196IDR",
+    "symbol": "OPA4197IPWR",
     "board": "JR",
     "side": "B.Cu",
     "xy": [
-     259.97,
+     260.47,
      51.55
     ],
-    "courtyard_mm2": 71.262
+    "courtyard_mm2": 46.123
    },
    {
     "ref": "U4347",
     "instance": "E3",
     "symbol": "OPA4196IDR",
-    "board": "JR",
-    "side": "B.Cu",
+    "board": "K",
+    "side": "F.Cu",
     "xy": [
-     258.68,
-     62.57
+     235.18,
+     64.97
     ],
     "courtyard_mm2": 71.262
    },
@@ -10132,11 +10204,11 @@
     "ref": "U4348",
     "instance": "E3",
     "symbol": "OPA4196IDR",
-    "board": "JR",
-    "side": "B.Cu",
+    "board": "K",
+    "side": "F.Cu",
     "xy": [
-     259.97,
-     88.08
+     244.754,
+     78.354
     ],
     "courtyard_mm2": 71.262
    },
@@ -10903,8 +10975,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     179.415,
-     116.788
+     174.95,
+     120.95
     ],
     "courtyard_mm2": 71.262
    },
@@ -11120,7 +11192,7 @@
     "side": "F.Cu",
     "xy": [
      175.95,
-     108.83
+     113.08
     ],
     "courtyard_mm2": 71.262
    },
@@ -11153,10 +11225,10 @@
     "instance": "E5",
     "symbol": "SN74HC74DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     166.97,
-     177.18
+     165.094,
+     184.183
     ],
     "courtyard_mm2": 71.262
    },
@@ -11165,10 +11237,10 @@
     "instance": "E5",
     "symbol": "SN74HC74DR",
     "board": "K",
-    "side": "B.Cu",
+    "side": "F.Cu",
     "xy": [
-     152.45,
-     134.08
+     142.274,
+     139.955
     ],
     "courtyard_mm2": 71.262
    },
@@ -11839,8 +11911,8 @@
     "board": "JR",
     "side": "B.Cu",
     "xy": [
-     297.93,
-     29.55
+     262.95,
+     60.77
     ],
     "courtyard_mm2": 71.262
    },
@@ -11911,8 +11983,8 @@
     "board": "JL",
     "side": "B.Cu",
     "xy": [
-     142.51,
-     110.48
+     158.01,
+     127.98
     ],
     "courtyard_mm2": 24.01
    },
@@ -12007,8 +12079,8 @@
     "board": "JL",
     "side": "B.Cu",
     "xy": [
-     160.38,
-     118.97
+     110.93,
+     101.15
     ],
     "courtyard_mm2": 71.262
    },
@@ -12019,8 +12091,8 @@
     "board": "JL",
     "side": "B.Cu",
     "xy": [
-     158.05,
-     129.07
+     93.93,
+     113.55
     ],
     "courtyard_mm2": 71.262
    },
@@ -12101,10 +12173,10 @@
     "instance": "W1",
     "symbol": "OPA4196IDR",
     "board": "K",
-    "side": "F.Cu",
+    "side": "B.Cu",
     "xy": [
-     163.829,
-     186.427
+     169.2,
+     206.47
     ],
     "courtyard_mm2": 71.262
    },
@@ -12295,8 +12367,8 @@
     "board": "K",
     "side": "F.Cu",
     "xy": [
-     164.12,
-     117.88
+     150.62,
+     106.38
     ],
     "courtyard_mm2": 71.262
    },
@@ -13455,14 +13527,14 @@
    {
     "ref": "U8314",
     "instance": "M4A",
-    "symbol": "OPA4196IDR",
+    "symbol": "OPA4197IPWR",
     "board": "JR",
     "side": "B.Cu",
     "xy": [
-     191.97,
-     88.08
+     192.47,
+     89.58
     ],
-    "courtyard_mm2": 71.262
+    "courtyard_mm2": 46.123
    },
    {
     "ref": "U8315",
@@ -13504,11 +13576,11 @@
     "ref": "U8318",
     "instance": "M4A",
     "symbol": "OPA4196IDR",
-    "board": "JR",
-    "side": "B.Cu",
+    "board": "K",
+    "side": "F.Cu",
     "xy": [
-     190.68,
-     66.87
+     176.93,
+     53.47
     ],
     "courtyard_mm2": 71.262
    },
@@ -13719,14 +13791,14 @@
    {
     "ref": "U8417",
     "instance": "M4B",
-    "symbol": "OPA4196IDR",
+    "symbol": "OPA4197IPWR",
     "board": "JR",
     "side": "B.Cu",
     "xy": [
-     208.97,
+     209.47,
      55.85
     ],
-    "courtyard_mm2": 71.262
+    "courtyard_mm2": 46.123
    },
    {
     "ref": "U8418",
@@ -13755,9 +13827,9 @@
   ],
   "place_source": {
    "read": "gate record displaced_k_ic_packages",
-   "moved": 85,
-   "listed": 99,
-   "kept": 14
+   "moved": 91,
+   "listed": 102,
+   "kept": 11
   },
   "exact_part_places": {
    "WQP518MA": [
@@ -18692,19 +18764,19 @@
    ]
   },
   "link_figures": {
-   "links": 61,
-   "placed": 61,
-   "slots": 61,
-   "slot_area_mm2": 1016.25,
-   "loop_plan_area_mm2": 5632.0133,
-   "cable_plan_area_mm2": 31095.0
+   "links": 62,
+   "placed": 62,
+   "slots": 62,
+   "slot_area_mm2": 1048.5,
+   "loop_plan_area_mm2": 5618.5474,
+   "cable_plan_area_mm2": 32120.0
   },
   "plan_heat_row_W": [
-   34.83,
+   35.43,
    41.1
   ],
   "plan_heat_row_text": [
-   "34.83",
+   "35.43",
    "41.1"
   ],
   "operating_ranges": {
@@ -19710,8 +19782,8 @@
    "A01": {
     "refs": 29,
     "centroid": [
-     163.0,
-     117.568
+     161.531,
+     116.478
     ]
    },
    "A02": {
@@ -19764,10 +19836,10 @@
     ]
    },
    "E3": {
-    "refs": 214,
+    "refs": 235,
     "centroid": [
-     267.748,
-     51.824
+     265.725,
+     54.46
     ]
    },
    "E4": {
@@ -19780,8 +19852,8 @@
    "E5": {
     "refs": 214,
     "centroid": [
-     179.869,
-     154.627
+     179.833,
+     154.733
     ]
    },
    "E6": {
@@ -19792,17 +19864,17 @@
     ]
    },
    "F1": {
-    "refs": 171,
+    "refs": 194,
     "centroid": [
-     48.915,
-     119.606
+     56.855,
+     112.804
     ]
    },
    "F2": {
-    "refs": 171,
+    "refs": 174,
     "centroid": [
-     89.572,
-     79.003
+     90.165,
+     78.519
     ]
    },
    "F3": {
@@ -19822,15 +19894,15 @@
    "H2": {
     "refs": 53,
     "centroid": [
-     132.369,
-     113.733
+     131.938,
+     113.097
     ]
    },
    "M4A": {
-    "refs": 102,
+    "refs": 125,
     "centroid": [
-     231.515,
-     160.373
+     220.755,
+     140.038
     ]
    },
    "M4B": {
@@ -19883,10 +19955,10 @@
     ]
    },
    "O4": {
-    "refs": 167,
+    "refs": 170,
     "centroid": [
-     65.153,
-     209.564
+     65.141,
+     207.445
     ]
    },
    "O5": {
