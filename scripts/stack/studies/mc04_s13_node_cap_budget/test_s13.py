@@ -1,4 +1,4 @@
-"""MC04-S13 tests and mutations M1 to M11 (offline; M3 reads the recorded control run; M9 to M11 use in-memory copies)."""
+"""MC04-S13 tests and mutations M1 to M16 (offline; M3 and M12 read recorded runs; M9 to M11 and M13 to M16 use in-memory copies)."""
 import copy
 import json
 import sys
@@ -163,7 +163,7 @@ class Models(unittest.TestCase):
         if not path.exists():
             self.skipTest("controls not run yet")
         c = json.loads(path.read_text())
-        self.assertTrue(all(x["fails_P5"] for x in c["M3"]))
+        self.assertTrue(c["M3"] and all(x["fails_P5"] for x in c["M3"]))
 
 
 class P4bComparison(unittest.TestCase):
@@ -221,6 +221,95 @@ class P4bComparison(unittest.TestCase):
         self.assertEqual(b[-1], (135, 135))
         flat = [i for first, last in b for i in range(first, last + 1)]
         self.assertEqual(flat, list(range(136)))
+
+
+class SeedAndP7(unittest.TestCase):
+    """Addendum B: M12 reads the recorded deck run; M13 to M16 use in-memory copies."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.cen, cls.topo, cls.rows = budget.topologies()
+        cls.ref9 = cls.topo[cls.rows["/E2/REF9_FB"]["topology"]]
+        cls.good = {"inp": 5.0, "inm": 5.000021, "xinm": 5.000021, "n1": 5.000021, "out": 9.00004,
+                    "vp": 12.0, "vn": -12.0, "top_threshold": 0.0}
+        path = STUDY / "checkpoints/controls.json"
+        cls.controls = json.loads(path.read_text()) if path.exists() else None
+
+    def test_ref9_expected_dc_is_9_and_5(self):
+        exp, _ = budget.expected_dc(self.ref9, budget.sweep_points(self.ref9)[0])
+        self.assertAlmostEqual(exp["out"], 9.0, places=5)
+        self.assertAlmostEqual(exp["inm"], 5.0, places=6)
+
+    def test_grounded_in_plus_is_not_floating(self):
+        t = self.topo[self.rows["/W1/DRIVE_INV_SUM"]["topology"]]
+        text = budget.loop_texts(t, budget.sweep_points(t)[0])[0][1]
+        self.assertIn("XU 0 xinm vp vn out", text)
+
+    def test_seed_deck_differs_only_in_c_stray(self):
+        t = self.ref9
+        p = budget.sweep_points(t, values=[10])[0]
+        seed = budget.seed_netlist(t, p, "loop").splitlines()
+        ev = budget.loop_texts(t, p)[2][1].split("\n.control\n")[0].splitlines()
+        diff = [(a, b) for a, b in zip(seed, ev) if a != b]
+        self.assertEqual(len(seed), len(ev))
+        self.assertEqual(len(diff), 1)
+        self.assertTrue(diff[0][0].startswith("Cstray") and diff[0][1].startswith("Cstray"))
+
+    def test_nodeset_changes_the_deck_key(self):
+        p = budget.sweep_points(self.ref9, values=[10])[0]
+        a = budget.loop_texts(self.ref9, p)[0][1]
+        b = budget.loop_texts(self.ref9, p, [".nodeset v(out) = 9.00004"])[0][1]
+        self.assertNotEqual(runner.deck_key(a), runner.deck_key(b))
+
+    def test_m12_recorded(self):
+        path = STUDY / "checkpoints/m12.json"
+        if not path.exists():
+            self.skipTest("M12 not run yet")
+        m = json.loads(path.read_text())
+        self.assertEqual(m["status"], "NOT EVALUATED")
+        self.assertIsNone(m["metrics"])
+        self.assertTrue(all(a["result"] != "accepted" for a in m["attempts"]))
+
+    def test_m13_one_millivolt_fails_50_uV(self):
+        ref = dict(self.good)
+        if self.controls:
+            s = next((x for x in self.controls.get("seeds", []) if x.get("valid")), None)
+            if s:
+                ref = dict(s["reference"])
+        self.assertIsNone(budget.accept_op(ref, ref))
+        node = sorted(ref)[0]
+        bad = dict(ref)
+        bad[node] += 1e-3
+        self.assertTrue(budget.accept_op(ref, bad))
+
+    def test_m14_p7_not_evaluated_fails(self):
+        rec = {"loop": {"status": "NOT EVALUATED", "pm_deg": None}, "pass": True}
+        self.assertFalse(budget.p7_pass(rec, need_k4=False))
+        if self.controls and self.controls.get("P7"):
+            c = copy.deepcopy(self.controls["P7"]["/E2/REF9_FB"])
+            c["loop"]["status"] = "NOT EVALUATED"
+            c.pop("K1_fails", None)
+            self.assertFalse(budget.p7_pass(c, need_k4=False))
+
+    def test_m15_invalid_seeds(self):
+        c = self.ref9["circuit"]
+        exp, _ = budget.expected_dc(self.ref9, budget.sweep_points(self.ref9)[0])
+        self.assertEqual(budget.seed_validity(c, "loop", self.good, exp), [])
+        railed = {**self.good, "out": 11.97}
+        self.assertTrue(budget.seed_validity(c, "loop", railed, exp))
+        apart = {**self.good, "xinm": 5.002, "inm": 5.002}
+        self.assertTrue(budget.seed_validity(c, "loop", apart, exp))
+
+    def test_m16_k4_removed_fails_p7(self):
+        rec = {"loop": {"status": "OK"}, "K1_fails": True, "closed": {"status": "OK"}, "K4_fails": True}
+        self.assertTrue(budget.p7_pass(rec, need_k4=True))
+        drop = copy.deepcopy(rec)
+        del drop["K4_fails"]
+        self.assertFalse(budget.p7_pass(drop, need_k4=True))
+        if self.controls and self.controls.get("P7"):
+            c = copy.deepcopy(self.controls["P7"]["/W1/DRIVE_INV_SUM"])
+            c.pop("K4_fails", None)
+            self.assertFalse(budget.p7_pass(c, need_k4=True))
 
 
 if __name__ == "__main__":

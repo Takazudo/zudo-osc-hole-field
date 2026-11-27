@@ -5,6 +5,10 @@ stem is the first 20 hex digits of it, so byte-identical decks share one key. Ev
 `bash scripts/kicad/run.sh ngspice -b <deck>` from the repository root with a 600 s timeout, and through the imported
 `check_oracle_result`; the deck text must be unchanged afterwards and every data file fresh, non-empty and finite.
 On a timeout every container of the pinned image is killed and the list must be empty before the next deck.
+
+Addendum B: every operating point is written in full precision (`set numdgt=15`, `wrdata ... all`); a seed deck is the
+same netlist at zero stray with `op` (or a DC ramp of the bias source) and `wrnodev`, and its `.ic` lines become
+`.nodeset` lines of every evaluation deck of that netlist.
 """
 from __future__ import annotations
 
@@ -13,6 +17,7 @@ import cmath
 import gzip
 import hashlib
 import math
+import re
 import subprocess
 import time
 from pathlib import Path
@@ -45,6 +50,61 @@ def read_table(path: Path):
     return {nm: [r[i] for r in table] for i, nm in enumerate(names)}
 
 
+EXTERNAL = re.compile(r"[a-z0-9_]+")  # top-level node names; internal model nodes carry a dot, branches a '#'
+OP_ALL = ["set numdgt=15", "op", "wrdata @D@.{name}.dat all", "set numdgt=8"]
+
+
+def op_lines(name):
+    return [x.replace("{name}", name) for x in OP_ALL]
+
+
+def external_nodes(tab):
+    """Full-precision values (last row) of every top-level node in a `wrdata ... all` table from read_table().
+    Column 0 is the plot scale; when it is a node it is written again later, and read_table() names that "#imag"."""
+    keys = list(tab)
+    out = {}
+    for k in keys[1:]:
+        nm = k[:-5] if k.endswith("#imag") and k[:-5] == keys[0] else k
+        if EXTERNAL.fullmatch(nm):
+            out[nm] = tab[k][-1]
+    if not out:
+        raise OracleError("operating-point record has no external node")
+    return out
+
+
+def last_log(key):
+    p = WORK / f"{key[:20]}.log"
+    return p.read_text() if p.exists() else ""
+
+
+def seed_control(method="op", src=None, value=None):
+    if method == "op":
+        an = "op"
+    else:
+        an = f"dc {src} 0 {value:.9g} {value / 20:.9g}"  # 0 to the nominal value in 20 steps (Addendum B2.2)
+    return [".control", "set noinit", "set wr_singlescale", "set wr_vecnames", "set numdgt=15", an,
+            "wrdata @D@.ref.dat all", "wrnodev @D@.nodes.txt", "quit", ".endc", ".end", ""]
+
+
+def run_seed(netlist_text, method="op", src=None, value=None):
+    """Run one seed deck. Returns (key, reference {node: V}, nodeset lines, transient_op, wall)."""
+    text = netlist_text.rstrip("\n") + "\n" + "\n".join(seed_control(method, src, value))
+    key = deck_key(text)
+    nodes = WORK / f"{key[:20]}.nodes.txt"
+    nodes.unlink(missing_ok=True)
+    key, tables, wall = run(text, ["ref"], keep=False)
+    ref = external_nodes(tables["ref"])
+    (WORK / f"{key[:20]}.ref.dat").unlink()
+    if not nodes.exists():
+        raise OracleError(f"seed {key[:20]}: wrnodev wrote nothing")
+    ics = [ln for ln in nodes.read_text().splitlines() if ln.startswith(".ic ")]
+    nodes.unlink()
+    if not ics:
+        raise OracleError(f"seed {key[:20]}: no .ic line")
+    nodeset = [".nodeset " + ln[len(".ic "):] for ln in ics]
+    return key, ref, nodeset, "Transient op" in last_log(key), wall, text
+
+
 def ensure_spiceinit():
     init = ROOT / ".spiceinit"
     if init.exists():
@@ -75,8 +135,10 @@ def run(text: str, files: list[str], *, keep=True):
     paths = {s: WORK / f"{stem}.{s}.dat" for s in files}
     for p in paths.values():
         p.unlink(missing_ok=True)
-    if pinned_containers():
-        raise OracleError("a container of the pinned image is running before the deck")
+    if pinned_containers():  # "Stopping the oracle": docker kill before the deck, and the list must be empty
+        survivors = kill_pinned_containers()
+        if survivors:
+            raise SystemExit(f"STOP 3: container survived docker kill: {survivors}")
     INVOCATIONS["count"] += 1
     t0 = time.time()
     try:
@@ -109,17 +171,26 @@ LOOP_TOLERANCES = (("reltol=1e-6 vntol=1e-9 abstol=1e-15", ".options reltol=1e-6
 LOOP_AC = "ac dec 100 10 1g"
 
 
-def loop_text(netlist_lines, op_vectors, *, x="xinm", y="inm", tol=None, ac=LOOP_AC):
-    """The sequence of the retained loop_oracle(): op, AC voltage injection, AC current injection, op again."""
-    probe = [f"Vmy n1 {y} 0", f"Vinj {x} n1 DC 0 AC 1", "Iinj 0 n1 DC 0 AC 0"]
+def probe_lines(x="xinm", y="inm"):
+    return [f"Vmy n1 {y} 0", f"Vinj {x} n1 DC 0 AC 1", "Iinj 0 n1 DC 0 AC 0"]
+
+
+def loop_netlist(netlist_lines, *, x="xinm", y="inm"):
+    """The loop deck's netlist (no tolerance, no seed, no control): what its seed deck runs."""
+    return "\n".join(netlist_lines + probe_lines(x, y))
+
+
+def loop_text(netlist_lines, *, x="xinm", y="inm", tol=None, ac=LOOP_AC, nodeset=()):
+    """The sequence of the retained loop_oracle(): op, AC voltage injection, AC current injection, op again.
+    Both operating points are written in full precision for the seed comparison (Addendum B2.5)."""
     vv, vi = ["v(n1)", f"v({x})"], ["i(Vmy)", "i(Vinj)"]
-    lines = netlist_lines + probe + ([tol] if tol else []) + [
+    lines = netlist_lines + probe_lines(x, y) + ([tol] if tol else []) + list(nodeset) + [
         ".control", "set noinit", "set wr_singlescale", "set wr_vecnames", "option numdgt=8",
-        "op", "wrdata @D@.op1.dat " + " ".join(op_vectors),
+        *op_lines("op1"),
         ac, "wrdata @D@.v.dat " + " ".join(vv),
         "alter @vinj[acmag]=0", "alter @iinj[acmag]=1",
         ac, "wrdata @D@.i.dat " + " ".join(vi),
-        "op", "wrdata @D@.op2.dat " + " ".join(op_vectors),
+        *op_lines("op2"),
         "quit", ".endc", ".end", ""]
     return "\n".join(lines), vv, vi
 
@@ -381,7 +452,7 @@ def tau_fit(w, edge, end, tau0):
 def closed_metrics(circuit, corner, P, tables):
     cls, sub = circuit["class"], circuit["subclass"]
     nodes = ["out"] + (["harness"] if cls == "A" else [])
-    m = {"op": {k: r(v[0]) for k, v in tables["op"].items() if k.startswith("v(")}}
+    m = {}
     paths = ["buf", "rem"] if cls == "B" else [P["main"]]
     m["ac"] = {}
     for k, role in enumerate(paths):

@@ -491,6 +491,7 @@ def extract(net, info=None, *, diagnostic=False):
         else:
             circuit["aux"][name(n)] = {"net": n, "dc": v}
     circuit["node_names"] = {n: name(n) for n in set(names) | set(core) | set(src)}
+    circuit["inp_node"] = name(inp)  # "0" when IN+ is AGND in the specification; the deck must not float it
     for e in elements:
         for key in ("a", "b", "ccw", "w", "cw"):
             if key in e:
@@ -562,7 +563,7 @@ def netlist_lines(circuit, corner, c_stray, swept, *, other=None, other_c=0.0, o
     inm_pin = "inm" if not circuit["follower"] else "out"
     if loop:
         inm_pin = "xinm"
-    lines.append(f"XU inp {inm_pin} vp vn out {m}")
+    lines.append(f"XU {circuit['inp_node']} {inm_pin} vp vn out {m}")
     for e in circuit["elements"]:
         if e["t"] == "ota":
             p = e["pins_n"]
@@ -601,7 +602,8 @@ def topology_key(circuit):
                                           sort_keys=True) for e in circuit["elements"]),
             "sources": sorted((r, s["node"], s["dc"]) for r, s in circuit["sources"].items()),
             "aux": sorted((n, a["dc"]) for n, a in circuit["aux"].items()),
-            "brackets": sorted(b["canon"] for b in circuit["brackets"]), "tmux": bool(circuit["tmux"])}
+            "brackets": sorted(b["canon"] for b in circuit["brackets"]), "tmux": bool(circuit["tmux"]),
+            "inp_node": circuit["inp_node"]}
     return sha256(json.dumps(blob, sort_keys=True).encode())[:16]
 
 
@@ -807,7 +809,7 @@ def closed_text(circuit, corner, lines):
     ac = "ac dec 50 10 100meg"
     band = (20, 20e3) if sub in AUDIO or cls in AUDIO else (10, 100e3)
     ctl = [".control", "set noinit", "set wr_singlescale", "set wr_vecnames", "option numdgt=8",
-           "op", "wrdata @D@.op.dat " + ("v(out) v(inp)" if circuit["follower"] else "v(out) v(inm) v(inp)")]
+           "set numdgt=15", "op", "wrdata @D@.op.dat all", "set numdgt=8"]  # full precision (Addendum B2.5)
     files = ["op"]
     ac_paths = ["buf", "rem"] if cls == "B" else [main]
     for k, role in enumerate(ac_paths):

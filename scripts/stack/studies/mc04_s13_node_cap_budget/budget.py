@@ -1,4 +1,4 @@
-"""MC04-S13 driver: node capacitance budgets from vendor-model ngspice decks (brief Revision 4, DS-161 to DS-172).
+"""MC04-S13 driver: node capacitance budgets from vendor-model ngspice decks (brief Revision 6, DS-161 to DS-173).
 
     budget.py --pins              Arm 0 P1, P2 and P3 (the P3 read-only fetch is compared by --fetched)
     budget.py --controls          Arm 0 P5, P7, P8 with the study's own runner (P4a and P4b are run outside)
@@ -67,8 +67,8 @@ PINNED = {  # brief "Pinned inputs" (P1) and the model table (P3)
     "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s12-disposition-20261127.md": "6c21cb39354f12f091472c1dd33c56ec53b4ea0bf1196489737f7bc1e8516f0b",
     "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s12-report-20261127.md": "d3b9a33026089d24aa4d8e4c591b1cb16545fb617e01800d3993e38a23470a19",
     "circuit/orchestration/campaigns/osc-stack-20261114/reviews/mc04-s12-result-review-20261127.md": "77f8039f95d1afce36e52fe056717dc0c77e0219283bc7f5cca5662dbd58f2d9",
-    # Addendum A5: this brief at Revision 4, and, for the record only, the regenerated stage 1b paper result
-    "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s13-node-capacitance-budget-brief-20261127.md": "a0381b6a6c6f5a65414951c96d4eaf611c9aa7a38ff9d33eea2281eb7cfc5806",
+    # Addendum A5 and B6: this brief at its current Revision 6, and, for the record only, the regenerated stage 1b paper result
+    "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s13-node-capacitance-budget-brief-20261127.md": "b4be52d50212dad993c489b5d2a1df62df1e2ae8a8ddc509acae0d037bbd0c69",
     "scripts/stack/studies/mc04_s1b_indicator_loops/result.json": "4058446308c49e1b044cf933eb788706c43782492fa7968ac12c6ed06574840c",
 }
 MODEL_PINS = {
@@ -165,75 +165,311 @@ def build_lines(t, p, *, loop):
     return lines
 
 
-def loop_texts(t, p):
+# ------------------------------------------------------------------------------------------------ seeds (Addendum B)
+
+SEED_TOL_V = 50e-6  # B2.5: an evaluation operating point must equal the seed reference within 50 uV
+OP_MOVE_V = 1e-4  # the retained "did not move" check between the two operating points of a loop deck
+INPUT_TOL_V = 1e-3  # B2.3: amplifier inputs within 1 mV
+RAIL_MARGIN_V = 1.0  # B2.3: output at least 1 V inside each rail
+DC_TOL_V = 10e-3  # B2.3: a node with a derived DC value within 10 mV of it
+RAILS_V = (-12.0, 12.0)
+SEED_CAP = 180  # B2.7
+SEEDS = {"store": {}, "sink": None}
+
+
+class SeedCap(RuntimeError):
+    pass
+
+
+def loop_y(c):
+    return "out" if c["follower"] else "inm"
+
+
+def zero_point(p):
+    return {**p, "c_pF": 0}
+
+
+def seed_netlist(t, p, kind):
+    """The evaluation deck's netlist at C_stray = 0 with nothing else changed (B2.1)."""
+    c = t["circuit"]
+    p0 = zero_point(p)
+    if kind == "loop":
+        lines = cells.loop_lines(c, p0["corner"], build_lines(t, p0, loop=True))
+        return runner.loop_netlist(lines, x="xinm", y=loop_y(c))
+    text, _, _ = cells.closed_text(c, p0["corner"], build_lines(t, p0, loop=False))
+    return text.split("\n.control\n")[0]
+
+
+def seed_id(netlist_text):
+    return hashlib.sha256(netlist_text.encode()).hexdigest()[:24]
+
+
+def bias_source(netlist_text):
+    """B2.2: the cell's DC bias source, the DC voltage source with the largest non-zero value."""
+    best = None
+    for ln in netlist_text.splitlines():
+        f = ln.split()
+        if len(f) >= 5 and f[0].startswith(("Vdc_", "Vaux_", "Vac_")) and f[3] == "DC":
+            v = float(f[4])
+            if v != 0 and (best is None or abs(v) > abs(best[1])):
+                best = (f[0].lower(), v)
+    return best
+
+
+def ideal_dc(lines, inm_pin, gref=0.0, inp_node="inp"):
+    """Nodal DC solution with an ideal amplifier (V(IN-) = V(IN+), output free), capacitors open and gmin to `gref`."""
+    G = {}
+    fixed = {"0": 0.0}
+    nodes = set()
+    for ln in lines:
+        f = ln.split()
+        if not f or f[0].startswith((".", "*")):
+            continue
+        k = f[0][0].upper()
+        if k == "R":
+            a, b, v = f[1], f[2], cells.parse_value(f[3])
+            nodes |= {a, b}
+            G[(a, b)] = G.get((a, b), 0.0) + 1 / v
+        elif k == "V":
+            a, b = f[1], f[2]
+            val = float(f[4]) if f[3] == "DC" else float(f[3])
+            if b == "0":
+                fixed[a] = val
+            elif a == "0":
+                fixed[b] = -val
+            else:
+                return None
+        elif k in ("C", "I", "B"):
+            nodes |= {f[1], f[2]}
+        elif k == "X":
+            nodes |= set(f[1:-1])
+    if "XOTA" in " ".join(lines):
+        return None
+    unknown = sorted(n for n in nodes if n not in fixed)
+    idx = {n: i for i, n in enumerate(unknown)}
+    n = len(unknown)
+    A = [[0.0] * n for _ in range(n)]
+    rhs = [0.0] * n
+    gmin = 1e-12
+    for i, u in enumerate(unknown):
+        A[i][i] += gmin
+        rhs[i] += gmin * gref
+    for (a, b), g in G.items():
+        for x, y in ((a, b), (b, a)):
+            if x in idx:
+                A[idx[x]][idx[x]] += g
+                if y in idx:
+                    A[idx[x]][idx[y]] -= g
+                else:
+                    rhs[idx[x]] += g * fixed[y]
+    if "out" not in idx:
+        return None
+    row = [0.0] * n  # the output's KCL row is replaced by the nullor: V(inp) - V(IN-) = 0
+    rr = 0.0
+    for node, s in ((inp_node, 1.0), (inm_pin, -1.0)):
+        if node in idx:
+            row[idx[node]] += s
+        else:
+            rr -= s * fixed[node]
+    A[idx["out"]], rhs[idx["out"]] = row, rr
+    try:
+        x = runner.solve(A, rhs)
+    except Exception:
+        return None
+    return {u: x[i] for i, u in enumerate(unknown)} | {k: v for k, v in fixed.items() if k != "0"}
+
+
+def expected_dc(t, p):
+    """B2.3: DC values derived from the specification netlist with an ideal amplifier, for OUT and the inverting
+    input; a node whose value depends on gmin (no resistive DC path) has no derived value."""
+    c = t["circuit"]
+    if c["class"] == "G":
+        return {}, "OTA cell (class G): no derived DC value; only the rail test applies (B2.3)"
+    p0 = zero_point(p)
+    lines = cells.loop_lines(c, p0["corner"], build_lines(t, p0, loop=False))
+    inm_pin = "out" if c["follower"] else "inm"
+    a = ideal_dc(lines, inm_pin, 0.0, c["inp_node"])
+    b = ideal_dc(lines, inm_pin, 1.0, c["inp_node"])
+    if a is None or b is None:
+        return {}, "no ideal-amplifier DC solution derivable from the netlist"
+    out = {}
+    for node in ("out", inm_pin):
+        if node in a and abs(a[node] - b[node]) < 1e-6:
+            out[node] = round(a[node], 9)
+    return out, ("ideal amplifier (IN- = IN+), capacitors open, the cell's resistors and DC sources from the "
+                 "specification netlist; nodes without a resistive DC path are left out")
+
+
+def seed_validity(c, kind, ref, expected):
+    """B2.3 on a seed reference. Reasons carry no figure (B2.6)."""
+    errs = []
+    if c["class"] != "G":
+        inm = "xinm" if kind == "loop" else ("out" if c["follower"] else "inm")
+        ip = c["inp_node"]
+        vin = {**ref, "0": 0.0}
+        if ip not in vin or inm not in vin:
+            errs.append("amplifier input nodes missing from the seed")
+        elif abs(vin[ip] - vin[inm]) > INPUT_TOL_V:
+            errs.append("amplifier inputs more than 1 mV apart")
+    if "out" not in ref:
+        errs.append("output node missing from the seed")
+    elif not (RAILS_V[0] + RAIL_MARGIN_V <= ref["out"] <= RAILS_V[1] - RAIL_MARGIN_V):
+        errs.append("output not at least 1 V inside each rail")
+    for node, v in expected.items():
+        if node not in ref or abs(ref[node] - v) > DC_TOL_V:
+            errs.append(f"{node} more than 10 mV from its derived DC value")
+    return errs
+
+
+def get_seed(t, p, kind):
+    net = seed_netlist(t, p, kind)
+    sid = seed_id(net)
+    store = SEEDS["store"]
+    if sid in store:
+        return store[sid]
+    if len(store) >= SEED_CAP:
+        raise SeedCap(f"seed cap {SEED_CAP} reached")
+    expected, derivation = expected_dc(t, p)
+    attempts, chosen = [], None
+    for method in ("op", "dc ramp"):
+        src = val = None
+        if method == "dc ramp":
+            bs = bias_source(net)
+            if bs is None:
+                attempts.append({"method": method, "result": "not applicable: no non-zero DC bias source"})
+                break
+            src, val = bs
+        text = net.rstrip("\n") + "\n" + "\n".join(runner.seed_control(method, src, val))
+        try:
+            key, ref, nodeset, tranop, wall, _ = runner.run_seed(net, method, src, val)
+        except (runner.OracleError, RuntimeError) as e:
+            attempts.append({"method": method, "source": src, "key": runner.deck_key(text),
+                             "result": "failed: " + str(e)[-300:]})
+            continue
+        errs = seed_validity(t["circuit"], kind, ref, expected)
+        attempts.append({"method": method, "source": src, "value": val, "key": key, "transient_op": tranop,
+                         "wall_s": round(wall, 2), "result": "valid" if not errs else "invalid", "reasons": errs})
+        if not errs:
+            chosen = {"method": method, "ref": ref, "nodeset": nodeset}
+            break
+    rec = {"deck": "seed", "point_id": sid, "kind": kind, "point": {**zero_point(p), "phase": "seed"},
+           "expected_dc": expected, "derivation": derivation, "attempts": attempts,
+           "wall_s": round(sum(a.get("wall_s", 0) for a in attempts), 2)}
+    if chosen:
+        ns = "\n".join(chosen["nodeset"])
+        rec.update({"status": "OK", "valid": True, "method": chosen["method"], "reference": chosen["ref"],
+                    "nodeset": chosen["nodeset"], "nodeset_sha256": hashlib.sha256(ns.encode()).hexdigest()})
+    else:
+        rec.update({"status": "NOT EVALUATED", "valid": False, "reason": "no valid operating point"})
+    store[sid] = rec
+    if SEEDS["sink"]:
+        SEEDS["sink"](rec)
+    return rec
+
+
+def accept_op(ext, ref):
+    if set(ext) != set(ref):
+        return "operating-point node set differs from the seed"
+    if any(abs(ext[k] - ref[k]) > SEED_TOL_V for k in ref):
+        return "operating point differs from the seed reference by more than 50 uV"
+    return None
+
+
+def dc_moved(op1, op2):
+    if set(op1) != set(op2) or any(abs(op1[k] - op2[k]) > OP_MOVE_V for k in op1):
+        return "operating point moved between the AC runs (more than 0.1 mV)"
+    return None
+
+
+# ------------------------------------------------------------------------------------------------ decks
+
+def loop_texts(t, p, nodeset=()):
     c = t["circuit"]
     lines = cells.loop_lines(c, p["corner"], build_lines(t, p, loop=True))
-    y = "out" if c["follower"] else "inm"
-    opv = ["v(out)", "v(n1)", "v(xinm)"]
     out = []
     for name, tol in runner.LOOP_TOLERANCES:
-        text, vv, vi = runner.loop_text(lines, opv, x="xinm", y=y, tol=tol)
+        text, vv, vi = runner.loop_text(lines, x="xinm", y=loop_y(c), tol=tol, nodeset=nodeset)
         out.append((name, text, vv, vi))
     return out
 
 
-def closed_texts(t, p):
+def closed_texts(t, p, nodeset=()):
     c = t["circuit"]
     lines = build_lines(t, p, loop=False)
     text, files, P = cells.closed_text(c, p["corner"], lines)
+    ns = "".join(x + "\n" for x in nodeset)
+    text = text.replace("\n.control\n", "\n" + ns + ".control\n", 1)
     gear = text.replace("\n.control\n", "\n.options method=gear\n.control\n", 1)
     return [("ngspice default (trap)", text, files, P), ("gear", gear, files, P)]
 
 
-def dc_moved(op1, op2):
-    for k in op1:
-        if abs(op1[k][0] - op2[k][0]) > 1e-4:
-            return f"operating point moved on {k}"
+def not_evaluated(seed, attempts=()):
+    return {"status": "NOT EVALUATED", "reason": "no valid operating point" if not seed["valid"] else
+            "no tolerance step gave an accepted operating point", "key": attempts[0]["key"] if attempts else None,
+            "metrics": None, "attempts": list(attempts), "seed_id": seed["point_id"]}
+
+
+def oracle_failure(msg):
+    low = msg.lower()
+    if "timeout" in low or "timed out" in low:
+        return "timeout"
+    if "timestep too small" in low or "singular" in low or "converge" in low or "gmin" in low or \
+            "source stepping" in low:
+        return "no convergence"
     return None
 
 
 def run_loop(t, p):
+    seed = get_seed(t, p, "loop")
+    if not seed["valid"]:
+        return not_evaluated(seed)
     attempts = []
-    for name, text, vv, vi in loop_texts(t, p):
+    for name, text, vv, vi in loop_texts(t, p, seed["nodeset"]):
         try:
             key, tab, wall = runner.run(text, ["op1", "v", "i", "op2"])
         except (runner.OracleError, RuntimeError) as e:
-            msg = str(e)
-            if "TIMEOUT" in msg.upper() or "timed out" in msg:
-                attempts.append({"tolerance": name, "result": "timeout", "key": runner.deck_key(text)})
-                continue
-            if "Timestep too small" in msg or "singular" in msg.lower() or "converge" in msg.lower() or \
-                    "gmin" in msg.lower() or "source stepping" in msg.lower():
-                attempts.append({"tolerance": name, "result": "no convergence", "key": runner.deck_key(text)})
-                continue
-            raise
-        why = dc_moved(tab["op1"], tab["op2"])
-        attempts.append({"tolerance": name, "result": why or "usable", "key": key, "wall_s": round(wall, 2)})
+            why = oracle_failure(str(e))
+            if why is None:
+                raise
+            attempts.append({"tolerance": name, "result": why, "key": runner.deck_key(text)})
+            continue
+        e1, e2 = runner.external_nodes(tab["op1"]), runner.external_nodes(tab["op2"])
+        why = accept_op(e1, seed["reference"]) or accept_op(e2, seed["reference"]) or dc_moved(e1, e2)
+        attempts.append({"tolerance": name, "result": why or "accepted", "key": key, "wall_s": round(wall, 2),
+                         "transient_op": "Transient op" in runner.last_log(key)})
         if why is None:
             m = runner.loop_metrics(tab["v"], tab["i"], vv, vi)
-            m["op"] = {k: runner.r(v[0]) for k, v in tab["op1"].items() if k.startswith("v(")}
-            return {"status": "OK", "key": key, "metrics": m, "attempts": attempts}
-    return {"status": "NOT EVALUATED", "key": attempts[0]["key"], "metrics": None, "attempts": attempts}
+            m["op"] = dict(e1)  # accepted, full precision
+            return {"status": "OK", "key": key, "metrics": m, "attempts": attempts, "seed_id": seed["point_id"],
+                    "seed_sha256": seed["nodeset_sha256"], "accepted_step": name}
+    return not_evaluated(seed, attempts)
 
 
 def run_closed(t, p):
+    seed = get_seed(t, p, "closed")
+    if not seed["valid"]:
+        return not_evaluated(seed)
     attempts = []
-    for name, text, files, P in closed_texts(t, p):
+    for name, text, files, P in closed_texts(t, p, seed["nodeset"]):
         try:
             key, tab, wall = runner.run(text, files)
         except (runner.OracleError, RuntimeError) as e:
-            msg = str(e)
-            if "Timestep too small" in msg or "converge" in msg.lower() or "timed out" in msg or \
-                    "singular" in msg.lower() or "gmin" in msg.lower():
-                attempts.append({"integration": name, "result": "no convergence", "key": runner.deck_key(text),
-                                 "error": msg[-400:]})
-                continue
-            raise
-        attempts.append({"integration": name, "result": "usable", "key": key, "wall_s": round(wall, 2)})
-        m = runner.closed_metrics(t["circuit"], p["corner"], P, tab)
-        m["stimulus"] = stimulus_record(t["circuit"], P)
-        return {"status": "OK", "key": key, "metrics": m, "attempts": attempts}
-    return {"status": "NOT EVALUATED", "key": attempts[0]["key"], "metrics": None, "attempts": attempts}
+            why = oracle_failure(str(e))
+            if why is None:
+                raise
+            attempts.append({"integration": name, "result": why, "key": runner.deck_key(text)})
+            continue
+        e0 = runner.external_nodes(tab["op"])
+        why = accept_op(e0, seed["reference"])
+        attempts.append({"integration": name, "result": why or "accepted", "key": key, "wall_s": round(wall, 2),
+                         "transient_op": "Transient op" in runner.last_log(key)})
+        if why is None:
+            m = runner.closed_metrics(t["circuit"], p["corner"], P, tab)
+            m["op"] = dict(e0)  # accepted, full precision
+            m["stimulus"] = stimulus_record(t["circuit"], P)
+            return {"status": "OK", "key": key, "metrics": m, "attempts": attempts, "seed_id": seed["point_id"],
+                    "seed_sha256": seed["nodeset_sha256"], "accepted_step": name}
+    return not_evaluated(seed, attempts)
 
 
 def stimulus_record(c, P):
@@ -264,7 +500,7 @@ def append(rec):
 
 
 def invocations(results):
-    return sum(len(r["attempts"]) for r in results.values())
+    return sum(1 for r in results.values() for a in r["attempts"] if a.get("key"))
 
 
 # ------------------------------------------------------------------------------------------------ criteria
@@ -543,6 +779,12 @@ def drive(slice_min, *, resume, max_decks=None):
     cen, topo, rows = topologies()
     ftopo = f_topologies(cen)
     results = load_results()
+
+    def seed_sink(rec):
+        append(rec)
+        results[(rec["point_id"], "seed")] = rec
+    SEEDS["store"] = {pid: rec for (pid, deck), rec in results.items() if deck == "seed"}
+    SEEDS["sink"] = seed_sink
     t_start = time.time()
     state = json.loads((STUDY / "checkpoints/sweep-state.json").read_text()) if (STUDY / "checkpoints/sweep-state.json").exists() else {"sweep_s": 0.0, "slices": []}
     done_new = 0
@@ -564,7 +806,7 @@ def drive(slice_min, *, resume, max_decks=None):
             if max_decks is not None and done_new >= max_decks:
                 reason = f"pilot end after {done_new} decks"
                 break
-            if invocations(results) + 4 > DECK_CAP:
+            if invocations(results) + 6 > DECK_CAP:
                 reason = "deck cap reached"
                 break
             if state["sweep_s"] + (time.time() - t_start) > SWEEP_CEILING_S:
@@ -575,18 +817,25 @@ def drive(slice_min, *, resume, max_decks=None):
                 if (pid, deck) in results:
                     continue
                 t0 = time.time()
-                out = run_loop(t, p) if deck == "loop" else run_closed(t, p)
+                try:
+                    out = run_loop(t, p) if deck == "loop" else run_closed(t, p)
+                except SeedCap:
+                    reason = "seed cap reached"
+                    break
                 rec = {"point_id": pid, "deck": deck, "point": p, "phase": ph, **out,
                        "wall_s": round(time.time() - t0, 2)}
                 append(rec)
                 results[(pid, deck)] = rec
                 done_new += 1
+            if reason == "seed cap reached":
+                break
             if not ready and not [x for x in todo[1:] if x[0] == "sweep"]:
                 continue
     finally:
         if created:
             runner.remove_spiceinit()
         survivors = kill_pinned_containers()
+        SEEDS["sink"] = None
     state["sweep_s"] += time.time() - t_start
     state["slices"].append({"ended": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "reason": reason,
                             "decks_written": done_new, "invocations_total": invocations(results),
@@ -675,7 +924,9 @@ def evaluate(write=True):
                               "values": {str(x): {"pass": y["pass"], "failed": y["failed"], "pm_deg": y.get("pm_deg"),
                                                   "gm_dB": y.get("gm_dB")} for x, y in v["verdicts"].items()}})
     budget = {"status": STATUS, "method_limits": METHOD_LIMITS, "criteria": CRITERIA, "rows": out_rows,
-              "what_if": whatif, "f_diagnostic": fdiag}
+              "what_if": whatif, "f_diagnostic": fdiag,
+              "P9_cross_check": {"note": "not pass or fail; first-order typical-only estimate of the 100k/100k "
+                                         "uncompensated summer (f2_loop_estimate.py)", "rows": p9_rows(topo, results)}}
     validate_budget(budget)
     if write:
         BUDGET.write_text(json.dumps(budget, indent=1, sort_keys=True) + "\n")
@@ -714,7 +965,7 @@ def label(r, c, lims, pe, parts):
         return "NOT EVALUATED: sweep incomplete (cap, ceiling or STOP)", None, None
     ne = [v for v in lims.values() if v["not_evaluated"]]
     if ne:
-        return "NOT EVALUATED: non-converging deck at " + ", ".join(f"{x} pF" for v in ne for x in v["not_evaluated"]), None, None
+        return "NOT EVALUATED: no accepted operating point or no convergence at " + ", ".join(f"{x} pF" for v in ne for x in v["not_evaluated"]), None, None
     if any(v["status"] == "FAILS AT ZERO STRAY" for v in lims.values()):
         d = next(v for v in lims.values() if v["status"] == "FAILS AT ZERO STRAY")["deciding"]
         return "FAILS AT ZERO STRAY", None, d
@@ -769,7 +1020,28 @@ METHOD_LIMITS = [
     "unsourced)", "Ruling 4 is pending its re-review in the placement brief",
     "passives are ideal elements at their specification value; no vendor model exists for them and none is claimed",
     "leakage, hum pickup and neighbour coupling are not covered by a capacitance budget",
+    "(Addendum B) the seed selects the zero-stray operating point, so no other DC state, such as a latched output "
+    "or a start-up state, is examined",
 ]
+P9_ESTIMATE = {0: 31.4, 10: 21.3, 20: 17.1}  # f2_loop_estimate.py first-order figures (brief "Expected outcome")
+
+
+def p9_rows(topo, results):
+    """P9, cross-check only: class E loop phase margin at 0, 10 and 20 pF beside the first-order estimate."""
+    out = []
+    for k, t in sorted(topo.items()):
+        if not t["circuit"]["subclass"].startswith("E"):
+            continue
+        for p in sweep_points(t):
+            if p["c_pF"] not in P9_ESTIMATE:
+                continue
+            lo = results.get((point_id(p), "loop"))
+            pm = lo["metrics"]["phase_margin_deg"] if lo and lo["status"] == "OK" else None
+            out.append({"topology": k, "nets": t["nets"], "subclass": t["circuit"]["subclass"], "corner": p["corner"],
+                        "c_pF": p["c_pF"], "pm_deg": pm, "estimate_deg": P9_ESTIMATE[p["c_pF"]],
+                        "difference_deg": None if pm is None else round(pm - P9_ESTIMATE[p["c_pF"]], 2),
+                        "status": "NOT RUN" if lo is None else lo["status"]})
+    return out
 CRITERIA = {"K1": "phase margin >= 45 deg (Middlebrook double injection at the IN- pin)",
             "K2": "gain margin >= 10 dB, or no phase crossover below 100 MHz",
             "K3": "closed-loop peaking <= 3 dB above the low-frequency gain",
@@ -817,15 +1089,57 @@ LOOP_VALIDATION = [(1e3, 9.953), (10.0, 59.67), (1e9, 7.713)]  # retained loop_b
 FOLLOWER = {"OPAx196": (54.82, 2.597e6), "OPAx197": (63.95, 9.986e6)}  # retained case5a_control rows
 
 
-def loop_run(lines, x, y, opv):
-    text, vv, vi = runner.loop_text(lines, opv, x=x, y=y, tol=None, ac="ac dec 100 10 100meg")
+def loop_run(lines, x, y, amp_inputs=None):
+    """A P5/P8/M3 loop deck through the seeded runner: seed at the same netlist (no stray to remove), then the
+    evaluation deck with the seed as .nodeset, accepted only on the 50 uV and 0.1 mV tests (Addendum B2)."""
+    net = runner.loop_netlist(lines, x=x, y=y)
+    skey, ref, nodeset, tranop, _, _ = runner.run_seed(net)
+    seed = {"key": skey, "transient_op": tranop, "nodeset_sha256": hashlib.sha256("\n".join(nodeset).encode()).hexdigest()}
+    if amp_inputs:
+        vin = {**ref, "0": 0.0}
+        errs = []
+        if abs(vin[amp_inputs[0]] - vin[amp_inputs[1]]) > INPUT_TOL_V:
+            errs.append("amplifier inputs more than 1 mV apart")
+        if not (RAILS_V[0] + RAIL_MARGIN_V <= ref["out"] <= RAILS_V[1] - RAIL_MARGIN_V):
+            errs.append("output not at least 1 V inside each rail")
+        if errs:
+            return {"seed": seed, "result": "no valid operating point", "reasons": errs, "pm": None, "f": None}
+    text, vv, vi = runner.loop_text(lines, x=x, y=y, tol=None, ac="ac dec 100 10 100meg", nodeset=nodeset)
     key, tab, wall = runner.run(text, ["op1", "v", "i", "op2"])
+    e1, e2 = runner.external_nodes(tab["op1"]), runner.external_nodes(tab["op2"])
+    why = accept_op(e1, ref) or accept_op(e2, ref) or dc_moved(e1, e2)
+    if why:
+        return {"seed": seed, "deck": key, "result": why, "pm": None, "f": None}
     f, T, _ = runner.loop_gain(tab["v"], tab["i"], vv, vi)
     m = runner.margins(f, T)
     u = [q for q in m["unity"] if q["falling"]]
     if not u:  # no falling unity crossing: no phase margin to report (a P5 failure, M3's expected outcome)
-        return key, None, None
-    return key, u[0]["pm_deg"], u[0]["f_Hz"]
+        return {"seed": seed, "deck": key, "result": "accepted; no falling unity crossing", "pm": None, "f": None}
+    return {"seed": seed, "deck": key, "result": "accepted", "pm": u[0]["pm_deg"], "f": u[0]["f_Hz"]}
+
+
+def p7_pass(res, need_k4):
+    """Addendum B4: a positive control passes only as an evaluated failure of its criteria; a missing or
+    NOT EVALUATED result is never counted as the required failure."""
+    k1 = res.get("loop", {}).get("status") == "OK" and res.get("K1_fails") is True
+    if not need_k4:
+        return k1
+    k4 = res.get("closed", {}).get("status") == "OK" and res.get("K4_fails") is True
+    return k1 and k4
+
+
+def p6b_check(seed, kind):
+    """B3 on one H-REF9 seed: OUT 9.000 V +/- 10 mV; IN- within 1 mV of IN+ at 5.000 V."""
+    if not seed["valid"]:
+        return ["no valid operating point"]
+    ref = seed["reference"]
+    inm = "xinm" if kind == "loop" else "inm"
+    errs = []
+    if abs(ref["out"] - 9.0) > DC_TOL_V:
+        errs.append("OUT more than 10 mV from 9.000 V")
+    if abs(ref["inp"] - 5.0) > INPUT_TOL_V or abs(ref[inm] - ref["inp"]) > INPUT_TOL_V:
+        errs.append("IN- not within 1 mV of IN+ at 5.000 V")
+    return errs
 
 
 def controls():
@@ -833,55 +1147,137 @@ def controls():
     check_models()
     if kill_pinned_containers():
         raise SystemExit("STOP 3")
-    out = {"P5": [], "P8": [], "P7": {}, "M3": []}
+    out = {"P5": [], "P8": [], "P6b": [], "P7": {}, "M3": [], "seeds": []}
+    SEEDS["store"], SEEDS["sink"] = {}, out["seeds"].append
     created = runner.ensure_spiceinit()
+    stop = None
     try:
         for rl, want in LOOP_VALIDATION:
             base = ["MC04-S13 P5 loop-break validation, linear two-pole loop", "E1 o1 0 0 x 1000", "Rp o1 o2 1k",
                     "Cp o2 0 1.5915n", "E2 o3 0 o2 0 1", "Rq o3 o4 1k", "Cq o4 0 159.15p", "E3 o5 0 o4 0 1",
                     "Ro o5 y 1k", "Rg y 0 2k", f"Rl x 0 {rl:g}"]
-            key, pm, f = loop_run(base, "x", "y", ["v(x)"])
+            r = loop_run(base, "x", "y")
+            pm = r["pm"]
             out["P5"].append({"R_load_ohm": rl, "pm_deg": None if pm is None else round(pm, 4), "retained_deg": want,
-                              "pass": pm is not None and abs(pm - want) <= 0.1, "deck": key})
-            key, pm2, f2 = loop_run(base, "y", "x", ["v(x)"])  # M3: probe polarity swapped
+                              "pass": pm is not None and abs(pm - want) <= 0.1, **{k: r[k] for k in r if k not in ("pm", "f")}})
+            r2 = loop_run(base, "y", "x")  # M3: probe polarity swapped
+            pm2 = r2["pm"]
             out["M3"].append({"R_load_ohm": rl, "pm_deg": None if pm2 is None else round(pm2, 4),
-                              "fails_P5": pm2 is None or abs(pm2 - want) > 0.1, "deck": key})
-        for sub, lib in (("OPAx196", cells.MODEL_LIBS["OPAx196"]), ("OPAx197", cells.MODEL_LIBS["OPAx197"])):
-            lines = [f"MC04-S13 P8 plain follower {sub}", ".param TEMP=27", f".include {lib}", "Vplus vp 0 12",
-                     "Vminus vn 0 -12", f"XU 0 xinm vp vn out {sub}"]
-            key, pm, f = loop_run(lines, "xinm", "out", ["v(out)"])
-            want_pm, want_f = FOLLOWER[sub]
-            out["P8"].append({"model": sub, "pm_deg": None if pm is None else round(pm, 3),
-                              "crossover_Hz": None if f is None else round(f, 1), "retained": FOLLOWER[sub],
-                              "pass": pm is not None and abs(pm - want_pm) <= 0.1 and abs(f / want_f - 1) <= 0.005,
-                              "deck": key})
+                              "fails_P5": pm2 is None or abs(pm2 - want) > 0.1,
+                              **{k: r2[k] for k in r2 if k not in ("pm", "f")}})
+        if not all(x["pass"] for x in out["P5"]):
+            stop = "P5"
         cen, topo, rows = topologies()
-        for net, decks in (("/W1/DRIVE_INV_SUM", ("loop", "closed")), ("/E2/REF9_FB", ("loop",))):
-            t = topo[rows[net]["topology"]]
-            p = sweep_points(t, values=[1000], phase="P7")[0]
-            res = {}
-            lo = run_loop(t, p)
-            res["loop"] = {"status": lo["status"], "pm_deg": lo["metrics"]["phase_margin_deg"] if lo["metrics"] else None}
-            res["K1_fails"] = lo["metrics"] is not None and not runner.k1_k2(lo["metrics"])[0]
-            if "closed" in decks:
-                cl = run_closed(t, p)
-                ov = max(o["overshoot_percent"] or 0 for v in cl["metrics"]["k4"].values() for o in v) if cl["metrics"] else None
-                res["closed"] = {"status": cl["status"], "max_overshoot_percent": ov}
-                res["K4_fails"] = ov is not None and ov > runner.OVERSHOOT_LIMIT
-            res["pass"] = res["K1_fails"] and res.get("K4_fails", True)
-            res["corner"], res["c_stray"] = p["corner"], "1 nF"
-            out["P7"][net] = res
+        if stop is None:  # P6 is the offline census (--census); P6b follows it (Addendum B3)
+            t = topo[rows["/E2/REF9_FB"]["topology"]]
+            for corner in cells.corners_of(t["circuit"]):
+                p = sweep_points(t, values=[0], corners=[corner], phase="P6b")[0]
+                row = {"corner": corner, "seeds": {}, "pass": True}
+                for kind in ("loop", "closed"):
+                    s = get_seed(t, p, kind)
+                    errs = p6b_check(s, kind)
+                    row["seeds"][kind] = {"seed_id": s["point_id"], "method": s.get("method"), "errors": errs,
+                                          "out_V": s["reference"]["out"] if s["valid"] and not errs else None}
+                    row["pass"] &= not errs
+                lo, cl = run_loop(t, p), run_closed(t, p)
+                row["loop"] = {"status": lo["status"], "accepted_step": lo.get("accepted_step"), "attempts": lo["attempts"]}
+                row["closed"] = {"status": cl["status"], "accepted_step": cl.get("accepted_step"), "attempts": cl["attempts"]}
+                row["pass"] &= lo["status"] == "OK" and cl["status"] == "OK"
+                out["P6b"].append(row)
+            if not all(x["pass"] for x in out["P6b"]):
+                stop = "P6b"
+        if stop is None:
+            for net, need_k4 in (("/W1/DRIVE_INV_SUM", True), ("/E2/REF9_FB", False)):
+                t = topo[rows[net]["topology"]]
+                p = sweep_points(t, values=[1000], phase="P7")[0]
+                res = {"corner": p["corner"], "c_stray": "1 nF"}
+                lo = run_loop(t, p)
+                res["loop"] = {"status": lo["status"], "accepted_step": lo.get("accepted_step"),
+                               "pm_deg": lo["metrics"]["phase_margin_deg"] if lo["metrics"] else None,
+                               "attempts": lo["attempts"], "seed_id": lo.get("seed_id")}
+                if lo["metrics"] is not None:
+                    res["K1_fails"] = not runner.k1_k2(lo["metrics"])[0]
+                if need_k4:
+                    cl = run_closed(t, p)
+                    res["closed"] = {"status": cl["status"], "accepted_step": cl.get("accepted_step"),
+                                     "attempts": cl["attempts"], "seed_id": cl.get("seed_id")}
+                    if cl["metrics"] is not None:
+                        ov = max(o["overshoot_percent"] or 0 for v in cl["metrics"]["k4"].values() for o in v)
+                        res["closed"]["max_overshoot_percent"] = ov
+                        res["K4_fails"] = ov > runner.OVERSHOOT_LIMIT
+                res["pass"] = p7_pass(res, need_k4)
+                out["P7"][net] = res
+            if not all(x["pass"] for x in out["P7"].values()):
+                stop = "P7"
+        if stop is None:
+            for sub, lib in (("OPAx196", cells.MODEL_LIBS["OPAx196"]), ("OPAx197", cells.MODEL_LIBS["OPAx197"])):
+                lines = [f"MC04-S13 P8 plain follower {sub}", ".param TEMP=27", f".include {lib}", "Vplus vp 0 12",
+                         "Vminus vn 0 -12", f"XU 0 xinm vp vn out {sub}"]
+                r = loop_run(lines, "xinm", "out", amp_inputs=("0", "xinm"))
+                want_pm, want_f = FOLLOWER[sub]
+                pm, f = r["pm"], r["f"]
+                out["P8"].append({"model": sub, "pm_deg": None if pm is None else round(pm, 3),
+                                  "crossover_Hz": None if f is None else round(f, 1), "retained": FOLLOWER[sub],
+                                  "pass": pm is not None and abs(pm - want_pm) <= 0.1 and abs(f / want_f - 1) <= 0.005,
+                                  **{k: r[k] for k in r if k not in ("pm", "f")}})
+            if not all(x["pass"] for x in out["P8"]):
+                stop = "P8"
     finally:
         if created:
             runner.remove_spiceinit()
         kill_pinned_containers()
+        SEEDS["sink"] = None
     out["invocations"] = runner.INVOCATIONS["count"]
-    out["pass"] = (all(x["pass"] for x in out["P5"]) and all(x["pass"] for x in out["P8"])
-                   and all(x["pass"] for x in out["P7"].values()) and all(x["fails_P5"] for x in out["M3"]))
+    out["stopped_at"] = stop
+    out["pass"] = stop is None and all(x["fails_P5"] for x in out["M3"])
     (STUDY / "checkpoints/controls.json").write_text(json.dumps(out, indent=1) + "\n")
-    print(json.dumps(out, indent=1))
+    print(json.dumps({k: out[k] for k in ("stopped_at", "pass", "invocations")}))
     if not out["pass"]:
-        raise SystemExit("STOP 2: an Arm 0 control failed")
+        raise SystemExit(f"STOP 2: Arm 0 control failed ({stop or 'M3'})")
+
+
+def mutation_m12():
+    """M12: the /E2/REF9_FB 1 nF loop deck with its seed removed must be rejected by the operating-point
+    acceptance test: the row is NOT EVALUATED and carries no K1 figure. Writes checkpoints/m12.json."""
+    check_pins(PINNED)
+    check_models()
+    if kill_pinned_containers():
+        raise SystemExit("STOP 3")
+    cen, topo, rows = topologies()
+    t = topo[rows["/E2/REF9_FB"]["topology"]]
+    p = sweep_points(t, values=[1000], phase="P7")[0]
+    SEEDS["store"], SEEDS["sink"] = {}, None
+    created = runner.ensure_spiceinit()
+    attempts = []
+    try:
+        seed = get_seed(t, p, "loop")
+        if not seed["valid"]:
+            raise SystemExit("M12: the REF9 seed is not valid; see P6b")
+        for name, text, vv, vi in loop_texts(t, p, nodeset=()):  # the mutation: no .nodeset
+            try:
+                key, tab, wall = runner.run(text, ["op1", "v", "i", "op2"])
+            except (runner.OracleError, RuntimeError) as e:
+                why = oracle_failure(str(e))
+                if why is None:
+                    raise
+                attempts.append({"tolerance": name, "result": why, "key": runner.deck_key(text)})
+                continue
+            e1, e2 = runner.external_nodes(tab["op1"]), runner.external_nodes(tab["op2"])
+            why = accept_op(e1, seed["reference"]) or accept_op(e2, seed["reference"]) or dc_moved(e1, e2)
+            attempts.append({"tolerance": name, "result": why or "accepted", "key": key, "wall_s": round(wall, 2)})
+            if why is None:
+                break
+    finally:
+        if created:
+            runner.remove_spiceinit()
+        kill_pinned_containers()
+    accepted = any(a["result"] == "accepted" for a in attempts)
+    rec = {"mutation": "M12", "seed_id": seed["point_id"], "attempts": attempts,
+           "status": "OK" if accepted else "NOT EVALUATED", "metrics": None, "rejected": not accepted}
+    (STUDY / "checkpoints/m12.json").write_text(json.dumps(rec, indent=1) + "\n")
+    print(json.dumps({k: rec[k] for k in ("status", "rejected")}))
+    if accepted:
+        raise SystemExit("M12 not rejected: an unseeded deck passed the acceptance test")
 
 
 # ------------------------------------------------------------------------------------------------ check
@@ -895,18 +1291,38 @@ def check():
     bad = []
     for (pid, deck), rec in results.items():
         p = rec["point"]
-        if point_id(p) != pid:
-            bad.append(f"{pid}: point id")
-            continue
         t = allt.get(p["topology"])
         if t is None:
             bad.append(f"{pid}: unknown topology")
             continue
-        texts = [x[1] for x in (loop_texts(t, p) if deck == "loop" else closed_texts(t, p))]
+        if deck == "seed":
+            net = seed_netlist(t, p, rec["kind"])
+            if seed_id(net) != pid:
+                bad.append(f"{pid}: seed netlist differs from the rebuilt one")
+            for a in rec["attempts"]:
+                if a.get("key"):
+                    txt = net.rstrip("\n") + "\n" + "\n".join(runner.seed_control(a["method"], a.get("source"), a.get("value")))
+                    if runner.deck_key(txt) != a["key"]:
+                        bad.append(f"{pid}: seed deck key differs")
+            if rec["valid"]:
+                if accept_op(rec["reference"], rec["reference"]) or seed_validity(t["circuit"], rec["kind"], rec["reference"], rec["expected_dc"]):
+                    bad.append(f"{pid}: seed marked valid but fails B2.3")
+            continue
+        if point_id(p) != pid:
+            bad.append(f"{pid}: point id")
+            continue
+        seed = results.get((rec.get("seed_id"), "seed"))
+        if seed is None or seed_id(seed_netlist(t, p, deck)) != rec.get("seed_id"):
+            bad.append(f"{pid} {deck}: seed missing or not the zero-stray deck of this point")
+            continue
+        ns = seed.get("nodeset", [])
+        texts = [x[1] for x in (loop_texts(t, p, ns) if deck == "loop" else closed_texts(t, p, ns))]
         keys = [runner.deck_key(x) for x in texts]
-        used = [a["key"] for a in rec["attempts"]]
-        if any(k not in keys for k in used) or rec["key"] not in keys:
+        used = [a["key"] for a in rec["attempts"] if a.get("key")]
+        if any(k not in keys for k in used) or (rec["key"] is not None and rec["key"] not in keys):
             bad.append(f"{pid} {deck}: deck key differs from the rebuilt text")
+        if rec["status"] == "OK" and accept_op(rec["metrics"]["op"], seed["reference"]):
+            bad.append(f"{pid} {deck}: recorded operating point differs from its seed by more than 50 uV")
     old = json.loads(BUDGET.read_text()) if BUDGET.exists() else None
     new = evaluate(write=False)
     same = old is not None and json.dumps(old, sort_keys=True) == json.dumps(json.loads(json.dumps(new, sort_keys=True)), sort_keys=True)
@@ -982,7 +1398,7 @@ def pins(fetched):
 def main():
     ap = argparse.ArgumentParser()
     g = ap.add_mutually_exclusive_group(required=True)
-    for a in ("--run", "--resume", "--evaluate", "--check", "--controls", "--census"):
+    for a in ("--run", "--resume", "--evaluate", "--check", "--controls", "--census", "--m12"):
         g.add_argument(a, action="store_true")
     g.add_argument("--pins", metavar="FETCHED_ZIP")
     ap.add_argument("--slice-min", type=float, default=25.0)
@@ -1017,6 +1433,8 @@ def main():
         sys.exit(1 if errs else 0)
     if a.pins:
         pins(a.pins)
+    elif a.m12:
+        mutation_m12()
     elif a.controls:
         controls()
     elif a.run or a.resume:
