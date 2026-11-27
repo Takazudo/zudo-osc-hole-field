@@ -42,6 +42,10 @@ await page.evaluate(() => window.__preview.idle());
 
 const st0 = await page.evaluate(() => window.__preview.state());
 check(st0.boards === 10, `10 boards loaded (${st0.boards})`);
+const meta = await page.evaluate(() => document.getElementById('bannerMeta').textContent);
+const conf = await page.evaluate(() => JSON.parse(document.getElementById('data').textContent).configuration);
+check(meta.includes(conf.id) && meta.includes('owner confirmation PENDING'), `banner names configuration ${conf.id} and pending confirmation`);
+check(meta.includes(conf.package_manifest ? conf.package_manifest.path : `none (${conf.package_status_short})`), 'banner states the package linkage');
 const nLayers = await page.evaluate(() => JSON.parse(document.getElementById('data').textContent).boards.reduce((a, b) => a + b.layers.length, 0));
 check(st0.textures === nLayers, `${nLayers} copper textures decoded (${st0.textures})`);
 check(st0.instances > 6000, `instanced bodies and meshes (${st0.instances})`);
