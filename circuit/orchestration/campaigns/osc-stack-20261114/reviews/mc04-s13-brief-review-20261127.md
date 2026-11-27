@@ -416,3 +416,87 @@ gain 1.8). B4 is right that `NOT EVALUATED` is neither the required failure nor 
 **ACCEPT WITH CORRECTIONS.** The four corrections are confined and can be confirmed by the manager by inspection; I
 do not ask for another round if they are applied as worded. Whether other classes need the second seed method is
 not known before the run, as the addendum says.
+
+## Delta review of Revision 7 (Addendum C, seed reference and deck-builder correction): ACCEPT WITH CORRECTIONS (3, none needs another round)
+
+2026-11-27. Same reviewer session and model (Fable 5.2, `claude-fable-5-2`), read-only. Subject: Revision 7 of the
+brief, SHA-256 `78213a8bf64bbc756fc97d693c372e2ef0b1aef9935dd86022f06b09b0536b90` (matches the expected value),
+uncommitted on top of `87f38b1a`. The sections above are unchanged. I re-ran one diagnostic deck, `t100b.cir`,
+through `scripts/kicad/run.sh` with a temporary `.spiceinit` that I removed; no container and no `.spiceinit`
+remain. I also built netlists with the committed `cells.py` in memory, without simulating.
+
+### The `cells.py` correction matches the specification for exactly eight cells
+
+- The diff of `87f38b1a` changes one thing in the netlist: the amplifier line takes its first pin from
+  `circuit["inp_node"]`, the specification's IN+ node, where it used to be the literal `inp`. The node also enters
+  the topology key. The other change in the file is the full-precision operating-point record.
+- From `io-partition.json`, the amplifier unit of each in-scope net has IN+ on AGND for exactly these eight:
+  `/W1/FOLDER_SUM`, `/W2/FOLDER_SUM`, `/W1/DRIVE_INV_SUM` (E-audio), `/W1/CONTROL_SUM`, `/M4B/COMMAND_SUM`,
+  `/M4B/COMMAND_INVERT_SUM`, `/F3/RES_CONTROL_SUM` (E-control) and `/W1/PRE_GAIN_SUM` (G). That is the addendum's
+  count of 3, 4 and 1. The module specifications agree (`amp(…, 'AGND', …)` in `wavefolder.py` lines 72, 89, 91,
+  95 and `mix4_vca.py` lines 45, 49).
+- The committed builder now writes `XU 0 inm vp vn out OPAx196` for all eight. For the driven cells it still writes
+  `inp`: both `TARGET_SUM` cells (IN+ on `REF25`, three elements on the node), H-REF9, H-output and classes A to D.
+- `/E2/RISE_EXPO_SUM` also has IN+ on AGND, but it is class I and blocked, so no deck is built.
+- Withdrawing run 2's `/W1/DRIVE_INV_SUM` figures is right: that deck had a floating input. The H-REF9 diagnosis
+  and my own Revision 5 check are not affected, because REF5 drives IN+ there.
+
+### The confirmation pass is sound
+
+- A converged `op` with no fallback satisfies the DC equations of the deck. It is a DC solution of the macro-model,
+  whatever seeded it. The fallback result is the end of an integration and is not.
+- Own check: `t100b.cir` (TMUX 100 pF, bracket to AGND, all 123 nodes of the first pass as `.nodeset`) converges
+  directly, with no gmin stepping, no source stepping and no "Transient op" line, to `V(out)` = 9.000039670750414 V
+  and `V(inm)` = 5.000021405130474 V. The log and the node file are byte-equal to the design authority's.
+- The first pass at the same corner (`t100a.log`) shows the fallback and 9.000163611583 V, 124 µV away, as stated.
+- Could the seeded pass land on a non-physical point? Only on another DC solution of the model, if one exists. Three
+  tests stand against that: the validity tests of B2.3, the group agreement of C2.5 and, in the diagnostic, the
+  independent DC ramp, which agrees within 0.3 nV. The values are also physically consistent: the 1.1 µV between
+  `V(out)` and 1.8 × `V(inm)` is about 28 pA of input bias current in 40 kΩ.
+
+### The 5 µV group tolerance is justified
+
+- Good seeds agree within 0.3 nV between methods and far below that across a capacitor. The fault it must catch was
+  124 µV. 5 µV sits more than four decades above the first and a factor of 25 below the second.
+- The loop seed and the closed-loop seed are the same DC circuit in the committed builder. Stimuli are offsets
+  that start at 0 on top of the DC level, the H-REF9 load sources are 0 A at DC, and the class C injection path is
+  1 TΩ at DC, which shifts the node by about 0.1 µV at most.
+- The test costs no deck.
+
+### The seed budget fits the cap, but 360 is not an arithmetic bound
+
+With the third run's plan (1 408 main decks, 80 seeds) even three invocations per seed leave more than 700 of the
+2 400 for the class B single-path decks, the what-if rows, splits and retries. But C2 allows up to three
+invocations per seed (first pass, confirmation, ramp), so 180 seeds can need 540, not 360 (correction 2).
+
+### M17 to M19 are adequate, with one condition on M19
+
+M17 covers a fallback-derived reference from either pass, M18 the group test at the size of the real fault, M19
+the builder defect. M19 must test the complete deck: `netlist_lines()` alone leaves `inp` with only the amplifier
+pin for every driven cell (I see that for H-REF9, H-output and class A), because the source lines are added later
+(correction 3).
+
+### Corrections
+
+1. **Evaluation decks that fall back.** C2 bans a fallback result as a seed reference, but B2.5 still lets an
+   evaluation deck with a "Transient op" line yield metrics if it is within 50 µV on the external nodes. The
+   internal model nodes of such a point are not checked, and the transients of a closed-loop deck start from it.
+   Make it consistent: an evaluation deck whose accepted operating point came from the fallback yields no metric at
+   that ladder step, and the ladder continues. Run 3's evaluation decks solved without fallback, so this should
+   cost nothing.
+2. **State 360 as a cap.** Say that seed invocations are capped at 360, counted and reported, and that reaching the
+   cap is a stop; or raise the figure to three per seed.
+3. **M19 on the complete deck.** The test runs on the full deck text, sources included, and covers the inverting
+   pin and the OTA input pins as C1 says, not IN+ alone.
+
+### Nothing else is broken
+
+The diff against committed Revision 6 touches the P6b row, mutations M17 to M19, STOP 2, the state paragraph and
+the addendum. Scope, criteria, rulings, the 50 µV acceptance, caps and the forbidden list are unchanged. P4b reuse
+stays under the B6 conditions, which Addendum C does not touch.
+
+### Verdict on Revision 7
+
+**ACCEPT WITH CORRECTIONS.** The three corrections are confined and can be confirmed by the manager by
+inspection; I do not ask for another round if they are applied as worded. As the addendum says, the remedies were
+shown on one cell at two capacitances; whether every class reaches a seed without fallback is for the run to show.

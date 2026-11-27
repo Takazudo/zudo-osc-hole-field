@@ -1,4 +1,4 @@
-# MC04-S13 brief: vendor-model simulation that sets a stray-capacitance budget per protected node (DS-161), Revision 6
+# MC04-S13 brief: vendor-model simulation that sets a stray-capacitance budget per protected node (DS-161), Revision 8
 
 2026-11-27. Issue #367 (MC-04 paper gate). The owner's choice DS-161 (option 1 of
 `mc04-s12-disposition-20261127.md`), briefed by the design authority under DS-03 (Fable design agent at high effort,
@@ -22,7 +22,12 @@ passed P1 to P6, P8 and the new P4b and stopped at Arm 0 P7 (STOP 2, commit `444
 Addendum B, which rules how an operating point is obtained and checked, adds control P6b and settles how P7 treats
 a control that is not evaluated**. Revision 5 (SHA-256
 `d0a8f2769163c2e92517f2c332f4612c9123d3869faa2c39d23a58ebd9a4bf9f`) was delta-reviewed ACCEPT WITH CORRECTIONS (4);
-**this Revision 6 applies those four** and changes nothing else. The manager confirms it by inspection; the re-run
+Revision 6 (SHA-256 `b4be52d50212dad993c489b5d2a1df62df1e2ae8a8ddc509acae0d037bbd0c69`) applied those four; its run
+passed P1 to P6 and stopped at Arm 0 P6b (STOP 2, commit `87f38b1a`). **This Revision 7 adds Addendum C, which
+rules that a seed reference may not come from ngspice's transient-op fallback, and rules on the executor's
+deck-builder correction**. Revision 7 (SHA-256
+`78213a8bf64bbc756fc97d693c372e2ef0b1aef9935dd86022f06b09b0536b90`) was delta-reviewed ACCEPT WITH CORRECTIONS (3);
+**this Revision 8 applies those three** and changes nothing else. The manager confirms it by inspection; the re-run
 needs a new admission. (Revision history
 at the end). The reviewer asks for no further round if R1 is applied as worded; the manager confirms it by
 inspection. The manager admits the run after the admission checks in "Run
@@ -377,7 +382,7 @@ The study follows the retained receipts and does not invent a second route.
 | P4b | reproduce the vendor-simulated content of a retained receipt (OPAx196 and OPAx197) | **as redefined in Addendum A**: `python scripts/stack/studies/mc04_s13_node_cap_budget/p4b.py --run` (then `--resume` per slice) reports all 136 rows, `loop_break_validation` and every derived block of `input-buffer-vendor.json` equal to the retained receipt, with only the 16 `metrics.paper_screen` objects excluded. The plain `--check --offline` of the retained script is no longer the control: it cannot pass at HEAD |
 | P5 | loop-break method | the study's own loop measurement reproduces the three `loop_break_validation` rows (analytic phase margin 9.953°, 59.67°, 7.713°) within 0.1° |
 | P6 | census | the study derives 107 footprints and 64 nets, with the class counts 11, 23, 10, 1, 9, 5, 1, 3, 1, and the four binding rows above |
-| P6b | operating point of H-REF9 at zero stray (Addendum B, B3) | for each of the three H-REF9 seed decks (output capacitance 0 and 100 pF, and the Ruling 6 bracket variant if the sweep uses one), at `C_stray` = 0: `V(out)` = 9.000 V ± 10 mV, the inverting input within 1 mV of the non-inverting input at 5.000 V, and the seeded loop deck and seeded closed-loop deck at 0 pF return the seed reference (full-precision operating point of the seed deck, not the `wrnodev` text) within 50 µV at some step of the tolerance ladder, tightest first; the step that passes is recorded. Any miss: stop |
+| P6b | operating point of H-REF9 at zero stray (Addendum B, B3, as amended by Addendum C, C4) | for every H-REF9 corner in the sweep plan (output capacitance 0 and 100 pF, each with the Ruling 6 bracket to AGND and open), with seeds obtained under Addendum C, at `C_stray` = 0: `V(out)` = 9.000 V ± 10 mV, the inverting input within 1 mV of the non-inverting input at 5.000 V, and the seeded loop deck and seeded closed-loop deck at 0 pF return the seed reference (full-precision operating point of the seed deck, not the `wrnodev` text) within 50 µV at some step of the tolerance ladder, tightest first; the step that passes is recorded. Any miss: stop |
 | P7 | positive control: an excessive load must fail | `/W1/DRIVE_INV_SUM` with 1 nF on the node fails K1 and K4; `/E2/REF9_FB` with 1 nF fails K1. Both are measured on a seeded and accepted operating point (Addendum B, B2). If either passes, the method cannot discriminate: stop. If either is `NOT EVALUATED`, that is neither the required failure nor a pass: stop (Addendum B, B4) |
 | P8 | negative control | the plain unity follower, no load, gives 54.82° at 2.597 MHz (OPAx196) and 63.95° at 9.986 MHz (OPAx197), within 0.1° and 0.5 %, as the retained `case5a_control` rows |
 | P9 | cross-check, not pass or fail | the class E result at 0, 10 and 20 pF is reported beside the first-order figures of `f2_loop_estimate.py` (31°, 21°, 17°), with the difference |
@@ -408,9 +413,10 @@ small step, large step, sine in one `.control` block).
   A cap that is reached is reported as a cap. If closed-loop decks must be split per analysis for more than a few
   points, the cap will be reached before the sweep ends: the driver then stops and reports which classes are
   complete. It does not thin the sweep, and a higher cap is a new admission.
-- Since Addendum B the count is about 1 800 decks, plus up to 240 for the class B single-path drives (R1), plus up
-  to 180 seed decks: up to 2 220 before any split deck or retry. That leaves little room under the 2 400 cap; the
-  cap is unchanged and reaching it is reported as above.
+- Since Addendum B the count is about 1 800 decks, plus up to 240 for the class B single-path drives (R1), plus
+  the seed decks: up to 180 seeds and, since Addendum C, up to 540 seed-deck invocations (their own counted cap,
+  C2.8). Those upper figures together exceed 2 400, so they cannot all be reached: the total cap of 2 400 is
+  unchanged and governs, there is little room under it, and reaching either cap is a stop reported as above.
 - Order of the sweep, so that a cap or ceiling costs the least: classes B, C and A first (U8409, U5210), then D, H,
   E, G, the what-if rows, the Ruling 6 pairs and last the class F diagnostic.
 - Conditions: rails ±12 V ideal, 27 °C, model typical. No temperature or tolerance corner is run; the factor of two
@@ -440,6 +446,11 @@ small step, large step, sine in one `.control` block).
 | M14 | a P7 result set to `NOT EVALUATED` in an in-memory copy of the controls record | make P7 fail, not pass |
 | M15 | a seed whose output is 11.97 V, and separately a seed whose amplifier inputs are 2 mV apart (in-memory copies) | each fail the seed validity test of B2.3 |
 | M16 | the `/W1/DRIVE_INV_SUM` control record with its K4 result removed (in-memory copy) | fail P7; this requires the fix of `budget.py` line 871, `res.get("K4_fails", True)` |
+| M17 | a seed reference taken from a deck whose log has a "Transient op" line (the confirmation pass skipped, in-memory copy of the seed record) | be rejected by the seed validity test of C2 |
+| M18 | two seeds of one DC-equivalence group differing by 124 µV at the output (in-memory copies) | fail the 5 µV agreement test of C2.5 |
+| M19 | in the complete deck text, as written to disk after the source and probe lines are added: an amplifier IN+ pin, an amplifier inverting pin, and an OTA input pin, each in turn left on a node with no other element | each be rejected by the deck builder's test; a test of `netlist_lines()` alone does not satisfy M19 |
+| M20 | an evaluation deck record whose log has a "Transient op" line and whose operating point is inside 50 µV (in-memory copy) | yield no metric at that ladder step |
+| M21 | the seed-deck invocation counter set to 540 before a seed is requested | stop under STOP 3 |
 
 ## Run bounds (ORCHESTRATION.md section 3)
 
@@ -512,9 +523,10 @@ Stop, write what was found, and change nothing further on any of these:
 
 1. input drift: a pin or a model hash differs;
 2. any Arm 0 control fails, P4a drift or a P4b difference outside the Addendum A exclusion included; a P6b miss
-   and a P7 control that is `NOT EVALUATED` after the Addendum B seed are such failures;
+   and a P7 control that is `NOT EVALUATED` after the seed of Addenda B and C are such failures;
 3. the pinned image is missing or does not report KiCad 10.0.6, the admission check fails, the guard fires, a
-   container of the pinned image survives `docker kill`, P4b is killed by a limit, or a ceiling is reached;
+   container of the pinned image survives `docker kill`, P4b is killed by a limit, or a ceiling is reached (the
+   540 seed-deck invocations of C2.8 included);
 4. the pilot projects the sweep beyond 5 h;
 5. a deck would need a model that is not retained, other than the two cases Ruling 6 allows: mark the node blocked
    and continue with the other classes; stop only if the gap is in class A, B or C;
@@ -809,11 +821,11 @@ tries "tolerance, then DC seed (none, then nodeset)".
    full precision too. With the second seed method the reference is the full-precision last point of the ramp. The existing check
    that the two operating points of a loop deck agree within 0.1 mV stays. A deck that misses either test yields no
    metric at that tolerance step; the ladder continues; if no step passes, the row is `NOT EVALUATED` with the
-   three attempts recorded. A "Transient op" line in the log is recorded per deck; it does not by itself reject a
-   deck, the 50 µV comparison does.
+   three attempts recorded. A "Transient op" line in the log is recorded per deck. Since Revision 8 (C2, last
+   paragraph) such a line rejects the deck at that ladder step, whatever the 50 µV comparison gives.
 6. **No figure from a rejected operating point is written to any output**, not as a metric and not as a note.
-7. **Cost.** One seed per DC-distinct deck: at most 180 seed decks. They count against the unchanged cap of 2 400
-   ngspice invocations and the unchanged 600 s timeout.
+7. **Cost.** One seed per DC-distinct deck: at most 180 seeds. They count against the unchanged cap of 2 400
+   ngspice invocations and the unchanged 600 s timeout. Invocations per seed and their own cap: C2.8.
 
 ### B3. New control P6b (Arm 0 table)
 
@@ -889,6 +901,145 @@ other classes need the second seed method is not known before the run.
 Decided by: design authority (DS-03, Fable agent at high effort), owner notified. Reverse by: a design-authority
 ruling.
 
+## Addendum C (Revision 7): a seed reference never comes from the transient-op fallback; the deck-builder correction is accepted
+
+Design-authority ruling under DS-03 (Fable design agent at high effort, model `claude-fable-5-2`), 2026-11-27; owner
+notified. Cause: the third S13 run stopped at P6b under STOP 2 (`87f38b1a`). The stop was correct and stays on
+record. The 50 µV acceptance of B2.5 is not widened. No criterion, scope or cap changes.
+
+### What went wrong in Addendum B
+
+B2.1 took the seed reference from the first `op` of the zero-stray deck, and B2.3 opened the DC ramp only when that
+seed failed a coarse validity test (10 mV, 1 mV). Where ngspice reaches the `op` through its "Transient op"
+fallback, the result is the end of a short integration, not a Newton solution. It can be 124 µV from the DC point
+and still pass B2.3. That gap was this brief's error, not the executor's.
+
+### Diagnosis at the failing corner: both remedies reach the same DC point
+
+Read-only, single decks through `bash scripts/kicad/run.sh ngspice -b`, one at a time, built from the third run's
+own H-REF9 loop seed netlists (bracket to AGND; `1432f4b6…` for TMUX 0 and `268daef6…` for TMUX 100 pF), in the
+ignored `.circuit-cache/sources/mc04-s13-diag/`. No container and no `.spiceinit` was left. These are the design
+authority's diagnostic figures, not study results.
+
+| Method | TMUX 0: `V(out)` | TMUX 100 pF: `V(out)` | "Transient op" |
+| --- | --- | --- | --- |
+| first `op` (Addendum B seed) | 9.000039757331 V | 9.000163611583 V | yes, both |
+| second `op`, seeded with all nodes of the first | 9.000039670750418 V | 9.000039670750414 V | no |
+| DC ramp of REF5, 0 to 5 V in 20 steps, last point | 9.000039671049832 V | 9.000039671049832 V | no |
+
+The inverting input is 5.000021405130 V after the second `op` and 5.000021405297 V after the ramp, at both
+capacitances. The two remedies agree within 0.3 nV, and each agrees with itself across the capacitor within
+0.01 pV. The first `op` is 87 nV off at TMUX 0 and 124 µV off at TMUX 100 pF. The evaluation decks of the third
+run had already solved to this point without fallback; only their reference was wrong.
+
+### C1. Ruling on the `cells.py` correction: accepted, it restores the specification
+
+Before `87f38b1a` the deck builder always wrote the amplifier as `XU inp …`. Where the specification ties IN+ to
+AGND, no other element was on `inp`, so the deck simulated an amplifier with a floating non-inverting input. The
+correction writes the node the specification gives (`0` for AGND). This is a deck-construction correction to match
+the specification, inside the allowed writes. It is not a topology change, not a changed cell and not a Ruling 5
+deviation; the earlier decks were the deviation.
+
+- Affected by the executor's count: 4 class E control cells, 3 class E audio cells and the class G cells. Cells
+  whose IN+ is driven (classes A, B, C, D, H; the P5 and P8 followers) had the right deck.
+- The second run's `/W1/DRIVE_INV_SUM` P7 figures (3.0°, 290.7 %) came from a floating IN+ and are withdrawn as
+  evidence. They are not reused; the report keeps them only as history, marked withdrawn.
+- The Addendum B diagnosis of H-REF9 is not affected: REF5 drives IN+ there.
+- Required with the correction: a builder test that rejects any deck in which an amplifier or OTA input pin sits on
+  a node with no other element (M19), and reviewer check 24. The test reads the complete deck text of every deck
+  kind (seed, loop, closed-loop), after the source, load and probe lines are added, and covers the non-inverting
+  pin, the inverting pin and both OTA input pins. A node counts as connected only through another element line,
+  not through a `.nodeset` line.
+
+### C2. Seeds, exactly (replaces B2 items 1 to 3; items 4 to 7 stand)
+
+This applies to every class and every deck kind, not only H-REF9.
+
+1. **First pass.** As B2.1: the evaluation deck's netlist at `C_stray` = 0, default tolerances, `op`, full-precision
+   record and `wrnodev`. If its log has no "Transient op" line, this pass is the seed.
+2. **Confirmation pass, required whenever the first pass used "Transient op".** The same seed deck again, with all
+   node values of the first pass as `.nodeset`, default tolerances, `op`, full-precision record and `wrnodev`. It
+   is accepted only if its log has no "Transient op" line. Its record is then the seed reference and its node
+   values are the `.nodeset` of the evaluation decks. Exactly one confirmation pass; no third.
+3. **DC ramp, when item 2 is not accepted, or when the seed fails item 4.** As B2.2: a `dc` sweep of the cell's DC
+   bias source from 0 to nominal in at least 20 steps, last point, full precision. It is accepted only if its log
+   has no "Transient op" line. A cell with no non-zero DC source has no ramp.
+4. **Validity.** The tests of B2.3 stand (inputs within 1 mV, output 1 V inside each rail, specification values
+   within 10 mV; class G the last two). Added: **the deck that produced the seed reference has no "Transient op"
+   line in its log.** A fallback result is never a seed reference, whatever its values.
+5. **Agreement inside a DC-equivalence group.** Seeds whose netlists differ only in capacitor values, and the loop
+   seed and closed-loop seed of one cell and corner, describe the same DC circuit. Their seed references must
+   agree within 5 µV on every external node they share. This costs no deck. A group that disagrees is re-seeded
+   once by the DC ramp (item 3); if it still disagrees, every row of the group is `NOT EVALUATED`.
+6. **No valid seed** by items 1 to 5: every row of that deck is `NOT EVALUATED: no valid operating point`. In P6b
+   that is a stop.
+7. **Recorded per seed:** the method that produced the reference (`op`, `op confirmed`, `dc ramp`), whether the
+   first pass used the fallback, the reference at full precision, the `.nodeset` SHA-256, and the group agreement.
+8. **Cost, as two counted caps.** A seed can need three invocations: first pass, confirmation pass and DC ramp.
+   At most 180 seeds as before, and **at most 540 seed-deck invocations, counted by the runner in a counter of
+   their own; reaching 540 is a stop** (STOP 3, a ceiling), reported with the classes that are complete. Every
+   seed-deck invocation also counts against the unchanged total cap of 2 400 ngspice invocations. The two caps do
+   not add: the total governs. By the third run's plan (1 408 main decks, 80 main-plan seeds) the seeds need at
+   most 240 invocations and the main sweep at most 1 648 before the class B single-path decks, the what-if rows,
+   splits and retries.
+
+B2.4 to B2.6 stand unchanged: the `.nodeset` lines, the 50 µV comparison against the full-precision seed
+reference, the 0.1 mV agreement inside a loop deck, and no figure from a rejected operating point.
+
+**An evaluation deck whose log has a "Transient op" line yields no metric at that ladder step, and the ladder
+continues** (Revision 8; this replaces the last sentence of B2.5). The 50 µV comparison covers external nodes
+only, so internal model nodes of a fallback result are unchecked, and a closed-loop transient would start from
+it. This holds for any operating point in the deck, loop or closed-loop. If no step is free of the line and
+inside 50 µV, the row is `NOT EVALUATED` with the attempts recorded. The line is still recorded per deck.
+
+### C3. Why not one remedy alone
+
+The confirmation pass is first because it keeps the evaluation deck's own netlist and proved sufficient. The ramp
+stays as the second route because a cell could fall back twice. Counting "Transient op" as failed validity (item 4)
+is what opens the ramp, so the executor's two options are both adopted, in that order.
+
+### C4. P6b as amended
+
+P6b covers every H-REF9 corner of the sweep plan: TMUX output capacitance 0 and 100 pF, each with the Ruling 6
+bracket to AGND and open. For each corner the seeds are obtained under C2, and the tests of B3 apply unchanged:
+9.000 V ± 10 mV, the inverting input within 1 mV of 5.000 V, and the seeded loop and closed-loop decks at 0 pF
+within 50 µV of the seed reference at some ladder step. Added: the C2.5 agreement holds between TMUX 0 and
+TMUX 100 pF and between the loop and closed-loop seeds. Any miss is a stop under STOP 2.
+
+### C5. Re-run, tests and review
+
+- The re-run needs a delta check of this addendum and a new admission. It starts at the start checks and P1 to
+  P4a; P1 gains this brief at its Revision 7 hash. P4b may be reused under the B6 conditions, which are unchanged.
+  P5, P6, P6b, P7, P8 and P9 run again. No loop, closed-loop or seed result of an earlier run is reused.
+- Mutations M17 to M21 are added (table above). M12 runs after P7 as before.
+- New reviewer checks: (24) for one class E control cell, one class E audio cell and one class G cell, the deck's
+  amplifier input pins against the specification, pin by pin, and that no amplifier input pin is alone on a node;
+  (25) no seed reference in the record comes from a deck with a "Transient op" line, by reading the logs of the
+  H-REF9 seeds and two others of its own choice; (26) the C2.5 groups and their agreement, recomputed for H-REF9
+  from the recorded references; (27) the second run's `/W1/DRIVE_INV_SUM` figures are marked withdrawn and cited
+  nowhere as evidence.
+- `method_limits` keeps the Addendum B sentence on the zero-stray operating point. Allowed writes are unchanged.
+  Scope, criteria, Rulings 1 to 7, sweep, caps, bounds, STOP conditions and the forbidden list stand as in
+  Revision 6.
+
+### Not established by this addendum
+
+The remedies were shown on one cell at two capacitances. Whether every class reaches a seed without fallback is
+not known before the run; where none does, the rows are `NOT EVALUATED` and say so. An operating point without
+fallback is a solution of the macro-model, not a statement about the part. The `cells.py` correction was judged
+from its diff and the executor's count of affected cells; the decks of those cells are for reviewer check 24.
+
+### Decision rows proposed for the manager (Addendum C)
+
+| Row | Text |
+| --- | --- |
+| S13 third stop | MC04-S13 stopped at Arm 0 P6b under STOP 2 (`87f38b1a`): at H-REF9 with TMUX 100 pF and the bracket to AGND the seed came from ngspice's transient-op fallback and was 124 µV from the DC point. No budget exists. The stop stands; the cause was a gap in Addendum B |
+| Addendum C | A seed reference never comes from a deck that used "Transient op". A first pass that fell back is confirmed by one second `op` seeded from it; failing that, the DC ramp. Seeds of one DC circuit must agree within 5 µV. The rule applies to every class. The 50 µV acceptance is unchanged |
+| Deck-builder correction | The `cells.py` change of `87f38b1a` (IN+ on the specification's node, AGND where the specification says so) is a correction to match the specification, not a topology change. The second run's `/W1/DRIVE_INV_SUM` control figures are withdrawn |
+
+Decided by: design authority (DS-03, Fable agent at high effort), owner notified. Reverse by: a design-authority
+ruling.
+
 ## Revision history
 
 Revision 1: SHA-256 `e31a537eb3934c6773e1b2863b705d53766abfdbe65ddbb89c942994eb05ea12`, reviewed ACCEPT WITH
@@ -949,4 +1100,26 @@ CORRECTIONS (4), newest section of `reviews/mc04-s13-brief-review-20261127.md`. 
 | 2 | Pin the P4b reuse | Addendum B, B6: hashes of `checkpoints/p4b.jsonl` and `p4b.py`, the checkpoint's `pins`, the source of the second run's model hashes, same image digest, KiCad 10.0.6 and ngspice 44.2, P1 and P3 first |
 | 3 | M15 and M16; fix of `budget.py` line 871 | "Tests and mutations"; Addendum B, B4 and B6 |
 | 4 | Seed limit in `method_limits`; deck count against the cap | "Outputs" (`method_limits`); "Sweep design" (new bullet); Addendum B, "Not established" |
+| Header | title and state paragraph | |
+
+Revision 6: SHA-256 `b4be52d50212dad993c489b5d2a1df62df1e2ae8a8ddc509acae0d037bbd0c69`, admitted, passed P1 to P6
+(P4b reused under B6), stopped at Arm 0 P6b (STOP 2, `87f38b1a`). Revision 7 adds Addendum C and changes nothing
+else.
+
+| Item | Changed in Revision 7 |
+| --- | --- |
+| Seeds | new section "Addendum C": C2 replaces B2 items 1 to 3 (first pass, confirmation pass, DC ramp, no fallback-derived reference, 5 µV group agreement, seed-deck count); C3 |
+| Deck-builder correction | Addendum C, C1 |
+| P6b | Arm 0 table, P6b row; Addendum C, C4; STOP 2 wording |
+| Tests and review | mutations M17 to M19; reviewer checks 24 to 27 and the re-run rule (C5) |
+| Header | title and state paragraph |
+
+Revision 7: SHA-256 `78213a8bf64bbc756fc97d693c372e2ef0b1aef9935dd86022f06b09b0536b90`, delta review ACCEPT WITH
+CORRECTIONS (3). Revision 8 applies all three.
+
+| # | Correction | Changed in Revision 8 |
+| --- | --- | --- |
+| 1 | An evaluation deck with a "Transient op" line yields no metric at that ladder step; the ladder continues | Addendum C, C2 (paragraph after item 8); Addendum B, B2.5 (pointer); mutation M20 |
+| 2 | Seed invocations: up to three per seed, an explicit counted cap of 540 whose reach is a stop, inside the unchanged 2 400 | Addendum C, C2.8; Addendum B, B2.7 (pointer); "Sweep design" bullet; STOP 3; mutation M21 |
+| 3 | M19 on the complete deck text, covering the inverting pin and the OTA input pins | "Tests and mutations", M19; Addendum C, C1 |
 | Header | title and state paragraph | |
