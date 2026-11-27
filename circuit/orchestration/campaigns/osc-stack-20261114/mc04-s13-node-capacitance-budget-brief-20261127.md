@@ -1,4 +1,4 @@
-# MC04-S13 brief: vendor-model simulation that sets a stray-capacitance budget per protected node (DS-161), Revision 3
+# MC04-S13 brief: vendor-model simulation that sets a stray-capacitance budget per protected node (DS-161), Revision 4
 
 2026-11-27. Issue #367 (MC-04 paper gate). The owner's choice DS-161 (option 1 of
 `mc04-s12-disposition-20261127.md`), briefed by the design authority under DS-03 (Fable design agent at high effort,
@@ -14,7 +14,10 @@ it is not a stability proof, not a hardware qualification and not an acceptance 
 (SHA-256 `e31a537eb3934c6773e1b2863b705d53766abfdbe65ddbb89c942994eb05ea12`) was reviewed ACCEPT WITH CORRECTIONS
 (`reviews/mc04-s13-brief-review-20261127.md`); Revision 2 (SHA-256
 `7757906d2db2d9da73978ac4ca16c6b3e53a30034b20d99d7dbfc2560aedb68e`) applied all twelve and its delta re-review
-returned ACCEPT WITH CORRECTIONS (one required, two wording). This Revision 3 applies those three (revision history
+returned ACCEPT WITH CORRECTIONS (one required, two wording). Revision 3 (SHA-256
+`a8d915f694af63c5b04dc5849066fc3d56ac33960003e661eef51d7a478e94c2`) applied those three, was admitted and stopped at
+Arm 0 P4b (STOP 2, commit `e3b747b7`, `mc04-s13-report-20261127.md`). **This Revision 4 adds Addendum A, which
+redefines P4b**; nothing else changes. It needs a delta check and a new admission before a re-run. (Revision history
 at the end). The reviewer asks for no further round if R1 is applied as worded; the manager confirms it by
 inspection. The manager admits the run after the admission checks in "Run
 bounds".
@@ -363,7 +366,7 @@ The study follows the retained receipts and does not invent a second route.
 | P2 | oracle identity | image digest recorded and equal to the pin; `kicad-cli version` prints exactly `10.0.6` (project rule 4; `pin.env` alone would accept any 10.0.x); the ngspice banner is recorded and reads 44.2, as the brief review observed in this image. Anything else is a stop |
 | P3 | model pins | the three model hashes match. OPAx196 is taken from `circuit-dev-resources` commit `54c00fc8` (read-only) or, failing that, through the existing fail-closed fetch of `https://www.ti.com/lit/zip/sbomaf9`, and is placed as `.circuit-cache/sources/opa196-model/SBOMAF9E.ZIP`; the hash decides either way |
 | P4a | reproduce a retained receipt (OPAx197) | `python -m design.spec.cells.sweep_precision_vendor --check --offline` passes: `precision-output-vendor.json` is byte-equal, 12 of 12 |
-| P4b | reproduce a retained receipt (OPAx196 and OPAx197) | `python -m design.spec.cells.sweep_input_buffer_vendor --check --offline` passes: all 136 rows of `input-buffer-vendor.json` byte-equal |
+| P4b | reproduce the vendor-simulated content of a retained receipt (OPAx196 and OPAx197) | **as redefined in Addendum A**: `python scripts/stack/studies/mc04_s13_node_cap_budget/p4b.py --run` (then `--resume` per slice) reports all 136 rows, `loop_break_validation` and every derived block of `input-buffer-vendor.json` equal to the retained receipt, with only the 16 `metrics.paper_screen` objects excluded. The plain `--check --offline` of the retained script is no longer the control: it cannot pass at HEAD |
 | P5 | loop-break method | the study's own loop measurement reproduces the three `loop_break_validation` rows (analytic phase margin 9.953°, 59.67°, 7.713°) within 0.1° |
 | P6 | census | the study derives 107 footprints and 64 nets, with the class counts 11, 23, 10, 1, 9, 5, 1, 3, 1, and the four binding rows above |
 | P7 | positive control: an excessive load must fail | `/W1/DRIVE_INV_SUM` with 1 nF on the node fails K1 and K4; `/E2/REF9_FB` with 1 nF fails K1. If either passes, the method cannot discriminate: stop |
@@ -417,6 +420,9 @@ small step, large step, sine in one `.control` block).
 | M6 | one footprint removed from the census | fail P6 |
 | M7 | a pass placed above a fail | be reported non-monotonic and decided by the lowest fail |
 | M8 | a row with `IDENTITY OPEN` or K9 `NOT RUN` labelled as a plain budget | be rejected |
+| M9 | one vendor metric changed in an in-memory copy of the retained receipt (a `phase_margin_deg`, a `crossover_Hz`, a `deck_sha256`) | fail P4b |
+| M10 | a `metrics.paper_screen` object changed or removed in that copy | not fail P4b; the same change to any other key of the same row must fail |
+| M11 | a 17th row given a `paper_screen` key, or one of the 16 losing it, in that copy | fail P4b (the exclusion set is exactly the 16 rows) |
 
 ## Run bounds (ORCHESTRATION.md section 3)
 
@@ -431,8 +437,8 @@ small step, large step, sine in one `.control` block).
 | Admission | `MemAvailable` ≥ 11 GiB, no other heavy process, no running container of the pinned image, at least 5 GiB free disk, the pinned image present, and a tree that is clean **except the new study directory** (the driver is untracked there at start, as the S12 result review recorded). This brief, its review and the decision rows are committed by the manager first |
 | Fingerprint | into `result.json`: OS and architecture, CPU quota and affinity, cgroup memory files or their absence, `MemAvailable`, swap, disk, interpreter and package versions, docker daemon, image digest, `kicad-cli version`, ngspice banner, process list, commit |
 | Start checks | `bash scripts/checks/regen-all.sh` (372 s in S12; ceiling 15 min) and `pnpm circuit:check` (ceiling 5 min) |
-| Arm 0 | ceiling 2 h 30 min: P4a 10 min, P4b 120 min, the rest 20 min. P4b's wall time is unknown and is recorded. The brief review measured a warm `run.sh` call at about 0.55 s and a first call at 15 s |
-| P4b | the retained script has no checkpoint. It runs as **one** background command under the guard with a 2 h limit (`timeout 2h`, and the session's background limit set to 2 h for this command, not the 30 min default). If it is killed by any limit, that is a stop: it is not resumed and not repeated in pieces. "Stopping the oracle" applies to it |
+| Arm 0 | ceiling 2 h 30 min: P4a 10 min, P4b 120 min of compute in slices, the rest 20 min. Measured in the stopped run: P4a 10.2 s; P4b 1233.6 s for the first 62 of 136 cases, about 20 s per case |
+| P4b | checkpointed, inside the 30 min background limit (Addendum A, A4): batches of 5 cases, one checkpoint line per finished batch, a slice ends by itself once 20 min have passed, and a resume continues from the last finished batch. No 2 h background command is used. Expected 45 to 60 min of compute in three or four slices; ceiling 120 min of compute and 8 slices |
 | Pilot | the first 40 sweep decks, timed. If the projected sweep exceeds 5 h, stop and report. Do not thin the value list, drop a corner or shorten a transient to fit |
 | Sweep | ceiling 5 h and 2 400 decks; 600 s per deck; expected 1.5 to 3 h |
 | Slices | the session's default background limit is 30 min. The sweep driver ends a slice by itself after 25 min, appends one line per finished deck to `results.jsonl`, keyed by deck SHA, and resumes from it after re-checking P1 and P3 and after "Stopping the oracle". The guard writes its summary at every slice end, so no slice lacks one. A resume after a slice end is not a retry |
@@ -449,7 +455,7 @@ Allowed writes, and nothing else:
 - a new directory `scripts/stack/studies/mc04_s13_node_cap_budget/` with the driver `budget.py` (`--run`,
   `--resume`, `--check`), `cells.py` (deck builders), `runner.py` (the multi-analysis runner), `guard.py` (the
   copy), the tests, a README, `census.json`, `models.json`, `results.jsonl`, `budget.json`, `result.json` and
-  `checkpoints/` with the guard summaries;
+  `checkpoints/` with the guard summaries; and, for Addendum A, `p4b.py` and `checkpoints/p4b.jsonl`;
 - the report `circuit/orchestration/campaigns/osc-stack-20261114/mc04-s13-report-<date>.md`;
 - ignored working files under `.circuit-cache/sources/mc04-s13/`, the two model caches, and what P4a and P4b
   write under `.circuit-cache/sources/input-buffer-vendor/` and `opa197-model/` (see "How the oracle is invoked").
@@ -487,7 +493,7 @@ and tolerance corners (not admitted by this brief).
 Stop, write what was found, and change nothing further on any of these:
 
 1. input drift: a pin or a model hash differs;
-2. any Arm 0 control fails, P4a or P4b drift included;
+2. any Arm 0 control fails, P4a drift or a P4b difference outside the Addendum A exclusion included;
 3. the pinned image is missing or does not report KiCad 10.0.6, the admission check fails, the guard fires, a
    container of the pinned image survives `docker kill`, P4b is killed by a limit, or a ceiling is reached;
 4. the pilot projects the sweep beyond 5 h;
@@ -518,7 +524,7 @@ The reviewer is not the executor and not the author of this brief. The review is
 10. The run bounds: fingerprint, peak memory as tree RSS plus container, wall times, deck count as ngspice
     invocations, caps, every slice and resume, a guard summary for each, and an empty container list before each
     resume.
-11. That P4a and P4b left both retained receipts byte-equal, and nothing outside the allowed paths changed.
+11. That P4a and P4b left both retained receipts byte-equal on disk, and nothing outside the allowed paths changed.
 12. That no output calls a draft validated, qualified or released, and that every limit of the method is stated:
     generic single-channel family cores with no package parasitics, channel coupling or supply impedance; ideal
     rails; typical-only models; 27 °C; lumped capacitance to AGND; the four assumed geometry terms; Ruling 4
@@ -587,6 +593,133 @@ ruling on the S13 result, or an owner decision.
 
 No simulation was run to write this brief.
 
+## Addendum A (Revision 4): P4b is redefined to test the vendor-simulated metrics, with the paper comparison excluded
+
+2026-11-27. Design authority under DS-03 (Fable design agent at high effort, model `claude-fable-5-2`), owner
+notified. Cause: the S13 run stopped at P4b under STOP 2. The stop was correct and stays on record. This addendum
+changes the control, not the receipt, the sweep script or any criterion.
+
+### What failed, and why a re-pin would be wrong
+
+- `sweep_input_buffer_vendor.py` (pinned, `13c47000…e23d`) holds `PAPER_SHA256 = 5cdac8e9…57fa` for
+  `scripts/stack/studies/mc04_s1b_indicator_loops/result.json`. That is the file as committed in `4b0ccee5`; I
+  confirmed `git show 4b0ccee5:…/result.json` hashes to it.
+- Commit `93197a3e` regenerated that file after MC04-S5. At HEAD it hashes to `40584463…840c`. `paper_points()`
+  raises on the mismatch, so `--check` cannot pass at HEAD for any caller. The run reached it at row 62, the first
+  of the 16 rows that carry the comparison.
+- The comparison is also no longer like for like. `paper_point()` compares the OPA4196 `case5a` vendor run with the
+  paper row of U8417 unit 3, which the regenerated file computes for OPA4197IPWR after the S5 swap. Updating the
+  pin alone would put an OPA4196 simulation beside an OPA4197 paper figure in a retained receipt.
+
+### A1. What S13 needs from P4b
+
+S13 relies on the receipt for one thing: that this oracle, these two model files and the Middlebrook method
+reproduce the retained vendor-simulated numbers. Those are the loop-break validation, the follower controls, the
+`case5a` phase margins and crossovers, and the transient rows. The `paper_screen` object is a comparison of a
+simulated margin with a first-order paper figure. No S13 criterion, limit or label reads it.
+
+### A2. The exact P4b definition
+
+P4b passes when all of the following hold.
+
+1. **Pins.** `sweep_input_buffer_vendor.py` is `13c47000…e23d` and `input-buffer-vendor.json` is `12a0de40…c9b`,
+   before and after. Both model hashes match (P3).
+2. **Producer.** The study's `p4b.py` imports the pinned module unedited and produces the report with the module's
+   own functions only: `models(offline=True)`, `run_all()`, `validate_loop_break()` and `report()`. It reimplements
+   no deck, no metric and no report field.
+3. **Two runtime substitutions, in memory only, both recorded in `checkpoints/p4b.jsonl`:**
+   - `paper_point` is replaced by a stub that reads no file and returns
+     `{"paper_pm_deg": null, "basis": "EXCLUDED BY MC04-S13 ADDENDUM A", "run_minus_paper_deg": null}`;
+   - `all_cases` is replaced, per batch, by a function returning the next 5 cases of the original `all_cases()`
+     list in its original order (A4).
+   No other attribute of the module is changed, and no file of the module, the receipt or the paper study is
+   written.
+4. **Exclusion set.** In the retained receipt exactly 16 rows carry `metrics.paper_screen`: `results[62]` to
+   `results[77]`, model `OPA4196`, case `case5a`. The same 16 rows, and no other, carry it in the produced report.
+5. **Equality.** After deleting `metrics.paper_screen` from those 16 rows on both sides, the produced report and
+   the retained receipt are equal as `json.dumps(obj, indent=2) + "\n"` strings, key order included. Nothing else
+   is excluded. In particular these stay inside the comparison:
+   - all 136 rows: `model`, `case`, `cell`, `variant`, `integration`, `deck_sha256` and every other metric,
+     including `phase_margin_deg`, `crossover_Hz`, `dc_loop_gain_dB`, `zs_over_zl_at_crossover`, the
+     voltage-injection figures, the operating points and the attempt lists of the 24 `case5a` rows;
+   - the two `case5a_control` rows (54.82° at 2.597 MHz, 63.95° at 9.986 MHz);
+   - the three `loop_break_validation` rows (9.953°, 59.67°, 7.713°);
+   - `oscillation`, `settling_OPA4197_vs_OPA4196`, `deltas`, `models`, `conditions`, and the top-level
+     `paper_screen` block, which is built from constants and reads no file.
+6. **Named figures.** The P4b record lists, beside the verdict, the retained and reproduced phase margin and
+   crossover of the 24 `case5a` rows, the two controls and the three validation rows, so a reader sees the numbers
+   the budgets lean on without opening the receipt.
+
+A difference anywhere inside the comparison is a P4b failure and a stop under STOP 2. It is a finding, not a reason
+to refresh anything.
+
+### A3. How the `paper_screen` comparison is treated
+
+- It is excluded from P4b's equality, for the 16 rows only, and from nothing else.
+- It is reported in the S13 report as an **inherited receipt defect, not established by S13**: the pin in the sweep
+  script is stale since `93197a3e`; the retained receipt's 16 `paper_screen` objects compare against the superseded
+  `4b0ccee5` paper file; and the regenerated paper row is for another amplifier.
+- S13 does not rebuild the comparison from the `4b0ccee5` blob. That would make the receipt reproduce in full, but
+  it would present a comparison against a superseded file as a current check.
+- It becomes a separate receipt-maintenance item, **MC04-RM1**, outside S13's allowed writes, with its own brief
+  and review. That task decides what the OPA4196 run is compared with after S5 (the
+  `sensitivity_R_SENSE_5600_OPA4196` block, a per-amplifier paper row, or no paper comparison), changes the script,
+  regenerates the receipt through its producer and has the result independently byte-checked. Until then the
+  retained script's `--check` is recorded as `NOT RUN: cannot pass at HEAD (stale paper pin, MC04-RM1)` wherever a
+  task would have run it.
+- MC04-RM1 does not gate S13. If it lands before the S13 re-run, the pins of this brief change and the manager
+  re-admits against the new hashes; P4b as defined here still applies, with an empty exclusion set if the new
+  receipt carries no such object.
+- No budget row may cite a `paper_screen` figure.
+
+### A4. Checkpointing inside the 30-minute background limit
+
+- The stopped run measured 1233.6 s for 62 cases, about 20 s per case, so the whole receipt needs about 45 to 60
+  minutes. That cannot fit one 30 minute background command, and the Revision 3 rule of one 2 h command is
+  withdrawn.
+- `p4b.py` calls `run_all()` once per batch of 5 consecutive cases. After each batch it appends one line to
+  `checkpoints/p4b.jsonl` with the batch's first and last index, the five case identities (`model`, `case`,
+  `cell`, `variant`), the five result rows and the wall time.
+- A slice ends by itself before a new batch once 20 minutes have passed, so a slice lasts at most 20 minutes plus
+  one batch. Each slice runs under the study's guard and leaves a guard summary. The retained script's own 600 s
+  limit per deck stays in force.
+- `--resume` re-checks P1 and P3, applies "Stopping the oracle", checks that every stored batch matches the case
+  identities of the original list at its indices, and continues at the next batch. A batch that was interrupted
+  left no line and is run again whole. That is a resume, not a retry.
+- `run_all()` writes `.spiceinit` at the repository root and removes it in a `finally` block, which a kill does not
+  reach. At a resume `p4b.py` may delete `.spiceinit` only if it is untracked and its content is exactly
+  `set ngbehavior=ps` and a newline; anything else is a stop.
+- After the last batch, `validate_loop_break()` and `report()` run once, the comparison of A2 is made, and the
+  verdict is written. Ceiling: 120 minutes of compute and 8 slices in total; reaching either is a stop.
+- `.circuit-cache/sources/input-buffer-vendor/` remains the working directory of the retained functions.
+
+### A5. Re-run, tests and review
+
+- The re-run starts again at the start checks and Arm 0, P1 to P4a included, under a new admission. P6 is repeated.
+  Results of the stopped run are not reused; its record stays in `result.json` history and in the report.
+- P1 gains two entries: this brief at its Revision 4 hash, and, for the record only,
+  `mc04_s1b_indicator_loops/result.json` at `4058446308c49e1b044cf933eb788706c43782492fa7968ac12c6ed06574840c`.
+- Mutations M9 to M11 are added (table above). They run on in-memory copies and need no deck.
+- New reviewer checks: (16) `p4b.py` changes only `paper_point` and `all_cases`, in memory, and the pinned script,
+  the receipt and the paper study are byte-unchanged; (17) the exclusion set is exactly rows 62 to 77 and the
+  comparison covers everything else, shown by M9 to M11; (18) the batches concatenate to the original `all_cases()`
+  order with no gap or repeat; (19) the report states the `paper_screen` defect as inherited and cites MC04-RM1,
+  and no budget row cites a `paper_screen` figure.
+- Allowed writes gain `p4b.py` and `checkpoints/p4b.jsonl` in the study directory. Nothing else changes: scope,
+  criteria, rulings, sweep, caps, bounds other than the P4b rows, STOP conditions and forbidden list stand as in
+  Revision 3.
+
+### Decision rows proposed for the manager (Addendum A)
+
+| Row | Text |
+| --- | --- |
+| S13 stop | MC04-S13 stopped at Arm 0 P4b under STOP 2 (`e3b747b7`): the retained input-buffer sweep cannot pass `--check` at HEAD because its stage 1b paper pin predates `93197a3e`. No budget exists. The stop stands |
+| Addendum A | P4b is the reproduction of every vendor-simulated field of `input-buffer-vendor.json` through the pinned script's own functions, with the 16 `metrics.paper_screen` objects excluded and run in checkpointed batches of 5 cases; the receipt and the script are not changed |
+| MC04-RM1 | The stale paper pin and the OPA4196-against-OPA4197 comparison in `sweep_input_buffer_vendor.py` are an inherited receipt defect for a separate maintenance task with its own brief and review; it does not gate S13 |
+
+Decided by: design authority (DS-03, Fable agent at high effort), owner notified. Reverse by: a design-authority
+ruling, or the MC04-RM1 result.
+
 ## Revision history
 
 Revision 1: SHA-256 `e31a537eb3934c6773e1b2863b705d53766abfdbe65ddbb89c942994eb05ea12`, reviewed ACCEPT WITH
@@ -615,3 +748,14 @@ table below).
 | R1 | Class B at wiper 0.5 cancels, so K3, K4 and K7 have no output under a common drive | stimulus table, class B row; new "Note on class B" (BUFFERED_INPUT alone at gain −1, REMOTE_INPUT alone at gain 2 × wiper, the worse decides; K5 and K9 keep the common drive); "Sweep design": class B row and the deck estimate (at most 240 extra decks, counted against the unchanged 2 400 cap) |
 | R2 | H-REF9: one load step or two | stimulus table, H-REF9 row; "Note on H-REF9": two separate steps in two transients, 1 mA for K5 and 100 µA for K6 |
 | R3 | Time resolution of the relative K6 and K8 tests | new paragraph "Time resolution of the relative tests": timestep at most 1/1000 of the zero-stray time constant, same timestep and window across a corner, resolution recorded, coarser than 0.1 % is `NOT EVALUATED`, a tie at 100 pF counts as a fail and the deciding criterion is named |
+
+Revision 3: SHA-256 `a8d915f694af63c5b04dc5849066fc3d56ac33960003e661eef51d7a478e94c2`, admitted, stopped at Arm 0 P4b
+(STOP 2, `e3b747b7`). Revision 4 adds Addendum A and changes nothing else.
+
+| Item | Changed in Revision 4 |
+| --- | --- |
+| P4b redefined | new section "Addendum A" (A1 need, A2 exact definition, A3 treatment of `paper_screen` and MC04-RM1, A4 checkpointing, A5 re-run, tests and review); Arm 0 table, P4b row; STOP 2 wording |
+| P4b checkpointing | "Run bounds": rows "Arm 0" and "P4b" (batches of 5 cases, 20 min slices, the one 2 h command withdrawn) |
+| Tests and review | mutations M9 to M11; reviewer check 11 wording and checks 16 to 19 (in A5) |
+| Outputs | `p4b.py` and `checkpoints/p4b.jsonl` added to the allowed writes |
+| Header | title and state paragraph |

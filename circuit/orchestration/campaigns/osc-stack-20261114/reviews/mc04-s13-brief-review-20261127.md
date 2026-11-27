@@ -257,3 +257,79 @@ decision rows match the rulings as revised. The brief still adopts nothing and s
 **ACCEPT WITH CORRECTIONS.** R1 must be applied before admission. It is confined to the class B row of the stimulus
 table and can be confirmed by the manager by inspection; I do not ask for another review round if it is applied as
 worded. R2 and R3 are wording.
+
+## Delta review of Revision 4 (Addendum A, P4b redefined): ACCEPT
+
+2026-11-27. Same reviewer session and model (Fable 5.2, `claude-fable-5-2`), read-only. Subject: Revision 4 of the
+brief, SHA-256 `a0381b6a6c6f5a65414951c96d4eaf611c9aa7a38ff9d33eea2281eb7cfc5806` (matches the expected value),
+uncommitted on top of `e3b747b7`. The sections above are unchanged. No deck, sweep or `p4b.py` was run, and `p4b.py`
+does not exist yet, so this reviews the definition, not an implementation.
+
+### The cause is as stated
+
+- `scripts/stack/studies/mc04_s1b_indicator_loops/result.json` hashes to `40584463…840c` at HEAD.
+  `git show 4b0ccee5:` of the same path hashes to `5cdac8e9…57fa`, the value pinned as `PAPER_SHA256`. The last
+  commit on the file is `93197a3e`.
+- In the HEAD file, U8417 unit 3 is `OPA4197IPWR` (GBW 10 MHz). `paper_point()` is called only for model `OPA4196`,
+  so a re-pin alone would set an OPA4196 run beside an OPA4197 paper row. Refusing the re-pin is correct.
+- The stop report gives 1233.6 s and 62 of 136 cases, which is index 62, the first row with the comparison.
+
+### The exclusion is minimal and correctly identified
+
+- In `input-buffer-vendor.json`, `metrics.paper_screen` exists on exactly indices 62 to 77. Those are exactly the 16
+  rows with model `OPA4196` and case `case5a`, and `paper_screen` is the last key of each `metrics` object.
+- `paper_point()` is the only caller of `paper_points()`, and `paper_points()` is the only reader of
+  `PAPER_RESULT`. `run_all()` calls `paper_point()` at one place, under `case5a` and `OPA4196`.
+- The top-level `paper_screen` block of `report()` is built from the constants `PAPER_RESULT` and `PAPER_SHA256` and
+  reads no file. Keeping it inside the comparison is right; it will be equal.
+- No derived block carries the excluded object. `deltas()` walks the OPA4197 keys, which have no `paper_screen`
+  (confirmed: no `deltas` entry contains it). `oscillation_summary()` reads `sustained_oscillation` only, and
+  `settle_comparison()` reads settle times only.
+- Every vendor-simulated number of those 16 rows (`phase_margin_deg`, crossover, operating point, attempts,
+  `deck_sha256`) stays compared. The excluded object adds only a paper figure and a difference derived from it.
+
+### The two substitutions cannot change any other output
+
+- `run_all()` looks up `all_cases` and `paper_point` as module globals at call time, so replacing the module
+  attributes takes effect and nothing else needs to change.
+- `run_all()` keeps no state between cases: one deck name per case, results appended in list order, and the only
+  shared side effect is `.spiceinit`, written at entry and removed in `finally`. Calling it once per batch of five
+  gives the same rows as one call, provided the batches are consecutive slices of one original list. Reviewer check
+  18 covers that.
+- `report()`, `deltas()` and `settle_comparison()` depend on row order only through the concatenated list.
+  `validate_loop_break()` runs after `run_all()` and without `.spiceinit` in the retained `run()` too, so running it
+  once after the last batch keeps the original sequence.
+- Rows restored from `checkpoints/p4b.jsonl` round-trip exactly through JSON (floats, `null`, key order), so a
+  resumed run compares equal to an uninterrupted one.
+
+### M9 to M11 and the resume rule are sound
+
+- M9 proves the comparison still bites on vendor metrics. M10 proves the exclusion is one key wide. M11 proves the
+  set is exactly 16 rows in both directions. Together they cover A2 items 4 and 5.
+- `.spiceinit` is neither tracked nor ignored in this repository, and `run_all()` refuses to start when it exists.
+  Deleting it at a resume only when untracked and byte-equal to `set ngbehavior=ps` plus a newline is the narrowest
+  rule that works; anything else being a stop is right.
+- A slice of 20 minutes plus one batch fits the 30 minute limit at the measured 20 s per case. The later `case5b`
+  transient rows were not timed by the stopped run, so the 45 to 60 minute estimate is an extrapolation; the
+  120 minute and 8 slice ceilings bound it.
+
+### Nothing else is broken
+
+- The diff against the committed Revision 3 touches the P4b rows, STOP 2, mutations, outputs, the state paragraph
+  and the addendum. Scope, criteria, rulings, sweep and caps are unchanged.
+- The stopped run's commit `e3b747b7` wrote only the study directory and the report.
+- Treating the stale pin as maintenance item MC04-RM1 with its own brief, outside S13's writes, is consistent with
+  the forbidden list and with "a drift is a finding, not a reason to refresh a receipt".
+
+### Two wording points, neither blocks admission
+
+1. The state paragraph still carries the Revision 3 sentence "The reviewer asks for no further round if R1 is
+   applied as worded" directly after the Revision 4 statement. Move it beside the Revision 3 text, so it cannot be
+   read as covering Revision 4.
+2. A4 should say that `p4b.py` takes the original `all_cases()` list once per process, before the substitution, and
+   that the 136th case forms a last batch of one.
+
+### Verdict on Revision 4
+
+**ACCEPT.** P4b as redefined tests everything S13 leans on and excludes only what cannot be reproduced at HEAD. The
+implementation of `p4b.py` is for the result review to check (reviewer checks 16 to 19).
